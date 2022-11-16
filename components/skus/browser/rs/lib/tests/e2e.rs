@@ -1,4 +1,5 @@
 use std::cell::RefCell;
+use std::{thread, time};
 use std::cell::RefMut;
 use std::collections::HashMap;
 use std::fmt;
@@ -175,5 +176,37 @@ fn has_credentials_works() {
 
         // calling refresh_order_credentials with no credentials loaded
         sdk.refresh_order_credentials(&order.id).await.unwrap();
+    });
+}
+
+#[test]
+fn skus_5m_tlv2_e2e_works() {
+    let subscriber = FmtSubscriber::builder().with_max_level(Level::TRACE).finish();
+    tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
+
+    task::block_on(async {
+        let client = CLIClient { store: RefCell::new(CLIStore(HashMap::new())) };
+        let sdk = skus::sdk::SDK::new(client, Environment::Staging, None, None);
+        sdk.initialize().await;
+
+        let order = sdk.create_order("tlv2_e2e_5m").await.unwrap();
+
+        sdk.refresh_order(&order.id).await.unwrap();
+        // Local cache should return response
+        sdk.refresh_order(&order.id).await.unwrap();
+
+        // initialize
+        sdk.submit_order_credentials_to_sign(&order.id);
+
+        // go ahead and see if we attempt to re-initialize, hope not
+        sdk.fetch_order_credentials(&order.id).await.unwrap();
+
+		let four_min = time::Duration::from_millis(4*60000);
+
+		for _ in 1..=30 {
+        	sdk.present_order_credentials(&order.id, &order.location, "/").await.unwrap();
+			let now = time::Instant::now();
+			thread::sleep(four_min);
+		}
     });
 }

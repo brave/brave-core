@@ -30,7 +30,10 @@ void BraveWalletPermissionPromptImpl::ShowBubble() {
       ->ShowBubble();
 }
 
-void BraveWalletPermissionPromptImpl::UpdateAnchor() {}
+bool BraveWalletPermissionPromptImpl::UpdateAnchor() {
+  // Returning false will force the caller to recreate the view.
+  return false;
+}
 
 permissions::PermissionPrompt::TabSwitchingBehavior
 BraveWalletPermissionPromptImpl::GetTabSwitchingBehavior() {

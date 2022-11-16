@@ -9,8 +9,9 @@ import * as Solana from '@solana/web3.js'
 // Constants
 import {
   BraveWallet,
+  SerializableTimeDelta,
+  SerializableTransactionInfo,
   SolFeeEstimates,
-  TimeDelta,
   WalletState
 } from '../../constants/types'
 import {
@@ -53,7 +54,7 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   // Common fields
   hash: string
   nonce: string
-  createdTime: TimeDelta
+  createdTime: SerializableTimeDelta
   status: BraveWallet.TransactionStatus
   sender: string
   senderLabel: string
@@ -109,7 +110,9 @@ export function useTransactionFeesParser (selectedNetwork?: BraveWallet.NetworkI
       : undefined
   }, [])
 
-  return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransactionFees => {
+  return React.useCallback(<
+    T extends BraveWallet.TransactionInfo | SerializableTransactionInfo
+  >(transactionInfo: T): ParsedTransactionFees => {
     const { txDataUnion: { ethTxData1559: txData, filTxData } } = transactionInfo
 
     const isFilTransaction = filTxData !== undefined
@@ -233,7 +236,7 @@ export function useTransactionParser (
       : undefined
   }
 
-  return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransaction => {
+  return React.useCallback((transactionInfo: SerializableTransactionInfo): ParsedTransaction => {
     const {
       txArgs,
       txDataUnion: {

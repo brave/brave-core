@@ -23,7 +23,8 @@ import {
   ER20TransferParams,
   ERC721TransferFromParams,
   SendTransactionParams,
-  SPLTransferFromParams
+  SPLTransferFromParams,
+  SerializableTransactionInfo
 } from '../../constants/types'
 import {
   AddSitePermissionPayloadType,
@@ -157,10 +158,10 @@ export const WalletAsyncActions = {
   sendERC721TransferFrom: createAction<ERC721TransferFromParams>('sendERC721TransferFrom'),
   approveERC20Allowance: createAction<ApproveERC20Params>('approveERC20Allowance'),
   transactionStatusChanged: createAction<TransactionStatusChanged>('transactionStatusChanged'),
-  approveTransaction: createAction<BraveWallet.TransactionInfo>('approveTransaction'),
-  rejectTransaction: createAction<BraveWallet.TransactionInfo>('rejectTransaction'),
+  approveTransaction: createAction<SerializableTransactionInfo>('approveTransaction'),
+  rejectTransaction: createAction<SerializableTransactionInfo>('rejectTransaction'),
   rejectAllTransactions: createAction('rejectAllTransactions'),
-  refreshGasEstimates: createAction<BraveWallet.TransactionInfo>('refreshGasEstimates'),
+  refreshGasEstimates: createAction<SerializableTransactionInfo>('refreshGasEstimates'),
   updateUnapprovedTransactionGasFields: createAction<UpdateUnapprovedTransactionGasFieldsType>('updateUnapprovedTransactionGasFields'),
   updateUnapprovedTransactionSpendAllowance: createAction<UpdateUnapprovedTransactionSpendAllowanceType>('updateUnapprovedTransactionSpendAllowance'),
   updateUnapprovedTransactionNonce: createAction<UpdateUnapprovedTransactionNonceType>('updateUnapprovedTransactionNonce'),
@@ -171,9 +172,9 @@ export const WalletAsyncActions = {
   removeSitePermission: createAction<RemoveSitePermissionPayloadType>('removeSitePermission'), // refreshWalletInfo
   addSitePermission: createAction<AddSitePermissionPayloadType>('addSitePermission'), // refreshWalletInfo
   refreshBalancesAndPrices: createAction('refreshBalancesAndPrices'),
-  retryTransaction: createAction<BraveWallet.TransactionInfo>('retryTransaction'),
-  cancelTransaction: createAction<BraveWallet.TransactionInfo>('cancelTransaction'),
-  speedupTransaction: createAction<BraveWallet.TransactionInfo>('speedupTransaction'),
+  retryTransaction: createAction<SerializableTransactionInfo>('retryTransaction'),
+  cancelTransaction: createAction<SerializableTransactionInfo>('cancelTransaction'),
+  speedupTransaction: createAction<SerializableTransactionInfo>('speedupTransaction'),
   expandWalletNetworks: createAction('expandWalletNetworks'), // replace with chrome.tabs.create helper
   refreshBalancesAndPriceHistory: createAction('refreshBalancesAndPriceHistory'),
   getCoinMarkets: createAction<GetCoinMarketPayload>('getCoinMarkets'),
@@ -334,8 +335,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
           return payload[account.address]
         }).flat(1)
 
-        const filteredTransactions = newPendingTransactions?.filter((tx: BraveWallet.TransactionInfo) => tx?.txStatus === BraveWallet.TransactionStatus.Unapproved) ?? []
-
+        const filteredTransactions = newPendingTransactions?.filter((tx) => tx?.txStatus === BraveWallet.TransactionStatus.Unapproved) ?? []
         const sortedTransactionList = sortTransactionByDate(filteredTransactions)
 
         state.transactions = payload
@@ -445,7 +445,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
       unapprovedTxUpdated (state: WalletState, { payload }: PayloadAction<UnapprovedTxUpdated>) {
         const index = state.pendingTransactions.findIndex(
-          (tx: BraveWallet.TransactionInfo) => tx.id === payload.txInfo.id
+          (tx) => tx.id === payload.txInfo.id
         )
 
         if (index !== -1) {
@@ -461,7 +461,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         const pendingTransactions = state.pendingTransactions
 
         const index = pendingTransactions.findIndex(
-          (tx: BraveWallet.TransactionInfo) => tx.id === state.selectedPendingTransaction?.id
+          (tx) => tx.id === state.selectedPendingTransaction?.id
         ) + 1
 
         state.selectedPendingTransaction = pendingTransactions.length === index
@@ -497,7 +497,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
       builder.addCase(WalletAsyncActions.transactionStatusChanged, (state, { payload }) => {
         const newPendingTransactions = state.pendingTransactions
-          .filter((tx: BraveWallet.TransactionInfo) => tx.id !== payload.txInfo.id)
+          .filter((tx) => tx.id !== payload.txInfo.id)
           .concat(payload.txInfo.txStatus === BraveWallet.TransactionStatus.Unapproved ? [payload.txInfo] : [])
 
         const sortedTransactionList = sortTransactionByDate(newPendingTransactions)

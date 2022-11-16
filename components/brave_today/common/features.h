@@ -11,10 +11,10 @@
 namespace brave_today {
 namespace features {
 
-extern const base::Feature kBraveNewsFeature;
-extern const base::Feature kBraveNewsV2Feature;
-extern const base::Feature kBraveNewsCardPeekFeature;
-extern const base::Feature kBraveNewsSubscribeButtonFeature;
+BASE_DECLARE_FEATURE(kBraveNewsFeature);
+BASE_DECLARE_FEATURE(kBraveNewsV2Feature);
+BASE_DECLARE_FEATURE(kBraveNewsCardPeekFeature);
+BASE_DECLARE_FEATURE(kBraveNewsSubscribeButtonFeature);
 
 }  // namespace features
 }  // namespace brave_today

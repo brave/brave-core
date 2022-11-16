@@ -78,7 +78,6 @@ source_set("bat_native_ledger_tests") {
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/get_me/get_me_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/patch_card/patch_card_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/post_cards/post_cards_unittest.cc",
-    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/post_oauth/post_oauth_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/post_transaction/post_transaction_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/post_transaction_commit/post_transaction_commit_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/uphold_utils_unittest.cc",
@@ -86,6 +85,7 @@ source_set("bat_native_ledger_tests") {
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoints/patch_wallets/patch_wallets_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoints/post_connect/post_connect_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoints/post_wallets/post_wallets_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoints/uphold/post_oauth/post_oauth_uphold_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/gemini/gemini_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/gemini/gemini_util_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/ledger_client_mock.cc",
@@ -114,14 +114,15 @@ source_set("bat_native_ledger_tests") {
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/uphold/uphold_util_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/wallet/wallet_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/wallet/wallet_utils_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/wallet_provider/connect_external_wallet_unittest.cc",
   ]
 
   deps = [
     "//base/test:test_support",
     "//brave/components/challenge_bypass_ristretto",
+    "//brave/third_party/rapidjson",
     "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-ledger:publishers_proto",
-    "//brave/vendor/bat-native-rapidjson",
     "//net:net",
     "//sql:sql",
     "//url:url",

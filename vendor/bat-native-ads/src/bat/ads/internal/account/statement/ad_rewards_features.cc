@@ -18,7 +18,7 @@ constexpr int kDefaultNextPaymentDay = 7;
 
 }  // namespace
 
-const base::Feature kAdRewards{kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kAdRewards, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsAdRewardsEnabled() {
   return base::FeatureList::IsEnabled(kAdRewards);

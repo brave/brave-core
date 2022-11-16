@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -34,7 +34,7 @@ import {
 export interface Props {
   selectedNetwork?: BraveWallet.NetworkInfo
   selectedAccountAddress?: string
-  onSelectTransaction: (transaction: BraveWallet.TransactionInfo) => void
+  onSelectTransaction: (transaction: SerializableTransactionInfo) => void
 }
 
 export const TransactionsPanel = ({

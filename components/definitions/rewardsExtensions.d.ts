@@ -176,16 +176,9 @@ declare namespace RewardsExtension {
     wallets: Record<string, number>
   }
 
-  export type WalletType = 'uphold' | 'bitflyer' | 'gemini'
+  type WalletStatus = import('gen/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.m.js').WalletStatus
 
-  export enum WalletStatus {
-    NOT_CONNECTED = 0,
-    CONNECTED = 1,
-    VERIFIED = 2,
-    DISCONNECTED_NOT_VERIFIED = 3,
-    DISCONNECTED_VERIFIED = 4,
-    PENDING = 5
-  }
+  export type WalletType = 'uphold' | 'bitflyer' | 'gemini'
 
   export interface ExternalWallet {
     address: string

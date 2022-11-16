@@ -11,7 +11,7 @@
 namespace brave_sync {
 namespace features {
 
-extern const base::Feature kBraveSync;
+BASE_DECLARE_FEATURE(kBraveSync);
 
 }  // namespace features
 }  // namespace brave_sync

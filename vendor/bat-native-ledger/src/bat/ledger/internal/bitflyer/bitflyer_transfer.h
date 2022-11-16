@@ -32,9 +32,9 @@ class BitflyerTransfer {
              client::TransactionCallback callback);
 
  private:
-  void OnCreateTransaction(const mojom::Result result,
+  void OnCreateTransaction(mojom::Result,
                            const std::string& id,
-                           client::TransactionCallback callback);
+                           client::TransactionCallback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::BitflyerServer> bitflyer_server_;

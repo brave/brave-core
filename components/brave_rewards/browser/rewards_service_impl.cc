@@ -665,23 +665,23 @@ void RewardsServiceImpl::GetAvailableCountries(
   }
 
   auto on_external_wallet = [](GetAvailableCountriesCallback callback,
-                               ledger::mojom::Result result,
-                               ledger::mojom::ExternalWalletPtr wallet) {
-    // If the user is not currently linked to any wallet provider, then all ISO
-    // country codes are available.
+                               GetExternalWalletResult result) {
+    auto wallet = std::move(result).value_or(nullptr);
+    // If the user is not currently connected to any wallet provider, then all
+    // ISO country codes are available.
     if (!wallet ||
-        wallet->status == ledger::mojom::WalletStatus::NOT_CONNECTED) {
+        wallet->status == ledger::mojom::WalletStatus::kNotConnected) {
       return std::move(callback).Run(kISOCountries);
     }
 
-    // If the user is currently linked to a bitFlyer wallet, then the only
+    // If the user is currently connected to a bitFlyer wallet, then the only
     // available countries are |kBitflyerCountries|.
     if (wallet->type == ledger::constant::kWalletBitflyer) {
       return std::move(callback).Run(std::vector<std::string>(
           kBitflyerCountries.begin(), kBitflyerCountries.end()));
     }
 
-    // If the user is currently linked to any other external wallet provider,
+    // If the user is currently connected to any other external wallet provider,
     // then remove |kBitflyerCountries| from the list of ISO countries.
     static const std::vector<std::string> kNonBitflyerCountries = []() {
       auto countries = kISOCountries;
@@ -2316,12 +2316,18 @@ void RewardsServiceImpl::SetLedgerEnvForTesting() {
   ledger_for_testing_ = true;
 }
 
+void RewardsServiceImpl::SetLedgerStateTargetVersionForTesting(int version) {
+  ledger_state_target_version_for_testing_ = version;
+}
+
 void RewardsServiceImpl::PrepareLedgerEnvForTesting() {
   if (!ledger_for_testing_) {
     return;
   }
 
   bat_ledger_service_->SetTesting();
+  bat_ledger_service_->SetStateMigrationTargetVersionForTesting(
+      ledger_state_target_version_for_testing_);
   SetRetryInterval(1);
 
   profile_->GetPrefs()->SetInteger(prefs::kMinVisitTime, 1);
@@ -2590,82 +2596,45 @@ std::string RewardsServiceImpl::GetLegacyWallet() {
 
 void RewardsServiceImpl::GetExternalWallet(GetExternalWalletCallback callback) {
   if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback),
-                         ledger::mojom::Result::LEDGER_OK, nullptr);
+    return DeferCallback(
+        FROM_HERE, std::move(callback),
+        base::unexpected(ledger::mojom::GetExternalWalletError::kUnexpected));
   }
 
   bat_ledger_->GetExternalWallet(GetExternalWalletType(), std::move(callback));
 }
 
-void RewardsServiceImpl::ExternalWalletAuthorization(
-      const std::string& wallet_type,
-      const base::flat_map<std::string, std::string>& args,
-      ExternalWalletAuthorizationCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback),
-                         ledger::mojom::Result::LEDGER_ERROR,
-                         base::flat_map<std::string, std::string>());
-  }
-
-  bat_ledger_->ExternalWalletAuthorization(wallet_type, args,
-                                           std::move(callback));
-}
-
-void RewardsServiceImpl::OnProcessExternalWalletAuthorization(
-    const std::string& wallet_type,
-    const std::string& action,
-    ProcessRewardsPageUrlCallback callback,
-    const ledger::mojom::Result result,
-    const base::flat_map<std::string, std::string>& args) {
-  std::move(callback).Run(result, wallet_type, action, args);
-}
-
-void RewardsServiceImpl::ProcessRewardsPageUrl(
+void RewardsServiceImpl::ConnectExternalWallet(
     const std::string& path,
     const std::string& query,
-    ProcessRewardsPageUrlCallback callback) {
-  auto path_items = base::SplitString(
-      path,
-      "/",
-      base::TRIM_WHITESPACE,
-      base::SPLIT_WANT_NONEMPTY);
-
-  if (path_items.size() < 2) {
-    return DeferCallback(FROM_HERE, std::move(callback),
-                         ledger::mojom::Result::LEDGER_ERROR, "", "",
-                         base::flat_map<std::string, std::string>());
+    ConnectExternalWalletCallback callback) {
+  if (!Connected()) {
+    return DeferCallback(
+        FROM_HERE, std::move(callback),
+        base::unexpected(
+            ledger::mojom::ConnectExternalWalletError::kUnexpected));
   }
 
-  const std::string action = path_items.at(1);
-  const std::string wallet_type = path_items.at(0);
+  const auto path_items = base::SplitString(path, "/", base::TRIM_WHITESPACE,
+                                            base::SPLIT_WANT_NONEMPTY);
+  if (path_items.empty()) {
+    return DeferCallback(
+        FROM_HERE, std::move(callback),
+        base::unexpected(
+            ledger::mojom::ConnectExternalWalletError::kUnexpected));
+  }
 
-  base::flat_map<std::string, std::string> query_map;
+  const std::string wallet_type = path_items.at(0);
+  base::flat_map<std::string, std::string> query_parameters;
 
   const auto url = GURL("brave:/" + path + query);
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
-    query_map[std::string(it.GetKey())] = it.GetUnescapedValue();
+    query_parameters[static_cast<std::string>(it.GetKey())] =
+        it.GetUnescapedValue();
   }
 
-  if (action == "authorization") {
-    if (wallet_type == ledger::constant::kWalletUphold ||
-        wallet_type == ledger::constant::kWalletBitflyer ||
-        wallet_type == ledger::constant::kWalletGemini) {
-      ExternalWalletAuthorization(
-          wallet_type,
-          query_map,
-          base::BindOnce(
-              &RewardsServiceImpl::OnProcessExternalWalletAuthorization,
-              AsWeakPtr(),
-              wallet_type,
-              action,
-              std::move(callback)));
-      return;
-    }
-  }
-
-  DeferCallback(FROM_HERE, std::move(callback),
-                ledger::mojom::Result::LEDGER_ERROR, wallet_type, action,
-                base::flat_map<std::string, std::string>());
+  bat_ledger_->ConnectExternalWallet(wallet_type, query_parameters,
+                                     std::move(callback));
 }
 
 void RewardsServiceImpl::OnDisconnectWallet(

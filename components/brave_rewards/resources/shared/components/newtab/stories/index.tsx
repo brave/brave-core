@@ -11,6 +11,7 @@ import { RewardsCard } from '../rewards_card'
 import { SponsoredImageTooltip } from '../sponsored_image_tooltip'
 
 import { localeStrings } from './locale_strings'
+import * as mojom from '../../../../shared/lib/mojom'
 
 const localeContext = {
   getString (key: string) {
@@ -57,7 +58,7 @@ export function Card () {
             } : null}
             externalWallet={disconnectedWallet ? {
               provider: 'uphold',
-              status: 'disconnected',
+              status: mojom.WalletStatus.kLoggedOut,
               username: '',
               links: {
                 reconnect: 'https://brave.com'

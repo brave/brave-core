@@ -13,16 +13,18 @@ namespace features {
 
 // Brave search promotion match located at last low in omnibox popup.
 // This type seems more like ads banner.
-const base::Feature kOmniboxBanner{"BraveSearchOmniboxBanner",
-                                   base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kOmniboxBanner,
+             "BraveSearchOmniboxBanner",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Brave search promotion match located at second low in omnibox popup.
 // This looks very similar with other normal matches.
-const base::Feature kOmniboxButton{"BraveSearchOmniboxButton",
-                                   base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kOmniboxButton,
+             "BraveSearchOmniboxButton",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Brave search promotion at NTP.
-const base::Feature kNTP{"BraveSearchNTP", base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kNTP, "BraveSearchNTP", base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace features
 

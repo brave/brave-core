@@ -51,6 +51,7 @@ public class BraveClassAdapter {
         chain = new BraveNewTabPageLayoutClassAdapter(chain);
         chain = new BraveQuickActionSearchWidgetProviderClassAdapter(chain);
         chain = new BraveNotificationManagerProxyImplClassAdapter(chain);
+        chain = new BraveNotificationPermissionRationaleDialogControllerClassAdapter(chain);
         chain = new BravePartnerBookmarksDelegateImplClassAdapter(chain);
         chain = new BravePasswordSettingsBaseClassAdapter(chain);
         chain = new BravePermissionDialogDelegateClassAdapter(chain);

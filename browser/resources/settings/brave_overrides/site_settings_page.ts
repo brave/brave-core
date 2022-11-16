@@ -8,7 +8,7 @@
 import {RegisterPolymerComponentReplacement, RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_overriding.js'
 import {ContentSettingsTypes} from '../site_settings/constants.js'
 import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
-import {I18nBehavior} from 'chrome://resources/cr_elements/i18n_behavior.js';
+import {I18nBehavior} from 'chrome://resources/i18n_behavior.js';
 import {SettingsSiteSettingsPageElement} from '../site_settings_page/site_settings_page.js'
 import {routes} from '../route.js'
 import './config.js'

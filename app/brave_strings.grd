@@ -406,6 +406,21 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           Brave may not function correctly because it is no longer supported on Windows XP or Windows Vista
         </message>
       </if>
+      <if expr="is_win">
+        <message name="IDS_WIN_7_OBSOLETE" desc="A message displayed on an at-launch infobar and about:help warning the user that the computer they are using will soon be or is already unsupported.">
+                    To get future Brave updates, you'll need Windows 10 or later. This computer is using Windows 7.
+        </message>
+      </if>
+      <if expr="is_win">
+        <message name="IDS_WIN_8_OBSOLETE" desc="A message displayed on an at-launch infobar and about:help warning the user that the computer they are using will soon be or is already unsupported.">
+                    To get future Brave updates, you'll need Windows 10 or later. This computer is using Windows 8.
+        </message>
+      </if>
+      <if expr="is_win">
+        <message name="IDS_WIN_8_1_OBSOLETE" desc="A message displayed on an at-launch infobar and about:help warning the user that the computer they are using will soon be or is already unsupported.">
+                    To get future Brave updates, you'll need Windows 10 or later. This computer is using Windows 8.1.
+        </message>
+      </if>
       <if expr="is_linux">
         <message name="IDS_LINUX_OBSOLETE" desc="A message displayed on an at-launch infobar and about:help warning the user that the OS version they are using is no longer supported.">
           Brave may not function correctly because it is no longer supported on this Linux distribution
@@ -722,7 +737,7 @@ Permissions you've already given to websites and apps may apply to this account.
         Warning: Brave cannot prevent extensions from recording your browsing history. To disable this extension in Private mode, unselect this option.
       </message>
       <message name="IDS_EXTENSIONS_UNINSTALL" desc="The link for uninstalling extensions.">
-        Remove from Brave...
+        Remove from Brave
       </message>
       <message name="IDS_EXTENSIONS_SHORTCUT_SCOPE_IN_CHROME" desc="The label to indicate that a shortcut will be triggerable only from within the Brave application.">
         In Brave
@@ -1381,6 +1396,11 @@ Permissions you've already given to websites and apps may apply to this account.
             Your account is managed by <ph name="MANAGER_NAME">$1<ex>example.com</ex></ph>. Your administrator can see and edit this Brave browser profile and its data like bookmarks, history, and passwords.
           </message>
         </if>
+        <if expr="not chromeos_lacros">
+          <message name="IDS_FRE_SIGN_IN_SUBTITLE" desc="The subtitle for the sign in page explaining to the users the benefits of signing in to Brave">
+            You can enjoy the most out of Brave
+          </message>
+        </if>
 
         <!-- Profile switch IPH -->
         <message name="IDS_PROFILE_SWITCH_PROMO" desc="Text of the In-Product-Help bubble for profile switching.">
@@ -1556,9 +1576,40 @@ Permissions you've already given to websites and apps may apply to this account.
       </if>
       <!-- High Efficiency Chip strings -->
       <if expr="not is_android">
-        <message name="IDS_HIGH_EFFICIENCY_DIALOG_BODY" desc="Body text for a dialog describing that Memory Saver mode will use less memory from inactive tabs and that this is a setting the user can control.">
-          As needed, Brave reclaims memory from tabs you aren't actively using. You can change this anytime in settings.
-        </message>
+        <if expr="use_titlecase">
+          <message name="IDS_HIGH_EFFICIENCY_DIALOG_TITLE" desc="In Title Case: Title text for a dialog describing that the Memory Saver setting is enabled">
+            Memory Saver Made Brave Faster
+          </message>
+        </if>
+        <if expr="not use_titlecase">
+          <message name="IDS_HIGH_EFFICIENCY_DIALOG_TITLE" desc="Title text for a dialog describing that the Memory Saver setting is enabled">
+            Memory Saver made Brave faster
+          </message>
+        </if>
+      </if>
+
+      <!-- High Efficiency IPH strings -->
+      <if expr="not is_android">
+        <if expr="use_titlecase">
+          <message name="IDS_HIGH_EFFICIENCY_INFO_MODE_PROMO_TITLE" desc="In Title Case: The title for the high efficiency info mode in-product promo bubble.">
+            Memory Saver Made Brave Faster
+          </message>
+        </if>
+        <if expr="not use_titlecase">
+          <message name="IDS_HIGH_EFFICIENCY_INFO_MODE_PROMO_TITLE" desc="The title for the high efficiency info mode in-product promo bubble.">
+            Memory Saver made Brave faster
+          </message>
+        </if>
+        <if expr="use_titlecase">
+          <message name="IDS_HIGH_EFFICIENCY_MODE_PROMO_TITLE" desc="In Title Case: The title for the high efficiency mode in-product promo bubble">
+            Make Brave Faster
+          </message>
+        </if>
+        <if expr="not use_titlecase">
+          <message name="IDS_HIGH_EFFICIENCY_MODE_PROMO_TITLE" desc="The title for the high efficiency mode in-product promo bubble">
+            Make Brave faster
+          </message>
+        </if>
       </if>
     </messages>
   </release>

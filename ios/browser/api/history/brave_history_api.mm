@@ -159,10 +159,10 @@
 - (void)removeAllWithCompletion:(void (^)())completion {
   // Deletes entire History and from all synced devices
   __weak BraveHistoryAPI* weak_history_api = self;
-  auto delete_history = ^(void (^completion)()) {
+  auto delete_history = ^(void (^callback)()) {
     BraveHistoryAPI* historyAPI = weak_history_api;
     if (!historyAPI) {
-      completion();
+      callback();
       return;
     }
 
@@ -171,17 +171,17 @@
 
     historyAPI->history_service_->DeleteLocalAndRemoteHistoryBetween(
         historyAPI->web_history_service_, base::Time::Min(), base::Time::Max(),
-        base::BindOnce(completion), &historyAPI->tracker_);
+        base::BindOnce(callback), &historyAPI->tracker_);
   };
 
   web::GetUIThreadTaskRunner({})->PostTask(
       FROM_HERE, base::BindOnce(delete_history, completion));
 }
 
-- (void)searchWithQuery:(NSString*)query
-               maxCount:(NSUInteger)maxCount
-             completion:(void (^)(NSArray<IOSHistoryNode*>* historyResults))
-                            completion {
+- (void)searchWithQuery:(NSString*)queryArg
+               maxCount:(NSUInteger)maxCountArg
+             completion:
+                 (void (^)(NSArray<IOSHistoryNode*>* historyResults))callback {
   __weak BraveHistoryAPI* weak_history_api = self;
   auto search_with_query = ^(NSString* query, NSUInteger maxCount,
                              void (^completion)(NSArray<IOSHistoryNode*>*)) {
@@ -228,7 +228,7 @@
 
   web::GetUIThreadTaskRunner({})->PostTask(
       FROM_HERE,
-      base::BindOnce(search_with_query, query, maxCount, completion));
+      base::BindOnce(search_with_query, queryArg, maxCountArg, callback));
 }
 
 @end

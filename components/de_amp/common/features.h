@@ -11,7 +11,7 @@
 namespace de_amp {
 namespace features {
 
-extern const base::Feature kBraveDeAMP;
+BASE_DECLARE_FEATURE(kBraveDeAMP);
 
 }  // namespace features
 }  // namespace de_amp

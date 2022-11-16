@@ -59,6 +59,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.viewpager.widget.ViewPager;
@@ -68,6 +69,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.json.JSONException;
 
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.base.BuildInfo;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
@@ -75,7 +77,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet;
-import org.chromium.chrome.browser.BraveRewardsExternalWallet.WalletStatus;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
@@ -90,6 +91,8 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.custom_layout.HeightWrappingViewPager;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
+import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
+import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
@@ -100,7 +103,9 @@ import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.ledger.mojom.WalletStatus;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.ui.permissions.PermissionConstants;
 
 import java.math.RoundingMode;
 import java.text.DateFormat;
@@ -891,6 +896,30 @@ public class BraveRewardsPanel
         }));
     }
 
+    private void requestNotificationPermission() {
+        if (mActivity.shouldShowRequestPermissionRationale(
+                    PermissionConstants.NOTIFICATION_PERMISSION)
+                || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
+            // other than android 13 redirect to
+            // setting page and for android 13 Last time don't allow selected in permission
+            // dialog, then enable through setting, this done through this dialog
+            showNotificationWarningDialog();
+        } else {
+            // 1st time request permission
+            ActivityCompat.requestPermissions(
+                    mActivity, new String[] {PermissionConstants.NOTIFICATION_PERMISSION}, 1);
+        }
+    }
+
+    private void showNotificationWarningDialog() {
+        BraveNotificationWarningDialog notificationWarningDialog =
+                BraveNotificationWarningDialog.newInstance(
+                        BraveNotificationWarningDialog.FROM_LAUNCHED_BRAVE_PANEL);
+        notificationWarningDialog.setCancelable(false);
+        notificationWarningDialog.show(mActivity.getSupportFragmentManager(),
+                BraveNotificationWarningDialog.NOTIFICATION_WARNING_DIALOG_TAG);
+    }
+
     private void showDeclareGeoModal(String[] countries) {
         showBraveRewardsOnboardingModal();
         if (mBraveRewardsOnboardingModalView != null) {
@@ -979,9 +1008,15 @@ public class BraveRewardsPanel
             btnContinue.setOnClickListener((new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (countrySpinner != null) {
-                        mBraveRewardsNativeWorker.CreateRewardsWallet(
-                                sortedCountryMap.get(countrySpinner.getSelectedItem().toString()));
+                    if (BravePermissionUtils.hasPermission(mAnchorView.getContext(),
+                                PermissionConstants.NOTIFICATION_PERMISSION)) {
+                        if (countrySpinner != null) {
+                            mBraveRewardsNativeWorker.CreateRewardsWallet(sortedCountryMap.get(
+                                    countrySpinner.getSelectedItem().toString()));
+                        }
+                    } else {
+                        // else request notification permission
+                        requestNotificationPermission();
                     }
                 }
             }));
@@ -1315,8 +1350,8 @@ public class BraveRewardsPanel
     }
 
     @Override
-    public void OnGetExternalWallet(int errorCode, String externalWallet) {
-        int walletStatus = BraveRewardsExternalWallet.NOT_CONNECTED;
+    public void OnGetExternalWallet(String externalWallet) {
+        int walletStatus = WalletStatus.NOT_CONNECTED;
         if (!TextUtils.isEmpty(externalWallet)) {
             try {
                 mExternalWallet = new BraveRewardsExternalWallet(externalWallet);
@@ -1335,7 +1370,7 @@ public class BraveRewardsPanel
     private void showRewardsFromAdsSummary(int walletStatus) {
         if (mBraveRewardsNativeWorker != null) {
             String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
-            if (walletStatus == BraveRewardsExternalWallet.VERIFIED
+            if (walletStatus == WalletStatus.CONNECTED
                     && (walletType.equals(BraveWalletProvider.UPHOLD)
                             || walletType.equals(BraveWalletProvider.BITFLYER)
                             || walletType.equals(BraveWalletProvider.GEMINI))) {
@@ -1350,14 +1385,14 @@ public class BraveRewardsPanel
                         .setVisibility(View.VISIBLE);
             }
             // Hide rewards from ads when verified but disconnected from provider
-            if (walletStatus == BraveRewardsExternalWallet.DISCONNECTED_VERIFIED) {
+            if (walletStatus == WalletStatus.LOGGED_OUT) {
                 mPopupView.findViewById(R.id.rewards_from_ads_summary_layout)
                         .setVisibility(View.GONE);
             }
         }
     }
 
-    private void setVerifyWalletButton(@WalletStatus final int status) {
+    private void setVerifyWalletButton(final int status) {
         TextView btnVerifyWallet = mPopupView.findViewById(R.id.btn_verify_wallet);
         SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -1367,26 +1402,13 @@ public class BraveRewardsPanel
         String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
 
         switch (status) {
-            case BraveRewardsExternalWallet.NOT_CONNECTED:
+            case WalletStatus.NOT_CONNECTED:
                 rightDrawable = R.drawable.ic_verify_wallet_arrow;
                 textId = R.string.brave_ui_wallet_button_unverified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
-                Log.e(TAG, "BraveRewardsExternalWallet.NOT_CONNECTED");
+                Log.e(TAG, "WalletStatus.NOT_CONNECTED");
                 break;
-            case BraveRewardsExternalWallet.CONNECTED:
-                rightDrawable = R.drawable.verified_disclosure;
-                textId = R.string.brave_ui_wallet_button_unverified;
-                btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
-                break;
-            case BraveRewardsExternalWallet.PENDING:
-                editor.putBoolean(PREF_VERIFY_WALLET_ENABLE, true);
-                editor.apply();
-
-                rightDrawable = R.drawable.verified_disclosure;
-                textId = R.string.brave_ui_wallet_button_unverified;
-                btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
-                break;
-            case BraveRewardsExternalWallet.VERIFIED:
+            case WalletStatus.CONNECTED:
                 editor.putBoolean(PREF_VERIFY_WALLET_ENABLE, true);
                 editor.apply();
 
@@ -1402,8 +1424,7 @@ public class BraveRewardsPanel
                     mBtnAddFunds.setVisibility(View.VISIBLE);
                 }
                 break;
-            case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
-            case BraveRewardsExternalWallet.DISCONNECTED_VERIFIED:
+            case WalletStatus.LOGGED_OUT:
                 leftDrawable = getWalletIcon(walletType);
                 textId = R.string.brave_ui_wallet_button_logged_out;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(leftDrawable, 0, 0, 0);
@@ -1422,14 +1443,13 @@ public class BraveRewardsPanel
         setVerifyWalletButtonClickEvent(btnVerifyWallet, status);
 
         // Update add funds button based on status
-        if (status != BraveRewardsExternalWallet.VERIFIED) {
+        if (status != WalletStatus.CONNECTED) {
             mBtnAddFunds.setEnabled(false);
             return;
         }
     }
 
-    private void setVerifyWalletButtonClickEvent(
-            View btnVerifyWallet, @WalletStatus final int status) {
+    private void setVerifyWalletButtonClickEvent(View btnVerifyWallet, final int status) {
         btnVerifyWallet.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1442,28 +1462,22 @@ public class BraveRewardsPanel
                 }
 
                 switch (status) {
-                    case BraveRewardsExternalWallet.NOT_CONNECTED:
-                    case BraveRewardsExternalWallet.CONNECTED:
-                    case BraveRewardsExternalWallet.PENDING:
-                    case BraveRewardsExternalWallet.VERIFIED:
-                        if (status == BraveRewardsExternalWallet.NOT_CONNECTED) {
-                            TabUtils.openUrlInNewTab(false,
-                                    BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
-                            dismiss();
-                        } else {
-                            int requestCode = (status == BraveRewardsExternalWallet.NOT_CONNECTED)
-                                    ? BraveConstants.VERIFY_WALLET_ACTIVITY_REQUEST_CODE
-                                    : BraveConstants.USER_WALLET_ACTIVITY_REQUEST_CODE;
-                            Intent intent = BuildVerifyWalletActivityIntent(status);
-                            if (intent != null) {
-                                mActivity.startActivityForResult(intent, requestCode);
-                            }
-                        }
-                        break;
-                    case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
-                    case BraveRewardsExternalWallet.DISCONNECTED_VERIFIED:
+                    case WalletStatus.NOT_CONNECTED:
                         TabUtils.openUrlInNewTab(false,
                                 BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
+                        dismiss();
+                        break;
+                    case WalletStatus.CONNECTED:
+                        int requestCode = BraveConstants.USER_WALLET_ACTIVITY_REQUEST_CODE;
+                        Intent intent = BuildVerifyWalletActivityIntent(status);
+                        if (intent != null) {
+                            mActivity.startActivityForResult(intent, requestCode);
+                        }
+                        break;
+                    case WalletStatus.LOGGED_OUT:
+                        TabUtils.openUrlInNewTab(false,
+                                BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
+                        dismiss();
                         break;
                     default:
                         Log.e(TAG, "Unexpected external wallet status");
@@ -1732,12 +1746,10 @@ public class BraveRewardsPanel
         return sharedPreferences.getBoolean(PREF_VERIFY_WALLET_ENABLE, false);
     }
 
-    private Intent BuildVerifyWalletActivityIntent(@WalletStatus final int status) {
+    private Intent BuildVerifyWalletActivityIntent(final int status) {
         Class clazz = null;
         switch (status) {
-            case BraveRewardsExternalWallet.CONNECTED:
-            case BraveRewardsExternalWallet.PENDING:
-            case BraveRewardsExternalWallet.VERIFIED:
+            case WalletStatus.CONNECTED:
                 clazz = BraveRewardsUserWalletActivity.class;
                 break;
             default:

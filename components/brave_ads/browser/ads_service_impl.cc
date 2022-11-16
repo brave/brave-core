@@ -113,7 +113,7 @@ constexpr int kHttpUpgradeRequiredStatusResponseCode = 426;
 
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 
-const base::Feature kServing{"AdServing", base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kServing, "AdServing", base::FEATURE_ENABLED_BY_DEFAULT);
 
 int GetDataResourceId(const std::string& name) {
   if (name == ads::data::resource::kCatalogJsonSchemaFilename) {

@@ -8,6 +8,7 @@ import { Store } from './async/types'
 import { getBraveKeyring } from './api/hardware_keyrings'
 import { BraveWallet } from '../constants/types'
 import { objectEquals } from '../utils/object-utils'
+import { makeSerializableTransaction } from '../utils/model-serialization-utils'
 
 export class WalletApiProxy {
   walletHandler = new BraveWallet.WalletHandlerRemote()
@@ -75,13 +76,13 @@ export class WalletApiProxy {
   addTxServiceObserver (store: Store) {
     const txServiceManagerObserverReceiver = new BraveWallet.TxServiceObserverReceiver({
       onNewUnapprovedTx: function (txInfo) {
-        store.dispatch(WalletActions.newUnapprovedTxAdded({ txInfo }))
+        store.dispatch(WalletActions.newUnapprovedTxAdded({ txInfo: makeSerializableTransaction(txInfo) }))
       },
       onUnapprovedTxUpdated: function (txInfo) {
-        store.dispatch(WalletActions.unapprovedTxUpdated({ txInfo }))
+        store.dispatch(WalletActions.unapprovedTxUpdated({ txInfo: makeSerializableTransaction(txInfo) }))
       },
       onTransactionStatusChanged: function (txInfo) {
-        store.dispatch(WalletActions.transactionStatusChanged({ txInfo }))
+        store.dispatch(WalletActions.transactionStatusChanged({ txInfo: makeSerializableTransaction(txInfo) }))
       }
     })
     this.txService.addObserver(txServiceManagerObserverReceiver.$.bindNewPipeAndPassRemote())

@@ -22,6 +22,7 @@ static_library("common") {
   public_deps = [
     ":buildflags",
     "//base",
+    "//brave/components/resources:strings",
     "//content/public/common",
   ]
 

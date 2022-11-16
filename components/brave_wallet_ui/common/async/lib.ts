@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { assert } from 'chrome://resources/js/assert.m.js'
+import { assert } from 'chrome://resources/js/assert.js'
 import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
@@ -42,6 +42,7 @@ import { AllNetworksOption } from '../../options/network-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
+import { makeSerializableTransaction } from '../../utils/model-serialization-utils'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -692,10 +693,11 @@ export function refreshTransactionHistory (address?: string) {
       ? accounts.filter(account => account.address === address)
       : accounts
 
-    const freshTransactions: AccountTransactions = await accountsToUpdate.reduce(
+    const freshTransactions: AccountTransactions = await accountsToUpdate.reduce<Promise<AccountTransactions>>(
       async (acc, account) => acc.then(async (obj) => {
         const { transactionInfos } = await txService.getAllTransactionInfo(account.coin, account.address)
-        obj[account.address] = sortTransactionByDate(transactionInfos, 'descending')
+        const serializedTransactionInfos = transactionInfos.map(makeSerializableTransaction)
+        obj[account.address] = sortTransactionByDate(serializedTransactionInfos, 'descending')
         return obj
       }), Promise.resolve({}))
 

@@ -86,6 +86,19 @@
   <message name="IDS_BRAVE_WALLET_SEND" desc="Send tab button">Send</message>
   <message name="IDS_BRAVE_WALLET_SWAP" desc="Swap tab button">Swap</message>
   <message name="IDS_BRAVE_WALLET_RESET" desc="Reset button text">Reset</message>
+  <message name="IDS_BRAVE_WALLET_SEND_TOKEN" desc="Send tab Send Token button">Send token</message>
+  <message name="IDS_BRAVE_WALLET_SEND_NFT" desc="Send tab Send NFT button">Send NFT</message>
+  <message name="IDS_BRAVE_WALLET_SELECT_TOKEN" desc="Send tab Select token button">Select token</message>
+  <message name="IDS_BRAVE_WALLET_SELECT_NFT" desc="Send tab Select NFT button">Select NFT</message>
+  <message name="IDS_BRAVE_WALLET_SEND_TAB_SELECT_TITLE" desc="Send tab Select token title">Select a token to send</message>
+  <message name="IDS_BRAVE_WALLET_ENTER_RECIPIENT_ADDRESS" desc="Send tab Enter recipient address">Enter recipient address</message>
+  <message name="IDS_BRAVE_WALLET_NOT_ENOUGH_FUNDS" desc="Send tab Not enough funds error">Not enough funds</message>
+  <message name="IDS_BRAVE_WALLET_SEND_HALF" desc="Send tab Send Half button">HALF</message>
+  <message name="IDS_BRAVE_WALLET_SEND_MAX" desc="Send tab Send Max button">MAX</message>
+  <message name="IDS_BRAVE_WALLET_REVIEW_ORDER" desc="Send tab Review order button">Review order</message>
+  <message name="IDS_BRAVE_WALLET_NO_AVAILIBLE_TOKENS" desc="Send tab placeholder for empty token list.">No available tokens</message>
+  <message name="IDS_BRAVE_WALLET_SEARCH_TOKENS" desc="Send tab search for tokens.">Search token by name</message>
+  <message name="IDS_BRAVE_WALLET_SEARCH_NFTS" desc="Send tab search for nfts.">Search NFT by name, id</message>
   <message name="IDS_BRAVE_WALLET_BUY_NOT_SUPPORTED_TOOLTIP" desc="Tooltip text when buy action is not supported">Buy support is not available for <ph name="NETWORK"><ex>Binance Smart Chain</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_BUY_TAB_BUY_NOT_SUPPORTED_MESSAGE" desc="Message shown when the selected network is not supported for buy transactions">Buy not supported for selected network</message>
   <message name="IDS_BRAVE_WALLET_SWAP_NOT_SUPPORTED_TOOLTIP" desc="Tooltip text when swap action is not supported">Swap support is not available for <ph name="NETWORK"><ex>Binance Smart Chain</ex>$1</ph></message>
@@ -451,6 +464,7 @@
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_BLOCKCHAIN" desc="NFT detail screen blockchain category">Blockchain</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_STANDARD" desc="NFT detail screen token standard category">Token standard</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_ID" desc="NFT detail screen token id category">Token ID</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS" desc="NFT detail contract address category">Contract address</message>
   <message name="IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED" desc="The error message when request for method 'eth_chainId' on custom network url failed">Request for method 'eth_chainId' on <ph name="URL">$1<ex>https://some.network/rpc/</ex></ph> failed</message>
   <message name="IDS_SETTINGS_WALLET_NETWORKS_EXISTS" desc="The error text of the wallet network dialog for existing network">
     This network is already added.

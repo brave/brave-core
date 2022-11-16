@@ -4,8 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <set>
 
 #include "base/base64.h"
+#include "base/base64url.h"
+#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
@@ -28,6 +31,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_test.h"
+#include "crypto/sha2.h"
 #include "net/dns/mock_host_resolver.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -359,12 +363,12 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V11EmptyWallet) {
   EXPECT_TRUE(brave_wallet.empty());
 }
 
-class UpholdStateMachine : public RewardsStateBrowserTest,
-                           public ::testing::WithParamInterface<
-                               std::pair<std::string, std::string>> {
+class V10 : public RewardsStateBrowserTest,
+            public ::testing::WithParamInterface<
+                std::pair<std::string, std::string>> {
  public:
   static std::string NameSuffixGenerator(
-      const ::testing::TestParamInfo<UpholdStateMachine::ParamType>& info) {
+      const ::testing::TestParamInfo<V10::ParamType>& info) {
     return from_json(std::get<0>(info.param)) + "__" +
            from_json(std::get<1>(info.param));
   }
@@ -385,10 +389,22 @@ class UpholdStateMachine : public RewardsStateBrowserTest,
   }
 
   static std::string to_string(int status) {
-    return status == -1 ? "unknown_WalletStatus_value"
-                        : (std::ostringstream{}
-                           << static_cast<ledger::mojom::WalletStatus>(status))
-                              .str();
+    switch (status) {
+      case 0:
+        return "NOT_CONNECTED";
+      case 1:
+        return "CONNECTED";
+      case 2:
+        return "VERIFIED";
+      case 3:
+        return "DISCONNECTED_NOT_VERIFIED";
+      case 4:
+        return "DISCONNECTED_VERIFIED";
+      case 5:
+        return "PENDING";
+      default:
+        return "unknown_WalletStatus_value";
+    }
   }
 
   static std::string to_string(const std::string& key,
@@ -414,7 +430,7 @@ class UpholdStateMachine : public RewardsStateBrowserTest,
 // clang-format off
 INSTANTIATE_TEST_SUITE_P(
     RewardsStateBrowserTest,
-    UpholdStateMachine,
+    V10,
     ::testing::Values(
         // NOLINTNEXTLINE
         std::make_pair(  // NOT_CONNECTED_token_empty_address_empty__NOT_CONNECTED_token_empty_address_empty
@@ -1112,30 +1128,236 @@ INSTANTIATE_TEST_SUITE_P(
                 R"("token":"0047c2fd8f023e067354dbdb5639ee67acf77150",)"
                 R"("user_name":"",)"
                 R"("withdraw_url":""})"})),
-    UpholdStateMachine::NameSuffixGenerator);
+    V10::NameSuffixGenerator);
 // clang-format on
 
-IN_PROC_BROWSER_TEST_P_(UpholdStateMachine, Migration) {
-  using ledger::state::kWalletUphold;
+IN_PROC_BROWSER_TEST_P_(V10, Paths) {
+  // testing migration from v9 to v10
+  profile_->GetPrefs()->SetInteger("brave.rewards.version", 9);
+  rewards_service_->SetLedgerStateTargetVersionForTesting(10);
 
   const auto& params = GetParam();
-  const auto& from = std::get<0>(params);
-  const auto& to = std::get<1>(params);
+  const auto& from_wallet = std::get<0>(params);
+  const auto& expected_wallet = std::get<1>(params);
 
-  profile_->GetPrefs()->SetInteger("brave.rewards.version", 9);
-  auto encrypted =
-      rewards_browsertest_util::EncryptPrefString(rewards_service_, from);
-  ASSERT_TRUE(encrypted);
-  profile_->GetPrefs()->SetString("brave.rewards.wallets.uphold", *encrypted);
+  const auto encrypted_from_wallet =
+      rewards_browsertest_util::EncryptPrefString(rewards_service_,
+                                                  from_wallet);
+  ASSERT_TRUE(encrypted_from_wallet);
+  profile_->GetPrefs()->SetString("brave.rewards.wallets.uphold",
+                                  *encrypted_from_wallet);
 
   rewards_browsertest_util::StartProcess(rewards_service_);
 
-  const auto uphold_pref =
+  const auto encrypted_to_wallet =
       profile_->GetPrefs()->GetString("brave.rewards.wallets.uphold");
-  auto decrypted = rewards_browsertest_util::DecryptPrefString(rewards_service_,
-                                                               uphold_pref);
-  ASSERT_TRUE(decrypted);
-  EXPECT_EQ(*decrypted, to);
+  const auto decrypted_to_wallet = rewards_browsertest_util::DecryptPrefString(
+      rewards_service_, encrypted_to_wallet);
+  ASSERT_TRUE(decrypted_to_wallet);
+
+  EXPECT_EQ(*decrypted_to_wallet, expected_wallet);
+}
+
+class V12
+    : public RewardsStateBrowserTest,
+      public testing::WithParamInterface<
+          std::tuple<std::string, std::string, ledger::mojom::WalletStatus>> {};
+
+// clang-format off
+INSTANTIATE_TEST_SUITE_P(
+  RewardsStateBrowserTest,
+  V12,
+  testing::Values(
+    std::tuple<std::string, std::string, ledger::mojom::WalletStatus>(
+      "pre_v12_NOT_CONNECTED__v12_kNotConnected",
+      R"(
+        {
+          "status": 0,
+          "token": "token",
+          "address": "address",
+          "one_time_string": "",
+          "code_verifier": "",
+          "activity_url": "activity_url",
+          "add_url": "add_url",
+          "withdraw_url": "withdraw_url"
+        }
+      )",
+      ledger::mojom::WalletStatus::kNotConnected
+    ),
+    std::tuple<std::string, std::string, ledger::mojom::WalletStatus>(
+      "pre_v12_VERIFIED__v12_kConnected",
+      R"(
+        {
+          "status": 2,
+          "token": "token",
+          "address": "address",
+          "one_time_string": "",
+          "code_verifier": "",
+          "activity_url": "",
+          "add_url": "",
+          "withdraw_url": ""
+        }
+      )",
+      ledger::mojom::WalletStatus::kConnected
+    ),
+    std::tuple<std::string, std::string, ledger::mojom::WalletStatus>(
+      "pre_v12_VERIFIED__v12_kLoggedOut",
+      R"(
+        {
+          "status": 2,
+          "token": "",
+          "address": "address",
+          "one_time_string": "",
+          "code_verifier": "",
+          "activity_url": "activity_url",
+          "add_url": "add_url",
+          "withdraw_url": "withdraw_url"
+        }
+      )",
+      ledger::mojom::WalletStatus::kLoggedOut
+    ),
+    std::tuple<std::string, std::string, ledger::mojom::WalletStatus>(
+      "pre_v12_DISCONNECTED_VERIFIED_v12_VERIFIED__kLoggedOut",
+      R"(
+        {
+          "status": 4,
+          "token": "token",
+          "address": "address",
+          "one_time_string": "",
+          "code_verifier": "",
+          "activity_url": "activity_url",
+          "add_url": "add_url",
+          "withdraw_url": "withdraw_url"
+        }
+      )",
+      ledger::mojom::WalletStatus::kLoggedOut
+    ),
+    std::tuple<std::string, std::string, ledger::mojom::WalletStatus>(
+      "pre_v12_CONNECTED__v12_kNotConnected",
+      R"(
+        {
+          "status": 1,
+          "token": "token",
+          "address": "address",
+          "one_time_string": "",
+          "code_verifier": "",
+          "activity_url": "activity_url",
+          "add_url": "add_url",
+          "withdraw_url": "withdraw_url"
+        }
+      )",
+      ledger::mojom::WalletStatus::kNotConnected
+    ),
+    std::tuple<std::string, std::string, ledger::mojom::WalletStatus>(
+      "pre_v12_DISCONNECTED_NOT_VERIFIED__v12_kNotConnected",
+      R"(
+        {
+          "status": 3,
+          "token": "token",
+          "address": "address",
+          "one_time_string": "",
+          "code_verifier": "",
+          "activity_url": "activity_url",
+          "add_url": "add_url",
+          "withdraw_url": "withdraw_url"
+        }
+      )",
+      ledger::mojom::WalletStatus::kNotConnected
+    ),
+    std::tuple<std::string, std::string, ledger::mojom::WalletStatus>(
+      "pre_v12_PENDING__v12_kNotConnected",
+      R"(
+        {
+          "status": 5,
+          "token": "token",
+          "address": "address",
+          "one_time_string": "",
+          "code_verifier": "",
+          "activity_url": "activity_url",
+          "add_url": "add_url",
+          "withdraw_url": "withdraw_url"
+        }
+      )",
+      ledger::mojom::WalletStatus::kNotConnected
+    )
+  ),
+  [](const auto& info) {
+    return std::get<0>(info.param);
+  }
+);
+// clang-format on
+
+IN_PROC_BROWSER_TEST_P_(V12, Paths) {
+  // testing migration from v11 to v12
+  profile_->GetPrefs()->SetInteger("brave.rewards.version", 11);
+  rewards_service_->SetLedgerStateTargetVersionForTesting(12);
+
+  const auto encrypted_from_wallet =
+      rewards_browsertest_util::EncryptPrefString(rewards_service_,
+                                                  std::get<1>(GetParam()));
+  ASSERT_TRUE(encrypted_from_wallet);
+  profile_->GetPrefs()->SetString("brave.rewards.wallets.bitflyer",
+                                  *encrypted_from_wallet);
+
+  rewards_browsertest_util::StartProcess(rewards_service_);
+
+  const auto encrypted_to_wallet =
+      profile_->GetPrefs()->GetString("brave.rewards.wallets.bitflyer");
+  const auto decrypted_to_wallet = rewards_browsertest_util::DecryptPrefString(
+      rewards_service_, encrypted_to_wallet);
+  ASSERT_TRUE(decrypted_to_wallet);
+
+  const auto value = base::JSONReader::Read(*decrypted_to_wallet);
+  ASSERT_TRUE(value && value->is_dict());
+
+  const auto& wallet_dict = value->GetDict();
+
+  const auto status = wallet_dict.FindInt("status");
+  const auto* token = wallet_dict.FindString("token");
+  const auto* address = wallet_dict.FindString("address");
+  const auto* one_time_string = wallet_dict.FindString("one_time_string");
+  const auto* code_verifier = wallet_dict.FindString("code_verifier");
+  const auto* activity_url = wallet_dict.FindString("activity_url");
+  const auto* add_url = wallet_dict.FindString("add_url");
+  const auto* login_url = wallet_dict.FindString("login_url");
+  const auto* withdraw_url = wallet_dict.FindString("withdraw_url");
+
+  ASSERT_TRUE(status && token && address && one_time_string && code_verifier &&
+              activity_url && add_url && login_url && withdraw_url);
+
+  ASSERT_TRUE(
+      (std::set{0 /* kNotConnected */, 2 /* kConnected */, 4 /* kLoggedOut */}
+           .count(*status)));
+  ASSERT_TRUE(static_cast<ledger::mojom::WalletStatus>(*status) ==
+              std::get<2>(GetParam()));
+
+  if (*status == 0 /* kNotConnected */ || *status == 4 /* kLoggedOut */) {
+    ASSERT_TRUE(token->empty());
+    ASSERT_TRUE(address->empty());
+
+    ASSERT_TRUE(activity_url->empty());
+    ASSERT_TRUE(add_url->empty());
+    ASSERT_TRUE(withdraw_url->empty());
+  } else {  // *status == 2 /* kConnected */
+    ASSERT_FALSE(token->empty());
+    ASSERT_FALSE(address->empty());
+
+    ASSERT_FALSE(activity_url->empty());
+    ASSERT_FALSE(add_url->empty());
+    ASSERT_FALSE(withdraw_url->empty());
+  }
+
+  ASSERT_FALSE(one_time_string->empty());
+  ASSERT_FALSE(code_verifier->empty());
+  ASSERT_TRUE(base::Contains(*login_url, *one_time_string));
+
+  std::string code_challenge;
+  base::Base64UrlEncode(crypto::SHA256HashString(*code_verifier),
+                        base::Base64UrlEncodePolicy::OMIT_PADDING,
+                        &code_challenge);
+  base::ReplaceChars(code_challenge, "+", "-", &code_challenge);
+  base::ReplaceChars(code_challenge, "/", "_", &code_challenge);
+  ASSERT_TRUE(base::Contains(*login_url, code_challenge));
 }
 
 }  // namespace rewards_browsertest

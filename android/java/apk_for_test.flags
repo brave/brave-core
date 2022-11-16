@@ -137,7 +137,7 @@
     *** mActionModeController;
     *** mLocationBarModel;
     *** mToolbar;
-    *** mBookmarkBridgeSupplier;
+    *** mBookmarkModelSupplier;
     *** mLayoutManager;
     *** mOverlayPanelVisibilitySupplier;
     *** mTabModelSelector;
@@ -469,6 +469,15 @@
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.notifications.permissions.NotificationPermissionRationaleDialogController {
+    *** wrapDialogDismissalCallback(...);
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.notifications.permissions.BraveNotificationPermissionRationaleDialogController {
     public <init>(...);
 }
 

@@ -14,14 +14,14 @@ namespace brave_rewards {
 namespace features {
 
 #if BUILDFLAG(IS_ANDROID)
-extern const base::Feature kBraveRewards;
+BASE_DECLARE_FEATURE(kBraveRewards);
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
-extern const base::Feature kGeminiFeature;
+BASE_DECLARE_FEATURE(kGeminiFeature);
 #endif
 
-extern const base::Feature kVerboseLoggingFeature;
+BASE_DECLARE_FEATURE(kVerboseLoggingFeature);
 
 }  // namespace features
 }  // namespace brave_rewards

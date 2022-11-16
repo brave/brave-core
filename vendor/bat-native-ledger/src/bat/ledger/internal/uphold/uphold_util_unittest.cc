@@ -190,7 +190,7 @@ TEST_F(UpholdUtilTest, GetWallet) {
   ASSERT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
   ASSERT_EQ(result->user_name, "test");
   ASSERT_EQ(result->token, "4c80232r219c30cdf112208890a32c7e00");
-  ASSERT_EQ(result->status, mojom::WalletStatus::VERIFIED);
+  ASSERT_EQ(result->status, mojom::WalletStatus::kConnected);
 }
 
 TEST_F(UpholdUtilTest, GenerateRandomHexString) {
@@ -212,7 +212,7 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
   auto wallet = mojom::ExternalWallet::New();
 
   // Not connected
-  wallet->status = mojom::WalletStatus::NOT_CONNECTED;
+  wallet->status = mojom::WalletStatus::kNotConnected;
   wallet->token = "";    // must be empty
   wallet->address = "";  // must be empty
   auto result = uphold::GenerateLinks(wallet->Clone());
@@ -227,8 +227,8 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
                     "transactions:transfer:others&intention=login&state="}));
   ASSERT_EQ(result->account_url, "https://wallet-sandbox.uphold.com/dashboard");
 
-  // Verified
-  wallet->status = mojom::WalletStatus::VERIFIED;
+  // Connected
+  wallet->status = mojom::WalletStatus::kConnected;
   wallet->token = "must be non-empty";
   wallet->address = "123123123124234234234";  // must be non-empty
   result = uphold::GenerateLinks(wallet->Clone());
@@ -247,25 +247,9 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
                     "transactions:transfer:others&intention=login&state="}));
   ASSERT_EQ(result->account_url, "https://wallet-sandbox.uphold.com/dashboard");
 
-  // Disconnected Verified
-  wallet->status = mojom::WalletStatus::DISCONNECTED_VERIFIED;
+  // Logged out
+  wallet->status = mojom::WalletStatus::kLoggedOut;
   wallet->token = "";    // must be empty
-  wallet->address = "";  // must be empty
-  result = uphold::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url, "");
-  ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(
-      result->login_url,
-      base::StrCat({"https://wallet-sandbox.uphold.com/authorize/",
-                    BUILDFLAG(UPHOLD_STAGING_CLIENT_ID),
-                    "?scope=cards:read cards:write user:read "
-                    "transactions:transfer:application "
-                    "transactions:transfer:others&intention=login&state="}));
-  ASSERT_EQ(result->account_url, "https://wallet-sandbox.uphold.com/dashboard");
-
-  // Pending
-  wallet->status = mojom::WalletStatus::PENDING;
-  wallet->token = "must be non-empty";
   wallet->address = "";  // must be empty
   result = uphold::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");

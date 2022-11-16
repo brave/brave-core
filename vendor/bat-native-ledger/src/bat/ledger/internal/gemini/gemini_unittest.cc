@@ -85,8 +85,8 @@ INSTANTIATE_TEST_SUITE_P(
   DisconnectGeminiWallet,
   Values(
     // NOLINTNEXTLINE
-    DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (NOT_CONNECTED)
-      "00_NOT_CONNECTED_unlink_wallet_succeeded",
+    DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (kNotConnected)
+      "kNotConnected_unlink_wallet_succeeded",
       R"({ "status": 0 })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       mojom::UrlResponse{
@@ -97,11 +97,11 @@ INSTANTIATE_TEST_SUITE_P(
         {}
       },
       mojom::Result::LEDGER_OK,
-      mojom::WalletStatus::NOT_CONNECTED
+      mojom::WalletStatus::kNotConnected
     },
     // NOLINTNEXTLINE
-    DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (NOT_CONNECTED)
-      "01_NOT_CONNECTED_unlink_wallet_failed",
+    DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (kNotConnected)
+      "kNotConnected_unlink_wallet_failed",
       R"({ "status": 0 })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       mojom::UrlResponse{
@@ -112,11 +112,11 @@ INSTANTIATE_TEST_SUITE_P(
         {}
       },
       mojom::Result::LEDGER_ERROR,
-      mojom::WalletStatus::NOT_CONNECTED
+      mojom::WalletStatus::kNotConnected
     },
     // NOLINTNEXTLINE
-    DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (VERIFIED)
-      "02_VERIFIED_unlink_wallet_succeeded",
+    DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (kConnected)
+      "kConnected_unlink_wallet_succeeded",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       mojom::UrlResponse{
@@ -127,11 +127,11 @@ INSTANTIATE_TEST_SUITE_P(
         {}
       },
       mojom::Result::LEDGER_OK,
-      mojom::WalletStatus::NOT_CONNECTED
+      mojom::WalletStatus::kNotConnected
     },
     // NOLINTNEXTLINE
-    DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (VERIFIED)
-      "03_VERIFIED_unlink_wallet_failed",
+    DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (kConnected)
+      "kConnected_unlink_wallet_failed",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       mojom::UrlResponse{
@@ -142,11 +142,11 @@ INSTANTIATE_TEST_SUITE_P(
         {}
       },
       mojom::Result::LEDGER_ERROR,
-      mojom::WalletStatus::VERIFIED
+      mojom::WalletStatus::kConnected
     },
     // NOLINTNEXTLINE
-    DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (DISCONNECTED_VERIFIED)
-      "04_DISCONNECTED_VERIFIED_unlink_wallet_succeeded",
+    DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet succeeded. (kLoggedOut)
+      "kLoggedOut_unlink_wallet_succeeded",
       R"({ "status": 4 })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       mojom::UrlResponse{
@@ -157,11 +157,11 @@ INSTANTIATE_TEST_SUITE_P(
         {}
       },
       mojom::Result::LEDGER_OK,
-      mojom::WalletStatus::NOT_CONNECTED
+      mojom::WalletStatus::kNotConnected
     },
     // NOLINTNEXTLINE
-    DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (DISCONNECTED_VERIFIED)
-      "05_DISCONNECTED_VERIFIED_unlink_wallet_failed",
+    DisconnectWalletParamType{  // Rewards UnLink (Claim) Wallet failed. (kLoggedOut)
+      "kLoggedOut_unlink_wallet_failed",
       R"({ "status": 4 })",
       R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
       mojom::UrlResponse{
@@ -172,7 +172,7 @@ INSTANTIATE_TEST_SUITE_P(
         {}
       },
       mojom::Result::LEDGER_ERROR,
-      mojom::WalletStatus::DISCONNECTED_VERIFIED
+      mojom::WalletStatus::kLoggedOut
     }),
   NameSuffixGenerator<DisconnectWalletParamType>
 );

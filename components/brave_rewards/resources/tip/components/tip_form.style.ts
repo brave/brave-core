@@ -50,10 +50,6 @@ export const monthlyIndicator = styled.div`
   color: var(--brave-palette-neutral600);
 `
 
-export const monthlyIndicatorStar = styled.span`
-  color: var(--brave-color-brandBatInteracting);
-`
-
 export const main = styled.div`
   flex: 1 0 auto;
   margin-top: 17px;

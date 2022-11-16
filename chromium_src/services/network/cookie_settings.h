@@ -24,6 +24,7 @@
   AnnotateAndMoveUserBlockedEphemeralCookies(                       \
       const GURL& url, const net::SiteForCookies& site_for_cookies, \
       const url::Origin* top_frame_origin,                          \
+      const net::FirstPartySetMetadata& first_party_set_metadata,   \
       net::CookieAccessResultList& maybe_included_cookies,          \
       net::CookieAccessResultList& excluded_cookies) const;         \
   bool AnnotateAndMoveUserBlockedCookies

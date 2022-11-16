@@ -55,8 +55,7 @@ export const downloadCompleted = () => action(types.DOWNLOAD_COMPLETED)
 
 export const getExternalWallet = () => action(types.GET_EXTERNAL_WALLET)
 
-export const onExternalWallet = (result: number, wallet: RewardsInternals.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
-  result,
+export const onGetExternalWallet = (wallet: RewardsInternals.ExternalWallet) => action(types.ON_GET_EXTERNAL_WALLET, {
   wallet
 })
 

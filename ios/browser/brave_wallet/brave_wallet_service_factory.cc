@@ -47,6 +47,8 @@ BraveWalletServiceFactory::BraveWalletServiceFactory()
           "BraveWalletService",
           BrowserStateDependencyManager::GetInstance()) {
   DependsOn(KeyringServiceFactory::GetInstance());
+  DependsOn(JsonRpcServiceFactory::GetInstance());
+  DependsOn(TxServiceFactory::GetInstance());
 }
 
 BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;

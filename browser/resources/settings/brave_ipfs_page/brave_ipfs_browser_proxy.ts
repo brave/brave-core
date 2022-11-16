@@ -27,7 +27,7 @@ export class BraveIPFSBrowserProxyImpl {
   }
 
   launchIPFSService () {
-    return new Promise(resolve => {
+    return new Promise<boolean>(resolve => {
       if (!chrome.ipfs) {
         resolve(false)
         return
@@ -37,7 +37,7 @@ export class BraveIPFSBrowserProxyImpl {
   }
 
   shutdownIPFSService () {
-    return new Promise(resolve => {
+    return new Promise<boolean>(resolve => {
       if (!chrome.ipfs) {
         resolve(false)
         return
@@ -47,7 +47,7 @@ export class BraveIPFSBrowserProxyImpl {
   }
 
   getIPFSResolveMethodList () {
-    return new Promise(resolve => {
+    return new Promise<string>(resolve => {
       if (!chrome.ipfs) {
         resolve(false)
         return
@@ -56,8 +56,8 @@ export class BraveIPFSBrowserProxyImpl {
     })
   }
 
-  removeIpfsPeer (id, address) {
-    return new Promise(resolve => {
+  removeIpfsPeer (id: string, address: string) {
+    return new Promise<boolean>(resolve => {
       if (!chrome.ipfs) {
         resolve(false)
         return
@@ -67,7 +67,7 @@ export class BraveIPFSBrowserProxyImpl {
   }
 
   getIpfsPeersList () {
-    return new Promise(resolve => {
+    return new Promise<string>(resolve => {
       if (!chrome.ipfs) {
         resolve(false)
         return
@@ -76,8 +76,8 @@ export class BraveIPFSBrowserProxyImpl {
     })
   }
 
-  addIpfsPeer (value) {
-    return new Promise(resolve => {
+  addIpfsPeer (value: string) {
+    return new Promise<boolean>(resolve => {
       if (!chrome.ipfs) {
         resolve(false)
         return
@@ -87,7 +87,7 @@ export class BraveIPFSBrowserProxyImpl {
   }
 
   getIpnsKeysList () {
-    return new Promise(resolve => {
+    return new Promise<string>(resolve => {
       if (!chrome.ipfs) {
         resolve(false)
         return
@@ -96,8 +96,8 @@ export class BraveIPFSBrowserProxyImpl {
     })
   }
 
-  rotateKey (name) {
-    return new Promise(resolve => {
+  rotateKey (name: string) {
+    return new Promise<boolean>(resolve => {
       if (!chrome.ipfs) {
         resolve(false)
         return
@@ -106,8 +106,8 @@ export class BraveIPFSBrowserProxyImpl {
     })
   }
 
-  addIpnsKey (name) {
-    return new Promise(resolve => {
+  addIpnsKey (name: string) {
+    return new Promise<string>(resolve => {
       if (!chrome.ipfs) {
         resolve(false)
         return
@@ -116,8 +116,8 @@ export class BraveIPFSBrowserProxyImpl {
     })
   }
 
-  removeIpnsKey (name) {
-    return new Promise(resolve => {
+  removeIpnsKey (name: string) {
+    return new Promise<string>(resolve => {
       if (!chrome.ipfs) {
         resolve(false)
         return
@@ -127,7 +127,7 @@ export class BraveIPFSBrowserProxyImpl {
   }
 
   getIPFSEnabled () {
-    return new Promise(resolve => {
+    return new Promise<boolean>(resolve => {
       if (!chrome.ipfs) {
         resolve(false)
         return
@@ -136,8 +136,8 @@ export class BraveIPFSBrowserProxyImpl {
     })
   }
 
-  validateGatewayUrl (url) {
-    return new Promise(resolve => {
+  validateGatewayUrl (url: string) {
+    return new Promise<boolean>(resolve => {
       if (!chrome.ipfs) {
         resolve(false)
         return

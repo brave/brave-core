@@ -21,6 +21,7 @@ import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
 import { isValidAddress, isValidFilAddress } from '../../utils/address-utils'
+import { endsWithAny } from '../../utils/string-utils'
 import Amount from '../../utils/amount'
 
 // hooks
@@ -28,19 +29,15 @@ import { useLib } from './useLib'
 import { useAssets } from './assets'
 import { PendingCryptoSendState, SendCryptoActions } from '../reducers/send_crypto_reducer'
 
-const supportedENSExtensions = ['.eth']
-const supportedSNSExtensions = ['.sol']
-// Should match `kUDPattern` array from json_rpc_service.cc.
-const supportedUDExtensions = [
-  '.crypto', '.x', '.coin', '.nft', '.dao', '.wallet', '.888', '.blockchain', '.bitcoin']
+// constants
+import {
+  supportedENSExtensions,
+  supportedSNSExtensions,
+  supportedUDExtensions
+} from '../constants/domain-extensions'
 
-const endsWithAny = (extensions: string[], url: string) => {
-  return extensions.some(function (suffix) {
-    return url.endsWith(suffix)
-  })
-}
-
-export default function useSend () {
+// ToDo: Remove isSendTab prop once we fully migrate to Send Tab
+export default function useSend (isSendTab?: boolean) {
   // redux
   const dispatch = useDispatch()
   const {
@@ -92,7 +89,7 @@ export default function useSend () {
     dispatch(SendCryptoActions.setToAddressOrUrl(payload))
   }
 
-  const selectSendAsset = (asset: BraveWallet.BlockchainToken) => {
+  const selectSendAsset = (asset: BraveWallet.BlockchainToken | undefined) => {
     if (asset?.isErc721 || asset?.isNft) {
       setSendAmount('1')
     } else {
@@ -314,6 +311,20 @@ export default function useSend () {
     })
   }, [selectedAccount?.address, selectedSendAsset, fullTokenList])
 
+  const resetSendFields = React.useCallback((reselectSendAsset?: boolean) => {
+    if (isSendTab) {
+      selectSendAsset(undefined)
+      setToAddressOrUrl('')
+      setSendAmount('')
+      return
+    }
+    if (reselectSendAsset) {
+      selectSendAsset(sendAssetOptions[0])
+    }
+    setToAddressOrUrl('')
+    setSendAmount('')
+  }, [selectSendAsset, isSendTab, sendAssetOptions])
+
   const submitSend = React.useCallback(() => {
     if (!selectedSendAsset) {
       console.log('Failed to submit Send transaction: no send asset selected')
@@ -358,11 +369,10 @@ export default function useSend () {
         coin: selectedAccount.coin,
         splTokenMintAddress: selectedSendAsset.contractAddress
       }))
-      setToAddressOrUrl('')
-      setSendAmount('')
-      selectSendAsset(sendAssetOptions[0])
+      resetSendFields(true)
       return
     }
+
     if (selectedAccount.coin === BraveWallet.CoinType.FIL) {
       dispatch(WalletActions.sendTransaction({
         from: selectedAccount.address,
@@ -371,11 +381,16 @@ export default function useSend () {
           .multiplyByDecimals(selectedSendAsset.decimals).toNumber().toString(),
         coin: selectedAccount.coin
       } as SendFilTransactionParams))
-      setToAddressOrUrl('')
-      setSendAmount('')
+      resetSendFields()
       return
     }
-    if (selectedSendAsset.isErc721 || selectedSendAsset.isErc20) { return }
+
+    if (selectedSendAsset.isErc721 || selectedSendAsset.isErc20) {
+      if (isSendTab) {
+        resetSendFields()
+      }
+      return
+    }
 
     dispatch(WalletActions.sendTransaction({
       from: selectedAccount.address,
@@ -386,14 +401,14 @@ export default function useSend () {
         : new Amount(sendAmount).multiplyByDecimals(selectedSendAsset.decimals).toHex()
     }))
 
-    setToAddressOrUrl('')
-    setSendAmount('')
+    resetSendFields()
   }, [
     selectedSendAsset,
     selectedAccount,
     sendAmount,
     toAddress,
-    sendAssetOptions[0]
+    resetSendFields,
+    isSendTab
   ])
 
   // memos
@@ -413,6 +428,9 @@ export default function useSend () {
 
   // effects
   React.useEffect(() => {
+    if (isSendTab) {
+      return
+    }
     // We also check that coinType matches here because localhost
     // networks share the same chainId
     if (
@@ -422,7 +440,7 @@ export default function useSend () {
       return
     }
     selectSendAsset(sendAssetOptions[0])
-  }, [sendAssetOptions, selectedSendAsset, selectedNetwork])
+  }, [sendAssetOptions, selectedSendAsset, selectedNetwork, isSendTab])
 
   React.useEffect(() => {
     if (selectedAccount?.coin === BraveWallet.CoinType.ETH) {

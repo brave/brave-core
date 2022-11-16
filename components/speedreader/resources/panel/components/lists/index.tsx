@@ -11,22 +11,27 @@ import fontMonoSvg from '../../svg/fontMono'
 import fontDyslexicSvg from '../../svg/fontDyslexic'
 import contentTextOnlySvg from '../../svg/contentTextOnly'
 import contentTextWithImagesSvg from '../../svg/contentTextWithImages'
+import { FontFamily, ContentStyle } from '../../api/browser'
 
 const fontStyleOptions = [
   {
     title: 'Sans',
+    family: FontFamily.kSans,
     svgIcon: fontSansSvg
   },
   {
     title: 'Serif',
+    family: FontFamily.kSerif,
     svgIcon: fontSerifSvg
   },
   {
     title: 'Mono',
+    family: FontFamily.kMono,
     svgIcon: fontMonoSvg
   },
   {
     title: 'Dyslexic',
+    family: FontFamily.kDyslexic,
     svgIcon: fontDyslexicSvg
   }
 ]
@@ -34,10 +39,12 @@ const fontStyleOptions = [
 const contentStyleOptions = [
   {
     title: 'Text with images',
+    contentStyle: ContentStyle.kDefault,
     svgIcon: contentTextWithImagesSvg
   },
   {
     title: 'Text only',
+    contentStyle: ContentStyle.kTextOnly,
     svgIcon: contentTextOnlySvg
   }
 ]
@@ -75,8 +82,15 @@ function Option (props: OptionType) {
   )
 }
 
-export function FontStyleList () {
-  const [activeOption] = React.useState('sans')
+interface FontStyleListProps {
+  activeFontFamily: FontFamily
+  onClick?: Function
+}
+
+export function FontStyleList (props: FontStyleListProps) {
+  const handleClick = (fontFamily: FontFamily) => {
+    props.onClick?.(fontFamily)
+  }
 
   return (
     <ListBox>
@@ -84,7 +98,8 @@ export function FontStyleList () {
         return (
           <Option
             key={entry.title}
-            isSelected={activeOption === entry.title.toLocaleLowerCase()}
+            isSelected={props.activeFontFamily === entry.family}
+            onClick={handleClick.bind(this, entry.family)}
           >
             <div className="sm">
               <div>{<entry.svgIcon />}</div>
@@ -97,8 +112,15 @@ export function FontStyleList () {
   )
 }
 
-export function ContentList () {
-  const [activeOption] = React.useState('text with images')
+interface ContentStyleProps {
+  activeContentStyle: ContentStyle
+  onClick?: Function
+}
+
+export function ContentList (props: ContentStyleProps) {
+  const handleClick = (contentStyle: ContentStyle) => {
+    props.onClick?.(contentStyle)
+  }
 
   return (
     <ListBox>
@@ -106,8 +128,9 @@ export function ContentList () {
         return (
           <Option
             key={entry.title}
-            isSelected={activeOption === entry.title.toLocaleLowerCase()}
+            isSelected={props.activeContentStyle === entry.contentStyle}
             ariaLabel={entry.title}
+            onClick={handleClick.bind(this, entry.contentStyle)}
           >
             <div>{<entry.svgIcon />}</div>
           </Option>

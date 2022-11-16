@@ -121,6 +121,8 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.informers.BraveAndroidSyncDisabledInformer;
+import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
+import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionRationaleDialogController;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
@@ -170,6 +172,7 @@ import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnCalloutDialogFragment;
+import org.chromium.chrome.browser.vpn.fragments.LinkVpnSubscriptionDialogFragment;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnApiResponseUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
@@ -184,6 +187,7 @@ import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.ui.permissions.PermissionConstants;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
@@ -859,7 +863,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             BraveSyncWorker.get();
         }
 
-        checkForNotificationData();
+        checkAndshowNotificationWarningDialog();
 
         if (!RateUtils.getInstance(this).getPrefRateEnabled()) {
             RateUtils.getInstance(this).setPrefRateEnabled(true);
@@ -965,6 +969,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         BraveVpnPrefUtils.getPurchaseToken(), BraveVpnPrefUtils.getProductId(),
                         BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
             }
+        }
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
+                && BraveVpnPrefUtils.isSubscriptionPurchase()
+                && !BraveVpnPrefUtils.isLinkSubscriptionDialogShown()) {
+            showLinkVpnSubscriptionDialog();
         }
         if (PackageUtils.isFirstInstall(this)
                 && (OnboardingPrefManager.getInstance().isDormantUsersEngagementEnabled()
@@ -1081,9 +1090,16 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private void showVpnCalloutDialog() {
         BraveVpnCalloutDialogFragment braveVpnCalloutDialogFragment =
                 new BraveVpnCalloutDialogFragment();
-        braveVpnCalloutDialogFragment.setCancelable(false);
         braveVpnCalloutDialogFragment.show(
                 getSupportFragmentManager(), "BraveVpnCalloutDialogFragment");
+    }
+
+    private void showLinkVpnSubscriptionDialog() {
+        LinkVpnSubscriptionDialogFragment linkVpnSubscriptionDialogFragment =
+                new LinkVpnSubscriptionDialogFragment();
+        linkVpnSubscriptionDialogFragment.setCancelable(false);
+        linkVpnSubscriptionDialogFragment.show(
+                getSupportFragmentManager(), "LinkVpnSubscriptionDialogFragment");
     }
 
     private void showAdFreeCalloutDialog() {
@@ -1092,7 +1108,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         BraveAdFreeCalloutDialogFragment braveAdFreeCalloutDialogFragment =
                 new BraveAdFreeCalloutDialogFragment();
-        braveAdFreeCalloutDialogFragment.setCancelable(false);
         braveAdFreeCalloutDialogFragment.show(
                 getSupportFragmentManager(), "BraveAdFreeCalloutDialogFragment");
     }
@@ -1208,6 +1223,32 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl,
                         lastUsedRegularProfile.getPrimaryOTRProfile(/* createIfNeeded= */ true));
             }
+        }
+    }
+
+    private void showNotificationWarningDialog() {
+        BraveNotificationWarningDialog notificationWarningDialog =
+                BraveNotificationWarningDialog.newInstance(
+                        BraveNotificationWarningDialog.FROM_LAUNCHED_BRAVE_ACTIVITY);
+        notificationWarningDialog.setCancelable(false);
+        notificationWarningDialog.setDismissListener(closeDialogListener);
+        notificationWarningDialog.show(getSupportFragmentManager(),
+                BraveNotificationWarningDialog.NOTIFICATION_WARNING_DIALOG_TAG);
+    }
+
+    private BraveNotificationWarningDialog.DismissListener closeDialogListener =
+            new BraveNotificationWarningDialog.DismissListener() {
+                @Override
+                public void onDismiss() {
+                    checkForNotificationData();
+                }
+            };
+
+    private void checkAndshowNotificationWarningDialog() {
+        if (BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(this)) {
+            showNotificationWarningDialog();
+        } else {
+            checkForNotificationData();
         }
     }
 
@@ -1529,13 +1570,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     private void showBraveRateDialog() {
         RateDialogFragment mRateDialogFragment = new RateDialogFragment();
-        mRateDialogFragment.setCancelable(false);
         mRateDialogFragment.show(getSupportFragmentManager(), "RateDialogFragment");
     }
 
     private void showCrossPromotionalDialog() {
-        CrossPromotionalModalDialogFragment mCrossPromotionalModalDialogFragment = new CrossPromotionalModalDialogFragment();
-        mCrossPromotionalModalDialogFragment.setCancelable(false);
+        CrossPromotionalModalDialogFragment mCrossPromotionalModalDialogFragment =
+                new CrossPromotionalModalDialogFragment();
         mCrossPromotionalModalDialogFragment.show(getSupportFragmentManager(), "CrossPromotionalModalDialogFragment");
     }
 
@@ -1544,7 +1584,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
             DormantUsersEngagementDialogFragment dormantUsersEngagementDialogFragment =
                     new DormantUsersEngagementDialogFragment();
-            dormantUsersEngagementDialogFragment.setCancelable(false);
             dormantUsersEngagementDialogFragment.setNotificationType(notificationType);
             dormantUsersEngagementDialogFragment.show(
                     getSupportFragmentManager(), "DormantUsersEngagementDialogFragment");
@@ -1575,7 +1614,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        checkForNotificationData();
+        if (intent != null) {
+            String openUrl = intent.getStringExtra(BraveActivity.OPEN_URL);
+            if (!TextUtils.isEmpty(openUrl)) {
+                openNewOrSelectExistingTab(openUrl);
+            }
+        }
+        checkAndshowNotificationWarningDialog();
     }
 
     @Override

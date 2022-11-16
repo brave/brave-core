@@ -9,7 +9,7 @@ import * as React from 'react'
 import { getLocale } from '../../../../common/locale'
 
 // types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, SerializableSolanaTxData } from '../../../constants/types'
 import { TypedSolanaInstructionWithParams } from '../../../utils/solana-instruction-utils'
 
 import {
@@ -22,7 +22,7 @@ import {
 import SolanaTransactionInstruction from '../../shared/solana-transaction-instruction/solana-transaction-instruction'
 
 export interface Props {
-  data: BraveWallet.SolanaTxData | undefined
+  data: SerializableSolanaTxData | undefined
   instructions: TypedSolanaInstructionWithParams[] | undefined
   txType: BraveWallet.TransactionType
 }

@@ -99,6 +99,21 @@ provideStrings({
   braveWalletDecimalPlacesError: 'Too many decimal places',
   braveWalletBuyTapBuyNotSupportedMessage: 'Buy not supported for selected network',
 
+  // Send Tab
+  braveWalletSendToken: 'Send token',
+  braveWalletSendNFT: 'Send NFT',
+  braveWalletSelectToken: 'Select token',
+  braveWalletSelectNFT: 'Select NFT',
+  braveWalletSendTabSelectTitle: 'Select a token to send',
+  braveWalletEnterRecipientAddress: 'Enter recipient address',
+  braveWalletNotEnoughFunds: 'Not enough funds',
+  braveWalletSendHalf: 'HALF',
+  braveWalletSendMax: 'MAX',
+  braveWalletReviewOrder: 'Review order',
+  braveWalletNoAvailableTokens: 'No available tokens',
+  braveWalletSearchTokens: 'Search token by name',
+  braveWalletSearchNFTs: 'Search NFT by name, id',
+
   // Create Account Tab
   braveWalletUnlockNeededToCreateAccount: 'Unlock needed to create an account',
   braveWalletCreateAccountDescription: 'You don’t yet have a $1 account. Create one now?',
@@ -629,6 +644,7 @@ provideStrings({
   braveWalletNFTDetailBlockchain: 'Blockchain',
   braveWalletNFTDetailTokenStandard: 'Token standard',
   braveWalletNFTDetailTokenID: 'Token ID',
+  braveWalletNFTDetailContractAddress: 'Contract address',
 
   // Sweepstakes
   braveWalletSweepstakesTitle: 'Brave Swap-stakes',

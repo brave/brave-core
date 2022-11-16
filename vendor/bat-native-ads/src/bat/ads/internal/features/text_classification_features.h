@@ -10,7 +10,7 @@
 
 namespace ads::targeting::features {
 
-extern const base::Feature kTextClassification;
+BASE_DECLARE_FEATURE(kTextClassification);
 
 bool IsTextClassificationEnabled();
 

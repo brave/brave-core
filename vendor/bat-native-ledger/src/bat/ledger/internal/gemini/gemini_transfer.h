@@ -33,9 +33,9 @@ class GeminiTransfer {
              client::TransactionCallback callback);
 
  private:
-  void OnCreateTransaction(const mojom::Result result,
+  void OnCreateTransaction(mojom::Result,
                            const std::string& id,
-                           client::TransactionCallback callback);
+                           client::TransactionCallback);
 
   void FetchTransactionStatus(const std::string& id,
                               const int attempts,

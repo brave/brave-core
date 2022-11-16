@@ -25,6 +25,8 @@ import * as urls from '../../lib/rewards_urls'
 
 import * as style from './rewards_card.style'
 
+import * as mojom from '../../../shared/lib/mojom'
+
 const nextPaymentDateFormatter = new Intl.DateTimeFormat(undefined, {
   day: 'numeric',
   month: 'short'
@@ -99,7 +101,7 @@ export function RewardsCard (props: Props) {
     }
 
     const { externalWallet } = props
-    if (externalWallet && externalWallet.status === 'disconnected') {
+    if (externalWallet && externalWallet.status === mojom.WalletStatus.kLoggedOut) {
       const onClick = () => {
         if (externalWallet.links.reconnect) {
           window.open(externalWallet.links.reconnect, '_blank')

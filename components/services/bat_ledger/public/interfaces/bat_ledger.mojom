@@ -6,6 +6,7 @@ module bat_ledger.mojom;
 
 import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom";
 import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_database.mojom";
+import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom";
 import "mojo/public/mojom/base/values.mojom";
 
 interface BatLedgerService {
@@ -17,6 +18,7 @@ interface BatLedgerService {
   SetReconcileInterval(int32 interval);
   SetRetryInterval(int32 interval);
   SetTesting();
+  SetStateMigrationTargetVersionForTesting(int32 version);
 
   GetEnvironment() => (ledger.mojom.Environment environment);
   GetDebug() => (bool debug);
@@ -133,9 +135,9 @@ interface BatLedger {
 
   FetchBalance() => (ledger.mojom.Result result, ledger.mojom.Balance? balance);
 
-  GetExternalWallet(string wallet_type) => (ledger.mojom.Result result, ledger.mojom.ExternalWallet? wallet);
+  GetExternalWallet(string wallet_type) => (ledger.mojom.GetExternalWalletResult result);
 
-  ExternalWalletAuthorization(string wallet_type, map<string, string> args) => (ledger.mojom.Result result, map<string, string> args);
+  ConnectExternalWallet(string wallet_type, map<string, string> args) => (ledger.mojom.ConnectExternalWalletResult result);
 
   DisconnectWallet(string wallet_type) => (ledger.mojom.Result result);
 

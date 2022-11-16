@@ -34,7 +34,7 @@ constexpr bool kDefaultShouldDetectScreenWasLocked = false;
 
 }  // namespace
 
-const base::Feature kFeature{kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kFeature, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsEnabled() {
   return base::FeatureList::IsEnabled(kFeature);

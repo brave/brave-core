@@ -36,7 +36,7 @@ std::string GetAccountUrl();
 
 std::string GetActivityUrl();
 
-mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet);
+mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr);
 
 }  // namespace gemini
 }  // namespace ledger

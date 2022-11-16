@@ -1,6 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
+<!-- These messages are the user-facing UI strings for omnibox pedals. -->
+<!-- There are two kinds of UI strings here: -->
+<!--   * Visible UI labels -->
+<!--   * Invisible screen reader text for screen readers -->
 <grit-part>
-
   <message name="IDS_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_HINT" desc="The button text contents to suggest pedal action, LAUNCH_INCOGNITO">
     Open Private window
   </message>

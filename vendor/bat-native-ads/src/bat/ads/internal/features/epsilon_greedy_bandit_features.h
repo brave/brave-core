@@ -10,7 +10,7 @@
 
 namespace ads::targeting::features {
 
-extern const base::Feature kEpsilonGreedyBandit;
+BASE_DECLARE_FEATURE(kEpsilonGreedyBandit);
 
 bool IsEpsilonGreedyBanditEnabled();
 

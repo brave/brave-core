@@ -672,30 +672,11 @@ void BatLedgerImpl::GetExternalWallet(const std::string& wallet_type,
   ledger_->GetExternalWallet(wallet_type, std::move(callback));
 }
 
-// static
-void BatLedgerImpl::OnExternalWalletAuthorization(
-    CallbackHolder<ExternalWalletAuthorizationCallback>* holder,
-    ledger::mojom::Result result,
-    const base::flat_map<std::string, std::string>& args) {
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, args);
-  delete holder;
-}
-
-void BatLedgerImpl::ExternalWalletAuthorization(
+void BatLedgerImpl::ConnectExternalWallet(
     const std::string& wallet_type,
     const base::flat_map<std::string, std::string>& args,
-    ExternalWalletAuthorizationCallback callback) {
-  auto* holder = new CallbackHolder<ExternalWalletAuthorizationCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_->ExternalWalletAuthorization(
-      wallet_type,
-      args,
-      std::bind(BatLedgerImpl::OnExternalWalletAuthorization,
-                holder,
-                _1,
-                _2));
+    ConnectExternalWalletCallback callback) {
+  ledger_->ConnectExternalWallet(wallet_type, args, std::move(callback));
 }
 
 // static

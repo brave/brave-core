@@ -1,5 +1,5 @@
 diff --git a/tools/perf/core/perf_dashboard_machine_group_mapping.json b/tools/perf/core/perf_dashboard_machine_group_mapping.json
-index 0b9ae6abbb80ffbb8c9d5e8a120dbcd22ce10e1a..4b61c22cb3906483496cb2e18d8ca0cd964763a9 100644
+index 7c9179cf80f47fc8e7ddc6ebb111393e41cc3501..bc97ca19665899820aaaa360b3051d784ec88f93 100644
 --- a/tools/perf/core/perf_dashboard_machine_group_mapping.json
 +++ b/tools/perf/core/perf_dashboard_machine_group_mapping.json
 @@ -1,4 +1,5 @@

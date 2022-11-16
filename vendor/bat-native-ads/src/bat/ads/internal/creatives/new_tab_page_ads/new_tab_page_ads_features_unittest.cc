@@ -29,7 +29,7 @@ TEST(BatAdsNewTabPageAdsFeaturesTest, NewTabPageAdsDisabled) {
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  std::vector<base::Feature> disabled_features;
+  std::vector<base::test::FeatureRef> disabled_features;
   disabled_features.push_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;

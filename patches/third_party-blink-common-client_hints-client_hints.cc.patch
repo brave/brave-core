@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/common/client_hints/client_hints.cc b/third_party/blink/common/client_hints/client_hints.cc
-index 0d7256656f6753dee77cf948f17e24fdc5493238..50cffe933b01a48ade914582a8d1f7d6a5ed35ba 100644
+index 7aab94e771ca01b38ae7146c7402f6c208d17d78..0ebf3b039f2c6fe4448f3f587eaf2d318e0891c1 100644
 --- a/third_party/blink/common/client_hints/client_hints.cc
 +++ b/third_party/blink/common/client_hints/client_hints.cc
-@@ -111,6 +111,7 @@ const size_t kWebEffectiveConnectionTypeMappingCount =
+@@ -113,6 +113,7 @@ const size_t kWebEffectiveConnectionTypeMappingCount =
      std::size(kWebEffectiveConnectionTypeMapping);
  
  bool IsClientHintSentByDefault(network::mojom::WebClientHintsType type) {

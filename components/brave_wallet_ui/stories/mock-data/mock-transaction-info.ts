@@ -2,10 +2,10 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { BraveWallet } from '../../constants/types'
+import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
 import { mockOriginInfo } from './mock-origin-info'
 
-export const mockTransactionInfo: BraveWallet.TransactionInfo = {
+export const mockTransactionInfo: SerializableTransactionInfo = {
   fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
   id: '465a4d6646-kjlwf665',
   txArgs: ['0x0d8775f648430679a709e98d2b0cb6250d2887ef', '0x15ddf09c97b0000'],
@@ -32,9 +32,9 @@ export const mockTransactionInfo: BraveWallet.TransactionInfo = {
   txStatus: 0,
   txParams: ['address', 'ammount'],
   txType: BraveWallet.TransactionType.ERC20Transfer,
-  createdTime: { microseconds: BigInt(0) },
-  submittedTime: { microseconds: BigInt(0) },
-  confirmedTime: { microseconds: BigInt(0) },
+  createdTime: { microseconds: 0 },
+  submittedTime: { microseconds: 0 },
+  confirmedTime: { microseconds: 0 },
   originInfo: mockOriginInfo,
   groupId: undefined
 }

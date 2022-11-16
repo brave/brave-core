@@ -1223,10 +1223,10 @@ source_set("ads") {
     "//sql",
     "//third_party/abseil-cpp:absl",
     "//third_party/boringssl",
+    "//brave/third_party/rapidjson",
     "//third_party/re2",
     "//third_party/zlib",
     "//url",
-    rebase_path("bat-native-rapidjson", dep_base),
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
     rebase_path("brave_base", dep_base),
   ]

@@ -14,7 +14,6 @@
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
-#include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/version_info/channel.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -260,19 +259,21 @@ TEST_F(SidebarServiceTest, HideBuiltInItem) {
   SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
   // Have prefs which contain a custom item and hides 1 built-in item
   {
-    ListPrefUpdate update(&prefs_, sidebar::kSidebarHiddenBuiltInItems);
-    update->ClearList();
-    update->Append(static_cast<int>(SidebarItem::BuiltInItemType::kBookmarks));
+    base::Value::List list;
+    list.Append(static_cast<int>(SidebarItem::BuiltInItemType::kBookmarks));
+    prefs_.SetList(sidebar::kSidebarHiddenBuiltInItems, std::move(list));
   }
   {
-    ListPrefUpdate update(&prefs_, sidebar::kSidebarItems);
     base::Value::Dict dict;
     dict.Set(sidebar::kSidebarItemURLKey, "https://custom1.brave.com/");
     dict.Set(sidebar::kSidebarItemTitleKey, "Custom Item 1");
     dict.Set(sidebar::kSidebarItemTypeKey,
              static_cast<int>(SidebarItem::Type::kTypeWeb));
     dict.Set(sidebar::kSidebarItemOpenInPanelKey, false);
-    update->GetList().Append(std::move(dict));
+
+    base::Value::List list;
+    list.Append(std::move(dict));
+    prefs_.SetList(sidebar::kSidebarItems, std::move(list));
   }
 
   InitService();
@@ -292,19 +293,21 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
   SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
   // Have prefs which contain a custom item and hides 1 built-in item
   {
-    ListPrefUpdate update(&prefs_, sidebar::kSidebarHiddenBuiltInItems);
-    update->ClearList();
-    update->Append(static_cast<int>(SidebarItem::BuiltInItemType::kBookmarks));
+    base::Value::List list;
+    list.Append(static_cast<int>(SidebarItem::BuiltInItemType::kBookmarks));
+    prefs_.SetList(sidebar::kSidebarHiddenBuiltInItems, std::move(list));
   }
   {
-    ListPrefUpdate update(&prefs_, sidebar::kSidebarItems);
     base::Value::Dict dict;
     dict.Set(sidebar::kSidebarItemURLKey, "https://custom1.brave.com/");
     dict.Set(sidebar::kSidebarItemTitleKey, "Custom Item 1");
     dict.Set(sidebar::kSidebarItemTypeKey,
              static_cast<int>(SidebarItem::Type::kTypeWeb));
     dict.Set(sidebar::kSidebarItemOpenInPanelKey, false);
-    update->GetList().Append(std::move(dict));
+
+    base::Value::List list;
+    list.Append(std::move(dict));
+    prefs_.SetList(sidebar::kSidebarItems, std::move(list));
   }
 
   InitService();
@@ -345,9 +348,6 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsSomeHidden) {
   // Make prefs already have old-style builtin items before service
   // initialization.
   {
-    ListPrefUpdate update(&prefs_, sidebar::kSidebarItems);
-    update->ClearList();
-
     base::Value::Dict dict;
     dict.Set(sidebar::kSidebarItemURLKey, "https://anything.brave.com/");
     dict.Set(sidebar::kSidebarItemTitleKey, "Anything");
@@ -356,7 +356,10 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsSomeHidden) {
     dict.Set(sidebar::kSidebarItemBuiltInItemTypeKey,
              static_cast<int>(SidebarItem::BuiltInItemType::kBraveTalk));
     dict.Set(sidebar::kSidebarItemOpenInPanelKey, true);
-    update->GetList().Append(std::move(dict));
+
+    base::Value::List list;
+    list.Append(std::move(dict));
+    prefs_.SetList(sidebar::kSidebarItems, std::move(list));
   }
 
   InitService();
@@ -394,15 +397,13 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
   // that re-migration will not break anything.
   // Also add a custom item so that the main items pref is not default value.
   {
-    ListPrefUpdate update(&prefs_, sidebar::kSidebarItems);
-    update->ClearList();
-
     std::vector<SidebarItem::BuiltInItemType> hideable_types{
         SidebarItem::BuiltInItemType::kBraveTalk,
         SidebarItem::BuiltInItemType::kWallet,
         SidebarItem::BuiltInItemType::kBookmarks,
     };
 
+    base::Value::List list;
     for (const auto& built_in_type : hideable_types) {
       base::Value::Dict dict;
       dict.Set(sidebar::kSidebarItemURLKey, "https://anything.brave.com/");
@@ -412,7 +413,7 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
       dict.Set(sidebar::kSidebarItemBuiltInItemTypeKey,
                static_cast<int>(built_in_type));
       dict.Set(sidebar::kSidebarItemOpenInPanelKey, true);
-      update->GetList().Append(std::move(dict));
+      list.Append(std::move(dict));
     }
 
     base::Value::Dict dict;
@@ -421,7 +422,9 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
     dict.Set(sidebar::kSidebarItemTypeKey,
              static_cast<int>(SidebarItem::Type::kTypeWeb));
     dict.Set(sidebar::kSidebarItemOpenInPanelKey, false);
-    update->GetList().Append(std::move(dict));
+
+    list.Append(std::move(dict));
+    prefs_.SetList(sidebar::kSidebarItems, std::move(list));
   }
 
   InitService();
@@ -484,9 +487,6 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
   // Make prefs already have old-style builtin items before service
   // initialization.
   {
-    ListPrefUpdate update(&prefs_, sidebar::kSidebarItems);
-    update->ClearList();
-
     // Items should not receive a built-in-item-type.
     std::vector<std::string> urls{
         "https://together.brave.com/",
@@ -494,6 +494,7 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
         "chrome://bookmarks/",
         "chrome://history/",
     };
+    base::Value::List list;
     for (const auto& url : urls) {
       base::Value::Dict dict;
       dict.Set(sidebar::kSidebarItemURLKey, url);
@@ -501,7 +502,7 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
       dict.Set(sidebar::kSidebarItemTypeKey,
                static_cast<int>(SidebarItem::Type::kTypeBuiltIn));
       dict.Set(sidebar::kSidebarItemOpenInPanelKey, true);
-      update->Append(base::Value(std::move(dict)));
+      list.Append(base::Value(std::move(dict)));
     }
     // Add a custom item to make sure we don't interfere with it
     base::Value::Dict dict;
@@ -510,7 +511,8 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
     dict.Set(sidebar::kSidebarItemTypeKey,
              static_cast<int>(SidebarItem::Type::kTypeWeb));
     dict.Set(sidebar::kSidebarItemOpenInPanelKey, false);
-    update->Append(base::Value(std::move(dict)));
+    list.Append(std::move(dict));
+    prefs_.SetList(sidebar::kSidebarItems, std::move(list));
   }
 
   // Not crashing is a good indicator this test has passed
@@ -549,9 +551,9 @@ TEST_F(SidebarServiceTest, HidesBuiltInItemsViaPref) {
   // Make prefs already have old-style builtin items before service
   // initialization.
   {
-    ListPrefUpdate update(&prefs_, sidebar::kSidebarHiddenBuiltInItems);
-    update->ClearList();
-    update->Append(static_cast<int>(SidebarItem::BuiltInItemType::kBookmarks));
+    base::Value::List list;
+    list.Append(static_cast<int>(SidebarItem::BuiltInItemType::kBookmarks));
+    prefs_.SetList(sidebar::kSidebarHiddenBuiltInItems, std::move(list));
   }
 
   // Verify new state doesn't include bookmarks item
@@ -593,9 +595,6 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
   // Make prefs already have builtin items before service initialization.
   // And it has old url in old pref format (storing built-in items).
   {
-    ListPrefUpdate update(&prefs_, sidebar::kSidebarItems);
-    update->ClearList();
-
     base::Value::Dict dict;
     dict.Set(sidebar::kSidebarItemURLKey, "https://deprecated.brave.com/");
     dict.Set(sidebar::kSidebarItemTitleKey, "Brave together");
@@ -604,7 +603,9 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
     dict.Set(sidebar::kSidebarItemBuiltInItemTypeKey,
              static_cast<int>(SidebarItem::BuiltInItemType::kBraveTalk));
     dict.Set(sidebar::kSidebarItemOpenInPanelKey, true);
-    update->GetList().Append(std::move(dict));
+    base::Value::List list;
+    list.Append(std::move(dict));
+    prefs_.SetList(sidebar::kSidebarItems, std::move(list));
   }
 
   InitService();
@@ -628,9 +629,6 @@ TEST_F(SidebarServiceTest, BuiltInItemDoesntHaveHistoryItem) {
   // Make prefs already have builtin items before service initialization.
   // And it has history item.
   {
-    ListPrefUpdate update(&prefs_, sidebar::kSidebarItems);
-    update->ClearList();
-
     base::Value::Dict dict;
     dict.Set(sidebar::kSidebarItemURLKey, "https://deprecated.brave.com/");
     dict.Set(sidebar::kSidebarItemTypeKey,
@@ -638,7 +636,10 @@ TEST_F(SidebarServiceTest, BuiltInItemDoesntHaveHistoryItem) {
     dict.Set(sidebar::kSidebarItemBuiltInItemTypeKey,
              static_cast<int>(SidebarItem::BuiltInItemType::kHistory));
     dict.Set(sidebar::kSidebarItemOpenInPanelKey, true);
-    update->GetList().Append(std::move(dict));
+
+    base::Value::List list;
+    list.Append(std::move(dict));
+    prefs_.SetList(sidebar::kSidebarItems, std::move(list));
   }
 
   InitService();
