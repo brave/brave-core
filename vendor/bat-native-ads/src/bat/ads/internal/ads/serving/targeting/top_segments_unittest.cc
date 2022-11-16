@@ -170,19 +170,19 @@ TEST_P(BatAdsTopSegmentsTest, GetSegments) {
     enabled_features.emplace_back(features::kEpsilonGreedyBandit,
                                   kEpsilonGreedyBanditParameters);
   } else {
-    disabled_features.push_back(features::kEpsilonGreedyBandit);
+    disabled_features.emplace_back(features::kEpsilonGreedyBandit);
   }
 
   if (param.purchase_intent_enabled) {
     enabled_features.push_back({features::kPurchaseIntent, {}});
   } else {
-    disabled_features.push_back(features::kPurchaseIntent);
+    disabled_features.emplace_back(features::kPurchaseIntent);
   }
 
   if (param.text_classification_enabled) {
     enabled_features.push_back({features::kTextClassification, {}});
   } else {
-    disabled_features.push_back(features::kTextClassification);
+    disabled_features.emplace_back(features::kTextClassification);
   }
 
   base::test::ScopedFeatureList scoped_feature_list;

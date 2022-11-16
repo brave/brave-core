@@ -30,7 +30,7 @@ TEST(BatAdsServingFeaturesTest, ServingDisabled) {
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kServing);
+  disabled_features.emplace_back(kServing);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -92,7 +92,7 @@ TEST(BatAdsServingFeaturesTest, DisabledDefaultNotificationAdsPerHour) {
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kServing);
+  disabled_features.emplace_back(kServing);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -157,7 +157,7 @@ TEST(BatAdsServingFeaturesTest, DisabledMaximumNotificationAdsPerDay) {
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kServing);
+  disabled_features.emplace_back(kServing);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -222,7 +222,7 @@ TEST(BatAdsServingFeaturesTest, DisabledMaximumInlineContentAdsPerHour) {
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kServing);
+  disabled_features.emplace_back(kServing);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -287,7 +287,7 @@ TEST(BatAdsServingFeaturesTest, DisabledMaximumInlineContentAdsPerDay) {
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kServing);
+  disabled_features.emplace_back(kServing);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -352,7 +352,7 @@ TEST(BatAdsServingFeaturesTest, DisabledMaximumNewTabPageAdsPerHour) {
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kServing);
+  disabled_features.emplace_back(kServing);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -419,7 +419,7 @@ TEST(BatAdsServingFeaturesTest, DisabledNewTabPageAdsMinimumWaitTime) {
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kServing);
+  disabled_features.emplace_back(kServing);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -483,7 +483,7 @@ TEST(BatAdsServingFeaturesTest, DisabledMaximumNewTabPageAdsPerDay) {
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kServing);
+  disabled_features.emplace_back(kServing);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -547,7 +547,7 @@ TEST(BatAdsServingFeaturesTest, DisabledMaximumPromotedContentAdsPerHour) {
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kServing);
+  disabled_features.emplace_back(kServing);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -612,7 +612,7 @@ TEST(BatAdsServingFeaturesTest, DisabledMaximumPromotedContentAdsPerDay) {
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kServing);
+  disabled_features.emplace_back(kServing);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -677,7 +677,7 @@ TEST(BatAdsServingFeaturesTest, DisabledMaximumSearchResultAdsPerHour) {
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kServing);
+  disabled_features.emplace_back(kServing);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -742,7 +742,7 @@ TEST(BatAdsServingFeaturesTest, DisabledMaximumSearchResultAdsPerDay) {
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kServing);
+  disabled_features.emplace_back(kServing);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
