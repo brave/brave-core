@@ -3,7 +3,7 @@ on:
   pull_request_review:
     types: [submitted]
   pull_request:
-    types: [closed, reopened]
+    types: [reopened]
   # push:
   #   branches:
   #     - "aka/alert-on-unsigned-commits"
@@ -23,6 +23,8 @@ jobs:
       - name: Alert Unsigned Commits
         run: |
           env | grep -i GIT | sort  # TODO remove before merge
+          set -x # TODO remove before merge
+
           BRAVE_CORE_PATH=/repos/brave/brave-core
           post_once() {
               comments=$(gh pr view "$GITHUB_HEAD_REF" --json comments --jq ".comments[].body")
