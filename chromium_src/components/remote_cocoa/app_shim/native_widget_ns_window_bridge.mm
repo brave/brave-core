@@ -45,7 +45,11 @@ void NativeWidgetNSWindowBridge::ResetWindowControlsPosition() {
   // find out what can be used instead of this.
   NSView* frameView = window_.get().contentView.superview;
   DCHECK([frameView isKindOfClass:[NSThemeFrame class]]);
-  [frameView performSelector:@selector(_resetTitleBarButtons)];
+  SEL selector = @selector(_resetTitleBarButtons);
+  if ([frameView respondsToSelector:selector])
+    [frameView performSelector:selector];
+  else
+    LOG(ERROR) << "Failed to find selector for resetting window controls";
 }
 
 }  // namespace remote_cocoa
