@@ -8,6 +8,7 @@ import SwiftUI
 import BraveUI
 import BraveShared
 import Data
+import Onboarding
 
 extension BrowserViewController {
   func presentCookieNotificationBlockingCalloutIfNeeded() {

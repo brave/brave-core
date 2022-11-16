@@ -274,8 +274,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // Check if user has launched the application before and determine if it is a new retention user
-    if Preferences.General.isFirstLaunch.value, Preferences.General.isNewRetentionUser.value == nil {
-      Preferences.General.isNewRetentionUser.value = true
+    if Preferences.General.isFirstLaunch.value, Preferences.Onboarding.isNewRetentionUser.value == nil {
+      Preferences.Onboarding.isNewRetentionUser.value = true
     }
 
     if Preferences.DAU.appRetentionLaunchDate.value == nil {
@@ -342,6 +342,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     BraveTalkJitsiCoordinator.sendAppLifetimeEvent(
       .didFinishLaunching(options: launchOptions ?? [:])
     )
+    
+    // DAU may not have pinged on the first launch so weekOfInstallation pref may not be set yet
+    if let weekOfInstall = Preferences.DAU.weekOfInstallation.value ??
+        Preferences.DAU.installationDate.value?.mondayOfCurrentWeekFormatted {
+      braveCore.initializeP3AService(
+        forChannel: AppConstants.buildChannel.serverChannelParam,
+        weekOfInstall: weekOfInstall
+      )
+    }
     
     return shouldPerformAdditionalDelegateHandling
   }

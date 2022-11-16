@@ -299,7 +299,8 @@ extension BrowserViewController: TopToolbarDelegate {
           profile: self.profile,
           tabManager: self.tabManager,
           feedDataSource: self.feedDataSource,
-          historyAPI: self.braveCore.historyAPI
+          historyAPI: self.braveCore.historyAPI,
+          p3aUtilities: self.braveCore.p3aUtils
         )
         let container = SettingsNavigationController(rootViewController: shieldsAndPrivacy)
         container.isModalInPresentation = true

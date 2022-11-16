@@ -15,11 +15,72 @@ extension Preferences {
     public static let basicOnboardingCompleted = Option<Int>(
       key: "general.basic-onboarding-completed",
       default: OnboardingState.undetermined.rawValue)
+    
     /// The time until the next on-boarding shows
     public static let basicOnboardingDefaultBrowserSelected = Option<Bool>(
       key: "general.basic-onboarding-default-browser-selected",
       default: false)
+    
     /// The progress the user has made with onboarding
-    public static let basicOnboardingProgress = Option<Int>(key: "general.basic-onboarding-progress", default: OnboardingProgress.none.rawValue)
+    public static let basicOnboardingProgress = Option<Int>(
+      key: "general.basic-onboarding-progress",
+      default: OnboardingProgress.none.rawValue)
+    
+    /// The bool detemining if p3a infomartion is shown in onboarding to a user so they will not see it again as pop-over
+    public static let p3aOnboardingShown = Option<Bool>(
+      key: "onboarding.basic-onboarding-default-browser-selected",
+      default: false)
+    
+    /// Whether this is a new user who installed the application after onboarding retention updates
+    public static let isNewRetentionUser = Option<Bool?>(key: "general.new-retention", default: nil)
+  }
+}
+
+extension Preferences {
+  public final class FullScreenCallout {
+    /// Whether the block cookie consent notices callout is shown.
+    public static let blockCookieConsentNoticesCalloutCompleted = Option<Bool>(
+      key: "fullScreenCallout.full-screen-cookie-consent-notices-callout-completed",
+      default: false)
+    
+    /// Whether the vpn callout is shown.
+    public static let vpnCalloutCompleted = Option<Bool>(
+      key: "fullScreenCallout.full-screen-vpn-callout-completed",
+      default: false)
+    
+    /// Whether the rewards callout is shown.
+    public static let rewardsCalloutCompleted = Option<Bool>(
+      key: "fullScreenCallout.full-screen-rewards-callout-completed",
+      default: false)
+    
+    /// Whether the whats new callout should be shown.
+    public static let whatsNewCalloutOptIn = Option<Bool>(
+      key: "fullScreenCallout.full-screen-whats-new-callout-completed",
+      default: false)
+    
+    /// Whether the ntp callout is shown.
+    public static let ntpCalloutCompleted = Option<Bool>(
+      key: "fullScreenCallout.full-screen-ntp-callout-completed",
+      default: false)
+    
+    /// Whether the omnibox callout is shown.
+    public static let omniboxCalloutCompleted = Option<Bool>(
+      key: "fullScreenCallout.full-screen-omnibox-callout-completed",
+      default: false)
+  }
+}
+
+extension Preferences {
+  public final class DefaultBrowserIntro {
+    /// Whether the default browser onboarding completed. This can happen by opening app settings or after the user
+    /// dismissed the intro screen enough amount of times.
+    public static let completed = Option<Bool>(
+      key: "defaultBrowserIntro.intro-completed",
+      default: false)
+    
+    /// Whether system notification showed or not
+    public static let defaultBrowserNotificationScheduled = Option<Bool>(
+      key: "general.default-browser-notification-scheduled",
+      default: false)
   }
 }
