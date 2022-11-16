@@ -14,52 +14,14 @@
 
 #include <string>
 
-#include "base/check.h"
 #include "brave/third_party/rapidjson/src/include/rapidjson/document.h"
-#include "brave/third_party/rapidjson/src/include/rapidjson/stringbuffer.h"
-#include "brave/third_party/rapidjson/src/include/rapidjson/writer.h"
 
-namespace ads {
+namespace ads::helper::json {
 
-using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
+bool Validate(rapidjson::Document* document, const std::string& json_schema);
 
-template <typename T>
-void SaveToJson(const T& t, std::string* json) {
-  DCHECK(json);
+std::string GetLastError(rapidjson::Document* document);
 
-  rapidjson::StringBuffer buffer;
-  JsonWriter writer(buffer);
-
-  SaveToJson(&writer, t);
-  *json = buffer.GetString();
-}
-
-template <typename T>
-bool LoadFromJson(T* t, const std::string& json) {
-  DCHECK(t);
-  return t->FromJson(json);
-}
-
-template <typename T>
-bool LoadFromJson(T* t,
-                  const std::string& json,
-                  const std::string& json_schema) {
-  DCHECK(t);
-  return t->FromJson(json, json_schema);
-}
-
-}  // namespace ads
-
-namespace helper {
-
-class JSON final {
- public:
-  static bool Validate(rapidjson::Document* document,
-                       const std::string& json_schema);
-
-  static std::string GetLastError(rapidjson::Document* document);
-};
-
-}  // namespace helper
+}  // namespace ads::helper::json
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DEPRECATED_JSON_JSON_HELPER_H_

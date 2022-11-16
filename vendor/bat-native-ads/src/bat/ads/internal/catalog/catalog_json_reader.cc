@@ -31,8 +31,8 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
       AdsClientHelper::GetInstance()->LoadDataResource(
           data::resource::kCatalogJsonSchemaFilename);
 
-  if (!helper::JSON::Validate(&document, json_schema)) {
-    BLOG(1, helper::JSON::GetLastError(&document));
+  if (!helper::json::Validate(&document, json_schema)) {
+    BLOG(1, helper::json::GetLastError(&document));
     return absl::nullopt;
   }
 
