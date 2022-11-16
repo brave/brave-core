@@ -197,13 +197,20 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
       url::Origin::CreateFromNormalizedTuple("https", "youtube.com", 80),
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
+  std::string rewritten_url;
+
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.Adblock.ShouldBlockRequest");
   g_brave_browser_process->ad_block_service()->ShouldStartRequest(
       url_to_check, ctx->resource_type, source_host,
       ctx->aggressive_blocking || force_aggressive,
       &previous_result.did_match_rule, &previous_result.did_match_exception,
       &previous_result.did_match_important, &ctx->mock_data_url,
-      &ctx->new_url_spec);
+      &rewritten_url);
+
+  if (ctx->method == "GET" || ctx->method == "HEAD" ||
+      ctx->method == "OPTIONS") {
+    ctx->new_url_spec = rewritten_url;
+  }
 
   if (previous_result.did_match_important ||
       (previous_result.did_match_rule &&
