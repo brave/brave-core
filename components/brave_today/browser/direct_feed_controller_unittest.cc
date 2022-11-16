@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include <algorithm>
+#include <cstdint>
 #include <iterator>
 #include <memory>
 #include <unordered_set>
@@ -113,8 +114,10 @@ std::string GetFeedJson() {
 TEST(BraveNewsDirectFeed, ParseFeed) {
   FeedData data;
   // If this errors, probably our xml was not valid
-  bool parse_success =
-      brave_news::parse_feed_string(::rust::String(GetFeedJson()), data);
+  auto json = GetFeedJson();
+  bool parse_success = brave_news::parse_feed_bytes(
+      ::rust::Slice<const uint8_t>((const uint8_t*)json.data(), json.size()),
+      data);
 
   // String was parsed to data?
   ASSERT_TRUE(parse_success);
