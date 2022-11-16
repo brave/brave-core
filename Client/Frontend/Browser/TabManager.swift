@@ -12,6 +12,7 @@ import CoreData
 import BraveCore
 import BraveWallet
 import os.log
+import Growth
 
 protocol TabManagerDelegate: AnyObject {
   func tabManager(_ tabManager: TabManager, didSelectedTabChange selected: Tab?, previous: Tab?)
@@ -92,6 +93,7 @@ class TabManager: NSObject {
   private var domainFrc = Domain.frc()
   private let syncedTabsQueue = DispatchQueue(label: "synced-tabs-queue")
   private var syncTabsTask: DispatchWorkItem?
+  private var metricsHeartbeat: Timer?
 
   init(prefs: Prefs, imageStore: DiskImageStore?, rewards: BraveRewards?, tabGeneratorAPI: BraveTabGeneratorAPI?) {
     assert(Thread.isMainThread)
@@ -117,6 +119,11 @@ class TabManager: NSObject {
     } catch {
       Logger.module.error("Failed to perform fetch of Domains for observing dapps permission changes: \(error.localizedDescription, privacy: .public)")
     }
+    
+    // Initially fired and set up after tabs are restored
+    metricsHeartbeat = Timer(timeInterval: 5.minutes, repeats: true, block: { [weak self] _ in
+      self?.recordTabCountP3A()
+    })
   }
   
   deinit {
@@ -1015,6 +1022,11 @@ class TabManager: NSObject {
   /// Restores all tabs.
   /// Returns the tab that has to be selected after restoration.
   var restoreAllTabs: Tab {
+    defer {
+      metricsHeartbeat?.fire()
+      RunLoop.current.add(metricsHeartbeat!, forMode: .default)
+    }
+    
     isRestoring = true
     let tabToSelect = self.restoreTabsInternal
     isRestoring = false
@@ -1034,6 +1046,24 @@ class TabManager: NSObject {
       }
     }
     isRestoring = false
+  }
+  
+  // MARK: - P3A
+  
+  private func recordTabCountP3A() {
+    // Q7 How many open tabs do you have?
+    let count = allTabs.count
+    UmaHistogramRecordValueToBucket(
+      "Brave.Core.TabCount",
+      buckets: [
+        .r(0...1),
+        .r(2...5),
+        .r(6...10),
+        .r(11...50),
+        .r(51...)
+      ],
+      value: count
+    )
   }
 }
 
