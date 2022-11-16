@@ -14,7 +14,7 @@ import {
 } from '../common/constants/solana'
 
 // types
-import { BraveWallet } from '../constants/types'
+import { BraveWallet, SerializableSolanaTxData } from '../constants/types'
 
 export type TypedSolanaInstructionWithParams = {
   instruction: Solana.TransactionInstruction
@@ -135,7 +135,7 @@ export const getSolanaTransactionInstructionParamsAndType = ({
   } as TypedSolanaInstructionWithParams
 }
 
-export const getTypedSolanaTxInstructions = (solTxData: BraveWallet.SolanaTxData): TypedSolanaInstructionWithParams[] => {
+export const getTypedSolanaTxInstructions = (solTxData: SerializableSolanaTxData): TypedSolanaInstructionWithParams[] => {
   const instructions: TypedSolanaInstructionWithParams[] = (solTxData?.instructions || []).map((instruction) => {
     return getSolanaTransactionInstructionParamsAndType(instruction)
   })

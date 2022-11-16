@@ -2,15 +2,18 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { BraveWallet, P3ASendTransactionTypes, SupportedTestNetworks } from '../constants/types'
+import { BraveWallet, P3ASendTransactionTypes, SerializableTransactionInfo, SupportedTestNetworks } from '../constants/types'
 import { getLocale } from '../../common/locale'
 import { SolanaTransactionTypes } from '../common/constants/solana'
 import { loadTimeData } from '../../common/loadTimeData'
 
 type Order = 'ascending' | 'descending'
 
-export const sortTransactionByDate = (transactions: BraveWallet.TransactionInfo[], order: Order = 'ascending') => {
-  return [...transactions].sort(function (x: BraveWallet.TransactionInfo, y: BraveWallet.TransactionInfo) {
+export const sortTransactionByDate = <T extends BraveWallet.TransactionInfo | SerializableTransactionInfo>(
+  transactions: T[],
+  order: Order = 'ascending'
+): T[] => {
+  return [...transactions].sort(function (x: T, y: T) {
     return order === 'ascending'
       ? Number(x.createdTime.microseconds) - Number(y.createdTime.microseconds)
       : Number(y.createdTime.microseconds) - Number(x.createdTime.microseconds)
@@ -38,7 +41,9 @@ export const getTransactionStatusString = (statusId: number) => {
   }
 }
 
-export function isSolanaTransaction (transaction: BraveWallet.TransactionInfo) {
+export function isSolanaTransaction <
+  T extends BraveWallet.TransactionInfo | SerializableTransactionInfo
+> (transaction: T) {
   const { txType, txDataUnion: { solanaTxData } } = transaction
   return SolanaTransactionTypes.includes(txType) ||
     (txType === BraveWallet.TransactionType.Other && solanaTxData !== undefined)

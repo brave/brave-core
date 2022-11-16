@@ -11,6 +11,7 @@ import { Redirect, useHistory, useParams } from 'react-router'
 import {
   AddAccountNavTypes,
   BraveWallet,
+  SerializableTransactionInfo,
   SupportedTestNetworks,
   UserAssetInfoType,
   WalletRoutes
@@ -302,7 +303,7 @@ export const PortfolioAsset = (props: Props) => {
     }).flat(1)
   }, [accounts, transactions, selectedAssetsNetwork])
 
-  const selectedAssetTransactions = React.useMemo((): BraveWallet.TransactionInfo[] => {
+  const selectedAssetTransactions: SerializableTransactionInfo[] = React.useMemo(() => {
     if (selectedAsset) {
       const filteredTransactions = transactionsByNetwork.filter((tx) => {
         return tx && parseTransaction(tx).symbol === selectedAsset?.symbol

@@ -6,7 +6,7 @@ import * as React from 'react'
 import { useSelector } from 'react-redux'
 
 // Constants
-import { WalletState, BraveWallet } from '../../../../constants/types'
+import { WalletState, SerializableTransactionInfo } from '../../../../constants/types'
 
 // Hooks
 import { useExplorer } from '../../../../common/hooks'
@@ -26,7 +26,7 @@ import {
 
 interface Props {
   headerTitle: string
-  transaction: BraveWallet.TransactionInfo
+  transaction: SerializableTransactionInfo
   onClose: () => void
 }
 
