@@ -97,7 +97,7 @@ struct AssetDetailHeaderView: View {
       ) {
         Text(Strings.Wallet.send)
       }
-      if networkStore.isSwapSupported {
+      if networkStore.isSwapSupported && assetDetailStore.token.isFungibleToken {
         Button(
           action: {
             buySendSwapDestination = BuySendSwapDestination(
@@ -131,95 +131,109 @@ struct AssetDetailHeaderView: View {
   }
 
   var body: some View {
-    VStack(spacing: 0) {
-      VStack(alignment: .leading) {
-        if sizeCategory.isAccessibilityCategory {
-          VStack(alignment: .leading) {
-            if horizontalSizeClass == .regular {
-              DateRangeView(selectedRange: $assetDetailStore.timeframe)
-                .padding(6)
-                .overlay(
-                  RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .strokeBorder(Color(.secondaryButtonTint))
-                )
+    VStack(alignment: assetDetailStore.token.isFungibleToken ? .center : .leading, spacing: 0) {
+      if assetDetailStore.token.isFungibleToken {
+        VStack(alignment: .leading) {
+          if sizeCategory.isAccessibilityCategory {
+            VStack(alignment: .leading) {
+              if horizontalSizeClass == .regular {
+                DateRangeView(selectedRange: $assetDetailStore.timeframe)
+                  .padding(6)
+                  .overlay(
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                      .strokeBorder(Color(.secondaryButtonTint))
+                  )
+              }
+              HStack {
+                AssetIconView(token: assetDetailStore.token, network: networkStore.selectedChain)
+                Text(assetDetailStore.token.name)
+                  .fixedSize(horizontal: false, vertical: true)
+                  .font(.title3.weight(.semibold))
+              }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+          } else {
             HStack {
               AssetIconView(token: assetDetailStore.token, network: networkStore.selectedChain)
               Text(assetDetailStore.token.name)
                 .fixedSize(horizontal: false, vertical: true)
                 .font(.title3.weight(.semibold))
-            }
-          }
-          .frame(maxWidth: .infinity, alignment: .leading)
-        } else {
-          HStack {
-            AssetIconView(token: assetDetailStore.token, network: networkStore.selectedChain)
-            Text(assetDetailStore.token.name)
-              .fixedSize(horizontal: false, vertical: true)
-              .font(.title3.weight(.semibold))
-            if horizontalSizeClass == .regular {
-              Spacer()
-              DateRangeView(selectedRange: $assetDetailStore.timeframe)
-                .padding(6)
-                .overlay(
-                  RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .strokeBorder(Color(.secondaryButtonTint))
-                )
-            }
-          }
-        }
-        Text(
-          String.localizedStringWithFormat(
-            Strings.Wallet.assetDetailSubtitle,
-            assetDetailStore.token.name,
-            assetDetailStore.token.symbol)
-        )
-        .font(.footnote)
-        .foregroundColor(Color(.secondaryBraveLabel))
-        VStack(alignment: .leading) {
-          HStack {
-            Group {
-              if let selectedCandle = selectedCandle,
-                let formattedString = assetDetailStore.currencyFormatter.string(from: NSNumber(value: selectedCandle.value)) {
-                Text(formattedString)
-              } else {
-                Text(assetDetailStore.price)
+              if horizontalSizeClass == .regular {
+                Spacer()
+                DateRangeView(selectedRange: $assetDetailStore.timeframe)
+                  .padding(6)
+                  .overlay(
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                      .strokeBorder(Color(.secondaryButtonTint))
+                  )
               }
             }
-            .font(.title2.bold())
-            deltaText
-            Spacer()
           }
-          Text(assetDetailStore.btcRatio)
-            .font(.footnote)
-            .foregroundColor(Color(.secondaryBraveLabel))
+          Text(
+            String.localizedStringWithFormat(
+              Strings.Wallet.assetDetailSubtitle,
+              assetDetailStore.token.name,
+              assetDetailStore.token.symbol)
+          )
+          .font(.footnote)
+          .foregroundColor(Color(.secondaryBraveLabel))
+          VStack(alignment: .leading) {
+            HStack {
+              Group {
+                if let selectedCandle = selectedCandle,
+                   let formattedString = assetDetailStore.currencyFormatter.string(from: NSNumber(value: selectedCandle.value)) {
+                  Text(formattedString)
+                } else {
+                  Text(assetDetailStore.price)
+                }
+              }
+              .font(.title2.bold())
+              deltaText
+              Spacer()
+            }
+            Text(assetDetailStore.btcRatio)
+              .font(.footnote)
+              .foregroundColor(Color(.secondaryBraveLabel))
+          }
+          .redacted(reason: assetDetailStore.isInitialState ? .placeholder : [])
+          .shimmer(assetDetailStore.isLoadingPrice)
+          let data = assetDetailStore.priceHistory.isEmpty ? emptyData : assetDetailStore.priceHistory
+          LineChartView(data: data, numberOfColumns: data.count, selectedDataPoint: $selectedCandle) {
+            Color(.walletGreen)
+              .shimmer(assetDetailStore.isLoadingChart)
+          }
+          .chartAccessibility(
+            title: String.localizedStringWithFormat(
+              Strings.Wallet.assetDetailSubtitle,
+              assetDetailStore.token.name,
+              assetDetailStore.token.symbol),
+            dataPoints: data
+          )
+          .disabled(data.isEmpty)
+          .frame(height: 128)
+          .padding(.horizontal, -16)
+          .animation(.default, value: data)
+          if horizontalSizeClass == .compact {
+            DateRangeView(selectedRange: $assetDetailStore.timeframe)
+          }
         }
-        .redacted(reason: assetDetailStore.isInitialState ? .placeholder : [])
-        .shimmer(assetDetailStore.isLoadingPrice)
-        let data = assetDetailStore.priceHistory.isEmpty ? emptyData : assetDetailStore.priceHistory
-        LineChartView(data: data, numberOfColumns: data.count, selectedDataPoint: $selectedCandle) {
-          Color(.walletGreen)
-            .shimmer(assetDetailStore.isLoadingChart)
+        .padding(16)
+      } else {
+        HStack {
+          AssetIconView(token: assetDetailStore.token, network: networkStore.selectedChain)
+          Text(assetDetailStore.token.nftTokenTitle)
+            .fixedSize(horizontal: false, vertical: true)
+            .font(.title3.weight(.semibold))
+          Spacer()
         }
-        .chartAccessibility(
-          title: String.localizedStringWithFormat(
-            Strings.Wallet.assetDetailSubtitle,
-            assetDetailStore.token.name,
-            assetDetailStore.token.symbol),
-          dataPoints: data
-        )
-        .disabled(data.isEmpty)
-        .frame(height: 128)
-        .padding(.horizontal, -16)
-        .animation(.default, value: data)
-        if horizontalSizeClass == .compact {
-          DateRangeView(selectedRange: $assetDetailStore.timeframe)
-        }
+        .padding(16)
       }
-      .padding(16)
-      Divider()
-        .padding(.bottom)
+      if assetDetailStore.token.isFungibleToken {
+        Divider()
+          .padding(.bottom)
+      }
       actionButtonsContainer
+        .padding(.horizontal, assetDetailStore.token.isFungibleToken ? 0 : 16)
     }
   }
 }
@@ -241,3 +255,9 @@ struct CurrencyDetailHeaderView_Previews: PreviewProvider {
   }
 }
 #endif
+
+private extension BraveWallet.BlockchainToken {
+  var isFungibleToken: Bool {
+    return !isErc721 && !isNft
+  }
+}
