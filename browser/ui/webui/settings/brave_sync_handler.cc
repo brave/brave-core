@@ -318,7 +318,9 @@ void BraveSyncHandler::HandlePermanentlyDeleteAccount(
 
   auto* sync_service = GetSyncService();
   if (!sync_service) {
-    ResolveJavascriptCallback(args[0].Clone(), base::Value(false));
+    RejectJavascriptCallback(
+        args[0].Clone(),
+        l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_INTERNAL_ACCOUNT_DELETE_ERROR));
     return;
   }
 
