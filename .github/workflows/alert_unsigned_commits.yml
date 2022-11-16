@@ -1,12 +1,8 @@
 name: Alert Unsigned Commits
 on:
   pull_request_review:
-    types: [submitted]
   pull_request:
     types: [reopened, synchronize]
-  # push:
-  #   branches:
-  #     - "aka/alert-on-unsigned-commits"
 
 permissions:
   pull-requests: write
@@ -37,7 +33,7 @@ jobs:
           verified=$(jq -r .verified <<<"$verification")
           author_login=$(jq -r .author.login <<<"$commit")
           if [[ "$verified" != "true" ]]; then
-              msg=":warning: Found unsigned commit
+              msg=":warning: PR head is an unsigned commit
           commit: ${HEAD_SHA}
           reason: $(jq -r .reason <<<"$verification")
           Please follow the handbook to configure [commit signing](https://github.com/brave/handbook/blob/master/development/commit-and-tag-signing.md)
