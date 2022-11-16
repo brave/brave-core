@@ -485,6 +485,11 @@ class DisplayTextField: UITextField {
       super.accessibilityCustomActions = newValue
     }
   }
+  
+  override var accessibilityTraits: UIAccessibilityTraits {
+    get { [.staticText, .button] }
+    set { }
+  }
 
   override var canBecomeFirstResponder: Bool {
     return false
