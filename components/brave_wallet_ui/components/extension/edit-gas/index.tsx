@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 import { getLocale } from '../../../../common/locale'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
 import { UpdateUnapprovedTransactionGasFieldsType } from '../../../common/constants/action_types'
 
 import { NavButton, Panel } from '../'
@@ -45,7 +45,7 @@ export enum MaxPriorityPanels {
 export interface Props {
   onCancel: () => void
   networkSpotPrice: string
-  transactionInfo: BraveWallet.TransactionInfo
+  transactionInfo: SerializableTransactionInfo
   selectedNetwork: BraveWallet.NetworkInfo
   baseFeePerGas: string
   suggestedMaxPriorityFeeChoices: string[]

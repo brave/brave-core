@@ -16,8 +16,16 @@ interface PageHandler {
   GoToBraveSupport();
 };
 
+enum ConnectionStatus {
+  kUnknown,
+  kConnecting,
+  kConnectionSlow,
+  kConnectionStuck,
+  kConnected,
+};
+
 interface PrivateTabPage {
   OnTorCircuitEstablished(bool has_established);
   OnTorInitializing(string percentage, string message);
-  OnTorCircuitGetStuck(bool stuck);
+  OnTorCircuitStatus(ConnectionStatus status);
 };

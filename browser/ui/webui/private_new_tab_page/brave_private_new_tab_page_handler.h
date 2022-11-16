@@ -63,7 +63,7 @@ class BravePrivateNewTabPageHandler
   void OnTorInitializing(const std::string& percentage,
                          const std::string& message) override;
 
-  void OnTorCircuitGetStuck();
+  void OnTorCircuitTimer(brave_private_new_tab::mojom::ConnectionStatus status);
 
   // Handle back to the page by which we can pass results.
   mojo::Remote<brave_private_new_tab::mojom::PrivateTabPage> page_;

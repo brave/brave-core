@@ -6,15 +6,19 @@
 package org.chromium.chrome.browser.settings;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 
 import androidx.preference.Preference;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
@@ -23,6 +27,7 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
+import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
@@ -94,6 +99,7 @@ public class BraveMainPreferencesBase
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
     private Preference mVpnCalloutPreference;
+    private boolean mNotificationClicked;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,6 +113,7 @@ public class BraveMainPreferencesBase
         overrideChromiumPreferences();
         initRateBrave();
         setPreferenceListeners();
+        notificationClick();
     }
 
     @Override
@@ -118,6 +125,36 @@ public class BraveMainPreferencesBase
         // Run updateBravePreferences() after fininshing MainPreferences::updatePreferences().
         // Otherwise, some prefs could be added after finishing updateBravePreferences().
         new Handler().post(() -> updateBravePreferences());
+        if (mNotificationClicked
+                && BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(
+                        getActivity())) {
+            mNotificationClicked = false;
+            showNotificationWarningDialog();
+        }
+    }
+
+    private void showNotificationWarningDialog() {
+        BraveNotificationWarningDialog notificationWarningDialog =
+                BraveNotificationWarningDialog.newInstance(
+                        BraveNotificationWarningDialog.FROM_LAUNCHED_BRAVE_SETTINGS);
+        notificationWarningDialog.setCancelable(false);
+        notificationWarningDialog.show(getChildFragmentManager(),
+                BraveNotificationWarningDialog.NOTIFICATION_WARNING_DIALOG_TAG);
+    }
+
+    private void notificationClick() {
+        Preference notifications = findPreference(PREF_NOTIFICATIONS);
+        notifications.setOnPreferenceClickListener(preference -> {
+            mNotificationClicked = true;
+
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE,
+                    ContextUtils.getApplicationContext().getPackageName());
+            startActivity(intent);
+            // We handle the click so the default action isn't triggered.
+            return true;
+        });
     }
 
     private void updateBravePreferences() {

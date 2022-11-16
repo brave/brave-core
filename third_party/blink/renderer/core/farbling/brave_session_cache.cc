@@ -44,10 +44,6 @@ inline uint64_t lfsr_next(uint64_t v) {
   return ((v >> 1) | (((v << 62) ^ (v << 61)) & (~(~zero << 63) << 62)));
 }
 
-float Identity(float value, size_t index) {
-  return value;
-}
-
 float ConstantMultiplier(double fudge_factor, float value, size_t index) {
   return value * fudge_factor;
 }
@@ -231,7 +227,7 @@ void BraveSessionCache::Init() {
   RegisterAllowFontFamilyCallback(base::BindRepeating(&brave::AllowFontFamily));
 }
 
-AudioFarblingCallback BraveSessionCache::GetAudioFarblingCallback(
+OptionalAudioFarblingCallback BraveSessionCache::GetAudioFarblingCallback(
     blink::WebContentSettingsClient* settings) {
   if (farbling_enabled_ && settings) {
     switch (settings->GetBraveFarblingLevel()) {
@@ -251,7 +247,7 @@ AudioFarblingCallback BraveSessionCache::GetAudioFarblingCallback(
       }
     }
   }
-  return base::BindRepeating(&Identity);
+  return absl::nullopt;
 }
 
 void BraveSessionCache::PerturbPixels(blink::WebContentSettingsClient* settings,
@@ -373,7 +369,7 @@ bool BraveSessionCache::AllowFontFamily(
         return true;
       FarblingPRNG prng = MakePseudoRandomGenerator();
       prng.discard(family_name.Impl()->GetHash() % 16);
-      return ((prng() % 2) == 0);
+      return ((prng() % 20) == 0);
     }
     default:
       NOTREACHED();

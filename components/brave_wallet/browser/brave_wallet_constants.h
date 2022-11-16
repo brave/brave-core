@@ -689,6 +689,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletNFTDetailTokenStandard",
      IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_STANDARD},
     {"braveWalletNFTDetailTokenID", IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_ID},
+    {"braveWalletNFTDetailContractAddress",
+     IDS_BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS},
     {"braveWalletTrezorSignTypedDataError",
      IDS_BRAVE_WALLET_TREZOR_SIGN_TYPED_DATA_ERROR},
     {"braveWalletSweepstakesTitle", IDS_BRAVE_WALLET_SWEEPSTAKES_TITLE},

@@ -12,13 +12,13 @@ import {
   BraveWallet,
   WalletAccountType,
   WalletState,
-  WalletRoutes
+  WalletRoutes,
+  SerializableTransactionInfo
 } from '../../../constants/types'
 
 // Utils
 import { toProperCase } from '../../../utils/string-utils'
-import { formatDateAsRelative } from '../../../utils/datetime-utils'
-import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
+import { formatDateAsRelative, serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
 import Amount from '../../../utils/amount'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
@@ -62,7 +62,7 @@ import TransactionTimestampTooltip from '../transaction-timestamp-tooltip'
 import { WalletActions } from '../../../common/actions'
 
 export interface Props {
-  transaction: BraveWallet.TransactionInfo
+  transaction: SerializableTransactionInfo
   account: WalletAccountType | undefined
   accounts: WalletAccountType[]
   displayAccountName: boolean
@@ -366,12 +366,12 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             <TransactionTimestampTooltip
               text={
                 <TransactionFeeTooltipBody>
-                  {mojoTimeDeltaToJSDate(transactionDetails.createdTime).toUTCString()}
+                  {serializedTimeDeltaToJSDate(transactionDetails.createdTime).toUTCString()}
                 </TransactionFeeTooltipBody>
               }
             >
               <DetailTextDarkBold>
-                {formatDateAsRelative(mojoTimeDeltaToJSDate(transactionDetails.createdTime))}
+                {formatDateAsRelative(serializedTimeDeltaToJSDate(transactionDetails.createdTime))}
               </DetailTextDarkBold>
             </TransactionTimestampTooltip>
 

@@ -26,6 +26,7 @@ class BraveBrowserNonClientFrameViewMac : public BrowserNonClientFrameViewMac {
  private:
   bool ShouldShowWindowTitleForVerticalTabs() const;
   void UpdateWindowTitleVisibility();
+  void UpdateWindowTitleAndControls();
 
   // BrowserNonClientFrameViewMac overrides:
   void OnPaint(gfx::Canvas* canvas) override;

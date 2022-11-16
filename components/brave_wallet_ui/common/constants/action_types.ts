@@ -6,6 +6,7 @@
 import {
   BraveWallet,
   Origin,
+  SerializableTransactionInfo,
   SlippagePresetObjectType,
   TransactionProviderError,
   WalletAccountType
@@ -30,15 +31,15 @@ export type IsEip1559Changed = {
 }
 
 export type NewUnapprovedTxAdded = {
-  txInfo: BraveWallet.TransactionInfo
+  txInfo: SerializableTransactionInfo
 }
 
 export type UnapprovedTxUpdated = {
-  txInfo: BraveWallet.TransactionInfo
+  txInfo: SerializableTransactionInfo
 }
 
 export type TransactionStatusChanged = {
-  txInfo: BraveWallet.TransactionInfo
+  txInfo: SerializableTransactionInfo
 }
 
 export type SetUserAssetVisiblePayloadType = {

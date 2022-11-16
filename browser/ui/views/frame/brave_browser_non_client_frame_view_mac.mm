@@ -31,7 +31,7 @@ BraveBrowserNonClientFrameViewMac::BraveBrowserNonClientFrameViewMac(
     show_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsEnabled, prefs,
         base::BindRepeating(
-            &BraveBrowserNonClientFrameViewMac::UpdateWindowTitleVisibility,
+            &BraveBrowserNonClientFrameViewMac::UpdateWindowTitleAndControls,
             base::Unretained(this)));
     show_title_bar_on_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsShowTitleOnWindow, prefs,
@@ -89,4 +89,12 @@ int BraveBrowserNonClientFrameViewMac::NonClientHitTest(
   }
 
   return BrowserNonClientFrameViewMac::NonClientHitTest(point);
+}
+
+void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleAndControls() {
+  UpdateWindowTitleVisibility();
+
+  // In case title visibility wasn't changed and only vertical tab strip enabled
+  // state changed, we should reset controls positions manually.
+  frame()->ResetWindowControlsPosition();
 }

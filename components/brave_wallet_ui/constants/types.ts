@@ -229,9 +229,9 @@ export interface WalletState {
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   fullTokenList: BraveWallet.BlockchainToken[]
   portfolioPriceHistory: PriceDataObjectType[]
-  pendingTransactions: BraveWallet.TransactionInfo[]
-  knownTransactions: BraveWallet.TransactionInfo[]
-  selectedPendingTransaction: BraveWallet.TransactionInfo | undefined
+  pendingTransactions: SerializableTransactionInfo[]
+  knownTransactions: SerializableTransactionInfo[]
+  selectedPendingTransaction: SerializableTransactionInfo | undefined
   isFetchingPortfolioPriceHistory: boolean
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
   networkList: BraveWallet.NetworkInfo[]
@@ -275,7 +275,7 @@ export interface PanelState {
   switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
   suggestedTokenRequest?: BraveWallet.AddSuggestTokenRequest
-  selectedTransaction: BraveWallet.TransactionInfo | undefined
+  selectedTransaction: SerializableTransactionInfo | undefined
 }
 
 export interface PageState {
@@ -484,8 +484,61 @@ export interface ApproveERC20Params {
   allowance: string
 }
 
+/**
+ * Used to properly store BraveWallet.TransactionInfo in redux store,
+ * since bigints are not serializable by default
+ */
+export type SerializableTimeDelta = Record<keyof TimeDelta, number>
+
+export type Defined<T> = Exclude<T, undefined>
+
+export type SerializableSolanaTxDataMaxRetries = {
+  maxRetries?: ({
+    maxRetries: number
+  }) | undefined
+}
+
+export type SerializableSolanaTxDataSendOptions =
+  | (Omit<Defined<BraveWallet.SolanaSendTransactionOptions>, 'maxRetries'> & SerializableSolanaTxDataMaxRetries)
+  | undefined
+
+export type SerializableSolanaTxData = Omit<
+  BraveWallet.SolanaTxData,
+  | 'lastValidBlockHeight'
+  | 'lamports'
+  | 'amount'
+  | 'sendOptions'
+  > & {
+  lastValidBlockHeight: string
+  lamports: string
+  amount: string
+  sendOptions: SerializableSolanaTxDataSendOptions
+}
+
+/**
+ * Used to properly store BraveWallet.TransactionInfo in redux store,
+ * since bigints are not serializable by default
+ */
+export type SerializableTransactionInfo = Omit<
+  BraveWallet.TransactionInfo,
+  | 'confirmedTime'
+  | 'createdTime'
+  | 'submittedTime'
+  | 'txDataUnion'
+> & {
+  confirmedTime: SerializableTimeDelta
+  createdTime: SerializableTimeDelta
+  submittedTime: SerializableTimeDelta
+  txDataUnion: {
+    solanaTxData?: SerializableSolanaTxData
+    ethTxData?: BraveWallet.TxData
+    ethTxData1559?: BraveWallet.TxData1559
+    filTxData?: BraveWallet.FilTxData
+  }
+}
+
 export type AccountTransactions = {
-  [accountId: string]: BraveWallet.TransactionInfo[]
+  [accountId: string]: SerializableTransactionInfo[]
 }
 
 export type GetEthAddrReturnInfo = BraveWallet.JsonRpcService_EnsGetEthAddr_ResponseParams
@@ -866,4 +919,11 @@ export interface BuySendSwapDepositOption {
   name: string
   icon: string
   route: WalletRoutes
+}
+
+export enum TokenStandards {
+  ERC721 = 'ERC721',
+  ERC20 = 'ERC20',
+  ERC1155 = 'ERC1155',
+  SPL = 'SPL'
 }

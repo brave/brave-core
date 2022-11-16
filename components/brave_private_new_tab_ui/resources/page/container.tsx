@@ -51,7 +51,7 @@ const BadgePrivateWindow = styled.div`
 function Container () {
   const isWindowTor = loadTimeData.getBoolean('isWindowTor')
 
-  const { isConnected, isLoading, progress, message, connectionFailed } = useTorObserver()
+  const { isConnected, progress, message, connectionStatus } = useTorObserver()
   const { hasDisclaimerDismissed } = useHasDisclaimerDismissed()
 
   let badgeElement = (
@@ -73,10 +73,9 @@ function Container () {
     badgeElement = (
       <BadgeTor
         isConnected={isConnected}
-        isLoading={isLoading}
         progress={progress ?? ''}
         message={message ?? ''}
-        connectionFailed={connectionFailed}
+        connectionStatus={connectionStatus}
       />
     )
 
