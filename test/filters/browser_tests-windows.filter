@@ -8,8 +8,8 @@
 # This test passes locally but always fails on CI
 -TabHoverCardBubbleViewDialogBrowserTest.InvokeUi_tab_hover_card
 
-# This test passes locally but fails on CI likely because BraveMainDelegate is
-# available in the Chromium tests. It fails with the message:
+# These tests passes locally but fails on CI likely because BraveMainDelegate
+# is not available in the Chromium tests. It fails with the message:
 #
 # Terminating render process for bad Mojo message: Received bad user message:
 # No binder found for interface brave_news.mojom.BraveNewsController for the
@@ -18,6 +18,7 @@
 # The binder is not instantiated because BraveContentBrowserClient is also not
 # available. The difference between CI and local execution has not been
 # investigated.
+-WebAppTabStripBrowserTest.NavigationThrottle
 -WebAppTabStripBrowserTest.OnlyNavigateHomeTabIfDifferentUrl
 
 # These tests fail because our default search provider is not Google, which
