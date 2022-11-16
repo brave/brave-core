@@ -6,6 +6,7 @@
 import Foundation
 import WebKit
 import Shared
+import Data
 import os.log
 
 /// This handler receives a list of ids and selectors for a given frame for which it is then able to inject scripts and css rules in order to hide certain elements
@@ -51,7 +52,8 @@ class CosmeticFiltersScriptHandler: TabContentScript {
         return
       }
       
-      let selectors = AdBlockStats.shared.cachedEngines.flatMap { cachedEngine -> [String] in
+      let domain = Domain.getOrCreate(forUrl: frameURL, persistent: tab?.isPrivate == true ? false : true)
+      let selectors = AdBlockStats.shared.cachedEngines(for: domain).flatMap { cachedEngine -> [String] in
         do {
           return try cachedEngine.selectorsForCosmeticRules(
             frameURL: frameURL,

@@ -15,26 +15,6 @@ import Shared
 /// Since frames may be loaded as the user scrolls which may need additional scripts to be injected,
 /// We cache information about frames in order to prevent excessive reloading of scripts.
 struct PageData {
-  /// Object that represent the settings when returning deomian script types.
-  struct DomainScriptOptions: OptionSet {
-    let rawValue: Int
-
-    /// Wether or not we should persist shield settings
-    static let persistShieldSettings = DomainScriptOptions(rawValue: 1 << 0)
-
-    /// These settings are tuned for a regular browsing session:
-    /// - Persist shield settings
-    static let `default`: DomainScriptOptions = [persistShieldSettings]
-
-    /// These settings are tuned for a private browsing session:
-    /// - Does not persist shield settings
-    static let privateBrowsing: DomainScriptOptions = []
-
-    /// These options are tuned for the `PlaylistCacheLoader`:
-    /// - Does not persist shield settings
-    static let playlistCacheLoader: DomainScriptOptions = []
-  }
-  
   /// The url of the page (i.e. main frame)
   private(set) var mainFrameURL: URL
   /// A list of all currently available subframes for this current page
@@ -51,19 +31,19 @@ struct PageData {
   }
   
   /// This method builds all the user scripts that should be included for this page
-  mutating func makeUserScriptTypes(forRequestURL requestURL: URL, isForMainFrame: Bool, options: DomainScriptOptions) -> Set<UserScriptType>? {
+  mutating func makeUserScriptTypes(forRequestURL requestURL: URL, isForMainFrame: Bool, persistentDomain: Bool) -> Set<UserScriptType>? {
     if !isForMainFrame {
       // We need to add any non-main frame urls to our site data
       // We will need this to construct all non-main frame scripts
       allSubframeURLs.insert(requestURL)
     }
     
-    return makeUserScriptTypes(options: options)
+    return makeUserScriptTypes(persistentDomain: persistentDomain)
   }
   
   /// A new list of scripts is returned only if a change is detected in the response (for example an HTTPs upgrade).
   /// In some cases (like during an https upgrade) the scripts may change on the response. So we need to update the user scripts
-  mutating func makeUserScriptTypes(forResponseURL responseURL: URL, isForMainFrame: Bool, options: DomainScriptOptions) -> Set<UserScriptType>? {
+  mutating func makeUserScriptTypes(forResponseURL responseURL: URL, isForMainFrame: Bool, persistentDomain: Bool) -> Set<UserScriptType>? {
     if isForMainFrame {
       // If it's the main frame url that was upgraded,
       // we need to update it and rebuild the types
@@ -71,7 +51,7 @@ struct PageData {
       mainFrameURL = responseURL
       
       // And now we rebuild the scripts and set them
-      return makeUserScriptTypes(options: options)
+      return makeUserScriptTypes(persistentDomain: persistentDomain)
     } else if !allSubframeURLs.contains(responseURL) {
       // first try to remove the old unwanted `http` frame URL
       if var components = URLComponents(url: responseURL, resolvingAgainstBaseURL: false), components.scheme == "https" {
@@ -89,7 +69,7 @@ struct PageData {
     }
     
     // And now we rebuild the scripts and set them
-    return makeUserScriptTypes(options: options)
+    return makeUserScriptTypes(persistentDomain: persistentDomain)
   }
   
   /// Check if we upgraded to https and if so we need to update the url of frame evaluations
@@ -102,12 +82,18 @@ struct PageData {
     }
   }
   
-  mutating private func makeUserScriptTypes(options: DomainScriptOptions) -> Set<UserScriptType> {
+  /// Return the domain for this current page passing any options needed for its persistance
+  func domain(persistent: Bool) -> Domain {
+    return Domain.getOrCreate(forUrl: mainFrameURL, persistent: persistent)
+  }
+  
+  /// Return all the user script types for this page. The number of script types grows as more frames are loaded.
+  mutating private func makeUserScriptTypes(persistentDomain: Bool) -> Set<UserScriptType> {
     var userScriptTypes: Set<UserScriptType> = [.siteStateListener]
 
     // Handle dynamic domain level scripts on the main document.
     // These are scripts that change depending on the domain and the main document
-    let domainForShields = Domain.getOrCreate(forUrl: mainFrameURL, persistent: options.contains(.persistShieldSettings))
+    let domainForShields = self.domain(persistent: persistentDomain)
     let isFPProtectionOn = domainForShields.isShieldExpected(.FpProtection, considerAllShieldsOption: true)
     // Add the `farblingProtection` script if needed
     // Note: The added farbling protection script based on the document url, not the frame's url.
@@ -125,13 +111,13 @@ struct PageData {
     
     // Add engine scripts for the main frame
     userScriptTypes = userScriptTypes.union(
-      adBlockStats.makeEngineScriptTypes(frameURL: mainFrameURL, isMainFrame: true)
+      adBlockStats.makeEngineScriptTypes(frameURL: mainFrameURL, isMainFrame: true, domain: domainForShields)
     )
     
     // Add engine scripts for all of the known sub-frames
     for frameURL in allSubframeURLs {
       userScriptTypes = userScriptTypes.union(
-        adBlockStats.makeEngineScriptTypes(frameURL: frameURL, isMainFrame: false)
+        adBlockStats.makeEngineScriptTypes(frameURL: frameURL, isMainFrame: false, domain: domainForShields)
       )
     }
     

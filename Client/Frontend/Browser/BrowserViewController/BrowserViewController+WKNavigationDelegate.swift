@@ -305,7 +305,7 @@ extension BrowserViewController: WKNavigationDelegate {
        let scriptTypes = tab?.currentPageData?.makeUserScriptTypes(
         forRequestURL: url,
         isForMainFrame: targetFrame.isMainFrame,
-        options: isPrivateBrowsing ? .privateBrowsing : .default
+        persistentDomain: !isPrivateBrowsing
        ) {
       tab?.setCustomUserScript(scripts: scriptTypes)
     }
@@ -456,7 +456,7 @@ extension BrowserViewController: WKNavigationDelegate {
        let scriptTypes = tab?.currentPageData?.makeUserScriptTypes(
         forResponseURL: responseURL,
         isForMainFrame: navigationResponse.isForMainFrame,
-        options: isPrivateBrowsing ? .privateBrowsing : .default
+        persistentDomain: !isPrivateBrowsing
        ) {
       tab?.setCustomUserScript(scripts: scriptTypes)
     }

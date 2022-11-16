@@ -275,9 +275,9 @@ public actor AdBlockEngineManager: Sendable {
       })
       
       var allCompileResults: [ResourceWithVersion: Result<Void, Error>] = [:]
-      var allEngines: [AdblockEngine] = []
+      var allEngines: [CachedAdBlockEngine] = []
       
-      for (_, group) in await self.group(resources: resourcesWithVersion) {
+      for (source, group) in await self.group(resources: resourcesWithVersion) {
         try Task.checkCancellation()
         
         // Combine all rule lists that need to be injected during initialization
@@ -291,7 +291,7 @@ public actor AdBlockEngineManager: Sendable {
           allCompileResults[resourceWithVersion] = compileResult
         }
         
-        allEngines.append(engine)
+        allEngines.append(CachedAdBlockEngine(engine: engine, source: source))
       }
       
       // Set the results and clear some things
