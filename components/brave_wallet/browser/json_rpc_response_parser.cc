@@ -12,8 +12,6 @@
 
 namespace brave_wallet {
 
-absl::optional<base::Value> ParseResultValue(const std::string& json);
-
 bool ParseSingleStringResult(const std::string& json, std::string* result) {
   DCHECK(result);
 
@@ -52,19 +50,15 @@ absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
 }
 
 absl::optional<base::Value> ParseResultValue(const std::string& json) {
-  absl::optional<base::Value> records_v =
+  absl::optional<base::Value> value =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+  if (!value)
     return absl::nullopt;
-  }
-
-  base::Value* result_v = records_v->GetDict().FindByDottedPath("result");
-  if (!result_v)
+  auto response = json_rpc_responses::RPCResponse::FromValue(*value);
+  if (!response || !response->result)
     return absl::nullopt;
-
-  return std::move(*result_v);
+  return std::move(*response->result);
 }
 
 absl::optional<base::Value::Dict> ParseResultDict(const std::string& json) {
