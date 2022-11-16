@@ -1,6 +1,7 @@
 name: Alert Unsigned Commits
 on:
   pull_request_review:
+    types: [submitted]
   pull_request:
     types: [reopened, synchronize]
 
@@ -12,14 +13,14 @@ env:
 
 jobs:
   alert-unsigned:
-    # if: github.event.review.state == 'approved'
+    if: github.event.review.state == 'approved'
     name: Alert Unsigned Commits
     runs-on: ubuntu-latest
     steps:
       - name: Alert Unsigned Commits
         run: |
           env | grep -i GIT | sort  # TODO remove before merge
-          set -x # TODO remove before merge
+          set -x
           HEAD_SHA=${{ github.event.pull_request.head.sha }}
 
           BRAVE_CORE_PATH=brave/brave-core
