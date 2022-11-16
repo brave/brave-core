@@ -5,7 +5,7 @@
 
 import './brave_sync_code_dialog.js';
 
-import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {DomRepeatEvent, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {WebUIListenerMixin, WebUIListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {BaseMixin} from '../base_mixin.js'
@@ -125,15 +125,14 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
     router.navigateTo((router.getRoutes() as {BRAVE_SYNC: Route}).BRAVE_SYNC);
   }
 
-  async onDeleteDevice_(e: Event) {
+  async onDeleteDevice_(e: DomRepeatEvent<BraveDeviceInfo>) {
     const messageText = this.i18n('braveSyncDeleteDeviceConfirmation')
     const shouldDeleteDevice = confirm(messageText)
     if (!shouldDeleteDevice) {
       return
     }
-
-    const deviceGuid = (e.currentTarget as HTMLElement).getAttribute('arg')!;
-    await this.browserProxy_.deleteDevice(deviceGuid);
+    const device: BraveDeviceInfo = e.model.item
+    await this.browserProxy_.deleteDevice(device.guid);
   }
 }
 
