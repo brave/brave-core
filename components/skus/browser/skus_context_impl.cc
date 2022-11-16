@@ -98,11 +98,13 @@ void shim_scheduleWakeup(
     ::std::uint64_t delay_ms,
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::WakeupContext>)> done,
     rust::cxxbridge1::Box<skus::WakeupContext> ctx) {
-  VLOG(1) << "shim_scheduleWakeup " << delay_ms;
+  int buffer_ms = 10;
+  VLOG(1) << "shim_scheduleWakeup " << (delay_ms + buffer_ms) << " ("
+          << delay_ms << "ms plus " << buffer_ms << "ms buffer)";
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&OnScheduleWakeup, std::move(done), std::move(ctx)),
-      base::Milliseconds(delay_ms));
+      base::Milliseconds(delay_ms + buffer_ms));
 }
 
 std::unique_ptr<SkusUrlLoader> shim_executeRequest(
