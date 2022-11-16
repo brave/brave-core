@@ -7,26 +7,26 @@ import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import {
-  AccountTransactions,
-  BraveWallet,
-  BalancePayload,
-  WalletAccountType,
   AccountInfo,
+  AccountTransactions,
+  BalancePayload,
   BraveKeyrings,
+  BraveWallet,
   GetBlockchainTokenInfoReturnInfo,
-  SupportedCoinTypes,
-  SupportedTestNetworks,
   SendEthTransactionParams,
   SendFilTransactionParams,
   SendSolTransactionParams,
   SolanaSerializedTransactionParams,
-  SupportedOnRampNetworks
+  SupportedCoinTypes,
+  SupportedOnRampNetworks,
+  SupportedTestNetworks,
+  WalletAccountType
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
 import { getFilecoinKeyringIdFromNetwork, getNetworkInfo, getNetworksByCoinType } from '../../utils/network-utils'
-import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
+import { getFlattenedAccountBalances, getTokenParam } from '../../utils/api-utils'
 import Amount from '../../utils/amount'
 import { sortTransactionByDate } from '../../utils/tx-utils'
 import { addLogoToToken, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
@@ -42,6 +42,7 @@ import { AllNetworksOption } from '../../options/network-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
+import { numberArrayToHexStr } from '../../utils/hex-utils'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -996,4 +997,21 @@ export async function sendSolanaSerializedTransaction (payload: SolanaSerialized
       payload.groupId || null
     )
   }
+}
+
+export async function simulateTransaction (payload: BraveWallet.TransactionInfo) {
+  const {
+    txDataUnion: { ethTxData1559: txData },
+    fromAddress
+  } = payload
+
+  const data = txData?.baseData.data || []
+
+  const { jsonRpcService } = getAPIProxy()
+  return await jsonRpcService.simulateEVMTransaction(
+      fromAddress,
+      txData?.baseData.to || '',
+      `0x${numberArrayToHexStr(data)}`,
+      txData?.baseData.value || '0x0'
+  )
 }

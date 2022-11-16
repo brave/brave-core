@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 
-import { WalletState } from '../../../constants/types'
+import { BraveWallet, WalletState } from '../../../constants/types'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
@@ -68,6 +68,7 @@ import { Footer } from './common/footer'
 import { TransactionQueueStep } from './common/queue'
 import { Origin } from './common/origin'
 import { EditPendingTransactionGas } from './common/gas'
+import ConfirmSimulatedTransaction from './simulate'
 
 type confirmPanelTabs = 'transaction' | 'details'
 
@@ -139,6 +140,12 @@ export const ConfirmTransactionPanel = ({
     return <StyledWrapper>
       <Skeleton width={'100%'} height={'100%'} enableAnimation />
     </StyledWrapper>
+  }
+
+  if (transactionInfo.txType === BraveWallet.TransactionType.Other) {
+    return (
+        <ConfirmSimulatedTransaction onConfirm={onConfirm} onReject={onReject} />
+    )
   }
 
   if (isEditing) {

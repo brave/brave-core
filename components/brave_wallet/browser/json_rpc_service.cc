@@ -2929,4 +2929,75 @@ void JsonRpcService::OnGetSolanaBlockHeight(
                           "");
 }
 
+void JsonRpcService::SimulateEVMTransaction(
+    const std::string& from,
+    const std::string& to,
+    const std::string& data,
+    const std::string& value,
+    SimulateEVMTransactionCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnSimulateEVMTransaction,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  base::Value::Dict transaction;
+  transaction.Set("data", base::Value(data));
+  transaction.Set("from", base::Value(from));
+  transaction.Set("to", base::Value(to));
+  transaction.Set("value", base::Value(value));
+
+  GURL url("http://localhost:3000");
+  RequestInternal(GetJSON(transaction), true, url,
+                  std::move(internal_callback));
+}
+
+void JsonRpcService::OnSimulateEVMTransaction(
+    SimulateEVMTransactionCallback callback,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(false, nullptr);
+    return;
+  }
+
+  auto json = api_request_result.body();
+
+  auto records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!records_v || !records_v->is_dict()) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return;
+  }
+
+  const auto& response_dict = records_v->GetDict();
+  const auto* report_value = response_dict.FindList("simulation");
+  if (!report_value) {
+    std::move(callback).Run(false, nullptr);
+    return;
+  }
+
+  auto report = mojom::SimulationReport::New();
+
+  for (const auto& diff_item : *report_value) {
+    auto diff = mojom::BalanceDiff::New();
+    const auto& diff_dict = diff_item.GetDict();
+    auto* diff_value = diff_dict.FindString("diff");
+    if (!diff_value) {
+      std::move(callback).Run(false, nullptr);
+      return;
+    }
+    diff->diff = *diff_value;
+
+    auto* symbol = diff_dict.FindString("symbol");
+    if (!symbol) {
+      std::move(callback).Run(false, nullptr);
+      return;
+    }
+    diff->symbol = *symbol;
+
+    report->simulation.push_back(diff.Clone());
+  }
+
+  std::move(callback).Run(true, report.Clone());
+}
+
 }  // namespace brave_wallet
