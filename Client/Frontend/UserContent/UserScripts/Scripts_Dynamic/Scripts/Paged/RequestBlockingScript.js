@@ -58,7 +58,15 @@ window.__firefox__.execute(function($) {
 
     // Extract the url
     const urlString = arguments[1]
-    this._resourceURL = new URL(urlString, window.location.href)
+    
+    try {
+      // We do this in a try/catch block to not fail the request in case we can't
+      // create a URL
+      this._resourceURL = new URL(urlString, window.location.href)
+    } catch (error) {
+      // Ignore this error and proceed like a regular request
+    }
+    
     return originalOpen.apply(this, arguments)
   });
   
