@@ -98,7 +98,7 @@ export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElement
     try {
       success = await this.syncBrowserProxy_.setSyncCode(syncCodeToSubmit)
     } catch (e: unknown) {
-      this.syncCodeValidationError_ = (e as Error).message
+      this.syncCodeValidationError_ = (e as string)
       success = false
     }
     this.isSubmittingSyncCode_ = false
