@@ -10,3 +10,7 @@
 # it seems in Static build the crash isn't detected/handled.
 -CDM_10/ECKEncryptedMediaTest.MultipeCdmTypes/0
 -CDM_11/ECKEncryptedMediaTest.MultipeCdmTypes/0
+
+# These tests fail on x86 CI but pass locally
+-MetricIntegrationTest.FirstInputDelay
+-MetricIntegrationTest.LargestContentfulPaint_SubframeInput
