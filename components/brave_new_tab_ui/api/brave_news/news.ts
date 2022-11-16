@@ -43,7 +43,8 @@ class BraveNewsApi {
     this.updateChannels()
 
     this.controller.getLocale().then(({ locale }) => {
-      this.locale = locale
+      // If we don't know what locale to display, fallback to en_US for now.
+      this.locale = locale || "en_US"
       this.updatePublishers()
     })
   }

@@ -154,7 +154,7 @@ struct FeedSearchResultItem {
 // Browser-side handler
 interface BraveNewsController {
   // Gets the current locale.
-  GetLocale() => (string locale);
+  GetLocale() => (string? locale);
 
   GetFeed() => (Feed feed);
   GetPublishers() => (map<string, Publisher> publishers);

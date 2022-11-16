@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "base/barrier_callback.h"
 #include "base/bind.h"
 #include "base/callback_forward.h"
@@ -133,7 +134,10 @@ void PublishersController::GetLocale(
   GetOrFetchPublishers(base::BindOnce(
       [](PublishersController* controller,
          mojom::BraveNewsController::GetLocaleCallback callback, Publishers _) {
-        std::move(callback).Run(controller->default_locale_);
+        std::move(callback).Run(
+            controller->default_locale_.empty()
+                ? absl::nullopt
+                : absl::make_optional(controller->default_locale_));
       },
       base::Unretained(this), std::move(callback)));
 }

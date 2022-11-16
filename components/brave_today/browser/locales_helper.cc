@@ -111,6 +111,9 @@ base::flat_set<std::string> GetMinimalLocalesSet(
     result.insert(best_missing_locale.value());
   }
 
+  for (const auto& locale : result)
+    LOG(ERROR) << "Going to fetch locale: '" << locale << "'";
+
   return result;
 }
 

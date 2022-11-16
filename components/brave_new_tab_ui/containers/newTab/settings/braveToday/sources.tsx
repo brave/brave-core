@@ -85,7 +85,7 @@ type SourcesProps = Props & {
 const useBraveNewsLocale = () => {
   const [locale, setLocale] = React.useState('')
   React.useEffect(() => {
-    getBraveNewsController().getLocale().then(({ locale }) => setLocale(locale))
+    getBraveNewsController().getLocale().then(({ locale }) => setLocale(locale ?? "en_US"))
   }, [])
   return locale
 }
