@@ -131,8 +131,8 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
     if (!shouldDeleteDevice) {
       return
     }
-
-    const deviceGuid = (e.currentTarget as HTMLElement).getAttribute('arg')!;
+    // @ts-ignore
+    const deviceGuid = (e.currentTarget as HTMLElement).arg;
     await this.browserProxy_.deleteDevice(deviceGuid);
   }
 }
