@@ -35,10 +35,6 @@
 # This test fails on CI but passes locally
 -LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed
 
-# These tests fail on x86 CI but pass locally
--MetricIntegrationTest.FirstInputDelay
--MetricIntegrationTest.LargestContentfulPaint_SubframeInput
-
 -All/MediaEngagementAutoplayBrowserTest.*
 -All/ExternallyManagedBrowserTestWithPrefMigrationRead.ReinstallPolicyAppWithLocallyInstalledApp/1
 -All/PDFExtensionAccessibilityTreeDumpTest.*
