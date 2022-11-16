@@ -71,7 +71,8 @@ BraveNewsTabHelper::GetAvailableFeeds() {
 bool BraveNewsTabHelper::IsSubscribed(const FeedDetails& feed_details) {
   auto* publisher = controller_->publisher_controller()->GetPublisherForFeed(
       feed_details.feed_url);
-  return brave_news::IsPublisherEnabled(publisher);
+  return publisher && publisher->user_enabled_status ==
+                          brave_news::mojom::UserEnabled::ENABLED;
 }
 
 bool BraveNewsTabHelper::IsSubscribed() {
