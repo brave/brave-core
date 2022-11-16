@@ -5,6 +5,7 @@
 
 import XCTest
 import BraveCore
+import Data
 @testable import Brave
 
 class AdBlockEngineManagerTests: XCTestCase {
@@ -80,12 +81,18 @@ class AdBlockEngineManagerTests: XCTestCase {
       await engineManager.compileResources()
       
       Task { @MainActor in
-        XCTAssertEqual(stats.cachedEngines.count, 3)
-        let types = stats.makeEngineScriptTypes(frameURL: URL(string:  "https://stackoverflow.com")!, isMainFrame: true)
+        let url = URL(string:  "https://stackoverflow.com")!
+        let domain = Domain.getOrCreate(forUrl: url, persistent: false)
+        let cachedEngines = stats.cachedEngines(for: domain)
+        XCTAssertEqual(cachedEngines.count, 3)
+        
+        let types = stats.makeEngineScriptTypes(frameURL: url, isMainFrame: true, domain: domain)
         // We should have no scripts injected
         XCTAssertEqual(types.count, 0)
         
-        let types2 = stats.makeEngineScriptTypes(frameURL: URL(string:  "https://reddit.com")!, isMainFrame: true)
+        let url2 = URL(string:  "https://stackoverflow.com")!
+        let domain2 = Domain.getOrCreate(forUrl: url2, persistent: false)
+        let types2 = stats.makeEngineScriptTypes(frameURL: URL(string:  "https://reddit.com")!, isMainFrame: true, domain: domain2)
         // We should have 1 engine script injected
         XCTAssertEqual(types2.count, 1)
         XCTAssertTrue(types2.contains(where: { scriptType in

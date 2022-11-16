@@ -574,7 +574,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
        let customUserScripts = tab.currentPageData?.makeUserScriptTypes(
         forRequestURL: requestURL,
         isForMainFrame: targetFrame.isMainFrame,
-        options: .playlistCacheLoader
+        persistentDomain: false
        ) {
       tab.setCustomUserScript(scripts: customUserScripts)
     }
@@ -646,7 +646,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
        let scriptTypes = tab.currentPageData?.makeUserScriptTypes(
         forResponseURL: responseURL,
         isForMainFrame: navigationResponse.isForMainFrame,
-        options: .playlistCacheLoader
+        persistentDomain: false
        ) {
       tab.setCustomUserScript(scripts: scriptTypes)
     }

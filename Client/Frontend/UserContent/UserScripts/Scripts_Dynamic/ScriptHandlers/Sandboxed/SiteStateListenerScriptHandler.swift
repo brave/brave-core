@@ -61,8 +61,9 @@ class SiteStateListenerScriptHandler: TabContentScript {
         return
       }
       
-      if let frameInfo = tab.currentPageData?.framesInfo[frameURL] {
-        let models = AdBlockStats.shared.cosmeticFilterModels(forFrameURL: frameURL)
+      if let pageData = tab.currentPageData, let frameInfo = pageData.framesInfo[frameURL] {
+        let domain = pageData.domain(persistent: !tab.isPrivate)
+        let models = AdBlockStats.shared.cosmeticFilterModels(forFrameURL: frameURL, domain: domain)
         
         let hideSelectors = models.reduce(Set<String>(), { partialResult, model in
           return partialResult.union(model.hideSelectors)

@@ -20,7 +20,7 @@ final class PageDataTests: XCTestCase {
     // When
     // We get the script types for the main frame
     let mainFrameRequestTypes = pageData.makeUserScriptTypes(
-      forRequestURL: mainFrameURL, isForMainFrame: true, options: .privateBrowsing
+      forRequestURL: mainFrameURL, isForMainFrame: true, persistentDomain: false
     )
     
     // Then
@@ -33,7 +33,7 @@ final class PageDataTests: XCTestCase {
     // When
     // Nothing has changed
     let unchangedScriptTypes = pageData.makeUserScriptTypes(
-      forRequestURL: mainFrameURL, isForMainFrame: true, options: .privateBrowsing
+      forRequestURL: mainFrameURL, isForMainFrame: true, persistentDomain: false
     )
     
     // Then
