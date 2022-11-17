@@ -13,6 +13,7 @@ enum DomainUserScript: CaseIterable {
   case braveTalkHelper
   case braveSkus
   case bravePlaylistFolderSharingHelper
+  case youtubeAdblock
 
   /// Initialize this script with a URL
   init?(for url: URL) {
@@ -47,6 +48,19 @@ enum DomainUserScript: CaseIterable {
       return Set(["account.brave.com",
                    "account.bravesoftware.com",
                    "account.brave.software"])
+    case .youtubeAdblock:
+      return Set(["youtube.com"])
+    }
+  }
+  
+  /// Returns a shield type for a given user script domain.
+  /// Returns nil if the domain's user script can't be turned off via a shield toggle. (i.e. it's always enabled)
+  var requiredShield: BraveShield? {
+    switch self {
+    case .braveSearchHelper, .braveTalkHelper, .bravePlaylistFolderSharingHelper, .braveSkus:
+      return nil
+    case .youtubeAdblock:
+      return .AdblockAndTp
     }
   }
 }
