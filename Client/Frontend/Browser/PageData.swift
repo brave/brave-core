@@ -106,7 +106,15 @@ struct PageData {
     // Handle dynamic domain level scripts on the request that don't use shields
     // This shield is always on and doesn't need sheild settings
     if let domainUserScript = DomainUserScript(for: mainFrameURL) {
-      userScriptTypes.insert(.domainUserScript(domainUserScript))
+      if let shield = domainUserScript.requiredShield {
+        // If a shield is required check that shield
+        if domainForShields.isShieldExpected(shield, considerAllShieldsOption: true) {
+          userScriptTypes.insert(.domainUserScript(domainUserScript))
+        }
+      } else {
+        // Otherwise just add it right away
+        userScriptTypes.insert(.domainUserScript(domainUserScript))
+      }
     }
     
     // Add engine scripts for the main frame

@@ -22,6 +22,8 @@ enum ScriptSourceType {
   /// This script is a modification of the android and desktop script found here:
   /// https://github.com/brave/brave-core/blob/master/components/cosmetic_filters/resources/data/content_cosmetic.ts
   case selectorsPoller
+  /// A script for blocking youtube ads
+  case youtubeAdblock
 
   var fileName: String {
     switch self {
@@ -29,6 +31,7 @@ enum ScriptSourceType {
     case .farblingProtection: return "FarblingProtectionScript"
     case .frameCheckWrapper: return "FrameCheckWrapper"
     case .selectorsPoller: return "SelectorsPollerScript"
+    case .youtubeAdblock: return "YoutubeAdblock"
     }
   }
 
