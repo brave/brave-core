@@ -68,25 +68,41 @@ PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
 PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;
 
 void PlaylistDownloadRequestManager::CreateWebContents() {
+  LOG(ERROR) << "BravePlaylist"
+             << "CreateWebContents 1";
   if (!web_contents_) {
+    LOG(ERROR) << "BravePlaylist"
+               << "CreateWebContents 2";
     // |web_contents_| is created on demand.
     content::WebContents::CreateParams create_params(context_, nullptr);
     web_contents_ = content::WebContents::Create(create_params);
   }
+  LOG(ERROR) << "BravePlaylist"
+             << "CreateWebContents 3";
   Observe(web_contents_.get());
 }
 
 void PlaylistDownloadRequestManager::GetMediaFilesFromPage(Request request) {
+  LOG(ERROR) << "BravePlaylist"
+             << "GetMediaFilesFromPage 1";
   web_contents_destroy_timer_.reset();
+  LOG(ERROR) << "BravePlaylist"
+             << "GetMediaFilesFromPage 2";
 
   if (!ReadyToRunMediaDetectorScript()) {
+    LOG(ERROR) << "BravePlaylist"
+               << "GetMediaFilesFromPage 3";
     pending_requests_.push_back(std::move(request));
     if (media_detector_script_.empty())
       media_detector_component_manager_->RegisterIfNeeded();
     return;
   }
+  LOG(ERROR) << "BravePlaylist"
+             << "GetMediaFilesFromPage 4";
 
   RunMediaDetector(std::move(request));
+  LOG(ERROR) << "BravePlaylist"
+             << "GetMediaFilesFromPage 5";
 }
 
 void PlaylistDownloadRequestManager::OnScriptReady(const std::string& script) {
@@ -105,30 +121,51 @@ void PlaylistDownloadRequestManager::FetchPendingRequest() {
 }
 
 void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
+  LOG(ERROR) << "BravePlaylist"
+             << "RunMediaDetector 1";
   DCHECK(PlaylistJavaScriptWorldIdIsSet());
 
   DCHECK_GE(in_progress_urls_count_, 0);
   in_progress_urls_count_++;
 
+  LOG(ERROR) << "BravePlaylist"
+             << "RunMediaDetector 2";
+
   DCHECK(callback_for_current_request_.is_null());
   callback_for_current_request_ = std::move(request.callback);
+  LOG(ERROR) << "BravePlaylist"
+             << "RunMediaDetector 3";
 
   if (absl::holds_alternative<std::string>(request.url_or_contents)) {
+    LOG(ERROR) << "BravePlaylist"
+               << "RunMediaDetector 4";
     CreateWebContents();
     GURL url(absl::get<std::string>(request.url_or_contents));
+    LOG(ERROR) << "BravePlaylist"
+               << "RunMediaDetector 5";
     DCHECK(url.is_valid());
     DCHECK(web_contents_);
+    LOG(ERROR) << "BravePlaylist"
+               << "RunMediaDetector 6";
     web_contents_->GetController().LoadURLWithParams(
         content::NavigationController::LoadURLParams(url));
+    LOG(ERROR) << "BravePlaylist"
+               << "RunMediaDetector 7";
   } else {
+    LOG(ERROR) << "BravePlaylist"
+               << "RunMediaDetector 8";
     auto weak_contents =
         absl::get<base::WeakPtr<content::WebContents>>(request.url_or_contents);
     if (!weak_contents) {
       FetchPendingRequest();
       return;
     }
+    LOG(ERROR) << "BravePlaylist"
+               << "RunMediaDetector 9";
 
     GetMedia(weak_contents.get());
+    LOG(ERROR) << "BravePlaylist"
+               << "RunMediaDetector 10";
   }
 }
 
@@ -150,19 +187,29 @@ void PlaylistDownloadRequestManager::DidFinishLoad(
 
 void PlaylistDownloadRequestManager::GetMedia(content::WebContents* contents) {
   DCHECK(contents && contents->GetPrimaryMainFrame());
+  LOG(ERROR) << "BravePlaylist"
+             << "GetMedia 1";
 
   contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       base::UTF8ToUTF16(media_detector_script_),
       base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
                      weak_factory_.GetWeakPtr(), contents->GetWeakPtr()),
       g_playlist_javascript_world_id);
+  LOG(ERROR) << "BravePlaylist"
+             << "GetMedia 2";
 }
 
 void PlaylistDownloadRequestManager::OnGetMedia(
     base::WeakPtr<content::WebContents> contents,
     base::Value value) {
+  LOG(ERROR) << "BravePlaylist"
+             << "OnGetMedia 1";
   ProcessFoundMedia(contents, std::move(value));
+  LOG(ERROR) << "BravePlaylist"
+             << "OnGetMedia 2";
   FetchPendingRequest();
+  LOG(ERROR) << "BravePlaylist"
+             << "OnGetMedia 3";
 }
 
 void PlaylistDownloadRequestManager::ProcessFoundMedia(

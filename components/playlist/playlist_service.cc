@@ -233,6 +233,8 @@ bool PlaylistService::HasPrefStorePlaylistItem(const std::string& id) const {
 
 void PlaylistService::DownloadMediaFile(const PlaylistItemInfo& info) {
   VLOG(2) << __func__;
+  LOG(ERROR) << "BravePlaylist"
+             << "DownloadMediaFile";
   media_file_download_manager_->DownloadMediaFile(info);
 }
 

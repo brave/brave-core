@@ -91,6 +91,9 @@ void PlaylistPageHandler::GetPlaylist(
         item.id, item.title, GURL(item.page_src),
         GURL("file://" + item.media_file_path),
         GURL("file://" + item.thumbnail_path), item.media_file_cached));
+    LOG(ERROR) << "BravePlaylist"
+               << "GetPlaylist : " << item.media_file_path << " : "
+               << item.thumbnail_path;
   }
   std::move(callback).Run(playlist::mojom::Playlist::New(
       playlist->id, playlist->name, std::move(items)));

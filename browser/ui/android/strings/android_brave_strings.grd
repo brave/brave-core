@@ -3240,6 +3240,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_PLAYLIST" desc="Playlist menu item text">
       Playlist
     </message>
+    <message name="IDS_VIEW_ACTION" desc="View action text">
+      View
+    </message>
+    <message name="IDS_SAVED" desc="Saved text">
+      Saved
+    </message>
+    <message name="IDS_ADDED_TO_PLAYLIST" desc="\Added to specific playlist text">
+      Added to '<ph name="PLAYLIST_NAME">%1$s</ph>'
+    </message>
   </messages>
   </release>
 </grit>
