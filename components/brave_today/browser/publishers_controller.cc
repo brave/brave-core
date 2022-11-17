@@ -12,7 +12,6 @@
 #include <utility>
 #include <vector>
 
-#include "absl/types/optional.h"
 #include "base/barrier_callback.h"
 #include "base/bind.h"
 #include "base/callback_forward.h"
@@ -33,6 +32,7 @@
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
 
 namespace brave_news {
