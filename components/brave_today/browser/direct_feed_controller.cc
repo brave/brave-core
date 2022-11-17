@@ -47,6 +47,15 @@
 namespace brave_news {
 
 namespace {
+std::string GetResponseCharset(network::SimpleURLLoader* loader) {
+  auto* response_info = loader->ResponseInfo();
+  if (!response_info) {
+    return "utf-8";
+  }
+
+  return response_info->charset.empty() ? "utf-8" : response_info->charset;
+}
+
 mojom::ArticlePtr RustFeedItemToArticle(const FeedItem& rust_feed_item) {
   // We don't include description since there does not exist a
   // UI which uses that field at the moment.
@@ -192,14 +201,13 @@ void DirectFeedController::FindFeeds(
             std::string mime_type;
             GURL final_url(loader->GetFinalURL());
             base::flat_map<std::string, std::string> headers;
-            std::string charset = "utf8";
+            std::string charset = GetResponseCharset(loader);
             if (loader->ResponseInfo()) {
               auto headers_list = loader->ResponseInfo()->headers;
               mime_type = loader->ResponseInfo()->mime_type;
               if (headers_list) {
                 response_code = headers_list->response_code();
               }
-              charset = loader->ResponseInfo()->charset;
             }
             direct_feed_controller->url_loaders_.erase(iter);
 
