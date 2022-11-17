@@ -29,7 +29,7 @@ export const walletTermsAcknowledged = ({ page }: State) => page.walletTermsAckn
 export const importWalletError = ({ page }: State) => page.importWalletError
 export const nftMetadata = ({ page }: State) => page.nftMetadata
 export const portfolioPriceHistory = ({ page }: State) => page.portfolioPriceHistory
-export const selectedAsset = ({ page }: State) => page.selectedAsset
+export const selectedAsset = ({ page }: State) => page?.selectedAsset
 export const selectedAssetCryptoPrice = ({ page }: State) => page.selectedAssetCryptoPrice
 export const selectedAssetFiatPrice = ({ page }: State) => page.selectedAssetFiatPrice
 export const selectedAssetPriceHistory = ({ page }: State) => page.selectedAssetPriceHistory

@@ -520,6 +520,7 @@ enum OnRampProvider {
   kWyre = 0,
   kRamp = 1,
   kSardine = 2,
+  kTransak = 3
 };
 
 // List of tokens and coins that are supported.
