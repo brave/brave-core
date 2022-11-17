@@ -238,8 +238,8 @@ export class SettingsBraveP2pKeysSubpageElement extends SettingsBraveP2pKeysSubp
     this.actionItemName = ""
   }
 
-  onKeyMenuTapped_(event: Event) {
-    this.actionItemName = (event.target as HTMLElement).getAttribute('itemName')!;
+  onKeyMenuTapped_(event: DomRepeatEvent<KeysListItem>) {
+    this.actionItemName = event.model.item.name;
     const actionMenu = this.$.keyMenu.get();
     actionMenu.showAt(event.target as HTMLElement);
   }
