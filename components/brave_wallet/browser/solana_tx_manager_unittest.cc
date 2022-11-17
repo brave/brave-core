@@ -67,10 +67,11 @@ class SolanaTxManagerUnitTest : public testing::Test {
     SetInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash1_, "",
                    false, last_valid_block_height1_);
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     json_rpc_service_ =
         std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
-    keyring_service_ =
-        std::make_unique<KeyringService>(json_rpc_service_.get(), &prefs_);
+    keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
+                                                        &prefs_, &local_state_);
     tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(),
                                               keyring_service_.get(), &prefs_);
     CreateWallet();
@@ -401,6 +402,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;

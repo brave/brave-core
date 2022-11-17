@@ -249,13 +249,14 @@ class EthTxManagerUnitTest : public testing::Test {
           }
         }));
 
-    brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    json_rpc_service_ =
-        std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
-    keyring_service_ =
-        std::make_unique<KeyringService>(json_rpc_service_.get(), &prefs_);
-    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(),
-                                              keyring_service_.get(), &prefs_);
+    brave_wallet::RegisterProfilePrefs(profile_prefs_.registry());
+    brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
+    json_rpc_service_ = std::make_unique<JsonRpcService>(
+        shared_url_loader_factory_, &profile_prefs_);
+    keyring_service_ = std::make_unique<KeyringService>(
+        json_rpc_service_.get(), &profile_prefs_, &local_state_);
+    tx_service_ = std::make_unique<TxService>(
+        json_rpc_service_.get(), keyring_service_.get(), &profile_prefs_);
 
     base::RunLoop run_loop;
     json_rpc_service_->SetNetwork(brave_wallet::mojom::kLocalhostChainId,
@@ -289,7 +290,7 @@ class EthTxManagerUnitTest : public testing::Test {
 
   EthTxManager* eth_tx_manager() { return tx_service_->GetEthTxManager(); }
 
-  PrefService* GetPrefs() { return &prefs_; }
+  PrefService* GetPrefs() { return &profile_prefs_; }
 
   void SetInterceptor(const std::string& content) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
@@ -463,7 +464,8 @@ class EthTxManagerUnitTest : public testing::Test {
  protected:
   base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
-  sync_preferences::TestingPrefServiceSyncable prefs_;
+  sync_preferences::TestingPrefServiceSyncable profile_prefs_;
+  sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;

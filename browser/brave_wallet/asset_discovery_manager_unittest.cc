@@ -27,6 +27,7 @@
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "chrome/browser/prefs/browser_prefs.h"
+#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
@@ -146,6 +147,8 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
     RegisterUserProfilePrefs(prefs->registry());
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
+    local_state_ = std::make_unique<ScopedTestingLocalState>(
+        TestingBrowserProcess::GetGlobal());
     keyring_service_ =
         KeyringServiceFactory::GetServiceForContext(profile_.get());
     json_rpc_service_ =
@@ -155,7 +158,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
     tx_service = TxServiceFactory::GetServiceForContext(profile_.get());
     wallet_service_ = std::make_unique<BraveWalletService>(
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service, GetPrefs());
+        json_rpc_service_, tx_service, GetPrefs(), GetLocalState());
     asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
         wallet_service_.get(), json_rpc_service_, keyring_service_, GetPrefs());
     asset_discovery_manager_->SetSupportedChainsForTesting(
@@ -339,6 +342,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   }
 
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
+  TestingPrefServiceSimple* GetLocalState() { return local_state_->Get(); }
   GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
     return brave_wallet::GetNetworkURL(GetPrefs(), chain_id, coin);
   }
@@ -348,6 +352,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscovery>
       wallet_service_observer_;
   content::BrowserTaskEnvironment task_environment_;
+  std::unique_ptr<ScopedTestingLocalState> local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<BraveWalletService> wallet_service_;
   std::unique_ptr<AssetDiscoveryManager> asset_discovery_manager_;

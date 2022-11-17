@@ -12,6 +12,8 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "chrome/test/base/scoped_testing_local_state.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -27,6 +29,8 @@ class BraveWalletP3AUnitTest : public testing::Test {
 
   void SetUp() override {
     TestingProfile::Builder builder;
+    local_state_ = std::make_unique<ScopedTestingLocalState>(
+        TestingBrowserProcess::GetGlobal());
     profile_ = builder.Build();
     keyring_service_ =
         KeyringServiceFactory::GetServiceForContext(profile_.get());
@@ -38,6 +42,7 @@ class BraveWalletP3AUnitTest : public testing::Test {
   void WaitForResponse() { task_environment_.RunUntilIdle(); }
 
   content::BrowserTaskEnvironment task_environment_;
+  std::unique_ptr<ScopedTestingLocalState> local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
   KeyringService* keyring_service_;
