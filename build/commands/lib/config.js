@@ -408,6 +408,10 @@ Config.prototype.buildArgs = function () {
     args.symbol_level = 1
   }
 
+  if (this.getTargetOS() == 'win') {
+    args.use_large_pdbs = true
+  }
+
   if (this.getTargetOS() === 'mac' &&
       fs.existsSync(path.join(this.srcDir, 'build', 'mac_files', 'xcode_binaries', 'Contents'))) {
       // always use hermetic xcode for macos when available
