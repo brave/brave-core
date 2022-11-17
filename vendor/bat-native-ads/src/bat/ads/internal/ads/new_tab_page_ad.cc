@@ -5,7 +5,8 @@
 
 #include "bat/ads/internal/ads/new_tab_page_ad.h"
 
-#include "absl/types/optional.h"
+#include <utility>
+
 #include "base/check.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"
@@ -44,9 +45,8 @@ NewTabPageAd::~NewTabPageAd() {
   serving_->RemoveObserver(this);
 }
 
-void NewTabPageAd::MaybeServe(const MaybeServeNewTabPageAdCallback& callback) {
-  serving_->MaybeServeAd(
-      [callback](const absl::optional<NewTabPageAdInfo>& ad) { callback(ad); });
+void NewTabPageAd::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
+  serving_->MaybeServeAd(std::move(callback));
 }
 
 void NewTabPageAd::TriggerEvent(const std::string& placement_id,

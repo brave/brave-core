@@ -624,8 +624,8 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
   ads->MaybeServeInlineContentAd(
       base::SysNSStringToUTF8(dimensionsArg),
-      ^(const std::string& dimensions,
-        const absl::optional<ads::InlineContentAdInfo>& ad) {
+      base::BindOnce(^(const std::string& dimensions,
+                       const absl::optional<ads::InlineContentAdInfo>& ad) {
         if (!ad) {
           completion(base::SysUTF8ToNSString(dimensions), nil);
           return;
@@ -634,7 +634,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
         const auto inline_content_ad =
             [[InlineContentAdIOS alloc] initWithInlineContentAdInfo:*ad];
         completion(base::SysUTF8ToNSString(dimensions), inline_content_ad);
-      });
+      }));
 }
 
 - (void)reportInlineContentAdEvent:(NSString*)placementId

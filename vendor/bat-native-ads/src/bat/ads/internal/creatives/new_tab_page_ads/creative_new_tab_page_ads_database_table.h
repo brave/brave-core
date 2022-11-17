@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/callback.h"
 #include "base/check_op.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
@@ -34,9 +35,9 @@ using GetCreativeNewTabPageAdCallback =
                        const CreativeNewTabPageAdInfo&)>;
 
 using GetCreativeNewTabPageAdsCallback =
-    std::function<void(const bool,
-                       const std::vector<std::string>&,
-                       const CreativeNewTabPageAdList&)>;
+    base::OnceCallback<void(const bool,
+                            const std::vector<std::string>&,
+                            const CreativeNewTabPageAdList&)>;
 
 class CreativeNewTabPageAds final : public TableInterface {
  public:

@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "absl/types/optional.h"
+#include "base/bind.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/inline_content_ad_info.h"
@@ -51,15 +52,16 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, Serve) {
 
   // Act
   GetAds()->MaybeServeInlineContentAd(
-      kDimensions, [](const std::string& dimensions,
-                      const absl::optional<InlineContentAdInfo>& ad) {
+      kDimensions,
+      base::BindOnce([](const std::string& dimensions,
+                        const absl::optional<InlineContentAdInfo>& ad) {
         // Assert
         EXPECT_EQ(kDimensions, dimensions);
         EXPECT_TRUE(ad);
         EXPECT_TRUE(ad->IsValid());
         EXPECT_EQ(1, GetAdEventCount(AdType::kInlineContentAd,
                                      ConfirmationType::kServed));
-      });
+      }));
 }
 
 TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerServedEvent) {

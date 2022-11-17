@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/bind.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_builder_unittest_util.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
@@ -53,12 +54,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test, GetAds) {
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"foo-bar3"}, {}, {"foo-bar1", "foo-bar2"}),
       "200x100",
-      [](const bool had_opportunity,
-         const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const bool had_opportunity,
+                        const CreativeInlineContentAdList& creative_ads) {
         // Assert
         EXPECT_TRUE(had_opportunity);
         EXPECT_TRUE(!creative_ads.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsEligibleInlineContentAdsV2Test, GetAdsForNoSegments) {
@@ -78,12 +79,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test, GetAdsForNoSegments) {
   // Act
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({}, {}, {}), "200x100",
-      [](const bool had_opportunity,
-         const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const bool had_opportunity,
+                        const CreativeInlineContentAdList& creative_ads) {
         // Assert
         EXPECT_TRUE(had_opportunity);
         EXPECT_TRUE(!creative_ads.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsEligibleInlineContentAdsV2Test,
@@ -95,12 +96,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test,
       targeting::BuildUserModel({"interest-foo", "interest-bar"}, {},
                                 {"intent-foo", "intent-bar"}),
       "?x?",
-      [](const bool had_opportunity,
-         const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const bool had_opportunity,
+                        const CreativeInlineContentAdList& creative_ads) {
         // Assert
         EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsEligibleInlineContentAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
@@ -111,12 +112,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
       targeting::BuildUserModel({"interest-foo", "interest-bar"}, {},
                                 {"intent-foo", "intent-bar"}),
       "200x100",
-      [](const bool had_opportunity,
-         const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const bool had_opportunity,
+                        const CreativeInlineContentAdList& creative_ads) {
         // Assert
         EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
-      });
+      }));
 }
 
 }  // namespace ads::inline_content_ads

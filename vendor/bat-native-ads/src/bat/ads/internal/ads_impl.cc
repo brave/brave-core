@@ -298,11 +298,11 @@ void AdsImpl::TriggerNotificationAdEvent(
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
   if (!IsInitialized()) {
-    callback(/*ads*/ absl::nullopt);
+    std::move(callback).Run(/*ads*/ absl::nullopt);
     return;
   }
 
-  new_tab_page_ad_->MaybeServe(callback);
+  new_tab_page_ad_->MaybeServe(std::move(callback));
 }
 
 void AdsImpl::TriggerNewTabPageAdEvent(
@@ -329,11 +329,11 @@ void AdsImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   if (!IsInitialized()) {
-    callback(dimensions, absl::nullopt);
+    std::move(callback).Run(dimensions, absl::nullopt);
     return;
   }
 
-  inline_content_ad_->MaybeServe(dimensions, callback);
+  inline_content_ad_->MaybeServe(dimensions, std::move(callback));
 }
 
 void AdsImpl::TriggerInlineContentAdEvent(

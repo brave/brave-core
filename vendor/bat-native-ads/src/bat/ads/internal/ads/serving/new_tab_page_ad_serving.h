@@ -11,6 +11,7 @@
 #include "base/observer_list.h"
 #include "bat/ads/ads_callback.h"
 #include "bat/ads/internal/ads/serving/new_tab_page_ad_serving_observer.h"
+#include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "bat/ads/internal/segments/segment_alias.h"
 
 namespace ads {
@@ -22,6 +23,10 @@ class SubdivisionTargeting;
 namespace resource {
 class AntiTargeting;
 }  // namespace resource
+
+namespace targeting {
+struct UserModelInfo;
+}  // namespace targeting
 
 struct NewTabPageAdInfo;
 
@@ -45,14 +50,19 @@ class Serving final {
   void AddObserver(ServingObserver* observer);
   void RemoveObserver(ServingObserver* observer);
 
-  void MaybeServeAd(const MaybeServeNewTabPageAdCallback& callback);
+  void MaybeServeAd(MaybeServeNewTabPageAdCallback callback);
 
  private:
+  void OnGetForUserModel(MaybeServeNewTabPageAdCallback callback,
+                         const targeting::UserModelInfo& user_model,
+                         bool had_opportunity,
+                         const CreativeNewTabPageAdList& creative_ads);
+
   bool IsSupported() const;
 
   void ServeAd(const NewTabPageAdInfo& ad,
-               const MaybeServeNewTabPageAdCallback& callback);
-  void FailedToServeAd(const MaybeServeNewTabPageAdCallback& callback);
+               MaybeServeNewTabPageAdCallback callback);
+  void FailedToServeAd(MaybeServeNewTabPageAdCallback callback);
 
   void NotifyOpportunityAroseToServeNewTabPageAd(
       const SegmentList& segments) const;

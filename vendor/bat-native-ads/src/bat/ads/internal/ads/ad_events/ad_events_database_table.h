@@ -9,6 +9,7 @@
 #include <functional>
 #include <string>
 
+#include "base/callback.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/database/database_table_interface.h"
@@ -16,19 +17,25 @@
 
 namespace ads::database::table {
 
-using GetAdEventsCallback = std::function<void(const bool, const AdEventList&)>;
+using GetAdEventsCallbackDeprecated =
+    std::function<void(const bool, const AdEventList&)>;
+
+using GetAdEventsCallback =
+    base::OnceCallback<void(const bool, const AdEventList&)>;
 
 class AdEvents final : public TableInterface {
  public:
   void LogEvent(const AdEventInfo& ad_event, ResultCallback callback);
 
   void GetIf(const std::string& condition,
-             const GetAdEventsCallback& callback) const;
+             const GetAdEventsCallbackDeprecated& callback) const;
 
-  void GetAll(const GetAdEventsCallback& callback) const;
+  void GetAll(const GetAdEventsCallbackDeprecated& callback) const;
 
   void GetForType(mojom::AdType ad_type,
-                  const GetAdEventsCallback& callback) const;
+                  const GetAdEventsCallbackDeprecated& callback) const;
+
+  void GetForType(mojom::AdType ad_type, GetAdEventsCallback callback) const;
 
   void PurgeExpired(ResultCallback callback) const;
   void PurgeOrphaned(mojom::AdType ad_type, ResultCallback callback) const;

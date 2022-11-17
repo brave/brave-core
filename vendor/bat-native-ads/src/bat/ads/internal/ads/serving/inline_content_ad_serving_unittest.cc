@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "absl/types/optional.h"
+#include "base/bind.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ads/serving/inline_content_ad_serving_observer.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
@@ -22,28 +23,8 @@
 
 namespace ads::inline_content_ads {
 
-class BatAdsInlineContentAdServingTest : public ServingObserver,
-                                         public UnitTestBase {
- protected:
-  void SetUp() override {
-    UnitTestBase::SetUp();
-
-    features::ForceServingVersion(1);
-
-    subdivision_targeting_ =
-        std::make_unique<geographic::SubdivisionTargeting>();
-    anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
-    serving_ = std::make_unique<Serving>(subdivision_targeting_.get(),
-                                         anti_targeting_resource_.get());
-    serving_->AddObserver(this);
-  }
-
-  void TearDown() override {
-    serving_->RemoveObserver(this);
-
-    UnitTestBase::TearDown();
-  }
-
+class BatAdsInlineContentAdServingObserver : public ServingObserver {
+ public:
   void OnOpportunityAroseToServeInlineContentAd(
       const SegmentList& /*segments*/) override {
     had_opportunuity_ = true;
@@ -56,14 +37,46 @@ class BatAdsInlineContentAdServingTest : public ServingObserver,
 
   void OnFailedToServeInlineContentAd() override { failed_to_serve_ad_ = true; }
 
-  std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
-  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
-  std::unique_ptr<Serving> serving_;
+  const InlineContentAdInfo& ad() const { return ad_; }
 
+  bool had_opportunuity() const { return had_opportunuity_; }
+
+  bool did_serve_ad() const { return did_serve_ad_; }
+
+  bool failed_to_serve_ad() const { return failed_to_serve_ad_; }
+
+ private:
   InlineContentAdInfo ad_;
   bool had_opportunuity_ = false;
   bool did_serve_ad_ = false;
   bool failed_to_serve_ad_ = false;
+};
+class BatAdsInlineContentAdServingTest : public UnitTestBase {
+ protected:
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    features::ForceServingVersion(1);
+
+    subdivision_targeting_ =
+        std::make_unique<geographic::SubdivisionTargeting>();
+    anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
+    serving_ = std::make_unique<Serving>(subdivision_targeting_.get(),
+                                         anti_targeting_resource_.get());
+    serving_->AddObserver(&serving_observer_);
+  }
+
+  void TearDown() override {
+    serving_->RemoveObserver(&serving_observer_);
+
+    UnitTestBase::TearDown();
+  }
+
+  std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
+  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
+  std::unique_ptr<Serving> serving_;
+
+  BatAdsInlineContentAdServingObserver serving_observer_;
 };
 
 TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
@@ -71,15 +84,18 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
   features::ForceServingVersion(0);
 
   // Act
-  serving_->MaybeServeAd("200x100",
-                         [=](const std::string& /*dimensions*/,
-                             const absl::optional<InlineContentAdInfo>& ad) {
-                           // Assert
-                           EXPECT_FALSE(ad);
-                           EXPECT_FALSE(had_opportunuity_);
-                           EXPECT_FALSE(did_serve_ad_);
-                           EXPECT_TRUE(failed_to_serve_ad_);
-                         });
+  serving_->MaybeServeAd(
+      "200x100", base::BindOnce(
+                     [](BatAdsInlineContentAdServingObserver* serving_observer,
+                        const std::string& /*dimensions*/,
+                        const absl::optional<InlineContentAdInfo>& ad) {
+                       // Assert
+                       EXPECT_FALSE(ad);
+                       EXPECT_FALSE(serving_observer->had_opportunuity());
+                       EXPECT_FALSE(serving_observer->did_serve_ad());
+                       EXPECT_TRUE(serving_observer->failed_to_serve_ad());
+                     },
+                     base::Unretained(&serving_observer_)));
 }
 
 TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
@@ -93,16 +109,19 @@ TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  serving_->MaybeServeAd("200x100",
-                         [=](const std::string& /*dimensions*/,
-                             const absl::optional<InlineContentAdInfo>& ad) {
-                           // Assert
-                           EXPECT_TRUE(ad);
-                           EXPECT_TRUE(had_opportunuity_);
-                           EXPECT_TRUE(did_serve_ad_);
-                           EXPECT_FALSE(failed_to_serve_ad_);
-                           EXPECT_EQ(ad, ad_);
-                         });
+  serving_->MaybeServeAd(
+      "200x100", base::BindOnce(
+                     [](BatAdsInlineContentAdServingObserver* serving_observer,
+                        const std::string& /*dimensions*/,
+                        const absl::optional<InlineContentAdInfo>& ad) {
+                       // Assert
+                       EXPECT_TRUE(ad);
+                       EXPECT_TRUE(serving_observer->had_opportunuity());
+                       EXPECT_TRUE(serving_observer->did_serve_ad());
+                       EXPECT_FALSE(serving_observer->failed_to_serve_ad());
+                       EXPECT_EQ(ad, serving_observer->ad());
+                     },
+                     base::Unretained(&serving_observer_)));
 }
 
 TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForNonExistentDimensions) {
@@ -116,15 +135,18 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForNonExistentDimensions) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  serving_->MaybeServeAd("?x?",
-                         [=](const std::string& /*dimensions*/,
-                             const absl::optional<InlineContentAdInfo>& ad) {
-                           // Assert
-                           EXPECT_FALSE(ad);
-                           EXPECT_FALSE(had_opportunuity_);
-                           EXPECT_FALSE(did_serve_ad_);
-                           EXPECT_TRUE(failed_to_serve_ad_);
-                         });
+  serving_->MaybeServeAd(
+      "?x?", base::BindOnce(
+                 [](BatAdsInlineContentAdServingObserver* serving_observer,
+                    const std::string& /*dimensions*/,
+                    const absl::optional<InlineContentAdInfo>& ad) {
+                   // Assert
+                   EXPECT_FALSE(ad);
+                   EXPECT_FALSE(serving_observer->had_opportunuity());
+                   EXPECT_FALSE(serving_observer->did_serve_ad());
+                   EXPECT_TRUE(serving_observer->failed_to_serve_ad());
+                 },
+                 base::Unretained(&serving_observer_)));
 
   // Assert
 }
@@ -139,15 +161,18 @@ TEST_F(BatAdsInlineContentAdServingTest,
   SaveCreativeAds(creative_ads);
 
   // Act
-  serving_->MaybeServeAd("200x100",
-                         [=](const std::string& /*dimensions*/,
-                             const absl::optional<InlineContentAdInfo>& ad) {
-                           // Assert
-                           EXPECT_FALSE(ad);
-                           EXPECT_FALSE(had_opportunuity_);
-                           EXPECT_FALSE(did_serve_ad_);
-                           EXPECT_TRUE(failed_to_serve_ad_);
-                         });
+  serving_->MaybeServeAd(
+      "200x100", base::BindOnce(
+                     [](BatAdsInlineContentAdServingObserver* serving_observer,
+                        const std::string& /*dimensions*/,
+                        const absl::optional<InlineContentAdInfo>& ad) {
+                       // Assert
+                       EXPECT_FALSE(ad);
+                       EXPECT_FALSE(serving_observer->had_opportunuity());
+                       EXPECT_FALSE(serving_observer->did_serve_ad());
+                       EXPECT_TRUE(serving_observer->failed_to_serve_ad());
+                     },
+                     base::Unretained(&serving_observer_)));
 
   // Assert
 }

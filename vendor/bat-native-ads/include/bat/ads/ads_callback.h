@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CALLBACK_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_CALLBACK_H_
 
-#include <functional>
 #include <string>
 
 #include "absl/types/optional.h"
@@ -24,11 +23,11 @@ using ShutdownCallback = base::OnceCallback<void(const bool)>;
 using RemoveAllHistoryCallback = base::OnceCallback<void(const bool)>;
 
 using MaybeServeNewTabPageAdCallback =
-    std::function<void(const absl::optional<NewTabPageAdInfo>&)>;
+    base::OnceCallback<void(const absl::optional<NewTabPageAdInfo>&)>;
 
 using MaybeServeInlineContentAdCallback =
-    std::function<void(const std::string&,
-                       const absl::optional<InlineContentAdInfo>&)>;
+    base::OnceCallback<void(const std::string&,
+                            const absl::optional<InlineContentAdInfo>&)>;
 
 using GetStatementOfAccountsCallback =
     base::OnceCallback<void(mojom::StatementInfoPtr statement)>;
