@@ -212,19 +212,6 @@ public class BraveWalletUtilsTest {
 
     @Test
     @SmallTest
-    public void isSwapLiquidityErrorReasonTest() {
-        assertEquals(
-                Utils.isSwapLiquidityErrorReason(
-                        "{code: 100, reason: 'Validation Failed', validationErrors:[{field: 'buyAmount', code: 1004, reason: 'INSUFFICIENT_ASSET_LIQUIDITY'}]}"),
-                true);
-        assertEquals(
-                Utils.isSwapLiquidityErrorReason(
-                        "{code: 100, reason: 'Validation Failed', validationErrors:[{field: 'buyAmount', code: 1004, reason: 'SOMETHING_ELSE'}]}"),
-                false);
-    }
-
-    @Test
-    @SmallTest
     public void getContractAddressTest() {
         assertEquals(Utils.getContractAddress(BraveWalletConstants.GOERLI_CHAIN_ID, "USDC",
                              "0xdef1c0ded9bec7f1a1670819833240f027b25eff"),

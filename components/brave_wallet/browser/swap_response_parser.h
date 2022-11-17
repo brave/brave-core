@@ -13,9 +13,12 @@ namespace brave_wallet {
 
 mojom::SwapResponsePtr ParseSwapResponse(const std::string& json,
                                          bool expect_transaction_data);
+mojom::SwapErrorResponsePtr ParseSwapErrorResponse(const std::string& json);
 
 mojom::JupiterQuotePtr ParseJupiterQuote(const std::string& json);
 mojom::JupiterSwapTransactionsPtr ParseJupiterSwapTransactions(
+    const std::string& json);
+mojom::JupiterErrorResponsePtr ParseJupiterErrorResponse(
     const std::string& json);
 absl::optional<std::string> ConvertAllNumbersToString(const std::string& json);
 }  // namespace brave_wallet
