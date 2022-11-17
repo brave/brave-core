@@ -10,7 +10,6 @@
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "content/public/browser/web_contents.h"
 
 SpeedreaderPanelDataHandlerImpl::SpeedreaderPanelDataHandlerImpl(
     mojo::PendingReceiver<speedreader::mojom::PanelDataHandler> receiver,
