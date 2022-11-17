@@ -9,7 +9,7 @@
 #include <functional>
 #include <string>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/database/database_table_interface.h"

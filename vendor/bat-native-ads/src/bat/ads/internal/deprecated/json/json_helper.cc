@@ -6,6 +6,8 @@
 #include "bat/ads/internal/deprecated/json/json_helper.h"
 
 #include "base/strings/string_number_conversions.h"
+#include "brave/third_party/rapidjson/src/include/rapidjson/error/en.h"
+#include "brave/third_party/rapidjson/src/include/rapidjson/schema.h"
 
 namespace helper {
 

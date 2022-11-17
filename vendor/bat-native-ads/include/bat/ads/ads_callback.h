@@ -9,7 +9,7 @@
 #include <string>
 
 #include "absl/types/optional.h"
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/values.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/new_tab_page_ad_info.h"

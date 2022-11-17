@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_served.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"

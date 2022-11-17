@@ -9,7 +9,6 @@
 
 #include "base/check.h"
 #include "base/notreached.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_constants.h"
 #include "bat/ads/internal/ads_client_helper.h"

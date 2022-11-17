@@ -7,8 +7,8 @@
 
 #include <utility>
 
-#include "base/bind.h"
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ad_content_value_util.h"
 #include "bat/ads/ad_info.h"

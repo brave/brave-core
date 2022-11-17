@@ -15,11 +15,9 @@
 #include <string>
 
 #include "base/check.h"
-#include "rapidjson/document.h"
-#include "rapidjson/error/en.h"  // IWYU pragma: keep
-#include "rapidjson/schema.h"    // IWYU pragma: keep
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/writer.h"
+#include "brave/third_party/rapidjson/src/include/rapidjson/document.h"
+#include "brave/third_party/rapidjson/src/include/rapidjson/stringbuffer.h"
+#include "brave/third_party/rapidjson/src/include/rapidjson/writer.h"
 
 namespace ads {
 

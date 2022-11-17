@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "base/callback.h"  // IWYU pragma: keep
+#include "base/functional/callback.h"
 #include "base/location.h"
 
 namespace base {

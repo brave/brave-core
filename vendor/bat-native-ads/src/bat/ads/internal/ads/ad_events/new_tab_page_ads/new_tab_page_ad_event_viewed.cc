@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_viewed.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/base/logging_util.h"

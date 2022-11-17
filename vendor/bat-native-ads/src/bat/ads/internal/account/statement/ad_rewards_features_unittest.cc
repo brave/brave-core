@@ -30,7 +30,7 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDisabled) {
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kAdRewards);
+  disabled_features.emplace_back(kAdRewards);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
