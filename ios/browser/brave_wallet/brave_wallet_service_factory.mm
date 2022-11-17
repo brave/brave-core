@@ -14,6 +14,7 @@
 #include "brave/ios/browser/brave_wallet/tx_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
+#include "ios/chrome/browser/application_context/application_context.h"
 #include "ios/chrome/browser/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/web/public/browser_state.h"
@@ -64,7 +65,8 @@ BraveWalletServiceFactory::BuildServiceInstanceFor(
   auto* tx_service = TxServiceFactory::GetServiceForState(browser_state);
   std::unique_ptr<BraveWalletService> service(new BraveWalletService(
       std::make_unique<BraveWalletServiceDelegate>(), keyring_service,
-      json_rpc_service, tx_service, browser_state->GetPrefs()));
+      json_rpc_service, tx_service, browser_state->GetPrefs(),
+      GetApplicationContext()->GetLocalState()));
   return service;
 }
 
