@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_panel_handler_impl.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -54,6 +53,5 @@ void SpeedreaderPanelUI::CreateInterfaces(
   panel_handler_ = std::make_unique<SpeedreaderPanelHandlerImpl>(
       std::move(panel_handler), this);
   panel_data_handler_ = std::make_unique<SpeedreaderPanelDataHandlerImpl>(
-      std::move(panel_data_handler),
-      browser_->tab_strip_model()->GetActiveWebContents());
+      std::move(panel_data_handler), browser_);
 }
