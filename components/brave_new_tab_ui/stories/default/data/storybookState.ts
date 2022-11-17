@@ -43,9 +43,9 @@ function shouldShowBrandedWallpaperData (shouldShow: boolean): NewTab.BrandedWal
 function getWidgetStackOrder (firstWidget: string): NewTab.StackWidget[] {
   switch (firstWidget) {
     case 'braveTalk':
-      return ['rewards', 'binance', 'braveTalk', 'ftx']
+      return ['rewards', 'binance', 'braveTalk']
     default:
-      return ['braveTalk', 'binance', 'rewards', 'ftx']
+      return ['braveTalk', 'binance', 'rewards']
   }
 }
 
@@ -99,8 +99,6 @@ export const useNewTabData = (state: NewTab.State = defaultState) => {
     braveTalkPromptDismissed: !boolean('Brave Talk prompt?', false),
     geminiSupported: boolean('Gemini Supported?', true),
     cryptoDotComSupported: boolean('Crypto.com supported?', true),
-    ftxSupported: boolean('FTX supported?', true),
-    showFTX: boolean('Show FTX?', true),
     showBinance: boolean('Show Binance?', true),
     hideAllWidgets: boolean('Hide all widgets?', false),
     isBraveTodayOptedIn: boolean('Brave Today opted-in?', false),

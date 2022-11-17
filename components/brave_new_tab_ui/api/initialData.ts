@@ -22,7 +22,6 @@ export type InitialData = {
   geminiSupported: boolean
   binanceSupported: boolean
   cryptoDotComSupported: boolean
-  ftxSupported: boolean
   searchPromotionEnabled: boolean
 }
 
@@ -58,7 +57,6 @@ export async function getInitialData (): Promise<InitialData> {
       braveTalkSupported,
       geminiSupported,
       cryptoDotComSupported,
-      ftxSupported,
       binanceSupported,
       searchPromotionEnabled,
       braveBackgrounds,
@@ -94,11 +92,6 @@ export async function getInitialData (): Promise<InitialData> {
         })
       }),
       new Promise((resolve) => {
-        chrome.ftx.isSupported((supported: boolean) => {
-          resolve(supported)
-        })
-      }),
-      new Promise((resolve) => {
         chrome.binance.isSupportedRegion((supported: boolean) => {
           resolve(supported)
         })
@@ -123,7 +116,6 @@ export async function getInitialData (): Promise<InitialData> {
       braveTalkSupported,
       geminiSupported,
       cryptoDotComSupported,
-      ftxSupported,
       binanceSupported,
       searchPromotionEnabled
     } as InitialData

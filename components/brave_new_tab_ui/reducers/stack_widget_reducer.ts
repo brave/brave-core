@@ -10,8 +10,7 @@ const widgets = {
   'binance': 'showBinance',
   'braveTalk': 'showBraveTalk',
   'gemini': 'showGemini',
-  'cryptoDotCom': 'showCryptoDotCom',
-  'ftx': 'showFTX'
+  'cryptoDotCom': 'showCryptoDotCom'
 }
 
 const removeStackWidget = (widget: NewTab.StackWidget, state: NewTab.State): NewTab.State => {

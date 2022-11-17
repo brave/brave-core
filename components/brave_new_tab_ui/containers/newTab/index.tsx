@@ -17,7 +17,6 @@ import BraveToday, { GetDisplayAdContent } from '../../components/default/braveT
 import FooterInfo from '../../components/default/footer/footer'
 import * as Page from '../../components/default/page'
 import { SponsoredImageTooltip } from '../../components/default/rewards'
-import { FTXWidget as FTX } from '../../widgets/ftx/components'
 import TopSitesGrid from './gridSites'
 import SiteRemovalNotification from './notification'
 import Stats from './stats'
@@ -37,7 +36,6 @@ import currencyData from '../../components/default/binance/data'
 import geminiData from '../../components/default/gemini/data'
 import { NewTabActions } from '../../constants/new_tab_types'
 import { BraveTodayState } from '../../reducers/today'
-import { FTXState } from '../../widgets/ftx/ftx_state'
 
 // NTP features
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
@@ -51,7 +49,6 @@ interface Props {
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
   todayData: BraveTodayState
-  ftx: FTXState
   actions: NewTabActions
   getBraveNewsDisplayAd: GetDisplayAdContent
   saveShowBackgroundImage: (value: boolean) => void
@@ -62,7 +59,6 @@ interface Props {
   saveShowBinance: (value: boolean) => void
   saveShowGemini: (value: boolean) => void
   saveShowCryptoDotCom: (value: boolean) => void
-  saveShowFTX: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
   saveSetAllStackWidgets: (value: boolean) => void
   chooseNewCustomBackgroundImage: () => void
@@ -348,11 +344,6 @@ class NewTabPage extends React.Component<Props, State> {
 
   toggleShowCryptoDotCom = () => {
     this.props.saveShowCryptoDotCom(!this.props.newTabData.showCryptoDotCom)
-  }
-
-  toggleShowFTX = () => {
-    this.props.actions.ftx.disconnect()
-    this.props.saveShowFTX(!this.props.newTabData.showFTX)
   }
 
   onBinanceClientUrl = (clientUrl: string) => {
@@ -789,8 +780,6 @@ class NewTabPage extends React.Component<Props, State> {
       geminiSupported,
       showCryptoDotCom,
       cryptoDotComSupported,
-      showFTX,
-      ftxSupported,
       binanceSupported
     } = this.props.newTabData
     const lookup = {
@@ -813,10 +802,6 @@ class NewTabPage extends React.Component<Props, State> {
       'cryptoDotCom': {
         display: showCryptoDotCom && cryptoDotComSupported,
         render: this.renderCryptoDotComWidget.bind(this)
-      },
-      'ftx': {
-        display: showFTX && ftxSupported,
-        render: this.renderFTXWidget.bind(this)
       }
     }
 
@@ -853,8 +838,6 @@ class NewTabPage extends React.Component<Props, State> {
       showGemini,
       showCryptoDotCom,
       cryptoDotComSupported,
-      showFTX,
-      ftxSupported,
       binanceSupported,
       hideAllWidgets
     } = this.props.newTabData
@@ -863,8 +846,7 @@ class NewTabPage extends React.Component<Props, State> {
       braveTalkSupported && showBraveTalk,
       binanceSupported && showBinance,
       geminiSupported && showGemini,
-      cryptoDotComSupported && showCryptoDotCom,
-      ftxSupported && showFTX
+      cryptoDotComSupported && showCryptoDotCom
     ].every((widget: boolean) => !widget)
   }
 
@@ -1096,35 +1078,6 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  renderFTXWidget (showContent: boolean, position: number) {
-    const { newTabData } = this.props
-    const { showFTX, textDirection, ftxSupported } = newTabData
-
-    if (!showFTX || !ftxSupported) {
-      return null
-    }
-
-    return (
-      <FTX
-        ftx={this.props.ftx}
-        actions={this.props.actions.ftx}
-        isCrypto={true}
-        paddingType={'none'}
-        isCryptoTab={!showContent}
-        menuPosition={'left'}
-        widgetTitle={'FTX'}
-        isForeground={showContent}
-        stackPosition={position}
-        textDirection={textDirection}
-        preventFocus={false}
-        hideWidget={this.toggleShowFTX}
-        showContent={showContent}
-        onShowContent={this.setForegroundStackWidget.bind(this, 'ftx')}
-        onDisconnect={this.props.ftx.isConnected ? this.props.actions.ftx.disconnect : undefined}
-      />
-    )
-  }
-
   render () {
     const { newTabData, gridSitesData, actions } = this.props
     const { showSettingsMenu, showEditTopSite, targetTopSiteForEditing, forceToHideWidget } = this.state
@@ -1329,9 +1282,6 @@ class NewTabPage extends React.Component<Props, State> {
           cryptoDotComSupported={newTabData.cryptoDotComSupported}
           toggleShowCryptoDotCom={this.toggleShowCryptoDotCom}
           showCryptoDotCom={newTabData.showCryptoDotCom}
-          ftxSupported={newTabData.ftxSupported}
-          toggleShowFTX={this.toggleShowFTX}
-          showFTX={newTabData.showFTX}
           todayPublishers={this.props.todayData.publishers}
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.props.saveSetAllStackWidgets}

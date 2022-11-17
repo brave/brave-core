@@ -4,7 +4,6 @@ import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
-import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
@@ -151,18 +150,6 @@ source_set("extensions") {
     ]
     deps += [
       "//brave/components/gemini/browser",
-      "//brave/components/ntp_widget_utils/browser",
-    ]
-  }
-
-  if (enable_ftx) {
-    sources += [
-      "api/ftx_api.cc",
-      "api/ftx_api.h",
-    ]
-    deps += [
-      "//brave/components/ftx/browser",
-      "//brave/components/ftx/common",
       "//brave/components/ntp_widget_utils/browser",
     ]
   }

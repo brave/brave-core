@@ -996,9 +996,6 @@
       <if expr="enable_brave_vpn">
         <part file="brave_vpn_strings.grdp" />
       </if>
-      <if expr="enable_ftx">
-        <part file="ftx_strings.grdp" />
-      </if>
     </messages>
   </release>
 </grit>

@@ -45,7 +45,6 @@ import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
-import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/translate/core/common/buildflags.gni")
@@ -325,10 +324,6 @@ if (enable_widevine) {
     "//brave/browser/widevine:constants",
     "//brave/components/brave_drm",
   ]
-}
-
-if (enable_ftx) {
-  brave_chrome_browser_deps += [ "//brave/browser/ftx" ]
 }
 
 if (enable_brave_translate_go) {

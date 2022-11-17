@@ -26,7 +26,6 @@
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
-#include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -52,10 +51,6 @@ using ntp_background_images::prefs::
 
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
 #include "brave/components/crypto_dot_com/common/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_FTX)
-#include "brave/components/ftx/common/pref_names.h"
 #endif
 
 namespace {
@@ -105,9 +100,6 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   pref_data.Set("showCryptoDotCom",
                 prefs->GetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom));
-#endif
-#if BUILDFLAG(ENABLE_FTX)
-  pref_data.Set("showFTX", prefs->GetBoolean(kFTXNewTabPageShowFTX));
 #endif
   return pref_data;
 }
@@ -359,12 +351,6 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
 #endif
-#if BUILDFLAG(ENABLE_FTX)
-  pref_change_registrar_.Add(
-      kFTXNewTabPageShowFTX,
-      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
-                          base::Unretained(this)));
-#endif
 
   if (ads_service_) {
     ads_service_observation_.Reset();
@@ -483,10 +469,6 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
   } else if (settingsKeyInput == "showCryptoDotCom") {
     settingsKey = kCryptoDotComNewTabPageShowCryptoDotCom;
-#endif
-#if BUILDFLAG(ENABLE_FTX)
-  } else if (settingsKeyInput == "showFTX") {
-    settingsKey = kFTXNewTabPageShowFTX;
 #endif
   } else {
     LOG(ERROR) << "Invalid setting key";

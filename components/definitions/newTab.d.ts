@@ -84,7 +84,7 @@ declare namespace NewTab {
     url: string
   }
 
-  export type StackWidget = 'rewards' | 'binance' | 'braveTalk' | 'gemini' | 'bitcoinDotCom' | 'cryptoDotCom' | 'ftx' | ''
+  export type StackWidget = 'rewards' | 'binance' | 'braveTalk' | 'gemini' | 'bitcoinDotCom' | 'cryptoDotCom' | ''
 
   export interface GridSitesState {
     removedSites: Site[]
@@ -109,7 +109,6 @@ declare namespace NewTab {
     binanceSupported: boolean
     bitcoinDotComSupported: boolean
     cryptoDotComSupported: boolean
-    ftxSupported: boolean
     showEmptyPage: boolean
     rewardsState: RewardsWidgetState
     currentStackWidget: StackWidget
@@ -118,7 +117,6 @@ declare namespace NewTab {
     binanceState: BinanceWidgetState
     geminiState: GeminiWidgetState
     cryptoDotComState: CryptoDotComWidgetState
-    ftxState: FTXWidgetState
   }
 
   export type Preferences = {
@@ -135,7 +133,6 @@ declare namespace NewTab {
     showBinance: boolean
     showGemini: boolean
     showCryptoDotCom: boolean
-    showFTX: boolean
     hideAllWidgets: boolean
     isBraveTodayOptedIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
@@ -240,10 +237,6 @@ declare namespace NewTab {
     losersGainers: Record<string, any>
     supportedPairs: Record<string, any>
     charts: Record<string, any>
-  }
-
-  export interface FTXWidgetState {
-    optedIntoMarkets: boolean
   }
 
   export type BinanceTLD = 'us' | 'com'

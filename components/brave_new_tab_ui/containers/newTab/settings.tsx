@@ -65,7 +65,6 @@ export interface Props {
   toggleShowBinance: () => void
   toggleShowGemini: () => void
   toggleShowCryptoDotCom: () => void
-  toggleShowFTX: () => void
   toggleBrandedWallpaperOptIn: () => void
   toggleCards: (show: boolean) => void
   chooseNewCustomImageBackground: () => void
@@ -91,8 +90,6 @@ export interface Props {
   geminiSupported: boolean
   showCryptoDotCom: boolean
   cryptoDotComSupported: boolean
-  showFTX: boolean
-  ftxSupported: boolean
   todayPublishers?: Publishers
   setActiveTab?: TabType
   cardsHidden: boolean
@@ -299,9 +296,6 @@ export default class Settings extends React.PureComponent<Props, State> {
       toggleShowCryptoDotCom,
       cryptoDotComSupported,
       showCryptoDotCom,
-      toggleShowFTX,
-      ftxSupported,
-      showFTX,
       toggleCards,
       cardsHidden,
       onEnableRewards
@@ -427,9 +421,6 @@ export default class Settings extends React.PureComponent<Props, State> {
                       toggleShowCryptoDotCom={toggleShowCryptoDotCom}
                       cryptoDotComSupported={cryptoDotComSupported}
                       showCryptoDotCom={showCryptoDotCom}
-                      toggleShowFTX={toggleShowFTX}
-                      ftxSupported={ftxSupported}
-                      showFTX={showFTX}
                     />
                   ) : null
               }
