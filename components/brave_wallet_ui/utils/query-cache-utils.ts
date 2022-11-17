@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { EntityState } from '@reduxjs/toolkit'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
 
 /**
@@ -50,6 +51,17 @@ type InnerProvidesList<T> = <
 ) => CacheList<T, Results[number]['id']>
 
 /**
+ * Inner function returned by `providesRegistry` to be passed to the `provides` property of a query
+ */
+type InnerProvidesRegistry<T> = <
+  Results extends EntityState<{}>,
+  Error extends FetchBaseQueryError
+>(
+  results: Results | undefined,
+  error: Error | undefined
+) => CacheList<T, Results['ids'][number]>
+
+/**
  * HOF to create an entity cache to provide a LIST,
  * depending on the results being in a common format.
  *
@@ -78,6 +90,43 @@ export const providesList = <T extends string>(
     return [
       { type, id: 'LIST' },
       ...results.map((result) => ({ type, id: result.id } as const))
+    ]
+  }
+  // Received an error, include an error cache item to the cache list
+  return concatErrorCache([{ type, id: 'LIST' }], error)
+}
+
+/**
+ * HOF to create an entity cache to provide a LIST,
+ * depending on the results being in a common `EntityState` format.
+ *
+ * Will not provide individual items without a result.
+ *
+ * Can be used in conjection with providesList
+ *
+ * @example
+ * ```ts
+ * const results = [
+ *   { id: 1, message: 'foo' },
+ *   { id: 2, message: 'bar' }
+ * ]
+ * providesRegistry('Todo')(results)
+ * // [
+ * //   { type: 'Todo', id: 'LIST'},
+ * //   { type: 'Todo', id: 1 },
+ * //   { type: 'Todo', id: 2 },
+ * // ]
+ * ```
+ */
+export const providesRegistry = <T extends string>(
+  type: T
+): InnerProvidesRegistry<T> => (results, error) => {
+  // is result available?
+  if (results) {
+    // successful query
+    return [
+      { type, id: 'LIST' },
+      ...results.ids.map((id) => ({ type, id } as const))
     ]
   }
   // Received an error, include an error cache item to the cache list
@@ -171,6 +220,7 @@ export const invalidatesUnknownErrors = () => <
 export const cacher = {
   defaultTags,
   providesList,
+  providesRegistry,
   invalidatesList,
   cacheByIdArg,
   cacheByIdArgProperty,

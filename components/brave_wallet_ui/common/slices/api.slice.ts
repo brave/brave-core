@@ -13,12 +13,17 @@ import {
 } from '../../constants/types'
 import { IsEip1559Changed } from '../constants/action_types'
 
+// entity adaptors
+import {
+  networkEntityAdapter,
+  networkEntityInitalState,
+  NetworkEntityState
+} from './entity-adaptors/network-entity-adaptor'
+
 // utils
 import { cacher } from '../../utils/query-cache-utils'
 import getAPIProxy from '../async/bridge'
 import WalletApiProxy from '../wallet_api_proxy'
-
-export type NetworkInfoWithId = BraveWallet.NetworkInfo & { id: string }
 
 export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIProxy()) {
   const walletApi = createApi({
@@ -36,31 +41,19 @@ export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIPr
       //
       // Networks
       //
-      getAllNetworks: query<NetworkInfoWithId[], void>({
+      getAllNetworks: query<NetworkEntityState, void>({
         async queryFn (arg, api, extraOptions, baseQuery) {
           const apiProxy = baseQuery(undefined).data
-
           const networksList = await fetchNetworksList(apiProxy)
-
+          const normalizedNetworksState = networkEntityAdapter.setAll(
+            networkEntityInitalState,
+            networksList
+          )
           return {
-            data: networksList
+            data: normalizedNetworksState
           }
         },
-        providesTags: cacher.providesList('Network')
-      }),
-      getNetwork: query<NetworkInfoWithId, string>({
-        async queryFn (chainId, api, extraOptions, baseQuery) {
-          const apiProxy = baseQuery(undefined).data
-
-          const networkList: NetworkInfoWithId[] = await fetchNetworksList(apiProxy)
-          const foundNetwork = networkList.find(n => n.chainId === chainId)
-
-          if (!foundNetwork) {
-            return { error: 'Network not found' }
-          }
-          return { data: foundNetwork }
-        },
-        providesTags: cacher.cacheByIdArg('Network')
+        providesTags: cacher.providesRegistry('Network')
       }),
       getIsTestNetworksEnabled: query<boolean, void>({
         async queryFn (arg, api, extraOptions, baseQuery) {
@@ -95,15 +88,22 @@ export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIPr
             data: { id: chainId, isEip1559 } // invalidate the cache of the network with this chainId
           }
         },
-        onQueryStarted ({ chainId, isEip1559 }, { dispatch }) {
+        async onQueryStarted ({ chainId, isEip1559 }, { dispatch, queryFulfilled }) {
           // optimistic updates
           // try manually updating the cached network with the updated isEip1559 value
-          dispatch(walletApi.util.updateQueryData('getAllNetworks', undefined, (draft) => {
-            const draftNet = draft.find(net => net.chainId === chainId)
+          const patchResult = dispatch(walletApi.util.updateQueryData('getAllNetworks', undefined, (draft) => {
+            const draftNet = draft.entities[chainId]
             if (draftNet) {
               draftNet.isEip1559 = isEip1559
             }
           }))
+
+          try {
+            await queryFulfilled
+          } catch {
+            // undo the optimistic update if the mutation failed
+            patchResult.undo()
+          }
         },
         invalidatesTags: cacher.invalidatesList('Network')
       })
@@ -123,7 +123,8 @@ export const {
   useGetIsTestNetworksEnabledQuery,
   useIsEip1559ChangedMutation,
   useLazyGetAllNetworksQuery,
-  useLazyGetIsTestNetworksEnabledQuery
+  useLazyGetIsTestNetworksEnabledQuery,
+  useGetSelectedCoinQuery
 } = walletApi
 
 //
@@ -165,7 +166,7 @@ async function fetchNetworksList ({
   const { chainId: defaultEthChainId } = await jsonRpcService.getChainId(BraveWallet.CoinType.ETH)
   const { chainIds: hiddenEthNetworkList } = await jsonRpcService.getHiddenNetworks(BraveWallet.CoinType.ETH)
 
-  const networkList: NetworkInfoWithId[] = flattenedNetworkList.filter((network) => {
+  const networkList = flattenedNetworkList.filter((network) => {
     if (!testNetworksEnabled) {
       return !SupportedTestNetworks.includes(network.chainId)
     }
@@ -175,9 +176,7 @@ async function fetchNetworksList ({
       network.chainId !== defaultEthChainId &&
       hiddenEthNetworkList.includes(network.chainId)
     )
-  }).map(net => ({
-    id: net.chainId,
-    ...net
-  }))
+  })
+
   return networkList
 }
