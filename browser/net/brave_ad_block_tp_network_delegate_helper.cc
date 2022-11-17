@@ -207,8 +207,9 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
       &previous_result.did_match_important, &ctx->mock_data_url,
       &rewritten_url);
 
-  if (ctx->method == "GET" || ctx->method == "HEAD" ||
-      ctx->method == "OPTIONS") {
+  if (GURL(rewritten_url).is_valid() &&
+      (ctx->method == "GET" || ctx->method == "HEAD" ||
+       ctx->method == "OPTIONS")) {
     ctx->new_url_spec = rewritten_url;
   }
 

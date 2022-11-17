@@ -162,8 +162,8 @@ DomainBlockNavigationThrottle::WillProcessResponse() {
 void DomainBlockNavigationThrottle::OnShouldBlockDomain(
     std::pair<bool, std::string> block_result) {
   const bool should_block = block_result.first;
-  const std::string new_url_spec = block_result.second;
-  if (!should_block && new_url_spec.empty()) {
+  const GURL new_url(block_result.second);
+  if (!should_block && !new_url.is_valid()) {
     DomainBlockTabStorage* tab_storage = DomainBlockTabStorage::FromWebContents(
         navigation_handle()->GetWebContents());
     if (tab_storage)
@@ -172,7 +172,7 @@ void DomainBlockNavigationThrottle::OnShouldBlockDomain(
     // runner, but now we know that we want to allow navigation to continue.
     Resume();
     return;
-  } else if (!new_url_spec.empty()) {
+  } else if (new_url.is_valid()) {
     content::NavigationHandle* handle = navigation_handle();
 
     content::WebContents* contents = handle->GetWebContents();
@@ -181,8 +181,6 @@ void DomainBlockNavigationThrottle::OnShouldBlockDomain(
     // load.
     CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
         content::NavigationThrottle::CANCEL));
-
-    const GURL new_url(new_url_spec);
 
     content::OpenURLParams params =
         content::OpenURLParams::FromNavigationHandle(handle);
