@@ -35,6 +35,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
 
@@ -312,10 +313,10 @@ TEST_F(PublishersControllerTest, LocaleDefaultsToENUS) {
         "enabled": false
     }])",
                                        net::HTTP_OK);
-  std::string locale;
+  absl::optional<std::string> locale;
   base::RunLoop loop;
-  publishers_controller_.GetLocale(
-      base::BindLambdaForTesting([&locale, &loop](const std::string& result) {
+  publishers_controller_.GetLocale(base::BindLambdaForTesting(
+      [&locale, &loop](const absl::optional<std::string>& result) {
         locale = result;
         loop.Quit();
       }));
