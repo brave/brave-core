@@ -27,8 +27,10 @@ export const SectionBox = styled(StyledDiv) <{
   hasError?: boolean
   minHeight?: number
   lessLeftPadding?: boolean
+  boxDirection?: 'row' | 'column'
 }>`
   background-color: ${(p) => p.theme.color.background02};
+  flex-direction: ${(p) => p.boxDirection ? p.boxDirection : 'column'};
   box-sizing: border-box;
   border-radius: 16px;
   border: 1px solid

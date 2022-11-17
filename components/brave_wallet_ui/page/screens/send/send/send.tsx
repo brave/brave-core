@@ -45,6 +45,7 @@ import { SelectSendOptionButton } from '../components/select-send-option-button/
 import { StandardButton } from '../components/standard-button/standard-button'
 import { SelectTokenButton } from '../components/select-token-button/select-token-button'
 import { PresetButton } from '../components/preset-button/preset-button'
+import { AccountSelector } from '../components/account-selector/account-selector'
 
 interface Props {
   onShowSelectTokenModal: () => void
@@ -298,7 +299,7 @@ export const Send = (props: Props) => {
             </Column>
           </Row>
         </SectionBox>
-        <SectionBox hasError={false}>
+        <SectionBox hasError={false} boxDirection='row'>
           {showResolvedDomainAddress &&
             <FoundAddress
               textSize='16px'
@@ -320,6 +321,7 @@ export const Send = (props: Props) => {
             onChange={handleInputAddressChange}
             spellCheck={false}
           />
+          <AccountSelector onSelectAddress={setToAddressOrUrl} />
         </SectionBox>
         <StandardButton
           buttonText={reviewButtonText}
