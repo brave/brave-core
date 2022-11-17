@@ -77,6 +77,7 @@ import { mockPageState } from './mock-data/mock-page-state'
 import { mockWalletState } from './mock-data/mock-wallet-state'
 import { mockSendCryptoState } from './mock-data/send-crypto-state'
 import { mockUserAccounts } from './mock-data/user-accounts'
+import { BuyOptions } from '../options/buy-with-options'
 
 export default {
   title: 'Wallet/Extension/Panels',
@@ -578,6 +579,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(mockBasicAttentionToken)
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [selectedTransaction, setSelectedTransaction] = React.useState<SerializableTransactionInfo | undefined>(transactionList[1][0])
+  const [buyAmount, setBuyAmount] = React.useState<string>('')
 
   const onChangeSendView = (view: BuySendSwapViewTypes) => {
     if (view === 'assets') {
@@ -689,6 +691,14 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     navigateTo('currencies')
   }, [])
 
+  const onChangeBuyAmount = React.useCallback((amount: string) => {
+    setBuyAmount(amount)
+  }, [])
+
+  const onOpenBuyAssetLink = React.useCallback(() => {
+    console.log('Open buy asset link')
+  }, [])
+
   return (
     <Provider store={store}>
       <StyledExtensionWrapper>
@@ -779,6 +789,11 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                           onChangeBuyView={onChangeSendView}
                           selectedAsset={selectedWyreAsset}
                           onShowCurrencySelection={onShowCurrencySelection}
+                          isSelectedNetworkSupported={true}
+                          buyAmount={buyAmount}
+                          buyOptions={BuyOptions}
+                          onChangeBuyAmount={onChangeBuyAmount}
+                          openBuyAssetLink={onOpenBuyAssetLink}
                         />
                       }
                       {selectedPanel === 'sitePermissions' &&
