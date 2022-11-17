@@ -1,0 +1,23 @@
+diff --git a/third_party/unrar/src/ulinks.cpp b/third_party/unrar/src/ulinks.cpp
+index 1656824f66eaeb0b0a3f901a037b9cd53faa1944..cef25b4a46bc431ceea45f659308deab4f14e506 100644
+--- a/third_party/unrar/src/ulinks.cpp
++++ b/third_party/unrar/src/ulinks.cpp
+@@ -26,12 +26,12 @@ static bool UnixSymlink(const char *Target,const wchar *LinkName,RarTime *ftm,Ra
+   times[1].tv_nsec=ftm->IsSet() ? long(ftm->GetUnixNS()%1000000000) : UTIME_NOW;
+   utimensat(AT_FDCWD,LinkNameA,times,AT_SYMLINK_NOFOLLOW);
+ #else
+-  struct timeval tv[2];
+-  tv[0].tv_sec=fta->GetUnix();
+-  tv[0].tv_usec=long(fta->GetUnixNS()%1000000000/1000);
+-  tv[1].tv_sec=ftm->GetUnix();
+-  tv[1].tv_usec=long(ftm->GetUnixNS()%1000000000/1000);
+-  lutimes(LinkNameA,tv);
++  // struct timeval tv[2];
++  // tv[0].tv_sec=fta->GetUnix();
++  // tv[0].tv_usec=long(fta->GetUnixNS()%1000000000/1000);
++  // tv[1].tv_sec=ftm->GetUnix();
++  // tv[1].tv_usec=long(ftm->GetUnixNS()%1000000000/1000);
++  // lutimes(LinkNameA,tv);
+ #endif
+ #endif
+ 

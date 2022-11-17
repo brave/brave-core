@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/safe_browsing/download_protection/check_client_download_request.cc b/chrome/browser/safe_browsing/download_protection/check_client_download_request.cc
+index be96ea34475d5f58303f878581c70b0cc7e8a065..1c7acb9a5f1c0ca25e8590e6b58663d390f11a4a 100644
+--- a/chrome/browser/safe_browsing/download_protection/check_client_download_request.cc
++++ b/chrome/browser/safe_browsing/download_protection/check_client_download_request.cc
+@@ -235,6 +235,7 @@ void CheckClientDownloadRequest::MaybeStorePingsForDownload(
+ absl::optional<enterprise_connectors::AnalysisSettings>
+ CheckClientDownloadRequest::ShouldUploadBinary(
+     DownloadCheckResultReason reason) {
++#if !BUILDFLAG(IS_ANDROID)
+   // If the download was destroyed, we can't upload it.
+   if (reason == REASON_DOWNLOAD_DESTROYED)
+     return absl::nullopt;
+@@ -263,6 +264,9 @@ CheckClientDownloadRequest::ShouldUploadBinary(
+   }
+ 
+   return settings;
++#else
++  return absl::nullopt;
++#endif
+ }
+ 
+ void CheckClientDownloadRequest::UploadBinary(

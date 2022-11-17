@@ -1,0 +1,36 @@
+diff --git a/third_party/maldoca/src/maldoca/ole/oss_utils.cc b/third_party/maldoca/src/maldoca/ole/oss_utils.cc
+index ff2d2552b156a6d5d09c48a6a02bed705cde0902..31017e53dc21d65d716be70c16aab9147ec2d91a 100644
+--- a/third_party/maldoca/src/maldoca/ole/oss_utils.cc
++++ b/third_party/maldoca/src/maldoca/ole/oss_utils.cc
+@@ -92,8 +92,8 @@ bool BufferToUtf8::Init(const char* encode_name) {
+ 
+ #if !defined(_WIN32)
+   if (converter_ != nullptr) {
+-    iconv_close(converter_);
+-    converter_ = nullptr;
++    //iconv_close(converter_);
++    //converter_ = nullptr;
+   }
+   internal_converter_ = InternalConverter::kNone;
+   // Fixing missing encoding;
+@@ -103,7 +103,7 @@ bool BufferToUtf8::Init(const char* encode_name) {
+     DLOG(INFO) << "Replaced cp10000 with MAC";
+   }
+ 
+-  converter_ = iconv_open("UTF-8", encode_name);
++  //converter_ = iconv_open("UTF-8", encode_name);
+   if (converter_ == reinterpret_cast<iconv_t>(-1)) {
+     converter_ = nullptr;
+     LOG(ERROR) << "Failed to open iconv for '" << encode_name
+@@ -904,8 +904,9 @@ bool BufferToUtf8::ConvertEncodingBufferToUTF8String(absl::string_view input,
+   char* out_ptr = const_cast<char*>(out_str->data() + old_output_size);
+ 
+   while (in_bytes_left > 0) {
+-    size_t done = iconv(converter_, const_cast<char**>(&input_ptr),
+-                        &in_bytes_left, &out_ptr, &out_bytes_left);
++    size_t done = 0;
++    //size_t done = iconv(converter_, const_cast<char**>(&input_ptr),
++                        //&in_bytes_left, &out_ptr, &out_bytes_left);
+     if (done == static_cast<size_t>(-1)) {
+       // try to handle error
+       switch (errno) {

@@ -1,0 +1,22 @@
+diff --git a/third_party/maldoca/src/maldoca/service/common/process_doc_wrapper.cc b/third_party/maldoca/src/maldoca/service/common/process_doc_wrapper.cc
+index 10939f1c625780187c63d9f32b8d387d36e4db2f..2b5141fecc6be6efea0961bf3944e9b60e12c83e 100644
+--- a/third_party/maldoca/src/maldoca/service/common/process_doc_wrapper.cc
++++ b/third_party/maldoca/src/maldoca/service/common/process_doc_wrapper.cc
+@@ -7,7 +7,7 @@
+ #include "build/build_config.h"
+ 
+ #include "base/files/file_util.h"
+-#if defined(OS_LINUX)
++#if defined(OS_LINUX) || defined(OS_ANDROID)
+ #include "base/strings/string_util.h"
+ #else
+ #include "base/strings/string_util_win.h"
+@@ -21,7 +21,7 @@ namespace third_party_maldoca {
+ 
+ 
+ bool ExtensionEqualInCaseSensitive(base::FilePath file_path, std::string extension){
+-  #if defined(OS_LINUX)
++  #if defined(OS_LINUX) || defined(OS_ANDROID)
+   std::string file_extension = file_path.FinalExtension();
+   return base::CompareCaseInsensitiveASCII(file_extension, extension) == 0;
+   #else

@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
+index 1d69e002fe658868136769977a76648882e4b522..19f21da71820321a482233aa225fe605f3ecce59 100644
+--- a/chrome/browser/chrome_content_browser_client.cc
++++ b/chrome/browser/chrome_content_browser_client.cc
+@@ -5024,7 +5024,7 @@ ChromeContentBrowserClient::CreateURLLoaderThrottles(
+   bool matches_enterprise_allowlist = safe_browsing::IsURLAllowlistedByPolicy(
+       request.url, *profile->GetPrefs());
+   if (!matches_enterprise_allowlist) {
+-#if BUILDFLAG(SAFE_BROWSING_DB_LOCAL)
++#if BUILDFLAG(SAFE_BROWSING_DB_LOCAL) && !BUILDFLAG(IS_ANDROID)
+     auto* connectors_service =
+         enterprise_connectors::ConnectorsServiceFactory::GetForBrowserContext(
+             browser_context);
+@@ -6531,7 +6531,7 @@ void ChromeContentBrowserClient::IsClipboardPasteContentAllowed(
+     const ui::ClipboardFormatType& data_type,
+     const std::string& data,
+     IsClipboardPasteContentAllowedCallback callback) {
+-#if BUILDFLAG(FULL_SAFE_BROWSING)
++#if BUILDFLAG(FULL_SAFE_BROWSING) && !BUILDFLAG(IS_ANDROID)
+   // Safe browsing does not support images, so accept without checking.
+   // TODO(crbug.com/1013584): check policy on what to do about unsupported
+   // types when it is implemented.

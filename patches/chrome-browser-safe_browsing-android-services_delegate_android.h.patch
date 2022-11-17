@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/safe_browsing/android/services_delegate_android.h b/chrome/browser/safe_browsing/android/services_delegate_android.h
+index 78e6f1c9b4953e09e060d4787f3c383a1e694433..30fd804aed95dffd9085cf46bcdb888aed6bcd3d 100644
+--- a/chrome/browser/safe_browsing/android/services_delegate_android.h
++++ b/chrome/browser/safe_browsing/android/services_delegate_android.h
+@@ -11,6 +11,7 @@
+ namespace safe_browsing {
+ 
+ class AndroidTelemetryService;
++class DownloadProtectionService;
+ 
+ // Android ServicesDelegate implementation. Create via
+ // ServicesDelegate::Create().
+@@ -37,6 +38,7 @@ class ServicesDelegateAndroid : public ServicesDelegate {
+   void RegisterDelayedAnalysisCallback(
+       DelayedAnalysisCallback callback) override;
+   void AddDownloadManager(content::DownloadManager* download_manager) override;
++  DownloadProtectionService* GetDownloadService() override;
+ 
+   void StartOnIOThread(
+       scoped_refptr<network::SharedURLLoaderFactory> browser_url_loader_factory,

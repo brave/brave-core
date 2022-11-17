@@ -1,0 +1,74 @@
+diff --git a/chrome/browser/safe_browsing/download_protection/download_protection_observer.cc b/chrome/browser/safe_browsing/download_protection/download_protection_observer.cc
+index 44f50f5db4628cb9287c8fe15d53987dc3c92f13..8efd21301144ef0e97ff04a34498de57303fb4cf 100644
+--- a/chrome/browser/safe_browsing/download_protection/download_protection_observer.cc
++++ b/chrome/browser/safe_browsing/download_protection/download_protection_observer.cc
+@@ -40,6 +40,9 @@ bool DangerTypeIsDangerous(download::DownloadDangerType danger_type) {
+ }
+ 
+ void MaybeReportDangerousDownloadWarning(download::DownloadItem* download) {
++#if BUILDFLAG(IS_ANDROID)
++  return;
++#else
+   // If |download| has a deep scanning malware verdict, then it means the
+   // dangerous file has already been reported.
+   auto* scan_result = static_cast<enterprise_connectors::ScanResult*>(
+@@ -68,11 +71,15 @@ void MaybeReportDangerousDownloadWarning(download::DownloadItem* download) {
+       base::HexEncode(raw_digest_sha256.data(), raw_digest_sha256.size()),
+       download->GetDangerType(), download->GetMimeType(), /*scan_id*/ "",
+       download->GetTotalBytes(), EventResult::WARNED);
++#endif
+ }
+ 
+ void ReportDangerousDownloadWarningBypassed(
+     download::DownloadItem* download,
+     download::DownloadDangerType original_danger_type) {
++#if BUILDFLAG(IS_ANDROID)
++  return;
++#else
+   content::BrowserContext* browser_context =
+       content::DownloadItemUtils::GetBrowserContext(download);
+   Profile* profile = Profile::FromBrowserContext(browser_context);
+@@ -102,9 +109,13 @@ void ReportDangerousDownloadWarningBypassed(
+         original_danger_type, download->GetMimeType(),
+         /*scan_id*/ "", download->GetTotalBytes());
+   }
++#endif
+ }
+ 
+ void ReportAnalysisConnectorWarningBypassed(download::DownloadItem* download) {
++#if BUILDFLAG(IS_ANDROID)
++  return;
++#else
+   content::BrowserContext* browser_context =
+       content::DownloadItemUtils::GetBrowserContext(download);
+   Profile* profile = Profile::FromBrowserContext(browser_context);
+@@ -136,6 +147,7 @@ void ReportAnalysisConnectorWarningBypassed(download::DownloadItem* download) {
+         enterprise_connectors::ContentAnalysisResponse(),
+         /*user_justification=*/absl::nullopt);
+   }
++#endif
+ }
+ 
+ }  // namespace
+@@ -211,8 +223,10 @@ void DownloadProtectionObserver::OnDownloadUpdated(
+ 
+     // This is called when a SavePackage warning is bypassed so that the final
+     // renaming takes place.
++#if !BUILDFLAG(IS_ANDROID)
+     if (download->IsSavePackageDownload())
+       enterprise_connectors::RunSavePackageScanningCallback(download, true);
++#endif
+   }
+ 
+   danger_types_[download] = current_danger_type;
+@@ -222,8 +236,10 @@ void DownloadProtectionObserver::OnDownloadRemoved(
+     download::DownloadItem* download) {
+   // This needs to run if a SavePackage is discarded after a scan so that it
+   // can cleanup temporary files.
++#if !BUILDFLAG(IS_ANDROID)
+   if (download->IsSavePackageDownload())
+     enterprise_connectors::RunSavePackageScanningCallback(download, false);
++#endif
+ }
+ 
+ void DownloadProtectionObserver::ReportDelayedBypassEvent(

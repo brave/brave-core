@@ -479,7 +479,7 @@ Config.prototype.buildArgs = function () {
     args.brave_android_developer_options_code = this.braveAndroidDeveloperOptionsCode
     args.brave_safetynet_api_key = this.braveSafetyNetApiKey
     args.enable_widevine = false
-    args.safe_browsing_mode = 2
+    //args.safe_browsing_mode = 2
 
     // Feed is not used in Brave
     args.enable_feed_v2 = false

@@ -1,0 +1,36 @@
+diff --git a/chrome/browser/download/download_commands.cc b/chrome/browser/download/download_commands.cc
+index b652c4ac5ef5c9d00734e21fd6ae8574afc96da5..f3ab6720fa04cc01802ec1344406cebbda126558 100644
+--- a/chrome/browser/download/download_commands.cc
++++ b/chrome/browser/download/download_commands.cc
+@@ -142,11 +142,19 @@ GURL DownloadCommands::GetLearnMoreURLForInterruptedDownload() const {
+ }
+ 
+ bool DownloadCommands::IsCommandEnabled(Command command) const {
++#if !BUILDFLAG(IS_ANDROID)
+   return model_ ? model_->IsCommandEnabled(this, command) : false;
++#else
++  return false;
++#endif
+ }
+ 
+ bool DownloadCommands::IsCommandChecked(Command command) const {
++#if !BUILDFLAG(IS_ANDROID)
+   return model_ ? model_->IsCommandChecked(this, command) : false;
++#else
++  return false;
++#endif
+ }
+ 
+ bool DownloadCommands::IsCommandVisible(Command command) const {
+@@ -163,7 +171,11 @@ void DownloadCommands::ExecuteCommand(Command command) {
+   if (!model_)
+     return;
+ 
++#if !BUILDFLAG(IS_ANDROID)
+   model_->ExecuteCommand(this, command);
++#else
++  return;
++#endif
+ }
+ 
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \

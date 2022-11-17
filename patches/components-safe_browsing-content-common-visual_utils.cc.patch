@@ -1,0 +1,13 @@
+diff --git a/components/safe_browsing/content/common/visual_utils.cc b/components/safe_browsing/content/common/visual_utils.cc
+index 576a13f329226931eda36e6737abb0214850214b..bcd1791fae77567c4d0eb13ec5b306f980d1253e 100644
+--- a/components/safe_browsing/content/common/visual_utils.cc
++++ b/components/safe_browsing/content/common/visual_utils.cc
+@@ -43,7 +43,7 @@ const int kMinHeightForVisualFeatures = 576;
+ #endif
+ const int kPHashBlockSize = 6;
+ 
+-#if BUILDFLAG(FULL_SAFE_BROWSING)
++#if BUILDFLAG(FULL_SAFE_BROWSING) && !BUILDFLAG(IS_ANDROID)
+ // Parameters chosen to ensure privacy is preserved by visual features.
+ const float kMaxZoomForVisualFeatures = 2.0;
+ #endif  // BUILDFLAG(FULL_SAFE_BROWSING)

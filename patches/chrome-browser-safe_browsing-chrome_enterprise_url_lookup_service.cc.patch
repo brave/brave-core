@@ -1,0 +1,32 @@
+diff --git a/chrome/browser/safe_browsing/chrome_enterprise_url_lookup_service.cc b/chrome/browser/safe_browsing/chrome_enterprise_url_lookup_service.cc
+index b66f8690a506241f01c3d06daeaab996e031e187..91f4cbafedd0ad80070ba7ad9d36a2e0636e4d3f 100644
+--- a/chrome/browser/safe_browsing/chrome_enterprise_url_lookup_service.cc
++++ b/chrome/browser/safe_browsing/chrome_enterprise_url_lookup_service.cc
+@@ -43,10 +43,14 @@ ChromeEnterpriseRealTimeUrlLookupService::
+     ~ChromeEnterpriseRealTimeUrlLookupService() = default;
+ 
+ bool ChromeEnterpriseRealTimeUrlLookupService::CanPerformFullURLLookup() const {
++#if BUILDFLAG(IS_ANDROID)
++  return false;
++#else
+   return RealTimePolicyEngine::CanPerformEnterpriseFullURLLookup(
+       profile_->GetPrefs(),
+       connectors_service_->GetDMTokenForRealTimeUrlCheck().has_value(),
+       profile_->IsOffTheRecord());
++#endif
+ }
+ 
+ bool ChromeEnterpriseRealTimeUrlLookupService::
+@@ -99,8 +103,12 @@ void ChromeEnterpriseRealTimeUrlLookupService::GetAccessToken(
+ 
+ absl::optional<std::string>
+ ChromeEnterpriseRealTimeUrlLookupService::GetDMTokenString() const {
++#if BUILDFLAG(IS_ANDROID)
++  return absl::nullopt;
++#else
+   DCHECK(connectors_service_);
+   return connectors_service_->GetDMTokenForRealTimeUrlCheck();
++#endif
+ }
+ 
+ GURL ChromeEnterpriseRealTimeUrlLookupService::GetRealTimeLookupUrl() const {

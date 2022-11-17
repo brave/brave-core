@@ -1,0 +1,40 @@
+diff --git a/chrome/common/safe_browsing/BUILD.gn b/chrome/common/safe_browsing/BUILD.gn
+index 6e56a57f56f920293db14315692e8d838ed50c90..9da715431f5c25c4760ec585f0a64018d08394ed 100644
+--- a/chrome/common/safe_browsing/BUILD.gn
++++ b/chrome/common/safe_browsing/BUILD.gn
+@@ -30,7 +30,7 @@ if (safe_browsing_mode == 1) {
+     public_deps = [ "//components/safe_browsing/core/common/proto:csd_proto" ]
+   }
+ 
+-  if (is_linux || is_win) {
++  if (is_linux || is_win || is_android) {
+     source_set("document_analyzer_results") {
+       sources = [
+         "document_analyzer_results.cc",
+@@ -91,7 +91,7 @@ if (safe_browsing_mode == 1) {
+     public_deps = [ "//components/safe_browsing/core/common/proto:csd_proto" ]
+   }
+ 
+-  if (is_linux || is_win) {
++  if (is_linux || is_win || is_android) {
+     source_set("document_analyzer") {
+       sources = [
+         "document_analyzer.cc",
+@@ -196,7 +196,7 @@ source_set("safe_browsing") {
+       "//third_party/lzma_sdk/google:seven_zip_reader",
+     ]
+ 
+-    if (is_linux) {
++    if (is_linux || is_android) {
+       deps += [ ":document_analyzer" ]
+     }
+ 
+@@ -210,7 +210,7 @@ source_set("safe_browsing") {
+       "//third_party/zlib/google:zip",
+     ]
+ 
+-    if (is_linux || is_win) {
++    if (is_linux || is_win || is_android) {
+       public_deps += [ ":document_analyzer_results" ]
+     }
+   }

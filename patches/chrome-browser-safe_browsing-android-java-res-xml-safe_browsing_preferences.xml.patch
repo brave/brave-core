@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/safe_browsing/android/java/res/xml/safe_browsing_preferences.xml b/chrome/browser/safe_browsing/android/java/res/xml/safe_browsing_preferences.xml
+index 5538113bb13b356eede2371c1763e97a2c9db978..b716d049543caba5d297c67a65ff4550de542f8f 100644
+--- a/chrome/browser/safe_browsing/android/java/res/xml/safe_browsing_preferences.xml
++++ b/chrome/browser/safe_browsing/android/java/res/xml/safe_browsing_preferences.xml
+@@ -1,9 +1,7 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<!--
+-Copyright 2020 The Chromium Authors
+-Use of this source code is governed by a BSD-style license that can be
+-found in the LICENSE file.
+--->
++<!-- Copyright 2021 The Brave Authors. All rights reserved.
++     Use of this source code is governed by a BSD-style license that can be
++     found in the LICENSE file. -->
+ 
+ <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto">
+@@ -11,7 +9,7 @@ found in the LICENSE file.
+     <org.chromium.components.browser_ui.settings.TextMessagePreference
+         android:key="text_managed" />
+ 
+-    <org.chromium.chrome.browser.safe_browsing.settings.RadioButtonGroupSafeBrowsingPreference
++    <org.chromium.chrome.browser.safe_browsing.settings.BraveRadioButtonGroupSafeBrowsingPreference
+         android:key="safe_browsing_radio_button_group"
+         android:selectable="false"
+         app:allowDividerAbove="false"

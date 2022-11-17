@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/file_select_helper.cc b/chrome/browser/file_select_helper.cc
+index 5bcfac8fffa01b3bcf7c8a4d4f3f88196b3c59e9..14afbc6485d15716b4d1f39e408885d383927a73 100644
+--- a/chrome/browser/file_select_helper.cc
++++ b/chrome/browser/file_select_helper.cc
+@@ -367,7 +367,7 @@ void FileSelectHelper::PerformContentAnalysisIfNeeded(
+   if (AbortIfWebContentsDestroyed())
+     return;
+ 
+-#if BUILDFLAG(FULL_SAFE_BROWSING)
++#if BUILDFLAG(FULL_SAFE_BROWSING) && !BUILDFLAG(IS_ANDROID)
+   enterprise_connectors::ContentAnalysisDelegate::Data data;
+   if (enterprise_connectors::ContentAnalysisDelegate::IsEnabled(
+           profile_, web_contents_->GetLastCommittedURL(), &data,

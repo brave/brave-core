@@ -1,0 +1,63 @@
+diff --git a/chrome/browser/safe_browsing/download_protection/deep_scanning_request.cc b/chrome/browser/safe_browsing/download_protection/deep_scanning_request.cc
+index 1470daad0053a99536ea15a3cb28e04212bcfa2a..442009ad49a69cf1d2ca4199c2438561ef07a1ce 100644
+--- a/chrome/browser/safe_browsing/download_protection/deep_scanning_request.cc
++++ b/chrome/browser/safe_browsing/download_protection/deep_scanning_request.cc
+@@ -12,6 +12,7 @@
+ #include "base/metrics/histogram_functions.h"
+ #include "base/observer_list.h"
+ #include "base/strings/string_number_conversions.h"
++#include "build/build_config.h"
+ #include "chrome/browser/browser_process.h"
+ #include "chrome/browser/download/chrome_download_manager_delegate.h"
+ #include "chrome/browser/download/download_core_service.h"
+@@ -28,9 +29,11 @@
+ #include "chrome/browser/safe_browsing/download_protection/download_protection_service.h"
+ #include "chrome/browser/safe_browsing/download_protection/download_protection_util.h"
+ #include "chrome/browser/safe_browsing/download_protection/download_request_maker.h"
++#if !BUILDFLAG(IS_ANDROID)
+ #include "chrome/browser/ui/browser.h"
+ #include "chrome/browser/ui/browser_finder.h"
+ #include "chrome/browser/ui/views/safe_browsing/deep_scanning_failure_modal_dialog.h"
++#endif
+ #include "chrome/common/pref_names.h"
+ #include "components/download/public/common/download_item.h"
+ #include "components/enterprise/common/proto/connectors.pb.h"
+@@ -298,6 +301,9 @@ DeepScanningRequest::ShouldUploadBinary(download::DownloadItem* item) {
+   if (item->GetURL().SchemeIsFile())
+     return absl::nullopt;
+ 
++#if BUILDFLAG(IS_ANDROID)
++  return absl::nullopt;
++#else
+   auto* service =
+       enterprise_connectors::ConnectorsServiceFactory::GetForBrowserContext(
+           content::DownloadItemUtils::GetBrowserContext(item));
+@@ -315,6 +321,7 @@ DeepScanningRequest::ShouldUploadBinary(download::DownloadItem* item) {
+   return service->GetAnalysisSettings(
+       item->GetURL(),
+       enterprise_connectors::AnalysisConnector::FILE_DOWNLOADED);
++#endif
+ }
+ 
+ DeepScanningRequest::DeepScanningRequest(
+@@ -713,16 +720,19 @@ bool DeepScanningRequest::MaybeShowDeepScanFailureModalDialog(
+   if (!profile)
+     return false;
+ 
++#if !BUILDFLAG(IS_ANDROID)
+   Browser* browser =
+       chrome::FindTabbedBrowser(profile, /*match_original_profiles=*/false);
+   if (!browser)
+     return false;
+-
+   DeepScanningFailureModalDialog::ShowForWebContents(
+       browser->tab_strip_model()->GetActiveWebContents(),
+       std::move(accept_callback), std::move(cancel_callback),
+       std::move(close_callback), std::move(open_now_callback));
+   return true;
++#else
++  return false;
++#endif
+ }
+ 
+ void DeepScanningRequest::OpenDownload() {

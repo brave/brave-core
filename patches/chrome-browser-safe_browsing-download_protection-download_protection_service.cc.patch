@@ -1,0 +1,72 @@
+diff --git a/chrome/browser/safe_browsing/download_protection/download_protection_service.cc b/chrome/browser/safe_browsing/download_protection/download_protection_service.cc
+index 99cc8a136bc5d0f99a05a4cf6d49fa21a7c92df2..cda9c3f2a246f928a4bcfca7ebc31dda9bac0b02 100644
+--- a/chrome/browser/safe_browsing/download_protection/download_protection_service.cc
++++ b/chrome/browser/safe_browsing/download_protection/download_protection_service.cc
+@@ -224,6 +224,9 @@ void DownloadProtectionService::CheckClientDownload(
+ bool DownloadProtectionService::MaybeCheckClientDownload(
+     download::DownloadItem* item,
+     CheckDownloadRepeatingCallback callback) {
++#if BUILDFLAG(IS_ANDROID)
++  return false;
++#else
+   Profile* profile = Profile::FromBrowserContext(
+       content::DownloadItemUtils::GetBrowserContext(item));
+   bool safe_browsing_enabled =
+@@ -271,6 +274,7 @@ bool DownloadProtectionService::MaybeCheckClientDownload(
+   }
+ 
+   return false;
++#endif
+ }
+ 
+ bool DownloadProtectionService::ShouldCheckDownloadUrl(
+@@ -674,6 +678,9 @@ void DownloadProtectionService::AddReferrerChainToPPAPIClientDownloadRequest(
+ void DownloadProtectionService::OnDangerousDownloadOpened(
+     const download::DownloadItem* item,
+     Profile* profile) {
++#if BUILDFLAG(IS_ANDROID)
++  return;
++#else
+   std::string raw_digest_sha256 = item->GetHash();
+   auto* router =
+       extensions::SafeBrowsingPrivateEventRouterFactory::GetForProfile(profile);
+@@ -722,6 +729,7 @@ void DownloadProtectionService::OnDangerousDownloadOpened(
+         item->GetMimeType(), /*scan_id*/ "", item->GetDangerType(),
+         item->GetTotalBytes());
+   }
++#endif
+ }
+ 
+ bool DownloadProtectionService::MaybeBeginFeedbackForDownload(
+@@ -745,6 +753,7 @@ void DownloadProtectionService::UploadForDeepScanning(
+     DeepScanningRequest::DeepScanTrigger trigger,
+     DownloadCheckResult download_check_result,
+     enterprise_connectors::AnalysisSettings analysis_settings) {
++#if !BUILDFLAG(IS_ANDROID)
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+   auto request = std::make_unique<DeepScanningRequest>(
+       item, trigger, download_check_result, callback, this,
+@@ -754,6 +763,7 @@ void DownloadProtectionService::UploadForDeepScanning(
+       std::make_pair(request_raw, std::move(request)));
+   DCHECK(insertion_result.second);
+   insertion_result.first->second->Start();
++#endif
+ }
+ 
+ void DownloadProtectionService::UploadSavePackageForDeepScanning(
+@@ -761,6 +771,7 @@ void DownloadProtectionService::UploadSavePackageForDeepScanning(
+     base::flat_map<base::FilePath, base::FilePath> save_package_files,
+     CheckDownloadRepeatingCallback callback,
+     enterprise_connectors::AnalysisSettings analysis_settings) {
++#if !BUILDFLAG(IS_ANDROID)
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+   auto request = std::make_unique<DeepScanningRequest>(
+       item, DownloadCheckResult::UNKNOWN, callback, this,
+@@ -770,6 +781,7 @@ void DownloadProtectionService::UploadSavePackageForDeepScanning(
+       std::make_pair(request_raw, std::move(request)));
+   DCHECK(insertion_result.second);
+   insertion_result.first->second->Start();
++#endif
+ }
+ 
+ std::vector<DeepScanningRequest*>

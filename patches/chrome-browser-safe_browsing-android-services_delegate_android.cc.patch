@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/safe_browsing/android/services_delegate_android.cc b/chrome/browser/safe_browsing/android/services_delegate_android.cc
+index af8c4a77a032a5c954d380db08e2233328e7fbe4..902cebd23fc93f07df09619f945ae2a7015e9ff3 100644
+--- a/chrome/browser/safe_browsing/android/services_delegate_android.cc
++++ b/chrome/browser/safe_browsing/android/services_delegate_android.cc
+@@ -49,6 +49,10 @@ ServicesDelegateAndroid::database_manager() const {
+   return database_manager_;
+ }
+ 
++DownloadProtectionService* ServicesDelegateAndroid::GetDownloadService() {
++  return nullptr;
++}
++
+ void ServicesDelegateAndroid::Initialize() {
+   if (!database_manager_set_for_tests_) {
+     database_manager_ =

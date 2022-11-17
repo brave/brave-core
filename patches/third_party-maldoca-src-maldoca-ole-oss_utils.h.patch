@@ -1,0 +1,13 @@
+diff --git a/third_party/maldoca/src/maldoca/ole/oss_utils.h b/third_party/maldoca/src/maldoca/ole/oss_utils.h
+index 607aa9aa07030cfb9736342fb09825089fb25b3c..33352f7e6884172daaf00d25d45aa2ef6c1c7c52 100644
+--- a/third_party/maldoca/src/maldoca/ole/oss_utils.h
++++ b/third_party/maldoca/src/maldoca/ole/oss_utils.h
+@@ -69,7 +69,7 @@ class BufferToUtf8 {
+   virtual ~BufferToUtf8() {
+ #if !defined(_WIN32)
+     if (converter_ != nullptr) {
+-      iconv_close(converter_);
++      //iconv_close(converter_);
+     }
+ #endif  // _WIN32
+   }

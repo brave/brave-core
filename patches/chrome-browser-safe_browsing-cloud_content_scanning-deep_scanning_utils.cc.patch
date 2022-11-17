@@ -1,0 +1,56 @@
+diff --git a/chrome/browser/safe_browsing/cloud_content_scanning/deep_scanning_utils.cc b/chrome/browser/safe_browsing/cloud_content_scanning/deep_scanning_utils.cc
+index c3aaf34ad96fb9f254b304c54f3e3e7235ac54e6..90f549eec23a42187c134ce4d7a64474d2849cf3 100644
+--- a/chrome/browser/safe_browsing/cloud_content_scanning/deep_scanning_utils.cc
++++ b/chrome/browser/safe_browsing/cloud_content_scanning/deep_scanning_utils.cc
+@@ -23,6 +23,7 @@ namespace {
+ constexpr int kMinBytesPerSecond = 1;
+ constexpr int kMaxBytesPerSecond = 100 * 1024 * 1024;  // 100 MB/s
+ 
++#if !BUILDFLAG(IS_ANDROID)
+ std::string MaybeGetUnscannedReason(BinaryUploadService::Result result) {
+   switch (result) {
+     case BinaryUploadService::Result::SUCCESS:
+@@ -46,6 +47,7 @@ std::string MaybeGetUnscannedReason(BinaryUploadService::Result result) {
+       return "DLP_SCAN_UNSUPPORTED_FILE_TYPE";
+   }
+ }
++#endif
+ 
+ crash_reporter::CrashKeyString<7>* GetScanCrashKey(ScanningCrashKey key) {
+   static crash_reporter::CrashKeyString<7> pending_file_uploads(
+@@ -149,6 +151,9 @@ void MaybeReportDeepScanningVerdict(
+     const enterprise_connectors::ContentAnalysisResponse& response,
+     EventResult event_result) {
+   DCHECK(base::ranges::all_of(download_digest_sha256, base::IsHexDigit<char>));
++#if BUILDFLAG(IS_ANDROID)
++  return;
++#else
+   auto* router =
+       extensions::SafeBrowsingPrivateEventRouterFactory::GetForProfile(profile);
+   if (!router)
+@@ -184,6 +189,7 @@ void MaybeReportDeepScanningVerdict(
+           response_result, content_size, event_result);
+     }
+   }
++#endif
+ }
+ 
+ void ReportAnalysisConnectorWarningBypass(
+@@ -200,6 +206,9 @@ void ReportAnalysisConnectorWarningBypass(
+     const enterprise_connectors::ContentAnalysisResponse& response,
+     absl::optional<std::u16string> user_justification) {
+   DCHECK(base::ranges::all_of(download_digest_sha256, base::IsHexDigit<char>));
++#if BUILDFLAG(IS_ANDROID)
++  return;
++#else
+   auto* router =
+       extensions::SafeBrowsingPrivateEventRouterFactory::GetForProfile(profile);
+   if (!router)
+@@ -215,6 +224,7 @@ void ReportAnalysisConnectorWarningBypass(
+         trigger, response.request_token(), access_point, result, content_size,
+         user_justification);
+   }
++#endif
+ }
+ 
+ std::string EventResultToString(EventResult result) {

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 6af6b725815f67cee31bf03382ea69c53c2897d8..644a41bce2041c12323d913d56c6715ee78a51d2 100644
+index 6af6b725815f67cee31bf03382ea69c53c2897d8..774fed804d2e0954664196cb4f40c7d4ae9f79e6 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -2538,6 +2538,7 @@ static_library("browser") {
@@ -10,3 +10,23 @@ index 6af6b725815f67cee31bf03382ea69c53c2897d8..644a41bce2041c12323d913d56c6715e
  
    if (is_android) {
      sources += [
+@@ -3323,6 +3324,10 @@ static_library("browser") {
+       "webauthn/android/chrome_webauthn_client_android.h",
+       "webauthn/android/conditional_ui_delegate_android.cc",
+       "webauthn/android/conditional_ui_delegate_android.h",
++      "download/download_commands.cc",
++      "download/download_commands.h",
++      "enterprise/connectors/analysis/analysis_settings.cc",
++      "enterprise/connectors/analysis/analysis_settings.h",
+     ]
+     public_deps += [
+       "//chrome/android/features/dev_ui:buildflags",
+@@ -3729,8 +3734,6 @@ static_library("browser") {
+       "download/default_download_dir_policy_handler.h",
+       "download/download_auto_open_policy_handler.cc",
+       "download/download_auto_open_policy_handler.h",
+-      "download/download_commands.cc",
+-      "download/download_commands.h",
+       "download/download_crx_util.cc",
+       "download/download_crx_util.h",
+       "download/download_danger_prompt.cc",

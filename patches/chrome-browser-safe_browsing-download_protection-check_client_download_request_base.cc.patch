@@ -1,8 +1,27 @@
 diff --git a/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc b/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
-index 022c6d5338aae0ad42fe88c4f2e2c8c2a5a149a0..4fa2c82a6e0fb7c0f1c118b244311c9e0c06d89d 100644
+index 022c6d5338aae0ad42fe88c4f2e2c8c2a5a149a0..b667b1b9bd9e2a04708eb38eb6480de50cf2f238 100644
 --- a/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
 +++ b/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
-@@ -283,6 +283,7 @@ void CheckClientDownloadRequestBase::OnRequestBuilt(
+@@ -150,6 +150,7 @@ void CheckClientDownloadRequestBase::FinishRequest(
+         "SBClientDownload.DownloadRequestNetworkStats", reason, REASON_MAX);
+   }
+ 
++#if !BUILDFLAG(IS_ANDROID)
+   auto settings = ShouldUploadBinary(reason);
+   if (settings.has_value()) {
+     UploadBinary(result, reason, std::move(settings.value()));
+@@ -158,6 +159,10 @@ void CheckClientDownloadRequestBase::FinishRequest(
+     content::GetUIThreadTaskRunner({})->PostTask(
+         FROM_HERE, base::BindOnce(std::move(callback_), result));
+   }
++#else
++  content::GetUIThreadTaskRunner({})->PostTask(
++        FROM_HERE, base::BindOnce(std::move(callback_), result));
++#endif
+ 
+   if (FileTypePolicies::GetInstance()
+           ->PolicyForFile(target_file_path_, GURL{}, nullptr)
+@@ -283,6 +288,7 @@ void CheckClientDownloadRequestBase::OnRequestBuilt(
      std::unique_ptr<ClientDownloadRequest> request) {
    client_download_request_ = std::move(request);
    SanitizeRequest();

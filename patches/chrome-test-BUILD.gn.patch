@@ -1,5 +1,5 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 1c660e23fbfbe97d489bb7b0e463ef40197851be..0c19ea3d2712b733238476b3086e9f842a1de2d6 100644
+index 1c660e23fbfbe97d489bb7b0e463ef40197851be..467a77795e6eb72a29e3b27dda073eb50539694e 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -319,6 +319,7 @@ static_library("test_support") {
@@ -19,3 +19,25 @@ index 1c660e23fbfbe97d489bb7b0e463ef40197851be..0c19ea3d2712b733238476b3086e9f84
      # These binaries create PDBs larger than 4 GiB. Increasing the PDB page
      # size allows larger PDBs, but not all tools can handle such large PDBs
      # yet.
+@@ -9068,6 +9069,10 @@ static_library("test_support_unit") {
+   }
+ }
+ 
++proto_library("test_proto") {
++  sources = [ "../common/safe_browsing/ipc_protobuf_message_test.proto" ]
++}
++
+ if (!is_android) {
+   static_library("test_support_ui") {
+     defines = []
+@@ -9320,10 +9325,6 @@ if (!is_android) {
+     }
+   }
+ 
+-  proto_library("test_proto") {
+-    sources = [ "../common/safe_browsing/ipc_protobuf_message_test.proto" ]
+-  }
+-
+   if (is_chromeos_ash) {
+     assert(enable_extensions)
+ 

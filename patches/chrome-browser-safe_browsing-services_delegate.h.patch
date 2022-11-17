@@ -1,0 +1,50 @@
+diff --git a/chrome/browser/safe_browsing/services_delegate.h b/chrome/browser/safe_browsing/services_delegate.h
+index 908701659e570d731331e857431e247f574becbb..95eb4d2745fa7139fb1ad9804349b6c664c72c42 100644
+--- a/chrome/browser/safe_browsing/services_delegate.h
++++ b/chrome/browser/safe_browsing/services_delegate.h
+@@ -30,9 +30,9 @@ class TrackedPreferenceValidationDelegate;
+ 
+ namespace safe_browsing {
+ 
+-#if !BUILDFLAG(IS_ANDROID)
++//#if !BUILDFLAG(IS_ANDROID)
+ class DownloadProtectionService;
+-#endif
++//#endif
+ class IncidentReportingService;
+ class SafeBrowsingService;
+ class SafeBrowsingDatabaseManager;
+@@ -52,17 +52,17 @@ class ServicesDelegate {
+   class ServicesCreator {
+    public:
+     virtual bool CanCreateDatabaseManager() = 0;
+-#if !BUILDFLAG(IS_ANDROID)
++//#if !BUILDFLAG(IS_ANDROID)
+     virtual bool CanCreateDownloadProtectionService() = 0;
+-#endif
++//#endif
+     virtual bool CanCreateIncidentReportingService() = 0;
+ 
+     // Caller takes ownership of the returned object. Cannot use std::unique_ptr
+     // because services may not be implemented for some build configs.
+     virtual SafeBrowsingDatabaseManager* CreateDatabaseManager() = 0;
+-#if !BUILDFLAG(IS_ANDROID)
++//#if !BUILDFLAG(IS_ANDROID)
+     virtual DownloadProtectionService* CreateDownloadProtectionService() = 0;
+-#endif
++//#endif
+     virtual IncidentReportingService* CreateIncidentReportingService() = 0;
+   };
+ 
+@@ -104,9 +104,9 @@ class ServicesDelegate {
+       content::DownloadManager* download_manager) = 0;
+ 
+   // Returns nullptr for any service that is not available.
+-#if !BUILDFLAG(IS_ANDROID)
++//#if !BUILDFLAG(IS_ANDROID)
+   virtual DownloadProtectionService* GetDownloadService() = 0;
+-#endif
++//#endif
+ 
+   // Takes a SharedURLLoaderFactory from the BrowserProcess, for use in the
+   // database manager.

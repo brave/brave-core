@@ -1,0 +1,55 @@
+diff --git a/chrome/browser/download/chrome_download_manager_delegate.cc b/chrome/browser/download/chrome_download_manager_delegate.cc
+index 77b89c1888aea4826b7bc9b2cb7ac6587874c675..52d4c832254e8ba7515e3a48313a0c3d3467f620 100644
+--- a/chrome/browser/download/chrome_download_manager_delegate.cc
++++ b/chrome/browser/download/chrome_download_manager_delegate.cc
+@@ -363,6 +363,7 @@ void MaybeReportDangerousDownloadBlocked(
+     return;
+   }
+ 
++#if !BUILDFLAG(IS_ANDROID)
+   content::BrowserContext* browser_context =
+       content::DownloadItemUtils::GetBrowserContext(download);
+   Profile* profile = Profile::FromBrowserContext(browser_context);
+@@ -379,7 +380,6 @@ void MaybeReportDangerousDownloadBlocked(
+         return;
+     }
+   }
+-
+   auto* router =
+       extensions::SafeBrowsingPrivateEventRouterFactory::GetForProfile(profile);
+   if (router) {
+@@ -391,6 +391,7 @@ void MaybeReportDangerousDownloadBlocked(
+         download->GetTotalBytes(), safe_browsing::EventResult::BLOCKED);
+   }
+ #endif
++#endif
+ }
+ 
+ #if BUILDFLAG(FULL_SAFE_BROWSING)
+@@ -1437,6 +1438,9 @@ void ChromeDownloadManagerDelegate::CheckSavePackageScanningDone(
+     }
+   }
+ 
++#if BUILDFLAG (IS_ANDROID)
++  return;
++#else
+   // RunSavePackageScanningCallback is called after OnAsyncScanningCompleted or
+   // OnContentCheckCompleted so that the package completes correctly after a
+   // scanning-specific UI has been applie to `item`.
+@@ -1450,7 +1454,7 @@ void ChromeDownloadManagerDelegate::CheckSavePackageScanningDone(
+ 
+     case safe_browsing::DownloadCheckResult::UNKNOWN:
+     case safe_browsing::DownloadCheckResult::DEEP_SCANNED_SAFE:
+-      enterprise_connectors::RunSavePackageScanningCallback(item,
++        enterprise_connectors::RunSavePackageScanningCallback(item,
+                                                             /*allowed*/ true);
+       break;
+ 
+@@ -1471,6 +1475,7 @@ void ChromeDownloadManagerDelegate::CheckSavePackageScanningDone(
+                                                             /*allowed*/ true);
+       break;
+   }
++#endif
+ 
+ }
+ #endif  // FULL_SAFE_BROWSING

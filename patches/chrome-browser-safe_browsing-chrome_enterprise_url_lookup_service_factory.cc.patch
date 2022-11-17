@@ -1,0 +1,32 @@
+diff --git a/chrome/browser/safe_browsing/chrome_enterprise_url_lookup_service_factory.cc b/chrome/browser/safe_browsing/chrome_enterprise_url_lookup_service_factory.cc
+index 93bd804c6739902c5813281ba99f75f7667f660f..b37576a87a13e247d12d1504e8696d8013ff74dc 100644
+--- a/chrome/browser/safe_browsing/chrome_enterprise_url_lookup_service_factory.cc
++++ b/chrome/browser/safe_browsing/chrome_enterprise_url_lookup_service_factory.cc
+@@ -44,7 +44,9 @@ ChromeEnterpriseRealTimeUrlLookupServiceFactory::
+     ChromeEnterpriseRealTimeUrlLookupServiceFactory()
+     : ProfileKeyedServiceFactory("ChromeEnterpriseRealTimeUrlLookupService") {
+   DependsOn(VerdictCacheManagerFactory::GetInstance());
++#if !BUILDFLAG(IS_ANDROID)
+   DependsOn(enterprise_connectors::ConnectorsServiceFactory::GetInstance());
++#endif
+   DependsOn(SafeBrowsingNavigationObserverManagerFactory::GetInstance());
+ }
+ 
+@@ -54,6 +56,7 @@ ChromeEnterpriseRealTimeUrlLookupServiceFactory::BuildServiceInstanceFor(
+   if (!g_browser_process->safe_browsing_service()) {
+     return nullptr;
+   }
++#if !BUILDFLAG(IS_ANDROID)
+   Profile* profile = Profile::FromBrowserContext(context);
+   auto url_loader_factory =
+       std::make_unique<network::CrossThreadPendingSharedURLLoaderFactory>(
+@@ -66,6 +69,9 @@ ChromeEnterpriseRealTimeUrlLookupServiceFactory::BuildServiceInstanceFor(
+           profile),
+       SafeBrowsingNavigationObserverManagerFactory::GetForBrowserContext(
+           profile));
++#else
++  return nullptr;
++#endif
+ }
+ 
+ }  // namespace safe_browsing
