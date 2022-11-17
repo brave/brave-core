@@ -79,6 +79,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:generated_json_rpc_responses",
+    "//brave/components/brave_wallet/browser:generated_swap_responses",
     "//brave/components/brave_wallet/browser:hd_keyring",
     "//brave/components/brave_wallet/browser:permission_utils",
     "//brave/components/brave_wallet/browser:pref_names",

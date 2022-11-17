@@ -147,6 +147,7 @@ static_library("browser") {
   deps = [
     ":constants",
     ":generated_json_rpc_responses",
+    ":generated_swap_responses",
     ":hd_keyring",
     ":pref_names",
     ":transaction",
@@ -314,6 +315,16 @@ source_set("transaction") {
 
 generated_types("generated_json_rpc_responses") {
   sources = [ "json_rpc_responses.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [
+    ":browser",
+    "test:brave_wallet_unit_tests",
+  ]
+}
+
+generated_types("generated_swap_responses") {
+  sources = [ "swap_responses.idl" ]
   root_namespace = "brave_wallet::%(namespace)s"
   deps = [ "//base" ]
   visibility = [
