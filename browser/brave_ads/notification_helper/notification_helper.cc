@@ -5,7 +5,7 @@
 
 #include "brave/browser/brave_ads/notification_helper/notification_helper.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/memory/singleton.h"
 #include "brave/browser/brave_ads/notification_helper/notification_helper_impl.h"
 #include "build/build_config.h"

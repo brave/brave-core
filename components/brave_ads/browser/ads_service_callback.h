@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/callback.h"  // IWYU pragma: keep
+#include "base/functional/callback.h"
 #include "base/values.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"

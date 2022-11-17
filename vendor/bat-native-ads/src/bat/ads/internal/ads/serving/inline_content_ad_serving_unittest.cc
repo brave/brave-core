@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "absl/types/optional.h"
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ads/serving/inline_content_ad_serving_observer.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"

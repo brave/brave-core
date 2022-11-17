@@ -30,7 +30,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, IsDisabled) {
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kFeature);
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -90,7 +90,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, DisabledShouldExcludeAdIfConverted) {
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kFeature);
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -154,7 +154,7 @@ TEST(BatAdsExclusionRuleFeaturesTest,
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kFeature);
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -217,7 +217,7 @@ TEST(BatAdsUserActivityFeaturesTest,
       enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kFeature);
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,

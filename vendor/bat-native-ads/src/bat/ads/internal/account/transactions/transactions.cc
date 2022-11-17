@@ -7,9 +7,9 @@
 
 #include <utility>
 
-#include "base/bind.h"
-#include "base/callback.h"
 #include "base/check_op.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/guid.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_type.h"

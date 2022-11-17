@@ -5,7 +5,7 @@
 
 #include "brave/browser/brave_ads/background_helper/background_helper_linux.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"

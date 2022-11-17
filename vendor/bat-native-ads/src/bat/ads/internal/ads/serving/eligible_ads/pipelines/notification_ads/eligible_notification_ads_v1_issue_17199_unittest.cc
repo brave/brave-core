@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v1.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_builder_unittest_util.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"

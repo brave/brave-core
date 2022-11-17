@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/allocation/seen_ads.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/allocation/seen_advertisers.h"

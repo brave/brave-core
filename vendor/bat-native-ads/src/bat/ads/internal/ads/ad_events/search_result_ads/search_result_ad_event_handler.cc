@@ -7,8 +7,8 @@
 
 #include <utility>
 
-#include "base/bind.h"
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/internal/account/deposits/deposit_builder.h"
 #include "bat/ads/internal/account/deposits/deposit_info.h"
