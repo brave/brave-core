@@ -33,19 +33,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
-
-    sceneInfo = (UIApplication.shared.delegate as? AppDelegate)?.sceneInfo(for: session)
-    guard let sceneInfo = sceneInfo else {
+    
+    // Create a browser instance
+    // There has to be an application delegate
+    guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+      fatalError("Failed to create browser instance")
+    }
+    
+    guard let sceneInfo = appDelegate.sceneInfo(for: session) else {
       return
     }
+
+    self.sceneInfo = sceneInfo
 
     // We have to wait until pre1.12 migration is done until we proceed with database
     // initialization. This is because Database container may change. See bugs #3416, #3377.
     DataController.shared.initializeOnce()
     Migration.postCoreDataInitMigrations()
-    
-    let appDelegate = UIApplication.shared.delegate as? AppDelegate
-    assert(appDelegate != nil, "Should not be nil!")
 
     Preferences.General.themeNormalMode.objectWillChange
       .receive(on: RunLoop.main)
@@ -68,17 +72,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self?.updateTheme()
       }
       .store(in: &cancellables)
-
-    // Create a browser instance
-    guard
-      let browserViewController = createBrowserWindow(
-        scene: windowScene,
-        profile: sceneInfo.profile,
-        diskImageStore: sceneInfo.diskImageStore,
-        migration: sceneInfo.migration)
-    else {
-      fatalError("Failed to create browser instance")
-    }
+    
+    let browserViewController = createBrowserWindow(
+      scene: windowScene,
+      braveCore: appDelegate.braveCore,
+      profile: sceneInfo.profile,
+      diskImageStore: sceneInfo.diskImageStore,
+      migration: sceneInfo.migration)
 
     if SceneDelegate.shouldHandleUrpLookup {
       // TODO: Find a better way to do this when multiple windows are involved.
@@ -102,13 +102,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     PlaylistCarplayManager.shared.do {
       $0.browserController = browserViewController
     }
-
+    
+    self.present(
+      browserViewController: browserViewController,
+      windowScene: windowScene,
+      connectionOptions: connectionOptions
+    )
+        
+    PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.buildChannel.isPublic)
+    PrivacyReportsManager.consolidateData()
+    PrivacyReportsManager.scheduleProcessingBlockedRequests()
+    PrivacyReportsManager.scheduleVPNAlertsTask()
+  }
+  
+  private func present(browserViewController: BrowserViewController, windowScene: UIWindowScene, connectionOptions: UIScene.ConnectionOptions) {
     // Assign each browser a navigation controller
     let navigationController = UINavigationController(rootViewController: browserViewController).then {
       $0.isNavigationBarHidden = true
       $0.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
     }
-
+    
     // Assign each browser a window of its own
     let window = UIWindow(windowScene: windowScene).then {
       $0.backgroundColor = .black
@@ -119,10 +132,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         return .braveBlurple
       }
-
+      
       $0.rootViewController = navigationController
     }
-
+    
     self.window = window
 
     // TODO: Refactor to accept a UIWindowScene
@@ -130,7 +143,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // As each instance should have its own protection?
     self.windowProtection = WindowProtection(window: window)
     window.makeKeyAndVisible()
-
+    
     // Open shared URLs on launch if there are any
     if !connectionOptions.urlContexts.isEmpty {
       self.scene(windowScene, openURLContexts: connectionOptions.urlContexts)
@@ -151,11 +164,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         browserViewController.openPrivacyReport()
       }
     }
-        
-    PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.buildChannel.isPublic)
-    PrivacyReportsManager.consolidateData()
-    PrivacyReportsManager.scheduleProcessingBlockedRequests()
-    PrivacyReportsManager.scheduleVPNAlertsTask()
   }
 
   func sceneDidDisconnect(_ scene: UIScene) {
@@ -388,12 +396,7 @@ extension SceneDelegate {
 }
 
 extension SceneDelegate {
-  private func createBrowserWindow(scene: UIWindowScene, profile: Profile, diskImageStore: DiskImageStore?, migration: Migration?) -> BrowserViewController? {
-    // There has to be an application delegate
-    guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-      return nil
-    }
-
+  private func createBrowserWindow(scene: UIWindowScene, braveCore: BraveCoreMain, profile: Profile, diskImageStore: DiskImageStore?, migration: Migration?) -> BrowserViewController {
     // Make sure current private browsing flag respects the private browsing only user preference
     PrivateBrowsingManager.shared.isPrivateBrowsing = Preferences.Privacy.privateBrowsingOnly.value
 
@@ -405,7 +408,7 @@ extension SceneDelegate {
     let browserViewController = BrowserViewController(
       profile: profile,
       diskImageStore: diskImageStore,
-      braveCore: appDelegate.braveCore,
+      braveCore: braveCore,
       migration: migration,
       crashedLastSession: crashedLastSession)
 

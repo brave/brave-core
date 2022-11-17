@@ -40,18 +40,83 @@ private let KVOs: [KVOConstants] = [
 ]
 
 public class BrowserViewController: UIViewController {
-  var webViewContainer: UIView!
-  var topToolbar: TopToolbarView!
-  var tabsBar: TabsBarViewController!
+  let webViewContainer = UIView()
+  private(set) lazy var screenshotHelper = ScreenshotHelper(tabManager: tabManager)
+  
+  private(set) lazy var topToolbar: TopToolbarView = {
+    // Setup the URL bar, wrapped in a view to get transparency effect
+    let topToolbar = TopToolbarView()
+    topToolbar.translatesAutoresizingMaskIntoConstraints = false
+    topToolbar.delegate = self
+    topToolbar.tabToolbarDelegate = self
+
+    let toolBarInteraction = UIContextMenuInteraction(delegate: self)
+    topToolbar.locationView.addInteraction(toolBarInteraction)
+    return topToolbar
+  }()
+  
+  private(set) lazy var tabsBar: TabsBarViewController = {
+    let tabsBar = TabsBarViewController(tabManager: tabManager)
+    tabsBar.delegate = self
+    return tabsBar
+  }()
+
+  // These views wrap the top and bottom toolbars to provide background effects on them
+  let header = HeaderContainerView()
+  private let headerHeightLayoutGuide = UILayoutGuide()
+  
+  let footer: UIView = {
+    let footer = UIView()
+    footer.translatesAutoresizingMaskIntoConstraints = false
+    return footer
+  }()
+  
+  private let topTouchArea: UIButton = {
+    let topTouchArea = UIButton()
+    topTouchArea.isAccessibilityElement = false
+    return topTouchArea
+  }()
+  
+  private let bottomTouchArea: UIButton = {
+    let bottomTouchArea = UIButton()
+    bottomTouchArea.isAccessibilityElement = false
+    return bottomTouchArea
+  }()
+  
+  /// These constraints allow to show/hide tabs bar
+  private var webViewContainerTopOffset: Constraint?
+
+  /// Backdrop used for displaying greyed background for private tabs
+  private let webViewContainerBackdrop: UIView = {
+    let webViewContainerBackdrop = UIView()
+    webViewContainerBackdrop.backgroundColor = .braveBackground
+    webViewContainerBackdrop.alpha = 0
+    return webViewContainerBackdrop
+  }()
+  
   var readerModeBar: ReaderModeBarView?
-  var readerModeCache: ReaderModeCache
-  var statusBarOverlay: UIView!
-  fileprivate(set) var toolbar: BottomToolbarView?
+  private(set) var readerModeCache: ReaderModeCache
+  
+  private let statusBarOverlay: UIView = {
+    // Temporary work around for covering the non-clipped web view content
+    let statusBarOverlay = UIView()
+    statusBarOverlay.backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
+    return statusBarOverlay
+  }()
+  
+  private(set) var toolbar: BottomToolbarView?
+  var searchLoader: SearchLoader?
   var searchController: SearchViewController?
   var favoritesController: FavoritesViewController?
-  var screenshotHelper: ScreenshotHelper!
-  var searchLoader: SearchLoader?
-  let alertStackView = UIStackView()  // All content that appears above the footer should be added to this view. (Find In Page/SnackBars)
+  
+  /// All content that appears above the footer should be added to this view. (Find In Page/SnackBars)
+  let alertStackView: UIStackView = {
+    let alertStackView = UIStackView()
+    alertStackView.axis = .vertical
+    alertStackView.alignment = .center
+    return alertStackView
+  }()
+  
   var findInPageBar: FindInPageBar?
   var pageZoomBar: UIHostingController<PageZoomView>?
   private var pageZoomListener: NSObjectProtocol?
@@ -92,25 +157,13 @@ public class BrowserViewController: UIViewController {
   let bookmarkManager: BookmarkManager
 
   /// Whether last session was a crash or not
-  fileprivate let crashedLastSession: Bool
-
-  // These views wrap the top and bottom toolbars to provide background effects on them
-  let header = HeaderContainerView()
-  private let headerHeightLayoutGuide = UILayoutGuide()
-  var footer: UIView!
-  fileprivate var topTouchArea: UIButton!
-  fileprivate let bottomTouchArea = UIButton()
+  private let crashedLastSession: Bool
+  
   // A view to place behind the bottom bar down to the toolbar during keyboard animations to avoid
   // the odd look for the URL bar floating
   private let bottomBarKeyboardBackground = UIView().then {
     $0.isUserInteractionEnabled = false
   }
-
-  // These constraints allow to show/hide tabs bar
-  var webViewContainerTopOffset: Constraint?
-
-  // Backdrop used for displaying greyed background for private tabs
-  var webViewContainerBackdrop: UIView!
 
   var toolbarVisibilityViewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 44)
   private var toolbarLayoutGuide = UILayoutGuide().then {
@@ -396,7 +449,6 @@ public class BrowserViewController: UIViewController {
 
   fileprivate func didInit() {
     updateApplicationShortcuts()
-    screenshotHelper = ScreenshotHelper(tabManager: tabManager)
     tabManager.addDelegate(self)
     tabManager.addNavigationDelegate(self)
     tabManager.makeWalletEthProvider = { [weak self] tab in
@@ -520,30 +572,7 @@ public class BrowserViewController: UIViewController {
     try? widgetBookmarksFRC?.performFetch()
 
     updateWidgetFavoritesData()
-    
-    Task { @MainActor in
-      self.setupTabs()
-      
-      await ContentBlockerManager.shared.loadBundledResources()
-      await ContentBlockerManager.shared.loadCachedCompileResults()
-      
-      // Load cached data
-      // This is done first because compileResources and compilePendingResource need their results
-      async let filterListCache: Void = await FilterListResourceDownloader.shared.loadCachedData()
-      async let adblockResourceCache: Void = await AdblockResourceDownloader.shared.loadCachedData()
-      _ = await (filterListCache, adblockResourceCache)
 
-      // Compile some ad-block data
-      async let compiledResourcesCompile: Void = await AdBlockEngineManager.shared.compileResources()
-      async let pendingResourcesCompile: Void = await ContentBlockerManager.shared.compilePendingResources()
-      _ = await (compiledResourcesCompile, pendingResourcesCompile)
-  
-      FilterListResourceDownloader.shared.start(with: self.braveCore.adblockService)
-      await AdblockResourceDownloader.shared.startFetching()
-      ContentBlockerManager.shared.startTimer()
-      await AdBlockEngineManager.shared.startTimer()
-    }
-    
     // Eliminate the older usage days
     // Used in App Rating criteria
     AppReviewManager.shared.processMainCriteria(for: .daysInUse)
@@ -750,6 +779,62 @@ public class BrowserViewController: UIViewController {
 
   override public func viewDidLoad() {
     super.viewDidLoad()
+    view.backgroundColor = .braveBackground
+    
+    // Add layout guides
+    view.addLayoutGuide(pageOverlayLayoutGuide)
+    view.addLayoutGuide(headerHeightLayoutGuide)
+    view.addLayoutGuide(toolbarLayoutGuide)
+    
+    // Add views
+    view.addSubview(webViewContainerBackdrop)
+    view.addSubview(webViewContainer)
+    header.expandedBarStackView.addArrangedSubview(topToolbar)
+    header.collapsedBarContainerView.addSubview(collapsedURLBarView)
+    
+    addChild(tabsBar)
+    tabsBar.didMove(toParent: self)
+
+    view.addSubview(alertStackView)
+    view.addSubview(bottomTouchArea)
+    view.addSubview(topTouchArea)
+    view.addSubview(bottomBarKeyboardBackground)
+    view.addSubview(footer)
+    view.addSubview(header)
+    view.addSubview(statusBarOverlay)
+    
+    // For now we hide some elements so they are not visible
+    header.isHidden = true
+    footer.isHidden = true
+    
+    // Setup constraints
+    setupConstraints()
+    updateToolbarStateForTraitCollection(self.traitCollection)
+    
+    // Do some migratins
+    LegacyBookmarksHelper.restore_1_12_Bookmarks() {
+      Logger.module.info("Bookmarks from old database were successfully restored")
+    }
+    
+    // Perform migration to brave-core sync objects
+    if !Migration.isChromiumMigrationCompleted,
+      !Preferences.Chromium.syncV2PasswordMigrationStarted.value {
+      Preferences.Chromium.syncV2ObjectMigrationCount.value = 0
+    }
+    
+    Task { @MainActor in
+      await LaunchHelper.shared.prepareAdBlockServices(
+        adBlockService: self.braveCore.adblockService
+      )
+      
+      self.setupInteractions()
+    }
+  }
+  
+  private func setupInteractions() {
+    // We now show some elements since we're ready to use the app
+    header.isHidden = false
+    footer.isHidden = false
     
     NotificationCenter.default.do {
       $0.addObserver(
@@ -771,86 +856,20 @@ public class BrowserViewController: UIViewController {
         self, selector: #selector(updateShieldNotifications),
         name: NSNotification.Name(rawValue: BraveGlobalShieldStats.didUpdateNotification), object: nil)
     }
-
-    view.backgroundColor = .braveBackground
+    
     KeyboardHelper.defaultHelper.addDelegate(self)
     UNUserNotificationCenter.current().delegate = self
-
-    view.addLayoutGuide(pageOverlayLayoutGuide)
-    view.addLayoutGuide(headerHeightLayoutGuide)
-
-    webViewContainerBackdrop = UIView()
-    webViewContainerBackdrop.backgroundColor = .braveBackground
-    webViewContainerBackdrop.alpha = 0
-    view.addSubview(webViewContainerBackdrop)
-
-    webViewContainer = UIView()
-    view.addSubview(webViewContainer)
-
-    // Temporary work around for covering the non-clipped web view content
-    statusBarOverlay = UIView()
-    statusBarOverlay.backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
-
-    topTouchArea = UIButton()
-    topTouchArea.isAccessibilityElement = false
+    
+    // Add interactions
     topTouchArea.addTarget(self, action: #selector(tappedTopArea), for: .touchUpInside)
-    
-    bottomTouchArea.isAccessibilityElement = false
     bottomTouchArea.addTarget(self, action: #selector(tappedTopArea), for: .touchUpInside)
-    
-    // Setup the URL bar, wrapped in a view to get transparency effect
-    topToolbar = TopToolbarView()
-    topToolbar.translatesAutoresizingMaskIntoConstraints = false
-    topToolbar.delegate = self
-    topToolbar.tabToolbarDelegate = self
-
-    let toolBarInteraction = UIContextMenuInteraction(delegate: self)
-    topToolbar.locationView.addInteraction(toolBarInteraction)
-
-    header.expandedBarStackView.addArrangedSubview(topToolbar)
-
-    tabsBar = TabsBarViewController(tabManager: tabManager)
-    tabsBar.delegate = self
-
-    header.collapsedBarContainerView.addSubview(collapsedURLBarView)
     header.collapsedBarContainerView.addTarget(self, action: #selector(tappedCollapsedURLBar), for: .touchUpInside)
-    
-    addChild(tabsBar)
-    tabsBar.didMove(toParent: self)
-
-    view.addSubview(alertStackView)
-    footer = UIView()
-    footer.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(bottomTouchArea)
-    view.addSubview(topTouchArea)
-    view.addSubview(bottomBarKeyboardBackground)
-    view.addSubview(footer)
-    view.addSubview(header)
-    view.addSubview(statusBarOverlay)
-    alertStackView.axis = .vertical
-    alertStackView.alignment = .center
-    
-    view.addLayoutGuide(toolbarLayoutGuide)
-    toolbarLayoutGuide.snp.makeConstraints {
-      self.toolbarTopConstraint = $0.top.equalTo(view.safeArea.top).constraint
-      self.toolbarBottomConstraint = $0.bottom.equalTo(view).constraint
-      $0.leading.trailing.equalTo(view)
-    }
-
-    self.updateToolbarStateForTraitCollection(self.traitCollection)
-
-    setupConstraints()
-
     updateRewardsButtonState()
 
     // Setup UIDropInteraction to handle dragging and dropping
     // links into the view from other apps.
     let dropInteraction = UIDropInteraction(delegate: self)
     view.addInteraction(dropInteraction)
-
-    LegacyBookmarksHelper.restore_1_12_Bookmarks() {
-      Logger.module.info("Bookmarks from old database were successfully restored")
-    }
 
     // Adding a small delay before fetching gives more reliability to it,
     // epsecially when you are connected to a VPN.
@@ -866,12 +885,6 @@ public class BrowserViewController: UIViewController {
     }
 
     showWalletTransferExpiryPanelIfNeeded()
-
-    /// Perform migration to brave-core sync objects
-    if !Migration.isChromiumMigrationCompleted,
-      !Preferences.Chromium.syncV2PasswordMigrationStarted.value {
-      Preferences.Chromium.syncV2ObjectMigrationCount.value = 0
-    }
 
     doSyncMigration()
 
@@ -927,6 +940,7 @@ public class BrowserViewController: UIViewController {
       .store(in: &cancellables)
     
     syncPlaylistFolders()
+    checkCrashRestorationOrSetupTabs()
   }
 
   public static let defaultBrowserNotificationId = "defaultBrowserNotification"
@@ -1014,7 +1028,13 @@ public class BrowserViewController: UIViewController {
     }
   }
 
-  fileprivate func setupConstraints() {
+  private func setupConstraints() {
+    toolbarLayoutGuide.snp.makeConstraints {
+      self.toolbarTopConstraint = $0.top.equalTo(view.safeArea.top).constraint
+      self.toolbarBottomConstraint = $0.bottom.equalTo(view).constraint
+      $0.leading.trailing.equalTo(view)
+    }
+    
     collapsedURLBarView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -1071,9 +1091,6 @@ public class BrowserViewController: UIViewController {
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-
-    checkCrashRestoration()
-
     updateToolbarUsingTabManager(tabManager)
 
     if let tabId = tabManager.selectedTab?.rewardsId, rewards.ledger?.selectedTabId == 0 {
@@ -1081,14 +1098,13 @@ public class BrowserViewController: UIViewController {
     }
   }
 
-  fileprivate lazy var checkCrashRestoration: () -> Void = {
+  private func checkCrashRestorationOrSetupTabs() {
     if crashedLastSession {
       showRestoreTabsAlert()
     } else {
       setupTabs()
     }
-    return {}
-  }()
+  }
 
   fileprivate func showRestoreTabsAlert() {
     guard canRestoreTabs() else {
@@ -1430,7 +1446,7 @@ public class BrowserViewController: UIViewController {
     }
 
     if tabManager.selectedTab == nil {
-      tabsBar?.view.isHidden = true
+      tabsBar.view.isHidden = true
       return
     }
 
@@ -1454,7 +1470,7 @@ public class BrowserViewController: UIViewController {
       }
     }
 
-    let isShowing = tabsBar?.view.isHidden == false
+    let isShowing = tabsBar.view.isHidden == false
     let shouldShow = shouldShowTabBar()
 
     if isShowing != shouldShow && presentedViewController == nil {
@@ -2820,7 +2836,7 @@ extension BrowserViewController: TabManagerDelegate {
     // Update Tab Count on Tab-Tray Button
     let count = tabManager.tabsForCurrentMode.count
     toolbar?.updateTabCount(count)
-    topToolbar?.updateTabCount(count)
+    topToolbar.updateTabCount(count)
 
     // Update Actions for Tab-Tray Button
     var newTabMenuChildren: [UIAction] = []
@@ -2834,7 +2850,7 @@ extension BrowserViewController: TabManagerDelegate {
           self.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
         })
 
-      if (UIDevice.current.userInterfaceIdiom == .pad && tabsBar?.view.isHidden == true) || (UIDevice.current.userInterfaceIdiom == .phone && toolbar == nil) {
+      if (UIDevice.current.userInterfaceIdiom == .pad && tabsBar.view.isHidden == true) || (UIDevice.current.userInterfaceIdiom == .phone && toolbar == nil) {
         newTabMenuChildren.append(openNewPrivateTab)
       }
 
@@ -2935,8 +2951,8 @@ extension BrowserViewController: TabManagerDelegate {
           alert.addAction(closeAllAction)
           alert.addAction(cancelAction)
 
-          if let popoverPresentation = alert.popoverPresentationController,
-              let tabsButton = toolbar?.tabsButton ?? topToolbar?.tabsButton {
+          if let popoverPresentation = alert.popoverPresentationController {
+            let tabsButton = toolbar?.tabsButton ?? topToolbar.tabsButton
             popoverPresentation.sourceView = tabsButton
             popoverPresentation.sourceRect =
               .init(x: tabsButton.frame.width / 2, y: tabsButton.frame.height, width: 1, height: 1)
@@ -2955,7 +2971,7 @@ extension BrowserViewController: TabManagerDelegate {
     let closeTabMenu = UIMenu(title: "", options: .displayInline, children: closeTabMenuChildren)
 
     toolbar?.tabsButton.menu = UIMenu(title: "", identifier: nil, children: [closeTabMenu, duplicateTabMenu, bookmarkMenu, newTabMenu])
-    topToolbar?.tabsButton.menu = UIMenu(title: "", identifier: nil, children: [closeTabMenu, duplicateTabMenu, bookmarkMenu, newTabMenu])
+    topToolbar.tabsButton.menu = UIMenu(title: "", identifier: nil, children: [closeTabMenu, duplicateTabMenu, bookmarkMenu, newTabMenu])
 
     // Update Actions for Add-Tab Button
     toolbar?.addTabButton.menu = UIMenu(title: "", identifier: nil, children: [addTabMenu])

@@ -257,6 +257,8 @@ public class FilterListResourceDownloader: ObservableObject {
     }
     
     let folderURL = URL(fileURLWithPath: folderPath)
+    let folderSubPath = FilterListSetting.extractFolderPath(fromFilterListFolderURL: folderURL)
+    Preferences.AppState.lastDefaultFilterListFolderPath.value = folderSubPath
     
     Task {
       await self.loadShields(fromFolderURL: folderURL)
