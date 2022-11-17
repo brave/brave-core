@@ -26,7 +26,7 @@ public actor AdBlockEngineManager: Sendable {
       switch self {
       case .adBlock: return 0
       case .cosmeticFilters: return 3
-      case .filterList: return 7
+      case .filterList: return 100
       }
     }
   }
@@ -113,7 +113,7 @@ public actor AdBlockEngineManager: Sendable {
     }
     
     /// Tells this manager to add this resource next time it compiles this engine
-    func add(resource: ResourceWithVersion) {
+    fileprivate func add(resource: ResourceWithVersion) {
       self.enabledResources = enabledResources.filter({ resourceWithVersion in
         guard resourceWithVersion.resource == resource.resource else { return true }
         // Remove these compile results so we have to compile again
@@ -125,7 +125,7 @@ public actor AdBlockEngineManager: Sendable {
     }
     
     /// Tells this manager to remove all resources for the given source next time it compiles this engine
-    func removeResources(for source: Source, resourceTypes: Set<ResourceType> = Set(ResourceType.allCases)) {
+    fileprivate func removeResources(for source: Source, resourceTypes: Set<ResourceType> = Set(ResourceType.allCases)) {
       self.enabledResources = self.enabledResources.filter { resourceWithVersion in
         let resource = resourceWithVersion.resource
         guard resource.source == source && resourceTypes.contains(resource.type) else { return true }
@@ -134,24 +134,24 @@ public actor AdBlockEngineManager: Sendable {
     }
     
     /// Set the compile results so this manager can compute if its in sync or not
-    func set(compileResults: [ResourceWithVersion: Result<Void, Error>]) {
+    fileprivate func set(compileResults: [ResourceWithVersion: Result<Void, Error>]) {
       self.compileResults = compileResults
     }
     
     /// Set the compile results so this manager can compute if its in sync or not
-    func add(engine: AdblockEngine, for source: Source) {
+    fileprivate func add(engine: AdblockEngine, for source: Source) {
       self.cachedEngines[source] = engine
     }
     
     /// Set the current compile task to avoid overlaping compilations
-    func set(compileTask: Task<Void, Error>?) {
+    fileprivate func set(compileTask: Task<Void, Error>?) {
       self.compileTask = compileTask
     }
     
     #if DEBUG
     /// A method that logs info on the given resources
-    func debug(resources: [ResourceWithVersion]) {
-      let resourcesString = resources
+    fileprivate func debug(resources: [ResourceWithVersion]) {
+      let resourcesString = resources.sorted(by: { $0.order < $1.order })
         .map { resourceWithVersion -> String in
           let resource = resourceWithVersion.resource
           let type: String
@@ -265,11 +265,11 @@ public actor AdBlockEngineManager: Sendable {
   }
   
   /// Compile all resources
-  func compileResources() async {
+  public func compileResources() async {
     await data.compileTask?.cancel()
     await data.set(compileTask: nil)
     
-    let task = Task.detached {
+    let task = Task.detached(priority: .high) {
       let resourcesWithVersion = await self.data.enabledResources.sorted(by: {
         $0.order < $1.order
       })
@@ -277,7 +277,7 @@ public actor AdBlockEngineManager: Sendable {
       var allCompileResults: [ResourceWithVersion: Result<Void, Error>] = [:]
       var allEngines: [CachedAdBlockEngine] = []
       
-      for (source, group) in await self.group(resources: resourcesWithVersion) {
+      try await self.group(resources: resourcesWithVersion).asyncConcurrentForEach { source, group in
         try Task.checkCancellation()
         
         // Combine all rule lists that need to be injected during initialization
@@ -305,10 +305,7 @@ public actor AdBlockEngineManager: Sendable {
       }
       
       #if DEBUG
-      Task {
-        log.debug("AdblockEngineManager")
-        await self.data.debug(resources: resourcesWithVersion)
-      }
+      await self.data.debug(resources: resourcesWithVersion)
       #endif
     }
     
@@ -395,10 +392,12 @@ public actor AdBlockEngineManager: Sendable {
           return
         }
         
-        if engine.deserialize(data: data) {
-          continuation.resume()
-        } else {
-          continuation.resume(throwing: CompileError.couldNotDeserializeDATFile)
+        DispatchQueue.main.async {
+          if engine.deserialize(data: data) {
+            continuation.resume()
+          } else {
+            continuation.resume(throwing: CompileError.couldNotDeserializeDATFile)
+          }
         }
       case .jsonResources:
         guard let data = FileManager.default.contents(atPath: resource.fileURL.path) else {
@@ -411,9 +410,10 @@ public actor AdBlockEngineManager: Sendable {
             continuation.resume()
             return
           }
-          
-          engine.addResources(json)
-          continuation.resume()
+          DispatchQueue.main.async {
+            engine.addResources(json)
+            continuation.resume()
+          }
         } catch {
           continuation.resume(throwing: error)
         }

@@ -148,18 +148,8 @@ final public class ContentBlockerManager: Sendable {
     self.data = SyncData()
   }
   
-  public func loadCachedCompileResults() async {
-    guard let identifiers = await ruleStore.availableIdentifiers() else { return }
-    let loadedCachedResults = await load(identifiers: identifiers)
-    
-    await MainActor.run {
-      for cachedResults in loadedCachedResults {
-        self.cachedCompileResults[cachedResults.0] = (.bundled, cachedResults.1)
-      }
-    }
-  }
   
-  private func cleanupRuleLists() async {
+  public func cleanupDeadRuleLists() async {
     guard let identifiers = await ruleStore.availableIdentifiers() else { return }
     let enabledResources = await data.enabledResources
     
@@ -181,7 +171,6 @@ final public class ContentBlockerManager: Sendable {
       }
     }
   }
-  
   private func load(identifiers: [String]) async -> [(String, Result<WKContentRuleList, Error>)] {
     return await withTaskGroup(of: (identifier: String, result: Result<WKContentRuleList, Error>?).self, returning: [(String, Result<WKContentRuleList, Error>)].self) { group in
       for identifier in identifiers {
@@ -228,7 +217,6 @@ final public class ContentBlockerManager: Sendable {
           try await Task.sleep(seconds: Self.compileSleepTime)
           guard await !self.data.isSynced else { return }
           await self.compilePendingResources()
-          await self.cleanupRuleLists()
         }
       }, onCancel: {
         Task { @MainActor in
@@ -261,13 +249,10 @@ final public class ContentBlockerManager: Sendable {
     case .filterList:
       break
     }
-    
-    // Cleanup some stored data
-    await cleanupRuleLists()
   }
   
   /// Compile all the resources
-  func compilePendingResources() async {
+  public func compilePendingResources() async {
     let resources = await self.data.pendingResources
     
     await withTaskGroup(of: Void.self) { group in
@@ -286,9 +271,28 @@ final public class ContentBlockerManager: Sendable {
     }
     
     #if DEBUG
-    Self.log.debug("ContentBlockerManager")
     debug(resources: resources)
     #endif
+  }
+  
+  /// This method goes through all the resources and loads any available from the rule store so they are ready when displaying the page
+  public func loadCachedRuleLists() async {
+    await withTaskGroup(of: Void.self) { group in
+      for (identifier, resource) in await data.pendingResources {
+        group.addTask { @MainActor in
+          do {
+            guard let ruleList = try await self.ruleStore.contentRuleList(forIdentifier: identifier) else {
+              await self.data.movePendingResource(forIdentifier: identifier)
+              return
+            }
+            
+            self.cachedCompileResults[identifier] = (resource.sourceType, .success(ruleList))
+          } catch {
+            self.cachedCompileResults[identifier] = (resource.sourceType, .failure(error))
+          }
+        }
+      }
+    }
   }
   
   /// Compile the given resource
