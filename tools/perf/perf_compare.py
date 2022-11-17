@@ -38,10 +38,10 @@ def main():
   json_config = perf_test_utils.LoadJsonConfig(args.config)
   config = perf_config.PerfConfig(json_config)
 
-  common_options = perf_test_runner.CommonOptions.make_local(
-      args.working_directory, args.verbose, config.benchmarks)
+  common_options = perf_test_runner.CommonOptions.from_args(args)
 
   return 0 if perf_test_runner.RunConfigurations(config.runners,
+                                                 config.benchmarks,
                                                  common_options) else 1
 
 

@@ -12,6 +12,7 @@ from components.browser_type import BrowserType, ParseBrowserType
 
 
 class RunnerConfig:
+  """A description of a browser configuration that is able to run tests."""
   tag: Optional[str] = None
   location: Optional[str] = None
   label: Optional[str] = None
@@ -41,6 +42,8 @@ class RunnerConfig:
 
 
 class BenchmarkConfig:
+  """A description of one benchmark that can be launched on some RunnerConfigs.
+  """
   name: str
   pageset_repeat: int = 1
   stories: List[str]
@@ -59,6 +62,11 @@ class BenchmarkConfig:
 
 
 class PerfConfig:
+  """A config includes configurations & benchmarks that should be launched.
+
+  Each benchmark is launched on each configuration.
+  The class has 1-1 match to .json5 files used to setup tests.
+  """
   runners: List[RunnerConfig]
   benchmarks: List[BenchmarkConfig]
 
