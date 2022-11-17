@@ -155,8 +155,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[omnibox::kTopSiteSuggestionsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[omnibox::kBraveSuggestedSiteSuggestionsEnabled] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[omnibox::kHistorySuggestionsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[omnibox::kBookmarkSuggestionsEnabled] =

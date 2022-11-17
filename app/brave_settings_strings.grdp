@@ -86,9 +86,6 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_TOP_SITES" desc="The label for settings checkbox controlling whether or not top sites show up in autocomplete">
     Top sites
   </message>
-  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES" desc="The label for settings checkbox controlling whether or not Brave suggested sites show up in autocomplete">
-    Suggested sites
-  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_HISTORY" desc="The label for settings checkbox controlling whether or not browsing history shows up in autocomplete">
     Browsing History
   </message>

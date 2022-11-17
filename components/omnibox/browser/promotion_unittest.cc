@@ -44,8 +44,6 @@ class OmniboxPromotionTest : public testing::Test {
     RegisterPrefs(pref_service_.registry());
     omnibox::RegisterBraveProfilePrefs(pref_service_.registry());
     pref_service_.SetBoolean(omnibox::kTopSiteSuggestionsEnabled, false);
-    pref_service_.SetBoolean(omnibox::kBraveSuggestedSiteSuggestionsEnabled,
-                             false);
 
     scoped_default_locale_ =
         std::make_unique<brave_l10n::test::ScopedDefaultLocale>("en_US");

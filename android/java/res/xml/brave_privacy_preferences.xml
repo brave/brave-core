@@ -143,11 +143,6 @@
             android:title="@string/autocomplete_top_sites_title"
             android:persistent="false"/>
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-            android:key="autocomplete_brave_suggested_sites"
-            android:title="@string/autocomplete_brave_suggested_sites_title"
-            android:order="25"
-            android:persistent="false"/>
-        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="send_p3a_analytics"
             android:order="25"
             android:title="@string/send_p3a_analytics_title"

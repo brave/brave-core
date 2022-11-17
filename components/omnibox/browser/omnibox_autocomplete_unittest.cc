@@ -27,8 +27,3 @@ class OmniboxAutocompleteUnitTest : public testing::Test {
 TEST_F(OmniboxAutocompleteUnitTest, TopSiteSuggestionsEnabledTest) {
   EXPECT_TRUE(prefs()->GetBoolean(omnibox::kTopSiteSuggestionsEnabled));
 }
-
-TEST_F(OmniboxAutocompleteUnitTest, BraveSuggestedSiteSuggestionsEnabledTest) {
-  EXPECT_FALSE(
-      prefs()->GetBoolean(omnibox::kBraveSuggestedSiteSuggestionsEnabled));
-}
