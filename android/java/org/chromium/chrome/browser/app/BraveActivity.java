@@ -36,8 +36,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.android.billingclient.api.Purchase;
-import com.brave.braveandroidplaylist.activity.AllPlaylistActivity;
-import com.brave.braveandroidplaylist.util.ViewUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.wireguard.android.backend.GoBackend;
 import com.wireguard.android.backend.Tunnel;
@@ -137,6 +135,8 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
+import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
+import org.chromium.chrome.browser.playlist.PlaylistUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.Pref;
@@ -358,7 +358,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (id == R.id.brave_wallet_id) {
             openBraveWallet(false, false, false);
         } else if (id == R.id.brave_playlist_id) {
-            openBravePlaylist();
+            PlaylistUtils.openPlaylistActivity(BraveActivity.this, PlaylistUtils.DEFAULT_PLAYLIST);
         } else if (id == R.id.brave_news_id) {
             openBraveNewsSettings();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
@@ -860,16 +860,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
     }
 
-    private void showPlaylistButton() {
-        ViewUtils.showPlaylistButton(BraveActivity.this, findViewById(android.R.id.content),
-                SharedPreferencesManager.getInstance().readBoolean(
-                        BravePreferenceKeys.SHOULD_SHOW_PLAYLIST_ONBOARDING, false));
-    }
-
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        showPlaylistButton();
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
 
         BraveHelper.maybeMigrateSettings();
@@ -1264,12 +1257,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         braveWalletIntent.putExtra(Utils.RESTART_WALLET_ACTIVITY_RESTORE, restoreAction);
         braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(braveWalletIntent);
-    }
-
-    private void openBravePlaylist() {
-        Intent bravePlaylistIntent = new Intent(this, AllPlaylistActivity.class);
-        bravePlaylistIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(bravePlaylistIntent);
     }
 
     public void viewOnBlockExplorer(String address, @CoinType.EnumType int coinType) {
