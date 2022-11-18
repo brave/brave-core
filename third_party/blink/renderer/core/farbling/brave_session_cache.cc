@@ -29,6 +29,7 @@
 #include "third_party/blink/renderer/platform/language.h"
 #include "third_party/blink/renderer/platform/network/network_utils.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
+#include "third_party/blink/renderer/platform/weborigin/scheme_registry.h"
 #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
@@ -84,10 +85,10 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
   blink::WebContentSettingsClient* settings = nullptr;
   if (!context)
     return settings;
-  // Avoid blocking fingerprinting in WebUI pages.
+  // Avoid blocking fingerprinting in WebUI, extensions, etc.
   const String protocol = context->GetSecurityOrigin()->Protocol();
-  if (protocol == url::kAboutScheme || protocol == "chrome" ||
-      protocol == "brave") {
+  if (protocol == url::kAboutScheme || protocol == "chrome-extension" ||
+      blink::SchemeRegistry::ShouldTreatURLSchemeAsDisplayIsolated(protocol)) {
     return settings;
   }
   if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {

@@ -5,6 +5,7 @@
 
 #include <algorithm>
 
+#include "base/files/file_path.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
@@ -12,10 +13,12 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/browser/extensions/extension_browsertest.h"
+#include "chrome/browser/extensions/chrome_test_extension_loader.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/common/chrome_content_client.h"
+#include "chrome/common/chrome_paths.h"
+#include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
@@ -62,6 +65,14 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     content_client_.reset();
   }
 
+  std::string LoadExtension(const base::FilePath& path) {
+    extensions::ChromeTestExtensionLoader loader(browser()->profile());
+    scoped_refptr<const extensions::Extension> extension =
+        loader.LoadExtension(path);
+    EXPECT_TRUE(extension);
+    return extension->id();
+  }
+
   HostContentSettingsMap* ContentSettings() {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   }
@@ -99,13 +110,13 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     return browser()->window()->GetBounds();
   }
 
-  void FarbleScreenSize() {
+  void FarbleScreenSize(const GURL& url, bool content_scheme) {
     for (int j = 0; j < static_cast<int>(std::size(kTestWindowBounds)); ++j) {
       SetBounds(kTestWindowBounds[j]);
       for (bool allow_fingerprinting : {false, true}) {
         SetFingerprintingSetting(allow_fingerprinting);
-        NavigateToURLUntilLoadStop(FarblingUrl());
-        if (!allow_fingerprinting && !IsFlagDisabled()) {
+        NavigateToURLUntilLoadStop(url);
+        if (!allow_fingerprinting && !IsFlagDisabled() && content_scheme) {
           EXPECT_GE(
               8, EvalJs(Contents(), "window.outerWidth - window.innerWidth"));
           EXPECT_GE(
@@ -274,12 +285,12 @@ class BraveScreenFarblingBrowserTest_DisableFlag
 
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
                        FarbleScreenSize_EnableFlag) {
-  FarbleScreenSize();
+  FarbleScreenSize(FarblingUrl(), true);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_DisableFlag,
                        FarbleScreenSize_DisableFlag) {
-  FarbleScreenSize();
+  FarbleScreenSize(FarblingUrl(), true);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
@@ -344,4 +355,26 @@ IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_DisableFlag,
                        FarbleScreenPopupPosition_DisableFlag_3) {
   FarbleScreenPopupPosition(3);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
+                       FarbleScreenSize_Schemes) {
+  // chrome: URI (don't farble)
+  FarbleScreenSize(GURL("chrome:version"), false);
+
+  // chrome-extension: URI (don't farble)
+  base::FilePath test_data_dir;
+  base::PathService::Get(chrome::DIR_TEST_DATA, &test_data_dir);
+  std::string extension_id =
+      LoadExtension(test_data_dir.AppendASCII("extensions")
+                        .AppendASCII("ui")
+                        .AppendASCII("browser_action_popup"));
+  base::RunLoop().RunUntilIdle();  // Ensure the extension is fully loaded.
+  const GURL extension_url("chrome-extension://" + extension_id +
+                           "/popup.html");
+  FarbleScreenSize(extension_url, false);
+
+  // devtools: URI (don't farble)
+  const GURL devtools_url("devtools://devtools/bundled/devtools_app.html");
+  FarbleScreenSize(devtools_url, false);
 }
