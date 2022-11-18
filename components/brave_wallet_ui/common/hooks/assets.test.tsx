@@ -5,7 +5,7 @@ import { TextEncoder, TextDecoder } from 'util'
 // @ts-expect-error
 global.TextDecoder = TextDecoder
 global.TextEncoder = TextEncoder
-import { renderHook, act } from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import {
   mockAccount,
   mockAssetPrices,
@@ -13,7 +13,6 @@ import {
 } from '../constants/mocks'
 import useAssets from './assets'
 import { WalletAccountType } from '../../constants/types'
-import { setMockedBuyAssets } from '../async/__mocks__/lib'
 import * as MockedLib from '../async/__mocks__/lib'
 import { LibContext } from '../context/lib.context'
 import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
@@ -53,9 +52,8 @@ const renderHookOptionsWithCustomStore = (store: any) => ({
 })
 
 describe('useAssets hook', () => {
-  it('Selected account has balances, should return expectedResult', async () => {
-    setMockedBuyAssets(mockVisibleList)
-    const { result, waitForNextUpdate } = renderHook(
+  it('Selected account has balances, should return expectedResult', () => {
+    const { result } = renderHook(
       () => useAssets(),
       renderHookOptionsWithCustomStore(
         createStore(combineReducers({
@@ -71,14 +69,11 @@ describe('useAssets hook', () => {
         }))
       )
     )
-    await act(async () => {
-      await waitForNextUpdate()
-    })
     expect(result.current.panelUserAssetList).toEqual(mockVisibleList)
   })
 
-  it('should return empty array for panelUserAssetList if visible assets is empty', async () => {
-    const { result, waitForNextUpdate } = renderHook(
+  it('should return empty array for panelUserAssetList if visible assets is empty', () => {
+    const { result } = renderHook(
       () => useAssets(),
       renderHookOptionsWithCustomStore(
         createStore(combineReducers({
@@ -94,9 +89,6 @@ describe('useAssets hook', () => {
         }))
       )
     )
-    await act(async () => {
-      await waitForNextUpdate()
-    })
     expect(result.current.panelUserAssetList).toEqual([])
   })
 })

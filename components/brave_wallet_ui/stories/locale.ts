@@ -403,12 +403,15 @@ provideStrings({
   braveWalletBuyRampNetworkName: 'Ramp.Network',
   braveWalletBuyWyreName: 'Wyre',
   braveWalletBuySardineName: 'Sardine',
+  braveWalletBuyTransakName: 'Transak',
   braveWalletBuyRampDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
   braveWalletBuyWyreDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
   braveWalletBuySardineDescription: 'Instant buy with your bank account. Lower fees.',
+  braveWalletBuyTransakDescription: 'Instant buy with your bank account. Lower fees.',
   braveWalletBuyWithWyre: 'Buy with Wyre',
   braveWalletBuyWithRamp: 'Buy with Ramp',
   braveWalletBuyWithSardine: 'Buy with Sardine',
+  braveWalletBuyWithTransak: 'Buy with Transak',
 
   // Fund Wallet Screen
   braveWalletFundWalletTitle: 'To finish your $1 purchase, select one of our partners',
