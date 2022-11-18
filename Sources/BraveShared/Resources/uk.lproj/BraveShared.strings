@@ -286,6 +286,18 @@
 /* Title for Default Browser Full Screen Callout */
 "callout.defaultBrowserTitle" = "Конфіденційність — це просто.";
 
+/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutDescription" = "Завдяки цьому ми дізнаємося, які функції Brave використовуються найчастіше. Ви можете змінити параметри будь-коли в налаштуваннях Brave у розділі «Brave Shields і конфіденційність»";
+
+/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
+"callout.p3aCalloutLinkTitle" = "Дізнайтеся більше про аналітику продуктів зі збереженням конфіденційності (P3A).";
+
+/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutTitle" = "Допоможіть поліпшити Brave.";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "Ділитися анонімною та приватною інформацією про продукт";
+
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Переглянути відео";
 
@@ -1371,6 +1383,12 @@
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "Інші налаштування";
+
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Анонімно діліться приватною інформацією про продукт. Це допоможе нам дізнатися, які функції Brave використовуються найчастіше.";
+
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+"p3a.settingTitle" = "Аналітика щодо продукту";
 
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Рівень масштабування сторінки за замовчуванням";

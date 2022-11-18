@@ -286,6 +286,18 @@
 /* Title for Default Browser Full Screen Callout */
 "callout.defaultBrowserTitle" = "Güvenlik. Artık Çok Kolay.";
 
+/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutDescription" = "Bu şekilde en sık hangi Brave özelliklerinin kullanıldığını öğrenmemize yardımcı olabilirsiniz. Bu tercihi Brave Ayarları altındaki \"Brave Kalkanları ve Gizlilik\"ten istediğiniz zaman değiştirebilirsiniz.";
+
+/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
+"callout.p3aCalloutLinkTitle" = "Gizlilik Korumalı Ürün Analizlerimiz (P3A) hakkında daha fazlasını öğrenin.";
+
+/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutTitle" = "Brave'i daha iyi hale getirmeye yardım edin.";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "Anonim, gizli ürün içgörüleri paylaşın.";
+
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Videoyu izleyin";
 
@@ -830,7 +842,7 @@
 "genericErrorTitle" = "Hata";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsing" = "Tehlikeli siteleri engelle";
+"GoogleSafeBrowsing" = "Tehlikeli Siteleri Engelleyin";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "Güvenliğiniz risk altındayken, Google güvenli tarama hizmetine ziyaret ettiğiniz bazı sayfaların karartılmış URL'lerini gönderir.";
@@ -1371,6 +1383,12 @@
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "Diğer Ayarlar";
+
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Anonim, gizli ürün içgörüleri paylaşın. Bu şekilde en sık hangi Brave özelliklerinin kullanıldığını öğrenmemize yardımcı olabilirsiniz.";
+
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+"p3a.settingTitle" = "Ürün Analizi";
 
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Varsayılan Web Sayfası Yakınlaştırma Seviyesi";

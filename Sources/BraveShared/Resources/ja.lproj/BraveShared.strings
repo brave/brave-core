@@ -286,6 +286,18 @@
 /* Title for Default Browser Full Screen Callout */
 "callout.defaultBrowserTitle" = "シンプルに、プライバシー保護。";
 
+/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutDescription" = "これにより、Braveのどの機能が最も頻繁に使用されているかを知ることができます。Braveの設定の「Braveシールド & プライバシー」でいつでも変更できます。";
+
+/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
+"callout.p3aCalloutLinkTitle" = "プライバシーを保護したプロダクト分析 (P3A) についてはこちらをご覧ください。";
+
+/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutTitle" = "Braveの品質向上にご協力ください。";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "匿名かつプライバシーに配慮した形で製品のインサイトを共有します。";
+
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "説明を見る";
 
@@ -1343,7 +1355,7 @@
 "optionsMenu.braveNewsItemTitle" = "News";
 
 /* The subtitle description of menu item Brave Playlist */
-"optionsMenu.bravePlaylistItemDescription" = "どんな動画/ストリーミングでもオフライン再生用のプレイリストに保存。";
+"optionsMenu.bravePlaylistItemDescription" = "どんな動画/ストリーミングでもオフライン再生可能なプレイリストに追加しよう。";
 
 /* Brave News Item Menu title */
 "optionsMenu.bravePlaylistItemTitle" = "Playlist";
@@ -1371,6 +1383,12 @@
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "その他の設定";
+
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "匿名かつプライベートな製品インサイトを共有することができます。これにより、Braveのどの機能が最も頻繁に使用されているかを知ることができます。";
+
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+"p3a.settingTitle" = "プロダクト分析";
 
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "デフォルトのウェブページズームレベル";
@@ -1496,13 +1514,13 @@
 "playlist.playlistAutoSaveSettingsDescription" = "動画や音声ファイルをオフライン利用可能にする際、デバイスのデータ容量や通信量を大きく消費する可能性があります。";
 
 /* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "この設定を行うと、Playlistに追加されたアイテムが、オフライン再生のために自動でデバイスに保存されます。";
+"playlist.playlistAutoSaveSettingsFooterText" = "この設定を行うと、Playlistに追加されたアイテムが、自動でオフライン再生可能になります。";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsTitle" = "オフライン再生のために自動保存する";
+"playlist.playlistAutoSaveSettingsTitle" = "自動でオフライン再生可能にする";
 
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "動画や音声をオフライン使用のために保存することは、デバイスのデータ容量を大きく消費することがあります。容量を確保するため、いくつかのファイルを削除してください。";
+"playlist.playlistDiskSpaceWarningMessage" = "動画や音声をオフライン使用を可能にすることは、デバイスのデータ容量を大きく消費することがあります。容量を確保するため、いくつかのファイルを削除してください。";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "データ容量がもうすぐいっぱいです";
@@ -1529,7 +1547,7 @@
 "playlist.playlistResetPlaylistOptionFooterText" = "この設定を行うとPlaylistとオフライン再生用ストレージからすべての動画を削除します。";
 
 /* Error message when saving a playlist item for offline fails */
-"playlist.playlistSaveForOfflineErrorMessage" = "すみません、このアイテムは現在オフライン再生用に保存できません。";
+"playlist.playlistSaveForOfflineErrorMessage" = "すみません、このアイテムは現在オフライン再生ができません。";
 
 /* Title of alert when saving a playlist item for offline mode */
 "playlist.playlistSaveForOfflineErrorTitle" = "すみません。問題が発生しました";
@@ -1610,13 +1628,13 @@
 "playList.reopenButtonTitle" = "再度開く";
 
 /* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
-"playList.savedForOfflineLabelTitle" = "オフライン再生のために保存中";
+"playList.savedForOfflineLabelTitle" = "オフライン再生の準備中";
 
 /* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
-"playlist.saveForOfflineButtonTitle" = "オフライン再生用に保存";
+"playlist.saveForOfflineButtonTitle" = "オフライン再生可能にする";
 
 /* Text indicator on the table cell while saving a video for offline */
-"playList.savingForOfflineLabelTitle" = "オフライン再生のために保存中...";
+"playList.savingForOfflineLabelTitle" = "オフライン再生の準備中...";
 
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "すべてのPlaylistフォルダを自動で同期する";
@@ -1748,7 +1766,7 @@
 "playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Playlistを今すぐ追加";
 
 /* Description of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewDescription" = "オフライン用に自動保存をオンにすると、Playlist (共有プレイリストを含む) に新しく追加されたデータがオフライン再生用としてデバイスに保存され、お使いのデバイスの通信量を大きく消費する可能性があります。\n\nオフラインでの自動保存は、プレイリストの設定で管理することができます。";
+"playlistFolderSharing.offlineManagementViewDescription" = "自動でオフライン再生可能にする設定をオンにすると、Playlist (共有プレイリストを含む) に新しく追加されたデータがオフライン再生可能な状態になり、お使いのデバイスの通信量を大きく消費する可能性があります。\n\n自動でオフライン再生可能にする設定は、プレイリストの設定で管理することができます。";
 
 /* Button that takes the user to the settings menu */
 "playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "設定";
@@ -1760,7 +1778,7 @@
 "playlistFolderSharing.renameMenuTitle" = "名前を変更";
 
 /* Menu Title for saving offline data/cache */
-"playlistFolderSharing.saveOfflineDataMenuTitle" = "オフライン再生用データを保存する";
+"playlistFolderSharing.saveOfflineDataMenuTitle" = "オフライン再生を可能にする";
 
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "同期を開始する";

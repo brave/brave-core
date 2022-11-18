@@ -46,11 +46,29 @@
 /* The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network. */
 "wallet.addCustomNetworkDropdownButtonTitle" = "Tambah Rangkaian...";
 
+/* A title of one segment on top of Add Custom Assets screen. Users would need to select this segment if they are willing to add a custom non-fungible token. */
+"wallet.addCustomNFTTitle" = "NFT";
+
+/* A title of an initally hidden section in Add custom asset screen for users to input icon url and coingecko id. */
+"wallet.addCustomTokenAdvanced" = "Lanjutan";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's coingecko ID. */
+"wallet.addCustomTokenCoingeckoId" = "ID Coingecko";
+
 /* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
 "wallet.addCustomTokenErrorMessage" = "Gagal menambah token tersuai, sila cuba lagi.";
 
 /* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
 "wallet.addCustomTokenErrorTitle" = "Tidak dapat menambah token tersuai";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's icon URL. */
+"wallet.addCustomTokenIconURL" = "Ikon URL";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's ID. */
+"wallet.addCustomTokenId" = "ID Token (hanya untuk ERC721)";
+
+/* A title of one segment on top of Add Custom Assets screen, which is default selected. Users would need to select this segment if they are willing to add a custom fungible token. */
+"wallet.addCustomTokenTitle" = "Token";
 
 /* The description of the view shown over a dapps website that describes what adding a new network will do. */
 "wallet.addNetworkDescription" = "Ini akan membenarkan rangkaian ini untuk digunakan dalam Brave Wallet.";
@@ -69,6 +87,9 @@
 
 /* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
 "wallet.advancedSettingsTransaction" = "Tetapan lanjutan";
+
+/* The title of the option to filter by all networks, displayed in a view to filter assets between 'All Networks' or a specific Crypto network. */
+"wallet.allNetworksTitle" = "Semua Rangkaian";
 
 /* A title displayed above two numbers (the amount and transaction fee) showing the user the breakdown of the amount transferred and transaction fee for any Solana transaction. The \"+\" is a literal plus as the label below will show such as \"0.004 SOL + 0.00064 SOL\" */
 "wallet.amountAndFee" = "Amaun + Yuran";
@@ -331,6 +352,12 @@
 /* The placeholder for the input field for users to input network rpc url in Custom Network Details Screen. */
 "wallet.customNetworkUrlsPlaceholder" = "Masukkan URL";
 
+/* A title for the btton that users can click to choose the network they are willing to add custom asset in. */
+"wallet.customTokenNetworkButtonTitle" = "Pilih rangkaian";
+
+/* A title that will be displayed on top of the text field for users to choose a network they are willing to add the custom asset in. */
+"wallet.customTokenNetworkHeader" = "Pilih rangkaian";
+
 /* The title displayed on the add custom token screen */
 "wallet.customTokenTitle" = "Tersuai";
 
@@ -514,17 +541,26 @@
 /* The button title for showing the screen to change what assets are visible */
 "wallet.editVisibleAssetsButtonTitle" = "Edit Aset Tampak";
 
+/* A placeholder for the text field that users will input the custom token address */
+"wallet.enterAddress" = "Masukkan alamat";
+
 /* The header title for the textField users will input the dollar value of the crypto they want to buy */
 "wallet.enterAmount" = "Masukkan jumlah";
-
-/* A placeholder for the text field that users will input the custom token contract address */
-"wallet.enterContractAddress" = "Masukkan alamat kontrak";
 
 /* The navigation bar title displayed on the screen to enter wallet password to enable biometrics unlock from wallet settings. */
 "wallet.enterPasswordForBiometricsNavTitle" = "Dayakan Biometrik";
 
 /* The title displayed on the screen to enter password to enable biometrics unlock from wallet settings. */
 "wallet.enterPasswordForBiometricsTitle" = "Masukkan kata laluan dompet anda bagi mendayakan biometrik untuk dompet (anda akan ditanya sekali sahaja)";
+
+/* A placeholder for the text field that users will input the custom token Coingecko ID. */
+"wallet.enterTokenCoingeckoId" = "Masukkan token ID Coingecko";
+
+/* A placeholder for the text field that users will input the custom token icon URL */
+"wallet.enterTokenIconURL" = "Masukkan URL ikon token";
+
+/* A placeholder for the text field that users will input the custom token's ID. */
+"wallet.enterTokenId" = "Masukkan ID Token";
 
 /* A placeholder for the text field that users will input the custom token name */
 "wallet.enterTokenName" = "Masukkan nama token";
@@ -667,6 +703,9 @@
 /* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
 "wallet.module" = "Brave Wallet";
 
+/* The title displayed on the view to filter by a network / all networks. */
+"wallet.networkFilterTitle" = "Pilih Penapis Rangkaian";
+
 /* The footer beneath the networks title in settings screen. */
 "wallet.networkFooter" = "Penyesuaian rangkaian dompet";
 
@@ -705,6 +744,9 @@
 
 /* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
 "wallet.next" = "Seterusnya";
+
+/* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
+"wallet.nftsTitle" = "NFT";
 
 /* The empty state displayed when the user has no accounts associated with a transaction or asset */
 "wallet.noAccounts" = "Tiada Akaun";
@@ -1198,8 +1240,8 @@
 /* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
 "wallet.today" = "Hari ini";
 
-/* A title that will be displayed on top of the text field for users to input the custom token contract address */
-"wallet.tokenContractAddress" = "Alamat kontrak token";
+/* A title that will be displayed on top of the text field for users to input the custom token address */
+"wallet.tokenAddress" = "Alamat token";
 
 /* A title that will be displayed on top of the text field for users to input the custom token name */
 "wallet.tokenName" = "Nama token";
@@ -1297,7 +1339,7 @@
 /* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
 "wallet.transactionUnknownApprovalTitle" = "Diluluskan";
 
-/* A title shown for a erc 20 transfer, or erc 721 transaction. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
+/* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
 "wallet.transactionUnknownSendTitle" = "Dihantar %@";
 
 /* An error message displayed when an unspecified problem occurs. */
