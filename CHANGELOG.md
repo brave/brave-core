@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.45.1](https://github.com/brave/brave-ios/releases/tag/v1.45.1)
+
+ - Implemented Brave Shields to be loaded before the first tab loads. ([#6261](https://github.com/brave/brave-ios/issues/6261)) 
+ - Fixed ads from being shown on YouTube videos. ([#6411](https://github.com/brave/brave-ios/issues/6411))
+
 ## [1.45](https://github.com/brave/brave-ios/releases/tag/v1.45)
 
  - Added dialog for blocking cookie consent banners. ([#1358](https://github.com/brave/brave-ios/issues/1358))
