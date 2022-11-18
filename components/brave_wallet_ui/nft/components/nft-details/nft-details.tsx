@@ -20,6 +20,7 @@ import { getLocale } from '$web-common/locale'
 
 // Styled Components
 import {
+  CopyIcon,
   DetailColumn,
   DetailSectionColumn,
   DetailSectionRow,
@@ -28,22 +29,29 @@ import {
   ErrorMessage,
   ExplorerButton,
   ExplorerIcon,
+  NftStandard,
   ProjectDetailButton,
   ProjectDetailButtonRow,
   ProjectDetailButtonSeperator,
   ProjectDetailDescription,
   ProjectDetailIDRow,
-  ProjectDetailName,
   ProjectDetailRow,
   ProjectFacebookIcon,
   ProjectTwitterIcon,
   ProjectWebsiteIcon,
   StyledWrapper,
-  TokenName
+  TokenName,
+  HighlightedDetailSectionValue,
+  Subdivider,
+  ProjectDetailName
 } from './nft-details-styles'
 import { isValidateUrl } from '../../../utils/string-utils'
 import { NftMultimedia } from '../nft-multimedia/nft-multimedia'
 import { MultimediaWrapper } from '../nft-content/nft-content-styles'
+import { CreateNetworkIcon } from '../../../components/shared'
+import { Row } from '../../../components/shared/style'
+import CopyTooltip from '../../../components/shared/copy-tooltip/copy-tooltip'
+import { NftPinnigStatus } from '../../../components/desktop/nft-pinning-status/nft-pinning-status'
 
 interface Props {
   isLoading?: boolean
@@ -80,6 +88,9 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
     onClickLink(nftMetadata?.contractInformation?.facebook)
   }
 
+  const onCopyContractAddress = React.useCallback(() => {
+  }, [])
+
   return (
     <StyledWrapper>
       {nftMetadataError
@@ -91,6 +102,12 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                 <NftMultimedia nftMetadata={nftMetadata} />
               </MultimediaWrapper>
               <DetailColumn>
+                {selectedAsset.isErc721 &&
+                  <NftStandard>
+                    <CreateNetworkIcon network={tokenNetwork} size='small' />
+                    ERC-721
+                  </NftStandard>
+                }
                 <TokenName>
                   {nftMetadata.contractInformation.name}{' '}
                   {selectedAsset.tokenId
@@ -100,6 +117,17 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                 {/* TODO: Add floorFiatPrice & floorCryptoPrice when data is available from backend: https://github.com/brave/brave-browser/issues/22627 */}
                 {/* <TokenFiatValue>{CurrencySymbols[defaultCurrencies.fiat]}{nftMetadata.floorFiatPrice}</TokenFiatValue> */}
                 {/* <TokenCryptoValue>{nftMetadata.floorCryptoPrice} {selectedNetwork.symbol}</TokenCryptoValue> */}
+                <DetailSectionRow>
+                  <DetailSectionColumn>
+                    <DetailSectionTitle>Contract</DetailSectionTitle>
+                    <Row gap='4px'>
+                      <HighlightedDetailSectionValue>{selectedAsset.contractAddress}</HighlightedDetailSectionValue>
+                      <CopyTooltip>
+                        <CopyIcon onClick={onCopyContractAddress}/>
+                      </CopyTooltip>
+                    </Row>
+                  </DetailSectionColumn>
+                </DetailSectionRow>
                 <DetailSectionRow>
                   <DetailSectionColumn>
                     <DetailSectionTitle>
@@ -165,9 +193,28 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                       </ProjectDetailButtonRow>
                     )}
                 </ProjectDetailRow>
-                <ProjectDetailDescription>
-                  {nftMetadata.contractInformation.description}
-                </ProjectDetailDescription>
+                <DetailSectionColumn>
+                  <DetailSectionTitle>Description</DetailSectionTitle>
+                  <ProjectDetailDescription>{nftMetadata.contractInformation.description}</ProjectDetailDescription>
+                </DetailSectionColumn>
+                <Subdivider />
+                <DetailSectionRow>
+                  <DetailSectionColumn>
+                    <DetailSectionTitle>CID</DetailSectionTitle>
+                    <ProjectDetailDescription>Qmdieskenfisef3135422524</ProjectDetailDescription>
+                  </DetailSectionColumn>
+                </DetailSectionRow>
+                <DetailSectionRow>
+                  <DetailSectionColumn>
+                    <DetailSectionTitle>Image location or address</DetailSectionTitle>
+                    <HighlightedDetailSectionValue>{selectedAsset.logo}</HighlightedDetailSectionValue>
+                  </DetailSectionColumn>
+                </DetailSectionRow>
+                <DetailSectionRow>
+                  <DetailSectionColumn>
+                    <NftPinnigStatus pinningStatus='failed' />
+                  </DetailSectionColumn>
+                </DetailSectionRow>
               </DetailColumn>
             </>
           }

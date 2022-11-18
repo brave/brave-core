@@ -9,6 +9,7 @@ import WebsiteIcon from '../../../assets/svg-icons/website-icon.svg'
 import TwitterIcon from '../../../assets/svg-icons/twitter-icon.svg'
 import FacebookIcon from '../../../assets/svg-icons/facebook-icon.svg'
 import { OpenNewIcon } from 'brave-ui/components/icons'
+import Copy from '../../../assets/svg-icons/nft-ipfs/copy.svg'
 
 export const nftMediaSize = '440px'
 
@@ -63,7 +64,7 @@ export const DetailSectionRow = styled.div`
   align-items: flex-start;
   justify-content: space-between;
   min-width: 70%;
-  margin-bottom: 30px;
+  margin-bottom: 16px;
 `
 
 export const DetailSectionColumn = styled.div`
@@ -104,7 +105,6 @@ export const ProjectDetailRow = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 20px;
 `
 
 export const ProjectDetailName = styled.span`
@@ -140,6 +140,7 @@ export const ProjectDetailButtonRow = styled.div`
   justify-content: center;
   border: 1px solid #E5E8EB;
   border-radius: 6.5px;
+  margin-bottom: 20px;
 `
 
 export const ProjectDetailButtonSeperator = styled.div`
@@ -219,4 +220,62 @@ export const ErrorMessage = styled.p`
   color: ${(p) => p.theme.color.text02};
   word-break: break-word;
   margin-top: 50px;
+`
+
+export const NftStandard = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 2px 4px;
+  gap: 4px;
+  border: 1px solid rgba(174, 177, 194, 0.55);
+  border-radius: 4px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  color: ${(p) => p.theme.color.text02};
+  margin-bottom: 6px;
+`
+
+export const HighlightedDetailSectionValue = styled.p`
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: ${p => p.theme.color.interactive05};
+  margin: 0;
+  padding: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+`
+
+export const CopyIcon = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 12px;
+  height: 12px;
+  mask-image: url(${Copy});
+  -webkit-mask-image: url(${Copy});
+  mask-repeat: no-repeat;
+  background-color: ${p => p.theme.color.text02};
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${p => p.theme.color.interactive05};
+  }
+`
+
+export const Subdivider = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: ${p => p.theme.color.divider01};
+  margin-bottom: 16px;
+  margin-top: 16px;
 `

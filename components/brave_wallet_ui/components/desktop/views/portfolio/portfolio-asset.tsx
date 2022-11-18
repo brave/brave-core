@@ -33,7 +33,8 @@ import {
   UpdateNFtMetadataMessage,
   UpdateSelectedAssetMessage,
   UpdateTokenNetworkMessage,
-  braveNftDisplayOrigin
+  braveNftDisplayOrigin,
+  IframeSize
 } from '../../../../nft/nft-ui-messages'
 import { auroraSupportedContractAddresses } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
@@ -98,6 +99,7 @@ import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
 import { NftModal } from './components/nft-modal/nft-modal'
 import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
 import { ParsedTransaction } from '../../../../common/hooks/transaction-parser'
+import { IpfsNodeStatus } from './components/ipfs-node-status/ipfs-node-status'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 const rainbowbridgeLink = 'https://rainbowbridge.app'
@@ -117,6 +119,7 @@ export const PortfolioAsset = (props: Props) => {
   const [showTokenDetailsModal, setShowTokenDetailsModal] = React.useState<boolean>(false)
   const [showHideTokenModel, setShowHideTokenModal] = React.useState<boolean>(false)
   const [showNftModal, setshowNftModal] = React.useState<boolean>(false)
+  const [iframeHeight, setIframeHeight] = React.useState<string>('440px')
 
   // routing
   const history = useHistory()
@@ -472,6 +475,12 @@ export const PortfolioAsset = (props: Props) => {
       const { payload } = message as ToggleNftModal
       setshowNftModal(payload)
     }
+
+    if (message.command === NftUiCommand.IframeSize) {
+      const { payload } = message as IframeSize
+      setIframeHeight(payload.height + 'px')
+      console.log('payload', payload)
+    }
   }, [])
 
   const onSelectBuy = React.useCallback(() => {
@@ -585,8 +594,9 @@ export const PortfolioAsset = (props: Props) => {
   return (
     <StyledWrapper onClick={onHideMore}>
       <TopRow>
-        <BalanceRow>
+        <BalanceRow gap='16px'>
           <BackButton onSubmit={goBack} />
+          <IpfsNodeStatus />
         </BalanceRow>
         <BalanceRow>
           {!isNftAsset &&
@@ -717,6 +727,7 @@ export const PortfolioAsset = (props: Props) => {
         sandbox="allow-scripts allow-popups allow-same-origin"
         src='chrome-untrusted://nft-display'
         allowFullScreen
+        style={{ height: iframeHeight }}
       />
 
       {showNftModal && nftMetadata?.imageURL &&

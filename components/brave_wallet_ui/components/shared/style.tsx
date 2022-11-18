@@ -95,6 +95,8 @@ export const backgroundColorMixin = css<{
 // Containers
 export const Row = styled.div<FlexProps & {
   maxWidth?: CSSProperties['maxWidth']
+  margin?: number | string
+  padding?: number | string
 }>`
   display: flex;
   flex-direction: row;
@@ -104,6 +106,9 @@ export const Row = styled.div<FlexProps & {
   gap: ${(p) => p.gap ?? 'unset'};
   width: 100%;
   max-width: ${(p) => p.maxWidth ?? 'unset'};
+  margin: ${(p) => p.margin ?? 0};
+  position: relative;
+  ${makePaddingMixin(0)}
 `
 
 export const Column = styled.div<FlexProps & {
@@ -111,6 +116,7 @@ export const Column = styled.div<FlexProps & {
   fullHeight?: boolean
   color?: ThemeColor
   padding?: number | string
+  margin?: number | string
 }>`
   height: ${(p) => p.fullHeight ? '100%' : 'unset'};
   width: ${(p) => p.fullWidth ? '100%' : 'unset'};
@@ -120,7 +126,8 @@ export const Column = styled.div<FlexProps & {
   align-items: ${(p) => p.alignItems ?? 'center'};
   justify-content: ${(p) => p.justifyContent ?? 'center'};
   gap: ${(p) => p.gap ?? 'unset'};
-  ${(p) => p?.color && backgroundColorMixin}
+  margin: ${(p) => p.margin ?? 0};
+  ${(p) => p?.color && backgroundColorMixin};
   ${makePaddingMixin(0)}
 `
 
@@ -428,5 +435,12 @@ export const InputLabelText = styled.label`
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text03};
   text-align: left;
+  width: 100%;
+`
+
+export const BannerWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 24px;
   width: 100%;
 `
