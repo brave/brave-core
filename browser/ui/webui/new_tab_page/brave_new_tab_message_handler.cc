@@ -419,8 +419,6 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowStats;
   } else if (settingsKeyInput == "showToday") {
     settingsKey = brave_news::prefs::kNewTabPageShowToday;
-  } else if (settingsKeyInput == "showBraveNewsButton") {
-    settingsKey = brave_news::prefs::kShouldShowToolbarButton;
   } else if (settingsKeyInput == "isBraveTodayOptedIn") {
     settingsKey = brave_news::prefs::kBraveTodayOptedIn;
   } else if (settingsKeyInput == "showRewards") {

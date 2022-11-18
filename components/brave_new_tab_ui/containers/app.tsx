@@ -50,7 +50,6 @@ function DefaultPage (props: Props) {
       actions={actions}
       saveShowBackgroundImage={PreferencesAPI.saveShowBackgroundImage}
       saveShowToday={PreferencesAPI.saveShowToday}
-      saveShowBraveNewsButton={PreferencesAPI.saveShowBraveNewsButton}
       saveShowRewards={PreferencesAPI.saveShowRewards}
       saveShowBraveTalk={PreferencesAPI.saveShowBraveTalk}
       saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}

@@ -75,8 +75,7 @@ class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
 class BraveNewsTabHelperTest : public InProcessBrowserTest {
  public:
   BraveNewsTabHelperTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   void SetUp() override {
     brave::RegisterPathProvider();

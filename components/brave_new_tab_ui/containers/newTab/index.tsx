@@ -46,7 +46,6 @@ interface Props {
   getBraveNewsDisplayAd: GetDisplayAdContent
   saveShowBackgroundImage: (value: boolean) => void
   saveShowToday: (value: boolean) => any
-  saveShowBraveNewsButton: (value: boolean) => any
   saveShowRewards: (value: boolean) => void
   saveShowBraveTalk: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
@@ -724,7 +723,6 @@ class NewTabPage extends React.Component<Props, State> {
           setColorBackground={this.props.setColorBackground}
           showBackgroundImage={newTabData.showBackgroundImage}
           showToday={newTabData.showToday}
-          showBraveNewsButton={newTabData.showBraveNewsButton}
           showTopSites={newTabData.showTopSites}
           customLinksEnabled={newTabData.customLinksEnabled}
           showRewards={newTabData.showRewards}

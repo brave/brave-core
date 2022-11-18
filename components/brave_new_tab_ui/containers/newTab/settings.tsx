@@ -70,7 +70,6 @@ export interface Props {
   onEnableRewards: () => void
   showBackgroundImage: boolean
   showToday: boolean
-  showBraveNewsButton: boolean
   showTopSites: boolean
   customLinksEnabled: boolean
   brandedWallpaperOptIn: boolean
@@ -373,7 +372,6 @@ export default class Settings extends React.PureComponent<Props, State> {
                     onClearPrefs={this.props.onClearTodayPrefs}
                     showToday={this.props.showToday}
                     toggleShowToday={this.props.toggleShowToday}
-                    showBraveNewsButton={this.props.showBraveNewsButton}
                   />
                 ) : null
               }

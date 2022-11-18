@@ -74,7 +74,6 @@ export const Regular = () => {
       actions={getActions()}
       saveShowBackgroundImage={doNothing}
       saveShowToday={doNothing}
-      saveShowBraveNewsButton={doNothing}
       saveShowRewards={doNothing}
       saveShowBraveTalk={doNothing}
       saveBrandedWallpaperOptIn={onShowBrandedImageChanged}

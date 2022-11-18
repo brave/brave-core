@@ -22,7 +22,6 @@ export interface Props {
   onClearPrefs: () => any
   showToday: boolean
   toggleShowToday: () => any
-  showBraveNewsButton: boolean
 }
 
 export default function BraveTodayPrefs (props: Props) {
