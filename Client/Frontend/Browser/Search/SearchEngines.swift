@@ -8,6 +8,7 @@ import BraveShared
 import Storage
 import UIKit
 import os.log
+import Growth
 
 private let customSearchEnginesFileName = "customEngines.plist"
 
@@ -66,6 +67,7 @@ public class SearchEngines {
     self.fileAccessor = files
     self.disabledEngineNames = getDisabledEngineNames()
     self.orderedEngines = getOrderedEngines()
+    self.recordSearchEngineP3A()
   }
 
   public func searchEngineSetup() {
@@ -130,7 +132,10 @@ public class SearchEngines {
       newlyOrderedEngines.insert(defaultEngine(forType: type), at: 0)
       orderedEngines = newlyOrderedEngines
     }
-
+    
+    if type == .standard {
+      recordSearchEngineP3A()
+    }
   }
 
   func isEngineDefault(_ engine: OpenSearchEngine, type: DefaultEngineType? = nil) -> Bool {
@@ -428,5 +433,41 @@ public class SearchEngines {
     }
 
     updateDefaultEngine(engineDetails.engineName, forType: type)
+  }
+  
+  // MARK: - P3A
+  
+  private func recordSearchEngineP3A() {
+    enum Answer: Int, CaseIterable {
+      case other = 0
+      case google = 1
+      case duckduckgo = 2
+      case startpage = 3
+      case bing = 4
+      case qwant = 5
+      case yandex = 6
+      case ecosia = 7
+      case braveSearch = 8
+    }
+    let answer: Answer = {
+      let engine = defaultEngine(forType: .standard)
+      guard let defaultEngineID = InitialSearchEngines.SearchEngineID.allCases.first(where: {
+        $0.openSearchReference == engine.referenceURL
+      }) else {
+        return .other
+      }
+      switch defaultEngineID {
+      case .google: return .google
+      case .duckduckgo: return .duckduckgo
+      case .startpage: return .startpage
+      case .bing: return .bing
+      case .qwant: return .qwant
+      case .yandex: return .yandex
+      case .ecosia: return .ecosia
+      case .braveSearch: return .braveSearch
+      }
+    }()
+    // Q20 Which is your currently selected search engine
+    UmaHistogramEnumeration("Brave.Search.DefaultEngine.4", sample: answer)
   }
 }

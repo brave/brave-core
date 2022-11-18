@@ -9,7 +9,7 @@ import Foundation
 /// For user controlled search engines class look for `SearchEngines.swift`
 class InitialSearchEngines {
   /// Type of search engine available to the user.
-  enum SearchEngineID: String {
+  enum SearchEngineID: String, CaseIterable {
     case google, braveSearch, bing, duckduckgo, yandex, qwant, startpage, ecosia
 
     /// Open Search Reference  for default search Engines

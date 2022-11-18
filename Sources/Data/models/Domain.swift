@@ -153,6 +153,38 @@ public final class Domain: NSManagedObject, CRUD {
   public static func clearInMemoryDomains() {
     Domain.deleteAll(predicate: nil, context: .new(inMemory: true))
   }
+  
+  public class func totalDomainsWithAdblockShieldsLoweredFromGlobal() -> Int {
+    guard Preferences.Shields.blockAdsAndTracking.value,
+          let domains = Domain.all(where: NSPredicate(format: "shield_adblockAndTp != nil")) else {
+      return 0 // Can't be lower than off
+    }
+    return domains.filter({ $0.shield_adblockAndTp?.boolValue == false }).count
+  }
+  
+  public class func totalDomainsWithAdblockShieldsIncreasedFromGlobal() -> Int {
+    guard !Preferences.Shields.blockAdsAndTracking.value,
+          let domains = Domain.all(where: NSPredicate(format: "shield_adblockAndTp != nil")) else {
+      return 0 // Can't be higher than on
+    }
+    return domains.filter({ $0.shield_adblockAndTp?.boolValue == true }).count
+  }
+  
+  public class func totalDomainsWithFingerprintingProtectionLoweredFromGlobal() -> Int {
+    guard Preferences.Shields.fingerprintingProtection.value,
+          let domains = Domain.all(where: NSPredicate(format: "shield_fpProtection != nil")) else {
+      return 0 // Can't be lower than off
+    }
+    return domains.filter({ $0.shield_fpProtection?.boolValue == false }).count
+  }
+  
+  public class func totalDomainsWithFingerprintingProtectionIncreasedFromGlobal() -> Int {
+    guard !Preferences.Shields.fingerprintingProtection.value,
+          let domains = Domain.all(where: NSPredicate(format: "shield_fpProtection != nil")) else {
+      return 0 // Can't be higher than on
+    }
+    return domains.filter({ $0.shield_fpProtection?.boolValue == true }).count
+  }
 
   // MARK: Wallet
   
