@@ -607,11 +607,25 @@ void BraveNewsController::HandleSubscriptionsChanged() {
 void BraveNewsController::MaybeInitPrefs() {
   if (GetIsEnabled() && base::FeatureList::IsEnabled(
                             brave_today::features::kBraveNewsV2Feature)) {
+    // We had a bug where you could be subscribed to a channel in the empty
+    // locale in earlier versions of Brave News. If so, we should remove it.
+    // After this has been out for a bit we can remove it.
+    // https://github.com/brave/brave-browser/issues/26596
+    if (prefs_->GetDict(prefs::kBraveNewsChannels).contains("")) {
+      ScopedDictPrefUpdate update(prefs_, prefs::kBraveNewsChannels);
+      update->Remove("");
+    }
+
     const auto& channels = prefs_->GetDict(prefs::kBraveNewsChannels);
-    if (channels.empty() && GetIsEnabled()) {
+    if (channels.empty()) {
       publishers_controller_.GetLocale(base::BindOnce(
           [](ChannelsController* channels_controller,
              const std::string& locale) {
+            // This could happen, if we're offline, or the API is down at the
+            // moment.
+            if (locale.empty()) {
+              return;
+            }
             channels_controller->SetChannelSubscribed(locale,
                                                       kTopSourcesChannel, true);
           },

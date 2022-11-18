@@ -48,6 +48,8 @@ class ChannelsController {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveNewsFeedBuildingTest, BuildFeedV2);
+  FRIEND_TEST_ALL_PREFIXES(BraveNewsFeedBuildingTest,
+                           DuplicateItemsAreNotIncluded);
   static void SetChannelSubscribedPref(PrefService* prefs,
                                        const std::string& locale,
                                        const std::string& channel_id,
