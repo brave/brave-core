@@ -1,6 +1,5 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
-import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
@@ -31,10 +30,6 @@ json_features("api_features") {
 
   if (gemini_enabled) {
     sources += [ "_gemini_api_features.json" ]
-  }
-
-  if (crypto_dot_com_enabled) {
-    sources += [ "_crypto_dot_com_features.json" ]
   }
 }
 
@@ -87,10 +82,6 @@ if (binance_enabled) {
 
 if (gemini_enabled) {
   brave_extensions_api_schema_sources += [ "gemini.json" ]
-}
-
-if (crypto_dot_com_enabled) {
-  brave_extensions_api_schema_sources += [ "crypto_dot_com.json" ]
 }
 
 brave_extensions_api_uncompiled_sources = []

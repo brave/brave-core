@@ -10,7 +10,7 @@ import getNTPBrowserAPI from '../../api/background'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
 import { brandedWallpaperLogoClicked } from '../../api/wallpaper'
 import {
-  BinanceWidget as Binance, BraveTalkWidget as BraveTalk, Clock, CryptoDotComWidget as CryptoDotCom, EditCards, EditTopSite, GeminiWidget as Gemini, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion
+  BinanceWidget as Binance, BraveTalkWidget as BraveTalk, Clock, EditCards, EditTopSite, GeminiWidget as Gemini, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion
 } from '../../components/default'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 import BraveToday, { GetDisplayAdContent } from '../../components/default/braveToday'
@@ -22,9 +22,6 @@ import SiteRemovalNotification from './notification'
 import Stats from './stats'
 
 // Helpers
-import {
-  fetchCryptoDotComCharts, fetchCryptoDotComLosersGainers, fetchCryptoDotComSupportedPairs, fetchCryptoDotComTickerPrices
-} from '../../api/cryptoDotCom'
 import { generateQRData } from '../../binance-utils'
 import isReadableOnBackground from '../../helpers/colorUtil'
 import VisibilityTimer from '../../helpers/visibilityTimer'
@@ -58,7 +55,6 @@ interface Props {
   saveShowBraveTalk: (value: boolean) => void
   saveShowBinance: (value: boolean) => void
   saveShowGemini: (value: boolean) => void
-  saveShowCryptoDotCom: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
   saveSetAllStackWidgets: (value: boolean) => void
   chooseNewCustomBackgroundImage: () => void
@@ -342,10 +338,6 @@ class NewTabPage extends React.Component<Props, State> {
     }
   }
 
-  toggleShowCryptoDotCom = () => {
-    this.props.saveShowCryptoDotCom(!this.props.newTabData.showCryptoDotCom)
-  }
-
   onBinanceClientUrl = (clientUrl: string) => {
     this.props.actions.onBinanceClientUrl(clientUrl)
   }
@@ -599,61 +591,6 @@ class NewTabPage extends React.Component<Props, State> {
     })
   }
 
-  onCryptoDotComMarketsRequested = async (assets: string[]) => {
-    const [tickerPrices, losersGainers] = await Promise.all([
-      fetchCryptoDotComTickerPrices(assets),
-      fetchCryptoDotComLosersGainers()
-    ])
-    this.props.actions.cryptoDotComMarketDataUpdate(tickerPrices, losersGainers)
-  }
-
-  onCryptoDotComAssetData = async (assets: string[]) => {
-    const [charts, pairs] = await Promise.all([
-      fetchCryptoDotComCharts(assets),
-      fetchCryptoDotComSupportedPairs()
-    ])
-    this.props.actions.setCryptoDotComAssetData(charts, pairs)
-  }
-
-  cryptoDotComUpdateActions = async () => {
-    const { supportedPairs, tickerPrices: prices } = this.props.newTabData.cryptoDotComState
-    const assets = Object.keys(prices)
-    const supportedPairsSet = Object.keys(supportedPairs).length
-
-    const [tickerPrices, losersGainers, charts] = await Promise.all([
-      fetchCryptoDotComTickerPrices(assets),
-      fetchCryptoDotComLosersGainers(),
-      fetchCryptoDotComCharts(assets)
-    ])
-
-    // These are rarely updated, so we only need to fetch them
-    // in the refresh interval if they aren't set yet (perhaps due to no connection)
-    if (!supportedPairsSet) {
-      const pairs = await fetchCryptoDotComSupportedPairs()
-      this.props.actions.setCryptoDotComSupportedPairs(pairs)
-    }
-
-    this.props.actions.onCryptoDotComRefreshData(tickerPrices, losersGainers, charts)
-  }
-
-  onBtcPriceOptIn = async () => {
-    this.props.actions.onBtcPriceOptIn()
-    this.props.actions.onCryptoDotComInteraction()
-    await this.onCryptoDotComMarketsRequested(['BTC'])
-  }
-
-  onCryptoDotComBuyCrypto = () => {
-    this.props.actions.onCryptoDotComBuyCrypto()
-  }
-
-  onCryptoDotComInteraction = () => {
-    this.props.actions.onCryptoDotComInteraction()
-  }
-
-  onCryptoDotComOptInMarkets = (show: boolean) => {
-    this.props.actions.onCryptoDotComOptInMarkets(show)
-  }
-
   fetchGeminiBalances = () => {
     chrome.gemini.getAccountBalances((balances: Record<string, string>, authInvalid: boolean) => {
       if (authInvalid) {
@@ -778,8 +715,6 @@ class NewTabPage extends React.Component<Props, State> {
       showBraveTalk,
       showGemini,
       geminiSupported,
-      showCryptoDotCom,
-      cryptoDotComSupported,
       binanceSupported
     } = this.props.newTabData
     const lookup = {
@@ -798,10 +733,6 @@ class NewTabPage extends React.Component<Props, State> {
       'gemini': {
         display: showGemini && geminiSupported,
         render: this.renderGeminiWidget.bind(this)
-      },
-      'cryptoDotCom': {
-        display: showCryptoDotCom && cryptoDotComSupported,
-        render: this.renderCryptoDotComWidget.bind(this)
       }
     }
 
@@ -836,8 +767,6 @@ class NewTabPage extends React.Component<Props, State> {
       showBraveTalk,
       geminiSupported,
       showGemini,
-      showCryptoDotCom,
-      cryptoDotComSupported,
       binanceSupported,
       hideAllWidgets
     } = this.props.newTabData
@@ -846,7 +775,6 @@ class NewTabPage extends React.Component<Props, State> {
       braveTalkSupported && showBraveTalk,
       binanceSupported && showBinance,
       geminiSupported && showGemini,
-      cryptoDotComSupported && showCryptoDotCom
     ].every((widget: boolean) => !widget)
   }
 
@@ -1039,41 +967,6 @@ class NewTabPage extends React.Component<Props, State> {
         onDismissAuthInvalid={this.dismissGeminiAuthInvalid}
         onDisconnect={geminiState.userAuthed ? this.setGeminiDisconnectInProgress : undefined}
         onRefreshData={geminiState.userAuthed ? this.geminiUpdateActions : undefined}
-      />
-    )
-  }
-
-  renderCryptoDotComWidget (showContent: boolean, position: number) {
-    const { newTabData } = this.props
-    const { cryptoDotComState, showCryptoDotCom, textDirection, cryptoDotComSupported } = newTabData
-
-    if (!showCryptoDotCom || !cryptoDotComSupported) {
-      return null
-    }
-
-    return (
-      <CryptoDotCom
-        {...cryptoDotComState}
-        isCrypto={true}
-        paddingType={'none'}
-        isCryptoTab={!showContent}
-        menuPosition={'left'}
-        widgetTitle={'Crypto.com'}
-        isForeground={showContent}
-        stackPosition={position}
-        textDirection={textDirection}
-        preventFocus={false}
-        hideWidget={this.toggleShowCryptoDotCom}
-        showContent={showContent}
-        onShowContent={this.setForegroundStackWidget.bind(this, 'cryptoDotCom')}
-        onViewMarketsRequested={this.onCryptoDotComMarketsRequested}
-        onSetAssetData={this.onCryptoDotComAssetData}
-        onUpdateActions={this.cryptoDotComUpdateActions}
-        onDisableWidget={this.toggleShowCryptoDotCom}
-        onBtcPriceOptIn={this.onBtcPriceOptIn}
-        onBuyCrypto={this.onCryptoDotComBuyCrypto}
-        onInteraction={this.onCryptoDotComInteraction}
-        onOptInMarkets={this.onCryptoDotComOptInMarkets}
       />
     )
   }
@@ -1279,9 +1172,6 @@ class NewTabPage extends React.Component<Props, State> {
           geminiSupported={newTabData.geminiSupported}
           toggleShowGemini={this.toggleShowGemini}
           showGemini={newTabData.showGemini}
-          cryptoDotComSupported={newTabData.cryptoDotComSupported}
-          toggleShowCryptoDotCom={this.toggleShowCryptoDotCom}
-          showCryptoDotCom={newTabData.showCryptoDotCom}
           todayPublishers={this.props.todayData.publishers}
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.props.saveSetAllStackWidgets}

@@ -21,7 +21,6 @@ export type InitialData = {
   braveTalkSupported: boolean
   geminiSupported: boolean
   binanceSupported: boolean
-  cryptoDotComSupported: boolean
   searchPromotionEnabled: boolean
 }
 
@@ -56,7 +55,6 @@ export async function getInitialData (): Promise<InitialData> {
       braveRewardsSupported,
       braveTalkSupported,
       geminiSupported,
-      cryptoDotComSupported,
       binanceSupported,
       searchPromotionEnabled,
       braveBackgrounds,
@@ -87,11 +85,6 @@ export async function getInitialData (): Promise<InitialData> {
         })
       }),
       new Promise((resolve) => {
-        chrome.cryptoDotCom.isSupported((supported: boolean) => {
-          resolve(supported)
-        })
-      }),
-      new Promise((resolve) => {
         chrome.binance.isSupportedRegion((supported: boolean) => {
           resolve(supported)
         })
@@ -115,7 +108,6 @@ export async function getInitialData (): Promise<InitialData> {
       braveRewardsSupported,
       braveTalkSupported,
       geminiSupported,
-      cryptoDotComSupported,
       binanceSupported,
       searchPromotionEnabled
     } as InitialData

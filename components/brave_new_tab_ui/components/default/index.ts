@@ -11,7 +11,6 @@ import { RewardsWidget } from './rewards'
 import { BinanceWidget } from './binance'
 import { BraveTalkWidget } from './braveTalk'
 import { GeminiWidget } from './gemini'
-import { CryptoDotComWidget } from './cryptoDotCom'
 import EditCards from './editCards'
 import EditTopSite from './editTopSite'
 import SearchPromotion from './searchPromotion'
@@ -40,7 +39,6 @@ export {
   BraveTalkWidget,
   EditCards,
   GeminiWidget,
-  CryptoDotComWidget,
   createWidget,
   EditTopSite,
   SearchPromotion

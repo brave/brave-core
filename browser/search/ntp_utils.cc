@@ -8,15 +8,10 @@
 #include "base/logging.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-#include "brave/components/crypto_dot_com/common/pref_names.h"
-#endif
 
 namespace {
 
@@ -29,9 +24,6 @@ const char* const kWidgetPrefNames[] = {
     kNewTabPageShowRewards,
     kNewTabPageShowBraveTalk,
     kNewTabPageShowBinance,
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-    kCryptoDotComNewTabPageShowCryptoDotCom,
-#endif
     kNewTabPageShowGemini,
 };
 
@@ -84,9 +76,6 @@ void MigrateNewTabPagePrefs(Profile* profile) {
       prefs->SetBoolean(kNewTabPageShowRewards, true);
       prefs->SetBoolean(kNewTabPageShowBraveTalk, true);
       prefs->SetBoolean(kNewTabPageShowBinance, true);
-    #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-      prefs->SetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom, true);
-    #endif
       prefs->SetBoolean(kNewTabPageShowGemini, true);
     }
     // Record whether this has been migrated by setting an explicit

@@ -27,7 +27,6 @@ import braveTalkBanner from './assets/brave-talk.png'
 import binanceBanner from './assets/binance.png'
 import rewardsBanner from './assets/braverewards.png'
 import geminiBanner from './assets/gemini.png'
-import cryptoDotComBanner from './assets/crypto-dot-com.png'
 import HideIcon from './assets/hide-icon'
 import { Toggle } from '../../../components/toggle'
 import { PlusIcon } from 'brave-ui/components/icons'
@@ -47,9 +46,6 @@ interface Props {
   toggleShowGemini: () => void
   geminiSupported: boolean
   showGemini: boolean
-  toggleShowCryptoDotCom: () => void
-  showCryptoDotCom: boolean
-  cryptoDotComSupported: boolean
   toggleCards: (show: boolean) => void
   cardsHidden: boolean
 }
@@ -93,9 +89,6 @@ class CardsSettings extends React.PureComponent<Props, {}> {
       geminiSupported,
       toggleShowGemini,
       showGemini,
-      cryptoDotComSupported,
-      toggleShowCryptoDotCom,
-      showCryptoDotCom,
       toggleCards,
       cardsHidden
     } = this.props
@@ -146,22 +139,6 @@ class CardsSettings extends React.PureComponent<Props, {}> {
                 </StyledSettingsCopy>
               </StyledSettingsInfo>
               {this.renderToggleButton(showBinance, toggleShowBinance, false)}
-            </SettingsWidget>
-          : null
-        }
-        {
-          cryptoDotComSupported
-          ? <SettingsWidget>
-              <StyledBannerImage src={cryptoDotComBanner} />
-              <StyledSettingsInfo>
-                <StyledSettingsTitle>
-                  {'Crypto.com'}
-                </StyledSettingsTitle>
-                <StyledSettingsCopy>
-                  {getLocale('cryptoDotComWidgetDesc')}
-                </StyledSettingsCopy>
-              </StyledSettingsInfo>
-              {this.renderToggleButton(showCryptoDotCom, toggleShowCryptoDotCom, false)}
             </SettingsWidget>
           : null
         }

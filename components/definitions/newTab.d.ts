@@ -84,7 +84,7 @@ declare namespace NewTab {
     url: string
   }
 
-  export type StackWidget = 'rewards' | 'binance' | 'braveTalk' | 'gemini' | 'bitcoinDotCom' | 'cryptoDotCom' | ''
+  export type StackWidget = 'rewards' | 'binance' | 'braveTalk' | 'gemini' | 'bitcoinDotCom' | ''
 
   export interface GridSitesState {
     removedSites: Site[]
@@ -108,7 +108,6 @@ declare namespace NewTab {
     geminiSupported: boolean
     binanceSupported: boolean
     bitcoinDotComSupported: boolean
-    cryptoDotComSupported: boolean
     showEmptyPage: boolean
     rewardsState: RewardsWidgetState
     currentStackWidget: StackWidget
@@ -116,7 +115,6 @@ declare namespace NewTab {
     widgetStackOrder: StackWidget[]
     binanceState: BinanceWidgetState
     geminiState: GeminiWidgetState
-    cryptoDotComState: CryptoDotComWidgetState
   }
 
   export type Preferences = {
@@ -132,7 +130,6 @@ declare namespace NewTab {
     showBraveTalk: boolean
     showBinance: boolean
     showGemini: boolean
-    showCryptoDotCom: boolean
     hideAllWidgets: boolean
     isBraveTodayOptedIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
@@ -227,16 +224,6 @@ declare namespace NewTab {
     accountBalances: Record<string, string>
     disconnectInProgress: boolean
     authInvalid: boolean
-  }
-
-  export interface CryptoDotComWidgetState {
-    optInTotal: boolean
-    optInBTCPrice: boolean
-    optInMarkets: boolean
-    tickerPrices: Record<string, any>
-    losersGainers: Record<string, any>
-    supportedPairs: Record<string, any>
-    charts: Record<string, any>
   }
 
   export type BinanceTLD = 'us' | 'com'

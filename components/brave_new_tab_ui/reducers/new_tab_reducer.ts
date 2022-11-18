@@ -47,7 +47,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         braveRewardsSupported: initialDataPayload.braveRewardsSupported,
         braveTalkSupported: initialDataPayload.braveTalkSupported,
         geminiSupported: initialDataPayload.geminiSupported,
-        cryptoDotComSupported: initialDataPayload.cryptoDotComSupported,
         binanceSupported: initialDataPayload.binanceSupported,
         searchPromotionEnabled: initialDataPayload.searchPromotionEnabled,
         // Auto-dismiss of together prompt only
