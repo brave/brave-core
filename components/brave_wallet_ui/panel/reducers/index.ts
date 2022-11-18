@@ -8,9 +8,11 @@ import { combineReducers } from 'redux'
 import panelReducer from './panel_reducer'
 import walletReducer from '../../common/slices/wallet.slice'
 import sendCryptoReducer from '../../common/reducers/send_crypto_reducer'
+import { walletApi } from '../../common/slices/api.slice'
 
 export default combineReducers({
   panel: panelReducer,
   wallet: walletReducer,
+  [walletApi.reducerPath]: walletApi.reducer,
   sendCrypto: sendCryptoReducer
 })

@@ -82,7 +82,6 @@
   setSelectedAccount,
   setSelectedAccountFilterItem,
   setSelectedAssetFilterItem,
-  setSelectedCoin,
   setSelectedNetworkFilter,
   setSitePermissions,
   setSolFeeEstimates,

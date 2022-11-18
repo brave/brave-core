@@ -31,6 +31,7 @@ import Amount from '../../utils/amount'
 import { sortTransactionByDate } from '../../utils/tx-utils'
 import { addLogoToToken, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
 import { loadTimeData } from '../../../common/loadTimeData'
+import { walletApi } from '../slices/api.slice'
 
 import getAPIProxy from './bridge'
 import { Dispatch, State, Store } from './types'
@@ -777,7 +778,7 @@ export function refreshNetworkInfo () {
 
     const apiProxy = getAPIProxy()
     const { jsonRpcService } = apiProxy
-    const { wallet: { selectedCoin, networkList } } = getState()
+    const { wallet: { networkList } } = getState()
 
     // Get default network for each coinType
     const defaultNetworks = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
@@ -788,6 +789,7 @@ export function refreshNetworkInfo () {
     dispatch(WalletActions.setDefaultNetworks(defaultNetworks))
 
     // Get current selected networks info
+    const selectedCoin = await dispatch(walletApi.endpoints.getSelectedCoin.initiate()).unwrap()
     const chainId = await jsonRpcService.getChainId(selectedCoin)
 
     const currentNetwork = getNetworkInfo(chainId.chainId, selectedCoin, networkList)
@@ -798,8 +800,6 @@ export function refreshNetworkInfo () {
 
 export function refreshKeyringInfo () {
   return async (dispatch: Dispatch, getState: () => State) => {
-    const { wallet: { selectedCoin } } = getState()
-
     const apiProxy = getAPIProxy()
     const { keyringService, walletHandler, jsonRpcService } = apiProxy
     const walletInfoBase = await walletHandler.getWalletInfo()
@@ -822,6 +822,7 @@ export function refreshKeyringInfo () {
     }))
     const filteredDefaultAccounts = defaultAccounts.filter((account) => Object.keys(account).length !== 0)
     dispatch(WalletActions.setDefaultAccounts(filteredDefaultAccounts))
+    const selectedCoin = await dispatch(walletApi.endpoints.getSelectedCoin.initiate()).unwrap()
     const coinsChainId = await jsonRpcService.getChainId(selectedCoin)
 
     // Get selectedAccountAddress

@@ -25,7 +25,9 @@ import { cacher } from '../../utils/query-cache-utils'
 import getAPIProxy from '../async/bridge'
 import WalletApiProxy from '../wallet_api_proxy'
 
-export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIProxy()) {
+export function createWalletApi (
+  getProxy: () => WalletApiProxy = () => getAPIProxy()
+) {
   const walletApi = createApi({
     reducerPath: 'walletApi',
     baseQuery: () => {
@@ -43,42 +45,73 @@ export function createWalletApi (getProxy: () => WalletApiProxy = () => getAPIPr
       //
       getAllNetworks: query<NetworkEntityState, void>({
         async queryFn (arg, api, extraOptions, baseQuery) {
-          const apiProxy = baseQuery(undefined).data
-          const networksList = await fetchNetworksList(apiProxy)
-          const normalizedNetworksState = networkEntityAdapter.setAll(
-            networkEntityInitalState,
-            networksList
-          )
-          return {
-            data: normalizedNetworksState
+          try {
+            const apiProxy = baseQuery(undefined).data
+            const networksList = await fetchNetworksList(apiProxy)
+            const normalizedNetworksState = networkEntityAdapter.setAll(
+              networkEntityInitalState,
+              networksList
+            )
+            return {
+              data: normalizedNetworksState
+            }
+          } catch (error) {
+            return {
+              error: `Unable to fetch AllNetworks ${error}`
+            }
           }
         },
         providesTags: cacher.providesRegistry('Network')
+
       }),
+
       getIsTestNetworksEnabled: query<boolean, void>({
         async queryFn (arg, api, extraOptions, baseQuery) {
-          const { braveWalletService } = baseQuery(undefined).data
+          try {
+            const { braveWalletService } = baseQuery(undefined).data
 
-          const {
-            isEnabled: testNetworksEnabled
-          } = await braveWalletService.getShowWalletTestNetworks()
+            const { isEnabled: testNetworksEnabled } =
+              await braveWalletService.getShowWalletTestNetworks()
 
-          return {
-            data: testNetworksEnabled
+            return {
+              data: testNetworksEnabled
+            }
+          } catch (error) {
+            return {
+              error: `Unable to fetch isTestNetworksEnabled ${error}`
+            }
           }
         },
         providesTags: ['TestnetsEnabled']
       }),
       getSelectedCoin: query<BraveWallet.CoinType, void>({
         async queryFn (arg, api, extraOptions, baseQuery) {
-          const apiProxy = baseQuery(undefined).data
-          const { braveWalletService } = apiProxy
-
-          const { coin } = await braveWalletService.getSelectedCoin()
-
-          return { data: coin }
+          try {
+            const apiProxy = baseQuery(undefined).data
+            const { braveWalletService } = apiProxy
+            const { coin } = await braveWalletService.getSelectedCoin()
+            return { data: coin }
+          } catch (error) {
+            return {
+              error: `Unable to fetch selectedCoin: ${error}`
+            }
+          }
         },
         providesTags: ['SelectedCoin']
+      }),
+      setSelectedCoin: mutation<BraveWallet.CoinType, BraveWallet.CoinType>({
+        queryFn (coinTypeArg, api, extraOptions, baseQuery) {
+          try {
+            const { braveWalletService } = baseQuery(undefined).data
+            braveWalletService.setSelectedCoin(coinTypeArg)
+            return { data: coinTypeArg }
+          } catch (error) {
+            return {
+              error: `Unable to mutate selectedCoin: ${error}`
+            }
+          }
+        },
+        invalidatesTags: ['SelectedCoin']
       }),
       isEip1559Changed: mutation<{ id: string, isEip1559: boolean }, IsEip1559Changed>({
         async queryFn (arg) {
@@ -124,6 +157,7 @@ export const {
   useIsEip1559ChangedMutation,
   useLazyGetAllNetworksQuery,
   useLazyGetIsTestNetworksEnabledQuery,
+  useSetSelectedCoinMutation,
   useGetSelectedCoinQuery
 } = walletApi
 
@@ -136,17 +170,15 @@ async function fetchNetworksList ({
   jsonRpcService,
   walletHandler
 }: WalletApiProxy) {
-  const {
-    isFilecoinEnabled, isSolanaEnabled
-  } = await walletHandler.getWalletInfo()
+  const { isFilecoinEnabled, isSolanaEnabled } =
+    await walletHandler.getWalletInfo()
 
   // Get isTestNetworkEnabled
-  const {
-    isEnabled: testNetworksEnabled
-  } = await braveWalletService.getShowWalletTestNetworks()
+  const { isEnabled: testNetworksEnabled } =
+    await braveWalletService.getShowWalletTestNetworks()
 
   // Get All Networks
-  const filteredSupportedCoinTypes = SupportedCoinTypes.filter(coin => {
+  const filteredSupportedCoinTypes = SupportedCoinTypes.filter((coin) => {
     // MULTICHAIN: While we are still in development for FIL and SOL,
     // we will not use their networks unless enabled by brave://flags
     return (
@@ -156,20 +188,26 @@ async function fetchNetworksList ({
     )
   })
 
-  const networkLists = await Promise.all(filteredSupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
-    const { networks } = await jsonRpcService.getAllNetworks(coin)
-    return networks
-  }))
+  const networkLists = await Promise.all(
+    filteredSupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
+      const { networks } = await jsonRpcService.getAllNetworks(coin)
+      return networks
+    })
+  )
 
   const flattenedNetworkList = networkLists.flat(1)
 
-  const { chainId: defaultEthChainId } = await jsonRpcService.getChainId(BraveWallet.CoinType.ETH)
-  const { chainIds: hiddenEthNetworkList } = await jsonRpcService.getHiddenNetworks(BraveWallet.CoinType.ETH)
+  const { chainId: defaultEthChainId } = await jsonRpcService.getChainId(
+    BraveWallet.CoinType.ETH
+  )
+  const { chainIds: hiddenEthNetworkList } =
+    await jsonRpcService.getHiddenNetworks(BraveWallet.CoinType.ETH)
 
-  const networkList = flattenedNetworkList.filter((network) => {
-    if (!testNetworksEnabled) {
-      return !SupportedTestNetworks.includes(network.chainId)
-    }
+  const networkList = flattenedNetworkList
+    .filter((network) => {
+      if (!testNetworksEnabled) {
+        return !SupportedTestNetworks.includes(network.chainId)
+      }
 
     return !(
       network.coin === BraveWallet.CoinType.ETH &&
