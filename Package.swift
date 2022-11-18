@@ -333,6 +333,7 @@ let package = Package(
         "Static",
         "FeedKit",
         "Fuzi",
+        "Growth",
         .product(name: "Lottie", package: "lottie-ios")
       ],
       resources: [

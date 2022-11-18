@@ -15,6 +15,7 @@ import BraveNews
 import os.log
 import Data
 import Combine
+import Growth
 
 class BraveShieldsAndPrivacySettingsController: TableViewController {
   let profile: Profile
@@ -24,8 +25,8 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
   let p3aUtilities: BraveP3AUtils
 
   private let cookieConsentNoticesRowUUID = UUID()
-  private var filterListsSubscription: AnyCancellable?
   private var currentCookieConsentNoticeBlockingState: Bool
+  private var cancellables: Set<AnyCancellable> = []
 
   init(
     profile: Profile,
@@ -65,7 +66,7 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
     ]
     
     // Listen to changes on filter lists so we know we need to reload the section
-    filterListsSubscription = FilterListResourceDownloader.shared.$filterLists
+    FilterListResourceDownloader.shared.$filterLists
       .receive(on: DispatchQueue.main)
       .sink { filterLists in
         let filterList = filterLists.first(where: { $0.componentId == FilterList.cookieConsentNoticesComponentID })
@@ -89,6 +90,43 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
           self.dataSource.sections[sectionIndex] = self.shieldsSection
         }
       }
+      .store(in: &cancellables)
+    
+    Preferences.Shields.blockAdsAndTracking.$value
+      .sink { [weak self] _ in
+        self?.recordGlobalAdBlockShieldsP3A()
+      }
+      .store(in: &cancellables)
+    
+    Preferences.Shields.fingerprintingProtection.$value
+      .sink { [weak self] _ in
+        self?.recordGlobalFingerprintingShieldsP3A()
+      }
+      .store(in: &cancellables)
+  }
+  
+  // MARK: - P3A
+  
+  private func recordGlobalAdBlockShieldsP3A() {
+    // Q46 What is the global ad blocking shields setting?
+    enum Answer: Int, CaseIterable {
+      case disabled = 0
+      case standard = 1
+      case aggressive = 2
+    }
+    let answer: Answer = Preferences.Shields.blockAdsAndTracking.value ? .standard : .disabled
+    UmaHistogramEnumeration("Brave.Shields.AdBlockSetting", sample: answer)
+  }
+  
+  private func recordGlobalFingerprintingShieldsP3A() {
+    // Q47 What is the global fingerprinting shields setting?
+    enum Answer: Int, CaseIterable {
+      case disabled = 0
+      case standard = 1
+      case aggressive = 2
+    }
+    let answer: Answer = Preferences.Shields.fingerprintingProtection.value ? .standard : .disabled
+    UmaHistogramEnumeration("Brave.Shields.FingerprintBlockSetting", sample: answer)
   }
 
   // MARK: - Sections

@@ -81,6 +81,8 @@ public class FeedDataSource {
         self.languageCode = savedLanguageCode
       }
     }
+    
+    recordTotalExternalFeedsP3A()
   }
 
   // MARK: - Resource Managment
