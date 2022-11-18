@@ -20,6 +20,8 @@ const base::Feature kBraveVPN {
       base::FEATURE_DISABLED_BY_DEFAULT
 #endif
 };
+const base::Feature kBraveVPNLinkSubscriptionAndroidUI{
+    "BraveVPNLinkSubscriptionAndroidUI", base::FEATURE_DISABLED_BY_DEFAULT};
 
 }  // namespace features
 

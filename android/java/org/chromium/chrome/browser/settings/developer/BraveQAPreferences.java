@@ -72,6 +72,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private static final int DEFAULT_ADS_PER_HOUR = 2;
 
     private ChromeSwitchPreference mBraveVpnFeature;
+    private ChromeSwitchPreference mVpnLinkSubscriptionOnDev;
     private ChromeSwitchPreference mBraveDormantFeatureEngagement;
     private ChromeSwitchPreference mIsStagingServer;
     private ChromeSwitchPreference mIsSyncStagingServer;
@@ -96,6 +97,12 @@ public class BraveQAPreferences extends BravePreferenceFragment
                 (ChromeSwitchPreference) findPreference(BraveVpnPrefUtils.PREF_BRAVE_VPN_FEATURE);
         if (mBraveVpnFeature != null) {
             mBraveVpnFeature.setOnPreferenceChangeListener(this);
+        }
+
+        mVpnLinkSubscriptionOnDev = (ChromeSwitchPreference) findPreference(
+                BraveVpnPrefUtils.PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING);
+        if (mVpnLinkSubscriptionOnDev != null) {
+            mVpnLinkSubscriptionOnDev.setOnPreferenceChangeListener(this);
         }
 
         mBraveDormantFeatureEngagement = (ChromeSwitchPreference) findPreference(
@@ -297,6 +304,8 @@ public class BraveQAPreferences extends BravePreferenceFragment
                 || PREF_USE_SYNC_STAGING_SERVER.equals(preference.getKey())
                 || PREF_QA_VLOG_REWARDS.equals(preference.getKey())
                 || BraveVpnPrefUtils.PREF_BRAVE_VPN_FEATURE.equals(preference.getKey())
+                || BraveVpnPrefUtils.PREF_BRAVE_VPN_LINK_SUBSCRIPTION_ON_STAGING.equals(
+                        preference.getKey())
                 || OnboardingPrefManager.PREF_DORMANT_USERS_ENGAGEMENT.equals(
                         preference.getKey())) {
             setOnPreferenceValue(preference.getKey(), (boolean)newValue);
