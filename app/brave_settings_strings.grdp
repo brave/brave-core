@@ -706,16 +706,19 @@
     Media router enables cast feature in the browser.
   </message>
   <message name="IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_DESC" desc="The description for how to handle Unstoppable Domains">
-    Method to resolve Unstoppable Domains
+    Resolve Unstoppable Domains domain names
   </message>
   <message name="IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_SUB_DESC" desc="The sub-description for how to handle Unstoppable Domains">
-    <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph> about Ethereum privacy considerations.
+    <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph> about Unstoppable Domains privacy considerations.
   </message>
   <message name="IDS_SETTINGS_RESOLVE_ENS_DESC" desc="The description for how to handle ENS">
-    Method to resolve Ethereum Name Service (ENS)
+    Resolve Ethereum Name Service (ENS) domain names
   </message>
   <message name="IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_TITLE" desc="ENS offchain lookup method title">
     Allow ENS offchain lookup.
+  </message>
+  <message name="IDS_SETTINGS_RESOLVE_SNS_DESC" desc="The description for how to handle SNS">
+    Resolve Solana Name Service (SNS) domain names
   </message>
   <message name="IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_DESC" desc="ENS offchain lookup method desc">
     <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph> about ENS offchain lookup privacy considerations.

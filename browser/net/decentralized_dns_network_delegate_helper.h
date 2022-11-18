@@ -37,6 +37,13 @@ void OnBeforeURLRequest_EnsRedirectWork(
     brave_wallet::mojom::ProviderError error,
     const std::string& error_message);
 
+void OnBeforeURLRequest_SnsRedirectWork(
+    const brave::ResponseCallback& next_callback,
+    std::shared_ptr<brave::BraveRequestInfo> ctx,
+    const GURL& url,
+    brave_wallet::mojom::SolanaProviderError error,
+    const std::string& error_message);
+
 }  // namespace decentralized_dns
 
 #endif  // BRAVE_BROWSER_NET_DECENTRALIZED_DNS_NETWORK_DELEGATE_HELPER_H_

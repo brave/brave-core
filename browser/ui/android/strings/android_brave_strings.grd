@@ -383,8 +383,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_RESOLVE_METHOD_DISABLED" desc="Text for resolve method Disabled.">
         Disabled
       </message>
-      <message name="IDS_RESOLVE_METHOD_ETHEREUM" desc="Text for resolve method Ethereum.">
-        Ethereum
+      <message name="IDS_RESOLVE_METHOD_ENABLED" desc="Text for resolve method Enabled.">
+        Enabled
       </message>
       <message name="IDS_BRAVE_NEWS_OPTIN_TITLE" desc="Text for opt in card title">
         Today’s top stories in a completely private feed, just for you.

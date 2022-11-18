@@ -23,6 +23,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(
       kEnsOffchainResolveMethod,
       static_cast<int>(EnsOffchainResolveMethod::kAsk));
+  registry->RegisterIntegerPref(kSnsResolveMethod,
+                                static_cast<int>(ResolveMethodTypes::ASK));
 }
 
 void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
@@ -61,7 +63,7 @@ bool IsUnstoppableDomainsResolveMethodEthereum(PrefService* local_state) {
   }
 
   return local_state->GetInteger(kUnstoppableDomainsResolveMethod) ==
-         static_cast<int>(ResolveMethodTypes::ETHEREUM);
+         static_cast<int>(ResolveMethodTypes::ENABLED);
 }
 
 bool IsENSTLD(const GURL& url) {
@@ -83,7 +85,7 @@ bool IsENSResolveMethodEthereum(PrefService* local_state) {
   }
 
   return local_state->GetInteger(kENSResolveMethod) ==
-         static_cast<int>(ResolveMethodTypes::ETHEREUM);
+         static_cast<int>(ResolveMethodTypes::ENABLED);
 }
 
 void SetEnsOffchainResolveMethod(PrefService* local_state,
@@ -94,6 +96,28 @@ void SetEnsOffchainResolveMethod(PrefService* local_state,
 EnsOffchainResolveMethod GetEnsOffchainResolveMethod(PrefService* local_state) {
   return static_cast<EnsOffchainResolveMethod>(
       local_state->GetInteger(kEnsOffchainResolveMethod));
+}
+
+bool IsSnsTLD(const GURL& url) {
+  return base::EndsWith(url.host_piece(), kSolDomain);
+}
+
+bool IsSnsResolveMethodAsk(PrefService* local_state) {
+  if (!local_state) {
+    return false;  // Treat it as disabled.
+  }
+
+  return local_state->GetInteger(kSnsResolveMethod) ==
+         static_cast<int>(ResolveMethodTypes::ASK);
+}
+
+bool IsSnsResolveMethodEnabled(PrefService* local_state) {
+  if (!local_state) {
+    return false;  // Treat it as disabled.
+  }
+
+  return local_state->GetInteger(kSnsResolveMethod) ==
+         static_cast<int>(ResolveMethodTypes::ENABLED);
 }
 
 }  // namespace decentralized_dns

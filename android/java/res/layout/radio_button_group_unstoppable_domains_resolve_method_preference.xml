@@ -30,11 +30,11 @@
             app:primaryText="@string/resolve_method_disabled" />
 
         <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
-            android:id="@+id/unstoppable_domains_resolve_method_ethereum_radio_button"
+            android:id="@+id/unstoppable_domains_resolve_method_enabled_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/min_touch_target_size"
-            app:primaryText="@string/resolve_method_ethereum" />
+            app:primaryText="@string/resolve_method_enabled" />
 
     </org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayout>
 </LinearLayout>

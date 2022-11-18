@@ -1397,7 +1397,7 @@ void JsonRpcService::SnsGetSolAddr(const std::string& domain,
   sns_get_sol_addr_tasks_.AddTask(
       std::make_unique<SnsResolverTask>(std::move(done_callback),
                                         api_request_helper_.get(), domain,
-                                        network_url),
+                                        network_url, true),
       std::move(callback));
 }
 
@@ -1426,6 +1426,75 @@ void JsonRpcService::OnSnsGetSolAddrTaskDone(
 
   for (auto& cb : callbacks) {
     std::move(cb).Run(address, error, error_message);
+  }
+}
+
+void JsonRpcService::SnsResolveHost(const std::string& domain,
+                                    SnsResolveHostCallback callback) {
+  if (!base::FeatureList::IsEnabled(features::kBraveWalletSnsFeature)) {
+    std::move(callback).Run(
+        GURL(), mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  if (!IsValidDomain(domain)) {
+    std::move(callback).Run(
+        GURL(), mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  if (sns_resolve_host_tasks_.ContainsTaskForDomain(domain)) {
+    sns_resolve_host_tasks_.AddCallbackForDomain(domain, std::move(callback));
+    return;
+  }
+
+  GURL network_url = GetNetworkURL(prefs_, brave_wallet::mojom::kSolanaMainnet,
+                                   mojom::CoinType::SOL);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        GURL(), mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  // JsonRpcService owns EnsResolverTask instance, so Unretained is safe here.
+  auto done_callback = base::BindOnce(&JsonRpcService::OnSnsResolveHostTaskDone,
+                                      base::Unretained(this));
+
+  sns_resolve_host_tasks_.AddTask(
+      std::make_unique<SnsResolverTask>(std::move(done_callback),
+                                        api_request_helper_.get(), domain,
+                                        network_url, false),
+      std::move(callback));
+}
+
+void JsonRpcService::OnSnsResolveHostTaskDone(
+    SnsResolverTask* task,
+    absl::optional<SnsResolverTaskResult> task_result,
+    absl::optional<SnsResolverTaskError> task_error) {
+  auto callbacks = sns_resolve_host_tasks_.TaskDone(task);
+  if (callbacks.empty()) {
+    return;
+  }
+
+  GURL url;
+  mojom::SolanaProviderError error =
+      task_error ? task_error->error : mojom::SolanaProviderError::kSuccess;
+  std::string error_message = task_error ? task_error->error_message : "";
+
+  if (task_result) {
+    if (task_result->resolved_url.is_valid()) {
+      url = task_result->resolved_url;
+    } else {
+      error = mojom::SolanaProviderError::kInternalError;
+      error_message = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    }
+  }
+
+  for (auto& cb : callbacks) {
+    std::move(cb).Run(url, error, error_message);
   }
 }
 

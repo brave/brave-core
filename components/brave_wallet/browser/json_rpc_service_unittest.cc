@@ -471,6 +471,11 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
     return result;
   }
 
+  static std::vector<uint8_t> MakeTextRecordPayloadData(
+      const std::string& text) {
+    return std::vector<uint8_t>(text.begin(), text.end());
+  }
+
   absl::optional<std::string> HandleCall(
       const base::Value::Dict& dict) override {
     if (fail_with_timeout_)
@@ -5705,6 +5710,20 @@ class SnsJsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
                 SolRecordAddress(), GetRecordKeyAddress("SOL"),
                 domain_owner_private_key_)));
 
+    url_record_address_handler_ = std::make_unique<GetAccountInfoHandler>(
+        GetRecordKeyAddress("url"), SolanaAddress::ZeroAddress(),
+        GetAccountInfoHandler::MakeNameRegistryStateData(
+            DomainOwnerAddress(),
+            GetAccountInfoHandler::MakeTextRecordPayloadData(
+                url_value().spec())));
+
+    ipfs_record_address_handler_ = std::make_unique<GetAccountInfoHandler>(
+        GetRecordKeyAddress("IPFS"), SolanaAddress::ZeroAddress(),
+        GetAccountInfoHandler::MakeNameRegistryStateData(
+            DomainOwnerAddress(),
+            GetAccountInfoHandler::MakeTextRecordPayloadData(
+                ipfs_value().spec())));
+
     default_handler_ = std::make_unique<GetAccountInfoHandler>();
 
     json_rpc_endpoint_handler_->AddSolRpcCallHandler(
@@ -5716,6 +5735,11 @@ class SnsJsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
         domain_address_handler_.get());
     json_rpc_endpoint_handler_->AddSolRpcCallHandler(
         sol_record_address_handler_.get());
+
+    json_rpc_endpoint_handler_->AddSolRpcCallHandler(
+        url_record_address_handler_.get());
+    json_rpc_endpoint_handler_->AddSolRpcCallHandler(
+        ipfs_record_address_handler_.get());
 
     json_rpc_endpoint_handler_->AddSolRpcCallHandler(default_handler_.get());
 
@@ -5754,6 +5778,12 @@ class SnsJsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
         "RecPwner11111111111111111111111111111111111");
   }
 
+  GURL url_value() const { return GURL("https://brave.com"); }
+  GURL ipfs_value() const {
+    return GURL(
+        "ipfs://bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
+  }
+
   std::string sns_host() const { return "sub.test.sol"; }
 
  protected:
@@ -5777,6 +5807,8 @@ class SnsJsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
   std::unique_ptr<GetProgramAccountsHandler> get_program_accounts_handler_;
   std::unique_ptr<GetAccountInfoHandler> domain_address_handler_;
   std::unique_ptr<GetAccountInfoHandler> sol_record_address_handler_;
+  std::unique_ptr<GetAccountInfoHandler> url_record_address_handler_;
+  std::unique_ptr<GetAccountInfoHandler> ipfs_record_address_handler_;
   std::unique_ptr<GetAccountInfoHandler> default_handler_;
 
   std::unique_ptr<JsonRpcEnpointHandler> json_rpc_endpoint_handler_;
@@ -5892,6 +5924,56 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_SolRecordOwner) {
   EXPECT_CALL(callback, Run(DomainOwnerAddress().ToBase58(),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
+TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_UrlValue) {
+  base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
+  EXPECT_CALL(callback,
+              Run(url_value(), mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // HTTP error for url record account. Fail resolution.
+  url_record_address_handler_->FailWithTimeout();
+  EXPECT_CALL(callback,
+              Run(GURL(), mojom::SolanaProviderError::kInternalError,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+  url_record_address_handler_->FailWithTimeout(false);
+}
+
+TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_IpfsValue) {
+  url_record_address_handler_->Disable();
+
+  // No url record. Will return ipfs record.
+  base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
+  EXPECT_CALL(callback,
+              Run(ipfs_value(), mojom::SolanaProviderError::kSuccess, ""));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // HTTP error for ipfs record account. Fail resolution.
+  ipfs_record_address_handler_->FailWithTimeout();
+  EXPECT_CALL(callback,
+              Run(GURL(), mojom::SolanaProviderError::kInternalError,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+  ipfs_record_address_handler_->FailWithTimeout(false);
+
+  // No ipfs record account. Fail resolution.
+  ipfs_record_address_handler_->Disable();
+  EXPECT_CALL(callback,
+              Run(GURL(), mojom::SolanaProviderError::kInternalError,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }

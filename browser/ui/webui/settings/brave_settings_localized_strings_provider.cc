@@ -363,6 +363,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_RESOLVE_UNSTOPPABLE_DOMAINS_DESC},
     {"resolveENSDesc", IDS_SETTINGS_RESOLVE_ENS_DESC},
     {"ensOffchainLookupTitle", IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_TITLE},
+    {"resolveSnsDesc", IDS_SETTINGS_RESOLVE_SNS_DESC},
     {"resolveIPFSURLDesc", IDS_SETTINGS_RESOLVE_IPFS_URLS_DESC},
     {"ipfsPublicGatewayDesc", IDS_SETTINGS_IPFS_PUBLIC_GATEWAY_DESC},
     {"ipfsNftPublicGatewayDesc", IDS_SETTINGS_IPFS_PUBLIC_NFT_GATEWAY_DESC},
@@ -678,6 +679,10 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isENSL2Enabled", base::FeatureList::IsEnabled(
                             brave_wallet::features::kBraveWalletENSL2Feature));
+
+  html_source->AddBoolean("isSnsEnabled",
+                          base::FeatureList::IsEnabled(
+                              brave_wallet::features::kBraveWalletSnsFeature));
 
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {
