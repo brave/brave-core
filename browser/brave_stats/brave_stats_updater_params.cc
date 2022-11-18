@@ -32,10 +32,8 @@ static constexpr base::TimeDelta g_dtoi_delete_delta =
 
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(
     PrefService* stats_pref_service,
-    PrefService* profile_pref_service,
     const ProcessArch arch)
     : BraveStatsUpdaterParams(stats_pref_service,
-                              profile_pref_service,
                               arch,
                               GetCurrentDateAsYMD(),
                               GetCurrentISOWeekNumber(),
@@ -43,13 +41,11 @@ BraveStatsUpdaterParams::BraveStatsUpdaterParams(
 
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(
     PrefService* stats_pref_service,
-    PrefService* profile_pref_service,
     const ProcessArch arch,
     const std::string& ymd,
     int woy,
     int month)
     : stats_pref_service_(stats_pref_service),
-      profile_pref_service_(profile_pref_service),
       arch_(arch),
       ymd_(ymd),
       woy_(woy),
@@ -92,7 +88,7 @@ std::string BraveStatsUpdaterParams::GetReferralCodeParam() const {
 
 std::string BraveStatsUpdaterParams::GetAdsEnabledParam() const {
   return BooleanToString(
-      profile_pref_service_->GetBoolean(ads::prefs::kEnabled));
+      stats_pref_service_->GetBoolean(ads::prefs::kEnabledForLastProfile));
 }
 
 std::string BraveStatsUpdaterParams::GetProcessArchParam() const {

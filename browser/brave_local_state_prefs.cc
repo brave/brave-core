@@ -13,6 +13,7 @@
 #include "brave/browser/metrics/metrics_reporting_util.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
@@ -137,6 +138,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   core_metrics::CoreMetricsService::RegisterPrefs(registry);
 
   brave_wallet::RegisterLocalStatePrefs(registry);
+  brave_ads::AdsService::RegisterLocalStatePrefs(registry);
 }
 
 }  // namespace brave
