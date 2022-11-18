@@ -11,6 +11,8 @@
 #include "ui/base/webui/web_ui_util.h"
 
 namespace brave_vpn {
+
+#if !BUILDFLAG(IS_ANDROID)
 constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveVpn", IDS_BRAVE_VPN},
     {"braveVpnConnect", IDS_BRAVE_VPN_CONNECT},
@@ -71,6 +73,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveVpnSupportSubmit", IDS_BRAVE_VPN_SUPPORT_SUBMIT},
     {"braveVpnConnectNotAllowed", IDS_BRAVE_VPN_CONNECT_NOT_ALLOWED},
 };
+#endif
 
 constexpr char kManageUrlProd[] = "https://account.brave.com/account/";
 constexpr char kManageUrlStaging[] =
