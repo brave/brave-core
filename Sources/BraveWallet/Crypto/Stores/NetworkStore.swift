@@ -69,22 +69,7 @@ public class NetworkStore: ObservableObject {
 
   private func updateChainList() {
     Task { @MainActor in // fetch all networks for all coin types
-      self.allChains = await withTaskGroup(of: [BraveWallet.NetworkInfo].self) { @MainActor [weak rpcService] group -> [BraveWallet.NetworkInfo] in
-        guard let rpcService = rpcService else { return [] }
-        for coinType in WalletConstants.supportedCoinTypes {
-          group.addTask { @MainActor in
-            let chains = await rpcService.allNetworks(coinType)
-            return chains.filter { // localhost not supported
-              $0.chainId != BraveWallet.LocalhostChainId
-            }
-          }
-        }
-        let allChains = await group.reduce([BraveWallet.NetworkInfo](), { $0 + $1 })
-        return allChains.sorted { lhs, rhs in
-          // sort solana chains to the front of the list
-          lhs.coin == .sol && rhs.coin != .sol
-        }
-      }
+      self.allChains = await rpcService.allNetworksForSupportedCoins()
       
       let customChainIds = await rpcService.customNetworks(.eth) // only support Ethereum custom chains
       self.customChains = allChains.filter { customChainIds.contains($0.id) }

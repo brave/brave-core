@@ -174,11 +174,11 @@ public class SwapTokenStore: ObservableObject {
       return
     }
     
-    walletService.selectedCoin { [weak self] coinType in
+    rpcService.network(token.coin) { [weak self] network in
       self?.rpcService.balance(
         for: token,
         in: account.address,
-        with: coinType,
+        network: network,
         decimalFormatStyle: .decimals(precision: Int(token.decimals))
       ) { balance in
         completion(balance)

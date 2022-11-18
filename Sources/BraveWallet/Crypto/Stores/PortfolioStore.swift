@@ -141,7 +141,7 @@ public class PortfolioStore: ObservableObject {
       
       let keyring = await keyringService.keyringInfo(coin.keyringId)
       guard !Task.isCancelled else { return } // limit network request(s) if cancelled
-      let balances = await fetchBalances(for: allVisibleUserAssets, accounts: keyring.accountInfos)
+      let balances = await fetchBalances(for: allVisibleUserAssets, accounts: keyring.accountInfos, network: network)
       guard !Task.isCancelled else { return } // limit network request(s) if cancelled
       let nonZeroBalanceTokens = balances.filter { $1 > 0 }.map { $0.key }
       let nonZeroBalanceTokensPriceIds = visibleUserAssets.filter({ nonZeroBalanceTokens.contains($0.assetBalanceId.lowercased())}).map { $0.assetRatioId }
@@ -201,13 +201,14 @@ public class PortfolioStore: ObservableObject {
   /// Fetches the balances for a given list of tokens for each of the given accounts, giving a dictionary with a balance for each token symbol.
   @MainActor func fetchBalances(
     for tokens: [BraveWallet.BlockchainToken],
-    accounts: [BraveWallet.AccountInfo]
+    accounts: [BraveWallet.AccountInfo],
+    network: BraveWallet.NetworkInfo
   ) async -> [String: Double] {
     let balances = await withTaskGroup(of: [String: Double].self) { @MainActor group -> [String: Double] in
       for account in accounts {
         for token in tokens {
           group.addTask { @MainActor in
-            guard let balance = await self.rpcService.balance(for: token, in: account) else {
+            guard let balance = await self.rpcService.balance(for: token, in: account, network: network) else {
               return [:]
             }
             let balanceId = token.assetBalanceId.lowercased()
