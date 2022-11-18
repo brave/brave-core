@@ -78,7 +78,6 @@ export const Regular = () => {
       saveShowRewards={doNothing}
       saveShowBinance={doNothing}
       saveShowBraveTalk={doNothing}
-      saveShowGemini={doNothing}
       saveBrandedWallpaperOptIn={onShowBrandedImageChanged}
       saveSetAllStackWidgets={doNothing}
       getBraveNewsDisplayAd={getBraveNewsDisplayAd}

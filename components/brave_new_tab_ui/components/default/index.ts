@@ -10,7 +10,6 @@ import { Clock } from './clock'
 import { RewardsWidget } from './rewards'
 import { BinanceWidget } from './binance'
 import { BraveTalkWidget } from './braveTalk'
-import { GeminiWidget } from './gemini'
 import EditCards from './editCards'
 import EditTopSite from './editTopSite'
 import SearchPromotion from './searchPromotion'
@@ -38,7 +37,6 @@ export {
   BinanceWidget,
   BraveTalkWidget,
   EditCards,
-  GeminiWidget,
   createWidget,
   EditTopSite,
   SearchPromotion

@@ -50,7 +50,6 @@ extern const char kNewTabPageShowTopSites[];
 extern const char kNewTabPageShowStats[];
 extern const char kNewTabPageShowRewards[];
 extern const char kNewTabPageShowBinance[];
-extern const char kNewTabPageShowGemini[];
 extern const char kNewTabPageShowBraveTalk[];
 extern const char kNewTabPageHideAllWidgets[];
 extern const char kNewTabPageShowsOptions[];

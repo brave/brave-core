@@ -31,7 +31,6 @@ export const defaultState: NewTab.State = {
   showRewards: false,
   showBraveTalk: false,
   showBinance: false,
-  showGemini: false,
   showBitcoinDotCom: false,
   hideAllWidgets: false,
   brandedWallpaperOptIn: false,
@@ -40,7 +39,6 @@ export const defaultState: NewTab.State = {
   showEmptyPage: false,
   braveRewardsSupported: false,
   braveTalkSupported: false,
-  geminiSupported: false,
   binanceSupported: false,
   bitcoinDotComSupported: false,
   isIncognito: chrome.extension.inIncognitoContext,
@@ -90,7 +88,7 @@ export const defaultState: NewTab.State = {
   currentStackWidget: '',
   removedStackWidgets: [],
   // Order is ascending, with last entry being in the foreground
-  widgetStackOrder: ['binance', 'gemini', 'rewards'],
+  widgetStackOrder: ['binance', 'rewards'],
   binanceState: {
     userTLD: 'com',
     userLocale: 'en',
@@ -118,19 +116,6 @@ export const defaultState: NewTab.State = {
     authInvalid: false,
     selectedView: 'summary',
     depositInfoSaved: false
-  },
-  geminiState: {
-    geminiClientUrl: '',
-    userAuthed: false,
-    authInProgress: false,
-    tickerPrices: {},
-    selectedView: 'balance',
-    assetAddresses: {},
-    assetAddressQRCodes: {},
-    hideBalance: true,
-    accountBalances: {},
-    disconnectInProgress: false,
-    authInvalid: false
   },
   customImageBackgrounds: []
 }
@@ -292,11 +277,9 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
       braveTalkPromptDismissed: data.braveTalkPromptDismissed,
       braveTalkPromptAutoDismissed: data.braveTalkPromptAutoDismissed,
       binanceSupported: data.binanceSupported,
-      geminiSupported: data.geminiSupported,
       bitcoinDotComSupported: data.bitcoinDotComSupported,
       rewardsState: data.rewardsState,
       binanceState: data.binanceState,
-      geminiState: data.geminiState,
       removedStackWidgets: data.removedStackWidgets,
       widgetStackOrder: data.widgetStackOrder
     }

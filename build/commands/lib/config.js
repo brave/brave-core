@@ -131,8 +131,6 @@ const Config = function () {
   this.geminiWalletClientSecret = getNPMConfig(['gemini_wallet_client_secret']) || ''
   this.geminiWalletStagingClientId = getNPMConfig(['gemini_wallet_staging_client_id']) || ''
   this.geminiWalletStagingClientSecret = getNPMConfig(['gemini_wallet_staging_client_secret']) || ''
-  this.geminiClientId = getNPMConfig(['gemini_client_id']) || ''
-  this.geminiClientSecret = getNPMConfig(['gemini_client_secret']) || ''
   this.upholdClientId = getNPMConfig(['uphold_client_id']) || ''
   this.upholdClientSecret = getNPMConfig(['uphold_client_secret']) || ''
   this.upholdStagingClientId = getNPMConfig(['uphold_staging_client_id']) || ''
@@ -288,8 +286,6 @@ Config.prototype.buildArgs = function () {
     gemini_wallet_client_secret: this.geminiWalletClientSecret,
     gemini_wallet_staging_client_id: this.geminiWalletStagingClientId,
     gemini_wallet_staging_client_secret: this.geminiWalletStagingClientSecret,
-    gemini_client_id: this.geminiClientId,
-    gemini_client_secret: this.geminiClientSecret,
     uphold_client_id: this.upholdClientId,
     uphold_client_secret: this.upholdClientSecret,
     uphold_staging_client_id: this.upholdStagingClientId,
@@ -504,7 +500,6 @@ Config.prototype.buildArgs = function () {
     // not have a default value for this. But we'll
     // eventually want it on Android, so keeping CI
     // unchanged and deleting here for now.
-    delete args.gemini_client_id
     delete args.gemini_client_secret
   }
 
@@ -566,7 +561,6 @@ Config.prototype.buildArgs = function () {
     delete args.gemini_wallet_client_secret
     delete args.gemini_wallet_staging_client_id
     delete args.gemini_wallet_staging_client_secret
-    delete args.gemini_client_id
     delete args.gemini_client_secret
     delete args.uphold_client_id
     delete args.uphold_client_secret
@@ -789,14 +783,6 @@ Config.prototype.update = function (options) {
 
   if (options.gemini_wallet_staging_client_secret) {
     this.geminiWalletStagingClientSecret = options.gemini_wallet_staging_client_secret
-  }
-
-  if (options.gemini_client_id) {
-    this.geminiClientId = options.gemini_client_id
-  }
-
-  if (options.gemini_client_secret) {
-    this.geminiClientSecret = options.gemini_client_secret
   }
 
   if (options.uphold_client_id) {

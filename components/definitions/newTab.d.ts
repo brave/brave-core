@@ -84,7 +84,7 @@ declare namespace NewTab {
     url: string
   }
 
-  export type StackWidget = 'rewards' | 'binance' | 'braveTalk' | 'gemini' | 'bitcoinDotCom' | ''
+  export type StackWidget = 'rewards' | 'binance' | 'braveTalk' | 'bitcoinDotCom' | ''
 
   export interface GridSitesState {
     removedSites: Site[]
@@ -105,7 +105,6 @@ declare namespace NewTab {
     braveTalkPromptDismissed: boolean
     braveTalkSupported: boolean
     braveTalkPromptAutoDismissed: boolean
-    geminiSupported: boolean
     binanceSupported: boolean
     bitcoinDotComSupported: boolean
     showEmptyPage: boolean
@@ -114,7 +113,6 @@ declare namespace NewTab {
     removedStackWidgets: StackWidget[]
     widgetStackOrder: StackWidget[]
     binanceState: BinanceWidgetState
-    geminiState: GeminiWidgetState
   }
 
   export type Preferences = {
@@ -129,7 +127,6 @@ declare namespace NewTab {
     showRewards: boolean
     showBraveTalk: boolean
     showBinance: boolean
-    showGemini: boolean
     hideAllWidgets: boolean
     isBraveTodayOptedIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
@@ -210,20 +207,6 @@ declare namespace NewTab {
     authInvalid: boolean
     selectedView: string
     depositInfoSaved: boolean
-  }
-
-  export interface GeminiWidgetState {
-    geminiClientUrl: string
-    userAuthed: boolean
-    authInProgress: boolean
-    tickerPrices: Record<string, string>
-    selectedView: string
-    assetAddresses: Record<string, string>
-    assetAddressQRCodes: Record<string, string>
-    hideBalance: boolean
-    accountBalances: Record<string, string>
-    disconnectInProgress: boolean
-    authInvalid: boolean
   }
 
   export type BinanceTLD = 'us' | 'com'

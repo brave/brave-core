@@ -19,7 +19,6 @@ export type InitialData = {
   customImageBackgrounds: NewTab.ImageBackground[]
   braveRewardsSupported: boolean
   braveTalkSupported: boolean
-  geminiSupported: boolean
   binanceSupported: boolean
   searchPromotionEnabled: boolean
 }
@@ -54,7 +53,6 @@ export async function getInitialData (): Promise<InitialData> {
       wallpaperData,
       braveRewardsSupported,
       braveTalkSupported,
-      geminiSupported,
       binanceSupported,
       searchPromotionEnabled,
       braveBackgrounds,
@@ -76,11 +74,6 @@ export async function getInitialData (): Promise<InitialData> {
         }
 
         chrome.braveTalk.isSupported((supported: boolean) => {
-          resolve(supported)
-        })
-      }),
-      new Promise((resolve) => {
-        chrome.gemini.isSupported((supported: boolean) => {
           resolve(supported)
         })
       }),
@@ -107,7 +100,6 @@ export async function getInitialData (): Promise<InitialData> {
       customImageBackgrounds,
       braveRewardsSupported,
       braveTalkSupported,
-      geminiSupported,
       binanceSupported,
       searchPromotionEnabled
     } as InitialData

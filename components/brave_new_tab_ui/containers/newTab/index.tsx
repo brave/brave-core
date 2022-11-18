@@ -10,7 +10,7 @@ import getNTPBrowserAPI from '../../api/background'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
 import { brandedWallpaperLogoClicked } from '../../api/wallpaper'
 import {
-  BinanceWidget as Binance, BraveTalkWidget as BraveTalk, Clock, EditCards, EditTopSite, GeminiWidget as Gemini, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion
+  BinanceWidget as Binance, BraveTalkWidget as BraveTalk, Clock, EditCards, EditTopSite, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion
 } from '../../components/default'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 import BraveToday, { GetDisplayAdContent } from '../../components/default/braveToday'
@@ -28,9 +28,7 @@ import VisibilityTimer from '../../helpers/visibilityTimer'
 
 // Types
 import { getLocale } from '../../../common/locale'
-import { GeminiAssetAddress } from '../../actions/gemini_actions'
 import currencyData from '../../components/default/binance/data'
-import geminiData from '../../components/default/gemini/data'
 import { NewTabActions } from '../../constants/new_tab_types'
 import { BraveTodayState } from '../../reducers/today'
 
@@ -54,7 +52,6 @@ interface Props {
   saveShowRewards: (value: boolean) => void
   saveShowBraveTalk: (value: boolean) => void
   saveShowBinance: (value: boolean) => void
-  saveShowGemini: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
   saveSetAllStackWidgets: (value: boolean) => void
   chooseNewCustomBackgroundImage: () => void
@@ -320,46 +317,16 @@ class NewTabPage extends React.Component<Props, State> {
     }
   }
 
-  toggleShowGemini = () => {
-    const { showGemini, geminiState } = this.props.newTabData
-
-    this.props.saveShowGemini(!showGemini)
-
-    if (!showGemini) {
-      return
-    }
-
-    if (geminiState.userAuthed) {
-      chrome.gemini.revokeToken(() => {
-        this.disconnectGemini()
-      })
-    } else {
-      this.disconnectGemini()
-    }
-  }
-
   onBinanceClientUrl = (clientUrl: string) => {
     this.props.actions.onBinanceClientUrl(clientUrl)
-  }
-
-  onGeminiClientUrl = (clientUrl: string) => {
-    this.props.actions.onGeminiClientUrl(clientUrl)
   }
 
   onValidBinanceAuthCode = () => {
     this.props.actions.onValidBinanceAuthCode()
   }
 
-  onValidGeminiAuthCode = () => {
-    this.props.actions.onValidGeminiAuthCode()
-  }
-
   setBinanceHideBalance = (hide: boolean) => {
     this.props.actions.setBinanceHideBalance(hide)
-  }
-
-  setGeminiHideBalance = (hide: boolean) => {
-    this.props.actions.setGeminiHideBalance(hide)
   }
 
   disconnectBinance = () => {
@@ -374,24 +341,8 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.setBinanceDisconnectInProgress(false)
   }
 
-  disconnectGemini = () => {
-    this.props.actions.disconnectGemini()
-  }
-
-  setGeminiDisconnectInProgress = () => {
-    this.props.actions.setGeminiDisconnectInProgress(true)
-  }
-
-  cancelGeminiDisconnect = () => {
-    this.props.actions.setGeminiDisconnectInProgress(false)
-  }
-
   connectBinance = () => {
     this.props.actions.connectToBinance()
-  }
-
-  connectGemini = () => {
-    this.props.actions.connectToGemini()
   }
 
   buyCrypto = (coin: string, amount: string, fiat: string) => {
@@ -533,37 +484,12 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.onDepositQRForAsset(asset, src)
   }
 
-  setGeminiAssetAddress = (address: string, asset: string, qrCode: string) => {
-    const assetAddresses: GeminiAssetAddress[] = [{ asset, address, qrCode }]
-    if (asset === 'ETH') {
-      // Use ETH's address and qrCode for all other erc tokens.
-      geminiData.ercTokens.forEach((ercToken: string) => {
-        assetAddresses.push({
-          asset: ercToken,
-          address,
-          qrCode
-        })
-      })
-    }
-
-    this.props.actions.setGeminiAssetAddress(assetAddresses)
-  }
-
   setConvertableAssets = (asset: string, assets: string[]) => {
     this.props.actions.onConvertableAssets(asset, assets)
   }
 
   setBinanceSelectedView = (view: string) => {
     this.props.actions.setBinanceSelectedView(view)
-  }
-
-  setGeminiSelectedView = (view: string) => {
-    this.props.actions.setGeminiSelectedView(view)
-  }
-
-  setGeminiAuthInvalid = () => {
-    this.props.actions.setGeminiAuthInvalid(true)
-    this.props.actions.disconnectGemini()
   }
 
   binanceUpdateActions = () => {
@@ -575,53 +501,6 @@ class NewTabPage extends React.Component<Props, State> {
     this.fetchBalance()
     this.setDepositInfo()
     this.getConvertAssets()
-  }
-
-  geminiUpdateActions = () => {
-    this.fetchGeminiTickerPrices()
-    this.fetchGeminiBalances()
-    this.fetchGeminiDepositInfo()
-  }
-
-  fetchGeminiTickerPrices = () => {
-    geminiData.currencies.map((asset: string) => {
-      chrome.gemini.getTickerPrice(`${asset}usd`, (price: string) => {
-        this.props.actions.setGeminiTickerPrice(asset, price)
-      })
-    })
-  }
-
-  fetchGeminiBalances = () => {
-    chrome.gemini.getAccountBalances((balances: Record<string, string>, authInvalid: boolean) => {
-      if (authInvalid) {
-        chrome.gemini.refreshAccessToken((success: boolean) => {
-          if (!success) {
-            this.setGeminiAuthInvalid()
-          }
-        })
-        return
-      }
-
-      this.props.actions.setGeminiAccountBalances(balances)
-    })
-  }
-
-  updateGeminiAssetAddress = (asset: string, address: string) => {
-    generateQRData(address, asset, this.setGeminiAssetAddress.bind(this, address))
-  }
-
-  fetchGeminiDepositInfo = () => {
-    // Remove all ercTokens and update their address when ETH's address is fetched.
-    const toRemove = new Set(geminiData.ercTokens)
-    const targetAssets = geminiData.currencies.filter(x => !toRemove.has(x))
-
-    targetAssets.forEach((asset: string) => {
-      chrome.gemini.getDepositInfo(`${asset.toLowerCase()}`, (address: string) => {
-        if (address) {
-          this.updateGeminiAssetAddress(asset, address)
-        }
-      })
-    })
   }
 
   getCurrencyList = () => {
@@ -698,10 +577,6 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.setAuthInvalid(false)
   }
 
-  dismissGeminiAuthInvalid = () => {
-    this.props.actions.setGeminiAuthInvalid(false)
-  }
-
   getCryptoContent () {
     if (this.props.newTabData.hideAllWidgets) {
       return null
@@ -713,8 +588,6 @@ class NewTabPage extends React.Component<Props, State> {
       showRewards,
       showBinance,
       showBraveTalk,
-      showGemini,
-      geminiSupported,
       binanceSupported
     } = this.props.newTabData
     const lookup = {
@@ -729,10 +602,6 @@ class NewTabPage extends React.Component<Props, State> {
       'braveTalk': {
         display: braveTalkSupported && showBraveTalk,
         render: this.renderBraveTalkWidget.bind(this)
-      },
-      'gemini': {
-        display: showGemini && geminiSupported,
-        render: this.renderGeminiWidget.bind(this)
       }
     }
 
@@ -765,8 +634,6 @@ class NewTabPage extends React.Component<Props, State> {
       showRewards,
       showBinance,
       showBraveTalk,
-      geminiSupported,
-      showGemini,
       binanceSupported,
       hideAllWidgets
     } = this.props.newTabData
@@ -774,7 +641,6 @@ class NewTabPage extends React.Component<Props, State> {
       braveRewardsSupported && showRewards,
       braveTalkSupported && showBraveTalk,
       binanceSupported && showBinance,
-      geminiSupported && showGemini,
     ].every((widget: boolean) => !widget)
   }
 
@@ -928,45 +794,6 @@ class NewTabPage extends React.Component<Props, State> {
         onLearnMore={this.learnMoreBinance}
         onRefreshData={binanceState.userAuthed ? this.binanceRefreshActions : undefined}
         onDisconnect={binanceState.userAuthed ? this.setBinanceDisconnectInProgress : undefined}
-      />
-    )
-  }
-
-  renderGeminiWidget (showContent: boolean, position: number) {
-    const { newTabData } = this.props
-    const { geminiState, showGemini, textDirection, geminiSupported } = newTabData
-
-    if (!showGemini || !geminiSupported) {
-      return null
-    }
-
-    return (
-      <Gemini
-        {...geminiState}
-        isCrypto={true}
-        paddingType={'none'}
-        isCryptoTab={!showContent}
-        menuPosition={'left'}
-        widgetTitle={'Gemini'}
-        isForeground={showContent}
-        stackPosition={position}
-        textDirection={textDirection}
-        preventFocus={false}
-        hideWidget={this.toggleShowGemini}
-        showContent={showContent}
-        onShowContent={this.setForegroundStackWidget.bind(this, 'gemini')}
-        onDisableWidget={this.toggleShowGemini}
-        onValidAuthCode={this.onValidGeminiAuthCode}
-        onConnectGemini={this.connectGemini}
-        onGeminiClientUrl={this.onGeminiClientUrl}
-        onUpdateActions={this.geminiUpdateActions}
-        onSetSelectedView={this.setGeminiSelectedView}
-        onSetHideBalance={this.setGeminiHideBalance}
-        onCancelDisconnect={this.cancelGeminiDisconnect}
-        onDisconnectGemini={this.disconnectGemini}
-        onDismissAuthInvalid={this.dismissGeminiAuthInvalid}
-        onDisconnect={geminiState.userAuthed ? this.setGeminiDisconnectInProgress : undefined}
-        onRefreshData={geminiState.userAuthed ? this.geminiUpdateActions : undefined}
       />
     )
   }
@@ -1169,9 +996,6 @@ class NewTabPage extends React.Component<Props, State> {
           braveTalkSupported={newTabData.braveTalkSupported}
           toggleShowBraveTalk={this.toggleShowBraveTalk}
           showBraveTalk={newTabData.showBraveTalk}
-          geminiSupported={newTabData.geminiSupported}
-          toggleShowGemini={this.toggleShowGemini}
-          showGemini={newTabData.showGemini}
           todayPublishers={this.props.todayData.publishers}
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.props.saveSetAllStackWidgets}

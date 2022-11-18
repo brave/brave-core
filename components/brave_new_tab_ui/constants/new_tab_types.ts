@@ -6,7 +6,6 @@ import * as newTabActions from '../actions/new_tab_actions'
 import * as gridSitesActions from '../actions/grid_sites_actions'
 import * as binanceActions from '../actions/binance_actions'
 import * as rewardsActions from '../actions/rewards_actions'
-import * as geminiActions from '../actions/gemini_actions'
 import * as stackWidgetActions from '../actions/stack_widget_actions'
 import * as todayActions from '../actions/today_actions'
 
@@ -35,7 +34,6 @@ export type NewTabActions =
   typeof gridSitesActions &
   typeof binanceActions &
   typeof rewardsActions &
-  typeof geminiActions &
   typeof stackWidgetActions &
   {
     today: typeof todayActions

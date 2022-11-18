@@ -23,8 +23,7 @@ void ClearNewTabPageProfilePrefs(Profile* profile) {
 const char* const kWidgetPrefNames[] = {
     kNewTabPageShowRewards,
     kNewTabPageShowBraveTalk,
-    kNewTabPageShowBinance,
-    kNewTabPageShowGemini,
+    kNewTabPageShowBinance
 };
 
 }  // namespace
@@ -76,7 +75,6 @@ void MigrateNewTabPagePrefs(Profile* profile) {
       prefs->SetBoolean(kNewTabPageShowRewards, true);
       prefs->SetBoolean(kNewTabPageShowBraveTalk, true);
       prefs->SetBoolean(kNewTabPageShowBinance, true);
-      prefs->SetBoolean(kNewTabPageShowGemini, true);
     }
     // Record whether this has been migrated by setting an explicit
     // value for the HideAllWidgets pref.

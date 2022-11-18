@@ -91,7 +91,6 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
   pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
   pref_data.Set("showBinance", prefs->GetBoolean(kNewTabPageShowBinance));
   pref_data.Set("showBraveTalk", prefs->GetBoolean(kNewTabPageShowBraveTalk));
-  pref_data.Set("showGemini", prefs->GetBoolean(kNewTabPageShowGemini));
   return pref_data;
 }
 
@@ -329,10 +328,6 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kNewTabPageShowGemini,
-      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
       kNewTabPageHideAllWidgets,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
@@ -449,8 +444,6 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowBinance;
   } else if (settingsKeyInput == "showBraveTalk") {
     settingsKey = kNewTabPageShowBraveTalk;
-  } else if (settingsKeyInput == "showGemini") {
-    settingsKey = kNewTabPageShowGemini;
   } else {
     LOG(ERROR) << "Invalid setting key";
     return;

@@ -66,7 +66,6 @@
 #include "brave/components/de_amp/browser/de_amp_throttle.h"
 #include "brave/components/debounce/browser/debounce_navigation_throttle.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
-#include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/buildflags/buildflags.h"
 #include "brave/components/playlist/features.h"
@@ -167,10 +166,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(BINANCE_ENABLED)
 #include "brave/browser/binance/binance_protocol_handler.h"
-#endif
-
-#if BUILDFLAG(GEMINI_ENABLED)
-#include "brave/browser/gemini/gemini_protocol_handler.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -676,14 +671,6 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
   if (binance::IsBinanceProtocol(url)) {
     binance::HandleBinanceProtocol(url, web_contents_getter, page_transition,
                                    has_user_gesture, initiating_origin);
-    return true;
-  }
-#endif
-
-#if BUILDFLAG(GEMINI_ENABLED)
-  if (gemini::IsGeminiProtocol(url)) {
-    gemini::HandleGeminiProtocol(url, web_contents_getter, page_transition,
-                                 has_user_gesture, initiating_origin);
     return true;
   }
 #endif

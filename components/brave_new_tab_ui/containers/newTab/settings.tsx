@@ -63,7 +63,6 @@ export interface Props {
   toggleShowRewards: () => void
   toggleShowBraveTalk: () => void
   toggleShowBinance: () => void
-  toggleShowGemini: () => void
   toggleBrandedWallpaperOptIn: () => void
   toggleCards: (show: boolean) => void
   chooseNewCustomImageBackground: () => void
@@ -85,8 +84,6 @@ export interface Props {
   binanceSupported: boolean
   braveRewardsSupported: boolean
   braveTalkSupported: boolean
-  showGemini: boolean
-  geminiSupported: boolean
   todayPublishers?: Publishers
   setActiveTab?: TabType
   cardsHidden: boolean
@@ -287,9 +284,6 @@ export default class Settings extends React.PureComponent<Props, State> {
       binanceSupported,
       braveRewardsSupported,
       braveTalkSupported,
-      toggleShowGemini,
-      geminiSupported,
-      showGemini,
       toggleCards,
       cardsHidden,
       onEnableRewards
@@ -409,9 +403,6 @@ export default class Settings extends React.PureComponent<Props, State> {
                       toggleShowRewards={toggleShowRewards}
                       braveRewardsSupported={braveRewardsSupported}
                       showRewards={showRewards}
-                      showGemini={showGemini}
-                      toggleShowGemini={toggleShowGemini}
-                      geminiSupported={geminiSupported}
                     />
                   ) : null
               }

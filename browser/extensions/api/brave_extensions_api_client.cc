@@ -41,20 +41,6 @@ bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
     return true;
   }
 
-  // Gemini
-  URLPattern auth_pattern(URLPattern::SCHEME_HTTPS,
-      "https://exchange.gemini.com/auth*");
-  URLPattern token_pattern(URLPattern::SCHEME_HTTPS,
-      "https://exchange.gemini.com/auth/token*");
-  if (auth_pattern.MatchesURL(request.url) ||
-      token_pattern.MatchesURL(request.url)) {
-    return true;
-  }
-
-  if (request.url.SchemeIs(kGeminiScheme)) {
-    return true;
-  }
-
   return ChromeExtensionsAPIClient::ShouldHideBrowserNetworkRequest(context,
                                                                     request);
 }

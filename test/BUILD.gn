@@ -8,8 +8,6 @@ import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
-import("//brave/components/gemini/browser/buildflags/buildflags.gni")
-import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
@@ -426,15 +424,6 @@ test("brave_unit_tests") {
     sources +=
         [ "//brave/components/binance/browser/binance_json_parser_unittest.cc" ]
     deps += [ "//brave/components/binance/browser" ]
-  }
-
-  if (gemini_enabled) {
-    sources +=
-        [ "//brave/components/gemini/browser/gemini_json_parser_unittest.cc" ]
-    deps += [
-      "//brave/components/binance/browser",
-      "//brave/components/gemini/browser",
-    ]
   }
 
   if (is_linux) {
@@ -1013,12 +1002,6 @@ test("brave_browser_tests") {
       "//brave/components/binance/browser",
       "//components/country_codes",
     ]
-  }
-
-  if (gemini_enabled) {
-    sources +=
-        [ "//brave/components/gemini/browser/gemini_service_browsertest.cc" ]
-    deps += [ "//brave/components/gemini/browser" ]
   }
 
   if (enable_brave_wayback_machine) {

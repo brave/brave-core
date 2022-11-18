@@ -97,7 +97,6 @@ export const useNewTabData = (state: NewTab.State = defaultState) => {
     showBraveTalk: boolean('Show Brave Talk?', true),
     braveTalkSupported: boolean('Brave Talk supported?', true),
     braveTalkPromptDismissed: !boolean('Brave Talk prompt?', false),
-    geminiSupported: boolean('Gemini Supported?', true),
     showBinance: boolean('Show Binance?', true),
     hideAllWidgets: boolean('Hide all widgets?', false),
     isBraveTodayOptedIn: boolean('Brave Today opted-in?', false),
