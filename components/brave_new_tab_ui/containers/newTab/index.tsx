@@ -273,12 +273,6 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.setMostVisitedSettings(!showTopSites, customLinksEnabled)
   }
 
-  toggleShowBraveNewsButton = () => {
-    this.props.saveShowBraveNewsButton(
-      !this.props.newTabData.showBraveNewsButton
-    )
-  }
-
   toggleCustomLinksEnabled = () => {
     const { showTopSites, customLinksEnabled } = this.props.newTabData
     this.props.actions.setMostVisitedSettings(showTopSites, !customLinksEnabled)
@@ -714,14 +708,12 @@ class NewTabPage extends React.Component<Props, State> {
           showSettingsMenu={showSettingsMenu}
           featureFlagBraveNewsEnabled={newTabData.featureFlagBraveNewsEnabled}
           featureCustomBackgroundEnabled={newTabData.featureCustomBackgroundEnabled}
-          featureFlagBraveNewsSubscribeButtonEnabled={newTabData.featureFlagBraveNewsSubscribeButtonEnabled}
           onClose={this.closeSettings}
           setActiveTab={this.state.activeSettingsTab || undefined}
           onDisplayTodaySection={this.props.actions.today.ensureSettingsData}
           onClearTodayPrefs={this.props.actions.today.resetTodayPrefsToDefault}
           toggleShowBackgroundImage={this.toggleShowBackgroundImage}
           toggleShowToday={this.toggleShowToday}
-          toggleShowBraveNewsButton={this.toggleShowBraveNewsButton}
           toggleShowTopSites={this.toggleShowTopSites}
           setMostVisitedSettings={this.setMostVisitedSettings}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}

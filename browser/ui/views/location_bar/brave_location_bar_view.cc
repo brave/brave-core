@@ -91,9 +91,7 @@ void BraveLocationBarView::Init() {
       focus_ring->SetColorId(color_id.value());
   }
 
-  if (base::FeatureList::IsEnabled(
-          brave_today::features::kBraveNewsSubscribeButtonFeature) &&
-      base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature) &&
+  if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature) &&
       !browser_->profile()->IsOffTheRecord()) {
     brave_news_location_view_ =
         AddChildView(std::make_unique<BraveNewsLocationView>(

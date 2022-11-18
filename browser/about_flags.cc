@@ -509,12 +509,6 @@ constexpr char kBraveBackgroundVideoPlaybackDescription[] =
      flag_descriptions::kBraveNewsCardPeekFeatureDescription,               \
      kOsDesktop,                                                            \
      FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsCardPeekFeature)}, \
-    {"brave-news-subscribe-button",                                         \
-     flag_descriptions::kBraveNewsSubscribeButtonName,                      \
-     flag_descriptions::kBraveNewsSubscribeButtonDescription,               \
-     kOsLinux | kOsMac | kOsWin,                                            \
-     FEATURE_VALUE_TYPE(                                                    \
-      brave_today::features::kBraveNewsSubscribeButtonFeature)},
 
 #define BRAVE_FEDERATED_FEATURE_ENTRIES                                 \
     {"brave-federated",                                                 \
