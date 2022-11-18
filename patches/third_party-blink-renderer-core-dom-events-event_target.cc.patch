@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/events/event_target.cc b/third_party/blink/renderer/core/dom/events/event_target.cc
-index cbe981300e2352800671cfe274b8cc7e3080179d..f56b1a93fc3ce2d51f411a90e47c87bb94828dd9 100644
+index 9b77d717ba42129db61a28f2bf0942a027047e0c..423027c28ac0fe067ed691bdc456334c55e4eef2 100644
 --- a/third_party/blink/renderer/core/dom/events/event_target.cc
 +++ b/third_party/blink/renderer/core/dom/events/event_target.cc
 @@ -477,6 +477,7 @@ bool EventTarget::AddEventListenerInternal(
