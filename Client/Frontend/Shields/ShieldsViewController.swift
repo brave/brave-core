@@ -9,6 +9,7 @@ import BraveShared
 import Data
 import BraveUI
 import UIKit
+import Growth
 
 /// Displays shield settings and shield stats for a given URL
 class ShieldsViewController: UIViewController, PopoverContentComponent {
@@ -104,6 +105,10 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     Domain.setBraveShield(
       forUrl: url, shield: shield, isOn: isOn,
       isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      // Record shields & FP related hisotgrams, wait a sec for CoreData to sync contexts
+      self.recordShieldsUpdateP3A(shield: shield)
+    }
   }
 
   private func updateGlobalShieldState(_ on: Bool, animated: Bool = false) {
@@ -338,5 +343,41 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
   @available(*, unavailable)
   required init?(coder aDecoder: NSCoder) {
     fatalError()
+  }
+  
+  // MARK: - P3A
+  
+  private enum P3AShieldUpdateKind {
+    case adblock
+    case fingerprintingProtection
+  }
+  
+  private func recordShieldsUpdateP3A(shield: BraveShield) {
+    let buckets: [Bucket] = [
+      0,
+      .r(1...5),
+      .r(6...10),
+      .r(11...20),
+      .r(21...30),
+      .r(31...),
+    ]
+    switch shield {
+    case .AdblockAndTp:
+      // Q51 On how many domains has the user set the adblock setting to be lower (block less) than the default?
+      let adsBelowGlobalCount = Domain.totalDomainsWithAdblockShieldsLoweredFromGlobal()
+      UmaHistogramRecordValueToBucket("Brave.Shields.DomainAdsSettingsBelowGlobal", buckets: buckets, value: adsBelowGlobalCount)
+      // Q52 On how many domains has the user set the adblock setting to be higher (block more) than the default?
+      let adsAboveGlobalCount = Domain.totalDomainsWithAdblockShieldsIncreasedFromGlobal()
+      UmaHistogramRecordValueToBucket("Brave.Shields.DomainAdsSettingsAboveGlobal", buckets: buckets, value: adsBelowGlobalCount)
+    case .FpProtection:
+      // Q53 On how many domains has the user set the FP setting to be lower (block less) than the default?
+      let fingerprintingBelowGlobalCount = Domain.totalDomainsWithFingerprintingProtectionLoweredFromGlobal()
+      UmaHistogramRecordValueToBucket("Brave.Shields.DomainFingerprintSettingsBelowGlobal", buckets: buckets, value: fingerprintingBelowGlobalCount)
+      // Q54 On how many domains has the user set the FP setting to be higher (block more) than the default?
+      let fingerprintingAboveGlobalCount = Domain.totalDomainsWithFingerprintingProtectionIncreasedFromGlobal()
+      UmaHistogramRecordValueToBucket("Brave.Shields.DomainFingerprintSettingsAboveGlobal", buckets: buckets, value: fingerprintingAboveGlobalCount)
+    case .AllOff, .NoScript, .SafeBrowsing:
+      break
+    }
   }
 }
