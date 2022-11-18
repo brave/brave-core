@@ -23,6 +23,8 @@ import NetworkFilterSelector from '../../../network-filter-selector'
 import {
   EmptyStateText,
   FilterTokenRow,
+  IpfsButton,
+  IpfsIcon,
   NftGrid
 } from './nfts.styles'
 import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-grid-view-item'
@@ -58,6 +60,10 @@ export const Nfts = (props: Props) => {
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
   }, [dispatch])
 
+  const onClickIpfsButton = React.useCallback(() => {
+    console.log('message')
+  }, [])
+
   // memos
   const filteredNfts = React.useMemo(() => {
     if (searchValue === '') {
@@ -91,6 +97,9 @@ export const Nfts = (props: Props) => {
           value={searchValue}
         />
         <NetworkFilterSelector networkListSubset={networks} />
+        <IpfsButton onClick={onClickIpfsButton}>
+          <IpfsIcon />
+        </IpfsButton>
       </FilterTokenRow>
       {filteredNfts.length === 0
         ? <EmptyStateText>{emptyStateMessage}</EmptyStateText>

@@ -15,6 +15,16 @@ import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 import { LoadingSkeleton } from '../components/shared'
 import { ChartControlBar } from '../components/desktop/chart-control-bar/chart-control-bar'
 import { BuySendSwapDepositNav } from '../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
+import { NftIpfsBanner } from '../components/desktop/nft-ipfs-banner/nft-ipfs-banner'
+import { LocalIpfsNodeScreen } from '../components/desktop/local-ipfs-node/local-ipfs-node'
+import { InspectNftsScreen } from '../components/desktop/inspect-nfts/inspect-nfts'
+import WalletPageStory from './wrappers/wallet-page-story-wrapper'
+import { NftDetails } from '../nft/components/nft-details/nft-details'
+import { mockNewAssetOptions } from './mock-data/mock-asset-options'
+import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
+import { mockNetwork } from '../common/constants/mocks'
+import { NftPinnigStatus } from '../components/desktop/nft-pinning-status/nft-pinning-status'
+import { IpfsDetailsModal } from '../components/desktop/ipfs-details-modal/ipfs-details-modal'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -125,4 +135,95 @@ export const _BuySendSwapDeposit = () => {
 
 _BuySendSwapDeposit.story = {
   name: 'Buy/Send/Swap/Deposit'
+}
+
+export const _NftIpfsBanner = () => {
+  const [showBanner, setShowBanner] = React.useState(true)
+
+  const onDismiss = React.useCallback(() => {
+    setShowBanner(false)
+  }, [])
+
+  return (
+    <div style={{ width: '855px' }}>
+      {showBanner && <NftIpfsBanner onDismiss={onDismiss} status='uploading' />}
+    </div>
+  )
+}
+
+_NftIpfsBanner.story = {
+  name: 'NFT IPFS Banner'
+}
+
+export const _LocalIpfsScreen = () => {
+  const onClose = () => {
+    console.log('close')
+  }
+
+  return (
+    <LocalIpfsNodeScreen
+      onClose={onClose}
+    />
+  )
+}
+
+_LocalIpfsScreen.story = {
+  name: 'Run Local IPFS Node'
+}
+
+export const _InspectNftsScreen = () => {
+  const onClose = () => {
+    console.log('on close')
+  }
+  const onBack = () => {
+    console.log('on back')
+  }
+  return (
+    <WalletPageStory>
+      <InspectNftsScreen
+        onClose={onClose}
+        onBack={onBack}
+      />
+    </WalletPageStory>
+  )
+}
+
+_InspectNftsScreen.story = {
+  name: 'Inspect NFTs Screen'
+}
+
+export const _NftDetails = () => {
+  return (
+    <NftDetails
+      selectedAsset={{ ...mockNewAssetOptions[2], contractAddress: '0x7b539F7Cc90De458B60c2ab52eEf504B5de6D035', isErc721: true }}
+      nftMetadata={mockNFTMetadata[0]}
+      tokenNetwork={mockNetwork}
+    />
+  )
+}
+
+_NftDetails.story = {
+  name: 'NFT Details'
+}
+
+export const _NftPinningStatus = () => {
+  return (
+    <NftPinnigStatus
+      pinningStatus='failed'
+    />
+  )
+}
+
+_NftPinningStatus.story = {
+  title: 'NFT Pinning Status'
+}
+
+export const _IpfsDetailsModal = () => {
+  return (
+    <IpfsDetailsModal />
+  )
+}
+
+_IpfsDetailsModal.story = {
+  title: 'IPFS Details Modal'
 }

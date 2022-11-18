@@ -5,13 +5,14 @@
 
 import styled from 'styled-components'
 
-export const NftImageIframe = styled.iframe`
+export const NftImageIframe = styled.iframe<{ circular?: boolean }>`
   border: none;
   width: ${p => p.width ? p.width : '40px'};
   height: ${p => p.height ? p.height : '40px'};
+  border-radius: ${p => p.circular ? '50%' : 0};
 `
 
-export const NftImageResponsiveIframe = styled.iframe`
+export const NftImageResponsiveIframe = styled.iframe<{ circular?: boolean }>`
   border: none;
   position: absolute;
   z-index: 2;
@@ -21,4 +22,22 @@ export const NftImageResponsiveIframe = styled.iframe`
   right: 0;
   width: 100%;
   height: 100%;
+  border-radius: ${p => p.circular ? '50%' : 0};
+`
+
+export const NftIconWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const IconWrapper = styled.div<{ disabled?: boolean }>`
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  z-index: 3;
+  bottom: 0px;
+  right: 12px;
+  filter: ${(p) => p.disabled ? 'grayscale(100%)' : 'none'};
 `

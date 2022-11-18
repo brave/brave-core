@@ -25,7 +25,9 @@ import {
   braveWalletPanelOrigin,
   CommandMessage,
   DisplayMode,
+  IframeSize,
   NftUiCommand,
+  sendMessageToWalletUi,
   UpdateLoadingMessage,
   UpdateNFtMetadataErrorMessage,
   UpdateNFtMetadataMessage,
@@ -107,6 +109,18 @@ const App = () => {
     window.addEventListener('message', onMessageEventListener)
     return () => window.removeEventListener('message', onMessageEventListener)
   }, [])
+
+  React.useEffect(() => {
+    if (!loadingNftMetadata && nftMetadata && selectedAsset && tokenNetwork) {
+      const width = document.body.scrollWidth
+      const height = document.body.scrollHeight
+      const message: IframeSize = {
+        command: NftUiCommand.IframeSize,
+        payload: { width, height }
+      }
+      sendMessageToWalletUi(parent, message)
+    }
+  }, [nftMetadata, selectedAsset, tokenNetwork, loadingNftMetadata])
 
   return (
     <BrowserRouter>
