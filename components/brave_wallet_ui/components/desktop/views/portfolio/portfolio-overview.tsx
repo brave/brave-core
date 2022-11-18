@@ -228,7 +228,6 @@ export const PortfolioOverview = () => {
   // render
   return (
     <StyledWrapper>
-
       <Row alignItems='flex-start' justifyContent='flex-start'>
         <BalanceTitle>{getLocale('braveWalletBalance')}</BalanceTitle>
       </Row>
@@ -292,7 +291,7 @@ export const PortfolioOverview = () => {
             />
           : <NFTGridViewItem
               key={`${item.asset.tokenId}-${item.asset.contractAddress}`}
-              token={item}
+              token={item.asset}
               onSelectAsset={() => onSelectAsset(item.asset)}
             />
         }

@@ -12,6 +12,10 @@ import {
   WalletRoutes
 } from '../../../../../constants/types'
 
+// selectors
+import { useSafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../../common/selectors'
+
 // utils
 import { getLocale } from '$web-common/locale'
 
@@ -23,6 +27,8 @@ import NetworkFilterSelector from '../../../network-filter-selector'
 import {
   EmptyStateText,
   FilterTokenRow,
+  IpfsButton,
+  IpfsIcon,
   NftGrid
 } from './nfts.styles'
 import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-grid-view-item'
@@ -32,13 +38,17 @@ import Amount from '../../../../../utils/amount'
 interface Props {
   networks: BraveWallet.NetworkInfo[]
   nftList: BraveWallet.BlockchainToken[]
+  onToggleShowIpfsBanner: () => void
 }
 
 export const Nfts = (props: Props) => {
   const {
     networks,
-    nftList
+    nftList,
+    onToggleShowIpfsBanner
   } = props
+
+  const isNftPinningFeatureEnabled = useSafeWalletSelector(WalletSelectors.isNftPinningFeatureEnabled)
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
@@ -57,6 +67,10 @@ export const Nfts = (props: Props) => {
     // reset nft metadata
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
   }, [dispatch])
+
+  const onClickIpfsButton = React.useCallback(() => {
+    onToggleShowIpfsBanner()
+  }, [onToggleShowIpfsBanner])
 
   // memos
   const filteredNfts = React.useMemo(() => {
@@ -91,6 +105,11 @@ export const Nfts = (props: Props) => {
           value={searchValue}
         />
         <NetworkFilterSelector networkListSubset={networks} />
+        {isNftPinningFeatureEnabled &&
+          <IpfsButton onClick={onClickIpfsButton}>
+            <IpfsIcon />
+          </IpfsButton>
+        }
       </FilterTokenRow>
       {filteredNfts.length === 0
         ? <EmptyStateText>{emptyStateMessage}</EmptyStateText>
@@ -98,7 +117,7 @@ export const Nfts = (props: Props) => {
           {filteredNfts.map(nft => (
             <NFTGridViewItem
               key={`${nft.tokenId}-${nft.contractAddress}`}
-              token={{ asset: nft, assetBalance: '' }}
+              token={nft}
               onSelectAsset={() => onSelectAsset(nft)}
             />
           ))}

@@ -17,9 +17,11 @@ import { useExplorer } from '../../../common/hooks'
 // Utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '$web-common/locale'
+import { isNftPinnable, isValidateUrl, stripERC20TokenImageURL } from '../../../utils/string-utils'
 
 // Styled Components
 import {
+  CopyIcon,
   DetailColumn,
   DetailSectionColumn,
   DetailSectionRow,
@@ -28,22 +30,29 @@ import {
   ErrorMessage,
   ExplorerButton,
   ExplorerIcon,
+  NftStandard,
   ProjectDetailButton,
   ProjectDetailButtonRow,
   ProjectDetailButtonSeperator,
   ProjectDetailDescription,
   ProjectDetailIDRow,
-  ProjectDetailName,
   ProjectDetailRow,
   ProjectFacebookIcon,
   ProjectTwitterIcon,
   ProjectWebsiteIcon,
   StyledWrapper,
-  TokenName
+  TokenName,
+  HighlightedDetailSectionValue,
+  Subdivider,
+  ProjectDetailName
 } from './nft-details-styles'
-import { isValidateUrl } from '../../../utils/string-utils'
 import { NftMultimedia } from '../nft-multimedia/nft-multimedia'
 import { MultimediaWrapper } from '../nft-content/nft-content-styles'
+import { CreateNetworkIcon } from '../../../components/shared'
+import { Row } from '../../../components/shared/style'
+import CopyTooltip from '../../../components/shared/copy-tooltip/copy-tooltip'
+import { NftPinningStatus } from '../../../components/desktop/nft-pinning-status/nft-pinning-status'
+import { PinningStatusType } from '../../../page/constants/action_types'
 
 interface Props {
   isLoading?: boolean
@@ -51,9 +60,10 @@ interface Props {
   nftMetadata?: NFTMetadataReturnType
   nftMetadataError?: string
   tokenNetwork?: BraveWallet.NetworkInfo
+  nftPinningStatus?: PinningStatusType
 }
 
-export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, tokenNetwork }: Props) => {
+export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, tokenNetwork, nftPinningStatus }: Props) => {
   // custom hooks
   const onClickViewOnBlockExplorer = useExplorer(tokenNetwork || new BraveWallet.NetworkInfo())
 
@@ -91,8 +101,14 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                 <NftMultimedia nftMetadata={nftMetadata} />
               </MultimediaWrapper>
               <DetailColumn>
+                {selectedAsset.isErc721 &&
+                  <NftStandard>
+                    <CreateNetworkIcon network={tokenNetwork} size='small' />
+                    ERC-721
+                  </NftStandard>
+                }
                 <TokenName>
-                  {nftMetadata.contractInformation.name}{' '}
+                  {selectedAsset.name}{' '}
                   {selectedAsset.tokenId
                     ? '#' + new Amount(selectedAsset.tokenId).toNumber()
                     : ''}
@@ -100,6 +116,17 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                 {/* TODO: Add floorFiatPrice & floorCryptoPrice when data is available from backend: https://github.com/brave/brave-browser/issues/22627 */}
                 {/* <TokenFiatValue>{CurrencySymbols[defaultCurrencies.fiat]}{nftMetadata.floorFiatPrice}</TokenFiatValue> */}
                 {/* <TokenCryptoValue>{nftMetadata.floorCryptoPrice} {selectedNetwork.symbol}</TokenCryptoValue> */}
+                <DetailSectionRow>
+                  <DetailSectionColumn>
+                    <DetailSectionTitle>Contract</DetailSectionTitle>
+                    <Row gap='4px'>
+                      <HighlightedDetailSectionValue>{selectedAsset.contractAddress}</HighlightedDetailSectionValue>
+                      <CopyTooltip text={selectedAsset.contractAddress}>
+                        <CopyIcon />
+                      </CopyTooltip>
+                    </Row>
+                  </DetailSectionColumn>
+                </DetailSectionRow>
                 <DetailSectionRow>
                   <DetailSectionColumn>
                     <DetailSectionTitle>
@@ -165,9 +192,34 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                       </ProjectDetailButtonRow>
                     )}
                 </ProjectDetailRow>
-                <ProjectDetailDescription>
-                  {nftMetadata.contractInformation.description}
-                </ProjectDetailDescription>
+                <DetailSectionColumn>
+                  <DetailSectionTitle>{getLocale('braveWalletNFTDetailDescription')}</DetailSectionTitle>
+                  <ProjectDetailDescription>{nftMetadata.contractInformation.description}</ProjectDetailDescription>
+                </DetailSectionColumn>
+                {nftPinningStatus?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNED &&
+                  <>
+                    <Subdivider />
+                    <DetailSectionRow>
+                      <DetailSectionColumn>
+                        <DetailSectionTitle>{getLocale('braveWalletNFTDetailCid')}</DetailSectionTitle>
+                        <ProjectDetailDescription>{stripERC20TokenImageURL(selectedAsset.logo)?.replace('ipfs://', '')}</ProjectDetailDescription>
+                      </DetailSectionColumn>
+                    </DetailSectionRow>
+                    <DetailSectionRow>
+                      <DetailSectionColumn>
+                        <DetailSectionTitle>{getLocale('braveWalletNFTDetailImageAddress')}</DetailSectionTitle>
+                        <HighlightedDetailSectionValue href={stripERC20TokenImageURL(selectedAsset.logo)} target='_blank'>{stripERC20TokenImageURL(selectedAsset.logo)}</HighlightedDetailSectionValue>
+                      </DetailSectionColumn>
+                    </DetailSectionRow>
+                  </>
+                }
+                {selectedAsset && isNftPinnable(selectedAsset.logo) && nftPinningStatus?.code &&
+                  <DetailSectionRow>
+                    <DetailSectionColumn>
+                      <NftPinningStatus pinningStatusCode={nftPinningStatus.code} />
+                    </DetailSectionColumn>
+                  </DetailSectionRow>
+                }
               </DetailColumn>
             </>
           }

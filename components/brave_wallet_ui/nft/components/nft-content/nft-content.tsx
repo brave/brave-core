@@ -14,6 +14,7 @@ import { BraveWallet, NFTMetadataReturnType } from '../../../constants/types'
 import { DisplayMode } from '../../nft-ui-messages'
 
 import Placeholder from '../../../assets/svg-icons/placeholdr-image.svg'
+import { PinningStatusType } from '../../../page/constants/action_types'
 
 interface Props {
   isLoading?: boolean
@@ -23,6 +24,7 @@ interface Props {
   nftMetadataError?: string
   tokenNetwork?: BraveWallet.NetworkInfo
   imageUrl?: string
+  nftPinningStatus?: PinningStatusType | undefined
 }
 
 export const NftContent = (props: Props) => {
