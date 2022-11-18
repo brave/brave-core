@@ -269,18 +269,9 @@ const util = {
 
       for (const sourceFile of sourceFiles) {
         let destinationFile = path.join(output, path.relative(source, sourceFile))
-
-        // The destination file might be newer when updating chromium so
-        // we check for an exact match on the timestamp. We use seconds instead
-        // of ms because utimesSync doesn't set the times with ms precision
         if (!fs.existsSync(destinationFile) ||
-            Math.floor(new Date(fs.statSync(sourceFile).mtimeMs).getTime() / 1000) !=
-            Math.floor(new Date(fs.statSync(destinationFile).mtimeMs).getTime() / 1000)) {
+            util.calculateFileChecksum(sourceFile) != util.calculateFileChecksum(destinationFile)) {
           fs.copySync(sourceFile, destinationFile)
-          // can't set the date in the past so update the source file
-          // to match the newly copied destionation file
-          const date = fs.statSync(destinationFile).mtime
-          fs.utimesSync(sourceFile, date, date)
           console.log(sourceFile + ' copied to ' + destinationFile)
         }
       }
