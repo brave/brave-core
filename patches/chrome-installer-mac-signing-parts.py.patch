@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/signing/parts.py b/chrome/installer/mac/signing/parts.py
-index 6bb9dcbedfc3ccd29bcaf89fb0070b8f6cbc146d..a1b6060bdb764ee76d51df5ca5ac9a51f6656d81 100644
+index 919bd110c5af3a217fde6aa4a5a675566c764a8f..f185f361f7e9e3ddf3a5f5d98c00c9cf718fdf29 100644
 --- a/chrome/installer/mac/signing/parts.py
 +++ b/chrome/installer/mac/signing/parts.py
 @@ -10,6 +10,7 @@ import os.path

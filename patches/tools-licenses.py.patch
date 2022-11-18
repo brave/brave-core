@@ -1,8 +1,8 @@
 diff --git a/tools/licenses.py b/tools/licenses.py
-index 677c63364f472a576565ce4f36c26d2185f77687..dfcebe8c1459096f9746578bf7441ec6e063b153 100755
+index de49fae95801e402cef4cda481bdf17222c9525c..fee2b33b157778166239c3410b6ea08342d5337a 100755
 --- a/tools/licenses.py
 +++ b/tools/licenses.py
-@@ -35,6 +35,7 @@ else:
+@@ -39,6 +39,7 @@ from spdx_writer import SpdxWriter
  _REPOSITORY_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
  sys.path.insert(0, os.path.join(_REPOSITORY_ROOT, 'build/android/gyp'))
  from util import build_utils
@@ -10,7 +10,7 @@ index 677c63364f472a576565ce4f36c26d2185f77687..dfcebe8c1459096f9746578bf7441ec6
  
  
  # Paths from the root of the tree to directories to skip.
-@@ -381,6 +382,7 @@ SPECIAL_CASES = {
+@@ -385,6 +386,7 @@ SPECIAL_CASES = {
          "License File": "/third_party/selenium-atoms/LICENSE.closure",
      },
  }
@@ -18,7 +18,7 @@ index 677c63364f472a576565ce4f36c26d2185f77687..dfcebe8c1459096f9746578bf7441ec6
  
  # Special value for 'License File' field used to indicate that the license file
  # should not be used in about:credits.
-@@ -574,7 +576,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
+@@ -578,7 +580,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
        if skip in dirs:
          dirs.remove(skip)
  
@@ -28,7 +28,7 @@ index 677c63364f472a576565ce4f36c26d2185f77687..dfcebe8c1459096f9746578bf7441ec6
        # Add all subdirectories that are not marked for skipping.
        for dir in dirs:
          dirpath = os.path.join(path, dir)
-@@ -785,7 +788,8 @@ def GenerateCredits(file_template_file,
+@@ -801,7 +804,8 @@ def GenerateCredits(file_template_file,
    for path in third_party_dirs:
      try:
        metadata = ParseDir(path, _REPOSITORY_ROOT)
