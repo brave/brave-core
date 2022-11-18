@@ -302,6 +302,9 @@ public class PortfolioFragment
         if (selectedNetwork == null) {
             return;
         }
+        // TODO (Wengling): re-enable when NFT portfolio is done
+        if (asset.isNft) return;
+
         Utils.openAssetDetailsActivity(getActivity(), selectedNetwork.chainId, asset);
     }
 
