@@ -336,6 +336,7 @@ void OnLogTrainingInstance(const bool success) {
 }  // namespace
 
 AdsServiceImpl::AdsServiceImpl(
+    PrefService* local_state,
     Profile* profile,
     brave_adaptive_captcha::BraveAdaptiveCaptchaService*
         adaptive_captcha_service,
@@ -344,7 +345,8 @@ AdsServiceImpl::AdsServiceImpl(
     history::HistoryService* history_service,
     brave_rewards::RewardsService* rewards_service,
     brave_federated::AsyncDataStore* notification_ad_timing_data_store)
-    : profile_(profile),
+    : local_state_(local_state),
+      profile_(profile),
       history_service_(history_service),
       adaptive_captcha_service_(adaptive_captcha_service),
       ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
@@ -357,6 +359,7 @@ AdsServiceImpl::AdsServiceImpl(
       rewards_service_(rewards_service),
       notification_ad_timing_data_store_(notification_ad_timing_data_store),
       bat_ads_client_(new bat_ads::AdsClientMojoBridge(this)) {
+  DCHECK(local_state_);
   DCHECK(profile_);
   DCHECK(adaptive_captcha_service_);
   DCHECK(device_id_);
@@ -371,6 +374,8 @@ AdsServiceImpl::AdsServiceImpl(
   MigrateConfirmationState();
 
   rewards_service_->AddObserver(this);
+
+  CopyEnabledPrefToLocalState();
 }
 
 AdsServiceImpl::~AdsServiceImpl() {
@@ -654,6 +659,14 @@ void AdsServiceImpl::CloseAdaptiveCaptcha() {
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
+void AdsServiceImpl::CopyEnabledPrefToLocalState() {
+  // Copying enabled pref to local state so the stats updater does not depend on
+  // the profile
+  local_state_->SetBoolean(
+      ads::prefs::kEnabledForLastProfile,
+      profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
+}
+
 void AdsServiceImpl::InitializePrefChangeRegistrar() {
   pref_change_registrar_.Init(profile_->GetPrefs());
 
@@ -684,6 +697,8 @@ void AdsServiceImpl::OnEnabledPrefChanged() {
   }
 
   MaybeStartBatAdsService();
+
+  CopyEnabledPrefToLocalState();
 }
 
 void AdsServiceImpl::OnIdleTimeThresholdPrefChanged() {
