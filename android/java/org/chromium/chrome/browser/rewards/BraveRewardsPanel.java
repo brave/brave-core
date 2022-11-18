@@ -1559,9 +1559,10 @@ public class BraveRewardsPanel
         double recurrentAmount =
                 mBraveRewardsNativeWorker.GetPublisherRecurrentDonationAmount(pubId);
         if (mBraveRewardsNativeWorker.IsCurrentPublisherInRecurrentDonations(pubId)) {
-            monthlyTipText.setText(String.format(
+            String amount = String.format(
                     mPopupView.getResources().getString(R.string.brave_rewards_bat_value_text),
-                    (int) recurrentAmount));
+                    String.format(Locale.getDefault(), "%.2f", recurrentAmount));
+            monthlyTipText.setText(amount);
             monthlyTipText.setCompoundDrawablesWithIntrinsicBounds(
                     0, 0, R.drawable.ic_carat_down, 0);
         }
