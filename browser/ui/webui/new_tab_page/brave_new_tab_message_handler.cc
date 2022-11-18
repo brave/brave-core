@@ -81,8 +81,6 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
   pref_data.Set("showStats", prefs->GetBoolean(kNewTabPageShowStats));
   pref_data.Set("showToday",
                 prefs->GetBoolean(brave_news::prefs::kNewTabPageShowToday));
-  pref_data.Set("showBraveNewsButton",
-                prefs->GetBoolean(brave_news::prefs::kShouldShowToolbarButton));
   pref_data.Set("showRewards", prefs->GetBoolean(kNewTabPageShowRewards));
   pref_data.Set("isBrandedWallpaperNotificationDismissed",
                 prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
@@ -307,13 +305,9 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      brave_news::prefs::kShouldShowToolbarButton,
+      kNewTabPageShowRewards,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
-                          base::Unretained(this))),
-      pref_change_registrar_.Add(
-          kNewTabPageShowRewards,
-          base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
-                              base::Unretained(this)));
+                          base::Unretained(this)));
   pref_change_registrar_.Add(
       kBrandedWallpaperNotificationDismissed,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
