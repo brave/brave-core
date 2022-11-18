@@ -6,7 +6,6 @@
 #include "brave/components/brave_today/browser/suggestions_controller.h"
 
 #include <algorithm>
-#include <memory>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -270,19 +269,7 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating() {
   is_update_in_progress_ = true;
 
   publishers_controller_->GetLocale(base::BindOnce(
-      [](SuggestionsController* controller,
-         const absl::optional<std::string>& locale) {
-        // We don't have a locale, which can happen if we aren't online or the
-        // API isn't working properly. In this case, we don't have anything more
-        // to do.
-        if (!locale) {
-          controller->on_current_update_complete_->Signal();
-          controller->is_update_in_progress_ = false;
-          controller->on_current_update_complete_ =
-              std::make_unique<base::OneShotEvent>();
-          return;
-        }
-
+      [](SuggestionsController* controller, const std::string& locale) {
         controller->publishers_controller_->GetOrFetchPublishers(base::BindOnce(
             [](SuggestionsController* controller, const std::string& locale,
                Publishers publishers) {
@@ -305,7 +292,7 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating() {
                       },
                       base::Unretained(controller), locale));
             },
-            base::Unretained(controller), locale.value()));
+            base::Unretained(controller), locale));
       },
       base::Unretained(this)));
 }

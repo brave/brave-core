@@ -19,7 +19,6 @@
 #include "base/containers/flat_set.h"
 #include "base/feature_list.h"
 #include "base/guid.h"
-#include "base/strings/strcat.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -629,13 +628,13 @@ void BraveNewsController::MaybeInitPrefs() {
     if (channels.empty()) {
       publishers_controller_.GetLocale(base::BindOnce(
           [](ChannelsController* channels_controller,
-             const absl::optional<std::string>& locale) {
+             const std::string& locale) {
             // This could happen, if we're offline, or the API is down at the
             // moment.
-            if (!locale) {
+            if (locale.empty()) {
               return;
             }
-            channels_controller->SetChannelSubscribed(locale.value(),
+            channels_controller->SetChannelSubscribed(locale,
                                                       kTopSourcesChannel, true);
           },
           base::Unretained(&channels_controller_)));

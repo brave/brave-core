@@ -32,7 +32,6 @@
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
 
 namespace brave_news {
@@ -134,10 +133,7 @@ void PublishersController::GetLocale(
   GetOrFetchPublishers(base::BindOnce(
       [](PublishersController* controller,
          mojom::BraveNewsController::GetLocaleCallback callback, Publishers _) {
-        std::move(callback).Run(
-            controller->default_locale_.empty()
-                ? absl::nullopt
-                : absl::make_optional(controller->default_locale_));
+        std::move(callback).Run(controller->default_locale_);
       },
       base::Unretained(this), std::move(callback)));
 }
