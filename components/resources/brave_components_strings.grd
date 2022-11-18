@@ -251,7 +251,6 @@
       </message>
 
       <message name="IDS_BRAVE_NEW_TAB_SHOW_REWARDS" desc="Text for settings show rewards option">Show Brave Rewards</message>
-      <message name="IDS_BRAVE_NEW_TAB_SHOW_BINANCE" desc="Text for show binance option">Show Binance</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_CARDS" desc="Text for cards option">Cards</message>
       <message name="IDS_BRAVE_NEW_TAB_BRANDED_WALLPAPER_OPT_IN" desc="Text for setting to opt-in to Branded Wallpapers on New Tab Page">Show Sponsored Images</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON" desc="Description about turning on sponsored image">You can earn for seeing sponsored sites.</message>
@@ -347,7 +346,6 @@
       <message name="IDS_BRAVE_NEW_TAB_WIDGET_HIDE" desc="Hide Widget Text">Hide</message>
       <message name="IDS_BRAVE_NEW_TAB_BRAVE_REWARDS_TITLE" desc="">Brave Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_REWARDS_WIDGET_DESC" desc="Rewards widget description">Earn tokens for watching privacy-respecting ads.</message>
-      <message name="IDS_BRAVE_NEW_TAB_BINANCE_WIDGET_DESC" desc="Binance widget description">Trade crypto on Binance directly in your browser.</message>
       <message name="IDS_BRAVE_NEW_TAB_CARDS_TITLE" desc="Toggle cards title">Cards</message>
       <message name="IDS_BRAVE_NEW_TAB_CARDS_DESC" desc="Toggle cards description">By turning off Cards, all cards currently visible will be hidden. However, you may still be notified of new cards.</message>
 
@@ -892,59 +890,6 @@
       <message name="IDS_BRAVE_TALK_WIDGET_WELCOME_TITLE" desc="">Start a private video call with your friends and colleagues.</message>
       <message name="IDS_BRAVE_TALK_WIDGET_START_BUTTON" desc="">Start call</message>
       <message name="IDS_BRAVE_TALK_WIDGET_ABOUT_DATA" desc="">About your data</message>
-      <message name="IDS_BINANCE_WIDGET_BUY" desc="">Buy</message>
-      <message name="IDS_BINANCE_WIDGET_BUY_CRYPTO" desc="">Buy Crypto</message>
-      <message name="IDS_BINANCE_WIDGET_BUY_DEFAULT" desc="">I want to spend...</message>
-      <message name="IDS_BINANCE_WIDGET_WELCOME_TITLE" desc="">Purchase and trade with Binance</message>
-      <message name="IDS_BINANCE_WIDGET_SUB_TEXT" desc="">Enable Binance connection to view Binance account balance and trade crypto.</message>
-      <message name="IDS_BINANCE_WIDGET_CONNECT_TEXT" desc="">Enable Binance Connect</message>
-      <message name="IDS_BINANCE_WIDGET_DISMISS_TEXT" desc="">No thank you</message>
-      <message name="IDS_BINANCE_WIDGET_VALUE_TEXT" desc="">Equity Value (BTC)</message>
-      <message name="IDS_BINANCE_BTC_TICKER_TEXT" desc="">BTC</message>
-      <message name="IDS_BINANCE_WIDGET_DEPOSIT_LABEL" desc="">Deposit</message>
-      <message name="IDS_BINANCE_WIDGET_TRADE_LABEL" desc="">Trade</message>
-      <message name="IDS_BINANCE_WIDGET_API_KEY_HELP" desc="">Help.</message>
-      <message name="IDS_BINANCE_WIDGET_INVALID_ENTRY" desc="">Invalid entry.</message>
-      <message name="IDS_BINANCE_WIDGET_VALIDATING_CREDS" desc="">Validating your credentials...</message>
-      <message name="IDS_BINANCE_WIDGET_DISCONNECT_TITLE" desc="">Are you sure you want to disconnect?</message>
-      <message name="IDS_BINANCE_WIDGET_DISCONNECT_TEXT" desc="">Disconnecting will erase your widget settings. You will need to re-authenticate to reconnect.</message>
-      <message name="IDS_BINANCE_WIDGET_DISCONNECT_BUTTON" desc="">Disconnect</message>
-      <message name="IDS_BINANCE_WIDGET_ACCOUNT_DISCONNECTED" desc="">Account Disconnected</message>
-      <message name="IDS_BINANCE_WIDGET_CONFIGURE_BUTTON" desc="">Configure</message>
-      <message name="IDS_BINANCE_WIDGET_REFRESH_DATA" desc="">Refresh Data</message>
-
-      <message name="IDS_BINANCE_WIDGET_CONNECT" desc="">Connect</message>
-      <message name="IDS_BINANCE_WIDGET_CONVERTED" desc="">You converted</message>
-      <message name="IDS_BINANCE_WIDGET_CONTINUE" desc="">Continue</message>
-      <message name="IDS_BINANCE_WIDGET_UNABLE_TO_CONVERT" desc="">Unable to Convert</message>
-      <message name="IDS_BINANCE_WIDGET_CONVERSION_FAILED" desc="">The conversion could not be processed. Please try again.</message>
-      <message name="IDS_BINANCE_WIDGET_INSUFFICIENT_FUNDS" desc="">The amount you entered exceeds the amount you currently have available.</message>
-      <message name="IDS_BINANCE_WIDGET_RETRY" desc="">Retry</message>
-      <message name="IDS_BINANCE_WIDGET_DONE" desc="">Done</message>
-      <message name="IDS_BINANCE_WIDGET_COPY" desc="">Copy</message>
-      <message name="IDS_BINANCE_WIDGET_ADDRESS_UNAVAILABLE" desc="">Info Not Available</message>
-      <message name="IDS_BINANCE_WIDGET_DEPOSIT_ADDRESS" desc="">Deposit Address</message>
-      <message name="IDS_BINANCE_WIDGET_DEPOSIT_MEMO" desc="">Deposit Memo</message>
-      <message name="IDS_BINANCE_WIDGET_SEARCH" desc="">Search</message>
-
-      <message name="IDS_BINANCE_WIDGET_UNDER_MINIMUM" desc="">The minimum amount to convert is:</message>
-      <message name="IDS_BINANCE_WIDGET_CONFIRM_CONVERSION" desc="">Confirm Conversion</message>
-      <message name="IDS_BINANCE_WIDGET_CONVERT" desc="">Convert</message>
-      <message name="IDS_BINANCE_WIDGET_RATE" desc="">Rate</message>
-      <message name="IDS_BINANCE_WIDGET_FEE" desc="">Fee</message>
-      <message name="IDS_BINANCE_WIDGET_WILL_RECEIVE" desc="">You will receive</message>
-      <message name="IDS_BINANCE_WIDGET_CONFIRM" desc="">Confirm</message>
-      <message name="IDS_BINANCE_WIDGET_CANCEL" desc="">Cancel</message>
-      <message name="IDS_BINANCE_WIDGET_AVAILABLE" desc="">Available</message>
-      <message name="IDS_BINANCE_WIDGET_CONVERT_INTENT" desc="">I want to convert...</message>
-      <message name="IDS_BINANCE_WIDGET_PREVIEW_CONVERT" desc="">Preview Conversion</message>
-      <message name="IDS_BINANCE_WIDGET_SUMMARY" desc="">Summary</message>
-      <message name="IDS_BINANCE_WIDGET_AUTH_INVALID" desc="">Session Expired</message>
-      <message name="IDS_BINANCE_WIDGET_AUTH_INVALID_COPY" desc="">Your Binance access token has expired. Please reconnect to continue using the widget.</message>
-
-      <message name="IDS_CRYPTO_CONVERT_AMOUNT_PLACEHOLDER" desc="Text box placeholder for cyrptocurrency amount user wishes to convert to another currency">
-        I want to convert…
-      </message>
 
       <!-- WebUI Brave Toolbar resources -->
       <message name="IDS_WALLETS_TITLE" desc="The toolbar title for the brave://wallets page">Wallet</message>

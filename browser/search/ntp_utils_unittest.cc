@@ -37,7 +37,6 @@ TEST_F(NTPUtilsTest, MigratesHideWidgetTrue) {
   auto* prefs = profile()->GetPrefs();
   prefs->SetBoolean(kNewTabPageShowRewards, false);
   prefs->SetBoolean(kNewTabPageShowBraveTalk, false);
-  prefs->SetBoolean(kNewTabPageShowBinance, false);
   // Migrate
   new_tab_page::MigrateNewTabPagePrefs(profile());
   // Expect migrated to off
@@ -49,7 +48,6 @@ TEST_F(NTPUtilsTest, MigratesHideWidgetFalse) {
   auto* prefs = profile()->GetPrefs();
   prefs->SetBoolean(kNewTabPageShowRewards, false);
   prefs->SetBoolean(kNewTabPageShowBraveTalk, true);
-  prefs->SetBoolean(kNewTabPageShowBinance, false);
   // Migrate
   new_tab_page::MigrateNewTabPagePrefs(profile());
   // Expect not migrated

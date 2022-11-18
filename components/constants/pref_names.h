@@ -49,7 +49,6 @@ extern const char kNewTabPageClockFormat[];
 extern const char kNewTabPageShowTopSites[];
 extern const char kNewTabPageShowStats[];
 extern const char kNewTabPageShowRewards[];
-extern const char kNewTabPageShowBinance[];
 extern const char kNewTabPageShowBraveTalk[];
 extern const char kNewTabPageHideAllWidgets[];
 extern const char kNewTabPageShowsOptions[];
@@ -58,8 +57,6 @@ extern const char kAlwaysShowBookmarkBarOnNTP[];
 extern const char kBraveDarkMode[];
 extern const char kOtherBookmarksMigrated[];
 extern const char kBraveShieldsSettingsVersion[];
-extern const char kBinanceAccessToken[];
-extern const char kBinanceRefreshToken[];
 extern const char kDefaultBrowserPromptEnabled[];
 
 // Web discovery project

@@ -24,7 +24,6 @@ import {
   ToggleCardsText
 } from '../../../components/default'
 import braveTalkBanner from './assets/brave-talk.png'
-import binanceBanner from './assets/binance.png'
 import rewardsBanner from './assets/braverewards.png'
 import HideIcon from './assets/hide-icon'
 import { Toggle } from '../../../components/toggle'
@@ -33,9 +32,6 @@ import { PlusIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../common/locale'
 
 interface Props {
-  toggleShowBinance: () => void
-  showBinance: boolean
-  binanceSupported: boolean
   toggleShowBraveTalk: () => void
   showBraveTalk: boolean
   braveTalkSupported: boolean
@@ -73,9 +69,6 @@ class CardsSettings extends React.PureComponent<Props, {}> {
 
   render () {
     const {
-      binanceSupported,
-      toggleShowBinance,
-      showBinance,
       toggleShowBraveTalk,
       showBraveTalk,
       braveTalkSupported,
@@ -101,22 +94,6 @@ class CardsSettings extends React.PureComponent<Props, {}> {
               </StyledSettingsInfo>
               {this.renderToggleButton(showBraveTalk, toggleShowBraveTalk)}
             </FeaturedSettingsWidget>
-          : null
-        }
-        {
-          binanceSupported
-          ? <SettingsWidget>
-              <StyledBannerImage src={binanceBanner} />
-              <StyledSettingsInfo>
-                <StyledSettingsTitle>
-                  {'Binance'}
-                </StyledSettingsTitle>
-                <StyledSettingsCopy>
-                  {getLocale('binanceWidgetDesc')}
-                </StyledSettingsCopy>
-              </StyledSettingsInfo>
-              {this.renderToggleButton(showBinance, toggleShowBinance, false)}
-            </SettingsWidget>
           : null
         }
         {

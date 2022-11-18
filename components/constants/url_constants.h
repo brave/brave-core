@@ -9,7 +9,6 @@
 extern const char kChromeExtensionScheme[];
 extern const char kBraveUIScheme[];
 extern const char kMagnetScheme[];
-extern const char kBinanceScheme[];
 extern const char kWidevineTOS[];
 extern const char kRewardsUpholdSupport[];
 extern const char kP3ALearnMoreURL[];

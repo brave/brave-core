@@ -117,7 +117,6 @@ const Config = function () {
   this.googleDefaultClientSecret = getNPMConfig(['google_default_client_secret']) || ''
   this.braveServicesKey = getNPMConfig(['brave_services_key']) || ''
   this.infuraProjectId = getNPMConfig(['brave_infura_project_id']) || ''
-  this.binanceClientId = getNPMConfig(['binance_client_id']) || ''
   this.bitflyerClientId = getNPMConfig(['bitflyer_client_id']) || ''
   this.bitflyerClientSecret = getNPMConfig(['bitflyer_client_secret']) || ''
   this.bitflyerStagingClientId = getNPMConfig(['bitflyer_staging_client_id']) || ''
@@ -272,7 +271,6 @@ Config.prototype.buildArgs = function () {
     google_default_client_id: this.googleDefaultClientId,
     google_default_client_secret: this.googleDefaultClientSecret,
     brave_infura_project_id: this.infuraProjectId,
-    binance_client_id: this.binanceClientId,
     bitflyer_client_id: this.bitflyerClientId,
     bitflyer_client_secret: this.bitflyerClientSecret,
     bitflyer_staging_client_id: this.bitflyerStagingClientId,
@@ -547,7 +545,6 @@ Config.prototype.buildArgs = function () {
     delete args.brave_google_api_key
     delete args.brave_stats_api_key
     delete args.brave_stats_updater_url
-    delete args.binance_client_id
     delete args.bitflyer_client_id
     delete args.bitflyer_client_secret
     delete args.bitflyer_staging_client_id
@@ -731,10 +728,6 @@ Config.prototype.update = function (options) {
 
   if (options.brave_infura_project_id) {
     this.infuraProjectId = options.infura_project_id
-  }
-
-  if (options.binance_client_id) {
-    this.binanceClientId = options.binance_client_id
   }
 
   if (options.bitflyer_client_id) {

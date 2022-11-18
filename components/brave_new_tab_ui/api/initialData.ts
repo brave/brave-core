@@ -19,7 +19,6 @@ export type InitialData = {
   customImageBackgrounds: NewTab.ImageBackground[]
   braveRewardsSupported: boolean
   braveTalkSupported: boolean
-  binanceSupported: boolean
   searchPromotionEnabled: boolean
 }
 
@@ -53,7 +52,6 @@ export async function getInitialData (): Promise<InitialData> {
       wallpaperData,
       braveRewardsSupported,
       braveTalkSupported,
-      binanceSupported,
       searchPromotionEnabled,
       braveBackgrounds,
       customImageBackgrounds
@@ -77,11 +75,6 @@ export async function getInitialData (): Promise<InitialData> {
           resolve(supported)
         })
       }),
-      new Promise((resolve) => {
-        chrome.binance.isSupportedRegion((supported: boolean) => {
-          resolve(supported)
-        })
-      }),
       getNTPBrowserAPI().pageHandler.isSearchPromotionEnabled().then(({ enabled }) => enabled),
       getNTPBrowserAPI().pageHandler.getBraveBackgrounds().then(({ backgrounds }) => {
         return backgrounds.map(background => ({ type: 'brave', wallpaperImageUrl: background.imageUrl.url, author: background.author, link: background.link.url }))
@@ -100,7 +93,6 @@ export async function getInitialData (): Promise<InitialData> {
       customImageBackgrounds,
       braveRewardsSupported,
       braveTalkSupported,
-      binanceSupported,
       searchPromotionEnabled
     } as InitialData
   } catch (e) {

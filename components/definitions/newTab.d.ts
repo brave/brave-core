@@ -84,7 +84,7 @@ declare namespace NewTab {
     url: string
   }
 
-  export type StackWidget = 'rewards' | 'binance' | 'braveTalk' | 'bitcoinDotCom' | ''
+  export type StackWidget = 'rewards' | 'braveTalk' | 'bitcoinDotCom' | ''
 
   export interface GridSitesState {
     removedSites: Site[]
@@ -105,14 +105,12 @@ declare namespace NewTab {
     braveTalkPromptDismissed: boolean
     braveTalkSupported: boolean
     braveTalkPromptAutoDismissed: boolean
-    binanceSupported: boolean
     bitcoinDotComSupported: boolean
     showEmptyPage: boolean
     rewardsState: RewardsWidgetState
     currentStackWidget: StackWidget
     removedStackWidgets: StackWidget[]
     widgetStackOrder: StackWidget[]
-    binanceState: BinanceWidgetState
   }
 
   export type Preferences = {
@@ -126,7 +124,6 @@ declare namespace NewTab {
     showTopSites: boolean
     showRewards: boolean
     showBraveTalk: boolean
-    showBinance: boolean
     hideAllWidgets: boolean
     isBraveTodayOptedIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
@@ -178,38 +175,6 @@ declare namespace NewTab {
     parameters: RewardsParameters
     totalContribution: number
   }
-
-  export interface BinanceWidgetState {
-    binanceSupported?: boolean
-    userTLD: BinanceTLD
-    userLocale: string
-    initialFiat: string
-    initialAmount: string
-    initialAsset: string
-    userTLDAutoSet: boolean
-    accountBalances: Record<string, string>
-    authInProgress: boolean
-    assetBTCValues: Record<string, string>
-    assetUSDValues: Record<string, string>
-    assetBTCVolumes: Record<string, string>
-    userAuthed: boolean
-    btcBalanceValue: string
-    hideBalance: boolean
-    btcPrice: string
-    btcVolume: string
-    binanceClientUrl: string
-    assetDepositInfo: Record<string, any>
-    assetDepoitQRCodeSrcs: Record<string, string>
-    convertAssets: Record<string, Record<string, string>[]>
-    accountBTCValue: string
-    accountBTCUSDValue: string
-    disconnectInProgress: boolean
-    authInvalid: boolean
-    selectedView: string
-    depositInfoSaved: boolean
-  }
-
-  export type BinanceTLD = 'us' | 'com'
 
   export const enum RewardsResult {
     LEDGER_OK = 0,

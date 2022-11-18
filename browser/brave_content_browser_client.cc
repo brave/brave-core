@@ -34,7 +34,6 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
-#include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_status_header_throttle.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_federated/features.h"
@@ -162,10 +161,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/speedreader/speedreader_throttle.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
-#endif
-
-#if BUILDFLAG(BINANCE_ENABLED)
-#include "brave/browser/binance/binance_protocol_handler.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -666,14 +661,6 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
                                          page_transition, has_user_gesture);
     return true;
   }
-
-#if BUILDFLAG(BINANCE_ENABLED)
-  if (binance::IsBinanceProtocol(url)) {
-    binance::HandleBinanceProtocol(url, web_contents_getter, page_transition,
-                                   has_user_gesture, initiating_origin);
-    return true;
-  }
-#endif
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
       url, web_contents_getter, frame_tree_node_id, navigation_data,

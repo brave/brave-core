@@ -7,6 +7,5 @@
 
 namespace content {
 const char kBraveUIScheme[] = "brave";
-const char kBinanceScheme[] = "com.brave.binance";
 }
 

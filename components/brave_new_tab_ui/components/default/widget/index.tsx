@@ -20,8 +20,6 @@ export interface WidgetProps {
   isForeground?: boolean
   paddingType: 'none' | 'right' | 'default'
   onLearnMore?: () => void
-  onDisconnect?: () => void
-  onRefreshData?: () => void
   onAddSite?: () => void
   customLinksEnabled?: boolean
   onToggleCustomLinksEnabled?: () => void
@@ -43,8 +41,6 @@ export function Widget ({
   isForeground,
   paddingType,
   onLearnMore,
-  onDisconnect,
-  onRefreshData,
   onAddSite,
   customLinksEnabled,
   onToggleCustomLinksEnabled,
@@ -64,8 +60,6 @@ export function Widget ({
       <WidgetMenu
         widgetTitle={widgetTitle}
         onLearnMore={onLearnMore}
-        onDisconnect={onDisconnect}
-        onRefreshData={onRefreshData}
         onAddSite={onAddSite}
         customLinksEnabled={customLinksEnabled}
         onToggleCustomLinksEnabled={onToggleCustomLinksEnabled}

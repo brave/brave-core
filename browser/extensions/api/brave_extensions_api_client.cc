@@ -28,19 +28,6 @@ bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
     return true;  // protected URL
   }
 
-  // Binance
-  URLPattern pattern1(URLPattern::SCHEME_HTTPS,
-      "https://accounts.binance.com/*/oauth/authorize*");
-  URLPattern pattern2(URLPattern::SCHEME_HTTPS,
-      "https://accounts.binance.com/oauth/token*");
-  if (pattern1.MatchesURL(request.url) || pattern2.MatchesURL(request.url)) {
-    return true;
-  }
-
-  if (request.url.SchemeIs(kBinanceScheme)) {
-    return true;
-  }
-
   return ChromeExtensionsAPIClient::ShouldHideBrowserNetworkRequest(context,
                                                                     request);
 }

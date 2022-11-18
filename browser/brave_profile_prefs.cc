@@ -14,7 +14,6 @@
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
-#include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
@@ -311,7 +310,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kNewTabPageClockFormat, "");
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
-  registry->RegisterBooleanPref(kNewTabPageShowBinance, false);
   registry->RegisterBooleanPref(kNewTabPageShowBraveTalk, true);
   registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
 
@@ -352,12 +350,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #endif
   registry->RegisterBooleanPref(prefs::kAddOpenSearchEngines,
                                 allow_open_search_engines);
-
-  // Binance widget
-#if BUILDFLAG(BINANCE_ENABLED)
-  registry->RegisterStringPref(kBinanceAccessToken, "");
-  registry->RegisterStringPref(kBinanceRefreshToken, "");
-#endif
 
   omnibox::RegisterBraveProfilePrefs(registry);
 

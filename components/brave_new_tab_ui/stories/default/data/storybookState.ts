@@ -43,9 +43,9 @@ function shouldShowBrandedWallpaperData (shouldShow: boolean): NewTab.BrandedWal
 function getWidgetStackOrder (firstWidget: string): NewTab.StackWidget[] {
   switch (firstWidget) {
     case 'braveTalk':
-      return ['rewards', 'binance', 'braveTalk']
+      return ['rewards', 'braveTalk']
     default:
-      return ['braveTalk', 'binance', 'rewards']
+      return ['braveTalk', 'rewards']
   }
 }
 
@@ -97,7 +97,6 @@ export const useNewTabData = (state: NewTab.State = defaultState) => {
     showBraveTalk: boolean('Show Brave Talk?', true),
     braveTalkSupported: boolean('Brave Talk supported?', true),
     braveTalkPromptDismissed: !boolean('Brave Talk prompt?', false),
-    showBinance: boolean('Show Binance?', true),
     hideAllWidgets: boolean('Hide all widgets?', false),
     isBraveTodayOptedIn: boolean('Brave Today opted-in?', false),
     textDirection: select('Text direction', { ltr: 'ltr', rtl: 'rtl' }, 'ltr'),
@@ -106,11 +105,6 @@ export const useNewTabData = (state: NewTab.State = defaultState) => {
       adsBlockedStat: number('Number of blocked items', 1337),
       httpsUpgradesStat: number('Number of HTTPS upgrades', 1337)
     },
-    // TODO(petemill): Support binance state when binance can be included without chrome.* APIs
-    // binanceState: {
-    //   ...state.binanceState,
-    //   binanceSupported: boolean('Binance supported?', true)
-    // },
     initialDataLoaded: true,
     widgetStackOrder: getWidgetStackOrder(select('First widget', ['braveTalk', 'rewards'], 'rewards'))
   }

@@ -62,7 +62,6 @@ export interface Props {
   setMostVisitedSettings: (show: boolean, customize: boolean) => void
   toggleShowRewards: () => void
   toggleShowBraveTalk: () => void
-  toggleShowBinance: () => void
   toggleBrandedWallpaperOptIn: () => void
   toggleCards: (show: boolean) => void
   chooseNewCustomImageBackground: () => void
@@ -80,8 +79,6 @@ export interface Props {
   allowSponsoredWallpaperUI: boolean
   showRewards: boolean
   showBraveTalk: boolean
-  showBinance: boolean
-  binanceSupported: boolean
   braveRewardsSupported: boolean
   braveTalkSupported: boolean
   todayPublishers?: Publishers
@@ -279,9 +276,6 @@ export default class Settings extends React.PureComponent<Props, State> {
       showRewards,
       showBraveTalk,
       brandedWallpaperOptIn,
-      toggleShowBinance,
-      showBinance,
-      binanceSupported,
       braveRewardsSupported,
       braveTalkSupported,
       toggleCards,
@@ -394,9 +388,6 @@ export default class Settings extends React.PureComponent<Props, State> {
                     <CardsSettings
                       toggleCards={toggleCards}
                       cardsHidden={cardsHidden}
-                      toggleShowBinance={toggleShowBinance}
-                      showBinance={showBinance}
-                      binanceSupported={binanceSupported}
                       toggleShowBraveTalk={toggleShowBraveTalk}
                       showBraveTalk={showBraveTalk}
                       braveTalkSupported={braveTalkSupported}

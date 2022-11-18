@@ -42,10 +42,6 @@ export function saveShowBraveTalk (value: boolean): void {
   sendSavePref('showBraveTalk', value)
 }
 
-export function saveShowBinance (value: boolean): void {
-  sendSavePref('showBinance', value)
-}
-
 export function saveBrandedWallpaperOptIn (value: boolean): void {
   sendSavePref('brandedWallpaperOptIn', value)
 }

@@ -9,11 +9,6 @@
   WebSecurityPolicy::RegisterURLSchemeAsNotAllowingJavascriptURLs(       \
       brave_scheme);                                                     \
                                                                          \
-  WebString binance_scheme(WebString::FromASCII(kBinanceScheme));        \
-  WebSecurityPolicy::RegisterURLSchemeAsDisplayIsolated(binance_scheme); \
-  WebSecurityPolicy::RegisterURLSchemeAsNotAllowingJavascriptURLs(       \
-      binance_scheme);                                                   \
-                                                                         \
   WebString ipfs_scheme(WebString::FromASCII("ipfs"));                   \
   WebSecurityPolicy::RegisterURLSchemeAsSupportingFetchAPI(ipfs_scheme); \
                                                                          \

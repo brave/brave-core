@@ -9,7 +9,6 @@ import * as storage from '../storage/new_tab_storage'
 // Reducers
 import newTabStateReducer from './new_tab_reducer'
 import gridSitesReducer from './grid_sites_reducer'
-import binanceReducer from './binance_reducer'
 import rewardsReducer from './rewards_reducer'
 import { stackWidgetReducer } from './stack_widget_reducer'
 import todayReducer, { BraveTodayState } from './today'
@@ -25,7 +24,6 @@ export const newTabReducers = (state: NewTab.State | undefined, action: any) => 
 
   const startingState = state
   state = newTabStateReducer(state, action)
-  state = binanceReducer(state, action)
   state = rewardsReducer(state, action)
   state = stackWidgetReducer(state, action)
 

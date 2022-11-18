@@ -193,21 +193,6 @@ declare namespace chrome.braveRewards {
   const updatePrefs: (prefs: Partial<RewardsPrefs>) => void
 }
 
-declare namespace chrome.binance {
-  const getUserTLD: (callback: (userTLD: string) => void) => {}
-  const isSupportedRegion: (callback: (supported: boolean) => void) => {}
-  const getClientUrl: (callback: (clientUrl: string) => void) => {}
-  const getAccessToken: (callback: (success: boolean) => void) => {}
-  const getAccountBalances: (callback: (balances: Record<string, Record<string, string>>, unauthorized: boolean) => void) => {}
-  const getConvertQuote: (from: string, to: string, amount: string, callback: (quote: any) => void) => {}
-  const getDepositInfo: (symbol: string, tickerNetwork: string, callback: (depositAddress: string, depositTag: string) => void) => {}
-  const getCoinNetworks: (callback: (networks: Record<string, string>) => void) => {}
-  const getConvertAssets: (callback: (supportedAssets: any) => void) => {}
-  const confirmConvert: (quoteId: string, callback: (success: boolean, message: string) => void) => {}
-  const revokeToken: (callback: (success: boolean) => void) => {}
-  const getLocaleForURL: (callback: (locale: string) => void) => {}
-}
-
 declare namespace chrome.braveTalk {
   const isSupported: (callback: (supported: boolean) => void) => {}
 }

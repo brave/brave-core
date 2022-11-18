@@ -8,7 +8,6 @@ import { AddSiteTile, AddSiteTileImage, Tile, TileActionsContainer, TileAction, 
 import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './notification'
 import { Clock } from './clock'
 import { RewardsWidget } from './rewards'
-import { BinanceWidget } from './binance'
 import { BraveTalkWidget } from './braveTalk'
 import EditCards from './editCards'
 import EditTopSite from './editTopSite'
@@ -34,7 +33,6 @@ export {
   SiteRemovalAction,
   Clock,
   RewardsWidget,
-  BinanceWidget,
   BraveTalkWidget,
   EditCards,
   createWidget,

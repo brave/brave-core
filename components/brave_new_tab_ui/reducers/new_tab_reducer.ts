@@ -46,7 +46,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ...initialDataPayload.privateTabData,
         braveRewardsSupported: initialDataPayload.braveRewardsSupported,
         braveTalkSupported: initialDataPayload.braveTalkSupported,
-        binanceSupported: initialDataPayload.binanceSupported,
         searchPromotionEnabled: initialDataPayload.searchPromotionEnabled,
         // Auto-dismiss of together prompt only
         // takes effect on the next page view and not the
@@ -97,9 +96,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         }
       })
 
-      if (state.currentStackWidget) {
-        state = storage.migrateStackWidgetSettings(state)
-      }
       state = storage.addNewStackWidget(state)
       state = storage.replaceStackWidgets(state)
 

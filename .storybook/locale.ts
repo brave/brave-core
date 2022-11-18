@@ -313,7 +313,6 @@ let locale: Record<string, string> = {
   dashboardSettingsTitle: 'Customize Dashboard',
   showBackgroundImg: 'Show background image',
   showBraveStats: 'Show Brave Stats',
-  showBinance: 'Show Binance',
   braveTalkWidgetTitle: 'Brave Talk',
   showClock: 'Show Clock',
   showTopSites: 'Show Top Sites',

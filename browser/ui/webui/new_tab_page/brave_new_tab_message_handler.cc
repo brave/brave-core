@@ -89,7 +89,6 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
   pref_data.Set("isBraveTodayOptedIn",
                 prefs->GetBoolean(brave_news::prefs::kBraveTodayOptedIn));
   pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
-  pref_data.Set("showBinance", prefs->GetBoolean(kNewTabPageShowBinance));
   pref_data.Set("showBraveTalk", prefs->GetBoolean(kNewTabPageShowBraveTalk));
   return pref_data;
 }
@@ -320,10 +319,6 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kNewTabPageShowBinance,
-      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
       kNewTabPageShowBraveTalk,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
@@ -440,8 +435,6 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kBrandedWallpaperNotificationDismissed;
   } else if (settingsKeyInput == "hideAllWidgets") {
     settingsKey = kNewTabPageHideAllWidgets;
-  } else if (settingsKeyInput == "showBinance") {
-    settingsKey = kNewTabPageShowBinance;
   } else if (settingsKeyInput == "showBraveTalk") {
     settingsKey = kNewTabPageShowBraveTalk;
   } else {

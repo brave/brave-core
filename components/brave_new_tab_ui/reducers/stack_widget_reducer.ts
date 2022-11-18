@@ -7,7 +7,6 @@ import { types } from '../constants/stack_widget_types'
 
 const widgets = {
   'rewards': 'showRewards',
-  'binance': 'showBinance',
   'braveTalk': 'showBraveTalk'
 }
 

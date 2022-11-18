@@ -58,34 +58,4 @@ TEST_F(BraveExtensionsAPIClientTests, IsBraveProtectedUrlUphold) {
   ASSERT_FALSE(ShouldHideBrowserNetworkRequest(allowed3));
 }
 
-TEST_F(BraveExtensionsAPIClientTests, IsBraveProtectedUrlBinance) {
-  auto create_request_params = [](const std::string& url) {
-    const int kRendererProcessId = 2;
-    WebRequestInfoInitParams request;
-    request.url = GURL(url);
-    request.render_process_id = kRendererProcessId;
-    return request;
-  };
-
-  WebRequestInfo blocked1(
-      create_request_params("https://accounts.binance.com/en/oauth/authorize"));
-  WebRequestInfo blocked2(create_request_params(
-      "https://accounts.binance.com/oauth/token"));
-  WebRequestInfo blocked3(
-      create_request_params("https://accounts.binance.com/fr/oauth/authorize"));
-  WebRequestInfo blocked4(
-      create_request_params("com.brave.binance://authorization?code=Asv4EWY3"));
-
-  ASSERT_TRUE(ShouldHideBrowserNetworkRequest(blocked1));
-  ASSERT_TRUE(ShouldHideBrowserNetworkRequest(blocked2));
-  ASSERT_TRUE(ShouldHideBrowserNetworkRequest(blocked3));
-  ASSERT_TRUE(ShouldHideBrowserNetworkRequest(blocked4));
-
-  WebRequestInfo allowed1(create_request_params("https://binance.com/"));
-  WebRequestInfo allowed2(create_request_params(
-      "https://accounts.binance.com/"));
-  ASSERT_FALSE(ShouldHideBrowserNetworkRequest(allowed1));
-  ASSERT_FALSE(ShouldHideBrowserNetworkRequest(allowed2));
-}
-
 }  // namespace extensions
