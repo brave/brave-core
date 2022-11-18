@@ -19,6 +19,7 @@ class ScrollView;
 }
 
 class Browser;
+class TabStripScrollContainer;
 
 // Wraps TabStripRegion and show it vertically.
 class VerticalTabStripRegionView : public views::View {
@@ -84,6 +85,9 @@ class VerticalTabStripRegionView : public views::View {
 
   gfx::Size GetPreferredSizeForState(State state) const;
 
+  // Returns valid object only when the related flag is enabled.
+  TabStripScrollContainer* GetTabStripScrollContainer();
+
   raw_ptr<Browser> browser_ = nullptr;
 
   raw_ptr<views::View> original_parent_of_region_view_ = nullptr;
@@ -106,6 +110,8 @@ class VerticalTabStripRegionView : public views::View {
   base::OneShotTimer mouse_enter_timer_;
 
   bool mouse_events_for_test_ = false;
+
+  absl::optional<gfx::Size> last_layout_size_;
 
   base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };
