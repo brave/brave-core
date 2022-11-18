@@ -128,7 +128,7 @@
     *** mActionModeController;
     *** mLocationBarModel;
     *** mToolbar;
-    *** mBookmarkBridgeSupplier;
+    *** mBookmarkModelSupplier;
     *** mLayoutManager;
     *** mOverlayPanelVisibilitySupplier;
     *** mTabModelSelector;

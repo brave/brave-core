@@ -11,34 +11,40 @@
 namespace brave_wallet {
 namespace features {
 
-const base::Feature kNativeBraveWalletFeature{"NativeBraveWallet",
-                                              base::FEATURE_ENABLED_BY_DEFAULT};
-const base::Feature kBraveWalletFilecoinFeature{
+BASE_FEATURE(kNativeBraveWalletFeature,
+             "NativeBraveWallet",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveWalletFilecoinFeature,
+             "BraveWalletFilecoin",
 #if BUILDFLAG(IS_ANDROID)
-  "BraveWalletFilecoin", base::FEATURE_DISABLED_BY_DEFAULT
+             base::FEATURE_DISABLED_BY_DEFAULT
 #else
-  "BraveWalletFilecoin", base::FEATURE_ENABLED_BY_DEFAULT
+             base::FEATURE_ENABLED_BY_DEFAULT
 #endif
-};
+);
 
-const base::Feature kBraveWalletSolanaFeature{"BraveWalletSolana",
-                                              base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveWalletSolanaFeature,
+             "BraveWalletSolana",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 const base::FeatureParam<bool> kCreateDefaultSolanaAccount{
     &kBraveWalletSolanaFeature, "create_default_solana_account", true};
 
-const base::Feature kBraveWalletSolanaProviderFeature{
-    "BraveWalletSolanaProvider", base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveWalletSolanaProviderFeature,
+             "BraveWalletSolanaProvider",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
-const base::Feature kBraveWalletDappsSupportFeature{
-    "BraveWalletDappsSupport", base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveWalletDappsSupportFeature,
+             "BraveWalletDappsSupport",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBraveWalletENSL2Feature,
+             "BraveWalletENSL2",
 #if BUILDFLAG(IS_ANDROID)
-const base::Feature kBraveWalletENSL2Feature{"BraveWalletENSL2",
-                                             base::FEATURE_DISABLED_BY_DEFAULT};
+             base::FEATURE_DISABLED_BY_DEFAULT
 #else
-const base::Feature kBraveWalletENSL2Feature{"BraveWalletENSL2",
-                                             base::FEATURE_ENABLED_BY_DEFAULT};
+             base::FEATURE_ENABLED_BY_DEFAULT
 #endif
+);
 
 }  // namespace features
 }  // namespace brave_wallet

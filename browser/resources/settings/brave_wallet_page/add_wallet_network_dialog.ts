@@ -3,134 +3,180 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
 import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
-import 'chrome://resources/cr_elements/cr_input/cr_input.js';
 import 'chrome://resources/cr_elements/cr_searchable_drop_down/cr_searchable_drop_down.js';
-import { Polymer, html } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import { I18nBehavior } from 'chrome://resources/cr_elements/i18n_behavior.js';
-import { BraveWalletBrowserProxyImpl } from './brave_wallet_browser_proxy.js';
-import { getTemplate } from './add_wallet_network_dialog.html.js'
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {BaseMixin} from '../base_mixin.js'
+import {loadTimeData} from '../i18n_setup.js'
+import {NetworkInfo, BraveWalletBrowserProxy, BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.js';
+import {CrInputElement} from 'chrome://resources/cr_elements/cr_input/cr_input.js'
+import {getTemplate} from './add_wallet_network_dialog.html.js'
 
-Polymer({
-  is: 'add-wallet-network-dialog',
+const SettingsBraveAddWalletNetworkDialogElementBase =
+  I18nMixin(BaseMixin(PolymerElement)) as {
+    new(): PolymerElement & I18nMixinInterface
+  }
 
-  _template: getTemplate(),
+export interface Url {
+  value: string;
+}
 
-  behaviors: [
-    I18nBehavior
-  ],
+export interface ExtendedNetworkInfo extends NetworkInfo {
+  searchString: string;
+}
 
-  properties: {
-    addNewAllowed: {
-      type: Boolean,
-      value: false
-    },
-    coin: {
-      type: Number,
-      value: 0
-    },
-    networks: {
-      type: Array,
-      value() {
-        return [];
+export type UrlType = 'rpc' | 'icon' | 'block';
+
+declare global {
+  interface Window {
+    testing: any;
+  }
+}
+
+export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAddWalletNetworkDialogElementBase {
+  static get is() {
+    return 'add-wallet-network-dialog'
+  }
+
+  static get template() {
+    return getTemplate()
+  }
+
+  static get properties() {
+    return {
+      addNewAllowed: {
+        type: Boolean,
+        value: false
       },
-    },
-    selectedRpcUrl: {
-      type: String,
-      value: ''
-    },
-    rpcUrls: {
-      type: Array,
-      value() {
-        return [{ value: '' }];
-      }
-    },
-    iconUrls: {
-      type: Array,
-      value() {
-        return [{ value: '' }];
-      }
-    },
-    blockUrls: {
-      type: Array,
-      value() {
-        return [{ value: '' }];
-      }
-    },
-    isRpcPlusButtonDisabled_: {
-      type: Boolean,
-      value: true,
-    },
-    isIconPlusButtonDisabled_: {
-      type: Boolean,
-      value: true,
-    },
-    isBlockPlusButtonDisabled_: {
-      type: Boolean,
-      value: true,
-    },
-    isSubmitButtonEnabled_: {
-      type: Boolean,
-      value: false,
-    },
+      coin: {
+        type: Number,
+        value: 0
+      },
+      networks: {
+        type: Array,
+        value() {
+          return [];
+        },
+      },
+      selectedRpcUrl: {
+        type: String,
+        value: ''
+      },
+      rpcUrls: {
+        type: Array,
+        value() {
+          return [{ value: '' }];
+        }
+      },
+      iconUrls: {
+        type: Array,
+        value() {
+          return [{ value: '' }];
+        }
+      },
+      blockUrls: {
+        type: Array,
+        value() {
+          return [{ value: '' }];
+        }
+      },
+      isRpcPlusButtonDisabled_: {
+        type: Boolean,
+        value: true,
+      },
+      isIconPlusButtonDisabled_: {
+        type: Boolean,
+        value: true,
+      },
+      isBlockPlusButtonDisabled_: {
+        type: Boolean,
+        value: true,
+      },
+      isSubmitButtonEnabled_: {
+        type: Boolean,
+        value: false,
+      },
 
-    chainIdValue_: String,
-    invalidChainIdMessage_: String,
-    chainIdInvalid_: {
-      type: Boolean,
-      value: false,
-    },
+      chainIdValue_: String,
+      invalidChainIdMessage_: String,
+      chainIdInvalid_: {
+        type: Boolean,
+        value: false,
+      },
 
-    chainNameValue_: String,
-    chainNameInvalid_: {
-      type: Boolean,
-      value: false,
-    },
-    isCurrencyErrorHidden_: {
-      type: Boolean,
-      value: true,
-    },
-    isSubmissionErrorHidden_: {
-      type: Boolean,
-      value: true,
-    },
-    submissionErrorMessage_: {
-      type: String,
-      value: true
-    },
-    selected: {
-      type: Object,
-      value: {}
-    },
-    currencyNameValue_: String,
-    currencySymbolValue_: String,
-    currencyDecimalsValue_: Number,
-    prepopulatedNetworks_: {
-      type: Array,
-      value: []
-    },
-    searchValue_: {
-      type: String,
-      value: '',
-      observer: 'onSearchValueChanged_',
-    },
-    searchItems_: {
-      type: Array,
-      value: []
-    },
-  },
+      chainNameValue_: String,
+      chainNameInvalid_: {
+        type: Boolean,
+        value: false,
+      },
+      isCurrencyErrorHidden_: {
+        type: Boolean,
+        value: true,
+      },
+      isSubmissionErrorHidden_: {
+        type: Boolean,
+        value: true,
+      },
+      submissionErrorMessage_: {
+        type: String,
+        value: true
+      },
+      selected: {
+        type: Object,
+        value: {}
+      },
+      currencyNameValue_: String,
+      currencySymbolValue_: String,
+      currencyDecimalsValue_: Number,
+      prepopulatedNetworks_: {
+        type: Array,
+        value: []
+      },
+      searchValue_: {
+        type: String,
+        value: '',
+        observer: 'onSearchValueChanged_',
+      },
+      searchItems_: {
+        type: Array,
+        value: []
+      },
+    };
+  }
 
-  browserProxy_: null,
+  private addNewAllowed: boolean;
+  private coin: number;
+  private networks: NetworkInfo[];
+  private selectedRpcUrl: string;
+  private rpcUrls: Url[];
+  private iconUrls: Url[];
+  private blockUrls: Url[];
+  private isRpcPlusButtonDisabled_: boolean;
+  private isIconPlusButtonDisabled_: boolean;
+  private isBlockPlusButtonDisabled_: boolean;
+  private isSubmitButtonEnabled_: boolean;
+  private chainIdValue_: string;
+  private invalidChainIdMessage_: string;
+  private chainIdInvalid_: boolean;
+  private chainNameValue_: string;
+  private chainNameInvalid_: boolean;
+  private isCurrencyErrorHidden_: boolean;
+  private isSubmissionErrorHidden_: boolean;
+  private submissionErrorMessage_: string;
+  private selected: NetworkInfo;
+  private currencyNameValue_: string;
+  private currencySymbolValue_: string;
+  private currencyDecimalsValue_: number;
+  private prepopulatedNetworks_: ExtendedNetworkInfo[];
+  private searchValue_: string;
+  private searchItems_: string[];
 
-  /** @override */
-  created: function () {
-    this.browserProxy_ = BraveWalletBrowserProxyImpl.getInstance();
-  },
+  browserProxy_: BraveWalletBrowserProxy = BraveWalletBrowserProxyImpl.getInstance();
 
-  ready: function () {
+  override ready() {
+    super.ready()
     this.updatePrepopulatedNetworks()
 
     if (Object.keys(this.selected).length === 0)
@@ -153,20 +199,22 @@ Polymer({
     this.updatePlusButtonState('rpc')
     this.updatePlusButtonState('icon')
     this.updatePlusButtonState('block')
-  },
+  }
 
-  connectedCallback: function () {
+  override connectedCallback() {
+    super.connectedCallback()
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       window.testing = window.testing || {}
       window.testing['addWalletNetworkDialog'] = this.shadowRoot
     }
-  },
+  }
 
-  disconnectedCallback: function () {
+  override disconnectedCallback() {
+    super.disconnectedCallback()
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       delete window.testing['addWalletNetworkDialog']
     }
-  },
+  }
 
   updatePrepopulatedNetworks() {
     if (!this.addNewAllowed)
@@ -175,13 +223,18 @@ Polymer({
       if (!payload)
         return
 
-      this.prepopulatedNetworks_ = payload
-      this.prepopulatedNetworks_.forEach(item => item.searchString = `${item.chainId}(${BigInt(item.chainId)}) ${item.chainName}`)
+      payload.forEach(item => {
+        this.prepopulatedNetworks_.push(
+          {...item, searchString: `${item.chainId}(${BigInt(item.chainId)}) ${item.chainName}`}
+        )
+      })
+      // this.prepopulatedNetworks_ = payload
+      // this.prepopulatedNetworks_.forEach(item => item.searchString = `${item.chainId}(${BigInt(item.chainId)}) ${item.chainName}`)
       this.searchItems_ = this.prepopulatedNetworks_.map(item => item.searchString)
     })
-  },
+  }
 
-  validateURL: function (value) {
+  validateURL(value: string) {
     const url_ = value
     if (url_.trim() == '') {
       return false;
@@ -194,39 +247,40 @@ Polymer({
     }
 
     return url.protocol === "http:" || url.protocol === "https:"
-  },
-  /** @private */
-  chainIdChanged_: function (event) {
-    const value = event.target.value
+  }
+
+  chainIdChanged_() {
+    const value = this.chainIdValue_
     this.chainIdInvalid_ = value.length === 0
     if (this.chainIdInvalid_) {
       this.invalidChainIdMessage_ = this.i18n('walletAddNetworkInvalidChainId')
     }
     this.updateSubmitButtonState_()
-  },
+  }
 
-  chainNameChanged_: function (event) {
-    const element = event.target
-    this.chainNameInvalid_ = element.value.trim() === ''
+  chainNameChanged_() {
+    this.chainNameInvalid_ = this.chainNameValue_.trim() === ''
     this.updateSubmitButtonState_()
-  },
+  }
 
-  isInvalidInputForList_: function (value, list) {
+  isInvalidInputForList_(value: string, list: string) {
     if (value.trim() === '') {
       return (list === 'icon' || list === 'block') ? false : true
     }
     return !this.validateURL(value)
-  },
-  getTailOfUrlsArray: function (list) {
+  }
+
+  getTailOfUrlsArray(list: UrlType) {
     if (list === 'rpc') {
-      return this.rpcUrls.at(0).value
+      return this.rpcUrls.at(0)!.value
     } else if (list === 'icon') {
-      return this.iconUrls.at(0).value
-    } else if (list === 'block') {
-      return this.blockUrls.at(0).value
+      return this.iconUrls.at(0)!.value
+    } else /* (list === 'block') */ {
+      return this.blockUrls.at(0)!.value
     }
-  },
-  updatePlusButtonState: function (list) {
+  }
+
+  updatePlusButtonState(list: UrlType) {
     const inputElementValue = this.getTailOfUrlsArray(list)
     const disabled = (!inputElementValue || inputElementValue.trim() === '')
     if (list === 'rpc') {
@@ -236,15 +290,18 @@ Polymer({
     } else if (list === 'block') {
       this.isBlockPlusButtonDisabled_ = disabled
     }
-  },
-  updateSubmitButtonState_: function () {
-    for (const input of this.shadowRoot.querySelectorAll('.mandatory')) {
+  }
+
+  updateSubmitButtonState_() {
+    for (const inputElement of this.shadowRoot!.querySelectorAll('.mandatory')) {
+      const input = inputElement as CrInputElement
       if (input && (input.invalid || !input.value || (input.value.trim && input.value.trim() === ''))) {
         this.isSubmitButtonEnabled_ = false
         return;
       }
     }
-    for (const input of this.shadowRoot.querySelectorAll('.wallet-input')) {
+    for (const inputElement of this.shadowRoot!.querySelectorAll('.wallet-input')) {
+      const input = inputElement as CrInputElement
       if (input && input.invalid) {
         this.isSubmitButtonEnabled_ = false
         return;
@@ -265,14 +322,16 @@ Polymer({
     }
 
     this.isSubmitButtonEnabled_ = true
-  },
-  nativeCurrencyChanged_: function (event) {
+  }
+
+  nativeCurrencyChanged_() {
     this.isCurrencyErrorHidden_ = true
-  },
+  }
+
   // Called for any change in the urls inputs
   // validates value of focused one and shows error if the value is invalid
-  // calls update for Plus buton state
-  urlChangedImpl_: function (element, list) {
+  // calls update for Plus button state
+  urlChangedImpl_(element: CrInputElement, list: UrlType) {
     element.invalid = this.isInvalidInputForList_(element.value, list)
     this.updateSubmitButtonState_()
     const empty = element.value.trim() === ''
@@ -284,33 +343,41 @@ Polymer({
     if (!element.invalid || empty) {
       this.updatePlusButtonState(list)
     }
-  },
-  hasValidRPCUrls: function () {
+  }
+
+  hasValidRPCUrls() {
     return this.rpcUrls.find(element => this.validateURL(element.value))
-  },
-  urlChangedIcons_: function (event) {
-    return this.urlChangedImpl_(event.target, 'icon')
-  },
-  urlChangedRpc_: function (event) {
-    return this.urlChangedImpl_(event.target, 'rpc')
-  },
-  urlChangedBlock_: function (event) {
-    return this.urlChangedImpl_(event.target, 'block')
-  },
-  onAddRpcUrlTap_: function (item) {
+  }
+
+  urlChangedIcons_(event: Event) {
+    return this.urlChangedImpl_((event.target as CrInputElement), 'icon')
+  }
+
+  urlChangedRpc_(event: Event) {
+    return this.urlChangedImpl_((event.target as CrInputElement), 'rpc')
+  }
+
+  urlChangedBlock_(event: Event) {
+    return this.urlChangedImpl_((event.target as CrInputElement), 'block')
+  }
+
+  onAddRpcUrlTap_() {
     this.splice('rpcUrls', 0, 0, { value: '' });
     this.isRpcPlusButtonDisabled_ = true
-  },
-  onAddIconUrlTap_: function (item) {
+  }
+
+  onAddIconUrlTap_() {
     this.splice('iconUrls', 0, 0, { value: '' });
     this.isIconPlusButtonDisabled_ = true
-  },
-  onAddBlockUrlTap_: function (item) {
+  }
+
+  onAddBlockUrlTap_() {
     this.splice('blockUrls', 0, 0, { value: '' });
     this.isBlockPlusButtonDisabled_ = true
-  },
-  transformListForSerializaion_: function (list) {
-    return list.reduce((filtered, item) => {
+  }
+
+  transformListForSerializaion_(list: Url[]) {
+    return list.reduce((filtered: string[] | null, item: Url) => {
       if (item && item.value.trim() !== '') {
         if (!filtered) {
           filtered = []
@@ -319,34 +386,39 @@ Polymer({
       }
       return filtered
     }, null)
-  },
-  showCurrencyError: function () {
+  }
+
+  showCurrencyError() {
     this.isSubmissionErrorHidden_ = true
     this.isCurrencyErrorHidden_ = false
-  },
-  setSubmissionResult: function (success, errorMessage) {
+  }
+
+  setSubmissionResult(success: boolean, errorMessage: string) {
     this.isCurrencyErrorHidden_ = this.isSubmissionErrorHidden_ = true
     if (!success) {
       this.isSubmissionErrorHidden_ = false
       this.submissionErrorMessage_ = errorMessage
     }
-  },
-  addNewNetwork: function (payload) {
+  }
+
+  addNewNetwork(payload: NetworkInfo) {
     this.browserProxy_.addChain(payload)
       .then(([success, errorMessage]) => {
         this.setSubmissionResult(success, errorMessage)
         if (success) {
-          this.fire('close');
+          this.dispatchEvent(new CustomEvent('close'));
           return
         }
       })
-  },
-  getHexNumber: function (value) {
+  }
+
+  getHexNumber(value: string) {
     if (!isNaN(Number(value)))
       return '0x' + Number(value).toString(16)
     return value
-  },
-  onAddNetworkTap_: function (item) {
+  }
+
+  onAddNetworkTap_() {
     let payload = Object({
       chainId: this.getHexNumber(this.chainIdValue_),
       chainName: this.chainNameValue_,
@@ -354,7 +426,7 @@ Polymer({
     const nativeCurrency = Object({
       name: this.currencyNameValue_.trim(),
       symbol: this.currencySymbolValue_.trim(),
-      decimals: parseInt(this.currencyDecimalsValue_)
+      decimals: this.currencyDecimalsValue_
     })
     if ((nativeCurrency.name || nativeCurrency.symbol || nativeCurrency.decimals)) {
       if (!nativeCurrency.name || !nativeCurrency.symbol || !nativeCurrency.decimals) {
@@ -365,7 +437,7 @@ Polymer({
     }
     payload.coin = this.coin
     payload.rpcUrls = this.transformListForSerializaion_(this.rpcUrls)
-    payload.activeRpcEndpointIndex = payload.rpcUrls.findIndex(it => it === this.selectedRpcUrl)
+    payload.activeRpcEndpointIndex = payload.rpcUrls.findIndex((it: string) => it === this.selectedRpcUrl)
     if (payload.activeRpcEndpointIndex < 0)
       payload.activeRpcEndpointIndex = 0
     payload.blockExplorerUrls = this.transformListForSerializaion_(this.blockUrls)
@@ -382,8 +454,9 @@ Polymer({
       return
     }
     this.addNewNetwork(payload)
-  },
-  onSearchValueChanged_(newValue, oldValue) {
+  }
+
+  onSearchValueChanged_(newValue: string) {
     if (!newValue)
       return
     const found = this.prepopulatedNetworks_.find(item => item.searchString === newValue)
@@ -413,4 +486,7 @@ Polymer({
       this.searchValue_ = ''
     }
   }
-});
+}
+
+customElements.define(
+  SettingsBraveAddWalletNetworkDialogElement.is, SettingsBraveAddWalletNetworkDialogElement)

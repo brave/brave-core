@@ -9,7 +9,7 @@
 
 #include "base/bind.h"
 #include "brave/ios/browser/brave_web_main_parts.h"
-#include "ios/chrome/browser/chrome_url_constants.h"
+#include "ios/chrome/browser/url/chrome_url_constants.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/gurl.h"

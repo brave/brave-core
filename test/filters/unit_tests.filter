@@ -8,14 +8,22 @@
 # These tests crash due to TestingBraveBrowserProcess::greaselion_download_service()
 # having NOTREACHED which causes an immediate crash
 # https://github.com/brave/brave-browser/issues/25726
+-All/PriceTrackingViewFeatureFlagTest.PriceTrackingViewCreation/*
+-ApcScrimManagerImplTest.DisabledScrimCannotBeShown
+-ApcScrimManagerImplTest.HideDoesNotImmediatelySetOriginalAxMode
+-ApcScrimManagerImplTest.HideFocusOnTheWebContent
 -ApcScrimManagerImplTest.RestoresTheOriginalHiddenStateOnWebcontentsVisibibleTransition
+-ApcScrimManagerImplTest.ShutDownDisablesAndHidesScrim
 -ApcScrimManagerImplTest.UpdatesVisibilityOnWebcontentsVisibilityChanged
 -BatterySaverButtonNoExperimentsAvailableTest.*
 -BatterySaverButtonTest.*
+-BrowserViewTestWithStopLoadingAnimationForHiddenWindow.LoadingAnimationNotRenderedWhenWindowHidden
+-ChromeBrowsingDataRemoverDelegateOriginTrialsTest.PersistentOriginTrialsAreDeleted
 -ExtensionActionViewControllerFeatureUnitTest.*
 -ExtensionActionViewControllerGrayscaleTest.*
 -ExtensionActionViewControllerUnitTest.*
 -HighEfficiencyChipViewTest.*
+-PageLiveStateDecoratorHelperTabsTest.IsActiveTab
 
 # These tests crash when BraveExtensionManagement is initialized via a
 # TestExtensionSystem
@@ -42,6 +50,27 @@
 # returns false instead of true
 # https://github.com/brave/brave-browser/issues/25729
 -TabContainerTest.RemoveTabInGroupWithTabClosingMode
+
+# Tests below are disabled for attempting to read unregistered pref
+# kDefaultSearchProviderByExtension, and crashing. This pref seems to be
+# registered only by SearchEngineProviderServiceFactory::RegisterProfilePrefs.
+-RenderViewContextMenuPrefsTest.LensImageSearchDisabledFor3pDse
+-RenderViewContextMenuPrefsTest.LensImageSearchEnabled
+-RenderViewContextMenuPrefsTest.LensImageSearchEnabledFor3pDse
+-RenderViewContextMenuPrefsTest.LensImageSearchForProgressiveWebApp
+-RenderViewContextMenuPrefsTest.LensImageSearchNonImage
+-All/SearchProviderRequestTest.SendRequestWithURL/*
+-All/SearchProviderRequestTest.SendRequestWithoutURL/*
+
+# The following tests are disabled for BraveRenderViewContextMenu::InitMenu
+# attempting to check Tor statuses, which dereferences an uninitialised
+# g_browser_process->local_state().
+-AutofillContextMenuManagerTest.AutofillContextMenuContents
+-AutofillContextMenuManagerTest.ExecuteCommand
+
+# These tests fail because we have features::kNavigationRequestPreconnect
+# disabled
+-PreconnectManagerTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*

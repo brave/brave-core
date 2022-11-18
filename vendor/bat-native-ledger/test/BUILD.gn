@@ -121,9 +121,9 @@ source_set("bat_native_ledger_tests") {
   deps = [
     "//base/test:test_support",
     "//brave/components/challenge_bypass_ristretto",
+    "//brave/third_party/rapidjson",
     "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-ledger:publishers_proto",
-    "//brave/vendor/bat-native-rapidjson",
     "//net:net",
     "//sql:sql",
     "//url:url",

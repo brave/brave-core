@@ -14,9 +14,9 @@
   std::unique_ptr<url::Origin> origin;
 }
 
-- (instancetype)initWithOrigin:(url::Origin)origin {
+- (instancetype)initWithOrigin:(url::Origin)value {
   if ((self = [super init])) {
-    self->origin = std::make_unique<url::Origin>(origin);
+    self->origin = std::make_unique<url::Origin>(value);
   }
   return self;
 }

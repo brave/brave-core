@@ -14,12 +14,8 @@ namespace syncer {
 BraveSyncStoppedReporter::BraveSyncStoppedReporter(
     const GURL& sync_service_url,
     const std::string& user_agent,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    ResultCallback callback)
-    : SyncStoppedReporter(sync_service_url,
-                          user_agent,
-                          url_loader_factory,
-                          std::move(callback)) {}
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : SyncStoppedReporter(sync_service_url, user_agent, url_loader_factory) {}
 
 BraveSyncStoppedReporter::~BraveSyncStoppedReporter() = default;
 

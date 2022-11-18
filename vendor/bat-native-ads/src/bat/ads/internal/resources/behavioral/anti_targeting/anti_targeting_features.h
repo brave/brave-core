@@ -10,7 +10,7 @@
 
 namespace ads::resource::features {
 
-extern const base::Feature kAntiTargeting;
+BASE_DECLARE_FEATURE(kAntiTargeting);
 
 bool IsAntiTargetingEnabled();
 

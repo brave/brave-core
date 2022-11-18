@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_TABS_FEATURES_H_
 
 #include "base/compiler_specific.h"
+#include "base/feature_list.h"
 
 namespace base {
 struct LOGICALLY_CONST Feature;
@@ -15,7 +16,7 @@ struct LOGICALLY_CONST Feature;
 namespace tabs {
 namespace features {
 
-extern const base::Feature kBraveVerticalTabs;
+BASE_DECLARE_FEATURE(kBraveVerticalTabs);
 
 // Returns true when users chose to use vertical tabs
 bool ShouldShowVerticalTabs();

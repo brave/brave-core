@@ -1,8 +1,8 @@
 diff --git a/build/config/android/internal_rules.gni b/build/config/android/internal_rules.gni
-index f440dbbbae9337468208e40f11ac058c9f87c905..345a87528faafcefb403c1b2bf234ef25a939a7c 100644
+index 355243859b65527b4b4cf18e0b5ce6e88b481d43..1392ba92904b5aff3b174e3d11189f80a82cf9f8 100644
 --- a/build/config/android/internal_rules.gni
 +++ b/build/config/android/internal_rules.gni
-@@ -3912,6 +3912,7 @@ if (enable_java_templates) {
+@@ -3918,6 +3918,7 @@ if (enable_java_templates) {
        } else {
          not_needed(invoker, [ "missing_classes_allowlist" ])
        }

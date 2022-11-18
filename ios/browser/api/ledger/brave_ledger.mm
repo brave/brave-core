@@ -1698,7 +1698,7 @@ BATLedgerBridge(BOOL,
   } else if (onlyOnce) {
     const auto idx = [self.mNotifications
         indexOfObjectPassingTest:^BOOL(RewardsNotification* _Nonnull obj,
-                                       NSUInteger idx, BOOL* _Nonnull stop) {
+                                       NSUInteger index, BOOL* _Nonnull stop) {
           return obj.displayed && [obj.id isEqualToString:identifier];
         }];
     if (idx != NSNotFound) {
@@ -2014,10 +2014,10 @@ BATLedgerBridge(BOOL,
   rewardsDatabase.AsyncCall(&ledger::LedgerDatabase::RunTransaction)
       .WithArgs(std::move(transaction))
       .Then(base::BindOnce(
-          ^(ledger::client::RunDBTransactionCallback callback,
+          ^(ledger::client::RunDBTransactionCallback completion,
             ledger::mojom::DBCommandResponsePtr response) {
             if (weakSelf)
-              std::move(callback).Run(std::move(response));
+              std::move(completion).Run(std::move(response));
           },
           std::move(callback)));
 }

@@ -69,7 +69,7 @@ constexpr int kDefaultServingVersion = 1;
 
 }  // namespace
 
-const base::Feature kServing{kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kServing, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsServingEnabled() {
   return base::FeatureList::IsEnabled(kServing);

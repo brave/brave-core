@@ -10,7 +10,7 @@
 
 namespace ads::targeting::features {
 
-extern const base::Feature kTextEmbedding;
+BASE_DECLARE_FEATURE(kTextEmbedding);
 
 bool IsTextEmbeddingEnabled();
 

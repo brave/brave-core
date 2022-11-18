@@ -23,7 +23,7 @@ String FrameFetchContext::GetCacheIdentifierIfCrossSiteSubframe() const {
         // calls when nothing has changed.
         top_frame_origin_for_cache_identifier_ = top_frame_origin;
         cache_identifier = top_frame_origin->RegistrableDomain();
-        if (cache_identifier.IsEmpty())
+        if (cache_identifier.empty())
           cache_identifier = top_frame_origin->Host();
       }
     }

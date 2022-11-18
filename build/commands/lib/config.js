@@ -193,7 +193,7 @@ const Config = function () {
   }
 }
 
-Config.prototype.isOfficialBuild = function () {
+Config.prototype.isReleaseBuild = function () {
   return this.buildConfig === 'Release'
 }
 
@@ -263,10 +263,11 @@ Config.prototype.buildArgs = function () {
     proprietary_codecs: true,
     ffmpeg_branding: "Chrome",
     branding_path_component: "brave",
+    branding_path_product: "brave",
     enable_nacl: false,
     enable_widevine: true,
     target_cpu: this.targetArch,
-    is_official_build: this.isOfficialBuild() && !this.isAsan(),
+    is_official_build: this.isReleaseBuild() && !this.isAsan(),
     is_debug: this.isDebug(),
     dcheck_always_on: getNPMConfig(['dcheck_always_on']) || this.isComponentBuild(),
     brave_channel: this.channel,
@@ -321,6 +322,10 @@ Config.prototype.buildArgs = function () {
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     use_goma: this.use_goma,
     ...this.extraGnArgs,
+  }
+
+  if (!args.is_official_build) {
+    args.branding_path_product += "-development"
   }
 
   if (!this.isBraveReleaseBuild()) {
@@ -392,13 +397,13 @@ Config.prototype.buildArgs = function () {
     args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
   }
 
-  if (this.targetArch === 'x86' &&
-      (process.platform === 'linux' || this.getTargetOS() === 'win')) {
+  if ((this.getTargetOS() === 'linux' && this.targetArch === 'x86') ||
+      (this.getTargetOS() === 'win' && this.isBraveReleaseBuild())) {
     // Minimal symbols to work around size restrictions:
     // On Linux x86, ELF32 cannot be > 4GiB.
-    // For x86 Windows, chrome.dll.pdb sometimes becomes > 4 GiB and
-    // llvm-pdbutil on that file errors out with "The data is in an unexpected
-    // format. Too many directory blocks". Associated llvm issue:
+    // For x86, x64, and Arm64 Windows, chrome.dll.pdb sometimes becomes
+    // > 4 GiB and llvm-pdbutil on that file errors out with "The data is in an
+    // unexpected format. Too many directory blocks". Associated llvm issue:
     // https://github.com/llvm/llvm-project/issues/54445
     args.symbol_level = 1
   }
@@ -449,7 +454,7 @@ Config.prototype.buildArgs = function () {
   if (this.targetOS === 'android') {
     args.android_channel = this.channel
     args.enable_jdk_library_desugaring = false
-    if (!this.isOfficialBuild()) {
+    if (!this.isReleaseBuild()) {
       args.android_channel = 'default'
       args.chrome_public_manifest_package = 'com.brave.browser_default'
     } else if (this.channel === '') {
@@ -545,8 +550,8 @@ Config.prototype.buildArgs = function () {
     delete args.proprietary_codecs
     delete args.ffmpeg_branding
     delete args.branding_path_component
+    delete args.branding_path_product
     delete args.enable_nacl
-    delete args.branding_path_component
     delete args.enable_widevine
     delete args.enable_hangout_services_extension
     delete args.brave_google_api_endpoint

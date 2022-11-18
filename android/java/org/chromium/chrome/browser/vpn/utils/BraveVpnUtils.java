@@ -258,7 +258,6 @@ public class BraveVpnUtils {
     public static void showVpnAlwaysOnErrorDialog(Activity activity) {
         BraveVpnAlwaysOnErrorDialogFragment mBraveVpnAlwaysOnErrorDialogFragment =
                 new BraveVpnAlwaysOnErrorDialogFragment();
-        mBraveVpnAlwaysOnErrorDialogFragment.setCancelable(false);
         mBraveVpnAlwaysOnErrorDialogFragment.show(
                 ((FragmentActivity) activity).getSupportFragmentManager(),
                 "BraveVpnAlwaysOnErrorDialogFragment");
@@ -267,7 +266,6 @@ public class BraveVpnUtils {
     public static void showVpnConfirmDialog(Activity activity) {
         BraveVpnConfirmDialogFragment braveVpnConfirmDialogFragment =
                 new BraveVpnConfirmDialogFragment();
-        braveVpnConfirmDialogFragment.setCancelable(false);
         braveVpnConfirmDialogFragment.show(
                 ((FragmentActivity) activity).getSupportFragmentManager(),
                 "BraveVpnConfirmDialogFragment");

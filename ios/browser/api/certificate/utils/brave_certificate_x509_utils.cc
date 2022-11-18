@@ -282,20 +282,12 @@ std::string NIDToAbsoluteOID(const net::der::Input& input) {
 std::string SignatureAlgorithmDigestToName(
     const net::SignatureAlgorithm& signature_algorithm) {
   switch (signature_algorithm) {
-    case net::SignatureAlgorithm::kRsaPkcs1Md2:
-      return "MD2";
-    case net::SignatureAlgorithm::kRsaPkcs1Md4:
-      return "MD4";
-    case net::SignatureAlgorithm::kRsaPkcs1Md5:
-      return "MD5";
     case net::SignatureAlgorithm::kEcdsaSha1:
     case net::SignatureAlgorithm::kRsaPkcs1Sha1:
-    case net::SignatureAlgorithm::kDsaSha1:
       return "SHA-1";
     case net::SignatureAlgorithm::kRsaPkcs1Sha256:
     case net::SignatureAlgorithm::kEcdsaSha256:
     case net::SignatureAlgorithm::kRsaPssSha256:
-    case net::SignatureAlgorithm::kDsaSha256:
       return "SHA-256";
     case net::SignatureAlgorithm::kRsaPkcs1Sha384:
     case net::SignatureAlgorithm::kEcdsaSha384:
@@ -311,9 +303,6 @@ std::string SignatureAlgorithmDigestToName(
 std::string SignatureAlgorithmIdToName(
     const net::SignatureAlgorithm& signature_algorithm) {
   switch (signature_algorithm) {
-    case net::SignatureAlgorithm::kRsaPkcs1Md2:
-    case net::SignatureAlgorithm::kRsaPkcs1Md4:
-    case net::SignatureAlgorithm::kRsaPkcs1Md5:
     case net::SignatureAlgorithm::kRsaPkcs1Sha1:
     case net::SignatureAlgorithm::kRsaPkcs1Sha256:
     case net::SignatureAlgorithm::kRsaPkcs1Sha384:
@@ -328,9 +317,6 @@ std::string SignatureAlgorithmIdToName(
     case net::SignatureAlgorithm::kEcdsaSha384:
     case net::SignatureAlgorithm::kEcdsaSha512:
       return "ECDSA";
-    case net::SignatureAlgorithm::kDsaSha1:
-    case net::SignatureAlgorithm::kDsaSha256:
-      return "DSA";
   }
 }
 

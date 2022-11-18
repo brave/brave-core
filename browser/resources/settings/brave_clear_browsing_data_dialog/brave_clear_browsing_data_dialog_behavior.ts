@@ -8,7 +8,7 @@
 import "./brave_clear_browsing_data_on_exit_page.js"
 
 import {loadTimeData} from "../i18n_setup.js"
-import {WebUIListenerMixin} from 'chrome://resources/js/web_ui_listener_mixin.js';
+import {WebUIListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {SettingsClearBrowsingDataDialogElement} from '../clear_browsing_data_dialog/clear_browsing_data_dialog.js'
 import type {SettingsClearBrowsingDataDialogElement as BraveSettingsClearBrowsingDataDialogElement} from '../clear_browsing_data_dialog/clear_browsing_data_dialog.js'
 

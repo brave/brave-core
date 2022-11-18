@@ -14,7 +14,6 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "components/prefs/pref_service.h"
-#include "components/prefs/scoped_user_pref_update.h"
 
 DailyStorage::DailyStorage(PrefService* prefs, const char* pref_name)
     : prefs_(prefs),
@@ -83,13 +82,12 @@ void DailyStorage::Load() {
 
 void DailyStorage::Save() {
   FilterToDay();
-  ListPrefUpdate update(prefs_, pref_name_);
-  base::Value::List& list = update.Get()->GetList();
-  list.clear();
+  base::Value::List list;
   for (const auto& u : daily_values_) {
     base::Value::Dict value;
     value.Set("day", u.time.ToDoubleT());
     value.Set("value", static_cast<double>(u.value));
     list.Append(std::move(value));
   }
+  prefs_->SetList(pref_name_, std::move(list));
 }

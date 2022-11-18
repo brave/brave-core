@@ -57,7 +57,10 @@ if (include_polymer) {
 # does not have an equivalent .html file.
 brave_non_web_component_files_ts = []
 if (include_polymer) {
-  brave_non_web_component_files_ts += [ "polymer_overriding.ts" ]
+  brave_non_web_component_files_ts += [
+    "i18n_behavior.ts",
+    "polymer_overriding.ts",
+  ]
 
   # Files that are passed as input to css_to_wrapper().
   brave_css_files = [

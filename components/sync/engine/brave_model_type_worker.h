@@ -23,7 +23,7 @@ class ModelTypeProcessor;
 
 namespace features {
 
-extern const base::Feature kBraveSyncResetProgressMarker;
+BASE_DECLARE_FEATURE(kBraveSyncResetProgressMarker);
 
 }  // namespace features
 

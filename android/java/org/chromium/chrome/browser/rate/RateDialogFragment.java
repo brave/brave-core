@@ -47,8 +47,6 @@ public class RateDialogFragment extends BraveDialogFragment implements View.OnCl
     private EditText mRateFeedbackEditText;
     private Button mPositiveButton;
     private Button mNegativeButton;
-    private Button mRateButton;
-    private Button mLaterButton;
 
     private LinearLayout mSmileyLayout;
     private LinearLayout mRateActionLayout;
@@ -63,7 +61,8 @@ public class RateDialogFragment extends BraveDialogFragment implements View.OnCl
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_rate_dialog, container, false);
     }
 
@@ -110,7 +109,9 @@ public class RateDialogFragment extends BraveDialogFragment implements View.OnCl
                     mRateFeedbackEditText.startAnimation(shake);
                     return;
                 } else {
-                    RateFeedbackUtils.RateFeedbackWorkerTask mWorkerTask = new RateFeedbackUtils.RateFeedbackWorkerTask(mUserSelection, feedback, rateFeedbackCallback);
+                    RateFeedbackUtils.RateFeedbackWorkerTask mWorkerTask =
+                            new RateFeedbackUtils.RateFeedbackWorkerTask(
+                                    mUserSelection, feedback, rateFeedbackCallback);
                     mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
             } else if (mIsSuccessShown) {
@@ -134,7 +135,9 @@ public class RateDialogFragment extends BraveDialogFragment implements View.OnCl
         try {
             getActivity().startActivity(new Intent(Intent.ACTION_VIEW, marketUri));
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(getActivity(), "Couldn't find PlayStore on this device", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Couldn't find PlayStore on this device",
+                         Toast.LENGTH_SHORT)
+                    .show();
         }
         RateUtils.getInstance(getActivity()).setNextRateDateAndCount();
         dismiss();
@@ -164,14 +167,16 @@ public class RateDialogFragment extends BraveDialogFragment implements View.OnCl
         mPositiveButton.setText(getResources().getString(R.string.rate));
         mNegativeButton.setText(getResources().getString(R.string.later));
 
-        mRateTitleTextView.setText(getResources().getString(R.string.would_you_mind_leaving_rating));
+        mRateTitleTextView.setText(
+                getResources().getString(R.string.would_you_mind_leaving_rating));
     }
 
-    private RateFeedbackUtils.RateFeedbackCallback rateFeedbackCallback = new RateFeedbackUtils.RateFeedbackCallback() {
-        @Override
-        public void rateFeedbackSubmitted() {
-            RateUtils.getInstance(getActivity()).setNextRateDateAndCount();
-            dismiss();
-        }
-    };
+    private RateFeedbackUtils.RateFeedbackCallback rateFeedbackCallback =
+            new RateFeedbackUtils.RateFeedbackCallback() {
+                @Override
+                public void rateFeedbackSubmitted() {
+                    RateUtils.getInstance(getActivity()).setNextRateDateAndCount();
+                    dismiss();
+                }
+            };
 }

@@ -14,8 +14,9 @@
 namespace autofill_assistant {
 namespace features {
 
-const base::Feature kAutofillAssistantFeedbackChip{
-    "AutofillAssistantFeedbackChip", base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kAutofillAssistantFeedbackChip,
+             "AutofillAssistantFeedbackChip",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace features
 }  // namespace autofill_assistant

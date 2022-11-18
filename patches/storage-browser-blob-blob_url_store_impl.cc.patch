@@ -1,10 +1,10 @@
 diff --git a/storage/browser/blob/blob_url_store_impl.cc b/storage/browser/blob/blob_url_store_impl.cc
-index 75e8768b04f1f40b8a12797083094084de150dce..36d16a1192d74a613e39832cfd9e2427a48a7a92 100644
+index 0584f079450cfdcecfa13cc28845fb7fcb100e88..fd619c4cc61e665001f92d7416af52fc1359e2dd 100644
 --- a/storage/browser/blob/blob_url_store_impl.cc
 +++ b/storage/browser/blob/blob_url_store_impl.cc
-@@ -178,6 +178,7 @@ bool BlobURLStoreImpl::BlobUrlIsValid(const GURL& url,
+@@ -180,6 +180,7 @@ bool BlobURLStoreImpl::BlobUrlIsValid(const GURL& url,
    } else {
-     valid_origin = origin_ == url_origin;
+     valid_origin = storage_key_origin == url_origin;
    }
 +  BRAVE_BLOB_URL_STORE_IMPL_BLOB_URL_IS_VALID
    if (!valid_origin) {

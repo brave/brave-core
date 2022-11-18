@@ -24,8 +24,9 @@ constexpr int kDefaultResourceVersion = 1;
 
 }  // namespace
 
-const base::Feature kTextClassification{kFeatureName,
-                                        base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kTextClassification,
+             kFeatureName,
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsTextClassificationEnabled() {
   return base::FeatureList::IsEnabled(kTextClassification);

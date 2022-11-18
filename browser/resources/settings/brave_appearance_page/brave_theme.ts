@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import {PolymerElement, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {WebUIListenerMixin, WebUIListenerMixinInterface} from 'chrome://resources/js/web_ui_listener_mixin.js'
+import {WebUIListenerMixin, WebUIListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import {routes} from '../route.js'
 import {Router} from '../router.js'
 import 'chrome://resources/cr_elements/md_select.css.js';

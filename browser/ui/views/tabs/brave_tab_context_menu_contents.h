@@ -17,6 +17,10 @@ class BraveTabMenuModel;
 class Browser;
 class Tab;
 
+namespace gfx {
+class Point;
+}  // namespace gfx
+
 namespace sessions {
 class TabRestoreService;
 }  // namespace sessions

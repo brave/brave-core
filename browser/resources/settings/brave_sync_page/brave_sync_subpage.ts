@@ -5,7 +5,7 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import 'chrome://resources/js/util.m.js';
+import 'chrome://resources/js/util.js';
 
 import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.js';
@@ -18,9 +18,9 @@ import '../people_page/sync_controls.js';
 import './brave_sync_configure.js';
 import './brave_sync_setup.js';
 
-import { assert } from 'chrome://resources/js/assert.m.js';
+import { assert } from 'chrome://resources/js/assert.js';
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import { I18nMixin } from 'chrome://resources/js/i18n_mixin.js';
+import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js';
 
 import { Route, RouteObserverMixin, Router } from '../router.js';
 import { SyncBrowserProxyImpl, StatusAction } from '../people_page/sync_browser_proxy.js';

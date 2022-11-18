@@ -10,19 +10,21 @@
 
 namespace brave_ads::features {
 
-const base::Feature kNotificationAds{"AdNotifications",
-                                     base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kNotificationAds,
+             "AdNotifications",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
-const base::Feature kCustomNotificationAds{"CustomAdNotifications",
-                                           base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kCustomNotificationAds,
+             "CustomAdNotifications",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
-const base::Feature kAllowedToFallbackToCustomNotificationAds{
-    "AllowedToFallbackToCustomAdNotifications",
-    base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kAllowedToFallbackToCustomNotificationAds,
+             "AllowedToFallbackToCustomAdNotifications",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
-const base::Feature kSupportBraveSearchResultAdConfirmationEvents{
-    "SupportBraveSearchResultAdConfirmationEvents",
-    base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kSupportBraveSearchResultAdConfirmationEvents,
+             "SupportBraveSearchResultAdConfirmationEvents",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 namespace {
 

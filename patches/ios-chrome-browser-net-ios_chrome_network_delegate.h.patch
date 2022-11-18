@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/net/ios_chrome_network_delegate.h b/ios/chrome/browser/net/ios_chrome_network_delegate.h
-index 9cf3ae492a9b1b27d4cae02621edb7ffed834890..d48bf8823d3b297df5b44b26f99194815d5c915f 100644
+index 8980369a2479f69e752fe685c4e53161f9171277..115d8726aa6df9508c69593f8e86d068fdf5621b 100644
 --- a/ios/chrome/browser/net/ios_chrome_network_delegate.h
 +++ b/ios/chrome/browser/net/ios_chrome_network_delegate.h
-@@ -49,6 +49,7 @@ class IOSChromeNetworkDelegate : public net::NetworkDelegateImpl {
+@@ -50,6 +50,7 @@ class IOSChromeNetworkDelegate : public net::NetworkDelegateImpl {
  
   private:
    using QueryReason = content_settings::CookieSettings::QueryReason;

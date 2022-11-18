@@ -613,7 +613,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       static_cast<ads::mojom::NewTabPageAdEventType>(eventType));
 }
 
-- (void)inlineContentAdsWithDimensions:(NSString*)dimensions
+- (void)inlineContentAdsWithDimensions:(NSString*)dimensionsArg
                             completion:
                                 (void (^)(NSString* dimensions,
                                           InlineContentAdIOS* ad))completion {
@@ -621,7 +621,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     return;
   }
   ads->MaybeServeInlineContentAd(
-      base::SysNSStringToUTF8(dimensions),
+      base::SysNSStringToUTF8(dimensionsArg),
       ^(const std::string& dimensions,
         const absl::optional<ads::InlineContentAdInfo>& ad) {
         if (!ad) {
@@ -1002,27 +1002,27 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       content:""
       content_type:""
       method:"GET"
-      callback:^(const std::string& errorDescription, int statusCode,
-                 const std::string& response,
-                 const base::flat_map<std::string, std::string>& headers) {
+      callback:^(const std::string& errorDescriptionArg, int statusCodeArg,
+                 const std::string& responseStr,
+                 const base::flat_map<std::string, std::string>& headersArg) {
         const auto strongSelf = weakSelf;
         if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
           return;
         }
 
-        if (statusCode == 404) {
+        if (statusCodeArg == 404) {
           BLOG(1, @"%@ ads resource manifest not found", folderName);
           completion(NO);
           return;
         }
 
-        if (statusCode != 200) {
+        if (statusCodeArg != 200) {
           BLOG(1, @"Failed to download %@ ads resource manifest", folderName);
           handleRetry();
           return;
         }
 
-        NSData* data = [base::SysUTF8ToNSString(response)
+        NSData* data = [base::SysUTF8ToNSString(responseStr)
             dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary* dict = [NSJSONSerialization JSONObjectWithData:data
                                                              options:0
@@ -1094,7 +1094,6 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                   const std::string& errorDescription, int statusCode,
                   const std::string& response,
                   const base::flat_map<std::string, std::string>& headers) {
-                const auto strongSelf = weakSelf;
                 if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
                   return;
                 }
@@ -1118,10 +1117,10 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                 BLOG(1, @"Cached %@ ads resource version %@", adsResourceId,
                      version);
 
-                NSMutableDictionary* dict =
+                NSMutableDictionary* dictionary =
                     [[strongSelf adsResourceMetadata] mutableCopy];
-                dict[adsResourceId] = version;
-                [strongSelf setAdsResourceMetadata:dict];
+                dictionary[adsResourceId] = version;
+                [strongSelf setAdsResourceMetadata:dictionary];
 
                 BLOG(1, @"%@ ads resource updated to version %@", adsResourceId,
                      version);
@@ -1323,7 +1322,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)runDBTransaction:(ads::mojom::DBTransactionInfoPtr)transaction
-                callback:(ads::RunDBTransactionCallback)callback {
+                callback:(ads::RunDBTransactionCallback)completion {
   __weak BraveAds* weakSelf = self;
   base::PostTaskAndReplyWithResult(
       databaseQueue.get(), FROM_HERE,
@@ -1338,7 +1337,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
             }
             std::move(callback).Run(std::move(response));
           },
-          std::move(callback)));
+          std::move(completion)));
 }
 
 - (void)updateAdRewards {

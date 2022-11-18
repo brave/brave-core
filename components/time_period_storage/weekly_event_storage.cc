@@ -89,13 +89,12 @@ void WeeklyEventStorage::Load() {
 }
 
 void WeeklyEventStorage::Save() {
-  ListPrefUpdate update(prefs_, pref_name_);
-  base::Value* list = update.Get();
-  list->ClearList();
+  base::Value::List list;
   for (const auto& u : events_) {
     base::Value::Dict value;
     value.Set("day", base::TimeToValue(u.day));
     value.Set("value", static_cast<int>(u.value));
-    list->GetList().Append(std::move(value));
+    list.Append(std::move(value));
   }
+  prefs_->SetList(pref_name_, std::move(list));
 }

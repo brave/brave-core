@@ -28,8 +28,8 @@ UntrustedLedgerUI::UntrustedLedgerUI(content::WebUI* web_ui)
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       std::string("style-src 'unsafe-inline';"));
-  untrusted_source->AddResourcePath("load_time_data.js",
-                                    IDR_WEBUI_JS_LOAD_TIME_DATA_JS);
+  untrusted_source->AddResourcePath("load_time_data_deprecated.js",
+                                    IDR_WEBUI_JS_LOAD_TIME_DATA_DEPRECATED_JS);
   untrusted_source->UseStringsJs();
   untrusted_source->AddString("braveWalletLedgerBridgeUrl",
                               kUntrustedLedgerURL);

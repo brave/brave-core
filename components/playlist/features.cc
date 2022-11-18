@@ -9,6 +9,6 @@
 
 namespace playlist::features {
 
-const base::Feature kPlaylist{"Playlist", base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kPlaylist, "Playlist", base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace playlist::features

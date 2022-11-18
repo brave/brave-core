@@ -28,8 +28,7 @@ const AdPredictorWeightList kDefaultWeights = {
 
 }  // namespace
 
-const base::Feature kEligibleAds{kFeatureName,
-                                 base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kEligibleAds, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsEligibleAdsEnabled() {
   return base::FeatureList::IsEnabled(kEligibleAds);

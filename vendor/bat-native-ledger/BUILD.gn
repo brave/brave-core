@@ -595,11 +595,11 @@ source_set("ledger") {
     "//third_party/boringssl",
     "//third_party/brotli:dec",
     "//third_party/protobuf:protobuf_lite",
+    "//brave/third_party/rapidjson",
     "//third_party/re2",
     "//url",
     rebase_path("bip39wally-core-native:bip39wally-core", dep_base),
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
-    rebase_path("bat-native-rapidjson", dep_base),
     rebase_path("brave_base", dep_base),
   ]
 
