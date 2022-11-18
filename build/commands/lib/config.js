@@ -193,7 +193,7 @@ const Config = function () {
   }
 }
 
-Config.prototype.isOfficialBuild = function () {
+Config.prototype.isReleaseBuild = function () {
   return this.buildConfig === 'Release'
 }
 
@@ -267,7 +267,7 @@ Config.prototype.buildArgs = function () {
     enable_nacl: false,
     enable_widevine: true,
     target_cpu: this.targetArch,
-    is_official_build: this.isOfficialBuild() && !this.isAsan(),
+    is_official_build: this.isReleaseBuild() && !this.isAsan(),
     is_debug: this.isDebug(),
     dcheck_always_on: getNPMConfig(['dcheck_always_on']) || this.isComponentBuild(),
     brave_channel: this.channel,
@@ -324,7 +324,7 @@ Config.prototype.buildArgs = function () {
     ...this.extraGnArgs,
   }
 
-  if (!this.isOfficialBuild()) {
+  if (!args.is_official_build) {
     args.branding_path_product += "-development"
   }
 
@@ -454,7 +454,7 @@ Config.prototype.buildArgs = function () {
   if (this.targetOS === 'android') {
     args.android_channel = this.channel
     args.enable_jdk_library_desugaring = false
-    if (!this.isOfficialBuild()) {
+    if (!this.isReleaseBuild()) {
       args.android_channel = 'default'
       args.chrome_public_manifest_package = 'com.brave.browser_default'
     } else if (this.channel === '') {
