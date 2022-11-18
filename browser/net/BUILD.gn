@@ -30,6 +30,8 @@ source_set("net") {
     "brave_ad_block_csp_network_delegate_helper.h",
     "brave_ad_block_tp_network_delegate_helper.cc",
     "brave_ad_block_tp_network_delegate_helper.h",
+    "brave_ads_status_header_network_delegate_helper.cc",
+    "brave_ads_status_header_network_delegate_helper.h",
     "brave_block_safebrowsing_urls.cc",
     "brave_block_safebrowsing_urls.h",
     "brave_common_static_redirect_network_delegate_helper.cc",
@@ -73,6 +75,8 @@ source_set("net") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/safebrowsing",
+    "//brave/common",
+    "//brave/components/brave_ads/browser",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_shields/browser",
@@ -178,6 +182,7 @@ source_set("unit_tests") {
 
   sources = [
     "brave_ad_block_tp_network_delegate_helper_unittest.cc",
+    "brave_ads_status_header_network_delegate_helper_unittest.cc",
     "brave_block_safebrowsing_urls_unittest.cc",
     "brave_common_static_redirect_network_delegate_helper_unittest.cc",
     "brave_httpse_network_delegate_helper_unittest.cc",
@@ -191,6 +196,8 @@ source_set("unit_tests") {
   deps = [
     "//brave/browser/net",
     "//brave/browser/net:geolocation",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/browser:test_support",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/browser",
     "//chrome/test:test_support",
