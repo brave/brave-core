@@ -257,9 +257,10 @@ public class TransactionConfirmationStore: ObservableObject {
   
   @MainActor func fetchGasTokenBalance(
     token: BraveWallet.BlockchainToken,
-    account: BraveWallet.AccountInfo
+    account: BraveWallet.AccountInfo,
+    network: BraveWallet.NetworkInfo
   ) async {
-    if let gasTokenBalance = await rpcService.balance(for: token, in: account) {
+    if let gasTokenBalance = await rpcService.balance(for: token, in: account, network: network) {
       gasTokenBalanceCache["\(token.symbol)\(account.address)"] = gasTokenBalance
       updateTransaction(with: activeTransaction, shouldFetchCurrentAllowance: false, shouldFetchGasTokenBalance: false)
     }
@@ -302,7 +303,7 @@ public class TransactionConfirmationStore: ObservableObject {
           }
         } else if shouldFetchGasTokenBalance {
           if let account = keyring.accountInfos.first(where: { $0.address == activeParsedTransaction.fromAddress }) {
-            await fetchGasTokenBalance(token: network.nativeToken, account: account)
+            await fetchGasTokenBalance(token: network.nativeToken, account: account, network: network)
           }
         }
       }
@@ -330,7 +331,7 @@ public class TransactionConfirmationStore: ObservableObject {
           }
         } else if shouldFetchGasTokenBalance {
           if let account = keyring.accountInfos.first(where: { $0.address == activeParsedTransaction.fromAddress }) {
-            await fetchGasTokenBalance(token: network.nativeToken, account: account)
+            await fetchGasTokenBalance(token: network.nativeToken, account: account, network: network)
           }
         }
       }
@@ -363,7 +364,7 @@ public class TransactionConfirmationStore: ObservableObject {
           }
         } else if shouldFetchGasTokenBalance {
           if let account = keyring.accountInfos.first(where: { $0.address == activeParsedTransaction.fromAddress }) {
-            await fetchGasTokenBalance(token: network.nativeToken, account: account)
+            await fetchGasTokenBalance(token: network.nativeToken, account: account, network: network)
           }
         }
         
@@ -388,7 +389,7 @@ public class TransactionConfirmationStore: ObservableObject {
           }
         } else if shouldFetchGasTokenBalance {
           if let account = keyring.accountInfos.first(where: { $0.address == activeParsedTransaction.fromAddress }) {
-            await fetchGasTokenBalance(token: network.nativeToken, account: account)
+            await fetchGasTokenBalance(token: network.nativeToken, account: account, network: network)
           }
         }
         
@@ -416,7 +417,7 @@ public class TransactionConfirmationStore: ObservableObject {
           }
         } else if shouldFetchGasTokenBalance {
           if let account = keyring.accountInfos.first(where: { $0.address == activeParsedTransaction.fromAddress }) {
-            await fetchGasTokenBalance(token: network.nativeToken, account: account)
+            await fetchGasTokenBalance(token: network.nativeToken, account: account, network: network)
           }
         }
       }

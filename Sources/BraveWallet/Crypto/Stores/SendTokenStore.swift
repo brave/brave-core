@@ -162,7 +162,7 @@ public class SendTokenStore: ObservableObject {
       let balance = await self.rpcService.balance(
         for: selectedSendToken,
         in: selectedAccount,
-        with: coin,
+        network: network,
         decimalFormatStyle: .decimals(precision: Int(selectedSendToken.decimals))
       )
       guard !Task.isCancelled else { return }

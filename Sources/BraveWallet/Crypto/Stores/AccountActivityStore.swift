@@ -72,8 +72,8 @@ class AccountActivityStore: ObservableObject {
       let allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
       let allUserAssets: [BraveWallet.BlockchainToken] = await walletService.userAssets(network.chainId, coin: network.coin)
       let userVisibleTokens = allUserAssets.filter(\.visible)
-      self.assets = await fetchAssets(userVisibleTokens: userVisibleTokens)
-      self.NFTAssets = await fetchNFTAssets(userVisibleTokens: userVisibleTokens)
+      self.assets = await fetchAssets(userVisibleTokens: userVisibleTokens, network: network)
+      self.NFTAssets = await fetchNFTAssets(userVisibleTokens: userVisibleTokens, network: network)
       let assetRatios = self.assets.reduce(into: [String: Double](), {
         $0[$1.token.assetRatioId.lowercased()] = Double($1.price)
       })
@@ -88,7 +88,8 @@ class AccountActivityStore: ObservableObject {
   }
 
   @MainActor private func fetchAssets(
-    userVisibleTokens: [BraveWallet.BlockchainToken]
+    userVisibleTokens: [BraveWallet.BlockchainToken],
+    network: BraveWallet.NetworkInfo
   ) async -> [AssetViewModel] {
     let visibleUserAssets = userVisibleTokens.filter { !$0.isErc721 && !$0.isNft }
     var updatedAssets = visibleUserAssets.map {
@@ -112,7 +113,7 @@ class AccountActivityStore: ObservableObject {
     let tokenBalances = await withTaskGroup(of: [TokenBalance].self) { @MainActor group -> [TokenBalance] in
       for token in visibleUserAssets {
         group.addTask { @MainActor in
-          let balance = await self.rpcService.balance(for: token, in: self.account)
+          let balance = await self.rpcService.balance(for: token, in: self.account, network: network)
           return [TokenBalance(token, balance)]
         }
       }
@@ -130,7 +131,8 @@ class AccountActivityStore: ObservableObject {
   }
   
   @MainActor private func fetchNFTAssets(
-    userVisibleTokens: [BraveWallet.BlockchainToken]
+    userVisibleTokens: [BraveWallet.BlockchainToken],
+    network: BraveWallet.NetworkInfo
   ) async -> [NFTAssetViewModel] {
     let visibleNFTAssets = userVisibleTokens.filter { $0.isErc721 || $0.isNft }
     var updatedNFTAssets = visibleNFTAssets.map { asset in
@@ -144,7 +146,7 @@ class AccountActivityStore: ObservableObject {
     let tokenBalances = await withTaskGroup(of: [TokenBalance].self) { @MainActor group -> [TokenBalance] in
       for token in visibleNFTAssets {
         group.addTask { @MainActor in
-          let balance = await self.rpcService.balance(for: token, in: self.account)
+          let balance = await self.rpcService.balance(for: token, in: self.account, network: network)
           return [TokenBalance(token, balance)]
         }
       }

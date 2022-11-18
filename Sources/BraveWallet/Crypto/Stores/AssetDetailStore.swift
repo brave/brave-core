@@ -132,7 +132,7 @@ class AssetDetailStore: ObservableObject {
         self.priceHistory = priceHistory
       }
       
-      self.accounts = await fetchAccountBalances(updatedAccounts, keyring: keyring)
+      self.accounts = await fetchAccountBalances(updatedAccounts, keyring: keyring, network: network)
       let assetRatios = [token.assetRatioId.lowercased(): assetPriceValue]
       self.transactionSummaries = await fetchTransactionSummarys(keyring: keyring, assetRatios: assetRatios)
     }
@@ -140,7 +140,8 @@ class AssetDetailStore: ObservableObject {
   
   @MainActor private func fetchAccountBalances(
     _ accountAssetViewModels: [AccountAssetViewModel],
-    keyring: BraveWallet.KeyringInfo
+    keyring: BraveWallet.KeyringInfo,
+    network: BraveWallet.NetworkInfo
   ) async -> [AccountAssetViewModel] {
     var accountAssetViewModels = accountAssetViewModels
     isLoadingAccountBalances = true
@@ -148,7 +149,7 @@ class AssetDetailStore: ObservableObject {
     let tokenBalances = await withTaskGroup(of: [AccountBalance].self) { @MainActor group -> [AccountBalance] in
       for account in keyring.accountInfos {
         group.addTask { @MainActor in
-          let balance = await self.rpcService.balance(for: self.token, in: account)
+          let balance = await self.rpcService.balance(for: self.token, in: account, network: network)
           return [AccountBalance(account, balance)]
         }
       }
