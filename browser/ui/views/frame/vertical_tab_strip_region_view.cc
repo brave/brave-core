@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
+#include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -29,6 +30,7 @@
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
+#include "ui/views/view_utils.h"
 
 namespace {
 
@@ -388,6 +390,13 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
     }
     region_view_->layout_manager_->SetOrientation(
         views::LayoutOrientation::kVertical);
+    if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
+      auto* scroll_container = views::AsViewClass<TabStripScrollContainer>(
+          region_view_->tab_strip_container_);
+      DCHECK(scroll_container)
+          << "TabStripScrollContainer is used by upstream at this moment.";
+      scroll_container->SetLayoutManager(std::make_unique<views::FillLayout>());
+    }
   } else {
     if (Contains(region_view_)) {
       scroll_view_->contents()->RemoveChildView(region_view_);
@@ -395,6 +404,14 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
     }
     region_view_->layout_manager_->SetOrientation(
         views::LayoutOrientation::kHorizontal);
+    if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
+      auto* scroll_container = views::AsViewClass<TabStripScrollContainer>(
+          region_view_->tab_strip_container_);
+      DCHECK(scroll_container)
+          << "TabStripScrollContainer is used by upstream at this moment.";
+      scroll_container->SetLayoutManager(std::make_unique<views::FillLayout>())
+          ->SetMinimumSizeEnabled(true);
+    }
   }
 
   PreferredSizeChanged();
