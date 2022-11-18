@@ -286,6 +286,18 @@
 /* Title for Default Browser Full Screen Callout */
 "callout.defaultBrowserTitle" = "隱私不再遙不可及。";
 
+/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutDescription" = "這有助於我們瞭解哪些 Brave 功能的使用率最高。您隨時可以在 Brave 設定中的「Brave Shields 和隱私」下變更這項設定。";
+
+/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
+"callout.p3aCalloutLinkTitle" = "深入瞭解保護隱私的產品分析 (P3A)。";
+
+/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutTitle" = "協助提升 Brave 品質。";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "分享匿名、不公開的產品深入分析。";
+
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "觀看影片";
 
@@ -1371,6 +1383,12 @@
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "其他設定";
+
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "分享匿名、不公開的產品深入分析。這有助於我們瞭解哪些 Brave 功能的使用率最高。";
+
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+"p3a.settingTitle" = "產品分析";
 
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "預設網頁縮放比例";

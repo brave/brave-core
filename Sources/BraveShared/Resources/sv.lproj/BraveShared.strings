@@ -286,6 +286,18 @@
 /* Title for Default Browser Full Screen Callout */
 "callout.defaultBrowserTitle" = "Integritet. Helt enkelt.";
 
+/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutDescription" = "Detta hjälper oss att förstå vilka Brave-funktioner som används oftast. Du kan ändra detta när som helst i inställningarna under \"Brave Shields och sekretess\".";
+
+/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
+"callout.p3aCalloutLinkTitle" = "Läs mer om vår integritetsbevarande produktanalys (P3A)";
+
+/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutTitle" = "Hjälp till att göra Brave bättre.";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "Dela privat produktstatistik anonymt.";
+
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Se videon";
 
@@ -830,7 +842,7 @@
 "genericErrorTitle" = "Fel";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsing" = "Blockera farliga webbplatser";
+"GoogleSafeBrowsing" = "Blockera skadliga webbplatser";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "Skickar skadliga webbadresser för vissa sidor som du besöker till Googles tjänst för säker webbsökning, när din säkerhet är i fara.";
@@ -1371,6 +1383,12 @@
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "Andra inställningar";
+
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Dela privat produktstatistik anonymt. Det hjälper oss att förstå vilka Brave-funktioner som används mest.";
+
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+"p3a.settingTitle" = "Produktanalys";
 
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Zoomnivå för webbsida som standard";

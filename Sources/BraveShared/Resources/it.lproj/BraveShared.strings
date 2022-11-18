@@ -286,6 +286,18 @@
 /* Title for Default Browser Full Screen Callout */
 "callout.defaultBrowserTitle" = "Privacy, in tutta semplicità.";
 
+/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutDescription" = "Questa funzione ci aiuta a capire quali funzioni di Brave sono usate più spesso. Puoi modificare la tua scelta ogni volta che vuoi andando alle Impostazioni di Brave e selezionando “Protezioni Brave e privacy”.";
+
+/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
+"callout.p3aCalloutLinkTitle" = "Scopri di più sulle analisi di prodotto a tutela della privacy (P3A).";
+
+/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutTitle" = "Contribuisci a migliorare Brave.";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "Condividi analisi di prodotto anonime e rispettose della privacy.";
+
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Guarda il video";
 
@@ -830,7 +842,7 @@
 "genericErrorTitle" = "Errore";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsing" = "Blocca siti pericolosi";
+"GoogleSafeBrowsing" = "Blocca i siti pericolosi";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "Invia URL offuscati di alcune delle pagine che visiti al servizio di Navigazione sicura di Google quando la tua sicurezza è a rischio.";
@@ -1371,6 +1383,12 @@
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "Altre impostazioni";
+
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Condividi analisi di prodotto anonime e rispettose della privacy. Questo ci aiuta a capire quali funzioni di Brave sono usate più spesso.";
+
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+"p3a.settingTitle" = "Analisi di prodotto";
 
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Livello di zoom predefinito per le pagine web";

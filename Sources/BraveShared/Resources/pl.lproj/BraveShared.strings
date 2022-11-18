@@ -286,6 +286,18 @@
 /* Title for Default Browser Full Screen Callout */
 "callout.defaultBrowserTitle" = "Prosty sposób na prywatność.";
 
+/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutDescription" = "To pomoże nam zrozumieć, które funkcje Brave są używane najczęściej. Możesz to zmienić w dowolnej chwili w Ustawieniach Brave w zakładce Tarcze Brave i prywatność.";
+
+/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
+"callout.p3aCalloutLinkTitle" = "Dowiedz się więcej o naszej analizie produktów z zachowaniem prywatności (P3A).";
+
+/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutTitle" = "Pomóż ulepszyć Brave.";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "Dziel się anonimowo uwagami na temat produktów.";
+
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Zobacz film";
 
@@ -1371,6 +1383,12 @@
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "Inne ustawienia";
+
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Dziel się anonimowo uwagami na temat produktów. To pomoże nam zrozumieć, które funkcje Brave są używane najczęściej.";
+
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+"p3a.settingTitle" = "Analiza produktów";
 
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Domyślny stopień powiększenia strony";

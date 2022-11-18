@@ -46,11 +46,29 @@
 /* The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network. */
 "wallet.addCustomNetworkDropdownButtonTitle" = "Adicionar rede…";
 
+/* A title of one segment on top of Add Custom Assets screen. Users would need to select this segment if they are willing to add a custom non-fungible token. */
+"wallet.addCustomNFTTitle" = "NFT";
+
+/* A title of an initally hidden section in Add custom asset screen for users to input icon url and coingecko id. */
+"wallet.addCustomTokenAdvanced" = "Avançados";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's coingecko ID. */
+"wallet.addCustomTokenCoingeckoId" = "ID do CoinGecko";
+
 /* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
 "wallet.addCustomTokenErrorMessage" = "Houve uma falha ao adicionar um token personalizado. Tente novamente.";
 
 /* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
 "wallet.addCustomTokenErrorTitle" = "Não foi possível adicionar um token personalizado";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's icon URL. */
+"wallet.addCustomTokenIconURL" = "URL de ícone";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's ID. */
+"wallet.addCustomTokenId" = "ID do token (somente para ERC721)";
+
+/* A title of one segment on top of Add Custom Assets screen, which is default selected. Users would need to select this segment if they are willing to add a custom fungible token. */
+"wallet.addCustomTokenTitle" = "Token";
 
 /* The description of the view shown over a dapps website that describes what adding a new network will do. */
 "wallet.addNetworkDescription" = "Isso permitirá que esta rede seja usada na Carteira Brave.";
@@ -69,6 +87,9 @@
 
 /* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
 "wallet.advancedSettingsTransaction" = "Configurações avançadas";
+
+/* The title of the option to filter by all networks, displayed in a view to filter assets between 'All Networks' or a specific Crypto network. */
+"wallet.allNetworksTitle" = "Todas as redes";
 
 /* A title displayed above two numbers (the amount and transaction fee) showing the user the breakdown of the amount transferred and transaction fee for any Solana transaction. The \"+\" is a literal plus as the label below will show such as \"0.004 SOL + 0.00064 SOL\" */
 "wallet.amountAndFee" = "Valor + taxa";
@@ -331,6 +352,12 @@
 /* The placeholder for the input field for users to input network rpc url in Custom Network Details Screen. */
 "wallet.customNetworkUrlsPlaceholder" = "Insira URL(s)";
 
+/* A title for the btton that users can click to choose the network they are willing to add custom asset in. */
+"wallet.customTokenNetworkButtonTitle" = "Selecionar rede";
+
+/* A title that will be displayed on top of the text field for users to choose a network they are willing to add the custom asset in. */
+"wallet.customTokenNetworkHeader" = "Selecionar rede";
+
 /* The title displayed on the add custom token screen */
 "wallet.customTokenTitle" = "Personalizado";
 
@@ -514,17 +541,26 @@
 /* The button title for showing the screen to change what assets are visible */
 "wallet.editVisibleAssetsButtonTitle" = "Editar ativos visíveis";
 
+/* A placeholder for the text field that users will input the custom token address */
+"wallet.enterAddress" = "Inserir endereço";
+
 /* The header title for the textField users will input the dollar value of the crypto they want to buy */
 "wallet.enterAmount" = "Inserir valor";
-
-/* A placeholder for the text field that users will input the custom token contract address */
-"wallet.enterContractAddress" = "Inserir endereço de contrato";
 
 /* The navigation bar title displayed on the screen to enter wallet password to enable biometrics unlock from wallet settings. */
 "wallet.enterPasswordForBiometricsNavTitle" = "Ativar biometria";
 
 /* The title displayed on the screen to enter password to enable biometrics unlock from wallet settings. */
 "wallet.enterPasswordForBiometricsTitle" = "Insira a senha da sua carteira para ativar a biometria na carteira (você só precisará fazer isso uma vez)";
+
+/* A placeholder for the text field that users will input the custom token Coingecko ID. */
+"wallet.enterTokenCoingeckoId" = "Insira o ID do CoikGecko do token";
+
+/* A placeholder for the text field that users will input the custom token icon URL */
+"wallet.enterTokenIconURL" = "Insira o URL do ícone do token";
+
+/* A placeholder for the text field that users will input the custom token's ID. */
+"wallet.enterTokenId" = "Insira o ID do token";
 
 /* A placeholder for the text field that users will input the custom token name */
 "wallet.enterTokenName" = "Inserir nome do token";
@@ -667,6 +703,9 @@
 /* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
 "wallet.module" = "Carteira Brave";
 
+/* The title displayed on the view to filter by a network / all networks. */
+"wallet.networkFilterTitle" = "Selecionar filtro de rede";
+
 /* The footer beneath the networks title in settings screen. */
 "wallet.networkFooter" = "Personalização de redes de carteiras";
 
@@ -705,6 +744,9 @@
 
 /* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
 "wallet.next" = "Próxima";
+
+/* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
+"wallet.nftsTitle" = "NFTs";
 
 /* The empty state displayed when the user has no accounts associated with a transaction or asset */
 "wallet.noAccounts" = "Não há contas";
@@ -1198,8 +1240,8 @@
 /* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
 "wallet.today" = "Hoje";
 
-/* A title that will be displayed on top of the text field for users to input the custom token contract address */
-"wallet.tokenContractAddress" = "Endereço de contrato de token";
+/* A title that will be displayed on top of the text field for users to input the custom token address */
+"wallet.tokenAddress" = "Endereço do token";
 
 /* A title that will be displayed on top of the text field for users to input the custom token name */
 "wallet.tokenName" = "Nome do token";
@@ -1297,7 +1339,7 @@
 /* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
 "wallet.transactionUnknownApprovalTitle" = "Aprovada";
 
-/* A title shown for a erc 20 transfer, or erc 721 transaction. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
+/* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
 "wallet.transactionUnknownSendTitle" = "Enviou %@";
 
 /* An error message displayed when an unspecified problem occurs. */

@@ -286,6 +286,18 @@
 /* Title for Default Browser Full Screen Callout */
 "callout.defaultBrowserTitle" = "Privatsphäre leicht gemacht.";
 
+/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutDescription" = "Das hilft uns, zu verstehen, welche Brave-Funktionen am häufigsten genutzt werden. Sie können diese jederzeit in den Brave-Einstellungen unter „Brave Shields und Datenschutz“ ändern.";
+
+/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
+"callout.p3aCalloutLinkTitle" = "Erfahren Sie mehr über unsere Produktanalyse, die den Datenschutz respektiert (P3A).";
+
+/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutTitle" = "Brave mit Ihrer Hilfe verbessern.";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "Teilen Sie anonyme und private Produkteinblicke.";
+
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Video ansehen";
 
@@ -830,7 +842,7 @@
 "genericErrorTitle" = "Fehler";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsing" = "Gefährliche Seiten blockieren";
+"GoogleSafeBrowsing" = "Gefährliche Websites blockieren";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "Sendet verschleierte URLs einiger Seiten, die Sie besuchen, an den Dienst Google Safe Browsing, wenn Ihre Sicherheit gefährdet ist.";
@@ -1371,6 +1383,12 @@
 
 /* Section name for other settings. */
 "OtherSettingsSection" = "Andere Einstellungen";
+
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Teilen Sie anonyme und private Produkteinblicke. Das hilft uns, zu verstehen, welche Brave-Funktionen am häufigsten genutzt werden.";
+
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+"p3a.settingTitle" = "Produktanalysen";
 
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Standard-Zoomebene für Websites";
