@@ -14,10 +14,13 @@ import { BuySendSwapDepositButton } from './buy-send-swap-deposit-button/buy-sen
 // Styled Components
 import { Wrapper } from './buy-send-swap-deposit-nav.style'
 
+// Transactions is not a option for Desktop.
+const buttonOptions = BuySendSwapDepositOptions.filter((option) => option.id !== 'transactions')
+
 export const BuySendSwapDepositNav = () => {
   return (
     <Wrapper>
-      {BuySendSwapDepositOptions.map((option) =>
+      {buttonOptions.map((option) =>
         <BuySendSwapDepositButton option={option} key={option.id} />
       )}
     </Wrapper>
