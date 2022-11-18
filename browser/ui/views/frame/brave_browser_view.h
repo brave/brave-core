@@ -80,8 +80,10 @@ class BraveBrowserView : public BrowserView {
   bool GetSupportsTitle() const override;
 #endif
   bool ShouldShowWindowTitle() const override;
+  void OnThemeChanged() override;
 
   views::View* sidebar_host_view() { return sidebar_host_view_; }
+  bool IsSidebarVisible() const;
 
   VerticalTabStripWidgetDelegateView*
   vertical_tab_strip_widget_delegate_view() {

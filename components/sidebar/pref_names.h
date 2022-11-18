@@ -14,6 +14,8 @@ constexpr char kSidebarHiddenBuiltInItems[] =
 constexpr char kSidebarShowOption[] = "brave.sidebar.sidebar_show_option";
 constexpr char kSidebarItemAddedFeedbackBubbleShowCount[] =
     "brave.sidebar.item_added_feedback_bubble_shown_count";
+constexpr char kSidebarAlignmentChangedForVerticalTabs[] =
+    "brave.sidebar.sidebar_alignment_changed_for_vertical_tabs";
 
 }  // namespace sidebar
 

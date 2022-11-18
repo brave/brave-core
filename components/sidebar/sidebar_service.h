@@ -97,6 +97,9 @@ class SidebarService : public KeyedService {
   ShowSidebarOption GetSidebarShowOption() const;
   void SetSidebarShowOption(ShowSidebarOption show_options);
 
+  void MoveSidebarToRightForVerticalTabsIfNeeded();
+  void RestoreSidebarAlignmentIfNeeded();
+
   absl::optional<SidebarItem> GetDefaultPanelItem() const;
   bool IsEditableItemAt(size_t index) const;
 
@@ -118,6 +121,9 @@ class SidebarService : public KeyedService {
 
   raw_ptr<PrefService> prefs_ = nullptr;
   std::vector<SidebarItem> items_;
+
+  bool changing_sidebar_alignment_for_vertical_tabs_ = false;
+
   base::ObserverList<Observer> observers_;
   PrefChangeRegistrar pref_change_registrar_;
 };

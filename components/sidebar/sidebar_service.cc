@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/auto_reset.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
@@ -24,6 +25,7 @@
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
+#include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -78,6 +80,7 @@ void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
           ? static_cast<int>(ShowSidebarOption::kShowNever)
           : static_cast<int>(ShowSidebarOption::kShowAlways));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
+  registry->RegisterBooleanPref(kSidebarAlignmentChangedForVerticalTabs, false);
 }
 
 SidebarService::SidebarService(PrefService* prefs) : prefs_(prefs) {
@@ -91,6 +94,10 @@ SidebarService::SidebarService(PrefService* prefs) : prefs_(prefs) {
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
       kSidebarShowOption,
+      base::BindRepeating(&SidebarService::OnPreferenceChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      prefs::kSidePanelHorizontalAlignment,
       base::BindRepeating(&SidebarService::OnPreferenceChanged,
                           base::Unretained(this)));
 }
@@ -435,6 +442,26 @@ void SidebarService::SetSidebarShowOption(ShowSidebarOption show_options) {
   prefs_->SetInteger(kSidebarShowOption, static_cast<int>(show_options));
 }
 
+void SidebarService::MoveSidebarToRightForVerticalTabsIfNeeded() {
+  if (!prefs_->FindPreference(prefs::kSidePanelHorizontalAlignment)
+           ->IsDefaultValue())
+    return;
+
+  base::AutoReset<bool> resetter(&changing_sidebar_alignment_for_vertical_tabs_,
+                                 true);
+  prefs_->SetBoolean(prefs::kSidePanelHorizontalAlignment,
+                     /* align right = */ true);
+}
+
+void SidebarService::RestoreSidebarAlignmentIfNeeded() {
+  if (!prefs_->GetBoolean(kSidebarAlignmentChangedForVerticalTabs))
+    return;
+
+  base::AutoReset<bool> resetter(&changing_sidebar_alignment_for_vertical_tabs_,
+                                 true);
+  prefs_->ClearPref(prefs::kSidePanelHorizontalAlignment);
+}
+
 void SidebarService::LoadSidebarItems() {
   auto default_items_to_add = GetDefaultSidebarItems();
 
@@ -624,6 +651,13 @@ void SidebarService::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == kSidebarShowOption) {
     for (Observer& obs : observers_)
       obs.OnShowSidebarOptionChanged(GetSidebarShowOption());
+    return;
+  }
+
+  if (pref_name == prefs::kSidePanelHorizontalAlignment) {
+    prefs_->SetBoolean(kSidebarAlignmentChangedForVerticalTabs,
+                       changing_sidebar_alignment_for_vertical_tabs_ &&
+                           prefs_->GetBoolean(pref_name));
     return;
   }
 }

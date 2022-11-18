@@ -403,10 +403,7 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
 
 void VerticalTabStripRegionView::OnThemeChanged() {
   View::OnThemeChanged();
-
-  const auto background_color = GetColorProvider()->GetColor(kColorToolbar);
-  SetBackground(views::CreateSolidBackground(background_color));
-  scroll_view_->SetBackgroundColor(background_color);
+  scroll_view_->SetBackgroundColor(GetColorProvider()->GetColor(kColorToolbar));
 
   new_tab_button_->FrameColorsChanged();
 }

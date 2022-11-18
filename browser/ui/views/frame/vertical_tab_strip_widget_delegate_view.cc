@@ -8,8 +8,10 @@
 #include <utility>
 
 #include "base/check.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/common/pref_names.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/widget/widget.h"
@@ -137,12 +139,52 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
 
   if (need_to_call_layout)
     Layout();
+
+#if BUILDFLAG(IS_MAC)
+  UpdateClip();
+#endif
 }
 
 void VerticalTabStripWidgetDelegateView::OnWidgetDestroying(
     views::Widget* widget) {
   widget_observation_.Reset();
 }
+
+#if BUILDFLAG(IS_MAC)
+void VerticalTabStripWidgetDelegateView::UpdateClip() {
+  // On mac, child window can be drawn out of parent window. We should clip
+  // the border line and corner radius manually.
+  SkPath path;
+  const bool is_vertical_tab_right_most =
+      !static_cast<BraveBrowserView*>(browser_view_)->IsSidebarVisible() ||
+      !browser_view_->browser()
+           ->profile()
+           ->GetOriginalProfile()
+           ->GetPrefs()
+           ->GetBoolean(prefs::kSidePanelHorizontalAlignment);
+
+  if (is_vertical_tab_right_most) {
+    // We should clip the bottom-left corner too.
+    // The corner radius value refers to the that of menu widget. Looks like fit
+    // for us.
+    // https://github.com/chromium/chromium/blob/371d67fd9c7db16c32f22e3ba247a07aa5e81487/ui/views/controls/menu/menu_config_mac.mm#L35
+    constexpr int kCornerRadius = 8;
+    path.moveTo(1, 0);
+    path.lineTo(width(), 0);
+    path.lineTo(width(), height() - 1);
+    path.lineTo(1 + kCornerRadius, height() - 1);
+    path.rArcTo(kCornerRadius, kCornerRadius, 0, SkPath::kSmall_ArcSize,
+                SkPathDirection::kCW, -kCornerRadius, -kCornerRadius);
+    path.close();
+  } else {
+    path.lineTo(width(), 0);
+    path.lineTo(width(), height() - 1);
+    path.lineTo(0, height() - 1);
+    path.close();
+  }
+  SetClipPath(path);
+}
+#endif
 
 BEGIN_METADATA(VerticalTabStripWidgetDelegateView, views::View)
 END_METADATA

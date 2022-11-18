@@ -11,12 +11,14 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/net/brave_query_filter.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/debounce/browser/debounce_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/sidebar/sidebar_service.h"
 #include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
@@ -235,9 +237,19 @@ void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser) {
 }
 
 void ToggleVerticalTabStrip(Browser* browser) {
-  auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
+  auto* profile = browser->profile()->GetOriginalProfile();
+  auto* prefs = profile->GetPrefs();
+  auto* sidebar_service =
+      sidebar::SidebarServiceFactory::GetForProfile(profile);
+  const bool was_using_vertical_tab_strip =
+      prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled);
   prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled,
-                    !prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+                    !was_using_vertical_tab_strip);
+  if (was_using_vertical_tab_strip) {
+    sidebar_service->RestoreSidebarAlignmentIfNeeded();
+  } else {
+    sidebar_service->MoveSidebarToRightForVerticalTabsIfNeeded();
+  }
 }
 
 void ToggleVerticalTabStripFloatingMode(Browser* browser) {

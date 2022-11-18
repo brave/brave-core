@@ -57,7 +57,7 @@ class SidePanelMenuModel : public ui::SimpleMenuModel,
 
 SidePanelToolbarButton::SidePanelToolbarButton(Browser* browser)
     : SidePanelToolbarButton_ChromiumImpl(browser) {
-  auto* prefs = browser->profile()->GetPrefs();
+  auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
 
   SetMenuModel(std::make_unique<SidePanelMenuModel>(prefs));
 
