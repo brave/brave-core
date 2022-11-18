@@ -18,6 +18,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/containers/flat_set.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
@@ -33,6 +34,7 @@
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/gurl.h"
 
 namespace brave_news {
 
@@ -295,7 +297,8 @@ bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
 
   // None of the filters match, we can display
   VLOG(2) << "None of the filters matched, will display item for publisher "
-          << data->publisher_id;
+          << data->publisher_id << ": " << publisher->publisher_name << " ["
+          << data->title << "]";
   return true;
 }
 
@@ -311,11 +314,20 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
   std::list<mojom::PromotedArticlePtr> promoted_articles;
   std::list<mojom::DealPtr> deals;
   std::hash<std::string> hasher;
+  base::flat_set<GURL> seen_articles;
+
   for (auto& item : feed_items) {
     if (!ShouldDisplayFeedItem(item, publishers, channels)) {
       continue;
     }
     auto& metadata = MetadataFromFeedItem(item);
+    if (seen_articles.contains(metadata->url)) {
+      VLOG(2) << "Skipping " << metadata->url
+              << " because we've already seen it.";
+      continue;
+    }
+
+    seen_articles.insert(metadata->url);
     const auto& publisher = publishers->at(metadata->publisher_id);
     // ShouldDisplayFeedItem should already have returned false
     // if publishers doesn't have this publisher_id.
