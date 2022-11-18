@@ -287,12 +287,6 @@ void SpeedreaderTabHelper::ShowBubble(bool is_bubble_speedreader) {
 }
 
 void SpeedreaderTabHelper::HideBubble() {
-  Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
-  if (browser) {
-    static_cast<BraveBrowserWindow*>(browser->window())
-        ->HideSpeedreaderWebUIBubble();
-  }
-
   if (speedreader_bubble_) {
     speedreader_bubble_->Hide();
     speedreader_bubble_ = nullptr;
