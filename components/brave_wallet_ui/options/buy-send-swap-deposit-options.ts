@@ -11,6 +11,7 @@ import BuyIconURL from '../assets/svg-icons/buy-send-swap-deposit-icons/buy-icon
 import SendIconURL from '../assets/svg-icons/buy-send-swap-deposit-icons/send-icon.svg'
 import SwapIconURL from '../assets/svg-icons/buy-send-swap-deposit-icons/swap-icon.svg'
 import DepositIconURL from '../assets/svg-icons/buy-send-swap-deposit-icons/deposit-icon.svg'
+import HistoryIcon from '../assets/svg-icons/history-icon.svg'
 
 export const BuySendSwapDepositOptions: BuySendSwapDepositOption[] = [
   {
@@ -36,5 +37,11 @@ export const BuySendSwapDepositOptions: BuySendSwapDepositOption[] = [
     name: 'braveWalletDepositCryptoButton',
     icon: DepositIconURL,
     route: WalletRoutes.DepositFundsPageStart
+  },
+  {
+    id: 'transactions',
+    name: 'braveWalletTransactions',
+    icon: HistoryIcon,
+    route: WalletRoutes.Accounts
   }
 ]
