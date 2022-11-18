@@ -248,7 +248,7 @@ void ToggleVerticalTabStrip(Browser* browser) {
   if (was_using_vertical_tab_strip) {
     sidebar_service->RestoreSidebarAlignmentIfNeeded();
   } else {
-    sidebar_service->MoveSidebarToRightForVerticalTabsIfNeeded();
+    sidebar_service->MoveSidebarToRightTemporarily();
   }
 }
 

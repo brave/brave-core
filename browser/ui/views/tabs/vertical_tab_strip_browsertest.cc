@@ -11,8 +11,8 @@
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "build/build_config.h"
-#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
@@ -26,10 +26,6 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "chrome/browser/ui/views/frame/glass_browser_frame_view.h"
-#endif
-
-#if BUILDFLAG(IS_LINUX)
-#include "chrome/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(IS_MAC)
@@ -270,8 +266,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, SidebarAlignment) {
                    ->IsDefaultValue());
   EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
 
-  // When disabling vertical tab strip, sidebar should be restored to the default
-  // position.
+  // When disabling vertical tab strip, sidebar should be restored to the
+  // default position.
   ToggleVerticalTabStrip();
   EXPECT_TRUE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
                   ->IsDefaultValue());
@@ -286,7 +282,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, SidebarAlignment) {
 
   // Turning off vertical tab strip also shouldn't affect sidebar's position.
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
-      ToggleVerticalTabStrip();
+  ToggleVerticalTabStrip();
   ToggleVerticalTabStrip();
   EXPECT_FALSE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
                    ->IsDefaultValue());

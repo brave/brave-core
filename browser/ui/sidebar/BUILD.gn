@@ -18,6 +18,8 @@ source_set("sidebar") {
     "sidebar_controller.h",
     "sidebar_model.cc",
     "sidebar_model.h",
+    "sidebar_service_delegate_impl.cc",
+    "sidebar_service_delegate_impl.h",
     "sidebar_service_factory.cc",
     "sidebar_service_factory.h",
     "sidebar_utils.cc",

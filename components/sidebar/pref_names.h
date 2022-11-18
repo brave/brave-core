@@ -14,7 +14,10 @@ constexpr char kSidebarHiddenBuiltInItems[] =
 constexpr char kSidebarShowOption[] = "brave.sidebar.sidebar_show_option";
 constexpr char kSidebarItemAddedFeedbackBubbleShowCount[] =
     "brave.sidebar.item_added_feedback_bubble_shown_count";
-constexpr char kSidebarAlignmentChangedForVerticalTabs[] =
+
+// Indicates that sidebar alignment was changed by the browser itself, not by
+// users.
+constexpr char kSidebarAlignmentChangedTemporarily[] =
     "brave.sidebar.sidebar_alignment_changed_for_vertical_tabs";
 
 }  // namespace sidebar
