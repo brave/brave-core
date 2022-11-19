@@ -141,7 +141,7 @@ where
         let mut result: bool = false;
         let mut store = self.get_store()?;
         let state: KVState = store.get_state()?;
-        event!(Level::DEBUG, has_credentials = ?!state.credentials.is_none(), "does order have credentials");
+        event!(Level::DEBUG, has_credentials = ?state.credentials.is_some(), "does order have credentials");
 
         if let Some(credentials) = state.credentials {
             // get the order

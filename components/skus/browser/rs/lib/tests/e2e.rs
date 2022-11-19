@@ -88,6 +88,50 @@ impl KVStore for CLIStore {
 }
 
 #[test]
+fn skus_e2e_tlv2_cred_summary_not_exists() {
+    let subscriber = FmtSubscriber::builder().with_max_level(Level::TRACE).finish();
+    tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
+
+    task::block_on(async {
+
+        let client = CLIClient { store: RefCell::new(CLIStore(HashMap::new())) };
+        let sdk = skus::sdk::SDK::new(client, Environment::Testing, None, None);
+        sdk.initialize().await;
+
+        let order = sdk.create_order("tlv2_e2e").await.unwrap();
+        sdk.refresh_order(&order.id).await.unwrap(); // get the order 
+        // attempt to get the matching_order_credential_summary right out the gate with no creds
+        sdk.matching_order_credential_summary(&order.id, "free.time.limited.v2.brave.software").await.unwrap();
+    });
+}
+
+#[test]
+fn skus_e2e_tlv2_works_multiple_creds() {
+    let subscriber = FmtSubscriber::builder().with_max_level(Level::TRACE).finish();
+    tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
+
+    task::block_on(async {
+
+        /* create an order, multiple clients will get creds from */
+        let client = CLIClient { store: RefCell::new(CLIStore(HashMap::new())) };
+        let sdk = skus::sdk::SDK::new(client, Environment::Staging, None, None);
+        sdk.initialize().await;
+
+        let order = sdk.create_order("tlv2_e2e_5m").await.unwrap();
+
+        for _ in 1..=5 { // simulate 5 independent clients getting tlv2 creds on one order
+            let c = CLIClient { store: RefCell::new(CLIStore(HashMap::new())) };
+            let s = skus::sdk::SDK::new(c, Environment::Staging, None, None);
+            s.initialize().await;
+            s.refresh_order(&order.id).await.unwrap(); // get the order 
+            s.fetch_order_credentials(&order.id).await.unwrap(); // get credentials
+            // present a credential
+            s.present_order_credentials(&order.id, &order.location, "/").await.unwrap();
+        }
+    });
+}
+
+#[test]
 fn skus_e2e_works() {
     let subscriber = FmtSubscriber::builder().with_max_level(Level::TRACE).finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
@@ -126,12 +170,12 @@ fn skus_tlv2_e2e_works() {
         sdk.refresh_order(&order.id).await.unwrap();
 
         // initialize
-        sdk.submit_order_credentials_to_sign(&order.id);
+        sdk.submit_order_credentials_to_sign(&order.id).await.unwrap();
 
         // go ahead and see if we attempt to re-initialize, hope not
         sdk.fetch_order_credentials(&order.id).await.unwrap();
 
-        for _ in 1..=3 {
+        for _ in 1..=2 {
             sdk.present_order_credentials(&order.id, &order.location, "/").await.unwrap();
         }
         // should all be spent by this point, only 5 per day per that sku
@@ -145,7 +189,7 @@ fn skus_tlv2_e2e_works() {
         }
         // get the existing creds we created, and delete 29 of them in the future so
         // we can test out the reloading
-        sdk.remove_last_n_creds(&order.id, 29);
+        sdk.remove_last_n_creds(&order.id, 29).await.unwrap();
         // reload to get updated creds
         sdk.refresh_order_credentials(&order.id).await.unwrap();
 
@@ -196,7 +240,7 @@ fn skus_5m_tlv2_e2e_works() {
         sdk.refresh_order(&order.id).await.unwrap();
 
         // initialize
-        sdk.submit_order_credentials_to_sign(&order.id);
+        sdk.submit_order_credentials_to_sign(&order.id).await.unwrap();
 
         // go ahead and see if we attempt to re-initialize, hope not
         sdk.fetch_order_credentials(&order.id).await.unwrap();
@@ -205,7 +249,6 @@ fn skus_5m_tlv2_e2e_works() {
 
 		for _ in 1..=30 {
         	sdk.present_order_credentials(&order.id, &order.location, "/").await.unwrap();
-			let now = time::Instant::now();
 			thread::sleep(four_min);
 		}
     });

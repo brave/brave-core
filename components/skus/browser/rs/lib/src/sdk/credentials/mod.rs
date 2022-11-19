@@ -37,6 +37,15 @@ where
             return Err(InternalError::OrderLocationMismatch.into());
         }
 
+        // if we have no credentials at all, we should attempt to
+        // fetch_order_credentials to populate prior to trying to 
+        // presenting the order cred summary to the caller, otherwise we 
+        // will get an InternalError::NotFound
+        if !self.client.has_credentials(&order.id).await? {
+            self.fetch_order_credentials(order_id).await?;
+        }
+
+
         let expires_at = order.expires_at;
         for item in &order.items {
             match item.credential_type {
