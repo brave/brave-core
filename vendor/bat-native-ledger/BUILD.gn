@@ -407,6 +407,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/endpoint/uphold/uphold_server.h",
     "src/bat/ledger/internal/endpoint/uphold/uphold_utils.cc",
     "src/bat/ledger/internal/endpoint/uphold/uphold_utils.h",
+    "src/bat/ledger/internal/endpoints/gemini/get_recipient_id/get_recipient_id_gemini.cc",
+    "src/bat/ledger/internal/endpoints/gemini/get_recipient_id/get_recipient_id_gemini.h",
     "src/bat/ledger/internal/endpoints/get_parameters/get_parameters.cc",
     "src/bat/ledger/internal/endpoints/get_parameters/get_parameters.h",
     "src/bat/ledger/internal/endpoints/get_parameters/get_parameters_utils.cc",
