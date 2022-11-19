@@ -405,7 +405,7 @@ const util = {
     }
   },
 
-  touchOverriddenFiles: () => {
+  touchOverriddenChromiumSrcFiles: () => {
     console.log('touch original files overridden by chromium_src...')
 
     // Return true when original file of |file| should be touched.
@@ -465,10 +465,9 @@ const util = {
     })
   },
 
-  touchOverriddenFilesAndUpdateBranding: () => {
-    util.touchOverriddenFiles()
+  touchOverriddenFiles: () => {
+    util.touchOverriddenChromiumSrcFiles()
     util.touchOverriddenVectorIconFiles()
-    util.updateBranding()
   },
 
   // Chromium compares pre-installed midl files and generated midl files from IDL during the build to check integrity.
