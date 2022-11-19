@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
@@ -440,10 +441,20 @@ void SidebarService::SetSidebarShowOption(ShowSidebarOption show_options) {
 }
 
 void SidebarService::MoveSidebarToRightTemporarily() {
+  if (!delegate_) {
+    CHECK_IS_TEST();
+    return;
+  }
+
   delegate_->MoveSidebarToRightTemporarily();
 }
 
 void SidebarService::RestoreSidebarAlignmentIfNeeded() {
+  if (!delegate_) {
+    CHECK_IS_TEST();
+    return;
+  }
+
   delegate_->RestoreSidebarAlignmentIfNeeded();
 }
 
