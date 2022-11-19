@@ -22,15 +22,6 @@ bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
   version_info::Channel channel = chrome::GetChannel();
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  // Enable VPN feature except stable.
-  if (base::EqualsCaseInsensitiveASCII(kBraveVPNFeatureInternalName,
-                                       internal_name) &&
-      channel == version_info::Channel::STABLE) {
-    return true;
-  }
-#endif
-
 #if BUILDFLAG(ENABLE_PLAYLIST)
   // Enable playlist feature only for nightly/development.
   if (base::EqualsCaseInsensitiveASCII(kPlaylistFeatureInternalName,
