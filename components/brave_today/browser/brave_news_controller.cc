@@ -18,6 +18,7 @@
 #include "base/callback_helpers.h"
 #include "base/containers/flat_set.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/guid.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -43,6 +44,7 @@
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -171,6 +173,21 @@ void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
     return;
   }
   publishers_controller_.GetOrFetchPublishers(std::move(callback));
+}
+
+void BraveNewsController::AddPublisherListener(
+    mojo::PendingRemote<mojom::PublisherListener> listener) {
+      LOG(ERROR) << "Made it here (unexpected!)";
+  listener_.Bind(std::move(listener));
+
+  // As we've just bound a new listener, let it know about our publishers.
+  GetPublishers(base::BindOnce(
+      [](BraveNewsController* controller, Publishers publishers) {
+        auto event = mojom::PublisherEvent::New();
+        event->addedOrUpdated = std::move(publishers);
+        controller->listener_->changed(std::move(event));
+      },
+      base::Unretained(this)));
 }
 
 void BraveNewsController::GetSuggestedPublisherIds(

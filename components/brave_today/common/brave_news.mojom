@@ -151,6 +151,15 @@ struct FeedSearchResultItem {
   string feed_title;
 };
 
+struct PublisherEvent {
+  map<string, Publisher> addedOrUpdated;
+  array<string> removed;
+};
+
+interface PublisherListener {
+  changed(PublisherEvent event);
+};
+
 // Browser-side handler
 interface BraveNewsController {
   // Gets the current locale.
@@ -158,6 +167,7 @@ interface BraveNewsController {
 
   GetFeed() => (Feed feed);
   GetPublishers() => (map<string, Publisher> publishers);
+  AddPublisherListener(pending_remote<PublisherListener> listener);
   GetSuggestedPublisherIds() => (array<string> suggested_publisher_ids);
   GetChannels() => (map<string, Channel> channels);
   SetChannelSubscribed(string locale, string channel_id, bool subscribed) => (Channel updated);

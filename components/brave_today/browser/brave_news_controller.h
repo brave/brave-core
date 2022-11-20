@@ -28,6 +28,8 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -84,6 +86,9 @@ class BraveNewsController : public KeyedService,
   void GetLocale(GetLocaleCallback callback) override;
   void GetFeed(GetFeedCallback callback) override;
   void GetPublishers(GetPublishersCallback callback) override;
+  void AddPublisherListener(
+      mojo::PendingRemote<mojom::PublisherListener> listener)
+      override;
   void GetSuggestedPublisherIds(
       GetSuggestedPublisherIdsCallback callback) override;
   void FindFeeds(const GURL& possible_feed_or_site_url,
@@ -151,6 +156,7 @@ class BraveNewsController : public KeyedService,
   base::CancelableTaskTracker task_tracker_;
 
   mojo::ReceiverSet<mojom::BraveNewsController> receivers_;
+  mojo::Remote<mojom::PublisherListener> listener_;
   base::WeakPtrFactory<BraveNewsController> weak_ptr_factory_;
 };
 
