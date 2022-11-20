@@ -6,9 +6,9 @@
 import WebAnimationPlayer from '../api/web_animation_player'
 
 export enum ViewType {
-  Default, // the welcome ui
-  SelectBrowser,
-  SelectProfile,
+  DefaultBrowser, // the welcome ui
+  ImportSelectBrowser,
+  ImportSelectProfile,
   ImportInProgress,
   ImportSucceeded,
   ImportFailed,

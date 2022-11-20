@@ -91,4 +91,12 @@ export const FootNote = styled.div`
   font-size: 12px;
   margin-top: 40px;
   line-height: 18px;
+
+  a, button {
+    color: inherit;
+  }
+
+  span {
+    margin-left: 5px;
+  }
 `

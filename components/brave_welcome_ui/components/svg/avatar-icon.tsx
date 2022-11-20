@@ -9,7 +9,9 @@ const backgroundFills = ['#DFE1E5',
 '#B7DEFF', '#F5C5E2', '#CCC5F5', '#C5F5DB', '#E9F5C5']
 
 const AvatarIcon = (props: any) => {
-  const bgFill = backgroundFills[Math.round(Math.random() * (backgroundFills.length - 1))]
+  const bgFill = React.useMemo(() => {
+    return backgroundFills[Math.round(Math.random() * (backgroundFills.length - 1))]
+  }, [])
 
   return (
     <svg

@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { ViewType, Scenes } from './component_types'
-import { BrowserProfile } from '../api/import_data_browser'
+import { BrowserProfile } from '../api/welcome_browser_proxy'
 
 interface Store {
   setViewType: (viewType: ViewType) => void
@@ -25,7 +25,7 @@ const defaultStore = {
   setScenes: () => {},
   currentSelectedBrowser: undefined,
   browserProfiles: undefined,
-  viewType: ViewType.Default,
+  viewType: ViewType.DefaultBrowser,
   scenes: undefined
 }
 

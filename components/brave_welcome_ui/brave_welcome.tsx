@@ -6,73 +6,21 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { initLocale } from 'brave-ui'
-import { addWebUIListener } from 'chrome://resources/js/cr.m.js'
 
 import { loadTimeData } from '$web-common/loadTimeData'
-import darkTheme from './theme/welcome-dark'
-import lightTheme from './theme/welcome-light'
 
 import BraveCoreThemeProvider from '$web-common/BraveCoreThemeProvider'
 
 import MainContainer from './main_container'
-import DataContext from './state/context'
-import { ViewType, Scenes } from './state/component_types'
-import { useInitializeImportData, useProfileCount } from './state/hooks'
+import DataContextProvider from './state/data-context-provider'
 
 function App () {
-  const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
-  const [viewType, setViewType] = React.useState<ViewType>(ViewType.Default)
-  const [currentSelectedBrowser, setCurrentSelectedBrowser] = React.useState<string | undefined>(undefined)
-  const { browserProfiles } = useInitializeImportData()
-  const { profileCountRef, incrementCount, decrementCount } = useProfileCount()
-  const [scenes, setScenes] = React.useState<Scenes | undefined>(undefined)
-
-  const store = {
-    setViewType,
-    setCurrentSelectedBrowser,
-    incrementCount,
-    setScenes,
-    browserProfiles,
-    currentSelectedBrowser,
-    viewType,
-    scenes
-  }
-
-  React.useEffect(() => {
-    chrome.braveTheme.getBraveThemeType(setInitialThemeType)
-
-    addWebUIListener('brave-import-data-status-changed', (status: any) => {
-      // TODO(tali): Handle item based events
-
-      if (status.event === 'ImportStarted' && (profileCountRef.current > 0)) {
-        setViewType(ViewType.ImportInProgress)
-      }
-
-      if (status.event === 'ImportEnded') {
-        decrementCount()
-        if (profileCountRef.current === 0) {
-          setViewType(ViewType.ImportSucceeded)
-        }
-      }
-    })
-  }, [])
-
   return (
-    <>
-      {initialThemeType &&
-        <DataContext.Provider
-          value={store}
-        >
-          <BraveCoreThemeProvider
-            initialThemeType={initialThemeType}
-            dark={darkTheme}
-            light={lightTheme}
-          >
-            <MainContainer />
-          </BraveCoreThemeProvider>
-        </DataContext.Provider>
-      }
-    </>
+    <DataContextProvider>
+      <BraveCoreThemeProvider>
+        <MainContainer />
+      </BraveCoreThemeProvider>
+    </DataContextProvider>
   )
 }
 

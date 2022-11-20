@@ -11,8 +11,7 @@ import LeftArrowSVG from '../svg/left-arrow'
 import AvatarIconSVG from '../svg/avatar-icon'
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
-import { ImportDataBrowserProxyImpl } from '../../api/import_data_browser'
-import { BravePrivacyBrowserProxyImpl } from '../../api/privacy_data_browser'
+import { WelcomeBrowserProxyImpl, ImportDataBrowserProxyImpl, defaultImportTypes } from '../../api/welcome_browser_proxy'
 import { getLocale } from '$web-common/locale'
 
 interface ProfileItemProps {
@@ -25,13 +24,13 @@ interface ProfileItemProps {
 function ProfileItem (props: ProfileItemProps) {
   return (
     <div className="item-box">
-      <div className="item-grid">
-        <label className="item-info" htmlFor={`profile-${props.id}`}>
+      <label className="item-grid">
+        <div className="item-info">
           <div className="avatar">
             <AvatarIconSVG />
           </div>
           <span>{props.profileName}</span>
-        </label>
+        </div>
         <div className="item-action">
           <input
             type="checkbox"
@@ -40,7 +39,7 @@ function ProfileItem (props: ProfileItemProps) {
             onChange={props.onChange}
           />
         </div>
-      </div>
+      </label>
     </div>
   )
 }
@@ -51,7 +50,7 @@ function SelectProfile () {
   const [selectedProfiles, setSelectedProfiles] = React.useState<Set<number>>(new Set())
 
   const handleBackButton = () => {
-    setViewType(ViewType.SelectBrowser)
+    setViewType(ViewType.ImportSelectBrowser)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,11 +74,11 @@ function SelectProfile () {
     if (selectedProfiles.size <= 0) return
 
     selectedProfiles.forEach((entry) => {
-      ImportDataBrowserProxyImpl.getInstance().importData(entry)
+      ImportDataBrowserProxyImpl.getInstance().importData(entry, defaultImportTypes)
       incrementCount()
     })
 
-    BravePrivacyBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.SelectProfile, isFinished: false, isSkipped: false })
+    WelcomeBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.ImportSelectProfile, isFinished: false, isSkipped: false })
   }
 
   return (

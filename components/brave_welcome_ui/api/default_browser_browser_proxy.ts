@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+// Copied from Chromium
+
 /**
  * @fileoverview A helper object used from the "Default Browser" section
  * to interact with the browser.
@@ -33,8 +35,7 @@ export interface DefaultBrowserBrowserProxy {
   setAsDefaultBrowser: () => void
 }
 
-export class DefaultBrowserBrowserProxyImpl implements
-    DefaultBrowserBrowserProxy {
+export class DefaultBrowserBrowserProxyImpl implements DefaultBrowserBrowserProxy {
   requestDefaultBrowserState () {
     return sendWithPromise('requestDefaultBrowserState')
   }

@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+// Copied from Chromium
+
 // clang-format off
 import { sendWithPromise } from 'chrome://resources/js/cr.m.js'
 // clang-format on
@@ -11,7 +13,7 @@ import { sendWithPromise } from 'chrome://resources/js/cr.m.js'
  * An object describing a source browser profile that may be imported.
  * The structure of this data must be kept in sync with C++ ImportDataHandler.
  */
-export interface _BrowserProfile {
+export interface BrowserProfile {
   name: string
   index: number
   profileName: string
@@ -20,20 +22,6 @@ export interface _BrowserProfile {
   passwords: boolean
   search: boolean
   autofillFormData: boolean
-}
-
-const defaultImportTypes = {
-  import_dialog_autofill_form_data: true,
-  import_dialog_bookmarks: true,
-  import_dialog_history: true,
-  import_dialog_saved_passwords: true,
-  import_dialog_search_engine: true,
-  import_dialog_extensions: true,
-  import_dialog_payments: true
-}
-
-export interface BrowserProfile extends _BrowserProfile {
-  browserType: string | undefined
 }
 
 /**
@@ -58,7 +46,8 @@ export interface ImportDataBrowserProxy {
    * @param types Which types of data to import.
    */
   importData: (
-      sourceBrowserProfileIndex: number) => void
+      sourceBrowserProfileIndex: number,
+      types: {[type: string]: boolean}) => void
 
   /**
    * Prompts the user to choose a bookmarks file to import bookmarks from.
@@ -72,8 +61,8 @@ export class ImportDataBrowserProxyImpl implements ImportDataBrowserProxy {
   }
 
   importData (
-      sourceBrowserProfileIndex: number) {
-    chrome.send('importData', [sourceBrowserProfileIndex, defaultImportTypes])
+      sourceBrowserProfileIndex: number, types: {[type: string]: boolean}) {
+    chrome.send('importData', [sourceBrowserProfileIndex, types])
   }
 
   importFromBookmarksFile () {

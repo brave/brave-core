@@ -7,9 +7,9 @@ import * as React from 'react'
 
 import * as S from './style'
 import Button from '$web-components/button'
-import { BravePrivacyBrowserProxyImpl } from '../../api/privacy_data_browser'
+import { WelcomeBrowserProxyImpl } from '../../api/welcome_browser_proxy'
 import { ViewType } from '../../state/component_types'
-import { getLocale } from '$web-common/locale'
+import { getLocale, splitStringForTag } from '$web-common/locale'
 
 interface InputCheckboxProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -20,17 +20,16 @@ interface InputCheckboxProps {
 
 function InputCheckbox (props: InputCheckboxProps) {
   return (
-    <div className="item">
+    <label className="item">
       <input
-        id={props.id}
         type="checkbox"
         checked={props.isChecked}
         onChange={props.onChange}
       />
-      <label htmlFor={props.id}>
+      <div>
         {props.labelText}
-      </label>
-    </div>
+      </div>
+    </label>
   )
 }
 
@@ -47,11 +46,18 @@ function HelpImprove () {
   }
 
   const handleFinish = () => {
-    BravePrivacyBrowserProxyImpl.getInstance().setP3AEnabled(isP3AEnabled)
-    BravePrivacyBrowserProxyImpl.getInstance().setMetricsReportingEnabled(isMetricsReportingEnabled)
-    BravePrivacyBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.HelpImprove, isFinished: true, isSkipped: false })
+    WelcomeBrowserProxyImpl.getInstance().setP3AEnabled(isP3AEnabled)
+    WelcomeBrowserProxyImpl.getInstance().setMetricsReportingEnabled(isMetricsReportingEnabled)
+    WelcomeBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.HelpImprove, isFinished: true, isSkipped: false })
     window.open('chrome://newtab', '_self')
   }
+
+  const handleOpenSettingsPage = () => {
+    WelcomeBrowserProxyImpl.getInstance().openSettingsPage()
+  }
+
+  const changeSettingsNote = splitStringForTag(getLocale('braveWelcomeChangeSettingsNote'))
+  const readPrivacyPolicy = splitStringForTag(getLocale('braveWelcomePrivacyPolicyNote'))
 
   return (
     <S.MainBox>
@@ -87,9 +93,18 @@ function HelpImprove () {
             {getLocale('braveWelcomeFinishButtonLabel')}
           </Button>
           <S.FootNote>
-            Change these choices at any time in Brave at brave://settings/privacy.
-            {' '}
-            Read our full Privacy Policy.
+            {changeSettingsNote.beforeTag}
+            <a href="brave://settings/privacy" onClick={handleOpenSettingsPage}>
+              {changeSettingsNote.duringTag}
+            </a>
+            {changeSettingsNote.afterTag}
+            <span>
+              {readPrivacyPolicy.beforeTag}
+              <a href="https://brave.com/privacy/browser" target="_blank">
+                {readPrivacyPolicy.duringTag}
+              </a>
+              {readPrivacyPolicy.afterTag}
+            </span>
           </S.FootNote>
         </div>
       </S.ActionBox>

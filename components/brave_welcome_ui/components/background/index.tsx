@@ -4,10 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-
 import * as S from './style'
-import DataContext from '../../state/context'
+
 import WebAnimationPlayer from '../../api/web_animation_player'
+import DataContext from '../../state/context'
 
 import Stars01 from '../svg/stars01'
 import Stars02 from '../svg/stars02'

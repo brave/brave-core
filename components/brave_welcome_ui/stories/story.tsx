@@ -115,7 +115,7 @@ export default {
         setScenes,
         currentSelectedBrowser,
         browserProfiles: payload,
-        viewType: ViewType.Default,
+        viewType: ViewType.DefaultBrowser,
         scenes
       }
 

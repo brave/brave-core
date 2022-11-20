@@ -10,9 +10,8 @@ import Button from '$web-components/button'
 import classnames from '$web-common/classnames'
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
-import { getUniqueBrowserTypes } from '../../state/hooks'
-import { ImportDataBrowserProxyImpl } from '../../api/import_data_browser'
-import { BravePrivacyBrowserProxyImpl } from '../../api/privacy_data_browser'
+import { getUniqueBrowserTypes } from '../../state/utils'
+import { WelcomeBrowserProxyImpl, ImportDataBrowserProxyImpl, defaultImportTypes } from '../../api/welcome_browser_proxy'
 import { getLocale } from '$web-common/locale'
 
 import ChromeCanarySVG from '../svg/browser-icons/chrome-canary'
@@ -64,7 +63,6 @@ function BrowserItemButton (props: BrowserItemButtonProps) {
       </i>
       <div className="browser-logo-box">
         {browserIcons[props.browserName]}
-        {/* <img src={} alt="" /> */}
       </div>
       <p className="browser-name">{props.browserName}</p>
     </button>
@@ -88,19 +86,19 @@ function SelectBrowser () {
     if (!filteredProfiles) return
     if (filteredProfiles.length > 1) {
       // If there are multiple profiles, we handle it in a different view
-      setViewType(ViewType.SelectProfile)
+      setViewType(ViewType.ImportSelectProfile)
     } else {
-      ImportDataBrowserProxyImpl.getInstance().importData(filteredProfiles[0].index)
+      ImportDataBrowserProxyImpl.getInstance().importData(filteredProfiles[0].index, defaultImportTypes)
       incrementCount()
     }
 
-    BravePrivacyBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.SelectBrowser, isFinished: false, isSkipped: false })
+    WelcomeBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.ImportSelectBrowser, isFinished: false, isSkipped: false })
   }
 
   const handleSkip = () => {
     scenes?.s2.play() // play the final animation on skip
     setViewType(ViewType.HelpImprove)
-    BravePrivacyBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.SelectBrowser, isFinished: false, isSkipped: true })
+    WelcomeBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.ImportSelectBrowser, isFinished: false, isSkipped: true })
   }
 
   return (

@@ -23,11 +23,11 @@ function MainContainer () {
 
   let mainEl = <Welcome />
 
-  if (viewType === ViewType.SelectBrowser) {
+  if (viewType === ViewType.ImportSelectBrowser) {
     mainEl = <SelectBrowser />
   }
 
-  if (viewType === ViewType.SelectProfile) {
+  if (viewType === ViewType.ImportSelectProfile) {
     mainEl = <SelectProfile />
   }
 

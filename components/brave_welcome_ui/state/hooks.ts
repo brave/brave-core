@@ -4,13 +4,13 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { BrowserType } from './component_types'
-import { BrowserProfile, ImportDataBrowserProxyImpl } from '../api/import_data_browser'
+import { BrowserProfile, ImportDataBrowserProxyImpl } from '../api/welcome_browser_proxy'
 import { loadTimeData } from '$web-common/loadTimeData'
+import { BrowserType } from './component_types'
+
+const browserList = Object.values(BrowserType)
 
 export const getValidBrowserProfiles = (profiles: BrowserProfile[]) => {
-  const browserList = Object.values(BrowserType)
-
   const getBrowserName = (toFind: string) => {
     // TODO(tali): Add exact matching for cases like "Chrome" vs "Chrome Canary"
     return browserList.find(browser => toFind.includes(browser))
@@ -25,11 +25,6 @@ export const getValidBrowserProfiles = (profiles: BrowserProfile[]) => {
     })
 
   return results
-}
-
-export const getUniqueBrowserTypes = (browserProfiles: BrowserProfile[]) => {
-  const browsersTypes = browserProfiles.map((profile) => profile.browserType)
-  return Array.from(new Set(browsersTypes))
 }
 
 export function useInitializeImportData () {
