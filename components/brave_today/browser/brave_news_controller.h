@@ -33,6 +33,7 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -156,7 +157,7 @@ class BraveNewsController : public KeyedService,
   base::CancelableTaskTracker task_tracker_;
 
   mojo::ReceiverSet<mojom::BraveNewsController> receivers_;
-  mojo::Remote<mojom::PublisherListener> listener_;
+  mojo::RemoteSet<mojom::PublisherListener> publisher_listeners_;
   base::WeakPtrFactory<BraveNewsController> weak_ptr_factory_;
 };
 

@@ -31,6 +31,8 @@
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/locales_helper.h"
 #include "brave/components/brave_today/browser/network.h"
+#include "brave/components/brave_today/browser/publishers_controller.h"
+#include "brave/components/brave_today/browser/publishers_parsing.h"
 #include "brave/components/brave_today/browser/suggestions_controller.h"
 #include "brave/components/brave_today/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_today/browser/urls.h"
@@ -45,6 +47,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -177,17 +180,20 @@ void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
 
 void BraveNewsController::AddPublisherListener(
     mojo::PendingRemote<mojom::PublisherListener> listener) {
-      LOG(ERROR) << "Made it here (unexpected!)";
-  listener_.Bind(std::move(listener));
+  auto id = publisher_listeners_.Add(std::move(listener));
 
   // As we've just bound a new listener, let it know about our publishers.
   GetPublishers(base::BindOnce(
-      [](BraveNewsController* controller, Publishers publishers) {
-        auto event = mojom::PublisherEvent::New();
-        event->addedOrUpdated = std::move(publishers);
-        controller->listener_->changed(std::move(event));
+      [](BraveNewsController* controller, mojo::RemoteSetElementId id,
+         Publishers publishers) {
+        auto* listener = controller->publisher_listeners_.Get(id);
+        if (listener) {
+          auto event = mojom::PublisherEvent::New();
+          event->addedOrUpdated = std::move(publishers);
+          listener->changed(std::move(event));
+        }
       },
-      base::Unretained(this)));
+      base::Unretained(this), id));
 }
 
 void BraveNewsController::GetSuggestedPublisherIds(
@@ -247,6 +253,19 @@ void BraveNewsController::SubscribeToNewDirectFeed(
               return;
             }
 
+            std::vector<mojom::PublisherPtr> direct_feeds;
+            ParseDirectPublisherList(
+                controller->prefs_->GetDict(prefs::kBraveTodayDirectFeeds),
+                &direct_feeds);
+            auto event = mojom::PublisherEvent::New();
+            for (auto& feed : direct_feeds) {
+              event->addedOrUpdated[feed->publisher_id] = std::move(feed);
+            }
+
+            for (const auto& listener : controller->publisher_listeners_) {
+              listener->changed(event->Clone());
+            }
+
             // Mark feed as requiring update
             // TODO(petemill): expose function to mark direct feeds as dirty
             // and not require re-download of sources.json
@@ -277,6 +296,12 @@ void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
 
   p3a::RecordDirectFeedsTotal(prefs_);
   p3a::RecordWeeklyAddedDirectFeedsCount(prefs_, -1);
+
+  for (const auto& receiver : publisher_listeners_) {
+    auto event = mojom::PublisherEvent::New();
+    event->removed.push_back(publisher_id);
+    receiver->changed(std::move(event));
+  }
 }
 
 void BraveNewsController::GetImageData(const GURL& padded_image_url,
@@ -405,6 +430,13 @@ void BraveNewsController::SetPublisherPref(const std::string& publisher_id,
           // And if in the middle of update, that's ok because
           // consideration of source preferences is done after the remote fetch
           // is completed.
+          for (const auto& listener : controller->publisher_listeners_) {
+            auto event = mojom::PublisherEvent::New();
+            auto copy = publisher->Clone();
+            copy->user_enabled_status = new_status;
+            event->addedOrUpdated[publisher_id] = std::move(copy);
+            listener->changed(std::move(event));
+          }
           controller->publishers_controller_.EnsurePublishersIsUpdating();
         }
       },
