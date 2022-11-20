@@ -15,6 +15,9 @@ export interface BraveTorBrowserProxy {
   setTorEnabled(value: boolean)
   isTorEnabled(): Promise<boolean>
   isTorManaged(): Promise<boolean>
+  isSnowflakeExtensionAllowed(): Promise<boolean>
+  isSnowflakeExtensionEnabled(): Promise<boolean>
+  enableSnowflakeExtension(enable: boolean): Promise<boolean>
 }
 
 export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {
@@ -48,6 +51,18 @@ export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {
 
   isTorManaged() {
     return sendWithPromise('brave_tor.isTorManaged')
+  }
+
+  isSnowflakeExtensionAllowed() {
+    return sendWithPromise('brave_tor.isSnowflakeExtensionAllowed')
+  }
+
+  isSnowflakeExtensionEnabled(): Promise<boolean> {
+    return sendWithPromise('brave_tor.isSnowflakeExtensionEnabled')
+  }
+
+  enableSnowflakeExtension(enable): Promise<boolean> {
+    return sendWithPromise('brave_tor.enableSnowflakeExtension', enable)
   }
 }
 
