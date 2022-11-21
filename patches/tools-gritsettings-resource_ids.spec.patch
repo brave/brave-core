@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index 01f27f9eb13bd8fbd3f2d77dee16b29bdebc5a73..88abf22bb4cca28d8bc693b0b83dac3bc1e3e544 100644
+index 01f27f9eb13bd8fbd3f2d77dee16b29bdebc5a73..51f3c4f4abcd810370efb103b7dd71543a7471d2 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -41,6 +41,9 @@
@@ -21,6 +21,15 @@ index 01f27f9eb13bd8fbd3f2d77dee16b29bdebc5a73..88abf22bb4cca28d8bc693b0b83dac3b
      "includes": [1620],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/identity_internals/resources.grd": {
+@@ -292,7 +295,7 @@
+     "includes": [1940],
+   },
+   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings/resources.grd": {
+-    "META": {"sizes": {"includes": [500],}},
++    "META": {"sizes": {"includes": [550],}},
+     "includes": [1960],
+   },
+   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/signin/profile_picker/resources.grd": {
 @@ -709,6 +712,9 @@
    "components/components_chromium_strings.grd": {
      "messages": [3520],
