@@ -32,7 +32,7 @@ function getBuyOptions (): BuyOption[] {
   {
     id: BraveWallet.OnRampProvider.kTransfero,
     actionText: getLocale('braveWalletBuyWithTransfero'),
-    icon: window.matchMedia('(prefers-color-scheme: dark)').matches ? TransaferoDark : TransaferoDark,
+    icon: TransaferoDark,
     name: getLocale('braveWalletBuyTransferoName'),
     description: getLocale('braveWalletBuyTransferoDescription')
   }
