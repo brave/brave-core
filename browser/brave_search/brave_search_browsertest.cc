@@ -390,6 +390,12 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderNotAllowedDomain) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderForFetchRequest) {
+  PrefService* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(ads::prefs::kEnabled, true);
+
+  GURL url = https_server()->GetURL(kAllowedDomain, "/");
+  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
   base::RunLoop run_loop;
   SetRequestExpectationsCallback(base::BindRepeating(
       [](base::OnceClosure loop_closure,
@@ -403,12 +409,37 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderForFetchRequest) {
       },
       run_loop.QuitClosure()));
 
+  url = https_server()->GetURL(kAllowedDomain, "/bravesearch.html");
+  const std::string fetch_request = std::string("fetch('") + url.spec() + "')";
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::ExecJs(web_contents, fetch_request));
+
+  run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveSearchTest, FetchRequestForNonBraveSearchTab) {
   PrefService* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(ads::prefs::kEnabled, true);
 
-  const GURL url = https_server()->GetURL(kAllowedDomain, "/bravesearch.html");
+  GURL url = https_server()->GetURL(kNotAllowedDomain, "/");
+  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  base::RunLoop run_loop;
+  SetRequestExpectationsCallback(base::BindRepeating(
+      [](base::OnceClosure loop_closure,
+         const net::test_server::HttpRequest& request) {
+        EXPECT_FALSE(base::Contains(request.headers, kAdsStatusHeaderName));
+        if (request.GetURL().path_piece() == "/bravesearch.html") {
+          std::move(loop_closure).Run();
+        }
+      },
+      run_loop.QuitClosure()));
+
+  url = https_server()->GetURL(kAllowedDomain, "/bravesearch.html");
   const std::string fetch_request =
-      std::string("fetch('") + url.spec() + "', {mode : 'no-cors'})";
+      std::string("fetch('") + url.spec() + "', {mode: 'no-cors'})";
 
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();

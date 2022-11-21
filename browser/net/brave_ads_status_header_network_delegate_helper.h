@@ -16,6 +16,9 @@ class HttpRequestHeaders;
 
 namespace brave {
 
+constexpr char kAdsStatusHeader[] = "X-Brave-Ads-Enabled";
+constexpr char kAdsEnabledStatusValue[] = "1";
+
 int OnBeforeStartTransaction_AdsStatusHeader(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
