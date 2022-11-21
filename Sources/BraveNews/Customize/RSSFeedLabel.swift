@@ -5,7 +5,6 @@
 
 import Foundation
 import SwiftUI
-import SDWebImageSwiftUI
 
 struct RSSFeedLabel: View {
   var feed: RSSFeedLocation

@@ -5,7 +5,7 @@
 
 import Foundation
 import SwiftUI
-import SDWebImageSwiftUI
+import BraveUI
 
 private struct SourceImageView: View {
   var source: FeedItem.Source
@@ -30,9 +30,17 @@ private struct SourceImageView: View {
       .frame(width: imageHeight*2, height: imageHeight)
       .overlay(
         source.coverURL.map {
-          WebImage(url: $0)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
+          WebImageReader(url: $0) { image, isFinished in
+            if let image {
+              Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+            } else {
+              ProgressView()
+                .progressViewStyle(.braveCircular(size: .small, tint: .black))
+                .opacity(0.2)
+            }
+          }
         }
       )
       .overlay(

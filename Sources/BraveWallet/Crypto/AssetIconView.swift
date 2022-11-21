@@ -5,6 +5,7 @@
 
 import SwiftUI
 import BraveCore
+import BraveUI
 
 /// Displays an asset's icon from the token registry
 ///
