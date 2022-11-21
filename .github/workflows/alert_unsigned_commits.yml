@@ -19,11 +19,12 @@ jobs:
         run: |
           set -x
           HEAD_SHA=${{ github.event.pull_request.head.sha }}
+          PR_NUMBER=${{ github.event.pull_request.number }}
 
           BRAVE_CORE_PATH=brave/brave-core
           post_once() {
-              comments=$(gh -R "$BRAVE_CORE_PATH" pr view "$GITHUB_HEAD_REF" --json comments --jq ".comments[].body")
-              grep -F -q "$(head -1 <<<"$1")" <<<"$comments" || gh -R "$BRAVE_CORE_PATH" pr comment "$GITHUB_HEAD_REF" -b "$1"
+              comments=$(gh -R "$BRAVE_CORE_PATH" pr view "$PR_NUMBER" --json comments --jq ".comments[].body")
+              grep -F -q "$(head -1 <<<"$1")" <<<"$comments" || gh -R "$BRAVE_CORE_PATH" pr comment "$PR_NUMBER" -b "$1"
           }
 
           commit=$(gh api -H "Accept: application/vnd.github+json" "/repos/${BRAVE_CORE_PATH}/commits/${HEAD_SHA}")
