@@ -54,10 +54,10 @@ uint64_t FromLE(uint64_t uint64_le) {
 #endif
 }
 
-SnsResolverTaskError ParseErrorResult(const std::string& json) {
+SnsResolverTaskError ParseErrorResult(const base::Value& json_value) {
   SnsResolverTaskError task_error;
   brave_wallet::ParseErrorResult<mojom::SolanaProviderError>(
-      json, &task_error.error, &task_error.error_message);
+      json_value, &task_error.error, &task_error.error_message);
 
   return task_error;
 }
@@ -208,8 +208,12 @@ std::string getProgramAccounts(const SolanaAddress& mint_token) {
 // Parsing result of getProgramAccounts call. Exepected to find 1 token account
 // for mint. If parsing fails first element of pair is `false`.
 std::pair<bool, absl::optional<SolanaAddress>>
-GetTokenOwnerFromGetProgramAccountsResult(const std::string& json) {
-  auto result = ParseResultList(json);
+GetTokenOwnerFromGetProgramAccountsResult(const base::Value& json_value) {
+  auto response = json_rpc_responses::RPCResponse::FromValue(json_value);
+  if (!response || !response->result)
+    return {false, absl::nullopt};
+
+  auto* result = response->result->GetIfList();
   if (!result)
     return {false, absl::nullopt};
 
@@ -224,7 +228,7 @@ GetTokenOwnerFromGetProgramAccountsResult(const std::string& json) {
     return {false, absl::nullopt};
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(*account, &account_info)) {
+  if (!solana::ParseGetAccountInfoPayload(*account, &account_info)) {
     return {false, absl::nullopt};
   }
 
@@ -526,8 +530,9 @@ void SnsResolverTask::OnFetchNftSplMint(APIRequestResult api_request_result) {
   }
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(api_request_result.body(), &account_info)) {
-    SetError(ParseErrorResult(api_request_result.body()));
+  if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
+                                   &account_info)) {
+    SetError(ParseErrorResult(api_request_result.value_body()));
     return;
   }
 
@@ -564,10 +569,10 @@ void SnsResolverTask::OnFetchNftTokenOwner(
     return;
   }
 
-  auto [parsing_ok, token_owner] =
-      GetTokenOwnerFromGetProgramAccountsResult(api_request_result.body());
+  auto [parsing_ok, token_owner] = GetTokenOwnerFromGetProgramAccountsResult(
+      api_request_result.value_body());
   if (!parsing_ok) {
-    SetError(ParseErrorResult(api_request_result.body()));
+    SetError(ParseErrorResult(api_request_result.value_body()));
     return;
   }
 
@@ -595,8 +600,9 @@ void SnsResolverTask::OnFetchDomainRegistryState(
   }
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(api_request_result.body(), &account_info)) {
-    SetError(ParseErrorResult(api_request_result.body()));
+  if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
+                                   &account_info)) {
+    SetError(ParseErrorResult(api_request_result.value_body()));
     return;
   }
 
@@ -643,8 +649,9 @@ void SnsResolverTask::OnFetchSolRecordRegistryState(
   }
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(api_request_result.body(), &account_info)) {
-    SetError(ParseErrorResult(api_request_result.body()));
+  if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
+                                   &account_info)) {
+    SetError(ParseErrorResult(api_request_result.value_body()));
     return;
   }
 
@@ -697,8 +704,9 @@ void SnsResolverTask::OnFetchUrlRecordRegistryState(
   }
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(api_request_result.body(), &account_info)) {
-    SetError(ParseErrorResult(api_request_result.body()));
+  if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
+                                   &account_info)) {
+    SetError(ParseErrorResult(api_request_result.value_body()));
     return;
   }
 
@@ -757,8 +765,9 @@ void SnsResolverTask::OnFetchIpfsRecordRegistryState(
   }
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(api_request_result.body(), &account_info)) {
-    SetError(ParseErrorResult(api_request_result.body()));
+  if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
+                                   &account_info)) {
+    SetError(ParseErrorResult(api_request_result.value_body()));
     return;
   }
 

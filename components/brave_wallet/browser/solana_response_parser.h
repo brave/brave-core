@@ -32,10 +32,11 @@ bool ParseGetLatestBlockhash(const std::string& json,
 bool ParseGetSignatureStatuses(
     const std::string& json,
     std::vector<absl::optional<SolanaSignatureStatus>>* statuses);
-bool ParseGetAccountInfo(const std::string& json,
+bool ParseGetAccountInfo(const base::Value& json_value,
                          absl::optional<SolanaAccountInfo>* account_info_out);
-bool ParseGetAccountInfo(const base::Value::Dict& value_dict,
-                         absl::optional<SolanaAccountInfo>* account_info_out);
+bool ParseGetAccountInfoPayload(
+    const base::Value::Dict& value_dict,
+    absl::optional<SolanaAccountInfo>* account_info_out);
 bool ParseGetFeeForMessage(const std::string& json, uint64_t* fee);
 bool ParseGetBlockHeight(const std::string& json, uint64_t* block_height);
 

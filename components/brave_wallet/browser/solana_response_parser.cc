@@ -179,15 +179,18 @@ bool ParseGetSignatureStatuses(
   return true;
 }
 
-bool ParseGetAccountInfo(const std::string& json,
+bool ParseGetAccountInfo(const base::Value& json_value,
                          absl::optional<SolanaAccountInfo>* account_info_out) {
   DCHECK(account_info_out);
 
-  auto result = ParseResultDict(json);
-  if (!result)
+  auto response = json_rpc_responses::RPCResponse::FromValue(json_value);
+  if (!response)
     return false;
 
-  const base::Value* value = result->Find("value");
+  if (!response->result || !response->result->is_dict())
+    return false;
+
+  const base::Value* value = response->result->GetDict().Find("value");
   if (!value)
     return false;
 
@@ -197,14 +200,15 @@ bool ParseGetAccountInfo(const std::string& json,
   }
 
   if (value->is_dict()) {
-    return ParseGetAccountInfo(value->GetDict(), account_info_out);
+    return ParseGetAccountInfoPayload(value->GetDict(), account_info_out);
   }
 
   return false;
 }
 
-bool ParseGetAccountInfo(const base::Value::Dict& value_dict,
-                         absl::optional<SolanaAccountInfo>* account_info_out) {
+bool ParseGetAccountInfoPayload(
+    const base::Value::Dict& value_dict,
+    absl::optional<SolanaAccountInfo>* account_info_out) {
   SolanaAccountInfo account_info;
   if (!GetUint64FromDictValue(value_dict, "lamports", false,
                               &account_info.lamports)) {

@@ -12,11 +12,11 @@
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_wallet {
-
-namespace solana {
-
 namespace {
+
+base::Value ToValue(const std::string& json) {
+  return base::JSONReader::Read(json).value_or(base::Value());
+}
 
 void CompareJSON(const std::string& request_string,
                  const std::string& expected_request) {
@@ -28,6 +28,10 @@ void CompareJSON(const std::string& request_string,
 }
 
 }  // namespace
+
+namespace brave_wallet {
+
+namespace solana {
 
 TEST(SolanaResponseParserUnitTest, ParseSolanaGetBalance) {
   std::string json =
@@ -237,7 +241,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
   expected_info.rent_epoch = UINT64_MAX;
 
   absl::optional<SolanaAccountInfo> info;
-  ASSERT_TRUE(ParseGetAccountInfo(json, &info));
+  ASSERT_TRUE(ParseGetAccountInfo(ToValue(json), &info));
   EXPECT_EQ(*info, expected_info);
 
   json = R"(
@@ -248,7 +252,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
         "value":null
       }
     })";
-  ASSERT_TRUE(ParseGetAccountInfo(json, &info));
+  ASSERT_TRUE(ParseGetAccountInfo(ToValue(json), &info));
   EXPECT_FALSE(info);
 
   // Parsing should fail if data string is not base64 encoded as it says.
@@ -267,7 +271,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
       }
     }
   )";
-  EXPECT_FALSE(ParseGetAccountInfo(json, &info));
+  EXPECT_FALSE(ParseGetAccountInfo(ToValue(json), &info));
 
   // data using base58 is not supported.
   json = R"(
@@ -285,7 +289,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
       }
     }
   )";
-  EXPECT_FALSE(ParseGetAccountInfo(json, &info));
+  EXPECT_FALSE(ParseGetAccountInfo(ToValue(json), &info));
 
   // data using jsonParsed encoding param is not supported.
   json = R"(
@@ -313,12 +317,12 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
       }
     }
   )";
-  EXPECT_FALSE(ParseGetAccountInfo(json, &info));
+  EXPECT_FALSE(ParseGetAccountInfo(ToValue(json), &info));
 
   json = R"({"jsonrpc":"2.0","id":1,"result":{"value":{}}})";
-  EXPECT_FALSE(ParseGetAccountInfo(json, &info));
+  EXPECT_FALSE(ParseGetAccountInfo(ToValue(json), &info));
 
-  EXPECT_DCHECK_DEATH(ParseGetAccountInfo(json, nullptr));
+  EXPECT_DCHECK_DEATH(ParseGetAccountInfo(ToValue(json), nullptr));
 }
 
 TEST(SolanaResponseParserUnitTest, ParseGetFeeForMessage) {

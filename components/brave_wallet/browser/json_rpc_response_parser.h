@@ -30,12 +30,34 @@ absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
     const std::string& json);
 
 template <typename Error>
-void ParseErrorResult(const std::string& json,
+void ParseErrorResult(const base::Value& json_value,
                       Error* error,
                       std::string* error_message) {
   DCHECK(error);
   DCHECK(error_message);
 
+  // This error is defined in https://www.jsonrpc.org/specification#error_object
+  // and the same for Ethereum, Solana, and other JSON RPC implementations.
+  *error = Error::kParsingError;
+  *error_message = l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR);
+
+  auto response = json_rpc_responses::RPCResponse::FromValue(json_value);
+  if (!response || !response->error)
+    return;
+  *error = static_cast<Error>(response->error->code);
+  if (!mojom::IsKnownEnumValue(*error))
+    *error = Error::kUnknown;
+  if (response->error->message)
+    *error_message = *response->error->message;
+  else
+    error_message->clear();
+}
+
+// TODO(apaymyshev): cleanup
+template <typename Error>
+void ParseErrorResult(const std::string& json,
+                      Error* error,
+                      std::string* error_message) {
   // This error is defined in https://www.jsonrpc.org/specification#error_object
   // and the same for Ethereum, Solana, and other JSON RPC implementations.
   *error = Error::kParsingError;
@@ -48,16 +70,7 @@ void ParseErrorResult(const std::string& json,
     return;
   }
 
-  auto response = json_rpc_responses::RPCResponse::FromValue(*value);
-  if (!response || !response->error)
-    return;
-  *error = static_cast<Error>(response->error->code);
-  if (!mojom::IsKnownEnumValue(*error))
-    *error = Error::kUnknown;
-  if (response->error->message)
-    *error_message = *response->error->message;
-  else
-    error_message->clear();
+  ParseErrorResult(*value, error, error_message);
 }
 
 absl::optional<base::Value::Dict> ParseResultDict(const std::string& json);
