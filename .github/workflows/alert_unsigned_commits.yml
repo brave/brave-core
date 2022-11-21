@@ -2,8 +2,6 @@ name: Alert Unsigned Commits
 on:
   pull_request_review:
     types: [submitted]
-  pull_request:
-    types: [reopened, synchronize]
 
 permissions:
   pull-requests: write
@@ -19,14 +17,13 @@ jobs:
     steps:
       - name: Alert Unsigned Commits
         run: |
-          env | grep -i GIT | sort  # TODO remove before merge
           set -x
           HEAD_SHA=${{ github.event.pull_request.head.sha }}
 
           BRAVE_CORE_PATH=brave/brave-core
           post_once() {
               comments=$(gh -R "$BRAVE_CORE_PATH" pr view "$GITHUB_HEAD_REF" --json comments --jq ".comments[].body")
-              grep -q "$(head -1 <<<"$1")" <<<"$comments" || gh -R "$BRAVE_CORE_PATH" pr comment "$GITHUB_HEAD_REF" -b "$1"
+              grep -F -q "$(head -1 <<<"$1")" <<<"$comments" || gh -R "$BRAVE_CORE_PATH" pr comment "$GITHUB_HEAD_REF" -b "$1"
           }
 
           commit=$(gh api -H "Accept: application/vnd.github+json" "/repos/${BRAVE_CORE_PATH}/commits/${HEAD_SHA}")
