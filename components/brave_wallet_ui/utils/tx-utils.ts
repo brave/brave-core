@@ -712,15 +712,6 @@ export const isSendingToKnownTokenContractAddress = (
     return contractAddressError
   }
 
-  // getTransactionInteractionAddress(tx).toLowerCase() === SwapExchangeProxy:
-  // SolanaDappSignTransaction:
-  // SolanaDappSignAndSendTransaction:
-  // SolanaSwap:
-  // Other && solTxData !== undefined:
-  // ETHSwap:
-  // ETHSend:
-  // SolanaSystemTransfer:
-  // Other:
   return false
 }
 
