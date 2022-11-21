@@ -14,7 +14,7 @@ export const localeStrings = {
   walletDisconnected: 'Logged out',
   walletDisconnectLink: 'Disconnect from $1',
   walletEstimatedEarnings: 'Estimated Earnings',
-  walletLogIntoYourAccount: 'Log into your $1 account',
+  walletLogIntoYourAccount: 'Log in to your $1 account',
   walletMonthlyTips: 'Monthly Tips',
   walletOneTimeTips: 'One-Time Tips',
   walletPendingContributions: 'Pending contributions',
