@@ -1,68 +1,46 @@
-import {
-  BraveNewsControllerRemote,
-  Publisher,
-  UserEnabled
-} from "gen/brave/components/brave_today/common/brave_news.mojom.m";
-import getBraveNewsController from ".";
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
-type ChangeEvent<Entity> = {
-  inserted: { [key: string]: Entity },
-  updated: { [key: string]: Partial<Entity> },
-  deleted: string[]
-}
+export type ChangeEvent<Entity> = {
+  addedOrUpdated: { [key: string]: Entity };
+  removed: string[];
+};
 
-type Listener<Entity> = (e: ChangeEvent<Entity>) => void;
-interface ControllerInterface<Entity> {
-  addListener(listener: Listener<Entity>): void;
-  removeListener(listener: Listener<Entity>): void;
-}
+export type Cache<Entity> = { [key: string]: Entity };
 
-function eagerUpdate<T>(
-  target: any,
-  propertyKey: string,
-  descriptor: TypedPropertyDescriptor<T>
-) {
-}
+export type CacheListener<Entity> = (
+  newValue: Cache<Entity>,
+  oldValue: Cache<Entity>
+) => void;
 
-function eagerDelete<T>(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<T>) {
+export class CachingWrapper<Entity> {
+  protected cache: Cache<Entity> = {};
+  protected listeners: CacheListener<Entity>[];
 
-}
+  changed(event: ChangeEvent<Entity>) {
+    const copy = { ...this.cache };
+    for (const id in event.addedOrUpdated) copy[id] = event.addedOrUpdated[id];
+    for (const id of event.removed) delete copy[id];
 
-function eagerInsert<T>(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<T>) {
-
-}
-
-class CachingWrapper<Entity> {
-  #cache: { [key: string]: Entity } = {};
-  #getAll: () => Promise<{ [key: string]: Entity }>;
-
-  constructor(getAll: () => Promise<{ [key: string]: Entity }>) {
-    this.#getAll = getAll;
-
-    this.getAll();
+    this.change(copy);
   }
 
-  get(id: string) {
-    return this.#cache[id];
+  addListener(listener: CacheListener<Entity>) {
+    this.listeners.push(listener);
   }
 
-  getAll() {
-    this.#getAll().then(c => this.#cache = c);
-    return this.#cache;
-  }
-}
-
-class PublisherCachingWrapper extends CachingWrapper<
-  BraveNewsControllerRemote,
-  Publisher,
-  "publisherId"
-> {
-  constructor() {
-    super(getBraveNewsController(), "publisherId");
+  removeListener(listener: CacheListener<Entity>) {
+    this.listeners = this.listeners.filter((l) => l !== listener);
   }
 
-  @eagerUpdate
-  setPublisherPref(publisherId: string, newStatus: UserEnabled) {
-    this.api.setPublisherPref(publisherId, newStatus);
+  change(newValue: { [key: string]: Entity }) {
+    const oldValue = this.cache;
+    this.cache = newValue;
+
+    for (const listener of this.listeners) {
+      listener(newValue, oldValue);
+    }
   }
 }
