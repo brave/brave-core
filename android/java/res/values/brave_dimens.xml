@@ -54,4 +54,7 @@
     <dimen name="shields_tooltip_arrow_height">15dp</dimen>
 
     <dimen name="zero_margin"> 0dp </dimen>
+
+    <!-- NTP dimens override -->
+    <dimen name="tile_grid_layout_min_horizontal_spacing">0dp</dimen>
 </resources>
