@@ -10,9 +10,8 @@ import {
   PublisherListenerReceiver,
   UserEnabled
 } from 'gen/brave/components/brave_today/common/brave_news.mojom.m'
-import getBraveNewsController from '.'
+import getBraveNewsController, { isDirectFeed } from '.'
 import { CachingWrapper } from './magicCache'
-import { isDirectFeed } from './news'
 
 export class PublisherCachingWrapper
   extends CachingWrapper<Publisher>
