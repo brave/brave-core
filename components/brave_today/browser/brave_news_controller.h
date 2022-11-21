@@ -88,13 +88,14 @@ class BraveNewsController : public KeyedService,
   void GetFeed(GetFeedCallback callback) override;
   void GetPublishers(GetPublishersCallback callback) override;
   void AddPublisherListener(
-      mojo::PendingRemote<mojom::PublisherListener> listener)
-      override;
+      mojo::PendingRemote<mojom::PublisherListener> listener) override;
   void GetSuggestedPublisherIds(
       GetSuggestedPublisherIdsCallback callback) override;
   void FindFeeds(const GURL& possible_feed_or_site_url,
                  FindFeedsCallback callback) override;
   void GetChannels(GetChannelsCallback callback) override;
+  void AddChannelsListener(
+      mojo::PendingRemote<mojom::ChannelsListener> listener) override;
   void SetChannelSubscribed(const std::string& locale,
                             const std::string& channel_id,
                             bool subscribed,

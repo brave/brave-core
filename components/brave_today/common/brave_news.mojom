@@ -160,6 +160,15 @@ interface PublisherListener {
   Changed(PublisherEvent event);
 };
 
+struct ChannelsEvent {
+  map<string, Channel> addedOrUpdated;
+  array<string> removed;
+};
+
+interface ChannelsListener {
+  Changed(ChannelsEvent event);
+};
+
 // Browser-side handler
 interface BraveNewsController {
   // Gets the current locale.
@@ -170,6 +179,7 @@ interface BraveNewsController {
   AddPublisherListener(pending_remote<PublisherListener> listener);
   GetSuggestedPublisherIds() => (array<string> suggested_publisher_ids);
   GetChannels() => (map<string, Channel> channels);
+  AddChannelsListener(pending_remote<ChannelsListener> listener);
   SetChannelSubscribed(string locale, string channel_id, bool subscribed) => (Channel updated);
   // Look at the incoming url and return results
   //  - if it's a feed url then return the feed item

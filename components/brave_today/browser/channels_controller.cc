@@ -12,6 +12,8 @@
 #include "base/bind.h"
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
+#include "base/functional/bind.h"
+#include "base/unguessable_token.h"
 #include "base/values.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
@@ -20,6 +22,7 @@
 #include "brave/components/brave_today/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
 namespace brave_news {
 namespace {
@@ -51,7 +54,8 @@ void ChannelsController::SetChannelSubscribedPref(PrefService* prefs,
 ChannelsController::ChannelsController(
     PrefService* prefs,
     PublishersController* publishers_controller)
-    : prefs_(prefs), publishers_controller_(publishers_controller) {}
+    : prefs_(prefs), publishers_controller_(publishers_controller) {
+}
 
 ChannelsController::~ChannelsController() = default;
 
@@ -121,6 +125,22 @@ void ChannelsController::GetAllChannels(ChannelsCallback callback) {
       std::move(callback), base::Unretained(prefs_)));
 }
 
+void ChannelsController::AddListener(
+    mojo::PendingRemote<mojom::ChannelsListener> listener) {
+  auto id = listeners_.Add(std::move(listener));
+  GetAllChannels(base::BindOnce(
+      [](ChannelsController* controller, mojo::RemoteSetElementId id,
+         Channels channels) {
+        auto* listener = controller->listeners_.Get(id);
+        if (listener) {
+          auto event = mojom::ChannelsEvent::New();
+          event->addedOrUpdated = std::move(channels);
+          listener->Changed(std::move(event));
+        }
+      },
+      base::Unretained(this), id));
+}
+
 mojom::ChannelPtr ChannelsController::SetChannelSubscribed(
     const std::string& locale,
     const std::string& channel_id,
@@ -134,6 +154,12 @@ mojom::ChannelPtr ChannelsController::SetChannelSubscribed(
   result->channel_name = channel_id;
   result->subscribed_locales = GetChannelLocales(channel_id);
 
+  for (const auto& listener : listeners_) {
+    auto event = mojom::ChannelsEvent::New();
+    event->addedOrUpdated[channel_id] = result->Clone();
+    listener->Changed(std::move(event));
+  }
+
   return result;
 }
 
@@ -142,4 +168,5 @@ bool ChannelsController::GetChannelSubscribed(const std::string& locale,
   const auto& subscriptions = prefs_->GetDict(prefs::kBraveNewsChannels);
   return IsChannelSubscribedInLocale(subscriptions, locale, channel_id);
 }
+
 }  // namespace brave_news

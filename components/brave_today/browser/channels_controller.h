@@ -15,6 +15,8 @@
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "components/prefs/pref_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
 namespace brave_news {
 using Channels = base::flat_map<std::string, mojom::ChannelPtr>;
@@ -40,6 +42,7 @@ class ChannelsController {
   std::vector<std::string> GetChannelLocales(
       const std::string& channel_id) const;
   void GetAllChannels(ChannelsCallback callback);
+  void AddListener(mojo::PendingRemote<mojom::ChannelsListener> listener);
   mojom::ChannelPtr SetChannelSubscribed(const std::string& locale,
                                          const std::string& channel_id,
                                          bool subscribed);
@@ -54,6 +57,8 @@ class ChannelsController {
                                        bool subscribed);
   raw_ptr<PrefService> prefs_;
   raw_ptr<PublishersController> publishers_controller_;
+
+  mojo::RemoteSet<mojom::ChannelsListener> listeners_;
 };
 }  // namespace brave_news
 

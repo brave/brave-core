@@ -215,6 +215,11 @@ void BraveNewsController::GetChannels(GetChannelsCallback callback) {
   channels_controller_.GetAllChannels(std::move(callback));
 }
 
+void BraveNewsController::AddChannelsListener(
+    mojo::PendingRemote<mojom::ChannelsListener> listener) {
+  channels_controller_.AddListener(std::move(listener));
+}
+
 void BraveNewsController::SetChannelSubscribed(
     const std::string& locale,
     const std::string& channel_id,
