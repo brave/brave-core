@@ -6,10 +6,10 @@
 import * as React from 'react'
 
 // Types
-import { PanelTypes, BuySendSwapDepositOption } from '../../../constants/types'
+import { PanelTypes, NavOption } from '../../../constants/types'
 
 // Options
-import { BuySendSwapDepositOptions } from '../../../options/buy-send-swap-deposit-options'
+import { NavOptions } from '../../../options/nav-options'
 
 // Components
 import { PanelBottomNavButton } from './panel-bottom-nav-button/panel-bottom-nav-button'
@@ -24,10 +24,13 @@ interface Props {
   onNavigate: (path: PanelTypes) => void
 }
 
+// Portfolio is not an option in the panel
+const buttonOptions = NavOptions.filter((option) => option.id !== 'portfolio')
+
 export const PanelBottomNav = (props: Props) => {
   const { onNavigate } = props
 
-  const handleOnClick = React.useCallback((option: BuySendSwapDepositOption) => {
+  const handleOnClick = React.useCallback((option: NavOption) => {
     if (option.id === 'transactions') {
       onNavigate('transactions')
       return
@@ -43,7 +46,7 @@ export const PanelBottomNav = (props: Props) => {
   return (
     <StyledWrapper>
       <NavOutline>
-        {BuySendSwapDepositOptions.map((option) =>
+        {buttonOptions.map((option) =>
           <PanelBottomNavButton
             key={option.id}
             onClick={() => handleOnClick(option)}

@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Types
-import { BuySendSwapDepositOption, WalletRoutes } from '../constants/types'
+import { NavOption, WalletRoutes } from '../constants/types'
 
 // Assets
 import BuyIconURL from '../assets/svg-icons/buy-send-swap-deposit-icons/buy-icon.svg'
@@ -12,8 +12,15 @@ import SendIconURL from '../assets/svg-icons/buy-send-swap-deposit-icons/send-ic
 import SwapIconURL from '../assets/svg-icons/buy-send-swap-deposit-icons/swap-icon.svg'
 import DepositIconURL from '../assets/svg-icons/buy-send-swap-deposit-icons/deposit-icon.svg'
 import HistoryIcon from '../assets/svg-icons/history-icon.svg'
+import PortfolioIconURL from '../assets/svg-icons/buy-send-swap-deposit-icons/portfolio-icon.svg'
 
-export const BuySendSwapDepositOptions: BuySendSwapDepositOption[] = [
+export const NavOptions: NavOption[] = [
+  {
+    id: 'portfolio',
+    name: 'braveWalletTopNavPortfolio',
+    icon: PortfolioIconURL,
+    route: WalletRoutes.Portfolio
+  },
   {
     id: 'buy',
     name: 'braveWalletBuy',
