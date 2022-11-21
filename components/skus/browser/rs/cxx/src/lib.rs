@@ -473,8 +473,8 @@ async fn credential_summary_task(
         .map_err(|e| e.into())
     {
         Ok(Some(summary)) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &summary),
-        Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, ""),
-        Err(e) => callback.0(callback_state.into_raw(), e, ""),
+        Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, "{}"),
+        Err(e) => callback.0(callback_state.into_raw(), e, "{}"),
     }
 }
 
