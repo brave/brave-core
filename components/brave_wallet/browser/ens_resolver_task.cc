@@ -15,6 +15,7 @@
 #include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
+#include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
@@ -32,13 +33,11 @@ namespace brave_wallet {
 namespace {
 
 absl::optional<std::vector<uint8_t>> ExtractGatewayResult(
-    const std::string& json) {
-  auto records_v =
-      base::JSONReader::Read(json, base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
+    const base::Value& json_value) {
+  if (!json_value.is_dict()) {
     return absl::nullopt;
   }
-  auto* data = records_v->GetDict().FindString("data");
+  auto* data = json_value.GetDict().FindString("data");
   if (!data)
     return absl::nullopt;
 
@@ -48,10 +47,10 @@ absl::optional<std::vector<uint8_t>> ExtractGatewayResult(
   return result;
 }
 
-EnsResolverTaskError ParseErrorResult(const std::string& json) {
+EnsResolverTaskError ParseErrorResult(const base::Value& json_value) {
   EnsResolverTaskError task_error;
   brave_wallet::ParseErrorResult<mojom::ProviderError>(
-      json, &task_error.error, &task_error.error_message);
+      json_value, &task_error.error, &task_error.error_message);
 
   return task_error;
 }
@@ -130,14 +129,12 @@ OffchainLookupData& OffchainLookupData::operator=(OffchainLookupData&&) =
 OffchainLookupData::~OffchainLookupData() = default;
 
 absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromJson(
-    const std::string& json) {
-  auto records_v =
-      base::JSONReader::Read(json, base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
+    const base::Value& json_value) {
+  if (!json_value.is_dict()) {
     return absl::nullopt;
   }
 
-  auto* error_data = records_v->GetDict().FindStringByDottedPath("error.data");
+  auto* error_data = json_value.GetDict().FindStringByDottedPath("error.data");
   if (!error_data)
     return absl::nullopt;
 
@@ -300,9 +297,9 @@ void EnsResolverTask::OnFetchEnsResolverDone(
     return;
   }
 
-  auto bytes_result = ParseDecodedBytesResult(api_request_result.body());
+  auto bytes_result = ParseDecodedBytesResult(api_request_result.value_body());
   if (!bytes_result) {
-    task_error_ = ParseErrorResult(api_request_result.body());
+    task_error_ = ParseErrorResult(api_request_result.value_body());
     return;
   }
 
@@ -347,8 +344,8 @@ void EnsResolverTask::OnFetchEnsip10SupportDone(
   }
 
   bool is_supported = false;
-  if (!ParseBoolResult(api_request_result.body(), &is_supported)) {
-    task_error_ = ParseErrorResult(api_request_result.body());
+  if (!ParseBoolResult(api_request_result.value_body(), &is_supported)) {
+    task_error_ = ParseErrorResult(api_request_result.value_body());
     return;
   }
 
@@ -382,15 +379,15 @@ void EnsResolverTask::OnFetchEnsRecordDone(
     return;
   }
 
-  if (auto offchain_lookup =
-          OffchainLookupData::ExtractFromJson(api_request_result.body())) {
+  if (auto offchain_lookup = OffchainLookupData::ExtractFromJson(
+          api_request_result.value_body())) {
     offchain_lookup_data_ = std::move(offchain_lookup);
     return;
   }
 
-  auto bytes_result = ParseDecodedBytesResult(api_request_result.body());
+  auto bytes_result = ParseDecodedBytesResult(api_request_result.value_body());
   if (!bytes_result) {
-    task_error_ = ParseErrorResult(api_request_result.body());
+    task_error_ = ParseErrorResult(api_request_result.value_body());
     return;
   }
 
@@ -433,15 +430,15 @@ void EnsResolverTask::OnFetchWithEnsip10ResolveDone(
     return;
   }
 
-  if (auto offchain_lookup =
-          OffchainLookupData::ExtractFromJson(api_request_result.body())) {
+  if (auto offchain_lookup = OffchainLookupData::ExtractFromJson(
+          api_request_result.value_body())) {
     offchain_lookup_data_ = std::move(offchain_lookup);
     return;
   }
 
-  auto bytes_result = ParseDecodedBytesResult(api_request_result.body());
+  auto bytes_result = ParseDecodedBytesResult(api_request_result.value_body());
   if (!bytes_result) {
-    task_error_ = ParseErrorResult(api_request_result.body());
+    task_error_ = ParseErrorResult(api_request_result.value_body());
     return;
   }
 
@@ -539,7 +536,7 @@ void EnsResolverTask::OnFetchOffchainDone(APIRequestResult api_request_result) {
     return;
   }
 
-  auto bytes_result = ExtractGatewayResult(api_request_result.body());
+  auto bytes_result = ExtractGatewayResult(api_request_result.value_body());
   if (!bytes_result) {
     task_error_.emplace(MakeInternalError());
     return;
@@ -582,15 +579,15 @@ void EnsResolverTask::OnFetchOffchainCallbackDone(
 
   offchain_callback_call_.reset();
 
-  if (auto offchain_lookup =
-          OffchainLookupData::ExtractFromJson(api_request_result.body())) {
+  if (auto offchain_lookup = OffchainLookupData::ExtractFromJson(
+          api_request_result.value_body())) {
     offchain_lookup_data_ = std::move(offchain_lookup);
     return;
   }
 
-  auto bytes_result = ParseDecodedBytesResult(api_request_result.body());
+  auto bytes_result = ParseDecodedBytesResult(api_request_result.value_body());
   if (!bytes_result) {
-    task_error_ = ParseErrorResult(api_request_result.body());
+    task_error_ = ParseErrorResult(api_request_result.value_body());
     return;
   }
 

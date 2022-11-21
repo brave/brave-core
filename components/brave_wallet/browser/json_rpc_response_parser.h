@@ -22,12 +22,23 @@
 namespace brave_wallet {
 
 // TODO(apaymyshev): fix callers with the function below.
+// TODO(apaymyshev): cleanup
 bool ParseSingleStringResult(const std::string& json, std::string* result);
+bool ParseSingleStringResult(const base::Value& json_value,
+                             std::string* result);
+// TODO(apaymyshev): cleanup
 absl::optional<std::string> ParseSingleStringResult(const std::string& json);
+absl::optional<std::string> ParseSingleStringResult(
+    const base::Value& json_value);
+// TODO(apaymyshev): cleanup
 absl::optional<base::Value> ParseResultValue(const std::string& json);
+absl::optional<base::Value> ParseResultValue(const base::Value& json_value);
 
+// TODO(apaymyshev): cleanup
 absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
     const std::string& json);
+absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
+    const base::Value& json_value);
 
 template <typename Error>
 void ParseErrorResult(const base::Value& json_value,
@@ -75,7 +86,9 @@ void ParseErrorResult(const std::string& json,
 
 absl::optional<base::Value::Dict> ParseResultDict(const std::string& json);
 absl::optional<base::Value::List> ParseResultList(const std::string& json);
+// TODO(apaymyshev): cleanup
 bool ParseBoolResult(const std::string& json, bool* value);
+bool ParseBoolResult(const base::Value& json_value, bool* value);
 
 absl::optional<std::string> ConvertInt64ToString(const std::string& path,
                                                  const std::string& json);

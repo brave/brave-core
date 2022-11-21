@@ -28,9 +28,35 @@ bool ParseSingleStringResult(const std::string& json, std::string* result) {
   return true;
 }
 
+bool ParseSingleStringResult(const base::Value& json_value,
+                             std::string* result) {
+  DCHECK(result);
+
+  auto result_v = ParseResultValue(json_value);
+  if (!result_v)
+    return false;
+
+  const std::string* result_str = result_v->GetIfString();
+  if (!result_str)
+    return false;
+
+  *result = *result_str;
+
+  return true;
+}
+
 absl::optional<std::string> ParseSingleStringResult(const std::string& json) {
   std::string result;
   if (!ParseSingleStringResult(json, &result))
+    return absl::nullopt;
+
+  return result;
+}
+
+absl::optional<std::string> ParseSingleStringResult(
+    const base::Value& json_value) {
+  std::string result;
+  if (!ParseSingleStringResult(json_value, &result))
     return absl::nullopt;
 
   return result;
@@ -49,13 +75,30 @@ absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
   return PrefixedHexStringToBytes(*result_str);
 }
 
+absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
+    const base::Value& json_value) {
+  auto result_v = ParseResultValue(json_value);
+  if (!result_v)
+    return absl::nullopt;
+
+  const std::string* result_str = result_v->GetIfString();
+  if (!result_str)
+    return absl::nullopt;
+
+  return PrefixedHexStringToBytes(*result_str);
+}
+
 absl::optional<base::Value> ParseResultValue(const std::string& json) {
   absl::optional<base::Value> value =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
   if (!value)
     return absl::nullopt;
-  auto response = json_rpc_responses::RPCResponse::FromValue(*value);
+  return ParseResultValue(*value);
+}
+
+absl::optional<base::Value> ParseResultValue(const base::Value& json_value) {
+  auto response = json_rpc_responses::RPCResponse::FromValue(json_value);
   if (!response || !response->result)
     return absl::nullopt;
   return std::move(*response->result);
@@ -82,6 +125,27 @@ bool ParseBoolResult(const std::string& json, bool* value) {
 
   std::string result;
   if (!ParseSingleStringResult(json, &result))
+    return false;
+
+  if (result ==
+      "0x0000000000000000000000000000000000000000000000000000000000000001") {
+    *value = true;
+    return true;
+  } else if (result ==
+             "0x000000000000000000000000000000000000000000000000000000000000000"
+             "0") {
+    *value = false;
+    return true;
+  }
+
+  return false;
+}
+
+bool ParseBoolResult(const base::Value& json_value, bool* value) {
+  DCHECK(value);
+
+  std::string result;
+  if (!ParseSingleStringResult(json_value, &result))
     return false;
 
   if (result ==
