@@ -15,7 +15,7 @@ const style = {
     bottom: 0;
     right: 0;
     overflow: auto;
-    background: rgba(0, 0, 0, 0.33);
+    background: rgba(0, 0, 0, 0.7);
     z-index: 9999;
     display: flex;
     flex-direction: column;
