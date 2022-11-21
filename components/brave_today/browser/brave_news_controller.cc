@@ -55,14 +55,6 @@ namespace {
 constexpr uint32_t kDesiredFaviconSizePixels = 48;
 }  // namespace
 
-bool IsPublisherEnabled(const mojom::Publisher* publisher) {
-  if (!publisher)
-    return false;
-  return (publisher->is_enabled &&
-          publisher->user_enabled_status != mojom::UserEnabled::DISABLED) ||
-         publisher->user_enabled_status == mojom::UserEnabled::ENABLED;
-}
-
 // static
 void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kShouldShowToolbarButton, true);
@@ -615,11 +607,25 @@ void BraveNewsController::HandleSubscriptionsChanged() {
 void BraveNewsController::MaybeInitPrefs() {
   if (GetIsEnabled() && base::FeatureList::IsEnabled(
                             brave_today::features::kBraveNewsV2Feature)) {
+    // We had a bug where you could be subscribed to a channel in the empty
+    // locale in earlier versions of Brave News. If so, we should remove it.
+    // After this has been out for a bit we can remove it.
+    // https://github.com/brave/brave-browser/issues/26596
+    if (prefs_->GetDict(prefs::kBraveNewsChannels).contains("")) {
+      ScopedDictPrefUpdate update(prefs_, prefs::kBraveNewsChannels);
+      update->Remove("");
+    }
+
     const auto& channels = prefs_->GetDict(prefs::kBraveNewsChannels);
-    if (channels.empty() && GetIsEnabled()) {
+    if (channels.empty()) {
       publishers_controller_.GetLocale(base::BindOnce(
           [](ChannelsController* channels_controller,
              const std::string& locale) {
+            // This could happen, if we're offline, or the API is down at the
+            // moment.
+            if (locale.empty()) {
+              return;
+            }
             channels_controller->SetChannelSubscribed(locale,
                                                       kTopSourcesChannel, true);
           },
