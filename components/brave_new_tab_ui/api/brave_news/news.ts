@@ -4,9 +4,8 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { BraveNewsControllerRemote, Publisher, PublisherType, UserEnabled } from 'gen/brave/components/brave_today/common/brave_news.mojom.m'
-import getBraveNewsController, { Channels, Publishers } from '.'
+import getBraveNewsController, { Channels } from '.'
 
-type PublishersListener = (publishers: Publishers, oldValue: Publishers) => void
 type ChannelsListener = (newValue: Channels, oldValue: Channels) => void
 
 export const isPublisherEnabled = (publisher: Publisher) => {
@@ -27,9 +26,6 @@ export const isDirectFeed = (publisher: Publisher) => {
 class BraveNewsApi {
   controller: BraveNewsControllerRemote
 
-  publishersListeners: PublishersListener[] = []
-  lastPublishers: Publishers = {}
-
   channelsListeners: ChannelsListener[] = []
   lastChannels: Channels = {}
 
@@ -44,52 +40,11 @@ class BraveNewsApi {
 
     this.controller.getLocale().then(({ locale }) => {
       this.locale = locale
-      this.updatePublishers()
     })
-  }
-
-  getPublishers () {
-    return this.lastPublishers
   }
 
   getChannels () {
     return this.lastChannels
-  }
-
-  async setPublisherPref (publisherId: string, status: UserEnabled) {
-    const newValue = {
-      ...this.lastPublishers,
-      [publisherId]: {
-        ...this.lastPublishers[publisherId],
-        userEnabledStatus: status
-      }
-    }
-
-    // We completely remove direct feeds when setting the UserEnabled status
-    // to DISABLED.
-    const publisher = this.lastPublishers[publisherId]
-    if (isDirectFeed(publisher) && status === UserEnabled.DISABLED) {
-      delete newValue[publisherId]
-    }
-
-    this.controller.setPublisherPref(publisherId, status)
-    this.updatePublishers(newValue)
-  }
-
-  async subscribeToDirectFeed (feedUrl: string) {
-    const { publishers } = await this.controller.subscribeToNewDirectFeed({ url: feedUrl })
-    this.updatePublishers(publishers)
-  }
-
-  setPublisherFollowed (publisherId: string, enabled: boolean) {
-    // For now, Direct Sources work differently to Combined Sources - in their
-    // not modified state they are considered enabled.
-    if (isDirectFeed(this.lastPublishers[publisherId]) && !enabled) {
-      this.setPublisherPref(publisherId, UserEnabled.DISABLED)
-      return
-    }
-
-    this.setPublisherPref(publisherId, enabled ? UserEnabled.ENABLED : UserEnabled.NOT_MODIFIED)
   }
 
   async setChannelSubscribed (channelId: string, subscribed: boolean) {
@@ -121,17 +76,6 @@ class BraveNewsApi {
     })
   }
 
-  async updatePublishers (newPublishers?: Publishers) {
-    if (!newPublishers) {
-      ({ publishers: newPublishers } = await this.controller.getPublishers())
-    }
-
-    const oldValue = this.lastPublishers
-    this.lastPublishers = newPublishers!
-
-    this.notifyPublishersListeners(newPublishers!, oldValue)
-  }
-
   async updateChannels (newChannels?: Channels) {
     if (!newChannels) {
       ({ channels: newChannels } = await this.controller.getChannels())
@@ -143,15 +87,6 @@ class BraveNewsApi {
     this.notifyChannelsListeners(this.lastChannels, oldValue)
   }
 
-  addPublishersListener (listener: PublishersListener) {
-    this.publishersListeners.push(listener)
-  }
-
-  removePublishersListener (listener: PublishersListener) {
-    const index = this.publishersListeners.indexOf(listener)
-    this.publishersListeners.splice(index, 1)
-  }
-
   addChannelsListener (listener: ChannelsListener) {
     this.channelsListeners.push(listener)
   }
@@ -159,12 +94,6 @@ class BraveNewsApi {
   removeChannelsListener (listener: ChannelsListener) {
     const index = this.channelsListeners.indexOf(listener)
     this.channelsListeners.splice(index, 1)
-  }
-
-  notifyPublishersListeners (newValue: Publishers, oldValue: Publishers) {
-    for (const listener of this.publishersListeners) {
-      listener(newValue, oldValue)
-    }
   }
 
   notifyChannelsListeners (newValue: Channels, oldValue: Channels) {

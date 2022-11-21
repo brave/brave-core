@@ -172,7 +172,7 @@ export const usePublisherFollowed = (publisherId: string) => {
   const publisher = usePublisher(publisherId)
 
   const followed = isPublisherEnabled(publisher)
-  const setFollowed = useCallback((followed: boolean) => api.setPublisherFollowed(publisherId, followed), [publisherId])
+  const setFollowed = useCallback((followed: boolean) => publishersCache.setPublisherFollowed(publisherId, followed), [publisherId])
 
   return {
     followed,
