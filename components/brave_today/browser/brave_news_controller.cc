@@ -190,7 +190,7 @@ void BraveNewsController::AddPublisherListener(
         if (listener) {
           auto event = mojom::PublisherEvent::New();
           event->addedOrUpdated = std::move(publishers);
-          listener->changed(std::move(event));
+          listener->Changed(std::move(event));
         }
       },
       base::Unretained(this), id));
@@ -263,7 +263,7 @@ void BraveNewsController::SubscribeToNewDirectFeed(
             }
 
             for (const auto& listener : controller->publisher_listeners_) {
-              listener->changed(event->Clone());
+              listener->Changed(event->Clone());
             }
 
             // Mark feed as requiring update
@@ -300,7 +300,7 @@ void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
   for (const auto& receiver : publisher_listeners_) {
     auto event = mojom::PublisherEvent::New();
     event->removed.push_back(publisher_id);
-    receiver->changed(std::move(event));
+    receiver->Changed(std::move(event));
   }
 }
 
@@ -435,7 +435,7 @@ void BraveNewsController::SetPublisherPref(const std::string& publisher_id,
             auto copy = publisher->Clone();
             copy->user_enabled_status = new_status;
             event->addedOrUpdated[publisher_id] = std::move(copy);
-            listener->changed(std::move(event));
+            listener->Changed(std::move(event));
           }
           controller->publishers_controller_.EnsurePublishersIsUpdating();
         }

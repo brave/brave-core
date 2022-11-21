@@ -157,7 +157,7 @@ struct PublisherEvent {
 };
 
 interface PublisherListener {
-  changed(PublisherEvent event);
+  Changed(PublisherEvent event);
 };
 
 // Browser-side handler
