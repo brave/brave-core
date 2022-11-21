@@ -232,4 +232,6 @@
     <color name="cookie_consent_action_color">@color/brave_action_color</color>
     <color name="cookie_consent_text_color">#212529</color>
     <color name="cookie_consent_tooltip_color">@android:color/white</color>
+
+    <color name="notification_button_color">#423EEE</color>
 </resources>
