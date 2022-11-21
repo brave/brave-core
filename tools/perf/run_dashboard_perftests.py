@@ -60,9 +60,8 @@ def main():
   configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
       targets, config.runners[0])
 
-  return 0 if perf_test_runner.RunConfigurations(configurations,
-                                                 config.benchmarks,
-                                                 common_options) else 1
+  return 0 if perf_test_runner.RunConfigurations(
+      configurations, config.benchmarks, common_options) else 1
 
 
 if __name__ == '__main__':

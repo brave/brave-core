@@ -106,6 +106,7 @@ class BrowserType:
                       _variations_repo_dir: Optional[str]) -> Optional[str]:
     return None
 
+
 class BraveBrowserTypeImpl(BrowserType):
   _channel: str
   _use_field_trials: bool
@@ -157,8 +158,10 @@ class BraveBrowserTypeImpl(BrowserType):
       raise RuntimeError('Set --variations-repo-dir to use field trials')
     return _MakeTestingFieldTrials(out_dir, tag, variations_repo_dir)
 
+
 def _ParseVersion(version_string) -> List[str]:
   return version_string.split('.')
+
 
 def _FetchTag(tag: str):
   tag_str = f'refs/tags/{tag}'
@@ -169,15 +172,16 @@ def _FetchTag(tag: str):
 
 def _GetBuildDate(tag: str) -> str:
   tag_str = _FetchTag(tag)
-  _, output = GetProcessOutput(['git','show','-s','--format=%ci', tag_str],
-                               cwd=path_util.GetBraveDir(), check=True)
+  _, output = GetProcessOutput(['git', 'show', '-s', '--format=%ci', tag_str],
+                               cwd=path_util.GetBraveDir(),
+                               check=True)
   return output.rstrip()
 
 
 def _MakeTestingFieldTrials(out_dir: str,
                             tag: str,
                             variations_repo_dir: str,
-                            branch:str = 'production') -> str:
+                            branch: str = 'production') -> str:
   chromium_version = _ParseVersion(_GetChromiumVersion(tag))
   assert re.match(r'v\d+\.\d+\.\d+', tag)
   combined_version = chromium_version[0] + '.' + tag[1:]
@@ -185,10 +189,12 @@ def _MakeTestingFieldTrials(out_dir: str,
   target_path = os.path.join(out_dir, 'fieldtrial_testing_config.json')
 
   date = _GetBuildDate(tag)
-  args = ['python3', 'seed/fieldtrials_testing_config_generator.py',
-          f'--output={target_path}', f'--target-date={date}',
-          f'--target-branch={branch}',
-          f'--target-version={combined_version}', '--target-channel=NIGHTLY']
+  args = [
+      'python3', 'seed/fieldtrials_testing_config_generator.py',
+      f'--output={target_path}', f'--target-date={date}',
+      f'--target-branch={branch}', f'--target-version={combined_version}',
+      '--target-channel=NIGHTLY'
+  ]
   GetProcessOutput(args, cwd=variations_repo_dir, check=True)
   return target_path
 
@@ -199,6 +205,7 @@ def _GetChromiumVersion(tag: str) -> str:
       subprocess.check_output(['git', 'show', f'{tag_str}:package.json'],
                               cwd=path_util.GetBraveDir()))
   return package_json['config']['projects']['chrome']['tag']
+
 
 def _GetNearestChromiumUrl(tag: str) -> str:
   chrome_versions = {}
