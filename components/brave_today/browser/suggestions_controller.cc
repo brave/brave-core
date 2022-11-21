@@ -223,7 +223,15 @@ SuggestionsController::GetSuggestedPublisherIdsWithHistory(
     }
 
     for (const auto& info : similarity_info_it->second) {
-      const auto& similar_publisher = publishers.at(info.publisher_id);
+      const auto& similar_publisher_it = publishers.find(info.publisher_id);
+      if (similar_publisher_it == publishers.end()) {
+        LOG(ERROR) << "Encountered suggestion for missing publisher: "
+                   << info.publisher_id
+                   << " which implies the suggestion data needs to be updated.";
+        continue;
+      }
+
+      const auto& similar_publisher = similar_publisher_it->second;
       // Don't suggest similar publishers which are already enabled,
       // or which are explicitly disabled.
       if (similar_publisher->user_enabled_status !=
