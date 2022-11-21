@@ -20,9 +20,9 @@ bool GetEthJsonRequestInfo(const std::string& json,
                            std::string* method,
                            std::string* params);
 
-mojom::TxDataPtr ParseEthSendTransactionParams(const std::string& json,
+mojom::TxDataPtr ParseEthTransactionParams(const std::string& json,
                                                std::string* from);
-mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
+mojom::TxData1559Ptr ParseEthTransaction1559Params(const std::string& json,
                                                        std::string* from);
 bool ShouldCreate1559Tx(mojom::TxData1559Ptr tx_data_1559,
                         bool network_supports_eip1559,

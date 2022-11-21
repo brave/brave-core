@@ -23,8 +23,8 @@ TEST(EthRequestHelperUnitTest, CommonParseErrors) {
        "[[]]", "[0]"});
   for (const auto& error_case : error_cases) {
     std::string from;
-    EXPECT_FALSE(ParseEthSendTransactionParams(error_case, &from));
-    EXPECT_FALSE(ParseEthSendTransaction1559Params(error_case, &from));
+    EXPECT_FALSE(ParseEthTransactionParams(error_case, &from));
+    EXPECT_FALSE(ParseEthTransaction1559Params(error_case, &from));
     std::string address;
     std::string message;
     EXPECT_FALSE(ParseEthSignParams(error_case, &address, &message));
@@ -48,7 +48,7 @@ TEST(EthRequestHelperUnitTest, CommonParseErrors) {
   }
 }
 
-TEST(EthRequestHelperUnitTest, ParseEthSendTransactionParams) {
+TEST(EthRequestHelperUnitTest, ParseEthTransactionParams) {
   std::string json(
       R"({
         "params": [{
@@ -62,7 +62,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSendTransactionParams) {
         }]
       })");
   std::string from;
-  mojom::TxDataPtr tx_data = ParseEthSendTransactionParams(json, &from);
+  mojom::TxDataPtr tx_data = ParseEthTransactionParams(json, &from);
   ASSERT_TRUE(tx_data);
   EXPECT_EQ(from, "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8");
   EXPECT_EQ(tx_data->to, "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C7");
@@ -73,7 +73,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSendTransactionParams) {
   EXPECT_TRUE(tx_data->nonce.empty());  // Should be ignored.
 }
 
-TEST(EthResponseHelperUnitTest, ParseEthSendTransaction1559Params) {
+TEST(EthResponseHelperUnitTest, ParseEthTransaction1559Params) {
   std::string json(
       R"({
         "params": [{
@@ -88,7 +88,7 @@ TEST(EthResponseHelperUnitTest, ParseEthSendTransaction1559Params) {
         }]
       })");
   std::string from;
-  mojom::TxData1559Ptr tx_data = ParseEthSendTransaction1559Params(json, &from);
+  mojom::TxData1559Ptr tx_data = ParseEthTransaction1559Params(json, &from);
   ASSERT_TRUE(tx_data);
   EXPECT_EQ(from, "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8");
   EXPECT_EQ(tx_data->base_data->to,
@@ -111,7 +111,7 @@ TEST(EthResponseHelperUnitTest, ParseEthSendTransaction1559Params) {
           "data": "0x010203"
         }]
       })";
-  tx_data = ParseEthSendTransaction1559Params(json, &from);
+  tx_data = ParseEthTransaction1559Params(json, &from);
   ASSERT_TRUE(tx_data);
   EXPECT_EQ(from, "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8");
   EXPECT_EQ(tx_data->base_data->to,
@@ -170,7 +170,7 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
         }]
       })");
   std::string from;
-  auto tx_data = ParseEthSendTransaction1559Params(json, &from);
+  auto tx_data = ParseEthTransaction1559Params(json, &from);
 
   ASSERT_TRUE(tx_data);
   EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(),
@@ -210,7 +210,7 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
         }]
       })";
 
-  tx_data = ParseEthSendTransaction1559Params(json, &from);
+  tx_data = ParseEthTransaction1559Params(json, &from);
   ASSERT_TRUE(tx_data);
   EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(),
                                  true /* network_supports_eip1559 */,
@@ -230,7 +230,7 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
           "nonce": "0x01"
         }]
       })";
-  tx_data = ParseEthSendTransaction1559Params(json, &from);
+  tx_data = ParseEthTransaction1559Params(json, &from);
   ASSERT_TRUE(tx_data);
   EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(),
                                   true /* network_supports_eip1559 */,
@@ -248,7 +248,7 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
           "data": "0x010203"
         }]
       })";
-  tx_data = ParseEthSendTransaction1559Params(json, &from);
+  tx_data = ParseEthTransaction1559Params(json, &from);
   ASSERT_TRUE(tx_data);
   EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, from));
   EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,

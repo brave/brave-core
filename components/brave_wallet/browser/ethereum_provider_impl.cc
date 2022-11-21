@@ -288,7 +288,7 @@ void EthereumProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
 
   std::string from;
   mojom::TxData1559Ptr tx_data_1559 =
-      ParseEthSendTransaction1559Params(normalized_json_request, &from);
+      ParseEthTransaction1559Params(normalized_json_request, &from);
   if (!tx_data_1559) {
     mojom::ProviderError code = mojom::ProviderError::kInternalError;
     std::string message = "Internal JSON-RPC error";

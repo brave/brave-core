@@ -18,6 +18,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/json_rpc_requests.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "url/gurl.h"
 
@@ -61,43 +62,28 @@ absl::optional<base::Value> GetParamsDict(const std::string& json) {
 }
 
 // This is a best effort parsing of the data
-brave_wallet::mojom::TxDataPtr ValueToTxData(const base::Value& tx_value,
-                                             std::string* from_out) {
+brave_wallet::mojom::TxDataPtr ValueToTxData(
+    const brave_wallet::json_rpc_requests::Transaction* tx,
+    std::string* from_out) {
+  CHECK(tx);
   CHECK(from_out);
   auto tx_data = brave_wallet::mojom::TxData::New();
-  const base::Value::Dict* params_dict = tx_value.GetIfDict();
-  if (!params_dict)
+
+  *from_out = tx->from;
+  tx_data->to = tx->to;
+  if (tx->gas)
+    tx_data->gas_limit = *tx->gas;
+  if (tx->gas_price)
+    tx_data->gas_price = *tx->gas_price;
+  if (tx->value)
+    tx_data->value = *tx->value;
+
+  // If data is specified it's best to make sure it's valid
+  std::vector<uint8_t> bytes;
+  if (tx->data && !tx->data->empty() &&
+      !brave_wallet::PrefixedHexStringToBytes(*tx->data, &bytes))
     return nullptr;
-
-  const std::string* from = params_dict->FindString("from");
-  if (from)
-    *from_out = *from;
-
-  const std::string* to = params_dict->FindString("to");
-  if (to)
-    tx_data->to = *to;
-
-  const std::string* gas = params_dict->FindString("gas");
-  if (gas)
-    tx_data->gas_limit = *gas;
-
-  const std::string* gas_price = params_dict->FindString("gasPrice");
-  if (gas_price)
-    tx_data->gas_price = *gas_price;
-
-  const std::string* value = params_dict->FindString("value");
-  if (value)
-    tx_data->value = *value;
-
-  const std::string* data = params_dict->FindString("data");
-  if (data) {
-    // If data is specified it's best to make sure it's valid
-    std::vector<uint8_t> bytes;
-    if (!data->empty() &&
-        !brave_wallet::PrefixedHexStringToBytes(*data, &bytes))
-      return nullptr;
-    tx_data->data = bytes;
-  }
+  tx_data->data = bytes;
 
   return tx_data;
 }
@@ -110,7 +96,7 @@ const char kRequestJsonRPC[] = "2.0";
 
 namespace brave_wallet {
 
-mojom::TxDataPtr ParseEthSendTransactionParams(const std::string& json,
+mojom::TxDataPtr ParseEthTransactionParams(const std::string& json,
                                                std::string* from) {
   CHECK(from);
   from->clear();
@@ -118,10 +104,13 @@ mojom::TxDataPtr ParseEthSendTransactionParams(const std::string& json,
   auto param_obj = GetObjectFromParamsList(json);
   if (!param_obj)
     return nullptr;
-  return ValueToTxData(*param_obj, from);
+  auto tx = brave_wallet::json_rpc_requests::Transaction::FromValue(*param_obj);
+  if (!tx)
+    return nullptr;
+  return ValueToTxData(tx.get(), from);
 }
 
-mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
+mojom::TxData1559Ptr ParseEthTransaction1559Params(const std::string& json,
                                                        std::string* from) {
   CHECK(from);
   from->clear();
@@ -129,24 +118,21 @@ mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
   if (!param_obj)
     return nullptr;
 
+  auto tx = brave_wallet::json_rpc_requests::Transaction::FromValue(*param_obj);
+  if (!tx)
+    return nullptr;
+
   auto tx_data = mojom::TxData1559::New();
-  auto base_data_ret = ValueToTxData(*param_obj, from);
+  auto base_data_ret = ValueToTxData(tx.get(), from);
   if (!base_data_ret)
     return nullptr;
 
   tx_data->base_data = std::move(base_data_ret);
-  const base::Value::Dict* params_dict = param_obj->GetIfDict();
-  if (!params_dict)
-    return nullptr;
 
-  const std::string* max_priority_fee_per_gas =
-      params_dict->FindString("maxPriorityFeePerGas");
-  if (max_priority_fee_per_gas)
-    tx_data->max_priority_fee_per_gas = *max_priority_fee_per_gas;
-
-  const std::string* max_fee_per_gas = params_dict->FindString("maxFeePerGas");
-  if (max_fee_per_gas)
-    tx_data->max_fee_per_gas = *max_fee_per_gas;
+  if (tx->max_priority_fee_per_gas)
+    tx_data->max_priority_fee_per_gas = *tx->max_priority_fee_per_gas;
+  if (tx->max_fee_per_gas)
+    tx_data->max_fee_per_gas = *tx->max_fee_per_gas;
 
   return tx_data;
 }
