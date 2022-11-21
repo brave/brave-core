@@ -9,6 +9,8 @@
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
+#include "base/timer/timer.h"
+#include "brave/components/time_period_storage/weekly_storage.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefRegistrySimple;
@@ -23,6 +25,7 @@ enum class MenuGroup {
 };
 
 extern const char kFrequentMenuGroupHistogramName[];
+extern const char kMenuDismissRateHistogramName[];
 
 class MenuMetrics {
  public:
@@ -42,9 +45,21 @@ class MenuMetrics {
   // 2. Browser views (History, Bookmarks, Extensions, Settings)
   void RecordMenuGroupAction(MenuGroup group);
 
+  void RecordMenuShown();
+  void RecordMenuDismiss();
+
  private:
+  void RecordMenuDismissRate();
+
+  void Update();
+
   absl::optional<std::pair<MenuGroup, int>> current_max_group_;
+
   raw_ptr<PrefService> local_state_ = nullptr;
+  WeeklyStorage menu_shown_storage_;
+  WeeklyStorage menu_dismiss_storage_;
+
+  base::RepeatingTimer update_timer_;
 };
 
 }  // namespace misc_metrics

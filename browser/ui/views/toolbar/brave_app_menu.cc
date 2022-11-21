@@ -26,9 +26,21 @@ BraveAppMenu::BraveAppMenu(Browser* browser, int run_types)
 
 BraveAppMenu::~BraveAppMenu() = default;
 
+void BraveAppMenu::RunMenu(views::MenuButtonController* host) {
+  AppMenu::RunMenu(host);
+  menu_metrics_->RecordMenuShown();
+}
+
 void BraveAppMenu::ExecuteCommand(int command_id, int mouse_event_flags) {
   AppMenu::ExecuteCommand(command_id, mouse_event_flags);
   RecordMenuUsage(command_id);
+}
+
+void BraveAppMenu::OnMenuClosed(views::MenuItemView* menu) {
+  AppMenu::OnMenuClosed(menu);
+  if (menu == nullptr) {
+    menu_metrics_->RecordMenuDismiss();
+  }
 }
 
 MenuItemView* BraveAppMenu::AddMenuItem(views::MenuItemView* parent,

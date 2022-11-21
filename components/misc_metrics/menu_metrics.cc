@@ -8,6 +8,7 @@
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/ranges/algorithm.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -21,6 +22,8 @@ namespace {
 const char kTabWindowPrefKey[] = "tab_window";
 const char kBraveFeaturesPrefKey[] = "brave_features";
 const char kBrowserViewsPrefKey[] = "browser_views";
+
+constexpr base::TimeDelta kUpdateInterval = base::Days(1);
 
 const char* GetMenuGroupPrefKey(MenuGroup group) {
   switch (group) {
@@ -38,14 +41,22 @@ const char* GetMenuGroupPrefKey(MenuGroup group) {
 
 const char kFrequentMenuGroupHistogramName[] =
     "Brave.Toolbar.FrequentMenuGroup";
+const char kMenuDismissRateHistogramName[] = "Brave.Toolbar.MenuDismissRate";
 
 MenuMetrics::MenuMetrics(PrefService* local_state)
-    : local_state_(local_state) {}
+    : local_state_(local_state),
+      menu_shown_storage_(local_state, kMiscMetricsMenuShownStorage),
+      menu_dismiss_storage_(local_state, kMiscMetricsMenuDismissStorage) {
+  update_timer_.Start(FROM_HERE, kUpdateInterval, this, &MenuMetrics::Update);
+  Update();
+}
 
 MenuMetrics::~MenuMetrics() = default;
 
 void MenuMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kMiscMetricsMenuGroupActionCounts);
+  registry->RegisterListPref(kMiscMetricsMenuShownStorage);
+  registry->RegisterListPref(kMiscMetricsMenuDismissStorage);
 }
 
 void MenuMetrics::RecordMenuGroupAction(MenuGroup group) {
@@ -88,6 +99,46 @@ void MenuMetrics::RecordMenuGroupAction(MenuGroup group) {
 
   UMA_HISTOGRAM_EXACT_LINEAR(kFrequentMenuGroupHistogramName, histogram_value,
                              3);
+}
+
+void MenuMetrics::RecordMenuShown() {
+  VLOG(2) << "MenuMetrics: menu shown";
+  menu_shown_storage_.AddDelta(1);
+  RecordMenuDismissRate();
+}
+
+void MenuMetrics::RecordMenuDismiss() {
+  VLOG(2) << "MenuMetrics: menu dismiss";
+  menu_dismiss_storage_.AddDelta(1);
+  RecordMenuDismissRate();
+}
+
+void MenuMetrics::RecordMenuDismissRate() {
+  double shown_sum = menu_shown_storage_.GetWeeklySum();
+  double dismiss_sum = menu_dismiss_storage_.GetWeeklySum();
+
+  int answer = 0;
+  if (shown_sum != 0) {
+    double rate = dismiss_sum / shown_sum;
+
+    VLOG(2) << "MenuMetrics: menu dismiss rate: " << rate;
+
+    if (rate < 0.25) {
+      answer = 1;
+    } else if (rate >= 0.25 && rate < 0.5) {
+      answer = 2;
+    } else if (rate >= 0.5 && rate < 0.75) {
+      answer = 3;
+    } else if (rate >= 0.75) {
+      answer = 4;
+    }
+  }
+
+  UMA_HISTOGRAM_EXACT_LINEAR(kMenuDismissRateHistogramName, answer, 5);
+}
+
+void MenuMetrics::Update() {
+  RecordMenuDismissRate();
 }
 
 }  // namespace misc_metrics
