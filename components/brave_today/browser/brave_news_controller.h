@@ -111,6 +111,7 @@ class BraveNewsController : public KeyedService,
   void ClearPrefs() override;
   void IsFeedUpdateAvailable(const std::string& displayed_feed_hash,
                              IsFeedUpdateAvailableCallback callback) override;
+  void AddFeedListener(mojo::PendingRemote<mojom::FeedListener>) override;
   void GetDisplayAd(GetDisplayAdCallback callback) override;
   void OnInteractionSessionStarted() override;
   void OnSessionCardVisitsCountChanged(
