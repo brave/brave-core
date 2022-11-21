@@ -155,7 +155,7 @@ void VerticalTabStripWidgetDelegateView::UpdateClip() {
   // On mac, child window can be drawn out of parent window. We should clip
   // the border line and corner radius manually.
   SkPath path;
-  const bool is_vertical_tab_right_most =
+  const bool is_vertical_tab_left_most =
       !static_cast<BraveBrowserView*>(browser_view_)->IsSidebarVisible() ||
       !browser_view_->browser()
            ->profile()
@@ -163,10 +163,10 @@ void VerticalTabStripWidgetDelegateView::UpdateClip() {
            ->GetPrefs()
            ->GetBoolean(prefs::kSidePanelHorizontalAlignment);
 
-  if (is_vertical_tab_right_most) {
+  if (is_vertical_tab_left_most) {
     // We should clip the bottom-left corner too.
-    // The corner radius value refers to the that of menu widget. Looks like fit
-    // for us.
+    // The corner radius value refers to the that of menu widget. Looks fit for
+    // us.
     // https://github.com/chromium/chromium/blob/371d67fd9c7db16c32f22e3ba247a07aa5e81487/ui/views/controls/menu/menu_config_mac.mm#L35
     constexpr int kCornerRadius = 8;
     path.moveTo(1, 0);
