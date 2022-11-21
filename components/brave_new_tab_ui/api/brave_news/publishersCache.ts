@@ -34,7 +34,7 @@ export class PublishersCachingWrapper
     }
 
     if (isDirectFeed(this.cache[publisherId]) && !enabled) {
-      this.controller.setPublisherPref(publisherId, UserEnabled.ENABLED)
+      this.controller.setPublisherPref(publisherId, UserEnabled.DISABLED)
       delete copy[publisherId]
     } else {
       const status = enabled ? UserEnabled.ENABLED : UserEnabled.NOT_MODIFIED
