@@ -81,6 +81,7 @@ source_set("bat_native_ledger_tests") {
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/post_transaction/post_transaction_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/post_transaction_commit/post_transaction_commit_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/uphold/uphold_utils_unittest.cc",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoints/gemini/get_recipient_id/get_recipient_id_gemini_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoints/get_parameters/get_parameters_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoints/patch_wallets/patch_wallets_unittest.cc",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoints/post_connect/post_connect_unittest.cc",
