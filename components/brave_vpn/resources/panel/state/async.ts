@@ -33,10 +33,6 @@ handler.on(Actions.connectToNewRegion.getType(), async (store) => {
   getPanelBrowserAPI().serviceHandler.connect()
 })
 
-handler.on(Actions.retryConnect.getType(), async (store) => {
-  store.dispatch(Actions.connect())
-})
-
 handler.on(Actions.connectionStateChanged.getType(), async (store) => {
   const state = getState(store)
 
