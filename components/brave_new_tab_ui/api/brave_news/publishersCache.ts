@@ -23,9 +23,13 @@ export class PublishersCachingWrapper
     super()
 
     this.controller = getBraveNewsController()
-    this.controller.addPublishersListener(
-      this.receiver.$.bindNewPipeAndPassRemote()
-    )
+
+    // We can't set up  the mojo pipe in the test environment.
+    if (process.env.NODE_ENV !== 'test') {
+      this.controller.addPublishersListener(
+        this.receiver.$.bindNewPipeAndPassRemote()
+      )
+    }
   }
 
   setPublisherFollowed (publisherId: string, enabled: boolean) {

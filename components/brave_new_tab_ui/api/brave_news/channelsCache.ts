@@ -22,9 +22,13 @@ export class ChannelsCachingWrapper
     super()
 
     this.controller = getBraveNewsController()
-    this.controller.addChannelsListener(
-      this.receiver.$.bindNewPipeAndPassRemote()
-    )
+
+    // We can't setup the mojom pipe in the test environment.
+    if (process.env.NODE_ENV !== 'test') {
+      this.controller.addChannelsListener(
+        this.receiver.$.bindNewPipeAndPassRemote()
+      )
+    }
   }
 
   setChannelSubscribed (locale: string, channelId: string, subscribed: boolean) {
