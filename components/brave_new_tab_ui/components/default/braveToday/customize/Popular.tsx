@@ -5,7 +5,6 @@
 
 import { getLocale } from '$web-common/locale'
 import * as React from 'react'
-import { api } from '../../../../api/brave_news/news'
 import Flex from '../../../Flex'
 import Carousel from './Carousel'
 import { useBraveNews } from './Context'
@@ -15,9 +14,9 @@ import DiscoverSection from './DiscoverSection'
 import FeedCard from './FeedCard'
 
 const usePopularPublisherIds = () => {
-  const { filteredPublisherIds, publishers } = useBraveNews()
+  const { filteredPublisherIds, publishers, locale } = useBraveNews()
   return React.useMemo(() => filteredPublisherIds.map(id => publishers[id])
-    .map(p => [p, p.locales.find(l => l.locale === api.locale)?.rank] as const)
+    .map(p => [p, p.locales.find(l => l.locale === locale)?.rank] as const)
     // Filter out publishers which aren't in the current locale.
     .filter(([p, pRank]) => pRank !== undefined)
     .sort(([a, aRank], [b, bRank]) => {
@@ -30,7 +29,7 @@ const usePopularPublisherIds = () => {
       // primitives, so we want to sort 0 last.
       return (aRank || Number.MAX_SAFE_INTEGER) - (bRank || Number.MAX_SAFE_INTEGER)
     })
-    .map(([p]) => p.publisherId), [filteredPublisherIds, publishers])
+    .map(([p]) => p.publisherId), [filteredPublisherIds, publishers, locale])
 }
 
 export function PopularCarousel () {

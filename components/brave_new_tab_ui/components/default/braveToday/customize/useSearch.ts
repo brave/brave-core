@@ -4,8 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { api } from '../../../../api/brave_news/news'
-import { FeedSearchResultItem } from '../../../../api/brave_news'
+import getBraveNewsController, { FeedSearchResultItem } from '../../../../api/brave_news'
 import { useBraveNews, useChannels } from './Context'
 
 export const QUERY_MIN_LENGTH_FILTER_SOURCES = 2
@@ -105,7 +104,7 @@ export default function useSearch (query: string) {
     setLoading(true)
     let cancelled = false
 
-    api.controller.findFeeds({ url: feedUrlQuery.toString() }).then(({ results }) => {
+    getBraveNewsController().findFeeds({ url: feedUrlQuery.toString() }).then(({ results }) => {
       console.debug('News: received feed results', { results, cancelled })
       if (cancelled) return
 
