@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads::database {

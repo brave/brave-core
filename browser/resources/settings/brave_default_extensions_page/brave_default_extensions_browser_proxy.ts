@@ -18,6 +18,7 @@ export interface BraveDefaultExtensionsBrowserProxy  {
   getDecentralizedDnsResolveMethodList(): Promise<any[]> // TODO(petemill): Define type
   getEnsOffchainResolveMethodList(): Promise<any[]> // TODO(petemill): Define type
   isENSL2Enabled(): boolean
+  isSnsEnabled(): boolean
 }
 
 export class BraveDefaultExtensionsBrowserProxyImpl implements BraveDefaultExtensionsBrowserProxy {
@@ -63,6 +64,10 @@ export class BraveDefaultExtensionsBrowserProxyImpl implements BraveDefaultExten
 
   isENSL2Enabled() {
     return loadTimeData.getBoolean('isENSL2Enabled')
+  }
+
+  isSnsEnabled() {
+    return loadTimeData.getBoolean('isSnsEnabled')
   }
 
   static getInstance(): BraveDefaultExtensionsBrowserProxy {

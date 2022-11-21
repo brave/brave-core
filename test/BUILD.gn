@@ -86,7 +86,11 @@ static_library("brave_test_support_unit") {
 test("brave_unit_tests") {
   testonly = true
 
-  configs += [ "//chrome/test:disable_thinlto_cache_flags" ]
+  configs += [
+    "//build/config:precompiled_headers",
+    "//chrome/test:disable_thinlto_cache_flags",
+    "//chrome/test:pdb_larger_than_4gb",
+  ]
 
   sources = [
     "//brave/browser/brave_ads/search_result_ad/search_result_ad_service_unittest.cc",
@@ -1123,6 +1127,7 @@ test("brave_browser_tests") {
   if (enable_extensions) {
     sources += [
       "//brave/browser/extensions/brave_shields_apitest.cc",
+      "//brave/browser/ui/webui/settings/brave_tor_snowflake_extension_browsertest.cc",
       "//chrome/browser/extensions/extension_apitest.cc",
       "//chrome/browser/extensions/extension_apitest.h",
     ]

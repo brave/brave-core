@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 
-#include "base/bind.h"
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/creatives/creative_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"

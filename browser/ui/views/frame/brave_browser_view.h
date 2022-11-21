@@ -83,6 +83,11 @@ class BraveBrowserView : public BrowserView {
 
   views::View* sidebar_host_view() { return sidebar_host_view_; }
 
+  VerticalTabStripWidgetDelegateView*
+  vertical_tab_strip_widget_delegate_view() {
+    return vertical_tab_strip_widget_delegate_view_;
+  }
+
  private:
   class TabCyclingEventHandler;
   friend class WindowClosingConfirmBrowserTest;

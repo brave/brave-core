@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "absl/types/optional.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/ads/serving/new_tab_page_ad_serving_observer.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "bat/ads/internal/ads/serving/serving_features_unittest_util.h"
@@ -22,28 +23,8 @@
 
 namespace ads::new_tab_page_ads {
 
-class BatAdsNewTabPageAdServingTest : public ServingObserver,
-                                      public UnitTestBase {
- protected:
-  void SetUp() override {
-    UnitTestBase::SetUp();
-
-    features::ForceServingVersion(1);
-
-    subdivision_targeting_ =
-        std::make_unique<geographic::SubdivisionTargeting>();
-    anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
-    serving_ = std::make_unique<Serving>(subdivision_targeting_.get(),
-                                         anti_targeting_resource_.get());
-    serving_->AddObserver(this);
-  }
-
-  void TearDown() override {
-    serving_->RemoveObserver(this);
-
-    UnitTestBase::TearDown();
-  }
-
+class BatAdsNewTabPageAdServingObserver : public ServingObserver {
+ public:
   void OnOpportunityAroseToServeNewTabPageAd(
       const SegmentList& /*segments*/) override {
     had_opportunuity_ = true;
@@ -56,14 +37,47 @@ class BatAdsNewTabPageAdServingTest : public ServingObserver,
 
   void OnFailedToServeNewTabPageAd() override { failed_to_serve_ad_ = true; }
 
-  std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
-  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
-  std::unique_ptr<Serving> serving_;
+  const NewTabPageAdInfo& ad() const { return ad_; }
 
+  bool had_opportunuity() const { return had_opportunuity_; }
+
+  bool did_serve_ad() const { return did_serve_ad_; }
+
+  bool failed_to_serve_ad() const { return failed_to_serve_ad_; }
+
+ private:
   NewTabPageAdInfo ad_;
   bool had_opportunuity_ = false;
   bool did_serve_ad_ = false;
   bool failed_to_serve_ad_ = false;
+};
+
+class BatAdsNewTabPageAdServingTest : public UnitTestBase {
+ protected:
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    features::ForceServingVersion(1);
+
+    subdivision_targeting_ =
+        std::make_unique<geographic::SubdivisionTargeting>();
+    anti_targeting_resource_ = std::make_unique<resource::AntiTargeting>();
+    serving_ = std::make_unique<Serving>(subdivision_targeting_.get(),
+                                         anti_targeting_resource_.get());
+    serving_->AddObserver(&serving_observer_);
+  }
+
+  void TearDown() override {
+    serving_->RemoveObserver(&serving_observer_);
+
+    UnitTestBase::TearDown();
+  }
+
+  std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
+  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
+  std::unique_ptr<Serving> serving_;
+
+  BatAdsNewTabPageAdServingObserver serving_observer_;
 };
 
 TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
@@ -71,13 +85,16 @@ TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
   features::ForceServingVersion(0);
 
   // Act
-  serving_->MaybeServeAd([=](const absl::optional<NewTabPageAdInfo>& ad) {
-    // Assert
-    EXPECT_FALSE(ad);
-    EXPECT_FALSE(had_opportunuity_);
-    EXPECT_FALSE(did_serve_ad_);
-    EXPECT_TRUE(failed_to_serve_ad_);
-  });
+  serving_->MaybeServeAd(base::BindOnce(
+      [](BatAdsNewTabPageAdServingObserver* serving_observer,
+         const absl::optional<NewTabPageAdInfo>& ad) {
+        // Assert
+        EXPECT_FALSE(ad);
+        EXPECT_FALSE(serving_observer->had_opportunuity());
+        EXPECT_FALSE(serving_observer->did_serve_ad());
+        EXPECT_TRUE(serving_observer->failed_to_serve_ad());
+      },
+      base::Unretained(&serving_observer_)));
 }
 
 TEST_F(BatAdsNewTabPageAdServingTest, ServeAd) {
@@ -90,14 +107,17 @@ TEST_F(BatAdsNewTabPageAdServingTest, ServeAd) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  serving_->MaybeServeAd([=](const absl::optional<NewTabPageAdInfo>& ad) {
-    // Assert
-    EXPECT_TRUE(ad);
-    EXPECT_TRUE(had_opportunuity_);
-    EXPECT_TRUE(did_serve_ad_);
-    EXPECT_FALSE(failed_to_serve_ad_);
-    EXPECT_EQ(ad, ad_);
-  });
+  serving_->MaybeServeAd(base::BindOnce(
+      [](BatAdsNewTabPageAdServingObserver* serving_observer,
+         const absl::optional<NewTabPageAdInfo>& ad) {
+        // Assert
+        EXPECT_TRUE(ad);
+        EXPECT_TRUE(serving_observer->had_opportunuity());
+        EXPECT_TRUE(serving_observer->did_serve_ad());
+        EXPECT_FALSE(serving_observer->failed_to_serve_ad());
+        EXPECT_EQ(ad, serving_observer->ad());
+      },
+      base::Unretained(&serving_observer_)));
 }
 
 TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
@@ -111,13 +131,16 @@ TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  serving_->MaybeServeAd([=](const absl::optional<NewTabPageAdInfo>& ad) {
-    // Assert
-    EXPECT_FALSE(ad);
-    EXPECT_FALSE(had_opportunuity_);
-    EXPECT_FALSE(did_serve_ad_);
-    EXPECT_TRUE(failed_to_serve_ad_);
-  });
+  serving_->MaybeServeAd(base::BindOnce(
+      [](BatAdsNewTabPageAdServingObserver* serving_observer,
+         const absl::optional<NewTabPageAdInfo>& ad) {
+        // Assert
+        EXPECT_FALSE(ad);
+        EXPECT_FALSE(serving_observer->had_opportunuity());
+        EXPECT_FALSE(serving_observer->did_serve_ad());
+        EXPECT_TRUE(serving_observer->failed_to_serve_ad());
+      },
+      base::Unretained(&serving_observer_)));
 }
 
 TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
@@ -125,13 +148,16 @@ TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   ForcePermissionRules();
 
   // Act
-  serving_->MaybeServeAd([=](const absl::optional<NewTabPageAdInfo>& ad) {
-    // Assert
-    EXPECT_FALSE(ad);
-    EXPECT_FALSE(had_opportunuity_);
-    EXPECT_FALSE(did_serve_ad_);
-    EXPECT_TRUE(failed_to_serve_ad_);
-  });
+  serving_->MaybeServeAd(base::BindOnce(
+      [](BatAdsNewTabPageAdServingObserver* serving_observer,
+         const absl::optional<NewTabPageAdInfo>& ad) {
+        // Assert
+        EXPECT_FALSE(ad);
+        EXPECT_FALSE(serving_observer->had_opportunuity());
+        EXPECT_FALSE(serving_observer->did_serve_ad());
+        EXPECT_TRUE(serving_observer->failed_to_serve_ad());
+      },
+      base::Unretained(&serving_observer_)));
 }
 
 TEST_F(BatAdsNewTabPageAdServingTest,
@@ -143,13 +169,16 @@ TEST_F(BatAdsNewTabPageAdServingTest,
   SaveCreativeAds(creative_ads);
 
   // Act
-  serving_->MaybeServeAd([=](const absl::optional<NewTabPageAdInfo>& ad) {
-    // Assert
-    EXPECT_FALSE(ad);
-    EXPECT_FALSE(had_opportunuity_);
-    EXPECT_FALSE(did_serve_ad_);
-    EXPECT_TRUE(failed_to_serve_ad_);
-  });
+  serving_->MaybeServeAd(base::BindOnce(
+      [](BatAdsNewTabPageAdServingObserver* serving_observer,
+         const absl::optional<NewTabPageAdInfo>& ad) {
+        // Assert
+        EXPECT_FALSE(ad);
+        EXPECT_FALSE(serving_observer->had_opportunuity());
+        EXPECT_FALSE(serving_observer->did_serve_ad());
+        EXPECT_TRUE(serving_observer->failed_to_serve_ad());
+      },
+      base::Unretained(&serving_observer_)));
 }
 
 }  // namespace ads::new_tab_page_ads

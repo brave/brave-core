@@ -6,6 +6,10 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
 
+#include <memory>
+
+#include "base/callback_helpers.h"
+#include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
@@ -45,6 +49,13 @@ class VerticalTabStripRegionView : public views::View {
   TabStrip* tab_strip() { return region_view_->tab_strip_; }
 
   const Browser* browser() const { return browser_; }
+
+  // Expand vertical tabstrip temporarily. When the returned
+  // ScopedCallbackRunner is destroyed, the state will be restored to the
+  // previous state.
+  using ScopedStateResetter = std::unique_ptr<base::ScopedClosureRunner>;
+  [[nodiscard]] ScopedStateResetter ExpandTabStripForDragging();
+  gfx::Vector2d GetOffsetForDraggedTab() const;
 
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
@@ -95,6 +106,8 @@ class VerticalTabStripRegionView : public views::View {
   base::OneShotTimer mouse_enter_timer_;
 
   bool mouse_events_for_test_ = false;
+
+  base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_

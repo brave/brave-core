@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 
+#include "base/functional/bind.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"
@@ -38,11 +39,12 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest,
 
   const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
-      segments, [](const bool success, const SegmentList& /*segments*/,
-                   const CreativeNewTabPageAdList& creative_ads) {
+      segments,
+      base::BindOnce([](const bool success, const SegmentList& /*segments*/,
+                        const CreativeNewTabPageAdList& creative_ads) {
         EXPECT_TRUE(success);
         EXPECT_EQ(1UL, creative_ads.size());
-      });
+      }));
 }
 
 }  // namespace ads

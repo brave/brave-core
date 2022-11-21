@@ -94,7 +94,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
   local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
-                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+                            static_cast<int>(ResolveMethodTypes::ENABLED));
   EXPECT_TRUE(IsUnstoppableDomainsResolveMethodEthereum(local_state()));
 
   // No redirect for OTR context.
@@ -127,7 +127,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
   local_state()->SetInteger(kENSResolveMethod,
-                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+                            static_cast<int>(ResolveMethodTypes::ENABLED));
   EXPECT_TRUE(IsENSResolveMethodEthereum(local_state()));
   brave_request_info->request_url = GURL("http://brave.eth");
   rc = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(base::DoNothing(),
@@ -139,7 +139,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
 TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
        DecentralizedDnsPreRedirectTLDs) {
   local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
-                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+                            static_cast<int>(ResolveMethodTypes::ENABLED));
   struct TestCase {
     const char* url;
     bool is_valid;
@@ -172,7 +172,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
 TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
        UnstoppableDomainsRedirectWork) {
   local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
-                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+                            static_cast<int>(ResolveMethodTypes::ENABLED));
 
   GURL url("http://brave.crypto");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -296,6 +296,36 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
   EXPECT_EQ(brave_request_info->pending_error,
             net::ERR_ENS_OFFCHAIN_LOOKUP_NOT_SELECTED);
+}
+
+TEST_F(DecentralizedDnsNetworkDelegateHelperTest, SnsRedirectWork) {
+  GURL url("http://test.sol");
+  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
+
+  // No redirect for failed requests.
+  OnBeforeURLRequest_SnsRedirectWork(
+      base::DoNothing(), brave_request_info, {},
+      brave_wallet::mojom::SolanaProviderError::kInternalError, "todo");
+  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+
+  OnBeforeURLRequest_SnsRedirectWork(
+      base::DoNothing(), brave_request_info, {},
+      brave_wallet::mojom::SolanaProviderError::kSuccess, "");
+  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+
+  // No redirect for invalid url.
+  OnBeforeURLRequest_SnsRedirectWork(
+      base::DoNothing(), brave_request_info, GURL("invalid"),
+      brave_wallet::mojom::SolanaProviderError::kSuccess, "");
+  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
+
+  // Redirect for valid url.
+  OnBeforeURLRequest_SnsRedirectWork(
+      base::DoNothing(), brave_request_info, GURL("https://brave.com"),
+      brave_wallet::mojom::SolanaProviderError::kSuccess, "");
+  EXPECT_EQ(brave_request_info->new_url_spec, GURL("https://brave.com"));
+
+  EXPECT_FALSE(brave_request_info->pending_error.has_value());
 }
 
 }  // namespace decentralized_dns

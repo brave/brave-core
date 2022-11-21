@@ -21,6 +21,7 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/common:common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/renderer",
+    "//chrome/common:channel_info",
     "//content/public/common",
     "//content/public/renderer",
     "//gin",

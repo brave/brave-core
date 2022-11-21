@@ -8,8 +8,8 @@
 #include <cstdint>
 #include <utility>
 
-#include "base/bind.h"
 #include "base/check_op.h"
+#include "base/functional/bind.h"
 #include "base/hash/hash.h"
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"

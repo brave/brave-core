@@ -192,6 +192,12 @@ source_set("ui") {
         "webui/settings/brave_tor_handler.h",
       ]
     }
+    if (enable_extensions) {
+      sources += [
+        "webui/settings/brave_tor_snowflake_extension_handler.cc",
+        "webui/settings/brave_tor_snowflake_extension_handler.h",
+      ]
+    }
 
     public_deps += [ "//brave/vendor/bat-native-ads" ]
   }  # !is_android

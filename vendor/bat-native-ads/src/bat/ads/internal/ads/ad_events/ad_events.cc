@@ -8,8 +8,8 @@
 #include <string>
 #include <utility>
 
-#include "base/bind.h"
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_type.h"

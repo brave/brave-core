@@ -40,6 +40,13 @@
 <settings-toggle-button pref="{{prefs.tor.auto_onion_location}}" class="cr-row" label="$i18n{autoOnionLocationLabel}"
   sub-label="$i18n{autoOnionLocationDesc}" disabled="[[!torEnabledPref_.value]]">
 </settings-toggle-button>
+<if expr="enable_extensions">
+  <settings-toggle-button id="torSnowflake" pref="[[torSnowflakeExtensionEnabledPref_]]"
+    label="$i18n{torSnowflakeExtensionLabel}" sub-label="$i18n{torSnowflakeExtensionDesc}"
+    disabled="[[!torSnowflakeExtensionAllowed_]]" on-settings-boolean-control-change="onTorSnowflakeExtensionChange_"
+    learn-more-url="https://support.brave.com/hc/en-us/articles/9059440641421">
+  </settings-toggle-button>
+</if>
 <settings-toggle-button id="useBridges" class="cr-row" label="$i18n{torUseBridgesTitle}"
   sub-label="$i18n{torUseBridgesDesc}" learn-more-url="https://support.brave.com/hc/en-us/articles/7816553516045"
   pref="{{isUsingBridgesPref_}}" disabled="[[!torEnabledPref_.value]]"
@@ -90,3 +97,11 @@
   <request-bridges-dialog id="requestBridgesDialog" on-close="showRequestBridgesDialogClosed_">
   </request-bridges-dialog>
 </template>
+
+<if expr="enable_extensions">
+  <template is="dom-if" if="[[showTorSnowflakeInstallFailed_]]" restamp>
+    <tor-snowflake-install-failed-dialog id="torSnowflakeInstallFailedDialog"
+      on-close="torSnowflakeInstallFailedDialogClosed_">
+    </tor-snowflake-install-failed-dialog>
+  </template>
+</if>

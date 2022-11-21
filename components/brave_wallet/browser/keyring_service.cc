@@ -1003,6 +1003,8 @@ void KeyringService::ImportAccount(const std::string& account_name,
                                    const std::string& private_key,
                                    mojom::CoinType coin,
                                    ImportAccountCallback callback) {
+  std::string private_key_trimmed;
+  base::TrimString(private_key, " \n\t", &private_key_trimmed);
   auto keyring_id = GetKeyringIdForCoinNonFIL(coin);
 
   if (!keyring_id) {
@@ -1019,9 +1021,9 @@ void KeyringService::ImportAccount(const std::string& account_name,
 
   std::vector<uint8_t> private_key_bytes;
   if (*keyring_id == mojom::kDefaultKeyringId) {
-    if (!base::HexStringToBytes(private_key, &private_key_bytes)) {
+    if (!base::HexStringToBytes(private_key_trimmed, &private_key_bytes)) {
       // try again with 0x prefix considered
-      if (!PrefixedHexStringToBytes(private_key, &private_key_bytes)) {
+      if (!PrefixedHexStringToBytes(private_key_trimmed, &private_key_bytes)) {
         std::move(callback).Run(false, "");
         return;
       }
@@ -1033,9 +1035,12 @@ void KeyringService::ImportAccount(const std::string& account_name,
       return;
     }
     std::vector<uint8_t> keypair(kSolanaKeypairSize);
-    if (!Base58Decode(private_key, &keypair, keypair.size())) {
-      std::move(callback).Run(false, "");
-      return;
+    if (!Base58Decode(private_key_trimmed, &keypair, keypair.size())) {
+      if (!Uint8ArrayDecode(private_key_trimmed, &keypair,
+                            kSolanaKeypairSize)) {
+        std::move(callback).Run(false, "");
+        return;
+      }
     }
     // extract private key from keypair
     private_key_bytes = std::move(keypair);

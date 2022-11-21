@@ -27,6 +27,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -226,9 +227,18 @@ class CookieListOptInPreEnabledBrowserTest : public CookieListOptInBrowserTest {
   void SetUpLocalState() override {
     CookieListOptInBrowserTest::SetUpLocalState();
 
-    CookieListFilterEnabledObserver enabled_observer;
     GetRegionalServiceManager()->EnableFilterList(kCookieListUuid, true);
-    enabled_observer.Wait();
+
+    // Since `AdBlockRegionalServiceManager::EnableFilterList` modifies local
+    // state asynchronously in a posted task, waiting for the update to complete
+    // can cause a race condition in which a browser window is displayed before
+    // the update has occurred (particularly on macOS). Instead of waiting,
+    // update local state directly before proceeding.
+    ScopedDictPrefUpdate pref_update(g_browser_process->local_state(),
+                                     prefs::kAdBlockRegionalFilters);
+    base::Value::Dict entry;
+    entry.Set("enabled", true);
+    pref_update->Set(kCookieListUuid, std::move(entry));
   }
 };
 

@@ -7,8 +7,8 @@
 
 #include <utility>
 
-#include "base/bind.h"
 #include "base/check_op.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmation_util.h"

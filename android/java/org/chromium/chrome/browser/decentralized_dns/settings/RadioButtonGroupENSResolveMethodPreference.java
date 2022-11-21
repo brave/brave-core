@@ -54,9 +54,9 @@ public class RadioButtonGroupENSResolveMethodPreference
         mButtons.set(ResolveMethodTypes.DISABLED,
                 (RadioButtonWithDescription) holder.findViewById(
                         R.id.ens_resolve_method_disabled_radio_button));
-        mButtons.set(ResolveMethodTypes.ETHEREUM,
+        mButtons.set(ResolveMethodTypes.ENABLED,
                 (RadioButtonWithDescription) holder.findViewById(
-                        R.id.ens_resolve_method_ethereum_radio_button));
+                        R.id.ens_resolve_method_enabled_radio_button));
 
         mSettingRadioButton = mButtons.get(mSetting);
         mSettingRadioButton.setChecked(true);

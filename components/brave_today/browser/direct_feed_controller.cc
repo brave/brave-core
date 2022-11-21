@@ -18,7 +18,6 @@
 #include "base/callback.h"
 #include "base/containers/flat_set.h"
 #include "base/guid.h"
-#include "base/i18n/icu_string_conversions.h"
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
@@ -86,33 +85,26 @@ mojom::ArticlePtr RustFeedItemToArticle(const FeedItem& rust_feed_item) {
 
 using ParseFeedCallback = base::OnceCallback<void(absl::optional<FeedData>)>;
 void ParseFeedDataOffMainThread(const GURL& feed_url,
-                                const std::string& charset,
                                 std::string body_content,
                                 ParseFeedCallback callback) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(
-          [](const GURL& feed_url, const std::string& charset,
+          [](const GURL& feed_url,
              std::string body_content) -> absl::optional<FeedData> {
-            std::string result;
-            // Ensure the body is encoded as UTF-8.
-            if (!base::ConvertToUtf8AndNormalize(body_content, charset,
-                                                 &result)) {
-              LOG(ERROR) << "Failed to convert body content of " << feed_url
-                         << " to utf-8";
-              return absl::nullopt;
-            }
-
             brave_news::FeedData data;
-            if (!parse_feed_string(::rust::String(result), data)) {
+            if (!parse_feed_bytes(::rust::Slice<const uint8_t>(
+                                      (const uint8_t*)body_content.data(),
+                                      body_content.size()),
+                                  data)) {
               VLOG(1) << feed_url.spec() << " not a valid feed.";
               VLOG(2) << "Response body was:";
-              VLOG(2) << result;
+              VLOG(2) << body_content;
               return absl::nullopt;
             }
             return data;
           },
-          feed_url, charset, std::move(body_content)),
+          feed_url, std::move(body_content)),
       std::move(callback));
 }
 
@@ -207,9 +199,9 @@ void DirectFeedController::FindFeeds(
             auto* loader = iter->get();
             auto response_code = -1;
             std::string mime_type;
-            std::string charset = GetResponseCharset(loader);
             GURL final_url(loader->GetFinalURL());
             base::flat_map<std::string, std::string> headers;
+            std::string charset = GetResponseCharset(loader);
             if (loader->ResponseInfo()) {
               auto headers_list = loader->ResponseInfo()->headers;
               mime_type = loader->ResponseInfo()->mime_type;
@@ -231,10 +223,10 @@ void DirectFeedController::FindFeeds(
 
             // Response is valid, but still might not be a feed
             ParseFeedDataOffMainThread(
-                feed_url, charset, body_content,
+                feed_url, body_content,
                 base::BindOnce(
                     [](const GURL& feed_url, const GURL& final_url,
-                       const std::string& mime_type,
+                       const std::string& charset, const std::string& mime_type,
                        const std::string& body_content,
                        DirectFeedController* direct_feed_controller,
                        mojom::BraveNewsController::FindFeedsCallback callback,
@@ -255,7 +247,7 @@ void DirectFeedController::FindFeeds(
                         VLOG(1) << "Had html type";
                         // Get feed links from doc
                         auto feed_urls = GetFeedURLsFromHTMLDocument(
-                            body_content, final_url);
+                            charset, body_content, final_url);
                         auto all_done_handler = base::BindOnce(
                             [](mojom::BraveNewsController::FindFeedsCallback
                                    callback,
@@ -298,7 +290,7 @@ void DirectFeedController::FindFeeds(
                       VLOG(2) << body_content;
                       std::move(callback).Run(std::move(results));
                     },
-                    feed_url, final_url, mime_type, body_content,
+                    feed_url, final_url, charset, mime_type, body_content,
                     base::Unretained(direct_feed_controller),
                     std::move(callback)));
           },
@@ -442,7 +434,6 @@ void DirectFeedController::OnResponse(
   // Parse response data
   auto* loader = iter->get();
   auto response_code = -1;
-  std::string charset = GetResponseCharset(loader);
   base::flat_map<std::string, std::string> headers;
   if (loader->ResponseInfo()) {
     auto headers_list = loader->ResponseInfo()->headers;
@@ -464,7 +455,7 @@ void DirectFeedController::OnResponse(
   }
 
   // Response is valid, but still might not be a feed
-  ParseFeedDataOffMainThread(feed_url, charset, std::move(body_content),
+  ParseFeedDataOffMainThread(feed_url, std::move(body_content),
                              base::BindOnce(
                                  [](DownloadFeedCallback callback,
                                     std::unique_ptr<DirectFeedResponse> result,

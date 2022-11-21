@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "absl/types/optional.h"
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"

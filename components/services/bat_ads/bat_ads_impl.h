@@ -9,14 +9,11 @@
 #include <cstdint>
 #include <memory>
 #include <string>
-#include <utility>
 #include <vector>
 
-#include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -30,8 +27,7 @@ namespace bat_ads {
 
 class BatAdsClientMojoBridge;
 
-class BatAdsImpl : public mojom::BatAds,
-                   public base::SupportsWeakPtr<BatAdsImpl> {
+class BatAdsImpl : public mojom::BatAds {
  public:
   explicit BatAdsImpl(
       mojo::PendingAssociatedRemote<mojom::BatAdsClient> client);
@@ -140,34 +136,6 @@ class BatAdsImpl : public mojom::BatAds,
                        ToggleFlaggedAdCallback callback) override;
 
  private:
-  // TODO(https://github.com/brave/brave-browser/issues/24661) Workaround to
-  // pass |base::OnceCallback| into |std::bind| until we refactor Brave Ads
-  // |std::function| to |base::OnceCallback|.
-  template <typename T>
-  class CallbackHolder {
-   public:
-    CallbackHolder(base::WeakPtr<BatAdsImpl> client, T callback)
-        : client_(std::move(client)), callback_(std::move(callback)) {}
-    ~CallbackHolder() = default;
-
-    bool is_valid() { return !!client_; }
-
-    T& get() { return callback_; }
-
-   private:
-    base::WeakPtr<BatAdsImpl> client_;
-    T callback_;
-  };
-
-  static void OnMaybeServeInlineContentAd(
-      CallbackHolder<MaybeServeInlineContentAdCallback>* holder,
-      const std::string& dimensions,
-      const absl::optional<ads::InlineContentAdInfo>& ad);
-
-  static void OnMaybeServeNewTabPageAd(
-      CallbackHolder<MaybeServeNewTabPageAdCallback>* holder,
-      const absl::optional<ads::NewTabPageAdInfo>& ad);
-
   std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
   std::unique_ptr<ads::Ads> ads_;
 };

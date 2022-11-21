@@ -31,6 +31,7 @@ import Amount from '../../utils/amount'
 import { sortTransactionByDate } from '../../utils/tx-utils'
 import { addLogoToToken, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
 import { loadTimeData } from '../../../common/loadTimeData'
+import { walletApi } from '../slices/api.slice'
 
 import getAPIProxy from './bridge'
 import { Dispatch, State, Store } from './types'
@@ -229,10 +230,11 @@ export const getAllBuyAssets = async (): Promise<{
   rampAssetOptions: BraveWallet.BlockchainToken[]
   wyreAssetOptions: BraveWallet.BlockchainToken[]
   sardineAssetOptions: BraveWallet.BlockchainToken[]
+  transakAssetOptions: BraveWallet.BlockchainToken[]
   allAssetOptions: BraveWallet.BlockchainToken[]
 }> => {
   const { blockchainRegistry } = getAPIProxy()
-  const { kRamp, kWyre, kSardine } = BraveWallet.OnRampProvider
+  const { kRamp, kWyre, kSardine, kTransak } = BraveWallet.OnRampProvider
 
   const rampAssetsPromises = await Promise.all(
     SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kRamp, chainId))
@@ -242,6 +244,10 @@ export const getAllBuyAssets = async (): Promise<{
   )
   const sardineAssetsPromises = await Promise.all(
     SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kSardine, chainId))
+  )
+
+  const transakAssetsPromises = await Promise.all(
+    SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kTransak, chainId))
   )
 
   // add token logos
@@ -257,7 +263,11 @@ export const getAllBuyAssets = async (): Promise<{
     .flatMap(p => p.tokens)
     .map(addLogoToToken)
 
-  // seperate native assets from tokens
+  const transakAssetOptions: BraveWallet.BlockchainToken[] = transakAssetsPromises
+    .flatMap(p => p.tokens)
+    .map(addLogoToToken)
+
+  // separate native assets from tokens
   const {
     tokens: rampTokenOptions,
     nativeAssets: rampNativeAssetOptions
@@ -272,6 +282,11 @@ export const getAllBuyAssets = async (): Promise<{
     tokens: sardineTokenOptions,
     nativeAssets: sardineNativeAssetOptions
   } = getNativeTokensFromList(sardineAssetOptions)
+
+  const {
+    tokens: transakTokenOptions,
+    nativeAssets: transakNativeAssetOptions
+  } = getNativeTokensFromList(transakAssetOptions)
 
   // separate BAT from other tokens
   const {
@@ -289,20 +304,28 @@ export const getAllBuyAssets = async (): Promise<{
     nonBat: sardineNonBatTokens
   } = getBatTokensFromList(sardineTokenOptions)
 
+  const {
+    bat: transakBatTokens,
+    nonBat: transakNonBatTokens
+  } = getBatTokensFromList(transakTokenOptions)
+
   // sort lists
   // Move Gas coins and BAT to front of list
   const sortedRampOptions = [...rampNativeAssetOptions, ...rampBatTokens, ...rampNonBatTokens]
   const sortedWyreOptions = [...wyreNativeAssetOptions, ...wyreBatTokens, ...wyreNonBatTokens]
   const sortedSardineOptions = [...sardineNativeAssetOptions, ...sardineBatTokens, ...sardineNonBatTokens]
+  const sortedTransakOptions = [...transakNativeAssetOptions, ...transakBatTokens, ...transakNonBatTokens]
 
   const results = {
     rampAssetOptions: sortedRampOptions,
     wyreAssetOptions: sortedWyreOptions,
     sardineAssetOptions: sortedSardineOptions,
+    transakAssetOptions: sortedTransakOptions,
     allAssetOptions: getUniqueAssets([
       ...sortedRampOptions,
       ...sortedWyreOptions,
-      ...sortedSardineOptions
+      ...sortedSardineOptions,
+      ...sortedTransakOptions
     ])
   }
 
@@ -755,7 +778,7 @@ export function refreshNetworkInfo () {
 
     const apiProxy = getAPIProxy()
     const { jsonRpcService } = apiProxy
-    const { wallet: { selectedCoin, networkList } } = getState()
+    const { wallet: { networkList } } = getState()
 
     // Get default network for each coinType
     const defaultNetworks = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
@@ -766,6 +789,7 @@ export function refreshNetworkInfo () {
     dispatch(WalletActions.setDefaultNetworks(defaultNetworks))
 
     // Get current selected networks info
+    const selectedCoin = await dispatch(walletApi.endpoints.getSelectedCoin.initiate()).unwrap()
     const chainId = await jsonRpcService.getChainId(selectedCoin)
 
     const currentNetwork = getNetworkInfo(chainId.chainId, selectedCoin, networkList)
@@ -776,8 +800,6 @@ export function refreshNetworkInfo () {
 
 export function refreshKeyringInfo () {
   return async (dispatch: Dispatch, getState: () => State) => {
-    const { wallet: { selectedCoin } } = getState()
-
     const apiProxy = getAPIProxy()
     const { keyringService, walletHandler, jsonRpcService } = apiProxy
     const walletInfoBase = await walletHandler.getWalletInfo()
@@ -800,6 +822,7 @@ export function refreshKeyringInfo () {
     }))
     const filteredDefaultAccounts = defaultAccounts.filter((account) => Object.keys(account).length !== 0)
     dispatch(WalletActions.setDefaultAccounts(filteredDefaultAccounts))
+    const selectedCoin = await dispatch(walletApi.endpoints.getSelectedCoin.initiate()).unwrap()
     const coinsChainId = await jsonRpcService.getChainId(selectedCoin)
 
     // Get selectedAccountAddress

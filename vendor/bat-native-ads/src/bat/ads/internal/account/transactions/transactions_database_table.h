@@ -9,7 +9,7 @@
 #include <string>
 #include <utility>
 
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/database/database_table_interface.h"

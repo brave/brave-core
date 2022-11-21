@@ -6,7 +6,9 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_v1.h"
 
 #include <memory>
+#include <utility>
 
+#include "base/functional/bind.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pacing/pacing_random_util.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_builder_unittest_util.h"
@@ -54,18 +56,20 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  const CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
+  CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing-software"}, {}, {}),
       "200x100",
-      [&expected_creative_ads](
-          const bool had_opportunity,
-          const CreativeInlineContentAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(had_opportunity);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
-      });
+      base::BindOnce(
+          [](const CreativeInlineContentAdList& expected_creative_ads,
+             const bool had_opportunity,
+             const CreativeInlineContentAdList& creative_ads) {
+            // Assert
+            EXPECT_TRUE(had_opportunity);
+            EXPECT_EQ(expected_creative_ads, creative_ads);
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
@@ -77,18 +81,20 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  const CreativeInlineContentAdList expected_creative_ads = {creative_ad};
+  CreativeInlineContentAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing-software"}, {}, {}),
       "200x100",
-      [&expected_creative_ads](
-          const bool had_opportunity,
-          const CreativeInlineContentAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(had_opportunity);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
-      });
+      base::BindOnce(
+          [](const CreativeInlineContentAdList& expected_creative_ads,
+             const bool had_opportunity,
+             const CreativeInlineContentAdList& creative_ads) {
+            // Assert
+            EXPECT_TRUE(had_opportunity);
+            EXPECT_EQ(expected_creative_ads, creative_ads);
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
@@ -100,17 +106,19 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  const CreativeInlineContentAdList expected_creative_ads = {creative_ad};
+  CreativeInlineContentAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"finance-banking"}, {}, {}), "200x100",
-      [&expected_creative_ads](
-          const bool had_opportunity,
-          const CreativeInlineContentAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(had_opportunity);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
-      });
+      base::BindOnce(
+          [](const CreativeInlineContentAdList& expected_creative_ads,
+             const bool had_opportunity,
+             const CreativeInlineContentAdList& creative_ads) {
+            // Assert
+            EXPECT_TRUE(had_opportunity);
+            EXPECT_EQ(expected_creative_ads, creative_ads);
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
@@ -132,20 +140,22 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  const CreativeInlineContentAdList expected_creative_ads = {creative_ad_1,
-                                                             creative_ad_3};
+  CreativeInlineContentAdList expected_creative_ads = {creative_ad_1,
+                                                       creative_ad_3};
 
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing", "food & drink"}, {},
                                 {}),
       "200x100",
-      [&expected_creative_ads](
-          const bool had_opportunity,
-          const CreativeInlineContentAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(had_opportunity);
-        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
-      });
+      base::BindOnce(
+          [](const CreativeInlineContentAdList& expected_creative_ads,
+             const bool had_opportunity,
+             const CreativeInlineContentAdList& creative_ads) {
+            // Assert
+            EXPECT_TRUE(had_opportunity);
+            EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForNoSegments) {
@@ -157,17 +167,19 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForNoSegments) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  const CreativeInlineContentAdList expected_creative_ads = {creative_ad};
+  CreativeInlineContentAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
       {}, "200x100",
-      [&expected_creative_ads](
-          const bool had_opportunity,
-          const CreativeInlineContentAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(had_opportunity);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
-      });
+      base::BindOnce(
+          [](const CreativeInlineContentAdList& expected_creative_ads,
+             const bool had_opportunity,
+             const CreativeInlineContentAdList& creative_ads) {
+            // Assert
+            EXPECT_TRUE(had_opportunity);
+            EXPECT_EQ(expected_creative_ads, creative_ads);
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
@@ -181,12 +193,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
   // Act
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"UNMATCHED"}, {}, {}), "200x100",
-      [](const bool had_opportunity,
-         const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const bool had_opportunity,
+                        const CreativeInlineContentAdList& creative_ads) {
         // Assert
         EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsEligibleInlineContentAdsV1Test,
@@ -201,12 +213,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test,
   // Act
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing"}, {}, {}), "?x?",
-      [](const bool had_opportunity,
-         const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const bool had_opportunity,
+                        const CreativeInlineContentAdList& creative_ads) {
         // Assert
         EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
@@ -227,19 +239,21 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   ClientStateManager::GetInstance()->UpdateSeenAd(ad);
 
   // Act
-  const CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
+  CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing", "food & drink"}, {},
                                 {}),
       "200x100",
-      [&expected_creative_ads](
-          const bool had_opportunity,
-          const CreativeInlineContentAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(had_opportunity);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
-      });
+      base::BindOnce(
+          [](const CreativeInlineContentAdList& expected_creative_ads,
+             const bool had_opportunity,
+             const CreativeInlineContentAdList& creative_ads) {
+            // Assert
+            EXPECT_TRUE(had_opportunity);
+            EXPECT_EQ(expected_creative_ads, creative_ads);
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
@@ -261,19 +275,21 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
   // Act
   const ScopedPacingRandomNumberSetter scoped_setter(0.3);
 
-  const CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
+  CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing", "food & drink"}, {},
                                 {}),
       "200x100",
-      [&expected_creative_ads](
-          const bool had_opportunity,
-          const CreativeInlineContentAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(had_opportunity);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
-      });
+      base::BindOnce(
+          [](const CreativeInlineContentAdList& expected_creative_ads,
+             const bool had_opportunity,
+             const CreativeInlineContentAdList& creative_ads) {
+            // Assert
+            EXPECT_TRUE(had_opportunity);
+            EXPECT_EQ(expected_creative_ads, creative_ads);
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetPrioritizedAds) {
@@ -298,19 +314,21 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetPrioritizedAds) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  const CreativeInlineContentAdList expected_creative_ads = {creative_ad_1};
+  CreativeInlineContentAdList expected_creative_ads = {creative_ad_1};
 
   eligible_ads_->GetForUserModel(
       targeting::BuildUserModel({"technology & computing", "food & drink"}, {},
                                 {}),
       "200x100",
-      [&expected_creative_ads](
-          const bool had_opportunity,
-          const CreativeInlineContentAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(had_opportunity);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
-      });
+      base::BindOnce(
+          [](const CreativeInlineContentAdList& expected_creative_ads,
+             const bool had_opportunity,
+             const CreativeInlineContentAdList& creative_ads) {
+            // Assert
+            EXPECT_TRUE(had_opportunity);
+            EXPECT_EQ(expected_creative_ads, creative_ads);
+          },
+          std::move(expected_creative_ads)));
 }
 
 }  // namespace ads::inline_content_ads

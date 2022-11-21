@@ -5,8 +5,10 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v2.h"
 
+#include <utility>
+
 #include "absl/types/optional.h"
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/serving/choose/predict_ad.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
@@ -28,28 +30,35 @@ EligibleAdsV2::EligibleAdsV2(
     : EligibleAdsBase(subdivision_targeting, anti_targeting_resource) {}
 
 void EligibleAdsV2::GetForUserModel(
-    const targeting::UserModelInfo& user_model,
+    targeting::UserModelInfo user_model,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
   BLOG(1, "Get eligible notification ads");
 
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNotificationAd,
-      [=](const bool success, const AdEventList& ad_events) {
-        if (!success) {
-          BLOG(1, "Failed to get ad events");
-          callback(/*had_opportunity*/ false, {});
-          return;
-        }
-
-        GetBrowsingHistory(user_model, ad_events, callback);
-      });
+      base::BindOnce(&EligibleAdsV2::OnGetForUserModel, base::Unretained(this),
+                     std::move(user_model), std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
+void EligibleAdsV2::OnGetForUserModel(
+    targeting::UserModelInfo user_model,
+    GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+    const bool success,
+    const AdEventList& ad_events) {
+  if (!success) {
+    BLOG(1, "Failed to get ad events");
+    std::move(callback).Run(/*had_opportunity*/ false, {});
+    return;
+  }
+
+  GetBrowsingHistory(std::move(user_model), ad_events, std::move(callback));
+}
+
 void EligibleAdsV2::GetBrowsingHistory(
-    const targeting::UserModelInfo& user_model,
+    targeting::UserModelInfo user_model,
     const AdEventList& ad_events,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
   const int max_count = features::GetBrowsingHistoryMaxCount();
@@ -57,50 +66,60 @@ void EligibleAdsV2::GetBrowsingHistory(
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
       max_count, days_ago,
       base::BindOnce(&EligibleAdsV2::GetEligibleAds, base::Unretained(this),
-                     user_model, ad_events, callback));
+                     std::move(user_model), ad_events, std::move(callback)));
 }
 
 void EligibleAdsV2::GetEligibleAds(
-    const targeting::UserModelInfo& user_model,
+    targeting::UserModelInfo user_model,
     const AdEventList& ad_events,
-    const GetEligibleAdsCallback<CreativeNotificationAdList>& callback,
+    GetEligibleAdsCallback<CreativeNotificationAdList> callback,
     const BrowsingHistoryList& browsing_history) {
   const database::table::CreativeNotificationAds database_table;
-  database_table.GetAll([=](const bool success, const SegmentList& /*segments*/,
-                            const CreativeNotificationAdList& creative_ads) {
-    if (!success) {
-      BLOG(1, "Failed to get ads");
-      callback(/*had_opportunity*/ false, {});
-      return;
-    }
+  database_table.GetAll(base::BindOnce(
+      &EligibleAdsV2::OnGetEligibleAds, base::Unretained(this),
+      std::move(user_model), ad_events, browsing_history, std::move(callback)));
+}
 
-    if (creative_ads.empty()) {
-      BLOG(1, "No eligible ads");
-      callback(/*had_opportunity*/ false, {});
-      return;
-    }
+void EligibleAdsV2::OnGetEligibleAds(
+    const targeting::UserModelInfo& user_model,
+    const AdEventList& ad_events,
+    const BrowsingHistoryList& browsing_history,
+    GetEligibleAdsCallback<CreativeNotificationAdList> callback,
+    const bool success,
+    const SegmentList& /*segments*/,
+    const CreativeNotificationAdList& creative_ads) {
+  if (!success) {
+    BLOG(1, "Failed to get ads");
+    std::move(callback).Run(/*had_opportunity*/ false, {});
+    return;
+  }
 
-    const CreativeNotificationAdList eligible_creative_ads =
-        FilterCreativeAds(creative_ads, ad_events, browsing_history);
-    if (eligible_creative_ads.empty()) {
-      BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-      callback(/*had_opportunity*/ true, {});
-      return;
-    }
+  if (creative_ads.empty()) {
+    BLOG(1, "No eligible ads");
+    std::move(callback).Run(/*had_opportunity*/ false, {});
+    return;
+  }
 
-    const absl::optional<CreativeNotificationAdInfo> creative_ad =
-        PredictAd(user_model, ad_events, eligible_creative_ads);
-    if (!creative_ad) {
-      BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-      callback(/*had_opportunity*/ true, {});
-      return;
-    }
+  const CreativeNotificationAdList eligible_creative_ads =
+      FilterCreativeAds(creative_ads, ad_events, browsing_history);
+  if (eligible_creative_ads.empty()) {
+    BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
+    std::move(callback).Run(/*had_opportunity*/ true, {});
+    return;
+  }
 
-    BLOG(1, eligible_creative_ads.size()
-                << " eligible ads out of " << creative_ads.size() << " ads");
+  const absl::optional<CreativeNotificationAdInfo> creative_ad =
+      PredictAd(user_model, ad_events, eligible_creative_ads);
+  if (!creative_ad) {
+    BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
+    std::move(callback).Run(/*had_opportunity*/ true, {});
+    return;
+  }
 
-    callback(/*had_opportunity*/ true, {*creative_ad});
-  });
+  BLOG(1, eligible_creative_ads.size()
+              << " eligible ads out of " << creative_ads.size() << " ads");
+
+  std::move(callback).Run(/*had_opportunity*/ true, {*creative_ad});
 }
 
 CreativeNotificationAdList EligibleAdsV2::FilterCreativeAds(

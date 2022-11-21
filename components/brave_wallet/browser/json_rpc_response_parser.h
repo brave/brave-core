@@ -12,6 +12,7 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/json_rpc_responses.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "components/grit/brave_components_strings.h"
@@ -23,6 +24,7 @@ namespace brave_wallet {
 // TODO(apaymyshev): fix callers with the function below.
 bool ParseSingleStringResult(const std::string& json, std::string* result);
 absl::optional<std::string> ParseSingleStringResult(const std::string& json);
+absl::optional<base::Value> ParseResultValue(const std::string& json);
 
 absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
     const std::string& json);
@@ -39,26 +41,21 @@ void ParseErrorResult(const std::string& json,
   *error = Error::kParsingError;
   *error_message = l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR);
 
-  absl::optional<base::Value> records_v =
+  absl::optional<base::Value> value =
       base::JSONReader::Read(json, base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
+  if (!value || !value->is_dict()) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return;
   }
 
-  const auto& dict = records_v->GetDict();
-  absl::optional<int> code_int = dict.FindIntByDottedPath("error.code");
-  const std::string* message_string =
-      dict.FindStringByDottedPath("error.message");
-  if (!code_int)
+  auto response = json_rpc_responses::RPCResponse::FromValue(*value);
+  if (!response || !response->error)
     return;
-
-  *error = static_cast<Error>(*code_int);
-  if (message_string) {
-    *error_message = *message_string;
-  } else {
+  *error = static_cast<Error>(response->error->code);
+  if (response->error->message)
+    *error_message = *response->error->message;
+  else
     error_message->clear();
-  }
 }
 
 absl::optional<base::Value::Dict> ParseResultDict(const std::string& json);

@@ -1,0 +1,51 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+namespace json_rpc_responses {
+  dictionary Error {
+    long code;
+    DOMString? message;
+  };
+
+  dictionary RPCResponse {
+    any jsonrpc;
+    any id;
+    any? result;
+    Error? error;
+  };
+
+  dictionary EthGetFeeHistoryResult {
+    DOMString[] baseFeePerGas;
+    double[] gasUsedRatio;
+    DOMString oldestBlock;
+    any[]? reward;
+  };
+
+  dictionary TransactionReceipt {
+    DOMString transactionHash;
+    DOMString transactionIndex;
+    DOMString blockNumber;
+    DOMString blockHash;
+    DOMString cumulativeGasUsed;
+    DOMString gasUsed;
+    // contracatAddress can be null
+    any contractAddress;
+    // TODO(bbondy): logs
+    DOMString logsBloom;
+    DOMString status;
+  };
+
+  dictionary EthGetLogsResult {
+    DOMString address;
+    DOMString blockHash;
+    DOMString blockNumber;
+    DOMString data;
+    DOMString logIndex;
+    boolean removed;
+    DOMString transactionHash;
+    DOMString transactionIndex;
+    DOMString[] topics;
+  };
+};

@@ -1,0 +1,69 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+namespace swap_responses {
+  dictionary SwapResponse0x {
+    DOMString price;
+    DOMString? guaranteedPrice;
+    DOMString? to;
+    DOMString? data;
+    DOMString value;
+    DOMString gas;
+    DOMString estimatedGas;
+    DOMString gasPrice;
+    DOMString protocolFee;
+    DOMString minimumProtocolFee;
+    DOMString buyTokenAddress;
+    DOMString buyTokenAddress;
+    DOMString sellTokenAddress;
+    DOMString buyAmount;
+    DOMString sellAmount;
+    // TODO(bbondy): sources
+    DOMString allowanceTarget;
+    DOMString sellTokenToEthRate;
+    DOMString buyTokenToEthRate;
+  };
+
+  dictionary JupiterMarketInfoFee {
+    DOMString amount;
+    DOMString mint;
+    DOMString pct;
+  };
+
+  dictionary JupiterMarketInfo {
+    DOMString _label;
+    DOMString id;
+    DOMString inputMint;
+    DOMString outputMint;
+    boolean notEnoughLiquidity;
+    DOMString inAmount;
+    DOMString outAmount;
+    DOMString priceImpactPct;
+    JupiterMarketInfoFee lpFee;
+    JupiterMarketInfoFee platformFee;
+  };
+
+  dictionary JupiterQuoteData {
+    DOMString inAmount;
+    DOMString outAmount;
+    DOMString amount;
+    DOMString otherAmountThreshold;
+    DOMString outAmountWithSlippage;
+    DOMString swapMode;
+    DOMString priceImpactPct;
+    JupiterMarketInfo[] marketInfos;
+  };
+
+  dictionary JupiterQuoteResponse {
+    JupiterQuoteData[] data;
+    DOMString timeTaken;
+  };
+
+  dictionary JupiterSwapTransactions {
+    DOMString? setupTransaction;
+    DOMString swapTransaction;
+    DOMString? cleanupTransaction;
+  };
+};

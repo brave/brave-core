@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
 
-#include "base/bind.h"
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/base/unittest/unittest_time_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 

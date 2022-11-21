@@ -9,6 +9,7 @@
 
 #include "base/strings/sys_string_conversions.h"
 #include "components/sync/driver/sync_service.h"
+#include "components/sync_sessions/open_tabs_ui_delegate.h"
 #include "components/sync_sessions/session_sync_service.h"
 #include "ios/chrome/browser/ui/recent_tabs/synced_sessions.h"
 #include "net/base/mac/url_conversions.h"
@@ -203,6 +204,11 @@ SyncDeviceType const SyncDeviceTypeTablet = static_cast<NSInteger>(
   }
 
   return [distantTabs copy];
+}
+
+- (void)deleteSyncedSession:(NSString*)sessionTag {
+  session_sync_service_->GetOpenTabsUIDelegate()->DeleteForeignSession(
+      base::SysNSStringToUTF8(sessionTag));
 }
 
 @end

@@ -8,10 +8,12 @@
 
 #include <functional>
 
+#include "base/functional/callback.h"
+
 namespace ads {
 
 template <typename T>
-using GetEligibleAdsCallback = std::function<void(const bool, const T&)>;
+using GetEligibleAdsCallback = base::OnceCallback<void(const bool, const T&)>;
 
 }  // namespace ads
 

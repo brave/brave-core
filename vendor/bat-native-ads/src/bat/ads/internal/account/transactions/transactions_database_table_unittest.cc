@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/base/containers/container_util.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"

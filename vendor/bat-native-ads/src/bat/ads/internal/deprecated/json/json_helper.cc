@@ -6,11 +6,12 @@
 #include "bat/ads/internal/deprecated/json/json_helper.h"
 
 #include "base/strings/string_number_conversions.h"
+#include "brave/third_party/rapidjson/src/include/rapidjson/error/en.h"
+#include "brave/third_party/rapidjson/src/include/rapidjson/schema.h"
 
-namespace helper {
+namespace ads::helper::json {
 
-bool JSON::Validate(rapidjson::Document* document,
-                    const std::string& json_schema) {
+bool Validate(rapidjson::Document* document, const std::string& json_schema) {
   if (!document) {
     return false;
   }
@@ -31,7 +32,7 @@ bool JSON::Validate(rapidjson::Document* document,
   return document->Accept(validator);
 }
 
-std::string JSON::GetLastError(rapidjson::Document* document) {
+std::string GetLastError(rapidjson::Document* document) {
   if (!document) {
     return "Invalid document";
   }
@@ -43,4 +44,4 @@ std::string JSON::GetLastError(rapidjson::Document* document) {
   return description + " (" + error_offset + ")";
 }
 
-}  // namespace helper
+}  // namespace ads::helper::json

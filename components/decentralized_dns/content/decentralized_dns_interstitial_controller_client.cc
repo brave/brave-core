@@ -5,6 +5,7 @@
 
 #include "brave/components/decentralized_dns/content/decentralized_dns_interstitial_controller_client.h"
 
+#include "base/notreached.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
@@ -44,7 +45,7 @@ DecentralizedDnsInterstitialControllerClient::
       local_state_(local_state) {}
 
 void DecentralizedDnsInterstitialControllerClient::Proceed() {
-  SetResolveMethodAndReload(ResolveMethodTypes::ETHEREUM);
+  SetResolveMethodAndReload(ResolveMethodTypes::ENABLED);
 }
 
 void DecentralizedDnsInterstitialControllerClient::DontProceed() {
@@ -54,9 +55,18 @@ void DecentralizedDnsInterstitialControllerClient::DontProceed() {
 void DecentralizedDnsInterstitialControllerClient::SetResolveMethodAndReload(
     ResolveMethodTypes type) {
   DCHECK(local_state_);
-  auto* pref_name = IsUnstoppableDomainsTLD(request_url_)
-                        ? kUnstoppableDomainsResolveMethod
-                        : kENSResolveMethod;
+  const char* pref_name = nullptr;
+  if (IsUnstoppableDomainsTLD(request_url_)) {
+    pref_name = kUnstoppableDomainsResolveMethod;
+  } else if (IsENSTLD(request_url_)) {
+    pref_name = kENSResolveMethod;
+  } else if (IsSnsTLD(request_url_)) {
+    pref_name = kSnsResolveMethod;
+  } else {
+    NOTREACHED();
+    return;
+  }
+
   local_state_->SetInteger(pref_name, static_cast<int>(type));
   web_contents_->GetController().Reload(content::ReloadType::BYPASSING_CACHE,
                                         true);

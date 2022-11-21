@@ -60,6 +60,7 @@ import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
 import { getCoinFromTxDataUnion, getNetworkInfo } from '../../utils/network-utils'
 import { isSolanaTransaction, shouldReportTransactionP3A } from '../../utils/tx-utils'
+import { walletApi } from '../slices/api.slice'
 
 const handler = new AsyncActionHandler()
 
@@ -79,9 +80,6 @@ async function refreshBalancesPricesAndHistory (store: Store) {
 
 async function refreshWalletInfo (store: Store) {
   const apiProxy = getAPIProxy()
-
-  const selectedCoin = await apiProxy.braveWalletService.getSelectedCoin()
-  store.dispatch(WalletActions.setSelectedCoin(selectedCoin.coin))
 
   await store.dispatch(refreshKeyringInfo())
   await store.dispatch(refreshNetworkInfo())
@@ -122,12 +120,11 @@ async function updateCoinAccountNetworkInfo (store: Store, coin: BraveWallet.Coi
   if (accounts.length === 0) {
     return
   }
-  const { braveWalletService, keyringService, jsonRpcService } = getAPIProxy()
+  const { keyringService, jsonRpcService } = getAPIProxy()
   const coinsChainId = await jsonRpcService.getChainId(coin)
 
   // Update Selected Coin
-  await braveWalletService.setSelectedCoin(coin)
-  await store.dispatch(WalletActions.setSelectedCoin(coin))
+  store.dispatch(walletApi.endpoints.setSelectedCoin.initiate(coin))
 
   // Updated Selected Account
   const selectedAccountAddress = coin === BraveWallet.CoinType.FIL

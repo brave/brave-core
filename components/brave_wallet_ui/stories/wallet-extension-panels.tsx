@@ -5,7 +5,21 @@
 
 import * as React from 'react'
 import { Provider } from 'react-redux'
-import { combineReducers, createStore } from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
+
+import './locale'
+import {
+  AccountTransactions,
+  AppsListType,
+  BraveWallet,
+  BuySendSwapViewTypes,
+  PanelTypes,
+  SerializableTransactionInfo,
+  WalletAccountType,
+  WalletState
+} from '../constants/types'
+import { AppsList } from '../options/apps-list-options'
+import { filterAppList } from '../utils/filter-app-list'
 
 // Components
 import {
@@ -33,18 +47,6 @@ import {
   SelectAccount,
   CreateAccountTab
 } from '../components/buy-send-swap'
-import {
-  BraveWallet,
-  WalletAccountType,
-  PanelTypes,
-  AppsListType,
-  BuySendSwapViewTypes,
-  WalletState,
-  AccountTransactions,
-  SerializableTransactionInfo
-} from '../constants/types'
-import { AppsList } from '../options/apps-list-options'
-import { filterAppList } from '../utils/filter-app-list'
 import LockPanel from '../components/extension/lock-panel'
 import {
   StyledExtensionWrapperLonger,
@@ -56,8 +58,11 @@ import {
 } from './style'
 import { mockNetworks } from './mock-data/mock-networks'
 import { PanelTitles } from '../options/panel-titles'
-import './locale'
 import { LibContext } from '../common/context/lib.context'
+import WalletPanelStory from './wrappers/wallet-panel-story-wrapper'
+
+// reducers & slices
+import { walletApi } from '../common/slices/api.slice'
 import { createSendCryptoReducer } from '../common/reducers/send_crypto_reducer'
 import { createWalletReducer } from '../common/slices/wallet.slice'
 import { createPageReducer } from '../page/reducers/page_reducer'
@@ -77,6 +82,7 @@ import { mockPageState } from './mock-data/mock-page-state'
 import { mockWalletState } from './mock-data/mock-wallet-state'
 import { mockSendCryptoState } from './mock-data/send-crypto-state'
 import { mockUserAccounts } from './mock-data/user-accounts'
+import { BuyOptions } from '../options/buy-with-options'
 
 export default {
   title: 'Wallet/Extension/Panels',
@@ -328,12 +334,25 @@ const transactionDummyData: AccountTransactions = {
 
 const originInfo = mockOriginInfo
 
-const store = createStore(combineReducers({
-  wallet: createWalletReducer(mockWalletState),
-  page: createPageReducer(mockPageState),
-  panel: createPanelReducer(mockPanelState),
-  sendCrypto: createSendCryptoReducer(mockSendCryptoState)
-}))
+function createStoreWithCustomState (customWalletState: Partial<WalletState> = {}) {
+  return configureStore({
+    reducer: {
+      wallet: createWalletReducer({
+        ...mockWalletState,
+        ...customWalletState
+      }),
+      page: createPageReducer(mockPageState),
+      panel: createPanelReducer(mockPanelState),
+      [walletApi.reducerPath]: walletApi.reducer,
+      sendCrypto: createSendCryptoReducer(mockSendCryptoState)
+
+    },
+    devTools: true,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(walletApi.middleware)
+  })
+}
+
+const store = createStoreWithCustomState()
 
 const transactionList = {
   [mockedTransactionAccounts[0].address]: [
@@ -350,16 +369,6 @@ const mockCustomStoreState: Partial<WalletState> = {
   fullTokenList: mockNewAssetOptions,
   activeOrigin: originInfo,
   transactions: transactionList
-}
-
-function createStoreWithCustomState (customWalletState: Partial<WalletState> = {}) {
-  return createStore(combineReducers({
-    wallet: createWalletReducer({
-      ...mockWalletState,
-      ...customWalletState
-    }),
-    page: createPageReducer(mockPageState)
-  }))
 }
 
 export const _ConfirmTransaction = () => {
@@ -578,6 +587,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(mockBasicAttentionToken)
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [selectedTransaction, setSelectedTransaction] = React.useState<SerializableTransactionInfo | undefined>(transactionList[1][0])
+  const [buyAmount, setBuyAmount] = React.useState<string>('')
 
   const onChangeSendView = (view: BuySendSwapViewTypes) => {
     if (view === 'assets') {
@@ -689,8 +699,16 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     navigateTo('currencies')
   }, [])
 
+  const onChangeBuyAmount = React.useCallback((amount: string) => {
+    setBuyAmount(amount)
+  }, [])
+
+  const onOpenBuyAssetLink = React.useCallback(() => {
+    console.log('Open buy asset link')
+  }, [])
+
   return (
-    <Provider store={store}>
+    <WalletPanelStory>
       <StyledExtensionWrapper>
         {walletLocked ? (
           <LockPanel
@@ -779,6 +797,11 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                           onChangeBuyView={onChangeSendView}
                           selectedAsset={selectedWyreAsset}
                           onShowCurrencySelection={onShowCurrencySelection}
+                          isSelectedNetworkSupported={true}
+                          buyAmount={buyAmount}
+                          buyOptions={BuyOptions}
+                          onChangeBuyAmount={onChangeBuyAmount}
+                          openBuyAssetLink={onOpenBuyAssetLink}
                         />
                       }
                       {selectedPanel === 'sitePermissions' &&
@@ -807,7 +830,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
         )
         }
       </StyledExtensionWrapper>
-    </Provider>
+    </WalletPanelStory>
   )
 }
 

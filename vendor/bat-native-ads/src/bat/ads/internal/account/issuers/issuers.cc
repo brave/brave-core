@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "absl/types/optional.h"
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_json_reader.h"

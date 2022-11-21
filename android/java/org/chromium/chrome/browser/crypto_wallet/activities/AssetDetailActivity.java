@@ -347,24 +347,28 @@ public class AssetDetailActivity
                                                     String.format(Locale.getDefault(), "%.4f %s",
                                                             thisAccountBalance, mAsset.symbol);
 
+                                            // if NFT, only show the account that owns it (i.e.
+                                            // balance = 1)
+                                            if (mAsset.isNft && thisAccountBalance != 1.) continue;
+
                                             WalletListItemModel model = new WalletListItemModel(
                                                     R.drawable.ic_eth, accountInfo.name,
                                                     accountInfo.address, fiatBalanceString,
                                                     cryptoBalanceString, accountInfo.isImported);
                                             model.setAccountInfo(accountInfo);
                                             walletListItemModelList.add(model);
+                                        }
 
-                                            if (walletCoinAdapter != null) {
-                                                walletCoinAdapter.setWalletListItemModelList(
-                                                        walletListItemModelList);
-                                                walletCoinAdapter.setOnWalletListItemClick(
-                                                        AssetDetailActivity.this);
-                                                walletCoinAdapter.setWalletListItemType(
-                                                        Utils.ACCOUNT_ITEM);
-                                                rvAccounts.setAdapter(walletCoinAdapter);
-                                                rvAccounts.setLayoutManager(new LinearLayoutManager(
-                                                        AssetDetailActivity.this));
-                                            }
+                                        if (walletCoinAdapter != null) {
+                                            walletCoinAdapter.setWalletListItemModelList(
+                                                    walletListItemModelList);
+                                            walletCoinAdapter.setOnWalletListItemClick(
+                                                    AssetDetailActivity.this);
+                                            walletCoinAdapter.setWalletListItemType(
+                                                    Utils.ACCOUNT_ITEM);
+                                            rvAccounts.setAdapter(walletCoinAdapter);
+                                            rvAccounts.setLayoutManager(new LinearLayoutManager(
+                                                    AssetDetailActivity.this));
                                         }
                                     });
                         });

@@ -7,8 +7,8 @@
 
 #include <utility>
 
-#include "base/bind.h"
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/database/database_bind_util.h"
@@ -64,12 +64,12 @@ AdEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return ad_event;
 }
 
-void OnGetAdEvents(const GetAdEventsCallback& callback,
+void OnGetAdEvents(GetAdEventsCallback callback,
                    mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get ad events");
-    callback(/*success*/ false, {});
+    std::move(callback).Run(/*success*/ false, {});
     return;
   }
 
@@ -80,7 +80,7 @@ void OnGetAdEvents(const GetAdEventsCallback& callback,
     ad_events.push_back(ad_event);
   }
 
-  callback(/*success*/ true, ad_events);
+  std::move(callback).Run(/*success*/ true, ad_events);
 }
 
 void RunTransaction(const std::string& query, GetAdEventsCallback callback) {
@@ -105,7 +105,8 @@ void RunTransaction(const std::string& query, GetAdEventsCallback callback) {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetAdEvents, callback));
+      std::move(transaction),
+      base::BindOnce(&OnGetAdEvents, std::move(callback)));
 }
 
 void MigrateToV5(mojom::DBTransactionInfo* transaction) {
@@ -195,7 +196,7 @@ void AdEvents::LogEvent(const AdEventInfo& ad_event, ResultCallback callback) {
 }
 
 void AdEvents::GetIf(const std::string& condition,
-                     const GetAdEventsCallback& callback) const {
+                     const GetAdEventsCallbackDeprecated& callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "ae.uuid, "
@@ -211,10 +212,15 @@ void AdEvents::GetIf(const std::string& condition,
       "ORDER BY timestamp DESC ",
       GetTableName().c_str(), condition.c_str());
 
-  RunTransaction(query, callback);
+  RunTransaction(
+      query,
+      base::BindOnce(
+          [](const GetAdEventsCallbackDeprecated& callback, const bool success,
+             const AdEventList& ad_events) { callback(success, ad_events); },
+          callback));
 }
 
-void AdEvents::GetAll(const GetAdEventsCallback& callback) const {
+void AdEvents::GetAll(const GetAdEventsCallbackDeprecated& callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "ae.uuid, "
@@ -229,11 +235,26 @@ void AdEvents::GetAll(const GetAdEventsCallback& callback) const {
       "ORDER BY timestamp DESC",
       GetTableName().c_str());
 
-  RunTransaction(query, callback);
+  RunTransaction(
+      query,
+      base::BindOnce(
+          [](const GetAdEventsCallbackDeprecated& callback, const bool success,
+             const AdEventList& ad_events) { callback(success, ad_events); },
+          callback));
 }
 
 void AdEvents::GetForType(const mojom::AdType ad_type,
-                          const GetAdEventsCallback& callback) const {
+                          const GetAdEventsCallbackDeprecated& callback) const {
+  GetForType(ad_type, base::BindOnce(
+                          [](const GetAdEventsCallbackDeprecated& callback,
+                             const bool success, const AdEventList& ad_events) {
+                            callback(success, ad_events);
+                          },
+                          callback));
+}
+
+void AdEvents::GetForType(const mojom::AdType ad_type,
+                          GetAdEventsCallback callback) const {
   DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
 
   const std::string ad_type_as_string = AdType(ad_type).ToString();
@@ -253,7 +274,7 @@ void AdEvents::GetForType(const mojom::AdType ad_type,
       "ORDER BY timestamp DESC",
       GetTableName().c_str(), ad_type_as_string.c_str());
 
-  RunTransaction(query, callback);
+  RunTransaction(query, std::move(callback));
 }
 
 void AdEvents::PurgeExpired(ResultCallback callback) const {

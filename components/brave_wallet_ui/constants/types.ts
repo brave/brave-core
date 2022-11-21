@@ -150,6 +150,7 @@ export type BuySendSwapTypes =
   | 'send'
   | 'swap'
   | 'deposit'
+  | 'transactions'
 
 export type ChartTimelineType =
   | '5MIN'
@@ -244,7 +245,6 @@ export interface WalletState {
   gasEstimates?: BraveWallet.GasEstimation1559
   connectedAccounts: WalletAccountType[]
   isMetaMaskInstalled: boolean
-  selectedCoin: BraveWallet.CoinType
   defaultCurrencies: DefaultCurrencies
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   defaultNetworks: BraveWallet.NetworkInfo[]
