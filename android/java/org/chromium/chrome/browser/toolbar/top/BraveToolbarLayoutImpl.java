@@ -223,8 +223,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mCookieListOptInPageAndroidHandler.close();
         }
 
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
-                && mPlaylistPageHandler != null) {
+        if (mPlaylistPageHandler != null) {
             mPlaylistPageHandler.close();
         }
         super.destroy();

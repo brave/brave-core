@@ -34,8 +34,14 @@ public class PlaylistPageHandlerFactory {
 
     public PageHandler getPlaylistPageHandler(ConnectionErrorHandler connectionErrorHandler) {
         Profile profile = Utils.getProfile(false); // Always use regular profile
+        if (profile == null) {
+            return null;
+        }
         int nativeHandle =
                 PlaylistPageHandlerFactoryJni.get().getInterfaceToPlaylistPageHandler(profile);
+        if (nativeHandle == -1) {
+            return null;
+        }
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         PageHandler pageHandler = PageHandler.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) pageHandler).getProxyHandler();
