@@ -251,7 +251,7 @@ public struct NewsSettingsView: View {
     if !userOptedIn.value {
       OptInView { @MainActor in
         Preferences.BraveNews.isShowingOptIn.value = false
-        Preferences.BraveNews.isEnabled.value = true
+        isNewsEnabled.value = true
         // Initialize ads if it hasn't already been done
         await dataSource.ads?.initialize()
         await withCheckedContinuation { c in

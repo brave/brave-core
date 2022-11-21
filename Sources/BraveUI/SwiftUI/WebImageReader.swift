@@ -38,14 +38,14 @@ private class WalletWebImageManager: ObservableObject {
   }
 }
 
-struct WebImageReader<Content: View>: View {
+public struct WebImageReader<Content: View>: View {
   @StateObject private var imageManager: WalletWebImageManager = .init()
-  var url: URL?
-  var options: SDWebImageOptions
+  public var url: URL?
+  public var options: SDWebImageOptions
 
   private var content: (_ image: UIImage?, _ isFinished: Bool) -> Content
 
-  init(
+  public init(
     url: URL?,
     options: SDWebImageOptions = [],
     @ViewBuilder content: @escaping (_ image: UIImage?, _ isFinished: Bool) -> Content
@@ -55,7 +55,7 @@ struct WebImageReader<Content: View>: View {
     self.options = options
   }
 
-  var body: some View {
+  public var body: some View {
     content(imageManager.image, imageManager.isFinished)
       .onAppear {
         if !imageManager.isFinished {

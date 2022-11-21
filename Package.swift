@@ -41,7 +41,6 @@ let package = Package(
     .package(url: "https://github.com/airbnb/lottie-ios", from: "3.1.9"),
     .package(url: "https://github.com/jrendel/SwiftKeychainWrapper", from: "4.0.1"),
     .package(url: "https://github.com/SDWebImage/SDWebImage", from: "5.10.2"),
-    .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI", from: "2.2.1"),
     .package(url: "https://github.com/nmdias/FeedKit", from: "9.1.2"),
     .package(url: "https://github.com/brave/PanModal", revision: "e4c07f8e6c5df937051fabc47e1e92901e1d068b"),
     .package(url: "https://github.com/apple/swift-collections", from: "0.0.2"),
@@ -335,7 +334,6 @@ let package = Package(
         "FeedKit",
         "Fuzi",
         "Growth",
-        "SDWebImageSwiftUI",
         .product(name: "Lottie", package: "lottie-ios")
       ],
       resources: [

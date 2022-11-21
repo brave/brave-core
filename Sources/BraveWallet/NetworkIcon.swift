@@ -5,6 +5,7 @@
 
 import BraveCore
 import SwiftUI
+import BraveUI
 
 struct NetworkIcon: View {
   
