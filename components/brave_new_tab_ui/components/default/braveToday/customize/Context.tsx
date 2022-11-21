@@ -54,8 +54,8 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   toggleBraveNewsOnNTP: (enabled: boolean) => {}
 })
 
-const publishersCache = new PublisherCachingWrapper();
-const channelsCache = new ChannelsCachingWrapper();
+const publishersCache = new PublisherCachingWrapper()
+const channelsCache = new ChannelsCachingWrapper()
 
 export function BraveNewsContextProvider (props: { children: React.ReactNode }) {
   const [locale, setLocale] = useState('')
@@ -71,8 +71,8 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
 
   // Get the default locale on load.
   useEffect(() => {
-    getBraveNewsController().getLocale().then(({ locale }) => setLocale(locale));
-  }, []);
+    getBraveNewsController().getLocale().then(({ locale }) => setLocale(locale))
+  }, [])
 
   React.useEffect(() => {
     const handler = (channels: Channels) => setChannels(channels)

@@ -54,8 +54,7 @@ void ChannelsController::SetChannelSubscribedPref(PrefService* prefs,
 ChannelsController::ChannelsController(
     PrefService* prefs,
     PublishersController* publishers_controller)
-    : prefs_(prefs), publishers_controller_(publishers_controller) {
-}
+    : prefs_(prefs), publishers_controller_(publishers_controller) {}
 
 ChannelsController::~ChannelsController() = default;
 

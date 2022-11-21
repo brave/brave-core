@@ -1,46 +1,45 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {
   BraveNewsControllerRemote,
   Channel,
   ChannelsListenerInterface,
   ChannelsListenerReceiver
-} from "gen/brave/components/brave_today/common/brave_news.mojom.m";
-import getBraveNewsController from ".";
-import { CachingWrapper } from "./magicCache";
+} from 'gen/brave/components/brave_today/common/brave_news.mojom.m'
+import getBraveNewsController from '.'
+import { CachingWrapper } from './magicCache'
 
 export class ChannelsCachingWrapper
   extends CachingWrapper<Channel>
-  implements ChannelsListenerInterface
-{
-  private receiver = new ChannelsListenerReceiver(this);
-  private controller: BraveNewsControllerRemote;
+  implements ChannelsListenerInterface {
+  private receiver = new ChannelsListenerReceiver(this)
+  private controller: BraveNewsControllerRemote
 
-  constructor() {
-    super();
+  constructor () {
+    super()
 
-    this.controller = getBraveNewsController();
+    this.controller = getBraveNewsController()
     this.controller.addChannelsListener(
       this.receiver.$.bindNewPipeAndPassRemote()
-    );
+    )
   }
 
-  setChannelSubscribed(locale: string, channelId: string, subscribed: boolean) {
+  setChannelSubscribed (locale: string, channelId: string, subscribed: boolean) {
     // While we're waiting for the new channels to come back, speculatively
     // update them, so the UI has instant feedback.
     // This will be overwritten when the controller responds.
     let subscribedLocales = [
       ...(this.cache[channelId]?.subscribedLocales ?? [])
-    ];
+    ]
     if (subscribedLocales.includes(locale)) {
       // Remove this locale from the list of subscribed locales.
-      subscribedLocales = subscribedLocales.filter((l) => l !== locale);
+      subscribedLocales = subscribedLocales.filter((l) => l !== locale)
     } else {
       // Add this locale to the list of subscribed locales.
-      subscribedLocales.push(locale);
+      subscribedLocales.push(locale)
     }
 
     this.change({
@@ -49,8 +48,8 @@ export class ChannelsCachingWrapper
         ...this.cache[channelId],
         subscribedLocales
       }
-    });
+    })
 
-    return this.controller.setChannelSubscribed(locale, channelId, subscribed);
+    return this.controller.setChannelSubscribed(locale, channelId, subscribed)
   }
 }
