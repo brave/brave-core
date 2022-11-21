@@ -19,8 +19,9 @@
 namespace {
 
 constexpr auto kVettedHosts = base::MakeFixedFlatSet<base::StringPiece>(
-    {"search.brave.com", "search-dev.brave.com", "search-dev-local.brave.com",
-     "search.brave.software", "search.bravesoftware.com"});
+    {"search.brave.com", "search.brave.software", "search.bravesoftware.com",
+     "safesearch.brave.com", "safesearch.brave.software",
+     "safesearch.bravesoftware.com", "search-dev-local.brave.com"});
 
 }  // namespace
 

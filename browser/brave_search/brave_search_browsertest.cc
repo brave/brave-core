@@ -41,7 +41,7 @@ namespace {
 
 const char kEmbeddedTestServerDirectory[] = "brave-search";
 const char kAllowedDomain[] = "search.brave.com";
-const char kAllowedDomainDev[] = "search-dev.brave.com";
+const char kAllowedDomainDev[] = "search.brave.software";
 const char kNotAllowedDomain[] = "brave.com";
 const char kAdsStatusHeaderName[] = "X-Brave-Ads-Enabled";
 const char kAdsStatusHeaderValue[] = "1";
