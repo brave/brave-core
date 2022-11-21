@@ -112,6 +112,7 @@ BraveNewsController::BraveNewsController(
                               &publishers_controller_,
                               &api_request_helper_,
                               history_service),
+      publishers_observation_(this),
       weak_ptr_factory_(this) {
   DCHECK(prefs_);
   // Set up preference listeners
@@ -129,6 +130,8 @@ BraveNewsController::BraveNewsController(
       base::BindRepeating(&BraveNewsController::HandleSubscriptionsChanged,
                           base::Unretained(this)));
 
+  publishers_observation_.Observe(&publishers_controller_);
+
   p3a::RecordAtInit(prefs_);
   // Monitor kBraveTodaySources and update feed / publisher cache
   // Start timer of updating feeds, if applicable
@@ -145,6 +148,19 @@ void BraveNewsController::Bind(
 void BraveNewsController::ClearHistory() {
   // TODO(petemill): Clear history once/if we actually store
   // feed cache somewhere.
+}
+
+void BraveNewsController::OnPublishersUpdated(
+    PublishersController* controller) {
+  publishers_controller_.GetOrFetchPublishers(base::BindOnce(
+      [](BraveNewsController* controller, Publishers publishers) {
+        auto event = mojom::PublishersEvent::New();
+        event->addedOrUpdated = std::move(publishers);
+        for (const auto& listener : controller->publishers_listeners_) {
+          listener->Changed(event->Clone());
+        }
+      },
+      base::Unretained(this)));
 }
 
 mojo::PendingRemote<mojom::BraveNewsController>
@@ -180,20 +196,22 @@ void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
 
 void BraveNewsController::AddPublishersListener(
     mojo::PendingRemote<mojom::PublishersListener> listener) {
-  auto id = publishers_listeners_.Add(std::move(listener));
-
   // As we've just bound a new listener, let it know about our publishers.
+  // Note: We don't add the listener to the set until |GetPublishers| has
+  // returned to avoid invoking the listener twice if a fetch is in progress.
   GetPublishers(base::BindOnce(
-      [](BraveNewsController* controller, mojo::RemoteSetElementId id,
+      [](BraveNewsController* controller,
+         mojo::PendingRemote<mojom::PublishersListener> listener,
          Publishers publishers) {
-        auto* listener = controller->publishers_listeners_.Get(id);
-        if (listener) {
+        auto id = controller->publishers_listeners_.Add(std::move(listener));
+        auto* added_listener = controller->publishers_listeners_.Get(id);
+        if (added_listener) {
           auto event = mojom::PublishersEvent::New();
           event->addedOrUpdated = std::move(publishers);
-          listener->Changed(std::move(event));
+          added_listener->Changed(std::move(event));
         }
       },
-      base::Unretained(this), id));
+      base::Unretained(this), std::move(listener)));
 }
 
 void BraveNewsController::GetSuggestedPublisherIds(
