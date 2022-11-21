@@ -11,6 +11,34 @@ import Fuzi
 import FeedKit
 import UIKit
 
+enum FindFeedsError: Error, Identifiable {
+  /// An error occured while attempting to download the page
+  case dataTaskError(Error)
+  /// The data was either not received or is in the incorrect format
+  case invalidData
+  /// The data downloaded did not match a
+  case parserError(ParserError)
+  /// No feeds were found at the given URL
+  case noFeedsFound
+  
+  var localizedDescription: String {
+    switch self {
+    case .dataTaskError(let error as URLError) where error.code == .notConnectedToInternet:
+      return error.localizedDescription
+    case .dataTaskError:
+      return Strings.BraveNews.addSourceNetworkFailureMessage
+    case .invalidData, .parserError:
+      return Strings.BraveNews.addSourceInvalidDataMessage
+    case .noFeedsFound:
+      return Strings.BraveNews.addSourceNoFeedsFoundMessage
+    }
+  }
+  
+  var id: String {
+    localizedDescription
+  }
+}
+
 public class BraveNewsAddSourceViewController: UITableViewController {
 
   private let feedDataSource: FeedDataSource
@@ -131,34 +159,6 @@ public class BraveNewsAddSourceViewController: UITableViewController {
       case .failure(let error):
         self.displayError(error)
       }
-    }
-  }
-
-  enum FindFeedsError: Error, Identifiable {
-    /// An error occured while attempting to download the page
-    case dataTaskError(Error)
-    /// The data was either not received or is in the incorrect format
-    case invalidData
-    /// The data downloaded did not match a
-    case parserError(ParserError)
-    /// No feeds were found at the given URL
-    case noFeedsFound
-
-    var localizedDescription: String {
-      switch self {
-      case .dataTaskError(let error as URLError) where error.code == .notConnectedToInternet:
-        return error.localizedDescription
-      case .dataTaskError:
-        return Strings.BraveNews.addSourceNetworkFailureMessage
-      case .invalidData, .parserError:
-        return Strings.BraveNews.addSourceInvalidDataMessage
-      case .noFeedsFound:
-        return Strings.BraveNews.addSourceNoFeedsFoundMessage
-      }
-    }
-    
-    var id: String {
-      localizedDescription
     }
   }
 

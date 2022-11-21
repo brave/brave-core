@@ -9,8 +9,9 @@ import FeedKit
 import Fuzi
 import Shared
 import Growth
+import SwiftUI
 
-public struct RSSFeedLocation: Hashable {
+public struct RSSFeedLocation: Hashable, Identifiable {
   public var title: String?
   public var url: URL
 
@@ -43,6 +44,11 @@ extension FeedDataSource {
     if !location.url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: location.url) {
       return false
     }
+    if let firstPartySource = sources.first(where: { $0.feedURL == location.url }) {
+      // If there is a source with the same feed URL already we will just follow it instead.
+      isFollowingSourceBinding(source: firstPartySource).wrappedValue = true
+      return true
+    }
     let feedUrl = location.url.absoluteString
     if RSSFeedSource.get(with: feedUrl) != nil {
       return false
@@ -52,6 +58,7 @@ extension FeedDataSource {
       feedUrl: feedUrl)
     setNeedsReloadCards()
     recordTotalExternalFeedsP3A()
+    objectWillChange.send()
     return true
   }
 
@@ -65,6 +72,7 @@ extension FeedDataSource {
     FeedSourceOverride.resetStatus(forId: location.id)
     setNeedsReloadCards()
     recordTotalExternalFeedsP3A()
+    objectWillChange.send()
   }
 
   /// Whether or not an RSS feed is currently enabled
@@ -73,11 +81,19 @@ extension FeedDataSource {
   func isRSSFeedEnabled(_ location: RSSFeedLocation) -> Bool {
     FeedSourceOverride.get(fromId: location.id)?.enabled ?? true
   }
-
-  /// Toggle an RSS feed enabled state
-  func toggleRSSFeedEnabled(_ location: RSSFeedLocation, enabled: Bool) {
-    FeedSourceOverride.setEnabled(forId: location.id, enabled: enabled)
-    setNeedsReloadCards()
+  
+  @MainActor func isFollowingRSSFeedBinding(feed: RSSFeedLocation) -> Binding<Bool> {
+    .init {
+      self.rssFeedLocations.contains(where: { $0.id == feed.id })
+    } set: { [self] newValue in
+      // In news revamp, you cannot enable or disable an RSS feed, unfollowing results in removing it entirely
+      if newValue {
+        addRSSFeedLocation(feed)
+      } else {
+        removeRSSFeed(feed)
+      }
+      objectWillChange.send()
+    }
   }
   
   // MARK: - P3A
