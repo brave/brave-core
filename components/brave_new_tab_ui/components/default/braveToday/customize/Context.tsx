@@ -9,6 +9,7 @@ import { useNewTabPref } from '../../../../hooks/usePref'
 import { Channels, Publisher, Publishers, PublisherType } from '../../../../api/brave_news'
 import { api, isPublisherEnabled } from '../../../../api/brave_news/news'
 import Modal from './Modal'
+import { PublisherCachingWrapper } from '../../../../api/brave_news/publisherCache'
 
 // Leave possibility for more pages open.
 type NewsPage = null
@@ -50,6 +51,8 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   toggleBraveNewsOnNTP: (enabled: boolean) => {}
 })
 
+const publishersCache = new PublisherCachingWrapper();
+
 export function BraveNewsContextProvider (props: { children: React.ReactNode }) {
   const [customizePage, setCustomizePage] = useState<NewsPage>(null)
   const [channels, setChannels] = useState<Channels>({})
@@ -81,11 +84,9 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
   }, [])
 
   React.useEffect(() => {
-    const handler = () => setPublishers(api.getPublishers())
-    handler()
-
-    api.addPublishersListener(handler)
-    return () => api.removePublishersListener(handler)
+    const handler = (publishers: Publishers) => setPublishers(publishers)
+    publishersCache.addListener(handler)
+    return () => { publishersCache.removeListener(handler) }
   }, [])
 
   const sortedPublishers = useMemo(() =>

@@ -15,19 +15,6 @@ export type Channels = Record<string, BraveNews.Channel>
 // Create singleton connection to browser interface
 let braveNewsControllerInstance: BraveNews.BraveNewsControllerRemote
 
-class Listener implements BraveNews.PublisherListenerInterface {
-  private receiver = new BraveNews.PublisherListenerReceiver(this);
-
-  bindNewPipeAndPassRemote() {
-    return this.receiver.$.bindNewPipeAndPassRemote();
-  }
-
-  changed(e: BraveNews.PublisherEvent) {
-    console.log("I can't believe it!", e);
-  }
-}
-let listener = new Listener();
-
 export default function getBraveNewsController () {
   // Make connection on first call (not in module root, so that storybook
   // doesn't try to connect, or pages which use exported types
@@ -37,7 +24,6 @@ export default function getBraveNewsController () {
     // mojo apis are available.
     // @ts-expect-error
     braveNewsControllerInstance = window.storybookBraveNewsController || BraveNews.BraveNewsController.getRemote()
-    braveNewsControllerInstance.addPublisherListener(listener.bindNewPipeAndPassRemote());
   }
   return braveNewsControllerInstance
 }

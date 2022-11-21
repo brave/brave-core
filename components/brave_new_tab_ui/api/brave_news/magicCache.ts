@@ -17,7 +17,7 @@ export type CacheListener<Entity> = (
 
 export class CachingWrapper<Entity> {
   protected cache: Cache<Entity> = {};
-  protected listeners: CacheListener<Entity>[];
+  protected listeners: CacheListener<Entity>[] = [];
 
   changed(event: ChangeEvent<Entity>) {
     const copy = { ...this.cache };
@@ -27,8 +27,9 @@ export class CachingWrapper<Entity> {
     this.change(copy);
   }
 
-  addListener(listener: CacheListener<Entity>) {
+  addListener(listener: CacheListener<Entity>, init = true) {
     this.listeners.push(listener);
+    if (init) listener(this.cache, {});
   }
 
   removeListener(listener: CacheListener<Entity>) {
