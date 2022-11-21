@@ -198,10 +198,9 @@ public struct NewsSettingsView: View {
   @ObservedObject fileprivate var searchDelegate: SearchDelegate
   @ObservedObject private var isNewsEnabled = Preferences.BraveNews.isEnabled
   @State private var searchResults: SearchResults?
-  @State private var isShowingAddSource: Bool = false
-//  @State private var findFeedsError: FindFeedsError?
+  @State private var isShowingImportOPML: Bool = false
   
-  var showBraveNewsToggle: some View {
+  private var showBraveNewsToggle: some View {
     Toggle(isOn: $isNewsEnabled.value.animation(.default)) {
       VStack(alignment: .leading, spacing: 4) {
         Text("Show Brave News") // TODO: Localize
@@ -217,8 +216,8 @@ public struct NewsSettingsView: View {
   }
   
   // Xcode typechecker struggled when these were inside of `body`
-  @ViewBuilder var destinations: some View {
-    let totalFollowCount = dataSource.followedSources.count + dataSource.followedChannels.count
+  @ViewBuilder private var destinations: some View {
+    let totalFollowCount = dataSource.followedSources.count + dataSource.followedChannels.count + dataSource.rssFeedLocations.count
     NavigationLink {
       SourceListContainerView(dataSource: dataSource)
     } label: {
@@ -295,9 +294,9 @@ public struct NewsSettingsView: View {
     .overlay(Group {
       if !searchDelegate.query.isEmpty {
         SearchResultsView(
-          results: searchResults ?? .empty,
-          isFollowingSource: { dataSource.isFollowingSourceBinding(source: $0) },
-          isFollowingChannel: { dataSource.isFollowingChannelBinding(channel: $0) }
+          dataSource: dataSource,
+          query: searchDelegate.query,
+          results: searchResults ?? .empty
         )
       }
     })
@@ -306,115 +305,16 @@ public struct NewsSettingsView: View {
         Spacer()
         Menu {
           Button {
-            isShowingAddSource = true
+            isShowingImportOPML = true
           } label: {
-            Label("Import OPML…", systemImage: "square.and.arrow.down")
+            Label("Import OPML…", systemImage: "square.and.arrow.down") // TODO: Localize
           }
         } label: {
           Image(systemName: "ellipsis")
         }
       }
     }
-    .opmlImporter(isPresented: $isShowingAddSource, dataSource: dataSource)
-  }
-}
-
-private struct OPMLImporterViewModifier: ViewModifier {
-  @Binding var isPresented: Bool
-  var dataSource: FeedDataSource
-  @State private var opmlParsedResult: OPMLParsedResult?
-  @State private var importError: BraveNewsAddSourceViewController.FindFeedsError? // TODO: Take this out
-  
-  func body(content: Content) -> some View {
-    content
-      .fileImporter(
-        isPresented: $isPresented,
-        allowedContentTypes: [.init("public.opml")!],
-        onCompletion: { result in
-          switch result {
-          case .success(let url):
-            importOPML(from: url)
-          case .failure:
-            break
-          }
-        }
-      )
-      .sheet(item: $opmlParsedResult) { result in
-        UIKitController(
-          UINavigationController(
-            rootViewController:
-              BraveNewsAddSourceResultsViewController(
-                dataSource: dataSource,
-                searchedURL: result.url,
-                rssFeedLocations: result.locations,
-                sourcesAdded: nil
-              )
-          )
-        )
-      }
-      .alert(item: $importError) { error in
-        Alert(
-          title: Text(Strings.BraveNews.addSourceFailureTitle),
-          message: Text(error.localizedDescription),
-          dismissButton: .default(Text(Strings.OKString))
-        )
-      }
-  }
-  
-  private struct OPMLParsedResult: Hashable, Identifiable {
-    var url: URL
-    var locations: [RSSFeedLocation]
-    var id: String {
-      url.absoluteString
-    }
-  }
-  
-  private func rssLocationFromOPMLOutline(_ outline: OPML.Outline) -> RSSFeedLocation? {
-    guard let url = outline.xmlUrl?.asURL else { return nil }
-    return .init(title: outline.text, url: url)
-  }
-  
-  private func importOPML(from url: URL) {
-    guard url.isFileURL, let data = try? Data(contentsOf: url) else {
-      isPresented = false
-      importError = .noFeedsFound
-      return
-    }
-    DispatchQueue.global(qos: .userInitiated).async {
-      let opml = OPMLParser.parse(data: data)
-      DispatchQueue.main.async {
-        guard let opml = opml else {
-          isPresented = false
-          importError = .invalidData
-          return
-        }
-        let locations = opml.outlines.compactMap(self.rssLocationFromOPMLOutline)
-        if locations.isEmpty {
-          isPresented = false
-          importError = .noFeedsFound
-          return
-        }
-        opmlParsedResult = .init(url: url, locations: locations)
-      }
-    }
-  }
-}
-
-extension View {
-  func opmlImporter(
-    isPresented: Binding<Bool>,
-    dataSource: FeedDataSource
-  ) -> some View {
-    modifier(OPMLImporterViewModifier(isPresented: isPresented, dataSource: dataSource))
-  }
-}
-
-struct BraveNewsAddSourceView: UIViewControllerRepresentable {
-  var dataSource: FeedDataSource
-  func makeUIViewController(context: Context) -> UINavigationController {
-    UINavigationController(rootViewController: BraveNewsAddSourceViewController(dataSource: dataSource))
-  }
-  func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {
+    .opmlImporter(isPresented: $isShowingImportOPML, dataSource: dataSource)
   }
 }
 

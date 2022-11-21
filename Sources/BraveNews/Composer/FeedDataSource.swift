@@ -557,6 +557,7 @@ public class FeedDataSource: ObservableObject {
       needsReloadCards = true
     }
   }
+  
   /// Reset all source settings back to default
   public func resetSourcesToDefault() {
     FeedSourceOverride.resetSourceSelection()
@@ -607,14 +608,21 @@ public class FeedDataSource: ObservableObject {
   }
   
   /// Searches sources, channels and RSS feeds
-  func search(query: String) -> SearchResults? {
-    let sourceResults = sources.filter({ $0.name.localizedCaseInsensitiveContains(query) })
+  @MainActor func search(query: String) -> SearchResults? {
+    let sourceResults = sources.filter({
+      $0.name.localizedCaseInsensitiveContains(query) ||
+      $0.siteURL?.absoluteString.localizedCaseInsensitiveContains(query) == true
+    })
     var channelResults: Set<FeedChannel> = Set(channels.filter({ $0.localizedCaseInsensitiveContains(query) }).map({
       .init(localeIdentifier: self.selectedLocale, name: $0)
     }))
     // Add any followed channels that aren't from the selected locale
     channelResults.formUnion(followedChannels.filter({ $0.name.localizedCaseInsensitiveContains(query) }))
-    return .init(sources: sourceResults, channels: Array(channelResults))
+    let rssFeeds = rssFeedLocations.filter {
+      $0.title?.localizedCaseInsensitiveContains(query) == true ||
+      $0.url.absoluteString.localizedCaseInsensitiveContains(query)
+    }
+    return .init(sources: sourceResults, channels: Array(channelResults), rssFeeds: rssFeeds)
   }
 
   // MARK: - Card Generation
@@ -927,8 +935,13 @@ extension FeedDataSource {
 struct SearchResults {
   var sources: [FeedItem.Source]
   var channels: [FeedChannel]
+  var rssFeeds: [RSSFeedLocation]
   
   static var empty: Self {
-    .init(sources: [], channels: [])
+    .init(sources: [], channels: [], rssFeeds: [])
+  }
+  
+  var isEmpty: Bool {
+    sources.isEmpty && channels.isEmpty && rssFeeds.isEmpty
   }
 }

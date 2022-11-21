@@ -16,7 +16,9 @@ struct FollowingListContainerView: View {
       fetchSources: { Array(dataSource.followedSources) },
       isFollowingSource: { dataSource.isFollowingSourceBinding(source: $0) },
       fetchChannels: { Array(dataSource.followedChannels) },
-      isFollowingChannel: { dataSource.isFollowingChannelBinding(channel: $0)}
+      isFollowingChannel: { dataSource.isFollowingChannelBinding(channel: $0)},
+      fetchRSSFeeds: { dataSource.rssFeedLocations },
+      isFollowingRSSFeed: { dataSource.isFollowingRSSFeedBinding(feed: $0) }
     )
   }
 }
@@ -26,9 +28,12 @@ struct FollowingListView: View {
   var isFollowingSource: (FeedItem.Source) -> Binding<Bool>
   var fetchChannels: () -> [FeedChannel]
   var isFollowingChannel: (FeedChannel) -> Binding<Bool>
+  var fetchRSSFeeds: () -> [RSSFeedLocation]
+  var isFollowingRSSFeed: (RSSFeedLocation) -> Binding<Bool>
   
   @State private var followedSources: [FeedItem.Source] = []
   @State private var followedChannels: [FeedChannel] = []
+  @State private var followedRSSFeeds: [RSSFeedLocation] = []
   
   var body: some View {
     List {
@@ -39,7 +44,7 @@ struct FollowingListView: View {
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
-          Text("Sources")
+          Text("Sources") // TODO: Localize
         }
       }
       if !followedChannels.isEmpty {
@@ -57,20 +62,31 @@ struct FollowingListView: View {
             .padding(.vertical, 4)
           }
         } header: {
-          Text("Channels")
+          Text("Channels") // TODO: Localize
+        }
+      }
+      if !followedRSSFeeds.isEmpty {
+        Section {
+          ForEach(followedRSSFeeds) { feed in
+            RSSFeedLabel(feed: feed, isFollowing: isFollowingRSSFeed(feed))
+          }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        } header: {
+          Text("User Sources") // TODO: Localize
         }
       }
     }
     .listBackgroundColor(Color(.braveGroupedBackground))
     .listStyle(.insetGrouped)
     .environment(\.defaultMinListRowHeight, 0)
-    .navigationTitle("Following")
+    .navigationTitle("Following") // TODO: Localize
     .navigationBarTitleDisplayMode(.inline)
     .onAppear {
       // Since we dont want to remove entries from the list immediately, we will not be using
       // the followed sources & channel list directly and instead copying them
       followedSources = fetchSources()
       followedChannels = fetchChannels().sorted(by: { $0.name < $1.name })
+      followedRSSFeeds = fetchRSSFeeds()
     }
     .listInitialOffsetWorkaround()
   }
@@ -91,7 +107,9 @@ struct FollowingListView_PreviewProvider: PreviewProvider {
             .init(localeIdentifier: "en_US", name: "Weather"),
           ]
         },
-        isFollowingChannel: { _ in .constant(true) }
+        isFollowingChannel: { _ in .constant(true) },
+        fetchRSSFeeds: { [] },
+        isFollowingRSSFeed: { _ in .constant(true) }
       )
     }
   }

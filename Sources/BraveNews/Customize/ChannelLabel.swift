@@ -95,6 +95,7 @@ struct ChannelLabel_PreviewProvider: PreviewProvider {
       ChannelLabel(title: "Brave", isFollowing: .constant(false))
       ChannelLabel(title: "Top Sources", subtitle: "Canada", isFollowing: .constant(true))
     }
+    .padding()
   }
 }
 #endif
