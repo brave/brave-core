@@ -399,9 +399,8 @@ void FeedController::NotifyUpdateDone() {
   // can be waited for.
   is_update_in_progress_ = false;
   on_current_update_complete_ = std::make_unique<base::OneShotEvent>();
-}
 
-void FeedController::NotifyListeners() {
+  // Notify listeners.
   for (const auto& listener : listeners_) {
     listener->OnUpdateAvailable(current_feed_.hash);
   }

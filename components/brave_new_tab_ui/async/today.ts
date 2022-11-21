@@ -13,8 +13,7 @@ import { addFeedListener } from "../api/brave_news/feedListener";
 
 addFeedListener((hash) => {
   const current = store.getState().today.feed?.hash
-  if (current === hash) return
-  store.dispatch(Actions.isUpdateAvailable({ isUpdateAvailable: true }))
+  store.dispatch(Actions.isUpdateAvailable({ isUpdateAvailable: current !== hash }))
 });
 
 function storeInHistoryState(data: Object) {

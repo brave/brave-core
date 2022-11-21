@@ -77,7 +77,6 @@ class FeedController : public PublishersController::Observer {
   void GetOrFetchFeed(base::OnceClosure callback);
   void ResetFeed();
   void NotifyUpdateDone();
-  void NotifyListeners();
 
   raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<PublishersController> publishers_controller_ = nullptr;
