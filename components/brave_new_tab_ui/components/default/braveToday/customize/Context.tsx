@@ -8,7 +8,7 @@ import { useCallback, useMemo, useState, useEffect } from 'react'
 import { useNewTabPref } from '../../../../hooks/usePref'
 import getBraveNewsController, { Channels, Publisher, Publishers, PublisherType, isPublisherEnabled } from '../../../../api/brave_news'
 import Modal from './Modal'
-import { PublisherCachingWrapper } from '../../../../api/brave_news/publisherCache'
+import { PublishersCachingWrapper } from '../../../../api/brave_news/publishersCache'
 import { ChannelsCachingWrapper } from '../../../../api/brave_news/channelsCache'
 
 // Leave possibility for more pages open.
@@ -53,7 +53,7 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   toggleBraveNewsOnNTP: (enabled: boolean) => {}
 })
 
-const publishersCache = new PublisherCachingWrapper()
+const publishersCache = new PublishersCachingWrapper()
 const channelsCache = new ChannelsCachingWrapper()
 
 export function BraveNewsContextProvider (props: { children: React.ReactNode }) {

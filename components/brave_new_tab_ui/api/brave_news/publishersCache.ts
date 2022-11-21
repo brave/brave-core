@@ -6,24 +6,24 @@
 import {
   BraveNewsControllerRemote,
   Publisher,
-  PublisherListenerInterface,
-  PublisherListenerReceiver,
+  PublishersListenerInterface,
+  PublishersListenerReceiver,
   UserEnabled
 } from 'gen/brave/components/brave_today/common/brave_news.mojom.m'
 import getBraveNewsController, { isDirectFeed } from '.'
 import { CachingWrapper } from './magicCache'
 
-export class PublisherCachingWrapper
+export class PublishersCachingWrapper
   extends CachingWrapper<Publisher>
-  implements PublisherListenerInterface {
-  private receiver = new PublisherListenerReceiver(this)
+  implements PublishersListenerInterface {
+  private receiver = new PublishersListenerReceiver(this)
   private controller: BraveNewsControllerRemote
 
   constructor () {
     super()
 
     this.controller = getBraveNewsController()
-    this.controller.addPublisherListener(
+    this.controller.addPublishersListener(
       this.receiver.$.bindNewPipeAndPassRemote()
     )
   }

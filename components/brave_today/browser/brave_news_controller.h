@@ -87,8 +87,8 @@ class BraveNewsController : public KeyedService,
   void GetLocale(GetLocaleCallback callback) override;
   void GetFeed(GetFeedCallback callback) override;
   void GetPublishers(GetPublishersCallback callback) override;
-  void AddPublisherListener(
-      mojo::PendingRemote<mojom::PublisherListener> listener) override;
+  void AddPublishersListener(
+      mojo::PendingRemote<mojom::PublishersListener> listener) override;
   void GetSuggestedPublisherIds(
       GetSuggestedPublisherIdsCallback callback) override;
   void FindFeeds(const GURL& possible_feed_or_site_url,
@@ -158,7 +158,7 @@ class BraveNewsController : public KeyedService,
   base::CancelableTaskTracker task_tracker_;
 
   mojo::ReceiverSet<mojom::BraveNewsController> receivers_;
-  mojo::RemoteSet<mojom::PublisherListener> publisher_listeners_;
+  mojo::RemoteSet<mojom::PublishersListener> publishers_listeners_;
   base::WeakPtrFactory<BraveNewsController> weak_ptr_factory_;
 };
 

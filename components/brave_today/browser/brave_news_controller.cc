@@ -178,17 +178,17 @@ void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
   publishers_controller_.GetOrFetchPublishers(std::move(callback));
 }
 
-void BraveNewsController::AddPublisherListener(
-    mojo::PendingRemote<mojom::PublisherListener> listener) {
-  auto id = publisher_listeners_.Add(std::move(listener));
+void BraveNewsController::AddPublishersListener(
+    mojo::PendingRemote<mojom::PublishersListener> listener) {
+  auto id = publishers_listeners_.Add(std::move(listener));
 
   // As we've just bound a new listener, let it know about our publishers.
   GetPublishers(base::BindOnce(
       [](BraveNewsController* controller, mojo::RemoteSetElementId id,
          Publishers publishers) {
-        auto* listener = controller->publisher_listeners_.Get(id);
+        auto* listener = controller->publishers_listeners_.Get(id);
         if (listener) {
-          auto event = mojom::PublisherEvent::New();
+          auto event = mojom::PublishersEvent::New();
           event->addedOrUpdated = std::move(publishers);
           listener->Changed(std::move(event));
         }
@@ -262,12 +262,12 @@ void BraveNewsController::SubscribeToNewDirectFeed(
             ParseDirectPublisherList(
                 controller->prefs_->GetDict(prefs::kBraveTodayDirectFeeds),
                 &direct_feeds);
-            auto event = mojom::PublisherEvent::New();
+            auto event = mojom::PublishersEvent::New();
             for (auto& feed : direct_feeds) {
               event->addedOrUpdated[feed->publisher_id] = std::move(feed);
             }
 
-            for (const auto& listener : controller->publisher_listeners_) {
+            for (const auto& listener : controller->publishers_listeners_) {
               listener->Changed(event->Clone());
             }
 
@@ -302,8 +302,8 @@ void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
   p3a::RecordDirectFeedsTotal(prefs_);
   p3a::RecordWeeklyAddedDirectFeedsCount(prefs_, -1);
 
-  for (const auto& receiver : publisher_listeners_) {
-    auto event = mojom::PublisherEvent::New();
+  for (const auto& receiver : publishers_listeners_) {
+    auto event = mojom::PublishersEvent::New();
     event->removed.push_back(publisher_id);
     receiver->Changed(std::move(event));
   }
@@ -435,8 +435,8 @@ void BraveNewsController::SetPublisherPref(const std::string& publisher_id,
           // And if in the middle of update, that's ok because
           // consideration of source preferences is done after the remote fetch
           // is completed.
-          for (const auto& listener : controller->publisher_listeners_) {
-            auto event = mojom::PublisherEvent::New();
+          for (const auto& listener : controller->publishers_listeners_) {
+            auto event = mojom::PublishersEvent::New();
             auto copy = publisher->Clone();
             copy->user_enabled_status = new_status;
             event->addedOrUpdated[publisher_id] = std::move(copy);

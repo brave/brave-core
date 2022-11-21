@@ -151,13 +151,13 @@ struct FeedSearchResultItem {
   string feed_title;
 };
 
-struct PublisherEvent {
+struct PublishersEvent {
   map<string, Publisher> addedOrUpdated;
   array<string> removed;
 };
 
-interface PublisherListener {
-  Changed(PublisherEvent event);
+interface PublishersListener {
+  Changed(PublishersEvent event);
 };
 
 struct ChannelsEvent {
@@ -175,9 +175,15 @@ interface BraveNewsController {
   GetLocale() => (string locale);
 
   GetFeed() => (Feed feed);
+
+    // Deprecated by https://github.com/brave/brave-core/pull/16038. Use
+  // |AddPublishersListener| instead.
   GetPublishers() => (map<string, Publisher> publishers);
-  AddPublisherListener(pending_remote<PublisherListener> listener);
+  AddPublishersListener(pending_remote<PublishersListener> listener);
   GetSuggestedPublisherIds() => (array<string> suggested_publisher_ids);
+
+  // Deprecated by https://github.com/brave/brave-core/pull/16038. Use
+  // |AddChannelsListener| instead.
   GetChannels() => (map<string, Channel> channels);
   AddChannelsListener(pending_remote<ChannelsListener> listener);
   SetChannelSubscribed(string locale, string channel_id, bool subscribed) => (Channel updated);
