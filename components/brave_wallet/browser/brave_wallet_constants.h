@@ -38,8 +38,6 @@ constexpr char kRampID[] = "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf";
 constexpr char kSardineStorefrontBaseURL[] = "https://crypto.sardine.ai";
 constexpr char kSardineClientTokensURL[] =
     "https://api.sardine.ai/v1/auth/client-tokens";
-constexpr char kTransakURL[] = "https://global.transak.com/";
-constexpr char kTransakApiKey[] = "985d14f0-4cf5-4a4c-8917-78107620d3b7";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletEnterYourPasswordToStartBackup",
@@ -706,17 +704,13 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletBuyWithWyre", IDS_BRAVE_WALLET_BUY_WITH_WYRE},
     {"braveWalletBuyWithRamp", IDS_BRAVE_WALLET_BUY_WITH_RAMP},
     {"braveWalletBuyWithSardine", IDS_BRAVE_WALLET_BUY_WITH_SARDINE},
-    {"braveWalletBuyWithTransak", IDS_BRAVE_WALLET_BUY_WITH_TRANSAK},
     {"braveWalletBuyRampNetworkName", IDS_BRAVE_WALLET_BUY_RAMP_NETWORK_NAME},
     {"braveWalletBuyWyreName", IDS_BRAVE_WALLET_BUY_WYRE_NAME},
     {"braveWalletBuySardineName", IDS_BRAVE_WALLET_BUY_SARDINE_NAME},
-    {"braveWalletBuyTransakName", IDS_BRAVE_WALLET_BUY_TRANSAK_NAME},
     {"braveWalletBuyRampDescription", IDS_BRAVE_WALLET_BUY_RAMP_DESCRIPTION},
     {"braveWalletBuyWyreDescription", IDS_BRAVE_WALLET_BUY_WYRE_DESCRIPTION},
     {"braveWalletBuySardineDescription",
      IDS_BRAVE_WALLET_BUY_SARDINE_DESCRIPTION},
-    {"braveWalletBuyTransakDescription",
-     IDS_BRAVE_WALLET_BUY_TRANSAK_DESCRIPTION},
     {"braveWalletNetworkFilterAll", IDS_BRAVE_WALLET_NETWORK_FILTER_ALL},
     {"braveWalletAssetFilterAllAssets",
      IDS_BRAVE_WALLET_ASSET_FILTER_ALL_ASSETS},
@@ -1031,7 +1025,6 @@ const std::vector<mojom::BlockchainToken>& GetWyreBuyTokens();
 const std::vector<mojom::BlockchainToken>& GetRampBuyTokens();
 const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList();
 const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens();
-const std::vector<mojom::BlockchainToken>& GetTransakBuyTokens();
 const std::string GetSardineNetworkName(const std::string& chain_id);
 const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();
 bool HasJupiterFeesForTokenMint(const std::string& mint);
