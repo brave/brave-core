@@ -16,7 +16,7 @@ typedef NSString* BraveCoreSwitchKey NS_STRING_ENUM;
 /// Expected value: url-source={url}
 OBJC_EXPORT const BraveCoreSwitchKey BraveCoreSwitchKeyComponentUpdater;
 /// Overrides Chromium VLOG verbosity. Defaults to only printing from folders
-/// existing within a `brave` subfolder up to level 5.
+/// existing within a `brave` subfolder up to level 0.
 ///
 /// Expected value: {folder-expression}={level}
 OBJC_EXPORT const BraveCoreSwitchKey BraveCoreSwitchKeyVModule;

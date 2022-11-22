@@ -65,7 +65,7 @@ void BraveMainDelegate::BasicStartupComplete() {
   }
 
   if (!command_line->HasSwitch(switches::kVModule)) {
-    command_line->AppendSwitchASCII(switches::kVModule, "*/brave/*=5");
+    command_line->AppendSwitchASCII(switches::kVModule, "*/brave/*=0");
   }
 
   IOSChromeMainDelegate::BasicStartupComplete();
