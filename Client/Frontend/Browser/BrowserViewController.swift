@@ -661,6 +661,7 @@ public class BrowserViewController: UIViewController {
       topToolbar.locationView.loading = tab.loading
     }
 
+    toolbarVisibilityViewModel.toolbarState = .expanded
     updateTabsBarVisibility()
   }
   
