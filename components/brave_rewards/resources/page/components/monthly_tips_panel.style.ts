@@ -11,8 +11,9 @@ export const root = styled.div`
 `
 
 export const description = styled.div`
-  color: #5E6175;
+  color: var(--brave-palette-neutral600);
   margin: 16px 0;
+  line-height: 24px;
 `
 
 export const remove = styled.span`
