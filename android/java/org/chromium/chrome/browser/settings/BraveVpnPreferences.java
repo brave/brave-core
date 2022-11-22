@@ -198,7 +198,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         return true;
                     }
                 });
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)) {
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
+                && !BraveVpnPrefUtils.isSubscriptionPurchase()) {
             removePreferenceIfPresent(PREF_LINK_SUBSCRIPTION);
         }
     }
@@ -320,10 +321,6 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 }
             }
         }.start();
-        if (findPreference(PREF_LINK_SUBSCRIPTION) != null) {
-            findPreference(PREF_LINK_SUBSCRIPTION)
-                    .setEnabled(BraveVpnPrefUtils.isSubscriptionPurchase());
-        }
         BraveVpnUtils.dismissProgressDialog();
     }
 
