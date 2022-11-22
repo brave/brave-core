@@ -545,7 +545,7 @@
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_TEXT" desc="">If you already have a custodial account, you'll be prompted to connect it. If you don't, you'll get the chance to create one.</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_NOTE" desc="">Note: Your transactions will be visible to the custodian once you authorize. For instance, they will be able to see the recipient and amount of your tips.</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_HEADER" desc="">Ready to start earning BAT?</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_NOTE" desc="">Custodial wallet providers are required to verify the identity of anyone creating a wallet, including using a photo ID. See our <ph name="BEGIN_LINK">$1</ph>Brave Rewards Privacy Policy<ph name="END_LINK">$2</ph>.</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_NOTE" desc="">Custodial account providers are required to verify your identity, which may include submitting a photo ID. See our <ph name="BEGIN_LINK">$1</ph>Brave Rewards Privacy Policy<ph name="END_LINK">$2</ph>.</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_TEXT" desc="">Connect your custodial account to your Rewards profile so you can:</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_1" desc="">Store, manage, and withdraw your BAT earnings</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_2" desc="">Top up your account with BAT you purchased</message>

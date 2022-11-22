@@ -13,7 +13,7 @@ export const localeStrings = {
   connectWalletChooseText: 'If you already have a custodial account, you\'ll be prompted to connect it. If you don\'t, you\'ll get the chance to create one.',
   connectWalletChooseNote: 'Note: Your transactions will be visible to the custodian once you authorize. For instance, they will be able to see the recipient and amount of your tips.',
   connectWalletInfoHeader: 'Ready to start earning BAT?',
-  connectWalletInfoNote: 'Custodial wallet providers are required to verify the identity of anyone creating a wallet, including using a photo ID. See our $1Brave Rewards Privacy Policy$2.',
+  connectWalletInfoNote: 'Custodial account providers are required to verify your identity, which may include submitting a photo ID. See our $1Brave Rewards Privacy Policy$2.',
   connectWalletInfoText: 'Connect your custodial account to your Rewards profile so you can:',
   connectWalletInfoListItem1: 'Store, manage, and withdraw your BAT earnings',
   connectWalletInfoListItem2: 'Top up your account with BAT you purchased',
