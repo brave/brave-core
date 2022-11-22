@@ -33,6 +33,7 @@ const reducer = createReducer<RootState>({}, defaultState)
 reducer.on(Actions.connect, (state): RootState => {
   return {
     ...state,
+    hasError: false,
     connectionStatus: ConnectionState.CONNECTING
   }
 })
@@ -79,13 +80,6 @@ reducer.on(Actions.selectedRegionChanged, (state, payload): RootState => {
   return {
     ...state,
     currentRegion: payload.region
-  }
-})
-
-reducer.on(Actions.retryConnect, (state): RootState => {
-  return {
-    ...state,
-    hasError: false
   }
 })
 
