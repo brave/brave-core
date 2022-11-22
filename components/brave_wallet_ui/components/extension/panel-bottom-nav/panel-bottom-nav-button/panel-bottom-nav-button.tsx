@@ -6,22 +6,20 @@
 import * as React from 'react'
 
 // Types
-import { BuySendSwapDepositOption } from '../../../../constants/types'
+import { NavOption } from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
 
+// Components
+import { NavTooltip } from '../../../shared/nav-tooltip/nav-tooltip'
+
 // Styled Components
-import {
-  Button,
-  ButtonIcon,
-  Tip,
-  Pointer
-} from './panel-bottom-nav-button.style'
+import { Button, ButtonIcon } from './panel-bottom-nav-button.style'
 
 interface Props {
   onClick: () => void
-  option: BuySendSwapDepositOption
+  option: NavOption
 }
 
 export const PanelBottomNavButton = (props: Props) => {
@@ -40,19 +38,22 @@ export const PanelBottomNavButton = (props: Props) => {
   }, [])
 
   return (
-    <Button
-      onMouseEnter={showTip}
-      onMouseLeave={hideTip}
-      onClick={onClick}>
+    <Button onMouseEnter={showTip} onMouseLeave={hideTip} onClick={onClick}>
       <ButtonIcon icon={option.icon} />
-      {active && (
-        <>
-          <Pointer />
-          <Tip position={option.id === 'buy' ? 'left' : option.id === 'transactions' ? 'right' : 'center'}>
-            {getLocale(option.name)}
-          </Tip>
-        </>
-      )}
+
+      <NavTooltip
+        orientation='top'
+        distance={30}
+        showTip={active}
+        text={getLocale(option.name)}
+        horizontalAlign={
+          option.id === 'buy'
+            ? 'left'
+            : option.id === 'transactions'
+              ? 'right'
+              : 'center'
+        }
+      />
     </Button>
   )
 }

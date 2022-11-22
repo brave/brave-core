@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Options
-import { BuySendSwapDepositOptions } from '../../../options/buy-send-swap-deposit-options'
+import { NavOptions } from '../../../options/nav-options'
 
 // Components
 import { BuySendSwapDepositButton } from './buy-send-swap-deposit-button/buy-send-swap-deposit-button'
@@ -14,14 +14,28 @@ import { BuySendSwapDepositButton } from './buy-send-swap-deposit-button/buy-sen
 // Styled Components
 import { Wrapper } from './buy-send-swap-deposit-nav.style'
 
-// Transactions is not a option for Desktop.
-const buttonOptions = BuySendSwapDepositOptions.filter((option) => option.id !== 'transactions')
+export interface Props {
+  isTab?: boolean
+}
 
-export const BuySendSwapDepositNav = () => {
+// Transactions is not an option for Desktop.
+const buttonOptions = NavOptions.filter((option) => option.id !== 'transactions')
+
+export const BuySendSwapDepositNav = (props: Props) => {
+  const { isTab } = props
+
+  const filteredButtonOptions = React.useMemo(() => {
+    if (!isTab) {
+      // Portfolio is not an option in the crypto view.
+      return buttonOptions.filter((option) => option.id !== 'portfolio')
+    }
+    return buttonOptions
+  }, [isTab])
+
   return (
-    <Wrapper>
-      {buttonOptions.map((option) =>
-        <BuySendSwapDepositButton option={option} key={option.id} />
+    <Wrapper isTab={isTab}>
+      {filteredButtonOptions.map((option) =>
+        <BuySendSwapDepositButton isTab={isTab} option={option} key={option.id} />
       )}
     </Wrapper>
   )

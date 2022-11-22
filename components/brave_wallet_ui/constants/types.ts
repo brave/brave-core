@@ -914,8 +914,16 @@ export const P3ASendTransactionTypes = [
 
 export type SendOptionTypes = 'token' | 'nft'
 
-export interface BuySendSwapDepositOption {
-  id: BuySendSwapTypes
+export type NavIDTypes =
+  | 'buy'
+  | 'send'
+  | 'swap'
+  | 'deposit'
+  | 'transactions'
+  | 'portfolio'
+
+export interface NavOption {
+  id: NavIDTypes
   name: string
   icon: string
   route: WalletRoutes
