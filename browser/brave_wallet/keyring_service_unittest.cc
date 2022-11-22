@@ -28,6 +28,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/switches.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -4594,6 +4595,38 @@ TEST_F(KeyringServiceUnitTest, DiscoverAssets) {
       mojom::kMainnetChainId, mojom::CoinType::ETH, GetPrefs());
   EXPECT_EQ(user_assets[user_assets.size() - 1]->symbol, "RAI");
   EXPECT_EQ(user_assets.size(), 6u);
+}
+
+TEST_F(KeyringServiceUnitTest, DevWalletPassword) {
+  base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
+
+  // Setup wallet.
+  {
+    KeyringService service(json_rpc_service(), GetPrefs());
+    CreateWallet(&service, "some_password");
+  }
+
+  // Locked on start by default.
+  {
+    KeyringService service(json_rpc_service(), GetPrefs());
+    EXPECT_TRUE(service.IsLocked());
+  }
+
+  // Unlocked on start with right password.
+  {
+    cmdline->AppendSwitchASCII(switches::kDevWalletPassword, "some_password");
+    KeyringService service(json_rpc_service(), GetPrefs());
+    EXPECT_FALSE(service.IsLocked());
+    cmdline->RemoveSwitch(switches::kDevWalletPassword);
+  }
+
+  // Locked on start with wrong password.
+  {
+    cmdline->AppendSwitchASCII(switches::kDevWalletPassword, "wrong_password");
+    KeyringService service(json_rpc_service(), GetPrefs());
+    EXPECT_TRUE(service.IsLocked());
+    cmdline->RemoveSwitch(switches::kDevWalletPassword);
+  }
 }
 
 }  // namespace brave_wallet

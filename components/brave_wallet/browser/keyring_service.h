@@ -405,6 +405,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                            const std::string keyring_id);
 
   bool ValidatePasswordInternal(const std::string& password);
+  void MaybeUnlockWithCommandLine();
 
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;

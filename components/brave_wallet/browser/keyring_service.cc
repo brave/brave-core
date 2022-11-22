@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/command_line.h"
 #include "base/hash/hash.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
@@ -31,6 +32,7 @@
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
+#include "brave/components/brave_wallet/common/switches.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -246,6 +248,8 @@ KeyringService::KeyringService(JsonRpcService* json_rpc_service,
       kBraveWalletAutoLockMinutes,
       base::BindRepeating(&KeyringService::OnAutoLockPreferenceChanged,
                           base::Unretained(this)));
+
+  MaybeUnlockWithCommandLine();
 }
 
 KeyringService::~KeyringService() {
@@ -2271,6 +2275,17 @@ void KeyringService::GetChecksumEthAddress(
 void KeyringService::HasPendingUnlockRequest(
     HasPendingUnlockRequestCallback callback) {
   std::move(callback).Run(HasPendingUnlockRequest());
+}
+
+void KeyringService::MaybeUnlockWithCommandLine() {
+#if !defined(OFFICIAL_BUILD)
+  std::string dev_wallet_password =
+      base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kDevWalletPassword);
+  if (!dev_wallet_password.empty()) {
+    Unlock(dev_wallet_password, base::DoNothing());
+  }
+#endif  // !defined(OFFICIAL_BUILD)
 }
 
 }  // namespace brave_wallet
