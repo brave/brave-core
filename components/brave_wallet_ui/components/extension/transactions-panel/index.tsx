@@ -56,7 +56,7 @@ export const TransactionsPanel = ({
   }, [transactionList])
 
   // render
-  if (transactionList.length === 0) {
+  if (sortedNonRejectedTransactionList.length === 0) {
     return (
       <StyledWrapper hideScrollbar>
         <Column fullHeight padding='22px'>

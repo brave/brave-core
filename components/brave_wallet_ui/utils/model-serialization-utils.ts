@@ -5,7 +5,7 @@
 
 import { BraveWallet, SerializableSolanaTxData, SerializableSolanaTxDataSendOptions, SerializableTimeDelta, SerializableTransactionInfo, TimeDelta } from '../constants/types'
 
-export function makeSerializableTimeDelta (td: TimeDelta): SerializableTimeDelta {
+export function makeSerializableTimeDelta (td: TimeDelta | SerializableTimeDelta): SerializableTimeDelta {
   return {
     microseconds: Number(td.microseconds)
   }
