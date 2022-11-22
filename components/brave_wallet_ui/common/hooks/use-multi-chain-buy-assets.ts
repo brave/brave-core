@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 
 // utils
 import { getNetworkInfo } from '../../utils/network-utils'
@@ -14,8 +15,7 @@ import {
 } from '../../utils/asset-utils'
 
 // types
-import { BraveWallet, BuyOption, SupportedOnRampNetworks, SupportedTestNetworks } from '../../constants/types'
-import { WalletSelectors } from '../selectors'
+import { BraveWallet, BuyOption, SupportedOnRampNetworks, WalletState } from '../../constants/types'
 
 // options
 import { BuyOptions } from '../../options/buy-with-options'
@@ -23,13 +23,11 @@ import { BuyOptions } from '../../options/buy-with-options'
 // hooks
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
-import { useUnsafeWalletSelector } from './use-safe-selector'
 
 export const useMultiChainBuyAssets = () => {
   // redux
-  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
-  const selectedCurrency = useUnsafeWalletSelector(WalletSelectors.selectedCurrency)
-  const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
+  const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
+  const selectedCurrency = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedCurrency)
 
   // custom hooks
   const isMounted = useIsMounted()
@@ -43,14 +41,12 @@ export const useMultiChainBuyAssets = () => {
       wyreAssetOptions: BraveWallet.BlockchainToken[]
       rampAssetOptions: BraveWallet.BlockchainToken[]
       sardineAssetOptions: BraveWallet.BlockchainToken[]
-      transakAssetOptions: BraveWallet.BlockchainToken[]
       allAssetOptions: BraveWallet.BlockchainToken[]
     }
   >({
     wyreAssetOptions: [],
     rampAssetOptions: [],
     sardineAssetOptions: [],
-    transakAssetOptions: [],
     allAssetOptions: []
   })
 
@@ -66,12 +62,11 @@ export const useMultiChainBuyAssets = () => {
   }, [selectedAsset, buyAssetNetworks])
 
   const selectedAssetBuyOptions: BuyOption[] = React.useMemo(() => {
-    const { wyreAssetOptions, rampAssetOptions, sardineAssetOptions, transakAssetOptions } = options
+    const { wyreAssetOptions, rampAssetOptions, sardineAssetOptions } = options
     const onRampAssetMap = {
       [BraveWallet.OnRampProvider.kWyre]: wyreAssetOptions,
       [BraveWallet.OnRampProvider.kRamp]: rampAssetOptions,
-      [BraveWallet.OnRampProvider.kSardine]: sardineAssetOptions,
-      [BraveWallet.OnRampProvider.kTransak]: transakAssetOptions
+      [BraveWallet.OnRampProvider.kSardine]: sardineAssetOptions
     }
     return selectedAsset
       ? [...BuyOptions]
@@ -79,23 +74,6 @@ export const useMultiChainBuyAssets = () => {
         .sort((optionA, optionB) => optionA.name.localeCompare(optionB.name))
       : []
   }, [selectedAsset, options])
-
-  const isSelectedNetworkSupported = React.useMemo(() => {
-    if (!selectedNetwork) return false
-
-    // Test networks are not supported in buy tab
-    if (SupportedTestNetworks.includes(selectedNetwork.chainId.toLowerCase())) {
-      return false
-    }
-
-    return options.allAssetOptions
-      .map(asset => asset.chainId.toLowerCase())
-      .includes(selectedNetwork.chainId.toLowerCase())
-  }, [options.allAssetOptions, selectedNetwork])
-
-  const assetsForFilteredNetwork = React.useMemo(() => {
-    return options.allAssetOptions.filter(asset => selectedNetwork?.chainId === asset.chainId)
-  }, [selectedNetwork, options.allAssetOptions])
 
   // methods
   const getAllBuyOptionsAllChains = React.useCallback(() => {
@@ -158,8 +136,6 @@ export const useMultiChainBuyAssets = () => {
     getAllBuyOptionsAllChains,
     buyAmount,
     setBuyAmount,
-    openBuyAssetLink,
-    isSelectedNetworkSupported,
-    assetsForFilteredNetwork
+    openBuyAssetLink
   }
 }
