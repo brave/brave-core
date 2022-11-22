@@ -13,7 +13,6 @@
 #include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
-#include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/timer/timer.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -60,8 +59,7 @@ bool IsPublisherEnabled(const mojom::Publisher* publisher);
 // owning prefs data.
 // Controls remote feed update logic via Timer and prefs values.
 class BraveNewsController : public KeyedService,
-                            public mojom::BraveNewsController,
-                            public PublishersController::Observer {
+                            public mojom::BraveNewsController {
  public:
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
@@ -84,9 +82,6 @@ class BraveNewsController : public KeyedService,
   PublishersController* publisher_controller() {
     return &publishers_controller_;
   }
-
-  // PublishersController::Observer:
-  void OnPublishersUpdated(PublishersController* controller) override;
 
   // mojom::BraveNewsController
   void GetLocale(GetLocaleCallback callback) override;
@@ -161,9 +156,6 @@ class BraveNewsController : public KeyedService,
   base::RepeatingTimer timer_feed_update_;
   base::RepeatingTimer timer_publishers_update_;
   base::CancelableTaskTracker task_tracker_;
-
-  base::ScopedObservation<PublishersController, PublishersController::Observer>
-      publishers_observation_;
 
   mojo::ReceiverSet<mojom::BraveNewsController> receivers_;
   mojo::RemoteSet<mojom::PublishersListener> publishers_listeners_;

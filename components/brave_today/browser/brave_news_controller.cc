@@ -112,7 +112,6 @@ BraveNewsController::BraveNewsController(
                               &publishers_controller_,
                               &api_request_helper_,
                               history_service),
-      publishers_observation_(this),
       weak_ptr_factory_(this) {
   DCHECK(prefs_);
   // Set up preference listeners
@@ -130,8 +129,6 @@ BraveNewsController::BraveNewsController(
       base::BindRepeating(&BraveNewsController::HandleSubscriptionsChanged,
                           base::Unretained(this)));
 
-  publishers_observation_.Observe(&publishers_controller_);
-
   p3a::RecordAtInit(prefs_);
   // Monitor kBraveTodaySources and update feed / publisher cache
   // Start timer of updating feeds, if applicable
@@ -148,19 +145,6 @@ void BraveNewsController::Bind(
 void BraveNewsController::ClearHistory() {
   // TODO(petemill): Clear history once/if we actually store
   // feed cache somewhere.
-}
-
-void BraveNewsController::OnPublishersUpdated(
-    PublishersController* controller) {
-  publishers_controller_.GetOrFetchPublishers(base::BindOnce(
-      [](BraveNewsController* controller, Publishers publishers) {
-        auto event = mojom::PublishersEvent::New();
-        event->addedOrUpdated = std::move(publishers);
-        for (const auto& listener : controller->publishers_listeners_) {
-          listener->Changed(event->Clone());
-        }
-      },
-      base::Unretained(this)));
 }
 
 mojo::PendingRemote<mojom::BraveNewsController>
