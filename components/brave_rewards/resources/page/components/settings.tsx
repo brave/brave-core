@@ -224,9 +224,12 @@ export function Settings () {
           <style.settingGroup>
             <AdsPanel />
           </style.settingGroup>
-          <style.settingGroup data-test-id='auto-contribute-settings'>
-            <AutoContributePanel />
-          </style.settingGroup>
+          {
+            userType !== 'unconnected' &&
+              <style.settingGroup data-test-id='auto-contribute-settings'>
+                <AutoContributePanel />
+              </style.settingGroup>
+          }
           {
             userType !== 'unconnected' &&
               <>
