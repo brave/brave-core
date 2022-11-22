@@ -276,7 +276,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         removePreferenceIfPresent(PREF_SYNC_AND_SERVICES_LINK);
         removePreferenceIfPresent(PREF_NETWORK_PREDICTIONS);
         removePreferenceIfPresent(PREF_PRIVACY_SANDBOX);
-        removePreferenceIfPresent(PREF_SAFE_BROWSING);
+        // removePreferenceIfPresent(PREF_SAFE_BROWSING);
 
         if (mCookieListOptInPageAndroidHandler != null) {
             mCookieListOptInPageAndroidHandler.shouldShowDialog(shouldShowDialog -> {

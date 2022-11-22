@@ -1,0 +1,12 @@
+diff --git a/components/safe_browsing/android/BUILD.gn b/components/safe_browsing/android/BUILD.gn
+index 60eee9787879c4e932291b68abafc68cd91e443c..fa06d16fbcf1fb95c265bafc70cb7c4c43f4ef28 100644
+--- a/components/safe_browsing/android/BUILD.gn
++++ b/components/safe_browsing/android/BUILD.gn
+@@ -17,6 +17,7 @@ android_library("safe_browsing_java") {
+     "java/src/org/chromium/components/safe_browsing/SafeBrowsingApiBridge.java",
+     "java/src/org/chromium/components/safe_browsing/SafeBrowsingApiHandler.java",
+   ]
++  sources += brave_java_safe_browsing_sources deps+= brave_java_safe_browsing_deps
+ }
+ 
+ generate_jni("jni_headers") {

@@ -80,6 +80,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ApplicationLifetime;
 import org.chromium.chrome.browser.BraveAdFreeCalloutDialogFragment;
 import org.chromium.chrome.browser.BraveAdaptiveCaptchaUtils;
+import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
@@ -146,6 +147,8 @@ import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rate.RateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
+import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
+import org.chromium.chrome.browser.safe_browsing.SafeBrowsingState;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserListener;
 import org.chromium.chrome.browser.settings.BraveNewsPreferences;
@@ -182,6 +185,8 @@ import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
+import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
+import org.chromium.components.safe_browsing.SafeBrowsingApiBridge;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
@@ -234,6 +239,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     private static final List<String> yandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
+
+    private BraveSafeBrowsingApiHandler mBraveSafeBrowsingApiHandler;
 
     private String mPurchaseToken = "";
     private String mProductId = "";
@@ -292,6 +299,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 return;
             }
             updateWalletBadgeVisibility();
+        }
+        if (SafeBrowsingBridge.getSafeBrowsingState() != SafeBrowsingState.NO_SAFE_BROWSING) {
+            mBraveSafeBrowsingApiHandler.initSafeBrowsing();
         }
     }
 
@@ -765,6 +775,18 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> { BraveStatsUtil.removeShareStatsFile(); });
+        if (mBraveSafeBrowsingApiHandler == null) {
+            mBraveSafeBrowsingApiHandler =
+                    new BraveSafeBrowsingApiHandler(this, BraveConfig.SAFEBROWSING_API_KEY);
+            SafeBrowsingApiBridge.setHandler(mBraveSafeBrowsingApiHandler);
+            SafeBrowsingApiBridge.ensureInitialized();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mBraveSafeBrowsingApiHandler.shutdownSafeBrowsing();
     }
 
     @Override
