@@ -149,6 +149,11 @@ TestingBraveBrowserProcess::brave_vpn_os_connection_api() {
 }
 #endif
 
+misc_metrics::MenuMetrics* TestingBraveBrowserProcess::menu_metrics() {
+  NOTREACHED();
+  return nullptr;
+}
+
 void TestingBraveBrowserProcess::SetAdBlockService(
     std::unique_ptr<brave_shields::AdBlockService> service) {
   ad_block_service_ = std::move(service);

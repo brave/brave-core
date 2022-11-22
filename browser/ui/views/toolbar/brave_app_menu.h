@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_APP_MENU_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_APP_MENU_H_
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "chrome/browser/ui/views/toolbar/app_menu.h"
 
@@ -29,7 +30,7 @@ class BraveAppMenu : public AppMenu {
 
   void RecordMenuUsage(int command_id);
 
-  misc_metrics::MenuMetrics menu_metrics_;
+  base::raw_ptr<misc_metrics::MenuMetrics> menu_metrics_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_APP_MENU_H_

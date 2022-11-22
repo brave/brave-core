@@ -53,6 +53,10 @@ namespace debounce {
 class DebounceComponentInstaller;
 }  // namespace debounce
 
+namespace misc_metrics {
+class MenuMetrics;
+}  // namespace misc_metrics
+
 namespace ntp_background_images {
 class NTPBackgroundImagesService;
 }  // namespace ntp_background_images
@@ -122,6 +126,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   brave_vpn::BraveVPNOSConnectionAPI* brave_vpn_os_connection_api() override;
 #endif
   brave::BraveFarblingService* brave_farbling_service() override;
+  misc_metrics::MenuMetrics* menu_metrics() override;
 
  private:
   // BrowserProcessImpl overrides:
@@ -189,6 +194,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
 
   std::unique_ptr<brave::BraveFarblingService> brave_farbling_service_;
+  std::unique_ptr<misc_metrics::MenuMetrics> menu_metrics_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };
