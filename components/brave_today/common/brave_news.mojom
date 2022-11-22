@@ -176,7 +176,7 @@ interface BraveNewsController {
 
   GetFeed() => (Feed feed);
 
-    // Deprecated by https://github.com/brave/brave-core/pull/16038. Use
+  // Deprecated by https://github.com/brave/brave-core/pull/16038. Use
   // |AddPublishersListener| instead.
   GetPublishers() => (map<string, Publisher> publishers);
   AddPublishersListener(pending_remote<PublishersListener> listener);

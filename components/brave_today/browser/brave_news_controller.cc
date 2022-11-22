@@ -266,7 +266,8 @@ void BraveNewsController::SubscribeToNewDirectFeed(
                 &direct_feeds);
             auto event = mojom::PublishersEvent::New();
             for (auto& feed : direct_feeds) {
-              event->addedOrUpdated[feed->publisher_id] = std::move(feed);
+              auto publisher_id = feed->publisher_id;
+              event->addedOrUpdated[publisher_id] = std::move(feed);
             }
 
             for (const auto& listener : controller->publishers_listeners_) {
