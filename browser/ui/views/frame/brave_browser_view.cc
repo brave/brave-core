@@ -30,6 +30,7 @@
 #include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
@@ -236,8 +237,9 @@ void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
 void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
   DCHECK(sidebar_container_view_);
 
-  const bool on_left = !GetProfile()->GetPrefs()->GetBoolean(
-      prefs::kSidePanelHorizontalAlignment);
+  const bool on_left =
+      !GetProfile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
+          prefs::kSidePanelHorizontalAlignment);
 
   sidebar_container_view_->SetSidebarOnLeft(on_left);
   static_cast<BraveContentsLayoutManager*>(GetContentsLayoutManager())
@@ -507,6 +509,19 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
     return true;
 
   return false;
+}
+
+void BraveBrowserView::OnThemeChanged() {
+  BrowserView::OnThemeChanged();
+  if (vertical_tab_strip_host_view_) {
+    const auto background_color = GetColorProvider()->GetColor(kColorToolbar);
+    vertical_tab_strip_host_view_->SetBackground(
+        views::CreateSolidBackground(background_color));
+  }
+}
+
+bool BraveBrowserView::IsSidebarVisible() const {
+  return sidebar_container_view_ && sidebar_container_view_->IsSidebarVisible();
 }
 
 BraveBrowser* BraveBrowserView::GetBraveBrowser() const {

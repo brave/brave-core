@@ -67,6 +67,10 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
                                      views::View* host);
   void UpdateWidgetBounds();
 
+#if BUILDFLAG(IS_MAC)
+  void UpdateClip();
+#endif
+
   raw_ptr<BrowserView> browser_view_ = nullptr;
   raw_ptr<views::View> host_ = nullptr;
   raw_ptr<VerticalTabStripRegionView> region_view_ = nullptr;

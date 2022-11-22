@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
@@ -24,6 +25,7 @@
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
+#include "brave/components/sidebar/sidebar_service_delegate.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -78,9 +80,12 @@ void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
           ? static_cast<int>(ShowSidebarOption::kShowNever)
           : static_cast<int>(ShowSidebarOption::kShowAlways));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
+  registry->RegisterBooleanPref(kSidebarAlignmentChangedTemporarily, false);
 }
 
-SidebarService::SidebarService(PrefService* prefs) : prefs_(prefs) {
+SidebarService::SidebarService(PrefService* prefs,
+                               std::unique_ptr<SidebarServiceDelegate> delegate)
+    : prefs_(prefs), delegate_(std::move(delegate)) {
   DCHECK(prefs_);
   MigratePrefSidebarBuiltInItemsToHidden();
 
@@ -433,6 +438,24 @@ bool SidebarService::IsEditableItemAt(size_t index) const {
 void SidebarService::SetSidebarShowOption(ShowSidebarOption show_options) {
   DCHECK_NE(ShowSidebarOption::kShowOnClick, show_options);
   prefs_->SetInteger(kSidebarShowOption, static_cast<int>(show_options));
+}
+
+void SidebarService::MoveSidebarToRightTemporarily() {
+  if (!delegate_) {
+    CHECK_IS_TEST();
+    return;
+  }
+
+  delegate_->MoveSidebarToRightTemporarily();
+}
+
+void SidebarService::RestoreSidebarAlignmentIfNeeded() {
+  if (!delegate_) {
+    CHECK_IS_TEST();
+    return;
+  }
+
+  delegate_->RestoreSidebarAlignmentIfNeeded();
 }
 
 void SidebarService::LoadSidebarItems() {
