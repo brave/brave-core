@@ -234,6 +234,14 @@ Config.prototype.isAsan = function () {
   return false
 }
 
+Config.prototype.isOfficialBuild = function () {
+  return this.isReleaseBuild() && !this.isAsan()
+}
+
+Config.prototype.getBrandingPathProduct = function () {
+  return this.isOfficialBuild() ? "brave" : "brave-development"
+}
+
 Config.prototype.buildArgs = function () {
   const version = this.braveVersion
   let version_parts = version.split('+')[0]
@@ -259,11 +267,11 @@ Config.prototype.buildArgs = function () {
     proprietary_codecs: true,
     ffmpeg_branding: "Chrome",
     branding_path_component: "brave",
-    branding_path_product: "brave",
+    branding_path_product: this.getBrandingPathProduct(),
     enable_nacl: false,
     enable_widevine: true,
     target_cpu: this.targetArch,
-    is_official_build: this.isReleaseBuild() && !this.isAsan(),
+    is_official_build: this.isOfficialBuild(),
     is_debug: this.isDebug(),
     dcheck_always_on: getNPMConfig(['dcheck_always_on']) || this.isComponentBuild(),
     brave_channel: this.channel,
@@ -313,10 +321,6 @@ Config.prototype.buildArgs = function () {
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     use_goma: this.use_goma,
     ...this.extraGnArgs,
-  }
-
-  if (!args.is_official_build) {
-    args.branding_path_product += "-development"
   }
 
   if (!this.isBraveReleaseBuild()) {
