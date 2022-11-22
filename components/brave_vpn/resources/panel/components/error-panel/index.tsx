@@ -17,7 +17,7 @@ function ErrorPanel (props: Props) {
   const currentRegion = useSelector(state => state.currentRegion)
 
   const handleTryAgain = () => {
-    dispatch(Actions.retryConnect())
+    dispatch(Actions.connect())
   }
 
   const handleChooseServer = () => {
