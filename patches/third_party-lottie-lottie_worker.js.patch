@@ -1,0 +1,12 @@
+diff --git a/third_party/lottie/lottie_worker.js b/third_party/lottie/lottie_worker.js
+index adb3ff4793654284dc3e5790a140dfd97e0cc8a6..eb4d2b6a9d2ffda790fea840e91f9786002c7ed4 100644
+--- a/third_party/lottie/lottie_worker.js
++++ b/third_party/lottie/lottie_worker.js
+@@ -12033,6 +12033,7 @@ function initAnimation(animationData, initParams, canvas) {
+     }
+   });
+ 
++  currentAnimation.addEventListener("complete", () => postMessage({ name: 'complete' }));
+   sendInitializedEvent();
+ 
+   // Play the animation if its not already playing.
