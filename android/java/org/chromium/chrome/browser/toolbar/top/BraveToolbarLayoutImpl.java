@@ -473,6 +473,16 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 }
                 mBraveShieldsHandler.clearBraveShieldsCount(tab.getId());
                 dismissShieldsTooltip();
+                if (BraveActivity.getBraveActivity() != null) {
+                    ViewGroup viewGroup = BraveActivity.getBraveActivity()
+                                                  .getWindow()
+                                                  .getDecorView()
+                                                  .findViewById(android.R.id.content);
+                    View playlistButton = viewGroup.findViewById(R.id.playlist_button_id);
+                    if (playlistButton != null && playlistButton.getVisibility() == View.VISIBLE) {
+                        playlistButton.setVisibility(View.GONE);
+                    }
+                }
             }
 
             @Override
@@ -627,8 +637,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             PlaylistViewUtils.showPlaylistButton(braveActivity, viewGroup, playlistOptionsListener);
             if (SharedPreferencesManager.getInstance().readBoolean(
                         BravePreferenceKeys.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
-                // new PlaylistOnboardingPanel((FragmentActivity)braveActivity,
-                // viewGroup.findViewById(R.id.playlist_button_id), viewGroup);
+                new PlaylistOnboardingPanel((FragmentActivity) braveActivity,
+                        viewGroup.findViewById(R.id.playlist_button_id), viewGroup);
                 SharedPreferencesManager.getInstance().writeBoolean(
                         BravePreferenceKeys.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
             }

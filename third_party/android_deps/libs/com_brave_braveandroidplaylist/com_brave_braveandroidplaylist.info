@@ -175,6 +175,7 @@ resources = [
   "res/drawable-mdpi-v4/ic_remove_offline_data_playlist.png",
   "res/drawable-mdpi-v4/ic_rename_playlist.png",
   "res/drawable-mdpi-v4/ic_upload_media.png",
+  "res/drawable-nodpi-v4/playlist_placeholder.png",
   "res/drawable-xhdpi-v4/ic_add_media_to_playlist.png",
   "res/drawable-xhdpi-v4/ic_arrow_down_playlist.png",
   "res/drawable-xhdpi-v4/ic_check_circle_filled.png",
