@@ -523,6 +523,16 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
     } else {
       detailController.onFullscreen()
     }
+    
+    setNeedsUpdateOfHomeIndicatorAutoHidden()
+  }
+  
+  override var prefersHomeIndicatorAutoHidden: Bool {
+    if !UIDevice.isIpad || splitController.isCollapsed {
+      return listController.tableView.isHidden
+    } else {
+      return detailController.navigationController?.isNavigationBarHidden == true
+    }
   }
 
   func onExitFullscreen() {
@@ -535,6 +545,7 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
         dismiss(animated: true, completion: nil)
       }
     }
+    setNeedsUpdateOfHomeIndicatorAutoHidden()
   }
   
   func showStaticImage(image: UIImage?) {
