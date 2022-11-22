@@ -9,10 +9,10 @@
 
 #include "brave/browser/ui/views/infobars/web_discovery_infobar_content_view.h"
 #include "brave/browser/web_discovery/web_discovery_infobar_delegate.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/widget/widget.h"
 
+// web_discovery_tab_helper.cc has decls.
 std::unique_ptr<infobars::InfoBar> CreateWebDiscoveryInfoBar(
     std::unique_ptr<WebDiscoveryInfoBarDelegate> delegate) {
   return std::make_unique<WebDiscoveryInfoBarView>(std::move(delegate));
@@ -42,8 +42,7 @@ void WebDiscoveryInfoBarView::ChildPreferredSizeChanged(views::View* child) {
   if (child == content_view_) {
     child->SizeToPreferredSize();
     RecalculateHeight();
-    BrowserView::GetBrowserViewForNativeWindow(GetWidget()->GetNativeWindow())
-        ->InvalidateLayout();
+    InvalidateLayout();
   }
 }
 

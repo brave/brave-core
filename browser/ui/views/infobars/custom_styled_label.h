@@ -24,6 +24,7 @@ class CustomStyledLabel : public views::StyledLabel {
   ~CustomStyledLabel() override;
 
  private:
+  // views::StyledLabel overrides:
   std::unique_ptr<views::Label> CreateLabel(
       const std::u16string& text,
       const RangeStyleInfo& style_info,

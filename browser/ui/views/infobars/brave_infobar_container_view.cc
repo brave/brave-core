@@ -12,7 +12,7 @@ BraveInfoBarContainerView::BraveInfoBarContainerView(
     : InfoBarContainerView(delegate) {
   // To hide shadow, replace it with empty view.
   DCHECK(content_shadow_);
-  RemoveChildView(content_shadow_);
+  RemoveChildViewT(content_shadow_);
   content_shadow_ = AddChildView(std::make_unique<views::View>());
 }
 
