@@ -55,6 +55,10 @@ const char kBraveWalletKeyringEncryptionKeysMigrated[] =
     "brave.wallet.keyring_encryption_keys_migrated";
 const char kBraveWalletLastTransactionSentTimeDict[] =
     "brave.wallet.last_transaction_sent_time_dict";
+const char kBraveWalletNextAssetDiscoveryFromBlocks[] =
+    "brave.wallet.next_asset_discovery_from_blocks";
+const char kBraveWalletLastDiscoveredAssetsAt[] =
+    "brave.wallet.last_discovered_assets_at";
 
 // DEPRECATED
 const char kBraveWalletSelectedAccount[] = "brave.wallet.selected_account";

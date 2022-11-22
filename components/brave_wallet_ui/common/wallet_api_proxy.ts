@@ -63,6 +63,9 @@ export class WalletApiProxy {
       accountsChanged: function () {
         store.dispatch(WalletActions.accountsChanged())
       },
+      accountsAdded: function () {
+        // TODO: Handle this event.
+      },
       autoLockMinutesChanged: function () {
         store.dispatch(WalletActions.autoLockMinutesChanged())
       },
@@ -115,6 +118,9 @@ export class WalletApiProxy {
       },
       onNetworkListChanged: function () {
         store.dispatch(WalletActions.getAllNetworks())
+      },
+      onDiscoverAssetsCompleted: function (discoveredAssets) {
+        // TODO: Handle this event.
       }
     })
     this.braveWalletService.addObserver(braveWalletServiceObserverReceiver.$.bindNewPipeAndPassRemote())

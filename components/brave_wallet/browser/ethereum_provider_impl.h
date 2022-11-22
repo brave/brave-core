@@ -180,6 +180,7 @@ class EthereumProviderImpl final
                                           const std::string& error) override;
   void OnIsEip1559Changed(const std::string& chain_id,
                           bool is_eip1559) override {}
+
   void OnSwitchEthereumChainRequested(const std::string& chain_id,
                                       const GURL& origin) {}
   void OnSwitchEthereumChainRequestProcessed(bool approved,
@@ -312,6 +313,8 @@ class EthereumProviderImpl final
   void Unlocked() override;
   void BackedUp() override {}
   void AccountsChanged() override {}
+  void AccountsAdded(mojom::CoinType coin,
+                     const std::vector<std::string>& addresses) override {}
   void AutoLockMinutesChanged() override {}
   void SelectedAccountChanged(mojom::CoinType coin) override;
 

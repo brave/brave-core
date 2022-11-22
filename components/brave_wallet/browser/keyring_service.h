@@ -41,6 +41,7 @@ class EthereumProviderImplUnitTest;
 class SolanaProviderImplUnitTest;
 class FilecoinKeyring;
 class JsonRpcService;
+class AssetDiscoveryManagerUnitTest;
 
 // This class is not thread-safe and should have single owner
 class KeyringService : public KeyedService, public mojom::KeyringService {
@@ -177,6 +178,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void NotifyWalletBackupComplete() override;
   void GetKeyringsInfo(const std::vector<std::string>& keyrings,
                        GetKeyringsInfoCallback callback) override;
+  mojom::KeyringInfoPtr GetKeyringInfoSync(const std::string& keyring_id);
   void GetKeyringInfo(const std::string& keyring_id,
                       GetKeyringInfoCallback callback) override;
   void SetHardwareAccountName(const std::string& address,
@@ -297,8 +299,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, DefaultSolanaAccountCreated);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
                            DefaultSolanaAccountRestored);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, DiscoverAssets);
-
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, AccountsAdded);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
                            AccountDiscovery);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
@@ -307,6 +308,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                            ManuallyAddAccount);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
                            RestoreWalletTwice);
+  FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
+                           KeyringServiceObserver);
 
   friend class EthereumProviderImplUnitTest;
   friend class SolanaProviderImplUnitTest;
@@ -314,6 +317,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   friend class EthTxManagerUnitTest;
   friend class FilTxManagerUnitTest;
   friend class KeyringServiceUnitTest;
+  friend class AssetDiscoveryManagerUnitTest;
 
   absl::optional<std::string> FindImportedFilecoinKeyringId(
       const std::string& address) const;
@@ -338,7 +342,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::string& account_name);
   void AddDiscoveryAccountsForKeyring(size_t discovery_account_index,
                                       int attempts_left);
-  mojom::KeyringInfoPtr GetKeyringInfoSync(const std::string& keyring_id);
   void OnAutoLockFired();
   HDKeyring* GetHDKeyringById(const std::string& keyring_id) const;
   std::vector<mojom::AccountInfoPtr> GetHardwareAccountsSync(
@@ -385,6 +388,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void MaybeMigratePBKDF2Iterations(const std::string& password);
 
   void NotifyAccountsChanged();
+  void NotifyAccountsAdded(mojom::CoinType coin,
+                           const std::vector<std::string>& account_infos);
   void StopAutoLockTimer();
   void ResetAutoLockTimer();
   void OnAutoLockPreferenceChanged();

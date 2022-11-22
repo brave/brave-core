@@ -731,8 +731,8 @@ void KeyringService::CreateWallet(const std::string& password,
     if (address) {
       SetPrefForKeyring(prefs_, kSelectedAccount, base::Value(*address),
                         mojom::kDefaultKeyringId);
-      json_rpc_service_->DiscoverAssets(
-          mojom::kMainnetChainId, mojom::CoinType::ETH, {address.value()});
+
+      NotifyAccountsAdded(mojom::CoinType::ETH, {address.value()});
     }
   }
 
@@ -769,8 +769,7 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
     if (address) {
       SetPrefForKeyring(prefs_, kSelectedAccount, base::Value(*address),
                         mojom::kDefaultKeyringId);
-      json_rpc_service_->DiscoverAssets(
-          mojom::kMainnetChainId, mojom::CoinType::ETH, {address.value()});
+      NotifyAccountsAdded(mojom::CoinType::ETH, {address.value()});
     }
   }
 
@@ -912,8 +911,7 @@ void KeyringService::AddAccount(const std::string& account_name,
   if (address) {
     SetSelectedAccountForCoinSilently(coin, address.value());
     SetSelectedCoin(prefs_, coin);
-    json_rpc_service_->DiscoverAssets(mojom::kMainnetChainId,
-                                      mojom::CoinType::ETH, {address.value()});
+    NotifyAccountsAdded(coin, {address.value()});
   }
 
   NotifyAccountsChanged();
@@ -1357,10 +1355,8 @@ absl::optional<std::string> KeyringService::ImportAccountForKeyring(
   SetSelectedAccountForCoinSilently(GetCoinForKeyring(keyring_id), address);
   SetSelectedCoin(prefs_, GetCoinForKeyring(keyring_id));
 
-  json_rpc_service_->DiscoverAssets(mojom::kMainnetChainId,
-                                    mojom::CoinType::ETH, {address});
   NotifyAccountsChanged();
-
+  NotifyAccountsAdded(info.coin, {address});
   return address;
 }
 
@@ -1471,10 +1467,8 @@ void KeyringService::AddHardwareAccounts(
       account_selected = true;
     }
   }
-
-  json_rpc_service_->DiscoverAssets(mojom::kMainnetChainId,
-                                    mojom::CoinType::ETH, addresses);
   NotifyAccountsChanged();
+  NotifyAccountsAdded(infos[0]->coin, addresses);
 }
 
 void KeyringService::RemoveHardwareAccount(
@@ -2160,6 +2154,18 @@ void KeyringService::SetKeyringImportedAccountName(
 void KeyringService::NotifyAccountsChanged() {
   for (const auto& observer : observers_) {
     observer->AccountsChanged();
+  }
+}
+
+void KeyringService::NotifyAccountsAdded(
+    mojom::CoinType coin,
+    const std::vector<std::string>& addresses) {
+  for (const auto& observer : observers_) {
+    std::vector<std::string> addresses_clone;
+    for (const auto& address : addresses) {
+      addresses_clone.push_back(address);
+    }
+    observer->AccountsAdded(coin, addresses_clone);
   }
 }
 
