@@ -6,6 +6,7 @@ const fs = require('fs-extra')
 const createDist = (buildConfig = config.defaultBuildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
+  util.touchOverriddenFiles()
   util.updateBranding()
   // On Android CI does two builds sequentially: for aab and for apk.
   // Symbols are uploaded after 2nd build, but we need to preserve the symbols
