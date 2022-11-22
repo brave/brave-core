@@ -4,24 +4,29 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 
 // types
 import {
   BraveWallet,
+  BuyOption,
   BuySendSwapViewTypes,
   ToOrFromType,
-  BuyOption
+  WalletState,
+  SupportedTestNetworks
 } from '../../../constants/types'
 
 // utils
 import { getLocale } from '../../../../common/locale'
-import { WalletSelectors } from '../../../common/selectors'
+import { getRampAssetSymbol, isSelectedAssetInAssetOptions } from '../../../utils/asset-utils'
 
 // options
+import { BuyOptions } from '../../../options/buy-with-options'
 import { SelectBuyOption } from '../select-buy-option/select-buy-option'
 
 // hooks
-import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import { useAssets } from '../../../common/hooks/assets'
+import { useLib } from '../../../common/hooks/useLib'
 
 // components
 import { NavButton } from '../../extension'
@@ -36,46 +41,90 @@ import {
 
 export interface Props {
   selectedAsset: BraveWallet.BlockchainToken
-  isSelectedNetworkSupported: boolean
-  buyAmount: string
-  buyOptions: BuyOption[]
-  onChangeBuyAmount: (buyAmount: string) => void
   onChangeBuyView: (view: BuySendSwapViewTypes, option?: ToOrFromType) => void
   onShowCurrencySelection: () => void
-  openBuyAssetLink: ({ buyOption, depositAddress }: { buyOption: number, depositAddress: string }) => void
 }
 
 export const Buy = ({
   selectedAsset,
-  buyAmount,
-  buyOptions,
-  isSelectedNetworkSupported,
-  onChangeBuyAmount,
   onChangeBuyView,
-  onShowCurrencySelection,
-  openBuyAssetLink
+  onShowCurrencySelection
 }: Props) => {
   // state
+  const [buyAmount, setBuyAmount] = React.useState('')
   const [showBuyOptions, setShowBuyOptions] = React.useState<boolean>(false)
   const [selectedOnRampProvider, setSelectedOnRampProvider] = React.useState<BraveWallet.OnRampProvider>()
 
   // Redux
-  const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
-  const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
-  const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
+  const {
+    selectedNetwork,
+    selectedAccount,
+    defaultCurrencies,
+    selectedCurrency
+  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+
+  // Custom Hooks
+  const { wyreAssetOptions, rampAssetOptions, sardineAssetOptions } = useAssets()
+  const { getBuyAssetUrl } = useLib()
+
+  // memos
+  const supportedBuyOptions: BuyOption[] = React.useMemo(() => {
+    const onRampAssetMap = {
+      [BraveWallet.OnRampProvider.kWyre]: wyreAssetOptions,
+      [BraveWallet.OnRampProvider.kRamp]: rampAssetOptions,
+      [BraveWallet.OnRampProvider.kSardine]: sardineAssetOptions
+    }
+    return BuyOptions.filter(buyOption => {
+      return isSelectedAssetInAssetOptions(selectedAsset, onRampAssetMap[buyOption.id])
+    })
+    .sort((optionA, optionB) => optionA.name.localeCompare(optionB.name))
+  }, [selectedAsset, wyreAssetOptions, rampAssetOptions, sardineAssetOptions])
+
+  const isSelectedNetworkSupported = React.useMemo(() => {
+    // Test networks are not supported in buy tab
+    if (SupportedTestNetworks.includes(selectedNetwork.chainId.toLowerCase())) {
+      return false
+    }
+
+    return [...rampAssetOptions, ...wyreAssetOptions, ...sardineAssetOptions]
+      .map(asset => asset.chainId.toLowerCase())
+      .includes(selectedNetwork.chainId.toLowerCase())
+  }, [selectedNetwork, rampAssetOptions, wyreAssetOptions, sardineAssetOptions])
 
   // methods
   const onSubmitBuy = React.useCallback(async (buyOption: BraveWallet.OnRampProvider) => {
-    if (!selectedAsset || !selectedNetwork || !selectedAccount) {
-      return
-    }
-    openBuyAssetLink({
-      buyOption,
-      depositAddress: selectedAccount.address
-    })
-    setSelectedOnRampProvider(undefined)
-  }, [selectedAsset, selectedNetwork, buyAmount, selectedAccount])
+    const asset = buyOption === BraveWallet.OnRampProvider.kRamp
+      ? { ...selectedAsset, symbol: getRampAssetSymbol(selectedAsset) }
+      : selectedAsset
+    setSelectedOnRampProvider(buyOption)
 
+    try {
+      const url = await getBuyAssetUrl({
+        asset,
+        onRampProvider: buyOption,
+        chainId: selectedNetwork.chainId,
+        address: selectedAccount.address,
+        amount: buyAmount,
+        currencyCode: selectedCurrency ? selectedCurrency.currencyCode : 'USD'
+      })
+
+      chrome.tabs.create({ url }, () => {
+        if (chrome.runtime.lastError) {
+          console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+        }
+      })
+    } catch (e) {
+      console.error(e)
+    }
+    setSelectedOnRampProvider(undefined)
+  }, [
+    getBuyAssetUrl,
+    selectedNetwork,
+    selectedAccount,
+    buyAmount,
+    selectedAsset,
+    selectedCurrency
+  ])
   const onShowAssets = React.useCallback(() => {
     onChangeBuyView('assets', 'from')
   }, [onChangeBuyView])
@@ -93,7 +142,7 @@ export const Buy = ({
     <StyledWrapper>
       {showBuyOptions
         ? <SelectBuyOption
-          buyOptions={buyOptions}
+          buyOptions={supportedBuyOptions}
           selectedOption={selectedOnRampProvider}
           onSelect={onSubmitBuy}
           onBack={onBack}
@@ -104,7 +153,7 @@ export const Buy = ({
               <SwapInputComponent
                 defaultCurrencies={defaultCurrencies}
                 componentType='buyAmount'
-                onInputChange={onChangeBuyAmount}
+                onInputChange={setBuyAmount}
                 selectedAssetInputAmount={buyAmount}
                 inputName='buy'
                 selectedAsset={selectedAsset}
