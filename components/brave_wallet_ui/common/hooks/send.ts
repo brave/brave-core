@@ -113,6 +113,10 @@ export default function useSend (isSendTab?: boolean) {
           setAddressWarning('')
           setToAddress(value.address)
           setShowEnsOffchainLookupOptions(value.requireOffchainConsent)
+          // If found ENS address is the same as the selectedAccounts Wallet Address
+          if (value.address.toLowerCase() === selectedAccount?.address?.toLowerCase()) {
+            setAddressError(getLocale('braveWalletSameAddressError'))
+          }
           return
         }
         setShowEnsOffchainLookupOptions(false)
@@ -128,6 +132,10 @@ export default function useSend (isSendTab?: boolean) {
           setAddressError('')
           setAddressWarning('')
           setToAddress(value.address)
+          // If found UD address is the same as the selectedAccounts Wallet Address
+          if (value.address.toLowerCase() === selectedAccount?.address?.toLowerCase()) {
+            setAddressError(getLocale('braveWalletSameAddressError'))
+          }
           return
         }
         setNotRegisteredError(valueToLowerCase)
@@ -248,6 +256,10 @@ export default function useSend (isSendTab?: boolean) {
           setAddressError('')
           setAddressWarning('')
           setToAddress(value.address)
+          // If found UD address is the same as the selectedAccounts Wallet Address
+          if (value.address.toLowerCase() === selectedAccount?.address?.toLowerCase()) {
+            setAddressError(getLocale('braveWalletSameAddressError'))
+          }
           return
         }
         setNotRegisteredError(valueToLowerCase)
@@ -261,6 +273,10 @@ export default function useSend (isSendTab?: boolean) {
           setAddressError('')
           setAddressWarning('')
           setToAddress(value.address)
+          // If found SNS address is the same as the selectedAccounts Wallet Address
+          if (value.address.toLowerCase() === selectedAccount?.address?.toLowerCase()) {
+            setAddressError(getLocale('braveWalletSameAddressError'))
+          }
           return
         }
         setNotRegisteredError(valueToLowerCase)

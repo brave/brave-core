@@ -205,7 +205,7 @@ export const Send = (props: Props) => {
 
   const showResolvedDomainAddress = React.useMemo(() => {
     if (
-      (addressError === undefined || addressError === '') &&
+      (addressError === undefined || addressError === '' || addressError === getLocale('braveWalletSameAddressError')) &&
       toAddress &&
       endsWithAny(allSupportedExtensions, toAddressOrUrl.toLowerCase())
     ) {
