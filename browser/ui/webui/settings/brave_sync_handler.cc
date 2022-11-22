@@ -208,7 +208,8 @@ void BraveSyncHandler::HandleSetSyncCode(const base::Value::List& args) {
   const std::string time_limited_sync_code = args[1].GetString();
   if (time_limited_sync_code.empty()) {
     LOG(ERROR) << "No sync code parameter provided!";
-    RejectJavascriptCallback(args[0].Clone(), base::Value(false));
+    RejectJavascriptCallback(
+        args[0].Clone(), l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_CODE_EMPTY));
     return;
   }
 
@@ -229,7 +230,10 @@ void BraveSyncHandler::HandleSetSyncCode(const base::Value::List& args) {
   auto* sync_service = GetSyncService();
   if (!sync_service ||
       !sync_service->SetSyncCode(pure_words_with_status.value())) {
-    RejectJavascriptCallback(args[0].Clone(), base::Value(false));
+    LOG(ERROR) << "sync_service=" << sync_service;
+    RejectJavascriptCallback(
+        args[0].Clone(),
+        l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_INTERNAL_SETUP_ERROR));
     return;
   }
 
