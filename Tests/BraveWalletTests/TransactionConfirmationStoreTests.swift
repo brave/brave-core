@@ -297,7 +297,7 @@ import BraveCore
         XCTAssertEqual(id, mockTransaction.id)
       }
       .store(in: &cancellables)
-    await waitForExpectations(timeout: 1) { error in
+    waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
     
@@ -312,7 +312,7 @@ import BraveCore
         }
       }
     )
-    await waitForExpectations(timeout: 1) { error in
+    waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
   }
@@ -343,7 +343,7 @@ import BraveCore
         XCTAssertEqual(id, mockTransaction.id)
       }
       .store(in: &cancellables)
-    await waitForExpectations(timeout: 1) { error in
+    waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
     
@@ -358,7 +358,7 @@ import BraveCore
         }
       }
     )
-    await waitForExpectations(timeout: 1) { error in
+    waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
   }
@@ -389,7 +389,7 @@ import BraveCore
         XCTAssertEqual(id, mockTransaction.id)
       }
       .store(in: &cancellables)
-    await waitForExpectations(timeout: 1) { error in
+    waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
     
@@ -404,7 +404,7 @@ import BraveCore
         }
       }
     )
-    await waitForExpectations(timeout: 1) { error in
+    waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
   }
