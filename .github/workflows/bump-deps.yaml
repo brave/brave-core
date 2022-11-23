@@ -1,8 +1,5 @@
 name: Bump DEPS
 on:
-  push:
-    branches:
-      - "aka/auto-bump-DEPS"
   workflow_dispatch:
     inputs:
       dep:
