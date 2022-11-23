@@ -529,7 +529,7 @@ TEST(JsonParser, ConvertAllNumbersToString) {
   // OK: convert floating point values in scientific notation to string
   json = R"({"a": 1.196568750220778e-7})";
   EXPECT_EQ(std::string(json::convert_all_numbers_to_string(json)),
-            R"({"a":"0.0000001196568750220778"})");
+            R"({"a":"1.196568750220778e-7"})");
 
   // KO: invalid cases
   std::vector<std::string> invalid_cases = {
