@@ -254,50 +254,84 @@ export const Send = (props: Props) => {
           lessLeftPadding={true}
           hasError={insufficientFundsError}
         >
-          <Row
-            rowWidth='full'
-            rowHeight='full'
-          >
+          {selectedSendOption === 'token' &&
             <Column
               columnHeight='full'
-              verticalAlign='center'
+              columnWidth='full'
+              verticalAlign='space-between'
+              horizontalAlign='space-between'
             >
-              <Row>
+              <Row
+                rowWidth='full'
+                horizontalAlign='flex-end'>
+                <Text textSize='14px' textColor='text03' maintainHeight={true} isBold={true}>
+                  {accountNameAndBalance}
+                </Text>
+              </Row>
+              <Row
+                rowWidth='full'
+              >
+                <Row>
+                  <SelectTokenButton
+                    onClick={onShowSelectTokenModal}
+                    token={selectedSendAsset}
+                    selectedSendOption={selectedSendOption} />
+                  {selectedSendOption === 'token' && selectedSendAsset &&
+                    <>
+                      <HorizontalDivider
+                        height={28}
+                        marginLeft={8}
+                        marginRight={8}
+                        dividerTheme='lighter'
+                      />
+                      <PresetButton buttonText={getLocale('braveWalletSendHalf')} onClick={() => setPresetAmountValue(0.5)} />
+                      <PresetButton buttonText={getLocale('braveWalletSendMax')} onClick={() => setPresetAmountValue(1)} />
+                    </>
+                  }
+                </Row>
+                {selectedSendOption === 'token' &&
+                  <AmountInput
+                    placeholder='0.0'
+                    hasError={insufficientFundsError}
+                    value={sendAmount}
+                    onChange={handleInputAmountChange}
+                  />
+                }
+              </Row>
+              <Row
+                rowWidth='full'
+                horizontalAlign='flex-end'>
+                <Text textSize='14px' textColor='text03' maintainHeight={true} isBold={false}>
+                  {sendAmountFiatValue}
+                </Text>
+              </Row>
+            </Column>
+          }
+          {selectedSendOption === 'nft' &&
+            <Row
+              rowWidth='full'
+              rowHeight='full'
+            >
+              <Column
+                columnHeight='full'
+                verticalAlign='center'
+              >
                 <SelectTokenButton
                   onClick={onShowSelectTokenModal}
                   token={selectedSendAsset}
                   selectedSendOption={selectedSendOption} />
-                {selectedSendOption === 'token' && selectedSendAsset &&
-                  <>
-                    <HorizontalDivider
-                      height={28}
-                      marginLeft={8}
-                      marginRight={8}
-                      dividerTheme='lighter'
-                    />
-                    <PresetButton buttonText={getLocale('braveWalletSendHalf')} onClick={() => setPresetAmountValue(0.5)} />
-                    <PresetButton buttonText={getLocale('braveWalletSendMax')} onClick={() => setPresetAmountValue(1)} />
-                  </>
-                }
-              </Row>
-            </Column>
-            <Column columnHeight='full' verticalAlign='space-between' horizontalAlign='flex-end'>
-              <Text textSize='14px' textColor='text03' maintainHeight={true} isBold={true}>
-                {accountNameAndBalance}
-              </Text>
-              {selectedSendOption === 'token' &&
-                <AmountInput
-                  placeholder='0.0'
-                  hasError={insufficientFundsError}
-                  value={sendAmount}
-                  onChange={handleInputAmountChange}
-                />
-              }
-              <Text textSize='14px' textColor='text03' maintainHeight={true} isBold={false}>
-                {sendAmountFiatValue}
-              </Text>
-            </Column>
-          </Row>
+              </Column>
+              <Column
+                columnHeight='full'
+                verticalAlign='flex-start'
+                horizontalAlign='flex-end'
+              >
+                <Text textSize='14px' textColor='text03' maintainHeight={true} isBold={true}>
+                  {accountNameAndBalance}
+                </Text>
+              </Column>
+            </Row>
+          }
         </SectionBox>
         <SectionBox hasError={false} boxDirection='row'>
           {showResolvedDomainAddress &&
