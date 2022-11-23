@@ -21,7 +21,9 @@ const shadowBox = `
 `
 
 export const root = styled.div`
-  padding: 16px;
+  // We want the padding to be 16px but the WebUI bubble already includes
+  // a padding of 13px, so just specify the additional 3px here
+  padding: 3px;
 
   a {
     text-decoration: none;
