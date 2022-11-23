@@ -45,7 +45,7 @@ jobs:
           [[ -z "$DEP" ]] && { echo Input dependency cannot be empty; exit 1; }
           [[ -z "$HASH" ]] && { echo Input hash cannot be empty; exit 1; }
 
-          DATE_ISO="$($DATE --iso-8601)"
+          DATETIME="$($DATE '+%Y-%m-%d-%H-%M')"
           readarray -t milestones < <(gh api /repos/brave/brave-core/milestones -q ".[] | .title" | grep -Fv Closed)
           branches=( "${milestones[@]/*Nightly/master}" )
           branches=( "${branches[@]/ -*/}" )
@@ -54,7 +54,7 @@ jobs:
           for branch in "${branches[@]}"
           do
             git switch "$branch"
-            pr_branch="pr-auto-bump-deps-${branch}-${DATE_ISO}"
+            pr_branch="pr-auto-bump-deps-${branch}-${DATETIME}"
             git switch -c "$pr_branch"
             "$SED" -i -e "s|\(.*${DEP}.*\)@\(.*\)\",$|\1@${HASH}\",|" "$DEPS"
             git add ${DEPS}
