@@ -1269,6 +1269,9 @@
     <message name="IDS_BRAVE_AVATAR_LABEL_89" desc="The label for the avatar_bonbon_ninja.png avatar.">
       Avatar Bonbon Ninja
     </message>
+    <message name="IDS_BRAVE_SHIELDS_EXAMPLE_DIALOG_TEMPLATE" desc="The placeholder for Brave shields add site dialog">
+      example.com
+    </message>
   </if>
 
   <!--Add new items to the appropriate sections above -->
