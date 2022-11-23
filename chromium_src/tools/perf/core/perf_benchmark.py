@@ -29,8 +29,16 @@ def _GetVariationsBrowserArgs(self, original_method,
       possible_browser = browser_finder.FindBrowser(finder_options)
     if not possible_browser:
       return []
-    return fieldtrial_util.GenerateArgs(
+    target_os = self.FixupTargetOS(possible_browser.target_os)
+
+    args = fieldtrial_util.GenerateArgs(
       field_trial_config,
-      self.FixupTargetOS(possible_browser.target_os),
+      target_os,
       current_args)
+    if target_os == 'windows':
+      # Windows system has 8k cmd size limit. There is not way to pass a huge
+      # trials using this method. If you get this assert consider simplifying
+      # Griffin config or bundling the testing_field_trials to the browser.
+      assert sum(len(x) + 1 for x in args) < 7000, 'cmd line is near the limit'
+    return args
   return original_method(self, finder_options, current_args, possible_browser)
