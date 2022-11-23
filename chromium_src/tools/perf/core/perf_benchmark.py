@@ -1,7 +1,7 @@
 # Copyright (c) 2022 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# you can obtain one at http://mozilla.org/MPL/2.0/.
+# you can obtain one at https://mozilla.org/MPL/2.0/.
 """A inline part of perf_benchmark.py"""
 
 import override_utils
@@ -13,7 +13,7 @@ def _GetVariationsBrowserArgs(self, original_method,
                               possible_browser=None):
   """Override to pass field_trials to Brave browser
 
-  It parses json config localtion from browser args (--field-trial-config) and
+  It parses json config location from browser args (--field-trial-config) and
   uses chromium GenerateArgs() to generate a cmd-line to enable proper
   features & trials.
   Note: it should be used instead of --enable-field-trial-config.

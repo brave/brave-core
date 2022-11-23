@@ -167,7 +167,7 @@ class RunableConfiguration:
                        'run_performance_tests.py'))
 
       args.append(f'--benchmarks={benchmark_name}')
-      assert (out_dir)
+      assert out_dir
       args.append('--isolated-script-test-output=' +
                   os.path.join(out_dir, benchmark_name, 'output.json'))
 
