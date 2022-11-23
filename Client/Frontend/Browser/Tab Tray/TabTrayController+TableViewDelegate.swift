@@ -7,8 +7,8 @@ import BraveShared
 import Data
 import UIKit
 
-extension TabTrayController: UITableViewDataSource, UITableViewDelegate, TabSyncHeaderViewDelegate {
-  
+extension TabTrayController: UITableViewDataSource, UITableViewDelegate {
+
   func numberOfSections(in tableView: UITableView) -> Int {
     sessionList.count
   }
@@ -39,6 +39,7 @@ extension TabTrayController: UITableViewDataSource, UITableViewDelegate, TabSync
     cell.do {
       $0.detailTextLabel?.font = .preferredFont(forTextStyle: .subheadline)
       $0.setLines(distantTab.title, detailText: distantTab.url.absoluteString)
+      $0.selectionStyle = .none
     }
     
     cell.imageIconView.do {
@@ -93,11 +94,66 @@ extension TabTrayController: UITableViewDataSource, UITableViewDelegate, TabSync
       $0.isCollapsed = hiddenSections.contains(section)
       $0.section = section
       $0.delegate = self
+      $0.backgroundColor = .secondaryBraveBackground
+      $0.tintColor = .secondaryBraveBackground
     }
          
     return headerView
   }
   
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let distantTab = sessionList[safe: indexPath.section]?.tabs[safe: indexPath.row] else {
+      return
+    }
+    
+    tabTraySearchController.isActive = false
+
+    if let url = URL(string: distantTab.url.absoluteString) {
+      dismiss(animated: true) {
+        self.toolbarUrlActionsDelegate?.openInNewTab(url, isPrivate: false)
+      }
+    }
+
+    tableView.deselectRow(at: indexPath, animated: true)
+  }
+  
+  func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    guard let distantTab = sessionList[safe: indexPath.section]?.tabs[safe: indexPath.row] else {
+      return nil
+    }
+
+    return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { [unowned self] _ in
+      let openInNewTabAction = UIAction(
+        title: Strings.openNewTabButtonTitle,
+        image: UIImage(systemName: "plus.square.on.square"),
+        handler: UIAction.deferredActionHandler { _ in
+          self.toolbarUrlActionsDelegate?.openInNewTab(distantTab.url, isPrivate: false)
+          self.presentingViewController?.dismiss(animated: true)
+        })
+
+      let copyAction = UIAction(
+        title: Strings.copyLinkActionTitle,
+        image: UIImage(systemName: "doc.on.doc"),
+        handler: UIAction.deferredActionHandler { _ in
+          self.toolbarUrlActionsDelegate?.copy(distantTab.url)
+        })
+
+      let shareAction = UIAction(
+        title: Strings.shareLinkActionTitle,
+        image: UIImage(systemName: "square.and.arrow.up"),
+        handler: UIAction.deferredActionHandler { _ in
+          self.toolbarUrlActionsDelegate?.share(distantTab.url)
+        })
+
+      let urlMenu = UIMenu(title: "", options: .displayInline, children: [openInNewTabAction])
+      let linkMenu = UIMenu(title: "", options: .displayInline, children: [copyAction, shareAction])
+
+      return UIMenu(title: distantTab.url.absoluteString, identifier: nil, children: [urlMenu, linkMenu])
+    }
+  }
+}
+
+extension TabTrayController: TabSyncHeaderViewDelegate {
   func toggleSection(_ header: TabSyncHeaderView, section: Int) {
     func indexPathsForSection() -> [IndexPath] {
       var indexPaths = [IndexPath]()
@@ -120,20 +176,24 @@ extension TabTrayController: UITableViewDataSource, UITableViewDelegate, TabSync
     }
   }
   
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard let distantTab = sessionList[safe: indexPath.section]?.tabs[safe: indexPath.row] else {
+  func hideForNow(_ header: TabSyncHeaderView, section: Int) {
+    guard let sectionDetails = sessionList[safe: section] else {
       return
     }
     
-    tabTraySearchController.isActive = false
-
-    if let url = URL(string: distantTab.url.absoluteString) {
-      dismiss(animated: true) {
-        self.toolbarUrlActionsDelegate?.openInNewTab(url, isPrivate: false)
-      }
+    braveCore.openTabsAPI.deleteSyncedSession(sectionDetails.sessionTag)
+  }
+  
+  func openAll(_ header: TabSyncHeaderView, section: Int) {
+    guard let tabList = sessionList[safe: section]?.tabs else {
+      return
     }
-
-    tableView.deselectRow(at: indexPath, animated: true)
+    
+    let urls: [URL] = tabList.compactMap { $0.url }
+    
+    dismiss(animated: true) {
+      self.toolbarUrlActionsDelegate?.batchOpen(urls)
+    }
   }
   
 }

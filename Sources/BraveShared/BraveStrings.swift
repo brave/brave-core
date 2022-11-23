@@ -3221,6 +3221,20 @@ extension Strings {
         bundle: .module,
         value: "Devices",
         comment: "The title displayed on table header for open tabs list from other devices")
+    public static let openSessionOpenAllActionTitle =
+      NSLocalizedString(
+        "opentabs.openSessionOpenAllActionTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Open All",
+        comment: "The title for the action to open all the tabs in a synced open session")
+    public static let openSessionHideAllActionTitle =
+      NSLocalizedString(
+        "opentabs.openSessionHideAllActionTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Hide for now",
+        comment: "The title for the action to hide open session with all tabs")
   }
 }
 
