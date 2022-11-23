@@ -37,7 +37,6 @@ jobs:
 
           SED=sed
           DATE=date
-          DEPS=DEPS
 
           # Inputs
           DEP="${{ inputs.dep }}"
@@ -56,8 +55,8 @@ jobs:
             git switch "$branch"
             pr_branch="pr-auto-bump-deps-${branch}-${DATETIME}"
             git switch -c "$pr_branch"
-            "$SED" -i -e "s|\(.*${DEP}.*\)@\(.*\)\",$|\1@${DEPREF}\",|" "$DEPS"
-            git add ${DEPS}
+            "$SED" -i -e "s|\(.*${DEP}.*\)@\(.*\)\",$|\1@${DEPREF}\",|" DEPS
+            git add DEPS
             git commit -m "Auto bump DEPS ${DEP}"
             git push -u origin "$pr_branch"
             gh pr create --base "${branch}" -f -t "Auto bump ${DEP}" -l "CI/run-audit-deps"
