@@ -43,11 +43,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var switches: [BraveCoreSwitch] = []
     if !AppConstants.buildChannel.isPublic {
       // Check prefs for additional switches
-      let activeSwitches = Preferences.BraveCore.activeSwitches.value
+      let activeSwitches = Set(Preferences.BraveCore.activeSwitches.value)
       let switchValues = Preferences.BraveCore.switchValues.value
       for activeSwitch in activeSwitches {
-        if let value = switchValues[activeSwitch], !value.isEmpty {
-          switches.append(.init(key: .init(rawValue: activeSwitch), value: value))
+        let key = BraveCoreSwitchKey(rawValue: activeSwitch)
+        if key.isValueless {
+          switches.append(.init(key: key))
+        } else if let value = switchValues[activeSwitch], !value.isEmpty {
+          switches.append(.init(key: key, value: value))
         }
       }
     }
