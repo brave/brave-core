@@ -45,7 +45,6 @@ window.__firefox__.execute(function($) {
   // Each of these get setup once the mutation observer starts running.
   let notYetQueriedClasses = []
   let notYetQueriedIds = []
-  let cosmeticObserver
   
   const CC = {}
   CC.allSelectorsToRules = CC.allSelectorsToRules || new Map()
@@ -218,30 +217,40 @@ window.__firefox__.execute(function($) {
     notYetQueriedIds = []
   }
 
-  const UseMutationObserver = () => {
-    clearInterval(selectorsPollingIntervalId)
-    selectorsPollingIntervalId = undefined
-    if (!cosmeticObserver) {
-      cosmeticObserver = new MutationObserver(handleMutations)
+  const useMutationObserver = () => {
+    if (selectorsPollingIntervalId) {
+      clearInterval(selectorsPollingIntervalId)
+      selectorsPollingIntervalId = undefined
     }
+    
+    const observer = new MutationObserver(onMutations)
+    
     const observerConfig = {
       subtree: true,
       childList: true,
       attributeFilter: ['id', 'class']
     }
-    cosmeticObserver.observe(document.documentElement, observerConfig)
+    
+    observer.observe(document.documentElement, observerConfig)
   }
 
-  const UseSelectorsPolling = () => {
-    if (!cosmeticObserver) {
-      cosmeticObserver.disconnect()
+  const usePolling = (observer) => {
+    if (observer) {
+      const mutations = observer.takeRecords()
+      observer.disconnect()
+      
+      if (mutations) {
+        queueAttrsFromMutations(mutations)
+      }
     }
-
-    selectorsPollingIntervalId = window.setInterval(querySelectors, selectorsPollingIntervalMs)
-    window.setTimeout(UseMutationObserver, returnToMutationObserverIntervalMs)
+    
+    const futureTimeMs = window.Date.now() + returnToMutationObserverIntervalMs
+    const queryAttrsFromDocumentBound = queryAttrsFromDocument.bind(undefined, futureTimeMs)
+    selectorsPollingIntervalId = window.setInterval(queryAttrsFromDocumentBound,
+                                                       selectorsPollingIntervalMs)
   }
 
-  const handleMutations = function (mutations) {
+  const queueAttrsFromMutations = (mutations) => {
     let mutationScore = 0
     for (let _i = 0, mutations1 = mutations; _i < mutations1.length; _i++) {
       const aMutation = mutations1[_i]
@@ -295,6 +304,12 @@ window.__firefox__.execute(function($) {
         }
       }
     }
+    
+    return mutationScore
+  }
+  
+  const onMutations = (mutations, observer) => {
+    const mutationScore = queueAttrsFromMutations(mutations)
     // Check the conditions to switch to the alternative strategy
     // to get selectors.
     if (CC.switchToSelectorsPollingThreshold !== undefined) {
@@ -306,7 +321,7 @@ window.__firefox__.execute(function($) {
       }
       currentMutationScore += mutationScore
       if (currentMutationScore > CC.switchToSelectorsPollingThreshold) {
-        UseSelectorsPolling()
+        usePolling(observer)
       }
     }
     if (!ShouldThrottleFetchNewClassIdsRules()) {
@@ -612,7 +627,7 @@ window.__firefox__.execute(function($) {
 
   const pumpCosmeticFilterQueuesOnIdle = idleize(pumpCosmeticFilterQueues, pumpIntervalMaxMs)
 
-  const querySelectors = function () {
+  const queryAttrsFromDocument = (switchToMutationObserverAtTime) => {
     const elmWithClassOrId = document.querySelectorAll('[class],[id]')
 
     for (let _i = 0, elmWithClassOrId1 = elmWithClassOrId; _i < elmWithClassOrId1.length; _i++) {
@@ -632,15 +647,20 @@ window.__firefox__.execute(function($) {
       }
     }
     fetchNewClassIdRules()
+    
+    if (switchToMutationObserverAtTime !== undefined
+        && window.Date.now() >= switchToMutationObserverAtTime) {
+     useMutationObserver()
+    }
   }
 
   const startObserving = function () {
     // First queue up any classes and ids that exist before the mutation observer
     // starts running.
-    querySelectors()
+    queryAttrsFromDocument()
     // Second, set up a mutation observer to handle any new ids or classes
     // that are added to the document.
-    UseMutationObserver()
+    useMutationObserver()
   }
 
   const scheduleQueuePump = function (hide1pContent, genericHide) {
@@ -658,7 +678,7 @@ window.__firefox__.execute(function($) {
     }
     // Third / final possibility, this is this the first time this has been
     // called, in which case set up a timer and quit
-    CC._startCheckingId = setTimeout((_a) => {
+    CC._startCheckingId = setTimeout(_ => {
       CC._hasDelayOcurred = true
       if (!genericHide) {
         if (CC.firstSelectorsPollingDelayMs === undefined) {
