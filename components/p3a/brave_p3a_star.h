@@ -12,7 +12,7 @@
 #include "base/callback.h"
 #include "base/memory/ref_counted.h"
 #include "base/strings/string_piece_forward.h"
-#include "brave/components/nested_star/src/lib.rs.h"
+#include "brave/components/constellation/src/lib.rs.h"
 #include "brave/components/p3a/brave_p3a_star_randomness_meta.h"
 #include "brave/components/p3a/brave_p3a_star_randomness_points.h"
 
@@ -55,16 +55,16 @@ class BraveP3AStar {
   void HandleRandomnessData(
       std::string histogram_name,
       uint8_t epoch,
-      ::rust::Box<nested_star::RandomnessRequestStateWrapper>
+      ::rust::Box<constellation::RandomnessRequestStateWrapper>
           randomness_request_state,
-      std::unique_ptr<rust::Vec<nested_star::VecU8>> resp_points,
-      std::unique_ptr<rust::Vec<nested_star::VecU8>> resp_proofs);
+      std::unique_ptr<rust::Vec<constellation::VecU8>> resp_points,
+      std::unique_ptr<rust::Vec<constellation::VecU8>> resp_proofs);
 
   bool ConstructFinalMessage(
-      ::rust::Box<nested_star::RandomnessRequestStateWrapper>&
+      ::rust::Box<constellation::RandomnessRequestStateWrapper>&
           randomness_request_state,
-      const rust::Vec<nested_star::VecU8>& resp_points,
-      const rust::Vec<nested_star::VecU8>& resp_proofs,
+      const rust::Vec<constellation::VecU8>& resp_points,
+      const rust::Vec<constellation::VecU8>& resp_proofs,
       std::string* output);
 
   BraveP3AStarRandomnessMeta rand_meta_manager_;
@@ -72,7 +72,7 @@ class BraveP3AStar {
 
   StarMessageCallback message_callback_;
 
-  ::rust::Box<nested_star::PPOPRFPublicKeyWrapper> null_public_key_;
+  ::rust::Box<constellation::PPOPRFPublicKeyWrapper> null_public_key_;
 };
 
 }  // namespace brave

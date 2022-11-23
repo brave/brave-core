@@ -27,17 +27,17 @@ namespace {
 
 constexpr std::size_t kMaxRandomnessResponseSize = 131072;
 
-std::unique_ptr<rust::Vec<nested_star::VecU8>> DecodeBase64List(
+std::unique_ptr<rust::Vec<constellation::VecU8>> DecodeBase64List(
     const base::Value* list) {
-  std::unique_ptr<rust::Vec<nested_star::VecU8>> result(
-      new rust::Vec<nested_star::VecU8>());
+  std::unique_ptr<rust::Vec<constellation::VecU8>> result(
+      new rust::Vec<constellation::VecU8>());
   for (const base::Value& list_entry : list->GetList()) {
     const std::string* entry_str = list_entry.GetIfString();
     if (entry_str == nullptr) {
       LOG(ERROR) << "BraveP3AStarRandomnessPoints: list value is not string";
       return nullptr;
     }
-    nested_star::VecU8 entry_dec_vec;
+    constellation::VecU8 entry_dec_vec;
     absl::optional<std::vector<uint8_t>> entry_dec =
         base::Base64Decode(*entry_str);
     if (!entry_dec.has_value()) {
@@ -68,9 +68,9 @@ void BraveP3AStarRandomnessPoints::SendRandomnessRequest(
     std::string histogram_name,
     BraveP3AStarRandomnessMeta* randomness_meta,
     uint8_t epoch,
-    rust::Box<nested_star::RandomnessRequestStateWrapper>
+    rust::Box<constellation::RandomnessRequestStateWrapper>
         randomness_request_state,
-    const rust::Vec<nested_star::VecU8>& rand_req_points) {
+    const rust::Vec<constellation::VecU8>& rand_req_points) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(config_->star_randomness_host + "/randomness");
   resource_request->method = "POST";
@@ -111,7 +111,7 @@ void BraveP3AStarRandomnessPoints::HandleRandomnessResponse(
     std::string histogram_name,
     BraveP3AStarRandomnessMeta* randomness_meta,
     uint8_t epoch,
-    rust::Box<nested_star::RandomnessRequestStateWrapper>
+    rust::Box<constellation::RandomnessRequestStateWrapper>
         randomness_request_state,
     std::unique_ptr<std::string> response_body) {
   if (!response_body || response_body->empty()) {
@@ -150,14 +150,14 @@ void BraveP3AStarRandomnessPoints::HandleRandomnessResponse(
                        std::move(randomness_request_state), nullptr, nullptr);
     return;
   }
-  std::unique_ptr<rust::Vec<nested_star::VecU8>> points_vec =
+  std::unique_ptr<rust::Vec<constellation::VecU8>> points_vec =
       DecodeBase64List(points_value);
   if (points_vec == nullptr) {
     data_callback_.Run(histogram_name, epoch,
                        std::move(randomness_request_state), nullptr, nullptr);
     return;
   }
-  std::unique_ptr<rust::Vec<nested_star::VecU8>> proofs_vec;
+  std::unique_ptr<rust::Vec<constellation::VecU8>> proofs_vec;
   if (proofs_value != nullptr) {
     proofs_vec = DecodeBase64List(proofs_value);
     if (!proofs_vec) {
@@ -166,7 +166,7 @@ void BraveP3AStarRandomnessPoints::HandleRandomnessResponse(
       return;
     }
   } else {
-    proofs_vec.reset(new rust::Vec<nested_star::VecU8>());
+    proofs_vec.reset(new rust::Vec<constellation::VecU8>());
   }
   data_callback_.Run(histogram_name, epoch, std::move(randomness_request_state),
                      std::move(points_vec), std::move(proofs_vec));

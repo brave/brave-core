@@ -7,12 +7,12 @@ edition = "2018"
 adblock-ffi = { path = "../../components/adblock_rust_ffi" }
 brave-wallet-cxx = { path = "../../components/brave_wallet/rust" }
 challenge-bypass-ristretto-ffi = { path = "../../components/challenge_bypass_ristretto" }
+constellation-cxx = { path = "../../components/constellation" }
 speedreader-ffi = { path = "../../components/speedreader/rust/ffi" }
 skus-cxx = { path = "../../components/skus/browser/rs/cxx" }
 brave-news-cxx = { path = "../../components/brave_today/rust" }
 json-cxx = { path = "../../components/json/rs" }
 filecoin-cxx = { path = "../../components/filecoin/rs" }
-nested-star-cxx = { path = "../../components/nested_star" }
 
 [patch.crates-io.link-cplusplus_v1]
 path = "../../../third_party/rust/link_cplusplus/v1/crate"

@@ -8,12 +8,12 @@ use ffi::{
     ByteDataResult, LocalRandomnessDataResult, PPOPRFPublicKeyResult, RandomnessRequestStateResult,
     VecU8,
 };
-use nested_sta_rs::api::ppoprf::ppoprf::ServerPublicKey;
-use nested_sta_rs::api::*;
-use nested_sta_rs::randomness::testing::{LocalFetcher, LocalFetcherResponse};
-use nested_sta_rs::randomness::RequestState as RandomnessRequestState;
+use star_constellation::api::ppoprf::ppoprf::ServerPublicKey;
+use star_constellation::api::*;
+use star_constellation::randomness::testing::{LocalFetcher, LocalFetcherResponse};
+use star_constellation::randomness::RequestState as RandomnessRequestState;
 
-#[cxx::bridge(namespace = "nested_star")]
+#[cxx::bridge(namespace = "constellation")]
 mod ffi {
     struct RandomnessRequestStateResult {
         state: Box<RandomnessRequestStateWrapper>,

@@ -11,7 +11,7 @@
 
 #include "base/callback.h"
 #include "base/memory/ref_counted.h"
-#include "brave/components/nested_star/src/lib.rs.h"
+#include "brave/components/constellation/src/lib.rs.h"
 #include "brave/components/p3a/brave_p3a_config.h"
 #include "brave/components/p3a/brave_p3a_star_randomness_meta.h"
 
@@ -29,10 +29,10 @@ class BraveP3AStarRandomnessPoints {
   using RandomnessDataCallback = base::RepeatingCallback<void(
       std::string histogram_name,
       uint8_t epoch,
-      ::rust::Box<nested_star::RandomnessRequestStateWrapper>
+      ::rust::Box<constellation::RandomnessRequestStateWrapper>
           randomness_request_state,
-      std::unique_ptr<rust::Vec<nested_star::VecU8>> resp_points,
-      std::unique_ptr<rust::Vec<nested_star::VecU8>> resp_proofs)>;
+      std::unique_ptr<rust::Vec<constellation::VecU8>> resp_points,
+      std::unique_ptr<rust::Vec<constellation::VecU8>> resp_proofs)>;
 
   BraveP3AStarRandomnessPoints(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -44,16 +44,16 @@ class BraveP3AStarRandomnessPoints {
       std::string histogram_name,
       BraveP3AStarRandomnessMeta* randomness_meta,
       uint8_t epoch,
-      ::rust::Box<nested_star::RandomnessRequestStateWrapper>
+      ::rust::Box<constellation::RandomnessRequestStateWrapper>
           randomness_request_state,
-      const rust::Vec<nested_star::VecU8>& rand_req_points);
+      const rust::Vec<constellation::VecU8>& rand_req_points);
 
  private:
   void HandleRandomnessResponse(
       std::string histogram_name,
       BraveP3AStarRandomnessMeta* randomness_meta,
       uint8_t epoch,
-      ::rust::Box<nested_star::RandomnessRequestStateWrapper>
+      ::rust::Box<constellation::RandomnessRequestStateWrapper>
           randomness_request_state,
       std::unique_ptr<std::string> response_body);
 

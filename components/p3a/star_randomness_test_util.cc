@@ -13,7 +13,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/time/time_to_iso8601.h"
-#include "brave/components/nested_star/src/lib.rs.h"
+#include "brave/components/constellation/src/lib.rs.h"
 #include "net/http/http_request_headers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -31,7 +31,7 @@ std::string HandleRandomnessRequest(const network::ResourceRequest& request,
 
   EXPECT_EQ(*req_parsed_val.FindIntKey("epoch"), expected_epoch);
 
-  rust::Vec<nested_star::VecU8> req_points_rust;
+  rust::Vec<constellation::VecU8> req_points_rust;
   base::Value::List& points_list =
       req_parsed_val.FindListKey("points")->GetList();
 
@@ -40,7 +40,7 @@ std::string HandleRandomnessRequest(const network::ResourceRequest& request,
   std::transform(
       points_list.cbegin(), points_list.cend(),
       std::back_inserter(req_points_rust), [](const base::Value& val) {
-        nested_star::VecU8 point_dec_rust;
+        constellation::VecU8 point_dec_rust;
         std::vector<uint8_t> point_dec = *base::Base64Decode(val.GetString());
         std::copy(point_dec.cbegin(), point_dec.cend(),
                   std::back_inserter(point_dec_rust.data));
@@ -48,12 +48,12 @@ std::string HandleRandomnessRequest(const network::ResourceRequest& request,
       });
 
   auto rand_result =
-      nested_star::generate_local_randomness(req_points_rust, expected_epoch);
+      constellation::generate_local_randomness(req_points_rust, expected_epoch);
 
   EXPECT_NE(rand_result.points.size(), 0U);
 
   base::Value resp_points_value(base::Value::Type::LIST);
-  for (const nested_star::VecU8& resp_point_rust : rand_result.points) {
+  for (const constellation::VecU8& resp_point_rust : rand_result.points) {
     std::vector<uint8_t> resp_point;
     std::copy(resp_point_rust.data.cbegin(), resp_point_rust.data.cend(),
               std::back_inserter(resp_point));

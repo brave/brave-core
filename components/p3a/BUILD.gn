@@ -61,7 +61,7 @@ static_library("p3a") {
     "//base",
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/brave_stats/browser",
-    "//brave/components/nested_star:cxx",
+    "//brave/components/constellation:cxx",
     "//brave/components/nitro_utils",
     "//brave/components/p3a:buildflags",
     "//brave/components/p3a_utils",
@@ -103,7 +103,7 @@ source_set("unit_tests") {
   deps = [
     "//base/test:test_support",
     "//brave/components/brave_referrals/browser",
-    "//brave/components/nested_star:cxx",
+    "//brave/components/constellation:cxx",
     "//brave/components/p3a",
     "//brave/components/p3a:buildflags",
     "//components/prefs:test_support",
