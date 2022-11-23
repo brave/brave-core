@@ -33,28 +33,28 @@ constexpr std::size_t kMaxInfoResponseSize = 131072;
 const int kRndInfoRetryInitialBackoffSeconds = 5;
 const int kRndInfoRetryMaxBackoffMinutes = 60;
 
-::rust::Box<nested_star::PPOPRFPublicKeyWrapper> DecodeServerPublicKey(
+::rust::Box<constellation::PPOPRFPublicKeyWrapper> DecodeServerPublicKey(
     const std::string* pk_base64) {
   if (pk_base64 == nullptr || pk_base64->empty()) {
     VLOG(2) << "BraveP3AStarRandomnessMeta: no pk available, will not validate "
                "randomness";
-    return nested_star::get_ppoprf_null_public_key();
+    return constellation::get_ppoprf_null_public_key();
   }
   absl::optional<std::vector<uint8_t>> dec_pk = base::Base64Decode(*pk_base64);
   if (!dec_pk.has_value()) {
     LOG(ERROR)
         << "BraveP3AStarRandomnessMeta: bad pk base64, will not validate "
            "randomness";
-    return nested_star::get_ppoprf_null_public_key();
+    return constellation::get_ppoprf_null_public_key();
   }
   ::rust::Slice<const uint8_t> dec_pk_slice{dec_pk.value().data(),
                                             dec_pk.value().size()};
-  nested_star::PPOPRFPublicKeyResult pk_res =
-      nested_star::load_ppoprf_public_key(dec_pk_slice);
+  constellation::PPOPRFPublicKeyResult pk_res =
+      constellation::load_ppoprf_public_key(dec_pk_slice);
   if (!pk_res.error.empty()) {
     LOG(ERROR) << "BraveP3AStarRandomnessMeta: failed to load pk: "
                << std::string(pk_res.error);
-    return nested_star::get_ppoprf_null_public_key();
+    return constellation::get_ppoprf_null_public_key();
   }
   return std::move(pk_res.key);
 }
@@ -64,7 +64,7 @@ const int kRndInfoRetryMaxBackoffMinutes = 60;
 RandomnessServerInfo::RandomnessServerInfo(
     uint8_t current_epoch,
     base::Time next_epoch_time,
-    ::rust::Box<nested_star::PPOPRFPublicKeyWrapper> public_key)
+    ::rust::Box<constellation::PPOPRFPublicKeyWrapper> public_key)
     : current_epoch(current_epoch),
       next_epoch_time(next_epoch_time),
       public_key(std::move(public_key)) {}
@@ -261,7 +261,7 @@ void BraveP3AStarRandomnessMeta::HandleServerInfoResponse(
     return;
   }
   const std::string* pk_value = parsed_value.value().FindStringKey("publicKey");
-  ::rust::Box<nested_star::PPOPRFPublicKeyWrapper> pk =
+  ::rust::Box<constellation::PPOPRFPublicKeyWrapper> pk =
       DecodeServerPublicKey(pk_value);
   if (pk_value != nullptr) {
     local_state_->SetString(kCurrentPKPrefName, *pk_value);
