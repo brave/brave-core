@@ -91,6 +91,12 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   profile->GetPrefs()->ClearPref(kDefaultBrowserLaunchingCount);
 #endif
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  // Added 11/2022
+  profile->GetPrefs()->ClearPref(kDontAskEnableWebDiscovery);
+  profile->GetPrefs()->ClearPref(kBraveSearchVisitCount);
+#endif
+
   brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(
       profile->GetPrefs());
   brave_wallet::MigrateObsoleteProfilePrefs(profile->GetPrefs());

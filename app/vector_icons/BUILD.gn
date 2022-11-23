@@ -29,6 +29,7 @@ aggregate_vector_icons("brave_vector_icons") {
     "sidebar_toolbar_button_right.icon",
     "vpn_indicator.icon",
     "wallet_toolbar_button.icon",
+    "web_discovery_infobar_close_button.icon",
   ]
 
   if (enable_sidebar) {

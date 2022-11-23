@@ -280,8 +280,6 @@ source_set("ui") {
       "views/toolbar/bookmark_button.h",
       "views/toolbar/brave_app_menu.cc",
       "views/toolbar/brave_app_menu.h",
-      "views/web_discovery_dialog_view.cc",
-      "views/web_discovery_dialog_view.h",
       "views/window_closing_confirm_dialog_view.cc",
       "views/window_closing_confirm_dialog_view.h",
     ]

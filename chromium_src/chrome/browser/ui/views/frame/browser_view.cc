@@ -8,6 +8,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
+#include "brave/browser/ui/views/infobars/brave_infobar_container_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
@@ -17,6 +18,7 @@
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
+#define InfoBarContainerView BraveInfoBarContainerView
 #define BrowserViewLayout BraveBrowserViewLayout
 #define ToolbarView BraveToolbarView
 #define BrowserTabStripController BraveBrowserTabStripController
@@ -34,3 +36,4 @@
 #undef SidePanel
 #undef kAlignLeft
 #undef kAlignRight
+#undef InfoBarContainerView

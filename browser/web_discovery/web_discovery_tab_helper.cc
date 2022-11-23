@@ -5,44 +5,30 @@
 
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 
+#include <memory>
+
+#include "base/time/time.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/ui/browser_dialogs.h"
-#include "brave/components/constants/pref_names.h"
+#include "brave/browser/web_discovery/web_discovery_cta_util.h"
+#include "brave/browser/web_discovery/web_discovery_infobar_delegate.h"
 #include "brave/components/constants/url_constants.h"
-#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "components/prefs/pref_service.h"
-#include "components/search_engines/template_url.h"
-#include "components/search_engines/template_url_service.h"
-#include "components/user_prefs/user_prefs.h"
+#include "components/infobars/content/content_infobar_manager.h"
+#include "components/infobars/core/infobar.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/page.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 
-namespace {
-
-bool ShouldCreateWebDiscoveryTabHelper(content::WebContents* contents) {
-  DCHECK(contents);
-  auto* context = contents->GetBrowserContext();
-  if (!brave::IsRegularProfile(context))
-    return false;
-  auto* prefs = user_prefs::UserPrefs::Get(context);
-  if (!prefs)
-    return false;
-  return !prefs->GetBoolean(kDontAskEnableWebDiscovery) &&
-         prefs->GetInteger(kBraveSearchVisitCount) < 20;
-}
-
-}  // namespace
+#if defined(TOOLKIT_VIEWS)
+std::unique_ptr<infobars::InfoBar> CreateWebDiscoveryInfoBar(
+    std::unique_ptr<WebDiscoveryInfoBarDelegate> delegate);
+#endif
 
 // static
 void WebDiscoveryTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents) {
-  if (contents && ShouldCreateWebDiscoveryTabHelper(contents))
+  if (contents && brave::IsRegularProfile(contents->GetBrowserContext()))
     WebDiscoveryTabHelper::CreateForWebContents(contents);
 }
 
@@ -55,85 +41,41 @@ WebDiscoveryTabHelper::~WebDiscoveryTabHelper() = default;
 void WebDiscoveryTabHelper::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,
     const GURL& validated_url) {
+  if (validated_url.host() != kBraveSearchHost)
+    return;
+
   // Only care about main frame.
   if (render_frame_host->GetParent())
     return;
 
-  if (validated_url != base::StringPiece(kBraveSearchUrl))
-    return;
-
-  auto* browser = chrome::FindBrowserWithWebContents(web_contents());
-  if (!browser)
-    return;
-
-  auto* profile = browser->profile();
+  auto* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   if (!profile)
     return;
 
-  auto* service = TemplateURLServiceFactory::GetForProfile(profile);
-  if (!service)
-    return;
-
   auto* prefs = profile->GetPrefs();
-  if (!prefs)
+  WebDiscoveryCTAState state =
+      GetWebDiscoveryCTAState(prefs, GetWebDiscoveryCurrentCTAId());
+
+  auto* service = TemplateURLServiceFactory::GetForProfile(profile);
+  if (!ShouldShowWebDiscoveryInfoBar(service, prefs, state))
     return;
 
-  if (!NeedVisitCountHandling(prefs, service))
-    return;
-
-  IncreaseBraveSearchVisitCount(prefs);
-
-  if (ShouldShowWebDiscoveryDialog(prefs))
-    brave::ShowWebDiscoveryDialog(browser, web_contents());
+  state.count++;
+  state.last_displayed = base::Time::Now();
+  SetWebDiscoveryCTAStateToPrefs(prefs, state);
+  ShowInfoBar(prefs);
 }
 
-bool WebDiscoveryTabHelper::NeedVisitCountHandling(
-    PrefService* prefs,
-    TemplateURLService* template_service) {
-  DCHECK(prefs && template_service);
-
-  if (prefs->GetBoolean(kDontAskEnableWebDiscovery))
-    return false;
-
-  if (!IsBraveSearchDefault(template_service))
-    return false;
-
-  if (prefs->GetBoolean(kWebDiscoveryEnabled))
-    return false;
-
-  if (prefs->GetInteger(kBraveSearchVisitCount) >= 20)
-    return false;
-
-  return true;
-}
-
-bool WebDiscoveryTabHelper::IsBraveSearchDefault(
-    TemplateURLService* template_service) {
-  DCHECK(template_service);
-
-  auto* template_url = template_service->GetDefaultSearchProvider();
-  if (!template_url)
-    return false;
-  return template_url->prepopulate_id() ==
-         TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE;
-}
-
-bool WebDiscoveryTabHelper::ShouldShowWebDiscoveryDialog(PrefService* prefs) {
-  DCHECK(prefs);
-
-  const int visit_count = prefs->GetInteger(kBraveSearchVisitCount);
-  return (visit_count == 3 || visit_count == 10 || visit_count == 20);
-}
-
-void WebDiscoveryTabHelper::IncreaseBraveSearchVisitCount(PrefService* prefs) {
-  DCHECK(prefs);
-
-  const int visit_count = prefs->GetInteger(kBraveSearchVisitCount) + 1;
-  // Don't need to increase anymore. We don't show again after 20th visit.
-  if (visit_count > 20)
-    return;
-
-  prefs->SetInteger(kBraveSearchVisitCount, visit_count);
+void WebDiscoveryTabHelper::ShowInfoBar(PrefService* prefs) {
+  // Only support view toolkit based WebDiscovery InfoBar.
+#if defined(TOOLKIT_VIEWS)
+  infobars::ContentInfoBarManager::FromWebContents(web_contents())
+      ->AddInfoBar(CreateWebDiscoveryInfoBar(
+          std::make_unique<WebDiscoveryInfoBarDelegate>(prefs)));
+#else
+  NOTREACHED() << "We don't support WDP infobar";
+#endif
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(WebDiscoveryTabHelper);

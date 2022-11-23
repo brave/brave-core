@@ -21,6 +21,11 @@
     E_CPONLY(kColorLocationBarFocusRing)        \
     E_CPONLY(kColorDialogDontAskAgainButton)    \
     E_CPONLY(kColorDialogDontAskAgainButtonHovered) \
+    E_CPONLY(kColorWebDiscoveryInfoBarBackground)   \
+    E_CPONLY(kColorWebDiscoveryInfoBarMessage)      \
+    E_CPONLY(kColorWebDiscoveryInfoBarLink)         \
+    E_CPONLY(kColorWebDiscoveryInfoBarNoThanks)     \
+    E_CPONLY(kColorWebDiscoveryInfoBarClose)
 
 #define BRAVE_SEARCH_CONVERSION_COLOR_IDS                             \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundBorder)        \
