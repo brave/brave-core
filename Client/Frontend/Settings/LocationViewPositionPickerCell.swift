@@ -104,7 +104,7 @@ class LocationViewPositionPickerCell: UITableViewCell, Cell {
     override var isSelected: Bool {
       didSet {
         checkmarkView.image = UIImage(systemName: isSelected ? "checkmark.circle" : "circle")
-        checkmarkView.tintColor = isSelected ? .braveOrange : .braveDisabled
+        checkmarkView.tintColor = isSelected ? .braveBlurpleTint : .braveDisabled
       }
     }
     

@@ -189,7 +189,7 @@ struct PasswordEntryView: View {
           ToolbarItemGroup(placement: .cancellationAction) {
             Button(action: { presentationMode.dismiss() }) {
               Text(Strings.cancelButtonTitle)
-                .foregroundColor(Color(.braveOrange))
+                .foregroundColor(Color(.braveBlurpleTint))
             }
           }
         }

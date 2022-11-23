@@ -22,7 +22,7 @@ public class BraveNewsErrorView: UIView, FeedCardContent {
   }
 
   public let refreshButton = ActionButton().then {
-    $0.backgroundColor = .braveOrange
+    $0.backgroundColor = .braveBlurpleTint
     $0.setTitle(Strings.BraveNews.refresh, for: .normal)
     $0.titleLabel?.font = .systemFont(ofSize: 15.0, weight: .semibold)
     $0.layer.borderWidth = 0

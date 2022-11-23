@@ -169,7 +169,7 @@ struct AddAccountView: View {
           presentationMode.dismiss()
         }) {
           Text(Strings.cancelButtonTitle)
-            .foregroundColor(Color(.braveOrange))
+            .foregroundColor(Color(.braveBlurpleTint))
         }
       }
     }

@@ -90,7 +90,7 @@ struct SlippageGrid: View {
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
             .foregroundColor(Color(isPredefinedOptionSelected(option.id) ? .white : .secondaryBraveLabel))
-            .background(BuySendSwapGridBackgroundView(backgroundColor: Color(isSelected ? .braveBlurple : .secondaryBraveGroupedBackground)))
+            .background(BuySendSwapGridBackgroundView(backgroundColor: Color(isSelected ? .braveBlurpleTint : .secondaryBraveGroupedBackground)))
             .padding(.top, 8)
         }
         .accessibilityAddTraits(isSelected ? .isSelected : [])
@@ -117,7 +117,7 @@ struct SlippageGrid: View {
         .frame(maxWidth: .infinity)
         .accentColor(customSlippage != nil ? .white : nil)
         .foregroundColor(Color(customSlippage != nil ? .white : .secondaryBraveLabel))
-        .background(BuySendSwapGridBackgroundView(backgroundColor: Color(customSlippage != nil ? .braveBlurple : .secondaryBraveGroupedBackground)))
+        .background(BuySendSwapGridBackgroundView(backgroundColor: Color(customSlippage != nil ? .braveBlurpleTint : .secondaryBraveGroupedBackground)))
         .padding(.top, 8)
         .accessibilityAddTraits(customSlippage != nil ? .isSelected : [])
     }
@@ -491,7 +491,7 @@ struct SwapCryptoView: View {
             onDismiss()
           }) {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveOrange))
+              .foregroundColor(Color(.braveBlurpleTint))
           }
         }
       }

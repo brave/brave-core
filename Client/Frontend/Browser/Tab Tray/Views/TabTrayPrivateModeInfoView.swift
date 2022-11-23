@@ -56,7 +56,7 @@ extension TabTrayController {
 
     let learnMoreButton = UIButton(type: .system).then {
       $0.setTitle(Strings.privateTabLink, for: [])
-      $0.setTitleColor(.braveOrange, for: [])
+      $0.setTitleColor(.braveBlurpleTint, for: [])
       $0.titleLabel?.font = UX.learnMoreFont
       $0.titleLabel?.numberOfLines = 0
     }

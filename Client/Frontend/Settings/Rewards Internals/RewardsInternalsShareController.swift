@@ -19,7 +19,7 @@ private class RewardsInternalsSharableCell: UITableViewCell, TableViewReusable {
     detailTextLabel?.numberOfLines = 0
     selectedBackgroundView = UIView()
     selectedBackgroundView?.backgroundColor = .init {
-      $0.userInterfaceStyle == .dark ? UIColor(white: 0.2, alpha: 1.0) : UIColor.braveOrange.withAlphaComponent(0.06)
+      $0.userInterfaceStyle == .dark ? UIColor(white: 0.2, alpha: 1.0) : UIColor.braveBlurpleTint.withAlphaComponent(0.06)
     }
   }
   @available(*, unavailable)

@@ -132,7 +132,7 @@ struct SignatureRequestView: View {
               } label: {
                 Text(showOrignalMessage[requestIndex] == true ? Strings.Wallet.signMessageShowUnknownUnicode : Strings.Wallet.signMessageShowOriginalMessage)
                   .font(.subheadline)
-                  .foregroundColor(Color(.braveBlurple))
+                  .foregroundColor(Color(.braveBlurpleTint))
               }
             }
             .padding(12)

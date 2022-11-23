@@ -49,7 +49,7 @@ public class EnableVPNSettingHeader: UIView {
     }()
 
     $0.setTitle(title, for: .normal)
-    $0.backgroundColor = .braveOrange
+    $0.backgroundColor = .braveBlurpleTint
     $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
     $0.setTitleColor(.white, for: .normal)
     $0.snp.makeConstraints { make in

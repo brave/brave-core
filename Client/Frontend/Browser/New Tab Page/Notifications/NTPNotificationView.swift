@@ -53,7 +53,7 @@ class NTPNotificationView: UIStackView {
   lazy var body = LinkLabel().then {
     $0.font = .systemFont(ofSize: 12.0)
     $0.textColor = config.textColor
-    $0.linkColor = UIColor.braveOrange
+    $0.linkColor = UIColor.braveBlurpleTint
     $0.text = config.bodyText?.text
 
     $0.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 313), for: .vertical)
@@ -63,7 +63,7 @@ class NTPNotificationView: UIStackView {
 
   lazy var primaryButton = RoundInterfaceButton(type: .system).then {
     $0.setTitle(config.primaryButtonConfig?.text, for: .normal)
-    $0.backgroundColor = .braveBlurple
+    $0.backgroundColor = .braveBlurpleTint
     $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 25, bottom: 12, right: 25)
     $0.setTitleColor(.white, for: .normal)

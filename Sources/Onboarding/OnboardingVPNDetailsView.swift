@@ -63,7 +63,7 @@ public struct OnboardingVPNDetailsView: View {
           .font(.title3.weight(.medium))
           .padding(EdgeInsets(top: 12, leading: 24, bottom: 12, trailing: 24))
       }
-      .background(Color(.braveOrange))
+      .background(Color(.braveBlurpleTint))
       .accentColor(Color(.white))
       .clipShape(Capsule())
     }

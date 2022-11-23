@@ -141,7 +141,7 @@ class NewContentAvailableButton: SpringButton {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    backgroundColor = .braveOrange
+    backgroundColor = .braveBlurpleTint
     layer.cornerCurve = .continuous
 
     clipsToBounds = true

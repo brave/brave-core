@@ -33,7 +33,7 @@ public struct PlaylistOnboardingView: View {
             Image("welcome-view-playlist-play-icon", bundle: .module)
             Text(Strings.Callout.playlistOnboardingViewButtonTitle)
               .font(.title3.weight(.medium))
-              .foregroundColor(Color(.braveBlurple))
+              .foregroundColor(Color(.braveBlurpleTint))
           }
         }
       }

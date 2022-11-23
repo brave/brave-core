@@ -169,7 +169,7 @@ final public class LinkLabel: UITextView {
 
   private struct UX {
     static let textColor = UIColor.braveLabel
-    static let linkColor = UIColor.braveBlurple
+    static let linkColor = UIColor.braveBlurpleTint
   }
 }
 

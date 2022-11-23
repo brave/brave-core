@@ -132,7 +132,7 @@ struct CustomNetworkListView: View {
           isPresentingNetworkDetails = .init()
         }) {
           Label(Strings.Wallet.addCustomNetworkBarItemTitle, systemImage: "plus")
-            .foregroundColor(Color(.braveOrange))
+            .foregroundColor(Color(.braveBlurpleTint))
         }
       }
     }

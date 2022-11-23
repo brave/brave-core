@@ -112,7 +112,7 @@ struct TransactionDetailsView: View {
         ToolbarItemGroup(placement: .confirmationAction) {
           Button(action: { presentationMode.dismiss() }) {
             Text(Strings.done)
-              .foregroundColor(Color(.braveOrange))
+              .foregroundColor(Color(.braveBlurpleTint))
           }
         }
       }

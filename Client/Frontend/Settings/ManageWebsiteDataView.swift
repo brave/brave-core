@@ -156,7 +156,7 @@ struct ManageWebsiteDataView: View {
         ToolbarItemGroup(placement: .confirmationAction) {
           Button(action: onDismiss) {
             Text(Strings.done)
-              .foregroundColor(Color(.braveOrange))
+              .foregroundColor(Color(.braveBlurpleTint))
           }
         }
         ToolbarItemGroup(placement: .bottomBar) {
@@ -169,7 +169,7 @@ struct ManageWebsiteDataView: View {
             }
           }) {
             Text(editMode.isEditing ? Strings.done : Strings.edit)
-              .foregroundColor(visibleRecords.isEmpty ? Color(.braveDisabled) : Color(.braveOrange))
+              .foregroundColor(visibleRecords.isEmpty ? Color(.braveDisabled) : Color(.braveBlurpleTint))
           }
           .disabled(visibleRecords.isEmpty)
           Spacer()

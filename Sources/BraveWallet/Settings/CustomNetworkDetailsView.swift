@@ -391,7 +391,7 @@ struct CustomNetworkDetailsView: View {
               addCustomNetwork()
             }) {
               Text(Strings.Wallet.saveButtonTitle)
-                .foregroundColor(Color(.braveOrange))
+                .foregroundColor(Color(.braveBlurpleTint))
             }
           }
         }
@@ -401,7 +401,7 @@ struct CustomNetworkDetailsView: View {
           presentationMode.dismiss()
         }) {
           Text(Strings.cancelButtonTitle)
-            .foregroundColor(Color(.braveOrange))
+            .foregroundColor(Color(.braveBlurpleTint))
         }
       }
     }

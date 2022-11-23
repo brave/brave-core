@@ -42,7 +42,7 @@ class WalletURLBarButton: UIButton {
   
   override open var isHighlighted: Bool {
     didSet {
-      self.tintColor = isHighlighted ? .braveOrange : .braveLabel
+      self.tintColor = isHighlighted ? .braveBlurpleTint : .braveLabel
     }
   }
   

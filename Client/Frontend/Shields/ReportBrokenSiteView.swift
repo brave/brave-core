@@ -32,7 +32,7 @@ class ReportBrokenSiteView: UIStackView {
   }
 
   let urlLabel = UILabel().then {
-    $0.textColor = .braveOrange
+    $0.textColor = .braveBlurpleTint
     $0.font = .systemFont(ofSize: 16.0)
     $0.numberOfLines = 0
   }
@@ -47,7 +47,7 @@ class ReportBrokenSiteView: UIStackView {
   let submitButton = ActionButton(type: .system).then {
     $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
     $0.titleEdgeInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
-    $0.backgroundColor = .braveOrange
+    $0.backgroundColor = .braveBlurpleTint
     $0.setTitleColor(.white, for: .normal)
     $0.setTitle(Strings.Shields.reportBrokenSubmitButtonTitle, for: .normal)
     $0.layer.borderWidth = 0

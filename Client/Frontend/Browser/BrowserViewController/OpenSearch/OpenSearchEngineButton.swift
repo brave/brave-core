@@ -31,7 +31,7 @@ class OpenSearchEngineButton: BraveButton {
       case .enabled:
         isLoading = false
         setImage(UIImage(named: "AddSearch", in: .module, compatibleWith: nil)!.template, for: .normal)
-        tintColor = .braveOrange
+        tintColor = .braveBlurpleTint
         isUserInteractionEnabled = true
       case .loading:
         isLoading = true
@@ -47,7 +47,7 @@ class OpenSearchEngineButton: BraveButton {
   override init(frame: CGRect) {
     self.action = .disabled
     super.init(frame: frame)
-    setTitleColor(.braveOrange, for: .normal)
+    setTitleColor(.braveBlurpleTint, for: .normal)
   }
 
   convenience init(title: String? = nil, hidesWhenDisabled: Bool) {

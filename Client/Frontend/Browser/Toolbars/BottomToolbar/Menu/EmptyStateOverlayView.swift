@@ -48,7 +48,7 @@ class EmptyStateOverlayView: UIView {
     $0.layer.cornerRadius = UX.buttonHeight / 2.0
     $0.titleEdgeInsets = UX.titleEdgeInsets
     $0.contentEdgeInsets = UX.contentEdgeInsets
-    $0.backgroundColor = .braveBlurple
+    $0.backgroundColor = .braveBlurpleTint
   }
   
   private let actionDescriptionLabel = UILabel().then {
