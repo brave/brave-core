@@ -44,7 +44,7 @@ class TabTrayController: LoadingViewController {
   }
 
   let tabManager: TabManager
-  private let braveCore: BraveCoreMain
+  let braveCore: BraveCoreMain
   private var openTabsSessionServiceListener: OpenTabsSessionStateListener?
   
   weak var delegate: TabTrayDelegate?
