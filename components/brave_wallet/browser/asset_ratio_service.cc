@@ -232,23 +232,6 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
     api_request_helper_->Request("POST", sardine_token_url, payload,
                                  "application/json", true,
                                  std::move(internal_callback), request_headers);
-  } else if (provider == mojom::OnRampProvider::kTransak) {
-    GURL transak_url = GURL(kTransakURL);
-    transak_url =
-        net::AppendQueryParameter(transak_url, "fiatCurrency", currency_code);
-    transak_url =
-        net::AppendQueryParameter(transak_url, "defaultCryptoCurrency", symbol);
-    transak_url = net::AppendQueryParameter(transak_url, "fiatAmount", amount);
-    transak_url =
-        net::AppendQueryParameter(transak_url, "walletAddress", address);
-    transak_url = net::AppendQueryParameter(
-        transak_url, "networks",
-        "ethereum,arbitrum,optimism,polygon,bsc,solana,avaxcchain,osmosis,"
-        "fantom,aurora,celo");
-    transak_url =
-        net::AppendQueryParameter(transak_url, "apiKey", kTransakApiKey);
-
-    std::move(callback).Run(std::move(transak_url.spec()), absl::nullopt);
   } else {
     std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
   }
