@@ -129,6 +129,13 @@ void JSEthereumProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
     return;
   // Close mojo connection from browser to renderer.
   receiver_.reset();
+  script_context_released_ = true;
+}
+
+void JSEthereumProvider::DidDispatchDOMContentLoadedEvent() {
+  if (script_context_released_)
+    return;
+  ConnectEvent();
 }
 
 bool JSEthereumProvider::EnsureConnected() {
@@ -220,7 +227,6 @@ void JSEthereumProvider::Install(bool allow_overwrite_window_ethereum_provider,
 
   blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
   ExecuteScript(web_frame, *g_provider_script, kEthereumProviderScript);
-  provider->ConnectEvent();
 }
 
 bool JSEthereumProvider::GetIsBraveWallet() {
