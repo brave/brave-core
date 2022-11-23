@@ -51,7 +51,7 @@ jobs:
           branches=( "${branches[@]/ -*/}" )
           echo Branches to operate on:
           declare -p branches
-          for branch in "${branches[2]}"  # TODO s/2/@/
+          for branch in "${branches[@]}"
           do
             git switch "$branch"
             pr_branch="pr-auto-bump-deps-${branch}-${DATE_ISO}"
