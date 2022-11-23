@@ -5,7 +5,7 @@ group("android_deps") {
     ":com_airbnb_android_java",
     ":com_android_billingclient_java",
     ":com_android_installreferrer_java",
-    ":com_brave_braveandroidplaylist_java",
+    ":com_brave_playlist_java",
     ":com_github_bumptech_glide_java",
     ":com_google_android_exoplayer_exoplayer_common_java",
     ":com_google_android_exoplayer_exoplayer_core_java",
@@ -84,11 +84,23 @@ android_aar_prebuilt("com_google_android_play_core_java") {
       "libs/com_google_android_play_core/com_google_android_play_core.info"
 }
 
-android_aar_prebuilt("com_brave_braveandroidplaylist_java") {
-  aar_path =
-      "libs/com_brave_braveandroidplaylist/braveandroidplaylist-release.aar"
-  info_path =
-      "libs/com_brave_braveandroidplaylist/com_brave_braveandroidplaylist.info"
+android_aar_prebuilt("com_brave_playlist_java") {
+  aar_path = "libs/com_brave_playlist/playlist_release.aar"
+  info_path = "libs/com_brave_playlist/playlist_release.info"
+  deps = [
+    ":com_google_android_exoplayer_exoplayer_core_java",
+    ":com_google_android_exoplayer_exoplayer_ui_java",
+    "//third_party/android_deps:material_design_java",
+    "//third_party/androidx:androidx_appcompat_appcompat_java",
+    "//third_party/androidx:androidx_constraintlayout_constraintlayout_java",
+    "//third_party/androidx:androidx_fragment_fragment_java",
+    "//third_party/androidx:androidx_fragment_fragment_java",
+    "//third_party/androidx:androidx_recyclerview_recyclerview_java",
+    "//third_party/androidx:androidx_transition_transition_java",
+    "//third_party/androidx:androidx_viewpager2_viewpager2_java",
+  ]
+  bytecode_rewriter_target =
+      "//build/android/bytecode:fragment_activity_replacer"
 }
 
 android_aar_prebuilt("com_google_android_exoplayer_exoplayer_core_java") {
