@@ -128,6 +128,8 @@ bool MaybeChangeReferrer(bool allow_referrers,
 
 ShieldsSettingCounts GetFPSettingCount(HostContentSettingsMap* map);
 ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map);
+bool IsPatternValidForBraveContentType(ContentSettingsType content_type,
+                                       const std::string& pattern_string);
 
 }  // namespace brave_shields
 
