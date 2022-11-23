@@ -34,6 +34,8 @@ jobs:
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           git config user.name "${{ github.actor }}"
           git config push.default simple
+          gh api /repos/brave/web-discovery-project/commits/main -q .sha
+          exit 0
 
           SED=sed
           DATE=date
@@ -59,5 +61,5 @@ jobs:
             git add DEPS
             git commit -m "Auto bump DEPS ${DEP}"
             git push -u origin "$pr_branch"
-            gh pr create --base "${branch}" -f -t "Auto bump ${DEP}" -l "CI/run-audit-deps"
+            # gh pr create --base "${branch}" -f -t "Auto bump ${DEP}" -l "CI/run-audit-deps"
           done
