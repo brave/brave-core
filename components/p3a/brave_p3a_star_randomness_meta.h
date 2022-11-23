@@ -13,7 +13,7 @@
 #include "base/memory/ref_counted.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/components/nested_star/src/lib.rs.h"
+#include "brave/components/constellation/src/lib.rs.h"
 #include "brave/components/p3a/brave_p3a_config.h"
 
 class PrefService;
@@ -34,12 +34,12 @@ struct RandomnessServerInfo {
   RandomnessServerInfo(
       uint8_t current_epoch,
       base::Time next_epoch_time,
-      ::rust::Box<nested_star::PPOPRFPublicKeyWrapper> public_key);
+      ::rust::Box<constellation::PPOPRFPublicKeyWrapper> public_key);
   ~RandomnessServerInfo();
 
   uint8_t current_epoch;
   base::Time next_epoch_time;
-  ::rust::Box<nested_star::PPOPRFPublicKeyWrapper> public_key;
+  ::rust::Box<constellation::PPOPRFPublicKeyWrapper> public_key;
 };
 
 class BraveP3AStarRandomnessMeta {

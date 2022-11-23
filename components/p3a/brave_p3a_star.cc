@@ -46,7 +46,7 @@ BraveP3AStar::BraveP3AStar(
                               base::Unretained(this)),
           config),
       message_callback_(message_callback),
-      null_public_key_(nested_star::get_ppoprf_null_public_key()) {
+      null_public_key_(constellation::get_ppoprf_null_public_key()) {
   UpdateRandomnessServerInfo();
 }
 
@@ -75,14 +75,14 @@ bool BraveP3AStar::StartMessagePreparation(std::string histogram_name,
 
   uint8_t epoch = rnd_server_info->current_epoch;
 
-  auto prepare_res = nested_star::prepare_measurement(layers, epoch);
+  auto prepare_res = constellation::prepare_measurement(layers, epoch);
   if (!prepare_res.error.empty()) {
     LOG(ERROR) << "BraveP3AStar: measurement preparation failed: "
                << prepare_res.error.c_str();
     return false;
   }
 
-  auto req = nested_star::construct_randomness_request(*prepare_res.state);
+  auto req = constellation::construct_randomness_request(*prepare_res.state);
 
   rand_points_manager_.SendRandomnessRequest(
       histogram_name, &rand_meta_manager_, rnd_server_info->current_epoch,
@@ -94,10 +94,10 @@ bool BraveP3AStar::StartMessagePreparation(std::string histogram_name,
 void BraveP3AStar::HandleRandomnessData(
     std::string histogram_name,
     uint8_t epoch,
-    ::rust::Box<nested_star::RandomnessRequestStateWrapper>
+    ::rust::Box<constellation::RandomnessRequestStateWrapper>
         randomness_request_state,
-    std::unique_ptr<rust::Vec<nested_star::VecU8>> resp_points,
-    std::unique_ptr<rust::Vec<nested_star::VecU8>> resp_proofs) {
+    std::unique_ptr<rust::Vec<constellation::VecU8>> resp_points,
+    std::unique_ptr<rust::Vec<constellation::VecU8>> resp_proofs) {
   if (resp_points == nullptr || resp_proofs == nullptr) {
     message_callback_.Run(histogram_name, epoch, nullptr);
     return;
@@ -119,14 +119,14 @@ void BraveP3AStar::HandleRandomnessData(
 }
 
 bool BraveP3AStar::ConstructFinalMessage(
-    rust::Box<nested_star::RandomnessRequestStateWrapper>&
+    rust::Box<constellation::RandomnessRequestStateWrapper>&
         randomness_request_state,
-    const rust::Vec<nested_star::VecU8>& resp_points,
-    const rust::Vec<nested_star::VecU8>& resp_proofs,
+    const rust::Vec<constellation::VecU8>& resp_points,
+    const rust::Vec<constellation::VecU8>& resp_proofs,
     std::string* output) {
   auto* rnd_server_info = rand_meta_manager_.GetCachedRandomnessServerInfo();
   DCHECK(rnd_server_info);
-  auto msg_res = nested_star::construct_message(
+  auto msg_res = constellation::construct_message(
       resp_points, resp_proofs, *randomness_request_state,
       resp_proofs.empty() ? *null_public_key_ : *rnd_server_info->public_key,
       {}, kP3AStarCurrentThreshold);

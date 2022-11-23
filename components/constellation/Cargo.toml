@@ -1,10 +1,10 @@
 [package]
-name = "nested-star-cxx"
+name = "constellation-cxx"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-nested-sta-rs = { git = "https://github.com/brave-experiments/nested-sta-rs", rev = "ad9816d4e14964f23680362c65bba8358dbe895a" }
+star-constellation = { git = "https://github.com/brave/constellation", rev = "6c91f94d7b307f7dec08e1a86edcbf789d420185" }
 cxx = { path = "../../../third_party/rust/cxx/v1/crate" }
 # Use following cxx dep if compiling example via Makefile
 # cxx = "1.0"
@@ -13,7 +13,7 @@ cxx = { path = "../../../third_party/rust/cxx/v1/crate" }
 cxx-build = "1.0"
 
 [lib]
-name = "nested_star_cxx"
+name = "constellation_cxx"
 crate-type = ["rlib"]
 # Use following crate type setting if compiling example via Makefile
 # crate-type = ["staticlib"]
