@@ -228,7 +228,7 @@ class SendTabToSelfContentHeaderFooterView: UITableViewHeaderFooterView, TableVi
   
   private(set) var titleLabel = UILabel().then {
     $0.numberOfLines = 0
-    $0.textColor = .braveOrange
+    $0.textColor = .braveBlurpleTint
     $0.textAlignment = .center
   }
 

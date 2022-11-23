@@ -22,7 +22,7 @@ public class WindowProtection {
       $0.setTitle("Unlock", for: .normal)
       $0.titleLabel?.font = .preferredFont(forTextStyle: .headline)
       $0.titleLabel?.adjustsFontForContentSizeCategory = true
-      $0.backgroundColor = .braveBlurple
+      $0.backgroundColor = .braveBlurpleTint
       $0.isHidden = true
     }
 

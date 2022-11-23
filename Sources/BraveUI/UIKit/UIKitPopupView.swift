@@ -57,7 +57,7 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
     var backgroundColor: UIColor {
       switch self {
       case .primary:
-        return .braveBlurple
+        return .braveBlurpleTint
       case .secondary:
         return .secondaryButtonTint
       case .destructive:
@@ -69,7 +69,7 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
 
     var titleColor: UIColor {
       if self == .link {
-        return .braveBlurple
+        return .braveBlurpleTint
       }
       return .white
     }

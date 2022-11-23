@@ -38,7 +38,7 @@ struct AccountsHeaderView: View {
             }
             .navigationViewStyle(StackNavigationViewStyle())
             .environment(\.modalPresentationMode, $isPresentingBackup)
-            .accentColor(Color(.braveOrange))
+            .accentColor(Color(.braveBlurpleTint))
           }
       )
       Spacer()

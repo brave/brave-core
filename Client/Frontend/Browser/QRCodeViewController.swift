@@ -229,7 +229,7 @@ class QRCodeViewController: UIViewController {
         captureDevice.torchMode = AVCaptureDevice.TorchMode.on
         captureDevice.unlockForConfiguration()
         navigationItem.leftBarButtonItem?.image = UIImage(named: "qrcode-isLighting", in: .module, compatibleWith: nil)!
-        navigationItem.leftBarButtonItem?.tintColor = .braveOrange
+        navigationItem.leftBarButtonItem?.tintColor = .braveBlurpleTint
       } catch {
         Logger.module.error("\(error.localizedDescription)")
       }

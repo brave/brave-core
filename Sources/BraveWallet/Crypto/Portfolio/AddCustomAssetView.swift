@@ -86,7 +86,7 @@ struct AddCustomAssetView: View {
             }
             Spacer()
             Image(systemName: "chevron.down.circle")
-              .foregroundColor(Color(.braveBlurple))
+              .foregroundColor(Color(.braveBlurpleTint))
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
@@ -242,7 +242,7 @@ struct AddCustomAssetView: View {
             presentationMode.dismiss()
           }) {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveOrange))
+              .foregroundColor(Color(.braveBlurpleTint))
           }
         }
         ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -251,7 +251,7 @@ struct AddCustomAssetView: View {
             addCustomToken()
           }) {
             Text(Strings.Wallet.add)
-              .foregroundColor(Color(.braveOrange))
+              .foregroundColor(Color(.braveBlurpleTint))
           }
           .disabled(addButtonDisabled)
         }
@@ -283,7 +283,7 @@ struct AddCustomAssetView: View {
                 networkSelectionStore: networkSelectionStore
               )
             }
-            .accentColor(Color(.braveOrange))
+            .accentColor(Color(.braveBlurpleTint))
             .navigationViewStyle(.stack)
           }
       )

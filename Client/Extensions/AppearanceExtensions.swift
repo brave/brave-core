@@ -17,7 +17,7 @@ extension UIView {
   /// - warning: Be careful adjusting colors here, and make sure impact is well known
   public static func applyAppearanceDefaults() {
     UIToolbar.appearance().do {
-      $0.tintColor = .braveOrange
+      $0.tintColor = .braveBlurpleTint
       let appearance: UIToolbarAppearance = {
         let appearance = UIToolbarAppearance()
         appearance.configureWithOpaqueBackground()
@@ -35,7 +35,7 @@ extension UIView {
     }
 
     UINavigationBar.appearance().do {
-      $0.tintColor = .braveOrange
+      $0.tintColor = .braveBlurpleTint
       let appearance: UINavigationBarAppearance = {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
@@ -50,7 +50,7 @@ extension UIView {
       $0.scrollEdgeAppearance = appearance
     }
 
-    UISwitch.appearance().onTintColor = UIColor.braveOrange
+    UISwitch.appearance().onTintColor = UIColor.braveBlurpleTint
 
     /// Used as color a table will use as the base (e.g. background)
     let tablePrimaryColor = UIColor.braveGroupedBackground
@@ -61,7 +61,7 @@ extension UIView {
     UITableView.appearance().separatorColor = .braveSeparator
 
     UITableViewCell.appearance().do {
-      $0.tintColor = .braveOrange
+      $0.tintColor = .braveBlurpleTint
       $0.backgroundColor = tableSecondaryColor
     }
 

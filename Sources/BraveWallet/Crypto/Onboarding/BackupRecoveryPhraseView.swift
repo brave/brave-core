@@ -85,6 +85,7 @@ struct BackupRecoveryPhraseView: View {
         }
         Toggle(Strings.Wallet.backupRecoveryPhraseDisclaimer, isOn: $confirmedPhraseBackup)
           .fixedSize(horizontal: false, vertical: true)
+          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
           .font(.footnote)
           .padding(.vertical, 30)
           .padding(.horizontal, 20)

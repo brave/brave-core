@@ -160,7 +160,7 @@ public struct NewSiteConnectionView: View {
             onDismiss()
           } label: {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveOrange))
+              .foregroundColor(Color(.braveBlurpleTint))
           }
         }
       }

@@ -141,7 +141,7 @@ extension PrivacyReportsView {
       .toolbar {
         ToolbarItem(placement: .confirmationAction) {
           Button(Strings.done, action: onDismiss)
-            .foregroundColor(Color(.braveOrange))
+            .foregroundColor(Color(.braveBlurpleTint))
         }
       }
       .onAppear {

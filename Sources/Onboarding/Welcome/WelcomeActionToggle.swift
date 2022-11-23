@@ -63,7 +63,7 @@ class WelcomeShareActionToggle: BlockedAdsStackView {
   
   private(set) lazy var shareToggle = UISwitch().then {
     $0.addTarget(self, action: #selector(didToggleShare), for: .valueChanged)
-    $0.onTintColor = .braveBlurple
+    $0.onTintColor = .braveBlurpleTint
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
   }

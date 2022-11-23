@@ -43,7 +43,7 @@ public class WelcomeNTPOnboardingController: UIViewController, PopoverContentCom
   
   private let button = RoundInterfaceButton(type: .custom).then {
     $0.setTitleColor(.white, for: .normal)
-    $0.backgroundColor = .braveBlurple
+    $0.backgroundColor = .braveBlurpleTint
     $0.titleLabel?.numberOfLines = 0
     $0.titleLabel?.minimumScaleFactor = 0.7
     $0.titleLabel?.adjustsFontSizeToFitWidth = true

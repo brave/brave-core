@@ -126,12 +126,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let window = UIWindow(windowScene: windowScene).then {
       $0.backgroundColor = .black
       $0.overrideUserInterfaceStyle = expectedThemeOverride
-      $0.tintColor = UIColor {
-        if $0.userInterfaceStyle == .dark {
-          return .braveLighterBlurple
-        }
-        return .braveBlurple
-      }
+      $0.tintColor = .braveBlurpleTint
       
       $0.rootViewController = navigationController
     }

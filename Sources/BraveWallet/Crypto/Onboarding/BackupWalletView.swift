@@ -60,6 +60,7 @@ struct BackupWalletView: View {
         
         Toggle(Strings.Wallet.backupWalletDisclaimer, isOn: $acknowledgedWarning)
           .font(.footnote)
+          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
           .foregroundColor(Color(.braveLabel))
           .padding(.horizontal, 20)
           .padding(.vertical, 10)
@@ -135,7 +136,7 @@ struct BackupWalletView: View {
                 presentationMode.dismiss()
               }) {
                 Text(Strings.cancelButtonTitle)
-                  .foregroundColor(Color(.braveOrange))
+                  .foregroundColor(Color(.braveBlurpleTint))
               }
             }
           }

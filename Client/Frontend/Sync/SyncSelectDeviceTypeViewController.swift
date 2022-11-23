@@ -13,7 +13,7 @@ class SyncDeviceTypeButton: UIControl {
   var type: DeviceType!
 
   // Color for the opposite state of `pressed`
-  private var pressedReversedColor = UIColor.braveOrange
+  private var pressedReversedColor = UIColor.braveBlurpleTint
   var pressed: Bool = false {
     didSet {
       if pressed == oldValue {

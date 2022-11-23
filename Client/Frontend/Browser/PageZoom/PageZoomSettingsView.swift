@@ -81,7 +81,7 @@ struct PageZoomSettingsView: View {
               if preferredZoomLevel == zoomLevel {
                 Image(systemName: "checkmark")
                   .font(.system(.body).weight(.medium))
-                  .foregroundColor(Color(.braveOrange))
+                  .foregroundColor(Color(.braveBlurpleTint))
               }
             }
           })

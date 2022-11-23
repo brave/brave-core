@@ -186,7 +186,7 @@ struct EditSiteConnectionView: View {
             onDismiss(permittedAccounts)
           } label: {
             Text(Strings.done)
-              .foregroundColor(Color(.braveOrange))
+              .foregroundColor(Color(.braveBlurpleTint))
           }
         }
       }

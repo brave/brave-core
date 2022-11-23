@@ -384,7 +384,7 @@ extension PlaylistFolderController: UITableViewDelegate {
       })
 
     editAction.image = UIImage(systemName: "pencil")
-    editAction.backgroundColor = .braveBlurple
+    editAction.backgroundColor = .braveBlurpleTint
 
     deleteAction.image = UIImage(braveSystemNamed: "brave.trash")!
     deleteAction.backgroundColor = .braveErrorLabel

@@ -166,7 +166,7 @@ class TabLocationView: UIView {
     readerModeButton.accessibilityIdentifier = "TabLocationView.readerModeButton"
     readerModeButton.accessibilityCustomActions = [UIAccessibilityCustomAction(name: Strings.tabToolbarReaderViewButtonTitle, target: self, selector: #selector(readerModeCustomAction))]
     readerModeButton.unselectedTintColor = .braveLabel
-    readerModeButton.selectedTintColor = .braveOrange
+    readerModeButton.selectedTintColor = .braveBlurpleTint
     return readerModeButton
   }()
 

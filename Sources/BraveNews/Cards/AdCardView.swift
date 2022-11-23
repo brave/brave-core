@@ -90,7 +90,7 @@ private class BraveAdCalloutView: UIView {
       .view(
         UILabel().then {
           $0.text = "Ad"
-          $0.textColor = .braveBlurple
+          $0.textColor = .braveBlurpleTint
           $0.font = {
             let metrics = UIFontMetrics(forTextStyle: .footnote)
             let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .footnote)

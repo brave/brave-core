@@ -109,7 +109,7 @@ struct PlaylistPopoverView: View {
           }
         }
         .buttonStyle(BraveFilledButtonStyle(size: .small))
-        .foregroundColor(Color(UIColor.braveBlurple))
+        .foregroundColor(Color(UIColor.braveBlurpleTint))
       }
 
       Button(action: {

@@ -49,7 +49,7 @@ class SearchSuggestionPromptCell: UITableViewCell {
       left: DesignUX.paddingX,
       bottom: DesignUX.paddingY,
       right: DesignUX.paddingX)
-    $0.backgroundColor = .braveBlurple
+    $0.backgroundColor = .braveBlurpleTint
   }
 
   private lazy var disableButton = UIButton().then {

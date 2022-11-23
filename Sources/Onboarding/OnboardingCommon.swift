@@ -17,7 +17,7 @@ struct OnboardingCommon {
     /// A negative spacing is needed to make rounded corners for details view visible.
     static let negativeSpacing = -16.0
     static let descriptionContentInset = 25.0
-    static let linkColor: UIColor = .braveBlurple
+    static let linkColor: UIColor = .braveBlurpleTint
     static let animationContentInset = 50.0
     static let checkboxInsets = -44.0
 
@@ -29,7 +29,7 @@ struct OnboardingCommon {
     static func primaryButton(text: String = Strings.OBContinueButton) -> UIButton {
       let button = RoundInterfaceButton().then {
         $0.setTitle(text, for: .normal)
-        $0.backgroundColor = .braveOrange
+        $0.backgroundColor = .braveBlurpleTint
         $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 25, bottom: 12, right: 25)
       }
 

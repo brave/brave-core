@@ -155,7 +155,7 @@ class BraveSearchPromotionCell: UITableViewCell {
       $0.titleLabel.snp.makeConstraints {
         $0.edges.equalToSuperview().inset(8.0)
       }
-      $0.backgroundColor = .braveOrange
+      $0.backgroundColor = .braveBlurpleTint
     }
 
     dismissButton.do {
@@ -164,7 +164,7 @@ class BraveSearchPromotionCell: UITableViewCell {
           Strings.BraveSearchPromotion.braveSearchPromotionBannerMaybeLaterButtonTitle :
           Strings.BraveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle,
         for: .normal)
-      $0.setTitleColor(.braveOrange, for: .normal)
+      $0.setTitleColor(.braveBlurpleTint, for: .normal)
       $0.titleLabel?.font = .preferredFont(forTextStyle: .subheadline, weight: .semibold)
       $0.titleLabel?.minimumScaleFactor = 0.5
       $0.titleEdgeInsets = titleEdgeInsets
@@ -221,7 +221,7 @@ class TrySearchButton: UIControl {
   private let backgroundView: UIVisualEffectView = {
     let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterial))
     backgroundView.isUserInteractionEnabled = false
-    backgroundView.contentView.backgroundColor = .braveOrange
+    backgroundView.contentView.backgroundColor = .braveBlurpleTint
     backgroundView.layer.cornerRadius = 16
     backgroundView.layer.cornerCurve = .continuous
     backgroundView.layer.masksToBounds = true

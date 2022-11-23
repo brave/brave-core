@@ -88,7 +88,7 @@ public class OptionSelectionViewController<OptionType: RepresentableOptionType>:
     super.viewDidLoad()
 
     view.backgroundColor = .braveGroupedBackground
-    view.tintColor = .braveOrange
+    view.tintColor = .braveBlurpleTint
   }
 
   @available(*, unavailable)

@@ -255,7 +255,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     searchButton.layer.backgroundColor = SearchViewControllerUX.engineButtonBackgroundColor
     searchButton.addTarget(self, action: #selector(didClickSearchButton), for: .touchUpInside)
     searchButton.accessibilityLabel = Strings.searchSettingsButtonTitle
-    searchButton.tintColor = .braveOrange
+    searchButton.tintColor = .braveBlurpleTint
 
     searchButton.imageView?.snp.makeConstraints { make in
       make.width.height.equalTo(SearchViewControllerUX.searchImageWidth)

@@ -138,7 +138,7 @@ struct PageZoomView: View {
           dismiss?()
         } label: {
           Image(systemName: "xmark")
-            .foregroundColor(Color(UIColor.braveBlurple))
+            .foregroundColor(Color(UIColor.braveBlurpleTint))
             .font(.system(.footnote).weight(.medium))
         }
         .frame(maxWidth: .infinity, alignment: .trailing)

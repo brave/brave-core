@@ -44,7 +44,7 @@ struct AccountListView: View {
         ToolbarItemGroup(placement: .cancellationAction) {
           Button(action: { onDismiss() }) {
             Text(Strings.cancelButtonTitle)
-              .foregroundColor(Color(.braveOrange))
+              .foregroundColor(Color(.braveBlurpleTint))
           }
         }
         ToolbarItemGroup(placement: .primaryAction) {
@@ -52,7 +52,7 @@ struct AccountListView: View {
             isPresentingAddAccount = true
           }) {
             Label(Strings.Wallet.addAccountTitle, systemImage: "plus")
-              .foregroundColor(Color(.braveOrange))
+              .foregroundColor(Color(.braveBlurpleTint))
           }
         }
       }

@@ -158,7 +158,7 @@ struct EditUserAssetsView: View {
             presentationMode.dismiss()
           }) {
             Text(Strings.done)
-              .foregroundColor(Color(.braveOrange))
+              .foregroundColor(Color(.braveBlurpleTint))
           }
         }
       }

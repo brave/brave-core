@@ -184,7 +184,7 @@ struct EncryptionView: View {
       ToolbarItemGroup(placement: .cancellationAction) {
         Button(action: { onDismiss() }) {
           Text(Strings.cancelButtonTitle)
-            .foregroundColor(Color(.braveOrange))
+            .foregroundColor(Color(.braveBlurpleTint))
         }
       }
     }

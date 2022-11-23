@@ -38,7 +38,7 @@ class SyncAddDeviceViewController: SyncViewController {
     let button = UIButton()
     button.setTitle(Strings.copyToClipboard, for: .normal)
     button.addTarget(self, action: #selector(SEL_copy), for: .touchUpInside)
-    button.setTitleColor(UIColor.braveOrange, for: .normal)
+    button.setTitleColor(UIColor.braveBlurpleTint, for: .normal)
     button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     button.isHidden = true
     return button
@@ -131,7 +131,7 @@ class SyncAddDeviceViewController: SyncViewController {
     modeControl.isHidden = deviceType == .computer
     modeControl.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
 
-    modeControl.selectedSegmentTintColor = UIColor.braveOrange
+    modeControl.selectedSegmentTintColor = UIColor.braveBlurpleTint
     modeControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
     stackView.addArrangedSubview(modeControl)
 
@@ -176,7 +176,7 @@ class SyncAddDeviceViewController: SyncViewController {
     doneButton.setTitle(Strings.done, for: .normal)
     doneButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.bold)
     doneButton.setTitleColor(.white, for: .normal)
-    doneButton.backgroundColor = .braveOrange
+    doneButton.backgroundColor = .braveBlurpleTint
     doneButton.addTarget(self, action: #selector(SEL_done), for: .touchUpInside)
 
     doneEnterWordsStackView.addArrangedSubview(doneButton)

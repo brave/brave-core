@@ -227,7 +227,7 @@ private struct SiteRow: View {
         }
         if siteConnection.connectedAddresses.count > maxBlockies {
           Circle()
-            .foregroundColor(Color(.braveBlurple))
+            .foregroundColor(Color(.braveBlurpleTint))
             .frame(width: min(blockieSize, maxBlockieSize), height: min(blockieSize, maxBlockieSize))
             .overlay(
               HStack(spacing: 1) {

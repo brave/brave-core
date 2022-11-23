@@ -165,6 +165,7 @@ private struct RestoreWalletView: View {
           HStack {
             Toggle(Strings.Wallet.restoreWalletShowRecoveryPhrase, isOn: $showingRecoveryPhase)
               .labelsHidden()
+              .toggleStyle(SwitchToggleStyle(tint: .accentColor))
               .scaleEffect(0.75)
               .padding(-6)
             Text(Strings.Wallet.restoreWalletShowRecoveryPhrase)

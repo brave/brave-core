@@ -63,7 +63,7 @@ public class SelectedInsetButton: InsetButton {
     layer.cornerCurve = .continuous
 
     setTitleColor(.braveLabel, for: .normal)
-    selectedBackgroundColor = .braveOrange
+    selectedBackgroundColor = .braveBlurpleTint
   }
 
   required init?(coder aDecoder: NSCoder) {

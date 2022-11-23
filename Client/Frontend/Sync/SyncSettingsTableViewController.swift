@@ -390,7 +390,7 @@ extension SyncSettingsTableViewController {
     cell.textLabel?.do {
       $0.text = Strings.syncAddAnotherDevice
       $0.textAlignment = .center
-      $0.textColor = .braveOrange
+      $0.textColor = .braveBlurpleTint
       $0.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular)
     }
   }

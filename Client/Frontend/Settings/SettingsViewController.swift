@@ -97,7 +97,7 @@ class SettingsViewController: TableViewController {
     tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
 
     view.backgroundColor = .braveGroupedBackground
-    view.tintColor = .braveOrange
+    view.tintColor = .braveBlurpleTint
     navigationController?.view.backgroundColor = .braveGroupedBackground
   }
 

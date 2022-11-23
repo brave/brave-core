@@ -139,7 +139,7 @@ class RecentSearchHeaderView: UICollectionReusableView {
     if showRecentSearches {
       showButton.do {
         $0.setTitle(Strings.recentShowMore, for: .normal)
-        $0.setTitleColor(.braveBlurple, for: .normal)
+        $0.setTitleColor(.braveBlurpleTint, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 12.0)
         $0.layer.cornerRadius = 0.0
         $0.layer.borderColor = nil
@@ -151,7 +151,7 @@ class RecentSearchHeaderView: UICollectionReusableView {
 
       hideClearButton.do {
         $0.setTitle(Strings.recentSearchClear, for: .normal)
-        $0.setTitleColor(.braveBlurple, for: .normal)
+        $0.setTitleColor(.braveBlurpleTint, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 12.0)
         $0.layer.cornerRadius = 0.0
         $0.layer.borderColor = nil
@@ -171,7 +171,7 @@ class RecentSearchHeaderView: UICollectionReusableView {
         $0.layer.borderWidth = 0.0
         $0.titleEdgeInsets = titleEdgeInsets
         $0.contentEdgeInsets = contentEdgeInsets
-        $0.backgroundColor = .braveBlurple
+        $0.backgroundColor = .braveBlurpleTint
       }
 
       hideClearButton.do {

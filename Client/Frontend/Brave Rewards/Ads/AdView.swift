@@ -9,7 +9,7 @@ import Shared
 public class AdView: UIView {
   let adContentButton = AdContentButton()
   let openSwipeButton = AdSwipeButton(contentType: .text(Strings.Ads.open, textColor: .white)).then {
-    $0.backgroundColor = .braveBlurple
+    $0.backgroundColor = .braveBlurpleTint
   }
   let dislikeSwipeButton = AdSwipeButton(contentType: .image(UIImage(named: "dislike-ad-icon", in: .module, compatibleWith: nil)!)).then {
     $0.backgroundColor = .braveErrorLabel
