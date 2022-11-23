@@ -60,6 +60,7 @@ import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
+import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -210,7 +211,8 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     @Override
     public void onResume() {
         super.onResume();
-        if (hasPermission(getActivity(), PermissionConstants.NOTIFICATION_PERMISSION)) {
+        if (BravePermissionUtils.hasPermission(
+                    getContext(), PermissionConstants.NOTIFICATION_PERMISSION)) {
             statsNotificationView.setVisibility(View.GONE);
         } else {
             statsNotificationView.setVisibility(View.VISIBLE);
@@ -228,36 +230,13 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 // other than android 13 redirect to
                 // setting page and for android 13 Last time don't allow selected in permission
                 // dialog, then enable through setting
-                redirectToSettingPage();
+                BravePermissionUtils.notificationSettingPage(getContext());
             } else {
                 // 1st time request permission
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[] {PermissionConstants.NOTIFICATION_PERMISSION}, 1);
             }
         });
-    }
-
-    private void redirectToSettingPage() {
-        Intent intent = new Intent();
-        intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        // for Android 5-7
-        intent.putExtra(APP_PACKAGE, getActivity().getPackageName());
-        intent.putExtra(APP_UID, getActivity().getApplicationInfo().uid);
-
-        // for Android 8 and above
-        intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
-
-        startActivity(intent);
-    }
-
-    private Boolean hasPermission(Context context, String permission) {
-        if (ContextCompat.checkSelfPermission(context, permission)
-                != PackageManager.PERMISSION_GRANTED) {
-            return false;
-        }
-        return true;
     }
 
     @Override

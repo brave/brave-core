@@ -59,6 +59,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.viewpager.widget.ViewPager;
@@ -69,6 +70,7 @@ import org.json.JSONException;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.base.BuildInfo;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
@@ -92,6 +94,8 @@ import org.chromium.chrome.browser.custom_layout.HeightWrappingViewPager;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
+import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
+import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
@@ -103,6 +107,7 @@ import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.ui.permissions.PermissionConstants;
 
 import java.math.RoundingMode;
 import java.text.DateFormat;
@@ -893,6 +898,30 @@ public class BraveRewardsPanel
         }));
     }
 
+    private void requestNotificationPermission() {
+        if (mActivity.shouldShowRequestPermissionRationale(
+                    PermissionConstants.NOTIFICATION_PERMISSION)
+                || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
+            // other than android 13 redirect to
+            // setting page and for android 13 Last time don't allow selected in permission
+            // dialog, then enable through setting, this done through this dialog
+            showNotificationWarningDialog();
+        } else {
+            // 1st time request permission
+            ActivityCompat.requestPermissions(
+                    mActivity, new String[] {PermissionConstants.NOTIFICATION_PERMISSION}, 1);
+        }
+    }
+
+    private void showNotificationWarningDialog() {
+        BraveNotificationWarningDialog notificationWarningDialog =
+                BraveNotificationWarningDialog.newInstance(
+                        BraveNotificationWarningDialog.FROM_LAUNCHED_BRAVE_PANEL);
+        notificationWarningDialog.setCancelable(false);
+        notificationWarningDialog.show(mActivity.getSupportFragmentManager(),
+                BraveNotificationWarningDialog.NOTIFICATION_WARNING_DIALOG_TAG);
+    }
+
     private void showDeclareGeoModal(String[] countries) {
         showBraveRewardsOnboardingModal();
         if (mBraveRewardsOnboardingModalView != null) {
@@ -981,9 +1010,15 @@ public class BraveRewardsPanel
             btnContinue.setOnClickListener((new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (countrySpinner != null) {
-                        mBraveRewardsNativeWorker.CreateRewardsWallet(
-                                sortedCountryMap.get(countrySpinner.getSelectedItem().toString()));
+                    if (BravePermissionUtils.hasPermission(mAnchorView.getContext(),
+                                PermissionConstants.NOTIFICATION_PERMISSION)) {
+                        if (countrySpinner != null) {
+                            mBraveRewardsNativeWorker.CreateRewardsWallet(sortedCountryMap.get(
+                                    countrySpinner.getSelectedItem().toString()));
+                        }
+                    } else {
+                        // else request notification permission
+                        requestNotificationPermission();
                     }
                 }
             }));
