@@ -17,8 +17,29 @@ extension BraveCoreSwitchKey {
       return "Component Updater"
     case .syncURL:
       return "Sync URL"
+    case .p3aDoNotRandomizeUploadInterval:
+      return "Don't Randomize Upload Interval"
+    case .p3aIgnoreServerErrors:
+      return "Ignore Server Errors"
+    case .p3aUploadIntervalSeconds:
+      return "Upload Interval"
+    case .p3aTypicalRotationIntervalSeconds:
+      return "Typical Rotation Interval"
+    case .p3aExpressRotationIntervalSeconds:
+      return "Express Rotation Interval"
+    case .p3aUploadServerURL:
+      return "Upload Server URL"
     default:
       return ""
+    }
+  }
+  /// Whether or not the key is passed in without a value
+  public var isValueless: Bool {
+    switch self {
+    case .p3aDoNotRandomizeUploadInterval, .p3aIgnoreServerErrors:
+      return true
+    default:
+      return false
     }
   }
 }
@@ -45,6 +66,7 @@ private struct BasicStringInputView: View {
         TextField(coreSwitch.displayString, text: $text)
           .disableAutocorrection(true)
           .autocapitalization(.none)
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         if let hint = hint {
           Text(hint)
@@ -152,14 +174,19 @@ struct BraveCoreDebugSwitchesView: View {
     private var binding: Binding<Bool> {
       .init(
         get: {
-          activeSwitches.value.contains(coreSwitch.rawValue) && !switchValues.value[coreSwitch.rawValue, default: ""].isEmpty
+          activeSwitches.value.contains(coreSwitch.rawValue) && (coreSwitch.isValueless || !switchValues.value[coreSwitch.rawValue, default: ""].isEmpty)
         },
         set: { isOn in
-          if isOn {
-            activeSwitches.value.append(coreSwitch.rawValue)
-          } else {
-            activeSwitches.value.removeAll(where: { $0 == coreSwitch.rawValue })
+          if !coreSwitch.isValueless && switchValues.value[coreSwitch.rawValue, default: ""].isEmpty {
+            return
           }
+          var switches = Set(activeSwitches.value)
+          if isOn {
+            switches.insert(coreSwitch.rawValue)
+          } else {
+            switches.remove(coreSwitch.rawValue)
+          }
+          activeSwitches.value = Array(switches)
         }
       )
     }
@@ -167,6 +194,7 @@ struct BraveCoreDebugSwitchesView: View {
     var body: some View {
       HStack(spacing: 16) {
         Toggle(coreSwitch.displayString, isOn: binding)
+          .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
           .labelsHidden()
         VStack(alignment: .leading) {
           HStack {
@@ -186,7 +214,7 @@ struct BraveCoreDebugSwitchesView: View {
           }
         }
       }
-      .padding(.vertical, 6)
+      .padding(.vertical, 2)
     }
   }
 
@@ -201,23 +229,55 @@ struct BraveCoreDebugSwitchesView: View {
           .listRowInsets(.zero)
       }
       Section {
-        // Sync URL
-        NavigationLink {
-          BasicStringInputView(coreSwitch: .syncURL)
-            .keyboardType(.URL)
-        } label: {
-          SwitchContainer(.syncURL)
+        Group {
+          // Sync URL
+          NavigationLink {
+            BasicStringInputView(coreSwitch: .syncURL)
+              .keyboardType(.URL)
+          } label: {
+            SwitchContainer(.syncURL)
+          }
+          NavigationLink {
+            BasicStringInputView(coreSwitch: .componentUpdater, hint: "Should match the format: url-source={url}")
+          } label: {
+            SwitchContainer(.componentUpdater)
+          }
+          NavigationLink {
+            BasicStringInputView(coreSwitch: .vModule, hint: "Should match the format:\n\n{folder-expression}={level}\n\nDefaults to */brave/*=5")
+          } label: {
+            SwitchContainer(.vModule)
+          }
         }
-        NavigationLink {
-          BasicStringInputView(coreSwitch: .componentUpdater, hint: "Should match the format: url-source={url}")
-        } label: {
-          SwitchContainer(.componentUpdater)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }
+      Section {
+        Group {
+          SwitchContainer(.p3aDoNotRandomizeUploadInterval)
+          SwitchContainer(.p3aIgnoreServerErrors)
+          NavigationLink {
+            BasicStringInputView(coreSwitch: .p3aUploadIntervalSeconds, hint: "Overrides the number of seconds to upload P3A metrics")
+          } label: {
+            SwitchContainer(.p3aUploadIntervalSeconds)
+          }
+          NavigationLink {
+            BasicStringInputView(coreSwitch: .p3aUploadServerURL, hint: "Overrides the P3A cloud backend URL.")
+          } label: {
+            SwitchContainer(.p3aUploadServerURL)
+          }
+          NavigationLink {
+            BasicStringInputView(coreSwitch: .p3aTypicalRotationIntervalSeconds, hint: "Interval in seconds between restarting the uploading process for all gathered values")
+          } label: {
+            SwitchContainer(.p3aTypicalRotationIntervalSeconds)
+          }
+          NavigationLink {
+            BasicStringInputView(coreSwitch: .p3aExpressRotationIntervalSeconds, hint: "Interval in seconds between restarting the uploading process for all gathered values")
+          } label: {
+            SwitchContainer(.p3aExpressRotationIntervalSeconds)
+          }
         }
-        NavigationLink {
-          BasicStringInputView(coreSwitch: .vModule, hint: "Should match the format:\n\n{folder-expression}={level}\n\nDefaults to */brave/*=5")
-        } label: {
-          SwitchContainer(.vModule)
-        }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      } header: {
+        Text("P3A")
       }
       Section {
         Button("Disable All") {
@@ -225,6 +285,7 @@ struct BraveCoreDebugSwitchesView: View {
             activeSwitches.value = []
           }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
     .listStyle(.insetGrouped)
