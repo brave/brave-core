@@ -300,6 +300,7 @@ resources = [
   "res/layout/dialog_fragment_playlist.xml",
   "res/layout/fragment_empty_playlist.xml",
   "res/layout/fragment_playlist.xml",
+  "res/layout/fragment_playlist_player.xml",
   "res/layout/fragment_single_playlist_onboarding.xml",
   "res/layout/item_media.xml",
   "res/layout/item_playlist.xml",

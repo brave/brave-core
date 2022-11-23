@@ -9,7 +9,9 @@ import android.content.Intent;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.brave.braveandroidplaylist.PlaylistViewModel;
 import com.brave.braveandroidplaylist.fragment.PlaylistFragment;
 import com.brave.braveandroidplaylist.listener.PlaylistOptionsListener;
 import com.brave.braveandroidplaylist.model.PlaylistOptionsModel;
@@ -39,6 +41,8 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
         if (getIntent() != null) {
             playlistName = getIntent().getStringExtra(PlaylistUtils.PLAYLIST_NAME);
         }
+        PlaylistViewModel viewModel =
+                new ViewModelProvider(PlaylistHostActivity.this).get(PlaylistViewModel.class);
         if (mPlaylistPageHandler != null) {
             mPlaylistPageHandler.getPlaylist(playlistName, playlist -> {
                 JSONObject playlistJsonObject = new JSONObject();
@@ -62,8 +66,9 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                     Log.e(PlaylistUtils.TAG, "PlaylistHostActivity -> JSONException error " + e);
                 }
 
-                PlaylistFragment playlistFragment =
-                        PlaylistFragment.newInstance(playlistJsonObject.toString());
+                viewModel.setPlaylistData(playlistJsonObject.toString());
+
+                PlaylistFragment playlistFragment = new PlaylistFragment();
                 playlistFragment.setPlaylistOptionsListener(this);
                 getSupportFragmentManager()
                         .beginTransaction()

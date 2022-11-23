@@ -83,6 +83,13 @@ android_aar_prebuilt("com_brave_braveandroidplaylist_java") {
       "libs/com_brave_braveandroidplaylist/braveandroidplaylist-release.aar"
   info_path =
       "libs/com_brave_braveandroidplaylist/com_brave_braveandroidplaylist.info"
+  deps = [
+    ":com_google_android_exoplayer_exoplayer_core_java",
+    ":com_google_android_exoplayer_exoplayer_ui_java",
+    "//third_party/android_deps:material_design_java",
+  ]
+  bytecode_rewriter_target =
+      "//build/android/bytecode:fragment_activity_replacer"
 }
 
 android_aar_prebuilt("com_google_android_exoplayer_exoplayer_core_java") {
