@@ -57,7 +57,7 @@ struct SourceListView_PreviewProvider: PreviewProvider {
       SourceListView(sources: Mock.sources, isFollowing: { _ in .constant(false) })
     }
     .navigationViewStyle(.stack)
-    .accentColor(Color(.braveOrange))
+    .accentColor(Color(.braveBlurpleTint))
   }
 }
 #endif

@@ -130,7 +130,7 @@ public struct NewsSettingsView: View {
       }
       .frame(maxWidth: .infinity, alignment: .leading)
     }
-    .toggleStyle(SwitchToggleStyle(tint: Color(.braveOrange)))
+    .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
   }
   
   // Xcode typechecker struggled when these were inside of `body`
@@ -345,7 +345,7 @@ struct NewsSettingsView_PreviewProvider: PreviewProvider {
         rootViewController: NewsSettingsViewController(dataSource: .init(), openURL: { _ in })
       )
     )
-    .accentColor(Color(.braveOrange))
+    .accentColor(Color(.braveBlurpleTint))
   }
 }
 #endif
