@@ -634,7 +634,9 @@ export enum WalletRoutes {
   OnboardingComplete = '/crypto/onboarding/complete',
 
   // fund wallet page
+  FundWalletPageStart = '/crypto/fund-wallet',
   FundWalletPage = '/crypto/fund-wallet/:tokenId?',
+  DepositFundsPageStart = '/crypto/deposit-funds',
   DepositFundsPage = '/crypto/deposit-funds/:tokenId?',
 
   // NFTs
