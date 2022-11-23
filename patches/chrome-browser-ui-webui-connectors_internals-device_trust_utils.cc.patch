@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/connectors_internals/device_trust_utils.cc b/chrome/browser/ui/webui/connectors_internals/device_trust_utils.cc
+index 1013b64e97c9c25f524d1d53b6bab27f0d970baf..4dc073f3ff53512bae3b8166611706c315b7a9ac 100644
+--- a/chrome/browser/ui/webui/connectors_internals/device_trust_utils.cc
++++ b/chrome/browser/ui/webui/connectors_internals/device_trust_utils.cc
+@@ -46,6 +46,7 @@ connectors_internals::mojom::KeyType AlgorithmToType(
+     case crypto::SignatureVerifier::RSA_PSS_SHA256:
+       return connectors_internals::mojom::KeyType::RSA;
+     case crypto::SignatureVerifier::ECDSA_SHA256:
++    case crypto::SignatureVerifier::ECDSA_SHA384:
+       return connectors_internals::mojom::KeyType::EC;
+   }
+ }
