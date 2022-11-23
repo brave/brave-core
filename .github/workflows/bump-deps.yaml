@@ -58,7 +58,7 @@ jobs:
           do
             git switch "$branch"
             git switch -c "pr-auto-bump-deps-${branch}-${DATE_ISO}"
-            "$SED" -e "s|\(.*${DEP}.*\)@\(.*\)\",$|\1@${HASH}\",|" "$DEPS"
+            "$SED" -i -e "s|\(.*${DEP}.*\)@\(.*\)\",$|\1@${HASH}\",|" "$DEPS"
             git add ${DEPS}
             git commit -m "Auto bump DEPS ${DEP}"
             git push -u origin "${branch}"
