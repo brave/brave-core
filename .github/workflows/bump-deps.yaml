@@ -1,0 +1,66 @@
+name: Bump DEPS
+on:
+  push:
+    branches:
+      - "aka/auto-bump-DEPS"
+  workflow_dispatch:
+    inputs:
+      dep:
+        description: "Dependency"
+        required: true
+        type: string
+        default: "vendor/web-discovery-project"
+      hash:
+        description: "New hash for dependency"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-bump:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: "0"
+
+      - name: auto-bump
+        run: |
+          set -x
+
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git config user.name "${{ github.actor }}"
+          git config push.default simple
+
+          SED=sed
+          DATE=date
+          DEPS=DEPS
+
+          # Inputs
+          DEP="${{ inputs.dep }}"
+          HASH="${{ inputs.hash }}"
+          [[ -z "$DEP" ]] && { echo Input dependency cannot be empty; exit 1; }
+          [[ -z "$HASH" ]] && { echo Input hash cannot be empty; exit 1; }
+
+          DATE_ISO="$($DATE --iso-8601)"
+          readarray -t milestones < <(gh api /repos/brave/brave-core/milestones -q ".[] | .title" | grep -Fv Closed)
+          branches=( "${milestones[@]/*Nightly/master}" )
+          branches=( "${branches[@]/ -*/}" )
+          echo Branches to operate on:
+          declare -p branches
+          for branch in "${branches[2]}"  # TODO s/2/@/
+          do
+            git switch "$branch"
+            git switch -c "pr-auto-bump-deps-${branch}-${DATE_ISO}"
+            "$SED" -e "s|\(.*${DEP}.*\)@\(.*\)\",$|\1@${HASH}\",|" "$DEPS"
+            git add ${DEPS}
+            git commit -m "Auto bump DEPS ${DEP}"
+            git push -u origin "${branch}"
+            gh pr create --base "${branch}" -f -t "Auto bump ${DEP}" -l "CI/run-audit-deps"
+          done
