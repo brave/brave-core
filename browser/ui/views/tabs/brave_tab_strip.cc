@@ -16,6 +16,7 @@
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
+#include "chrome/browser/ui/views/tabs/tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -86,8 +87,13 @@ void BraveTabStrip::Layout() {
       base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
     // Chromium implementation limits the height of tab strip, which we don't
     // want.
-    for (auto* view : children())
-      view->SetBoundsRect(GetLocalBounds());
+    auto bounds = GetLocalBounds();
+    for (auto* view : children()) {
+      if (view->bounds() != bounds)
+        view->SetBoundsRect(GetLocalBounds());
+      else if (view == &tab_container_.get())
+        view->Layout();
+    }
     return;
   }
 
