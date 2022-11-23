@@ -7,8 +7,8 @@ on:
         required: true
         type: string
         default: "vendor/web-discovery-project"
-      hash:
-        description: "New hash for dependency"
+      ref:
+        description: "New ref for dependency"
         required: true
         type: string
 
@@ -41,9 +41,9 @@ jobs:
 
           # Inputs
           DEP="${{ inputs.dep }}"
-          HASH="${{ inputs.hash }}"
+          DEPREF="${{ inputs.ref }}"
           [[ -z "$DEP" ]] && { echo Input dependency cannot be empty; exit 1; }
-          [[ -z "$HASH" ]] && { echo Input hash cannot be empty; exit 1; }
+          [[ -z "$DEPREF" ]] && { echo Input ref cannot be empty; exit 1; }
 
           DATETIME="$($DATE '+%Y-%m-%d-%H-%M')"
           readarray -t milestones < <(gh api /repos/brave/brave-core/milestones -q ".[] | .title" | grep -Fv Closed)
@@ -56,7 +56,7 @@ jobs:
             git switch "$branch"
             pr_branch="pr-auto-bump-deps-${branch}-${DATETIME}"
             git switch -c "$pr_branch"
-            "$SED" -i -e "s|\(.*${DEP}.*\)@\(.*\)\",$|\1@${HASH}\",|" "$DEPS"
+            "$SED" -i -e "s|\(.*${DEP}.*\)@\(.*\)\",$|\1@${DEPREF}\",|" "$DEPS"
             git add ${DEPS}
             git commit -m "Auto bump DEPS ${DEP}"
             git push -u origin "$pr_branch"
