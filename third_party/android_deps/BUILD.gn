@@ -87,6 +87,13 @@ android_aar_prebuilt("com_brave_braveandroidplaylist_java") {
     ":com_google_android_exoplayer_exoplayer_core_java",
     ":com_google_android_exoplayer_exoplayer_ui_java",
     "//third_party/android_deps:material_design_java",
+    "//third_party/androidx:androidx_appcompat_appcompat_java",
+    "//third_party/androidx:androidx_constraintlayout_constraintlayout_java",
+    "//third_party/androidx:androidx_fragment_fragment_java",
+    "//third_party/androidx:androidx_fragment_fragment_java",
+    "//third_party/androidx:androidx_recyclerview_recyclerview_java",
+    "//third_party/androidx:androidx_transition_transition_java",
+    "//third_party/androidx:androidx_viewpager2_viewpager2_java",
   ]
   bytecode_rewriter_target =
       "//build/android/bytecode:fragment_activity_replacer"
