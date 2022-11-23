@@ -1068,8 +1068,9 @@ public class BrowserViewController: UIViewController {
     
     toolbarVisibilityViewModel.transitionDistance = header.expandedBarStackView.bounds.height - header.collapsedBarContainerView.bounds.height
     // Since the height of the WKWebView changes while collapsing we need to use a stable value to determine
-    // if the toolbars can collapse
-    toolbarVisibilityViewModel.minimumCollapsableContentHeight = webViewContainer.bounds.height + header.bounds.height + footer.bounds.height + view.safeAreaInsets.top + view.safeAreaInsets.bottom
+    // if the toolbars can collapse. We don't subtract the bottom safe area inset because the footer includes
+    // that safe area
+    toolbarVisibilityViewModel.minimumCollapsableContentHeight = view.bounds.height - view.safeAreaInsets.top
     
     var additionalInsets: UIEdgeInsets = .zero
     if isUsingBottomBar {

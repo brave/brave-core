@@ -349,4 +349,48 @@ import XCTest
     // based on content size change
     XCTAssertEqual(viewModel.toolbarState, .expanded)
   }
+  
+  /// Tests when a page would become ineligable to collapse mid-scroll due to the overall size of the web view
+  /// becoming larger.
+  func testCollapseAllowedToNoCollapseAllowed() {
+    let viewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 100)
+    var snapshot: ToolbarVisibilityViewModel.ScrollViewSnapshot = .init(
+      contentOffset: .init(x: 0, y: 150),
+      contentInset: .zero,
+      contentHeight: 960,
+      frameHeight: 480,
+      isDecelerating: false
+    )
+    viewModel.send(action: .dragged(snapshot: snapshot, panData: .init(yTranslation: -50, yVelocity: 0)))
+    XCTAssertEqual(viewModel.interactiveTransitionProgress, 0.5)
+    snapshot.contentHeight = 360 // Now ineligible
+    viewModel.send(action: .contentSizeChanged(snapshot: snapshot))
+    // The next drag will do nothing as we are no longer ineligable to collapse
+    viewModel.send(action: .dragged(snapshot: snapshot, panData: .init(yTranslation: -100, yVelocity: 0)))
+    XCTAssertEqual(viewModel.interactiveTransitionProgress, 0.5)
+    viewModel.send(action: .endedDrag(snapshot: snapshot, panData: .init(yTranslation: -100, yVelocity: 0)))
+    // Upon letting go the bar will revert to expanded
+    XCTAssertEqual(viewModel.toolbarState, .expanded)
+    XCTAssertNil(viewModel.interactiveTransitionProgress)
+  }
+  
+  /// Tests when a page becomes ineligable to collapse after it fully collapsed (i.e. the page changed size
+  /// after collapsing correctly)
+  func testNoCollapsedAllowedAfterPreviouslyCollapsed() {
+    let viewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 100)
+    var snapshot: ToolbarVisibilityViewModel.ScrollViewSnapshot = .init(
+      contentOffset: .init(x: 0, y: 150),
+      contentInset: .zero,
+      contentHeight: 960,
+      frameHeight: 480,
+      isDecelerating: false
+    )
+    viewModel.send(action: .dragged(snapshot: snapshot, panData: .init(yTranslation: -100, yVelocity: 0)))
+    viewModel.send(action: .endedDrag(snapshot: snapshot, panData: .init(yTranslation: -100, yVelocity: 0)))
+    XCTAssertNil(viewModel.interactiveTransitionProgress)
+    XCTAssertEqual(viewModel.toolbarState, .collapsed)
+    snapshot.contentHeight = 360 // Now ineligible
+    viewModel.send(action: .dragged(snapshot: snapshot, panData: .init(yTranslation: -50, yVelocity: 0)))
+    XCTAssertEqual(viewModel.toolbarState, .expanded)
+  }
 }

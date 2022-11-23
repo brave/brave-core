@@ -185,6 +185,9 @@ import SwiftUI
   
   private func dragged(_ snapshot: ScrollViewSnapshot, pan: PanState) {
     if !isContentHeightSufficientForCollapse(snapshot) || transitionDistance.isZero {
+      if toolbarState == .collapsed {
+        toolbarState = .expanded
+      }
       return
     }
     
@@ -219,6 +222,10 @@ import SwiftUI
   
   private func endedDrag(_ snapshot: ScrollViewSnapshot, initialSnapshot: ScrollViewSnapshot, pan: PanState) {
     if !isContentHeightSufficientForCollapse(snapshot) || transitionDistance.isZero {
+      if interactiveTransitionProgress != nil || toolbarState == .collapsed {
+        // Cancel the transition
+        toolbarState = .expanded
+      }
       return
     }
     
@@ -265,7 +272,8 @@ import SwiftUI
   /// If you need to control the delegate yourself, consider calling actions yourself instead
   func beginObservingScrollView(_ scrollView: UIScrollView) {
     scrollView.panGestureRecognizer.addTarget(self, action: #selector(pannedScrollView(_:)))
-    scrollViewObservation = scrollView.observe(\.contentSize, changeHandler: { [weak self] scrollView, _ in
+    scrollViewObservation = scrollView.observe(\.contentSize, options: [.old, .new], changeHandler: { [weak self] scrollView, change in
+      guard change.oldValue != change.newValue else { return }
       self?.send(action: .contentSizeChanged(snapshot: Self.snapshotData(from: scrollView)))
     })
     scrollView.delegate = coordinator
