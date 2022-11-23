@@ -241,7 +241,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
         EXPECT_GE(child_bounds.y(), parent_bounds.y());
         EXPECT_LE(popup_inner_width, EvalJs(parent_contents, "innerWidth + 8"));
         EXPECT_LE(popup_inner_height,
-                  EvalJs(parent_contents, "Math.max(100, innerHeight + 8)"));
+                  EvalJs(parent_contents, "Math.max(150, innerHeight + 8)"));
       } else {
         EXPECT_LE(child_bounds.x(), std::max(80, 10 + parent_bounds.x()));
         EXPECT_LE(child_bounds.y(), std::max(80, 10 + parent_bounds.y()));
