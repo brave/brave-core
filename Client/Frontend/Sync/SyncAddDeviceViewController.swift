@@ -16,13 +16,12 @@ enum DeviceType {
 class SyncAddDeviceViewController: SyncViewController {
   var doneHandler: (() -> Void)?
 
-  private let barcodeSize: CGFloat = 200.0
+  private let barcodeSize: CGFloat = 300.0
 
   lazy var stackView: UIStackView = {
     let stack = UIStackView()
     stack.axis = .vertical
-    stack.distribution = .equalSpacing
-    stack.spacing = 4
+    stack.spacing = 20
     return stack
   }()
 
@@ -30,6 +29,7 @@ class SyncAddDeviceViewController: SyncViewController {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 18.0, weight: UIFont.Weight.medium)
     label.lineBreakMode = NSLineBreakMode.byWordWrapping
+    label.textAlignment = .center
     label.numberOfLines = 0
     return label
   }()
@@ -84,12 +84,12 @@ class SyncAddDeviceViewController: SyncViewController {
     title = deviceType == .computer ? Strings.syncAddComputerTitle : Strings.syncAddTabletOrPhoneTitle
 
     view.addSubview(stackView)
-    stackView.snp.makeConstraints { make in
-      make.top.equalTo(self.view.safeArea.top).inset(10)
-      make.left.right.equalTo(self.view).inset(16)
-      make.bottom.equalTo(self.view.safeArea.bottom).inset(24)
+    stackView.snp.makeConstraints {
+      $0.top.equalTo(view.safeArea.top).inset(10)
+      $0.left.right.equalTo(view).inset(16)
+      $0.bottom.equalTo(view.safeArea.bottom).inset(24)
     }
-
+  
     controlContainerView = UIView()
     controlContainerView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -97,18 +97,21 @@ class SyncAddDeviceViewController: SyncViewController {
     containerView.translatesAutoresizingMaskIntoConstraints = false
     containerView.layer.cornerRadius = 8
     containerView.layer.cornerCurve = .continuous
-    containerView.layer.masksToBounds = true
 
     qrCodeView = SyncQRCodeView(syncApi: syncAPI)
     containerView.addSubview(qrCodeView!)
-    qrCodeView?.snp.makeConstraints { make in
-      make.top.bottom.equalTo(0).inset(22)
-      make.centerX.equalTo(self.containerView)
-      make.size.equalTo(barcodeSize)
+    qrCodeView?.snp.makeConstraints {
+      if UIDevice.isIpad {
+        $0.leading.trailing.equalToSuperview().inset(24)
+        $0.width.equalTo(qrCodeView?.snp.height ?? barcodeSize)
+      } else {
+        $0.centerX.equalTo(containerView)
+        $0.size.equalTo(barcodeSize)
+      }
     }
 
-    self.codewordsView.text = syncAPI.getTimeLimitedWords(fromWords: syncAPI.getSyncCode())
-    self.setupVisuals()
+    codewordsView.text = syncAPI.getTimeLimitedWords(fromWords: syncAPI.getSyncCode())
+    setupVisuals()
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -144,7 +147,8 @@ class SyncAddDeviceViewController: SyncViewController {
     titleLabel.translatesAutoresizingMaskIntoConstraints = false
     titleLabel.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.semibold)
     titleLabel.textColor = .braveLabel
-    titleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+    titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+    titleLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
     titleDescriptionStackView.addArrangedSubview(titleLabel)
 
     descriptionLabel = UILabel()
@@ -156,6 +160,7 @@ class SyncAddDeviceViewController: SyncViewController {
     descriptionLabel.adjustsFontSizeToFitWidth = true
     descriptionLabel.minimumScaleFactor = 0.5
     descriptionLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+    descriptionLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
     titleDescriptionStackView.addArrangedSubview(descriptionLabel)
 
     stackView.addArrangedSubview(titleDescriptionStackView)
@@ -194,6 +199,9 @@ class SyncAddDeviceViewController: SyncViewController {
 
     codewordsView.snp.makeConstraints {
       $0.edges.equalToSuperview()
+      if UIDevice.isIpad {
+        $0.size.equalTo(barcodeSize)
+      }
     }
 
     doneButton.snp.makeConstraints { (make) in
@@ -271,6 +279,13 @@ class SyncAddDeviceViewController: SyncViewController {
     codewordsView.isHidden = isFirstIndex
     copyPasteButton.isHidden = isFirstIndex
 
+    codewordsView.snp.remakeConstraints {
+      $0.edges.equalToSuperview()
+      if UIDevice.isIpad, isFirstIndex {
+        $0.size.equalTo(barcodeSize)
+      }
+    }
+    
     updateLabels()
   }
 
