@@ -41,7 +41,7 @@ void AdsClientHelper::AddObserver(AdsClientObserver* observer) {
   DCHECK(observer);
   DCHECK(!observer->IsBound());
 
-  g_ads_client_instance->AddBatAdsClientObserver(observer->Bind());
+  g_ads_client_instance->AddBatAdsClientObserver(observer);
 }
 
 // static

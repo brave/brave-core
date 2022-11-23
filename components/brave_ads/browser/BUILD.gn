@@ -70,7 +70,6 @@ source_set("browser") {
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_today/common",
     "//brave/components/rpill/common",
-    "//brave/components/services/bat_ads/public/cpp",
     "//chrome/browser/notifications",
     "//chrome/browser/profiles:profile",
     "//components/history/core/browser",

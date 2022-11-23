@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/time/time.h"
+#include "bat/ads/ads_client_observer.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/notification_ad_value_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -36,12 +37,13 @@ bool BatAdsClientMojoBridge::CanShowNotificationAdsWhileBrowserIsBackgrounded()
 }
 
 void BatAdsClientMojoBridge::AddBatAdsClientObserver(
-    mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver> observer) {
+    ads::AdsClientObserver* observer) {
+  DCHECK(observer);
   if (!bat_ads_client_receiver_.is_bound()) {
     return;
   }
 
-  bat_ads_client_receiver_->AddBatAdsClientObserver(std::move(observer));
+  bat_ads_client_receiver_->AddBatAdsClientObserver(observer->Bind());
 }
 
 bool BatAdsClientMojoBridge::IsNetworkConnectionAvailable() const {

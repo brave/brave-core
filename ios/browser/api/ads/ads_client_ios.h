@@ -21,9 +21,7 @@ class AdsClientIOS : public ads::AdsClient {
  private:
   __unsafe_unretained id<AdsClientBridge> bridge_;
 
-  void AddBatAdsClientObserver(
-      mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver> observer)
-      override;
+  void AddBatAdsClientObserver(ads::AdsClientObserver* observer) override;
   bool IsNetworkConnectionAvailable() const override;
   bool IsBrowserActive() const override;
   bool IsBrowserInFullScreenMode() const override;

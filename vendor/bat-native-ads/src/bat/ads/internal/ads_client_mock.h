@@ -16,6 +16,8 @@
 
 namespace ads {
 
+class AdsClientObserver;
+
 class AdsClientMock : public AdsClient {
  public:
   AdsClientMock();
@@ -28,8 +30,7 @@ class AdsClientMock : public AdsClient {
 
   ~AdsClientMock() override;
 
-  MOCK_METHOD1(AddBatAdsClientObserver,
-               void(mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver>));
+  MOCK_METHOD1(AddBatAdsClientObserver, void(AdsClientObserver*));
 
   MOCK_CONST_METHOD0(IsNetworkConnectionAvailable, bool());
 

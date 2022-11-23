@@ -484,8 +484,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 #pragma mark - Observers
 
-- (void)addBatAdsClientObserver:
-    (mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver>)observer {
+- (void)addBatAdsClientObserver:(ads::AdsClientObserver*)observer {
   ads::AddBatAdsClientObserver(observer);
 }
 

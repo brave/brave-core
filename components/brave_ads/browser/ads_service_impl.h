@@ -70,7 +70,7 @@ class AdsTooltipsDelegate;
 class DeviceId;
 
 class AdsServiceImpl : public AdsService,
-                       public ads::AdsClient,
+                       public bat_ads::mojom::BatAdsClient,
                        BackgroundHelper::Observer,
                        public ResourceComponentObserver,
                        public brave_rewards::RewardsServiceObserver,
@@ -157,6 +157,7 @@ class AdsServiceImpl : public AdsService,
 
   // TODO(https://github.com/brave/brave-browser/issues/23974) Decouple
   // notification ad business logic.
+  bool CheckIfCanShowNotificationAds();
   bool ShouldShowCustomNotificationAds();
   void StartNotificationAdTimeOutTimer(const std::string& placement_id);
   bool StopNotificationAdTimeOutTimer(const std::string& placement_id);
@@ -181,8 +182,15 @@ class AdsServiceImpl : public AdsService,
   // TODO(https://github.com/brave/brave-browser/issues/14676) Decouple URL
   // request business logic.
   void OnURLRequest(SimpleURLLoaderList::iterator url_loader_iter,
-                    ads::UrlRequestCallback callback,
+                    UrlRequestCallback callback,
                     std::unique_ptr<std::string> response_body);
+
+  bool GetBooleanPrefValue(const std::string& path) const;
+  int GetIntegerPrefValue(const std::string& path) const;
+  std::string GetStringPrefValue(const std::string& path) const;
+  int64_t GetInt64PrefValue(const std::string& path) const;
+  uint64_t GetUint64PrefValue(const std::string& path) const;
+  bool PrefPathExists(const std::string& path) const;
 
   // TODO(https://github.com/brave/brave-browser/issues/14673) Decouple
   // migration business logic.
@@ -303,50 +311,55 @@ class AdsServiceImpl : public AdsService,
       mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver> observer)
       override;
 
-  bool IsNetworkConnectionAvailable() const override;
+  void IsNetworkConnectionAvailable(
+      IsNetworkConnectionAvailableCallback callback) override;
 
-  bool IsBrowserActive() const override;
-  bool IsBrowserInFullScreenMode() const override;
+  void IsBrowserActive(IsBrowserActiveCallback callback) override;
+  void IsBrowserInFullScreenMode(
+      IsBrowserInFullScreenModeCallback callback) override;
 
-  bool CanShowNotificationAds() override;
-  bool CanShowNotificationAdsWhileBrowserIsBackgrounded() const override;
-  void ShowNotificationAd(const ads::NotificationAdInfo& ad) override;
+  void CanShowNotificationAds(CanShowNotificationAdsCallback callback) override;
+  void CanShowNotificationAdsWhileBrowserIsBackgrounded(
+      CanShowNotificationAdsWhileBrowserIsBackgroundedCallback callback)
+      override;
+  void ShowNotificationAd(base::Value::Dict dict) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
   void RecordAdEventForId(const std::string& id,
                           const std::string& type,
                           const std::string& confirmation_type,
-                          base::Time time) const override;
-  std::vector<base::Time> GetAdEventHistory(
-      const std::string& ad_type,
-      const std::string& confirmation_type) const override;
-  void ResetAdEventHistoryForId(const std::string& id) const override;
+                          base::Time time) override;
+  void GetAdEventHistory(const std::string& ad_type,
+                         const std::string& confirmation_type,
+                         GetAdEventHistoryCallback callback) override;
+  void ResetAdEventHistoryForId(const std::string& id) override;
 
   void GetBrowsingHistory(int max_count,
                           int days_ago,
-                          ads::GetBrowsingHistoryCallback callback) override;
+                          GetBrowsingHistoryCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/14676) Decouple URL
   // request business logic.
   void UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
-                  ads::UrlRequestCallback callback) override;
+                  UrlRequestCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/26194) Decouple
   // load/save file business logic.
   void Save(const std::string& name,
             const std::string& value,
-            ads::SaveCallback callback) override;
-  void Load(const std::string& name, ads::LoadCallback callback) override;
+            SaveCallback callback) override;
+  void Load(const std::string& name, LoadCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/26195) Decouple load
   // resources business logic.
   void LoadFileResource(const std::string& id,
                         int version,
-                        ads::LoadFileCallback callback) override;
-  std::string LoadDataResource(const std::string& name) override;
+                        LoadFileResourceCallback callback) override;
+  void LoadDataResource(const std::string& name,
+                        LoadDataResourceCallback callback) override;
 
   void GetScheduledCaptcha(const std::string& payment_id,
-                           ads::GetScheduledCaptchaCallback callback) override;
+                           GetScheduledCaptchaCallback callback) override;
   void ShowScheduledCaptchaNotification(
       const std::string& payment_id,
       const std::string& captcha_id,
@@ -354,7 +367,7 @@ class AdsServiceImpl : public AdsService,
   void ClearScheduledCaptcha() override;
 
   void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,
-                        ads::RunDBTransactionCallback callback) override;
+                        RunDBTransactionCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple P2A
   // business logic.
@@ -364,17 +377,26 @@ class AdsServiceImpl : public AdsService,
   void LogTrainingInstance(std::vector<brave_federated::mojom::CovariateInfoPtr>
                                training_instance) override;
 
-  bool GetBooleanPref(const std::string& path) const override;
-  int GetIntegerPref(const std::string& path) const override;
-  double GetDoublePref(const std::string& path) const override;
-  std::string GetStringPref(const std::string& path) const override;
-  int64_t GetInt64Pref(const std::string& path) const override;
-  uint64_t GetUint64Pref(const std::string& path) const override;
-  base::Time GetTimePref(const std::string& path) const override;
-  absl::optional<base::Value::Dict> GetDictPref(
-      const std::string& path) const override;
-  absl::optional<base::Value::List> GetListPref(
-      const std::string& path) const override;
+  void GetBooleanPref(const std::string& path,
+                      GetBooleanPrefCallback callback) override;
+  void GetIntegerPref(const std::string& path,
+                      GetIntegerPrefCallback callback) override;
+  void GetDoublePref(const std::string& path,
+                     GetDoublePrefCallback callback) override;
+  void GetStringPref(const std::string& path,
+                     GetStringPrefCallback callback) override;
+  void GetInt64Pref(const std::string& path,
+                    GetInt64PrefCallback callback) override;
+  void GetUint64Pref(const std::string& path,
+                     GetUint64PrefCallback callback) override;
+  void GetTimePref(const std::string& path,
+                   GetTimePrefCallback callback) override;
+  void GetDictPref(const std::string& path,
+                   GetDictPrefCallback callback) override;
+  void GetListPref(const std::string& path,
+                   GetListPrefCallback callback) override;
+  void HasPrefPath(const std::string& path,
+                   HasPrefPathCallback callback) override;
 
   void SetBooleanPref(const std::string& path, bool value) override;
   void SetIntegerPref(const std::string& path, int value) override;
@@ -389,11 +411,9 @@ class AdsServiceImpl : public AdsService,
 
   void ClearPref(const std::string& path) override;
 
-  bool HasPrefPath(const std::string& path) const override;
-
-  void Log(const char* file,
-           int line,
-           int verbose_level,
+  void Log(const std::string& file,
+           int32_t line,
+           int32_t verbose_level,
            const std::string& message) override;
 
   // BackgroundHelper::Observer:
@@ -465,7 +485,7 @@ class AdsServiceImpl : public AdsService,
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
       bat_ads_client_receiver_;
   mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_remote_;
-  };
+};
 
 }  // namespace brave_ads
 

@@ -19,8 +19,7 @@ AdsClientIOS::~AdsClientIOS() {
   bridge_ = nil;
 }
 
-void AdsClientIOS::AddBatAdsClientObserver(
-    mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver> observer) {
+void AdsClientIOS::AddBatAdsClientObserver(ads::AdsClientObserver* observer) {
   [bridge_ addBatAdsClientObserver:observer];
 }
 

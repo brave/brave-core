@@ -17,10 +17,10 @@
 #include "bat/ads/export.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
-#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
 
 namespace ads {
+
+class AdsClientObserver;
 
 struct NotificationAdInfo;
 
@@ -29,8 +29,7 @@ class ADS_EXPORT AdsClient {
   virtual ~AdsClient() = default;
 
   // Called to add an ads client observer.
-  virtual void AddBatAdsClientObserver(
-      mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver> observer) = 0;
+  virtual void AddBatAdsClientObserver(AdsClientObserver* observer) = 0;
 
   // Returns |true| if there is an available network connection.
   virtual bool IsNetworkConnectionAvailable() const = 0;

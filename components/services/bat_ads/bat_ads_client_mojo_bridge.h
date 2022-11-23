@@ -43,9 +43,7 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
   ~BatAdsClientMojoBridge() override;
 
   // AdsClient:
-  void AddBatAdsClientObserver(
-      mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver> observer)
-      override;
+  void AddBatAdsClientObserver(ads::AdsClientObserver* observer) override;
 
   bool IsNetworkConnectionAvailable() const override;
 

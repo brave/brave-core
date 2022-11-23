@@ -20,10 +20,13 @@ class AdsClientObserverNotifier {
   AdsClientObserverNotifier();
 
   AdsClientObserverNotifier(const AdsClientObserverNotifier& other) = delete;
-  AdsClientObserverNotifier& operator=(const AdsClientObserverNotifier& other) = delete;
+  AdsClientObserverNotifier& operator=(const AdsClientObserverNotifier& other) =
+      delete;
 
-  AdsClientObserverNotifier(AdsClientObserverNotifier&& other) noexcept = delete;
-  AdsClientObserverNotifier& operator=(AdsClientObserverNotifier&& other) noexcept = delete;
+  AdsClientObserverNotifier(AdsClientObserverNotifier&& other) noexcept =
+      delete;
+  AdsClientObserverNotifier& operator=(
+      AdsClientObserverNotifier&& other) noexcept = delete;
 
   ~AdsClientObserverNotifier();
 

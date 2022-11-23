@@ -218,9 +218,9 @@ void UnitTestBase::Initialize() {
 
 void UnitTestBase::MockAddBatAdsClientObserver() {
   ON_CALL(*ads_client_mock_, AddBatAdsClientObserver(_))
-      .WillByDefault(Invoke(
-          [=](mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver>
-                  observer) { AddBatAdsClientObserver(std::move(observer)); }));
+      .WillByDefault(Invoke([=](AdsClientObserver* observer) {
+        AddBatAdsClientObserver(observer->Bind());
+      }));
 }
 
 void UnitTestBase::SetDefaultMocks() {
