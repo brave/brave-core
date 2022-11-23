@@ -4417,6 +4417,7 @@ TEST_F(KeyringServiceUnitTest, AccountsAdded) {
       {"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"});
 }
 
+#if !defined(OFFICIAL_BUILD)
 TEST_F(KeyringServiceUnitTest, DevWalletPassword) {
   base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
 
@@ -4448,5 +4449,6 @@ TEST_F(KeyringServiceUnitTest, DevWalletPassword) {
     cmdline->RemoveSwitch(switches::kDevWalletPassword);
   }
 }
+#endif  // !defined(OFFICIAL_BUILD)
 
 }  // namespace brave_wallet
