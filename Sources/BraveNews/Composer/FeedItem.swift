@@ -6,7 +6,7 @@
 import Foundation
 import CodableHelpers
 
-public struct FeedItem: Equatable, Comparable {
+public struct FeedItem: Hashable, Comparable {
   public var score: Double
   public var content: Content
   public var source: Source
@@ -90,7 +90,7 @@ extension FeedItem {
     }
   }
 
-  public struct FeedContentType: Decodable, Equatable {
+  public struct FeedContentType: Decodable, Hashable {
     var rawValue: String
     init(rawValue: String) {
       self.rawValue = rawValue
@@ -104,7 +104,7 @@ extension FeedItem {
     public static let partner = FeedContentType(rawValue: "brave_partner")
   }
 
-  public struct Content: Equatable, Decodable {
+  public struct Content: Hashable, Decodable {
     public var publishTime: Date
     @URLString public var url: URL?
     @URLString public var imageURL: URL?

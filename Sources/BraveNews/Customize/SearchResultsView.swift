@@ -119,6 +119,7 @@ struct SearchResultsView: View {
       return URLSession(configuration: configuration, delegate: nil, delegateQueue: .main)
     }()
     rssSearchTask = session.dataTask(with: url) { (data, response, error) in
+      defer { rssSearchTask = nil }
       if let error = error {
         completion(.failure(.dataTaskError(error)))
         return
