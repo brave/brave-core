@@ -502,6 +502,7 @@ struct UrlRequest {
   string content_type;
   bool skip_log;
   uint32 load_flags = 0;
+  uint32 retries_on_rate_limiting;
 };
 
 struct UrlResponse {
