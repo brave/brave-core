@@ -868,17 +868,34 @@ TEST_F(BraveVPNServiceTest, NeedsConnectTest) {
   OnDisconnected();
   EXPECT_FALSE(needs_connect());
   EXPECT_EQ(ConnectionState::CONNECTING, connection_state());
+}
 
-  // Handle connect after disconnect current connection.
-  connection_state() = ConnectionState::CONNECTED;
+TEST_F(BraveVPNServiceTest, OnDisconnectedWithoutNetwork) {
+  std::string env = skus::GetDefaultEnvironment();
+  // Connection state can be changed with purchased.
+  SetPurchasedState(env, PurchasedState::PURCHASED);
+
+  SetDeviceRegion("eu-es");
   auto network_change_notifier = net::NetworkChangeNotifier::CreateIfNeeded();
   net::test::ScopedMockNetworkChangeNotifier mock_notifier;
   mock_notifier.mock_network_change_notifier()->SetConnectionType(
       net::NetworkChangeNotifier::CONNECTION_NONE);
   EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_NONE,
             net::NetworkChangeNotifier::GetConnectionType());
+
+  // Handle connect after disconnect current connection.
+  // When we need another connect, it should make next connect call
+  // even if network is not available.
+  connection_state() = ConnectionState::CONNECTED;
+  needs_connect() = true;
   OnDisconnected();
   EXPECT_FALSE(needs_connect());
+  EXPECT_EQ(ConnectionState::CONNECTING, connection_state());
+
+  // Set connect failed when we don't want another connect.
+  connection_state() = ConnectionState::CONNECTED;
+  needs_connect() = false;
+  OnDisconnected();
   EXPECT_EQ(ConnectionState::CONNECT_FAILED, connection_state());
 }
 
