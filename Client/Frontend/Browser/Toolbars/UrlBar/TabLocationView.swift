@@ -7,6 +7,7 @@ import Shared
 import SnapKit
 import BraveShared
 import Combine
+import BraveCore
 
 protocol TabLocationViewDelegate {
   func tabLocationViewDidTapLocation(_ tabLocationView: TabLocationView)
@@ -407,7 +408,7 @@ class TabLocationView: UIView {
   
   fileprivate func updateTextWithURL() {
     (urlTextField as? DisplayTextField)?.hostString = url?.withoutWWW.host ?? ""
-    urlTextField.text = url?.withoutWWW.schemelessAbsoluteString.trim("/")
+    urlTextField.text = URLFormatter.formatURL(forSecurityDisplay: url?.absoluteString ?? "", schemeDisplay: .omitHttpAndHttps)
   }
 }
 

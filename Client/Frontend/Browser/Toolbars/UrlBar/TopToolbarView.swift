@@ -10,6 +10,7 @@ import Combine
 import UIKit
 import DesignSystem
 import BraveUI
+import BraveCore
 
 private struct TopToolbarViewUX {
   static let locationPadding: CGFloat = 8
@@ -666,8 +667,8 @@ extension TopToolbarView: TabLocationViewDelegate {
 
     var overlayText = locationText
     // Make sure to use the result from topToolbarDisplayTextForURL as it is responsible for extracting out search terms when on a search page
-    if let text = locationText, let url = URL(string: text), let host = url.host {
-      overlayText = url.absoluteString.replacingOccurrences(of: host, with: host.asciiHostToUTF8())
+    if let text = locationText, let url = URL(string: text) {
+      overlayText = URLFormatter.formatURL(forSecurityDisplay: url.absoluteString, schemeDisplay: .show)
     }
     enterOverlayMode(overlayText, pasted: false, search: isSearchQuery)
   }

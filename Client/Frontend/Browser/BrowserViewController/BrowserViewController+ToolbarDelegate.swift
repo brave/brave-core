@@ -207,22 +207,32 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func processAddressBar(text: String, visitType: VisitType, isBraveSearchPromotion: Bool = false) {
-    if let fixupURL = URIFixup.getURL(text), !isBraveSearchPromotion {
-      // Do not allow users to enter URLs with the following schemes.
-      // Instead, submit them to the search engine like Chrome-iOS does.
-      if !["file"].contains(fixupURL.scheme) {
-        // The user entered a URL, so use it.
-        finishEditingAndSubmit(fixupURL, visitType: visitType)
+    if !isBraveSearchPromotion {
+      if submitValidURL(text, visitType: visitType) {
         return
       }
     }
-
+    
     // We couldn't build a URL, so pass it on to the search engine.
     submitSearchText(text, isBraveSearchPromotion: isBraveSearchPromotion)
 
     if !PrivateBrowsingManager.shared.isPrivateBrowsing {
       RecentSearch.addItem(type: .text, text: text, websiteUrl: nil)
     }
+  }
+  
+  func submitValidURL(_ text: String, visitType: VisitType) -> Bool {
+    if let fixupURL = URIFixup.getURL(text) {
+      // Do not allow users to enter URLs with the following schemes.
+      // Instead, submit them to the search engine like Chrome-iOS does.
+      if !["file"].contains(fixupURL.scheme) {
+        // The user entered a URL, so use it.
+        finishEditingAndSubmit(fixupURL, visitType: visitType)
+        return true
+      }
+    }
+    
+    return false
   }
 
   func submitSearchText(_ text: String, isBraveSearchPromotion: Bool = false) {
