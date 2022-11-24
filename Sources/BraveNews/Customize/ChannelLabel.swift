@@ -69,7 +69,7 @@ private let channelGlyphMap: [String: String] = [
   "Home": "brave.house",
   "Crypto": "brave.bitcoinsign",
   "Technology": "brave.desktop.and.phone",
-  "Entertainment": "brave.star",
+  "Entertainment": "brave.video",
   "Top News": "brave.trophy",
   "Culture": "brave.book.alt",
   "Travel": "brave.mappin",
