@@ -28,7 +28,8 @@ absl::optional<mojom::UrlRequestPtr> RequestBuilder::Request() const {
   }
 
   return mojom::UrlRequest::New(*url, Method(), std::move(*headers), *content,
-                                ContentType(), SkipLog(), LoadFlags());
+                                ContentType(), SkipLog(), LoadFlags(),
+                                RetryOnRateLimiting());
 }
 
 RequestBuilder::RequestBuilder(LedgerImpl* ledger) : ledger_(ledger) {
@@ -57,6 +58,10 @@ bool RequestBuilder::SkipLog() const {
 }
 
 uint32_t RequestBuilder::LoadFlags() const {
+  return 0;
+}
+
+uint32_t RequestBuilder::RetryOnRateLimiting() const {
   return 0;
 }
 

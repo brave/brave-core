@@ -43,6 +43,8 @@ class RequestBuilder {
 
   virtual uint32_t LoadFlags() const;
 
+  virtual uint32_t RetryOnRateLimiting() const;
+
   LedgerImpl* ledger_;  // NOT OWNED
 };
 

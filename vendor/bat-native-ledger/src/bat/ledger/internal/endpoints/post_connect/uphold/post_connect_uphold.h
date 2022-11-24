@@ -57,6 +57,8 @@ class PostConnectUphold final : public PostConnect {
 
   const char* Path() const override;
 
+  uint32_t RetryOnRateLimiting() const override;
+
   std::string address_;
 };
 
