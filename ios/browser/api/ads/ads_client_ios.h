@@ -21,7 +21,9 @@ class AdsClientIOS : public ads::AdsClient {
  private:
   __unsafe_unretained id<AdsClientBridge> bridge_;
 
-  void AddBatAdsClientObserver(ads::AdsClientObserver* observer) override;
+  void AddObserver(ads::AdsClientObserver* observer) override;
+  void RemoveObserver(ads::AdsClientObserver* observer) override;
+  void BindPendingObservers() override;
   bool IsNetworkConnectionAvailable() const override;
   bool IsBrowserActive() const override;
   bool IsBrowserInFullScreenMode() const override;

@@ -43,7 +43,9 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
   ~BatAdsClientMojoBridge() override;
 
   // AdsClient:
-  void AddBatAdsClientObserver(ads::AdsClientObserver* observer) override;
+  void AddObserver(ads::AdsClientObserver* observer) override;
+  void RemoveObserver(ads::AdsClientObserver* observer) override;
+  void BindPendingObservers() override;
 
   bool IsNetworkConnectionAvailable() const override;
 
@@ -127,7 +129,9 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
            const std::string& message) override;
 
  private:
-  mojo::AssociatedRemote<mojom::BatAdsClient> bat_ads_client_receiver_;
+  mojo::AssociatedRemote<mojom::BatAdsClient> receiver_;
+  std::vector<ads::AdsClientObserver*> pending_observers_;
+  bool is_observers_bound_ = false;
 };
 
 }  // namespace bat_ads

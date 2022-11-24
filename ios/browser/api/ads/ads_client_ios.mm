@@ -19,8 +19,16 @@ AdsClientIOS::~AdsClientIOS() {
   bridge_ = nil;
 }
 
-void AdsClientIOS::AddBatAdsClientObserver(ads::AdsClientObserver* observer) {
-  [bridge_ addBatAdsClientObserver:observer];
+void AdsClientIOS::AddObserver(ads::AdsClientObserver* observer) {
+  [bridge_ addObserver:observer];
+}
+
+void AdsClientIOS::RemoveObserver(ads::AdsClientObserver* observer) {
+  [bridge_ removeObserver:observer];
+}
+
+void AdsClientIOS::BindPendingObservers() {
+  [bridge_ bindPendingObservers];
 }
 
 bool AdsClientIOS::IsNetworkConnectionAvailable() const {

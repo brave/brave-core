@@ -271,7 +271,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   adEventHistory = new ads::AdEventHistory();
 
   adsClient = new AdsClientIOS(self);
-  adsClientObserverNotifier = new AdsClientObserverNotifier();
+  adsClientObserverNotifier = new AdsClientObserverNotifierIOS(self);
   ads = ads::Ads::CreateInstance(adsClient);
   ads->Initialize(base::BindOnce(^(const bool success) {
     [self periodicallyCheckForAdsResourceUpdates];
@@ -484,8 +484,16 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 #pragma mark - Observers
 
-- (void)addBatAdsClientObserver:(ads::AdsClientObserver*)observer {
-  ads::AddBatAdsClientObserver(observer);
+- (void)addObserver:(ads::AdsClientObserver*)observer {
+  // TODO(tmancey/aseren): To be implemented
+}
+
+- (void)removeObserver:(ads::AdsClientObserver*)observer {
+  // TODO(tmancey/aseren): To be implemented
+}
+
+- (void)bindPendingObservers {
+  // TODO(tmancey/aseren): To be implemented
 }
 
 - (void)applicationDidBecomeActive {

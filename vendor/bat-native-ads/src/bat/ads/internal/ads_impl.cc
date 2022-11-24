@@ -83,6 +83,8 @@ void SuccessfullyInitializedAds(InitializeCallback callback) {
 
   std::move(callback).Run(/*success*/ true);
 
+  AdsClientHelper::GetInstance()->BindPendingObservers();
+
   AdsObserverManager::GetInstance()->NotifyDidInitializeAds();
 }
 

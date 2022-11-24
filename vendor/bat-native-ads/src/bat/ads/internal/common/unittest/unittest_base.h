@@ -139,7 +139,7 @@ class UnitTestBase : public AdsClientObserverNotifierForTesting,
  private:
   void Initialize();
 
-  void MockAddBatAdsClientObserver();
+  void MockAdsClientAddObserver();
 
   void SetDefaultMocks();
 

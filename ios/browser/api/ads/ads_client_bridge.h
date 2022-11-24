@@ -18,7 +18,9 @@
 - (bool)isBrowserActive;
 - (bool)isBrowserInFullScreenMode;
 - (bool)canShowNotificationAdsWhileBrowserIsBackgrounded;
-- (void)addBatAdsClientObserver:(ads::AdsClientObserver*)observer;
+- (void)addObserver:(ads::AdsClientObserver*)observer;
+- (void)removeObserver:(ads::AdsClientObserver*)observer;
+- (void)bindPendingObservers;
 - (bool)isNetworkConnectionAvailable;
 - (bool)canShowNotificationAds;
 - (void)loadFileResource:(const std::string&)id

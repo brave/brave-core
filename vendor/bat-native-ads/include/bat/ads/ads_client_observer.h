@@ -28,10 +28,14 @@ class AdsClientObserver : public bat_ads::mojom::BatAdsClientObserver {
 
   ~AdsClientObserver() override;
 
-  // Binds the receiver, connecting it to a new PendingRemote which is returned
-  // for transmission elsewhere (typically to a Remote who will consume it to
-  // start making calls).
-  mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver> Bind();
+  // Creates a pending receiver, connecting it to a new PendingRemote which is
+  // returned for transmission elsewhere (typically to a Remote who will consume
+  // it to start making calls).
+  mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver>
+  CreatePendingReceiverAndPassRemote();
+
+  // Binds the receiver by consuming the pending receiver which was created.
+  void BindReceiver();
 
   // Indicates whether the receiver is bound, meaning it may continue to receive
   // Interface method calls from a remote caller.
@@ -39,7 +43,7 @@ class AdsClientObserver : public bat_ads::mojom::BatAdsClientObserver {
 
   // Resets the receiver to an unbound state. An unbound Receiver will NEVER
   // schedule method calls or disconnection notifications, and any pending tasks
-  // which were scheduled prior to unbinding are effectively cancelled.
+  // which were scheduled prior to unbinding are effectively canceled.
   void Reset() { receiver_.reset(); }
 
   // Invoked when the operating system locale changes.
@@ -126,6 +130,7 @@ class AdsClientObserver : public bat_ads::mojom::BatAdsClientObserver {
                                 const std::string& recovery_seed) override {}
 
  private:
+  mojo::PendingReceiver<bat_ads::mojom::BatAdsClientObserver> pending_receiver_;
   mojo::Receiver<bat_ads::mojom::BatAdsClientObserver> receiver_{this};
 };
 

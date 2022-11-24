@@ -216,15 +216,16 @@ void UnitTestBase::Initialize() {
   task_environment_.FastForwardUntilNoTasksRemain();
 }
 
-void UnitTestBase::MockAddBatAdsClientObserver() {
-  ON_CALL(*ads_client_mock_, AddBatAdsClientObserver(_))
+void UnitTestBase::MockAdsClientAddObserver() {
+  ON_CALL(*ads_client_mock_, AddObserver(_))
       .WillByDefault(Invoke([=](AdsClientObserver* observer) {
-        AddBatAdsClientObserver(observer->Bind());
+        AddBatAdsClientObserver(observer->CreatePendingReceiverAndPassRemote());
+        observer->BindReceiver();
       }));
 }
 
 void UnitTestBase::SetDefaultMocks() {
-  MockAddBatAdsClientObserver();
+  MockAdsClientAddObserver();
 
   MockBuildChannel(BuildChannelType::kRelease);
 
