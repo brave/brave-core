@@ -458,6 +458,11 @@ void BraveNewsController::IsFeedUpdateAvailable(
                                          std::move(callback));
 }
 
+void BraveNewsController::AddFeedListener(
+    mojo::PendingRemote<mojom::FeedListener> listener) {
+  feed_controller_.AddListener(std::move(listener));
+}
+
 void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
   // TODO(petemill): maybe we need to have a way to re-fetch ads_service,
   // since it may have been disabled at time of service creation and enabled
