@@ -96,6 +96,19 @@ extension FeedDataSource {
     }
   }
   
+  @MainActor func purgeDisabledRSSLocations() {
+    // News 2.0 no longer allows keeping RSS feeds, so this will attempt to remove any RSS feeds the user has
+    // specifically disabled
+    let locations = Set(rssFeedLocations.map(\.id))
+    let disabledLocations = FeedSourceOverride.all().filter {
+      !$0.enabled && locations.contains($0.publisherID)
+    }
+    for location in disabledLocations {
+      guard let url = URL(string: location.publisherID) else { continue }
+      removeRSSFeed(.init(title: nil, url: url))
+    }
+  }
+  
   // MARK: - P3A
   
   func recordTotalExternalFeedsP3A() {

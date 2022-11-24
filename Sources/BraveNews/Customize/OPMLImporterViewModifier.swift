@@ -7,12 +7,41 @@ import Foundation
 import SwiftUI
 import BraveUI
 import BraveShared
+import FeedKit
+
+enum FindFeedsError: Error, Identifiable {
+  /// An error occured while attempting to download the page
+  case dataTaskError(Error)
+  /// The data was either not received or is in the incorrect format
+  case invalidData
+  /// The data downloaded did not match a supported feed type
+  case parserError(ParserError)
+  /// No feeds were found at the given URL
+  case noFeedsFound
+  
+  var localizedDescription: String {
+    switch self {
+    case .dataTaskError(let error as URLError) where error.code == .notConnectedToInternet:
+      return error.localizedDescription
+    case .dataTaskError:
+      return Strings.BraveNews.addSourceNetworkFailureMessage
+    case .invalidData, .parserError:
+      return Strings.BraveNews.addSourceInvalidDataMessage
+    case .noFeedsFound:
+      return Strings.BraveNews.addSourceNoFeedsFoundMessage
+    }
+  }
+  
+  var id: String {
+    localizedDescription
+  }
+}
 
 struct OPMLImporterViewModifier: ViewModifier {
   @Binding var isPresented: Bool
   var dataSource: FeedDataSource
   @State private var opmlParsedResult: OPMLParsedResult?
-  @State private var importError: FindFeedsError? // TODO: Take this out
+  @State private var importError: FindFeedsError?
   
   func body(content: Content) -> some View {
     content

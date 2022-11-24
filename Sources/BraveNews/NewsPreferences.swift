@@ -17,5 +17,7 @@ extension Preferences {
     ///
     /// Example: ["en_US": "Top Sources"]
     public static let followedChannels = Option<[String: [String]]>(key: "brave-news.followed-channels", default: [:])
+    public static let isNewsRevampSetUpCompleted = Option<Bool>(key: "brave-news.revamp.setup.completed", default: false)
+    public static let selectedLocale = Option<String?>(key: "brave-news.selected-locale", default: nil)
   }
 }
