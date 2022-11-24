@@ -59,11 +59,15 @@ public class URIFixup {
   }
 
   public static func getURL(_ entry: String) -> URL? {
-    if let url = URL(string: entry), InternalURL.isValid(url: url) {
-      return URL(string: entry)
+    let trimmed = entry.trimmingCharacters(in: .whitespacesAndNewlines)
+    
+    // NSURL: idnString from brave core handles the puny code represantation of Hostnames
+    // Using Punycode, host names containing Unicode characters are transcoded to a subset of ASCII
+    let entryURL = NSURL(idnString: trimmed) as URL?
+    if let url = entryURL, InternalURL.isValid(url: url) {
+      return url
     }
 
-    let trimmed = entry.trimmingCharacters(in: .whitespacesAndNewlines)
     guard let escaped = trimmed.addingPercentEncoding(withAllowedCharacters: .URLAllowed) else {
       return nil
     }
@@ -74,7 +78,7 @@ public class URIFixup {
     // the official URI scheme list, so that other such search phrases
     // like "filetype:" are recognised as searches rather than URLs.
     // Use `URL(string: entry)` so it doesn't double percent escape URLs.
-    if let url = URL(string: entry) ?? URL(string: escaped), url.schemeIsValid {
+    if let url = entryURL, url.schemeIsValid {
       return validateURL(url)
     }
 
@@ -86,16 +90,12 @@ public class URIFixup {
       return nil
     }
 
-    if trimmed.range(of: " ") != nil {
-      return nil
-    }
-
     if trimmed.range(of: ":") != nil {
       // The host is a valid IPv4 or IPv6 address
       if isValidIPAddressURL(trimmed) {
         // IP Addresses do NOT require a Scheme.
         // However, Brave requires that URLs have a scheme.
-        return URL(string: "http://\(escaped)")
+        return NSURL(idnString: "http://\(escaped)") as URL?
       } else {
         // If host is NOT an IP-Address, it should never contain a colon
         // This is because it also doesn't contain a "." so it isn't a domain at all.
@@ -116,16 +116,8 @@ public class URIFixup {
     //    - Chrome takes you to the domain (seems like a security flaw).
     //    - Safari passes on the entire url to the Search Engine just like it does
     //      without a path or query.
-    if URL(string: trimmed)?.user != nil || URL(string: escaped)?.user != nil || URL(string: "http://\(trimmed)")?.user != nil || URL(string: "http://\(escaped)")?.user != nil {
-      return nil
-    }
-
-    // If the user enters anything arithmetic
-    // Such as 125.5, do not construct a URL from it
-    // It is a mathematical expression
-    if let url = URL(string: trimmed),
-      url.scheme == nil,
-      Double(trimmed) != nil {
+    if URL(string: trimmed)?.user != nil || URL(string: escaped)?.user != nil ||
+        URL(string: "http://\(trimmed)")?.user != nil || URL(string: "http://\(escaped)")?.user != nil {
       return nil
     }
 
@@ -138,8 +130,7 @@ public class URIFixup {
       if dotCount > 0 && !isValidIPAddress(escaped) {
         // If there is a "." or ":", prepend "http://" and try again. Since this
         // is strictly an "http://" URL, we also require a host.
-        if let url = URL(string: "http://\(escaped)"),
-          let host = url.host,
+        if let url = NSURL(idnString: "http://\(escaped)") as URL?, let host = url.host,
           host.rangeOfCharacter(from: CharacterSet(charactersIn: "1234567890.[]:").inverted) != nil {
           return validateURL(url)
         }
@@ -149,7 +140,7 @@ public class URIFixup {
 
     // If there is a "." or ":", prepend "http://" and try again. Since this
     // is strictly an "http://" URL, we also require a host.
-    if let url = URL(string: "http://\(escaped)"), url.host != nil {
+    if let url = NSURL(idnString: "http://\(escaped)") as URL?, url.host != nil {
       return validateURL(url)
     }
 

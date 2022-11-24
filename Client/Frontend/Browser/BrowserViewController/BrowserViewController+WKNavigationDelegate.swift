@@ -664,6 +664,45 @@ extension BrowserViewController: WKNavigationDelegate {
     guard let tab = tab(for: webView), let url = webView.url, rewards.isEnabled else { return }
     tab.redirectURLs.append(url)
   }
+  
+  /// Invoked when an error occurs while starting to load data for the main frame.
+  public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+    // Ignore the "Frame load interrupted" error that is triggered when we cancel a request
+    // to open an external application and hand it over to UIApplication.openURL(). The result
+    // will be that we switch to the external app, for example the app store, while keeping the
+    // original web page in the tab instead of replacing it with an error page.
+    let error = error as NSError
+    if error.domain == "WebKitErrorDomain" && error.code == 102 {
+      return
+    }
+
+    if checkIfWebContentProcessHasCrashed(webView, error: error) {
+      return
+    }
+
+    if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
+      if let tab = tabManager[webView], tab === tabManager.selectedTab {
+        updateToolbarCurrentURL(tab.url?.displayURL)
+        updateWebViewPageZoom(tab: tab)
+      }
+      return
+    }
+
+    if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
+      ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
+      // Submitting same errornous URL using toolbar will cause progress bar get stuck
+      // Reseting the progress bar in case there is an error is necessary
+      topToolbar.hideProgressBar()
+
+      // If the local web server isn't working for some reason (Brave cellular data is
+      // disabled in settings, for example), we'll fail to load the session restore URL.
+      // We rely on loading that page to get the restore callback to reset the restoring
+      // flag, so if we fail to load that page, reset it here.
+      if InternalURL(url)?.aboutComponent == "sessionrestore" {
+        tabManager.allTabs.filter { $0.webView == webView }.first?.restoring = false
+      }
+    }
+  }
 }
 
 extension WKNavigationType: CustomDebugStringConvertible {
