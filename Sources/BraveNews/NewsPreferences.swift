@@ -13,7 +13,6 @@ extension Preferences {
     public static let isEnabled = Option<Bool>(key: "brave-today.enabled", default: true)
     public static let languageChecked = Option<Bool>(key: "brave-today.language-checked", default: false)
     public static let debugEnvironment = Option<String?>(key: "brave-today.debug.environment", default: nil)
-    public static let debugLanguageCode = Option<String?>(key: "brave-today.debug.language-code", default: nil)
     /// A list of channels followed for a locale.
     ///
     /// Example: ["en_US": "Top Sources"]

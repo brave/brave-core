@@ -56,6 +56,7 @@ public class FeedDataSource: ObservableObject {
       reloadChannels()
     }
   }
+  @Published private(set) var sourceSuggestions: [String: [FeedItem.SourceSimilarity]] = [:]
   @Published public var selectedLocale: String = "en_CA" {
     didSet {
       reloadChannels()
@@ -100,24 +101,12 @@ public class FeedDataSource: ObservableObject {
   // MARK: - Initialization
 
   public init() {
-    assert(!FeedDataSource.supportedLanguages.isEmpty, "We shouldn't ever have no supported languages")
-    self.languageCode = {
-      if let code = Locale.preferredLanguages.first?.prefix(2).lowercased(),
-         FeedDataSource.supportedLanguages.contains(code) {
-        return code
-      }
-      return FeedDataSource.supportedLanguages.first!
-    }()
     restoreCachedSources()
     
     if !AppConstants.buildChannel.isPublic,
       let savedEnvironment = Preferences.BraveNews.debugEnvironment.value,
       let environment = Environment(rawValue: savedEnvironment) {
       self.environment = environment
-      
-      if let savedLanguageCode = Preferences.BraveNews.debugLanguageCode.value {
-        self.languageCode = savedLanguageCode
-      }
     }
     
     recordTotalExternalFeedsP3A()
@@ -156,22 +145,6 @@ public class FeedDataSource: ObservableObject {
         !AppConstants.buildChannel.isPublic,
         "Environment cannot be changed on non-public build channels")
       Preferences.BraveNews.debugEnvironment.value = environment.rawValue
-      clearCachedFiles()
-    }
-  }
-  
-  /// The language used when fetching localized resources
-  ///
-  /// Updating the language code automatically clears the current cached items if any exists
-  ///
-  /// - warning: Should only be changed in non-public releases
-  var languageCode: String {
-    didSet {
-      if oldValue == languageCode { return }
-      assert(
-        !AppConstants.buildChannel.isPublic,
-        "Language code cannot be changed on non-public build channels")
-      Preferences.BraveNews.debugLanguageCode.value = languageCode
       clearCachedFiles()
     }
   }
@@ -223,6 +196,13 @@ public class FeedDataSource: ObservableObject {
       isLocalized: true,
       cacheLifetime: 1.hours
     )
+    static let sourceSuggestions = NewsResource(
+      bucket: NewsBucket(name: "brave-today-cdn", path: "source-suggestions"),
+      name: "source_similarity_t10",
+      type: "json",
+      isLocalized: true,
+      cacheLifetime: 1.days
+    )
   }
 
   /// Get the full name of a file for a giv en Brave News resource, taking into account whether
@@ -230,8 +210,8 @@ public class FeedDataSource: ObservableObject {
   private func resourceFilename(for resource: NewsResource) -> String {
     // "en" is the default language and thus does not get the language code inserted into the
     // file name.
-    if resource.isLocalized, languageCode != "en" {
-      return "\(resource.name).\(languageCode).\(resource.type)"
+    if resource.isLocalized {
+      return "\(resource.name).\(selectedLocale).\(resource.type)"
     }
     return "\(resource.name).\(resource.type)"
   }
@@ -378,6 +358,14 @@ public class FeedDataSource: ObservableObject {
     }
     return items.compactMap(\.wrappedValue)
   }
+  
+  private func loadSourceSuggestions() async throws -> [String: [FeedItem.SourceSimilarity]] {
+    let items = try await loadResource(.sourceSuggestions, decodedTo: [String: [FailableDecodable<FeedItem.SourceSimilarity>]].self)
+    if items.isEmpty {
+      throw BraveNewsError.resourceEmpty
+    }
+    return items.mapValues { $0.compactMap(\.wrappedValue) }
+  }
 
   /// Describes a single RSS feed's loaded data set converted into Brave News based data
   private struct RSSDataFeed {
@@ -501,8 +489,9 @@ public class FeedDataSource: ObservableObject {
     Task { @MainActor in
       do {
         async let sources = loadGlobalSources()
+        async let suggestions = loadSourceSuggestions()
         async let items = loadFeed()
-        (self.sources, self.items) = try await (sources, items)
+        (self.sources, self.items, self.sourceSuggestions) = try await (sources, items, suggestions)
         for result in await self.loadRSSFeeds() {
           switch result {
           case .success(let feed):
@@ -620,7 +609,9 @@ public class FeedDataSource: ObservableObject {
   /// Searches sources, channels and RSS feeds
   func search(query: String) -> SearchResults? {
     let sourceResults = sources.filter({ $0.name.localizedCaseInsensitiveContains(query) })
-    var channelResults: Set<FeedChannel> = Set(channels.filter({ $0.localizedCaseInsensitiveContains(query) }).map({ .init(localeIdentifier: self.selectedLocale, name: $0) }))
+    var channelResults: Set<FeedChannel> = Set(channels.filter({ $0.localizedCaseInsensitiveContains(query) }).map({
+      .init(localeIdentifier: self.selectedLocale, name: $0)
+    }))
     // Add any followed channels that aren't from the selected locale
     channelResults.formUnion(followedChannels.filter({ $0.name.localizedCaseInsensitiveContains(query) }))
     return .init(sources: sourceResults, channels: Array(channelResults))

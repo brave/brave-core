@@ -8,7 +8,8 @@ import SwiftUI
 import BraveShared
 import BraveUI
 
-struct SourceListContainerView: View {
+struct SourceListContainerView
+: View {
   @ObservedObject var dataSource: FeedDataSource
   
   var localizedSourcesByRank: [FeedItem.Source] {

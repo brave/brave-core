@@ -224,7 +224,7 @@ public struct NewsSettingsView: View {
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
           NavigationLink {
-            EmptyView()
+            SourceSuggestionsContainerView(dataSource: dataSource)
           } label: {
             DestinationLabel(
               image: Image(braveSystemName: "brave.star"),
@@ -278,6 +278,8 @@ public struct NewsSettingsView: View {
     .animation(.default, value: searchDelegate.isEditing)
     .listStyle(.insetGrouped)
     .listBackgroundColor(Color(.braveGroupedBackground))
+    .navigationTitle("Brave News") // DNT?
+    .navigationBarTitleDisplayMode(.inline)
     .onChange(of: searchDelegate.query) { query in
       searchResults = dataSource.search(query: query)
     }
@@ -306,6 +308,7 @@ public struct NewsSettingsView: View {
     }
     .sheet(isPresented: $isShowingAddSource) {
       BraveNewsAddSourceView(dataSource: dataSource)
+        .ignoresSafeArea()
     }
   }
 }
