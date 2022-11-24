@@ -37,7 +37,7 @@ import Foundation
   public var wrappedValue: T?
   public init(from decoder: Decoder) throws {
     let container = try decoder.singleValueContainer()
-    #if MOZ_CHANNEL_DEBUG
+    #if DEBUG
     // In debug builds we print out failed decodes to console so we can fix the issue or notify the
     // appropriate team about some malformed JSON
     do {

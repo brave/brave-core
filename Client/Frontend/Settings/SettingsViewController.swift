@@ -239,11 +239,14 @@ class SettingsViewController: TableViewController {
       Row(
         text: Strings.BraveNews.braveNews,
         selection: {
-          let todaySettings = BraveNewsSettingsViewController(dataSource: self.feedDataSource, ads: self.rewards?.ads)
-          todaySettings.newsSettingsDidDismiss = {
-            AppReviewManager.shared.isReviewRequired = true
+          let controller = NewsSettingsViewController(dataSource: self.feedDataSource)
+          controller.viewDidDisappear = {
+            if Preferences.Review.braveNewsCriteriaPassed.value {
+              AppReviewManager.shared.isReviewRequired = true
+              Preferences.Review.braveNewsCriteriaPassed.value = false
+            }
           }
-          self.navigationController?.pushViewController(todaySettings, animated: true)
+          self.navigationController?.pushViewController(controller, animated: true)
         }, image: UIImage(named: "settings-brave-today", in: .module, compatibleWith: nil)!.template, accessory: .disclosureIndicator)
     )
 

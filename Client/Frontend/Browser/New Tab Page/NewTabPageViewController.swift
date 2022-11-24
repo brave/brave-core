@@ -583,7 +583,7 @@ class NewTabPageViewController: UIViewController {
       openBraveNewsActivity.becomeCurrent()
     case .itemAction(.toggledSource, let context):
       let isEnabled = feedDataSource.isSourceEnabled(context.item.source)
-      feedDataSource.toggleSource(context.item.source, enabled: !isEnabled)
+      feedDataSource.toggleSourceHidden(context.item.source, hidden: isEnabled)
       if isEnabled {
         let alert = FeedActionAlertView.feedDisabledAlertView(for: context.item)
         alert.present(on: self)
@@ -734,9 +734,12 @@ class NewTabPageViewController: UIViewController {
   }
 
   @objc private func tappedBraveNewsSettings() {
-    let controller = BraveNewsSettingsViewController(dataSource: feedDataSource, ads: rewards.ads)
-    controller.newsSettingsDidDismiss = {
-      AppReviewManager.shared.isReviewRequired = true
+    let controller = NewsSettingsViewController(dataSource: feedDataSource)
+    controller.viewDidDisappear = {
+      if Preferences.Review.braveNewsCriteriaPassed.value {
+        AppReviewManager.shared.isReviewRequired = true
+        Preferences.Review.braveNewsCriteriaPassed.value = false
+      }
     }
     let container = UINavigationController(rootViewController: controller)
     present(container, animated: true)
