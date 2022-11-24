@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import UIKit
 import Shared
 
 extension BrowserViewController {
@@ -28,5 +29,15 @@ extension BrowserViewController {
         }
       }
     )
+  }
+  
+  var braveTalkKeyCommands: [UIKeyCommand] {
+    [
+      .init(input: "m", modifierFlags: [], action: #selector(BrowserViewController.toggleBraveTalkMute))
+    ]
+  }
+  
+  @objc private func toggleBraveTalkMute() {
+    braveTalkJitsiCoordinator.toggleMute()
   }
 }
