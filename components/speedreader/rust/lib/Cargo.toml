@@ -18,7 +18,7 @@ include = [
 ]
 
 [dependencies]
-flate2 = { version = "1.0.22", features = ["rust_backend"], default-features = false }
+flate2 = { version = "1.0.25", features = ["rust_backend"], default-features = false }
 html5ever = "0.25.1"
 kuchiki = { git = "https://github.com/brave/kuchiki", branch = "speedreader" }
 lol_html = "0.2.0"
