@@ -148,6 +148,8 @@ source_set("ui") {
       "webui/settings/brave_search_engines_handler.h",
       "webui/settings/brave_settings_localized_strings_provider.cc",
       "webui/settings/brave_settings_localized_strings_provider.h",
+      "webui/settings/brave_site_settings_handler.cc",
+      "webui/settings/brave_site_settings_handler.h",
       "webui/settings/brave_sync_handler.cc",
       "webui/settings/brave_sync_handler.h",
       "webui/settings/brave_wallet_handler.cc",
