@@ -36,7 +36,7 @@ public class BraveVPN {
 
   /// Initialize the vpn service. It should be called even if the user hasn't bought the vpn yet.
   /// This function can have side effects if the receipt has expired(removes the vpn connection then).
-  public static func initialize(customCredential: (credential: String, environment: String)?) {
+  public static func initialize(customCredential: SkusVPNCredential?) {
     func clearConfiguration() {
       GRDVPNHelper.clearVpnConfiguration()
       clearCredentials()
@@ -49,7 +49,13 @@ public class BraveVPN {
     }
     
     if let customCredential = customCredential {
-      setCustomVPNCredential(customCredential.credential, environment: customCredential.environment)
+      if hasExpired == true {
+        clearConfiguration()
+        logAndStoreError("Skus credential expired, resetting configuration")
+        return
+      }
+      
+      setCustomVPNCredential(customCredential)
     }
     
     helper.verifyMainCredentials { valid, error in
@@ -93,13 +99,13 @@ public class BraveVPN {
     Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
   }
   
-  public static func setCustomVPNCredential(_ credential: String, environment: String) {
+  public static func setCustomVPNCredential(_ credential: SkusVPNCredential) {
     GRDSubscriptionManager.setIsPayingUser(true)
     populateRegionDataIfNecessary()
     
     let dict: NSMutableDictionary =
-    ["brave-vpn-premium-monthly-pass": credential,
-     "brave-payments-env": environment,
+    ["brave-vpn-premium-monthly-pass": credential.guardianCredential,
+     "brave-payments-env": credential.environment,
      "validation-method": "brave-premium"]
     helper.customSubscriberCredentialAuthKeys = dict
   }
@@ -300,6 +306,14 @@ public class BraveVPN {
   public static func clearCredentials() {
     GRDKeychain.removeGuardianKeychainItems()
     GRDKeychain.removeSubscriberCredential(withRetries: 3)
+    
+    clearSkusCredentials() 
+  }
+  
+  public static func clearSkusCredentials() {
+    Preferences.VPN.skusCredential.reset()
+    Preferences.VPN.skusCredentialDomain.reset()
+    Preferences.VPN.expirationDate.reset()
   }
 
   // MARK: - Region selection

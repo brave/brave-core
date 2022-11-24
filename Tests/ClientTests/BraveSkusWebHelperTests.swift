@@ -69,10 +69,12 @@ final class BraveSkusWebHelperTests: XCTestCase {
   }
   
   func testFetchVPNCredential() throws {
+    let sampleCookieExpirationDate = "06 Aug 2022 00:00:00 GMT"
+    
     // Sample token we receive from the server
     let sampleCookie =
     """
-    __Secure-sku#brave-firewall-vpn-premium=eyJ0eXBlIjoidGltZS1saW1pdGVkIiwidmVyc2lvbiI6MSwic2t1IjoiYnJhdmUtZmlyZXdhbGwtdnBuLXByZW1pdW0iLCJwcmVzZW50YXRpb24iOiJleUpsZUhCcGNtVnpRWFFpT2lJeU1ESXlMVEE0TFRBMklpd2lhWE56ZFdWa1FYUWlPaUl5TURJeUxUQTRMVEExSWl3aWRHOXJaVzRpT2lKV1ZUY3hNV1V5VTJoVkwzaEJNRFYzTnk5eVQyNTZVa3hvWkdsc1lqUkdSV2xvYUZkM1YzWmhkRGhIT0ZCSlIxbFpXVE42WkRZNFoxVjJiVUZrTHpKV0luMD0ifQ==;path=*;samesite=strict;expires=Sat, 06 Aug 2022 00:00:00 GMT;secure
+    __Secure-sku#brave-firewall-vpn-premium=eyJ0eXBlIjoidGltZS1saW1pdGVkIiwidmVyc2lvbiI6MSwic2t1IjoiYnJhdmUtZmlyZXdhbGwtdnBuLXByZW1pdW0iLCJwcmVzZW50YXRpb24iOiJleUpsZUhCcGNtVnpRWFFpT2lJeU1ESXlMVEE0TFRBMklpd2lhWE56ZFdWa1FYUWlPaUl5TURJeUxUQTRMVEExSWl3aWRHOXJaVzRpT2lKV1ZUY3hNV1V5VTJoVkwzaEJNRFYzTnk5eVQyNTZVa3hvWkdsc1lqUkdSV2xvYUZkM1YzWmhkRGhIT0ZCSlIxbFpXVE42WkRZNFoxVjJiVUZrTHpKV0luMD0ifQ==;path=*;samesite=strict;expires=Sat, \(sampleCookieExpirationDate);secure
     """
     
     let manuallyExtractedCredential =
@@ -81,15 +83,15 @@ final class BraveSkusWebHelperTests: XCTestCase {
     """
     
     let developmentCred = BraveSkusWebHelper.fetchVPNCredential(sampleCookie, domain: "account.brave.software")
-    XCTAssertEqual(try XCTUnwrap(developmentCred?.credential), manuallyExtractedCredential)
+    XCTAssertEqual(try XCTUnwrap(developmentCred?.guardianCredential), manuallyExtractedCredential)
     XCTAssertEqual("development", try XCTUnwrap(developmentCred?.environment))
     
     let stagingCred = BraveSkusWebHelper.fetchVPNCredential(sampleCookie, domain: "account.bravesoftware.com")
-    XCTAssertEqual(try XCTUnwrap(stagingCred?.credential), manuallyExtractedCredential)
+    XCTAssertEqual(try XCTUnwrap(stagingCred?.guardianCredential), manuallyExtractedCredential)
     XCTAssertEqual("staging", try XCTUnwrap(stagingCred?.environment))
     
     let prodCred = BraveSkusWebHelper.fetchVPNCredential(sampleCookie, domain: "account.brave.com")
-    XCTAssertEqual(try XCTUnwrap(prodCred?.credential), manuallyExtractedCredential)
+    XCTAssertEqual(try XCTUnwrap(prodCred?.guardianCredential), manuallyExtractedCredential)
     XCTAssertEqual("production", try XCTUnwrap(prodCred?.environment))
     
     let wrongDomainCred = BraveSkusWebHelper.fetchVPNCredential(sampleCookie, domain: "example.com")
@@ -97,5 +99,13 @@ final class BraveSkusWebHelperTests: XCTestCase {
     
     let wrongCookie = BraveSkusWebHelper.fetchVPNCredential("wrong cookie", domain: "account.brave.com")
     XCTAssertNil(wrongCookie)
+    
+    let expirationDate = try XCTUnwrap(prodCred?.expirationDate)
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "dd MMM yyyy HH:mm:ss zzz"
+    
+    let dateFromTestCookie = try XCTUnwrap(dateFormatter.date(from: sampleCookieExpirationDate))
+    
+    XCTAssertEqual(expirationDate, dateFromTestCookie)
   }
 }
