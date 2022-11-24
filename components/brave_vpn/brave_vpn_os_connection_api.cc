@@ -67,7 +67,7 @@ void BraveVPNOSConnectionAPI::CreateVPNConnection() {
   CreateVPNConnectionImpl(connection_info_);
 }
 
-void BraveVPNOSConnectionAPI::Connect() {
+void BraveVPNOSConnectionAPI::Connect(bool ignore_network_state) {
   if (IsInProgress()) {
     VLOG(2) << __func__ << ": Current state: " << connection_state_
             << " : prevent connecting while previous operation is in-progress";
@@ -88,7 +88,7 @@ void BraveVPNOSConnectionAPI::Connect() {
   VLOG(2) << __func__ << " : start connecting!";
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTING);
 
-  if (!IsNetworkAvailable()) {
+  if (!ignore_network_state && !IsNetworkAvailable()) {
     VLOG(2) << __func__ << ": Network is not available, failed to connect";
     UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
     return;
@@ -224,9 +224,10 @@ void BraveVPNOSConnectionAPI::OnDisconnected() {
 
   if (needs_connect_) {
     needs_connect_ = false;
-
-    if (connection_state_ == ConnectionState::DISCONNECTED)
-      Connect();
+    // Right after disconnected, network could be unavailable shortly.
+    // In this situation, connect process should go ahead because
+    // because BraveVpnAPIRequest could handle network failure by retrying.
+    Connect(true /* ignore_network_state */);
   }
 }
 
