@@ -165,6 +165,27 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterBooleanPref(kDontAskEnableWebDiscovery, false);
   registry->RegisterIntegerPref(kBraveSearchVisitCount, 0);
 #endif
+
+  // Added 24/11/2022: https://github.com/brave/brave-core/pull/16027
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+  registry->RegisterStringPref(kFTXAccessToken, "");
+  registry->RegisterStringPref(kFTXOauthHost, "");
+  registry->RegisterBooleanPref(kFTXNewTabPageShowFTX, false);
+  registry->RegisterBooleanPref(kCryptoDotComNewTabPageShowCryptoDotCom, false);
+  registry->RegisterBooleanPref(kCryptoDotComHasBoughtCrypto, false);
+  registry->RegisterBooleanPref(kCryptoDotComHasInteracted, false);
+  registry->RegisterStringPref(kGeminiAccessToken, "");
+  registry->RegisterStringPref(kGeminiRefreshToken, "");
+  registry->RegisterBooleanPref(kNewTabPageShowGemini, false);
+#endif
+
+  // Added 24/11/2022: https://github.com/brave/brave-core/pull/16027
+#if !BUILDFLAG(IS_IOS)
+  registry->RegisterStringPref(kBinanceAccessToken, "");
+  registry->RegisterStringPref(kBinanceRefreshToken, "");
+  registry->RegisterBooleanPref(kNewTabPageShowBinance, false);
+  registry->RegisterBooleanPref(kBraveSuggestedSiteSuggestionsEnabled, false);
+#endif
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
