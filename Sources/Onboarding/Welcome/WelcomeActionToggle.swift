@@ -45,20 +45,8 @@ class WelcomeShareActionToggle: BlockedAdsStackView {
     $0.numberOfLines = 0
     $0.minimumScaleFactor = 0.5
     $0.adjustsFontSizeToFitWidth = true
-    $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
-    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     $0.setContentHuggingPriority(.defaultLow, for: .vertical)
     $0.setContentCompressionResistancePriority(.required, for: .vertical)
-  }
-  
-  private let iconView = UIImageView().then {
-    $0.contentMode = .scaleAspectFit
-    $0.image = UIImage(named: "welcome-view-ntp-logo", in: .module, compatibleWith: nil)
-    $0.snp.makeConstraints {
-      $0.size.equalTo(40)
-    }
-    $0.setContentHuggingPriority(.required, for: .horizontal)
-    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
   
   private(set) lazy var shareToggle = UISwitch().then {
