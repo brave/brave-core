@@ -46,6 +46,38 @@ import JitsiMeetSDK
   private var jitsiMeetView: JitsiMeetView?
   private var isBraveTalkInPiPMode: Bool = false
   private var delegate: JitsiDelegate?
+  private var isMuted: Bool = false
+  public private(set) var isCallActive: Bool = false
+  
+  public func toggleMute() {
+    guard Self.isIntegrationEnabled else { return }
+    isMuted.toggle() // The SDK doesn't seem to call `audioMutedChanged` when we call setAudioMuted below…
+    jitsiMeetView?.setAudioMuted(isMuted)
+  }
+  
+  public enum KeyboardPressPhase {
+    case began, changed, ended, cancelled
+  }
+  
+  public func handleResponderPresses(presses: Set<UIPress>, phase: KeyboardPressPhase) {
+    guard Self.isIntegrationEnabled, isCallActive else { return }
+    let isSpacebarPressed = presses.contains(where: { $0.key?.keyCode == .keyboardSpacebar })
+    switch phase {
+    case .began:
+      if isSpacebarPressed {
+        isMuted = false
+      }
+    case .changed:
+      if !isMuted && !isSpacebarPressed {
+        isMuted = true
+      }
+    case .cancelled, .ended:
+      if isSpacebarPressed {
+        isMuted = true
+      }
+    }
+    jitsiMeetView?.setAudioMuted(isMuted)
+  }
   
   public func launchNativeBraveTalk(
     for room: String,
@@ -70,13 +102,15 @@ import JitsiMeetSDK
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
           jmv.window?.bringSubviewToFront(jmv)
         }
+        self?.isCallActive = true
       },
-      readyToClose: { [weak self] in
+      conferenceTerminated: { [weak self] in
         guard let self = self else { return }
         self.pipViewCoordinator?.hide() { _ in
           self.jitsiMeetView?.removeFromSuperview()
           self.jitsiMeetView = nil
           self.pipViewCoordinator = nil
+          self.isCallActive = false
           // Destroy the bridge after they're done
           JitsiMeet.sharedInstance().destroyReactNativeBridge()
           onExitCall()
@@ -84,6 +118,9 @@ import JitsiMeetSDK
       },
       enterPictureInPicture: { [weak self] in
         self?.pipViewCoordinator?.enterPictureInPicture()
+      },
+      audioIsMuted: { [weak self] isMuted in
+        self?.isMuted = isMuted
       }
     )
     
@@ -107,28 +144,42 @@ import JitsiMeetSDK
 
 private class JitsiDelegate: NSObject, JitsiMeetViewDelegate {
   var conferenceWillJoin: () -> Void
-  var readyToClose: () -> Void
+  var conferenceTerminated: () -> Void
   var enterPiP: () -> Void
+  var audioIsMuted: (Bool) -> Void
   
   init(
     conferenceWillJoin: @escaping () -> Void,
-    readyToClose: @escaping () -> Void,
-    enterPictureInPicture: @escaping () -> Void
+    conferenceTerminated: @escaping () -> Void,
+    enterPictureInPicture: @escaping () -> Void,
+    audioIsMuted: @escaping (Bool) -> Void
   ) {
     self.conferenceWillJoin = conferenceWillJoin
-    self.readyToClose = readyToClose
+    self.conferenceTerminated = conferenceTerminated
     self.enterPiP = enterPictureInPicture
+    self.audioIsMuted = audioIsMuted
+  }
+  
+  func conferenceJoined(_ data: [AnyHashable: Any]!) {
+    if let isMuted = data?["isAudioMuted"] as? Bool {
+      audioIsMuted(isMuted)
+    }
   }
   
   func conferenceWillJoin(_ data: [AnyHashable: Any]!) {
     conferenceWillJoin()
   }
   
-  func ready(toClose data: [AnyHashable: Any]!) {
-    readyToClose()
+  func conferenceTerminated(_ data: [AnyHashable: Any]!) {
+    conferenceTerminated()
   }
   
   func enterPicture(inPicture data: [AnyHashable: Any]!) {
     enterPiP()
+  }
+  
+  func audioMutedChanged(_ data: [AnyHashable: Any]!) {
+    guard let isMuted = data?["muted"] as? Bool else { return }
+    audioIsMuted(isMuted)
   }
 }

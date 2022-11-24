@@ -283,7 +283,31 @@ extension BrowserViewController {
     if topToolbar.inOverlayMode {
       keyCommandList.append(contentsOf: searchLocationCommands)
     }
+    
+    if braveTalkJitsiCoordinator.isCallActive {
+      keyCommandList.append(contentsOf: braveTalkKeyCommands)
+    }
 
     return keyCommandList
+  }
+  
+  public override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+    super.pressesBegan(presses, with: event)
+    braveTalkJitsiCoordinator.handleResponderPresses(presses: presses, phase: .began)
+  }
+  
+  public override func pressesChanged(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+    super.pressesChanged(presses, with: event)
+    braveTalkJitsiCoordinator.handleResponderPresses(presses: presses, phase: .changed)
+  }
+  
+  public override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+    super.pressesEnded(presses, with: event)
+    braveTalkJitsiCoordinator.handleResponderPresses(presses: presses, phase: .ended)
+  }
+  
+  public override func pressesCancelled(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+    super.pressesCancelled(presses, with: event)
+    braveTalkJitsiCoordinator.handleResponderPresses(presses: presses, phase: .cancelled)
   }
 }
