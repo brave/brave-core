@@ -2397,7 +2397,6 @@ extension BrowserViewController: TabDelegate {
       BraveTalkScriptHandler(tab: tab, rewards: rewards, launchNativeBraveTalk: { [weak self] tab, room, token in
         self?.launchNativeBraveTalk(tab: tab, room: room, token: token)
       }),
-      BraveSkusScriptHandler(tab: tab),
       ResourceDownloadScriptHandler(tab: tab),
       DownloadContentScriptHandler(browserController: self, tab: tab),
       WindowRenderScriptHandler(tab: tab),
@@ -2413,6 +2412,10 @@ extension BrowserViewController: TabDelegate {
       tab.contentBlocker,
       tab.requestBlockingContentHelper,
     ]
+    
+    if let braveSkusHandler = BraveSkusScriptHandler(tab: tab) {
+      injectedScripts.append(braveSkusHandler)
+    }
     
     // Only add the logins handler and wallet provider if the tab is NOT a private browsing tab
     if !tab.isPrivate {

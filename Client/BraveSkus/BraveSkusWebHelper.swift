@@ -7,6 +7,7 @@ import Foundation
 import Shared
 import BraveShared
 import os.log
+import BraveVPN
 
 class BraveSkusWebHelper {
   /// On which hosts the receipt should be allowed to be exposed.
@@ -102,18 +103,23 @@ class BraveSkusWebHelper {
   }
   
   /// Takes credential passed from the Brave SKUs and extract a proper credential to pass to the GuardianConnect framework.
-  static func fetchVPNCredential(_ credential: String, domain: String) -> (credential: String, environment: String)? {
+  static func fetchVPNCredential(_ credential: String, domain: String) -> SkusVPNCredential? {
     guard let unescapedCredential = credential.unescape(),
           let env = environment(domain: domain),
             let sampleUrl = URL(string: "https://brave.com") else { return nil }
     
-    guard let guardianConnectCredential =
-      HTTPCookie.cookies(withResponseHeaderFields:
-                          ["Set-Cookie": unescapedCredential], for: sampleUrl).first?.value else {
+    guard let cookie = HTTPCookie.cookies(withResponseHeaderFields:
+                                            ["Set-Cookie": unescapedCredential], for: sampleUrl).first else {
       return nil
     }
     
-    return (guardianConnectCredential, env)
+    let guardianCredential = cookie.value
+    
+    guard let expirationDate = cookie.expiresDate else {
+      return nil
+    }
+    
+    return .init(guardianCredential: guardianCredential, environment: env, expirationDate: expirationDate)
   }
   
   static func milisecondsOptionalDate(from stringDate: String) -> Date? {

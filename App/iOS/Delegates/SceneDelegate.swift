@@ -203,6 +203,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     if Preferences.URP.referralLookupOutstanding.value == false {
       appDelegate.dau.sendPingToServer()
     }
+    
+    BraveSkusManager.refreshSKUCredential(isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
   }
 
   func sceneWillResignActive(_ scene: UIScene) {

@@ -60,8 +60,7 @@ public class IAPObserver: NSObject, SKPaymentTransactionObserver {
               //
               // The user will be able to retrieve the shared credential
               // after log in to account.brave website.
-              Preferences.VPN.skusCredential.reset()
-              Preferences.VPN.skusCredentialDomain.reset()
+              BraveVPN.clearSkusCredentials()
             } else {
               // Receipt either expired or receipt validation returned some error.
               self.delegate?.purchaseFailed(error: .receiptError)
