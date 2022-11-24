@@ -11,7 +11,7 @@
 namespace ipfs {
 namespace features {
 
-extern const base::Feature kIpfsFeature;
+BASE_DECLARE_FEATURE(kIpfsFeature);
 
 }  // namespace features
 }  // namespace ipfs

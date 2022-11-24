@@ -104,56 +104,19 @@ mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
     return nullptr;
   }
 
-  CheckWalletState(wallet.get());
-
-  switch (wallet->status) {
-    case mojom::WalletStatus::VERIFIED: {
-      wallet->add_url = GetAddUrl(wallet->address);
-      wallet->withdraw_url = GetWithdrawUrl(wallet->address);
-      break;
-    }
-    case mojom::WalletStatus::PENDING:
-    case mojom::WalletStatus::NOT_CONNECTED:
-    case mojom::WalletStatus::DISCONNECTED_VERIFIED: {
-      wallet->add_url = "";
-      wallet->withdraw_url = "";
-      break;
-    }
-    default:
-      NOTREACHED();
-  }
-
   wallet->account_url = GetAccountUrl();
+  wallet->activity_url = "";
+  wallet->add_url = "";
   wallet->login_url = GetLoginUrl(wallet->one_time_string);
-  wallet->activity_url = GetActivityUrl(wallet->address);
+  wallet->withdraw_url = "";
+
+  if (wallet->status == mojom::WalletStatus::kConnected) {
+    wallet->activity_url = GetActivityUrl(wallet->address);
+    wallet->add_url = GetAddUrl(wallet->address);
+    wallet->withdraw_url = GetWithdrawUrl(wallet->address);
+  }
 
   return wallet;
-}
-
-void CheckWalletState(const mojom::ExternalWallet* wallet) {
-  if (!wallet)
-    return;
-
-  switch (wallet->status) {
-    case mojom::WalletStatus::NOT_CONNECTED:
-    case mojom::WalletStatus::DISCONNECTED_VERIFIED: {
-      DCHECK(wallet->token.empty());
-      DCHECK(wallet->address.empty());
-      break;
-    }
-    case mojom::WalletStatus::PENDING: {
-      DCHECK(!wallet->token.empty());
-      DCHECK(wallet->address.empty());
-      break;
-    }
-    case mojom::WalletStatus::VERIFIED: {
-      DCHECK(!wallet->token.empty());
-      DCHECK(!wallet->address.empty());
-      break;
-    }
-    default:
-      NOTREACHED() << " Unexpected Uphold wallet status " << wallet->status;
-  }
 }
 
 }  // namespace uphold

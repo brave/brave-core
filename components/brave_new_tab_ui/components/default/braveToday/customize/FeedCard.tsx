@@ -1,17 +1,17 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { useState } from 'react'
 import * as React from 'react'
 import styled from 'styled-components'
-import { api } from '../../../../api/brave_news/news'
 import Flex from '../../../Flex'
 import FollowButton from './FollowButton'
 import { getCardColor } from './colors'
 import { usePublisher, usePublisherFollowed } from './Context'
 import { useLazyUnpaddedImageUrl } from '../useUnpaddedImageUrl'
+import getBraveNewsController from '../../../../api/brave_news'
 
 interface CardProps {
   backgroundColor?: string
@@ -96,7 +96,7 @@ export function DirectFeedCard (props: {
     <Card backgroundColor={getCardColor(props.feedUrl)} data-feed-card-is-followed={true}>
       <StyledFollowButton isDisabled={loading} following={false} onClick={async () => {
         setLoading(true)
-        await api.subscribeToDirectFeed(props.feedUrl)
+        await getBraveNewsController().subscribeToNewDirectFeed({ url: props.feedUrl })
         setLoading(false)
       }} />
     </Card>

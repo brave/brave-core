@@ -27,6 +27,8 @@ constexpr uint256_t kDefaultERC20ApproveGasLimit = 300000;
 constexpr int32_t kAutoLockMinutesMin = 1;
 constexpr int32_t kAutoLockMinutesMax = 10080;
 
+constexpr int32_t kAssetDiscoveryMinutesPerRequest = 1;
+
 constexpr char kWalletBaseDirectory[] = "BraveWallet";
 constexpr char kImageSourceHost[] = "erc-token-images";
 constexpr char kWyreID[] = "AC_MGNVBGHPA9T";
@@ -138,6 +140,20 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletSend", IDS_BRAVE_WALLET_SEND},
     {"braveWalletSwap", IDS_BRAVE_WALLET_SWAP},
     {"braveWalletReset", IDS_BRAVE_WALLET_RESET},
+    {"braveWalletSendToken", IDS_BRAVE_WALLET_SEND_TOKEN},
+    {"braveWalletSendNFT", IDS_BRAVE_WALLET_SEND_NFT},
+    {"braveWalletSelectToken", IDS_BRAVE_WALLET_SELECT_TOKEN},
+    {"braveWalletSelectNFT", IDS_BRAVE_WALLET_SELECT_NFT},
+    {"braveWalletSendTabSelectTitle", IDS_BRAVE_WALLET_SEND_TAB_SELECT_TITLE},
+    {"braveWalletEnterRecipientAddress",
+     IDS_BRAVE_WALLET_ENTER_RECIPIENT_ADDRESS},
+    {"braveWalletNotEnoughFunds", IDS_BRAVE_WALLET_NOT_ENOUGH_FUNDS},
+    {"braveWalletSendHalf", IDS_BRAVE_WALLET_SEND_HALF},
+    {"braveWalletSendMax", IDS_BRAVE_WALLET_SEND_MAX},
+    {"braveWalletReviewOrder", IDS_BRAVE_WALLET_REVIEW_ORDER},
+    {"braveWalletNoAvailableTokens", IDS_BRAVE_WALLET_NO_AVAILIBLE_TOKENS},
+    {"braveWalletSearchTokens", IDS_BRAVE_WALLET_SEARCH_TOKENS},
+    {"braveWalletSearchNFTs", IDS_BRAVE_WALLET_SEARCH_NFTS},
     {"braveWalletBuyNotSupportedTooltip",
      IDS_BRAVE_WALLET_BUY_NOT_SUPPORTED_TOOLTIP},
     {"braveWalletSwapNotSupportedTooltip",
@@ -675,6 +691,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletNFTDetailTokenStandard",
      IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_STANDARD},
     {"braveWalletNFTDetailTokenID", IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_ID},
+    {"braveWalletNFTDetailContractAddress",
+     IDS_BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS},
     {"braveWalletTrezorSignTypedDataError",
      IDS_BRAVE_WALLET_TREZOR_SIGN_TYPED_DATA_ERROR},
     {"braveWalletSweepstakesTitle", IDS_BRAVE_WALLET_SWEEPSTAKES_TITLE},
@@ -999,6 +1017,9 @@ constexpr char kERC721MetadataInterfaceId[] = "0x5b5e139f";
 constexpr char kEthereumPrefKey[] = "ethereum";
 constexpr char kFilecoinPrefKey[] = "filecoin";
 constexpr char kSolanaPrefKey[] = "solana";
+
+constexpr char kEthereumBlockTagEarliest[] = "earliest";
+constexpr char kEthereumBlockTagLatest[] = "latest";
 
 const std::vector<mojom::BlockchainToken>& GetWyreBuyTokens();
 const std::vector<mojom::BlockchainToken>& GetRampBuyTokens();

@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 
@@ -11,11 +11,12 @@ import { GeminiIcon } from '../icons/gemini_icon'
 import { BitflyerIcon } from '../icons/bitflyer_icon'
 import { UpholdIcon } from '../icons/uphold_icon'
 import { CaretIcon } from '../icons/caret_icon'
-import { PendingIcon } from './icons/pending_icon'
 import { ArrowCircleIcon } from './icons/arrow_circle_icon'
 import { ExternalWalletBubble } from './external_wallet_bubble'
 
 import * as style from './external_wallet_view.style'
+
+import * as mojom from '../../../shared/lib/mojom'
 
 interface Props {
   externalWallet: ExternalWallet | null
@@ -73,17 +74,13 @@ export function ExternalWalletView (props: Props) {
         <button onClick={toggleBubble} className={showBubble ? 'pressed' : ''}>
           <style.buttonText data-test-id='external-wallet-status-text'>
             {
-              getString(externalWallet.status === 'disconnected'
+              getString(externalWallet.status === mojom.WalletStatus.kLoggedOut
                 ? 'walletDisconnected'
                 : 'walletVerified')
             }
           </style.buttonText>
           <style.buttonIcons>
             <span className='provider'><ProviderIcon /></span>
-            {
-              externalWallet.status === 'pending' &&
-                <span className='status'><PendingIcon /></span>
-            }
             <span className='caret'>
               <CaretIcon direction='down' />
             </span>

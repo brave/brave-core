@@ -29,8 +29,8 @@ TEST(BatAdsPermissionRuleFeaturesTest, IsDisabled) {
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  std::vector<base::Feature> disabled_features;
-  disabled_features.push_back(kFeature);
+  std::vector<base::test::FeatureRef> disabled_features;
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -50,7 +50,7 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsInWindowedMode) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, kParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -72,7 +72,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -92,8 +92,8 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldExcludeAdIfConvertedWhenDisable) {
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  std::vector<base::Feature> disabled_features;
-  disabled_features.push_back(kFeature);
+  std::vector<base::test::FeatureRef> disabled_features;
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -117,7 +117,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, kParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -140,7 +140,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -162,8 +162,8 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  std::vector<base::Feature> disabled_features;
-  disabled_features.push_back(kFeature);
+  std::vector<base::test::FeatureRef> disabled_features;
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -187,7 +187,7 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsIfMediaIsNotPlaying) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, kParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -209,7 +209,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -230,8 +230,8 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  std::vector<base::Feature> disabled_features;
-  disabled_features.push_back(kFeature);
+  std::vector<base::test::FeatureRef> disabled_features;
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -254,7 +254,7 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsIfBrowserIsActive) {
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, kParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -276,7 +276,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -297,8 +297,8 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  std::vector<base::Feature> disabled_features;
-  disabled_features.push_back(kFeature);
+  std::vector<base::test::FeatureRef> disabled_features;
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,

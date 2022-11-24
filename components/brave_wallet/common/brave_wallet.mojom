@@ -514,6 +514,9 @@ interface KeyringServiceObserver {
   // Fired when the accounts list changes
   AccountsChanged();
 
+  // Fired when accounts are added
+  AccountsAdded(CoinType coin, array<string> addresses);
+
   // Fired when the autolock setting changes
   AutoLockMinutesChanged();
 
@@ -905,6 +908,9 @@ interface JsonRpcService {
   // ENS lookups
   EnsGetEthAddr(string domain, EnsOffchainLookupOptions? options) => (string address, bool require_offchain_consent, ProviderError error, string error_message);
 
+  // SNS lookups
+  SnsGetSolAddr(string domain) => (string address, SolanaProviderError error, string error_message);
+
   // Unstoppable Domains lookups
   UnstoppableDomainsGetWalletAddr(string domain, BlockchainToken? token) => (string address, ProviderError error, string error_message);
 
@@ -1135,6 +1141,9 @@ interface BraveWalletServiceObserver {
 
   // Fired when the list of networks changes
   OnNetworkListChanged();
+
+  // Fired when a discovered asset query completes
+  OnDiscoverAssetsCompleted(array<BlockchainToken> discovered_assets);
 };
 
 struct SignMessageRequest {
@@ -1309,11 +1318,14 @@ interface BraveWalletService {
   // This is used for UI notifying native when the user approves or
   // rejects decrypting data for an origin
   NotifyDecryptRequestProcessed(bool approved, url.mojom.Origin origin);
+
   GetPendingDecryptRequests() => (array<DecryptRequest> requests);
 
   IsBase58EncodedSolanaPubkey(string key) => (bool result);
 
   Base58Encode(array<array<uint8>> addresses) => (array<string> addresses);
+
+  DiscoverAssetsOnAllSupportedChains();
 
   // Resets the keyring and the related preferences
   Reset();

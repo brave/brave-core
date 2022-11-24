@@ -1,14 +1,20 @@
 {
   "root": true, /* Don't read chromium's eslint config (https://eslint.org/docs/user-guide/configuring/configuration-files#cascading-and-hierarchy) */
   "extends": "standard-with-typescript",
-  "ignorePatterns": ["*.js", "*.d.ts"],
+  "ignorePatterns": [
+    "*.js",
+    "*.d.ts"
+  ],
   "env": {
     "browser": false,
     "node": true,
     "es6": true,
     "jest/globals": true
   },
-  "plugins": ["jest"],
+  "plugins": [
+    "jest",
+    "licenses"
+  ],
   "globals": {
     "chrome": "readonly"
   },
@@ -16,7 +22,39 @@
     "project": "./tsconfig-lint.json"
   },
   "rules": {
-    "quote-props": ["error", "consistent"],
+    "licenses/header": [
+      2,
+      {
+        "tryUseCreatedYear": true,
+        "comment": {
+          "allow": "both",
+          "prefer": "line"
+        },
+        "header": [
+          "Copyright (c) {YEAR} The Brave Authors. All rights reserved.",
+          "This Source Code Form is subject to the terms of the Mozilla Public",
+          "License, v. 2.0. If a copy of the MPL was not distributed with this file,",
+          "you can obtain one at https://mozilla.org/MPL/2.0/."
+        ],
+        "altHeaders": [
+          [
+            "Copyright (c) {YEAR} The Brave Authors. All rights reserved.",
+            "* This Source Code Form is subject to the terms of the Mozilla Public",
+            "* License, v. 2.0. If a copy of the MPL was not distributed with this file,",
+            "* You can obtain one at https://mozilla.org/MPL/2.0/."
+          ],
+          [
+            "This Source Code Form is subject to the terms of the Mozilla Public",
+            "* License, v. 2.0. If a copy of the MPL was not distributed with this file,",
+            "* You can obtain one at https://mozilla.org/MPL/2.0/."
+          ]
+        ]
+      }
+    ],
+    "quote-props": [
+      "error",
+      "consistent"
+    ],
     "@typescript-eslint/indent": 0,
     "@typescript-eslint/no-useless-constructor": 0,
     "@typescript-eslint/explicit-function-return-type": 0,

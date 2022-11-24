@@ -1,7 +1,7 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import {
@@ -52,7 +52,8 @@ import {
   PanelTypes,
   WalletAccountType,
   BuySendSwapViewTypes,
-  ToOrFromType
+  ToOrFromType,
+  SerializableTransactionInfo
 } from '../constants/types'
 
 import { AppsList } from '../options/apps-list-options'
@@ -267,12 +268,12 @@ function Container () {
     }
   }
 
-  const viewTransactionDetail = React.useCallback((transaction: BraveWallet.TransactionInfo) => {
+  const viewTransactionDetail = React.useCallback((transaction: SerializableTransactionInfo) => {
     dispatch(WalletPanelActions.setSelectedTransaction(transaction))
     dispatch(WalletPanelActions.navigateTo('transactionDetails'))
   }, [])
 
-  const viewTransactionStatus = React.useCallback((transaction: BraveWallet.TransactionInfo) => {
+  const viewTransactionStatus = React.useCallback((transaction: SerializableTransactionInfo) => {
     dispatch(WalletPanelActions.setSelectedTransaction(transaction))
     dispatch(WalletPanelActions.navigateTo('transactionStatus'))
   }, [])
@@ -339,15 +340,15 @@ function Container () {
     })
   }
 
-  const onRetryTransaction = (transaction: BraveWallet.TransactionInfo) => {
+  const onRetryTransaction = (transaction: SerializableTransactionInfo) => {
     dispatch(WalletActions.retryTransaction(transaction))
   }
 
-  const onSpeedupTransaction = (transaction: BraveWallet.TransactionInfo) => {
+  const onSpeedupTransaction = (transaction: SerializableTransactionInfo) => {
     dispatch(WalletActions.speedupTransaction(transaction))
   }
 
-  const onCancelTransaction = (transaction: BraveWallet.TransactionInfo) => {
+  const onCancelTransaction = (transaction: SerializableTransactionInfo) => {
     dispatch(WalletActions.cancelTransaction(transaction))
   }
 
@@ -438,7 +439,7 @@ function Container () {
     )
   }
 
-  if ((selectedPendingTransaction || signMessageData.length) &&
+  if (selectedAccount && (selectedPendingTransaction || signMessageData.length) &&
     selectedPanel === 'connectHardwareWallet') {
     return (
       <PanelWrapper isLonger={false}>
@@ -796,7 +797,7 @@ function Container () {
             <TransactionsPanel
               onSelectTransaction={viewTransactionDetail}
               selectedNetwork={selectedNetwork}
-              selectedAccountAddress={selectedAccount.address}
+              selectedAccountAddress={selectedAccount?.address}
             />
           </Panel>
         </StyledExtensionWrapper>

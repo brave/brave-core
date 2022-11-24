@@ -6,9 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_TAB_STRIP_REGION_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_TAB_STRIP_REGION_VIEW_H_
 
-#define FrameColorsChanged                 \
-  UnUsed_FrameColorsChanged() {}           \
-  friend class VerticalTabStripRegionView; \
+#define FrameColorsChanged                                          \
+  UnUsed_FrameColorsChanged() {}                                    \
+  friend class VerticalTabStripRegionView;                          \
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, MinHeight); \
   void FrameColorsChanged
 #include "src/chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #undef FrameColorsChanged

@@ -47,6 +47,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
+import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
@@ -301,6 +302,9 @@ public class PortfolioFragment
         if (selectedNetwork == null) {
             return;
         }
+        // TODO (Wengling): re-enable when NFT portfolio is done
+        if (asset.isNft) return;
+
         Utils.openAssetDetailsActivity(getActivity(), selectedNetwork.chainId, asset);
     }
 
@@ -402,7 +406,7 @@ public class PortfolioFragment
             return;
         }
         keyringService.getKeyringInfo(
-                Utils.getKeyringForCoinType(selectedNetwork.coin), keyringInfo -> {
+                AssetUtils.getKeyringForCoinType(selectedNetwork.coin), keyringInfo -> {
                     AccountInfo[] accountInfos = new AccountInfo[] {};
                     if (keyringInfo != null) {
                         accountInfos = keyringInfo.accountInfos;

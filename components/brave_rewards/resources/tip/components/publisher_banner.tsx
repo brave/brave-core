@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 
@@ -18,7 +18,6 @@ import {
   PublisherInfo,
   PublisherStatus,
   ExternalWalletInfo,
-  ExternalWalletStatus,
   MediaMetaData
 } from '../lib/interfaces'
 
@@ -35,6 +34,8 @@ import { NewTabLink } from '../../shared/components/new_tab_link'
 import { VerifiedIcon } from './icons/verified_icon'
 
 import * as style from './publisher_banner.style'
+
+import * as mojom from '../../shared/lib/mojom'
 
 function getLogoURL (publisherInfo: PublisherInfo) {
   const { logo } = publisherInfo
@@ -174,9 +175,8 @@ function showUnverifiedNotice (
     return false
   }
   switch (externalWalletInfo.status) {
-    case ExternalWalletStatus.DISCONNECTED_NOT_VERIFIED:
-    case ExternalWalletStatus.DISCONNECTED_VERIFIED:
-    case ExternalWalletStatus.NOT_CONNECTED:
+    case mojom.WalletStatus.kLoggedOut:
+    case mojom.WalletStatus.kNotConnected:
       return false
   }
 

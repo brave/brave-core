@@ -192,6 +192,12 @@ source_set("ui") {
         "webui/settings/brave_tor_handler.h",
       ]
     }
+    if (enable_extensions) {
+      sources += [
+        "webui/settings/brave_tor_snowflake_extension_handler.cc",
+        "webui/settings/brave_tor_snowflake_extension_handler.h",
+      ]
+    }
 
     public_deps += [ "//brave/vendor/bat-native-ads" ]
   }  # !is_android
@@ -274,8 +280,6 @@ source_set("ui") {
       "views/toolbar/bookmark_button.h",
       "views/toolbar/brave_app_menu.cc",
       "views/toolbar/brave_app_menu.h",
-      "views/web_discovery_dialog_view.cc",
-      "views/web_discovery_dialog_view.h",
       "views/window_closing_confirm_dialog_view.cc",
       "views/window_closing_confirm_dialog_view.h",
     ]

@@ -1,9 +1,9 @@
 diff --git a/tools/clang/pylib/clang/compile_db.py b/tools/clang/pylib/clang/compile_db.py
-index ff6ff9d3d4ae9cb25330ca88f2747fdac66eb939..e5d677ab038c94f237292a60eecdef6e6025e0e8 100755
+index ff6ff9d3d4ae9cb25330ca88f2747fdac66eb939..607bd896ca625520b93282d6f284ee65bf06822b 100755
 --- a/tools/clang/pylib/clang/compile_db.py
 +++ b/tools/clang/pylib/clang/compile_db.py
 @@ -212,3 +212,4 @@ def Read(path):
    """
    with open(os.path.join(path, 'compile_commands.json'), 'rb') as db:
      return json.load(db)
-+import os, sys; sys.path.append(os.path.join(__file__, *[os.pardir] * 5, 'brave', 'script')); from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/clang/pylib/clang/compile_db.py", globals(), locals())
++import os, sys; sys.path.append(os.path.join(os.path.dirname(__file__), *[os.pardir] * 4, 'brave', 'script')); from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/clang/pylib/clang/compile_db.py", globals(), locals())

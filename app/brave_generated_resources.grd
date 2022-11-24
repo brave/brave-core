@@ -506,28 +506,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
       </if>
 
-      <!-- Web Discovery dialog -->
-      <if expr="not is_android">
-        <message name="IDS_WEB_DISCOVERY_DIALOG_HEADER_TEXT" desc="The text for web discovery dialog header">
-          Want to make Brave Search even better?
-        </message>
-        <message name="IDS_WEB_DISCOVERY_DIALOG_CONTENTS_TEXT" desc="The text for web discovery dialog contents">
-          Opt in to the Web Discovery Project to anonymously contribute some search &amp; browsing data, and improve Brave Search results for all. Privacy-preserving. And zero effort. <ph name="LEARN_MORE_TEXT">$1<ex>Learn more</ex></ph>
-        </message>
-        <message name="IDS_WEB_DISCOVERY_DIALOG_CONTENTS_TEXT_LEARN_MORE_PART" desc="The text learn more link for web discovery dialog contents. This text should be same with above Learn more text in CONTENTS_TEXT">
-          Learn more
-        </message>
-        <message name="IDS_WEB_DISCOVERY_DIALOG_DONT_ASK_AGAIN_TEXT" desc="The text for disabling web discovery dialog checkbox">
-          Don't ask again
-        </message>
-        <message name="IDS_WEB_DISCOVERY_DIALOG_OK_BUTTON_TEXT" desc="The text for ok button">
-          Turn on
-        </message>
-        <message name="IDS_WEB_DISCOVERY_DIALOG_CANCEL_BUTTON_TEXT" desc="The text for cancel button">
-          No thanks
-        </message>
-      </if>
-
       <!-- Brave crash report permission ask dialog -->
       <if expr="not is_android">
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_OK_BUTTON_LABEL" desc="The text for ok button">
@@ -600,6 +578,22 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON" desc="Announcement when the dismiss button is focused.">
           Dismiss Brave search conversion, press Enter to remove this suggestion
+        </message>
+        <!-- web Discovery InfoBar -->
+        <message name="IDS_WEB_DISCOVERY_INFOBAR_MESSAGE" desc="The text for web discovery infobar message">
+          Help improve <ph name="SEARCH_NAME">$1<ex>Brave Search</ex></ph> by sending anonymous usage data.  <ph name="MORE_INFO">$2<ex>More info</ex></ph>
+        </message>
+        <message name="IDS_WEB_DISCOVERY_INFOBAR_MESSAGE_BRAVE_SEARCH" desc="The text for brave search part in message">
+          Brave Search
+        </message>
+        <message name="IDS_WEB_DISCOVERY_INFOBAR_MESSAGE_MORE_INFO" desc="The text for more info link part in message">
+          More info
+        </message>
+        <message name="IDS_WEB_DISCOVERY_INFOBAR_OK_BUTTON_LABEL" desc="The text for ok button in infobar">
+          OK
+        </message>
+        <message name="IDS_WEB_DISCOVERY_INFOBAR_NO_THANKS_LABEL" desc="The text for no thanks button in infobar">
+          No thanks
         </message>
       </if>
 
@@ -830,6 +824,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_TAB_CXMENU_SHOW_TITLE_BAR" desc="The label of the tab context menu item for showing window title when vertical tab strip is enabled.">
           Show title bar
         </message>
+        <message name="IDS_TAB_CXMENU_USE_FLOATING_VERTICAL_TABS" desc="The label of the tab context menu item for enabling floating mode for vertical tab strip">
+          Float on mouseover
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
@@ -839,7 +836,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Use Vertical Tabs
         </message>
         <message name="IDS_TAB_CXMENU_SHOW_TITLE_BAR" desc="The label of the tab context menu item for showing window title when vertical tab strip is enabled.">
-          Show title bar
+          Show Title Bar
+        </message>
+        <message name="IDS_TAB_CXMENU_USE_FLOATING_VERTICAL_TABS" desc="The label of the tab context menu item for enabling floating mode for vertical tab strip">
+          Float on Mouseover
         </message>
       </if>
 

@@ -193,10 +193,10 @@ class BatLedgerImpl :
   void GetExternalWallet(const std::string& wallet_type,
                          GetExternalWalletCallback) override;
 
-  void ExternalWalletAuthorization(
-    const std::string& wallet_type,
-    const base::flat_map<std::string, std::string>& args,
-    ExternalWalletAuthorizationCallback callback) override;
+  void ConnectExternalWallet(
+      const std::string& wallet_type,
+      const base::flat_map<std::string, std::string>& args,
+      ConnectExternalWalletCallback) override;
 
   void DisconnectWallet(
     const std::string& wallet_type,
@@ -325,11 +325,6 @@ class BatLedgerImpl :
   static void OnHasSufficientBalanceToReconcile(
     CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,
     bool sufficient);
-
-  static void OnExternalWalletAuthorization(
-      CallbackHolder<ExternalWalletAuthorizationCallback>* holder,
-      ledger::mojom::Result result,
-      const base::flat_map<std::string, std::string>& args);
 
   static void OnDisconnectWallet(
       CallbackHolder<DisconnectWalletCallback>* holder,

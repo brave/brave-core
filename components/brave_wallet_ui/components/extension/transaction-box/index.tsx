@@ -1,17 +1,17 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
 import { getLocale } from '../../../../common/locale'
 import { numberArrayToHexStr } from '../../../utils/hex-utils'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
 import { CodeSnippet, CodeSnippetText, DetailColumn, DetailText, TransactionText } from './style'
 
 export interface Props {
-  transactionInfo: BraveWallet.TransactionInfo
+  transactionInfo: SerializableTransactionInfo
 }
 
 const txKeys = Object.keys(BraveWallet.TransactionType)

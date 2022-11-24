@@ -12,7 +12,7 @@ namespace permissions {
 namespace features {
 
 COMPONENT_EXPORT(PERMISSIONS_COMMON)
-extern const base::Feature kPermissionLifetime;
+BASE_DECLARE_FEATURE(kPermissionLifetime);
 
 }  // namespace features
 }  // namespace permissions

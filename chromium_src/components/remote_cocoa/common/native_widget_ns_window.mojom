@@ -8,4 +8,6 @@ module remote_cocoa.mojom;
 [BraveExtend]
 interface NativeWidgetNSWindow {
   SetWindowTitleVisibility(bool visible);
+
+  ResetWindowControlsPosition();
 };

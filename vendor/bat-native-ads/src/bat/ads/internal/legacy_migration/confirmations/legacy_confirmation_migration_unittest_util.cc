@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/legacy_migration/confirmations/legacy_confirmation_migration_unittest_util.h"
 
-#include "base/bind.h"
 #include "base/check_op.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "brave/components/brave_ads/common/pref_names.h"

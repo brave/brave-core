@@ -84,13 +84,13 @@ class RewardsBrowserTestContribution
   void SetUpUpholdWallet(brave_rewards::RewardsServiceImpl* rewards_service,
                          const double balance,
                          const ledger::mojom::WalletStatus status =
-                             ledger::mojom::WalletStatus::VERIFIED);
+                             ledger::mojom::WalletStatus::kConnected);
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
   void SetUpGeminiWallet(brave_rewards::RewardsServiceImpl* rewards_service,
                          const double balance,
                          const ledger::mojom::WalletStatus status =
-                             ledger::mojom::WalletStatus::VERIFIED);
+                             ledger::mojom::WalletStatus::kConnected);
 #endif
 
   std::vector<ledger::mojom::Result> GetMultipleTipStatus();

@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as Solana from '@solana/web3.js'
 
@@ -14,7 +14,7 @@ import {
 } from '../common/constants/solana'
 
 // types
-import { BraveWallet } from '../constants/types'
+import { BraveWallet, SerializableSolanaTxData } from '../constants/types'
 
 export type TypedSolanaInstructionWithParams = {
   instruction: Solana.TransactionInstruction
@@ -142,7 +142,7 @@ export const getSolanaTransactionInstructionParamsAndType = ({
   } as TypedSolanaInstructionWithParams
 }
 
-export const getTypedSolanaTxInstructions = (solTxData?: BraveWallet.SolanaTxData): TypedSolanaInstructionWithParams[] => {
+export const getTypedSolanaTxInstructions = (solTxData?: SerializableSolanaTxData | BraveWallet.SolanaTxData): TypedSolanaInstructionWithParams[] => {
   const instructions: TypedSolanaInstructionWithParams[] = (solTxData?.instructions || []).map((instruction) => {
     return getSolanaTransactionInstructionParamsAndType(instruction)
   })

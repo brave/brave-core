@@ -10,7 +10,7 @@
 
 namespace brave_component_updater {
 
-extern const base::Feature kUseDevUpdaterUrl;
+BASE_DECLARE_FEATURE(kUseDevUpdaterUrl);
 
 }  // namespace brave_component_updater
 

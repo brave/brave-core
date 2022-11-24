@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 import { render } from 'react-dom'
@@ -52,8 +52,8 @@ function fullLog (log: string) {
   getActions().onGetFullLog(log)
 }
 
-function externalWallet (properties: {result: number, wallet: RewardsInternals.ExternalWallet}) {
-  getActions().onExternalWallet(properties.result, properties.wallet)
+function onGetExternalWallet (wallet: RewardsInternals.ExternalWallet) {
+  getActions().onGetExternalWallet(wallet)
 }
 
 function eventLogs (logs: RewardsInternals.EventLog[]) {
@@ -84,7 +84,7 @@ window.brave_rewards_internals = {
   promotions,
   partialLog,
   fullLog,
-  externalWallet,
+  onGetExternalWallet,
   eventLogs,
   adDiagnostics
 }

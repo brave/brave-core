@@ -129,6 +129,13 @@ void JSEthereumProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
     return;
   // Close mojo connection from browser to renderer.
   receiver_.reset();
+  script_context_released_ = true;
+}
+
+void JSEthereumProvider::DidDispatchDOMContentLoadedEvent() {
+  if (script_context_released_)
+    return;
+  ConnectEvent();
 }
 
 bool JSEthereumProvider::EnsureConnected() {
@@ -157,75 +164,69 @@ void JSEthereumProvider::Install(bool allow_overwrite_window_ethereum_provider,
     return;
   v8::Context::Scope context_scope(context);
 
+  // Check window.ethereum existence.
   v8::Local<v8::Object> global = context->Global();
-  v8::Local<v8::Value> ethereum_value;
-  if (!global->Get(context, gin::StringToV8(isolate, kEthereum))
-           .ToLocal(&ethereum_value) ||
-      !ethereum_value->IsObject()) {
-    gin::Handle<JSEthereumProvider> provider =
-        gin::CreateHandle(isolate, new JSEthereumProvider(render_frame));
-    if (provider.IsEmpty())
-      return;
-    v8::Local<v8::Value> provider_value = provider.ToV8();
+  v8::Local<v8::Value> ethereum_value =
+      global->Get(context, gin::StringToV8(isolate, kEthereum))
+          .ToLocalChecked();
+  if (!ethereum_value->IsUndefined())
+    return;
 
-    if (!allow_overwrite_window_ethereum_provider) {
-      SetProviderNonWritable(context, global, provider_value,
-                             gin::StringToV8(isolate, kEthereum), true);
-    } else {
-      global
-          ->Set(context, gin::StringToSymbol(isolate, kEthereum),
-                provider_value)
-          .Check();
-    }
+  gin::Handle<JSEthereumProvider> provider =
+      gin::CreateHandle(isolate, new JSEthereumProvider(render_frame));
+  if (provider.IsEmpty())
+    return;
+  v8::Local<v8::Value> provider_value = provider.ToV8();
 
-    v8::Local<v8::Object> provider_object =
-        provider_value->ToObject(context).ToLocalChecked();
-
-    // Non-function properties are readonly guaranteed by gin::Wrappable
-    // send should be writable because of
-    // https://github.com/brave/brave-browser/issues/25078
-    for (const std::string& method :
-         {"request", "isConnected", "enable", "sendAsync"}) {
-      SetOwnPropertyWritable(context, provider_object,
-                             gin::StringToV8(isolate, method), false);
-    }
-
-    // Set isMetaMask to writable.
-    // isMetaMask should be writable because of
-    // https://github.com/brave/brave-browser/issues/22213;
-    SetOwnPropertyWritable(context, provider_object,
-                           gin::StringToV8(isolate, kIsMetaMask), true);
-
-    // Set non-writable _metamask obj with non-writable isUnlocked method.
-    v8::Local<v8::Value> metamask_value;
-    v8::Local<v8::Object> metamask_obj = v8::Object::New(isolate);
-    provider_object
-        ->Set(context, gin::StringToSymbol(isolate, kMetaMask), metamask_obj)
+  if (!allow_overwrite_window_ethereum_provider) {
+    SetProviderNonWritable(context, global, provider_value,
+                           gin::StringToV8(isolate, kEthereum), true);
+  } else {
+    global
+        ->Set(context, gin::StringToSymbol(isolate, kEthereum), provider_value)
         .Check();
-    SetOwnPropertyWritable(context, provider_object,
-                           gin::StringToV8(isolate, kMetaMask), false);
+  }
 
-    metamask_obj
-        ->Set(
-            context, gin::StringToSymbol(isolate, kIsUnlocked),
+  v8::Local<v8::Object> provider_object =
+      provider_value->ToObject(context).ToLocalChecked();
+
+  // Non-function properties are readonly guaranteed by gin::Wrappable
+  // send should be writable because of
+  // https://github.com/brave/brave-browser/issues/25078
+  for (const std::string& method :
+       {"request", "isConnected", "enable", "sendAsync"}) {
+    SetOwnPropertyWritable(context, provider_object,
+                           gin::StringToV8(isolate, method), false);
+  }
+
+  // Set isMetaMask to writable.
+  // isMetaMask should be writable because of
+  // https://github.com/brave/brave-browser/issues/22213;
+  SetOwnPropertyWritable(context, provider_object,
+                         gin::StringToV8(isolate, kIsMetaMask), true);
+
+  // Set non-writable _metamask obj with non-writable isUnlocked method.
+  v8::Local<v8::Value> metamask_value;
+  v8::Local<v8::Object> metamask_obj = v8::Object::New(isolate);
+  provider_object
+      ->Set(context, gin::StringToSymbol(isolate, kMetaMask), metamask_obj)
+      .Check();
+  SetOwnPropertyWritable(context, provider_object,
+                         gin::StringToV8(isolate, kMetaMask), false);
+
+  metamask_obj
+      ->Set(context, gin::StringToSymbol(isolate, kIsUnlocked),
             gin::CreateFunctionTemplate(
                 isolate, base::BindRepeating(&JSEthereumProvider::IsUnlocked,
                                              base::Unretained(provider.get())))
                 ->GetFunction(context)
                 .ToLocalChecked())
-        .Check();
-    SetOwnPropertyWritable(context, metamask_obj,
-                           gin::StringToV8(isolate, kIsUnlocked), false);
+      .Check();
+  SetOwnPropertyWritable(context, metamask_obj,
+                         gin::StringToV8(isolate, kIsUnlocked), false);
 
-    blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
-    ExecuteScript(web_frame, *g_provider_script, kEthereumProviderScript);
-    provider->ConnectEvent();
-  } else {
-    render_frame->GetWebFrame()->AddMessageToConsole(
-        blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
-                                 "Brave Wallet will not insert window.ethereum "
-                                 "because it already exists!"));
-  }
+  blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
+  ExecuteScript(web_frame, *g_provider_script, kEthereumProviderScript);
 }
 
 bool JSEthereumProvider::GetIsBraveWallet() {

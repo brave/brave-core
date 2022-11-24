@@ -28,6 +28,10 @@ base::flat_set<std::string> GetPublisherLocales(const Publishers& publishers);
 base::flat_set<std::string> GetMinimalLocalesSet(
     const base::flat_set<std::string>& channel_locales,
     const Publishers& publishers);
+
+// Calculate if Brave News should be enabled on the NTP by checking the
+// user's locale.
+bool IsUserInDefaultEnabledLocale();
 }  // namespace brave_news
 
 #endif  // BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_LOCALES_HELPER_H_

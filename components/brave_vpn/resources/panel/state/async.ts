@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../../common/AsyncActionHandler'
@@ -31,10 +31,6 @@ handler.on(Actions.connectToNewRegion.getType(), async (store) => {
 
   getPanelBrowserAPI().serviceHandler.setSelectedRegion(state.currentRegion)
   getPanelBrowserAPI().serviceHandler.connect()
-})
-
-handler.on(Actions.retryConnect.getType(), async (store) => {
-  store.dispatch(Actions.connect())
 })
 
 handler.on(Actions.connectionStateChanged.getType(), async (store) => {

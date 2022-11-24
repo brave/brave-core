@@ -145,6 +145,10 @@ void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
                       : BraveSidePanel::kHorizontalAlignRight);
 }
 
+bool SidebarContainerView::IsSidebarVisible() const {
+  return sidebar_control_view_ && sidebar_control_view_->GetVisible();
+}
+
 void SidebarContainerView::SetSidebarShowOption(
     sidebar::SidebarService::ShowSidebarOption show_option) {
   UpdateSidebarVisibility(show_option);

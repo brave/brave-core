@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Notification } from './notification'
 import { NotificationView } from './notification_view'
@@ -13,6 +13,8 @@ import { GrantAvailable } from './grant_available'
 import { PendingPublisherVerified } from './pending_publisher_verified'
 import { PendingTipFailed } from './pending_tip_failed'
 import { ExternalWalletDisconnected } from './external_wallet_disconnected'
+import { UpholdBATNotAllowed } from './uphold_bat_not_allowed'
+import { UpholdInsufficientCapabilities } from './uphold_insufficient_capabilities'
 
 export * from './notification'
 export * from './notification_view'
@@ -37,5 +39,9 @@ export function getNotificationView (
       return PendingTipFailed
     case 'external-wallet-disconnected':
       return ExternalWalletDisconnected
+    case 'uphold-bat-not-allowed':
+      return UpholdBATNotAllowed
+    case 'uphold-insufficient-capabilities':
+      return UpholdInsufficientCapabilities
   }
 }

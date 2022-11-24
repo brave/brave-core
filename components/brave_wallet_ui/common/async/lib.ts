@@ -1,8 +1,8 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
-import { assert } from 'chrome://resources/js/assert.m.js'
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+import { assert } from 'chrome://resources/js/assert.js'
 import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
@@ -31,6 +31,7 @@ import Amount from '../../utils/amount'
 import { sortTransactionByDate } from '../../utils/tx-utils'
 import { addLogoToToken, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
 import { loadTimeData } from '../../../common/loadTimeData'
+import { walletApi } from '../slices/api.slice'
 
 import getAPIProxy from './bridge'
 import { Dispatch, State, Store } from './types'
@@ -42,6 +43,7 @@ import { AllNetworksOption } from '../../options/network-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
+import { makeSerializableTransaction } from '../../utils/model-serialization-utils'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -146,6 +148,11 @@ export async function isStrongPassword (value: string) {
 export async function findENSAddress (address: string, ensOffchainLookupOptions?: BraveWallet.EnsOffchainLookupOptions | undefined) {
   const apiProxy = getAPIProxy()
   return apiProxy.jsonRpcService.ensGetEthAddr(address, ensOffchainLookupOptions || null)
+}
+
+export async function findSNSAddress (address: string) {
+  const apiProxy = getAPIProxy()
+  return apiProxy.jsonRpcService.snsGetSolAddr(address)
 }
 
 export async function findUnstoppableDomainAddress (address: string, token: BraveWallet.BlockchainToken | null) {
@@ -521,7 +528,7 @@ export function refreshBalances () {
           if (networks.some(n => n.chainId === token.chainId)) {
             const getSolTokenBalance = await jsonRpcService.getSPLTokenAccountBalance(account.address, token.contractAddress, token.chainId)
             return {
-              balance: getSolTokenBalance.amount,
+              balance: token.isNft ? getSolTokenBalance.uiAmountString : getSolTokenBalance.amount,
               error: getSolTokenBalance.error,
               errorMessage: getSolTokenBalance.errorMessage,
               chainId: token.chainId
@@ -687,10 +694,11 @@ export function refreshTransactionHistory (address?: string) {
       ? accounts.filter(account => account.address === address)
       : accounts
 
-    const freshTransactions: AccountTransactions = await accountsToUpdate.reduce(
+    const freshTransactions: AccountTransactions = await accountsToUpdate.reduce<Promise<AccountTransactions>>(
       async (acc, account) => acc.then(async (obj) => {
         const { transactionInfos } = await txService.getAllTransactionInfo(account.coin, account.address)
-        obj[account.address] = sortTransactionByDate(transactionInfos, 'descending')
+        const serializedTransactionInfos = transactionInfos.map(makeSerializableTransaction)
+        obj[account.address] = sortTransactionByDate(serializedTransactionInfos, 'descending')
         return obj
       }), Promise.resolve({}))
 
@@ -748,7 +756,7 @@ export function refreshNetworkInfo () {
 
     const apiProxy = getAPIProxy()
     const { jsonRpcService } = apiProxy
-    const { wallet: { selectedCoin, networkList } } = getState()
+    const { wallet: { networkList } } = getState()
 
     // Get default network for each coinType
     const defaultNetworks = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
@@ -759,6 +767,7 @@ export function refreshNetworkInfo () {
     dispatch(WalletActions.setDefaultNetworks(defaultNetworks))
 
     // Get current selected networks info
+    const selectedCoin = await dispatch(walletApi.endpoints.getSelectedCoin.initiate()).unwrap()
     const chainId = await jsonRpcService.getChainId(selectedCoin)
 
     const currentNetwork = getNetworkInfo(chainId.chainId, selectedCoin, networkList)
@@ -769,8 +778,6 @@ export function refreshNetworkInfo () {
 
 export function refreshKeyringInfo () {
   return async (dispatch: Dispatch, getState: () => State) => {
-    const { wallet: { selectedCoin } } = getState()
-
     const apiProxy = getAPIProxy()
     const { keyringService, walletHandler, jsonRpcService } = apiProxy
     const walletInfoBase = await walletHandler.getWalletInfo()
@@ -793,6 +800,7 @@ export function refreshKeyringInfo () {
     }))
     const filteredDefaultAccounts = defaultAccounts.filter((account) => Object.keys(account).length !== 0)
     dispatch(WalletActions.setDefaultAccounts(filteredDefaultAccounts))
+    const selectedCoin = await dispatch(walletApi.endpoints.getSelectedCoin.initiate()).unwrap()
     const coinsChainId = await jsonRpcService.getChainId(selectedCoin)
 
     // Get selectedAccountAddress
@@ -903,7 +911,7 @@ export async function sendEthTransaction (store: Store, payload: SendEthTransact
     // Check if network and keyring support EIP-1559.
     default:
       const { selectedAccount, selectedNetwork } = store.getState().wallet
-      isEIP1559 = selectedNetwork
+      isEIP1559 = selectedNetwork && selectedAccount
         ? hasEIP1559Support(selectedAccount, selectedNetwork)
         : false
   }

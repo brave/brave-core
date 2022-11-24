@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 import { getLocale } from '$web-common/locale'
@@ -51,7 +51,7 @@ const BadgePrivateWindow = styled.div`
 function Container () {
   const isWindowTor = loadTimeData.getBoolean('isWindowTor')
 
-  const { isConnected, isLoading, progress, message, connectionFailed } = useTorObserver()
+  const { isConnected, progress, message, connectionStatus } = useTorObserver()
   const { hasDisclaimerDismissed } = useHasDisclaimerDismissed()
 
   let badgeElement = (
@@ -73,10 +73,9 @@ function Container () {
     badgeElement = (
       <BadgeTor
         isConnected={isConnected}
-        isLoading={isLoading}
         progress={progress ?? ''}
         message={message ?? ''}
-        connectionFailed={connectionFailed}
+        connectionStatus={connectionStatus}
       />
     )
 

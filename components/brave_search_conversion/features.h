@@ -11,9 +11,9 @@
 namespace brave_search_conversion {
 namespace features {
 
-extern const base::Feature kOmniboxBanner;
-extern const base::Feature kOmniboxButton;
-extern const base::Feature kNTP;
+BASE_DECLARE_FEATURE(kOmniboxBanner);
+BASE_DECLARE_FEATURE(kOmniboxButton);
+BASE_DECLARE_FEATURE(kNTP);
 
 }  // namespace features
 }  // namespace brave_search_conversion

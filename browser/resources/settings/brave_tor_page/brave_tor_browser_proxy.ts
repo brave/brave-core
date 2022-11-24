@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
@@ -15,6 +15,9 @@ export interface BraveTorBrowserProxy {
   setTorEnabled(value: boolean)
   isTorEnabled(): Promise<boolean>
   isTorManaged(): Promise<boolean>
+  isSnowflakeExtensionAllowed(): Promise<boolean>
+  isSnowflakeExtensionEnabled(): Promise<boolean>
+  enableSnowflakeExtension(enable: boolean): Promise<boolean>
 }
 
 export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {
@@ -48,6 +51,18 @@ export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {
 
   isTorManaged() {
     return sendWithPromise('brave_tor.isTorManaged')
+  }
+
+  isSnowflakeExtensionAllowed() {
+    return sendWithPromise('brave_tor.isSnowflakeExtensionAllowed')
+  }
+
+  isSnowflakeExtensionEnabled(): Promise<boolean> {
+    return sendWithPromise('brave_tor.isSnowflakeExtensionEnabled')
+  }
+
+  enableSnowflakeExtension(enable): Promise<boolean> {
+    return sendWithPromise('brave_tor.enableSnowflakeExtension', enable)
   }
 }
 

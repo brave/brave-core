@@ -9,8 +9,6 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/bind.h"
-#include "base/callback_helpers.h"
 #include "base/check.h"
 #include "base/containers/circular_deque.h"
 #include "base/containers/contains.h"
@@ -19,6 +17,8 @@
 #include "base/feature_list.h"  // IWYU pragma: keep
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/hash/hash.h"
 #include "base/logging.h"
 #include "base/metrics/field_trial_params.h"
@@ -113,7 +113,7 @@ constexpr int kHttpUpgradeRequiredStatusResponseCode = 426;
 
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 
-const base::Feature kServing{"AdServing", base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kServing, "AdServing", base::FEATURE_ENABLED_BY_DEFAULT);
 
 int GetDataResourceId(const std::string& name) {
   if (name == ads::data::resource::kCatalogJsonSchemaFilename) {

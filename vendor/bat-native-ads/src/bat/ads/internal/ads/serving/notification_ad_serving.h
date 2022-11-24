@@ -12,6 +12,7 @@
 #include "base/observer_list.h"
 #include "bat/ads/internal/ads/serving/notification_ad_serving_observer.h"
 #include "bat/ads/internal/base/timer/timer.h"
+#include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/prefs/pref_manager_observer.h"
 #include "bat/ads/internal/segments/segment_alias.h"
 
@@ -29,6 +30,10 @@ class SubdivisionTargeting;
 namespace resource {
 class AntiTargeting;
 }  // namespace resource
+
+namespace targeting {
+struct UserModelInfo;
+}  // namespace targeting
 
 struct NotificationAdInfo;
 
@@ -58,6 +63,10 @@ class Serving final : public PrefManagerObserver {
   void MaybeServeAd();
 
  private:
+  void OnGetForUserModel(const targeting::UserModelInfo& user_model,
+                         bool had_opportunity,
+                         const CreativeNotificationAdList& creative_ads);
+
   void OnAdsPerHourPrefChanged();
 
   bool IsSupported() const;

@@ -1,3 +1,7 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
 import { useHistory } from 'react-router'
@@ -46,6 +50,7 @@ interface Props {
   selectedNetwork?: BraveWallet.NetworkInfo
   name: string
   hideBalances?: boolean
+  isNft?: boolean
 }
 
 export const PortfolioAccountItem = (props: Props) => {
@@ -58,7 +63,8 @@ export const PortfolioAccountItem = (props: Props) => {
     defaultCurrencies,
     hideBalances,
     name,
-    spotPrices
+    spotPrices,
+    isNft
   } = props
 
   // Routing
@@ -118,9 +124,11 @@ export const PortfolioAccountItem = (props: Props) => {
             size='small'
             hideBalances={hideBalances ?? false}
           >
-            <FiatBalanceText>
-              {fiatBalance.formatAsFiat(defaultCurrencies.fiat)}
-            </FiatBalanceText>
+            {!isNft &&
+              <FiatBalanceText>
+                {fiatBalance.formatAsFiat(defaultCurrencies.fiat)}
+              </FiatBalanceText>
+            }
             <AssetBalanceText>{`${formattedAssetBalance} ${assetTicker}`}</AssetBalanceText>
           </WithHideBalancePlaceholder>
         </BalanceColumn>

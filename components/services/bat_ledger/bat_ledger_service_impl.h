@@ -39,6 +39,7 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
   void SetReconcileInterval(const int32_t interval) override;
   void SetRetryInterval(int32_t interval) override;
   void SetTesting() override;
+  void SetStateMigrationTargetVersionForTesting(int32_t version) override;
   void SetGeminiRetries(int32_t retries) override;
 
   void GetEnvironment(GetEnvironmentCallback callback) override;

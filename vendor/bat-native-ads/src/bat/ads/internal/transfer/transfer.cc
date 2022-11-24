@@ -6,8 +6,8 @@
 #include "bat/ads/internal/transfer/transfer.h"
 
 #include "absl/types/optional.h"
-#include "base/bind.h"
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"

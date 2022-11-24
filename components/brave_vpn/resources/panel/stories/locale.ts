@@ -1,3 +1,7 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import { provideStrings } from '../../../../../.storybook/locale'
 
 provideStrings({
@@ -24,7 +28,7 @@ provideStrings({
   braveVpnFeature1: 'Block trackers & ads across all apps',
   braveVpnFeature2: 'Protects you from unwanted network connections',
   braveVpnFeature3: 'Choose your VPN location',
-  braveVpnFeature4: 'Fast and unlimited up to 100 Mbps',
+  braveVpnFeature4: 'Fast and unlimited up to 500 Mbps',
   braveVpnFeature5: '24/7 support',
   braveVpnLoading: 'One moment while loading…',
   braveVpnPurchaseFailed: 'Unable to check the status of your purchase, probably a network problem, try again or contact support.',

@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_util.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 

@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Reducer } from 'redux'
 
@@ -67,7 +67,7 @@ const rewardsInternalsReducer: Reducer<RewardsInternals.State | undefined> = (st
     case types.GET_EXTERNAL_WALLET:
       chrome.send('brave_rewards_internals.getExternalWallet')
       break
-    case types.ON_EXTERNAL_WALLET:
+    case types.ON_GET_EXTERNAL_WALLET:
       state = { ...state }
       state.externalWallet = action.payload.wallet
       break

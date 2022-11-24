@@ -45,6 +45,14 @@ public class BraveWalletProviderDelegateImplHelper {
         return BraveWalletPreferences.getPrefWeb3NotificationsEnabled();
     }
 
+    @CalledByNative
+    public static void ShowAccountCreation(String keyringId) {
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            activity.showAccountCreation(keyringId);
+        }
+    }
+
     public static void IsSolanaConnected(
             WebContents webContents, String account, Callbacks.Callback1<Boolean> callback) {
         Callback<Boolean> callbackWrapper = result -> {

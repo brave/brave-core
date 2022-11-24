@@ -7,9 +7,10 @@
 
 #include <utility>
 
-#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_panel_handler_impl.h"
+#include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/resources/panel/grit/brave_speedreader_panel_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -25,6 +26,12 @@ SpeedreaderPanelUI::SpeedreaderPanelUI(content::WebUI* web_ui,
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
       web_ui, name, kBraveSpeedreaderPanelGenerated,
       kBraveSpeedreaderPanelGeneratedSize, IDR_SPEEDREADER_UI_HTML);
+
+  for (const auto& str : speedreader::kLocalizedStrings) {
+    std::u16string l10n_str =
+        brave_l10n::GetLocalizedResourceUTF16String(str.id);
+    source->AddString(str.name, l10n_str);
+  }
 
   AddBackgroundColorToSource(source, web_ui->GetWebContents());
 }
@@ -46,6 +53,5 @@ void SpeedreaderPanelUI::CreateInterfaces(
   panel_handler_ = std::make_unique<SpeedreaderPanelHandlerImpl>(
       std::move(panel_handler), this);
   panel_data_handler_ = std::make_unique<SpeedreaderPanelDataHandlerImpl>(
-      std::move(panel_data_handler),
-      browser_->tab_strip_model()->GetActiveWebContents());
+      std::move(panel_data_handler), browser_);
 }

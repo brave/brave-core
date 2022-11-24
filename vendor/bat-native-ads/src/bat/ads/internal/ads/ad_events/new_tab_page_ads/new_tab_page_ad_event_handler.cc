@@ -136,8 +136,11 @@ void EventHandler::FireEvent(const NewTabPageAdInfo& ad,
             !ShouldRewardUser()) {
           // Fire an ad served event if Brave Ads are disabled and the ad
           // wasn't served by ads library.
-          FireEvent(placement_id, creative_instance_id,
-                    mojom::NewTabPageAdEventType::kServed);
+          const auto served_ad_event =
+              AdEventFactory::Build(mojom::NewTabPageAdEventType::kServed);
+          served_ad_event->FireEvent(ad);
+
+          NotifyNewTabPageAdEvent(ad, mojom::NewTabPageAdEventType::kServed);
         }
 
         const auto ad_event = AdEventFactory::Build(event_type);

@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import {
@@ -34,6 +34,7 @@ import {
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
+import { useGetSelectedCoinQuery } from '../../../common/slices/api.slice'
 
 export interface Props {
   account: WalletAccountType
@@ -48,9 +49,11 @@ const SitePermissionAccountItem = (props: Props) => {
   const {
     selectedAccount,
     connectedAccounts,
-    activeOrigin,
-    selectedCoin
+    activeOrigin
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+
+  // api
+  const { data: selectedCoin } = useGetSelectedCoinQuery()
 
   // memos
   const orb = React.useMemo(() => {
@@ -58,8 +61,8 @@ const SitePermissionAccountItem = (props: Props) => {
   }, [account.address])
 
   const isActive = React.useMemo((): boolean => {
-    return account.address.toLowerCase() === selectedAccount.address.toLowerCase()
-  }, [selectedAccount, account])
+    return account.address.toLowerCase() === selectedAccount?.address.toLowerCase()
+  }, [selectedAccount?.address, account.address])
 
   const hasPermission = React.useMemo((): boolean => {
     return connectedAccounts.some(a => a.address.toLowerCase() === account.address.toLowerCase())

@@ -10,7 +10,7 @@
 
 namespace ads::features {
 
-extern const base::Feature kAdRewards;
+BASE_DECLARE_FEATURE(kAdRewards);
 
 bool IsAdRewardsEnabled();
 

@@ -1,17 +1,19 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { withKnobs, text } from '@storybook/addon-knobs'
 import ThemeProvider from '../../common/BraveCoreThemeProvider'
 import BraveTodayLoadingCard from '../components/default/braveToday/cards/cardLoading'
 import BraveTodayErrorCard from '../components/default/braveToday/cards/cardError'
+import BraveTodayOptInCard from '../components/default/braveToday/cards/cardOptIn'
 import PublisherMeta from '../components/default/braveToday/cards/PublisherMeta'
 import DisplayAdCard from '../components/default/braveToday/cards/displayAd'
-import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
 import * as BraveNews from '../api/brave_news'
+import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
+import './todayStrings'
 
 const onClick = () => alert('clicked')
 
@@ -95,7 +97,11 @@ export const Loading = () => (
 )
 
 export const Error = () => (
-  <BraveTodayErrorCard />
+  <BraveTodayErrorCard onRefresh={() => console.log('refresh clicked')} />
+)
+
+export const OptIn = () => (
+  <BraveTodayOptInCard onOptIn={() => console.log('opt-in clicked')} onDisable={() => console.log('disable clicked')} />
 )
 
 const handleDisplayAdVisit = () => alert('handle visit')

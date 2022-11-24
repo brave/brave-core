@@ -136,9 +136,9 @@ TxServiceFactory::TxServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "TxService",
           BrowserContextDependencyManager::GetInstance()) {
-  DependsOn(brave_wallet::JsonRpcServiceFactory::GetInstance());
-  DependsOn(brave_wallet::KeyringServiceFactory::GetInstance());
-  DependsOn(brave_wallet::AssetRatioServiceFactory::GetInstance());
+  DependsOn(JsonRpcServiceFactory::GetInstance());
+  DependsOn(KeyringServiceFactory::GetInstance());
+  DependsOn(AssetRatioServiceFactory::GetInstance());
 }
 
 TxServiceFactory::~TxServiceFactory() = default;

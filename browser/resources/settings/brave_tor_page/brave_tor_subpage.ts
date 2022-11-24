@@ -1,18 +1,20 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import { WebUIListenerMixin } from 'chrome://resources/js/web_ui_listener_mixin.js'
-import { I18nMixin } from 'chrome://resources/js/i18n_mixin.js';
+import { WebUIListenerMixin } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js';
 import { RouteObserverMixin } from '../router.js'
 import { PrefsMixin } from '../prefs/prefs_mixin.js'
 import { BraveTorBrowserProxyImpl } from './brave_tor_browser_proxy.js'
 import './brave_tor_bridges_dialog.js'
+import './brave_tor_snowflake_install_failed_dialog.js'
 import {getTemplate} from './brave_tor_subpage.html.js'
+import { loadTimeData } from '../i18n_setup.js'
 
 const SettingBraveTorPageElementBase = I18nMixin(RouteObserverMixin(WebUIListenerMixin(PrefsMixin(PolymerElement))))
 
@@ -115,6 +117,22 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         },
       },
 
+      torSnowflakeExtensionEnabledPref_: {
+        type: Object,
+        value() {
+          return {
+            key: '',
+            type: chrome.settingsPrivate.PrefType.BOOLEAN,
+            value: false,
+          }
+        },
+      },
+
+      torSnowflakeExtensionAllowed_: {
+        type: Boolean,
+        value: false,
+      },
+
       showRequestBridgesDialog_: Boolean,
 
       isConfigChanged_: {
@@ -122,7 +140,9 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         computed: 'computeIsConfigChanged_(useBridges_, builtinBridges_, requestedBridges_, providedBridges_, loadedConfig_, shouldShowBridgesGroup_, torEnabledPref_.value)',
         value: false,
         notify: true
-      }
+      },
+
+      showTorSnowflakeInstallFailed_: Boolean,
     }
   }
 
@@ -136,6 +156,12 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
   ready() {
     super.ready()
+
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
+      window.testing = window.testing || {}
+      window.testing[`torSubpage`] = this.shadowRoot
+    }
+
     this.browserProxy_.getBridgesConfig().then((config) => {
       this.loadedConfig_ = config
       this.isUsingBridgesPref_ = {
@@ -160,6 +186,18 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     this.browserProxy_.isTorManaged().then(managed => {
       this.disableTorOption_ = managed
     })
+
+    if (loadTimeData.getBoolean('enable_extensions')) {
+      this.browserProxy_.isSnowflakeExtensionAllowed().then(allowed => {
+        this.torSnowflakeExtensionAllowed_ = allowed
+      })
+      this.addWebUIListener('tor-snowflake-extension-enabled', enabled => {
+        this.setTorSnowflakeExtensionEnabledPref_(enabled)
+      })
+      this.browserProxy_.isSnowflakeExtensionEnabled().then(enabled => {
+        this.setTorSnowflakeExtensionEnabledPref_(enabled)
+      })
+    }
   }
 
   onSlotClick_(e) {
@@ -319,6 +357,29 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     if (event.currentTarget.bridges_) {
       this.requestedBridges_ = event.currentTarget.bridges_.join('\n')
     }
+  }
+
+  setTorSnowflakeExtensionEnabledPref_(enabled: boolean) {
+    const pref = {
+      key: '',
+      type: chrome.settingsPrivate.PrefType.BOOLEAN,
+      value: enabled,
+    }
+    this.torSnowflakeExtensionEnabledPref_ = pref
+  }
+
+  onTorSnowflakeExtensionChange_(e: Event) {
+    e.stopPropagation()
+    this.browserProxy_.enableSnowflakeExtension(e.target.checked).
+      catch((reason: String) => {
+        console.log(reason)
+        this.setTorSnowflakeExtensionEnabledPref_(false)
+        this.showTorSnowflakeInstallFailed_ = true
+      })
+  }
+
+  torSnowflakeInstallFailedDialogClosed_() {
+    this.showTorSnowflakeInstallFailed_ = false
   }
 
   currentRouteChanged() {

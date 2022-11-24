@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { Redirect, useParams, useLocation } from 'react-router'
@@ -123,13 +123,13 @@ export const Account = ({
 
   const nonFungibleTokens = React.useMemo(
     () =>
-      accountsTokensList.filter(({ isErc721 }) => isErc721)
+      accountsTokensList.filter(({ isErc721, isNft }) => isErc721 || isNft)
         .filter((token) => getBalance(selectedAccount, token) !== '0'),
     [accountsTokensList, selectedAccount]
   )
 
-  const funigbleTokens = React.useMemo(
-    () => accountsTokensList.filter(({ isErc721 }) => !isErc721),
+  const fungibleTokens = React.useMemo(
+    () => accountsTokensList.filter(({ isErc721, isNft }) => !(isErc721 || isNft)),
     [accountsTokensList]
   )
 
@@ -216,7 +216,7 @@ export const Account = ({
       <SubDivider />
       <Spacer />
 
-      {funigbleTokens.map((item) =>
+      {fungibleTokens.map((item) =>
         <PortfolioAssetItem
           key={`${item.contractAddress}-${item.symbol}-${item.chainId}`}
           assetBalance={getBalance(selectedAccount, item)}

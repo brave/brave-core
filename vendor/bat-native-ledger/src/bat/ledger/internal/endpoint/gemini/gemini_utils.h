@@ -12,8 +12,10 @@
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
-namespace endpoint {
-namespace gemini {
+namespace endpoints {
+inline const char kGeminiRecipientIDLabel[] = "Brave Browser";
+}
+namespace endpoint::gemini {
 
 std::string GetClientId();
 
@@ -26,8 +28,7 @@ std::string GetOauthServerUrl(const std::string& path);
 
 mojom::Result CheckStatusCode(const int status_code);
 
-}  // namespace gemini
-}  // namespace endpoint
+}  // namespace endpoint::gemini
 }  // namespace ledger
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_GEMINI_GEMINI_UTILS_H_

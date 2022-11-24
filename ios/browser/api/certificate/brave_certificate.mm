@@ -160,6 +160,10 @@
 }
 
 - (bool)is_self_signed {
+  if (!extended_cert_->signature_algorithm().has_value()) {
+    return false;
+  }
+
   net::CertErrors errors;
   std::string normalized_subject;
   net::der::Input subject_value = extended_cert_->normalized_subject();
@@ -177,7 +181,7 @@
     return false;
   }
 
-  return net::VerifySignedData(extended_cert_->signature_algorithm(),
+  return net::VerifySignedData(*extended_cert_->signature_algorithm(),
                                extended_cert_->tbs_certificate_tlv(),
                                extended_cert_->signature_value(),
                                extended_cert_->tbs().spki_tlv);

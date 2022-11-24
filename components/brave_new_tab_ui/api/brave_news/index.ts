@@ -1,7 +1,7 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as BraveNews from 'gen/brave/components/brave_today/common/brave_news.mojom.m.js'
 // Provide access to all the generated types
@@ -26,4 +26,19 @@ export default function getBraveNewsController () {
     braveNewsControllerInstance = window.storybookBraveNewsController || BraveNews.BraveNewsController.getRemote()
   }
   return braveNewsControllerInstance
+}
+
+export const isPublisherEnabled = (publisher: BraveNews.Publisher) => {
+  if (!publisher) return false
+
+  // Direct Sources are enabled if they're available.
+  if (publisher.type === BraveNews.PublisherType.DIRECT_SOURCE) return true
+
+  // Publishers enabled via channel are not shown in the sidebar.
+  return publisher.userEnabledStatus === BraveNews.UserEnabled.ENABLED
+}
+
+export const isDirectFeed = (publisher: BraveNews.Publisher) => {
+  if (!publisher) return false
+  return publisher.type === BraveNews.PublisherType.DIRECT_SOURCE
 }

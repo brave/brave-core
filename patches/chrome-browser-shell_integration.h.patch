@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/shell_integration.h b/chrome/browser/shell_integration.h
-index 4d54dcae744f1d4c463474b64c35f8dee294dff8..6e642ff7156f75d7ff2d28e0aa80f820ecfb9415 100644
+index 3929d7e117d32272ff74ebc90b82b3b8639d4957..d242def5af89766c63b1cb0c1777895bc8f3c5b9 100644
 --- a/chrome/browser/shell_integration.h
 +++ b/chrome/browser/shell_integration.h
-@@ -231,6 +231,7 @@ class DefaultBrowserWorker : public DefaultWebClientWorker {
+@@ -236,6 +236,7 @@ class DefaultBrowserWorker : public DefaultWebClientWorker {
    DefaultBrowserWorker(const DefaultBrowserWorker&) = delete;
    DefaultBrowserWorker& operator=(const DefaultBrowserWorker&) = delete;
  

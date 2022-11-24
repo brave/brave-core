@@ -1,11 +1,12 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {
   BraveWallet,
   Origin,
+  SerializableTransactionInfo,
   SlippagePresetObjectType,
   TransactionProviderError,
   WalletAccountType
@@ -30,15 +31,15 @@ export type IsEip1559Changed = {
 }
 
 export type NewUnapprovedTxAdded = {
-  txInfo: BraveWallet.TransactionInfo
+  txInfo: SerializableTransactionInfo
 }
 
 export type UnapprovedTxUpdated = {
-  txInfo: BraveWallet.TransactionInfo
+  txInfo: SerializableTransactionInfo
 }
 
 export type TransactionStatusChanged = {
-  txInfo: BraveWallet.TransactionInfo
+  txInfo: SerializableTransactionInfo
 }
 
 export type SetUserAssetVisiblePayloadType = {

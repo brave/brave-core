@@ -21,6 +21,8 @@
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
 namespace history {
 class HistoryService;
@@ -48,6 +50,8 @@ class FeedController : public PublishersController::Observer {
   void DoesFeedVersionDiffer(
       const std::string& matching_hash,
       mojom::BraveNewsController::IsFeedUpdateAvailableCallback callback);
+  // Adds a listener which will be notified of feed updates.
+  void AddListener(mojo::PendingRemote<mojom::FeedListener> listener);
   // Provides a clone of data so that caller can take ownership or dispose
   void GetOrFetchFeed(GetFeedCallback callback);
   // Perform an update to the feed from source, but not more than once
@@ -88,6 +92,7 @@ class FeedController : public PublishersController::Observer {
   std::unique_ptr<base::OneShotEvent> on_current_update_complete_;
   base::ScopedObservation<PublishersController, PublishersController::Observer>
       publishers_observation_;
+  mojo::RemoteSet<mojom::FeedListener> listeners_;
   // Store a copy of the feed in memory so we don't fetch new data from remote
   // every time the UI opens.
   mojom::Feed current_feed_;

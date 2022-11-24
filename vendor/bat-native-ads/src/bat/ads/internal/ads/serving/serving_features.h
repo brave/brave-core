@@ -14,7 +14,7 @@ class TimeDelta;
 
 namespace ads::features {
 
-extern const base::Feature kServing;
+BASE_DECLARE_FEATURE(kServing);
 
 bool IsServingEnabled();
 

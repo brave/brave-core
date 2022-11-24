@@ -26,8 +26,9 @@
 namespace tabs {
 namespace features {
 
-const base::Feature kBraveVerticalTabs{"BraveVerticalTabs",
-                                       base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveVerticalTabs,
+             "BraveVerticalTabs",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool SupportsVerticalTabs(const Browser* browser) {
   if (!browser) {
@@ -54,6 +55,14 @@ bool ShouldShowWindowTitleForVerticalTabs(const Browser* browser) {
 
   return browser->profile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsShowTitleOnWindow);
+}
+
+bool IsFloatingVerticalTabsEnabled(const Browser* browser) {
+  if (!ShouldShowVerticalTabs(browser))
+    return false;
+
+  return browser->profile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
+      brave_tabs::kVerticalTabsFloatingEnabled);
 }
 
 std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(

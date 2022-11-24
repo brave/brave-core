@@ -32,13 +32,13 @@ using GetCreativeInlineContentAdCallback =
                        const CreativeInlineContentAdInfo& creative_ad)>;
 
 using GetCreativeInlineContentAdsCallback =
-    std::function<void(const bool success,
-                       const SegmentList& segments,
-                       const CreativeInlineContentAdList& creative_ads)>;
+    base::OnceCallback<void(const bool success,
+                            const SegmentList& segments,
+                            const CreativeInlineContentAdList& creative_ads)>;
 
 using GetCreativeInlineContentAdsForDimensionsCallback =
-    std::function<void(const bool success,
-                       const CreativeInlineContentAdList& creative_ads)>;
+    base::OnceCallback<void(const bool success,
+                            const CreativeInlineContentAdList& creative_ads)>;
 
 class CreativeInlineContentAds final : public TableInterface {
  public:

@@ -1,7 +1,7 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
@@ -149,6 +149,8 @@ export type BuySendSwapTypes =
   | 'buy'
   | 'send'
   | 'swap'
+  | 'deposit'
+  | 'transactions'
 
 export type ChartTimelineType =
   | '5MIN'
@@ -221,16 +223,16 @@ export interface WalletState {
   favoriteApps: BraveWallet.AppItem[]
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
-  selectedAccount: WalletAccountType
+  selectedAccount?: WalletAccountType
   selectedNetwork: BraveWallet.NetworkInfo | undefined
   accounts: WalletAccountType[]
   transactions: AccountTransactions
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   fullTokenList: BraveWallet.BlockchainToken[]
   portfolioPriceHistory: PriceDataObjectType[]
-  pendingTransactions: BraveWallet.TransactionInfo[]
-  knownTransactions: BraveWallet.TransactionInfo[]
-  selectedPendingTransaction: BraveWallet.TransactionInfo | undefined
+  pendingTransactions: SerializableTransactionInfo[]
+  knownTransactions: SerializableTransactionInfo[]
+  selectedPendingTransaction: SerializableTransactionInfo | undefined
   isFetchingPortfolioPriceHistory: boolean
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
   networkList: BraveWallet.NetworkInfo[]
@@ -243,7 +245,6 @@ export interface WalletState {
   gasEstimates?: BraveWallet.GasEstimation1559
   connectedAccounts: WalletAccountType[]
   isMetaMaskInstalled: boolean
-  selectedCoin: BraveWallet.CoinType
   defaultCurrencies: DefaultCurrencies
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   defaultNetworks: BraveWallet.NetworkInfo[]
@@ -274,7 +275,7 @@ export interface PanelState {
   switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
   suggestedTokenRequest?: BraveWallet.AddSuggestTokenRequest
-  selectedTransaction: BraveWallet.TransactionInfo | undefined
+  selectedTransaction: SerializableTransactionInfo | undefined
 }
 
 export interface PageState {
@@ -483,11 +484,65 @@ export interface ApproveERC20Params {
   allowance: string
 }
 
+/**
+ * Used to properly store BraveWallet.TransactionInfo in redux store,
+ * since bigints are not serializable by default
+ */
+export type SerializableTimeDelta = Record<keyof TimeDelta, number>
+
+export type Defined<T> = Exclude<T, undefined>
+
+export type SerializableSolanaTxDataMaxRetries = {
+  maxRetries?: ({
+    maxRetries: number
+  }) | undefined
+}
+
+export type SerializableSolanaTxDataSendOptions =
+  | (Omit<Defined<BraveWallet.SolanaSendTransactionOptions>, 'maxRetries'> & SerializableSolanaTxDataMaxRetries)
+  | undefined
+
+export type SerializableSolanaTxData = Omit<
+  BraveWallet.SolanaTxData,
+  | 'lastValidBlockHeight'
+  | 'lamports'
+  | 'amount'
+  | 'sendOptions'
+  > & {
+  lastValidBlockHeight: string
+  lamports: string
+  amount: string
+  sendOptions: SerializableSolanaTxDataSendOptions
+}
+
+/**
+ * Used to properly store BraveWallet.TransactionInfo in redux store,
+ * since bigints are not serializable by default
+ */
+export type SerializableTransactionInfo = Omit<
+  BraveWallet.TransactionInfo,
+  | 'confirmedTime'
+  | 'createdTime'
+  | 'submittedTime'
+  | 'txDataUnion'
+> & {
+  confirmedTime: SerializableTimeDelta
+  createdTime: SerializableTimeDelta
+  submittedTime: SerializableTimeDelta
+  txDataUnion: {
+    solanaTxData?: SerializableSolanaTxData
+    ethTxData?: BraveWallet.TxData
+    ethTxData1559?: BraveWallet.TxData1559
+    filTxData?: BraveWallet.FilTxData
+  }
+}
+
 export type AccountTransactions = {
-  [accountId: string]: BraveWallet.TransactionInfo[]
+  [accountId: string]: SerializableTransactionInfo[]
 }
 
 export type GetEthAddrReturnInfo = BraveWallet.JsonRpcService_EnsGetEthAddr_ResponseParams
+export type GetSolAddrReturnInfo = BraveWallet.JsonRpcService_SnsGetSolAddr_ResponseParams
 export type GetUnstoppableDomainsWalletAddrReturnInfo = BraveWallet.JsonRpcService_UnstoppableDomainsGetWalletAddr_ResponseParams
 
 export interface GetBlockchainTokenInfoReturnInfo {
@@ -687,6 +742,9 @@ export enum WalletRoutes {
 
   // swap
   Swap = '/swap',
+
+  // send
+  Send = '/send'
 }
 
 export const WalletOrigin = 'chrome://wallet'
@@ -853,3 +911,27 @@ export const P3ASendTransactionTypes = [
   BraveWallet.TransactionType.SolanaSPLTokenTransfer,
   BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
 ]
+
+export type SendOptionTypes = 'token' | 'nft'
+
+export type NavIDTypes =
+  | 'buy'
+  | 'send'
+  | 'swap'
+  | 'deposit'
+  | 'transactions'
+  | 'portfolio'
+
+export interface NavOption {
+  id: NavIDTypes
+  name: string
+  icon: string
+  route: WalletRoutes
+}
+
+export enum TokenStandards {
+  ERC721 = 'ERC721',
+  ERC20 = 'ERC20',
+  ERC1155 = 'ERC1155',
+  SPL = 'SPL'
+}

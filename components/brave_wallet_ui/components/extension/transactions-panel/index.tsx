@@ -1,12 +1,12 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -33,8 +33,8 @@ import {
 
 export interface Props {
   selectedNetwork?: BraveWallet.NetworkInfo
-  selectedAccountAddress: string
-  onSelectTransaction: (transaction: BraveWallet.TransactionInfo) => void
+  selectedAccountAddress?: string
+  onSelectTransaction: (transaction: SerializableTransactionInfo) => void
 }
 
 export const TransactionsPanel = ({
@@ -46,7 +46,7 @@ export const TransactionsPanel = ({
   const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
 
   // memos / computed
-  const transactionList = transactions?.[selectedAccountAddress] || []
+  const transactionList = selectedAccountAddress && transactions?.[selectedAccountAddress] || []
 
   const sortedNonRejectedTransactionList = React.useMemo(() => {
     return sortTransactionByDate(
@@ -56,7 +56,7 @@ export const TransactionsPanel = ({
   }, [transactionList])
 
   // render
-  if (transactionList.length === 0) {
+  if (sortedNonRejectedTransactionList.length === 0) {
     return (
       <StyledWrapper hideScrollbar>
         <Column fullHeight padding='22px'>

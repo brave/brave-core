@@ -23,7 +23,8 @@ const build = (buildConfig = config.defaultBuildConfig, options) => {
   config.update(options)
   checkVersionsMatch()
 
-  util.touchOverriddenFilesAndUpdateBranding()
+  util.touchOverriddenFiles()
+  util.updateBranding()
 
   if (config.xcode_gen_target) {
     util.generateXcodeWorkspace()

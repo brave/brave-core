@@ -9,8 +9,8 @@
 #include <string>
 #include <vector>
 
-#include "base/callback.h"  // IWYU pragma: keep
 #include "base/files/file.h"
+#include "base/functional/callback.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "url/gurl.h"
 

@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/command_line.h"
 #include "base/hash/hash.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
@@ -31,6 +32,7 @@
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
+#include "brave/components/brave_wallet/common/switches.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -246,6 +248,8 @@ KeyringService::KeyringService(JsonRpcService* json_rpc_service,
       kBraveWalletAutoLockMinutes,
       base::BindRepeating(&KeyringService::OnAutoLockPreferenceChanged,
                           base::Unretained(this)));
+
+  MaybeUnlockWithCommandLine();
 }
 
 KeyringService::~KeyringService() {
@@ -727,8 +731,8 @@ void KeyringService::CreateWallet(const std::string& password,
     if (address) {
       SetPrefForKeyring(prefs_, kSelectedAccount, base::Value(*address),
                         mojom::kDefaultKeyringId);
-      json_rpc_service_->DiscoverAssets(
-          mojom::kMainnetChainId, mojom::CoinType::ETH, {address.value()});
+
+      NotifyAccountsAdded(mojom::CoinType::ETH, {address.value()});
     }
   }
 
@@ -765,8 +769,7 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
     if (address) {
       SetPrefForKeyring(prefs_, kSelectedAccount, base::Value(*address),
                         mojom::kDefaultKeyringId);
-      json_rpc_service_->DiscoverAssets(
-          mojom::kMainnetChainId, mojom::CoinType::ETH, {address.value()});
+      NotifyAccountsAdded(mojom::CoinType::ETH, {address.value()});
     }
   }
 
@@ -908,8 +911,7 @@ void KeyringService::AddAccount(const std::string& account_name,
   if (address) {
     SetSelectedAccountForCoinSilently(coin, address.value());
     SetSelectedCoin(prefs_, coin);
-    json_rpc_service_->DiscoverAssets(mojom::kMainnetChainId,
-                                      mojom::CoinType::ETH, {address.value()});
+    NotifyAccountsAdded(coin, {address.value()});
   }
 
   NotifyAccountsChanged();
@@ -1003,6 +1005,8 @@ void KeyringService::ImportAccount(const std::string& account_name,
                                    const std::string& private_key,
                                    mojom::CoinType coin,
                                    ImportAccountCallback callback) {
+  std::string private_key_trimmed;
+  base::TrimString(private_key, " \n\t", &private_key_trimmed);
   auto keyring_id = GetKeyringIdForCoinNonFIL(coin);
 
   if (!keyring_id) {
@@ -1019,9 +1023,9 @@ void KeyringService::ImportAccount(const std::string& account_name,
 
   std::vector<uint8_t> private_key_bytes;
   if (*keyring_id == mojom::kDefaultKeyringId) {
-    if (!base::HexStringToBytes(private_key, &private_key_bytes)) {
+    if (!base::HexStringToBytes(private_key_trimmed, &private_key_bytes)) {
       // try again with 0x prefix considered
-      if (!PrefixedHexStringToBytes(private_key, &private_key_bytes)) {
+      if (!PrefixedHexStringToBytes(private_key_trimmed, &private_key_bytes)) {
         std::move(callback).Run(false, "");
         return;
       }
@@ -1033,9 +1037,12 @@ void KeyringService::ImportAccount(const std::string& account_name,
       return;
     }
     std::vector<uint8_t> keypair(kSolanaKeypairSize);
-    if (!Base58Decode(private_key, &keypair, keypair.size())) {
-      std::move(callback).Run(false, "");
-      return;
+    if (!Base58Decode(private_key_trimmed, &keypair, keypair.size())) {
+      if (!Uint8ArrayDecode(private_key_trimmed, &keypair,
+                            kSolanaKeypairSize)) {
+        std::move(callback).Run(false, "");
+        return;
+      }
     }
     // extract private key from keypair
     private_key_bytes = std::move(keypair);
@@ -1348,10 +1355,8 @@ absl::optional<std::string> KeyringService::ImportAccountForKeyring(
   SetSelectedAccountForCoinSilently(GetCoinForKeyring(keyring_id), address);
   SetSelectedCoin(prefs_, GetCoinForKeyring(keyring_id));
 
-  json_rpc_service_->DiscoverAssets(mojom::kMainnetChainId,
-                                    mojom::CoinType::ETH, {address});
   NotifyAccountsChanged();
-
+  NotifyAccountsAdded(info.coin, {address});
   return address;
 }
 
@@ -1462,10 +1467,8 @@ void KeyringService::AddHardwareAccounts(
       account_selected = true;
     }
   }
-
-  json_rpc_service_->DiscoverAssets(mojom::kMainnetChainId,
-                                    mojom::CoinType::ETH, addresses);
   NotifyAccountsChanged();
+  NotifyAccountsAdded(infos[0]->coin, addresses);
 }
 
 void KeyringService::RemoveHardwareAccount(
@@ -2154,6 +2157,18 @@ void KeyringService::NotifyAccountsChanged() {
   }
 }
 
+void KeyringService::NotifyAccountsAdded(
+    mojom::CoinType coin,
+    const std::vector<std::string>& addresses) {
+  for (const auto& observer : observers_) {
+    std::vector<std::string> addresses_clone;
+    for (const auto& address : addresses) {
+      addresses_clone.push_back(address);
+    }
+    observer->AccountsAdded(coin, addresses_clone);
+  }
+}
+
 void KeyringService::OnAutoLockPreferenceChanged() {
   StopAutoLockTimer();
   ResetAutoLockTimer();
@@ -2266,6 +2281,17 @@ void KeyringService::GetChecksumEthAddress(
 void KeyringService::HasPendingUnlockRequest(
     HasPendingUnlockRequestCallback callback) {
   std::move(callback).Run(HasPendingUnlockRequest());
+}
+
+void KeyringService::MaybeUnlockWithCommandLine() {
+#if !defined(OFFICIAL_BUILD)
+  std::string dev_wallet_password =
+      base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kDevWalletPassword);
+  if (!dev_wallet_password.empty()) {
+    Unlock(dev_wallet_password, base::DoNothing());
+  }
+#endif  // !defined(OFFICIAL_BUILD)
 }
 
 }  // namespace brave_wallet

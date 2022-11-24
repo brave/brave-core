@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 import { useSelector } from 'react-redux'
@@ -9,8 +9,9 @@ import { useSelector } from 'react-redux'
 // Constants
 import {
   BraveWallet,
+  SerializableTimeDelta,
+  SerializableTransactionInfo,
   SolFeeEstimates,
-  TimeDelta,
   WalletAccountType,
   WalletState
 } from '../../constants/types'
@@ -45,7 +46,8 @@ import {
   isSolanaTransaction,
   isSwapTransaction,
   parseTransactionFeesWithoutPrices,
-  transactionHasSameAddressError
+  transactionHasSameAddressError,
+  TransactionInfo
 } from '../../utils/tx-utils'
 import { getBalance } from '../../utils/balance-utils'
 import { getAddressLabel } from '../../utils/account-utils'
@@ -54,6 +56,7 @@ import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 
 // Hooks
 import usePricing from './pricing'
+import { makeSerializableTimeDelta } from '../../utils/model-serialization-utils'
 
 interface ParsedTransactionFees {
   gasLimit: string
@@ -73,7 +76,7 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   id: string
   hash: string
   nonce: string
-  createdTime: TimeDelta
+  createdTime: SerializableTimeDelta
   status: BraveWallet.TransactionStatus
   sender: string
   senderLabel: string
@@ -124,7 +127,7 @@ export interface ParsedTransaction extends ParsedTransactionFees {
 }
 
 export function useTransactionFeesParser (selectedNetwork?: BraveWallet.NetworkInfo, networkSpotPrice?: string, solFeeEstimates?: SolFeeEstimates) {
-  return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransactionFees => {
+  return React.useCallback((transactionInfo: TransactionInfo): ParsedTransactionFees => {
     const txFeesBase = parseTransactionFeesWithoutPrices(
       transactionInfo,
       solFeeEstimates
@@ -165,7 +168,7 @@ export function useTransactionParser (
     [selectedNetwork, findAssetPrice]
   )
 
-  return React.useCallback((tx: BraveWallet.TransactionInfo): ParsedTransaction => {
+  return React.useCallback((tx: SerializableTransactionInfo): ParsedTransaction => {
     const {
       token,
       gasFee,
@@ -219,7 +222,7 @@ export function parseTransactionWithoutPrices ({
   accounts: WalletAccountType[]
   fullTokenList: BraveWallet.BlockchainToken[]
   solFeeEstimates?: SolFeeEstimates
-  tx: BraveWallet.TransactionInfo
+  tx: TransactionInfo
   transactionNetwork?: BraveWallet.NetworkInfo
   userVisibleTokensList: BraveWallet.BlockchainToken[]
 }): Omit<
@@ -308,7 +311,7 @@ export function parseTransactionWithoutPrices ({
     approvalTargetLabel: getAddressLabel(approvalTarget, accounts),
     buyToken,
     coinType: getCoinFromTxDataUnion(tx.txDataUnion),
-    createdTime: tx.createdTime,
+    createdTime: makeSerializableTimeDelta(tx.createdTime),
     contractAddressError: isSendingToKnownTokenContractAddress(tx, combinedTokensList)
       ? getLocale('braveWalletContractAddressError')
       : undefined,

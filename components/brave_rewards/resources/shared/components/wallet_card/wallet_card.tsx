@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 
@@ -19,6 +19,8 @@ import { WalletInfoIcon } from './icons/wallet_info_icon'
 import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
 
 import * as style from './wallet_card.style'
+
+import * as mojom from '../../../shared/lib/mojom'
 
 const rangeFormatter = new Intl.DateTimeFormat(undefined, {
   month: 'short',
@@ -54,7 +56,7 @@ export function WalletCard (props: Props) {
   const { externalWallet } = props
 
   const walletDisconnected =
-    externalWallet && externalWallet.status === 'disconnected'
+    externalWallet && externalWallet.status === mojom.WalletStatus.kLoggedOut
 
   function onAddFundsClick () {
     props.onExternalWalletAction('add-funds')

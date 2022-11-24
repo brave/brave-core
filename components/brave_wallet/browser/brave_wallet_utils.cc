@@ -1054,26 +1054,10 @@ std::vector<mojom::NetworkInfoPtr> GetAllKnownChains(PrefService* prefs,
 GURL GetNetworkURL(PrefService* prefs,
                    const std::string& chain_id,
                    mojom::CoinType coin) {
-  if (coin == mojom::CoinType::ETH) {
-    if (auto custom_chain =
-            GetCustomChain(prefs, chain_id, mojom::CoinType::ETH)) {
-      return MaybeAddInfuraProjectId(GetActiveEndpointUrl(*custom_chain));
-    } else if (auto known_chain =
-                   GetKnownChain(prefs, chain_id, mojom::CoinType::ETH)) {
-      return MaybeAddInfuraProjectId(GetActiveEndpointUrl(*known_chain));
-    }
-  } else if (coin == mojom::CoinType::SOL) {
-    for (const auto* network : GetKnownSolNetworks()) {
-      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
-        return GetActiveEndpointUrl(*network);
-      }
-    }
-  } else if (coin == mojom::CoinType::FIL) {
-    for (const auto* network : GetKnownFilNetworks()) {
-      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
-        return GetActiveEndpointUrl(*network);
-      }
-    }
+  if (auto custom_chain = GetCustomChain(prefs, chain_id, coin)) {
+    return MaybeAddInfuraProjectId(GetActiveEndpointUrl(*custom_chain));
+  } else if (auto known_chain = GetKnownChain(prefs, chain_id, coin)) {
+    return MaybeAddInfuraProjectId(GetActiveEndpointUrl(*known_chain));
   }
   return GURL();
 }

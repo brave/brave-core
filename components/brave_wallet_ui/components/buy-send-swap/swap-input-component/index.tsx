@@ -1,3 +1,7 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 import {
@@ -305,7 +309,7 @@ function SwapInputComponent (props: Props) {
     <BubbleContainer>
       {componentType !== 'selector' &&
         <>
-          {!selectedAsset?.isErc721 &&
+          {!(selectedAsset?.isErc721 || selectedAsset?.isNft) &&
             <Row>
               <FromBalanceText componentType={componentType}>{getTitle()}</FromBalanceText>
 
@@ -332,7 +336,7 @@ function SwapInputComponent (props: Props) {
                 <Spacer />
               </AssetButton>
             }
-            {!selectedAsset?.isErc721 &&
+            {!(selectedAsset?.isErc721 || selectedAsset?.isNft) &&
               <Input
                 componentType={componentType}
                 type={componentType === 'toAddress' ? 'text' : 'number'}
@@ -362,7 +366,7 @@ function SwapInputComponent (props: Props) {
               </RefreshButton>
             }
             {componentType !== 'exchange' && componentType !== 'toAddress' &&
-              <AssetButton isERC721={selectedAsset?.isErc721} onClick={onShowSelection}>
+              <AssetButton isERC721={(selectedAsset?.isErc721 || selectedAsset?.isNft)} onClick={onShowSelection}>
                 <ButtonLeftSide>
                   <AssetIconWithPlaceholder asset={selectedAsset} network={selectedNetwork} />
                   <AssetTicker>
@@ -377,7 +381,7 @@ function SwapInputComponent (props: Props) {
               </AssetButton>
             }
           </Row>
-          {componentType === 'fromAmount' && !selectedAsset?.isErc721 &&
+          {componentType === 'fromAmount' && !(selectedAsset?.isErc721 || selectedAsset?.isNft) &&
             <PresetRow>
               {AmountPresetOptions().map((preset, idx) =>
                 <PresetButton

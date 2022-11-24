@@ -12,6 +12,7 @@
 #include "base/observer_list.h"
 #include "bat/ads/ads_callback.h"
 #include "bat/ads/internal/ads/serving/inline_content_ad_serving_observer.h"
+#include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/segments/segment_alias.h"
 
 namespace ads {
@@ -23,6 +24,10 @@ class SubdivisionTargeting;
 namespace resource {
 class AntiTargeting;
 }  // namespace resource
+
+namespace targeting {
+struct UserModelInfo;
+}  // namespace targeting
 
 struct InlineContentAdInfo;
 
@@ -47,15 +52,21 @@ class Serving final {
   void RemoveObserver(ServingObserver* observer);
 
   void MaybeServeAd(const std::string& dimensions,
-                    const MaybeServeInlineContentAdCallback& callback);
+                    MaybeServeInlineContentAdCallback callback);
 
  private:
+  void OnGetForUserModel(const targeting::UserModelInfo& user_model,
+                         const std::string& dimensions,
+                         MaybeServeInlineContentAdCallback callback,
+                         bool had_opportunity,
+                         const CreativeInlineContentAdList& creative_ads);
+
   bool IsSupported() const;
 
   void ServeAd(const InlineContentAdInfo& ad,
-               const MaybeServeInlineContentAdCallback& callback);
+               MaybeServeInlineContentAdCallback callback);
   void FailedToServeAd(const std::string& dimensions,
-                       const MaybeServeInlineContentAdCallback& callback);
+                       MaybeServeInlineContentAdCallback callback);
 
   void NotifyOpportunityAroseToServeInlineContentAd(
       const SegmentList& segments) const;

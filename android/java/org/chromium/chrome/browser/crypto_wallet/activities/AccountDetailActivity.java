@@ -39,6 +39,7 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
+import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -154,7 +155,7 @@ public class AccountDetailActivity
 
     private void fetchAccountInfo(NetworkInfo selectedNetwork) {
         assert mKeyringService != null;
-        mKeyringService.getKeyringInfo(Utils.getKeyringForCoinType(mCoinType), keyringInfo -> {
+        mKeyringService.getKeyringInfo(AssetUtils.getKeyringForCoinType(mCoinType), keyringInfo -> {
             if (keyringInfo == null) {
                 return;
             }

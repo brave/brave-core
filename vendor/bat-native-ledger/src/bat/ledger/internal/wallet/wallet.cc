@@ -5,7 +5,6 @@
 
 #include "bat/ledger/internal/wallet/wallet.h"
 
-#include <map>
 #include <utility>
 #include <vector>
 
@@ -14,13 +13,10 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/bitflyer/bitflyer.h"
-#include "bat/ledger/internal/bitflyer/bitflyer_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/state/state_keys.h"
-#include "bat/ledger/internal/uphold/uphold.h"
-#include "bat/ledger/internal/uphold/uphold_util.h"
+#include "bat/ledger/internal/wallet/wallet_util.h"
 
 #include "wally_bip39.h"  // NOLINT
 
@@ -44,119 +40,31 @@ void Wallet::FetchBalance(ledger::FetchBalanceCallback callback) {
   balance_->Fetch(std::move(callback));
 }
 
-void Wallet::ExternalWalletAuthorization(
-    const std::string& wallet_type,
-    const base::flat_map<std::string, std::string>& args,
-    ledger::ExternalWalletAuthorizationCallback callback) {
-  if (wallet_type == constant::kWalletUphold) {
-    ledger_->uphold()->WalletAuthorization(args, callback);
-    return;
-  }
-
-  if (wallet_type == constant::kWalletBitflyer) {
-    ledger_->bitflyer()->WalletAuthorization(args, callback);
-    return;
-  }
-
-  if (wallet_type == constant::kWalletGemini) {
-    ledger_->gemini()->WalletAuthorization(args, callback);
-    return;
-  }
-
-  NOTREACHED();
-  callback(mojom::Result::LEDGER_ERROR, {});
-}
-
 void Wallet::DisconnectWallet(const std::string& wallet_type,
                               ledger::LegacyResultCallback callback) {
-  if (wallet_type == constant::kWalletUphold) {
-    if (const auto uphold_wallet = ledger_->uphold()->GetWallet()) {
-      switch (uphold_wallet->status) {
-        case mojom::WalletStatus::DISCONNECTED_VERIFIED:
-          DCHECK(uphold_wallet->token.empty());
-          DCHECK(uphold_wallet->address.empty());
-          break;
-        case mojom::WalletStatus::PENDING:
-          DCHECK(!uphold_wallet->token.empty());
-          DCHECK(uphold_wallet->address.empty());
-          break;
-        case mojom::WalletStatus::VERIFIED:
-          DCHECK(!uphold_wallet->token.empty());
-          DCHECK(!uphold_wallet->address.empty());
-          break;
-        default:
-          BLOG(0,
-               "Wallet status should have been either DISCONNECTED_VERIFIED, "
-               "PENDING, or VERIFIED!");
-      }
-    } else {
-      BLOG(0, "Uphold wallet is null!");
-    }
+  promotion_server_->delete_claim()->Request(
+      wallet_type, [this, wallet_type, callback](mojom::Result result) {
+        if (result != mojom::Result::LEDGER_OK) {
+          BLOG(0, "Failed to disconnect " << wallet_type
+                                          << " wallet (server side)!");
+          return callback(result);
+        }
 
-    return promotion_server_->delete_claim()->Request(
-        constant::kWalletUphold, [this, callback](const mojom::Result result) {
-          if (result != mojom::Result::LEDGER_OK) {
-            const auto uphold_wallet = ledger_->uphold()->GetWallet();
-            if (!uphold_wallet) {
-              BLOG(0, "Uphold wallet is null!");
-              BLOG(0, "Wallet unlinking failed!");
-              return callback(mojom::Result::LEDGER_ERROR);
-            }
+        if (!ledger::wallet::DisconnectWallet(ledger_, wallet_type, true)) {
+          BLOG(0, "Failed to disconnect " << wallet_type
+                                          << " wallet (client side)!");
+          return callback(mojom::Result::LEDGER_ERROR);
+        }
 
-            if (uphold_wallet->status ==
-                    mojom::WalletStatus::DISCONNECTED_VERIFIED ||
-                uphold_wallet->status == mojom::WalletStatus::VERIFIED) {
-              BLOG(0, "Wallet unlinking failed!");
-              return callback(result);
-            }
-          }
-
-          ledger_->uphold()->DisconnectWallet({});
-          ledger_->state()->ResetWalletType();
-          callback(mojom::Result::LEDGER_OK);
-        });
-  }
-
-  if (wallet_type == constant::kWalletBitflyer) {
-    promotion_server_->delete_claim()->Request(
-        constant::kWalletBitflyer,
-        [this, callback](const mojom::Result result) {
-          if (result != mojom::Result::LEDGER_OK) {
-            BLOG(0, "Wallet unlinking failed");
-            callback(result);
-            return;
-          }
-          ledger_->bitflyer()->DisconnectWallet(true);
-          ledger_->state()->ResetWalletType();
-          callback(mojom::Result::LEDGER_OK);
-        });
-    return;
-  }
-
-  if (wallet_type == constant::kWalletGemini) {
-    promotion_server_->delete_claim()->Request(
-        constant::kWalletGemini, [this, callback](const mojom::Result result) {
-          if (result != mojom::Result::LEDGER_OK) {
-            BLOG(0, "Wallet unlinking failed");
-            callback(result);
-            return;
-          }
-          ledger_->gemini()->DisconnectWallet(true);
-          ledger_->state()->ResetWalletType();
-          callback(mojom::Result::LEDGER_OK);
-        });
-    return;
-  }
-
-  NOTREACHED();
-  callback(mojom::Result::LEDGER_OK);
+        ledger_->state()->ResetWalletType();
+        callback(mojom::Result::LEDGER_OK);
+      });
 }
 
 void Wallet::DisconnectAllWallets(ledger::LegacyResultCallback callback) {
-  DisconnectWallet(constant::kWalletUphold, [](const mojom::Result result) {});
-  DisconnectWallet(constant::kWalletBitflyer,
-                   [](const mojom::Result result) {});
-  DisconnectWallet(constant::kWalletGemini, [](const mojom::Result result) {});
+  DisconnectWallet(constant::kWalletBitflyer, [](auto) {});
+  DisconnectWallet(constant::kWalletGemini, [](auto) {});
+  DisconnectWallet(constant::kWalletUphold, [](auto) {});
   callback(mojom::Result::LEDGER_OK);
 }
 

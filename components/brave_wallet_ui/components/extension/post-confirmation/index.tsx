@@ -1,8 +1,12 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 // Constants
-import { BraveWallet, TransactionProviderError, WalletState } from '../../../constants/types'
+import { BraveWallet, SerializableTransactionInfo, TransactionProviderError, WalletState } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -23,7 +27,7 @@ import { TransactionFailed } from './failed'
 import { Loader } from './common/common.style'
 
 interface Props {
-  transaction: BraveWallet.TransactionInfo
+  transaction: SerializableTransactionInfo
 }
 
 export function TransactionStatus (props: Props) {
@@ -34,7 +38,7 @@ export function TransactionStatus (props: Props) {
     (state: { wallet: WalletState }) => state.wallet
   )
 
-  const liveTransaction: BraveWallet.TransactionInfo = React.useMemo(
+  const liveTransaction: SerializableTransactionInfo = React.useMemo(
     () => transactions[transaction.fromAddress].find(tx => tx.id === transaction.id) || transaction,
     [transactions, transaction]
   )

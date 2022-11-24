@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/features/text_embedding_features.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"

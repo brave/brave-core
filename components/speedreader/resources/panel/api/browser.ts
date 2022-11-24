@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
-* License, v. 2.0. If a copy of the MPL was not distributed with this file,
-* You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as SpeedreaderPanel from 'gen/brave/components/speedreader/common/speedreader_panel.mojom.m.js'
 
@@ -11,7 +11,6 @@ const factory = SpeedreaderPanel.PanelFactory.getRemote()
 
 export const panelHandler = new SpeedreaderPanel.PanelHandlerRemote()
 export const panelDataHandler = new SpeedreaderPanel.PanelDataHandlerRemote()
-export const panelHandlerCallbackRouter = new SpeedreaderPanel.PanelHandlerCallbackRouter()
 
 factory.createInterfaces(
   panelHandler.$.bindNewPipeAndPassReceiver(),

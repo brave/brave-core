@@ -498,6 +498,9 @@
   <message name="IDS_OS_SETTINGS_LANGUAGES_EDIT_DICTIONARY_LABEL" desc="Label for the section for users to add words that they don’t want get flagged by the spell check.">
     Customize spell check
   </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_JAPANESE_MANAGE_USER_DICTIONARY_LABEL" desc="Label for the section of the Japanese user settings which allows them to manage their custom dictionaries for Japaneses input. This is the string which appears at the top of the User dictionaries subpage.">
+    User dictionaries
+  </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_EDIT_DICTIONARY_DESCRIPTION" desc="Description for the section for users to add words that they don’t want get flagged by the spell check.">
     Add words you want spell check to skip
   </message>
@@ -582,6 +585,36 @@
   </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_SECTION_TITLE" desc="The label for the section in input method options page section title.">
     Section
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_AUTOMATICALLY_SWITCH_TO_HALFWIDTH" desc="The label for the input method option to enable double-space to type period (when an user types two consecutive space, it outputs a period).">
+    Automatically switch to halfwidth
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_SHIFT_KEY_MODE_STYLE" desc="The label for the setting to set the shift key mode style.">
+    Shift Key Mode Style
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_SHIFT_KEY_MODE_STYLE_OFF" desc="The label for the option to disable the shift key mode style.">
+    Off
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_SHIFT_KEY_MODE_STYLE_ALPHANUMERIC" desc="The label for the option to set the Shift key mode style to Alphanumeric.">
+    Alphanumeric
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_SHIFT_KEY_MODE_STYLE_KATAKANA" desc="The label for the option to set the Shift key mode style to Katakana.">
+    Katakana
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_USE_INPUT_HISTORY" desc="The label for the toggled settings to determine if the input history should be used or not.">
+    Use Input History
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_USE_SYSTEM_DICTIONARY" desc="The label for the toggled settings to determine if the system dictionary should be used or not.">
+    Use system dictionary
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_NUMBER_OF_SUGGESTIONS" desc="The label for the setting to set the number of suggestions the Japanese input method should show.">
+    Number of suggestions
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_DISABLE_PERSONALIZED_SUGGESTIONS" desc="The label for the setting toggle to enable or disable the personalized conversions and custom user dictionaries for Japanese. The original string in Japanese is '学習機能、入力履歴からのサジェスト機能、ユーザ辞書機能を無効にする'.">
+    Disable personalized conversions and suggestions as well as user dictionary
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_SEND_STATISTICS_TO_GOOGLE" desc="The label for the setting toggle to enable or disable sending all usage statistics and crash reports to Brave. The original string in Japanese is '使用統計データや障害レポートを Brave に自動送信する'.">
+    Automatically send usage statistics and crash reports to Brave
   </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ENABLE_DOUBLE_SPACE_PERIOD" desc="The label for the input method option to enable double-space to type period (when an user types two consecutive space, it outputs a period).">
     Double-space to type period
@@ -715,6 +748,15 @@
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_KEYMAP_STYLE_CHROMEOS" translateable="false">
     ChromeOS
   </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_MANAGE_USER_DICTIONARY" desc="Label on the settings page which if the user clicks on, will bring up the Japaneses dictionary management page. There are multiple dictionary which the user can modify.">
+    Manage user dictionaries
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_CLEAR_PERSONALIZATION_DATA" desc="The label for the button leading to the page within japanese input settings which can be used to clear personalization data for Japanese input. In Japanese, this should be '入力履歴の消去...'.">
+    Clear personalization data...
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_JAPANESE_MANAGE_USER_DICTIONARY_SUBTITLE" desc="Subheading for the label on the settings page which if the user clicks on, will bring up the Japaneses dictionary management page. There are multiple dictionary which the user can modify.">
+    Add your own words to the user dictionaries in order to customize the conversion candidates.
+  </message>
   <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_PINYIN_CHINESE_PUNCTUATION" desc="The label for the pinyin input method option for whether to output full-width or half-with punctuation.">
     Initial punctuation width is Full
   </message>
@@ -773,62 +815,6 @@
   <message name="IDS_OS_SETTINGS_PERSONALIZATION" desc="Name of the OS settings page which displays personalization preferences.">
     Personalization
   </message>
-  <message name="IDS_SETTINGS_CHANGE_PICTURE_TAKE_PHOTO" desc="The text on the button to take photo of the current user.">
-    Take photo
-  </message>
-  <message name="IDS_SETTINGS_CHANGE_PICTURE_CAPTURE_VIDEO" desc="The text on the button to capture video of the current user.">
-    Capture video
-  </message>
-  <message name="IDS_SETTINGS_CHANGE_PICTURE_DISCARD_PHOTO" desc="The text on the button to discard the captured photo or video of the current user.">
-    Discard photo or video
-  </message>
-  <message name="IDS_SETTINGS_CHANGE_PICTURE_PREVIEW_ALT" desc="Alt text for the big preview of user image.">
-    User image preview
-  </message>
-  <message name="IDS_SETTINGS_CHANGE_PICTURE_SWITCH_MODE_TO_VIDEO" desc="The text on the button to switch the mode of the camera to video.">
-    Switch to video recorder
-  </message>
-  <message name="IDS_SETTINGS_CHANGE_PICTURE_DIALOG_TEXT" desc="Text with description of what to do on Change picture subpage.">
-    Choose a picture to display for your account on the sign-in screen
-  </message>
-  <message name="IDS_SETTINGS_CHANGE_PICTURE_SWITCH_MODE_TO_CAMERA" desc="The text on the button to switch the mode of the camera to photo.">
-    Switch to camera mode
-  </message>
-  <message name="IDS_SETTINGS_CHANGE_PICTURE_CHOOSE_FILE" desc="Text on a button that shows file dialog to choose a picture from file.">
-    Choose a file
-  </message>
-  <message name="IDS_SETTINGS_CHANGE_PICTURE_OLD_PHOTO" desc="The text on the existing photo, which was either taken by the webcam or read from a file.">
-    Existing photo from camera or file
-  </message>
-  <message name="IDS_SETTINGS_CHANGE_PICTURE_OLD_VIDEO" desc="The text on the existing video, which was either taken by the webcam or read from a file.">
-    Existing video from camera or file
-  </message>
-  <message name="IDS_SETTINGS_CHANGE_PICTURE_AUTHOR_CREDIT_TEXT" desc="Label in the profile picture picker for the photo credit for the selected image.">
-    Photo by <ph name="NAME">$1<ex>John Doe</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_PHOTO_CAPTURE_ACCESSIBLE_TEXT" desc="The accessible message to speak to announce that a photo was captured.">
-    Photo was captured
-  </message>
-  <message name="IDS_SETTINGS_PHOTO_DISCARD_ACCESSIBLE_TEXT" desc="The accessible message to speak to announce that a photo was discarded.">
-    Photo was discarded
-  </message>
-  <message name="IDS_SETTINGS_PHOTO_MODE_ACCESSIBLE_TEXT" desc="The accessible message to speak to announce a switch to photo mode for camera.">
-    Photo mode entered
-  </message>
-  <message name="IDS_SETTINGS_VIDEO_MODE_ACCESSIBLE_TEXT" desc="The accessible message to speak to announce a switch to video mode for camera.">
-    Video mode entered
-  </message>
-
-  <!-- Personalization Page (OS settings) and Appearance Page (Browser settings) -->
-  <message name="IDS_OS_SETTINGS_SET_WALLPAPER" desc="Name of the control which allows the user to set the wallpaper.">
-    Wallpaper
-  </message>
-  <message name="IDS_OS_SETTINGS_OPEN_WALLPAPER_APP" desc="Sub-label about opening the wallpaper app.">
-    Open the wallpaper app
-  </message>
-  <message name="IDS_OS_SETTINGS_CHANGE_PICTURE_TITLE" desc="Label for row in settings page that shows the user image picker.">
-    Change device account image
-  </message>
   <message name="IDS_OS_SETTINGS_OPEN_PERSONALIZATION_HUB" desc="Title for the link to open personalization hub.">
     Set your wallpaper &amp; style
   </message>
@@ -839,9 +825,6 @@
   <!-- Search and Assistant section. -->
   <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_LABEL" desc="Label in OS settings describing search engine behavior.">
     Preferred search engine
-  </message>
-  <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_BUTTON_LABEL" desc="Label in OS settings for the button to configure search engine behavior.">
-    Configure
   </message>
   <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_DESCRIPTION" desc="Description in the search engine dialog in OS settings explaining that search engine is used in both the Brave browser and the ChromeOS app launcher.">
     Set your default search engine for Brave browser and <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> Launcher
@@ -2154,20 +2137,11 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_BLUETOOTH_CONNECTED" desc="In Bluetooth device list, this label is shown below a device which is already connected.">
     Connected
   </message>
-  <message name="IDS_SETTINGS_BLUETOOTH_CONNECTED_WITH_BATTERY" desc="In Bluetooth device list, this label is shown below a device which is already connected and has a known battery percentage.">
-    Connected, <ph name="BATTERY_PERCENTAGE">$1<ex>100</ex></ph>% battery
-  </message>
   <message name="IDS_SETTINGS_BLUETOOTH_CONNECTING">
     Connecting...
   </message>
-  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_LIST_PAIRED" desc="Title of the settings subsection listing paired Bluetooth devices.">
-    Paired devices
-  </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PRIMARY_USER_CONTROLLED" desc="Settings &gt; Bluetooth &gt; Text to show when Bluetooth configuration is controlled by the primary user.">
     Bluetooth configuration is controlled by <ph name="USER_EMAIL">$1<ex>joe@gmail.com</ex></ph>.
-  </message>
-  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_LIST_UNPAIRED" desc="Title of the settings subsection listing unpaired Bluetooth devices.">
-    Unpaired devices
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_CONNECT" desc="Bluetooth pairing dialog: Text for dropdown meny item to connect to a device.">
     Connect
@@ -2268,15 +2242,6 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_BLUETOOTH_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing available Bluetooth devices. Only visible by screen reader software.">
     Show available Bluetooth devices
   </message>
-  <message name="IDS_SETTINGS_BLUETOOTH_NO_DEVICES" desc="Message displayed when there are no paired Bluetooth devices scan.">
-    No paired devices
-  </message>
-  <message name="IDS_SETTINGS_BLUETOOTH_NO_DEVICES_FOUND" desc="Message displayed when no Bluetooth devices are found after a scan.">
-    No Bluetooth devices found
-  </message>
-  <message name="IDS_SETTINGS_BLUETOOTH_NOT_CONNECTED" desc="In Bluetooth device list, this label is shown below a device which is not connected.">
-    Not connected
-  </message>
   <message name="IDS_SETTINGS_BLUETOOTH" desc="Name of the settings page which displays Bluetooth device settings.">
     Bluetooth
   </message>
@@ -2313,26 +2278,23 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_REMOVE_SAVED_DEVICE_DIALOG_CANCEL" desc="Bluetooth saved devices subpage &gt; Remove device dialog: Label for button that cancels removing the device.">
     Cancel
   </message>
-  <message name="IDS_SETTINGS_REMOVE_SAVED_DEVICE_DIALOG_REMOVE" desc="Bluetooth saved devices subpage &gt; Remove device dialog: Label for button that removes the device.">
+  <message name="IDS_SETTINGS_REMOVE_SAVED_DEVICE_DIALOG_REMOVE" desc="Bluetooth saved devices subpage &gt; Remove device dialog: Label for button that removes the device." meaning="the title and the button are meant to match. “Remove” means to move or take content/data down so that it's no longer visible in the user interface (but it may still exist in the system, as opposed to 'deleting' or 'uninstalling'">
     Remove
   </message>
-  <message name="IDS_SETTINGS_REMOVE_SAVED_DEVICE_DIALOG_LABEL" desc="Bluetooth saved devices subpage &gt; Remove device dialog: Label for dialog that removes the device.">
+  <message name="IDS_SETTINGS_REMOVE_SAVED_DEVICE_DIALOG_LABEL" desc="Bluetooth saved devices subpage &gt; Remove device dialog: Label for dialog that removes the device." meaning="question to prompt users if they want to remove [device name] from their [email address]. The user then confirms removing the device name or cancels to not remove the device name">
     Remove <ph name="DEVICE">$1<ex>Beats</ex></ph> from <ph name="PRIMARY_EMAIL">$2<ex>john@google.com</ex></ph>?
   </message>
   <message name="IDS_SETTINGS_FORGET_DEVICE_DIALOG_CANCEL" desc="Bluetooth device details page &gt; Forget device dialog: Label for button that cancels forgetting the device.">
     Cancel
   </message>
-  <message name="IDS_SETTINGS_FORGET_DEVICE_DIALOG_FORGET" desc="Bluetooth device details page &gt; Forget device dialog: Label for button that forgets the device.">
+  <message name="IDS_SETTINGS_FORGET_DEVICE_DIALOG_FORGET" desc="Bluetooth device details page &gt; Forget device dialog: Label for button that forgets the device." meaning="The 'forget' buttons means 'forgetting the device,' the 'forget' button is a confirmation for the user to unpair and remove the device from their account">
     Forget
   </message>
   <message name="IDS_SETTINGS_FORGET_DEVICE_DIALOG_LABEL" desc="Bluetooth device details page &gt; Forget device dialog: Label for dialog that forgets the device.">
     <ph name="DEVICE">$1<ex>Beats</ex></ph> will be removed from this Chromebook and won’t be saved to <ph name="PRIMARY_EMAIL">$2<ex>john@google.com</ex></ph>.
   </message>
-  <message name="IDS_SETTINGS_FORGET_DEVICE_DIALOG_TITLE" desc="Bluetooth device details page &gt; Forget device dialog: Title for dialog that forgets the device.">
-    Forget device
-  </message>
-  <message name="IDS_SETTINGS_BLUETOOTH_PAIR_DEVICE_TITLE" desc="Title of the settings dialog for adding or pairing Bluetooth a device.">
-    Connect to Bluetooth device
+  <message name="IDS_SETTINGS_FORGET_DEVICE_DIALOG_TITLE" desc="Bluetooth device details page &gt; Forget device dialog: Title for dialog that forgets the device." meaning="'Forget this device' means the device will be unpaired and removed from the account">
+    Forget this device?
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_REMOVE" desc="Label for removing (unpairing) a paired Bluetooth device">
     Remove from list
@@ -2344,7 +2306,7 @@ Press an assigned switch or key to remove assignment.
     Scan for new devices
   </message>
   <message name="IDS_BLUETOOTH_ENABLE_FAST_PAIR_SUBTITLE" desc="Subtitle that describes the toggle that enables Fast Pair on the Bluetooth settings page.">
-    Easily connect and set up Fast Pair devices close by
+    Connect and quickly set up Fast Pair devices close by
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_ENABLED_A11Y_LABEL" desc="Bluetooth device details page: Accessibility announcement when Bluetooth state is enabled.">
     Bluetooth enabled
@@ -3031,6 +2993,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_BUTTON_FORGET" desc="Settings &gt; Internet &gt; Network details: The label for the button to forget a network (remove from the list of known networks).">
     Forget
   </message>
+  <message name="IDS_SETTINGS_INTERNET_BUTTON_SIGNIN" desc="Settings &gt; Internet &gt; Network details: The label for the button to signin to a network behind a captive portal.">
+    Sign in
+  </message>
   <message name="IDS_SETTINGS_INTERNET_BUTTON_VIEW_ACCOUNT" desc="Settings &gt; Internet &gt; Network details: The label for the button to view the account details for a Cellular network.">
     View Account
   </message>
@@ -3283,6 +3248,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_SECTION_TITLE" desc="The title of the Phone Hub Task Continuation section on the settings page.">
     Recent Brave tabs
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_APPS_SECTION_BETA_TITLE" desc="The title of the Phone Hub Apps section in the settings page on Beta stage.">
+    Apps (Beta)
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_APPS_SECTION_TITLE" desc="The title of the Phone Hub Apps section on the settings page.">
     Apps
@@ -4471,7 +4439,7 @@ Press an assigned switch or key to remove assignment.
     Hide notification content when someone else is detected
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_TITLE" desc="Text on the privacy page that opens up the privacy hub section.">
-    Privacy Hub
+    Privacy controls
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_CAMERA_HARDWARE_TOGGLE_ACTIVE_SUBTEXT" desc="Sub-label on the privacy page that indicates that the hardware camera toggle is active.">
     Internal camera deactivated by hardware switch
@@ -4487,6 +4455,12 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_MICROPHONE_TOGGLE_NO_MICROPHONE_CONNECTED_SUBTEXT" desc="Sub-label to indicate that the microphone toggle in the privacy hub page is disabled as no microphone is connected to the device.">
     No microphone connected
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_NO_CAMERA_CONNECTED_TEXT" desc="Text to display in the Privacy Hub subpage when no camera is connected to the device.">
+    No camera is connected
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_NO_MICROPHONE_CONNECTED_TEXT" desc="Text to display in the Privacy Hub subpage when no microphone is connected to the device.">
+    No microphone is connected
   </message>
   <message name="IDS_OS_SETTINGS_GEOLOCATION_TOGGLE_TITLE" desc="The title of the toggle to enable/disable geolocation from the privacy hub.">
     Geolocation

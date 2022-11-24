@@ -278,6 +278,13 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
       base::BindRepeating(&VerticalTabStripRegionView::OnCollapsedPrefChanged,
                           base::Unretained(this)));
   OnCollapsedPrefChanged();
+
+  floating_mode_pref_.Init(
+      brave_tabs::kVerticalTabsFloatingEnabled, prefs,
+      base::BindRepeating(
+          &VerticalTabStripRegionView::OnFloatingModePrefChanged,
+          base::Unretained(this)));
+  OnFloatingModePrefChanged();
 }
 
 VerticalTabStripRegionView::~VerticalTabStripRegionView() {
@@ -306,6 +313,28 @@ void VerticalTabStripRegionView::SetState(State state) {
   mouse_enter_timer_.Stop();
   state_ = state;
   PreferredSizeChanged();
+}
+
+VerticalTabStripRegionView::ScopedStateResetter
+VerticalTabStripRegionView::ExpandTabStripForDragging() {
+  if (state_ == State::kExpanded)
+    return {};
+
+  auto resetter = std::make_unique<base::ScopedClosureRunner>(
+      base::BindOnce(&VerticalTabStripRegionView::SetState,
+                     weak_factory_.GetWeakPtr(), State::kCollapsed));
+
+  SetState(State::kExpanded);
+  // In this case, we dont' wait for the widget bounds to be changed so that
+  // tab drag controller can layout tabs properly.
+  SetSize(GetPreferredSize());
+
+  return resetter;
+}
+
+gfx::Vector2d VerticalTabStripRegionView::GetOffsetForDraggedTab() const {
+  return {0, scroll_view_header_->GetPreferredSize().height() +
+                 (tabs::kVerticalTabHeight / 2)};
 }
 
 gfx::Size VerticalTabStripRegionView::CalculatePreferredSize() const {
@@ -374,16 +403,13 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
 
 void VerticalTabStripRegionView::OnThemeChanged() {
   View::OnThemeChanged();
-
-  const auto background_color = GetColorProvider()->GetColor(kColorToolbar);
-  SetBackground(views::CreateSolidBackground(background_color));
-  scroll_view_->SetBackgroundColor(background_color);
+  scroll_view_->SetBackgroundColor(GetColorProvider()->GetColor(kColorToolbar));
 
   new_tab_button_->FrameColorsChanged();
 }
 
 void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {
-  if (IsMouseHovered()) {
+  if (IsMouseHovered() && !mouse_events_for_test_) {
     // On Windows, when mouse moves into the area which intersects with web
     // view, OnMouseExited() is invoked even mouse is on this view.
     return;
@@ -395,13 +421,14 @@ void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {
 }
 
 void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
-  mouse_enter_timer_.Stop();
-  if (state_ == State::kCollapsed) {
-    mouse_enter_timer_.Start(
-        FROM_HERE, base::Milliseconds(400),
-        base::BindOnce(&VerticalTabStripRegionView::SetState,
-                       base::Unretained(this), State::kFloating));
-  }
+  if (!tabs::features::IsFloatingVerticalTabsEnabled(browser_))
+    return;
+
+  // During tab dragging, this could be already expanded.
+  if (state_ == State::kExpanded)
+    return;
+
+  ScheduleFloatingModeTimer();
 }
 
 void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
@@ -423,6 +450,17 @@ void VerticalTabStripRegionView::OnCollapsedPrefChanged() {
   SetState(collapsed_pref_.GetValue() ? State::kCollapsed : State::kExpanded);
 }
 
+void VerticalTabStripRegionView::OnFloatingModePrefChanged() {
+  if (!tabs::features::IsFloatingVerticalTabsEnabled(browser_)) {
+    if (state_ == State::kFloating)
+      SetState(State::kCollapsed);
+    return;
+  }
+
+  if (IsMouseHovered())
+    ScheduleFloatingModeTimer();
+}
+
 gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
     State state) const {
   if (!tabs::features::ShouldShowVerticalTabs(browser_))
@@ -440,6 +478,21 @@ gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
       << "If a new state was added, " << __FUNCTION__
       << " should be revisited.";
   return {tabs::kVerticalTabMinWidth, View::CalculatePreferredSize().height()};
+}
+
+void VerticalTabStripRegionView::ScheduleFloatingModeTimer() {
+  if (mouse_events_for_test_) {
+    SetState(State::kFloating);
+    return;
+  }
+
+  mouse_enter_timer_.Stop();
+  if (state_ == State::kCollapsed) {
+    mouse_enter_timer_.Start(
+        FROM_HERE, base::Milliseconds(400),
+        base::BindOnce(&VerticalTabStripRegionView::SetState,
+                       base::Unretained(this), State::kFloating));
+  }
 }
 
 BEGIN_METADATA(VerticalTabStripRegionView, views::View)

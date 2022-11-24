@@ -1,7 +1,7 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
@@ -13,7 +13,8 @@ import {
   PanelState,
   WalletState,
   HardwareInfo,
-  WalletRoutes
+  WalletRoutes,
+  SerializableTransactionInfo
 } from '../../constants/types'
 import {
   AccountPayloadType,
@@ -192,7 +193,7 @@ handler.on(PanelActions.cancelConnectHardwareWallet.type, async (store: Store, p
   await store.dispatch(PanelActions.navigateToMain())
 })
 
-handler.on(PanelActions.approveHardwareTransaction.type, async (store: Store, txInfo: BraveWallet.TransactionInfo) => {
+handler.on(PanelActions.approveHardwareTransaction.type, async (store: Store, txInfo: SerializableTransactionInfo) => {
   const found = await findHardwareAccountInfo(txInfo.fromAddress)
   if (!found || !found.hardware) {
     return

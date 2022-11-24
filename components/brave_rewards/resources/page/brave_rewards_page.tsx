@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 import { render } from 'react-dom'
@@ -19,6 +19,7 @@ import { getCurrentBalanceReport } from './reducers/utils'
 import * as rewardsActions from './actions/rewards_actions'
 
 import { App } from './components/app'
+import * as mojom from '../shared/lib/mojom'
 
 const store = createStore(createReducer())
 const actions = bindActionCreators(rewardsActions, store.dispatch.bind(store))
@@ -195,12 +196,12 @@ function reconcileComplete (properties: {type: number, result: number}) {
   }
 }
 
-function externalWallet (properties: {result: number, wallet: Rewards.ExternalWallet}) {
-  actions.onExternalWallet(properties.result, properties.wallet)
+function onGetExternalWallet (result: mojom.GetExternalWalletResult) {
+  actions.onGetExternalWallet(result)
 }
 
-function processRewardsPageUrl (data: Rewards.ProcessRewardsPageUrl) {
-  actions.onProcessRewardsPageUrl(data)
+function onConnectExternalWallet (result: mojom.ConnectExternalWalletResult) {
+  actions.onConnectExternalWallet(result)
 }
 
 function disconnectWallet (properties: {result: number}) {
@@ -295,8 +296,8 @@ Object.defineProperty(window, 'brave_rewards', {
     excludedSiteChanged,
     balance,
     reconcileComplete,
-    externalWallet,
-    processRewardsPageUrl,
+    onGetExternalWallet,
+    onConnectExternalWallet,
     disconnectWallet,
     unblindedTokensReady,
     monthlyReport,

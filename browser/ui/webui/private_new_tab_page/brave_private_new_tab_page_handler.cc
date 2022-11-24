@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
@@ -26,7 +27,7 @@
 #endif
 
 namespace {
-constexpr const auto kStuckPeriod = base::Seconds(30);
+constexpr const auto kStuckPeriod = base::Seconds(45);
 }
 
 BravePrivateNewTabPageHandler::BravePrivateNewTabPageHandler(
@@ -91,6 +92,8 @@ void BravePrivateNewTabPageHandler::GetIsTorConnected(
   std::move(callback).Run(is_connected);
 }
 
+using ConnectionStatus = brave_private_new_tab::mojom::ConnectionStatus;
+
 void BravePrivateNewTabPageHandler::GoToBraveSearch(const std::string& input,
                                                     bool open_new_tab) {
   DCHECK(profile_);
@@ -141,7 +144,9 @@ void BravePrivateNewTabPageHandler::GoToBraveSupport() {
 void BravePrivateNewTabPageHandler::OnTorCircuitEstablished(bool result) {
   stuck_timer_.Stop();
   if (page_) {
-    page_.get()->OnTorCircuitGetStuck(!result && stuck_timer_.IsRunning());
+    page_.get()->OnTorCircuitStatus(result
+                                        ? ConnectionStatus::kConnected
+                                        : ConnectionStatus::kConnectionStuck);
     page_.get()->OnTorCircuitEstablished(result);
   }
 }
@@ -149,15 +154,30 @@ void BravePrivateNewTabPageHandler::OnTorCircuitEstablished(bool result) {
 void BravePrivateNewTabPageHandler::OnTorInitializing(
     const std::string& percentage,
     const std::string& message) {
-  stuck_timer_.Start(FROM_HERE, kStuckPeriod, this,
-                     &BravePrivateNewTabPageHandler::OnTorCircuitGetStuck);
+  stuck_timer_.Start(
+      FROM_HERE, kStuckPeriod,
+      base::BindOnce(&BravePrivateNewTabPageHandler::OnTorCircuitTimer,
+                     base::Unretained(this),
+                     ConnectionStatus::kConnectionSlow));
   if (page_) {
     page_.get()->OnTorInitializing(percentage, message);
+    page_.get()->OnTorCircuitStatus(ConnectionStatus::kConnecting);
   }
 }
 
-void BravePrivateNewTabPageHandler::OnTorCircuitGetStuck() {
-  if (page_) {
-    page_.get()->OnTorCircuitGetStuck(true);
+void BravePrivateNewTabPageHandler::OnTorCircuitTimer(ConnectionStatus status) {
+  if (!page_)
+    return;
+
+  if (status == ConnectionStatus::kConnectionSlow) {
+    // First time shot of stuck_timer_  means that 'connection is slow' we
+    // take another chance to connect and then notify that we get stuck.
+    stuck_timer_.Start(
+        FROM_HERE, kStuckPeriod,
+        base::BindOnce(&BravePrivateNewTabPageHandler::OnTorCircuitTimer,
+                       base::Unretained(this),
+                       ConnectionStatus::kConnectionStuck));
   }
+
+  page_.get()->OnTorCircuitStatus(status);
 }

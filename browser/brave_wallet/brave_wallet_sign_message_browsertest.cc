@@ -26,6 +26,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -33,6 +34,22 @@
 #include "url/gurl.h"
 
 namespace brave_wallet {
+
+namespace {
+
+bool WaitForWalletBubble(content::WebContents* web_contents) {
+  auto* tab_helper =
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents);
+  if (!tab_helper->IsShowingBubble()) {
+    base::RunLoop run_loop;
+    tab_helper->SetShowBubbleCallbackForTesting(run_loop.QuitClosure());
+    run_loop.Run();
+  }
+
+  return tab_helper->IsShowingBubble();
+}
+
+}  // namespace
 
 class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
  public:
@@ -46,10 +63,21 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
   }
 
   void SetUpOnMainThread() override {
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
 
     brave::RegisterPathProvider();
@@ -100,10 +128,7 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
   }
   void CallEthereumEnable() {
     ASSERT_TRUE(ExecJs(web_contents(), "ethereumEnable()"));
-    base::RunLoop().RunUntilIdle();
-    ASSERT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   }
 
  protected:
@@ -113,6 +138,7 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
                                     "signMessageViaSendAsync"};
 
  private:
+  content::ContentMockCertVerifier mock_cert_verifier_;
   base::test::ScopedFeatureList scoped_feature_list_;
   net::test_server::EmbeddedTestServer https_server_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
@@ -136,9 +162,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {
                            method.c_str())));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_TRUE(WaitForWalletBubble(web_contents()));
     brave_wallet_service_->NotifySignMessageRequestProcessed(
         true, request_index++, nullptr, absl::nullopt);
     EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
@@ -168,9 +192,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserRejectedRequest) {
                            method.c_str())));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_TRUE(WaitForWalletBubble(web_contents()));
     brave_wallet_service_->NotifySignMessageRequestProcessed(
         false, request_index++, nullptr, absl::nullopt);
     EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",

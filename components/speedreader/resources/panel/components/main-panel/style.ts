@@ -1,3 +1,7 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 
 export const Box = styled.div`
@@ -8,9 +12,14 @@ export const Box = styled.div`
   height: 100%;
   font-family: ${(p) => p.theme.fontFamily.heading};
   flex: 1 1 auto;
+  position: relative;
 
   @media (prefers-color-scheme: dark) {
     --speedreader-background: #1E2029;
+  }
+
+  a {
+    color: ${(p) => p.theme.color.interactive05};
   }
 `
 
@@ -27,12 +36,17 @@ export const HeaderContent = styled.div`
 
   div:first-child {
     flex: 1 1 auto;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 20px;
   }
 `
 
 export const Section = styled.section`
   margin-bottom: 16px;
   padding: 0 24px;
+  line-height: 18px;
+  font-weight: 400;
 
   .title {
     color: ${(p) => p.theme.color.text02};
@@ -45,4 +59,18 @@ export const Section = styled.section`
 
 export const SiteName = styled.div`
   font-weight: 600;
+`
+
+export const Bg = styled.div`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 0 24px 5px 24px;
+  color: #F1F3F5;
+  opacity: 0.1;
+  pointer-events: none;
+`
+
+export const SiteTitleBox = styled.div`
+  padding: 0 24px 24px 24px;
 `

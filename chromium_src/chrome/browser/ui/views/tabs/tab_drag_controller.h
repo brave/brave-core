@@ -24,9 +24,16 @@ using TabDragControllerBrave = TabDragController;
   GetAttachedBrowserWidget_Unused() { return {}; } \
   virtual views::Widget* GetAttachedBrowserWidget
 #define GetLocalProcessWindow virtual GetLocalProcessWindow
+#define DetachAndAttachToNewContext virtual DetachAndAttachToNewContext
+#define CalculateNonMaximizedDraggedBrowserBounds \
+  virtual CalculateNonMaximizedDraggedBrowserBounds
+#define CalculateDraggedBrowserBounds virtual CalculateDraggedBrowserBounds
 
 #include "src/chrome/browser/ui/views/tabs/tab_drag_controller.h"
 
+#undef CalculateDraggedBrowserBounds
+#undef CalculateNonMaximizedDraggedBrowserBounds
+#undef DetachAndAttachToNewContext
 #undef GetLocalProcessWindow
 #undef GetAttachedBrowserWidget
 #undef GetTabGroupForTargetIndex
@@ -34,9 +41,11 @@ using TabDragControllerBrave = TabDragController;
 #undef MoveAttached
 #undef GetAttachedDragPoint
 
+#include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
+
 class TabDragController : public TabDragControllerChromium {
  public:
-  using TabDragControllerChromium::TabDragControllerChromium;
+  TabDragController();
   ~TabDragController() override;
 
   // Making this virtual method is really painful as "Init" is too common name.
@@ -61,8 +70,25 @@ class TabDragController : public TabDragControllerChromium {
                                  bool exclude_dragged_view,
                                  gfx::NativeWindow* window) override;
 
+  void DetachAndAttachToNewContext(ReleaseCapture release_capture,
+                                   TabDragContext* target_context,
+                                   const gfx::Point& point_in_screen,
+                                   bool set_capture = true) override;
+
+  gfx::Rect CalculateNonMaximizedDraggedBrowserBounds(
+      views::Widget* widget,
+      const gfx::Point& point_in_screen) override;
+  gfx::Rect CalculateDraggedBrowserBounds(
+      TabDragContext* source,
+      const gfx::Point& point_in_screen,
+      std::vector<gfx::Rect>* drag_bounds) override;
+
  private:
+  gfx::Vector2d GetVerticalTabStripWidgetOffset();
+
   bool is_showing_vertical_tabs_ = false;
+
+  VerticalTabStripRegionView::ScopedStateResetter vertical_tab_state_resetter_;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_DRAG_CONTROLLER_H_

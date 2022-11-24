@@ -1,7 +1,7 @@
 // Copyright (c) 2019 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as preferencesAPI from './preferences'
 import * as statsAPI from './stats'
@@ -189,7 +189,7 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
         resolve(parameters)
       })),
       new Promise(resolve => {
-        chrome.braveRewards.getExternalWallet((_, wallet) => resolve(wallet))
+        chrome.braveRewards.getExternalWallet((wallet) => resolve(wallet))
       }),
       new Promise(resolve => {
         chrome.braveRewards.fetchPromotions(resolve)

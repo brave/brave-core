@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Button, Table } from 'brave-ui/components'
 import { Cell, Row } from 'brave-ui/components/dataTables/table/index'
@@ -123,7 +123,11 @@ export default function TorrentFileList ({ torrent, torrentId, onSaveAllFiles }:
     return <Container>
       <HeaderRow>
         <Header>Files</Header>
-        <Button onClick={saveAllFiles} text="Save all files"/>
+        <Button
+          onClick={saveAllFiles}
+          disabled={torrent?.progress !== 1}
+          text="Save all files"
+        />
       </HeaderRow>
       <FilesContainer>
         <Table header={tableHeader} rows={rows}>

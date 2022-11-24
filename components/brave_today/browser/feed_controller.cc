@@ -89,6 +89,11 @@ void FeedController::DoesFeedVersionDiffer(
       base::Unretained(this), matching_hash, std::move(callback)));
 }
 
+void FeedController::AddListener(
+    mojo::PendingRemote<mojom::FeedListener> listener) {
+  listeners_.Add(std::move(listener));
+}
+
 void FeedController::GetOrFetchFeed(GetFeedCallback callback) {
   GetOrFetchFeed(base::BindOnce(
       [](FeedController* controller, GetFeedCallback callback) {
@@ -142,6 +147,7 @@ void FeedController::EnsureFeedIsUpdating() {
               VLOG(1) << "All feed item fetches done with item count: "
                       << total_size;
               if (total_size == 0) {
+                controller->ResetFeed();
                 controller->NotifyUpdateDone();
                 return;
               }
@@ -393,6 +399,11 @@ void FeedController::NotifyUpdateDone() {
   // can be waited for.
   is_update_in_progress_ = false;
   on_current_update_complete_ = std::make_unique<base::OneShotEvent>();
+
+  // Notify listeners.
+  for (const auto& listener : listeners_) {
+    listener->OnUpdateAvailable(current_feed_.hash);
+  }
 }
 
 }  // namespace brave_news

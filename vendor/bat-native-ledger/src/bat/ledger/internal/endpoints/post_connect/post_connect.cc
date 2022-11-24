@@ -37,7 +37,7 @@ Result ParseBody(const std::string& body) {
   if (message->find("KYC required") != std::string::npos) {
     // HTTP 403: Uphold
     BLOG(0, "KYC required!");
-    return base::unexpected(Error::kKycRequired);
+    return base::unexpected(Error::kKYCRequired);
   } else if (message->find("mismatched provider accounts") !=
              std::string::npos) {
     // HTTP 403: bitFlyer, Gemini, Uphold
@@ -91,7 +91,7 @@ Result PostConnect::ProcessResponse(const mojom::UrlResponse& response) {
       return ParseBody(response.body);
     case net::HTTP_NOT_FOUND:  // HTTP 404
       BLOG(0, "KYC required!");
-      return base::unexpected(Error::kKycRequired);
+      return base::unexpected(Error::kKYCRequired);
     case net::HTTP_CONFLICT:  // HTTP 409
       BLOG(0, "Device limit reached!");
       return base::unexpected(Error::kDeviceLimitReached);
@@ -105,41 +105,51 @@ Result PostConnect::ProcessResponse(const mojom::UrlResponse& response) {
 }
 
 // static
-mojom::Result PostConnect::ToLegacyResult(const Result& result) {
+ConnectExternalWalletResult PostConnect::ToConnectExternalWalletResult(
+    const Result& result) {
   if (!result.has_value()) {
     switch (result.error()) {
       case Error::kFailedToCreateRequest:
-        return mojom::Result::LEDGER_ERROR;
+        return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
       case Error::kFlaggedWallet:  // HTTP 400
-        return mojom::Result::FLAGGED_WALLET;
+        return base::unexpected(
+            mojom::ConnectExternalWalletError::kFlaggedWallet);
       case Error::kMismatchedCountries:  // HTTP 400
-        return mojom::Result::MISMATCHED_COUNTRIES;
+        return base::unexpected(
+            mojom::ConnectExternalWalletError::kMismatchedCountries);
       case Error::kProviderUnavailable:  // HTTP 400
-        return mojom::Result::PROVIDER_UNAVAILABLE;
+        return base::unexpected(
+            mojom::ConnectExternalWalletError::kProviderUnavailable);
       case Error::kRegionNotSupported:  // HTTP 400
-        return mojom::Result::REGION_NOT_SUPPORTED;
+        return base::unexpected(
+            mojom::ConnectExternalWalletError::kRegionNotSupported);
       case Error::kUnknownMessage:  // HTTP 400, HTTP 403
-        return mojom::Result::LEDGER_ERROR;
-      case Error::kKycRequired:  // HTTP 403, HTTP 404
-        return mojom::Result::NOT_FOUND;
+        return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
+      case Error::kKYCRequired:  // HTTP 403, HTTP 404
+        return base::unexpected(
+            mojom::ConnectExternalWalletError::kKYCRequired);
       case Error::kMismatchedProviderAccounts:  // HTTP 403
-        return mojom::Result::MISMATCHED_PROVIDER_ACCOUNTS;
+        return base::unexpected(
+            mojom::ConnectExternalWalletError::kMismatchedProviderAccounts);
       case Error::kRequestSignatureVerificationFailure:  // HTTP 403
-        return mojom::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE;
+        return base::unexpected(mojom::ConnectExternalWalletError::
+                                    kRequestSignatureVerificationFailure);
       case Error::kTransactionVerificationFailure:  // HTTP 403
-        return mojom::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE;
+        return base::unexpected(mojom::ConnectExternalWalletError::
+                                    kUpholdTransactionVerificationFailure);
       case Error::kDeviceLimitReached:  // HTTP 409
-        return mojom::Result::DEVICE_LIMIT_REACHED;
+        return base::unexpected(
+            mojom::ConnectExternalWalletError::kDeviceLimitReached);
       case Error::kUnexpectedError:  // HTTP 500
-        return mojom::Result::LEDGER_ERROR;
+        return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
       case Error::kUnexpectedStatusCode:  // HTTP xxx
-        return mojom::Result::LEDGER_ERROR;
+        return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
       case Error::kFailedToParseBody:
-        return mojom::Result::LEDGER_ERROR;
+        return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
     }
   }
 
-  return mojom::Result::LEDGER_OK;
+  return {};
 }
 
 PostConnect::PostConnect(LedgerImpl* ledger) : RequestBuilder(ledger) {}

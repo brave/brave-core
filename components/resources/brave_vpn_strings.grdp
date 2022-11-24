@@ -101,7 +101,7 @@
   </message>
 
   <message name="IDS_BRAVE_VPN_FEATURE_4" desc="Key feature for selling advertising">
-    Fast and unlimited up to 100 Mbps
+    Fast and unlimited up to 500 Mbps
   </message>
 
   <message name="IDS_BRAVE_VPN_FEATURE_5" desc="Key feature for selling advertising">
@@ -200,9 +200,17 @@
     Submit
   </message>
 
-  <message name="IDS_BRAVE_VPN_CONNECT_NOT_ALLOWED" desc="A highlited note on the main panel when permission from the user is not allowed to create a VPN profile on OS-level">
-    VPN connection failed. Please try connecting again, and be sure to click Allow to enable Brave's VPN configuration.
-  </message>
+  <if expr="is_win">
+    <message name="IDS_BRAVE_VPN_CONNECT_NOT_ALLOWED" desc="A highlited note on the main panel when permission from the user is not allowed to create a VPN profile on OS-level">
+      Failed to write the VPN config. This may happen if you don't have permission or if you haven't run Windows Update recently.
+    </message>
+  </if>
+
+  <if expr="is_macosx">
+    <message name="IDS_BRAVE_VPN_CONNECT_NOT_ALLOWED" desc="A highlited note on the main panel when permission from the user is not allowed to create a VPN profile on OS-level">
+      VPN connection failed. Please try connecting again, and be sure to click Allow to enable Brave's VPN configuration.
+    </message>
+  </if>
 
   <message name="IDS_BRAVE_VPN_DNS_CHANGE_ALERT" desc="A text shown to user when he changed DNS settings with Brave VPN enabled">
     Turning off secure DNS or using default servers on Windows may reveal the names of the sites you visit to your Internet service provider. Brave does not recommend doing this. Do you want to do it anyways?

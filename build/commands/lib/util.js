@@ -252,6 +252,24 @@ const util = {
     fileMap.add([path.join(config.braveCoreDir, 'ui', 'webui', 'resources', 'css', 'text_defaults_md.css'),
                  path.join(config.srcDir, 'ui', 'webui', 'resources', 'css', 'text_defaults_md.css')])
 
+    let explicitSourceFiles = new Set()
+    if (process.platform === 'darwin') {
+      // Set proper mac app icon for channel to chrome/app/theme/mac/app.icns.
+      // Each channel's app icons are stored in brave/app/theme/$channel/app.icns.
+      // With this copying, we don't need to modify chrome/BUILD.gn for this.
+      const iconSource = path.join(braveAppDir, 'theme', 'brave', 'mac', config.channel, 'app.icns')
+      const iconDest = path.join(chromeAppDir, 'theme', 'brave', 'mac', 'app.icns')
+      explicitSourceFiles[iconDest] = iconSource
+
+      // Set proper branding file.
+      let branding_file_name = 'BRANDING'
+      if (config.channel)
+        branding_file_name = branding_file_name + '.' + config.channel
+      const brandingSource = path.join(braveAppDir, 'theme', 'brave', branding_file_name)
+      const brandingDest = path.join(chromeAppDir, 'theme', 'brave', 'BRANDING')
+      explicitSourceFiles[brandingDest] = brandingSource
+    }
+
     for (const [source, output] of fileMap) {
       if (!fs.existsSync(source)) {
         console.warn(`Warning: The following file-system entry was not found for copying contents to a chromium destination: ${source}. Consider removing the entry from the file-map, or investigating whether the correct source code reference is checked out.`)
@@ -267,50 +285,17 @@ const util = {
         sourceFiles = [source]
       }
 
-      for (const sourceFile of sourceFiles) {
-        let destinationFile = path.join(output, path.relative(source, sourceFile))
-
-        // The destination file might be newer when updating chromium so
-        // we check for an exact match on the timestamp. We use seconds instead
-        // of ms because utimesSync doesn't set the times with ms precision
+      for (let sourceFile of sourceFiles) {
+        const destinationFile = path.join(output, path.relative(source, sourceFile))
+        sourceFile = explicitSourceFiles[destinationFile] || sourceFile
         if (!fs.existsSync(destinationFile) ||
-            Math.floor(new Date(fs.statSync(sourceFile).mtimeMs).getTime() / 1000) !=
-            Math.floor(new Date(fs.statSync(destinationFile).mtimeMs).getTime() / 1000)) {
+            util.calculateFileChecksum(sourceFile) != util.calculateFileChecksum(destinationFile)) {
           fs.copySync(sourceFile, destinationFile)
-          // can't set the date in the past so update the source file
-          // to match the newly copied destionation file
-          const date = fs.statSync(destinationFile).mtime
-          fs.utimesSync(sourceFile, date, date)
           console.log(sourceFile + ' copied to ' + destinationFile)
         }
       }
     }
 
-    if (process.platform === 'darwin') {
-      // Copy proper mac app icon for channel to chrome/app/theme/mac/app.icns.
-      // Each channel's app icons are stored in brave/app/theme/$channel/app.icns.
-      // With this copying, we don't need to modify chrome/BUILD.gn for this.
-      const iconSource = path.join(braveAppDir, 'theme', 'brave', 'mac', config.channel, 'app.icns')
-      const iconDest = path.join(chromeAppDir, 'theme', 'brave', 'mac', 'app.icns')
-      if (!fs.existsSync(iconDest) ||
-          util.calculateFileChecksum(iconSource) != util.calculateFileChecksum(iconDest)) {
-        console.log('copy app icon')
-        fs.copySync(iconSource, iconDest)
-      }
-
-      // Copy branding file
-      let branding_file_name = 'BRANDING'
-      if (config.channel)
-        branding_file_name = branding_file_name + '.' + config.channel
-
-      const brandingSource = path.join(braveAppDir, 'theme', 'brave', branding_file_name)
-      const brandingDest = path.join(chromeAppDir, 'theme', 'brave', 'BRANDING')
-      if (!fs.existsSync(brandingDest) ||
-          util.calculateFileChecksum(brandingSource) != util.calculateFileChecksum(brandingDest)) {
-        console.log('copy branding file')
-        fs.copySync(brandingSource, brandingDest)
-      }
-    }
     if (config.targetOS === 'android') {
 
       let braveOverwrittenFiles = new Set();
@@ -414,7 +399,7 @@ const util = {
     }
   },
 
-  touchOverriddenFiles: () => {
+  touchOverriddenChromiumSrcFiles: () => {
     console.log('touch original files overridden by chromium_src...')
 
     // Return true when original file of |file| should be touched.
@@ -474,10 +459,9 @@ const util = {
     })
   },
 
-  touchOverriddenFilesAndUpdateBranding: () => {
-    util.touchOverriddenFiles()
+  touchOverriddenFiles: () => {
+    util.touchOverriddenChromiumSrcFiles()
     util.touchOverriddenVectorIconFiles()
-    util.updateBranding()
   },
 
   // Chromium compares pre-installed midl files and generated midl files from IDL during the build to check integrity.

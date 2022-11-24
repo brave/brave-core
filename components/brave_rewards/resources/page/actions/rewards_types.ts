@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 export const enum types {
   IS_INITIALIZED = '@@rewards/IS_INITIALIZED',
@@ -66,11 +66,11 @@ export const enum types {
   GET_EXCLUDED_SITES = '@@rewards/GET_EXCLUDED_SITES',
   GET_BALANCE = '@@rewards/GET_BALANCE',
   ON_BALANCE = '@@rewards/ON_BALANCE',
-  GET_EXTERNAL_WALLET = '@@rewards/GET_EXTERNAL_WALLET',
   GET_EXTERNAL_WALLET_PROVIDERS = '@@rewards/GET_EXTERNAL_WALLET_PROVIDERS',
-  ON_EXTERNAL_WALLET = '@@rewards/ON_EXTERNAL_WALLET',
-  PROCESS_REWARDS_PAGE_URL = '@@rewards/PROCESS_REWARDS_PAGE_URL',
-  ON_PROCESS_REWARDS_PAGE_URL = '@@rewards/ON_PROCESS_REWARDS_PAGE_URL',
+  GET_EXTERNAL_WALLET = '@@rewards/GET_EXTERNAL_WALLET',
+  ON_GET_EXTERNAL_WALLET = '@@rewards/ON_GET_EXTERNAL_WALLET',
+  CONNECT_EXTERNAL_WALLET = '@@rewards/CONNECT_EXTERNAL_WALLET',
+  ON_CONNECT_EXTERNAL_WALLET = '@@rewards/ON_CONNECT_EXTERNAL_WALLET',
   HIDE_REDIRECT_MODAL = '@@rewards/HIDE_REDIRECT_MODAL',
   DISCONNECT_WALLET = '@@rewards/DISCONNECT_WALLET',
   GET_MONTHLY_REPORT = '@@rewards/GET_MONTHLY_REPORT',

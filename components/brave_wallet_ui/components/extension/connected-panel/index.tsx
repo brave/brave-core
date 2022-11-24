@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import {
@@ -26,7 +26,9 @@ import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import Amount from '../../../utils/amount'
 
 // Hooks
-import { useExplorer, usePricing, useIsMounted } from '../../../common/hooks'
+import { useExplorer, usePricing } from '../../../common/hooks'
+import { useGetSelectedCoinQuery } from '../../../common/slices/api.slice'
+import { useApiProxy } from '../../../common/hooks/use-api-proxy'
 
 // types
 import {
@@ -83,19 +85,25 @@ export const ConnectedPanel = (props: Props) => {
     activeOrigin: originInfo,
     selectedAccount,
     selectedNetwork,
-    selectedCoin,
     connectedAccounts
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+
+  // api
+  const { data: selectedCoin } = useGetSelectedCoinQuery()
 
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [isSolanaConnected, setIsSolanaConnected] = React.useState<boolean>(false)
   const [isPermissionDenied, setIsPermissionDenied] = React.useState<boolean>(false)
 
+  // computed
+  const selectedAccountAddress = selectedAccount?.address || ''
+  const selectedAccountName = selectedAccount?.name || ''
+
   // custom hooks
+  const { braveWalletService } = useApiProxy()
   const { computeFiatAmount } = usePricing(spotPrices)
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
-  const isMounted = useIsMounted()
 
   // methods
   const navigate = React.useCallback((path: PanelTypes) => () => {
@@ -133,40 +141,54 @@ export const ConnectedPanel = (props: Props) => {
 
   // effects
   React.useEffect(() => {
-    const checkPermission = async () => {
-      const braveWalletService = getWalletPanelApiProxy().braveWalletService
-      await braveWalletService.isPermissionDenied(selectedCoin, originInfo.origin)
-        .then(result => {
-          if (isMounted) {
-            setIsPermissionDenied(result.denied)
-          }
-        })
-        .catch(e => console.log(e))
-    }
-    checkPermission()
-    if (selectedCoin === BraveWallet.CoinType.SOL) {
-      const isSolanaAccountConnected = async () => {
-        const apiProxy = getWalletPanelApiProxy()
-        await apiProxy.panelHandler.isSolanaAccountConnected(selectedAccount.address)
+    let subscribed = true
+
+    if (selectedCoin) {
+      (async () => {
+        await braveWalletService.isPermissionDenied(selectedCoin, originInfo.origin)
           .then(result => {
-            if (isMounted) {
+            if (subscribed) {
+              setIsPermissionDenied(result.denied)
+            }
+          })
+          .catch(e => console.log(e))
+      })()
+    }
+
+    return () => {
+      subscribed = false
+    }
+  }, [braveWalletService, selectedCoin, originInfo.origin])
+
+  React.useEffect(() => {
+    let subscribed = true
+
+    if (selectedAccount?.address && selectedCoin === BraveWallet.CoinType.SOL) {
+      (async () => {
+        const { panelHandler } = getWalletPanelApiProxy()
+        await panelHandler.isSolanaAccountConnected(selectedAccount?.address)
+          .then(result => {
+            if (subscribed) {
               setIsSolanaConnected(result.connected)
             }
           })
           .catch(e => console.log(e))
-      }
-      isSolanaAccountConnected()
+      })()
     }
-  }, [selectedAccount, selectedCoin, isMounted, originInfo])
+
+    return () => {
+      subscribed = false
+    }
+  }, [selectedAccount?.address, selectedCoin])
 
   // memos
   const bg = React.useMemo(() => {
-    return background({ seed: selectedAccount.address.toLowerCase() })
-  }, [selectedAccount.address])
+    return background({ seed: selectedAccountAddress.toLowerCase() })
+  }, [selectedAccountAddress])
 
   const orb = React.useMemo(() => {
-    return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [selectedAccount.address])
+    return create({ seed: selectedAccountAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
+  }, [selectedAccountAddress])
 
   const isBuyDisabled = React.useMemo(() => {
     if (!selectedNetwork) {
@@ -176,7 +198,7 @@ export const ConnectedPanel = (props: Props) => {
   }, [BuySupportedChains, selectedNetwork])
 
   const selectedAccountFiatBalance = React.useMemo(() => {
-    if (!selectedNetwork) {
+    if (!selectedNetwork || !selectedAccount) {
       return Amount.empty()
     }
 
@@ -192,9 +214,9 @@ export const ConnectedPanel = (props: Props) => {
     if (originInfo.originSpec === WalletOrigin) {
       return true
     } else {
-      return connectedAccounts.some(account => account.address === selectedAccount.address)
+      return connectedAccounts.some(account => account.address === selectedAccountAddress)
     }
-  }, [connectedAccounts, selectedAccount, originInfo, selectedCoin, isSolanaConnected])
+  }, [connectedAccounts, selectedAccountAddress, originInfo, selectedCoin, isSolanaConnected])
 
   const connectedStatusText = React.useMemo((): string => {
     if (isPermissionDenied) {
@@ -221,7 +243,7 @@ export const ConnectedPanel = (props: Props) => {
   }, [selectedCoin, connectedAccounts, originInfo, isPermissionDenied])
 
   // computed
-  const formattedAssetBalance = selectedNetwork
+  const formattedAssetBalance = selectedNetwork && selectedAccount
     ? new Amount(selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId] ?? '')
       .divideByDecimals(selectedNetwork.decimals)
       .formatAsAsset(6, selectedNetwork.symbol)
@@ -234,7 +256,7 @@ export const ConnectedPanel = (props: Props) => {
         onExpand={onExpand}
         onClickSetting={onOpenSettings}
         onClickMore={onShowMore}
-        onClickViewOnBlockExplorer={onClickViewOnBlockExplorer('address', selectedAccount.address)}
+        onClickViewOnBlockExplorer={selectedAccount ? onClickViewOnBlockExplorer('address', selectedAccountAddress) : undefined}
         showMore={showMore}
       />
 
@@ -271,9 +293,9 @@ export const ConnectedPanel = (props: Props) => {
           <AccountCircle orb={orb} onClick={navigate('accounts')}>
             <SwitchIcon />
           </AccountCircle>
-          <AccountNameText>{reduceAccountDisplayName(selectedAccount.name, 14)}</AccountNameText>
-          <CopyTooltip text={selectedAccount.address}>
-            <AccountAddressText>{reduceAddress(selectedAccount.address)}</AccountAddressText>
+          <AccountNameText>{reduceAccountDisplayName(selectedAccountName, 14)}</AccountNameText>
+          <CopyTooltip text={selectedAccountAddress}>
+            <AccountAddressText>{reduceAddress(selectedAccountAddress)}</AccountAddressText>
           </CopyTooltip>
         </BalanceColumn>
         <BalanceColumn>

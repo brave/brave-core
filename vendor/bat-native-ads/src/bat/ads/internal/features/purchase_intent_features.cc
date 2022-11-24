@@ -28,8 +28,7 @@ constexpr int kDefaultResourceVersion = 1;
 
 }  // namespace
 
-const base::Feature kPurchaseIntent{kFeatureName,
-                                    base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kPurchaseIntent, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsPurchaseIntentEnabled() {
   return base::FeatureList::IsEnabled(kPurchaseIntent);

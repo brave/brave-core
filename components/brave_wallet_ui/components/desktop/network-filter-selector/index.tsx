@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -80,6 +80,13 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
   }, [sortedNetworks])
 
   // methods
+  const getSubTestNetworks = React.useCallback((network: BraveWallet.NetworkInfo) => {
+    return sortedNetworks.filter((n) =>
+      n.coin === network.coin &&
+      n.symbol.toLowerCase() === network.symbol.toLowerCase() &&
+      SupportedTestNetworks.includes(n.chainId))
+  }, [sortedNetworks])
+
   const toggleShowNetworkFilter = React.useCallback(() => {
     setShowNetworkFilter(prev => !prev)
   }, [])
@@ -119,21 +126,15 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
             >
               {isTestNetworksEnabled &&
                 <SubDropDown>
-                  {sortedNetworks.filter((n) =>
-                    n.coin === network.coin &&
-                    n.symbol.toLowerCase() === network.symbol.toLowerCase() &&
-                    // Optimism's native asset is considered ETH, so we want to make sure
-                    // we dont include it under Ethereum's submenu.
-                    n.chainId !== BraveWallet.OPTIMISM_MAINNET_CHAIN_ID)
-                    .map((subNetwork) =>
-                      <NetworkFilterItem
-                        key={`${subNetwork.chainId + subNetwork.chainName}`}
-                        network={subNetwork}
-                        onSelectNetwork={onSelectAndClose}
-                        selectedNetwork={selectedNetworkFilter}
-                        isSubItem={true}
-                      />
-                    )}
+                  {getSubTestNetworks(network).map((subNetwork) =>
+                    <NetworkFilterItem
+                      key={`${subNetwork.chainId + subNetwork.chainName}`}
+                      network={subNetwork}
+                      onSelectNetwork={onSelectAndClose}
+                      selectedNetwork={selectedNetworkFilter}
+                      isSubItem={true}
+                    />
+                  )}
                 </SubDropDown>
               }
             </NetworkFilterItem>

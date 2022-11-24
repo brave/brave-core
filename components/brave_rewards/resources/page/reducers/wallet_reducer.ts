@@ -1,9 +1,10 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Reducer } from 'redux'
 import { types } from '../actions/rewards_types'
+import * as mojom from '../../shared/lib/mojom'
 
 const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {
@@ -98,10 +99,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       }
       break
     }
-    case types.GET_EXTERNAL_WALLET: {
-      chrome.send('brave_rewards.getExternalWallet')
-      break
-    }
     case types.GET_EXTERNAL_WALLET_PROVIDERS: {
       chrome.send('brave_rewards.getExternalWalletProviders')
       break
@@ -110,69 +107,24 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       chrome.send('brave_rewards.setExternalWalletType', [action.payload.provider])
       break
     }
-    case types.ON_EXTERNAL_WALLET: {
-      state = { ...state }
+    case types.GET_EXTERNAL_WALLET: {
+      chrome.send('brave_rewards.getExternalWallet')
+      break
+    }
+    case types.ON_GET_EXTERNAL_WALLET: {
+      const { value, error } = action.payload.result
 
-      if (action.payload.result === 24) { // type::Result::EXPIRED_TOKEN
-        chrome.send('brave_rewards.getExternalWallet')
-        break
-      }
-
-      if (action.payload.result === 9) { // type::Result::NOT_FOUND
-        state.ui.modalRedirect = 'kycRequiredModal'
-        break
-      }
-
-      if (action.payload.result === 25) { // type::Result::UPHOLD_BAT_NOT_ALLOWED
-        state.ui.modalRedirect = 'upholdBATNotAllowedModal'
-        break
-      }
-
-      if (action.payload.result === 36) { // type::Result::DEVICE_LIMIT_REACHED
-        state.ui.modalRedirect = 'deviceLimitReachedModal'
-        break
-      }
-
-      if (action.payload.result === 37) { // type::Result::MISMATCHED_PROVIDER_ACCOUNTS
-        state.ui.modalRedirect = 'mismatchedProviderAccountsModal'
-        break
-      }
-
-      if (action.payload.result === 41) { // type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE
-        state.ui.modalRedirect = 'walletOwnershipVerificationFailureModal'
-        break
-      }
-
-      if (action.payload.result === 43) { // type::Result::UPHOLD_INSUFFICIENT_CAPABILITIES
-        state.ui.modalRedirect = 'upholdInsufficientCapabilitiesModal'
-        break
-      }
-
-      if (action.payload.result === 44) { // type::Result::FLAGGED_WALLET
-        state.ui.modalRedirect = 'flaggedWalletModal'
-        break
-      }
-
-      if (action.payload.result === 45) { // type::Result::REGION_NOT_SUPPORTED
-        state.ui.modalRedirect = 'regionNotSupportedModal'
-        break
-      }
-
-      if (action.payload.result === 46) { // type::Result::MISMATCHED_COUNTRIES
-        state.ui.modalRedirect = 'mismatchedCountriesModal'
-        break
-      }
-
-      if (action.payload.result === 47) { // type::Result::PROVIDER_UNAVAILABLE
-        state.ui.modalRedirect = 'providerUnavailableModal'
-        break
-      }
-
-      if (action.payload.result === 0) { // type::Result::LEDGER_OK
+      if (value) {
+        state = { ...state, externalWallet: value.wallet }
         chrome.send('brave_rewards.fetchBalance')
+      } else {
+        switch (error) {
+          case mojom.GetExternalWalletError.kAccessTokenExpired:
+            chrome.send('brave_rewards.getExternalWallet')
+            break
+        }
       }
 
-      state.externalWallet = action.payload.wallet
       break
     }
     case types.GET_MONTHLY_REPORT: {

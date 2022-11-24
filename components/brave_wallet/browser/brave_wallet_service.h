@@ -15,6 +15,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
+#include "brave/components/brave_wallet/browser/asset_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -190,8 +191,13 @@ class BraveWalletService : public KeyedService,
   void Base58Encode(const std::vector<std::vector<std::uint8_t>>& addresses,
                     Base58EncodeCallback callback) override;
 
+  void DiscoverAssetsOnAllSupportedChains() override;
+
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
+
+  void OnDiscoverAssetsCompleted(
+      std::vector<mojom::BlockchainTokenPtr> discovered_assets);
 
   // Resets things back to the original state of BraveWalletService.
   // To be used when the Wallet is reset / erased
@@ -312,6 +318,7 @@ class BraveWalletService : public KeyedService,
   raw_ptr<TxService> tx_service_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;
   BraveWalletP3A brave_wallet_p3a_;
+  AssetDiscoveryManager asset_discovery_manager_;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
   PrefChangeRegistrar pref_change_registrar_;
   base::RepeatingTimer p3a_periodic_timer_;

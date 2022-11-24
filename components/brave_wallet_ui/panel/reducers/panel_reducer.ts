@@ -1,12 +1,12 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { createReducer } from 'redux-act'
 import {
   BraveWallet,
-  PanelState, PanelTypes
+  PanelState, PanelTypes, SerializableTransactionInfo
 } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import {
@@ -178,7 +178,7 @@ export const createPanelReducer = (initialState: PanelState) => {
       suggestedTokenRequest: payload
     }
   })
-  reducer.on(PanelActions.setSelectedTransaction.type, (state: PanelState, payload: BraveWallet.TransactionInfo | undefined): PanelState => {
+  reducer.on(PanelActions.setSelectedTransaction.type, (state: PanelState, payload: SerializableTransactionInfo): PanelState => {
     return {
       ...state,
       selectedTransaction: payload

@@ -144,6 +144,7 @@ source_set("tab_helper") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "asset_discovery_manager_unittest.cc",
     "blockchain_images_source_unittest.cc",
     "brave_wallet_p3a_unittest.cc",
     "brave_wallet_prefs_unittest.cc",

@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import * as EthereumBlockies from 'ethereum-blockies'
@@ -10,15 +10,14 @@ import * as EthereumBlockies from 'ethereum-blockies'
 import { getLocale } from '../../../../common/locale'
 import { toProperCase } from '../../../utils/string-utils'
 import { getTransactionStatusString } from '../../../utils/tx-utils'
-import { formatDateAsRelative } from '../../../utils/datetime-utils'
+import { formatDateAsRelative, serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
 import { getNetworkFromTXDataUnion } from '../../../utils/network-utils'
-import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { WalletSelectors } from '../../../common/selectors'
 import Amount from '../../../utils/amount'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
 import { SwapExchangeProxy } from '../../../common/constants/registry'
 
 // Hooks
@@ -46,8 +45,8 @@ import {
 
 export interface Props {
   selectedNetwork?: BraveWallet.NetworkInfo
-  transaction: BraveWallet.TransactionInfo
-  onSelectTransaction: (transaction: BraveWallet.TransactionInfo) => void
+  transaction: SerializableTransactionInfo
+  onSelectTransaction: (transaction: SerializableTransactionInfo) => void
 }
 
 const { ERC20Approve, ERC721TransferFrom, ERC721SafeTransferFrom } = BraveWallet.TransactionType
@@ -160,7 +159,7 @@ export const TransactionsListItem = ({
             </span>
             <StatusAndTimeRow>
               <DetailTextDarkBold>
-                {formatDateAsRelative(mojoTimeDeltaToJSDate(transactionDetails.createdTime))}
+                {formatDateAsRelative(serializedTimeDeltaToJSDate(transactionDetails.createdTime))}
               </DetailTextDarkBold>
 
               <StatusRow>

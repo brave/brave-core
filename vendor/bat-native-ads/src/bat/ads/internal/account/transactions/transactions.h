@@ -9,7 +9,7 @@
 #include <functional>
 #include <string>
 
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 #include "bat/ads/internal/account/transactions/transaction_info.h"
 
 namespace base {

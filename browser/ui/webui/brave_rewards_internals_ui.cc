@@ -65,8 +65,7 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void ClearLog(const base::Value::List& args);
   void OnClearLog(const bool success);
   void GetExternalWallet(const base::Value::List& args);
-  void OnGetExternalWallet(const ledger::mojom::Result result,
-                           ledger::mojom::ExternalWalletPtr wallet);
+  void OnGetExternalWallet(brave_rewards::GetExternalWalletResult);
   void GetEventLogs(const base::Value::List& args);
   void OnGetEventLogs(std::vector<ledger::mojom::EventLogPtr> logs);
   void GetAdDiagnostics(const base::Value::List& args);
@@ -371,26 +370,20 @@ void RewardsInternalsDOMHandler::GetExternalWallet(
 }
 
 void RewardsInternalsDOMHandler::OnGetExternalWallet(
-    const ledger::mojom::Result result,
-    ledger::mojom::ExternalWalletPtr wallet) {
+    brave_rewards::GetExternalWalletResult result) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
   base::Value::Dict data;
-  data.Set("result", static_cast<int>(result));
-  base::Value::Dict wallet_dict;
-
-  if (wallet) {
-    wallet_dict.Set("address", wallet->address);
-    wallet_dict.Set("memberId", wallet->member_id);
-    wallet_dict.Set("status", static_cast<int>(wallet->status));
-    wallet_dict.Set("type", wallet->type);
+  if (auto wallet = std::move(result).value_or(nullptr)) {
+    data.Set("address", wallet->address);
+    data.Set("memberId", wallet->member_id);
+    data.Set("status", static_cast<int>(wallet->status));
+    data.Set("type", wallet->type);
   }
 
-  data.Set("wallet", std::move(wallet_dict));
-
-  CallJavascriptFunction("brave_rewards_internals.externalWallet",
+  CallJavascriptFunction("brave_rewards_internals.onGetExternalWallet",
                          base::Value(std::move(data)));
 }
 

@@ -13,7 +13,8 @@ class GURL;
 
 namespace brave_news {
 
-std::vector<GURL> GetFeedURLsFromHTMLDocument(const std::string& html_body,
+std::vector<GURL> GetFeedURLsFromHTMLDocument(const std::string& charset,
+                                              const std::string& html_body,
                                               const GURL& html_url);
 
 }  // namespace brave_news

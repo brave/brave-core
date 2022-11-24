@@ -27,7 +27,7 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
     rect.set_x(tab.is_tab_in_group()
                    ? BraveTabGroupHeader::GetLeftPaddingForVerticalTabs()
                    : 0);
-    rect.set_width(width.value_or(tabs.front().GetPreferredWidth()) - rect.x());
+    rect.set_width(width.value_or(tab.GetPreferredWidth()) - rect.x());
     rect.set_height(tab.state().open() == TabOpen::kOpen ? kVerticalTabHeight
                                                          : 0);
     bounds.push_back(rect);

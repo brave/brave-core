@@ -268,6 +268,13 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
                                     SkColorSetRGB(0xF0, 0xF2, 0xFF))};
 #endif
 
+  mixer[kColorWebDiscoveryInfoBarBackground] = {
+      SkColorSetRGB(0xFF, 0xFF, 0xFF)};
+  mixer[kColorWebDiscoveryInfoBarMessage] = {SkColorSetRGB(0x1D, 0x1F, 0x25)};
+  mixer[kColorWebDiscoveryInfoBarLink] = {SkColorSetRGB(0x4C, 0x54, 0xD2)};
+  mixer[kColorWebDiscoveryInfoBarNoThanks] = {SkColorSetRGB(0x6B, 0x70, 0x84)};
+  mixer[kColorWebDiscoveryInfoBarClose] = {SkColorSetRGB(0x6B, 0x70, 0x84)};
+
   // Colors for HelpBubble. IDs are defined in
   // chrome/browser/ui/color/chrome_color_id.h
   mixer[kColorFeaturePromoBubbleBackground] = {SK_ColorWHITE};
@@ -352,6 +359,15 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x86, 0x8E, 0x96),
                                     SkColorSetRGB(0xF0, 0xF2, 0xFF))};
 #endif
+
+  mixer[kColorWebDiscoveryInfoBarBackground] = {
+      SkColorSetRGB(0x1A, 0x1C, 0x22)};
+  mixer[kColorWebDiscoveryInfoBarMessage] = {SkColorSetRGB(0xFF, 0xFF, 0xFF)};
+  mixer[kColorWebDiscoveryInfoBarLink] = {SkColorSetRGB(0xA6, 0xAB, 0xEC)};
+  mixer[kColorWebDiscoveryInfoBarNoThanks] = {
+      SkColorSetARGB(0xBF, 0xEC, 0xEF, 0xF2)};
+  mixer[kColorWebDiscoveryInfoBarClose] = {
+      SkColorSetARGB(0xBF, 0x8C, 0x90, 0xA1)};
 
   // Colors for HelpBubble. IDs are defined in
   // chrome/browser/ui/color/chrome_color_id.h

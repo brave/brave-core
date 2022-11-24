@@ -13,21 +13,21 @@ namespace features {
 #if BUILDFLAG(IS_ANDROID)
 //  Flag for Brave Rewards.
 #if defined(ARCH_CPU_X86_FAMILY) && defined(OFFICIAL_BUILD)
-const base::Feature kBraveRewards{"BraveRewards",
-                                  base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveRewards, "BraveRewards", base::FEATURE_DISABLED_BY_DEFAULT);
 #else
-const base::Feature kBraveRewards{"BraveRewards",
-                                  base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kBraveRewards, "BraveRewards", base::FEATURE_ENABLED_BY_DEFAULT);
 #endif
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
-const base::Feature kGeminiFeature{"BraveRewardsGemini",
-                                   base::FEATURE_ENABLED_BY_DEFAULT};
+BASE_FEATURE(kGeminiFeature,
+             "BraveRewardsGemini",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 #endif
 
-const base::Feature kVerboseLoggingFeature{"BraveRewardsVerboseLogging",
-                                           base::FEATURE_DISABLED_BY_DEFAULT};
+BASE_FEATURE(kVerboseLoggingFeature,
+             "BraveRewardsVerboseLogging",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace features
 }  // namespace brave_rewards

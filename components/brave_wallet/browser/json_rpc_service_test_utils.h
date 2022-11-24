@@ -25,6 +25,9 @@ std::string MakeJsonRpcErrorResponseWithData(int error,
                                              const std::string& error_message,
                                              const std::string& data);
 
+std::string MakeJsonRpcValueResponse(const base::Value& value);
+std::string MakeJsonRpcResultResponse(const base::Value& value);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_SERVICE_TEST_UTILS_H_

@@ -97,9 +97,6 @@ NS_SWIFT_NAME(LedgerObserver)
 /// Wallet balance was fetched and updated
 @property(nonatomic, copy, nullable) void (^fetchedBalance)();
 
-@property(nonatomic, copy, nullable) void (^externalWalletAuthorized)
-    (NSString* type);
-
 @property(nonatomic, copy, nullable) void (^externalWalletDisconnected)
     (NSString* type);
 

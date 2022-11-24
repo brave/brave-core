@@ -1,7 +1,7 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { createAction } from 'redux-act'
 
@@ -36,7 +36,6 @@ export type selectedRegionPayload = {
 export const connect = createAction('connect')
 export const disconnect = createAction('disconnect')
 export const connectionFailed = createAction('connectionFailed')
-export const retryConnect = createAction('retryConnect')
 export const initialize = createAction('initialize')
 export const purchaseConfirmed = createAction('purchaseConfirmed')
 export const purchaseFailed = createAction('purchaseFailed')

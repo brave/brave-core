@@ -6,16 +6,24 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/ios/browser/brave_stats/brave_stats_prefs.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+
+#if BUILDFLAG(ENABLE_IPFS)
+#include "brave/components/ipfs/ipfs_service.h"
+#endif
 
 void BraveRegisterBrowserStatePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   brave_sync::Prefs::RegisterProfilePrefs(registry);
   brave_wallet::RegisterProfilePrefs(registry);
   brave_wallet::RegisterProfilePrefsForMigration(registry);
+#if BUILDFLAG(ENABLE_IPFS)
+  ipfs::IpfsService::RegisterProfilePrefs(registry);
+#endif
 }
 
 void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {

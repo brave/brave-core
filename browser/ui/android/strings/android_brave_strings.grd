@@ -143,8 +143,59 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
   </translations>
   <release seq="1" allow_pseudo="false">
     <messages fallback_to_english="true">
-       <message name="IDS_TIP_AMOUNT_TEXT"  desc="Text for Tip amount">
+      <message name="IDS_TIP_AMOUNT_TEXT"  desc="Text for Tip amount">
         Tip amount:
+      </message>
+      <message name="IDS_BRAVE_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_TITLE" desc="The title of a dialog shown to users before asking for notification permission.">
+        Brave notifications make it easier
+      </message>
+      <message name="IDS_BRAVE_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_MESSAGE" desc="The body text of a dialog explaining the benefits of enabling Brave notifications.">
+        Manage downloads, earn tokens, see weekly usage stats, and more.
+      </message>
+      <message name="IDS_NOTIFICATION_BRAVE_DIALOG_HEADER_BOTH_REWARDS_PRIVACY" desc="Text header for When BOTH Brave Rewards and Privacy Report are TURNED ON.">
+        You're not earning Rewards or receiving Privacy Reports
+      </message>
+      <message name="IDS_NOTIFICATION_BRAVE_DIALOG_HEADER_ONLY_REWARDS" desc="Text header for When ONLY Brave Rewards is TURNED ON.">
+        You're not earning Brave Rewards 
+      </message>
+      <message name="IDS_NOTIFICATION_BRAVE_DIALOG_HEADER_ONLY_PRIVACY" desc="Text header for When ONLY Privacy Report is TURNED ON.">
+        You're not receiving Privacy Reports
+      </message>
+      <message name="IDS_NOTIFICATION_BRAVE_DIALOG_DESCRIPTION_BOTH_REWARDS_PRIVACY" desc="Text description for When BOTH Brave Rewards and Privacy Report are TURNED ON.">
+        Turn notifications back on if you'd like to keep earning BAT and receiving weekly privacy reports.
+      </message>
+      <message name="IDS_NOTIFICATION_BRAVE_DIALOG_DESCRIPTION_ONLY_REWARDS" desc="Text description for When ONLY Brave Rewards is TURNED ON.">
+        Turn notifications back on if you'd like to keep earning BAT
+      </message>
+      <message name="IDS_NOTIFICATION_BRAVE_DIALOG_DESCRIPTION_ONLY_PRIVACY" desc="Text description for When ONLY Privacy Report is TURNED ON.">
+        Turn notifications back on if you\'d like to keep receiving weekly privacy reports.
+      </message>
+     <message name="IDS_NOTIFICATION_OS_DIALOG_HEADER_BOTH_REWARDS_PRIVACY" desc="Text header for When BOTH Brave Rewards and Privacy Report are TURNED ON.">
+        You're not earning Rewards or receiving Privacy Reports
+      </message>
+      <message name="IDS_NOTIFICATION_OS_DIALOG_HEADER_ONLY_REWARDS" desc="Text header for When ONLY Brave Rewards is TURNED ON.">
+        You're not earning Rewards
+      </message>
+      <message name="IDS_NOTIFICATION_OS_DIALOG_HEADER_ONLY_PRIVACY" desc="Text header for When ONLY Privacy Report is TURNED ON.">
+        You're not receiving Privacy Reports
+      </message>
+      <message name="IDS_NOTIFICATION_OS_DIALOG_DESCRIPTION_BOTH_REWARDS_PRIVACY" desc="Text description for When BOTH Brave Rewards and Privacy Report are TURNED ON.">
+        Enable device notifications to earn Brave Rewards and see Privacy Reports.
+      </message>
+      <message name="IDS_NOTIFICATION_OS_DIALOG_DESCRIPTION_ONLY_REWARDS" desc="Text description for When ONLY Brave Rewards is TURNED ON.">
+        Enable device notifications to earn Brave Rewards.
+      </message>
+      <message name="IDS_NOTIFICATION_OS_DIALOG_DESCRIPTION_ONLY_PRIVACY" desc="Text description for When ONLY Privacy Report is TURNED ON.">
+        Enable device notifications to get Brave Privacy Reports.
+      </message>
+      <message name="IDS_ENABLE_NOTIFICATIONS_FROM_BRAVE_TO_EARN_BRAVE_REWARDS" desc="Text description for Enable notifications from Brave to earn Brave Rewards.">
+        Enable notifications from Brave to earn Brave Rewards.
+      </message>
+      <message name="IDS_OPEN_SETTINGS_AND_TURN_ON_DEVICE_NOTIFICATIONS_FOR_BRAVE_ADS" desc="Text description for Open Settings and turn on device notifications for Brave Ads.">
+        Open Settings and turn on device notifications for Brave Ads.
+      </message>
+      <message name="IDS_TURN_ON_BRAVE_NOTIFICATIONS" desc="Text for button Turn on Brave notifications">
+        Turn on Brave notifications
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_SHIELDS" desc="Content description for the button that is enable, disable Brave Shields.">
         Enable/Disable Brave Shields
@@ -332,8 +383,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_RESOLVE_METHOD_DISABLED" desc="Text for resolve method Disabled.">
         Disabled
       </message>
-      <message name="IDS_RESOLVE_METHOD_ETHEREUM" desc="Text for resolve method Ethereum.">
-        Ethereum
+      <message name="IDS_RESOLVE_METHOD_ENABLED" desc="Text for resolve method Enabled.">
+        Enabled
       </message>
       <message name="IDS_BRAVE_NEWS_OPTIN_TITLE" desc="Text for opt in card title">
         Today’s top stories in a completely private feed, just for you.
@@ -458,7 +509,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Closing all tabs closes Brave
       </message>
       <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK_ON" desc="Text for background video playback is on">
-        Experimental. Enables play audio from video in background when tab is not active or device screen is turned off. Try to switch to desktop mode if this feature is not working.
+        Allows audio to continue playing when you switch to another tab in Brave, switch to another app, or your device screen is off.
       </message>
       <message name="IDS_TEXT_ENABLED" desc="Text indicating that an option is enabled">
         Enabled
@@ -1098,9 +1149,6 @@ Are you sure you want to do this?
       <message name="IDS_VERIFY_WALLET_BRAVE_NOTE1">
         Brave Software Inc. does not process, store, or access any of the personal information that you provide to <ph name="WALLET_PROVIDER">%1$s</ph> when you establish an account with them.
       </message>
-      <message name="IDS_USER_WALLET_COMPLETE_VERIFICATION">
-        Complete wallet verification
-      </message>
       <message name="IDS_USER_WALLET_ACTIVITY_NAME">
         User Wallet
       </message>
@@ -1116,20 +1164,8 @@ Are you sure you want to do this?
       <message name="IDS_USER_WALLET_STATUS_NOT_CONNECTED">
         Not connected
       </message>
-      <message name="IDS_USER_WALLET_STATUS_CONNECTED">
-        Connected
-      </message>
       <message name="IDS_USER_WALLET_STATUS_VERIFIED">
         Verified
-      </message>
-      <message name="IDS_USER_WALLET_STATUS_DISCONNECTED_NOT_VERIFIED">
-        Disconnected not verified
-      </message>
-      <message name="IDS_USER_WALLET_STATUS_DISCONNECTED_VERIFIED">
-        Disconnected verified
-      </message>
-      <message name="IDS_USER_WALLET_STATUS_PENDING">
-        Pending
       </message>
       <message name="IDS_BRAVE_DEFAULT" desc="Text for brave default settings option.">
         Brave Default
@@ -3254,6 +3290,21 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_ADDRESS" desc="Add custom asset dialog Token contract address field for Solana NFT">
       Token address
+    </message>
+    <message name="IDS_LINK_SUBSCRIPTION_TITLE" desc="Brave vpn link subscription settings title text">
+      Link purchase to your Brave account
+    </message>
+    <message name="IDS_LINK_SUBSCRIPTION_TEXT" desc="Brave vpn link subscription settings text">
+      Link your Play Store purchase to your Brave account to use Brave VPN on other devices.
+    </message>
+    <message name="IDS_LINK_SUBSCRIPTION_DIALOG_ACTION_TEXT" desc="Brave vpn link subscription dialog action text">
+      Link your VPN subscription
+    </message>
+    <message name="IDS_LINK_SUBSCRIPTION_DIALOG_TITLE" desc="Brave vpn link subscription dialog title">
+      Extend your Brave Firewall + VPN protection
+    </message>
+    <message name="IDS_LINK_SUBSCRIPTION_DIALOG_TEXT" desc="Brave vpn link subscription dialog text">
+      Your Brave VPN subscription can protect up to 5 devices, across Android, iOS, and desktop. Just link your Google Play subscription to your Brave account.
     </message>
   </messages>
   </release>

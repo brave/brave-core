@@ -9,13 +9,16 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/webui/speedreader/speedreader_panel_data_handler_impl.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/common/speedreader.mojom.h"
+#include "brave/components/speedreader/common/speedreader_panel.mojom.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
@@ -37,6 +40,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
@@ -484,4 +488,41 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RSS) {
   EXPECT_EQ(nullptr, content::EvalJs(ActiveWebContents(), kNoStyleInjected,
                                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                      speedreader::kIsolatedWorldId));
+}
+
+class SpeedReaderBrowserPanelV2Test : public SpeedReaderBrowserTest {
+ public:
+  SpeedReaderBrowserPanelV2Test() {
+    feature_list_.InitAndEnableFeature(speedreader::kSpeedreaderPanelV2);
+  }
+  ~SpeedReaderBrowserPanelV2Test() override = default;
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserPanelV2Test, NoCrash) {
+  ToggleSpeedreader();
+
+  NavigateToPageSynchronously(kTestPageReadable);
+  ClickReaderButton();
+
+  NavigateToPageSynchronously(kTestPageReadable);
+  browser()->tab_strip_model()->DetachAndDeleteWebContentsAt(0);
+  ClickReaderButton();
+
+  // Simulate user actions.
+  mojo::Remote<speedreader::mojom::PanelDataHandler> pdh;
+  SpeedreaderPanelDataHandlerImpl panel_data_handler(
+      pdh.BindNewPipeAndPassReceiver(), browser());
+  pdh->SetFontSize(speedreader::mojom::FontSize::k130);
+
+  base::RunLoop run_loop;
+  pdh->GetFontSize(base::BindLambdaForTesting(
+      [&run_loop](speedreader::mojom::FontSize) { run_loop.Quit(); }));
+  run_loop.Run();
+  EXPECT_EQ(speedreader::mojom::FontSize::k130, tab_helper()->GetFontSize());
+
+  NavigateToPageSynchronously(kTestPageReadable);
+  ClickReaderButton();
 }

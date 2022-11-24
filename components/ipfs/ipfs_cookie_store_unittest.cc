@@ -15,8 +15,7 @@ namespace net {
 struct IPFSCookieStoreTestTraits {
   static std::unique_ptr<CookieStore> Create() {
     return std::make_unique<CookieMonster>(nullptr /* store */,
-                                           nullptr /* netlog */,
-                                           /*first_party_sets_enabled=*/false);
+                                           nullptr /* netlog */);
   }
 
   static void DeliverChangeNotifications() { base::RunLoop().RunUntilIdle(); }
@@ -48,8 +47,8 @@ class IPFSCookieStoreTest : public CookieStoreTest<IPFSCookieStoreTestTraits> {
 
 TEST_F(IPFSCookieStoreTest, SetCookie) {
   scoped_refptr<MockPersistentCookieStore> store(new MockPersistentCookieStore);
-  std::unique_ptr<CookieMonster> cm(new CookieMonster(
-      store.get(), net::NetLog::Get(), /*first_party_sets_enabled=*/false));
+  std::unique_ptr<CookieMonster> cm(
+      new CookieMonster(store.get(), net::NetLog::Get()));
 
   // Verify
   // 1. {CID}.ipfs.localhost can set cookies for itself

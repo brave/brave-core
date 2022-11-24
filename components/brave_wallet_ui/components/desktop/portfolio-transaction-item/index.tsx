@@ -1,7 +1,7 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,14 +12,14 @@ import {
   BraveWallet,
   WalletAccountType,
   WalletState,
-  WalletRoutes
+  WalletRoutes,
+  SerializableTransactionInfo
 } from '../../../constants/types'
 import { SwapExchangeProxy } from '../../../common/constants/registry'
 
 // Utils
 import { toProperCase } from '../../../utils/string-utils'
-import { formatDateAsRelative } from '../../../utils/datetime-utils'
-import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
+import { formatDateAsRelative, serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
 import Amount from '../../../utils/amount'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
@@ -62,7 +62,7 @@ import TransactionPopup, { TransactionPopupItem } from '../transaction-popup'
 import TransactionTimestampTooltip from '../transaction-timestamp-tooltip'
 
 export interface Props {
-  transaction: BraveWallet.TransactionInfo
+  transaction: SerializableTransactionInfo
   account: WalletAccountType | undefined
   accounts: WalletAccountType[]
   displayAccountName: boolean
@@ -366,12 +366,12 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             <TransactionTimestampTooltip
               text={
                 <TransactionFeeTooltipBody>
-                  {mojoTimeDeltaToJSDate(transactionDetails.createdTime).toUTCString()}
+                  {serializedTimeDeltaToJSDate(transactionDetails.createdTime).toUTCString()}
                 </TransactionFeeTooltipBody>
               }
             >
               <DetailTextDarkBold>
-                {formatDateAsRelative(mojoTimeDeltaToJSDate(transactionDetails.createdTime))}
+                {formatDateAsRelative(serializedTimeDeltaToJSDate(transactionDetails.createdTime))}
               </DetailTextDarkBold>
             </TransactionTimestampTooltip>
 

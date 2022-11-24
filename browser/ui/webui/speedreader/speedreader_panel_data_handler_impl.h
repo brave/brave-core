@@ -6,25 +6,18 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SPEEDREADER_SPEEDREADER_PANEL_DATA_HANDLER_IMPL_H_
 #define BRAVE_BROWSER_UI_WEBUI_SPEEDREADER_SPEEDREADER_PANEL_DATA_HANDLER_IMPL_H_
 
-#include <stdint.h>
-
-#include <memory>
-#include <string>
-
-#include "base/scoped_observation.h"
 #include "brave/components/speedreader/common/speedreader_panel.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
-
-class TabStripModel;
 
 using speedreader::mojom::ContentStyle;
 using speedreader::mojom::FontFamily;
 using speedreader::mojom::FontSize;
 using speedreader::mojom::Theme;
+
+class Browser;
 
 namespace speedreader {
 class SpeedreaderTabHelper;
@@ -35,8 +28,7 @@ class SpeedreaderPanelDataHandlerImpl
  public:
   SpeedreaderPanelDataHandlerImpl(
       mojo::PendingReceiver<speedreader::mojom::PanelDataHandler> receiver,
-      content::WebContents* web_contents);
-
+      Browser* browser);
   SpeedreaderPanelDataHandlerImpl(const SpeedreaderPanelDataHandlerImpl&) =
       delete;
   SpeedreaderPanelDataHandlerImpl& operator=(
@@ -44,7 +36,7 @@ class SpeedreaderPanelDataHandlerImpl
 
   ~SpeedreaderPanelDataHandlerImpl() override;
 
-  // speedreader::mojom::PanelDatahandler overrides
+  // speedreader::mojom::PanelDataHandler overrides
   void GetTheme(GetThemeCallback callback) override;
   void SetTheme(Theme theme) override;
 
@@ -62,9 +54,16 @@ class SpeedreaderPanelDataHandlerImpl
   void IsEnabled(IsEnabledCallback callback) override;
   void SetEnabled(bool on) override;
 
+  void GetSiteSettings(GetSiteSettingsCallback callback) override;
+
  private:
+  speedreader::SpeedreaderTabHelper* GetSpeedreaderTabHelper();
+  void UpdateSiteSettings();
+
   mojo::Receiver<speedreader::mojom::PanelDataHandler> receiver_;
-  raw_ptr<speedreader::SpeedreaderTabHelper> speedreader_tab_helper_ = nullptr;
+
+  raw_ptr<Browser> browser_;
+  speedreader::mojom::SiteSettings site_settings_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SPEEDREADER_SPEEDREADER_PANEL_DATA_HANDLER_IMPL_H_

@@ -175,7 +175,7 @@ INSTANTIATE_TEST_SUITE_P(
           "code": 403
         }
       )",
-      base::unexpected(Error::kKycRequired)
+      base::unexpected(Error::kKYCRequired)
     },
     PostConnectParamType{
       "HTTP_403_mismatched_provider_accounts",
@@ -225,7 +225,7 @@ INSTANTIATE_TEST_SUITE_P(
       "HTTP_404_kyc_required",
       net::HTTP_NOT_FOUND,
       "",
-      base::unexpected(Error::kKycRequired)
+      base::unexpected(Error::kKYCRequired)
     },
     PostConnectParamType{
       "HTTP_409_device_limit_reached",

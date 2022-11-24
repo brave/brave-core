@@ -13,8 +13,8 @@
 #include <utility>
 
 #include "absl/types/optional.h"
-#include "base/bind.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"

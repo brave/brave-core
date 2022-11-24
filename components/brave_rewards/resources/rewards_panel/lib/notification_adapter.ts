@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {
   ExternalWalletProvider,
@@ -14,7 +14,9 @@ import {
   GrantAvailableNotification,
   PendingPublisherVerifiedNotification,
   PendingTipFailedNotification,
-  ExternalWalletDisconnectedNotification
+  ExternalWalletDisconnectedNotification,
+  UpholdBATNotAllowedNotification,
+  UpholdInsufficientCapabilitiesNotification
 } from '../../shared/components/notifications'
 
 function parseGrantId (id: string) {
@@ -134,6 +136,18 @@ export function mapNotification (
             type: 'external-wallet-disconnected',
             // The provider is not currently recorded for this notification
             provider: mapProvider('')
+          })
+        case 'uphold_bat_not_allowed':
+          return create<UpholdBATNotAllowedNotification>({
+            ...baseProps,
+            type: 'uphold-bat-not-allowed',
+            provider: 'uphold'
+          })
+        case 'uphold_insufficient_capabilities':
+          return create<UpholdInsufficientCapabilitiesNotification>({
+            ...baseProps,
+            type: 'uphold-insufficient-capabilities',
+            provider: 'uphold'
           })
       }
       break

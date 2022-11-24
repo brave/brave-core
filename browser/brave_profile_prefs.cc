@@ -176,6 +176,12 @@ void RegisterProfilePrefsForMigration(
 
   // Added 01/2022
   registry->RegisterBooleanPref(brave_rewards::prefs::kHideButton, false);
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  // Added 11/2022
+  registry->RegisterBooleanPref(kDontAskEnableWebDiscovery, false);
+  registry->RegisterIntegerPref(kBraveSearchVisitCount, 0);
+#endif
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -393,8 +399,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Web discovery extension, default false
   registry->RegisterBooleanPref(kWebDiscoveryEnabled, false);
-  registry->RegisterBooleanPref(kDontAskEnableWebDiscovery, false);
-  registry->RegisterIntegerPref(kBraveSearchVisitCount, 0);
+  registry->RegisterDictionaryPref(kWebDiscoveryCTAState);
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)

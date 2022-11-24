@@ -24,13 +24,13 @@
 {%- if method.response_parameters %}
   auto callback = ^(
 {%- for param in method.response_parameters -%}
-{{param.kind|expected_cpp_param_type}} {{param.name}}
+{{param.kind|expected_cpp_param_type}} {{param.name}}_arg
 {%- if not loop.last %}, {% endif -%}
 {%- endfor -%}
   ) {
     completion(
 {%- for param in method.response_parameters -%}
-{{param|cpp_to_objc_assign}}
+{{param|cpp_to_objc_assign('','_arg')}}
 {%- if not loop.last %}, {% endif -%}
 {%- endfor -%}
     );

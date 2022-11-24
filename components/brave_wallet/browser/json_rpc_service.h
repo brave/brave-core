@@ -19,6 +19,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
+#include "brave/components/brave_wallet/browser/sns_resolver_task.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -85,6 +86,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::vector<std::vector<std::string>>& reward,
       mojom::ProviderError error,
       const std::string& error_message)>;
+
+  using EthGetLogsCallback =
+      base::OnceCallback<void(const std::vector<Log>& logs,
+                              mojom::ProviderError error,
+                              const std::string& error_message)>;
   void GetBlockNumber(GetBlockNumberCallback callback);
   void GetFeeHistory(GetFeeHistoryCallback callback);
 
@@ -176,6 +182,15 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void EnsGetEthAddr(const std::string& domain,
                      mojom::EnsOffchainLookupOptionsPtr options,
                      EnsGetEthAddrCallback callback) override;
+  void SnsGetSolAddr(const std::string& domain,
+                     SnsGetSolAddrCallback callback) override;
+
+  using SnsResolveHostCallback =
+      base::OnceCallback<void(const GURL& url,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
+  void SnsResolveHost(const std::string& domain,
+                      SnsResolveHostCallback callback);
 
   bool SetNetwork(const std::string& chain_id,
                   mojom::CoinType coin,
@@ -305,35 +320,15 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                           const std::string& chain_id,
                           GetTokenMetadataCallback callback) override;
 
-  using DiscoverAssetsCallback = base::OnceCallback<void(
-      const std::vector<mojom::BlockchainTokenPtr> discovered_assets,
-      mojom::ProviderError error,
-      const std::string& error_message)>;
-  void DiscoverAssets(const std::string& chain_id,
-                      mojom::CoinType coin,
-                      const std::vector<std::string>& account_addresses);
+  void EthGetLogs(const std::string& chain_id,
+                  const std::string& from_block,
+                  const std::string& to_block,
+                  base::Value::List addresses,
+                  base::Value::List topics,
+                  EthGetLogsCallback callback);
 
-  void DiscoverAssetsInternal(const std::string& chain_id,
-                              mojom::CoinType coin,
-                              const std::vector<std::string>& account_addresses,
-                              DiscoverAssetsCallback callback);
-
-  void OnGetAllTokensDiscoverAssets(
-      const std::string& chain_id,
-      const std::vector<std::string>& account_addresses,
-      std::vector<mojom::BlockchainTokenPtr> user_assets,
-      DiscoverAssetsCallback callback,
-      std::vector<mojom::BlockchainTokenPtr> token_list);
-
-  void OnGetTransferLogs(
-      DiscoverAssetsCallback callback,
-      base::flat_map<std::string, mojom::BlockchainTokenPtr>& user_assets_map,
-      APIRequestResult api_request_result);
-
-  void OnDiscoverAssetsCompleted(
-      std::vector<mojom::BlockchainTokenPtr> discovered_assets,
-      mojom::ProviderError error,
-      const std::string& error_message);
+  void OnEthGetLogs(EthGetLogsCallback callback,
+                    APIRequestResult api_request_result);
 
   // Resets things back to the original state of BraveWalletService.
   // To be used when the Wallet is reset / erased
@@ -474,6 +469,14 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       EnsResolverTask* task,
       absl::optional<EnsResolverTaskResult> task_result,
       absl::optional<EnsResolverTaskError> error);
+  void OnSnsGetSolAddrTaskDone(
+      SnsResolverTask* task,
+      absl::optional<SnsResolverTaskResult> task_result,
+      absl::optional<SnsResolverTaskError> error);
+  void OnSnsResolveHostTaskDone(
+      SnsResolverTask* task,
+      absl::optional<SnsResolverTaskResult> task_result,
+      absl::optional<SnsResolverTaskError> error);
   void OnEnsGetEthAddr(EnsGetEthAddrCallback callback,
                        APIRequestResult api_request_result);
   void OnGetFilEstimateGas(GetFilEstimateGasCallback callback,
@@ -583,6 +586,9 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   EnsResolverTaskContainer<EnsGetEthAddrCallback> ens_get_eth_addr_tasks_;
   EnsResolverTaskContainer<EnsGetContentHashCallback>
       ens_get_content_hash_tasks_;
+
+  SnsResolverTaskContainer<SnsGetSolAddrCallback> sns_get_sol_addr_tasks_;
+  SnsResolverTaskContainer<SnsResolveHostCallback> sns_resolve_host_tasks_;
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;
   PrefService* prefs_ = nullptr;

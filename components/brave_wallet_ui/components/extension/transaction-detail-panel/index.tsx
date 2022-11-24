@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useSelector } from 'react-redux'
@@ -14,7 +14,6 @@ import { useExplorer, useTransactionParser } from '../../../common/hooks'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { getTransactionStatusString, isSolanaTransaction } from '../../../utils/tx-utils'
 import { toProperCase } from '../../../utils/string-utils'
-import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
 import Amount from '../../../utils/amount'
 import { getNetworkFromTXDataUnion, getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { getLocale } from '../../../../common/locale'
@@ -24,7 +23,8 @@ import {
   BraveWallet,
   WalletAccountType,
   DefaultCurrencies,
-  WalletState
+  WalletState,
+  SerializableTransactionInfo
 } from '../../../constants/types'
 
 // Styled Components
@@ -54,18 +54,19 @@ import Header from '../../buy-send-swap/select-header'
 import { StatusBubble } from '../../shared/style'
 import { TransactionStatusTooltip } from '../transaction-status-tooltip'
 import { Tooltip } from '../../shared'
+import { serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
 
 export interface Props {
-  transaction: BraveWallet.TransactionInfo
+  transaction: SerializableTransactionInfo
   selectedNetwork?: BraveWallet.NetworkInfo
   accounts: WalletAccountType[]
   visibleTokens: BraveWallet.BlockchainToken[]
   transactionSpotPrices: BraveWallet.AssetPrice[]
   defaultCurrencies: DefaultCurrencies
   onBack: () => void
-  onRetryTransaction: (transaction: BraveWallet.TransactionInfo) => void
-  onSpeedupTransaction: (transaction: BraveWallet.TransactionInfo) => void
-  onCancelTransaction: (transaction: BraveWallet.TransactionInfo) => void
+  onRetryTransaction: (transaction: SerializableTransactionInfo) => void
+  onSpeedupTransaction: (transaction: SerializableTransactionInfo) => void
+  onCancelTransaction: (transaction: SerializableTransactionInfo) => void
 }
 
 const TransactionDetailPanel = (props: Props) => {
@@ -151,6 +152,11 @@ const TransactionDetailPanel = (props: Props) => {
       liveTransaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom) {
       return transactionDetails.erc721BlockchainToken?.name + ' ' + transactionDetails.erc721TokenId
     }
+
+    if (liveTransaction.txType === BraveWallet.TransactionType.ERC20Approve && transactionDetails.isApprovalUnlimited) {
+      return `${getLocale('braveWalletTransactionApproveUnlimited')} ${transactionDetails.symbol}`
+    }
+
     return new Amount(transactionDetails.value)
       .formatAsAsset(undefined, transactionDetails.symbol)
   }, [transactionDetails, liveTransaction])
@@ -244,7 +250,7 @@ const TransactionDetailPanel = (props: Props) => {
           {getLocale('braveWalletTransactionDetailDate')}
         </DetailTitle>
         <DetailTextDark>
-          {mojoTimeDeltaToJSDate(transactionDetails.createdTime).toUTCString()}
+          {serializedTimeDeltaToJSDate(transactionDetails.createdTime).toUTCString()}
         </DetailTextDark>
       </DetailRow>
       {![BraveWallet.TransactionStatus.Rejected, BraveWallet.TransactionStatus.Error].includes(transactionDetails.status) &&

@@ -539,11 +539,11 @@ html[data-font-size="150"] {
 }
 
 html[data-font-family="sans"] {
-  font-family: "Arial", Sans-serif;
+  font-family: Sans-serif;
 }
 
 html[data-font-family="serif"] {
-  font-family: Sans-serif;
+  font-family: serif;
 }
 
 html[data-font-family="mono"] {
@@ -551,7 +551,7 @@ html[data-font-family="mono"] {
 }
 
 html[data-font-family="dyslexic"] {
-  font-family: "Tahoma", Sans-serif;
+  font-family: Tahoma, Sans-serif;
 }
 
 html[data-content-style="text-only"] img {

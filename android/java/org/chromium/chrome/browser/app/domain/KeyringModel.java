@@ -273,6 +273,10 @@ public class KeyringModel implements KeyringServiceObserver {
         });
     }
 
+    public void isWalletLocked(Callbacks.Callback1<Boolean> callback) {
+        mKeyringService.isLocked(isWalletLocked -> callback.call(isWalletLocked));
+    }
+
     private KeyringInfo getSelectedCoinKeyringInfo(int coinType) {
         String selectedCoinKeyringId = getSelectedCoinKeyringId(coinType);
         for (KeyringInfo keyringInfo : _mKeyringInfosLiveData.getValue()) {
@@ -324,6 +328,9 @@ public class KeyringModel implements KeyringServiceObserver {
     public void accountsChanged() {
         update();
     }
+
+    @Override
+    public void accountsAdded(int coin, String[] addresses) {}
 
     @Override
     public void autoLockMinutesChanged() {}

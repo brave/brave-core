@@ -29,8 +29,8 @@ TEST(BatAdsInlineContentAdsFeaturesTest, InlineContentAdsDisabled) {
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
 
-  std::vector<base::Feature> disabled_features;
-  disabled_features.push_back(kFeature);
+  std::vector<base::test::FeatureRef> disabled_features;
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,

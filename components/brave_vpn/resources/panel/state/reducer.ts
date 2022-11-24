@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { createReducer } from 'redux-act'
 
@@ -33,6 +33,7 @@ const reducer = createReducer<RootState>({}, defaultState)
 reducer.on(Actions.connect, (state): RootState => {
   return {
     ...state,
+    hasError: false,
     connectionStatus: ConnectionState.CONNECTING
   }
 })
@@ -57,6 +58,7 @@ reducer.on(Actions.connectToNewRegion, (state, payload): RootState => {
   return {
     ...state,
     isSelectingRegion: false,
+    hasError: false,
     currentRegion: payload.region
   }
 })
@@ -71,6 +73,7 @@ reducer.on(Actions.toggleRegionSelector, (state, payload): RootState => {
 reducer.on(Actions.connectionStateChanged, (state, payload): RootState => {
   return {
     ...state,
+    hasError: payload.connectionStatus === ConnectionState.CONNECTED ? false : state.hasError,
     connectionStatus: payload.connectionStatus
   }
 })
@@ -79,13 +82,6 @@ reducer.on(Actions.selectedRegionChanged, (state, payload): RootState => {
   return {
     ...state,
     currentRegion: payload.region
-  }
-})
-
-reducer.on(Actions.retryConnect, (state): RootState => {
-  return {
-    ...state,
-    hasError: false
   }
 })
 

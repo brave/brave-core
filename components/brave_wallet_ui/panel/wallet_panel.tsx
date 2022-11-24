@@ -1,7 +1,7 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { render } from 'react-dom'
@@ -11,11 +11,12 @@ import { loadTimeData } from '../../common/loadTimeData'
 import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
-import store from './store'
+import store, { walletPanelApiProxy } from './store'
 import * as WalletActions from '../common/actions/wallet_actions'
 import Container from './container'
 import { LibContext } from '../common/context/lib.context'
 import * as Lib from '../common/async/lib'
+import { ApiProxyContext } from '../common/context/api-proxy.context'
 
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
@@ -30,9 +31,11 @@ function App () {
           dark={walletDarkTheme}
           light={walletLightTheme}
         >
-          <LibContext.Provider value={Lib}>
-            <Container />
-          </LibContext.Provider>
+          <ApiProxyContext.Provider value={walletPanelApiProxy}>
+            <LibContext.Provider value={Lib}>
+              <Container />
+            </LibContext.Provider>
+          </ApiProxyContext.Provider>
         </BraveCoreThemeProvider>
       }
     </Provider>

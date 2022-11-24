@@ -56,7 +56,7 @@ mojom::Result PostRecipientId::ParseBody(const std::string& body,
 
 std::string PostRecipientId::GeneratePayload() {
   base::Value::Dict payload;
-  payload.Set("label", base::GenerateGUID());
+  payload.Set("label", endpoints::kGeminiRecipientIDLabel);
 
   std::string json;
   base::JSONWriter::Write(payload, &json);

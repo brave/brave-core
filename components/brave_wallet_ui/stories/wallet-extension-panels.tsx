@@ -1,11 +1,25 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { Provider } from 'react-redux'
-import { combineReducers, createStore } from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
+
+import './locale'
+import {
+  AccountTransactions,
+  AppsListType,
+  BraveWallet,
+  BuySendSwapViewTypes,
+  PanelTypes,
+  SerializableTransactionInfo,
+  WalletAccountType,
+  WalletState
+} from '../constants/types'
+import { AppsList } from '../options/apps-list-options'
+import { filterAppList } from '../utils/filter-app-list'
 
 // Components
 import {
@@ -33,17 +47,6 @@ import {
   SelectAccount,
   CreateAccountTab
 } from '../components/buy-send-swap'
-import {
-  BraveWallet,
-  WalletAccountType,
-  PanelTypes,
-  AppsListType,
-  BuySendSwapViewTypes,
-  WalletState,
-  AccountTransactions
-} from '../constants/types'
-import { AppsList } from '../options/apps-list-options'
-import { filterAppList } from '../utils/filter-app-list'
 import LockPanel from '../components/extension/lock-panel'
 import {
   StyledExtensionWrapperLonger,
@@ -55,8 +58,11 @@ import {
 } from './style'
 import { mockNetworks } from './mock-data/mock-networks'
 import { PanelTitles } from '../options/panel-titles'
-import './locale'
 import { LibContext } from '../common/context/lib.context'
+import WalletPanelStory from './wrappers/wallet-panel-story-wrapper'
+
+// reducers & slices
+import { walletApi } from '../common/slices/api.slice'
 import { createSendCryptoReducer } from '../common/reducers/send_crypto_reducer'
 import { createWalletReducer } from '../common/slices/wallet.slice'
 import { createPageReducer } from '../page/reducers/page_reducer'
@@ -116,9 +122,9 @@ const transactionDummyData: AccountTransactions = {
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5 * 1000) },
-      submittedTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5) },
-      confirmedTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5) },
+      createdTime: { microseconds: (Date.now() * 1000) - 1000 * 60 * 5 * 1000 },
+      submittedTime: { microseconds: (Date.now() * 1000) - 1000 * 60 * 5 },
+      confirmedTime: { microseconds: (Date.now() * 1000) - 1000 * 60 * 5 },
       originInfo: mockOriginInfo,
       groupId: undefined
     },
@@ -149,9 +155,9 @@ const transactionDummyData: AccountTransactions = {
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: BigInt(0) },
-      submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) },
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       groupId: undefined
     },
@@ -182,9 +188,9 @@ const transactionDummyData: AccountTransactions = {
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: BigInt(0) },
-      submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) },
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       groupId: undefined
     },
@@ -215,9 +221,9 @@ const transactionDummyData: AccountTransactions = {
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: BigInt(0) },
-      submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) },
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       groupId: undefined
     },
@@ -248,9 +254,9 @@ const transactionDummyData: AccountTransactions = {
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: BigInt(0) },
-      submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) },
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       groupId: undefined
     }
@@ -283,9 +289,9 @@ const transactionDummyData: AccountTransactions = {
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: BigInt(0) },
-      submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) },
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       groupId: undefined
     },
@@ -316,9 +322,9 @@ const transactionDummyData: AccountTransactions = {
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: BigInt(0) },
-      submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) },
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       groupId: undefined
     }
@@ -327,12 +333,25 @@ const transactionDummyData: AccountTransactions = {
 
 const originInfo = mockOriginInfo
 
-const store = createStore(combineReducers({
-  wallet: createWalletReducer(mockWalletState),
-  page: createPageReducer(mockPageState),
-  panel: createPanelReducer(mockPanelState),
-  sendCrypto: createSendCryptoReducer(mockSendCryptoState)
-}))
+function createStoreWithCustomState (customWalletState: Partial<WalletState> = {}) {
+  return configureStore({
+    reducer: {
+      wallet: createWalletReducer({
+        ...mockWalletState,
+        ...customWalletState
+      }),
+      page: createPageReducer(mockPageState),
+      panel: createPanelReducer(mockPanelState),
+      [walletApi.reducerPath]: walletApi.reducer,
+      sendCrypto: createSendCryptoReducer(mockSendCryptoState)
+
+    },
+    devTools: true,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(walletApi.middleware)
+  })
+}
+
+const store = createStoreWithCustomState()
 
 const transactionList = {
   [mockedTransactionAccounts[0].address]: [
@@ -349,16 +368,6 @@ const mockCustomStoreState: Partial<WalletState> = {
   fullTokenList: mockNewAssetOptions,
   activeOrigin: originInfo,
   transactions: transactionList
-}
-
-function createStoreWithCustomState (customWalletState: Partial<WalletState> = {}) {
-  return createStore(combineReducers({
-    wallet: createWalletReducer({
-      ...mockWalletState,
-      ...customWalletState
-    }),
-    page: createPageReducer(mockPageState)
-  }))
 }
 
 export const _ConfirmTransaction = () => {
@@ -576,7 +585,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(mockEthToken)
   const [, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(mockBasicAttentionToken)
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
-  const [selectedTransaction, setSelectedTransaction] = React.useState<BraveWallet.TransactionInfo | undefined>(transactionList[1][0])
+  const [selectedTransaction, setSelectedTransaction] = React.useState<SerializableTransactionInfo | undefined>(transactionList[1][0])
 
   const onChangeSendView = (view: BuySendSwapViewTypes) => {
     if (view === 'assets') {
@@ -678,7 +687,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     alert('Will speedup transaction')
   }
 
-  const onSelectTransaction = (transaction: BraveWallet.TransactionInfo) => {
+  const onSelectTransaction = (transaction: SerializableTransactionInfo) => {
     navigateTo('transactionDetails')
     setSelectedTransaction(transaction)
     console.log(selectedTransaction)
@@ -689,7 +698,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   }, [])
 
   return (
-    <Provider store={store}>
+    <WalletPanelStory>
       <StyledExtensionWrapper>
         {walletLocked ? (
           <LockPanel
@@ -806,7 +815,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
         )
         }
       </StyledExtensionWrapper>
-    </Provider>
+    </WalletPanelStory>
   )
 }
 

@@ -25,7 +25,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   kParameters["default_ad_notifications_per_hour"] = "2";
   enabled_features.emplace_back(features::kServing, kParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -48,7 +48,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasNotChangedDefaultSetting) {
   kParameters["default_ad_notifications_per_hour"] = "2";
   enabled_features.emplace_back(features::kServing, kParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -68,7 +68,7 @@ TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
   kParameters["default_ad_notifications_per_hour"] = "-1";
   enabled_features.emplace_back(features::kServing, kParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -88,7 +88,7 @@ TEST_F(BatAdsSettingsTest, ClampMaxAdsPerHour) {
   kParameters["default_ad_notifications_per_hour"] = "11";
   enabled_features.emplace_back(features::kServing, kParameters);
 
-  const std::vector<base::Feature> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,

@@ -16,19 +16,16 @@
 namespace brave {
 namespace ios {
 TargetDeviceType DeviceTypeFromSyncDeviceType(
-    sync_pb::SyncEnums::DeviceType deviceType) {
+    syncer::DeviceInfo::FormFactor deviceType) {
   switch (deviceType) {
-    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_WIN:
-    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_MAC:
-    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_LINUX:
-    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_CROS:
-      return TargetDeviceTypePC;
-    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_PHONE:
-    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_TABLET:
-      return TargetDeviceTypeMobile;
-    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_UNSET:
-    case sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_OTHER:
+    case syncer::DeviceInfo::FormFactor::kUnknown:
       return TargetDeviceTypeUnset;
+    case syncer::DeviceInfo::FormFactor::kDesktop:
+      return TargetDeviceTypePC;
+    case syncer::DeviceInfo::FormFactor::kPhone:
+      return TargetDeviceTypeMobile;
+    case syncer::DeviceInfo::FormFactor::kTablet:
+      return TargetDeviceTypeTablet;
   }
 }
 }  // namespace ios
@@ -130,7 +127,7 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
               deviceName:base::SysUTF8ToNSString(device.device_name)
                  cacheId:base::SysUTF8ToNSString(device.cache_guid)
               deviceType:brave::ios::DeviceTypeFromSyncDeviceType(
-                             device.device_type)
+                             device.form_factor)
          lastUpdatedTime:device.last_updated_timestamp.ToNSDate()];
 
     [targetDeviceList addObject:targetDevice];

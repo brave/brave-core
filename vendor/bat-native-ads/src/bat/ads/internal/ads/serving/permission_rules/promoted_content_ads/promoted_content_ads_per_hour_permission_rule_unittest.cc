@@ -24,7 +24,7 @@ class BatAdsPromotedContentAdsPerHourPermissionRuleTest : public UnitTestBase {
     const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
         enabled_features;
 
-    const std::vector<base::Feature> disabled_features;
+    const std::vector<base::test::FeatureRef> disabled_features;
 
     base::test::ScopedFeatureList scoped_feature_list;
     scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,

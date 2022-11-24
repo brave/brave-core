@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { createAction } from '@reduxjs/toolkit'
 import {
@@ -17,7 +17,7 @@ import {
   SignAllTransactionsProcessedPayload,
   SwitchEthereumChainProcessedPayload
 } from '../constants/action_types'
-import { BraveWallet, PanelTypes } from '../../constants/types'
+import { BraveWallet, PanelTypes, SerializableTransactionInfo } from '../../constants/types'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
 export const connectToSite = createAction<AccountPayloadType>('connectToSite')
@@ -44,7 +44,7 @@ export const signMessage = createAction<BraveWallet.SignMessageRequest[]>('signM
 export const signMessageProcessed = createAction<SignMessageProcessedPayload>('signMessageProcessed')
 export const signMessageHardware = createAction<BraveWallet.SignMessageRequest>('signMessageHardware')
 export const signMessageHardwareProcessed = createAction<SignMessageProcessedPayload>('signMessageHardwareProcessed')
-export const approveHardwareTransaction = createAction<BraveWallet.TransactionInfo>('approveHardwareTransaction')
+export const approveHardwareTransaction = createAction<SerializableTransactionInfo>('approveHardwareTransaction')
 export const setHardwareWalletInteractionError = createAction<HardwareWalletResponseCodeType | undefined>('setHardwareWalletInteractionError')
 export const cancelConnectHardwareWallet = createAction<CancelConnectHardwareWalletPayload>('cancelConnectHardwareWallet')
 export const addSuggestToken = createAction<BraveWallet.AddSuggestTokenRequest>('addSuggestToken')
@@ -53,7 +53,7 @@ export const getEncryptionPublicKey = createAction<BraveWallet.GetEncryptionPubl
 export const getEncryptionPublicKeyProcessed = createAction<GetEncryptionPublicKeyProcessedPayload>('getEncryptionPublicKeyProcessed')
 export const decrypt = createAction<BraveWallet.DecryptRequest>('decrypt')
 export const decryptProcessed = createAction<DecryptProcessedPayload>('decryptProcessed')
-export const setSelectedTransaction = createAction<BraveWallet.TransactionInfo | undefined>('setSelectedTransaction')
+export const setSelectedTransaction = createAction<SerializableTransactionInfo | undefined>('setSelectedTransaction')
 export const signTransaction = createAction<BraveWallet.SignTransactionRequest[]>('signTransaction')
 export const signTransactionHardware = createAction<BraveWallet.SignTransactionRequest>('signTransactionHardware')
 export const signTransactionProcessed = createAction<SignMessageProcessedPayload>('signTransactionProcessed')

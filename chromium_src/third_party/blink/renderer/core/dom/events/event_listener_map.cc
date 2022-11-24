@@ -20,7 +20,7 @@ bool EventListenerMap::AddListenerToVector(
                                                    registered_listener);
   if (result && CoreProbeSink::HasAgentsGlobal(CoreProbeSink::kPageGraph)) {
     DCHECK(registered_listener);
-    DCHECK(vector && !vector->IsEmpty());
+    DCHECK(vector && !vector->empty());
     DCHECK(*registered_listener == vector->back());
     const int id = RegisteredEventListener::GenerateId();
     // Set id to the returned object.

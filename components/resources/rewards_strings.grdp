@@ -37,7 +37,7 @@
     Estimated Earnings
   </message>
   <message name="IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT" desc="">
-    Log into your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
+    Log in to your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
   </message>
   <message name="IDS_REWARDS_WALLET_MONTHLY_TIPS" desc="">
     Monthly Tips
@@ -45,14 +45,8 @@
   <message name="IDS_REWARDS_WALLET_ONE_TIME_TIPS" desc="">
     One-Time Tips
   </message>
-  <message name="IDS_REWARDS_WALLET_PENDING" desc="">
-    Pending
-  </message>
   <message name="IDS_REWARDS_WALLET_PENDING_CONTRIBUTIONS" desc="">
     Pending contributions
-  </message>
-  <message name="IDS_REWARDS_WALLET_PENDING_TEXT" desc="">
-    There is a temporary problem verifying with <ph name="PROVIDER">$1<ex>Uphold</ex></ph>. Your Brave Rewards will remain in a pending state and retry automatically, but you can also try again later.
   </message>
   <message name="IDS_REWARDS_WALLET_REWARDS_FROM_ADS" desc="">
     Rewards from Ads
@@ -265,6 +259,18 @@
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_TEXT" desc="">
     This can happen to keep your account secure. Click below to reconnect now.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_UPHOLD_BAT_NOT_ALLOWED_TITLE" desc="">
+    Error: BAT unavailable
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_UPHOLD_BAT_NOT_ALLOWED_TEXT" desc="">
+    BAT is not yet supported in your region on Uphold.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_UPHOLD_INSUFFICIENT_CAPABILITIES_TITLE" desc="">
+    Error: Limited Uphold account functionality
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_UPHOLD_INSUFFICIENT_CAPABILITIES_TEXT" desc="">
+    According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again.
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_ACTION" desc="">
     Reconnect

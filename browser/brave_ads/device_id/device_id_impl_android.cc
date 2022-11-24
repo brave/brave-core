@@ -9,7 +9,7 @@
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "brave/browser/brave_ads/android/jni_headers/DeviceIdImplAndroid_jni.h"
 
 namespace brave_ads {

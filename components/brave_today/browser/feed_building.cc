@@ -18,6 +18,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/containers/flat_set.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
@@ -33,6 +34,7 @@
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/gurl.h"
 
 namespace brave_news {
 
@@ -295,7 +297,8 @@ bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
 
   // None of the filters match, we can display
   VLOG(2) << "None of the filters matched, will display item for publisher "
-          << data->publisher_id;
+          << data->publisher_id << ": " << publisher->publisher_name << " ["
+          << data->title << "]";
   return true;
 }
 
@@ -311,11 +314,20 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
   std::list<mojom::PromotedArticlePtr> promoted_articles;
   std::list<mojom::DealPtr> deals;
   std::hash<std::string> hasher;
+  base::flat_set<GURL> seen_articles;
+
   for (auto& item : feed_items) {
     if (!ShouldDisplayFeedItem(item, publishers, channels)) {
       continue;
     }
     auto& metadata = MetadataFromFeedItem(item);
+    if (seen_articles.contains(metadata->url)) {
+      VLOG(2) << "Skipping " << metadata->url
+              << " because we've already seen it.";
+      continue;
+    }
+
+    seen_articles.insert(metadata->url);
     const auto& publisher = publishers->at(metadata->publisher_id);
     // ShouldDisplayFeedItem should already have returned false
     // if publishers doesn't have this publisher_id.
@@ -330,6 +342,17 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
     // Adjust score to consider profile's browsing history
     if (history_hosts.find(metadata->url.host()) != history_hosts.end()) {
       metadata->score -= 5;
+    }
+    if (base::FeatureList::IsEnabled(
+            brave_today::features::kBraveNewsV2Feature)) {
+      // Adjust score to consider an explicit follow of the source, vs a
+      // channel-based follow
+      if (publisher->user_enabled_status ==
+          brave_news::mojom::UserEnabled::ENABLED) {
+        VLOG(1) << "Found explicit enable, adding score for: "
+                << publisher->publisher_name;
+        metadata->score -= 10;
+      }
     }
     // Get hash at this point since we have a flat list, and our algorithm
     // will only change sorting which can be re-applied on the next
@@ -407,20 +430,33 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
               return (deal_category_counts.at(a) < deal_category_counts.at(b));
             });
   VLOG(1) << "Got deal categories # " << deal_category_names_by_priority.size();
+
   // Get first headline
   std::list<mojom::ArticlePtr>::iterator featured_article_it;
   for (featured_article_it = articles.begin();
        featured_article_it != articles.end(); featured_article_it++) {
+    // Get the highest score "news" article
     if (featured_article_it->get()->data->category_name == "Top News") {
+      VLOG(1) << "Featured item was set to a \"Top News\" article";
       break;
     }
   }
+  if (featured_article_it == articles.end()) {
+    // If there was no matching "news" article,
+    // get the highest score article.
+    featured_article_it = articles.begin();
+    VLOG(1) << "Featured item was set to the highest ranked article";
+  }
+  // When we have no articles, do not set a featured item
   if (featured_article_it != articles.end()) {
     auto item = *std::make_move_iterator(featured_article_it);
     auto article = mojom::FeedItem::NewArticle(std::move(item));
     feed->featured_item = std::move(article);
     articles.erase(featured_article_it);
+  } else {
+    VLOG(1) << "No featured item was set as there are no articles";
   }
+
   // Generate as many pages of content as possible
   // Make the pages
   int cur_page = 0;

@@ -1,9 +1,9 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { BraveWallet } from '../../constants/types'
+import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
 import { HardwareVendor } from '../api/hardware_keyrings'
 import {
   FilecoinNetwork,
@@ -20,7 +20,7 @@ export abstract class HardwareKeyring {
 
 export abstract class TrezorKeyring extends HardwareKeyring {
   abstract getAccounts (from: number, to: number, scheme: string): Promise<GetAccountsHardwareOperationResult>
-  abstract signTransaction (path: string, txInfo: BraveWallet.TransactionInfo, chainId: string): Promise<SignHardwareOperationResult>
+  abstract signTransaction (path: string, txInfo: SerializableTransactionInfo, chainId: string): Promise<SignHardwareOperationResult>
   abstract signPersonalMessage (path: string, message: string): Promise<SignHardwareOperationResult>
   abstract signEip712Message (path: string, domainSeparatorHex: string, hashStructMessageHex: string): Promise<SignHardwareOperationResult>
 }
