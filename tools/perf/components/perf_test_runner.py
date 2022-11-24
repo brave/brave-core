@@ -6,12 +6,11 @@
 import os
 import json
 import logging
-import shlex
 import shutil
 import time
 
 from copy import deepcopy
-from typing import Tuple, Optional, List
+from typing import Tuple, Optional, List, NamedTuple
 
 from components import path_util, perf_profile
 from components.perf_config import BenchmarkConfig, RunnerConfig
@@ -21,37 +20,24 @@ from components.perf_test_utils import (GetRevisionNumberAndHash,
                                         GetProcessOutput)
 
 
-class CommonOptions:
-  verbose = False
-  do_run_tests = True
-  do_report = False
-  report_on_failure = False
-  local_run = False
-  working_directory = ''
-  benchmarks: List[BenchmarkConfig]
+class CommonOptions(NamedTuple):
+  verbose: bool = False
+  do_run_tests: bool = True
+  do_report: bool = False
+  report_on_failure: bool = False
+  local_run: bool = False
+  variations_repo_dir: Optional[str] = None
+  working_directory: str = ''
 
   @classmethod
-  def make_local(cls, working_directory: str, verbose: bool,
-                 benchmarks: List[BenchmarkConfig]) -> 'CommonOptions':
-    options = CommonOptions()
-    options.verbose = verbose
-    options.working_directory = working_directory
-    options.benchmarks = benchmarks
-    options.local_run = True
-    return options
-
-  @classmethod
-  def from_args(cls, args,
-                benchmarks: List[BenchmarkConfig]) -> 'CommonOptions':
-    options = CommonOptions()
-    options.verbose = args.verbose
-    options.do_run_tests = not args.report_only
-    options.do_report = not args.no_report and not args.local_run
-    options.report_on_failure = args.report_on_failure
-    options.local_run = args.local_run
-    options.working_directory = args.working_directory
-    options.benchmarks = benchmarks
-    return options
+  def from_args(cls, args) -> 'CommonOptions':
+    return CommonOptions(verbose=args.verbose,
+                         do_run_tests=not args.report_only,
+                         do_report=not args.no_report and not args.local_run,
+                         report_on_failure=args.report_on_failure,
+                         local_run=args.local_run,
+                         variations_repo_dir=args.variations_repo_dir,
+                         working_directory=args.working_directory)
 
 
 def ReportToDashboardImpl(browser_type: BrowserType, dashboard_bot_name: str,
@@ -107,23 +93,29 @@ def ReportToDashboardImpl(browser_type: BrowserType, dashboard_bot_name: str,
   return False, ['Reporting ' + revision + ' failed'], None
 
 
+# pylint: disable=too-many-instance-attributes
 class RunableConfiguration:
   common_options: CommonOptions
-
+  benchmarks: List[BenchmarkConfig]
   config: RunnerConfig
   binary_path: Optional[str] = None
   out_dir: str
   profile_dir: Optional[str] = None
+  field_trial_config: Optional[str] = None
 
   status_line: str = ''
   logs: List[str] = []
 
-  def __init__(self, config: RunnerConfig, binary_path: Optional[str],
-               out_dir: str, common_options: CommonOptions):
+  def __init__(self, config: RunnerConfig, benchmarks: List[BenchmarkConfig],
+               binary_path: Optional[str], out_dir: str,
+               common_options: CommonOptions,
+               field_trial_config: Optional[str]):
     self.config = config
+    self.benchmarks = benchmarks
     self.binary_path = binary_path
     self.out_dir = out_dir
     self.common_options = common_options
+    self.field_trial_config = field_trial_config
 
   def PrepareProfile(self) -> bool:
     start_time = time.time()
@@ -148,15 +140,12 @@ class RunableConfiguration:
     rebase_benchmark.stories = ['BraveSearch_cold']
     rebase_benchmark.pageset_repeat = 1
 
-    return self.RunSingleTest(self.profile_dir, self.binary_path,
-                              rebase_runner_config, rebase_benchmark, None,
-                              True, self.common_options.verbose)
+    return self.RunSingleTest(rebase_runner_config, rebase_benchmark, None,
+                              True)
 
-  @classmethod
-  def RunSingleTest(cls, profile_dir: Optional[str], binary_path: str,
-                    config: RunnerConfig, benchmark_config: BenchmarkConfig,
-                    out_dir: Optional[str], local_run: bool,
-                    verbose: bool) -> bool:
+  def RunSingleTest(self, config: RunnerConfig,
+                    benchmark_config: BenchmarkConfig, out_dir: Optional[str],
+                    local_run: bool) -> bool:
     args = [path_util.GetVpython3Path()]
     args.append(os.path.join(path_util.GetChromiumPerfDir(), 'run_benchmark'))
 
@@ -178,17 +167,15 @@ class RunableConfiguration:
                        'run_performance_tests.py'))
 
       args.append(f'--benchmarks={benchmark_name}')
-      if out_dir:
-        args.append('--isolated-script-test-output=' +
-                    os.path.join(out_dir, benchmark_name, 'output.json'))
-      else:
-        args.append('--output-format=none')
+      assert out_dir
+      args.append('--isolated-script-test-output=' +
+                  os.path.join(out_dir, benchmark_name, 'output.json'))
 
-    if profile_dir:
-      args.append(f'--profile-dir={profile_dir}')
+    if self.profile_dir:
+      args.append(f'--profile-dir={self.profile_dir}')
 
     args.append('--browser=exact')
-    args.append(f'--browser-executable={binary_path}')
+    args.append(f'--browser-executable={self.binary_path}')
     args.append('--pageset-repeat=%d' % benchmark_config.pageset_repeat)
 
     if len(benchmark_config.stories) > 0:
@@ -197,15 +184,18 @@ class RunableConfiguration:
 
     extra_browser_args = deepcopy(config.extra_browser_args)
     extra_browser_args.extend(config.browser_type.GetExtraBrowserArgs())
+    if self.field_trial_config:
+      extra_browser_args.append(
+          f'--field-trial-config={self.field_trial_config}')
 
     args.extend(config.browser_type.GetExtraBenchmarkArgs())
     args.extend(config.extra_benchmark_args)
 
-    if verbose:
-      args.append('--show-stdout')
+    if self.common_options.verbose:
+      args.extend(['--show-stdout', '--verbose'])
 
     if len(extra_browser_args) > 0:
-      args.append('--extra-browser-args=' + shlex.join(extra_browser_args))
+      args.append('--extra-browser-args=' + ' '.join(extra_browser_args))
 
     success, _ = GetProcessOutput(args, cwd=path_util.GetChromiumPerfDir())
     return success
@@ -223,17 +213,15 @@ class RunableConfiguration:
       return False
 
     start_time = time.time()
-    for benchmark in self.common_options.benchmarks:
+    for benchmark in self.benchmarks:
       if self.common_options.local_run:
         test_out_dir = os.path.join(self.out_dir, os.pardir, benchmark.name)
       else:
         test_out_dir = os.path.join(self.out_dir, 'results')
       logging.info('Running test %s', benchmark.name)
 
-      test_success = self.RunSingleTest(self.profile_dir, self.binary_path,
-                                        self.config, benchmark, test_out_dir,
-                                        self.common_options.local_run,
-                                        self.common_options.verbose)
+      test_success = self.RunSingleTest(self.config, benchmark, test_out_dir,
+                                        self.common_options.local_run)
 
       if not test_success:
         has_failure = True
@@ -288,6 +276,7 @@ class RunableConfiguration:
 
 
 def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
+                                  benchmarks: List[BenchmarkConfig],
                                   common_options: CommonOptions
                                   ) -> List[RunableConfiguration]:
   runable_configurations: List[RunableConfiguration] = []
@@ -300,15 +289,20 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
         description += f'[tag_{config.tag}]'
     assert (description)
     out_dir = os.path.join(common_options.working_directory, description)
+
     binary_path = None
 
     if common_options.do_run_tests:
       shutil.rmtree(out_dir, True)
+      os.makedirs(out_dir)
       binary_path = PrepareBinary(out_dir, config.tag, config.location,
                                   config.browser_type)
+      field_trial_config = config.browser_type.MakeFieldTrials(
+          config.tag, out_dir, common_options.variations_repo_dir)
       logging.info('%s : %s directory %s', description, binary_path, out_dir)
     runable_configurations.append(
-        RunableConfiguration(config, binary_path, out_dir, common_options))
+        RunableConfiguration(config, benchmarks, binary_path, out_dir,
+                             common_options, field_trial_config))
   return runable_configurations
 
 
@@ -329,9 +323,10 @@ def SpawnConfigurationsFromTargetList(target_list: List[str],
 
 
 def RunConfigurations(configurations: List[RunnerConfig],
+                      benchmarks: List[BenchmarkConfig],
                       common_options: CommonOptions) -> bool:
   runable_configurations = PrepareBinariesAndDirectories(
-      configurations, common_options)
+      configurations, benchmarks, common_options)
 
   has_failure = False
   logs: List[str] = []
@@ -342,7 +337,7 @@ def RunConfigurations(configurations: List[RunnerConfig],
     logs.extend(config_logs)
 
   if common_options.local_run:
-    for benchmark in common_options.benchmarks:
+    for benchmark in benchmarks:
       logs.append(benchmark.name + ' : file://' + os.path.join(
           common_options.working_directory, benchmark.name, 'results.html'))
 
