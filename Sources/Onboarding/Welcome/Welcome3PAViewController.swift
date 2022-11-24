@@ -27,13 +27,7 @@ public class Welcome3PAViewController: UIViewController {
 
     view.addSubview(contentView)
     contentView.snp.makeConstraints {
-      if traitCollection.verticalSizeClass == .regular
-          && traitCollection.horizontalSizeClass == .compact {
-        $0.leading.trailing.greaterThanOrEqualTo(view)
-      } else {
-        $0.width.lessThanOrEqualTo(BraveUX.baseDimensionValue)
-      }
-
+      $0.leading.trailing.greaterThanOrEqualTo(view)
       $0.centerX.centerY.equalToSuperview()
     }
 

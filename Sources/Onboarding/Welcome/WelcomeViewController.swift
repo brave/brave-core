@@ -415,7 +415,7 @@ public class WelcomeViewController: UIViewController {
     }
     
     Preferences.Onboarding.basicOnboardingProgress.value = OnboardingProgress.newTabPage.rawValue
-    presenting.dismiss(animated: true, completion: nil)
+    presenting.dismiss(animated: false, completion: nil)
   }
 }
 
