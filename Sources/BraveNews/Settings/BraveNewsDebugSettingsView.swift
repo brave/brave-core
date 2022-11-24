@@ -106,17 +106,6 @@ public struct BraveNewsDebugSettingsView: View {
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      Section {
-        Button {
-          let categories = Set(feedDataSource.sources.map(\.category))
-          for category in categories where !category.isEmpty {
-            feedDataSource.toggleCategory(category, enabled: false)
-          }
-        } label: {
-          Text("Disable All Default Sources")
-        }
-      }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(.insetGrouped)
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))

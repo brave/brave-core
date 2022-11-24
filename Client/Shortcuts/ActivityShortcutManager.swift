@@ -15,6 +15,7 @@ import BraveVPN
 import BraveNews
 import Growth
 import os.log
+import SwiftUI
 
 /// Shortcut Activity Types and detailed information to create and perform actions
 public enum ActivityType: String {
@@ -161,9 +162,12 @@ public class ActivityShortcutManager: NSObject {
         guard let newTabPageController = bvc.tabManager.selectedTab?.newTabPageViewController else { return }
         newTabPageController.scrollToBraveNews()
       } else {
-        let controller = BraveNewsSettingsViewController(dataSource: bvc.feedDataSource, ads: bvc.rewards.ads)
-        controller.newsSettingsDidDismiss = {
-          AppReviewManager.shared.isReviewRequired = true
+        let controller = NewsSettingsViewController(dataSource: bvc.feedDataSource)
+        controller.viewDidDisappear = {
+          if Preferences.Review.braveNewsCriteriaPassed.value {
+            AppReviewManager.shared.isReviewRequired = true
+            Preferences.Review.braveNewsCriteriaPassed.value = false
+          }
         }
         let container = UINavigationController(rootViewController: controller)
         bvc.present(container, animated: true)

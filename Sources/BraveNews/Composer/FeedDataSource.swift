@@ -12,9 +12,10 @@ import FeedKit
 import BraveCore
 import CodableHelpers
 import os.log
+import SwiftUI
 
 /// Powers the Brave News feed.
-public class FeedDataSource {
+public class FeedDataSource: ObservableObject {
   /// The current view state of the data source
   public enum State {
     /// Nothing has happened yet
@@ -50,8 +51,45 @@ public class FeedDataSource {
   }
 
   @Published public private(set) var state: State = .initial
-  private(set) var sources: [FeedItem.Source] = []
+  @Published private(set) var sources: [FeedItem.Source] = [] {
+    didSet {
+      reloadChannels()
+    }
+  }
+  @Published public var selectedLocale: String = "en_CA" {
+    didSet {
+      reloadChannels()
+    }
+  }
+  @Published private var allChannels: [String: Set<String>] = [:]
+  var channels: Set<String> {
+    allChannels[selectedLocale] ?? []
+  }
   private var items: [FeedItem.Content] = []
+  
+  private func reloadChannels() {
+    let channelLocaleMap = Dictionary(
+      grouping: sources.compactMap(\.localeDetails).flatMap({ $0 }),
+      by: { $0.locale }
+    )
+    allChannels = channelLocaleMap.mapValues({ localeDetails in
+      localeDetails.compactMap({ $0 }).reduce(into: Set<String>(), { $0.formUnion($1.channels) })
+    })
+  }
+  
+  var followedSources: Set<FeedItem.Source> {
+    let allOverrides = Set(FeedSourceOverride.all().filter(\.enabled).map(\.publisherID))
+    return Set(sources.filter({ allOverrides.contains($0.id) }))
+  }
+  
+  var followedChannels: Set<FeedChannel> {
+    let channels = Preferences.BraveNews.followedChannels.value
+    return channels.reduce(into: Set<FeedChannel>()) { result, element in
+      result.formUnion(element.value.map({
+        .init(localeIdentifier: element.key, name: $0)
+      }))
+    }
+  }
 
   /// An ads object to handle inserting Inline Content Ads within the Brave News sequence
   public var ads: BraveAds?
@@ -164,6 +202,13 @@ public class FeedDataSource {
     var isLocalized: Bool
     var cacheLifetime: TimeInterval
 
+    static let globalSources = NewsResource(
+      bucket: NewsBucket(name: "brave-today-cdn"),
+      name: "sources.global",
+      type: "json",
+      isLocalized: false,
+      cacheLifetime: 1.days
+    )
     static let sources = NewsResource(
       bucket: NewsBucket(name: "brave-today-cdn"),
       name: "sources",
@@ -180,7 +225,7 @@ public class FeedDataSource {
     )
   }
 
-  /// Get the full name of a file for a given Brave News resource, taking into account whether
+  /// Get the full name of a file for a giv en Brave News resource, taking into account whether
   /// or not the resource can be localized for supported languages
   private func resourceFilename(for resource: NewsResource) -> String {
     // "en" is the default language and thus does not get the language code inserted into the
@@ -294,7 +339,7 @@ public class FeedDataSource {
 
   private func restoreCachedSources() {
     Task { @MainActor in
-      guard let data = await cachedResource(.sources, loadExpiredData: true) else { return }
+      guard let data = await cachedResource(.globalSources, loadExpiredData: true) else { return }
       do {
         let decodedResource = try await onThrowing(queue: todayQueue) {
           return try self.decoder
@@ -309,9 +354,17 @@ public class FeedDataSource {
       }
     }
   }
+  
+  private func loadGlobalSources() async throws -> [FeedItem.Source] {
+    let sources = try await loadResource(.globalSources, decodedTo: [FailableDecodable<FeedItem.Source>].self)
+    if sources.isEmpty {
+      throw BraveNewsError.resourceEmpty
+    }
+    return sources.compactMap(\.wrappedValue)
+  }
 
-  private func loadSources() async throws -> [FeedItem.Source] {
-    let sources = try await loadResource(.sources, decodedTo: [FailableDecodable<FeedItem.Source>].self)
+  private func loadLegacySources() async throws -> [FeedItem.LegacySource] {
+    let sources = try await loadResource(.sources, decodedTo: [FailableDecodable<FeedItem.LegacySource>].self)
     if sources.isEmpty {
       throw BraveNewsError.resourceEmpty
     }
@@ -375,8 +428,8 @@ public class FeedDataSource {
   }
 
   /// Load all RSS feeds that the user has enabled
-  private func loadRSSFeeds() async -> [Result<RSSDataFeed, Error>] {
-    let locations = await rssFeedLocations.filter(isRSSFeedEnabled)
+  @MainActor private func loadRSSFeeds() async -> [Result<RSSDataFeed, Error>] {
+    let locations = rssFeedLocations.filter(isRSSFeedEnabled)
     return await withTaskGroup(
       of: Result<RSSDataFeed, Error>.self,
       returning: [Result<RSSDataFeed, Error>].self
@@ -447,7 +500,7 @@ public class FeedDataSource {
     state = .loading(state)
     Task { @MainActor in
       do {
-        async let sources = loadSources()
+        async let sources = loadGlobalSources()
         async let items = loadFeed()
         (self.sources, self.items) = try await (sources, items)
         for result in await self.loadRSSFeeds() {
@@ -493,14 +546,6 @@ public class FeedDataSource {
 
   public static let topNewsCategory = "Top News"
 
-  /// Get a map of customized sources IDs and their overridden enabled states
-  @MainActor public var customizedSources: [String: Bool] {
-    let all = FeedSourceOverride.all()
-    return all.reduce(into: [:]) { (result, source) in
-      result[source.publisherID] = source.enabled
-    }
-  }
-
   /// Whether or not a source is currently enabled (whether or not by default or by a user changing
   /// said default)
   public func isSourceEnabled(_ source: FeedItem.Source) -> Bool {
@@ -508,10 +553,14 @@ public class FeedDataSource {
   }
 
   /// Toggle a source's enabled status
-  public func toggleSource(_ source: FeedItem.Source, enabled: Bool) {
-    FeedSourceOverride.setEnabled(forId: source.id, enabled: enabled)
+  public func toggleSourceHidden(_ source: FeedItem.Source, hidden: Bool) {
+    if hidden {
+      FeedSourceOverride.setEnabled(forId: source.id, enabled: false)
+    } else {
+      FeedSourceOverride.resetStatus(forId: source.id)
+    }
 
-    if let cards = state.cards, cards.isEmpty && enabled {
+    if let cards = state.cards, cards.isEmpty && !hidden {
       // If we're enabling a source and we don't have any items because their source selection was
       // causing an empty generation, regenerate the cards
       reloadCards(from: self.items, sources: self.sources)
@@ -519,28 +568,62 @@ public class FeedDataSource {
       needsReloadCards = true
     }
   }
-
-  /// Toggle an entire category on or off
-  public func toggleCategory(_ category: String, enabled: Bool) {
-    let sourcesInCategory = sources.filter { $0.category == category }
-    if sourcesInCategory.isEmpty {
-      return
-    }
-    FeedSourceOverride.setEnabled(forIds: sourcesInCategory.map(\.id), enabled: enabled)
-
-    if let cards = state.cards, cards.isEmpty && enabled {
-      // If we're enabling a category and we don't have any items because their source selection was
-      // causing an empty generation, regenerate the cards
-      reloadCards(from: self.items, sources: self.sources)
-    } else {
-      needsReloadCards = true
-    }
-  }
-
   /// Reset all source settings back to default
   public func resetSourcesToDefault() {
     FeedSourceOverride.resetSourceSelection()
     needsReloadCards = true
+  }
+  
+  func isFollowingChannelBinding(channel: FeedChannel) -> Binding<Bool> {
+    .init {
+      Preferences.BraveNews.followedChannels.value[channel.localeIdentifier]?.contains(channel.name) ?? false
+    } set: { [self] newValue in
+      if newValue {
+        Preferences.BraveNews.followedChannels.value[channel.localeIdentifier, default: []].append(channel.name)
+      } else {
+        Preferences.BraveNews.followedChannels.value[channel.localeIdentifier, default: []].removeAll(where: { $0 == channel.name })
+      }
+      if let cards = state.cards, cards.isEmpty && newValue {
+        // If we're enabling a category and we don't have any items because their source selection was
+        // causing an empty generation, regenerate the cards
+        reloadCards(from: self.items, sources: self.sources)
+      } else {
+        needsReloadCards = true
+      }
+      Preferences.Review.braveNewsCriteriaPassed.value = true
+      objectWillChange.send()
+    }
+  }
+  
+  func isFollowingSourceBinding(source: FeedItem.Source) -> Binding<Bool> {
+    .init {
+      FeedSourceOverride.get(fromId: source.id)?.enabled ?? false
+    } set: { [self] newValue in
+      if newValue {
+        FeedSourceOverride.setEnabled(forId: source.id, enabled: true)
+      } else {
+        // Unfollowing doesn't actually set the enabled status to false anymore, simply resets the override
+        FeedSourceOverride.resetStatus(forId: source.id)
+      }
+      if let cards = state.cards, cards.isEmpty && newValue {
+        // If we're enabling a category and we don't have any items because their source selection was
+        // causing an empty generation, regenerate the cards
+        reloadCards(from: self.items, sources: self.sources)
+      } else {
+        needsReloadCards = true
+      }
+      Preferences.Review.braveNewsCriteriaPassed.value = true
+      objectWillChange.send()
+    }
+  }
+  
+  /// Searches sources, channels and RSS feeds
+  func search(query: String) -> SearchResults? {
+    let sourceResults = sources.filter({ $0.name.localizedCaseInsensitiveContains(query) })
+    var channelResults: Set<FeedChannel> = Set(channels.filter({ $0.localizedCaseInsensitiveContains(query) }).map({ .init(localeIdentifier: self.selectedLocale, name: $0) }))
+    // Add any followed channels that aren't from the selected locale
+    channelResults.formUnion(followedChannels.filter({ $0.name.localizedCaseInsensitiveContains(query) }))
+    return .init(sources: sourceResults, channels: Array(channelResults))
   }
 
   // MARK: - Card Generation
@@ -848,4 +931,13 @@ extension FeedDataSource {
     indirect case repeating([FeedSequenceElement], times: Int = .max)
   }
 
+}
+
+struct SearchResults {
+  var sources: [FeedItem.Source]
+  var channels: [FeedChannel]
+  
+  static var empty: Self {
+    .init(sources: [], channels: [])
+  }
 }

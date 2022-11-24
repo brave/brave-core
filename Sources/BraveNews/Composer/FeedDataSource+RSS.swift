@@ -236,11 +236,20 @@ extension FeedItem.Content {
     )
   }
 }
-extension FeedItem.Source {
+
+extension FeedItem.LegacySource {
   init?(from feed: FeedKit.Feed, location: RSSFeedLocation) {
     let id = location.id
     guard let title = feed.title else { return nil }
     self.init(id: id, isDefault: true, category: "", name: title, isUserSource: true)
+  }
+}
+
+extension FeedItem.Source {
+  init?(from feed: FeedKit.Feed, location: RSSFeedLocation) {
+    let id = location.id
+    guard let title = feed.title else { return nil }
+    self.init(id: id, isDefault: true, category: "", name: title, isUserSource: true, destinationDomains: [])
   }
 }
 

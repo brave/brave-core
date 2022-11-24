@@ -3317,11 +3317,11 @@ extension Strings {
       comment: ""
     )
     public static let disablePublisherContent = NSLocalizedString("today.disablePublisherContent", tableName: "BraveShared", bundle: .module,
-      value: "Disable content from %@",
+      value: "Hide content from %@",
       comment: "'%@' will turn into the name of a publisher (verbatim), for example: Brave Blog"
     )
     public static let enablePublisherContent = NSLocalizedString("today.enablePublisherContent", tableName: "BraveShared", bundle: .module,
-      value: "Enable content from %@",
+      value: "Allow content from %@",
       comment: "'%@' will turn into the name of a publisher (verbatim), for example: Brave Blog"
     )
     public static let disabledAlertTitle = NSLocalizedString("today.disabledAlertTitle", tableName: "BraveShared", bundle: .module,

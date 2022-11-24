@@ -17,8 +17,61 @@ public struct FeedItem: Equatable, Comparable {
 }
 
 extension FeedItem {
+  
+  public struct SourceSimilarity: Equatable, Decodable {
+    public var sourceID: String
+    public var relativeScore: Double
+    
+    enum CodingKeys: String, CodingKey {
+      case sourceID = "source"
+      case relativeScore = "score"
+    }
+  }
+  
+  public struct Source: Hashable, Decodable, Identifiable {
+    public var id: String
+    public var isDefault: Bool
+    public var category: String
+    public var name: String
+    public var isUserSource = false
+    @URLString public var siteURL: URL?
+    @URLString public var feedURL: URL?
+    @URLString public var faviconURL: URL?
+    @URLString public var coverURL: URL?
+    public var destinationDomains: [String]
+    public var backgroundColor: String?
+    public var localeDetails: [LocaleDetails]?
+    
+    func rank(of locale: String) -> Int {
+      localeDetails?.first(where: { $0.locale == locale })?.rank ?? -1
+    }
+    
+    enum CodingKeys: String, CodingKey {
+      case id = "publisher_id"
+      case isDefault = "enabled"
+      case category
+      case name = "publisher_name"
+      case destinationDomains = "destination_domains"
+      case siteURL = "site_url"
+      case feedURL = "feed_url"
+      case faviconURL = "favicon_url"
+      case coverURL = "cover_url"
+      case backgroundColor = "background_color"
+      case localeDetails = "locales"
+    }
+    
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+      lhs.id == rhs.id
+    }
+    
+    public struct LocaleDetails: Hashable, Decodable {
+      public var channels: Set<String>
+      public var locale: String
+      public var rank: Int?
+    }
+  }
 
-  public struct Source: Equatable, Decodable {
+  public struct LegacySource: Equatable, Decodable {
     public var id: String
     public var isDefault: Bool
     public var category: String
