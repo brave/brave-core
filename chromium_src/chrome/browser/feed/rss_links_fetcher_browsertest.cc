@@ -10,6 +10,7 @@
 // histogram counts are not what the test expects. Get get around this, we just
 // disable the checks for histogram counts.
 namespace base {
+namespace {
 class HistogramTesterStub {
  public:
   HistogramTesterStub() = default;
@@ -17,6 +18,7 @@ class HistogramTesterStub {
 
   void ExpectTotalCount(StringPiece name, HistogramBase::Count count) const {}
 };
+}  // namespace
 }  // namespace base
 
 #define HistogramTester HistogramTesterStub
