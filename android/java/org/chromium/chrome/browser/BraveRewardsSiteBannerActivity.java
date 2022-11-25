@@ -120,8 +120,8 @@ public class BraveRewardsSiteBannerActivity
     /**
      Once you call donate it will call one of in 3 second
         1. OnOneTimeTip with LEDGER_ERROR -> This is error
-        2. onReconcileComplete with LEDGER_OK -> This is success
-        3. OnPendingContributionSaved with LEDGER_OK -> This is pending
+        2. onReconcileComplete with LEDGER_OK -> This is success, else this is error case
+        3. OnPendingContributionSaved with LEDGER_OK -> This is pending, else this is error case
         4. if none of the method called with in 3 second -> This is success
      *
    */
@@ -171,6 +171,7 @@ public class BraveRewardsSiteBannerActivity
             // tip error
             mTipUpdated = true;
             removeTimeout();
+
             tipConfirmation(TIP_ERROR, mAmount, mIsMonthly);
         }
     }
@@ -180,10 +181,12 @@ public class BraveRewardsSiteBannerActivity
         if (!mIsActivityIsActive) return;
         if (resultCode == BraveRewardsNativeWorker.LEDGER_OK && mTipUpdated == false) {
             // tip success
-            mTipUpdated = true;
-            removeTimeout();
             tipConfirmation(TIP_SUCCESS, mAmount, mIsMonthly);
+        } else if (mTipUpdated == false) {
+            tipConfirmation(TIP_ERROR, mAmount, mIsMonthly);
         }
+        mTipUpdated = true;
+        removeTimeout();
     }
 
     @Override
@@ -191,10 +194,12 @@ public class BraveRewardsSiteBannerActivity
         if (!mIsActivityIsActive) return;
         if (resultCode == BraveRewardsNativeWorker.LEDGER_OK && mTipUpdated == false) {
             // tip pending
-            mTipUpdated = true;
-            removeTimeout();
             tipConfirmation(TIP_PENDING, mAmount, mIsMonthly);
+        } else if (mTipUpdated == false) {
+            tipConfirmation(TIP_ERROR, mAmount, mIsMonthly);
         }
+        mTipUpdated = true;
+        removeTimeout();
     }
 
     private Runnable tipRunnable = new Runnable() {
