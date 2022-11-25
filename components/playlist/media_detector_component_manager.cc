@@ -35,6 +35,8 @@ MediaDetectorComponentManager::MediaDetectorComponentManager(
   // TODO(sko) This list should be dynamically updated from the playlist.
   // Once it's done, remove this line.
   SetUseLocalListToHideMediaSrcAPI();
+
+  SetUseLocalScriptForTesting();
 }
 
 MediaDetectorComponentManager::~MediaDetectorComponentManager() = default;
@@ -141,8 +143,12 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
   function getNodeSource(node, src, mimeType, thumbnail) {
     var name = node.title;
     if (name == null || typeof name == 'undefined' || name == "") {
-      name = document.title;
+      // Try getting mobile youtube specific data
+      name = window.ytplayer?.bootstrapPlayerResponse?.videoDetails?.title
     }
+
+    if (name == null || typeof name == 'undefined' || name == "")
+      name = document.title
 
     if (mimeType == null || typeof mimeType == 'undefined' || mimeType == "") {
       if (node.constructor.name == 'HTMLVideoElement') {
@@ -229,17 +235,30 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
     return document.querySelectorAll('audio');
   }
 
-  function getOGTagImage() {
-    return document.querySelector('meta[property="og:image"]')?.content
+  function getThumbnail() {
+    let thumbnail = document.querySelector('meta[property="og:image"]')?.content;
+    if (thumbnail && !thumbnail.startsWith('http')) {
+      thumbnail = new URL(thumbnail, location.origin).href
+    }
+    
+    if (thumbnail && thumbnail !== '') return thumbnail;
+
+    // Try getting mobile youtube specific data
+    thumbnail = window.ytplayer?.bootstrapPlayerResponse?.videoDetails?.thumbnail?.thumbnails;
+    if (thumbnail && Array.isArray(thumbnail)) {
+      thumbnail = thumbnail[0]?.url
+    }
+
+    return thumbnail
   }
 
   let videoElements = getAllVideoElements() ?? [];
   let audioElements = getAllAudioElements() ?? [];
-  const thumbnail = getOGTagImage();
+  const thumbnail = getThumbnail();
   let medias = []
   videoElements.forEach(e => medias = medias.concat( getNodeData(e, thumbnail)));
   audioElements.forEach(e => medias = medias.concat( getNodeData(e, thumbnail)));
-    return medias;
+  return medias;
 })();
   )-";
 

@@ -190,11 +190,19 @@ void PlaylistDownloadRequestManager::GetMedia(content::WebContents* contents) {
   LOG(ERROR) << "BravePlaylist"
              << "GetMedia 1";
 
+#if BUILDFLAG(IS_ANDROID)
+  content::RenderFrameHost::AllowInjectingJavaScript();
+  contents->GetPrimaryMainFrame()->ExecuteJavaScript(
+      base::UTF8ToUTF16(media_detector_script_),
+      base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
+                     weak_factory_.GetWeakPtr(), contents->GetWeakPtr()));
+#else
   contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       base::UTF8ToUTF16(media_detector_script_),
       base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
                      weak_factory_.GetWeakPtr(), contents->GetWeakPtr()),
       g_playlist_javascript_world_id);
+#endif
   LOG(ERROR) << "BravePlaylist"
              << "GetMedia 2";
 }
