@@ -144,17 +144,19 @@ public class BraveMainPreferencesBase
 
     private void notificationClick() {
         Preference notifications = findPreference(PREF_NOTIFICATIONS);
-        notifications.setOnPreferenceClickListener(preference -> {
-            mNotificationClicked = true;
+        if (notifications != null) {
+            notifications.setOnPreferenceClickListener(preference -> {
+                mNotificationClicked = true;
 
-            Intent intent = new Intent();
-            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-            intent.putExtra(Settings.EXTRA_APP_PACKAGE,
-                    ContextUtils.getApplicationContext().getPackageName());
-            startActivity(intent);
-            // We handle the click so the default action isn't triggered.
-            return true;
-        });
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE,
+                        ContextUtils.getApplicationContext().getPackageName());
+                startActivity(intent);
+                // We handle the click so the default action isn't triggered.
+                return true;
+            });
+        }
     }
 
     private void updateBravePreferences() {
