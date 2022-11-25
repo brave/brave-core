@@ -389,8 +389,10 @@ extension TabsBarViewController: UICollectionViewDataSource {
 
       let previousOrNext = max(0, previousIndex - 1)
       tabManager.selectTab(self.tabList[previousOrNext])
-
-      self.collectionView.selectItem(at: IndexPath(row: previousOrNext, section: 0), animated: true, scrollPosition: .centeredHorizontally)
+      
+      self.collectionView.selectItem(at: IndexPath(row: previousOrNext, section: 0), animated: false, scrollPosition: .centeredHorizontally)
+      self.updateOverflowIndicatorsLayout()
+      
     }
 
     return cell
