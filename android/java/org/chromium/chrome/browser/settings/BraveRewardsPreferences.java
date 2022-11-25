@@ -13,11 +13,6 @@ import androidx.preference.Preference.OnPreferenceChangeListener;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRelaunchUtils;
-import org.chromium.chrome.browser.BraveRewardsNativeWorker;
-import org.chromium.chrome.browser.BraveRewardsObserver;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -25,16 +20,13 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
 /**
  * Fragment to keep track of all Brave Rewards related preferences.
  */
-public class BraveRewardsPreferences extends BravePreferenceFragment
-        implements OnPreferenceChangeListener, BraveRewardsObserver {
+public class BraveRewardsPreferences extends BravePreferenceFragment {
     public static final String PREF_ADS_SWITCH = "ads_switch";
 
     // flag, if exists: default state (off) for background Brave ads has been set
     public static final String PREF_ADS_SWITCH_DEFAULT_HAS_BEEN_SET = "ads_switch_default_set";
 
     private ChromeSwitchPreference mAdsSwitch;
-
-    private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,23 +51,6 @@ public class BraveRewardsPreferences extends BravePreferenceFragment
         });
     }
 
-    @Override
-    public void onStart() {
-        mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        if (mBraveRewardsNativeWorker != null) {
-            mBraveRewardsNativeWorker.AddObserver(this);
-        }
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        if (mBraveRewardsNativeWorker != null) {
-            mBraveRewardsNativeWorker.RemoveObserver(this);
-        }
-        super.onStop();
-    }
-
     /**
      * Returns the user preference for whether the brave ads in background is enabled.
      *
@@ -94,42 +69,4 @@ public class BraveRewardsPreferences extends BravePreferenceFragment
         sharedPreferencesEditor.putBoolean(PREF_ADS_SWITCH, enabled);
         sharedPreferencesEditor.apply();
     }
-
-    @Override
-    public void onDisplayPreferenceDialog(Preference preference) {
-        if (preference instanceof BraveRewardsResetPreference) {
-            BraveRewardsResetPreferenceDialog dialogFragment =
-                    BraveRewardsResetPreferenceDialog.newInstance(
-                            (BraveRewardsResetPreference) preference);
-            dialogFragment.setTargetFragment(this, 0);
-            dialogFragment.show(getFragmentManager(), BraveRewardsResetPreferenceDialog.TAG);
-        } else {
-            super.onDisplayPreferenceDialog(preference);
-        }
-    }
-
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        return true;
-    }
-
-    @Override
-    public void OnResetTheWholeState(boolean success) {
-        if (success) {
-            SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-            sharedPreferencesEditor.putBoolean(
-                    BraveRewardsPanel.PREF_GRANTS_NOTIFICATION_RECEIVED, false);
-            sharedPreferencesEditor.putBoolean(
-                    BraveRewardsPanel.PREF_WAS_BRAVE_REWARDS_TURNED_ON, false);
-            sharedPreferencesEditor.apply();
-            BravePrefServiceBridge.getInstance().setSafetynetCheckFailed(false);
-            BraveRelaunchUtils.askForRelaunch(getActivity());
-        } else {
-            BraveRelaunchUtils.askForRelaunchCustom(getActivity());
-        }
-    }
-
-    @Override
-    public void onCreatePreferences(Bundle bundle, String s) {}
 }

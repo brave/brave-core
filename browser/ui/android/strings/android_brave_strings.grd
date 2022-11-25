@@ -969,9 +969,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SHOW_ADS_WHEN_BRAVE_IS_NOT_IN_USE" desc="Title for Show Ads when Brave is not in use option in Brave rewards settings.">
         Show Ads when Brave is not in use
       </message>
-      <message name="IDS_RESET_BRAVE_REWARDS_OPTION" desc="Title for preference to reset Brave Rewards.">
-        Reset Brave Rewards
-      </message>
       <message name="IDS_RESET_BRAVE_REWARDS_OPTION_DESCRIPTION" desc="Description for preference to reset Brave Rewards.">
         This will delete your Brave Rewards and reset all of your Brave Rewards data
       </message>

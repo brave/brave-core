@@ -21,7 +21,7 @@
         android:key="brave_rewards"
         android:order="2"
         android:icon="@drawable/ic_rewards"
-        android:title="@string/brave_ui_brave_rewards"/>
+        android:title="@string/show_ads_when_brave_is_not_in_use"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BraveWalletPreferences"
         android:key="brave_wallet"

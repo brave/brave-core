@@ -37,6 +37,7 @@ import org.chromium.chrome.browser.rate.RateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
 import org.chromium.chrome.browser.settings.BraveStatsPreferences;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
@@ -198,6 +199,11 @@ public class BraveMainPreferencesBase
             removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
         }
         setBgPlaybackPreference();
+
+        Preference braveRewardsPreference = findPreference(PREF_BRAVE_REWARDS);
+        if (braveRewardsPreference != null) {
+            braveRewardsPreference.setSummary(String.valueOf(getPrefAdsInBackgroundEnabled()));
+        }
     }
 
     private void setBgPlaybackPreference() {
@@ -458,5 +464,10 @@ public class BraveMainPreferencesBase
         }
 
         return true;
+    }
+
+    public static boolean getPrefAdsInBackgroundEnabled() {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        return sharedPreferences.getBoolean(BraveRewardsPreferences.PREF_ADS_SWITCH, true);
     }
 }
