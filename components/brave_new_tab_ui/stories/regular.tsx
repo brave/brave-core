@@ -17,7 +17,6 @@ import { onChangeColoredBackground, onUseBraveBackground, onShowBrandedImageChan
 import getTodayState from './default/data/todayStorybookState'
 import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
 import { getDataUrl, getUnpaddedAsDataUrl } from '../../common/privateCDN'
-import getFTXStorybookState from '../widgets/ftx/ftx_storybook_state'
 import { images, updateImages } from '../data/backgrounds'
 
 const doNothingDispatch: Dispatch = (action: any) => action
@@ -69,7 +68,6 @@ export const Regular = () => {
 
   return (
     <NewTabPage
-      ftx={getFTXStorybookState()}
       newTabData={newTabData}
       todayData={todayState}
       gridSitesData={gridSitesData}
@@ -78,11 +76,7 @@ export const Regular = () => {
       saveShowToday={doNothing}
       saveShowBraveNewsButton={doNothing}
       saveShowRewards={doNothing}
-      saveShowBinance={doNothing}
       saveShowBraveTalk={doNothing}
-      saveShowGemini={doNothing}
-      saveShowCryptoDotCom={doNothing}
-      saveShowFTX={doNothing}
       saveBrandedWallpaperOptIn={onShowBrandedImageChanged}
       saveSetAllStackWidgets={doNothing}
       getBraveNewsDisplayAd={getBraveNewsDisplayAd}

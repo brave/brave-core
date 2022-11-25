@@ -11,8 +11,6 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/constants/url_constants.h"
-#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
-#include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -164,7 +162,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "showFrecencyMenuLabel", IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_MENU_LABEL },
         { "showFavoritesMenuLabel", IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_MENU_LABEL },  // NOLINT
         { "showRewards", IDS_BRAVE_NEW_TAB_SHOW_REWARDS },
-        { "showBinance", IDS_BRAVE_NEW_TAB_SHOW_BINANCE },
         { "cards", IDS_BRAVE_NEW_TAB_SHOW_CARDS },
         { "brandedWallpaperOptIn", IDS_BRAVE_NEW_TAB_BRANDED_WALLPAPER_OPT_IN },
         { "sponsoredImageOn", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON},
@@ -258,14 +255,9 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "addWidget", IDS_BRAVE_NEW_TAB_WIDGET_ADD },
         { "hideWidget", IDS_BRAVE_NEW_TAB_WIDGET_HIDE },
         { "rewardsWidgetDesc", IDS_BRAVE_NEW_TAB_REWARDS_WIDGET_DESC },
-        { "binanceWidgetDesc", IDS_BRAVE_NEW_TAB_BINANCE_WIDGET_DESC },
-        { "geminiWidgetDesc", IDS_BRAVE_NEW_TAB_GEMINI_WIDGET_DESC },
         { "cardsToggleTitle", IDS_BRAVE_NEW_TAB_CARDS_TITLE },
         { "cardsToggleDesc", IDS_BRAVE_NEW_TAB_CARDS_DESC },
         { "editCardsTitle", IDS_EDIT_CARDS_TITLE },
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-        { "cryptoDotComWidgetDesc", IDS_BRAVE_NEW_TAB_CRYPTO_DOT_COM_WIDGET_DESC },              // NOLINT
-#endif
         { "braveRewardsTitle", IDS_BRAVE_NEW_TAB_BRAVE_REWARDS_TITLE },
         // Private Tab - General
         { "learnMore", IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE },
@@ -347,134 +339,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "braveTalkWidgetWelcomeTitle", IDS_BRAVE_TALK_WIDGET_WELCOME_TITLE },
         { "braveTalkWidgetStartButton", IDS_BRAVE_TALK_WIDGET_START_BUTTON },
         { "braveTalkWidgetAboutData", IDS_BRAVE_TALK_WIDGET_ABOUT_DATA },
-        // Binance Widget
-        { "binanceWidgetBuy", IDS_BINANCE_WIDGET_BUY },
-        { "binanceWidgetBuyCrypto", IDS_BINANCE_WIDGET_BUY_CRYPTO },
-        { "binanceWidgetBuyDefault", IDS_BINANCE_WIDGET_BUY_DEFAULT },
-        { "binanceWidgetWelcomeTitle", IDS_BINANCE_WIDGET_WELCOME_TITLE },
-        { "binanceWidgetSubText", IDS_BINANCE_WIDGET_SUB_TEXT },
-        { "binanceWidgetConnectText", IDS_BINANCE_WIDGET_CONNECT_TEXT },
-        { "binanceWidgetDismissText", IDS_BINANCE_WIDGET_DISMISS_TEXT },
-        { "binanceWidgetValueText", IDS_BINANCE_WIDGET_VALUE_TEXT },
-        { "binanceWidgetBTCTickerText" , IDS_BINANCE_BTC_TICKER_TEXT },
-        { "binanceWidgetViewDetails", IDS_BRAVE_UI_VIEW_DETAILS },
-        { "binanceWidgetDepositLabel", IDS_BINANCE_WIDGET_DEPOSIT_LABEL },
-        { "binanceWidgetTradeLabel", IDS_BINANCE_WIDGET_TRADE_LABEL },
-        { "binanceWidgetInvalidEntry", IDS_BINANCE_WIDGET_INVALID_ENTRY },
-        { "binanceWidgetValidatingCreds", IDS_BINANCE_WIDGET_VALIDATING_CREDS },    // NOLINT
-        { "binanceWidgetDisconnectTitle", IDS_BINANCE_WIDGET_DISCONNECT_TITLE },    // NOLINT
-        { "binanceWidgetDisconnectText" , IDS_BINANCE_WIDGET_DISCONNECT_TEXT },     // NOLINT
-        { "binanceWidgetDisconnectButton" , IDS_BINANCE_WIDGET_DISCONNECT_BUTTON }, // NOLINT
-        { "binanceWidgetCancelText" , IDS_BRAVE_UI_CANCEL },
-        { "binanceWidgetAccountDisconnected" , IDS_BINANCE_WIDGET_ACCOUNT_DISCONNECTED }, // NOLINT
-        { "binanceWidgetConfigureButton" , IDS_BINANCE_WIDGET_CONFIGURE_BUTTON },         // NOLINT
-        { "binanceWidgetConnect", IDS_BINANCE_WIDGET_CONNECT },
-        { "binanceWidgetConverted", IDS_BINANCE_WIDGET_CONVERTED },
-        { "binanceWidgetContinue", IDS_BINANCE_WIDGET_CONTINUE },
-        { "binanceWidgetUnableToConvert", IDS_BINANCE_WIDGET_UNABLE_TO_CONVERT },         // NOLINT
-        { "binanceWidgetRetry", IDS_BINANCE_WIDGET_RETRY },
-        { "binanceWidgetInsufficientFunds", IDS_BINANCE_WIDGET_INSUFFICIENT_FUNDS },      // NOLINT
-        { "binanceWidgetConversionFailed", IDS_BINANCE_WIDGET_CONVERSION_FAILED },        // NOLINT
-        { "binanceWidgetDone", IDS_BINANCE_WIDGET_DONE },
-        { "binanceWidgetCopy", IDS_BINANCE_WIDGET_COPY },
-        { "binanceWidgetSearch", IDS_BINANCE_WIDGET_SEARCH },
-        { "binanceWidgetAddressUnavailable", IDS_BINANCE_WIDGET_ADDRESS_UNAVAILABLE },    // NOLINT
-        { "binanceWidgetDepositAddress", IDS_BINANCE_WIDGET_DEPOSIT_ADDRESS },
-        { "binanceWidgetDepositMemo", IDS_BINANCE_WIDGET_DEPOSIT_MEMO },
-        { "binanceWidgetConfirmConversion", IDS_BINANCE_WIDGET_CONFIRM_CONVERSION },      // NOLINT
-        { "binanceWidgetConvert", IDS_BINANCE_WIDGET_CONVERT },
-        { "binanceWidgetRate", IDS_BINANCE_WIDGET_RATE },
-        { "binanceWidgetFee", IDS_BINANCE_WIDGET_FEE },
-        { "binanceWidgetWillReceive", IDS_BINANCE_WIDGET_WILL_RECEIVE },
-        { "binanceWidgetConfirm", IDS_BINANCE_WIDGET_CONFIRM },
-        { "binanceWidgetCancel", IDS_BINANCE_WIDGET_CANCEL },
-        { "binanceWidgetAvailable" , IDS_BINANCE_WIDGET_AVAILABLE },
-        { "binanceWidgetConvertIntent", IDS_BINANCE_WIDGET_CONVERT_INTENT },
-        { "binanceWidgetPreviewConvert", IDS_BINANCE_WIDGET_PREVIEW_CONVERT },
-        { "binanceWidgetSummary", IDS_BINANCE_WIDGET_SUMMARY },
-        { "binanceWidgetAuthInvalid", IDS_BINANCE_WIDGET_AUTH_INVALID },
-        { "binanceWidgetAuthInvalidCopy", IDS_BINANCE_WIDGET_AUTH_INVALID_COPY },         // NOLINT
-        { "binanceWidgetRefreshData", IDS_BINANCE_WIDGET_REFRESH_DATA },
-        { "binanceWidgetUnderMinimum", IDS_BINANCE_WIDGET_UNDER_MINIMUM },
-        // Gemini Widget
-        { "geminiWidgetAuthInvalid", IDS_BINANCE_WIDGET_AUTH_INVALID },
-        { "geminiWidgetAuthInvalidCopy", IDS_GEMINI_WIDGET_AUTH_INVALID_COPY },
-        { "geminiWidgetDone", IDS_BINANCE_WIDGET_DONE },
-        { "geminiWidgetCopy", IDS_BINANCE_WIDGET_COPY },
-        { "geminiWidgetRetry", IDS_BINANCE_WIDGET_RETRY },
-        { "geminiWidgetCancel", IDS_BINANCE_WIDGET_CANCEL },
-        { "geminiWidgetConfirm", IDS_BINANCE_WIDGET_CONFIRM },
-        { "geminiWidgetDisconnectTitle", IDS_BINANCE_WIDGET_DISCONNECT_TITLE },
-        { "geminiWidgetDisconnectText", IDS_BINANCE_WIDGET_DISCONNECT_TEXT },
-        { "geminiWidgetDisconnectButton", IDS_BINANCE_WIDGET_DISCONNECT_BUTTON },         // NOLINT
-        { "geminiWidgetCancelText", IDS_BINANCE_WIDGET_CANCEL },
-        { "geminiWidgetDismissText", IDS_BINANCE_WIDGET_DISMISS_TEXT },
-        { "geminiWidgetConnectTitle", IDS_GEMINI_WIDGET_CONNECT_TITLE },
-        { "geminiWidgetConnectCopy", IDS_GEMINI_WIDGET_CONNECT_COPY },
-        { "geminiWidgetConnectButton", IDS_GEMINI_WIDGET_CONNECT_BUTTON },
-        { "geminiWidgetFailedTrade", IDS_GEMINI_WIDGET_FAILED_TRADE },
-        { "geminiWidgetInsufficientFunds", IDS_BINANCE_WIDGET_INSUFFICIENT_FUNDS },       // NOLINT
-        { "geminiWidgetError", IDS_GEMINI_WIDGET_ERROR },
-        { "geminiWidgetConfirmTrade", IDS_GEMINI_WIDGET_CONFIRM_TRADE },
-        { "geminiWidgetBuy", IDS_BINANCE_WIDGET_BUY },
-        { "geminiWidgetSell", IDS_GEMINI_WIDGET_SELL },
-        { "geminiWidgetAvailable", IDS_BINANCE_WIDGET_AVAILABLE },
-        { "geminiWidgetGetQuote", IDS_GEMINI_WIDGET_GET_QUOTE },
-        { "geminiWidgetUnavailable", IDS_BINANCE_WIDGET_ADDRESS_UNAVAILABLE },
-        { "geminiWidgetDepositAddress", IDS_BINANCE_WIDGET_DEPOSIT_ADDRESS },
-        { "geminiWidgetSearch", IDS_BINANCE_WIDGET_SEARCH },
-        { "geminiWidgetDepositLabel", IDS_BINANCE_WIDGET_DEPOSIT_LABEL },
-        { "geminiWidgetTradeLabel", IDS_GEMINI_WIDGET_TRADE_LABEL },
-        { "geminiWidgetBalanceLabel", IDS_GEMINI_WIDGET_BALANCE_LABEL },
-        { "geminiWidgetBuying", IDS_GEMINI_WIDGET_BUYING },
-        { "geminiWidgetSelling", IDS_GEMINI_WIDGET_SELLING },
-        { "geminiWidgetContinue", IDS_BINANCE_WIDGET_CONTINUE },
-        { "geminiWidgetBought", IDS_GEMINI_WIDGET_BOUGHT },
-        { "geminiWidgetSold", IDS_GEMINI_WIDGET_SOLD },
-        { "geminiWidgetFee", IDS_BINANCE_WIDGET_FEE },
-        { "geminiWidgetUnitPrice", IDS_GEMINI_WIDGET_UNIT_PRICE },
-        { "geminiWidgetTotalPrice", IDS_GEMINI_WIDGET_TOTAL_PRICE },
-        { "geminiWidgetTotalAmount", IDS_GEMINI_WIDGET_TOTAL_AMOUNT },
-        { "geminiWidgetSummaryNoBalance", IDS_GEMINI_WIDGET_SUMMARY_NO_BALANCE},
-        { "cryptoConvertAmountPlaceholder", IDS_CRYPTO_CONVERT_AMOUNT_PLACEHOLDER },      // NOLINT
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-        { "cryptoDotComWidgetShowPrice", IDS_CRYPTO_DOT_COM_WIDGET_SHOW_PRICE },
-        { "cryptoDotComWidgetBuy", IDS_BINANCE_WIDGET_BUY },
-        { "cryptoDotComWidgetCopyOne", IDS_CRYPTO_DOT_COM_WIDGET_COPY_ONE },
-        { "cryptoDotComWidgetCopyTwo", IDS_CRYPTO_DOT_COM_WIDGET_COPY_TWO },
-        { "cryptoDotComWidgetBuyBtc", IDS_CRYPTO_DOT_COM_WIDGET_BUY_BTC },
-        { "cryptoDotComWidgetViewMarkets", IDS_CRYPTO_DOT_COM_WIDGET_VIEW_MARKETS },      // NOLINT
-        { "cryptoDotComWidgetGraph", IDS_CRYPTO_DOT_COM_WIDGET_GRAPH },
-        { "cryptoDotComWidgetPairs", IDS_CRYPTO_DOT_COM_WIDGET_PAIRS },
-        { "cryptoDotComWidgetVolume", IDS_CRYPTO_DOT_COM_WIDGET_VOLUME },
-#endif
-#if BUILDFLAG(ENABLE_FTX)
-        { "ftxMoreMarketsLink", IDS_FTX_MORE_MARKETS_LINK },
-        { "ftxWidgetDescription", IDS_FTX_WIDGET_DESCRIPTION },
-        { "ftxMarkets", IDS_FTX_MARKETS },
-        { "ftxConvert", IDS_FTX_CONVERT },
-        { "ftxSummary", IDS_FTX_SUMMARY },
-        { "ftxIntro", IDS_FTX_INTRO },
-        { "ftxViewMarkets", IDS_FTX_VIEW_MARKETS },
-        { "ftxConnect", IDS_FTX_CONNECT },
-        { "ftxGraphLabel", IDS_FTX_GRAPH_LABEL },
-        { "ftxVolumeLabel", IDS_FTX_VOLUME_LABEL },
-        { "ftxConversionPreviewLabel", IDS_FTX_CONVERSION_PREVIEW_LABEL },
-        { "ftxConversionPreviewTitle", IDS_FTX_CONVERSION_PREVIEW_TITLE },
-        { "ftxConversionQuantityLabel", IDS_FTX_CONVERSION_QUANTITY_LABEL },
-        { "ftxConversionPriceLabel", IDS_FTX_CONVERSION_PRICE_LABEL },
-        { "ftxConversionProceedsLabel", IDS_FTX_CONVERSION_PROCEEDS_LABEL },
-        { "ftxConversionSubmittingLabel", IDS_FTX_CONVERSION_SUBMITTING_LABEL },
-        { "ftxConversionConfirmLabel", IDS_FTX_CONVERSION_CONFIRM_LABEL },
-        { "ftxConversionCancelLabel", IDS_FTX_CONVERSION_CANCEL_LABEL },
-        { "ftxConversionSuccessTitle", IDS_FTX_CONVERSION_SUCCESS_TITLE },
-        { "ftxConversionDoneLabel", IDS_FTX_CONVERSION_DONE_LABEL },
-        { "ftxConversionBalanceNeeded", IDS_FTX_CONVERSION_BALANCE_NEEDED },
-        { "ftxConversionAmountAvailable", IDS_FTX_CONVERSION_AMOUNT_AVAILABLE },
-        { "ftxSummaryBlurLabel", IDS_FTX_SUMMARY_BLUR_LABEL },
-        { "ftxSummaryRevealLabel", IDS_FTX_SUMMARY_REVEAL_LABEL },
-        { "ftxSummaryNoBalance", IDS_FTX_SUMMARY_NO_BALANCE},
-#endif
       }
     }, {
       std::string("wallet"), {

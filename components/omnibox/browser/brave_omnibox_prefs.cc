@@ -17,12 +17,6 @@ const char kAutocompleteEnabled[] = "brave.autocomplete_enabled";
 // |TopsitesProvider|.
 const char kTopSiteSuggestionsEnabled[] = "brave.top_site_suggestions_enabled";
 
-// Determines whether suggested sites show up in the omnibox results. See
-// |SuggestedSitesProvider|.
-// Note: These suggestions include referral codes.
-const char kBraveSuggestedSiteSuggestionsEnabled[] =
-    "brave.brave_suggested_site_suggestions_enabled";
-
 // Determines whether history suggestions show up in the omnibox results. This
 // includes:
 // 1. Results from the |HistoryURLProvider|, which aren't "What-You-Typed".
@@ -40,7 +34,6 @@ const char kBookmarkSuggestionsEnabled[] =
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kAutocompleteEnabled, true);
   registry->RegisterBooleanPref(kTopSiteSuggestionsEnabled, true);
-  registry->RegisterBooleanPref(kBraveSuggestedSiteSuggestionsEnabled, false);
   registry->RegisterBooleanPref(kHistorySuggestionsEnabled, true);
   registry->RegisterBooleanPref(kBookmarkSuggestionsEnabled, true);
 }

@@ -3,7 +3,6 @@ import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
-import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/buildflags/buildflags.gni")
@@ -368,8 +367,6 @@ source_set("ui") {
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/constants",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
-    "//brave/components/crypto_dot_com/browser/buildflags:buildflags",
-    "//brave/components/ftx/browser/buildflags:buildflags",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/common",
@@ -720,10 +717,6 @@ source_set("ui") {
       "webui/ethereum_remote_client/ethereum_remote_client_ui.h",
     ]
     deps += [ "//brave/browser/ui/webui/ethereum_remote_client:ethereum_remote_client_page_generated" ]
-  }
-
-  if (enable_ftx) {
-    deps += [ "//brave/components/ftx/common" ]
   }
 
   if (enable_playlist_webui) {

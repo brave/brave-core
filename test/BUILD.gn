@@ -2,15 +2,11 @@ import("//brave/android/android_browser_tests.gni")
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/metrics/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
-import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
-import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
-import("//brave/components/gemini/browser/buildflags/buildflags.gni")
-import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
@@ -421,26 +417,6 @@ test("brave_unit_tests") {
       "//brave/browser/ui/views/brave_ads",
       "//brave/browser/ui/views/brave_tooltips",
     ]
-  }
-
-  if (binance_enabled) {
-    sources +=
-        [ "//brave/components/binance/browser/binance_json_parser_unittest.cc" ]
-    deps += [ "//brave/components/binance/browser" ]
-  }
-
-  if (gemini_enabled) {
-    sources +=
-        [ "//brave/components/gemini/browser/gemini_json_parser_unittest.cc" ]
-    deps += [
-      "//brave/components/binance/browser",
-      "//brave/components/gemini/browser",
-    ]
-  }
-
-  if (crypto_dot_com_enabled) {
-    sources += [ "//brave/components/crypto_dot_com/browser/crypto_dot_com_json_parser_unittest.cc" ]
-    deps += [ "//brave/components/crypto_dot_com/browser" ]
   }
 
   if (is_linux) {
@@ -884,7 +860,6 @@ test("brave_browser_tests") {
     "//brave/components/brave_wayback_machine",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/constants",
-    "//brave/components/crypto_dot_com/browser",
     "//brave/components/de_amp/browser/test:browser_tests",
     "//brave/components/de_amp/common:common",
     "//brave/components/debounce/browser",
@@ -926,6 +901,7 @@ test("brave_browser_tests") {
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
     "//components/content_settings/renderer",
+    "//components/country_codes",
     "//components/crx_file",
     "//components/embedder_support",
     "//components/gcm_driver:gcm_buildflags",
@@ -1009,27 +985,6 @@ test("brave_browser_tests") {
       "//components/infobars/content",
       "//components/infobars/core",
     ]
-  }
-
-  # Binance is enabled on Android but the test contains Desktop only code
-  if (binance_enabled && !is_android) {
-    sources +=
-        [ "//brave/components/binance/browser/binance_service_browsertest.cc" ]
-
-    deps += [
-      "//brave/components/binance/browser",
-      "//components/country_codes",
-    ]
-  }
-
-  if (gemini_enabled) {
-    sources +=
-        [ "//brave/components/gemini/browser/gemini_service_browsertest.cc" ]
-    deps += [ "//brave/components/gemini/browser" ]
-  }
-
-  if (crypto_dot_com_enabled) {
-    sources += [ "//brave/components/crypto_dot_com/browser/crypto_dot_com_service_browsertest.cc" ]
   }
 
   if (enable_brave_wayback_machine) {

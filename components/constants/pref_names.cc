@@ -57,14 +57,10 @@ const char kNewTabPageShowClock[] = "brave.new_tab_page.show_clock";
 const char kNewTabPageClockFormat[] = "brave.new_tab_page.clock_format";
 const char kNewTabPageShowStats[] = "brave.new_tab_page.show_stats";
 const char kNewTabPageShowRewards[] = "brave.new_tab_page.show_rewards";
-const char kNewTabPageShowBinance[] = "brave.new_tab_page.show_binance";
-const char kNewTabPageShowGemini[] = "brave.new_tab_page.show_gemini";
 const char kNewTabPageShowBraveTalk[] = "brave.new_tab_page.show_together";
 const char kNewTabPageHideAllWidgets[] = "brave.new_tab_page.hide_all_widgets";
 const char kNewTabPageShowsOptions[] = "brave.new_tab_page.shows_options";
 const char kBraveTodayIntroDismissed[] = "brave.today.intro_dismissed";
-const char kBinanceAccessToken[] = "brave.binance.access_token";
-const char kBinanceRefreshToken[] = "brave.binance.refresh_token";
 const char kAlwaysShowBookmarkBarOnNTP[] =
     "brave.always_show_bookmark_bar_on_ntp";
 const char kBraveDarkMode[] = "brave.dark_mode";

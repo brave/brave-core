@@ -30,11 +30,7 @@ export const defaultState: NewTab.State = {
   customLinksNum: 0,
   showRewards: false,
   showBraveTalk: false,
-  showBinance: false,
-  showGemini: false,
   showBitcoinDotCom: false,
-  showCryptoDotCom: false,
-  showFTX: false,
   hideAllWidgets: false,
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
@@ -42,11 +38,7 @@ export const defaultState: NewTab.State = {
   showEmptyPage: false,
   braveRewardsSupported: false,
   braveTalkSupported: false,
-  geminiSupported: false,
-  binanceSupported: false,
   bitcoinDotComSupported: false,
-  cryptoDotComSupported: false,
-  ftxSupported: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
   showAlternativePrivateSearchEngineToggle: false,
@@ -94,120 +86,13 @@ export const defaultState: NewTab.State = {
   currentStackWidget: '',
   removedStackWidgets: [],
   // Order is ascending, with last entry being in the foreground
-  widgetStackOrder: ['ftx', 'cryptoDotCom', 'binance', 'gemini', 'rewards'],
-  binanceState: {
-    userTLD: 'com',
-    userLocale: 'en',
-    initialFiat: 'USD',
-    initialAmount: '',
-    initialAsset: 'BTC',
-    userTLDAutoSet: false,
-    hideBalance: true,
-    binanceClientUrl: '',
-    userAuthed: false,
-    authInProgress: false,
-    btcBalanceValue: '0.00',
-    accountBalances: {},
-    assetBTCValues: {},
-    assetBTCVolumes: {},
-    assetUSDValues: {},
-    btcPrice: '0.00',
-    btcVolume: '0',
-    assetDepositInfo: {},
-    assetDepoitQRCodeSrcs: {},
-    convertAssets: {},
-    accountBTCValue: '0.00',
-    accountBTCUSDValue: '0.00',
-    disconnectInProgress: false,
-    authInvalid: false,
-    selectedView: 'summary',
-    depositInfoSaved: false
-  },
-  geminiState: {
-    geminiClientUrl: '',
-    userAuthed: false,
-    authInProgress: false,
-    tickerPrices: {},
-    selectedView: 'balance',
-    assetAddresses: {},
-    assetAddressQRCodes: {},
-    hideBalance: true,
-    accountBalances: {},
-    disconnectInProgress: false,
-    authInvalid: false
-  },
-  cryptoDotComState: {
-    optInTotal: false,
-    optInBTCPrice: false,
-    optInMarkets: false,
-    tickerPrices: {},
-    losersGainers: {},
-    supportedPairs: {},
-    charts: []
-  },
-  ftxState: {
-    optedIntoMarkets: false
-  },
+  widgetStackOrder: ['rewards'],
   customImageBackgrounds: []
 }
 
 if (chrome.extension.inIncognitoContext) {
   defaultState.isTor = loadTimeData.getBoolean('isTor')
   defaultState.isQwant = loadTimeData.getBoolean('isQwant')
-}
-
-// For users upgrading to the new list based widget stack state,
-// a list in the current format will need to be generated based on their
-// previous configuration.
-const getMigratedWidgetOrder = (state: NewTab.State) => {
-  const {
-    showRewards,
-    showBinance,
-    currentStackWidget
-  } = state
-
-  if (!showRewards && !showBinance) {
-    return {
-      widgetStackOrder: [],
-      removedStackWidgets: ['rewards', 'binance']
-    }
-  }
-
-  if (showRewards && !showBinance) {
-    return {
-      widgetStackOrder: ['rewards'],
-      removedStackWidgets: ['binance']
-    }
-  }
-
-  if (!showRewards && showBinance) {
-    return {
-      widgetStackOrder: ['binance'],
-      removedStackWidgets: ['rewards']
-    }
-  }
-
-  const widgetStackOrder = []
-  const nonCurrentWidget = currentStackWidget === 'rewards'
-    ? 'binance'
-    : 'rewards'
-
-  widgetStackOrder.push(currentStackWidget)
-  widgetStackOrder.unshift(nonCurrentWidget)
-
-  return {
-    widgetStackOrder,
-    removedStackWidgets: []
-  }
-}
-
-export const migrateStackWidgetSettings = (state: NewTab.State) => {
-  // Migrating to the new stack widget data format
-  const { widgetStackOrder, removedStackWidgets } = getMigratedWidgetOrder(state)
-  state.widgetStackOrder = widgetStackOrder as NewTab.StackWidget[]
-  state.removedStackWidgets = removedStackWidgets as NewTab.StackWidget[]
-  state.currentStackWidget = ''
-  return state
 }
 
 // Ensure any new stack widgets introduced are put behind
@@ -227,19 +112,14 @@ export const addNewStackWidget = (state: NewTab.State) => {
 // as a result of https://github.com/brave/brave-browser/issues/10067
 export const replaceStackWidgets = (state: NewTab.State) => {
   const {
-    showBinance,
     showRewards,
     showBraveTalk,
     braveRewardsSupported,
-    braveTalkSupported,
-    binanceSupported
+    braveTalkSupported
   } = state
   const displayLookup = {
     'rewards': {
       display: braveRewardsSupported && showRewards
-    },
-    'binance': {
-      display: binanceSupported && showBinance
     },
     'braveTalk': {
       display: braveTalkSupported && showBraveTalk
@@ -307,14 +187,8 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
       braveTalkSupported: data.braveTalkSupported,
       braveTalkPromptDismissed: data.braveTalkPromptDismissed,
       braveTalkPromptAutoDismissed: data.braveTalkPromptAutoDismissed,
-      binanceSupported: data.binanceSupported,
-      geminiSupported: data.geminiSupported,
       bitcoinDotComSupported: data.bitcoinDotComSupported,
       rewardsState: data.rewardsState,
-      binanceState: data.binanceState,
-      geminiState: data.geminiState,
-      cryptoDotComState: data.cryptoDotComState,
-      ftxState: data.ftxState,
       removedStackWidgets: data.removedStackWidgets,
       widgetStackOrder: data.widgetStackOrder
     }

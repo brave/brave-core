@@ -1320,9 +1320,6 @@ Are you sure you want to do this?
       <message name="IDS_AUTOCOMPLETE_TOP_SITES_TITLE" desc="The label for settings switch controlling whether or not top sites show up in autocomplete">
         Show top sites in autocomplete
       </message>
-      <message name="IDS_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES_TITLE" desc="The label for settings switch controlling whether or not Brave suggested sites show up in autocomplete">
-        Show suggested sites in autocomplete
-      </message>
       <message name="IDS_UPDATE_NOTIFICATION_TITLE" desc="Title of notification on application update.">
         Save Data Online
       </message>

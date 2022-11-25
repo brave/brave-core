@@ -49,8 +49,6 @@ extern const char kNewTabPageClockFormat[];
 extern const char kNewTabPageShowTopSites[];
 extern const char kNewTabPageShowStats[];
 extern const char kNewTabPageShowRewards[];
-extern const char kNewTabPageShowBinance[];
-extern const char kNewTabPageShowGemini[];
 extern const char kNewTabPageShowBraveTalk[];
 extern const char kNewTabPageHideAllWidgets[];
 extern const char kNewTabPageShowsOptions[];
@@ -59,8 +57,6 @@ extern const char kAlwaysShowBookmarkBarOnNTP[];
 extern const char kBraveDarkMode[];
 extern const char kOtherBookmarksMigrated[];
 extern const char kBraveShieldsSettingsVersion[];
-extern const char kBinanceAccessToken[];
-extern const char kBinanceRefreshToken[];
 extern const char kDefaultBrowserPromptEnabled[];
 
 // Web discovery project
@@ -95,5 +91,29 @@ extern const char kDontAskForCrashReporting[];
 // state of the switch and prefs::kEnableMediaRouter is updated to
 // kEnableMediaRouterOnRestart on restart.
 extern const char kEnableMediaRouterOnRestart[];
+
+// Obsolete widget removal prefs
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+constexpr char kFTXAccessToken[] = "brave.ftx.access_token";
+constexpr char kFTXOauthHost[] = "brave.ftx.oauth_host";
+constexpr char kFTXNewTabPageShowFTX[] = "ftx.new_tab_page.show_ftx";
+constexpr char kCryptoDotComNewTabPageShowCryptoDotCom[] =
+    "crypto_dot_com.new_tab_page.show_crypto_dot_com";
+constexpr char kCryptoDotComHasBoughtCrypto[] =
+    "crypto_dot_com.new_tab_page.has_bought_crypto";
+constexpr char kCryptoDotComHasInteracted[] =
+    "crypto_dot_com.new_tab_page.has_interacted";
+constexpr char kGeminiAccessToken[] = "brave.gemini.access_token";
+constexpr char kGeminiRefreshToken[] = "brave.gemini.refresh_token";
+constexpr char kNewTabPageShowGemini[] = "brave.new_tab_page.show_gemini";
+#endif
+
+#if !BUILDFLAG(IS_IOS)
+constexpr char kBinanceAccessToken[] = "brave.binance.access_token";
+constexpr char kBinanceRefreshToken[] = "brave.binance.refresh_token";
+constexpr char kNewTabPageShowBinance[] = "brave.new_tab_page.show_binance";
+constexpr char kBraveSuggestedSiteSuggestionsEnabled[] =
+    "brave.brave_suggested_site_suggestions_enabled";
+#endif
 
 #endif  // BRAVE_COMPONENTS_CONSTANTS_PREF_NAMES_H_

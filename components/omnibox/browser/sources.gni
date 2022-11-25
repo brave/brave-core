@@ -2,7 +2,6 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-import("//brave/components/binance/browser/buildflags/buildflags.gni")
 
 brave_components_omnibox_browser_sources = [
   "//brave/components/omnibox/browser/brave_bookmark_provider.cc",
@@ -23,11 +22,6 @@ brave_components_omnibox_browser_sources = [
   "//brave/components/omnibox/browser/promotion_provider.h",
   "//brave/components/omnibox/browser/promotion_utils.cc",
   "//brave/components/omnibox/browser/promotion_utils.h",
-  "//brave/components/omnibox/browser/suggested_sites_match.cc",
-  "//brave/components/omnibox/browser/suggested_sites_match.h",
-  "//brave/components/omnibox/browser/suggested_sites_provider.cc",
-  "//brave/components/omnibox/browser/suggested_sites_provider.h",
-  "//brave/components/omnibox/browser/suggested_sites_provider_data.cc",
   "//brave/components/omnibox/browser/topsites_provider.cc",
   "//brave/components/omnibox/browser/topsites_provider.h",
   "//brave/components/omnibox/browser/topsites_provider_data.cc",
@@ -35,15 +29,7 @@ brave_components_omnibox_browser_sources = [
 
 brave_components_omnibox_browser_deps = [
   "//base",
-  "//brave/components/binance/browser/buildflags",
   "//brave/components/brave_search_conversion",
   "//brave/components/constants",
   "//url",
 ]
-
-if (binance_enabled) {
-  brave_components_omnibox_browser_deps += [
-    "//brave/components/binance/browser",
-    "//brave/components/ntp_widget_utils/browser",
-  ]
-}

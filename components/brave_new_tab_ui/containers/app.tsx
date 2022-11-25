@@ -22,17 +22,12 @@ import { getActionsForDispatch } from '../api/getActions'
 import { NewTabActions } from '../constants/new_tab_types'
 import { ApplicationState } from '../reducers'
 import { BraveTodayState } from '../reducers/today'
-import { FTXState } from '../widgets/ftx/ftx_state'
 
 interface Props {
   actions: NewTabActions
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
   braveTodayData: BraveTodayState
-  // TODO(petemill): we should have a separate container for widgets that can connect
-  // redux / widget state to the components, instead of collecting and passing
-  // through all these layers.
-  ftx: FTXState
 }
 
 const getBraveNewsDisplayAd = function GetBraveNewsDisplayAd () {
@@ -52,17 +47,12 @@ function DefaultPage (props: Props) {
       newTabData={newTabData}
       todayData={braveTodayData}
       gridSitesData={gridSitesData}
-      ftx={props.ftx}
       actions={actions}
       saveShowBackgroundImage={PreferencesAPI.saveShowBackgroundImage}
       saveShowToday={PreferencesAPI.saveShowToday}
       saveShowBraveNewsButton={PreferencesAPI.saveShowBraveNewsButton}
       saveShowRewards={PreferencesAPI.saveShowRewards}
       saveShowBraveTalk={PreferencesAPI.saveShowBraveTalk}
-      saveShowBinance={PreferencesAPI.saveShowBinance}
-      saveShowGemini={PreferencesAPI.saveShowGemini}
-      saveShowCryptoDotCom={PreferencesAPI.saveShowCryptoDotCom}
-      saveShowFTX={PreferencesAPI.saveShowFTX}
       saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
       saveSetAllStackWidgets={PreferencesAPI.saveSetAllStackWidgets}
       getBraveNewsDisplayAd={getBraveNewsDisplayAd}
@@ -78,8 +68,7 @@ function DefaultPage (props: Props) {
 const mapStateToProps = (state: ApplicationState): Partial<Props> => ({
   newTabData: state.newTabData,
   gridSitesData: state.gridSitesData,
-  braveTodayData: state.today,
-  ftx: state.ftx
+  braveTodayData: state.today
 })
 
 const mapDispatchToProps = (dispatch: Dispatch): Partial<Props> => {

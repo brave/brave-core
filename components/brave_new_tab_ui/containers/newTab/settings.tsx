@@ -62,10 +62,6 @@ export interface Props {
   setMostVisitedSettings: (show: boolean, customize: boolean) => void
   toggleShowRewards: () => void
   toggleShowBraveTalk: () => void
-  toggleShowBinance: () => void
-  toggleShowGemini: () => void
-  toggleShowCryptoDotCom: () => void
-  toggleShowFTX: () => void
   toggleBrandedWallpaperOptIn: () => void
   toggleCards: (show: boolean) => void
   chooseNewCustomImageBackground: () => void
@@ -83,16 +79,8 @@ export interface Props {
   allowSponsoredWallpaperUI: boolean
   showRewards: boolean
   showBraveTalk: boolean
-  showBinance: boolean
-  binanceSupported: boolean
   braveRewardsSupported: boolean
   braveTalkSupported: boolean
-  showGemini: boolean
-  geminiSupported: boolean
-  showCryptoDotCom: boolean
-  cryptoDotComSupported: boolean
-  showFTX: boolean
-  ftxSupported: boolean
   todayPublishers?: Publishers
   setActiveTab?: TabType
   cardsHidden: boolean
@@ -288,20 +276,8 @@ export default class Settings extends React.PureComponent<Props, State> {
       showRewards,
       showBraveTalk,
       brandedWallpaperOptIn,
-      toggleShowBinance,
-      showBinance,
-      binanceSupported,
       braveRewardsSupported,
       braveTalkSupported,
-      toggleShowGemini,
-      geminiSupported,
-      showGemini,
-      toggleShowCryptoDotCom,
-      cryptoDotComSupported,
-      showCryptoDotCom,
-      toggleShowFTX,
-      ftxSupported,
-      showFTX,
       toggleCards,
       cardsHidden,
       onEnableRewards
@@ -412,24 +388,12 @@ export default class Settings extends React.PureComponent<Props, State> {
                     <CardsSettings
                       toggleCards={toggleCards}
                       cardsHidden={cardsHidden}
-                      toggleShowBinance={toggleShowBinance}
-                      showBinance={showBinance}
-                      binanceSupported={binanceSupported}
                       toggleShowBraveTalk={toggleShowBraveTalk}
                       showBraveTalk={showBraveTalk}
                       braveTalkSupported={braveTalkSupported}
                       toggleShowRewards={toggleShowRewards}
                       braveRewardsSupported={braveRewardsSupported}
                       showRewards={showRewards}
-                      showGemini={showGemini}
-                      toggleShowGemini={toggleShowGemini}
-                      geminiSupported={geminiSupported}
-                      toggleShowCryptoDotCom={toggleShowCryptoDotCom}
-                      cryptoDotComSupported={cryptoDotComSupported}
-                      showCryptoDotCom={showCryptoDotCom}
-                      toggleShowFTX={toggleShowFTX}
-                      ftxSupported={ftxSupported}
-                      showFTX={showFTX}
                     />
                   ) : null
               }

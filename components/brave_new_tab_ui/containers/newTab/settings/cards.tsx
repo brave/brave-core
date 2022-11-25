@@ -24,11 +24,7 @@ import {
   ToggleCardsText
 } from '../../../components/default'
 import braveTalkBanner from './assets/brave-talk.png'
-import binanceBanner from './assets/binance.png'
 import rewardsBanner from './assets/braverewards.png'
-import geminiBanner from './assets/gemini.png'
-import cryptoDotComBanner from './assets/crypto-dot-com.png'
-import ftxPreviewImageUrl from './assets/ftx-preview.png'
 import HideIcon from './assets/hide-icon'
 import { Toggle } from '../../../components/toggle'
 import { PlusIcon } from 'brave-ui/components/icons'
@@ -36,24 +32,12 @@ import { PlusIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../common/locale'
 
 interface Props {
-  toggleShowBinance: () => void
-  showBinance: boolean
-  binanceSupported: boolean
   toggleShowBraveTalk: () => void
   showBraveTalk: boolean
   braveTalkSupported: boolean
   toggleShowRewards: () => void
   showRewards: boolean
   braveRewardsSupported: boolean
-  toggleShowGemini: () => void
-  geminiSupported: boolean
-  showGemini: boolean
-  toggleShowCryptoDotCom: () => void
-  showCryptoDotCom: boolean
-  cryptoDotComSupported: boolean
-  toggleShowFTX: () => void
-  showFTX: boolean
-  ftxSupported: boolean
   toggleCards: (show: boolean) => void
   cardsHidden: boolean
 }
@@ -85,24 +69,12 @@ class CardsSettings extends React.PureComponent<Props, {}> {
 
   render () {
     const {
-      binanceSupported,
-      toggleShowBinance,
-      showBinance,
       toggleShowBraveTalk,
       showBraveTalk,
       braveTalkSupported,
       toggleShowRewards,
       showRewards,
       braveRewardsSupported,
-      geminiSupported,
-      toggleShowGemini,
-      showGemini,
-      cryptoDotComSupported,
-      toggleShowCryptoDotCom,
-      showCryptoDotCom,
-      ftxSupported,
-      toggleShowFTX,
-      showFTX,
       toggleCards,
       cardsHidden
     } = this.props
@@ -123,69 +95,6 @@ class CardsSettings extends React.PureComponent<Props, {}> {
               {this.renderToggleButton(showBraveTalk, toggleShowBraveTalk)}
             </FeaturedSettingsWidget>
           : null
-        }
-        {
-          geminiSupported
-          ? <SettingsWidget>
-              <StyledBannerImage src={geminiBanner} />
-              <StyledSettingsInfo>
-                <StyledSettingsTitle>
-                  {'Gemini'}
-                </StyledSettingsTitle>
-                <StyledSettingsCopy>
-                  {getLocale('geminiWidgetDesc')}
-                </StyledSettingsCopy>
-              </StyledSettingsInfo>
-              {this.renderToggleButton(showGemini, toggleShowGemini, false)}
-            </SettingsWidget>
-          : null
-        }
-        {
-          binanceSupported
-          ? <SettingsWidget>
-              <StyledBannerImage src={binanceBanner} />
-              <StyledSettingsInfo>
-                <StyledSettingsTitle>
-                  {'Binance'}
-                </StyledSettingsTitle>
-                <StyledSettingsCopy>
-                  {getLocale('binanceWidgetDesc')}
-                </StyledSettingsCopy>
-              </StyledSettingsInfo>
-              {this.renderToggleButton(showBinance, toggleShowBinance, false)}
-            </SettingsWidget>
-          : null
-        }
-        {
-          cryptoDotComSupported
-          ? <SettingsWidget>
-              <StyledBannerImage src={cryptoDotComBanner} />
-              <StyledSettingsInfo>
-                <StyledSettingsTitle>
-                  {'Crypto.com'}
-                </StyledSettingsTitle>
-                <StyledSettingsCopy>
-                  {getLocale('cryptoDotComWidgetDesc')}
-                </StyledSettingsCopy>
-              </StyledSettingsInfo>
-              {this.renderToggleButton(showCryptoDotCom, toggleShowCryptoDotCom, false)}
-            </SettingsWidget>
-          : null
-        }
-        {
-        ftxSupported &&
-        <SettingsWidget>
-          <StyledBannerImage src={ftxPreviewImageUrl} />
-          <StyledSettingsInfo>
-            <StyledSettingsTitle>
-              FTX
-            </StyledSettingsTitle>
-            <StyledSettingsCopy>
-              {getLocale('ftxWidgetDescription')}
-            </StyledSettingsCopy>
-          </StyledSettingsInfo>
-          {this.renderToggleButton(showFTX, toggleShowFTX, false)}
-        </SettingsWidget>
         }
         {
           braveRewardsSupported

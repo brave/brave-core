@@ -19,10 +19,6 @@ export type InitialData = {
   customImageBackgrounds: NewTab.ImageBackground[]
   braveRewardsSupported: boolean
   braveTalkSupported: boolean
-  geminiSupported: boolean
-  binanceSupported: boolean
-  cryptoDotComSupported: boolean
-  ftxSupported: boolean
   searchPromotionEnabled: boolean
 }
 
@@ -56,10 +52,6 @@ export async function getInitialData (): Promise<InitialData> {
       wallpaperData,
       braveRewardsSupported,
       braveTalkSupported,
-      geminiSupported,
-      cryptoDotComSupported,
-      ftxSupported,
-      binanceSupported,
       searchPromotionEnabled,
       braveBackgrounds,
       customImageBackgrounds
@@ -83,26 +75,6 @@ export async function getInitialData (): Promise<InitialData> {
           resolve(supported)
         })
       }),
-      new Promise((resolve) => {
-        chrome.gemini.isSupported((supported: boolean) => {
-          resolve(supported)
-        })
-      }),
-      new Promise((resolve) => {
-        chrome.cryptoDotCom.isSupported((supported: boolean) => {
-          resolve(supported)
-        })
-      }),
-      new Promise((resolve) => {
-        chrome.ftx.isSupported((supported: boolean) => {
-          resolve(supported)
-        })
-      }),
-      new Promise((resolve) => {
-        chrome.binance.isSupportedRegion((supported: boolean) => {
-          resolve(supported)
-        })
-      }),
       getNTPBrowserAPI().pageHandler.isSearchPromotionEnabled().then(({ enabled }) => enabled),
       getNTPBrowserAPI().pageHandler.getBraveBackgrounds().then(({ backgrounds }) => {
         return backgrounds.map(background => ({ type: 'brave', wallpaperImageUrl: background.imageUrl.url, author: background.author, link: background.link.url }))
@@ -121,10 +93,6 @@ export async function getInitialData (): Promise<InitialData> {
       customImageBackgrounds,
       braveRewardsSupported,
       braveTalkSupported,
-      geminiSupported,
-      cryptoDotComSupported,
-      ftxSupported,
-      binanceSupported,
       searchPromotionEnabled
     } as InitialData
   } catch (e) {

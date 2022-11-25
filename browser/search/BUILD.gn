@@ -1,5 +1,3 @@
-import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
-
 source_set("search") {
   sources = []
 
@@ -15,8 +13,6 @@ source_set("search") {
       "//base",
       "//brave/browser/profiles:profiles",
       "//brave/components/constants",
-      "//brave/components/crypto_dot_com/browser/buildflags",
-      "//brave/components/crypto_dot_com/common",
       "//chrome/browser/ui",
       "//chrome/common",
       "//components/pref_registry",
@@ -33,15 +29,11 @@ source_set("unit_tests") {
     deps = [
       "//brave/browser/search",
       "//brave/components/constants",
-      "//brave/components/crypto_dot_com/browser/buildflags:buildflags",
       "//chrome/test:test_support",
       "//components/prefs",
       "//components/sync_preferences",
       "//content/test:test_support",
       "//testing/gtest",
     ]
-    if (crypto_dot_com_enabled) {
-      deps += [ "//brave/components/crypto_dot_com/common" ]
-    }
   }
 }

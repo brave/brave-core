@@ -25,8 +25,6 @@
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
-#include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -49,14 +47,6 @@ using ntp_background_images::prefs::kBrandedWallpaperNotificationDismissed;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
 using ntp_background_images::prefs::
     kNewTabPageShowSponsoredImagesBackgroundImage;  // NOLINT
-
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-#include "brave/components/crypto_dot_com/common/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_FTX)
-#include "brave/components/ftx/common/pref_names.h"
-#endif
 
 namespace {
 
@@ -99,16 +89,7 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
   pref_data.Set("isBraveTodayOptedIn",
                 prefs->GetBoolean(brave_news::prefs::kBraveTodayOptedIn));
   pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
-  pref_data.Set("showBinance", prefs->GetBoolean(kNewTabPageShowBinance));
   pref_data.Set("showBraveTalk", prefs->GetBoolean(kNewTabPageShowBraveTalk));
-  pref_data.Set("showGemini", prefs->GetBoolean(kNewTabPageShowGemini));
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  pref_data.Set("showCryptoDotCom",
-                prefs->GetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom));
-#endif
-#if BUILDFLAG(ENABLE_FTX)
-  pref_data.Set("showFTX", prefs->GetBoolean(kFTXNewTabPageShowFTX));
-#endif
   return pref_data;
 }
 
@@ -338,33 +319,13 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kNewTabPageShowBinance,
-      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
       kNewTabPageShowBraveTalk,
-      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      kNewTabPageShowGemini,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
       kNewTabPageHideAllWidgets,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  pref_change_registrar_.Add(
-      kCryptoDotComNewTabPageShowCryptoDotCom,
-      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
-                          base::Unretained(this)));
-#endif
-#if BUILDFLAG(ENABLE_FTX)
-  pref_change_registrar_.Add(
-      kFTXNewTabPageShowFTX,
-      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
-                          base::Unretained(this)));
-#endif
 
   if (ads_service_) {
     ads_service_observation_.Reset();
@@ -474,20 +435,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kBrandedWallpaperNotificationDismissed;
   } else if (settingsKeyInput == "hideAllWidgets") {
     settingsKey = kNewTabPageHideAllWidgets;
-  } else if (settingsKeyInput == "showBinance") {
-    settingsKey = kNewTabPageShowBinance;
   } else if (settingsKeyInput == "showBraveTalk") {
     settingsKey = kNewTabPageShowBraveTalk;
-  } else if (settingsKeyInput == "showGemini") {
-    settingsKey = kNewTabPageShowGemini;
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  } else if (settingsKeyInput == "showCryptoDotCom") {
-    settingsKey = kCryptoDotComNewTabPageShowCryptoDotCom;
-#endif
-#if BUILDFLAG(ENABLE_FTX)
-  } else if (settingsKeyInput == "showFTX") {
-    settingsKey = kFTXNewTabPageShowFTX;
-#endif
   } else {
     LOG(ERROR) << "Invalid setting key";
     return;
