@@ -9,6 +9,7 @@
 
 #include "base/bind.h"
 #include "base/json/json_writer.h"
+#include "base/json/values_util.cc"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
@@ -145,11 +146,19 @@ void PlaylistDownloadRequestManager::GetMedia(content::WebContents* contents) {
       media_detector_component_manager_->GetMediaDetectorScript();
   DCHECK(!media_detector_script.empty());
 
+#if BUILDFLAG(IS_ANDROID)
+  content::RenderFrameHost::AllowInjectingJavaScript();
+  contents->GetPrimaryMainFrame()->ExecuteJavaScript(
+      base::UTF8ToUTF16(media_detector_script),
+      base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
+                     weak_factory_.GetWeakPtr(), contents->GetWeakPtr()));
+#else
   contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       base::UTF8ToUTF16(media_detector_script),
       base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
                      weak_factory_.GetWeakPtr(), contents->GetWeakPtr()),
       g_playlist_javascript_world_id);
+#endif
 }
 
 void PlaylistDownloadRequestManager::OnGetMedia(
@@ -213,23 +222,34 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
     auto* page_source = media.FindStringKey("pageSrc");
     auto* mime_type = media.FindStringKey("mimeType");
     auto* src = media.FindStringKey("src");
-    auto* thumbnail = media.FindStringKey("thumbnail");
     DCHECK(name);
     DCHECK(page_source);
     DCHECK(page_title);
     DCHECK(mime_type);
     DCHECK(src);
 
+    // nullable data
+    auto* thumbnail = media.FindStringKey("thumbnail");
+    auto* author = media.FindStringKey("author");
+    auto duration = media.FindDoubleKey("duration");
+
     auto item = mojom::PlaylistItem::New();
     item->id = base::Token::CreateRandom().ToString();
     item->page_source = GURL(*page_source);
     item->name = *name;
+    if (duration.has_value()) {
+      item->duration = 
+          base::TimeDeltaToValue(base::Seconds(*duration)).GetString();
+    }
     if (thumbnail) {
       item->thumbnail_source = GURL(*thumbnail);
       item->thumbnail_path = GURL(*thumbnail);
     }
     item->media_source = GURL(*src);
     item->media_path = GURL(*src);
+    if (author)
+      item->author = *author;
+
     items.push_back(std::move(item));
   }
 
