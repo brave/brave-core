@@ -87,7 +87,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     private ChromeBasePreference mSubscriptionStatus;
     private ChromeBasePreference mSubscriptionExpires;
     private ChromeBasePreference mServerHost;
-    private ChromeBasePreference mLinkSubscriptionPrefernce;
+    private ChromeBasePreference mLinkSubscriptionPreference;
     private BraveVpnPrefModel mBraveVpnPrefModel;
 
     @Override
@@ -187,16 +187,16 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         return true;
                     }
                 });
-        mLinkSubscriptionPrefernce = new ChromeBasePreference(getActivity());
-        mLinkSubscriptionPrefernce.setTitle(
+        mLinkSubscriptionPreference = new ChromeBasePreference(getActivity());
+        mLinkSubscriptionPreference.setTitle(
                 getResources().getString(R.string.link_subscription_title));
-        mLinkSubscriptionPrefernce.setSummary(
+        mLinkSubscriptionPreference.setSummary(
                 getResources().getString(R.string.link_subscription_text));
-        mLinkSubscriptionPrefernce.setKey(PREF_LINK_SUBSCRIPTION);
-        mLinkSubscriptionPrefernce.setVisible(
+        mLinkSubscriptionPreference.setKey(PREF_LINK_SUBSCRIPTION);
+        mLinkSubscriptionPreference.setVisible(
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
                 && BraveVpnPrefUtils.isSubscriptionPurchase());
-        mLinkSubscriptionPrefernce.setOnPreferenceClickListener(
+        mLinkSubscriptionPreference.setOnPreferenceClickListener(
                 new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
@@ -210,7 +210,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 });
         PreferenceCategory preferenceCategory =
                 (PreferenceCategory) findPreference(PREF_BRAVE_VPN_SUBSCRIPTION_SECTION);
-        preferenceCategory.addPreference(mLinkSubscriptionPrefernce);
+        preferenceCategory.addPreference(mLinkSubscriptionPreference);
     }
 
     @Override
@@ -265,8 +265,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         } else {
             BraveVpnUtils.dismissProgressDialog();
         }
-        if (mLinkSubscriptionPrefernce != null) {
-            mLinkSubscriptionPrefernce.setVisible(
+        if (mLinkSubscriptionPreference != null) {
+            mLinkSubscriptionPreference.setVisible(
                     ChromeFeatureList.isEnabled(
                             BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
                     && BraveVpnPrefUtils.isSubscriptionPurchase());
