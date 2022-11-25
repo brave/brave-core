@@ -20,10 +20,6 @@ namespace brave_vpn {
 
 namespace {
 
-HANDLE g_connecting_event_handle = NULL;
-HANDLE g_connect_failed_event_handle = NULL;
-HANDLE g_disconnecting_event_handle = NULL;
-
 class ScopedHeapAlloc {
  public:
   explicit ScopedHeapAlloc(SIZE_T dw_bytes) {
@@ -41,24 +37,6 @@ class ScopedHeapAlloc {
  private:
   LPVOID lp_alloc_mem_ = NULL;
 };
-
-void WINAPI RasDialFunc(UINT, RASCONNSTATE rasconnstate, DWORD error) {
-  if (error) {
-    SetEvent(g_connect_failed_event_handle);
-    internal::PrintRasError(error);
-    return;
-  }
-
-  // Only interested in connecting event.
-  switch (rasconnstate) {
-    case RASCS_ConnectDevice:
-      SetEvent(g_connecting_event_handle);
-      break;
-    default:
-      // Ignore all other states.
-      break;
-  }
-}
 
 // https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-formatmessage
 void PrintSystemError(DWORD error) {
@@ -98,45 +76,6 @@ DWORD SetCredentials(LPCTSTR entry_name, LPCTSTR username, LPCTSTR password) {
 }  // namespace
 
 namespace internal {
-
-HANDLE GetEventHandleForConnecting() {
-  if (!g_connecting_event_handle)
-    g_connecting_event_handle = CreateEvent(NULL, false, false, NULL);
-  return g_connecting_event_handle;
-}
-
-void CloseEventHandleForConnecting() {
-  if (g_connecting_event_handle) {
-    CloseHandle(g_connecting_event_handle);
-    g_connecting_event_handle = NULL;
-  }
-}
-
-HANDLE GetEventHandleForConnectFailed() {
-  if (!g_connect_failed_event_handle)
-    g_connect_failed_event_handle = CreateEvent(NULL, false, false, NULL);
-  return g_connect_failed_event_handle;
-}
-
-void CloseEventHandleForConnectFailed() {
-  if (g_connect_failed_event_handle) {
-    CloseHandle(g_connect_failed_event_handle);
-    g_connect_failed_event_handle = NULL;
-  }
-}
-
-HANDLE GetEventHandleForDisconnecting() {
-  if (!g_disconnecting_event_handle)
-    g_disconnecting_event_handle = CreateEvent(NULL, false, false, NULL);
-  return g_disconnecting_event_handle;
-}
-
-void CloseEventHandleForDisconnecting() {
-  if (g_disconnecting_event_handle) {
-    CloseHandle(g_disconnecting_event_handle);
-    g_disconnecting_event_handle = NULL;
-  }
-}
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgeterrorstringa
 void PrintRasError(DWORD error) {
@@ -230,7 +169,6 @@ bool DisconnectEntry(const std::wstring& entry_name) {
         VLOG(2) << __func__ << " : " << name << ", " << type;
         if (name.compare(entry_name) == 0 && type.compare(L"VPN") == 0) {
           VLOG(2) << __func__ << " : Disconnect... " << entry_name;
-          SetEvent(g_disconnecting_event_handle);
           dw_ret = RasHangUpA(lp_ras_conn[i].hrasconn);
           break;
         }
@@ -269,7 +207,6 @@ bool ConnectEntry(const std::wstring& entry_name) {
       reinterpret_cast<LPRASDIALPARAMS>(ras_dial_params.lp_alloc_mem());
   if (lp_ras_dial_params == NULL) {
     LOG(ERROR) << "HeapAlloc failed!";
-    SetEvent(g_connect_failed_event_handle);
     return false;
   }
   lp_ras_dial_params->dwSize = sizeof(RASDIALPARAMS);
@@ -286,7 +223,6 @@ bool ConnectEntry(const std::wstring& entry_name) {
       RasGetCredentials(DEFAULT_PHONE_BOOK, entry_name.c_str(), &credentials);
   if (dw_ret != ERROR_SUCCESS) {
     PrintRasError(dw_ret);
-    SetEvent(g_connect_failed_event_handle);
     return false;
   }
   wcscpy_s(lp_ras_dial_params->szUserName, UNLEN + 1, credentials.szUserName);
@@ -294,8 +230,8 @@ bool ConnectEntry(const std::wstring& entry_name) {
 
   VLOG(2) << __func__ << " : Connecting to " << entry_name;
   HRASCONN h_ras_conn = NULL;
-  dw_ret = RasDial(NULL, DEFAULT_PHONE_BOOK, lp_ras_dial_params, 0,
-                   (LPVOID)(&RasDialFunc), &h_ras_conn);
+  dw_ret = RasDial(NULL, DEFAULT_PHONE_BOOK, lp_ras_dial_params, 0, NULL,
+                   &h_ras_conn);
 
   if (dw_ret == ERROR_DIAL_ALREADY_IN_PROGRESS) {
     // We should not treat this as failure state.
@@ -306,7 +242,6 @@ bool ConnectEntry(const std::wstring& entry_name) {
 
   if (dw_ret != ERROR_SUCCESS) {
     PrintRasError(dw_ret);
-    SetEvent(g_connect_failed_event_handle);
     return false;
   }
 
