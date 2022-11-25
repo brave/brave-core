@@ -23,6 +23,10 @@ public class BraveNewTabPageLayoutClassAdapter extends BraveClassVisitor {
         addMethodAnnotation(
                 sBraveNewTabPageLayoutClassName, "insertSiteSectionView", "Ljava/lang/Override;");
 
+        makePublicMethod(sNewTabPageLayoutClassName, "isScrollableMvtEnabled");
+        addMethodAnnotation(
+                sBraveNewTabPageLayoutClassName, "isScrollableMvtEnabled", "Ljava/lang/Override;");
+
         changeSuperName(sNewTabPageLayoutClassName, sNewTabPageLayoutSuperClassName);
     }
 }
