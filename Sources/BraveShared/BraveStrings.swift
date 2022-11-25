@@ -4246,7 +4246,7 @@ extension Strings {
   public static let blockCookieConsentNotices = NSLocalizedString(
     "BlockCookieConsentNotices",
     tableName: "BraveShared", bundle: .module,
-    value: "Block cookie consent notices",
+    value: "Block Cookie Consent Notices",
     comment: "A title for a toggle that allows user to block cookie consent notices"
   )
   
