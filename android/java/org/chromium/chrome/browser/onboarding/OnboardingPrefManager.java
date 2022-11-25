@@ -56,6 +56,8 @@ public class OnboardingPrefManager {
     private static final String PREF_P3A_CRASH_REPORTING_MESSAGE_SHOWN =
             "p3a_crash_reporting_message_shown";
     private static final String PREF_URL_FOCUS_COUNT = "url_focus_count";
+    private static final String PREF_NOTIFICATION_PERMISSION_ENABLING_DIALOG =
+            "notification_permission_enabling_dialog";
 
     private static OnboardingPrefManager sInstance;
 
@@ -340,5 +342,21 @@ public class OnboardingPrefManager {
 
         Date date = calendar.getTime();
         return date.getTime();
+    }
+
+    /**
+     * Returns the user preference for whether the Notification Permission Enabling dialog is shown.
+     */
+    public boolean isNotificationPermissionEnablingDialogShown() {
+        return mSharedPreferences.getBoolean(PREF_NOTIFICATION_PERMISSION_ENABLING_DIALOG, false);
+    }
+
+    /**
+     * Sets the user preference for whether the Notification Permission Enabling dialog is shown.
+     */
+    public void setNotificationPermissionEnablingDialogShown(boolean isShown) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_NOTIFICATION_PERMISSION_ENABLING_DIALOG, isShown);
+        sharedPreferencesEditor.apply();
     }
 }
