@@ -114,6 +114,7 @@ import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.base.WindowAndroid;
 
 import java.util.ArrayList;
@@ -136,6 +137,7 @@ public class BraveNewTabPageLayout
     private ViewGroup mMvTilesContainerLayout;
 
     // Own members.
+    private final Context mContext;
     private ImageView mBgImageView;
     private Profile mProfile;
     private SponsoredTab mSponsoredTab;
@@ -190,6 +192,8 @@ public class BraveNewTabPageLayout
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        mContext = context;
         mProfile = Profile.getLastUsedRegularProfile();
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         mNTPBackgroundImagesBridge.setNewTabPageListener(newTabPageListener);
@@ -1355,5 +1359,12 @@ public class BraveNewTabPageLayout
         if (mNtpAdapter != null) {
             mNtpAdapter.setBraveNewsController(mBraveNewsController);
         }
+    }
+
+    protected boolean isScrollableMvtEnabled() {
+        return ChromeFeatureList.isEnabled(ChromeFeatureList.SHOW_SCROLLABLE_MVT_ON_NTP_ANDROID)
+                && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(mContext)
+                && UserPrefs.get(Profile.getLastUsedRegularProfile())
+                           .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
     }
 }
