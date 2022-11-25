@@ -55,7 +55,7 @@
         android:fontFamily="@font/poppins_regular"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textColor="@color/wallet_toolbar_bg_color"
+        android:textColor="@color/rewards_tipping_publisher_name_color"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/publisher_favicon"
