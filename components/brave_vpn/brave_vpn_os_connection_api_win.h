@@ -44,6 +44,7 @@ class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPI,
   void OnObjectSignaled(HANDLE object) override;
 
   void OnCreated(const std::string& name, bool success);
+  void OnConnected(bool success);
   void OnRemoved(const std::string& name, bool success);
   void OnCheckConnection(const std::string& name,
                          internal::CheckConnectionResult result);

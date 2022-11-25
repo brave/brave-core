@@ -34,8 +34,8 @@ namespace brave_vpn {
 
 namespace {
 
-void ConnectEntry(const std::wstring& name) {
-  brave_vpn::internal::ConnectEntry(name);
+bool ConnectEntry(const std::wstring& name) {
+  return brave_vpn::internal::ConnectEntry(name);
 }
 
 void DisconnectEntry(const std::wstring& name) {
@@ -75,9 +75,11 @@ void BraveVPNOSConnectionAPIWin::CreateVPNConnectionImpl(
 
 void BraveVPNOSConnectionAPIWin::ConnectImpl(const std::string& name) {
   // Connection state update from this call will be done by monitoring.
-  base::ThreadPool::PostTask(
+  base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&ConnectEntry, base::UTF8ToWide(name)));
+      base::BindOnce(&ConnectEntry, base::UTF8ToWide(name)),
+      base::BindOnce(&BraveVPNOSConnectionAPIWin::OnConnected,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void BraveVPNOSConnectionAPIWin::DisconnectImpl(const std::string& name) {
@@ -134,7 +136,7 @@ void BraveVPNOSConnectionAPIWin::OnCheckConnection(
     CheckConnectionResult result) {
   switch (result) {
     case CheckConnectionResult::CONNECTED:
-      OnConnected();
+      BraveVPNOSConnectionAPI::OnConnected();
       break;
     case CheckConnectionResult::CONNECTING:
       OnIsConnecting();
@@ -161,6 +163,12 @@ void BraveVPNOSConnectionAPIWin::OnCreated(const std::string& name,
   }
 
   BraveVPNOSConnectionAPI::OnCreated();
+}
+
+void BraveVPNOSConnectionAPIWin::OnConnected(bool success) {
+  if (success) {
+    BraveVPNOSConnectionAPI::OnConnected();
+  }
 }
 
 void BraveVPNOSConnectionAPIWin::OnRemoved(const std::string& name,
