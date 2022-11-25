@@ -337,6 +337,8 @@ extension LoginListViewController {
         handler: { [weak self] _ in
           guard let self = self else { return }
 
+          self.tableView.isEditing = false
+          self.setEditing(false, animated: false)
           self.passwordAPI.removeLogin(credential)
           self.fetchLoginInfo()
         }))
