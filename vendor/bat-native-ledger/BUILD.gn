@@ -427,6 +427,7 @@ source_set("ledger") {
     "src/bat/ledger/internal/endpoints/post_wallets/post_wallets.h",
     "src/bat/ledger/internal/endpoints/request_builder.cc",
     "src/bat/ledger/internal/endpoints/request_builder.h",
+    "src/bat/ledger/internal/endpoints/request_for.cc",
     "src/bat/ledger/internal/endpoints/request_for.h",
     "src/bat/ledger/internal/endpoints/response_handler.h",
     "src/bat/ledger/internal/endpoints/result_for.h",

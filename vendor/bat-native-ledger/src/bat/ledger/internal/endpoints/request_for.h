@@ -20,6 +20,11 @@
 
 namespace ledger::endpoints {
 
+void SendImpl(LedgerImpl*,
+              absl::optional<std::tuple<mojom::UrlRequestPtr,
+                                        client::LoadURLCallback,
+                                        base::TimeDelta>> params);
+
 template <typename, typename = void>
 inline constexpr bool enumerator_check = false;
 
@@ -62,55 +67,13 @@ class RequestFor {
       return;
     }
 
-    SendImpl(
-        std::tuple(ledger_, std::move(*request_), base::Seconds(0),
-                   base::BindOnce(&Endpoint::OnResponse, std::move(callback))));
+    SendImpl(ledger_, std::tuple(std::move(*request_),
+                                 base::BindOnce(&Endpoint::OnResponse,
+                                                std::move(callback)),
+                                 base::Seconds(0)));
   }
 
  private:
-  static void SendImpl(
-      absl::optional<std::tuple<LedgerImpl*,
-                                mojom::UrlRequestPtr,
-                                base::TimeDelta,
-                                client::LoadURLCallback>> params) {
-    if (params) {
-      auto [ledger, request, delta, callback] = std::move(*params);
-
-      auto load_url_callback =
-          base::BindOnce(
-              [](LedgerImpl* led, mojom::UrlRequestPtr req,
-                 client::LoadURLCallback cb,
-                 const mojom::UrlResponse& response) -> decltype(params) {
-                if (/*response.status_code == net::HTTP_TOO_MANY_REQUESTS &&*/
-                    req->retry_on_rate_limiting--) {
-                  BLOG(0, "req->retry_on_rate_limiting--");
-                  ledger::LogUrlResponse(__func__, response);
-
-                  return std::tuple(led, std::move(req), base::Seconds(5),
-                                    std::move(cb));
-                } else {
-                  std::move(cb).Run(response);
-                  return absl::nullopt;
-                }
-              },
-              ledger, request->Clone(), std::move(callback))
-              .Then(base::BindOnce(&SendImpl));
-
-      if (delta.is_positive()) {
-        base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-            FROM_HERE,
-            base::BindOnce(static_cast<void (LedgerImpl::*)(
-                               mojom::UrlRequestPtr, client::LoadURLCallback)>(
-                               &LedgerImpl::LoadURL),
-                           base::Unretained(ledger), std::move(request),
-                           std::move(load_url_callback)),
-            std::move(delta));
-      } else {
-        ledger->LoadURL(std::move(request), std::move(load_url_callback));
-      }
-    }
-  }
-
   LedgerImpl* ledger_;  // NOT OWNED
   absl::optional<ledger::mojom::UrlRequestPtr> request_;
 };
