@@ -55,8 +55,7 @@ BraveVPNOSConnectionAPIWin::BraveVPNOSConnectionAPIWin() {
 }
 
 BraveVPNOSConnectionAPIWin::~BraveVPNOSConnectionAPIWin() {
-  CloseHandle(event_handle_for_connected_);
-  CloseHandle(event_handle_for_disconnected_);
+  CloseHandle(event_handle_for_connected_disconnected_);
   CloseEventHandleForConnecting();
   CloseEventHandleForDisconnecting();
   CloseEventHandleForConnectFailed();
@@ -108,6 +107,14 @@ void BraveVPNOSConnectionAPIWin::CheckConnectionImpl(const std::string& name) {
 void BraveVPNOSConnectionAPIWin::OnObjectSignaled(HANDLE object) {
   DCHECK(!target_vpn_entry_name().empty());
 
+  // Check connection state for BraveVPN entry again when connected or
+  // disconnected events are arrived because we can get both event from any os
+  // vpn entry. All other events are sent by our code at utils_win.cc.
+  if (object == event_handle_for_connected_disconnected_) {
+    CheckConnectionImpl(target_vpn_entry_name());
+    return;
+  }
+
   CheckConnectionResult result = CheckConnectionResult::DISCONNECTING;
   if (object == GetEventHandleForConnecting()) {
     result = CheckConnectionResult::CONNECTING;
@@ -115,10 +122,6 @@ void BraveVPNOSConnectionAPIWin::OnObjectSignaled(HANDLE object) {
     result = CheckConnectionResult::CONNECT_FAILED;
   } else if (object == GetEventHandleForDisconnecting()) {
     result = CheckConnectionResult::DISCONNECTING;
-  } else if (object == event_handle_for_connected_) {
-    result = CheckConnectionResult::CONNECTED;
-  } else if (object == event_handle_for_disconnected_) {
-    result = CheckConnectionResult::DISCONNECTED;
   } else {
     NOTREACHED();
   }
@@ -164,23 +167,19 @@ void BraveVPNOSConnectionAPIWin::OnRemoved(const std::string& name,
                                            bool success) {}
 
 void BraveVPNOSConnectionAPIWin::StartVPNConnectionChangeMonitoring() {
-  DCHECK(!event_handle_for_connected_ && !event_handle_for_disconnected_);
+  DCHECK(!event_handle_for_connected_disconnected_);
 
-  event_handle_for_connected_ = CreateEvent(NULL, false, false, NULL);
-  event_handle_for_disconnected_ = CreateEvent(NULL, false, false, NULL);
+  event_handle_for_connected_disconnected_ =
+      CreateEvent(NULL, false, false, NULL);
 
-  // We don't need to check current connection state again if monitor each event
-  // separately.
+  // Ase we pass INVALID_HANDLE_VALUE, we can get connected or disconnected
+  // event from any os vpn entry. It's filtered by OnObjectSignaled().
   RasConnectionNotificationW(static_cast<HRASCONN>(INVALID_HANDLE_VALUE),
-                             event_handle_for_connected_, RASCN_Connection);
-  RasConnectionNotificationW(static_cast<HRASCONN>(INVALID_HANDLE_VALUE),
-                             event_handle_for_disconnected_,
-                             RASCN_Disconnection);
+                             event_handle_for_connected_disconnected_,
+                             RASCN_Connection | RASCN_Disconnection);
 
-  connected_event_watcher_.StartWatchingMultipleTimes(
-      event_handle_for_connected_, this);
-  disconnected_event_watcher_.StartWatchingMultipleTimes(
-      event_handle_for_disconnected_, this);
+  connected_disconnected_event_watcher_.StartWatchingMultipleTimes(
+      event_handle_for_connected_disconnected_, this);
   connecting_event_watcher_.StartWatchingMultipleTimes(
       GetEventHandleForConnecting(), this);
   disconnecting_event_watcher_.StartWatchingMultipleTimes(

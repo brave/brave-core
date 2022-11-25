@@ -24,6 +24,24 @@ HANDLE g_connecting_event_handle = NULL;
 HANDLE g_connect_failed_event_handle = NULL;
 HANDLE g_disconnecting_event_handle = NULL;
 
+class ScopedHeapAlloc {
+ public:
+  explicit ScopedHeapAlloc(SIZE_T dw_bytes) {
+    lp_alloc_mem_ = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_bytes);
+  }
+  ~ScopedHeapAlloc() {
+    if (lp_alloc_mem_)
+      HeapFree(GetProcessHeap(), 0, lp_alloc_mem_);
+  }
+  ScopedHeapAlloc(const ScopedHeapAlloc&) = delete;
+  ScopedHeapAlloc& operator=(const ScopedHeapAlloc&) = delete;
+
+  LPVOID lp_alloc_mem() { return lp_alloc_mem_; }
+
+ private:
+  LPVOID lp_alloc_mem_ = NULL;
+};
+
 void WINAPI RasDialFunc(UINT, RASCONNSTATE rasconnstate, DWORD error) {
   if (error) {
     SetEvent(g_connect_failed_event_handle);
@@ -151,8 +169,8 @@ std::wstring GetPhonebookPath() {
   }
 
   // Allocate required buf.
-  app_data_path = reinterpret_cast<TCHAR*>(HeapAlloc(
-      GetProcessHeap(), HEAP_ZERO_MEMORY, dw_buf_size * sizeof(TCHAR)));
+  ScopedHeapAlloc app_data_path_mem(dw_buf_size * sizeof(TCHAR));
+  app_data_path = reinterpret_cast<TCHAR*>(app_data_path_mem.lp_alloc_mem());
   if (app_data_path == NULL) {
     LOG(ERROR) << "HeapAlloc failed!";
     return app_data_path;
@@ -164,15 +182,19 @@ std::wstring GetPhonebookPath() {
       L"%ls\\Microsoft\\Network\\Connections\\Pbk\\rasphone.pbk",
       app_data_path);
 
-  // Deallocate memory for the connection buffer
-  HeapFree(GetProcessHeap(), 0, app_data_path);
-  app_data_path = NULL;
-
   return phone_book_path;
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasenumconnectionsa
 bool DisconnectEntry(const std::wstring& entry_name) {
+  auto connection_result = CheckConnection(entry_name);
+  if (connection_result == CheckConnectionResult::DISCONNECTING) {
+    VLOG(2) << __func__
+            << " Don't try to disconnect while brave vpn entry is already in "
+               "disconnecting state";
+    return true;
+  }
+
   DWORD dw_cb = 0;
   DWORD dw_ret = ERROR_SUCCESS;
   DWORD dw_connections = 0;
@@ -184,8 +206,8 @@ bool DisconnectEntry(const std::wstring& entry_name) {
 
   if (dw_ret == ERROR_BUFFER_TOO_SMALL) {
     // Allocate the memory needed for the array of RAS structure(s).
-    lp_ras_conn = reinterpret_cast<LPRASCONN>(
-        HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_cb));
+    ScopedHeapAlloc ras_conn(dw_cb);
+    lp_ras_conn = reinterpret_cast<LPRASCONN>(ras_conn.lp_alloc_mem());
     if (lp_ras_conn == NULL) {
       LOG(ERROR) << "HeapAlloc failed!";
       return false;
@@ -214,9 +236,6 @@ bool DisconnectEntry(const std::wstring& entry_name) {
         }
       }
     }
-    // Deallocate memory for the connection buffer
-    HeapFree(GetProcessHeap(), 0, lp_ras_conn);
-    lp_ras_conn = NULL;
     return dw_ret == ERROR_SUCCESS;
   }
 
@@ -233,11 +252,21 @@ bool DisconnectEntry(const std::wstring& entry_name) {
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasdiala
 bool ConnectEntry(const std::wstring& entry_name) {
+  auto connection_result = CheckConnection(entry_name);
+  if (connection_result == CheckConnectionResult::CONNECTING ||
+      connection_result == CheckConnectionResult::CONNECTED) {
+    VLOG(2)
+        << __func__
+        << " Don't try to connect when it's in-progress or already connected.";
+    return true;
+  }
+
   LPRASDIALPARAMS lp_ras_dial_params = NULL;
   DWORD cb = sizeof(RASDIALPARAMS);
 
-  lp_ras_dial_params = reinterpret_cast<LPRASDIALPARAMS>(
-      HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, cb));
+  ScopedHeapAlloc ras_dial_params(cb);
+  lp_ras_dial_params =
+      reinterpret_cast<LPRASDIALPARAMS>(ras_dial_params.lp_alloc_mem());
   if (lp_ras_dial_params == NULL) {
     LOG(ERROR) << "HeapAlloc failed!";
     SetEvent(g_connect_failed_event_handle);
@@ -256,7 +285,6 @@ bool ConnectEntry(const std::wstring& entry_name) {
   DWORD dw_ret =
       RasGetCredentials(DEFAULT_PHONE_BOOK, entry_name.c_str(), &credentials);
   if (dw_ret != ERROR_SUCCESS) {
-    HeapFree(GetProcessHeap(), 0, (LPVOID)lp_ras_dial_params);
     PrintRasError(dw_ret);
     SetEvent(g_connect_failed_event_handle);
     return false;
@@ -268,15 +296,19 @@ bool ConnectEntry(const std::wstring& entry_name) {
   HRASCONN h_ras_conn = NULL;
   dw_ret = RasDial(NULL, DEFAULT_PHONE_BOOK, lp_ras_dial_params, 0,
                    (LPVOID)(&RasDialFunc), &h_ras_conn);
+
+  if (dw_ret == ERROR_DIAL_ALREADY_IN_PROGRESS) {
+    // We should not treat this as failure state.
+    // Just return when already dialed.
+    PrintRasError(dw_ret);
+    return true;
+  }
+
   if (dw_ret != ERROR_SUCCESS) {
-    HeapFree(GetProcessHeap(), 0, (LPVOID)lp_ras_dial_params);
     PrintRasError(dw_ret);
     SetEvent(g_connect_failed_event_handle);
     return false;
   }
-  VLOG(2) << "SUCCESS!";
-
-  HeapFree(GetProcessHeap(), 0, (LPVOID)lp_ras_dial_params);
 
   return true;
 }
@@ -295,6 +327,15 @@ bool CreateEntry(const std::wstring& entry_name,
                  const std::wstring& hostname,
                  const std::wstring& username,
                  const std::wstring& password) {
+  auto connection_result = CheckConnection(entry_name);
+  if (connection_result == CheckConnectionResult::CONNECTING ||
+      connection_result == CheckConnectionResult::CONNECTED) {
+    VLOG(2) << __func__
+            << " Don't try to create entry when brave vpn entry is in "
+               "connecting or connected state";
+    return true;
+  }
+
   RASENTRY entry;
   ZeroMemory(&entry, sizeof(RASENTRY));
   // For descriptions of each field (including valid values) see:
@@ -412,7 +453,7 @@ CheckConnectionResult GetConnectionState(HRASCONN h_ras_conn) {
       VLOG(2) << "Connecting device...";
       return CheckConnectionResult::CONNECTING;
     case RASCS_Connected:
-      VLOG(2) << "Connection completed";
+      VLOG(2) << "Connected";
       return CheckConnectionResult::CONNECTED;
     case RASCS_Disconnected:
       VLOG(2) << "Disconnected";
@@ -425,6 +466,7 @@ CheckConnectionResult GetConnectionState(HRASCONN h_ras_conn) {
 }
 
 CheckConnectionResult CheckConnection(const std::wstring& entry_name) {
+  VLOG(2) << "Check connection state for " << entry_name;
   if (entry_name.empty())
     return CheckConnectionResult::DISCONNECTED;
 
@@ -439,6 +481,7 @@ CheckConnectionResult CheckConnection(const std::wstring& entry_name) {
 
   // If got success here, it means there is no connected vpn entry.
   if (dw_ret == ERROR_SUCCESS) {
+    VLOG(2) << " There is no active connections.";
     return CheckConnectionResult::DISCONNECTED;
   }
 
@@ -447,7 +490,8 @@ CheckConnectionResult CheckConnection(const std::wstring& entry_name) {
     return CheckConnectionResult::DISCONNECTED;
 
   // Allocate the memory needed for the array of RAS structure(s).
-  lp_ras_conn = (LPRASCONN)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_cb);
+  ScopedHeapAlloc ras_conn(dw_cb);
+  lp_ras_conn = reinterpret_cast<LPRASCONN>(ras_conn.lp_alloc_mem());
   if (lp_ras_conn == NULL) {
     LOG(ERROR) << "HeapAlloc failed!";
     return CheckConnectionResult::DISCONNECTED;
@@ -461,7 +505,6 @@ CheckConnectionResult CheckConnection(const std::wstring& entry_name) {
   dw_ret = RasEnumConnections(lp_ras_conn, &dw_cb, &dw_connections);
 
   if (ERROR_SUCCESS != dw_ret) {
-    HeapFree(GetProcessHeap(), 0, lp_ras_conn);
     lp_ras_conn = NULL;
     return CheckConnectionResult::DISCONNECTED;
   }
@@ -474,9 +517,6 @@ CheckConnectionResult CheckConnection(const std::wstring& entry_name) {
       break;
     }
   }
-
-  HeapFree(GetProcessHeap(), 0, lp_ras_conn);
-  lp_ras_conn = NULL;
   return result;
 }
 
