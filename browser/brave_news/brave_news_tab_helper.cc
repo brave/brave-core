@@ -71,8 +71,10 @@ BraveNewsTabHelper::GetAvailableFeeds() {
 bool BraveNewsTabHelper::IsSubscribed(const FeedDetails& feed_details) {
   auto* publisher = controller_->publisher_controller()->GetPublisherForFeed(
       feed_details.feed_url);
-  return publisher && publisher->user_enabled_status ==
-                          brave_news::mojom::UserEnabled::ENABLED;
+  return publisher &&
+         (publisher->user_enabled_status ==
+              brave_news::mojom::UserEnabled::ENABLED ||
+          publisher->type == brave_news::mojom::PublisherType::DIRECT_SOURCE);
 }
 
 bool BraveNewsTabHelper::IsSubscribed() {
