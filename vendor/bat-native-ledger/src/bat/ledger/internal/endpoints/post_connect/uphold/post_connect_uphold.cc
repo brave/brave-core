@@ -94,8 +94,4 @@ const char* PostConnectUphold::Path() const {
   return "/v3/wallet/uphold/%s/claim";
 }
 
-uint32_t PostConnectUphold::RetryOnRateLimiting() const {
-  return 3;
-}
-
 }  // namespace ledger::endpoints

@@ -59,6 +59,7 @@ class PostWallets final : public RequestBuilder,
       const std::string& content) const override;
   absl::optional<std::string> Content() const override;
   std::string ContentType() const override;
+  uint32_t RetryOnRateLimiting() const override;
 
   absl::optional<std::string> geo_country_;
 };

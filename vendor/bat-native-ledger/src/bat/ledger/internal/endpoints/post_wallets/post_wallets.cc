@@ -67,7 +67,9 @@ Result PostWallets::ProcessResponse(const mojom::UrlResponse& response) {
 
 PostWallets::PostWallets(LedgerImpl* ledger,
                          absl::optional<std::string>&& geo_country)
-    : RequestBuilder(ledger), geo_country_(std::move(geo_country)) {}
+    : RequestBuilder(ledger), geo_country_(std::move(geo_country)) {
+  geo_country_ = absl::nullopt;
+}
 
 PostWallets::~PostWallets() = default;
 
@@ -120,6 +122,10 @@ absl::optional<std::string> PostWallets::Content() const {
 
 std::string PostWallets::ContentType() const {
   return kApplicationJson;
+}
+
+uint32_t PostWallets::RetryOnRateLimiting() const {
+  return 3;
 }
 
 }  // namespace ledger::endpoints

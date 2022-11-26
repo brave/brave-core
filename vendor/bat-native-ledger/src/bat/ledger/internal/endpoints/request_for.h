@@ -15,7 +15,6 @@
 #include "bat/ledger/internal/endpoints/request_builder.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/logging.h"
-#include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger::endpoints {

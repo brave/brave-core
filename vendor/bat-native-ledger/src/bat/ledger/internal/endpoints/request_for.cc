@@ -5,6 +5,9 @@
 
 #include "bat/ledger/internal/endpoints/request_for.h"
 
+#include "net/http/http_status_code.h"
+#include "net/http/http_util.h"
+
 namespace ledger::endpoints {
 
 void SendImpl(LedgerImpl* ledger,
@@ -14,27 +17,36 @@ void SendImpl(LedgerImpl* ledger,
   DCHECK(ledger);
 
   if (params) {
-    auto [request, callback, delta] = std::move(*params);
+    auto [request, callback, delay] = std::move(*params);
 
     auto load_url_callback =
         base::BindOnce(
             [](mojom::UrlRequestPtr req, client::LoadURLCallback cb,
                const mojom::UrlResponse& res) -> decltype(params) {
-              if (/*response.status_code == net::HTTP_TOO_MANY_REQUESTS &&*/
+              if (res.status_code == net::HTTP_TOO_MANY_REQUESTS &&
                   req->retry_on_rate_limiting--) {
-                LogUrlResponse(__func__, res);
-
-                return std::tuple(std::move(req), std::move(cb),
-                                  base::Seconds(5));
-              } else {
-                std::move(cb).Run(res);
-                return absl::nullopt;
+                if (base::TimeDelta retry_after;
+                    res.headers.contains("retry-after") &&
+                    net::HttpUtil::ParseRetryAfterHeader(
+                        res.headers.at("retry-after"), base::Time::Now(),
+                        &retry_after)) {
+                  LogUrlResponse(__func__, res);
+                  BLOG(1, "Retrying after " << retry_after.InSeconds()
+                                            << " seconds.");
+                  return std::tuple(std::move(req), std::move(cb),
+                                    std::move(retry_after));
+                } else {
+                  BLOG(0, "Failed to parse retry-after header!");
+                }
               }
+
+              std::move(cb).Run(res);
+              return absl::nullopt;
             },
             request->Clone(), std::move(callback))
             .Then(base::BindOnce(&SendImpl, ledger));
 
-    if (delta.is_positive()) {
+    if (delay > base::Seconds(0)) {
       base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
           FROM_HERE,
           base::BindOnce(static_cast<void (LedgerImpl::*)(
@@ -42,7 +54,7 @@ void SendImpl(LedgerImpl* ledger,
                              &LedgerImpl::LoadURL),
                          base::Unretained(ledger), std::move(request),
                          std::move(load_url_callback)),
-          std::move(delta));
+          std::move(delay));
     } else {
       ledger->LoadURL(std::move(request), std::move(load_url_callback));
     }
