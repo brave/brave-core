@@ -108,8 +108,7 @@ class BraveNewsButtonView : public views::LabelButton,
       has_feeds = !tab_helper->GetAvailableFeeds().empty();
     }
 
-    auto image = gfx::CreateVectorIcon(
-        subscribed ? kBraveTodaySubscribedIcon : kBraveTodaySubscribeIcon, 16,
+    auto image = gfx::CreateVectorIcon(kBraveNewsSubscribeIcon, 16,
         color_utils::DeriveDefaultIconColor(GetIconColor(subscribed)));
     SetImage(ButtonState::STATE_NORMAL, image);
     SetVisible(has_feeds);
