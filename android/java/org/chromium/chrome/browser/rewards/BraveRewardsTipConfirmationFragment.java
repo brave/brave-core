@@ -98,7 +98,10 @@ public class BraveRewardsTipConfirmationFragment extends Fragment implements Bra
         mNextTipDateText = view.findViewById(R.id.next_tip_date_text);
         mNextTipDateValue = view.findViewById(R.id.next_tip_date_value);
 
-        if (monthlyContribution) {
+        if (status == BraveRewardsSiteBannerActivity.TIP_PENDING) {
+            tipTypeDescriptionTextView.setText(R.string.pending_tip_text);
+            oneTtimeTipNote.setVisibility(View.INVISIBLE);
+        } else if (monthlyContribution) {
             TextView tipAmountText = view.findViewById(R.id.tip_amount_text);
             tipAmountText.setText(R.string.tip_amount_text);
             tipTypeDescriptionTextView.setText(
