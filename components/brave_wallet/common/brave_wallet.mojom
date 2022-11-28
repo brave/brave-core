@@ -74,6 +74,7 @@ enum ProviderError {
 
 enum FilecoinProviderError {
   kSuccess = ProviderError.kSuccess,  // No error
+  kUnknown = ProviderError.kUnknown,
   kActorNotFound = 1, // Actor not found for given address
   // Pre-defined error codes specified in
   // https://www.jsonrpc.org/specification#error_object
@@ -86,6 +87,7 @@ enum FilecoinProviderError {
 
 enum SolanaProviderError {
   kSuccess = ProviderError.kSuccess,  // No error
+  kUnknown =  ProviderError.kUnknown,
 
   kUserRejectedRequest = ProviderError.kUserRejectedRequest,
   kUnauthorized = ProviderError.kUnauthorized,
