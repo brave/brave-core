@@ -25,7 +25,7 @@ extension PlaylistListViewController: UITableViewDataSource {
 
   func getAssetDurationFormatted(item: PlaylistInfo, _ completion: @escaping (String) -> Void) {
     PlaylistManager.shared.getAssetDuration(item: item) { duration in
-      let domain = URL(string: item.pageSrc)?.baseDomain ?? "0s"
+      let domain = URL(string: item.pageSrc)?.baseDomain ?? "0\(Strings.shieldsTimeStatsSeconds)"
       if let duration = duration {
         if duration.isInfinite {
           // Live video/audio
@@ -79,17 +79,22 @@ extension PlaylistListViewController: UITableViewDataSource {
       }
       
       guard indexPath.row >= 0,
+            PlaylistManager.shared.currentFolder != nil,
             let item = PlaylistManager.shared.itemAtIndex(indexPath.row) else {
+        cell.do {
+          $0.showsReorderControl = false
+          $0.setTitle(title: nil)
+          $0.setDetails(details: nil)
+          $0.setContentSize(parentController: self)
+        }
         return cell
       }
-      
-      let domain = URL(string: item.pageSrc)?.baseDomain ?? "0s"
       
       cell.do {
         $0.showsReorderControl = false
         $0.setTitle(title: item.name)
-        $0.setDetails(details: domain)
-        $0.setContentSize(parentController: self, size: view.bounds.size)
+        $0.setDetails(details: URL(string: item.pageSrc)?.baseDomain ?? "0\(Strings.shieldsTimeStatsSeconds)")
+        $0.setContentSize(parentController: self)
         
         if let url = URL(string: item.pageSrc) {
           $0.loadThumbnail(for: url)
@@ -109,12 +114,11 @@ extension PlaylistListViewController: UITableViewDataSource {
     }
 
     cell.prepareForDisplay()
-    let domain = URL(string: item.pageSrc)?.baseDomain ?? "0s"
 
     cell.do {
       $0.showsReorderControl = false
       $0.titleLabel.text = item.name
-      $0.detailLabel.text = domain
+      $0.detailLabel.text = URL(string: item.pageSrc)?.baseDomain ?? "0\(Strings.shieldsTimeStatsSeconds)"
       $0.contentView.backgroundColor = .clear
       $0.backgroundColor = .clear
       $0.iconView.image = nil
