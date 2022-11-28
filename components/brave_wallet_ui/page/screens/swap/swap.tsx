@@ -9,15 +9,26 @@ import { useHistory } from 'react-router-dom'
 import { NetworkInfo, Swap as SwapInterface } from '@brave/swap-interface'
 import '@brave/swap-interface/dist/style.css'
 
+// Utils
 import { getLocale } from '$web-common/locale'
+
+// Selectors
 import { WalletSelectors } from '../../../common/selectors'
 import {
   useSafeWalletSelector,
   useUnsafeWalletSelector
 } from '../../../common/hooks/use-safe-selector'
+
+// Hooks
 import { useLib } from '../../../common/hooks'
+
+// Types
 import { BraveWallet, WalletAccountType, WalletRoutes } from '../../../constants/types'
 
+// Components
+import { BuySendSwapDepositNav } from '../../../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
+
+// Adapters
 import {
   makeBlockchainToken,
   makeNetworkInfo,
@@ -118,6 +129,7 @@ export const Swap = () => {
 
   return (
     <div>
+      <BuySendSwapDepositNav isTab={true} />
       {selectedNetwork && selectedAccount && (
         <SwapInterface
           getLocale={getLocale}
