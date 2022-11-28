@@ -60,15 +60,15 @@
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Trackere & reklamer blokeret (aggressivt) ",
+    "message": "Trackere &amp; reklamer blokeret (aggressivt) ",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Trackere & reklamer blokeret (standard) ",
+    "message": "Trackere &amp; reklamer blokeret (standard) ",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Tillad alle trackere & reklamer ",
+    "message": "Tillad alle trackere &amp; reklamer ",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
