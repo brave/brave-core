@@ -42,7 +42,7 @@ extension BraveWallet.NetworkInfo: Identifiable {
       visible: false,
       tokenId: "",
       coingeckoId: "",
-      chainId: "",
+      chainId: chainId,
       coin: coin
     )
   }
@@ -88,7 +88,7 @@ extension BraveWallet.SignMessageRequest {
 
 extension BraveWallet.BlockchainToken: Identifiable {
   public var id: String {
-    contractAddress.lowercased()
+    contractAddress.lowercased() + chainId + symbol + tokenId
   }
 
   public func contractAddress(in network: BraveWallet.NetworkInfo) -> String {
