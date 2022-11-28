@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fil">
+<translation id="915758461293673891">Halaga ng tip:</translation>
+<translation id="8966035543003363155">Mas pinapadali ito ng mga notification ng Brave</translation>
+<translation id="7662771815233894695">Pamahalaan ang mga download, makakuha ng mga token, tingnan ang stats ng lingguhang paggamit, at higit pa.</translation>
+<translation id="4265429476391459783">Hindi ka nakakakuha ng Mga Reward o nakakatanggap ng Mga Ulat sa Privacy</translation>
+<translation id="1305714751384738456">Hindi ka nakakakuha ng Mga Reward ng Brave</translation>
+<translation id="1483391942610220726">Hindi ka nakakatanggap ng Mga Ulat sa Privacy</translation>
+<translation id="4683790942451502796">I-on ulit ang mga notification kung gusto mong patuloy na kumita ng BAT at makatanggap ng mga lingguhang ulat sa privacy.</translation>
+<translation id="1462722717055895108">I-on ulit ang mga notification kung gusto mong patuloy na kumita ng BAT</translation>
+<translation id="5457255168064266494">I-on ulit ang mga notification kung gusto mong patuloy na makatanggap ng mga lingguhang ulat sa privacy.</translation>
+<translation id="6268959058971634697">Hindi ka nakakakuha ng Mga Reward</translation>
+<translation id="1088637159642753509">I-enable ang mga notification sa device para makakuha ng Mga Reward ng Brave at makita ang Mga Ulat sa Privacy.</translation>
+<translation id="312404770066229090">I-enable ang mga notification sa device para makakuha ng Mga Reward ng Brave.</translation>
+<translation id="2241529840361230499">I-enable ang mga notification sa device para makatanggap ng Mga Ulat sa Privacy ng Brave.</translation>
+<translation id="4930155581888391118">I-enable ang mga notification mula sa Brave para makakuha ng Mga Reward ng Brave.</translation>
+<translation id="325187916104529570">Buksan ang Mga Setting at i-on ang mga notification sa device para sa Brave Ads.</translation>
+<translation id="5744802588121897886">I-on ang mga notification ng Brave</translation>
 <translation id="7307834434086582547">I-enable/I-disable ang Brave Shields</translation>
 <translation id="6945863270524203017">Makatanggap ng lingguhang mga update sa privacy sa tracker at pag-block ng ad.</translation>
 <translation id="4324735664183300693">I-on ang mga notification</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">Pamamaraan ng Pagresolba</translation>
 <translation id="2356070529366658676">Magtanong</translation>
 <translation id="4176463684765177261">Hindi Pinagana</translation>
-<translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">Naka-enable</translation>
 <translation id="6252490671914511928">Mga nangungunang kuwento ngayong araw sa ganap na pribadong feed, para lang sa iyo.</translation>
 <translation id="7266075701303521777">Ang Balita sa Brave ay sinusuportahan ng ad na may mga ganap na pribado at naka-anonymize na ad na tumutugma sa iyong device.</translation>
 <translation id="4541978218358617681">Ad</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">I-clear ang data sa pag-browse</translation>
 <translation id="5965081608816406060">Pag-playback ng video sa background</translation>
 <translation id="6332924730165919598">Magsasara ang Brave kapag isinara ang lahat ng tab</translation>
-<translation id="1580125697191336644">Pang-eksperimento. Ine-enable ang pag-play ng audio mula sa video sa background kapag hindi aktibo ang tab o kapag naka-off ang screen ng device. Subukang lumipat sa desktop mode kung hindi gumagana ang feature na ito.</translation>
-<translation id="59174027418879706">Naka-enable</translation>
+<translation id="3872768973878059926">Binibigyang-daan ang audio na patuloy na mag-play kapag lumipat ka sa ibang tab sa Brave, lumipat sa ibang app, o naka-off ang screen ng device mo.</translation>
 <translation id="4150201353443180367">Display</translation>
 <translation id="2433507940547922241">Hitsura</translation>
 <translation id="6333347122924254968">Ipakita ang icon ng Brave Rewards sa address bar</translation>
@@ -310,16 +325,11 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Puwedeng hilingin sa iyo ng Uphold na i-verify mo ang iyong pagkakakilanlan batay sa mga hiniling na serbisyo.</translation>
 <translation id="3200197118442451932">Hindi ipoproseso, iso-store, o ia-access ng Brave Software Inc. ang alinman sa mga personal na impormasyong ibibigay mo sa <ph name="WALLET_PROVIDER"/> kapag bumuo ka ng account sa kanila.</translation>
-<translation id="3699674790322420653">Kumpletuhin ang pag-verify ng wallet</translation>
 <translation id="2193391216824305230">Wallet ng User</translation>
 <translation id="1665118090708049096">Pumunta sa aking<ph name="WALLET_PROVIDER"/> account</translation>
 <translation id="1948959999802743233">Nadiskonekta mula sa <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Mag-withdraw ng Mga Pondo</translation>
 <translation id="8874184842967597500">Hindi nakakonekta</translation>
-<translation id="3368922792935385530">Nakakonekta</translation>
-<translation id="5358719431303818601">Nadiskonektang hindi na-verify</translation>
-<translation id="4241449868720191203">Nadiskonektang na-verify</translation>
-<translation id="3248185426436836442">Nakabinbin</translation>
 <translation id="2495032782748793764">Default ng Brave</translation>
 <translation id="9132378787893584761">I-share ang Brave sa iyong mga kaibigan!</translation>
 <translation id="717952606991220586">Naku, may mali. Pakisubukang muli sa ibang pagkakataon.</translation>
@@ -673,6 +683,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="1597199892790541240">Gas Fee</translation>
 <translation id="1634828734222219955">Kabuuan</translation>
 <translation id="7995708795274219641">Halaga + Gas</translation>
+<translation id="2186011161688824046">Halaga + bayarin</translation>
 <translation id="1950052789869821983">Transaksyon</translation>
 <translation id="2304783958703511257">Mga Advanced na Setting</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -701,6 +712,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="1133619932669546254">I-activate ang <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">URI NG FUNCTION: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Walang data</translation>
+<translation id="1105525362447173583">Solana Dapp Sign Transaction</translation>
 <translation id="9061799688859969073">Nagpadala ang <ph name="ACCOUNT_NAME"/> ng <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
 <translation id="1148985422232712046">Nag-send ang <ph name="ACCOUNT_NAME"/> ng <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
 <translation id="2911329628253651823">Inaprubahan ng <ph name="ACCOUNT_NAME"/> ang <ph name="ASSET"/> - <ph name="DATE"/></translation>
@@ -800,6 +812,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="8030169304546394654">Nakadiskonekta</translation>
 <translation id="3423275441470187644">Tiwala</translation>
 <translation id="2391762656119864333">Bawiin</translation>
+<translation id="3368922792935385530">Nakakonekta</translation>
 <translation id="3432029672560911238">User account</translation>
 <translation id="5753378322046059140">Lumipat ng account</translation>
 <translation id="3897092660631435901">Menu</translation>
@@ -867,6 +880,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="7080614857771109950">Kayang magsuporta ng magkatugmang EVM na mga asset sa Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Sinusuportahan ang mga asset na compatible sa SPL sa Solana blockchain</translation>
 <translation id="6575120282593094155">Wala ka pang <ph name="ACCOUNT_TYPE"/> account. Gumawa na ng isa ngayon?</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">Mga Hindi Kasamang App</translation>
 <translation id="8463269357637177759">Mga Pinapayagang Regular App</translation>
@@ -889,6 +903,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="4784306439879850873">Tandaang hindi mave-verify ng Brave ang mangyayari kapag lumagda ka. Posibleng pahintulutan ng lagda ang halos anumang operasyon sa iyong account o sa ngalan mo, kabilang ang (pero hindi  ito limitado sa) pagbibigay ng ganap na kontrol sa iyong account at mga asset ng cryptocurrency sa humihiling na site. Lumagda lang kung sigurado kang gusto mong gawin ang pagkilos na ito, at pinagkakatiwalaan mo ang humihiling na site.</translation>
 <translation id="3474375934783434676">Maglagda sa sarili mong pananagutan</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> sa <ph name="SIZE"/></translation>
+<translation id="756701799684433105">Aprubahan ang transaksyon</translation>
 <translation id="6450792191436242818">System Program</translation>
 <translation id="6252742184395380448">Config Program</translation>
 <translation id="5358970666412490132">Stake Program</translation>
@@ -898,6 +913,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="6421371987002247943">Token Program</translation>
 <translation id="8780753288764281797">Secp256k1 Program</translation>
 <translation id="8504640708321980506">Data</translation>
+<translation id="3723411967118253067">Program ID</translation>
 <translation id="4771176409524282426">Gumawa ng account</translation>
 <translation id="1755120947324658439">Italaga</translation>
 <translation id="7588707273764747927">Mag-transfer</translation>
@@ -937,4 +953,27 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="7352651011704765696">Nagkaproblema</translation>
 <translation id="7144878232160441200">I-retry</translation>
 <translation id="6040143037577758943">Isara</translation>
+<translation id="7710469167917867539">Bayarin sa transaksyon</translation>
+<translation id="7843211152394841558">Max na Retry:</translation>
+<translation id="8496335570810457">Preflight Commitment:</translation>
+<translation id="5100124500279922001">Laktawan ang Preflight:</translation>
+<translation id="7152095322071766507">Pinakabinibisitang Site</translation>
+<translation id="7230006500876504868">Maghanap gamit ang Brave</translation>
+<translation id="5888208462949095139">Maghanap gamit ang <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
+<translation id="5456039738087398178">Widget sa home screen</translation>
+<translation id="703185154752046151">Idinagdag ang widget sa home screen</translation>
+<translation id="3290805388004282161">Subukan ang widget ng Brave search</translation>
+<translation id="4809681171446727314">I-access ang pribado at independent na paghanap sa home screen mo mismo.</translation>
+<translation id="7751715172931488388">Magdagdag ng widget</translation>
+<translation id="7285167584112910782">Paghananap ng mabilisang pagkilos ng Brave</translation>
+<translation id="2326703104633309781">Gamitin ang Brave Translate</translation>
+<translation id="5802752138057422257">May na-detect na mga NON-ASCII character!</translation>
+<translation id="442709594176931966">Tingnan ang orihinal na mensahe</translation>
+<translation id="2239252396088484499">Tingnan ang mensahe nang naka-ASCII encoding</translation>
+<translation id="4220693114674044366">Address ng token</translation>
+<translation id="5658257029899993935">Mag-link ng pagbili sa Brave account mo</translation>
+<translation id="1187061015547219282">I-link ang pagbili mo sa Play Store sa Brave account mo gamit ang Brave VPN sa iba pang device.</translation>
+<translation id="6662142137695589205">I-link ang subscription mo sa VPN</translation>
+<translation id="2674077112509133024">Palawakin ang proteksyon mo ng Brave Firewall + VPN</translation>
+<translation id="6365389672683343144">Kayang protektahan ng subscription mo sa Brave VPN ang hanggang 5 device, sa Android, iOS, at desktop. I-link lang ang subscription mo sa Google Play sa Brave account mo.</translation>
 </translationbundle>
