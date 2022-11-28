@@ -14,7 +14,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
+#include "chrome/browser/ui/views/tabs/tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -78,6 +80,24 @@ SkColor BraveTabStrip::GetTabSeparatorColor() const {
                    dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
   return dark_mode ? SkColorSetRGB(0x39, 0x38, 0x38)
                    : SkColorSetRGB(0xBE, 0xBF, 0xBF);
+}
+
+void BraveTabStrip::Layout() {
+  if (tabs::features::ShouldShowVerticalTabs(GetBrowser()) &&
+      base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
+    // Chromium implementation limits the height of tab strip, which we don't
+    // want.
+    auto bounds = GetLocalBounds();
+    for (auto* view : children()) {
+      if (view->bounds() != bounds)
+        view->SetBoundsRect(GetLocalBounds());
+      else if (view == &tab_container_.get())
+        view->Layout();
+    }
+    return;
+  }
+
+  TabStrip::Layout();
 }
 
 BEGIN_METADATA(BraveTabStrip, TabStrip)
