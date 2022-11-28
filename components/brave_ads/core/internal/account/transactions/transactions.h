@@ -30,10 +30,15 @@ using GetCallback =
 
 using RemoveAllCallback = base::OnceCallback<void(const bool)>;
 
-TransactionInfo Add(const std::string& creative_instance_id,
-                    double value,
+TransactionInfo Get(const std::string& creative_instance_id,
                     const AdType& ad_type,
                     const ConfirmationType& confirmation_type,
+                    double value);
+
+TransactionInfo Add(const std::string& creative_instance_id,
+                    const AdType& ad_type,
+                    const ConfirmationType& confirmation_type,
+                    double value,
                     AddCallback callback);
 
 void GetForDateRange(base::Time from_time,
