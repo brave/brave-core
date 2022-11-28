@@ -31,15 +31,6 @@ extension Preferences {
     public static let ntpCheckDate = Option<TimeInterval?>(key: "ntp.next-check-date", default: nil)
   }
 
-  public final class BraveNews {
-    public static let isShowingOptIn = Option<Bool>(key: "brave-today.showing-opt-in", default: false)
-    public static let userOptedIn = Option<Bool>(key: "brave-today.user-opted-in", default: false)
-    public static let isEnabled = Option<Bool>(key: "brave-today.enabled", default: true)
-    public static let languageChecked = Option<Bool>(key: "brave-today.language-checked", default: false)
-    public static let debugEnvironment = Option<String?>(key: "brave-today.debug.environment", default: nil)
-    public static let debugLanguageCode = Option<String?>(key: "brave-today.debug.language-code", default: nil)
-  }
-
   public final class Review {
     /// Application Launch Count (how many times the application has been launched)
     public static let launchCount = Option<Int>(key: "review.launch-count", default: 0)

@@ -160,13 +160,25 @@ private let mockCategories = [
   "Tech",
 ]
 
+extension FeedItem.LegacySource {
+  fileprivate static var mock: FeedItem.LegacySource {
+    .init(
+      id: UUID().uuidString,
+      isDefault: true,
+      category: "Top News",
+      name: "Test Source"
+    )
+  }
+}
+
 extension FeedItem.Source {
   fileprivate static var mock: FeedItem.Source {
     .init(
       id: UUID().uuidString,
       isDefault: true,
       category: "Top News",
-      name: "Test Source"
+      name: "Test Source",
+      destinationDomains: []
     )
   }
 }
