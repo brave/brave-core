@@ -48,7 +48,6 @@ jobs:
           [[ -z "$DEP" ]] && { echo Input dependency cannot be empty; exit 1; }
           [[ -z "$DEPREF" ]] && { echo Input ref cannot be empty; exit 1; }
 
-          DATETIME="$($DATE '+%Y-%m-%d-%H-%M')"
           readarray -t milestones < <(gh api /repos/${GITHUB_REPOSITORY:?}/milestones -q ".[] | .title" | grep -Fv Closed)
           branches=( "${milestones[@]/*Nightly/master}" )
           branches=( "${branches[@]/ -*/}" )
@@ -56,11 +55,11 @@ jobs:
           for branch in "${branches[@]}"
           do
             git switch "$branch"
-            pr_branch="pr-auto-bump-deps-${branch}-${DATETIME}"
+            pr_branch="pr-auto-bump-deps-${branch}-${DEP}-${DEPREF}"
             git switch -c "$pr_branch"
             "$SED" -i -e "s|\(.*${DEP}.*\)@\(.*\)\",$|\1@${DEPREF}\",|" DEPS
             git add DEPS
-            git commit -m "Auto bump DEPS ${DEP}"
+            git commit -m "Auto bump DEPS ${DEP}@${DEPREF}"
             # git push -u origin "$pr_branch"
-            # gh pr create --base "${branch}" -f -t "Auto bump ${DEP}" -l "CI/run-audit-deps"
+            # gh pr create --base "${branch}" -f -t "Auto bump DEPS ${DEP}@${DEPREF}" -l "CI/run-audit-deps"
           done
