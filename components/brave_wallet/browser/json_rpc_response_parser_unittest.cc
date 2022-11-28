@@ -151,6 +151,21 @@ TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
     EXPECT_EQ(solana_error_message,
               l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
   }
+
+  // Unknown error code.
+  json =
+      R"({
+       "jsonrpc": "2.0",
+       "id": 1,
+       "error": {
+         "code": 3
+       }
+     })";
+  ParseErrorResult<mojom::ProviderError>(json, &eth_error, &eth_error_message);
+  EXPECT_EQ(mojom::ProviderError::kUnknown, eth_error);
+  ParseErrorResult<mojom::SolanaProviderError>(json, &solana_error,
+                                               &solana_error_message);
+  EXPECT_EQ(mojom::SolanaProviderError::kUnknown, solana_error);
 }
 
 TEST(JsonRpcResponseParserUnitTest, ConvertUint64ToString) {

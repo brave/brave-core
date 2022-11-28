@@ -54,6 +54,8 @@ void ParseErrorResult(const std::string& json,
     return;
 
   *error = static_cast<Error>(*code_int);
+  if (!mojom::IsKnownEnumValue(*error))
+    *error = Error::kUnknown;
   if (message_string) {
     *error_message = *message_string;
   } else {
