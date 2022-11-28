@@ -35,6 +35,7 @@ namespace brave_wallet {
 extern const char kBraveWalletWeeklyHistogramName[];
 extern const char kBraveWalletMonthlyHistogramName[];
 extern const char kBraveWalletNewUserReturningHistogramName[];
+extern const char kBraveWalletLastUsageTimeHistogramName[];
 
 class KeyringService;
 class JsonRpcService;

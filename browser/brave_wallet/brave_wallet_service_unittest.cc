@@ -2264,4 +2264,33 @@ TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetricMigration) {
       kBraveWalletNewUserReturningHistogramName, 1, 2);
 }
 
+TEST_F(BraveWalletServiceUnitTest, LastUsageTimeMetric) {
+  histogram_tester_->ExpectTotalCount(kBraveWalletLastUsageTimeHistogramName,
+                                      0);
+
+  GetPrefs()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  task_environment_.RunUntilIdle();
+
+  histogram_tester_->ExpectUniqueSample(kBraveWalletLastUsageTimeHistogramName,
+                                        1, 1);
+
+  task_environment_.FastForwardBy(base::Days(7));
+
+  histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
+                                       2, 1);
+
+  task_environment_.FastForwardBy(base::Days(7));
+
+  histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
+                                       3, 1);
+  histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
+                                       1, 7);
+
+  GetPrefs()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  task_environment_.RunUntilIdle();
+
+  histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
+                                       1, 8);
+}
+
 }  // namespace brave_wallet
