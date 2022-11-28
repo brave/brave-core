@@ -16,8 +16,8 @@ import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n
 import {WebUIListenerMixin, WebUIListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {BaseMixin} from '../base_mixin.js'
 import {Route, Router} from '../router.js';
-import {SyncStatus, SyncPrefs, SyncBrowserProxy, SyncBrowserProxyImpl} from '../people_page/sync_browser_proxy.js';
-import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
+import {SyncPrefs, SyncBrowserProxy, SyncBrowserProxyImpl} from '../people_page/sync_browser_proxy.js';
+import {BraveSyncBrowserProxy, BraveSyncStatus} from './brave_sync_browser_proxy.js';
 import {getTemplate} from './brave_sync_page.html.js'
 
 /**
@@ -53,12 +53,12 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
       },
       syncLabel_: {
         type: String,
-        computed: 'computeSyncLabel_(syncStatus_.firstSetupInProgress)'
+        computed: 'computeSyncLabel_(syncStatus_)'
       },
     };
   }
 
-  private syncStatus_: SyncStatus;
+  private syncStatus_: BraveSyncStatus;
   private isEncryptionSet_: boolean;
   private syncLabel_: string;
 
@@ -66,6 +66,10 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
   braveBrowserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();
 
   computeSyncLabel_() {
+    if (this.syncStatus_ !== undefined &&
+        this.syncStatus_.hasSyncWordsDecryptionError) {
+        return this.i18n('braveSyncCouldNotSyncActionLabel');
+    }
     const isAlreadySetup = this.syncStatus_ !== undefined &&
         !this.syncStatus_.firstSetupInProgress;
     const key = isAlreadySetup ? 'braveSyncManageActionLabel' : 'braveSyncSetupActionLabel';
@@ -75,7 +79,8 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
   override connectedCallback() {
     super.connectedCallback()
     const onSyncStatus = this.handleSyncStatus_.bind(this)
-    this.browserProxy_.getSyncStatus().then((status: SyncStatus) => onSyncStatus(status));
+    this.braveBrowserProxy_.getSyncStatus().then(
+        (status: BraveSyncStatus) => onSyncStatus(status));
     this.addWebUIListener(
       'sync-prefs-changed', this.handleSyncPrefsChanged_.bind(this));
     this.addWebUIListener('sync-status-changed', onSyncStatus);
@@ -90,7 +95,7 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
   /**
    * Handler for when the sync state is pushed from the browser.
    */
-  async handleSyncStatus_(syncStatus: SyncStatus) {
+  async handleSyncStatus_(syncStatus: BraveSyncStatus) {
     this.syncStatus_ = syncStatus;
   }
 

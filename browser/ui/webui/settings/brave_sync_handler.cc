@@ -84,7 +84,6 @@ void BraveSyncHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "SyncSetupReset", base::BindRepeating(&BraveSyncHandler::HandleReset,
                                             base::Unretained(this)));
-
   web_ui()->RegisterMessageCallback(
       "SyncDeleteDevice",
       base::BindRepeating(&BraveSyncHandler::HandleDeleteDevice,

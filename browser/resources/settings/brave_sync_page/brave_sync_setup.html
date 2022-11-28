@@ -52,9 +52,9 @@
   </div>
 </div>
 
-<template is="dom-if" if="[[syncCodeDialogType_]]" restamp>
+<template is="dom-if" if="[[syncCodeDialogType]]" restamp>
   <settings-brave-sync-code-dialog
-    code-type="{{syncCodeDialogType_}}"
+    code-type="{{syncCodeDialogType}}"
     sync-code="{{syncCode}}"
     sync-code-validation-error="{{syncCodeValidationError_}}"
     on-done="handleSyncCodeDialogDone_"
