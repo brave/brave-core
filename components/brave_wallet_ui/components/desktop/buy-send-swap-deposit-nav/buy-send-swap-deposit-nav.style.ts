@@ -15,7 +15,9 @@ export const Wrapper = styled.div<{ isTab?: boolean }>`
   padding: ${(p) => p.isTab ? 8 : 0}px;
   border: 2px solid ${(p) => p.theme.color.divider01};
   width: ${(p) => p.isTab ? 'unset' : '285px'};
-  position: ${(p) => p.isTab ? 'absolute' : 'relative'};
+  position: ${(p) => p.isTab ? 'fixed' : 'relative'};
+  top: ${(p) => p.isTab ? '100px' : 'unset'};
   left: ${(p) => p.isTab ? '32px' : 'unset'};
   overflow: ${(p) => p.isTab ? 'visible' : 'hidden'};
+  z-index: 40;
 `

@@ -710,7 +710,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
             {selectedPanel === 'main' ? (
               <ConnectedPanel
                 navAction={navigateTo}
-                isSwapSupported={true}
               />
             ) : (
               <>
