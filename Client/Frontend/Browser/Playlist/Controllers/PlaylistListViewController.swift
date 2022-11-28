@@ -323,7 +323,7 @@ class PlaylistListViewController: UIViewController {
         return
       }
 
-      delegate.playItem(item: item) { [weak self] error in
+      delegate.playItem(item: item) { [weak self] item, error in
         PlaylistCarplayManager.shared.currentPlaylistItem = nil
 
         guard let self = self,
@@ -372,6 +372,9 @@ class PlaylistListViewController: UIViewController {
           // Even if the item was NOT previously the last played item,
           // it is now as it has begun to play
           delegate.updateLastPlayedItem(item: item)
+          
+          // Download item if necessary
+          PlaylistManager.shared.autoDownload(item: item)
         }
       }
     }

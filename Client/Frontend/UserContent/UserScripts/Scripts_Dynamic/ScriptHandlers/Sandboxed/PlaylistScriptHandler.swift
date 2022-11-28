@@ -107,7 +107,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     Self.queue.async { [weak handler] in
       guard let handler = handler else { return }
 
-      if item.duration <= 0.0 && !item.detected || item.src.isEmpty || item.src.hasPrefix("data:") || item.src.hasPrefix("blob:") {
+      if item.duration <= 0.0 && !item.detected || item.src.isEmpty || item.src.hasPrefix("data:") {
         DispatchQueue.main.async {
           handler.delegate?.updatePlaylistURLBar(tab: handler.tab, state: .none, item: nil)
         }
@@ -120,7 +120,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
             let delegate = handler.delegate
           else { return }
 
-          if !isPlayable {
+          if !isPlayable && !item.src.hasPrefix("blob:") {
             delegate.updatePlaylistURLBar(tab: handler.tab, state: .none, item: nil)
             return
           }

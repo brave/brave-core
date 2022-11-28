@@ -30,14 +30,14 @@ class PlaylistMediaStreamer {
     self.playerView = playerView
   }
 
-  func loadMediaStreamingAsset(_ item: PlaylistInfo) -> AnyPublisher<Void, PlaybackError> {
+  func loadMediaStreamingAsset(_ item: PlaylistInfo) -> AnyPublisher<PlaylistInfo, PlaybackError> {
     // We need to check if the item is cached locally.
     // If the item is cached (downloaded)
     // then we can play it directly without having to stream it.
     let cacheState = PlaylistManager.shared.state(for: item.tagId)
     if cacheState != .invalid {
       return Future { resolver in
-        resolver(.success(Void()))
+        resolver(.success(item))
       }.eraseToAnyPublisher()
     }
 
@@ -48,7 +48,7 @@ class PlaylistMediaStreamer {
     }
 
     // Try to stream the asset from its url..
-    return canStreamURL(url).flatMap { canStream -> AnyPublisher<Void, PlaybackError> in
+    return canStreamURL(url).flatMap { canStream -> AnyPublisher<PlaylistInfo, PlaybackError> in
       // Stream failed so fallback to the webview
       // It's possible the URL expired..
       if !canStream {
@@ -56,7 +56,7 @@ class PlaylistMediaStreamer {
       }
 
       return Future { resolver in
-        resolver(.success(Void()))
+        resolver(.success(item))
       }.eraseToAnyPublisher()
     }.eraseToAnyPublisher()
   }
@@ -103,7 +103,7 @@ class PlaylistMediaStreamer {
 
   // MARK: - Private
 
-  private func streamingFallback(_ item: PlaylistInfo) -> Deferred<AnyPublisher<Void, PlaybackError>> {
+  private func streamingFallback(_ item: PlaylistInfo) -> Deferred<AnyPublisher<PlaylistInfo, PlaybackError>> {
     // Fallback to web stream
     return Deferred {
       var cancelled = false
@@ -132,7 +132,7 @@ class PlaylistMediaStreamer {
 
             if let newItem = newItem, URL(string: newItem.src) != nil {
               PlaylistItem.updateItem(newItem) {
-                resolver(.success(Void()))
+                resolver(.success(newItem))
               }
             } else if cancelled {
               resolver(.failure(.cancelled))

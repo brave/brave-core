@@ -120,7 +120,7 @@ public class PlaylistManager: NSObject {
   }
 
   func itemAtIndex(_ index: Int) -> PlaylistInfo? {
-    if index < numberOfAssets {
+    if index >= 0 && index < numberOfAssets {
       return PlaylistInfo(item: frc.object(at: IndexPath(row: index, section: 0)))
     }
     return nil
