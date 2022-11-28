@@ -93,7 +93,7 @@ class AccountActivityStore: ObservableObject {
   ) async -> [AssetViewModel] {
     let visibleUserAssets = userVisibleTokens.filter { !$0.isErc721 && !$0.isNft }
     var updatedAssets = visibleUserAssets.map {
-      AssetViewModel(token: $0, decimalBalance: 0, price: "", history: [])
+      AssetViewModel(token: $0, network: network, decimalBalance: 0, price: "", history: [])
     }
     // fetch price for each asset
     let priceResult = await assetRatioService.priceWithIndividualRetry(
@@ -138,6 +138,7 @@ class AccountActivityStore: ObservableObject {
     var updatedNFTAssets = visibleNFTAssets.map { asset in
       NFTAssetViewModel(
         token: asset,
+        network: network,
         balance: 0
       )
     }

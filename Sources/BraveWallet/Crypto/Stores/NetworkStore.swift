@@ -7,6 +7,7 @@ import Foundation
 import BraveCore
 import SwiftUI
 import Strings
+import BraveShared
 
 /// An interface that helps you interact with a json-rpc service
 ///
@@ -21,17 +22,26 @@ public class NetworkStore: ObservableObject {
   
   @Published private(set) var allChains: [BraveWallet.NetworkInfo] = []
   @Published private(set) var customChains: [BraveWallet.NetworkInfo] = []
+  
+  /// The primary networks from `allChains`
+  var primaryNetworks: [BraveWallet.NetworkInfo] {
+    allChains
+      .filter { WalletConstants.primaryNetworkChainIds.contains($0.chainId) }
+  }
+  
+  // The secondary networks from `allChains`
+  var secondaryNetworks: [BraveWallet.NetworkInfo] {
+    allChains
+      .filter {
+        !WalletConstants.primaryNetworkChainIds.contains($0.chainId)
+        && !WalletConstants.supportedTestNetworkChainIds.contains($0.chainId)
+      }
+  }
 
   @Published private(set) var selectedChainId: String = BraveWallet.MainnetChainId
   var selectedChain: BraveWallet.NetworkInfo {
     allChains.first(where: { $0.chainId == self.selectedChainId }) ?? .init()
   }
-  
-  enum NetworkFilter: Equatable {
-    case allNetworks
-    case network(BraveWallet.NetworkInfo)
-  }
-  @Published var networkFilter: NetworkFilter = .allNetworks
   
   @Published private(set) var isSwapSupported: Bool = true
 
@@ -103,6 +113,23 @@ public class NetworkStore: ObservableObject {
         let success = await rpcService.setNetwork(network.chainId, coin: network.coin)
         return success ? nil : .unknown
       }
+    }
+  }
+  
+  func subNetworks(for network: BraveWallet.NetworkInfo) -> [BraveWallet.NetworkInfo] {
+    guard WalletConstants.primaryNetworkChainIds.contains(network.chainId),
+          Preferences.Wallet.showTestNetworks.value else {
+      return []
+    }
+    let isPrimaryOrTestnetChainId: (_ chainId: String) -> Bool = { chainId in
+      WalletConstants.primaryNetworkChainIds.contains(chainId)
+      || WalletConstants.supportedTestNetworkChainIds.contains(chainId)
+    }
+    return allChains.filter {
+      $0.coin == network.coin
+      && $0.symbol == network.symbol
+      && !isCustomChain($0)
+      && isPrimaryOrTestnetChainId($0.chainId)
     }
   }
   

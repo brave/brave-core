@@ -21,6 +21,7 @@ struct PortfolioView: View {
   @State private var dismissedBackupBannerThisSession: Bool = false
   @State private var isPresentingBackup: Bool = false
   @State private var isPresentingEditUserAssets: Bool = false
+  @State private var isPresentingNetworkFilter: Bool = false
   
   @Environment(\.sizeCategory) private var sizeCategory
   /// Reference to the collection view used to back the `List` on iOS 16+
@@ -88,6 +89,30 @@ struct PortfolioView: View {
       }
     }
   }
+  
+  private var networkFilterButton: some View {
+    Button(action: {
+      self.isPresentingNetworkFilter = true
+    }) {
+      HStack {
+        Text(portfolioStore.networkFilter.title)
+        Image(braveSystemName: "brave.text.alignleft")
+      }
+      .font(.footnote.weight(.medium))
+      .foregroundColor(Color(.braveBlurpleTint))
+    }
+    .sheet(isPresented: $isPresentingNetworkFilter) {
+      NavigationView {
+        NetworkFilterView(
+          networkFilter: $portfolioStore.networkFilter,
+          networkStore: networkStore
+        )
+      }
+      .onDisappear {
+        networkStore.closeNetworkSelectionStore()
+      }
+    }
+  }
 
   var body: some View {
     List {
@@ -105,9 +130,14 @@ struct PortfolioView: View {
               selectedToken = asset.token
             }) {
               PortfolioAssetView(
-                image: AssetIconView(token: asset.token, network: networkStore.selectedChain),
+                image: AssetIconView(
+                  token: asset.token,
+                  network: asset.network,
+                  shouldShowNativeTokenIcon: true
+                ),
                 title: asset.token.name,
                 symbol: asset.token.symbol,
+                networkName: asset.network.chainName,
                 amount: portfolioStore.currencyFormatter.string(from: NSNumber(value: (Double(asset.price) ?? 0) * asset.decimalBalance)) ?? "",
                 quantity: String(format: "%.04f", asset.decimalBalance)
               )
@@ -117,7 +147,27 @@ struct PortfolioView: View {
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }, header: {
-        WalletListHeaderView(title: Text(Strings.Wallet.assetsTitle))
+        HStack {
+          Text(Strings.Wallet.assetsTitle)
+          Spacer()
+          networkFilterButton
+        }
+        .textCase(nil)
+        .osAvailabilityModifiers { content in
+          if #available(iOS 15.0, *) {
+            content
+              .padding(.horizontal, -8)
+          } else if #available(iOS 14.5, *) {
+            // In iOS 14.4-14.8 for some reason List does not apply correct padding
+            // or insets to headers and footers
+            content
+              .padding(.horizontal, 8)
+          } else {
+            content
+              .padding(.horizontal, -8)
+          }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
       })
       
       if !portfolioStore.userVisibleNFTs.isEmpty {
@@ -130,11 +180,13 @@ struct PortfolioView: View {
                 PortfolioNFTAssetView(
                   image: NFTIconView(
                     token: nftAsset.token,
-                    network: networkStore.selectedChain,
-                    url: nftAsset.imageUrl
+                    network: nftAsset.network,
+                    url: nftAsset.imageUrl,
+                    shouldShowNativeTokenIcon: true
                   ),
                   title: nftAsset.token.nftTokenTitle,
                   symbol: nftAsset.token.symbol,
+                  networkName: nftAsset.network.chainName,
                   quantity: "\(nftAsset.balance)"
                 )
               }
@@ -204,38 +256,19 @@ struct BalanceHeaderView: View {
 
   private var balanceOrDataPointView: some View {
     HStack {
-      Group {
-        if sizeCategory.isAccessibilityCategory {
-          VStack(alignment: .leading) {
-            NetworkPicker(
-              keyringStore: keyringStore,
-              networkStore: networkStore
-            )
-            Text(verbatim: balance)
-              .font(.largeTitle.bold())
-          }
-        } else {
-          HStack {
-            Text(verbatim: balance)
-              .font(.largeTitle.bold())
-            NetworkPicker(
-              keyringStore: keyringStore,
-              networkStore: networkStore
-            )
-            Spacer()
-          }
-        }
-      }
-      .opacity(selectedBalance == nil ? 1 : 0)
-      .overlay(
-        Group {
-          if let dataPoint = selectedBalance {
-            Text(dataPoint.formattedPrice)
-              .font(.largeTitle.bold())
-          }
-        },
-        alignment: .leading
-      )
+      Text(verbatim: balance)
+        .font(.largeTitle.bold())
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .opacity(selectedBalance == nil ? 1 : 0)
+        .overlay(
+          Group {
+            if let dataPoint = selectedBalance {
+              Text(dataPoint.formattedPrice)
+                .font(.largeTitle.bold())
+            }
+          },
+          alignment: .leading
+        )
       if horizontalSizeClass == .regular {
         Spacer()
         DateRangeView(selectedRange: $selectedDateRange)

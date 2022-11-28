@@ -270,9 +270,6 @@ struct AddCustomAssetView: View {
               get: { isPresentingNetworkSelection },
               set: {
                 isPresentingNetworkSelection = $0
-                if !$0, networkSelectionStore.detailNetwork != nil {
-                  networkSelectionStore.detailNetwork = nil
-                }
               }
             )
           ) {

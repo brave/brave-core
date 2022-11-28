@@ -3347,5 +3347,12 @@ extension Strings {
       value: "Select Network Filter",
       comment: "The title displayed on the view to filter by a network / all networks."
     )
+    public static let userAssetSymbolNetworkDesc = NSLocalizedString(
+      "wallet.userAssetSymbolNetwork",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "%@ on %@",
+      comment: "The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name."
+    )
   }
 }

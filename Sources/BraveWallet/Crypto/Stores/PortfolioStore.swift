@@ -5,25 +5,28 @@
 
 import Foundation
 import BraveCore
+import SwiftUI
 
 public struct AssetViewModel: Identifiable, Equatable {
   var token: BraveWallet.BlockchainToken
+  var network: BraveWallet.NetworkInfo
   var decimalBalance: Double
   var price: String
   var history: [BraveWallet.AssetTimePrice]
 
   public var id: String {
-    token.id
+    token.id + network.chainId
   }
 }
 
 struct NFTAssetViewModel: Identifiable, Equatable {
   var token: BraveWallet.BlockchainToken
+  var network: BraveWallet.NetworkInfo
   var balance: Int
   var imageUrl: URL?
 
   public var id: String {
-    token.id
+    token.id + network.chainId
   }
 }
 
@@ -34,6 +37,20 @@ struct BalanceTimePrice: DataPoint, Equatable {
 
   var value: CGFloat {
     price
+  }
+}
+
+public enum NetworkFilter: Equatable {
+  case allNetworks
+  case network(BraveWallet.NetworkInfo)
+  
+  var title: String {
+    switch self {
+    case .allNetworks:
+      return Strings.Wallet.allNetworksTitle
+    case let .network(network):
+      return network.chainName
+    }
   }
 }
 
@@ -65,6 +82,12 @@ public class PortfolioStore: ObservableObject {
       update()
     }
   }
+  
+  @Published var networkFilter: NetworkFilter = .allNetworks {
+    didSet {
+      update()
+    }
+  }
 
   public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
     walletService: self.walletService,
@@ -78,6 +101,12 @@ public class PortfolioStore: ObservableObject {
   
   /// Cancellable for the last running `update()` Task.
   private var updateTask: Task<(), Never>?
+  /// Cache of total balances. The key is the token's `assetBalanceId`.
+  private var totalBalancesCache: [String: Double] = [:]
+  /// Cache of prices for each token. The key is the token's `assetRatioId`.
+  private var pricesCache: [String: String] = [:]
+  /// Cache of priceHistories. The key is the token's `assetRatioId`.
+  private var priceHistoriesCache: [String: [BraveWallet.AssetTimePrice]] = [:]
 
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -116,61 +145,140 @@ public class PortfolioStore: ObservableObject {
     self.updateTask?.cancel()
     self.updateTask = Task { @MainActor in
       self.isLoadingBalances = true
-      let coin = await walletService.selectedCoin()
-      let network = await rpcService.network(coin)
-      let allVisibleUserAssets = await walletService.userAssets(network.chainId, coin: coin).filter(\.visible)
-      let visibleNFTAssets = allVisibleUserAssets.filter { $0.isErc721 || $0.isNft }
-      let visibleUserAssets = allVisibleUserAssets.filter { !$0.isErc721 && !$0.isNft }
-      // if the task was cancelled, don't update the UI
-      guard !Task.isCancelled else { return }
+      let networks: [BraveWallet.NetworkInfo]
+      switch networkFilter {
+      case .allNetworks:
+        networks = await self.rpcService.allNetworksForSupportedCoins()
+          .filter { !WalletConstants.supportedTestNetworkChainIds.contains($0.chainId) }
+      case let .network(network):
+        networks = [network]
+      }
+      struct NetworkAssets: Equatable {
+        let network: BraveWallet.NetworkInfo
+        let tokens: [BraveWallet.BlockchainToken]
+        let sortOrder: Int
+      }
+      let allVisibleUserAssets = await withTaskGroup(
+        of: [NetworkAssets].self,
+        body: { @MainActor group -> [NetworkAssets] in
+          for (index, network) in networks.enumerated() {
+            group.addTask { @MainActor in
+              let userAssets = await self.walletService.userAssets(network.chainId, coin: network.coin).filter(\.visible)
+              return [NetworkAssets(network: network, tokens: userAssets, sortOrder: index)]
+            }
+          }
+          return await group.reduce([NetworkAssets](), { $0 + $1 })
+            .sorted(by: { $0.sortOrder < $1.sortOrder }) // maintain sort order of networks
+        }
+      )
+      var updatedUserVisibleAssets: [AssetViewModel] = []
+      var updatedUserVisibleNFTs: [NFTAssetViewModel] = []
+      for networkAssets in allVisibleUserAssets {
+        for token in networkAssets.tokens {
+          if token.isErc721 || token.isNft {
+            updatedUserVisibleNFTs.append(
+              NFTAssetViewModel(
+                token: token,
+                network: networkAssets.network,
+                balance: Int(totalBalancesCache[token.assetBalanceId] ?? 0)
+              )
+            )
+          } else {
+            updatedUserVisibleAssets.append(
+              AssetViewModel(
+                token: token,
+                network: networkAssets.network,
+                decimalBalance: totalBalancesCache[token.assetBalanceId] ?? 0,
+                price: pricesCache[token.assetRatioId.lowercased()] ?? "",
+                history: priceHistoriesCache[token.assetRatioId.lowercased()] ?? []
+              )
+            )
+          }
+        }
+      }
       // update userVisibleAssets on display immediately with empty values. Issue #5567
-      userVisibleAssets = visibleUserAssets.map { token in
-        AssetViewModel(
-          token: token,
-          decimalBalance: 0.0,
-          price: "",
-          history: []
-        )
-      }
-      userVisibleNFTs = visibleNFTAssets.map { asset in
-        NFTAssetViewModel(
-          token: asset,
-          balance: 0
-        )
-      }
+      self.userVisibleAssets = updatedUserVisibleAssets
+      self.userVisibleNFTs = updatedUserVisibleNFTs
       
-      let keyring = await keyringService.keyringInfo(coin.keyringId)
-      guard !Task.isCancelled else { return } // limit network request(s) if cancelled
-      let balances = await fetchBalances(for: allVisibleUserAssets, accounts: keyring.accountInfos, network: network)
-      guard !Task.isCancelled else { return } // limit network request(s) if cancelled
-      let nonZeroBalanceTokens = balances.filter { $1 > 0 }.map { $0.key }
-      let nonZeroBalanceTokensPriceIds = visibleUserAssets.filter({ nonZeroBalanceTokens.contains($0.assetBalanceId.lowercased())}).map { $0.assetRatioId }
-      let priceHistories = await fetchPriceHistory(for: nonZeroBalanceTokensPriceIds)
-      guard !Task.isCancelled else { return } // limit network request(s) if cancelled
-      let visibleAssetRatioIds = visibleUserAssets.filter(\.visible).map { $0.assetRatioId.lowercased() }
-      let prices = await fetchPrices(for: visibleAssetRatioIds)
-      
-      // if the task was cancelled, don't update the UI
+      let keyrings = await self.keyringService.keyrings(for: WalletConstants.supportedCoinTypes)
       guard !Task.isCancelled else { return }
+      typealias TokenNetworkAccounts = (token: BraveWallet.BlockchainToken, network: BraveWallet.NetworkInfo, accounts: [BraveWallet.AccountInfo])
+      let allTokenNetworkAccounts = allVisibleUserAssets.flatMap { networkAssets in
+        networkAssets.tokens.map { token in
+          TokenNetworkAccounts(
+            token: token,
+            network: networkAssets.network,
+            accounts: keyrings.first(where: { $0.coin == token.coin })?.accountInfos ?? []
+          )
+        }
+      }
+      let totalBalances: [String: Double] = await withTaskGroup(of: [String: Double].self, body: { @MainActor group in
+        for tokenNetworkAccounts in allTokenNetworkAccounts {
+          group.addTask { @MainActor in
+            let totalBalance = await self.fetchTotalBalance(
+              token: tokenNetworkAccounts.token,
+              network: tokenNetworkAccounts.network,
+              accounts: tokenNetworkAccounts.accounts
+            )
+            return [tokenNetworkAccounts.token.assetBalanceId: totalBalance]
+          }
+        }
+        return await group.reduce(into: [String: Double](), { partialResult, new in
+          for key in new.keys {
+            partialResult[key] = new[key]
+          }
+        })
+      })
+      for (key, value) in totalBalances {
+        totalBalancesCache[key] = value
+      }
+
+      // fetch price for every token
+      let allTokens = allVisibleUserAssets.flatMap(\.tokens)
+      let allAssetRatioIds = allTokens.map(\.assetRatioId)
+      let prices: [String: String] = await fetchPrices(for: allAssetRatioIds)
+      for (key, value) in prices { // update cached values
+        self.pricesCache[key] = value
+      }
+
+      // fetch price history for every non-zero balance token
+      let nonZeroBalanceAssetRatioIds: [String] = allTokens
+        .filter { (totalBalancesCache[$0.assetBalanceId] ?? 0) > 0 }
+        .map { $0.assetRatioId }
+      let priceHistories: [String: [BraveWallet.AssetTimePrice]] = await fetchPriceHistory(for: nonZeroBalanceAssetRatioIds)
+      for (key, value) in priceHistories { // update cached values
+        self.priceHistoriesCache[key] = value
+      }
       
-      // build our userVisibleAssets
-      userVisibleAssets = visibleUserAssets.map { token in
-        let balanceId = token.assetBalanceId.lowercased()
-        let priceId = token.assetRatioId.lowercased()
-        return AssetViewModel(
-          token: token,
-          decimalBalance: balances[balanceId] ?? 0.0,
-          price: prices[priceId] ?? "",
-          history: priceHistories[priceId] ?? []
-        )
+      guard !Task.isCancelled else { return }
+      updatedUserVisibleAssets.removeAll()
+      updatedUserVisibleNFTs.removeAll()
+      for networkAssets in allVisibleUserAssets {
+        for token in networkAssets.tokens {
+          if token.isErc721 || token.isNft {
+            updatedUserVisibleNFTs.append(
+              NFTAssetViewModel(
+                token: token,
+                network: networkAssets.network,
+                balance: Int(totalBalancesCache[token.assetBalanceId] ?? 0)
+              )
+            )
+          } else {
+            updatedUserVisibleAssets.append(
+              AssetViewModel(
+                token: token,
+                network: networkAssets.network,
+                decimalBalance: totalBalancesCache[token.assetBalanceId] ?? 0,
+                price: pricesCache[token.assetRatioId.lowercased()] ?? "",
+                history: priceHistoriesCache[token.assetRatioId.lowercased()] ?? []
+              )
+            )
+          }
+        }
       }
-      userVisibleNFTs = visibleNFTAssets.map { token in
-        NFTAssetViewModel(
-          token: token,
-          balance: Int(balances[token.assetBalanceId.lowercased()] ?? 0),
-          imageUrl: nil // TODO: fetch image url from erc721Metadata / erc1155Metadata / solana metadata in #6361
-        )
-      }
+      self.userVisibleAssets = updatedUserVisibleAssets
+      self.userVisibleNFTs = updatedUserVisibleNFTs
+      
       // Compute balance based on current prices
       let currentBalance = userVisibleAssets
         .compactMap {
@@ -198,31 +306,25 @@ public class PortfolioStore: ObservableObject {
     }
   }
   
-  /// Fetches the balances for a given list of tokens for each of the given accounts, giving a dictionary with a balance for each token symbol.
-  @MainActor func fetchBalances(
-    for tokens: [BraveWallet.BlockchainToken],
-    accounts: [BraveWallet.AccountInfo],
-    network: BraveWallet.NetworkInfo
-  ) async -> [String: Double] {
-    let balances = await withTaskGroup(of: [String: Double].self) { @MainActor group -> [String: Double] in
+  @MainActor private func fetchTotalBalance(
+    token: BraveWallet.BlockchainToken,
+    network: BraveWallet.NetworkInfo,
+    accounts: [BraveWallet.AccountInfo]
+  ) async -> Double {
+    let balancesForAsset = await withTaskGroup(of: [Double].self, body: { @MainActor group in
       for account in accounts {
-        for token in tokens {
-          group.addTask { @MainActor in
-            guard let balance = await self.rpcService.balance(for: token, in: account, network: network) else {
-              return [:]
-            }
-            let balanceId = token.assetBalanceId.lowercased()
-            return [balanceId: balance]
-          }
+        group.addTask { @MainActor in
+          let balance = await self.rpcService.balance(
+            for: token,
+            in: account,
+            network: network
+          )
+          return [balance ?? 0]
         }
       }
-      return await group.reduce(into: [String: Double](), { partialResult, new in
-        for key in new.keys {
-          partialResult[key, default: 0] += new[key] ?? 0
-        }
-      })
-    }
-    return balances
+      return await group.reduce([Double](), { $0 + $1 })
+    })
+    return balancesForAsset.reduce(0, +)
   }
   
   /// Fetches the prices for a given list of `assetRatioId`, giving a dictionary with the price for each symbol

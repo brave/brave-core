@@ -9,6 +9,7 @@ struct PortfolioAssetView: View {
   var image: AssetIconView
   var title: String
   var symbol: String
+  let networkName: String
   var amount: String
   var quantity: String
 
@@ -20,7 +21,7 @@ struct PortfolioAssetView: View {
           .font(.footnote)
           .fontWeight(.semibold)
           .foregroundColor(Color(.bravePrimary))
-        Text(symbol)
+        Text(String.localizedStringWithFormat(Strings.Wallet.userAssetSymbolNetworkDesc, symbol, networkName))
           .font(.caption)
           .foregroundColor(Color(.braveLabel))
       }
@@ -46,6 +47,7 @@ struct PortfolioAssetView_Previews: PreviewProvider {
       image: AssetIconView(token: .previewToken, network: .mockMainnet),
       title: "Basic Attention Token",
       symbol: "BAT",
+      networkName: "Ethereum Mainnet Beta",
       amount: "$10,402.22",
       quantity: "10303"
     )
@@ -60,6 +62,7 @@ struct PortfolioNFTAssetView: View {
   let image: NFTIconView
   let title: String
   let symbol: String
+  let networkName: String
   let quantity: String
   
   var body: some View {
@@ -70,7 +73,7 @@ struct PortfolioNFTAssetView: View {
           .font(.footnote)
           .fontWeight(.semibold)
           .foregroundColor(Color(.bravePrimary))
-        Text(symbol)
+        Text(String.localizedStringWithFormat(Strings.Wallet.userAssetSymbolNetworkDesc, symbol, networkName))
           .font(.caption)
           .foregroundColor(Color(.braveLabel))
       }
@@ -93,6 +96,7 @@ struct PortfolioNFTAssetView_Previews: PreviewProvider {
       image: NFTIconView(token: .previewToken, network: .mockMainnet),
       title: "Invisible Friends #3965",
       symbol: "INVSBLE",
+      networkName: "Ethereum Mainnet Beta",
       quantity: "1"
     )
     .previewLayout(.sizeThatFits)
