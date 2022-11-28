@@ -61,12 +61,16 @@ struct AccountActivityView: View {
         header: WalletListHeaderView(title: Text(Strings.Wallet.assetsTitle))
       ) {
         Group {
-          if activityStore.assets.isEmpty {
+          if activityStore.userVisibleAssets.isEmpty {
             emptyTextView(Strings.Wallet.noAssets)
           } else {
-            ForEach(activityStore.assets) { asset in
+            ForEach(activityStore.userVisibleAssets) { asset in
               PortfolioAssetView(
-                image: AssetIconView(token: asset.token, network: networkStore.selectedChain),
+                image: AssetIconView(
+                  token: asset.token,
+                  network: asset.network,
+                  shouldShowNativeTokenIcon: true
+                ),
                 title: asset.token.name,
                 symbol: asset.token.symbol,
                 networkName: asset.network.chainName,
@@ -78,15 +82,16 @@ struct AccountActivityView: View {
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      if !activityStore.NFTAssets.isEmpty {
+      if !activityStore.userVisibleNFTs.isEmpty {
         Section(content: {
           Group {
-            ForEach(activityStore.NFTAssets) { nftAsset in
+            ForEach(activityStore.userVisibleNFTs) { nftAsset in
               PortfolioNFTAssetView(
                 image: NFTIconView(
                   token: nftAsset.token,
-                  network: networkStore.selectedChain,
-                  url: nftAsset.imageUrl
+                  network: nftAsset.network,
+                  url: nftAsset.imageUrl,
+                  shouldShowNativeTokenIcon: true
                 ),
                 title: nftAsset.token.nftTokenTitle,
                 symbol: nftAsset.token.symbol,

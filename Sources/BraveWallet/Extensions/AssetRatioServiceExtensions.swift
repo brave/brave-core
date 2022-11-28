@@ -93,4 +93,19 @@ extension BraveWalletAssetRatioService {
       completion(priceResult)
     }
   }
+  
+  /// Fetches the prices for a given list of `assetRatioId`, giving a dictionary with the price for each symbol
+  @MainActor func fetchPrices(
+    for priceIds: [String],
+    toAssets: [String],
+    timeframe: BraveWallet.AssetPriceTimeframe
+  ) async -> [String: String] {
+    let priceResult = await priceWithIndividualRetry(
+      priceIds.map { $0.lowercased() },
+      toAssets: toAssets,
+      timeframe: timeframe
+    )
+    let prices = Dictionary(uniqueKeysWithValues: priceResult.assetPrices.map { ($0.fromAsset, $0.price) })
+    return prices
+  }
 }
