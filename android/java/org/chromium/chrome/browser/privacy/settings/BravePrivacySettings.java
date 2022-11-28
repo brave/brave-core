@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettin
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.privacy.settings.PrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.safe_browsing.settings.NoGooglePlayServicesDialog;
 import org.chromium.chrome.browser.settings.BraveDialogPreference;
 import org.chromium.chrome.browser.settings.BravePreferenceDialogFragment;
 import org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreference;
@@ -287,6 +288,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 preference.setOnPreferenceClickListener((pref) -> {
                     if (!ChromiumPlayServicesAvailability.isGooglePlayServicesAvailable(
                                 getActivity())) {
+                        NoGooglePlayServicesDialog.create(getContext()).show();
                         // Don't show the menu if Google Play Services are not available
                         return true;
                     }

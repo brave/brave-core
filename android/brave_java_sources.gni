@@ -277,6 +277,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsTipFailureFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsTippingPanelFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/safe_browsing/settings/BraveStandardProtectionSettingsFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/safe_browsing/settings/NoGooglePlayServicesDialog.java",
   "../../brave/android/java/org/chromium/chrome/browser/searchwidget/SearchWidgetProviderActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/set_default_browser/BraveSetDefaultBrowserUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/set_default_browser/OnBraveSetDefaultBrowserListener.java",
