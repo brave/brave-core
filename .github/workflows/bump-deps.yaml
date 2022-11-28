@@ -57,7 +57,7 @@ jobs:
             git switch "$branch"
             pr_branch="pr-auto-bump-deps-${branch}-${DEP}-${DEPREF}"
             git switch -c "$pr_branch"
-            "$SED" -i -e "s|\(.*${DEP}.*\)@\(.*\)\",$|\1@${DEPREF}\",|" DEPS
+            "$SED" -i -e '/^\s*"'"${DEP//\//\\\/}"'"\s*:/,/@/ s/@[^"]*"/@'"$DEPREF"'"/' DEPS
             git add DEPS
             git commit -m "Auto bump DEPS ${DEP}@${DEPREF}"
             # git push -u origin "$pr_branch"
