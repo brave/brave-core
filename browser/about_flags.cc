@@ -321,12 +321,6 @@ constexpr char kBraveNewsCardPeekFeatureDescription[] =
     "Prompt Brave News via the top featured article peeking up from the bottom "
     "of the New Tab Page, after a short delay.";
 
-constexpr char kBraveNewsSubscribeButtonName[] =
-    "Enable Brave News Subscribe Button";
-constexpr char kBraveNewsSubscribeButtonDescription[] =
-    "Show a button in the toolbar to allow you to add supported sites to Brave "
-    "News.";
-
 constexpr char kCryptoWalletsForNewInstallsName[] =
     "Enable Crypto Wallets option in settings";
 constexpr char kCryptoWalletsForNewInstallsDescription[] =
