@@ -41,7 +41,22 @@ mojom::SwapResponsePtr ParseSwapResponse(const std::string& json,
   //   "sources":[...],
   //   "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
   //   "sellTokenToEthRate":"1900.44962824532464391",
-  //   "buyTokenToEthRate":"1"
+  //   "buyTokenToEthRate":"1",
+  //   "estimatedPriceImpact": "0.7232",
+  //   "sources": [
+  //     {
+  //       "name": "0x",
+  //       "proportion": "0",
+  //     },
+  //     {
+  //       "name": "Uniswap_V2",
+  //       "proportion": "1",
+  //     },
+  //     {
+  //       "name": "Curve",
+  //       "proportion": "0",
+  //     }
+  //   ]
   // }
 
   absl::optional<base::Value> records_v =
@@ -89,6 +104,14 @@ mojom::SwapResponsePtr ParseSwapResponse(const std::string& json,
       swap_response_value->sell_token_to_eth_rate;
   swap_response->buy_token_to_eth_rate =
       swap_response_value->buy_token_to_eth_rate;
+  swap_response->estimated_price_impact =
+      swap_response_value->estimated_price_impact;
+
+  for (const auto& source_value : swap_response_value->sources) {
+    swap_response->sources.push_back(
+        mojom::ZeroExSource::New(source_value.name, source_value.proportion));
+  }
+
   return swap_response;
 }
 

@@ -437,7 +437,8 @@ export default function useSend (isSendTab?: boolean) {
       .multiplyByDecimals(selectedSendAsset.decimals) // ETH → Wei conversion
       .value // extract BigNumber object wrapped by Amount
 
-    return amountBN && amountBN.decimalPlaces() > 0
+    const amountDP = amountBN && amountBN.decimalPlaces()
+    return amountDP && amountDP > 0
       ? 'fromAmountDecimalsOverflow'
       : undefined
   }, [sendAmount, selectedSendAsset])

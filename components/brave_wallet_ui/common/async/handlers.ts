@@ -346,11 +346,20 @@ handler.on(WalletActions.selectPortfolioTimeline.type, async (store: Store, payl
 
 handler.on(WalletActions.sendTransaction.type, async (
   store: Store,
-  payload: SendEthTransactionParams | SendFilTransactionParams | SendSolTransactionParams
+  payload:
+    | Omit<SendEthTransactionParams, 'hasEIP1559Support'>
+    | SendFilTransactionParams
+    | SendSolTransactionParams
 ) => {
+  const { wallet: walletState } = store.getState()
+
   let addResult
   if (payload.coin === BraveWallet.CoinType.ETH) {
-    addResult = await sendEthTransaction(store, payload as SendEthTransactionParams)
+    addResult = await sendEthTransaction({
+      ...payload,
+      hasEIP1559Support: !!walletState.selectedNetwork && !!walletState.selectedAccount &&
+        hasEIP1559Support(walletState.selectedAccount, walletState.selectedNetwork)
+    })
   } else if (payload.coin === BraveWallet.CoinType.FIL) {
     addResult = await sendFilTransaction(payload as SendFilTransactionParams)
   } else if (payload.coin === BraveWallet.CoinType.SOL) {
