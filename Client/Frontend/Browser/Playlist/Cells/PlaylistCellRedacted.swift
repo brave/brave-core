@@ -149,15 +149,18 @@ class PlaylistCellRedacted: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    
-    hostingController.rootView.contentSize = bounds.size
+  deinit {
+    hostingController.willMove(toParent: nil)
+    hostingController.view.removeFromSuperview()
+    hostingController.removeFromParent()
   }
   
   func loadThumbnail(for url: URL) {
+    hostingController.rootView.thumbnail = nil
+    
     let cacheKey = url.baseDomain ?? url.absoluteString
     if let image = PlaylistCellRedacted.cache.object(forKey: cacheKey as NSString) {
+      faviconRenderer = nil
       hostingController.rootView.thumbnail = image
       return
     }
@@ -179,13 +182,21 @@ class PlaylistCellRedacted: UITableViewCell {
     hostingController.rootView.details = details
   }
   
-  func setContentSize(parentController: UIViewController, size: CGSize) {
+  func setContentSize(parentController: UIViewController) {
     if hostingController.parent != parentController {
+      hostingController.willMove(toParent: nil)
+      hostingController.view.removeFromSuperview()
+      hostingController.removeFromParent()
+      
       parentController.addChild(hostingController)
+      contentView.addSubview(hostingController.view)
+      hostingController.view.snp.makeConstraints {
+        $0.edges.equalTo(contentView)
+      }
       hostingController.didMove(toParent: parentController)
     }
     
-    hostingController.rootView.contentSize = size
+    hostingController.rootView.contentSize = parentController.view.bounds.size
     hostingController.view.invalidateIntrinsicContentSize()
   }
 }

@@ -252,21 +252,29 @@ window.__firefox__.includeOnce("Playlist", function($) {
       });
     
       let observeNode = function(node) {
-        // Observe video or audio elements
-        let isVideoElement = (node.constructor.name == "HTMLVideoElement");
-        if (isVideoElement || (node.constructor.name == "HTMLAudioElement")) {
-          let type = isVideoElement ? 'video' : 'audio';
-          node.observer = new MutationObserver(function (mutations) {
+        function processNode(node) {
+          // Observe video or audio elements
+          let isVideoElement = (node.constructor.name == "HTMLVideoElement");
+          if (isVideoElement || (node.constructor.name == "HTMLAudioElement")) {
+            let type = isVideoElement ? 'video' : 'audio';
+            node.observer = new MutationObserver(function (mutations) {
+              notify(node, type, true);
+            });
+          
+            node.observer.observe(node, { attributes: true, attributeFilter: ["src"] });
+            node.addEventListener('loadedmetadata', function() {
+              notify(node, type, true);
+            });
+          
             notify(node, type, true);
-          });
-        
-          node.observer.observe(node, { attributes: true, attributeFilter: ["src"] });
-          node.addEventListener('loadedmetadata', function() {
-            notify(node, type, true);
-          });
-        
-          notify(node, type, true);
+          }
         }
+        
+        for (const child of node.childNodes) {
+          processNode(child);
+        }
+        
+        processNode(node);
       };
     
       // Observe elements added to a Node
@@ -291,6 +299,57 @@ window.__firefox__.includeOnce("Playlist", function($) {
           return document_createElement.call(this, tag);
       };*/
       
+      function checkPageForVideos(ignoreSource) {
+        onReady(function() {
+          let videos = getAllVideoElements();
+          let audios = getAllAudioElements();
+          
+          if (videos.length == 0 && audios.length == 0) {
+            setTimeout(function() {
+              $.postNativeMessage('$<message_handler>', {
+                "securityToken": SECURITY_TOKEN,
+                "state": "cancel"
+              });
+            }, 10000);
+            return;
+          }
+          
+          videos.forEach(function(node) {
+            observeNode(node);
+            notifyNode(node, 'video', true, ignoreSource);
+          });
+
+          audios.forEach(function(node) {
+            observeNode(node);
+            notifyNode(node, 'audio', true, ignoreSource);
+          });
+          
+          $(function() {
+            $.postNativeMessage('$<message_handler>', {
+              "securityToken": SECURITY_TOKEN,
+              "state": document.readyState
+            });
+          })();
+        });
+        
+        // Timeinterval is needed for DailyMotion as their DOM is bad
+        let interval = setInterval(function() {
+          getAllVideoElements().forEach(function(node) {
+            observeNode(node);
+            notifyNode(node, 'video', true, ignoreSource);
+          });
+
+          getAllAudioElements().forEach(function(node) {
+            observeNode(node);
+            notifyNode(node, 'audio', true, ignoreSource);
+          });
+        }, 1000);
+
+        let timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 10000);
+      }
+      
       // Needed for Japanese videos like tver.jp which literally never loads automatically
       Object.defineProperty(window.__firefox__, 'playlistProcessDocumentLoad', {
         enumerable: false,
@@ -298,49 +357,11 @@ window.__firefox__.includeOnce("Playlist", function($) {
         writable: false,
         value:
         function() {
-          onReady(function() {
-            let videos = getAllVideoElements();
-            let audios = getAllAudioElements();
-            
-            if (videos.length == 0 && audios.length == 0) {
-              $(function() {
-                $.postNativeMessage('$<message_handler>', {
-                  "securityToken": SECURITY_TOKEN,
-                  "state": document.readyState
-                });
-              })();
-              return;
-            }
-            
-            videos.forEach(function(node) {
-              observeNode(node);
-              notifyNode(node, 'video', true, true);
-            });
-
-            audios.forEach(function(node) {
-              observeNode(node);
-              notifyNode(node, 'audio', true, true);
-            });
-          });
-          
-          // Timeinterval is needed for DailyMotion as their DOM is bad
-          let interval = setInterval(function() {
-            getAllVideoElements().forEach(function(node) {
-              observeNode(node);
-              notifyNode(node, 'video', true, true);
-            });
-
-            getAllAudioElements().forEach(function(node) {
-              observeNode(node);
-              notifyNode(node, 'audio', true, true);
-            });
-          }, 1000);
-
-          let timeout = setTimeout(function() {
-            clearInterval(interval);
-          }, 10000);
+          checkPageForVideos(true);
         }
       });
+      
+      checkPageForVideos(false);
     }
 
     observePage();
