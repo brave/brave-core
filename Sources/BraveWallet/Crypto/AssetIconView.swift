@@ -18,6 +18,8 @@ import BraveCore
 struct AssetIconView: View {
   var token: BraveWallet.BlockchainToken
   var network: BraveWallet.NetworkInfo
+  /// If we should show the native token logo on non-native assets
+  var shouldShowNativeTokenIcon: Bool = false
   @ScaledMetric var length: CGFloat = 40
 
   private var fallbackMonogram: some View {
@@ -39,11 +41,8 @@ struct AssetIconView: View {
       }
     }
     
-    if network.isNativeAsset(token), let logo = network.nativeTokenLogo {
-      // check bundled images
-      if let uiImage = UIImage(named: logo, in: .module, with: nil) {
-        return Image(uiImage: uiImage)
-      }
+    if network.isNativeAsset(token), let uiImage = networkNativeTokenLogo {
+      return Image(uiImage: uiImage)
     }
     
     return nil
@@ -68,7 +67,23 @@ struct AssetIconView: View {
       }
     }
     .frame(width: length, height: length)
+    .overlay(tokenLogo, alignment: .bottomTrailing)
     .accessibilityHidden(true)
+  }
+  
+  private var networkNativeTokenLogo: UIImage? {
+    if let logo = network.nativeTokenLogo {
+      return UIImage(named: logo, in: .module, with: nil)
+    }
+    return nil
+  }
+  
+  @ViewBuilder private var tokenLogo: some View {
+    if shouldShowNativeTokenIcon, !network.isNativeAsset(token), let image = networkNativeTokenLogo {
+      Image(uiImage: image)
+        .resizable()
+        .frame(width: 15, height: 15)
+    }
   }
 }
 
@@ -112,6 +127,8 @@ struct NFTIconView: View {
   var network: BraveWallet.NetworkInfo
   /// NFT image url from metadata
   var url: URL?
+  /// If we should show the native token logo on non-native assets
+  var shouldShowNativeTokenIcon: Bool = false
   
   var body: some View {
     WebImageReader(url: url) { image, isFinished in
@@ -120,7 +137,7 @@ struct NFTIconView: View {
           .resizable()
           .aspectRatio(contentMode: .fit)
       } else {
-        AssetIconView(token: token, network: network)
+        AssetIconView(token: token, network: network, shouldShowNativeTokenIcon: shouldShowNativeTokenIcon)
       }
     }
   }

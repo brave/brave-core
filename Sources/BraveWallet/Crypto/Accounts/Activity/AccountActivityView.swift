@@ -69,6 +69,7 @@ struct AccountActivityView: View {
                 image: AssetIconView(token: asset.token, network: networkStore.selectedChain),
                 title: asset.token.name,
                 symbol: asset.token.symbol,
+                networkName: asset.network.chainName,
                 amount: activityStore.currencyFormatter.string(from: NSNumber(value: (Double(asset.price) ?? 0) * asset.decimalBalance)) ?? "",
                 quantity: String(format: "%.04f", asset.decimalBalance)
               )
@@ -89,6 +90,7 @@ struct AccountActivityView: View {
                 ),
                 title: nftAsset.token.nftTokenTitle,
                 symbol: nftAsset.token.symbol,
+                networkName: nftAsset.network.chainName,
                 quantity: "\(nftAsset.balance)"
               )
             }

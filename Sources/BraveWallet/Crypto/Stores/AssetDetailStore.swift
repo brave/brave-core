@@ -96,8 +96,10 @@ class AssetDetailStore: ObservableObject {
     Task { @MainActor in
       self.isLoadingPrice = true
       self.isLoadingChart = true
-      let coin = await walletService.selectedCoin()
-      let network = await rpcService.network(coin)
+      let coin = token.coin
+      let allNetworks = await rpcService.allNetworks(coin)
+      let selectedNetwork = await rpcService.network(coin)
+      let network = allNetworks.first(where: { $0.chainId == token.chainId }) ?? selectedNetwork
       let buyTokens = await blockchainRegistry.buyTokens(.wyre, chainId: network.chainId)
       self.isBuySupported = buyTokens.first(where: { $0.symbol.lowercased() == token.symbol.lowercased() }) != nil
       // fetch accounts
@@ -134,7 +136,7 @@ class AssetDetailStore: ObservableObject {
       
       self.accounts = await fetchAccountBalances(updatedAccounts, keyring: keyring, network: network)
       let assetRatios = [token.assetRatioId.lowercased(): assetPriceValue]
-      self.transactionSummaries = await fetchTransactionSummarys(keyring: keyring, assetRatios: assetRatios)
+      self.transactionSummaries = await fetchTransactionSummarys(keyring: keyring, network: network, assetRatios: assetRatios)
     }
   }
   
@@ -172,16 +174,15 @@ class AssetDetailStore: ObservableObject {
   
   @MainActor private func fetchTransactionSummarys(
     keyring: BraveWallet.KeyringInfo,
+    network: BraveWallet.NetworkInfo,
     assetRatios: [String: Double]
   ) async -> [TransactionSummary] {
-    let coin = token.coin
-    let network = await rpcService.network(coin)
-    let userVisibleAssets = await walletService.userAssets(network.chainId, coin: coin)
-    let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: coin)
+    let userVisibleAssets = await walletService.userAssets(network.chainId, coin: network.coin)
+    let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
     let allTransactions = await withTaskGroup(of: [BraveWallet.TransactionInfo].self) { @MainActor group -> [BraveWallet.TransactionInfo] in
       for account in keyring.accountInfos {
         group.addTask { @MainActor in
-          await self.txService.allTransactionInfo(coin, from: account.address)
+          await self.txService.allTransactionInfo(network.coin, from: account.address)
         }
       }
       return await group.reduce([BraveWallet.TransactionInfo](), { partialResult, prior in

@@ -225,7 +225,7 @@ extension BraveWallet.BlockchainToken {
   
   /// The id to map with the return balance from RPCService
   var assetBalanceId: String {
-    "\(contractAddress)+\(symbol)"
+    contractAddress + symbol + chainId
   }
   
   var isAuroraSupportedToken: Bool {
