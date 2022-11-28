@@ -9,7 +9,8 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 import {
   BraveWallet,
   SupportedCoinTypes,
-  SupportedTestNetworks
+  SupportedTestNetworks,
+  WalletInfoBase
 } from '../../constants/types'
 import { IsEip1559Changed } from '../constants/action_types'
 
@@ -19,6 +20,11 @@ import {
   networkEntityInitalState,
   NetworkEntityState
 } from './entity-adaptors/network-entity-adaptor'
+import {
+  AccountInfoEntityState,
+  accountInfoEntityAdaptor,
+  accountInfoEntityAdaptorInitialState
+} from './entity-adaptors/account-info-entity-adaptor'
 
 // utils
 import { cacher } from '../../utils/query-cache-utils'
@@ -37,9 +43,118 @@ export function createWalletApi (
       ...cacher.defaultTags,
       'Network',
       'TestnetsEnabled',
-      'SelectedCoin'
+      'SelectedCoin',
+      'WalletInfo',
+      'AccountInfos',
+      'DefaultAccountAddresses',
+      'SelectedAccountAddress',
+      'ChainIdForCoinType',
+      'SelectedChainId'
     ],
     endpoints: ({ mutation, query }) => ({
+      //
+      // Accounts & Wallet Info
+      //
+      getWalletInfoBase: query<WalletInfoBase, void>({
+        async queryFn (arg, api, extraOptions, baseQuery) {
+          const { walletHandler } = baseQuery(undefined).data
+          const walletInfo: WalletInfoBase = await walletHandler.getWalletInfo()
+          return {
+            data: walletInfo
+          }
+        },
+        providesTags: ['WalletInfo']
+      }),
+      getAccountInfosRegistry: query<AccountInfoEntityState, void>({
+        async queryFn (arg, { dispatch }, extraOptions, baseQuery) {
+          const walletInfo: WalletInfoBase = await dispatch(
+            walletApi.endpoints.getWalletInfoBase.initiate()
+          ).unwrap()
+          const accountInfos: BraveWallet.AccountInfo[] = walletInfo.accountInfos
+          return {
+            data: accountInfoEntityAdaptor.setAll(
+              accountInfoEntityAdaptorInitialState,
+              accountInfos
+            )
+          }
+        },
+        providesTags: cacher.providesRegistry('AccountInfos')
+      }),
+      getDefaultAccountAddresses: query<string[], void>({
+        async queryFn (arg, { dispatch }, extraOptions, baseQuery) {
+          const { keyringService } = baseQuery(undefined).data // apiProxy
+
+          // Get default account addresses for each CoinType
+          const defaultAccountAddresses = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
+            const chainId: string = await dispatch(walletApi.endpoints.getChainIdForCoin.initiate(coin)).unwrap()
+            const defaultAccount = coin === BraveWallet.CoinType.FIL
+              ? await keyringService.getFilecoinSelectedAccount(chainId)
+              : await keyringService.getSelectedAccount(coin)
+            return defaultAccount.address
+          }))
+
+          // remove empty addresses
+          const filteredDefaultAccountAddresses = defaultAccountAddresses
+            .filter((account: string | null): account is string => account !== null && account !== '')
+
+          return {
+            data: filteredDefaultAccountAddresses
+          }
+        },
+        providesTags: ['DefaultAccountAddresses']
+      }),
+      setSelectedAccount: mutation<string, {
+        address: string
+        coin: BraveWallet.CoinType
+      }>({
+        async queryFn ({ address, coin }, api, extraOptions, baseQuery) {
+          const { keyringService } = baseQuery(undefined).data // apiProxy
+          await keyringService.setSelectedAccount(address, coin)
+          return {
+            data: address
+          }
+        },
+        invalidatesTags: ['SelectedAccountAddress']
+      }),
+      getSelectedAccountAddress: query<string, void>({
+        async queryFn (arg, { dispatch }, extraOptions, baseQuery) {
+          const { keyringService } = baseQuery(undefined).data // apiProxy
+
+          const selectedCoin: number = await dispatch(walletApi.endpoints.getSelectedCoin.initiate()).unwrap()
+
+          let selectedAddress: string | null = null
+          if (selectedCoin === BraveWallet.CoinType.FIL) {
+            const chainId: string = await dispatch(walletApi.endpoints.getChainIdForCoin.initiate(selectedCoin)).unwrap()
+            selectedAddress = (await keyringService.getFilecoinSelectedAccount(chainId)).address
+          } else {
+            selectedAddress = (await keyringService.getSelectedAccount(selectedCoin)).address
+          }
+
+          const accountsRegistry: AccountInfoEntityState = await dispatch(walletApi.endpoints.getAccountInfosRegistry.initiate()).unwrap()
+          const fallbackAccount = accountsRegistry[accountsRegistry.ids[0]]
+
+          if (
+            // If the selected address is null, set the selected account address to the fallback address
+            selectedAddress === null || selectedAddress === '' ||
+            // If a user has already created an wallet but then chooses to restore
+            // a different wallet, getSelectedAccount still returns the previous wallets
+            // selected account.
+            // This check looks to see if the returned selectedAccount exist in the accountInfos
+            // payload, if not it will setSelectedAccount to the fallback address
+            !accountsRegistry.ids.find((accountId) => String(accountId).toLowerCase() === selectedAddress?.toLowerCase())
+          ) {
+            await dispatch(walletApi.endpoints.setSelectedAccount.initiate(fallbackAccount))
+            return {
+              data: fallbackAccount.address
+            }
+          }
+
+          return {
+            data: selectedAddress
+          }
+        },
+        providesTags: ['SelectedAccountAddress']
+      }),
       //
       // Networks
       //
@@ -62,9 +177,27 @@ export function createWalletApi (
           }
         },
         providesTags: cacher.providesRegistry('Network')
-
       }),
-
+      getChainIdForCoin: query<string, BraveWallet.CoinType>({
+        async queryFn (arg, api, extraOptions, baseQuery) {
+          const { jsonRpcService } = baseQuery(undefined).data // apiProxy
+          const { chainId } = await jsonRpcService.getChainId(arg)
+          return {
+            data: chainId
+          }
+        },
+        providesTags: cacher.cacheByIdArg('ChainIdForCoinType')
+      }),
+      getSelectedChainId: query<string, void>({
+        async queryFn (arg, { dispatch }, extraOptions, baseQuery) {
+          const selectedCoin: number = await dispatch(walletApi.endpoints.getSelectedCoin.initiate()).unwrap()
+          const chainId: string = await dispatch(walletApi.endpoints.getChainIdForCoin.initiate(selectedCoin)).unwrap()
+          return {
+            data: chainId
+          }
+        },
+        providesTags: ['SelectedChainId']
+      }),
       getIsTestNetworksEnabled: query<boolean, void>({
         async queryFn (arg, api, extraOptions, baseQuery) {
           try {
