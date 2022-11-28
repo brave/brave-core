@@ -458,7 +458,7 @@ struct WalletPanelView: View {
             }
           }
           VStack(spacing: 4) {
-            let nativeAsset = accountActivityStore.assets.first(where: { $0.token.symbol == networkStore.selectedChain.symbol })
+            let nativeAsset = accountActivityStore.userVisibleAssets.first(where: { $0.token.symbol == networkStore.selectedChain.symbol })
             Text(String(format: "%.04f %@", nativeAsset?.decimalBalance ?? 0.0, networkStore.selectedChain.symbol))
               .font(.title2.weight(.bold))
             Text(currencyFormatter.string(from: NSNumber(value: (Double(nativeAsset?.price ?? "") ?? 0) * (nativeAsset?.decimalBalance ?? 0.0))) ?? "")

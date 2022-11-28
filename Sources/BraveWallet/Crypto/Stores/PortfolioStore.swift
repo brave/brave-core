@@ -158,19 +158,7 @@ public class PortfolioStore: ObservableObject {
         let tokens: [BraveWallet.BlockchainToken]
         let sortOrder: Int
       }
-      let allVisibleUserAssets = await withTaskGroup(
-        of: [NetworkAssets].self,
-        body: { @MainActor group -> [NetworkAssets] in
-          for (index, network) in networks.enumerated() {
-            group.addTask { @MainActor in
-              let userAssets = await self.walletService.userAssets(network.chainId, coin: network.coin).filter(\.visible)
-              return [NetworkAssets(network: network, tokens: userAssets, sortOrder: index)]
-            }
-          }
-          return await group.reduce([NetworkAssets](), { $0 + $1 })
-            .sorted(by: { $0.sortOrder < $1.sortOrder }) // maintain sort order of networks
-        }
-      )
+      let allVisibleUserAssets = await self.walletService.allVisibleUserAssets(in: networks)
       var updatedUserVisibleAssets: [AssetViewModel] = []
       var updatedUserVisibleNFTs: [NFTAssetViewModel] = []
       for networkAssets in allVisibleUserAssets {
@@ -215,7 +203,7 @@ public class PortfolioStore: ObservableObject {
       let totalBalances: [String: Double] = await withTaskGroup(of: [String: Double].self, body: { @MainActor group in
         for tokenNetworkAccounts in allTokenNetworkAccounts {
           group.addTask { @MainActor in
-            let totalBalance = await self.fetchTotalBalance(
+            let totalBalance = await self.rpcService.fetchTotalBalance(
               token: tokenNetworkAccounts.token,
               network: tokenNetworkAccounts.network,
               accounts: tokenNetworkAccounts.accounts
@@ -236,7 +224,11 @@ public class PortfolioStore: ObservableObject {
       // fetch price for every token
       let allTokens = allVisibleUserAssets.flatMap(\.tokens)
       let allAssetRatioIds = allTokens.map(\.assetRatioId)
-      let prices: [String: String] = await fetchPrices(for: allAssetRatioIds)
+      let prices: [String: String] = await assetRatioService.fetchPrices(
+        for: allAssetRatioIds,
+        toAssets: [currencyFormatter.currencyCode],
+        timeframe: timeframe
+      )
       for (key, value) in prices { // update cached values
         self.pricesCache[key] = value
       }
@@ -304,40 +296,6 @@ public class PortfolioStore: ObservableObject {
       }
       isLoadingBalances = false
     }
-  }
-  
-  @MainActor private func fetchTotalBalance(
-    token: BraveWallet.BlockchainToken,
-    network: BraveWallet.NetworkInfo,
-    accounts: [BraveWallet.AccountInfo]
-  ) async -> Double {
-    let balancesForAsset = await withTaskGroup(of: [Double].self, body: { @MainActor group in
-      for account in accounts {
-        group.addTask { @MainActor in
-          let balance = await self.rpcService.balance(
-            for: token,
-            in: account,
-            network: network
-          )
-          return [balance ?? 0]
-        }
-      }
-      return await group.reduce([Double](), { $0 + $1 })
-    })
-    return balancesForAsset.reduce(0, +)
-  }
-  
-  /// Fetches the prices for a given list of `assetRatioId`, giving a dictionary with the price for each symbol
-  @MainActor func fetchPrices(
-    for priceIds: [String]
-  ) async -> [String: String] {
-    let priceResult = await assetRatioService.priceWithIndividualRetry(
-      priceIds.map { $0.lowercased() },
-      toAssets: [currencyFormatter.currencyCode],
-      timeframe: timeframe
-    )
-    let prices = Dictionary(uniqueKeysWithValues: priceResult.assetPrices.map { ($0.fromAsset, $0.price) })
-    return prices
   }
   
   /// Fetches the price history for the given `assetRatioId`, giving a dictionary with the price history for each symbol
