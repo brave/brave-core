@@ -34,12 +34,10 @@ jobs:
         run: |
           set -x
 
-          env | grep -i git | sort
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           git config user.name "${{ github.actor }}"
           git config push.default simple
           gh api /repos/brave/web-discovery-project/commits/main -q .sha
-          exit 0
 
           SED=sed
           DATE=date
@@ -51,11 +49,10 @@ jobs:
           [[ -z "$DEPREF" ]] && { echo Input ref cannot be empty; exit 1; }
 
           DATETIME="$($DATE '+%Y-%m-%d-%H-%M')"
-          readarray -t milestones < <(gh api /repos/brave/brave-core/milestones -q ".[] | .title" | grep -Fv Closed)
+          readarray -t milestones < <(gh api /repos/${GITHUB_REPOSITORY:?}/milestones -q ".[] | .title" | grep -Fv Closed)
           branches=( "${milestones[@]/*Nightly/master}" )
           branches=( "${branches[@]/ -*/}" )
-          echo Branches to operate on:
-          declare -p branches
+          echo "Branches to operate on: ${branches[*]}"
           for branch in "${branches[@]}"
           do
             git switch "$branch"
@@ -64,6 +61,6 @@ jobs:
             "$SED" -i -e "s|\(.*${DEP}.*\)@\(.*\)\",$|\1@${DEPREF}\",|" DEPS
             git add DEPS
             git commit -m "Auto bump DEPS ${DEP}"
-            git push -u origin "$pr_branch"
+            # git push -u origin "$pr_branch"
             # gh pr create --base "${branch}" -f -t "Auto bump ${DEP}" -l "CI/run-audit-deps"
           done
