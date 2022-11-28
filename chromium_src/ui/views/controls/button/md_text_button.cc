@@ -24,11 +24,6 @@
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view_class_properties.h"
 
-// To be called from MdTextButtonBase::UpdateColors().
-#define BRAVE_MD_TEXT_BUTTON_UPDATE_COLORS \
-  UpdateColorsForBrave();                  \
-  UpdateIconForBrave();
-
 #define MdTextButton MdTextButtonBase
 #include "src/ui/views/controls/button/md_text_button.cc"
 #undef MdTextButton
@@ -207,108 +202,77 @@ void MdTextButton::SetLoading(bool loading) {
   UpdateColors();
 }
 
+void MdTextButton::UpdateTextColor() {
+  MdTextButtonBase::UpdateTextColor();
+
+  // Once we update the buttons across Brave to use the new style, we can remove
+  // this branch.
+  if (kind_ == kOld) {
+    if (GetProminent()) {
+      return;
+    }
+    const ui::NativeTheme* theme = GetNativeTheme();
+    // Override different text hover color
+    if (theme->GetPlatformHighContrastColorScheme() !=
+        ui::NativeTheme::PlatformHighContrastColorScheme::kDark) {
+      SetTextColor(ButtonState::STATE_HOVERED, kBraveBrandColor);
+      SetTextColor(ButtonState::STATE_PRESSED, kBraveBrandColor);
+    }
+    return;
+  }
+
+  auto colors = GetButtonColors();
+  SetTextColor(GetVisualState(), colors.text_color);
+}
+
 void MdTextButton::UpdateBackgroundColor() {
-  // Handled via |UpdateColorsForBrave|.
-  if (kind_ != kOld) {
-    return;
-  }
+  // Once we update the buttons across Brave to use the new style, we can remove
+  // this branch.
+  if (kind_ == kOld) {
+    MdTextButtonBase::UpdateBackgroundColor();
 
-  MdTextButtonBase::UpdateBackgroundColor();
-}
-
-void MdTextButton::UpdateOldColorsForBrave() {
-  if (GetProminent()) {
-    return;
-  }
-
-  const ui::NativeTheme* theme = GetNativeTheme();
-  // Override different text hover color
-  if (theme->GetPlatformHighContrastColorScheme() !=
-      ui::NativeTheme::PlatformHighContrastColorScheme::kDark) {
-    SetTextColor(ButtonState::STATE_HOVERED, kBraveBrandColor);
-    SetTextColor(ButtonState::STATE_PRESSED, kBraveBrandColor);
-  }
-  // Override border color for hover on non-prominent
-  if (GetState() == ButtonState::STATE_PRESSED ||
-      GetState() == ButtonState::STATE_HOVERED) {
-    // First, get the same background fill color that MdTextButtonBase does.
-    // It is undfortunate to copy these lines almost as-is. Consider otherwise
-    // patching it in via a #define.
-    SkColor bg_color = GetColorProvider()->GetColor(ui::kColorDialogBackground);
-    if (GetBgColorOverride()) {
-      bg_color = *GetBgColorOverride();
+    // We don't modify the Prominent button at all.
+    if (GetProminent()) {
+      return;
     }
-    if (GetState() == STATE_PRESSED) {
-      bg_color = GetNativeTheme()->GetSystemButtonPressedColor(bg_color);
-    }
-    // The only thing that differs for Brave is the stroke color
-    SkColor stroke_color = kBraveBrandColor;
-    SetBackground(CreateBackgroundFromPainter(
-        Painter::CreateRoundRectWith1PxBorderPainter(bg_color, stroke_color,
-                                                     GetCornerRadius())));
-  }
-}
 
-// To be called from MdTextButtonBase::UpdateColors().
-void MdTextButton::UpdateColorsForBrave() {
-  if (GetKind() == Kind::kOld) {
-    UpdateOldColorsForBrave();
+    // Override border color for hover on non-prominent
+    if (GetState() == ButtonState::STATE_PRESSED ||
+        GetState() == ButtonState::STATE_HOVERED) {
+      // First, get the same background fill color that MdTextButtonBase does.
+      // It is unfortunate to copy these lines almost as-is. Consider otherwise
+      // patching it in via a #define.
+      SkColor bg_color =
+          GetColorProvider()->GetColor(ui::kColorDialogBackground);
+      if (GetBgColorOverride()) {
+        bg_color = *GetBgColorOverride();
+      }
+      if (GetState() == STATE_PRESSED) {
+        bg_color = GetNativeTheme()->GetSystemButtonPressedColor(bg_color);
+      }
+      // The only thing that differs for Brave is the stroke color
+      SkColor stroke_color = kBraveBrandColor;
+      SetBackground(CreateBackgroundFromPainter(
+          Painter::CreateRoundRectWith1PxBorderPainter(bg_color, stroke_color,
+                                                       GetCornerRadius())));
+    }
     return;
   }
 
-  // Leo buttons only have a light and dark mode.
-  auto color_scheme =
-      GetNativeTheme()->GetPreferredColorScheme() == ColorScheme::kDark
-          ? ColorScheme::kDark
-          : ColorScheme::kLight;
-  auto state = GetVisualState();
-  float opacity = 1;
-
-  // Leo buttons don't have a pressed state, so use the hover state instead.
-  if (state == ButtonState::STATE_PRESSED) {
-    state = ButtonState::STATE_HOVERED;
-  }
-
-  // The loading style is the normal button style, with some opacity.
-  if (loading_) {
-    state = ButtonState::STATE_NORMAL;
-    opacity = kLoadingOpacity;
-  }
-
-  // The enabled style is the normal button style with more opacity.
-  if (!GetEnabled() || state == STATE_DISABLED) {
-    state = ButtonState::STATE_DISABLED;
-    opacity = kDisabledOpacity;
-  }
-
-  MdTextButtonStyleKey style_lookup{GetKind(), color_scheme, state};
-  auto it = GetButtonThemes().find(style_lookup);
-  if (it == GetButtonThemes().end()) {
-    NOTREACHED() << "No style found for ButtonKind: " << kind_
-                 << ", ColorScheme: "
-                 << (color_scheme == ColorScheme::kDark ? "dark" : "light")
-                 << ", ButtonState: " << state;
-  }
-  const auto& style = it->second;
-
-  SetTextColor(GetVisualState(), AddOpacity(style.text_color, opacity));
-
-  // Prefer the BgColorOverride, if there is one. Fallback to what's in our
-  // style.
-  SkColor bg_color = GetBgColorOverride().value_or(
-      style.background_color.value_or(SK_ColorTRANSPARENT));
-  SkColor stroke_color = style.border_color.value_or(SK_ColorTRANSPARENT);
+  auto colors = GetButtonColors();
 
   // SubPixelRendering doesn't work if we have any background opacity.
-  SetTextSubpixelRenderingEnabled(opacity == 1 &&
-                                  SkColorGetA(bg_color) == 0xFF);
+  SetTextSubpixelRenderingEnabled(SkColorGetA(colors.background_color) == 0xFF);
+
   SetBackground(
       CreateBackgroundFromPainter(Painter::CreateRoundRectWith1PxBorderPainter(
-          AddOpacity(bg_color, opacity), AddOpacity(stroke_color, opacity),
-          GetCornerRadius())));
+          colors.background_color, colors.stroke_color, GetCornerRadius())));
 }
 
-void MdTextButton::UpdateIconForBrave() {
+void MdTextButton::UpdateColors() {
+  MdTextButtonBase::UpdateColors();
+
+  // Update the icon color.
   if (icon_) {
     SetImageModel(
         ButtonState::STATE_NORMAL,
@@ -334,6 +298,50 @@ void MdTextButton::OnPaintBackground(gfx::Canvas* canvas) {
     canvas->DrawRoundRect(gfx::RectF(GetLocalBounds()), GetCornerRadius(),
                           flags);
   }
+}
+
+MdTextButton::ButtonColors MdTextButton::GetButtonColors() {
+  // Leo buttons only have a light and dark mode.
+  auto color_scheme =
+      GetNativeTheme()->GetPreferredColorScheme() == ColorScheme::kDark
+          ? ColorScheme::kDark
+          : ColorScheme::kLight;
+  auto state = GetVisualState();
+  float opacity = 1;
+
+  // Leo buttons don't have a pressed state, so use the hover state instead.
+  if (state == ButtonState::STATE_PRESSED) {
+    state = ButtonState::STATE_HOVERED;
+  }
+
+  // The loading style is the normal button style, with some opacity.
+  if (loading_) {
+    state = ButtonState::STATE_NORMAL;
+    opacity = kLoadingOpacity;
+  }
+
+  // The enabled style is the normal button style with more opacity.
+  if (!GetEnabled() || state == STATE_DISABLED) {
+    state = ButtonState::STATE_NORMAL;
+    opacity = kDisabledOpacity;
+  }
+
+  MdTextButtonStyleKey style_lookup{GetKind(), color_scheme, state};
+  auto it = GetButtonThemes().find(style_lookup);
+  if (it == GetButtonThemes().end()) {
+    NOTREACHED() << "No style found for ButtonKind: " << kind_
+                 << ", ColorScheme: "
+                 << (color_scheme == ColorScheme::kDark ? "dark" : "light")
+                 << ", ButtonState: " << state;
+  }
+  const auto& style = it->second;
+  return {.background_color = AddOpacity(
+              GetBgColorOverride().value_or(
+                  style.background_color.value_or(SK_ColorTRANSPARENT)),
+              opacity),
+          .stroke_color = AddOpacity(
+              style.border_color.value_or(SK_ColorTRANSPARENT), opacity),
+          .text_color = AddOpacity(style.text_color, opacity)};
 }
 
 }  // namespace views
