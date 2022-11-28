@@ -4136,12 +4136,12 @@ extension Strings {
   public struct P3A {
     public static let settingTitle = NSLocalizedString(
       "p3a.settingTitle", tableName: "BraveShared", bundle: .module,
-      value: "Product Analytics",
+      value: "Allow privacy-preserving product analytics (P3A)",
       comment: "The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave.")
     
     public static let settingSubtitle = NSLocalizedString(
       "p3a.settingSubtitle", tableName: "BraveShared", bundle: .module,
-      value: "Share anonymous, private product insights. This helps us learn what Brave features are used most often.",
+      value: "Anonymised P3A info helps Brave estimate overall usage and ensure we're improving popular features.",
       comment: "A subtitle shown on the setting that toggles analytics on Brave.")
   }
 }
