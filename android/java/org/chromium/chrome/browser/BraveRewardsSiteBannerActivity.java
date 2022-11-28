@@ -77,6 +77,12 @@ public class BraveRewardsSiteBannerActivity
             mBraveRewardsNativeWorker.GetPublisherBanner(
                     mBraveRewardsNativeWorker.GetPublisherId(currentTabId_));
         }
+        clickOnCloseButton();
+    }
+
+    private void clickOnCloseButton() {
+        View closeButton = findViewById(R.id.button_close);
+        closeButton.setOnClickListener((v) -> { finish(); });
     }
 
     @Override
