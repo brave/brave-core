@@ -1,3 +1,6 @@
+# Description: Run this by visiting https://github.com/brave/brave-core/actions/workflows/bump-deps.yaml
+# and clicking the `Run workflow` button on the top-right.
+# You can also run it from cli by: `gh workflow run bump-deps.yaml -f ref=commit-hash`
 name: Bump DEPS
 on:
   workflow_dispatch:
