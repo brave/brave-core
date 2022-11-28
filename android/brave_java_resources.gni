@@ -721,6 +721,7 @@ brave_java_resources = [
   "java/res/layout-land/brave_shields_stats_row.xml",
   "java/res/layout-land/verify_wallet_activity.xml",
   "java/res/layout-sw600dp-land/brave_shields_stats_row.xml",
+  "java/res/layout-sw600dp/brave_rewards_site_banner.xml",
   "java/res/layout-sw600dp/brave_shields_stats_row.xml",
   "java/res/layout/account_spinner_items.xml",
   "java/res/layout/activity_account_detail.xml",
