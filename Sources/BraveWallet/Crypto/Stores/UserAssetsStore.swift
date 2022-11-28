@@ -72,28 +72,70 @@ public class UserAssetsStore: ObservableObject {
     self.rpcService = rpcService
     self.keyringService = keyringService
     self.assetRatioService = assetRatioService
-    self.rpcService.add(self)
     self.keyringService.add(self)
-
-    fetchVisibleAssets()
   }
-
-  private func updateSelectedAssets(_ network: BraveWallet.NetworkInfo) {
-    walletService.userAssets(network.chainId, coin: network.coin) { [self] userAssets in
-      let visibleAssetIds = userAssets.filter(\.visible).map(\.id)
-      blockchainRegistry.allTokens(network.chainId, coin: network.coin) { [self] registryTokens in
-        allTokens = registryTokens + [network.nativeToken]
-        var uniqueAssets: [BraveWallet.BlockchainToken] = []
-        // we need to swap out the ERC721 assets that are from token registry but was added back as custom tokens with token id.
-        for registeryToken in allTokens {
-          if let matchedUserAsset = userAssets.first(where: { $0.id == registeryToken.id }) {
-            uniqueAssets.append(matchedUserAsset)
-          } else {
-            uniqueAssets.append(registeryToken)
+  
+  @Published var networkFilter: NetworkFilter = .allNetworks {
+    didSet {
+      update()
+    }
+  }
+  
+  func update() {
+    Task { @MainActor in
+      let networks: [BraveWallet.NetworkInfo]
+      switch networkFilter {
+      case .allNetworks:
+        networks = await self.rpcService.allNetworksForSupportedCoins()
+      case let .network(network):
+        networks = [network]
+      }
+      struct AssetsForNetwork: Equatable {
+        let network: BraveWallet.NetworkInfo
+        let tokens: [BraveWallet.BlockchainToken]
+        let sortOrder: Int
+      }
+      let allUserAssets = await withTaskGroup(
+        of: [AssetsForNetwork].self,
+        body: { @MainActor group -> [AssetsForNetwork] in
+          for (index, network) in networks.enumerated() {
+            group.addTask { @MainActor in
+              let userAssets = await self.walletService.userAssets(network.chainId, coin: network.coin)
+              return [AssetsForNetwork(network: network, tokens: userAssets, sortOrder: index)]
+            }
           }
+          return await group.reduce([AssetsForNetwork](), { $0 + $1 })
+            .sorted(by: { $0.sortOrder < $1.sortOrder }) // maintain sort order of networks
         }
-        
-        assetStores = uniqueAssets.union(userAssets, f: { $0.id }).map { token in
+      )
+      
+      var allTokens = await withTaskGroup(
+        of: [AssetsForNetwork].self,
+        body: { @MainActor group -> [AssetsForNetwork] in
+          for (index, network) in networks.enumerated() {
+            group.addTask { @MainActor in
+              let allTokens = await self.blockchainRegistry.allTokens(network.chainId, coin: network.coin)
+              return [AssetsForNetwork(network: network, tokens: allTokens + [network.nativeToken], sortOrder: index)]
+            }
+          }
+          return await group.reduce([AssetsForNetwork](), { $0 + $1 })
+            .sorted(by: { $0.sortOrder < $1.sortOrder }) // maintain sort order of networks
+        }
+      )
+      // Filter `allTokens` to remove any tokens existing in `allUserAssets`. This is possible for ERC721 tokens in the registry without a `tokenId`, which requires the user to add as a custom token
+      let allUserTokens = allUserAssets.flatMap(\.tokens)
+      allTokens = allTokens.map { assetsForNetwork in
+        AssetsForNetwork(
+          network: assetsForNetwork.network,
+          tokens: assetsForNetwork.tokens.filter { token in
+            !allUserTokens.contains(where: { $0.id == token.id })
+          },
+          sortOrder: assetsForNetwork.sortOrder)
+      }
+      
+      let visibleIds = allUserAssets.flatMap(\.tokens).filter(\.visible).map { $0.id + $0.chainId }
+      assetStores = (allUserAssets + allTokens).flatMap { assetsForNetwork in
+        assetsForNetwork.tokens.map { token in
           var isCustomToken: Bool {
             if token.contractAddress.isEmpty {
               return false
@@ -102,16 +144,16 @@ public class UserAssetsStore: ObservableObject {
             if !token.tokenId.isEmpty {
               return true
             }
-            return !allTokens.contains(where: {
-              $0.contractAddress(in: network).caseInsensitiveCompare(token.contractAddress) == .orderedSame
+            return !allTokens.flatMap(\.tokens).contains(where: {
+              $0.contractAddress(in: assetsForNetwork.network).caseInsensitiveCompare(token.contractAddress) == .orderedSame
             })
           }
           return AssetStore(
             walletService: walletService,
-            network: network,
+            network: assetsForNetwork.network,
             token: token,
             isCustomToken: isCustomToken,
-            isVisible: visibleAssetIds.contains(token.id)
+            isVisible: visibleIds.contains(where: { $0 == (token.id + token.chainId) })
           )
         }
       }
@@ -122,39 +164,20 @@ public class UserAssetsStore: ObservableObject {
     _ asset: BraveWallet.BlockchainToken,
     completion: @escaping (_ success: Bool) -> Void
   ) {
-    walletService.selectedCoin { [weak self] coinType in
-      guard let self = self else { return }
-      
-      self.rpcService.network(coinType) { currentNetwork in
-        self.walletService.addUserAsset(asset) { success in
-          if success, asset.chainId.caseInsensitiveCompare(currentNetwork.chainId) == .orderedSame {
-            self.updateSelectedAssets(currentNetwork)
-          }
-          completion(success)
-        }
+    walletService.addUserAsset(asset) { [weak self] success in
+      if success {
+        self?.update()
       }
+      completion(success)
     }
   }
 
   func removeUserAsset(token: BraveWallet.BlockchainToken, completion: @escaping (_ success: Bool) -> Void) {
-    walletService.selectedCoin { [weak self] coin in
-      guard let self = self else { return }
-      self.rpcService.network(coin) { network in
-        self.walletService.removeUserAsset(token) { success in
-          if success {
-            self.updateSelectedAssets(network)
-          }
-          completion(success)
-        }
+    walletService.removeUserAsset(token) { [weak self] success in
+      if success {
+        self?.update()
       }
-    }
-  }
-
-  func fetchVisibleAssets() {
-    walletService.selectedCoin { [weak self] coin in
-      self?.rpcService.network(coin) { network in
-        self?.updateSelectedAssets(network)
-      }
+      completion(success)
     }
   }
 
@@ -190,21 +213,9 @@ public class UserAssetsStore: ObservableObject {
   }
 }
 
-extension UserAssetsStore: BraveWalletJsonRpcServiceObserver {
-  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
-    rpcService.network(coin) { [weak self] network in
-      self?.updateSelectedAssets(network)
-    }
-  }
-  public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
-  }
-  public func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
-  }
-}
-
 extension UserAssetsStore: BraveWalletKeyringServiceObserver {
   public func keyringCreated(_ keyringId: String) {
-    fetchVisibleAssets()
+    update()
   }
   
   public func keyringRestored(_ keyringId: String) {

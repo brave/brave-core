@@ -32,12 +32,16 @@ private struct EditTokenView: View {
       }
     }) {
       HStack(spacing: 8) {
-        AssetIconView(token: assetStore.token, network: assetStore.network)
+        AssetIconView(
+          token: assetStore.token,
+          network: assetStore.network,
+          shouldShowNativeTokenIcon: true
+        )
         VStack(alignment: .leading) {
           Text(tokenName)
             .fontWeight(.semibold)
             .foregroundColor(Color(.bravePrimary))
-          Text(assetStore.token.symbol.uppercased())
+          Text(String.localizedStringWithFormat(Strings.Wallet.userAssetSymbolNetworkDesc, assetStore.token.symbol, assetStore.network.chainName))
             .foregroundColor(Color(.secondaryBraveLabel))
         }
         .font(.footnote)
@@ -62,6 +66,7 @@ struct EditUserAssetsView: View {
   @State private var isAddingCustomAsset = false
   @State private var isPresentingAssetRemovalError = false
   @State private var tokenNeedsTokenId: BraveWallet.BlockchainToken?
+  @State private var isPresentingNetworkFilter = false
 
   private var tokenStores: [AssetStore] {
     let normalizedQuery = query.lowercased()
@@ -71,10 +76,50 @@ struct EditUserAssetsView: View {
         $0.token.symbol.lowercased().contains(normalizedQuery) || $0.token.name.lowercased().contains(normalizedQuery)
       }
     }
-    return
-      stores
-      .sorted(by: { $0.token.symbol.caseInsensitiveCompare($1.token.symbol) == .orderedAscending })
-      .sorted(by: { $0.isVisible && !$1.isVisible })
+    return stores.sorted(by: { $0.isVisible && !$1.isVisible })
+  }
+  
+  private var networkFilterButton: some View {
+    Button(action: {
+      self.isPresentingNetworkFilter = true
+    }) {
+      HStack {
+        Image(braveSystemName: "brave.text.alignleft")
+        Text(userAssetsStore.networkFilter.title)
+      }
+      .font(.footnote.weight(.medium))
+      .foregroundColor(Color(.braveBlurpleTint))
+    }
+    .sheet(isPresented: $isPresentingNetworkFilter) {
+      NavigationView {
+        NetworkFilterView(
+          networkFilter: $userAssetsStore.networkFilter,
+          networkStore: networkStore
+        )
+      }
+      .onDisappear {
+        networkStore.closeNetworkSelectionStore()
+      }
+    }
+  }
+  
+  private var addCustomAssetButton: some View {
+    Button(action: {
+      isAddingCustomAsset = true
+    }) {
+      Image(systemName: "plus")
+    }
+    .sheet(isPresented: $isAddingCustomAsset) {
+      AddCustomAssetView(
+        networkStore: networkStore,
+        networkSelectionStore: networkStore.openNetworkSelectionStore(mode: .formSelection),
+        keyringStore: keyringStore,
+        userAssetStore: userAssetsStore
+      )
+      .onDisappear {
+        networkStore.closeNetworkSelectionStore()
+      }
+    }
   }
 
   var body: some View {
@@ -86,14 +131,6 @@ struct EditUserAssetsView: View {
               title: Text(Strings.Wallet.assetsTitle)
             )
             Spacer()
-            Button(action: {
-              isAddingCustomAsset = true
-            }) {
-              Text(Strings.Wallet.addCustomAsset)
-                .font(.footnote.weight(.bold))
-                .textCase(.none)
-                .foregroundColor(Color(.braveBlurpleTint))
-            }
           }
           .osAvailabilityModifiers { content in
             if #available(iOS 15.0, *) {
@@ -152,6 +189,11 @@ struct EditUserAssetsView: View {
       .navigationBarTitleDisplayMode(.inline)
       .filterable(text: $query)
       .toolbar {
+        ToolbarItemGroup(placement: .bottomBar) {
+          networkFilterButton
+          Spacer()
+          addCustomAssetButton
+        }
         ToolbarItemGroup(placement: .confirmationAction) {
           Button(action: {
             assetsUpdated()
@@ -160,17 +202,6 @@ struct EditUserAssetsView: View {
             Text(Strings.done)
               .foregroundColor(Color(.braveBlurpleTint))
           }
-        }
-      }
-      .sheet(isPresented: $isAddingCustomAsset) {
-        AddCustomAssetView(
-          networkStore: networkStore,
-          networkSelectionStore: networkStore.openNetworkSelectionStore(mode: .formSelection),
-          keyringStore: keyringStore,
-          userAssetStore: userAssetsStore
-        )
-        .onDisappear {
-          networkStore.closeNetworkSelectionStore()
         }
       }
       .sheet(
@@ -199,6 +230,9 @@ struct EditUserAssetsView: View {
       }
     }
     .navigationViewStyle(StackNavigationViewStyle())
+    .onAppear {
+      userAssetsStore.update()
+    }
   }
 
   private func removeCustomToken(_ token: BraveWallet.BlockchainToken) {
