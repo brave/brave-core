@@ -227,6 +227,9 @@
     <color name="rewards_tipping_panel_divider_color">#80AEB1C2</color>
     <color name="rewards_tipping_black_color">#000000</color>
     <color name="rewards_tipping_white_color">#FFFFFF</color>
+    <color name="rewards_tipping_publisher_name_color">#F8F9FA</color>
+    <color name="rewards_tipping_radio_group_bg">#E9E9F4</color>
+    <color name="rewards_tipping_text_color">#212529</color>
 
     <color name="brave_rewards_theme_color">#4C54D2</color>
     <color name="cookie_consent_action_color">@color/brave_action_color</color>

@@ -146,6 +146,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_TIP_AMOUNT_TEXT"  desc="Text for Tip amount">
         Tip amount:
       </message>
+      <message name="IDS_PENDING_TIP_TEXT"  desc="Text for Pending tip text">
+        You've set up a pending tip!
+      </message>
       <message name="IDS_BRAVE_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_TITLE" desc="The title of a dialog shown to users before asking for notification permission.">
         Brave notifications make it easier
       </message>
