@@ -296,6 +296,10 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/flags/BraveCachedFlag"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/LogoCoordinator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/BraveLogoCoordinator"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/tracing/settings/DeveloperSettings"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/settings/BravePreferenceFragment"));
     }
 
     @Test
@@ -970,6 +974,12 @@ public class BytecodeTest {
         Assert.assertTrue(
                 checkSuperName("org/chromium/chrome/browser/document/ChromeLauncherActivity",
                         "org/chromium/chrome/browser/document/BraveLauncherActivity"));
+        Assert.assertTrue(
+                checkSuperName("org/chromium/components/permissions/PermissionDialogDelegate",
+                        "org/chromium/components/permissions/BravePermissionDialogDelegate"));
+        Assert.assertTrue(
+                checkSuperName("org/chromium/chrome/browser/tracing/settings/DeveloperSettings",
+                        "org/chromium/chrome/browser/settings/BravePreferenceFragment"));
     }
 
     private boolean classExists(String className) {
