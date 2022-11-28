@@ -4,13 +4,12 @@
 
 import * as React from 'react'
 
+import { adsPerHourOptions } from '../../lib/ads_options'
 import { LocaleContext } from '../../lib/locale_context'
 import { RewardsTourProps } from './rewards_tour_props'
 import { Slider } from './slider'
 
 import * as style from './setup_form.style'
-
-const adsPerHourOptions = [1, 2, 3, 4, 5]
 
 export function SetupForm (props: RewardsTourProps) {
   const { getString, getPluralString } = React.useContext(LocaleContext)

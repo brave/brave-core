@@ -8,6 +8,7 @@ import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
 import { getUserType } from '../../shared/lib/user_type'
 import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
+import { adsPerHourOptions } from '../../shared/lib/ads_options'
 
 import {
   externalWalletFromExtensionData,
@@ -172,7 +173,7 @@ export function AdsPanel () {
             onChange={settingSelectHandler('adsPerHour')}
           >
             {
-              [0, 1, 2, 3, 4, 5, 10].map((n) => (
+              adsPerHourOptions.map((n) => (
                 <option key={`num-per-hour-${n}`} value={n}>
                   {getString(`adsPerHour${n}`)}
                 </option>
