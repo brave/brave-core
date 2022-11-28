@@ -82,9 +82,6 @@
 <translation id="9024104284526126630">Możesz rozpocząć prywatne połączenie w Brave.</translation>
 <translation id="4903286433687221248">Rozpocznij nieograniczone rozmowy z przyjaciółmi i współpracownikami za pomocą aplikacji Brave Talk.</translation>
 <translation id="7115051913071512405">Wypróbuj</translation>
-<translation id="7415602225677446066">Topowe wiadomości dnia w całkowicie prywatnym kanale, tylko dla Ciebie.</translation>
-<translation id="6903061332999399632">Brave News są wspierane reklamami z wykorzystaniem całkowicie prywatnych i anonimowych reklam dopasowanych do Twojego urządzenia. Twoje dane osobowe zawsze pozostają prywatne, zgodnie z naszą <ph name="LINK_START"/>polityką prywatności<ph name="LINK_END"/>.</translation>
-<translation id="7823038307453615214">Pokaż Brave News</translation>
 <translation id="1447534717041828517">Pokaż przycisk Brave News na pasku narzędzi</translation>
 <translation id="370665806235115550">Ładowanie...</translation>
 <translation id="4634933166298842522">Zarządzaj subskrypcjami</translation>
@@ -93,7 +90,6 @@
 <translation id="8909741410750517071">Obserwuj to źródło za pomocą 1 kliknięcia.</translation>
 <translation id="1982678174789043774">Bądź na bieżąco ze wszystkimi historiami dzięki Aktualnościom Brave</translation>
 <translation id="7894417427965898400">Zarządzaj kanałami</translation>
-<translation id="780301667611848630">Nie, dziękuję</translation>
 <translation id="9164544612367905452">Trwa pobieranie…</translation>
 <translation id="1276592121036104130">Wczytaj nowe treści.</translation>
 <translation id="2875288128871360696">Przewiń do Brave News</translation>
@@ -104,33 +100,11 @@
 <translation id="5158129253322921540">Wyłącz treści od <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Promowane</translation>
 <translation id="4541978218358617681">Reklama</translation>
-<translation id="6265592479622441247">Wróć do obszaru <ph name="BEGIN_BOLD"/>Pulpit<ph name="END_BOLD"/></translation>
-<translation id="8300751939969131609">Włącz Aktualności Brave i bądź zawsze na bieżąco</translation>
-<translation id="8117813824055029515">Dostosowane do potrzeb użytkownika kanały informacyjne z wiodących źródeł, dostarczane bezpośrednio do przeglądarki. Wszystkie w 100% prywatne.</translation>
-<translation id="1765217911817124376">Włącz aktualności Brave</translation>
-<translation id="7845637671472170434">Wyszukuj wiadomości, strony, tematy i kanały RSS</translation>
-<translation id="1498364270401875204">Kanały</translation>
-<translation id="1472675084647422956">Pokaż więcej</translation>
-<translation id="8032569120109842252">Obserwowane</translation>
-<translation id="7841646697467892441">{FEED_COUNT, plural,
-          =1 {# źródło}
-          few {# źródła}
-          many {# źródeł}
-          other {# źródła}
-        }</translation>
-<translation id="6143382357119101833">Otrzymuj wiadomości z <ph name="URL"/></translation>
-<translation id="4515121482885046194">Nie znaleziono wiadomości na stronie <ph name="URL"/></translation>
-<translation id="8535964427132833909">Nic tu nie ma :'(</translation>
-<translation id="9036971622563146214">Wyniki</translation>
-<translation id="6727452620418483718">Wyniki bezpośrednie</translation>
-<translation id="7697251281928908970">Nie przestawaj pisać, żeby wyszukać źródła</translation>
-<translation id="4750394297954878236">Sugestie</translation>
-<translation id="7436846601026966360">Niektóre źródła, które mogą Ci się spodobać. Sugestie są anonimowe i dopasowywane tylko na Twoim urządzeniu.</translation>
 <translation id="1776831331757823105">Godzina</translation>
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="7679334366167089823">Zarabiaj tokeny za oglądanie reklam z poszanowaniem Twojej prywatności.</translation>
-<translation id="1531133232292396145">Handluj kryptowalutami na platformie Binance, bezpośednio w swojej przeglądarce.</translation>
-<translation id="2166494527623220386">Handluj kryptowalutami w Gemini bezpośrednio w swojej przeglądarce.</translation>
+<translation id="2236818903653027036">Handluj kryptowalutami na platformie Binance, bezpośrednio w swojej przeglądarce.</translation>
+<translation id="6508379561970983105">Handluj kryptowalutami na platformie Gemini bezpośrednio w swojej przeglądarce.</translation>
 <translation id="7191394989411626168">Wyłączenie kart spowoduje ukrycie wszystkich aktualnie widocznych kart. Wciąż jednak mogą Państwo otrzymywać powiadomienia o nowych kartach.</translation>
 <translation id="6820526586005233839">Zatrzymano reklamy Brave</translation>
 <translation id="5190407395832551012">Aby chronić przed nadużyciami związanymi z nagrodami Brave, losowo prosimy użytkowników o rozwiązanie zadania typu captcha. Kliknij „Rozwiąż”, aby wznowić wyświetlanie reklam.</translation>
@@ -166,6 +140,8 @@
 <translation id="4712050378540986986">Status Tor</translation>
 <translation id="1939334281379458295">Łączenie Tor zakończone pomyślnie.</translation>
 <translation id="8030169304546394654">Rozłączony</translation>
+<translation id="2701204441419443612">Trwa łączenie…</translation>
+<translation id="8813986611396294203">Sieć Tor działa obecnie nieco wolniej</translation>
 <translation id="2795840524629682765">Połączenie z Tor nie powiodło się</translation>
 <translation id="1149108864689950951">Tor łączy się... [[percentage]]%</translation>
 <translation id="3651192084771403430">Masz problemy z połączeniem? Spróbuj <ph name="BEGIN_LINK"/>wyłączyć<ph name="END_LINK"/>  prywatne okno w Tor i ponownie je włączyć w ustawieniach.</translation>
@@ -279,8 +255,6 @@
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7841456038054167122">Wpisz ponownie klucze lub wypróbuj różne klucze.</translation>
-<translation id="1911900517212490188">Wprowadzony klucz przywracania nie jest już obsługiwany. Przejdź <ph name="BEGIN_LINK"/>tutaj<ph name="END_LINK"/>, aby uzyskać nowy klucz.</translation>
 <translation id="7583327070390027131">Data następnych miesięcznych napiwków</translation>
 <translation id="6231182869178328516">Przekaż napiwek <ph name="NAME"/>, korzystając z przeglądarki Brave. Sprawdź pod adresem https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Bardzo podoba mi się, to że <ph name="HASHTAG"/>Brave pozwala mi na wspieranie twórców! Twórca <ph name="NAME"/> otrzymał mój napiwek w postaci <ph name="HASHTAG2"/>BAT. Jeśli zweryfikuje się na stronie https://creators.brave.com przed <ph name="DATE"/>, BAT-y będą jego!</translation>
@@ -302,6 +276,9 @@
 <translation id="8925428135452218262">Błąd: niezgodność kraju</translation>
 <translation id="5260522591743022748">Wygląda na to, że Twoje nagrody Brave zostały już zweryfikowane przez inne konto <ph name="PROVIDER"/>. Spróbuj zweryfikować ponownie za pomocą poprzedniego konta.</translation>
 <translation id="5111921830714291902">Błąd: Inne konto</translation>
+<translation id="5225019866741699134">Wygląda na to, że tymczasowo nie można połączyć <ph name="PROVIDER"/> z Nagrodami Brave. Spróbuj ponownie później.</translation>
+<translation id="6105073131081187815">Możesz wyświetlić <ph name="BEGIN_LINK"/>status usługi tutaj<ph name="END_LINK"/>.</translation>
+<translation id="2400786541309111904">Błąd: połączenie z wybranym powiernikiem czasowo niedostępne</translation>
 <translation id="1024520300696337331">Twoje konto <ph name="PROVIDER"/>nie może zostać połączone z profilem Nagrody Brave. Twoje konto <ph name="PROVIDER"/> jest zarejestrowane w kraju, w którym obecnie nie obsługuje się połączeń z profilem Nagrody Brave.</translation>
 <translation id="619384413404021992">Zobacz zaktualizowaną listę regionów obsługiwanych przez <ph name="LINK_BEGIN"/> i dowiedz się więcej <ph name="END_LINK"/>o połączeniu konta powierniczego z profilem Nagrody Brave.</translation>
 <translation id="7193389978208728181">Błąd: Nieobsługiwany region</translation>
@@ -312,9 +289,9 @@
 <translation id="3274650021044762770">Wystąpił problem podczas potwierdzania żądania przeglądarki w celu połączenia nagród Brave z kontem <ph name="PROVIDER"/> Możesz <ph name="BEGIN_LINK"/>skontaktować się z pomocą techniczną <ph name="END_LINK"/>, aby uzyskać pomoc.</translation>
 <translation id="1316066811927496401">Błąd: nie można potwierdzić żądania</translation>
 <translation id="1737873393693460829">Włączając [[title]], zgadzasz się na <ph name="BEGIN_LINK1"/>Warunki użytkowania<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Politykę prywatności<ph name="END_LINK2"/>.</translation>
-<translation id="4672975606583962967">Wybierz usługę portfela</translation>
-<translation id="1815503044492647974">Wybierz partnera portfela powierniczego Custodial. Jeśli masz już konto, zostaniesz poproszony o zalogowanie się w celu połączenia.</translation>
-<translation id="2205685774710519016">Uwaga: po autoryzacji Twoje transakcje będą widoczne dla wybranej usługi portfela; na przykład, będzie można zobaczyć odbiorcę i kwotę Twoich napiwków.</translation>
+<translation id="4123948149985772126">Wybierz dostawcę konta</translation>
+<translation id="2916515880661220182">Jeśli masz już konto powiernicze, otrzymasz powiadomienie z prośbą o jego podłączenie. W przeciwnym razie uzyskasz możliwość jego utworzenia.</translation>
+<translation id="2054853229650377447">Uwaga: Twoje transakcje będą widoczne dla powiernika po autoryzacji. Na przykład zobaczy on odbiorcę oraz kwotę napiwków.</translation>
 <translation id="2147158325758481862">Weryfikacja jest nieobowiązkowa</translation>
 <translation id="8228649055483250005">Dostawcy portfeli powierniczych Custodial są zobowiązani do weryfikowania tożsamości każdej osoby zakładającej portfel, w tym przy użyciu dokumentu tożsamości ze zdjęciem.</translation>
 <translation id="2672513643520959619"><ph name="BOLD_BEGIN"/>Brave Software Inc.<ph name="BOLD_END"/> nie przetwarza, nie przechowuje ani nie uzyskuje dostępu do żadnych danych osobowych podczas zakładania konta z naszymi partnerami portfela powierniczego Custodial.</translation>
@@ -407,12 +384,10 @@
 <translation id="3363158483789327529">Profil nagród nie został jeszcze utworzony</translation>
 <translation id="476272015919848174">Identyfikator płatności nagród:</translation>
 <translation id="9008441690901662695">Stan nagród:</translation>
-<translation id="3368922792935385530">Połączone</translation>
+<translation id="2851097645709765545">Brak portfela</translation>
 <translation id="8874184842967597500">Brak połączenia</translation>
 <translation id="4569155249847375786">Zweryfikowany</translation>
-<translation id="922103963921062336">Rozłączono (nie zweryfikowano)</translation>
 <translation id="6521149675246672063">Rozłączono (zweryfikowano)</translation>
-<translation id="3248185426436836442">Oczekuje</translation>
 <translation id="5906820630265272615">Fundusze BAT</translation>
 <translation id="5814098892838785557">Czy na pewno chcesz przestać wspierać tego twórcę?</translation>
 <translation id="6582097696555842139">Anuluj miesięczny napiwek</translation>
@@ -521,18 +496,12 @@
 <translation id="8204292894173669182">Usuń z zapisanych</translation>
 <translation id="5530851178552343773">Przeznaczono [[reservedAmount]] [[currency]] dla twórców, którzy jeszcze nie zarejestrowali się, aby móc otrzymywać darowizny. Twoja przeglądarka będzie próbowała przekazać darowiznę, aż do momentu, gdy dokonają potwierdzenia lub gdy upłynie 90 dni.</translation>
 <translation id="5939518447894949180">Resetuj</translation>
-<translation id="3157931365184549694">Przywróć</translation>
 <translation id="5669281110673664811">Wyczyść listę wykluczonych</translation>
 <translation id="1797334173232638045">Twoje przypięte strony zostały przeniesione do</translation>
 <translation id="542042553430131913">Jeśli nagrody Brave nie zostały zweryfikowane, Twoje saldo BAT będzie przechowywane w lokalnych plikach na Twoim urządzeniu.</translation>
 <translation id="2142973554991645476">Jeśli chcesz zabezpieczyć swoje BAT na wypadek konieczności ponownej instalacji przeglądarki lub sformatowania urządzenia i chcesz korzystać z możliwości dodawania lub wycofywania swoich BAT, zalecamy przeprowadzenie <ph name="LINK_BEGIN"/>weryfikacji<ph name="LINK_END"/>.</translation>
 <translation id="5317144262906129592">Możesz wesprzeć tego twórcę treści, dając napiwek. To forma podziękowania za tworzenie świetnych treści.</translation>
 <translation id="3074127054582480056">Uwaga</translation>
-<translation id="3034163433136515805">Pokaż kod QR</translation>
-<translation id="1640793619390890218">dla użytkowników iOS Rewards przesyłających tokeny BAT.</translation>
-<translation id="5462747026114176246">Przywrócenie za pomocą klucza odsyzkującegu zastąpi obecny profil nagród Brave. Przed odzyskaniem opróżnij nagrody Brave lub zrób ich kopię zapasową.</translation>
-<translation id="3267911153934785912">Wprowadź klucz odzyskiwania lub</translation>
-<translation id="1209382772199769572">Wykonaj kopię zapasową swojego portfela przed wymianą, w przeciwnym razie stracisz środki ([[funds]]) znajdujące się w bieżącym portfelu.</translation>
 <translation id="3659457123782988823">Na pewno chcesz zresetować nagrody Brave?</translation>
 <translation id="4048187103708861555">Dane dotyczące <ph name="BAT_AMOUNT"/> i innych nagród zostaną utracone na stałe, jeśli zresetujesz nagrody Brave. Upewnij się, że przeprowadzona została <ph name="LINK_BEGIN"/>weryfikacja<ph name="LINK_END"/>, tak aby zachować BAT.</translation>
 <translation id="3548849774726860833">Twoje nagrody zostaną na stałe utracone, jeśli zresetujesz nagrody Brave.</translation>
@@ -548,7 +517,6 @@
 <translation id="2726674968268546964">tokeny</translation>
 <translation id="5015443703424816075">Token</translation>
 <translation id="1634828734222219955">Razem</translation>
-<translation id="4395099108822007284">Trwa wczytywanie obrazu...</translation>
 <translation id="3535654229833214438">Transakcje</translation>
 <translation id="8772672608371898774">Zweryfikowany wydawca Brave</translation>
 <translation id="5050370287908180130">Zobacz szczegóły w zestawieniu miesięcznym</translation>
@@ -575,6 +543,9 @@
 <translation id="4450893287417543264">Nie pokazuj ponownie</translation>
 <translation id="6518133107902771759">Weryfikuj</translation>
 <translation id="422369484771082705">Weryfikacja jest opcjonalna. Jednak po jej przeprowadzeniu będzie można bezpośrednio wypłacić swoje BAT-y zarobione w ramach programu Nagród Brave bezpośrednio do portfela powierniczego.</translation>
+<translation id="4354564238172327160">Zostań Twórcą Brave!</translation>
+<translation id="4639659520811817892">Odwiedź stronę creators.brave.com, aby już dziś się zarejestrować i móc zdobywać tokeny BAT przekazane przez Twoich fanów i obserwujących.</translation>
+<translation id="4816455138209470435">Przeglądarka Brave obsługuje YouTube, Twitch, Vimeo i inne strony!</translation>
 <translation id="3656941797339037856">Połącz Rewards z Gemini!</translation>
 <translation id="31532096120351460">Gemini pozwala łatwo handlować ponad 50 kryptowalutami, w tym BAT. To bezpieczna platforma do przechowywania kryptowalut. Możesz także zarabiać odsetki w US, HK i SG.</translation>
 <translation id="7404779623219601861">Wymieniaj tokeny BAT na karty upominkowe</translation>
@@ -671,17 +642,20 @@
 <translation id="1164622162816276433">Obroty 24 h</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Włączyć obsługę Unstoppable Domains w Brave?</translation>
-<translation id="689573545156113164">Brave będzie korzystać z usługi Infura na potrzeby wykonywania wywołań Ethereum JSON-RPC do inteligentnego kontraktu z Unstoppable Domains w celu rozwiązywania żądań wyszukiwania nazw domen .crypto (a także .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Jeśli włączysz tę opcję, Infura zobaczy te konkretne domeny, które będziesz próbować odwiedzić, ale nie będzie widzieć innych domen. Zapoznaj się z <ph name="BEGIN_INFURA_TOU_LINK"/>regulaminem<ph name="END_INFURA_TOU_LINK"/>i<ph name="BEGIN_INFURA_PRIVACY_LINK"/>polityką prywatności<ph name="END_INFURA_PRIVACY_LINK"/>usługi Infura.</translation>
+<translation id="689573545156113164">Brave będzie korzystać z usługi Infura na potrzeby wykonywania wywołań sieci Ethereum JSON-RPC do inteligentnego kontraktu z domeną Unstoppable Domains w celu rozwiązywania żądań wyszukiwania nazw domen .crypto (a także .x, .coin, .nft, .dao, .wallet, .888, .blockchain, .bitcoin). Jeśli włączysz tę opcję, usługa Infura zobaczy te konkretne domeny, które będziesz próbować odwiedzić, ale nie będzie widzieć innych domen. Zapoznaj się z <ph name="BEGIN_INFURA_TOU_LINK"/>Warunkami użytkowania<ph name="END_INFURA_TOU_LINK"/> i <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Polityką prywatności <ph name="END_INFURA_PRIVACY_LINK"/>usługi Infura.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Włączyć obsługę Ethereum Name Service (ENS) w Brave?</translation>
-<translation id="8328137586971750853">Brave będzie korzystać z usługi Infura na potrzeby wykonywania wywołań Ethereum JSON-RPC do inteligentnego kontraktu z Ethereum Name Service w celu rozwiązywania żądań wyszukiwania nazw domen .eth. Jeśli włączysz tę opcję, Infura zobaczy domenę .eth, którą będziesz próbować odwiedzić, ale nie będzie widzieć innych domen. Zapoznaj się z <ph name="BEGIN_INFURA_TOU_LINK"/>regulaminem<ph name="END_INFURA_TOU_LINK"/> i <ph name="BEGIN_INFURA_PRIVACY_LINK"/>polityką prywatności<ph name="END_INFURA_PRIVACY_LINK"/> usługi Infura.</translation>
+<translation id="8328137586971750853">Brave będzie korzystać z usługi Infura na potrzeby wykonywania wywołań sieci Ethereum JSON-RPC do inteligentnego kontraktu z domeną Ethereum Name Service w celu rozwiązywania żądań wyszukiwania nazw domen .eth. Jeśli włączysz tę opcję, Infura zobaczy domenę .eth, którą będziesz próbować odwiedzić, ale nie będzie widzieć innych domen. Zapoznaj się z <ph name="BEGIN_INFURA_TOU_LINK"/>Warunkami użytkowania<ph name="END_INFURA_TOU_LINK"/> i <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Polityką prywatności<ph name="END_INFURA_PRIVACY_LINK"/> usługi Infura.</translation>
 <translation id="807404806385418949">Wyszukiwanie poza łańcuchem ENS</translation>
 <translation id="4049590838234508776">Włączyć obsługę wyszukiwania poza łańcuchem Ethereum Name Service (ENS) w Brave?</translation>
-<translation id="1769433806670482329">Brave będzie korzystać z bramek poza łańcuchem, żeby obsługiwać zapytania wyszukiwania dotyczące nazwy w ramach domeny .eth. Po włączeniu tej opcji bramki stron trzecich będą widziały domenę .eth, na którą próbujesz przejść, ale nie zobaczą innych domen. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Dowiedz się więcej<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
+<translation id="1769433806670482329">Brave będzie korzystać z bramek poza łańcuchem w celu obsługiwania zapytań wyszukiwania dotyczących nazwy w ramach domeny .eth. Po włączeniu tej opcji bramki stron trzecich będą widziały domenę .eth, na którą próbujesz przejść, ale nie zobaczą innych domen. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Dowiedz się więcej<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
 <translation id="4047002754575891955">Kontynuuj z wyszukiwaniem poza łańcuchem</translation>
+<translation id="531747189990625622">Domena Solana Name Service</translation>
+<translation id="1090584614351290462">Włączyć obsługę domeny Solana Name Service (SNS) w przeglądarce Brave?</translation>
+<translation id="954404755605517948">Brave będzie korzystać z usługi Coinbase Cloud na potrzeby wykonywania wywołań sieci Solana JSON-RPC do programu z domeny Solana Name Service w celu rozwiązywania żądań wyszukiwania nazw domen .sol. Jeśli włączysz tę opcję, usługa Coinbase Cloude zobaczy domenę .sol, którą będziesz próbować odwiedzić, ale nie będzie widzieć innych domen. Zapoznaj się z <ph name="BEGIN_COINBASE_TOU_LINK"/>Warunkami użytkowania<ph name="END_COINBASE_TOU_LINK"/> i <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>Polityką prywatności<ph name="END_COINBASE_PRIVACY_LINK"/> usługi Coinbase Cloud.</translation>
 <translation id="7378412287463452336">Kontynuuj, korzystając z serwera Infura</translation>
+<translation id="2313603121968571839">Kontynuuj, korzystając z serwera usługi Coinbase Cloud</translation>
 <translation id="2356070529366658676">Zapytaj</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="59174027418879706">Włączone</translation>
 <translation id="2468755552460246661">Domena zablokowana</translation>
 <translation id="6393849031898466746">Ta strona może próbować śledzić użytkownika na innych stronach</translation>
@@ -777,7 +751,6 @@
 <translation id="3600355176618429948">Szacunkowe dochody</translation>
 <translation id="4244985009709452836">Zaloguj się do swojego konta <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Jednorazowe napiwki</translation>
-<translation id="3022529765171561652">Wystąpił tymczasowy problem z weryfikacją <ph name="PROVIDER"/>. Twoje nagrody Brave pozostaną w stanie oczekującym, a próba zostanie automatycznie ponowiona. Możesz też spróbować ponownie później.</translation>
 <translation id="590733288489975971">Nagrody z reklam</translation>
 <translation id="6181762795539107980">Niezweryfikowane</translation>
 <translation id="3026978804849658576">Wyświetl zestawienie</translation>
@@ -826,6 +799,7 @@
 <translation id="3358400027937159351">Przekazano: <ph name="AMOUNT"/>.</translation>
 <translation id="1619753851206150396">Wylogowano Cię</translation>
 <translation id="5142174225142816130">Może się tak zdarzyć ze względu na ochronę Twojego konta. Kliknij poniżej, aby połączyć się ponownie.</translation>
+<translation id="1677961202754619328">Według serwisu Uphold na Twoim koncie Uphold obowiązują obecnie pewne ograniczenia. Zaloguj się na swoje konto i sprawdź, czy nie ma jakichś powiadomień lub pozostałych wymagań związanych z kontem, które należy spełnić, a następnie spróbuj ponownie.</translation>
 <translation id="2807965672895914288">Twoje zaplanowane miesięczne płatności, w celu realizacji automatycznego wsparcia i comiesięcznych napiwków nie mogły zostać przetworzone, ponieważ w Twoim portfelu brakuje środków. Spróbujemy ponownie za 30 dni.</translation>
 <translation id="2429828319207652823">Wystąpił problem przy przetwarzaniu Twojego wsparcia.</translation>
 <translation id="2099354965137813181">Nie udało się przetworzyć miesięcznego napiwku</translation>
@@ -847,7 +821,7 @@
 <translation id="5425006356459378415">Nagrody Brave nie są dostępne</translation>
 <translation id="909076461795862330">Niestety wystąpił błąd podczas konfigurowania Nagród Brave. Spróbuj ponownie.</translation>
 <translation id="3180990265682133881">Niestety wystąpił błąd podczas ustawianiu kraju. Spróbuj ponownie.</translation>
-<translation id="2191603160848789187">Nowe rejestracje w ramach Nagród Brave są obecnie wyłączone w Twoim regionie. Zawsze możesz spróbować później. <ph name="LINK_BEGIN"/>Dowiedz się więcej<ph name="LINK_BEGIN"/></translation>
+<translation id="5931798071481566121">Nowe rejestracje w ramach Nagród Brave są obecnie wyłączone w Twoim regionie. Zawsze możesz spróbować później. <ph name="LINK_BEGIN"/>Dowiedz się więcej<ph name="LINK_END"/></translation>
 <translation id="8764860730661377310">Region Twoich Nagród Brave ustawiono na: <ph name="COUNTRY"/>.</translation>
 <translation id="7068416025603720599">Wybierz kraj, żebyśmy mogli pokazać Ci opcje i reklamy właściwe dla Twojego regionu. <ph name="LINK_BEGIN"/>Polityka prywatności<ph name="LINK_END"/></translation>
 <translation id="1275213816424141989">Może później</translation>
@@ -886,7 +860,18 @@
 <translation id="6609621505400013054">Portfel bitFlyer jest zarządzany przez bitFlyer, Inc.</translation>
 <translation id="4361456403643555676">Poprzez zweryfikowanie nagród Brave i połączenie ich z kontem bitFlyer otrzymasz możliwość zapisywania tokenów otrzymanych poprzez nagrody Brave i łatwiejszego zarządzania nimi.</translation>
 <translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Dowiedz się więcej<ph name="LINK_END"/> o tym, jak połączyć przeglądarkę Brave z kontem bitFlyer.</translation>
+<translation id="1015443539415537847">Nagrody Brave nie są dostępne</translation>
+<translation id="5007776270364097327">Niestety jesteś w regionie, w którym Nagrody Brave nie są dostępne.</translation>
+<translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Dowiedz się więcej<ph name="LINK_END"/></translation>
+<translation id="4214852687527104244">Nie martw się.</translation>
+<translation id="5027616819996705541">Wciąż możesz przeglądać bez obaw o naruszenie prywatności!</translation>
 <translation id="8303087505226646884">Speedreader Brave</translation>
+<translation id="1013121820689882118">Speedreader</translation>
+<translation id="8112297508607107861">Zawsze wczytuj tryb funkcji speedreader w przypadku <ph name="HOST_NAME"/></translation>
+<translation id="6278428485366576908">Motyw</translation>
+<translation id="8710842507289500830">Styl czcionki</translation>
+<translation id="8168435359814927499">Treści</translation>
+<translation id="7451953332310475840">Przełącz tryb czytnika tylko w przypadku tej witryny internetowej. Aby wyłączyć funkcję speedreader w ramach całego profilu przeglądarki, odwiedź sekcję <ph name="LINK_BEFORE"/>Ustawienia.<ph name="LINK_AFTER"/></translation>
 <translation id="7701466644604753106">Włącz Speedreader</translation>
 <translation id="763042262431778831">Wyłącz Speedreader</translation>
 <translation id="1148827340205946630">Użytkownik odrzucił żądanie.</translation>
@@ -962,6 +947,18 @@
 <translation id="5061574358754621254">Dane dotyczące cen wspierane przez CoinGecko</translation>
 <translation id="1483493594462132177">Wyślij</translation>
 <translation id="538450413584738399">Wymiana</translation>
+<translation id="9113988219764868805">Wyślij token</translation>
+<translation id="4254256922305105713">Wyślij token NFT</translation>
+<translation id="3453833142586986467">Wybierz token</translation>
+<translation id="554732459168975059">Wybierz token NFT</translation>
+<translation id="5313430503143128212">Wybierz token do wysłania</translation>
+<translation id="2791691551852500015">Wprowadź adres odbiorcy</translation>
+<translation id="570080709303714420">POŁOWA</translation>
+<translation id="2784548701748328827">CAŁOŚĆ</translation>
+<translation id="2329227154184107678">Sprawdź zamówienie</translation>
+<translation id="8530071505111489657">Brak dostępnych tokenów</translation>
+<translation id="615791330696335475">Wyszukaj tokeny według nazwy</translation>
+<translation id="5009335307032488349">Wyszukaj tokeny według nazwy lub identyfikatora</translation>
 <translation id="6295954645230084874">Wsparcie zakupu nie jest możliwe dla <ph name="NETWORK"/></translation>
 <translation id="9209024278910716955">Zakup nieobsługiwany dla wybranej sieci</translation>
 <translation id="4171338820961522154">Wsparcie zmiany nie jest dostępne dla <ph name="NETWORK"/></translation>
@@ -980,6 +977,7 @@
 <translation id="2704606927547763573">Skopiowane</translation>
 <translation id="6042308850641462728">Więcej</translation>
 <translation id="768236965975208017">Bezpieczny. Wielołańcuchowy. I jakże łatwy w użyciu. Od Twojego Portfela Brave dzieli Cię zaledwie kilka kliknięć</translation>
+<translation id="3157931365184549694">Przywróć</translation>
 <translation id="2484275747844666540">Utwórz nowy portfel</translation>
 <translation id="3662348701117072366">Importuj istniejący portfel</translation>
 <translation id="375882617301124395">Utwórz kopię zapasową portfela kryptowalutowego</translation>
@@ -1067,7 +1065,7 @@
 <translation id="9220525904950070496">Usuń konto</translation>
 <translation id="8574289650879708853">Dodaj spersonalizowane aktywo</translation>
 <translation id="6600400596821238377">Nazwa tokena</translation>
-<translation id="4432966365400169165">Adres kontraktu tokena</translation>
+<translation id="4220693114674044366">Adres tokenu</translation>
 <translation id="4092152169181928870">Symbol tokena</translation>
 <translation id="4351811224047421378">Dokładność liczb po przecinku</translation>
 <translation id="4982060163914604175">Dodaj wyrażenie <ph name="CONTRACT_ADDRESS"/> jako niestandardowy token</translation>
@@ -1091,6 +1089,7 @@
 <translation id="8654192805213365413">75%</translation>
 <translation id="3512100619724810532">100%</translation>
 <translation id="5398538976202345089">Nieobsługiwana sieć</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Sieć testowa</translation>
 <translation id="4022672158058543834">Goerli</translation>
@@ -1153,6 +1152,7 @@
 <translation id="793994607260936590">początek</translation>
 <translation id="4709524402122994378">transakcje</translation>
 <translation id="4591079278963448049">Powiązane konto tokenowe jeszcze nie istnieje. Na jego utworzenie i dodanie do niego funduszy wydana zostanie niewielka kwota w SOL.</translation>
+<translation id="3368922792935385530">Połączone</translation>
 <translation id="523862956770478816">Uprawnienia witryny</translation>
 <translation id="1575262454612599115">Połączono następującą liczbę kont: <ph name="NUMBER_OF_ACCOUNTS"/></translation>
 <translation id="4305817255990598646">Przełącz</translation>
@@ -1272,6 +1272,7 @@
 <translation id="4378475168089649292">Blockchain</translation>
 <translation id="1904295039023858291">Standard tokena</translation>
 <translation id="9033453977881595182">ID tokena</translation>
+<translation id="6332387008245531841">Adres kontraktu</translation>
 <translation id="2962388922926051374">Prośba o metodę „eth_child” w <ph name="URL"/> zakończona niepowodzeniem</translation>
 <translation id="8325036459845654666">Ta sieć jest już dodana.</translation>
 <translation id="554350381160981853">Podpisywanie wpisanych danych obsługiwane jest jedynie na urządzeniu Trezor Model One z oprogramowaniem układowym 1.10.5 lub nowszym.</translation>
@@ -1290,9 +1291,11 @@
 <translation id="3898731124813934210">Kup poprzez Wyre</translation>
 <translation id="5522073372365069684">Kup poprzez Ramp</translation>
 <translation id="7902920577183739843">Kup przez Sardine</translation>
+<translation id="6534275647567011533">Kupuj za pomocą Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
+<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Kupuj kryptowaluty za pomocą kart Visa lub Mastercard.</translation>
 <translation id="3101839349578102016">Natychmiastowy zakup za pomocą rachunku bankowego. Niższe opłaty.</translation>
 <translation id="8528916244724490964">Wszystkie sieci</translation>
@@ -1453,6 +1456,7 @@
 <translation id="5148123176978018397">Potwierdź poniższe:</translation>
 <translation id="6088314935678153800">Rozumiem, że jest to portfel do samodzielnego zabezpieczenia i że tylko ja odpowiadam za wszelkie powiązane fundusze, aktywa lub konta oraz za podjęcie odpowiednich działań w celu zabezpieczenia, ochrony i wykonania kopii zapasowej mojego portfela. Rozumiem, że Brave NIE może uzyskać dostępu do mojego portfela ani cofnąć transakcji w moim imieniu i że moja fraza odzyskiwania jest JEDYNYM sposobem na odzyskanie dostępu w przypadku zgubienia hasła, utraty urządzenia lub podobnych okoliczności.</translation>
 <translation id="7781090633800450517">Znam i akceptuję <ph name="LINK_BEFORE"/>Warunki użytkowania<ph name="LINK_AFTER"/></translation>
+<translation id="1422451606553326863">Kup kryptowaluty</translation>
 <translation id="3887541341068007345">Sprawdzam rozszerzenia portfela...</translation>
 <translation id="3567994771568272606">Importuj ze starszych portfeli krypto Brave</translation>
 <translation id="8407091560429310499">Wybierz aktywa</translation>
@@ -1500,6 +1504,11 @@
 <translation id="5026874946691314267">Nie pokazuj tego ponownie</translation>
 <translation id="434502623875309667">Mapowanie adresu wymaga obsługi żądań sieci poza łańcuchem. Kontynuować?</translation>
 <translation id="2779500703989728346">NFT</translation>
+<translation id="7555212728172209005">Brak transakcji</translation>
+<translation id="3664551680108236020">Po ukończeniu pierwszej transakcji zostanie ona wyświetlona tutaj.</translation>
+<translation id="3033638954295674319">Coś poszło nie tak podczas pobierania danych tokena NFT. Spróbuj ponownie później.</translation>
+<translation id="2540568096903252632">Wprowadź hasło, aby kontynuować</translation>
+<translation id="3356580495013324916">Wprowadź hasło Portfela Brave w celu utworzenia jego kopii zapasowej.</translation>
 <translation id="3155170474926428993">Oprogramowanie Tor</translation>
 <translation id="3745016858329272300">Ogólne informacje</translation>
 <translation id="4045404575593562245">Wydarzenia kontrolne sieci Tor</translation>
@@ -1508,10 +1517,60 @@
 <translation id="6951743416068151209">URI Tor Proxy</translation>
 <translation id="1671503397662036257">Status połączenia z siecią Tor</translation>
 <translation id="6024292492796847324">Postęp inicjalizacji sieci Tor</translation>
+<translation id="8300751939969131609">Włącz Aktualności Brave i bądź zawsze na bieżąco</translation>
+<translation id="7758665172236842395">Obserwuj swoje ulubione źródła w pojedynczym kanale aktywności. Wystarczy, że otworzysz kartę przeglądarki Brave, przewiniesz na dół i… gotowe!</translation>
+<translation id="2376542729617592331">Aktualności Brave wyświetlają prywatne i zanonimizowane reklamy. <ph name="LINK_START"/>Dowiedz się więcej<ph name="LINK_END"/>.</translation>
+<translation id="1765217911817124376">Włącz aktualności Brave</translation>
+<translation id="780301667611848630">Nie, dziękuję</translation>
+<translation id="6265592479622441247">Wróć do obszaru <ph name="BEGIN_BOLD"/>Pulpit<ph name="END_BOLD"/></translation>
+<translation id="8981973962043893066">Wyszukuj strony, tematy i kanały RSS</translation>
+<translation id="1498364270401875204">Kanały</translation>
+<translation id="6401776069326703655">Wyświetl wszystko</translation>
+<translation id="8032569120109842252">Obserwowane</translation>
+<translation id="3790976909891317760">{FEED_COUNT, plural,
+      =1 {# źródło}
+      few {# źródła}
+      many {# źródeł}
+      other {# źródła}
+    }</translation>
+<translation id="6143382357119101833">Otrzymuj wiadomości z <ph name="URL"/></translation>
+<translation id="4515121482885046194">Nie znaleziono wiadomości na stronie <ph name="URL"/></translation>
+<translation id="8535964427132833909">Nic tu nie ma :'(</translation>
+<translation id="9036971622563146214">Wyniki</translation>
+<translation id="6727452620418483718">Wyniki bezpośrednie</translation>
+<translation id="7697251281928908970">Nie przestawaj pisać, żeby wyszukać źródła</translation>
+<translation id="4750394297954878236">Sugestie</translation>
+<translation id="3225021799163709119">Popularne</translation>
+<translation id="7436846601026966360">Niektóre źródła, które mogą Ci się spodobać. Sugestie są anonimowe i dopasowywane tylko na Twoim urządzeniu.</translation>
+<translation id="7950715913905993008">Ups…</translation>
+<translation id="7158100730468448581">Aktualności Brave nie mogły pobrać treści.</translation>
+<translation id="254100925533869330">Brak treści</translation>
+<translation id="7172792761509429092">Brak treści do pokazania w Aktualnościach Brave.</translation>
+<translation id="1771307734839364850">Wybierz źródło treści</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="6261915643960475695">Biznes</translation>
+<translation id="8265589281845759879">Samochody</translation>
+<translation id="7577010593836079522">Kultura</translation>
+<translation id="3706423975342040244">Rozrywka</translation>
+<translation id="1432147735538902155">Moda</translation>
+<translation id="736592699917579616">Jedzenie</translation>
+<translation id="5104499318017527547">Rozrywka</translation>
+<translation id="2228584369802328636">Gry</translation>
+<translation id="6941852195052765076">Zdrowie</translation>
+<translation id="932327136139879170">Strona główna</translation>
+<translation id="1322083935398004629">Polityka</translation>
+<translation id="3872834068356954457">Nauka</translation>
+<translation id="1264974993859112054">Sport</translation>
+<translation id="2283599456633275070">Podróże</translation>
+<translation id="7487067081878637334">Technologia</translation>
+<translation id="5030268312472358928">Najpopularniejsze akutalności</translation>
+<translation id="5510475084662028636">Najpopularniejsze źródła</translation>
+<translation id="1459693405370120464">Pogoda</translation>
+<translation id="8366057325711477500">Wiadomości ze świata</translation>
 <translation id="6303294677342628402">Tarcze</translation>
 <translation id="8458987127502506209">Włącz Tarcze Brave</translation>
-<translation id="7509914170164691086">Tarcze WŁĄCZONE <ph name="LINK_BEFORE"/> w wypadku <ph name="LINK_AFTER"/></translation>
-<translation id="260764436039299868">Tarcze są WYŁĄCZONE <ph name="LINK_BEFORE"/> w wypadku <ph name="LINK_AFTER"/></translation>
+<translation id="7509914170164691086">Tarcze są WŁĄCZONE <ph name="LINK_BEFORE"/> dla <ph name="LINK_AFTER"/></translation>
+<translation id="260764436039299868">Tarcze są WYŁĄCZONE <ph name="LINK_BEFORE"/> dla <ph name="LINK_AFTER"/></translation>
 <translation id="3907405056878805220">Jeśli ta strona nie działa, wyłącz Tarczę.
     <ph name="LINK_BEFORE"/>Uwaga: to może zmniejszyć ochronę prywatności zapewnianą przez Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Zablokowane skrypty śledzące, reklamy i inne <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
@@ -1520,6 +1579,7 @@
 <translation id="5799940914270080805">Zmiana tych ustawień może spowodować niepoprawne działanie stron.</translation>
 <translation id="9204041448536398473">Globalne ustawienia Tarczy</translation>
 <translation id="2108334320919763866">Ustawienia ogólne</translation>
+<translation id="3440043456924990296">Ustawienia zarządzane przez organizację</translation>
 <translation id="4516904298421534459">Listy filtrów</translation>
 <translation id="3570081523466826008">Aktualizacje HTTPS</translation>
 <translation id="131231380815754440">Włącz HTTPS</translation>
@@ -1545,6 +1605,25 @@
 <translation id="264682546981571963">Masz dość powiadomień o wyrażeniu zgody na pliki cookie?</translation>
 <translation id="4986297793092101884">Brave już blokuje pliki cookie innych firm. Możemy również blokować powiadomienia o wyrażeniu zgody na pliki cookie.</translation>
 <translation id="535688588637568715">Tak, blokuj powiadomienia o wyrażeniu zgody na pliki cookie</translation>
+<translation id="6294662480095808915">Domyślna prytwaność.</translation>
+<translation id="4366423156486478559">Uzyskaj ochronę przeglądarki Brave w przypadku każdego klikniętego łącza. Wystarczy, że ustawisz przeglądarkę Brave jako domyślną. Przeglądaj bez obaw o naruszenie prywatności.</translation>
+<translation id="3830912418080848377">Importuj ustawienia</translation>
+<translation id="6378406588483694938">W łatwy sposób importuj zakładki, rozszerzenia i nawet zapisane hasła ze starej przeglądarki.</translation>
+<translation id="2092825239819166928">Wybierz profil do zaimportowania</translation>
+<translation id="4763127492635705340">Wybrana przeglądarka ma wiele profili. Wybierz te, które chcesz zaimportować.</translation>
+<translation id="880174232178865598">Importuj profile</translation>
+<translation id="2453860139492968684">Zakończ</translation>
+<translation id="2273851479262317744">Ustaw Brave jako domyślną przeglądarkę</translation>
+<translation id="5037676449506322593">Wybierz wszystko</translation>
+<translation id="8330804319517911603">Pomóż udoskonalić przeglądarkę Brave</translation>
+<translation id="2867964979837593892">Dopracowywanie produktu. Ochrona prywatności. Każdego dnia.</translation>
+<translation id="7661940959332108190">Wysyłaj raporty diagnostyczne po awarii lub zawieszeniu się przeglądarki Brave.</translation>
+<translation id="6358373266071757311">Dziel się anonimowo uwagami na temat produktów. To pomoże nam zrozumieć, które funkcje Brave są używane najczęściej.</translation>
+<translation id="7415454883318062233">Konfiguracja ukończona</translation>
+<translation id="3141206739023333979">Możesz zmienić te opcje w każdej chwili w przeglądarce Brave, przechodząc do <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
+<translation id="8321985064212130832">Przeczytaj pełną wersję naszej <ph name="LINK_BEFORE"/>Polityki prywatności<ph name="LINK_AFTER"/></translation>
+<translation id="7821773512278295352">Firewall Brave + VPN: połączone</translation>
+<translation id="6019088868713395120">Firewall Brave + VPN: rozłączone</translation>
 <translation id="3541307549916475335">Interfejs użytkownika panelu VPN Brave</translation>
 <translation id="1742469581923031760">Łączenie…</translation>
 <translation id="1287487756047817908">Odłączanie…</translation>
@@ -1561,7 +1640,7 @@
 <translation id="8670386189340362926">Zablokuj skrypty śledzące i reklamy we wszystkich aplikacjach</translation>
 <translation id="4860763498907927955">Chroni Cię przed niechcianymi połączeniami sieciowymi</translation>
 <translation id="3181339219453722970">Wybierz lokalizację VPN</translation>
-<translation id="1751947227857853925">Szybka łączność bez limitów, do 100 Mbps</translation>
+<translation id="1708407585266172412">Szybkie połączenie bez limitów do 500 Mb/s</translation>
 <translation id="1400240082805528049">Całodobowa pomoc techniczna</translation>
 <translation id="1693568075761612600">Nie udało się utworzyć zgłoszenia do działu wsparcia. Sprawdź swoje połączenie.</translation>
 <translation id="8463313539532697053">Poczekaj chwilę na załadowanie.…</translation>
@@ -1569,6 +1648,7 @@
 <translation id="4613076894734402086">Edytuj metodę płatności</translation>
 <translation id="8373427068383038263">Wygląda na to, że Twoja ostatnia płatność za <ph name="VALUE"/> zakończyła się niepowodzeniem. Dostęp do tej subskrypcji zostanie wstrzymany do chwili rozwiązania problemu dotyczącego płatności. Spróbuj edytować metodę płatności lub skontaktuj się z działem wsparcia Brave.</translation>
 <translation id="1839021455997460752">Twój adres e-mail</translation>
+<translation id="8054563304616131773">Wprowadź prawidłowy adres e-mail</translation>
 <translation id="5154702632169343078">Temat</translation>
 <translation id="6625978880678465492">Wybierz powód</translation>
 <translation id="6687228121145903051">Nie można połączyć się z VPN (inny błąd)</translation>
@@ -1583,6 +1663,7 @@
 <translation id="24242621812020123">Wersja aplikacji:</translation>
 <translation id="6676791921618140305">Wersja systemu operacyjnego:</translation>
 <translation id="1156325797949437777">Wsparcie udzielane we współpracy z firmą Guardian.</translation>
+<translation id="8146777497879160283">Nie udało się zapisać konfiguracji połączenia VPN. Może tak się zdarzyć w przypadku braku uprawnień lub jeśli w ostatnim czasie nie przeprowadzano uaktualnienia systemu Windows.</translation>
 <translation id="3307461350293459700">Nie udało się nawiązać połączenia VPN. Spróbuj połączyć się ponownie i pamiętaj, aby kliknąć „Zezwalaj” w celu włączenia konfiguracji VPN Brave.</translation>
 <translation id="7261518280726313829">Wyłączenie Secure DNS lub korzystanie z serwerów domyślnych w systemie Windows może doprowadzić do ujawnienia nazw odwiedzanych stron dostawcy usług internetowych. Brave nie zaleca takiego działania. Czy mimo to chcesz to zrobić?</translation>
 <translation id="888284761945060750">Secure DNS jest wyłączone w związku z zasadami obowiązującymi w Twojej organizacji. Korzystanie z Brave VPN bez Secure DNS może spowodować ujawnienie nazw odwiedzanych stron dostawcy usług internetowych lub organizacji.</translation>
@@ -1604,4 +1685,17 @@
 <translation id="6973157709854838218">Ukryj swoje salda na ekranie</translation>
 <translation id="4548946945059463969">Pokaż swoje salda na ekranie</translation>
 <translation id="242959166945779492">Nie masz żadnych środków na swoim koncie. Odwiedź FTX, aby je nabyć.</translation>
+<translation id="1531133232292396145">Handluj kryptowalutami na platformie Binance, bezpośednio w swojej przeglądarce.</translation>
+<translation id="2166494527623220386">Handluj kryptowalutami w Gemini bezpośrednio w swojej przeglądarce.</translation>
+<translation id="7841456038054167122">Wpisz ponownie klucze lub wypróbuj różne klucze.</translation>
+<translation id="1911900517212490188">Wprowadzony klucz przywracania nie jest już obsługiwany. Przejdź <ph name="BEGIN_LINK"/>tutaj<ph name="END_LINK"/>, aby uzyskać nowy klucz.</translation>
+<translation id="922103963921062336">Rozłączono (nie zweryfikowano)</translation>
+<translation id="3248185426436836442">Oczekuje</translation>
+<translation id="3034163433136515805">Pokaż kod QR</translation>
+<translation id="1640793619390890218">dla użytkowników iOS Rewards przesyłających tokeny BAT.</translation>
+<translation id="5462747026114176246">Przywrócenie za pomocą klucza odsyzkującegu zastąpi obecny profil nagród Brave. Przed odzyskaniem opróżnij nagrody Brave lub zrób ich kopię zapasową.</translation>
+<translation id="3267911153934785912">Wprowadź klucz odzyskiwania lub</translation>
+<translation id="1209382772199769572">Wykonaj kopię zapasową swojego portfela przed wymianą, w przeciwnym razie stracisz środki ([[funds]]) znajdujące się w bieżącym portfelu.</translation>
+<translation id="4395099108822007284">Trwa wczytywanie obrazu...</translation>
+<translation id="3022529765171561652">Wystąpił tymczasowy problem z weryfikacją <ph name="PROVIDER"/>. Twoje nagrody Brave pozostaną w stanie oczekującym, a próba zostanie automatycznie ponowiona. Możesz też spróbować ponownie później.</translation>
 </translationbundle>

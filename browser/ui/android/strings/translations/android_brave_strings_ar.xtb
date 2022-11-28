@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ar">
+<translation id="915758461293673891">مبلغ المكافأة:</translation>
+<translation id="8966035543003363155">تُسهل إشعارات Brave الأمر</translation>
+<translation id="7662771815233894695">يمكنك إدارة التنزيلات، والحصول على الرموز المميزة، والاطلاع على إحصائيات الاستخدام الأسبوعية وغير ذلك الكثير.</translation>
+<translation id="4265429476391459783">أنت لا تحصل على مكافآت أو تتلقى تقارير الخصوصية</translation>
+<translation id="1305714751384738456">أنت لا تحصل على مكافآت Brave</translation>
+<translation id="1483391942610220726">أنت لا تتلقى تقارير الخصوصية</translation>
+<translation id="4683790942451502796">قم بإعادة تشغيل الإشعارات إذا كنت ترغب في الاستمرار في الحصول على BAT وتلقي تقارير الخصوصية الأسبوعية.</translation>
+<translation id="1462722717055895108">قم بإعادة تشغيل الإشعارات إذا كنت ترغب في الاستمرار في الحصول على BAT</translation>
+<translation id="5457255168064266494">قم بإعادة تشغيل الإشعارات إذا كنت ترغب في الاستمرار في تلقي تقارير الخصوصية الأسبوعية.</translation>
+<translation id="6268959058971634697">أنت لا تحصل على مكافآت</translation>
+<translation id="1088637159642753509">قم بتمكين إشعارات الجهاز لتحصل على مكافآت Brave وتشاهد تقارير الخصوصية.</translation>
+<translation id="312404770066229090">قم بتمكين إشعارات الجهاز لتحصل على مكافآت Brave</translation>
+<translation id="2241529840361230499">قم بتمكين إشعارات الجهاز لتحصل على تقارير خصوصية Brave</translation>
+<translation id="4930155581888391118">قم بتمكين الإشعارات المرسلة من Brave للحصول على مكافآت Brave.</translation>
+<translation id="325187916104529570">افتح الإعدادات وقم بتشغيل إشعارات الجهاز لإعلانات Brave.</translation>
+<translation id="5744802588121897886">قم بتشغيل إشعارات Brave</translation>
 <translation id="7307834434086582547">تمكين/تعطيل طرق حماية Brave</translation>
 <translation id="6945863270524203017">احصل على تحديثات الخصوصية الأسبوعية على حظر أدوات التعقب amp;amp، والإعلانات.</translation>
 <translation id="4324735664183300693">تشغيل الإشعارات</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">طريقة الحل</translation>
 <translation id="2356070529366658676">طلب</translation>
 <translation id="4176463684765177261">غير مفعّل</translation>
-<translation id="1448289340149908413">إيثريوم</translation>
+<translation id="59174027418879706">تم التمكين</translation>
 <translation id="6252490671914511928">أهم’sأخبار اليوم في موجز خاص تمامًا، من أجلك فقط.</translation>
 <translation id="7266075701303521777">Brave News عبارة عن خدمة مدعومة بالإعلانات، وتتضمن إعلانات خاصة وغير مسماة ومطابقة لجهازك.</translation>
 <translation id="4541978218358617681">إعلان</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">محو بيانات التصفُّح</translation>
 <translation id="5965081608816406060">إعادة تشغيل الفيديو في الخلفية</translation>
 <translation id="6332924730165919598">يؤدي إغلاق جميع علامات التبويب إلى إغلاق Brave</translation>
-<translation id="1580125697191336644">إصدار تجريبي. لتمكين تشغيل الصوت من الفيديو الجاري في الخلفية عندما لا تكون علامة التبويب نشطة أو عند إطفاء شاشة الجهاز. في حال عدم عمل هذه الميزة على أكمل وجه حاول التحويل إلى وضع سطح المكتب.</translation>
-<translation id="59174027418879706">تم التمكين</translation>
+<translation id="3872768973878059926">يسمح باستمرار تشغيل الصوت عند التبديل إلى علامة تبويب أخرى في منصة Brave، أو التبديل إلى تطبيق آخر، أو عند إطفاء شاشة الجهاز.</translation>
 <translation id="4150201353443180367">عرض</translation>
 <translation id="2433507940547922241">المظهر</translation>
 <translation id="6333347122924254968">إظهار أَيقونة "مكافآت متصفح Brave" في شريط العنواين</translation>
@@ -306,16 +321,11 @@
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">قد يتطلب منك Uphold التحقق من هويتك بناءً على الخدمات المطلوبة.</translation>
 <translation id="3200197118442451932">لا تقوم شركة Brave Software Inc. بمعالجة المعلومات الشخصية التي تقدمها إلى <ph name="WALLET_PROVIDER"/>أو تخزينها أو الوصول إليها، عندما تقوم بإنشاء حساب بواسطتها.</translation>
-<translation id="3699674790322420653">أكمل التحقق من المحفظة</translation>
 <translation id="2193391216824305230">محفظة المستخدم</translation>
 <translation id="1665118090708049096">الانتقال إلى <ph name="WALLET_PROVIDER"/>حسابي</translation>
 <translation id="1948959999802743233">قطع الاتصال بـ <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">سحب رصيد</translation>
 <translation id="8874184842967597500">غير متصل</translation>
-<translation id="3368922792935385530">متصل</translation>
-<translation id="5358719431303818601">لم يتم التحقق من قطع الاتصال</translation>
-<translation id="4241449868720191203">تم التحقق من قطع الاتصال</translation>
-<translation id="3248185426436836442">معلَّق</translation>
 <translation id="2495032782748793764">Brave Default</translation>
 <translation id="9132378787893584761">شارك Brave مع أصدقائك!</translation>
 <translation id="717952606991220586">عذرًا، حدث خطأ ما. الرجاء المحاولة مرة أخرى لاحقًا.</translation>
@@ -669,6 +679,7 @@
 <translation id="1597199892790541240">رسوم الجاس</translation>
 <translation id="1634828734222219955">الإجمالي</translation>
 <translation id="7995708795274219641">المبلغ + الغاز</translation>
+<translation id="2186011161688824046">المبلغ + الرسوم</translation>
 <translation id="1950052789869821983">معاملة</translation>
 <translation id="2304783958703511257">الإعدادات المتقدمة</translation>
 <translation id="4220062530885628403">الرقم الخاص</translation>
@@ -697,6 +708,7 @@
 <translation id="1133619932669546254">قم بتفعيل <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">نوع الوظيفة:<ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">لا توجد بيانات</translation>
+<translation id="1105525362447173583">توقيع Solana Dapp على المعاملة</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/>تم إرسال<ph name="CRYPTO_VALUE"/><ph name="ASSET"/>($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/>تم إرسال<ph name="ASSET"/>#<ph name="ASSET_ID"/>-<ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/>تمت الموافقة<ph name="ASSET"/><ph name="DATE"/></translation>
@@ -796,6 +808,7 @@
 <translation id="8030169304546394654">قُطع الاتصال</translation>
 <translation id="3423275441470187644">الثقة</translation>
 <translation id="2391762656119864333">إبطال</translation>
+<translation id="3368922792935385530">متصل</translation>
 <translation id="3432029672560911238">حساب المستخدم</translation>
 <translation id="5753378322046059140">تبديل الحساب</translation>
 <translation id="3897092660631435901">القائمة</translation>
@@ -863,6 +876,7 @@
 <translation id="7080614857771109950">يدعم الأصول المتوافقة مع الجهاز الافتراضي اللامركزي لمنصة Ethereum على تقنية blockchain لمنصة Ethereum (ERC-20 ، ERC-721 ، ERC-1551 ، ERC-1155)</translation>
 <translation id="6577166808959668729">يدعم الأصول المتوافقة مع عملة SPL على تقنية blockchain لمشروع العملة الرقمية Solana</translation>
 <translation id="6575120282593094155">ليس لديك حساب على <ph name="ACCOUNT_TYPE"/>، هل ترغب في إنشاء واحد الآن؟</translation>
+<translation id="1448289340149908413">إيثريوم</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">التطبيقات المستبعدة</translation>
 <translation id="8463269357637177759">التطبيقات العادية المسموح بها</translation>
@@ -885,6 +899,7 @@
 <translation id="4784306439879850873">لاحظ أن Brave لا يمكنه التحقق مما سيحدث إذا قمت بالتوقيع. يمكن أن يخول التوقيع تقريبًا أي عملية في حسابك أو نيابة عنك ، بما في ذلك (على سبيل المثال لا الحصر) منح التحكم الكامل في حسابك وأصول التشفير للموقع الذي يقدم الطلب. قم بالتوقيع فقط إذا كنت متأكدًا من رغبتك في اتخاذ هذا الإجراء، وتثق في الموقع الطالب.</translation>
 <translation id="3474375934783434676">تسجيل الدخول على مسؤوليتك الخاصة</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> من<ph name="SIZE"/></translation>
+<translation id="756701799684433105">الموافقة على الترجمة</translation>
 <translation id="6450792191436242818">برنامج النظام</translation>
 <translation id="6252742184395380448">برنامج التكوين</translation>
 <translation id="5358970666412490132">برنامج Stake</translation>
@@ -894,6 +909,7 @@
 <translation id="6421371987002247943">برنامج الرمز المميز</translation>
 <translation id="8780753288764281797">برنامج Secp256k1</translation>
 <translation id="8504640708321980506">البيانات</translation>
+<translation id="3723411967118253067">معرف البرنامج</translation>
 <translation id="4771176409524282426">إنشاء حساب</translation>
 <translation id="1755120947324658439">تعيين</translation>
 <translation id="7588707273764747927">تحويل</translation>
@@ -933,4 +949,32 @@
 <translation id="7352651011704765696">حدث خطأ ما</translation>
 <translation id="7144878232160441200">إعادة المحاولة</translation>
 <translation id="6040143037577758943">إغلاق</translation>
+<translation id="7710469167917867539">رسوم المعاملة</translation>
+<translation id="7843211152394841558">الحد الأقصى لعدد مرات إعادة المحاولة:</translation>
+<translation id="8496335570810457">الالتزام بالتحقق من الصحة:</translation>
+<translation id="5100124500279922001">تجاوز التحقق من الصحة:</translation>
+<translation id="7152095322071766507">الموقع الأكثر زيارة</translation>
+<translation id="7230006500876504868">بحث باستخدام Brave</translation>
+<translation id="5888208462949095139">بحث بـ <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
+<translation id="5456039738087398178">عنصر واجهة الشاشة الرئيسية</translation>
+<translation id="703185154752046151">تمت إضافة عنصر واجهة مستخدم إلى الشاشة الرئيسية</translation>
+<translation id="3290805388004282161">يمكنك تجربة عنصر واجهة مستخدم البحث على Brave</translation>
+<translation id="4809681171446727314">يمكنك الوصول إلى بحث خاص ومستقل مباشرة من شاشتك الرئيسية.</translation>
+<translation id="7751715172931488388">إضافة عنصر واجهة المستخدم</translation>
+<translation id="7285167584112910782">البحث السريع عن الإجراءات على Brave</translation>
+<translation id="2326703104633309781">استخدام ترجمة Brave</translation>
+<translation id="5802752138057422257">تم اكتشاف أحرف بخلاف ASCII!</translation>
+<translation id="442709594176931966">عرض الرسالة الأصلية</translation>
+<translation id="2239252396088484499">عرض الرسالة بترميز ASCII</translation>
+<translation id="4220693114674044366">عنوان الرمز المميز</translation>
+<translation id="5658257029899993935">ربط عملية الشراء بحسابك على Brave</translation>
+<translation id="1187061015547219282">ربط عمليات الشراء من متجر Play Store بحسابك على Brave لاستخدام Brave VPN على أجهزة أخرى.</translation>
+<translation id="6662142137695589205">ربط اشتراكك في VPN</translation>
+<translation id="2674077112509133024">قم بتوسيع نطاق حماية Brave Firewall + VPN</translation>
+<translation id="6365389672683343144">يمكن لاشتراك Brave VPN الخاص بك حماية ما يصل إلى 5 أجهزة عبر نظام التشغيل Android و iOS وسطح المكتب. ما عليك سوى ربط اشتراكك في Google Play بحساب Brave الخاص بك.</translation>
+<translation id="1580125697191336644">إصدار تجريبي. لتمكين تشغيل الصوت من الفيديو الجاري في الخلفية عندما لا تكون علامة التبويب نشطة أو عند إطفاء شاشة الجهاز. في حال عدم عمل هذه الميزة على أكمل وجه حاول التحويل إلى وضع سطح المكتب.</translation>
+<translation id="3699674790322420653">أكمل التحقق من المحفظة</translation>
+<translation id="5358719431303818601">لم يتم التحقق من قطع الاتصال</translation>
+<translation id="4241449868720191203">تم التحقق من قطع الاتصال</translation>
+<translation id="3248185426436836442">معلَّق</translation>
 </translationbundle>

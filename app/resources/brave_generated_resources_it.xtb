@@ -3,7 +3,9 @@
 <translationbundle lang="it">
 <translation id="3333887201479867589">Ricompense Brave</translation>
 <translation id="4615489450165434530">Segnala un sito non funzionante</translation>
+<translation id="8097438084542431276">Copia il link pulito</translation>
 <translation id="1209739344687072997">Segnala un sito non funzionante</translation>
+<translation id="7630214457764713113">Copia link pulito</translation>
 <translation id="6406506848690869874">Sincronizzazione</translation>
 <translation id="1544192797660353713">Portafoglio</translation>
 <translation id="2445484935443597917">Crea un nuovo profilo</translation>
@@ -73,7 +75,9 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="2638041073279639246">Apri il link in una finestra privata con Tor</translation>
 <translation id="3425600262621021599">Apri il link in una finestra privata Brave con Tor</translation>
 <translation id="3229091547987707389">Importa e condividi una directory</translation>
+<translation id="2804710924397009224">Nascondi l'icona di ricompense di Brave</translation>
 <translation id="5029193871181468990">Nascondi l’icona di Brave Rewards</translation>
+<translation id="2808103541110899519">Nascondi l’icona del portafoglio di Brave</translation>
 <translation id="7595540212376041331">Nascondi l’icona del portafoglio Brave</translation>
 <translation id="4928988318462976765">Negozio Estensioni Web</translation>
 <translation id="9181207987584064303">Visualizza nel Negozio Estensioni Web</translation>
@@ -170,7 +174,13 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="191143826155037518">Brave ti viene fornito con la <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) e include <ph name="BEGIN_LINK_OSS"/>software open source<ph name="END_LINK_OSS"/> protetto da altre licenze.
         Puoi consultare <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>le istruzioni per scaricare e compilare direttamente<ph name="END_LINK_BUILD_INSTRUCTIONS"/><ph name="BEGIN_LINK_SOURCE_CODE"/>il codice sorgente specifico usato per creare questa copia<ph name="END_LINK_SOURCE_CODE"/></translation>
 <translation id="4474155171896946103">Aggiungi tutte le schede ai Preferiti...</translation>
+<translation id="3987546108749866209">Usa le schede verticali</translation>
+<translation id="5860254591544742609">Mostra la barra del titolo</translation>
+<translation id="399928467800528208">Espandi al passaggio del mouse</translation>
 <translation id="2336228925368920074">Aggiungi tutte le schede ai Preferiti...</translation>
+<translation id="2523967823495420116">Usa le schede verticali</translation>
+<translation id="8888603463702767599">Mostra la barra del titolo</translation>
+<translation id="2058818256505091369">Espandi al passaggio del mouse</translation>
 <translation id="4235920711083356755">Mostra il pulsante della VPN</translation>
 <translation id="4070612712151038707">Mostra il pulsante della VPN nella barra degli strumenti</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -201,9 +211,9 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="8722651357687610395">Imposta Brave come default</translation>
 <translation id="2370739752330685659">Forse più tardi</translation>
 <translation id="7537601449003285327">Aggiungi alla barra delle applicazioni</translation>
+<translation id="2307973900865360088">Mantieni nel Dock</translation>
 <translation id="961012016278832836">Versione legacy di Microsoft Edge</translation>
 <translation id="6436994631426134065">Importata da <ph name="BROWSER_NAME"/>.</translation>
-<translation id="7630214457764713113">Copia link pulito</translation>
 <translation id="9156965752763025780">Le modifiche verranno applicate al prossimo riavvio di Brave.</translation>
 <translation id="7179921470347911571">Rilancia Ora</translation>
 <translation id="4472575034687746823">Come iniziare</translation>
@@ -245,6 +255,8 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="5919424224662539292">Personalizza l'immagine di sfondo e i widget che appaiono nella pagina della nuova scheda</translation>
 <translation id="7461924472993315131">Blocca</translation>
 <translation id="7506648566440714944">Brave è già aggiunto</translation>
+<translation id="239275665037555969">Dock</translation>
+<translation id="4057614912106618659">Brave è già nel Dock</translation>
 <translation id="3195845168740336657">Impostazioni delle Protezioni</translation>
 <translation id="754769152790647708">Stato delle Protezioni</translation>
 <translation id="3615717588724840230">I siti possono bloccare tracker, annunci e il fingerprinting grazie alle Protezioni</translation>
@@ -384,6 +396,8 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="4581190919849683048">Con quale tipo di dispositivo vuoi effettuare la sincronizzazione?</translation>
 <translation id="4112587618563511470">Codice di sincronizzazione non valido, controllalo e riprova.</translation>
 <translation id="3995714999835224798">Questo codice non è valido</translation>
+<translation id="4432071071853308688">Il campo del codice è vuoto</translation>
+<translation id="955848693465029904">Errore interno nella configurazione della sincronizzazione</translation>
 <translation id="859506441384380749">Questo codice è stato generato da una versione deprecata di Brave; per prima cosa aggiorna l’altro dispositivo</translation>
 <translation id="3132642509209154999">Questo codice è scaduto. Generane uno nuovo sull’altro dispositivo e riprova.</translation>
 <translation id="2859229680945501779">Questo codice non è valido. Controlla che l’ora e il fuso orario siano impostati in modo corretto sul tuo dispositivo.</translation>
@@ -403,17 +417,21 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="6864914031231797928">Consenti l'accesso a Google per le estensioni</translation>
 <translation id="6554397389149987360">Utilizza il componente Hangouts per abilitare la condivisione dello schermo e altre funzioni nel browser.</translation>
 <translation id="7878791177459550035">Il router multimediale permette le trasmissioni nel browser.</translation>
-<translation id="5927916530277631319">Metodo per risolvere Unstoppable Domains</translation>
-<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/> sulla privacy di Ethereum.</translation>
-<translation id="5248318250177143470">Metodo per risolvere Ethereum Name Service (ENS)</translation>
+<translation id="2707635989000984973">Risolvi i nomi di dominio di Unstoppable Domains</translation>
+<translation id="1807158022157096592"><ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/> sulla privacy di Unstoppable Domains.</translation>
+<translation id="641308776160806829">Risolvi i nomi di dominio Ethereum Name Service (ENS)</translation>
 <translation id="6421218422395686663">Consenti ricerca off-chain di ENS</translation>
+<translation id="4608449984413688436">Risolvi i nomi di dominio Solana Name Service (SNS)</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/> sulle implicazioni per la privacy della ricerca off-chain di ENS.</translation>
 <translation id="6241402707160226266">Finestra in Incognito con Tor</translation>
 <translation id="8762452230727230396">Tor nasconde il tuo indirizzo IP ai siti che visiti.</translation>
+<translation id="951983619130191090">Dai una mano e aiuta gli altri a collegarsi alla rete Tor</translation>
+<translation id="2223668809371912019">Attiva l’estensione Snowflake per permettere agli utenti che si trovano in Paesi sottoposti a censura di collegarsi alla rete Tor tramite la tua connessione di rete.</translation>
 <translation id="2959986444009520721">Utilizza i bridge</translation>
 <translation id="8416750895933172460">I bridge ti aiutano ad accedere alla rete Tor dove Tor è bloccato. A seconda della tua posizione, un bridge può funzionare meglio di un altro.</translation>
 <translation id="7206799843254049470">Impostazioni della connessione Tor</translation>
 <translation id="3194502271166340944">Controlla il modo in cui Finestra privata con Tor si connette alla rete Tor</translation>
+<translation id="3717364961460790491">Non è stato possibile scaricare l’estensione Snowflake, necessaria per questa funzione. Controlla la tua connessione internet e riprova.</translation>
 <translation id="4859228830700205299">Seleziona un bridge integrato</translation>
 <translation id="3233137871426528317">Richiedi un bridge a torproject.org</translation>
 <translation id="5701503934456421898">Richiedi un nuovo bridge...</translation>
@@ -490,11 +508,13 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="1195880978080389104">Nodo locale IPFS di Brave</translation>
 <translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Scopri di più<ph name="END_LINK_MPL"/> sulla privacy dei gateway e dei nodi IPFS locali di Brave.</translation>
 <translation id="4927734062756955434">Indirizzo del gateway pubblico IPFS</translation>
+<translation id="3707431725427930007">Indirizzo del gateway pubblico IPFS per gli NFT</translation>
 <translation id="8425213833346101688">Cambia</translation>
 <translation id="585868419599255817">Ripiego al gateway pubblico dell'IPFS</translation>
 <translation id="2618080188892567155">Fallback automatico al gateway IPFS pubblico se il nodo locale IPFS di Brave è irraggiungibile.</translation>
 <translation id="4107552920076294723">Reindirizza le risorse IPFS al gateway IPFS configurato</translation>
-<translation id="6494857428933042381">Utilizza automaticamente il gateway configurato per le risoluzioni IPFS quando viene rilevata una risorsa gateway IPFS.</translation>
+<translation id="4284166297897715283">Le richieste relative alle risorse IPFS, ospitate su gateway IPFS di terze parti, verranno caricate tramite il gateway locale o remoto selezionato.
+    N.B: se si seleziona il nodo locale, la risorsa verrà richiesta direttamente dal computer e per un po’ tempo i dati memorizzati nella cache potrebbero essere forniti alla rete IPFS.</translation>
 <translation id="8655170717758778983">Quando possibile, reindirizza automaticamente alle pagine IPFS tramite DNSLink</translation>
 <translation id="2233724520223030977">Quando possibile, utilizza automaticamente DNSLink per navigare a una versione IPFS di un sito web</translation>
 <translation id="8068526464562249859">Utilizza l'estensione IPFS Companion per un supporto IPFS avanzato in Brave, incluso l'accesso alle attività IPFS comuni dalla barra del tuo browser.</translation>
@@ -569,4 +589,8 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="5318548116565208315">Avatar granoturco bonbon</translation>
 <translation id="1959966725083452288">Avatar bonbon reale</translation>
 <translation id="2039034364578911089">Avatar bonbon ninja</translation>
+<translation id="5927916530277631319">Metodo per risolvere Unstoppable Domains</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/> sulla privacy di Ethereum.</translation>
+<translation id="5248318250177143470">Metodo per risolvere Ethereum Name Service (ENS)</translation>
+<translation id="6494857428933042381">Utilizza automaticamente il gateway configurato per le risoluzioni IPFS quando viene rilevata una risorsa gateway IPFS.</translation>
 </translationbundle>

@@ -3,7 +3,9 @@
 <translationbundle lang="tr">
 <translation id="3333887201479867589">Brave Ödülleri</translation>
 <translation id="4615489450165434530">Arızalı Bir Siteyi Bildir</translation>
+<translation id="8097438084542431276">Temiz Bağlantıyı Kopyala</translation>
 <translation id="1209739344687072997">Arızalı bir siteyi bildir</translation>
+<translation id="7630214457764713113">Temiz bağlantıyı kopyala</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">Cüzdan</translation>
 <translation id="2445484935443597917">Yeni Profil Oluştur</translation>
@@ -74,7 +76,9 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="2638041073279639246">Bağlantıyı Tor ile özel pencerede aç</translation>
 <translation id="3425600262621021599">Bağlantıyı Brave'de Tor ile özel pencerede aç</translation>
 <translation id="3229091547987707389">Bir dizini içe aktar ve paylaş</translation>
+<translation id="2804710924397009224">Brave Ödülleri Simgesini Gizle</translation>
 <translation id="5029193871181468990">Brave Ödülleri simgesini gizle</translation>
+<translation id="2808103541110899519">Brave Cüzdanı Simgesini gizle</translation>
 <translation id="7595540212376041331">Brave Cüzdanı simgesini gizle</translation>
 <translation id="4928988318462976765">Web Uzantıları Mağazası</translation>
 <translation id="9181207987584064303">Web Uzantıları Mağazası'nda görüntüle</translation>
@@ -171,7 +175,13 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="191143826155037518">Brave'i <ph name="BEGIN_LINK_MPL"/>Mozilla Kamu Lisansı 2.0<ph name="END_LINK_MPL"/> (MPL) altında ve <ph name="BEGIN_LINK_OSS"/>açık kaynak yazılım<ph name="END_LINK_OSS"/> dahil çeşitli diğer lisanslar altında kullanabilirsiniz.
         <ph name="BEGIN_LINK_SOURCE_CODE"/>Bu kopyayı oluşturmak için kullanılan kaynak kodunu <ph name="END_LINK_SOURCE_CODE"/> <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>indirmek ve inşa etmek için talimatları<ph name="END_LINK_BUILD_INSTRUCTIONS"/> okuyabilirsiniz.</translation>
 <translation id="4474155171896946103">Tüm sekmelere yer işareti koy...</translation>
+<translation id="3987546108749866209">Dikey sekmeleri kullan</translation>
+<translation id="5860254591544742609">Başlık çubuğunu göster</translation>
+<translation id="399928467800528208">Fare imleci üzerinde gezin</translation>
 <translation id="2336228925368920074">Tüm Sekmelere Yer İşareti Koy...</translation>
+<translation id="2523967823495420116">Dikey Sekmeleri Kullan</translation>
+<translation id="8888603463702767599">Başlık Çubuğunu Göster</translation>
+<translation id="2058818256505091369">Fare İmleci Üzerinde Gezin</translation>
 <translation id="4235920711083356755">VPN düğmesini göster</translation>
 <translation id="4070612712151038707">VPN düğmesini araç çubuğunda gösterir</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -202,9 +212,9 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="8722651357687610395">Brave'i varsayılan yapın</translation>
 <translation id="2370739752330685659">Belki daha sonra</translation>
 <translation id="7537601449003285327">Görev çubuğuna sabitle</translation>
+<translation id="2307973900865360088">Dock'ta Tut</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/> öğesinden alındı.</translation>
-<translation id="7630214457764713113">Temiz bağlantıyı kopyala</translation>
 <translation id="9156965752763025780">Değişiklikleriniz, Brave tekrar başlatıldığında geçerli olacak.</translation>
 <translation id="7179921470347911571">Şimdi Tekrar Başlat</translation>
 <translation id="4472575034687746823">Başlayın</translation>
@@ -246,6 +256,8 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="5919424224662539292">Yeni sekme sayfasında gözüken arka plan resmini ve widget'ları özelleştirin</translation>
 <translation id="7461924472993315131">Sabitle</translation>
 <translation id="7506648566440714944">Brave zaten sabitlendi</translation>
+<translation id="239275665037555969">Dock</translation>
+<translation id="4057614912106618659">Brave zaten Dock'ta</translation>
 <translation id="3195845168740336657">Kalkan ayarları</translation>
 <translation id="754769152790647708">Kalkan durumu</translation>
 <translation id="3615717588724840230">Siteler, Kalkanları kullanarak izleyicileri, reklamları ve parmak izlerini engelleyebilir</translation>
@@ -385,6 +397,8 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="4581190919849683048">Ne tür bir cihazla eş zamanlanmak istersiniz?</translation>
 <translation id="4112587618563511470">Eş zamanlama kodu geçersiz, lütfen kontrol edip tekrar deneyin.</translation>
 <translation id="3995714999835224798">Kod geçersiz</translation>
+<translation id="4432071071853308688">Bu kod boş</translation>
+<translation id="955848693465029904">Dahili senkronizasyon kurulum hatası</translation>
 <translation id="859506441384380749">Bu kod Brave'in artık kullanılmayan bir sürümü tarafından oluşturulmuş, lütfen önce diğer cihazınızı yükseltin</translation>
 <translation id="3132642509209154999">Bu kodun süresi dolmuş. Lütfen diğer cihazınızda yeni bir kod oluşturun ve tekrar deneyin.</translation>
 <translation id="2859229680945501779">Bu kod geçersiz. Lütfen cihazınızdaki saatin ve saat diliminin doğru şekilde ayarlandığını teyit edin.</translation>
@@ -404,17 +418,21 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="6864914031231797928">Uzantılar için Google ile oturum açmaya izin ver</translation>
 <translation id="6554397389149987360">Ekran paylaşımını ve tarayıcıdaki diğer özellikleri etkinleştirmek için Hangouts bileşenini kullanır.</translation>
 <translation id="7878791177459550035">Medya yönlendiricisi tarayıcıda yayın özelliğini etkinleştirir.</translation>
-<translation id="5927916530277631319">Unstoppable Domains'i çözmenin yolu</translation>
-<translation id="2889554198027690581">Ethereum gizlilik hususları hakkında <ph name="BEGIN_LINK"/>Daha Fazla Bilgi Edinin<ph name="END_LINK"/>.</translation>
-<translation id="5248318250177143470">Ethereum Name Service (ENS) çözümlemesi için yol</translation>
+<translation id="2707635989000984973">Unstoppable Domains alan adlarını çöz</translation>
+<translation id="1807158022157096592">Unstoppable Domains gizlilik hususları hakkında<ph name="BEGIN_LINK"/>Daha Fazla Bilgi Edinin<ph name="END_LINK"/>.</translation>
+<translation id="641308776160806829">Ethereum Name Service (ENS) alan adlarını çöz</translation>
 <translation id="6421218422395686663">ENS offchain aramasına izin ver.</translation>
+<translation id="4608449984413688436">Solana Name Service (SNS) alan adlarını çöz</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>ENS offchain araması gizlilik hususları hakkında<ph name="END_LINK"/>Daha Fazla Bilgi Edinin.</translation>
 <translation id="6241402707160226266">Tor ile özel pencere</translation>
 <translation id="8762452230727230396">Tor ziyaret ettiğiniz sitelerden IP adresinizi gizler.</translation>
+<translation id="951983619130191090">Başkalarının Tor ağına bağlanmasına yardım etmek için gönüllü ol</translation>
+<translation id="2223668809371912019">Sansür uygulayan ülkelerdeki kullanıcıların ağ bağlantınız aracılığıyla Tor ağına bağlanmalarına izin vermek için Snowflake uzantısını etkinleştirin.</translation>
 <translation id="2959986444009520721">Köprüleri Kullanın</translation>
 <translation id="8416750895933172460">Köprüler, Tor'un engellendiği yerlerde Tor Ağına erişmenize yardımcı olur. Nerede olduğunuza bağlı olarak, bir köprü diğerlerinden daha iyi çalışabilir.</translation>
 <translation id="7206799843254049470">Tor bağlantı ayarları</translation>
 <translation id="3194502271166340944">Tor içeren Gizli Pencerelerin Tor ağına nasıl bağlanacağını kontrol eder</translation>
+<translation id="3717364961460790491">Bu işlevsellik için gereken Snowflake uzantısı indirilemiyor. Lütfen internet bağlantınızı kontrol edin ve tekrar deneyin.</translation>
 <translation id="4859228830700205299">Yerleşik bir köprü seçin</translation>
 <translation id="3233137871426528317">torproject.org'dan bir köprü isteyin</translation>
 <translation id="5701503934456421898">Yeni Bir Köprü İsteyin...</translation>
@@ -491,11 +509,13 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="1195880978080389104">Brave yerel IPFS düğümü</translation>
 <translation id="2178402446227616866">Brave yerel IPFS düğümü ve ağ geçidi gizlilik hususları hakkında <ph name="BEGIN_LINK_MPL"/>daha fazla bilgi edinin.<ph name="END_LINK_MPL"/></translation>
 <translation id="4927734062756955434">IPFS ortak ağ geçidi adresi</translation>
+<translation id="3707431725427930007">NFT için IPFS ortak ağ geçidi adresi</translation>
 <translation id="8425213833346101688">Değiştir</translation>
 <translation id="585868419599255817">IPFS herkese açık ağ geçidi geri çekilmesi</translation>
 <translation id="2618080188892567155">Brave yerel IPFS düğümünüze erişilemediğinde, otomatik olarak herkese açık IPFS geçidine çekilin.</translation>
 <translation id="4107552920076294723">IPFS kaynaklarını ayarlanmış IPFS ağ geçidine yeniden yönlendirin</translation>
-<translation id="6494857428933042381">Bir IPFS ağ geçidi kaynağıyla karşılaşıldığında IPFS çözümleri için ayarlı ağ geçidini otomatik olarak kullanır.</translation>
+<translation id="4284166297897715283">Üçüncü taraf IPFS ağ geçitlerinde barındırılan IPFS kaynaklarına gönderilen talepler, belirli yerel veya uzak ağ geçitleri aracılığıyla yüklenecektir.
+    Not: Yerel düğüm seçildiyse kaynak doğrudan bilgisayarınızdan talep edilir ve önbelleğe alınan veriler bir süreliğine IPFS ağına sağlanabilir.</translation>
 <translation id="8655170717758778983">Mümkün olduğunda DNSLink ile IPFS sayfalarını otomatik olarak yeniden yönlendir</translation>
 <translation id="2233724520223030977">Mümkün olduğunda web sitenin IPFS versiyonuna gitmek için otomatik olarak DNSLink kullanır</translation>
 <translation id="8068526464562249859">Tarayıcı çubuğunuzdan genel IPFS görevlerine erişim dahil, Brave'de gelişmiş IPFS desteği için IPFS Eşlikçisi uzantısını kullanır.</translation>
@@ -570,4 +590,8 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="5318548116565208315">Avatar Bonbon Mısır</translation>
 <translation id="1959966725083452288">Avatar Kraliyet Şekerlemesi</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="5927916530277631319">Unstoppable Domains'i çözmenin yolu</translation>
+<translation id="2889554198027690581">Ethereum gizlilik hususları hakkında <ph name="BEGIN_LINK"/>Daha Fazla Bilgi Edinin<ph name="END_LINK"/>.</translation>
+<translation id="5248318250177143470">Ethereum Name Service (ENS) çözümlemesi için yol</translation>
+<translation id="6494857428933042381">Bir IPFS ağ geçidi kaynağıyla karşılaşıldığında IPFS çözümleri için ayarlı ağ geçidini otomatik olarak kullanır.</translation>
 </translationbundle>

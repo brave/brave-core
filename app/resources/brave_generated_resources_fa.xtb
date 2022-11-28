@@ -3,7 +3,9 @@
 <translationbundle lang="fa">
 <translation id="3333887201479867589">پاداش‌های Brave</translation>
 <translation id="4615489450165434530">گزارش خرابی سایت</translation>
+<translation id="8097438084542431276">کپی کردن پیوند تمیز</translation>
 <translation id="1209739344687072997">گزارش خرابی سایت</translation>
+<translation id="7630214457764713113">کپی کردن پیوند تمیز</translation>
 <translation id="6406506848690869874">همگام‌سازی</translation>
 <translation id="1544192797660353713">کیف پول</translation>
 <translation id="2445484935443597917">ایجاد نمایه جدید</translation>
@@ -72,7 +74,9 @@
 <translation id="2638041073279639246">باز کردن پیوند در Window with Tor خصوصی</translation>
 <translation id="3425600262621021599">باز کردن پیوند در Window with Tor خصوصی Brave</translation>
 <translation id="3229091547987707389">وارد کردن و اشتراک‌گذاری یک دایرکتوری</translation>
+<translation id="2804710924397009224">شمایل جوایز بریو را پنهان کن.</translation>
 <translation id="5029193871181468990">مخفی کردن نماد Brave Rewards</translation>
+<translation id="2808103541110899519">پنهان کردن نماد کیف پول Brave</translation>
 <translation id="7595540212376041331">نماد «کیف پول Brave» را پنهان می‌کند</translation>
 <translation id="4928988318462976765">فروشگاه افزونه‌های وب</translation>
 <translation id="9181207987584064303">مشاهده در «فروشگاه افزونه‌های وب»</translation>
@@ -169,7 +173,13 @@
 <translation id="191143826155037518">Brave تحت <ph name="BEGIN_LINK_MPL"/>مجوزهای عمومی Mozilla نسخه 2.0<ph name="END_LINK_MPL"/> (MPL) در اختیار شما قرار داده می‌شود و شامل <ph name="BEGIN_LINK_OSS"/>نرم‌افزار متن‌باز<ph name="END_LINK_OSS"/> تحت مجموعه دیگری از مجوزها است.
 شما می‌توانید <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>دستورالعمل‌های مربوط به نحوه دانلود و ایجاد<ph name="END_LINK_BUILD_INSTRUCTIONS"/> کد منبع مشخص <ph name="BEGIN_LINK_SOURCE_CODE"/>استفاده‌شده برای ایجاد این نسخه را مطالعه کنید<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">نشانک‌گذاری همه برگه‌ها...</translation>
+<translation id="3987546108749866209">استفاده از زبانه‌های عمودی</translation>
+<translation id="5860254591544742609">نمایش نوار عنوان</translation>
+<translation id="399928467800528208">شناور با حرکت ماوس</translation>
 <translation id="2336228925368920074">نشانک‌گذاری همه برگه‌ها...</translation>
+<translation id="2523967823495420116">استفاده از زبانه‌های عمودی</translation>
+<translation id="8888603463702767599">نمایش نوار عنوان</translation>
+<translation id="2058818256505091369">شناور با حرکت ماوس</translation>
 <translation id="4235920711083356755">نمایش دکمه VPN</translation>
 <translation id="4070612712151038707">دکمه VPN را در نوار ابزار نمایش می‌دهد</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -200,9 +210,9 @@
 <translation id="8722651357687610395">Brave را به‌عنوان پیش فرض تنظیم کنید</translation>
 <translation id="2370739752330685659">شاید بعداً</translation>
 <translation id="7537601449003285327">پین کردن به نوار وظیفه</translation>
+<translation id="2307973900865360088">نگه داشتن در نوار ابزار</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">درون‌برد از <ph name="BROWSER_NAME"/></translation>
-<translation id="7630214457764713113">کپی کردن پیوند تمیز</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
 <translation id="7179921470347911571">اکنون راه‌اندازی مجدد شود</translation>
 <translation id="4472575034687746823">شروع به کار</translation>
@@ -244,6 +254,8 @@
 <translation id="5919424224662539292">تصویر پس‌زمینه و ابزارک‌هایی را که در صفحه زبانه جدید نشان داده می‌شود سفارشی کنید</translation>
 <translation id="7461924472993315131">پین</translation>
 <translation id="7506648566440714944">Brave قبلاً سنجاق شده است</translation>
+<translation id="239275665037555969">نوار ابزار</translation>
+<translation id="4057614912106618659">Brave از قبل در نوار ابزار است</translation>
 <translation id="3195845168740336657">تنظیمات سپر امنیتی</translation>
 <translation id="754769152790647708">وضعیت سپر امنیتی</translation>
 <translation id="3615717588724840230">سایت‌ها با استفاده از سپر امنیتی قادر به مسدودسازی ردیاب‌ها، آگهی‌ها و انگشت‌نگاری خواهند بود.</translation>
@@ -383,6 +395,8 @@
 <translation id="4581190919849683048">مایل به همگام‌سازی با چه نوع دستگاهی هستید؟</translation>
 <translation id="4112587618563511470">کد همگام‌سازی نامعتبر است. لطفاً بررسی و دوباره امتحان کنید.</translation>
 <translation id="3995714999835224798">این کد نامعتبر است</translation>
+<translation id="4432071071853308688">این کد خالی است</translation>
+<translation id="955848693465029904">خطای راه‌اندازی همگام‌سازی داخلی</translation>
 <translation id="859506441384380749">این کد توسط نسخه منسوخ Brave ایجاد شده است، لطفاً ابتدا دستگاه دیگر خود را ارتقا دهید</translation>
 <translation id="3132642509209154999">این کد منقضی شده است. لطفاً کد جدیدی در دستگاه دیگرتان ایجاد و دوباره تلاش کنید.</translation>
 <translation id="2859229680945501779">این کد نامعتبر است. لطفاً بررسی کنید که زمان و منطقه زمانی در دستگاهتان درست تنظیم شده باشند.</translation>
@@ -402,17 +416,21 @@
 <translation id="6864914031231797928">مجاز کردن ورود به سیستم Google برای افزونه‌ها</translation>
 <translation id="6554397389149987360">از مؤلفه‌های Hangouts برای فعال کردن اشتراک‌گذاری صفحه و سایر ویژگی‌ها در مرورگر استفاده می‌کند.</translation>
 <translation id="7878791177459550035">روتر رسانه قابلیت پخش را در مرورگر ممکن می‌سازد.</translation>
-<translation id="5927916530277631319">روش تحلیل دامنه‌های توقف‌ناپذیر</translation>
-<translation id="2889554198027690581">درباره رعایت حریم خصوصی Ethereum<ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/>.</translation>
-<translation id="5248318250177143470">روشی برای تحلیل «سرویس نام اتریوم» (ENS)</translation>
+<translation id="2707635989000984973">حل نام‌های دامنه‌های غیرقابل توقف</translation>
+<translation id="1807158022157096592">درباره ملاحظات حریم خصوصی دامنه‌های غیرقابل توقف <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/>.</translation>
+<translation id="641308776160806829">حل نام‌های دامنه سرویس نام اتریوم (ENS)</translation>
 <translation id="6421218422395686663">به ENS اجازه مراجعه برون زنجیره‌ای دهید.</translation>
+<translation id="4608449984413688436">نام‌های «دامنه سرویس نام سولانا» (SNS) را حل می‌کند.</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/> درباره ملاحظات حریم خصوصی جستجوی برون زنجیره‌ای ENS.</translation>
 <translation id="6241402707160226266">پنجره خصوصی با Tor</translation>
 <translation id="8762452230727230396">Tor نشانی IP شما را از سایت‌هایی که بازدید می‌کنید، مخفی می‌کند.</translation>
+<translation id="951983619130191090">برای کمک به دیگران برای اتصال به شبکه Tor داوطلب شوید</translation>
+<translation id="2223668809371912019">افزونه Snowflake را فعال کنید تا کاربران در کشورهای تحت سانسور بتوانند از طریق اتصال شبکه شما به شبکه Tor متصل شوند.</translation>
 <translation id="2959986444009520721">از پل ها استفاده کنید</translation>
 <translation id="8416750895933172460">پل‌ها به شما کمک می‌کنند تا در مکان‌هایی که Tor مسدود است به شبکه Tor دسترسی پیدا کنید. بسته به مکانی که در آن قرار دارید، ممکن است یک پل بهتر از پل‌های دیگر عمل کند.</translation>
 <translation id="7206799843254049470">تنظیمات اتصال Tor</translation>
 <translation id="3194502271166340944">نحوه اتصال ویندوز خصوصی با Tor به شبکه Tor را کنترل می کند</translation>
+<translation id="3717364961460790491">افزونه Snowflake لازم برای این عملکرد قابل دانلود نیست. لطفاً اتصال اینترنت خود را بررسی و دوباره امتحان کنید.</translation>
 <translation id="4859228830700205299">یک پل داخلی را انتخاب کنید</translation>
 <translation id="3233137871426528317">درخواست یک پل از torproject.org</translation>
 <translation id="5701503934456421898">درخواست پل جدید...</translation>
@@ -489,11 +507,13 @@
 <translation id="1195880978080389104">گره IPFS محلی Brave</translation>
 <translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>درباره<ph name="END_LINK_MPL"/> گره IPFS محلی Brave و ملاحظات حریم خصوصی درگاه بیشتر بدانید.</translation>
 <translation id="4927734062756955434">نشانی دروازه عمومی IPFS</translation>
+<translation id="3707431725427930007">آدرس درگاه عمومی IPFS برای NFT</translation>
 <translation id="8425213833346101688">تغییر</translation>
 <translation id="585868419599255817">بازگشت دروازه عمومی IPFS</translation>
 <translation id="2618080188892567155">اگر دسترسی به گره IPFS محلی Brave ممکن نیست، به‌طور خودکار به درگاه IPFS عمومی برگردانده می‌شوید.</translation>
 <translation id="4107552920076294723">منابع IPFS را به دروازه IPFS پیکربندی‌شده هدایت کنید</translation>
-<translation id="6494857428933042381">وقتی منبع دروازه IPFS نمایان می‌شود، به‌طور خودکار از دروازه پیکربندی‌شده برای تحلیل‌های IPFS استفاده شود.</translation>
+<translation id="4284166297897715283">درخواست‌ها به منابع IPFS، میزبانی‌شده روی درگاه‌های IPFS شخص ثالث، از طریق درگاه محلی یا راه دور انتخاب شده بارگیری می‌شوند.
+ توجه: اگر گره محلی انتخاب شده باشد، منبع مستقیماً از رایانه شما درخواست می‌شود و ممکن است داده‌های کش برای مدتی به شبکه IPFS ارائه شود.</translation>
 <translation id="8655170717758778983">درصورت امکان، به‌طور خودکار ازطریق DNSLink به صفحات IPFS هدایت می‌شود</translation>
 <translation id="2233724520223030977">به‌طور خودکار از DNSLink استفاده می‌کند تا درصورت امکان به نسخه IPFS پیمایش کند</translation>
 <translation id="8068526464562249859">برای پشتیبانی بهبودیافته IPFS در Brave (از جمله دسترسی به کارهای معمول IPFS از نوار مرورگر)، از افزونه همراه IPFS استفاده می‌کند.</translation>
@@ -568,4 +588,8 @@
 <translation id="5318548116565208315">آواتار ذرت آب‌نبات</translation>
 <translation id="1959966725083452288">آواتار سلطنتی آب‌نبات</translation>
 <translation id="2039034364578911089">آواتار نینجای آب‌نبات</translation>
+<translation id="5927916530277631319">روش تحلیل دامنه‌های توقف‌ناپذیر</translation>
+<translation id="2889554198027690581">درباره رعایت حریم خصوصی Ethereum<ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/>.</translation>
+<translation id="5248318250177143470">روشی برای تحلیل «سرویس نام اتریوم» (ENS)</translation>
+<translation id="6494857428933042381">وقتی منبع دروازه IPFS نمایان می‌شود، به‌طور خودکار از دروازه پیکربندی‌شده برای تحلیل‌های IPFS استفاده شود.</translation>
 </translationbundle>

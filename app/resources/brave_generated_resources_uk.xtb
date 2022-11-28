@@ -3,7 +3,9 @@
 <translationbundle lang="uk">
 <translation id="3333887201479867589">Винагороди Brave</translation>
 <translation id="4615489450165434530">Повідомити про зламаний сайт</translation>
+<translation id="8097438084542431276">Скопіювати очищене посилання</translation>
 <translation id="1209739344687072997">Звіт про пошкоджений сайт</translation>
+<translation id="7630214457764713113">Скопіювати очищене посилання</translation>
 <translation id="6406506848690869874">Синхронізувати</translation>
 <translation id="1544192797660353713">Гаманець</translation>
 <translation id="2445484935443597917">Створити новий профіль</translation>
@@ -73,7 +75,9 @@
 <translation id="2638041073279639246">Відкрийте посилання у приватномі вікні з Tor</translation>
 <translation id="3425600262621021599">Відкрийте посилання у приватномі вікні  Brave з Tor</translation>
 <translation id="3229091547987707389">Імпорт і поширення каталогу</translation>
+<translation id="2804710924397009224">Приховати іконку нагород Brave</translation>
 <translation id="5029193871181468990">Приховати іконку нагород Brave</translation>
+<translation id="2808103541110899519">Приховати значок гаманця Brave</translation>
 <translation id="7595540212376041331">Приховати значок гаманця Brave</translation>
 <translation id="4928988318462976765">Веб Магазин Розширень</translation>
 <translation id="9181207987584064303">Переглянути у Веб Магазині Розширень</translation>
@@ -170,7 +174,13 @@
 <translation id="191143826155037518">Brave надається вам за умовами <ph name="BEGIN_LINK_MPL"/>Публічної Ліцензії Mozilla 2.0 <ph name="END_LINK_MPL"/> (MPL) та включає <ph name="BEGIN_LINK_OSS"/>програмне забезпечення з відкритим кодом <ph name="END_LINK_OSS"/> за умовами багатьох інших ліцензій.
 Ви можете прочитати <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>інструкції, як завантажити та створити самостійно <ph name="END_LINK_BUILD_INSTRUCTIONS"/>конкретний <ph name="BEGIN_LINK_SOURCE_CODE"/>вихідний код, використаний для створення цієї копії<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Позначити закладками всі вкладки...</translation>
+<translation id="3987546108749866209">Використовувати вертикальні вкладки</translation>
+<translation id="5860254591544742609">Показати панель заголовку</translation>
+<translation id="399928467800528208">Спливаюче вікно за наведення курсора</translation>
 <translation id="2336228925368920074">Позначити закладками всі вкладки...</translation>
+<translation id="2523967823495420116">Використовувати вертикальні вкладки</translation>
+<translation id="8888603463702767599">Показати панель заголовку</translation>
+<translation id="2058818256505091369">Спливаюче вікно за наведення курсора</translation>
 <translation id="4235920711083356755">Показувати кнопку VPN</translation>
 <translation id="4070612712151038707">Показує кнопку VPN на панелі інструментів</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -201,9 +211,9 @@
 <translation id="8722651357687610395">Встановіть Brave  за замовчуванням</translation>
 <translation id="2370739752330685659">Можливо, пізніше</translation>
 <translation id="7537601449003285327">Закріпити на панелі завдань</translation>
+<translation id="2307973900865360088">Залишити закріпленим</translation>
 <translation id="961012016278832836">Microsoft Edge застарів</translation>
 <translation id="6436994631426134065">Імпортовано з <ph name="BROWSER_NAME"/>.</translation>
-<translation id="7630214457764713113">Скопіювати очищене посилання</translation>
 <translation id="9156965752763025780">Ваші зміни почнуть діяти після наступного перезапуску Brave.</translation>
 <translation id="7179921470347911571">Перезапустити зараз</translation>
 <translation id="4472575034687746823">Початок роботи</translation>
@@ -245,6 +255,8 @@
 <translation id="5919424224662539292">Налаштовуйте фонові зображення та віджети, які з'являються на сторінці нової вкладки</translation>
 <translation id="7461924472993315131">Закріпити</translation>
 <translation id="7506648566440714944">Brave уже закріплено</translation>
+<translation id="239275665037555969">Закріпити</translation>
+<translation id="4057614912106618659">Brave уже закріплено</translation>
 <translation id="3195845168740336657">Налаштування щитів</translation>
 <translation id="754769152790647708">Статус щитів</translation>
 <translation id="3615717588724840230">Сайти можуть блокувати трекери, рекламу та відстеження за допомогою щитів</translation>
@@ -384,6 +396,8 @@
 <translation id="4581190919849683048">Із пристроєм якого типу ви хотіли б синхронізуватись?</translation>
 <translation id="4112587618563511470">Невірний код синхронізації. Будь ласка, перевірте його і спробуйте знову.</translation>
 <translation id="3995714999835224798">Недійсний код</translation>
+<translation id="4432071071853308688">Код відсутній</translation>
+<translation id="955848693465029904">Внутрішня помилка налаштування</translation>
 <translation id="859506441384380749">Цей код було згенеровано застарілою версією Brave, спочатку встановіть оновлення на іншому пристрої</translation>
 <translation id="3132642509209154999">Термін дії цього коду минув. Згенеруйте новий код на іншому пристрої та повторіть спробу.</translation>
 <translation id="2859229680945501779">Цей код недійсний. Перевірте, чи правильно налаштовано час і часовий пояс на вашому пристрої.</translation>
@@ -403,17 +417,21 @@
 <translation id="6864914031231797928">Дозволити вхід через Google для розширень</translation>
 <translation id="6554397389149987360">Використовує компоненти Hangouts, щоб увімкнути поширення екрану та інші функції у браузері.</translation>
 <translation id="7878791177459550035">Маршрутизатор медіавмісту дозволяє транслювати в браузері.</translation>
-<translation id="5927916530277631319">Метод вирішення Unstoppable Domains</translation>
-<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Дізнайтеся більше<ph name="END_LINK"/> про визначення приватності Ethereum.</translation>
-<translation id="5248318250177143470">Спосіб вирішення Ethereum Name Service (ENS)</translation>
+<translation id="2707635989000984973">Обробка запитів на пошук доменних імен Unstoppable Domains</translation>
+<translation id="1807158022157096592"><ph name="BEGIN_LINK"/>Дізнатися більше<ph name="END_LINK"/> про положення щодо приватності Unstoppable Domains.</translation>
+<translation id="641308776160806829">Обробка запитів на пошук доменних імен Ethereum Name Service (ENS)</translation>
 <translation id="6421218422395686663">Дозволити ENS пошук за межами мережі.</translation>
+<translation id="4608449984413688436">Обробка запитів на пошук доменних імен Solana Name Service (SNS)</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Детальніше<ph name="END_LINK"/> про визначення приватності пошуку за межами мережі ENS.</translation>
 <translation id="6241402707160226266">Приватне вікно з Tor</translation>
 <translation id="8762452230727230396">Tor приховує вашу IP адресу від сайтів, які ви відвідуєте.</translation>
+<translation id="951983619130191090">Допомагайте іншим підключатися до мережі Tor</translation>
+<translation id="2223668809371912019">Увімкніть розширення Snowflake, щоб допомагати користувачам у країнах, на які розповсюджується цензура, підключатися до мережі Tor, використовуючи ваше з’єднання.</translation>
 <translation id="2959986444009520721">Використовуйте мости</translation>
 <translation id="8416750895933172460">Мости допомагають отримати доступ до мережі Tor там, де Tor заблоковано. Залежно від вашого розташування швидкість роботи мостів може різнитися.</translation>
 <translation id="7206799843254049470">Налаштування підключення Tor</translation>
 <translation id="3194502271166340944">Контролює підключення приватних вікон із Tor до мережі Tor</translation>
+<translation id="3717364961460790491">Не вдалося завантажити розширення Snowflake, потрібне для використання цих функцій. Перевірте підключення до Інтернету та спробуйте ще раз.</translation>
 <translation id="4859228830700205299">Виберіть інтегрований міст</translation>
 <translation id="3233137871426528317">Подайте запит на виділення мосту на torproject.org</translation>
 <translation id="5701503934456421898">Подати запит на новий міст…</translation>
@@ -490,11 +508,13 @@
 <translation id="1195880978080389104">Локальний вузол IPFS Brave</translation>
 <translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Докладніше<ph name="END_LINK_MPL"/> про локальний вузол IPFS Brave та визначення приватності шлюзу.</translation>
 <translation id="4927734062756955434">Адреса відкритого шлюзу IPFS</translation>
+<translation id="3707431725427930007">Публічна адреса шлюзу IPFS для NFT</translation>
 <translation id="8425213833346101688">Змінити</translation>
 <translation id="585868419599255817">Резервний відкритий шлюз IPFS</translation>
 <translation id="2618080188892567155">Автоматично переходити на відкритий шлюз IPFS, якщо не вдається зв’язатися з локальним вузлом IPFS Brave.</translation>
 <translation id="4107552920076294723">Перенаправляти ресурси IPFS до налаштованого шлюзу IPFS</translation>
-<translation id="6494857428933042381">Автоматично використовує налаштований шлюз для вирішення проблем із IPFS при виявленні ресурсу шлюзу IPFS</translation>
+<translation id="4284166297897715283">Запити щодо ресурсів IPFS, розміщених у сторонніх шлюзах IPFS, завантажуватимуться через вибраний локальний чи віддалений шлюз.
+    Зауважте: у разі вибору локального вузла запит буде надіслано безпосередньо на ваш комп’ютер, і мережа IPFS може протягом певного часу отримувати дані з кешу.</translation>
 <translation id="8655170717758778983">Автоматично перенаправляти на сторінки IPFS через DNSLink, коли це можливо</translation>
 <translation id="2233724520223030977">Автоматично використовує DNSLink для переходу до IPFS версії вебсайту за можливості</translation>
 <translation id="8068526464562249859">Використовує супровідне розширення IPFS для покращеної підтримки IPFS у Brave, в тому числі доступу до частих завдань IPFS з рядка веб-переглядача.</translation>
@@ -569,4 +589,8 @@
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="5927916530277631319">Метод вирішення Unstoppable Domains</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Дізнайтеся більше<ph name="END_LINK"/> про визначення приватності Ethereum.</translation>
+<translation id="5248318250177143470">Спосіб вирішення Ethereum Name Service (ENS)</translation>
+<translation id="6494857428933042381">Автоматично використовує налаштований шлюз для вирішення проблем із IPFS при виявленні ресурсу шлюзу IPFS</translation>
 </translationbundle>

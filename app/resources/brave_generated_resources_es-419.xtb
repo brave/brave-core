@@ -3,7 +3,9 @@
 <translationbundle lang="es-419">
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="4615489450165434530">Informar sobre un sitio roto</translation>
+<translation id="8097438084542431276">Copiar enlace limpio</translation>
 <translation id="1209739344687072997">Informar sobre un sitio roto</translation>
+<translation id="7630214457764713113">Copiar enlace limpio</translation>
 <translation id="6406506848690869874">Sincronización</translation>
 <translation id="1544192797660353713">Billetera</translation>
 <translation id="2445484935443597917">Crear un perfil nuevo</translation>
@@ -74,7 +76,9 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="2638041073279639246">Abrir vínculo en una ventana privada con Tor</translation>
 <translation id="3425600262621021599">Abrir vínculo en una ventana privada de Brave con Tor</translation>
 <translation id="3229091547987707389">Importar y compartir un directorio</translation>
+<translation id="2804710924397009224">Esconda el icono de Recompensas Brave</translation>
 <translation id="5029193871181468990">Ocultar ícono de Recompensas de Brave</translation>
+<translation id="2808103541110899519">Ocultar el ícono de Billetera de Brave</translation>
 <translation id="7595540212376041331">Ocultar el ícono de Billetera de Brave</translation>
 <translation id="4928988318462976765">Tienda virtual de extensiones</translation>
 <translation id="9181207987584064303">Ver en la Tienda virtual de extensiones</translation>
@@ -171,7 +175,13 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="191143826155037518">Brave es accesible gracias a la <ph name="BEGIN_LINK_MPL"/>versión 2.0 de la Licencia Pública de Mozilla<ph name="END_LINK_MPL"/> (MPL, por sus siglas en inglés). Además, es compatible con el <ph name="BEGIN_LINK_OSS"/>software de código abierto<ph name="END_LINK_OSS"/> de una gran variedad de otras licencias.
         Lee las <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instrucciones sobre cómo descargar y crear por ti mismo<ph name="END_LINK_BUILD_INSTRUCTIONS"/> el <ph name="BEGIN_LINK_SOURCE_CODE"/>código abierto específico utilizado para crear esta copia<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Agregar a favoritos todas las pestañas...</translation>
+<translation id="3987546108749866209">Usar pestañas verticales</translation>
+<translation id="5860254591544742609">Mostrar barra de título</translation>
+<translation id="399928467800528208">Hacer flotante al colocar el cursor encima</translation>
 <translation id="2336228925368920074">Agregar a favoritos todas las pestañas...</translation>
+<translation id="2523967823495420116">Usar pestañas verticales</translation>
+<translation id="8888603463702767599">Mostrar barra de título</translation>
+<translation id="2058818256505091369">Hacer flotante al colocar el cursor encima</translation>
 <translation id="4235920711083356755">Mostrar el botón de la VPN</translation>
 <translation id="4070612712151038707">Muestra el botón de la VPN en la barra de herramientas</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -202,9 +212,9 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="8722651357687610395">Establecer Brave como predeterminado</translation>
 <translation id="2370739752330685659">Quizás más tarde</translation>
 <translation id="7537601449003285327">Asociar a la barra de tareas</translation>
+<translation id="2307973900865360088">Mantener en el Dock</translation>
 <translation id="961012016278832836">Versiones anteriores de Microsoft Edge</translation>
 <translation id="6436994631426134065">Importado de <ph name="BROWSER_NAME"/>.</translation>
-<translation id="7630214457764713113">Copiar enlace limpio</translation>
 <translation id="9156965752763025780">Los cambios se aplicarán la próxima vez que inicies Brave.</translation>
 <translation id="7179921470347911571">Reiniciar ahora</translation>
 <translation id="4472575034687746823">Comenzar</translation>
@@ -246,6 +256,8 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="5919424224662539292">Personaliza la imagen de fondo y los widgets que se muestran en la página de la pestaña nueva</translation>
 <translation id="7461924472993315131">Fijar</translation>
 <translation id="7506648566440714944">Brave ya está fijado</translation>
+<translation id="239275665037555969">Dock</translation>
+<translation id="4057614912106618659">Brave ya está en el Dock</translation>
 <translation id="3195845168740336657">Configuración de los Escudos</translation>
 <translation id="754769152790647708">Estado de los Escudos</translation>
 <translation id="3615717588724840230">Es posible bloquear los rastreadores, anuncios y huellas dactilares de los sitios web con los Escudos</translation>
@@ -385,6 +397,8 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="4581190919849683048">¿Qué tipo de dispositivo quieres sincronizar?</translation>
 <translation id="4112587618563511470">Código de sincronización no válido, revísalo y vuelve a intentarlo.</translation>
 <translation id="3995714999835224798">Este código no es válido</translation>
+<translation id="4432071071853308688">Este código está vacío</translation>
+<translation id="955848693465029904">Error al configurar la sincronización interna</translation>
 <translation id="859506441384380749">El código se generó por una versión obsoleta de Brave, primero actualice su otro dispositivo</translation>
 <translation id="3132642509209154999">El código se venció. Genera uno nuevo en tu otro dispositivo e inténtalo de nuevo.</translation>
 <translation id="2859229680945501779">Este código no es válido. Comprueba que la hora y la zona horaria de tu dispositivo sean correctas.</translation>
@@ -404,17 +418,21 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="6864914031231797928">Permitir inicio de sesión de Google en extensiones</translation>
 <translation id="6554397389149987360">Usa el componente Hangouts para compartir la pantalla y habilitar otras funciones en el navegador.</translation>
 <translation id="7878791177459550035">El router multimedia permite hacer transmisiones en el navegador.</translation>
-<translation id="5927916530277631319">Método para resolver dominios imparables</translation>
-<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Infórmate<ph name="END_LINK"/> sobre las consideraciones de privacidad de Ethereum.</translation>
-<translation id="5248318250177143470">Método para resolver Ethereum Name Service (ENS)</translation>
+<translation id="2707635989000984973">Resolver los nombres de dominio de Unstoppable Domains</translation>
+<translation id="1807158022157096592"><ph name="BEGIN_LINK"/>Infórmate<ph name="END_LINK"/> sobre las consideraciones de privacidad de Unstoppable Domains.</translation>
+<translation id="641308776160806829">Resolver los nombres de dominio del servicio de nombres de Ethereum (ENS)</translation>
 <translation id="6421218422395686663">Permite la búsqueda de ENS fuera de cadena.</translation>
+<translation id="4608449984413688436">Resolver los nombres de dominio del servicio de nombres de Solana (SNS)</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/> sobre las consideraciones de privacidad de la búsqueda de ENS fuera de cadena.</translation>
 <translation id="6241402707160226266">Ventana privada con Tor</translation>
 <translation id="8762452230727230396">Tor oculta tu dirección IP de los sitios que visitas.</translation>
+<translation id="951983619130191090">Ofrécete para ayudar a otras personas a conectarse a la red Tor</translation>
+<translation id="2223668809371912019">Habilita la extensión Snowflake para que los usuarios que se encuentren en países con censura puedan conectarse a la red Tor a través de tu conexión de red.</translation>
 <translation id="2959986444009520721">Utilice puentes</translation>
 <translation id="8416750895933172460">Los puentes te ayudan a acceder a la red Tor en lugares donde Tor está bloqueado. Dependiendo de dónde estés, un puente puede funcionar mejor que otro.</translation>
 <translation id="7206799843254049470">Ajustes de la conexión de Tor</translation>
 <translation id="3194502271166340944">Controla cómo las ventanas privadas con Tor se conectan a la red Tor</translation>
+<translation id="3717364961460790491">No se ha podido descargar la extensión Snowflake que se necesita para disfrutar de esta funcionalidad. Comprueba si tienes conexión a internet y vuelve a intentarlo.</translation>
 <translation id="4859228830700205299">Seleccione un puente integrado</translation>
 <translation id="3233137871426528317">Solicite un puente de torproject.org</translation>
 <translation id="5701503934456421898">Solicitar un nuevo puente...</translation>
@@ -491,11 +509,13 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="1195880978080389104">Nodo local IPFS de Brave</translation>
 <translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Más información<ph name="END_LINK_MPL"/> sobre las consideraciones de privacidad de la puerta de enlace y del nodo local IPFS de Brave.</translation>
 <translation id="4927734062756955434">Dirección de la puerta de enlace de IPFS pública</translation>
+<translation id="3707431725427930007">Dirección de la puerta de enlace pública IPFS para NFT</translation>
 <translation id="8425213833346101688">Cambiar</translation>
 <translation id="585868419599255817">Alternativa de la puerta de enlace pública IPFS</translation>
 <translation id="2618080188892567155">Recurre automáticamente a la puerta de enlace de IPFS pública cuando no se puede acceder al nodo local IPFS de Brave.</translation>
 <translation id="4107552920076294723">Redirigir los recursos de IPFS a la puerta de enlace de IPFS configurada</translation>
-<translation id="6494857428933042381">Utiliza automáticamente la puerta de enlace configurada para resoluciones de IPFS cuando se encuentra un recurso de puerta de enlace de IPFS.</translation>
+<translation id="4284166297897715283">Las solicitudes enviadas a recursos IPFS, que se alojan en puertas de enlace IPFA de terceros, se cargarán a través de la puerta de enlace seleccionada, ya sea local o remota.
+    Nota: Si se selecciona un nodo local, el recurso se solicitará directamente desde tu computadora, por lo que es posible que se envíen algunos datos en caché a la red IPFS.</translation>
 <translation id="8655170717758778983">Redirecciona automáticamente a páginas IPFS mediante DNSLink cuando es posible</translation>
 <translation id="2233724520223030977">Usa DNSLink automáticamente para navegar a una versión IPFS de un sitio web cuando es posible</translation>
 <translation id="8068526464562249859">Utiliza la extensión complementaria de IPFS para mejorar la compatibilidad con IPFS en Brave, incluido el acceso a tareas comunes de IPFS desde la barra de tu navegador.</translation>
@@ -570,4 +590,8 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="5318548116565208315">Avatar Caramelo maíz</translation>
 <translation id="1959966725083452288">Avatar Caramelo real</translation>
 <translation id="2039034364578911089">Avatar Caramelo ninja</translation>
+<translation id="5927916530277631319">Método para resolver dominios imparables</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Infórmate<ph name="END_LINK"/> sobre las consideraciones de privacidad de Ethereum.</translation>
+<translation id="5248318250177143470">Método para resolver Ethereum Name Service (ENS)</translation>
+<translation id="6494857428933042381">Utiliza automáticamente la puerta de enlace configurada para resoluciones de IPFS cuando se encuentra un recurso de puerta de enlace de IPFS.</translation>
 </translationbundle>

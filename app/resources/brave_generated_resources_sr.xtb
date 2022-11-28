@@ -3,7 +3,9 @@
 <translationbundle lang="sr">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="4615489450165434530">Prijavite raskinutu vezu sa sajtom</translation>
+<translation id="8097438084542431276">Kopiraj čisti link</translation>
 <translation id="1209739344687072997">Prijavite raskinutu vezu sa sajtom</translation>
+<translation id="7630214457764713113">Kopirati čist link</translation>
 <translation id="6406506848690869874">Sinhronizuj</translation>
 <translation id="1544192797660353713">Novčanik</translation>
 <translation id="2445484935443597917">Направи нов профил</translation>
@@ -73,7 +75,9 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2638041073279639246">Otvori vezu u privatnom prozoru sa Tor-om</translation>
 <translation id="3425600262621021599">Otvori vezu u Brave privatnom prozoru sa Tor-om</translation>
 <translation id="3229091547987707389">Uvoz i deljenje direktorijuma</translation>
+<translation id="2804710924397009224">Sakrij ikone Brave nagrada</translation>
 <translation id="5029193871181468990">Sakrij ikonicu Brave nagrada</translation>
+<translation id="2808103541110899519">Sakrij ikonicu Brave novčanika</translation>
 <translation id="7595540212376041331">Sakrij ikonicu Brave novčanika</translation>
 <translation id="4928988318462976765">Prodavnica Veb proširenja</translation>
 <translation id="9181207987584064303">Prikaži u prodavnici Veb proširenja</translation>
@@ -170,7 +174,13 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191143826155037518">Brave vam je dostupan pod <ph name="BEGIN_LINK_MPL"/>Javnom licencom kompanije Mozilla 2.0<ph name="END_LINK_MPL"/> (MPL) i uključuje <ph name="BEGIN_LINK_OSS"/>softver otvorenog kôda<ph name="END_LINK_OSS"/> pod različitim licencama.
         Možete da pročitate <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instrukcije kako da preuzmete i izradite za sebe<ph name="END_LINK_BUILD_INSTRUCTIONS"/> the specific <ph name="BEGIN_LINK_SOURCE_CODE"/>izvorni kôd koji je korišćen za kreiranje ove kopije<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Обележи све картице...</translation>
+<translation id="3987546108749866209">Prikaži kartice vertikalno</translation>
+<translation id="5860254591544742609">Prikaži naslovnu traku</translation>
+<translation id="399928467800528208">Plutajući režim pri prelasku mišem</translation>
 <translation id="2336228925368920074">Обележи све картице...</translation>
+<translation id="2523967823495420116">Prikaži kartice vertikalno</translation>
+<translation id="8888603463702767599">Prikaži naslovnu traku</translation>
+<translation id="2058818256505091369">Plutajući režim pri prelasku mišem</translation>
 <translation id="4235920711083356755">Prikaži VPN dugme</translation>
 <translation id="4070612712151038707">Prikazuje VPN dugme na traci sa alatkama</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -201,9 +211,9 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8722651357687610395">Postavite Brave kao podrazumevani</translation>
 <translation id="2370739752330685659">Možda kasnije</translation>
 <translation id="7537601449003285327">Pin to taskbar (Закачи на траку задатака)</translation>
+<translation id="2307973900865360088">Zadrži u Docku</translation>
 <translation id="961012016278832836">Zastarela verzija pregledača Microsoft Edge</translation>
 <translation id="6436994631426134065">Uvezeno iz <ph name="BROWSER_NAME"/>.</translation>
-<translation id="7630214457764713113">Kopirati čist link</translation>
 <translation id="9156965752763025780">Промене ће ступити на снагу када следећи пут поново покренете Brave.</translation>
 <translation id="7179921470347911571">Ponovo pokreni sada</translation>
 <translation id="4472575034687746823">Започнимо</translation>
@@ -245,6 +255,8 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5919424224662539292">Prilagodite pozadinsku sliku i vidžete koji se pojavljuju na stranici nove kartice</translation>
 <translation id="7461924472993315131">Закачи</translation>
 <translation id="7506648566440714944">Brave je već zakačen</translation>
+<translation id="239275665037555969">Dock</translation>
+<translation id="4057614912106618659">Brave se već nalazi u Docku</translation>
 <translation id="3195845168740336657">Podešavanje štitova</translation>
 <translation id="754769152790647708">Status štitova</translation>
 <translation id="3615717588724840230">Sajtovi mogu da blokiraju praćenja, oglase i beleženje posebnih obeležja koristeći štitove</translation>
@@ -384,6 +396,8 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4581190919849683048">Sa kojim tipom uređaja biste hteli da se sinhronizujete?</translation>
 <translation id="4112587618563511470">Nevažeći kod za sinhronizaciju, proverite i pokušajte ponovo.</translation>
 <translation id="3995714999835224798">Ovaj kod je nevažeći</translation>
+<translation id="4432071071853308688">Ovaj kôd je prazan</translation>
+<translation id="955848693465029904">Interna greška konfigurisanja sinhronizacije</translation>
 <translation id="859506441384380749">Ovaj kod je generisala zastarela verzija Brave pregledača. Ažurirajte najpre svoj drugi uređaj</translation>
 <translation id="3132642509209154999">Ovaj kod je istekao. Generišite nov kod na vašem drugom uređaju i pokušajte ponovo.</translation>
 <translation id="2859229680945501779">Ovaj kod je nevažeći. Proverite da li su vreme i vremenska zona ispravno podešeni na vašem uređaju.</translation>
@@ -403,17 +417,21 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="6864914031231797928">Dozvolite Google prijavu za proširenja</translation>
 <translation id="6554397389149987360">Koristi komponentu Hangouts da biste omogućili deljenje ekrana i druge funkcije u pregledaču.</translation>
 <translation id="7878791177459550035">Medijski ruter omogućuje korišćenje funkcije preslikavanja ekrana u pretraživaču.</translation>
-<translation id="5927916530277631319">Metod za razrešavanje Unstoppable Domains</translation>
-<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/> o razmatranjima privatnosti Ethereum-a.</translation>
-<translation id="5248318250177143470">Metod za razrešavanje Ethereum Name Service (ENS)</translation>
+<translation id="2707635989000984973">Razrešavanje Unstoppable Domains naziva domena</translation>
+<translation id="1807158022157096592"><ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/> o pitanjima privatnosti što se tiče Unstoppable Domains.</translation>
+<translation id="641308776160806829">Razrešavanje Ethereum Name Service (ENS) naziva domena</translation>
 <translation id="6421218422395686663">Dozvoliti ENS pronalaženje van lanca.</translation>
+<translation id="4608449984413688436">Razrešavanje Solana Name Service (SNS) naziva domena</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/> o pitanjima privatnosti što se tiče ENS pronalaženja van lanca.</translation>
 <translation id="6241402707160226266">Privatni prozor u Toru</translation>
 <translation id="8762452230727230396">Tor krije vašu IP adresu od lokacija koje ste posetili.</translation>
+<translation id="951983619130191090">Kao volonter pomažite drugima da se povežu na Tor mrežu</translation>
+<translation id="2223668809371912019">Aktivirajte proširenje Snowflake da biste omogućili korisnicima u cenzurisanim zemljama da se povežu na Tor mrežu preko vaše mrežne veze.</translation>
 <translation id="2959986444009520721">Koristite mostove</translation>
 <translation id="8416750895933172460">Mostovi vam pomažu da pristupite Tor mreži na mestima na kojima je Tor blokiran. U zavisnosti od toga gde se nalazite, jedan most može da radi bolje od drugih.</translation>
 <translation id="7206799843254049470">Podešavanja Tor veze</translation>
 <translation id="3194502271166340944">Kontroliše kako se privatni prozor sa Tor pregledačem povezuje na Tor mrežu</translation>
+<translation id="3717364961460790491">Nije moguće preuzeti proširenje Snowflake, koje je neophodno za ovu funkciju. Proverite vezu sa internetom i pokušajte ponovo.</translation>
 <translation id="4859228830700205299">Izaberite ugrađen most</translation>
 <translation id="3233137871426528317">Zatražite most sa torproject.org</translation>
 <translation id="5701503934456421898">Zatražite nov most...</translation>
@@ -490,11 +508,13 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="1195880978080389104">Brave lokalno IPFS čvorište</translation>
 <translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Saznajte više<ph name="END_LINK_MPL"/> o razmatranjima Braveovog IPFS lokalnog čvora i privatnosti mrežnog prilaza.</translation>
 <translation id="4927734062756955434">Adresa IPFS javnog mrežnog prolaza</translation>
+<translation id="3707431725427930007">Adresa IPFS javnog mrežnog prolaza za NFT</translation>
 <translation id="8425213833346101688">Промени</translation>
 <translation id="585868419599255817">Vraćanje na IPFS javni mrežni prolaz</translation>
 <translation id="2618080188892567155">Automatski se vratite na javni IPFS mrežni prolaz ako nije moguće doći do vašeg Brave lokalnog IPFS čvorišta.</translation>
 <translation id="4107552920076294723">Preusmeri IPFS resurse na konfigurisani IPFS mrežni prolaz</translation>
-<translation id="6494857428933042381">Automatski koristi konfigurisani mrežni prolaz za IPFS rezolucije kada se naiđe na resurs IPFS mrežnog prolaza.</translation>
+<translation id="4284166297897715283">Zahtevi za IPFS resurse, hostovani na IPFS mrežnim prolazima treće strane biće učitani preko izabranog lokalnog ili udaljenog mrežnog prolaza.
+    Napomena: Ako je izabran lokalni čvor, resurs će biti zatražen direktno sa vašeg računara a keširani podaci će biti obezbeđeni IPFS mreži na neko vreme.</translation>
 <translation id="8655170717758778983">Automatsko preusmeravanje na IPFS stranice putem DNSLink-a kada je moguće</translation>
 <translation id="2233724520223030977">Automatski koristi DNSLink za navigaciju na IPFS verziju veb-lokacije, onda kada je to moguće</translation>
 <translation id="8068526464562249859">Koristi IPFS pomoćnik proširenje za poboljšanu IPFS podršku u Brave-u, uključujući pristup uobičajenim IPFS zadacima sa vaše trake pregledača.</translation>
@@ -569,4 +589,8 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="5318548116565208315">Avatar bonbon kukuruz</translation>
 <translation id="1959966725083452288">Avatar kraljevski bonbon</translation>
 <translation id="2039034364578911089">Avatar bonbon nindža</translation>
+<translation id="5927916530277631319">Metod za razrešavanje Unstoppable Domains</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/> o razmatranjima privatnosti Ethereum-a.</translation>
+<translation id="5248318250177143470">Metod za razrešavanje Ethereum Name Service (ENS)</translation>
+<translation id="6494857428933042381">Automatski koristi konfigurisani mrežni prolaz za IPFS rezolucije kada se naiđe na resurs IPFS mrežnog prolaza.</translation>
 </translationbundle>

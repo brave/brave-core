@@ -3,7 +3,9 @@
 <translationbundle lang="ko">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="4615489450165434530">작동이 멈춘 사이트 보고</translation>
+<translation id="8097438084542431276">클린 링크 복사</translation>
 <translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
+<translation id="7630214457764713113">클린 링크 복사</translation>
 <translation id="6406506848690869874">동기화</translation>
 <translation id="1544192797660353713">월렛</translation>
 <translation id="2445484935443597917">새 프로필 만들기</translation>
@@ -73,7 +75,9 @@
 <translation id="2638041073279639246">Tor를 이용해 비공개 윈도우에서 링크 열기</translation>
 <translation id="3425600262621021599">Tor를 이용해 Brave 비공개 윈도우에서 링크 열기</translation>
 <translation id="3229091547987707389">디렉토리 가져오기 및 공유</translation>
+<translation id="2804710924397009224">Brave Rewards 아이콘 숨기기</translation>
 <translation id="5029193871181468990">Brave Rewards 아이콘 숨기기</translation>
+<translation id="2808103541110899519">Brave 월렛 아이콘 숨기기</translation>
 <translation id="7595540212376041331">Brave 월렛 아이콘 숨기기</translation>
 <translation id="4928988318462976765">웹 익스텐션 스토어</translation>
 <translation id="9181207987584064303">웹 익스텐션 스토어에서 보기</translation>
@@ -170,7 +174,13 @@
 <translation id="191143826155037518">Brave (브레이브)는 <ph name="BEGIN_LINK_MPL"/>모질라 공용 허가서 2.0<ph name="END_LINK_MPL"/> (MPL)에 따라 사용자에게 제공되며, 여러 다양한 기타 허가서에 따라 <ph name="BEGIN_LINK_OSS"/>오픈 소스 소프트웨어<ph name="END_LINK_OSS"/>를 포함합니다. 
         귀하는 <ph name="BEGIN_LINK_SOURCE_CODE"/>이 사본을 만드는 데 사용되는 특정 소스 코드<ph name="END_LINK_SOURCE_CODE"/>를 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>다운로드하고 구축하는 방법에 대한 지침<ph name="END_LINK_BUILD_INSTRUCTIONS"/>을 읽으실 수 있습니다.</translation>
 <translation id="4474155171896946103">모든 탭 북마크...</translation>
+<translation id="3987546108749866209">세로 탭 사용</translation>
+<translation id="5860254591544742609">제목 바 표시</translation>
+<translation id="399928467800528208">마우스오버 위로 플로팅</translation>
 <translation id="2336228925368920074">모든 탭 북마크...</translation>
+<translation id="2523967823495420116">세로 탭 사용</translation>
+<translation id="8888603463702767599">제목 바 표시</translation>
+<translation id="2058818256505091369">마우스오버 위로 플로팅</translation>
 <translation id="4235920711083356755">VPN 버튼 표시</translation>
 <translation id="4070612712151038707">툴바에 VPN 버튼 표시</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -201,9 +211,9 @@
 <translation id="8722651357687610395">Brave를 기본으로 설정</translation>
 <translation id="2370739752330685659">나중에</translation>
 <translation id="7537601449003285327">작업 표시줄에 고정</translation>
+<translation id="2307973900865360088">도크에 고정</translation>
 <translation id="961012016278832836">Microsoft Edge 레거시</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/>에서 가져왔습니다.</translation>
-<translation id="7630214457764713113">클린 링크 복사</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
 <translation id="7179921470347911571">지금 다시 실행</translation>
 <translation id="4472575034687746823">시작하기</translation>
@@ -245,6 +255,8 @@
 <translation id="5919424224662539292">새 탭 페이지에 표시되는 배경 이미지와 위젯을 사용자 지정합니다</translation>
 <translation id="7461924472993315131">고정</translation>
 <translation id="7506648566440714944">Brave가 이미 고정됨</translation>
+<translation id="239275665037555969">도크</translation>
+<translation id="4057614912106618659">Brave가 이미 도크에 있음</translation>
 <translation id="3195845168740336657">Shields 설정</translation>
 <translation id="754769152790647708">Shields 상태</translation>
 <translation id="3615717588724840230">Shields를 사용하면 사이트에서 트래커, 광고, 지문을 차단할 수 있습니다.</translation>
@@ -383,6 +395,8 @@
 <translation id="4581190919849683048">동기화하려는 장치 유형은?</translation>
 <translation id="4112587618563511470">잘못된 동기화 코드입니다. 확인하고 다시 시도하세요.</translation>
 <translation id="3995714999835224798">유효하지 않은 코드</translation>
+<translation id="4432071071853308688">코드가 비어 있음</translation>
+<translation id="955848693465029904">내부 동기화 셋업 오류</translation>
 <translation id="859506441384380749">이 코드는 더 이상 지원되지 않는 Brave 구버전에서 생성되었습니다. 다른 기기를 먼저 업그레이드하세요.</translation>
 <translation id="3132642509209154999">만료된 코드입니다. 다른 기기에서 새 코드를 생성하고 다시 시도하세요.</translation>
 <translation id="2859229680945501779">유효하지 않은 코드입니다. 디바이스에 시간과 시간대가 제대로 설정되어 있는지 확인하세요.</translation>
@@ -402,17 +416,21 @@
 <translation id="6864914031231797928">확장 프로그램에 대한 Google 로그인 허용</translation>
 <translation id="6554397389149987360">화면 공유와 다른 기능들을 브라우저에서 사용하시려면 행아웃 요소들을 사용하세요.</translation>
 <translation id="7878791177459550035">미디어 라우터가 브라우저 내  전송 기능을 활성화합니다.</translation>
-<translation id="5927916530277631319">Unstoppable Domains 해석 방법</translation>
-<translation id="2889554198027690581">이더리움 개인정보 보호 고려 사항에 대해 <ph name="BEGIN_LINK"/>자세히 알아보세요<ph name="END_LINK"/>.</translation>
-<translation id="5248318250177143470">Ethereum Name Service(ENS) 해석 방법</translation>
+<translation id="2707635989000984973">Unstoppable Domains 도메인 이름 해석</translation>
+<translation id="1807158022157096592">Unstoppable Domains 개인정보 보호 고려 사항에 대해 <ph name="BEGIN_LINK"/>자세히 알아보세요<ph name="END_LINK"/>.</translation>
+<translation id="641308776160806829">ENS(Ethereum Name Service) 도메인 이름 해석</translation>
 <translation id="6421218422395686663">ENS 오프체인 룩업 허용.</translation>
+<translation id="4608449984413688436">SNS(Solana Name Service) 도메인 이름 해석</translation>
 <translation id="7831978744512353629">ENS 오프체인 룩업 개인정보 보호 고려 사항에 대해<ph name="BEGIN_LINK"/>자세히 알아보세요<ph name="END_LINK"/>.</translation>
 <translation id="6241402707160226266">Tor와 함께하는 개인정보 보호 창</translation>
 <translation id="8762452230727230396">Tor는 방문하는 사이트에서 IP 주소를 숨깁니다.</translation>
+<translation id="951983619130191090">다른 사람들이 Tor 네트워크에 연결할 수 있도록 자발적으로 돕기</translation>
+<translation id="2223668809371912019">Snowflake 확장 프로그램을 활성화하면 검열 국가에 있는 사용자들이 귀하의 네트워크 연결을 통해 Tor 네트워크에 연결할 수 있습니다.</translation>
 <translation id="2959986444009520721">Bridges 사용</translation>
 <translation id="8416750895933172460">브리지는 Tor가 차단된 장소에서 Tor 네트워크에 액세스하는 데 도움을 줍니다. 현재 위치에 따라 다른 것보다 가장 나은 브리지 하나가 선택됩니다.</translation>
 <translation id="7206799843254049470">Tor 연결 설정</translation>
 <translation id="3194502271166340944">Tor가 있는 비공개 창이 Tor 네트워크에 연결되는 방법 제어</translation>
+<translation id="3717364961460790491">이 기능에 필요한 Snowflake 확장 프로그램을 다운로드할 수 없습니다. 인터넷 연결 상태를 확인하고 다시 시도하세요.</translation>
 <translation id="4859228830700205299">내장 브리지 선택</translation>
 <translation id="3233137871426528317">torproject.org에서 브리지 요청하기</translation>
 <translation id="5701503934456421898">새 브리지 요청...</translation>
@@ -489,11 +507,13 @@
 <translation id="1195880978080389104">Brave 로컬 IPFS 노드</translation>
 <translation id="2178402446227616866">Brave 로컬 IPFS 노드 및 게이트웨이 개인정보 보호 고려 사항에 대해 <ph name="BEGIN_LINK_MPL"/>자세히 알아보세요<ph name="END_LINK_MPL"/>.</translation>
 <translation id="4927734062756955434">IPFS 퍼블릭 게이트웨이 주소</translation>
+<translation id="3707431725427930007">NFT용 IPFS 퍼블릭 게이트웨이 주소</translation>
 <translation id="8425213833346101688">변경</translation>
 <translation id="585868419599255817">IPFS 공용 게이트웨이 대체</translation>
 <translation id="2618080188892567155">Brave 로컬 IPFS 노드에 접근할 수 없는 경우에 퍼블릭 IPFS 게이트웨이로 자동 전환합니다.</translation>
 <translation id="4107552920076294723">IPFS 리소스를 설정된 IPFS 게이트웨이로 리다이렉트</translation>
-<translation id="6494857428933042381">IPFS 게이트웨이 리소스가 발견될 경우에 IPFS 레졸루션에 자동으로 설정된 게이트웨이를 사용합니다.</translation>
+<translation id="4284166297897715283">제3자 IPFS 게이트웨이가 호스트하는 IPFS 리소스 요청은 선택한 로컬 또는 원격 게이트웨이를 통해 로드됩니다.
+    참고: 로컬 노드가 선택되면 리소스가 귀하의 컴퓨터에서 바로 요청되며, 경우에 따라 캐시된 데이터가 IPFS 네트워크에 제공될 수 있습니다.</translation>
 <translation id="8655170717758778983">가능한 경우 DNSLink를 통해 IPFS 페이지로 자동으로 리다이렉트</translation>
 <translation id="2233724520223030977">가능한 경우, 자동으로 DNSLink를 사용하여 웹 사이트의 IPFS 버전으로 이동합니다.</translation>
 <translation id="8068526464562249859">브라우저 바에서 공통 IPFS 태스크에 접근할 수 있는 기능 등 Brave에서의 보다 향상된 IPFS 지원을 위해 IPFS 컴패니언 확장 기능을 사용합니다.</translation>
@@ -568,4 +588,8 @@
 <translation id="5318548116565208315">아바타 봉봉 콘</translation>
 <translation id="1959966725083452288">아바타 봉봉 로열</translation>
 <translation id="2039034364578911089">아바타 봉봉 닌자</translation>
+<translation id="5927916530277631319">Unstoppable Domains 해석 방법</translation>
+<translation id="2889554198027690581">이더리움 개인정보 보호 고려 사항에 대해 <ph name="BEGIN_LINK"/>자세히 알아보세요<ph name="END_LINK"/>.</translation>
+<translation id="5248318250177143470">Ethereum Name Service(ENS) 해석 방법</translation>
+<translation id="6494857428933042381">IPFS 게이트웨이 리소스가 발견될 경우에 IPFS 레졸루션에 자동으로 설정된 게이트웨이를 사용합니다.</translation>
 </translationbundle>

@@ -12,10 +12,13 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="8522292744959221145">Parollarınızın data pozuntuları və digər güvənlik məsələlərinə qarşı güvəndə olduğunu yoxlamaq üçün <ph name="BEGIN_LINK"/>Brave'a daxil olun<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Brave haqqında</translation>
 <translation id="1203500561924088507">Quraşdırdığınız üçün təşəkkür edirik. <ph name="BUNDLE_NAME"/> istifadə etməzdən əvvəl brauzerinizi yenidən başlatmalısınız.</translation>
+<translation id="8905049883018921395">Aktiv olduqda, Brave yaddaşı qeyri-aktiv tablardan təmizləyir. Bu, aktiv tablara və digər tətbiqlərə daha çox kompüter resursları verir və Brave'u sürətli edir. Onlara qayıtdığınız zaman qeyri-aktiv tablarınız avtomatik olaraq yenidən aktivləşir. <ph name="BEGIN_LINK"/>Ətraflı məlumat<ph name="END_LINK"/></translation>
+<translation id="4658574652223735641">Yaddaşa Qənaət Brave'u daha sürətli etdi</translation>
 <translation id="4798342026247191171">Yeni Brave profilinizi ayarlayın</translation>
 <translation id="6361779936989026201">Brave Assistent Brave'da</translation>
 <translation id="113959764510199339">Brave parolları göstərməyə çalışır.</translation>
 <translation id="8132634101975074716">Brave'a daxil oldunuz!</translation>
+<translation id="4168469784091952813">Brave'dan maksimum yararlana bilərsiniz</translation>
 <translation id="5147525139567260139">Brave tabı paylaşın</translation>
 <translation id="1530633922026945685">Brave ətrafınızın 3D xəritəsini yaratmaq üçün kameranıza giriş icazəsi tələb edir</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administrator güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir}=1{Administrator güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir. Anonim pəncərəniz yenidən açılmayacaq.}other{Administrator güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir. # Anonim pəncərəniz yenidən açılmayacaq.}}</translation>
@@ -180,6 +183,7 @@ Hazırda veb saytlar və tətbiqlərə verdiyiniz icazələr bu hesaba tətbiq o
 <translation id="1786715389543715322">Brave güncəllənir (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Brave girişinə icazə verin</translation>
 <translation id="5536657158619734169">Brave'um yeni versiyası əlçatandır.</translation>
+<translation id="5267531627648004734">Brave'dan silin</translation>
 <translation id="239760341987199724">Brave'u defolt brauzer təyin edin</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="894936507076470937">Brave düzgün işləməyə bilər, çünki daha Linux sistemi üzərində dəstəklənmir</translation>
@@ -207,6 +211,7 @@ Hazırda veb saytlar və tətbiqlərə verdiyiniz icazələr bu hesaba tətbiq o
 <translation id="505042220086416644">Brave'um yeni versiyası əlçatandır və həmişəkindən daha sürətlidir.</translation>
 <translation id="9071554113102421877">Brave'də açın</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> Brave'a əlavə edildi</translation>
+<translation id="3693188491491843187">Brave'u sürətli edin</translation>
 <translation id="608006075545470555">Bu brauzerə İş Profili əlavə edin</translation>
 <translation id="5849446944780602366">Brave'u fərdiləşdirin və idarə edin. Güncəlləmə əlçatandır.</translation>
 <translation id="7433698744896946664">Brave alətlər panelində artırmanın giriş sorğularını göstərməsinə icazə verin</translation>
@@ -250,6 +255,7 @@ Hazırda veb saytlar və tətbiqlərə verdiyiniz icazələr bu hesaba tətbiq o
 <translation id="1489465648257900784">Profiliniz yeni versiya Brave Brave'dan olduğu üçün istifadə edilə bilməz.
 
 Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstərin və ya yeni Brave versiyası işlədin.</translation>
+<translation id="7870748924073900361">Yaddaşa Qənaət Brave'u daha sürətli etdi</translation>
 <translation id="6666624454809779082">Brave kompüterinizdəki bütün istifadəçilər üçün artıq quraşdırılıb.</translation>
 <translation id="5360050006043219962">Bütün cihazlarınızda Brave elementlərinə giriş etmək üçün daxil olun və sinxronizasiyanı aktiv edin.</translation>
 <translation id="8291513491595858997">Valideyniniz Brave üçün "Saytlar, tətbiqlər və artırmalar üçün icazələri" deaktiv edib. Bu <ph name="EXTENSION_TYPE_PARAMETER"/> artırmasının aktiv edilməsinə icazə verilmir.</translation>
@@ -286,6 +292,7 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="38294420683216447">Brave profilləri ilə bütün Brave elementlərinizi ayıra bilərsiniz. Bu, iş və əyləncə arasında ayırım etməyi asanlaşdırır.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="2034072705932785495">Brave bu sayt üçün kameraya giriş tələb edir</translation>
+<translation id="5296583608321648908">Brave güncəlləmələrini əldə etmək üçün Windows 10 və ya daha yeni versiya tələb olunur. Bu kompüter Windows 7 istifadə edir.</translation>
 <translation id="3962395975456095331">Brave yenidən başladılsın?</translation>
 <translation id="2619516027171717873">Hazırda istifadə olunan Brave versiyasını quraşdıra bilməzsiniz. Lütfən, Brave'u qapadın və yenidən cəhd edin.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave 1 dəqiqəyə yenidən başlayacaq}other{Brave # dəqiqəyə yenidən başlayacaq}}</translation>
@@ -300,9 +307,9 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="8678991866891573053">Brave saytlara datanızdan daha az istifadə etməklə eyni baxış təcrübəsi təqdim etməyə imkan verən yeni funksiyaları araşdırır</translation>
 <translation id="3343095737966473035">Brave defolt brauzeriniz deyil</translation>
 <translation id="5477319665405831211">Brave'u cihazlarda sinxronizasiya edin və fərdiləşdirin</translation>
-<translation id="2280238321454602884">Aktiv olduqda, Brave aktiv istifadə etmədiyiniz tablardan yaddaşı geri alır. Bu, kompüterinizin resurslarını digər tapşırıqlar üçün boşaldır və Brave'u sürətləndirir. Qeyri-aktiv tablar boş görünür və kliklədiyiniz zaman avtomatik olaraq yenidən yüklənir. <ph name="BEGIN_LINK"/>Ətraflı məlumat əldə edin<ph name="END_LINK"/> və ya <ph name="BEGIN_LINK_2"/>rəy göndərin<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Brauzinq datanız bu cihazdan silinəcək. Sonradan datanızı bərpa etmək üçün Bravea <ph name="USER_EMAIL"/> kimi daxil olun.</translation>
 <translation id="7747138024166251722">Quraşdırıcı müvəqqəti direktoriya yarada bilmədi. Proqramı quraşdırmaq üçün boş disk yeri və icazə tapın.</translation>
+<translation id="1978509466033734608">Brave'u sürətli edin</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="1652855885539187849">Bu hesab ilə Brave profili artıq bu cihazda mövcuddur</translation>
 <translation id="7845233973568007926">Quraşdırdığınız üçün təşəkkür edirik. <ph name="BUNDLE_NAME"/> istifadə etməzdən əvvəl kompüterinizi yenidən başlatmalısınız.</translation>
@@ -326,15 +333,16 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="3360368475735266712">Brave'u cihazlarda sinxronizasiya etmək və fərdiləşdirmək üçün daxil olun</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> əvvəl Brave istifadə edirdi</translation>
 <translation id="3098618823450433881">Bütün cihazlarınızda Brave brauzerinin elementlərinə giriş etmək üçün daxil olun və sinxronizasiyanı aktiv edin</translation>
+<translation id="2569754604093464025">Brave güncəlləmələrini əldə etmək üçün Windows 10 və ya daha yeni versiya tələb olunur. Bu kompüter Windows 8 istifadə edir.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Brave'u bir gün ərzində yenidən başladın}other{Brave'u # gün ərzində yenidən başladın}}</translation>
 <translation id="6914496861676471566">Quraşdırıcı arxivi zədələnib və ya yanlışdır. Lütfən, Brave'u yenidən endirin.</translation>
 <translation id="6431861494713261006">İstəyə görə: Diaqnostika və istifadəçi datasını avtomatik Brave'a göndərməklə ChromeOS funksiyalarını təkmilləşdirməyə yardım edin.</translation>
 <translation id="2097604701283463988">Brave'um vaxtı keçib</translation>
-<translation id="607365808648940765">Lazım olduqda, Brave aktiv istifadə etmədiyiniz tablardan yaddaşı geri alır. Bunu istənilən zaman ayarlarda dəyişə bilərsiniz.</translation>
 <translation id="8550334526674375523">Bu iş profili şəxsi profilinizdən tamamilə ayrıdır.</translation>
 <translation id="2452889775041290116">Valideyniniz Brave üçün "Saytlar, tətbiqlər və artırmalar üçün icazələri" deaktiv edib. Bu <ph name="EXTENSION_TYPE_PARAMETER"/> artırmasının əlavə edilməsinə icazə verilmir.</translation>
 <translation id="8502436661255886343">Brave güncəlləmələrini əldə etmək üçün macOS 10.13 və ya daha yeni versiya tələb olunur. Bu kompüter macOS 10.12 istifadə edir.</translation>
 <translation id="227028348235968071">Brave Hesabınız ilə daxil olduqda Brave parollarınızı yoxlaya bilər</translation>
+<translation id="4226455268610449503">Aktiv olduqda, Brave arxa fon fəaliyyətini və rahat sürüşdürmə və video kadr sürətləri kimi vizual effektləri məhdudlaşdırmaqla batareya enerjisinə qənaət edir. <ph name="BEGIN_LINK"/>Ətraflı məlumat<ph name="END_LINK"/></translation>
 <translation id="8121009781989288430">Müəlliflik Hüququ <ph name="YEAR"/> Brave Müəllifləri. Bütün hüquqlar qorunur.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Bu datanı necə istifadə edirik:<ph name="END_BOLD"/> Saytlar maraqlarınız haqqında Brave ilə məlumat saxlaya bilər. Məsələn, marafona ayaqqabı almaq üçün sayta daxil olsanız, sayt marağınızı qaçış marafonu kimi müəyyən edə bilər. Sonra yarışa yazılmaq üçün başqa sayta daxil olsanız, həmin sayt maraqlarınız əsasında sizə qaçış ayaqqabısı reklamı göstərə bilər.</translation>
 <translation id="3052349005266761501">Brave başlayır...</translation>
@@ -358,6 +366,7 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="82609232232243542">Brave'a daxil olun</translation>
 <translation id="5173820533850252773">Brave'un vaxtı keçib</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave 1 saata yenidən başlayacaq}other{Brave # saata yenidən başlayacaq}}</translation>
+<translation id="5190991181158966940">Brave güncəlləmələrini əldə etmək üçün Windows 10 və ya daha yeni versiya tələb olunur. Bu kompüter Windows 8.1 istifadə edir.</translation>
 <translation id="7863882214613921971">Linki Yeni Brave tabında açın</translation>
 <translation id="911206726377975832">Brauzinq datanız da silinsin?</translation>
 <translation id="5708733457516068434">Sınaqlar zamanı saytların sizə reklam göstərmək üçün istifadə etdiyi maraqlı mövzuları görə və silə bilərsiniz. Brave son baxış tarixçənizə əsasən maraqlarınızı təxmin edir.</translation>

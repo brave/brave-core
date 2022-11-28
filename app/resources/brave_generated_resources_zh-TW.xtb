@@ -3,7 +3,9 @@
 <translationbundle lang="zh-TW">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="4615489450165434530">回報壞掉的網站</translation>
+<translation id="8097438084542431276">複製清除連結</translation>
 <translation id="1209739344687072997">回報壞掉的網站</translation>
+<translation id="7630214457764713113">複製潔淨連結</translation>
 <translation id="6406506848690869874">同步</translation>
 <translation id="1544192797660353713">錢包</translation>
 <translation id="2445484935443597917">建立新的個人資料</translation>
@@ -73,7 +75,9 @@
 <translation id="2638041073279639246">在使用 Tor 的隱私視窗中開啟連結</translation>
 <translation id="3425600262621021599">在使用 Tor 的 Brave 隱私視窗中開啟連結</translation>
 <translation id="3229091547987707389">匯入並分享目錄</translation>
+<translation id="2804710924397009224">隱藏 Brave 獎賞圖標</translation>
 <translation id="5029193871181468990">隱藏 Brave 獎勵圖示</translation>
+<translation id="2808103541110899519">隱藏 Brave 錢包圖示</translation>
 <translation id="7595540212376041331">隱藏 Brave 錢包圖示</translation>
 <translation id="4928988318462976765">網路擴充功能商店</translation>
 <translation id="9181207987584064303">在「網路擴充功能商店」檢視</translation>
@@ -170,7 +174,13 @@
 <translation id="191143826155037518">Brave 是以 <ph name="BEGIN_LINK_MPL"/>Mozilla 公眾授權條款 2.0<ph name="END_LINK_MPL"/> (MPL) 提供，其包含了其他多種授權條款的 <ph name="BEGIN_LINK_OSS"/>開放原始碼軟體<ph name="END_LINK_OSS"/>。
         您可以閱讀 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>如何下載並自行建構<ph name="END_LINK_BUILD_INSTRUCTIONS"/> 特定 <ph name="BEGIN_LINK_SOURCE_CODE"/>原始碼來建立此副本<ph name="END_LINK_SOURCE_CODE"/> 的說明。</translation>
 <translation id="4474155171896946103">將所有分頁加入書籤...</translation>
+<translation id="3987546108749866209">使用垂直分頁</translation>
+<translation id="5860254591544742609">顯示標題列</translation>
+<translation id="399928467800528208">滑鼠游標停在上方時浮動</translation>
 <translation id="2336228925368920074">將所有分頁加入書籤...</translation>
+<translation id="2523967823495420116">使用垂直分頁</translation>
+<translation id="8888603463702767599">顯示標題列</translation>
+<translation id="2058818256505091369">滑鼠游標停在上方時浮動</translation>
 <translation id="4235920711083356755">顯示 VPN 按鈕</translation>
 <translation id="4070612712151038707">在工具列中顯示 VPN 按鈕</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -201,9 +211,9 @@
 <translation id="8722651357687610395">將 Brave 設為預設值</translation>
 <translation id="2370739752330685659">稍後再說</translation>
 <translation id="7537601449003285327">固定至工作列</translation>
+<translation id="2307973900865360088">保留於 Dock</translation>
 <translation id="961012016278832836">Microsoft Edge 舊版</translation>
 <translation id="6436994631426134065">已從 <ph name="BROWSER_NAME"/> 匯入。</translation>
-<translation id="7630214457764713113">複製潔淨連結</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="4472575034687746823">開始使用</translation>
@@ -245,6 +255,8 @@
 <translation id="5919424224662539292">自訂出現在新分頁上的背景圖片與小工具</translation>
 <translation id="7461924472993315131">固定</translation>
 <translation id="7506648566440714944">Brave 已固定</translation>
+<translation id="239275665037555969">Dock</translation>
+<translation id="4057614912106618659">Brave 已位於 Dock 中</translation>
 <translation id="3195845168740336657">Shields 設定</translation>
 <translation id="754769152790647708">Shields 狀態</translation>
 <translation id="3615717588724840230">網站會使用 Shields 封鎖跟蹤器、廣告和指紋識別</translation>
@@ -253,7 +265,7 @@
 <translation id="6303294677342628402">防護</translation>
 <translation id="7133511168130368997">封鎖在整個網路上追蹤您的追蹤器與廣告。</translation>
 <translation id="2761825942249694703">這些是預設的防護設定。它們會套用到所有的網頁，除非您在特定的網頁上於防護面板中修改了某些東西才會有所不同。變更這些不會影響您既有的每個網站的設定。</translation>
-<translation id="1435116578479068303">這會封鎖網站上的大部分廣告，但不會封鎖私人 Brave Ads，如要對此進行控管，請前往 <ph name="BEGIN_LINK"/>Brave 獎勵<ph name="END_LINK"/> 設定。</translation>
+<translation id="1435116578479068303">這會封鎖網站上的大部分廣告，但不會封鎖私人 Brave 廣告，如要對此進行控管，請前往 <ph name="BEGIN_LINK"/>Brave 獎勵<ph name="END_LINK"/> 設定。</translation>
 <translation id="8452536890042542134">這將封鎖網站上的大部分廣告。</translation>
 <translation id="4800195524776354947">在 Shields 圖示上顯示封鎖項目的數量</translation>
 <translation id="5510493033031835532">自動重新導向 AMP 頁面</translation>
@@ -384,6 +396,8 @@
 <translation id="4581190919849683048">您想要同步的是哪種類型的裝置？</translation>
 <translation id="4112587618563511470">無效的同步代碼，請檢查並再試一次。</translation>
 <translation id="3995714999835224798">此代碼無效</translation>
+<translation id="4432071071853308688">此代碼為空</translation>
+<translation id="955848693465029904">內部同步設定錯誤</translation>
 <translation id="859506441384380749">此代碼由已淘汰的 Brave 版本產生，請先升級您的其他裝置</translation>
 <translation id="3132642509209154999">此代碼已過期，請在其他裝置上產生新的代碼，然後再試一次。</translation>
 <translation id="2859229680945501779">此程式碼無效。請確認您的裝置已正確設定時間和時區。</translation>
@@ -403,17 +417,21 @@
 <translation id="6864914031231797928">允許延伸套件登入 Google</translation>
 <translation id="6554397389149987360">使用 Hangouts 元件來啟用畫面分享和其它瀏覽器功能。</translation>
 <translation id="7878791177459550035">媒體路由器可在瀏覽器中啟用投影功能。</translation>
-<translation id="5927916530277631319">處理 Unstoppable Domains 的方式</translation>
-<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>詳細瞭解<ph name="END_LINK"/>以太坊隱私權注意事項。</translation>
-<translation id="5248318250177143470">處理以太坊域名服務 (ENS) 的方式</translation>
+<translation id="2707635989000984973">解析 Unstoppable Domains 網域名稱</translation>
+<translation id="1807158022157096592"><ph name="BEGIN_LINK"/>深入瞭解<ph name="END_LINK"/> Unstoppable Domains 隱私權的相關考量。</translation>
+<translation id="641308776160806829">解析 Ethereum Name Service (ENS) 網域名稱</translation>
 <translation id="6421218422395686663">允許 ENS 鏈下查找。</translation>
+<translation id="4608449984413688436">解析 Solana Name Service (SNS) 網域名稱</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>詳細瞭解<ph name="END_LINK"/> 關於 ENS 鏈下查找的私隱權注意事項</translation>
 <translation id="6241402707160226266">使用 Tor 的隱私視窗</translation>
 <translation id="8762452230727230396">Tor 會讓您對您造訪的網站隱藏 IP 位置。</translation>
+<translation id="951983619130191090">自願協助他人連線至 Tor 網路</translation>
+<translation id="2223668809371912019">啟用 Snowflake 擴充功能，允許設有審查制度國家/地區的使用者透過您的網路連線至 Tor 網路。</translation>
 <translation id="2959986444009520721">使用橋接器</translation>
 <translation id="8416750895933172460">橋接器可幫助您在 Tor 受封鎖的地方存取 Tor 網路。橋接器的效能可能會因為您所在的位置而有所不同。</translation>
 <translation id="7206799843254049470">Tor 連線設定</translation>
 <translation id="3194502271166340944">控制 Tor 私密視窗連結到 Tor 網路的方式</translation>
+<translation id="3717364961460790491">Snowflake 擴充功能是使用這項功能的必要項目，但目前無法下載。請檢查您的網際網路連線，並再試一次。</translation>
 <translation id="4859228830700205299">選擇內建的橋接器</translation>
 <translation id="3233137871426528317">從 torproject.org 申請橋接器</translation>
 <translation id="5701503934456421898">申請新橋接器……</translation>
@@ -490,11 +508,13 @@
 <translation id="1195880978080389104">Brave 本機 IPFS 節點</translation>
 <translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>深入瞭解<ph name="END_LINK_MPL"/> Brave 本機 IPFS 節點與閘道隱私注意事項。</translation>
 <translation id="4927734062756955434">IPFS 公用閘道器位址</translation>
+<translation id="3707431725427930007">NFT 的 IPFS 公用閘道位址</translation>
 <translation id="8425213833346101688">變更</translation>
 <translation id="585868419599255817">IPFS 公開閘道器汰退</translation>
 <translation id="2618080188892567155">如果無法連接 Brave 本機 IPFS 節點，自動回復公用 IPFS 閘道。</translation>
 <translation id="4107552920076294723">將 IPFS 資源重新導向到已設定的 IPFS 閘道器</translation>
-<translation id="6494857428933042381">當遇到 IPFS 閘道器資源時，自動使用設定的閘道器進行 IPFS 解析。</translation>
+<translation id="4284166297897715283">向第三方 IPFS 閘道所代管 IPFS 資源提出的請求，會透過您選取的本機或遠端閘道載入。
+注意：若已選取本機節點，資源請求會由電腦直接提出，並為 IPFS 網路提供快取資料一段時間。</translation>
 <translation id="8655170717758778983">可行時，自動透過 DNSLink 重新導向至 IPFS 頁面</translation>
 <translation id="2233724520223030977">可行時，會自動使用 DNSLink 來導向至網站的 IPFS 版本</translation>
 <translation id="8068526464562249859">在 Brave 使用 IPFS 隨附擴充功能以增強 IPFS 支援，包括從您的瀏覽器列存取一般的 IPFS 任務。</translation>
@@ -569,4 +589,8 @@
 <translation id="5318548116565208315">糖果粒化身</translation>
 <translation id="1959966725083452288">高貴糖果化身</translation>
 <translation id="2039034364578911089">糖果忍者化身</translation>
+<translation id="5927916530277631319">處理 Unstoppable Domains 的方式</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>詳細瞭解<ph name="END_LINK"/>以太坊隱私權注意事項。</translation>
+<translation id="5248318250177143470">處理以太坊域名服務 (ENS) 的方式</translation>
+<translation id="6494857428933042381">當遇到 IPFS 閘道器資源時，自動使用設定的閘道器進行 IPFS 解析。</translation>
 </translationbundle>

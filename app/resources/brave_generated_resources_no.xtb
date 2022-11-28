@@ -3,7 +3,9 @@
 <translationbundle lang="no">
 <translation id="3333887201479867589">Brave-belønninger</translation>
 <translation id="4615489450165434530">Rapporter et nettsted som ikke fungerer</translation>
+<translation id="8097438084542431276">Kopier ren link</translation>
 <translation id="1209739344687072997">Rapporter et nettsted som ikke fungerer</translation>
+<translation id="7630214457764713113">Kopier ren link</translation>
 <translation id="6406506848690869874">Synkroniser</translation>
 <translation id="1544192797660353713">Lommebok</translation>
 <translation id="2445484935443597917">Opprett en ny profil</translation>
@@ -73,7 +75,9 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2638041073279639246">Åpne lenke i privat vindu med Tor</translation>
 <translation id="3425600262621021599">Åpne lenke i Brave privat vindu med Tor</translation>
 <translation id="3229091547987707389">Importer og del kataloger</translation>
+<translation id="2804710924397009224">Skjul Brave Rewards-ikonet</translation>
 <translation id="5029193871181468990">Skjul Brave Rewards-ikonet</translation>
+<translation id="2808103541110899519">Skjul Brave Wallet-ikonet</translation>
 <translation id="7595540212376041331">Skjul Brave Lommebok-ikonet</translation>
 <translation id="4928988318462976765">Butikken for nettutvidelser</translation>
 <translation id="9181207987584064303">Vis i butikken for nettutvidelser</translation>
@@ -170,7 +174,13 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191143826155037518">Brave gjøres tilgjengelig for deg under <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) og inneholder <ph name="BEGIN_LINK_OSS"/>programvare med åpen kildekode<ph name="END_LINK_OSS"/> under en rekke andre lisenser.
         Du kan lese <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>hvordan du laster ned <ph name="END_LINK_BUILD_INSTRUCTIONS"/> den spesifikke <ph name="BEGIN_LINK_SOURCE_CODE"/>kildekoden som ble brukt til å lage dette eksemplaret<ph name="END_LINK_SOURCE_CODE"/>, og bygge den selv.</translation>
 <translation id="4474155171896946103">Bokmerk alle fanene</translation>
+<translation id="3987546108749866209">Bruk vertikale faner</translation>
+<translation id="5860254591544742609">Vis tittelfelt</translation>
+<translation id="399928467800528208">Flytende modus ved mouseover</translation>
 <translation id="2336228925368920074">Legg inn bokmerke for alle åpne faner</translation>
+<translation id="2523967823495420116">Bruk vertikale faner</translation>
+<translation id="8888603463702767599">Vis tittelfelt</translation>
+<translation id="2058818256505091369">Flytende modus ved mouseover</translation>
 <translation id="4235920711083356755">Vis VPN-knappen</translation>
 <translation id="4070612712151038707">Viser VPN-knappen i verktøylinjen</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -201,9 +211,9 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8722651357687610395">Sett Brave som standard</translation>
 <translation id="2370739752330685659">Kanskje senere</translation>
 <translation id="7537601449003285327">Fest til oppgavelinjen</translation>
+<translation id="2307973900865360088">Behold i Dock</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">importert fra <ph name="BROWSER_NAME"/>.</translation>
-<translation id="7630214457764713113">Kopier ren link</translation>
 <translation id="9156965752763025780">Endringene dine trer i kraft neste gang du starter Brave.</translation>
 <translation id="7179921470347911571">Start på nytt nå</translation>
 <translation id="4472575034687746823">Kom i gang</translation>
@@ -245,10 +255,12 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5919424224662539292">Tilpass bakgrunnsbildet og widgeten som fremkommer på 'ny fane'-siden</translation>
 <translation id="7461924472993315131">Fest</translation>
 <translation id="7506648566440714944">Brave er allerede festet</translation>
+<translation id="239275665037555969">Dock</translation>
+<translation id="4057614912106618659">Brave er allerede i Dock</translation>
 <translation id="3195845168740336657">Innstillinger for skjold</translation>
 <translation id="754769152790647708">Status for Skjold</translation>
 <translation id="3615717588724840230">Nettsider kan blokkere sporere, annonser og fingerprinting ved hjelp av Skjold</translation>
-<translation id="5690973901138662477">Skjold aktivert</translation>
+<translation id="5690973901138662477">Shields aktivert</translation>
 <translation id="4697275813919189958">Skjold ikke aktivert</translation>
 <translation id="6303294677342628402">Skjold</translation>
 <translation id="7133511168130368997">Blokker sporere og annonser som følger deg på nettet.</translation>
@@ -384,6 +396,8 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4581190919849683048">Hvilken enhetstype vil du synke til?</translation>
 <translation id="4112587618563511470">Ugyldig synkkode, kontroller og prøv igjen.</translation>
 <translation id="3995714999835224798">Koden er ugyldig</translation>
+<translation id="4432071071853308688">Denne koden er tom</translation>
+<translation id="955848693465029904">Intern feil ved synk.-oppsett</translation>
 <translation id="859506441384380749">Denne koden ble generert av en utdatert versjon av Brave. Oppgrader den andre enheten din først.</translation>
 <translation id="3132642509209154999">Denne koden har utløpt. Generer en ny kode på den andre enheten din, og prøv på nytt.</translation>
 <translation id="2859229680945501779">Denne koden er ugyldig. Kontroller at klokkeslettet og tidssonen er korrekt angitt på enheten.</translation>
@@ -403,17 +417,21 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="6864914031231797928">Tillat Google-pålogging for utvidelser</translation>
 <translation id="6554397389149987360">Bruk Hangouts-komponenten for å aktivere skjermdeling og andre funksjoner i nettleseren.</translation>
 <translation id="7878791177459550035">Mediaruteren slår på cast-funksjonen i nettleseren.</translation>
-<translation id="5927916530277631319">Metode for oppslag av ustoppelige domener</translation>
-<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Finn ut mer<ph name="END_LINK"/> om personvern ifm. Ethereum.</translation>
-<translation id="5248318250177143470">Metode for oppslag av Ethereum-navnetjeneste (ENS)</translation>
+<translation id="2707635989000984973">Oppklar domenenavn fra Unstoppable Domains</translation>
+<translation id="1807158022157096592"><ph name="BEGIN_LINK"/>Les mer<ph name="END_LINK"/> om personvernhensyn knyttet til Unstoppable Domains.</translation>
+<translation id="641308776160806829">Oppklae Ethereum-navnetjeneste (ENS)-domenenavn</translation>
 <translation id="6421218422395686663">Tillat ENS offchain-søk.</translation>
+<translation id="4608449984413688436">Oppklar Solana Name Service (SNS)-domenenavn</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Finn ut mer<ph name="END_LINK"/> om personvernhensyn ved ENS offchain-søk.</translation>
 <translation id="6241402707160226266">Privat vindu med Tor</translation>
 <translation id="8762452230727230396">Tor skjuler IP-adressen din for nettstedene du besøker.</translation>
+<translation id="951983619130191090">Bli med og hjelp andre å koble seg til Tor-nettverket</translation>
+<translation id="2223668809371912019">Aktiver Snowflake-utvidelsen for å la brukere i sensurerte land koble seg til Tor-nettverket via nettverksforbindelsen din.</translation>
 <translation id="2959986444009520721">Bruk broer</translation>
 <translation id="8416750895933172460">Med broer kan du få du tilgang til Tor-nettverket på steder der Tor er blokkert. Det kan hende at én type bro fungerer bedre andre, avhengig av hvor du befinner deg.</translation>
 <translation id="7206799843254049470">Tor-tilkoblingsinnstillinger</translation>
 <translation id="3194502271166340944">Kontrollerer hvordan private vinduer med Tor kobles til Tor-nettverket</translation>
+<translation id="3717364961460790491">Snowflake-utvidelsen som kreves for denne funksjonaliteten, kunne ikke lastes ned. Sjekk internettilkoblingen din og prøv på nytt.</translation>
 <translation id="4859228830700205299">Velg en innebygget bro</translation>
 <translation id="3233137871426528317">Be om en bro fra torproject.org</translation>
 <translation id="5701503934456421898">Be om en ny bro ...</translation>
@@ -490,11 +508,13 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="1195880978080389104">Lokal IPFS-node for Brave</translation>
 <translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Finn ut mer<ph name="END_LINK_MPL"/> om den lokale IPFS-noden for Brave og personvernhensyn knyttet til gatewayer.</translation>
 <translation id="4927734062756955434">Offentlig IPFS-systemportadresse</translation>
+<translation id="3707431725427930007">Offentlig IPFS-gatewayadresse for NFT</translation>
 <translation id="8425213833346101688">Endre</translation>
 <translation id="585868419599255817">Tilbakefall av offentlig IPFS-gateway</translation>
 <translation id="2618080188892567155">Gå automatisk tilbake til den offentlige IPFS-systemporten dersom den lokale noden er utilgjengelig.</translation>
 <translation id="4107552920076294723">Omdiriger IPFS-ressurser til den konfigurerte IPFS-systemporten</translation>
-<translation id="6494857428933042381">Bruker automatisk den konfigurerte systemporten for IPFS-løsninger når en IPFS-systemportressurs oppdages.</translation>
+<translation id="4284166297897715283">Forespørsler til IPFS-ressurser som tredjeparts IPFS-gatewayer er vert for, lastes inn via den valgte lokale eller eksterne gatewayen.
+Merk: Hvis en lokal node er valgt, forespørres ressursen direkte fra datamaskinen din, og bufrede data kan sendes til IPFS-nettverket en stund.</translation>
 <translation id="8655170717758778983">Viderekoble automatisk til IPFS-sider via DNSLink når det er mulig</translation>
 <translation id="2233724520223030977">Bruker automatisk DNSLink for å navigere til IPFS-versjoner av nettsteder når det er mulig</translation>
 <translation id="8068526464562249859">Bruker IPFS Companion-programutvidelsen for forbedret IPFS-støtte i Brave, inkludert tilgang til vanlige IPFS-oppgaver fra topplinjemenyen i nettleseren din.</translation>
@@ -569,4 +589,8 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="5318548116565208315">Bonbon-avatar: mais</translation>
 <translation id="1959966725083452288">Bonbon-avatar: kongelig</translation>
 <translation id="2039034364578911089">Bonbon-avatar: ninja</translation>
+<translation id="5927916530277631319">Metode for oppslag av ustoppelige domener</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Finn ut mer<ph name="END_LINK"/> om personvern ifm. Ethereum.</translation>
+<translation id="5248318250177143470">Metode for oppslag av Ethereum-navnetjeneste (ENS)</translation>
+<translation id="6494857428933042381">Bruker automatisk den konfigurerte systemporten for IPFS-løsninger når en IPFS-systemportressurs oppdages.</translation>
 </translationbundle>

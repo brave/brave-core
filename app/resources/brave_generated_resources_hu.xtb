@@ -3,7 +3,9 @@
 <translationbundle lang="hu">
 <translation id="3333887201479867589">Brave jutalmak</translation>
 <translation id="4615489450165434530">Nem működő oldal jelentése</translation>
+<translation id="8097438084542431276">Tiszta hivatkozás másolása</translation>
 <translation id="1209739344687072997">Nem működő oldal jelentése</translation>
+<translation id="7630214457764713113">Tiszta hivatkozás másolása</translation>
 <translation id="6406506848690869874">Szinkronizálás</translation>
 <translation id="1544192797660353713">Pénztárca</translation>
 <translation id="2445484935443597917">Új profil létrehozása</translation>
@@ -73,7 +75,9 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="2638041073279639246">Hivatkozás megnyitása privát ablakban a Tor böngészővel</translation>
 <translation id="3425600262621021599">Hivatkozás megnyitása Brave privát ablakban a Tor böngészővel</translation>
 <translation id="3229091547987707389">Könyvtár importálása és megosztása</translation>
+<translation id="2804710924397009224">Brave Rewards ikon elrejtése</translation>
 <translation id="5029193871181468990">Brave jutalmak ikon elrejtése</translation>
+<translation id="2808103541110899519">Brave pénztárca ikon elrejtése</translation>
 <translation id="7595540212376041331">Brave pénztárca ikon elrejtése</translation>
 <translation id="4928988318462976765">Webes Kiterjesztések Áruháza</translation>
 <translation id="9181207987584064303">Megtekintés a Webes Kiterjesztések Áruházában</translation>
@@ -170,7 +174,13 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="191143826155037518">A Brave-et a <ph name="BEGIN_LINK_MPL"/>Mozilla nyilvános licenc 2.0 értelmében használhatja<ph name="END_LINK_MPL"/> (MPL) és tartalmazza a <ph name="BEGIN_LINK_OSS"/>nyílt forráskódú szoftvert<ph name="END_LINK_OSS"/> különböző más licencek alatt.
  Elolvashatja a <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>útmutatót a letöltéshez és a saját építéshez<ph name="END_LINK_BUILD_INSTRUCTIONS"/> the specific <ph name="BEGIN_LINK_SOURCE_CODE"/>ennek a példánynak a készítéséhez használt forráskód<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Összes lap hozzáadása a könyvjelzőkhöz...</translation>
+<translation id="3987546108749866209">Függőleges lapok használata</translation>
+<translation id="5860254591544742609">Címsor mutatása</translation>
+<translation id="399928467800528208">Lebegő mód, ha fölé viszi az egeret</translation>
 <translation id="2336228925368920074">Összes lap hozzáadása a könyvjelzőkhöz...</translation>
+<translation id="2523967823495420116">Függőleges lapok használata</translation>
+<translation id="8888603463702767599">Címsor mutatása</translation>
+<translation id="2058818256505091369">Lebegő mód, ha fölé viszi az egeret</translation>
 <translation id="4235920711083356755">VPN gomb mutatása</translation>
 <translation id="4070612712151038707">Megjeleníti a VPN gombot az eszköztáron</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -201,9 +211,9 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="8722651357687610395">Tedd a Brave-et alapértelmezetté</translation>
 <translation id="2370739752330685659">Talán később</translation>
 <translation id="7537601449003285327">Rögzítés a tálcán</translation>
+<translation id="2307973900865360088">Dock-ban tartás</translation>
 <translation id="961012016278832836">Microsoft Edge régi verzió</translation>
 <translation id="6436994631426134065">Importálva a következőből: <ph name="BROWSER_NAME"/>.</translation>
-<translation id="7630214457764713113">Tiszta hivatkozás másolása</translation>
 <translation id="9156965752763025780">Módosításai a Brave újraindítása után lépnek érvénybe.</translation>
 <translation id="7179921470347911571">Indítsd újra most</translation>
 <translation id="4472575034687746823">Kezdő lépések</translation>
@@ -245,6 +255,8 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="5919424224662539292">Állítsa be az új ablakban megjelenő háttérképet és widgeteket.</translation>
 <translation id="7461924472993315131">Rögzítés</translation>
 <translation id="7506648566440714944">A Brave már rögzítve van</translation>
+<translation id="239275665037555969">Dock</translation>
+<translation id="4057614912106618659">A Brave már a Dock-ban van</translation>
 <translation id="3195845168740336657">Pajzsbeállítások</translation>
 <translation id="754769152790647708">Pajzsok állapota</translation>
 <translation id="3615717588724840230">A webhelyek a Pajzsok használatával képesek blokkolni a nyomkövetőket, a reklámokat és az ujjlenyomat-felismerést</translation>
@@ -384,6 +396,8 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="4581190919849683048">Milyen típusú készüléket szeretne szinkronizálni?</translation>
 <translation id="4112587618563511470">Érvénytelen szinkronizálási kód. Ellenőrizze, majd próbálja újra.</translation>
 <translation id="3995714999835224798">Érvénytelen kód</translation>
+<translation id="4432071071853308688">Ez a kód üres</translation>
+<translation id="955848693465029904">Belső szinkronizációs beállítási hiba</translation>
 <translation id="859506441384380749">Ezt a kódot a Brave egy elavult verziója generálta; kérjük, előbb frissítse a másik eszközt</translation>
 <translation id="3132642509209154999">Ez a kód lejárt. Generáljon egy újat a másik eszközén, majd próbálja újra.</translation>
 <translation id="2859229680945501779">Ez a kód érvénytelen. Ellenőrizze, hogy az eszköze idő- és időzóna-beállításai helyesek-e.</translation>
@@ -403,17 +417,21 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="6864914031231797928">Google bejelentkezés engedélyezése a bővítmények számára</translation>
 <translation id="6554397389149987360">Hangouts komponenseket használ, hogy lehetővé tegye a képernyőmegosztást és más funkciókat a böngészőben.</translation>
 <translation id="7878791177459550035">A média router engedélyezi a kivetítés funkciót a böngészőben.</translation>
-<translation id="5927916530277631319">Módszer az Unstoppable Domains megoldására</translation>
-<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>További tudnivalók<ph name="END_LINK"/> az Ethereum adatvédelmi szempontjairól.</translation>
-<translation id="5248318250177143470">Módszer az Ethereum Name Service (ENS) megoldására</translation>
+<translation id="2707635989000984973">Unstoppable Domains domain neveinek feloldása</translation>
+<translation id="1807158022157096592"><ph name="BEGIN_LINK"/>További tudnivalók <ph name="END_LINK"/> az Unstoppable Domains adatvédelmi szempontjairól.</translation>
+<translation id="641308776160806829">Ethereum Name Service (ENS) domain neveinek feloldása</translation>
 <translation id="6421218422395686663">ENS láncon kívüli keresés engedélyezése</translation>
+<translation id="4608449984413688436">Solana Name Service (SNS) domain neveinek feloldása</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>További tudnivalók<ph name="END_LINK"/> az ENS láncon kívüli keresés adatvédelmi szempontjairól.</translation>
 <translation id="6241402707160226266">Privát ablak Torral</translation>
 <translation id="8762452230727230396">Ezzel elrejtheti a felkeresett oldalak elől az IP címét.</translation>
+<translation id="951983619130191090">Segítsen másoknak is, hogy a Tor-hálózathoz csatlakozhassanak!</translation>
+<translation id="2223668809371912019">Engedélyezze a Snowflake-bővítményt, hogy lehetővé tegye a cenzúrát alkalmazó országok felhasználóinak, hogy a Tor-hálózathoz csatlakozhassanak az Ön hálózati kapcsolatán keresztül.</translation>
 <translation id="2959986444009520721">Hidak használata</translation>
 <translation id="8416750895933172460">A hidak segítenek elérni a Tor-hálózatot olyan helyeken, ahol a Tor le van tiltva. A tartózkodási helytől függően egyik vagy másik híd jobban működhet.</translation>
 <translation id="7206799843254049470">A Tor kapcsolati beállításai</translation>
 <translation id="3194502271166340944">Azt szabályozza, hogy a Tort használó privát ablakok hogyan csatlakozzanak a Tor-hálózathoz</translation>
+<translation id="3717364961460790491">A funkció működéséhez szükséges Snowflake-bővítményt nem sikerült letölteni. Kérjük, ellenőrizze az internetkapcsolatát, és próbálja újra!</translation>
 <translation id="4859228830700205299">Beépített híd kiválasztása</translation>
 <translation id="3233137871426528317">Híd kérése a torproject.org webhelyről</translation>
 <translation id="5701503934456421898">Új híd kérése...</translation>
@@ -490,11 +508,13 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="1195880978080389104">Brave helyi IPFS-csomópont</translation>
 <translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/> További információ<ph name="END_LINK_MPL"/> a Brave helyi IPFS-csomópontokkal és átjárókkal kapcsolatos adatvédelmi szempontokról.</translation>
 <translation id="4927734062756955434">IPFS nyilvános átjáró címe</translation>
+<translation id="3707431725427930007">Az NFT nyilvános IPFS-átjáró címe</translation>
 <translation id="8425213833346101688">Módosítás</translation>
 <translation id="585868419599255817">Visszaállás IPFS nyilvános átjáróra</translation>
 <translation id="2618080188892567155">Automatikus visszaállás a nyilvános IPFS-átjáróra, ha a Brave helyi IPFS-csomópontja nem érhető el.</translation>
 <translation id="4107552920076294723">IPFS források átirányítása a beállított IPFS átjáróra</translation>
-<translation id="6494857428933042381">Automatikusan a beállított átjárót használja IPFS megoldásokhoz, amikor egy IPFS-átjáró forrással találkozik.</translation>
+<translation id="4284166297897715283">Azok az IPFS forrásokra irányuló kérések, melyek harmadik fél IPFS-átjáróin vannak elhelyezve, a kiválasztott helyi vagy távoli átjárón keresztül kerülnek betöltésre.
+     Megjegyzés: Ha helyi csomópont kerül kiválasztásra, akkor a forrás közvetlenül a számítógépéről lesz lekérve, és a tárolt adatok egy ideig az IPFS-hálózat rendelkezésére fognak állni.</translation>
 <translation id="8655170717758778983">Ha lehetséges, DNSLink segítségével automatikusan átirányít IPFS oldalakra.</translation>
 <translation id="2233724520223030977">Ha lehetséges, DNSLink segítségével automatikusan a weboldalak IPFS verziójára navigál.</translation>
 <translation id="8068526464562249859">IPFS Companion kiterjesztést használ a bővített IPFS támogatáshoz Brave-ben, beleértve a közönséges IPFS feladatokhoz a böngészősávból.</translation>
@@ -569,4 +589,8 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="5318548116565208315">Bonbon Corn avatár</translation>
 <translation id="1959966725083452288">Bonbon Royal avatár</translation>
 <translation id="2039034364578911089">Bonbon Ninja avatár</translation>
+<translation id="5927916530277631319">Módszer az Unstoppable Domains megoldására</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>További tudnivalók<ph name="END_LINK"/> az Ethereum adatvédelmi szempontjairól.</translation>
+<translation id="5248318250177143470">Módszer az Ethereum Name Service (ENS) megoldására</translation>
+<translation id="6494857428933042381">Automatikusan a beállított átjárót használja IPFS megoldásokhoz, amikor egy IPFS-átjáró forrással találkozik.</translation>
 </translationbundle>

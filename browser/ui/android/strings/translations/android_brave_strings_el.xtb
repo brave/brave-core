@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="el">
+<translation id="915758461293673891">Ποσό φιλοδωρήματος:</translation>
+<translation id="8966035543003363155">Οι ειδοποιήσεις του Brave κάνουν τα πράγματα πιο εύκολα</translation>
+<translation id="7662771815233894695">Διαχειριστείτε λήψεις, κερδίστε διακριτικά, δείτε στατιστικά εβδομαδιαίας χρήσης και πολλά άλλα.</translation>
+<translation id="4265429476391459783">Δεν κερδίζετε Ανταμοιβές, ούτε λαμβάνετε Αναφορές απορρήτου</translation>
+<translation id="1305714751384738456">Δεν κερδίζετε Ανταμοιβές Brave</translation>
+<translation id="1483391942610220726">Δεν λαμβάνετε Αναφορές απορρήτου</translation>
+<translation id="4683790942451502796">Ενεργοποιήστε ξανά τις ειδοποιήσεις εάν θέλετε να συνεχίσετε να κερδίζετε BAT και να λαμβάνετε εβδομαδιαίες αναφορές απορρήτου.</translation>
+<translation id="1462722717055895108">Ενεργοποιήστε ξανά τις ειδοποιήσεις αν θέλετε να συνεχίσετε να κερδίζετε BAT</translation>
+<translation id="5457255168064266494">Ενεργοποιήστε ξανά τις ειδοποιήσεις αν θέλετε να συνεχίσετε να λαμβάνετε εβδομαδιαίες αναφορές απορρήτου.</translation>
+<translation id="6268959058971634697">Δεν κερδίζετε Ανταμοιβές</translation>
+<translation id="1088637159642753509">Ενεργοποιήστε τις ειδοποιήσεις συσκευής για να κερδίζετε Ανταμοιβές Brave και να βλέπετε τις Αναφορές απορρήτου.</translation>
+<translation id="312404770066229090">Ενεργοποιήστε τις ειδοποιήσεις συσκευής για να κερδίζετε Ανταμοιβές Brave.</translation>
+<translation id="2241529840361230499">Ενεργοποιήστε τις ειδοποιήσεις συσκευής για να λαμβάνετε Αναφορές απορρήτου Brave.</translation>
+<translation id="4930155581888391118">Ενεργοποιήστε τις ειδοποιήσεις από το Brave για να κερδίζετε Ανταμοιβές Brave.</translation>
+<translation id="325187916104529570">Ανοίξτε τις Ρυθμίσεις και ενεργοποιήστε τις ειδοποιήσεις συσκευής για τις Διαφημίσεις Brave.</translation>
+<translation id="5744802588121897886">Ενεργοποιήστε τις ειδοποιήσεις Brave</translation>
 <translation id="7307834434086582547">Ενεργοποίηση/Απενεργοποίηση Ασπίδες Brave</translation>
 <translation id="6945863270524203017">Λάβετε εβδομαδιαίες ενημερώσεις απορρήτου στο πρόγραμμα παρακολούθησης &amp; αποκλεισμού διαφημίσεων.</translation>
 <translation id="4324735664183300693">Ενεργοποίηση ειδοποιήσεων</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">Μέθοδος επίλυσης</translation>
 <translation id="2356070529366658676">Να γίνεται ερώτηση</translation>
 <translation id="4176463684765177261">Απενεργοποιημένη</translation>
-<translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">Ενεργοποιημένο</translation>
 <translation id="6252490671914511928">Οι κορυφαίες ιστορίες σήμερα σε μια εντελώς ιδιωτική ροή, μόνο για εσάς.</translation>
 <translation id="7266075701303521777">Το Brave News υποστηρίζεται από διαφημίσεις με εντελώς ιδιωτικές και ανώνυμες διαφημίσεις που αντιστοιχίζονται στη συσκευή σας.</translation>
 <translation id="4541978218358617681">Διαφήμιση</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">Διαγραφή δεδομένων περιήγησης</translation>
 <translation id="5965081608816406060">Αναπαραγωγή βίντεο στο παρασκήνιο</translation>
 <translation id="6332924730165919598">Το κλείσιμο όλων των καρτελών κλείνει το Brave</translation>
-<translation id="1580125697191336644">Πειραματικό. Επιτρέπει την αναπαραγωγή ήχου από βίντεο στο παρασκήνιο, όταν η καρτέλα δεν είναι ενεργή ή η οθόνη της συσκευής είναι απενεργοποιημένη. Προσπαθήστε να μεταβείτε στη λειτουργία επιφάνειας εργασίας, εάν αυτό το χαρακτηριστικό δεν λειτουργεί.</translation>
-<translation id="59174027418879706">Ενεργή</translation>
+<translation id="3872768973878059926">Επιτρέπει τη συνέχιση της αναπαραγωγής του ήχου όταν κάνετε εναλλαγή σε άλλη καρτέλα στο Brave, σε άλλη εφαρμογή ή όταν η οθόνη της συσκευής σας είναι απενεργοποιημένη.</translation>
 <translation id="4150201353443180367">Οθόνη</translation>
 <translation id="2433507940547922241">Εμφάνιση</translation>
 <translation id="6333347122924254968">Εμφάνιση εικονιδίου Ανταμοιβές Brave στη γραμμή διευθύνσεων</translation>
@@ -310,16 +325,11 @@
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Η Uphold πιθανόν να σας ζητήσει να επαληθεύσετε την ταυτότητά σας, ανάλογα με τις υπηρεσίες που ζητήσατε.</translation>
 <translation id="3200197118442451932">Η Brave Software Inc. δεν επεξεργάζεται, αποθηκεύει ή αποκτά πρόσβαση σε καμία από τις προσωπικές πληροφορίες τις οποίες παρέχετε στο<ph name="WALLET_PROVIDER"/> όταν δημιουργείτε λογαριασμό μαζί τους.</translation>
-<translation id="3699674790322420653">Ολοκλήρωση επαλήθευσης πορτοφολιού</translation>
 <translation id="2193391216824305230">Πορτοφόλι χρήστη</translation>
 <translation id="1665118090708049096">Μετάβαση στον <ph name="WALLET_PROVIDER"/> λογαριασμό μου</translation>
 <translation id="1948959999802743233">Αποσύνδεση από <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Ανάληψη κεφαλαίων</translation>
 <translation id="8874184842967597500">Δεν υπάρχει σύνδεση</translation>
-<translation id="3368922792935385530">Σε σύνδεση</translation>
-<translation id="5358719431303818601">Αποσυνδεδεμένο δεν επαληθεύτηκε</translation>
-<translation id="4241449868720191203">Αποσυνδεδεμένο επαληθεύτηκε</translation>
-<translation id="3248185426436836442">Εκκρεμεί</translation>
 <translation id="2495032782748793764">Προεπιλογή Brave</translation>
 <translation id="9132378787893584761">Μοιραστείτε το Brave με τους φίλους σας!</translation>
 <translation id="717952606991220586">Ωχ, κάτι πήγε λάθος. Προσπαθήστε ξανά αργότερα.</translation>
@@ -673,6 +683,7 @@
 <translation id="1597199892790541240">Τέλος καυσίμου</translation>
 <translation id="1634828734222219955">Σύνολο</translation>
 <translation id="7995708795274219641">Ποσό + Καύσιμο</translation>
+<translation id="2186011161688824046">Ποσό + τέλος</translation>
 <translation id="1950052789869821983">Συναλλαγή</translation>
 <translation id="2304783958703511257">Ρυθμίσεις για προχωρημένους</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -701,6 +712,7 @@
 <translation id="1133619932669546254">Ενεργοποιήστε <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">ΤΥΠΟΣ ΛΕΙΤΟΥΡΓΙΑΣ: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Δεν υπάρχουν δεδομένα</translation>
+<translation id="1105525362447173583">Συναλλαγή υπογραφής Solana Dapp</translation>
 <translation id="9061799688859969073">Ο λογαριασμός <ph name="ACCOUNT_NAME"/> έστειλε <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
 <translation id="1148985422232712046">Ο λογαριασμός<ph name="ACCOUNT_NAME"/> έστειλε<ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
 <translation id="2911329628253651823">Ο λογαριασμός<ph name="ACCOUNT_NAME"/> ενέκρινε <ph name="ASSET"/> - <ph name="DATE"/></translation>
@@ -800,6 +812,7 @@
 <translation id="8030169304546394654">Αποσυνδέθηκε</translation>
 <translation id="3423275441470187644">Εμπιστοσύνη</translation>
 <translation id="2391762656119864333">Ανάκληση</translation>
+<translation id="3368922792935385530">Σε σύνδεση</translation>
 <translation id="3432029672560911238">Λογαριασμός χρήστη</translation>
 <translation id="5753378322046059140">Αλλαγή λογαριασμού</translation>
 <translation id="3897092660631435901">Μενού</translation>
@@ -867,6 +880,7 @@
 <translation id="7080614857771109950">Υποστηρίζει στοιχεία συμβατά με EVM στο Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Υποστηρίζει στοιχεία συμβατά με SLP στο Solana blockchain</translation>
 <translation id="6575120282593094155">Δεν έχετε ακόμα λογαριασμό <ph name="ACCOUNT_TYPE"/>. Θέλετε να δημιουργήσετε έναν λογαριασμό τώρα;</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">Εξαιρούμενες εφαρμογές</translation>
 <translation id="8463269357637177759">Επιτρεπόμενες συνήθεις εφαρμογές</translation>
@@ -889,6 +903,7 @@
 <translation id="4784306439879850873">Λάβετε υπόψη ότι το Brave δεν μπορεί να επαληθεύσει τι θα συμβεί αν υπογράψετε. Η υπογραφή θα μπορούσε να εξουσιοδοτήσει σχεδόν οποιαδήποτε λειτουργία στον λογαριασμό σας ή εκ μέρους σας, συμπεριλαμβανομένου (ενδεικτικά) του πλήρους ελέγχου του λογαριασμού σας και των στοιχείων κρυπτονομισμάτων στον ιστότοπο που υποβάλλει το αίτημα. Υπογράψτε μόνο αν είστε σίγουροι ότι θέλετε να προβείτε σε αυτήν την ενέργεια και εμπιστεύεστε τον ιστότοπο που υποβάλλει το αίτημα.</translation>
 <translation id="3474375934783434676">Συνδεθείτε με δικό σας ρίσκο</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> από <ph name="SIZE"/></translation>
+<translation id="756701799684433105">Έγκριση συναλλαγής</translation>
 <translation id="6450792191436242818">Πρόγραμμα συστήματος (System Program)</translation>
 <translation id="6252742184395380448">Πρόγραμμα διαμόρφωσης (Config Program)</translation>
 <translation id="5358970666412490132">Πρόγραμμα μεριδίων (Stake Program)</translation>
@@ -898,6 +913,7 @@
 <translation id="6421371987002247943">Πρόγραμμα διακριτικών</translation>
 <translation id="8780753288764281797">Πρόγραμμα Secp256k1</translation>
 <translation id="8504640708321980506">Δεδομένα</translation>
+<translation id="3723411967118253067">Αναγνωριστικό προγράμματος</translation>
 <translation id="4771176409524282426">Δημιουργία λογαριασμού</translation>
 <translation id="1755120947324658439">Εκχώρηση</translation>
 <translation id="7588707273764747927">Μεταφορά</translation>
@@ -937,4 +953,32 @@
 <translation id="7352651011704765696">Κάτι πήγε στραβά</translation>
 <translation id="7144878232160441200">Προσπαθήστε ξανά</translation>
 <translation id="6040143037577758943">Κλείσιμο</translation>
+<translation id="7710469167917867539">Τέλος συναλλαγής</translation>
+<translation id="7843211152394841558">Μέγιστος αριθμός επαναλήψεων:</translation>
+<translation id="8496335570810457">Δέσμευση προσομοίωσης συναλλαγής (Preflight Commitment):</translation>
+<translation id="5100124500279922001">Παράλειψη προσομοίωσης συναλλαγής:</translation>
+<translation id="7152095322071766507">Ιστότοπος κορυφαίος σε επισκέψεις</translation>
+<translation id="7230006500876504868">Αναζήτηση με το Brave</translation>
+<translation id="5888208462949095139">Αναζήτηση με <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
+<translation id="5456039738087398178">Γραφικό στοιχείο αρχικής οθόνης</translation>
+<translation id="703185154752046151">Το γραφικό στοιχείο προστέθηκε στην αρχική οθόνη</translation>
+<translation id="3290805388004282161">Δοκιμάστε το γραφικό στοιχείο αναζήτησης Brave</translation>
+<translation id="4809681171446727314">Αποκτήστε πρόσβαση σε ιδιωτική, ανεξάρτητη αναζήτηση απευθείας από την αρχική οθόνη σας.</translation>
+<translation id="7751715172931488388">Προσθήκη γραφικού στοιχείου</translation>
+<translation id="7285167584112910782">Γρήγορη αναζήτηση ενεργειών Brave</translation>
+<translation id="2326703104633309781">Χρήση Μετάφρασης Brave</translation>
+<translation id="5802752138057422257">Εντοπίστηκαν μη ASCII χαρακτήρες!</translation>
+<translation id="442709594176931966">Προβολή αρχικού μηνύματος</translation>
+<translation id="2239252396088484499">Προβολή μηνύματος σε κωδικοποίηση ASCII</translation>
+<translation id="4220693114674044366">Διεύθυνση διακριτικού</translation>
+<translation id="5658257029899993935">Συνδέστε την αγορά στον λογαριασμό σας Brave</translation>
+<translation id="1187061015547219282">Συνδέστε την αγορά σας από το Play Store με τον λογαριασμό σας Brave για να χρησιμοποιήσετε το Brave VPN σε άλλες συσκευές.</translation>
+<translation id="6662142137695589205">Συνδέστε τη συνδρομή σας VPN</translation>
+<translation id="2674077112509133024">Επεκτείνετε την προστασία σας με Τείχος προστασίας Brave + VPN</translation>
+<translation id="6365389672683343144">Η συνδρομή σας Brave VPN μπορεί να προστατεύσει έως και 5 συσκευές Android, iOS και υπολογιστές. Συνδέστε απλώς τη συνδρομή σας στο Google Play με τον λογαριασμό σας Brave.</translation>
+<translation id="1580125697191336644">Πειραματικό. Επιτρέπει την αναπαραγωγή ήχου από βίντεο στο παρασκήνιο, όταν η καρτέλα δεν είναι ενεργή ή η οθόνη της συσκευής είναι απενεργοποιημένη. Προσπαθήστε να μεταβείτε στη λειτουργία επιφάνειας εργασίας, εάν αυτό το χαρακτηριστικό δεν λειτουργεί.</translation>
+<translation id="3699674790322420653">Ολοκλήρωση επαλήθευσης πορτοφολιού</translation>
+<translation id="5358719431303818601">Αποσυνδεδεμένο δεν επαληθεύτηκε</translation>
+<translation id="4241449868720191203">Αποσυνδεδεμένο επαληθεύτηκε</translation>
+<translation id="3248185426436836442">Εκκρεμεί</translation>
 </translationbundle>

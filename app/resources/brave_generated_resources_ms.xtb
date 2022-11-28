@@ -3,7 +3,9 @@
 <translationbundle lang="ms">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="4615489450165434530">Laporkan Laman yang Terputus-putus</translation>
+<translation id="8097438084542431276">Salin Pautan Bersih</translation>
 <translation id="1209739344687072997">Laporkan laman yang  terputus-putus</translation>
+<translation id="7630214457764713113">Salin pautan bersih</translation>
 <translation id="6406506848690869874">Segerak</translation>
 <translation id="1544192797660353713">Dompet</translation>
 <translation id="2445484935443597917">Buat Profil Baharu</translation>
@@ -73,7 +75,9 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2638041073279639246">Buka pautan dalam tetingkap persendirian dengan Tor</translation>
 <translation id="3425600262621021599">Buka pautan dalam tetingkap persendirian Brave dengan Tor</translation>
 <translation id="3229091547987707389">Import dan kongsi direktori</translation>
+<translation id="2804710924397009224">Sembunyikan Ikon Ganjaran Brave</translation>
 <translation id="5029193871181468990">Sembunyikan ikon Ganjaran Brave</translation>
+<translation id="2808103541110899519">Sembunyikan Ikon Dompet Brave</translation>
 <translation id="7595540212376041331">Sembunyikan ikon Dompet Brave</translation>
 <translation id="4928988318462976765">Kedai Sambungan Web</translation>
 <translation id="9181207987584064303">Lihat di Kedai Sambungan Web</translation>
@@ -170,7 +174,13 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191143826155037518">Brave tersedia untuk anda di bawah <ph name="BEGIN_LINK_MPL"/>Lesen Awam Mozilla 2.0<ph name="END_LINK_MPL"/> (MPL) dan merangkumi <ph name="BEGIN_LINK_OSS"/>perisian sumber terbuka<ph name="END_LINK_OSS"/> di bawah pelbagai lesen lain.
         Anda boleh membaca <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>arahan tentang cara  untuk memuat turun dan membina untuk diri anda sendiri<ph name="END_LINK_BUILD_INSTRUCTIONS"/> kod sumber <ph name="BEGIN_LINK_SOURCE_CODE"/>khusus yang digunakan untuk mencipta salinan ini<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Tanda halaman semua tab...</translation>
+<translation id="3987546108749866209">Gunakan tab menegak</translation>
+<translation id="5860254591544742609">Tunjukkan bar tajuk</translation>
+<translation id="399928467800528208">Tuding guna tetikus</translation>
 <translation id="2336228925368920074">Tanda Halaman Semua Tab...</translation>
+<translation id="2523967823495420116">Gunakan Tab Menegak</translation>
+<translation id="8888603463702767599">Tunjukkan Bar Tajuk</translation>
+<translation id="2058818256505091369">Tuding guna Tetikus</translation>
 <translation id="4235920711083356755">Tunjukkan butang VPN</translation>
 <translation id="4070612712151038707">Menunjukkan butang VPN dalam bar alat</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -201,9 +211,9 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8722651357687610395">Tetapkan Brave sebagai lalai</translation>
 <translation id="2370739752330685659">Mungkin kemudian</translation>
 <translation id="7537601449003285327">Sematkan pada bar tugas</translation>
+<translation id="2307973900865360088">Simpan dalam Dok</translation>
 <translation id="961012016278832836">Legasi Microsoft Edge</translation>
 <translation id="6436994631426134065">Diimport daripada <ph name="BROWSER_NAME"/>.</translation>
-<translation id="7630214457764713113">Salin pautan bersih</translation>
 <translation id="9156965752763025780">Perubahan anda akan dilaksanakan apabila anda melancarkan semula Brave pada masa hadapan.</translation>
 <translation id="7179921470347911571">Lancarkan Semula Sekarang</translation>
 <translation id="4472575034687746823">Bermula</translation>
@@ -245,6 +255,8 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5919424224662539292">Suaikan imej latar belakang dan widget yang muncul di halaman tab baharu</translation>
 <translation id="7461924472993315131">Pin</translation>
 <translation id="7506648566440714944">Brave telah disematkan</translation>
+<translation id="239275665037555969">Dok</translation>
+<translation id="4057614912106618659">Brave telah berada dalam Dok</translation>
 <translation id="3195845168740336657">Tetapan Perisai</translation>
 <translation id="754769152790647708">Status Perisai</translation>
 <translation id="3615717588724840230">Laman boleh menyekat penjejak, iklan dan cap jari menggunakan Perisai</translation>
@@ -384,6 +396,8 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4581190919849683048">Ke peranti jenis manakah yang anda ingin segerakkan?</translation>
 <translation id="4112587618563511470">Kod segerakan salah, sila semak dan cuba lagi.</translation>
 <translation id="3995714999835224798">Kod ini tidak sah</translation>
+<translation id="4432071071853308688">Kod ini kosong</translation>
+<translation id="955848693465029904">Ralat persediaan penyegerakan dalaman</translation>
 <translation id="859506441384380749">Kod ini dijana oleh versi Brave yang telah ditamatkan, sila naik taraf peranti anda yang lain dahulu</translation>
 <translation id="3132642509209154999">Kod ini telah tamat tempoh. Sila jana yang baharu pada peranti anda yang lain dan cuba lagi.</translation>
 <translation id="2859229680945501779">Kod ini tidak sah. Sila periksa bahawa masa dan zon masa ditetapkan dengan betul pada peranti anda.</translation>
@@ -403,17 +417,21 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6864914031231797928">Benarkan log masuk Google untuk sambungan</translation>
 <translation id="6554397389149987360">Menggunakan komponen Hangouts untuk mendayakan perkongsian skrin dan lain-lain ciri dalam pelayar.</translation>
 <translation id="7878791177459550035">Penghala media mendayakan ciri siaran dalam pelayar.</translation>
-<translation id="5927916530277631319">Kaedah untuk menyelesaikan Domain yang tidak dapat Dihentikan</translation>
-<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Ketahui Lebih Lanjut<ph name="END_LINK"/> tentang pertimbangan privasi Ethereum.</translation>
-<translation id="5248318250177143470">Kaedah untuk menyelesaikan Ethereum Name Service (ENS)</translation>
+<translation id="2707635989000984973">Selesaikan nama domain Domain yang Tidak Dapat Dihentikan</translation>
+<translation id="1807158022157096592"><ph name="BEGIN_LINK"/>Ketahui Lebih Lanjut<ph name="END_LINK"/> tentang pertimbangan privasi Domain yang Tidak Dapat Dihentikan.</translation>
+<translation id="641308776160806829">Selesaikan nama domain Ethereum Name Service (ENS)?</translation>
 <translation id="6421218422395686663">Benarkan carian luar rantaian ENS.</translation>
+<translation id="4608449984413688436">Selesaikan nama domain Solana Name Service (SNS)</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Ketahui Lebih Lanjut<ph name="END_LINK"/> tentang pertimbangan privasi carian luar rantaian ENS.</translation>
 <translation id="6241402707160226266">Tetingkap Privasi dengan Tor</translation>
 <translation id="8762452230727230396">Tor menyembunyikan alamat IP anda daripada tapak yang anda lawati.</translation>
+<translation id="951983619130191090">Tawarkan diri untuk membantu orang lain berhubung dengan rangkaian Tor</translation>
+<translation id="2223668809371912019">Dayakan sambungan Snowflake untuk membolehkan pengguna dalam negara yang ditapis berhubung dengan rangkaian Tor melalui sambungan rangkaian anda.</translation>
 <translation id="2959986444009520721">Gunakan Penya,bung</translation>
 <translation id="8416750895933172460">Penyambung membolehkan anda mengakses Rangkaian Tor di tempat Tor disekat. Bergantung pada lokasi anda berada, satu penyambung mungkin berfungsi lebih baik daripada yang lain.</translation>
 <translation id="7206799843254049470">Tetapan sambungan Tor</translation>
 <translation id="3194502271166340944">Mengawal cara Tetingkap Peribadi dengan Tor bersambung ke rangkaian Tor</translation>
+<translation id="3717364961460790491">Sambungan Snowflake yang diperlukan untuk fungsi ini tidak dapat dimuat turun. Sila semak sambungan Internet anda dan cuba lagi.</translation>
 <translation id="4859228830700205299">Pilih penyambung terbina dalam</translation>
 <translation id="3233137871426528317">Minta penyambung daripada torproject.org</translation>
 <translation id="5701503934456421898">Minta Penyambung Baharu...</translation>
@@ -490,11 +508,13 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1195880978080389104">Nod IPFS tempatan Brave</translation>
 <translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Ketahui lebih lanjut<ph name="END_LINK_MPL"/> tentang nod IPFS tempatan Brave dan pertimbangan privasi gerbang.</translation>
 <translation id="4927734062756955434">Alamat gerbang awam IPFS</translation>
+<translation id="3707431725427930007">Alamat get laluan umum IPFS untuk NFT</translation>
 <translation id="8425213833346101688">Tukar</translation>
 <translation id="585868419599255817">Undur balik get laluan awam IPFS</translation>
 <translation id="2618080188892567155">Kembali ke gerbang IPFS awam secara automatik jika nod IPFS tempatan Brave anda tidak boleh dicapai.</translation>
 <translation id="4107552920076294723">Halakan semula sumber IPFS kepada gerbang IPFS yang dikonfigurasi</translation>
-<translation id="6494857428933042381">Menggunakan gerbang yang dikonfigurasi secara automatik untuk resolusi IPFS apabila sesebuah sumber gerbang IPFS ditemui.</translation>
+<translation id="4284166297897715283">Permintaan kepada sumber IPFS yang dianjurkan pada get laluan pihak ketiga IPFS akan dimuatkan melalui get laluan tempatan atau jauh yang dipilih.
+    Nota: Jika nod tempatan dipilih, sumber akan diminta terus daripada komputer anda dan data cache mungkin diberikan kepada rangkaian IPFS buat beberapa ketika.</translation>
 <translation id="8655170717758778983">Ubah hala ke halaman IPFS secara automatik melalui DNSLink apabila mungkin</translation>
 <translation id="2233724520223030977">Mengunakan DNSLink secara automatik untuk menavigasi ke versi IPFS laman web apabila mungkin</translation>
 <translation id="8068526464562249859">Menggunakan sambungan Teman IPFS untuk sokongan IPFS dirangsang dalam Brave, termasuk akses kepada tugasan IPFS umum daripada bar pelayar anda.</translation>
@@ -569,4 +589,8 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5318548116565208315">Avatar Jagung Bonbon</translation>
 <translation id="1959966725083452288">Avatar Diraja Bonbon</translation>
 <translation id="2039034364578911089">Avatar Ninja Bonbon</translation>
+<translation id="5927916530277631319">Kaedah untuk menyelesaikan Domain yang tidak dapat Dihentikan</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Ketahui Lebih Lanjut<ph name="END_LINK"/> tentang pertimbangan privasi Ethereum.</translation>
+<translation id="5248318250177143470">Kaedah untuk menyelesaikan Ethereum Name Service (ENS)</translation>
+<translation id="6494857428933042381">Menggunakan gerbang yang dikonfigurasi secara automatik untuk resolusi IPFS apabila sesebuah sumber gerbang IPFS ditemui.</translation>
 </translationbundle>

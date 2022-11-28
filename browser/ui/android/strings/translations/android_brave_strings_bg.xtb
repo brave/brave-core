@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="bg">
+<translation id="915758461293673891">Размер на бакшиша:</translation>
 <translation id="7307834434086582547">Разрешаване/забраняване на щитове на Brave</translation>
 <translation id="6945863270524203017">Получавайте ежеседмични актуализации за поверителност за проследяване и блокиране на реклами.</translation>
 <translation id="4324735664183300693">Включете известията</translation>
@@ -61,7 +62,7 @@
 <translation id="3894650624018948468">Метод на разрешаване</translation>
 <translation id="2356070529366658676">Попитайте ме</translation>
 <translation id="4176463684765177261">Деактивирано</translation>
-<translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">Активирано</translation>
 <translation id="6252490671914511928">Водещите истории от днес в напълно личен канал, само за вас.</translation>
 <translation id="7266075701303521777">Brave новини поддържа напълно поверителни и анонимни реклами, подбрани на вашето устройство.</translation>
 <translation id="4541978218358617681">Реклама</translation>
@@ -101,8 +102,6 @@
 <translation id="8026334261755873520">Изчистване на данните за сърфирането</translation>
 <translation id="5965081608816406060">Възпроизвеждане на фоново видео</translation>
 <translation id="6332924730165919598">Затварянето на всички раздели затваря Brave</translation>
-<translation id="1580125697191336644">Експерименталнo. Активира възпроизвеждане на аудио от видео във фонов режим, когато разделът не е активен или екранът на устройството е изключен. Опитайте да преминете към режим на работния плот, ако тази функция не работи.</translation>
-<translation id="59174027418879706">Активирано</translation>
 <translation id="4150201353443180367">Екран</translation>
 <translation id="2433507940547922241">Облик</translation>
 <translation id="6333347122924254968">Показване на иконата с награди в Brave в адресната лента</translation>
@@ -310,16 +309,11 @@
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Uphold може да изисква да потвърдите самоличността си въз основа на поисканите услуги.</translation>
 <translation id="3200197118442451932">Brave Software Inc. не обработва, съхранява или осъществява достъп до лична информация, която предоставяте на <ph name="WALLET_PROVIDER"/>, когато създадете акаунт там.</translation>
-<translation id="3699674790322420653">Завършете проверката на портфейла</translation>
 <translation id="2193391216824305230">Потребителски портфейл</translation>
 <translation id="1665118090708049096">Към моя акаунт в <ph name="WALLET_PROVIDER"/></translation>
 <translation id="1948959999802743233">Изключване от <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Изтегляне на средства</translation>
 <translation id="8874184842967597500">Няма връзка</translation>
-<translation id="3368922792935385530">Установена е връзка</translation>
-<translation id="5358719431303818601">Прекъсната връзка, не е потвърден</translation>
-<translation id="4241449868720191203">Прекъсната връзка, потвърден</translation>
-<translation id="3248185426436836442">Предстоящо</translation>
 <translation id="2495032782748793764">Brave по подразбиране</translation>
 <translation id="9132378787893584761">Споделете Brave с приятелите си!</translation>
 <translation id="717952606991220586">Грешка, нещо се обърка. Опитайте отново по-късно.</translation>
@@ -673,6 +667,7 @@
 <translation id="1597199892790541240">Такса за газ</translation>
 <translation id="1634828734222219955">Общо</translation>
 <translation id="7995708795274219641">Количество + газ</translation>
+<translation id="2186011161688824046">Сума + такса</translation>
 <translation id="1950052789869821983">Трансакция</translation>
 <translation id="2304783958703511257">Разширени настройки</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -800,6 +795,7 @@
 <translation id="8030169304546394654">Разкачен</translation>
 <translation id="3423275441470187644">Довери се</translation>
 <translation id="2391762656119864333">Оттегляне</translation>
+<translation id="3368922792935385530">Установена е връзка</translation>
 <translation id="3432029672560911238">Потребителски акаунт</translation>
 <translation id="5753378322046059140">Превключване на акаунт</translation>
 <translation id="3897092660631435901">Меню</translation>
@@ -867,6 +863,7 @@
 <translation id="7080614857771109950">Поддържа съвместими активи с EVM в блокчейна на Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Поддържа съвместими активи с SPL в блокчейна на Solana</translation>
 <translation id="6575120282593094155">Все още нямате акаунт в <ph name="ACCOUNT_TYPE"/>. Желете ли да си създадете такъв сега?</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">Изключени приложения</translation>
 <translation id="8463269357637177759">Разрешени редовни приложения</translation>
@@ -889,6 +886,7 @@
 <translation id="4784306439879850873">Имайте предвид, че Brave не може да гарантира какво ще се случи, ако подпишете. Подписът може да удостовери почти всяка операция във Вашия акаунт или от Ваше име, включително (но не само) да предостави пълен контрол върху акаунта Ви и крипоактивите на сайта, който ги заявява. Подпишете само ако сте сигурни, че искате да предприемете това действие, и вярвате на сайта.</translation>
 <translation id="3474375934783434676">Подписване на свой собствен риск</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> от <ph name="SIZE"/></translation>
+<translation id="756701799684433105">Одобряване на трансакцията</translation>
 <translation id="6450792191436242818">Системна програма</translation>
 <translation id="6252742184395380448">Програма за конфигуриране</translation>
 <translation id="5358970666412490132">Програма за залози</translation>
@@ -937,4 +935,15 @@
 <translation id="7352651011704765696">Нещо се обърка</translation>
 <translation id="7144878232160441200">Нов опит</translation>
 <translation id="6040143037577758943">Затваряне</translation>
+<translation id="7710469167917867539">Такса за трансакция</translation>
+<translation id="7843211152394841558">Максимален брой повторни опити:</translation>
+<translation id="8496335570810457">Прифлайт обвързаност:</translation>
+<translation id="5100124500279922001">Пропускане на прифлайт:</translation>
+<translation id="442709594176931966">Преглед на оригиналното съобщение</translation>
+<translation id="2239252396088484499">Преглед на съобщението в кодиране ASCII</translation>
+<translation id="1580125697191336644">Експерименталнo. Активира възпроизвеждане на аудио от видео във фонов режим, когато разделът не е активен или екранът на устройството е изключен. Опитайте да преминете към режим на работния плот, ако тази функция не работи.</translation>
+<translation id="3699674790322420653">Завършете проверката на портфейла</translation>
+<translation id="5358719431303818601">Прекъсната връзка, не е потвърден</translation>
+<translation id="4241449868720191203">Прекъсната връзка, потвърден</translation>
+<translation id="3248185426436836442">Предстоящо</translation>
 </translationbundle>

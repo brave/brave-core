@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="th">
+<translation id="915758461293673891">จำนวนทิป:</translation>
+<translation id="8966035543003363155">การแจ้งเตือนของ Brave จะช่วยให้ง่ายขึ้น</translation>
+<translation id="7662771815233894695">จัดการการดาวน์โหลด รับโทเค็น ดูสถิติการใช้งานรายสัปดาห์ และอื่นๆ</translation>
+<translation id="4265429476391459783">คุณจะไม่ได้รับรางวัลหรือได้รับรายงานความเป็นส่วนตัว</translation>
+<translation id="1305714751384738456">คุณจะไม่ได้รับ Brave Rewards</translation>
+<translation id="1483391942610220726">คุณจะไม่ได้รับรายงานความเป็นส่วนตัว</translation>
+<translation id="4683790942451502796">เปิดการแจ้งเตือนเหมือนเดิมถ้าคุณยังต้องการได้รับ BAT และรับรายงานความเป็นส่วนตัวรายสัปดาห์</translation>
+<translation id="1462722717055895108">เปิดการแจ้งเตือนเหมือนเดิมถ้าคุณยังต้องการได้รับ BAT</translation>
+<translation id="5457255168064266494">เปิดการแจ้งเตือนเหมือนเดิมถ้าคุณยังต้องการรับรายงานความเป็นส่วนตัวรายสัปดาห์</translation>
+<translation id="6268959058971634697">คุณจะไม่ได้รับ Rewards</translation>
+<translation id="1088637159642753509">เปิดการแจ้งเตือนอุปกรณ์เพื่อรับ Brave Rewards และดูรายงานความเป็นส่วนตัว</translation>
+<translation id="312404770066229090">เปิดการแจ้งเตือนอุปกรณ์เพื่อรับ Brave Rewards</translation>
+<translation id="2241529840361230499">เปิดการแจ้งเตือนอุปกรณ์เพื่อรับ Brave Privacy Reports</translation>
+<translation id="4930155581888391118">เปิดการแจ้งเตือนจาก Brave เพื่อรับ Brave Rewards</translation>
+<translation id="325187916104529570">เปิดการตั้งค่าและเปิดการแจ้งเตือนอุปกรณ์สำหรับ Brave Ads</translation>
+<translation id="5744802588121897886">เปิดการแจ้งเตือน Brave</translation>
 <translation id="7307834434086582547">เปิด/ปิดใช้งาน Brave Shields</translation>
 <translation id="6945863270524203017">รับการอัปเดตความเป็นส่วนตัวรายสัปดาห์เกี่ยวกับตัวติดตามและการบล็อกโฆษณา</translation>
 <translation id="4324735664183300693">เปิดการแจ้งเตือน</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">วิธีแก้ไข</translation>
 <translation id="2356070529366658676">ถาม</translation>
 <translation id="4176463684765177261">ปิดการใช้งานแล้ว</translation>
-<translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">เปิดใช้งานแล้ว</translation>
 <translation id="6252490671914511928">เรื่องเด่นประจำวันนี้ในฟีดส่วนตัว สำหรับคุณโดยเฉพาะ</translation>
 <translation id="7266075701303521777">ข่าว Brave เป็นโฆษณาที่ได้รับการสนับสนุนความส่วนตัวโดยสมบูรณ์และเป็นโฆษณาที่ไม่ระบุชื่อ ซึ่งเหมาะกับอุปกรณ์ของคุณ</translation>
 <translation id="4541978218358617681">โฆษณา</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">ล้างข้อมูลการท่องเว็บ</translation>
 <translation id="5965081608816406060">การเล่นวิดีโอในเบื้องหลัง</translation>
 <translation id="6332924730165919598">การปิดแท็บทั้งหมดจะเป็นการปิด Brave</translation>
-<translation id="1580125697191336644">ฟีเจอร์ทดลอง เปิดเสียงจากวิดีโอในเบื้องหลังเมื่อไม่ได้ใช้งานแท็บหรือเมื่อปิดหน้าจออุปกรณ์ ลองเปลี่ยนเป็นโหมดเดสก์ท็อปถ้าฟีเจอร์นี้ไม่ทำงาน</translation>
-<translation id="59174027418879706">เปิดใช้งานแล้ว</translation>
+<translation id="3872768973878059926">อนุญาตให้เปิดเสียงต่อไปเมื่อคุณเปลี่ยนเป็นแท็บอื่นใน Brave, เปลี่ยนเป็นแอปอื่น หรือเมื่อปิดหน้าจออุปกรณ์</translation>
 <translation id="4150201353443180367">การแสดงผล</translation>
 <translation id="2433507940547922241">ลักษณะที่ปรากฏ</translation>
 <translation id="6333347122924254968">แสดงไอคอน Brave Rewards ในแถบที่อยู่</translation>
@@ -310,16 +325,11 @@
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Uphold อาจกำหนดให้คุณยืนยันตัวตนของคุณตามบริการที่ร้องขอ</translation>
 <translation id="3200197118442451932">Brave Software Inc. ไม่ได้ประมวลผล จัดเก็บ หรือเข้าถึงข้อมูลส่วนตัวใดๆ ที่คุณให้แก่ <ph name="WALLET_PROVIDER"/> เมื่อคุณจัดทำบัญชีด้วยข้อมูลเหล่านี้</translation>
-<translation id="3699674790322420653">ยืนยันวอลเล็ตให้เสร็จสิ้น</translation>
 <translation id="2193391216824305230">กระเป๋าเงินผู้ใช้</translation>
 <translation id="1665118090708049096">ไปที่บัญชี <ph name="WALLET_PROVIDER"/> ของฉัน</translation>
 <translation id="1948959999802743233">ยกเลิกการเชื่อมต่อกับ <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">ถอนเงิน</translation>
 <translation id="8874184842967597500">ไม่ได้เชื่อมต่อ</translation>
-<translation id="3368922792935385530">เชื่อมต่อแล้ว</translation>
-<translation id="5358719431303818601">ยังไม่ได้รับการยืนยันการยกเลิกการเชื่อมต่อ</translation>
-<translation id="4241449868720191203">ยืนยันการยกเลิกการเชื่อมต่อแล้ว</translation>
-<translation id="3248185426436836442">รอดำเนินการ</translation>
 <translation id="2495032782748793764">Brave Default</translation>
 <translation id="9132378787893584761">แชร์ Brave กับเพื่อนของคุณ!</translation>
 <translation id="717952606991220586">อุ๊ย มีบางอย่างผิดปกติ โปรดลองใหม่ภายหลัง</translation>
@@ -673,6 +683,7 @@
 <translation id="1597199892790541240">ค่าแก๊ส</translation>
 <translation id="1634828734222219955">รวม</translation>
 <translation id="7995708795274219641">จำนวน + แก๊ส</translation>
+<translation id="2186011161688824046">จำนวน + ค่าธรรมเนียม</translation>
 <translation id="1950052789869821983">ธุรกรรม</translation>
 <translation id="2304783958703511257">การตั้งค่าขั้นสูง</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -701,6 +712,7 @@
 <translation id="1133619932669546254">เปิดใช้งาน <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">ประเภทฟังก์ชัน: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">ไม่มีข้อมูล</translation>
+<translation id="1105525362447173583">ธุรกรรม Solana Dapp Sign</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> ได้ส่ง <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> ได้ส่ง <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> ได้อนุมัติ <ph name="ASSET"/> - <ph name="DATE"/></translation>
@@ -800,6 +812,7 @@
 <translation id="8030169304546394654">ไม่ได้เชื่อมต่อ</translation>
 <translation id="3423275441470187644">เชื่อถือ</translation>
 <translation id="2391762656119864333">เพิกถอน</translation>
+<translation id="3368922792935385530">เชื่อมต่อแล้ว</translation>
 <translation id="3432029672560911238">บัญชีผู้ใช้</translation>
 <translation id="5753378322046059140">สลับบัญชี</translation>
 <translation id="3897092660631435901">Menu</translation>
@@ -867,6 +880,7 @@
 <translation id="7080614857771109950">รองรับสินทรัพย์ที่เข้ากันได้กับ EVM บนบล็อกเชน Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">รองรับสินทรัพย์ที่เข้ากันได้กับ SLP บนบล็อกเชน Solana</translation>
 <translation id="6575120282593094155">คุณยังไม่มีบัญชี <ph name="ACCOUNT_TYPE"/> ต้องการสร้างตอนนี้หรือไม่</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">แอปที่ยกเว้น</translation>
 <translation id="8463269357637177759">แอปทั่วไปที่อนุญาต</translation>
@@ -889,6 +903,7 @@
 <translation id="4784306439879850873">โปรดทราบว่า Brave ไม่สามารถตรวจสอบได้ว่าจะเกิดอะไรขึ้นหากคุณลงชื่อ ลายเซ็นสามารถอนุญาตการดำเนินการเกือบทั้งหมดในบัญชีของคุณหรือในนามของคุณ ซึ่งรวมถึง (แต่ไม่จำกัดเพียง) ให้การควบคุมบัญชีและทรัพย์สินเข้ารหัสของคุณทั้งหมดแก่ไซต์ที่ส่งคำขอ ลงชื่อเฉพาะเมื่อคุณแน่ใจว่าต้องการดำเนินการนี้ และเชื่อถือไซต์ที่ร้องขอ</translation>
 <translation id="3474375934783434676">ลงชื่อโดยยอมรับความเสี่ยงด้วยตัวคุณเอง</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> จาก <ph name="SIZE"/></translation>
+<translation id="756701799684433105">อนุมัติธุรกรรม</translation>
 <translation id="6450792191436242818">โปรแกรมระบบ</translation>
 <translation id="6252742184395380448">โปรแกรมกำหนดค่า</translation>
 <translation id="5358970666412490132">โปรแกรมสเตก</translation>
@@ -898,6 +913,7 @@
 <translation id="6421371987002247943">โปรแกรมโทเค็น</translation>
 <translation id="8780753288764281797">โปรแกรม Secp256k1</translation>
 <translation id="8504640708321980506">ข้อมูล</translation>
+<translation id="3723411967118253067">ID โปรแกรม</translation>
 <translation id="4771176409524282426">สร้างบัญชี</translation>
 <translation id="1755120947324658439">โอนสิทธิ์</translation>
 <translation id="7588707273764747927">Transfer</translation>
@@ -937,4 +953,32 @@
 <translation id="7352651011704765696">มีบางอย่างผิดพลาด</translation>
 <translation id="7144878232160441200">ลองใหม่</translation>
 <translation id="6040143037577758943">ปิด</translation>
+<translation id="7710469167917867539">ค่าธรรมเนียมการทำธุรกรรม</translation>
+<translation id="7843211152394841558">จำนวนความพยายามสูงสุด:</translation>
+<translation id="8496335570810457">ความรับผิดชอบต่อการจำลองการทำธุรกรรม:</translation>
+<translation id="5100124500279922001">ข้ามการจำลองการทำธุรกรรม:</translation>
+<translation id="7152095322071766507">เว็บไซต์ที่เข้าชมบ่อย</translation>
+<translation id="7230006500876504868">ค้นหาด้วย Brave</translation>
+<translation id="5888208462949095139">ค้นหาด้วย <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
+<translation id="5456039738087398178">วิดเจ็ตหน้าจอหลัก</translation>
+<translation id="703185154752046151">วิดเจ็ตที่เพิ่มลงในหน้าจอหลัก</translation>
+<translation id="3290805388004282161">ลองวิดเจ็ตการค้นหา Brave</translation>
+<translation id="4809681171446727314">เข้าถึงการค้นหาที่อิสระและเป็นส่วนตัวได้ทันทีจากหน้าจอหลักของคุณ</translation>
+<translation id="7751715172931488388">เพิ่มวิดเจ็ต</translation>
+<translation id="7285167584112910782">การค้นหาด่วนของ Brave</translation>
+<translation id="2326703104633309781">ใช้ Brave Translate</translation>
+<translation id="5802752138057422257">พบอักขระที่ไม่ใช่ ASCII!</translation>
+<translation id="442709594176931966">ดูข้อความดั้งเดิม</translation>
+<translation id="2239252396088484499">ดูข้อความแบบเข้ารหัส ASCII</translation>
+<translation id="4220693114674044366">ที่อยู่โทเค็น</translation>
+<translation id="5658257029899993935">ลิงก์การซื้อกับบัญชี Brave ของคุณ</translation>
+<translation id="1187061015547219282">ลิงก์การซื้อใน Play Store กับบัญชี Brave เพื่อใช้ Brave VPN บนอุปกรณ์อื่นๆ</translation>
+<translation id="6662142137695589205">ลิงก์การสมัครสมาชิก VPN ของคุณ</translation>
+<translation id="2674077112509133024">ขยายการปกป้อง Brave Firewall + VPN ของคุณ</translation>
+<translation id="6365389672683343144">การสมัครสมาชิก Brave VPN สามารถปกป้องอุปกรณ์ได้สูงสุด 5 รายการทั้ง Android, iOS และเดสก์ท็อป เพียงลิงก์การสมัครสมาชิก Google Play กับบัญชี Brave ของคุณ</translation>
+<translation id="1580125697191336644">ฟีเจอร์ทดลอง เปิดเสียงจากวิดีโอในเบื้องหลังเมื่อไม่ได้ใช้งานแท็บหรือเมื่อปิดหน้าจออุปกรณ์ ลองเปลี่ยนเป็นโหมดเดสก์ท็อปถ้าฟีเจอร์นี้ไม่ทำงาน</translation>
+<translation id="3699674790322420653">ยืนยันวอลเล็ตให้เสร็จสิ้น</translation>
+<translation id="5358719431303818601">ยังไม่ได้รับการยืนยันการยกเลิกการเชื่อมต่อ</translation>
+<translation id="4241449868720191203">ยืนยันการยกเลิกการเชื่อมต่อแล้ว</translation>
+<translation id="3248185426436836442">รอดำเนินการ</translation>
 </translationbundle>

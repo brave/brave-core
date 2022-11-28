@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="da">
+<translation id="915758461293673891">Bidragsbeløb:</translation>
+<translation id="8966035543003363155">Brave-notifikartioner gør det nemmere</translation>
+<translation id="7662771815233894695">Hold styr på downloads, optjen tokens, se ugentlige statistikker for brug og meget mere.</translation>
+<translation id="4265429476391459783">Du optjener hverken Rewards eller modtager databeskyttelsesrapporter</translation>
+<translation id="1305714751384738456">Du optjener ikke Brave Rewards</translation>
+<translation id="1483391942610220726">Du modtager ikke databeskyttelsesrapporter</translation>
+<translation id="4683790942451502796">Slå notifikationer til igen, hvis du gerne vil fortsætte med at optjene BAT og modtage ugentlige databeskyttelsesrapporter</translation>
+<translation id="1462722717055895108">Slå notifikationer til igen, hvis du gerne vil fortsætte med at optjene BAT</translation>
+<translation id="5457255168064266494">Slå notifikationer til igen, hvis du gerne vil fortsætte med at modtage ugentlige databeskyttelsesrapporter</translation>
+<translation id="6268959058971634697">Du optjener ikke Rewards</translation>
+<translation id="1088637159642753509">Slå notifikationer til på din enhed, så du kan optjene Brave Rewards og se databeskyttelsesrapporter.</translation>
+<translation id="312404770066229090">Slå notifikationer til på din enhed, så du kan optjene Brave Rewards.</translation>
+<translation id="2241529840361230499">Slå notifikationer til på din enhed, så du kan få databeskyttelsesrapporter fra Brave.</translation>
+<translation id="4930155581888391118">Slå notifikationer til på din enhed, så du kan optjene Brave Rewards.</translation>
+<translation id="325187916104529570">Åbn Indstillinger, og slå notifikationer for Brave Ads til på din enhed.</translation>
+<translation id="5744802588121897886">Slå Brave-notifikationer til</translation>
 <translation id="7307834434086582547">Aktivér/deaktiver Brave-skjolde</translation>
 <translation id="6945863270524203017">Få ugentlige opdateringer på trackere &amp; reklameblokering.</translation>
 <translation id="4324735664183300693">Slå notifikationer fra</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">Løsningsmetode</translation>
 <translation id="2356070529366658676">Spørg</translation>
 <translation id="4176463684765177261">Deaktiveret</translation>
-<translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">Aktiveret</translation>
 <translation id="6252490671914511928">Dagens tophistorier i et helt privat feed direkte til dig.</translation>
 <translation id="7266075701303521777">Brave-nyheder indeholder fuldstændigt private og anonymiserede reklamer, der er tilpasset til din enhed.</translation>
 <translation id="4541978218358617681">Annonce</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">Ryd browserdata</translation>
 <translation id="5965081608816406060">Afspilning af baggrundsvideo</translation>
 <translation id="6332924730165919598">Lukning af alle faner lukker Brave</translation>
-<translation id="1580125697191336644">Eksperimentelt. Aktiverer afspilning af lyd fra video i baggrunden, når fanen ikke er aktiv, eller enhedens skærm er slået fra. Prøv at skifte til desktoptilstand, hvis denne funktion ikke fungerer.</translation>
-<translation id="59174027418879706">Aktiveret</translation>
+<translation id="3872768973878059926">Tillad fortsat afspilning af lyd, når du skifter til en anden fane i Brave eller til en anden app, eller din enheds skærm er slukket.</translation>
 <translation id="4150201353443180367">Skærm</translation>
 <translation id="2433507940547922241">Udseende</translation>
 <translation id="6333347122924254968">Vis ikonet for Brave Belønninger i adresselinjen</translation>
@@ -310,16 +325,11 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Uphold vil muligvis bede dig om at bekræfte din identitet, baseret på hvilke tjenester der bruges.</translation>
 <translation id="3200197118442451932">Brave Software Inc. behandler, gemmer eller tilgår ikke nogen af de personlige oplysninger, du giver til <ph name="WALLET_PROVIDER"/>, når du opretter en konto hos virksomheden.</translation>
-<translation id="3699674790322420653">Gennemfør tegnebogsverificering</translation>
 <translation id="2193391216824305230">Brugers tegnebog</translation>
 <translation id="1665118090708049096">Gå til min <ph name="WALLET_PROVIDER"/>-konto</translation>
 <translation id="1948959999802743233">Afbryd forbindelsen til <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Hæv Penge</translation>
 <translation id="8874184842967597500">Ikke tilsluttet</translation>
-<translation id="3368922792935385530">Tilsluttet</translation>
-<translation id="5358719431303818601">Frakoblet ikke verificeret</translation>
-<translation id="4241449868720191203">Frakoblet verificeret</translation>
-<translation id="3248185426436836442">Afventer</translation>
 <translation id="2495032782748793764">Brave standard</translation>
 <translation id="9132378787893584761">Del Brave med dine venner!</translation>
 <translation id="717952606991220586">Ups, noget er galt. Prøv venligst igen senere.</translation>
@@ -673,6 +683,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1597199892790541240">Brændstofgebyr</translation>
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Beløb + Brændstof</translation>
+<translation id="2186011161688824046">Beløb + gebyr</translation>
 <translation id="1950052789869821983">Transaktion</translation>
 <translation id="2304783958703511257">Avancerede indstillinger</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -701,6 +712,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1133619932669546254">Aktivér <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">FUNKTIONSTYPE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Ingen data</translation>
+<translation id="1105525362447173583">Solana Dapp Sign-transaktion</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> sendte <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> sendt<ph name="ASSET"/> #<ph name="ASSET_ID"/> -<ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> godkendte <ph name="ASSET"/> - <ph name="DATE"/></translation>
@@ -800,6 +812,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="8030169304546394654">Afbrudt</translation>
 <translation id="3423275441470187644">Stol på siden</translation>
 <translation id="2391762656119864333">Tilbagekald</translation>
+<translation id="3368922792935385530">Tilsluttet</translation>
 <translation id="3432029672560911238">Brugerkonto</translation>
 <translation id="5753378322046059140">Skift konto</translation>
 <translation id="3897092660631435901">Menu</translation>
@@ -867,6 +880,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="7080614857771109950">Understøtter EVM-kompatible aktiver på Ethereums blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Understøtter SPL-kompatible aktiver på Solanas blockchain</translation>
 <translation id="6575120282593094155">Du har endnu ikke en <ph name="ACCOUNT_TYPE"/>-konto. Vil du oprette en nu?</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">Ekskluderede apps</translation>
 <translation id="8463269357637177759">Tilladte almindelige apps</translation>
@@ -889,6 +903,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="4784306439879850873">Vær opmærksom på, at Brave ikke kan garantere, hvad der vil ske, hvis du skriver under. En signatur kan godkende næsten enhver form for handling i din konto eller på dine vegne, blandt andet at give fuld kontrol over din konto og crypto-aktiver til siden, der anmoder dig. Skriv kun under, hvis du er sikker på, du vil udføre denne handling og stoler på siden.</translation>
 <translation id="3474375934783434676">Skriv under på eget ansvar</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/>af<ph name="SIZE"/></translation>
+<translation id="756701799684433105">Godkend transaktion</translation>
 <translation id="6450792191436242818">Systemprogram</translation>
 <translation id="6252742184395380448">Konfigurér program</translation>
 <translation id="5358970666412490132">Belønningsprogram</translation>
@@ -898,6 +913,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="6421371987002247943">Poletprogram</translation>
 <translation id="8780753288764281797">Secp256k1-program</translation>
 <translation id="8504640708321980506">Data</translation>
+<translation id="3723411967118253067">Program-ID</translation>
 <translation id="4771176409524282426">Opret konto</translation>
 <translation id="1755120947324658439">Tildel</translation>
 <translation id="7588707273764747927">Overfør</translation>
@@ -937,4 +953,32 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="7352651011704765696">Noget gik galt</translation>
 <translation id="7144878232160441200">Prøv igen</translation>
 <translation id="6040143037577758943">Luk</translation>
+<translation id="7710469167917867539">Transaktionsgebyr</translation>
+<translation id="7843211152394841558">Maks. forsøg:</translation>
+<translation id="8496335570810457">Transaktionssimulation-forpligtelse:</translation>
+<translation id="5100124500279922001">Spring transaktionssimulation over:</translation>
+<translation id="7152095322071766507">Mest besøgte side</translation>
+<translation id="7230006500876504868">Søg med Brave</translation>
+<translation id="5888208462949095139">Søg med <ph name="DEFAULT_SEARCH_ENGINE"/>S</translation>
+<translation id="5456039738087398178">Widget til hjemmeskærm</translation>
+<translation id="703185154752046151">Widget føjet til hjemmeskærm</translation>
+<translation id="3290805388004282161">Prøv Braves søgewidget</translation>
+<translation id="4809681171446727314">Udfør private, uafhængige søgninger direkte fra din hjemmeskærm.</translation>
+<translation id="7751715172931488388">TIlføj widget</translation>
+<translation id="7285167584112910782">Braves hurtige søgefunktion</translation>
+<translation id="2326703104633309781">Brug Brave Translate</translation>
+<translation id="5802752138057422257">NON-ASCII-tegn registreret!</translation>
+<translation id="442709594176931966">Se oprindelige besked</translation>
+<translation id="2239252396088484499">Se besked i ASCII-kode</translation>
+<translation id="4220693114674044366">Token-adresse</translation>
+<translation id="5658257029899993935">Forbind købet med din Brave-konto</translation>
+<translation id="1187061015547219282">Du kan forbinde køb på Play Store til med din Brave-konto, så du kan bruge Brave-VPN på andre enheder.</translation>
+<translation id="6662142137695589205">Forbind dit VPN-abonnement</translation>
+<translation id="2674077112509133024">Udvid din Brave Firewall + VPN-beskyttelse</translation>
+<translation id="6365389672683343144">Dit VPN-abonnement hos Brave kan beskytte op til 5 enheder – både Android, iOS eller PC. Du skal bare forbinde din Google Play-konto med din Brave-konto.</translation>
+<translation id="1580125697191336644">Eksperimentelt. Aktiverer afspilning af lyd fra video i baggrunden, når fanen ikke er aktiv, eller enhedens skærm er slået fra. Prøv at skifte til desktoptilstand, hvis denne funktion ikke fungerer.</translation>
+<translation id="3699674790322420653">Gennemfør tegnebogsverificering</translation>
+<translation id="5358719431303818601">Frakoblet ikke verificeret</translation>
+<translation id="4241449868720191203">Frakoblet verificeret</translation>
+<translation id="3248185426436836442">Afventer</translation>
 </translationbundle>

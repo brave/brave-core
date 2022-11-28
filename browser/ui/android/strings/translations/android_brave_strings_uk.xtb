@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="uk">
+<translation id="915758461293673891">Розмір чайових:</translation>
+<translation id="8966035543003363155">Зі сповіщеннями від Brave це буде простіше</translation>
+<translation id="7662771815233894695">Керуйте завантаженнями, отримуйте токени, переглядайте тижневу статистику з використання тощо.</translation>
+<translation id="4265429476391459783">Ви не заробляєте винагороди та не отримуєте звіти щодо конфіденційності</translation>
+<translation id="1305714751384738456">Ви не заробляєте винагороди Brave</translation>
+<translation id="1483391942610220726">Ви не отримуєте звіти щодо конфіденційності</translation>
+<translation id="4683790942451502796">Якщо ви хочете й надалі отримувати BAT і щотижневі звіти щодо конфіденційності, знов увімкніть сповіщення.</translation>
+<translation id="1462722717055895108">Якщо ви хочете й надалі отримувати BAT, знов увімкніть сповіщення</translation>
+<translation id="5457255168064266494">Якщо ви хочете й надалі отримувати щотижневі звіти щодо конфіденційності, знов увімкніть сповіщення.</translation>
+<translation id="6268959058971634697">Ви не заробляєте винагороди</translation>
+<translation id="1088637159642753509">Щоб отримувати винагороди Brave і щотижневі звіти щодо конфіденційності, увімкніть сповіщення.</translation>
+<translation id="312404770066229090">Щоб отримувати винагороди Brave, увімкніть сповіщення на пристрої.</translation>
+<translation id="2241529840361230499">Щоб отримувати від Brave звіти щодо конфіденційності, увімкніть сповіщення на пристрої.</translation>
+<translation id="4930155581888391118">Щоб отримувати винагороди, увімкніть сповіщення від Brave.</translation>
+<translation id="325187916104529570">Відкрийте налаштування та ввімкніть на пристрої сповіщення для Brave Ads.</translation>
+<translation id="5744802588121897886">Увімкнути сповіщення Brave</translation>
 <translation id="7307834434086582547">Увімкнути/Вимкнути Brave Shields</translation>
 <translation id="6945863270524203017">Отримуйте щотижневі оновлення щодо конфіденційності про блокування трекерів і реклами.</translation>
 <translation id="4324735664183300693">Увімкнути сповіщення</translation>
@@ -28,7 +44,7 @@
 <translation id="8195146845495346281">Найменший розмір чайових: 0,25 BAT</translation>
 <translation id="4647657427328119430">Недостатньо токенів.</translation>
 <translation id="2359808026110333948">Продовжити</translation>
-<translation id="4227681408214010862">Добре, що #Brave дає мені змогу мені підтримувати авторів! Даю чайові <ph name="NAME"/> у #BAT. Якщо вони підтвердять за адресою https://creators.brave.com до <ph name="DATE"/>, BAT будуть їхніми!</translation>
+<translation id="4227681408214010862">Добре, що #Brave дає мені змогу підтримувати авторів! Даю чайові <ph name="NAME"/> у #BAT. Якщо ця людина виконає перевірку за адресою https://creators.brave.com до <ph name="DATE"/>, BAT будуть їхніми!</translation>
 <translation id="6231182869178328516">Мої чайові було щойно надіслано користувачу <ph name="NAME"/> за допомогою Brave Browser. Додаткову інформацію можна переглянути тут: https://brave.com/tips.</translation>
 <translation id="7172012963002631836">Під час надсилання чайових виникла проблема.</translation>
 <translation id="8994556588732085585">Будь ласка, закрийте та знову відкрийте банер для чайових, щоб повторити спробу.</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">Метод вирішення</translation>
 <translation id="2356070529366658676">Запитати</translation>
 <translation id="4176463684765177261">Вимкнено</translation>
-<translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">Увімкнено</translation>
 <translation id="6252490671914511928">Найпопулярніші сьогоднішні історії в абсолютно приватній стрічці, тільки для вас.</translation>
 <translation id="7266075701303521777">Новини Brave підтримують рекламу з повністю приватними й анонімними оголошеннями, підібраними для вашого пристрою.</translation>
 <translation id="4541978218358617681">Реклама</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">Очистити історію</translation>
 <translation id="5965081608816406060">Відтворення відео у фоновому режимі</translation>
 <translation id="6332924730165919598">Brave закривається при закритті усіх вкладок</translation>
-<translation id="1580125697191336644">Експериментальна функція. Дозволяє відтворювати звук з відео у фоновому режимі, коли вкладка неактивна чи екран пристрою вимкнений. Спробуйте перемкнутись на настільний режим, якщо ця функція не працює.</translation>
-<translation id="59174027418879706">Увімкнено</translation>
+<translation id="3872768973878059926">Дозволяє продовжувати відтворення аудіо після переключення вкладки Brave, переходу в іншу програму, а також вимкнення екрана пристрою.</translation>
 <translation id="4150201353443180367">Екран</translation>
 <translation id="2433507940547922241">Зовнішній вигляд</translation>
 <translation id="6333347122924254968">Показувати значок Brave Rewards в адресному рядку</translation>
@@ -310,16 +325,11 @@
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Uphold може вимагати від вас підтвердження вашої особи, залежно від запитаних послуг.</translation>
 <translation id="3200197118442451932">Brave Software Inc. не обробляє, не зберігає та не отримує доступу до будь-якої особистої інформації, яку ви надаєте <ph name="WALLET_PROVIDER"/>, коли створюєте у них обліковий запис.</translation>
-<translation id="3699674790322420653">Завершити підтвердження гаманця</translation>
 <translation id="2193391216824305230">Гаманець користувача</translation>
 <translation id="1665118090708049096">Перейти до облікового запису <ph name="WALLET_PROVIDER"/></translation>
 <translation id="1948959999802743233">Відключити <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Вивести кошти</translation>
 <translation id="8874184842967597500">Не під’єднано</translation>
-<translation id="3368922792935385530">Підключено</translation>
-<translation id="5358719431303818601">Відключено, не підтверджено</translation>
-<translation id="4241449868720191203">Відключено, підтверджено</translation>
-<translation id="3248185426436836442">В очікуванні</translation>
 <translation id="2495032782748793764">Стандартна версія Brave</translation>
 <translation id="9132378787893584761">Поділіться Brave з друзями!</translation>
 <translation id="717952606991220586">Отакої, щось пішло не так. Будь ласка, спробуйте ще раз пізніше.</translation>
@@ -673,6 +683,7 @@
 <translation id="1597199892790541240">Комісія за газ</translation>
 <translation id="1634828734222219955">Усього</translation>
 <translation id="7995708795274219641">Сума + газ</translation>
+<translation id="2186011161688824046">Сума + комісія</translation>
 <translation id="1950052789869821983">Транзакція</translation>
 <translation id="2304783958703511257">Розширені налаштування</translation>
 <translation id="4220062530885628403">Нонс</translation>
@@ -701,6 +712,7 @@
 <translation id="1133619932669546254">Активувати <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">ТИП ФУНКЦІЇ: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Немає даних</translation>
+<translation id="1105525362447173583">Транзакція підпису Dapp на базі Solana</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> надіслав (-ла) <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> надсилає<ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> затвердив (-ла) <ph name="ASSET"/> — <ph name="DATE"/></translation>
@@ -800,6 +812,7 @@
 <translation id="8030169304546394654">Від'єднано</translation>
 <translation id="3423275441470187644">Надійний</translation>
 <translation id="2391762656119864333">Анулювати</translation>
+<translation id="3368922792935385530">Підключено</translation>
 <translation id="3432029672560911238">Обліковий запис користувача</translation>
 <translation id="5753378322046059140">Змінити обліковий запис</translation>
 <translation id="3897092660631435901">Меню</translation>
@@ -867,6 +880,7 @@
 <translation id="7080614857771109950">Підтримує сумісні з EVM активи в блокчейні Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Підтримує сумісні з SPL активи в блокчейні Solana</translation>
 <translation id="6575120282593094155">У вас ще немає облікового запису <ph name="ACCOUNT_TYPE"/>. Створити зараз?</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">Виключені додатки</translation>
 <translation id="8463269357637177759">Дозволені звичайні додатки</translation>
@@ -889,6 +903,7 @@
 <translation id="4784306439879850873">Зверніть увагу, Brave не зможе перевірити, що буде відбуватися, якщо ви підпишетесь. Підпис може авторизувати майже будь-яку операцію у рахунку або від вашого імені, зокрема (але без обмежень) надання повного контролю над вашим рахунком і криптоактивами сайту, який робить запит. Підписуйте, лише якщо ви впевнені, що хочете виконати цю дію й довіряєте сайту, який робить запит.</translation>
 <translation id="3474375934783434676">Підписування на власний ризик</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> з <ph name="SIZE"/></translation>
+<translation id="756701799684433105">Схвалити транзакцію</translation>
 <translation id="6450792191436242818">Системна програма</translation>
 <translation id="6252742184395380448">Програма налаштувань</translation>
 <translation id="5358970666412490132">Stake Program</translation>
@@ -898,43 +913,72 @@
 <translation id="6421371987002247943">Програма токенів</translation>
 <translation id="8780753288764281797">Secp256k1 Program</translation>
 <translation id="8504640708321980506">Дані</translation>
+<translation id="3723411967118253067">ID програми</translation>
 <translation id="4771176409524282426">Створити обліковий запис</translation>
 <translation id="1755120947324658439">Призначити</translation>
 <translation id="7588707273764747927">Передати</translation>
 <translation id="5328067049293286962">Створити рахунок із початковим значенням</translation>
-<translation id="1512366326138054636">Розширений рахунок нонс</translation>
+<translation id="1512366326138054636">Розширений рахунок nonce</translation>
 <translation id="7042202638449257311">Вивести кошти з рахунку нонс</translation>
 <translation id="6586085653712983224">Ініціалізація рахунку нонс</translation>
 <translation id="8790312855368673743">Авторизувати рахунок нонс</translation>
 <translation id="5312748886432335174">Виділити</translation>
-<translation id="7678705217826797696">Виділити з початковим значенням</translation>
+<translation id="7678705217826797696">Виділення місця з початковим значенням</translation>
 <translation id="7436137523759921028">Призначити з початковим значенням</translation>
 <translation id="3360695936886670509">Передати з початковим значенням</translation>
 <translation id="7323636209143541483">Оновити рахунок нонс</translation>
 <translation id="616021855350068202">Ініціалізація mint</translation>
 <translation id="4377316227435786423">Ініціалізація рахунку</translation>
 <translation id="7474306790151660826">Ініціалізація мультипідпису</translation>
-<translation id="363258595406850968">Установити повноваження</translation>
-<translation id="2091563464450586155">Mint для</translation>
-<translation id="1252941298291625577">Записати</translation>
+<translation id="363258595406850968">Установлення права</translation>
+<translation id="2091563464450586155">Мінтинг для</translation>
+<translation id="1252941298291625577">Спалення</translation>
 <translation id="5211196599627796093">Закрити рахунок</translation>
 <translation id="6988707241715050556">Заморозити рахунок</translation>
 <translation id="857250415816680832">Розморозити рахунок</translation>
 <translation id="5453172892735755262">Передавання перевірено</translation>
 <translation id="471669767157904431">Схвалення перевірено</translation>
-<translation id="3530340583186873359">Mint для перевірки</translation>
-<translation id="5068456869800056740">Запис перевірено</translation>
+<translation id="3530340583186873359">Мінтинг для перевірки</translation>
+<translation id="5068456869800056740">Спалення перевірено</translation>
 <translation id="3004830385467519189">Ініціалізація рахунку 2</translation>
-<translation id="8026488633670875516">Синхронізація власних</translation>
+<translation id="8026488633670875516">Синхронізація нативних</translation>
 <translation id="2024649614526778327">Ініціалізація рахунку 3</translation>
 <translation id="8382368767453083629">Ініціалізація мультипідпису 2</translation>
 <translation id="77243237706803459">Ініціалізація mint 2</translation>
 <translation id="583281660410589416">Невідомий</translation>
 <translation id="2862978891748913252">Виберіть свою країну</translation>
-<translation id="3832588024105436400">Виберіть свою країну, щоб ми могли показувати вам відповідні для вашого регіону опції та рекламу. <ph name="PRIVACY_POLICY"/></translation>
+<translation id="3832588024105436400">Виберіть свою країну, щоб ми могли показувати вам відповідні для вашого регіону можливості та рекламу. <ph name="PRIVACY_POLICY"/></translation>
 <translation id="5666264859501108700">Ваш регіон винагород Brave: <ph name="COUNTRY_NAME"/>.</translation>
 <translation id="3180990265682133881">Виникла помилка під час установлення країни. Спробуйте знову.</translation>
 <translation id="7352651011704765696">Щось пішло не так</translation>
 <translation id="7144878232160441200">Спробувати знову</translation>
 <translation id="6040143037577758943">Закрити</translation>
+<translation id="7710469167917867539">Комісія за транзакцію</translation>
+<translation id="7843211152394841558">Максимальна кількість спроб:</translation>
+<translation id="8496335570810457">Статус симуляції:</translation>
+<translation id="5100124500279922001">Пропустити симуляцію:</translation>
+<translation id="7152095322071766507">Найчастіше відвідуваний сайт</translation>
+<translation id="7230006500876504868">Пошук у Brave</translation>
+<translation id="5888208462949095139">Пошук у <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
+<translation id="5456039738087398178">Віджет на головний екран</translation>
+<translation id="703185154752046151">Віджет додано на головний екран</translation>
+<translation id="3290805388004282161">Спробуйте віджет для пошуку Brave</translation>
+<translation id="4809681171446727314">Отримуйте доступ до незалежного та приватного пошуку просто на головному екрані.</translation>
+<translation id="7751715172931488388">Додати віджет</translation>
+<translation id="7285167584112910782">Швидкий пошук дій Brave</translation>
+<translation id="2326703104633309781">Увімкнути перекладач Brave</translation>
+<translation id="5802752138057422257">Виявлено символи, що не відповідають формату ASCII!</translation>
+<translation id="442709594176931966">Переглянути вихідне повідомлення</translation>
+<translation id="2239252396088484499">Переглянути повідомлення в кодуванні ASCII</translation>
+<translation id="4220693114674044366">Адреса токена</translation>
+<translation id="5658257029899993935">Зв’язати покупку з обліковим записом Brave</translation>
+<translation id="1187061015547219282">Зв’яжіть покупку в Play Маркеті з акаунтом Brave, щоб використовувати Brave VPN на інших пристроях.</translation>
+<translation id="6662142137695589205">Зв’язати підписку на VPN</translation>
+<translation id="2674077112509133024">Розширений захист брандмауера Firewall + VPN</translation>
+<translation id="6365389672683343144">За допомогою підписки на VPN від Brave можна захистити до 5 пристроїв на базі Android та iOS, а також ПК. Достатньо підключити підписку Google Play до облікового запису Brave.</translation>
+<translation id="1580125697191336644">Експериментальна функція. Дозволяє відтворювати звук з відео у фоновому режимі, коли вкладка неактивна чи екран пристрою вимкнений. Спробуйте перемкнутись на настільний режим, якщо ця функція не працює.</translation>
+<translation id="3699674790322420653">Завершити підтвердження гаманця</translation>
+<translation id="5358719431303818601">Відключено, не підтверджено</translation>
+<translation id="4241449868720191203">Відключено, підтверджено</translation>
+<translation id="3248185426436836442">В очікуванні</translation>
 </translationbundle>

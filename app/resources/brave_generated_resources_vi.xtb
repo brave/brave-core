@@ -3,7 +3,9 @@
 <translationbundle lang="vi">
 <translation id="3333887201479867589">Phần thưởng của Brave</translation>
 <translation id="4615489450165434530">Báo cáo trang web bị hỏng</translation>
+<translation id="8097438084542431276">Sao chép liên kết sạch</translation>
 <translation id="1209739344687072997">Báo cáo trang web bị hỏng</translation>
+<translation id="7630214457764713113">Sao chép liên kết sạch</translation>
 <translation id="6406506848690869874">Đồng bộ</translation>
 <translation id="1544192797660353713">Ví</translation>
 <translation id="2445484935443597917">Tạo hồ sơ mới</translation>
@@ -73,7 +75,9 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2638041073279639246">Mở liên kết trong cửa sổ cá nhân mới với công nghệ Tor</translation>
 <translation id="3425600262621021599">Mở liên kết trong cửa sổ cá nhân Brave với công nghệ Tor</translation>
 <translation id="3229091547987707389">Nhập khẩu và chia sẻ thư mục</translation>
+<translation id="2804710924397009224">Ẩn Biểu tượng Phần thưởng Brave</translation>
 <translation id="5029193871181468990">Ẩn biểu tượng Brave Phần thưởng</translation>
+<translation id="2808103541110899519">Ẩn biểu tượng Ví Brave</translation>
 <translation id="7595540212376041331">Ẩn biểu tượng Ví Brave</translation>
 <translation id="4928988318462976765">Cửa hàng Tiện ích mở rộng Web</translation>
 <translation id="9181207987584064303">Xem trong Cửa hàng Tiện ích mở rộng Web</translation>
@@ -170,7 +174,13 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191143826155037518">Chúng tôi cung cấp Brave cho bạn theo <ph name="BEGIN_LINK_MPL"/>Giấy phép công cộng 2.0 của Mozilla<ph name="END_LINK_MPL"/> (MPL). Ngoài ra, Brave còn có <ph name="BEGIN_LINK_OSS"/>phần mềm nguồn mở<ph name="END_LINK_OSS"/> tuân theo nhiều loại giấy phép khác.
         Bạn có thể đọc <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>hướng dẫn cách tải xuống và tự xây dựng cho mình<ph name="END_LINK_BUILD_INSTRUCTIONS"/> <ph name="BEGIN_LINK_SOURCE_CODE"/>mã nguồn cụ thể dùng để tạo bản sao này<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Đánh dấu tất cả các tab...</translation>
+<translation id="3987546108749866209">Dùng tab dọc</translation>
+<translation id="5860254591544742609">Hiển thị thanh tiêu đề</translation>
+<translation id="399928467800528208">Nổi khi di chuột qua</translation>
 <translation id="2336228925368920074">Đánh dấu trang Tất cả các Tab...</translation>
+<translation id="2523967823495420116">Dùng tab dọc</translation>
+<translation id="8888603463702767599">Hiển thị thanh tiêu đề</translation>
+<translation id="2058818256505091369">Nổi khi di chuột qua</translation>
 <translation id="4235920711083356755">Hiển thị nút VPN</translation>
 <translation id="4070612712151038707">Hiển thị nút VPN trên Thanh công cụ</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -201,9 +211,9 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8722651357687610395">Đặt Brave làm trình duyệt mặc định</translation>
 <translation id="2370739752330685659">Có lẽ để sau</translation>
 <translation id="7537601449003285327">Ghim vào thanh tác vụ</translation>
+<translation id="2307973900865360088">Giữ lại trong Dock</translation>
 <translation id="961012016278832836">Microsoft Edge Cũ</translation>
 <translation id="6436994631426134065">Đã nhập khẩu từ <ph name="BROWSER_NAME"/>.</translation>
-<translation id="7630214457764713113">Sao chép liên kết sạch</translation>
 <translation id="9156965752763025780">Các thay đổi của bạn sẽ có hiệu lực vào lần tới khi bạn chạy lại Brave.</translation>
 <translation id="7179921470347911571">Khởi chạy lại Ngay</translation>
 <translation id="4472575034687746823">Bắt đầu</translation>
@@ -245,6 +255,8 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5919424224662539292">Tùy chỉnh hình nền và các tiện ích xuất hiện trên trang tab mới</translation>
 <translation id="7461924472993315131">Ghim</translation>
 <translation id="7506648566440714944">Brave đã được ghim</translation>
+<translation id="239275665037555969">Dock</translation>
+<translation id="4057614912106618659">Brave đã ở trên Dock</translation>
 <translation id="3195845168740336657">Thiết lập khiên</translation>
 <translation id="754769152790647708">Trạng thái khiên</translation>
 <translation id="3615717588724840230">Các trang web có thể chặn trình theo dõi, quảng cáo và lấy dấu vân tay bằng Khiên</translation>
@@ -384,6 +396,8 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4581190919849683048">Bạn muốn đồng bộ hóa đến loại thiết bị nào?</translation>
 <translation id="4112587618563511470">Mã đồng bộ hóa không hợp lệ, xin vui lòng kiểm tra và thử lại.</translation>
 <translation id="3995714999835224798">Mã này không hợp lệ</translation>
+<translation id="4432071071853308688">Mã này trống</translation>
+<translation id="955848693465029904">Lỗi thiết lập đồng bộ nội bộ</translation>
 <translation id="859506441384380749">Mã này được tạo ra bởi một phiên bản cũ của Brave, hãy nâng cấp thiết bị kia của bạn trước</translation>
 <translation id="3132642509209154999">Mã này đã hết hạn. Vui lòng tạo một mã mới trên thiết bị kia của bạn và thử lại.</translation>
 <translation id="2859229680945501779">Mã này không hợp lệ. Vui lòng kiểm tra xem thời gian và múi giờ có được đặt chính xác trên thiết bị của bạn không.</translation>
@@ -403,17 +417,21 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6864914031231797928">Cho phép đăng nhập bằng Google cho các tiện ích mở rộng</translation>
 <translation id="6554397389149987360">Sử dụng thành phần của Hangouts để cho phép chia sẻ màn hình và các tính năng khác trong trình duyệt.</translation>
 <translation id="7878791177459550035">Bộ định tuyến phương tiện cho phép tính năng truyền trong trình duyệt.</translation>
-<translation id="5927916530277631319">Phương thức phân giải tên miền Unstoppable Domains</translation>
-<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/> về các cân nhắc quyền riêng tư của Ethereum.</translation>
-<translation id="5248318250177143470">Phương thức phân giải tên miền ENS (Dịch vụ Cung cấp Tên miền Ethereum)</translation>
+<translation id="2707635989000984973">Xử lý các tên miền Unstoppable Domains</translation>
+<translation id="1807158022157096592"><ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/> về các cân nhắc quyền riêng tư của Unstoppable Domains.</translation>
+<translation id="641308776160806829">Xử lý các tên miền Ethereum Name Service (ENS)</translation>
 <translation id="6421218422395686663">Cho phép tra cứu chuỗi ngoại tuyến ENS.</translation>
+<translation id="4608449984413688436">Xử lý các tên miền Solana Name Service (SNS)</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/> về các cân nhắc quyền riêng tư trong tra cứu chuỗi ngoại tuyến ENS.</translation>
 <translation id="6241402707160226266">Cửa sổ riêng tư với Tor</translation>
 <translation id="8762452230727230396">Tor ẩn địa chỉ IP của bạn khỏi các trang web bạn truy cập.</translation>
+<translation id="951983619130191090">Tình nguyện giúp người khác kết nối với mạng Tor</translation>
+<translation id="2223668809371912019">Bật tiện ích mở rộng Snowflake để cho phép người dùng ở các quốc gia bị kiểm duyệt kết nối với mạng Tor thông qua kết nối mạng của bạn.</translation>
 <translation id="2959986444009520721">Sử dụng cầu nối</translation>
 <translation id="8416750895933172460">Cầu nối giúp bạn truy cập Mạng Tor ở những nơi Tor bị chặn. Tùy thuộc vào vị trí của bạn, cầu nối này có thể hoạt động tốt hơn các cầu nối khác.</translation>
 <translation id="7206799843254049470">Cài đặt kết nối Tor</translation>
 <translation id="3194502271166340944">Kiểm soát cách Cửa sổ Riêng tư có Tor kết nối với mạng Tor</translation>
+<translation id="3717364961460790491">Không thể tải xuống tiện ích mở rộng Snowflake cần thiết cho chức năng này. Vui lòng kiểm tra kết nối internet của bạn và thử lại.</translation>
 <translation id="4859228830700205299">Chọn cầu nối tích hợp sẵn</translation>
 <translation id="3233137871426528317">Yêu cầu cầu nối từ torproject.org</translation>
 <translation id="5701503934456421898">Yêu cầu Cầu nối mới...</translation>
@@ -490,11 +508,13 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1195880978080389104">Nút IPFS cục bộ Brave</translation>
 <translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Tìm hiểu thêm<ph name="END_LINK_MPL"/> về nút IPFS cục bộ Brave và các cân nhắc về quyền riêng tư cổng.</translation>
 <translation id="4927734062756955434">Địa chỉ cổng mạng IPFS công khai</translation>
+<translation id="3707431725427930007">Địa chỉ cổng mạng IPFS công khai cho NFT</translation>
 <translation id="8425213833346101688">Thay đổi</translation>
 <translation id="585868419599255817">Dự phòng cổng công khai IPFS</translation>
 <translation id="2618080188892567155">Tự động quay lại cổng IPFS công khai nếu không thể truy cập vào nút IPFS cục bộ Brave của bạn.</translation>
 <translation id="4107552920076294723">Chuyển hướng tài nguyên IPFS đến cổng IPFS đã cấu hình</translation>
-<translation id="6494857428933042381">Tự động sử dụng cổng mạng đã được cấu hình đối với các giải pháp IPFS khi gặp tài nguyên cổng mạng IPFS.</translation>
+<translation id="4284166297897715283">Các yêu cầu truy cập tài nguyên IPFS, được lưu trữ trên cổng IPFS của bên thứ ba sẽ được tải qua cổng cục bộ hoặc cổng từ xa đã chọn.
+Lưu ý: Nếu nút cục bộ được chọn, tài nguyên sẽ được yêu cầu trực tiếp từ máy tính của bạn và dữ liệu đã lưu trong bộ nhớ cache có thể được cung cấp cho mạng IPFS trong một thời gian.</translation>
 <translation id="8655170717758778983">Tự động chuyển hướng đến các trang IPFS thông qua DNSLink khi có thể</translation>
 <translation id="2233724520223030977">Tự động dùng DNSLink để điều hướng đến phiên bản IPFS của một website khi có thể</translation>
 <translation id="8068526464562249859">Sử dụng tiện ích mở rộng IPFS Companion để tăng cường hỗ trợ IPFS trong Brave, bao gồm quyền truy cập các tác vụ IPFS phổ biến từ thanh trình duyệt của bạn.</translation>
@@ -569,4 +589,8 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5318548116565208315">Ảnh đại diện Bonbon Corn</translation>
 <translation id="1959966725083452288">Ảnh đại diện Bonbon Royal</translation>
 <translation id="2039034364578911089">Ảnh đại diện Bonbon Ninja</translation>
+<translation id="5927916530277631319">Phương thức phân giải tên miền Unstoppable Domains</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/> về các cân nhắc quyền riêng tư của Ethereum.</translation>
+<translation id="5248318250177143470">Phương thức phân giải tên miền ENS (Dịch vụ Cung cấp Tên miền Ethereum)</translation>
+<translation id="6494857428933042381">Tự động sử dụng cổng mạng đã được cấu hình đối với các giải pháp IPFS khi gặp tài nguyên cổng mạng IPFS.</translation>
 </translationbundle>

@@ -82,9 +82,6 @@
 <translation id="9024104284526126630">Вы можете начать частный звонок в Brave.</translation>
 <translation id="4903286433687221248">Звоните друзьям и коллегам без ограничений с Brave Talk.</translation>
 <translation id="7115051913071512405">Попробовать</translation>
-<translation id="7415602225677446066">Главные новости за сегодня в вашей личной ленте новостей, только для вас.</translation>
-<translation id="6903061332999399632">В разделе Brave News появляется полностью конфиденциальная и анонимизированная реклама. Она подбирается прямо на устройстве. С ней личная информация всегда остается таковой согласно <ph name="LINK_START"/>политике конфиденциальности<ph name="LINK_END"/>.</translation>
-<translation id="7823038307453615214">Показывать Brave News</translation>
 <translation id="1447534717041828517">Показывать кнопку Brave Новостей на панели инструментов</translation>
 <translation id="370665806235115550">Загрузка...</translation>
 <translation id="4634933166298842522">Управление подписками</translation>
@@ -93,7 +90,6 @@
 <translation id="8909741410750517071">Подпишитесь на этот источник одним нажатием кнопки мыши</translation>
 <translation id="1982678174789043774">Узнавайте обо всех актуальных событиях в Brave Новостях.</translation>
 <translation id="7894417427965898400">Управлять лентой новостей</translation>
-<translation id="780301667611848630">Нет, спасибо</translation>
 <translation id="9164544612367905452">Загружается…</translation>
 <translation id="1276592121036104130">Загрузить новый контент</translation>
 <translation id="2875288128871360696">Перейти к Brave News</translation>
@@ -104,31 +100,11 @@
 <translation id="5158129253322921540">Отключить контент от <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">На правах рекламы</translation>
 <translation id="4541978218358617681">Реклама</translation>
-<translation id="6265592479622441247">Вернуться к <ph name="BEGIN_BOLD"/>информационной панели<ph name="END_BOLD"/></translation>
-<translation id="8300751939969131609">Включите Brave Новости и будьте в курсе всех событий</translation>
-<translation id="8117813824055029515">Персональная лента с новостями из ведущих источников прямо в вашем браузере. Конфиденциально на 100 %.</translation>
-<translation id="1765217911817124376">Включить Brave News</translation>
-<translation id="7845637671472170434">Ищите новости, сайты, темы или RSS-фиды</translation>
-<translation id="1498364270401875204">Каналы</translation>
-<translation id="1472675084647422956">Показать больше...</translation>
-<translation id="8032569120109842252">Подписки</translation>
-<translation id="7841646697467892441">{FEED_COUNT, plural,
-          =1 {# источник}
-          other {# источника}
-        }</translation>
-<translation id="6143382357119101833">Получить фиды с сайта <ph name="URL"/></translation>
-<translation id="4515121482885046194">Фиды на сайте <ph name="URL"/> не найдены</translation>
-<translation id="8535964427132833909">Нет результатов поиска</translation>
-<translation id="9036971622563146214">Результаты</translation>
-<translation id="6727452620418483718">Прямые результаты поиска</translation>
-<translation id="7697251281928908970">Удлините поисковой запрос</translation>
-<translation id="4750394297954878236">Подсказки</translation>
-<translation id="7436846601026966360">Источники, которые могут вам понравиться. Подсказки анонимны, и сведения о них располагаются только на вашем устройстве.</translation>
 <translation id="1776831331757823105">Часы</translation>
 <translation id="7791543448312431591">Добавить</translation>
 <translation id="7679334366167089823">Заработайте токены, просматривая безопасные для вашей конфиденциальности рекламные объявления.</translation>
-<translation id="1531133232292396145">Торгуйте криптовалютами на Binance непосредственно из своего браузера.</translation>
-<translation id="2166494527623220386">Торгуйте криптовалютами на Gemini непосредственно из своего браузера.</translation>
+<translation id="2236818903653027036">Торгуйте криптовалютой на Binance прямо в браузере.</translation>
+<translation id="6508379561970983105">Торгуйте криптовалютой на Gemini прямо в браузере.</translation>
 <translation id="7191394989411626168">Если вы отключите Карты, все карты, которые видны сейчас, будут скрыты. Однако, вы по прежнему можете получать оповещение о новых картах.</translation>
 <translation id="6820526586005233839">Работа Brave Ads приостановлена</translation>
 <translation id="5190407395832551012">Чтобы повысить безопасность Brave Rewards, мы просим случайных пользователей решать капчу. Нажмите «Решить», чтобы возобновить рекламу.</translation>
@@ -164,6 +140,8 @@
 <translation id="4712050378540986986">Статус сети Tor</translation>
 <translation id="1939334281379458295">Tor подключен</translation>
 <translation id="8030169304546394654">Отключен</translation>
+<translation id="2701204441419443612">Подключение…</translation>
+<translation id="8813986611396294203">Сеть Tor работает медленно</translation>
 <translation id="2795840524629682765">Сбой подключения к Tor</translation>
 <translation id="1149108864689950951">Подключение Tor ([[percentage]] %)…</translation>
 <translation id="3651192084771403430">Не удается подключиться? Попробуйте <ph name="BEGIN_LINK"/>отключить<ph name="END_LINK"/> функцию «Окно инкогнито с Tor» в настройках, а затем включить ее снова.</translation>
@@ -277,8 +255,6 @@
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7841456038054167122">Введите повторно ключи или попробуйте другие ключи.</translation>
-<translation id="1911900517212490188">Введенный ключ восстановления больше не действителен. Пожалуйста, посетите <ph name="BEGIN_LINK"/>эту страницу<ph name="END_LINK"/>, чтобы получить новый ключ.</translation>
 <translation id="7583327070390027131">Следующая дата ежемесячного платежа</translation>
 <translation id="6231182869178328516">Я только что поддержал(а) <ph name="NAME"/> через браузер Brave. Узнать больше можно на https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Здорово, что <ph name="HASHTAG"/>Brave дает мне возможность поддерживать авторов! Только что пользователю <ph name="NAME"/> переведены от меня токены <ph name="HASHTAG2"/>BAT. Чтобы получить их, автору нужно подтвердить профиль на сайте https://creators.brave.com до <ph name="DATE"/>.</translation>
@@ -300,6 +276,9 @@
 <translation id="8925428135452218262">Ошибка: несоответствие стран</translation>
 <translation id="5260522591743022748">Похоже, ваш профиль Brave Наград уже подтвержден другим аккаунтом <ph name="PROVIDER"/>. Повторите попытку с предыдущим аккаунтом.</translation>
 <translation id="5111921830714291902">Ошибка: неверный аккаунт</translation>
+<translation id="5225019866741699134">Подключить <ph name="PROVIDER"/> к Brave Наградам пока невозможно. Повторите попытку позже.</translation>
+<translation id="6105073131081187815"><ph name="BEGIN_LINK"/>Узнайте статус сервиса<ph name="END_LINK"/>.</translation>
+<translation id="2400786541309111904">Произошла ошибка. Подключение к выбранному кастодиану временно недоступно.</translation>
 <translation id="1024520300696337331">Мы не можем подключить ваш аккаунт <ph name="PROVIDER"/> к профилю Brave Наград, так как страна, где был зарегистрирован аккаунт <ph name="PROVIDER"/> не поддерживается сервисом.</translation>
 <translation id="619384413404021992">Посмотрите <ph name="LINK_BEGIN"/>список поддерживаемых регионов и узнайте больше<ph name="END_LINK"/> о подключении кастодиального аккаунта к Brave Наградам.</translation>
 <translation id="7193389978208728181">Ошибка. Сервис не поддерживается в этом регионе.</translation>
@@ -310,9 +289,9 @@
 <translation id="3274650021044762770">Не удалось подтвердить запрос браузера на подключение Brave Наград к аккаунту <ph name="PROVIDER"/>. Свяжитесь со <ph name="BEGIN_LINK"/>службой поддержки<ph name="END_LINK"/>.</translation>
 <translation id="1316066811927496401">Ошибка: не удалось подтвердить запрос</translation>
 <translation id="1737873393693460829">Включая «[[title]]», вы соглашаетесь с <ph name="BEGIN_LINK1"/>Условиями использования<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>Политикой конфиденциальности<ph name="END_LINK2"/>.</translation>
-<translation id="4672975606583962967">Выберите сервис кошельков</translation>
-<translation id="1815503044492647974">Выберите партнерский сервис кастодиальных кошельков. У вас уже есть аккаунт? Чтобы подключиться, вам будет нужно в него войти.</translation>
-<translation id="2205685774710519016">Примечание. После авторизации ваши транзакции будут видны выбранному сервису кошельков. Например, этот сервис сможет просматривать информацию о получателе и размер вознаграждения.</translation>
+<translation id="4123948149985772126">Выберите сервис, в котором был создан аккаунт</translation>
+<translation id="2916515880661220182">Вам предложат создать или подключить уже существующий кастодиальный кошелек.</translation>
+<translation id="2054853229650377447">Внимание! После авторизации кастодиан сможет просматривать информацию о ваших транзакциях, например сведения о получателе и сумме вознаграждения.</translation>
 <translation id="2147158325758481862">Подтверждать кошелек необязательно</translation>
 <translation id="8228649055483250005">Сервисы кастодиальных кошельков должны подтверждать личность каждого, кто создает кошелек, в том числе проверяя удостоверение с фотографией.</translation>
 <translation id="2672513643520959619">Компания <ph name="BOLD_BEGIN"/>Brave Software Inc.<ph name="BOLD_END"/> не обрабатывает и не хранит личные данные, а также не получает к ним доступ, когда вы создаете аккаунт в партнерских сервисах кастодиальных кошельков.</translation>
@@ -405,12 +384,10 @@
 <translation id="3363158483789327529">Профиль Brave Наград еще не создан</translation>
 <translation id="476272015919848174">ID оплаты Наград:</translation>
 <translation id="9008441690901662695">Статус Наград:</translation>
-<translation id="3368922792935385530">Подключено</translation>
+<translation id="2851097645709765545">Кошелька нет</translation>
 <translation id="8874184842967597500">Не подключено</translation>
 <translation id="4569155249847375786">Проверен</translation>
-<translation id="922103963921062336">Отключено (Не верифицировано)</translation>
 <translation id="6521149675246672063">Отключено (Верифицировано)</translation>
-<translation id="3248185426436836442">В ожидании</translation>
 <translation id="5906820630265272615">Средства в BAT</translation>
 <translation id="5814098892838785557">Вы уверены, что хотите прекратить поддерживать этого творца?</translation>
 <translation id="6582097696555842139">Отмена ежемесячного платежа</translation>
@@ -519,18 +496,12 @@
 <translation id="8204292894173669182">Удалить из сохраненного</translation>
 <translation id="5530851178552343773">Вы отправили [[currency]] ([[reservedAmount]]) авторам, которые еще не подтвердили права на свой контент. Браузер будет повторять попытку в течение 90 дней.</translation>
 <translation id="5939518447894949180">Сбросить</translation>
-<translation id="3157931365184549694">Восстановить</translation>
 <translation id="5669281110673664811">Очистить список исключений</translation>
 <translation id="1797334173232638045">Закрепленные сайты перемещены в</translation>
 <translation id="542042553430131913">Если вы не подтвердите профиль Brave Наград, то баланс BAT будет храниться в локальных файлах на вашем устройстве.</translation>
 <translation id="2142973554991645476">Если вы <ph name="LINK_BEGIN"/>подтвердите<ph name="LINK_END"/> профиль Brave Наград, то BAT будут защищены в случае переустановки браузера и форматирования устройства. Вы также получите возможность добавлять и выводить токены.</translation>
 <translation id="5317144262906129592">Вы можете поблагодарить автора за его работу, отправив вознаграждение.</translation>
 <translation id="3074127054582480056">Внимание</translation>
-<translation id="3034163433136515805">Показать QR-код</translation>
-<translation id="1640793619390890218">для пользователей Brave Rewards на iOS за перечисление баллов BAT.</translation>
-<translation id="5462747026114176246">Перед тем как использовать ключ, создайте резервную копию профиля Brave Наград или используйте вознаграждения. После восстановления ваш профиль Brave Наград будет перезаписан.</translation>
-<translation id="3267911153934785912">Введите ключ восстановления или</translation>
-<translation id="1209382772199769572">Перед тем как менять кошелек, выполните его резервное копирование. Если этого не сделать, вы потеряете средства ([[funds]]).</translation>
 <translation id="3659457123782988823">Сбросить профиль Brave Наград?</translation>
 <translation id="4048187103708861555">Если вы сбросите профиль Brave Наград, то навсегда потеряете его данные и <ph name="BAT_AMOUNT"/>. Чтобы сохранить средства, выполните <ph name="LINK_BEGIN"/>подтверждение<ph name="LINK_END"/>.</translation>
 <translation id="3548849774726860833">Если вы сбросите профиль Brave Наград, все его данные будут утеряны навсегда.</translation>
@@ -546,7 +517,6 @@
 <translation id="2726674968268546964">токены</translation>
 <translation id="5015443703424816075">Token</translation>
 <translation id="1634828734222219955">Итого</translation>
-<translation id="4395099108822007284">Загружаем изображение...</translation>
 <translation id="3535654229833214438">Операции</translation>
 <translation id="8772672608371898774">Издатель, подтвержденный Brave</translation>
 <translation id="5050370287908180130">См. подробности в выписке за месяц</translation>
@@ -573,6 +543,9 @@
 <translation id="4450893287417543264">Не показывать снова</translation>
 <translation id="6518133107902771759">Подтвердить</translation>
 <translation id="422369484771082705">Вы можете пройти процедуру подтверждения, чтобы выводить токены BAT, полученные в рамках программы Brave Награды, напрямую на кастодиальный кошелек. Но это необязательно.</translation>
+<translation id="4354564238172327160">Станьте автором Brave!</translation>
+<translation id="4639659520811817892">Зарегистрируйтесь на сайте creators.brave.com и получайте BAT от поклонников и подписчиков.</translation>
+<translation id="4816455138209470435">Brave поддерживает YouTube, Twitch, Vimeo и многие другие платформы!</translation>
 <translation id="3656941797339037856">Привяжите Rewards к Gemini</translation>
 <translation id="31532096120351460">Покупайте и продавайте криптовалюты, включая BAT, на Gemini. Это надежная платформа, где можно хранить более 50 криптовалют и получать проценты в США, Гонконге и Сингапуре.</translation>
 <translation id="7404779623219601861">Использовать BAT для подарочных карт</translation>
@@ -669,17 +642,20 @@
 <translation id="1164622162816276433">Объем 24Ч</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Включить поддержку Unstoppable Domains в Brave?</translation>
-<translation id="689573545156113164">С помощью Infura Brave будет делать вызовы протокола JSON-RPC Ethereum для смарт-контакта Unstoppable Domains, чтобы обрабатывать запросы на поиск доменов .crypto, .x, .coin, .nft, .dao, .wallet, .blockchain, .bitcoin и .zil. Если вы включите этот параметр, Infura будет получать сведения только о тех доменах, которые вы посещаете. Ознакомьтесь c <ph name="BEGIN_INFURA_TOU_LINK"/>условиями использования<ph name="END_INFURA_TOU_LINK"/> и <ph name="BEGIN_INFURA_PRIVACY_LINK"/>политикой конфиденциальности Infura<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="689573545156113164">С помощью Infura Brave будет делать вызовы протокола JSON-RPC Ethereum для смарт-контракта Unstoppable Domains, чтобы обрабатывать запросы на поиск доменов .crypto, .x, .coin, .nft, .dao, .wallet, .blockchain, .bitcoin и .zil. Если вы включите этот параметр, Infura будет получать сведения только о тех доменах, которые вы посещаете. Ознакомьтесь c <ph name="BEGIN_INFURA_TOU_LINK"/>условиями использования<ph name="END_INFURA_TOU_LINK"/> и <ph name="BEGIN_INFURA_PRIVACY_LINK"/>политикой конфиденциальности Infura<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Служба имен Ethereum</translation>
 <translation id="4335039108389860301">Включить поддержку Ethereum Name Service (ENS) в Brave?</translation>
-<translation id="8328137586971750853">С помощью Infura Brave будет делать вызовы протокола JSON-RPC Ethereum для смарт-контакта Ethereum Name Service, чтобы обрабатывать запросы на поиск доменов .eth. Если вы включите этот параметр, Infura будет получать сведения только о тех доменах .eth, которые вы посещаете. Ознакомьтесь c <ph name="BEGIN_INFURA_TOU_LINK"/>условиями использования<ph name="END_INFURA_TOU_LINK"/> и <ph name="BEGIN_INFURA_PRIVACY_LINK"/>политикой конфиденциальности Infura<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="8328137586971750853">С помощью Infura Brave будет делать вызовы протокола JSON-RPC Ethereum для смарт-контракта Ethereum Name Service, чтобы обрабатывать запросы на поиск доменов .eth. Если вы включите этот параметр, Infura будет получать сведения только о тех доменах .eth, которые вы посещаете. Ознакомьтесь c <ph name="BEGIN_INFURA_TOU_LINK"/>условиями использования<ph name="END_INFURA_TOU_LINK"/> и <ph name="BEGIN_INFURA_PRIVACY_LINK"/>политикой конфиденциальности Infura<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="807404806385418949">Офчейн-поиск в системе Ethereum Name Service</translation>
 <translation id="4049590838234508776">Включить поддержку офчейн-поиска в системе Ethereum Name Service (ENS) в Brave?</translation>
-<translation id="1769433806670482329">Для выполнения запросов по поиску доменных имен .eth Brave будет использовать офчейн-шлюзы. Если включить этот параметр, сторонние шлюзы будут видеть домен .eth, на который вы заходите, но другие домены им будут недоступны. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Подробнее<ph name="END_BRAVE_LEARN_MORE_LINK"/></translation>
+<translation id="1769433806670482329">Brave будет использовать офчейн-шлюзы, чтобы обрабатывать запросы на поиск доменных имен .eth. Если вы включите эту функцию, то сторонние шлюзы будут видеть только домен .eth, который вы посещаете. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Подробнее<ph name="END_BRAVE_LEARN_MORE_LINK"/></translation>
 <translation id="4047002754575891955">Попробовать офчейн-поиск</translation>
+<translation id="531747189990625622">Solana Name Service</translation>
+<translation id="1090584614351290462">Включить поддержку Solana Name Service (SNS) в Brave?</translation>
+<translation id="954404755605517948">С помощью Coinbase Cloud Brave будет делать вызовы протокола JSON-RPC Solana для смарт-контракта Solana Name Service, чтобы обрабатывать запросы на поиск доменов .sol. Если вы включите этот параметр, Coinbase Cloud будет получать сведения только о тех доменах .sol, которые вы посещаете. Ознакомьтесь c <ph name="BEGIN_COINBASE_TOU_LINK"/>условиями использования<ph name="END_COINBASE_TOU_LINK"/> и <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>политикой конфиденциальности Coinbase Cloud<ph name="END_COINBASE_PRIVACY_LINK"/>.</translation>
 <translation id="7378412287463452336">Продолжить с использованием сервера Infura</translation>
+<translation id="2313603121968571839">Использовать сервер Coinbase Cloud</translation>
 <translation id="2356070529366658676">Спрашивать</translation>
-<translation id="1448289340149908413">Ethereum</translation>
 <translation id="59174027418879706">Включено</translation>
 <translation id="2468755552460246661">Домен заблокирован</translation>
 <translation id="6393849031898466746">Этот сайт может отслеживать ваши действия в Сети</translation>
@@ -775,7 +751,6 @@
 <translation id="3600355176618429948">Общий доход</translation>
 <translation id="4244985009709452836">Войти в аккаунт <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Разовые чаевые</translation>
-<translation id="3022529765171561652">Возникла временная проблема при проверке через <ph name="PROVIDER"/>. Ваши Brave Награды останутся в статусе ожидания, а повторные попытки оплаты будут происходить автоматически. Вы также можете попробовать еще раз провести платеж чуть позже.</translation>
 <translation id="590733288489975971">Вознаграждения за рекламу</translation>
 <translation id="6181762795539107980">Не подтвержден</translation>
 <translation id="3026978804849658576">Открыть отчет</translation>
@@ -824,6 +799,7 @@
 <translation id="3358400027937159351">Внесено <ph name="AMOUNT"/>.</translation>
 <translation id="1619753851206150396">Выполнен выход.</translation>
 <translation id="5142174225142816130">Такое может произойти, это нужно для защиты вашего аккаунта. Щелкните внизу, чтобы переподключиться.</translation>
+<translation id="1677961202754619328">Для вашего аккаунта Uphold установлены ограничения. Войдите в систему и проверьте, нет ли у вас непрочитанных уведомлений или невыполненных требований, а затем повторите попытку.</translation>
 <translation id="2807965672895914288">Ваш запланированный ежемесячный платеж (Автоматический Взнос) и ежемесячные чаевые не завершены из-за недостатка средств. Мы попробуем еще раз через 30 дней.</translation>
 <translation id="2429828319207652823">Возникла проблема при обработке вашего взноса.</translation>
 <translation id="2099354965137813181">Ежемесячный платеж не прошел</translation>
@@ -845,7 +821,7 @@
 <translation id="5425006356459378415">Brave Награды недоступны</translation>
 <translation id="909076461795862330">Во время настройки Brave Наград произошла ошибка. Повторите попытку.</translation>
 <translation id="3180990265682133881">При указании страны произошла ошибка. Повторите попытку.</translation>
-<translation id="2191603160848789187">Регистрация в Brave Наградах для вашего региона отключена. Повторите попытку позже. <ph name="LINK_BEGIN"/>Подробнее<ph name="LINK_BEGIN"/></translation>
+<translation id="5931798071481566121">В вашем регионе приостановлена регистрация в сервисе «Brave Награды». Повторите попытку позже. <ph name="LINK_BEGIN"/>Подробнее<ph name="LINK_END"/></translation>
 <translation id="8764860730661377310">Установлен ваш регион использования Brave Наград: <ph name="COUNTRY"/>.</translation>
 <translation id="7068416025603720599">Выберите страну, тогда мы сможем показывать вам настройки и рекламу, соответствующие вашему региону. <ph name="LINK_BEGIN"/>Политика конфиденциальности<ph name="LINK_END"/></translation>
 <translation id="1275213816424141989">Может быть, позже</translation>
@@ -884,7 +860,18 @@
 <translation id="6609621505400013054">Кошелек bitFlyer — сервис, предоставляемый компанией bitFlyer, Inc.</translation>
 <translation id="4361456403643555676">Если вы подтвердите профиль Brave Наград и подключите его к аккаунту bitFlyer, то вам будет проще хранить и использовать токены, полученные в качестве вознаграждений.</translation>
 <translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Подробнее<ph name="LINK_END"/> о том, как привязать аккаунт bitFlyer к браузеру Brave.</translation>
+<translation id="1015443539415537847">К сожалению, сервис «Brave Награды» недоступен</translation>
+<translation id="5007776270364097327">Похоже, в вашем регионе сервис «Brave Награды» недоступен.</translation>
+<translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Подробнее<ph name="LINK_END"/></translation>
+<translation id="4214852687527104244">Но есть и хорошие новости.</translation>
+<translation id="5027616819996705541">Вы можете конфиденциально пользоваться браузером!</translation>
 <translation id="8303087505226646884">Brave Speedreader</translation>
+<translation id="1013121820689882118">Speedreader</translation>
+<translation id="8112297508607107861">Всегда включать Speedreader для <ph name="HOST_NAME"/></translation>
+<translation id="6278428485366576908">Тема</translation>
+<translation id="8710842507289500830">Стиль шрифта</translation>
+<translation id="8168435359814927499">Контент</translation>
+<translation id="7451953332310475840">Включить Speedreader только для этого сайта. Чтобы отключить его на уровне профиля браузера, перейдите в меню <ph name="LINK_BEFORE"/>Настройки<ph name="LINK_AFTER"/>.</translation>
 <translation id="7701466644604753106">Включить Speedreader</translation>
 <translation id="763042262431778831">Выключить Speedreader</translation>
 <translation id="1148827340205946630">Пользователь отклонил запрос.</translation>
@@ -960,6 +947,18 @@
 <translation id="5061574358754621254">Данные о ценах представлены порталом CoinGecko</translation>
 <translation id="1483493594462132177">Отправить</translation>
 <translation id="538450413584738399">Своп</translation>
+<translation id="9113988219764868805">Отправить токены</translation>
+<translation id="4254256922305105713">Отправить NFT</translation>
+<translation id="3453833142586986467">Выбрать токены</translation>
+<translation id="554732459168975059">Выбрать NFT</translation>
+<translation id="5313430503143128212">Выберите токен для отправки</translation>
+<translation id="2791691551852500015">Укажите адрес получателя</translation>
+<translation id="570080709303714420">ПОЛОВИНА</translation>
+<translation id="2784548701748328827">МАКС</translation>
+<translation id="2329227154184107678">Проверить ордер</translation>
+<translation id="8530071505111489657">Нет токенов</translation>
+<translation id="615791330696335475">Поиск токенов по названию</translation>
+<translation id="5009335307032488349">Поиск NFT по идентификатору и названию</translation>
 <translation id="6295954645230084874">Покупки в <ph name="NETWORK"/> не поддерживаются.</translation>
 <translation id="9209024278910716955">Покупки в этой сети недоступны</translation>
 <translation id="4171338820961522154">Обмен в <ph name="NETWORK"/> не поддерживается.</translation>
@@ -978,6 +977,7 @@
 <translation id="2704606927547763573">Скопировано</translation>
 <translation id="6042308850641462728">Подробнее...</translation>
 <translation id="768236965975208017">Безопасность. Удобство. Поддержка мультичейнов. Начните пользоваться Brave Кошельком всего в несколько кликов</translation>
+<translation id="3157931365184549694">Восстановить</translation>
 <translation id="2484275747844666540">Создать кошелек</translation>
 <translation id="3662348701117072366">Импорт существующего кошелька</translation>
 <translation id="375882617301124395">Резервное копирование криптокошелька</translation>
@@ -1065,7 +1065,7 @@
 <translation id="9220525904950070496">Remove account</translation>
 <translation id="8574289650879708853">Добавить пользовательский актив</translation>
 <translation id="6600400596821238377">Название токена</translation>
-<translation id="4432966365400169165">Адрес контракта токена</translation>
+<translation id="4220693114674044366">Адрес токена</translation>
 <translation id="4092152169181928870">Символ токена</translation>
 <translation id="4351811224047421378">Количество знаков после запятой</translation>
 <translation id="4982060163914604175">Добавить <ph name="CONTRACT_ADDRESS"/> как собственный токен</translation>
@@ -1089,6 +1089,7 @@
 <translation id="8654192805213365413">75 %</translation>
 <translation id="3512100619724810532">100 %</translation>
 <translation id="5398538976202345089">Сеть не поддерживается</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Тестирование сети</translation>
 <translation id="4022672158058543834">Goerli</translation>
@@ -1151,6 +1152,7 @@
 <translation id="793994607260936590">Начать</translation>
 <translation id="4709524402122994378">транзакции</translation>
 <translation id="4591079278963448049">Счет с соответствующим видом токенов еще не создан. Чтобы открыть его и пополнить, будет списана небольшая сумма SOL.</translation>
+<translation id="3368922792935385530">Подключено</translation>
 <translation id="523862956770478816">Разрешения сайта</translation>
 <translation id="1575262454612599115">Подключено аккаунтов: <ph name="NUMBER_OF_ACCOUNTS"/></translation>
 <translation id="4305817255990598646">Переключить</translation>
@@ -1270,6 +1272,7 @@
 <translation id="4378475168089649292">Блокчейн</translation>
 <translation id="1904295039023858291">Стандарт токена</translation>
 <translation id="9033453977881595182">ID токена</translation>
+<translation id="6332387008245531841">Адрес контракта</translation>
 <translation id="2962388922926051374">Запрос метода eth_chainId для <ph name="URL"/> не выполнен.</translation>
 <translation id="8325036459845654666">Эта сеть уже добавлена.</translation>
 <translation id="554350381160981853">Подпись введенных данных поддерживается только на устройстве Trezor Model One с версией ПО 1.10.5 и выше.</translation>
@@ -1288,9 +1291,11 @@
 <translation id="3898731124813934210">Купить через Wyre</translation>
 <translation id="5522073372365069684">Купить через Ramp</translation>
 <translation id="7902920577183739843">Купить с помощью Sardine</translation>
+<translation id="6534275647567011533">Купить с помощью Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
+<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Покупайте криптовалюту с помощью карт Visa или Mastercard.</translation>
 <translation id="3101839349578102016">Мгновенная покупка с помощью банковского счета с низкой комиссией.</translation>
 <translation id="8528916244724490964">Все сети</translation>
@@ -1343,7 +1348,7 @@
 <translation id="9071560809248786823">Платежи Lamport</translation>
 <translation id="6129953537138746214">Пробел</translation>
 <translation id="2333894833508885986">Главная программа</translation>
-<translation id="673881072848521017">Основа</translation>
+<translation id="673881072848521017">Основной</translation>
 <translation id="6602282658898162258">Seed-фраза</translation>
 <translation id="6985542807131223826">Полномочие</translation>
 <translation id="938125553895090449">Новое полномочие</translation>
@@ -1451,6 +1456,7 @@
 <translation id="5148123176978018397">Подтвердите следующее:</translation>
 <translation id="6088314935678153800">Я понимаю, что это некастодиальный кошелек и я несу полную ответственность за связанные с ним средства, активы и аккаунты, а также за принятие соответствующих мер для обеспечения его безопасности, защиты и резервного копирования. Я понимаю, что Brave НЕ может получить доступ к моему кошельку или отменить транзакции от моего имени, а что моя секретная фраза — ЕДИНСТВЕННЫЙ способ восстановить доступ в случае утери пароля, кражи устройства или аналогичных обстоятельств.</translation>
 <translation id="7781090633800450517">Я соглашаюсь с <ph name="LINK_BEFORE"/>Условиями использования<ph name="LINK_AFTER"/></translation>
+<translation id="1422451606553326863">Купить криптовалюту</translation>
 <translation id="3887541341068007345">Проверяем, есть ли у вас расширения для кошельков…</translation>
 <translation id="3567994771568272606">Импорт из устаревших криптокошельков Brave</translation>
 <translation id="8407091560429310499">Выбрать актив</translation>
@@ -1498,6 +1504,11 @@
 <translation id="5026874946691314267">Больше не показывать</translation>
 <translation id="434502623875309667">Для разрешения адресов требуются запросы офчейн-сети. Продолжить?</translation>
 <translation id="2779500703989728346">NFT</translation>
+<translation id="7555212728172209005">Транзакций нет</translation>
+<translation id="3664551680108236020">Как только вы совершите первую транзакцию, она появится здесь.</translation>
+<translation id="3033638954295674319">Не удалось получить информацию об NFT. Повторите попытку позже.</translation>
+<translation id="2540568096903252632">Чтобы продолжить, введите пароль</translation>
+<translation id="3356580495013324916">Чтобы начать резервное копирование Brave Кошелька, введите пароль от него.</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Общая информация</translation>
 <translation id="4045404575593562245">События контроля Tor</translation>
@@ -1506,6 +1517,56 @@
 <translation id="6951743416068151209">Ссылка прокси Tor</translation>
 <translation id="1671503397662036257">Статус соединения Tor</translation>
 <translation id="6024292492796847324">Прогресс инициализации Tor</translation>
+<translation id="8300751939969131609">Включите Brave Новости и будьте в курсе всех событий</translation>
+<translation id="7758665172236842395">Читайте новости из любимых источников в одной ленте. Просто откройте вкладку Brave и прокрутите вниз!</translation>
+<translation id="2376542729617592331">Сервис «Brave Новости» работает за счет не нарушающих конфиденциальность объявлений. <ph name="LINK_START"/>Подробнее<ph name="LINK_END"/></translation>
+<translation id="1765217911817124376">Включить Brave News</translation>
+<translation id="780301667611848630">Спасибо, не надо</translation>
+<translation id="6265592479622441247">Вернуться к <ph name="BEGIN_BOLD"/>информационной панели<ph name="END_BOLD"/></translation>
+<translation id="8981973962043893066">Поиск сайта, темы или RSS-ленты</translation>
+<translation id="1498364270401875204">Каналы</translation>
+<translation id="6401776069326703655">Посмотреть все</translation>
+<translation id="8032569120109842252">Подписки</translation>
+<translation id="3790976909891317760">{FEED_COUNT, plural,
+=1 {# источник}
+few {# источника}
+many {# источников }
+other {# источника}
+}</translation>
+<translation id="6143382357119101833">Получить фиды с сайта <ph name="URL"/></translation>
+<translation id="4515121482885046194">Фиды на сайте <ph name="URL"/> не найдены</translation>
+<translation id="8535964427132833909">Нет результатов поиска</translation>
+<translation id="9036971622563146214">Результаты</translation>
+<translation id="6727452620418483718">Прямые результаты поиска</translation>
+<translation id="7697251281928908970">Удлините поисковой запрос</translation>
+<translation id="4750394297954878236">Подсказки</translation>
+<translation id="3225021799163709119">Популярное</translation>
+<translation id="7436846601026966360">Источники, которые могут вам понравиться. Подсказки анонимны, и сведения о них располагаются только на вашем устройстве.</translation>
+<translation id="7950715913905993008">Ошибочка…</translation>
+<translation id="7158100730468448581">Не удалось получить контент для Brave Новостей.</translation>
+<translation id="254100925533869330">Контента нет</translation>
+<translation id="7172792761509429092">В Brave Новостях нет контента.</translation>
+<translation id="1771307734839364850">Выберите источники контента</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="6261915643960475695">Сотрудничество</translation>
+<translation id="8265589281845759879">Автомобили</translation>
+<translation id="7577010593836079522">Культура</translation>
+<translation id="3706423975342040244">Развлечения</translation>
+<translation id="1432147735538902155">Мода</translation>
+<translation id="736592699917579616">Еда</translation>
+<translation id="5104499318017527547">Юмор</translation>
+<translation id="2228584369802328636">Игры</translation>
+<translation id="6941852195052765076">Здоровье</translation>
+<translation id="932327136139879170">Главная страница</translation>
+<translation id="1322083935398004629">Политика</translation>
+<translation id="3872834068356954457">Наука</translation>
+<translation id="1264974993859112054">Спорт</translation>
+<translation id="2283599456633275070">Путешествия</translation>
+<translation id="7487067081878637334">Технологии</translation>
+<translation id="5030268312472358928">Популярные новости</translation>
+<translation id="5510475084662028636">Популярные источники</translation>
+<translation id="1459693405370120464">Погода</translation>
+<translation id="8366057325711477500">Мировые новости</translation>
 <translation id="6303294677342628402">Защита</translation>
 <translation id="8458987127502506209">Включить Brave Щит</translation>
 <translation id="7509914170164691086">Щит ВКЛЮЧЕН <ph name="LINK_BEFORE"/>для<ph name="LINK_AFTER"/></translation>
@@ -1518,6 +1579,7 @@
 <translation id="5799940914270080805">В результате изменения этих настроек может быть нарушена работа некоторых сайтов.</translation>
 <translation id="9204041448536398473">Общие настройки Щита</translation>
 <translation id="2108334320919763866">Глобальная защита по умолчанию</translation>
+<translation id="3440043456924990296">Настройки, которыми управляет организация</translation>
 <translation id="4516904298421534459">Списки фильтров</translation>
 <translation id="3570081523466826008">Подключаться по HTTPS</translation>
 <translation id="131231380815754440">Включить HTTPS</translation>
@@ -1543,6 +1605,25 @@
 <translation id="264682546981571963">Устали от уведомлений о согласии на использование файлов cookie?</translation>
 <translation id="4986297793092101884">Brave уже блокирует сторонние файлы cookie. Но мы можем избавить вас и от уведомлений о согласии на использование файлов cookie.</translation>
 <translation id="535688588637568715">Да, блокировать уведомления о согласии на использование файлов cookie</translation>
+<translation id="6294662480095808915">Конфиденциальность по умолчанию</translation>
+<translation id="4366423156486478559">Brave защищает вас во время каждого перехода по ссылке. Сделайте Brave браузером по умолчанию и наслаждайтесь конфиденциальностью в интернете.</translation>
+<translation id="3830912418080848377">Настройки импорта</translation>
+<translation id="6378406588483694938">Импортируйте закладки, расширения и даже сохраненные пароли из прежнего браузера.</translation>
+<translation id="2092825239819166928">Выберите профиль для импорта</translation>
+<translation id="4763127492635705340">В выбранном браузере есть несколько профилей. Выберите нужные.</translation>
+<translation id="880174232178865598">Импортировать профили</translation>
+<translation id="2453860139492968684">Закрыть</translation>
+<translation id="2273851479262317744">Сделать Brave браузером по умолчанию</translation>
+<translation id="5037676449506322593">Выбрать все</translation>
+<translation id="8330804319517911603">Помогите нам улучшить Brave</translation>
+<translation id="2867964979837593892">Совершенствуем продукт. Защищаем вашу конфиденциальность. Каждый день.</translation>
+<translation id="7661940959332108190">Отправлять отчеты для диагностики, когда в Brave происходит сбой или браузер зависает.</translation>
+<translation id="6358373266071757311">Делиться анонимными и конфиденциальными данными о продукте (это поможет нам узнавать, какие функции Brave используются чаще всего).</translation>
+<translation id="7415454883318062233">Настройка завершена</translation>
+<translation id="3141206739023333979">Вы можете когда угодно изменить настройки в браузере Brave по ссылке <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
+<translation id="8321985064212130832">Прочитайте полную версию <ph name="LINK_BEFORE"/>Политики конфиденциальности<ph name="LINK_AFTER"/></translation>
+<translation id="7821773512278295352">Brave Брандмауэр + VPN: подключено</translation>
+<translation id="6019088868713395120">Brave Брандмауэр + VPN: отключено</translation>
 <translation id="3541307549916475335">Интерфейс панели управления Brave VPN</translation>
 <translation id="1742469581923031760">Подключение…</translation>
 <translation id="1287487756047817908">Отключение…</translation>
@@ -1559,7 +1640,7 @@
 <translation id="8670386189340362926">Блокируйте трекеры и рекламу во всех приложениях.</translation>
 <translation id="4860763498907927955">Защищает вас от нежелательных подключений по сети.</translation>
 <translation id="3181339219453722970">Изменяйте свое местоположение с помощью VPN.</translation>
-<translation id="1751947227857853925">Безлимитный интернет со скоростью до 100 Мбит/сек.</translation>
+<translation id="1708407585266172412">Скорость до 500 Мбит/с — и никаких ограничений</translation>
 <translation id="1400240082805528049">Поддержка 24/7</translation>
 <translation id="1693568075761612600">Не удалось создать запрос в службу поддержки. Проверьте подключение.</translation>
 <translation id="8463313539532697053">Подождите…</translation>
@@ -1567,6 +1648,7 @@
 <translation id="4613076894734402086">Изменить способ оплаты</translation>
 <translation id="8373427068383038263">Похоже, последний платеж за подписку <ph name="VALUE"/> не прошел. Доступ будет приостановлен до устранения проблемы. Попробуйте изменить способ оплаты или свяжитесь со службой поддержки Brave.</translation>
 <translation id="1839021455997460752">Ваш адрес электронной почты</translation>
+<translation id="8054563304616131773">Укажите действительный адрес электронной почты</translation>
 <translation id="5154702632169343078">Тема</translation>
 <translation id="6625978880678465492">Выберите причину обращения</translation>
 <translation id="6687228121145903051">Ошибка подключения к VPN (другое).</translation>
@@ -1581,6 +1663,7 @@
 <translation id="24242621812020123">Версия приложения:</translation>
 <translation id="6676791921618140305">Операционная система:</translation>
 <translation id="1156325797949437777">Поддержка предоставляется в партнерстве с Guardian.</translation>
+<translation id="8146777497879160283">Не удалось записать конфигурацию VPN. Возможно, у вас нет разрешения на это или вы давно не обновляли Windows.</translation>
 <translation id="3307461350293459700">Не удалось установить подключение к VPN. Повторите попытку. Если появится окно с предупреждением о добавлении конфигураций VPN, нажмите "Разрешить".</translation>
 <translation id="7261518280726313829">Brave не рекомендует отключать функцию защищенного DNS-сервера или использовать серверы Windows, установленные по умолчанию, поскольку в этом случае поставщик интернет-услуг сможет видеть названия сайтов, которые вы посещаете. Продолжить?</translation>
 <translation id="888284761945060750">Функция защищенного DNS-сервера отключена согласно правилам вашей организации. Если использовать Brave VPN без этой функции, поставщик интернет-услуг или сотрудники организации смогут видеть названия сайтов, которые вы посещаете.</translation>
@@ -1602,4 +1685,17 @@
 <translation id="6973157709854838218">Скрыть средства с экрана</translation>
 <translation id="4548946945059463969">Показать средства на экране</translation>
 <translation id="242959166945779492">На вашем счету нет средств. Чтобы приобрести валюту, посетите биржу FTX.</translation>
+<translation id="1531133232292396145">Торгуйте криптовалютами на Binance непосредственно из своего браузера.</translation>
+<translation id="2166494527623220386">Торгуйте криптовалютами на Gemini непосредственно из своего браузера.</translation>
+<translation id="7841456038054167122">Введите повторно ключи или попробуйте другие ключи.</translation>
+<translation id="1911900517212490188">Введенный ключ восстановления больше не действителен. Пожалуйста, посетите <ph name="BEGIN_LINK"/>эту страницу<ph name="END_LINK"/>, чтобы получить новый ключ.</translation>
+<translation id="922103963921062336">Отключено (Не верифицировано)</translation>
+<translation id="3248185426436836442">В ожидании</translation>
+<translation id="3034163433136515805">Показать QR-код</translation>
+<translation id="1640793619390890218">для пользователей Brave Rewards на iOS за перечисление баллов BAT.</translation>
+<translation id="5462747026114176246">Перед тем как использовать ключ, создайте резервную копию профиля Brave Наград или используйте вознаграждения. После восстановления ваш профиль Brave Наград будет перезаписан.</translation>
+<translation id="3267911153934785912">Введите ключ восстановления или</translation>
+<translation id="1209382772199769572">Перед тем как менять кошелек, выполните его резервное копирование. Если этого не сделать, вы потеряете средства ([[funds]]).</translation>
+<translation id="4395099108822007284">Загружаем изображение...</translation>
+<translation id="3022529765171561652">Возникла временная проблема при проверке через <ph name="PROVIDER"/>. Ваши Brave Награды останутся в статусе ожидания, а повторные попытки оплаты будут происходить автоматически. Вы также можете попробовать еще раз провести платеж чуть позже.</translation>
 </translationbundle>

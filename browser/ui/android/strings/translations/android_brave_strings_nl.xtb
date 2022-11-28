@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
+<translation id="915758461293673891">Bedrag van bijdrage:</translation>
+<translation id="8966035543003363155">Meer gemak met Brave-meldingen</translation>
+<translation id="7662771815233894695">Beheer downloads, verdien tokens, bekijk wekelijkse gebruiksstatistieken en meer.</translation>
+<translation id="4265429476391459783">U ontvangt geen Rewards of privacyrapporten</translation>
+<translation id="1305714751384738456">U ontvangt geen Brave Rewards</translation>
+<translation id="1483391942610220726">U ontvangt geen privacyrapporten</translation>
+<translation id="4683790942451502796">Zet meldingen weer aan als u BAT en wekelijke privacyrapporten wilt blijven ontvangen.</translation>
+<translation id="1462722717055895108">Zet meldingen weer aan als u BAT wilt blijven ontvangen</translation>
+<translation id="5457255168064266494">Zet meldingen weer aan als u wekelijkse privacyrapporten wilt blijven ontvangen.</translation>
+<translation id="6268959058971634697">U ontvangt geen Rewards</translation>
+<translation id="1088637159642753509">Schakel apparaatmeldingen in om Brave Rewards te ontvangen en privacyrapporten in te zien.</translation>
+<translation id="312404770066229090">Schakel apparaatmeldingen in om Brave Rewards te ontvangen.</translation>
+<translation id="2241529840361230499">Schakel apparaatmeldingen in om Brave-privacyrapporten te ontvangen.</translation>
+<translation id="4930155581888391118">Schakel meldingen van Brave in om Brave Rewards te ontvangen.</translation>
+<translation id="325187916104529570">Open Instellingen en zet de apparaatmeldingen voor Brave Ads aan.</translation>
+<translation id="5744802588121897886">Zet Brave-meldingen aan</translation>
 <translation id="7307834434086582547">Schakel Brave Shields in/uit</translation>
 <translation id="6945863270524203017">Ontvang wekelijks privacy-updates voor tracker- en advertentieblokkering.</translation>
 <translation id="4324735664183300693">Meldingen aanzetten</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">Methode omzetten</translation>
 <translation id="2356070529366658676">Vragen</translation>
 <translation id="4176463684765177261">Uitgeschakeld</translation>
-<translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">Ingeschakeld</translation>
 <translation id="6252490671914511928">De topverhalen van vandaag in een privéfeed, speciaal voor jou.</translation>
 <translation id="7266075701303521777">Het Brave-nieuws bevat advertenties; deze zijn volledig privé en anoniem, afgestemd op jouw apparaat.</translation>
 <translation id="4541978218358617681">Advertentie</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">Browsegegevens wissen</translation>
 <translation id="5965081608816406060">Achtergrondvideo afspelen</translation>
 <translation id="6332924730165919598">Als je alle tabbladen sluit, wordt Brave gesloten</translation>
-<translation id="1580125697191336644">Experimenteel. Hiermee kun je audio van video op de achtergrond afspelen wanneer het tabblad niet actief is of het apparaatscherm is uitgeschakeld. Probeer over te schakelen naar de bureaubladmodus als deze functie niet werkt.</translation>
-<translation id="59174027418879706">Ingeschakeld</translation>
+<translation id="3872768973878059926">Staat audio toe om te blijven spelen wanneer u naar een ander tabblad in Brave overschakelt, naar een andere app overschakelt of wanneer het scherm van uw apparaat uit is.</translation>
 <translation id="4150201353443180367">Weergave</translation>
 <translation id="2433507940547922241">Vormgeving</translation>
 <translation id="6333347122924254968">Het Brave Beloningen-pictogram tonen in de adresbalk</translation>
@@ -310,16 +325,11 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Uphold kan je vragen je identiteit te verifiëren op basis van de gevraagde diensten.</translation>
 <translation id="3200197118442451932">Brave Software Inc. verwerkt noch bewaart persoonlijke informatie die u verstrekt aan <ph name="WALLET_PROVIDER"/> en heeft hier ook geen toegang tot wanneer u een account bij hen aanmaakt.</translation>
-<translation id="3699674790322420653">Rond walletverificatie af</translation>
 <translation id="2193391216824305230">Gebruikersportemonnee</translation>
 <translation id="1665118090708049096">Ga naar mijn <ph name="WALLET_PROVIDER"/>-account</translation>
 <translation id="1948959999802743233">Verbinding verbreken met <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Geldmiddelen Opnemen</translation>
 <translation id="8874184842967597500">Niet verbonden</translation>
-<translation id="3368922792935385530">Verbonden</translation>
-<translation id="5358719431303818601">Afgesloten niet geverifieerd</translation>
-<translation id="4241449868720191203">Afgesloten geverifieerd</translation>
-<translation id="3248185426436836442">In afwachting</translation>
 <translation id="2495032782748793764">Brave Default</translation>
 <translation id="9132378787893584761">Deel Brave met je vrienden!</translation>
 <translation id="717952606991220586">Oeps, er is iets misgegaan. Probeer het later opnieuw.</translation>
@@ -673,6 +683,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1597199892790541240">Gas vergoeding</translation>
 <translation id="1634828734222219955">Totaal</translation>
 <translation id="7995708795274219641">Bedrag + gas</translation>
+<translation id="2186011161688824046">Bedrag + vergoeding</translation>
 <translation id="1950052789869821983">Transactie</translation>
 <translation id="2304783958703511257">Geavanceerde instellingen</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -701,6 +712,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1133619932669546254"><ph name="TOKEN"/> activeren</translation>
 <translation id="2199215899212542417">FUNCTIETYPE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Geen gegevens</translation>
+<translation id="1105525362447173583">Transactie ondertekenen met Solana Dapp</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> heeft <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> verzonden ($ <ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> verzonden<ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> heeft <ph name="ASSET"/> - <ph name="DATE"/> goedgekeurd</translation>
@@ -800,6 +812,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="8030169304546394654">Verbinding verbroken</translation>
 <translation id="3423275441470187644">Vertrouwen</translation>
 <translation id="2391762656119864333">Intrekken</translation>
+<translation id="3368922792935385530">Verbonden</translation>
 <translation id="3432029672560911238">Gebruikersaccount</translation>
 <translation id="5753378322046059140">Van account wisselen</translation>
 <translation id="3897092660631435901">Menu</translation>
@@ -867,6 +880,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="7080614857771109950">Ondersteunt EVM-compatibele assets op de blockchain van Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Ondersteunt SLP-compatibele assets op de blockchain van Solana</translation>
 <translation id="6575120282593094155">U hebt nog geen <ph name="ACCOUNT_TYPE"/>-account. Wilt u er nu een aanmaken?</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">Uitgesloten apps</translation>
 <translation id="8463269357637177759">Toegestane reguliere apps</translation>
@@ -889,6 +903,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="4784306439879850873">Houd er rekening mee dat Brave niet kan controleren wat er gebeurt als u tekent. Een ondertekening kan bijna elke bewerking in uw account of namens uw account autoriseren, waaronder (maar niet beperkt tot) het geven van volledige controle over uw account en cryptoassets aan de website die het verzoek doet. Teken alleen als u deze actie wilt uitvoeren en de aanvragende website vertrouwt.</translation>
 <translation id="3474375934783434676">Tekenen op eigen risico</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> of <ph name="SIZE"/></translation>
+<translation id="756701799684433105">Transactie goedkeuren</translation>
 <translation id="6450792191436242818">Systeemprogramma</translation>
 <translation id="6252742184395380448">Configuratieprogramma</translation>
 <translation id="5358970666412490132">Aandelenprogramma</translation>
@@ -898,6 +913,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6421371987002247943">Token-programma</translation>
 <translation id="8780753288764281797">Secp256k1-programma</translation>
 <translation id="8504640708321980506">Data</translation>
+<translation id="3723411967118253067">Programma-ID</translation>
 <translation id="4771176409524282426">Account maken</translation>
 <translation id="1755120947324658439">Toewijzen</translation>
 <translation id="7588707273764747927">Transfer</translation>
@@ -937,4 +953,32 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="7352651011704765696">Er ging iets fout</translation>
 <translation id="7144878232160441200">Opnieuw proberen</translation>
 <translation id="6040143037577758943">Sluit</translation>
+<translation id="7710469167917867539">Transactiekosten</translation>
+<translation id="7843211152394841558">Max. aantal nieuwe pogingen:</translation>
+<translation id="8496335570810457">Preflight-toezegging:</translation>
+<translation id="5100124500279922001">Preflight overslaan:</translation>
+<translation id="7152095322071766507">Meest bezochte site</translation>
+<translation id="7230006500876504868">Zoeken met Brave</translation>
+<translation id="5888208462949095139">Zoeken met <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
+<translation id="5456039738087398178">Startscherm-widget</translation>
+<translation id="703185154752046151">Widget toegevoegd aan het startscherm</translation>
+<translation id="3290805388004282161">Probeer de widget 'Zoeken met Brave'</translation>
+<translation id="4809681171446727314">Krijg toegang tot privé- en onafhankelijk zoeken rechtstreeks vanaf het startscherm.</translation>
+<translation id="7751715172931488388">Widget toevoegen</translation>
+<translation id="7285167584112910782">Snel zoeken met Brave</translation>
+<translation id="2326703104633309781">Gebruik Brave Translate</translation>
+<translation id="5802752138057422257">Niet-ASCII-tekens gedetecteerd!</translation>
+<translation id="442709594176931966">Oorspronkelijk bericht weergeven</translation>
+<translation id="2239252396088484499">Bericht in ASCII-codering weergeven</translation>
+<translation id="4220693114674044366">Token-adres</translation>
+<translation id="5658257029899993935">Aankoop koppelen aan uw Brave-account</translation>
+<translation id="1187061015547219282">Koppel uw Play Store-aankoop aan uw Brave-account om Brave VPN op andere apparaten te gebruiken.</translation>
+<translation id="6662142137695589205">Koppel uw VPN-abonnement</translation>
+<translation id="2674077112509133024">Breid uw Brave Firewall + VPN-bescherming uit</translation>
+<translation id="6365389672683343144">Uw Brave VPN-abonnement kan tot 5 apparaten beschermen op Android, iOS en desktop. U hoeft alleen uw Google Play-abonnement te koppelen aan uw Brave-account.</translation>
+<translation id="1580125697191336644">Experimenteel. Hiermee kun je audio van video op de achtergrond afspelen wanneer het tabblad niet actief is of het apparaatscherm is uitgeschakeld. Probeer over te schakelen naar de bureaubladmodus als deze functie niet werkt.</translation>
+<translation id="3699674790322420653">Rond walletverificatie af</translation>
+<translation id="5358719431303818601">Afgesloten niet geverifieerd</translation>
+<translation id="4241449868720191203">Afgesloten geverifieerd</translation>
+<translation id="3248185426436836442">In afwachting</translation>
 </translationbundle>

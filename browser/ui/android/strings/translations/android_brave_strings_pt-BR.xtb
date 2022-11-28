@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="pt-BR">
+<translation id="915758461293673891">Valor da contribuição:</translation>
+<translation id="8966035543003363155">As notificações do Brave tornam tudo mais fácil</translation>
+<translation id="7662771815233894695">Gerencie downloads, ganhe tokens, veja as estatísticas de uso semanais e muito mais.</translation>
+<translation id="4265429476391459783">Você não está ganhando Recompensas nem recebendo Relatórios de privacidade</translation>
+<translation id="1305714751384738456">Você não está ganhando Recompensas Brave</translation>
+<translation id="1483391942610220726">Você não está recebendo Relatórios de privacidade</translation>
+<translation id="4683790942451502796">Ative novamente as notificações se quiser continuar ganhando BATs e recebendo relatórios de privacidade semanais.</translation>
+<translation id="1462722717055895108">Ative novamente as notificações se quiser continuar ganhando BATs</translation>
+<translation id="5457255168064266494">Ative novamente as notificações se quiser continuar recebendo relatórios de privacidade semanais</translation>
+<translation id="6268959058971634697">Você não está ganhando Recompensas</translation>
+<translation id="1088637159642753509">Ative as notificações no dispositivo para ganhar Recompensas Brave e ver Relatórios de privacidade.</translation>
+<translation id="312404770066229090">Ative as notificações no dispositivo para ganhar Recompensas Brave.</translation>
+<translation id="2241529840361230499">Ative as notificações no dispositivo para receber Relatórios de privacidade do Brave.</translation>
+<translation id="4930155581888391118">Ative as notificações no dispositivo para ganhar Recompensas Brave.</translation>
+<translation id="325187916104529570">Abra as Configurações e ative as notificações no dispositivo para os Anúncios Brave.</translation>
+<translation id="5744802588121897886">Ativar notificações do Brave</translation>
 <translation id="7307834434086582547">Habilitar/Desabilitar Brave Shields</translation>
 <translation id="6945863270524203017">Receba informações semanais atualizadas sobre o bloqueio de rastreadores e anúncios.</translation>
 <translation id="4324735664183300693">Ativar notificações</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">Método de resolução</translation>
 <translation id="2356070529366658676">Perguntar</translation>
 <translation id="4176463684765177261">Desativado</translation>
-<translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">Ativada</translation>
 <translation id="6252490671914511928">As principais notícias de hoje em um feed totalmente privado, apenas para você.</translation>
 <translation id="7266075701303521777">Os anúncios exibidos nas Notícias Brave são totalmente privados e anonimizados, encontrando correspondências para seus interesses no seu dispositivo.</translation>
 <translation id="4541978218358617681">Anúncio</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">Limpar dados de navegação</translation>
 <translation id="5965081608816406060">Vídeo tocando de fundo</translation>
 <translation id="6332924730165919598">Fechando todas as abas você fechará o Brave</translation>
-<translation id="1580125697191336644">Experimental. Permite que o áudio seja tocado a partir do vídeo no plano de fundo quando a aba não estiver ativo ou a tela estiver desligada. Tente alterar para o modo desktop caso a funcionalidade não funcione.</translation>
-<translation id="59174027418879706">Ativada</translation>
+<translation id="3872768973878059926">Permite que o áudio continue sendo reproduzido quando você acessa outra guia no Brave, quando você muda de app ou quando a tela do seu dispositivo está desligada.</translation>
 <translation id="4150201353443180367">Exibição</translation>
 <translation id="2433507940547922241">Aparência</translation>
 <translation id="6333347122924254968">Mostrar ícone das Recompensas Brave na barra de endereço</translation>
@@ -310,16 +325,11 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">A Uphold pode exigir que você verifique sua identidade com base nos serviços solicitados.</translation>
 <translation id="3200197118442451932">A Brave Software Inc. não processa, armazena nem acessa nenhuma das informações pessoais que você fornece ao <ph name="WALLET_PROVIDER"/> quando cria uma conta nesse serviço.</translation>
-<translation id="3699674790322420653">Concluir verificação de carteira</translation>
 <translation id="2193391216824305230">Carteira do Usuário</translation>
 <translation id="1665118090708049096">Ir para a minha conta do <ph name="WALLET_PROVIDER"/></translation>
 <translation id="1948959999802743233">Desconectar do <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Retirar Fundos</translation>
 <translation id="8874184842967597500">Não conectado</translation>
-<translation id="3368922792935385530">Conectado</translation>
-<translation id="5358719431303818601">Desconectado não verificado</translation>
-<translation id="4241449868720191203">Desconectado verificado</translation>
-<translation id="3248185426436836442">Pendente</translation>
 <translation id="2495032782748793764">Padrão do Brave</translation>
 <translation id="9132378787893584761">Compartilhe o Brave com seus amigos!</translation>
 <translation id="717952606991220586">Opa, algo está errado. Tente novamente mais tarde.</translation>
@@ -673,6 +683,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="1597199892790541240">Taxa de Gás</translation>
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Quantidade + Gás</translation>
+<translation id="2186011161688824046">Valor + taxa</translation>
 <translation id="1950052789869821983">Transação</translation>
 <translation id="2304783958703511257">Configurações avançadas</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -701,6 +712,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="1133619932669546254">Ativar <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">TIPO DE FUNÇÃO: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Não há dados</translation>
+<translation id="1105525362447173583">Transação de assinatura de DApp Solana</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> enviou <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (US$ <ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> enviou <ph name="ASSET"/> #nº <ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> aprovou <ph name="ASSET"/> - <ph name="DATE"/></translation>
@@ -800,6 +812,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="8030169304546394654">Desconectado</translation>
 <translation id="3423275441470187644">Confiar</translation>
 <translation id="2391762656119864333">Revogar</translation>
+<translation id="3368922792935385530">Conectado</translation>
 <translation id="3432029672560911238">Conta de usuário</translation>
 <translation id="5753378322046059140">Mudar de conta</translation>
 <translation id="3897092660631435901">Menu</translation>
@@ -867,6 +880,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="7080614857771109950">Oferece suporte a ativos compatíveis com EVM na blockchain Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Oferece suporte a ativos compatíveis com SPL na blockchain Solana</translation>
 <translation id="6575120282593094155">Você ainda não tem uma conta do <ph name="ACCOUNT_TYPE"/>. Deseja criar uma agora?</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">Apps excluídos</translation>
 <translation id="8463269357637177759">Apps comuns permitidos</translation>
@@ -889,6 +903,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="4784306439879850873">Tenha em mente que o Brave não pode verificar o que acontecerá se você assinar. Uma assinatura pode autorizar praticamente qualquer operação na sua conta ou em seu nome, incluindo (entre outras coisas) total controle da sua conta e dos seus criptoativos para o site que está fazendo a solicitação. Assine somente se tiver certeza de que deseja realizar essa ação e se confiar no site que fez a solicitação.</translation>
 <translation id="3474375934783434676">Assine por sua conta e risco</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> de <ph name="SIZE"/></translation>
+<translation id="756701799684433105">Aprovar transação</translation>
 <translation id="6450792191436242818">Programa do sistema</translation>
 <translation id="6252742184395380448">Programa de configuração</translation>
 <translation id="5358970666412490132">Programa de staking</translation>
@@ -898,6 +913,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="6421371987002247943">Programa de token</translation>
 <translation id="8780753288764281797">Programa Secp256k1</translation>
 <translation id="8504640708321980506">Dados</translation>
+<translation id="3723411967118253067">ID do programa</translation>
 <translation id="4771176409524282426">Criar conta</translation>
 <translation id="1755120947324658439">Atribuir</translation>
 <translation id="7588707273764747927">Transferir</translation>
@@ -922,10 +938,10 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="857250415816680832">Descongelar conta</translation>
 <translation id="5453172892735755262">Transferência verificada</translation>
 <translation id="471669767157904431">Aprovação verificada</translation>
-<translation id="3530340583186873359">Cunhar para conta verificada</translation>
-<translation id="5068456869800056740">Queimar conta verificada</translation>
+<translation id="3530340583186873359">Cunhagem verificada</translation>
+<translation id="5068456869800056740">Queima verificada</translation>
 <translation id="3004830385467519189">Inicializar conta 2</translation>
-<translation id="8026488633670875516">Sincronizar conta de token nativo</translation>
+<translation id="8026488633670875516">Sincronizar token nativo</translation>
 <translation id="2024649614526778327">Inicializar conta 3</translation>
 <translation id="8382368767453083629">Inicializar multisig 2</translation>
 <translation id="77243237706803459">Inicializar cunhagem 2</translation>
@@ -937,4 +953,32 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="7352651011704765696">Algo deu errado</translation>
 <translation id="7144878232160441200">Tentar novamente</translation>
 <translation id="6040143037577758943">Fechar</translation>
+<translation id="7710469167917867539">Taxa de transação</translation>
+<translation id="7843211152394841558">Máximo de novas tentativas:</translation>
+<translation id="8496335570810457">Commitment de simulação de transação:</translation>
+<translation id="5100124500279922001">Pular simulação de transação:</translation>
+<translation id="7152095322071766507">Site mais visitado</translation>
+<translation id="7230006500876504868">Pesquisar com o Brave</translation>
+<translation id="5888208462949095139">Pesquisar com <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
+<translation id="5456039738087398178">Widget da tela inicial</translation>
+<translation id="703185154752046151">Widget adicionado à tela inicial</translation>
+<translation id="3290805388004282161">Teste o widget da pesquisa Brave</translation>
+<translation id="4809681171446727314">Acesse uma pesquisa privada e independente diretamente na sua tela inicial.</translation>
+<translation id="7751715172931488388">Adicionar widget</translation>
+<translation id="7285167584112910782">Pesquisa de ação rápida do Brave</translation>
+<translation id="2326703104633309781">Usar o Tradutor Brave</translation>
+<translation id="5802752138057422257">Caracteres não ASCII detectados.</translation>
+<translation id="442709594176931966">Ver mensagem original</translation>
+<translation id="2239252396088484499">Ver mensagem em codificação ASCII</translation>
+<translation id="4220693114674044366">Endereço do token</translation>
+<translation id="5658257029899993935">Vincular compra à sua conta Brave</translation>
+<translation id="1187061015547219282">Vincule sua compra na Play Store à sua conta Brave para usar a VPN Brave em outros dispositivos.</translation>
+<translation id="6662142137695589205">Vincular sua assinatura de VPN</translation>
+<translation id="2674077112509133024">Amplie sua proteção do Firewall + VPN Brave</translation>
+<translation id="6365389672683343144">Sua assinatura da VPN Brave pode proteger até 5 dispositivos, incluindo Android, iOS e computadores. Basta vincular sua assinatura do Google Play à sua conta do Brave.</translation>
+<translation id="1580125697191336644">Experimental. Permite que o áudio seja tocado a partir do vídeo no plano de fundo quando a aba não estiver ativo ou a tela estiver desligada. Tente alterar para o modo desktop caso a funcionalidade não funcione.</translation>
+<translation id="3699674790322420653">Concluir verificação de carteira</translation>
+<translation id="5358719431303818601">Desconectado não verificado</translation>
+<translation id="4241449868720191203">Desconectado verificado</translation>
+<translation id="3248185426436836442">Pendente</translation>
 </translationbundle>

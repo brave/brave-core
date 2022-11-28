@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fa">
+<translation id="915758461293673891">مبلغ انعام:</translation>
+<translation id="8966035543003363155">اعلان‌های Brave این کار را راحت‌تر کرده است</translation>
+<translation id="7662771815233894695">دانلودها را مدیریت کنید،‌ توکن بگیرید، آمار مصرف هفتگی را مشاهده کنید و کارهای دیگری از این دست انجام دهید.</translation>
+<translation id="4265429476391459783">شما در حال کسب پاداش یا دریافت گزارش‌های حریم خصوصی نیستید</translation>
+<translation id="1305714751384738456">شما در حال دریافت پاداش‌های Brave نیستید</translation>
+<translation id="1483391942610220726">شما در حال دریافت گزارش‌های حریم خصوصی نیستید</translation>
+<translation id="4683790942451502796">اگر مایلید به کسب BAT ادامه دهید و همچنان گزارش‌های حریم خصوصی هفتگی را دریافت کنید، اعلان‌ها را دوباره روشن کنید.</translation>
+<translation id="1462722717055895108">اگر مایلید به کسب BAT ادامه دهید، اعلان‌ها را دوباره روشن کنید.</translation>
+<translation id="5457255168064266494">اگر مایلید به دریافت گزارش‌های حریم خصوصی هفتگی ادامه دهید، اعلان‌ها را دوباره روشن کنید.</translation>
+<translation id="6268959058971634697">شما در حال دریافت پاداش نیستید</translation>
+<translation id="1088637159642753509">اعلان‌های دستگاه را فعال کنید تا پاداش‌های Brave را کسب کنید و گزارش‌های حریم خصوصی را ببینید.</translation>
+<translation id="312404770066229090">اعلان‌های دستگاه را فعال کنید تا از پاداش‌های Brave بهره‌مند شوید.</translation>
+<translation id="2241529840361230499">اعلان‌های دستگاه را فعال کنید تا از پاداش‌های Brave بهره‌مند شوید.</translation>
+<translation id="4930155581888391118">دریافت اعلان از Brave را فعال کنید تا از پاداش‌های Brave بهره‌مند شوید.</translation>
+<translation id="325187916104529570">تنظیمات را باز کنید و اعلان‌های دستگاه را برای آگهی‌های Brave روشن کنید.</translation>
+<translation id="5744802588121897886">اعلان‌های Brave را روشن کنید</translation>
 <translation id="7307834434086582547">فعال/غیرفعال کردن سپرهای ایمنی Brave</translation>
 <translation id="6945863270524203017">برای مسدودسازی ردیاب و آگهی هر هفته به‌روزرسانی حریم شخصی را دریافت کنید.</translation>
 <translation id="4324735664183300693">روشن کردن اعلان‌ها</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">روش تحلیل</translation>
 <translation id="2356070529366658676">سؤال شود</translation>
 <translation id="4176463684765177261">غیرفعال شد</translation>
-<translation id="1448289340149908413">اتریوم</translation>
+<translation id="59174027418879706">فعال شد</translation>
 <translation id="6252490671914511928">امروز’s داستان برتر در یک فید کاملاً خصوصی، فقط برای شما.</translation>
 <translation id="7266075701303521777">Brave News توسط آگهی‌های کاملاً خصوصی و بی‌نام که منطبق بادستگاه شماست، پشتیبانی می‌شود.</translation>
 <translation id="4541978218358617681">آگهی</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">پاک کردن داده‌های مرور</translation>
 <translation id="5965081608816406060">بازپخش ویدیو در پس‌زمینه</translation>
 <translation id="6332924730165919598">بستن همه برگه‌ها Brave را می‌بندد</translation>
-<translation id="1580125697191336644">آزمایشی. وقتی که زبانه فعال نباشد یا صفحه نمایش دستگاه خاموش باشد، پخش صدای ویدیو در پس‌زمینه را فعال می‌کند. اگر این قابلیت کار نکرد، به حالت دسک‌تاپ جابه‌جا شوید.</translation>
-<translation id="59174027418879706">فعال شد</translation>
+<translation id="3872768973878059926">هنگامی که به زبانه دیگری در Brave بروید، به برنامه دیگری بروید یا صفحه دستگاه خاموش باشد، اجازه می‌دهد صدا همچنان پخش شود.</translation>
 <translation id="4150201353443180367">صفحه نمایش</translation>
 <translation id="2433507940547922241">شکل ظاهری</translation>
 <translation id="6333347122924254968">نمایش نماد Brave Rewards در نوار نشانی</translation>
@@ -310,16 +325,11 @@
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">ممکن است Uphold شما را ملزم به تأیید هویتتان بر اساس خدمات درخواستی کند.</translation>
 <translation id="3200197118442451932">Brave Software Inc.‎ هیچ یک از اطلاعات شخصی را که هنگام ساخت حساب در اختیار<ph name="WALLET_PROVIDER"/> قرار داده‌اید، پردازش یا ذخیره نمی‌کند یا به آنها دسترسی ندارد.</translation>
-<translation id="3699674790322420653">تکمیل تأیید کیف پول</translation>
 <translation id="2193391216824305230">کیف پول کاربر</translation>
 <translation id="1665118090708049096">به حساب <ph name="WALLET_PROVIDER"/> من بروید</translation>
 <translation id="1948959999802743233">قطع اتصال از <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">برداشتن سرمایه</translation>
 <translation id="8874184842967597500">متصل نیست</translation>
-<translation id="3368922792935385530">متصل</translation>
-<translation id="5358719431303818601">قطع‌شده و تأییدنشده</translation>
-<translation id="4241449868720191203">قطع‌شده و تأییدشده</translation>
-<translation id="3248185426436836442">معوق</translation>
 <translation id="2495032782748793764">پیش‌فرض Brave</translation>
 <translation id="9132378787893584761">Brave را با دوستان خود به اشتراک بگذارید!</translation>
 <translation id="717952606991220586">متأسفیم، مشکلی پیش آمد. لطفاً بعداً دوباره امتحان کنید.</translation>
@@ -673,6 +683,7 @@
 <translation id="1597199892790541240">فیس گاز</translation>
 <translation id="1634828734222219955">مجموع</translation>
 <translation id="7995708795274219641">مبلغ + گاز</translation>
+<translation id="2186011161688824046">مبلغ + کارمزد</translation>
 <translation id="1950052789869821983">تراکنش</translation>
 <translation id="2304783958703511257">تنظیمات پیشرفته</translation>
 <translation id="4220062530885628403">نانس</translation>
@@ -701,6 +712,7 @@
 <translation id="1133619932669546254">فعال کردن <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">نوع قابلیت: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">داده‌ای وجود ندارد</translation>
+<translation id="1105525362447173583">تراکنش علامت دپ سولانا</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> ارسال شد <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> ارسال کرد <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/>، <ph name="ASSET"/>-<ph name="DATE"/> را تأیید کرد</translation>
@@ -800,6 +812,7 @@
 <translation id="8030169304546394654">ارتباط قطع شد</translation>
 <translation id="3423275441470187644">اعتماد</translation>
 <translation id="2391762656119864333">ابطال</translation>
+<translation id="3368922792935385530">متصل</translation>
 <translation id="3432029672560911238">حساب کاربر</translation>
 <translation id="5753378322046059140">تغییر حساب</translation>
 <translation id="3897092660631435901">مینو</translation>
@@ -867,6 +880,7 @@
 <translation id="7080614857771109950">از دارایی‌های سازگار EVM در بلاکچین اتریوم (ERC-20،‏ ERC-721،‏ ERC-1551،‏ ERC-1155) پشتیبانی می‌کند</translation>
 <translation id="6577166808959668729">از دارایی‌های سازگار SLP در بلاکچین Solana پشتیبانی می‌کند</translation>
 <translation id="6575120282593094155">شما هنوز حساب <ph name="ACCOUNT_TYPE"/> ندارید. اکنون یکی ایجاد می‌کنید؟</translation>
+<translation id="1448289340149908413">اتریوم</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">برنامه‌های مستثنی‌شده</translation>
 <translation id="8463269357637177759">برنامه‌های معمولی مجاز</translation>
@@ -889,6 +903,7 @@
 <translation id="4784306439879850873">توجه داشته باشید که اگر امضا کنید Brave نمی‌تواند تأیید کند که چه اتفاقی می‌افتد. امضا می‌تواند تقریباً هرگونه عملیاتی را، از جمله (اما نه محدود به) کنترل کامل حساب شما و دارایی‌های رمزارز به سایت درخواست‌کننده در حساب شما یا از طرف شما مجاز کند. فقط در صورتی امضا کنید که از انجام این اقدام مطمئن و به سایت درخواست‌کننده اعتماد داشته باشید.</translation>
 <translation id="3474375934783434676">با مسئولیت خود ثبت‌نام کنید</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> از <ph name="SIZE"/></translation>
+<translation id="756701799684433105">تأیید تراکنش</translation>
 <translation id="6450792191436242818">برنامه سیستمی</translation>
 <translation id="6252742184395380448">برنامه پیکربندی</translation>
 <translation id="5358970666412490132">برنامه اثبات سهام</translation>
@@ -898,6 +913,7 @@
 <translation id="6421371987002247943">برنامه توکن</translation>
 <translation id="8780753288764281797">برنامه Secp256k1</translation>
 <translation id="8504640708321980506">داده</translation>
+<translation id="3723411967118253067">شناسه برنامه</translation>
 <translation id="4771176409524282426">ایجاد حساب</translation>
 <translation id="1755120947324658439">تعیین کردن</translation>
 <translation id="7588707273764747927">انتقال</translation>
@@ -937,4 +953,32 @@
 <translation id="7352651011704765696">مشکلی روی داد</translation>
 <translation id="7144878232160441200">سعی مجدد</translation>
 <translation id="6040143037577758943">بستن</translation>
+<translation id="7710469167917867539">کارمزد تراکنش</translation>
+<translation id="7843211152394841558">حداکثر تعداد تلاش‌های مجدد:</translation>
+<translation id="8496335570810457">تعهد پیش از پرواز:</translation>
+<translation id="5100124500279922001">رد کردن پیش از پرواز:</translation>
+<translation id="7152095322071766507">سایت بازدیدشده برتر</translation>
+<translation id="7230006500876504868">جستجو با Brave</translation>
+<translation id="5888208462949095139">جستجو با <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
+<translation id="5456039738087398178">ویجت صفحه اصلی</translation>
+<translation id="703185154752046151">ویجت به صفحه اصلی افزوده شد</translation>
+<translation id="3290805388004282161">ویجت جستجوی Brave را امتحان کنید</translation>
+<translation id="4809681171446727314">درست از صفحه اصلی خود، به جستجوی محرمانه و مستقل دسترسی یابید.</translation>
+<translation id="7751715172931488388">افزودن ویجت</translation>
+<translation id="7285167584112910782">جستجوی عمل سریع Brave</translation>
+<translation id="2326703104633309781">استفاده از ترجمه Brave</translation>
+<translation id="5802752138057422257">نویسه‌های غیر ASCII شناسایی شدند!</translation>
+<translation id="442709594176931966">نمایش پیام اصلی</translation>
+<translation id="2239252396088484499">نمایش پیام با رمزگذاری ASCII</translation>
+<translation id="4220693114674044366">آدرس توکن</translation>
+<translation id="5658257029899993935">خرید را با حساب Brave خود مرتبط کنید</translation>
+<translation id="1187061015547219282">خرید Play Store خود را به حساب Brave مرتبط کنید تا از VPN مربوط به Brave روی سایر دستگاه‌ها استفاده کنید.</translation>
+<translation id="6662142137695589205">اشتراک VPN خود را مرتبط کنید</translation>
+<translation id="2674077112509133024">محفاظت VPN + فایروال Brave خود را گسترش دهید</translation>
+<translation id="6365389672683343144">اشتراک VPN مرتبط با Brave می‌تواند از حداکثر 5 دستگاه Android،‏ iOS و رایانه محافظت کند. کافی است اشتراک Google Play خود را به حساب Brave مرتبط کنید.</translation>
+<translation id="1580125697191336644">آزمایشی. وقتی که زبانه فعال نباشد یا صفحه نمایش دستگاه خاموش باشد، پخش صدای ویدیو در پس‌زمینه را فعال می‌کند. اگر این قابلیت کار نکرد، به حالت دسک‌تاپ جابه‌جا شوید.</translation>
+<translation id="3699674790322420653">تکمیل تأیید کیف پول</translation>
+<translation id="5358719431303818601">قطع‌شده و تأییدنشده</translation>
+<translation id="4241449868720191203">قطع‌شده و تأییدشده</translation>
+<translation id="3248185426436836442">معوق</translation>
 </translationbundle>

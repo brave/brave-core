@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="tr">
+<translation id="915758461293673891">Bahşiş miktarı:</translation>
+<translation id="8966035543003363155">Brave bildirimleri işleri kolaylaştırır</translation>
+<translation id="7662771815233894695">İndirmeleri yönetin, token'lar kazanın, haftalık kullanım istatistiklerini ve daha fazlasını görün.</translation>
+<translation id="4265429476391459783">Ödülleri kazanmıyorsunuz veya Gizlilik Raporlarını almıyorsunuz</translation>
+<translation id="1305714751384738456">Brave Ödüllerini kazanmıyorsunuz</translation>
+<translation id="1483391942610220726">Gizlilik Raporlarını almıyorsunuz</translation>
+<translation id="4683790942451502796">BAT kazanmaya ve haftalık gizlilik raporlarını almaya devam etmek isterseniz bildirimleri tekrar açın.</translation>
+<translation id="1462722717055895108">BAT kazanmaya devam etmek isterseniz bildirimleri tekrar açın</translation>
+<translation id="5457255168064266494">Haftalık gizlilik raporlarını almaya devam etmek isterseniz bildirimleri tekrar açın.</translation>
+<translation id="6268959058971634697">Ödülleri kazanmıyorsunuz</translation>
+<translation id="1088637159642753509">Brave Ödüllerini kazanmak ve Gizlilik Raporlarını görmek için cihaz bildirimlerini etkinleştirin.</translation>
+<translation id="312404770066229090">Brave Ödüllerini kazanmak için cihaz bildirimlerini etkinleştirin.</translation>
+<translation id="2241529840361230499">Brave Gizlilik Raporlarını almak için cihaz bildirimlerini etkinleştirin.</translation>
+<translation id="4930155581888391118">Brave Ödüllerini kazanmak için Brave'den gelen bildirimleri etkinleştirin.</translation>
+<translation id="325187916104529570">Ayarları Açın ve Brave Reklamları için cihaz bildirimlerini etkinleştirin.</translation>
+<translation id="5744802588121897886">Brave bildirimlerini aç</translation>
 <translation id="7307834434086582547">Brave Kalkanlarını Etkinleştir/Devre Dışı Bırak</translation>
 <translation id="6945863270524203017">İzleyici &amp; reklam engelleyici için haftalık gizlilik güncellemeleri alın</translation>
 <translation id="4324735664183300693">Bildirimleri aç</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">Çözümleme Yöntemi</translation>
 <translation id="2356070529366658676">Sor</translation>
 <translation id="4176463684765177261">Devre dışı</translation>
-<translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">Etkin</translation>
 <translation id="6252490671914511928">Bugünün en çok okunan hikayeleri tamamen özel bir akışta, yalnızca sizin için.</translation>
 <translation id="7266075701303521777">Brave Haberleri cihazınızda eşleştirilen tamamen gizli ve anonim reklamlarla desteklenir.</translation>
 <translation id="4541978218358617681">Reklam</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">Tarama verilerini temizle</translation>
 <translation id="5965081608816406060">Arka planda kayıttan video oynatma</translation>
 <translation id="6332924730165919598">Tüm sekmelerin kapatılması, Brave'i kapatır</translation>
-<translation id="1580125697191336644">Deneysel. Sekme aktif olmadığında veya cihaz ekranı kapalı olduğunda arka planda videodan ses çalınmasını etkinleştirir. Bu özellik çalışmıyorsa masaüstü moduna geçmeyi deneyin.</translation>
-<translation id="59174027418879706">Etkin</translation>
+<translation id="3872768973878059926">Brave'de başka bir sekmeye geçerken, başka bir uygulamaya geçerken veya cihaz ekranınız kapalıyken sesin çalmaya devam etmesine izin verir.</translation>
 <translation id="4150201353443180367">Ekran</translation>
 <translation id="2433507940547922241">Görünüm</translation>
 <translation id="6333347122924254968">Adres çubuğunda Brave Ödülleri simgesini göster</translation>
@@ -311,16 +326,11 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Onaylama, talep ettiğiniz hizmetlere bağlı olarak kimliğinizi doğrulamanızı gerektirebilir.</translation>
 <translation id="3200197118442451932">Brave Software Inc., <ph name="WALLET_PROVIDER"/> için onunla bir hesap oluşturduğunuzda verdiğiniz kişisel bilgilerin hiçbirini işlemez, kaydetmez veya bunlara erişmez.</translation>
-<translation id="3699674790322420653">Tam cüzdan onayı</translation>
 <translation id="2193391216824305230">Kullanıcı Cüzdanı</translation>
 <translation id="1665118090708049096"><ph name="WALLET_PROVIDER"/> hesabıma git</translation>
 <translation id="1948959999802743233"><ph name="WALLET_PROVIDER"/> bağlantısını kes</translation>
 <translation id="6239274080752256452">Para Çek</translation>
 <translation id="8874184842967597500">Bağlı değil</translation>
-<translation id="3368922792935385530">Bağlı</translation>
-<translation id="5358719431303818601">Bağlantı kesilmesi doğrulanmadı</translation>
-<translation id="4241449868720191203">Bağlantı kesilmesi doğrulandı</translation>
-<translation id="3248185426436836442">Beklemede</translation>
 <translation id="2495032782748793764">Varsayılan Brave</translation>
 <translation id="9132378787893584761">Brave'i arkadaşlarınızla paylaşın!</translation>
 <translation id="717952606991220586">Eyvah, bir şeyler yanlış. Lütfen daha sonra tekrar deneyin.</translation>
@@ -674,6 +684,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="1597199892790541240">Gas Ücreti</translation>
 <translation id="1634828734222219955">Toplam</translation>
 <translation id="7995708795274219641">Tutar + Gas</translation>
+<translation id="2186011161688824046">Tutar + ücret</translation>
 <translation id="1950052789869821983">İşlem</translation>
 <translation id="2304783958703511257">Gelişmiş Ayarlar</translation>
 <translation id="4220062530885628403">Tek seferlik anahtar</translation>
@@ -702,6 +713,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="1133619932669546254"><ph name="TOKEN"/> token'ını etkinleştir</translation>
 <translation id="2199215899212542417">FONKSİYON TİPİ: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Veri yok</translation>
+<translation id="1105525362447173583">Solana Dapp İşlemini İmzala</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/>, <ph name="CRYPTO_VALUE"/><ph name="ASSET"/> (<ph name="FIAT_VALUE"/>$) gönderdi - <ph name="DATE"/></translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/><ph name="ASSET"/> #<ph name="ASSET_ID"/> gönderdi - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> onaylı <ph name="ASSET"/> - <ph name="DATE"/></translation>
@@ -801,6 +813,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="8030169304546394654">Bağlantı kesildi</translation>
 <translation id="3423275441470187644">Güven</translation>
 <translation id="2391762656119864333">İptal et</translation>
+<translation id="3368922792935385530">Bağlı</translation>
 <translation id="3432029672560911238">Kullanıcı hesabı</translation>
 <translation id="5753378322046059140">Hesap değiştir</translation>
 <translation id="3897092660631435901">Menü</translation>
@@ -868,6 +881,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="7080614857771109950">Ethereum blok zincirindeki EVM uyumlu varlıkları (ERC-20, ERC-721, ERC-1551, ERC-1155) destekler</translation>
 <translation id="6577166808959668729">Solana blok zincirindeki SPL uyumlu varlıkları destekler</translation>
 <translation id="6575120282593094155">Hala bir <ph name="ACCOUNT_TYPE"/> hesabınız yok. Şu an oluşturmak ister misiniz?</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">Hariç Tutulan Uygulamalar</translation>
 <translation id="8463269357637177759">İzin Verilen Düzenli Uygulamalar</translation>
@@ -890,6 +904,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="4784306439879850873">Brave'in imzalamanız halinde ne olacağını doğrulayamayacağını unutmayın. Bir imza, hesabınıza ve adınıza yapılacak, hesabınızın ve kripto varlıklarınızın tam kontrolünü talepte bulunan siteye devretmek de dahil olmak üzere (fakat bununla sınırlı olmaksızın) neredeyse her türlü değişikliği yetkilendirebilir. Sadece bu eylemi gerçekleştirmek istediğinizden eminseniz ve talepte bulunan siteye güveniyorsanız imzalayın.</translation>
 <translation id="3474375934783434676">İmza riski size aittir</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> / <ph name="SIZE"/></translation>
+<translation id="756701799684433105">İşlemi onayla</translation>
 <translation id="6450792191436242818">Sistem Programı</translation>
 <translation id="6252742184395380448">Konfig Programı</translation>
 <translation id="5358970666412490132">Paydaş Programı</translation>
@@ -899,6 +914,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="6421371987002247943">Token Programı</translation>
 <translation id="8780753288764281797">Secp256k1 Programı</translation>
 <translation id="8504640708321980506">Veri</translation>
+<translation id="3723411967118253067">Program Kimliği</translation>
 <translation id="4771176409524282426">Hesap oluştur</translation>
 <translation id="1755120947324658439">Devret</translation>
 <translation id="7588707273764747927">Transfer</translation>
@@ -938,4 +954,32 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="7352651011704765696">Bir şey yanlış gitti</translation>
 <translation id="7144878232160441200">Tekrar Dene</translation>
 <translation id="6040143037577758943">Kapat</translation>
+<translation id="7710469167917867539">İşlem bedeli</translation>
+<translation id="7843211152394841558">Maks Yeniden Deneme:</translation>
+<translation id="8496335570810457">Denetim Öncesi Taahhüt:</translation>
+<translation id="5100124500279922001">Denetim Öncesini Atla:</translation>
+<translation id="7152095322071766507">En Çok Ziyaret Edilen Site</translation>
+<translation id="7230006500876504868">Brave ile Ara</translation>
+<translation id="5888208462949095139"><ph name="DEFAULT_SEARCH_ENGINE"/> ile ara</translation>
+<translation id="5456039738087398178">Ana ekran öğesi</translation>
+<translation id="703185154752046151">Öğe, ana ekrana eklendi</translation>
+<translation id="3290805388004282161">Brave arama öğesini deneyin</translation>
+<translation id="4809681171446727314">Ana ekranınızdan gizli, bağımsız aramaya erişin.</translation>
+<translation id="7751715172931488388">Öğe ekle</translation>
+<translation id="7285167584112910782">Brave hızlı eylem araması</translation>
+<translation id="2326703104633309781">Brave Çeviriyi kullan</translation>
+<translation id="5802752138057422257">ASCII olmayan karakterler tespit edildi!</translation>
+<translation id="442709594176931966">Orijinal mesajı görüntüle</translation>
+<translation id="2239252396088484499">Mesajı ASCII kodlamasıyla görüntüle</translation>
+<translation id="4220693114674044366">Token adresi</translation>
+<translation id="5658257029899993935">Satın alımı Brave hesabınıza bağlayın</translation>
+<translation id="1187061015547219282">Brave VPN'i diğer cihazlarda kullanmak için Play Store satın alımınızı Brave hesabınıza bağlayın.</translation>
+<translation id="6662142137695589205">VPN aboneliğinizi bağlayın</translation>
+<translation id="2674077112509133024">Brave Güvenlik Duvarı + VPN korumanızı genişletin</translation>
+<translation id="6365389672683343144">Brave VPN aboneliğiniz; Android, iOS ve masaüstü genelinde 5 cihaza kadar koruma sağlayabilir. Sadece Google Play aboneliğinizi Brave hesabınıza bağlayın.</translation>
+<translation id="1580125697191336644">Deneysel. Sekme aktif olmadığında veya cihaz ekranı kapalı olduğunda arka planda videodan ses çalınmasını etkinleştirir. Bu özellik çalışmıyorsa masaüstü moduna geçmeyi deneyin.</translation>
+<translation id="3699674790322420653">Tam cüzdan onayı</translation>
+<translation id="5358719431303818601">Bağlantı kesilmesi doğrulanmadı</translation>
+<translation id="4241449868720191203">Bağlantı kesilmesi doğrulandı</translation>
+<translation id="3248185426436836442">Beklemede</translation>
 </translationbundle>

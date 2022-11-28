@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Brave награди</translation>
 <translation id="4615489450165434530">Подаване на сигнал за нефункциониращ сайт</translation>
 <translation id="1209739344687072997">Докладвайте нефункциониращ сайт</translation>
+<translation id="7630214457764713113">Копиране на чиста връзка</translation>
 <translation id="6406506848690869874">Синхр</translation>
 <translation id="1544192797660353713">Портфейл</translation>
 <translation id="2445484935443597917">Създаване на нов потребителски профил</translation>
@@ -73,6 +74,7 @@
 <translation id="2638041073279639246">Отворете линка в поверителен прозорец с Tor</translation>
 <translation id="3425600262621021599">Отворете линка в Brave поверителен прозорец с Tor</translation>
 <translation id="3229091547987707389">Импортиране и споделяне на директория</translation>
+<translation id="2804710924397009224">Скриване на иконата Brave Rewards</translation>
 <translation id="5029193871181468990">Скриване на иконата за награди в Brave</translation>
 <translation id="7595540212376041331">Скриване на иконата за портфейл в Brave</translation>
 <translation id="4928988318462976765">Магазин за уеб разширения</translation>
@@ -203,7 +205,6 @@
 <translation id="7537601449003285327">Закачи към лентата на задачите</translation>
 <translation id="961012016278832836">Предишни версии на Microsoft Edge</translation>
 <translation id="6436994631426134065">Импортирано от <ph name="BROWSER_NAME"/>.</translation>
-<translation id="7630214457764713113">Копиране на чиста връзка</translation>
 <translation id="9156965752763025780">Промените ви ще влязат в сила следващия път, когато стартирате отново Brave.</translation>
 <translation id="7179921470347911571">Презареди сега</translation>
 <translation id="4472575034687746823">Първи стъпки</translation>
@@ -403,9 +404,6 @@
 <translation id="6864914031231797928">Разрешаване на вход за Google за разширения</translation>
 <translation id="6554397389149987360">Използвайте "Hangouts" компоненти, за да разрешите споделяне на екрана и други функции в браузъра.</translation>
 <translation id="7878791177459550035">Медийният маршрутизатор активира функция за предаване в браузъра.</translation>
-<translation id="5927916530277631319">Метод за разрешаване на Unstoppable Domains</translation>
-<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/> за съображенията за поверителност на Ethereum.</translation>
-<translation id="5248318250177143470">Метод за разрешаване на Ethereum Name Service (ENS)</translation>
 <translation id="6421218422395686663">Разрешете ENS търсене извън веригата.</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/> за съображенията за поверителност на ENS търсене извън веригата.</translation>
 <translation id="6241402707160226266">Поверителен прозорец с Tor</translation>
@@ -494,7 +492,6 @@
 <translation id="585868419599255817">Възстановяване на публичния шлюз на IPFS</translation>
 <translation id="2618080188892567155">Автоматично връщане към публичния IPFS шлюз, ако локалният IPFS възел на Brave не може да бъде достигнат.</translation>
 <translation id="4107552920076294723">Пренасочване на IPFS ресурси към конфигурирания IPFS шлюз</translation>
-<translation id="6494857428933042381">Използва автоматично конфигурирания шлюз за решение на IPFS, когато се срещне ресурс на IPFS шлюз.</translation>
 <translation id="8655170717758778983">Автоматично пренасочване към IPFS страници чрез DNSLink, когато е възможно</translation>
 <translation id="2233724520223030977">Използва автоматичен DNSLink за навигация до IPFS версия на уебсайт, когато е възможно</translation>
 <translation id="8068526464562249859">Използва разширението IPFS Companion за подобрена поддръжка на IPFS в Brave, включително достъп до често срещани IPFS задачи от лентата на вашия браузър.</translation>
@@ -569,4 +566,8 @@
 <translation id="5318548116565208315">Аватар Bonbon Corn</translation>
 <translation id="1959966725083452288">Аватар Bonbon Royal</translation>
 <translation id="2039034364578911089">Аватар Bonbon Ninja</translation>
+<translation id="5927916530277631319">Метод за разрешаване на Unstoppable Domains</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/> за съображенията за поверителност на Ethereum.</translation>
+<translation id="5248318250177143470">Метод за разрешаване на Ethereum Name Service (ENS)</translation>
+<translation id="6494857428933042381">Използва автоматично конфигурирания шлюз за решение на IPFS, когато се срещне ресурс на IPFS шлюз.</translation>
 </translationbundle>

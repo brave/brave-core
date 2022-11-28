@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="id">
+<translation id="915758461293673891">Jumlah tip:</translation>
+<translation id="8966035543003363155">Notifikasi Brave mempermudah Anda</translation>
+<translation id="7662771815233894695">Mengelola unduhan, mendapatkan token, melihat statistik penggunaan mingguan, dan banyak lagi.</translation>
+<translation id="4265429476391459783">Anda tidak mendapatkan Imbalan atau menerima Laporan Privasi</translation>
+<translation id="1305714751384738456">Anda tidak mendapatkan Imbalan Brave</translation>
+<translation id="1483391942610220726">Anda tidak menerima Laporan Privasi</translation>
+<translation id="4683790942451502796">Aktifkan notifikasi kembali jika Anda ingin tetap mendapatkan BAT dan menerima laporan privasi mingguan.</translation>
+<translation id="1462722717055895108">Aktifkan notifikasi kembali jika Anda ingin tetap mendapatkan BAT</translation>
+<translation id="5457255168064266494">Aktifkan notifikasi kembali jika Anda ingin tetap menerima laporan privasi mingguan.</translation>
+<translation id="6268959058971634697">Anda tidak mendapatkan Imbalan</translation>
+<translation id="1088637159642753509">Aktifkan notifikasi perangkat untuk mendapatkan Imbalan Brave dan melihat Laporan Privasi.</translation>
+<translation id="312404770066229090">Aktifkan notifikasi perangkat untuk mendapatkan Imbalan Brave.</translation>
+<translation id="2241529840361230499">Aktifkan notifikasi perangkat untuk mendapatkan Laporan Privasi Brave.</translation>
+<translation id="4930155581888391118">Aktifkan notifikasi dari Brave untuk mendapatkan Imbalan Brave.</translation>
+<translation id="325187916104529570">Buka Pengaturan dan aktifkan notifikasi perangkat untuk Iklan Brave.</translation>
+<translation id="5744802588121897886">Aktifkan notifikasi Brave</translation>
 <translation id="7307834434086582547">Aktifkan/Nonaktifkan Brave Shields</translation>
 <translation id="6945863270524203017">Dapatkan pembaruan privasi mingguan pada pelacak &amp; pemblokir iklan.</translation>
 <translation id="4324735664183300693">Aktifkan notifikasi</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">Metode Penyelesaian</translation>
 <translation id="2356070529366658676">Tanya</translation>
 <translation id="4176463684765177261">Dinonaktifkan</translation>
-<translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">Diaktifkan</translation>
 <translation id="6252490671914511928">Kisah terpopuler hari ini dalam umpan yang benar-benar privat, hanya untuk Anda.</translation>
 <translation id="7266075701303521777">Brave News didukung iklan dengan iklan yang sepenuhnya privat dan anonim yang disesuaikan pada perangkat Anda.</translation>
 <translation id="4541978218358617681">Iklan</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">Hapus data penjelajahan</translation>
 <translation id="5965081608816406060">Pemutaran video di latar</translation>
 <translation id="6332924730165919598">Menutup semua tab akan menutup Brave</translation>
-<translation id="1580125697191336644">Eksperimental. Aktifkan pemutaran audio dari video di latar ketika tab tidak aktif atau layar perangkat dimatikan. Coba beralih ke mode desktop jika fitur ini tak bekerja.</translation>
-<translation id="59174027418879706">Diaktifkan</translation>
+<translation id="3872768973878059926">Memungkinkan audio agar tetap berputar saat Anda beralih ke tab lain di Brave, beralih ke aplikasi lain, atau jika layar perangkat Anda non-aktif.</translation>
 <translation id="4150201353443180367">Tampilan</translation>
 <translation id="2433507940547922241">Tampilan</translation>
 <translation id="6333347122924254968">Tampilkan ikon Brave Rewards pada bilah alamat</translation>
@@ -310,16 +325,11 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Uphold mungkin memerlukan verifikasi identitas Anda berdasarkan layanan yang diminta.</translation>
 <translation id="3200197118442451932">Brave Software Inc. tidak memproses, menyimpan, atau mengakses informasi pribadi apa pun yang Anda sediakan ke <ph name="WALLET_PROVIDER"/> saat Anda membuat akun di situs mereka.</translation>
-<translation id="3699674790322420653">Selesaikan verifikasi dompet</translation>
 <translation id="2193391216824305230">Dompet Pengguna</translation>
 <translation id="1665118090708049096">Buka akun <ph name="WALLET_PROVIDER"/> saya</translation>
 <translation id="1948959999802743233">Putuskan koneksi dari <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Tarik Dana</translation>
 <translation id="8874184842967597500">Tidak tersambung</translation>
-<translation id="3368922792935385530">Tersambung</translation>
-<translation id="5358719431303818601">Terputus tidak terverifikasi</translation>
-<translation id="4241449868720191203">Terputus terverifikasi</translation>
-<translation id="3248185426436836442">Tertunda</translation>
 <translation id="2495032782748793764">Brave Default</translation>
 <translation id="9132378787893584761">Bagikan Brave ke teman-teman Anda!</translation>
 <translation id="717952606991220586">Ups, ada yang keliru. Silakan coba lagi nanti.</translation>
@@ -673,6 +683,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1597199892790541240">Biaya Gas</translation>
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Nominal + Bensin</translation>
+<translation id="2186011161688824046">Jumlah + biaya</translation>
 <translation id="1950052789869821983">Transaksi</translation>
 <translation id="2304783958703511257">Pengaturan Lanjutan</translation>
 <translation id="4220062530885628403">Saat ini</translation>
@@ -701,6 +712,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1133619932669546254">Aktifkan <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">TIPE FUNGSI: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Tidak ada data</translation>
+<translation id="1105525362447173583">Transaksi Tertanda Solana Dapp</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> telah mengirimkan<ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> mengirimkan <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> disetujui <ph name="ASSET"/> - <ph name="DATE"/></translation>
@@ -800,6 +812,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="8030169304546394654">Terputus</translation>
 <translation id="3423275441470187644">Percayai</translation>
 <translation id="2391762656119864333">Cabut</translation>
+<translation id="3368922792935385530">Tersambung</translation>
 <translation id="3432029672560911238">Akun pengguna</translation>
 <translation id="5753378322046059140">Mengubah akun</translation>
 <translation id="3897092660631435901">Menu</translation>
@@ -867,6 +880,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="7080614857771109950">Mendukung aset EVM yang kompatibel pada rantai blok Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Mendukung aset kompatibel SPL pada rantai blok Solana</translation>
 <translation id="6575120282593094155">Anda belum memiliki akun <ph name="ACCOUNT_TYPE"/>. Ingin membuatnya sekarang?</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">Aplikasi yang Dikecualikan</translation>
 <translation id="8463269357637177759">Aplikasi Reguler yang Diizinkan</translation>
@@ -889,6 +903,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="4784306439879850873">Perhatikanlah bahwa Brave tidak dapat memverifikasi hal yang akan terjadi jika Anda memberikan tanda tangan. Tanda tangan dapat mengotorisasi hampir setiap pengoperasian di akun Anda atau atas nama Anda, termasuk (namun tidak terbatas pada) memberikan kendali penuh atas akun dan aset kripto Anda ke situs yang mengajukan permintaan. Berikan tanda tangan hanya jika Anda yakin akan mengambil tindakan ini, dan jika Anda memercayai situs yang mengajukan permintaan ini.</translation>
 <translation id="3474375934783434676">Tanda tangani dengan menanggung risiko Anda sendiri</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> dari <ph name="SIZE"/></translation>
+<translation id="756701799684433105">Setujui transaksi</translation>
 <translation id="6450792191436242818">Program Sistem</translation>
 <translation id="6252742184395380448">Program Konfigurasi</translation>
 <translation id="5358970666412490132">Program Taruhan</translation>
@@ -898,32 +913,33 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="6421371987002247943">Program Token</translation>
 <translation id="8780753288764281797">Program Secp256k1</translation>
 <translation id="8504640708321980506">Data</translation>
+<translation id="3723411967118253067">ID Program</translation>
 <translation id="4771176409524282426">Buat akun</translation>
 <translation id="1755120947324658439">Tugaskan</translation>
 <translation id="7588707273764747927">Transfer</translation>
-<translation id="5328067049293286962">Buat akun dengan Seed</translation>
+<translation id="5328067049293286962">Buat akun dengan bibit</translation>
 <translation id="1512366326138054636">Lanjutkan akun nonce</translation>
 <translation id="7042202638449257311">Tarik akun nonce</translation>
 <translation id="6586085653712983224">Mulai akun nonce</translation>
 <translation id="8790312855368673743">Otorisasi akun nonce</translation>
 <translation id="5312748886432335174">Alokasi</translation>
-<translation id="7678705217826797696">Alokasi dengan Seed</translation>
+<translation id="7678705217826797696">Alokasi dengan bibit</translation>
 <translation id="7436137523759921028">Tugaskan dengan Seed</translation>
-<translation id="3360695936886670509">Transfer dengan Seed</translation>
+<translation id="3360695936886670509">Transfer dengan bibit</translation>
 <translation id="7323636209143541483">Tingkatkan akun nonce</translation>
 <translation id="616021855350068202">Mulai Mint</translation>
 <translation id="4377316227435786423">Mulai akun</translation>
 <translation id="7474306790151660826">Mulai multisig</translation>
 <translation id="363258595406850968">Tetapkan otoritas</translation>
-<translation id="2091563464450586155">Mint ke</translation>
-<translation id="1252941298291625577">Burn</translation>
+<translation id="2091563464450586155">Cetak ke</translation>
+<translation id="1252941298291625577">Hanguskan</translation>
 <translation id="5211196599627796093">Tutup akun</translation>
 <translation id="6988707241715050556">Bekukan akun</translation>
 <translation id="857250415816680832">Cairkan akun</translation>
 <translation id="5453172892735755262">Transfer telah diperiksa</translation>
 <translation id="471669767157904431">Persetujuan telah diperiksa</translation>
-<translation id="3530340583186873359">Mint ke telah diperiksa</translation>
-<translation id="5068456869800056740">Burn telah diperiksa</translation>
+<translation id="3530340583186873359">Transaksi cetak ke yang telah diperiksa</translation>
+<translation id="5068456869800056740">Transaksi hanguskan yang telah diperiksa</translation>
 <translation id="3004830385467519189">Mulai akun 2</translation>
 <translation id="8026488633670875516">Sinkronisasikan akun asal</translation>
 <translation id="2024649614526778327">Mulai akun 3</translation>
@@ -937,4 +953,32 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="7352651011704765696">Terjadi sesuatu</translation>
 <translation id="7144878232160441200">Coba Lagi</translation>
 <translation id="6040143037577758943">Tutup</translation>
+<translation id="7710469167917867539">Biaya transaksi</translation>
+<translation id="7843211152394841558">Coba Ulang Maksimal:</translation>
+<translation id="8496335570810457">Komitmen Simulasi Transaksi:</translation>
+<translation id="5100124500279922001">Lewati Simulasi Transaksi:</translation>
+<translation id="7152095322071766507">Situs Paling Sering Dikunjungi</translation>
+<translation id="7230006500876504868">Mencari dengan Brave</translation>
+<translation id="5888208462949095139">Mencari dengan <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
+<translation id="5456039738087398178">Widget layar beranda</translation>
+<translation id="703185154752046151">Widget ditambahkan ke layar beranda</translation>
+<translation id="3290805388004282161">Cobalah widget pencarian Brave</translation>
+<translation id="4809681171446727314">Mengakses pencarian privat dan independen cukup dari layar beranda Anda.</translation>
+<translation id="7751715172931488388">Tambahkan widget</translation>
+<translation id="7285167584112910782">Pencarian aksi cepat Brave</translation>
+<translation id="2326703104633309781">Gunakan Terjemahan Brave</translation>
+<translation id="5802752138057422257">Karakter NON-ASCII telah terdeteksi!</translation>
+<translation id="442709594176931966">Lihat pesan asli</translation>
+<translation id="2239252396088484499">Lihat pesan di pengkodean ASCII</translation>
+<translation id="4220693114674044366">Alamat token</translation>
+<translation id="5658257029899993935">Tautkan pembelian ke akun Brave Anda</translation>
+<translation id="1187061015547219282">Tautkan pembelian di Play Store Anda ke akun Brave Anda untuk menggunakan VPN Brave pada perangkat lain.</translation>
+<translation id="6662142137695589205">Tautkan paket langganan VPN Anda</translation>
+<translation id="2674077112509133024">Perpanjang perlindungan Dinding Api + VPN Bravve Anda</translation>
+<translation id="6365389672683343144">Paket langganan VPN Brave Anda dapat melindungi hingga 5 perangkat, meliputi Android, iOS, dan desktop. Cukup tautkan paket langganan Google Play Anda ke akun Brave Anda.</translation>
+<translation id="1580125697191336644">Eksperimental. Aktifkan pemutaran audio dari video di latar ketika tab tidak aktif atau layar perangkat dimatikan. Coba beralih ke mode desktop jika fitur ini tak bekerja.</translation>
+<translation id="3699674790322420653">Selesaikan verifikasi dompet</translation>
+<translation id="5358719431303818601">Terputus tidak terverifikasi</translation>
+<translation id="4241449868720191203">Terputus terverifikasi</translation>
+<translation id="3248185426436836442">Tertunda</translation>
 </translationbundle>

@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sk">
+<translation id="915758461293673891">Suma príspevku:</translation>
+<translation id="8966035543003363155">Upozornenia Brave uľahčujú prácu</translation>
+<translation id="7662771815233894695">Spravujte sťahovanie, získavajte tokeny, zobrazujte týždenné štatistiky používania a využívajte ďalšie funkcie.</translation>
+<translation id="4265429476391459783">Nezískavate odmeny ani nedostávate správy o ochrane osobných údajov</translation>
+<translation id="1305714751384738456">Nezískavate Brave Rewards</translation>
+<translation id="1483391942610220726">Nedostávate správy o ochrane osobných údajov</translation>
+<translation id="4683790942451502796">Ak chcete naďalej získavať BAT a dostávať týždenné správy o ochrane osobných údajov, znova zapnite upozornenia.</translation>
+<translation id="1462722717055895108">Ak chcete naďalej získavať BAT, zapnite upozornenia.</translation>
+<translation id="5457255168064266494">Ak chcete aj naďalej dostávať týždenné správy o ochrane osobných údajov, znova zapnite upozornenia.</translation>
+<translation id="6268959058971634697">Nezískavate odmeny</translation>
+<translation id="1088637159642753509">Zapnite upozornenia zariadenia, aby ste mohli získavať Brave Rewards a zobrazovať správy o ochrane osobných údajov.</translation>
+<translation id="312404770066229090">Zapnite upozornenia zariadenia, aby ste mohli získavať Brave Rewards.</translation>
+<translation id="2241529840361230499">Zapnite upozornenia zariadenia, aby ste mohli získavať správy o ochrane osobných údajov Brave.</translation>
+<translation id="4930155581888391118">Zapnite upozornenia z prehliadača Brave, aby ste získavali Brave Rewards.</translation>
+<translation id="325187916104529570">Otvorte Nastavenia a zapnite upozornenia zariadenia pre Brave Ads.</translation>
+<translation id="5744802588121897886">Zapnúť upozornenia Brave</translation>
 <translation id="7307834434086582547">Povoliť/zakázať štíty Brave</translation>
 <translation id="6945863270524203017">Získajte týždenné aktualizácie o ochrane pred sledovaním a blokovaní reklám.</translation>
 <translation id="4324735664183300693">Zapnúť upozornenia</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">Metóda Resolve</translation>
 <translation id="2356070529366658676">Opýtať sa</translation>
 <translation id="4176463684765177261">Deaktivované</translation>
-<translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">Aktivovaný</translation>
 <translation id="6252490671914511928">Najlepšie príbehy dneška v úplne súkromnom informačnom kanáli, a to len pre vás.</translation>
 <translation id="7266075701303521777">Novinky Brave sú podporované reklamami s úplne súkromnýmí a anonymizovanými reklamami zhodnými na vašom zariadení.</translation>
 <translation id="4541978218358617681">Reklama</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">Vymazať dáta prehliadania</translation>
 <translation id="5965081608816406060">Prehrávanie videa na pozadí</translation>
 <translation id="6332924730165919598">Zatvorením všetkých kariet sa zavrie prehliadač Brave</translation>
-<translation id="1580125697191336644">Experimentálny. Umožňuje prehrávanie zvuku z videa na pozadí, keď karta nie je aktívna alebo obrazovka zariadenia je vypnutá. Ak táto funkcia nefunguje, skúste prepnúť do desktop módu.</translation>
-<translation id="59174027418879706">Povolené</translation>
+<translation id="3872768973878059926">Umožňuje pokračovať v prehrávaní zvuku, keď prepnete na inú kartu v prehliadači Brave, prepnete na inú aplikáciu alebo keď je obrazovka zariadenia vypnutá.</translation>
 <translation id="4150201353443180367">Displej</translation>
 <translation id="2433507940547922241">Vzhľad</translation>
 <translation id="6333347122924254968">Zobraziť ikonu odmien Brave v paneli s adresou</translation>
@@ -310,16 +325,11 @@ Naozaj chcete pokračovať?</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Ak požiadate o nejaké služby, Uphold vás môže požiadať o potvrdenie identity.</translation>
 <translation id="3200197118442451932">Spoločnosť Brave Software Inc. nespracováva, neuchováva a ani nepristupuje k osobným údajom, ktoré poskytnete <ph name="WALLET_PROVIDER"/>, keď si u nich založíte účet.</translation>
-<translation id="3699674790322420653">Dokončiť verifikáciu peňaženky</translation>
 <translation id="2193391216824305230">Peňaženka používateľa</translation>
 <translation id="1665118090708049096">Prejsť na môj účet <ph name="WALLET_PROVIDER"/></translation>
 <translation id="1948959999802743233">Odpojiť od <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Vybrať prostriedky</translation>
 <translation id="8874184842967597500">Nepripojené</translation>
-<translation id="3368922792935385530">Pripojené</translation>
-<translation id="5358719431303818601">Odpojenie neoverené</translation>
-<translation id="4241449868720191203">Odpojenie overené</translation>
-<translation id="3248185426436836442">Prebieha</translation>
 <translation id="2495032782748793764">Brave prednastavené</translation>
 <translation id="9132378787893584761">Zdieľajte Brave so svojimi priateľmi!</translation>
 <translation id="717952606991220586">Och, niečo sa pokazilo. Prosím, skúste to znova.</translation>
@@ -673,6 +683,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="1597199892790541240">Poplatek za palivo</translation>
 <translation id="1634828734222219955">Celkem</translation>
 <translation id="7995708795274219641">Částka + palivo</translation>
+<translation id="2186011161688824046">Čiastka + poplatok</translation>
 <translation id="1950052789869821983">Transakcia</translation>
 <translation id="2304783958703511257">Rozšírené nastavenia</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -701,6 +712,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="1133619932669546254">Aktivovať <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">TYP FUNKCIE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Žiadne dáta</translation>
+<translation id="1105525362447173583">Transakcia Solana Dapp Sign</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> odoslaný <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (<ph name="FIAT_VALUE"/> $) – <ph name="DATE"/></translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> odoslal <ph name="ASSET"/> #<ph name="ASSET_ID"/> –<ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> schválený <ph name="ASSET"/> - <ph name="DATE"/></translation>
@@ -800,6 +812,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="8030169304546394654">Prerušené spojenie</translation>
 <translation id="3423275441470187644">Dôverovať</translation>
 <translation id="2391762656119864333">Odvolať</translation>
+<translation id="3368922792935385530">Pripojené</translation>
 <translation id="3432029672560911238">Účet používateľa</translation>
 <translation id="5753378322046059140">Prepnúť účet</translation>
 <translation id="3897092660631435901">Menu</translation>
@@ -867,6 +880,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="7080614857771109950">Podporuje aktíva kompatibilné s EVM na blockchaine Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Podporuje aktíva kompatibilné so SLP na blockchaine Solana</translation>
 <translation id="6575120282593094155">Ešte nemáte účet <ph name="ACCOUNT_TYPE"/> Chcete ho teraz vytvoriť?</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">Vylúčené aplikácie</translation>
 <translation id="8463269357637177759">Povolené bežné aplikácie</translation>
@@ -889,6 +903,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="4784306439879850873">Upozorňujeme, že Brave nedokáže overiť, čo sa stane, ak sa prihlásite. Podpisom sa dá schváliť takmer každá operácia na vašom účte alebo vo vašom mene, vrátane (okrem iného) poskytnutia úplnej kontroly nad vaším účtom a kryptoaktívami v prospech stránky vytvárajúcej žiadosť.  Podpíšte sa len vtedy, ak ste si istí, že chcete túto akciu vykonať a že dôverujete žiadajúcej stránke.</translation>
 <translation id="3474375934783434676">Zaregistrujte sa na vlastné riziko</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> z <ph name="SIZE"/></translation>
+<translation id="756701799684433105">Schváliť transakciu</translation>
 <translation id="6450792191436242818">Systémový program</translation>
 <translation id="6252742184395380448">Konfiguračný program</translation>
 <translation id="5358970666412490132">Program s podielmi</translation>
@@ -898,6 +913,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="6421371987002247943">Program tokenov</translation>
 <translation id="8780753288764281797">Program Secp256k1</translation>
 <translation id="8504640708321980506">Údaje</translation>
+<translation id="3723411967118253067">ID programu</translation>
 <translation id="4771176409524282426">Vytvoriť účet</translation>
 <translation id="1755120947324658439">Priradiť</translation>
 <translation id="7588707273764747927">Prevod</translation>
@@ -937,4 +953,32 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="7352651011704765696">Niečo sa pokazilo</translation>
 <translation id="7144878232160441200">Skúsiť znova</translation>
 <translation id="6040143037577758943">Zavrieť</translation>
+<translation id="7710469167917867539">Poplatok za transakciu</translation>
+<translation id="7843211152394841558">Maximálny počet opakovaných pokusov:</translation>
+<translation id="8496335570810457">Záväzok pred skutočnou transakciou:</translation>
+<translation id="5100124500279922001">Preskočiť simulovanú transakciu:</translation>
+<translation id="7152095322071766507">Najnavštevovanejšia stránka</translation>
+<translation id="7230006500876504868">Vyhľadávanie pomocou Brave</translation>
+<translation id="5888208462949095139">Hľadať pomocou <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
+<translation id="5456039738087398178">Miniaplikácia domovskej obrazovky</translation>
+<translation id="703185154752046151">Miniaplikácia pridaná na domovskú obrazovku</translation>
+<translation id="3290805388004282161">Vyskúšajte vyhľadávaciu miniaplikáciu Brave</translation>
+<translation id="4809681171446727314">Prístup k súkromnému, nezávislému vyhľadávaniu priamo z domovskej obrazovky.</translation>
+<translation id="7751715172931488388">Pridať miniaplikáciu</translation>
+<translation id="7285167584112910782">Rýchle vyhľadávanie Brave</translation>
+<translation id="2326703104633309781">Použiť Brave Translate</translation>
+<translation id="5802752138057422257">Zistili sa iné znaky ako ASCII!</translation>
+<translation id="442709594176931966">Zobraziť pôvodnú správu</translation>
+<translation id="2239252396088484499">Zobraziť správu v kódovaní ASCII</translation>
+<translation id="4220693114674044366">Adresa tokenu</translation>
+<translation id="5658257029899993935">Prepojenie nákupu s účtom Brave</translation>
+<translation id="1187061015547219282">Prepojte svoj nákup v Obchode Play s účtom Brave a používajte Brave VPN na iných zariadeniach.</translation>
+<translation id="6662142137695589205">Prepojenie predplatného siete VPN</translation>
+<translation id="2674077112509133024">Rozšírenie ochrany Brave Firewall + VPN</translation>
+<translation id="6365389672683343144">Predplatné Brave VPN môže chrániť až 5 zariadení so systémom Android, iOS a počítač. Stačí prepojiť predplatné Google Play s účtom Brave.</translation>
+<translation id="1580125697191336644">Experimentálny. Umožňuje prehrávanie zvuku z videa na pozadí, keď karta nie je aktívna alebo obrazovka zariadenia je vypnutá. Ak táto funkcia nefunguje, skúste prepnúť do desktop módu.</translation>
+<translation id="3699674790322420653">Dokončiť verifikáciu peňaženky</translation>
+<translation id="5358719431303818601">Odpojenie neoverené</translation>
+<translation id="4241449868720191203">Odpojenie overené</translation>
+<translation id="3248185426436836442">Prebieha</translation>
 </translationbundle>

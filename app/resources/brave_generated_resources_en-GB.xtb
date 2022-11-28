@@ -3,7 +3,9 @@
 <translationbundle lang="en-GB">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="4615489450165434530">Report a Broken Site</translation>
+<translation id="8097438084542431276">Copy clean link</translation>
 <translation id="1209739344687072997">Report a broken site</translation>
+<translation id="7630214457764713113">Copy clean link</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">Wallet</translation>
 <translation id="2445484935443597917">Create a New Profile</translation>
@@ -73,7 +75,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2638041073279639246">Open link in private window with Tor</translation>
 <translation id="3425600262621021599">Open link in Brave private window with Tor</translation>
 <translation id="3229091547987707389">Import and share a directory</translation>
+<translation id="2804710924397009224">Hide Brave Rewards icon</translation>
 <translation id="5029193871181468990">Hide Brave Rewards icon</translation>
+<translation id="2808103541110899519">Hide Brave Wallet icon</translation>
 <translation id="7595540212376041331">Hide Brave Wallet icon</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">View in Web Extensions Store</translation>
@@ -170,7 +174,13 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191143826155037518">Brave is made available to you under the <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) and includes <ph name="BEGIN_LINK_OSS"/>open source software<ph name="END_LINK_OSS"/> under a variety of other licenses.
         You can read <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instructions on how to download and build for yourself<ph name="END_LINK_BUILD_INSTRUCTIONS"/> the specific <ph name="BEGIN_LINK_SOURCE_CODE"/>source code used to create this copy<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Bookmark all tabs...</translation>
+<translation id="3987546108749866209">Use vertical tabs</translation>
+<translation id="5860254591544742609">Show title bar</translation>
+<translation id="399928467800528208">Float on mouseover</translation>
 <translation id="2336228925368920074">Bookmark All Tabs...</translation>
+<translation id="2523967823495420116">Use vertical tabs</translation>
+<translation id="8888603463702767599">Show title bar</translation>
+<translation id="2058818256505091369">Float on mouseover</translation>
 <translation id="4235920711083356755">Show VPN button</translation>
 <translation id="4070612712151038707">Shows the VPN button in the toolbar</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -201,9 +211,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8722651357687610395">Set Brave as default</translation>
 <translation id="2370739752330685659">Maybe later</translation>
 <translation id="7537601449003285327">Pin to taskbar</translation>
+<translation id="2307973900865360088">Keep in dock</translation>
 <translation id="961012016278832836">Microsoft Edge legacy</translation>
 <translation id="6436994631426134065">Imported from <ph name="BROWSER_NAME"/>.</translation>
-<translation id="7630214457764713113">Copy clean link</translation>
 <translation id="9156965752763025780">Your changes will take effect the next time you relaunch Brave.</translation>
 <translation id="7179921470347911571">Relaunch Now</translation>
 <translation id="4472575034687746823">Get started</translation>
@@ -245,6 +255,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5919424224662539292">Customise the background image and widgets that appear on the new tab page</translation>
 <translation id="7461924472993315131">Pin</translation>
 <translation id="7506648566440714944">Brave is already pinned</translation>
+<translation id="239275665037555969">Dock</translation>
+<translation id="4057614912106618659">Brave is already in dock</translation>
 <translation id="3195845168740336657">Shields settings</translation>
 <translation id="754769152790647708">Shields status</translation>
 <translation id="3615717588724840230">Sites can block trackers, ads and fingerprinting using Shields</translation>
@@ -384,6 +396,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4581190919849683048">Which type of device would you like to sync to?</translation>
 <translation id="4112587618563511470">Invalid sync code, please check and try again.</translation>
 <translation id="3995714999835224798">This code is invalid</translation>
+<translation id="4432071071853308688">This code is empty</translation>
+<translation id="955848693465029904">Internal sync set-up error</translation>
 <translation id="859506441384380749">This code was generated by a deprecated version of Brave, please upgrade your other device first</translation>
 <translation id="3132642509209154999">This code has expired. Please generate a new one on your other device and try again.</translation>
 <translation id="2859229680945501779">This code is invalid. Please check that the time and timezone are set correctly on your device.</translation>
@@ -403,17 +417,21 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6864914031231797928">Allow Google login for extensions</translation>
 <translation id="6554397389149987360">Uses Hangouts component to enable screen sharing and other features in the browser.</translation>
 <translation id="7878791177459550035">Media router enables cast feature in the browser.</translation>
-<translation id="5927916530277631319">Method to resolve Unstoppable Domains</translation>
-<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/> about Ethereum privacy considerations.</translation>
-<translation id="5248318250177143470">Method to resolve Ethereum Name Service (ENS)</translation>
+<translation id="2707635989000984973">Resolve Unstoppable Domains domain names</translation>
+<translation id="1807158022157096592"><ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/> about Unstoppable Domains privacy considerations.</translation>
+<translation id="641308776160806829">Resolve Ethereum Name Service (ENS) domain names</translation>
 <translation id="6421218422395686663">Allow ENS off-chain look-up.</translation>
+<translation id="4608449984413688436">Resolve Solana Name Service (SNS) domain names</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/> about ENS off-chain look-up privacy considerations.</translation>
 <translation id="6241402707160226266">Private window with Tor</translation>
 <translation id="8762452230727230396">Tor hides your IP address from the sites you visit.</translation>
+<translation id="951983619130191090">Volunteer to help others connect to the Tor network</translation>
+<translation id="2223668809371912019">Enable the Snowflake extension to allow users in censored countries to connect to the Tor network via your network connection.</translation>
 <translation id="2959986444009520721">Use Bridges</translation>
 <translation id="8416750895933172460">Bridges help you access the Tor Network in places where Tor is blocked. Depending on where you are located, one bridge may work better than others.</translation>
 <translation id="7206799843254049470">Tor connection settings</translation>
 <translation id="3194502271166340944">Controls how Private Windows with Tor connect to the Tor network</translation>
+<translation id="3717364961460790491">The Snowflake extension necessary for this functionality could not be downloaded. Please check your Internet connection and try again.</translation>
 <translation id="4859228830700205299">Select a built-in bridge</translation>
 <translation id="3233137871426528317">Request a bridge from torproject.org</translation>
 <translation id="5701503934456421898">Request a New Bridge...</translation>
@@ -490,11 +508,13 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1195880978080389104">Brave local IPFS node</translation>
 <translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Learn more<ph name="END_LINK_MPL"/> about Brave local IPFS node and gateway privacy considerations.</translation>
 <translation id="4927734062756955434">IPFS public gateway address</translation>
+<translation id="3707431725427930007">IPFS public gateway address for NFT</translation>
 <translation id="8425213833346101688">Change</translation>
 <translation id="585868419599255817">IPFS public gateway fallback</translation>
 <translation id="2618080188892567155">Automatically fall back to public IPFS gateway if your Brave local IPFS node cannot be reached.</translation>
 <translation id="4107552920076294723">Redirect IPFS resources to the configured IPFS gateway</translation>
-<translation id="6494857428933042381">Automatically uses the configured gateway for IPFS resolutions when an IPFS gateway resource is encountered.</translation>
+<translation id="4284166297897715283">Requests to IPFS resources, hosted on third-party IPFS gateways, will be loaded via selected local or remote gateway.
+    Note: if local node is selected, resource will be requested directly from your computer and cached data may be provided to the IPFS network for some time.</translation>
 <translation id="8655170717758778983">Automatically redirect to IPFS pages via DNSLink when possible</translation>
 <translation id="2233724520223030977">Automatically uses DNSLink to navigate to an IPFS version of a website when possible</translation>
 <translation id="8068526464562249859">Uses the IPFS Companion extension for enhanced IPFS support in Brave, including access to common IPFS tasks from your browser bar.</translation>
@@ -569,4 +589,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="5927916530277631319">Method to resolve Unstoppable Domains</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/> about Ethereum privacy considerations.</translation>
+<translation id="5248318250177143470">Method to resolve Ethereum Name Service (ENS)</translation>
+<translation id="6494857428933042381">Automatically uses the configured gateway for IPFS resolutions when an IPFS gateway resource is encountered.</translation>
 </translationbundle>

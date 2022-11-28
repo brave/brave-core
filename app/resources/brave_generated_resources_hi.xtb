@@ -3,7 +3,9 @@
 <translationbundle lang="hi">
 <translation id="3333887201479867589">Brave रिवार्ड्स</translation>
 <translation id="4615489450165434530">एक ब्रेक हुई साइट की रिपोर्ट करें</translation>
+<translation id="8097438084542431276">क्लीन लिंक को कॉपी करें</translation>
 <translation id="1209739344687072997">एक ब्रेक हुई साइट की रिपोर्ट करें</translation>
+<translation id="7630214457764713113">क्लीन लिंक को कॉपी करें</translation>
 <translation id="6406506848690869874">सिंक</translation>
 <translation id="1544192797660353713">वॉलेट</translation>
 <translation id="2445484935443597917">नई प्रोफ़ाइल बनाएं</translation>
@@ -74,7 +76,9 @@
 <translation id="2638041073279639246">Tor के साथ प्राइवेट विंडो में लिंक खोलें</translation>
 <translation id="3425600262621021599">Tor के साथ ब्रेव प्राइवेट विंडो में लिंक खोलें</translation>
 <translation id="3229091547987707389">एक डायरेक्टरी इम्पोर्ट और शेयर करें</translation>
+<translation id="2804710924397009224">Brave रिवार्ड्स आइकन छुपाएं</translation>
 <translation id="5029193871181468990">Brave रिवॉर्ड आइकन को छिपाएँ</translation>
+<translation id="2808103541110899519">Brave वॉलेट आइकन को छिपाएँ</translation>
 <translation id="7595540212376041331">Brave वॉलेट आइकन को छिपाएँ</translation>
 <translation id="4928988318462976765">वेब एक्सटेंशन स्टोर</translation>
 <translation id="9181207987584064303">वेब एक्सटेंशन स्टोर में देखें</translation>
@@ -171,7 +175,13 @@
 <translation id="191143826155037518">Brave आपको  <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) के तहत उपलब्ध कराया जाता है और इसमें कई अन्य लाइसेंसों के तहत ओपन सोर्स सॉफ़्टवेयर <ph name="BEGIN_LINK_OSS"/>open source software<ph name="END_LINK_OSS"/> शामिल होते हैं।
 आप इस प्रतिलिपि<ph name="BEGIN_LINK_SOURCE_CODE"/> को बनाने के लिए उपयोग किए गए विशिष्ट <ph name="END_LINK_SOURCE_CODE"/>सोर्स कोड को डाउनलोड करने और स्वयं के लिए निर्माण करने के<ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/> निर्देश <ph name="END_LINK_BUILD_INSTRUCTIONS"/>पढ़ सकते हैं।</translation>
 <translation id="4474155171896946103">सभी टैब बुकमार्क करें...</translation>
+<translation id="3987546108749866209">वर्टिकल टैब का इस्तेमाल करें</translation>
+<translation id="5860254591544742609">टाइटल बार दिखाएँ</translation>
+<translation id="399928467800528208">माउसओवर के दौरान फ़्लोट की सुविधा</translation>
 <translation id="2336228925368920074">सभी टैब बुकमार्क करें...</translation>
+<translation id="2523967823495420116">वर्टिकल टैब का इस्तेमाल करें</translation>
+<translation id="8888603463702767599">टाइटल बार दिखाएँ</translation>
+<translation id="2058818256505091369">माउसओवर के दौरान फ़्लोट की सुविधा</translation>
 <translation id="4235920711083356755">VPN बटन दिखाएं</translation>
 <translation id="4070612712151038707">टूलबार में VPN बटन दिखाता है</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -202,9 +212,9 @@
 <translation id="8722651357687610395">Brave को डिफ़ॉल्ट के रूप में सेट करें</translation>
 <translation id="2370739752330685659">शायद बाद में</translation>
 <translation id="7537601449003285327">टास्कबार में पिन करें</translation>
+<translation id="2307973900865360088">डॉक में रखें</translation>
 <translation id="961012016278832836">Microsoft Edge की लेगसी</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/> से इम्पोर्ट किया गया.</translation>
-<translation id="7630214457764713113">क्लीन लिंक को कॉपी करें</translation>
 <translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
 <translation id="7179921470347911571">अब पुनः प्रस्तुत करें</translation>
 <translation id="4472575034687746823">आरंभ करें</translation>
@@ -279,6 +289,8 @@ Binance
 <translation id="5919424224662539292">नए टैब पेज़ पर दिखाई देने वाली पृष्ठभूमि छवि और विजेट को कस्टमाइज़ करें</translation>
 <translation id="7461924472993315131">पिन करें</translation>
 <translation id="7506648566440714944">Brave पहले से ही पिन किया हुआ है</translation>
+<translation id="239275665037555969">डॉक</translation>
+<translation id="4057614912106618659">Brave पहले से ही डॉक में है</translation>
 <translation id="3195845168740336657">शील्ड की सेटिंग</translation>
 <translation id="754769152790647708">शील्ड का स्टेटस</translation>
 <translation id="3615717588724840230">साइट शील्ड का इस्तेमाल करके ट्रैकर, विज्ञापन और फ़िंगरप्रिंटिंग को ब्लॉक कर सकती हैं</translation>
@@ -418,6 +430,8 @@ Binance
 <translation id="4581190919849683048">आप किस प्रकार के उपकरण से सिंक करना चाहेंगे?</translation>
 <translation id="4112587618563511470">अमान्य सिंक कोड, कृपया जाँच करें और पुनः प्रयास करें।</translation>
 <translation id="3995714999835224798">यह कोड अमान्य है</translation>
+<translation id="4432071071853308688">यह कोड खाली है</translation>
+<translation id="955848693465029904">इंटर्नल सिंक के सेटअप में गड़बड़ी हुई</translation>
 <translation id="859506441384380749">यह कोड Brave के पुराने पिछड़े संस्करण से जेनरेट किया गया था, कृपया पहले अपने अन्य डिवाइस को अपग्रेड करें</translation>
 <translation id="3132642509209154999">यह कोड समाप्त हो गया है. कृपया अपने दूसरे डिवाइस पर एक नया कोड जेनरेट करें और दोबारा कोशिश करें.</translation>
 <translation id="2859229680945501779">यह कोड अमान्य है। कृपया जांच लें कि आपके डिवाइस पर टाइम और टाइमज़ोन सही ढंग से सेट हैं.</translation>
@@ -437,17 +451,21 @@ Binance
 <translation id="6864914031231797928">एक्सटेंशन के लिए Google लॉगिन की अनुमति दें</translation>
 <translation id="6554397389149987360">ब्राउज़र में स्क्रीन साझा करने और अन्य सुविधाओं के लिए हैंगऑउट के घटकों का उपयोग करें।</translation>
 <translation id="7878791177459550035">मीडिया राउटर ब्राउज़र में कास्ट फीचर इनेबल करता है.</translation>
-<translation id="5927916530277631319">Unstoppable डोमेन को हल करने की विधि</translation>
-<translation id="2889554198027690581">Ethereum की गोपनीयता नीति के बारे में <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/>.</translation>
-<translation id="5248318250177143470">Ethereum नाम सेवा (ENS) को हल करने की विधि</translation>
+<translation id="2707635989000984973">Unstoppable Domains के डोमेन नाम को हल करें</translation>
+<translation id="1807158022157096592">Unstoppable Domains के गोपनियता से जुड़े विचारों के बारे में <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
+<translation id="641308776160806829">Ethereum Name Service (ENS) डोमेन नेम को हल करें</translation>
 <translation id="6421218422395686663">ENS ऑफ़चेन को खोजने की इजाज़त दें.</translation>
+<translation id="4608449984413688436">Solana Name Service (SNS) के डोमेन नेम को हल करें</translation>
 <translation id="7831978744512353629">ENS ऑफ़चेन खोजने से जुड़े प्राइवेसी नियमों के बारे में <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/>.</translation>
 <translation id="6241402707160226266">Tor के साथ प्राइवेट विंडो</translation>
 <translation id="8762452230727230396">Tor आपके आईपी एड्रेस को आपके द्वारा देखी जाने वाली साइटों से छुपाता है।</translation>
+<translation id="951983619130191090">Tor नेटवर्क से जुड़ने में दूसरों की मदद के लिए सामने आएँ</translation>
+<translation id="2223668809371912019">जिन देशों में प्रतिबंध हैं, वहाँ के यूज़र आपके नेटवर्क कनेक्शन के ज़रिए Tor नेटवर्क से कनेक्ट कर पाएँ, इसके लिए Snowflake एक्सटेंशन चालू करें.</translation>
 <translation id="2959986444009520721">ब्रिज का इस्तेमाल करें</translation>
 <translation id="8416750895933172460">ब्रिज आपको उन जगहों पर Tor नेटवर्क को ऐक्सेस करने की सुविधा देते हैं, जहाँ Tor ब्लॉक है. आप कहाँ मौजूद हैं, इसके हिसाब से, एक ब्रिज दूसरे से बेहतर काम कर सकता है.</translation>
 <translation id="7206799843254049470">Tor कनेक्शन सेटिंग</translation>
 <translation id="3194502271166340944">Tor वाली गोपनीय विंडोज़ Tor नेटवर्क से कैसे कनेक्ट करेगी, यह उसे कंट्रोल करता है</translation>
+<translation id="3717364961460790491">इस सुविधा के लिए ज़रूरी Snowflake एक्सटेंशन को डाउनलोड नहीं किया जा सका. अपने इंटरनेट कनेक्शन को जाँचें और फिर से कोशिश करें.</translation>
 <translation id="4859228830700205299">इसमें मौजूद कोई ब्रिज चुनें</translation>
 <translation id="3233137871426528317">torproject.org से ब्रिज का अनुरोध करें</translation>
 <translation id="5701503934456421898">नए ब्रिज का अनुरोध करें...</translation>
@@ -524,11 +542,13 @@ Binance
 <translation id="1195880978080389104">Brave स्थानीय IPFS नोड</translation>
 <translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Brave स्थानीय  IPFS नोड और गेटवे गोपनीयता विचारों के बारे में और <ph name="END_LINK_MPL"/> में जानें.</translation>
 <translation id="4927734062756955434">IPFS पब्लिक गेटवे पता</translation>
+<translation id="3707431725427930007">NFT के लिए IPFS पब्लिक गेटवे का पता</translation>
 <translation id="8425213833346101688">बदलें</translation>
 <translation id="585868419599255817">IPFS पब्लिक गेटवे फ़ॉलबैक</translation>
 <translation id="2618080188892567155">अगर आपके Brave स्थानीय नोड तक नहीं पहुँच सकता है, तो अपने आप सार्वजनिक IPFS गेटवे पर वापस चला जाएगा.</translation>
 <translation id="4107552920076294723">IPFS संसाधनों को कॉन्फ़िगर किए गए IPFS गेटवे पर पुनर्निर्देशित करें</translation>
-<translation id="6494857428933042381">जब IPFS गेटवे संसाधन की जानकारी होती है, तो IPFS प्रस्तावों के लिए कॉन्फ़िगर किए गए गेटवे का स्वचालित रूप से उपयोग करता है।</translation>
+<translation id="4284166297897715283">थर्ड पार्टी IPFS गेटवे पर IPFS संसाधनों के लिए होस्ट किए गए अनुरोध, चुने हुए स्थानीय या दूर के गेटवे के ज़रिए लोड किए जाएँगे.
+  ध्यान दें : अगर स्थानीय नोड चुने जाते हैं, तो संसाधनों का अनुरोध सीधे आपके कंप्यूटर से किया जाएगा और कुछ समय के लिए IPFS नेटवर्क को कैश डेटा दिया जा सकता है.</translation>
 <translation id="8655170717758778983">जब संभव हो तो DNSLink के माध्यम से IPFS पृष्ठों पर स्वचालित रूप से रीडायरेक्ट करें</translation>
 <translation id="2233724520223030977">जब भी संभव हो, वेबसाइट के IPFS संस्करण में नेविगेट करने के लिए DNSLink का स्वचालित रूप से उपयोग करता है</translation>
 <translation id="8068526464562249859">आपके ब्राउज़र बार से सामान्य IPFS टास्क एक्सेस करने सहित Brave में बेहतर IPFS समर्थन के लिए IPFS Companion एक्सटेंशन का उपयोग करता है।</translation>
@@ -603,4 +623,8 @@ Binance
 <translation id="5318548116565208315">अवतार बॉनबॉन कॉर्न</translation>
 <translation id="1959966725083452288">अवतार बॉनबॉन रॉयल</translation>
 <translation id="2039034364578911089">अवतार बॉनबॉन निंजा</translation>
+<translation id="5927916530277631319">Unstoppable डोमेन को हल करने की विधि</translation>
+<translation id="2889554198027690581">Ethereum की गोपनीयता नीति के बारे में <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/>.</translation>
+<translation id="5248318250177143470">Ethereum नाम सेवा (ENS) को हल करने की विधि</translation>
+<translation id="6494857428933042381">जब IPFS गेटवे संसाधन की जानकारी होती है, तो IPFS प्रस्तावों के लिए कॉन्फ़िगर किए गए गेटवे का स्वचालित रूप से उपयोग करता है।</translation>
 </translationbundle>

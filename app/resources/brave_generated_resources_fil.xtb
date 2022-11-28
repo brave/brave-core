@@ -3,7 +3,9 @@
 <translationbundle lang="fil">
 <translation id="3333887201479867589">Mga Reward ng Brave</translation>
 <translation id="4615489450165434530">Mag-ulat ng Sirang Site</translation>
+<translation id="8097438084542431276">Kopyahin ang Clean Link</translation>
 <translation id="1209739344687072997">Mag-ulat ng sirang site</translation>
+<translation id="7630214457764713113">Kopyahin ang clean link</translation>
 <translation id="6406506848690869874">Mag-sync</translation>
 <translation id="1544192797660353713">Wallet</translation>
 <translation id="2445484935443597917">Gumawa ng Bagong Profile</translation>
@@ -73,7 +75,9 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="2638041073279639246">Buksan ang link sa pribadong window gamit ang Tor</translation>
 <translation id="3425600262621021599">Buksan ang link sa pribadong window ng Brave gamit ang Tor</translation>
 <translation id="3229091547987707389">Mag-import at magbahgi ng directory</translation>
+<translation id="2804710924397009224">Itago ang Icon ng Mga Reward ng Brave</translation>
 <translation id="5029193871181468990">Itago ang icon ng Brave Rewards</translation>
+<translation id="2808103541110899519">Itago ang Icon ng Brave Wallet</translation>
 <translation id="7595540212376041331">icon na Itago ang Brave Wallet</translation>
 <translation id="4928988318462976765">Store ng Mga Web Extension</translation>
 <translation id="9181207987584064303">Tingnan sa Store ng Mga Web Extension</translation>
@@ -170,7 +174,13 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="191143826155037518">Ang Brave ay ginawang available sa iyo sa ilalim ng <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) at may kasama itong <ph name="BEGIN_LINK_OSS"/>open source na software<ph name="END_LINK_OSS"/> sa ilalim ng iba't ibang lisensya.
         Maaari mong basahin ang <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>mga tagubilin sa kung paano i-download at gawin nang mag-isa<ph name="END_LINK_BUILD_INSTRUCTIONS"/> ang partikular na <ph name="BEGIN_LINK_SOURCE_CODE"/>source code na ginamit para gawin ang kopyang ito<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">I-bookmark ang lahat ng tab...</translation>
+<translation id="3987546108749866209">Gumamit ng mga vertical na tab</translation>
+<translation id="5860254591544742609">Ipakita ang title bar</translation>
+<translation id="399928467800528208">Float on mouseover</translation>
 <translation id="2336228925368920074">I-bookmark ang Lahat ng Mga Tab...</translation>
+<translation id="2523967823495420116">Gumamit ng Mga Vertical na Tab</translation>
+<translation id="8888603463702767599">Ipakita ang Title Bar</translation>
+<translation id="2058818256505091369">Float on Mouseover</translation>
 <translation id="4235920711083356755">Ipakita ang button ng VPN</translation>
 <translation id="4070612712151038707">Ipinapakita ang button ng VPN sa toolbar</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -201,9 +211,9 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="8722651357687610395">Itakda ang Brave bilang default</translation>
 <translation id="2370739752330685659">Sa ibang pagkakataon siguro</translation>
 <translation id="7537601449003285327">I-pin sa taskbar</translation>
+<translation id="2307973900865360088">Panatilihin sa Dock</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">Na-import mula sa <ph name="BROWSER_NAME"/>.</translation>
-<translation id="7630214457764713113">Kopyahin ang clean link</translation>
 <translation id="9156965752763025780">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave.</translation>
 <translation id="7179921470347911571">Muling Ilunsad Ngayon</translation>
 <translation id="4472575034687746823">Magsimula</translation>
@@ -245,6 +255,8 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="5919424224662539292">I-customize ang larawan at mga widget sa background na lumalabas sa bagong tab page</translation>
 <translation id="7461924472993315131">I-pin</translation>
 <translation id="7506648566440714944">Naka-pin na ang Brave</translation>
+<translation id="239275665037555969">Dock</translation>
+<translation id="4057614912106618659">Nasa Dock na ang Brave</translation>
 <translation id="3195845168740336657">Mga setting ng Shields</translation>
 <translation id="754769152790647708">Status ng Shields</translation>
 <translation id="3615717588724840230">Maba-block ng mga site ang mga tracker, ad, fingerprinting gamit ang Shields</translation>
@@ -384,6 +396,8 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="4581190919849683048">Aling uri ng device ang gusto mong i-sync?</translation>
 <translation id="4112587618563511470">Invalid ang sync code, pakitingnan at subukan ulit.</translation>
 <translation id="3995714999835224798">Hindi valid ang code na ito</translation>
+<translation id="4432071071853308688">Walang laman ang code na ito</translation>
+<translation id="955848693465029904">Internal na error sa pag-set up ng pag-sync</translation>
 <translation id="859506441384380749">Ang code na ito ay binuo ng hindi na ginagamit na bersyon ng Brave, paki-upgrade muna ang isa mo pang device</translation>
 <translation id="3132642509209154999">Nag-expire na ang code. Bumuo ng bago sa iba mong device at subukan ulit.</translation>
 <translation id="2859229680945501779">Ang code na ito ay hindi wasto. Pakitingnan kung ang oras at timezone ay nakaset nang tama sa iyong device.</translation>
@@ -403,17 +417,21 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="6864914031231797928">Payagan ang mga pag-log in sa Google para sa mga extension</translation>
 <translation id="6554397389149987360">Ginagamit ang component ng Hangouts upang ma-enable ang pagbabahagi ng screen at iba pang feature sa browser.</translation>
 <translation id="7878791177459550035">Ine-enable ng media router ang feature na cast sa browser.</translation>
-<translation id="5927916530277631319">Pamamaraan para lutasin ang Mga Hindi Napipigilang Domain</translation>
-<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Alamin Pa<ph name="END_LINK"/> ang tungkol sa mga konsiderasyon sa privacy sa Ethereum.</translation>
-<translation id="5248318250177143470">Pamamaraan para lutasin ang Ethereum Name Service (ENS)</translation>
+<translation id="2707635989000984973">Lutasin ang mga domain name ng Mga Hindi Napipigilang Domain</translation>
+<translation id="1807158022157096592"><ph name="BEGIN_LINK"/>Matuto Pa<ph name="END_LINK"/> tungkol sa mga konsiderasyon sa privacy sa Mga Hindi Napipigilang Domain.</translation>
+<translation id="641308776160806829">Lutasin ang mga Ethereum Name Service (ENS) na domain name</translation>
 <translation id="6421218422395686663">Payagan ang paghanap ng ENS offchain.</translation>
+<translation id="4608449984413688436">Lutasin ang mga Solana Name Service (SNS) na domain name</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Matuto Pa<ph name="END_LINK"/> tungkol sa mga pagsasaalang-alang sa privacy ng paghanap ng ENS offchain.</translation>
 <translation id="6241402707160226266">Pribadong window na may Tor</translation>
 <translation id="8762452230727230396">Itinatago ng tor ang iyong IP address mula sa mga site na binibisita mo.</translation>
+<translation id="951983619130191090">Magboluntaryong tulungan ang iba na kumonekta sa Tor network</translation>
+<translation id="2223668809371912019">I-enable ang Snowflake extension para payagan ang mga user sa mga naka-censor na bansa na kumonekta sa Tor network sa pamamagitan ng koneksyon sa network mo.</translation>
 <translation id="2959986444009520721">Gumamit ng mga Bridge</translation>
 <translation id="8416750895933172460">Ang mga bridge ay nakakatulong sa iyong ma-access ang Tor Network sa mga lugar kung saan bina-block ang Tor. Depende kung saan ka naroroon, maaaring mas mabilis ang ilang bridge kumpara sa iba.</translation>
 <translation id="7206799843254049470">Mga seting ng koneksyon ng Tor</translation>
 <translation id="3194502271166340944">Kinikontrol kung paano kumokonekta sa Tor network ang Mga Pribadong Window na may Tor</translation>
+<translation id="3717364961460790491">Hindi ma-download ang Snowflake extension na kailangan para sa functionality na ito. Pakitingnan ang koneksyon mo sa Internet at subukan ulit.</translation>
 <translation id="4859228830700205299">Pumili ng built-in na bridge</translation>
 <translation id="3233137871426528317">Humiling ng bridge mula sa torproject.org</translation>
 <translation id="5701503934456421898">Humiling ng Bagong Bridge...</translation>
@@ -490,11 +508,13 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="1195880978080389104">Brave local IPFS node</translation>
 <translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Matuto pa <ph name="END_LINK_MPL"/>tungkol sa Brave local IPFS node at mga pagsasaalang-alang sa privacy ng gateway.</translation>
 <translation id="4927734062756955434">Pampublikong gateway address ng IPFS</translation>
+<translation id="3707431725427930007">Pampublikong gateway address ng IPFS para sa NFT</translation>
 <translation id="8425213833346101688">Baguhin</translation>
 <translation id="585868419599255817">Fallback ng pampublikong gateway ng IPFS</translation>
 <translation id="2618080188892567155">Kusang bumabalik sa public IPFS gateway kung hindi naabot ang Brave local IPFS node.</translation>
 <translation id="4107552920076294723">I-redirect ang mga resource ng IPFS sa naka-configure na gateway ng IPFS</translation>
-<translation id="6494857428933042381">Awtomatikong ginagamit ang naka-configure na gateway para sa mga paglutas ng IPFS kapag may nakitang resource ng gateway ng IPFS.</translation>
+<translation id="4284166297897715283">Ilo-load ang mga kahilingan sa mga resource ng IPFS, na hino-host sa mga gateway ng IPFS sa pamamagitan ng napiling lokal o remote na gateway.
+    Tandaan: Kung pinili ang lokal na node, direktang hihilingin ang resource mula sa computer mo at puwedeng panandaliang ibigay ang naka-cache na data sa IPFS network.</translation>
 <translation id="8655170717758778983">Awtomatikong i-redirect sa mga page ng IPFS sa pamamagitan ng DNSLink kapag posible</translation>
 <translation id="2233724520223030977">Awtomatikong ginagamit ang DNSLink para mag-navigate sa isang bersyon ng IPFS ng isang website kapag posible</translation>
 <translation id="8068526464562249859">Ginagamit ang Companion extension ng IPFS para sa pinahusay na suporta sa IPFS sa Brave, kasama ang access sa mga karaniwang gawain ng IPFS mula sa bar ng iyong browser.</translation>
@@ -569,4 +589,8 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="5927916530277631319">Pamamaraan para lutasin ang Mga Hindi Napipigilang Domain</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Alamin Pa<ph name="END_LINK"/> ang tungkol sa mga konsiderasyon sa privacy sa Ethereum.</translation>
+<translation id="5248318250177143470">Pamamaraan para lutasin ang Ethereum Name Service (ENS)</translation>
+<translation id="6494857428933042381">Awtomatikong ginagamit ang naka-configure na gateway para sa mga paglutas ng IPFS kapag may nakitang resource ng gateway ng IPFS.</translation>
 </translationbundle>

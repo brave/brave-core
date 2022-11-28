@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hu">
+<translation id="915758461293673891">Borravaló összege:</translation>
+<translation id="8966035543003363155">A Brave értesítéseivel minden egyszerűbb</translation>
+<translation id="7662771815233894695">Kezelje a letöltéseket, gyűjtsön tokeneket, tekintse meg a heti felhasználási statisztikákat, és még több lehetőség.</translation>
+<translation id="4265429476391459783">Jelenleg nem szerez jutalmakat, és nem kap adatvédelmi jelentéseket</translation>
+<translation id="1305714751384738456">Jelenleg nem szerez Brave jutalmakat</translation>
+<translation id="1483391942610220726">Jelenleg nem kap adatvédelmi jelentéseket</translation>
+<translation id="4683790942451502796">Kapcsolja vissza az értesítéseket, ha szeretne továbbra is BAT-ot szerezni, és heti adatvédelmi jelentéseket kapni.</translation>
+<translation id="1462722717055895108">Kapcsolja vissza az értesítéseket, ha szeretne továbbra is BAT-ot szerezni</translation>
+<translation id="5457255168064266494">Kapcsolja vissza az értesítéseket, ha szeretne továbbra is heti adatvédelmi jelentéseket kapni.</translation>
+<translation id="6268959058971634697">Jelenleg nem szerez jutalmakat</translation>
+<translation id="1088637159642753509">Engedélyezze az eszközén az értesítéseket, hogy adatvédelmi jelentéseket kapjon.</translation>
+<translation id="312404770066229090">Engedélyezze az eszközén az értesítéseket, hogy Brave jutalmakat szerezzen.</translation>
+<translation id="2241529840361230499">Engedélyezze az eszközén az értesítéseket, hogy Brave adatvédelmi jelentéseket kapjon.</translation>
+<translation id="4930155581888391118">Engedélyezze az értesítéseket, hogy Brave jutalmakat szerezzen.</translation>
+<translation id="325187916104529570">Nyissa meg a Beállításokat, és kapcsolja vissza az értesítéseket a Brave hirdetésekre.</translation>
+<translation id="5744802588121897886">Brave értesítések bekapcsolása</translation>
 <translation id="7307834434086582547">Brave Shields engedélyezése/ letiltása</translation>
 <translation id="6945863270524203017">Heti adatvédelmi frissítéseket kaphat a nyomkövetők és hirdetések blokkolásáról.</translation>
 <translation id="4324735664183300693">Értesítések bekapcsolása</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">Megoldási módszer</translation>
 <translation id="2356070529366658676">Kérdés</translation>
 <translation id="4176463684765177261">Kikapcsolva</translation>
-<translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">Engedélyezve</translation>
 <translation id="6252490671914511928">A nap legfontosabb történetei egy teljesen privát hírcsatornán, csak Önnek.</translation>
 <translation id="7266075701303521777">A Brave Hírek hirdetések által támogatott, a teljesen privát és anonimizált hirdetések pedig az eszközén kerülnek kiválasztásra.</translation>
 <translation id="4541978218358617681">Hirdetés</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">Böngészési adatok törlése</translation>
 <translation id="5965081608816406060">Videólejátszás a háttérben</translation>
 <translation id="6332924730165919598">Az összes fül lezárásával a Brave lezáródik</translation>
-<translation id="1580125697191336644">Kísérleti. Lehetővé teszi a videó hangjának lejátszását, amikor a fül nem aktív, vagy a képernyő ki van kapcsolva. Próbáljon asztali módra váltani, ha ez a funkció nem működik.</translation>
-<translation id="59174027418879706">Engedélyezve</translation>
+<translation id="3872768973878059926">Tovább folytathatja a hanglejátszást, ha egy másik lapra vált a Brave-ben, ha egy másik alkalmazásra vált, vagy ha a készüléke képernyője kikapcsolt állapotban van.</translation>
 <translation id="4150201353443180367">Megjelenítés</translation>
 <translation id="2433507940547922241">Megjelenés</translation>
 <translation id="6333347122924254968">A Brave-jutalmak ikonjának megjelenítése a címsorban</translation>
@@ -310,16 +325,11 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">A kért szolgáltatások alapján szükség lehet rá, hogy az Uphold felé igazolja személyazonosságát .</translation>
 <translation id="3200197118442451932">A Brave Software Inc. nem kezeli, nem tárolja, valamint nem nem fér hozzá a(z) <ph name="WALLET_PROVIDER"/> számára a fiók létesítésekor megadott személyes adatai egyikéhez sem.</translation>
-<translation id="3699674790322420653">Komplett pénztárca ellenőrzés</translation>
 <translation id="2193391216824305230">Felhasználói pénztárca</translation>
 <translation id="1665118090708049096">Ugrás a(z) <ph name="WALLET_PROVIDER"/> fiókomra</translation>
 <translation id="1948959999802743233">Kapcsolat bontása a következővel: <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Pénzkivevés</translation>
 <translation id="8874184842967597500">Nincs csatlakozva</translation>
-<translation id="3368922792935385530">Kapcsolódva</translation>
-<translation id="5358719431303818601">Nem ellenőrzött szétkapcsolva</translation>
-<translation id="4241449868720191203">Ellenőrzött szétkepcsolva</translation>
-<translation id="3248185426436836442">Várakozó</translation>
 <translation id="2495032782748793764">Brave alapértelmezett</translation>
 <translation id="9132378787893584761">Oszd meg a Brave-et barátaiddal!</translation>
 <translation id="717952606991220586">Hoppá, valami hiba történt. Próbáld újra később.</translation>
@@ -673,6 +683,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="1597199892790541240">Gáz ára</translation>
 <translation id="1634828734222219955">Összesen</translation>
 <translation id="7995708795274219641">Összeg + gáz</translation>
+<translation id="2186011161688824046">Összeg + díj</translation>
 <translation id="1950052789869821983">Tranzakció</translation>
 <translation id="2304783958703511257">Speciális beállítások</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -701,6 +712,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="1133619932669546254"><ph name="TOKEN"/> aktiválása</translation>
 <translation id="2199215899212542417">FUNKCIÓTÍPUS: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Nincs adat</translation>
+<translation id="1105525362447173583">Solana Dapp Sign tranzakció</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> elküldte a következőt: <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> (<ph name="FIAT_VALUE"/> $) – <ph name="DATE"/></translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> a következőt küldte: <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> jóváhagyta a következőt: <ph name="ASSET"/> – <ph name="DATE"/></translation>
@@ -800,6 +812,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="8030169304546394654">Nincs kapcsolat</translation>
 <translation id="3423275441470187644">Megbízható</translation>
 <translation id="2391762656119864333">Visszavonás</translation>
+<translation id="3368922792935385530">Csatlakozva</translation>
 <translation id="3432029672560911238">Felhasználói fiók</translation>
 <translation id="5753378322046059140">Fiókváltás</translation>
 <translation id="3897092660631435901">Menü</translation>
@@ -867,6 +880,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="7080614857771109950">Támogatja az Ethereum blokklánc EVM-kompatibilis eszközeit (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Támogatja a Solana blokklánc SPL-kompatibilis eszközeit</translation>
 <translation id="6575120282593094155">Még nincs <ph name="ACCOUNT_TYPE"/> fiókja. Létrehoz most egyet?</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">Kizárt alkalmazások</translation>
 <translation id="8463269357637177759">Engedélyezett normál alkalmazások</translation>
@@ -889,6 +903,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="4784306439879850873">Ne feledje, hogy a Brave nem tudja megerősíteni, mi történik, ha aláír. Aláírással szinte bármelyik számláján lévő műveletre feljogosítja a kérvényező oldalt, vagy arra, hogy az Ön nevében járjon el, beleértve (de nem kizárólag) a számlája és kriptoeszközei feletti teljes rendelkezést. Csak akkor írjon alá, ha biztosan ezt szeretné, és megbízik a kérvényező oldalban.</translation>
 <translation id="3474375934783434676">Csak a saját felelősségére írjon alá</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/>/<ph name="SIZE"/></translation>
+<translation id="756701799684433105">Tranzakció jóváhagyása</translation>
 <translation id="6450792191436242818">System Program (Rendszerprogram)</translation>
 <translation id="6252742184395380448">Config Program (Konfig. program)</translation>
 <translation id="5358970666412490132">Stake Program (Kockázati program)</translation>
@@ -898,11 +913,12 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="6421371987002247943">Tokenprogram</translation>
 <translation id="8780753288764281797">Secp256k1 program</translation>
 <translation id="8504640708321980506">Adatok</translation>
+<translation id="3723411967118253067">Programazonosító</translation>
 <translation id="4771176409524282426">Fiók létrehozása</translation>
 <translation id="1755120947324658439">Hozzárendelés</translation>
 <translation id="7588707273764747927">Átutalás</translation>
 <translation id="5328067049293286962">Számla létrehozása kulcsszólánccal</translation>
-<translation id="1512366326138054636">Nonce-számla előlegezése</translation>
+<translation id="1512366326138054636">Nonce-előmozdítási számla</translation>
 <translation id="7042202638449257311">Nonce-számla lehívása</translation>
 <translation id="6586085653712983224">Nonce-számla inicializálása</translation>
 <translation id="8790312855368673743">Nonce-számla engedélyezése</translation>
@@ -920,10 +936,10 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="5211196599627796093">Számla zárolása</translation>
 <translation id="6988707241715050556">Számla befagyasztása</translation>
 <translation id="857250415816680832">Számla feloldása</translation>
-<translation id="5453172892735755262">A kijelöltek átvezetése</translation>
-<translation id="471669767157904431">A kijelöltek jóváhagyása</translation>
-<translation id="3530340583186873359">Kiadás a kijelöltekben</translation>
-<translation id="5068456869800056740">Kijelöltek égetése</translation>
+<translation id="5453172892735755262">Az ellenőrzöttek átutalása</translation>
+<translation id="471669767157904431">Az ellenőrzöttek jóváhagyása</translation>
+<translation id="3530340583186873359">Kiadás ellenőrizve</translation>
+<translation id="5068456869800056740">Az ellenőrzöttek égetése</translation>
 <translation id="3004830385467519189">2. számla inicializálása</translation>
 <translation id="8026488633670875516">Natív szinkronizálás</translation>
 <translation id="2024649614526778327">3. számla inicializálása</translation>
@@ -937,4 +953,32 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="7352651011704765696">Valami hiba történt</translation>
 <translation id="7144878232160441200">Újra</translation>
 <translation id="6040143037577758943">Bezárás</translation>
+<translation id="7710469167917867539">Tranzakciós összeg</translation>
+<translation id="7843211152394841558">Ismételt próbálkozások max. száma:</translation>
+<translation id="8496335570810457">Előzetes vállalás:</translation>
+<translation id="5100124500279922001">Előzetes kihagyása:</translation>
+<translation id="7152095322071766507">Leggyakrabban látogatott oldal</translation>
+<translation id="7230006500876504868">Keresés a Brave-vel</translation>
+<translation id="5888208462949095139">Keresés a következővel: <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
+<translation id="5456039738087398178">Kezdőképernyős modul</translation>
+<translation id="703185154752046151">Modul hozzáadva a kezdőképernyőhöz</translation>
+<translation id="3290805388004282161">Próbálja ki a Brave keresési modulját</translation>
+<translation id="4809681171446727314">Hozzáférés egy privát, független keresőhöz egyenesen a kezdőképernyőjén.</translation>
+<translation id="7751715172931488388">Modul hozzáadása</translation>
+<translation id="7285167584112910782">Brave gyorskereső</translation>
+<translation id="2326703104633309781">A Brave fordító használata</translation>
+<translation id="5802752138057422257">Nem ASCII-karaktereket észleltünk!</translation>
+<translation id="442709594176931966">Eredeti üzenet megtekintése</translation>
+<translation id="2239252396088484499">Üzenet megtekintése ASCII-kódolással</translation>
+<translation id="4220693114674044366">Token címe</translation>
+<translation id="5658257029899993935">Kapcsolja a vásárlást a Brave-fiókjához</translation>
+<translation id="1187061015547219282">Kapcsolja a Play Store vásárlását a Brave-fiókjához, hogy más eszközökön is használni tudja a Brave VPN-t.</translation>
+<translation id="6662142137695589205">Kapcsolja össze a VPN-előfizetését</translation>
+<translation id="2674077112509133024">Bővítse ki a Brave tűzfal + VPN-védelmét</translation>
+<translation id="6365389672683343144">A Brave VPN-előfizetésével legfeljebb 5 eszközt tud biztonságban, legyen szó Androidos, iOS vagy asztali alkalmazásról. Csak kapcsolja a Google Play-előfizetését a Brave-fiókjához.</translation>
+<translation id="1580125697191336644">Kísérleti. Lehetővé teszi a videó hangjának lejátszását, amikor a fül nem aktív, vagy a képernyő ki van kapcsolva. Próbáljon asztali módra váltani, ha ez a funkció nem működik.</translation>
+<translation id="3699674790322420653">Komplett pénztárca ellenőrzés</translation>
+<translation id="5358719431303818601">Nem ellenőrzött szétkapcsolva</translation>
+<translation id="4241449868720191203">Ellenőrzött szétkepcsolva</translation>
+<translation id="3248185426436836442">Várakozó</translation>
 </translationbundle>

@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ro">
+<translation id="915758461293673891">Suma plății:</translation>
 <translation id="7307834434086582547">Activați/dezactivați scuturile Brave</translation>
 <translation id="6945863270524203017">Primiți săptămânal noutăți despre confidențialitate referitoare la monitoare și blocări de anunțuri.</translation>
 <translation id="4324735664183300693">Activați notificările</translation>
@@ -61,7 +62,7 @@
 <translation id="3894650624018948468">Metodă de rezolvare</translation>
 <translation id="2356070529366658676">Întreabă-mă</translation>
 <translation id="4176463684765177261">Dezactivat</translation>
-<translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">Activat</translation>
 <translation id="6252490671914511928">Principalele informații ale zilei într-un flux complet privat pentru dvs.</translation>
 <translation id="7266075701303521777">Știrile Brave sunt susținute prin anunțuri furnizate întru totul confidențial și anonim pe dispozitivul dvs.</translation>
 <translation id="4541978218358617681">Reclamă</translation>
@@ -101,8 +102,6 @@
 <translation id="8026334261755873520">Șterge datele de navigare</translation>
 <translation id="5965081608816406060">Redare fișier video în fundal</translation>
 <translation id="6332924730165919598">Închiderea tuturor paginilor închide și Brave</translation>
-<translation id="1580125697191336644">Experimental. Permite redarea audio de pe video în fundal când pagina nu este activă sau ecranul dispozitivului este închis. Încercați să treceți pe modul desktop dacă această funcție nu funcționează.</translation>
-<translation id="59174027418879706">Activat</translation>
 <translation id="4150201353443180367">Ecran</translation>
 <translation id="2433507940547922241">Aspect</translation>
 <translation id="6333347122924254968">Afișați pictograma Recompense Brave în bara de adrese</translation>
@@ -310,16 +309,11 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Uphold s-ar putea să solicite să vă verificați identitatea pe baza serviciilor solicitate.</translation>
 <translation id="3200197118442451932">Brave Software Inc. nu prelucrează, nu stochează și nu accesează informațiile personale pentru care le oferiți <ph name="WALLET_PROVIDER"/> atunci când creați un cont la ei.</translation>
-<translation id="3699674790322420653">Finalizați verificarea portofelului</translation>
 <translation id="2193391216824305230">Portofel utilizator</translation>
 <translation id="1665118090708049096">Accesați contul <ph name="WALLET_PROVIDER"/> meu</translation>
 <translation id="1948959999802743233">Deconectați de la <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Retragere fonduri</translation>
 <translation id="8874184842967597500">Neconectat</translation>
-<translation id="3368922792935385530">Conectat</translation>
-<translation id="5358719431303818601">Deconectare neverificată</translation>
-<translation id="4241449868720191203">Deconectat verificat</translation>
-<translation id="3248185426436836442">În așteptare</translation>
 <translation id="2495032782748793764">Brave implicit</translation>
 <translation id="9132378787893584761">Partajații Brave cu prietenii dvs.!</translation>
 <translation id="717952606991220586">Hopa, ceva nu funcționează. Vă rugăm încercați din nou mai târziu.</translation>
@@ -674,6 +668,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1597199892790541240">Taxă gas</translation>
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Suma + Gas</translation>
+<translation id="2186011161688824046">Sumă + tarif</translation>
 <translation id="1950052789869821983">Tranzacție</translation>
 <translation id="2304783958703511257">Setări avansate</translation>
 <translation id="4220062530885628403">Nonce</translation>
@@ -801,6 +796,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="8030169304546394654">Deconectat</translation>
 <translation id="3423275441470187644">De încredere</translation>
 <translation id="2391762656119864333">Revocați</translation>
+<translation id="3368922792935385530">Conectat</translation>
 <translation id="3432029672560911238">Cont utilizator</translation>
 <translation id="5753378322046059140">Schimbați contul</translation>
 <translation id="3897092660631435901">Meniu</translation>
@@ -868,6 +864,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="7080614857771109950">Acceptă activele compatibile EVM pe blockchain-ul Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Acceptă activele compatibile SPL pe blockchain-ul Solana</translation>
 <translation id="6575120282593094155">Nu aveți încă un cont <ph name="ACCOUNT_TYPE"/>. Creați unul acum?</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">Aplicații excluse</translation>
 <translation id="8463269357637177759">Aplicații obișnuite permise</translation>
@@ -890,6 +887,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="4784306439879850873">Rețineți că Brave nu vă poate confirma ce se va întâmpla dacă semnați. O semnătură poate autoriza aproape orice operație în contul dvs. sau în numele dvs., inclusiv (printre altele) cedarea totală a controlului asupra contului dvs. și asupra activelor cripto site-ului care face solicitarea. Semnați doar dacă sunteți de acord cu această acțiune și dacă aveți încredere în site-ul care face solicitarea.</translation>
 <translation id="3474375934783434676">Semnează pe propria răspundere</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> din <ph name="SIZE"/></translation>
+<translation id="756701799684433105">Aprobați tranzacția</translation>
 <translation id="6450792191436242818">Programul sistemului</translation>
 <translation id="6252742184395380448">Program de configurare</translation>
 <translation id="5358970666412490132">Programe Stake</translation>
@@ -923,7 +921,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="857250415816680832">Deblocați contul</translation>
 <translation id="5453172892735755262">Transfer verificat</translation>
 <translation id="471669767157904431">Aprobare verificată</translation>
-<translation id="3530340583186873359">Emiteți la verificat</translation>
+<translation id="3530340583186873359">Emisie verificate</translation>
 <translation id="5068456869800056740">Epuizați activele verificate</translation>
 <translation id="3004830385467519189">Inițializați contul 2</translation>
 <translation id="8026488633670875516">Sincronizați nativele</translation>
@@ -938,4 +936,15 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="7352651011704765696">A apărut o eroare</translation>
 <translation id="7144878232160441200">Reîncearcă</translation>
 <translation id="6040143037577758943">Închide</translation>
+<translation id="7710469167917867539">Taxa tranzacției</translation>
+<translation id="7843211152394841558">Nr. max de reîncercări:</translation>
+<translation id="8496335570810457">Angajament Preflight:</translation>
+<translation id="5100124500279922001">Omiteți Preflight:</translation>
+<translation id="442709594176931966">Vizualizați mesajul original</translation>
+<translation id="2239252396088484499">Vizualizați mesajul în cod ASCII</translation>
+<translation id="1580125697191336644">Experimental. Permite redarea audio de pe video în fundal când pagina nu este activă sau ecranul dispozitivului este închis. Încercați să treceți pe modul desktop dacă această funcție nu funcționează.</translation>
+<translation id="3699674790322420653">Finalizați verificarea portofelului</translation>
+<translation id="5358719431303818601">Deconectare neverificată</translation>
+<translation id="4241449868720191203">Deconectat verificat</translation>
+<translation id="3248185426436836442">În așteptare</translation>
 </translationbundle>
