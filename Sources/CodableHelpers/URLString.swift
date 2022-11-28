@@ -10,7 +10,7 @@ import Foundation
 ///
 /// This wrapper decodes a `String` type rather than a `URL` type and converts that decoded string into a
 /// `URL` using `URL(string:)`
-@propertyWrapper public struct URLString: Equatable, Decodable {
+@propertyWrapper public struct URLString: Hashable, Decodable {
   public var wrappedValue: URL?
 
   public init(wrappedValue: URL?) {

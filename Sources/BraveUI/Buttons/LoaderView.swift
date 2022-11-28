@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import SwiftUI
 
 private class LoaderLayer: CALayer {
   weak var parent: LoaderView?
@@ -118,4 +119,48 @@ public class LoaderView: UIView {
     layer.path = UIBezierPath(ovalIn: bounds.insetBy(dx: size.lineWidth / 2.0, dy: size.lineWidth / 2.0)).cgPath
     return layer
   }()
+}
+
+public struct BraveCircularProgressViewStyle: ProgressViewStyle {
+  public var size: LoaderView.Size = .normal
+  public var tintColor: UIColor = .white
+  @State private var isActive: Bool = false
+  
+  public func makeBody(configuration: Configuration) -> some View {
+    Representable(size: size, tintColor: tintColor, isActive: $isActive)
+      .onAppear {
+        isActive = true
+      }
+      .onDisappear {
+        isActive = false
+      }
+  }
+  struct Representable: UIViewRepresentable {
+    var size: LoaderView.Size
+    var tintColor: UIColor
+    @Binding var isActive: Bool
+    
+    func makeUIView(context: Context) -> LoaderView {
+      LoaderView(size: size)
+    }
+    func updateUIView(_ uiView: LoaderView, context: Context) {
+      uiView.setContentHuggingPriority(.required, for: .vertical)
+      uiView.setContentHuggingPriority(.required, for: .horizontal)
+      uiView.tintColor = tintColor
+      if isActive {
+        uiView.start()
+      } else {
+        uiView.stop()
+      }
+    }
+  }
+}
+
+extension ProgressViewStyle where Self == BraveCircularProgressViewStyle {
+  public static func braveCircular(
+    size: LoaderView.Size = .normal,
+    tint: UIColor = .white
+  ) -> BraveCircularProgressViewStyle {
+    .init(size: size, tintColor: tint)
+  }
 }
