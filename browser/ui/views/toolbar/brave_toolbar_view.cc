@@ -287,7 +287,8 @@ void BraveToolbarView::UpdateBookmarkVisibility() {
 }
 
 void BraveToolbarView::UpdateHorizontalPadding() {
-  if (tabs::features::ShouldShowWindowTitleForVerticalTabs(browser())) {
+  if (!tabs::features::ShouldShowVerticalTabs(browser()) ||
+      tabs::features::ShouldShowWindowTitleForVerticalTabs(browser())) {
     SetBorder(nullptr);
   } else {
     auto [leading, trailing] =

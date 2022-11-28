@@ -58,6 +58,8 @@ class VerticalTabStripRegionView : public views::View {
   [[nodiscard]] ScopedStateResetter ExpandTabStripForDragging();
   gfx::Vector2d GetOffsetForDraggedTab() const;
 
+  int GetAvailableWidthForTabContainer();
+
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
   gfx::Size GetMinimumSize() const override;
@@ -84,6 +86,7 @@ class VerticalTabStripRegionView : public views::View {
   void ScheduleFloatingModeTimer();
 
   gfx::Size GetPreferredSizeForState(State state) const;
+  int GetPreferredWidthForState(State state) const;
 
   // Returns valid object only when the related flag is enabled.
   TabStripScrollContainer* GetTabStripScrollContainer();

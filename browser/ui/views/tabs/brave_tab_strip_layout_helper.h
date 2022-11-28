@@ -17,7 +17,6 @@ class Rect;
 
 class TabStripLayoutHelper;
 class TabWidthConstraints;
-class TabWidthConstraints;
 struct TabLayoutConstants;
 
 namespace tabs {

@@ -7,7 +7,12 @@
 
 #include <memory>
 
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/features.h"
+#include "chrome/browser/ui/ui_features.cc"
+#include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
 
 BraveCompoundTabContainer::BraveCompoundTabContainer(
@@ -20,12 +25,54 @@ BraveCompoundTabContainer::BraveCompoundTabContainer(
                            hover_card_controller,
                            drag_context,
                            tab_slot_controller,
-                           scroll_contents_view) {
-  if (tabs::features::ShouldShowVerticalTabs(
-          tab_slot_controller.GetBrowser())) {
-    SetLayoutManager(std::make_unique<views::FlexLayout>())
-        ->SetOrientation(views::LayoutOrientation::kVertical);
+                           scroll_contents_view),
+      tab_slot_controller_(tab_slot_controller) {}
+
+void BraveCompoundTabContainer::SetAvailableWidthCallback(
+    base::RepeatingCallback<int()> available_width_callback) {
+  CompoundTabContainer::SetAvailableWidthCallback(available_width_callback);
+  if (!available_width_callback || tabs::features::ShouldShowVerticalTabs(
+                                       tab_slot_controller_->GetBrowser())) {
+    // Unlike Chromium Impl, Just pass the `available_width_callback` to
+    // child containers when it's vertical tabs or we're trying to clear
+    // the callback.
+    pinned_tab_container_->SetAvailableWidthCallback(available_width_callback_);
+    unpinned_tab_container_->SetAvailableWidthCallback(
+        available_width_callback_);
   }
 }
 
-BraveCompoundTabContainer::~BraveCompoundTabContainer() {}
+BraveCompoundTabContainer::~BraveCompoundTabContainer() = default;
+
+base::OnceClosure BraveCompoundTabContainer::LockLayout() {
+  std::vector<base::OnceClosure> closures;
+  for (const auto& tab_container :
+       {unpinned_tab_container_, pinned_tab_container_}) {
+    closures.push_back(
+        static_cast<BraveTabContainer*>(base::to_address(tab_container))
+            ->LockLayout());
+  }
+
+  return base::BindOnce(
+      [](std::vector<base::OnceClosure> closures) {
+        base::ranges::for_each(closures,
+                               [](auto& closure) { std::move(closure).Run(); });
+      },
+      std::move(closures));
+}
+
+int BraveCompoundTabContainer::GetAvailableWidthForUnpinnedTabContainer(
+    base::RepeatingCallback<int()> available_width_callback) {
+  // At this moment, Chromium upstream has a bug which causes crash.
+  // In a near future, this patch won't be needed as upstream checks if the
+  // `available_width_callback` is null.
+  if (!available_width_callback) {
+    return parent() ? parent()->GetAvailableSize(this).width().value() : 0;
+  }
+
+  return CompoundTabContainer::GetAvailableWidthForUnpinnedTabContainer(
+      available_width_callback);
+}
+
+BEGIN_METADATA(BraveCompoundTabContainer, CompoundTabContainer)
+END_METADATA

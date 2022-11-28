@@ -10,12 +10,29 @@
 
 class BraveCompoundTabContainer : public CompoundTabContainer {
  public:
+  METADATA_HEADER(BraveCompoundTabContainer);
+
   BraveCompoundTabContainer(raw_ref<TabContainerController> controller,
                             TabHoverCardController* hover_card_controller,
                             TabDragContextBase* drag_context,
                             TabSlotController& tab_slot_controller,
                             views::View* scroll_contents_view);
   ~BraveCompoundTabContainer() override;
+
+  // Combine results of TabContainerImpl::LockLayout() for pinned tabs and
+  // un pinned tabs.
+  base::OnceClosure LockLayout();
+
+  // CompoundTabContainer:
+  void SetAvailableWidthCallback(
+      base::RepeatingCallback<int()> available_width_callback) override;
+  int GetAvailableWidthForUnpinnedTabContainer(
+      base::RepeatingCallback<int()> available_width_callback) override;
+
+ private:
+  void UpdateLayout();
+
+  base::raw_ref<TabSlotController> tab_slot_controller_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_COMPOUND_TAB_CONTAINER_H_

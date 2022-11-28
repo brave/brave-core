@@ -26,7 +26,7 @@ BraveBrowserNonClientFrameViewMac::BraveBrowserNonClientFrameViewMac(
   frame_graphic_ =
       std::make_unique<BraveWindowFrameGraphic>(browser->profile());
 
-  if (tabs::features::ShouldShowVerticalTabs(browser)) {
+  if (tabs::features::SupportsVerticalTabs(browser)) {
     auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
     show_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsEnabled, prefs,
@@ -96,5 +96,7 @@ void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleAndControls() {
 
   // In case title visibility wasn't changed and only vertical tab strip enabled
   // state changed, we should reset controls positions manually.
-  frame()->ResetWindowControlsPosition();
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(&views::Widget::ResetWindowControlsPosition,
+                                base::Unretained(frame())));
 }

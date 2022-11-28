@@ -12,6 +12,7 @@
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
+#include "chrome/browser/ui/views/tabs/tab_drag_controller.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 
 BraveTabContainer::BraveTabContainer(
@@ -24,7 +25,8 @@ BraveTabContainer::BraveTabContainer(
                        hover_card_controller,
                        drag_context,
                        tab_slot_controller,
-                       scroll_contents_view) {
+                       scroll_contents_view),
+      drag_context_(static_cast<TabDragContext*>(drag_context)) {
   auto* browser = tab_slot_controller_->GetBrowser();
   if (!browser) {
     CHECK_IS_TEST();
@@ -51,16 +53,30 @@ BraveTabContainer::~BraveTabContainer() {
   // closed tabs were cleaned up from OnTabCloseAnimationCompleted().
   CancelAnimation();
   DCHECK(closing_tabs_.empty()) << "There are dangling closed tabs.";
+  DCHECK(!layout_locked_)
+      << "The lock returned by LockLayout() shouldn't outlive this object";
+}
+
+base::OnceClosure BraveTabContainer::LockLayout() {
+  DCHECK(!layout_locked_) << "LockLayout() doesn't allow reentrance";
+  layout_locked_ = true;
+  return base::BindOnce(&BraveTabContainer::OnUnlockLayout,
+                        base::Unretained(this));
 }
 
 gfx::Size BraveTabContainer::CalculatePreferredSize() const {
+  if (layout_locked_)
+    return {};
+
   if (!tabs::features::ShouldShowVerticalTabs(
-          tab_slot_controller_->GetBrowser()))
+          tab_slot_controller_->GetBrowser())) {
     return TabContainerImpl::CalculatePreferredSize();
+  }
 
   const int tab_count = tabs_view_model_.view_size();
   int height = 0;
-  if (bounds_animator_.IsAnimating() && tab_count) {
+  if (bounds_animator_.IsAnimating() && tab_count &&
+      !drag_context_->GetDragController()->IsActive()) {
     // When removing a tab in the middle of tabs, the last tab's current bottom
     // could be greater than ideal bounds bottom.
     height = tabs_view_model_.view_at(tab_count - 1)->bounds().bottom();
@@ -74,7 +90,10 @@ gfx::Size BraveTabContainer::CalculatePreferredSize() const {
       height = std::max(height, tab->bounds().bottom());
   }
 
-  const auto slots_bounds = layout_helper_->CalculateIdealBounds({});
+  const auto slots_bounds = layout_helper_->CalculateIdealBounds(
+      available_width_callback_.is_null()
+          ? absl::nullopt
+          : absl::optional<int>(available_width_callback_.Run()));
   height =
       std::max(height, slots_bounds.empty() ? 0 : slots_bounds.back().bottom());
   return gfx::Size(TabStyle::GetStandardWidth(), height);
@@ -127,6 +146,9 @@ bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
 }
 
 void BraveTabContainer::StartInsertTabAnimation(int model_index) {
+  if (layout_locked_)
+    return;
+
   if (!tabs::features::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
     TabContainerImpl::StartInsertTabAnimation(model_index);
@@ -135,10 +157,13 @@ void BraveTabContainer::StartInsertTabAnimation(int model_index) {
 
   ExitTabClosingMode();
 
-  gfx::Rect bounds = GetTabAtModelIndex(model_index)->bounds();
-  bounds.set_height(GetLayoutConstant(TAB_HEIGHT));
-  bounds.set_width(TabStyle::GetStandardWidth());
-  bounds.set_x(-TabStyle::GetStandardWidth());
+  auto* new_tab = GetTabAtModelIndex(model_index);
+  gfx::Rect bounds = new_tab->bounds();
+  bounds.set_height(tabs::kVerticalTabHeight);
+  const auto tab_width = new_tab->data().pinned ? tabs::kVerticalTabMinWidth
+                                                : TabStyle::GetStandardWidth();
+  bounds.set_width(tab_width);
+  bounds.set_x(-tab_width);
   bounds.set_y((model_index > 0)
                    ? tabs_view_model_.ideal_bounds(model_index - 1).bottom()
                    : 0);
@@ -168,6 +193,21 @@ void BraveTabContainer::UpdateLayoutOrientation() {
   layout_helper_->set_use_vertical_tabs(tabs::features::ShouldShowVerticalTabs(
       tab_slot_controller_->GetBrowser()));
   InvalidateLayout();
+}
+
+void BraveTabContainer::OnUnlockLayout() {
+  layout_locked_ = false;
+
+  InvalidateIdealBounds();
+  PreferredSizeChanged();
+  CompleteAnimationAndLayout();
+}
+
+void BraveTabContainer::CompleteAnimationAndLayout() {
+  if (layout_locked_)
+    return;
+
+  TabContainerImpl::CompleteAnimationAndLayout();
 }
 
 BEGIN_METADATA(BraveTabContainer, TabContainerImpl)
