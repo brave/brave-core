@@ -335,7 +335,6 @@ class Tab: NSObject {
       
       let scriptPreferences: [UserScriptManager.ScriptType: Bool] = [
         .cookieBlocking: Preferences.Privacy.blockAllCookies.value,
-        .playlistMediaSource: Preferences.Playlist.webMediaSourceCompatibility.value,
         .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value,
         .nightMode: Preferences.General.nightModeEnabled.value,
         .deAmp: Preferences.Shields.autoRedirectAMPPages.value

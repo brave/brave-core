@@ -38,7 +38,12 @@ public class PlaylistCarplayManager: NSObject {
       if let selectedTab = browserController?.tabManager.selectedTab,
         let playlistItem = selectedTab.playlistItem,
         PlaylistManager.shared.index(of: playlistItem.tagId) == nil {
-
+        
+        // Support for `blob:` Playlist Items
+        if playlistItem.src.hasPrefix("blob:") && PlaylistManager.shared.allItems.filter({ $0.pageSrc == playlistItem.pageSrc }).first != nil {
+          return
+        }
+        
         browserController?.updatePlaylistURLBar(
           tab: selectedTab,
           state: .newItem,

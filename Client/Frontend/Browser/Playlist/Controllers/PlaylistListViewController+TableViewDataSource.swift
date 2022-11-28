@@ -78,7 +78,8 @@ extension PlaylistListViewController: UITableViewDataSource {
         return UITableViewCell()
       }
       
-      guard let item = PlaylistManager.shared.itemAtIndex(indexPath.row) else {
+      guard indexPath.row >= 0,
+            let item = PlaylistManager.shared.itemAtIndex(indexPath.row) else {
         return cell
       }
       
