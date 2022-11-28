@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">Ẩn số dư của bạn khỏi màn hình</translation>
 <translation id="4548946945059463969">Tiết lộ số dư của bạn trên màn hình</translation>
 <translation id="242959166945779492">Bạn không có bất kỳ số dư nào trong tài khoản của mình. Hãy truy cập FTX để mua.</translation>
+<translation id="1531133232292396145">Mua bán Tiền ảo trên Binance ngay trong trình duyệt của bạn.</translation>
+<translation id="2166494527623220386">Mua bán Tiền ảo trên Gemini ngay trong trình duyệt của bạn.</translation>
+<translation id="7841456038054167122">Vui lòng nhập lại khóa hoặc thử khóa khác.</translation>
+<translation id="1911900517212490188">Khóa khôi phục đã nhập không được hỗ trợ nữa. Vui lòng truy cập <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> để lấy khóa mới.</translation>
+<translation id="922103963921062336">Đã ngắt kết nối (Chưa xác minh)</translation>
+<translation id="3248185426436836442">Đang chờ xử lý</translation>
+<translation id="3034163433136515805">Xem Mã QR</translation>
+<translation id="1640793619390890218">cho người dùng iOS Rewards chuyển BAT.</translation>
+<translation id="5462747026114176246">Khôi phục bằng khóa khôi phục sẽ thay thế hồ sơ Phần thưởng Brave hiện tại của bạn. Đảm bảo rằng bạn làm trống hoặc sao lưu Phần thưởng Brave hiện tại của mình trước khi khôi phục.</translation>
+<translation id="3267911153934785912">Nhập khoá khôi phục của bạn hoặc</translation>
+<translation id="1209382772199769572">Hãy sao lưu ví của bạn trước khi thay thế. Nếu không bạn sẽ mất khoản tiền, [[funds]], trong ví hiện tại của bạn.</translation>
+<translation id="4395099108822007284">Đang tải hình ảnh...</translation>
+<translation id="3022529765171561652">Đã xảy ra lỗi tạm thời khi xác minh với <ph name="PROVIDER"/>. Phần thưởng Brave của bạn sẽ vẫn ở trạng thái đang chờ xử lý và tự động thử lại, nhưng bạn cũng có thể thử lại sau.</translation>
 </translationbundle>

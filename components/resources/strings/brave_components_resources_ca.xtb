@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">Oculta els teus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Mostra els teus saldos a la pantalla</translation>
 <translation id="242959166945779492">No tens cap balanç al teu compte. Visita FTX per comprar-ne algunes.</translation>
+<translation id="1531133232292396145">Comercialitzeu criptomonedes amb Binance directament al vostre navegador.</translation>
+<translation id="2166494527623220386">Comercialitzeu criptomonedes amb Gemini directament al vostre navegador.</translation>
+<translation id="7841456038054167122">Tornar a posar les claus o prova claus diferents per favor.</translation>
+<translation id="1911900517212490188">La clau de restauració introduïda ja no és compatible. Si us plau visiteu <ph name="BEGIN_LINK"/>aquesta pàgina<ph name="END_LINK"/> per aconseguir una nova clau.</translation>
+<translation id="922103963921062336">Desconnectat (no verificat)</translation>
+<translation id="3248185426436836442">Pendent</translation>
+<translation id="3034163433136515805">Veure codi QR</translation>
+<translation id="1640793619390890218">per als usuaris d'iOS Rewards que transfereixin BAT.</translation>
+<translation id="5462747026114176246">Si restaures amb una clau de recuperació, se substituirà el teu perfil de Recompenses de Brave actual. Assegura't de buidar les teves Recompenses de Brave actuals o fer-ne una còpia de seguretat abans de restaurar.</translation>
+<translation id="3267911153934785912">Introdueix la clau de recuperació o</translation>
+<translation id="1209382772199769572">Fes una còpia de seguretat de la cartera abans de reemplaçar-la. Si no ho fas, perdràs els fons, [[funds]], de la cartera actual.</translation>
+<translation id="4395099108822007284">Carregant la imatge...</translation>
+<translation id="3022529765171561652">Hi ha un problema temporal amb la verificació de <ph name="PROVIDER"/>. Les teves recompenses de Brave es mantindran en l'estat Pendent i es tornarà a provar automàticament, però també pots provar-ho manualment més tard.</translation>
 </translationbundle>

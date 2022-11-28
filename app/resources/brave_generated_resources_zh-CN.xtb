@@ -588,4 +588,8 @@
 <translation id="5318548116565208315">邦邦 Corn 的头像</translation>
 <translation id="1959966725083452288">邦邦 Royal 的头像</translation>
 <translation id="2039034364578911089">邦邦 Ninja 的头像</translation>
+<translation id="5927916530277631319">解决无法停止域这个问题的方法</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>详细了解<ph name="END_LINK"/>太坊隐私注意事项。</translation>
+<translation id="5248318250177143470">解决以太坊名称服务（ENS）相关问题的方法</translation>
+<translation id="6494857428933042381">当遇到 IPFS 网关资源时，自动使用配置的网关进行 IPFS 解析。</translation>
 </translationbundle>

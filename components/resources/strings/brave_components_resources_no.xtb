@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">Skjul saldoene dine fra visning</translation>
 <translation id="4548946945059463969">Avslør saldoene dine på skjermen</translation>
 <translation id="242959166945779492">Saldoen på kontoen din er tom. Besøk FTX for å endre dette.</translation>
+<translation id="1531133232292396145">Handle krypto på Binance, direkte i nettleseren din.</translation>
+<translation id="2166494527623220386">Trade i krypto på Gemini, direkte i nettleseren din.</translation>
+<translation id="7841456038054167122">Vennligst tast inn nøkler på nytt, eller prøv andre nøkler.</translation>
+<translation id="1911900517212490188">Gjenopprettingsnøkkelen du oppga, støttes ikke lenger. Gå <ph name="BEGIN_LINK"/>hit<ph name="END_LINK"/> for å få en ny nøkkel.</translation>
+<translation id="922103963921062336">Frakoblet (ikke verifisert)</translation>
+<translation id="3248185426436836442">Påventende</translation>
+<translation id="3034163433136515805">Vis QR-kode</translation>
+<translation id="1640793619390890218">for Rewards-brukere med iOS som overfører BAT.</translation>
+<translation id="5462747026114176246">Gjenoppretting med en gjenopprettingsnøkkel vil erstatte den nåværendeBrave Rewards-profilen din. Tøm eller sikkerhetskopier Brave Rewards før du fortsetter.</translation>
+<translation id="3267911153934785912">Skriv inn gjenopprettingsnøkkelen eller</translation>
+<translation id="1209382772199769572">Ta en backup av lommeboken din før du skifter den ut. Du vil ellers miste midlene {{funds}} i den nåværende lommeboken din.</translation>
+<translation id="4395099108822007284">Laster inn bilde …</translation>
+<translation id="3022529765171561652">Det har oppstått et midlertidig problem med verifisering via <ph name="PROVIDER"/>. Brave-belønningene dine får statusen Venter, og vi prøver igjen automatisk. Du kan også prøve igjen senere.</translation>
 </translationbundle>

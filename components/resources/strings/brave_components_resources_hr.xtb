@@ -1688,4 +1688,17 @@ Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</trans
 <translation id="6973157709854838218">Sakrij svoje raspoložive iznose sa zaslona</translation>
 <translation id="4548946945059463969">Otkrij svoje raspoložive iznose na ekranu</translation>
 <translation id="242959166945779492">Nemate raspoloživih iznosa na svom računu. Posjetite FTX da biste ih kupili.</translation>
+<translation id="1531133232292396145">Trgujte kriptovalutama na burzi Binance izravno u svojem pregledniku.</translation>
+<translation id="2166494527623220386">Trgujte kriptovalutama na burzi Gemini izravno u svojem pregledniku.</translation>
+<translation id="7841456038054167122">Ponovno upišite ključeve ili pokušajte s drugim ključevima.</translation>
+<translation id="1911900517212490188">Upisani ključ za vraćanje više se ne podržava. Posjetite <ph name="BEGIN_LINK"/>ovdje<ph name="END_LINK"/> za dobivanje novog ključa.</translation>
+<translation id="922103963921062336">Isključen (nije provjeren)</translation>
+<translation id="3248185426436836442">Na čekanju</translation>
+<translation id="3034163433136515805">Prikaži kȏd QR</translation>
+<translation id="1640793619390890218">za korisnike usluge iOS Rewards koji prenose BAT.</translation>
+<translation id="5462747026114176246">Vraćanjem ključem za oporavak zamjenjuje se postojeći profil za Nagrade. Stoga, prije vraćanja ispraznite postojeće Nagrade Brave ili izradite njihovu sigurnosnu kopiju.</translation>
+<translation id="3267911153934785912">Upišite svoj ključ za oporavak ili</translation>
+<translation id="1209382772199769572">Izradite sigurnosnu kopiju svojeg novčanika prije zamjene. Inače gubite raspoloživa sredstva [[funds]] u svojem trenutačnom novčaniku.</translation>
+<translation id="4395099108822007284">Učitavanje slike...</translation>
+<translation id="3022529765171561652">Nastao je privremeni problem pri provjeravanju autentičnosti s pružateljem usluge <ph name="PROVIDER"/>. Vaše Nagrade Brave ostaju u stanju čekanja i automatski se vraćaju, no kasnije možete pokušati ponovo.</translation>
 </translationbundle>

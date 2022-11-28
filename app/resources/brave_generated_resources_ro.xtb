@@ -566,4 +566,8 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="5318548116565208315">Avatar Porumb Bombon</translation>
 <translation id="1959966725083452288">Avatar Regal Bombon</translation>
 <translation id="2039034364578911089">Avatar Ninja Bombon</translation>
+<translation id="5927916530277631319">Metodă pentru a rezolva domeniile Unstoppable</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Aflați mai multe<ph name="END_LINK"/> despre aspectele de confidențialitate Ethereum.</translation>
+<translation id="5248318250177143470">Metodă pentru a rezolva Ethereum Name Service (ENS)</translation>
+<translation id="6494857428933042381">Utilizează automat poarta de ieșire configurată pentru rezoluții IPFS atunci când se întâlnește o resursă de ieșire IPFS.</translation>
 </translationbundle>

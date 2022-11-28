@@ -976,4 +976,9 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="6662142137695589205">Link your VPN subscription</translation>
 <translation id="2674077112509133024">Extend your Brave Firewall + VPN protection</translation>
 <translation id="6365389672683343144">Your Brave VPN subscription can protect up to 5 devices, across Android, iOS and desktop. Just link your Google Play subscription to your Brave account.</translation>
+<translation id="1580125697191336644">Experimental. Enables play audio from video in background when tab is not active or device screen is turned off. Try to switch to desktop mode if this feature is not working.</translation>
+<translation id="3699674790322420653">Complete wallet verification</translation>
+<translation id="5358719431303818601">Disconnected not verified</translation>
+<translation id="4241449868720191203">Disconnected verified</translation>
+<translation id="3248185426436836442">Pending</translation>
 </translationbundle>

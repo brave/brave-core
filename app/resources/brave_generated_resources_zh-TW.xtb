@@ -589,4 +589,8 @@
 <translation id="5318548116565208315">糖果粒化身</translation>
 <translation id="1959966725083452288">高貴糖果化身</translation>
 <translation id="2039034364578911089">糖果忍者化身</translation>
+<translation id="5927916530277631319">處理 Unstoppable Domains 的方式</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>詳細瞭解<ph name="END_LINK"/>以太坊隱私權注意事項。</translation>
+<translation id="5248318250177143470">處理以太坊域名服務 (ENS) 的方式</translation>
+<translation id="6494857428933042381">當遇到 IPFS 閘道器資源時，自動使用設定的閘道器進行 IPFS 解析。</translation>
 </translationbundle>

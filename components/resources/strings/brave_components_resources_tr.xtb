@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">Bakiyenizi ekranda gizleyin</translation>
 <translation id="4548946945059463969">Bakiyenizi ekranda gösterin</translation>
 <translation id="242959166945779492">Hesabınızda bakiye yok. Satın almak için FTX'i ziyaret edin.</translation>
+<translation id="1531133232292396145">Doğrudan tarayıcınızdan, Binance'da Kripto alım satımı yapın.</translation>
+<translation id="2166494527623220386">Doğrudan tarayıcınızdan, Gemini'de Kripto alım satımı yapın.</translation>
+<translation id="7841456038054167122">Lütfen anahtarları yeniden girin ya da başka anahtarlar deneyin.</translation>
+<translation id="1911900517212490188">Girilen geri yükleme anahtarı artık desteklenmiyor. Yeni bir anahtar edinmek için lütfen Please <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> adresini ziyaret edin.</translation>
+<translation id="922103963921062336">Bağlantısız (Onaylanmamış)</translation>
+<translation id="3248185426436836442">Beklemede</translation>
+<translation id="3034163433136515805">QR Kodunu Görüntüle</translation>
+<translation id="1640793619390890218">BAT transfer eden iOS Rewards kullanıcıları için.</translation>
+<translation id="5462747026114176246">Kurtarma anahtarı ile geri yükleme şu anki Brave Ödülleri profilinizin yerini alacaktır. Geri yükleme öncesi şu anki Brave Ödüllerinizi boşalttığınızdan veya yedeklediğinizden emin olun.</translation>
+<translation id="3267911153934785912">Kurtarma anahtarınızı girin veya</translation>
+<translation id="1209382772199769572">Yenileme öncesi cüzdanınızı yedekleyin. Yoksa mevcut cüzdanınızdaki [[funds]] meblağını kaybedersiniz.</translation>
+<translation id="4395099108822007284">Resim yükleniyor...</translation>
+<translation id="3022529765171561652"><ph name="PROVIDER"/> doğrulamasında geçici bir sorun var. Brave Ödülleriniz Beklemede durumunda kalacak ve otomatik olarak tekrar denenecek fakat siz de daha sonra tekrar deneyebilirsiniz.</translation>
 </translationbundle>

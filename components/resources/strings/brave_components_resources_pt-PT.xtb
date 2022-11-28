@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">Não mostrar os seus saldos no ecrã</translation>
 <translation id="4548946945059463969">Mostrar os seus saldos no ecrã</translation>
 <translation id="242959166945779492">Não tem saldos na sua conta. Visite FTX para comprar.</translation>
+<translation id="1531133232292396145">Negoceie Criptomedas em Binance diretamente no seu browser.</translation>
+<translation id="2166494527623220386">Negoceie Criptomedas em Binance diretamente no seu browser.</translation>
+<translation id="7841456038054167122">Por favor reintroduza a chave ou tente chave diferente</translation>
+<translation id="1911900517212490188">A chave de restauração inserida já não é suportada. Visite <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> para obter uma nova chave.</translation>
+<translation id="922103963921062336">Desligado (Verificado)</translation>
+<translation id="3248185426436836442">Pendente</translation>
+<translation id="3034163433136515805">Ver Código QR</translation>
+<translation id="1640793619390890218">para utilizadores de recompensas de iOS a transferir BAT.</translation>
+<translation id="5462747026114176246">A restauração com uma chave de recuperação irá substituir o seu perfil de Recompensas Brave atual. Esvazie ou efetue uma cópia de segurança das suas Recompensas Brave antes de restaurar.</translation>
+<translation id="3267911153934785912">Introduza a chave de recuperação ou</translation>
+<translation id="1209382772199769572">Proceda ao backup da sua wallet (carteira) antes de a substituir. Ou perderá os fundos. {{funds}}, na sua wallet (carteira) atual.</translation>
+<translation id="4395099108822007284">A carregar imagem...</translation>
+<translation id="3022529765171561652">Existe um problema temporário na verificação do <ph name="PROVIDER"/>. As suas Recompensas Brave permanecerão no estado pendente e será realizada uma nova tentativa automaticamente. Também pode tentar novamente mais tarde.</translation>
 </translationbundle>

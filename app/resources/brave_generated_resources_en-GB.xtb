@@ -589,4 +589,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="5927916530277631319">Method to resolve Unstoppable Domains</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/> about Ethereum privacy considerations.</translation>
+<translation id="5248318250177143470">Method to resolve Ethereum Name Service (ENS)</translation>
+<translation id="6494857428933042381">Automatically uses the configured gateway for IPFS resolutions when an IPFS gateway resource is encountered.</translation>
 </translationbundle>

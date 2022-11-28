@@ -1684,4 +1684,17 @@ Podjetje Brave bo uporabljalo Infuro za izdajanje klicev Ethereum JSON-RPC pamet
 <translation id="6973157709854838218">Skrijte svoje stanje pred prikazom</translation>
 <translation id="4548946945059463969">Razkrijte svoje stanje na zaslonu</translation>
 <translation id="242959166945779492">Na vašem računu ni nobenih sredstev. Obiščite FTX, če jih želite kupiti.</translation>
+<translation id="1531133232292396145">Na Binance neposredno v vašem brskalniku trgujte s Crypto.</translation>
+<translation id="2166494527623220386">Na Gemini neposredno v vašem brskalniku trgujte s Crypto.</translation>
+<translation id="7841456038054167122">Ponovno vnesite ključ ali poskusite z drugim.</translation>
+<translation id="1911900517212490188">Vneseni obnovitveni ključ ni več podprt. Prosimo, obiščite <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> in boste prejeli nov ključ.</translation>
+<translation id="922103963921062336">Prekinjeno (ni preverjeno)</translation>
+<translation id="3248185426436836442">Na čakanju</translation>
+<translation id="3034163433136515805">Ogled kode QR</translation>
+<translation id="1640793619390890218">Gemini denarnica za iOS nagrajuje uporabnike, ki pošiljajo BAT.</translation>
+<translation id="5462747026114176246">Z obnovitvijo s ključem za obnovitev boste nadomestili vaš trenutni profil Brave Rewards. Prepričajte se, da ste izpraznili ali varnostno kopirali svoje trenutne Brave Rewards, preden se lotite obnovitve.</translation>
+<translation id="3267911153934785912">Vnesite svoj obnovitveni ključ ali</translation>
+<translation id="1209382772199769572">Pred zamenjavo varnostno kopirajte denarnico. V nasprotnem primeru boste izgubili sklad, [[funds]], v svoji trenutni denarnici.</translation>
+<translation id="4395099108822007284">Nalaganje slike...</translation>
+<translation id="3022529765171561652">Nastala je začasna težava pri preverjanju z <ph name="PROVIDER"/>. Nagrade Brave bodo ostale v stanju čakanja in bodo samodejno ponovile poskus, lahko pa poskusite tudi pozneje.</translation>
 </translationbundle>

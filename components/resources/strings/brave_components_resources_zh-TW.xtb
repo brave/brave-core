@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">隱藏顯示餘額</translation>
 <translation id="4548946945059463969">在螢幕上顯示您的餘額</translation>
 <translation id="242959166945779492">您的帳戶中沒有任何餘額。請造訪 FTX 購買。</translation>
+<translation id="1531133232292396145">在您瀏覽器中的 Binance 上直接交易加密貨幣。</translation>
+<translation id="2166494527623220386">在您瀏覽器中的 Gemini 上直接交易加密貨幣。</translation>
+<translation id="7841456038054167122">請重新輸入或嘗試其他金鑰。</translation>
+<translation id="1911900517212490188">輸入的恢復金鑰不再受到支援。請到<ph name="BEGIN_LINK"/>這裡<ph name="END_LINK"/>取得新的金鑰。</translation>
+<translation id="922103963921062336">切斷連線了（未經驗證）</translation>
+<translation id="3248185426436836442">未定</translation>
+<translation id="3034163433136515805">檢視 QR 碼</translation>
+<translation id="1640793619390890218">適用於 iOS Rewards 使用者傳輸 BAT。</translation>
+<translation id="5462747026114176246">使用復原金鑰進行還原會取代您目前的 Brave 獎勵個人資料。請務必清空或備份您目前的 Brave 獎勵，再進行還原。</translation>
+<translation id="3267911153934785912">輸入您的復原金鑰或</translation>
+<translation id="1209382772199769572">請在更換錢包前備份，否則您會失去目前錢包內的資金 [[funds]]。</translation>
+<translation id="4395099108822007284">正在載入圖片……</translation>
+<translation id="3022529765171561652">驗證 <ph name="PROVIDER"/> 時發生暫時性問題。您的 Brave 獎勵會處於待處理狀態，並將自動重試，不過您也可以稍後再試。</translation>
 </translationbundle>

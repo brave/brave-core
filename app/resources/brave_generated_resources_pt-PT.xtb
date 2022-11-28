@@ -589,4 +589,8 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5318548116565208315">Avatar Milho Bombom</translation>
 <translation id="1959966725083452288">Avatar Real Bombom</translation>
 <translation id="2039034364578911089">Avatar Ninja Bombom</translation>
+<translation id="5927916530277631319">Método para resolver Unstoppable Domains</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/> sobre configurações de privacidade Ethereum.</translation>
+<translation id="5248318250177143470">Método para resolver Ethereum Name Service (ENS)</translation>
+<translation id="6494857428933042381">Usa automaticamente o gateway configurado para resoluções IPFS quando um recurso gateway IPFS é encontrado.</translation>
 </translationbundle>

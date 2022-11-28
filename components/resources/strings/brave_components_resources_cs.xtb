@@ -1684,4 +1684,17 @@ other {# zdrojů}
 <translation id="6973157709854838218">Skrýt vaše zůstatky ze zobrazení</translation>
 <translation id="4548946945059463969">Odhalit vaše zůstatky na obrazovce</translation>
 <translation id="242959166945779492">Na účtu nemáte žádný zůstatek. Navštivte FTX a proveďte nákup.</translation>
+<translation id="1531133232292396145">Obchodujte s kryptoměnami na burze Binance přímo v prohlížeči.</translation>
+<translation id="2166494527623220386">Obchodujte s kryptoměnami na burze Gemini přímo v prohlížeči.</translation>
+<translation id="7841456038054167122">Zadejte prosím znovu klíče nebo zkuste jiné klíče.</translation>
+<translation id="1911900517212490188">Zadaný klíč pro obnovení už není podporovaný. Navštivte prosím <ph name="BEGIN_LINK"/>tuto<ph name="END_LINK"/> stránku, získáte zde nový.</translation>
+<translation id="922103963921062336">Odpojeno (neověřeno)</translation>
+<translation id="3248185426436836442">Probíhá</translation>
+<translation id="3034163433136515805">Zobrazit QR kód</translation>
+<translation id="1640793619390890218">pro uživatele iOS Rewards, kteří přenášejí BAT.</translation>
+<translation id="5462747026114176246">Obnova pomocí klíče pro obnovení nahradí váš aktuální profil odměn Brave. Ujistěte se, že jste vaše aktuální odměny Brave před obnovením vyprázdnili nebo zálohovali.</translation>
+<translation id="3267911153934785912">Zadejte klíč pro obnovení nebo</translation>
+<translation id="1209382772199769572">Před nahrazením si zálohujte peněženku. V opačném případě přijdete o prostředky ve své aktuální peněžence, [[funds]].</translation>
+<translation id="4395099108822007284">Načítání obrázku...</translation>
+<translation id="3022529765171561652">Došlo k dočasnému problému při ověřování pomocí <ph name="PROVIDER"/>. Vaše odměny Brave zůstanou ve stavu čekání a automaticky se zopakují, ale můžete to zkusit i později.</translation>
 </translationbundle>

@@ -590,4 +590,8 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="5318548116565208315">Avatar Bonbon Corn</translation>
 <translation id="1959966725083452288">Avatar Bonbon Royal</translation>
 <translation id="2039034364578911089">Avatar Bonbon Ninja</translation>
+<translation id="5927916530277631319">Método para resolver Unstoppable Domains</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Obtén máis información<ph name="END_LINK"/> sobre as consideracións de privacidade de Ethereum.</translation>
+<translation id="5248318250177143470">Método para resolver o Ethereum Name Service (ENS)</translation>
+<translation id="6494857428933042381">Utiliza a pasarela configurada automaticamente para resolucións de IPFS cando se atopa un recurso de pasarela de IPFS.</translation>
 </translationbundle>

@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">Ocultar a exibição dos seus saldos</translation>
 <translation id="4548946945059463969">Revelar seus saldos na tela</translation>
 <translation id="242959166945779492">Você não tem nenhum saldo na sua conta. Acesse o FTX para adquirir saldo.</translation>
+<translation id="1531133232292396145">Negocie criptomoedas no Binance diretamente no seu navegador.</translation>
+<translation id="2166494527623220386">Negocie criptomoedas no Gemini diretamente no seu navegador.</translation>
+<translation id="7841456038054167122">Digite a senha novamente ou tente senhas diferentes.</translation>
+<translation id="1911900517212490188">A chave de restauração inserida não é mais compatível. Visite <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> para obter uma nova chave.</translation>
+<translation id="922103963921062336">Desconectado (não confirmado)</translation>
+<translation id="3248185426436836442">Pendente</translation>
+<translation id="3034163433136515805">Visualizar Código QR</translation>
+<translation id="1640793619390890218">para usuários do Rewards no iOS que estão transferindo BAT.</translation>
+<translation id="5462747026114176246">Restaurar com uma chave de recuperação substituirá seu perfil atual das Recompensas Brave. Certifique-se de esvaziar ou fazer o backup das suas Recompensas Brave atuais antes de restaurar.</translation>
+<translation id="3267911153934785912">Insira sua chave de recuperação ou</translation>
+<translation id="1209382772199769572">Faça backup da sua carteira antes de substituir. Caso contrário, você perderá os fundos ([[funds]]) da sua carteira atual.</translation>
+<translation id="4395099108822007284">Carregando imagem...</translation>
+<translation id="3022529765171561652">Há um problema temporário na verificação do <ph name="PROVIDER"/>. Suas Recompensas Brave permanecerão em estado pendente e uma nova tentativa será realizada automaticamente, mas você também pode tentar novamente mais tarde.</translation>
 </translationbundle>

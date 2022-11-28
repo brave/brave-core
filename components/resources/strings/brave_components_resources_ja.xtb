@@ -1686,4 +1686,17 @@
 <translation id="6973157709854838218">残高を非表示</translation>
 <translation id="4548946945059463969">画面に残高を表示</translation>
 <translation id="242959166945779492">アカウントに残高がありません。購入するにはFTXへ移動します。</translation>
+<translation id="1531133232292396145">ブラウザで、直接Binanceで暗号資産を取引します。</translation>
+<translation id="2166494527623220386">ブラウザで直接Geminiで暗号資産を取引しましょう。</translation>
+<translation id="7841456038054167122">キーを再入力または別のキーを入力してください。</translation>
+<translation id="1911900517212490188">入力された回復キーはもうサポートされていません。<ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>に進んで、新しいキーを取得してください。</translation>
+<translation id="922103963921062336">切断（認証されていません）</translation>
+<translation id="3248185426436836442">保留中</translation>
+<translation id="3034163433136515805">QR コードを見る</translation>
+<translation id="1640793619390890218">（BATを転送するiOS Rewardsユーザー）</translation>
+<translation id="5462747026114176246">回復キーで復元すると現在のBraveリワードプロフィールと置き換えられます。復元前に現在のBraveリワードを空にするか、バックアップを確実にしてください。</translation>
+<translation id="3267911153934785912">回復キーを入力</translation>
+<translation id="1209382772199769572">現在使用中のウォレット内の資金[[funds]]が失われないよう、変更する前にウォレットをバックアップしてください。</translation>
+<translation id="4395099108822007284">画像を読み込み中...</translation>
+<translation id="3022529765171561652">一時的に、 <ph name="PROVIDER"/> の認証に問題が発生しています。Braveリワードのステータスは保留中となり、自動的に再試行されます。後ほどもう一度お試しいただくことも可能です。</translation>
 </translationbundle>

@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">Sakriti saldo sa ekrana</translation>
 <translation id="4548946945059463969">Prikazati saldo na ekranu</translation>
 <translation id="242959166945779492">Nemate ništa na stanju na vašem računu. Posetite FTX da biste nešto imali.</translation>
+<translation id="1531133232292396145">Trgujte kriptovalutama na Binance-u direktno u svom pregledaču.</translation>
+<translation id="2166494527623220386">Trgujte kriptovalutama na Gemini-u direktno iz svog pregledača.</translation>
+<translation id="7841456038054167122">Ponovo unesite šifre ili probajte neke druge šifre.</translation>
+<translation id="1911900517212490188">Uneseni ključ za vraćanje u predhodno stanje više nije podržan. Molimo Vas da posetite <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> kako biste dobili novi ključ.</translation>
+<translation id="922103963921062336">Nepovezan (nije proveren)</translation>
+<translation id="3248185426436836442">U toku</translation>
+<translation id="3034163433136515805">Vidi QR šifru</translation>
+<translation id="1640793619390890218">za iOS Rewards korisnike koji prenose BAT.</translation>
+<translation id="5462747026114176246">Osposobljavanje pomoću ključa za osposobljavanje će zameniti vaš trenutni profil za Brave nagrade. Ne zaboravite da ispraznite ili napravite rezervnu kopiju vaših trenutnih Brave nagrada pre ponovnog osposobljavanja.</translation>
+<translation id="3267911153934785912">Unesite ključ za osposobljavanje ili</translation>
+<translation id="1209382772199769572">Napravite rezervnu kopiju vašeg novčanika pre zamene. Ili ćete izgubiti sredstva, [[funds]], u vašem sadašnjem novčaniku.</translation>
+<translation id="4395099108822007284">Učitavanje slike...</translation>
+<translation id="3022529765171561652">Trenutno postoji problem u potvrđivanju <ph name="PROVIDER"/>. Vaše Brave nagrade će ostati na čekanju i automatski će se ponovo proveravati, ali možete i ponovo pokušati kasnije.</translation>
 </translationbundle>

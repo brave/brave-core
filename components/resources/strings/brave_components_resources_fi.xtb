@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">Piilota saldosi näytöltä</translation>
 <translation id="4548946945059463969">Näytä saldosi näytöllä</translation>
 <translation id="242959166945779492">Sinulla ei ole yhtään saldoa tililläsi. Käy FTX:ssä ostaaksesi valuuttoja.</translation>
+<translation id="1531133232292396145">Käy kryptokauppaa Binancessa suoraan selaimestasi käsin.</translation>
+<translation id="2166494527623220386">Käy kryptokauppaa Geminissä suoraan selaimestasi käsin.</translation>
+<translation id="7841456038054167122">Syötä avaimet uudelleen tai kokeile eri avaimia.</translation>
+<translation id="1911900517212490188">Palautusavainta ei enää tueta. Ole hyvä ja vieraile <ph name="BEGIN_LINK"/>täällä<ph name="END_LINK"/> saadaksesi uuden avaimen.</translation>
+<translation id="922103963921062336">Ei yhteyttä (Ei todennettu)</translation>
+<translation id="3248185426436836442">Odottaa</translation>
+<translation id="3034163433136515805">Näytä ruutukoodi</translation>
+<translation id="1640793619390890218">iOS Rewards-käyttäjille, jotka siirtävät BATteja.</translation>
+<translation id="5462747026114176246">Kun palautat palautusavaimella, nykyinen Brave-palkintoprofiilisi vaihdetaan. Varmista siis, että tyhjennät tai varmuuskopioit nykyiset Brave-palkintosi ennen palautusta.</translation>
+<translation id="3267911153934785912">Syätö palautusavaimesi tai</translation>
+<translation id="1209382772199769572">Tee lompakostasi varmuuskopio ennen sen vaihtamista. Muutoin menetät tämänhetkisen lompakkosi [[funds]] varat.</translation>
+<translation id="4395099108822007284">Ladataan kuvaa...</translation>
+<translation id="3022529765171561652">Väliaikainen ongelma vahvistamisessa palveluntarjoajan <ph name="PROVIDER"/> kanssa. Brave-palkintosi pysyvät odottavassa tilassa, ja ne yritetään vahvistaa uudelleen automaattisesti, mutta voit myös itse yrittää myöhemmin uudelleen.</translation>
 </translationbundle>

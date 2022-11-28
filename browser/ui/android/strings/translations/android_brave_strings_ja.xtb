@@ -976,4 +976,9 @@
 <translation id="6662142137695589205">VPNサブスクリプションにリンク</translation>
 <translation id="2674077112509133024">Brave Firewall + VPNの保護を拡張</translation>
 <translation id="6365389672683343144">Brave VPNサブスクリプションは、Android、iOS、デスクトップで最大5台のデバイスを保護できます。Google PlayのサブスクリプションをBrave アカウントにリンクするだけで設定可能です。</translation>
+<translation id="1580125697191336644">試験的機能です。タブが非アクティブの際やデバイス画面がオフになっている際に、バックグラウンドから音声のみを再生します。正常に機能しない場合は、デスクトップモードへの切り替えをお試しください。</translation>
+<translation id="3699674790322420653">ウォレットの検証を完了</translation>
+<translation id="5358719431303818601">接続の解除が確認されていません</translation>
+<translation id="4241449868720191203">接続の解除が確認されました</translation>
+<translation id="3248185426436836442">保留中</translation>
 </translationbundle>

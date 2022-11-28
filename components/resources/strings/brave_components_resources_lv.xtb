@@ -1683,4 +1683,17 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="6973157709854838218">Paslēpt bilanci no displeja</translation>
 <translation id="4548946945059463969">Atklājiet savu bilanci ekrānā</translation>
 <translation id="242959166945779492">Jūsu kontā nav atlikuma. Apmeklējiet FTX, lai iegādātos valūtu.</translation>
+<translation id="1531133232292396145">Tirgojieties ar kripto, izmantojot Binance tieši pārlūkā.</translation>
+<translation id="2166494527623220386">Tirgojieties ar kripto, izmantojot Gemini tieši pārlūkā.</translation>
+<translation id="7841456038054167122">Lūdzu, ievadiet atslēgas vēlreiz vai mēģiniet citas atslēgas.</translation>
+<translation id="1911900517212490188">Ievadītā atkopšanas atslēga vairs netiek atbalstīta. Lūdzu, ienāciet <ph name="BEGIN_LINK"/>šeit<ph name="END_LINK"/>, lai iegūtu jaunu atslēgu.</translation>
+<translation id="922103963921062336">Atslēgts (neverificēts)</translation>
+<translation id="3248185426436836442">Gaida</translation>
+<translation id="3034163433136515805">Skatiet QR kodu</translation>
+<translation id="1640793619390890218">iOS Rewards lietotājiem, kuri pārsūta BAT.</translation>
+<translation id="5462747026114176246">Atjaunojot ar atkopšanas atslēgu, jūsu šī brīža Brave balvu profils tiks aizstāts. Pārliecinieties, ka šī brīža Brave Rewards iztukšojat vai dublējat pirms atjaunošanas.</translation>
+<translation id="3267911153934785912">Ievadiet savu atkopšanas atslēgu vai</translation>
+<translation id="1209382772199769572">Pirms nomaiņas dublējiet savu maku. Pretējā gadījumā zaudēsiet savā makā šobrīd esošos līdzekļus – [[funds]].</translation>
+<translation id="4395099108822007284">Notiek attēla ielāde...</translation>
+<translation id="3022529765171561652">Radās pagaidu problēma, verificējot ar <ph name="PROVIDER"/>. Jūsu Brave Rewards paliks gaidīšanas statusā un mēģinās vēlreiz automātiski, bet jūs varat arī mēģināt vēlāk vēlreiz.</translation>
 </translationbundle>

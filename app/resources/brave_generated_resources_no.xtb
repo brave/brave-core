@@ -589,4 +589,8 @@ Merk: Hvis en lokal node er valgt, forespørres ressursen direkte fra datamaskin
 <translation id="5318548116565208315">Bonbon-avatar: mais</translation>
 <translation id="1959966725083452288">Bonbon-avatar: kongelig</translation>
 <translation id="2039034364578911089">Bonbon-avatar: ninja</translation>
+<translation id="5927916530277631319">Metode for oppslag av ustoppelige domener</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Finn ut mer<ph name="END_LINK"/> om personvern ifm. Ethereum.</translation>
+<translation id="5248318250177143470">Metode for oppslag av Ethereum-navnetjeneste (ENS)</translation>
+<translation id="6494857428933042381">Bruker automatisk den konfigurerte systemporten for IPFS-løsninger når en IPFS-systemportressurs oppdages.</translation>
 </translationbundle>

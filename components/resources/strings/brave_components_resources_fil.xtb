@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">Itago ang iyong mga balanse sa display</translation>
 <translation id="4548946945059463969">Ipakita ang iyong mga balanse sa screen</translation>
 <translation id="242959166945779492">Wala kang anumang balanse sa iyong account. Bisitahin ang FTX para bumili ng ganito.</translation>
+<translation id="1531133232292396145">Mag-trade ng Crypto sa Binance nang direkta sa iyong browser.</translation>
+<translation id="2166494527623220386">Mag-trade ng Crypto sa Gemini nang direkta sa iyong browser.</translation>
+<translation id="7841456038054167122">Pakilagay muli ang mga key o sumubok ng ibang mga key.</translation>
+<translation id="1911900517212490188">Hindi na sinusuportahan ang inilagay na key sa pag-restore. Bumisita <ph name="BEGIN_LINK"/>rito<ph name="END_LINK"/> upang makakuha ng bagong key.</translation>
+<translation id="922103963921062336">Nadiskonekta (Hindi na-verify)</translation>
+<translation id="3248185426436836442">Nakabinbin</translation>
+<translation id="3034163433136515805">Tingnan ang QR Code</translation>
+<translation id="1640793619390890218">para sa mga user ng iOS Rewards na nagta-transfer ng BAT.</translation>
+<translation id="5462747026114176246">Kapag nag-restore gamit ang recovery key, mapapalitan ang iyong kasalukuyang profile sa Mga Reward ng Brave. Tiyaking walang laman o na-back up mo ang iyong kasalukuyang Mga Reward ng Brave bago mag-restore.</translation>
+<translation id="3267911153934785912">Ilagay ang iyong recovery key o</translation>
+<translation id="1209382772199769572">I-back up ang wallet mo bago ito palitan. Kung hindi ay mawawala mo ang pondong [[funds]] sa kasalukuyan mong wallet.</translation>
+<translation id="4395099108822007284">Nilo-load ang larawan...</translation>
+<translation id="3022529765171561652">Pansamantalang nagkaproblema sa pag-verify sa <ph name="PROVIDER"/>. Mananatiing nakabinbin ang status ng iyong Brave Rewards at awtomatiko itong magre-retry, pero puwede mo ring subukan ulit sa ibang pagkakataon.</translation>
 </translationbundle>

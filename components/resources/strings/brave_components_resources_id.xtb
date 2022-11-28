@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">Sembunyikan saldo Anda agar tidak ditampilkan</translation>
 <translation id="4548946945059463969">Tampilkan saldo Anda pada layar</translation>
 <translation id="242959166945779492">Anda tidak memiliki saldo apa pun di akun Anda. Kunjungi FTX untuk membelinya.</translation>
+<translation id="1531133232292396145">Berdagang Kripto di Binance langsung di peramban Anda.</translation>
+<translation id="2166494527623220386">Perdagangkan Kripto di Gemini di peramban Anda.</translation>
+<translation id="7841456038054167122">Masukkan ulang kunci atau coba kunci lain.</translation>
+<translation id="1911900517212490188">Kunci pemulihan yang dimasukkan tidak didukung lagi. Silakan masuk <ph name="BEGIN_LINK"/>di sini<ph name="END_LINK"/> untuk mendapat kunci baru.</translation>
+<translation id="922103963921062336">Putus (Tidak Terverifikasi)</translation>
+<translation id="3248185426436836442">Tertunda</translation>
+<translation id="3034163433136515805">Lihat Kode QR</translation>
+<translation id="1640793619390890218">untuk pengguna iOS Rewards yang mentransfer BAT.</translation>
+<translation id="5462747026114176246">Pemulihan kembali dengan kunci pemulihan akan menggantikan profil Brave Rewards Anda saat ini. Pastikan Anda mengosongkan atau mencadangkan Brave Rewards Anda saat ini sebelum memulihkan.</translation>
+<translation id="3267911153934785912">Masukkan kunci pemulihan atau</translation>
+<translation id="1209382772199769572">Cadangkan dompet Anda sebelum menggantikannya. Atau Anda akan kehilangan dana, [[funds]], di dompet Anda saat ini.</translation>
+<translation id="4395099108822007284">Memuat gambar...</translation>
+<translation id="3022529765171561652">Terjadi masalah sementara ketika memverifikasi dengan <ph name="PROVIDER"/>. Imbalan Brave Anda akan tetap dalam status tertunda dan secara otomatis dicoba ulang, namun Anda juga dapat mencobanya kembali nanti.</translation>
 </translationbundle>

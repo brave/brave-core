@@ -1688,4 +1688,17 @@
 <translation id="6973157709854838218">ሂሳቦን ከማሳያ ይደብቁ</translation>
 <translation id="4548946945059463969">ቀሪ ሂሳብዎን በማያ ገጽ ላይ ያሳዩ</translation>
 <translation id="242959166945779492">በመለያዎ ውስጥ ምንም ቀሪ ሂሳቦች የሉዎትም። የተወሰኑትን ለመግዛት FTX ን ይጎብኙ።</translation>
+<translation id="1531133232292396145">በቀጥታ በአሳሽዎ ውስጥ በBinance ላይ ክሪፕቶ ይገበያዩ።</translation>
+<translation id="2166494527623220386">በቀጥታ በአሳሽዎ ውስጥ በGemini ላይ ክሪፕቶ ይገበያዩ</translation>
+<translation id="7841456038054167122">እባክዎ ቁልፎችን ደግመው ስገቡ ወይ ሌላ ቁልፍ ይሞክሩ</translation>
+<translation id="1911900517212490188">የገባው የተመለስ ቁልፍ ከአሁን በኋላ አይሠራም። አዲስ ቁልፍ ለማግኘት እባክዎ <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> ን ይጎበኙ።</translation>
+<translation id="922103963921062336">ተቋርጧል (አልተረጋገጠም)</translation>
+<translation id="3248185426436836442">በመጠበቅ ላይ</translation>
+<translation id="3034163433136515805">QR ኮድን ይመልከቱ</translation>
+<translation id="1640793619390890218">BAT ን ለሚያስተላልፉ የ iOS ሽልማቶች ተጠቃሚዎች።</translation>
+<translation id="5462747026114176246">በመልሶ ማግኛ ቁልፍ ወደነበረበት እንዲመለስ ማድረግ የአሁኑን የብሬቭ ሽልማቶች መገለጫን ያድሰዋል። ወደነበረበት ከመመለስዎ በፊት የአሁኑን የብሬቭ ሽልማቶችን ባዶ ማድረግ ወይም ምትኬ መያዝዎን ያረጋግጡ።</translation>
+<translation id="3267911153934785912">የመልሶ ማግኛ ቁልፍዎን ያስገቡ ወይም</translation>
+<translation id="1209382772199769572">ከመተካትዎ በፊት ዋለትዎን ምትክ ያስቀምጡ። ወይም አሁን ባለው ዋለትዎ ውስጥ ያለውን ፈንድ፣ [[funds]] ያጣሉ።</translation>
+<translation id="4395099108822007284">ምስል በመጫን ላይ...</translation>
+<translation id="3022529765171561652">በ <ph name="PROVIDER"/>ማረጋገጥ ላይ ጊዜያዊ ችግር አለ። የ Brave ሽልማቶችዎ በመጠባበቅ ላይ እንዳሉ ይቆያሉ፣ እና በራስ-ሰር እንደገና ይሞክሩ ፣ ግን ቆይተው እንደገና መሞከር ይችላሉ።</translation>
 </translationbundle>

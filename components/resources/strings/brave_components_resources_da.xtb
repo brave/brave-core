@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">Skjul dine saldoer fra visning</translation>
 <translation id="4548946945059463969">Vis dine balancer på skærmen</translation>
 <translation id="242959166945779492">Du har intet tilgodehavende på din konto. Besøg FTX for at købe midler.</translation>
+<translation id="1531133232292396145">Handl kryptovaluta på Binance direkte fra din browser.</translation>
+<translation id="2166494527623220386">Handl kryptovaluta på Gemini direkte i din browser:</translation>
+<translation id="7841456038054167122">Skriv venligst koderne igen eller prøv andre koder.</translation>
+<translation id="1911900517212490188">Den indtastede gendannelsesnøgle understøttes ikke længere. Besøg venligst <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> for at få en ny nøgle.</translation>
+<translation id="922103963921062336">Forbundet (ikke bekræftet)</translation>
+<translation id="3248185426436836442">Afventer</translation>
+<translation id="3034163433136515805">Se QR-Kode</translation>
+<translation id="1640793619390890218">til overførsel af BAT for brugere af iOS Rewards.</translation>
+<translation id="5462747026114176246">Du erstatter din aktuelle Brave Belønninger-profil, når du gendanner ved hjælp af en gendannelsesnøgle. Sørg for, at du først tømmer eller sikkerhedskopierer din aktuelle Brave Belønninger.</translation>
+<translation id="3267911153934785912">Indtast din gendannelsesnøgle eller</translation>
+<translation id="1209382772199769572">Sikkerhedskopiér din tegnebog, før du erstatter den. Ellers vil du miste et beløb på [[funds]] i din nuværende tegnebog.</translation>
+<translation id="4395099108822007284">Indlæser billede...</translation>
+<translation id="3022529765171561652">Der er et midlertidigt problem med at verificere med<ph name="PROVIDER"/>. Dine Brave-belønninger forbliver i en afventende tilstand, og forsøger automatisk igen, men du kan også prøve igen senere.</translation>
 </translationbundle>

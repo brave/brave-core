@@ -1683,4 +1683,17 @@ Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</tra
 <translation id="6973157709854838218">Oculta a visualización dos teus saldos</translation>
 <translation id="4548946945059463969">Amosa os teus saldos na pantalla</translation>
 <translation id="242959166945779492">Non tes saldo na conta. Visita FTX para comprar saldo.</translation>
+<translation id="1531133232292396145">Comercia con criptomoedas en Binance sen saír do teu navegador.</translation>
+<translation id="2166494527623220386">Comercia con criptomoedas en Gemini sen saír do teu navegador.</translation>
+<translation id="7841456038054167122">Volva a poñer as claves ou inténteo con outras claves diferentes.</translation>
+<translation id="1911900517212490188">A clave de restauración introducida xa non é compatible. Entra <ph name="BEGIN_LINK"/>aquí<ph name="END_LINK"/> para conseguir unha nova.</translation>
+<translation id="922103963921062336">Desconectado (non verificado)</translation>
+<translation id="3248185426436836442">Pendente</translation>
+<translation id="3034163433136515805">Ver o código QR</translation>
+<translation id="1640793619390890218">dos usuarios de Brave Rewards de iOS que fagan transferencias de BAT.</translation>
+<translation id="5462747026114176246">A restauración cunha clave de recuperación substituirá o teu perfil actual de Recompensas de Brave. Asegúrate de baleirar ou gardar cunha copia de seguranza o que teñas actualmente en Recompensas de Brave antes de restaurar.</translation>
+<translation id="3267911153934785912">Insira a súa clave de recuperación ou</translation>
+<translation id="1209382772199769572">Fai unha copia de seguridade da túa carteira antes de substituíla ou perderás os fondos, [[funds]], na túa carteira actual.</translation>
+<translation id="4395099108822007284">Cargando imaxe…</translation>
+<translation id="3022529765171561652">Prodúcese un problema temporal ao facer a verificación con <ph name="PROVIDER"/>. O teu perfil de Recompensas de Brave manterase co estado "Pendente" e volverá intentalo automaticamente, aínda que tamén podes deixalo para máis tarde.</translation>
 </translationbundle>

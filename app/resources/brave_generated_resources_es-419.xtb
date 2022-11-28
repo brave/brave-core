@@ -590,4 +590,8 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="5318548116565208315">Avatar Caramelo maíz</translation>
 <translation id="1959966725083452288">Avatar Caramelo real</translation>
 <translation id="2039034364578911089">Avatar Caramelo ninja</translation>
+<translation id="5927916530277631319">Método para resolver dominios imparables</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Infórmate<ph name="END_LINK"/> sobre las consideraciones de privacidad de Ethereum.</translation>
+<translation id="5248318250177143470">Método para resolver Ethereum Name Service (ENS)</translation>
+<translation id="6494857428933042381">Utiliza automáticamente la puerta de enlace configurada para resoluciones de IPFS cuando se encuentra un recurso de puerta de enlace de IPFS.</translation>
 </translationbundle>

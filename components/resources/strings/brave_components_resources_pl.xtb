@@ -1685,4 +1685,17 @@
 <translation id="6973157709854838218">Ukryj swoje salda na ekranie</translation>
 <translation id="4548946945059463969">Pokaż swoje salda na ekranie</translation>
 <translation id="242959166945779492">Nie masz żadnych środków na swoim koncie. Odwiedź FTX, aby je nabyć.</translation>
+<translation id="1531133232292396145">Handluj kryptowalutami na platformie Binance, bezpośednio w swojej przeglądarce.</translation>
+<translation id="2166494527623220386">Handluj kryptowalutami w Gemini bezpośrednio w swojej przeglądarce.</translation>
+<translation id="7841456038054167122">Wpisz ponownie klucze lub wypróbuj różne klucze.</translation>
+<translation id="1911900517212490188">Wprowadzony klucz przywracania nie jest już obsługiwany. Przejdź <ph name="BEGIN_LINK"/>tutaj<ph name="END_LINK"/>, aby uzyskać nowy klucz.</translation>
+<translation id="922103963921062336">Rozłączono (nie zweryfikowano)</translation>
+<translation id="3248185426436836442">Oczekuje</translation>
+<translation id="3034163433136515805">Pokaż kod QR</translation>
+<translation id="1640793619390890218">dla użytkowników iOS Rewards przesyłających tokeny BAT.</translation>
+<translation id="5462747026114176246">Przywrócenie za pomocą klucza odsyzkującegu zastąpi obecny profil nagród Brave. Przed odzyskaniem opróżnij nagrody Brave lub zrób ich kopię zapasową.</translation>
+<translation id="3267911153934785912">Wprowadź klucz odzyskiwania lub</translation>
+<translation id="1209382772199769572">Wykonaj kopię zapasową swojego portfela przed wymianą, w przeciwnym razie stracisz środki ([[funds]]) znajdujące się w bieżącym portfelu.</translation>
+<translation id="4395099108822007284">Trwa wczytywanie obrazu...</translation>
+<translation id="3022529765171561652">Wystąpił tymczasowy problem z weryfikacją <ph name="PROVIDER"/>. Twoje nagrody Brave pozostaną w stanie oczekującym, a próba zostanie automatycznie ponowiona. Możesz też spróbować ponownie później.</translation>
 </translationbundle>

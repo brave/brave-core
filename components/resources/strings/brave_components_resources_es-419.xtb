@@ -1683,4 +1683,17 @@ Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</t
 <translation id="6973157709854838218">Oculta tus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Muestra tus saldos en la pantalla</translation>
 <translation id="242959166945779492">No tienes ningún saldo en tu cuenta. Visita FTX para adquirir un poco.</translation>
+<translation id="1531133232292396145">Opera con criptomonedas en Binance directamente en tu navegador.</translation>
+<translation id="2166494527623220386">Opera con criptomonedas en Gemini directamente en tu navegador.</translation>
+<translation id="7841456038054167122">Vuelve a ingresar las claves o prueba claves diferentes.</translation>
+<translation id="1911900517212490188">La clave de recuperación ingresada ya no es compatible. Visita <ph name="BEGIN_LINK"/>esta página<ph name="END_LINK"/> para obtener una nueva.</translation>
+<translation id="922103963921062336">Desconectado (sin verificar)</translation>
+<translation id="3248185426436836442">Pendiente</translation>
+<translation id="3034163433136515805">Ver código QR</translation>
+<translation id="1640793619390890218">para usuarios de Brave Rewards de iOS que hagan transferencias de BAT.</translation>
+<translation id="5462747026114176246">Restaurar con una clave de recuperación reemplazará tu perfil actual de Recompensas de Brave. Procura vaciar o guardar en una copia de seguridad lo que tienes actualmente en Recompensas de Brave antes de restaurar.</translation>
+<translation id="3267911153934785912">Ingrese su clave de recuperación o</translation>
+<translation id="1209382772199769572">Realiza una copia de seguridad de tu billetera antes de reemplazar o perderás los fondos, [[funds]], en tu billetera actual.</translation>
+<translation id="4395099108822007284">Cargando imagen...</translation>
+<translation id="3022529765171561652">Hay un problema temporal al realizar la verificación con <ph name="PROVIDER"/>. Tu perfil de Recompensas de Brave quedará en estado "Pendiente" y se intentará de nuevo automáticamente, aunque también puedes volver a probar más adelante.</translation>
 </translationbundle>

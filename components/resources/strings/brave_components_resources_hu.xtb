@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">Az egyenlegek elrejtése a megjelenítésből</translation>
 <translation id="4548946945059463969">Az egyenlegek mutatása a képernyőn</translation>
 <translation id="242959166945779492">Fiókja nem rendelkezik egyenleggel. A beszerzéshez látogasson el az FTX-re.</translation>
+<translation id="1531133232292396145">Kereskedj kriptóval a binance-en közvetlenül böngésződben.</translation>
+<translation id="2166494527623220386">Kereskedj kriptóval a Geminin közvetlenül böngésződben.</translation>
+<translation id="7841456038054167122">Adja meg újra a kódokat vagy próbáljon meg más kódokat.</translation>
+<translation id="1911900517212490188">A megadott visszaállítási kulcs már nem támogatott. Kérjük, új kulcs beszerzéséhez kattintson <ph name="BEGIN_LINK"/>ide<ph name="END_LINK"/>.</translation>
+<translation id="922103963921062336">Szétkapcsolva (Nem ellenőrzött)</translation>
+<translation id="3248185426436836442">Várakozó</translation>
+<translation id="3034163433136515805">QR-kód megtekintése</translation>
+<translation id="1640793619390890218">a BAT-ot utaló iOS Rewards-felhasználók számára.</translation>
+<translation id="5462747026114176246">A visszaállítási kulcs használatával lecseréli jelenlegi Brave Jutalmak profilját, ezért bizonyosodjon meg róla, hogy a visszaállítást megelőzően végrehajtotta jelenlegi Brave Jutalmainak kiürítését vagy biztonsági mentését.</translation>
+<translation id="3267911153934785912">Adja meg helyreállítási kódját, vagy</translation>
+<translation id="1209382772199769572">Készítsen biztonsági másolatot pénztárcájáról, mielőtt kicserélné. Ellenkező esetben elveszíti a következő pénzalapot a jelenlegi pénztárcájából: [[funds]].</translation>
+<translation id="4395099108822007284">Kép betöltése...</translation>
+<translation id="3022529765171561652">Átmeneti hiba lépett fel a következő ellenőrzésénél: <ph name="PROVIDER"/>. Brave Jutalmai függő állapotban maradnak, ezek feldolgozását a rendszer automatikusan ismét megpróbálja majd, de Ön is újrapróbálhatja később.</translation>
 </translationbundle>

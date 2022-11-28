@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">화면에서 잔액 숨김</translation>
 <translation id="4548946945059463969">화면에 잔액 표시</translation>
 <translation id="242959166945779492">계정 내에 잔액이 없습니다. FTX를 방문하여 구매하세요.</translation>
+<translation id="1531133232292396145">브라우저의 바이낸스에서 크립토를 직접 거래하십시오.</translation>
+<translation id="2166494527623220386">브라우저의 제미니에서 크립토를 직접 거래하십시오.</translation>
+<translation id="7841456038054167122">키를 다시 입력하거나 다른 키로 시도해 주세요.</translation>
+<translation id="1911900517212490188">입력하신 복원 키는 더 이상 지원되지 않습니다. <ph name="BEGIN_LINK"/>여기<ph name="END_LINK"/>에서 새 키를 받으세요.</translation>
+<translation id="922103963921062336">연결 끊김(확인되지 않음)</translation>
+<translation id="3248185426436836442">대기 중</translation>
+<translation id="3034163433136515805">QR 코드 보기</translation>
+<translation id="1640793619390890218">BAT를 이전하는 iOS Rewards 사용자.</translation>
+<translation id="5462747026114176246">복구 키로 복구하면 현재 Brave Rewards 프로필을 대체합니다. 복구 전에 현재 Brave Rewards를 비우거나 백업하세요.</translation>
+<translation id="3267911153934785912">복구 키를 입력하거나</translation>
+<translation id="1209382772199769572">교체하기 전에 월릿을 백업하세요. 그렇지 않으면 현재 월릿에 있는 {{funds}} 자금을 잃습니다.</translation>
+<translation id="4395099108822007284">이미지 로드 중...</translation>
+<translation id="3022529765171561652"><ph name="PROVIDER"/>를 이용한 검증에 일시적인 문제가 발생했습니다. Brave Rewards가 보류 중 상태로 유지되며 자동으로 다시 시도합니다. 나중에 직접 다시 시도하셔도 됩니다.</translation>
 </translationbundle>

@@ -1579,4 +1579,20 @@
 <translation id="6973157709854838218">Nu afișați soldurile</translation>
 <translation id="4548946945059463969">Afișați soldurile pe ecran</translation>
 <translation id="242959166945779492">Nu aveți niciun sold în contul dvs. Accesați FTX pentru a achiziționa.</translation>
+<translation id="1531133232292396145">Tranzacționați criptomonede pe Binance direct din browser.</translation>
+<translation id="2166494527623220386">Tranzacționați criptomonede pe Gemini direct din browserul dvs.</translation>
+<translation id="7841456038054167122">Vă rugăm reintroduceți codurile sau încercați alte coduri.</translation>
+<translation id="1911900517212490188">Cheia de restaurare introdusă nu mai este acceptată. Te rugăm să intri <ph name="BEGIN_LINK"/>aici<ph name="END_LINK"/> pentru a obține o cheie nouă.</translation>
+<translation id="922103963921062336">Deconectat (neverificat)</translation>
+<translation id="3248185426436836442">În așteptare</translation>
+<translation id="3034163433136515805">Vizualizare Cod QR</translation>
+<translation id="1640793619390890218">pentru utilizatorii iOS Rewards care transferă BAT.</translation>
+<translation id="5462747026114176246">Restabilirea cu o cheie de recuperare va înlocui profilul dvs. actual de recompense Brave. Goliți-vă sau asigurați-vă recompensele Brave înainte de restabilire.</translation>
+<translation id="3267911153934785912">Introduceți cheia de recuperare sau</translation>
+<translation id="1209382772199769572">Realizați o copie de rezervă după portofel înainte de înlocuire. În caz contrar, veți pierde fondurile, [[funds]], din portofelul dvs. curent.</translation>
+<translation id="4395099108822007284">Se încarcă imaginea...</translation>
+<translation id="689573545156113164">Brave va folosi Infura pentru a genera apeluri Ethereum JSON-RPC spre contractul inteligent din Unstoppable Domains în vederea rezolvării solicitărilor de căutare a numelui domeniului .crypto (dar și .x, .coin, .nft, .dao, .wallet, .blockchain, .zil). Dacă activați această opțiune, Infura va avea acces la domeniile specifice pe care încercați să le accesați, însă nu și la alte domenii. Consultați <ph name="BEGIN_INFURA_TOU_LINK"/>condițiile de utilizare<ph name="END_INFURA_TOU_LINK"/> și <ph name="BEGIN_INFURA_PRIVACY_LINK"/>politica de confidențialitate<ph name="END_INFURA_PRIVACY_LINK"/> ale Infura.</translation>
+<translation id="8328137586971750853">Brave va utiliza Infura pentru a efectua apeluri Ethereum JSON-RPC către contractul inteligent de la Ethereum Name Service, pentru a rezolva solicitările de căutare nume de domenii .eth. Dacă activați această opțiune, Infura va vedea domeniile pe care încercați să le accesați, dar nu veți putea vedea alte domenii. Vedeți <ph name="BEGIN_INFURA_TOU_LINK"/>termenii de utilizare<ph name="END_INFURA_TOU_LINK"/> și <ph name="BEGIN_INFURA_PRIVACY_LINK"/>politica de confidențialitate<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
+<translation id="1769433806670482329">Brave va folosi gateway-uri offchain pentru a rezolva solicitările de căutare a denumirilor de domenii .eth. Dacă activați această funcție, gateway-urile terțe vor vedea domeniul .eth pe care încercați să-l accesați, însă nu va putea vedea alte domenii. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Aflați mai multe<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
+<translation id="3022529765171561652"><ph name="PROVIDER"/> nu poate fi momentan confirmat, din cauza unei probleme. Recompensele Brave vor rămâne în așteptare și se va reîncerca confirmarea automată, însă puteți încerca și dvs. mai târziu.</translation>
 </translationbundle>

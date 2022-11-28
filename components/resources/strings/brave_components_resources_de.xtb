@@ -1683,4 +1683,17 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="6973157709854838218">Guthabenanzeige ausblenden</translation>
 <translation id="4548946945059463969">Guthabenanzeige erlauben</translation>
 <translation id="242959166945779492">Sie haben kein Guthaben auf Ihrem Konto. Gehen Sie zu FTX, um welches zu kaufen.</translation>
+<translation id="1531133232292396145">Traden Sie Krypto auf Binance direkt in Ihrem Browser.</translation>
+<translation id="2166494527623220386">Traden Sie Krypto auf Gemini direkt in Ihrem Browser.</translation>
+<translation id="7841456038054167122">Bitte geben Sie die Schlüssel erneut ein oder probieren Sie andere Schlüssel aus.</translation>
+<translation id="1911900517212490188">Der eingegebene Wiederherstellungsschlüssel wird nicht mehr unterstützt. Bitte besuchen Sie <ph name="BEGIN_LINK"/>diese Seite<ph name="END_LINK"/>, um einen neuen Schlüssel zu erhalten.</translation>
+<translation id="922103963921062336">Getrennt (nicht verifiziert)</translation>
+<translation id="3248185426436836442">Ausstehend</translation>
+<translation id="3034163433136515805">QR-Code anzeigen</translation>
+<translation id="1640793619390890218">für iOS Rewards-Benutzer, die BAT überweisen.</translation>
+<translation id="5462747026114176246">Durch die Wiederherstellung mit einem Wiederherstellungsschlüssel wird Ihr aktuelles Brave Belohnungs-Profil ersetzt. Stellen Sie sicher, dass Sie Ihre aktuellen Brave Belohnungen leeren oder sichern, bevor Sie sie wiederherstellen.</translation>
+<translation id="3267911153934785912">Geben Sie Ihren Wiederherstellungsschlüssel an oder</translation>
+<translation id="1209382772199769572">Sichern Sie Ihre Wallet vor dem Austausch, sonst geht das Guthaben, [[funds]], in Ihrer aktuellen Wallet verloren.</translation>
+<translation id="4395099108822007284">Bild wird geladen ...</translation>
+<translation id="3022529765171561652">Es gibt ein vorübergehendes Problem bei der Verifizierung mit <ph name="PROVIDER"/>. Ihre Brave-Belohnungen bleiben in einem schwebenden Status und der Vorgang wird automatisch wiederholt. Sie können es aber auch später noch einmal versuchen.</translation>
 </translationbundle>

@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">Masquer vos soldes</translation>
 <translation id="4548946945059463969">Afficher vos soldes à l'écran</translation>
 <translation id="242959166945779492">Le solde de votre compte est nul. Accédez à FTX pour acheter des devises.</translation>
+<translation id="1531133232292396145">Échangez des cryptomonnaies sur Binance directement dans votre navigateur.</translation>
+<translation id="2166494527623220386">Echangez des cryptomonnaies sur Gemini directement dans votre navigateur.</translation>
+<translation id="7841456038054167122">Veuillez ressaisir les clés ou essayer d'autres clés.</translation>
+<translation id="1911900517212490188">La clé de restauration saisie n'est plus prise en charge. Veuillez cliquer <ph name="BEGIN_LINK"/>ici<ph name="END_LINK"/> pour obtenir une nouvelle clé.</translation>
+<translation id="922103963921062336">Déconnecté (non vérifié)</translation>
+<translation id="3248185426436836442">En attente</translation>
+<translation id="3034163433136515805">Afficher le code QR</translation>
+<translation id="1640793619390890218">pour les utilisateurs d'iOS Rewards qui transfèrent du BAT.</translation>
+<translation id="5462747026114176246">La restauration avec une clé de récupération remplacera votre profil Récompenses Brave actuel. Veillez donc à vider ou à sauvegarder vos récompenses Brave actuelles avant d'effectuer la restauration.</translation>
+<translation id="3267911153934785912">Entrez votre clé de récupération ou</translation>
+<translation id="1209382772199769572">Sauvegardez votre portefeuille avant de le remplacer. Sinon, vous perdrez les fonds, [[funds]], de votre portefeuille actuel.</translation>
+<translation id="4395099108822007284">Chargement de l'image...</translation>
+<translation id="3022529765171561652">Un problème temporaire est survenu lors de la vérification avec <ph name="PROVIDER"/>. Vos Récompenses Brave resteront en attente, mais de nouvelles tentatives seront effectuées automatiquement. Vous pourrez également réessayer plus tard.</translation>
 </translationbundle>

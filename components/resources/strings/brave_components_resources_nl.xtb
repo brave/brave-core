@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">Uw saldo verbergen</translation>
 <translation id="4548946945059463969">Uw saldo tonen</translation>
 <translation id="242959166945779492">Je hebt geen saldo in je account. Ga naar FTX om saldo toe te voegen.</translation>
+<translation id="1531133232292396145">Rechtstreeks in uw browser in crypto handelen op Binance.</translation>
+<translation id="2166494527623220386">Rechtstreeks in uw browser in crypto handelen op Gemini.</translation>
+<translation id="7841456038054167122">Voor de sleutels alsjeblieft opnieuw in of probeer andere sleutels</translation>
+<translation id="1911900517212490188">De ingevoerde herstelsleutel wordt niet meer ondersteund. U kunt <ph name="BEGIN_LINK"/>hier<ph name="END_LINK"/> een nieuwe sleutel krijgen.</translation>
+<translation id="922103963921062336">Verbinding verbroken (niet geverifieerd)</translation>
+<translation id="3248185426436836442">In afwachting</translation>
+<translation id="3034163433136515805">QR-code bekijken</translation>
+<translation id="1640793619390890218">voor iOS-gebruikers die BAT overmaken.</translation>
+<translation id="5462747026114176246">Als u een herstelsleutel gebruikt om te herstellen, wordt uw huidige Brave Beloningen-profiel vervangen. Zorg er daarom voor dat u uw huidige wallet leegmaakt of dat u een back-up van uw Brave-beloningen maakt voordat u het herstelproces in gang zet.</translation>
+<translation id="3267911153934785912">Voer de herstelsleutel in of</translation>
+<translation id="1209382772199769572">Maak een back-up van je wallet voordat je deze vervangt. Anders verlies je het geld, [[funds]], in je huidige wallet.</translation>
+<translation id="4395099108822007284">Afbeelding laden...</translation>
+<translation id="3022529765171561652">Er is een tijdelijk probleem opgetreden bij het verifiëren met <ph name="PROVIDER"/>. Uw Brave-beloningen houden de status 'In behandeling'. We proberen het automatisch opnieuw, maar u kunt het later ook zelf proberen.</translation>
 </translationbundle>

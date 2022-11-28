@@ -1683,4 +1683,17 @@ Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</t
 <translation id="6973157709854838218">Ocultar tus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Mostrar tus saldos en la pantalla</translation>
 <translation id="242959166945779492">No tienes saldo disponible en tu cuenta. Pásate por FTX para adquirir fondos.</translation>
+<translation id="1531133232292396145">Invierte en criptomonedas en Binance directamente con su navegador.</translation>
+<translation id="2166494527623220386">Invierte en criptomonedas en Gemini directamente desde el navegador.</translation>
+<translation id="7841456038054167122">Por favor vuelve a introducir las claves o prueba otras diferentes.</translation>
+<translation id="1911900517212490188">La clave de recuperación introducida ya no es compatible. Por favor, entra <ph name="BEGIN_LINK"/>aquí<ph name="END_LINK"/>para obtener una nueva clave.</translation>
+<translation id="922103963921062336">Desconectado (no verificado)</translation>
+<translation id="3248185426436836442">Pendiente</translation>
+<translation id="3034163433136515805">Ver el código QR</translation>
+<translation id="1640793619390890218">de los usuarios de Brave Rewards de iOS que hagan transferencias de BAT.</translation>
+<translation id="5462747026114176246">Restaurar con una clave de recuperación reemplazará tu perfil actual de Recompensas de Brave. Asegúrate de que vacías o guardas en una copia de seguridad lo que tienes actualmente en Recompensas de Brave antes de restaurar.</translation>
+<translation id="3267911153934785912">Introduce tu clave de recuperación o</translation>
+<translation id="1209382772199769572">Haz una copia de respaldo de tu cartera antes de sustituirla. De lo contrario, perderás los fondos ([[funds]]) de tu cartera actual.</translation>
+<translation id="4395099108822007284">Cargando imagen...</translation>
+<translation id="3022529765171561652">Se produce un problema temporal al realizar la verificación con <ph name="PROVIDER"/>. Tu perfil de Recompensas de Brave se mantendrá en estado "Pendiente" y volverá a intentarlo automáticamente, aunque también puedes dejarlo para más adelante.</translation>
 </translationbundle>

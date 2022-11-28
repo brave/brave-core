@@ -589,4 +589,8 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="5318548116565208315">Karamellimaissi-kuvake</translation>
 <translation id="1959966725083452288">Kuninkaallinen karamelli -kuvake</translation>
 <translation id="2039034364578911089">Karamellininja-kuvake</translation>
+<translation id="5927916530277631319">Pysäyttämättömien verkkotunnusten käsittelytapa</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Lue lisää<ph name="END_LINK"/> Etheriumin tietosuojanäkökohdista.</translation>
+<translation id="5248318250177143470">ENS-palvelun (Ethereum Name Service) selvityskeino</translation>
+<translation id="6494857428933042381">Voit automaattisesti käyttää annettua IPFS-ratkaisujen porttia IPFS-porttiresurssin kohtaamisen yhteydessä.</translation>
 </translationbundle>

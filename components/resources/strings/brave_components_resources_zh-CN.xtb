@@ -1683,4 +1683,17 @@ other {# 个来源}
 <translation id="6973157709854838218">隐藏余额</translation>
 <translation id="4548946945059463969">在屏幕上显示余额</translation>
 <translation id="242959166945779492">账户中没有任何余额。访问 FTX 购买资产。</translation>
+<translation id="1531133232292396145">在浏览器中直接在 Binance 上进行加密货币交易。</translation>
+<translation id="2166494527623220386">在浏览器中直接在 Gemini 上进行加密货币交易。</translation>
+<translation id="7841456038054167122">请重新输入密钥或尝试不同密钥。</translation>
+<translation id="1911900517212490188">不再支持输入的还原密钥。请访问 <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> 获取新密钥。</translation>
+<translation id="922103963921062336">断开连接（未验证）</translation>
+<translation id="3248185426436836442">等待审批</translation>
+<translation id="3034163433136515805">查看二维码</translation>
+<translation id="1640793619390890218">（供要转移 BAT 的 iOS Rewards 用户使用）。</translation>
+<translation id="5462747026114176246">使用恢复密钥进行还原将取代您当前的 Brave 奖励档案。因此，在您还原前确保您清空或备份了当前的 Brave 奖励。</translation>
+<translation id="3267911153934785912">输入恢复密钥或</translation>
+<translation id="1209382772199769572">请在更换钱包之前先备份，否则，您会失去您的当前钱包中的这笔资金 [[funds]]。</translation>
+<translation id="4395099108822007284">正在载入图片...</translation>
+<translation id="3022529765171561652">用<ph name="PROVIDER"/>进行验证时出现临时性问题。您的 Brave 奖励会继续处于“待处理” 状态并会自动重试，但您也可以稍后再试。</translation>
 </translationbundle>

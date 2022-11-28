@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">Hide your balances from display</translation>
 <translation id="4548946945059463969">Reveal your balances on screen</translation>
 <translation id="242959166945779492">You do not have any balances in your account. Visit FTX to purchase some.</translation>
+<translation id="1531133232292396145">Trade crypto on Binance directly in your browser.</translation>
+<translation id="2166494527623220386">Trade crypto on Gemini directly in your browser.</translation>
+<translation id="7841456038054167122">Please re-enter keys or try different keys.</translation>
+<translation id="1911900517212490188">The restore key entered is no longer supported. Please visit <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> to get a new key.</translation>
+<translation id="922103963921062336">Disconnected (not verified)</translation>
+<translation id="3248185426436836442">Pending</translation>
+<translation id="3034163433136515805">View QR Code</translation>
+<translation id="1640793619390890218">for iOS Rewards users transferring BAT.</translation>
+<translation id="5462747026114176246">Restoring with a recovery key will replace your current Brave Rewards profile. Make sure you empty or back up your current Brave Rewards before restoring.</translation>
+<translation id="3267911153934785912">Enter your recovery key or</translation>
+<translation id="1209382772199769572">Backup your wallet before replacing. Or you will lose the fund, [[funds]], in your current wallet.</translation>
+<translation id="4395099108822007284">Loading image...</translation>
+<translation id="3022529765171561652">There is a temporary problem verifying with <ph name="PROVIDER"/>. Your Brave Rewards will remain in a pending state and retry automatically, but you can also try again later.</translation>
 </translationbundle>

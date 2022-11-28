@@ -1683,4 +1683,17 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="6973157709854838218">Non mostrare il tuo saldo</translation>
 <translation id="4548946945059463969">Mostra il tuo saldo sullo schermo</translation>
 <translation id="242959166945779492">Non hai alcun saldo sul tuo conto. Visita FTX per acquistarne un po'.</translation>
+<translation id="1531133232292396145">Scambia criptovalute su Binance direttamente dal tuo browser.</translation>
+<translation id="2166494527623220386">Scambia Criptovalute su Gemini direttamente dal tuo browser.</translation>
+<translation id="7841456038054167122">Si prega di reinserire le chiavi o provare chiavi diverse.</translation>
+<translation id="1911900517212490188">La chiave di ripristino inserita non è più supportata. Per favore visita <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> to get a new key.</translation>
+<translation id="922103963921062336">Disconnetti (Non verificato)</translation>
+<translation id="3248185426436836442">In sospeso</translation>
+<translation id="3034163433136515805">Visualizza Codice QR</translation>
+<translation id="1640793619390890218">per gli utenti delle ricompense iOS che trasferiscono BAT.</translation>
+<translation id="5462747026114176246">Il ripristino con una chiave apposita sostituirà il tuo profilo Ricompense Brave. Assicurati di svuotare o eseguire il backup delle Ricompense Brave prima del ripristino.</translation>
+<translation id="3267911153934785912">Inserisci la tua chiave di ripristino o</translation>
+<translation id="1209382772199769572">Prima di sostituire il portafoglio esegui un backup, altrimenti perderai il denaro presente nel portafoglio, [[funds]].</translation>
+<translation id="4395099108822007284">Caricamento dell'immagine...</translation>
+<translation id="3022529765171561652">C’è un problema temporaneo con <ph name="PROVIDER"/>. L’account che hai creato per le Ricompense Brave resterà in sospeso. Riproveremo automaticamente ma poi, se vuoi, puoi riprovare anche tu.</translation>
 </translationbundle>

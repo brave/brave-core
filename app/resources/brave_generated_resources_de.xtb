@@ -589,4 +589,8 @@ Hinweis: Wenn der lokale Knoten ausgewählt ist, wird die Ressource direkt von I
 <translation id="5318548116565208315">Bonbon-Avatar Mais</translation>
 <translation id="1959966725083452288">Bonbon-Avatar Adliger</translation>
 <translation id="2039034364578911089">Bonbon-Avatar Ninja</translation>
+<translation id="5927916530277631319">Methode zum Auflösen unaufhaltsamer Domains</translation>
+<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Erfahren Sie mehr<ph name="END_LINK"/> zu Überlegungen zum Datenschutz von Ethereum.</translation>
+<translation id="5248318250177143470">Methode zum Auflösen des Ethereum Name Service (ENS)</translation>
+<translation id="6494857428933042381">Verwendet automatisch den konfigurierten Gateway für IPFS-Lösungen, wenn es auf eine IPFS-Gatewayressource stößt.</translation>
 </translationbundle>

@@ -1683,4 +1683,17 @@
 <translation id="6973157709854838218">Dölj dina saldon från att visas</translation>
 <translation id="4548946945059463969">Visa dina saldon på skärmen</translation>
 <translation id="242959166945779492">Du har inga saldon på ditt konto. Besök FTX för att köpa.</translation>
+<translation id="1531133232292396145">Handla krypto på Binance direkt i din webbläsare.</translation>
+<translation id="2166494527623220386">Handla krypto på Gemini direkt i din webbläsare.</translation>
+<translation id="7841456038054167122">Vänligen skriv in nycklarna igen eller prova andra nycklar</translation>
+<translation id="1911900517212490188">Den angivna återställningsnyckeln stöds inte längre. Gå <ph name="BEGIN_LINK"/>hit<ph name="END_LINK"/> för att få en ny nyckel.</translation>
+<translation id="922103963921062336">Frånkopplad (inte verifierad)</translation>
+<translation id="3248185426436836442">Väntande</translation>
+<translation id="3034163433136515805">Visa QR-kod</translation>
+<translation id="1640793619390890218">för iOS Rewards-användare som överför BAT.</translation>
+<translation id="5462747026114176246">Om du använder en återställningsnyckel så ersätts din aktuella Brave Rewards-profil. Se därför till att tömma eller ha en säkerhetskopia av din aktuella Brave Rewards-profil innan du återställer.</translation>
+<translation id="3267911153934785912">Skriv in din återställningsnyckel eller</translation>
+<translation id="1209382772199769572">Säkerhetskopiera din plånbok innan du ersätter den. Annars kommer du att förlora medlen, [[funds]], i din nuvarande plånbok.</translation>
+<translation id="4395099108822007284">Laddar bild...</translation>
+<translation id="3022529765171561652">Det finns ett tillfälligt problem med att verifiera med <ph name="PROVIDER"/>. Dina Brave Rewards kommer att förbli i ett väntande tillstånd och försöka igen automatiskt, men du kan också försöka igen senare.</translation>
 </translationbundle>

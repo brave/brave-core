@@ -1578,4 +1578,20 @@
 <translation id="6973157709854838218">Скриване на салдата от дисплея</translation>
 <translation id="4548946945059463969">Показване на салдата на екрана</translation>
 <translation id="242959166945779492">Нямате салда по сметката си. Посетете FTX, за да закупите такива.</translation>
+<translation id="1531133232292396145">Търгувайте с криптовалути на Binance директно във вашия браузър.</translation>
+<translation id="2166494527623220386">Търгувайте с криптовалута на Gemini директно във вашия браузър.</translation>
+<translation id="7841456038054167122">Въведете отново ключовете или опитайте с различни ключове.</translation>
+<translation id="1911900517212490188">Въведеният ключ за възстановяване вече не се поддържа. Посетете <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> за да получите нов ключ.</translation>
+<translation id="922103963921062336">Прекъсната връзка (непотвърден)</translation>
+<translation id="3248185426436836442">Предстоящо</translation>
+<translation id="3034163433136515805">Вижте QR кода</translation>
+<translation id="1640793619390890218">за потребителите на Rewards с iOS, които прехвърлят BAT.</translation>
+<translation id="5462747026114176246">Възстановяването чрез ключ за възстановяване ще замени настоящия ви профил в Brave награди. Изпразнете текущите Brave награди или създайте резервно копие, преди да започнете възстановяването.</translation>
+<translation id="3267911153934785912">Въведете ключа си за възстановяване или</translation>
+<translation id="1209382772199769572">Направете резервно копие на портфейла си преди смяна. В противен случай ще загубите средствата, [[funds]], в сегашния си портфейл.</translation>
+<translation id="4395099108822007284">Зареждане на изображение...</translation>
+<translation id="689573545156113164">Brave ще използва Infura за издаване на Ethereum JSON-RPC извиквания към интелигентния договор от Unstoppable Domains за разрешаване на .crypto (и също .x, .coin, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) заявки за търсене на име на домейн. Ако активирате това, Infura ще види конкретните домейни, които се опитвате да посетите, но няма да може да види други домейни. Вижте <ph name="BEGIN_INFURA_TOU_LINK"/>условията за използване<ph name="END_INFURA_TOU_LINK"/> и <ph name="BEGIN_INFURA_PRIVACY_LINK"/>политиката за поверителност<ph name="END_INFURA_PRIVACY_LINK"/> на Infura.</translation>
+<translation id="8328137586971750853">Brave ще използва Infura за извършване на Ethereum JSON-RPC повиквания към интелигентния договор от Ethereum Name Service за разрешаване на заявки за търсене на имена на .eth домейни. Ако разрешите това, Infura ще вижда .eth домейна, който се опитвате да посетите, но няма да може да вижда други домейни. Вижте <ph name="BEGIN_INFURA_TOU_LINK"/>Условията за употреба на Infura<ph name="END_INFURA_TOU_LINK"/> и <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Правилата за защита на личните данни на Infura<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="1769433806670482329">Brave ще използва извънверижни шлюзове за разрешаване на заявки за търсене на име на домейн .eth. Ако активирате това, шлюзовете на трети страни ще виждат домейна .eth, който се опитвате да посетите, но няма да могат да виждат други домейни. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Научете повече<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
+<translation id="3022529765171561652">Има временен проблем при потвърждаването с <ph name="PROVIDER"/>. Вашите Brave Rewards ще останат в състояние на изчакване и автоматично ще се извърши повторен опит, но можете също да опитате отново по-късно.</translation>
 </translationbundle>
