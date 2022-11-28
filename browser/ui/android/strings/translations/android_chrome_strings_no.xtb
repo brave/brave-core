@@ -62,7 +62,7 @@
 <translation id="1291207594882862231">Slett loggoppføringer, informasjonskapsler, nettstedsdata, bufferen …</translation>
 <translation id="129553762522093515">Nylig lukket</translation>
 <translation id="1298077576058087471">Spar opptil 60 % data – les dagens nyheter</translation>
-<translation id="1303339473099049190">Finner ikke det passordet. Kontrollér stavemåten, og prøv på nytt.</translation>
+<translation id="1303339473099049190">Finner ikke det passordet. Kontroller stavemåten, og prøv på nytt.</translation>
 <translation id="1303507811548703290"><ph name="DOMAIN"/> – sendt fra <ph name="DEVICE_NAME"/></translation>
 <translation id="1310482092992808703">Gruppér faner</translation>
 <translation id="1311657260431405215">Denne QR-koden er ikke noen nettadresse: <ph name="QRCODEVALUE"/></translation>
@@ -100,7 +100,6 @@ Når du sletter nettleserloggen, enten det er hele loggen eller bare loggen for 
 <translation id="1448440926884431741">Organiser sporede produkter i Bokmerker</translation>
 <translation id="1450753235335490080">Kan ikke dele <ph name="CONTENT_TYPE"/></translation>
 <translation id="5598889255595678761">Velg språk for Brave</translation>
-<translation id="147113415845704694">Prøv «Hvordan er været i dag?»</translation>
 <translation id="1474893630593443211">Mer kontroll over annonsene du ser</translation>
 <translation id="1477626028522505441">Nedlastingen av <ph name="FILE_NAME"/> ble avbrutt på grunn av tjenerproblemer.</translation>
 <translation id="148482509007564431">Flyt for lagring av bokmerke</translation>
@@ -325,10 +324,11 @@ Når du sletter nettleserloggen, enten det er hele loggen eller bare loggen for 
 <translation id="2841216154655874070">{NUM_DAYS,plural, =1{Sjekket for en dag siden}other{Sjekket for # dager siden}}</translation>
 <translation id="2842985007712546952">Overordnet mappe</translation>
 <translation id="2856503607207334158">Pålogging mislyktes</translation>
-<translation id="2860954141821109167">Kontrollér at en telefon-app er påslått på denne enheten</translation>
+<translation id="2860954141821109167">Kontroller at en telefon-app er påslått på denne enheten</translation>
 <translation id="6518254564747115579">Enkelte Brave-funksjoner kommer ikke til å være tilgjengelige lenger</translation>
 <translation id="2870560284913253234">Nettsted</translation>
 <translation id="2871733351037274014">Forhåndslasting av sider</translation>
+<translation id="2876136027428473467"><ph name="CHILD_NAME"/> vil at du skal godkjenne dette nettstedet:</translation>
 <translation id="2886836735871983413">En liste over nettsteder vises her mens du surfer på nettet</translation>
 <translation id="8541922081612557424">Om Brave</translation>
 <translation id="2891154217021530873">Stopp innlastingen av siden</translation>
@@ -343,6 +343,7 @@ Når du sletter nettleserloggen, enten det er hele loggen eller bare loggen for 
 <translation id="6355102470683871794">Brave <ph name="APP_NAME"/>-lagring</translation>
 <translation id="2932222164150889403">Tastaturet ditt endres ikke</translation>
 <translation id="6537665929855787038">Brave-varsler gjør ting lettere</translation>
+<translation id="2940075786175545812">Valg om å godkjenne eller ikke godkjenne et nettsted</translation>
 <translation id="2942036813789421260">Fanen for forhåndsvisning er lukket</translation>
 <translation id="4700262879698141140">Oppdaterer Brave for å kunne koble til andre enheter</translation>
 <translation id="2951071800649516099">Legg til sider på leselisten til senere</translation>
@@ -360,12 +361,11 @@ Når du sletter nettleserloggen, enten det er hele loggen eller bare loggen for 
 <translation id="2019027298133375428">Når Brave-nettsteder ber om privat forhåndslasting av linker på sidene sine, medfører det at Brave krypterer og forhåndslaster sider gjennom Braves tjenere uten informasjonskapsler. Dermed skjules identiteten din for det forhåndslastede nettstedet.</translation>
 <translation id="3006881078666935414">Ingen bruksdata</translation>
 <translation id="301080557829842765">Personvernveiledning</translation>
-<translation id="3016635187733453316">Kontrollér at enheten er koblet til internett</translation>
+<translation id="3016635187733453316">Kontroller at enheten er koblet til internett</translation>
 <translation id="3026955690410463085">Inkluder link</translation>
 <translation id="3029276696788198026">Ingen forhåndslasting</translation>
 <translation id="3029704984691124060">Passordfrasene stemmer ikke overens</translation>
 <translation id="3031225630520268969">UI for samtykke til talesøk med assistenten</translation>
-<translation id="3034163383943672781">Nedlastingen starter <ph name="DATE"/>.</translation>
 <translation id="3036750288708366620"><ph name="BEGIN_LINK"/>Få hjelp<ph name="END_LINK"/></translation>
 <translation id="3037177537145227281">Sporer prisen</translation>
 <translation id="3251012123600267109">Viser beskjeder om å logge på Brave</translation>
@@ -410,6 +410,7 @@ Når du sletter nettleserloggen, enten det er hele loggen eller bare loggen for 
 <translation id="3259831549858767975">Gjør alt på siden mindre</translation>
 <translation id="3264124641674805320">Slik laster du ned innhold til senere</translation>
 <translation id="3264259168916048410">Datamaskinen din vil bruke denne enheten til å logge på et nettsted</translation>
+<translation id="3265093782546847662">Alle sider på <ph name="DOMAIN"/></translation>
 <translation id="3265534588625245297">Administrer hvilke nettsteder du følger</translation>
 <translation id="3269093882174072735">Last inn bildet</translation>
 <translation id="3280562213547448728">Talesøk</translation>
@@ -442,7 +443,6 @@ Når du sletter nettleserloggen, enten det er hele loggen eller bare loggen for 
 <translation id="3443221991560634068">Last inn den aktive siden på nytt</translation>
 <translation id="3444179773590444986">Vil du dele tilbakemeldinger om mørkt tema for nettsteder?</translation>
 <translation id="7384339501748168186">For å beskytte personvernet ditt autofyller ikke Brave passordet ditt i dette feltet.</translation>
-<translation id="3469665409713263828">{FILE_COUNT,plural, =1{1 nedlasting er planlagt}other{# nedlastinger er planlagt}}</translation>
 <translation id="3474624961160222204">Fortsett som <ph name="NAME"/></translation>
 <translation id="3478363558367712427">Du kan velge søkemotor</translation>
 <translation id="3479552764303398839">Ikke nå</translation>
@@ -700,7 +700,6 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="4925120120285606924">Skjermdump <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="49268022542405662">Passordene dine blir eksportert og lastet ned som en tekstfil. De blir synlige for alle personer og apper som har tilgang til målmappen.</translation>
 <translation id="1955495299630319741">Fordi du logger av en konto som administreres av <ph name="DOMAIN_NAME"/>, slettes Brave-dataene dine fra denne enheten. De blir værende i Brave-kontoen din.</translation>
-<translation id="4941179133499732445">Trykk på mikrofonen for å søke med stemmen</translation>
 <translation id="4943703118917034429">Virtuell virkelighet</translation>
 <translation id="4943872375798546930">Ingen resultater</translation>
 <translation id="5742837711075932301">Når du er logget på den samme Brave-kontoen, kan andre enheter bruke denne enheten som sikkerhetsnøkkel.</translation>
@@ -711,6 +710,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="4985248278475639481">Om personlig tilpasning av annonser</translation>
 <translation id="4987271110129728827">Finner ikke den siden. Kontroller stavemåten, eller prøv et søk på nettet.</translation>
 <translation id="4988526792673242964">Sider</translation>
+<translation id="4991110219272367918">Valget om å godkjenne eller ikke godkjenne nettstedet er lukket</translation>
 <translation id="499724277181351974">Naviger: <ph name="WEBSITE_TITLE"/>: <ph name="WEBSITE_URL"/></translation>
 <translation id="5001388021414335527">Følg dette nettstedet her</translation>
 <translation id="500351648694011114">Surf enklere</translation>
@@ -723,7 +723,6 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="5039804452771397117">Tillat</translation>
 <translation id="504456571576643789">Ting å tenke på</translation>
 <translation id="4858031288914533863"><ph name="BEGIN_LINK1"/>Andre typer aktiviteter<ph name="END_LINK1"/> kan bli lagret i Brave-kontoen din når du er pålogget. Du kan slette dem når som helst.</translation>
-<translation id="5061533557687621530">For å sjekke været, trykk på mikrofonen og si «Hvordan er været i dag?»</translation>
 <translation id="506254248375231072">Ingen faner</translation>
 <translation id="4744980273298156620">Snart ser du artikler fra <ph name="SITE_NAME"/> når du åpner nye faner. Nettstedene du følger, lagres i Brave-kontoen din. Du kan administrere dem i innstillingene for Discover.</translation>
 <translation id="5091249083535528968">Utvidede bruksdata</translation>
@@ -743,8 +742,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="5171045022955879922">Søk, eller skriv inn en nettadresse</translation>
 <translation id="517734441743343109">Ved å fortsette godtar du <ph name="BEGIN_TOS_LINK"/>vilkårene for bruk<ph name="END_TOS_LINK"/> og <ph name="BEGIN_PRIVACY_LINK"/>personvernreglene<ph name="END_PRIVACY_LINK"/>.</translation>
 <translation id="8445059357334030806">Åpne i Brave</translation>
-<translation id="5188992787241350004">Søk med stemmen</translation>
-<translation id="5191251636205085390">Finn ut om og kontrollér nye teknologier som tar sikte på å erstatte tredjeparts informasjonskapsler</translation>
+<translation id="5191251636205085390">Finn ut om og kontroller nye teknologier som tar sikte på å erstatte tredjeparts informasjonskapsler</translation>
 <translation id="5193988420012215838">Kopiert til utklippstavlen</translation>
 <translation id="5199929503336119739">Jobbprofil</translation>
 <translation id="5204967432542742771">Skriv inn passordet</translation>
@@ -870,7 +868,6 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="5869789175361934029">Fortsett på en annen enhet</translation>
 <translation id="5604589745019948682">For å følge et nettsted, gå til nettstedet, åpne Brave-menyen og trykk på Følg.</translation>
 <translation id="5879072387416556377">Få bedre forslag</translation>
-<translation id="5880748256563468367">Gå til feeden</translation>
 <translation id="9037412730408024068">For å hjelpe deg med å fullføre oppgaver mottar Brave nettadressene til og innholdet på nettsteder der du bruker assistenten, i tillegg til informasjon som du sender inn gjennom assistenten</translation>
 <translation id="1985257319311245640">Ved å vite nettadressene til nettsteder kan Brave-assistenten hjelpe deg med å utføre oppgaver. Du kan slå av assistenten i Brave-innstillingene.</translation>
 <translation id="5916664084637901428">På</translation>
@@ -882,10 +879,11 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="305870044889644984">Åpne brukerstøtten for Brave i en ny fane</translation>
 <translation id="5957442310066583693">For å se toppnettstedene dine, trykk på knappen Gå til startsiden</translation>
 <translation id="5958275228015807058">Du finner filene og sidene dine under Nedlastinger</translation>
+<translation id="5958994127112619898">Forenkle siden</translation>
 <translation id="5962718611393537961">Trykk for å skjule</translation>
 <translation id="5964869237734432770">Stopp bildebeskrivelser</translation>
 <translation id="9135546826883360971">Brave husker valget ditt</translation>
-<translation id="5979084224081478209">Kontrollér passordene</translation>
+<translation id="5979084224081478209">Kontroller passordene</translation>
 <translation id="5995726099713306770">Vil du laste ned siden på nytt?</translation>
 <translation id="6456271171669383967">Behold Brave</translation>
 <translation id="6000203700195075278">Følg på nytt</translation>
@@ -922,10 +920,10 @@ Utprøving av Privacy Sandbox er fremdeles under aktiv utvikling og er tilgjenge
 <translation id="7087658909840709934">Forhåndslaster sider som Brave tror du kanskje kommer til å besøke.</translation>
 <translation id="6186394685773237175">Fant ingen passord som er utsatt for sikkerhetsbrudd</translation>
 <translation id="6192907950379606605">Få bildebeskrivelser</translation>
+<translation id="6193448654517602979">Velg faner</translation>
 <translation id="8367262879301982880">Passord lagres i Brave Passordlagring på denne enheten</translation>
 <translation id="620197886010707372">Vil du åpne appen for <ph name="APPNAME"/> med Google Play?</translation>
 <translation id="6202812185118613467">Logg på igjen for å starte synkroniseringen</translation>
-<translation id="6203593061661911168">Nedlastingen starter når du er tilkoblet wifi</translation>
 <translation id="6210748933810148297">Ikke <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Forhåndsviser denne siden</translation>
 <translation id="6221633008163990886">Lås opp for å eksportere passordene dine</translation>
@@ -976,7 +974,7 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="6437478888915024427">Sideinformasjon</translation>
 <translation id="6441734959916820584">Navnet er for langt</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# bilde}other{# bilder}}</translation>
-<translation id="6447558397796644647">Finner ikke dette bokmerket. Kontrollér stavemåten, eller legg til et nytt bokmerke.</translation>
+<translation id="6447558397796644647">Finner ikke dette bokmerket. Kontroller stavemåten, eller legg til et nytt bokmerke.</translation>
 <translation id="6459045781120991510">Undersøkelser</translation>
 <translation id="6461962085415701688">Kan ikke åpne filen</translation>
 <translation id="9055113864158719823">Du kan se nettstedene du besøker i Brave, og angi tidtakere for dem.\n\nBrave får informasjon om nettstedene du angir tidtakere for, og hvor lenge du besøker dem. Denne informasjonen brukes til å gjøre Digital balanse bedre.</translation>
@@ -1074,12 +1072,14 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="6896758677409633944">Kopiér</translation>
 <translation id="6900532703269623216">Økt beskyttelse</translation>
 <translation id="6903907808598579934">Slå på synkronisering</translation>
+<translation id="6908998565271542516">Valget om å godkjenne eller ikke godkjenne nettstedet er åpnet i full høyde</translation>
 <translation id="6909589135458168665">Forhåndslasting av sider</translation>
 <translation id="6942665639005891494">Endre standard nedlastingssted når som helst via menyalternativet Innstillinger</translation>
 <translation id="694267552845942083">Du holder på å tilpasse innstillingene for Synkronisering. For å gjøre deg ferdig med å slå på synkronisering, trykk på Bekreft-knappen nederst på skjermen. Gå opp</translation>
 <translation id="6945221475159498467">Velg</translation>
 <translation id="6955535239952325894">Denne innstillingen er slått av for administrerte nettlesere</translation>
 <translation id="6963766334940102469">Slett bokmerker</translation>
+<translation id="6971862865055170158">Ikke godkjenn</translation>
 <translation id="6979737339423435258">Alle datoer</translation>
 <translation id="6995899638241819463">Få en advarsel hvis passord blir avdekket i databrudd</translation>
 <translation id="7020741890149022655">Legg til på leselisten <ph name="BEGIN_NEW"/>Nyhet<ph name="END_NEW"/></translation>
@@ -1122,7 +1122,7 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="7222235798733126207">Begrenset deling mellom nettsteder</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{1 nedlasting venter}other{# nedlastinger venter}}</translation>
 <translation id="7242755609445462077">Stilisert fremheving <ph name="CURRENT_DATE"/></translation>
-<translation id="8287068819750208230">Kontrollér at <ph name="TARGET_DEVICE_NAME"/> har synkronisering påslått i Brave</translation>
+<translation id="8287068819750208230">Kontroller at <ph name="TARGET_DEVICE_NAME"/> har synkronisering påslått i Brave</translation>
 <translation id="7252076891734325316">Plassér telefonen i nærheten av datamaskinen</translation>
 <translation id="727288900855680735">Vil du sende inn <ph name="ONE_TIME_CODE"/> til <ph name="ORIGIN"/>?</translation>
 <translation id="7274013316676448362">Blokkert nettsted</translation>
@@ -1151,10 +1151,9 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="724102042129299115">Førsteinntrykk ved bruk av Brave</translation>
 <translation id="741204030948306876">Ja, jeg er med</translation>
 <translation id="7419565702166471774">Bruk alltid sikre tilkoblinger</translation>
-<translation id="7431991332293347422">Kontrollér hvordan nettleserloggen din brukes til blant annet personlig tilpasning av søk</translation>
+<translation id="7431991332293347422">Kontroller hvordan nettleserloggen din brukes til blant annet personlig tilpasning av søk</translation>
 <translation id="7435356471928173109">Slått av av administratoren din</translation>
 <translation id="6234515504547364178">Logg av Brave</translation>
-<translation id="7444811645081526538">Flere kategorier</translation>
 <translation id="3699067418237091329">Logger deg av de fleste nettsteder. Du blir ikke logget av Brave-kontoen din.</translation>
 <translation id="7454641608352164238">Det er ikke nok plass</translation>
 <translation id="7456774706094330779">Utvidet forhåndslasting</translation>
@@ -1177,7 +1176,6 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="751961395872307827">Kan ikke koble til nettstedet</translation>
 <translation id="752220631458524187">Koble fra når du er ferdig</translation>
 <translation id="7523960634226602883">Bruk Google Lens for å søke med kameraet</translation>
-<translation id="753225086557513863">Planlagt til senere</translation>
 <translation id="7562080006725997899">Sletter nettlesingsdata</translation>
 <translation id="7814200940910057384">Brave-dataene er slettet</translation>
 <translation id="7577900504646297215">Administrer interesser</translation>
@@ -1235,7 +1233,6 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="784934925303690534">Tidsperiode</translation>
 <translation id="7851858861565204677">Andre enheter</translation>
 <translation id="7853202427316060426">Aktivitet</translation>
-<translation id="7857691613771368249">Spør når filer skal lagres</translation>
 <translation id="7859988229622350291">Oversett aldri</translation>
 <translation id="7866213166286285359">Oversett sider her</translation>
 <translation id="78707286264420418"><ph name="PRODUCT_NAME"/> trenger tillatelsen Enheter i nærheten for å kunne koble til enheten din</translation>
@@ -1271,6 +1268,7 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="8015452622527143194">Tilbakestill alt på siden til standardstørrelsen</translation>
 <translation id="8026334261755873520">Slett nettlesingsdata</translation>
 <translation id="8027863900915310177">Velg hvor du vil laste ned til</translation>
+<translation id="8030852056903932865">Godkjenn</translation>
 <translation id="8032569120109842252">Følger</translation>
 <translation id="8035133914807600019">Ny mappe</translation>
 <translation id="8037750541064988519"><ph name="DAYS"/> dager igjen</translation>
@@ -1287,7 +1285,7 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="8076492880354921740">Faner</translation>
 <translation id="8078096376109663956">Del kun tekst</translation>
 <translation id="8084114998886531721">Lagret passord</translation>
-<translation id="1718138320251931534">Kontrollér Brave-kontodataene dine</translation>
+<translation id="1718138320251931534">Kontroller Brave-kontodataene dine</translation>
 <translation id="808747664143081553">Koblet til enheten</translation>
 <translation id="1501443023467711714">Logg på for å tilpasse Brave til deg</translation>
 <translation id="3249150807062904185">Ved å fortsette godtar du <ph name="BEGIN_TOS_LINK"/>vilkårene for bruk<ph name="END_TOS_LINK"/>.\nFor å bidra til å gjøre appen bedre sender Brave bruks- og krasjrelaterte data til Brave. <ph name="BEGIN_UMA_LINK"/>Administrer<ph name="END_UMA_LINK"/></translation>
@@ -1309,7 +1307,6 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="8200772114523450471">Fortsett</translation>
 <translation id="8209050860603202033">Åpne bildet</translation>
 <translation id="8216351761227087153">Se</translation>
-<translation id="8218052821161047641">Rask side</translation>
 <translation id="8218622182176210845">Administrer kontoen din</translation>
 <translation id="8221656072740924283">Fortsett</translation>
 <translation id="8223642481677794647">Feedkortmeny</translation>
@@ -1338,6 +1335,7 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="8387617938027387193">Bekreft at det er deg</translation>
 <translation id="8393700583063109961">Send melding</translation>
 <translation id="7651600795135059130">Kontrollerer nettadresser opp mot en liste i Brave over utrygge nettsteder</translation>
+<translation id="8402673309244746971">Gå til Følger</translation>
 <translation id="8410695015584479363">Spor priser</translation>
 <translation id="8413126021676339697">Vis fullstendig logg</translation>
 <translation id="8414396119627470038">Logg på <ph name="SITE_ETLD_PLUS_ONE"/> med <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
@@ -1356,8 +1354,8 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="8453310803815879010">Start dinosaurspillet</translation>
 <translation id="8460448946170646641">Gjennomgå viktige personvern- og sikkerhetskontroller</translation>
 <translation id="8461694314515752532">Kryptér synkroniserte data med din egen passordfrase for synkronisering</translation>
-<translation id="8466613982764129868">Kontrollér at <ph name="TARGET_DEVICE_NAME"/> er koblet til internett</translation>
-<translation id="5633907266617216186">Adresser med mer</translation>
+<translation id="8466613982764129868">Kontroller at <ph name="TARGET_DEVICE_NAME"/> er koblet til internett</translation>
+<translation id="8473863474539038330">Adresser med mer</translation>
 <translation id="8481921391193215807">Når dette er på, kan nettsteder bruke de personvernbevarende teknikkene som vises her, for å levere innhold og tjenester. Disse omfatter alternativer til sporing på tvers av nettsteder. Flere prøvefunksjoner kan bli lagt til over tid.
 
 <ph name="BEGIN_LIST_ITEM1"/>Annonsører og utgivere kan bruke FLoC.<ph name="END_LIST_ITEM1"/>
@@ -1470,7 +1468,6 @@ Noen nettsteder kan for eksempel svare på denne forespørselen ved å vise deg 
 <translation id="9065203028668620118">Endre</translation>
 <translation id="5496925146144075335">Lagrede data som Brave ikke tror er viktige (for eksempel nettsteder uten lagrede innstillinger eller som du ikke besøker ofte)</translation>
 <translation id="906781307897697745">i <ph name="PRODUCT_NAME"/></translation>
-<translation id="9069543557624799859">Nedlastingen starter kl. <ph name="TIME"/>.</translation>
 <translation id="9069999660519089861">Ingen uleste sider</translation>
 <translation id="9070377983101773829">Start talesøk</translation>
 <translation id="8494430740943879273">For å få forslag om personlig tilpasset innhold fra Brave, slå på synkronisering</translation>

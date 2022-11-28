@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Recompense Brave</translation>
 <translation id="4615489450165434530">Raportați un site nefuncțional</translation>
 <translation id="1209739344687072997">Raportați un site nefuncțional</translation>
+<translation id="7630214457764713113">Copiați linkul curat</translation>
 <translation id="6406506848690869874">Sincronizare</translation>
 <translation id="1544192797660353713">Portofel</translation>
 <translation id="2445484935443597917">Creează un profil nou</translation>
@@ -73,6 +74,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2638041073279639246">Deschideți linkul în fereastră privată cu Tor</translation>
 <translation id="3425600262621021599">Deschideți linkul în fereastră privată Brave cu Tor</translation>
 <translation id="3229091547987707389">Importați și distribuiți un director</translation>
+<translation id="2804710924397009224">Ascunde iconița recompenselor Brave</translation>
 <translation id="5029193871181468990">Ascundeți pictograma privind recompensele Brave</translation>
 <translation id="7595540212376041331">Ascundeți pictograma portofelului Brave</translation>
 <translation id="4928988318462976765">Magazin Extensii Web</translation>
@@ -203,7 +205,6 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="7537601449003285327">Fixează pe bara de activități</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">Importat din <ph name="BROWSER_NAME"/></translation>
-<translation id="7630214457764713113">Copiați linkul curat</translation>
 <translation id="9156965752763025780">Modificările dvs. vor intra în vigoare următoarea dată când reporniți Brave.</translation>
 <translation id="7179921470347911571">Relansare acum</translation>
 <translation id="4472575034687746823">Începeți</translation>
@@ -403,9 +404,6 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="6864914031231797928">Permite conectarea cu contul Google pentru extensii</translation>
 <translation id="6554397389149987360">Utilizează componenta Hangouts pentru activarea partajării ecranului și alte funcții din browser.</translation>
 <translation id="7878791177459550035">Router-ul media activează funcția de proiecție în browser.</translation>
-<translation id="5927916530277631319">Metodă pentru a rezolva domeniile Unstoppable</translation>
-<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Aflați mai multe<ph name="END_LINK"/> despre aspectele de confidențialitate Ethereum.</translation>
-<translation id="5248318250177143470">Metodă pentru a rezolva Ethereum Name Service (ENS)</translation>
 <translation id="6421218422395686663">Permiteți căutarea ENS offchain.</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Aflați mai multe<ph name="END_LINK"/> despre aspectele de confidențialitate privind ENS offchain.</translation>
 <translation id="6241402707160226266">Fereastră privată cu Tor</translation>
@@ -494,7 +492,6 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="585868419599255817">Conectare la portalul public IPFS</translation>
 <translation id="2618080188892567155">Reveniți automat la gateway-ul IPFS public dacă nodul IPFS local Brave nu poate fi accesat.</translation>
 <translation id="4107552920076294723">Redirecționează resursele IPFS către poarta de ieșire IPFS configurată</translation>
-<translation id="6494857428933042381">Utilizează automat poarta de ieșire configurată pentru rezoluții IPFS atunci când se întâlnește o resursă de ieșire IPFS.</translation>
 <translation id="8655170717758778983">Redirecționați automat către paginile IPFS prin DNSLink atunci când este posibil</translation>
 <translation id="2233724520223030977">Folosește automat DNSLink pentru a naviga către o versiune IPFS a unui website atunci când este posibil</translation>
 <translation id="8068526464562249859">Folosește extensia IPFS Companion pentru suport IPFS îmbunătățit în Brave, inclusiv acces la sarcinile IPFS obișnuite din bara de browser.</translation>
