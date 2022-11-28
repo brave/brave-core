@@ -45,8 +45,8 @@ jobs:
           # Inputs
           DEP="${{ inputs.dep }}"
           DEPREF="${{ inputs.ref }}"
-          [[ -z "$DEP" ]] && { echo Input dependency cannot be empty; exit 1; }
-          [[ -z "$DEPREF" ]] && { echo Input ref cannot be empty; exit 1; }
+          [[ "${DEP:?}" =~ ^[a-zA-Z/-]+$ ]] || { echo Input dependency validation failed; exit 1; }
+          [[ "${DEPREF:?}" =~ ^[a-z0-9]+$ ]] || { echo Dependency reference validation failed; exit 1; }
 
           readarray -t milestones < <(gh api /repos/${GITHUB_REPOSITORY:?}/milestones -q ".[] | .title" | grep -Fv Closed)
           branches=( "${milestones[@]/*Nightly/master}" )
