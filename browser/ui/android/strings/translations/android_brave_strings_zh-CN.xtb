@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-CN">
+<translation id="915758461293673891">打赏金额：</translation>
+<translation id="8966035543003363155">Brave 通知让一切变得更方便</translation>
+<translation id="7662771815233894695">管理下载，赚取代币，查看每周使用统计数据等。</translation>
+<translation id="4265429476391459783">您将不会获得奖励或收到隐私报告</translation>
+<translation id="1305714751384738456">您将不会获得 Brave 奖励</translation>
+<translation id="1483391942610220726">您将不会收到隐私报告</translation>
+<translation id="4683790942451502796">如果您想继续获得 BAT 和每周收到隐私报告，请打开通知。</translation>
+<translation id="1462722717055895108">如果您想继续获得 BAT，请打开通知</translation>
+<translation id="5457255168064266494">如果您想继续每周收到隐私报告，请打开通知。</translation>
+<translation id="6268959058971634697">您将不会获得奖励</translation>
+<translation id="1088637159642753509">启用设备通知来获得 Brave 奖励，并查看隐私报告。</translation>
+<translation id="312404770066229090">启用设备通知来获得 Brave 奖励。</translation>
+<translation id="2241529840361230499">启用设备通知以获取 Brave 隐私报告。</translation>
+<translation id="4930155581888391118">启用来自 Brave 的通知以获得 Brave 奖励。</translation>
+<translation id="325187916104529570">打开设置上的 Brave Ads 通知。</translation>
+<translation id="5744802588121897886">打开 Brave 通知</translation>
 <translation id="7307834434086582547">启用/关闭 Brave 屏蔽</translation>
 <translation id="6945863270524203017">获取有关跟踪器和广告拦截的的每周隐私更新。</translation>
 <translation id="4324735664183300693">開啟通知</translation>
@@ -28,7 +44,7 @@
 <translation id="8195146845495346281">最低小费金额为 0.25 BAT</translation>
 <translation id="4647657427328119430">令牌不足。</translation>
 <translation id="2359808026110333948">继续</translation>
-<translation id="4227681408214010862">非常喜欢#Brave 让我支持创作者！我刚刚用 #BAT 打赏了 <ph name="NAME"/>。如果他们在 <ph name="DATE"/> 之前到 https://creators.brave.com 进行验证，那么那些 BAT 就是他们的了！</translation>
+<translation id="4227681408214010862">很高兴#Brave 让我支持创作者！我刚刚用 #BAT 打赏了 <ph name="NAME"/>。如果他们在 <ph name="DATE"/> 之前到 https://creators.brave.com 进行验证，那么那些 BAT 就是他们的了！</translation>
 <translation id="6231182869178328516">我刚刚通过 Brave 浏览器打赏了 <ph name="NAME"/>。快到 https://brave.com/tips 上查看吧。</translation>
 <translation id="7172012963002631836">处理打赏时出现问题。</translation>
 <translation id="8994556588732085585">请关闭并重新打开打赏横幅，然后重试。</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">解析方法</translation>
 <translation id="2356070529366658676">询问</translation>
 <translation id="4176463684765177261">已停用</translation>
-<translation id="1448289340149908413">以太坊</translation>
+<translation id="59174027418879706">已启用</translation>
 <translation id="6252490671914511928">完全私密的今日热门新闻，专为您打造。</translation>
 <translation id="7266075701303521777">Brave 新闻有广告支持，为您的设备匹配完全私密的匿名广告。</translation>
 <translation id="4541978218358617681">广告</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">清除浏览数据</translation>
 <translation id="5965081608816406060">后台视频播放</translation>
 <translation id="6332924730165919598">关闭所有标签页即会关闭 Brave</translation>
-<translation id="1580125697191336644">实验性的。当标签页未激活或设备屏幕关闭时，可在后台播放视频。如果此功能不起作用，请尝试切换到桌面模式。</translation>
-<translation id="59174027418879706">已启用</translation>
+<translation id="3872768973878059926">当您在 Brave 切换到另一个选项卡、另一个应用程序或您的设备屏幕关闭时，允许音频继续播放。</translation>
 <translation id="4150201353443180367">显示</translation>
 <translation id="2433507940547922241">外观</translation>
 <translation id="6333347122924254968">在地址栏显示 Brave 奖励图标</translation>
@@ -310,16 +325,11 @@
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Uphold 可能需要根据请求的服务要求您验证您的身份。</translation>
 <translation id="3200197118442451932">当您在供应商那里设立账户时，Brave Software Inc. 不会处理、存储或访问您提供给 <ph name="WALLET_PROVIDER"/> 的任何个人信息。</translation>
-<translation id="3699674790322420653">完成钱包验证</translation>
 <translation id="2193391216824305230">用户钱包</translation>
 <translation id="1665118090708049096">转至我的 <ph name="WALLET_PROVIDER"/> 账户</translation>
 <translation id="1948959999802743233">从 <ph name="WALLET_PROVIDER"/> 断开连接</translation>
 <translation id="6239274080752256452">资金提现</translation>
 <translation id="8874184842967597500">未连接</translation>
-<translation id="3368922792935385530">已连接</translation>
-<translation id="5358719431303818601">未验证断开连接</translation>
-<translation id="4241449868720191203">已验证断开连接</translation>
-<translation id="3248185426436836442">等待审批</translation>
 <translation id="2495032782748793764">Brave 默认</translation>
 <translation id="9132378787893584761">与您的朋友分享 Brave！</translation>
 <translation id="717952606991220586">哎呀，有些不对劲。请稍后再试。</translation>
@@ -673,6 +683,7 @@
 <translation id="1597199892790541240">Gas 费用</translation>
 <translation id="1634828734222219955">总量</translation>
 <translation id="7995708795274219641">数量 + Gas</translation>
+<translation id="2186011161688824046">金额 + 费用</translation>
 <translation id="1950052789869821983">交易</translation>
 <translation id="2304783958703511257">高级设置</translation>
 <translation id="4220062530885628403">随机数</translation>
@@ -701,6 +712,7 @@
 <translation id="1133619932669546254">激活 <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">功能类型：<ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">无数据</translation>
+<translation id="1105525362447173583">Solana Dapp 签署交易</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> 已转账 <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> 已发送 <ph name="ASSET"/> #<ph name="ASSET_ID"/>（<ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> 已批准 <ph name="ASSET"/> - <ph name="DATE"/></translation>
@@ -800,6 +812,7 @@
 <translation id="8030169304546394654">已断开连接</translation>
 <translation id="3423275441470187644">信任</translation>
 <translation id="2391762656119864333">撤消</translation>
+<translation id="3368922792935385530">已连接</translation>
 <translation id="3432029672560911238">用户帐户</translation>
 <translation id="5753378322046059140">切换帐号</translation>
 <translation id="3897092660631435901">菜单</translation>
@@ -867,6 +880,7 @@
 <translation id="7080614857771109950">支持 Ethereum 区块链上兼容 EVM 的资产（ERC-20、ERC-721、ERC-1551、ERC-1155）</translation>
 <translation id="6577166808959668729">支持 Solana 区块链上兼容 SPL 的资产</translation>
 <translation id="6575120282593094155">还没有<ph name="ACCOUNT_TYPE"/>帐户，要马上创建帐户吗？</translation>
+<translation id="1448289340149908413">以太坊</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">已排除的应用程序</translation>
 <translation id="8463269357637177759">允许使用的常规应用程序</translation>
@@ -889,6 +903,7 @@
 <translation id="4784306439879850873">请注意，Brave 无法验证您签名后会发生什么。签名可以授权他人进行账户的几乎任何操作，包括（但不限于）将您的账户和加密资产的完全控制权交给提出此请求的网站。因此只有在您确定要执行此操作并信任提出请求的网站时才能签名。</translation>
 <translation id="3474375934783434676">签名风险自担</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> 个交易（共  <ph name="SIZE"/> 个交易)</translation>
+<translation id="756701799684433105">核准交易</translation>
 <translation id="6450792191436242818">系统程序</translation>
 <translation id="6252742184395380448">配置程序</translation>
 <translation id="5358970666412490132">权益程序</translation>
@@ -898,6 +913,7 @@
 <translation id="6421371987002247943">代币计划</translation>
 <translation id="8780753288764281797">Secp256k1 程序</translation>
 <translation id="8504640708321980506">数据</translation>
+<translation id="3723411967118253067">程序 ID</translation>
 <translation id="4771176409524282426">创建账户</translation>
 <translation id="1755120947324658439">分配</translation>
 <translation id="7588707273764747927">转账</translation>
@@ -916,14 +932,14 @@
 <translation id="7474306790151660826">初始化多重签名</translation>
 <translation id="363258595406850968">设定权限</translation>
 <translation id="2091563464450586155">铸造为</translation>
-<translation id="1252941298291625577">燃烧</translation>
+<translation id="1252941298291625577">销毁</translation>
 <translation id="5211196599627796093">关闭账户</translation>
 <translation id="6988707241715050556">冻结账户</translation>
 <translation id="857250415816680832">解冻账户</translation>
 <translation id="5453172892735755262">转账已检查</translation>
 <translation id="471669767157904431">核准已检查</translation>
-<translation id="3530340583186873359">Mint to 已检查</translation>
-<translation id="5068456869800056740">燃烧已检查</translation>
+<translation id="3530340583186873359">铸造过程已验证</translation>
+<translation id="5068456869800056740">销毁已检查</translation>
 <translation id="3004830385467519189">初始化账户 2</translation>
 <translation id="8026488633670875516">同步原生代币账户</translation>
 <translation id="2024649614526778327">初始化账户 3</translation>
@@ -937,4 +953,27 @@
 <translation id="7352651011704765696">出了点儿问题</translation>
 <translation id="7144878232160441200">重试</translation>
 <translation id="6040143037577758943">关闭</translation>
+<translation id="7710469167917867539">交易费用</translation>
+<translation id="7843211152394841558">最大重试次数：</translation>
+<translation id="8496335570810457">预检承诺：</translation>
+<translation id="5100124500279922001">跳过预检：</translation>
+<translation id="7152095322071766507">访问量最高的网站</translation>
+<translation id="7230006500876504868">使用 Brave 搜寻</translation>
+<translation id="5888208462949095139">用<ph name="DEFAULT_SEARCH_ENGINE"/>查找</translation>
+<translation id="5456039738087398178">主屏幕小部件</translation>
+<translation id="703185154752046151">添加到主屏幕的小部件</translation>
+<translation id="3290805388004282161">尝试 Brave 搜索小部件</translation>
+<translation id="4809681171446727314">从您的主屏幕访问私人、独立搜索的权利。</translation>
+<translation id="7751715172931488388">添加小部件</translation>
+<translation id="7285167584112910782">Brave 快捷搜索</translation>
+<translation id="2326703104633309781">使用 Brave 翻译</translation>
+<translation id="5802752138057422257">检测到非 ASCII 字符！</translation>
+<translation id="442709594176931966">查看原始消息</translation>
+<translation id="2239252396088484499">查看以 ASCII 编码编写的消息</translation>
+<translation id="4220693114674044366">代币地址</translation>
+<translation id="5658257029899993935">将购买交易连接至您的 Brave 账号</translation>
+<translation id="1187061015547219282">将您的 Play Store 购买交易连接至 Brave 账户，以便在其他裝置上使用 Brave VPN。</translation>
+<translation id="6662142137695589205">连接您的 VPN 订阅</translation>
+<translation id="2674077112509133024">扩展您的 Brave 防火墙+ VPN 保护</translation>
+<translation id="6365389672683343144">您的 Brave VPN 订阅可以保护多达 5 个设备，涵盖 Android, iOS 和桌面。只需将您的 Google Play 订阅连接到您的 Brave 账户即可使用。</translation>
 </translationbundle>

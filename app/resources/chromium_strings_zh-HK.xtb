@@ -12,10 +12,13 @@
 <translation id="8522292744959221145">如要檢查密碼是否安全，且未受資料外洩或其他安全性問題影響，請<ph name="BEGIN_LINK"/>登入 Brave<ph name="END_LINK"/>。</translation>
 <translation id="8541922081612557424">關於 Brave</translation>
 <translation id="1203500561924088507">多謝安裝。您必須先重新啟動瀏覽器，才能使用 <ph name="BUNDLE_NAME"/>。</translation>
+<translation id="8905049883018921395">開啟時，Brave 會從閒置分頁釋出記憶體，為使用中的分頁和其他應用程式提供更多電腦資源，同時保持 Brave 的運作速度。閒置分頁會在您使用時自動恢復為「使用中」狀態。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
+<translation id="4658574652223735641">「節省記憶體」模式可讓 Brave 速度更快</translation>
 <translation id="4798342026247191171">設定新的 Brave 設定檔</translation>
 <translation id="6361779936989026201">Brave 的「Brave 助理」</translation>
 <translation id="113959764510199339">Brave 即將顯示密碼。</translation>
 <translation id="8132634101975074716">您已登入 Brave！</translation>
+<translation id="4168469784091952813">您可充分運用 Brave 的所有功能</translation>
 <translation id="5147525139567260139">分享 Brave 分頁</translation>
 <translation id="1530633922026945685">Brave 需要取得權限，才能存取相機以建立您身處環境的 3D 地圖</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{管理員要求您重新啟動 Brave，以套用更新}=1{管理員要求您重新啟動 Brave，以套用更新。您的無痕式視窗不會重新開啟。}other{管理員要求您重新啟動 Brave，以套用更新。您的 # 個無痕式視窗不會重新開啟。}}</translation>
@@ -182,6 +185,7 @@
 <translation id="1786715389543715322">正在更新 Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">允許登入 Brave</translation>
 <translation id="5536657158619734169">新版 Brave 現已推出。</translation>
+<translation id="5267531627648004734">從 Brave 中移除</translation>
 <translation id="239760341987199724">將 Brave 設為預設瀏覽器</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta 版本</translation>
 <translation id="894936507076470937">Brave 不再支援此 Linux 發行版本，因此可能無法正常運作</translation>
@@ -209,6 +213,7 @@
 <translation id="505042220086416644">新版 Brave 現已推出，速度更勝從前。</translation>
 <translation id="9071554113102421877">在 Brave 中開啟</translation>
 <translation id="7861579472672677409">已將 <ph name="EXTENSION_NAME"/> 加到 Brave</translation>
+<translation id="3693188491491843187">加快 Brave 的運作速度</translation>
 <translation id="608006075545470555">將工作設定檔新增至此瀏覽器</translation>
 <translation id="5849446944780602366">自訂和管理 Brave。有可用的更新。</translation>
 <translation id="7433698744896946664">允許擴充程式在 Brave 工具列中顯示存取要求</translation>
@@ -252,6 +257,7 @@
 <translation id="1489465648257900784">由於您的設定檔是來自較新版本的 Brave，所以系統無法使用這個檔案。
 
 這表示您可能無法使用部分功能。請指定另一個設定檔目錄，或使用較新版本的 Brave。</translation>
+<translation id="7870748924073900361">「節省記憶體」模式可讓 Brave 速度更快</translation>
 <translation id="6666624454809779082">已為您電腦上的所有使用者安裝 Brave。</translation>
 <translation id="5360050006043219962">如要透過所有裝置存取 Brave 資料，請登入並開啟同步處理功能。</translation>
 <translation id="8291513491595858997">您的家長已停用 Brave 的「網站、應用程式和擴充程式權限」設定，因此您無法啟用此<ph name="EXTENSION_TYPE_PARAMETER"/>。</translation>
@@ -290,6 +296,7 @@ Brave 無法復原您的設定。</translation>
 <translation id="38294420683216447">透過 Brave 設定檔，您可將所有 Brave 內容分門別類，從而更輕易劃分工作和娛樂內容。</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave 開發人員版</translation>
 <translation id="2034072705932785495">Brave 需要取得權限，才能讓這個網站存取您的相機</translation>
+<translation id="5296583608321648908">如要取得日後的 Brave 更新，您需要使用 Windows 10 或以上版本。此電腦目前版本為 Windows 7。</translation>
 <translation id="3962395975456095331">要重新啟動 Brave 嗎？</translation>
 <translation id="2619516027171717873">無法安裝這個版本的 Brave，因為目前正在執行相同版本。請關閉 Brave，然後再試一次。</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave 將於 1 分鐘後重新啟動}other{Brave 將於 # 分鐘後重新啟動}}</translation>
@@ -304,9 +311,9 @@ Brave 無法復原您的設定。</translation>
 <translation id="8678991866891573053">Brave 正在探索新功能，讓網站能在使用較少資料的情況下提供相同的瀏覽體驗</translation>
 <translation id="3343095737966473035">Brave 不是您的預設瀏覽器</translation>
 <translation id="5477319665405831211">在不同裝置上同步和設定個人化的 Brave</translation>
-<translation id="2280238321454602884">啟用此設定後，Brave 會回收目前未使用的分頁記憶體。這樣做可釋出電腦的資源來處理其他工作，並維持 Brave 的運作速度。已停用的分頁會顯示為空白，並會在您按一下分頁後自動重新載入內容。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/>或<ph name="BEGIN_LINK_2"/>提供意見<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">這會刪除此裝置上的瀏覽資料。如果日後想擷取資料，請以 <ph name="USER_EMAIL"/> 的身分登入 Brave。</translation>
 <translation id="7747138024166251722">安裝程式無法建立暫時目錄，請檢查可用磁碟空間與權限，以順利安裝軟件。</translation>
+<translation id="1978509466033734608">加快 Brave 的運作速度</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="1652855885539187849">此裝置上已有此帳戶的 Brave 設定檔</translation>
 <translation id="7845233973568007926">多謝安裝。您必須先重新啟動電腦，才能使用 <ph name="BUNDLE_NAME"/>。</translation>
@@ -330,15 +337,16 @@ Brave 無法復原您的設定。</translation>
 <translation id="3360368475735266712">登入即可在不同裝置上同步和設定個人化的 Brave</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> 以往曾使用 Brave</translation>
 <translation id="3098618823450433881">如要透過所有裝置存取 Brave 瀏覽器資料，請登入並開啟同步處理功能</translation>
+<translation id="2569754604093464025">如要取得日後的 Brave 更新，您需要使用 Windows 10 或以上版本。此電腦目前版本為 Windows 8。</translation>
 <translation id="5337999052834672687">{0,plural, =1{請在 1 天內重新啟動 Brave}other{請在 # 天內重新啟動 Brave}}</translation>
 <translation id="6914496861676471566">安裝程式封存檔案已損毀或無效，請重新下載 Brave。</translation>
 <translation id="6431861494713261006">可選用：將診斷和使用情況資料自動傳送給 Brave，協助改善 Brave 作業系統的功能和效能。</translation>
 <translation id="2097604701283463988">Brave 版本過舊</translation>
-<translation id="607365808648940765">如有需要，Brave 會回收目前未使用的分頁記憶體。您可隨時在設定中變更此設定。</translation>
 <translation id="8550334526674375523">此工作設定檔與個人設定檔是完全分開。</translation>
 <translation id="2452889775041290116">您的家長已停用 Brave 的「網站、應用程式和擴充程式權限」設定，因此您無法新增此<ph name="EXTENSION_TYPE_PARAMETER"/>。</translation>
 <translation id="8502436661255886343">如要取得日後的 Brave 更新，您將需要 macOS 10.13 或以上版本。此電腦正在使用 macOS 10.12。</translation>
 <translation id="227028348235968071">Brave 可在您使用 Brave 帳戶登入時檢查密碼</translation>
+<translation id="4226455268610449503">開啟後，Brave 會限制背景活動和視覺效果 (例如順暢捲動和影片影格速率) 來節省電池電量。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Brave Software Inc. 保留所有權利。</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>我們會如何使用這些資料：<ph name="END_BOLD"/>網站可將您的興趣相關資料儲存在 Brave 中。例如，如果您瀏覽某個網站想購買適合馬拉松的跑步鞋，網站可能會判斷您的興趣為跑馬拉松。如果您日後瀏覽其他網站報名參加比賽，該網站就可以根據您的興趣向您顯示跑步鞋的廣告。</translation>
 <translation id="3052349005266761501">正在啟動 Brave…</translation>
@@ -362,6 +370,7 @@ Brave 無法復原您的設定。</translation>
 <translation id="82609232232243542">登入 Brave</translation>
 <translation id="5173820533850252773">Brave 版本過舊</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave 將於 1 小時後重新啟動}other{Brave 將於 # 小時後重新啟動}}</translation>
+<translation id="5190991181158966940">如要取得日後的 Brave 更新，您需要使用 Windows 10 或以上版本。此電腦目前版本為 Windows 8.1。</translation>
 <translation id="7863882214613921971">在 Brave 的新分頁中開啟連結(&amp;T)</translation>
 <translation id="911206726377975832">您要一併刪除瀏覽數據嗎？</translation>
 <translation id="5708733457516068434">在試用期間，您可以查看及移除網站用來向您顯示廣告的感興趣主題。Brave 會根據您最近的瀏覽記錄，推測您感興趣的主題。</translation>

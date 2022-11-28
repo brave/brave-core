@@ -12,10 +12,13 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="8522292744959221145">Ili uangalie kama manenosiri yako ni salama dhidi ya ufichuzi haramu wa data na matatizo mengine ya usalama, <ph name="BEGIN_LINK"/>ingia katika akaunti kwenye Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Kuhusu Brave</translation>
 <translation id="1203500561924088507">Asante kwa kusakinisha. Ni lazima uzime kisha uwashe tena kivinjari chako kabla ya kutumia <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="8905049883018921395">Kiokoa hifadhi kinapowashwa, Brave hurejesha hifadhi iliyopo kwenye vichupo ambavyo havitumiki. Hatua hii hufanya vichupo vinavyotumika na programu nyinginezo ziwe na nyenzo zaidi za kompyuta na hufanya Brave iwe na kasi ya utendaji. Vichupo ambavyo hutumii vinaanza kutumika tena kiotomatiki unaporudi kwenye vichupo hivyo. <ph name="BEGIN_LINK"/>Pata maelezo zaidi<ph name="END_LINK"/></translation>
+<translation id="4658574652223735641">Kiokoa Hifadhi kimeifanya Brave Iwe na Kasi Zaidi ya Utendaji</translation>
 <translation id="4798342026247191171">Weka mipangilio ya wasifu wako mpya wa Brave</translation>
 <translation id="6361779936989026201">Programu ya Mratibu wa Brave katika Brave</translation>
 <translation id="113959764510199339">Brave inajaribu kuonyesha manenosiri.</translation>
 <translation id="8132634101975074716">Umeingia kwenye Brave!</translation>
+<translation id="4168469784091952813">Unaweza kunufaika zaidi unapotumia Brave</translation>
 <translation id="5147525139567260139">Shiriki kichupo cha Brave</translation>
 <translation id="1530633922026945685">Brave inahitaji ruhusa ya kufikia kamera yako ili iunde ramani ya 3D ya mazingira yako</translation>
 <translation id="4449148723378534338">Kagua vidhibiti muhimu vya faragha na usalama katika Brave</translation>
@@ -168,6 +171,7 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="1786715389543715322">Inasasisha Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Ruhusu kuingia katika akaunti ya Brave</translation>
 <translation id="5536657158619734169">Kuna toleo jipya la Brave linalopatikana.</translation>
+<translation id="5267531627648004734">Ondoa kwenye Brave</translation>
 <translation id="239760341987199724">Weka Brave kuwa kivinjari chako chaguomsingi</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Beta ya Brave</translation>
 <translation id="894936507076470937">Huenda Brave haitafanya kazi vizuri kwa sababu haitumiki tena kwenye toleo hili la Linux</translation>
@@ -195,6 +199,7 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="505042220086416644">Kuna toleo jipya la Brave linalopatikana, na ni la kasi kuliko la awali.</translation>
 <translation id="9071554113102421877">Fungua katika Brave</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> imeongezwa kwenye Brave</translation>
+<translation id="3693188491491843187">Ifanye Brave Iwe na Kasi Zaidi</translation>
 <translation id="608006075545470555">Ongeza Wasifu wa Kazini kwenye kivinjari hiki</translation>
 <translation id="5849446944780602366">Weka mapendeleo na udhibiti Brave. Sasisho linapatikana.</translation>
 <translation id="7433698744896946664">Ruhusu kiendelezi kionyeshe maombi ya ufikiaji katika upau wa vidhibiti wa Brave</translation>
@@ -238,6 +243,7 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="1489465648257900784">Wasifu wako hauwezi kutumiwa kwa sababu umetoka katika toleo jipya la Brave.
 
 Baadhi ya vipengele huenda visipatikane. Tafadhali bainisha saraka tofauti ya wasifu au utumie toleo jipya la Brave.</translation>
+<translation id="7870748924073900361">Kiokoa hifadhi kimeifanya Brave iwe na kasi zaidi ya utendaji</translation>
 <translation id="6666624454809779082">Tayari Brave imesakinishwa kwa watumiaji wote kwenye kompyuta yako.</translation>
 <translation id="5360050006043219962">Ili uweze kufikia vitu vyako vya Brave kwenye vifaa vyako vyote, ingia katika akaunti kisha uwashe kipengele cha kusawazisha.</translation>
 <translation id="8291513491595858997">Mzazi wako amezima "Ruhusa za tovuti, programu na viendelezi" kwenye Brave. Huruhusiwi kuwasha <ph name="EXTENSION_TYPE_PARAMETER"/> hii.</translation>
@@ -276,6 +282,7 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="38294420683216447">Ukitumia kipengele cha wasifu kwenye Brave, unaweza kutenganisha vitu vyako vyote vya Brave. Hali hii hukurahisishia mchakato wa kutenganisha kazi na burudani.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave ya Wasanidi Programu</translation>
 <translation id="2034072705932785495">Brave inahitaji ruhusa ya kufikia kamera yako katika tovuti hii</translation>
+<translation id="5296583608321648908">Ili upate masasisho yajayo ya Brave, utahitaji kutumia toleo la Windows 10 au toleo jipya zaidi. Kompyuta hii inatumia toleo la Windows 7.</translation>
 <translation id="3962395975456095331">Ungependa kufungua Brave tena?</translation>
 <translation id="2619516027171717873">Haiwezi kusakinisha toleo sawia la Brave ambalo linaendeshwa hivi sasa. Tafadhali funga Brave na ujaribu tena.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave itafunguka upya ndani ya dakika 1}other{Brave itafunguka upya ndani ya dakika #}}</translation>
@@ -290,9 +297,9 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="8678991866891573053">Brave inachunguza vipengele vipya vinavyoruhusu tovuti zikupe hali ile ile ya kuvinjari kwa kutumia data kidogo</translation>
 <translation id="3343095737966473035">Brave si kivinjari chako chaguomsingi</translation>
 <translation id="5477319665405831211">Sawazisha na uweke mapendeleo kwenye Brave katika vifaa vyako vyote</translation>
-<translation id="2280238321454602884">Ukiwasha mipangilio hii, Brave hurejesha hifadhi ya vichupo ambavyo huendelei kutumia. Hatua hii hufuta nyenzo katika kompyuta yako na kuongeza nafasi kwa ajili ya shughuli zingine na kuifanya Brave kufanya kazi kwa kasi. Vichupo visivyotumika huonekana vitupu na hupakia kiotomatiki unapovibofya. <ph name="BEGIN_LINK"/>Pata maelezo zaidi<ph name="END_LINK"/> au <ph name="BEGIN_LINK_2"/>tuma maoni<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Hatua hii itafuta data yako ya kuvinjari kwenye kifaa hiki. Ili urejeshe data yako baadaye, ingia katika Brave ukitumia <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Kisakinishi hakikuweza kuunda saraka la muda. Tafadhali chunguza nafasi iliyo wazi kwenye diski na ruhusa ya kusakinisha programu.</translation>
+<translation id="1978509466033734608">Ifanye Brave iwe na kasi</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Toleo la Jaribio la Brave</translation>
 <translation id="1652855885539187849">Tayari kuna wasifu kwenye Brave unaotumia akaunti hii katika kifaa hiki</translation>
 <translation id="7845233973568007926">Asante kwa kusakinisha. Ni lazima uzime kisha uwashe tena kompyuta yako kabla ya kutumia <ph name="BUNDLE_NAME"/>.</translation>
@@ -315,15 +322,16 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="3360368475735266712">Ingia katika akaunti ili usawazishe na uweke mapendeleo kwenye Brave katika vifaa vyako vyote</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> ilikuwa ikitumia Brave awali</translation>
 <translation id="3098618823450433881">Ili uweze kufikia vitu vyako vya kivinjari cha Brave kwenye vifaa vyako vyote, ingia katika akaunti kisha uwashe kipengele cha kusawazisha.</translation>
+<translation id="2569754604093464025">Ili upate masasisho yajayo ya Brave, utahitaji kutumia toleo la Windows 10 au toleo jipya zaidi. Kompyuta hii inatumia toleo la Windows 8.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Fungua Brave upya ndani ya siku moja}other{Fungua Brave upya ndani ya siku #}}</translation>
 <translation id="6914496861676471566">Kumbukumbu ya kisakinishi imeharibika au ni batili. Tafadhali pakua Brave tena.</translation>
 <translation id="6431861494713261006">Si lazima: Tusaidie kuboresha utendaji na vipengele vya Mfumo wa Uendeshaji wa Brave kwa kutuma kiotomatiki data ya matumizi na uchunguzi kwa Brave.</translation>
 <translation id="2097604701283463988">Brave Imepitwa na Wakati</translation>
-<translation id="607365808648940765">Kulingana na mahitaji, Brave hurejesha hifadhi ya vichupo ambavyo huendelei kutumia. Unaweza kubadilisha hali hii wakati wowote katika mipangilio.</translation>
 <translation id="8550334526674375523">Wasifu huu wa kazini ni tofauti kabisa na wasifu wako wa binafsi.</translation>
 <translation id="2452889775041290116">Mzazi wako amezima "Ruhusa za tovuti, programu na viendelezi" kwenye Brave. Huruhusiwi kuweka <ph name="EXTENSION_TYPE_PARAMETER"/> hii.</translation>
 <translation id="8502436661255886343">Ili upate masasisho ya Brave ya hapo baadaye, utahitaji toleo la macOS 10.13 au toleo jipya zaidi. Kompyuta hii inatumia macOS 10.12.</translation>
 <translation id="227028348235968071">Brave inaweza kukagua manenosiri unapoingia ukitumia Akaunti yako ya Brave</translation>
+<translation id="4226455268610449503">Ukiwasha mipangilio hii, Brave huhifadhi chaji ya betri kwa kudhibiti madoido na shughuli ya chinichini, kama vile usogezaji rahisi na kasi ya picha ya video. <ph name="BEGIN_LINK"/>Pata maelezo zaidi<ph name="END_LINK"/></translation>
 <translation id="8121009781989288430">Hakimiliki <ph name="YEAR"/> Wasanidi wa Brave. Haki zote zimehifadhiwa.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Jinsi tunavyotumia data hii:<ph name="END_BOLD"/> Tovuti zinaweza kuhifadhi maelezo kuhusu mambo yanayokuvutia kwa kutumia Brave. Kwa mfano, iwapo utatembelea tovuti ili kununua viatu kwa ajili ya kukimbia mbio za marathoni, tovuti hiyo huenda ikatambua kuwa moja ya mambo yanayokuvutia ni kukimbia mbio za marathoni. Baadaye, iwapo utatembelea tovuti tofauti ili kujisajili kwa ajili ya mbio, tovuti hiyo huenda ikakuonyesha tangazo la viatu vya kukimbilia kulingana na mambo yanayokuvutia.</translation>
 <translation id="3052349005266761501">Inaanzisha Brave...</translation>
@@ -346,6 +354,7 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="82609232232243542">Ingia kwenye Brave</translation>
 <translation id="5173820533850252773">Brave imepitwa na wakati</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave itafunguka upya ndani ya saa moja}other{Brave itafunguka upya ndani ya saa #}}</translation>
+<translation id="5190991181158966940">Ili upate masasisho yajayo ya Brave, utahitaji kutumia toleo la Windows 10 au toleo jipya zaidi. Kompyuta hii inatumia toleo Windows 8.1.</translation>
 <translation id="7863882214613921971">Fungua Kiungo katika kichupo kipya cha Brave</translation>
 <translation id="911206726377975832">Futa historia yako ya kuvinjari pia?</translation>
 <translation id="5708733457516068434">Vipindi vya kujaribu vinapotumika, unaweza kuona na kuondoa mada za tovuti zinazokuvutia zinazotumika kukuonyesha matangazo. Brave hukadiria mambo yanayokuvutia kulingana na historia yako ya kuvinjari ya hivi karibuni.</translation>
