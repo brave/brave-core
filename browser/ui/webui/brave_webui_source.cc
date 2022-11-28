@@ -352,37 +352,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "cryptoWalletsDisclosureConfirm", IDS_BRAVE_WALLET_DISCLOSURE_CONFIRM }         // NOLINT
       }
     }, {
-      std::string("welcome"), {
-#if !BUILDFLAG(IS_ANDROID)
-        { "headerText", IDS_WELCOME_HEADER },
-#endif
-        { "welcome", IDS_BRAVE_WELCOME_PAGE_MAIN_TITLE },
-        { "whatIsBrave", IDS_BRAVE_WELCOME_PAGE_MAIN_DESC },
-        { "letsGo", IDS_BRAVE_WELCOME_PAGE_MAIN_BUTTON },
-        { "braveRewardsTitle", IDS_BRAVE_WELCOME_PAGE_REWARDS_TITLE },
-        { "setupBraveRewards", IDS_BRAVE_WELCOME_PAGE_REWARDS_DESC },
-        { "braveRewardsTerms", IDS_BRAVE_WELCOME_PAGE_REWARDS_TERMS },
-        { "braveRewardsNote", IDS_BRAVE_WELCOME_PAGE_REWARDS_NOTE },
-        { "enableRewards", IDS_BRAVE_WELCOME_PAGE_REWARDS_BUTTON },
-        { "importFromAnotherBrowser", IDS_BRAVE_WELCOME_PAGE_IMPORT_TITLE },
-        { "setupImport", IDS_BRAVE_WELCOME_PAGE_IMPORT_DESC },
-        { "import", IDS_BRAVE_WELCOME_PAGE_IMPORT_BUTTON },
-        { "importFrom", IDS_BRAVE_WELCOME_PAGE_IMPORT_FROM_DESC },
-        { "default", IDS_BRAVE_WELCOME_PAGE_DEFAULT_TEXT },
-        { "manageShields", IDS_BRAVE_WELCOME_PAGE_SHIELDS_TITLE },
-        { "adjustProtectionLevel", IDS_BRAVE_WELCOME_PAGE_SHIELDS_DESC },
-        { "shieldSettings", IDS_BRAVE_WELCOME_PAGE_SHIELDS_BUTTON },
-        { "setDefault", IDS_BRAVE_WELCOME_PAGE_SET_DEFAULT_SEARCH_BUTTON },
-        { "setDefaultSearchEngine", IDS_BRAVE_WELCOME_PAGE_SEARCH_TITLE },
-        { "chooseSearchEngine", IDS_BRAVE_WELCOME_PAGE_SEARCH_DESC },
-        { "selectSearchEngine", IDS_BRAVE_WELCOME_PAGE_SEARCH_SELECT },
-        { "skipWelcomeTour", IDS_BRAVE_WELCOME_PAGE_SKIP_BUTTON },
-        { "next", IDS_BRAVE_WELCOME_PAGE_NEXT_BUTTON },
-        { "done", IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON },
-        { "privacyTitle", IDS_BRAVE_WELCOME_PAGE_PRIVACY_TITLE },
-        { "privacyDesc", IDS_BRAVE_WELCOME_PAGE_PRIVACY_DESC }
-      }
-    }, {
       std::string("rewards"), {
         { "adsCurrentEarnings",  IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS },
         { "adsDesc",  IDS_BRAVE_REWARDS_LOCAL_ADS_DESC },
