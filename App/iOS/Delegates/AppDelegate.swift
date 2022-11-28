@@ -348,7 +348,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // DAU may not have pinged on the first launch so weekOfInstallation pref may not be set yet
     if let weekOfInstall = Preferences.DAU.weekOfInstallation.value ??
-        Preferences.DAU.installationDate.value?.mondayOfCurrentWeekFormatted {
+        Preferences.DAU.installationDate.value?.mondayOfCurrentWeekFormatted,
+       AppConstants.buildChannel != .debug {
       braveCore.initializeP3AService(
         forChannel: AppConstants.buildChannel.serverChannelParam,
         weekOfInstall: weekOfInstall
