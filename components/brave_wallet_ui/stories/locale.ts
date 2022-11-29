@@ -98,6 +98,7 @@ provideStrings({
   braveWalletSwapFeesNotice: 'Quote includes a $1 Brave fee.',
   braveWalletDecimalPlacesError: 'Too many decimal places',
   braveWalletBuyTapBuyNotSupportedMessage: 'Buy not supported for selected network',
+  braveWalletSearchingForDomain: 'Searching for domain...',
 
   // Send Tab
   braveWalletSendToken: 'Send token',
