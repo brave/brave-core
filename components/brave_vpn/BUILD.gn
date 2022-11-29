@@ -11,7 +11,6 @@ static_library("brave_vpn") {
   sources = [
     "brave_vpn_api_request.cc",
     "brave_vpn_api_request.h",
-    "brave_vpn_constants.h",
     "brave_vpn_service.cc",
     "brave_vpn_service.h",
     "brave_vpn_service_helper.cc",
@@ -32,6 +31,7 @@ static_library("brave_vpn") {
     "mojom",
     "//base",
     "//brave/components/api_request_helper:api_request_helper",
+    "//brave/components/brave_vpn/common",
     "//brave/components/p3a_utils",
     "//brave/components/resources:strings",
     "//brave/components/skus/browser",
@@ -42,7 +42,6 @@ static_library("brave_vpn") {
     "//components/pref_registry",
     "//components/prefs",
     "//components/version_info",
-    "//net",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//ui/base",
@@ -64,12 +63,8 @@ static_library("brave_vpn") {
     ]
 
     if (is_win) {
-      sources += [
-        "brave_vpn_os_connection_api_win.cc",
-        "brave_vpn_os_connection_api_win.h",
-      ]
-
-      libs += [ "rasapi32.lib" ]
+      deps += [ "//brave/components/brave_vpn/win" ]
+      allow_circular_includes_from = [ "//brave/components/brave_vpn/win" ]
     }
 
     if (is_mac) {
@@ -82,27 +77,7 @@ static_library("brave_vpn") {
       configs += [ "//build/config/compiler:enable_arc" ]
     }
 
-    deps += [
-      ":brave_vpn_internal",
-      "//third_party/icu",
-    ]
-  }
-}
-
-source_set("brave_vpn_internal") {
-  visibility = [
-    ":brave_vpn",
-    ":vpntool",
-  ]
-
-  sources = []
-  deps = [ "//base" ]
-
-  if (is_win) {
-    sources += [
-      "utils_win.cc",
-      "utils_win.h",
-    ]
+    deps += [ "//third_party/icu" ]
   }
 }
 
@@ -123,6 +98,7 @@ source_set("unit_tests") {
     deps = [
       ":brave_vpn",
       "//base",
+      "//brave/components/brave_vpn/common",
       "//brave/components/p3a_utils",
       "//brave/components/skus/browser",
       "//brave/components/skus/common",
@@ -139,6 +115,7 @@ source_set("unit_tests") {
     ]
   }
 }
+<<<<<<< HEAD
 
 executable("vpntool") {
   sources = []
@@ -152,3 +129,5 @@ executable("vpntool") {
     libs = [ "rasapi32.lib" ]
   }
 }
+=======
+>>>>>>> 88c4a1756a (Move windows code to win folder in brave_vpn component)

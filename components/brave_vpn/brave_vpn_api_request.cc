@@ -9,8 +9,8 @@
 
 #include "base/debug/dump_without_crashing.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_service_helper.h"
+#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/vpn_response_parser.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"

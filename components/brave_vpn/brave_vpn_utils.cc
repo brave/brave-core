@@ -11,7 +11,7 @@
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
-#include "brave/components/brave_vpn/brave_vpn_constants.h"
+#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/features.h"
 #include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/p3a_utils/feature_usage.h"
