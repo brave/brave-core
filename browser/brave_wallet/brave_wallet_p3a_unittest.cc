@@ -197,4 +197,24 @@ TEST_F(BraveWalletP3AUnitTest, ActiveAccounts) {
   histogram_tester_->ExpectBucketCount(kSolActiveAccountHistogramName, 2, 1);
 }
 
+TEST_F(BraveWalletP3AUnitTest, EthProvider) {
+  histogram_tester_->ExpectTotalCount(kEthProviderHistogramName, 0);
+
+  wallet_p3a_->ReportEthereumProvider(mojom::EthereumProviderType::Native);
+  histogram_tester_->ExpectUniqueSample(kEthProviderHistogramName, 0, 1);
+
+  keyring_service_->CreateWallet("testing123", base::DoNothing());
+  WaitForResponse();
+
+  wallet_p3a_->ReportEthereumProvider(mojom::EthereumProviderType::Native);
+  histogram_tester_->ExpectBucketCount(kEthProviderHistogramName, 2, 1);
+
+  keyring_service_->Reset();
+  wallet_p3a_->ReportEthereumProvider(mojom::EthereumProviderType::Native);
+  histogram_tester_->ExpectBucketCount(kEthProviderHistogramName, 0, 2);
+
+  wallet_p3a_->ReportEthereumProvider(mojom::EthereumProviderType::ThirdParty);
+  histogram_tester_->ExpectBucketCount(kEthProviderHistogramName, 1, 1);
+}
+
 }  // namespace brave_wallet
