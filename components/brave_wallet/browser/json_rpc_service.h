@@ -301,7 +301,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                              const std::string& chain_id,
                              GetERC721TokenBalanceCallback callback) override;
 
-  using GetTokenMetadataCallback =
+  using GetEthTokenMetadataCallback =
       base::OnceCallback<void(const std::string& result,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
@@ -309,12 +309,12 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void GetERC721Metadata(const std::string& contract_address,
                          const std::string& token_id,
                          const std::string& chain_id,
-                         GetTokenMetadataCallback callback) override;
+                         GetEthTokenMetadataCallback callback) override;
 
   void GetERC1155Metadata(const std::string& contract_address,
                           const std::string& token_id,
                           const std::string& chain_id,
-                          GetTokenMetadataCallback callback) override;
+                          GetEthTokenMetadataCallback callback) override;
 
   void EthGetLogs(const std::string& chain_id,
                   const std::string& from_block,
@@ -361,8 +361,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& token_mint_address,
       const std::string& chain_id,
       GetSPLTokenAccountBalanceCallback callback) override;
-  void GetMetaplexMetadata(const std::string& nft_account_address,
-                           GetMetaplexMetadataCallback callback) override;
+  void GetSolTokenMetadata(const std::string& nft_account_address,
+                           GetSolTokenMetadataCallback callback) override;
   using SendSolanaTransactionCallback =
       base::OnceCallback<void(const std::string& tx_hash,
                               mojom::SolanaProviderError error,
@@ -517,16 +517,16 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void OnGetERC721OwnerOf(GetERC721OwnerOfCallback callback,
                           APIRequestResult api_request_result);
-  void GetTokenMetadata(const std::string& contract_address,
-                        const std::string& token_id,
-                        const std::string& chain_id,
-                        const std::string& interface_id,
-                        GetTokenMetadataCallback callback);
+  void GetEthTokenMetadata(const std::string& contract_address,
+                           const std::string& token_id,
+                           const std::string& chain_id,
+                           const std::string& interface_id,
+                           GetEthTokenMetadataCallback callback);
 
   void OnGetSupportsInterfaceTokenMetadata(const std::string& contract_address,
                                            const std::string& signature,
                                            const GURL& network_url,
-                                           GetTokenMetadataCallback callback,
+                                           GetEthTokenMetadataCallback callback,
                                            bool is_supported,
                                            mojom::ProviderError error,
                                            const std::string& error_message);
@@ -536,28 +536,27 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                                      const std::string& owner_address,
                                      mojom::ProviderError error,
                                      const std::string& error_message);
-  void OnGetTokenUri(GetTokenMetadataCallback callback,
+  void OnGetTokenUri(GetEthTokenMetadataCallback callback,
                      const APIRequestResult api_request_result);
 
-  void FetchTokenMetadata(GURL url,
-                          GetTokenMetadataIntermediateCallback callback);
+  void FetchMetadata(GURL url, GetTokenMetadataIntermediateCallback callback);
   void OnSanitizeTokenMetadata(GetTokenMetadataIntermediateCallback callback,
                                data_decoder::JsonSanitizer::Result result);
 
   void OnGetTokenMetadataPayload(GetTokenMetadataIntermediateCallback callback,
                                  APIRequestResult api_request_result);
 
-  void OnGetSolanaAccountInfoMetaplex(
-      GetMetaplexMetadataCallback callback,
+  void OnGetSolanaAccountInfoTokenMetadata(
+      GetSolTokenMetadataCallback callback,
       absl::optional<SolanaAccountInfo> account_info,
       mojom::SolanaProviderError error,
       const std::string& error_message);
-  void CompleteGetTokenMetadataEth(GetTokenMetadataCallback callback,
+  void CompleteGetEthTokenMetadata(GetEthTokenMetadataCallback callback,
                                    const std::string& response,
                                    int error,
                                    const std::string& error_message);
 
-  void CompleteGetTokenMetadataSol(GetMetaplexMetadataCallback callback,
+  void CompleteGetSolTokenMetadata(GetSolTokenMetadataCallback callback,
                                    const std::string& response,
                                    int error,
                                    const std::string& error_message);

@@ -1962,26 +1962,24 @@ void JsonRpcService::ContinueGetERC721TokenBalance(
 void JsonRpcService::GetERC721Metadata(const std::string& contract_address,
                                        const std::string& token_id,
                                        const std::string& chain_id,
-                                       GetTokenMetadataCallback callback) {
-  GetTokenMetadata(contract_address, token_id, chain_id,
-                                   kERC721MetadataInterfaceId,
-                                   std::move(callback));
+                                       GetEthTokenMetadataCallback callback) {
+  GetEthTokenMetadata(contract_address, token_id, chain_id,
+                      kERC721MetadataInterfaceId, std::move(callback));
 }
 
 void JsonRpcService::GetERC1155Metadata(const std::string& contract_address,
                                         const std::string& token_id,
                                         const std::string& chain_id,
-                                        GetTokenMetadataCallback callback) {
-  GetTokenMetadata(contract_address, token_id, chain_id,
-                                   kERC1155MetadataInterfaceId,
-                                   std::move(callback));
+                                        GetEthTokenMetadataCallback callback) {
+  GetEthTokenMetadata(contract_address, token_id, chain_id,
+                      kERC1155MetadataInterfaceId, std::move(callback));
 }
 
-void JsonRpcService::GetTokenMetadata(const std::string& contract_address,
-                                      const std::string& token_id,
-                                      const std::string& chain_id,
-                                      const std::string& interface_id,
-                                      GetTokenMetadataCallback callback) {
+void JsonRpcService::GetEthTokenMetadata(const std::string& contract_address,
+                                         const std::string& token_id,
+                                         const std::string& chain_id,
+                                         const std::string& interface_id,
+                                         GetEthTokenMetadataCallback callback) {
   auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
@@ -2041,7 +2039,7 @@ void JsonRpcService::OnGetSupportsInterfaceTokenMetadata(
     const std::string& contract_address,
     const std::string& function_signature,
     const GURL& network_url,
-    GetTokenMetadataCallback callback,
+    GetEthTokenMetadataCallback callback,
     bool is_supported,
     mojom::ProviderError error,
     const std::string& error_message) {
@@ -2066,7 +2064,7 @@ void JsonRpcService::OnGetSupportsInterfaceTokenMetadata(
                   true, network_url, std::move(internal_callback));
 }
 
-void JsonRpcService::OnGetTokenUri(GetTokenMetadataCallback callback,
+void JsonRpcService::OnGetTokenUri(GetEthTokenMetadataCallback callback,
                                    APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
@@ -2086,8 +2084,8 @@ void JsonRpcService::OnGetTokenUri(GetTokenMetadataCallback callback,
     return;
   }
 
-  FetchTokenMetadata(
-      url, base::BindOnce(&JsonRpcService::CompleteGetTokenMetadataEth,
+  FetchMetadata(
+      url, base::BindOnce(&JsonRpcService::CompleteGetEthTokenMetadata,
                           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
@@ -2132,16 +2130,16 @@ void JsonRpcService::OnGetTokenMetadataPayload(
   std::move(callback).Run(api_request_result.body(), 0, "");  // 0 is kSuccess
 }
 
-void JsonRpcService::CompleteGetTokenMetadataEth(
-    GetTokenMetadataCallback callback,
+void JsonRpcService::CompleteGetEthTokenMetadata(
+    GetEthTokenMetadataCallback callback,
     const std::string& response,
     int error,
     const std::string& error_message) {
   std::move(callback).Run(response, mojom::ProviderError(error), error_message);
 }
 
-void JsonRpcService::CompleteGetTokenMetadataSol(
-    GetMetaplexMetadataCallback callback,
+void JsonRpcService::CompleteGetSolTokenMetadata(
+    GetSolTokenMetadataCallback callback,
     const std::string& response,
     int error,
     const std::string& error_message) {
@@ -2503,8 +2501,8 @@ void JsonRpcService::OnGetSPLTokenAccountBalance(
                           mojom::SolanaProviderError::kSuccess, "");
 }
 
-void JsonRpcService::GetMetaplexMetadata(const std::string& nft_account_address,
-                                         GetMetaplexMetadataCallback callback) {
+void JsonRpcService::GetSolTokenMetadata(const std::string& nft_account_address,
+                                         GetSolTokenMetadataCallback callback) {
   // Derive metadata PDA for the NFT accounts
   absl::optional<std::string> associated_metadata_account =
       SolanaKeyring::GetAssociatedMetadataAccount(nft_account_address);
@@ -2516,7 +2514,7 @@ void JsonRpcService::GetMetaplexMetadata(const std::string& nft_account_address,
   }
 
   auto account_info_metadata_callback =
-      base::BindOnce(&JsonRpcService::OnGetSolanaAccountInfoMetaplex,
+      base::BindOnce(&JsonRpcService::OnGetSolanaAccountInfoTokenMetadata,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   // Call getAccountInfo for the metadata PDA
@@ -2529,8 +2527,8 @@ void JsonRpcService::GetMetaplexMetadata(const std::string& nft_account_address,
                   solana::ConverterForGetAccountInfo());
 }
 
-void JsonRpcService::OnGetSolanaAccountInfoMetaplex(
-    GetMetaplexMetadataCallback callback,
+void JsonRpcService::OnGetSolanaAccountInfoTokenMetadata(
+    GetSolTokenMetadataCallback callback,
     absl::optional<SolanaAccountInfo> account_info,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
@@ -2554,13 +2552,12 @@ void JsonRpcService::OnGetSolanaAccountInfoMetaplex(
     return;
   }
 
-  FetchTokenMetadata(
-      *url,
-      base::BindOnce(&JsonRpcService::CompleteGetTokenMetadataSol,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  FetchMetadata(*url, base::BindOnce(
+                          &JsonRpcService::CompleteGetSolTokenMetadata,
+                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void JsonRpcService::FetchTokenMetadata(
+void JsonRpcService::FetchMetadata(
     GURL url,
     GetTokenMetadataIntermediateCallback callback) {
   // Obtain JSON from the URL depending on the scheme.
