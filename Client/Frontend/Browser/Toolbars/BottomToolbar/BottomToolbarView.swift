@@ -40,6 +40,11 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     addButtons(actionButtons)
     contentView.axis = .horizontal
     contentView.distribution = .fillEqually
+    contentView.snp.makeConstraints { make in
+      make.leading.trailing.top.equalTo(self)
+      make.bottom.equalTo(self.safeArea.bottom)
+      make.height.greaterThanOrEqualTo(UIConstants.toolbarHeight)
+    }
 
     addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(didSwipeToolbar(_:))))
     
@@ -90,14 +95,6 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     } else {
       isSearchButtonEnabled = false
     }
-  }
-
-  override func updateConstraints() {
-    contentView.snp.makeConstraints { make in
-      make.leading.trailing.top.equalTo(self)
-      make.bottom.equalTo(self.safeArea.bottom)
-    }
-    super.updateConstraints()
   }
   
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
