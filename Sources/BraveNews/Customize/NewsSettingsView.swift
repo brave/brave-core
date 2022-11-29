@@ -52,6 +52,7 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
       .sink { [weak self] isEnabled in
         guard let self else { return }
         self.navigationItem.searchController = isEnabled ? self.searchController : nil
+        self.navigationController?.setToolbarHidden(!isEnabled, animated: true)
       }
       .store(in: &cancellables)
     
@@ -120,15 +121,10 @@ public struct NewsSettingsView: View {
   
   private var showBraveNewsToggle: some View {
     Toggle(isOn: $isNewsEnabled.value.animation(.default)) {
-      VStack(alignment: .leading, spacing: 4) {
-        Text(Strings.BraveNews.isEnabledToggleLabel)
-          .font(.headline)
-          .foregroundColor(Color(.bravePrimary))
-        Text(Strings.BraveNews.isEnabledToggleSubtitle)
-          .font(.footnote)
-          .foregroundColor(Color(.secondaryBraveLabel))
-      }
-      .frame(maxWidth: .infinity, alignment: .leading)
+      Text(Strings.BraveNews.isEnabledToggleLabel)
+        .font(.headline)
+        .foregroundColor(Color(.bravePrimary))
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
     .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
   }
@@ -201,7 +197,6 @@ public struct NewsSettingsView: View {
         }
       } header: {
         showBraveNewsToggle
-          .padding(.bottom)
           .padding(.vertical)
           .resetListHeaderStyle()
       }
@@ -248,25 +243,28 @@ public struct NewsSettingsView: View {
   }
   
   @ViewBuilder private var optInView: some View {
-    if !userOptedIn.value {
+    if !userOptedIn.value || !isNewsEnabled.value {
       OptInView { @MainActor in
         Preferences.BraveNews.isShowingOptIn.value = false
-        isNewsEnabled.value = true
         // Initialize ads if it hasn't already been done
         await dataSource.ads?.initialize()
-        await withCheckedContinuation { c in
-          dataSource.load {
-            c.resume()
+        if dataSource.isSourcesExpired {
+          await withCheckedContinuation { c in
+            dataSource.load {
+              c.resume()
+            }
           }
         }
         withAnimation {
           userOptedIn.value = true
+          isNewsEnabled.value = true
         }
       } tappedLearnMore: {
         tappedOptInLearnMore?()
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .background(Color(.braveBackground).ignoresSafeArea())
+      .transition(.opacity.animation(.default))
     }
   }
 }

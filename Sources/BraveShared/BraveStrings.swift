@@ -3416,13 +3416,6 @@ extension Strings {
       value: "Search for site, topic or RSS feed",
       comment: "Placeholder text that appears in the search bar when empty. Site as in website."
     )
-    public static let isEnabledToggleSubtitle = NSLocalizedString(
-      "today.isEnabledToggleSubtitle",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Ad-supported, private and anonymised ads matched on your device.",
-      comment: "Displays beneath the toggle to turn on Brave News that explains it shows ads."
-    )
     public static let popularSourcesButtonTitle = NSLocalizedString(
       "today.popularSourcesDestinationTitle",
       tableName: "BraveShared",
