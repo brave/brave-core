@@ -76,7 +76,6 @@ export const Regular = () => {
       actions={getActions()}
       saveShowBackgroundImage={doNothing}
       saveShowToday={doNothing}
-      saveShowBraveNewsButton={doNothing}
       saveShowRewards={doNothing}
       saveShowBinance={doNothing}
       saveShowBraveTalk={doNothing}

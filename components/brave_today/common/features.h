@@ -14,7 +14,6 @@ namespace features {
 BASE_DECLARE_FEATURE(kBraveNewsFeature);
 BASE_DECLARE_FEATURE(kBraveNewsV2Feature);
 BASE_DECLARE_FEATURE(kBraveNewsCardPeekFeature);
-BASE_DECLARE_FEATURE(kBraveNewsSubscribeButtonFeature);
 
 }  // namespace features
 }  // namespace brave_today
