@@ -63,6 +63,7 @@ jobs:
             # git commit -m "Auto bump DEPS ${DEP}@${DEPREF}"
             git push -u origin "$pr_branch"
             gh api --method PUT /repos/${GITHUB_REPOSITORY}/contents/DEPS --field message="Auto bump DEPS ${DEP}@${DEPREF}" --field content=@<( base64 -i DEPS ) --field encoding="base64" --field branch="$pr_branch" --field sha=$( git rev-parse $pr_branch:DEPS )
+            git restore DEPS
             git pull
             gh pr create --base "${branch}" -f -t "[TESTING] Auto bump DEPS ${DEP}@${DEPREF}" -l "CI/run-audit-deps"
           done
