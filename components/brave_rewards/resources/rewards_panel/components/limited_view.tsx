@@ -7,7 +7,6 @@ import * as React from 'react'
 
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
 import { HostContext, useHostListener } from '../lib/host_context'
-import { isExternalWalletProviderAllowed } from '../../shared/lib/external_wallet'
 import { supportedWalletRegionsURL, aboutBATURL } from '../../shared/lib/rewards_urls'
 import { ToggleButton } from '../../shared/components/toggle_button'
 import { NewTabLink } from '../../shared/components/new_tab_link'
@@ -15,35 +14,25 @@ import { SettingsIcon } from '../../shared/components/icons/settings_icon'
 import { ArrowNextIcon } from '../../shared/components/icons/arrow_next_icon'
 import { FancyBatIcon } from './icons/fancy_bat_icon'
 
+import * as derivedState from '../lib/derived_state'
 import * as style from './limited_view.style'
 
 export function LimitedView () {
   const host = React.useContext(HostContext)
   const { getString, getPluralString } = React.useContext(LocaleContext)
 
-  const [declaredCountry, setDeclaredCountry] =
-    React.useState(host.state.declaredCountry)
   const [adsEnabled, setAdsEnabled] =
     React.useState(host.state.settings.adsEnabled)
-  const [externalWalletRegions, setExternalWalletRegions] =
-    React.useState(host.state.options.externalWalletRegions)
-  const [externalWalletProviders, setExternalWalletProviders] =
-    React.useState(host.state.externalWalletProviders)
   const [publishersVisitedCount, setPublishersVisitedCount] =
     React.useState(host.state.publishersVisitedCount)
   const [publisherCountText, setPublisherCountText] = React.useState('')
-
-  const canConnectAccount = externalWalletProviders.some((provider) => {
-    const regionInfo = externalWalletRegions.get(provider) || null
-    return isExternalWalletProviderAllowed(declaredCountry, regionInfo)
-  })
+  const [canConnectAccount, setCanConnectAccount] =
+    React.useState(derivedState.canConnectAccount(host.state))
 
   useHostListener(host, (state) => {
-    setDeclaredCountry(state.declaredCountry)
     setAdsEnabled(state.settings.adsEnabled)
-    setExternalWalletRegions(state.options.externalWalletRegions)
-    setExternalWalletProviders(state.externalWalletProviders)
     setPublishersVisitedCount(state.publishersVisitedCount)
+    setCanConnectAccount(derivedState.canConnectAccount(state))
   })
 
   React.useEffect(() => {
@@ -85,7 +74,7 @@ export function LimitedView () {
       <style.connect>
         <style.connectAction>
           <button onClick={onConnectAccount}>
-            {getString('connectAccount')}<ArrowNextIcon />
+            {getString('rewardsConnectAccount')}<ArrowNextIcon />
           </button>
         </style.connectAction>
         <div>

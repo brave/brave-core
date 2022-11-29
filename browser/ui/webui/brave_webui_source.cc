@@ -342,6 +342,10 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsUnsupportedRegionNoticeLearnMore", IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_LEARN_MORE},  // NOLINT
         { "rewardsUnsupportedRegionNoticeText1", IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_1},  // NOLINT
         { "rewardsUnsupportedRegionNoticeText2", IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_2},  // NOLINT
+        {"rewardsVBATNoticeText1", IDS_REWARDS_VBAT_NOTICE_TEXT1},
+        {"rewardsVBATNoticeText2", IDS_REWARDS_VBAT_NOTICE_TEXT2},
+        {"rewardsVBATNoticeTitle1", IDS_REWARDS_VBAT_NOTICE_TITLE1},
+        {"rewardsVBATNoticeTitle2", IDS_REWARDS_VBAT_NOTICE_TITLE2},
 
         // Brave Talk  Widget
         { "braveTalkWidgetTitle", IDS_BRAVE_TALK_WIDGET_TITLE },
@@ -583,6 +587,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsBackupNoticeText2", IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT2 },                // NOLINT
         { "rewardsClaimRewards", IDS_REWARDS_WIDGET_CLAIM_REWARDS },
         { "rewardsClaimTokens", IDS_REWARDS_WIDGET_CLAIM_TOKENS },
+        { "rewardsConnectAccount", IDS_REWARDS_CONNECT_ACCOUNT },
         { "rewardsContribute", IDS_BRAVE_UI_REWARDS_CONTRIBUTE },
         { "rewardsContributeAttention", IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION },             // NOLINT
         { "rewardsGrantDaysRemaining", IDS_REWARDS_WIDGET_GRANT_DAYS_REMAINING },  // NOLINT
@@ -598,6 +603,10 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsResetTextFunds", IDS_BRAVE_UI_REWARDS_RESET_TEXT_FUNDS },
         { "rewardsTokenGrantTitle", IDS_REWARDS_WIDGET_TOKEN_GRANT_TITLE },
         { "rewardsSummary", IDS_BRAVE_UI_REWARDS_SUMMARY },
+        { "rewardsVBATNoticeText1", IDS_REWARDS_VBAT_NOTICE_TEXT1 },
+        { "rewardsVBATNoticeText2", IDS_REWARDS_VBAT_NOTICE_TEXT2 },
+        { "rewardsVBATNoticeTitle1", IDS_REWARDS_VBAT_NOTICE_TITLE1 },
+        { "rewardsVBATNoticeTitle2", IDS_REWARDS_VBAT_NOTICE_TITLE2 },
         { "saved", IDS_BRAVE_UI_ADS_SAVED },
         { "saveAd", IDS_BRAVE_UI_ADS_SAVE_AD },
         { "seeAllItems", IDS_BRAVE_UI_SEE_ALL_ITEMS },
@@ -651,7 +660,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "upholdPromoTitle", IDS_BRAVE_UI_UPHOLD_PROMO_TITLE },
         { "upholdPromoInfo", IDS_BRAVE_UI_UPHOLD_PROMO_INFO },
 
-        { "connectAccount", IDS_REWARDS_CONNECT_ACCOUNT },
         { "connectAccountNoProviders", IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS },  // NOLINT
         { "connectAccountText", IDS_REWARDS_CONNECT_ACCOUNT_TEXT },
         { "learnMore", IDS_REWARDS_LEARN_MORE },

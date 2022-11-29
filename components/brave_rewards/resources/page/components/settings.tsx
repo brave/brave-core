@@ -12,6 +12,7 @@ import { isExternalWalletProviderAllowed } from '../../shared/lib/external_walle
 
 import PageWallet from './pageWallet'
 
+import { VBATNotice, shouldShowVBATNotice } from '../../shared/components/vbat_notice'
 import { AdsPanel } from './ads_panel'
 import { AutoContributePanel } from './auto_contribute_panel'
 import { TipsPanel } from './tips_panel'
@@ -89,18 +90,25 @@ export function Settings () {
 
   const onTakeTour = () => { setShowRewardsTour(true) }
 
+  const canConnectAccount = () => {
+    const {
+      currentCountryCode,
+      externalWalletProviderList,
+      parameters
+    } = rewardsData
+
+    return externalWalletProviderList.some((provider) => {
+      const regionInfo = parameters.walletProviderRegions[provider] || null
+      return isExternalWalletProviderAllowed(currentCountryCode, regionInfo)
+    })
+  }
+
   const renderRewardsTour = () => {
     if (!showRewardsTour) {
       return null
     }
 
-    const {
-      adsData,
-      currentCountryCode,
-      externalWallet,
-      externalWalletProviderList,
-      parameters
-    } = rewardsData
+    const { adsData, externalWallet } = rewardsData
 
     const onDone = () => {
       setShowRewardsTour(false)
@@ -111,18 +119,11 @@ export function Settings () {
     }
 
     const onConnectAccount = () => {
-      if (externalWallet && externalWallet.loginUrl) {
-        window.open(externalWallet.loginUrl, '_self')
-      }
+      actions.onModalConnectOpen()
     }
 
     const canAutoContribute =
       !(externalWallet && externalWallet.type === 'bitflyer')
-
-    const canConnectAccount = externalWalletProviderList.some((provider) => {
-      const regionInfo = parameters.walletProviderRegions[provider] || null
-      return isExternalWalletProviderAllowed(currentCountryCode, regionInfo)
-    })
 
     return (
       <RewardsTourModal
@@ -130,7 +131,7 @@ export function Settings () {
         firstTimeSetup={false}
         adsPerHour={adsData.adsPerHour}
         canAutoContribute={canAutoContribute}
-        canConnectAccount={canConnectAccount}
+        canConnectAccount={canConnectAccount()}
         onAdsPerHourChanged={onAdsPerHourChanged}
         onConnectAccount={onConnectAccount}
         onDone={onDone}
@@ -167,6 +168,26 @@ export function Settings () {
       <style.onboarding>
         <SettingsOptInForm onTakeTour={onTakeTour} onEnable={onEnable} />
       </style.onboarding>
+    )
+  }
+
+  function renderVBATNotice () {
+    const { vbatDeadline } = rewardsData.parameters
+    if (!shouldShowVBATNotice(rewardsData.userType, vbatDeadline)) {
+      return null
+    }
+
+    const onConnect = () => { actions.onModalConnectOpen() }
+
+    return (
+      <style.vbatNotice>
+        <VBATNotice
+          vbatDeadline={vbatDeadline}
+          canConnectAccount={canConnectAccount()}
+          declaredCountry={rewardsData.currentCountryCode}
+          onConnectAccount={onConnect}
+        />
+      </style.vbatNotice>
     )
   }
 
@@ -212,6 +233,7 @@ export function Settings () {
                 </style.manageAction>
             }
           </style.header>
+          {renderVBATNotice()}
           <style.settingGroup>
             <AdsPanel />
           </style.settingGroup>

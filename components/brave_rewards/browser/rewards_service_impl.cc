@@ -656,7 +656,8 @@ void RewardsServiceImpl::GetUserType(
       version = base::Version({1});
     }
 
-    if (version.CompareTo(base::Version({2, 5})) < 0) {
+    if (!prefs->GetBoolean(prefs::kParametersVBatExpired) &&
+        version.CompareTo(base::Version({2, 5})) < 0) {
       std::move(callback).Run(UserType::kLegacyUnconnected);
       return;
     }

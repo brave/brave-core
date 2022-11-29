@@ -297,7 +297,7 @@ export function AdsPanel () {
           }
           <style.connectAction>
             <button onClick={onConnect}>
-              {getString('connectAccount')}<ArrowNextIcon />
+              {getString('rewardsConnectAccount')}<ArrowNextIcon />
             </button>
           </style.connectAction>
         </style.connect>

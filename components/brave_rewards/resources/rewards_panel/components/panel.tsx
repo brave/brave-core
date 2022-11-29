@@ -83,7 +83,7 @@ export function Panel () {
   return (
     <div>
       <div className='rewards-panel' data-test-id='rewards-panel'>
-        { userType !== 'unconnected' ? renderFull() : <LimitedView />}
+        {userType !== 'unconnected' ? renderFull() : <LimitedView />}
       </div>
       <PanelOverlays />
     </div>
