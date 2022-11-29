@@ -126,7 +126,6 @@ declare namespace NewTab {
     brandedWallpaperOptIn: boolean
     showStats: boolean
     showToday: boolean
-    showBraveNewsButton: boolean
     showClock: boolean
     clockFormat: string
     showTopSites: boolean
@@ -148,7 +147,6 @@ declare namespace NewTab {
     featureFlagBraveNewsEnabled: boolean
     featureFlagBraveNewsV2Enabled: boolean
     featureFlagBraveNewsPromptEnabled: boolean
-    featureFlagBraveNewsSubscribeButtonEnabled: boolean
     searchPromotionEnabled: boolean
     featureCustomBackgroundEnabled: boolean
     isIncognito: boolean

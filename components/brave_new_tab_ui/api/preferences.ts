@@ -30,10 +30,6 @@ export function saveShowToday (value: boolean): void {
   sendSavePref('showToday', value)
 }
 
-export function saveShowBraveNewsButton (value: boolean): void {
-  sendSavePref('showBraveNewsButton', value)
-}
-
 export function saveShowRewards (value: boolean): void {
   sendSavePref('showRewards', value)
 }
