@@ -482,7 +482,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             View view, BlockchainToken[] tokens, BlockchainToken[] userSelectedTokens) {
         HashSet<String> selectedTokensSymbols = new HashSet<String>();
         for (BlockchainToken userSelectedToken : userSelectedTokens) {
-            selectedTokensSymbols.add(userSelectedToken.symbol.toUpperCase(Locale.getDefault()));
+            selectedTokensSymbols.add(Utils.tokenToString(userSelectedToken));
         }
         RecyclerView rvAssets = view.findViewById(R.id.rvAssets);
         walletCoinAdapter = new WalletCoinAdapter(mType);
@@ -495,8 +495,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             itemModel.setBlockchainToken(tokens[i]);
             itemModel.setIconPath("file://" + tokensPath + "/" + tokens[i].logo);
 
-            boolean isUserSelected = selectedTokensSymbols.contains(
-                    tokens[i].symbol.toUpperCase(Locale.getDefault()));
+            boolean isUserSelected = selectedTokensSymbols.contains(Utils.tokenToString(tokens[i]));
             itemModel.setIsUserSelected(isUserSelected);
             walletListItemModelList.add(itemModel);
         }
@@ -609,66 +608,66 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     public void onAssetCheckedChanged(
             WalletListItemModel walletListItemModel, CheckBox assetCheck, boolean isChecked) {
         if (mType != WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) return;
-
         JsonRpcService jsonRpcService = getJsonRpcService();
         if (jsonRpcService == null) return;
-        jsonRpcService.getNetwork(
-                walletListItemModel.getBlockchainToken().coin, selectedNetwork -> {
-                    TokenUtils.isCustomToken(getBlockchainRegistry(), selectedNetwork,
-                            selectedNetwork.coin, walletListItemModel.getBlockchainToken(),
-                            isCustom -> {
-                                BraveWalletService braveWalletService = getBraveWalletService();
-                                // TODO: all the asserts need to be removed. Shall do proper
-                                // error handling instead.
-                                assert braveWalletService != null;
-                                if (!isCustom) {
-                                    if (isChecked) {
-                                        braveWalletService.addUserAsset(
-                                                walletListItemModel.getBlockchainToken(),
-                                                (success) -> {
-                                                    if (success) {
-                                                        walletListItemModel.setIsUserSelected(true);
-                                                    }
-                                                    if (isChecked
-                                                            != walletListItemModel
-                                                                       .getIsUserSelected())
-                                                        assetCheck.setChecked(
-                                                                walletListItemModel
-                                                                        .getIsUserSelected());
-                                                });
-                                    } else {
-                                        braveWalletService.removeUserAsset(
-                                                walletListItemModel.getBlockchainToken(),
-                                                (success) -> {
-                                                    if (success) {
-                                                        walletListItemModel.setIsUserSelected(
-                                                                false);
-                                                    }
-                                                    if (isChecked
-                                                            != walletListItemModel
-                                                                       .getIsUserSelected())
-                                                        assetCheck.setChecked(
-                                                                walletListItemModel
-                                                                        .getIsUserSelected());
-                                                });
-                                    }
+
+        BlockchainToken thisToken = walletListItemModel.getBlockchainToken();
+        jsonRpcService.getNetwork(thisToken.coin, selectedNetwork -> {
+            TokenUtils.isCustomToken(getBlockchainRegistry(), selectedNetwork, selectedNetwork.coin,
+                    thisToken, isCustom -> {
+                        // Only show add asset dialog on click when:
+                        //    1. It is an ERC721 token
+                        //    2. It is a token listed in Registry
+                        //    3. It is not user added (i.e. doesn't have a token id)
+                        if (thisToken.isErc721 && !isCustom
+                                && (thisToken.tokenId == null
+                                        || thisToken.tokenId.trim().isEmpty())) {
+                            showAddAssetDialog();
+                            walletListItemModel.setIsUserSelected(
+                                    false); // The added token is different from the listed one
+                        } else {
+                            BraveWalletService braveWalletService = getBraveWalletService();
+                            // TODO: all the asserts need to be removed. Shall do proper
+                            // error handling instead.
+                            assert braveWalletService != null;
+                            if (!isCustom) {
+                                if (isChecked) {
+                                    braveWalletService.addUserAsset(thisToken, (success) -> {
+                                        if (success) {
+                                            walletListItemModel.setIsUserSelected(true);
+                                        }
+                                        if (isChecked != walletListItemModel.getIsUserSelected()) {
+                                            assetCheck.setChecked(
+                                                    walletListItemModel.getIsUserSelected());
+                                        }
+                                    });
                                 } else {
-                                    braveWalletService.setUserAssetVisible(
-                                            walletListItemModel.getBlockchainToken(), isChecked,
-                                            success -> {
-                                                if (success) {
-                                                    walletListItemModel.setIsUserSelected(
-                                                            isChecked);
-                                                }
-                                                if (isChecked
-                                                        != walletListItemModel.getIsUserSelected())
-                                                    assetCheck.setChecked(
-                                                            walletListItemModel
-                                                                    .getIsUserSelected());
-                                            });
+                                    braveWalletService.removeUserAsset(thisToken, (success) -> {
+                                        if (success) {
+                                            walletListItemModel.setIsUserSelected(false);
+                                        }
+                                        if (isChecked != walletListItemModel.getIsUserSelected()) {
+                                            assetCheck.setChecked(
+                                                    walletListItemModel.getIsUserSelected());
+                                        }
+                                    });
                                 }
-                                mIsAssetsListChanged = true;
-                            });
-                });
+                            } else {
+                                braveWalletService.setUserAssetVisible(
+                                        thisToken, isChecked, success -> {
+                                            if (success) {
+                                                walletListItemModel.setIsUserSelected(isChecked);
+                                            }
+                                            if (isChecked
+                                                    != walletListItemModel.getIsUserSelected()) {
+                                                assetCheck.setChecked(
+                                                        walletListItemModel.getIsUserSelected());
+                                            }
+                                        });
+                            }
+                            mIsAssetsListChanged = true;
+                        }
+                    });
+        });
     };
 }
