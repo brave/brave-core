@@ -3309,6 +3309,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_LINK_SUBSCRIPTION_DIALOG_TEXT" desc="Brave vpn link subscription dialog text">
       Your Brave VPN subscription can protect up to 5 devices, across Android, iOS, and desktop. Just link your Google Play subscription to your Brave account.
     </message>
+    <message name="IDS_SAFE_BROWSING_NO_GOOGLE_PLAY_SERVICES_DIALOG_TITLE" desc="Brave no Google Play Services dialog title">
+      Cannot enable Safe Browsing
+    </message>
+    <message name="IDS_SAFE_BROWSING_NO_GOOGLE_PLAY_SERVICES_DIALOG_MESSAGE" desc="Brave no Google Play Services dialog message">
+      Safe Browsing has been disabled on your device. To enable it, ensure that Google Play Services is installed and that it's up to date.
+    </message>
   </messages>
   </release>
 </grit>

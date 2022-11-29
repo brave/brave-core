@@ -170,6 +170,7 @@ const Config = function () {
   this.extraGnArgs = {}
   this.extraGnGenOpts = getNPMConfig(['brave_extra_gn_gen_opts']) || ''
   this.extraNinjaOpts = []
+  this.braveAndroidSafeBrowsingApiKey = getNPMConfig(['brave_safebrowsing_api_key']) || ''
   this.braveSafetyNetApiKey = getNPMConfig(['brave_safetynet_api_key']) || ''
   this.braveAndroidDeveloperOptionsCode = getNPMConfig(['brave_android_developer_options_code']) || ''
   this.braveAndroidKeystorePath = getNPMConfig(['brave_android_keystore_path'])
@@ -468,6 +469,7 @@ Config.prototype.buildArgs = function () {
 
     args.brave_android_developer_options_code = this.braveAndroidDeveloperOptionsCode
     args.brave_safetynet_api_key = this.braveSafetyNetApiKey
+    args.brave_safebrowsing_api_key = this.braveAndroidSafeBrowsingApiKey
     args.enable_widevine = false
     args.safe_browsing_mode = 2
 
@@ -716,6 +718,10 @@ Config.prototype.update = function (options) {
 
   if (options.brave_google_api_key) {
     this.braveGoogleApiKey = options.brave_google_api_key
+  }
+
+  if (options.brave_safebrowsing_api_key) {
+    this.braveAndroidSafeBrowsingApiKey = options.brave_safebrowsing_api_key
   }
 
   if (options.brave_safetynet_api_key) {
