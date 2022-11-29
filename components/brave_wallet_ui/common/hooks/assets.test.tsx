@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import { TextEncoder, TextDecoder } from 'util'
 // @ts-expect-error
@@ -21,8 +20,8 @@ import { setMockedBuyAssets } from '../async/__mocks__/lib'
 import * as MockedLib from '../async/__mocks__/lib'
 import { LibContext } from '../context/lib.context'
 import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
-import { createWalletReducer, createWalletSlice } from '../slices/wallet.slice'
 import { mockBasicAttentionToken, mockEthToken } from '../../stories/mock-data/mock-asset-options'
+import { createMockStore } from '../../utils/test-utils'
 
 const mockAccounts = [
   {
@@ -62,8 +61,8 @@ describe('useAssets hook', () => {
     const { result, waitForNextUpdate } = renderHook(
       () => useAssets(),
       renderHookOptionsWithCustomStore(
-        createStore(combineReducers({
-          wallet: createWalletSlice({
+        createMockStore({
+          walletStateOverride: {
             ...mockWalletState,
             userVisibleTokensInfo: mockVisibleList,
             selectedAccount: mockAccounts[0],
@@ -71,8 +70,8 @@ describe('useAssets hook', () => {
             transactionSpotPrices: mockAssetPrices,
             selectedNetwork: mockNetwork,
             networkList: [mockNetwork]
-          }).reducer
-        }))
+          }
+        })
       )
     )
     await act(async () => {
@@ -85,8 +84,8 @@ describe('useAssets hook', () => {
     const { result, waitForNextUpdate } = renderHook(
       () => useAssets(),
       renderHookOptionsWithCustomStore(
-        createStore(combineReducers({
-          wallet: createWalletReducer({
+        createMockStore({
+          walletStateOverride: {
             ...mockWalletState,
             userVisibleTokensInfo: [],
             selectedAccount: mockAccounts[0],
@@ -94,8 +93,8 @@ describe('useAssets hook', () => {
             transactionSpotPrices: mockAssetPrices,
             selectedNetwork: mockNetwork,
             networkList: [mockNetwork]
-          })
-        }))
+          }
+        })
       )
     )
     await act(async () => {

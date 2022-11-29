@@ -353,7 +353,7 @@ describe('useSwap hook', () => {
           selectedAccount: {
             ...mockAccount,
             nativeBalanceRegistry: {
-              [mockWalletState.selectedNetwork.chainId]: '123456' // 123456 Wei
+              [mockWalletState.selectedNetwork?.chainId || '']: '123456' // 123456 Wei
             }
           }
         }),
@@ -394,7 +394,7 @@ describe('useSwap hook', () => {
           selectedAccount: {
             ...mockAccount,
             nativeBalanceRegistry: {
-              [mockWalletState.selectedNetwork.chainId]: '1234560' // 1234560 Wei
+              [mockWalletState.selectedNetwork?.chainId || '']: '1234560' // 1234560 Wei
             }
           }
         }),
@@ -446,11 +446,11 @@ describe('useSwap hook', () => {
 
       const ETH = {
         ...mockWalletState.userVisibleTokensInfo[0],
-        chainId: mockWalletState.selectedNetwork.chainId
+        chainId: mockWalletState.selectedNetwork?.chainId || ''
       }
       const USDC = {
         ...mockWalletState.userVisibleTokensInfo[1],
-        chainId: mockWalletState.selectedNetwork.chainId
+        chainId: mockWalletState.selectedNetwork?.chainId || ''
       }
 
       const mockStore = createStore(combineReducers({
