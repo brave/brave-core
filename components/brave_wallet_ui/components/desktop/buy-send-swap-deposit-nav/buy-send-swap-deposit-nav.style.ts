@@ -19,5 +19,5 @@ export const Wrapper = styled.div<{ isTab?: boolean }>`
   top: ${(p) => p.isTab ? '100px' : 'unset'};
   left: ${(p) => p.isTab ? '32px' : 'unset'};
   overflow: ${(p) => p.isTab ? 'visible' : 'hidden'};
-  z-index: 40;
+  z-index: ${(p) => p.isTab ? 10 : 'unset'};
 `
