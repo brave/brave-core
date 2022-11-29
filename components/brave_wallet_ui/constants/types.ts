@@ -326,9 +326,9 @@ export interface AccountInfo {
   address: string
   name: string
   isImported: boolean
-  hardware?: HardwareInfo
+  hardware: HardwareInfo | undefined
   coin: BraveWallet.CoinType
-  keyringId?: string
+  keyringId: string | undefined
 }
 
 export interface WalletInfoBase {
