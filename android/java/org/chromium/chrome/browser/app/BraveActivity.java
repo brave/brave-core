@@ -1278,10 +1278,16 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             };
 
     private void checkAndshowNotificationWarningDialog() {
-        if (BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(this)
+        OnboardingPrefManager.getInstance().updateLaunchCount();
+        if (OnboardingPrefManager.getInstance().launchCount() >= 3
+                && BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(this)
                 && !OnboardingPrefManager.getInstance()
                             .isNotificationPermissionEnablingDialogShown()) {
-            showNotificationWarningDialog();
+            if (BravePermissionUtils.hasNotificationPermission(this)) {
+                showNotificationWarningDialog();
+            } else {
+                maybeShowNotificationPermissionRetionale();
+            }
             OnboardingPrefManager.getInstance().setNotificationPermissionEnablingDialogShown(true);
         } else {
             checkForNotificationData();
