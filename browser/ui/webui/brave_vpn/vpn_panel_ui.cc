@@ -12,10 +12,9 @@
 #include "base/bind.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
-#include "brave/components/brave_vpn/brave_vpn_constants.h"
+#include "brave/browser/ui/webui/brave_vpn/brave_vpn_localized_string_provider.h"
 #include "brave/components/brave_vpn/resources/panel/grit/brave_vpn_panel_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -40,12 +39,7 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(kVPNPanelURL);
 
-  for (const auto& str : brave_vpn::kLocalizedStrings) {
-    std::u16string l10n_str =
-        brave_l10n::GetLocalizedResourceUTF16String(str.id);
-    source->AddString(str.name, l10n_str);
-  }
-
+  brave_vpn::AddLocalizedStrings(source);
   webui::SetupWebUIDataSource(
       source,
       base::make_span(kBraveVpnPanelGenerated, kBraveVpnPanelGeneratedSize),

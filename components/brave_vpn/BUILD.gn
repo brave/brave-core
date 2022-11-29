@@ -115,19 +115,3 @@ source_set("unit_tests") {
     ]
   }
 }
-<<<<<<< HEAD
-
-executable("vpntool") {
-  sources = []
-  deps = [
-    ":brave_vpn_internal",
-    "//base",
-  ]
-
-  if (is_win) {
-    sources += [ "winvpntool.cc" ]
-    libs = [ "rasapi32.lib" ]
-  }
-}
-=======
->>>>>>> 88c4a1756a (Move windows code to win folder in brave_vpn component)
