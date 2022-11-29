@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 
 public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
     private static final long DEFAULT_CHECK_DELTA = 10;
@@ -100,7 +101,7 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                         // additional details.
                         ApiException apiException = (ApiException) e;
                         if (isDebuggable()) {
-                            org.chromium.base.Log.d(TAG,
+                            Log.d(TAG,
                                     "Error: "
                                             + CommonStatusCodes.getStatusCodeString(
                                                     apiException.getStatusCode())
@@ -127,7 +128,7 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                     } else {
                         // A different, unknown type of error occurred.
                         if (isDebuggable()) {
-                            org.chromium.base.Log.d(TAG, "Error: " + e.getMessage());
+                            Log.d(TAG, "Error: " + e.getMessage());
                         }
                     }
                     mTriesCount = 0;

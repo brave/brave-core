@@ -3312,7 +3312,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SAFE_BROWSING_NO_GOOGLE_PLAY_SERVICES_DIALOG_TITLE" desc="Brave no Google Play Services dialog title">
       Cannot enable Safe Browsing
     </message>
-    <message name="IDS_SAFE_BROWSING_NO_GOOGLE_PLAY_SERVICES_DIALOG_MESSAGE" desc="Brave no Google Play Services dialog title">
+    <message name="IDS_SAFE_BROWSING_NO_GOOGLE_PLAY_SERVICES_DIALOG_MESSAGE" desc="Brave no Google Play Services dialog message">
       Safe Browsing has been disabled on your device. To enable it, ensure that Google Play Services is installed and that it's up to date.
     </message>
   </messages>

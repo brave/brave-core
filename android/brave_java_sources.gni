@@ -446,14 +446,6 @@ brave_java_base_module_sources = [
   "//brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardService.java",
 ]
 
-brave_java_safe_browsing_sources = [ "//brave/android/java/org/chromium/components/safe_browsing/BraveSafeBrowsingApiHandler.java" ]
-
-brave_java_safe_browsing_deps = [
-  "//brave/third_party/android_deps:google_play_services_safetynet_java",
-  "//third_party/android_deps:google_play_services_basement_java",
-  "//third_party/android_deps:google_play_services_tasks_java",
-]
-
 brave_java_base_module_deps = [
   "//brave/third_party/android_deps:com_wireguard_android_java",
   "//third_party/androidx:androidx_core_core_java",
