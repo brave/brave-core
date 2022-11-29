@@ -330,34 +330,43 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
             dom.append_before_sibling(&first_child, NodeOrText::AppendNode(description));
         }
 
-        let metadata_parent = dom::create_element_simple(dom, "div", "", None);
+        // Vertical split
+        if meta.author.is_some() || meta.last_modified.is_some()
+        {
+            let splitter = dom::create_element_simple(dom, "hr", "", None);
+            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(splitter));
+        }
+
+        let metadata_parent = dom::create_element_simple(dom, "div", "metadata", None);
         dom.append_before_sibling(&first_child, NodeOrText::AppendNode(metadata_parent.clone()));
 
         // Add in the author
         if let Some(ref text) = meta.author {
             let author =
-                dom::create_element_simple(dom, "p", "metadata", Some(&format!("By {}", text)));
+                dom::create_element_simple(dom, "p", "author", Some(&format!("By {}", text)));
             dom.append(&metadata_parent, NodeOrText::AppendNode(author));
         }
 
         // Add in last modified datetime
         if let Some(ref last_modified) = meta.last_modified {
             let format = format_description!(
-                "Updated [month repr:short]. [day], [year] [hour repr:12]:[minute] [period]"
+                "[month repr:short] [day], [year] [hour repr:12]:[minute] [period]"
             );
             if let Some(formatted) = last_modified.format(format).ok() {
-                let modified =
-                    dom::create_element_simple(dom, "p", "metadata date", Some(&formatted));
+                let modified = dom::create_element_simple(dom, "p", "date", Some(&formatted));
                 dom.append(&metadata_parent, NodeOrText::AppendNode(modified));
             }
         }
 
         // Add 'show original'
         {
-            let show_original_link =
-                dom::create_element_simple(dom, "a", "metadata show_original", None);
-            dom::set_attr("id", "c93e2206-2f31-4ddc-9828-2bb8e8ed940e", show_original_link.clone(), true);
-            dom::set_attr("href", "", show_original_link.clone(), true);
+            let show_original_link = dom::create_element_simple(dom, "div", "show_original", None);
+            dom::set_attr(
+                "id",
+                "c93e2206-2f31-4ddc-9828-2bb8e8ed940e",
+                show_original_link.clone(),
+                true,
+            );
             dom.append(&metadata_parent, NodeOrText::AppendNode(show_original_link));
         }
 
