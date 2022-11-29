@@ -90,8 +90,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       base::OnceCallback<void(const std::vector<Log>& logs,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
-  using GetTokenMetadataIntermediateCallback = base::OnceCallback<
-      void(const std::string& response, int, const std::string& error_message)>;
+  using GetTokenMetadataIntermediateCallback =
+      base::OnceCallback<void(const std::string& response,
+                              int error,
+                              const std::string& error_message)>;
 
   void GetBlockNumber(GetBlockNumberCallback callback);
   void GetFeeHistory(GetFeeHistoryCallback callback);
