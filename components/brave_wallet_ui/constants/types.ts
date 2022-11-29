@@ -936,3 +936,7 @@ export enum TokenStandards {
   ERC1155 = 'ERC1155',
   SPL = 'SPL'
 }
+
+export type ERC721Metadata = {
+  image?: string
+}

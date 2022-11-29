@@ -16,11 +16,6 @@ function concatErrorCache<T, ID> (
   existingCache: CacheList<T, ID>,
   error: FetchBaseQueryError | undefined
 ): CacheList<T, ID> {
-  if (error && 'status' in error && error.status === 401) {
-    // unauthorized error
-    return [...existingCache, 'UNAUTHORIZED']
-  }
-
   // unknown error
   return [...existingCache, 'UNKNOWN_ERROR']
 }
