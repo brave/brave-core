@@ -38,47 +38,35 @@ struct FollowingListView: View {
   
   var body: some View {
     List {
-      if !followedSources.isEmpty {
-        Section {
-          ForEach(followedSources) { source in
-            SourceLabel(source: source, isFollowing: isFollowingSource(source))
-          }
+      if !followedChannels.isEmpty {
+        ForEach(followedChannels) { channel in
+          let shouldShowRegionSubtitle = followedChannels.filter {
+            $0.name == channel.name
+          }.count > 1
+          ChannelLabel(
+            title: channel.name,
+            subtitle: shouldShowRegionSubtitle ? channel.localeDescription : nil,
+            isFollowing: isFollowingChannel(channel)
+          )
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        } header: {
-          Text(Strings.BraveNews.sourcesHeaderTitle)
+          .padding(.vertical, 4)
         }
       }
-      if !followedChannels.isEmpty {
-        Section {
-          ForEach(followedChannels) { channel in
-            let shouldShowRegionSubtitle = followedChannels.filter {
-              $0.name == channel.name
-            }.count > 1
-            ChannelLabel(
-              title: channel.name,
-              subtitle: shouldShowRegionSubtitle ? channel.localeDescription : nil,
-              isFollowing: isFollowingChannel(channel)
-            )
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
-            .padding(.vertical, 4)
-          }
-        } header: {
-          Text(Strings.BraveNews.channelsHeaderTitle)
+      if !followedSources.isEmpty {
+        ForEach(followedSources) { source in
+          SourceLabel(source: source, isFollowing: isFollowingSource(source))
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       if !followedRSSFeeds.isEmpty {
-        Section {
-          ForEach(followedRSSFeeds) { feed in
-            RSSFeedLabel(feed: feed, isFollowing: isFollowingRSSFeed(feed))
-          }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        } header: {
-          Text(Strings.BraveNews.userSourcesHeaderTitle)
+        ForEach(followedRSSFeeds) { feed in
+          RSSFeedLabel(feed: feed, isFollowing: isFollowingRSSFeed(feed))
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
     .listBackgroundColor(Color(.braveGroupedBackground))
-    .listStyle(.insetGrouped)
+    .listStyle(.grouped)
     .environment(\.defaultMinListRowHeight, 0)
     .navigationTitle(Strings.BraveNews.followingTitle)
     .navigationBarTitleDisplayMode(.inline)

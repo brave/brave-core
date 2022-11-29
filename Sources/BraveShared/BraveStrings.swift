@@ -3406,7 +3406,7 @@ extension Strings {
       "today.popularSourcesTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Channels",
+      value: "Popular Sources",
       comment: "A title at the top of the screen that shows a list of sources that are ranked the highest"
     )
     public static let searchPlaceholder = NSLocalizedString(
