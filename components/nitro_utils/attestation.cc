@@ -127,6 +127,8 @@ std::unique_ptr<net::ParsedCertificateList> ParseCertificatesAndCheckRoot(
       new net::ParsedCertificateList());
 
   net::ParseCertificateOptions parse_cert_options;
+  // Nitro enclave certs seem to contain serial numbers that Chromium does not
+  // like, so we disable serial number validation
   parse_cert_options.allow_invalid_serial_numbers = true;
   net::CertErrors cert_errors;
   for (auto& cert_val : cert_vals) {
