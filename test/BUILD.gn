@@ -973,6 +973,7 @@ test("brave_browser_tests") {
     "//components/send_tab_to_self",
     "//components/shared_highlighting/core/common",
     "//components/spellcheck/browser",
+    "//components/subresource_filter/core/common",
     "//components/user_prefs",
     "//extensions/browser:test_support",
     "//extensions/common:common_constants",
