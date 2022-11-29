@@ -1963,7 +1963,7 @@ void JsonRpcService::GetERC721Metadata(const std::string& contract_address,
                                        const std::string& token_id,
                                        const std::string& chain_id,
                                        GetTokenMetadataCallback callback) {
-  JsonRpcService::GetTokenMetadata(contract_address, token_id, chain_id,
+  GetTokenMetadata(contract_address, token_id, chain_id,
                                    kERC721MetadataInterfaceId,
                                    std::move(callback));
 }
@@ -1972,7 +1972,7 @@ void JsonRpcService::GetERC1155Metadata(const std::string& contract_address,
                                         const std::string& token_id,
                                         const std::string& chain_id,
                                         GetTokenMetadataCallback callback) {
-  JsonRpcService::GetTokenMetadata(contract_address, token_id, chain_id,
+  GetTokenMetadata(contract_address, token_id, chain_id,
                                    kERC1155MetadataInterfaceId,
                                    std::move(callback));
 }
