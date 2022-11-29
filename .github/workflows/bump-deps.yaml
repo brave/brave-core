@@ -34,9 +34,9 @@ jobs:
         run: |
           set -x
 
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
-          git config user.name "${{ github.actor }}"
-          git config push.default simple
+          # git config user.email "${{ github.actor }}@users.noreply.github.com"
+          # git config user.name "${{ github.actor }}"
+          # git config push.default simple
           gh api /repos/brave/web-discovery-project/commits/main -q .sha
 
           SED=sed
@@ -59,8 +59,9 @@ jobs:
             git switch -c "$pr_branch"
             "$SED" -i -e "s,^\(\s*\"$DEP\"\s*:\s*\"https.*\)@[^\"]*\",\1@$DEPREF\"," \
             -e "/^\s*\"${DEP//\//\\/}\"\s*:\s*{/,/@/ s/@[^\"]*/@$DEPREF/" DEPS
-            git add DEPS
-            git commit -m "Auto bump DEPS ${DEP}@${DEPREF}"
+            # git add DEPS
+            # git commit -m "Auto bump DEPS ${DEP}@${DEPREF}"
             # git push -u origin "$pr_branch"
+            gh api --method PUT /repos/${GITHUB_REPOSITORY}/contents/DEPS --field message="Auto bump DEPS ${DEP}@${DEPREF}" --field content=@<( base64 -i DEPS ) --field encoding="base64" --field branch="$pr_branch" --field sha=$( git rev-parse $pr_branch:DEPS )
             # gh pr create --base "${branch}" -f -t "Auto bump DEPS ${DEP}@${DEPREF}" -l "CI/run-audit-deps"
           done
