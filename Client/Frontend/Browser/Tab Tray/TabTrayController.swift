@@ -246,6 +246,10 @@ class TabTrayController: LoadingViewController {
       $0.dragDelegate = self
       $0.dropDelegate = self
       $0.dragInteractionEnabled = true
+      $0.backgroundView = UIView().then {
+        $0.backgroundColor = .clear
+        $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedCollectionViewBackground)))
+      }
     }
     
     tabSyncView.tableView.do {
@@ -598,6 +602,12 @@ class TabTrayController: LoadingViewController {
     UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
 
     present(settingsNavigationController, animated: true)
+  }
+  
+  @objc private func tappedCollectionViewBackground() {
+    if traitCollection.horizontalSizeClass == .compact {
+      doneAction()
+    }
   }
 }
 
