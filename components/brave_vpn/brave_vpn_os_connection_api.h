@@ -30,8 +30,10 @@ class BraveVpnAPIRequest;
 struct Hostname;
 
 // Interface for managing OS' vpn connection.
-class BraveVPNOSConnectionAPI : public base::PowerSuspendObserver,
-                                public net::NetworkChangeNotifier::DNSObserver {
+class BraveVPNOSConnectionAPI
+    : public base::PowerSuspendObserver,
+      public net::NetworkChangeNotifier::NetworkChangeObserver,
+      public net::NetworkChangeNotifier::DNSObserver {
  public:
   class Observer : public base::CheckedObserver {
    public:
@@ -108,6 +110,10 @@ class BraveVPNOSConnectionAPI : public base::PowerSuspendObserver,
 
   // net::NetworkChangeNotifier::DNSObserver
   void OnDNSChanged() override;
+
+  // net::NetworkChangeNotifier::NetworkChangeObserver
+  void OnNetworkChanged(
+      net::NetworkChangeNotifier::ConnectionType type) override;
 
   void CreateVPNConnection();
   std::string GetSelectedRegion() const;
