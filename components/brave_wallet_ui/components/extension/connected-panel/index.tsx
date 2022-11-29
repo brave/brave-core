@@ -24,6 +24,7 @@ import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import Amount from '../../../utils/amount'
+import { deserializeOrigin } from '../../../utils/model-serialization-utils'
 
 // Hooks
 import { useExplorer, usePricing } from '../../../common/hooks'
@@ -142,7 +143,7 @@ export const ConnectedPanel = (props: Props) => {
 
     if (selectedCoin) {
       (async () => {
-        await braveWalletService.isPermissionDenied(selectedCoin, originInfo.origin)
+        await braveWalletService.isPermissionDenied(selectedCoin, deserializeOrigin(originInfo.origin))
           .then(result => {
             if (subscribed) {
               setIsPermissionDenied(result.denied)
