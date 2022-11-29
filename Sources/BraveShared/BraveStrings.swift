@@ -3427,14 +3427,14 @@ extension Strings {
       "today.popularSourcesDestinationTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Popular Sources",
+      value: "Popular",
       comment: "A button title that when tapped shows users a list of news sources that are ranked the highest"
     )
     public static let popularSourcesButtonSubtitle = NSLocalizedString(
       "today.popularSourcesButtonSubtitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Currently trending sources",
+      value: "Ranked list of sources",
       comment: "Shown below 'Popular Sources' explaining what sources will be shown."
     )
     public static let suggestedSourcesButtonTitle = NSLocalizedString(
@@ -3448,7 +3448,7 @@ extension Strings {
       "today.suggestedSourcesButtonSubtitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Our curated list of sources",
+      value: "Some sources you might like",
       comment: "Shown below 'Suggested' explaining what sources will be shown."
     )
     public static let channelsButtonTitle = NSLocalizedString(
@@ -3462,7 +3462,7 @@ extension Strings {
       "today.channelsButtonSubtitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Follow topics relevant to you",
+      value: "Follow topics that interest you",
       comment: "Shown below 'Channels' explaining what will be shown when tapping on it."
     )
     public static let followingButtonTitle = NSLocalizedString(
@@ -3476,7 +3476,7 @@ extension Strings {
       "today.followingButtonSubtitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Manage your following list",
+      value: "Manage sources for your feed",
       comment: "Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it"
     )
     public static let availableRSSFeedsHeaderTitle = NSLocalizedString(
