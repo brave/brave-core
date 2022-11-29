@@ -90,10 +90,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       base::OnceCallback<void(const std::vector<Log>& logs,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
-  using GetTokenMetadataIntermediateCallback =
-      base::OnceCallback<void(const std::string& response,
-                              mojom::ProviderErrorUnionPtr,
-                              const std::string& error_message)>;
+  using GetTokenMetadataIntermediateCallback = base::OnceCallback<
+      void(const std::string& response, int, const std::string& error_message)>;
 
   void GetBlockNumber(GetBlockNumberCallback callback);
   void GetFeeHistory(GetFeeHistoryCallback callback);
@@ -372,7 +370,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void GetMetaplexMetadata(const std::string& nft_account_address,
                            GetMetaplexMetadataCallback callback) override;
   void FetchTokenMetadata(GURL url,
-                          mojom::CoinType coin,
                           GetTokenMetadataIntermediateCallback callback);
   void OnGetSolanaAccountInfoMetaplex(
       GetMetaplexMetadataCallback callback,
@@ -549,22 +546,20 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void OnGetTokenUri(GetTokenMetadataCallback callback,
                      const APIRequestResult api_request_result);
 
-  void OnSanitizeTokenMetadata(mojom::CoinType coin,
-                               GetTokenMetadataIntermediateCallback callback,
+  void OnSanitizeTokenMetadata(GetTokenMetadataIntermediateCallback callback,
                                data_decoder::JsonSanitizer::Result result);
 
-  void OnGetTokenMetadataPayload(mojom::CoinType coin,
-                                 GetTokenMetadataIntermediateCallback callback,
+  void OnGetTokenMetadataPayload(GetTokenMetadataIntermediateCallback callback,
                                  APIRequestResult api_request_result);
 
   void CompleteGetTokenMetadataEth(GetTokenMetadataCallback callback,
                                    const std::string& response,
-                                   mojom::ProviderErrorUnionPtr error,
+                                   int error,
                                    const std::string& error_message);
 
   void CompleteGetTokenMetadataSol(GetMetaplexMetadataCallback callback,
                                    const std::string& response,
-                                   mojom::ProviderErrorUnionPtr error,
+                                   int error,
                                    const std::string& error_message);
 
   void OnGetSupportsInterface(GetSupportsInterfaceCallback callback,

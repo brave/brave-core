@@ -3585,11 +3585,10 @@ TEST_F(JsonRpcServiceUnitTest, GetTokenMetadata) {
   SetTokenMetadataInterceptor(
       kERC721MetadataInterfaceId, mojom::kMainnetChainId,
       interface_supported_response, http_token_uri_response);
-  TestGetTokenMetadata(
-      "0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-      mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
-      mojom::ProviderError::kMethodNotSupported,
-      l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
+  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
+                       mojom::ProviderError::kInternalError,
+                       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 
   // Invalid metadata response (2 total)
   // (1/2) Timeout
