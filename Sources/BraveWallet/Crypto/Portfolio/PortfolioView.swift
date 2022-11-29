@@ -24,6 +24,8 @@ struct PortfolioView: View {
   @State private var isPresentingNetworkFilter: Bool = false
   
   @Environment(\.sizeCategory) private var sizeCategory
+  @Environment(\.buySendSwapDestination)
+  private var buySendSwapDestination: Binding<BuySendSwapDestination?>
   /// Reference to the collection view used to back the `List` on iOS 16+
   @State private var collectionView: UICollectionView?
 
@@ -207,13 +209,20 @@ struct PortfolioView: View {
         ),
         destination: {
           if let token = selectedToken {
-            AssetDetailView(
-              assetDetailStore: cryptoStore.assetDetailStore(for: token),
-              keyringStore: keyringStore,
-              networkStore: cryptoStore.networkStore
-            )
-            .onDisappear {
-              cryptoStore.closeAssetDetailStore(for: token)
+            if token.isErc721 {
+              NFTDetailView(nftDetailStore: cryptoStore.nftDetailStore(for: token), buySendSwapDestination: buySendSwapDestination)
+              .onDisappear {
+                cryptoStore.closeNFTDetailStore(for: token)
+              }
+            } else {
+              AssetDetailView(
+                assetDetailStore: cryptoStore.assetDetailStore(for: token),
+                keyringStore: keyringStore,
+                networkStore: cryptoStore.networkStore
+              )
+              .onDisappear {
+                cryptoStore.closeAssetDetailStore(for: token)
+              }
             }
           }
         },

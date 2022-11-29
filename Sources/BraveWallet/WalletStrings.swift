@@ -3354,5 +3354,61 @@ extension Strings {
       value: "%@ on %@",
       comment: "The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name."
     )
+    public static let nftDetailTitle = NSLocalizedString(
+      "wallet.nftDetailTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "NFT Detail",
+      comment: "The navigation title for NFT detail screen."
+    )
+    public static let nftDetailTokenID = NSLocalizedString(
+      "wallet.nftDetailTokenID",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Token ID",
+      comment: "The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value."
+    )
+    public static let nftDetailERC721 = NSLocalizedString(
+      "wallet.nftDetailERC721",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "ERC 721",
+      comment: "This is one type of token standard. And most likey this does not need to be translated"
+    )
+    public static let nftDetailTokenStandard = NSLocalizedString(
+      "wallet.nftDetailTokenStandard",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Token standard",
+      comment: "The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard"
+    )
+    public static let nftDetailBlockchain = NSLocalizedString(
+      "wallet.nftDetailBlockchain",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Blockchain",
+      comment: "The title an entry that will be displayed in NFT detail. This entry to display this NFT's blockchain"
+    )
+    public static let nftDetailDescription = NSLocalizedString(
+      "wallet.nftDetailDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Description",
+      comment: "The title of a section in NFT detail screen that will display NFT's description if there is any."
+    )
+    public static let nftDetailSendNFTButtonTitle = NSLocalizedString(
+      "wallet.nftDetailSendNFTButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Send NFT",
+      comment: "The title of the button inside NFT detail screen, which user can click to start sending this NFT."
+    )
+    public static let nftDetailImageNotAvailable = NSLocalizedString(
+      "wallet.nftDetailImageNotAvailable",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Image is not available",
+      comment: "A placeholder text, indicates this NFT image was not able to be loaded."
+    )
   }
 }
