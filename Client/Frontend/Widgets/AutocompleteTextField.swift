@@ -239,7 +239,7 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
     // The label's frame must be slightly shorter to make the clear button visible.
     let clearButtonOffset: CGFloat = 30
     frame.size.width = self.frame.size.width - frame.origin.x - clearButtonOffset
-    frame.size.height = self.frame.size.height - 1
+    frame.size.height = self.frame.size.height
     label.frame = frame
     return label
   }
