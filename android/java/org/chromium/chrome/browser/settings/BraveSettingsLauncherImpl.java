@@ -13,6 +13,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import org.chromium.chrome.browser.download.settings.BraveDownloadSettings;
+import org.chromium.chrome.browser.download.settings.DownloadSettings;
 import org.chromium.chrome.browser.safe_browsing.settings.BraveStandardProtectionSettingsFragment;
 import org.chromium.chrome.browser.safe_browsing.settings.StandardProtectionSettingsFragment;
 
@@ -28,6 +30,8 @@ public class BraveSettingsLauncherImpl extends SettingsLauncherImpl {
             // Substitute with our version of class
             if (fragment.equals(StandardProtectionSettingsFragment.class)) {
                 fragment = BraveStandardProtectionSettingsFragment.class;
+            } else if (fragment.equals(DownloadSettings.class)) {
+                fragment = BraveDownloadSettings.class;
             }
         }
         super.launchSettingsActivity(context, fragment, fragmentArgs);
