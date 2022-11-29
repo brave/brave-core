@@ -29,7 +29,8 @@ namespace {
 constexpr char kCurrentPKPrefName[] = "brave.p3a.current_pk";
 constexpr char kCurrentEpochPrefName[] = "brave.p3a.current_epoch";
 constexpr char kNextEpochTimePrefName[] = "brave.p3a.next_epoch_time";
-constexpr std::size_t kMaxInfoResponseSize = 131072;
+// A generous arbitrary limit, 128KB
+constexpr std::size_t kMaxInfoResponseSize = 128 * 1024;
 const int kRndInfoRetryInitialBackoffSeconds = 5;
 const int kRndInfoRetryMaxBackoffMinutes = 60;
 
