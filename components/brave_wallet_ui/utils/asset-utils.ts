@@ -175,7 +175,9 @@ export type GetBlockchainTokenIdArg = Pick<
   | 'isErc721'
   | 'symbol'
   | 'tokenId'
->
+> & {
+  coingeckoId?: string | undefined
+}
 
 /**
  * @param asset The token to get an id for
