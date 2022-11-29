@@ -47,10 +47,28 @@
     {
       "identity" : "sdwebimage",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/rs/SDWebImage",
+      "location" : "https://github.com/SDWebImage/SDWebImage.git",
       "state" : {
-        "revision" : "4aaca57fb2f6dc5554a2228cf1d94289bd0a6c7d",
-        "version" : "5.10.3"
+        "revision" : "3312bf5e67b52fbce7c3caf431b0cda721a9f7bb",
+        "version" : "5.14.2"
+      }
+    },
+    {
+      "identity" : "sdwebimagesvgnativecoder",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImageSVGNativeCoder.git",
+      "state" : {
+        "revision" : "2e5522fa9d95b2bfccbf38b1c97cd68f06931b02",
+        "version" : "0.1.1"
+      }
+    },
+    {
+      "identity" : "sdwebimageswiftui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImageSwiftUI.git",
+      "state" : {
+        "revision" : "ed288667c909c89127ab1b690113a3e397af3098",
+        "version" : "2.2.1"
       }
     },
     {
@@ -60,6 +78,15 @@
       "state" : {
         "revision" : "f222cbdf325885926566172f6f5f06af95473158",
         "version" : "5.6.0"
+      }
+    },
+    {
+      "identity" : "svgnative-xcode",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/svgnative-Xcode.git",
+      "state" : {
+        "revision" : "46c0196664b445c59d8c9c2f55c076cd9869f980",
+        "version" : "0.1.0-beta"
       }
     },
     {

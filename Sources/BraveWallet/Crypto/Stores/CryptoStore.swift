@@ -256,6 +256,25 @@ public class CryptoStore: ObservableObject {
     txService: txService
   )
   
+  private var nftDetailStore: NFTDetailStore?
+  func nftDetailStore(for nft: BraveWallet.BlockchainToken) -> NFTDetailStore {
+    if let store = nftDetailStore, store.nft.id == nft.id {
+      return store
+    }
+    let store = NFTDetailStore(
+      rpcService: rpcService,
+      nft: nft
+    )
+    nftDetailStore = store
+    return store
+  }
+  
+  func closeNFTDetailStore(for nft: BraveWallet.BlockchainToken) {
+    if let store = nftDetailStore, store.nft.id == nft.id {
+      nftDetailStore = nil
+    }
+  }
+  
   func prepare() {
     Task { @MainActor in
       let pendingTransactions = await fetchPendingTransactions()

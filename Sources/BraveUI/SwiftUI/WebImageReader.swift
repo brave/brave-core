@@ -5,6 +5,8 @@
 
 import SwiftUI
 import SDWebImage
+import SDWebImageSVGNativeCoder
+import os.log
 
 private class WalletWebImageManager: ObservableObject {
   /// loaded image, note when progressive loading, this will published multiple times with different partial image
@@ -17,6 +19,8 @@ private class WalletWebImageManager: ObservableObject {
   private var manager = SDWebImageManager.shared
   private var operation: SDWebImageOperation?
 
+  private var supportedCoders: [SDImageCoder] = [SDImageSVGNativeCoder.shared, SDImageAPNGCoder.shared, SDImageGIFCoder.shared]
+  
   init() {}
 
   func load(url: URL?, options: SDWebImageOptions = []) {
@@ -36,31 +40,70 @@ private class WalletWebImageManager: ObservableObject {
     operation?.cancel()
     operation = nil
   }
+  
+  func load(base64Str: String, options: [SDImageCoderOption: Any] = [:]) {
+    guard base64Str.hasPrefix("data:image/") else { return }
+    guard let dataString = base64Str.separatedBy(",").last else { return }
+    
+    let data = Data(base64Encoded: dataString, options: .ignoreUnknownCharacters)
+    for coder in supportedCoders where coder.canDecode(from: data) {
+      image = coder.decodedImage(with: data, options: options)
+      break
+    }
+  }
 }
 
 public struct WebImageReader<Content: View>: View {
   @StateObject private var imageManager: WalletWebImageManager = .init()
-  public var url: URL?
-  public var options: SDWebImageOptions
+  var url: URL?
+  var options: SDWebImageOptions
+  var coderOptions: [SDImageCoderOption: Any]
 
   private var content: (_ image: UIImage?, _ isFinished: Bool) -> Content
 
   public init(
     url: URL?,
     options: SDWebImageOptions = [],
+    coderOptions: [SDImageCoderOption: Any] = [:],
     @ViewBuilder content: @escaping (_ image: UIImage?, _ isFinished: Bool) -> Content
   ) {
     self.content = content
     self.url = url
     self.options = options
+    self.coderOptions = coderOptions
   }
 
   public var body: some View {
     content(imageManager.image, imageManager.isFinished)
       .onAppear {
-        if !imageManager.isFinished {
-          imageManager.load(url: url, options: options)
+        if let urlString = url?.absoluteString {
+          if urlString.hasPrefix("data:image/") {
+            imageManager.load(base64Str: urlString)
+          } else if !imageManager.isFinished {
+              imageManager.load(url: url, options: options)
+          }
         }
       }
+  }
+}
+
+public struct WebSVGImageView: UIViewRepresentable {
+  let url: URL?
+  
+  public init(url: URL?) {
+    self.url = url
+  }
+  
+  public func makeUIView(context: Context) -> UIImageView {
+    return UIImageView()
+  }
+  
+  public func updateUIView(_ uiView: UIImageView, context: Context) {
+    uiView.sd_setImage(with: url) { image, error, cacheType, url in
+      guard image != nil else {
+        Logger.module.debug("SVG image failed to load. Error: \(error.debugDescription)")
+        return
+      }
+    }
   }
 }
