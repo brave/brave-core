@@ -29,11 +29,13 @@ using ConnectionState = mojom::ConnectionState;
 BraveVPNOSConnectionAPI::BraveVPNOSConnectionAPI() {
   base::PowerMonitor::AddPowerSuspendObserver(this);
   net::NetworkChangeNotifier::AddDNSObserver(this);
+  net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 }
 
 BraveVPNOSConnectionAPI::~BraveVPNOSConnectionAPI() {
   base::PowerMonitor::RemovePowerSuspendObserver(this);
   net::NetworkChangeNotifier::RemoveDNSObserver(this);
+  net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
 }
 
 void BraveVPNOSConnectionAPI::AddObserver(Observer* observer) {
@@ -269,6 +271,14 @@ void BraveVPNOSConnectionAPI::OnDNSChanged() {
     Connect();
     reconnect_on_resume_ = false;
   }
+}
+
+void BraveVPNOSConnectionAPI::OnNetworkChanged(
+    net::NetworkChangeNotifier::ConnectionType type) {
+  VLOG(2) << __func__ << " : " << type;
+  // It's rare but sometimes Brave doesn't get vpn status update from OS.
+  // Checking here will make vpn status update properly in that situation.
+  CheckConnection();
 }
 
 void BraveVPNOSConnectionAPI::UpdateAndNotifyConnectionStateChange(

@@ -288,6 +288,10 @@ class BraveVPNServiceTest : public testing::Test {
   }
   void Suspend() { GetBraveVPNConnectionAPI()->OnSuspend(); }
   void OnDNSChanged() { GetBraveVPNConnectionAPI()->OnDNSChanged(); }
+  void OnNetworkChanged() {
+    GetBraveVPNConnectionAPI()->OnNetworkChanged(
+        net::NetworkChangeNotifier::CONNECTION_WIFI);
+  }
 
   void SetSelectedRegion(const std::string& region) {
     service_->SetSelectedRegion(region);
@@ -1147,6 +1151,18 @@ TEST_F(BraveVPNServiceTest, CheckConnectionStateAfterPurchased) {
   testing::Mock::VerifyAndClearExpectations(&api);
   EXPECT_CALL(api, CheckConnectionImpl(testing::_)).Times(1);
   SetPurchasedState(env, PurchasedState::PURCHASED);
+  testing::Mock::VerifyAndClearExpectations(&api);
+
+  SetMockConnectionAPI(nullptr);
+}
+
+TEST_F(BraveVPNServiceTest, CheckConnectionStateAfterNetworkStateChanged) {
+  MockBraveVPNOSConnectionAPI api;
+  SetMockConnectionAPI(&api);
+  std::string env = skus::GetDefaultEnvironment();
+
+  EXPECT_CALL(api, CheckConnectionImpl(testing::_)).Times(1);
+  OnNetworkChanged();
   testing::Mock::VerifyAndClearExpectations(&api);
 
   SetMockConnectionAPI(nullptr);
