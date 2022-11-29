@@ -11,7 +11,7 @@ deps = {
     "condition": "checkout_win",
   },
   "vendor/sparkle": {
-    "url": "https://github.com/brave/Sparkle.git@f69ba7b7fae7dda475ba6cda12fba8d72270478d",
+    "url": "https://github.com/brave/Sparkle.git@FromAPI",
     "condition": "checkout_mac",
   },
   "vendor/bip39wally-core-native": "https://github.com/brave-intl/bat-native-bip39wally-core.git@0d3a8713a2b388d2156fe49a70ef3f7cdb44b190",
