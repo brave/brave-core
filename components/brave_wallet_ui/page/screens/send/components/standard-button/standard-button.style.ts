@@ -5,6 +5,9 @@
 
 import styled from 'styled-components'
 
+// Assets
+import { LoaderIcon } from 'brave-ui/components/icons'
+
 // Shared Styles
 import { StyledButton, Icon } from '../../shared.styles'
 
@@ -77,4 +80,12 @@ export const Button = styled(StyledButton) <StandardButtonStyleProps>`
 export const ErrorIcon = styled(Icon)`
   background-color: ${(p) => p.theme.color.errorBorder};
   margin-right: 12px;
+`
+
+export const LoadIcon = styled(LoaderIcon)`
+  color: ${p => p.theme.color.white};
+  height: 25px;
+  width: 25px;
+  opacity: .4;
+  margin-right: 10px;
 `

@@ -79,7 +79,8 @@ export const Send = (props: Props) => {
     setSendAmount,
     setToAddressOrUrl,
     submitSend,
-    selectSendAsset
+    selectSendAsset,
+    searchingForDomain
   } = useSend(true)
 
   // Hooks
@@ -176,25 +177,28 @@ export const Send = (props: Props) => {
   }, [spotPrices, selectedSendAsset, sendAmount, defaultCurrencies.fiat, sendAssetBalance, selectedSendOption])
 
   const reviewButtonText = React.useMemo(() => {
-    return sendAmountValidationError
-      ? getLocale('braveWalletDecimalPlacesError')
-      : insufficientFundsError
-        ? getLocale('braveWalletNotEnoughFunds')
-        : (addressError !== undefined && addressError !== '')
-          ? addressError
-          : (addressWarning !== undefined && addressWarning !== '')
-            ? addressWarning
-            : getLocale('braveWalletReviewOrder')
-  }, [insufficientFundsError, addressError, addressWarning, sendAmountValidationError])
+    return searchingForDomain
+      ? getLocale('braveWalletSearchingForDomain')
+      : sendAmountValidationError
+        ? getLocale('braveWalletDecimalPlacesError')
+        : insufficientFundsError
+          ? getLocale('braveWalletNotEnoughFunds')
+          : (addressError !== undefined && addressError !== '')
+            ? addressError
+            : (addressWarning !== undefined && addressWarning !== '')
+              ? addressWarning
+              : getLocale('braveWalletReviewOrder')
+  }, [insufficientFundsError, addressError, addressWarning, sendAmountValidationError, searchingForDomain])
 
   const isReviewButtonDisabled = React.useMemo(() => {
-    return toAddressOrUrl === '' ||
+    return searchingForDomain ||
+      toAddressOrUrl === '' ||
       parseFloat(sendAmount) === 0 ||
       sendAmount === '' ||
       insufficientFundsError ||
       (addressError !== undefined && addressError !== '') ||
       sendAmountValidationError !== undefined
-  }, [toAddressOrUrl, sendAmount, insufficientFundsError, addressError, sendAmountValidationError])
+  }, [toAddressOrUrl, sendAmount, insufficientFundsError, addressError, sendAmountValidationError, searchingForDomain])
 
   const selectedTokensNetwork = React.useMemo(() => {
     if (selectedSendAsset) {
@@ -347,8 +351,9 @@ export const Send = (props: Props) => {
           <DIVForWidth id={INPUT_WIDTH_ID}>{toAddressOrUrl}</DIVForWidth>
           <AddressInput
             placeholder={getLocale('braveWalletEnterRecipientAddress')}
-            hasError={
-              (addressError !== undefined && addressError !== '') ||
+            hasError={searchingForDomain
+              ? false
+              : (addressError !== undefined && addressError !== '') ||
               (addressWarning !== undefined && addressWarning !== '')
             }
             value={toAddressOrUrl}
@@ -362,11 +367,12 @@ export const Send = (props: Props) => {
           onClick={submitSend}
           buttonType='primary'
           buttonWidth='full'
+          isLoading={searchingForDomain}
           disabled={isReviewButtonDisabled}
-          hasError={
-            insufficientFundsError ||
-            (addressError !== undefined && addressError !== '')
-          }
+          hasError={searchingForDomain
+            ? false
+            : insufficientFundsError ||
+            (addressError !== undefined && addressError !== '')}
         />
       </SendContainer>
       <Background

@@ -942,6 +942,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletHelpCenter", IDS_BRAVE_WALLET_HELP_CENTER},
     {"braveWalletBuyTapBuyNotSupportedMessage",
      IDS_BRAVE_WALLET_BUY_TAB_BUY_NOT_SUPPORTED_MESSAGE},
+    {"braveWalletSearchingForDomain", IDS_BRAVE_WALLET_SEARCHING_FOR_DOMAIN},
     {"braveWalletPortfolioTokenDetailsMenuLabel",
      IDS_BRAVE_WALLET_PORTFOLIO_TOKEN_DETAILS_MENU_LABEL},
     {"braveWalletPortfolioViewOnExplorerMenuLabel",
