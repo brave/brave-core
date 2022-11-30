@@ -35,6 +35,14 @@ void BraveSiteSettingsHandler::RegisterMessages() {
   SiteSettingsHandler::RegisterMessages();
 }
 
+bool BraveSiteSettingsHandler::IsPatternValidForBraveContentType(
+    ContentSettingsType content_type,
+    const std::string& pattern_string) {
+  if (content_type != ContentSettingsType::BRAVE_SHIELDS)
+    return true;
+  return (pattern_string.find('*') == std::string::npos);
+}
+
 void BraveSiteSettingsHandler::HandleIsPatternValidForType(
     const base::Value::List& args) {
   CHECK_EQ(3U, args.size());
@@ -45,8 +53,7 @@ void BraveSiteSettingsHandler::HandleIsPatternValidForType(
   ContentSettingsType content_type =
       site_settings::ContentSettingsTypeFromGroupName(type);
 
-  if (!brave_shields::IsPatternValidForBraveContentType(content_type,
-                                                        pattern_string)) {
+  if (!IsPatternValidForBraveContentType(content_type, pattern_string)) {
     base::Value::Dict return_value;
     return_value.Set(kIsValidKey, base::Value(false));
     return_value.Set(kReasonKey, base::Value(l10n_util::GetStringUTF8(

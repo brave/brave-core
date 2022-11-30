@@ -1023,26 +1023,3 @@ TEST_F(BraveShieldsUtilTest, GetDomainBlockingType) {
   ExpectDomainBlockingType(GURL("https://brave.com"),
                            DomainBlockingType::k1PES);
 }
-
-TEST_F(BraveShieldsUtilTest, IsPatternValidForBraveContentType) {
-  EXPECT_FALSE(brave_shields::IsPatternValidForBraveContentType(
-      ContentSettingsType::BRAVE_SHIELDS, "*.*"));
-  EXPECT_FALSE(brave_shields::IsPatternValidForBraveContentType(
-      ContentSettingsType::BRAVE_SHIELDS, "*"));
-  EXPECT_FALSE(brave_shields::IsPatternValidForBraveContentType(
-      ContentSettingsType::BRAVE_SHIELDS, "*://nytimes.com"));
-  EXPECT_FALSE(brave_shields::IsPatternValidForBraveContentType(
-      ContentSettingsType::BRAVE_SHIELDS, "*.com"));
-  EXPECT_FALSE(brave_shields::IsPatternValidForBraveContentType(
-      ContentSettingsType::BRAVE_SHIELDS, "brave[.*]"));
-  EXPECT_FALSE(brave_shields::IsPatternValidForBraveContentType(
-      ContentSettingsType::BRAVE_SHIELDS, "[*.]nytimes.com"));
-  EXPECT_TRUE(brave_shields::IsPatternValidForBraveContentType(
-      ContentSettingsType::BRAVE_SHIELDS, "nytimes.com"));
-  EXPECT_TRUE(brave_shields::IsPatternValidForBraveContentType(
-      ContentSettingsType::BRAVE_SHIELDS, "www.nytimes.com"));
-  EXPECT_TRUE(brave_shields::IsPatternValidForBraveContentType(
-      ContentSettingsType::BRAVE_SHIELDS, "https://www.nytimes.com"));
-  EXPECT_TRUE(brave_shields::IsPatternValidForBraveContentType(
-      ContentSettingsType::COOKIES, "[*.].nytimes.com"));
-}

@@ -63,6 +63,11 @@ class TestBraveSiteSettingsHandlerUnittest : public testing::Test {
   void HandleIsPatternValidForType(const base::Value::List& args) {
     handler_->HandleIsPatternValidForType(args);
   }
+  bool IsPatternValidForBraveContentType(ContentSettingsType content_type,
+                                         const std::string& pattern_string) {
+    return handler_->IsPatternValidForBraveContentType(content_type,
+                                                       pattern_string);
+  }
 
  private:
   std::unique_ptr<BraveSiteSettingsHandler> handler_;
@@ -111,4 +116,27 @@ TEST_F(TestBraveSiteSettingsHandlerUnittest, ValidNonShieldsType) {
   EXPECT_EQ(*data->arg3(), GetResponsePayload(true, std::string()));
 }
 
+TEST_F(TestBraveSiteSettingsHandlerUnittest,
+       IsPatternValidForBraveContentType) {
+  EXPECT_FALSE(IsPatternValidForBraveContentType(
+      ContentSettingsType::BRAVE_SHIELDS, "*.*"));
+  EXPECT_FALSE(IsPatternValidForBraveContentType(
+      ContentSettingsType::BRAVE_SHIELDS, "*"));
+  EXPECT_FALSE(IsPatternValidForBraveContentType(
+      ContentSettingsType::BRAVE_SHIELDS, "*://nytimes.com"));
+  EXPECT_FALSE(IsPatternValidForBraveContentType(
+      ContentSettingsType::BRAVE_SHIELDS, "*.com"));
+  EXPECT_FALSE(IsPatternValidForBraveContentType(
+      ContentSettingsType::BRAVE_SHIELDS, "brave[.*]"));
+  EXPECT_FALSE(IsPatternValidForBraveContentType(
+      ContentSettingsType::BRAVE_SHIELDS, "[*.]nytimes.com"));
+  EXPECT_TRUE(IsPatternValidForBraveContentType(
+      ContentSettingsType::BRAVE_SHIELDS, "nytimes.com"));
+  EXPECT_TRUE(IsPatternValidForBraveContentType(
+      ContentSettingsType::BRAVE_SHIELDS, "www.nytimes.com"));
+  EXPECT_TRUE(IsPatternValidForBraveContentType(
+      ContentSettingsType::BRAVE_SHIELDS, "https://www.nytimes.com"));
+  EXPECT_TRUE(IsPatternValidForBraveContentType(ContentSettingsType::COOKIES,
+                                                "[*.].nytimes.com"));
+}
 }  // namespace settings

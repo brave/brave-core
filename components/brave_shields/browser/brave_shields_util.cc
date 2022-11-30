@@ -701,11 +701,4 @@ ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map) {
   return GetAdsSettingCountFromRules(cosmetic_rules);
 }
 
-bool IsPatternValidForBraveContentType(ContentSettingsType content_type,
-                                       const std::string& pattern_string) {
-  if (content_type != ContentSettingsType::BRAVE_SHIELDS)
-    return true;
-  return (pattern_string.find('*') == std::string::npos);
-}
-
 }  // namespace brave_shields
