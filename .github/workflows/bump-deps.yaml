@@ -43,7 +43,7 @@ jobs:
           [[ "${DEP:?}" =~ ^[a-zA-Z/-]+$ ]] || { echo Input dependency validation failed; exit 1; }
           if [[ -z "${DEPREF}" ]]; then
             echo "Attempting to guess ref hash"
-            DEP_REPO=$(sed -n '/deps = {/, /^}/p' DEPS | sed 's/deps = //' | python3 -c "import sys,ast; d=ast.literal_eval(sys.stdin.read()); print(d[\"vendor/omaha\"][\"url\"])" | grep -Po '(?<=github.com/).*?(?=.git@)')
+            DEP_REPO=$(sed -n '/deps = {/, /^}/p' DEPS | sed 's/deps = //' | python3 -c "import sys,ast; d=ast.literal_eval(sys.stdin.read()); dep=d[\""$DEP"\"]; print(dep) if isinstance(dep, str) else print(dep.get(\"url\")) "| grep -Po '(?<=github.com/).*?(?=.git@)')
             gh api /repos/"${DEP_REPO}"/commits/master -q .sha > /tmp/DEPREF || gh api /repos/"${DEP_REPO}"/commits/main -q .sha > /tmp/DEPREF
             DEPREF=$(</tmp/DEPREF)
           fi
