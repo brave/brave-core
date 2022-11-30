@@ -34,25 +34,26 @@ jobs:
         run: |
           set -x
 
-          # git config user.email "${{ github.actor }}@users.noreply.github.com"
-          # git config user.name "${{ github.actor }}"
-          # git config push.default simple
-          gh api /repos/brave/web-discovery-project/commits/main -q .sha
-
           SED=sed
-          DATE=date
 
           # Inputs
           DEP="${{ inputs.dep }}"
           DEPREF="${{ inputs.ref }}"
+
           [[ "${DEP:?}" =~ ^[a-zA-Z/-]+$ ]] || { echo Input dependency validation failed; exit 1; }
+          if [[ -z "${DEPREF}" ]]; then
+            echo "Attempting to guess ref hash"
+            DEP_REPO=$(sed -n '/deps = {/, /^}/p' DEPS | sed 's/deps =//' | python3 -c "import sys,ast; d=ast.literal_eval(sys.stdin.read()); print(d[\"vendor/omaha\"][\"url\"])" | grep -Po '(?<=github.com/).*?(?=.git@)')
+            gh api /repos/"${DEP_REPO}"/commits/master -q .sha > /tmp/DEPREF || gh api /repos/"${DEP_REPO}"/commits/main -q .sha > /tmp/DEPREF
+            DEPREF=$(</tmp/DEPREF)
+          fi
           [[ "${DEPREF:?}" =~ ^[a-z0-9]+$ ]] || { echo Dependency reference validation failed; exit 1; }
 
           readarray -t milestones < <(gh api /repos/${GITHUB_REPOSITORY:?}/milestones -q ".[] | .title" | grep -Fv Closed)
           branches=( "${milestones[@]/*Nightly/master}" )
           branches=( "${branches[@]/ -*/}" )
           echo "Branches to operate on: ${branches[*]}"
-          for branch in "${branches[@]}"
+          for branch in "${branches[2]}"
           do
             git switch "$branch"
             pr_branch="pr-auto-bump-deps-${branch}-${DEP}-${DEPREF}"
@@ -65,5 +66,5 @@ jobs:
             gh api --method PUT /repos/${GITHUB_REPOSITORY}/contents/DEPS --field message="Auto bump DEPS ${DEP}@${DEPREF}" --field content=@<( base64 -i DEPS ) --field encoding="base64" --field branch="$pr_branch" --field sha=$( git rev-parse $pr_branch:DEPS )
             git restore DEPS
             git pull
-            gh pr create --base "${branch}" -f -t "[TESTING] Auto bump DEPS ${DEP}@${DEPREF}" -l "CI/run-audit-deps"
+            # gh pr create --base "${branch}" -f -t "Auto bump DEPS ${DEP}@${DEPREF}" -l "CI/run-audit-deps"
           done
