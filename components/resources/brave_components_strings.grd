@@ -438,34 +438,6 @@
       <message name="IDS_BRAVE_WEBCOMPATREPORTER_THANK_YOU" desc="Thanks the user for submitting a report of a broken website">Thank you!</message>
       <message name="IDS_BRAVE_WEBCOMPATREPORTER_CONFIRMATION_NOTICE" desc="Assures the user that a problem with a website reported as broken will be fixed soon">Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!</message>
 
-      <!-- WebUI welcome page resources -->
-      <message name="IDS_BRAVE_WELCOME_PAGE_MAIN_TITLE" desc="Welcome message title">Brave the new Internet</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_MAIN_DESC" desc="Welcome message description">Get ready to enjoy a faster and more secure browsing experience with a browser built to protect your privacy.</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_MAIN_BUTTON" desc="Button that moves to the next welcome screen">Let's go</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_TITLE" desc="Welcome message title for Brave Rewards">Brave Rewards</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_DESC" desc="Explainer text about Brave Rewards"><ph name="BEGIN_BOLD">$1</ph>Earn tokens<ph name="END_BOLD">$2</ph> by viewing Brave Private Ads and support content creators automatically.</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_TERMS" desc="Brave Rewards terms of service links">By clicking, you agree to the <ph name="BEGIN_LINK">$1</ph>Terms of Service<ph name="END_LINK">$2</ph> and <ph name="BEGIN_LINK">$3</ph>Privacy Policy<ph name="END_LINK">$4</ph>.</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_NOTE" desc="Note describing how to turn off rewards">You can turn this off at any time in settings.</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_BUTTON" desc="Button to enable Brave Rewards from the welcome page">Start using Rewards</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_TITLE" desc="Welcome message title for import from another browser">Import bookmarks and settings</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_DESC" desc="Explainer text about importing from another browser">Set up your usual browsing environment by importing bookmarks and settings from your old browser. Advanced import options can be found in Settings.</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_BUTTON" desc="Button to import from another browser">Import</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_FROM_DESC" desc="Default option message for selecting import sources">Import from...</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_TITLE" desc="Welcome message title for shields">Manage your shields</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_DESC" desc="Explainer text about shields">Protect against privacy-invading ads and trackers while browsing with Brave Shields. Set Shields to "down" if a site doesn’t seem to be working properly.</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_BUTTON" desc="Button to open shield settings">Shield Settings</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_DEFAULT_TEXT" desc="Indicator text to show current default">default</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_SET_DEFAULT_SEARCH_BUTTON" desc="Button to confirm default search engine">Set default</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_SEARCH_SELECT" desc="Default option message for selecting search engines">Select a search engine</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_SEARCH_DESC" desc="Explainer text about search engines in Brave">Choose the search engine you would like to use by default when searching the web from the address bar.</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_SEARCH_TITLE" desc="Welcome message title for search engines">Set default search engine</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_SKIP_BUTTON" desc="Button to skip the welcome tour and go to the new tab page">Skip welcome tour</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_NEXT_BUTTON" desc="Button to move to the next slide of the welcome tour">Next</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON" desc="Button that ends the welcome tour and moves the user to the new tab page">Done</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_PRIVACY_TITLE" desc="Title for the P3A panel">Browse safe and sound</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_PRIVACY_DESC" desc="Description for the P3A panel">
-        Brave Shields blocks the creepy stuff that tries to track you across the web — including most ads. Set Shields to &#8220;down&#8221; if a site doesn’t seem to be working. Brave uses <ph name="BEGIN_LINK_P3A">$1</ph>completely private product analytics<ph name="END_LINK_P3A">$1</ph> to estimate the overall usage of certain features. You can turn this off in <ph name="BEGIN_LINK_P3A_SETTINGS">$1</ph>Settings<ph name="END_LINK_P3A_SETTINGS">$1</ph>.
-      </message>
       <!-- WebUI rewards resources -->
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Brave Private Ads</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">Earn [[currency]] by viewing Brave Private Ads. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.</message>
