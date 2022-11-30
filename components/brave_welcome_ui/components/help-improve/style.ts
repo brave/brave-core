@@ -67,7 +67,7 @@ export const Grid = styled.div`
     border: 1px solid ${(p) => p.theme.color.interactive08};
 
     &:checked {
-      accent-color: ${(p) => p.theme.color.interactive05};
+      accent-color: var(--interactive5);
     }
   }
 `

@@ -63,7 +63,7 @@ export const MainBox = styled.div`
 `
 
 export const ProfileListBox = styled.div`
-  color: ${(p) => p.theme.color.text01};
+  color: #212529;
   font-size: 16px;
   font-weight: 400;
   margin-bottom: 55px;
@@ -141,7 +141,7 @@ export const ProfileListBox = styled.div`
     border: 1px solid ${(p) => p.theme.color.interactive08};
 
     &:checked {
-      accent-color: ${(p) => p.theme.color.interactive05};
+      accent-color: var(--interactive5);
     }
   }
 `

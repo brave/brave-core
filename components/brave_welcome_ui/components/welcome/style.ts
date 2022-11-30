@@ -59,4 +59,8 @@ export const ActionBox = styled.div`
   flex-direction: column;
   grid-gap: 10px;
   margin-bottom: 40px;
+
+  button {
+    color: white;
+  }
 `
