@@ -64,7 +64,7 @@ jobs:
                       -e "/^\s*\"${DEP//\//\\/}\"\s*:\s*{/,/@/ s/@[^\"]*/@$DEPREF/" DEPS
             # git add DEPS
             # git commit -m "Auto bump DEPS ${DEP}@${DEPREF}"
-            git push --delete origin "$pr_branch" # TODO remove
+            git push --delete origin "$pr_branch" || : # TODO remove
             git push -u origin "$pr_branch"
             gh api --method PUT /repos/${GITHUB_REPOSITORY}/contents/DEPS --field message="Auto bump DEPS ${DEP}@${DEPREF}" --field content=@<( base64 -i DEPS ) --field encoding="base64" --field branch="$pr_branch" --field sha=$( git rev-parse $pr_branch:DEPS )
             git restore DEPS
