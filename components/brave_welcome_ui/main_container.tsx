@@ -11,11 +11,12 @@ import { ViewType } from './state/component_types'
 
 import HelpImprove from './components/help-improve'
 import ImportInProgress from './components/import-in-progress'
-import SelectBrowser from './components/select-browser'
-import SelectProfile from './components/select-profile'
-import SetupComplete from './components/setup-complete'
 import Background from './components/background'
 import Welcome from './components/welcome'
+
+const SelectBrowser = React.lazy(() => import('./components/select-browser'))
+const SelectProfile = React.lazy(() => import('./components/select-profile'))
+const SetupComplete = React.lazy(() => import('./components/setup-complete'))
 
 function MainContainer () {
   const { viewType } = React.useContext(DataContext)
@@ -49,7 +50,9 @@ function MainContainer () {
 
   return (
     <Background static={!shouldPlayAnimations}>
-      {mainEl}
+      <React.Suspense fallback={<div>Loading...</div>}>
+        {mainEl}
+      </React.Suspense>
     </Background>
   )
 }

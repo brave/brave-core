@@ -64,10 +64,10 @@ export function useProfileCount () {
 }
 
 export function useShouldPlayAnimations () {
-  const [shouldPlayAnimations] = React.useState(
+  const [shouldPlayAnimations] = React.useState(() => (
     loadTimeData.getBoolean('hardwareAccelerationEnabledAtStartup') &&
     !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  )
+  ))
 
   return shouldPlayAnimations
 }
