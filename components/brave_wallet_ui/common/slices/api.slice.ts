@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { createApi } from '@reduxjs/toolkit/query/react'
 import { EntityId } from '@reduxjs/toolkit'
+import { createApi } from '@reduxjs/toolkit/query/react'
 
 // types
 import {
@@ -43,6 +43,12 @@ import WalletApiProxy from '../wallet_api_proxy'
 import { addLogoToToken, getAssetIdKey, GetBlockchainTokenIdArg } from '../../utils/asset-utils'
 import { getEntitiesListFromEntityState } from '../../utils/entities.utils'
 import { makeNetworkAsset } from '../../options/asset-options'
+import { getTokenParam } from '../../utils/api-utils'
+
+export type AssetPriceById = BraveWallet.AssetPrice & {
+  id: EntityId
+  fromAssetId: EntityId
+}
 
 export function createWalletApi (
   getProxy: () => WalletApiProxy = () => getAPIProxy()
@@ -54,18 +60,20 @@ export function createWalletApi (
     },
     tagTypes: [
       ...cacher.defaultTags,
-      'Network',
-      'TestnetsEnabled',
-      'SelectedCoin',
-      'WalletInfo',
       'AccountInfos',
-      'DefaultAccountAddresses',
-      'SelectedAccountAddress',
       'ChainIdForCoinType',
-      'SelectedChainId',
+      'DefaultAccountAddresses',
+      'DefaultFiatCurrency',
+      'ERC721Metadata',
       'KnownBlockchainTokens',
+      'Network',
+      'SelectedAccountAddress',
+      'SelectedChainId',
+      'SelectedCoin',
+      'TestnetsEnabled',
+      'TokenSpotPrice',
       'UserBlockchainTokens',
-      'ERC721Metadata'
+      'WalletInfo'
     ],
     endpoints: ({ mutation, query }) => ({
       //
@@ -170,6 +178,42 @@ export function createWalletApi (
           }
         },
         providesTags: ['SelectedAccountAddress']
+      }),
+      //
+      // Default Currencies
+      //
+      getDefaultFiatCurrency: query<string, void>({
+        async queryFn (arg, api, extraOptions, baseQuery) {
+          try {
+            const { braveWalletService } = baseQuery(undefined).data
+            const { currency } = await braveWalletService.getDefaultBaseCurrency()
+            const defaultFiatCurrency = currency.toLowerCase()
+            return {
+              data: defaultFiatCurrency
+            }
+          } catch (error) {
+            return {
+              error: 'Unable to fetch default fiat currency'
+            }
+          }
+        },
+        providesTags: ['DefaultFiatCurrency']
+      }),
+      setDefaultFiatCurrency: mutation<string, string>({
+        async queryFn (currencyArg, api, extraOptions, baseQuery) {
+          try {
+            const { braveWalletService } = baseQuery(undefined).data
+            braveWalletService.setDefaultBaseCurrency(currencyArg)
+            return {
+              data: currencyArg
+            }
+          } catch (error) {
+            return {
+              error: `Unable to set default fiat currency to ${currencyArg}`
+            }
+          }
+        },
+        invalidatesTags: ['DefaultFiatCurrency']
       }),
       //
       // Networks
@@ -288,6 +332,52 @@ export function createWalletApi (
           }
         },
         invalidatesTags: cacher.invalidatesList('Network')
+      }),
+      //
+      // Prices
+      //
+      getTokenSpotPrice: query<AssetPriceById, GetBlockchainTokenIdArg>({
+        async queryFn (tokenArg, { dispatch }, extraOptions, baseQuery) {
+          try {
+            const { assetRatioService } = baseQuery(undefined).data
+
+            const defaultFiatCurrency = await dispatch(
+              walletApi.endpoints.getDefaultFiatCurrency.initiate()
+            ).unwrap()
+
+            // send the correct token identifier to the ratio service
+            const getPriceTokenParam = getTokenParam(tokenArg)
+
+            // create a cache id using the provided args
+            const tokenPriceCacheId = `${getPriceTokenParam}-${defaultFiatCurrency}`
+
+            const { success, values } = await assetRatioService.getPrice(
+              [getPriceTokenParam],
+              [defaultFiatCurrency],
+              0
+            )
+
+            if (!success || !values[0]) {
+              throw new Error()
+            }
+
+            const tokenPrice: AssetPriceById = {
+              id: tokenPriceCacheId,
+              ...values[0],
+              fromAsset: tokenArg.symbol.toLowerCase(),
+              fromAssetId: getAssetIdKey(tokenArg)
+            }
+
+            return {
+              data: tokenPrice
+            }
+          } catch (error) {
+            return {
+              error: `Unable to find price for token ${tokenArg.symbol}`
+            }
+          }
+        },
+        providesTags: cacher.cacheByIdResultProperty('TokenSpotPrice')
       }),
       //
       // Tokens
@@ -541,22 +631,37 @@ export const {
   reducer: walletApiReducer,
   reducerPath: walletApiReducerPath,
   // hooks
-  useGetAllNetworksQuery,
-  useGetIsTestNetworksEnabledQuery,
-  useIsEip1559ChangedMutation,
-  useLazyGetAllNetworksQuery,
-  useLazyGetIsTestNetworksEnabledQuery,
-  useSetSelectedCoinMutation,
-  useGetSelectedCoinQuery,
   useAddUserTokenMutation,
+  useGetAccountInfosRegistryQuery,
+  useGetAllNetworksQuery,
+  useGetChainIdForCoinQuery,
+  useGetDefaultAccountAddressesQuery,
   useGetERC721MetadataQuery,
+  useGetIsTestNetworksEnabledQuery,
+  useGetSelectedAccountAddressQuery,
+  useGetSelectedChainIdQuery,
+  useGetSelectedCoinQuery,
+  useGetTokenSpotPriceQuery,
   useGetTokensRegistryQuery,
   useGetUserTokensRegistryQuery,
+  useGetWalletInfoBaseQuery,
+  useIsEip1559ChangedMutation,
+  useLazyGetAccountInfosRegistryQuery,
+  useLazyGetAllNetworksQuery,
+  useLazyGetChainIdForCoinQuery,
+  useLazyGetDefaultAccountAddressesQuery,
   useLazyGetERC721MetadataQuery,
+  useLazyGetIsTestNetworksEnabledQuery,
+  useLazyGetSelectedAccountAddressQuery,
+  useLazyGetSelectedChainIdQuery,
+  useLazyGetSelectedCoinQuery,
+  useLazyGetTokenSpotPriceQuery,
   useLazyGetTokensRegistryQuery,
   useLazyGetUserTokensRegistryQuery,
-  useLazyGetSelectedCoinQuery,
-  usePrefetch
+  useLazyGetWalletInfoBaseQuery,
+  usePrefetch,
+  useSetSelectedAccountMutation,
+  useSetSelectedCoinMutation
 } = walletApi
 
 export type WalletApiSliceState = ReturnType<typeof walletApi['reducer']>
