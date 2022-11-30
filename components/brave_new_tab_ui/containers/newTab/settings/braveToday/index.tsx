@@ -22,9 +22,6 @@ export interface Props {
   onClearPrefs: () => any
   showToday: boolean
   toggleShowToday: () => any
-  showBraveNewsButton: boolean
-  featureFlagBraveNewsSubscribeButtonEnabled: boolean
-  toggleShowBraveNewsButton: () => any
 }
 
 export default function BraveTodayPrefs (props: Props) {
@@ -61,16 +58,6 @@ export default function BraveTodayPrefs (props: Props) {
           />
         </SettingsRow>
       )}
-      {!category &&
-        props.showToday &&
-        props.featureFlagBraveNewsSubscribeButtonEnabled &&
-        <SettingsRow>
-          <SettingsText>{getLocale('braveTodayShowToolbarButton')}</SettingsText>
-          <Toggle
-            checked={props.showBraveNewsButton}
-            onChange={props.toggleShowBraveNewsButton}
-            size='large'/>
-        </SettingsRow>}
       {shouldShowSources &&
       <Sources category={category} setCategory={setCategory} {...props} />
       }
