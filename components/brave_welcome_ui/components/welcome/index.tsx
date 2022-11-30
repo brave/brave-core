@@ -12,7 +12,7 @@ import { WelcomeBrowserProxyImpl, DefaultBrowserBrowserProxyImpl } from '../../a
 import { ViewType } from '../../state/component_types'
 import Button from '$web-components/button'
 import { getLocale } from '$web-common/locale'
-import braveLogoUrl from '../../assets/brave_logo_3d@2x.png'
+import braveLogoUrl from '../../assets/brave_logo_3d@2x.webp'
 
 function Welcome () {
   const { setViewType, scenes } = React.useContext(DataContext)

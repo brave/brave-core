@@ -4,10 +4,11 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import skyeBgUrl from '../../assets/sky.jpg'
-import hillBgUrl from '../../assets/hill.png'
-import pyramidBgUrl from '../../assets/pyramid.png'
-import backgroundUrl2x from '../../assets/background@2x.jpg'
+
+import skyeBgUrl from '../../assets/sky.webp'
+import hillBgUrl from '../../assets/hill.webp'
+import pyramidBgUrl from '../../assets/pyramid.webp'
+import backgroundUrl2x from '../../assets/background@2x.webp'
 
 export const Box = styled.div`
 
