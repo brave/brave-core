@@ -41,6 +41,9 @@ class AssetDetailStore: ObservableObject {
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
     didSet {
       currencyFormatter.currencyCode = currencyCode
+      guard oldValue != currencyCode, // only if currency code changed
+            !isInitialState // only update if we're not in initial state
+      else { return }
       update()
     }
   }
@@ -149,16 +152,16 @@ class AssetDetailStore: ObservableObject {
     isLoadingAccountBalances = true
     typealias AccountBalance = (account: BraveWallet.AccountInfo, balance: Double?)
     let tokenBalances = await withTaskGroup(of: [AccountBalance].self) { @MainActor group -> [AccountBalance] in
-      for account in keyring.accountInfos {
+      for accountAssetViewModel in accountAssetViewModels {
         group.addTask { @MainActor in
-          let balance = await self.rpcService.balance(for: self.token, in: account, network: network)
-          return [AccountBalance(account, balance)]
+          let balance = await self.rpcService.balance(for: self.token, in: accountAssetViewModel.account, network: network)
+          return [AccountBalance(accountAssetViewModel.account, balance)]
         }
       }
       return await group.reduce([AccountBalance](), { $0 + $1 })
     }
     for tokenBalance in tokenBalances {
-      if let index = accounts.firstIndex(where: { $0.account.address == tokenBalance.account.address }) {
+      if let index = accountAssetViewModels.firstIndex(where: { $0.account.address == tokenBalance.account.address }) {
         accountAssetViewModels[index].decimalBalance = tokenBalance.balance ?? 0.0
         if token.isErc721 || token.isNft {
           accountAssetViewModels[index].balance = (tokenBalance.balance ?? 0) > 0 ? "1" : "0"

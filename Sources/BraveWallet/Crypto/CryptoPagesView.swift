@@ -74,7 +74,8 @@ struct CryptoPagesView: View {
         .sheet(isPresented: $cryptoStore.isPresentingAssetSearch) {
           AssetSearchView(
             keyringStore: keyringStore,
-            cryptoStore: cryptoStore
+            cryptoStore: cryptoStore,
+            userAssetsStore: cryptoStore.portfolioStore.userAssetsStore
           )
         }
     )

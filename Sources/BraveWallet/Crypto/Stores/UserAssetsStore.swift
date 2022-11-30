@@ -90,42 +90,12 @@ public class UserAssetsStore: ObservableObject {
       case let .network(network):
         networks = [network]
       }
-      struct AssetsForNetwork: Equatable {
-        let network: BraveWallet.NetworkInfo
-        let tokens: [BraveWallet.BlockchainToken]
-        let sortOrder: Int
-      }
-      let allUserAssets = await withTaskGroup(
-        of: [AssetsForNetwork].self,
-        body: { @MainActor group -> [AssetsForNetwork] in
-          for (index, network) in networks.enumerated() {
-            group.addTask { @MainActor in
-              let userAssets = await self.walletService.userAssets(network.chainId, coin: network.coin)
-              return [AssetsForNetwork(network: network, tokens: userAssets, sortOrder: index)]
-            }
-          }
-          return await group.reduce([AssetsForNetwork](), { $0 + $1 })
-            .sorted(by: { $0.sortOrder < $1.sortOrder }) // maintain sort order of networks
-        }
-      )
-      
-      var allTokens = await withTaskGroup(
-        of: [AssetsForNetwork].self,
-        body: { @MainActor group -> [AssetsForNetwork] in
-          for (index, network) in networks.enumerated() {
-            group.addTask { @MainActor in
-              let allTokens = await self.blockchainRegistry.allTokens(network.chainId, coin: network.coin)
-              return [AssetsForNetwork(network: network, tokens: allTokens + [network.nativeToken], sortOrder: index)]
-            }
-          }
-          return await group.reduce([AssetsForNetwork](), { $0 + $1 })
-            .sorted(by: { $0.sortOrder < $1.sortOrder }) // maintain sort order of networks
-        }
-      )
+      let allUserAssets = await self.walletService.allUserAssets(in: networks)
+      var allTokens = await self.blockchainRegistry.allTokens(in: networks)
       // Filter `allTokens` to remove any tokens existing in `allUserAssets`. This is possible for ERC721 tokens in the registry without a `tokenId`, which requires the user to add as a custom token
       let allUserTokens = allUserAssets.flatMap(\.tokens)
       allTokens = allTokens.map { assetsForNetwork in
-        AssetsForNetwork(
+        NetworkAssets(
           network: assetsForNetwork.network,
           tokens: assetsForNetwork.tokens.filter { token in
             !allUserTokens.contains(where: { $0.id == token.id })
@@ -210,6 +180,34 @@ public class UserAssetsStore: ObservableObject {
   @MainActor func networkInfo(by chainId: String, coin: BraveWallet.CoinType) async -> BraveWallet.NetworkInfo? {
     let allNetworks = await rpcService.allNetworks(coin)
     return allNetworks.first { $0.chainId.caseInsensitiveCompare(chainId) == .orderedSame }
+  }
+  
+  @MainActor func allAssets() async -> [AssetViewModel] {
+    let allNetworks = await rpcService.allNetworksForSupportedCoins()
+    let allUserAssets = await walletService.allUserAssets(in: allNetworks)
+    // Filter `allTokens` to remove any tokens existing in `allUserAssets`. This is possible for ERC721 tokens in the registry without a `tokenId`, which requires the user to add as a custom token
+    let allUserTokens = allUserAssets.flatMap(\.tokens)
+    let allBlockchainTokens = await blockchainRegistry.allTokens(in: allNetworks)
+      .map { assetsForNetwork in
+        NetworkAssets(
+          network: assetsForNetwork.network,
+          tokens: assetsForNetwork.tokens.filter { token in
+            !allUserTokens.contains(where: { $0.id == token.id })
+          },
+          sortOrder: assetsForNetwork.sortOrder)
+      }
+    
+    return (allUserAssets + allBlockchainTokens).flatMap { networkAssets in
+      networkAssets.tokens.map { token in
+        AssetViewModel(
+          token: token,
+          network: networkAssets.network,
+          decimalBalance: 0,
+          price: "",
+          history: []
+        )
+      }
+    }
   }
 }
 
