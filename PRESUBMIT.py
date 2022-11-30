@@ -74,9 +74,6 @@ def CheckLicense(input_api, output_api):
         'year': current_year,
     }
 
-    assert new_file_license_re.search(expected_license_template)
-    assert existing_file_license_re.search(expected_license_template)
-
     bad_new_files = []
     bad_files = []
     sources = lambda affected_file: input_api.FilterSourceFile(
@@ -94,10 +91,23 @@ def CheckLicense(input_api, output_api):
             if not existing_file_license_re.search(contents):
                 bad_files.append(f.LocalPath())
 
+    splitted_expected_license_template = expected_license_template.replace(
+        "# ", "").split('\n')
+    multiline_comment_expected_license = (
+        f'/* {splitted_expected_license_template[0]}\n'
+        f' * {splitted_expected_license_template[1]}\n'
+        f' * {splitted_expected_license_template[2]}\n'
+        f' * {splitted_expected_license_template[3]} */\n')
+    assert new_file_license_re.search(expected_license_template)
+    assert existing_file_license_re.search(expected_license_template)
+    assert new_file_license_re.search(multiline_comment_expected_license)
+    assert existing_file_license_re.search(multiline_comment_expected_license)
+
     # Show this to simplify copy-paste when an invalid license is found.
     expected_license_message = (
         f'Expected one of license headers:\n'
         f'{expected_license_template.replace("#", "//")}\n'
+        f'{multiline_comment_expected_license}\n'
         f'{expected_license_template}')
 
     result = []
