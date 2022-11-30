@@ -857,7 +857,7 @@ TEST_F(SolanaProviderImplUnitTest, GetDeserializedMessage) {
   deserialized_msg = provider_->GetDeserializedMessage(
       Base58Encode(*serialized_msg),
       "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw");
-  EXPECT_FALSE(deserialized_msg);
+  EXPECT_TRUE(deserialized_msg);
 }
 
 TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIs) {
