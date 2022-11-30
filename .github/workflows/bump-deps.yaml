@@ -48,6 +48,7 @@ jobs:
             DEPREF=$(</tmp/DEPREF)
           fi
           [[ "${DEPREF:?}" =~ ^[a-z0-9]+$ ]] || { echo Dependency reference validation failed; exit 1; }
+          ! $(grep -q "$DEPREF" DEPS) || { echo Dependency reference alread exists in DEPS. Cannot continue; exit 1; }
 
           readarray -t milestones < <(gh api /repos/${GITHUB_REPOSITORY:?}/milestones -q ".[] | .title" | grep -Fv Closed)
           branches=( "${milestones[@]/*Nightly/master}" )
@@ -57,6 +58,7 @@ jobs:
           do
             git switch "$branch"
             pr_branch="pr-auto-bump-deps-${branch}-${DEP}-${DEPREF}"
+            if git rev-parse --verify "$pr_branch"; then continue; fi # Skip duplicate
             git switch -c "$pr_branch"
             "$SED" -i -e "s,^\(\s*\"$DEP\"\s*:\s*\"https.*\)@[^\"]*\",\1@$DEPREF\"," \
                       -e "/^\s*\"${DEP//\//\\/}\"\s*:\s*{/,/@/ s/@[^\"]*/@$DEPREF/" DEPS
