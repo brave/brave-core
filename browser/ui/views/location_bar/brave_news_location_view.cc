@@ -74,6 +74,9 @@ class BraveNewsButtonView : public views::LabelButton,
                       profile->GetPrefs(),
                       base::BindRepeating(&BraveNewsButtonView::Update,
                                           base::Unretained(this)));
+    opted_in_.Init(brave_news::prefs::kBraveTodayOptedIn, profile->GetPrefs(),
+                   base::BindRepeating(&BraveNewsButtonView::Update,
+                                       base::Unretained(this)));
     news_enabled_.Init(brave_news::prefs::kNewTabPageShowToday,
                        profile->GetPrefs(),
                        base::BindRepeating(&BraveNewsButtonView::Update,
@@ -93,7 +96,8 @@ class BraveNewsButtonView : public views::LabelButton,
   BraveNewsButtonView& operator=(const BraveNewsButtonView&) = delete;
 
   void Update() {
-    if (!should_show_.GetValue() || !news_enabled_.GetValue()) {
+    if (!should_show_.GetValue() || !news_enabled_.GetValue() ||
+        !opted_in_.GetValue()) {
       SetVisible(false);
       return;
     }
@@ -190,6 +194,7 @@ class BraveNewsButtonView : public views::LabelButton,
   }
 
   BooleanPrefMember should_show_;
+  BooleanPrefMember opted_in_;
   BooleanPrefMember news_enabled_;
 
   base::raw_ptr<Profile> profile_;
