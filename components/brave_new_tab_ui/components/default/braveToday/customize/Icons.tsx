@@ -47,7 +47,7 @@ const Technology = <svg width="20" height="20" viewBox="0 0 20 20" fill="none" x
       <rect width="20" height="20" fill="white" />
     </clipPath>
   </defs>
-</svg>;
+</svg>
 
 const RegionNews = <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g clipPath="url(#clip0_1136_16112)">
@@ -58,7 +58,7 @@ const RegionNews = <svg width="20" height="20" viewBox="0 0 20 20" fill="none" x
       <rect width="20" height="20" fill="white" />
     </clipPath>
   </defs>
-</svg>;
+</svg>
 
 export const channels = {
   'default': <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
