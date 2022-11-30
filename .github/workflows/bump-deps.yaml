@@ -12,7 +12,7 @@ on:
         default: "vendor/web-discovery-project"
       ref:
         description: "New ref for dependency"
-        required: true
+        required: false
         type: string
 
 permissions:
