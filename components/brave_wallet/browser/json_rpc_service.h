@@ -19,6 +19,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
+#include "brave/components/brave_wallet/browser/nft_metadata_fetcher.h"
 #include "brave/components/brave_wallet/browser/sns_resolver_task.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"
@@ -29,7 +30,6 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
-#include "services/data_decoder/public/cpp/json_sanitizer.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -43,6 +43,7 @@ class PrefService;
 namespace brave_wallet {
 
 class EnsResolverTask;
+class NftMetadataFetcher;
 
 class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
  public:
@@ -90,11 +91,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       base::OnceCallback<void(const std::vector<Log>& logs,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
-  using GetTokenMetadataIntermediateCallback =
-      base::OnceCallback<void(const std::string& response,
-                              int error,
-                              const std::string& error_message)>;
-
   void GetBlockNumber(GetBlockNumberCallback callback);
   void GetFeeHistory(GetFeeHistoryCallback callback);
 
@@ -303,20 +299,27 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                              const std::string& chain_id,
                              GetERC721TokenBalanceCallback callback) override;
 
-  using GetEthTokenMetadataCallback =
-      base::OnceCallback<void(const std::string& result,
+  using GetEthTokenUriCallback =
+      base::OnceCallback<void(const GURL& uri,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
 
   void GetERC721Metadata(const std::string& contract_address,
                          const std::string& token_id,
                          const std::string& chain_id,
-                         GetEthTokenMetadataCallback callback) override;
+                         GetERC721MetadataCallback callback) override;
 
   void GetERC1155Metadata(const std::string& contract_address,
                           const std::string& token_id,
                           const std::string& chain_id,
-                          GetEthTokenMetadataCallback callback) override;
+                          GetERC1155MetadataCallback callback) override;
+  // GetEthTokenUri should only be called after check whether the contract
+  // supports the ERC721 or ERC1155 interface
+  void GetEthTokenUri(const std::string& chain_id,
+                      const std::string& contract_address,
+                      const std::string& token_id,
+                      const std::string& interface_id,
+                      GetEthTokenUriCallback callback);
 
   void EthGetLogs(const std::string& chain_id,
                   const std::string& from_block,
@@ -519,49 +522,13 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void OnGetERC721OwnerOf(GetERC721OwnerOfCallback callback,
                           APIRequestResult api_request_result);
-  void GetEthTokenMetadata(const std::string& contract_address,
-                           const std::string& token_id,
-                           const std::string& chain_id,
-                           const std::string& interface_id,
-                           GetEthTokenMetadataCallback callback);
-
-  void OnGetSupportsInterfaceTokenMetadata(const std::string& contract_address,
-                                           const std::string& signature,
-                                           const GURL& network_url,
-                                           GetEthTokenMetadataCallback callback,
-                                           bool is_supported,
-                                           mojom::ProviderError error,
-                                           const std::string& error_message);
-
   void ContinueGetERC721TokenBalance(const std::string& account_address,
                                      GetERC721TokenBalanceCallback callback,
                                      const std::string& owner_address,
                                      mojom::ProviderError error,
                                      const std::string& error_message);
-  void OnGetTokenUri(GetEthTokenMetadataCallback callback,
-                     const APIRequestResult api_request_result);
-
-  void FetchMetadata(GURL url, GetTokenMetadataIntermediateCallback callback);
-  void OnSanitizeTokenMetadata(GetTokenMetadataIntermediateCallback callback,
-                               data_decoder::JsonSanitizer::Result result);
-
-  void OnGetTokenMetadataPayload(GetTokenMetadataIntermediateCallback callback,
-                                 APIRequestResult api_request_result);
-
-  void OnGetSolanaAccountInfoTokenMetadata(
-      GetSolTokenMetadataCallback callback,
-      absl::optional<SolanaAccountInfo> account_info,
-      mojom::SolanaProviderError error,
-      const std::string& error_message);
-  void CompleteGetEthTokenMetadata(GetEthTokenMetadataCallback callback,
-                                   const std::string& response,
-                                   int error,
-                                   const std::string& error_message);
-
-  void CompleteGetSolTokenMetadata(GetSolTokenMetadataCallback callback,
-                                   const std::string& response,
-                                   int error,
-                                   const std::string& error_message);
+  void OnGetTokenUri2(GetEthTokenUriCallback callback,
+                      const APIRequestResult api_request_result);
 
   void OnGetSupportsInterface(GetSupportsInterfaceCallback callback,
                               APIRequestResult api_request_result);
@@ -616,6 +583,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;
   PrefService* prefs_ = nullptr;
   PrefService* local_state_prefs_ = nullptr;
+  std::unique_ptr<NftMetadataFetcher> nft_metadata_fetcher_;
   base::WeakPtrFactory<JsonRpcService> weak_ptr_factory_;
 };
 

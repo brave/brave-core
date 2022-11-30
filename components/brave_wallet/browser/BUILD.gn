@@ -91,6 +91,8 @@ static_library("browser") {
     "json_rpc_service.h",
     "keyring_service.cc",
     "keyring_service.h",
+    "nft_metadata_fetcher.cc",
+    "nft_metadata_fetcher.h",
     "nonce_tracker.cc",
     "nonce_tracker.h",
     "password_encryptor.cc",
