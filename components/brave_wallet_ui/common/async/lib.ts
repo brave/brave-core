@@ -43,7 +43,7 @@ import { AllNetworksOption } from '../../options/network-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
-import { makeSerializableTransaction } from '../../utils/model-serialization-utils'
+import { deserializeOrigin, makeSerializableTransaction } from '../../utils/model-serialization-utils'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -868,7 +868,7 @@ export function refreshSitePermissions () {
 
     // Get a list of accounts with permissions of the active origin
     const getAllPermissions = await Promise.all(accounts.map(async (account) => {
-      const result = await braveWalletService.hasPermission(account.coin, activeOrigin.origin, account.address)
+      const result = await braveWalletService.hasPermission(account.coin, deserializeOrigin(activeOrigin.origin), account.address)
       if (result.success && result.hasPermission) {
         return account
       }

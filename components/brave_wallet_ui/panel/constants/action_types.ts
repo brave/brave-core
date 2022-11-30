@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { BraveWallet, Origin, WalletAccountType } from '../../constants/types'
+import { BraveWallet, SerializableOrigin, WalletAccountType } from '../../constants/types'
 
 export type AccountPayloadType = {
   selectedAccounts: WalletAccountType[]
@@ -35,7 +35,7 @@ export type SignAllTransactionsProcessedPayload = {
 
 export type SwitchEthereumChainProcessedPayload = {
   approved: boolean
-  origin: Origin
+  origin: SerializableOrigin
 }
 
 export type AddSuggestTokenProcessedPayload = {
@@ -45,12 +45,12 @@ export type AddSuggestTokenProcessedPayload = {
 
 export type GetEncryptionPublicKeyProcessedPayload = {
   approved: boolean
-  origin: Origin
+  origin: SerializableOrigin
 }
 
 export type DecryptProcessedPayload = {
   approved: boolean
-  origin: Origin
+  origin: SerializableOrigin
 }
 
 export type CancelConnectHardwareWalletPayload = {

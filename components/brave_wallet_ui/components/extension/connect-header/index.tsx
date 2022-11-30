@@ -4,6 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
+// Types
+import { SerializableOriginInfo } from '../../../constants/types'
+
 // Utils
 import { getLocale } from '../../../../common/locale'
 
@@ -18,10 +21,9 @@ import {
 } from './style'
 
 import { URLText } from '../shared-panel-styles'
-import { BraveWallet } from '../../../constants/types'
 
 export interface Props {
-  originInfo: BraveWallet.OriginInfo
+  originInfo: SerializableOriginInfo
   hideTitle?: boolean
 }
 

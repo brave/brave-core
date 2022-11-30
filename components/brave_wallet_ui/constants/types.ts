@@ -240,7 +240,7 @@ export interface WalletState {
   addUserAssetError: boolean
   defaultEthereumWallet: BraveWallet.DefaultWallet
   defaultSolanaWallet: BraveWallet.DefaultWallet
-  activeOrigin: BraveWallet.OriginInfo
+  activeOrigin: SerializableOriginInfo
   solFeeEstimates?: SolFeeEstimates
   gasEstimates?: BraveWallet.GasEstimation1559
   connectedAccounts: WalletAccountType[]
@@ -261,20 +261,20 @@ export interface WalletState {
 
 export interface PanelState {
   hasInitialized: boolean
-  connectToSiteOrigin: BraveWallet.OriginInfo
+  connectToSiteOrigin: SerializableOriginInfo
   selectedPanel: PanelTypes
   lastSelectedPanel?: PanelTypes
   panelTitle: string
   connectingAccounts: string[]
-  addChainRequest: BraveWallet.AddChainRequest
-  signMessageData: BraveWallet.SignMessageRequest[]
+  addChainRequest: SerializableAddChainRequest
+  signMessageData: SerializableSignMessageRequest[]
   signTransactionRequests: BraveWallet.SignTransactionRequest[]
   signAllTransactionsRequests: BraveWallet.SignAllTransactionsRequest[]
-  getEncryptionPublicKeyRequest: BraveWallet.GetEncryptionPublicKeyRequest
-  decryptRequest: BraveWallet.DecryptRequest
-  switchChainRequest: BraveWallet.SwitchChainRequest
+  getEncryptionPublicKeyRequest: SerializableGetEncryptionPublicKeyRequest
+  decryptRequest: SerializableDecryptRequest
+  switchChainRequest: SerializableSwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
-  suggestedTokenRequest?: BraveWallet.AddSuggestTokenRequest
+  suggestedTokenRequest?: SerializableAddSuggestTokenRequest
   selectedTransaction: SerializableTransactionInfo | undefined
 }
 
@@ -491,6 +491,14 @@ export interface ApproveERC20Params {
  */
 export type SerializableTimeDelta = Record<keyof TimeDelta, number>
 
+type UnguessableToken = Exclude<BraveWallet.OriginInfo['origin']['nonceIfOpaque'], undefined>
+
+/**
+ * Used to properly store `UnguessableToken`s in redux store,
+ * since bigints are not serializable by default
+ */
+export type SerializableUnguessableToken = Record<keyof UnguessableToken, string>
+
 export type Defined<T> = Exclude<T, undefined>
 
 export type SerializableSolanaTxDataMaxRetries = {
@@ -516,6 +524,28 @@ export type SerializableSolanaTxData = Omit<
   sendOptions: SerializableSolanaTxDataSendOptions
 }
 
+export type SerializableOrigin = Omit<
+  BraveWallet.OriginInfo['origin'],
+  | 'nonceIfOpaque'
+  > & {
+  nonceIfOpaque: SerializableUnguessableToken | undefined
+}
+
+export type SerializableOriginInfo = Omit<
+  BraveWallet.OriginInfo,
+  | 'origin'
+  > & {
+  origin: SerializableOrigin
+}
+
+export type ObjWithOriginInfo<T = {}> = T & {
+  originInfo: BraveWallet.OriginInfo
+}
+
+export type WithSerializableOriginInfo<T extends ObjWithOriginInfo = ObjWithOriginInfo> = Omit<T, 'originInfo'> & {
+  originInfo: SerializableOriginInfo
+}
+
 /**
  * Used to properly store BraveWallet.TransactionInfo in redux store,
  * since bigints are not serializable by default
@@ -526,6 +556,7 @@ export type SerializableTransactionInfo = Omit<
   | 'createdTime'
   | 'submittedTime'
   | 'txDataUnion'
+  | 'originInfo'
 > & {
   confirmedTime: SerializableTimeDelta
   createdTime: SerializableTimeDelta
@@ -536,7 +567,22 @@ export type SerializableTransactionInfo = Omit<
     ethTxData1559?: BraveWallet.TxData1559
     filTxData?: BraveWallet.FilTxData
   }
+  originInfo: SerializableOriginInfo | undefined
 }
+
+export type SerializableAddSuggestTokenRequest = Omit<BraveWallet.AddSuggestTokenRequest, 'origin'> & {
+  origin: SerializableOriginInfo
+}
+
+export type SerializableSignMessageRequest = WithSerializableOriginInfo<BraveWallet.SignMessageRequest>
+
+export type SerializableAddChainRequest = WithSerializableOriginInfo<BraveWallet.AddChainRequest>
+
+export type SerializableGetEncryptionPublicKeyRequest = WithSerializableOriginInfo<BraveWallet.GetEncryptionPublicKeyRequest>
+
+export type SerializableDecryptRequest = WithSerializableOriginInfo<BraveWallet.DecryptRequest>
+
+export type SerializableSwitchChainRequest = WithSerializableOriginInfo<BraveWallet.SwitchChainRequest>
 
 export type AccountTransactions = {
   [accountId: string]: SerializableTransactionInfo[]

@@ -178,7 +178,7 @@ export async function signLedgerSolanaTransaction (
     return { success: result.status }
 }
 
-export async function signMessageWithHardwareKeyring (vendor: HardwareVendor, path: string, messageData: BraveWallet.SignMessageRequest): Promise<SignHardwareOperationResult> {
+export async function signMessageWithHardwareKeyring (vendor: HardwareVendor, path: string, messageData: Omit<BraveWallet.SignMessageRequest, 'originInfo'>): Promise<SignHardwareOperationResult> {
   const deviceKeyring = getHardwareKeyring(vendor, messageData.coin)
   if (deviceKeyring instanceof EthereumLedgerBridgeKeyring) {
     if (messageData.isEip712) {

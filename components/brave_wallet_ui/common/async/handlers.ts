@@ -61,6 +61,7 @@ import InteractionNotifier from './interactionNotifier'
 import { getCoinFromTxDataUnion, getNetworkInfo } from '../../utils/network-utils'
 import { isSolanaTransaction, shouldReportTransactionP3A } from '../../utils/tx-utils'
 import { walletApi } from '../slices/api.slice'
+import { deserializeOrigin, makeSerializableOriginInfo } from '../../utils/model-serialization-utils'
 
 const handler = new AsyncActionHandler()
 
@@ -149,7 +150,9 @@ handler.on(WalletActions.initialize.type, async (store) => {
   // Initialize active origin state.
   const braveWalletService = getAPIProxy().braveWalletService
   const { originInfo } = await braveWalletService.getActiveOrigin()
-  store.dispatch(WalletActions.activeOriginChanged(originInfo))
+  store.dispatch(WalletActions.activeOriginChanged(
+    makeSerializableOriginInfo(originInfo)
+  ))
   await refreshWalletInfo(store)
 })
 
@@ -595,13 +598,13 @@ handler.on(WalletActions.updateUnapprovedTransactionNonce.type, async (store: St
 
 handler.on(WalletActions.removeSitePermission.type, async (store: Store, payload: RemoveSitePermissionPayloadType) => {
   const braveWalletService = getAPIProxy().braveWalletService
-  await braveWalletService.resetPermission(payload.coin, payload.origin, payload.account)
+  await braveWalletService.resetPermission(payload.coin, deserializeOrigin(payload.origin), payload.account)
   await refreshWalletInfo(store)
 })
 
 handler.on(WalletActions.addSitePermission.type, async (store: Store, payload: AddSitePermissionPayloadType) => {
   const braveWalletService = getAPIProxy().braveWalletService
-  await braveWalletService.addPermission(payload.coin, payload.origin, payload.account)
+  await braveWalletService.addPermission(payload.coin, deserializeOrigin(payload.origin), payload.account)
   await refreshWalletInfo(store)
 })
 
