@@ -398,6 +398,7 @@ public class FeedDataSource: ObservableObject {
 
   /// Describes a single RSS feed's loaded data set converted into Brave News based data
   private struct RSSDataFeed {
+    var title: String?
     var source: FeedItem.Source
     var items: [FeedItem.Content]
   }
@@ -435,7 +436,7 @@ public class FeedDataSource: ObservableObject {
               return
             }
             content = self.scored(rssItems: content)
-            continuation.resume(returning: .init(source: source, items: content))
+            continuation.resume(returning: .init(title: feed.title, source: source, items: content))
           }
         case .failure(let error):
           continuation.resume(throwing: error)
@@ -454,7 +455,11 @@ public class FeedDataSource: ObservableObject {
       for location in locations {
         group.addTask {
           do {
-            return .success(try await self.loadRSSLocation(location))
+            let feed = try await self.loadRSSLocation(location)
+            if let title = feed.title, title != location.title {
+              self.updateRSSFeed(feed: location, title: title)
+            }
+            return .success(feed)
           } catch {
             return .failure(error)
           }
