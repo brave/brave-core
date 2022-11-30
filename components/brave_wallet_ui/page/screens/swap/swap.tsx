@@ -88,7 +88,7 @@ export const Swap = () => {
   const swapServiceMojo = getSwapService()
 
   React.useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const results = await Promise.all(
         networks.map(async e => (await swapServiceMojo.isSwapSupported(e.chainId)).result)
       )
@@ -129,7 +129,7 @@ export const Swap = () => {
 
   return (
     <div>
-      <BuySendSwapDepositNav isTab={true} />
+      <BuySendSwapDepositNav isTab={true} isSwap={true} />
       {selectedNetwork && selectedAccount && (
         <SwapInterface
           getLocale={getLocale}
