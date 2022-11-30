@@ -27,4 +27,18 @@ extension BraveWalletBraveWalletService {
         .sorted(by: { $0.sortOrder < $1.sortOrder })
     })
   }
+  
+  /// Returns all the user assets for each of the given networks
+  @MainActor func allUserAssets(in networks: [BraveWallet.NetworkInfo]) async -> [NetworkAssets] {
+    await withTaskGroup(of: [NetworkAssets].self, body: { @MainActor group in
+      for (index, network) in networks.enumerated() {
+        group.addTask { @MainActor in
+          let assets = await self.userAssets(network.chainId, coin: network.coin)
+          return [NetworkAssets(network: network, tokens: assets, sortOrder: index)]
+        }
+      }
+      return await group.reduce([NetworkAssets](), { $0 + $1 })
+        .sorted(by: { $0.sortOrder < $1.sortOrder })
+    })
+  }
 }
