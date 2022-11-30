@@ -1,8 +1,8 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 763cf51e6e44260af9875a47b89e2b7246d2960d..d66cd3b8290286241c0c55b2f9f0a27948adcca3 100644
+index 02098700fe998c75019c06f8ff60dbbb99744462..8d004b62d28bfd3493684d8a9c9c6be775d4f9a2 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
-@@ -322,6 +322,7 @@ static_library("test_support") {
+@@ -323,6 +323,7 @@ static_library("test_support") {
      "//ui/gl",
    ]
  
@@ -10,7 +10,7 @@ index 763cf51e6e44260af9875a47b89e2b7246d2960d..d66cd3b8290286241c0c55b2f9f0a279
    data_deps = []
  
    if (enable_pdf) {
-@@ -5227,7 +5228,7 @@ config("disable_thinlto_cache_flags") {
+@@ -5228,7 +5229,7 @@ config("disable_thinlto_cache_flags") {
  }
  
  config("pdb_larger_than_4gb") {
