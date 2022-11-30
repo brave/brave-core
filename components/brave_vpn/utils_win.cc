@@ -352,7 +352,6 @@ bool CreateEntry(const std::wstring& entry_name,
   if (!wrote_entry) {
     LOG(ERROR)
         << "ERROR: failed to write \"NumCustomPolicy\" field to `rasphone.pbk`";
-    RemoveEntry(entry_name);
     return false;
   }
 
@@ -362,7 +361,6 @@ bool CreateEntry(const std::wstring& entry_name,
   if (!wrote_entry) {
     LOG(ERROR) << "ERROR: failed to write \"CustomIPSecPolicies\" field to "
                   "`rasphone.pbk`";
-    RemoveEntry(entry_name);
     return false;
   }
 
