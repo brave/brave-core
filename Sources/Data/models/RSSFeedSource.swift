@@ -11,8 +11,7 @@ public final class RSSFeedSource: NSManagedObject, CRUD {
   @NSManaged public var feedUrl: String
 
   public class func get(with feedUrl: String) -> RSSFeedSource? {
-    let predicate = NSPredicate(format: "\(#keyPath(RSSFeedSource.feedUrl)) == %@", feedUrl)
-    return first(where: predicate)
+    return getInternal(feedUrl: feedUrl, context: DataController.viewContext)
   }
 
   public class func all() -> [RSSFeedSource] {
@@ -37,6 +36,19 @@ public final class RSSFeedSource: NSManagedObject, CRUD {
     if context.hasChanges {
       try? context.save()
     }
+  }
+  
+  public class func update(feedUrl: String, title: String) {
+    DataController.perform { context in
+      if let source = getInternal(feedUrl: feedUrl, context: context) {
+        source.title = title
+      }
+    }
+  }
+  
+  private class func getInternal(feedUrl: String, context: NSManagedObjectContext) -> RSSFeedSource? {
+    let predicate = NSPredicate(format: "\(#keyPath(RSSFeedSource.feedUrl)) == %@", feedUrl)
+    return first(where: predicate, context: context)
   }
 
   private class func entity(in context: NSManagedObjectContext) -> NSEntityDescription {

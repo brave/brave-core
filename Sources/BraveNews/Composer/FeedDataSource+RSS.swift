@@ -96,6 +96,10 @@ extension FeedDataSource {
     }
   }
   
+  func updateRSSFeed(feed: RSSFeedLocation, title: String) {
+    RSSFeedSource.update(feedUrl: feed.id, title: title)
+  }
+  
   @MainActor func purgeDisabledRSSLocations() {
     // News 2.0 no longer allows keeping RSS feeds, so this will attempt to remove any RSS feeds the user has
     // specifically disabled
