@@ -6,9 +6,10 @@
 #include <memory>
 
 #include "base/path_service.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/thread_test_helper.h"
+#include "base/version.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
@@ -25,6 +26,7 @@
 #include "components/embedder_support/user_agent_utils.h"
 #include "components/permissions/permission_request.h"
 #include "components/prefs/pref_service.h"
+#include "components/version_info/version_info.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -37,11 +39,48 @@ using brave_shields::ControlType;
 using content::TitleWatcher;
 
 namespace {
-const char kUserAgentScript[] = "navigator.userAgent";
-const char kBrandScript[] =
+
+constexpr char kUserAgentScript[] = "navigator.userAgent";
+
+constexpr char kBrandScript[] =
     "navigator.userAgentData.brands[0].brand + '|' + "
     "navigator.userAgentData.brands[1].brand + '|' + "
     "navigator.userAgentData.brands[2].brand";
+
+constexpr char kGetHighEntropyValuesScript[] = R"(
+  navigator.userAgentData.getHighEntropyValues(
+      ["fullVersionList", "uaFullVersion"]).then(
+          (values) => {return values;})
+)";
+
+void CheckUserAgentMetadataVersionsList(
+    const base::Value::List& versions_list,
+    const std::string& expected_version,
+    std::function<void(const std::string&)> check_greased_version) {
+  // Expect 3 items in the list: Brave, Chromium, and greased.
+  EXPECT_EQ(3UL, versions_list.size());
+
+  bool has_brave_brand = false;
+  bool has_chromium_brand = false;
+  for (auto& brand_version : versions_list) {
+    const std::string* brand = brand_version.GetDict().FindString("brand");
+    ASSERT_NE(nullptr, brand);
+    const std::string* version = brand_version.GetDict().FindString("version");
+    ASSERT_NE(nullptr, version);
+    if (*brand == "Brave") {
+      has_brave_brand = true;
+      EXPECT_EQ(expected_version, *version);
+    } else if (*brand == "Chromium") {
+      has_chromium_brand = true;
+      EXPECT_EQ(expected_version, *version);
+    } else {
+      check_greased_version(*version);
+    }
+  }
+  EXPECT_TRUE(has_brave_brand);
+  EXPECT_TRUE(has_chromium_brand);
+}
+
 }  // namespace
 
 class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
@@ -251,10 +290,59 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
 
 // Tests results of user agent metadata brands
 IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
-                       AddBraveToNavigatorUserAgentBrandList) {
+                       BraveIsInNavigatorUserAgentBrandList) {
   GURL url = https_server()->GetURL("a.com", "/simple.html");
   NavigateToURLUntilLoadStop(url);
   std::string brands = EvalJs(contents(), kBrandScript).ExtractString();
   EXPECT_NE(std::string::npos, brands.find("Brave"));
   EXPECT_NE(std::string::npos, brands.find("Chromium"));
+}
+
+// Tests that user agent metadata versions are as expected.
+IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
+                       CheckUserAgentMetadataVersions) {
+  GURL url = https_server()->GetURL("a.com", "/simple.html");
+  NavigateToURLUntilLoadStop(url);
+  const content::EvalJsResult result =
+      EvalJs(contents(), kGetHighEntropyValuesScript);
+  EXPECT_TRUE(result.error.empty());
+  const base::Value::Dict* values = result.value.GetIfDict();
+  ASSERT_NE(nullptr, values);
+
+  // Check brands versions
+  const base::Value::List* brands_list = values->FindList("brands");
+  ASSERT_NE(nullptr, brands_list);
+
+  // Expected major version for Brave and Chromium.
+  const std::string major_version = version_info::GetMajorVersionNumber();
+
+  CheckUserAgentMetadataVersionsList(
+      *brands_list, major_version, [](const std::string& version) {
+        EXPECT_EQ(std::string::npos, version.find("."));
+      });
+
+  // Check full versions
+  const base::Value::List* full_version_list =
+      values->FindList("fullVersionList");
+  ASSERT_NE(nullptr, full_version_list);
+
+  // Expected version string for Brave and Chromium.
+  const std::string expected_full_version =
+      base::StrCat({major_version, ".0.0.0"});
+
+  CheckUserAgentMetadataVersionsList(
+      *full_version_list, expected_full_version,
+      [](const std::string& version_str) {
+        base::Version version(version_str);
+        for (size_t i = 0; i < version.components().size(); i++) {
+          if (i > 0) {
+            EXPECT_EQ(0U, version.components()[i]);
+          }
+        }
+      });
+
+  // Check auFullVersion
+  const std::string* ua_full_version = values->FindString("uaFullVersion");
+  ASSERT_NE(nullptr, ua_full_version);
+  EXPECT_EQ(expected_full_version, *ua_full_version);
 }
