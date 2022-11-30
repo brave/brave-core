@@ -54,7 +54,7 @@ jobs:
           branches=( "${milestones[@]/*Nightly/master}" )
           branches=( "${branches[@]/ -*/}" )
           echo "Branches to operate on: ${branches[*]}"
-          for branch in "${branches[2]}"
+          for branch in "${branches[@]}"
           do
             git switch "$branch"
             pr_branch="pr-auto-bump-deps-${branch}-${DEP}-${DEPREF}"
@@ -64,9 +64,10 @@ jobs:
                       -e "/^\s*\"${DEP//\//\\/}\"\s*:\s*{/,/@/ s/@[^\"]*/@$DEPREF/" DEPS
             # git add DEPS
             # git commit -m "Auto bump DEPS ${DEP}@${DEPREF}"
+            git push --delete origin "$pr_branch" # TODO remove
             git push -u origin "$pr_branch"
             gh api --method PUT /repos/${GITHUB_REPOSITORY}/contents/DEPS --field message="Auto bump DEPS ${DEP}@${DEPREF}" --field content=@<( base64 -i DEPS ) --field encoding="base64" --field branch="$pr_branch" --field sha=$( git rev-parse $pr_branch:DEPS )
             git restore DEPS
             git pull
-            # gh pr create --base "${branch}" -f -t "Auto bump DEPS ${DEP}@${DEPREF}" -l "CI/run-audit-deps"
+            gh pr create --base "${branch}" -f -t "Auto bump DEPS ${DEP}@${DEPREF}" -l "CI/run-audit-deps"
           done
