@@ -56,9 +56,10 @@ int LocalDOMWindow::outerWidth() const {
   // Prevent fingerprinter use of outerWidth by returning a farbled value near
   // innerWidth instead:
   ExecutionContext* context = GetExecutionContext();
-  return BlockScreenFingerprinting(context)
+  auto* top_window = DynamicTo<LocalDOMWindow>(top());
+  return BlockScreenFingerprinting(context) && top_window
              ? FarbleInteger(context, brave::FarbleKey::kWindowInnerWidth,
-                             innerWidth(), 0, 8)
+                             top_window->innerWidth(), 0, 8)
              : outerWidth_ChromiumImpl();
 }
 
@@ -66,9 +67,10 @@ int LocalDOMWindow::outerHeight() const {
   // Prevent fingerprinter use of outerHeight by returning a farbled value near
   // innerHeight instead:
   ExecutionContext* context = GetExecutionContext();
-  return BlockScreenFingerprinting(context)
+  auto* top_window = DynamicTo<LocalDOMWindow>(top());
+  return BlockScreenFingerprinting(context) && top_window
              ? FarbleInteger(context, brave::FarbleKey::kWindowInnerHeight,
-                             innerHeight(), 0, 8)
+                             top_window->innerHeight(), 0, 8)
              : outerHeight_ChromiumImpl();
 }
 
