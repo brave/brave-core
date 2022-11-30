@@ -11,7 +11,9 @@
 #include <raserror.h>
 #include <stdio.h>
 
+#include "base/files/file_util.h"
 #include "base/logging.h"
+#include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 
 #define DEFAULT_PHONE_BOOK NULL
@@ -73,6 +75,31 @@ DWORD SetCredentials(LPCTSTR entry_name, LPCTSTR username, LPCTSTR password) {
   return ERROR_SUCCESS;
 }
 
+std::wstring TryGetPhonebookPath(int key) {
+  base::FilePath dir;
+  if (base::PathService::Get(key, &dir)) {
+    dir = dir.Append(L"Microsoft")
+              .Append(L"Network")
+              .Append(L"Connections")
+              .Append(L"Pbk");
+    if (base::DirectoryExists(dir)) {
+      base::FilePath phone_book_path = dir.Append(L"rasphone.pbk");
+      if (base::PathExists(phone_book_path)) {
+        VLOG(2) << __func__ << " : phone book found at \""
+                << phone_book_path.value().c_str() << "\"";
+        return phone_book_path.value();
+      } else {
+        VLOG(2) << __func__ << " : did not find phone book file at \""
+                << phone_book_path.value().c_str() << "\"";
+      }
+    } else {
+      VLOG(2) << __func__ << " : did not find phone book directory at \""
+              << dir.value().c_str() << "\"";
+    }
+  }
+  return L"";
+}
+
 }  // namespace
 
 namespace internal {
@@ -94,34 +121,25 @@ void PrintRasError(DWORD error) {
 }
 
 std::wstring GetPhonebookPath() {
-  TCHAR* app_data_path = NULL;
-  std::wstring phone_book_path;
+  std::wstring path;
 
-  // https://docs.microsoft.com/en-us/windows/win32/api/processenv/nf-processenv-expandenvironmentstringsa
-  // Caculate required buf size first.
-  const DWORD dw_buf_size =
-      ExpandEnvironmentStrings(TEXT("%APPDATA%"), app_data_path, 0);
-  if (dw_buf_size == 0) {
-    LOG(ERROR) << "failed to use ExpandEnvironmentStrings";
-    PrintRasError(GetLastError());
-    return phone_book_path;
+  // look initially in %APPDATA%
+  path = TryGetPhonebookPath(base::DIR_ROAMING_APP_DATA);
+  if (!path.empty()) {
+    return path;
   }
 
-  // Allocate required buf.
-  ScopedHeapAlloc app_data_path_mem(dw_buf_size * sizeof(TCHAR));
-  app_data_path = reinterpret_cast<TCHAR*>(app_data_path_mem.lp_alloc_mem());
-  if (app_data_path == NULL) {
-    LOG(ERROR) << "HeapAlloc failed!";
-    return app_data_path;
+  // fall back to the %ALLUSERSPROFILE% directory
+  path = TryGetPhonebookPath(base::DIR_COMMON_APP_DATA);
+  if (!path.empty()) {
+    return path;
   }
 
-  ExpandEnvironmentStrings(TEXT("%APPDATA%"), app_data_path, dw_buf_size);
+  VLOG(2) << __func__
+          << " : did not find phone book file. This is required to add the VPN "
+             "entry.";
 
-  phone_book_path = base::StringPrintf(
-      L"%ls\\Microsoft\\Network\\Connections\\Pbk\\rasphone.pbk",
-      app_data_path);
-
-  return phone_book_path;
+  return L"";
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasenumconnectionsa
