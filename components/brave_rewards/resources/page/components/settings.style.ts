@@ -89,8 +89,7 @@ export const content = styled.div`
 `
 
 export const main = styled.div`
-  flex: 0 1 auto;
-  max-width: 620px;
+  flex: 0 1 620px;
 `
 
 export const sidebar = styled.div`
