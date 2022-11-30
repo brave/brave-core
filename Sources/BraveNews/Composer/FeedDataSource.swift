@@ -785,7 +785,10 @@ public class FeedDataSource: ObservableObject {
 
     let overridenSources = FeedSourceOverride.all()
     var feedsFromEnabledSources = Set(items.filter { item in
-      overridenSources.first(where: {
+      if item.source.isUserSource {
+        return true
+      }
+      return overridenSources.first(where: {
         $0.publisherID == item.source.id
       })?.enabled ?? false
     })
