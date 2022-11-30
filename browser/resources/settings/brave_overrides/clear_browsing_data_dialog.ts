@@ -28,14 +28,37 @@ RegisterPolymerComponentReplacement(
 )
 
 RegisterPolymerTemplateModifications({
-  'settings-clear-browsing-data-dialog': (templateContent) => {
-    const body = templateContent.querySelector('[slot="body"]')
+  'settings-clear-browsing-data-dialog': (templateContent: HTMLTemplateElement) => {
+    // Append On exit tab page.
+    const tabsElement = templateContent.querySelector('#tabs')
+    if (!tabsElement) {
+      console.error(`[Brave Settings Overrides] cannot find #tabs in clear-browsing-data-dialog`)
+      return
+    }
+    tabsElement.insertAdjacentHTML(
+      'beforeend',
+      `<settings-brave-clear-browsing-data-on-exit-page id="on-exit-tab" prefs="{{prefs}}" />`
+    )
 
+    // Append Save button.
+    const confirmButtonElement = templateContent.querySelector('#clearBrowsingDataConfirm')
+    if (!confirmButtonElement) {
+      console.error(`[Brave Settings Overrides] cannot find #clearBrowsingDataConfirm in clear-browsing-data-dialog`)
+      return
+    }
+    confirmButtonElement.insertAdjacentHTML(
+      'afterend',
+      `<cr-button id="saveOnExitSettingsConfirm" class="action-button" disabled hidden>
+        ${loadTimeData.getString('save')}
+      </cr-button>`
+    )
+
+    // Append rewards reset data link
+    const body = templateContent.querySelector('[slot="body"]')
     if (!body) {
       console.error(`[Brave Settings Overrides] cannot find 'slot="body"' in clear-browsing-data-dialog`)
       return
     }
-
     body.insertAdjacentHTML(
       'beforeend',
       `<a id="rewards-reset-data" href="chrome://rewards/#manage-wallet">${loadTimeData.getString('resetRewardsData')}</a>`)
