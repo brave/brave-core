@@ -21,7 +21,7 @@
 namespace {
 
 constexpr int kSwapValidationErrorCode = 100;
-constexpr char kInsufficientAssetLuquidity[] = "INSUFFICIENT_ASSET_LIQUIDITY";
+constexpr char kInsufficientAssetLiquidity[] = "INSUFFICIENT_ASSET_LIQUIDITY";
 constexpr char kJupiterNoRoutesMessage[] =
     "No routes found for the input and output mints";
 
@@ -174,7 +174,7 @@ mojom::SwapErrorResponsePtr ParseSwapErrorResponse(const std::string& json) {
   result->is_insufficient_liquidity = false;
   if (result->code == kSwapValidationErrorCode) {
     for (auto& item : result->validation_errors) {
-      if (item->reason == kInsufficientAssetLuquidity) {
+      if (item->reason == kInsufficientAssetLiquidity) {
         result->is_insufficient_liquidity = true;
       }
     }

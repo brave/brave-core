@@ -272,6 +272,7 @@
   "devDependencies": {
     "@babel/core": "7.16.0",
     "@babel/plugin-proposal-export-namespace-from": "7.16.0",
+    "@brave/swap-interface": "0.12.5",
     "@storybook/addon-essentials": "6.4.13",
     "@storybook/addon-knobs": "6.4.0",
     "@storybook/addons": "6.4.13",
@@ -294,7 +295,6 @@
     "acorn": "8.0.5",
     "babel-loader": "8.2.3",
     "brave-ui": "github:brave/brave-ui#e4c049880199ac652b8f69610b8b70d1cd6d906f",
-    "@brave/swap-interface": "0.12.4",
     "chalk": "4.1.0",
     "commander": "2.20.3",
     "css-loader": "3.6.0",
