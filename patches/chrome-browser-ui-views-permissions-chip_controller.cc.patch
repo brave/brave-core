@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/views/permissions/chip_controller.cc b/chrome/browser/ui/views/permissions/chip_controller.cc
-index db9bf2764a895fc90d99227108eb30f0bd174668..ea1a0ba5fae3ac1f6f56961c6a62b7db247769a1 100644
+index 154fd219b74d55cae86ba376356b5bdc3ba3dfc6..c579dc647a012a134df14b9a31a06844c78afee5 100644
 --- a/chrome/browser/ui/views/permissions/chip_controller.cc
 +++ b/chrome/browser/ui/views/permissions/chip_controller.cc
-@@ -424,6 +424,7 @@ void ChipController::CollapsePrompt(bool allow_restart) {
- void ChipController::HideChip() {
+@@ -435,6 +435,7 @@ void ChipController::HideChip() {
    chip_->SetVisible(false);
-   // When the chip is hidden the locationbar layout should be updated.
+   // When the chip visibility changed from visible -> hidden, the locationbar
+   // layout should be updated.
 +  BRAVE_CHIP_CONTROLLER_HIDE_CHIP
    GetLocationBarView()->InvalidateLayout();
  }

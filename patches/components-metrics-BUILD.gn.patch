@@ -1,12 +1,12 @@
 diff --git a/components/metrics/BUILD.gn b/components/metrics/BUILD.gn
-index 4f51fa627763580191912b2c9507132bcbadfefb..c0b31796d3c65ff2748796ce3327e40e1b791d46 100644
+index 74b6a7a9ee39f35090e4b7bc2107554b7f156220..09defb74bf37256e5bbe6843faa4bb441337a7a1 100644
 --- a/components/metrics/BUILD.gn
 +++ b/components/metrics/BUILD.gn
-@@ -203,6 +203,7 @@ static_library("metrics") {
+@@ -253,6 +253,7 @@ static_library("metrics") {
        "motherboard_metrics_provider.h",
      ]
    }
 +  import("//brave/components/metrics/sources.gni") deps += brave_components_metrics_deps
  }
  
- if (is_android) {
+ # The component metrics provider is a separate target because it depends upon
