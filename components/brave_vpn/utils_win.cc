@@ -75,7 +75,7 @@ DWORD SetCredentials(LPCTSTR entry_name, LPCTSTR username, LPCTSTR password) {
   return ERROR_SUCCESS;
 }
 
-std::wstring TryGetPhonebookPath(int key) {
+std::wstring TryGetPhonebookPath(int key, const std::wstring& entry_name) {
   base::FilePath dir;
   if (base::PathService::Get(key, &dir)) {
     dir = dir.Append(L"Microsoft")
@@ -85,8 +85,28 @@ std::wstring TryGetPhonebookPath(int key) {
     if (base::DirectoryExists(dir)) {
       base::FilePath phone_book_path = dir.Append(L"rasphone.pbk");
       if (base::PathExists(phone_book_path)) {
-        VLOG(2) << __func__ << " : phone book found at \""
-                << phone_book_path.value().c_str() << "\"";
+        // https://learn.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasvalidateentrynamea
+        DWORD nRet = RasValidateEntryName(phone_book_path.value().c_str(),
+                                          entry_name.c_str());
+        switch (nRet) {
+          case ERROR_ALREADY_EXISTS:
+            VLOG(2) << __func__ << " : phone book found at \""
+                    << phone_book_path.value().c_str()
+                    << "\" and it contains the entry \"" << entry_name << "\"";
+            break;
+          case ERROR_SUCCESS:
+            VLOG(2) << __func__ << " : phone book found at \""
+                    << phone_book_path.value().c_str()
+                    << "\" but it does not contain the entry \"" << entry_name
+                    << "\"";
+            break;
+          default:
+            VLOG(2) << __func__ << " : phone book found at \""
+                    << phone_book_path.value().c_str()
+                    << "\" but validation for the entry \"" << entry_name
+                    << "\" failed: " << nRet;
+            break;
+        }
         return phone_book_path.value();
       } else {
         VLOG(2) << __func__ << " : did not find phone book file at \""
@@ -120,17 +140,17 @@ void PrintRasError(DWORD error) {
   PrintSystemError(error);
 }
 
-std::wstring GetPhonebookPath() {
+std::wstring GetPhonebookPath(const std::wstring& entry_name) {
   std::wstring path;
 
   // look initially in %APPDATA%
-  path = TryGetPhonebookPath(base::DIR_ROAMING_APP_DATA);
+  path = TryGetPhonebookPath(base::DIR_ROAMING_APP_DATA, entry_name);
   if (!path.empty()) {
     return path;
   }
 
   // fall back to the %ALLUSERSPROFILE% directory
-  path = TryGetPhonebookPath(base::DIR_COMMON_APP_DATA);
+  path = TryGetPhonebookPath(base::DIR_COMMON_APP_DATA, entry_name);
   if (!path.empty()) {
     return path;
   }
@@ -359,7 +379,7 @@ bool CreateEntry(const std::wstring& entry_name,
   constexpr wchar_t kNumCustomPolicy[] = L"1";
   constexpr wchar_t kCustomIPSecPolicies[] =
       L"030000000400000002000000050000000200000000000000";
-  std::wstring phone_book_path = GetPhonebookPath();
+  std::wstring phone_book_path = GetPhonebookPath(entry_name);
   if (phone_book_path.empty())
     return false;
 
