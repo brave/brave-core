@@ -964,8 +964,11 @@ class JsonRpcServiceUnitTest : public testing::Test {
                 !expected_cache_header.empty());
             EXPECT_EQ(expected_cache_header, header_value);
           }
-          EXPECT_TRUE(request.headers.GetHeader("x-brave-key", &header_value));
-          EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
+          if (!expected_method.empty()) {
+            EXPECT_TRUE(
+                request.headers.GetHeader("x-brave-key", &header_value));
+            EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
+          }
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), content);
         }));
@@ -1135,6 +1138,23 @@ class JsonRpcServiceUnitTest : public testing::Test {
         contract, token_id, chain_id, interface_id,
         base::BindLambdaForTesting([&](const std::string& response,
                                        mojom::ProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(response, expected_response);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  void TestFetchMetadata(const GURL& url,
+                         const std::string& expected_response,
+                         int expected_error,
+                         const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->FetchMetadata(
+        url,
+        base::BindLambdaForTesting([&](const std::string& response, int error,
                                        const std::string& error_message) {
           EXPECT_EQ(response, expected_response);
           EXPECT_EQ(error, expected_error);
@@ -5886,6 +5906,45 @@ TEST_F(JsonRpcServiceUnitTest, EthGetLogs) {
                  std::move(expected_logs), mojom::ProviderError::kSuccess, "");
 }
 
+TEST_F(JsonRpcServiceUnitTest, FetchMetadata) {
+  // Invalid URL yields internal error
+  TestFetchMetadata(GURL("invalid url"), "",
+                    static_cast<int>(mojom::JsonRpcError::kInternalError),
+                    l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // Unsupported scheme yields internal error
+  TestFetchMetadata(GURL("file://host/path"), "",
+                    static_cast<int>(mojom::JsonRpcError::kInternalError),
+                    l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // Data URL with unsupported mime type yields parsing error
+  TestFetchMetadata(
+      GURL("data:text/"
+           "csv;base64,eyJpbWFnZV91cmwiOiAgImh0dHBzOi8vZXhhbXBsZS5jb20ifQ=="),
+      "", static_cast<int>(mojom::JsonRpcError::kParsingError),
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // Valid URL but that results in HTTP timeout yields internal error
+  SetHTTPRequestTimeoutInterceptor();
+  TestFetchMetadata(GURL("https://example.com"), "",
+                    static_cast<int>(mojom::JsonRpcError::kInternalError),
+                    l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // Valid URL but invalid json response yields parsing error
+  SetInvalidJsonInterceptor();
+  TestFetchMetadata(GURL("https://example.com"), "",
+                    static_cast<int>(mojom::JsonRpcError::kParsingError),
+                    l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // All valid yields response json set via interceptor
+  GURL url = GURL("https://example.com");
+  const std::string& metadata_json =
+      R"({"image_url":"https://example.com/image.jpg"})";
+  SetInterceptor(url, "", "", metadata_json);
+  TestFetchMetadata(url, metadata_json,
+                    static_cast<int>(mojom::ProviderError::kSuccess), "");
+}
+
 TEST_F(JsonRpcServiceUnitTest, GetSolTokenMetadata) {
   // Valid inputs should yield metadata JSON (happy case)
   std::string get_account_info_response = R"({
@@ -6076,8 +6135,6 @@ TEST_F(JsonRpcServiceUnitTest, GetSolTokenMetadata) {
   TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
                           mojom::SolanaProviderError::kParsingError,
                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-
-  // TODO(nvonpentz) FetchTokenMetadata needs to be tested elsewhere
 }
 
 }  // namespace brave_wallet
