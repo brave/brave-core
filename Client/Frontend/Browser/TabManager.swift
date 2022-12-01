@@ -1073,18 +1073,12 @@ extension TabManager: WKNavigationDelegate {
   func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
     if let tab = self[webView] {
       tab.contentBlocker.clearPageStats()
-      tab.requestBlockingContentHelper.clearBlockedRequests()
     }
   }
 
   // The main frame JSContext is available, and DOM parsing has begun.
   // Do not excute JS at this point that requires running prior to DOM parsing.
   func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-    guard let tab = self[webView] else { return }
-
-    if !tab.contentBlocker.isEnabled {
-      webView.evaluateSafeJavaScript(functionName: "window.__firefox__.TrackingProtectionStats.setEnabled", args: [false, UserScriptManager.securityToken], contentWorld: ContentBlockerHelper.scriptSandbox)
-    }
   }
 
   func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {

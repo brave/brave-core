@@ -40,14 +40,9 @@ class RequestBlockingContentScriptHandler: TabContentScript {
   }()
   
   private weak var tab: Tab?
-  private var blockedRequests: Set<URL> = []
   
   init(tab: Tab) {
     self.tab = tab
-  }
-  
-  func clearBlockedRequests() {
-    blockedRequests.removeAll()
   }
   
   func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void) {
@@ -78,7 +73,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
         requestURL: requestURL,
         sourceURL: sourceURL,
         resourceType: dto.data.resourceType
-      ) { [weak self] shouldBlock in
+      ) { shouldBlock in
         assertIsMainThread("Result should happen on the main thread")
         
         if shouldBlock, Preferences.PrivacyReports.captureShieldsData.value,
@@ -88,11 +83,11 @@ class RequestBlockingContentScriptHandler: TabContentScript {
           PrivacyReportsManager.pendingBlockedRequests.append((blockedResourceHost, domainURL, Date()))
         }
 
-        if shouldBlock && !(self?.blockedRequests.contains(requestURL) ?? true) {
+        if shouldBlock && !tab.contentBlocker.blockedRequests.contains(requestURL) {
           BraveGlobalShieldStats.shared.adblock += 1
           let stats = tab.contentBlocker.stats
           tab.contentBlocker.stats = stats.adding(adCount: 1)
-          self?.blockedRequests.insert(requestURL)
+          tab.contentBlocker.blockedRequests.insert(requestURL)
         }
         
         replyHandler(shouldBlock, nil)

@@ -295,7 +295,12 @@ extension BrowserViewController: WKNavigationDelegate {
           // Add request blocking script
           // This script will block certian `xhr` and `window.fetch()` requests
           .requestBlocking: url.isWebPage(includeDataURIs: false) &&
-                            domainForMainFrame.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true)
+                            domainForMainFrame.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true),
+          
+          // The tracker protection script
+          // This script will track what is blocked and increase stats
+          .trackerProtectionStats: url.isWebPage(includeDataURIs: false) &&
+                                   domainForMainFrame.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true)
         ])
       }
     }

@@ -21,11 +21,25 @@ extension ContentBlockerHelper: TabContentScript {
     let data: ContentblockerDTOData
   }
   
-  static let scriptName = "trackingProtectionStats"
+  static let scriptName = "TrackingProtectionStats"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
   static let scriptSandbox: WKContentWorld = .page
-  static let userScript: WKUserScript? = nil
+  
+  static let userScript: WKUserScript? = {
+    guard var script = loadUserScript(named: scriptName) else {
+      return nil
+    }
+    
+    return WKUserScript.create(
+      source: secureScript(
+        handlerName: messageHandlerName,
+        securityToken: UserScriptManager.securityToken,
+        script: script),
+      injectionTime: .atDocumentStart,
+      forMainFrameOnly: false,
+      in: scriptSandbox)
+  }()
 
   func clearPageStats() {
     stats = TPPageStats()
@@ -34,7 +48,6 @@ extension ContentBlockerHelper: TabContentScript {
 
   func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
     defer { replyHandler(nil, nil) }
-    guard isEnabled else { return }
     
     guard let currentTabURL = tab?.webView?.url else {
       assertionFailure("Missing tab or webView")

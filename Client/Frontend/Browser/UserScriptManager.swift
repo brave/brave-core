@@ -90,6 +90,7 @@ class UserScriptManager {
     case nightMode
     case deAmp
     case requestBlocking
+    case trackerProtectionStats
     case resourceDownloader
     case windowRenderHelper
     case readyStateHelper
@@ -105,6 +106,7 @@ class UserScriptManager {
       case .nightMode: return NightModeScriptHandler.userScript
       case .deAmp: return DeAmpScriptHandler.userScript
       case .requestBlocking: return RequestBlockingContentScriptHandler.userScript
+      case .trackerProtectionStats: return ContentBlockerHelper.userScript
       case .ethereumProvider: return EthereumProviderScriptHandler.userScript
       case .solanaProvider: return SolanaProviderScriptHandler.userScript
         
@@ -141,6 +143,13 @@ class UserScriptManager {
       // Inject all base scripts
       self.baseScripts.forEach {
         scriptController.addUserScript($0)
+      }
+      
+      // Inject specifically trackerProtectionStats BEFORE request blocking
+      // this is because it needs to hook requests before requestBlocking
+      if scripts.contains(.trackerProtectionStats), let script = self.dynamicScripts[.trackerProtectionStats] {
+        scripts.remove(.trackerProtectionStats)
+        scriptController.addUserScript(script)
       }
       
       // Inject specifically RequestBlocking BEFORE other scripts
