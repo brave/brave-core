@@ -11,13 +11,15 @@ class DomainUserScriptTests: XCTestCase {
   func testBraveSearchAPIAvailability() throws {
     let goodURLs = [
       URL(string: "https://search.brave.com"),
-      URL(string: "https://search-dev.brave.com"),
+      URL(string: "https://search.bravesoftware.com"),
+      URL(string: "https://search.brave.software"),
       URL(string: "https://search.brave.com/custom/path"),
-      URL(string: "https://search-dev.brave.com/custom/path"),
+      URL(string: "https://safesearch.brave.com"),
+      URL(string: "https://search.bravesoftware.com/custom/path"),
     ].compactMap { $0 }
 
     goodURLs.forEach {
-      XCTAssertEqual(DomainUserScript(for: $0), .braveSearchHelper)
+      XCTAssertEqual(DomainUserScript(for: $0), .braveSearchHelper, "\($0) failed")
     }
 
     let badURLs = [
