@@ -7,6 +7,7 @@ import styled from 'styled-components'
 
 export const Tip = styled.div<{
   horizontalAlign?: 'left' | 'right' | 'center'
+  isSwap?: boolean
   orientation: 'top' | 'bottom' | 'right'
   distance: number
 }>`
@@ -19,7 +20,7 @@ export const Tip = styled.div<{
   transform: translateY(var(--y-tip-translation)) translateX(var(--x-tip-translation));
   padding: 8px 16px;
   color: ${(p) => p.theme.palette.white};
-  background: ${(p) => p.theme.palette.black};
+  background: ${(p) => p.isSwap ? 'var(--nav-tool-tip-background)' : p.theme.palette.black};
   z-index: 10;
   font-family: Poppins;
   font-size: 14px;
@@ -31,6 +32,7 @@ export const Tip = styled.div<{
 export const Pointer = styled.div<{
   orientation: 'top' | 'bottom' | 'right'
   distance: number
+  isSwap?: boolean
 }>`
   --top-rotation: 180deg;
   --bottom-rotation: 0deg;
@@ -44,5 +46,6 @@ export const Pointer = styled.div<{
   transform: translateY(var(--y-translation)) translateX(var(--x-translation)) rotate(var(--${(p) => p.orientation}-rotation));
   border-width: 0 7px 8px 7px;
   z-index: 10;
-  border-color: transparent transparent ${(p) => p.theme.palette.black} transparent;
+  /* --nav-tool-tip-background is closer aligned with swap design theme */
+  border-color: transparent transparent ${(p) => p.isSwap ? 'var(--nav-tool-tip-background)' : p.theme.palette.black} transparent;
 `

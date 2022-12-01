@@ -1,0 +1,54 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+   This Source Code Form is subject to the terms of the Mozilla Public
+   License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   you can obtain one at http://mozilla.org/MPL/2.0/. */
+
+:root {
+  /* Light Variables */
+  --nav-background: var(--color-legacy-background1);
+  --nav-border: var(--color-legacy-divider1);
+  --nav-button-color: var(--color-legacy-text2);
+  --nav-button-background: var(--color-legacy-background1);
+  --nav-button-color-hover: var(--color-legacy-text1);
+  --nav-button-background-hover: var(--color-legacy-divider1);
+  /* #1E2029 is not in the old design system */
+  --nav-tool-tip-background: #1e2029;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark Variables */
+    --nav-background: var(--color-legacy-background1);
+    --nav-border: var(--color-legacy-divider1);
+    --nav-button-color: var(--color-legacy-text2);
+    --nav-button-background: var(--color-legacy-background1);
+    --nav-button-color-hover: var(--color-legacy-text1);
+    --nav-button-background-hover: var(--color-legacy-divider1);
+    /* #17171F is not in the old design system */
+    --nav-tool-tip-background: #17171f;
+  }
+}
+
+html[data-theme='light'] {
+  /* Light Variables */
+  --nav-background: var(--color-legacy-background1);
+  --nav-border: var(--color-legacy-divider1);
+  --nav-button-color: var(--color-legacy-text2);
+  --nav-button-background: var(--color-legacy-background1);
+  --nav-button-color-hover: var(--color-legacy-text1);
+  --nav-button-background-hover: var(--color-legacy-divider1);
+  /* #1E2029 is not in the old design system */
+  --nav-tool-tip-background: #1e2029;
+}
+
+html[data-theme='dark'] {
+  /* Dark Variables */
+  --nav-background: var(--color-legacy-background1);
+  --nav-border: var(--color-legacy-divider1);
+  --nav-button-color: var(--color-legacy-text2);
+  --nav-button-background: var(--color-legacy-background1);
+  --nav-button-color-hover: var(--color-legacy-text1);
+  --nav-button-background-hover: var(--color-legacy-divider1);
+  /* #17171F is not in the old design system */
+  --nav-tool-tip-background: #17171f;
+}

@@ -14,10 +14,11 @@ export interface Props {
   orientation: 'top' | 'bottom' | 'right'
   distance: number
   showTip: boolean
+  isSwap?: boolean
 }
 
 export const NavTooltip = (props: Props) => {
-  const { text, horizontalAlign, orientation, distance, showTip } = props
+  const { text, horizontalAlign, orientation, distance, showTip, isSwap } = props
 
   if (!showTip) {
     return null
@@ -25,11 +26,12 @@ export const NavTooltip = (props: Props) => {
 
   return (
     <>
-      <Pointer distance={distance} orientation={orientation} />
+      <Pointer distance={distance} orientation={orientation} isSwap={isSwap} />
       <Tip
         distance={distance}
         orientation={orientation}
         horizontalAlign={horizontalAlign}
+        isSwap={isSwap}
       >
         {text}
       </Tip>
