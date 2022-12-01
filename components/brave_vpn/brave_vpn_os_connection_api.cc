@@ -72,7 +72,9 @@ void BraveVPNOSConnectionAPI::Connect(bool ignore_network_state) {
     return;
   }
 
-  DCHECK(!cancel_connecting_);
+  // Ignore connect request while cancelling is in-progress.
+  if (cancel_connecting_)
+    return;
 
   // User can ask connect again when user want to change region.
   if (connection_state() == ConnectionState::CONNECTED) {
