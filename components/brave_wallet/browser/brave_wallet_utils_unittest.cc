@@ -1347,4 +1347,20 @@ TEST(BraveWalletUtilsUnitTest, GetActiveEndpointUrl) {
   EXPECT_EQ(GURL(), GetActiveEndpointUrl(chain));
 }
 
+TEST(BraveWalletUtilsUnitTest, GetUnstoppableDomainsRpcUrl) {
+  EXPECT_EQ(AddInfuraProjectId(GURL("https://mainnet-infura.brave.com")),
+            GetUnstoppableDomainsRpcUrl(mojom::kMainnetChainId));
+  EXPECT_EQ(AddInfuraProjectId(GURL("https://mainnet-polygon.brave.com")),
+            GetUnstoppableDomainsRpcUrl(mojom::kPolygonMainnetChainId));
+}
+
+TEST(BraveWalletUtilsUnitTest, GetEnsRpcUrl) {
+  EXPECT_EQ(AddInfuraProjectId(GURL("https://mainnet-infura.brave.com")),
+            GetEnsRpcUrl());
+}
+
+TEST(BraveWalletUtilsUnitTest, GetSnsRpcUrl) {
+  EXPECT_EQ(GURL("https://mainnet-beta-solana.brave.com/rpc"), GetSnsRpcUrl());
+}
+
 }  // namespace brave_wallet
