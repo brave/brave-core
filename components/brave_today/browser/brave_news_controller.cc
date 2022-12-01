@@ -689,17 +689,17 @@ void BraveNewsController::MaybeInitPrefs() {
 
 void BraveNewsController::OnPublishersUpdated(
     brave_news::PublishersController*) {
-  publishers_controller_.GetOrFetchPublishers(base::BindOnce(
-      [](BraveNewsController* controller, Publishers publishers) {
-        // TODO(fallaciousreasoning): Make this more granular. It's fine for now
-        // but we should be able to just let the frontend know what's changed.
-        auto event = mojom::PublishersEvent::New();
-        event->addedOrUpdated = std::move(publishers);
-        for (const auto& observer : controller->publishers_listeners_) {
-          observer->Changed(event->Clone());
-        }
-      },
-      base::Unretained(this)));
+  // TODO(fallaciousreasoning): Make this more granular. It's fine for now
+  // but we should be able to just let the frontend know what's changed.
+  auto event = mojom::PublishersEvent::New();
+  for (const auto& [id, publisher] :
+       publishers_controller_.GetLastPublishers()) {
+    event->addedOrUpdated.insert({id, publisher->Clone()});
+  }
+
+  for (const auto& observer : publishers_listeners_) {
+    observer->Changed(event->Clone());
+  }
 }
 
 }  // namespace brave_news

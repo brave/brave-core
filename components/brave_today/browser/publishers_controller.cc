@@ -80,6 +80,10 @@ const mojom::Publisher* PublishersController::GetPublisherForFeed(
   return nullptr;
 }
 
+const Publishers& PublishersController::GetLastPublishers() const {
+  return publishers_;
+}
+
 void PublishersController::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
 }
