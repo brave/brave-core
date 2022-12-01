@@ -8,7 +8,7 @@ has_native_libraries = false
 has_proguard_flags = true
 has_r_text_file = true
 is_manifest_empty = false
-manifest_package = "com.brave.braveandroidplaylist"
+manifest_package = "com.brave.playlist"
 resources = [
   "res/drawable/ic_back_toolbar_playlist.xml",
   "res/drawable/ic_button_bg.xml",

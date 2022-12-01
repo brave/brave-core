@@ -50,12 +50,12 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import com.brave.braveandroidplaylist.enums.PlaylistOptions;
-import com.brave.braveandroidplaylist.listener.PlaylistOptionsListener;
-import com.brave.braveandroidplaylist.model.PlaylistOptionsModel;
-import com.brave.braveandroidplaylist.model.SnackBarActionModel;
-import com.brave.braveandroidplaylist.util.PlaylistViewUtils;
-import com.brave.braveandroidplaylist.view.PlaylistOnboardingPanel;
+import com.brave.playlist.enums.PlaylistOptions;
+import com.brave.playlist.listener.PlaylistOptionsListener;
+import com.brave.playlist.model.PlaylistOptionsModel;
+import com.brave.playlist.model.SnackBarActionModel;
+import com.brave.playlist.util.PlaylistViewUtils;
+import com.brave.playlist.view.PlaylistOnboardingPanel;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.BraveFeatureList;

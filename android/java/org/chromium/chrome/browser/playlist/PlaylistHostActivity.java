@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.brave.braveandroidplaylist.PlaylistViewModel;
-import com.brave.braveandroidplaylist.fragment.PlaylistFragment;
-import com.brave.braveandroidplaylist.listener.PlaylistOptionsListener;
-import com.brave.braveandroidplaylist.model.PlaylistOptionsModel;
+import com.brave.playlist.PlaylistViewModel;
+import com.brave.playlist.fragment.PlaylistFragment;
+import com.brave.playlist.listener.PlaylistOptionsListener;
+import com.brave.playlist.model.PlaylistOptionsModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
