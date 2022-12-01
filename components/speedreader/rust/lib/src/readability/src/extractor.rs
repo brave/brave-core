@@ -331,8 +331,7 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
         }
 
         // Vertical split
-        if meta.author.is_some() || meta.last_modified.is_some()
-        {
+        if meta.author.is_some() || meta.last_modified.is_some() {
             let splitter = dom::create_element_simple(dom, "hr", "", None);
             dom.append_before_sibling(&first_child, NodeOrText::AppendNode(splitter));
         }
