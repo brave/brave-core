@@ -182,6 +182,7 @@ public class CryptoStore: ObservableObject {
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
+      swapService: swapService,
       token: token
     )
     assetDetailStore = store

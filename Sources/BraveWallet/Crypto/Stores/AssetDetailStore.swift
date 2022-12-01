@@ -38,6 +38,7 @@ class AssetDetailStore: ObservableObject {
   @Published private(set) var accounts: [AccountAssetViewModel] = []
   @Published private(set) var transactionSummaries: [TransactionSummary] = []
   @Published private(set) var isBuySupported: Bool = true
+  @Published private(set) var isSwapSupported: Bool = true
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
     didSet {
       currencyFormatter.currencyCode = currencyCode
@@ -47,6 +48,7 @@ class AssetDetailStore: ObservableObject {
       update()
     }
   }
+  @Published private(set) var network: BraveWallet.NetworkInfo?
 
   let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
 
@@ -59,6 +61,7 @@ class AssetDetailStore: ObservableObject {
   private let txService: BraveWalletTxService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+  private let swapService: BraveWalletSwapService
 
   let token: BraveWallet.BlockchainToken
 
@@ -70,6 +73,7 @@ class AssetDetailStore: ObservableObject {
     txService: BraveWalletTxService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
+    swapService: BraveWalletSwapService,
     token: BraveWallet.BlockchainToken
   ) {
     self.assetRatioService = assetRatioService
@@ -79,6 +83,7 @@ class AssetDetailStore: ObservableObject {
     self.txService = txService
     self.blockchainRegistry = blockchainRegistry
     self.solTxManagerProxy = solTxManagerProxy
+    self.swapService = swapService
     self.token = token
 
     self.keyringService.add(self)
@@ -103,8 +108,17 @@ class AssetDetailStore: ObservableObject {
       let allNetworks = await rpcService.allNetworks(coin)
       let selectedNetwork = await rpcService.network(coin)
       let network = allNetworks.first(where: { $0.chainId == token.chainId }) ?? selectedNetwork
-      let buyTokens = await blockchainRegistry.buyTokens(.wyre, chainId: network.chainId)
-      self.isBuySupported = buyTokens.first(where: { $0.symbol.lowercased() == token.symbol.lowercased() }) != nil
+      self.network = network
+      var wyreBuyTokens: [BraveWallet.BlockchainToken] = []
+      if WalletConstants.supportedBuyWithWyreNetworkChainIds.contains(network.chainId) {
+        wyreBuyTokens = await blockchainRegistry.buyTokens(.wyre, chainId: network.chainId)
+      }
+      let rampBuyTokens = await blockchainRegistry.buyTokens(.ramp, chainId: network.chainId)
+      let sardineBuyTokens = await blockchainRegistry.buyTokens(.sardine, chainId: network.chainId)
+      let buyTokens = wyreBuyTokens + rampBuyTokens + sardineBuyTokens
+      self.isBuySupported = buyTokens.first(where: { $0.symbol.caseInsensitiveCompare(token.symbol) == .orderedSame }) != nil
+      self.isSwapSupported = await swapService.isiOSSwapSupported(chainId: token.chainId, coin: token.coin)
+      
       // fetch accounts
       let keyring = await keyringService.keyringInfo(coin.keyringId)
       var updatedAccounts = keyring.accountInfos.map {

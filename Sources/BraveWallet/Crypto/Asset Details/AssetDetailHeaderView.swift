@@ -49,13 +49,8 @@ struct AssetDetailHeaderView: View {
     (0..<300).map { _ in .init(date: Date(), price: "0.0") }
   }
   
-  private var isBuySupported: Bool {
-    assetDetailStore.isBuySupported
-    && WalletConstants.supportedBuyWithWyreNetworkChainIds.contains(networkStore.selectedChainId)
-  }
-  
   @ViewBuilder private var actionButtonsContainer: some View {
-    if isBuySupported && networkStore.isSwapSupported {
+    if assetDetailStore.isBuySupported && assetDetailStore.isSwapSupported {
       VStack {
         actionButtons
       }
@@ -75,7 +70,7 @@ struct AssetDetailHeaderView: View {
   
   @ViewBuilder var buySendSwapButtonsContainer: some View {
     HStack {
-      if isBuySupported {
+      if assetDetailStore.isBuySupported {
         Button(
           action: {
             buySendSwapDestination = BuySendSwapDestination(
@@ -97,7 +92,7 @@ struct AssetDetailHeaderView: View {
       ) {
         Text(Strings.Wallet.send)
       }
-      if networkStore.isSwapSupported && assetDetailStore.token.isFungibleToken {
+      if assetDetailStore.isSwapSupported && assetDetailStore.token.isFungibleToken {
         Button(
           action: {
             buySendSwapDestination = BuySendSwapDestination(
@@ -129,6 +124,20 @@ struct AssetDetailHeaderView: View {
     }
     .buttonStyle(BraveFilledButtonStyle(size: .normal))
   }
+  
+  @ViewBuilder private var tokenImageNameAndNetwork: some View {
+    AssetIconView(token: assetDetailStore.token, network: assetDetailStore.network ?? networkStore.selectedChain)
+    VStack(alignment: .leading) {
+      Text(assetDetailStore.token.name)
+        .fixedSize(horizontal: false, vertical: true)
+        .font(.title3.weight(.semibold))
+      if let chainName = assetDetailStore.network?.chainName {
+        Text(chainName)
+          .fixedSize(horizontal: false, vertical: true)
+          .font(.caption)
+      }
+    }
+  }
 
   var body: some View {
     VStack(alignment: assetDetailStore.token.isFungibleToken ? .center : .leading, spacing: 0) {
@@ -145,19 +154,13 @@ struct AssetDetailHeaderView: View {
                   )
               }
               HStack {
-                AssetIconView(token: assetDetailStore.token, network: networkStore.selectedChain)
-                Text(assetDetailStore.token.name)
-                  .fixedSize(horizontal: false, vertical: true)
-                  .font(.title3.weight(.semibold))
+                tokenImageNameAndNetwork
               }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
           } else {
             HStack {
-              AssetIconView(token: assetDetailStore.token, network: networkStore.selectedChain)
-              Text(assetDetailStore.token.name)
-                .fixedSize(horizontal: false, vertical: true)
-                .font(.title3.weight(.semibold))
+              tokenImageNameAndNetwork
               if horizontalSizeClass == .regular {
                 Spacer()
                 DateRangeView(selectedRange: $assetDetailStore.timeframe)

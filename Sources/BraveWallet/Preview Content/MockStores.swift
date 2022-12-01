@@ -123,6 +123,7 @@ extension AssetDetailStore {
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
+      swapService: MockSwapService(),
       token: .previewToken
     )
   }
