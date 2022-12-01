@@ -21,9 +21,6 @@
   <message name="IDS_REWARDS_WALLET_ACCOUNT_LINK" desc="">
     Go to my <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
   </message>
-  <message name="IDS_REWARDS_WALLET_ADD_FUNDS" desc="">
-    Add Funds
-  </message>
   <message name="IDS_REWARDS_WALLET_AUTO_CONTRIBUTE" desc="">
     Auto-Contribute
   </message>
@@ -262,9 +259,6 @@
   </message>
 
   <!-- Rewards panel notifications -->
-  <message name="IDS_REWARDS_NOTIFICATION_ADD_FUNDS" desc="">
-    Add Funds
-  </message>
   <message name="IDS_REWARDS_NOTIFICATION_RECONNECT" desc="">
     Reconnect
   </message>
@@ -273,12 +267,6 @@
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_CLAIM_TOKENS" desc="">
     Claim Tokens
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_ADD_FUNDS_TITLE" desc="">
-    Insufficient Funds
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_ADD_FUNDS_TEXT" desc="">
-    Your Brave Rewards account is waiting for a deposit.
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_AUTO_CONTRIBUTE_COMPLETED_TITLE" desc="">
     Auto-Contribute
@@ -319,9 +307,6 @@
   <message name="IDS_REWARDS_NOTIFICATION_GRANT_DAYS_REMAINING" desc="">
     You have <ph name="DAYS">$1<ex>20 days</ex></ph> left to claim
   </message>
-  <message name="IDS_REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS_TEXT" desc="">
-    Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We’ll try again in 30 days.
-  </message>
   <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_CONTRIBUTION_FAILED_TEXT" desc="">
     There was a problem processing your contribution.
   </message>
@@ -339,12 +324,6 @@
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_PUBLISHER_VERIFIED_TEXT" desc="">
     Creator <ph name="PUBLISHER_NAME">$1<ex>brave.com</ex></ph> recently verified.
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_PENDING_TIP_FAILED_TITLE" desc="">
-    Insufficient funds
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_PENDING_TIP_FAILED_TEXT" desc="">
-    You have pending tips due to insufficient funds
   </message>
 
   <!-- Adaptive captcha -->

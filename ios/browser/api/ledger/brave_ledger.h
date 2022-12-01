@@ -107,10 +107,6 @@ OBJC_EXPORT
 /// The users current wallet balance and related info
 @property(nonatomic, readonly, nullable) LedgerBalance* balance;
 
-/// Retrieves the users most up to date balance to determin whether or not the
-/// wallet has a sufficient balance to complete a reconcile
-- (void)hasSufficientBalanceToReconcile:(void (^)(BOOL sufficient))completion;
-
 /// Returns reserved amount of pending contributions to publishers.
 - (void)pendingContributionsTotal:(void (^)(double amount))completion
     NS_SWIFT_NAME(pendingContributionsTotal(completion:));

@@ -164,11 +164,6 @@ void Contribution::NotCompletedContributions(
   }
 }
 
-void Contribution::HasSufficientBalance(
-    ledger::HasSufficientBalanceToReconcileCallback callback) {
-  monthly_->HasSufficientBalance(callback);
-}
-
 void Contribution::ResetReconcileStamp() {
   ledger_->state()->ResetReconcileStamp();
   SetReconcileTimer();

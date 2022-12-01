@@ -412,10 +412,6 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   // Check if verified notification is shown
   rewards_browsertest_util::WaitForElementToContain(popup_contents.get(),
                                                     "#root", "3zsistemi.si");
-
-  // Check if insufficient funds notification is shown
-  rewards_browsertest_util::WaitForElementToContain(
-      popup_contents.get(), "#root", "Insufficient funds");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipWithVerifiedWallet) {

@@ -294,24 +294,6 @@ void BatLedgerImpl::GetCreationStamp(GetCreationStampCallback callback) {
   std::move(callback).Run(ledger_->GetCreationStamp());
 }
 
-void BatLedgerImpl::OnHasSufficientBalanceToReconcile(
-    CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,
-    bool sufficient) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(sufficient);
-  }
-  delete holder;
-}
-
-void BatLedgerImpl::HasSufficientBalanceToReconcile(
-    HasSufficientBalanceToReconcileCallback callback) {
-  auto* holder = new CallbackHolder<HasSufficientBalanceToReconcileCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->HasSufficientBalanceToReconcile(
-      std::bind(BatLedgerImpl::OnHasSufficientBalanceToReconcile, holder, _1));
-}
-
 void BatLedgerImpl::OnGetRewardsInternalsInfo(
     CallbackHolder<GetRewardsInternalsInfoCallback>* holder,
     ledger::mojom::RewardsInternalsInfoPtr info) {

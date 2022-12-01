@@ -85,7 +85,8 @@
             android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textColor="@android:color/holo_blue_dark"
-            android:padding="12dp">
+            android:padding="12dp"
+	    android:visibility="gone">
         </android.widget.Button>
 
         <ImageView

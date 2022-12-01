@@ -7,7 +7,6 @@
 
 #include "base/guid.h"
 #include "bat/ledger/internal/contribution/contribution_monthly.h"
-#include "bat/ledger/internal/contribution/contribution_monthly_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
 using std::placeholders::_1;
@@ -109,47 +108,6 @@ void ContributionMonthly::OnSavePendingContribution(
   }
 
   ledger_->ledger_client()->PendingContributionSaved(result);
-}
-
-void ContributionMonthly::HasSufficientBalance(
-    ledger::HasSufficientBalanceToReconcileCallback callback) {
-  auto fetch_callback =
-      base::BindOnce(&ContributionMonthly::OnSufficientBalanceWallet,
-                     base::Unretained(this), std::move(callback));
-
-  ledger_->wallet()->FetchBalance(std::move(fetch_callback));
-}
-
-void ContributionMonthly::OnSufficientBalanceWallet(
-    ledger::HasSufficientBalanceToReconcileCallback callback,
-    const mojom::Result result,
-    mojom::BalancePtr info) {
-  if (result != mojom::Result::LEDGER_OK || !info) {
-    BLOG(0, "Problem getting balance");
-    return;
-  }
-
-  auto tips_callback = std::bind(&ContributionMonthly::OnHasSufficientBalance,
-      this,
-      _1,
-      info->total,
-      callback);
-
-  ledger_->contribution()->GetRecurringTips(tips_callback);
-}
-
-void ContributionMonthly::OnHasSufficientBalance(
-    const std::vector<mojom::PublisherInfoPtr>& publisher_list,
-    const double balance,
-    ledger::HasSufficientBalanceToReconcileCallback callback) {
-  if (publisher_list.empty()) {
-    BLOG(1, "Publisher list is empty");
-    callback(true);
-    return;
-  }
-
-  const auto total = GetTotalFromVerifiedTips(publisher_list);
-  callback(balance >= total);
 }
 
 }  // namespace contribution

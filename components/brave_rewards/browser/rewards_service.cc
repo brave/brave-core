@@ -39,7 +39,6 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kBackupSucceeded, false);
   registry->RegisterBooleanPref(prefs::kUserHasFunded, false);
   registry->RegisterBooleanPref(prefs::kUserHasClaimedGrant, false);
-  registry->RegisterTimePref(prefs::kAddFundsNotification, base::Time());
   registry->RegisterBooleanPref(prefs::kEnabled, false);
   registry->RegisterStringPref(prefs::kDeclaredGeo, "");
   registry->RegisterStringPref(prefs::kUserVersion, "");

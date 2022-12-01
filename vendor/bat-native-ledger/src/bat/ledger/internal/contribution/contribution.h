@@ -47,9 +47,6 @@ class Contribution {
   void ContributionCompleted(const mojom::Result result,
                              mojom::ContributionInfoPtr contribution);
 
-  void HasSufficientBalance(
-    ledger::HasSufficientBalanceToReconcileCallback callback);
-
   // Fetches recurring tips that will be then used for the contribution.
   // This is called from global timer in impl.
   // Can be also called manually

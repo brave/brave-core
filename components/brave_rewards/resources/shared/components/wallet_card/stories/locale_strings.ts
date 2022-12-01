@@ -10,7 +10,6 @@ export const localeStrings = {
   rewardsPaymentPending: 'Your $1 $2 rewards will arrive in $3',
   rewardsPaymentProcessing: 'Your $1 $2 rewards are on the way. Keep an eye out!',
   walletAccountLink: 'Go to your $1 account',
-  walletAddFunds: 'Add Funds',
   walletAutoContribute: 'Auto-Contribute',
   walletDisconnected: 'Logged out',
   walletEstimatedEarnings: 'Estimated Earnings',

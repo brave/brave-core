@@ -56,8 +56,6 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
                 intent.getIntExtra(BraveRewardsExternalWallet.STATUS, UNDEFINED_WALLET_STATUS);
         TextView txtUserId = (TextView) findViewById(R.id.user_id);
         TextView txtUserStatus = (TextView) findViewById(R.id.user_status);
-        Button btn1 = (Button) findViewById(R.id.user_wallet_btn1);
-        Button btn2 = null;
         Button btnGotoProvider = (Button) findViewById(R.id.user_wallet_go_to_provider);
         btnGotoProvider.setText(
                 String.format(getResources().getString(R.string.user_wallet_goto_provider),
@@ -65,24 +63,7 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
 
         switch (status) {
             case WalletStatus.CONNECTED:
-                // set 2nd button visible
-                findViewById(R.id.user_wallet_btn2_separator).setVisibility(View.VISIBLE);
-                btn2 = (Button) findViewById(R.id.user_wallet_btn2);
-                btn2.setVisibility(View.VISIBLE);
-
-                // Buttons:
-                // Add funds
-                // Withdraw
-                // Go to provider
-                btn1.setText(
-                        getResources().getString(R.string.brave_rewards_local_panel_add_funds));
-                btn2.setText(getResources().getString(R.string.user_wallet_withdraw_funds));
                 txtUserStatus.setText(BraveRewardsExternalWallet.WalletStatusToString(status));
-
-                SetBtnOpenUrlClickHandler(
-                        btn1, intent.getStringExtra(BraveRewardsExternalWallet.ADD_URL));
-                SetBtnOpenUrlClickHandler(
-                        btn2, intent.getStringExtra(BraveRewardsExternalWallet.WITHDRAW_URL));
                 break;
             case UNDEFINED_WALLET_STATUS:
                 finish();

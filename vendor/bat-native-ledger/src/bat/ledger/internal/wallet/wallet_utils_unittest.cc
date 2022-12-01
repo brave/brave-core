@@ -38,8 +38,6 @@ TEST_F(WalletUtilTest, ExternalWalletPtrFromJSON) {
       "  \"one_time_string\": \"eda4c873eac72e1ecc30e77b25bb623b8b5bf99f\",\n"
       "  \"status\": 2,\n"
       "  \"user_name\": \"random_user\",\n"
-      "  \"add_url\": \"https://random.domain/add\","
-      "  \"withdraw_url\": \"https://random.domain/withdraw\","
       "  \"account_url\": \"https://random.domain/account\","
       "  \"login_url\": \"https://random.domain/login\","
       "  \"fees\": {\"brave\": 5.00}"
@@ -52,8 +50,6 @@ TEST_F(WalletUtilTest, ExternalWalletPtrFromJSON) {
             "eda4c873eac72e1ecc30e77b25bb623b8b5bf99f");
   EXPECT_EQ(wallet->status, ledger::mojom::WalletStatus::kConnected);
   EXPECT_EQ(wallet->user_name, "random_user");
-  EXPECT_EQ(wallet->add_url, "https://random.domain/add");
-  EXPECT_EQ(wallet->withdraw_url, "https://random.domain/withdraw");
   EXPECT_EQ(wallet->account_url, "https://random.domain/account");
   EXPECT_EQ(wallet->login_url, "https://random.domain/login");
   EXPECT_NE(wallet->fees.find("brave"), wallet->fees.end());
@@ -90,9 +86,7 @@ TEST_P(TransitionWalletCreate, Paths) {
     EXPECT_EQ(wallet->status, to);
     EXPECT_FALSE(wallet->account_url.empty());
     EXPECT_TRUE(wallet->activity_url.empty());
-    EXPECT_TRUE(wallet->add_url.empty());
     EXPECT_FALSE(wallet->login_url.empty());
-    EXPECT_TRUE(wallet->withdraw_url.empty());
 
     EXPECT_TRUE(wallet->token.empty());
     EXPECT_TRUE(wallet->address.empty());
@@ -161,14 +155,10 @@ TEST_P(TransitionWalletTransition, Paths) {
 
     if (to == mojom::WalletStatus::kConnected) {
       EXPECT_FALSE(to_wallet->activity_url.empty());
-      EXPECT_FALSE(to_wallet->add_url.empty());
-      EXPECT_FALSE(to_wallet->withdraw_url.empty());
     } else {
       EXPECT_TRUE(to == mojom::WalletStatus::kLoggedOut);
 
       EXPECT_TRUE(to_wallet->activity_url.empty());
-      EXPECT_TRUE(to_wallet->add_url.empty());
-      EXPECT_TRUE(to_wallet->withdraw_url.empty());
 
       EXPECT_FALSE(to_wallet->one_time_string.empty());
       EXPECT_FALSE(to_wallet->code_verifier.empty());

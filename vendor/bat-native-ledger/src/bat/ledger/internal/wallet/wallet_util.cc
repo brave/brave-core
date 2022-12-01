@@ -108,16 +108,6 @@ mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
     wallet->member_id = *member_id;
   }
 
-  const auto* add_url = dict.FindString("add_url");
-  if (add_url) {
-    wallet->add_url = *add_url;
-  }
-
-  const auto* withdraw_url = dict.FindString("withdraw_url");
-  if (withdraw_url) {
-    wallet->withdraw_url = *withdraw_url;
-  }
-
   const auto* account_url = dict.FindString("account_url");
   if (account_url) {
     wallet->account_url = *account_url;
@@ -209,8 +199,6 @@ bool SetWallet(LedgerImpl* ledger, mojom::ExternalWalletPtr wallet) {
   new_wallet.Set("code_verifier", wallet->code_verifier);
   new_wallet.Set("user_name", wallet->user_name);
   new_wallet.Set("member_id", wallet->member_id);
-  new_wallet.Set("add_url", wallet->add_url);
-  new_wallet.Set("withdraw_url", wallet->withdraw_url);
   new_wallet.Set("account_url", wallet->account_url);
   new_wallet.Set("login_url", wallet->login_url);
   new_wallet.Set("activity_url", wallet->activity_url);

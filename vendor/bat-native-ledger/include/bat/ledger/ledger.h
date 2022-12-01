@@ -40,8 +40,6 @@ using CreateRewardsWalletCallback =
 
 using OnRefreshPublisherCallback = std::function<void(mojom::PublisherStatus)>;
 
-using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
-
 using FetchBalanceCallback =
     base::OnceCallback<void(mojom::Result, mojom::BalancePtr)>;
 
@@ -275,9 +273,6 @@ class LEDGER_EXPORT Ledger {
                                   LegacyResultCallback callback) = 0;
 
   virtual uint64_t GetCreationStamp() = 0;
-
-  virtual void HasSufficientBalanceToReconcile(
-      HasSufficientBalanceToReconcileCallback callback) = 0;
 
   virtual void GetRewardsInternalsInfo(
       RewardsInternalsInfoCallback callback) = 0;

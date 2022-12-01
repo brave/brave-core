@@ -202,9 +202,6 @@ class LedgerImpl : public Ledger {
 
   uint64_t GetCreationStamp() override;
 
-  void HasSufficientBalanceToReconcile(
-      HasSufficientBalanceToReconcileCallback callback) override;
-
   void GetRewardsInternalsInfo(RewardsInternalsInfoCallback callback) override;
 
   void SaveRecurringTip(mojom::RecurringTipPtr info,

@@ -10,26 +10,6 @@
     android:orientation="vertical"
     android:paddingBottom="8dp">
 
-    <TextView
-        android:id="@+id/btn_add_funds"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/white_48_rounded_bg"
-        android:drawablePadding="8dp"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
-        android:text="@string/add_funds"
-        android:fontFamily="@font/poppins_600"
-        android:visibility="gone"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="16dp"
-        app:drawableStartCompat="@drawable/ic_plus"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

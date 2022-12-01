@@ -887,9 +887,7 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
 
     // enum class WalletStatus : int32_t
     dict.Set("status", static_cast<int32_t>(wallet->status));
-    dict.Set("add_url", wallet->add_url);
     dict.Set("type", wallet->type);
-    dict.Set("withdraw_url", wallet->withdraw_url);
     dict.Set("user_name", wallet->user_name);
     dict.Set("account_url", wallet->account_url);
     dict.Set("login_url", wallet->login_url);

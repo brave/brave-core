@@ -207,35 +207,6 @@ class PageWallet extends React.Component<Props, State> {
     }
   }
 
-  onFundsAction = (action: string) => {
-    const { externalWallet } = this.props.rewardsData
-
-    if (!externalWallet) {
-      return
-    }
-
-    switch (action) {
-      case 'add': {
-        if (externalWallet.addUrl) {
-          window.open(externalWallet.addUrl, '_self')
-          return
-        }
-        break
-      }
-      case 'withdraw': {
-        if (externalWallet.withdrawUrl) {
-          window.open(externalWallet.withdrawUrl, '_self')
-          return
-        }
-        break
-      }
-    }
-
-    if (externalWallet.loginUrl) {
-      this.handleExternalWalletLink()
-    }
-  }
-
   goToExternalWallet = () => {
     const { externalWallet } = this.props.rewardsData
 
@@ -541,9 +512,6 @@ class PageWallet extends React.Component<Props, State> {
 
   onExternalWalletAction = (action: ExternalWalletAction) => {
     switch (action) {
-      case 'add-funds':
-        this.onFundsAction('add')
-        break
       case 'reconnect':
         this.handleExternalWalletLink()
         break

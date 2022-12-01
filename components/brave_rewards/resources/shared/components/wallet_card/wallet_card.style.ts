@@ -19,7 +19,7 @@ export const grid = styled.div`
   grid-template-areas:
     "status-indicator earnings"
     "balance          earnings"
-    "add-funds        view-statement";
+    "empty            view-statement";
 `
 
 export const statusIndicator = styled.div`
@@ -63,7 +63,7 @@ export const disconnectedBalance = styled.div`
   }
 
   &.cover-actions {
-    grid-area: balance-start / balance-start / add-funds-end / balance-end;
+    grid-area: balance-start / balance-start / empty-end / balance-end;
     align-self: stretch;
     font-size: 14px;
     line-height: 20px;
@@ -149,29 +149,6 @@ const summaryActionButton = `
   border: none;
   background: transparent;
   cursor: pointer;
-`
-
-export const addFunds = styled.div`
-  grid-area: add-funds;
-  margin-top: 9px;
-  margin-left: 9px;
-
-  button {
-    ${summaryActionButton}
-    background: rgba(255, 255, 255, 0.24);
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.30);
-    }
-  }
-
-  .icon {
-    width: 17px;
-    height: auto;
-    vertical-align: middle;
-    margin-right: 6px;
-    margin-bottom: 2px;
-  }
 `
 
 export const viewStatement = styled.div`

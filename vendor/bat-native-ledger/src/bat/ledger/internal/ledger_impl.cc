@@ -634,12 +634,6 @@ uint64_t LedgerImpl::GetCreationStamp() {
   return state()->GetCreationStamp();
 }
 
-void LedgerImpl::HasSufficientBalanceToReconcile(
-    HasSufficientBalanceToReconcileCallback callback) {
-  WhenReady(
-      [this, callback]() { contribution()->HasSufficientBalance(callback); });
-}
-
 void LedgerImpl::GetRewardsInternalsInfo(
     RewardsInternalsInfoCallback callback) {
   WhenReady([this, callback]() {

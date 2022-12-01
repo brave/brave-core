@@ -31,8 +31,6 @@ struct ExternalWallet {
   string token;
   string address;
   WalletStatus status;
-  string add_url;
-  string withdraw_url;
   string one_time_string;
   string code_verifier;
   string user_name;
