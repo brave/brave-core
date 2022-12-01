@@ -222,8 +222,23 @@ void APIRequestHelper::OnResponse(
 void APIRequestHelper::OnDownload(SimpleURLLoaderList::iterator iter,
                                   DownloadCallback callback,
                                   base::FilePath path) {
+  auto* loader = iter->get();
+  base::flat_map<std::string, std::string> headers;
+  if (loader->ResponseInfo()) {
+    auto headers_list = loader->ResponseInfo()->headers;
+    if (headers_list) {
+      size_t header_iter = 0;
+      std::string key;
+      std::string value;
+      while (headers_list->EnumerateHeaderLines(&header_iter, &key, &value)) {
+        key = base::ToLowerASCII(key);
+        headers[key] = value;
+      }
+    }
+  }
+
   url_loaders_.erase(iter);
-  std::move(callback).Run(path);
+  std::move(callback).Run(path, std::move(headers));
 }
 
 }  // namespace api_request_helper

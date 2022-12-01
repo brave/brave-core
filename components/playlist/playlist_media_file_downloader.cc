@@ -115,8 +115,10 @@ void PlaylistMediaFileDownloader::DownloadMediaFile(const GURL& url,
                      base::Unretained(this), index));
 }
 
-void PlaylistMediaFileDownloader::OnMediaFileDownloaded(int index,
-                                                        base::FilePath path) {
+void PlaylistMediaFileDownloader::OnMediaFileDownloaded(
+    int index,
+    base::FilePath path,
+    base::flat_map<std::string, std::string> response_headers) {
   VLOG(2) << __func__ << ": downloaded media file at " << path;
 
   DCHECK(current_item_);
