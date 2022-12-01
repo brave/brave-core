@@ -351,6 +351,19 @@ struct SwapResponse {
   array<ZeroExSource> sources;
 };
 
+struct SwapErrorResponseItem {
+  string field;
+  int32 code;
+  string reason;
+};
+
+struct SwapErrorResponse {
+  int32 code;
+  string reason;
+  array<SwapErrorResponseItem> validation_errors;
+  bool is_insufficient_liquidity;
+};
+
 // Structs to model Jupiter (swap) HTTP API interactions
 // Swagger spec: https://quote-api.jup.ag/docs/static/index.html
 //
@@ -406,6 +419,13 @@ struct JupiterSwapTransactions {
   string setup_transaction;
   string swap_transaction;
   string cleanup_transaction;
+};
+
+struct JupiterErrorResponse {
+  string status_code;
+  string error;
+  string message;
+  bool is_insufficient_liquidity;
 };
 
 const string kLedgerHardwareVendor = "Ledger";
@@ -714,19 +734,19 @@ interface AssetRatioService {
 interface SwapService {
   // Obtains a price quote for a swap
   GetPriceQuote(SwapParams params) =>
-      (bool success, SwapResponse? response, string? error_response);
+      (SwapResponse? response, SwapErrorResponse? error_response, string error_string);
 
   // Obtains transaction payload data for a swap
   GetTransactionPayload(SwapParams params) =>
-      (bool success, SwapResponse? response, string? error_response);
+      (SwapResponse? response, SwapErrorResponse? error_response, string error_string);
 
   // Obtains a price quote from Jupiter for a Solana swap
   GetJupiterQuote(JupiterQuoteParams params) =>
-      (bool success, JupiterQuote? response, string? error_response);
+      (JupiterQuote? response, JupiterErrorResponse? error_response, string error_string);
 
   // Get the serialized transactions to perform the swap
   GetJupiterSwapTransactions(JupiterSwapParams params) =>
-      (bool success, JupiterSwapTransactions? response, string? error_response);
+      (JupiterSwapTransactions? response, JupiterErrorResponse? error_response, string error_string);
 
   // Obtains whether the given chain id supports swap
   IsSwapSupported(string chain_id) => (bool result);

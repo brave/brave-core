@@ -346,18 +346,6 @@ export interface WalletInfo extends WalletInfoBase {
   selectedAccount: string
 }
 
-export interface SwapErrorResponse {
-  code: number
-  reason: string
-  validationErrors?: Array<{ field: string, code: number, reason: string }>
-}
-
-export interface JupiterErrorResponse {
-  statusCode: string
-  error: string
-  message: string
-}
-
 export type AmountValidationErrorType =
   | 'fromAmountDecimalsOverflow'
   | 'toAmountDecimalsOverflow'

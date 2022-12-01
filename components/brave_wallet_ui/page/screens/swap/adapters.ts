@@ -7,14 +7,16 @@ import {
   BlockchainToken,
   ETHSendTransactionParams,
   JupiterQuoteParams,
+  JupiterQuoteResponseWithError,
   JupiterSwapParams,
+  JupiterSwapResponseWithError,
   NetworkInfo,
   SOLSendTransactionParams,
+  SwapFee,
   WalletAccount,
-  ZeroExQuoteResponse,
+  ZeroExQuoteResponseWithError,
   ZeroExSwapParams,
-  ZeroExSwapResponse,
-  SwapFee
+  ZeroExSwapResponseWithError
 } from '@brave/swap-interface'
 import {
   BraveWallet,
@@ -103,90 +105,64 @@ export function makeBlockchainToken (token: BraveWallet.BlockchainToken): Blockc
 }
 
 export function makeSwapService () {
-  async function getZeroExPriceQuote (params: ZeroExSwapParams) {
+  async function getZeroExPriceQuote (params: ZeroExSwapParams): Promise<ZeroExQuoteResponseWithError> {
     const { swapService } = getAPIProxy()
-    const { success, errorResponse, response } = await swapService.getPriceQuote(params)
+    const { response, errorResponse, errorString } = await swapService.getPriceQuote(params)
 
-    if (success) {
-      return {
-        price: response?.price || '',
-        value: response?.value || '',
-        gas: response?.gas || '',
-        estimatedGas: response?.estimatedGas || '',
-        gasPrice: response?.gasPrice || '',
-        protocolFee: response?.protocolFee || '',
-        minimumProtocolFee: response?.minimumProtocolFee || '',
-        buyTokenAddress: response?.buyTokenAddress || '',
-        sellTokenAddress: response?.sellTokenAddress || '',
-        buyAmount: response?.buyAmount || '',
-        sellAmount: response?.sellAmount || '',
-        allowanceTarget: response?.allowanceTarget || '',
-        sellTokenToEthRate: response?.sellTokenToEthRate || '',
-        buyTokenToEthRate: response?.buyTokenToEthRate || '',
-        estimatedPriceImpact: response?.estimatedPriceImpact || '',
-        sources: response?.sources || []
-      } as ZeroExQuoteResponse
+    if (response) {
+      return { response }
     }
 
-    throw new Error(errorResponse || '')
+    if (errorResponse) {
+      return { errorResponse }
+    }
+
+    throw new Error(errorString)
   }
 
-  async function getZeroExTransactionPayload (params: ZeroExSwapParams) {
+  async function getZeroExTransactionPayload (params: ZeroExSwapParams): Promise<ZeroExSwapResponseWithError> {
     const { swapService } = getAPIProxy()
-    const { success, errorResponse, response } = await swapService.getTransactionPayload(params)
-    if (success) {
-      return {
-        price: response?.price || '',
-        value: response?.value || '',
-        gas: response?.gas || '',
-        estimatedGas: response?.estimatedGas || '',
-        gasPrice: response?.gasPrice || '',
-        protocolFee: response?.protocolFee || '',
-        minimumProtocolFee: response?.minimumProtocolFee || '',
-        buyTokenAddress: response?.buyTokenAddress || '',
-        sellTokenAddress: response?.sellTokenAddress || '',
-        buyAmount: response?.buyAmount || '',
-        sellAmount: response?.sellAmount || '',
-        allowanceTarget: response?.allowanceTarget || '',
-        sellTokenToEthRate: response?.sellTokenToEthRate || '',
-        buyTokenToEthRate: response?.buyTokenToEthRate || '',
-        estimatedPriceImpact: response?.estimatedPriceImpact || '',
-        sources: response?.sources || [],
-        guaranteedPrice: response?.guaranteedPrice || '',
-        to: response?.to || '',
-        data: response?.data || ''
-      } as ZeroExSwapResponse
+    const { response, errorResponse, errorString } = await swapService.getTransactionPayload(params)
+
+    if (response) {
+      return { response }
     }
 
-    throw new Error(errorResponse || '')
+    if (errorResponse) {
+      return { errorResponse }
+    }
+
+    throw new Error(errorString)
   }
 
-  async function getJupiterQuote (params: JupiterQuoteParams) {
+  async function getJupiterQuote (params: JupiterQuoteParams): Promise<JupiterQuoteResponseWithError> {
     const { swapService } = getAPIProxy()
-    const { success, errorResponse, response } = await swapService.getJupiterQuote(params)
-    if (success) {
-      return {
-        routes: response?.routes || []
-      }
+    const { response, errorResponse, errorString } = await swapService.getJupiterQuote(params)
+
+    if (response) {
+      return { response }
     }
 
-    throw new Error(errorResponse || '')
+    if (errorResponse) {
+      return { errorResponse }
+    }
+
+    throw new Error(errorString)
   }
 
-  async function getJupiterTransactionsPayload (params: JupiterSwapParams) {
+  async function getJupiterTransactionsPayload (params: JupiterSwapParams): Promise<JupiterSwapResponseWithError> {
     const { swapService } = getAPIProxy()
-    const { success, errorResponse, response } = await swapService.getJupiterSwapTransactions(
-      params
-    )
-    if (success) {
-      return {
-        setupTransaction: response?.setupTransaction || '',
-        swapTransaction: response?.swapTransaction || '',
-        cleanupTransaction: response?.cleanupTransaction || ''
-      }
+    const { response, errorResponse, errorString } = await swapService.getJupiterSwapTransactions(params)
+
+    if (response) {
+      return { response }
     }
 
-    throw new Error(errorResponse || '')
+    if (errorResponse) {
+      return { errorResponse }
+    }
+
+    throw new Error(errorString)
   }
 
   async function isSwapSupported (chainId: string) {

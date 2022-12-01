@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
@@ -16,6 +17,15 @@
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/swap_responses.h"
 #include "brave/components/json/rs/src/lib.rs.h"
+
+namespace {
+
+constexpr int kSwapValidationErrorCode = 100;
+constexpr char kInsufficientAssetLiquidity[] = "INSUFFICIENT_ASSET_LIQUIDITY";
+constexpr char kJupiterNoRoutesMessage[] =
+    "No routes found for the input and output mints";
+
+}  // namespace
 
 namespace brave_wallet {
 
@@ -113,6 +123,64 @@ mojom::SwapResponsePtr ParseSwapResponse(const std::string& json,
   }
 
   return swap_response;
+}
+
+mojom::SwapErrorResponsePtr ParseSwapErrorResponse(const std::string& json) {
+  // https://github.com/0xProject/0x-monorepo/blob/development/packages/json-schemas/schemas/relayer_api_error_response_schema.json
+  //
+  // {
+  // 	"code": 100,
+  // 	"reason": "Validation Failed",
+  // 	"validationErrors": [{
+  // 			"field": "sellAmount",
+  // 			"code": 1001,
+  // 			"reason": "should match pattern \"^\\d+$\""
+  // 		},
+  // 		{
+  // 			"field": "sellAmount",
+  // 			"code": 1001,
+  // 			"reason": "should be integer"
+  // 		},
+  // 		{
+  // 			"field": "sellAmount",
+  // 			"code": 1001,
+  // 			"reason": "should match some schema in anyOf"
+  // 		}
+  // 	]
+  // }
+
+  absl::optional<base::Value> records_v = base::JSONReader::Read(json);
+  if (!records_v || !records_v->is_dict()) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return nullptr;
+  }
+
+  auto swap_error_response_value =
+      swap_responses::SwapErrorResponse0x::FromValue(*records_v);
+  if (!swap_error_response_value) {
+    return nullptr;
+  }
+
+  auto result = mojom::SwapErrorResponse::New();
+  result->code = swap_error_response_value->code;
+  result->reason = swap_error_response_value->reason;
+
+  if (swap_error_response_value->validation_errors) {
+    for (auto& error_item : *swap_error_response_value->validation_errors) {
+      result->validation_errors.emplace_back(mojom::SwapErrorResponseItem::New(
+          error_item.field, error_item.code, error_item.reason));
+    }
+  }
+  result->is_insufficient_liquidity = false;
+  if (result->code == kSwapValidationErrorCode) {
+    for (auto& item : result->validation_errors) {
+      if (item->reason == kInsufficientAssetLiquidity) {
+        result->is_insufficient_liquidity = true;
+      }
+    }
+  }
+
+  return result;
 }
 
 mojom::JupiterQuotePtr ParseJupiterQuote(const std::string& json) {
@@ -261,6 +329,32 @@ mojom::JupiterSwapTransactionsPtr ParseJupiterSwapTransactions(
     swap_transactions->cleanup_transaction = *value->cleanup_transaction;
 
   return swap_transactions;
+}
+
+mojom::JupiterErrorResponsePtr ParseJupiterErrorResponse(
+    const std::string& json) {
+  auto records_v =
+      base::JSONReader::Read(json, base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!records_v || !records_v->is_dict()) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return nullptr;
+  }
+
+  auto jupiter_error_response_value =
+      swap_responses::JupiterErrorResponse::FromValue(*records_v);
+  if (!jupiter_error_response_value) {
+    return nullptr;
+  }
+
+  auto result = mojom::JupiterErrorResponse::New();
+  result->status_code = jupiter_error_response_value->status_code;
+  result->error = jupiter_error_response_value->error;
+  result->message = jupiter_error_response_value->message;
+
+  result->is_insufficient_liquidity =
+      base::Contains(result->message, kJupiterNoRoutesMessage);
+
+  return result;
 }
 
 // Function to convert all numbers in JSON string to strings.

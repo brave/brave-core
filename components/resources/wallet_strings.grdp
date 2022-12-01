@@ -740,6 +740,7 @@
   <message name="IDS_BRAVE_SWAP_REVIEW_ORDER" desc="Text for swap button">Review order</message>
   <message name="IDS_BRAVE_SWAP_APPROVE_TOKEN" desc="Text for swap button while approving ERC20 token">Approve <ph name="TOKEN">$1</ph></message>
   <message name="IDS_BRAVE_SWAP_INSUFFICIENT_BALANCE" desc="Text for swap button when token token balance is insufficient">Insufficient <ph name="TOKEN">$1</ph> balance</message>
+  <message name="IDS_BRAVE_SWAP_INSUFFICIENT_LIQUIDITY" desc="Swap CTA text for insufficient liquidity">Insufficient liquidity</message>
   <message name="IDS_BRAVE_SWAP_SELECT_TOKEN" desc="Dropdown text to select token">Select token</message>
   <message name="IDS_BRAVE_SWAP_HALF" desc="Amount preset button text for half">Half</message>
   <message name="IDS_BRAVE_SWAP_MAX" desc="Amount preset button text for max">Max</message>

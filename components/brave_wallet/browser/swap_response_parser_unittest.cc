@@ -299,4 +299,90 @@ TEST(SwapResponseParserUnitTest, ParseJupiterSwapTransactions) {
   ASSERT_FALSE(ParseJupiterSwapTransactions(R"({"foo": "bar"})"));
 }
 
+TEST(SwapResponseParserUnitTest, ParseSwapErrorResponse) {
+  {
+    std::string json(R"(
+    {
+      "code": 100,
+      "reason": "Validation Failed",
+      "validationErrors": [
+        {
+          "field": "buyAmount",
+          "code": 1004,
+          "reason": "INSUFFICIENT_ASSET_LIQUIDITY"
+        }
+      ]
+    })");
+
+    auto swap_error = ParseSwapErrorResponse(json);
+    EXPECT_EQ(swap_error->code, 100);
+    EXPECT_EQ(swap_error->reason, "Validation Failed");
+    EXPECT_EQ(swap_error->validation_errors.size(), 1u);
+    EXPECT_EQ(swap_error->validation_errors.front()->field, "buyAmount");
+    EXPECT_EQ(swap_error->validation_errors.front()->code, 1004);
+    EXPECT_EQ(swap_error->validation_errors.front()->reason,
+              "INSUFFICIENT_ASSET_LIQUIDITY");
+
+    EXPECT_TRUE(swap_error->is_insufficient_liquidity);
+  }
+  {
+    std::string json(R"(
+    {
+      "code": 100,
+      "reason": "Validation Failed",
+      "validationErrors": [
+        {
+          "field": "buyAmount",
+          "code": 1004,
+          "reason": "SOMETHING_ELSE"
+        }
+      ]
+    })");
+
+    auto swap_error = ParseSwapErrorResponse(json);
+    EXPECT_EQ(swap_error->code, 100);
+    EXPECT_EQ(swap_error->reason, "Validation Failed");
+    EXPECT_EQ(swap_error->validation_errors.size(), 1u);
+    EXPECT_EQ(swap_error->validation_errors.front()->field, "buyAmount");
+    EXPECT_EQ(swap_error->validation_errors.front()->code, 1004);
+    EXPECT_EQ(swap_error->validation_errors.front()->reason, "SOMETHING_ELSE");
+
+    EXPECT_FALSE(swap_error->is_insufficient_liquidity);
+  }
+}
+
+TEST(SwapResponseParserUnitTest, ParseJupiterErrorResponse) {
+  {
+    std::string json(R"(
+    {
+      "statusCode": "some code",
+      "error": "error",
+      "message": "No routes found for the input and output mints"
+    })");
+
+    auto jupiter_error = ParseJupiterErrorResponse(json);
+    EXPECT_EQ(jupiter_error->status_code, "some code");
+    EXPECT_EQ(jupiter_error->error, "error");
+    EXPECT_EQ(jupiter_error->message,
+              "No routes found for the input and output mints");
+
+    EXPECT_TRUE(jupiter_error->is_insufficient_liquidity);
+  }
+  {
+    std::string json(R"(
+    {
+      "statusCode": "some code",
+      "error": "error",
+      "message": "some message"
+    })");
+
+    auto jupiter_error = ParseJupiterErrorResponse(json);
+    EXPECT_EQ(jupiter_error->status_code, "some code");
+    EXPECT_EQ(jupiter_error->error, "error");
+    EXPECT_EQ(jupiter_error->message, "some message");
+
+    EXPECT_FALSE(jupiter_error->is_insufficient_liquidity);
+  }
+}
+
 }  // namespace brave_wallet

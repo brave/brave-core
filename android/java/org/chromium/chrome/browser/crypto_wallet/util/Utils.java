@@ -664,29 +664,6 @@ public class Utils {
         return true;
     }
 
-    public static boolean isSwapLiquidityErrorReason(String error) {
-        try {
-            JSONObject mainObj = new JSONObject(error);
-            JSONArray errorsArray = mainObj.getJSONArray("validationErrors");
-            if (errorsArray == null) {
-                return false;
-            }
-            for (int index = 0; index < errorsArray.length(); index++) {
-                JSONObject errorObj = errorsArray.getJSONObject(index);
-                if (errorObj == null) {
-                    continue;
-                }
-                String reason = errorObj.getString("reason");
-                if (reason.equals("INSUFFICIENT_ASSET_LIQUIDITY")) {
-                    return true;
-                }
-            }
-        } catch (JSONException ex) {
-        }
-
-        return false;
-    }
-
     public static void setBitmapResource(ExecutorService executor, Handler handler, Context context,
             String iconPath, int iconId, ImageView iconImg, TextView textView,
             boolean drawCaratDown) {

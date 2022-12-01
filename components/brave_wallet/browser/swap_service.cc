@@ -286,7 +286,7 @@ void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
   if (!IsEVMNetworkSupported(
           json_rpc_service_->GetChainId(mojom::CoinType::ETH))) {
     std::move(callback).Run(
-        false, nullptr,
+        nullptr, nullptr,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
     return;
   }
@@ -303,19 +303,23 @@ void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
 void SwapService::OnGetPriceQuote(GetPriceQuoteCallback callback,
                                   APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(false, nullptr, api_request_result.body());
-    return;
-  }
-  mojom::SwapResponsePtr swap_response =
-      ParseSwapResponse(api_request_result.body(), false);
-  if (!swap_response) {
-    std::move(callback).Run(
-        false, nullptr,
-        "Could not parse response body: " + api_request_result.body());
+    if (auto swap_error_response =
+            ParseSwapErrorResponse(api_request_result.body())) {
+      std::move(callback).Run(nullptr, std::move(swap_error_response), "");
+    } else {
+      std::move(callback).Run(
+          nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    }
     return;
   }
 
-  std::move(callback).Run(true, std::move(swap_response), absl::nullopt);
+  if (auto swap_response =
+          ParseSwapResponse(api_request_result.body(), false)) {
+    std::move(callback).Run(std::move(swap_response), nullptr, "");
+  } else {
+    std::move(callback).Run(nullptr, nullptr,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  }
 }
 
 void SwapService::GetTransactionPayload(
@@ -324,7 +328,7 @@ void SwapService::GetTransactionPayload(
   if (!IsEVMNetworkSupported(
           json_rpc_service_->GetChainId(mojom::CoinType::ETH))) {
     std::move(callback).Run(
-        false, nullptr,
+        nullptr, nullptr,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
     return;
   }
@@ -343,19 +347,23 @@ void SwapService::OnGetTransactionPayload(
     GetTransactionPayloadCallback callback,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(false, nullptr, api_request_result.body());
-    return;
-  }
-  mojom::SwapResponsePtr swap_response =
-      ParseSwapResponse(api_request_result.body(), true);
-  if (!swap_response) {
-    std::move(callback).Run(
-        false, nullptr,
-        "Could not parse response body: " + api_request_result.body());
+    if (auto swap_error_response =
+            ParseSwapErrorResponse(api_request_result.body())) {
+      std::move(callback).Run(nullptr, std::move(swap_error_response), "");
+    } else {
+      std::move(callback).Run(
+          nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    }
+
     return;
   }
 
-  std::move(callback).Run(true, std::move(swap_response), absl::nullopt);
+  if (auto swap_response = ParseSwapResponse(api_request_result.body(), true)) {
+    std::move(callback).Run(std::move(swap_response), nullptr, "");
+  } else {
+    std::move(callback).Run(nullptr, nullptr,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  }
 }
 
 void SwapService::GetJupiterQuote(mojom::JupiterQuoteParamsPtr params,
@@ -363,7 +371,7 @@ void SwapService::GetJupiterQuote(mojom::JupiterQuoteParamsPtr params,
   if (!IsSolanaNetworkSupported(
           json_rpc_service_->GetChainId(mojom::CoinType::SOL))) {
     std::move(callback).Run(
-        false, nullptr,
+        nullptr, nullptr,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
     return;
   }
@@ -386,20 +394,22 @@ void SwapService::GetJupiterQuote(mojom::JupiterQuoteParamsPtr params,
 void SwapService::OnGetJupiterQuote(GetJupiterQuoteCallback callback,
                                     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(false, nullptr, api_request_result.body());
-    return;
-  }
-  mojom::JupiterQuotePtr swap_quote =
-      ParseJupiterQuote(api_request_result.body());
-
-  if (!swap_quote) {
-    std::move(callback).Run(
-        false, nullptr,
-        "Could not parse response body: " + api_request_result.body());
+    if (auto error_response =
+            ParseJupiterErrorResponse(api_request_result.body())) {
+      std::move(callback).Run(nullptr, std::move(error_response), "");
+    } else {
+      std::move(callback).Run(
+          nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    }
     return;
   }
 
-  std::move(callback).Run(true, std::move(swap_quote), absl::nullopt);
+  if (auto swap_quote = ParseJupiterQuote(api_request_result.body())) {
+    std::move(callback).Run(std::move(swap_quote), nullptr, "");
+  } else {
+    std::move(callback).Run(nullptr, nullptr,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  }
 }
 
 void SwapService::GetJupiterSwapTransactions(
@@ -408,7 +418,7 @@ void SwapService::GetJupiterSwapTransactions(
   if (!IsSolanaNetworkSupported(
           json_rpc_service_->GetChainId(mojom::CoinType::SOL))) {
     std::move(callback).Run(
-        false, nullptr,
+        nullptr, nullptr,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
     return;
   }
@@ -416,7 +426,7 @@ void SwapService::GetJupiterSwapTransactions(
   auto encoded_params = EncodeJupiterTransactionParams(std::move(params));
   if (!encoded_params) {
     std::move(callback).Run(
-        false, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+        nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
@@ -435,20 +445,24 @@ void SwapService::OnGetJupiterSwapTransactions(
     GetJupiterSwapTransactionsCallback callback,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(false, nullptr, api_request_result.body());
-    return;
-  }
-  mojom::JupiterSwapTransactionsPtr swap_transactions =
-      ParseJupiterSwapTransactions(api_request_result.body());
+    if (auto error_response =
+            ParseJupiterErrorResponse(api_request_result.body())) {
+      std::move(callback).Run(nullptr, std::move(error_response), "");
+    } else {
+      std::move(callback).Run(
+          nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    }
 
-  if (!swap_transactions) {
-    std::move(callback).Run(
-        false, nullptr,
-        "Could not parse response body: " + api_request_result.body());
     return;
   }
 
-  std::move(callback).Run(true, std::move(swap_transactions), absl::nullopt);
+  if (auto swap_transactions =
+          ParseJupiterSwapTransactions(api_request_result.body())) {
+    std::move(callback).Run(std::move(swap_transactions), nullptr, "");
+  } else {
+    std::move(callback).Run(nullptr, nullptr,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  }
 }
 
 void SwapService::HasJupiterFeesForTokenMint(
