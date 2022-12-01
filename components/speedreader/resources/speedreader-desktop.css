@@ -585,7 +585,7 @@ html[data-font-size="150"] {
 }
 
 html[data-font-family="sans"] {
-  font-family: Atkinson Hyperlegible, sans-serif;
+  font-family: 'Atkinson Hyperlegible', sans-serif;
 }
 
 html[data-font-family="serif"] {
@@ -597,7 +597,7 @@ html[data-font-family="mono"] {
 }
 
 html[data-font-family="dyslexic"] {
-  font-family: OpenDislexic, Comic Sans MS, Comic Sans, cursive, sans-serif;
+  font-family: 'OpenDyslexic', Comic Sans MS, Comic Sans, cursive, sans-serif;
 }
 
 html[data-content-style="text-only"] img {

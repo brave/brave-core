@@ -14,7 +14,9 @@
 #include "base/files/file_path_watcher.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
@@ -35,16 +37,30 @@ namespace {
 constexpr const char kSpeedreaderStylesheet[] = "speedreader-stylesheet";
 
 std::string WrapStylesheetWithCSP(const std::string& stylesheet) {
-  const std::string style_hash = crypto::SHA256HashString(stylesheet);
-  const std::string style_hash_b64 =
+  const std::string& style_hash = crypto::SHA256HashString(stylesheet);
+  const std::string& style_hash_b64 =
       base::Base64Encode(base::as_bytes(base::make_span(style_hash)));
+  constexpr const char kCSP[] = R"html(
+    <meta http-equiv="Content-Security-Policy"
+      content="script-src 'none';
+               style-src-elem 'sha256-%s'
+                              https://fonts.googleapis.com
+                              https://fonts.gstatic.com
+                              https://fonts.cdnfonts.com"
+    >)html";
 
-  return "<meta http-equiv=\"Content-Security-Policy\" content=\""
-         "script-src 'none'; style-src 'sha256-" +
-         style_hash_b64 +
-         "'\">\n"
-         "<style id=\"brave_speedreader_style\">" +
-         stylesheet + "</style>";
+  constexpr const char kFonts[] = R"html(
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Atkinson+Hyperlegible" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin>
+    <link href="https://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet">
+  )html";
+
+  return base::StrCat({base::StringPrintf(kCSP, style_hash_b64.c_str()),
+                       "<style id=\"brave_speedreader_style\">", stylesheet,
+                       "</style>", kFonts});
 }
 
 std::string GetDistilledPageStylesheet(const base::FilePath& stylesheet_path) {
