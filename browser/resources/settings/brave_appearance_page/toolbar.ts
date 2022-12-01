@@ -3,12 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {loadTimeData} from "../i18n_setup.js"
-import '../settings_shared.css.js';
-import '../settings_vars.css.js';
 import {getTemplate} from './toolbar.html.js'
+
+import '../settings_shared.css.js'
+import '../settings_vars.css.js'
+import './sidebar.js'
 
 const SettingsBraveAppearanceToolbarElementBase = I18nMixin(PolymerElement) as {
   new (): PolymerElement & I18nMixinInterface

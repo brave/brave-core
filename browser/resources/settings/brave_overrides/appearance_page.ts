@@ -12,7 +12,6 @@ import {loadTimeData} from '../i18n_setup.js'
 
 import '../brave_appearance_page/super_referral.js'
 import '../brave_appearance_page/brave_theme.js'
-import '../brave_appearance_page/sidebar.js'
 import '../brave_appearance_page/toolbar.js'
 
 const superReferralStringId = 'superReferralThemeName'
