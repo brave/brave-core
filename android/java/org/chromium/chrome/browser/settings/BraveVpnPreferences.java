@@ -20,6 +20,7 @@ import android.util.Pair;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 
 import com.android.billingclient.api.Purchase;
 import com.wireguard.android.backend.GoBackend;
@@ -70,6 +71,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     public static final String PREF_SUPPORT_VPN = "support_vpn";
     public static final String PREF_SERVER_RESET_CONFIGURATION = "server_reset_configuration";
     private static final String PREF_SPLIT_TUNNELING = "split_tunneling";
+    private static final String PREF_BRAVE_VPN_SUBSCRIPTION_SECTION =
+            "brave_vpn_subscription_section";
 
     private static final int INVALIDATE_CREDENTIAL_TIMER_COUNT = 5000;
 
@@ -84,6 +87,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     private ChromeBasePreference mSubscriptionStatus;
     private ChromeBasePreference mSubscriptionExpires;
     private ChromeBasePreference mServerHost;
+    private ChromeBasePreference mLinkSubscriptionPrefernce;
     private BraveVpnPrefModel mBraveVpnPrefModel;
 
     @Override
@@ -165,21 +169,6 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         return true;
                     }
                 });
-        if (findPreference(PREF_LINK_SUBSCRIPTION) != null) {
-            findPreference(PREF_LINK_SUBSCRIPTION)
-                    .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                        @Override
-                        public boolean onPreferenceClick(Preference preference) {
-                            Intent intent = new Intent(getActivity(), ChromeTabbedActivity.class);
-                            intent.putExtra(
-                                    BraveActivity.OPEN_URL, BraveVpnUtils.getBraveAccountUrl());
-                            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                            getActivity().finish();
-                            startActivity(intent);
-                            return true;
-                        }
-                    });
-        }
 
         findPreference(PREF_SERVER_RESET_CONFIGURATION)
                 .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -198,14 +187,30 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         return true;
                     }
                 });
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)) {
-            removePreferenceIfPresent(PREF_LINK_SUBSCRIPTION);
-        }
-    }
-
-    private void removePreferenceIfPresent(String key) {
-        Preference preference = getPreferenceScreen().findPreference(key);
-        if (preference != null) getPreferenceScreen().removePreference(preference);
+        mLinkSubscriptionPrefernce = new ChromeBasePreference(getActivity());
+        mLinkSubscriptionPrefernce.setTitle(
+                getResources().getString(R.string.link_subscription_title));
+        mLinkSubscriptionPrefernce.setSummary(
+                getResources().getString(R.string.link_subscription_text));
+        mLinkSubscriptionPrefernce.setKey(PREF_LINK_SUBSCRIPTION);
+        mLinkSubscriptionPrefernce.setVisible(
+                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
+                && BraveVpnPrefUtils.isSubscriptionPurchase());
+        mLinkSubscriptionPrefernce.setOnPreferenceClickListener(
+                new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        Intent intent = new Intent(getActivity(), ChromeTabbedActivity.class);
+                        intent.putExtra(BraveActivity.OPEN_URL, BraveVpnUtils.getBraveAccountUrl());
+                        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        getActivity().finish();
+                        startActivity(intent);
+                        return true;
+                    }
+                });
+        PreferenceCategory preferenceCategory =
+                (PreferenceCategory) findPreference(PREF_BRAVE_VPN_SUBSCRIPTION_SECTION);
+        preferenceCategory.addPreference(mLinkSubscriptionPrefernce);
     }
 
     @Override
@@ -259,6 +264,12 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
             new Handler().post(() -> updateSummaries());
         } else {
             BraveVpnUtils.dismissProgressDialog();
+        }
+        if (mLinkSubscriptionPrefernce != null) {
+            mLinkSubscriptionPrefernce.setVisible(
+                    ChromeFeatureList.isEnabled(
+                            BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
+                    && BraveVpnPrefUtils.isSubscriptionPurchase());
         }
     }
 
@@ -320,10 +331,6 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 }
             }
         }.start();
-        if (findPreference(PREF_LINK_SUBSCRIPTION) != null) {
-            findPreference(PREF_LINK_SUBSCRIPTION)
-                    .setEnabled(BraveVpnPrefUtils.isSubscriptionPurchase());
-        }
         BraveVpnUtils.dismissProgressDialog();
     }
 
