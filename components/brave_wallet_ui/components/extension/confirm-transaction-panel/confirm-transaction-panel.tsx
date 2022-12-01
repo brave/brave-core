@@ -260,7 +260,7 @@ export const ConfirmTransactionPanel = ({
           {(!isERC721TransferFrom && !isERC721SafeTransferFrom) &&
             <TransactionFiatAmountBig>
               {
-                transactionDetails.fiatValue.formatAsFiat(defaultCurrencies.fiat)
+                new Amount(transactionDetails.fiatValue).formatAsFiat(defaultCurrencies.fiat)
               }
             </TransactionFiatAmountBig>
           }

@@ -112,7 +112,7 @@ export const TransactionsListItem = ({
           } ${
             erc721ID
           } (${
-            transactionDetails.fiatValue.formatAsFiat(defaultFiatCurrency) || '...'
+            new Amount(transactionDetails.fiatValue).formatAsFiat(defaultFiatCurrency) || '...'
           })`}
       </DetailTextDark>
     )

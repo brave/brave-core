@@ -12,7 +12,8 @@ import {
   SolFeeEstimates,
   SupportedTestNetworks,
   WalletAccountType,
-  SerializableTransactionInfo
+  SerializableTransactionInfo,
+  SerializableTimeDelta
 } from '../constants/types'
 import { SolanaTransactionTypes } from '../common/constants/solana'
 import { MAX_UINT256, NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../common/constants/magics'
@@ -51,7 +52,9 @@ export type SolanaTransactionInfo = TransactionInfo & {
   }
 }
 
-export const sortTransactionByDate = <T extends TransactionInfo>(
+export const sortTransactionByDate = <
+  T extends { createdTime: SerializableTimeDelta }
+>(
   transactions: T[],
   order: Order = 'ascending'
 ): T[] => {
@@ -1026,8 +1029,8 @@ export const getTransactionFiatValues = ({
   tx: TransactionInfo
   txNetwork?: BraveWallet.NetworkInfo
 }): {
-  fiatValue: Amount
-  fiatTotal: Amount
+  fiatValue: string
+  fiatTotal: string
   formattedNativeCurrencyTotal: string
   gasFeeFiat: string
 } => {
@@ -1040,23 +1043,19 @@ export const getTransactionFiatValues = ({
   // Solana Dapps
   if (isSolanaDappTransaction(tx)) {
     const transferedAmountFiat = txNetwork
-      ? computeFiatAmount(
-        spotPrices,
-        {
+      ? computeFiatAmount(spotPrices, {
           decimals: txNetwork.decimals,
           symbol: txNetwork.symbol,
           value: transferredValueWei || ''
-        }
-      )
-    : Amount.empty()
+        })
+      : Amount.empty()
 
-    const totalAmountFiat = new Amount(gasFeeFiat)
-      .plus(transferedAmountFiat)
+    const totalAmountFiat = new Amount(gasFeeFiat).plus(transferedAmountFiat)
 
     return {
       gasFeeFiat,
-      fiatValue: transferedAmountFiat,
-      fiatTotal: totalAmountFiat,
+      fiatValue: transferedAmountFiat.toNumber().toString(),
+      fiatTotal: totalAmountFiat.toNumber().toString(),
       formattedNativeCurrencyTotal: transferedAmountFiat
         .div(networkSpotPrice)
         .formatAsAsset(6, txNetwork?.symbol)
@@ -1075,8 +1074,11 @@ export const getTransactionFiatValues = ({
 
     return {
       gasFeeFiat,
-      fiatValue: sendAmountFiat,
-      fiatTotal: new Amount(gasFeeFiat).plus(sendAmountFiat),
+      fiatValue: sendAmountFiat.toNumber().toString(),
+      fiatTotal: new Amount(gasFeeFiat)
+        .plus(sendAmountFiat)
+        .toNumber()
+        .toString(),
       formattedNativeCurrencyTotal: sendAmountFiat
         .div(networkSpotPrice)
         .formatAsAsset(6, txNetwork?.symbol)
@@ -1094,11 +1096,13 @@ export const getTransactionFiatValues = ({
 
     return {
       gasFeeFiat,
-      fiatValue: Amount.zero(), // Display NFT values in the future
-      fiatTotal: new Amount(totalAmountFiat),
-      formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
-        .div(networkSpotPrice)
-        .formatAsAsset(6, txNetwork?.symbol)
+      fiatValue: '0', // Display NFT values in the future
+      fiatTotal: new Amount(totalAmountFiat).toNumber().toString(),
+      formattedNativeCurrencyTotal:
+        totalAmountFiat &&
+        new Amount(totalAmountFiat)
+          .div(networkSpotPrice)
+          .formatAsAsset(6, txNetwork?.symbol)
     }
   }
 
@@ -1106,10 +1110,12 @@ export const getTransactionFiatValues = ({
   if (tx.txType === BraveWallet.TransactionType.ERC20Approve) {
     return {
       gasFeeFiat,
-      fiatValue: Amount.zero(),
-      fiatTotal: new Amount(gasFeeFiat),
-      formattedNativeCurrencyTotal: Amount.zero()
-        .formatAsAsset(2, txNetwork?.symbol)
+      fiatValue: '0',
+      fiatTotal: gasFeeFiat,
+      formattedNativeCurrencyTotal: Amount.zero().formatAsAsset(
+        2,
+        txNetwork?.symbol
+      )
     }
   }
 
@@ -1120,8 +1126,11 @@ export const getTransactionFiatValues = ({
 
     return {
       gasFeeFiat,
-      fiatValue: sendAmountFiat,
-      fiatTotal: new Amount(gasFeeFiat).plus(sendAmountFiat),
+      fiatValue: sendAmountFiat.toNumber().toString(),
+      fiatTotal: new Amount(gasFeeFiat)
+        .plus(sendAmountFiat)
+        .toNumber()
+        .toString(),
       formattedNativeCurrencyTotal: sendAmountFiat
         .div(networkSpotPrice)
         .formatAsAsset(6, txNetwork?.symbol)
@@ -1130,25 +1139,23 @@ export const getTransactionFiatValues = ({
 
   // ETH SWAP
   if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
-    const sellAmountFiat = sellToken && sellAmountWei
-      ? computeFiatAmount(
-          spotPrices,
-          {
+    const sellAmountFiat =
+      sellToken && sellAmountWei
+        ? computeFiatAmount(spotPrices, {
             decimals: sellToken.decimals,
             symbol: sellToken.symbol,
             value: sellAmountWei
-          }
-        )
-      : Amount.empty()
+          })
+        : Amount.empty()
 
-    const totalAmountFiat = new Amount(gasFeeFiat)
-      .plus(sellAmountFiat)
+    const totalAmountFiat = new Amount(gasFeeFiat).plus(sellAmountFiat)
 
     return {
       gasFeeFiat,
-      fiatValue: sellAmountFiat,
-      fiatTotal: totalAmountFiat,
-      formattedNativeCurrencyTotal: sellAmountFiat.div(networkSpotPrice)
+      fiatValue: sellAmountFiat.toNumber().toString(),
+      fiatTotal: totalAmountFiat.toNumber().toString(),
+      formattedNativeCurrencyTotal: sellAmountFiat
+        .div(networkSpotPrice)
         .formatAsAsset(6, txNetwork?.symbol)
     }
   }
@@ -1156,18 +1163,44 @@ export const getTransactionFiatValues = ({
   // DEFAULT
   const sendAmountFiat = txNetwork
     ? computeFiatAmount(spotPrices, {
-      decimals: txNetwork.decimals,
-      symbol: txNetwork.symbol,
-      value: getTransactionBaseValue(tx) || ''
-    })
+        decimals: txNetwork.decimals,
+        symbol: txNetwork.symbol,
+        value: getTransactionBaseValue(tx) || ''
+      })
     : Amount.empty()
 
   return {
     gasFeeFiat,
-    fiatValue: sendAmountFiat,
+    fiatValue: sendAmountFiat.toNumber().toString(),
     fiatTotal: new Amount(gasFeeFiat)
-      .plus(sendAmountFiat),
-    formattedNativeCurrencyTotal: sendAmountFiat.div(networkSpotPrice)
+      .plus(sendAmountFiat)
+      .toNumber()
+      .toString(),
+    formattedNativeCurrencyTotal: sendAmountFiat
+      .div(networkSpotPrice)
       .formatAsAsset(6, txNetwork?.symbol)
+  }
+}
+
+export const getLocaleKeyForTxStatus = (
+  status: BraveWallet.TransactionStatus
+) => {
+  switch (status) {
+    case BraveWallet.TransactionStatus.Unapproved:
+      return 'braveWalletTransactionStatusUnapproved'
+    case BraveWallet.TransactionStatus.Approved:
+      return 'braveWalletTransactionStatusApproved'
+    case BraveWallet.TransactionStatus.Rejected:
+      return 'braveWalletTransactionStatusRejected'
+    case BraveWallet.TransactionStatus.Submitted:
+      return 'braveWalletTransactionStatusSubmitted'
+    case BraveWallet.TransactionStatus.Confirmed:
+      return 'braveWalletTransactionStatusConfirmed'
+    case BraveWallet.TransactionStatus.Error:
+      return 'braveWalletTransactionStatusError'
+    case BraveWallet.TransactionStatus.Dropped:
+      return 'braveWalletTransactionStatusDropped'
+    default:
+      return ''
   }
 }

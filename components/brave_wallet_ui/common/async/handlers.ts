@@ -16,7 +16,10 @@ import {
   TransactionStatusChanged,
   UpdateUnapprovedTransactionNonceType,
   SelectedAccountChangedPayloadType,
-  GetCoinMarketPayload
+  GetCoinMarketPayload,
+  RetryTransactionPayload,
+  SpeedupTransactionPayload,
+  CancelTransactionPayload
 } from '../constants/action_types'
 import {
   BraveWallet,
@@ -617,53 +620,70 @@ handler.on(WalletActions.transactionStatusChanged.type, async (store: Store, pay
   }
 })
 
-handler.on(WalletActions.retryTransaction.type, async (store: Store, payload: BraveWallet.TransactionInfo) => {
-  const { txService } = getAPIProxy()
-  const coin = getCoinFromTxDataUnion(payload.txDataUnion)
-  const result = await txService.retryTransaction(coin, payload.id)
-  if (!result.success) {
-    console.error(
-      'Retry transaction failed: ' +
-      `id=${payload.id} ` +
-      `err=${result.errorMessage}`
+handler.on(
+  WalletActions.retryTransaction.type,
+  async (store: Store, payload: RetryTransactionPayload) => {
+    const { txService } = getAPIProxy()
+    const result = await txService.retryTransaction(
+      payload.coinType,
+      payload.transactionId
     )
-  } else {
-    // Refresh the transaction history of the origin account.
-    await store.dispatch(refreshTransactionHistory(payload.fromAddress))
+    if (!result.success) {
+      console.error(
+        'Retry transaction failed: ' +
+          `id=${payload.transactionId} ` +
+          `err=${result.errorMessage}`
+      )
+    } else {
+      // Refresh the transaction history of the origin account.
+      await store.dispatch(refreshTransactionHistory(payload.fromAddress))
+    }
   }
-})
+)
 
-handler.on(WalletActions.speedupTransaction.type, async (store: Store, payload: BraveWallet.TransactionInfo) => {
-  const { txService } = getAPIProxy()
-  const coin = getCoinFromTxDataUnion(payload.txDataUnion)
-  const result = await txService.speedupOrCancelTransaction(coin, payload.id, false)
-  if (!result.success) {
-    console.error(
-      'Speedup transaction failed: ' +
-      `id=${payload.id} ` +
-      `err=${result.errorMessage}`
+handler.on(
+  WalletActions.speedupTransaction.type,
+  async (store: Store, payload: SpeedupTransactionPayload) => {
+    const { txService } = getAPIProxy()
+    const result = await txService.speedupOrCancelTransaction(
+      payload.coinType,
+      payload.transactionId,
+      false
     )
-  } else {
-    // Refresh the transaction history of the origin account.
-    await store.dispatch(refreshTransactionHistory(payload.fromAddress))
+    if (!result.success) {
+      console.error(
+        'Speedup transaction failed: ' +
+          `id=${payload.transactionId} ` +
+          `err=${result.errorMessage}`
+      )
+    } else {
+      // Refresh the transaction history of the origin account.
+      await store.dispatch(refreshTransactionHistory(payload.fromAddress))
+    }
   }
-})
+)
 
-handler.on(WalletActions.cancelTransaction.type, async (store: Store, payload: BraveWallet.TransactionInfo) => {
-  const { txService } = getAPIProxy()
-  const coin = getCoinFromTxDataUnion(payload.txDataUnion)
-  const result = await txService.speedupOrCancelTransaction(coin, payload.id, true)
-  if (!result.success) {
-    console.error(
-      'Cancel transaction failed: ' +
-      `id=${payload.id} ` +
-      `err=${result.errorMessage}`
+handler.on(
+  WalletActions.cancelTransaction.type,
+  async (store: Store, payload: CancelTransactionPayload) => {
+    const { txService } = getAPIProxy()
+    const result = await txService.speedupOrCancelTransaction(
+      payload.coinType,
+      payload.transactionId,
+      true
     )
-  } else {
-    // Refresh the transaction history of the origin account.
-    await store.dispatch(refreshTransactionHistory(payload.fromAddress))
+    if (!result.success) {
+      console.error(
+        'Cancel transaction failed: ' +
+          `id=${payload.transactionId} ` +
+          `err=${result.errorMessage}`
+      )
+    } else {
+      // Refresh the transaction history of the origin account.
+      await store.dispatch(refreshTransactionHistory(payload.fromAddress))
+    }
   }
-})
+)
 
 handler.on(WalletActions.expandWalletNetworks.type, async (store) => {
   chrome.tabs.create({ url: 'chrome://settings/wallet/networks' }, () => {

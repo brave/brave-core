@@ -8,7 +8,7 @@ import { getLocale } from '../../common/locale'
 
 export const AllAccountsOption: WalletAccountType = {
   accountType: 'Primary',
-  address: '',
+  address: 'all',
   coin: 0,
   id: 'all',
   name: getLocale('braveWalletAccountFilterAllAccounts'),

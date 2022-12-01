@@ -15,6 +15,9 @@ import type WalletApiProxy from '../../wallet_api_proxy'
 // mocks
 import { mockWalletState } from '../../../stories/mock-data/mock-wallet-state'
 import { mockedMnemonic } from '../../../stories/mock-data/user-accounts'
+import { mockAccount } from '../../constants/mocks'
+import { mockNetworks } from '../../../stories/mock-data/mock-networks'
+import { mockAccountAssetOptions } from '../../../stories/mock-data/mock-asset-options'
 
 export const makeMockedStoreWithSpy = () => {
   const store = createStore(combineReducers({
@@ -83,42 +86,69 @@ export class MockedWalletApiProxy {
     sources: []
   }
 
-  swapService: Partial<InstanceType<typeof BraveWallet.SwapServiceInterface>> = {
-    getTransactionPayload: async ({
-      buyAmount,
-      buyToken,
-      sellAmount,
-      sellToken
-    }: BraveWallet.SwapParams): Promise<{
-      response: BraveWallet.SwapResponse
-      errorResponse: BraveWallet.SwapErrorResponse
-      errorString: string
-    }> => ({
-      errorResponse: {
-        code: 0,
-        isInsufficientLiquidity: false,
-        reason: '',
-        validationErrors: []
-      },
-      response: {
-        ...this.mockQuote,
-        buyTokenAddress: buyToken,
-        sellTokenAddress: sellToken,
-        buyAmount: buyAmount || '',
-        sellAmount: sellAmount || '',
-        price: '1'
-      },
-      errorString: ''
-    }),
-    getPriceQuote: async () => ({
-      response: this.mockTransaction,
-      errorResponse: null,
-      errorString: ''
+  blockchainRegistry: Partial<
+    InstanceType<typeof BraveWallet.BlockchainRegistryInterface>
+  > = {
+    getAllTokens: async (chainId: string, coin: number) => ({
+      tokens: mockWalletState.fullTokenList.filter(
+        (t) => t.chainId === chainId && t.coin === coin
+      )
     })
   }
 
-  keyringService: Partial<InstanceType<typeof BraveWallet.KeyringServiceInterface>> = {
-    validatePassword: async (password: string) => ({ result: password === 'password' }),
+  braveWalletService: Partial<
+    InstanceType<typeof BraveWallet.BraveWalletServiceInterface>
+  > = {
+    getUserAssets: async (chainId: string, coin: BraveWallet.CoinType) => {
+      return {
+        tokens: mockAccountAssetOptions.filter(
+          (t) => t.chainId === chainId && t.coin === coin
+        )
+      }
+    }
+  }
+
+  swapService: Partial<InstanceType<typeof BraveWallet.SwapServiceInterface>> =
+    {
+      getTransactionPayload: async ({
+        buyAmount,
+        buyToken,
+        sellAmount,
+        sellToken
+      }: BraveWallet.SwapParams): Promise<{
+        response: BraveWallet.SwapResponse
+        errorResponse: BraveWallet.SwapErrorResponse
+        errorString: string
+      }> => ({
+        errorResponse: {
+          code: 0,
+          isInsufficientLiquidity: false,
+          reason: '',
+          validationErrors: []
+        },
+        response: {
+          ...this.mockQuote,
+          buyTokenAddress: buyToken,
+          sellTokenAddress: sellToken,
+          buyAmount: buyAmount || '',
+          sellAmount: sellAmount || '',
+          price: '1'
+        },
+        errorString: ''
+      }),
+      getPriceQuote: async () => ({
+        response: this.mockTransaction,
+        errorResponse: null,
+        errorString: ''
+      })
+    }
+
+  keyringService: Partial<
+    InstanceType<typeof BraveWallet.KeyringServiceInterface>
+  > = {
+    validatePassword: async (password: string) => ({
+      result: password === 'password'
+    }),
     lock: () => {
       this.store.dispatch(WalletActions.locked())
       alert('wallet locked')
@@ -127,16 +157,20 @@ export class MockedWalletApiProxy {
       address: string,
       password: string,
       coin: number
-    ) => (password === 'password'
-      ? { privateKey: 'secret-private-key', success: true }
-      : { privateKey: '', success: false }
-    ),
-    async getMnemonicForDefaultKeyring (password) {
-      return password === 'password' ? { mnemonic: mockedMnemonic } : { mnemonic: '' }
+    ) =>
+      password === 'password'
+        ? { privateKey: 'secret-private-key', success: true }
+        : { privateKey: '', success: false },
+    getMnemonicForDefaultKeyring: async (password) => {
+      return password === 'password'
+        ? { mnemonic: mockedMnemonic }
+        : { mnemonic: '' }
     }
   }
 
-  ethTxManagerProxy: Partial<InstanceType<typeof BraveWallet.EthTxManagerProxyInterface>> = {
+  ethTxManagerProxy: Partial<
+    InstanceType<typeof BraveWallet.EthTxManagerProxyInterface>
+  > = {
     getGasEstimation1559: async () => {
       return {
         estimation: {
@@ -152,24 +186,68 @@ export class MockedWalletApiProxy {
     }
   }
 
-  braveWalletP3A: Partial<InstanceType<typeof BraveWallet.BraveWalletP3AInterface>> = {
+  braveWalletP3A: Partial<
+    InstanceType<typeof BraveWallet.BraveWalletP3AInterface>
+  > = {
     reportOnboardingAction: () => {},
     reportEthereumProvider: () => {}
   }
 
-  assetRatioService: Partial<InstanceType<typeof BraveWallet.AssetRatioServiceInterface>> = {
-    async getPrice (fromAssets, toAssets, timeframe) {
-        return {
-          success: true,
-          values: [
-            {
-              assetTimeframeChange: '1',
-              fromAsset: fromAssets[0],
-              toAsset: toAssets[0],
-              price: '1234.56'
-            }
-          ]
-        }
+  assetRatioService: Partial<
+    InstanceType<typeof BraveWallet.AssetRatioServiceInterface>
+  > = {
+    getPrice: async (fromAssets, toAssets, timeframe) => {
+      return {
+        success: true,
+        values: [
+          {
+            assetTimeframeChange: '1',
+            fromAsset: fromAssets[0],
+            toAsset: toAssets[0],
+            price: '1234.56'
+          }
+        ]
+      }
+    }
+  }
+
+  jsonRpcService: Partial<
+    InstanceType<typeof BraveWallet.JsonRpcServiceInterface>
+  > = {
+    getAllNetworks: async () => {
+      return { networks: mockNetworks }
+    },
+    getHiddenNetworks: async () => {
+      return { chainIds: [] }
+    }
+  }
+
+  walletHandler: Partial<
+    InstanceType<typeof BraveWallet.WalletHandlerInterface>
+  > = {
+    getWalletInfo: async () => {
+      return {
+        accountInfos: [
+          {
+            hardware: {
+              deviceId: mockAccount.deviceId || '',
+              path: '',
+              vendor: ''
+            },
+            isImported: mockAccount.accountType !== 'Primary',
+            address: mockAccount.address,
+            coin: mockAccount.coin,
+            keyringId: mockAccount.keyringId,
+            name: mockAccount.name
+          }
+        ],
+        favoriteApps: [],
+        isSolanaEnabled: true,
+        isFilecoinEnabled: true,
+        isWalletBackedUp: true,
+        isWalletCreated: true,
+        isWalletLocked: false
+      }
     }
   }
 

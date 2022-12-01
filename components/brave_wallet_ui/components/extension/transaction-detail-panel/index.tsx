@@ -165,7 +165,7 @@ const TransactionDetailPanel = (props: Props) => {
     if (liveTransaction.txType !== BraveWallet.TransactionType.ERC721TransferFrom &&
       liveTransaction.txType !== BraveWallet.TransactionType.ERC721SafeTransferFrom &&
       liveTransaction.txType !== BraveWallet.TransactionType.ERC20Approve) {
-      return transactionDetails.fiatValue
+      return new Amount(transactionDetails.fiatValue)
         .formatAsFiat(defaultCurrencies.fiat)
     }
     return ''

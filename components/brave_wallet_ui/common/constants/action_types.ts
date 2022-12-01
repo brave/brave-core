@@ -123,3 +123,12 @@ export type SetTransactionProviderErrorType = {
   transaction: BraveWallet.TransactionInfo
   providerError: TransactionProviderError
 }
+
+export interface RetryTransactionPayload {
+  transactionId: string
+  coinType: BraveWallet.CoinType
+  fromAddress: string
+}
+
+export type SpeedupTransactionPayload = RetryTransactionPayload
+export type CancelTransactionPayload = RetryTransactionPayload

@@ -134,6 +134,7 @@ export const Container = () => {
       walletLocation.includes(WalletRoutes.Portfolio) ||
       walletLocation.includes(WalletRoutes.Accounts) ||
       walletLocation.includes(WalletRoutes.Market) ||
+      walletLocation.includes(WalletRoutes.Transactions) ||
       walletLocation.includes(WalletRoutes.Nfts)
     )
 

@@ -27,7 +27,11 @@ export function makeSerializableTimeDelta (td: TimeDelta | SerializableTimeDelta
   }
 }
 
-export function makeSerializableUnguessableToken (token: BraveWallet.OriginInfo['origin']['nonceIfOpaque']): SerializableUnguessableToken | undefined {
+export function makeSerializableUnguessableToken (
+  token:
+    | BraveWallet.OriginInfo['origin']['nonceIfOpaque']
+    | SerializableUnguessableToken
+): SerializableUnguessableToken | undefined {
   if (!token) {
     return undefined
   }
@@ -49,16 +53,18 @@ export function deserializableUnguessableToken (token?: SerializableUnguessableT
   }
 }
 
+type OriginInfo = BraveWallet.OriginInfo | SerializableOriginInfo
+
 export function makeSerializableOriginInfo <
-  T extends BraveWallet.OriginInfo | undefined
-> (originInfo: T): T extends BraveWallet.OriginInfo ? SerializableOriginInfo : undefined {
+  T extends OriginInfo | undefined
+> (originInfo: T): T extends OriginInfo ? SerializableOriginInfo : undefined {
   return (originInfo ? {
     ...originInfo,
     origin: {
       ...originInfo?.origin,
       nonceIfOpaque: makeSerializableUnguessableToken(originInfo?.origin.nonceIfOpaque)
     }
-  } : undefined) as T extends BraveWallet.OriginInfo ? SerializableOriginInfo : undefined
+  } : undefined) as T extends OriginInfo ? SerializableOriginInfo : undefined
 }
 
 export function deserializeOrigin (origin: SerializableOrigin): BraveWallet.OriginInfo['origin'] {

@@ -34,6 +34,9 @@ export type ThemeColor = StringWithAutocomplete<keyof IThemeProps['color']>
 import BraveWalletWithCoins from '../../assets/svg-icons/onboarding/brave-wallet-with-coins.svg'
 import { makePaddingMixin } from '../../utils/style.utils'
 
+// re-export "send" styles
+export { Text } from '../../page/screens/send/shared.styles'
+
 // Spacers
 export const VerticalSpacer = styled.div<{ space: number | string }>`
   display: flex;

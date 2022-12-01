@@ -111,6 +111,22 @@ export const addLogoToToken = (token: BraveWallet.BlockchainToken) => {
   }
 }
 
+export const addChainIdToToken = (
+  token: BraveWallet.BlockchainToken,
+  chainId: string
+) => {
+  try {
+    token.chainId = chainId
+    return token
+  } catch {
+    // the token object was immutable, return a new token object
+    return {
+      ...token,
+      chainId: chainId
+    }
+  }
+}
+
 export const getNativeTokensFromList = (tokenList: BraveWallet.BlockchainToken[]) => {
   // separate Native (gas) assets from other tokens
   const { nativeAssets, tokens } = tokenList.reduce((acc, t) => {
@@ -201,5 +217,14 @@ export const findTokenByContractAddress = (
 ) => {
   return tokensList.find((token) =>
     token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
+  )
+}
+
+export const findTokenBySymbol = (
+  tokenSymbol: string,
+  tokensList: BraveWallet.BlockchainToken[]
+) => {
+  return tokensList.find((token) =>
+    token.symbol.toLowerCase() === tokenSymbol.toLowerCase()
   )
 }
