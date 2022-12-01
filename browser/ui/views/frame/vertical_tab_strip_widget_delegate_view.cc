@@ -48,8 +48,11 @@ VerticalTabStripWidgetDelegateView* VerticalTabStripWidgetDelegateView::Create(
   return delegate_view;
 }
 
-VerticalTabStripWidgetDelegateView::~VerticalTabStripWidgetDelegateView() =
-    default;
+VerticalTabStripWidgetDelegateView::~VerticalTabStripWidgetDelegateView() {
+  // Child views will be deleted after this. Marks `region_view_` nullptr
+  // so that they dont' access the `region_view_` via this view.
+  region_view_ = nullptr;
+}
 
 VerticalTabStripWidgetDelegateView::VerticalTabStripWidgetDelegateView(
     BrowserView* browser_view,

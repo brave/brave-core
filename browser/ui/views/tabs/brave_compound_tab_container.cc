@@ -6,11 +6,13 @@
 #include "brave/browser/ui/views/tabs/brave_compound_tab_container.h"
 
 #include <memory>
+#include <utility>
+#include <vector>
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/features.h"
-#include "chrome/browser/ui/ui_features.cc"
+#include "chrome/browser/ui/ui_features.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"

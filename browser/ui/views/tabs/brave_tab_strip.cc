@@ -197,11 +197,13 @@ void BraveTabStrip::UpdateTabContainer() {
     auto* vertical_region_view =
         browser_view->vertical_tab_strip_widget_delegate_view()
             ->vertical_tab_strip_region_view();
-    DCHECK(vertical_region_view);
+    // `vertical_region_view` can be null if it's in destruction.
+    if (vertical_region_view) {
+      SetAvailableWidthCallback(base::BindRepeating(
+          &VerticalTabStripRegionView::GetAvailableWidthForTabContainer,
+          base::Unretained(vertical_region_view)));
+    }
 
-    SetAvailableWidthCallback(base::BindRepeating(
-        &VerticalTabStripRegionView::GetAvailableWidthForTabContainer,
-        base::Unretained(vertical_region_view)));
     tab_container_->SetLayoutManager(std::make_unique<views::FlexLayout>())
         ->SetOrientation(views::LayoutOrientation::kVertical);
   } else {
