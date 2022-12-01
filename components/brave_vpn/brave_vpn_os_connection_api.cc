@@ -27,14 +27,10 @@ namespace brave_vpn {
 using ConnectionState = mojom::ConnectionState;
 
 BraveVPNOSConnectionAPI::BraveVPNOSConnectionAPI() {
-  base::PowerMonitor::AddPowerSuspendObserver(this);
-  net::NetworkChangeNotifier::AddDNSObserver(this);
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 }
 
 BraveVPNOSConnectionAPI::~BraveVPNOSConnectionAPI() {
-  base::PowerMonitor::RemovePowerSuspendObserver(this);
-  net::NetworkChangeNotifier::RemoveDNSObserver(this);
   net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
 }
 
@@ -236,41 +232,6 @@ void BraveVPNOSConnectionAPI::OnDisconnected() {
 void BraveVPNOSConnectionAPI::OnIsDisconnecting() {
   VLOG(2) << __func__;
   UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
-}
-
-void BraveVPNOSConnectionAPI::OnSuspend() {
-  // Set reconnection state in case if computer/laptop is going to sleep.
-  // The disconnection event will be fired after waking up and we want to
-  // restore the connection.
-  if (connection_state_ == ConnectionState::CONNECTED) {
-    Disconnect();
-    reconnect_on_resume_ = true;
-  }
-  VLOG(2) << __func__
-          << " Should reconnect when resume:" << reconnect_on_resume_;
-}
-
-void BraveVPNOSConnectionAPI::OnResume() {
-#if BUILDFLAG(IS_MAC)
-  OnDNSChanged();
-#endif  // BUILDFLAG(IS_MAC)
-}
-
-void BraveVPNOSConnectionAPI::OnDNSChanged() {
-  if (!IsNetworkAvailable() ||
-      // This event is triggered before going to sleep while vpn is still
-      // active. Vpn is presented as CONNECTION_UNKNOWN and so we have to skip
-      // this to be notified only when default network active without VPN to
-      // reconnect.
-      net::NetworkChangeNotifier::GetConnectionType() ==
-          net::NetworkChangeNotifier::CONNECTION_UNKNOWN)
-    return;
-
-  VLOG(2) << __func__ << " Should reconnect:" << reconnect_on_resume_;
-  if (reconnect_on_resume_) {
-    Connect();
-    reconnect_on_resume_ = false;
-  }
 }
 
 void BraveVPNOSConnectionAPI::OnNetworkChanged(
