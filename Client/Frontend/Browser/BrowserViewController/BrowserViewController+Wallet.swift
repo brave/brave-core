@@ -461,7 +461,7 @@ extension Tab: BraveWalletSolanaEventsListener {
       if let webView = webView {
         let script: String
         if let account = account {
-          script = "if (solanaWeb3) { window.solana.emit('accountChanged', new solanaWeb3.PublicKey('\(account.htmlEntityEncodedString)')) }"
+          script = "if (\(UserScriptManager.walletSolanaNameSpace).solanaWeb3) { window.solana.emit('accountChanged', new \(UserScriptManager.walletSolanaNameSpace).solanaWeb3.PublicKey('\(account.htmlEntityEncodedString)')) }"
         } else {
           script = "window.solana.emit('accountChanged')"
         }
@@ -507,7 +507,15 @@ extension Tab: BraveWalletSolanaEventsListener {
        let publicKey = await keyringService.selectedAccount(.sol),
        self.isSolanaAccountConnected(publicKey) {
       await webView.evaluateSafeJavaScript(
-        functionName: "if (solanaWeb3) { window.solana.publicKey = new solanaWeb3.PublicKey('\(publicKey.htmlEntityEncodedString)'); }",
+        functionName: """
+        if (\(UserScriptManager.walletSolanaNameSpace).solanaWeb3) {
+          window.__firefox__.execute(function($) {
+            window.solana.publicKey = $.deepFreeze(
+              new \(UserScriptManager.walletSolanaNameSpace).solanaWeb3.PublicKey('\(publicKey.htmlEntityEncodedString)')
+            );
+          });
+        }
+        """,
         contentWorld: .page,
         asFunction: false
       )

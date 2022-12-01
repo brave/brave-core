@@ -10,7 +10,10 @@ if (!window.__firefox__) {
    *  Copies an object's signature to an object with no prototype to prevent prototype polution attacks
    */
   function secureCopy(value) {
-    let properties = Object.assign({},
+    let prototypeProperties = Object.create(null, value.prototype ? Object.getOwnPropertyDescriptors(value.prototype) : undefined);
+    delete prototypeProperties['prototype'];
+    
+    let properties = Object.assign(Object.create(null, undefined),
                                    Object.getOwnPropertyDescriptors(value),
                                    value.prototype ? Object.getOwnPropertyDescriptors(value.prototype) : undefined);
     
@@ -18,7 +21,18 @@ if (!window.__firefox__) {
     delete properties['prototype'];
     
     /// Making object not inherit from Object.prototype prevents prototype pollution attacks.
-    return Object.create(null, properties);
+    //return Object.create(null, properties);
+    
+    // Create a Proxy so we can add an Object.prototype that has a null prototype and is read-only.
+    return new Proxy(Object.create(null, properties), {
+      get(target, property, receiver) {
+        if (property == 'prototype') {
+          return prototypeProperties;
+        }
+
+        return target[property];
+      }
+    });
   }
   
   /*
@@ -81,38 +95,71 @@ if (!window.__firefox__) {
         }
       }
       
-      for (const [name, property] of $Object.entries(overrides)) {
-        if (($Object.getOwnPropertyDescriptor(toString, name) || {}).writable) {
-          toString[name] = property;
+      // Secure calls to `toString`
+      const secureToString = function(toString) {
+        for (const [name, property] of $Object.entries(overrides)) {
+          let descriptor = $Object.getOwnPropertyDescriptor(toString, name);
+          if (!descriptor || descriptor.configurable) {
+            $Object.defineProperty(toString, name, {
+              enumerable: false,
+              configurable: false,
+              writable: false,
+              value: property
+            });
+          }
+          
+          descriptor = $Object.getOwnPropertyDescriptor(toString, name);
+          if (!descriptor || descriptor.writable) {
+            toString[name] = property;
+          }
+          
+          if (name !== 'toString') {
+            $.deepFreeze(toString[name]);
+          }
         }
 
-        $Object.defineProperty(toString, name, {
-          enumerable: false,
-          configurable: false,
-          writable: false,
-          value: property
-        });
-
-        if (name !== 'toString') {
-          $.deepFreeze(toString[name]);
-        }
-      }
-
-      $.deepFreeze(toString);
+        $.deepFreeze(toString);
+      };
+      
+      // Secure our custom `toString`
+      secureToString(toString);
 
       for (const [name, property] of $Object.entries(overrides)) {
-        if (($Object.getOwnPropertyDescriptor(value, name) || {}).writable) {
+        if (name == 'toString') {
+          // Object.prototype.toString != Object.toString
+          // They are two different functions, so we should check for both before overriding them
+          if (value[name] && value[name] !== Object.prototype.toString && value[name] !== Object.toString) {
+            // Secure the existing custom toString function
+            secureToString(value[name]);
+            continue;
+          }
+          
+          // Object.prototype.toString != Object.toString
+          // They are two different functions, so we should check for both before overriding them
+          let descriptor = $Object.getOwnPropertyDescriptor(value, name);
+          if (descriptor && descriptor.value !== Object.prototype.toString && descriptor.value !== Object.toString) {
+            // Secure the existing custom toString function
+            secureToString(value[name]);
+            continue;
+          }
+        }
+        
+        // Override all of the functions in the overrides array
+        let descriptor = $Object.getOwnPropertyDescriptor(value, name);
+        if (!descriptor || descriptor.configurable) {
+          $Object.defineProperty(value, name, {
+            enumerable: false,
+            configurable: false,
+            writable: false,
+            value: property
+          });
+        }
+        
+        descriptor = $Object.getOwnPropertyDescriptor(value, name);
+        if (!descriptor || descriptor.writable) {
           value[name] = property;
+          $.deepFreeze(value[name]);
         }
-
-        $Object.defineProperty(value, name, {
-          enumerable: false,
-          configurable: false,
-          writable: false,
-          value: property
-        });
-
-        $.deepFreeze(value[name]);
       }
     }
     return value;
@@ -122,12 +169,152 @@ if (!window.__firefox__) {
    *  Freeze an object and its prototype
    */
   $.deepFreeze = function(value) {
+    if (!value) {
+      return value;
+    }
+    
     $Object.freeze(value);
     
     if (value.prototype) {
       $Object.freeze(value.prototype);
     }
     return value;
+  };
+  
+  /*
+   *  Freeze an object recursively
+   */
+  $.extensiveFreeze = function(obj, exceptions = []) {
+    const primitiveTypes = $Array.of('number', 'string', 'boolean', 'null', 'undefined');
+    const isIgnoredClass = function(instance) {
+      return instance.constructor && exceptions.includes(instance.constructor.name);
+    };
+    
+    // Do nothing to primitive types
+    if (primitiveTypes.includes(typeof obj)) {
+      return obj;
+    }
+    
+    if (!obj || (obj.constructor && obj.constructor.name == "Object")) {
+      return obj;
+    }
+
+    // Do nothing to these prototypes
+    if (obj == Object.prototype || obj == Function.prototype) {
+      return obj;
+    }
+    
+    // Do nothing for typed arrays as they only contains primitives
+    if (obj instanceof Object.getPrototypeOf(Uint8Array)) {
+      return obj;
+    }
+
+    if ($Array.isArray(obj) || obj instanceof Set) {
+      for (const value of obj) {
+        if (!value || primitiveTypes.includes(typeof value)) {
+          continue;
+        }
+
+        if (value instanceof Object.getPrototypeOf(Uint8Array)) {
+          continue;
+        }
+        
+        $.extensiveFreeze(value, exceptions);
+        
+        if (!isIgnoredClass(value)) {
+          $Object.freeze($(value));
+        }
+      }
+      
+      return isIgnoredClass(obj) ? $(obj) : $Object.freeze($(obj));
+    } else if (obj instanceof Map) {
+      for (const value of obj.values()) {
+        if (!value || primitiveTypes.includes(typeof value)) {
+          continue;
+        }
+        
+        if (value instanceof Object.getPrototypeOf(Uint8Array)) {
+          continue;
+        }
+
+        $.extensiveFreeze(value, exceptions);
+        
+        if (!isIgnoredClass(value)) {
+          $Object.freeze($(value));
+        }
+      }
+
+      return isIgnoredClass(obj) ? $(obj) : $Object.freeze($(obj));
+    } else if (obj.constructor && (obj.constructor.name == "Function" || obj.constructor.name == "AsyncFunction")) {
+      return $Object.freeze($(obj));
+    } else {
+      let prototype = $Object.getPrototypeOf(obj);
+      if (prototype && prototype != Object.prototype && prototype != Function.prototype) {
+        $.extensiveFreeze(prototype, exceptions);
+        
+        if (!isIgnoredClass(prototype)) {
+          $Object.freeze($(prototype));
+        }
+      }
+
+      for (const value of $Object.values(obj)) {
+        if (!value || primitiveTypes.includes(typeof value)) {
+          continue;
+        }
+        
+        if (value instanceof Object.getPrototypeOf(Uint8Array)) {
+          continue;
+        }
+
+        $.extensiveFreeze(value, exceptions);
+        
+        if (!isIgnoredClass(value)) {
+          $Object.freeze($(value));
+        }
+      }
+
+      for (const name of $Object.getOwnPropertyNames(obj)) {
+        // Special handling for getters and setters because accessing them will return the value,
+        // and not the function itself.
+        let descriptor = $Object.getOwnPropertyDescriptor(obj, name);
+        if (descriptor) {
+          let values = $Array.of(descriptor.get, descriptor.set, descriptor.value);
+          for (const value of values) {
+            if (!value || primitiveTypes.includes(typeof value) || value instanceof Object.getPrototypeOf(Uint8Array)) {
+              continue;
+            }
+            
+            $.extensiveFreeze(value, exceptions);
+            
+            if (!isIgnoredClass(value)) {
+              $Object.freeze($(value));
+            }
+          }
+          
+          descriptor.enumerable = false;
+          descriptor.writable = false;
+          descriptor.configurable = false;
+          continue;
+        }
+        
+        let value = obj[name];
+        if (!value || primitiveTypes.includes(typeof value)) {
+          continue;
+        }
+        
+        if (value instanceof Object.getPrototypeOf(Uint8Array)) {
+          continue;
+        }
+        
+        $.extensiveFreeze(value, exceptions);
+        
+        if (!isIgnoredClass(value)) {
+          $Object.freeze($(value));
+        }
+      }
+
+      return isIgnoredClass(obj) ? $(obj) : $Object.freeze($(obj));
+    }
   };
     
   $.postNativeMessage = function(messageHandlerName, message) {
@@ -143,14 +330,16 @@ if (!window.__firefox__) {
     let result = $MessageHandlers[messageHandlerName].postMessage(message);
     window.webkit = webkit;
     return result;
-  }
+  };
   
   // Start securing functions before any other code can use them
   $($.deepFreeze);
+  $($.extensiveFreeze);
   $($.postNativeMessage);
   $($);
 
   $.deepFreeze($.deepFreeze);
+  $.deepFreeze($.extensiveFreeze);
   $.deepFreeze($.postNativeMessage);
   $.deepFreeze($);
   
@@ -271,7 +460,7 @@ if (!window.__firefox__) {
         if (!userScripts[name]) {
           userScripts[name] = true;
           if (typeof fn === 'function') {
-            $(fn)($, $Object, $Array);
+            $(fn)($, $Object, $Function, $Array);
           }
           return true;
         }
@@ -281,7 +470,7 @@ if (!window.__firefox__) {
     
       let execute = $(function(fn) {
         if (typeof fn === 'function') {
-          $(fn)($, $Object, $Array);
+          $(fn)($, $Object, $Function, $Array);
           return true;
         }
         return false;
