@@ -88,11 +88,17 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
     return settings;
   }
   if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
-    auto* frame = window->GetFrame();
-    if (!frame)
-      frame = window->GetDisconnectedFrame();
-    if (frame)
-      settings = frame->GetContentSettingsClient();
+    auto* local_frame = window->GetFrame();
+    if (!local_frame)
+      local_frame = window->GetDisconnectedFrame();
+    if (local_frame) {
+      if (auto* top_local_frame =
+              blink::DynamicTo<blink::LocalFrame>(&local_frame->Tree().Top())) {
+        settings = top_local_frame->GetContentSettingsClient();
+      } else {
+        settings = local_frame->GetContentSettingsClient();
+      }
+    }
   } else if (context->IsWorkerGlobalScope()) {
     settings =
         blink::To<blink::WorkerGlobalScope>(context)->ContentSettingsClient();
