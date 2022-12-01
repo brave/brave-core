@@ -23,7 +23,7 @@ enum class CheckConnectionResult {
 };
 
 void PrintRasError(DWORD error);
-std::wstring GetPhonebookPath();
+std::wstring GetPhonebookPath(const std::wstring& entry_name);
 
 bool CreateEntry(const std::wstring& entry_name,
                  const std::wstring& hostname,

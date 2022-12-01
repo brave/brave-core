@@ -146,8 +146,8 @@ void BraveVPNOSConnectionAPIWin::OnCreated(const std::string& name,
 }
 
 void BraveVPNOSConnectionAPIWin::OnConnected(bool success) {
-  success ? BraveVPNOSConnectionAPI::OnConnected()
-          : BraveVPNOSConnectionAPI::OnConnectFailed();
+  if (!success)
+    BraveVPNOSConnectionAPI::OnConnectFailed();
 }
 
 void BraveVPNOSConnectionAPIWin::OnDisconnected(bool success) {
