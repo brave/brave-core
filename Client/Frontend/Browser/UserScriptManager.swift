@@ -16,6 +16,7 @@ class UserScriptManager {
   static let shared = UserScriptManager()
   
   static let securityToken = ScriptLoader.uniqueID
+  static let walletSolanaNameSpace = "W\(ScriptLoader.uniqueID)"
   
   private let alwaysEnabledScripts: [ScriptType] = [
     .rewardsReporting,
@@ -197,6 +198,55 @@ class UserScriptManager {
         }
       }
       
+      // Inject SolanaWeb3Script.js
+      if WalletDebugFlags.isSolanaDappsEnabled,
+         tab.isPrivate == false,
+         Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultSolWallet.value) == .brave {
+        let script = ScriptLoader.loadUserScript(named: "SolanaWeb3Script") ?? tab.walletSolProviderScripts[.solanaWeb3]
+        
+        if let solanaWeb3Script = script {
+          let script = """
+          // Define a global variable with a random name
+          // Local variables are NOT enumerable!
+          let \(UserScriptManager.walletSolanaNameSpace);
+          
+          window.__firefox__.execute(function($, $Object, $Function, $Array) {
+            // Inject Solana as a Local Variable.
+            \(solanaWeb3Script)
+          
+            \(UserScriptManager.walletSolanaNameSpace) = $({
+              solanaWeb3: $(solanaWeb3)
+            });
+          
+            // Failed to load SolanaWeb3
+            if (typeof \(UserScriptManager.walletSolanaNameSpace) === 'undefined') {
+              return;
+            }
+          
+            const freezeExceptions = $Array.of("BN");
+          
+            for (const value of $Object.values(\(UserScriptManager.walletSolanaNameSpace).solanaWeb3)) {
+              if (!value) {
+                continue;
+              }
+          
+              $.extensiveFreeze(value, freezeExceptions);
+            }
+          
+            $.deepFreeze(\(UserScriptManager.walletSolanaNameSpace).solanaWeb3);
+            $.deepFreeze(\(UserScriptManager.walletSolanaNameSpace));
+          });
+          """
+          
+          let wkScript = WKUserScript.create(
+            source: script,
+            injectionTime: .atDocumentStart,
+            forMainFrameOnly: true,
+            in: SolanaProviderScriptHandler.scriptSandbox)
+          scriptController.addUserScript(wkScript)
+        }
+      }
+      
       if WalletDebugFlags.isSolanaDappsEnabled,
          tab.isPrivate == false,
          Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultSolWallet.value) == .brave,
@@ -232,19 +282,5 @@ class UserScriptManager {
         }
       }
     }
-  }
-  
-  @MainActor func injectSolanaWeb3Script(tab: Tab, solanaWeb3Script: String?) async {
-    guard let webView = tab.webView,
-          let solanaWeb3Script = solanaWeb3Script else {
-      return
-    }
-    // inject the Solana Web3 Library
-    await webView.evaluateSafeJavaScript(
-      functionName: solanaWeb3Script,
-      args: [],
-      contentWorld: .page,
-      asFunction: false
-    )
   }
 }

@@ -175,6 +175,7 @@ let package = Package(
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/RewardsReportingScript.js"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/WalletEthereumProviderScript.js"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/WalletSolanaProviderScript.js"),
+        .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/SolanaWeb3Script.js"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/DeAmpScript.js"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/PlaylistScript.js"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/ResourceDownloaderScript.js"),

@@ -35,7 +35,8 @@ class SolanaProviderScriptHandler: TabContentScript {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
     }
-    return WKUserScript.create(source: secureScript(handlerName: messageHandlerName,
+    return WKUserScript.create(source: secureScript(handlerNamesMap: ["$<message_handler>": messageHandlerName,
+                                                                      "$<walletSolanaNameSpace>": UserScriptManager.walletSolanaNameSpace],
                                                     securityToken: scriptId,
                                                     script: script),
                                injectionTime: .atDocumentStart,
@@ -152,8 +153,7 @@ class SolanaProviderScriptHandler: TabContentScript {
     if let args = args {
       param = MojoBase.Value(jsonString: args)?.dictionaryValue
     }
-    // need to inject Solana Web3 Library
-    await UserScriptManager.shared.injectSolanaWeb3Script(tab: tab, solanaWeb3Script: tab.walletSolProviderScripts[.solanaWeb3])
+
     let (status, errorMessage, publicKey) = await provider.connect(param)
     guard status == .success else {
       return (nil, buildErrorJson(status: status, errorMessage: errorMessage))
@@ -234,8 +234,6 @@ class SolanaProviderScriptHandler: TabContentScript {
     }
     if method == Keys.connect.rawValue,
        let publicKey = result[Keys.publicKey.rawValue]?.stringValue {
-      // need to inject Solana Web3 Library before replying with success
-      await UserScriptManager.shared.injectSolanaWeb3Script(tab: tab, solanaWeb3Script: tab.walletSolProviderScripts[.solanaWeb3])
       await tab.updateSolanaProperties()
       return (publicKey, nil)
     } else {
@@ -325,7 +323,7 @@ class SolanaProviderScriptHandler: TabContentScript {
   
   @MainActor private func emitConnectEvent(publicKey: String) async {
     if let webView = tab?.webView {
-      let script = "window.solana.emit('connect', new solanaWeb3.PublicKey('\(publicKey.htmlEntityEncodedString)'))"
+      let script = "window.solana.emit('connect', new \(UserScriptManager.walletSolanaNameSpace).solanaWeb3.PublicKey('\(publicKey.htmlEntityEncodedString)'))"
       await webView.evaluateSafeJavaScript(functionName: script, contentWorld: .page, asFunction: false)
     }
   }
