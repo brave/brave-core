@@ -22,6 +22,12 @@ namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
+#if BUILDFLAG(IS_ANDROID)
+namespace base {
+class SequencedTaskRunner;
+}  // namespace base
+#endif
+
 class GURL;
 
 class PlaylistThumbnailDownloader {
@@ -51,7 +57,21 @@ class PlaylistThumbnailDownloader {
   using APIRequestHelper = api_request_helper::APIRequestHelper;
   using TicketMap = base::flat_map<std::string, APIRequestHelper::Ticket>;
 
-  void OnThumbnailDownloaded(const std::string& id, base::FilePath path);
+  void OnThumbnailDownloaded(
+      const std::string& id,
+      base::FilePath path,
+      base::flat_map<std::string, std::string> response_headers);
+
+#if BUILDFLAG(IS_ANDROID)
+  void RenameFilePerFormat(const std::string& id,
+                           const base::FilePath& path,
+                           const std::string& extension);
+  void OnRenameFilePerFormat(const std::string& id,
+                             const base::FilePath& new_path,
+                             bool result);
+
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
+#endif
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 

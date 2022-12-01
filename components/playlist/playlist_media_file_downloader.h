@@ -94,7 +94,9 @@ class PlaylistMediaFileDownloader
  private:
   void ResetDownloadStatus();
   void DownloadMediaFile(const GURL& url);
-  void OnMediaFileDownloaded(base::FilePath path);
+  void OnMediaFileDownloaded(
+      base::FilePath path,
+      const base::flat_map<std::string, std::string>& response_headers);
 
   void NotifyFail(const std::string& id);
   void NotifySucceed(const std::string& id, const std::string& media_file_path);
