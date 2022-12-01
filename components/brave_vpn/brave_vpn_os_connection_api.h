@@ -13,7 +13,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
-#include "base/power_monitor/power_observer.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_vpn/brave_vpn_connection_info.h"
@@ -31,9 +30,7 @@ struct Hostname;
 
 // Interface for managing OS' vpn connection.
 class BraveVPNOSConnectionAPI
-    : public base::PowerSuspendObserver,
-      public net::NetworkChangeNotifier::NetworkChangeObserver,
-      public net::NetworkChangeNotifier::DNSObserver {
+    : public net::NetworkChangeNotifier::NetworkChangeObserver {
  public:
   class Observer : public base::CheckedObserver {
    public:
@@ -104,13 +101,6 @@ class BraveVPNOSConnectionAPI
  private:
   friend class BraveVPNServiceTest;
 
-  // base::PowerMonitor
-  void OnSuspend() override;
-  void OnResume() override;
-
-  // net::NetworkChangeNotifier::DNSObserver
-  void OnDNSChanged() override;
-
   // net::NetworkChangeNotifier::NetworkChangeObserver
   void OnNetworkChanged(
       net::NetworkChangeNotifier::ConnectionType type) override;
@@ -133,7 +123,6 @@ class BraveVPNOSConnectionAPI
 
   bool cancel_connecting_ = false;
   bool needs_connect_ = false;
-  bool reconnect_on_resume_ = false;
   bool prevent_creation_ = false;
   std::string target_vpn_entry_name_;
   mojom::ConnectionState connection_state_ =
