@@ -68,14 +68,14 @@ private let channelGlyphMap: [String: String] = [
   "Health": "brave.heart.and.hands",
   "Home": "brave.house",
   "Crypto": "brave.bitcoinsign",
-  "Technology": "brave.desktop.and.phone",
-  "Entertainment": "brave.video",
+  "Technology": "brave.desktop.and.phone", // Deprecated
+  "Entertainment": "brave.video", // Deprecated
   "Top News": "brave.trophy",
   "Culture": "brave.book.alt",
   "Travel": "brave.mappin",
   "Business": "brave.building.2",
   "Sports": "brave.basketball",
-  "Gaming": "brave.gamecontroller",
+  "Gaming": "brave.pacman",
   "Science": "brave.erlenmeyerflask",
   "Fashion": "brave.tshirt",
   "Food": "brave.bread.and.carrot",
@@ -86,6 +86,14 @@ private let channelGlyphMap: [String: String] = [
   "Fun": "brave.face.smiling",
   "Cars": "brave.car",
   "World News": "brave.globe",
+  // Added Later
+  "Entertainment News": "brave.party.popper",
+  "Film and TV": "brave.video",
+  "Music": "brave.music.eighthnote.2.grouped",
+  "Tech News": "brave.laptop.and.phone",
+  "Tech Reviews": "brave.laptop.and.phone.star",
+  "US News": "brave.globe.and.mappin",
+  "UK News": "brave.globe.and.mappin",
 ]
 
 #if DEBUG

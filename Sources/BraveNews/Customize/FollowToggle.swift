@@ -39,7 +39,6 @@ struct FollowToggle: View {
           .background(
             (isFollowing ? Color(.braveBackground) : Color(.braveBlurpleTint))
               .clipShape(Capsule())
-              .shadow(color: .black.opacity(isFollowing ? 0.1 : 0), radius: 1, x: 0, y: 1)
           )
           .overlay(
             Capsule()
