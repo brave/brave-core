@@ -6,6 +6,7 @@
 import Foundation
 import BraveCore
 import OrderedCollections
+import Shared
 
 struct WalletConstants {
   /// The Brave swap fee as a % value
@@ -97,5 +98,5 @@ struct WalletConstants {
 }
 
 public struct WalletDebugFlags {
-  public static let isSolanaDappsEnabled: Bool = false
+  public static let isSolanaDappsEnabled: Bool = !AppConstants.buildChannel.isPublic
 }
