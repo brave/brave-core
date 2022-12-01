@@ -17,6 +17,8 @@ BASE_DECLARE_FEATURE(kUseBraveTranslateGo);
 extern const base::FeatureParam<bool> kUpdateLanguageListParam;
 extern const base::FeatureParam<bool> kReplaceSecurityOriginParam;
 
+BASE_DECLARE_FEATURE(kBraveEnableAutoTranslate);
+
 }  // namespace features
 
 // The translate engine can work the folowing ways:
@@ -33,6 +35,10 @@ bool ShouldUpdateLanguagesList();
 // True if the actual translate requests in the scripts are redirected to the
 // google translate endpoint. False by default, use it only for local testing.
 bool UseGoogleTranslateEndpoint();
+
+// True if automatic translation logic is enabled.
+// Includes core logic and UI elements.
+bool IsBraveAutoTranslateEnabled();
 
 }  // namespace translate
 
