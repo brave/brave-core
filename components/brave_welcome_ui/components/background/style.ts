@@ -5,17 +5,14 @@
 
 import styled from 'styled-components'
 
-import skyeBgUrl from '../../assets/sky.webp'
 import hillBgUrl from '../../assets/hill.webp'
 import pyramidBgUrl from '../../assets/pyramid.webp'
-import backgroundUrl2x from '../../assets/background@2x.webp'
 
 export const Box = styled.div`
-
   .content-box {
     position: fixed;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     z-index: 999;
 
     display: flex;
@@ -23,20 +20,61 @@ export const Box = styled.div`
     justify-content: center;
   }
 
-  .sky {
+  .background-img {
     position: fixed;
-    width: 100vw;
-    height: 100vh;
-    background: url(${skyeBgUrl}) no-repeat;
-    background-size: cover;
+    width: 100%;
+    height: 100%;
     z-index: 1;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity .2s ease-in;
+
+    &.is-visible {
+      opacity: 1;
+    }
   }
 
   .hills-container {
     position: fixed;
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     z-index: 2;
+    opacity: 0;
+  }
+
+  .stars-container {
+    position: fixed;
+    width: 100vw;
+    height: 100%;
+    z-index: 50;
+    opacity: 0;
+
+    svg {
+      width: 100%;
+      height: auto;
+      position: absolute;
+      transform-origin: center;
+    }
+
+    .stars01 {
+      bottom: 0;
+      transform: scale(1.14);
+      filter: blur(3px);
+    }
+
+    .stars02 {
+      top: 10%;
+    }
+
+    .stars03 {
+      top: 15%;
+    }
+
+    .stars04 {
+      top: 30%;
+      transform: scale(0.8);
+      opacity: 0;
+    }
   }
 
   .hills-base {
@@ -77,48 +115,4 @@ export const Box = styled.div`
     z-index: 1;
     transform: translateX(20%);
    }
-
-   .stars-container {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    z-index: 50;
-
-    svg {
-      width: 100%;
-      height: auto;
-      position: absolute;
-      transform-origin: center;
-    }
-
-    .stars01 {
-      bottom: 0;
-      transform: scale(1.14);
-      filter: blur(3px);
-    }
-
-    .stars02 {
-      top: 10%;
-    }
-
-    .stars03 {
-      top: 15%;
-    }
-
-    .stars04 {
-      top: 30%;
-      transform: scale(0.8);
-      opacity: 0;
-    }
-  }
-`
-
-export const StaticBackground = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100vh;
-  background: url(${backgroundUrl2x}) no-repeat center center;
-  background-size: cover;
 `

@@ -153,5 +153,5 @@ export const _Welcome = () => {
 }
 
 export const _Background = () => {
-  return <Background static={false} />
+  return <Background static={true} />
 }

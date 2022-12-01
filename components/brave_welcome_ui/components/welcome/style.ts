@@ -6,10 +6,9 @@
 import styled from 'styled-components'
 
 export const Box = styled.div`
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(15px);
-  border-radius: 30px;
+  position: relative;
   max-width: 800px;
+  border-radius: 30px;
   color: white;
   font-family: ${(p) => p.theme.fontFamily.heading};
   display: flex;
@@ -17,12 +16,37 @@ export const Box = styled.div`
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  position: relative;
+
+  .view-backdrop {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 30px;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+
+    &.initial {
+      scale: 0.9;
+      opacity: 0;
+    }
+  }
 
   .view-header-box {
     display: grid;
     grid-template-columns: 0.2fr 1.5fr 0.2fr;
     padding: 100px 40px 50px 40px;
+  }
+
+  .view-content {
+    position: relative;
+    z-index: 3;
+
+    &.initial {
+      transform: translateY(20px);
+      opacity: 0;
+    }
   }
 
   .view-details {
@@ -41,11 +65,13 @@ export const Box = styled.div`
     margin: 0;
   }
 
-  .brave-logo-box {
+  .view-logo-box {
     width: 150px;
-    height: 150px;
+    height: auto;
     position: absolute;
     top: calc(-160px / 2);
+    left: calc(50% - 160px/2);
+    z-index: 2;
 
     img {
       width: 100%;
@@ -58,7 +84,9 @@ export const ActionBox = styled.div`
   display: flex;
   flex-direction: column;
   grid-gap: 10px;
-  margin-bottom: 40px;
+  padding: 0 40px;
+  max-width: 450px;
+  margin: 0 auto 40px auto;
 
   button {
     color: white;

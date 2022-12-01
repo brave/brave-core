@@ -19,10 +19,10 @@ const SelectProfile = React.lazy(() => import('./components/select-profile'))
 const SetupComplete = React.lazy(() => import('./components/setup-complete'))
 
 function MainContainer () {
-  const { viewType } = React.useContext(DataContext)
+  const { viewType, setViewType } = React.useContext(DataContext)
   const shouldPlayAnimations = useShouldPlayAnimations()
 
-  let mainEl = <Welcome />
+  let mainEl = null
 
   if (viewType === ViewType.ImportSelectBrowser) {
     mainEl = <SelectBrowser />
@@ -48,8 +48,19 @@ function MainContainer () {
     mainEl = <HelpImprove />
   }
 
+  if (viewType === ViewType.DefaultBrowser) {
+    mainEl = <Welcome />
+  }
+
+  const onBackgroundImgLoad = () => {
+    setViewType(ViewType.DefaultBrowser)
+  }
+
   return (
-    <Background static={!shouldPlayAnimations}>
+    <Background
+      static={!shouldPlayAnimations}
+      onLoad={onBackgroundImgLoad}
+    >
       <React.Suspense fallback={<div>Loading...</div>}>
         {mainEl}
       </React.Suspense>
