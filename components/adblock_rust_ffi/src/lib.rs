@@ -1,4 +1,3 @@
-use adblock::blocker::Redirection;
 use adblock::engine::Engine;
 use adblock::lists::FilterListMetadata;
 use adblock::resources::{MimeType, Resource, ResourceType};
@@ -130,6 +129,7 @@ pub unsafe extern "C" fn engine_match(
     did_match_exception: *mut bool,
     did_match_important: *mut bool,
     redirect: *mut *mut c_char,
+    rewritten_url: *mut *mut c_char,
 ) {
     let url = CStr::from_ptr(url).to_str().unwrap();
     let host = CStr::from_ptr(host).to_str().unwrap();
@@ -151,15 +151,14 @@ pub unsafe extern "C" fn engine_match(
     *did_match_rule |= blocker_result.matched;
     *did_match_exception |= blocker_result.exception.is_some();
     *did_match_important |= blocker_result.important;
-    *redirect = match blocker_result.redirect {
-        Some(Redirection::Resource(x)) => match CString::new(x) {
-            Ok(y) => y.into_raw(),
-            _ => ptr::null_mut(),
-        },
-        // Ignore `redirect-url` for now.
-        Some(Redirection::Url(_)) => ptr::null_mut(),
-        None => ptr::null_mut(),
-    };
+    *redirect = blocker_result
+        .redirect
+        .and_then(|x| CString::new(x).map(CString::into_raw).ok())
+        .unwrap_or(ptr::null_mut());
+    *rewritten_url = blocker_result
+        .rewritten_url
+        .and_then(|x| CString::new(x).map(CString::into_raw).ok())
+        .unwrap_or(ptr::null_mut());
 }
 
 /// Returns any CSP directives that should be added to a subdocument or document request's response

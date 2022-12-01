@@ -19,12 +19,14 @@
 @property(nonatomic, readwrite) bool didMatchException;
 @property(nonatomic, readwrite) bool didMatchImportant;
 @property(nonatomic, readwrite, copy) NSString* redirect;
+@property(nonatomic, readwrite, copy) NSString* rewrittenURL;
 @end
 
 @implementation AdblockEngineMatchResult
 - (instancetype)init {
   if ((self = [super init])) {
     self.redirect = @"";
+    self.rewrittenURL = @"";
   }
   return self;
 }
@@ -55,16 +57,18 @@
   bool did_match_exception = false;
   bool did_match_important = false;
   std::string redirect = "";
+  std::string rewritten_url = "";
   adblock_engine->matches(
       base::SysNSStringToUTF8(url), base::SysNSStringToUTF8(host),
       base::SysNSStringToUTF8(tabHost), isThirdParty,
       base::SysNSStringToUTF8(resourceType), &did_match_rule,
-      &did_match_exception, &did_match_important, &redirect);
+      &did_match_exception, &did_match_important, &redirect, &rewritten_url);
   auto result = [[AdblockEngineMatchResult alloc] init];
   result.didMatchRule = did_match_rule;
   result.didMatchException = did_match_exception;
   result.didMatchImportant = did_match_important;
   result.redirect = base::SysUTF8ToNSString(redirect);
+  result.rewrittenURL = base::SysUTF8ToNSString(rewritten_url);
   return result;
 }
 

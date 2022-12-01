@@ -74,7 +74,8 @@ class ADBLOCK_EXPORT Engine {
                bool* did_match_rule,
                bool* did_match_exception,
                bool* did_match_important,
-               std::string* redirect);
+               std::string* redirect,
+               std::string* rewritten_url);
   std::string getCspDirectives(const std::string& url,
                                const std::string& host,
                                const std::string& tab_host,

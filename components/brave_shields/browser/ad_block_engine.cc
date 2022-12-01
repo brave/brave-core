@@ -109,7 +109,8 @@ void AdBlockEngine::ShouldStartRequest(const GURL& url,
                                        bool* did_match_rule,
                                        bool* did_match_exception,
                                        bool* did_match_important,
-                                       std::string* mock_data_url) {
+                                       std::string* mock_data_url,
+                                       std::string* rewritten_url) {
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
   // a URL or origin and not a string to a host name.
@@ -120,7 +121,7 @@ void AdBlockEngine::ShouldStartRequest(const GURL& url,
   ad_block_client_->matches(url.spec(), url.host(), tab_host, is_third_party,
                             ResourceTypeToString(resource_type), did_match_rule,
                             did_match_exception, did_match_important,
-                            mock_data_url);
+                            mock_data_url, rewritten_url);
 
   // LOG(ERROR) << "AdBlockEngine::ShouldStartRequest(), host: "
   //  << tab_host
