@@ -199,17 +199,6 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   auto max_ua_z = EvalJs(contents(), kUserAgentScript);
   EXPECT_EQ(default_ua_z + "  ", max_ua_z);
 
-  // test that iframes also inherit the farbled user agent
-  // (farbling level is still maximum)
-  NavigateToURLUntilLoadStop(
-      https_server()->GetURL(domain_b, "/navigator/ua-local-iframe.html"));
-  TitleWatcher watcher1(contents(), expected_title);
-  EXPECT_EQ(expected_title, watcher1.WaitAndGetTitle());
-  NavigateToURLUntilLoadStop(
-      https_server()->GetURL(domain_b, "/navigator/ua-remote-iframe.html"));
-  TitleWatcher watcher2(contents(), expected_title);
-  EXPECT_EQ(expected_title, watcher2.WaitAndGetTitle());
-
   // test that web workers also inherit the farbled user agent
   // (farbling level is still maximum)
   NavigateToURLUntilLoadStop(
@@ -237,6 +226,64 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   EXPECT_EQ(last_requested_http_user_agent(), unfarbled_ua);
   auto off_ua_b2 = EvalJs(contents(), kUserAgentScript);
   EXPECT_EQ(off_ua_b.ExtractString(), off_ua_b2);
+}
+
+// Tests results of farbling user agent in iframes
+IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
+                       FarbleNavigatorUserAgentIframe) {
+  std::u16string expected_title(u"pass");
+  std::string domain_b = "b.com";
+  GURL url_b = https_server()->GetURL(domain_b, "/simple.html");
+  BlockFingerprinting(domain_b);
+
+  // test that local iframes inherit the farbled user agent
+  NavigateToURLUntilLoadStop(
+      https_server()->GetURL(domain_b, "/navigator/ua-local-iframe.html"));
+  TitleWatcher watcher1(contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher1.WaitAndGetTitle());
+
+  // test that remote iframes inherit the farbled user agent
+  NavigateToURLUntilLoadStop(
+      https_server()->GetURL(domain_b, "/navigator/ua-remote-iframe.html"));
+  TitleWatcher watcher2(contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher2.WaitAndGetTitle());
+
+  // test that dynamic iframes inherit the farbled user agent
+  // 7 variations based on https://arkenfox.github.io/TZP/tzp.html
+  NavigateToURLUntilLoadStop(
+      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-1.html"));
+  TitleWatcher dynamic_iframe_1_watcher(contents(), expected_title);
+  EXPECT_EQ(expected_title, dynamic_iframe_1_watcher.WaitAndGetTitle());
+
+  NavigateToURLUntilLoadStop(
+      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-2.html"));
+  TitleWatcher dynamic_iframe_2_watcher(contents(), expected_title);
+  EXPECT_EQ(expected_title, dynamic_iframe_2_watcher.WaitAndGetTitle());
+
+  NavigateToURLUntilLoadStop(
+      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-3.html"));
+  TitleWatcher dynamic_iframe_3_watcher(contents(), expected_title);
+  EXPECT_EQ(expected_title, dynamic_iframe_3_watcher.WaitAndGetTitle());
+
+  NavigateToURLUntilLoadStop(
+      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-4.html"));
+  TitleWatcher dynamic_iframe_4_watcher(contents(), expected_title);
+  EXPECT_EQ(expected_title, dynamic_iframe_4_watcher.WaitAndGetTitle());
+
+  NavigateToURLUntilLoadStop(
+      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-5.html"));
+  TitleWatcher dynamic_iframe_5_watcher(contents(), expected_title);
+  EXPECT_EQ(expected_title, dynamic_iframe_5_watcher.WaitAndGetTitle());
+
+  NavigateToURLUntilLoadStop(
+      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-6.html"));
+  TitleWatcher dynamic_iframe_6_watcher(contents(), expected_title);
+  EXPECT_EQ(expected_title, dynamic_iframe_6_watcher.WaitAndGetTitle());
+
+  NavigateToURLUntilLoadStop(
+      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-7.html"));
+  TitleWatcher dynamic_iframe_7_watcher(contents(), expected_title);
+  EXPECT_EQ(expected_title, dynamic_iframe_7_watcher.WaitAndGetTitle());
 }
 
 // Tests results of farbling user agent metadata
