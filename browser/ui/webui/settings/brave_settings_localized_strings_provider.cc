@@ -96,8 +96,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES},
     {"appearanceSettingsShowBookmarksButton",
      IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_BOOKMARKS_BUTTON},
-    {"appearanceSettingsShowSidePanelButton",
-     IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_SIDE_PANEL_BUTTON},
     {"appearanceSettingsLocationBarIsWide",
      IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE},
     {"appearanceSettingsShowBraveRewardsButtonLabel",
@@ -127,8 +125,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"appearanceSettingsTabHoverModeTooltip",
      IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_TOOLTIP},
 #if BUILDFLAG(ENABLE_SIDEBAR)
+    {"sideBar", IDS_SETTINGS_APPEARNCE_SETTINGS_SIDEBAR_PART_TITLE},
     {"appearanceSettingsShowOptionTitle",
      IDS_SETTINGS_SIDEBAR_SHOW_OPTION_TITLE},
+    {"appearanceSettingsShowSidebarButton",
+     IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_SIDEBAR_BUTTON},
     {"appearanceSettingsShowOptionAlways", IDS_SIDEBAR_SHOW_OPTION_ALWAYS},
     {"appearanceSettingsShowOptionMouseOver",
      IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER},
@@ -699,6 +700,10 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
     };
     html_source->AddLocalizedStrings(kSessionOnlyToEphemeralStrings);
   }
+
+  // Always disable upstream's side panel align option.
+  // We add our customized option at preferred position.
+  html_source->AddBoolean("showSidePanelOptions", false);
 }
 
 }  // namespace settings
