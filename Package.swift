@@ -172,6 +172,7 @@ let package = Package(
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/PlaylistSwizzlerScript.js"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/ReadyStateScript.js"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/RequestBlockingScript.js"),
+        .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/TrackingProtectionStats.js"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/RewardsReportingScript.js"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/WalletEthereumProviderScript.js"),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/WalletSolanaProviderScript.js"),

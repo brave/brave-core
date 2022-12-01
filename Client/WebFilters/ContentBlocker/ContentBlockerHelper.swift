@@ -43,11 +43,7 @@ enum BlockingStrength: String {
 }
 
 class ContentBlockerHelper {
-  weak var tab: Tab?
-
-  var isEnabled: Bool {
-    return tab != nil
-  }
+  private(set) weak var tab: Tab?
   
   /// The rule types and source types that are currently loaded in this tab
   private(set) var loadedRuleTypeWithSourceTypes: Set<ContentBlockerManager.RuleTypeWithSourceType> = []
