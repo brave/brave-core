@@ -272,7 +272,7 @@
   "devDependencies": {
     "@babel/core": "7.16.0",
     "@babel/plugin-proposal-export-namespace-from": "7.16.0",
-    "@brave/swap-interface": "0.12.5",
+    "@brave/swap-interface": "0.12.6",
     "@storybook/addon-essentials": "6.4.13",
     "@storybook/addon-knobs": "6.4.0",
     "@storybook/addons": "6.4.13",

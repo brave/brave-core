@@ -979,6 +979,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveSwapReviewOrder", IDS_BRAVE_SWAP_REVIEW_ORDER},
     {"braveSwapApproveToken", IDS_BRAVE_SWAP_APPROVE_TOKEN},
     {"braveSwapInsufficientBalance", IDS_BRAVE_SWAP_INSUFFICIENT_BALANCE},
+    {"braveSwapInsufficientLiquidity", IDS_BRAVE_SWAP_INSUFFICIENT_LIQUIDITY},
     {"braveSwapSelectToken", IDS_BRAVE_SWAP_SELECT_TOKEN},
     {"braveSwapHalf", IDS_BRAVE_SWAP_HALF},
     {"braveSwapMax", IDS_BRAVE_SWAP_MAX},
