@@ -136,4 +136,9 @@ void TorProfileManager::InitTorProfileUserPrefs(Profile* profile) {
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   pref_service->SetBoolean(translate::prefs::kOfferTranslateEnabled, false);
 #endif
+
+  // Disable autocomplete prefs
+  pref_service->SetBoolean(kAutocompleteEnabled, false);
+  pref_service->SetBoolean(kTopSiteSuggestionsEnabled, false);
+  pref_service->SetBoolean(kBraveSuggestedSiteSuggestionsEnabled, false);
 }

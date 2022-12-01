@@ -86,6 +86,12 @@ TEST_F(TorProfileManagerUnitTest, InitTorProfileUserPrefs) {
   EXPECT_FALSE(tor_profile->GetPrefs()->GetBoolean(
       translate::prefs::kOfferTranslateEnabled));
 #endif
+
+  // Check autocomplete prefs
+  EXPECT_FALSE(tor_profile->GetPrefs()->GetBoolean(kAutocompleteEnabled));
+  EXPECT_FALSE(tor_profile->GetPrefs()->GetBoolean(kTopSiteSuggestionsEnabled));
+  EXPECT_FALSE(tor_profile->GetPrefs()->GetBoolean(
+      kBraveSuggestedSiteSuggestionsEnabled));
 }
 
 TEST_F(TorProfileManagerUnitTest, ProfileForDevToolsWindow) {
