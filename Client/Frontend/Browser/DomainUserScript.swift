@@ -36,7 +36,10 @@ enum DomainUserScript: CaseIterable {
   var associatedDomains: Set<String> {
     switch self {
     case .braveSearchHelper:
-      return Set(["search.brave.com", "search-dev.brave.com", "search.brave.software"])
+      return Set(["search.brave.com", "search.brave.software",
+                  "search.bravesoftware.com", "safesearch.brave.com",
+                  "safesearch.brave.software", "safesearch.bravesoftware.com",
+                  "search-dev-local.brave.com"])
     case .braveTalkHelper:
       return Set(["talk.brave.com", "beta.talk.brave.com",
                  "talk.bravesoftware.com", "beta.talk.bravesoftware.com",
