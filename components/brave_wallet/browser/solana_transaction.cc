@@ -219,12 +219,12 @@ SolanaTransaction::GetSerializedMessage() const {
 absl::optional<std::vector<uint8_t>>
 SolanaTransaction::GetSignedTransactionBytes(
     KeyringService* keyring_service,
-    const std::vector<uint8_t>* fee_payer_signature) const {
-  if (!keyring_service && !fee_payer_signature)
+    const std::vector<uint8_t>* selected_account_signature) const {
+  if (!keyring_service && !selected_account_signature)
     return absl::nullopt;
 
-  if (fee_payer_signature &&
-      fee_payer_signature->size() != kSolanaSignatureSize)
+  if (selected_account_signature &&
+      selected_account_signature->size() != kSolanaSignatureSize)
     return absl::nullopt;
 
   auto message_signers_pair = GetSerializedMessage();
@@ -239,20 +239,26 @@ SolanaTransaction::GetSignedTransactionBytes(
     return absl::nullopt;
   CompactU16Encode(signers.size(), &transaction_bytes);
 
-  // Assign fee payer's signature, and keep signatures for other signers from
-  // dApp transaction if exists. Fill empty signatures for non-fee-payer
-  // signers if their signatures aren't passed by dApp transaction. This would
-  // make sure solana-web3 JS transactions have entries for all signers in the
-  // signatures property. We have to make sure of this because our fee payer's
-  // signature might be dropped later if Transaction.signatures.length is not
-  // equal to number of required signers for this transaction.
+  absl::optional<std::string> selected_account =
+      keyring_service->GetSelectedAccount(mojom::CoinType::SOL);
+  if (!selected_account)
+    return absl::nullopt;
+
+  // Assign selected account's signature, and keep signatures for other signers
+  // from dApp transaction if exists. Fill empty signatures for
+  // non-selected-account signers if their signatures aren't passed by dApp
+  // transaction. This would make sure solana-web3 JS transactions have entries
+  // for all signers in the signatures property. We have to make sure of this
+  // because our selected account's signature might be dropped later if
+  // Transaction.signatures.length is not equal to number of required signers
+  // for this transaction.
   uint8_t num_of_sig = 0;
   for (const auto& signer : signers) {
-    if (message_.fee_payer() == signer) {
-      if (fee_payer_signature) {
+    if (*selected_account == signer) {
+      if (selected_account_signature) {
         transaction_bytes.insert(transaction_bytes.end(),
-                                 fee_payer_signature->begin(),
-                                 fee_payer_signature->end());
+                                 selected_account_signature->begin(),
+                                 selected_account_signature->end());
       } else {
         std::vector<uint8_t> signature = keyring_service->SignMessage(
             mojom::kSolanaKeyringId, signer, message_bytes);
