@@ -233,6 +233,10 @@ class BraveWalletService : public KeyedService,
 
   BraveWalletP3A* GetBraveWalletP3A();
 
+ protected:
+  // For tests
+  BraveWalletService();
+
  private:
   friend class EthereumProviderImplUnitTest;
   friend class SolanaProviderImplUnitTest;
@@ -319,7 +323,7 @@ class BraveWalletService : public KeyedService,
   raw_ptr<TxService> tx_service_ = nullptr;
   raw_ptr<PrefService> profile_prefs_ = nullptr;
   BraveWalletP3A brave_wallet_p3a_;
-  AssetDiscoveryManager asset_discovery_manager_;
+  std::unique_ptr<AssetDiscoveryManager> asset_discovery_manager_;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
   PrefChangeRegistrar pref_change_registrar_;
   base::WeakPtrFactory<BraveWalletService> weak_ptr_factory_;
