@@ -187,6 +187,8 @@ JsonRpcService::JsonRpcService(
     : JsonRpcService(std::move(url_loader_factory), std::move(prefs), nullptr) {
 }
 
+JsonRpcService::JsonRpcService() : weak_ptr_factory_(this) {}
+
 void JsonRpcService::SetAPIRequestHelperForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   api_request_helper_ = std::make_unique<APIRequestHelper>(
@@ -2131,6 +2133,7 @@ void JsonRpcService::OnGetEthTokenUri(GetEthTokenUriCallback callback,
     std::move(callback).Run(GURL(), error, error_message);
     return;
   }
+  std::string token_url_spec = url.spec();
 
   std::move(callback).Run(url, mojom::ProviderError::kSuccess, "");
 }
