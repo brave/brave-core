@@ -96,6 +96,8 @@ std::pair<bool, std::string> LoadConfigFileOnFileTaskRunner(
 
 namespace ipfs {
 
+IpfsService::IpfsService() : ipfs_p3a_(nullptr, nullptr), weak_factory_(this) {}
+
 IpfsService::IpfsService(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -141,7 +143,9 @@ IpfsService::~IpfsService() {
     ipfs_client_updater_->RemoveObserver(this);
   }
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  RemoveObserver(ipns_keys_manager_.get());
+  if (observers_.HasObserver(ipns_keys_manager_.get())) {
+    RemoveObserver(ipns_keys_manager_.get());
+  }
 #endif
   Shutdown();
 }
@@ -162,6 +166,7 @@ void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kIPFSPublicNFTGatewayAddress,
                                kDefaultIPFSNFTGateway);
   registry->RegisterFilePathPref(kIPFSBinaryPath, base::FilePath());
+  registry->RegisterDictionaryPref(kIPFSPinnedCids);
 }
 
 base::FilePath IpfsService::GetIpfsExecutablePath() const {
@@ -369,6 +374,91 @@ void IpfsService::NotifyIpnsKeysLoaded(bool result) {
   for (auto& observer : observers_) {
     observer.OnIpnsKeysLoaded(result);
   }
+}
+
+// Local pinning
+void IpfsService::AddPin(const std::vector<std::string>& cids,
+                         bool recursive,
+                         AddPinCallback callback) {
+  if (!IsDaemonLaunched()) {
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  GURL gurl = server_endpoint_.Resolve(kAddPinPath);
+  for (const auto& cid : cids) {
+    gurl = net::AppendQueryParameter(gurl, kArgQueryParam, cid);
+  }
+  gurl = net::AppendQueryParameter(gurl, "recursive",
+                                   recursive ? "true" : "false");
+
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
+      base::BindOnce(&IpfsService::OnPinAddResult, base::Unretained(this), iter,
+                     std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
+}
+
+void IpfsService::RemovePin(const std::vector<std::string>& cids,
+                            RemovePinCallback callback) {
+  if (!IsDaemonLaunched()) {
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  GURL gurl = server_endpoint_.Resolve(kRemovePinPath);
+  for (const auto& cid : cids) {
+    gurl = net::AppendQueryParameter(gurl, kArgQueryParam, cid);
+  }
+  LOG(ERROR) << "XXZZZ " << gurl.spec();
+
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
+      base::BindOnce(&IpfsService::OnPinRemoveResult, base::Unretained(this),
+                     iter, std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
+}
+
+void IpfsService::GetPins(const absl::optional<std::vector<std::string>>& cids,
+                          const std::string& type,
+                          bool quiet,
+                          GetPinsCallback callback) {
+  if (!IsDaemonLaunched()) {
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  GURL gurl = server_endpoint_.Resolve(kGetPinsPath);
+  if (cids) {
+    for (const auto& cid : cids.value()) {
+      gurl = net::AppendQueryParameter(gurl, kArgQueryParam, cid);
+    }
+  }
+  gurl = net::AppendQueryParameter(gurl, "type", type);
+  gurl = net::AppendQueryParameter(gurl, "quiet", quiet ? "true" : "false");
+
+  auto url_loader = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
+  auto iter =
+      requests_list_.insert(requests_list_.begin(), std::move(url_loader));
+  iter->get()->Request(
+      "POST", gurl, std::string(), std::string(), false,
+      base::BindOnce(&IpfsService::OnGetPinsResult, base::Unretained(this),
+                     iter, std::move(callback)),
+      {{net::HttpRequestHeaders::kOrigin,
+        url::Origin::Create(gurl).Serialize()}});
 }
 
 void IpfsService::ImportFileToIpfs(const base::FilePath& path,
@@ -879,6 +969,100 @@ void IpfsService::OnPreWarmComplete(
   requests_list_.erase(iter);
   if (prewarm_callback_for_testing_)
     std::move(prewarm_callback_for_testing_).Run();
+}
+
+//{
+//  "PinLsList": {
+//    "Keys": {
+//      "<string>": {
+//        "Type": "<string>"
+//      }
+//    }
+//  },
+//  "PinLsObject": {
+//    "Cid": "<string>",
+//    "Type": "<string>"
+//  }
+//}
+void IpfsService::OnGetPinsResult(
+    APIRequestList::iterator iter,
+    GetPinsCallback callback,
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
+
+  bool success = response.Is2XXResponseCode();
+
+  if (!success) {
+    VLOG(1) << "Fail to get pins, response_code = " << response_code;
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  ipfs::GetPinsResult result;
+  bool parse_result =
+      IPFSJSONParser::GetGetPinsResultFromJSON(response.body(), &result);
+  if (!parse_result) {
+    VLOG(1) << "Fail to get pins, wrong format";
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  std::move(callback).Run(true, result);
+}
+
+void IpfsService::OnPinAddResult(
+    APIRequestList::iterator iter,
+    AddPinCallback callback,
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
+
+  bool success = response.Is2XXResponseCode();
+
+  if (!success) {
+    VLOG(1) << "Fail to add pin, response_code = " << response_code;
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  ipfs::AddPinResult result;
+  bool parse_result =
+      IPFSJSONParser::GetAddPinsResultFromJSON(response.body(), &result);
+  if (!parse_result) {
+    VLOG(1) << "Fail to add pin service, wrong format";
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  std::move(callback).Run(true, result);
+}
+
+void IpfsService::OnPinRemoveResult(
+    APIRequestList::iterator iter,
+    RemovePinCallback callback,
+    api_request_helper::APIRequestResult response) {
+  int response_code = response.response_code();
+  requests_list_.erase(iter);
+
+  bool success = response.Is2XXResponseCode();
+
+  if (!success) {
+    VLOG(1) << "Fail to remove pin, response_code = " << response_code;
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  ipfs::RemovePinResult result;
+  bool parse_result =
+      IPFSJSONParser::GetRemovePinsResultFromJSON(response.body(), &result);
+  if (!parse_result) {
+    VLOG(1) << "Fail to remove pin, wrong response format";
+    std::move(callback).Run(false, absl::nullopt);
+    return;
+  }
+
+  std::move(callback).Run(true, result);
 }
 
 void IpfsService::ValidateGateway(const GURL& url, BoolCallback callback) {

@@ -14,6 +14,7 @@
 #include "brave/components/ipfs/addresses_config.h"
 #include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/node_info.h"
+#include "brave/components/ipfs/pin/ipfs_pin_rpc_types.h"
 #include "brave/components/ipfs/repo_stats.h"
 
 class IPFSJSONParser {
@@ -46,6 +47,14 @@ class IPFSJSONParser {
   static std::string RemovePeerFromConfigJSON(const std::string& json,
                                               const std::string& peer_id,
                                               const std::string& address);
+  // Local pins
+  static bool GetAddPinsResultFromJSON(const std::string& json,
+                                       ipfs::AddPinResult* add_pin_result);
+  static bool GetGetPinsResultFromJSON(const std::string& json,
+                                       ipfs::GetPinsResult* result);
+  static bool GetRemovePinsResultFromJSON(
+      const std::string& json,
+      ipfs::RemovePinResult* add_pin_result);
 };
 
 #endif  // BRAVE_COMPONENTS_IPFS_IPFS_JSON_PARSER_H_
