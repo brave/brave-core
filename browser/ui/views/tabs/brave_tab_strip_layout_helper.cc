@@ -28,19 +28,21 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
 
   for (const auto& tab : tabs) {
     if (tab.state().pinned() == TabPinned::kPinned) {
-      if (!bounds.empty()) {
-        if (bounds.back().right() + tab.GetMinimumWidth() <
+      rect.set_width(kVerticalTabMinWidth);
+      rect.set_height(kVerticalTabHeight);
+      bounds.push_back(rect);
+
+      if (tab.state().open() == TabOpen::kOpen) {
+        if (rect.right() + tab.GetMinimumWidth() <
             width.value_or(TabStyle::GetStandardWidth())) {
-          rect.set_x(bounds.back().right());
+          rect.set_x(rect.right());
         } else {
           // New line
           rect.set_x(0);
           rect.set_y(bounds.back().bottom());
         }
       }
-      rect.set_width(kVerticalTabMinWidth);
-      rect.set_height(kVerticalTabHeight);
-      bounds.push_back(rect);
+
       last_tab_was_pinned = true;
       continue;
     }
