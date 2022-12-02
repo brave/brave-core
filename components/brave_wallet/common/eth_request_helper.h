@@ -21,9 +21,9 @@ bool GetEthJsonRequestInfo(const std::string& json,
                            std::string* params);
 
 mojom::TxDataPtr ParseEthTransactionParams(const std::string& json,
-                                               std::string* from);
+                                           std::string* from);
 mojom::TxData1559Ptr ParseEthTransaction1559Params(const std::string& json,
-                                                       std::string* from);
+                                                   std::string* from);
 bool ShouldCreate1559Tx(mojom::TxData1559Ptr tx_data_1559,
                         bool network_supports_eip1559,
                         const std::vector<mojom::AccountInfoPtr>& account_infos,
@@ -71,6 +71,9 @@ bool ParseWalletWatchAssetParams(const std::string& json,
 bool ParseRequestPermissionsParams(
     const std::string& json,
     std::vector<std::string>* restricted_methods);
+
+bool ParseEthSendRawTransactionParams(const std::string& json,
+                                      std::string* signed_transaction);
 
 }  // namespace brave_wallet
 

@@ -1017,6 +1017,19 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(base::ValueView input_value,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        std::move(id), normalized_json_request,
                        delegate_->GetOrigin()));
+  } else if (method == kEthSendRawTransaction) {
+    std::string signed_transaction;
+    if (!ParseEthSendRawTransactionParams(normalized_json_request,
+                                          &signed_transaction)) {
+      SendErrorOnRequest(error, error_message, std::move(callback),
+                         std::move(id));
+      return;
+    }
+    json_rpc_service_->SendRawTransaction(
+        signed_transaction,
+        base::BindOnce(&EthereumProviderImpl::OnSendRawTransaction,
+                       weak_factory_.GetWeakPtr(), std::move(callback),
+                       std::move(id)));
   } else if (method == kEthSign || method == kPersonalSign) {
     std::string address;
     std::string message;
@@ -1527,6 +1540,22 @@ void EthereumProviderImpl::AddSuggestToken(mojom::BlockchainTokenPtr token,
   brave_wallet_service_->AddSuggestTokenRequest(
       std::move(request), std::move(callback), std::move(id));
   delegate_->ShowPanel();
+}
+
+void EthereumProviderImpl::OnSendRawTransaction(
+    RequestCallback callback,
+    base::Value id,
+    const std::string& tx_hash,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  base::Value formed_response;
+  if (error != mojom::ProviderError::kSuccess) {
+    formed_response = GetProviderErrorDictionary(error, error_message);
+  } else {
+    formed_response = base::Value(tx_hash);
+  }
+  std::move(callback).Run(std::move(id), std::move(formed_response),
+                          error != mojom::ProviderError::kSuccess, "", false);
 }
 
 }  // namespace brave_wallet

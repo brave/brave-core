@@ -10,6 +10,7 @@
 #include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -1140,6 +1141,32 @@ TEST(EthResponseHelperUnitTest, ParseRequestPermissionsParams) {
       ParseRequestPermissionsParams("{ params: [5] }", &restricted_methods));
   EXPECT_FALSE(
       ParseRequestPermissionsParams("{ params: [] }", &restricted_methods));
+}
+
+TEST(EthResponseHelperUnitTest, ParseEthSendRawTransaction) {
+  std::string raw_transaction;
+  constexpr char expected_raw_transaction[] =
+      "0xf86c0c8525f38e9e0082520894cb08bd29e330594182a05a062441ccdb348aae658801"
+      "6345785d8a0000802ea0b9534f8e424fd28eecb16cd771b577df6a933ff58ac8c41786f0"
+      "2dcba0b632c1a039d0379cdbfb54cfd1894de3bb5c0583a11bc79abf19b6961e948e2127"
+      "f47bec";
+
+  std::string json = base::StringPrintf(
+      R"({
+        "method": "eth_sendRawTransaction",
+        "params": ["%s"]
+      })",
+      expected_raw_transaction);
+  EXPECT_TRUE(ParseEthSendRawTransactionParams(json, &raw_transaction));
+  EXPECT_EQ(raw_transaction, expected_raw_transaction);
+  EXPECT_FALSE(ParseEthSendRawTransactionParams(json, nullptr));
+  EXPECT_FALSE(ParseEthSendRawTransactionParams("", &raw_transaction));
+  EXPECT_FALSE(
+      ParseEthSendRawTransactionParams("{params: []}", &raw_transaction));
+  EXPECT_FALSE(
+      ParseEthSendRawTransactionParams("{params: [123]}", &raw_transaction));
+  EXPECT_FALSE(ParseEthSendRawTransactionParams("{params: {\"0x123\"}}",
+                                                &raw_transaction));
 }
 
 }  // namespace brave_wallet

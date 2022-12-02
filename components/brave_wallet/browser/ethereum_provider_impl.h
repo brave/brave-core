@@ -346,6 +346,11 @@ class EthereumProviderImpl final
       const url::Origin& origin,
       RequestPermissionsError error,
       const absl::optional<std::vector<std::string>>& allowed_accounts);
+  void OnSendRawTransaction(RequestCallback callback,
+                            base::Value id,
+                            const std::string& tx_hash,
+                            mojom::ProviderError error,
+                            const std::string& error_message);
 
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;

@@ -32,6 +32,7 @@ constexpr char kEthAccounts[] = "eth_accounts";
 constexpr char kEthCoinbase[] = "eth_coinbase";
 constexpr char kEthRequestAccounts[] = "eth_requestAccounts";
 constexpr char kEthSendTransaction[] = "eth_sendTransaction";
+constexpr char kEthSendRawTransaction[] = "eth_sendRawTransaction";
 constexpr char kEthGetBlockByNumber[] = "eth_getBlockByNumber";
 constexpr char kEthBlockNumber[] = "eth_blockNumber";
 constexpr char kEthSign[] = "eth_sign";

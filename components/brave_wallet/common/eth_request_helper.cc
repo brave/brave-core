@@ -97,7 +97,7 @@ const char kRequestJsonRPC[] = "2.0";
 namespace brave_wallet {
 
 mojom::TxDataPtr ParseEthTransactionParams(const std::string& json,
-                                               std::string* from) {
+                                           std::string* from) {
   CHECK(from);
   from->clear();
 
@@ -111,7 +111,7 @@ mojom::TxDataPtr ParseEthTransactionParams(const std::string& json,
 }
 
 mojom::TxData1559Ptr ParseEthTransaction1559Params(const std::string& json,
-                                                       std::string* from) {
+                                                   std::string* from) {
   CHECK(from);
   from->clear();
   auto param_obj = GetObjectFromParamsList(json);
@@ -657,6 +657,24 @@ bool ParseRequestPermissionsParams(
   for (auto prop : param_obj->DictItems()) {
     restricted_methods->push_back(prop.first);
   }
+  return true;
+}
+
+bool ParseEthSendRawTransactionParams(const std::string& json,
+                                      std::string* signed_transaction) {
+  if (!signed_transaction)
+    return false;
+
+  auto list = GetParamsList(json);
+  if (!list || list->size() != 1)
+    return false;
+
+  const std::string* signed_tx_str = (*list)[0].GetIfString();
+  if (!signed_tx_str)
+    return false;
+
+  *signed_transaction = *signed_tx_str;
+
   return true;
 }
 
