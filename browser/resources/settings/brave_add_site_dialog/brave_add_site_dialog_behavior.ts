@@ -8,6 +8,7 @@ import {loadTimeData} from "../i18n_setup.js"
 import {WebUIListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {AddSiteDialogElement} from '../site_settings/add_site_dialog.js'
 
+// Extend AddSiteDialog to change placeholder message for Shields.
 const BaseElement = WebUIListenerMixin(AddSiteDialogElement)
 export class BraveAddSiteDialogElement extends BaseElement {
   static override get properties() {
