@@ -363,7 +363,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (id == R.id.brave_playlist_id) {
             if (SharedPreferencesManager.getInstance().readBoolean(
                         PlaylistUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
-                PlaylistUtils.openPlaylistOnboardingActivity(BraveActivity.this);
+                PlaylistUtils.openPlaylistMenuOnboardingActivity(BraveActivity.this);
                 SharedPreferencesManager.getInstance().writeBoolean(
                         PlaylistUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
             } else {

@@ -6,36 +6,39 @@
 package org.chromium.chrome.browser.playlist;
 
 import org.chromium.base.BraveFeatureList;
-import org.chromium.chrome.browser.PlaylistPageHandlerFactory;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
+import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.playlist.mojom.PageHandler;
+import org.chromium.playlist.mojom.PlaylistService;
 
 public abstract class PlaylistBaseActivity
         extends AsyncInitializationActivity implements ConnectionErrorHandler {
-    protected PageHandler mPlaylistPageHandler;
+    protected PlaylistService mPlaylistService;
 
     @Override
     public void onConnectionError(MojoException e) {
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
-            mPlaylistPageHandler = null;
-            initPlaylistPageHandler();
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
+                && SharedPreferencesManager.getInstance().readBoolean(
+                        BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)) {
+            mPlaylistService = null;
+            initPlaylistService();
         }
     }
 
-    private void initPlaylistPageHandler() {
-        if (mPlaylistPageHandler != null) {
+    private void initPlaylistService() {
+        if (mPlaylistService != null) {
             return;
         }
 
-        mPlaylistPageHandler =
-                PlaylistPageHandlerFactory.getInstance().getPlaylistPageHandler(this);
+        mPlaylistService = PlaylistServiceFactoryAndroid.getInstance().getPlaylistService(this);
     }
 
-    public PageHandler getPlaylistPageHandler() {
-        return mPlaylistPageHandler;
+    public PlaylistService getPlaylistService() {
+        return mPlaylistService;
     }
 
     // @Override
@@ -52,13 +55,13 @@ public abstract class PlaylistBaseActivity
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
-            initPlaylistPageHandler();
+            initPlaylistService();
         }
     }
 
     @Override
     public void onDestroy() {
-        if (mPlaylistPageHandler != null) mPlaylistPageHandler.close();
+        if (mPlaylistService != null) mPlaylistService.close();
         super.onDestroy();
     }
 

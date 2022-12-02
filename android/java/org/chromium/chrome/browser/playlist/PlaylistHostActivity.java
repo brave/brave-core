@@ -53,28 +53,32 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                 new ViewModelProvider(PlaylistHostActivity.this).get(PlaylistViewModel.class);
 
         playlistViewModel.getCreatePlaylistOption().observe(PlaylistHostActivity.this, newName -> {
-            if (mPlaylistPageHandler != null) {
+            if (mPlaylistService != null) {
                 Playlist playlist = new Playlist();
                 playlist.name = newName;
                 playlist.items = new PlaylistItem[0];
                 Log.e(PlaylistUtils.TAG, "Name : " + playlist.name);
-                mPlaylistPageHandler.createPlaylist(playlist);
+                mPlaylistService.createPlaylist(playlist,
+                        createdPlaylist
+                        -> {
+
+                        });
                 Log.e(PlaylistUtils.TAG, "after Name : " + playlist.name);
                 openAllPlaylists(false, null);
             }
         });
 
         playlistViewModel.getPlaylistToOpen().observe(PlaylistHostActivity.this, playlistId -> {
-            if (mPlaylistPageHandler != null) {
+            if (mPlaylistService != null) {
                 openPlaylist(playlistId, true);
             }
         });
 
         playlistViewModel.getDeletePlaylistItems().observe(
                 PlaylistHostActivity.this, playlistItems -> {
-                    if (mPlaylistPageHandler != null) {
+                    if (mPlaylistService != null) {
                         for (PlaylistItemModel playlistItem : playlistItems.getItems()) {
-                            mPlaylistPageHandler.removeItemFromPlaylist(
+                            mPlaylistService.removeItemFromPlaylist(
                                     playlistItems.getId(), playlistItem.getId());
                         }
                         openPlaylist(playlistItems.getId(), false);
@@ -83,7 +87,7 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
 
         playlistViewModel.getPlaylistOption().observe(
                 PlaylistHostActivity.this, playlistOptionsModel -> {
-                    if (mPlaylistPageHandler != null) {
+                    if (mPlaylistService != null) {
                         PlaylistOptions option = playlistOptionsModel.getOptionType();
                         if (option == PlaylistOptions.EDIT_PLAYLIST) {
                             Log.e(PlaylistUtils.TAG, "PlaylistOptions.EDIT_PLAYLIST");
@@ -97,9 +101,9 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                                     "PlaylistOptions.DOWNLOAD_PLAYLIST_FOR_OFFLINE_USE");
                         } else if (option == PlaylistOptions.DELETE_PLAYLIST) {
                             Log.e(PlaylistUtils.TAG, "PlaylistOptions.DELETE_PLAYLIST");
-                            if (mPlaylistPageHandler != null
+                            if (mPlaylistService != null
                                     && playlistOptionsModel.getPlaylistModel() != null) {
-                                mPlaylistPageHandler.removePlaylist(
+                                mPlaylistService.removePlaylist(
                                         playlistOptionsModel.getPlaylistModel().getId());
                                 finish();
                             }
@@ -109,7 +113,7 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
 
         playlistViewModel.getAllPlaylistOption().observe(
                 PlaylistHostActivity.this, playlistOptionsModel -> {
-                    if (mPlaylistPageHandler != null) {
+                    if (mPlaylistService != null) {
                         PlaylistOptions option = playlistOptionsModel.getOptionType();
                         if (option == PlaylistOptions.REMOVE_ALL_OFFLINE_DATA) {
                             Log.e(PlaylistUtils.TAG, "PlaylistOptions.REMOVE_ALL_OFFLINE_DATA");
@@ -123,7 +127,7 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
 
         playlistViewModel.getPlaylistItemOption().observe(
                 PlaylistHostActivity.this, playlistItemOption -> {
-                    if (mPlaylistPageHandler != null) {
+                    if (mPlaylistService != null) {
                         PlaylistOptions option = playlistItemOption.getPlaylistOptions();
                         if (option == PlaylistOptions.MOVE_PLAYLIST_ITEM) {
                             Log.e(PlaylistUtils.TAG, "PlaylistOptions.MOVE_PLAYLIST_ITEM");
@@ -133,7 +137,7 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                             openAllPlaylists(true, playlistItemOption);
                         } else if (option == PlaylistOptions.DELETE_ITEMS_OFFLINE_DATA) {
                             Log.e(PlaylistUtils.TAG, "PlaylistOptions.DELETE_ITEMS_OFFLINE_DATA");
-                            mPlaylistPageHandler.removeLocalDataForItem(
+                            mPlaylistService.removeLocalDataForItem(
                                     playlistItemOption.getPlaylistItemModel().getId());
                         } else if (option == PlaylistOptions.SHARE_PLAYLIST_ITEM) {
                             Log.e(PlaylistUtils.TAG, "PlaylistOptions.SHARE_PLAYLIST_ITEM");
@@ -147,7 +151,7 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                                     playlistItemOption.getPlaylistItemModel().getPageSource());
                         } else if (option == PlaylistOptions.DELETE_PLAYLIST_ITEM) {
                             Log.e(PlaylistUtils.TAG, "PlaylistOptions.DELETE_PLAYLIST_ITEM");
-                            mPlaylistPageHandler.removeItemFromPlaylist(
+                            mPlaylistService.removeItemFromPlaylist(
                                     playlistItemOption.getPlaylistId(),
                                     playlistItemOption.getPlaylistItemModel().getId());
                         }
@@ -165,8 +169,8 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
     }
 
     private void openPlaylist(String playlistId, boolean recreateFragment) {
-        if (mPlaylistPageHandler != null) {
-            mPlaylistPageHandler.getPlaylist(playlistId, playlist -> {
+        if (mPlaylistService != null) {
+            mPlaylistService.getPlaylist(playlistId, playlist -> {
                 JSONObject playlistJsonObject = new JSONObject();
                 try {
                     playlistJsonObject.put("id", playlist.id);
@@ -178,9 +182,11 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                         playlistItemObject.put("name", playlistItem.name);
                         playlistItemObject.put("page_source", playlistItem.pageSource.url);
                         playlistItemObject.put("media_path", playlistItem.mediaPath.url);
-                        playlistItemObject.put("media_src", playlistItem.mediaSrc.url);
+                        playlistItemObject.put("media_src", playlistItem.mediaSource.url);
                         playlistItemObject.put("thumbnail_path", playlistItem.thumbnailPath.url);
                         playlistItemObject.put("cached", playlistItem.cached);
+                        playlistItemObject.put("author", playlistItem.author);
+                        playlistItemObject.put("duration", playlistItem.duration);
                         playlistItemsJsonArray.put(playlistItemObject);
                     }
                     playlistJsonObject.put("items", playlistItemsJsonArray);
@@ -204,8 +210,8 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
 
     private void openAllPlaylists(
             boolean showMoveOrCopy, PlaylistItemOptionModel playlistItemOptionModel) {
-        if (mPlaylistPageHandler != null) {
-            mPlaylistPageHandler.getAllPlaylists(playlists -> {
+        if (mPlaylistService != null) {
+            mPlaylistService.getAllPlaylists(playlists -> {
                 try {
                     JSONArray playlistsJsonArray = new JSONArray();
                     for (Playlist playlist : playlists) {
@@ -220,7 +226,7 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                             playlistItemObject.put("name", playlistItem.name);
                             playlistItemObject.put("page_source", playlistItem.pageSource.url);
                             playlistItemObject.put("media_path", playlistItem.mediaPath.url);
-                            playlistItemObject.put("media_src", playlistItem.mediaSrc.url);
+                            playlistItemObject.put("media_src", playlistItem.mediaSource.url);
                             playlistItemObject.put(
                                     "thumbnail_path", playlistItem.thumbnailPath.url);
                             playlistItemObject.put("cached", playlistItem.cached);
@@ -262,9 +268,8 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
         Log.e(PlaylistUtils.TAG,
                 "PlaylistOptionsModel type : " + playlistOptionsModel.getOptionType());
         if (PlaylistOptions.DELETE_PLAYLIST == playlistOptionsModel.getOptionType()) {
-            if (mPlaylistPageHandler != null && playlistOptionsModel.getPlaylistModel() != null) {
-                mPlaylistPageHandler.removePlaylist(
-                        playlistOptionsModel.getPlaylistModel().getId());
+            if (mPlaylistService != null && playlistOptionsModel.getPlaylistModel() != null) {
+                mPlaylistService.removePlaylist(playlistOptionsModel.getPlaylistModel().getId());
                 finish();
             }
         }

@@ -121,7 +121,7 @@ android_aar_prebuilt("com_google_android_exoplayer_exoplayer_core_java") {
 android_aar_prebuilt("com_google_android_exoplayer_exoplayer_common_java") {
   aar_path = "libs/com_google_android_exoplayer_exoplayer_common/exoplayer-common-2.17.1.aar"
   info_path = "libs/com_google_android_exoplayer_exoplayer_common/com_google_android_exoplayer_exoplayer_common.info"
-  deps = [ "//third_party/android_deps:com_google_guava_guava_android_java" ]
+  deps = [ "//third_party/android_deps:guava_android_java" ]
 }
 
 android_aar_prebuilt("com_google_android_exoplayer_exoplayer_datasource_java") {
