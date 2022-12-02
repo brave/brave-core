@@ -280,6 +280,12 @@ bool ConnectEntry(const std::wstring& entry_name) {
 
   if (dw_ret != ERROR_SUCCESS) {
     PrintRasError(dw_ret);
+
+    // To clear state.
+    VLOG(2) << __func__ << ": RasDial() failed. Try RasHangUp() to clear state";
+    if (dw_ret = RasHangUp(h_ras_conn); dw_ret != ERROR_SUCCESS)
+      PrintRasError(dw_ret);
+
     return false;
   }
 
