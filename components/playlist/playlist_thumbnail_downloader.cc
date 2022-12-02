@@ -118,8 +118,7 @@ void PlaylistThumbnailDownloader::RenameFilePerFormat(
   }
   base::FilePath new_path = path.AddExtension(extension);
   task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&base::ReplaceFile, path, new_path, nullptr),
+      FROM_HERE, base::BindOnce(&base::ReplaceFile, path, new_path, nullptr),
       base::BindOnce(&PlaylistThumbnailDownloader::OnRenameFilePerFormat,
                      base::Unretained(this), id, new_path));
 }

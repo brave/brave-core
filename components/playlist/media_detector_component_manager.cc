@@ -140,7 +140,9 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
       }
   }
 
-  function getNodeSource(node, src, mimeType, thumbnail) {
+  function getNodeData(node) {
+    var src = node.src
+    var mimeType = node.type
     var name = node.title;
     if (name == null || typeof name == 'undefined' || name == "") {
       // Try getting mobile youtube specific data
@@ -180,7 +182,6 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
         "duration": clamp_duration(node.duration),
         "detected": true,
         "tagId": node.tagUUID,
-        thumbnail
       }];
     } else {
       let target = node;
@@ -198,7 +199,6 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
               "duration": clamp_duration(target.duration),
               "detected": true,
               "tagId": target.tagUUID,
-              thumbnail
             });
           }
 
@@ -213,7 +213,6 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
               "duration": clamp_duration(target.duration),
               "detected": true,
               "tagId": target.tagUUID,
-              thumbnail
             });
           }
         }
@@ -221,10 +220,6 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
       });
       return sources;
     }
-  }
-
-  function getNodeData(node, thumbnail) {
-    return getNodeSource(node, node.src, node.type, thumbnail);
   }
 
   function getAllVideoElements() {
@@ -252,12 +247,35 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
     return thumbnail
   }
 
+  function getAuthor() {
+    // Try getting mobile youtube specific data
+    return window.ytplayer?.bootstrapPlayerResponse?.videoDetails?.author
+  }
+
+  function getDurationInSeconds() {
+    // Try getting mobile youtube specific data
+    return window.ytplayer?.bootstrapPlayerResponse?.videoDetails?.lengthSeconds
+  }
+
   let videoElements = getAllVideoElements() ?? [];
   let audioElements = getAllAudioElements() ?? [];
+  // TODO(sko) These data could be incorrect when there're multiple items.
+  // For now we're assuming that the first media is a representative one.
   const thumbnail = getThumbnail();
+  const author = getAuthor();
+  const durationInSeconds = getDurationInSeconds();
+
   let medias = []
-  videoElements.forEach(e => medias = medias.concat( getNodeData(e, thumbnail)));
-  audioElements.forEach(e => medias = medias.concat( getNodeData(e, thumbnail)));
+  videoElements.forEach(e => medias = medias.concat( getNodeData(e)));
+  audioElements.forEach(e => medias = medias.concat( getNodeData(e)));
+
+  if (medias.length) {
+    medias[0].thumbnail = thumbnail;
+    medias[0].author = author;
+    if (!medias[0].duration)
+     medias[0].duration = durationInSeconds;
+  }
+
   return medias;
 })();
   )-";

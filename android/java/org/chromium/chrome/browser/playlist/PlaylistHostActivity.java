@@ -58,6 +58,8 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                         playlistItemObject.put("media_path", playlistItem.mediaPath.url);
                         playlistItemObject.put("thumbnail_path", playlistItem.thumbnailPath.url);
                         playlistItemObject.put("cached", playlistItem.cached);
+                        playlistItemObject.put("author", playlistItem.author);
+                        playlistItemObject.put("duration", playlistItem.duration);
                         playlistItemsJsonArray.put(playlistItemObject);
                     }
                     playlistJsonObject.put("items", playlistItemsJsonArray);

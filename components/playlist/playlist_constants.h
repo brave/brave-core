@@ -20,6 +20,8 @@ constexpr char kPlaylistItemThumbnailPathKey[] = "thumbnailPath";
 constexpr char kPlaylistItemMediaFilePathKey[] = "mediaFilePath";
 constexpr char kPlaylistItemMediaFileCachedKey[] = "mediaCached";
 constexpr char kPlaylistItemTitleKey[] = "title";
+constexpr char kPlaylistItemAuthorKey[] = "author";
+constexpr char kPlaylistItemDurationKey[] = "duration";
 
 constexpr char kDefaultPlaylistID[] = "default";
 

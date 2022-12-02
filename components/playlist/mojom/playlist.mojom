@@ -28,6 +28,9 @@ struct PlaylistItem {
   // When it's |cached|, |media_path| and |thumbnail_path| will be
   // local path.
   bool cached;
+
+  string author;
+  string duration;
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.

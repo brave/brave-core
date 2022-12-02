@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/json/values_util.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/playlist_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -68,7 +69,8 @@ void PlaylistPageHandler::GetAllPlaylists(
     for (const auto& item : playlist.items) {
       items.push_back(playlist::mojom::PlaylistItem::New(
           item.id, item.title, GURL(item.page_src), GURL(item.media_file_path),
-          GURL(item.thumbnail_path), item.media_file_cached));
+          GURL(item.thumbnail_path), item.media_file_cached, item.author,
+          base::TimeDeltaToValue(item.duration).GetString()));
     }
     playlists.push_back(playlist::mojom::Playlist::New(
         playlist.id, playlist.name, std::move(items)));
@@ -90,7 +92,8 @@ void PlaylistPageHandler::GetPlaylist(
     items.push_back(playlist::mojom::PlaylistItem::New(
         item.id, item.title, GURL(item.page_src),
         GURL("file://" + item.media_file_path),
-        GURL("file://" + item.thumbnail_path), item.media_file_cached));
+        GURL("file://" + item.thumbnail_path), item.media_file_cached,
+        item.author, base::TimeDeltaToValue(item.duration).GetString()));
     LOG(ERROR) << "BravePlaylist"
                << "GetPlaylist : " << item.media_file_path << " : "
                << item.thumbnail_path;

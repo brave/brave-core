@@ -14,6 +14,7 @@
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/json/values_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "base/token.h"
@@ -415,6 +416,12 @@ std::vector<PlaylistItemInfo> PlaylistService::GetAllPlaylistItems() {
         *dict.FindString(playlist::kPlaylistItemMediaFilePathKey);
     item.media_file_cached =
         *dict.FindBool(playlist::kPlaylistItemMediaFileCachedKey);
+    if (auto* duration = dict.Find(playlist::kPlaylistItemDurationKey)) {
+      item.duration =
+          base::ValueToTimeDelta(duration).value_or(base::TimeDelta());
+    }
+    if (auto* author = dict.FindString(playlist::kPlaylistItemAuthorKey))
+      item.author = *author;
     items.push_back(std::move(item));
   }
 
@@ -450,6 +457,11 @@ PlaylistItemInfo PlaylistService::GetPlaylistItem(const std::string& id) {
       *item_value->FindString(playlist::kPlaylistItemMediaFilePathKey);
   item.media_file_cached =
       *item_value->FindBool(playlist::kPlaylistItemMediaFileCachedKey);
+  if (auto* duration = item_value->Find(playlist::kPlaylistItemDurationKey))
+    item.duration =
+        base::ValueToTimeDelta(duration).value_or(base::TimeDelta());
+  if (auto* author = item_value->FindString(playlist::kPlaylistItemAuthorKey))
+    item.author = *author;
 
   return item;
 }

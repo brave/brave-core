@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "base/json/values_util.h"
 #include "brave/components/playlist/playlist_constants.h"
 #include "brave/components/playlist/playlist_types.h"
 
@@ -22,6 +23,9 @@ base::Value::Dict GetValueFromPlaylistItemInfo(const PlaylistItemInfo& info) {
   playlist_value.Set(kPlaylistItemThumbnailPathKey, info.thumbnail_path);
   playlist_value.Set(kPlaylistItemMediaFilePathKey, info.media_file_path);
   playlist_value.Set(kPlaylistItemMediaFileCachedKey, info.media_file_cached);
+  playlist_value.Set(kPlaylistItemAuthorKey, info.author);
+  playlist_value.Set(kPlaylistItemDurationKey,
+                     base::TimeDeltaToValue(info.duration));
   return playlist_value;
 }
 

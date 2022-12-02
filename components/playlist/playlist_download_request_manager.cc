@@ -273,23 +273,32 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
     auto* page_source = media.FindStringKey("pageSrc");
     auto* mime_type = media.FindStringKey("mimeType");
     auto* src = media.FindStringKey("src");
-    auto* thumbnail = media.FindStringKey("thumbnail");
     DCHECK(name);
     DCHECK(page_source);
     DCHECK(page_title);
     DCHECK(mime_type);
     DCHECK(src);
 
+    // nullable data
+    auto* thumbnail = media.FindStringKey("thumbnail");
+    auto* author = media.FindStringKey("author");
+    auto duration = media.FindDoubleKey("duration");
+
     PlaylistItemInfo info;
     info.id = base::Token::CreateRandom().ToString();
     info.page_src = *page_source;
     info.title = *name;
+    info.media_src = *src;
+    info.media_file_path = *src;
+    if (duration.has_value())
+      info.duration = base::Seconds(*duration);
     if (thumbnail) {
       info.thumbnail_src = *thumbnail;
       info.thumbnail_path = *thumbnail;
     }
-    info.media_src = *src;
-    info.media_file_path = *src;
+    if (author)
+      info.author = *author;
+
     items.push_back(std::move(info));
   }
 
