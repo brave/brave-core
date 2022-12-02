@@ -41,6 +41,132 @@ bool RemoveValueFromList(base::Value::List* root, const T& value_to_remove) {
 }  // namespace
 
 // static
+// Response format /api/v0/pin/add
+// {
+//   "Pins": [
+//     "<string>"
+//   ],
+//   "Progress": "<int>"
+// }
+bool IPFSJSONParser::GetAddPinsResultFromJSON(
+    const std::string& json,
+    ipfs::AddPinResult* add_pin_result) {
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+
+  if (!records_v) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* pins_arr = records_v->FindKey("Pins");
+  if (!pins_arr || !pins_arr->is_list()) {
+    VLOG(1) << "Invalid response, can not find Pins array.";
+    return false;
+  }
+
+  auto progress = records_v->FindIntKey("Progress");
+  if (progress) {
+    add_pin_result->progress = *progress;
+  } else {
+    add_pin_result->progress = -1;
+  }
+
+  for (const base::Value& val : pins_arr->GetList()) {
+    add_pin_result->pins.push_back(val.GetString());
+  }
+  return true;
+}
+
+// static
+// Response format /api/v0/pin/rm
+// {
+//   "Pins": [
+//     "<string>"
+//   ]
+// }
+bool IPFSJSONParser::GetRemovePinsResultFromJSON(
+    const std::string& json,
+    ipfs::RemovePinResult* remove_pin_result) {
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+
+  if (!records_v) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* pins_arr = records_v->FindKey("Pins");
+  if (!pins_arr || !pins_arr->is_list()) {
+    VLOG(1) << "Invalid response, can not find Pins array.";
+    return false;
+  }
+
+  ipfs::RemovePinResult result;
+  for (const base::Value& val : pins_arr->GetList()) {
+    auto* val_as_str = val.GetIfString();
+    if (!val_as_str) {
+      return false;
+    }
+    result.push_back(*val_as_str);
+  }
+  *remove_pin_result = result;
+  return true;
+}
+
+// static
+// Response format /api/v0/pin/ls
+// {
+//   "PinLsList": {
+//     "Keys": {
+//       "<string>": {
+//         "Type": "<string>"
+//       }
+//     }
+//   },
+//   "PinLsObject": {
+//     "Cid": "<string>",
+//     "Type": "<string>"
+//   }
+// }
+bool IPFSJSONParser::GetGetPinsResultFromJSON(
+    const std::string& json,
+    ipfs::GetPinsResult* get_pins_result) {
+  DCHECK(get_pins_result);
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+
+  if (!records_v) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* keys = records_v->FindKey("Keys");
+  if (!keys || !keys->is_dict()) {
+    VLOG(1) << "Invalid response, can not find Keys in PinLsList dict.";
+    return false;
+  }
+
+  for (const auto it : keys->GetDict()) {
+    if (!it.second.is_dict()) {
+      VLOG(1) << "Missing Type for " << it.first;
+      return false;
+    }
+    const std::string* type = it.second.FindStringKey("Type");
+    if (!type) {
+      VLOG(1) << "Missing Type for " << it.first;
+      return false;
+    }
+    (*get_pins_result)[it.first] = *type;
+  }
+
+  return true;
+}
+
+// static
 // Response Format for /api/v0/swarm/peers
 // {
 //    "Peers": [
