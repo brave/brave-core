@@ -72,3 +72,5 @@ const char kBraveWalletCurrentChainId[] =
 const char kBraveWalletUserAssetsDeprecated[] = "brave.wallet.user_assets";
 const char kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated[] =
     "brave.wallet.user.assets.add_preloading_networks_migrated";
+const char kPinnedErc721Assets[] = "brave.wallet.user_pin_data";
+const char kAutoPinEnabled[] = "brave.wallet.auto_pin_enabled";
