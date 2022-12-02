@@ -30,5 +30,6 @@ export const DropDown = styled(StyledDiv)`
     box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.18);
   }
   z-index: 10;
+  left: 0px;
   top: 58px;
 `

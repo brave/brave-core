@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 
 // Shared Styles
-import { StyledDiv, StyledInput, Text } from '../shared.styles'
+import { StyledDiv, StyledInput, Text, Row } from '../shared.styles'
 
 export const SendContainer = styled(StyledDiv)`
   background-color: ${(p) => p.theme.color.background02};
@@ -26,7 +26,7 @@ export const SendContainer = styled(StyledDiv)`
 export const SectionBox = styled(StyledDiv) <{
   hasError?: boolean
   minHeight?: number
-  lessLeftPadding?: boolean
+  noPadding?: boolean
   boxDirection?: 'row' | 'column'
 }>`
   background-color: ${(p) => p.theme.color.background02};
@@ -35,7 +35,7 @@ export const SectionBox = styled(StyledDiv) <{
   border-radius: 16px;
   border: 1px solid
     ${(p) => (p.hasError ? p.theme.color.errorBorder : p.theme.color.divider01)};
-  padding: 16px 16px 16px ${(p) => (p.lessLeftPadding ? '8px' : '16px')};
+  padding: ${(p) => p.noPadding ? '0px' : '16px 16px 16px 8px'};
   width: 100%;
   position: relative;
   margin-bottom: 16px;
@@ -177,4 +177,9 @@ export const DIVForWidth = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
+`
+
+export const InputRow = styled(Row)`
+  box-sizing: border-box;
+  position: relative;
 `
