@@ -32,19 +32,27 @@ BraveURLSchemeDisplay const BraveURLSchemeDisplayOmitCryptographic =
 // MARK: - Implementation
 
 @implementation BraveURLFormatter
-+ (NSString*)formatURLForSecurityDisplay:(NSString*)origin
-                           schemeDisplay:(BraveURLSchemeDisplay)schemeDisplay {
++ (NSString*)formatURLOriginForSecurityDisplay:(NSString*)origin
+                                 schemeDisplay:
+                                     (BraveURLSchemeDisplay)schemeDisplay {
   std::u16string result = url_formatter::FormatUrlForSecurityDisplay(
       GURL(base::SysNSStringToUTF8(origin)),
       static_cast<url_formatter::SchemeDisplay>(schemeDisplay));
   return base::SysUTF16ToNSString(result) ?: @"";
 }
 
-+ (NSString*)formatURLForDisplayOmitSchemePathAndTrivialSubdomains:
++ (NSString*)formatURLOriginForDisplayOmitSchemePathAndTrivialSubdomains:
     (NSString*)origin {
   std::u16string result =
       url_formatter::FormatUrlForDisplayOmitSchemePathAndTrivialSubdomains(
           GURL(base::SysNSStringToUTF8(origin)));
+  return base::SysUTF16ToNSString(result) ?: @"";
+}
+
++ (NSString*)formatURL:(NSString*)url {
+  std::u16string result = url_formatter::FormatUrl(
+      GURL(base::SysNSStringToUTF8(url)), url_formatter::kFormatUrlOmitDefaults,
+      base::UnescapeRule::SPACES, nullptr, nullptr, nullptr);
   return base::SysUTF16ToNSString(result) ?: @"";
 }
 @end
