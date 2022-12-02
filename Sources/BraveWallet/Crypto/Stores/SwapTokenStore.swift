@@ -121,6 +121,7 @@ public class SwapTokenStore: ObservableObject {
   private var timer: Timer?
   private let batSymbol = "BAT"
   private let daiSymbol = "DAI"
+  private var prefilledToken: BraveWallet.BlockchainToken?
 
   enum SwapParamsBase {
     // calculating based on sell asset amount
@@ -159,7 +160,7 @@ public class SwapTokenStore: ObservableObject {
     self.txService = txService
     self.walletService = walletService
     self.ethTxManagerProxy = ethTxManagerProxy
-    self.selectedFromToken = prefilledToken
+    self.prefilledToken = prefilledToken
 
     self.keyringService.add(self)
     self.rpcService.add(self)
@@ -656,29 +657,60 @@ public class SwapTokenStore: ObservableObject {
     walletService.selectedCoin { [weak self] coinType in
       guard let self = self else { return }
       self.rpcService.network(coinType) { network in
-        self.blockchainRegistry.allTokens(network.chainId, coin: network.coin) { tokens in
-          // Native token on the current selected network
-          let nativeAsset = network.nativeToken
-          // Custom tokens added by users
-          self.walletService.userAssets(network.chainId, coin: network.coin) { userAssets in
-            let customTokens = userAssets.filter { asset in
-              !tokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(asset.contractAddress) == .orderedSame })
+        // Closure run after validating the prefilledToken (if applicable)
+        let continueClosure: (BraveWallet.NetworkInfo) -> Void = { [weak self] network in
+          guard let self = self else { return }
+          self.blockchainRegistry.allTokens(network.chainId, coin: network.coin) { tokens in
+            // Native token on the current selected network
+            let nativeAsset = network.nativeToken
+            // Custom tokens added by users
+            self.walletService.userAssets(network.chainId, coin: network.coin) { userAssets in
+              let customTokens = userAssets.filter { asset in
+                !tokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(asset.contractAddress) == .orderedSame })
+              }
+              let sortedCustomTokens = customTokens.sorted {
+                if $0.contractAddress(in: network).caseInsensitiveCompare(nativeAsset.contractAddress) == .orderedSame {
+                  return true
+                } else {
+                  return $0.symbol < $1.symbol
+                }
+              }
+              self.allTokens = sortedCustomTokens + tokens.sorted(by: { $0.symbol < $1.symbol })
+              // Seems like user assets always include the selected network's native asset
+              // But let's make sure all token list includes the native asset
+              if !self.allTokens.contains(where: { $0.symbol.lowercased() == nativeAsset.symbol.lowercased() }) {
+                self.allTokens.insert(nativeAsset, at: 0)
+              }
+              updateSelectedTokens(in: network)
             }
-            let sortedCustomTokens = customTokens.sorted {
-              if $0.contractAddress(in: network).caseInsensitiveCompare(nativeAsset.contractAddress) == .orderedSame {
-                return true
-              } else {
-                return $0.symbol < $1.symbol
+          }
+        }
+        
+        // validate the `prefilledToken`
+        if let prefilledToken = self.prefilledToken {
+          if prefilledToken.coin == network.coin && prefilledToken.chainId == network.chainId {
+            self.selectedFromToken = prefilledToken
+            continueClosure(network)
+          } else {
+            self.rpcService.allNetworks(prefilledToken.coin) { allNetworksForTokenCoin in
+              guard let networkForToken = allNetworksForTokenCoin.first(where: { $0.chainId == prefilledToken.chainId }) else {
+                // don't set prefilled token if it belongs to a network we don't know
+                continueClosure(network)
+                return
+              }
+              self.rpcService.setNetwork(networkForToken.chainId, coin: networkForToken.coin) { success in
+                if success {
+                  self.selectedFromToken = prefilledToken
+                  continueClosure(networkForToken) // network changed
+                } else {
+                  continueClosure(network)
+                }
               }
             }
-            self.allTokens = sortedCustomTokens + tokens.sorted(by: { $0.symbol < $1.symbol })
-            // Seems like user assets always include the selected network's native asset
-            // But let's make sure all token list includes the native asset
-            if !self.allTokens.contains(where: { $0.symbol.lowercased() == nativeAsset.symbol.lowercased() }) {
-              self.allTokens.insert(nativeAsset, at: 0)
-            }
-            updateSelectedTokens(in: network)
           }
+          self.prefilledToken = nil
+        } else { // `prefilledToken` is nil
+          continueClosure(network)
         }
       }
     }

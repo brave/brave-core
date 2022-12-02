@@ -38,7 +38,7 @@ class SwapStoreTests: XCTestCase {
   }
 
   func testDefaultSellBuyTokensOnMainnetWithPrefilledToken() {
-    let batToken: BraveWallet.BlockchainToken = .init(contractAddress: "", name: "Brave BAT", logo: "", isErc20: true, isErc721: false, isNft: false, symbol: "BAT", decimals: 18, visible: false, tokenId: "", coingeckoId: "", chainId: "", coin: .eth)
+    let batToken: BraveWallet.BlockchainToken = .init(contractAddress: "", name: "Brave BAT", logo: "", isErc20: true, isErc721: false, isNft: false, symbol: "BAT", decimals: 18, visible: false, tokenId: "", coingeckoId: "", chainId: BraveWallet.MainnetChainId, coin: .eth)
     let store = SwapTokenStore(
       keyringService: MockKeyringService(),
       blockchainRegistry: MockBlockchainRegistry(),
@@ -49,8 +49,17 @@ class SwapStoreTests: XCTestCase {
       ethTxManagerProxy: MockEthTxManagerProxy(),
       prefilledToken: batToken
     )
+    let fromTokenExpectation = expectation(description: "update-fromTokenExpectation")
+    store.$selectedFromToken
+      .dropFirst()
+      .first()
+      .sink { selectedFromToken in
+        defer { fromTokenExpectation.fulfill() }
+        XCTAssertEqual(selectedFromToken, batToken)
+      }
+      .store(in: &cancellables)
     let ex = expectation(description: "default-sell-buy-token-on-main")
-    XCTAssertNotNil(store.selectedFromToken)
+    XCTAssertNil(store.selectedFromToken) // `prefilledToken` not set until validated in `prepare()`
     XCTAssertNil(store.selectedToToken)
     let testAccountInfo: BraveWallet.AccountInfo = .init()
     store.prepare(with: testAccountInfo) {
@@ -58,6 +67,76 @@ class SwapStoreTests: XCTestCase {
       XCTAssertEqual(store.selectedFromToken?.symbol.lowercased(), batToken.symbol.lowercased())
       XCTAssertNotNil(store.selectedToToken)
       XCTAssertNotEqual(store.selectedToToken!.symbol.lowercased(), batToken.symbol.lowercased())
+    }
+    waitForExpectations(timeout: 3) { error in
+      XCTAssertNil(error)
+    }
+  }
+  
+  /// Test that given a `prefilledToken` that is not on the current network, the `BuyTokenStore`
+  /// will switch networks to the `chainId` of the token.
+  func testPrefilledTokenSwitchNetwork() {
+    let prefilledToken: BraveWallet.BlockchainToken = .mockSolToken
+    
+    var selectedCoin: BraveWallet.CoinType = .eth
+    var selectedNetwork: BraveWallet.NetworkInfo = .mockMainnet
+    let walletService = BraveWallet.TestBraveWalletService()
+    walletService._addObserver = { _ in }
+    walletService._selectedCoin = { $0(selectedCoin) }
+    walletService._userAssets = { _, coin, completion in
+      completion(coin == .eth ? [.previewToken] : [.mockSolToken])
+    }
+    let rpcService = BraveWallet.TestJsonRpcService()
+    rpcService._addObserver = { _ in }
+    rpcService._network = { coin, completion in
+      completion(selectedNetwork)
+    }
+    rpcService._solanaBalance = { _, _, completion in
+      completion(0, .success, "")
+    }
+    rpcService._splTokenAccountBalance = { _, _, _, completion in
+      completion("", 0, "", .success, "")
+    }
+    rpcService._allNetworks = { coin, completion in
+      completion(coin == .eth ? [.mockMainnet] : [.mockSolana])
+    }
+    // simulate network switch when `setNetwork` is called
+    rpcService._setNetwork = { chainId, coin, completion in
+      XCTAssertEqual(chainId, BraveWallet.SolanaMainnet) // verify network switched to SolanaMainnet
+      selectedCoin = coin
+      selectedNetwork = coin == .eth ? .mockMainnet : .mockSolana
+      completion(true)
+    }
+    
+    let store = SwapTokenStore(
+      keyringService: MockKeyringService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      rpcService: rpcService,
+      swapService: MockSwapService(),
+      txService: MockTxService(),
+      walletService: walletService,
+      ethTxManagerProxy: MockEthTxManagerProxy(),
+      prefilledToken: prefilledToken
+    )
+    
+    let fromTokenExpectation = expectation(description: "update-fromTokenExpectation")
+    store.$selectedFromToken
+      .dropFirst()
+      .first()
+      .sink { selectedFromToken in
+        defer { fromTokenExpectation.fulfill() }
+        XCTAssertEqual(selectedFromToken, .mockSolToken)
+      }
+      .store(in: &cancellables)
+    let ex = expectation(description: "default-sell-buy-token-on-main")
+    XCTAssertNil(store.selectedFromToken) // `prefilledToken` not set until validated in `prepare()`
+    XCTAssertNil(store.selectedToToken)
+    let testAccountInfo: BraveWallet.AccountInfo = .init()
+    store.prepare(with: testAccountInfo) {
+      defer { ex.fulfill() }
+      XCTAssertEqual(store.selectedFromToken?.symbol.lowercased(), prefilledToken.symbol.lowercased())
+      XCTAssertNotNil(store.selectedToToken)
+      XCTAssertNotEqual(store.selectedToToken!.symbol.lowercased(), prefilledToken.symbol.lowercased())
     }
     waitForExpectations(timeout: 3) { error in
       XCTAssertNil(error)
@@ -94,11 +173,13 @@ class SwapStoreTests: XCTestCase {
     }
   }
 
-
   func testDefaultSellBuyTokensOnEVMWithPrefilledToken() {
-    let daiToken: BraveWallet.BlockchainToken = .init(contractAddress: "", name: "DAI Stablecoin", logo: "", isErc20: true, isErc721: false, isNft: false, symbol: "DAI", decimals: 18, visible: false, tokenId: "", coingeckoId: "", chainId: "", coin: .eth)
-    let batToken: BraveWallet.BlockchainToken = .init(contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef", name: "Basic Attention Token", logo: "", isErc20: true, isErc721: false, isNft: false, symbol: "BAT", decimals: 18, visible: true, tokenId: "", coingeckoId: "", chainId: "", coin: .eth)
-    let rpcService = MockJsonRpcService()
+    let daiToken: BraveWallet.BlockchainToken = .init(contractAddress: "", name: "DAI Stablecoin", logo: "", isErc20: true, isErc721: false, isNft: false, symbol: "DAI", decimals: 18, visible: false, tokenId: "", coingeckoId: "", chainId: BraveWallet.PolygonMainnetChainId, coin: .eth)
+    let batToken: BraveWallet.BlockchainToken = .init(contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef", name: "Basic Attention Token", logo: "", isErc20: true, isErc721: false, isNft: false, symbol: "BAT", decimals: 18, visible: true, tokenId: "", coingeckoId: "", chainId: BraveWallet.PolygonMainnetChainId, coin: .eth)
+    let rpcService = BraveWallet.TestJsonRpcService()
+    rpcService._addObserver = { _ in }
+    rpcService._network = { $1(.mockPolygon) }
+    rpcService._erc20TokenBalance = { $3("10", .success, "") }
     let store = SwapTokenStore(
       keyringService: MockKeyringService(),
       blockchainRegistry: MockBlockchainRegistry(),
@@ -109,19 +190,25 @@ class SwapStoreTests: XCTestCase {
       ethTxManagerProxy: MockEthTxManagerProxy(),
       prefilledToken: daiToken
     )
-    let ex = expectation(description: "default-sell-buy-token-on-evm")
-    XCTAssertNotNil(store.selectedFromToken)
+    XCTAssertNil(store.selectedFromToken)  // `prefilledToken` not set until validated in `prepare()`
     XCTAssertNil(store.selectedToToken)
-
-    rpcService.setNetwork(BraveWallet.PolygonMainnetChainId, coin: .eth) { success in
-      XCTAssertTrue(success)
-      let testAccountInfo: BraveWallet.AccountInfo = .init()
-      store.prepare(with: testAccountInfo) {
-        defer { ex.fulfill() }
-        XCTAssertEqual(store.selectedFromToken?.symbol.lowercased(), daiToken.symbol.lowercased())
-        XCTAssertNotNil(store.selectedToToken)
-        XCTAssertEqual(store.selectedToToken!.symbol.lowercased(), batToken.symbol.lowercased())
+    let fromTokenExpectation = expectation(description: "update-sendTokenExpectation")
+    store.$selectedFromToken
+      .dropFirst()
+      .first()
+      .sink { selectedFromToken in
+        defer { fromTokenExpectation.fulfill() }
+        XCTAssertEqual(selectedFromToken, daiToken)
       }
+      .store(in: &cancellables)
+
+    let ex = expectation(description: "default-sell-buy-token-on-evm")
+    let testAccountInfo: BraveWallet.AccountInfo = .init()
+    store.prepare(with: testAccountInfo) {
+      defer { ex.fulfill() }
+      XCTAssertEqual(store.selectedFromToken?.symbol.lowercased(), daiToken.symbol.lowercased())
+      XCTAssertNotNil(store.selectedToToken)
+      XCTAssertEqual(store.selectedToToken!.symbol.lowercased(), batToken.symbol.lowercased())
     }
     waitForExpectations(timeout: 3) { error in
       XCTAssertNil(error)
