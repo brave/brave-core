@@ -9,10 +9,8 @@
 #include <map>
 #include <string>
 
-#include "base/callback.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "third_party/abseil-cpp/absl/random/random.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/dom_window.h"
@@ -42,8 +40,6 @@ enum FarbleKey : uint64_t {
 };
 
 typedef absl::randen_engine<uint64_t> FarblingPRNG;
-typedef absl::optional<base::RepeatingCallback<float(float, size_t)>>
-    OptionalAudioFarblingCallback;
 
 CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(
     ExecutionContext* context);
@@ -76,8 +72,16 @@ class CORE_EXPORT BraveSessionCache final
   static BraveSessionCache& From(ExecutionContext&);
   static void Init();
 
-  OptionalAudioFarblingCallback GetAudioFarblingCallback(
-      blink::WebContentSettingsClient* settings);
+  void FarbleAudioChannel(blink::WebContentSettingsClient* settings,
+                          float* dst,
+                          size_t count);
+  void GetRealtimeAnalyserFarblingCallbacks(
+      blink::WebContentSettingsClient* settings,
+      OptionalFarbleFloatTimeDomainDataCallback*
+          float_time_domain_data_callback,
+      OptionalFarbleByteTimeDomainDataCallback* byte_time_domain_data_callback,
+      OptionalFarbleConvertToByteDataCallback* convert_to_byte_data_callback,
+      OptionalFarbleConvertFloatToDbCallback* convert_float_to_db_callback);
   void PerturbPixels(blink::WebContentSettingsClient* settings,
                      const unsigned char* data,
                      size_t size);

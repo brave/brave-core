@@ -6,12 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_WEBAUDIO_REALTIME_ANALYSER_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_WEBAUDIO_REALTIME_ANALYSER_H_
 
-#include "base/callback.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 
-#define BRAVE_REALTIMEANALYSER_H                                \
-  absl::optional<base::RepeatingCallback<float(float, size_t)>> \
-      audio_farbling_callback_;
+#define BRAVE_REALTIMEANALYSER_H                                              \
+  OptionalFarbleFloatTimeDomainDataCallback float_time_domain_data_callback_; \
+  OptionalFarbleByteTimeDomainDataCallback byte_time_domain_data_callback_;   \
+  OptionalFarbleConvertToByteDataCallback convert_to_byte_data_callback_;     \
+  OptionalFarbleConvertFloatToDbCallback convert_float_to_db_callback_;
 
 #include "src/third_party/blink/renderer/modules/webaudio/realtime_analyser.h"
 
