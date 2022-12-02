@@ -212,8 +212,12 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
 - (void)onAppEnterBackground:(NSNotification*)notification {
   auto* context = GetApplicationContext();
-  if (context)
+  if (context) {
     context->OnAppEnterBackground();
+    // Since we don't use the WebViewWebMainParts, local state is never commited
+    // on app background
+    context->GetLocalState()->CommitPendingWrite();
+  }
 }
 
 - (void)onAppEnterForeground:(NSNotification*)notification {
@@ -223,6 +227,9 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 }
 
 - (void)onAppWillTerminate:(NSNotification*)notification {
+  // ApplicationContextImpl doesn't get teardown call at the moment because we
+  // cannot dealloc this class yet without crashing.
+  GetApplicationContext()->GetLocalState()->CommitPendingWrite();
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
