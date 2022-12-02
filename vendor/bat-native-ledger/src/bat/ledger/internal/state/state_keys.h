@@ -41,6 +41,8 @@ const char kParametersMonthlyTipChoices[] =
 const char kParametersPayoutStatus[] = "parameters.payout_status";
 const char kParametersWalletProviderRegions[] =
     "parameters.wallet_provider_regions";
+const char kParametersVBatDeadline[] = "parameters.vbat_deadline";
+const char kParametersVBatExpired[] = "parameters.vbat_expired";
 const char kEmptyBalanceChecked[] = "empty_balance_checked";
 const char kExternalWalletType[] = "external_wallet_type";
 const char kWalletBrave[]  ="wallets.brave";

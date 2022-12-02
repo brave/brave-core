@@ -87,6 +87,8 @@ declare namespace Rewards {
     autoContributeChoices: number[]
     payoutStatus: Record<string, ProviderPayoutStatus>
     walletProviderRegions: Record<string, Regions | undefined>
+    vbatDeadline: number | undefined
+    vbatExpired: boolean
   }
 
   export interface ComponentProps {

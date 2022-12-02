@@ -652,6 +652,8 @@ void RewardsDOMHandler::OnGetRewardsParameters(
   base::Value::List auto_contribute_choices;
   base::Value::Dict payout_status;
   base::Value::Dict wallet_provider_regions;
+  base::Time vbat_deadline;
+  bool vbat_expired = false;
   if (parameters) {
     rate = parameters->rate;
     auto_contribute_choice = parameters->auto_contribute_choice;
@@ -680,6 +682,9 @@ void RewardsDOMHandler::OnGetRewardsParameters(
 
       wallet_provider_regions.Set(wallet_provider, std::move(regions_dict));
     }
+
+    vbat_deadline = parameters->vbat_deadline;
+    vbat_expired = parameters->vbat_expired;
   }
 
   data.Set("rate", rate);
@@ -687,6 +692,11 @@ void RewardsDOMHandler::OnGetRewardsParameters(
   data.Set("autoContributeChoices", std::move(auto_contribute_choices));
   data.Set("payoutStatus", std::move(payout_status));
   data.Set("walletProviderRegions", std::move(wallet_provider_regions));
+  if (!vbat_deadline.is_null()) {
+    data.Set("vbatDeadline", floor(vbat_deadline.ToDoubleT() *
+                                   base::Time::kMillisecondsPerSecond));
+  }
+  data.Set("vbatExpired", vbat_expired);
 
   CallJavascriptFunction("brave_rewards.rewardsParameters",
                          base::Value(std::move(data)));

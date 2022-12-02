@@ -239,6 +239,18 @@ base::Value BatLedgerClientMojoBridge::GetValueState(
   return value;
 }
 
+void BatLedgerClientMojoBridge::SetTimeState(const std::string& name,
+                                             base::Time time) {
+  bat_ledger_client_->SetTimeState(name, time);
+}
+
+base::Time BatLedgerClientMojoBridge::GetTimeState(
+    const std::string& name) const {
+  base::Time time;
+  bat_ledger_client_->GetTimeState(name, &time);
+  return time;
+}
+
 void BatLedgerClientMojoBridge::ClearState(const std::string& name) {
   bat_ledger_client_->ClearState(name);
 }

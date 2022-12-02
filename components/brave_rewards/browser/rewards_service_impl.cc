@@ -1610,6 +1610,15 @@ base::Value RewardsServiceImpl::GetValueState(const std::string& name) const {
   return profile_->GetPrefs()->GetValue(GetPrefPath(name)).Clone();
 }
 
+void RewardsServiceImpl::SetTimeState(const std::string& name,
+                                      base::Time time) {
+  profile_->GetPrefs()->SetTime(GetPrefPath(name), time);
+}
+
+base::Time RewardsServiceImpl::GetTimeState(const std::string& name) const {
+  return profile_->GetPrefs()->GetTime(GetPrefPath(name));
+}
+
 void RewardsServiceImpl::ClearState(const std::string& name) {
   profile_->GetPrefs()->ClearPref(GetPrefPath(name));
 }

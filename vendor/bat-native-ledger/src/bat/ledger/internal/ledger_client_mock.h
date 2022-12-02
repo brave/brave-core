@@ -118,6 +118,10 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_CONST_METHOD1(GetValueState, base::Value(const std::string& name));
 
+  MOCK_METHOD2(SetTimeState, void(const std::string& name, base::Time time));
+
+  MOCK_CONST_METHOD1(GetTimeState, base::Time(const std::string& name));
+
   MOCK_METHOD1(ClearState, void(
       const std::string& name));
 

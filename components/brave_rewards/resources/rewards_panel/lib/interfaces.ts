@@ -72,6 +72,8 @@ export interface Settings {
 export interface Options {
   autoContributeAmounts: number[]
   externalWalletRegions: Map<string, ExternalWalletProviderRegionInfo>
+  vbatDeadline: number | undefined
+  vbatExpired: boolean
 }
 
 type RequestedView = 'rewards-tour'

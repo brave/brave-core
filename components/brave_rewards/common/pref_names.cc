@@ -70,6 +70,8 @@ const char kParametersMonthlyTipChoices[] =
 const char kParametersPayoutStatus[] = "brave.rewards.parameters.payout_status";
 const char kParametersWalletProviderRegions[] =
     "brave.rewards.parameters.wallet_provider_regions";
+const char kParametersVBatDeadline[] = "brave.rewards.parameters.vbat_deadline";
+const char kParametersVBatExpired[] = "brave.rewards.parameters.vbat_expired";
 const char kFetchOldBalance[] =
     "brave.rewards.fetch_old_balance";
 const char kEmptyBalanceChecked[] =

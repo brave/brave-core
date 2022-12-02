@@ -776,6 +776,13 @@
                     "additionalProperties": {
                       "type": "any"
                     }
+                  },
+                  "vbatDeadline": {
+                    "type": "number",
+                    "optional": true
+                  },
+                  "vbatExpired": {
+                    "type": "boolean"
                   }
                 }
               }
