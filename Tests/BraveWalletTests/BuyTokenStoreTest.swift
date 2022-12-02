@@ -32,6 +32,9 @@ class BuyTokenStoreTests: XCTestCase {
     
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._network = { $1(selectedNetwork) }
+    rpcService._allNetworks = { coin, completion in
+      completion([selectedNetwork])
+    }
     rpcService._addObserver = { _ in }
     
     let walletService = BraveWallet.TestBraveWalletService()
@@ -46,7 +49,7 @@ class BuyTokenStoreTests: XCTestCase {
     return (blockchainRegistry, rpcService, walletService, assetRatioService)
   }
   
-  func testPrefilledToken() {
+  @MainActor func testPrefilledToken() async {
     let (blockchainRegistry, rpcService, walletService, assetRatioService) = setupServices()
     var store = BuyTokenStore(
       blockchainRegistry: blockchainRegistry,
@@ -64,7 +67,40 @@ class BuyTokenStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       prefilledToken: .previewToken
     )
+    
+    await store.updateInfo()
     XCTAssertEqual(store.selectedBuyToken?.symbol.lowercased(), BraveWallet.BlockchainToken.previewToken.symbol.lowercased())
+  }
+  
+  /// Test that given a `prefilledToken` that is not on the current network, the `BuyTokenStore` will switch networks to the `chainId` of the token.
+  @MainActor func testPrefilledTokenSwitchNetwork() async {
+    var selectedCoin: BraveWallet.CoinType = .eth
+    var selectedNetwork: BraveWallet.NetworkInfo = .mockMainnet
+    let (blockchainRegistry, rpcService, walletService, assetRatioService) = setupServices()
+    walletService._selectedCoin = { $0(selectedCoin) }
+    rpcService._network = { coin, completion in
+      completion(selectedNetwork)
+    }
+    rpcService._allNetworks = { coin, completion in
+      completion(coin == .eth ? [.mockMainnet] : [.mockSolana])
+    }
+    // simulate network switch when `setNetwork` is called
+    rpcService._setNetwork = { chainId, coin, completion in
+      XCTAssertEqual(chainId, BraveWallet.SolanaMainnet) // verify network switched to SolanaMainnet
+      selectedCoin = coin
+      selectedNetwork = coin == .eth ? .mockMainnet : .mockSolana
+      completion(true)
+    }
+    
+    let store = BuyTokenStore(
+      blockchainRegistry: blockchainRegistry,
+      rpcService: rpcService,
+      walletService: walletService,
+      assetRatioService: assetRatioService,
+      prefilledToken: .mockSolToken // not on mainnet
+    )
+    await store.updateInfo()
+    XCTAssertEqual(store.selectedBuyToken?.symbol.lowercased(), BraveWallet.BlockchainToken.mockSolToken.symbol.lowercased())
   }
   
   func testBuyDisabledForTestNetwork() {

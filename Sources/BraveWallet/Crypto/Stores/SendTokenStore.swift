@@ -99,6 +99,7 @@ public class SendTokenStore: ObservableObject {
   private var allTokens: [BraveWallet.BlockchainToken] = []
   private var sendAddressUpdatedTimer: Timer?
   private var sendAmountUpdatedTimer: Timer?
+  private var prefilledToken: BraveWallet.BlockchainToken?
 
   public init(
     keyringService: BraveWalletKeyringService,
@@ -117,7 +118,7 @@ public class SendTokenStore: ObservableObject {
     self.blockchainRegistry = blockchainRegistry
     self.ethTxManagerProxy = ethTxManagerProxy
     self.solTxManagerProxy = solTxManagerProxy
-    self.selectedSendToken = prefilledToken
+    self.prefilledToken = prefilledToken
 
     self.keyringService.add(self)
     self.rpcService.add(self)
@@ -132,6 +133,28 @@ public class SendTokenStore: ObservableObject {
     }
     sendAmount = ((selectedSendTokenBalance ?? 0) * amount.rawValue).decimalExpansion(precisionAfterDecimalPoint: decimalPoint, rounded: rounded)
   }
+  
+  @MainActor private func validatePrefilledToken(on network: inout BraveWallet.NetworkInfo) async {
+    guard let prefilledToken = self.prefilledToken else {
+      return
+    }
+    if prefilledToken.coin == network.coin && prefilledToken.chainId == network.chainId {
+      // valid for current network
+      self.selectedSendToken = prefilledToken
+    } else {
+      // need to try and select correct network.
+      let allNetworksForTokenCoin = await rpcService.allNetworks(prefilledToken.coin)
+      guard let networkForToken = allNetworksForTokenCoin.first(where: { $0.chainId == prefilledToken.chainId }) else {
+        // don't set prefilled token if it belongs to a network we don't know
+        return
+      }
+      let success = await rpcService.setNetwork(networkForToken.chainId, coin: networkForToken.coin)
+      if success {
+        self.selectedSendToken = prefilledToken
+      }
+    }
+    self.prefilledToken = nil
+  }
 
   /// Cancellable for the last running `update()` Task.
   private var updateTask: Task<(), Never>?
@@ -141,8 +164,10 @@ public class SendTokenStore: ObservableObject {
     self.updateTask = Task { @MainActor in
       self.isLoading = true
       defer { self.isLoading = false }
-      let coin = await self.walletService.selectedCoin()
-      let network = await self.rpcService.network(coin)
+      var coin = await self.walletService.selectedCoin()
+      var network = await self.rpcService.network(coin)
+      await validatePrefilledToken(on: &network) // network may change
+      coin = network.coin // in case network changed
       // fetch user assets
       let userAssets = await self.walletService.userAssets(network.chainId, coin: network.coin)
       let allTokens = await self.blockchainRegistry.allTokens(network.chainId, coin: network.coin)

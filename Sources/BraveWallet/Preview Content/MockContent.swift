@@ -21,7 +21,7 @@ extension BraveWallet.BlockchainToken {
     visible: false,
     tokenId: "",
     coingeckoId: "",
-    chainId: "",
+    chainId: BraveWallet.MainnetChainId,
     coin: .eth
   )
   

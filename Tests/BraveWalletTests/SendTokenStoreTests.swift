@@ -29,6 +29,7 @@ class SendTokenStoreTests: XCTestCase {
     keyringService._selectedAccount = { $1(accountAddress) }
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._network = { $1(selectedNetwork) }
+    rpcService._allNetworks = { $1([selectedNetwork]) }
     rpcService._addObserver = { _ in }
     rpcService._balance = { $3(balance, .success, "") }
     rpcService._erc20TokenBalance = { $3(erc20Balance, .success, "") }
@@ -43,11 +44,11 @@ class SendTokenStoreTests: XCTestCase {
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     return (keyringService, rpcService, walletService, solTxManagerProxy)
   }
-
+  
   /// Test given a `prefilledToken` will be assigned to `selectedSendToken`
   func testPrefilledToken() {
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
-    
+
     var store = SendTokenStore(
       keyringService: MockKeyringService(),
       rpcService: MockJsonRpcService(),
@@ -70,7 +71,64 @@ class SendTokenStoreTests: XCTestCase {
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: .previewToken
     )
-    XCTAssertEqual(store.selectedSendToken?.symbol.lowercased(), BraveWallet.BlockchainToken.previewToken.symbol.lowercased())
+    let sendTokenExpectation = expectation(description: "update-sendTokenExpectation")
+    store.$selectedSendToken
+      .dropFirst()
+      .first()
+      .sink { selectedSendToken in
+        defer { sendTokenExpectation.fulfill() }
+        XCTAssertEqual(selectedSendToken, .previewToken)
+      }
+      .store(in: &cancellables)
+    store.update()
+    waitForExpectations(timeout: 1) { error in
+      XCTAssertNil(error)
+    }
+  }
+  
+  /// Test that given a `prefilledToken` that is not on the current network, the `SendTokenStore`
+  /// will switch networks to the `chainId` of the token before assigning the token.
+  func testPrefilledTokenSwitchNetwork() {
+    var selectedCoin: BraveWallet.CoinType = .eth
+    var selectedNetwork: BraveWallet.NetworkInfo = .mockMainnet
+    let (keyringService, rpcService, walletService, solTxManagerProxy) = setupServices()
+    walletService._selectedCoin = { $0(selectedCoin) }
+    rpcService._network = { coin, completion in
+      completion(selectedNetwork)
+    }
+    rpcService._allNetworks = { coin, completion in
+      completion(coin == .eth ? [.mockMainnet] : [.mockSolana])
+    }
+    // simulate network switch when `setNetwork` is called
+    rpcService._setNetwork = { chainId, coin, completion in
+      XCTAssertEqual(chainId, BraveWallet.SolanaMainnet) // verify network switched to SolanaMainnet
+      selectedCoin = coin
+      selectedNetwork = coin == .eth ? .mockMainnet : .mockSolana
+      completion(true)
+    }
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      ethTxManagerProxy: MockEthTxManagerProxy(),
+      solTxManagerProxy: solTxManagerProxy,
+      prefilledToken: .mockSolToken
+    )
+    let sendTokenExpectation = expectation(description: "update-sendTokenExpectation")
+    store.$selectedSendToken
+      .dropFirst()
+      .first()
+      .sink { selectedSendToken in
+        defer { sendTokenExpectation.fulfill() }
+        XCTAssertEqual(selectedSendToken, .mockSolToken)
+      }
+      .store(in: &cancellables)
+    store.update()
+    waitForExpectations(timeout: 1) { error in
+      XCTAssertNil(error)
+    }
   }
 
   /// Test `update()` will update the `selectedSendToken` if nil, and update `selectedSendTokenBalance` with the token balance
@@ -135,6 +193,7 @@ class SendTokenStoreTests: XCTestCase {
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: .previewToken
     )
+    store.selectedSendToken = .previewToken
     let ex = expectation(description: "send-eth-eip1559-transaction")
     store.sendToken(amount: "0.01") { success, _ in
       defer { ex.fulfill() }
@@ -158,7 +217,7 @@ class SendTokenStoreTests: XCTestCase {
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: .previewToken
     )
-
+    store.selectedSendToken = .previewToken
     let ex = expectation(description: "send-eth-transaction")
     store.sendToken(amount: "0.01") { success, _ in
       defer { ex.fulfill() }
@@ -208,7 +267,7 @@ class SendTokenStoreTests: XCTestCase {
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: .previewToken
     )
-
+    store.selectedSendToken = .previewToken
     let ex = expectation(description: "send-bat-transaction")
     store.sendToken(amount: "0.01") { success, _ in
       defer { ex.fulfill() }
@@ -236,7 +295,7 @@ class SendTokenStoreTests: XCTestCase {
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: .mockERC721NFTToken
     )
-
+    store.selectedSendToken = .mockERC721NFTToken
     let ex = expectation(description: "send-NFT-transaction")
     store.sendToken(amount: "") { success, _ in
       defer { ex.fulfill() }
@@ -256,6 +315,7 @@ class SendTokenStoreTests: XCTestCase {
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._chainId = { $1(BraveWallet.NetworkInfo.mockGoerli.chainId) }
     rpcService._network = { $1(BraveWallet.NetworkInfo.mockGoerli)}
+    rpcService._allNetworks = { $1([.mockGoerli]) }
     rpcService._balance = { _, _, _, completion in
       completion(mockBalanceWei, .success, "")
     }
@@ -281,7 +341,7 @@ class SendTokenStoreTests: XCTestCase {
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: .previewToken
     )
-    
+    store.selectedSendToken = .previewToken
     let fetchSelectedTokenBalanceEx = expectation(description: "fetchSelectedTokenBalance")
     store.$selectedSendTokenBalance
       .dropFirst()
@@ -332,7 +392,7 @@ class SendTokenStoreTests: XCTestCase {
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: BraveWallet.NetworkInfo.mockSolana.nativeToken
     )
-    
+    store.selectedSendToken = BraveWallet.NetworkInfo.mockSolana.nativeToken
     let ex = expectation(description: "send-sol-transaction")
     store.sendToken(
       amount: "0.01"
@@ -369,7 +429,7 @@ class SendTokenStoreTests: XCTestCase {
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: .mockSpdToken
     )
-
+    store.selectedSendToken = .mockSpdToken
     let ex = expectation(description: "send-sol-transaction")
     store.sendToken(
       amount: "0.01"
@@ -409,7 +469,7 @@ class SendTokenStoreTests: XCTestCase {
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: .mockSolToken
     )
-    
+    store.selectedSendToken = .mockSolToken
     let ex = expectation(description: "send-sol-transaction")
     store.sendToken(
       amount: "0.01"
@@ -450,7 +510,7 @@ class SendTokenStoreTests: XCTestCase {
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: .mockSpdToken
     )
-
+    store.selectedSendToken = .mockSpdToken
     let ex = expectation(description: "send-spl-transaction")
     store.sendToken(
       amount: "0.01"
