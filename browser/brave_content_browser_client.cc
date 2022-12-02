@@ -732,24 +732,21 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
 
     auto* tab_helper =
         speedreader::SpeedreaderTabHelper::FromWebContents(contents);
-    if (tab_helper) {
-      const auto state = tab_helper->PageDistillState();
-      if (speedreader::PageWantsDistill(state) && isMainFrame) {
-        // Only check for disabled sites if we are in Speedreader mode
-        const bool check_disabled_sites =
-            state == speedreader::DistillState::kSpeedreaderModePending;
-        auto* speedreader_service =
-            speedreader::SpeedreaderServiceFactory::GetForProfile(
-                Profile::FromBrowserContext(browser_context));
-        std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
-            speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
-                g_brave_browser_process->speedreader_rewriter_service(),
-                speedreader_service, settings_map, tab_helper->GetWeakPtr(),
-                request.url, check_disabled_sites,
-                base::ThreadTaskRunnerHandle::Get());
-        if (throttle)
-          result.push_back(std::move(throttle));
-      }
+    if (tab_helper && isMainFrame) {
+      const bool check_disabled_sites =
+          tab_helper->PageDistillState() ==
+          speedreader::DistillState::kSpeedreaderModePending;
+      auto* speedreader_service =
+          speedreader::SpeedreaderServiceFactory::GetForProfile(
+              Profile::FromBrowserContext(browser_context));
+      std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
+          speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
+              g_brave_browser_process->speedreader_rewriter_service(),
+              speedreader_service, settings_map, tab_helper->GetWeakPtr(),
+              request.url, check_disabled_sites,
+              base::ThreadTaskRunnerHandle::Get());
+      if (throttle)
+        result.push_back(std::move(throttle));
     }
 #endif  // ENABLE_SPEEDREADER
 
