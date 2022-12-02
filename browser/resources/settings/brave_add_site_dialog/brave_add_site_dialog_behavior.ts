@@ -10,13 +10,18 @@ import {AddSiteDialogElement} from '../site_settings/add_site_dialog.js'
 
 const BaseElement = WebUIListenerMixin(AddSiteDialogElement)
 export class BraveAddSiteDialogElement extends BaseElement {
+  static override get properties() {
+    const baseProperties = super.properties
+    const extended = Object.assign({}, baseProperties, {
+      sitePlaceholder: String
+    })
+    return extended
+  }
+  sitePlaceholder: String
   override ready() {
+    super.ready()
     const is_brave_shields = this.category === 'braveShields'
     const resource_id = is_brave_shields ? 'braveShieldsExampleTemplate' : 'addSiteExceptionPlaceholder'
-    if (!this.$.site) {
-      console.error('[Brave Settings Overrides] site input field not found')
-      return
-    }
-    this.$.site.placeholder = loadTimeData.getString(resource_id)
+    this.sitePlaceholder = loadTimeData.getString(resource_id)
   }
 }
