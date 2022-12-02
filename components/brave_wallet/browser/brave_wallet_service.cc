@@ -1400,7 +1400,7 @@ void BraveWalletService::DiscoverAssetsOnAllSupportedChains() {
     account_addresses.push_back(account_info->address);
   }
 
-  asset_discovery_manager_.DiscoverAssetsOnAllSupportedChainsRefresh(
+  asset_discovery_manager_->DiscoverAssetsOnAllSupportedChainsRefresh(
       account_addresses);
 }
 
