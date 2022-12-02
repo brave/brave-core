@@ -69,23 +69,25 @@ public extension WKWebView {
       javascript = js.javascript
     }
 
-    if #available(iOS 14.3, *) {
-      // swiftlint:disable:next safe_javascript
-      evaluateJavaScript(javascript, in: frame, in: contentWorld) { result in
-        switch result {
-        case .success(let value):
-          completion?(value, nil)
-        case .failure(let error):
-          completion?(nil, error)
+    DispatchQueue.main.async {
+      if #available(iOS 14.3, *) {
+        // swiftlint:disable:next safe_javascript
+        self.evaluateJavaScript(javascript, in: frame, in: contentWorld) { result in
+          switch result {
+          case .success(let value):
+            completion?(value, nil)
+          case .failure(let error):
+            completion?(nil, error)
+          }
         }
-      }
-    } else {
-      // swiftlint:disable:next safe_javascript
-      evaluateJavaScript(javascript) { result, error in
-        if let error = error {
-          completion?(nil, error)
-        } else {
-          completion?(result, error)
+      } else {
+        // swiftlint:disable:next safe_javascript
+        self.evaluateJavaScript(javascript) { result, error in
+          if let error = error {
+            completion?(nil, error)
+          } else {
+            completion?(result, error)
+          }
         }
       }
     }
