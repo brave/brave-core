@@ -27,6 +27,7 @@
 #include "brave/components/ipfs/ipfs_dns_resolver.h"
 #include "brave/components/ipfs/ipfs_p3a.h"
 #include "brave/components/ipfs/node_info.h"
+#include "brave/components/ipfs/pin/ipfs_pin_rpc_types.h"
 #include "brave/components/ipfs/repo_stats.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -81,6 +82,13 @@ class IpfsService : public KeyedService,
       base::OnceCallback<void(bool, const ipfs::NodeInfo&)>;
   using GarbageCollectionCallback =
       base::OnceCallback<void(bool, const std::string&)>;
+  // Local pins
+  using AddPinCallback =
+      base::OnceCallback<void(bool, absl::optional<AddPinResult>)>;
+  using RemovePinCallback =
+      base::OnceCallback<void(bool, absl::optional<RemovePinResult>)>;
+  using GetPinsCallback =
+      base::OnceCallback<void(bool, absl::optional<GetPinsResult>)>;
 
   using BoolCallback = base::OnceCallback<void(bool)>;
   using GetConfigCallback = base::OnceCallback<void(bool, const std::string&)>;
@@ -112,6 +120,17 @@ class IpfsService : public KeyedService,
   virtual void PreWarmShareableLink(const GURL& url);
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+  // Local pins
+  virtual void AddPin(const std::vector<std::string>& cids,
+                      bool recursive,
+                      AddPinCallback callback);
+  virtual void RemovePin(const std::vector<std::string>& cid,
+                         RemovePinCallback callback);
+  virtual void GetPins(const absl::optional<std::vector<std::string>>& cid,
+                       const std::string& type,
+                       bool quiet,
+                       GetPinsCallback callback);
+
   virtual void ImportFileToIpfs(const base::FilePath& path,
                                 const std::string& key,
                                 ipfs::ImportCompletedCallback callback);
@@ -131,12 +150,12 @@ class IpfsService : public KeyedService,
                  const base::FilePath& target_path,
                  BoolCallback callback);
 #endif
-  void GetConnectedPeers(GetConnectedPeersCallback callback,
-                         int retries = kPeersDefaultRetries);
+  virtual void GetConnectedPeers(GetConnectedPeersCallback callback,
+                                 int retries = kPeersDefaultRetries);
   void GetAddressesConfig(GetAddressesConfigCallback callback);
   virtual void LaunchDaemon(BoolCallback callback);
   void ShutdownDaemon(BoolCallback callback);
-  void StartDaemonAndLaunch(base::OnceCallback<void(void)> callback);
+  virtual void StartDaemonAndLaunch(base::OnceCallback<void(void)> callback);
   void GetConfig(GetConfigCallback);
   void GetRepoStats(GetRepoStatsCallback callback);
   void GetNodeInfo(GetNodeInfoCallback callback);
@@ -158,6 +177,7 @@ class IpfsService : public KeyedService,
   IpnsKeysManager* GetIpnsKeysManager() { return ipns_keys_manager_.get(); }
 #endif
  protected:
+  IpfsService();
   void OnConfigLoaded(GetConfigCallback, const std::pair<bool, std::string>&);
 
  private:
@@ -189,6 +209,18 @@ class IpfsService : public KeyedService,
                           BoolCallback callback);
 #endif
   base::TimeDelta CalculatePeersRetryTime();
+
+  // Local pins
+  void OnGetPinsResult(APIRequestList::iterator iter,
+                       GetPinsCallback callback,
+                       api_request_helper::APIRequestResult response);
+  void OnPinAddResult(APIRequestList::iterator iter,
+                      AddPinCallback callback,
+                      api_request_helper::APIRequestResult response);
+  void OnPinRemoveResult(APIRequestList::iterator iter,
+                         RemovePinCallback callback,
+                         api_request_helper::APIRequestResult response);
+
   void OnGatewayValidationComplete(SimpleURLLoaderList::iterator iter,
                                    BoolCallback callback,
                                    const GURL& initial_url,
@@ -212,6 +244,7 @@ class IpfsService : public KeyedService,
                            api_request_helper::APIRequestResult responsey);
   void OnPreWarmComplete(APIRequestList::iterator iter,
                          api_request_helper::APIRequestResult response);
+
   std::string GetStorageSize();
   void OnDnsConfigChanged(absl::optional<std::string> dns_server);
 
