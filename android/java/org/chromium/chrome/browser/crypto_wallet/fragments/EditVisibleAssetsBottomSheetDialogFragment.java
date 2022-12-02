@@ -625,6 +625,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                             showAddAssetDialog();
                             walletListItemModel.setIsUserSelected(
                                     false); // The added token is different from the listed one
+                            itemCheckboxConsistency(walletListItemModel, assetCheck, isChecked);
                         } else {
                             BraveWalletService braveWalletService = getBraveWalletService();
                             // TODO: all the asserts need to be removed. Shall do proper
@@ -636,20 +637,16 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                                         if (success) {
                                             walletListItemModel.setIsUserSelected(true);
                                         }
-                                        if (isChecked != walletListItemModel.getIsUserSelected()) {
-                                            assetCheck.setChecked(
-                                                    walletListItemModel.getIsUserSelected());
-                                        }
+                                        itemCheckboxConsistency(
+                                                walletListItemModel, assetCheck, isChecked);
                                     });
                                 } else {
                                     braveWalletService.removeUserAsset(thisToken, (success) -> {
                                         if (success) {
                                             walletListItemModel.setIsUserSelected(false);
                                         }
-                                        if (isChecked != walletListItemModel.getIsUserSelected()) {
-                                            assetCheck.setChecked(
-                                                    walletListItemModel.getIsUserSelected());
-                                        }
+                                        itemCheckboxConsistency(
+                                                walletListItemModel, assetCheck, isChecked);
                                     });
                                 }
                             } else {
@@ -658,16 +655,21 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                                             if (success) {
                                                 walletListItemModel.setIsUserSelected(isChecked);
                                             }
-                                            if (isChecked
-                                                    != walletListItemModel.getIsUserSelected()) {
-                                                assetCheck.setChecked(
-                                                        walletListItemModel.getIsUserSelected());
-                                            }
+                                            itemCheckboxConsistency(
+                                                    walletListItemModel, assetCheck, isChecked);
                                         });
                             }
                             mIsAssetsListChanged = true;
                         }
                     });
         });
-    };
+    }
+
+    private void itemCheckboxConsistency(
+            WalletListItemModel walletListItemModel, CheckBox assetCheck, boolean isChecked) {
+        if (isChecked != walletListItemModel.getIsUserSelected()) {
+            assetCheck.setTag("noOnClickListener");
+            assetCheck.setChecked(walletListItemModel.getIsUserSelected());
+        }
+    }
 }
