@@ -31,7 +31,6 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/solana_requests.h"
 #include "brave/components/brave_wallet/browser/solana_response_parser.h"
@@ -2026,7 +2025,7 @@ void JsonRpcService::GetEthTokenUri(const std::string& chain_id,
   }
 
   auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnGetTokenUri2,
+      base::BindOnce(&JsonRpcService::OnGetEthTokenUri,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   RequestInternal(eth::eth_call("", contract_address, "", "", "",
@@ -2034,8 +2033,8 @@ void JsonRpcService::GetEthTokenUri(const std::string& chain_id,
                   true, network_url, std::move(internal_callback));
 }
 
-void JsonRpcService::OnGetTokenUri2(GetEthTokenUriCallback callback,
-                                    APIRequestResult api_request_result) {
+void JsonRpcService::OnGetEthTokenUri(GetEthTokenUriCallback callback,
+                                      APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
         GURL(), mojom::ProviderError::kInternalError,

@@ -14,7 +14,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
-// #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/ipfs/ipfs_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -22,9 +22,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
-#include "brave/components/ipfs/ipfs_service.h"
-// #include "brave/components/ipfs/ipfs_utils.h"
-// #include "brave/components/ipfs/pref_names.h"
 namespace brave_wallet {
 
 namespace {
@@ -45,14 +42,8 @@ class NftMetadataFetcherUnitTest : public testing::Test {
     ipfs::IpfsService::RegisterProfilePrefs(prefs_.registry());
     json_rpc_service_ = std::make_unique<brave_wallet::JsonRpcService>(
         shared_url_loader_factory_, &prefs_);
-    // NftMetadataFetcher nft_metadata_fetcher_(shared_url_loader_factory_,
-    // json_rpc_service_.get(), GetPrefs());
     nft_metadata_fetcher_ = std::make_unique<NftMetadataFetcher>(
         shared_url_loader_factory_, json_rpc_service_.get(), GetPrefs());
-
-    // nft_metadata_fetcher_ =
-    // std::make_unique<NftMetadataFetcher>(json_rpc_service_);
-    // nft_metadata_fetcher_ = NftMetadataFetcher(json_rpc_service_.get());
   }
 
   PrefService* GetPrefs() { return &prefs_; }

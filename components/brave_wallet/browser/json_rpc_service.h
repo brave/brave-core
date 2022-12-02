@@ -527,8 +527,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                                      const std::string& owner_address,
                                      mojom::ProviderError error,
                                      const std::string& error_message);
-  void OnGetTokenUri2(GetEthTokenUriCallback callback,
-                      const APIRequestResult api_request_result);
+  void OnGetEthTokenUri(GetEthTokenUriCallback callback,
+                        const APIRequestResult api_request_result);
 
   void OnGetSupportsInterface(GetSupportsInterfaceCallback callback,
                               APIRequestResult api_request_result);

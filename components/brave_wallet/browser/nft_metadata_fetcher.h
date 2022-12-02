@@ -35,49 +35,48 @@ class NftMetadataFetcher {
 
   using APIRequestHelper = api_request_helper::APIRequestHelper;
   using APIRequestResult = api_request_helper::APIRequestResult;
-  using GetTokenMetadataIntermediateCallback =
-      base::OnceCallback<void(const std::string& response,
-                              int error,
-                              const std::string& error_message)>;
   using GetEthTokenMetadataCallback =
       base::OnceCallback<void(const std::string& result,
                               mojom::ProviderError error,
-                              const std::string& error_message)>;
-  using GetSolTokenMetadataCallback =
-      base::OnceCallback<void(const std::string& result,
-                              mojom::SolanaProviderError error,
                               const std::string& error_message)>;
   void GetEthTokenMetadata(const std::string& contract_address,
                            const std::string& token_id,
                            const std::string& chain_id,
                            const std::string& interface_id,
                            GetEthTokenMetadataCallback callback);
+  using GetSolTokenMetadataCallback =
+      base::OnceCallback<void(const std::string& result,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
   void GetSolTokenMetadata(const std::string& nft_account_address,
                            GetSolTokenMetadataCallback callback);
 
  private:
-  void OnGetSupportsInterfaceTokenMetadata(const std::string& contract_address,
-                                           const std::string& interface_id,
-                                           const std::string& token_id,
-                                           const std::string& chain_id,
-                                           // const GURL& network_url,
-                                           GetEthTokenMetadataCallback callback,
-                                           bool is_supported,
-                                           mojom::ProviderError error,
-                                           const std::string& error_message);
+  void OnGetSupportsInterface(const std::string& contract_address,
+                              const std::string& interface_id,
+                              const std::string& token_id,
+                              const std::string& chain_id,
+                              // const GURL& network_url,
+                              GetEthTokenMetadataCallback callback,
+                              bool is_supported,
+                              mojom::ProviderError error,
+                              const std::string& error_message);
 
-  void OnGetTokenUriTokenMetadata(GetEthTokenMetadataCallback callback,
-                                  const GURL& uri,
-                                  mojom::ProviderError error,
-                                  const std::string& error_message);
-
+  void OnGetEthTokenUri(GetEthTokenMetadataCallback callback,
+                        const GURL& uri,
+                        mojom::ProviderError error,
+                        const std::string& error_message);
+  // GetTokenMetadataIntermediateCallbacks convert the int error to a
+  // mojom::ProviderError or mojom::SolanaProviderError
+  using GetTokenMetadataIntermediateCallback =
+      base::OnceCallback<void(const std::string& response,
+                              int error,
+                              const std::string& error_message)>;
   void FetchMetadata(GURL url, GetTokenMetadataIntermediateCallback callback);
   void OnSanitizeTokenMetadata(GetTokenMetadataIntermediateCallback callback,
                                data_decoder::JsonSanitizer::Result result);
-
   void OnGetTokenMetadataPayload(GetTokenMetadataIntermediateCallback callback,
                                  APIRequestResult api_request_result);
-
   void OnGetSolanaAccountInfoTokenMetadata(
       GetSolTokenMetadataCallback callback,
       absl::optional<SolanaAccountInfo> account_info,
@@ -87,7 +86,6 @@ class NftMetadataFetcher {
                                    const std::string& response,
                                    int error,
                                    const std::string& error_message);
-
   void CompleteGetSolTokenMetadata(GetSolTokenMetadataCallback callback,
                                    const std::string& response,
                                    int error,

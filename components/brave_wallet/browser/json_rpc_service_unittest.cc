@@ -964,11 +964,8 @@ class JsonRpcServiceUnitTest : public testing::Test {
                 !expected_cache_header.empty());
             EXPECT_EQ(expected_cache_header, header_value);
           }
-          if (!expected_method.empty()) {
-            EXPECT_TRUE(
-                request.headers.GetHeader("x-brave-key", &header_value));
-            EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
-          }
+          EXPECT_TRUE(request.headers.GetHeader("x-brave-key", &header_value));
+          EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), content);
         }));
@@ -1328,7 +1325,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
       mojom::SolanaProviderError expected_error,
       const std::string& expected_error_message) {
     base::RunLoop run_loop;
-    VLOG(0) << "TestGetSolanaAccountInfo 0";
     json_rpc_service_->GetSolanaAccountInfo(
         "vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg",
         base::BindLambdaForTesting(
@@ -5892,8 +5888,17 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTokenUri) {
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
-  // Valid inputs, valid provider JSON, invalid URI
-  // TODO(nvonpentz)
+  // Valid inputs, valid RPC response JSON, valid RLP encoding, invalid URI
+  SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+                 "eth_call", "", R"({
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000b696e76616c69642075726c000000000000000000000000000000000000000000"
+  })");
+  TestGetEthTokenUri("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                     mojom::kMainnetChainId, kERC721MetadataInterfaceId, GURL(),
+                     mojom::ProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
   // All valid
   SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),

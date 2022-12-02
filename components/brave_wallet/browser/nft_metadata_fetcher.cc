@@ -86,7 +86,7 @@ void NftMetadataFetcher::GetEthTokenMetadata(
   }
 
   auto internal_callback =
-      base::BindOnce(&NftMetadataFetcher::OnGetSupportsInterfaceTokenMetadata,
+      base::BindOnce(&NftMetadataFetcher::OnGetSupportsInterface,
                      weak_ptr_factory_.GetWeakPtr(), contract_address,
                      interface_id, token_id, chain_id, std::move(callback));
 
@@ -94,7 +94,7 @@ void NftMetadataFetcher::GetEthTokenMetadata(
       contract_address, interface_id, chain_id, std::move(internal_callback));
 }
 
-void NftMetadataFetcher::OnGetSupportsInterfaceTokenMetadata(
+void NftMetadataFetcher::OnGetSupportsInterface(
     const std::string& contract_address,
     const std::string& interface_id,
     const std::string& token_id,
@@ -116,18 +116,17 @@ void NftMetadataFetcher::OnGetSupportsInterfaceTokenMetadata(
   }
 
   auto internal_callback =
-      base::BindOnce(&NftMetadataFetcher::OnGetTokenUriTokenMetadata,
+      base::BindOnce(&NftMetadataFetcher::OnGetEthTokenUri,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   json_rpc_service_->GetEthTokenUri(chain_id, contract_address, token_id,
                                     interface_id, std::move(internal_callback));
 }
 
-void NftMetadataFetcher::OnGetTokenUriTokenMetadata(
-    GetEthTokenMetadataCallback callback,
-    const GURL& uri,
-    mojom::ProviderError error,
-    const std::string& error_message) {
+void NftMetadataFetcher::OnGetEthTokenUri(GetEthTokenMetadataCallback callback,
+                                          const GURL& uri,
+                                          mojom::ProviderError error,
+                                          const std::string& error_message) {
   if (error != mojom::ProviderError::kSuccess) {
     std::move(callback).Run("", error, error_message);
     return;
@@ -365,7 +364,7 @@ absl::optional<GURL> NftMetadataFetcher::DecodeMetadataUri(
     return absl::nullopt;
   }
 
-  // Prevent out of bounds access in case length value incorrent 
+  // Prevent out of bounds access in case length value incorrent
   if (data.size() <= offset + *length) {
     return absl::nullopt;
   }
