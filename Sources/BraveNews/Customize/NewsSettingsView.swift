@@ -27,8 +27,10 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
     }
   }
   
-  public override func viewDidLoad() {
-    super.viewDidLoad()
+  private var isControllerSetUp: Bool = false
+  private func setUpController() {
+    if isControllerSetUp { return }
+    defer { isControllerSetUp = true }
     
     if navigationController?.viewControllers.first === self {
       navigationItem.rightBarButtonItem = .init(
@@ -71,6 +73,11 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
       .store(in: &cancellables)
   }
   
+  public override func viewDidLoad() {
+    super.viewDidLoad()
+    setUpController()
+  }
+  
   private lazy var searchController = UISearchController(searchResultsController: nil).then {
     $0.automaticallyShowsCancelButton = true
     $0.hidesNavigationBarDuringPresentation = true
@@ -91,6 +98,10 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
   
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    if #unavailable(iOS 14.5) {
+      // On iOS 14.4 and below `viewDidLoad` in a `UIHostingController` subclass is not called
+      setUpController()
+    }
     navigationController?.setToolbarHidden(!Preferences.BraveNews.userOptedIn.value, animated: animated)
   }
   
@@ -116,6 +127,7 @@ public struct NewsSettingsView: View {
   @ObservedObject private var userOptedIn = Preferences.BraveNews.userOptedIn
   
   fileprivate var tappedOptInLearnMore: (() -> Void)?
+  
   @State private var searchResults: SearchResults?
   @State private var isShowingImportOPML: Bool = false
   
@@ -201,6 +213,7 @@ public struct NewsSettingsView: View {
           .resetListHeaderStyle()
       }
     }
+    .listStyle(.insetGrouped)
     .animation(.default, value: searchDelegate.isEditing)
     .listBackgroundColor(Color(.braveGroupedBackground))
     .navigationTitle(Strings.BraveNews.braveNews)
@@ -222,22 +235,30 @@ public struct NewsSettingsView: View {
         )
       }
     })
-    .toolbar {
-      ToolbarItemGroup(placement: .bottomBar) {
-        if userOptedIn.value {
-          Spacer()
-          Menu {
-            Button {
-              isShowingImportOPML = true
-            } label: {
-              Label(Strings.BraveNews.importOPML, systemImage: "square.and.arrow.down")
+    .background(
+      Group {
+        if searchDelegate.query.isEmpty {
+          Color.clear
+            .toolbar {
+              ToolbarItemGroup(placement: .bottomBar) {
+                if userOptedIn.value {
+                  Spacer()
+                  Menu {
+                    Button {
+                      isShowingImportOPML = true
+                    } label: {
+                      Label(Strings.BraveNews.importOPML, systemImage: "square.and.arrow.down")
+                    }
+                  } label: {
+                    Image(systemName: "ellipsis")
+                      .frame(height: 44) // Menu label's don't have proper tap areas in toolbar
+                  }
+                }
+              }
             }
-          } label: {
-            Image(systemName: "ellipsis")
-          }
         }
       }
-    }
+    )
     .opmlImporter(isPresented: $isShowingImportOPML, dataSource: dataSource)
     .overlay(optInView)
   }
@@ -329,9 +350,13 @@ private class SearchDelegate: NSObject, UISearchBarDelegate, ObservableObject {
   }
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     query = searchText
+    // Not sure why this is required on iOS 14 tbh
+    objectWillChange.send()
   }
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     query = ""
+    // Not sure why this is required on iOS 14 tbh
+    objectWillChange.send()
   }
 }
 
