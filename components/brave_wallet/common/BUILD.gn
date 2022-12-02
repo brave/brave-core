@@ -3,8 +3,8 @@ import("//brave/components/brave_wallet/common/config.gni")
 import("//build/buildflag_header.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//testing/test.gni")
-import("//tools/json_schema_compiler/json_schema_api.gni")
 import("//tools/grit/preprocess_if_expr.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
 
 preprocess_folder = "preprocessed"
 preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
@@ -108,9 +108,7 @@ generated_types("generated_json_rpc_requests") {
   sources = [ "json_rpc_requests.idl" ]
   root_namespace = "brave_wallet::%(namespace)s"
   deps = [ "//base" ]
-  visibility = [
-    ":common",
-  ]
+  visibility = [ ":common" ]
 }
 
 preprocess_if_expr("preprocess_mojo") {

@@ -375,6 +375,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_CONFIRMED" desc="Status label for confirmed transaction">Confirmed</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_ERROR" desc="Status label for error transaction">Error</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_DROPPED" desc="Status label for dropped transaction">Dropped</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_SIGNED" desc="Status label for signed transaction">Signed</message>
   <message name="IDS_BRAVE_WALLET_RECENT_TRANSACTIONS" desc="Transactions panel title">Recent transactions</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAILS" desc="Transaction details panel title">Transaction details</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_DATE" desc="Transaction Detail Panel Date of transactions">Date</message>
@@ -510,6 +511,8 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNT_FILTER_ALL_ACCOUNTS" desc="Account Filter Selector All Accounts">All Accounts</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_TITLE" desc="Transaction submitted title">Transaction submitted</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_DESCRIPTION" desc="Transaction submitted description">Transaction has been successfully sent to the network and awaits confirmation.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIGNED_TITLE" desc="Transaction signed title">Transaction signed</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIGNED_DESCRIPTION" desc="Transaction signed description">Transaction has been signed and will be sent to network by dapps and awaits confirmation</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_HEADER_TITLE" desc="Transaction failed header title"><ph name="VALUE">$1<ex>1 ETH</ex></ph> was returned to your wallet</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_TITLE" desc="Transaction failed title">Transaction failed</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_DESCRIPTION" desc="Transaction failed description">Transaction was failed due to a large price movement. Increase slippage tolerance to succeed at a larger price movement.</message>

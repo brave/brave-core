@@ -12,7 +12,7 @@ import { mockTransactionInfo } from '../../../../stories/mock-data/mock-transact
 import WalletPanelStory from '../../../../stories/wrappers/wallet-panel-story-wrapper'
 import { StyledExtensionWrapper } from '../../../../stories/style'
 import { PanelWrapper } from '../../../../panel/style'
-import { TransactionSubmitted } from './submitted'
+import { TransactionSubmittedOrSigned } from './submitted_or_signed'
 
 export const _TransactionSubmitted = () => {
   const onClose = () => alert('Close panel screen')
@@ -21,7 +21,7 @@ export const _TransactionSubmitted = () => {
     <WalletPanelStory>
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
-          <TransactionSubmitted
+          <TransactionSubmittedOrSigned
             onClose={onClose}
             transaction={mockTransactionInfo}
             headerTitle='Swap 0.01 ETH to 32.2583 USDC'
@@ -32,8 +32,8 @@ export const _TransactionSubmitted = () => {
   )
 }
 
-_TransactionSubmitted.story = {
-  name: 'Transaction Submitted'
+_TransactionSubmittedOrSigned.story = {
+  name: 'Transaction Submitted/Signed'
 }
 
-export default _TransactionSubmitted
+export default _TransactionSubmittedOrSigned
