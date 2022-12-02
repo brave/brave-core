@@ -15,6 +15,7 @@
 #include "brave/browser/brave_federated/brave_federated_service_factory.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_auto_pin_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -94,6 +95,7 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
   brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
+  brave_wallet::BraveWalletAutoPinServiceFactory::GetServiceForContext(profile);
 #if BUILDFLAG(ENABLE_IPFS)
   ipfs::IpfsServiceFactory::GetForContext(profile);
 #endif
