@@ -11,3 +11,20 @@ export const networkEntityAdapter = createEntityAdapter<BraveWallet.NetworkInfo>
 })
 export const networkEntityInitalState = networkEntityAdapter.getInitialState()
 export type NetworkEntityState = typeof networkEntityInitalState
+
+//
+// Selectors (From Query Results)
+//
+export const selectNetworksRegistryFromQueryResult = (result: {
+  data?: NetworkEntityState
+}) => {
+  return result.data ?? networkEntityInitalState
+}
+
+export const {
+  selectAll: selectAllNetworksFromQueryResult,
+  selectById: selectNetworkByIdFromQueryResult,
+  selectEntities: selectNetworkEntitiesFromQueryResult,
+  selectIds: selectNetworkIdsFromQueryResult,
+  selectTotal: selectTotalNetworksFromQueryResult
+} = networkEntityAdapter.getSelectors(selectNetworksRegistryFromQueryResult)
