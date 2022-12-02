@@ -41,7 +41,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:contentDescription="@null"
-            app:srcCompat="@drawable/ic_more_horiz"/>
+            app:srcCompat="@drawable/ic_visibility_off"/>
 
     </LinearLayout>
 

@@ -7,22 +7,40 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="show_background_images"
-        android:title="@string/show_background_images"
-        android:summaryOn="@string/text_on"
-        android:summaryOff="@string/text_off" />
+    <PreferenceCategory
+        android:key="background_images"
+        android:title="@string/background_images">
 
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="show_sponsored_images"
-        android:title="@string/show_sponsored_images"
-        android:summaryOn="@string/text_on"
-        android:summaryOff="@string/text_off" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="show_background_images"
+            android:title="@string/show_background_images"
+            android:summaryOn="@string/text_on"
+            android:summaryOff="@string/text_off" />
 
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="show_top_sites"
-        android:title="@string/show_top_sites"
-        android:summaryOn="@string/text_on"
-        android:summaryOff="@string/text_off" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="show_sponsored_images"
+            android:title="@string/show_sponsored_images"
+            android:summaryOn="@string/text_on"
+            android:summaryOff="@string/text_off" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="widgets"
+        android:title="@string/widgets">
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="show_top_sites"
+            android:title="@string/show_top_sites"
+            android:summaryOn="@string/text_on"
+            android:summaryOff="@string/text_off" />
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="show_brave_stats"
+            android:title="@string/show_brave_stats"
+            android:summaryOn="@string/text_on"
+            android:summaryOff="@string/text_off" />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
