@@ -19,7 +19,7 @@ typedef absl::optional<base::RepeatingCallback<
     void(float*, unsigned char*, size_t, unsigned, unsigned, unsigned)>>
     OptionalFarbleByteTimeDomainDataCallback;
 typedef absl::optional<base::RepeatingCallback<
-void(const float*, unsigned char*, size_t, const double, const double)>>
+    void(const float*, unsigned char*, size_t, const double, const double)>>
     OptionalFarbleConvertToByteDataCallback;
 typedef absl::optional<
     base::RepeatingCallback<void(const float*, float*, size_t)>>
