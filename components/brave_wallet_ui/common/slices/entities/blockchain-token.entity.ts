@@ -22,10 +22,16 @@ export const blockchainTokenEntityAdaptor: BlockchainTokenEntityAdaptor = create
 })
 export type BlockchainTokenEntityAdaptorState = ReturnType<BlockchainTokenEntityAdaptor['getInitialState']> & {
   idsByChainId: Record<EntityId, EntityId[]>
+  tokenIdsByChainId: Record<string, string[]>
+  visibleTokenIds: string[]
+  visibleTokenIdsByChainId: Record<string, string[]>
 }
 export const blockchainTokenEntityAdaptorInitialState: BlockchainTokenEntityAdaptorState = {
   ...blockchainTokenEntityAdaptor.getInitialState(),
-  idsByChainId: {}
+  idsByChainId: {},
+  tokenIdsByChainId: {},
+  visibleTokenIds: [],
+  visibleTokenIdsByChainId: {}
 }
 
 // Tokens Registry Selectors From Root

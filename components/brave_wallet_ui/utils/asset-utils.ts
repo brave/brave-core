@@ -3,7 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+// Types
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+
+// utils
+import Amount from './amount'
 import {
   getRampNetworkPrefix,
   getWyreNetworkPrefix,
@@ -191,9 +195,7 @@ export type GetBlockchainTokenIdArg = Pick<
   | 'isErc721'
   | 'symbol'
   | 'tokenId'
-> & {
-  coingeckoId?: string | undefined
-}
+>
 
 /**
  * @param asset The token to get an id for
@@ -227,4 +229,22 @@ export const findTokenBySymbol = (
   return tokensList.find((token) =>
     token.symbol.toLowerCase() === tokenSymbol.toLowerCase()
   )
+}
+
+export const isNativeAsset = (
+  token: Pick<BraveWallet.BlockchainToken, 'contractAddress'>
+) => token.contractAddress === ''
+
+export const formatTokenBalance = (
+  tokenBalanceString: string | undefined,
+  selectedAsset:
+    | Pick<BraveWallet.BlockchainToken, 'decimals' | 'symbol'>
+    | undefined,
+  decimalPlaces?: number
+): string => {
+  return tokenBalanceString
+    ? new Amount(tokenBalanceString ?? '')
+        .divideByDecimals(selectedAsset?.decimals ?? 18)
+        .formatAsAsset(decimalPlaces ?? 6, selectedAsset?.symbol ?? '')
+    : ''
 }

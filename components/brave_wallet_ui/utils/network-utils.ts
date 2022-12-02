@@ -73,7 +73,9 @@ export const getNetworkFromTXDataUnion = <
   return networks.find((network) => network.coin === coin) ?? selectedNetwork
 }
 
-export function getFilecoinKeyringIdFromNetwork (network: BraveWallet.NetworkInfo) {
+export function getFilecoinKeyringIdFromNetwork (
+  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
+) {
   if (network.coin !== BraveWallet.CoinType.FIL) {
     return undefined
   }
