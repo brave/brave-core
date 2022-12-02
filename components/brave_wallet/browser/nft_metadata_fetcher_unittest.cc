@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/base64.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -701,6 +702,84 @@ TEST_F(NftMetadataFetcherUnitTest, GetSolTokenMetadata) {
   TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
                           mojom::SolanaProviderError::kParsingError,
                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+}
+
+TEST_F(NftMetadataFetcherUnitTest, DecodeMetadataUri) {
+  // Valid borsh encoding and URI yields expected URI
+  std::vector<uint8_t> uri_borsh_encoded = {
+      4, 101, 13, 230, 18, 95, 219, 52, 174, 123, 116, 180, 35, 247, 194, 171,
+      94, 148, 68, 75, 121, 55, 19, 250, 153, 7, 90, 171, 135, 29, 24, 251, 55,
+      67, 195, 198, 253, 30, 138, 21, 68, 160, 113, 238, 252, 55, 9, 61, 22,
+      187, 228, 119, 214, 204, 110, 244, 200, 40, 36, 82, 15, 47, 60, 157, 148,
+      32, 0, 0, 0, 83, 80, 69, 67, 73, 65, 76, 32, 83, 65, 85, 67, 69, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0,  // the next four bytes encode length of the URI string
+                         // (200)
+      200, 0, 0, 0, 104, 116, 116, 112, 115, 58, 47, 47, 98, 97, 102, 107, 114,
+      101, 105, 102, 52, 119, 120, 53, 52, 119, 106, 114, 55, 112, 103, 102,
+      117, 103, 51, 119, 108, 97, 116, 114, 51, 110, 102, 110, 116, 115, 102,
+      119, 110, 103, 118, 54, 101, 117, 115, 101, 98, 98, 113, 117, 101, 122,
+      114, 120, 101, 110, 106, 54, 99, 107, 52, 46, 105, 112, 102, 115, 46, 100,
+      119, 101, 98, 46, 108, 105, 110, 107, 63, 101, 120, 116, 61, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 232, 3, 0, 0, 1, 1, 255, 1, 0, 1, 1, 162, 43,
+      239, 108, 12, 203, 135, 105, 3, 217, 196, 174, 232, 132, 8, 168, 100, 3,
+      25, 234, 33, 253, 65, 3, 139, 60, 169, 234, 98, 211, 214, 213, 0};
+  auto uri = nft_metadata_fetcher_->DecodeMetadataUri(uri_borsh_encoded);
+  ASSERT_TRUE(uri);
+  EXPECT_EQ(uri.value().spec(),
+            "https://"
+            "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
+            "dweb.link/?ext=");
+
+  // Invalid borsh encoding due to incorrect claimed length of metadata URI
+  // string (too large) fails to decode (out of bounds check)
+  uri_borsh_encoded = {
+      4, 101, 13, 230, 18, 95, 219, 52, 174, 123, 116, 180, 35, 247, 194, 171,
+      94, 148, 68, 75, 121, 55, 19, 250, 153, 7, 90, 171, 135, 29, 24, 251, 55,
+      67, 195, 198, 253, 30, 138, 21, 68, 160, 113, 238, 252, 55, 9, 61, 22,
+      187, 228, 119, 214, 204, 110, 244, 200, 40, 36, 82, 15, 47, 60, 157, 148,
+      32, 0, 0, 0, 83, 80, 69, 67, 73, 65, 76, 32, 83, 65, 85, 67, 69, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0,
+      // next four bytes encode the URI of the string, which have been overrided
+      // to be incorrect (too large)
+      255, 255, 255, 0, 104, 116, 116, 112, 115, 58, 47, 47, 98, 97, 102, 107,
+      114, 101, 105, 102, 52, 119, 120, 53, 52, 119, 106, 114, 55, 112, 103,
+      102, 117, 103, 51, 119, 108, 97, 116, 114, 51, 110, 102, 110, 116, 115,
+      102, 119, 110, 103, 118, 54, 101, 117, 115, 101, 98, 98, 113, 117, 101,
+      122, 114, 120, 101, 110, 106, 54, 99, 107, 52, 46, 105, 112, 102, 115, 46,
+      100, 119, 101, 98, 46, 108, 105, 110, 107, 63, 101, 120, 116, 61, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 232, 3, 0, 0, 1, 1, 255, 1, 0, 1, 1, 162,
+      43, 239, 108, 12, 203, 135, 105, 3, 217, 196, 174, 232, 132, 8, 168, 100,
+      3, 25, 234, 33, 253, 65, 3, 139, 60, 169, 234, 98, 211, 214, 213, 0};
+  uri = nft_metadata_fetcher_->DecodeMetadataUri(uri_borsh_encoded);
+  ASSERT_FALSE(uri);
+
+  // Valid borsh encoding, but invalid URI is parsed but yields empty URI
+  auto uri_borsh_encoded2 = base::Base64Decode(
+      "BGUN5hJf2zSue3S0I/fCq16UREt5NxP6mQdaq4cdGPs3Q8PG/"
+      "R6KFUSgce78Nwk9Frvkd9bMbvTIKCRSDy88nZQgAAAAU1BFQ0lBTCBTQVVDRQAAAAAAAAAAA"
+      "AAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAAsAAABpbnZhbGlkIHVybOgDAQIAAABlDeYSX9s0r"
+      "nt0tCP3wqtelERLeTcT+pkHWquHHRj7NwFiDUmu+U8sXOOZQXL36xmknL+Zzd/"
+      "z3uw2G0ERMo8Eth4BAgABAf8BAAEBoivvbAzLh2kD2cSu6IQIqGQDGeoh/"
+      "UEDizyp6mLT1tUA");
+  ASSERT_TRUE(uri_borsh_encoded2);
+  uri = nft_metadata_fetcher_->DecodeMetadataUri(*uri_borsh_encoded2);
+  ASSERT_TRUE(uri);
+  EXPECT_EQ(uri.value().spec(), "");
+
+  // Invalid borsh encoding is not parsed
+  uri_borsh_encoded2 = base::Base64Decode("d2hvb3BzIQ==");
+  ASSERT_TRUE(uri_borsh_encoded2);
+  ASSERT_FALSE(nft_metadata_fetcher_->DecodeMetadataUri(*uri_borsh_encoded2));
 }
 
 }  // namespace brave_wallet

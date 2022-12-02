@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -93,6 +94,13 @@ class NftMetadataFetcher {
                                    const std::string& error_message);
 
   friend class NftMetadataFetcherUnitTest;
+  FRIEND_TEST_ALL_PREFIXES(NftMetadataFetcherUnitTest, DecodeMetadataUri);
+
+  static absl::optional<uint32_t> DecodeUint32(
+      const std::vector<uint8_t>& input,
+      size_t& offset);
+  static absl::optional<GURL> DecodeMetadataUri(
+      const std::vector<uint8_t> data);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<APIRequestHelper> api_request_helper_;

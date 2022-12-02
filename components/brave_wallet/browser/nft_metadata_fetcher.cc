@@ -13,7 +13,6 @@
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
-#include "brave/components/brave_wallet/browser/solana_data_decoder_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -307,6 +306,72 @@ void NftMetadataFetcher::CompleteGetSolTokenMetadata(
     const std::string& error_message) {
   std::move(callback).Run(response, mojom::SolanaProviderError(error),
                           error_message);
+}
+
+// static
+absl::optional<uint32_t> NftMetadataFetcher::DecodeUint32(
+    const std::vector<uint8_t>& input,
+    size_t& offset) {
+  if (offset >= input.size() || input.size() - offset < sizeof(uint32_t)) {
+    return absl::nullopt;
+  }
+
+  // Read bytes in little endian order.
+  base::span<const uint8_t> s =
+      base::make_span(input.begin() + offset, sizeof(uint32_t));
+  uint32_t uint32_le = *reinterpret_cast<const uint32_t*>(s.data());
+
+  offset += sizeof(uint32_t);
+
+#if defined(ARCH_CPU_LITTLE_ENDIAN)
+  return uint32_le;
+#else
+  return base::ByteSwap(uint32_le);
+#endif
+}
+
+// static
+// Expects a the bytes of a Borsh encoded Metadata struct (see
+// https://docs.rs/spl-token-metadata/latest/spl_token_metadata/state/struct.Metadata.html)
+// and returns the URI string in of the nested Data struct (see
+// https://docs.rs/spl-token-metadata/latest/spl_token_metadata/state/struct.Data.html)
+// as a GURL.
+absl::optional<GURL> NftMetadataFetcher::DecodeMetadataUri(
+    const std::vector<uint8_t> data) {
+  size_t offset = 0;
+  offset = offset + /* Skip first byte for metadata.key */ 1 +
+           /* Skip next 32 bytes for `metadata.update_authority` */ 32 +
+           /* Skip next 32 bytes for `metadata.mint` */ 32;
+
+  // Skip next field, metdata.data.name, a string
+  // whose length is represented by a leading 32 bit integer
+  auto length = DecodeUint32(data, offset);
+  if (!length) {
+    return absl::nullopt;
+  }
+  offset += static_cast<size_t>(*length);
+
+  // Skip next field, `metdata.data.symbol`, a string
+  // whose length is represented by a leading 32 bit integer
+  length = DecodeUint32(data, offset);
+  if (!length) {
+    return absl::nullopt;
+  }
+  offset += static_cast<size_t>(*length);
+
+  // Parse next field, metadata.data.uri, a string
+  length = DecodeUint32(data, offset);
+  if (!length) {
+    return absl::nullopt;
+  }
+
+  // Prevent out of bounds access in case length value incorrent 
+  if (data.size() <= offset + *length) {
+    return absl::nullopt;
+  }
+  std::string uri =
+      std::string(data.begin() + offset, data.begin() + offset + *length);
+  return GURL(uri);
 }
 
 }  // namespace brave_wallet
