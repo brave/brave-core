@@ -13,7 +13,6 @@
 #include "brave/browser/net/brave_ad_block_csp_network_delegate_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
-#include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 #include "brave/browser/net/brave_reduce_language_network_delegate_helper.h"
 #include "brave/browser/net/brave_service_key_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
@@ -69,9 +68,6 @@ void BraveRequestHandler::SetupCallbacks() {
   before_url_request_callbacks_.push_back(callback);
 
   callback = base::BindRepeating(brave::OnBeforeURLRequest_AdBlockTPPreWork);
-  before_url_request_callbacks_.push_back(callback);
-
-  callback = base::BindRepeating(brave::OnBeforeURLRequest_HttpsePreFileWork);
   before_url_request_callbacks_.push_back(callback);
 
   callback =

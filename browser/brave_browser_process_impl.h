@@ -38,7 +38,6 @@ class LocalDataFilesService;
 
 namespace brave_shields {
 class AdBlockService;
-class HTTPSEverywhereService;
 }  // namespace brave_shields
 
 namespace brave_stats {
@@ -105,7 +104,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   debounce::DebounceComponentInstaller* debounce_component_installer() override;
   brave::URLSanitizerComponentInstaller* URLSanitizerComponentInstaller()
       override;
-  brave_shields::HTTPSEverywhereService* https_everywhere_service() override;
   brave_component_updater::LocalDataFilesService* local_data_files_service()
       override;
 #if BUILDFLAG(ENABLE_TOR)
@@ -168,9 +166,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
       debounce_component_installer_;
   std::unique_ptr<brave::URLSanitizerComponentInstaller>
       url_sanitizer_component_installer_;
-  bool created_https_everywhere_service_ = false;
-  std::unique_ptr<brave_shields::HTTPSEverywhereService>
-      https_everywhere_service_;
   std::unique_ptr<brave_stats::BraveStatsUpdater> brave_stats_updater_;
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   std::unique_ptr<brave::BraveReferralsService> brave_referrals_service_;

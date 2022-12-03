@@ -59,9 +59,6 @@ if (!is_ios) {
       "domain_block_tab_storage.h",
       "filter_list_catalog_entry.cc",
       "filter_list_catalog_entry.h",
-      "https_everywhere_recently_used_cache.h",
-      "https_everywhere_service.cc",
-      "https_everywhere_service.h",
     ]
 
     deps = [

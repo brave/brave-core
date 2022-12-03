@@ -82,12 +82,6 @@ TestingBraveBrowserProcess::https_upgrade_exceptions_service() {
   return nullptr;
 }
 
-brave_shields::HTTPSEverywhereService*
-TestingBraveBrowserProcess::https_everywhere_service() {
-  NOTREACHED();
-  return nullptr;
-}
-
 brave_component_updater::LocalDataFilesService*
 TestingBraveBrowserProcess::local_data_files_service() {
   NOTREACHED();
