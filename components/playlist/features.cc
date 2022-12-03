@@ -9,6 +9,10 @@
 
 namespace playlist::features {
 
+#ifndef NDEBUG
 BASE_FEATURE(kPlaylist, "Playlist", base::FEATURE_DISABLED_BY_DEFAULT);
+#else
+BASE_FEATURE(kPlaylist, "Playlist", base::FEATURE_DISABLED_BY_DEFAULT);
+#endif  // NDEBUG
 
 }  // namespace playlist::features

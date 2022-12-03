@@ -52,6 +52,7 @@ source_set("playlist") {
     "//brave/components/api_request_helper:api_request_helper",
     "//brave/components/brave_component_updater/browser",
     "//components/component_updater",
+    "//components/download/public/common:public",
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/user_prefs",

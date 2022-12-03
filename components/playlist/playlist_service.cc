@@ -613,6 +613,21 @@ void PlaylistService::RemoveObserver(PlaylistServiceObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
+void PlaylistService::OnMediaFileDownloadProgressed(
+    const std::string& id,
+    int64_t total_bytes,
+    int64_t received_bytes,
+    int percent_complete,
+    base::TimeDelta time_remaining) {
+  VLOG(2) << __func__ << " " << total_bytes << " " << received_bytes << " "
+          << percent_complete << " " << time_remaining;
+
+  for (auto& observer : observers_) {
+    observer.OnMediaFileDownloadProgressed(id, total_bytes, received_bytes,
+                                           percent_complete, time_remaining);
+  }
+}
+
 void PlaylistService::OnMediaFileReady(const std::string& id,
                                        const std::string& media_file_path) {
   VLOG(2) << __func__ << ": " << id << " " << media_file_path;

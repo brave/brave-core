@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/json/values_util.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/playlist_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -134,4 +135,17 @@ void PlaylistPageHandler::OnPlaylistStatusChanged(
     const playlist::PlaylistChangeParams& params) {
   // TODO(sko) Send proper events based on |params|
   page_->OnEvent(playlist::mojom::PlaylistEvent::kUpdated);
+}
+
+void PlaylistPageHandler::OnMediaFileDownloadProgressed(
+    const std::string& id,
+    int64_t total_bytes,
+    int64_t received_bytes,
+    int percent_complete,
+    base::TimeDelta time_remaining) {
+#if !BUILDFLAG(IS_ANDROID)
+  page_->OnMediaFileDownloadProgressed(
+      id, total_bytes, received_bytes, percent_complete,
+      base::TimeDeltaToValue(time_remaining).GetString());
+#endif
 }

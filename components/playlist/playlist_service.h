@@ -162,7 +162,11 @@ class PlaylistService : public KeyedService,
   void Shutdown() override;
 
   // PlaylistMediaFileDownloadManager::Delegate overrides:
-  // Called when all audio/video media file are downloaded.
+  void OnMediaFileDownloadProgressed(const std::string& id,
+                                     int64_t total_bytes,
+                                     int64_t received_bytes,
+                                     int percent_complete,
+                                     base::TimeDelta remaining_time) override;
   void OnMediaFileReady(const std::string& id,
                         const std::string& media_file_path) override;
   void OnMediaFileGenerationFailed(const std::string& id) override;

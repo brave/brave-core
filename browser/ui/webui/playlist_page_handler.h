@@ -52,6 +52,11 @@ class PlaylistPageHandler : public playlist::mojom::PageHandler,
   // playlist::PlaylistServiceObserver
   void OnPlaylistStatusChanged(
       const playlist::PlaylistChangeParams& params) override;
+  void OnMediaFileDownloadProgressed(const std::string& id,
+                                     int64_t total_bytes,
+                                     int64_t received_bytes,
+                                     int percent_complete,
+                                     base::TimeDelta time_remaining) override;
 
  private:
   raw_ptr<Profile> profile_ = nullptr;

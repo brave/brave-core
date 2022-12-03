@@ -21,10 +21,13 @@
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/download/public/common/download_task_runner.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/pref_service_mock_factory.h"
 #include "components/sync_preferences/pref_service_syncable.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_host_resolver.h"
 #include "net/dns/mock_host_resolver.h"
@@ -68,6 +71,14 @@ class MockObserver : public PlaylistServiceObserver {
   MOCK_METHOD(void,
               OnPlaylistStatusChanged,
               (const PlaylistChangeParams& params),
+              (override));
+  MOCK_METHOD(void,
+              OnMediaFileDownloadProgressed,
+              (const std::string& id,
+               int64_t total_bytes,
+               int64_t received_bytes,
+               int percent_complete,
+               base::TimeDelta remaining_time),
               (override));
 };
 
@@ -163,6 +174,12 @@ class PlaylistServiceUnitTest : public testing::Test {
     builder.SetPrefService(std::move(pref_service));
     builder.SetPath(temp_dir_->GetPath());
     profile_ = builder.Build();
+
+    DCHECK(!download::GetIOTaskRunner());
+    // Sets the same IO task runner as TestProfile::GetIOTaskRunner() uses.
+    download::SetIOTaskRunner(
+        base::SingleThreadTaskRunner::GetCurrentDefault());
+
     ASSERT_EQ(pref_service_ptr, profile_->GetPrefs());
 
     detector_manager_ =
@@ -185,12 +202,14 @@ class PlaylistServiceUnitTest : public testing::Test {
     profile_.reset();
     temp_dir_.reset();
 
+    download::ClearIOTaskRunnerForTesting();
+
     testing::Test::TearDown();
   }
 
  private:
   content::BrowserTaskEnvironment task_environment_{
-      content::BrowserTaskEnvironment::IO_MAINLOOP};
+      content::BrowserTaskEnvironment::REAL_IO_THREAD};
 
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<playlist::MediaDetectorComponentManager> detector_manager_;
@@ -228,6 +247,10 @@ TEST_F(PlaylistServiceUnitTest, CreatePlaylistItem) {
     expected_arg.change_type = PlaylistChangeParams::Type::kItemCached;
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .WillOnce(on_event);
+    EXPECT_CALL(observer,
+                OnMediaFileDownloadProgressed(
+                    testing::_, testing::_, testing::_, testing::_, testing::_))
+        .Times(testing::AtLeast(1));
 
     service->AddObserver(&observer);
 

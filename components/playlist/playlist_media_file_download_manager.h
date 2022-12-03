@@ -31,6 +31,12 @@ class PlaylistMediaFileDownloadManager
  public:
   class Delegate {
    public:
+    virtual void OnMediaFileDownloadProgressed(
+        const std::string& id,
+        int64_t total_bytes,
+        int64_t received_bytes,
+        int percent_complete,
+        base::TimeDelta time_remaining) = 0;
     virtual void OnMediaFileReady(const std::string& id,
                                   const std::string& media_file_path) = 0;
     virtual void OnMediaFileGenerationFailed(const std::string& id) = 0;
@@ -59,6 +65,11 @@ class PlaylistMediaFileDownloadManager
 
  private:
   // PlaylistMediaFileDownloader::Delegate overrides:
+  void OnMediaFileDownloadProgressed(const std::string& id,
+                                     int64_t total_bytes,
+                                     int64_t received_bytes,
+                                     int percent_complete,
+                                     base::TimeDelta time_remaining) override;
   void OnMediaFileReady(const std::string& id,
                         const std::string& media_file_path) override;
   void OnMediaFileGenerationFailed(const std::string& id) override;
