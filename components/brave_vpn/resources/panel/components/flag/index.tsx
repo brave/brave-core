@@ -7,7 +7,8 @@ interface Props {
 
 export const IconBox = styled.span`
   width: 24px;
-  height: 24px;
+  height: auto;
+  display: flex;
 
   img {
     width: 100%;

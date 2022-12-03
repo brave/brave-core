@@ -47,6 +47,10 @@ export const RegionList = styled.div`
     border: 2px solid var(--box-bg);
     background-color: ${(p) => p.theme.color.divider01};
   }
+
+  label {
+    align-items: center; // vertically aligns radio button with contents next to it
+  }
 `
 
 export const RegionLabelButton = styled.button`
