@@ -12,7 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/speedreader/common/speedreader.mojom.h"
 #include "brave/components/speedreader/common/speedreader_panel.mojom.h"
-#include "brave/components/speedreader/speedreader_result_delegate.h"
+#include "brave/components/speedreader/speedreader_throttle_delegate.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -41,7 +41,7 @@ class SpeedreaderBubbleView;
 class SpeedreaderTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<SpeedreaderTabHelper>,
-      public SpeedreaderResultDelegate,
+      public SpeedreaderThrottleDelegate,
       public mojom::SpeedreaderHost {
  public:
   ~SpeedreaderTabHelper() override;
@@ -158,7 +158,8 @@ class SpeedreaderTabHelper
   void OnVisibilityChanged(content::Visibility visibility) override;
   void WebContentsDestroyed() override;
 
-  // SpeedreaderResultDelegate:
+  // SpeedreaderThrottleDelegate:
+  bool IsPageDistillationAllowed() override;
   void OnDistillComplete() override;
 
   void SetDocumentAttribute(const std::string& attribute,

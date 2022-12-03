@@ -531,6 +531,10 @@ void SpeedreaderTabHelper::WebContentsDestroyed() {
   HideBubble();
 }
 
+bool SpeedreaderTabHelper::IsPageDistillationAllowed() {
+  return speedreader::PageWantsDistill(distill_state_);
+}
+
 void SpeedreaderTabHelper::OnDistillComplete() {
   // Perform a state transition
   if (distill_state_ == DistillState::kSpeedreaderModePending) {

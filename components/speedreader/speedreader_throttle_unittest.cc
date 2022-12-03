@@ -7,9 +7,9 @@
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
+#include "brave/components/speedreader/speedreader_throttle_delegate.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -30,8 +30,12 @@ namespace {
 
 constexpr char kTestProfileName[] = "TestProfile";
 
-class TestSpeedreaderResultDelegate : public SpeedreaderResultDelegate {
- protected:
+class TestSpeedreaderThrottleDelegate
+    : public SpeedreaderThrottleDelegate,
+      public base::SupportsWeakPtr<TestSpeedreaderThrottleDelegate> {
+ public:
+  ~TestSpeedreaderThrottleDelegate() override = default;
+  bool IsPageDistillationAllowed() override { return true; }
   void OnDistillComplete() override {}
 };
 
@@ -74,8 +78,7 @@ class SpeedreaderThrottleTest : public testing::Test {
       bool check_disabled_sites = false) {
     auto runner = content::GetUIThreadTaskRunner({});
     return SpeedReaderThrottle::MaybeCreateThrottleFor(
-        nullptr, nullptr, content_settings(),
-        base::WeakPtr<TestSpeedreaderResultDelegate>(), url,
+        nullptr, nullptr, content_settings(), delegate_.AsWeakPtr(), url,
         check_disabled_sites, runner);
   }
 
@@ -85,7 +88,7 @@ class SpeedreaderThrottleTest : public testing::Test {
   std::unique_ptr<content::WebContents> web_contents_;
   std::unique_ptr<TestingProfileManager> profile_manager_;
   raw_ptr<TestingProfile> profile_ = nullptr;
-  TestSpeedreaderResultDelegate delegate_;
+  TestSpeedreaderThrottleDelegate delegate_;
 };
 
 TEST_F(SpeedreaderThrottleTest, AllowThrottle) {
