@@ -14,7 +14,7 @@ import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
 
 public class PlaylistUtils {
     public static final String TAG = "BravePlaylist";
-    public static final String DEFAULT_PLAYLIST = "default";
+    public static final String DEFAULT_PLAYLIST_ID = "default";
     public static final String PLAYLIST_NAME = "playlist_name";
 
     public static void openPlaylistActivity(Context context, String playlistName) {
