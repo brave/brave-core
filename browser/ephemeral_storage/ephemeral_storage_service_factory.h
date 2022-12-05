@@ -26,6 +26,9 @@ class EphemeralStorageServiceFactory
   EphemeralStorageServiceFactory();
   ~EphemeralStorageServiceFactory() override;
 
+  void RegisterProfilePrefs(
+      user_prefs::PrefRegistrySyncable* registry) override;
+
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(

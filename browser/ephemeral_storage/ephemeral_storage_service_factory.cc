@@ -8,10 +8,12 @@
 #include <memory>
 
 #include "base/feature_list.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "net/base/features.h"
 
 // static
@@ -36,10 +38,18 @@ EphemeralStorageServiceFactory::EphemeralStorageServiceFactory()
 
 EphemeralStorageServiceFactory::~EphemeralStorageServiceFactory() = default;
 
+void EphemeralStorageServiceFactory::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterListPref(
+      ephemeral_storage::kFirstPartyStorageURLsToCleanup);
+}
+
 KeyedService* EphemeralStorageServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   if (!base::FeatureList::IsEnabled(
-          net::features::kBraveFirstPartyEphemeralStorage)) {
+          net::features::kBraveFirstPartyEphemeralStorage) &&
+      !base::FeatureList::IsEnabled(
+          net::features::kBraveForgetFirstPartyStorage)) {
     return nullptr;
   }
   return new ephemeral_storage::EphemeralStorageService(

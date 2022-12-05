@@ -68,6 +68,7 @@ class BraveShieldsDataController
   FingerprintMode GetFingerprintMode();
   CookieBlockMode GetCookieBlockMode();
   bool IsBraveShieldsManaged();
+  bool IsForgetFirstPartyStorageFeatureEnabled() const;
   bool GetHTTPSEverywhereEnabled();
   HttpsUpgradeMode GetHttpsUpgradeMode();
   bool GetNoScriptEnabled();

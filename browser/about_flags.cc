@@ -559,6 +559,14 @@
           FEATURE_VALUE_TYPE(net::features::kBraveFirstPartyEphemeralStorage), \
       },                                                                       \
       {                                                                        \
+          "brave-forget-first-party-storage",                                  \
+          "Enable First Party Storage Cleanup support",                        \
+          "Add cookie blocking mode which allows Brave to cleanup first "      \
+          "party storage (Cookies, DOM Storage) on website close",             \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(net::features::kBraveForgetFirstPartyStorage),    \
+      },                                                                       \
+      {                                                                        \
           "brave-rewards-vbat-notice",                                         \
           "Enable Brave Rewards VBAT notices",                                 \
           "Enables notices in the Brave Rewards UI about VBAT deadlines.",     \
