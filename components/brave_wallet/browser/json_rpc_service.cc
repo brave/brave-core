@@ -295,7 +295,8 @@ void JsonRpcService::OnRequestResult(RequestCallback callback,
                                      APIRequestResult api_request_result) {
   bool reject;
   base::Value formed_response = GetProviderRequestReturnFromEthJsonResponse(
-      api_request_result.response_code(), api_request_result.body(), &reject);
+      api_request_result.response_code(), api_request_result.value_body(),
+      &reject);
   std::move(callback).Run(std::move(id), std::move(formed_response), reject, "",
                           false);
 }
@@ -371,7 +372,8 @@ void JsonRpcService::OnEthChainIdValidated(
     const GURL& rpc_url,
     AddChainCallback callback,
     APIRequestResult api_request_result) {
-  if (ParseSingleStringResult(api_request_result.body()) != chain->chain_id) {
+  if (ParseSingleStringResult(api_request_result.value_body()) !=
+      chain->chain_id) {
     std::move(callback).Run(
         chain->chain_id, mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
@@ -446,7 +448,7 @@ void JsonRpcService::OnEthChainIdValidatedForOrigin(
     return;
 
   const auto& chain = *add_chain_pending_requests_.at(chain_id)->network_info;
-  if (ParseSingleStringResult(api_request_result.body()) != chain_id) {
+  if (ParseSingleStringResult(api_request_result.value_body()) != chain_id) {
     FirePendingRequestCompleted(
         chain_id,
         l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
@@ -1660,12 +1662,12 @@ void JsonRpcService::OnUnstoppableDomainsGetWalletAddr(
     return;
   }
 
-  auto bytes_result = ParseDecodedBytesResult(api_request_result.body());
+  auto bytes_result = ParseDecodedBytesResult(api_request_result.value_body());
   if (!bytes_result) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     ud_get_eth_addr_calls_.SetError(key, chain_id, error, error_message);
     return;
   }
@@ -1836,12 +1838,12 @@ void JsonRpcService::OnGetIsEip1559(GetIsEip1559Callback callback,
     return;
   }
 
-  auto result = ParseResultDict(api_request_result.body());
+  auto result = ParseResultDict(api_request_result.value_body());
   if (!result) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run(false, error, error_message);
     return;
   }
@@ -2191,11 +2193,11 @@ void JsonRpcService::OnGetSupportsInterface(
   }
 
   bool is_supported = false;
-  if (!ParseBoolResult(api_request_result.body(), &is_supported)) {
+  if (!ParseBoolResult(api_request_result.value_body(), &is_supported)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run(false, error, error_message);
     return;
   }
@@ -2616,8 +2618,8 @@ void JsonRpcService::OnGetSolanaAccountInfo(
                                    &account_info)) {
     mojom::SolanaProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::SolanaProviderError>(api_request_result.body(),
-                                                 &error, &error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(
+        api_request_result.value_body(), &error, &error_message);
     std::move(callback).Run(absl::nullopt, error, error_message);
     return;
   }
