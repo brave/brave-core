@@ -60,6 +60,9 @@ class VerticalTabStripRegionView : public views::View {
 
   int GetAvailableWidthForTabContainer();
 
+  // This should be called when height of this view or tab strip changes.
+  void UpdateNewTabButtonVisibility();
+
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
   gfx::Size GetMinimumSize() const override;
@@ -77,7 +80,6 @@ class VerticalTabStripRegionView : public views::View {
 
   void UpdateLayout(bool in_destruction = false);
 
-  void UpdateNewTabButtonVisibility();
   void UpdateTabSearchButtonVisibility();
 
   void OnCollapsedPrefChanged();

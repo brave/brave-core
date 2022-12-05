@@ -207,6 +207,7 @@ class ScrollContentsView : public views::View {
     if (base::FeatureList::IsEnabled(features::kScrollableTabStrip))
       return;
 
+    container_->UpdateNewTabButtonVisibility();
     if (height() == GetPreferredSize().height())
       return;
 
