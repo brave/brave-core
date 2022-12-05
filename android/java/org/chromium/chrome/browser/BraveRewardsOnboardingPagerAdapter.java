@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
-    private static final String TAG = "BraveRewardsOnboarding";
+    private static final String TAG = "RewardsOnboarding";
     private boolean shouldShowMoreOptions;
     private TextView adsPerHourText;
     private List<Integer> adsPerHourValues = Arrays.asList(0, 1, 2, 3, 4, 5, 10);
