@@ -20,22 +20,22 @@ namespace brave_wallet {
 
 namespace eth {
 
-bool ParseStringResult(const std::string& json, std::string* value) {
+bool ParseStringResult(const base::Value& json_value, std::string* value) {
   DCHECK(value);
 
   std::string result;
-  if (!ParseSingleStringResult(json, &result))
+  if (!ParseSingleStringResult(json_value, &result))
     return false;
 
   size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
   return brave_wallet::DecodeString(offset, result, value);
 }
 
-bool ParseAddressResult(const std::string& json, std::string* address) {
+bool ParseAddressResult(const base::Value& json_value, std::string* address) {
   DCHECK(address);
 
   std::string result;
-  if (!ParseSingleStringResult(json, &result))
+  if (!ParseSingleStringResult(json_value, &result))
     return false;
 
   // Expected result: 0x prefix + 24 leading 0s + 40 characters for address.
@@ -54,9 +54,10 @@ bool ParseAddressResult(const std::string& json, std::string* address) {
   return true;
 }
 
-bool ParseEthGetBlockNumber(const std::string& json, uint256_t* block_num) {
+bool ParseEthGetBlockNumber(const base::Value& json_value,
+                            uint256_t* block_num) {
   std::string block_num_str;
-  if (!brave_wallet::ParseSingleStringResult(json, &block_num_str))
+  if (!brave_wallet::ParseSingleStringResult(json_value, &block_num_str))
     return false;
 
   if (!HexValueToUint256(block_num_str, block_num))
@@ -65,7 +66,7 @@ bool ParseEthGetBlockNumber(const std::string& json, uint256_t* block_num) {
   return true;
 }
 
-bool ParseEthGetFeeHistory(const std::string& json,
+bool ParseEthGetFeeHistory(const base::Value& json_value,
                            std::vector<std::string>* base_fee_per_gas,
                            std::vector<double>* gas_used_ratio,
                            std::string* oldest_block,
@@ -80,7 +81,7 @@ bool ParseEthGetFeeHistory(const std::string& json,
   oldest_block->clear();
   reward->clear();
 
-  auto value = ParseResultValue(json);
+  auto value = ParseResultValue(json_value);
   if (!value)
     return false;
 
@@ -109,13 +110,15 @@ bool ParseEthGetFeeHistory(const std::string& json,
   return true;
 }
 
-bool ParseEthGetBalance(const std::string& json, std::string* hex_balance) {
-  return brave_wallet::ParseSingleStringResult(json, hex_balance);
+bool ParseEthGetBalance(const base::Value& json_value,
+                        std::string* hex_balance) {
+  return brave_wallet::ParseSingleStringResult(json_value, hex_balance);
 }
 
-bool ParseEthGetTransactionCount(const std::string& json, uint256_t* count) {
+bool ParseEthGetTransactionCount(const base::Value& json_value,
+                                 uint256_t* count) {
   std::string count_str;
-  if (!brave_wallet::ParseSingleStringResult(json, &count_str))
+  if (!brave_wallet::ParseSingleStringResult(json_value, &count_str))
     return false;
 
   if (!HexValueToUint256(count_str, count))
@@ -124,11 +127,11 @@ bool ParseEthGetTransactionCount(const std::string& json, uint256_t* count) {
   return true;
 }
 
-bool ParseEthGetTransactionReceipt(const std::string& json,
+bool ParseEthGetTransactionReceipt(const base::Value& json_value,
                                    TransactionReceipt* receipt) {
   DCHECK(receipt);
 
-  auto result = ParseResultValue(json);
+  auto result = ParseResultValue(json_value);
   if (!result)
     return false;
 
@@ -170,12 +173,13 @@ bool ParseEthGetTransactionReceipt(const std::string& json,
   return true;
 }
 
-bool ParseEthSendRawTransaction(const std::string& json, std::string* tx_hash) {
-  return ParseSingleStringResult(json, tx_hash);
+bool ParseEthSendRawTransaction(const base::Value& json_value,
+                                std::string* tx_hash) {
+  return ParseSingleStringResult(json_value, tx_hash);
 }
 
-bool ParseEthCall(const std::string& json, std::string* result) {
-  return ParseSingleStringResult(json, result);
+bool ParseEthCall(const base::Value& json_value, std::string* result) {
+  return ParseSingleStringResult(json_value, result);
 }
 
 absl::optional<std::vector<std::string>> DecodeEthCallResponse(
@@ -196,17 +200,17 @@ absl::optional<std::vector<std::string>> DecodeEthCallResponse(
   return args;
 }
 
-bool ParseEthEstimateGas(const std::string& json, std::string* result) {
-  return ParseSingleStringResult(json, result);
+bool ParseEthEstimateGas(const base::Value& json_value, std::string* result) {
+  return ParseSingleStringResult(json_value, result);
 }
 
-bool ParseEthGasPrice(const std::string& json, std::string* result) {
-  return ParseSingleStringResult(json, result);
+bool ParseEthGasPrice(const base::Value& json_value, std::string* result) {
+  return ParseSingleStringResult(json_value, result);
 }
 
-bool ParseEthGetLogs(const std::string& json, std::vector<Log>* logs) {
+bool ParseEthGetLogs(const base::Value& json_value, std::vector<Log>* logs) {
   DCHECK(logs);
-  auto result = ParseResultList(json);
+  auto result = ParseResultList(json_value);
   if (!result)
     return false;
 
@@ -247,12 +251,12 @@ bool ParseEthGetLogs(const std::string& json, std::vector<Log>* logs) {
   return true;
 }
 
-bool ParseEnsResolverContentHash(const std::string& json,
+bool ParseEnsResolverContentHash(const base::Value& json_value,
                                  std::vector<uint8_t>* content_hash) {
   content_hash->clear();
 
   std::string string_content_hash;
-  if (!ParseStringResult(json, &string_content_hash)) {
+  if (!ParseStringResult(json_value, &string_content_hash)) {
     return false;
   }
   content_hash->assign(string_content_hash.begin(), string_content_hash.end());
@@ -260,9 +264,9 @@ bool ParseEnsResolverContentHash(const std::string& json,
 }
 
 absl::optional<std::vector<std::string>>
-ParseUnstoppableDomainsProxyReaderGetMany(const std::string& json) {
+ParseUnstoppableDomainsProxyReaderGetMany(const base::Value& json_value) {
   std::string result;
-  if (!ParseSingleStringResult(json, &result))
+  if (!ParseSingleStringResult(json_value, &result))
     return absl::nullopt;
 
   size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
@@ -277,18 +281,18 @@ ParseUnstoppableDomainsProxyReaderGetMany(const std::string& json) {
 }
 
 absl::optional<std::string> ParseUnstoppableDomainsProxyReaderGet(
-    const std::string& json) {
+    const base::Value& json_value) {
   std::string value;
-  if (!ParseStringResult(json, &value)) {
+  if (!ParseStringResult(json_value, &value)) {
     return absl::nullopt;
   }
 
   return value;
 }
 
-bool ParseTokenUri(const std::string& json, GURL* url) {
+bool ParseTokenUri(const base::Value& json_value, GURL* url) {
   std::string result;
-  if (!ParseStringResult(json, &result)) {
+  if (!ParseStringResult(json_value, &result)) {
     return false;
   }
 

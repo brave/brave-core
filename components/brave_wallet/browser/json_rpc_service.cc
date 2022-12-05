@@ -673,11 +673,12 @@ void JsonRpcService::OnGetBlockNumber(GetBlockNumberCallback callback,
     return;
   }
   uint256_t block_number;
-  if (!eth::ParseEthGetBlockNumber(api_request_result.body(), &block_number)) {
+  if (!eth::ParseEthGetBlockNumber(api_request_result.value_body(),
+                                   &block_number)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run(0, error, error_message);
     return;
   }
@@ -712,11 +713,12 @@ void JsonRpcService::OnGetFeeHistory(GetFeeHistoryCallback callback,
   std::vector<double> gas_used_ratio;
   std::string oldest_block;
   std::vector<std::vector<std::string>> reward;
-  if (!eth::ParseEthGetFeeHistory(api_request_result.body(), &base_fee_per_gas,
-                                  &gas_used_ratio, &oldest_block, &reward)) {
+  if (!eth::ParseEthGetFeeHistory(api_request_result.value_body(),
+                                  &base_fee_per_gas, &gas_used_ratio,
+                                  &oldest_block, &reward)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult(api_request_result.body(), &error, &error_message);
+    ParseErrorResult(api_request_result.value_body(), &error, &error_message);
     std::move(callback).Run(std::vector<std::string>(), std::vector<double>(),
                             "", std::vector<std::vector<std::string>>(), error,
                             error_message);
@@ -766,11 +768,11 @@ void JsonRpcService::OnEthGetBalance(GetBalanceCallback callback,
     return;
   }
   std::string balance;
-  if (!eth::ParseEthGetBalance(api_request_result.body(), &balance)) {
+  if (!eth::ParseEthGetBalance(api_request_result.value_body(), &balance)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -926,11 +928,12 @@ void JsonRpcService::OnEthGetTransactionCount(
     return;
   }
   uint256_t count;
-  if (!eth::ParseEthGetTransactionCount(api_request_result.body(), &count)) {
+  if (!eth::ParseEthGetTransactionCount(api_request_result.value_body(),
+                                        &count)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run(0, error, error_message);
     return;
   }
@@ -958,12 +961,12 @@ void JsonRpcService::OnGetTransactionReceipt(
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
-  if (!eth::ParseEthGetTransactionReceipt(api_request_result.body(),
+  if (!eth::ParseEthGetTransactionReceipt(api_request_result.value_body(),
                                           &receipt)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run(receipt, error, error_message);
     return;
   }
@@ -990,11 +993,12 @@ void JsonRpcService::OnSendRawTransaction(SendRawTxCallback callback,
     return;
   }
   std::string tx_hash;
-  if (!eth::ParseEthSendRawTransaction(api_request_result.body(), &tx_hash)) {
+  if (!eth::ParseEthSendRawTransaction(api_request_result.value_body(),
+                                       &tx_hash)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -1034,11 +1038,11 @@ void JsonRpcService::OnGetERC20TokenBalance(
     return;
   }
   std::string result;
-  if (!eth::ParseEthCall(api_request_result.body(), &result)) {
+  if (!eth::ParseEthCall(api_request_result.value_body(), &result)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -1086,11 +1090,11 @@ void JsonRpcService::OnGetERC20TokenAllowance(
     return;
   }
   std::string result;
-  if (!eth::ParseEthCall(api_request_result.body(), &result)) {
+  if (!eth::ParseEthCall(api_request_result.value_body(), &result)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -1139,12 +1143,13 @@ void JsonRpcService::OnEnsRegistryGetResolver(
   }
 
   std::string resolver_address;
-  if (!eth::ParseAddressResult(api_request_result.body(), &resolver_address) ||
+  if (!eth::ParseAddressResult(api_request_result.value_body(),
+                               &resolver_address) ||
       resolver_address.empty()) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -1225,13 +1230,13 @@ void JsonRpcService::OnEnsGetContentHash(EnsGetContentHashCallback callback,
   }
 
   std::vector<uint8_t> content_hash;
-  if (!eth::ParseEnsResolverContentHash(api_request_result.body(),
+  if (!eth::ParseEnsResolverContentHash(api_request_result.value_body(),
                                         &content_hash) ||
       content_hash.empty()) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run({}, false, error, error_message);
     return;
   }
@@ -1520,12 +1525,12 @@ void JsonRpcService::OnEnsGetEthAddr(EnsGetEthAddrCallback callback,
   }
 
   std::string address;
-  if (!eth::ParseAddressResult(api_request_result.body(), &address) ||
+  if (!eth::ParseAddressResult(api_request_result.value_body(), &address) ||
       address.empty()) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run("", false, error, error_message);
     return;
   }
@@ -1589,13 +1594,13 @@ void JsonRpcService::OnUnstoppableDomainsResolveDns(
     return;
   }
 
-  auto values =
-      eth::ParseUnstoppableDomainsProxyReaderGetMany(api_request_result.body());
+  auto values = eth::ParseUnstoppableDomainsProxyReaderGetMany(
+      api_request_result.value_body());
   if (!values) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     ud_resolve_dns_calls_.SetError(domain, chain_id, error, error_message);
     return;
   }
@@ -1770,11 +1775,11 @@ void JsonRpcService::OnGetEstimateGas(GetEstimateGasCallback callback,
   }
 
   std::string result;
-  if (!eth::ParseEthEstimateGas(api_request_result.body(), &result)) {
+  if (!eth::ParseEthEstimateGas(api_request_result.value_body(), &result)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -1801,11 +1806,11 @@ void JsonRpcService::OnGetGasPrice(GetGasPriceCallback callback,
   }
 
   std::string result;
-  if (!eth::ParseEthGasPrice(api_request_result.body(), &result)) {
+  if (!eth::ParseEthGasPrice(api_request_result.value_body(), &result)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -1904,12 +1909,12 @@ void JsonRpcService::OnGetERC721OwnerOf(GetERC721OwnerOfCallback callback,
   }
 
   std::string address;
-  if (!eth::ParseAddressResult(api_request_result.body(), &address) ||
+  if (!eth::ParseAddressResult(api_request_result.value_body(), &address) ||
       address.empty()) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -2044,12 +2049,12 @@ void JsonRpcService::OnGetEthTokenUri(GetEthTokenUriCallback callback,
 
   // Parse response JSON that wraps the result
   GURL url;
-  if (!eth::ParseTokenUri(api_request_result.body(), &url)) {
+  if (!eth::ParseTokenUri(api_request_result.value_body(), &url)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
-    std::move(callback).Run(url, error, error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
+    std::move(callback).Run(GURL(), error, error_message);
     return;
   }
 
@@ -2135,7 +2140,7 @@ void JsonRpcService::OnEthGetLogs(EthGetLogsCallback callback,
     return;
   }
 
-  if (!eth::ParseEthGetLogs(api_request_result.body(), &logs)) {
+  if (!eth::ParseEthGetLogs(api_request_result.value_body(), &logs)) {
     std::move(callback).Run(logs, mojom::ProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;

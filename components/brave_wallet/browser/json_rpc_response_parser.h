@@ -88,7 +88,10 @@ void ParseErrorResult(const std::string& json,
 absl::optional<base::Value::Dict> ParseResultDict(const std::string& json);
 absl::optional<base::Value::Dict> ParseResultDict(
     const base::Value& json_value);
+// TODO(apaymyshev): cleanup
 absl::optional<base::Value::List> ParseResultList(const std::string& json);
+absl::optional<base::Value::List> ParseResultList(
+    const base::Value& json_value);
 // TODO(apaymyshev): cleanup
 bool ParseBoolResult(const std::string& json, bool* value);
 bool ParseBoolResult(const base::Value& json_value, bool* value);
