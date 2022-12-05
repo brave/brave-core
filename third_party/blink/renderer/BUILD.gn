@@ -5,6 +5,8 @@
 
 component("renderer") {
   sources = [
+    "brave_audio_farbling_helper.cc",
+    "brave_audio_farbling_helper.h",
     "brave_farbling_constants.h",
     "brave_font_whitelist.cc",
     "brave_font_whitelist.h",

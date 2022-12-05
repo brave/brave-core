@@ -9,6 +9,8 @@
 #include <map>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
+#include "brave/third_party/blink/renderer/brave_audio_farbling_helper.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "third_party/abseil-cpp/absl/random/random.h"
 #include "third_party/blink/renderer/core/core_export.h"
@@ -75,13 +77,6 @@ class CORE_EXPORT BraveSessionCache final
   void FarbleAudioChannel(blink::WebContentSettingsClient* settings,
                           float* dst,
                           size_t count);
-  void GetRealtimeAnalyserFarblingCallbacks(
-      blink::WebContentSettingsClient* settings,
-      OptionalFarbleFloatTimeDomainDataCallback*
-          float_time_domain_data_callback,
-      OptionalFarbleByteTimeDomainDataCallback* byte_time_domain_data_callback,
-      OptionalFarbleConvertToByteDataCallback* convert_to_byte_data_callback,
-      OptionalFarbleConvertFloatToDbCallback* convert_float_to_db_callback);
   void PerturbPixels(blink::WebContentSettingsClient* settings,
                      const unsigned char* data,
                      size_t size);
@@ -94,12 +89,15 @@ class CORE_EXPORT BraveSessionCache final
   bool AllowFontFamily(blink::WebContentSettingsClient* settings,
                        const AtomicString& family_name);
   FarblingPRNG MakePseudoRandomGenerator(FarbleKey key = FarbleKey::kNone);
+  raw_ptr<AudioFarblingHelper> GetAudioFarblingHelper(
+      blink::WebContentSettingsClient* settings);
 
  private:
   bool farbling_enabled_;
   uint64_t session_key_;
   uint8_t domain_key_[32];
   std::map<FarbleKey, int> farbled_integers_;
+  raw_ptr<AudioFarblingHelper> audio_farbling_helper_;
 
   void PerturbPixelsInternal(const unsigned char* data, size_t size);
 };

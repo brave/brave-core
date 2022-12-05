@@ -20,7 +20,6 @@
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
-#include "third_party/blink/renderer/platform/audio/audio_utilities.h"
 #include "third_party/blink/renderer/platform/bindings/script_state.h"
 #include "third_party/blink/renderer/platform/fonts/font_fallback_list.h"
 #include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
@@ -44,191 +43,6 @@ constexpr double maxUInt64AsDouble = static_cast<double>(UINT64_MAX);
 
 inline uint64_t lfsr_next(uint64_t v) {
   return ((v >> 1) | (((v << 62) ^ (v << 61)) & (~(~zero << 63) << 62)));
-}
-
-// Calculate values for RealtimeAnalyser::GetFloatTimeDomainData on
-// default farbling setting.
-void DefaultFloatTimeDomainData(double fudge_factor,
-                                float* input_buffer,
-                                float* destination,
-                                size_t len,
-                                unsigned write_index,
-                                unsigned fft_size,
-                                unsigned input_buffer_size) {
-  for (unsigned i = 0; i < len; ++i) {
-    // Buffer access is protected due to modulo operation.
-    float value =
-        fudge_factor *
-        input_buffer[(i + write_index - fft_size + input_buffer_size) %
-                     input_buffer_size];
-
-    destination[i] = value;
-  }
-}
-
-// Calculate values for RealtimeAnalyser::GetByteTimeDomainData on
-// default farbling setting.
-void DefaultByteTimeDomainData(double fudge_factor,
-                               float* input_buffer,
-                               unsigned char* destination,
-                               size_t len,
-                               unsigned write_index,
-                               unsigned fft_size,
-                               unsigned input_buffer_size) {
-  for (unsigned i = 0; i < len; ++i) {
-    // Buffer access is protected due to modulo operation.
-    float value =
-        fudge_factor *
-        input_buffer[(i + write_index - fft_size + input_buffer_size) %
-                     input_buffer_size];
-
-    // Scale from nominal -1 -> +1 to unsigned byte.
-    double scaled_value = 128 * (value + 1);
-
-    // Clip to valid range.
-    if (scaled_value < 0) {
-      scaled_value = 0;
-    }
-    if (scaled_value > UCHAR_MAX) {
-      scaled_value = UCHAR_MAX;
-    }
-
-    destination[i] = static_cast<unsigned char>(scaled_value);
-  }
-}
-
-// Calculate values for RealtimeAnalyser::ConvertToByteData on
-// default farbling setting.
-void DefaultConvertToByteData(double fudge_factor,
-                              const float* source,
-                              unsigned char* destination,
-                              size_t len,
-                              const double min_decibels,
-                              const double range_scale_factor) {
-  for (unsigned i = 0; i < len; ++i) {
-    float linear_value = fudge_factor * source[i];
-    double db_mag = blink::audio_utilities::LinearToDecibels(linear_value);
-
-    // The range m_minDecibels to m_maxDecibels will be scaled to byte values
-    // from 0 to UCHAR_MAX.
-    double scaled_value =
-        UCHAR_MAX * (db_mag - min_decibels) * range_scale_factor;
-
-    // Clip to valid range.
-    if (scaled_value < 0) {
-      scaled_value = 0;
-    }
-    if (scaled_value > UCHAR_MAX) {
-      scaled_value = UCHAR_MAX;
-    }
-
-    destination[i] = static_cast<unsigned char>(scaled_value);
-  }
-}
-
-// Calculate values for RealtimeAnalyser::ConvertFloatToDb on
-// default farbling setting.
-void DefaultConvertFloatToDb(double fudge_factor,
-                             const float* source,
-                             float* destination,
-                             size_t len) {
-  for (unsigned i = 0; i < len; ++i) {
-    float linear_value = fudge_factor * source[i];
-    double db_mag = blink::audio_utilities::LinearToDecibels(linear_value);
-    destination[i] = static_cast<float>(db_mag);
-  }
-}
-
-// Calculate values for RealtimeAnalyser::GetFloatTimeDomainData on
-// max farbling setting.
-void MaxFloatTimeDomainData(uint64_t seed,
-                            float* input_buffer,
-                            float* destination,
-                            size_t len,
-                            unsigned write_index,
-                            unsigned fft_size,
-                            unsigned input_buffer_size) {
-  uint64_t v = seed;
-  for (unsigned i = 0; i < len; ++i) {
-    v = lfsr_next(v);
-    float value = (v / maxUInt64AsDouble) / 10;
-    destination[i] = value;
-  }
-}
-
-// Calculate values for RealtimeAnalyser::GetByteTimeDomainData on
-// max farbling setting.
-void MaxByteTimeDomainData(uint64_t seed,
-                           float* input_buffer,
-                           unsigned char* destination,
-                           size_t len,
-                           unsigned write_index,
-                           unsigned fft_size,
-                           unsigned input_buffer_size) {
-  uint64_t v = seed;
-  for (unsigned i = 0; i < len; ++i) {
-    v = lfsr_next(v);
-    float value = (v / maxUInt64AsDouble) / 10;
-
-    // Scale from nominal -1 -> +1 to unsigned byte.
-    double scaled_value = 128 * (value + 1);
-
-    // Clip to valid range.
-    if (scaled_value < 0) {
-      scaled_value = 0;
-    }
-    if (scaled_value > UCHAR_MAX) {
-      scaled_value = UCHAR_MAX;
-    }
-
-    destination[i] = static_cast<unsigned char>(scaled_value);
-  }
-}
-
-// Calculate values for RealtimeAnalyser::ConvertToByteData on
-// max farbling setting.
-void MaxConvertToByteData(uint64_t seed,
-                          const float* source,
-                          unsigned char* destination,
-                          size_t len,
-                          const double min_decibels,
-                          const double range_scale_factor) {
-  uint64_t v = seed;
-  for (unsigned i = 0; i < len; ++i) {
-    v = lfsr_next(v);
-    float linear_value = (v / maxUInt64AsDouble) / 10;
-    double db_mag = blink::audio_utilities::LinearToDecibels(linear_value);
-
-    // The range m_minDecibels to m_maxDecibels will be scaled to byte values
-    // from 0 to UCHAR_MAX.
-    double scaled_value =
-        UCHAR_MAX * (db_mag - min_decibels) * range_scale_factor;
-
-    // Clip to valid range.
-    if (scaled_value < 0) {
-      scaled_value = 0;
-    }
-    if (scaled_value > UCHAR_MAX) {
-      scaled_value = UCHAR_MAX;
-    }
-
-    destination[i] = static_cast<unsigned char>(scaled_value);
-  }
-}
-
-// Calculate values for RealtimeAnalyser::ConvertFloatToDb on
-// default farbling setting.
-void MaxConvertFloatToDb(uint64_t seed,
-                         const float* source,
-                         float* destination,
-                         size_t len) {
-  uint64_t v = seed;
-  for (unsigned i = 0; i < len; ++i) {
-    v = lfsr_next(v);
-    float linear_value = (v / maxUInt64AsDouble) / 10;
-    double db_mag = blink::audio_utilities::LinearToDecibels(linear_value);
-    destination[i] = static_cast<float>(db_mag);
-  }
 }
 
 }  // namespace
@@ -385,6 +199,10 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key_),
                sizeof session_key_));
   CHECK(h.Sign(domain, domain_key_, sizeof domain_key_));
+  const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
+  double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
+  uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
+  audio_farbling_helper_ = new AudioFarblingHelper(fudge_factor, seed);
   farbling_enabled_ = true;
 }
 
@@ -403,81 +221,25 @@ void BraveSessionCache::Init() {
   RegisterAllowFontFamilyCallback(base::BindRepeating(&brave::AllowFontFamily));
 }
 
+raw_ptr<AudioFarblingHelper> BraveSessionCache::GetAudioFarblingHelper(
+    blink::WebContentSettingsClient* settings) {
+  if (!farbling_enabled_)
+    return nullptr;
+  DCHECK(audio_farbling_helper_);
+  DCHECK(settings);
+  if ((settings->GetBraveFarblingLevel()) == BraveFarblingLevel::OFF)
+    return nullptr;
+  audio_farbling_helper_->SetMax(settings->GetBraveFarblingLevel() ==
+                                 BraveFarblingLevel::MAXIMUM);
+  return audio_farbling_helper_;
+}
+
 void BraveSessionCache::FarbleAudioChannel(
     blink::WebContentSettingsClient* settings,
     float* dst,
     size_t count) {
-  if (!farbling_enabled_)
-    return;
-  DCHECK(settings);
-  switch (settings->GetBraveFarblingLevel()) {
-    case BraveFarblingLevel::OFF: {
-      break;
-    }
-    case BraveFarblingLevel::BALANCED: {
-      const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
-      double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
-      VLOG(1) << "audio fudge factor (based on session token) = "
-              << fudge_factor;
-      for (unsigned i = 0; i < count; i++) {
-        dst[i] = dst[i] * fudge_factor;
-      }
-      break;
-    }
-    case BraveFarblingLevel::MAXIMUM: {
-      uint64_t v = *reinterpret_cast<uint64_t*>(domain_key_);
-      for (unsigned i = 0; i < count; i++) {
-        v = lfsr_next(v);
-        dst[i] = (v / maxUInt64AsDouble) / 10;
-      }
-      break;
-    }
-    default:
-      NOTREACHED();
-  }
-}
-
-void BraveSessionCache::GetRealtimeAnalyserFarblingCallbacks(
-    blink::WebContentSettingsClient* settings,
-    OptionalFarbleFloatTimeDomainDataCallback* float_time_domain_data_callback,
-    OptionalFarbleByteTimeDomainDataCallback* byte_time_domain_data_callback,
-    OptionalFarbleConvertToByteDataCallback* convert_to_byte_data_callback,
-    OptionalFarbleConvertFloatToDbCallback* convert_float_to_db_callback) {
-  if (farbling_enabled_ && settings) {
-    switch (settings->GetBraveFarblingLevel()) {
-      case BraveFarblingLevel::OFF: {
-        break;
-      }
-      case BraveFarblingLevel::BALANCED: {
-        const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
-        double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
-        VLOG(1) << "audio fudge factor (based on session token) = "
-                << fudge_factor;
-        *float_time_domain_data_callback =
-            base::BindRepeating(&DefaultFloatTimeDomainData, fudge_factor);
-        *byte_time_domain_data_callback =
-            base::BindRepeating(&DefaultByteTimeDomainData, fudge_factor);
-        *convert_to_byte_data_callback =
-            base::BindRepeating(&DefaultConvertToByteData, fudge_factor);
-        *convert_float_to_db_callback =
-            base::BindRepeating(&DefaultConvertFloatToDb, fudge_factor);
-        break;
-      }
-      case BraveFarblingLevel::MAXIMUM: {
-        uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
-        *float_time_domain_data_callback =
-            base::BindRepeating(&MaxFloatTimeDomainData, seed);
-        *byte_time_domain_data_callback =
-            base::BindRepeating(&MaxByteTimeDomainData, seed);
-        *convert_to_byte_data_callback =
-            base::BindRepeating(&MaxConvertToByteData, seed);
-        *convert_float_to_db_callback =
-            base::BindRepeating(&MaxConvertFloatToDb, seed);
-        break;
-      }
-      default:
-        NOTREACHED();
-    }
+  if (raw_ptr<AudioFarblingHelper> helper = GetAudioFarblingHelper(settings)) {
+    helper->FarbleAudioChannel(dst, count);
   }
 }
 
