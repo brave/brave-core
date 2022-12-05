@@ -35,6 +35,9 @@ class UserAssetsStoreTests: XCTestCase {
     rpcService._allNetworks = { coin, completion in
       completion(self.networks[coin] ?? [])
     }
+    rpcService._erc721Metadata = { _, _, _, completion in
+      completion("", .internalError, "")
+    }
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._userAssets = { chainId, coin, completion in
       completion(self.visibleAssetsForCoins[coin] ?? [])

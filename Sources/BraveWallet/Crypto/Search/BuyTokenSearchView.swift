@@ -19,7 +19,12 @@ struct BuyTokenSearchView: View {
         buyTokenStore.selectedBuyToken = token
         presentationMode.dismiss()
       }) {
-        TokenView(token: token, network: network)
+        TokenView(
+          token: token,
+          network: network
+        ) {
+          AssetIconView(token: token, network: network)
+        }
       }
     }
     .navigationTitle(Strings.Wallet.searchTitle.capitalized)

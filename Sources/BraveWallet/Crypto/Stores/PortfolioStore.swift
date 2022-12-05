@@ -23,10 +23,14 @@ struct NFTAssetViewModel: Identifiable, Equatable {
   var token: BraveWallet.BlockchainToken
   var network: BraveWallet.NetworkInfo
   var balance: Int
-  var imageUrl: URL?
+  var erc721Metadata: ERC721Metadata?
 
   public var id: String {
     token.id + network.chainId
+  }
+  
+  static func == (lhs: NFTAssetViewModel, rhs: NFTAssetViewModel) -> Bool {
+    lhs.id == rhs.id
   }
 }
 
@@ -107,6 +111,8 @@ public class PortfolioStore: ObservableObject {
   private var pricesCache: [String: String] = [:]
   /// Cache of priceHistories. The key is the token's `assetRatioId`.
   private var priceHistoriesCache: [String: [BraveWallet.AssetTimePrice]] = [:]
+  /// Cache of metadata for erc721 token. The key is the token's `id`.
+  private var metadataCache: [String: ERC721Metadata] = [:]
 
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -168,7 +174,8 @@ public class PortfolioStore: ObservableObject {
               NFTAssetViewModel(
                 token: token,
                 network: networkAssets.network,
-                balance: Int(totalBalancesCache[token.assetBalanceId] ?? 0)
+                balance: Int(totalBalancesCache[token.assetBalanceId] ?? 0),
+                erc721Metadata: metadataCache[token.id]
               )
             )
           } else {
@@ -242,6 +249,10 @@ public class PortfolioStore: ObservableObject {
         self.priceHistoriesCache[key] = value
       }
       
+      // fetch ERC721 metadata for ERC721 tokens
+      let erc721Tokens = allTokens.filter { $0.isErc721 }
+      metadataCache = await rpcService.fetchERC721Metadata(tokens: erc721Tokens)
+      
       guard !Task.isCancelled else { return }
       updatedUserVisibleAssets.removeAll()
       updatedUserVisibleNFTs.removeAll()
@@ -252,7 +263,8 @@ public class PortfolioStore: ObservableObject {
               NFTAssetViewModel(
                 token: token,
                 network: networkAssets.network,
-                balance: Int(totalBalancesCache[token.assetBalanceId] ?? 0)
+                balance: Int(totalBalancesCache[token.assetBalanceId] ?? 0),
+                erc721Metadata: metadataCache[token.id]
               )
             )
           } else {

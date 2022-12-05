@@ -50,6 +50,8 @@ class PortfolioStoreTests: XCTestCase {
     let totalBalanceValue = totalEthBalanceValue + totalSolBalanceValue
     let totalBalance = currencyFormatter.string(from: NSNumber(value: totalBalanceValue)) ?? ""
     
+    let mockERC721Metadata: ERC721Metadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description")
+    
     // setup test services
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._keyringInfo = { keyringId, completion in
@@ -103,6 +105,16 @@ class PortfolioStoreTests: XCTestCase {
     }
     rpcService._splTokenAccountBalance = {_, _, _, completion in
       completion("\(mockNFTBalance)", UInt8(0), "\(mockNFTBalance)", .success, "") // sol nft balance
+    }
+    rpcService._erc721Metadata = { _, _, _, completion in
+      completion(
+      """
+      {
+        "image": "mock.image.url",
+        "name": "mock nft name",
+        "description": "mock nft description"
+      }
+      """, .success, "")
     }
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._userAssets = { _, coin, completion in
@@ -183,6 +195,9 @@ class PortfolioStoreTests: XCTestCase {
         
         XCTAssertEqual(lastUpdatedVisibleNFTs[1].token.symbol, mockEthUserAssets.last?.symbol)
         XCTAssertEqual(lastUpdatedVisibleNFTs[1].balance, Int(mockNFTBalanceWei))
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 1]?.erc721Metadata?.imageURLString, mockERC721Metadata.imageURLString)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 1]?.erc721Metadata?.name, mockERC721Metadata.name)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 1]?.erc721Metadata?.description, mockERC721Metadata.description)
       }.store(in: &cancellables)
     // test that `update()` will assign new value to `balance` publisher
     let balanceException = expectation(description: "update-balance")

@@ -12,24 +12,39 @@ private extension String {
   }
 }
 
-struct ERC721MetaData: Codable {
-  var imageURL: String?
+struct ERC721Metadata: Codable {
+  var imageURLString: String?
   var name: String?
   var description: String?
   
   enum CodingKeys: String, CodingKey {
-    case imageURL = "image"
+    case imageURLString = "image"
     case name
     case description
   }
   
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    if let imageString = try container.decodeIfPresent(String.self, forKey: .imageURL) {
-      self.imageURL = imageString.hasPrefix("data:image") ? imageString : imageString.httpifyIpfsUrl
+    if let imageString = try container.decodeIfPresent(String.self, forKey: .imageURLString) {
+      self.imageURLString = imageString.hasPrefix("data:image") ? imageString : imageString.httpifyIpfsUrl
     }
     self.name = try container.decodeIfPresent(String.self, forKey: .name)
     self.description = try container.decodeIfPresent(String.self, forKey: .description)
+  }
+  
+  init(
+    imageURLString: String?,
+    name: String?,
+    description: String?
+  ) {
+    self.imageURLString = imageURLString
+    self.name = name
+    self.description = description
+  }
+  
+  var imageURL: URL? {
+    guard let urlString = imageURLString else { return nil }
+    return URL(string: urlString)
   }
 }
 
@@ -37,18 +52,20 @@ class NFTDetailStore: ObservableObject {
   private let rpcService: BraveWalletJsonRpcService
   let nft: BraveWallet.BlockchainToken
   @Published var isLoading: Bool = false
-  @Published var erc721MetaData: ERC721MetaData?
+  @Published var erc721Metadata: ERC721Metadata?
   @Published var networkInfo: BraveWallet.NetworkInfo = .init()
   
   init(
     rpcService: BraveWalletJsonRpcService,
-    nft: BraveWallet.BlockchainToken
+    nft: BraveWallet.BlockchainToken,
+    erc721Metadata: ERC721Metadata?
   ) {
     self.rpcService = rpcService
     self.nft = nft
+    self.erc721Metadata = erc721Metadata
   }
   
-  func fetchMetaData() {
+  func fetchMetadata() {
     Task { @MainActor in
       isLoading = true
       
@@ -61,8 +78,8 @@ class NFTDetailStore: ObservableObject {
       
       isLoading = false
       if let data = metaData.data(using: .utf8),
-         let result = try? JSONDecoder().decode(ERC721MetaData.self, from: data) {
-        erc721MetaData = result
+         let result = try? JSONDecoder().decode(ERC721Metadata.self, from: data) {
+        erc721Metadata = result
       }
     }
   }

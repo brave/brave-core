@@ -15,6 +15,8 @@ private struct EditTokenView: View {
   
   @Binding var tokenNeedsTokenId: BraveWallet.BlockchainToken?
   
+  @State var erc721Metadata: ERC721Metadata?
+  
   private var tokenName: String {
     if (assetStore.token.isErc721 || assetStore.token.isNft), !assetStore.token.tokenId.isEmpty {
       return assetStore.token.nftTokenTitle
@@ -32,11 +34,20 @@ private struct EditTokenView: View {
       }
     }) {
       HStack(spacing: 8) {
-        AssetIconView(
-          token: assetStore.token,
-          network: assetStore.network,
-          shouldShowNativeTokenIcon: true
-        )
+        if assetStore.token.isErc721 {
+          NFTIconView(
+            token: assetStore.token,
+            network: assetStore.network,
+            url: erc721Metadata?.imageURL,
+            shouldShowNativeTokenIcon: true
+          )
+        } else {
+          AssetIconView(
+            token: assetStore.token,
+            network: assetStore.network,
+            shouldShowNativeTokenIcon: true
+          )
+        }
         VStack(alignment: .leading) {
           Text(tokenName)
             .fontWeight(.semibold)
@@ -50,6 +61,11 @@ private struct EditTokenView: View {
           .opacity(assetStore.isVisible ? 1 : 0)
       }
       .padding(.vertical, 8)
+    }
+    .onAppear {
+      Task { @MainActor in
+        self.erc721Metadata = await assetStore.fetchERC721Metadata()
+      }
     }
     .accessibilityAddTraits(assetStore.isVisible ? [.isSelected] : [])
   }

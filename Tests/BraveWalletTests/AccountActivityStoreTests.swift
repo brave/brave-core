@@ -76,6 +76,16 @@ class AccountActivityStoreTests: XCTestCase {
       // spd token, sol nft balance
       completion(mockSplTokenBalances[tokenMintAddress] ?? "", UInt8(0), mockSplTokenBalances[tokenMintAddress] ?? "", .success, "")
     }
+    rpcService._erc721Metadata = { _, _, _, completion in
+      completion(
+      """
+      {
+        "image": "mock.image.url",
+        "name": "mock nft name",
+        "description": "mock nft description"
+      }
+      """, .success, "")
+    }
     
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
@@ -116,6 +126,8 @@ class AccountActivityStoreTests: XCTestCase {
     let mockERC20BalanceWei = formatter.weiString(from: mockERC20DecimalBalance, radix: .hex, decimals: Int(BraveWallet.BlockchainToken.mockUSDCToken.decimals)) ?? ""
     let mockNFTBalance: Double = 1
     let mockERC721BalanceWei = formatter.weiString(from: mockNFTBalance, radix: .hex, decimals: 0) ?? ""
+    
+    let mockERC721Metadata: ERC721Metadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description")
     
     let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy) = setupServices(
       mockEthBalanceWei: mockEthBalanceWei,
@@ -176,6 +188,9 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedVisibleNFTs.count, 1)
         XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.token.symbol, BraveWallet.BlockchainToken.mockERC721NFTToken.symbol)
         XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.balance, Int(mockNFTBalance))
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.erc721Metadata?.imageURLString, mockERC721Metadata.imageURLString)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.erc721Metadata?.name, mockERC721Metadata.name)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.erc721Metadata?.description, mockERC721Metadata.description)
       }.store(in: &cancellables)
     
     let transactionSummariesExpectation = expectation(description: "accountActivityStore-transactions")

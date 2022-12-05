@@ -27,16 +27,19 @@ public class AssetStore: ObservableObject, Equatable {
   var network: BraveWallet.NetworkInfo
 
   private let walletService: BraveWalletBraveWalletService
+  private let rpcService: BraveWalletJsonRpcService
   private(set) var isCustomToken: Bool
 
   init(
     walletService: BraveWalletBraveWalletService,
+    rpcService: BraveWalletJsonRpcService,
     network: BraveWallet.NetworkInfo,
     token: BraveWallet.BlockchainToken,
     isCustomToken: Bool,
     isVisible: Bool
   ) {
     self.walletService = walletService
+    self.rpcService = rpcService
     self.network = network
     self.token = token
     self.isCustomToken = isCustomToken
@@ -45,6 +48,10 @@ public class AssetStore: ObservableObject, Equatable {
 
   public static func == (lhs: AssetStore, rhs: AssetStore) -> Bool {
     lhs.token == rhs.token && lhs.isVisible == rhs.isVisible
+  }
+  
+  @MainActor func fetchERC721Metadata() async -> ERC721Metadata? {
+    return await rpcService.fetchERC721Metadata(for: token)
   }
 }
 
@@ -120,6 +127,7 @@ public class UserAssetsStore: ObservableObject {
           }
           return AssetStore(
             walletService: walletService,
+            rpcService: rpcService,
             network: assetsForNetwork.network,
             token: token,
             isCustomToken: isCustomToken,
@@ -208,6 +216,16 @@ public class UserAssetsStore: ObservableObject {
         )
       }
     }
+  }
+  
+  @MainActor func allERC721Metadata() async -> [String: ERC721Metadata] {
+    let allNetworks = await rpcService.allNetworksForSupportedCoins()
+    let allUserAssets = await walletService.allUserAssets(in: allNetworks)
+    // Filter `allTokens` to remove any tokens existing in `allUserAssets`. This is possible for ERC721 tokens in the registry without a `tokenId`, which requires the user to add as a custom token
+    let allUserTokens = allUserAssets.flatMap(\.tokens)
+    
+    // ERC721 metadata only exists for custom NFT added by users. ERC721 tokens from token registry do not have metadata
+    return await rpcService.fetchERC721Metadata(tokens: allUserTokens.filter { $0.isErc721 })
   }
 }
 
