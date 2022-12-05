@@ -87,10 +87,6 @@
 -PrerenderManagerTest.StartSameSuggestionPrerender
 -PrerenderTest.*
 
-# These tests fail because we have features::kNavigationRequestPreconnect
-# disabled
--PreconnectManagerTest.*
-
 # Tests failing due to our replacing of MdTextButton with MdTextButtonBase.
 -ScreenshotCapturedBubbleTest.EditNavigatesToImageEditorWebUI
 

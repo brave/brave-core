@@ -16,7 +16,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kFedCm, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFirstPartySets, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIdleDetection, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kNavigationRequestPreconnect, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNotificationTriggers, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxAdsAPIsOverride, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSignedExchangeReportingForDistributors,
