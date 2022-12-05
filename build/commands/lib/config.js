@@ -378,6 +378,7 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.isDebug() &&
+      !this.isComponentBuild() &&
       this.targetOS !== 'ios' &&
       this.targetOS !== 'android') {
     args.enable_profiling = true
