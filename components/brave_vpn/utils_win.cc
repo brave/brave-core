@@ -275,7 +275,19 @@ bool ConnectEntry(const std::wstring& entry_name) {
     // We should not treat this as failure state.
     // Just return when already dialed.
     PrintRasError(dw_ret);
-    return true;
+
+    // Clear previous connect and start new connect.
+    VLOG(2) << __func__
+            << " : Hangup in-progress connection and try connection again";
+    if (dw_ret = RasHangUp(h_ras_conn); dw_ret != ERROR_SUCCESS) {
+      VLOG(2) << __func__ << " : Failed to hangup";
+      PrintRasError(dw_ret);
+      return false;
+    }
+
+    h_ras_conn = NULL;
+    dw_ret = RasDial(NULL, DEFAULT_PHONE_BOOK, lp_ras_dial_params, 0, NULL,
+                     &h_ras_conn);
   }
 
   if (dw_ret != ERROR_SUCCESS) {
