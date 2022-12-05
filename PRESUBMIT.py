@@ -104,18 +104,22 @@ def CheckLicense(input_api, output_api):
     assert existing_file_license_re.search(multiline_comment_expected_license)
 
     # Show this to simplify copy-paste when an invalid license is found.
-    expected_license_message = (
-        f'Expected one of license headers:\n'
-        f'{expected_license_template.replace("#", "//")}\n'
-        f'{multiline_comment_expected_license}\n'
-        f'{expected_license_template}')
+    expected_licenses = (f'{expected_license_template.replace("#", "//")}\n'
+                         f'{multiline_comment_expected_license}\n'
+                         f'{expected_license_template}')
 
     result = []
     if bad_new_files:
+        expected_license_message = (
+            f'Expected one of license headers in new files:\n'
+            f'{expected_licenses}')
         result.append(
             output_api.PresubmitError(expected_license_message,
                                       items=bad_new_files))
     if bad_files:
+        expected_license_message = (
+            f'Expected one of license headers in existing files:\n'
+            f'{expected_licenses.replace(f"{current_year}", "<year>")}')
         result.append(
             output_api.PresubmitPromptWarning(expected_license_message,
                                               items=bad_files))
