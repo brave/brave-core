@@ -12,9 +12,10 @@ component("renderer") {
     "brave_font_whitelist.h",
   ]
 
-  deps = [ "//brave/components/brave_drm:brave_drm_blink",
-           "//third_party/blink/renderer/platform:platform",
-         ]
+  deps = [
+    "//brave/components/brave_drm:brave_drm_blink",
+    "//third_party/blink/renderer/platform:platform",
+  ]
 
   defines = [ "BLINK_IMPLEMENTATION=1" ]
 }
