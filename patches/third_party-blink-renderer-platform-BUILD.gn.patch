@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/platform/BUILD.gn b/third_party/blink/renderer/platform/BUILD.gn
+index 2aee75c42cacb7b2b60dc38686fdaa78929bab57..e3cc947c59849164a82ce1130425d41c343c4856 100644
+--- a/third_party/blink/renderer/platform/BUILD.gn
++++ b/third_party/blink/renderer/platform/BUILD.gn
+@@ -251,6 +251,7 @@ component("platform") {
+   visibility = []  # Allow re-assignment of list.
+   visibility = [
+     "//third_party/blink/*",
++    "//brave/third_party/blink/*",
+     "//tools/privacy_budget/font_indexer:*",
+   ]
+   output_name = "blink_platform"
