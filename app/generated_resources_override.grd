@@ -595,9 +595,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_FAVORITE_PEOPLE_WELCOME_TITLE" desc="Title of the opt-in UI for Google Photos in the new tab page emphasizing on favorite profiles.">
         See memories of your favorite profiles and more
       </message>
-      <if expr="is_android">
-        </if>
-
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">

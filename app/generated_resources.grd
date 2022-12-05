@@ -4763,18 +4763,6 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_MULTIPLE_EXTENSIONS" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
           Click to allow on <ph name="ORIGIN">$1<ex>google.com</ex></ph>:
         </message>
-        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUBBLE_SINGLE_EXTENSION_TITLE" desc="The title of the request access bubble to tell the user to accept the bubble to always run the extension on the site.">
-          Always allow "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" to run on <ph name="ORIGIN">$2<ex>google.com</ex></ph>?
-        </message>
-        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUBBLE_MULTIPLE_EXTENSIONS_TITLE" desc="The title of the request access bubble to tell the user to accept the bubble to always run the extensions on the site.">
-          Always allow these extensions to run on <ph name="ORIGIN">$1<ex>google.com</ex></ph>?
-        </message>
-        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUBBLE_OK_BUTTON_LABEL" desc="The label of the button to allow the extension(s) to run on the site.">
-          Always allow
-        </message>
-        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUBBLE_CANCEL_BUTTON_LABEL" desc="The label of the button to don't allow the extension(s) to run on the site.">
-          No thanks
-        </message>
         <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_TITLE_HAS_ACCESS" desc="The title in the card that shows up on mouse hover of a toolbar action when extension has access to the current site.">
           Allowed to read &amp; change
         </message>
@@ -6358,6 +6346,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_HIDE_SHORTCUTS_DESC" desc="The description for the option to hide shortcuts in the customization menu on the New Tab Page">
         Don't show shortcuts on this page
       </message>
+      <message name="IDS_NTP_CUSTOMIZE_SHOW_SHORTCUTS_LABEL" desc="The label for the option to show shortcuts in the customization menu on the New Tab Page">
+        Show shortcuts
+      </message>
       <message name="IDS_NTP_CUSTOMIZE_MY_SHORTCUTS_LABEL" desc="The label for the option to show user selected shortcuts in the customization menu on the New Tab Page">
         My shortcuts
       </message>
@@ -6780,12 +6771,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Got extensions? <ph name="BEGIN_LINK">&lt;a href="chrome://extensions"&gt;</ph>Manage your extensions<ph name="END_LINK">&lt;/a&gt;</ph> in one easy place.
       </message>
 
-      <if expr="is_android">
-        <message name="IDS_NTP_EXPLORE_SITES_TILE_TITLE" desc="A label for a button that when clicked takes the user to a tab that contains categorized links to websites that are popular in their country. [CHAR_LIMIT=12]">
-          Top sites
-        </message>
-      </if>
-
       <!-- Star View menu -->
       <if expr="use_titlecase">
         <message name="IDS_STAR_VIEW_MENU_ADD_BOOKMARK" desc="The item label of the menu triggered from the star icon in the location bar for adding a bookmark.">
@@ -6902,9 +6887,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Bookmarks strings -->
-      <message name="IDS_BOOKMARKS_FOLDER_SORT" desc="Label for the active folder and sort type in the side panel.">
-        <ph name="FOLDER_TITLE">$1<ex>All Bookmarks</ex></ph> (<ph name="SORT_TYPE">$2<ex>Newest</ex>)</ph>
-      </message>
       <message name="IDS_BOOKMARKS_SORT_BY_TYPE" desc="Menu item label for selecting the bookmarks sort type.">
         Sort by <ph name="SORT_TYPE">$1<ex>Newest</ex></ph>
       </message>
@@ -6926,8 +6908,26 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_BOOKMARKS_SORT_REVERSE_ALPHABETICALLY" desc="Label for the reverse alphabetical bookmarks sort type">
         Z to A
       </message>
+      <message name="IDS_BOOKMARKS_VISUAL_VIEW" desc="Label for the visual view bookmarks menu option">
+        Visual view
+      </message>
+      <message name="IDS_BOOKMARKS_COMPACT_VIEW" desc="Label for the compact view bookmarks menu option">
+        Compact view
+      </message>
       <message name="IDS_BOOKMARKS_SORT_MENU_A11Y_LABEL" is_accessibility_with_no_ui="true" desc="Screen reader label for the button which opens the sort menu in the bookmarks side panel.">
-        Sort Options
+        View List Options
+      </message>
+      <message name="IDS_BOOKMARKS_CREATE_NEW_FOLDER_A11Y_LABEL" is_accessibility_with_no_ui="true" desc="Screen reader label for the button which creates a new folder in the bookmarks side panel.">
+        Create New Folder
+      </message>
+      <message name="IDS_BOOKMARKS_EDIT_BOOKMARK_LIST_A11Y_LABEL" is_accessibility_with_no_ui="true" desc="Screen reader label for the button which toggles the bulk edit state in the bookmarks side panel.">
+        Edit Bookmark List
+      </message>
+      <message name="IDS_BOOKMARKS_EMPTY_STATE_TITLE" desc="Title for the bookmarks side panel empty state">
+        You'll find your bookmarks here
+      </message>
+      <message name="IDS_BOOKMARKS_EMPTY_STATE_BODY" desc="Body text for the bookmarks side panel empty state">
+        Bookmark things you want to come back to later
       </message>
 
       <!-- Read Anything strings -->
@@ -7449,6 +7449,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
 
       <!-- User Education Tutorial Strings -->
+      <message name="IDS_TUTORIAL_GENERIC_SUCCESS_TITLE" desc="The title of the generic success step in the user education tutorials">
+        Nicely Done!
+      </message>
       <if expr="use_titlecase">
         <message name="IDS_TUTORIAL_TAB_GROUP_ADD_TAB_TO_GROUP" desc="The description of the add tab step in the tab group tutorial">
           Right-click on a tab and select "Add Tab To New Group"
@@ -7483,6 +7486,23 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TUTORIAL_TAB_GROUP_SUCCESS_DESCRIPTION" desc="The description of the success step in the tab group tutorial">
         Try using tab groups to organize tasks, for online shopping, and more
+      </message>
+
+      <!-- Side Panel Tutorial Strings -->
+      <message name="IDS_TUTORIAL_SIDE_PANEL_READING_LIST_OPEN_SIDE_PANEL" desc="The description of the 'open side panel' step in side panel reading list tutorial">
+        Click the side panel icon to open it
+      </message>
+      <message name="IDS_TUTORIAL_SIDE_PANEL_READING_LIST_ADD_TAB" desc="The description of the 'add tab' step in side panel reading list tutorial">
+        Now add the current tab to your list
+      </message>
+      <message name="IDS_TUTORIAL_SIDE_PANEL_READING_LIST_MARK_READ" desc="The description of the 'mark as read' step in side panel reading list tutorial">
+        Select “Mark as read” to move the page to the bottom of your list
+      </message>
+      <message name="IDS_TUTORIAL_SIDE_PANEL_READING_LIST_CLICK_DROPDOWN" desc="The description of the 'click drop down' step in side panel reading list tutorial">
+        Click the drop down to choose another panel
+      </message>
+      <message name="IDS_TUTORIAL_SIDE_PANEL_READING_LIST_SUCCESS_BODY" desc="The description of the body text in the 'success' step in side panel reading list tutorial">
+        Try using the side panel for bookmarks, journeys, and more
       </message>
 
       <!-- Browser Hung Plugin Detector -->
@@ -9823,11 +9843,11 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_AUTOFILL" desc="This string appears as an item in a list of sync data types on a page that asks users if they want to turn on sync. Translate 'autofill' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=77d3626. Used in the tangible sync confirmation page.">
         Autofill
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_HISTORY" desc="This string appears as an item in a list of sync data types on a page that asks users if they want to turn on sync. Translate 'history' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=59c3162. Used in the tangible sync confirmation page.">
-        History
+      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_EXTENSIONS" desc="This string appears as an item in a list of sync data types on a page that asks users if they want to turn on sync. Translate 'extensions' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=62f9351. Used in the tangible sync confirmation page.">
+        Extensions
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_EXTENSIONS_AND_MORE" desc="This string appears as an item in a list of sync data types on a page that asks users if they want to turn on sync. Translate 'extensions' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=62f9351. Translate 'and more' so that it conveys that there are additional similar items that are not listed. Used in the tangible sync confirmation page.">
-        Extensions and more
+      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_HISTORY_AND_MORE" desc="This string appears as an item in a list of sync data types on a page that asks users if they want to turn on sync. Translate 'history' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=59c3162. Translate 'and more' so that it conveys that there are additional similar items that are not listed. Used in the tangible sync confirmation page.">
+        History and more
       </message>
       <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_INFO_DESC" desc="Description in the information about sync and information about customizing Sync settings on the tangible sync confirmation page">
         You can always choose what to sync in settings. Brave may personalize Search and other services based on your history.
@@ -12286,6 +12306,18 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Brave is being controlled by automated test software.
     </message>
 
+    <!-- Brave for Testing infobar main text -->
+    <message name="IDS_CHROME_FOR_TESTING_DISCLAIMER" desc="An infobar prompt shown whenever Brave for Testing is launched.">
+      Brave for Testing v<ph name="BROWSER_VERSION">
+        $1<ex>109.0.5369.0</ex>
+      </ph> is only for automated testing. For regular browsing, use a standard version of Brave that updates automatically.
+    </message>
+
+    <!-- Brave for Testing infobar download chrome hyperlink text -->
+    <message name="IDS_DOWNLOAD_CHROME" desc="Hyperlink call-out to download Brave">
+      Download Brave
+    </message>
+
     <!-- Security Key permission -->
     <if expr="is_android">
       <message name="IDS_SECURITY_KEY_ATTESTATION_INFOBAR_QUESTION" desc="An infobar prompt shown to a user when a website wants to see information that identifies the user's Security Key, such as make and model number. The 'make' of a device is the brand name of the manufacturer, e.g. Yubikey is a make of Security Key. The 'model' of a device is the specific product, e.g. Yubikey Neo is a model of Security Key.">
@@ -13605,6 +13637,157 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_OPEN_SETTINGS_BUTTON" desc="The user can choose “Settings” to visit chrome://settings/privacySandbox. If they do, they’ll find the toggle on for Sandbox trials, which include everything they’ve read above. They can leave trials on or turn them off on this page. Choosing “Settings”, the user will navigate away from this page and won’t be able to return here.">
       Settings
+    </message>
+
+    <!-- Privacy Sandbox Dialog M1 strings -->
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_TITLE" translateable="false" desc="Title of privacy sandbox consent dialog">
+      Lorem ipsum Consent
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_DESCRIPTION_1" translateable="false" desc="First part of description in privacy sandbox consent dialog">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium pulvinar metus non mollis. Quisque placerat eget nisl sit amet facilisis.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_DESCRIPTION_2" translateable="false" desc="Second part of description in privacy sandbox consent dialog">
+      Nulla in tortor a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit. Integer et libero id metus egestas consequat non a ipsum.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_DESCRIPTION_3" translateable="false" desc="Third part of description in privacy sandbox consent dialog">
+      Vestibulum pretium placerat justo vel suscipit. Quisque urna arcu, elementum ut venenatis ornare, consequat ac turpis.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_LEARN_MORE_EXPAND_LABEL" translateable="false" desc="Learn more expand label in privacy sandbox consent dialog">
+      Vestibulum orci risus, consectetur
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_DESCRIPTION_4" translateable="false" desc="Forth part of description in privacy sandbox consent dialog">
+      Vestibulum pretium placerat justo vel suscipit. Quisque urna arcu, elementum ut venenatis ornare, consequat ac turpis.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_SAVING_LABEL" translateable="false" desc="Saving state label in privacy sandbox consent dialog">
+      Consectetur
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_ACCEPT_BUTTON" translateable="false" desc="Accept button label in privacy sandbox consent dialog">
+      Quisque
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_DECLINE_BUTTON" translateable="false" desc="Decline button label in privacy sandbox consent dialog">
+      Lorem
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_LEARN_MORE_HEADING" translateable="false" desc="Learn more heading in privacy sandbox consent dialog">
+      Esed purus vestibulum velit convalli
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_LEARN_MORE_BULLET_1" translateable="false" desc="Learn more bullet point 1 in privacy sandbox consent dialog">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Nulla in tortor: <ph name="END_BOLD">&lt;/b&gt;</ph> a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_LEARN_MORE_BULLET_2" translateable="false" desc="Learn more bullet point 2 in privacy sandbox consent dialog">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Consectetur adipiscing elit:<ph name="END_BOLD">&lt;/b&gt;</ph> Duis pretium pulvinar metus non mollis
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_LEARN_MORE_BULLET_3" translateable="false" desc="Learn more bullet point 3 in privacy sandbox consent dialog">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Sed purus vestibulum:<ph name="END_BOLD">&lt;/b&gt;</ph> velit convallis suscipit. Aenean aliquam ut velit eget dapibus. Vestibulum orci risus, consectetur non odio vulputate, mattis dignissim purus. Cras id tempor mi.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_LEARN_MORE_LINK" translateable="false" desc="Learn more link in privacy sandbox consent dialog">
+      Esed purus vestibulum velit convalli
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_BANNER_IMAGE_A11Y_DESCRIPTION" translateable="false" desc="A11y description for the banner image in privacy sandbox consent dialog">
+      Sed ullamcorper, ligula ac tempus venenatis
+    </message>
+
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_TITLE" translateable="false" desc="Title of privacy sandbox notice EEA dialog">
+      Lorem ipsum Notice EEA
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_DESCRIPTION_1" translateable="false" desc="First part of description in privacy sandbox notice EEA dialog">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium pulvinar metus non mollis. Quisque placerat eget nisl sit amet facilisis.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_BULLET_1" translateable="false" desc="First bullet point in the description in privacy sandbox notice EEA dialog">
+      Nulla in tortor: a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_BULLET_2" translateable="false" desc="Second bullet point in the description in privacy sandbox notice EEA dialog">
+      Sed purus vestibulum: velit convallis suscipit. Aenean aliquam ut velit eget dapibus. Vestibulum orci risus, consectetur non odio vulputate, mattis dignissim purus. Cras id tempor mi.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_LEARN_MORE_EXPAND_LABEL" translateable="false" desc="Learn more expand label in privacy sandbox notice EEA dialog">
+      Vestibulum orci risus, consectetur
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_DESCRIPTION_2" translateable="false" desc="Second part of description in privacy sandbox notice EEA dialog">
+      Consectetur adipiscing elit duis pretium pulvinar metus non mollis
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_ACK_BUTTON" translateable="false" desc="Acknowledge button label in privacy sandbox notice EEA dialog">
+      Sed
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_SETTINGS_BUTTON" translateable="false" desc="Open settings button label in privacy sandbox notice EEA dialog">
+      Cras id
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_LEARN_MORE_HEADING_1" translateable="false" desc="Learn more first heading in privacy sandbox notice EEA dialog">
+      Esed purus vestibulum velit convalli
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_LEARN_MORE_DESCRIPTION" translateable="false" desc="Learn more description in privacy sandbox notice EEA dialog">
+      Nulla in tortor a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit. Integer et libero id metus egestas consequat non a ipsum.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_LEARN_MORE_HEADING_2" translateable="false" desc="Learn more second heading in privacy sandbox notice EEA dialog">
+      Proin sed purus vestibulum velit velit eget dapibus.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_LEARN_MORE_BULLET_1" translateable="false" desc="Learn more bullet point 1 in privacy sandbox notice EEA dialog">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Nulla in tortor:<ph name="END_BOLD">&lt;/b&gt;</ph> a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_LEARN_MORE_BULLET_2" translateable="false" desc="Learn more bullet point 2 in privacy sandbox notice EEA dialog">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Consectetur adipiscing elit:<ph name="END_BOLD">&lt;/b&gt;</ph> Duis pretium pulvinar metus non mollis
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_LEARN_MORE_BULLET_3" translateable="false" desc="Learn more bullet point 3 in privacy sandbox notice EEA dialog">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Sed purus vestibulum:<ph name="END_BOLD">&lt;/b&gt;</ph> velit convallis suscipit. Aenean aliquam ut velit eget dapibus. Vestibulum orci risus, consectetur non odio vulputate, mattis dignissim purus. Cras id tempor mi.
+    </message>
+
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_TITLE" translateable="false" desc="Title of privacy sandbox notice ROW dialog">
+       Lorem ipsum Notice ROW
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_DESCRIPTION_1" translateable="false" desc="First part of description in privacy sandbox notice ROW dialog">
+       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium pulvinar metus non mollis.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_DESCRIPTION_2" translateable="false" desc="Second part of description in privacy sandbox notice ROW dialog">
+      Nulla in tortor a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit. Integer et libero id metus egestas consequat non a ipsum. Quisque placerat eget nisl sit amet facilisis.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_DESCRIPTION_3" translateable="false" desc="Third part of description in privacy sandbox notice ROW dialog">
+      Vestibulum pretium placerat justo vel suscipit. Quisque urna arcu, elementum ut venenatis ornare, consequat ac turpis. Vestibulum orci risus, consectetur non odio vulputate, mattis dignissim purus. Cras id tempor mi.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_DESCRIPTION_4" translateable="false" desc="Fourth part of description in privacy sandbox notice ROW dialog">
+      Proin sed purus vestibulum velit convallis suscipit eget dapibus.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_ACK_BUTTON" translateable="false" desc="Acknowledge button label in privacy sandbox notice EEA dialog">
+      Sed
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_SETTINGS_BUTTON" translateable="false" desc="Open settings button label in privacy sandbox notice EEA dialog">
+      Cras id
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_EXPAND_LABEL" translateable="false" desc="Learn more expand label in privacy sandbox notice ROW dialog">
+      Vestibulum orci risus consectetur
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_HEADING_1" translateable="false" desc="Learn more first heading in privacy sandbox notice ROW dialog">
+      Esed purus vestibulum velit convalli
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_1" translateable="false" desc="First part of learn more description in privacy sandbox notice ROW dialog">
+      Etiam dictum sem et neque molestie lobortis. Morbi quam tellus, tincidunt eget dapibus ac, lobortis et lacus. Integer nec egestas elit. Nulla venenatis facilisis dui eget suscipit.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_HEADING_2" translateable="false" desc="Learn more second heading in privacy sandbox notice ROW dialog">
+      Class aptent taciti sociosqu ad
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_2" translateable="false" desc="Second part of learn more description in privacy sandbox notice ROW dialog">
+      Vestibulum pretium placerat justo vel suscipit. Quisque urna arcu.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_BULLET_1" translateable="false" desc="Learn more bullet point 1 in privacy sandbox notice ROW dialog">
+      Sed elementum tellus condimentum quam vestibulum lacinia. Ut eu lobortis massa, venenatis sodales lacus. Nulla elementum magna et tortor efficitur, at volutpat metus varius.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_BULLET_2" translateable="false" desc="Learn more bullet point 2 in privacy sandbox notice ROW dialog">
+      Duis tempor nulla nisi, ac bibendum lorem tempus sit amet. Proin non blandit risus. Maecenas facilisis enim nec tristique tristique. Eelementum ut venenatis ornare, consequat ac turpis. Vestibulum orci risus, consectetur non odio vulputate, mattis dignissim purus. Cras id tempor mi.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_3" translateable="false" desc="Third part of learn more description in privacy sandbox notice ROW dialog">
+      Etiam hendrerit turpis nibh, ac maximus lectus placerat at. Vivamus ligula quam, posuere luctus felis eu, dictum egestas arcu. per conubia nostra, per inceptos himenaeos. Cras ut metus vel est molestie finibus nec ut orci.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_4" translateable="false" desc="Fourth part of learn more description in privacy sandbox notice ROW dialog">
+      Aliquam euismod scelerisque metus, in aliquet est vehicula ut. Curabitur sit amet ligula quis ante maximus gravida non id magna. Pellentesque interdum venenatis leo, at ultrices felis mollis nec. Integer vulputate velit eget mauris lacinia, ut ullamcorper mauris vehicula.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_HEADING_3" translateable="false" desc="Learn more third heading in privacy sandbox notice ROW dialog">
+      Orci varius natoque penatibus et
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_5" translateable="false" desc="Fifth part of description in privacy sandbox notice ROW dialog">
+      Suspendisse at dui pulvinar, rhoncus orci at, porttitor nibh. Curabitur lacinia nulla sem, eu euismod dolor vulputate quis. Duis mattis eros et arcu elementum tempor. Duis pharetra eleifend sagittis.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_6" translateable="false" desc="Sixth part of description in privacy sandbox notice ROW dialog">
+      Cras sed lacus suscipit, efficitur erat nec, semper sapien. Fusce at nunc molestie, elementum augue at, auctor nunc. Sed dui nisi, consectetur sit amet urna vitae, facilisis scelerisque justo.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_BANNER_IMAGE_A11Y_DESCRIPTION" translateable="false" desc="A11y description for the banner image in privacy sandbox notice ROW dialog">
+      Ut venenatis magna nec lacus facilisis
     </message>
 
     <!-- Automated Password Change on Desktop strings -->

@@ -809,6 +809,18 @@ CHAR_LIMIT guidelines:
       <message name="IDS_PREFS_PRIVACY_SECURITY" desc="Title for the Privacy and Security preferences. [CHAR_LIMIT=32]">
         Privacy and security
       </message>
+      <message name="IDS_PRIVACY_SECTION_TITLE" desc="Title for the Privacy settings section.">
+        Privacy
+      </message>
+      <message name="IDS_SECURITY_SECTION_TITLE" desc="Title for the Security settings section.">
+        Security
+      </message>
+      <message name="IDS_AD_PRIVACY_LINK_ROW_LABEL" translateable="false" desc="Label for the ad privacy row.">
+        Donec semper
+      </message>
+      <message name="IDS_AD_PRIVACY_LINK_ROW_SUB_LABEL" translateable="false" desc="Sublabel for the ad privacy row.">
+        Fusce purus nibh, dictum sit amet mi in, fringilla ullamcorper tortor
+      </message>
       <message name="IDS_CONTEXTUAL_SEARCH_TITLE" desc="Name for the Contextual Search feature, which allows users to search for a term in a web page by tapping on it.">
         Touch to Search
       </message>
@@ -944,19 +956,19 @@ When you delete your browsing history — all or for a specific site — you als
       <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_SUMMARY" desc="The description of card 3 of 3. * “help”: This API is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players.">
         Help sites fight fraud and distinguish bots from profiles
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_DESCRIPTION_TRIALS_ON" desc="The first of 3 paragraphs on the spam &amp; fraud card. This is a behind-the-scenes upgrade to Brave. There aren’t any user controls or data to interact with, at least not yet. * “trust tokens”: explained in the next paragraph * “help”: This feature is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players. * “interaction”: is broad. It’s not just viewing a site but also how you interact with it, like by signing in * “Later”:  is important to convey the passage of time. We don’t want to convey how much time (it could be tiny). What’s important is that the user understands this is essentially a two-step process. A trust token is issued. Sometime in the future, when hyou visit a different site, that trust token might get used. ">
-        Spam &amp; fraud reduction relies on trust tokens to help sites fight fraud and distinguish bots from profiles.
+      <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_DESCRIPTION_TRIALS_ON" desc="The first of 3 paragraphs on the spam &amp; fraud card. This is a behind-the-scenes upgrade to Brave. There aren’t any user controls or data to interact with, at least not yet. * “private state tokens”: explained in the next paragraph * “help”: This feature is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players. * “interaction”: is broad. It’s not just viewing a site but also how you interact with it, like by signing in * “Later”:  is important to convey the passage of time. We don’t want to convey how much time (it could be tiny). What’s important is that the user understands this is essentially a two-step process. A private state token is issued. Sometime in the future, when hyou visit a different site, that private state token might get used. ">
+        Spam &amp; fraud reduction relies on private state tokens to help sites fight fraud and distinguish bots from profiles.
 
-Based on your interaction with a site, like regularly signing in to an account, that site can issue a trust token to your browser. Later, if other sites you visit check for and find a valid trust token, they’re more likely to treat you like a profile and not a bot.
+Based on your interaction with a site, like regularly signing in to an account, that site can issue a private state token to your browser. Later, if other sites you visit check for and find a valid private state token, they’re more likely to treat you like a profile and not a bot.
 
-Trust tokens improve privacy on the web and can’t be used to find out who you are.
+Private state tokens improve privacy on the web and can’t be used to find out who you are.
       </message>
-            <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_DESCRIPTION_TRIALS_OFF" desc="The first of 3 paragraphs on the spam &amp; fraud card. This is a behind-the-scenes upgrade to Brave. There aren’t any user controls or data to interact with, at least not yet. * “trust tokens”: explained in the next paragraph * “help”: This feature is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players. * “interaction”: is broad. It’s not just viewing a site but also how you interact with it, like by signing in * “Later”:  is important to convey the passage of time. We don’t want to convey how much time (it could be tiny). What’s important is that the user understands this is essentially a two-step process. A trust token is issued. Sometime in the future, when hyou visit a different site, that trust token might get used. ">
-        When trials are on, Spam &amp; fraud reduction relies on trust tokens to help sites fight fraud and distinguish bots from profiles.
+            <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_DESCRIPTION_TRIALS_OFF" desc="The first of 3 paragraphs on the spam &amp; fraud card. This is a behind-the-scenes upgrade to Brave. There aren’t any user controls or data to interact with, at least not yet. * “private state tokens”: explained in the next paragraph * “help”: This feature is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players. * “interaction”: is broad. It’s not just viewing a site but also how you interact with it, like by signing in * “Later”:  is important to convey the passage of time. We don’t want to convey how much time (it could be tiny). What’s important is that the user understands this is essentially a two-step process. A private state token is issued. Sometime in the future, when hyou visit a different site, that private state token might get used. ">
+        When trials are on, Spam &amp; fraud reduction relies on private state tokens to help sites fight fraud and distinguish bots from profiles.
 
-Based on your interaction with a site, like regularly signing in to an account, that site can issue a trust token to your browser. Later, if other sites you visit check for and find a valid trust token, they’re more likely to treat you like a profile and not a bot.
+Based on your interaction with a site, like regularly signing in to an account, that site can issue a private state token to your browser. Later, if other sites you visit check for and find a valid private state token, they’re more likely to treat you like a profile and not a bot.
 
-Trust tokens improve privacy on the web and can’t be used to find out who you are.
+Private state tokens improve privacy on the web and can’t be used to find out who you are.
       </message>
       <message name="IDS_PRIVACY_SANDBOX_LEARN_MORE_DESCRIPTION_TOPICS_1" desc="TOPICS API Bullet 1 of 3 that appear beneath the “Your interests as estimated by Brave” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “What data is used:” is bold and serves as a label to help profiles skimming the page. * “Your browsing history”: The user’s browsing history is available beneath the “History” menu at Brave’s top level. The Topics API estimates topics of interest based on sites in the user’s browsing history that are participating in the trials.">
         <ph name="BEGIN_BOLD">&lt;b&gt;</ph>What data is used:<ph name="END_BOLD">&lt;/b&gt;</ph> Your browsing history, a record of sites you’ve visited using Brave on this device.
@@ -1097,6 +1109,267 @@ Trust tokens improve privacy on the web and can’t be used to find out who you 
       </message>
       <message name="IDS_PRIVACY_SANDBOX_NOTICE_SHEET_DESCRIPTION" desc="* “Brave is finding new ways”: “finding” is meant to convey a work in progress, like “build” in the title. The features are live and functional, but still in beta. So we want a verb that’s stronger than “exploring” but weaker than “launching”. * “reduce tracking”: This used to read “reduce cross-site tracking”, but we’ve dropped “cross-site” because it makes the idea unnecessarily complicated. * “estimate your interests”: Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). * “Then” is an important keyword. It suggests some amount of time later. The first step is that interests are generated. Later (minutes or weeks), a different site might request interests.">
         Brave is finding new ways to reduce tracking and keep you even safer as you browse. Brave also <ph name="BEGIN_LINK">&lt;link&gt;</ph>estimates your interests<ph name="END_LINK">&lt;/link&gt;</ph> and enables you to manage them. Then, sites you visit can ask Brave for your interests to show you ads.
+      </message>
+
+      <!-- Privacy Sandbox v4 - Consent EEA. -->
+      <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_TITLE" translateable="false" desc="Privacy Sandbox dialog consent EEA: title.">
+        Lorem ipsum Consent
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_DESCRIPTION_1" translateable="false" desc="Privacy Sandbox dialog consent EEA: First section of the body, above the image.">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium pulvinar metus non mollis. Quisque placerat eget nisl sit amet facilisis.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_DESCRIPTION_2" translateable="false" desc="Privacy Sandbox dialog consent EEA: Second section of the body, above the image.">
+        Nulla in tortor a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit. Integer et libero id metus egestas consequat non a ipsum.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_DESCRIPTION_3" translateable="false" desc="Privacy Sandbox dialog consent EEA: Third section of the body, below the image, exclues the expand text.">
+        Vestibulum pretium placerat justo vel suscipit. Quisque urna arcu, elementum ut venenatis ornare, consequat ac turpis.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_LEARN_MORE_EXPAND_LABEL" translateable="false" desc="Privacy Sandbox dialog consent EEA: Text user clicks to expand the collapsed section.">
+        Vestibulum orci risus, consectetur
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_DESCRIPTION_4" translateable="false" desc="Privacy Sandbox dialog consent EEA: Fourth section of the body, below the collapsed section.">
+        Vestibulum pretium placerat justo vel suscipit. Quisque urna arcu, elementum ut venenatis ornare, consequat ac turpis.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_SAVING_LABEL" translateable="false" desc="Privacy Sandbox dialog consent EEA: Saving text.">
+        Consectetur
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_ACCEPT_BUTTON" translateable="false" desc="Privacy Sandbox dialog consent EEA: Consent Yes button.">
+        Quisque
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_DECLINE_BUTTON" translateable="false" desc="Privacy Sandbox dialog consent EEA: Consent No button.">
+        Lorem
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_LEARN_MORE_HEADING" translateable="false" desc="Privacy Sandbox dialog consent EEA: Header inside expand in consent.">
+        Esed purus vestibulum velit convalli
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_LEARN_MORE_BULLET_1" translateable="false" desc="Privacy Sandbox dialog consent EEA: First bullet point in expand in consent.">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Nulla in tortor:<ph name="END_BOLD">&lt;/b&gt;</ph> a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_LEARN_MORE_BULLET_2" translateable="false" desc="Privacy Sandbox dialog consent EEA: Second bullet point in expand in consent.">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Consectetur adipiscing elit:<ph name="END_BOLD">&lt;/b&gt;</ph> Duis pretium pulvinar metus non mollis
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_LEARN_MORE_BULLET_3" translateable="false" desc="Privacy Sandbox dialog consent EEA: Third bullet point in expand in consent.">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Sed purus vestibulum: <ph name="END_BOLD">&lt;/b&gt;</ph> velit convallis suscipit. Aenean aliquam ut velit eget dapibus. Vestibulum orci risus, consectetur non odio vulputate, mattis dignissim purus. Cras id tempor mi.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_LEARN_MORE_LINK" translateable="false" desc="Privacy Sandbox dialog consent EEA: Non-interactable link out 'Learn more with Brave's etc ect'">
+        Esed purus vestibulum velit convalli
+      </message>
+
+      <!-- Privacy Sandbox v4 - Notice EEA. -->
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_TITLE" translateable="false" desc="Privacy Sandbox dialog notice EEA: title.">
+        Lorem ipsum Notice EEA
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_DESCRIPTION_1" translateable="false" desc="Privacy Sandbox dialog notice EEA: First section of the body, above the bullet points.">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium pulvinar metus non mollis. Quisque placerat eget nisl sit amet facilisis.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_BULLET_1" translateable="false" desc="Privacy Sandbox dialog notice EEA: First bullet point (outside expand).">
+        Nulla in tortor: a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_BULLET_2" translateable="false" desc="Privacy Sandbox dialog notice EEA: Second bullet point (outside expand).">
+        Sed purus vestibulum: velit convallis suscipit. Aenean aliquam ut velit eget dapibus. Vestibulum orci risus, consectetur non odio vulputate, mattis dignissim purus. Cras id tempor mi.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_LEARN_MORE_EXPAND_LABEL" translateable="false" desc="Privacy Sandbox dialog notice EEA: Text user clicks to expand the collapsed section.">
+        Vestibulum orci risus, consectetur
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_DESCRIPTION_2" translateable="false" desc="Privacy Sandbox dialog notice EEA: Second section of text, below the expand label.">
+        Consectetur adipiscing elit duis pretium pulvinar metus non mollis
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_ACK_BUTTON" translateable="false" desc="Privacy Sandbox dialog notice EEA: Got it button.">
+        Sed
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_SETTINGS_BUTTON" translateable="false" desc="Privacy Sandbox dialog notice EEA: Settings button.">
+        Cras id
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_LEARN_MORE_HEADING_1" translateable="false" desc="Privacy Sandbox dialog notice EEA: First header in learn more expand.">
+        Esed purus vestibulum velit convalli
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_LEARN_MORE_DESCRIPTION" translateable="false" desc="Privacy Sandbox dialog notice EEA: First description block in expand.">
+        Nulla in tortor a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit. Integer et libero id metus egestas consequat non a ipsum.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_LEARN_MORE_HEADING_2" translateable="false" desc="Privacy Sandbox dialog notice EEA: Second header in learn more expand.">
+        Proin sed purus vestibulum velit velit eget dapibus.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_LEARN_MORE_BULLET_1" translateable="false" desc="Privacy Sandbox dialog notice EEA: First bullet point in expand.">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Nulla in tortor:<ph name="END_BOLD">&lt;/b&gt;</ph> a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_LEARN_MORE_BULLET_2" translateable="false" desc="Privacy Sandbox dialog notice EEA: Second bullet point in expand.">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Consectetur adipiscing elit:<ph name="END_BOLD">&lt;/b&gt;</ph> Duis pretium pulvinar metus non mollis
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_LEARN_MORE_BULLET_3" translateable="false" desc="Privacy Sandbox dialog notice EEA: Third bullet point in expand.">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Sed purus vestibulum: <ph name="END_BOLD">&lt;/b&gt;</ph> velit convallis suscipit. Aenean aliquam ut velit eget dapibus. Vestibulum orci risus, consectetur non odio vulputate, mattis dignissim purus. Cras id tempor mi.
+      </message>
+
+      <!-- Privacy Sandbox v4 - Notice ROW. -->
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_TITLE" translateable="false" desc="Privacy Sandbox dialog notice ROW: title.">
+        Lorem ipsum Notice ROW
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_DESCRIPTION_1" translateable="false" desc="Privacy Sandbox dialog notice ROW: First section of the body, above the image.">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium pulvinar metus non mollis.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_DESCRIPTION_2" translateable="false" desc="Privacy Sandbox dialog notice ROW: Second section of the body, above the image.">
+        Nulla in tortor a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit. Integer et libero id metus egestas consequat non a ipsum. Quisque placerat eget nisl sit amet facilisis.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_DESCRIPTION_3" translateable="false" desc="Privacy Sandbox dialog notice ROW: Third section of the body, below the image.">
+        Vestibulum pretium placerat justo vel suscipit. Quisque urna arcu, elementum ut venenatis ornare, consequat ac turpis. Vestibulum orci risus, consectetur non odio vulputate, mattis dignissim purus. Cras id tempor mi.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_DESCRIPTION_4" translateable="false" desc="Privacy Sandbox dialog notice ROW: Fourth section of the body, below the expand label.">
+        Proin sed purus vestibulum velit convallis suscipit eget dapibus.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_ACK_BUTTON" translateable="false" desc="Privacy Sandbox dialog notice ROW: Got it button on notice in eea.">
+        Sed
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_SETTINGS_BUTTON" translateable="false" desc="Privacy Sandbox dialog notice ROW: Settings button in notice.">
+        Cras id
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_LEARN_MORE_EXPAND_LABEL" translateable="false" desc="Privacy Sandbox dialog notice ROW: Expand text.">
+        Vestibulum orci risus consectetur
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_LEARN_MORE_HEADING_1" translateable="false" desc="Privacy Sandbox dialog notice ROW: First header inside expand section.">
+        Esed purus vestibulum velit convalli
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_1" translateable="false" desc="Privacy Sandbox dialog notice ROW: First description text in body, underneath first header.">
+        Etiam dictum sem et neque molestie lobortis. Morbi quam tellus, tincidunt eget dapibus ac, lobortis et lacus. Integer nec egestas elit. Nulla venenatis facilisis dui eget suscipit.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_LEARN_MORE_HEADING_2" translateable="false" desc="Privacy Sandbox dialog notice ROW: Second heading inside expand section.">
+        Class aptent taciti sociosqu ad
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_2" translateable="false" desc="Privacy Sandbox dialog notice ROW: Second description text in body, underneath second header.">
+        Vestibulum pretium placerat justo vel suscipit. Quisque urna arcu.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_LEARN_MORE_BULLET_1" translateable="false" desc="Privacy Sandbox dialog notice ROW: First bullet point in ROW notice expand.">
+        Sed elementum tellus condimentum quam vestibulum lacinia. Ut eu lobortis massa, venenatis sodales lacus. Nulla elementum magna et tortor efficitur, at volutpat metus varius.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_LEARN_MORE_BULLET_2" translateable="false" desc="Privacy Sandbox dialog notice ROW: Second bullet point in ROW notice expand.">
+        Duis tempor nulla nisi, ac bibendum lorem tempus sit amet. Proin non blandit risus. Maecenas facilisis enim nec tristique tristique. Eelementum ut venenatis ornare, consequat ac turpis. Vestibulum orci risus, consectetur non odio vulputate, mattis dignissim purus. Cras id tempor mi.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_3" translateable="false" desc="Privacy Sandbox dialog notice ROW: Third section in body, below bullet points.">
+        Etiam hendrerit turpis nibh, ac maximus lectus placerat at. Vivamus ligula quam, posuere luctus felis eu, dictum egestas arcu. per conubia nostra, per inceptos himenaeos. Cras ut metus vel est molestie finibus nec ut orci.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_4" translateable="false" desc="Privacy Sandbox dialog notice ROW: Fourth section in body, immediately below third.">
+        Aliquam euismod scelerisque metus, in aliquet est vehicula ut. Curabitur sit amet ligula quis ante maximus gravida non id magna. Pellentesque interdum venenatis leo, at ultrices felis mollis nec. Integer vulputate velit eget mauris lacinia, ut ullamcorper mauris vehicula.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_LEARN_MORE_HEADING_3" translateable="false" desc="Privacy Sandbox dialog notice ROW: Third header inside learn more expand.">
+        Orci varius natoque penatibus et
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_5" translateable="false" desc="Privacy Sandbox dialog notice ROW: Fifth section in body below header 3.">
+        Suspendisse at dui pulvinar, rhoncus orci at, porttitor nibh. Curabitur lacinia nulla sem, eu euismod dolor vulputate quis. Duis mattis eros et arcu elementum tempor. Duis pharetra eleifend sagittis.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_6" translateable="false" desc="Privacy Sandbox dialog notice ROW: Sixth section in body, immediately below fifth.">
+        Cras sed lacus suscipit, efficitur erat nec, semper sapien. Fusce at nunc molestie, elementum augue at, auctor nunc. Sed dui nisi, consectetur sit amet urna vitae, facilisis scelerisque justo.
+      </message>
+
+      <!-- Privacy Sandbox v4 - Ad Privacy Page -->
+      <message name="IDS_AD_PRIVACY_PAGE_TITLE" translateable="false" desc="Title for the Ad Privacy preferences page.">
+        Donec semper
+      </message>
+      <message name="IDS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_LABEL" translateable="false" desc="Title for topics preference.">
+        Mauris interdum lectus vitae lacinia
+      </message>
+      <message name="IDS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_SUB_LABEL_ENABLED" translateable="false" desc="Description for topics preference when enabled.">
+        Enabled Nulla eros tortor, placerat blandit dictum a, interdum id metus
+      </message>
+      <message name="IDS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_LABEL" translateable="false" desc="Title for the fledge preference.">
+        Aenean erat leo
+      </message>
+      <message name="IDS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_SUB_LABEL_ENABLED" translateable="false" desc="Description for the fledge preference when enabled.">
+        Enabled Duis scelerisque a mi eget ultricies
+      </message>
+      <message name="IDS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_LABEL" translateable="false" desc="Title for the ad measurement preference.">
+        Vestibulum augue erat
+      </message>
+      <message name="IDS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_SUB_LABEL_ENABLED" translateable="false" desc="Description for the ad measurement preference when enabled.">
+        Enabled Vivamus id lacus et lacus porttitor vulputate. Sed semper egestas orci vel maximus.
+      </message>
+
+      <!-- Privacy Sandbox v4 - Topics Page -->
+      <message name="IDS_SETTINGS_TOPICS_PAGE_TITLE" translateable="false" desc="Title for the Topics preferences page.">
+        Mauris interdum lectus vitae lacinia
+      </message>
+      <message name="IDS_SETTINGS_TOPICS_PAGE_TOGGLE_LABEL" translateable="false" desc="Title for the Topics toggle.">
+        Nunc gravida condimentum consectetur
+      </message>
+      <!-- TODO(http://b/254412601): Format link.-->
+      <message name="IDS_SETTINGS_TOPICS_PAGE_TOGGLE_SUB_LABEL" translateable="false" desc="Description for the Topics toggle.">
+        Vivamus nibh turpis, varius quis nisi vel, porta laoreet tellus.  <ph name="BEGIN_LINK">&lt;link&gt;</ph>Mauris porta imperdiet venenatis<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
+      <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_HEADING" translateable="false" desc="Section title for the current Topics list.">
+        Mauris at lectus
+      </message>
+      <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_DESCRIPTION" translateable="false" desc="Section description for the current Topics list.">
+        Nulla tincidunt iaculis nulla, sit amet viverra massa luctus nec. Integer eget pellentesque magna, et venenatis lorem. Integer a porta elit, eget bibendum neque.
+      </message>
+      <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_DESCRIPTION_DISABLED" translateable="false" desc="Description which appears when Topics are disabled.">
+        Sed porta viverra lacus ut euismod. Integer a cursus metus, ac ultricies libero.
+      </message>
+      <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_DESCRIPTION_EMPTY" translateable="false" desc="Description which appears when the Topics list is empty.">
+        Curabitur sagittis sapien ut turpis interdum, vitae porttitor sem pretium. Vestibulum sem mauris, ultrices ac massa sit amet, sodales aliquet est.
+      </message>
+      <message name="IDS_SETTINGS_TOPICS_PAGE_BLOCKED_TOPICS_HEADING" translateable="false" desc="Title for the blocked Topics preference.">
+        Integer faucibus metus
+      </message>
+      <!-- TODO(http://b/254412601): Format links.-->
+      <message name="IDS_SETTINGS_TOPICS_PAGE_FOOTER" translateable="false" desc="Footer for the Topics preference page.">
+        Quisque eu auctor purus, id tempus nulla. Pellentesque porta orci purus. Donec dictum, <ph name="BEGIN_LINK_1">&lt;link1&gt;</ph>justo nec ultricies semper<ph name="END_LINK_1">&lt;/link1&gt;</ph>, <ph name="BEGIN_LINK_2">&lt;link2&gt;</ph>eros mauris varius nibh<ph name="END_LINK_2">&lt;/link2&gt;</ph>, sit amet molestie quam arcu id urna. Donec vulputate dui ut lorem egestas, ac sollicitudin metus fermentum.
+      </message>
+
+      <!-- Privacy Sandbox v4 - Fledge Page -->
+      <message name="IDS_SETTINGS_FLEDGE_PAGE_TITLE" translateable="false" desc="Title for the Fledge preferences page.">
+        Aenean erat leo
+      </message>
+      <message name="IDS_SETTINGS_FLEDGE_PAGE_TOGGLE_LABEL" translateable="false" desc="Title for the Fledge toggle.">
+        Nunc aliquam consequat felis non tincidunt
+      </message>
+      <!-- TODO(http://b/254412044): Format links.-->
+      <message name="IDS_SETTINGS_FLEDGE_PAGE_TOGGLE_SUB_LABEL" translateable="false" desc="Description for the Fledge toggle.">
+        Donec pretium non elit vitae ornare. Morbi arcu elit, rutrum nec sapien quis, <ph name="BEGIN_LINK">&lt;link&gt;</ph>tristique tristique ante<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
+      <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_HEADING" translateable="false" desc="Section title for the current Fledge sites list.">
+        Aliquam
+      </message>
+      <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_DESCRIPTION" translateable="false" desc="Section description for the current Fledge sites list.">
+        Nullam sollicitudin elit vitae hendrerit suscipit. Nunc mi leo, placerat sit amet lorem non, semper convallis sapien.
+      </message>
+      <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_DESCRIPTION_DISABLED" translateable="false" desc="Description which appears when Fledge is disabled.">
+        Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos
+      </message>
+      <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_DESCRIPTION_EMPTY" translateable="false" desc="Description which appears when the Fledge sites list is empty.">
+        Morbi quis orci in mauris tempus rutrum. Curabitur blandit orci tortor, pellentesque tempor turpis lacinia ac.
+      </message>
+      <message name="IDS_SETTINGS_FLEDGE_PAGE_SEE_ALL_SITES_LABEL" translateable="false" desc="Title for the all Fledge sites preference.">
+        Donec non mi
+      </message>
+      <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCKED_SITES_HEADING" translateable="false" desc="Title for the blocked Fledge sites preference.">
+        Curabitur a pharetra
+      </message>
+      <!-- TODO(http://b/254412044): Format links.-->
+      <message name="IDS_SETTINGS_FLEDGE_PAGE_FOOTER" translateable="false" desc="">
+        Pellentesque sollicitudin purus sit amet felis fringilla blandit. Donec a eleifend ligula, <ph name="BEGIN_LINK_1">&lt;link1&gt;</ph>et fringilla nunc<ph name="END_LINK_1">&lt;/link1&gt;</ph>. Vivamus sit amet <ph name="BEGIN_LINK_2">&lt;link2&gt;</ph>cursus quam<ph name="END_LINK_2">&lt;/link2&gt;</ph>. Etiam ultricies rutrum orci, eget accumsan purus mattis in.
+      </message>
+
+      <!-- Privacy Sandbox v4 - Ad Measurement Page -->
+      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TITLE" translateable="false" desc="Title for the Ad Measurement preferences page.">
+        Vestibulum augue erat
+      </message>
+      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TOGGLE_LABEL" translateable="false" desc="Title for the Ad Measurement toggle.">
+        Vestibulum augue erat
+      </message>
+      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TOGGLE_SUB_LABEL" translateable="false" desc="Description for the Ad Measurement toggle.">
+        Vestibulum eleifend nunc a viverra congue. Integer nec mauris rutrum, porta mauris et, pellentesque ligula. Nam et pulvinar eros, in gravida nisl.
+      </message>
+      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_HEADING" translateable="false" desc="When on section header.">
+        Mauris
+      </message>
+      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_CONSIDER_HEADING" translateable="false" desc="What to consider section header.">
+        Aenean
+      </message>
+      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_BULLET_1" translateable="false" desc="When on first bullet point.">
+        Praesent sodales, magna eget volutpat iaculis, justo odio viverra justo, id venenatis est est sit amet ex
+      </message>
+      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_BULLET_2" translateable="false" desc="When on second bullet point.">
+        Nunc metus est, faucibus sit amet lacus sit amet, aliquet rutrum libero. Maecenas vel euismod ante.
+      </message>
+      <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_CONSIDER_BULLET_1" translateable="false" desc="What to consider first bullet point.">
+        Mauris mattis urna elit. Phasellus quis erat sapien. Praesent finibus pellentesque iaculis. Mauris hendrerit metus at enim rhoncus bibendum.
       </message>
 
       <!-- Secure DNS Settings.  Used by //chrome/browser/privacy. -->
@@ -1766,6 +2039,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_RENAME_EXTENSION_MESSAGE" desc="Message to warn users the danger of changing file extension.">
         If you change the file extension, the file may open in a different application and potentially be a hazard to your device.
+      </message>
+      <message name="IDS_RENAME_FILE_ACCESSIBILITY_HINT" desc="Hint displayed on screen and available to assistive tech for the edit text field for new file name.">
+        New file name
       </message>
 
        <!-- Duplicate download -->
@@ -3105,8 +3381,23 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_NTP_MANAGE_FEED" desc="Menu item to manage feed settings from the feed header overflow menu.">
         Manage
       </message>
-      <message name="IDS_CORMORANT_CREATOR_ACTIVITY" desc="Menu item to launch the Cormorant creator activity. This is used only for testing." translateable="false">
-        Creator Profile
+      <message name="IDS_CORMORANT_CREATOR_OFFLINE_ERROR_TITLE" desc="Creator page error title when the user is offline.">
+        You're offline
+      </message>
+      <message name="IDS_CORMORANT_CREATOR_OFFLINE_ERROR_DESCRIPTION" desc="Creator page error description when the user is offline.">
+        Check your internet connection and try again
+      </message>
+      <message name="IDS_CORMORANT_CREATOR_CONTENT_UNAVAILABLE_ERROR_TITLE" desc="Creator page error title when the creator has no content available.">
+        Nothing to show yet
+      </message>
+      <message name="IDS_CORMORANT_CREATOR_CONTENT_UNAVAILABLE_ERROR_DESCRIPTION" desc="Creator page error description when the creator has no content available.">
+        You'll see content when it becomes available
+      </message>
+      <message name="IDS_CORMORANT_CREATOR_GENERAL_ERROR_TITLE" desc="Creator page general error title when something goes wrong.">
+        Something went wrong
+      </message>
+      <message name="IDS_CORMORANT_CREATOR_GENERAL_ERROR_DESCRIPTION" desc="Creator page general error description when something goes wrong.">
+        Try again later
       </message>
       <message name="IDS_FEED_MANAGE_ACTIVITY" desc="Menu item to manage my activity from the feed header overflow menu.">
         Activity
@@ -3252,12 +3543,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_EXPLORE_SITES_LOADING_ERROR_NEXT_STEPS_CHECK_CONNECTION" desc="Text on an error screen indicating that checking network connection can fix this error.">
         Checking your internet connection
-      </message>
-      <message name="IDS_EXPLORE_SITES_IPH" desc="An in-product-help message for the explore sites feature on Android. The message encourages users to open a tab that contains categorized links to websites that are popular in their country.">
-        See popular websites
-      </message>
-      <message name="IDS_EXPLORE_SITES_IPH_ACCESSIBILITY" desc="An in-product-help message for the explore sites feature on Android. The message encourages users to open a tab that contains categorized links to websites that are popular in their country. This message specifies which button must be tapped so that screen reader users can find the view this is referring to.">
-        See popular websites by tapping the "Top sites" button
       </message>
 
       <!-- Video tutorials -->
@@ -4323,15 +4608,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_WEBAPK_NETWORK_ERROR_MESSAGE_TUNNEL_CONNECTION_FAILED" desc="The error message for ERROR_TUNNEL_CONNECTION_FAILED.">
         Establishing a tunnel via proxy server failed
-      </message>
-      <message name="IDS_LAUNCHPAD_TITLE" desc="Title of WebAPKs launchpad page">
-        Apps
-      </message>
-      <message name="IDS_LAUNCHPAD_MENU_UNINSTALL" desc="Text that displays on the Launchpad app management menu that allows user to open the setting to uninstall the app. ">
-        Uninstall
-      </message>
-      <message name="IDS_LAUNCHPAD_MENU_SITE_SETTINGS" desc="Text that displays on the Launchpad app management menu that allows the user to open the site setting page.">
-        Site settings
       </message>
 
       <!-- Keyboard shortcuts in Android N-->
@@ -5651,6 +5927,17 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <!-- Price tracking strings -->
       <message name="IDS_PRICE_DROP_SPOTTED_IPH" desc="This text appears in the IPH when a user opens a new tab page and an item in any of their open tabs has a price drop.">
         Price drop spotted
+      </message>
+
+      <!-- Restore Custom Tab strings -->
+      <message name="IDS_RESTORE_CUSTOM_TAB_TITLE" desc="Appears in pop-up message title when the previous Custom Tab session a user engaged with can be restored.">
+        Resume your last task?
+      </message>
+      <message name="IDS_RESTORE_CUSTOM_TAB_DESCRIPTION" desc="Appears in pop-up message description when the previous Custom Tab session a user engaged with can be restored.">
+        Easily continue where you left off
+      </message>
+      <message name="IDS_RESTORE_CUSTOM_TAB_BUTTON_TEXT" desc="Appears as pop-up message button text to direct the user to restore a previously engaged with Custom Tab session.">
+        Restore
       </message>
     </messages>
   </release>
