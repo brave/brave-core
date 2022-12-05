@@ -74,15 +74,41 @@ if [ $? != 0 ] ; then
   report_error 5 "ERROR: Failed to cleanup strings, please see output.log"
 fi
 
+base64xliff=$(cat en.xliff | base64)
+
 echo "Pushing string changes to Transifex..."
-http_status_code=$(curl --silent --write-out %{http_code} --list-only --output transifex.log --user ${USERNAME}:${PASSWORD} -F file=@en.xliff -X PUT \
-https://www.transifex.com/api/2/project/brave-ios/resource/bravexliff/content/)
+http_status_code=$(curl --silent --write-out %{http_code} --output transifex.log \
+  -X "POST" "https://rest.api.transifex.com/resource_strings_async_uploads" \
+  -H "Authorization: Bearer ${PASSWORD}" \
+  -H 'Content-Type: application/vnd.api+json' \
+  --data-binary @- << EOF
+    {
+      "data": {
+        "attributes": {
+          "callback_url": null,
+          "replace_edited_strings": false,
+          "content": "${base64xliff}",
+          "content_encoding": "base64"
+        },
+        "relationships": {
+          "resource": {
+            "data": {
+              "type": "resources",
+              "id": "o:brave:p:brave-ios:r:bravexliff"
+            }
+          }
+        },
+        "type": "resource_strings_async_uploads"
+      }
+    }
+EOF
+)
 
 if [ $http_status_code == 401 ] ; then
   report_error 3 "ERROR: Unauthorized access, please see output.log"
 fi
 
-if [ $((http_status_code / 100)) != 2 ] ; then
+if [ $http_status_code != 202 ] ; then
   report_error 6 "ERROR: Failed to push string changes to Transifex, please see output.log"
 fi
 

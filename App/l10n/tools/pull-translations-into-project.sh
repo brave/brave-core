@@ -48,7 +48,7 @@ if [ ! -d "translated-xliffs" ] ; then
 fi
 
 echo "Downloading translations from Transifex..."
-USERNAME="${USERNAME}" PASSWORD="${PASSWORD}" ./download-translations-from-transifex.sh
+USERNAME="${USERNAME}" PASSWORD="${PASSWORD}" swift ./download-translations-from-transifex.swift
 if [ $? != 0 ] ; then
   report_error 4 "ERROR: Failed to download translations from Transifex, please see output.log"
 fi
