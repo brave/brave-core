@@ -671,6 +671,13 @@ class SettingsViewController: TableViewController {
             self.displayBraveSearchDebugMenu()
           }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
         Row(
+          text: "View Chromium Local State",
+          selection: { [unowned self] in
+            let controller = UIHostingController(rootView: LocalStateInspectorView())
+            self.navigationController?.pushViewController(controller, animated: true)
+          }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self
+        ),
+        Row(
           text: "View Brave Histogram (p3a) Logs",
           selection: { [unowned self] in
             let histogramsController = self.p3aUtilities.histogramsController().then {
