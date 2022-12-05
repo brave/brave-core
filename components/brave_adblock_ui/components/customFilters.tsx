@@ -11,7 +11,7 @@ interface Props {
 }
 
 export class CustomFilters extends React.Component<Props, {}> {
-  constructor (props: Props) {
+  constructor(props: Props) {
     super(props)
   }
 
@@ -19,17 +19,13 @@ export class CustomFilters extends React.Component<Props, {}> {
     this.props.actions.updateCustomFilters(event.target.value)
   }
 
-  render () {
+  render() {
     return (
       <div>
-        <div
-          style={{ fontSize: '18px', marginTop: '20px' }}
-        >
+        <div style={{ fontSize: '18px', marginTop: '20px' }}>
           {getLocale('customFiltersTitle')}
         </div>
-        <div
-          style={{ fontWeight: 'bold' }}
-        >
+        <div style={{ fontWeight: 'bold' }}>
           {getLocale('customFiltersInstructions')}
         </div>
         <textarea

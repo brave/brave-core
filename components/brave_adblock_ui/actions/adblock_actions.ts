@@ -17,7 +17,8 @@ export const getCustomFilters = () => action(types.ADBLOCK_GET_CUSTOM_FILTERS)
 
 export const getRegionalLists = () => action(types.ADBLOCK_GET_REGIONAL_LISTS)
 
-export const getListSubscriptions = () => action(types.ADBLOCK_GET_LIST_SUBSCRIPTIONS)
+export const getListSubscriptions = () =>
+  action(types.ADBLOCK_GET_LIST_SUBSCRIPTIONS)
 
 export const onGetCustomFilters = (customFilters: string) =>
   action(types.ADBLOCK_ON_GET_CUSTOM_FILTERS, {
@@ -29,7 +30,9 @@ export const onGetRegionalLists = (regionalLists: AdBlock.FilterList[]) =>
     regionalLists
   })
 
-export const onGetListSubscriptions = (listSubscriptions: AdBlock.SubscriptionInfo[]) =>
+export const onGetListSubscriptions = (
+  listSubscriptions: AdBlock.SubscriptionInfo[]
+) =>
   action(types.ADBLOCK_ON_GET_LIST_SUBSCRIPTIONS, {
     listSubscriptions
   })
