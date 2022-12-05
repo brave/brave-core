@@ -25,7 +25,6 @@ bool IsTrialDisabledInBrave(base::StringPiece trial_name) {
   // clang-format off
   static const char* const kBraveDisabledTrialNames[] = {
       "AdInterestGroupAPI",
-      "CrossOriginOpenerPolicyReporting",
       "DeviceAttributes",
       "DigitalGoodsV2",
       "InterestCohortAPI",
@@ -55,7 +54,6 @@ bool IsTrialDisabledInBrave(OriginTrialFeature feature) {
   static const OriginTrialFeature kBraveDisabledTrialFeatures[] =
       {   // NOLINT
           OriginTrialFeature::kAdInterestGroupAPI,
-          OriginTrialFeature::kCrossOriginOpenerPolicyReporting,
           OriginTrialFeature::kDeviceAttributes,
           OriginTrialFeature::kDigitalGoods,
           OriginTrialFeature::kFencedFrames,
