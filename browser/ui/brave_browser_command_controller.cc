@@ -165,6 +165,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_ADD_NEW_PROFILE, add_new_profile_enabled);
   UpdateCommandEnabled(IDC_OPEN_GUEST_PROFILE, open_guest_profile_enabled);
   UpdateCommandEnabled(IDC_COPY_CLEAN_LINK, true);
+  UpdateCommandEnabled(IDC_TOGGLE_TAB_MUTE, true);
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
@@ -319,6 +320,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_APP_MENU_IPFS_OPEN_FILES:
       brave::OpenIpfsFilesWebUI(browser_);
+      break;
+    case IDC_TOGGLE_TAB_MUTE:
+      brave::ToggleActiveTabAudioMute(browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
