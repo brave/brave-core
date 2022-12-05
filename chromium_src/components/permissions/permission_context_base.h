@@ -84,9 +84,9 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
   void PermissionDecided(const PermissionRequestID& id,
                          const GURL& requesting_origin,
                          const GURL& embedding_origin,
-                         BrowserPermissionCallback callback,
                          ContentSetting content_setting,
-                         bool is_one_time) override;
+                         bool is_one_time,
+                         bool is_final_decision) override;
   void CleanUpRequest(const PermissionRequestID& id) override;
 
   std::map<std::string, std::unique_ptr<GroupedPermissionRequests>>

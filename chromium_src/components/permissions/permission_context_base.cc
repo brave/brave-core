@@ -64,8 +64,8 @@ void PermissionContextBase::PermissionDecided(
     }
   }
   PermissionContextBase_ChromiumImpl::PermissionDecided(
-      id, requesting_origin, embedding_origin, std::move(callback),
-      content_setting, is_one_time);
+      id, requesting_origin, embedding_origin, content_setting, is_one_time,
+      is_final_decision);
 }
 
 void PermissionContextBase::DecidePermission(
@@ -95,7 +95,7 @@ void PermissionContextBase::DecidePermission(
                  id.ToString(), std::make_unique<GroupedPermissionRequests>()))
              .first;
   }
-  it->second->AddRequest(std::move(pending_request->second));
+  it->second->AddRequest(std::move(pending_request->second.first));
 
   pending_requests_.erase(pending_request);
 }
