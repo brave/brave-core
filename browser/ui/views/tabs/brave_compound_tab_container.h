@@ -28,6 +28,8 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
       base::RepeatingCallback<int()> available_width_callback) override;
   int GetAvailableWidthForUnpinnedTabContainer(
       base::RepeatingCallback<int()> available_width_callback) override;
+  void TransferTabBetweenContainers(int from_model_index,
+                                    int to_model_index) override;
 
  private:
   void UpdateLayout();

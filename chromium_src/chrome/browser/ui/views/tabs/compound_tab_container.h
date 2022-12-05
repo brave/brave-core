@@ -12,9 +12,11 @@
   int NumPinnedTabs
 #define GetAvailableWidthForUnpinnedTabContainer \
   virtual GetAvailableWidthForUnpinnedTabContainer
+#define TransferTabBetweenContainers virtual TransferTabBetweenContainers
 
 #include "src/chrome/browser/ui/views/tabs/compound_tab_container.h"
 
+#undef TransferTabBetweenContainers
 #undef GetAvailableWidthForUnpinnedTabContainer
 #undef NumPinnedTabs
 
