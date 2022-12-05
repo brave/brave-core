@@ -200,7 +200,7 @@
 -ZoomControllerForPrerenderingTest.*
 
 # This test fails because we intentionally disable trust tokens via
-# network::features::kTrustTokens
+# network::features::kPrivateStateTokens
 -BrowsingDataModelTrustTokenBrowserTest.TrustTokenIssuance
 
 # These tests fail because we intentionally disable direct/raw sockets via

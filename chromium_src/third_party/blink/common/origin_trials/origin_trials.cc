@@ -62,7 +62,7 @@ bool IsTrialDisabledInBrave(OriginTrialFeature feature) {
           OriginTrialFeature::kFledge,
           OriginTrialFeature::kParakeet,
           OriginTrialFeature::kPrivacySandboxAdsAPIs,
-          OriginTrialFeature::kTrustTokens,
+          OriginTrialFeature::kPrivateStateTokens,
       };
   // clang-format on
 

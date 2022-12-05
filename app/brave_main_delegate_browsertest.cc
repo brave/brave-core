@@ -158,7 +158,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &net::features::kNoncedPartitionedCookies,
     &net::features::kPartitionedCookies,
     &net::features::kSamePartyAttributeEnabled,
-    &network::features::kTrustTokens,
+    &network::features::kPrivateStateTokens,
     &network_time::kNetworkTimeServiceQuerying,
     &optimization_guide::features::kOptimizationHints,
     &optimization_guide::features::kRemoteOptimizationGuideFetching,
