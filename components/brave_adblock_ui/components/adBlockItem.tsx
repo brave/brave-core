@@ -10,21 +10,24 @@ interface Props {
 }
 
 export class AdBlockItem extends React.Component<Props, {}> {
-  constructor (props: Props) {
+  constructor(props: Props) {
     super(props)
   }
 
   onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.actions.enableFilterList(this.props.resource.uuid, event.target.checked)
+    this.props.actions.enableFilterList(
+      this.props.resource.uuid,
+      event.target.checked
+    )
   }
 
-  render () {
+  render() {
     return (
       <div>
         <label>
           <input
             id={this.props.resource.uuid}
-            type='checkbox'
+            type="checkbox"
             checked={this.props.resource.enabled}
             onChange={this.onChange}
           />
