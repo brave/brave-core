@@ -169,7 +169,7 @@ mojom::ExternalWalletPtr GetWalletIf(
 
   auto wallet = GetWallet(ledger, wallet_type);
   if (!wallet) {
-    BLOG(0, wallet_type << " wallet is null!");
+    BLOG(9, wallet_type << " wallet is null!");
     return nullptr;
   }
 
@@ -180,7 +180,7 @@ mojom::ExternalWalletPtr GetWalletIf(
               std::ostream_iterator<mojom::WalletStatus>(oss, ", "));
     oss << *cend;
 
-    BLOG(0, "Unexpected state for " << wallet_type << " wallet (currently in "
+    BLOG(9, "Unexpected state for " << wallet_type << " wallet (currently in "
                                     << wallet->status
                                     << ", expected was: " << oss.str() << ")!");
     return nullptr;
