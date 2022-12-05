@@ -47,23 +47,23 @@ bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
 
 namespace solana {
 
-bool ParseGetBalance(const std::string& json, uint64_t* balance) {
+bool ParseGetBalance(const base::Value& json_value, uint64_t* balance) {
   DCHECK(balance);
 
-  auto result = ParseResultDict(json);
+  auto result = ParseResultDict(json_value);
   if (!result || !result)
     return false;
 
   return GetUint64FromDictValue(*result, "value", false, balance);
 }
 
-bool ParseGetTokenAccountBalance(const std::string& json,
+bool ParseGetTokenAccountBalance(const base::Value& json_value,
                                  std::string* amount,
                                  uint8_t* decimals,
                                  std::string* ui_amount_string) {
   DCHECK(amount && decimals && ui_amount_string);
 
-  auto result = ParseResultDict(json);
+  auto result = ParseResultDict(json_value);
   if (!result)
     return false;
 
@@ -92,16 +92,16 @@ bool ParseGetTokenAccountBalance(const std::string& json,
   return true;
 }
 
-bool ParseSendTransaction(const std::string& json, std::string* tx_id) {
-  return ParseSingleStringResult(json, tx_id);
+bool ParseSendTransaction(const base::Value& json_value, std::string* tx_id) {
+  return ParseSingleStringResult(json_value, tx_id);
 }
 
-bool ParseGetLatestBlockhash(const std::string& json,
+bool ParseGetLatestBlockhash(const base::Value& json_value,
                              std::string* hash,
                              uint64_t* last_valid_block_height) {
   DCHECK(hash && last_valid_block_height);
 
-  auto result = ParseResultDict(json);
+  auto result = ParseResultDict(json_value);
   if (!result)
     return false;
 
@@ -119,12 +119,12 @@ bool ParseGetLatestBlockhash(const std::string& json,
 }
 
 bool ParseGetSignatureStatuses(
-    const std::string& json,
+    const base::Value& json_value,
     std::vector<absl::optional<SolanaSignatureStatus>>* statuses) {
   DCHECK(statuses);
   statuses->clear();
 
-  auto result = ParseResultDict(json);
+  auto result = ParseResultDict(json_value);
   if (!result)
     return false;
 
@@ -245,21 +245,22 @@ bool ParseGetAccountInfoPayload(
   return true;
 }
 
-bool ParseGetFeeForMessage(const std::string& json, uint64_t* fee) {
+bool ParseGetFeeForMessage(const base::Value& json_value, uint64_t* fee) {
   DCHECK(fee);
 
-  auto result = ParseResultDict(json);
+  auto result = ParseResultDict(json_value);
   if (!result)
     return false;
 
   return GetUint64FromDictValue(*result, "value", true, fee);
 }
 
-bool ParseGetBlockHeight(const std::string& json, uint64_t* block_height) {
+bool ParseGetBlockHeight(const base::Value& json_value,
+                         uint64_t* block_height) {
   DCHECK(block_height);
 
   std::string block_height_string;
-  if (!brave_wallet::ParseSingleStringResult(json, &block_height_string))
+  if (!brave_wallet::ParseSingleStringResult(json_value, &block_height_string))
     return false;
 
   if (block_height_string.empty())

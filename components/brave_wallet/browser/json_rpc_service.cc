@@ -2362,11 +2362,11 @@ void JsonRpcService::OnGetSolanaBalance(GetSolanaBalanceCallback callback,
   }
 
   uint64_t balance = 0;
-  if (!solana::ParseGetBalance(api_request_result.body(), &balance)) {
+  if (!solana::ParseGetBalance(api_request_result.value_body(), &balance)) {
     mojom::SolanaProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::SolanaProviderError>(api_request_result.body(),
-                                                 &error, &error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(
+        api_request_result.value_body(), &error, &error_message);
     std::move(callback).Run(0u, error, error_message);
     return;
   }
@@ -2386,12 +2386,13 @@ void JsonRpcService::OnGetSPLTokenAccountBalance(
 
   std::string amount, ui_amount_string;
   uint8_t decimals = 0;
-  if (!solana::ParseGetTokenAccountBalance(api_request_result.body(), &amount,
-                                           &decimals, &ui_amount_string)) {
+  if (!solana::ParseGetTokenAccountBalance(api_request_result.value_body(),
+                                           &amount, &decimals,
+                                           &ui_amount_string)) {
     mojom::SolanaProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::SolanaProviderError>(api_request_result.body(),
-                                                 &error, &error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(
+        api_request_result.value_body(), &error, &error_message);
 
     // Treat balance as 0 if the associated token account is not created yet.
     if (error == mojom::SolanaProviderError::kInvalidParams &&
@@ -2492,12 +2493,12 @@ void JsonRpcService::OnSendSolanaTransaction(
   }
 
   std::string transaction_id;
-  if (!solana::ParseSendTransaction(api_request_result.body(),
+  if (!solana::ParseSendTransaction(api_request_result.value_body(),
                                     &transaction_id)) {
     mojom::SolanaProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::SolanaProviderError>(api_request_result.body(),
-                                                 &error, &error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(
+        api_request_result.value_body(), &error, &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -2530,12 +2531,12 @@ void JsonRpcService::OnGetSolanaLatestBlockhash(
 
   std::string blockhash;
   uint64_t last_valid_block_height = 0;
-  if (!solana::ParseGetLatestBlockhash(api_request_result.body(), &blockhash,
-                                       &last_valid_block_height)) {
+  if (!solana::ParseGetLatestBlockhash(api_request_result.value_body(),
+                                       &blockhash, &last_valid_block_height)) {
     mojom::SolanaProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::SolanaProviderError>(api_request_result.body(),
-                                                 &error, &error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(
+        api_request_result.value_body(), &error, &error_message);
     std::move(callback).Run("", 0, error, error_message);
     return;
   }
@@ -2569,12 +2570,12 @@ void JsonRpcService::OnGetSolanaSignatureStatuses(
   }
 
   std::vector<absl::optional<SolanaSignatureStatus>> statuses;
-  if (!solana::ParseGetSignatureStatuses(api_request_result.body(),
+  if (!solana::ParseGetSignatureStatuses(api_request_result.value_body(),
                                          &statuses)) {
     mojom::SolanaProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::SolanaProviderError>(api_request_result.body(),
-                                                 &error, &error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(
+        api_request_result.value_body(), &error, &error_message);
     std::move(callback).Run(
         std::vector<absl::optional<SolanaSignatureStatus>>(), error,
         error_message);
@@ -2650,11 +2651,11 @@ void JsonRpcService::OnGetSolanaFeeForMessage(
   }
 
   uint64_t fee;
-  if (!solana::ParseGetFeeForMessage(api_request_result.body(), &fee)) {
+  if (!solana::ParseGetFeeForMessage(api_request_result.value_body(), &fee)) {
     mojom::SolanaProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::SolanaProviderError>(api_request_result.body(),
-                                                 &error, &error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(
+        api_request_result.value_body(), &error, &error_message);
     std::move(callback).Run(0, error, error_message);
     return;
   }
@@ -2684,11 +2685,12 @@ void JsonRpcService::OnGetSolanaBlockHeight(
   }
 
   uint64_t block_height = 0;
-  if (!solana::ParseGetBlockHeight(api_request_result.body(), &block_height)) {
+  if (!solana::ParseGetBlockHeight(api_request_result.value_body(),
+                                   &block_height)) {
     mojom::SolanaProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::SolanaProviderError>(api_request_result.body(),
-                                                 &error, &error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(
+        api_request_result.value_body(), &error, &error_message);
     std::move(callback).Run(0, error, error_message);
     return;
   }
