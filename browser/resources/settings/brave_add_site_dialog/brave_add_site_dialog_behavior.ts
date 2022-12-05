@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * you can obtain one at https://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {loadTimeData} from "../i18n_setup.js"
 
@@ -22,7 +22,8 @@ export class BraveAddSiteDialogElement extends BaseElement {
   override ready() {
     super.ready()
     const is_brave_shields = this.category === 'braveShields'
-    const resource_id = is_brave_shields ? 'braveShieldsExampleTemplate' : 'addSiteExceptionPlaceholder'
+    const resource_id = is_brave_shields ? 'braveShieldsExampleTemplate'
+                                         : 'addSiteExceptionPlaceholder'
     this.sitePlaceholder = loadTimeData.getString(resource_id)
   }
 }
