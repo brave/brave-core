@@ -996,6 +996,12 @@
   <message name="IDS_SETTINGS_WALLET_DELETE_NETWORK_CONFIRMATION" desc="The text of confirmation to delete wallet network">
     Do you really want to delete <ph name="KEY_NAME">$1<ex>NetworkName</ex></ph>?
   </message>
+  <message name="IDS_SETTINGS_WALLET_ACTIVE_NETWORK_IS_ALWAYS_VISIBLE" desc="Tooltip for disabled hide/show network toggle when network is active">
+    Active network is always visible in wallet network list
+  </message>
+  <message name="IDS_SETTINGS_WALLET_SHOW_HIDE_NETWORK" desc="Tooltip for disabled hide/show network toggle">
+    Show/hide network in wallet network list
+  </message>
   <message name="IDS_SETTINGS_WALLET_RESET_NETWORK_CONFIRMATION" desc="The text of confirmation to reset wallet network">
     Do you really want to reset <ph name="KEY_NAME">$1<ex>NetworkName</ex></ph>?
   </message>

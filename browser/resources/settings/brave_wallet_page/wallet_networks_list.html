@@ -15,7 +15,7 @@
 <div class="networks-section">
   <div class="settings-row">
     <div class="flex cr-padded-text">
-        {{title}}
+        {{listTitle}}
     </div>
     <template is="dom-if" if="[[addNewAllowed]]">
       <cr-button on-click=onAddNetworkTap_ >
@@ -36,13 +36,15 @@
               </div>
               <div class="secondary">[[getItemDescritionText(item)]]</div>
             </div>
-            <cr-icon-button class$="[[getHideButtonClass(hiddenNetworks, item)]]"
-                            hidden=[[!canHideNetwork_(item)]]
-                            on-click="onHideButtonClicked_"
-                            on-dblclick="onEmptyDoubleClick"
-                            focus-row-control focus-type="remove">
-            </cr-icon-button>
-            <div class="separator" hidden=[[!canHideNetwork_(item)]]></div>
+            <div title=[[eyeButtonTitle_(item)]]>
+              <cr-icon-button class$="[[getHideButtonClass(hiddenNetworks, item)]]"
+                              disabled=[[!canHideNetwork_(item)]]
+                              on-click="onHideButtonClicked_"
+                              on-dblclick="onEmptyDoubleClick"
+                              focus-row-control focus-type="remove">
+              </cr-icon-button>
+            </div>
+            <div class="separator"></div>
             <cr-icon-button class="icon-more-vert"
                             on-click="onNetworkMenuTapped_"
                             on-dblclick="onEmptyDoubleClick"

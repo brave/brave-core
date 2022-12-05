@@ -737,40 +737,29 @@ export function refreshTransactionHistory (address?: string) {
 export function refreshFullNetworkList () {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
-    const { jsonRpcService, braveWalletService } = apiProxy
+    const { jsonRpcService } = apiProxy
     const { wallet: { isFilecoinEnabled, isSolanaEnabled } } = getState()
 
-    // Get isTestNetworkEnabled
-    const isTestNetworksEnabled = await braveWalletService.getShowWalletTestNetworks()
-
     // Get All Networks
-    const getFullNetworkList = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
+    const filteredSupportedCoinTypes = SupportedCoinTypes.filter((coin) => {
       // MULTICHAIN: While we are still in development for FIL and SOL,
       // we will not use their networks unless enabled by brave://flags
-      if (coin === BraveWallet.CoinType.FIL && !isFilecoinEnabled) {
-        return []
-      }
-      if (coin === BraveWallet.CoinType.SOL && !isSolanaEnabled) {
-        return []
-      }
-      const networkList = await jsonRpcService.getAllNetworks(coin)
-      return networkList.networks
-    }))
-    const flattenedNetworkList = getFullNetworkList.flat(1)
-    let networkList =
-      isTestNetworksEnabled.isEnabled
-        ? flattenedNetworkList
-        : flattenedNetworkList.filter((network) => !SupportedTestNetworks.includes(network.chainId))
-
-    const defaultEthChainId = (await jsonRpcService.getChainId(BraveWallet.CoinType.ETH)).chainId
-    const hiddenEthNetworkList = (await jsonRpcService.getHiddenNetworks(BraveWallet.CoinType.ETH)).chainIds
-    networkList = networkList.filter((network: BraveWallet.NetworkInfo) => {
-      return !(network.coin === BraveWallet.CoinType.ETH &&
-        network.chainId !== defaultEthChainId &&
-        hiddenEthNetworkList.includes(network.chainId))
+      return (
+        (coin === BraveWallet.CoinType.FIL && isFilecoinEnabled) ||
+        (coin === BraveWallet.CoinType.SOL && isSolanaEnabled) ||
+        coin === BraveWallet.CoinType.ETH
+      )
     })
 
-    dispatch(WalletActions.setAllNetworks(networkList))
+    const networks = (await Promise.all(
+      filteredSupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
+        const { networks } = await jsonRpcService.getAllNetworks(coin)
+        const { chainIds: hiddenChains } = await jsonRpcService.getHiddenNetworks(coin)
+        return networks.filter((n) => !hiddenChains.includes(n.chainId))
+      })
+    )).flat(1)
+
+    dispatch(WalletActions.setAllNetworks(networks))
   }
 }
 

@@ -34,7 +34,7 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
         type: Number,
         value: 0
       },
-      title: {
+      listTitle: {
         type: String,
         value: ''
       },
@@ -125,7 +125,7 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
   }
 
   getHideButtonClass(hiddenNetworks, item) {
-    if (hiddenNetworks.indexOf(item.chainId) > -1) {
+    if (!this.isDefaultNetwork(item.chainId) && hiddenNetworks.indexOf(item.chainId) > -1) {
       return "hide-network-button icon-visibility-off"
     }
     return "hide-network-button icon-visibility"
@@ -147,6 +147,14 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
 
   canHideNetwork_(item) {
     return !this.isDefaultNetwork(item.chainId);
+  }
+
+  eyeButtonTitle_(item) {
+    if (this.isDefaultNetwork(item.chainId)) {
+      return this.i18n('walletActiveNetworkIsAlwaysVisible')
+    }
+
+    return this.i18n('walletShowHideNetwork')
   }
 
   canResetNetwork_(item) {
@@ -184,8 +192,7 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
       this.updateNetworks()
       return
     }
-    var message = this.i18n('walletDeleteNetworkConfirmation',
-      chainName)
+    var message = this.i18n('walletDeleteNetworkConfirmation', chainName)
     if (!window.confirm(message))
       return
 

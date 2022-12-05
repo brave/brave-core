@@ -11,7 +11,6 @@ import {
   BraveWallet,
   ERC721Metadata,
   SupportedCoinTypes,
-  SupportedTestNetworks,
   WalletInfoBase
 } from '../../constants/types'
 import {
@@ -259,44 +258,16 @@ export function createWalletApi (
             const networkLists: BraveWallet.NetworkInfo[][] = await Promise.all(
               filteredSupportedCoinTypes.map(
                 async (coin: BraveWallet.CoinType) => {
-                  const { networks } = await jsonRpcService.getAllNetworks(
-                    coin
-                  )
-                  return networks
+                  const { networks } = await jsonRpcService.getAllNetworks(coin)
+                  const hiddenChains: string[] = await dispatch(
+                    walletApi.endpoints.getHiddenNetworkChainIdsForCoin.initiate(coin)
+                  ).unwrap()
+
+                  return networks.filter((n) => !hiddenChains.includes(n.chainId))
                 }
               )
             )
-            const flattenedNetworkList = networkLists.flat(1)
-
-            // fetch chain ids for network filtering
-            const defaultEthChainId: string = await dispatch(
-              walletApi.endpoints.getChainIdForCoin.initiate(
-                BraveWallet.CoinType.ETH
-              )
-            ).unwrap()
-
-            const hiddenEthNetworkChainIds: string[] = await dispatch(
-              walletApi.endpoints.getHiddenNetworkChainIdsForCoin.initiate(
-                BraveWallet.CoinType.ETH
-              )
-            ).unwrap()
-
-            // Check if test networks are Enabled
-            const testNetworksEnabled =
-              await dispatch(walletApi.endpoints.getIsTestNetworksEnabled.initiate()).unwrap()
-
-            // filter networks
-            const networksList = flattenedNetworkList.filter((network) => {
-              if (!testNetworksEnabled) {
-                return !SupportedTestNetworks.includes(network.chainId)
-              }
-
-              return !(
-                network.coin === BraveWallet.CoinType.ETH &&
-                network.chainId !== defaultEthChainId &&
-                hiddenEthNetworkChainIds.includes(network.chainId)
-              )
-            })
+            const networksList = networkLists.flat(1)
 
             // normalize list into a registry
             const normalizedNetworksState = networkEntityAdapter.setAll(
@@ -333,25 +304,6 @@ export function createWalletApi (
           }
         },
         providesTags: ['SelectedChainId']
-      }),
-      getIsTestNetworksEnabled: query<boolean, void>({
-        async queryFn (arg, api, extraOptions, baseQuery) {
-          try {
-            const { braveWalletService } = baseQuery(undefined).data
-
-            const { isEnabled: testNetworksEnabled } =
-              await braveWalletService.getShowWalletTestNetworks()
-
-            return {
-              data: testNetworksEnabled
-            }
-          } catch (error) {
-            return {
-              error: `Unable to fetch isTestNetworksEnabled ${error}`
-            }
-          }
-        },
-        providesTags: ['TestnetsEnabled']
       }),
       getSelectedCoin: query<BraveWallet.CoinType, void>({
         async queryFn (arg, api, extraOptions, baseQuery) {
@@ -713,7 +665,6 @@ export const {
   useGetChainIdForCoinQuery,
   useGetDefaultAccountAddressesQuery,
   useGetERC721MetadataQuery,
-  useGetIsTestNetworksEnabledQuery,
   useGetSelectedAccountAddressQuery,
   useGetSelectedChainIdQuery,
   useGetSelectedCoinQuery,
@@ -727,7 +678,6 @@ export const {
   useLazyGetChainIdForCoinQuery,
   useLazyGetDefaultAccountAddressesQuery,
   useLazyGetERC721MetadataQuery,
-  useLazyGetIsTestNetworksEnabledQuery,
   useLazyGetSelectedAccountAddressQuery,
   useLazyGetSelectedChainIdQuery,
   useLazyGetSelectedCoinQuery,

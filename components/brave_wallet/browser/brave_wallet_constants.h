@@ -797,6 +797,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_SOLANA_SECP256K1_PROGRAM},
     {"braveWalletNetworkFilterSecondary",
      IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY},
+    {"braveWalletNetworkFilterTestNetworks",
+     IDS_BRAVE_WALLET_NETWORK_FILTER_TEST_NETWORKS},
     {"braveWalletSelectCurrency", IDS_BRAVE_WALLET_SELECT_CURRENCY},
     {"braveWalletSearchCurrency", IDS_BRAVE_WALLET_SEARCH_CURRENCY},
     {"braveWalletHelpCenter", IDS_BRAVE_WALLET_HELP_CENTER},

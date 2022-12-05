@@ -124,32 +124,6 @@ export const BigCheckMark = styled.div`
   margin-right: 8px;
 `
 
-export const SubDropDown = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: 250px;
-  max-height: 262px;
-  padding: 5px;
-  background-color: ${(p) => p.theme.color.background02};
-  border: 1px solid ${(p) => p.theme.color.divider01};
-  border-radius: 8px;
-  box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.18);
-  @media (prefers-color-scheme: dark) {
-    box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.36);
-  }
-  position: absolute;
-  top: -6px;
-  left: 240px;
-  z-index: 10;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  @media screen and (max-width: 800px) {
-    left: -252px;
-  }
-`
-
 export const SecondaryNetworkText = styled.span`
   font-family: Poppins;
   font-size: 12px;
