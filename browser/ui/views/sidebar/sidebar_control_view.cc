@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 
+#include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -17,7 +18,11 @@
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -40,13 +45,18 @@ class ControlViewMenuModel : public ui::SimpleMenuModel {
 
   // ui::SimpleMenuModel overrides:
   const gfx::FontList* GetLabelFontListAt(size_t index) const override {
-    if (index == 0) {
+    if (GetTypeAt(index) == ui::MenuModel::TYPE_TITLE) {
       return &ui::ResourceBundle::GetSharedInstance().GetFontList(
           ui::ResourceBundle::BoldFont);
     }
     return SimpleMenuModel::GetLabelFontListAt(index);
   }
 };
+
+bool IsSidebarOnLeft(Browser* browser) {
+  return !browser->profile()->GetPrefs()->GetBoolean(
+      prefs::kSidePanelHorizontalAlignment);
+}
 
 }  // namespace
 
@@ -150,6 +160,13 @@ void SidebarControlView::ShowContextMenuForViewImpl(
       static_cast<int>(ShowSidebarOption::kShowNever),
       brave_l10n::GetLocalizedResourceUTF16String(
           IDS_SIDEBAR_SHOW_OPTION_NEVER));
+  context_menu_model_->AddTitle(brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_SIDEBAR_MENU_MODEL_POSITION_OPTION_TITLE));
+  context_menu_model_->AddItemWithStringId(
+      IDC_SIDEBAR_TOGGLE_POSITION,
+      IsSidebarOnLeft(browser_)
+          ? IDS_SIDEBAR_MENU_MODEL_POSITION_MOVE_TO_RIGHT_OPTION
+          : IDS_SIDEBAR_MENU_MODEL_POSITION_MOVE_TO_LEFT_OPTION);
   context_menu_runner_ = std::make_unique<views::MenuRunner>(
       context_menu_model_.get(), views::MenuRunner::CONTEXT_MENU);
   context_menu_runner_->RunMenuAt(
@@ -158,6 +175,10 @@ void SidebarControlView::ShowContextMenuForViewImpl(
 }
 
 void SidebarControlView::ExecuteCommand(int command_id, int event_flags) {
+  if (command_id == IDC_SIDEBAR_TOGGLE_POSITION) {
+    browser_->command_controller()->ExecuteCommand(command_id);
+    return;
+  }
   auto* service =
       sidebar::SidebarServiceFactory::GetForProfile(browser_->profile());
   service->SetSidebarShowOption(static_cast<ShowSidebarOption>(command_id));

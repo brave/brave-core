@@ -675,6 +675,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SIDEBAR_SHOW_OPTION_TITLE" desc="Title of sidebar show option menu">
           Show Sidebar
         </message>
+        <message name="IDS_SIDEBAR_MENU_MODEL_POSITION_OPTION_TITLE" desc="Title of sidebar show option menu">
+          Position
+        </message>
+        <message name="IDS_SIDEBAR_MENU_MODEL_POSITION_MOVE_TO_RIGHT_OPTION" desc="Title of sidebar position option menu to move to the right">
+          Move to the right
+        </message>
+        <message name="IDS_SIDEBAR_MENU_MODEL_POSITION_MOVE_TO_LEFT_OPTION" desc="Title of sidebar position option menu to move to the left">
+          Move to the left
+        </message>
         <message name="IDS_SETTINGS_SIDEBAR_SHOW_OPTION_TITLE" desc="Title of sidebar show option menu in settings">
           Show Sidebar
         </message>

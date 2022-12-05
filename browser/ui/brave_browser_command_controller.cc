@@ -198,8 +198,10 @@ void BraveBrowserCommandController::UpdateCommandForTor() {
 
 void BraveBrowserCommandController::UpdateCommandForSidebar() {
 #if BUILDFLAG(ENABLE_SIDEBAR)
-  if (sidebar::CanUseSidebar(browser_))
+  if (sidebar::CanUseSidebar(browser_)) {
     UpdateCommandEnabled(IDC_SIDEBAR_SHOW_OPTION_MENU, true);
+    UpdateCommandEnabled(IDC_SIDEBAR_TOGGLE_POSITION, true);
+  }
 #endif
 }
 
@@ -313,6 +315,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_MANAGE_BRAVE_VPN_PLAN:
       brave::OpenBraveVPNUrls(browser_, id);
       break;
+#if BUILDFLAG(ENABLE_SIDEBAR)
+    case IDC_SIDEBAR_TOGGLE_POSITION:
+      brave::ToggleSidebarPosition(browser_);
+      break;
+#endif
     case IDC_COPY_CLEAN_LINK:
       brave::CopySanitizedURL(
           browser_,
