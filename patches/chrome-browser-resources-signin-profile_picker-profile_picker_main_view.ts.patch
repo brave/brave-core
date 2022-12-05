@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
-index 562e410db22fc0e1d9dc4edec11be1298e32f2f8..3fb00ff2df4b050dde9cf450ed7c426f6d1e4ee9 100644
+index 98373d10063d5eab1e0bc4dc177e4880548a515a..d0bc355902113afb740db81e2ec44a95be34c169 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
 +++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
-@@ -95,6 +95,7 @@ export class ProfilePickerMainViewElement extends
+@@ -96,6 +96,7 @@ export class ProfilePickerMainViewElement extends
      if (!isProfileCreationAllowed()) {
        this.$.addProfile.style.display = 'none';
      }
 +    this.$.addProfile.style.borderRadius = '8px';
-   }
  
-   override connectedCallback() {
+     this.addEventListener('view-enter-finish', this.onViewEnterFinish_);
+   }
