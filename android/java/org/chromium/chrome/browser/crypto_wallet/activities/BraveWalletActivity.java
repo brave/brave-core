@@ -216,13 +216,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 }
             });
         }
-        // Delay active wallet P3A report to avoid too many RPC calls at once
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Utils.reportActiveWalletsForP3A(BraveWalletActivity.this);
-            }
-        }, 10000);
     }
 
     @Override
