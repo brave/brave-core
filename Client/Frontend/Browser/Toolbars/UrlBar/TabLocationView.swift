@@ -408,7 +408,7 @@ class TabLocationView: UIView {
   
   fileprivate func updateTextWithURL() {
     (urlTextField as? DisplayTextField)?.hostString = url?.withoutWWW.host ?? ""
-    urlTextField.text = URLFormatter.formatURL(forSecurityDisplay: url?.absoluteString ?? "", schemeDisplay: .omitHttpAndHttps)
+    urlTextField.text = url?.withoutWWW.schemelessAbsoluteString.trim("/")
   }
 }
 
