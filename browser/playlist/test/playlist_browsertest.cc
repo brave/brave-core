@@ -24,6 +24,8 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/content_mock_cert_verifier.h"
+#include "net/dns/mock_host_resolver.h"
 
 class PlaylistBrowserTest : public PlatformBrowserTest {
  public:
@@ -32,9 +34,9 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
   }
   ~PlaylistBrowserTest() override = default;
 
-  GURL GetURL(const std::string& path) {
-    return embedded_test_server()->GetURL(path);
-  }
+  auto* https_server() { return https_server_.get(); }
+
+  GURL GetURL(const std::string& path) { return https_server()->GetURL(path); }
 
   content::WebContents* GetActiveWebContents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
@@ -66,8 +68,14 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
     base::FilePath test_data_dir;
     ASSERT_TRUE(base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir));
 
-    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
-    ASSERT_TRUE(embedded_test_server()->Start());
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+    host_resolver()->AddRule("*", "127.0.0.1");
+
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+
+    https_server_->ServeFilesFromDirectory(test_data_dir);
+    ASSERT_TRUE(https_server_->Start());
 
     auto* service = playlist::PlaylistServiceFactory::GetForBrowserContext(
         browser()->profile());
@@ -75,10 +83,28 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
         ->SetUseLocalScriptForTesting();
   }
 
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    PlatformBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
+  }
+
  private:
   std::unique_ptr<base::RunLoop> run_loop_;
 
   base::test::ScopedFeatureList scoped_feature_list_;
+
+  content::ContentMockCertVerifier mock_cert_verifier_;
+  std::unique_ptr<net::EmbeddedTestServer> https_server_;
 };
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
@@ -208,8 +234,10 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, RemoveAndRestoreLocalData) {
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlayWithoutLocalCache) {
   // Create an item and wait for it to be cached.
-  ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(),
-                                     GetURL("/playlist/site_with_video.html")));
+  ASSERT_TRUE(content::NavigateToURL(
+      GetActiveWebContents(),
+      https_server()->GetURL("test.googlevideo.com",
+                             "/playlist/site_with_video.html")));
 
   chrome::AddTabAt(browser(), {}, -1, true /*foreground*/);
   ASSERT_TRUE(
@@ -224,29 +252,34 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlayWithoutLocalCache) {
                                   R"-js(
           const item = document.querySelector('.playlist-item');
           item && item.parentElement.parentElement
-              .querySelector('.playlist-item-cached-state').textContent == 'Cached';
+              .querySelector('.playlist-item-cached-state')
+              .textContent == 'Cached';
         )-js");
 
     return !result.value.is_none() && result.ExtractBool();
   }));
 
   // Remove cache
+  LOG(ERROR) << "1))))";
   ASSERT_TRUE(content::ExecJs(GetActiveWebContents(),
                               R"-js(
           const item = document.querySelector('.playlist-item');
-          item.parentElement.parentElement.querySelector('.playlist-item-cache-btn').click();
+          item.parentElement.parentElement
+              .querySelector('.playlist-item-cache-btn').click();
         )-js"));
   WaitUntil(base::BindLambdaForTesting([&]() {
     auto result = content::EvalJs(GetActiveWebContents(),
                                   R"-js(
           const item = document.querySelector('.playlist-item');
           item && item.parentElement.parentElement
-              .querySelector('.playlist-item-cached-state').textContent != 'Cached';
+              .querySelector('.playlist-item-cached-state')
+              .textContent != 'Cached';
        )-js");
 
     return !result.value.is_none() && result.ExtractBool();
   }));
 
+  LOG(ERROR) << "2))))";
   // Try playing the item
   ASSERT_TRUE(content::ExecJs(GetActiveWebContents(),
                               R"-js(
@@ -255,7 +288,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlayWithoutLocalCache) {
   WaitUntil(base::BindLambdaForTesting([&]() {
     return content::EvalJs(GetActiveWebContents(),
                            R"-js(
-          document.querySelector('#player').getAttribute('data-playing') === 'true';
+          document.querySelector('#player')
+          .getAttribute('data-playing') === 'true';
         )-js")
         .ExtractBool();
   }));

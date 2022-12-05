@@ -10,7 +10,7 @@ import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playli
 import { Playlist } from 'components/definitions/playlist'
 
 // Constants
-import { types } from '../constants/playlist_types'
+import {types} from '../constants/playlist_types'
 
 export const playlistLoaded = (playlists: PlaylistMojo.Playlist[]) =>
     action(types.PLAYLIST_LOADED, playlists)
@@ -24,8 +24,10 @@ export const selectPlaylistItem = (playlist: PlaylistMojo.PlaylistItem) =>
 export const playerStateChanged = (playerState: Playlist.PlayerState) =>
     action(types.PLAYLIST_PLAYER_STATE_CHANGED, playerState)
 
-export const playerStartedPlayingItem = (playlist: PlaylistMojo.PlaylistItem | undefined) =>
-    action(types.PLAYER_STARTED_PLAYING_ITEM)
+export const playerStartedPlayingItem =
+    (playlist: PlaylistMojo.PlaylistItem|undefined) =>
+        action(types.PLAYER_STARTED_PLAYING_ITEM)
 
-export const playerStoppedPlayingItem = (playlist: PlaylistMojo.PlaylistItem | undefined) =>
-    action(types.PLAYER_STOPPED_PLAYING_ITEM)
+export const playerStoppedPlayingItem =
+    (playlist: PlaylistMojo.PlaylistItem|undefined) =>
+        action(types.PLAYER_STOPPED_PLAYING_ITEM)

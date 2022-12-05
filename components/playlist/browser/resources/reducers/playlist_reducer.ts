@@ -13,7 +13,7 @@ import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playli
 const playlistReducer: Reducer<Playlist.State | undefined> =
     (state: Playlist.State | undefined, action) => {
       if (state === undefined) {
-        state = { lists: [], currentList: undefined, lastPlayerState: undefined }
+        state = {lists: [], currentList: undefined, lastPlayerState: undefined}
       }
 
       switch (action.type) {
