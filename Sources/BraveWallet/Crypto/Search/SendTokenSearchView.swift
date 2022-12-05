@@ -12,15 +12,39 @@ struct SendTokenSearchView: View {
   
   @Environment(\.presentationMode) @Binding private var presentationMode
   
+  @State var allERC721Metadata: [String: ERC721Metadata] = [:]
+  
   var network: BraveWallet.NetworkInfo
   
   var body: some View {
     TokenList(tokens: sendTokenStore.userAssets) { token in
       Button(action: {
+        sendTokenStore.selectedSendTokenERC721Metadata = allERC721Metadata[token.id]
         sendTokenStore.selectedSendToken = token
         presentationMode.dismiss()
       }) {
-        TokenView(token: token, network: network)
+        TokenView(
+          token: token,
+          network: network
+        ) {
+          if token.isErc721 {
+            NFTIconView(
+              token: token,
+              network: network,
+              url: allERC721Metadata[token.id]?.imageURL
+            )
+          } else {
+            AssetIconView(
+              token: token,
+              network: network
+            )
+          }
+        }
+      }
+    }
+    .onAppear {
+      Task { @MainActor in
+        self.allERC721Metadata = await sendTokenStore.fetchERC721Metadata(tokens: sendTokenStore.userAssets.filter { $0.isErc721 })
       }
     }
     .navigationTitle(Strings.Wallet.searchTitle)

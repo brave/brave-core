@@ -33,7 +33,15 @@ struct SwapTokenSearchView: View {
         }
         presentationMode.dismiss()
       }) {
-        TokenView(token: token, network: network)
+        TokenView(
+          token: token,
+          network: network
+        ) {
+          AssetIconView(
+            token: token,
+            network: network
+          )
+        }
       }
     }
     .navigationTitle(Strings.Wallet.searchTitle)

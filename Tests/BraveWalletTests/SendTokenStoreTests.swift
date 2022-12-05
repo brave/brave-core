@@ -38,6 +38,16 @@ class SendTokenStoreTests: XCTestCase {
     rpcService._splTokenAccountBalance = {_, _, _, completion in
       completion(splTokenBalance, UInt8(6), "", .success, "")
     }
+    rpcService._erc721Metadata = { _, _, _, completion in
+      completion(
+      """
+      {
+        "image": "mock.image.url",
+        "name": "mock nft name",
+        "description": "mock nft description"
+      }
+      """, .success, "")
+    }
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._selectedCoin = { $0(selectedCoin) }
     walletService._userAssets = { $2(userAssets) }
@@ -320,6 +330,9 @@ class SendTokenStoreTests: XCTestCase {
       completion(mockBalanceWei, .success, "")
     }
     rpcService._addObserver = { _ in }
+    rpcService._erc721Metadata = { _, _, _, completion in
+      completion("", .internalError, "")
+    }
 
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._userAssets = { $2([.previewToken]) }
@@ -520,6 +533,48 @@ class SendTokenStoreTests: XCTestCase {
     }
 
     waitForExpectations(timeout: 3) { error in
+      XCTAssertNil(error)
+    }
+  }
+
+  func testFetchSelectedERC721Metadata() {
+    let (keyringService, rpcService, walletService, solTxManagerProxy) = setupServices()
+    let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()
+    ethTxManagerProxy._makeErc721TransferFromData = { _, _, _, _, completion in
+      completion(true, .init())
+    }
+    let mockERC721Metadata: ERC721Metadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description")
+    
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      prefilledToken: nil
+    )
+    
+    let selectedSendTokenERC721MetadataException = expectation(description: "accountActivityStore-selectedSendTokenERC721MetadataException")
+    XCTAssertNil(store.selectedSendTokenERC721Metadata)  // Initial state
+    store.$selectedSendTokenERC721Metadata
+      .dropFirst()
+      .collect(1)
+      .sink { metadata in
+        defer { selectedSendTokenERC721MetadataException.fulfill() }
+        guard let lastUpdatedMetadata = metadata.last else {
+          XCTFail("Unexpected test result")
+          return
+        }
+        XCTAssertEqual(lastUpdatedMetadata?.imageURLString, mockERC721Metadata.imageURLString)
+        XCTAssertEqual(lastUpdatedMetadata?.name, mockERC721Metadata.name)
+        XCTAssertEqual(lastUpdatedMetadata?.description, mockERC721Metadata.description)
+      }.store(in: &cancellables)
+    
+    store.selectedSendToken = .mockERC721NFTToken
+    
+    waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
   }

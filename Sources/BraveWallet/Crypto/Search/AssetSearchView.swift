@@ -16,6 +16,7 @@ struct AssetSearchView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
   
   @State private var allAssets: [AssetViewModel] = []
+  @State private var allERC721Metadata: [String: ERC721Metadata] = [:]
   @State private var query = ""
   @State private var networkFilter: NetworkFilter = .allNetworks
   @State private var isPresentingNetworkFilter = false
@@ -86,26 +87,49 @@ struct AssetSearchView: View {
                 .frame(maxWidth: .infinity)
             } else {
               ForEach(filteredTokens) { assetViewModel in
+                
                 NavigationLink(
-                  destination: AssetDetailView(
-                    assetDetailStore: cryptoStore.assetDetailStore(for: assetViewModel.token),
-                    keyringStore: keyringStore,
-                    networkStore: cryptoStore.networkStore
-                  )
-                  .onDisappear {
-                    cryptoStore.closeAssetDetailStore(for: assetViewModel.token)
+                  destination: {
+                    if assetViewModel.token.isErc721 {
+                      NFTDetailView(
+                        nftDetailStore: cryptoStore.nftDetailStore(for: assetViewModel.token, erc721Metadata: allERC721Metadata[assetViewModel.token.id]),
+                        buySendSwapDestination: .constant(nil)
+                      )
+                      .onDisappear {
+                        cryptoStore.closeNFTDetailStore(for: assetViewModel.token)
+                      }
+                    } else {
+                      AssetDetailView(
+                        assetDetailStore: cryptoStore.assetDetailStore(for: assetViewModel.token),
+                        keyringStore: keyringStore,
+                        networkStore: cryptoStore.networkStore
+                      )
+                      .onDisappear {
+                        cryptoStore.closeAssetDetailStore(for: assetViewModel.token)
+                      }
+                    }
                   }
                 ) {
                   SearchAssetView(
-                    image: AssetIconView(
-                      token: assetViewModel.token,
-                      network: assetViewModel.network,
-                      shouldShowNativeTokenIcon: true
-                    ),
                     title: title(for: assetViewModel.token),
                     symbol: assetViewModel.token.symbol,
                     networkName: assetViewModel.network.chainName
-                  )
+                  ) {
+                    if assetViewModel.token.isErc721 {
+                      NFTIconView(
+                        token: assetViewModel.token,
+                        network: assetViewModel.network,
+                        url: allERC721Metadata[assetViewModel.token.id]?.imageURL,
+                        shouldShowNativeTokenIcon: true
+                      )
+                    } else {
+                      AssetIconView(
+                        token: assetViewModel.token,
+                        network: assetViewModel.network,
+                        shouldShowNativeTokenIcon: true
+                      )
+                    }
+                  }
                 }
               }
             }
@@ -138,6 +162,7 @@ struct AssetSearchView: View {
     .onAppear {
       Task { @MainActor in
         self.allAssets = await userAssetsStore.allAssets()
+        self.allERC721Metadata = await userAssetsStore.allERC721Metadata()
       }
     }
   }
@@ -151,15 +176,27 @@ struct AssetSearchView: View {
   }
 }
 
-struct SearchAssetView: View {
-  var image: AssetIconView
+struct SearchAssetView<ImageView: View>: View {
+  var image: () -> ImageView
   var title: String
   var symbol: String
   let networkName: String
+  
+  init(
+    title: String,
+    symbol: String,
+    networkName: String,
+    @ViewBuilder image: @escaping () -> ImageView
+  ) {
+    self.title = title
+    self.symbol = symbol
+    self.networkName = networkName
+    self.image = image
+  }
 
   var body: some View {
     HStack {
-      image
+      image()
       VStack(alignment: .leading) {
         Text(title)
           .font(.footnote)

@@ -258,13 +258,14 @@ public class CryptoStore: ObservableObject {
   )
   
   private var nftDetailStore: NFTDetailStore?
-  func nftDetailStore(for nft: BraveWallet.BlockchainToken) -> NFTDetailStore {
+  func nftDetailStore(for nft: BraveWallet.BlockchainToken, erc721Metadata: ERC721Metadata?) -> NFTDetailStore {
     if let store = nftDetailStore, store.nft.id == nft.id {
       return store
     }
     let store = NFTDetailStore(
       rpcService: rpcService,
-      nft: nft
+      nft: nft,
+      erc721Metadata: erc721Metadata
     )
     nftDetailStore = store
     return store

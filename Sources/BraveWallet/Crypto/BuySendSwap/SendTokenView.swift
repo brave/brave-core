@@ -76,11 +76,20 @@ struct SendTokenView: View {
           ) {
             HStack {
               if let token = sendTokenStore.selectedSendToken {
-                AssetIconView(
-                  token: token,
-                  network: networkStore.selectedChain,
-                  length: 26
-                )
+                if token.isErc721 {
+                  NFTIconView(
+                    token: token,
+                    network: networkStore.selectedChain,
+                    url: sendTokenStore.selectedSendTokenERC721Metadata?.imageURL,
+                    length: 26
+                  )
+                } else {
+                  AssetIconView(
+                    token: token,
+                    network: networkStore.selectedChain,
+                    length: 26
+                  )
+                }
               }
               Text(sendTokenStore.selectedSendToken?.symbol ?? "")
                 .font(.title3.weight(.semibold))

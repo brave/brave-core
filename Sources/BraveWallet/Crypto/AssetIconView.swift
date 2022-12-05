@@ -131,15 +131,31 @@ struct NFTIconView: View {
   /// If we should show the native token logo on non-native assets
   var shouldShowNativeTokenIcon: Bool = false
   
-  var body: some View {
-    WebImageReader(url: url) { image, isFinished in
-      if let image = image {
-        Image(uiImage: image)
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-      } else {
-        AssetIconView(token: token, network: network, shouldShowNativeTokenIcon: shouldShowNativeTokenIcon)
-      }
+  @ScaledMetric var length: CGFloat = 40
+  
+  private var networkNativeTokenLogo: UIImage? {
+    if let logo = network.nativeTokenLogo {
+      return UIImage(named: logo, in: .module, with: nil)
     }
+    return nil
+  }
+  
+  @ViewBuilder private var tokenLogo: some View {
+    if shouldShowNativeTokenIcon, !network.isNativeAsset(token), let image = networkNativeTokenLogo {
+      Image(uiImage: image)
+        .resizable()
+        .frame(width: 15, height: 15)
+    }
+  }
+  
+  var body: some View {
+    NFTImageView(urlString: url?.absoluteString ?? "") {
+      AssetIconView(token: token, network: network, shouldShowNativeTokenIcon: shouldShowNativeTokenIcon, length: length)
+    }
+    .cornerRadius(5)
+    .frame(width: length, height: length)
+    .overlay(tokenLogo, alignment: .bottomTrailing)
+    .allowsHitTesting(false)
+    .accessibilityHidden(true)
   }
 }
