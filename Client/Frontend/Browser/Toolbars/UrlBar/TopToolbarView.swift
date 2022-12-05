@@ -664,13 +664,7 @@ extension TopToolbarView: TabLocationViewDelegate {
 
   func tabLocationViewDidTapLocation(_ tabLocationView: TabLocationView) {
     guard let (locationText, isSearchQuery) = delegate?.topToolbarDisplayTextForURL(locationView.url as URL?) else { return }
-
-    var overlayText = locationText
-    // Make sure to use the result from topToolbarDisplayTextForURL as it is responsible for extracting out search terms when on a search page
-    if let text = locationText, let url = URL(string: text) {
-      overlayText = URLFormatter.formatURL(forSecurityDisplay: url.absoluteString, schemeDisplay: .show)
-    }
-    enterOverlayMode(overlayText, pasted: false, search: isSearchQuery)
+    enterOverlayMode(locationText, pasted: false, search: isSearchQuery)
   }
 
   func tabLocationViewDidLongPressLocation(_ tabLocationView: TabLocationView) {
