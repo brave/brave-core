@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/route.ts b/chrome/browser/resources/settings/route.ts
-index ad75a39061a033b398018af1a23740202574e1fc..7fe39f2b3df0315098c574c974b6e9fc29436cf9 100644
+index ca294b85461294b60284d6fbd31045e161299bb2..4222298d7accbfd49a9a049a04a94e3f1d516cae 100644
 --- a/chrome/browser/resources/settings/route.ts
 +++ b/chrome/browser/resources/settings/route.ts
 @@ -9,6 +9,7 @@ import {pageVisibility} from './page_visibility.js';
@@ -10,7 +10,7 @@ index ad75a39061a033b398018af1a23740202574e1fc..7fe39f2b3df0315098c574c974b6e9fc
  /**
   * Add all of the child routes that originate from the privacy route,
   * regardless of whether the privacy section under basic or advanced.
-@@ -242,6 +243,7 @@ function createBrowserSettingsRoutes(): Partial<SettingsRoutes> {
+@@ -252,6 +253,7 @@ function createBrowserSettingsRoutes(): Partial<SettingsRoutes> {
            loadTimeData.getString('performancePageTitle'));
      }
    }
