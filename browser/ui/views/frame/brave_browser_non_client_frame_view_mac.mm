@@ -98,5 +98,5 @@ void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleAndControls() {
   // state changed, we should reset controls positions manually.
   base::SequencedTaskRunnerHandle::Get()->PostTask(
       FROM_HERE, base::BindOnce(&views::Widget::ResetWindowControlsPosition,
-                                base::Unretained(frame())));
+                                frame()->GetWeakPtr()));
 }
