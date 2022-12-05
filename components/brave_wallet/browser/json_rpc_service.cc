@@ -650,12 +650,12 @@ void JsonRpcService::OnGetFilStateSearchMsgLimited(
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
-  if (!ParseFilStateSearchMsgLimited(api_request_result.body(), cid,
+  if (!ParseFilStateSearchMsgLimited(api_request_result.value_body(), cid,
                                      &exit_code)) {
     mojom::FilecoinProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::FilecoinProviderError>(api_request_result.body(),
-                                                   &error, &error_message);
+    ParseErrorResult<mojom::FilecoinProviderError>(
+        api_request_result.value_body(), &error, &error_message);
     std::move(callback).Run(exit_code, error, error_message);
     return;
   }
@@ -787,11 +787,11 @@ void JsonRpcService::OnFilGetBalance(GetBalanceCallback callback,
     return;
   }
   std::string balance;
-  if (!ParseFilGetBalance(api_request_result.body(), &balance)) {
+  if (!ParseFilGetBalance(api_request_result.value_body(), &balance)) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }
@@ -845,11 +845,11 @@ void JsonRpcService::OnGetFilBlockHeight(GetFilBlockHeightCallback callback,
     return;
   }
   uint64_t height = 0;
-  if (!ParseFilGetChainHead(api_request_result.body(), &height)) {
+  if (!ParseFilGetChainHead(api_request_result.value_body(), &height)) {
     mojom::FilecoinProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::FilecoinProviderError>(api_request_result.body(),
-                                                   &error, &error_message);
+    ParseErrorResult<mojom::FilecoinProviderError>(
+        api_request_result.value_body(), &error, &error_message);
     std::move(callback).Run(height, error, error_message);
     return;
   }
@@ -903,11 +903,11 @@ void JsonRpcService::OnFilGetTransactionCount(
     return;
   }
   uint64_t count = 0;
-  if (!ParseFilGetTransactionCount(api_request_result.body(), &count)) {
+  if (!ParseFilGetTransactionCount(api_request_result.value_body(), &count)) {
     mojom::FilecoinProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::FilecoinProviderError>(api_request_result.body(),
-                                                   &error, &error_message);
+    ParseErrorResult<mojom::FilecoinProviderError>(
+        api_request_result.value_body(), &error, &error_message);
     std::move(callback).Run(0u, error, error_message);
     return;
   }
@@ -1730,12 +1730,12 @@ void JsonRpcService::OnGetFilEstimateGas(GetFilEstimateGasCallback callback,
   std::string gas_fee_cap;
   int64_t gas_limit = 0;
   std::string gas_premium;
-  if (!ParseFilEstimateGas(api_request_result.body(), &gas_premium,
+  if (!ParseFilEstimateGas(api_request_result.value_body(), &gas_premium,
                            &gas_fee_cap, &gas_limit)) {
     mojom::FilecoinProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::FilecoinProviderError>(api_request_result.body(),
-                                                   &error, &error_message);
+    ParseErrorResult<mojom::FilecoinProviderError>(
+        api_request_result.value_body(), &error, &error_message);
     std::move(callback).Run("", "", 0, error, error_message);
     return;
   }
@@ -2450,11 +2450,11 @@ void JsonRpcService::OnSendFilecoinTransaction(
   }
 
   std::string cid;
-  if (!ParseSendFilecoinTransaction(api_request_result.body(), &cid)) {
+  if (!ParseSendFilecoinTransaction(api_request_result.value_body(), &cid)) {
     mojom::FilecoinProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::FilecoinProviderError>(api_request_result.body(),
-                                                   &error, &error_message);
+    ParseErrorResult<mojom::FilecoinProviderError>(
+        api_request_result.value_body(), &error, &error_message);
     std::move(callback).Run("", error, error_message);
     return;
   }

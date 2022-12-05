@@ -84,7 +84,10 @@ void ParseErrorResult(const std::string& json,
   ParseErrorResult(*value, error, error_message);
 }
 
+// TODO(apaymyshev): cleanup
 absl::optional<base::Value::Dict> ParseResultDict(const std::string& json);
+absl::optional<base::Value::Dict> ParseResultDict(
+    const base::Value& json_value);
 absl::optional<base::Value::List> ParseResultList(const std::string& json);
 // TODO(apaymyshev): cleanup
 bool ParseBoolResult(const std::string& json, bool* value);

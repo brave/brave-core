@@ -112,6 +112,15 @@ absl::optional<base::Value::Dict> ParseResultDict(const std::string& json) {
   return std::move(result->GetDict());
 }
 
+absl::optional<base::Value::Dict> ParseResultDict(
+    const base::Value& json_value) {
+  auto result = ParseResultValue(json_value);
+  if (!result || !result->is_dict())
+    return absl::nullopt;
+
+  return std::move(result->GetDict());
+}
+
 absl::optional<base::Value::List> ParseResultList(const std::string& json) {
   auto result = ParseResultValue(json);
   if (!result || !result->is_list())

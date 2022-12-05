@@ -15,22 +15,24 @@
 namespace brave_wallet {
 
 // Returns the balance of the account of given address.
-bool ParseFilGetBalance(const std::string& json, std::string* hex_balance);
+bool ParseFilGetBalance(const base::Value& json_value,
+                        std::string* hex_balance);
 // Returns the transaction count of given address.
-bool ParseFilGetTransactionCount(const std::string& json, uint64_t* count);
+bool ParseFilGetTransactionCount(const base::Value& json_value,
+                                 uint64_t* count);
 // Returns Gas estimation values.
-bool ParseFilEstimateGas(const std::string& json,
+bool ParseFilEstimateGas(const base::Value& json_value,
                          std::string* gas_premium,
                          std::string* gas_fee_cap,
                          int64_t* gas_limit);
 // Returns parsed chain head CID.
-bool ParseFilGetChainHead(const std::string& json, uint64_t* height);
+bool ParseFilGetChainHead(const base::Value& json_value, uint64_t* height);
 // Returns parsed receipt exit code.
-bool ParseFilStateSearchMsgLimited(const std::string& json,
+bool ParseFilStateSearchMsgLimited(const base::Value& json_value,
                                    const std::string& cid,
                                    int64_t* exit_code);
 // Returns parsed transaction CID.
-bool ParseSendFilecoinTransaction(const std::string& json,
+bool ParseSendFilecoinTransaction(const base::Value& json_value,
                                   std::string* tx_hash);
 
 }  // namespace brave_wallet
