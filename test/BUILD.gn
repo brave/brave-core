@@ -699,7 +699,7 @@ test("brave_browser_tests") {
     "//brave/browser/brave_wallet/brave_wallet_sign_message_browsertest.cc",
     "//brave/browser/brave_wallet/brave_wallet_tab_helper_browsertest.cc",
     "//brave/browser/brave_wallet/ethereum_provider_browsertest.cc",
-    "//brave/browser/brave_wallet/send_transaction_browsertest.cc",
+    "//brave/browser/brave_wallet/send_or_sign_transaction_browsertest.cc",
     "//brave/browser/brave_wallet/solana_provider_browsertest.cc",
     "//brave/browser/brave_wallet/solana_provider_renderer_browsertest.cc",
     "//brave/browser/brave_wallet/wallet_watch_asset_browsertest.cc",

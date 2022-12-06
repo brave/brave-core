@@ -43,6 +43,7 @@
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -63,6 +64,11 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
   })");
   return std::move(http_response);
 }
+
+constexpr char kSignedTransaction[] =
+    "0xf8688296048525f38e9e0082960494084dcb94038af1715963f149079ce011c4b2296211"
+    "80820a95a0c58904f26f5ac0e86a292d9a832bbb56ab8d7bfb9f74a5eafa99778bf059ea93"
+    "a07db1772583c02ae58637916c03a3a1d9fd98044dd83c52da6870fee25a8575e1";
 
 }  // namespace
 
@@ -112,16 +118,16 @@ class TestTxServiceObserver : public brave_wallet::mojom::TxServiceObserver {
   bool expect_eip1559_tx_ = false;
 };
 
-class SendTransactionBrowserTest : public InProcessBrowserTest {
+class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
  public:
-  SendTransactionBrowserTest()
+  SendOrSignTransactionBrowserTest()
       : https_server_for_files_(net::EmbeddedTestServer::TYPE_HTTPS),
         https_server_for_rpc_(net::EmbeddedTestServer::TYPE_HTTPS) {
     scoped_feature_list_.InitAndEnableFeature(
         brave_wallet::features::kNativeBraveWalletFeature);
   }
 
-  ~SendTransactionBrowserTest() override = default;
+  ~SendOrSignTransactionBrowserTest() override = default;
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
@@ -335,20 +341,22 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
-  void WaitForSendTransactionResultReady() {
+  void WaitForSendOrSignTransactionResultReady() {
     content::DOMMessageQueue message_queue;
     std::string message;
     EXPECT_TRUE(message_queue.WaitForMessage(&message));
     EXPECT_EQ("\"result ready\"", message);
   }
 
-  void TestUserApproved(const std::string& test_method,
+  void TestUserApproved(absl::optional<std::string> expected_signed_tx,
+                        const std::string& test_method,
                         const std::string& data = "",
                         bool skip_restore = false) {
     if (!skip_restore)
       RestoreWallet();
-    GURL url =
-        https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+    bool sign_only = expected_signed_tx.has_value();
+    GURL url = https_server_for_files()->GetURL(
+        "a.com", "/send_or_sign_transaction.html");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     EXPECT_TRUE(WaitForLoadStop(web_contents()));
 
@@ -357,9 +365,10 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(ExecJs(
         web_contents(),
         base::StringPrintf(
-            "sendTransaction(%s, '%s', "
+            "sendOrSignTransaction(%s, %s, '%s', "
             "'0x084DCb94038af1715963F149079cE011C4B22961', "
             "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11', '%s');",
+            sign_only ? "true" : "false",
             observer()->expect_eip1559_tx() ? "true" : "false",
             test_method.c_str(), data.c_str())));
     observer()->WaitForNewUnapprovedTx();
@@ -386,23 +395,34 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(1UL, infos.size());
     EXPECT_TRUE(
         base::EqualsCaseInsensitiveASCII(from(), infos[0]->from_address));
-    EXPECT_EQ(mojom::TransactionStatus::Submitted, infos[0]->tx_status);
+    if (sign_only) {
+      EXPECT_EQ(mojom::TransactionStatus::Signed, infos[0]->tx_status);
+    } else {
+      EXPECT_EQ(mojom::TransactionStatus::Submitted, infos[0]->tx_status);
+    }
     EXPECT_FALSE(infos[0]->tx_hash.empty());
     ASSERT_TRUE(infos[0]->tx_data_union->is_eth_tx_data_1559());
     EXPECT_EQ(infos[0]->tx_data_union->get_eth_tx_data_1559()->base_data->nonce,
               "0x9604");
 
-    WaitForSendTransactionResultReady();
-    EXPECT_EQ(EvalJs(web_contents(), "getSendTransactionResult()",
-                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                  .ExtractString(),
-              "0x00000000000009604");
+    WaitForSendOrSignTransactionResultReady();
+    if (sign_only) {
+      EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionResult()",
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                    .ExtractString(),
+                *expected_signed_tx);
+    } else {
+      EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionResult()",
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                    .ExtractString(),
+                "0x00000000000009604");
+    }
   }
 
-  void TestUserRejected(const std::string& test_method) {
+  void TestUserRejected(bool sign_only, const std::string& test_method) {
     RestoreWallet();
-    GURL url =
-        https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+    GURL url = https_server_for_files()->GetURL(
+        "a.com", "/send_or_sign_transaction.html");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     EXPECT_TRUE(WaitForLoadStop(web_contents()));
 
@@ -411,10 +431,10 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(
         ExecJs(web_contents(),
                base::StringPrintf(
-                   "sendTransaction(false, '%s', "
+                   "sendOrSignTransaction(%s, false, '%s', "
                    "'0x084DCb94038af1715963F149079cE011C4B22961', "
                    "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11');",
-                   test_method.c_str())));
+                   sign_only ? "true" : "false", test_method.c_str())));
     observer()->WaitForNewUnapprovedTx();
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(
@@ -446,8 +466,8 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
                     ->tx_data_union->get_eth_tx_data_1559()
                     ->base_data->nonce.empty());
 
-    WaitForSendTransactionResultReady();
-    EXPECT_EQ(EvalJs(web_contents(), "getSendTransactionError()",
+    WaitForSendOrSignTransactionResultReady();
+    EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionError()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractString(),
               l10n_util::GetStringUTF8(
@@ -468,10 +488,11 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     return transaction_infos;
   }
 
-  void TestSendTransactionError(const std::string& test_method) {
+  void TestSendTransactionError(bool sign_only,
+                                const std::string& test_method) {
     RestoreWallet();
-    GURL url =
-        https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+    GURL url = https_server_for_files()->GetURL(
+        "a.com", "/send_or_sign_transaction.html");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     EXPECT_TRUE(WaitForLoadStop(web_contents()));
 
@@ -480,14 +501,14 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(
         ExecJs(web_contents(),
                base::StringPrintf(
-                   "sendTransaction(false, '%s', "
+                   "sendOrSignTransaction(%s, false, '%s', "
                    "'0x084DCb94038af1715963F149079cE011C4B22961', "
                    "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11', "
                    "'invalid');",
-                   test_method.c_str())));
+                   sign_only ? "true" : "false", test_method.c_str())));
 
-    WaitForSendTransactionResultReady();
-    EXPECT_EQ(EvalJs(web_contents(), "getSendTransactionError()",
+    WaitForSendOrSignTransactionResultReady();
+    EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionError()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractString(),
               "Internal JSON-RPC error");
@@ -518,128 +539,234 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
   std::string chain_id_;
 };
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserApprovedRequest) {
-  TestUserApproved("request");
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserApprovedRequestSend) {
+  TestUserApproved(absl::nullopt, "request");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserApprovedSend1) {
-  TestUserApproved("send1");
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, UserApprovedSend1) {
+  TestUserApproved(absl::nullopt, "send1");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserApprovedSend2) {
-  TestUserApproved("send2");
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, UserApprovedSend2) {
+  TestUserApproved(absl::nullopt, "send2");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserApprovedSendAsync) {
-  TestUserApproved("sendAsync");
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserApprovedSendAsync) {
+  TestUserApproved(absl::nullopt, "sendAsync");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserApprovedRequestData0x) {
-  TestUserApproved("request", "0x");
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserApprovedRequestData0x) {
+  TestUserApproved(absl::nullopt, "request", "0x");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserApprovedSend1Data0x) {
-  TestUserApproved("send1", "0x1");
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserApprovedSend1Data0x) {
+  TestUserApproved(absl::nullopt, "send1", "0x1");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserApprovedSend2Data0x) {
-  TestUserApproved("send2", "0x11");
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserApprovedSend2Data0x) {
+  TestUserApproved(absl::nullopt, "send2", "0x11");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        UserApprovedSendAsyncData0x) {
-  TestUserApproved("sendAsync", "0x");
+  TestUserApproved(absl::nullopt, "sendAsync", "0x");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserRejectedRequest) {
-  TestUserRejected("request");
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, UserRejectedRequest) {
+  TestUserRejected(false, "request");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserRejectedSend1) {
-  TestUserRejected("send1");
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, UserRejectedSend1) {
+  TestUserRejected(false, "send1");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserRejectedSend2) {
-  TestUserRejected("send2");
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, UserRejectedSend2) {
+  TestUserRejected(false, "send2");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserRejectedSendAsync) {
-  TestUserRejected("sendAsync");
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserRejectedSendAsync) {
+  TestUserRejected(false, "sendAsync");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        SendTransactionErrorRequest) {
-  TestSendTransactionError("request");
+  TestSendTransactionError(false, "request");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SendTransactionErrorSend1) {
-  TestSendTransactionError("send1");
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       SendTransactionErrorSend1) {
+  TestSendTransactionError(false, "send1");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SendTransactionErrorSend2) {
-  TestSendTransactionError("send2");
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       SendTransactionErrorSend2) {
+  TestSendTransactionError(false, "send2");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        SendTransactionErrorSendAsync) {
-  TestSendTransactionError("sendAsync");
+  TestSendTransactionError(false, "sendAsync");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, InvalidAddress) {
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserApprovedRequestSign) {
+  TestUserApproved(kSignedTransaction, "request");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserApprovedSend1Sign) {
+  TestUserApproved(kSignedTransaction, "send1");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserApprovedSend2Sign) {
+  TestUserApproved(kSignedTransaction, "send2");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserApprovedSendAsyncSign) {
+  TestUserApproved(kSignedTransaction, "sendAsync");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserApprovedRequestData0xSign) {
+  TestUserApproved(kSignedTransaction, "request", "0x");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserApprovedSend1Data0xSign) {
+  TestUserApproved(
+      "0xf8688296048525f38e9e0082960494084dcb94038af1715963f149079ce011c4b22962"
+      "1101820a95a0ea3d09b65bb17424978c9ec3c9319c157523374dde70025b52034ae33f85"
+      "82a8a02a879841219186d6d1029d674a6ad428e5e6693ac6b92304905fcaae533d69a3",
+      "send1", "0x1");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserApprovedSend2Data0xSign) {
+  TestUserApproved(
+      "0xf8688296048525f38e9e0082960494084dcb94038af1715963f149079ce011c4b22962"
+      "1111820a96a0fe7acb8944ff3223ddb123ac046129093998087d9895203cb472ed865b6a"
+      "7213a071581e1fd537e114e7416322c06857f38df4e1f91e1abc9adb7cfb5840eaabca",
+      "send2", "0x11");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserApprovedSendAsyncData0xSign) {
+  TestUserApproved(kSignedTransaction, "sendAsync", "0x");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserRejectedRequestSign) {
+  TestUserRejected(true, "request");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserRejectedSend1Sign) {
+  TestUserRejected(true, "send1");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserRejectedSend2Sign) {
+  TestUserRejected(true, "send2");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       UserRejectedSendAsyncSign) {
+  TestUserRejected(true, "sendAsync");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       SignTransactionErrorRequest) {
+  TestSendTransactionError(true, "request");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       SignTransactionErrorSend1) {
+  TestSendTransactionError(true, "send1");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       SignTransactionErrorSend2) {
+  TestSendTransactionError(true, "send2");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       SignTransactionErrorSendAsync) {
+  TestSendTransactionError(true, "sendAsync");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, InvalidAddress) {
   RestoreWallet();
-  GURL url =
-      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+  GURL url = https_server_for_files()->GetURL("a.com",
+                                              "/send_or_sign_transaction.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_TRUE(WaitForLoadStop(web_contents()));
 
   CallEthereumEnable();
   UserGrantPermission(true);
-  ASSERT_TRUE(ExecJs(web_contents(),
-                     "sendTransaction(false, 'request', "
-                     "'0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909', "
-                     "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11');"));
+  for (bool sign_only : {true, false}) {
+    ASSERT_TRUE(
+        ExecJs(web_contents(),
+               base::StringPrintf(
+                   "sendOrSignTransaction(%s, false, 'request', "
+                   "'0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909', "
+                   "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11');",
+                   sign_only ? "true" : "false")));
 
-  WaitForSendTransactionResultReady();
-  EXPECT_FALSE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
-  EXPECT_EQ(EvalJs(web_contents(), "getSendTransactionError()",
-                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                .ExtractString(),
-            l10n_util::GetStringUTF8(
-                IDS_WALLET_ETH_SEND_TRANSACTION_FROM_NOT_AUTHED));
+    WaitForSendOrSignTransactionResultReady();
+    EXPECT_FALSE(
+        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+            ->IsShowingBubble());
+    EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionError()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractString(),
+              l10n_util::GetStringUTF8(
+                  IDS_WALLET_ETH_SEND_TRANSACTION_FROM_NOT_AUTHED));
+  }
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, NoEthPermission) {
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, NoEthPermission) {
   RestoreWallet();
-  GURL url =
-      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+  GURL url = https_server_for_files()->GetURL("a.com",
+                                              "/send_or_sign_transaction.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_TRUE(WaitForLoadStop(web_contents()));
 
   CallEthereumEnable();
   UserGrantPermission(false);
-  ASSERT_TRUE(ExecJs(web_contents(),
-                     "sendTransaction(false, 'request', "
-                     "'0x084DCb94038af1715963F149079cE011C4B22961', "
-                     "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11');"));
+  for (bool sign_only : {true, false}) {
+    ASSERT_TRUE(
+        ExecJs(web_contents(),
+               base::StringPrintf(
+                   "sendOrSignTransaction(%s, false, 'request', "
+                   "'0x084DCb94038af1715963F149079cE011C4B22961', "
+                   "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11');",
+                   sign_only ? "true" : "false")));
 
-  WaitForSendTransactionResultReady();
-  EXPECT_FALSE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
-  EXPECT_EQ(EvalJs(web_contents(), "getSendTransactionError()",
-                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                .ExtractString(),
-            l10n_util::GetStringUTF8(
-                IDS_WALLET_ETH_SEND_TRANSACTION_FROM_NOT_AUTHED));
+    WaitForSendOrSignTransactionResultReady();
+    EXPECT_FALSE(
+        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+            ->IsShowingBubble());
+    EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionError()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractString(),
+              l10n_util::GetStringUTF8(
+                  IDS_WALLET_ETH_SEND_TRANSACTION_FROM_NOT_AUTHED));
+  }
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SelectedAddress) {
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, SelectedAddress) {
   RestoreWallet();
   AddAccount("account 2");
-  GURL url =
-      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+  GURL url = https_server_for_files()->GetURL("a.com",
+                                              "/send_or_sign_transaction.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_TRUE(WaitForLoadStop(web_contents()));
 
@@ -684,10 +811,10 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SelectedAddress) {
             from(1));
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, NetworkVersion) {
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, NetworkVersion) {
   RestoreWallet();
-  GURL url =
-      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+  GURL url = https_server_for_files()->GetURL("a.com",
+                                              "/send_or_sign_transaction.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_TRUE(WaitForLoadStop(web_contents()));
 
@@ -732,10 +859,10 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, NetworkVersion) {
             "undefined");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, IsUnlocked) {
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, IsUnlocked) {
   RestoreWallet();
-  GURL url =
-      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+  GURL url = https_server_for_files()->GetURL("a.com",
+                                              "/send_or_sign_transaction.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_TRUE(WaitForLoadStop(web_contents()));
 
@@ -752,10 +879,10 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, IsUnlocked) {
                   .ExtractBool());
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, IsConnected) {
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, IsConnected) {
   RestoreWallet();
-  GURL url =
-      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+  GURL url = https_server_for_files()->GetURL("a.com",
+                                              "/send_or_sign_transaction.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_TRUE(WaitForLoadStop(web_contents()));
   EXPECT_TRUE(EvalJs(web_contents(), "getIsConnected()",
@@ -763,20 +890,21 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, IsConnected) {
                   .ExtractBool());
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        EthSendTransactionEIP1559Tx) {
   SetNetworkForTesting("0x1");  // mainnet
   observer()->SetExpectEip1559Tx(true);
-  TestUserApproved("request");
+  TestUserApproved(absl::nullopt, "request");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, EthSendTransactionLegacyTx) {
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       EthSendTransactionLegacyTx) {
   SetNetworkForTesting("0x539");  // localhost
   observer()->SetExpectEip1559Tx(false);
-  TestUserApproved("request");
+  TestUserApproved(absl::nullopt, "request");
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        EthSendTransactionCustomNetworkLegacyTx) {
   SetNetworkForTesting("0x5566");
   observer()->SetExpectEip1559Tx(false);
@@ -785,14 +913,50 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
   mojom::NetworkInfo chain = GetTestNetworkInfo1("0x5566");
   AddCustomNetwork(browser()->profile()->GetPrefs(), chain);
 
-  TestUserApproved("request", "", true /* skip_restore */);
+  TestUserApproved(absl::nullopt, "request", "", true /* skip_restore */);
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SecondEnableCallFails) {
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       EthSignTransactionEIP1559Tx) {
+  SetNetworkForTesting("0x1");  // mainnet
+  observer()->SetExpectEip1559Tx(true);
+  TestUserApproved(
+      "0x02f86d0182960484f38e9e008525f38e9e0082960494084dcb94038af1715963f14907"
+      "9ce011c4b229621180c001a0e152033adac7e7316007446c0cd45b97a21911b4e414b087"
+      "2d0f207dd9ac4226a07ed1a15909a925716d97ab6e2c7077c7b4b0616c8bc522bcd4914a"
+      "79ef5e6d1d",
+      "request");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       EthSignTransactionLegacyTx) {
+  SetNetworkForTesting("0x539");  // localhost
+  observer()->SetExpectEip1559Tx(false);
+  TestUserApproved(kSignedTransaction, "request");
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       EthSignTransactionCustomNetworkLegacyTx) {
+  SetNetworkForTesting("0x5566");
+  observer()->SetExpectEip1559Tx(false);
+  RestoreWallet();
+
+  mojom::NetworkInfo chain = GetTestNetworkInfo1("0x5566");
+  AddCustomNetwork(browser()->profile()->GetPrefs(), chain);
+
+  TestUserApproved(
+      "0xf8688296048525f38e9e0082960494084dcb94038af1715963f149079ce011c4b22962"
+      "118082aaf0a01789b12329c3b46db7bc23af14df45ebc54f6ce8da40f4db4cec866c73bf"
+      "2ed5a0642ca22062c10f05bfce787107c44001ed8bf1a1d8416cf2e9b133aadbc88076",
+      "request", "", true /* skip_restore */);
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
+                       SecondEnableCallFails) {
   RestoreWallet();
   AddAccount("account 2");
-  GURL url =
-      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+  GURL url = https_server_for_files()->GetURL("a.com",
+                                              "/send_or_sign_transaction.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_TRUE(WaitForLoadStop(web_contents()));
 
@@ -813,12 +977,12 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SecondEnableCallFails) {
             true);
 }
 
-IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        EnableCallRequestsUnlockIfLocked) {
   RestoreWallet();
   AddAccount("account 2");
-  GURL url =
-      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+  GURL url = https_server_for_files()->GetURL("a.com",
+                                              "/send_or_sign_transaction.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_TRUE(WaitForLoadStop(web_contents()));
 
