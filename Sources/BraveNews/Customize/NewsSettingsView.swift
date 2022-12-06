@@ -54,6 +54,10 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
       .sink { [weak self] isEnabled in
         guard let self else { return }
         self.navigationItem.searchController = isEnabled ? self.searchController : nil
+        if #available(iOS 16.0, *) {
+          // Setting `searchController` to nil seems to invalidate this setting and needs to be set again
+          self.navigationItem.preferredSearchBarPlacement = .stacked
+        }
         self.navigationController?.setToolbarHidden(!isEnabled, animated: true)
       }
       .store(in: &cancellables)
