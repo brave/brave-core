@@ -71,12 +71,20 @@ AdBlockService::SourceProviderObserver::SourceProviderObserver(
       on_metadata_retrieved_(on_metadata_retrieved),
       task_runner_(task_runner) {
   filters_provider_->AddObserver(this);
-  filters_provider_->LoadDAT(this);
+  filters_provider_->LoadDAT(
+      base::BindOnce(&AdBlockService::SourceProviderObserver::OnDATLoaded,
+                     weak_factory_.GetWeakPtr()));
 }
 
 AdBlockService::SourceProviderObserver::~SourceProviderObserver() {
   filters_provider_->RemoveObserver(this);
   resource_provider_->RemoveObserver(this);
+}
+
+void AdBlockService::SourceProviderObserver::OnChanged() {
+  filters_provider_->LoadDAT(
+      base::BindOnce(&AdBlockService::SourceProviderObserver::OnDATLoaded,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void AdBlockService::SourceProviderObserver::OnDATLoaded(
