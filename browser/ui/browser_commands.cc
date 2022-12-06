@@ -277,4 +277,12 @@ void ToggleSidebarPosition(Browser* browser) {
                     !prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
 }
 
+bool HasSelectedURL(Browser* browser) {
+#if defined(TOOLKIT_VIEWS)
+  return static_cast<BraveBrowserView*>(browser->window())->HasSelectedURL();
+#else
+  return false;
+#endif
+}
+
 }  // namespace brave

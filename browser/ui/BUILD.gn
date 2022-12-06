@@ -247,6 +247,8 @@ source_set("ui") {
       "views/omnibox/brave_omnibox_popup_contents_view.h",
       "views/omnibox/brave_omnibox_result_view.cc",
       "views/omnibox/brave_omnibox_result_view.h",
+      "views/omnibox/brave_omnibox_view_views.cc",
+      "views/omnibox/brave_omnibox_view_views.h",
       "views/omnibox/brave_rounded_omnibox_results_frame.cc",
       "views/omnibox/brave_rounded_omnibox_results_frame.h",
       "views/omnibox/brave_search_conversion_promotion_view.cc",
