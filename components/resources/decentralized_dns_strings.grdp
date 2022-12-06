@@ -7,7 +7,7 @@
     Enable support of Unstoppable Domains in Brave?
   </message>
   <message name="IDS_UNSTOPPABLE_DOMAINS_OPT_IN_PRIMARY_PARAGRAPH" desc="Main paragraph of unstoppable domains opt-in interstitial page.">
-    Brave will be using Infura to issue Ethereum JSON-RPC calls to the smart contract from Unstoppable Domains to resolve .crypto (and also .x, .coin, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) domain name lookup requests. If you enable this, Infura will see those specific domains that you're trying to visit but they will not be able to see other domains. See Infura's <ph name="BEGIN_INFURA_TOU_LINK">&lt;a target="_blank" href="$1"&gt;</ph>terms of use<ph name="END_INFURA_TOU_LINK">&lt;/a&gt;</ph> and <ph name="BEGIN_INFURA_PRIVACY_LINK">&lt;a target="_blank" href="$2"&gt;</ph>privacy policy<ph name="END_INFURA_PRIVACY_LINK">&lt;/a&gt;</ph>.
+    Brave will be using Infura to resolve .crypto (and also .x, .coin, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) domain names that are on Unstoppable Domains. If you enable this, Infura will see those specific domains that you're trying to visit but nothing else. See Infura's <ph name="BEGIN_INFURA_TOU_LINK">&lt;a target="_blank" href="$1"&gt;</ph>terms of use<ph name="END_INFURA_TOU_LINK">&lt;/a&gt;</ph> and <ph name="BEGIN_INFURA_PRIVACY_LINK">&lt;a target="_blank" href="$2"&gt;</ph>privacy policy<ph name="END_INFURA_PRIVACY_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_ENS_OPT_IN_TITLE" desc="Title of interstitial opt-in page for ENS.">
     Ethereum Name Service
@@ -16,7 +16,7 @@
     Enable support of Ethereum Name Service (ENS) in Brave?
   </message>
   <message name="IDS_ENS_OPT_IN_PRIMARY_PARAGRAPH" desc="Main paragraph of ENS opt-in interstitial page.">
-    Brave will be using Infura to issue Ethereum JSON-RPC calls to the smart contract from Ethereum Name Service to resolve .eth domain name lookup requests. If you enable this, Infura will see the .eth domain that you're trying to visit but they will not be able to see other domains. See Infura's <ph name="BEGIN_INFURA_TOU_LINK">&lt;a target="_blank" href="$1"&gt;</ph>terms of use<ph name="END_INFURA_TOU_LINK">&lt;/a&gt;</ph> and <ph name="BEGIN_INFURA_PRIVACY_LINK">&lt;a target="_blank" href="$2"&gt;</ph>privacy policy<ph name="END_INFURA_PRIVACY_LINK">&lt;/a&gt;</ph>.
+    Brave will be using Infura to resolve .eth domain names that are on Ethereum Name Service (ENS). If you enable this, Infura will see the .eth domain that you're trying to visit but nothing else. See Infura's <ph name="BEGIN_INFURA_TOU_LINK">&lt;a target="_blank" href="$1"&gt;</ph>terms of use<ph name="END_INFURA_TOU_LINK">&lt;/a&gt;</ph> and <ph name="BEGIN_INFURA_PRIVACY_LINK">&lt;a target="_blank" href="$2"&gt;</ph>privacy policy<ph name="END_INFURA_PRIVACY_LINK">&lt;/a&gt;</ph>.
   </message>
     <message name="IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_TITLE" desc="Title of interstitial opt-in page for ENS offchain lookup.">
     Ethereum Name Service Offchain Lookup
@@ -25,7 +25,7 @@
     Enable support of Ethereum Name Service (ENS) offchain lookup in Brave?
   </message>
   <message name="IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_PRIMARY_PARAGRAPH" desc="Main paragraph of ENS offchain lookup opt-in interstitial page.">
-    Brave will be using offchain gateways to resolve .eth domain name lookup requests. If you enable this, third party gateways will see the .eth domain that you're trying to visit but they will not be able to see other domains. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_BRAVE_LEARN_MORE_LINK">&lt;/a&gt;</ph>.
+    This .eth domain name is stored offchain and will be resolved by a third party gateway. If you enable ENS offchain lookup, the third party gateway will see the .eth domain that you're trying to visit but nothing else. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_BRAVE_LEARN_MORE_LINK">&lt;/a&gt;</ph>.
   </message>
     <message name="IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_PROCEED" desc="The text for the ENS offchain lookup opt-in interstitial proceed button.">
     Proceed with offchain lookup
@@ -40,7 +40,7 @@
     Enable support of Solana Name Service (SNS) in Brave?
   </message>
   <message name="IDS_SNS_OPT_IN_PRIMARY_PARAGRAPH" desc="Main paragraph of SNS opt-in interstitial page.">
-    Brave will be using Coinbase Cloud to issue Solana JSON-RPC calls to the program from Solana Name Service to resolve .sol domain name lookup requests. If you enable this, Coinbase Cloud will see the .sol domain that you're trying to visit but they will not be able to see other domains. See Coinbase Cloud's <ph name="BEGIN_COINBASE_TOU_LINK">&lt;a target="_blank" href="$1"&gt;</ph>terms of use<ph name="END_COINBASE_TOU_LINK">&lt;/a&gt;</ph> and <ph name="BEGIN_COINBASE_PRIVACY_LINK">&lt;a target="_blank" href="$2"&gt;</ph>privacy policy<ph name="END_COINBASE_PRIVACY_LINK">&lt;/a&gt;</ph>.
+    Brave will be using Coinbase Cloud to resolve .sol domain names. If you enable this, Coinbase will see the .sol domain that you're trying to visit but nothing else. See Coinbase Cloud's <ph name="BEGIN_COINBASE_TOU_LINK">&lt;a target="_blank" href="$1"&gt;</ph>terms of use<ph name="END_COINBASE_TOU_LINK">&lt;/a&gt;</ph> and <ph name="BEGIN_COINBASE_PRIVACY_LINK">&lt;a target="_blank" href="$2"&gt;</ph>privacy policy<ph name="END_COINBASE_PRIVACY_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_BUTTON" desc="The text for the decentralized DNS opt-in interstitial primary button.">
     Proceed using Infura server
