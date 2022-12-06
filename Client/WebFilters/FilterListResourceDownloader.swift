@@ -232,13 +232,13 @@ public class FilterListResourceDownloader: ObservableObject {
   @discardableResult
   public func enableFilterList(for componentID: String, isEnabled: Bool) -> Bool {
     // Enable the setting
+    defer { self.recordP3ACookieListEnabled() }
     if let index = filterLists.firstIndex(where: { $0.componentId == componentID }) {
       filterLists[index].isEnabled = isEnabled
       return true
     } else {
       return false
     }
-    self.recordP3ACookieListEnabled()
   }
   
   /// Tells us if the filter list is enabled for the given `componentID`
