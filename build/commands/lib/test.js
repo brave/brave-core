@@ -123,6 +123,7 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
 
   if (config.targetOS === 'ios') {
     util.run(path.join(config.outputDir, "iossim"), [
+      "-d", "\"iPhone 14 Pro\"",
       path.join(config.outputDir, `${suite}.app`),
       path.join(config.outputDir, `${suite}.app/PlugIns/${suite}_module.xctest`)
     ], config.defaultOptions)
