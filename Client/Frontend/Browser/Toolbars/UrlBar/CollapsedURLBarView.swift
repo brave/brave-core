@@ -68,7 +68,7 @@ class CollapsedURLBarView: UIView {
   var currentURL: URL? {
     didSet {
       urlLabel.text = currentURL.map {
-        URLFormatter.formatURL(forDisplayOmitSchemePathAndTrivialSubdomains: $0.absoluteString)
+        URLFormatter.formatURLOrigin(forDisplayOmitSchemePathAndTrivialSubdomains: $0.absoluteString)
       }
     }
   }
