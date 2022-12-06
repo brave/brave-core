@@ -14,6 +14,7 @@
 #include "base/containers/flat_map.h"
 #include "base/observer_list.h"
 #include "base/types/expected.h"
+#include "base/version.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.h"
@@ -37,7 +38,6 @@ bool IsMediaLink(const GURL& url,
 
 class RewardsNotificationService;
 class RewardsServiceObserver;
-class RewardsServicePrivateObserver;
 
 using GetPublisherInfoListCallback =
     base::OnceCallback<void(std::vector<ledger::mojom::PublisherInfoPtr> list)>;
@@ -147,6 +147,10 @@ class RewardsService : public KeyedService {
   // Returns the country code associated with the user's Rewards profile.
   virtual std::string GetCountryCode() const = 0;
 
+  // Returns the Rewards feature version associated with the current user. The
+  // returned `base::Version` will always be valid.
+  virtual base::Version GetUserVersion() const = 0;
+
   using GetAvailableCountriesCallback =
       base::OnceCallback<void(std::vector<std::string>)>;
 
@@ -160,6 +164,13 @@ class RewardsService : public KeyedService {
                                    const uint32_t limit,
                                    ledger::mojom::ActivityInfoFilterPtr filter,
                                    GetPublisherInfoListCallback callback) = 0;
+
+  // Returns a count of publishers that a user has visited. This value is
+  // displayed to unverified users to indicate the level of support they are
+  // providing to the creator community.
+  virtual void GetPublishersVisitedCount(
+      base::OnceCallback<void(int)> callback) = 0;
+
   virtual void GetExcludedList(GetPublisherInfoListCallback callback) = 0;
 
   using FetchPromotionsCallback =
@@ -326,8 +337,6 @@ class RewardsService : public KeyedService {
   virtual void ConnectExternalWallet(const std::string& path,
                                      const std::string& query,
                                      ConnectExternalWalletCallback) = 0;
-
-  virtual void DisconnectWallet() = 0;
 
   virtual void GetMonthlyReport(
       const uint32_t month,

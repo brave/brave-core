@@ -7,7 +7,6 @@ import styled from 'styled-components'
 import * as mixins from '../../shared/lib/css_mixins'
 
 export const root = styled.div`
-  margin-bottom: 26px;
   font-family: var(--brave-font-heading);
   background: var(--brave-palette-white);
   box-shadow: 0px 0px 10px rgba(99, 105, 110, 0.1);

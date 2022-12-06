@@ -20,7 +20,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/poppins_600"
         android:layout_marginTop="24dp"
         android:text="@string/basic_settings"
         android:textColor="@color/rewards_panel_text_color"/>
@@ -30,10 +30,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:textSize="14sp"
-        android:text="@string/you_can_change_this_later"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
+        android:textSize="16sp"
+        android:fontFamily="@font/poppins_500"
+        android:text="@string/how_often_do_you_see_ads"
         android:textColor="@color/rewards_panel_text_color"/>
 
       <TextView
@@ -42,121 +43,39 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="14sp"
-        android:text="@string/how_often_do_you_see_ads"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/poppins_500"
+        android:text="@string/more_private_ads"
         android:textColor="@color/rewards_panel_secondary_text_color"/>
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        app:srcCompat="@drawable/ic_ac_onboarding"
+        android:contentDescription="@null"/>
+
     <TextView
+        android:id="@+id/ads_per_hour_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:textSize="14sp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/ads_per_hour"
-        android:textColor="@color/rewards_panel_text_color"/>
+        android:textSize="22sp"
+        android:fontFamily="@font/poppins_600"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/rewards_panel_secondary_text_color"/>
 
-      <RadioGroup
-            android:id="@+id/hour_radio_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/ac_radio_group_bg"
-            android:padding="2dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/hour_1_radio"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ac_radio_button_selector"
-                android:gravity="center"
-                android:textColor="@drawable/ac_text_selector"
-                android:button="@null"
-                android:checked="true"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/value_1" />
-
-            <RadioButton
-                android:id="@+id/hour_2_radio"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ac_radio_button_selector"
-                android:gravity="center"
-                android:textColor="@drawable/ac_text_selector"
-                android:button="@null"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/value_2" />
-
-              <RadioButton
-                android:id="@+id/hour_3_radio"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ac_radio_button_selector"
-                android:gravity="center"
-                android:textColor="@drawable/ac_text_selector"
-                android:button="@null"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/value_3" />
-
-              <RadioButton
-                android:id="@+id/hour_4_radio"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ac_radio_button_selector"
-                android:gravity="center"
-                android:textColor="@drawable/ac_text_selector"
-                android:button="@null"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/value_4" />
-
-              <RadioButton
-                android:id="@+id/hour_5_radio"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ac_radio_button_selector"
-                android:gravity="center"
-                android:textColor="@drawable/ac_text_selector"
-                android:button="@null"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/value_5" />
-
-            </RadioGroup>
-
-    <LinearLayout
-        android:id="@+id/auto_contribute_layout"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="14sp"
-            android:text="@string/how_much_support"
-            android:textColor="@color/brave_rewards_modal_text_color"/>
+        <com.google.android.material.slider.Slider
+              android:id="@+id/ads_per_hour_slider"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:stepSize="1.0"
+              android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
+              app:trackColor="@color/rewards_onboarding_ac_slider_track_color"
+              app:trackColorActive="@color/rewards_onboarding_ac_slider_active_track_color" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -165,81 +84,8 @@
             android:gravity="center"
             android:textSize="14sp"
             android:layout_marginBottom="8dp"
-            android:text="@string/from_your_ads_earnings"
-            android:textColor="@color/brave_rewards_tos_color"/>
-
-        <RadioGroup
-            android:id="@+id/contribute_radio_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/ac_radio_group_bg"
-            android:padding="2dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/contribute_1_radio"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ac_radio_button_selector"
-                android:gravity="center"
-                android:textColor="@drawable/ac_text_selector"
-                android:button="@null"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/value_1_bat" />
-
-            <RadioButton
-                android:id="@+id/contribute_2_radio"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ac_radio_button_selector"
-                android:gravity="center"
-                android:textColor="@drawable/ac_text_selector"
-                android:button="@null"
-                android:checked="true"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/value_2_bat" />
-
-              <RadioButton
-                android:id="@+id/contribute_3_radio"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ac_radio_button_selector"
-                android:gravity="center"
-                android:textColor="@drawable/ac_text_selector"
-                android:button="@null"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/value_3_bat" />
-
-              <RadioButton
-                android:id="@+id/contribute_5_radio"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ac_radio_button_selector"
-                android:gravity="center"
-                android:textColor="@drawable/ac_text_selector"
-                android:button="@null"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/value_5_bat" />
-
-        </RadioGroup>
-
-    </LinearLayout>
+            android:fontFamily="@font/poppins_500"
+            android:text="@string/you_can_change_this_later"
+            android:textColor="@color/rewards_panel_secondary_text_color"/>
 
 </LinearLayout>

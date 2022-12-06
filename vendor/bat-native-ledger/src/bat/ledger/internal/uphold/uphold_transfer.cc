@@ -50,7 +50,7 @@ void UpholdTransfer::OnCreateTransaction(const mojom::Result result,
   }
 
   if (result == mojom::Result::EXPIRED_TOKEN) {
-    if (!ledger_->uphold()->DisconnectWallet()) {
+    if (!ledger_->uphold()->LogOutWallet()) {
       BLOG(0, "Failed to disconnect " << constant::kWalletUphold << " wallet!");
       return callback(mojom::Result::LEDGER_ERROR, "");
     }
@@ -94,7 +94,7 @@ void UpholdTransfer::OnCommitTransaction(const mojom::Result result,
   }
 
   if (result == mojom::Result::EXPIRED_TOKEN) {
-    if (!ledger_->uphold()->DisconnectWallet()) {
+    if (!ledger_->uphold()->LogOutWallet()) {
       BLOG(0, "Failed to disconnect " << constant::kWalletUphold << " wallet!");
       return callback(mojom::Result::LEDGER_ERROR, "");
     }

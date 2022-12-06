@@ -471,7 +471,9 @@
       </message>
       <!-- WebUI rewards resources -->
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Brave Private Ads</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">Earn [[currency]] by viewing Brave Private Ads. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">
+        Brave Private Ads are unobtrusive and private by design. Ads are based on your interests, but no personal data or browsing history ever leaves your device. Best of all, Brave Private Ads let you earn BAT (<ph name="BEGIN_LINK">$1</ph>Basic Attention Token<ph name="END_LINK">$2</ph>) just for viewing.
+      </message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The Brave Verified sites you visit will receive your contributions automatically, based on your attention as measured by Brave.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS" desc="">Current earnings this month (estimated)</message>
@@ -490,7 +492,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_TITLE" desc="">Regional ad relevance</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DESCRIPTION" desc="">This allows Brave to show you ads meant specifically for your region.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_LEARN" desc="">Learn More</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_AUTO_DETECTED_AS" desc="">Auto-detected as [[adsSubdivisionTarget]]</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_AUTO_DETECTED_AS" desc="">Auto-detected as <ph name="SUBDIVISION">$1</ph></message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_AUTO_DETECT" desc="">Auto-detect</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLE" desc="">Disable</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLED" desc="">Disabled</message>
@@ -527,9 +529,6 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_60" desc="">1 minute</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_UP_TO" desc="">Up to</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY" desc="">Enable content-level tips on these sites</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_REDT" desc="">Reddit</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_GH" desc="">GitHub</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_TW" desc="">Twitter</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_NEXT_DATE" desc="Description of the date in the donation box">Next monthly tips date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET" desc="">
         I just tipped <ph name="NAME">$1<ex>user</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.
@@ -571,21 +570,20 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_WALLET_OWNERSHIP_VERIFICATION_FAILURE_TEXT" desc="">There was a problem validating your browser's request to connect Brave Rewards to your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account. You can <ph name="BEGIN_LINK">$2</ph>contact support<ph name="END_LINK">$3</ph> for more help.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_WALLET_OWNERSHIP_VERIFICATION_FAILURE_TITLE" desc="">Error: Request could not be validated</message>
 
-      <message name="IDS_BRAVE_REWARDS_LOCAL_TOS_AND_PP" desc="">By turning on [[title]], you agree to the <ph name="BEGIN_LINK1">$1</ph>Terms of Service<ph name="END_LINK1">$2</ph> and <ph name="BEGIN_LINK2">$3</ph>Privacy Policy<ph name="END_LINK2">$4</ph>.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_TOS_AND_PP" desc="">By turning on <ph name="TITLE">$1<ex>Brave Private Ads</ex></ph>, you agree to the <ph name="BEGIN_LINK1">$2</ph>Terms of Service<ph name="END_LINK1">$3</ph> and <ph name="BEGIN_LINK2">$4</ph>Privacy Policy<ph name="END_LINK2">$5</ph>.</message>
 
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_HEADER" desc="">Choose an account provider</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_TEXT" desc="">If you already have a custodial account, you'll be prompted to connect it. If you don't, you'll get the chance to create one.</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_NOTE" desc="">Note: Your transactions will be visible to the custodian once you authorize. For instance, they will be able to see the recipient and amount of your tips.</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_HEADER" desc="">Verifying is optional</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_NOTE" desc="">Custodial wallet providers are required to verify the identity of anyone creating a wallet, including using a photo ID.</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_BRAVE_NOTE" desc=""><ph name="BOLD_BEGIN">$1</ph>Brave Software Inc.<ph name="BOLD_END">$2</ph> does not process, store, or access any of the personal information when you establish an account with our custodial wallet partners.</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_TEXT" desc="">However, your current Brave Rewards features are limited. Verifying with a custodial wallet partner allows you to:</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_1" desc="">Freely withdraw and deposit funds</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_2" desc="">Receive your Rewards directly to your account</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_HEADER" desc="">Ready to start earning BAT?</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_NOTE" desc="">Custodial account providers are required to verify your identity, which may include submitting a photo ID. See our <ph name="BEGIN_LINK">$1</ph>Brave Rewards Privacy Policy<ph name="END_LINK">$2</ph>.</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_TEXT" desc="">Connect your custodial account to your Rewards profile so you can:</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_1" desc="">Store, manage, and withdraw your BAT earnings</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_2" desc="">Top up your account with BAT you purchased</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_3" desc="">Tip your favorite sites &amp; creators</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_LEARN_MORE" desc="">Learn more about regions and support</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_PROVIDER_NOT_AVAILABLE" desc="">Currently not available in your region</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_TERMS_LABEL" desc="">I have read and agree to Brave’s <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> &amp; <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.</message>
-      <message name="IDS_BRAVE_REWARDS_CONTINUE" desc="">Continue</message>
       <message name="IDS_BRAVE_REWARDS_CONTRIBUTION_PENDING_UNTIL" desc="A label on Pending Contributions modal showing the date until which the contribution will be pending">
         Pending until <ph name="DATE">$1</ph>
       </message>
@@ -714,6 +712,9 @@
       <message name="IDS_BRAVE_REWARDS_TIP_SUPPORT_THIS_CREATOR" desc="">Support this creator</message>
       <message name="IDS_BRAVE_REWARDS_TIP_THANKS_FOR_THE_SUPPORT" desc="">Thanks for the support!</message>
       <message name="IDS_BRAVE_REWARDS_TIP_DELAY_NOTE" desc=""><ph name="BOLD_BEGIN">$1</ph>Note: <ph name="BOLD_END">$2</ph>Your tip can take several minutes to process</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CONNECT_ACCOUNT_BUTTON" desc="">Connect account</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_CONNECT_ACCOUNT_TEXT" desc="">Just connect a custodial account so you can start earning BAT and tip creators.</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_TIP_FAVORITE_CREATORS" desc="">Want to tip your favorite creators?</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET" desc="">Your one-time tip has been sent.</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_IS_PENDING" desc="">You’ve set up a pending tip!</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE" desc="">for their post</message>
@@ -763,6 +764,7 @@
       <message name="IDS_BRAVE_UI_GRANT_EXPIRE" desc="">Grant Expiration Date</message>
       <message name="IDS_BRAVE_UI_IMPORT" desc="">import</message>
       <message name="IDS_BRAVE_UI_LEARN_MORE" desc="">Learn More</message>
+      <message name="IDS_BRAVE_UI_MANAGE" desc="">Manage</message>
       <message name="IDS_BRAVE_UI_MANAGE_WALLET" desc="">Manage Brave Rewards</message>
       <message name="IDS_BRAVE_UI_MONTHLY_TIPS_BANG" desc="">Monthly Tips!</message>
       <message name="IDS_BRAVE_UI_MONTHLY_TIPS" desc="">Monthly Tips</message>
@@ -814,8 +816,9 @@
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESET_CONFIRMATION" desc="">Are you sure you want to reset your Brave Rewards?</message>
-      <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT_FUNDS" desc="">Your <ph name="BAT_AMOUNT">$1<ex>5 BAT</ex></ph> and other Rewards data will be permanently lost if you reset your Brave Rewards. Please ensure you have <ph name="LINK_BEGIN">$2</ph>verified<ph name="LINK_END">$3</ph> so you can keep your BAT.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT_NO_FUNDS" desc="">Your Rewards data will be permanently lost if you reset your Brave Rewards.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT" desc="">By resetting, your current Brave Rewards profile will be deleted and you will start again with a completely new Brave Rewards profile. Before proceeding, <ph name="LINK_BEGIN">$1</ph>learn more<ph name="LINK_END">$2</ph> about resetting, just to be safe.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT_FUNDS" desc="">Note: You currently have <ph name="BAT_AMOUNT">$1<ex>5 BAT</ex></ph> estimated earnings this month that will be lost if you reset now.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_RESET_CONSENT" desc="">I understand that my current Brave Rewards profile and Brave Rewards data will be deleted from my device, and I've read the <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">$2</ph>.</message>
       <message name="IDS_BRAVE_UI_TOKEN_GRANT" desc="">Token Grants Claimed</message>
       <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>
       <message name="IDS_BRAVE_UI_SAVE" desc="">Save</message>

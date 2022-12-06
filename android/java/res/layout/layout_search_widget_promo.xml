@@ -86,7 +86,7 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_plus_add_widget"
                         android:drawablePadding="8dp"
-                        android:fontFamily="@font/poppins_medium"
+                        android:fontFamily="@font/poppins_500"
                         android:gravity="center"
                         android:text="@string/add_widget"
                         android:textColor="@color/search_widget_promo_add_widget_text_color" />
@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:text="@string/not_now"
-                android:fontFamily="@font/poppins_medium"
+                android:fontFamily="@font/poppins_500"
                 android:textColor="@color/search_widget_promo_not_now_text_color"
                 app:layout_constraintBottom_toBottomOf="@id/cvAddWidget"
                 app:layout_constraintEnd_toEndOf="parent"

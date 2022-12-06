@@ -164,7 +164,11 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_METHOD0(ClearAllNotifications, void());
 
-  MOCK_METHOD1(WalletDisconnected, void(const std::string& wallet_type));
+  MOCK_CONST_METHOD0(ExternalWalletConnected, void());
+
+  MOCK_CONST_METHOD0(ExternalWalletLoggedOut, void());
+
+  MOCK_CONST_METHOD0(ExternalWalletReconnected, void());
 
   MOCK_METHOD1(DeleteLog, void(client::LegacyResultCallback callback));
 

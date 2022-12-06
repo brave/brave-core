@@ -308,13 +308,16 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsBraveRewards", IDS_REWARDS_WIDGET_BRAVE_REWARDS },
         { "rewardsClaimRewards", IDS_REWARDS_WIDGET_CLAIM_REWARDS },
         { "rewardsClaimTokens", IDS_REWARDS_WIDGET_CLAIM_TOKENS },
+        { "rewardsConnectAccount", IDS_REWARDS_CONNECT_ACCOUNT },
+        { "rewardsConnectAccountNoProviders", IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS },  // NOLINT
+        { "rewardsConnectAccountText", IDS_REWARDS_CONNECT_ACCOUNT_TEXT },
         { "rewardsContinue", IDS_REWARDS_WIDGET_CONTINUE},
         { "rewardsEarning", IDS_REWARDS_WIDGET_EARNING },
         { "rewardsEarningInfoText", IDS_REWARDS_WIDGET_EARNING_INFO_TEXT },
         { "rewardsExchangeValueNote", IDS_REWARDS_WIDGET_EXCHANGE_VALUE_NOTE },
         { "rewardsGiving", IDS_REWARDS_WIDGET_GIVING },
         { "rewardsGrantDaysRemaining", IDS_REWARDS_WIDGET_GRANT_DAYS_REMAINING },  // NOLINT
-        { "rewardsLearnMore", IDS_REWARDS_WIDGET_LEARN_MORE },
+        { "rewardsLearnMore", IDS_REWARDS_LEARN_MORE },
         { "rewardsOptInHeader", IDS_REWARDS_WIDGET_OPT_IN_HEADER },
         { "rewardsOptInTerms", IDS_BRAVE_REWARDS_ONBOARDING_TERMS },
         { "rewardsOptInText", IDS_REWARDS_WIDGET_OPT_IN_TEXT },
@@ -575,9 +578,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "donationTotalMonthlyTips",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_MONTHLY_TIPS },       // NOLINT
         { "donationVisitSome",  IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME },
         { "donationAbility",  IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY },
-        { "donationAbilityReddit", IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_REDT},
-        { "donationAbilityTwitter",  IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_TW },
-        { "donationAbilityGitHub",  IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_GH },
         { "donationNextDate",  IDS_BRAVE_REWARDS_LOCAL_DONAT_NEXT_DATE },
         { "monthlyTipsTitle",  IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_TITLE },
         { "monthlyTipsDesc",  IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_DESC },
@@ -661,6 +661,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "grantExpire", IDS_BRAVE_UI_GRANT_EXPIRE },
         { "import", IDS_BRAVE_UI_IMPORT },
         { "learnMore", IDS_BRAVE_UI_LEARN_MORE },
+        { "manage", IDS_BRAVE_UI_MANAGE },
         { "manageWallet", IDS_BRAVE_UI_MANAGE_WALLET },
         { "markAsInappropriate", IDS_BRAVE_UI_ADS_MARK_AS_INAPPROPRIATE },
         { "markAsInappropriateChecked", IDS_BRAVE_UI_ADS_MARK_AS_INAPPROPRIATE_CHECKED },        // NOLINT
@@ -678,9 +679,9 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "onboardingPromoHeader", IDS_BRAVE_REWARDS_ONBOARDING_PROMO_HEADER },
         { "onboardingPromoText", IDS_BRAVE_REWARDS_ONBOARDING_PROMO_TEXT },
         { "onboardingSetupAdsHeader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER },  // NOLINT
-        { "onboardingSetupAdsSubheader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_SUBHEADER },  // NOLINT
-        { "onboardingSetupContributeHeader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_HEADER },  // NOLINT
-        { "onboardingSetupContributeSubheader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_SUBHEADER },  // NOLINT
+        { "onboardingSetupAdsText1", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_TEXT_1 },  // NOLINT
+        { "onboardingSetupAdsText2", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_TEXT_2 },  // NOLINT
+        { "onboardingSetupChangeLater", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CHANGE_LATER },  // NOLINT
         { "onboardingStartUsingRewards", IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS },  // NOLINT
         { "onboardingTakeTour", IDS_BRAVE_REWARDS_ONBOARDING_TAKE_TOUR },
         { "onboardingTerms", IDS_BRAVE_REWARDS_ONBOARDING_TERMS },
@@ -694,25 +695,16 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "onboardingPanelWelcomeText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_TEXT },  // NOLINT
         { "onboardingPanelAdsHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_HEADER },  // NOLINT
         { "onboardingPanelAdsText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_TEXT },  // NOLINT
-        { "onboardingPanelScheduleHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_HEADER },  // NOLINT
-        { "onboardingPanelScheduleText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_TEXT },  // NOLINT
         { "onboardingPanelAcHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_HEADER },  // NOLINT
         { "onboardingPanelAcText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_TEXT },
         { "onboardingPanelTippingHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_HEADER },  // NOLINT
         { "onboardingPanelTippingText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_TEXT },  // NOLINT
-        { "onboardingPanelRedeemHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_HEADER },  // NOLINT
-        { "onboardingPanelRedeemText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_TEXT },  // NOLINT
         { "onboardingPanelSetupHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_HEADER },  // NOLINT
-        { "onboardingPanelSetupText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_TEXT },  // NOLINT
         { "onboardingPanelCompleteHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_HEADER },  // NOLINT
         { "onboardingPanelCompleteText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_TEXT },  // NOLINT
-        { "onboardingPanelVerifyHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_HEADER },  // NOLINT
         { "onboardingPanelVerifySubtext", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_SUBTEXT },  // NOLINT
         { "onboardingPanelVerifyLater", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_LATER },  // NOLINT
         { "onboardingPanelVerifyNow", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_NOW },  // NOLINT
-        { "onboardingPanelBitflyerNote", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_NOTE },  // NOLINT
-        { "onboardingPanelBitflyerText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_TEXT },  // NOLINT
-        { "onboardingPanelBitflyerLearnMore", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_LEARN_MORE },  // NOLINT
         { "oneTimeDonation", IDS_BRAVE_UI_ONE_TIME_DONATION },
         { "openAdsHistory", IDS_BRAVE_UI_OPEN_ADS_HISTORY },
         { "optOutTooltip", IDS_BRAVE_UI_ADS_OPT_OUT_TOOLTIP },
@@ -758,14 +750,16 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsContribute", IDS_BRAVE_UI_REWARDS_CONTRIBUTE },
         { "rewardsContributeAttention", IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION },             // NOLINT
         { "rewardsGrantDaysRemaining", IDS_REWARDS_WIDGET_GRANT_DAYS_REMAINING },  // NOLINT
+        { "rewardsLearnMore", IDS_REWARDS_LEARN_MORE },
         { "rewardsLogInToSeeBalance", IDS_REWARDS_LOG_IN_TO_SEE_BALANCE },
         { "rewardsPaymentCheckStatus", IDS_REWARDS_PAYMENT_CHECK_STATUS },
         { "rewardsPaymentCompleted", IDS_REWARDS_PAYMENT_COMPLETED },
         { "rewardsPaymentPending", IDS_REWARDS_PAYMENT_PENDING },
         { "rewardsPaymentProcessing", IDS_REWARDS_PAYMENT_PROCESSING },
         { "rewardsResetConfirmation", IDS_BRAVE_UI_REWARDS_RESET_CONFIRMATION },
+        { "rewardsResetConsent", IDS_BRAVE_UI_REWARDS_RESET_CONSENT },
+        { "rewardsResetText", IDS_BRAVE_UI_REWARDS_RESET_TEXT },
         { "rewardsResetTextFunds", IDS_BRAVE_UI_REWARDS_RESET_TEXT_FUNDS },
-        { "rewardsResetTextNoFunds", IDS_BRAVE_UI_REWARDS_RESET_TEXT_NO_FUNDS },
         { "rewardsTokenGrantTitle", IDS_REWARDS_WIDGET_TOKEN_GRANT_TITLE },
         { "rewardsSummary", IDS_BRAVE_UI_REWARDS_SUMMARY },
         { "saved", IDS_BRAVE_UI_ADS_SAVED },
@@ -823,25 +817,27 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
 
         { "upholdPromoEquitiesTitle",IDS_BRAVE_UI_UPHOLD_PROMO_EQUITIES_TITLE },                 // NOLINT
         { "upholdPromoEquitiesInfo", IDS_BRAVE_UI_UPHOLD_PROMO_EQUITIES_INFO },
+        { "connectAccount", IDS_REWARDS_CONNECT_ACCOUNT },
+        { "connectAccountNoProviders", IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS },  // NOLINT
+        { "connectAccountText", IDS_REWARDS_CONNECT_ACCOUNT_TEXT },
+        { "learnMore", IDS_REWARDS_LEARN_MORE },
         { "connectWalletChooseHeader", IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_HEADER },  // NOLINT
         { "connectWalletChooseNote", IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_NOTE },  // NOLINT
         { "connectWalletChooseText", IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_TEXT },  // NOLINT
         { "connectWalletInfoHeader", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_HEADER },  // NOLINT
         { "connectWalletInfoNote", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_NOTE },
-        { "connectWalletInfoBraveNote", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_BRAVE_NOTE },  // NOLINT
         { "connectWalletInfoText", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_TEXT },
         { "connectWalletInfoListItem1", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_1 },  // NOLINT
         { "connectWalletInfoListItem2", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_2 },  // NOLINT
+        { "connectWalletInfoListItem3", IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_LIST_ITEM_3 },  // NOLINT
         { "connectWalletLearnMore", IDS_BRAVE_REWARDS_CONNECT_WALLET_LEARN_MORE },  // NOLINT
         { "connectWalletProviderNotAvailable", IDS_BRAVE_REWARDS_CONNECT_WALLET_PROVIDER_NOT_AVAILABLE },  // NOLINT
-        { "continue", IDS_BRAVE_REWARDS_CONTINUE },
         { "contributionPendingUntil", IDS_BRAVE_REWARDS_CONTRIBUTION_PENDING_UNTIL },  // NOLINT
 
         { "walletAccountLink", IDS_REWARDS_WALLET_ACCOUNT_LINK },
         { "walletAddFunds", IDS_REWARDS_WALLET_ADD_FUNDS },
         { "walletAutoContribute", IDS_REWARDS_WALLET_AUTO_CONTRIBUTE },
         { "walletDisconnected", IDS_REWARDS_WALLET_DISCONNECTED },
-        { "walletDisconnectLink", IDS_REWARDS_WALLET_DISCONNECT_LINK },
         { "walletEstimatedEarnings", IDS_REWARDS_WALLET_ESTIMATED_EARNINGS },
         { "walletLogIntoYourAccount", IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT },  // NOLINT
         { "walletMonthlyTips", IDS_REWARDS_WALLET_MONTHLY_TIPS },
@@ -920,6 +916,8 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "continue", IDS_BRAVE_REWARDS_TIP_CONTINUE },
         { "tipAmount", IDS_BRAVE_REWARDS_TIP_TIP_AMOUNT },
         { "tipCanceled", IDS_BRAVE_REWARDS_TIP_TIP_CANCELED },
+        { "connectAccountButton", IDS_BRAVE_REWARDS_TIP_CONNECT_ACCOUNT_BUTTON },
+        { "connectAccountText", IDS_BRAVE_REWARDS_TIP_CONNECT_ACCOUNT_TEXT },
         { "currentlySupporting", IDS_BRAVE_REWARDS_TIP_CURRENTLY_SUPPORTING },
         { "currentMonthlyTip", IDS_BRAVE_REWARDS_TIP_CURRENT_MONTHLY_TIP },
         { "customAmount", IDS_BRAVE_REWARDS_TIP_CUSTOM_AMOUNT },
@@ -940,43 +938,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "notEnoughTokens", IDS_BRAVE_REWARDS_TIP_NOT_ENOUGH_TOKENS },
         { "tippingFeeNote", IDS_BRAVE_REWARDS_TIPPING_FEE_NOTE },
         { "on", IDS_BRAVE_UI_ON },
-        { "onboardingMaybeLater", IDS_BRAVE_REWARDS_ONBOARDING_MAYBE_LATER },
-        { "onboardingSetupAdsHeader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER },  // NOLINT
-        { "onboardingSetupAdsSubheader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_SUBHEADER },  // NOLINT
-        { "onboardingSetupContributeHeader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_HEADER },  // NOLINT
-        { "onboardingSetupContributeSubheader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_SUBHEADER },  // NOLINT
-        { "onboardingStartUsingRewards", IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS },  // NOLINT
-        { "onboardingTakeTour", IDS_BRAVE_REWARDS_ONBOARDING_TAKE_TOUR },
         { "onboardingTerms", IDS_BRAVE_REWARDS_ONBOARDING_TERMS },
-        { "onboardingTourBack", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BACK },
-        { "onboardingTourBegin", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_BEGIN },
-        { "onboardingTourContinue", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_CONTINUE },  // NOLINT
-        { "onboardingTourDone", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_DONE },
-        { "onboardingTourSkip", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_SKIP },
-        { "onboardingTourSkipForNow", IDS_BRAVE_REWARDS_ONBOARDING_TOUR_SKIP_FOR_NOW },  // NOLINT
-        { "onboardingPanelWelcomeHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_HEADER },  // NOLINT
-        { "onboardingPanelWelcomeText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_WELCOME_TEXT },  // NOLINT
-        { "onboardingPanelAdsHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_HEADER },  // NOLINT
-        { "onboardingPanelAdsText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_TEXT },  // NOLINT
-        { "onboardingPanelScheduleHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_HEADER },  // NOLINT
-        { "onboardingPanelScheduleText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_TEXT },  // NOLINT
-        { "onboardingPanelAcHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_HEADER },  // NOLINT
-        { "onboardingPanelAcText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_TEXT },
-        { "onboardingPanelTippingHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_HEADER },  // NOLINT
-        { "onboardingPanelTippingText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_TEXT },  // NOLINT
-        { "onboardingPanelRedeemHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_HEADER },  // NOLINT
-        { "onboardingPanelRedeemText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_TEXT },  // NOLINT
-        { "onboardingPanelSetupHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_HEADER },  // NOLINT
-        { "onboardingPanelSetupText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_TEXT },  // NOLINT
-        { "onboardingPanelCompleteHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_HEADER },  // NOLINT
-        { "onboardingPanelCompleteText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_TEXT },  // NOLINT
-        { "onboardingPanelVerifyHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_HEADER },  // NOLINT
-        { "onboardingPanelVerifySubtext", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_SUBTEXT },  // NOLINT
-        { "onboardingPanelVerifyLater", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_LATER },  // NOLINT
-        { "onboardingPanelVerifyNow", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_NOW },  // NOLINT
-        { "onboardingPanelBitflyerNote", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_NOTE },  // NOLINT
-        { "onboardingPanelBitflyerText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_TEXT },  // NOLINT
-        { "onboardingPanelBitflyerLearnMore", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_LEARN_MORE },  // NOLINT
         { "oneTimeTip", IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP },
         { "oneTimeTipAmount", IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP_AMOUNT },
         { "postHeader", IDS_BRAVE_REWARDS_TIP_POST_HEADER },
@@ -990,6 +952,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "supportThisCreator", IDS_BRAVE_REWARDS_TIP_SUPPORT_THIS_CREATOR },
         { "thanksForTheSupport", IDS_BRAVE_REWARDS_TIP_THANKS_FOR_THE_SUPPORT },  // NOLINT
         { "tipDelayNote", IDS_BRAVE_REWARDS_TIP_DELAY_NOTE },
+        { "tipFavoriteCreators", IDS_BRAVE_REWARDS_TIP_TIP_FAVORITE_CREATORS },
         { "tipHasBeenSent", IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET },
         { "tipIsPending", IDS_BRAVE_REWARDS_TIP_TIP_IS_PENDING },
         { "tipPostSubtitle", IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE },

@@ -262,13 +262,8 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   rewards_browsertest_util::WaitForElementThenClick(
       contents(),
-      "[data-test-id2='autoContribution']");
-  std::string value =
-      rewards_browsertest_util::WaitForElementThenGetAttribute(
-        contents(),
-        "[data-test-id2='autoContribution']",
-        "data-toggled");
-  ASSERT_STREQ(value.c_str(), "false");
+      "[data-test-id=auto-contribute-panel] "
+      "[data-test-id=setting-enabled-toggle] button");
 
   rewards_service_->StartMonthlyContributionForTest();
 }

@@ -43,7 +43,7 @@
             android:ellipsize="end"
             android:gravity="start"
             android:maxLines="1"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/poppins_600"
             android:textColor="@color/rewards_panel_text_color"
             android:textSize="20sp" />
 
@@ -64,7 +64,7 @@
                 android:paddingEnd="12dp"
                 android:paddingTop="4dp"
                 android:textAlignment="center"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:paddingBottom="4dp"
                 android:background="@drawable/unverified_48_rounded_bg"
                 android:textColor="@color/rewards_panel_text_color"

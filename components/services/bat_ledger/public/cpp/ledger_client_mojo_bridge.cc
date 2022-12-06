@@ -357,9 +357,16 @@ void LedgerClientMojoBridge::ClearAllNotifications() {
   ledger_client_->ClearAllNotifications();
 }
 
-void LedgerClientMojoBridge::WalletDisconnected(
-    const std::string& wallet_type) {
-  ledger_client_->WalletDisconnected(wallet_type);
+void LedgerClientMojoBridge::ExternalWalletConnected() {
+  ledger_client_->ExternalWalletConnected();
+}
+
+void LedgerClientMojoBridge::ExternalWalletLoggedOut() {
+  ledger_client_->ExternalWalletLoggedOut();
+}
+
+void LedgerClientMojoBridge::ExternalWalletReconnected() {
+  ledger_client_->ExternalWalletReconnected();
 }
 
 // static

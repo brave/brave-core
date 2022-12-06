@@ -140,6 +140,9 @@ class BatLedgerImpl :
                            ledger::mojom::ActivityInfoFilterPtr filter,
                            GetActivityInfoListCallback callback) override;
 
+  void GetPublishersVisitedCount(
+      GetPublishersVisitedCountCallback callback) override;
+
   void GetExcludedList(GetExcludedListCallback callback) override;
 
   void UpdateMediaDuration(
@@ -197,10 +200,6 @@ class BatLedgerImpl :
       const std::string& wallet_type,
       const base::flat_map<std::string, std::string>& args,
       ConnectExternalWalletCallback) override;
-
-  void DisconnectWallet(
-    const std::string& wallet_type,
-    DisconnectWalletCallback callback) override;
 
   void GetTransactionReport(const ledger::mojom::ActivityMonth month,
                             const int year,
@@ -325,10 +324,6 @@ class BatLedgerImpl :
   static void OnHasSufficientBalanceToReconcile(
     CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,
     bool sufficient);
-
-  static void OnDisconnectWallet(
-      CallbackHolder<DisconnectWalletCallback>* holder,
-      ledger::mojom::Result result);
 
   static void OnGetTransactionReport(
       CallbackHolder<GetTransactionReportCallback>* holder,

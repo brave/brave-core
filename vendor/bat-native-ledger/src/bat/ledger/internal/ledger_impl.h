@@ -133,6 +133,9 @@ class LedgerImpl : public Ledger {
                            mojom::ActivityInfoFilterPtr filter,
                            PublisherInfoListCallback callback) override;
 
+  void GetPublishersVisitedCount(
+      base::OnceCallback<void(int)> callback) override;
+
   void GetExcludedList(PublisherInfoListCallback callback) override;
 
   void SetPublisherMinVisitTime(int duration_in_seconds) override;
@@ -263,9 +266,6 @@ class LedgerImpl : public Ledger {
       const std::string& wallet_type,
       const base::flat_map<std::string, std::string>& args,
       ConnectExternalWalletCallback) override;
-
-  void DisconnectWallet(const std::string& wallet_type,
-                        LegacyResultCallback callback) override;
 
   void GetAllPromotions(GetAllPromotionsCallback callback) override;
 

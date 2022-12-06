@@ -118,7 +118,7 @@ void Bitflyer::OnFetchBalance(FetchBalanceCallback callback,
 
   if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    if (!DisconnectWallet()) {
+    if (!LogOutWallet()) {
       BLOG(0,
            "Failed to disconnect " << constant::kWalletBitflyer << " wallet!");
       return std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
@@ -248,9 +248,8 @@ bool Bitflyer::SetWallet(mojom::ExternalWalletPtr wallet) {
   return ledger::wallet::SetWallet(ledger_, std::move(wallet));
 }
 
-bool Bitflyer::DisconnectWallet(bool manual) {
-  return ledger::wallet::DisconnectWallet(ledger_, constant::kWalletBitflyer,
-                                          manual);
+bool Bitflyer::LogOutWallet() {
+  return ledger::wallet::LogOutWallet(ledger_, constant::kWalletBitflyer);
 }
 
 void Bitflyer::RemoveTransferFee(const std::string& contribution_id) {

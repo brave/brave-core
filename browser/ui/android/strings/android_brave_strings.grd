@@ -159,7 +159,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         You're not earning Rewards or receiving Privacy Reports
       </message>
       <message name="IDS_NOTIFICATION_BRAVE_DIALOG_HEADER_ONLY_REWARDS" desc="Text header for When ONLY Brave Rewards is TURNED ON.">
-        You're not earning Brave Rewards 
+        You're not earning Brave Rewards
       </message>
       <message name="IDS_NOTIFICATION_BRAVE_DIALOG_HEADER_ONLY_PRIVACY" desc="Text header for When ONLY Privacy Report is TURNED ON.">
         You're not receiving Privacy Reports
@@ -594,6 +594,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SKIP" desc="Text for skip button in onboarding">
         Skip
       </message>
+      <message name="IDS_SKIP_FOR_NOW" desc="Text for skip for now button in onboarding">
+        Skip for now
+      </message>
       <message name="IDS_LEARN_MORE_ONBOARDING" desc="Text for learn more button onboarding">
         Learn more
       </message>
@@ -766,7 +769,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Auto-Contribute
       </message>
       <message name="IDS_BRAVE_UI_CLAIM" desc="A claim grant button text">
-        Claim
+        Claim Rewards
       </message>
       <message name="IDS_YOUR_BALANCE" desc="Title text for `Your Balance` section in Brave rewards panel">
       Your Balance
@@ -774,35 +777,29 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_DESCRIPTION" desc="A notication message description about auto-contribute">
         You've contributed <ph name="BAT_VALUE">%1$s<ex>50</ex></ph> BAT.
       </message>
-      <message name="IDS_BRAVE_UI_NOTIFICATION_DESC_NO_FUNDS" desc="A notification about not enough funds">
-        Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We'll try again in 30 days.
-      </message>
-      <message name="IDS_BRAVE_UI_NOTIFICATION_DESC_TIP_ERROR" desc="A notification about tip processing problem">
-        There was a problem processing your tip, please try again.
-      </message>
       <message name="IDS_BRAVE_UI_NOTIFICATION_DESC_CONTR_ERROR" desc="A notification about contribution processing problem">
         There was a problem processing your contribution.
       </message>
       <message name="IDS_BRAVE_UI_NEW_TOKEN_GRANT" desc="A notification about free token grant">
-        Free Token Grant
+        A token grant is available!
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_GROUP_BRAVE_ADS" desc="Subheading for 'Brave Ads' section of a list of notification categories. [CHAR-LIMIT=32]">
-        Brave Ads
+      <message name="IDS_BRAVE_ADS_NOTIFICATION_TITLE" desc="Brave Ads notification title">
+        Your <ph name="MONTH_VALUE">%1$s<ex>October</ex></ph> Ads Rewards are here!
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_BRAVE_ADS" desc="Label for Brave Ads. [CHAR-LIMIT=32]">
-        Brave Ads
+      <message name="IDS_BRAVE_ADS_NOTIFICATION_TEXT" desc='Brave Ads notification text'>
+        <ph name="MONTH_VALUE">%1$s<ex>October</ex></ph> Rewards: <ph name="TOKEN">%2$s<ex>token</ex></ph> BAT
       </message>
-      <message name="IDS_BRAVE_UI_NEW_GRANT" desc="A notification about free token grant">
-         A free <ph name="TOKEN">%1$s<ex>token</ex></ph> grant is available.
-      </message>
-      <message name="IDS_BRAVE_ADS_YOU_EARNED" desc='Brave Ads "You earned" text'>
-        You've earned
+      <message name="IDS_BRAVE_ADS_NOTIFICATION_SUB_TEXT" desc='Brave Ads notification sub text'>
+        You have <ph name="TOKEN">%1$s<ex>89</ex></ph> days left to claim
       </message>
       <message name="IDS_BRAVE_UI_INSUFFICIENT_FUNDS_MSG" desc="A message about not enough funds">
         Insufficient Funds
       </message>
       <message name="IDS_BRAVE_UI_INSUFFICIENT_FUNDS_DESC" desc="A notification message about not enough funds">
         Your Brave Rewards account is waiting for a deposit.
+      </message>
+      <message name="IDS_BRAVE_UI_INSUFFICIENT_FUNDS_PENDING_TIPS_DESC" desc="A notification message about not enough funds">
+        You have pending tips due to insufficient funds.
       </message>
       <message name="IDS_BRAVE_WALLET_PORTFOLIO_BALANCE_UPDATING" desc="A placeholder to display for unupdated balance" translateable="false">
         ...
@@ -1048,10 +1045,10 @@ Are you sure you want to do this?
         Download history
       </message> -->
       <message name="IDS_BRAVE_UI_CONTRIBUTION_TIPS" desc="Title for monthly tips processed notification">
-        Contributions &amp; Tips
+        Contributions &amp; tips
       </message>
       <message name="IDS_BRAVE_UI_TIPS_PROCESSED_NOTIFICATION" desc="Message for monthly tips processed notification">
-        Your monthly tips have been processed!
+        Your monthly tips have been processed.
       </message>
       <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="Prompt to turn on Ads via notification">
         Turn on Ads
@@ -1157,9 +1154,6 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_USER_WALLET_GOTO_PROVIDER">
         Go to my <ph name="WALLET_PROVIDER">%1$s</ph> account
-      </message>
-      <message name="IDS_USER_WALLET_DISCONNECT_REWARDS">
-        Disconnect from <ph name="WALLET_PROVIDER">%1$s</ph>
       </message>
       <message name="IDS_USER_WALLET_WITHDRAW_FUNDS">
         Withdraw Funds
@@ -1465,7 +1459,7 @@ Are you sure you want to do this?
         Search
       </message>
       <message name="IDS_MENU_LEARN_MORE" desc="NTP widget menu item">
-        Learn More
+        Learn more
       </message>
       <message name="IDS_TEXT_HAS_BEEN_COPIED" desc="Copy to clipboard toast text.">
         Your text has been copied to the clipboard.
@@ -1510,13 +1504,7 @@ Are you sure you want to do this?
         Where do ads show up?
       </message>
       <message name="IDS_WHERE_DO_ADS_SHOW_UP_TEXT" desc="Brave rewards onboarding title">
-        Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.
-      </message>
-      <message name="IDS_WHEN_DO_YOU_RECEIVE_REWARDS" desc="Brave rewards onboarding title">
-        When do you receive rewards?
-      </message>
-      <message name="IDS_WHEN_DO_YOU_RECEIVE_REWARDS_TEXT" desc="Brave rewards onboarding title">
-        Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.
+        Brave Private Ads appear as notifications on your screen. You control how often you see these ads.
       </message>
       <message name="IDS_GIVING_BACK_MADE_EFFORTLESS" desc="Brave rewards onboarding title">
         Giving back made effortless
@@ -1528,16 +1516,10 @@ Are you sure you want to do this?
         Say thank you with tips
       </message>
       <message name="IDS_SAY_THANK_YOU_WITH_TIPS_TEXT" desc="Brave rewards onboarding title">
-        Tipping is a way to personally encourage and support content or creators that you absolutely love. Get tippin!
-      </message>
-      <message name="IDS_WHAT_CAN_YOU_DO_WITH_TOKENS" desc="Brave rewards onboarding title">
-        What can you do with tokens?
-      </message>
-      <message name="IDS_WHAT_CAN_YOU_DO_WITH_TOKENS_TEXT" desc="Brave rewards onboarding title">
-        Tokens can be used beyond supporting creators. You can buy digital content and other goods as merchants come onboard.
+        Tipping is a way to personally encourage and support content or creators that you love. Get tippin'!
       </message>
       <message name="IDS_BASIC_SETTINGS" desc="Brave rewards onboarding title">
-        Lastly, let’s get you set up on the basic settings
+        Lastly, let’s get you set up
       </message>
       <message name="IDS_YOU_CAN_CHANGE_THIS_LATER" desc="Brave rewards onboarding text">
         You can change this later.
@@ -1545,14 +1527,11 @@ Are you sure you want to do this?
       <message name="IDS_HOW_OFTEN_DO_YOU_SEE_ADS" desc="Brave rewards onboarding text">
         How often do you want to see ads?
       </message>
+      <message name="IDS_MORE_PRIVATE_ADS" desc="Brave rewards onboarding text">
+        More private ads, more rewards.
+      </message>
       <message name="IDS_ADS_PER_HOUR" desc="Brave rewards onboarding text">
-        (Ads per hour)
-      </message>
-      <message name="IDS_HOW_MUCH_SUPPORT" desc="Brave rewards onboarding text">
-        How much support do you want to give to your favorite creators?
-      </message>
-      <message name="IDS_FROM_YOUR_ADS_EARNINGS" desc="Brave rewards onboarding text">
-        (from your ads earnings)
+        <ph name="ADS_PER_HOUR">%1$s</ph> Ads per hour
       </message>
       <message name="IDS_YOU_ARE_DONE" desc="Brave rewards onboarding title">
         Woohoo, you’re all set!
@@ -1565,15 +1544,6 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_LETS_TAKE_A_QUICK_TOUR" desc="Brave rewards onboarding button text">
         Let's Take A Quick Tour
-      </message>
-      <message name="IDS_BRAVE_REWARDS_WELCOME_LAYOUT_TEXT" desc="Brave rewards welcome layout text">
-        After you receive your first ads payout you can come back and tip this creator!
-      </message>
-      <message name="IDS_QUICK_REFRESHER_TOUR" desc="Brave rewards welcome layout button text">
-        Quick refresher tour
-      </message>
-      <message name="IDS_REWARDS_PAYOUT" desc="Brave rewards welcome layout button text">
-        Your 1st rewards payout will arrive by:
       </message>
       <message name="IDS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE_TITLE" desc="Title for preference that allows the user to open downloads automatically.">
         Automatically open when possible
@@ -1616,33 +1586,6 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_NOT_NOW" desc="Set default browser modal button text">
         Not now
-      </message>
-      <message name="IDS_VALUE_1" desc="value for 1">
-        1
-      </message>
-      <message name="IDS_VALUE_2" desc="value for 2">
-        2
-      </message>
-      <message name="IDS_VALUE_3" desc="value for 3">
-        3
-      </message>
-      <message name="IDS_VALUE_4" desc="value for 4">
-        4
-      </message>
-      <message name="IDS_VALUE_5" desc="value for 5">
-        5
-      </message>
-      <message name="IDS_VALUE_1_BAT" desc="value for 1 BAT">
-        1 BAT
-      </message>
-      <message name="IDS_VALUE_2_BAT" desc="value for 5 BAT">
-        2 BAT
-      </message>
-      <message name="IDS_VALUE_3_BAT" desc="value for 10 BAT">
-        3 BAT
-      </message>
-      <message name="IDS_VALUE_5_BAT" desc="value for 5 BAT">
-        5 BAT
       </message>
       <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
         WebRTC IP handling policy
@@ -2607,9 +2550,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_MONTHLY_TIPS" desc="Title text for `Monthly Tips` section in Brave rewards panel">
       Monthly Tips
     </message>
-    <message name="IDS_MY_WALLET" desc="Text for `My wallet` button in Brave rewards panel">
-      Verified
-    </message>
     <message name="IDS_ESTIMATED_EARNINGS" desc="Title text for `Estimated earnings` section in Brave rewards panel">
       Estimated earnings
     </message>
@@ -3226,7 +3166,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Your Brave Rewards region has been set to <ph name="COUNTRY_NAME">%1$s</ph>.
     </message>
     <message name="IDS_DECLARE_GEO_FAILED_RESPONSE_TEXT" desc="Declare geo failed modal text">
-      Unfortunately, there was an error while trying to set your country. Please try again.
+      Unfortunately, there was an error while trying to set up Brave Rewards. Please try again.
     </message>
     <message name="IDS_SOMETHING_WENT_WRONG_TEXT" desc="Declare geo failed modal title">
       Something went wrong
@@ -3308,6 +3248,84 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_LINK_SUBSCRIPTION_DIALOG_TEXT" desc="Brave vpn link subscription dialog text">
       Your Brave VPN subscription can protect up to 5 devices, across Android, iOS, and desktop. Just link your Google Play subscription to your Brave account.
+    </message>
+    <message name="IDS_REWARDS_PANEL_UNVERIFIED_SWITCH_OFF_SUB_TEXT" desc="A sub title for brave rewards panel unverified state when rewards is off">
+      Turn on to help support content creators
+    </message>
+    <message name="IDS_REWARDS_PANEL_UNVERIFIED_SWITCH_ON_SUB_TEXT" desc="A sub title for brave rewards panel unverified state when rewards is on">
+      You are helping support content creators
+    </message>
+    <message name="IDS_REWARDS_PANEL_UNVERIFIED_OFF_SECTION_TEXT" desc="Rewards panel unverified state section text when rewards is disabled">
+      Using Brave Rewards helps support content creators, and lets you earn BAT.
+    </message>
+    <message name="IDS_READY_TO_START_EARNING_TEXT" desc="Rewards panel unverified state section text when rewards is enabled">
+      Ready to start earning BAT?
+    </message>
+    <message name="IDS_REWARDS_PANEL_UNVERIFIED_ON_SECTION_TEXT" desc="Rewards panel unverified state section text when rewards is enabled">
+      Just connect your custodial account to your Rewards profile. If you don’t have an account, you’ll get the chance to create one.
+    </message>
+    <message name="IDS_REWARDS_PANEL_UNVERIFIED_ON_SECTION_UNSUPPORTED_REGION_TEXT" desc="Rewards panel unverified state section text when rewards is enabled but region is not supported">
+      To start earning BAT, you need to connect a custodial account to Brave Rewards. Unfortunately, there's no custodian available in your region, so earning isn't available at this time. However, you'll still be automatically supporting creators by using Rewards.
+    </message>
+    <message name="IDS_LEARN_MORE_ABOUT_BAT" desc="Rewards panel unverified state section learn more text">
+      Learn more about BAT
+    </message>
+    <message name="IDS_REWARDS_SETTINGS" desc="Rewards panel settings button text">
+      Rewards settings
+    </message>
+    <message name="IDS_CONNECT_ACCOUNT" desc="Rewards panel connect account button text">
+      Connect account
+    </message>
+    <message name="IDS_REWARDS_PANEL_UNVERIFIED_CREATOR_SECTION_TEXT" desc="Rewards panel unverified creator section text">
+      You've visited <ph name="CREATOR_COUNT">%1$s<ex>2</ex></ph> creators supported by users like you this month
+    </message>
+    <message name="IDS_EMPTY_UNVERIFIED_STATE_TEXT" desc="Rewards panel unverified state text" translateable="false">
+      --
+    </message>
+    <message name="IDS_CONNECT_ACCOUNT_MODAL_TEXT" desc="Rewards panel onboarding connect account text">
+      Connect a custodial account so you can earn BAT and withdraw your rewards
+    </message>
+    <message name="IDS_I_WILL_DO_IT_LATER" desc="Rewards panel onboarding connect account modal dismiss action text">
+      I'll do it later
+    </message>
+    <message name="IDS_LOGGED_OUT_NOTIFICATION_ACTION_TEXT" desc="Rewards panel logged out notification action text">
+      Reconnect
+    </message>
+    <message name="IDS_LOGGED_OUT_NOTIFICATION_TITLE" desc="Rewards panel logged out notification title">
+      You are logged out
+    </message>
+    <message name="IDS_LOGGED_OUT_NOTIFICATION_TEXT" desc="Rewards panel logged out notification text">
+      This can happen to keep your account secure. Press below to reconnect now.
+    </message>
+    <message name="IDS_MONTHLY_TIP_FAILED_NOTIFICATION_TITLE" desc="Rewards panel monthly tip failed notification title">
+      Monthly tip failed
+    </message>
+    <message name="IDS_MONTHLY_TIP_FAILED_NOTIFICATION_TEXT" desc="Rewards panel monthly tip failed notification text">
+      There was a problem processing your contribution.
+    </message>
+    <message name="IDS_MONTHLY_TIP_FAILED_NO_FUNDS_NOTIFICATION_TEXT" desc="Rewards panel monthly tip failed no funds notification text">
+      Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due tu insufficient funds. We’ll try again in 30 days.
+    </message>
+    <message name="IDS_BAT_UNAVAILABLE_NOTIFICATION_TITLE" desc="Rewards panel BAT unavailable notification title">
+      Error: BAT unavailable
+    </message>
+    <message name="IDS_BAT_UNAVAILABLE_NOTIFICATION_TEXT" desc="Rewards panel BAT unavailable notification text">
+      BAT is not yet supported in your region on Uphold.
+    </message>
+    <message name="IDS_LIMITED_FUNCTIONALITY_NOTIFICATION_TITLE" desc="Rewards panel limited functionality notification title">
+      Error: Limited Uphold account functionality
+    </message>
+    <message name="IDS_LIMITED_FUNCTIONALITY_NOTIFICATION_TEXT" desc="Rewards panel limited functionality notification text">
+      Accourding to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again.
+    </message>
+    <message name="IDS_BRAVE_ADS_TEXT" desc="Brave ads text">
+      Brave Ads
+    </message>
+    <message name="IDS_WALLET_GENERATION_DISABLED_ERROR_TITLE" desc="wallet generation disabled error title">
+      Brave Rewards not available
+    </message>
+    <message name="IDS_WALLET_GENERATION_DISABLED_ERROR_TEXT" desc="wallet generation disabled error text">
+      New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LEARN_MORE">%1$s</ph>
     </message>
   </messages>
   </release>

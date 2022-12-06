@@ -74,8 +74,10 @@ export const defaultState: NewTab.State = {
       wallets: {}
     },
     externalWallet: undefined,
+    externalWalletProviders: [],
     dismissedNotifications: [],
     rewardsEnabled: false,
+    userVersion: '',
     isUnsupportedRegion: false,
     declaredCountry: '',
     enabledAds: false,
@@ -83,10 +85,12 @@ export const defaultState: NewTab.State = {
     adsSupported: false,
     promotions: [],
     totalContribution: 0.0,
+    publishersVisitedCount: 0,
     parameters: {
       rate: 0,
       monthlyTipChoices: [],
-      payoutStatus: {}
+      payoutStatus: {},
+      walletProviderRegions: {}
     }
   },
   currentStackWidget: '',

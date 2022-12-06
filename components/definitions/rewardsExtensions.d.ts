@@ -124,6 +124,7 @@ declare namespace RewardsExtension {
     monthlyTipChoices: number[]
     autoContributeChoices: number[]
     payoutStatus: Record<string, ProviderPayoutStatus>
+    walletProviderRegions: Record<string, { allow: string[], block: string[] } | undefined>
   }
 
   export interface BalanceReport {
