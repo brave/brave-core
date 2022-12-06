@@ -3,12 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/third_party/blink/renderer/brave_audio_farbling_helper.h"
+#include "brave/third_party/blink/renderer/platform/brave_audio_farbling_helper.h"
 
 #include <limits.h>
 
 #include "third_party/blink/renderer/platform/audio/audio_utilities.h"
 
+namespace blink {
 namespace {
 
 constexpr uint64_t zero = 0;
@@ -20,16 +21,14 @@ inline uint64_t lfsr_next(uint64_t v) {
 
 }  // namespace
 
-namespace brave {
+BraveAudioFarblingHelper::BraveAudioFarblingHelper(double fudge_factor,
+                                                   uint64_t seed)
+    : fudge_factor_(fudge_factor), seed_(seed) {}
 
-AudioFarblingHelper::AudioFarblingHelper(double fudge_factor, uint64_t seed)
-    : fudge_factor_(fudge_factor), seed_(seed) {
-  max_ = false;
-}
+BraveAudioFarblingHelper::~BraveAudioFarblingHelper() = default;
 
-AudioFarblingHelper::~AudioFarblingHelper() = default;
-
-void AudioFarblingHelper::FarbleAudioChannel(float* dst, size_t count) {
+void BraveAudioFarblingHelper::FarbleAudioChannel(float* dst,
+                                                  size_t count) const {
   if (max_) {
     uint64_t v = seed_;
     for (unsigned i = 0; i < count; i++) {
@@ -44,13 +43,13 @@ void AudioFarblingHelper::FarbleAudioChannel(float* dst, size_t count) {
 }
 
 // Calculate values for RealtimeAnalyser::GetFloatTimeDomainData
-void AudioFarblingHelper::FarbleFloatTimeDomainData(
+void BraveAudioFarblingHelper::FarbleFloatTimeDomainData(
     float* input_buffer,
     float* destination,
     size_t len,
     unsigned write_index,
     unsigned fft_size,
-    unsigned input_buffer_size) {
+    unsigned input_buffer_size) const {
   if (max_) {
     uint64_t v = seed_;
     for (unsigned i = 0; i < len; ++i) {
@@ -72,12 +71,13 @@ void AudioFarblingHelper::FarbleFloatTimeDomainData(
 }
 
 // Calculate values for RealtimeAnalyser::GetByteTimeDomainData
-void AudioFarblingHelper::FarbleByteTimeDomainData(float* input_buffer,
-                                                   unsigned char* destination,
-                                                   size_t len,
-                                                   unsigned write_index,
-                                                   unsigned fft_size,
-                                                   unsigned input_buffer_size) {
+void BraveAudioFarblingHelper::FarbleByteTimeDomainData(
+    float* input_buffer,
+    unsigned char* destination,
+    size_t len,
+    unsigned write_index,
+    unsigned fft_size,
+    unsigned input_buffer_size) const {
   if (max_) {
     uint64_t v = seed_;
     for (unsigned i = 0; i < len; ++i) {
@@ -122,18 +122,18 @@ void AudioFarblingHelper::FarbleByteTimeDomainData(float* input_buffer,
 }
 
 // Calculate values for RealtimeAnalyser::ConvertToByteData
-void AudioFarblingHelper::FarbleConvertToByteData(
+void BraveAudioFarblingHelper::FarbleConvertToByteData(
     const float* source,
     unsigned char* destination,
     size_t len,
     const double min_decibels,
-    const double range_scale_factor) {
+    const double range_scale_factor) const {
   if (max_) {
     uint64_t v = seed_;
     for (unsigned i = 0; i < len; ++i) {
       v = lfsr_next(v);
       float linear_value = (v / maxUInt64AsDouble) / 10;
-      double db_mag = blink::audio_utilities::LinearToDecibels(linear_value);
+      double db_mag = audio_utilities::LinearToDecibels(linear_value);
 
       // The range m_minDecibels to m_maxDecibels will be scaled to byte values
       // from 0 to UCHAR_MAX.
@@ -153,7 +153,7 @@ void AudioFarblingHelper::FarbleConvertToByteData(
   } else {
     for (unsigned i = 0; i < len; ++i) {
       float linear_value = fudge_factor_ * source[i];
-      double db_mag = blink::audio_utilities::LinearToDecibels(linear_value);
+      double db_mag = audio_utilities::LinearToDecibels(linear_value);
 
       // The range m_minDecibels to m_maxDecibels will be scaled to byte values
       // from 0 to UCHAR_MAX.
@@ -174,24 +174,24 @@ void AudioFarblingHelper::FarbleConvertToByteData(
 }
 
 // Calculate values for RealtimeAnalyser::ConvertFloatToDb
-void AudioFarblingHelper::FarbleConvertFloatToDb(const float* source,
-                                                 float* destination,
-                                                 size_t len) {
+void BraveAudioFarblingHelper::FarbleConvertFloatToDb(const float* source,
+                                                      float* destination,
+                                                      size_t len) const {
   if (max_) {
     uint64_t v = seed_;
     for (unsigned i = 0; i < len; ++i) {
       v = lfsr_next(v);
       float linear_value = (v / maxUInt64AsDouble) / 10;
-      double db_mag = blink::audio_utilities::LinearToDecibels(linear_value);
+      double db_mag = audio_utilities::LinearToDecibels(linear_value);
       destination[i] = static_cast<float>(db_mag);
     }
   } else {
     for (unsigned i = 0; i < len; ++i) {
       float linear_value = fudge_factor_ * source[i];
-      double db_mag = blink::audio_utilities::LinearToDecibels(linear_value);
+      double db_mag = audio_utilities::LinearToDecibels(linear_value);
       destination[i] = static_cast<float>(db_mag);
     }
   }
 }
 
-}  // namespace brave
+}  // namespace blink

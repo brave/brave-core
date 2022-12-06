@@ -6,10 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_WEBAUDIO_REALTIME_ANALYSER_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_WEBAUDIO_REALTIME_ANALYSER_H_
 
-#include "brave/third_party/blink/renderer/brave_audio_farbling_helper.h"
+#include "brave/third_party/blink/renderer/platform/brave_audio_farbling_helper.h"
 
 #define BRAVE_REALTIMEANALYSER_H \
-  brave::AudioFarblingHelper* audio_farbling_helper_;
+  absl::optional<BraveAudioFarblingHelper> audio_farbling_helper_;
 
 #include "src/third_party/blink/renderer/modules/webaudio/realtime_analyser.h"
 

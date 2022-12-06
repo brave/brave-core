@@ -5,17 +5,12 @@
 
 component("renderer") {
   sources = [
-    "brave_audio_farbling_helper.cc",
-    "brave_audio_farbling_helper.h",
     "brave_farbling_constants.h",
     "brave_font_whitelist.cc",
     "brave_font_whitelist.h",
   ]
 
-  deps = [
-    "//brave/components/brave_drm:brave_drm_blink",
-    "//third_party/blink/renderer/platform:platform",
-  ]
+  deps = [ "//brave/components/brave_drm:brave_drm_blink" ]
 
   defines = [ "BLINK_IMPLEMENTATION=1" ]
 }

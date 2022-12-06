@@ -9,6 +9,7 @@
 #include "base/feature_list.h"
 #include "base/sequence_checker.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/types/optional_util.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 #include "build/build_config.h"
@@ -202,7 +203,7 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
   double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
   uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
-  audio_farbling_helper_ = new AudioFarblingHelper(fudge_factor, seed);
+  audio_farbling_helper_.emplace(fudge_factor, seed);
   farbling_enabled_ = true;
 }
 
@@ -221,24 +222,17 @@ void BraveSessionCache::Init() {
   RegisterAllowFontFamilyCallback(base::BindRepeating(&brave::AllowFontFamily));
 }
 
-AudioFarblingHelper* BraveSessionCache::GetAudioFarblingHelper(
+absl::optional<blink::BraveAudioFarblingHelper>
+BraveSessionCache::GetAudioFarblingHelper(
     blink::WebContentSettingsClient* settings) {
-  if (!farbling_enabled_)
-    return nullptr;
-  DCHECK(audio_farbling_helper_);
-  DCHECK(settings);
-  if ((settings->GetBraveFarblingLevel()) == BraveFarblingLevel::OFF)
-    return nullptr;
-  audio_farbling_helper_->SetMax(settings->GetBraveFarblingLevel() ==
-                                 BraveFarblingLevel::MAXIMUM);
-  return audio_farbling_helper_;
+  return base::OptionalFromPtr(UpdateAndGetAudioFarblingHelper(settings));
 }
 
 void BraveSessionCache::FarbleAudioChannel(
     blink::WebContentSettingsClient* settings,
     float* dst,
     size_t count) {
-  if (AudioFarblingHelper* helper = GetAudioFarblingHelper(settings)) {
+  if (const auto* helper = UpdateAndGetAudioFarblingHelper(settings)) {
     helper->FarbleAudioChannel(dst, count);
   }
 }
@@ -374,6 +368,21 @@ FarblingPRNG BraveSessionCache::MakePseudoRandomGenerator(FarbleKey key) {
   uint64_t seed =
       *reinterpret_cast<uint64_t*>(domain_key_) ^ static_cast<uint64_t>(key);
   return FarblingPRNG(seed);
+}
+
+const blink::BraveAudioFarblingHelper*
+BraveSessionCache::UpdateAndGetAudioFarblingHelper(
+    blink::WebContentSettingsClient* settings) {
+  if (!farbling_enabled_)
+    return nullptr;
+  DCHECK(audio_farbling_helper_);
+  DCHECK(settings);
+  const auto farbling_level = settings->GetBraveFarblingLevel();
+  if (farbling_level == BraveFarblingLevel::OFF)
+    return nullptr;
+  audio_farbling_helper_->set_max(farbling_level ==
+                                  BraveFarblingLevel::MAXIMUM);
+  return &audio_farbling_helper_.value();
 }
 
 }  // namespace brave
