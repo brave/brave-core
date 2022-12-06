@@ -13,25 +13,30 @@
 #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
 #include "third_party/blink/renderer/modules/webaudio/analyser_node.h"
 
-#define BRAVE_AUDIOBUFFER_GETCHANNELDATA                                    \
-  NotShared<DOMFloat32Array> array = getChannelData(channel_index);         \
-  DOMFloat32Array* destination_array = array.Get();                         \
-  size_t len = destination_array->length();                                 \
-  if (len > 0) {                                                            \
-    if (WebContentSettingsClient* settings =                                \
-            brave::GetContentSettingsClientFor(                             \
-                ExecutionContext::From(script_state))) {                    \
-      float* destination = destination_array->Data();                       \
-      brave::BraveSessionCache::From(*ExecutionContext::From(script_state)) \
-          .FarbleAudioChannel(settings, destination, len);                  \
-    }                                                                       \
+#define BRAVE_AUDIOBUFFER_GETCHANNELDATA                                      \
+  {                                                                           \
+    NotShared<DOMFloat32Array> array = getChannelData(channel_index);         \
+    DOMFloat32Array* destination_array = array.Get();                         \
+    size_t len = destination_array->length();                                 \
+    if (len > 0) {                                                            \
+      if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
+        if (WebContentSettingsClient* settings =                              \
+                brave::GetContentSettingsClientFor(context)) {                \
+          float* destination = destination_array->Data();                     \
+          brave::BraveSessionCache::From(*context).FarbleAudioChannel(        \
+              settings, destination, len);                                    \
+        }                                                                     \
+      }                                                                       \
+    }                                                                         \
   }
 
 #define BRAVE_AUDIOBUFFER_COPYFROMCHANNEL                                      \
-  if (WebContentSettingsClient* settings = brave::GetContentSettingsClientFor( \
-          ExecutionContext::From(script_state))) {                             \
-    brave::BraveSessionCache::From(*ExecutionContext::From(script_state))      \
-        .FarbleAudioChannel(settings, dst, count);                             \
+  if (ExecutionContext* context = ExecutionContext::From(script_state)) {      \
+    if (WebContentSettingsClient* settings =                                   \
+            brave::GetContentSettingsClientFor(context)) {                     \
+      brave::BraveSessionCache::From(*context).FarbleAudioChannel(settings,    \
+                                                                  dst, count); \
+    }                                                                          \
   }
 
 #include "src/third_party/blink/renderer/modules/webaudio/audio_buffer.cc"
