@@ -238,7 +238,7 @@ void BraveSessionCache::FarbleAudioChannel(
     blink::WebContentSettingsClient* settings,
     float* dst,
     size_t count) {
-  if (raw_ptr<AudioFarblingHelper> helper = GetAudioFarblingHelper(settings)) {
+  if (AudioFarblingHelper* helper = GetAudioFarblingHelper(settings)) {
     helper->FarbleAudioChannel(dst, count);
   }
 }
