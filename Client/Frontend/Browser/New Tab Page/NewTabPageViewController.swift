@@ -738,11 +738,12 @@ class NewTabPageViewController: UIViewController {
       self.dismiss(animated: true)
       self.delegate?.navigateToInput(url.absoluteString, inNewTab: false, switchingToPrivateMode: false)
     })
-    controller.viewDidDisappear = {
+    controller.viewDidDisappear = { [weak self] in
       if Preferences.Review.braveNewsCriteriaPassed.value {
         AppReviewManager.shared.isReviewRequired = true
         Preferences.Review.braveNewsCriteriaPassed.value = false
       }
+      self?.checkForUpdatedFeed()
     }
     let container = UINavigationController(rootViewController: controller)
     present(container, animated: true)
