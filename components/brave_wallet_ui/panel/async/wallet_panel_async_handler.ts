@@ -796,7 +796,10 @@ handler.on(WalletActions.transactionStatusChanged.type, async (store: Store, pay
   const state = getPanelState(store)
   const walletState = getWalletState(store)
   if (
-    [BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Signed, BraveWallet.TransactionStatus.Rejected, BraveWallet.TransactionStatus.Approved]
+    [BraveWallet.TransactionStatus.Submitted,
+      BraveWallet.TransactionStatus.Signed,
+      BraveWallet.TransactionStatus.Rejected,
+      BraveWallet.TransactionStatus.Approved]
       .includes(payload.txInfo.txStatus)
   ) {
     if (state.selectedPanel === 'approveTransaction' && walletState.pendingTransactions.length === 0) {

@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
@@ -827,7 +827,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, NetworkVersion) {
   EXPECT_EQ(EvalJs(web_contents(), "getNetworkVersion()",
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                 .ExtractString(),
-            std::to_string((uint64_t)chain_id_uint256));
+            base::NumberToString((uint64_t)chain_id_uint256));
 
   // Newly added network change
   std::string chain_id = "0x38";
@@ -841,7 +841,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, NetworkVersion) {
   EXPECT_EQ(EvalJs(web_contents(), "getNetworkVersion()",
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                 .ExtractString(),
-            std::to_string((uint64_t)chain_id_uint256));
+            base::NumberToString((uint64_t)chain_id_uint256));
 
   // Make sure chainId > uint64_t has networkVersion undefined. This is
   // just a current limitation that we will likely get rid of in the future.
