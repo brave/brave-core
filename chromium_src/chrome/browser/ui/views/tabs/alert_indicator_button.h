@@ -6,10 +6,17 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_ALERT_INDICATOR_BUTTON_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_ALERT_INDICATOR_BUTTON_H_
 
+class AlertIndicatorButton;
 #define AlertIndicatorButton AlertIndicatorButtonBase
+#define GetTab     \
+  GetTab_Unused(); \
+                   \
+ protected:        \
+  Tab* GetTab
 #define UpdateEnabledForMuteToggle virtual UpdateEnabledForMuteToggle
 #include "src/chrome/browser/ui/views/tabs/alert_indicator_button.h"
 #undef UpdateEnabledForMuteToggle
+#undef GetTab
 #undef AlertIndicatorButton
 
 class AlertIndicatorButton : public AlertIndicatorButtonBase {

@@ -151,6 +151,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &history_clusters::internal::kPersistContextAnnotationsInHistoryDb,
     &lens::features::kLensStandalone,
     &lens::features::kLensUnifiedSidePanelFooter,
+    &media::kEnableTabMuting,
     &media::kLiveCaption,
     &net::features::kNoncedPartitionedCookies,
     &net::features::kPartitionedCookies,
@@ -191,7 +192,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
 #if BUILDFLAG(IS_WIN)
     &features::kWinrtGeolocationImplementation,
 #endif
-    &media::kEnableTabMuting,
     &net::features::kPartitionConnectionsByNetworkIsolationKey,
     &net::features::kPartitionExpectCTStateByNetworkIsolationKey,
     &net::features::kPartitionHttpServerPropertiesByNetworkIsolationKey,

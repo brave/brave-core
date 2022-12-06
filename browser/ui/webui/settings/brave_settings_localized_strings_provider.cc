@@ -280,6 +280,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveHelpTipsWarnBeforeClosingWindow",
      IDS_SETTINGS_WINDOW_CLOSING_CONFIRM_OPTION_LABEL},
     {"braveHelpTipsClosingLastTab", IDS_SETTINGS_CLOSING_LAST_TAB_OPTION_LABEL},
+    {"braveClickableMuteIndicators", IDS_SETTINGS_CLICKABLE_MUTE_INDICATORS},
     // New Tab Page
     {"braveNewTab", IDS_SETTINGS_NEW_TAB},
     {"braveNewTabBraveRewards", IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS},

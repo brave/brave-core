@@ -308,10 +308,13 @@ RegisterPolymerTemplateModifications({
       // Move help tips after downloads
       const sectionDownloads = getSectionElement(advancedSubSectionsTemplate.content, 'downloads')
       sectionDownloads.insertAdjacentElement('afterend', sectionHelpTips)
-      // Add an element to Chromium's system section
-      const buttonElement = createToggleButtonElement("prefs.brave.enable_closing_last_tab", "braveHelpTipsClosingLastTab")
+
+      // Add elements to Chromium's system section
       const sectionSystem = getSectionElement(advancedSubSectionsTemplate.content, 'system')
-      sectionSystem.appendChild(buttonElement)
+      const enableClosingLastTabButton = createToggleButtonElement("prefs.brave.enable_closing_last_tab", "braveHelpTipsClosingLastTab")
+      sectionSystem.appendChild(enableClosingLastTabButton)
+      const enableClickableMuteButton = createToggleButtonElement("prefs.brave.tabs.mute_indicator_clickable", "braveClickableMuteIndicators");
+      sectionSystem.appendChild(enableClickableMuteButton)
     }
   }
 })
