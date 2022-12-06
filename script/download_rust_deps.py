@@ -183,7 +183,7 @@ def main():
         rustup_add_target('aarch64-apple-darwin')
 
     cxx_path = os.path.abspath(
-        os.path.join(BRAVE_CORE_ROOT, '..', 'third_party', 'rust', 'cxx', 'v1'))
+        os.path.join(BRAVE_CORE_ROOT, 'third_party', 'rust', 'cxx', 'v1'))
 
     with open(os.path.join(cxx_path, "README.chromium")) as readme_file:
         _VERSION_PREFIX = "Version: "
