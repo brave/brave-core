@@ -36,8 +36,8 @@ class PLATFORM_EXPORT BraveAudioFarblingHelper final {
   void FarbleConvertToByteData(const float* source,
                                unsigned char* destination,
                                size_t len,
-                               const double min_decibels,
-                               const double range_scale_factor) const;
+                               double min_decibels,
+                               double range_scale_factor) const;
   void FarbleConvertFloatToDb(const float* source,
                               float* destination,
                               size_t len) const;
