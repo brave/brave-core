@@ -9,7 +9,7 @@
 #include "brave/third_party/blink/renderer/brave_audio_farbling_helper.h"
 
 #define BRAVE_REALTIMEANALYSER_H \
-  raw_ptr<brave::AudioFarblingHelper> audio_farbling_helper_;
+  brave::AudioFarblingHelper* audio_farbling_helper_;
 
 #include "src/third_party/blink/renderer/modules/webaudio/realtime_analyser.h"
 

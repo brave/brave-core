@@ -9,7 +9,6 @@
 #include <map>
 #include <string>
 
-#include "base/memory/raw_ptr.h"
 #include "brave/third_party/blink/renderer/brave_audio_farbling_helper.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "third_party/abseil-cpp/absl/random/random.h"
@@ -89,7 +88,7 @@ class CORE_EXPORT BraveSessionCache final
   bool AllowFontFamily(blink::WebContentSettingsClient* settings,
                        const AtomicString& family_name);
   FarblingPRNG MakePseudoRandomGenerator(FarbleKey key = FarbleKey::kNone);
-  raw_ptr<AudioFarblingHelper> GetAudioFarblingHelper(
+  AudioFarblingHelper* GetAudioFarblingHelper(
       blink::WebContentSettingsClient* settings);
 
  private:

@@ -221,7 +221,7 @@ void BraveSessionCache::Init() {
   RegisterAllowFontFamilyCallback(base::BindRepeating(&brave::AllowFontFamily));
 }
 
-raw_ptr<AudioFarblingHelper> BraveSessionCache::GetAudioFarblingHelper(
+AudioFarblingHelper* BraveSessionCache::GetAudioFarblingHelper(
     blink::WebContentSettingsClient* settings) {
   if (!farbling_enabled_)
     return nullptr;
