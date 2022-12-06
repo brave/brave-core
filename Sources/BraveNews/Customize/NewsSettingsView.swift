@@ -245,7 +245,7 @@ public struct NewsSettingsView: View {
           Color.clear
             .toolbar {
               ToolbarItemGroup(placement: .bottomBar) {
-                if userOptedIn.value {
+                if isNewsEnabled.value {
                   Spacer()
                   Menu {
                     Button {
