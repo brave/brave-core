@@ -27,7 +27,7 @@ const char kDefaultSolanaWalletHistogramName[] =
 const char kKeyringCreatedHistogramName[] = "Brave.Wallet.KeyringCreated";
 const char kOnboardingConversionHistogramName[] =
     "Brave.Wallet.OnboardingConversion.2";
-const char kEthProviderHistogramName[] = "Brave.Wallet.EthProvider";
+const char kEthProviderHistogramName[] = "Brave.Wallet.EthProvider.2";
 const char kEthTransactionSentHistogramName[] =
     "Brave.Wallet.EthTransactionSent";
 const char kSolTransactionSentHistogramName[] =
@@ -111,7 +111,15 @@ void BraveWalletP3A::Update() {
 
 void BraveWalletP3A::ReportEthereumProvider(
     mojom::EthereumProviderType provider_type) {
-  UMA_HISTOGRAM_ENUMERATION(kEthProviderHistogramName, provider_type);
+  mojom::EthereumProviderType answer = provider_type;
+
+  if (provider_type == mojom::EthereumProviderType::Native &&
+      !keyring_service_->IsKeyringCreated(mojom::kDefaultKeyringId)) {
+    // If native wallet is the current provider, but the wallet is not setup,
+    // report "none".
+    answer = mojom::EthereumProviderType::None;
+  }
+  UMA_HISTOGRAM_ENUMERATION(kEthProviderHistogramName, answer);
 }
 
 void BraveWalletP3A::ReportOnboardingAction(

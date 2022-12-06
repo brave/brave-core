@@ -84,7 +84,7 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Wallet.ActiveEthAccounts",
     "Brave.Wallet.ActiveFilAccounts",
     "Brave.Wallet.ActiveSolAccounts",
-    "Brave.Wallet.EthProvider",
+    "Brave.Wallet.EthProvider.2",
     "Brave.Wallet.EthTransactionSent",
     "Brave.Wallet.FilTransactionSent",
     "Brave.Wallet.DefaultSolanaWalletSetting",

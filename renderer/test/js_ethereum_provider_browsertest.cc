@@ -128,14 +128,14 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
               std::string::npos);
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 
-  histogram_tester_->ExpectBucketCount("Brave.Wallet.EthProvider", 0, 1);
+  histogram_tester_->ExpectBucketCount("Brave.Wallet.EthProvider.2", 0, 1);
 
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
   ReloadAndWaitForLoadStop();
 
-  histogram_tester_->ExpectBucketCount("Brave.Wallet.EthProvider", 2, 1);
+  histogram_tester_->ExpectBucketCount("Brave.Wallet.EthProvider.2", 0, 2);
 
   auto result = content::EvalJs(primary_main_frame(), command);
   EXPECT_EQ(result.error, "");
@@ -152,8 +152,6 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
   // overwrite successfully
   EXPECT_EQ(content::EvalJs(primary_main_frame(), overwrite).ExtractString(),
             "test");
-
-  histogram_tester_->ExpectBucketCount("Brave.Wallet.EthProvider", 2, 2);
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
