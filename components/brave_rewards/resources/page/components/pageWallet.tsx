@@ -636,7 +636,7 @@ class PageWallet extends React.Component<Props, State> {
           onViewPendingTips={this.onModalPendingToggle}
           onViewStatement={this.props.layout === 'wide' ? this.onModalActivityToggle : undefined}
         />
-        { this.props.layout === 'wide' && <ManageWalletButton onClick={this.onModalBackupOpen} /> }
+        <ManageWalletButton onClick={this.onModalBackupOpen} />
         {
           modalBackup
             ? <ModalBackupReset
