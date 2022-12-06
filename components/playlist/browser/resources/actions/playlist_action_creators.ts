@@ -10,7 +10,7 @@ import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playli
 import { Playlist } from 'components/definitions/playlist'
 
 // Constants
-import {types} from '../constants/playlist_types'
+import { types } from '../constants/playlist_types'
 
 export const playlistLoaded = (playlists: PlaylistMojo.Playlist[]) =>
     action(types.PLAYLIST_LOADED, playlists)

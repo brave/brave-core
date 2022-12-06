@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {Playlist} from 'components/definitions/playlist'
+import { Playlist } from 'components/definitions/playlist'
 
-import {getAllActions} from './api/getAllActions'
+import { getAllActions } from './api/getAllActions'
 
-export default function startReceivingPlayerEvents() {
+export default function startReceivingPlayerEvents () {
   window.onmessage = (e) => {
     if (e.origin !== 'chrome-untrusted://playlist-player') {
       console.error(`Invalid origin: ${e.origin}`)

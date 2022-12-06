@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {types} from '../constants/playlist_types'
+import { types } from '../constants/playlist_types'
 
-function getPlayerWindow() {
+function getPlayerWindow () {
   return (document.getElementById('player') as HTMLIFrameElement)?.contentWindow
 }
 
