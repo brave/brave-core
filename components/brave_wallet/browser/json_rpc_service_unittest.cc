@@ -5858,8 +5858,8 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTokenUri) {
   // Invalid chain ID input
   TestGetEthTokenUri("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1", "",
                      kERC721MetadataInterfaceId, GURL(),
-                     mojom::ProviderError::kInternalError,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+                     mojom::ProviderError::kInvalidParams,
+                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 
   // Unknown interfaceID input
   TestGetEthTokenUri("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",

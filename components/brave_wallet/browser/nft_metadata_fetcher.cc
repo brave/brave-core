@@ -25,6 +25,26 @@
 
 namespace {
 
+absl::optional<uint32_t> DecodeUint32(const std::vector<uint8_t>& input,
+                                      size_t& offset) {
+  if (offset >= input.size() || input.size() - offset < sizeof(uint32_t)) {
+    return absl::nullopt;
+  }
+
+  // Read bytes in little endian order.
+  base::span<const uint8_t> s =
+      base::make_span(input.begin() + offset, sizeof(uint32_t));
+  uint32_t uint32_le = *reinterpret_cast<const uint32_t*>(s.data());
+
+  offset += sizeof(uint32_t);
+
+#if defined(ARCH_CPU_LITTLE_ENDIAN)
+  return uint32_le;
+#else
+  return base::ByteSwap(uint32_le);
+#endif
+}
+
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("json_rpc_service", R"(
       semantics {
@@ -245,15 +265,18 @@ void NftMetadataFetcher::CompleteGetEthTokenMetadata(
     const std::string& response,
     int error,
     const std::string& error_message) {
-  std::move(callback).Run(response, mojom::ProviderError(error), error_message);
+  mojom::ProviderError mojo_err = static_cast<mojom::ProviderError>(error);
+  if (!mojom::IsKnownEnumValue(mojo_err))
+    mojo_err = mojom::ProviderError::kUnknown;
+  std::move(callback).Run(response, mojo_err, error_message);
 }
 
 void NftMetadataFetcher::GetSolTokenMetadata(
-    const std::string& nft_account_address,
+    const std::string& token_mint_address,
     GetSolTokenMetadataCallback callback) {
   // Derive metadata PDA for the NFT accounts
   absl::optional<std::string> associated_metadata_account =
-      SolanaKeyring::GetAssociatedMetadataAccount(nft_account_address);
+      SolanaKeyring::GetAssociatedMetadataAccount(token_mint_address);
   if (!associated_metadata_account) {
     std::move(callback).Run(
         "", mojom::SolanaProviderError::kInternalError,
@@ -274,12 +297,13 @@ void NftMetadataFetcher::OnGetSolanaAccountInfoTokenMetadata(
     mojom::SolanaProviderError error,
     const std::string& error_message) {
   if (error != mojom::SolanaProviderError::kSuccess || !account_info) {
-    std::move(callback).Run("", std::move(error), error_message);
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
   absl::optional<std::vector<uint8_t>> metadata =
-      base::Base64Decode((*account_info).data);
+      base::Base64Decode(account_info->data);
+
   if (!metadata) {
     std::move(callback).Run("", mojom::SolanaProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -303,30 +327,11 @@ void NftMetadataFetcher::CompleteGetSolTokenMetadata(
     const std::string& response,
     int error,
     const std::string& error_message) {
-  std::move(callback).Run(response, mojom::SolanaProviderError(error),
-                          error_message);
-}
-
-// static
-absl::optional<uint32_t> NftMetadataFetcher::DecodeUint32(
-    const std::vector<uint8_t>& input,
-    size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < sizeof(uint32_t)) {
-    return absl::nullopt;
-  }
-
-  // Read bytes in little endian order.
-  base::span<const uint8_t> s =
-      base::make_span(input.begin() + offset, sizeof(uint32_t));
-  uint32_t uint32_le = *reinterpret_cast<const uint32_t*>(s.data());
-
-  offset += sizeof(uint32_t);
-
-#if defined(ARCH_CPU_LITTLE_ENDIAN)
-  return uint32_le;
-#else
-  return base::ByteSwap(uint32_le);
-#endif
+  mojom::SolanaProviderError mojo_err =
+      static_cast<mojom::SolanaProviderError>(error);
+  if (!mojom::IsKnownEnumValue(mojo_err))
+    mojo_err = mojom::SolanaProviderError::kUnknown;
+  std::move(callback).Run(response, mojo_err, error_message);
 }
 
 // static
@@ -336,7 +341,7 @@ absl::optional<uint32_t> NftMetadataFetcher::DecodeUint32(
 // https://docs.rs/spl-token-metadata/latest/spl_token_metadata/state/struct.Data.html)
 // as a GURL.
 absl::optional<GURL> NftMetadataFetcher::DecodeMetadataUri(
-    const std::vector<uint8_t> data) {
+    const std::vector<uint8_t>& data) {
   size_t offset = 0;
   offset = offset + /* Skip first byte for metadata.key */ 1 +
            /* Skip next 32 bytes for `metadata.update_authority` */ 32 +

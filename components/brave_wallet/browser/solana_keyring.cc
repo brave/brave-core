@@ -166,10 +166,13 @@ absl::optional<std::string> SolanaKeyring::GetAssociatedTokenAccount(
 }
 
 // static
+// Derive metadata account using metadata seed constant, token metadata program
+// id, and the mint address as the seeds
+// https://docs.metaplex.com/programs/token-metadata/accounts#metadata
 absl::optional<std::string> SolanaKeyring::GetAssociatedMetadataAccount(
-    const std::string& nft_account_address) {
+    const std::string& token_mint_address) {
   std::vector<std::vector<uint8_t>> seeds;
-  const std::string& metadata_seed_constant = "metadata";
+  const std::string metadata_seed_constant = "metadata";
   std::vector<uint8_t> metaplex_seed_constant_bytes(
       metadata_seed_constant.begin(), metadata_seed_constant.end());
   std::vector<uint8_t> metadata_program_id_bytes;
@@ -177,7 +180,7 @@ absl::optional<std::string> SolanaKeyring::GetAssociatedMetadataAccount(
 
   if (!Base58Decode(mojom::kSolanaMetadataProgramId, &metadata_program_id_bytes,
                     kSolanaPubkeySize) ||
-      !Base58Decode(nft_account_address, &nft_account_address_bytes,
+      !Base58Decode(token_mint_address, &nft_account_address_bytes,
                     kSolanaPubkeySize)) {
     return absl::nullopt;
   }

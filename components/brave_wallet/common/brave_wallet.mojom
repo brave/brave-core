@@ -975,7 +975,7 @@ interface JsonRpcService {
       (string amount, uint8 decimals, string uiAmountString,
        SolanaProviderError error, string error_message);
   // Returns the metadata json associated with the NFT account address
-  GetSolTokenMetadata(string nft_account_address) => (string response, SolanaProviderError error, string error_message);
+  GetSolTokenMetadata(string token_mint_address) => (string response, SolanaProviderError error, string error_message);
 };
 
 enum TransactionStatus {
