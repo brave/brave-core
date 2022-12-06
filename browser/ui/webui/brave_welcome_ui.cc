@@ -282,6 +282,8 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
       content::GpuDataManager::GetInstance()->HardwareAccelerationEnabled());
 
   profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
+
+  AddBackgroundColorToSource(source, web_ui->GetWebContents());
 }
 
 BraveWelcomeUI::~BraveWelcomeUI() = default;

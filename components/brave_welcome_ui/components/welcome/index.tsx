@@ -4,18 +4,19 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { getLocale } from '$web-common/locale'
-import classnames from '$web-common/classnames'
-
 import * as S from './style'
+
+import classnames from '$web-common/classnames'
+import { getLocale } from '$web-common/locale'
+import Button from '$web-components/button'
 
 import { WelcomeBrowserProxyImpl, DefaultBrowserBrowserProxyImpl } from '../../api/welcome_browser_proxy'
 import WebAnimationPlayer from '../../api/web_animation_player'
+
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
 import { useShouldPlayAnimations } from '../../state/hooks'
 
-import Button from '$web-components/button'
 import braveLogoUrl from '../../assets/brave_logo_3d@2x.webp'
 
 function Welcome () {

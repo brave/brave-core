@@ -13,6 +13,7 @@ import HelpImprove from './components/help-improve'
 import ImportInProgress from './components/import-in-progress'
 import Background from './components/background'
 import Welcome from './components/welcome'
+import Loader from './components/loader'
 
 const SelectBrowser = React.lazy(() => import('./components/select-browser'))
 const SelectProfile = React.lazy(() => import('./components/select-profile'))
@@ -61,7 +62,7 @@ function MainContainer () {
       static={!shouldPlayAnimations}
       onLoad={onBackgroundImgLoad}
     >
-      <React.Suspense fallback={<div>Loading...</div>}>
+      <React.Suspense fallback={<Loader />}>
         {mainEl}
       </React.Suspense>
     </Background>

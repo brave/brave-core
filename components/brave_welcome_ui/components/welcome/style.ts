@@ -43,6 +43,7 @@ export const Box = styled.div`
     position: relative;
     z-index: 3;
 
+    // We define an initial state here if animations are enabled
     &.initial {
       transform: translateY(20px);
       opacity: 0;
