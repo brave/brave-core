@@ -64,7 +64,6 @@ public class FeedDataSource: ObservableObject {
     }
   }
   private(set) var availableLocales: Set<String> = []
-  private var localesWithFollowing: Set<String> = []
   @Published private var allChannels: [String: Set<String>] = [:]
   var channels: Set<String> {
     allChannels[selectedLocale] ?? []
@@ -655,7 +654,7 @@ public class FeedDataSource: ObservableObject {
       } else {
         Preferences.BraveNews.followedChannels.value[channel.localeIdentifier, default: []].removeAll(where: { $0 == channel.name })
       }
-      if let cards = state.cards, cards.isEmpty && newValue {
+      if let cards = state.cards, cards.isEmpty && newValue, !items.isEmpty {
         // If we're enabling a category and we don't have any items because their source selection was
         // causing an empty generation, regenerate the cards
         reloadCards(from: self.items, sources: self.sources)
@@ -677,7 +676,7 @@ public class FeedDataSource: ObservableObject {
         // Unfollowing doesn't actually set the enabled status to false anymore, simply resets the override
         FeedSourceOverride.resetStatus(forId: source.id)
       }
-      if let cards = state.cards, cards.isEmpty && newValue {
+      if let cards = state.cards, cards.isEmpty && newValue, !items.isEmpty {
         // If we're enabling a category and we don't have any items because their source selection was
         // causing an empty generation, regenerate the cards
         reloadCards(from: self.items, sources: self.sources)
