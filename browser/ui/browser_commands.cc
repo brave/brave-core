@@ -31,7 +31,9 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/profile_picker.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_utils.h"
 #include "chrome/common/pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
@@ -257,6 +259,16 @@ void ToggleVerticalTabStripFloatingMode(Browser* browser) {
   prefs->SetBoolean(
       brave_tabs::kVerticalTabsFloatingEnabled,
       !prefs->GetBoolean(brave_tabs::kVerticalTabsFloatingEnabled));
+}
+
+void ToggleActiveTabAudioMute(Browser* browser) {
+  WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
+  if (!contents || !contents->IsCurrentlyAudible())
+    return;
+
+  bool mute_tab = !contents->IsAudioMuted();
+  chrome::SetTabAudioMuted(contents, mute_tab, TabMutedReason::AUDIO_INDICATOR,
+                           std::string());
 }
 
 }  // namespace brave

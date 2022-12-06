@@ -34,6 +34,8 @@ void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url);
 void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser);
 void ToggleVerticalTabStrip(Browser* browser);
 void ToggleVerticalTabStripFloatingMode(Browser* browser);
+void ToggleActiveTabAudioMute(Browser* browser);
+
 }  // namespace brave
 
 
