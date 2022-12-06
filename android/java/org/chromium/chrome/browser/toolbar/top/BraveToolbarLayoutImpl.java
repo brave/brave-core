@@ -651,6 +651,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void showCookieConsentTooltip() {
+        if (BraveActivity.getBraveActivity() == null) {
+            return;
+        }
         ViewGroup viewGroup =
                 BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
                         android.R.id.content);
