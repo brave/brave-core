@@ -44,7 +44,7 @@ void BraveAudioFarblingHelper::FarbleAudioChannel(float* dst,
 
 // Calculate values for RealtimeAnalyser::GetFloatTimeDomainData
 void BraveAudioFarblingHelper::FarbleFloatTimeDomainData(
-    float* input_buffer,
+    const float* input_buffer,
     float* destination,
     size_t len,
     unsigned write_index,
@@ -72,7 +72,7 @@ void BraveAudioFarblingHelper::FarbleFloatTimeDomainData(
 
 // Calculate values for RealtimeAnalyser::GetByteTimeDomainData
 void BraveAudioFarblingHelper::FarbleByteTimeDomainData(
-    float* input_buffer,
+    const float* input_buffer,
     unsigned char* destination,
     size_t len,
     unsigned write_index,
@@ -126,8 +126,8 @@ void BraveAudioFarblingHelper::FarbleConvertToByteData(
     const float* source,
     unsigned char* destination,
     size_t len,
-    const double min_decibels,
-    const double range_scale_factor) const {
+    double min_decibels,
+    double range_scale_factor) const {
   if (max_) {
     uint64_t v = seed_;
     for (size_t i = 0; i < len; ++i) {

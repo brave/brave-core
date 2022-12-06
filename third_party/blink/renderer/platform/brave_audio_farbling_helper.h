@@ -21,13 +21,13 @@ class PLATFORM_EXPORT BraveAudioFarblingHelper final {
   void set_max(bool max) { max_ = max; }
 
   void FarbleAudioChannel(float* dst, size_t count) const;
-  void FarbleFloatTimeDomainData(float* input_buffer,
+  void FarbleFloatTimeDomainData(const float* input_buffer,
                                  float* destination,
                                  size_t len,
                                  unsigned write_index,
                                  unsigned fft_size,
                                  unsigned input_buffer_size) const;
-  void FarbleByteTimeDomainData(float* input_buffer,
+  void FarbleByteTimeDomainData(const float* input_buffer,
                                 unsigned char* destination,
                                 size_t len,
                                 unsigned write_index,
