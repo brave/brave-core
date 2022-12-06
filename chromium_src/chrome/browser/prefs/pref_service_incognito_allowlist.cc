@@ -3,18 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <vector>
+
+#include "base/no_destructor.h"
 #include "build/build_config.h"
 #include "chrome/common/pref_names.h"
 
 namespace {
 
-// Added guard to avoid build error from std::size with empty array.
-// Remove this guard when we have any prefs for android.
+const std::vector<const char*>& GetBravePersistentPrefNames() {
+  static base::NoDestructor<std::vector<const char*>> brave_allowlist({
 #if !BUILDFLAG(IS_ANDROID)
-const char* const kBravePersistentPrefNames[] = {
     prefs::kSidePanelHorizontalAlignment,
-};
 #endif
+  });
+
+  return *brave_allowlist;
+}
 
 }  // namespace
 
@@ -30,11 +35,8 @@ namespace prefs {
 std::vector<const char*> GetIncognitoPersistentPrefsAllowlist() {
   std::vector<const char*> allowlist =
       GetIncognitoPersistentPrefsAllowlist_ChromiumImpl();
-#if !BUILDFLAG(IS_ANDROID)
-  allowlist.insert(
-      allowlist.end(), kBravePersistentPrefNames,
-      kBravePersistentPrefNames + std::size(kBravePersistentPrefNames));
-#endif
+  allowlist.insert(allowlist.end(), GetBravePersistentPrefNames().begin(),
+                   GetBravePersistentPrefNames().end());
   return allowlist;
 }
 
