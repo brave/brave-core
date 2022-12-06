@@ -2262,6 +2262,10 @@ void AdsServiceImpl::OnRewardsWalletUpdated() {
   GetRewardsWallet();
 }
 
+void AdsServiceImpl::OnExternalWalletConnected() {
+  SetBooleanPref(ads::prefs::kShouldMigrateVerifiedRewardsUser, true);
+}
+
 void AdsServiceImpl::OnCompleteReset(const bool success) {
   if (success) {
     ShutdownAndResetState();

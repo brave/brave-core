@@ -169,9 +169,9 @@ void LedgerClientIOS::PendingContributionSaved(
 void LedgerClientIOS::ClearAllNotifications() {
   [bridge_ clearAllNotifications];
 }
-void LedgerClientIOS::WalletDisconnected(const std::string& wallet_type) {
-  [bridge_ walletDisconnected:wallet_type];
-}
+void LedgerClientIOS::ExternalWalletConnected() const {}
+void LedgerClientIOS::ExternalWalletLoggedOut() const {}
+void LedgerClientIOS::ExternalWalletReconnected() const {}
 void LedgerClientIOS::DeleteLog(ledger::client::LegacyResultCallback callback) {
   [bridge_ deleteLog:callback];
 }

@@ -10,7 +10,7 @@ import { Notification } from '../../shared/components/notifications'
 import { localeStrings } from './locale_strings'
 import { createStateManager } from '../../shared/lib/state_manager'
 
-import { LocaleContext } from '../../shared/lib/locale_context'
+import { LocaleContext, createLocaleContextForTesting } from '../../shared/lib/locale_context'
 import { WithThemeVariables } from '../../shared/components/with_theme_variables'
 import { NotificationCard } from '../components/notification_card'
 
@@ -23,11 +23,7 @@ export default {
   title: 'Rewards/Panel'
 }
 
-const locale = {
-  getString (key: string) {
-    return localeStrings[key] || 'MISSING'
-  }
-}
+const locale = createLocaleContextForTesting(localeStrings)
 
 function actionLogger (name: string) {
   return (...args: any[]) => {
@@ -42,14 +38,19 @@ function createHost (): Host {
     requestedView: null,
     rewardsEnabled: true,
     settings: {
+      adsEnabled: true,
       adsPerHour: 3,
       autoContributeEnabled: true,
       autoContributeAmount: 5
     },
     options: {
-      autoContributeAmounts: [1, 5, 10, 15]
+      autoContributeAmounts: [1, 5, 10, 15],
+      externalWalletRegions: new Map([
+        ['uphold', { allow: ['US'], block: [] }],
+        ['gemini', { allow: [], block: ['US'] }]
+      ])
     },
-    grantCaptchaInfo: {
+    grantCaptchaInfo: null && {
       id: '123',
       imageURL: grantCaptchaImageURL,
       hint: 'square',
@@ -64,7 +65,7 @@ function createHost (): Host {
         type: 'ads'
       }
     },
-    adaptiveCaptchaInfo: {
+    adaptiveCaptchaInfo: null && {
       url: '',
       status: 'pending'
     },
@@ -94,7 +95,7 @@ function createHost (): Host {
       supportedWalletProviders: []
     },
     publisherRefreshing: false,
-    externalWallet: {
+    externalWallet: null && {
       provider: 'uphold',
       username: 'brave123',
       status: mojom.WalletStatus.kConnected,
@@ -113,17 +114,17 @@ function createHost (): Host {
         id: '1',
         timeStamp: Date.now() - 100
       }
-    ],
+    ] && [],
     availableCountries: ['US'],
-    declaredCountry: ''
+    declaredCountry: 'US',
+    userVersion: '2.5',
+    publishersVisitedCount: 4
   })
 
   return {
     get state () { return stateManager.getState() },
 
     addListener: stateManager.addListener,
-
-    getString: locale.getString,
 
     refreshPublisherStatus () {
       console.log('refreshPublisherStatus')
@@ -137,11 +138,11 @@ function createHost (): Host {
       return Promise.resolve('success')
     },
 
-    setAutoContributeAmount (amount) {
+    setAdsEnabled (adsEnabled) {
       stateManager.update({
         settings: {
           ...stateManager.getState().settings,
-          autoContributeAmount: amount
+          adsEnabled
         }
       })
     },
@@ -270,7 +271,11 @@ function createHost (): Host {
 export function MainPanel () {
   const [host] = React.useState(() => createHost())
   return (
-    <App host={host} />
+    <div className='brave-theme-dark'>
+      <LocaleContext.Provider value={locale}>
+        <App host={host} />
+      </LocaleContext.Provider>
+    </div>
   )
 }
 

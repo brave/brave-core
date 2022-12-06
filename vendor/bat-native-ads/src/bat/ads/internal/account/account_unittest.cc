@@ -163,7 +163,7 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLResponseMap url_responses = {{// Get issuers request
-                                         R"(/v1/issuers/)",
+                                         R"(/v2/issuers/)",
                                          {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
@@ -248,7 +248,7 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
   const URLResponseMap url_responses = {{// Get issuers request
-                                         R"(/v1/issuers/)",
+                                         R"(/v2/issuers/)",
                                          {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
@@ -321,7 +321,7 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLResponseMap url_responses = {{// Get issuers request
-                                         R"(/v1/issuers/)",
+                                         R"(/v2/issuers/)",
                                          {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
@@ -418,7 +418,7 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingIssuers) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLResponseMap url_responses = {{// Get issuers request
-                                         R"(/v1/issuers/)",
+                                         R"(/v2/issuers/)",
                                          {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
@@ -444,7 +444,7 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLResponseMap url_responses = {{// Get issuers request
-                                         R"(/v1/issuers/)",
+                                         R"(/v2/issuers/)",
                                          {{net::HTTP_OK, "INVALID"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 

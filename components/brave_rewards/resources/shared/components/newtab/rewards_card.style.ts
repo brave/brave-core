@@ -314,6 +314,24 @@ export const earningTooltip = styled.div`
   line-height: 20px;
 `
 
+export const hiddenEarnings = styled.div`
+  padding-left: 3px;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 30px;
+  color: rgba(255, 255, 255, 0.66);
+
+  a {
+    display: block;
+    margin-top: -7px;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 18px;
+    color: #fff;
+    text-decoration: none;
+  }
+`
+
 export const giving = styled.div`
   flex: 1 1 50%;
 `
@@ -333,8 +351,77 @@ export const progressItemAmount = styled.div`
   }
 `
 
+export const connect = styled.div`
+  margin: 16px -12px 0;
+  padding: 16px;
+  background: linear-gradient(137.04deg, #346FE1 33.4%, #5844C3 82.8%);
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #fff;
+
+  strong {
+    font-weight: 600;
+  }
+`
+
+export const connectAction = styled.div`
+  margin-top: 8px;
+
+  button {
+    ${buttonReset}
+    background: rgba(255, 255, 255, 0.24);
+    border-radius: 48px;
+    padding: 6px 13px;
+    width: 100%;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 20px;
+    cursor: pointer;
+
+    &:active {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .icon {
+      vertical-align: middle;
+      height: 17px;
+      width: auto;
+      margin-left: 8px;
+      margin-top: -2px;
+    }
+  }
+`
+
+export const connectLearnMore = styled.div`
+  margin-top: 14px;
+
+  a {
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 20px;
+    color: #FFFFFF;
+    text-decoration: none;
+  }
+`
+
+export const publisherSupport = styled.div`
+  margin-top: 18px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  line-height: 18px;
+  color: #F0F2FF;
+`
+
+export const publisherCount = styled.div`
+  font-size: 32px;
+  line-height: 32px;
+`
+
 export const settings = styled.div`
-  margin-top: 10px;
+  margin-top: 16px;
   font-weight: 600;
   font-size: 13px;
   line-height: 20px;

@@ -294,9 +294,8 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
       contents(), "[data-test-id='settings-modal-tabs-1']");
 
   rewards_browsertest_util::WaitForElementToContain(
-      contents(),
-      "[data-test-id='reset-text']",
-      "Your Rewards data will");
+      contents(), "[data-test-id='reset-text']",
+      "By resetting, your current Brave Rewards profile will be deleted");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewardsWithBAT) {
@@ -315,8 +314,8 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewardsWithBAT) {
       contents(), "[data-test-id='settings-modal-tabs-1']");
 
   rewards_browsertest_util::WaitForElementToContain(
-      contents(), "[data-test-id='reset-text']",
-      "Your 30 BAT and other Rewards");
+      contents(), "[data-test-id='funds-warning-text']",
+      "Note: You currently have 30 BAT estimated earnings this month");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, EnableRewardsWithBalance) {

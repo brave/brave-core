@@ -13,6 +13,7 @@
 #include "base/android/jni_android.h"
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
+#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
@@ -30,7 +31,6 @@
 #include "content/public/browser/url_data_source.h"
 
 #define DEFAULT_ADS_PER_HOUR 2
-#define DEFAULT_AUTO_CONTRIBUTION_AMOUNT 10
 
 namespace chrome {
 namespace android {
@@ -121,6 +121,37 @@ void BraveRewardsNativeWorker::GetRewardsParameters(JNIEnv* env) {
         base::BindOnce(&BraveRewardsNativeWorker::OnGetRewardsParameters,
                        weak_factory_.GetWeakPtr(), brave_rewards_service_));
   }
+}
+
+void BraveRewardsNativeWorker::OnGetRewardsParameters(
+    brave_rewards::RewardsService* rewards_service,
+    ledger::mojom::RewardsParametersPtr parameters) {
+  if (parameters) {
+    parameters_ = std::move(parameters);
+  }
+
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_OnRewardsParameters(
+      env, weak_java_brave_rewards_native_worker_.get(env));
+}
+
+void BraveRewardsNativeWorker::FetchBalance(JNIEnv* env) {
+  if (brave_rewards_service_) {
+    brave_rewards_service_->FetchBalance(base::BindOnce(
+        &BraveRewardsNativeWorker::OnBalance, weak_factory_.GetWeakPtr()));
+  }
+}
+
+void BraveRewardsNativeWorker::OnBalance(const ledger::mojom::Result result,
+                                         ledger::mojom::BalancePtr balance) {
+  if (result == ledger::mojom::Result::LEDGER_OK && balance) {
+    balance_ = *balance;
+  }
+
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_onBalance(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      static_cast<int>(result));
 }
 
 void BraveRewardsNativeWorker::GetPublisherInfo(
@@ -301,30 +332,6 @@ void BraveRewardsNativeWorker::RemovePublisherFromMap(JNIEnv* env,
   }
 }
 
-void BraveRewardsNativeWorker::OnGetRewardsParameters(
-    brave_rewards::RewardsService* rewards_service,
-    ledger::mojom::RewardsParametersPtr parameters) {
-  if (parameters) {
-    parameters_ = std::move(parameters);
-  }
-
-  if (rewards_service) {
-    rewards_service->FetchBalance(base::BindOnce(
-        &BraveRewardsNativeWorker::OnBalance, weak_factory_.GetWeakPtr()));
-  }
-}
-
-void BraveRewardsNativeWorker::OnBalance(const ledger::mojom::Result result,
-                                         ledger::mojom::BalancePtr balance) {
-  if (result == ledger::mojom::Result::LEDGER_OK && balance) {
-    balance_ = *balance;
-  }
-
-  JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnRewardsParameters(
-      env, weak_java_brave_rewards_native_worker_.get(env), 0);
-}
-
 base::android::ScopedJavaLocalRef<jstring>
 BraveRewardsNativeWorker::GetWalletBalance(JNIEnv* env) {
   std::string json_balance;
@@ -377,6 +384,33 @@ void BraveRewardsNativeWorker::OnGetAdsAccountStatement(
       /* success */ true, statement->next_payment_date.ToDoubleT() * 1000,
       statement->ads_received_this_month, statement->earnings_this_month,
       statement->earnings_last_month);
+}
+
+bool BraveRewardsNativeWorker::CanConnectAccount(JNIEnv* env) {
+  if (!parameters_ || !brave_rewards_service_) {
+    return true;
+  }
+  std::string country_code = brave_rewards_service_->GetCountryCode();
+  return base::ranges::any_of(
+      brave_rewards_service_->GetExternalWalletProviders(),
+      [this, &country_code](const std::string& provider) {
+        if (!parameters_->wallet_provider_regions.count(provider)) {
+          return true;
+        }
+
+        const auto& regions = parameters_->wallet_provider_regions.at(provider);
+        if (!regions) {
+          return true;
+        }
+
+        const auto& [allow, block] = *regions;
+        if (allow.empty() && block.empty()) {
+          return true;
+        }
+
+        return base::Contains(allow, country_code) ||
+               (!block.empty() && !base::Contains(block, country_code));
+      });
 }
 
 base::android::ScopedJavaLocalRef<jdoubleArray>
@@ -783,6 +817,20 @@ void BraveRewardsNativeWorker::OnGetAvailableCountries(
       base::android::ToJavaArrayOfStrings(env, countries));
 }
 
+void BraveRewardsNativeWorker::GetPublishersVisitedCount(JNIEnv* env) {
+  if (brave_rewards_service_) {
+    brave_rewards_service_->GetPublishersVisitedCount(
+        base::BindOnce(&BraveRewardsNativeWorker::OnGetPublishersVisitedCount,
+                       weak_factory_.GetWeakPtr()));
+  }
+}
+
+void BraveRewardsNativeWorker::OnGetPublishersVisitedCount(int count) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_onGetPublishersVisitedCount(
+      env, weak_java_brave_rewards_native_worker_.get(env), count);
+}
+
 void BraveRewardsNativeWorker::GetPublisherBanner(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& publisher_key) {
@@ -854,20 +902,25 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
 }
 
 void BraveRewardsNativeWorker::DisconnectWallet(JNIEnv* env) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->DisconnectWallet();
-  }
+  // TODO(zenparsing): Remove disconnect ability from Android UI.
 }
 
-void BraveRewardsNativeWorker::OnDisconnectWallet(
-    brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result,
-    const std::string& wallet_type) {
+void BraveRewardsNativeWorker::OnExternalWalletConnected() {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnDisconnectWallet(env,
-        weak_java_brave_rewards_native_worker_.get(env),
-        static_cast<int>(result),
-        base::android::ConvertUTF8ToJavaString(env, wallet_type));
+  Java_BraveRewardsNativeWorker_OnExternalWalletConnected(
+      env, weak_java_brave_rewards_native_worker_.get(env));
+}
+
+void BraveRewardsNativeWorker::OnExternalWalletLoggedOut() {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_OnExternalWalletLoggedOut(
+      env, weak_java_brave_rewards_native_worker_.get(env));
+}
+
+void BraveRewardsNativeWorker::OnExternalWalletReconnected() {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_OnExternalWalletReconnected(
+      env, weak_java_brave_rewards_native_worker_.get(env));
 }
 
 std::string BraveRewardsNativeWorker::StdStrStrMapToJsonString(

@@ -78,6 +78,8 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedNotificationState,
                                 false);
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedRewardsState, false);
+  registry->RegisterBooleanPref(ads::prefs::kShouldMigrateVerifiedRewardsUser,
+                                false);
 
   registry->RegisterUint64Pref(ads::prefs::kConfirmationsHash, 0);
   registry->RegisterUint64Pref(ads::prefs::kClientHash, 0);

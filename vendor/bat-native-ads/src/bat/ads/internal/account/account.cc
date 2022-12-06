@@ -34,6 +34,15 @@
 
 namespace ads {
 
+namespace {
+
+bool ShouldResetConfirmations() {
+  return ShouldRewardUser() && AdsClientHelper::GetInstance()->GetBooleanPref(
+                                   prefs::kShouldMigrateVerifiedRewardsUser);
+}
+
+}  // namespace
+
 Account::Account(privacy::TokenGeneratorInterface* token_generator)
     : confirmations_(std::make_unique<Confirmations>(token_generator)),
       issuers_(std::make_unique<Issuers>()),
@@ -93,6 +102,8 @@ const WalletInfo& Account::GetWallet() const {
 }
 
 void Account::Process() const {
+  MaybeResetConfirmations();
+
   NotifyStatementOfAccountsDidChange();
 
   MaybeGetIssuers();
@@ -216,6 +227,19 @@ void Account::WalletDidChange(const WalletInfo& wallet) const {
   });
 }
 
+void Account::MaybeResetConfirmations() const {
+  if (!ShouldResetConfirmations()) {
+    return;
+  }
+
+  ResetConfirmations();
+
+  AdsClientHelper::GetInstance()->SetBooleanPref(
+      prefs::kShouldMigrateVerifiedRewardsUser, false);
+
+  TopUpUnblindedTokens();
+}
+
 void Account::TopUpUnblindedTokens() const {
   if (!ShouldRewardUser()) {
     return;
@@ -269,6 +293,10 @@ void Account::NotifyStatementOfAccountsDidChange() const {
 void Account::OnPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
     MaybeGetIssuers();
+
+    MaybeResetConfirmations();
+  } else if (path == prefs::kShouldMigrateVerifiedRewardsUser) {
+    MaybeResetConfirmations();
   }
 }
 

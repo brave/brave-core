@@ -121,6 +121,8 @@ class RewardsServiceImpl : public RewardsService,
   void CreateRewardsWallet(const std::string& country,
                            CreateRewardsWalletCallback callback) override;
 
+  base::Version GetUserVersion() const override;
+
   std::string GetCountryCode() const override;
 
   void GetAvailableCountries(
@@ -143,6 +145,9 @@ class RewardsServiceImpl : public RewardsService,
                            const uint32_t limit,
                            ledger::mojom::ActivityInfoFilterPtr filter,
                            GetPublisherInfoListCallback callback) override;
+
+  void GetPublishersVisitedCount(
+      base::OnceCallback<void(int)> callback) override;
 
   void GetExcludedList(GetPublisherInfoListCallback callback) override;
 
@@ -301,8 +306,6 @@ class RewardsServiceImpl : public RewardsService,
                              const std::string& query,
                              ConnectExternalWalletCallback) override;
 
-  void DisconnectWallet() override;
-
   void SetAutoContributeEnabled(bool enabled) override;
 
   void GetMonthlyReport(
@@ -407,9 +410,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnPendingContributionRemoved(const ledger::mojom::Result result);
 
   void OnRemoveAllPendingContributions(const ledger::mojom::Result result);
-
-  void OnDisconnectWallet(const std::string& wallet_type,
-                          const ledger::mojom::Result result);
 
   void OnSetPublisherExclude(const std::string& publisher_key,
                              const bool exclude,
@@ -542,7 +542,11 @@ class RewardsServiceImpl : public RewardsService,
 
   void ClearAllNotifications() override;
 
-  void WalletDisconnected(const std::string& wallet_type) override;
+  void ExternalWalletConnected() const override;
+
+  void ExternalWalletLoggedOut() const override;
+
+  void ExternalWalletReconnected() const override;
 
   void DeleteLog(ledger::LegacyResultCallback callback) override;
 

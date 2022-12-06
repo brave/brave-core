@@ -605,6 +605,7 @@ void RewardsServiceImpl::CreateRewardsWallet(
       // automatically enable Ads and AC.
       if (!prefs->GetBoolean(prefs::kEnabled)) {
         prefs->SetBoolean(prefs::kEnabled, true);
+        prefs->SetString(prefs::kUserVersion, prefs::kCurrentUserVersion);
         prefs->SetBoolean(ads::prefs::kEnabled, true);
 
         // Fetch the user's balance before turning on AC. We don't want to
@@ -636,6 +637,23 @@ void RewardsServiceImpl::CreateRewardsWallet(
   ready_->Post(FROM_HERE, base::BindOnce(on_start, AsWeakPtr(), country,
                                          std::move(callback)));
   StartLedgerProcessIfNecessary();
+}
+
+base::Version RewardsServiceImpl::GetUserVersion() const {
+  auto* prefs = profile_->GetPrefs();
+  base::Version version(prefs->GetString(prefs::kUserVersion));
+  if (!version.IsValid()) {
+    if (prefs->GetBoolean(prefs::kEnabled)) {
+      // If the profile does not have a valid version string, but Rewards is
+      // enabled, assume that the profile was created in an early version before
+      // user versions were recorded.
+      version = base::Version({1});
+    } else {
+      version = base::Version(prefs::kCurrentUserVersion);
+    }
+    DCHECK(version.IsValid());
+  }
+  return version;
 }
 
 std::string RewardsServiceImpl::GetCountryCode() const {
@@ -715,6 +733,14 @@ void RewardsServiceImpl::GetActivityInfoList(
       start, limit, std::move(filter),
       base::BindOnce(&RewardsServiceImpl::OnGetPublisherInfoList, AsWeakPtr(),
                      std::move(callback)));
+}
+
+void RewardsServiceImpl::GetPublishersVisitedCount(
+    base::OnceCallback<void(int)> callback) {
+  if (!Connected()) {
+    return DeferCallback(FROM_HERE, std::move(callback), 0);
+  }
+  bat_ledger_->GetPublishersVisitedCount(std::move(callback));
 }
 
 void RewardsServiceImpl::GetExcludedList(
@@ -2637,25 +2663,6 @@ void RewardsServiceImpl::ConnectExternalWallet(
                                      std::move(callback));
 }
 
-void RewardsServiceImpl::OnDisconnectWallet(
-    const std::string& wallet_type,
-    const ledger::mojom::Result result) {
-  for (auto& observer : observers_) {
-    observer.OnDisconnectWallet(this, result, wallet_type);
-  }
-}
-
-void RewardsServiceImpl::DisconnectWallet() {
-  if (!Connected()) {
-    return;
-  }
-
-  const std::string wallet_type = GetExternalWalletType();
-  bat_ledger_->DisconnectWallet(
-      wallet_type, base::BindOnce(&RewardsServiceImpl::OnDisconnectWallet,
-                                  AsWeakPtr(), wallet_type));
-}
-
 void RewardsServiceImpl::ShowNotification(
     const std::string& type,
     const std::vector<std::string>& args,
@@ -2929,8 +2936,22 @@ void RewardsServiceImpl::OnFilesDeletedForCompleteReset(
   std::move(callback).Run(success);
 }
 
-void RewardsServiceImpl::WalletDisconnected(const std::string& wallet_type) {
-  OnDisconnectWallet(wallet_type, ledger::mojom::Result::LEDGER_OK);
+void RewardsServiceImpl::ExternalWalletConnected() const {
+  for (auto& observer : observers_) {
+    observer.OnExternalWalletConnected();
+  }
+}
+
+void RewardsServiceImpl::ExternalWalletLoggedOut() const {
+  for (auto& observer : observers_) {
+    observer.OnExternalWalletLoggedOut();
+  }
+}
+
+void RewardsServiceImpl::ExternalWalletReconnected() const {
+  for (auto& observer : observers_) {
+    observer.OnExternalWalletReconnected();
+  }
 }
 
 void RewardsServiceImpl::DeleteLog(ledger::LegacyResultCallback callback) {

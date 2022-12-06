@@ -4,78 +4,77 @@
 
 import styled from 'styled-components'
 
-export const panelText = styled.div`
-  color: var(--brave-color-brandBat);
-  font-size: 14px;
-  line-height: 20px;
-  margin-top: -5px;
-`
+import * as mixins from '../../lib/css_mixins'
+
+import graphicImage from './assets/tour_setup.svg'
 
 export const root = styled.div`
-`
-
-export const section = styled.div`
-  margin-top: 30px;
-  font-size: 14px;
-  line-height: 21px;
-
-  &:first-of-type {
-    margin-top: 0px;
-  }
+  margin-top: -2px;
 `
 
 export const label = styled.div`
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 20px;
   color: var(--brave-palette-neutral900);
 `
 
 export const sublabel = styled.div`
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  margin: 4px 0;
   color: var(--brave-palette-neutral600);
 `
 
-export const optionBar = styled.div`
-  margin-top: 10px;
-  background: rgba(241, 236, 255, 0.5);
-  border: 2px solid var(--brave-palette-purple300);
-  border-radius: 2px;
-  display: flex;
+export const graphic = styled.div`
+  margin-top: 22px;
+  height: 100px;
+  background: center no-repeat url(/${graphicImage});
+  background-size: contain;
 
-  button {
-    margin: 3px;
-    flex: 1 1 auto;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 27px;
-    color: var(--brave-palette-neutral700);
-    border: 0;
-    border-radius: 2px;
-    background: none;
-    cursor: pointer;
-
-    &.selected {
-      color: var(--brave-palette-white);
-      background: var(--brave-palette-purple400);
-      cursor: default;
-
-      * {
-        color: var(--brave-palette-white);
-      }
-    }
-  }
-
-  button.large-text {
-    font-size: 22px;
-    line-height: 39px;
+  .tour-wide & {
+    height: 82px;
   }
 `
 
-export const acAmount = styled.span`
+export const adsPerHour = styled.div`
+  margin-top: 20px;
   font-weight: 600;
-  font-size: 18px;
-  line-height: 40px;
+  font-size: 22px;
+  line-height: 20px;
+  color: var(--brave-palette-neutral700);
 `
 
-export const acCurrency = styled.span`
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 18px;
+export const slider = styled.div`
+  margin: 23px auto 31px;
+  width: 238px;
+
+  --slider-bar-height: 8px;
+  --slider-handle-height: 24px;
+  --slider-handle-width: 24px;
+
+  .slider {
+    cursor: pointer;
+  }
+
+  .slider-bar {
+    background: #E4DBFF;
+    border-radius: 100px;
+    padding: 0 2px;
+  }
+
+  .slider-marker {
+    background: #F8F9FA;
+    border-radius: 50%;
+    height: 4px;
+    width: 4px;
+  }
+
+  .slider-handle {
+    ${mixins.buttonReset}
+    border-radius: 50%;
+    background: #845EF7;
+    cursor: pointer;
+  }
 `

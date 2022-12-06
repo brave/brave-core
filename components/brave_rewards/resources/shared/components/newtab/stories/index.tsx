@@ -5,7 +5,7 @@
 import * as React from 'react'
 import * as knobs from '@storybook/addon-knobs'
 
-import { LocaleContext } from '../../../lib/locale_context'
+import { LocaleContext, createLocaleContextForTesting } from '../../../lib/locale_context'
 import { WithThemeVariables } from '../../with_theme_variables'
 import { RewardsCard } from '../rewards_card'
 import { SponsoredImageTooltip } from '../sponsored_image_tooltip'
@@ -13,11 +13,7 @@ import { SponsoredImageTooltip } from '../sponsored_image_tooltip'
 import { localeStrings } from './locale_strings'
 import * as mojom from '../../../../shared/lib/mojom'
 
-const localeContext = {
-  getString (key: string) {
-    return localeStrings[key] || 'MISSING'
-  }
-}
+const localeContext = createLocaleContextForTesting(localeStrings)
 
 export default {
   title: 'Rewards/New Tab'
@@ -39,6 +35,7 @@ export function Card () {
         <div style={{ width: '284px' }}>
           <RewardsCard
             rewardsEnabled={true}
+            userVersion={'1.0'}
             isUnsupportedRegion={false}
             declaredCountry='US'
             adsEnabled={true}
@@ -68,6 +65,8 @@ export function Card () {
             earningsThisMonth={0.142}
             earningsLastMonth={1.25}
             contributionsThisMonth={10}
+            publishersVisited={4}
+            canConnectAccount={true}
             onEnableRewards={actionLogger('onEnableRewards')}
             onEnableAds={actionLogger('onEnableAds')}
             onSelectCountry={actionLogger('onSelectCountry')}

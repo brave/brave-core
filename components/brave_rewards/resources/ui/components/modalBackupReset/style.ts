@@ -64,7 +64,5 @@ export const StyledTextWrapper = styled('div')<{}>`
 
 export const StyledLink = styled('a')<{}>`
   color: ${p => p.theme.color.brandBatInteracting};
-  cursor: pointer;
-  display: inline-block;
-  font-weight: 700;
+  font-weight: 600;
 `

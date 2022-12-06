@@ -13,6 +13,7 @@ import {
   OpenLinkAction
 } from '../../shared/components/notifications'
 
+import { getUserType } from '../../shared/lib/user_type'
 import { ExternalWalletAction } from '../../shared/components/wallet_card'
 import { getInitialState } from './initial_state'
 import { createStateManager } from '../../shared/lib/state_manager'
@@ -47,10 +48,6 @@ function openTab (url: string) {
     return
   }
   chrome.tabs.create({ url })
-}
-
-function getString (key: string) {
-  return String((window as any).loadTimeData.getString(key) || '')
 }
 
 export function createHost (): Host {
@@ -158,22 +155,10 @@ export function createHost (): Host {
         return verifyURL
       case 'view-account':
         return links.account || ''
-      case 'disconnect':
-        return ''
     }
   }
 
   function handleExternalWalletAction (action: ExternalWalletAction) {
-    const { externalWallet } = stateManager.getState()
-
-    if (action === 'disconnect') {
-      if (externalWallet) {
-        chrome.braveRewards.disconnectWallet()
-        stateManager.update({ externalWallet: null })
-      }
-      return
-    }
-
     const url = getExternalWalletActionURL(action)
     if (!url) {
       console.error(new Error(`Action URL does not exist for '${action}`))
@@ -234,6 +219,9 @@ export function createHost (): Host {
 
   function updateNotifications () {
     apiAdapter.getNotifications().then((notifications) => {
+      const { userVersion, externalWallet } = stateManager.getState()
+      const userType = getUserType(userVersion, externalWallet)
+
       // We do not want to display any "grant available" notifications if there
       // is no corresponding grant information available. (This can occur if the
       // grant is deleted on the server.) For any "grant available" notification
@@ -242,6 +230,13 @@ export function createHost (): Host {
       // loaded prior to this operation.
       notifications = notifications.filter((notification) => {
         if (notification.type === 'grant-available') {
+          // If the user is in the limited "unconnected" state they should not
+          // receive any grant notifications. If we recieve one, clear the
+          // notification from the store and do not display it.
+          if (userType === 'unconnected') {
+            chrome.rewardsNotifications.deleteNotification(notification.id)
+            return false
+          }
           const { id } = (notification as GrantAvailableNotification).grantInfo
           return grants.has(id)
         }
@@ -309,13 +304,22 @@ export function createHost (): Host {
       loadPanelData().catch(console.error)
     })
 
+    chrome.braveRewards.onAdsEnabled.addListener((adsEnabled: boolean) => {
+      stateManager.update({
+        settings: {
+          ...stateManager.getState().settings,
+          adsEnabled
+        }
+      })
+    })
+
     apiAdapter.onGrantsUpdated(updateGrants)
 
     // Update the balance when a grant has been processed, when tips have been
-    // processed, or when the user disconnects their wallet.
+    // processed, or when the user's wallet is logged out.
     chrome.braveRewards.onReconcileComplete.addListener(updateBalance)
     chrome.braveRewards.onUnblindedTokensReady.addListener(updateBalance)
-    chrome.braveRewards.onDisconnectWallet.addListener(updateBalance)
+    chrome.braveRewards.onExternalWalletLoggedOut.addListener(updateBalance)
 
     // Update the notification list when notifications are added or removed.
     chrome.rewardsNotifications.onAllNotificationsDeleted.addListener(
@@ -333,6 +337,12 @@ export function createHost (): Host {
       }),
       apiAdapter.getRewardsEnabled().then((rewardsEnabled) => {
         stateManager.update({ rewardsEnabled })
+      }),
+      apiAdapter.getUserVersion().then((userVersion) => {
+        stateManager.update({ userVersion })
+      }),
+      apiAdapter.getPublishersVisitedCount().then((publishersVisitedCount) => {
+        stateManager.update({ publishersVisitedCount })
       }),
       apiAdapter.getDeclaredCountry().then((declaredCountry) => {
         stateManager.update({ declaredCountry })
@@ -395,8 +405,6 @@ export function createHost (): Host {
 
     addListener: stateManager.addListener,
 
-    getString,
-
     enableRewards (country: string) {
       return apiAdapter.createRewardsWallet(country)
     },
@@ -441,15 +449,8 @@ export function createHost (): Host {
       })
     },
 
-    setAutoContributeAmount (amount) {
-      chrome.braveRewards.updatePrefs({ autoContributeAmount: amount })
-
-      stateManager.update({
-        settings: {
-          ...stateManager.getState().settings,
-          autoContributeAmount: amount
-        }
-      })
+    setAdsEnabled (adsEnabled) {
+      chrome.braveRewards.updatePrefs({ adsEnabled })
     },
 
     setAdsPerHour (adsPerHour) {

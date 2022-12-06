@@ -21,6 +21,7 @@
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
@@ -1358,6 +1359,54 @@ IN_PROC_BROWSER_TEST_P_(V12, Paths) {
   base::ReplaceChars(code_challenge, "+", "-", &code_challenge);
   base::ReplaceChars(code_challenge, "/", "_", &code_challenge);
   ASSERT_TRUE(base::Contains(*login_url, code_challenge));
+}
+
+class V13 : public RewardsStateBrowserTest,
+            public testing::WithParamInterface<
+                std::tuple<std::string, ledger::mojom::WalletStatus>> {};
+
+INSTANTIATE_TEST_SUITE_P(
+    RewardsStateBrowserTest,
+    V13,
+    testing::Combine(testing::Values(std::string("bitflyer"),
+                                     std::string("gemini"),
+                                     std::string("uphold")),
+                     testing::Values(ledger::mojom::WalletStatus::kNotConnected,
+                                     ledger::mojom::WalletStatus::kConnected,
+                                     ledger::mojom::WalletStatus::kLoggedOut)),
+    [](const testing::TestParamInfo<V13::ParamType>& info) {
+      return (std::ostringstream{} << std::get<0>(info.param) << '_'
+                                   << std::get<1>(info.param) << '_'
+                                   << static_cast<int>(std::get<1>(info.param)))
+          .str();
+    });
+
+IN_PROC_BROWSER_TEST_P_(V13, Paths) {
+  // testing migration from v12 to v13
+  profile_->GetPrefs()->SetInteger("brave.rewards.version", 12);
+  rewards_service_->SetLedgerStateTargetVersionForTesting(13);
+
+  const auto wallet_status = std::get<1>(GetParam());
+  const auto encrypted_wallet = rewards_browsertest_util::EncryptPrefString(
+      rewards_service_,
+      (std::ostringstream{} << R"({ "status": )"
+                            << static_cast<int>(wallet_status) << " }")
+          .str());
+  ASSERT_TRUE(encrypted_wallet);
+  profile_->GetPrefs()->SetString(
+      "brave.rewards.wallets." + std::get<0>(GetParam()), *encrypted_wallet);
+
+  rewards_browsertest_util::StartProcess(rewards_service_);
+
+  if (wallet_status == ledger::mojom::WalletStatus::kConnected) {
+    ASSERT_TRUE(profile_->GetPrefs()->HasPrefPath(
+        ads::prefs::kShouldMigrateVerifiedRewardsUser));
+    ASSERT_TRUE(profile_->GetPrefs()->GetBoolean(
+        ads::prefs::kShouldMigrateVerifiedRewardsUser));
+  } else {
+    ASSERT_FALSE(profile_->GetPrefs()->HasPrefPath(
+        ads::prefs::kShouldMigrateVerifiedRewardsUser));
+  }
 }
 
 }  // namespace rewards_browsertest

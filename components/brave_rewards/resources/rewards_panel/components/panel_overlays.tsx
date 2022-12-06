@@ -5,30 +5,11 @@
 import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
+import { isExternalWalletProviderAllowed } from '../../shared/lib/external_wallet'
 import { OnboardingResult, RewardsOptInModal, RewardsTourModal } from '../../shared/components/onboarding'
 import { AdaptiveCaptchaView } from '../../rewards_panel/components/adaptive_captcha_view'
 import { GrantCaptchaModal } from './grant_captcha_modal'
 import { NotificationOverlay } from './notification_overlay'
-
-// Attaches a CSS class to the document body containing the name of the overlay.
-// This allows root-level style rules to expand the height of the panel if
-// necessary, based on the currently displayed overlay.
-function NamedOverlay (props: { name: string, children: React.ReactNode }) {
-  const onMountUnmount = (elem: HTMLElement | null) => {
-    const className = `panel-overlay-${props.name}`
-    if (elem) {
-      document.body.classList.add(className)
-    } else {
-      document.body.classList.remove(className)
-    }
-  }
-
-  return (
-    <div ref={onMountUnmount}>
-      {props.children}
-    </div>
-  )
-}
 
 export function PanelOverlays () {
   const host = React.useContext(HostContext)
@@ -83,25 +64,26 @@ export function PanelOverlays () {
   }
 
   if (showTour) {
-    const onVerifyWalletClick = () => {
+    const canConnectAccount = externalWalletProviders.some((provider) => {
+      const regionInfo = options.externalWalletRegions.get(provider) || null
+      return isExternalWalletProviderAllowed(declaredCountry, regionInfo)
+    })
+
+    const onConnectAccount = () => {
       host.handleExternalWalletAction('verify')
     }
 
     return (
-      <NamedOverlay name='rewards-tour'>
-        <RewardsTourModal
-          firstTimeSetup={rewardsEnabled}
-          adsPerHour={settings.adsPerHour}
-          externalWalletProvider={externalWalletProviders[0]}
-          autoContributeAmount={settings.autoContributeAmount}
-          autoContributeAmountOptions={options.autoContributeAmounts}
-          onAdsPerHourChanged={host.setAdsPerHour}
-          onAutoContributeAmountChanged={host.setAutoContributeAmount}
-          onVerifyWalletClick={onVerifyWalletClick}
-          onDone={toggleTour}
-          onClose={toggleTour}
-        />
-      </NamedOverlay>
+      <RewardsTourModal
+        firstTimeSetup={rewardsEnabled}
+        adsPerHour={settings.adsPerHour}
+        canAutoContribute={!externalWalletProviders.includes('bitflyer')}
+        canConnectAccount={canConnectAccount}
+        onAdsPerHourChanged={host.setAdsPerHour}
+        onConnectAccount={onConnectAccount}
+        onDone={toggleTour}
+        onClose={toggleTour}
+      />
     )
   }
 
@@ -121,16 +103,14 @@ export function PanelOverlays () {
     }
 
     return (
-      <NamedOverlay name='opt-in'>
-        <RewardsOptInModal
-          availableCountries={availableCountries}
-          initialView={needsCountry ? 'declare-country' : 'default'}
-          result={onboardingResult}
-          onEnable={onEnable}
-          onTakeTour={toggleTour}
-          onHideResult={onHideResult}
-        />
-      </NamedOverlay>
+      <RewardsOptInModal
+        availableCountries={availableCountries}
+        initialView={needsCountry ? 'declare-country' : 'default'}
+        result={onboardingResult}
+        onEnable={onEnable}
+        onTakeTour={toggleTour}
+        onHideResult={onHideResult}
+      />
     )
   }
 
@@ -145,35 +125,29 @@ export function PanelOverlays () {
     }
 
     return (
-      <NamedOverlay name='adaptive-captcha'>
-        <AdaptiveCaptchaView
-          adaptiveCaptchaInfo={adaptiveCaptchaInfo}
-          onClose={onClose}
-          onCaptchaResult={host.handleAdaptiveCaptchaResult}
-          onContactSupport={onContactSupport}
-        />
-      </NamedOverlay>
+      <AdaptiveCaptchaView
+        adaptiveCaptchaInfo={adaptiveCaptchaInfo}
+        onClose={onClose}
+        onCaptchaResult={host.handleAdaptiveCaptchaResult}
+        onContactSupport={onContactSupport}
+      />
     )
   }
 
   if (grantCaptchaInfo) {
     return (
-      <NamedOverlay name='grant-captcha'>
-        <GrantCaptchaModal
-          grantCaptchaInfo={grantCaptchaInfo}
-          onSolve={host.solveGrantCaptcha}
-          onClose={host.clearGrantCaptcha}
-        />
-      </NamedOverlay>
+      <GrantCaptchaModal
+        grantCaptchaInfo={grantCaptchaInfo}
+        onSolve={host.solveGrantCaptcha}
+        onClose={host.clearGrantCaptcha}
+      />
     )
   }
 
   if (notifications.length > 0 && !notificationsHidden) {
     const onClose = () => { setNotificationsHidden(true) }
     return (
-      <NamedOverlay name='notifications'>
-        <NotificationOverlay notifications={notifications} onClose={onClose} />
-      </NamedOverlay>
+      <NotificationOverlay notifications={notifications} onClose={onClose} />
     )
   }
 

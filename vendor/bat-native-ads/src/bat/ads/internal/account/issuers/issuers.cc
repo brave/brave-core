@@ -58,7 +58,7 @@ void Issuers::Fetch() {
   is_fetching_ = true;
 
   BLOG(1, "FetchIssuers");
-  BLOG(2, "GET /v1/issuers/");
+  BLOG(2, "GET /v2/issuers/");
 
   IssuersUrlRequestBuilder url_request_builder;
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();

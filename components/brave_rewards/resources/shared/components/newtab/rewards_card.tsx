@@ -7,11 +7,13 @@ import * as React from 'react'
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { GrantInfo } from '../../lib/grant_info'
 import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
+import { getUserType } from '../../lib/user_type'
 import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
 import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
 import { BatIcon } from '../icons/bat_icon'
 import { SettingsIcon } from '../icons/settings_icon'
 import { InfoIcon } from './icons/info_icon'
+import { ArrowNextIcon } from '../icons/arrow_next_icon'
 import { TermsOfService } from '../terms_of_service'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
@@ -66,6 +68,7 @@ export function RewardsCardHeader () {
 
 interface Props {
   rewardsEnabled: boolean
+  userVersion: string
   isUnsupportedRegion: boolean
   declaredCountry: string
   adsEnabled: boolean
@@ -81,6 +84,8 @@ interface Props {
   contributionsThisMonth: number
   grantInfo: GrantInfo | null
   externalWallet: ExternalWallet | null
+  publishersVisited: number
+  canConnectAccount: boolean
   onEnableRewards: () => void
   onEnableAds: () => void
   onSelectCountry: () => void
@@ -88,7 +93,14 @@ interface Props {
 }
 
 export function RewardsCard (props: Props) {
-  const { getString } = React.useContext(LocaleContext)
+  const { getString, getPluralString } = React.useContext(LocaleContext)
+
+  const [publisherCountText, setPublisherCountText] = React.useState('')
+
+  React.useEffect(() => {
+    getPluralString('rewardsPublisherCountText', props.publishersVisited)
+      .then(setPublisherCountText)
+  }, [props.publishersVisited])
 
   function renderBalance () {
     if (props.grantInfo && props.grantInfo.amount > 0) {
@@ -137,13 +149,6 @@ export function RewardsCard (props: Props) {
               {getString('rewardsBrowserNeedsUpdateToSeeAds')}
             </style.needsBrowserUpdateContentBody>
           </style.needsBrowserUpdateView>
-          <style.pendingRewards>
-            <PaymentStatusView
-              earningsLastMonth={props.earningsLastMonth}
-              nextPaymentDate={props.nextPaymentDate}
-              providerPayoutStatus={props.providerPayoutStatus}
-            />
-          </style.pendingRewards>
         </style.balance>
       )
     }
@@ -176,13 +181,16 @@ export function RewardsCard (props: Props) {
               </style.balanceExchangeNote>
           }
         </style.balanceExchange>
-        <style.pendingRewards>
-          <PaymentStatusView
-            earningsLastMonth={props.earningsLastMonth}
-            nextPaymentDate={props.nextPaymentDate}
-            providerPayoutStatus={props.providerPayoutStatus}
-          />
-        </style.pendingRewards>
+        {
+          showPending &&
+            <style.pendingRewards>
+              <PaymentStatusView
+                earningsLastMonth={props.earningsLastMonth}
+                nextPaymentDate={props.nextPaymentDate}
+                providerPayoutStatus={props.providerPayoutStatus}
+              />
+            </style.pendingRewards>
+        }
       </style.balance>
     )
   }
@@ -250,6 +258,63 @@ export function RewardsCard (props: Props) {
     )
   }
 
+  function renderSettingsLink () {
+    return (
+      <style.settings>
+        <NewTabLink href={urls.settingsURL}>
+          <SettingsIcon />{getString('rewardsSettings')}
+        </NewTabLink>
+      </style.settings>
+    )
+  }
+
+  function renderLimited () {
+    const onConnect = () => { window.open(urls.connectURL, '_blank') }
+
+    return (
+      <style.root>
+        <RewardsCardHeader />
+        <style.connect>
+          {
+            props.canConnectAccount
+              ? <>
+                  {
+                    formatMessage(getString('rewardsConnectAccountText'), {
+                      tags: {
+                        $1: (content) => <strong key='bold'>{content}</strong>
+                      }
+                    })
+                  }
+                  <style.connectAction>
+                    <button onClick={onConnect}>
+                      {getString('rewardsConnectAccount')}<ArrowNextIcon />
+                    </button>
+                  </style.connectAction>
+                </>
+              : <>
+                  {getString('rewardsConnectAccountNoProviders')}
+                  <style.connectLearnMore>
+                    <NewTabLink href={urls.supportedWalletRegionsURL}>
+                      {getString('rewardsLearnMore')}
+                    </NewTabLink>
+                  </style.connectLearnMore>
+                </>
+          }
+        </style.connect>
+        {
+          props.publishersVisited > 0 &&
+            <style.publisherSupport>
+              <style.publisherCount>
+                {props.publishersVisited}
+              </style.publisherCount>
+              <div>{publisherCountText}</div>
+            </style.publisherSupport>
+        }
+        {renderSettingsLink()}
+      </style.root>
+    )
+  }
+
   if (props.isUnsupportedRegion) {
     return renderRewardsUnsupportedRegion()
   }
@@ -260,6 +325,10 @@ export function RewardsCard (props: Props) {
 
   if (!props.declaredCountry) {
     return renderCountrySelect()
+  }
+
+  if (getUserType(props.userVersion, props.externalWallet) === 'unconnected') {
+    return renderLimited()
   }
 
   return (
@@ -294,7 +363,19 @@ export function RewardsCard (props: Props) {
                 </style.earningInfo>
               </style.progressItemLabel>
               <style.progressItemAmount>
-                <TokenAmount amount={props.earningsThisMonth} />
+                {
+                  props.externalWallet
+                    ? <TokenAmount
+                        amount={props.earningsThisMonth}
+                        minimumFractionDigits={1}
+                      />
+                    : <style.hiddenEarnings>
+                        -&nbsp;-&nbsp;
+                        <NewTabLink href={urls.rewardsChangesURL}>
+                          {getString('rewardsLearnMore')}
+                        </NewTabLink>
+                      </style.hiddenEarnings>
+                }
               </style.progressItemAmount>
             </style.earning>
         }
@@ -310,11 +391,7 @@ export function RewardsCard (props: Props) {
           </style.progressItemAmount>
         </style.giving>
       </style.progress>
-      <style.settings>
-        <NewTabLink href={urls.settingsURL}>
-          <SettingsIcon />{getString('rewardsSettings')}
-        </NewTabLink>
-      </style.settings>
+      {renderSettingsLink()}
     </style.root>
   )
 }

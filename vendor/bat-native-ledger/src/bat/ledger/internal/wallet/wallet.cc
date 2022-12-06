@@ -40,34 +40,6 @@ void Wallet::FetchBalance(ledger::FetchBalanceCallback callback) {
   balance_->Fetch(std::move(callback));
 }
 
-void Wallet::DisconnectWallet(const std::string& wallet_type,
-                              ledger::LegacyResultCallback callback) {
-  promotion_server_->delete_claim()->Request(
-      wallet_type, [this, wallet_type, callback](mojom::Result result) {
-        if (result != mojom::Result::LEDGER_OK) {
-          BLOG(0, "Failed to disconnect " << wallet_type
-                                          << " wallet (server side)!");
-          return callback(result);
-        }
-
-        if (!ledger::wallet::DisconnectWallet(ledger_, wallet_type, true)) {
-          BLOG(0, "Failed to disconnect " << wallet_type
-                                          << " wallet (client side)!");
-          return callback(mojom::Result::LEDGER_ERROR);
-        }
-
-        ledger_->state()->ResetWalletType();
-        callback(mojom::Result::LEDGER_OK);
-      });
-}
-
-void Wallet::DisconnectAllWallets(ledger::LegacyResultCallback callback) {
-  DisconnectWallet(constant::kWalletBitflyer, [](auto) {});
-  DisconnectWallet(constant::kWalletGemini, [](auto) {});
-  DisconnectWallet(constant::kWalletUphold, [](auto) {});
-  callback(mojom::Result::LEDGER_OK);
-}
-
 mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
   DCHECK(corrupted);
   *corrupted = false;

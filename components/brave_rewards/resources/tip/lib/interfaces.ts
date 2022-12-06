@@ -98,6 +98,7 @@ export interface HostState {
   publisherInfo?: PublisherInfo
   balanceInfo?: BalanceInfo
   externalWalletInfo?: ExternalWalletInfo
+  userVersion?: string
   rewardsParameters?: RewardsParameters
   hostError?: HostError
   nextReconcileDate?: Date
@@ -111,7 +112,6 @@ export type HostListener = (state: HostState) => void
 
 export interface Host {
   state: HostState
-  getString: (key: string) => string
   getDialogArgs: () => DialogArgs
   closeDialog: () => void
   processTip: (amount: number, kind: TipKind) => void

@@ -78,6 +78,7 @@ class TipMessageHandler : public WebUIMessageHandler,
   // Message handlers
   void DialogReady(const base::Value::List& args);
   void GetPublisherBanner(const base::Value::List& args);
+  void GetUserVersion(const base::Value::List& args);
   void GetRewardsParameters(const base::Value::List& args);
   void OnTip(const base::Value::List& args);
   void GetRecurringTips(const base::Value::List& args);
@@ -128,6 +129,10 @@ void TipMessageHandler::RegisterMessages() {
       "getPublisherBanner",
       base::BindRepeating(&TipMessageHandler::GetPublisherBanner,
                           base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "getUserVersion", base::BindRepeating(&TipMessageHandler::GetUserVersion,
+                                            base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
       "getRewardsParameters",
@@ -246,6 +251,14 @@ void TipMessageHandler::GetPublisherBanner(const base::Value::List& args) {
       publisher_key,
       base::BindOnce(&TipMessageHandler::GetPublisherBannerCallback,
                      weak_factory_.GetWeakPtr()));
+}
+
+void TipMessageHandler::GetUserVersion(const base::Value::List& args) {
+  if (!IsJavascriptAllowed() || !rewards_service_) {
+    return;
+  }
+  base::Version version = rewards_service_->GetUserVersion();
+  FireWebUIListener("userVersionUpdated", base::Value(version.GetString()));
 }
 
 void TipMessageHandler::GetRewardsParameters(const base::Value::List& args) {

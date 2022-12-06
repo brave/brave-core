@@ -181,6 +181,9 @@ class LEDGER_EXPORT Ledger {
                                    mojom::ActivityInfoFilterPtr filter,
                                    PublisherInfoListCallback callback) = 0;
 
+  virtual void GetPublishersVisitedCount(
+      base::OnceCallback<void(int)> callback) = 0;
+
   virtual void GetExcludedList(PublisherInfoListCallback callback) = 0;
 
   virtual void SetPublisherMinVisitTime(int duration_in_seconds) = 0;
@@ -339,9 +342,6 @@ class LEDGER_EXPORT Ledger {
       const std::string& wallet_type,
       const base::flat_map<std::string, std::string>& args,
       ConnectExternalWalletCallback) = 0;
-
-  virtual void DisconnectWallet(const std::string& wallet_type,
-                                LegacyResultCallback callback) = 0;
 
   virtual void GetAllPromotions(GetAllPromotionsCallback callback) = 0;
 

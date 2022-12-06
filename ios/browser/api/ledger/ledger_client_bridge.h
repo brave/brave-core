@@ -69,6 +69,7 @@
 - (void)getCreateScript:(ledger::client::GetCreateScriptCallback)callback;
 - (void)pendingContributionSaved:(const ledger::mojom::Result)result;
 - (void)clearAllNotifications;
+// TODO(zenparsing): This method is no longer called and should be removed.
 - (void)walletDisconnected:(const std::string&)wallet_type;
 - (void)deleteLog:(ledger::client::LegacyResultCallback)callback;
 - (absl::optional<std::string>)encryptString:(const std::string&)value;

@@ -125,24 +125,4 @@
             android:padding="12dp">
         </android.widget.Button>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:background="@drawable/rect_round_corners_12"
-        android:backgroundTint="@color/cardview_light_background">
-        <android.widget.Button
-            android:id="@+id/user_wallet_disconnect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/user_wallet_disconnect_rewards"
-            android:background="?android:attr/selectableItemBackground"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:textColor="@android:color/holo_red_light"
-            android:padding="12dp">
-        </android.widget.Button>
-    </LinearLayout>
 </LinearLayout>
