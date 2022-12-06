@@ -3417,5 +3417,12 @@ extension Strings {
       value: "The image rendered above may not exactly match the NFT",
       comment: "A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information."
     )
+    public static let signTransactionSignRisk = NSLocalizedString(
+      "wallet.signTransactionSignRisk",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Sign at your own risk",
+      comment: "A title of a warning message that warns users the risk of signing a transaction."
+    )
   }
 }

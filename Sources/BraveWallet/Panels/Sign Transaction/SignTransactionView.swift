@@ -265,7 +265,7 @@ struct SignTransactionView: View {
   @ViewBuilder private var warningView: some View {
     VStack(alignment: .leading, spacing: 8) {
       Group {
-        Label("Sign at your own risk", systemImage: "exclamationmark.triangle")
+        Label(Strings.Wallet.signTransactionSignRisk, systemImage: "exclamationmark.triangle")
           .font(.subheadline.weight(.semibold))
           .foregroundColor(Color(.braveErrorLabel))
           .padding(.top, 12)
