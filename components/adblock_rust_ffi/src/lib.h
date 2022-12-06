@@ -87,7 +87,8 @@ void engine_match(struct C_Engine* engine,
                   bool* did_match_rule,
                   bool* did_match_exception,
                   bool* did_match_important,
-                  char** redirect);
+                  char** redirect,
+                  char** rewritten_url);
 
 /**
  * Returns any CSP directives that should be added to a subdocument or document

@@ -21,6 +21,7 @@ NS_SWIFT_NAME(AdblockEngine.MatchResult)
 @property(nonatomic, readonly) bool didMatchException;
 @property(nonatomic, readonly) bool didMatchImportant;
 @property(nonatomic, readonly) NSString* redirect;
+@property(nonatomic, readonly) NSString* rewrittenURL;
 @end
 
 OBJC_EXPORT
