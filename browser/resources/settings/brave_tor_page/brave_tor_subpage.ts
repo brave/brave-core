@@ -16,7 +16,8 @@ import './brave_tor_snowflake_install_failed_dialog.js'
 import {getTemplate} from './brave_tor_subpage.html.js'
 import { loadTimeData } from '../i18n_setup.js'
 
-const SettingBraveTorPageElementBase = I18nMixin(RouteObserverMixin(WebUiListenerMixin(PrefsMixin(PolymerElement))))
+const SettingBraveTorPageElementBase =
+  I18nMixin(RouteObserverMixin(WebUiListenerMixin(PrefsMixin(PolymerElement))))
 
 const Usage = Object.freeze({
   NOT_USED: 0,

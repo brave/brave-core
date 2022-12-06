@@ -21,7 +21,8 @@ export interface SettingsBraveAppearanceThemeElement {
   }
 }
 
-const SettingsBraveAppearanceThemeElementBase = WebUiListenerMixin(BaseMixin(PolymerElement)) as {
+const SettingsBraveAppearanceThemeElementBase =
+  WebUiListenerMixin(BaseMixin(PolymerElement)) as {
   new (): PolymerElement & WebUiListenerMixinInterface
 }
 

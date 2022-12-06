@@ -25,7 +25,8 @@ const IPFS_RESOLVE_METHOD_TYPES = {
   IPFS_DISABLED: 3
 }
 
-const SettingBraveIpfsPageElementBase = RouteObserverMixin(WebUiListenerMixin(PrefsMixin(PolymerElement)))
+const SettingBraveIpfsPageElementBase =
+  RouteObserverMixin(WebUiListenerMixin(PrefsMixin(PolymerElement)))
 
 /**
  * 'settings-brave-default-extensions-page' is the settings page containing

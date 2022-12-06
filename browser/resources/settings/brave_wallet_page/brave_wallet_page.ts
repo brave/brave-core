@@ -15,7 +15,8 @@ import {Router, RouteObserverMixin} from '../router.js';
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {getTemplate} from './brave_wallet_page.html.js'
 
-const SettingsBraveWalletPageBase = WebUiListenerMixin(PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement))))
+const SettingsBraveWalletPageBase =
+  WebUiListenerMixin(PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement))))
 
 /**
  * 'settings-brave-default-extensions-page' is the settings page containing

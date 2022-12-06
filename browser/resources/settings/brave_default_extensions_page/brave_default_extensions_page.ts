@@ -11,7 +11,8 @@ import { PrefsMixin, PrefsMixinInterface } from '../prefs/prefs_mixin.js'
 import { BraveDefaultExtensionsBrowserProxyImpl } from './brave_default_extensions_browser_proxy.js'
 import { getTemplate } from './brave_default_extensions_page.html.js'
 
-const SettingBraveDefaultExtensionsPageElementBase = WebUiListenerMixin(PrefsMixin(PolymerElement)) as {
+const SettingBraveDefaultExtensionsPageElementBase =
+  WebUiListenerMixin(PrefsMixin(PolymerElement)) as {
   new (): PolymerElement & WebUiListenerMixinInterface & PrefsMixinInterface
 }
 

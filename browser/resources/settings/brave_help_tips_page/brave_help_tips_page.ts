@@ -8,7 +8,8 @@
  import {PrefsMixin} from '../prefs/prefs_mixin.js';
  import {getTemplate} from './brave_help_tips_page.html.js'
 
- const SettingBraveHelpTipsPageElementBase = WebUiListenerMixin(PrefsMixin(PolymerElement))
+const SettingBraveHelpTipsPageElementBase =
+  WebUiListenerMixin(PrefsMixin(PolymerElement))
 
 class SettingsBraveHelpTipsPageElement extends SettingBraveHelpTipsPageElementBase {
   static get is() {
