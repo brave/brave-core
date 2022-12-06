@@ -3400,7 +3400,7 @@ extension Strings {
       "wallet.nftDetailSendNFTButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Send NFT",
+      value: "Send",
       comment: "The title of the button inside NFT detail screen, which user can click to start sending this NFT."
     )
     public static let nftDetailImageNotAvailable = NSLocalizedString(
@@ -3409,6 +3409,13 @@ extension Strings {
       bundle: .module,
       value: "Image is not available",
       comment: "A placeholder text, indicates this NFT image was not able to be loaded."
+    )
+    public static let nftDetailSVGImageDisclaimer = NSLocalizedString(
+      "wallet.nftDetailSVGImageDisclaimer",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "The image rendered above may not exactly match the NFT",
+      comment: "A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information."
     )
   }
 }

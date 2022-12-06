@@ -35,6 +35,12 @@ struct NFTDetailView: View {
       noImageView
     }
   }
+  
+  private var isSVGImage: Bool {
+    guard let erc721Metadata = nftDetailStore.erc721Metadata, let imageUrlString = erc721Metadata.imageURLString else { return false }
+    return imageUrlString.hasPrefix("data:image/svg") || imageUrlString.hasSuffix(".svg")
+  }
+  
   var body: some View {
     ScrollView(.vertical) {
       VStack(alignment: .leading, spacing: 24) {
@@ -114,6 +120,13 @@ struct NFTDetailView: View {
             }
           }
           .foregroundColor(Color(.braveLabel))
+        }
+        if isSVGImage {
+          Text(Strings.Wallet.nftDetailSVGImageDisclaimer)
+            .multilineTextAlignment(.center)
+            .font(.footnote)
+            .foregroundColor(Color(.secondaryBraveLabel))
+            .frame(maxWidth: .infinity)
         }
       }
       .padding()
