@@ -1,11 +1,12 @@
-/* Copyright 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
+#include "brave/browser/ui/views/brave_icon_with_badge_image_source.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "base/strings/utf_string_conversions.h"
 #include "cc/paint/paint_flags.h"
@@ -35,25 +36,24 @@ constexpr int kTextHeightTarget = kBadgeHeight - (kVPadding * 2);
 constexpr int kMaxIncrementAttempts = 5;
 }  // namespace
 
-absl::optional<int>
-BraveActionIconWithBadgeImageSource::GetCustomGraphicSize() {
-  return kBraveActionGraphicSize;
+namespace brave {
+
+BraveIconWithBadgeImageSource::BraveIconWithBadgeImageSource(
+    const gfx::Size& size,
+    GetColorProviderCallback get_color_provider_callback,
+    size_t content_image_size,
+    size_t content_horizontal_margin)
+    : IconWithBadgeImageSource(size, std::move(get_color_provider_callback)),
+      content_image_size_(content_image_size),
+      content_horizontal_margin_(content_horizontal_margin) {}
+
+// static
+gfx::Size BraveIconWithBadgeImageSource::GetBadgeSize() {
+  return gfx::Size(kBadgeMaxWidth, kBadgeHeight);
 }
 
-absl::optional<int>
-BraveActionIconWithBadgeImageSource::GetCustomGraphicXOffset() {
-  return std::floor(
-      (size().width() - kBraveActionRightMargin - kBraveActionGraphicSize) /
-      2.0);
-}
-
-absl::optional<int>
-BraveActionIconWithBadgeImageSource::GetCustomGraphicYOffset() {
-  return std::floor((size().height() - kBraveActionGraphicSize) / 2.0);
-}
-
-void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
-    if (!badge_ || badge_->text.empty())
+void BraveIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
+  if (!badge_ || badge_->text.empty())
     return;
 
   SkColor text_color = SkColorGetA(badge_->text_color) == SK_AlphaTRANSPARENT
@@ -74,8 +74,7 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
   std::u16string utf16_text = base::UTF8ToUTF16(badge_->text);
 
   // Calculate best font size to fit maximum Width and constant height
-  gfx::Canvas::SizeStringInt(utf16_text, base_font, &text_width,
-                             &text_height,
+  gfx::Canvas::SizeStringInt(utf16_text, base_font, &text_width, &text_height,
                              0, gfx::Canvas::NO_ELLIPSIS);
   // Leaving extremely verbose log lines commented in case we want to change
   // any sizes in this algorithm, these logs are helpful.
@@ -96,8 +95,7 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
       // |max_decrement_attempts| accordingly
       int max_decrement_attempts = base_font.GetFontSize() - 1;
       while (max_decrement_attempts) {
-        base_font =
-            base_font.Derive(-1, 0, gfx::Font::Weight::NORMAL);
+        base_font = base_font.Derive(-1, 0, gfx::Font::Weight::NORMAL);
         gfx::Canvas::SizeStringInt(utf16_text, base_font, &text_width,
                                    &text_height, 0, gfx::Canvas::NO_ELLIPSIS);
         // LOG(ERROR) << "reducing to font size - w:" << text_width << " h:" <<
@@ -117,7 +115,7 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
       gfx::FontList bigger_font =
           base_font.Derive(1, 0, gfx::Font::Weight::NORMAL);
       gfx::Canvas::SizeStringInt(utf16_text, bigger_font, &w, &h, 0,
-                                gfx::Canvas::NO_ELLIPSIS);
+                                 gfx::Canvas::NO_ELLIPSIS);
       if (h > kTextHeightTarget || w > text_max_width)
         break;
       base_font = bigger_font;
@@ -163,6 +161,22 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
                                   gfx::Canvas::TEXT_ALIGN_CENTER);
 }
 
-gfx::Rect BraveActionIconWithBadgeImageSource::GetIconAreaRect() const {
+gfx::Rect BraveIconWithBadgeImageSource::GetIconAreaRect() const {
   return gfx::Rect(size());
 }
+
+absl::optional<int> BraveIconWithBadgeImageSource::GetCustomGraphicSize() {
+  return content_image_size_;
+}
+
+absl::optional<int> BraveIconWithBadgeImageSource::GetCustomGraphicXOffset() {
+  return std::floor(
+      (size().width() - content_horizontal_margin_ - content_image_size_) /
+      2.0);
+}
+
+absl::optional<int> BraveIconWithBadgeImageSource::GetCustomGraphicYOffset() {
+  return std::floor((size().height() - content_image_size_) / 2.0);
+}
+
+}  // namespace brave

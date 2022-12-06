@@ -12,7 +12,8 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
+#include "brave/browser/ui/views/brave_icon_with_badge_image_source.h"
+#include "brave/browser/ui/views/ui_utils.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -48,10 +49,8 @@ using brave_rewards::RewardsServiceFactory;
 using brave_rewards::RewardsTabHelper;
 
 constexpr SkColor kIconColor = SK_ColorBLACK;
-constexpr SkColor kBadgeTextColor = SK_ColorWHITE;
-constexpr SkColor kBadgeNotificationBG = SkColorSetRGB(0xfb, 0x54, 0x2b);
-constexpr SkColor kBadgeVerifiedBG = SkColorSetRGB(0x4c, 0x54, 0xd2);
 const char kVerifiedCheck[] = "\u2713";
+constexpr SkColor kBadgeVerifiedBG = SkColorSetRGB(0x4c, 0x54, 0xd2);
 
 class ButtonHighlightPathGenerator : public views::HighlightPathGenerator {
  public:
@@ -189,15 +188,17 @@ void BraveRewardsActionView::Update() {
   auto weak_contents = web_contents ? web_contents->GetWeakPtr()
                                     : base::WeakPtr<content::WebContents>();
 
-  auto image_source = std::make_unique<BraveActionIconWithBadgeImageSource>(
+  auto image_source = std::make_unique<brave::BraveIconWithBadgeImageSource>(
+
       preferred_size,
-      base::BindRepeating(GetColorProviderForWebContents, weak_contents));
+      base::BindRepeating(GetColorProviderForWebContents, weak_contents),
+      kBraveActionGraphicSize, kBraveActionRightMargin);
 
   image_source->SetIcon(gfx::Image(GetRewardsIcon()));
 
   auto [text, background_color] = GetBadgeTextAndBackground();
   image_source->SetBadge(std::make_unique<IconWithBadgeImageSource::Badge>(
-      text, kBadgeTextColor, background_color));
+      text, brave::kBadgeTextColor, background_color));
 
   SetImage(views::Button::STATE_NORMAL,
            gfx::ImageSkia(std::move(image_source), preferred_size));
@@ -344,7 +345,7 @@ BraveRewardsActionView::GetBadgeTextAndBackground() {
   std::string text_pref = browser_->profile()->GetPrefs()->GetString(
       brave_rewards::prefs::kBadgeText);
   if (!text_pref.empty()) {
-    return {text_pref, kBadgeNotificationBG};
+    return {text_pref, brave::kBadgeNotificationBG};
   }
 
   // 2. Display the number of current notifications, if non-zero.
@@ -353,7 +354,7 @@ BraveRewardsActionView::GetBadgeTextAndBackground() {
     std::string text =
         notifications > 99 ? "99+" : base::NumberToString(notifications);
 
-    return {text, kBadgeNotificationBG};
+    return {text, brave::kBadgeNotificationBG};
   }
 
   // 3. Display a verified checkmark for verified publishers.
@@ -361,7 +362,7 @@ BraveRewardsActionView::GetBadgeTextAndBackground() {
     return {kVerifiedCheck, kBadgeVerifiedBG};
   }
 
-  return {"", kBadgeNotificationBG};
+  return {"", brave::kBadgeNotificationBG};
 }
 
 size_t BraveRewardsActionView::GetRewardsNotificationCount() {

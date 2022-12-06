@@ -694,6 +694,10 @@ bool ShouldCreateDefaultSolanaAccount() {
          brave_wallet::features::kCreateDefaultSolanaAccount.Get();
 }
 
+bool ShouldShowTxStatusInToolbar() {
+  return brave_wallet::features::kShowToolbarTxStatus.Get();
+}
+
 std::vector<brave_wallet::mojom::NetworkInfoPtr>
 GetAllKnownNetworksForTesting() {
   std::vector<brave_wallet::mojom::NetworkInfoPtr> result;

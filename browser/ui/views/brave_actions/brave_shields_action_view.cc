@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
+#include "brave/browser/ui/views/brave_icon_with_badge_image_source.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -139,8 +139,9 @@ BraveShieldsActionView::GetImageSource() {
                    : base::WeakPtr<content::WebContents>());
 
   std::unique_ptr<IconWithBadgeImageSource> image_source(
-      new BraveActionIconWithBadgeImageSource(
-          preferred_size, std::move(get_color_provider_callback)));
+      new brave::BraveIconWithBadgeImageSource(
+          preferred_size, std::move(get_color_provider_callback),
+          kBraveActionGraphicSize, kBraveActionRightMargin));
   std::unique_ptr<IconWithBadgeImageSource::Badge> badge;
   bool is_enabled = false;
   std::string badge_text;

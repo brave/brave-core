@@ -61,7 +61,7 @@ class TxManager : public TxStateManager::Observer,
                                  RejectTransactionCallback);
   virtual void GetTransactionInfo(const std::string& tx_meta_id,
                                   GetTransactionInfoCallback);
-  virtual void GetAllTransactionInfo(const std::string& from,
+  virtual void GetAllTransactionInfo(const absl::optional<std::string>& from,
                                      GetAllTransactionInfoCallback);
 
   virtual void SpeedupOrCancelTransaction(

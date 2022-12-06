@@ -46,7 +46,7 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
-  void GetAllTransactionInfo(const std::string& from,
+  void GetAllTransactionInfo(const absl::optional<std::string>& from,
                              GetAllTransactionInfoCallback) override;
   void GetTransactionMessageToSign(
       const std::string& tx_meta_id,

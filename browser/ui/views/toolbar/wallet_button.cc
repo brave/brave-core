@@ -5,13 +5,15 @@
 
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 
-#include <string>
-#include <utility>
 #include <vector>
 
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/browser/ui/views/brave_icon_with_badge_image_source.h"
+#include "brave/browser/ui/views/ui_utils.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -26,6 +28,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/layout/fill_layout.h"
 
 namespace {
 
@@ -67,9 +70,21 @@ class WalletButtonMenuModel : public ui::SimpleMenuModel,
   raw_ptr<PrefService> prefs_ = nullptr;
 };
 
+const ui::ColorProvider* GetColorProviderForView(
+    base::WeakPtr<WalletButton> view) {
+  if (view) {
+    return view->GetColorProvider();
+  }
+
+  return ui::ColorProviderManager::Get().GetColorProviderFor(
+      ui::NativeTheme::GetInstanceForNativeUi()->GetColorProviderKey(nullptr));
+}
+
 }  // namespace
 
-WalletButton::WalletButton(View* backup_anchor_view, PrefService* prefs)
+WalletButton::WalletButton(View* backup_anchor_view,
+                           PrefService* prefs,
+                           content::BrowserContext* browser_context)
     : ToolbarButton(base::BindRepeating(&WalletButton::OnWalletPressed,
                                         base::Unretained(this)),
                     std::make_unique<WalletButtonMenuModel>(prefs),
@@ -78,6 +93,9 @@ WalletButton::WalletButton(View* backup_anchor_view, PrefService* prefs)
                              // already shows a panel on click
       prefs_(prefs),
       backup_anchor_view_(backup_anchor_view) {
+  tx_service_ =
+      brave_wallet::TxServiceFactory::GetServiceForContext(browser_context);
+
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
       kShowWalletIconOnToolbar,
@@ -95,9 +113,52 @@ WalletButton::WalletButton(View* backup_anchor_view, PrefService* prefs)
   SetButtonController(std::move(menu_button_controller));
 
   UpdateVisibility();
+
+  if (brave_wallet::ShouldShowTxStatusInToolbar()) {
+    if (tx_service_) {
+      tx_service_->AddObserver(tx_observer_.BindNewPipeAndPassRemote());
+      CheckTxStatus();
+    }
+  }
 }
 
 WalletButton::~WalletButton() = default;
+
+void WalletButton::CheckTxStatus() {
+  if (!tx_service_) {
+    NOTREACHED();
+    return;
+  }
+  status_resolver_ =
+      std::make_unique<brave_wallet::TxStatusResolver>(tx_service_);
+  status_resolver_->GetPendingTransactionsCount(base::BindOnce(
+      &WalletButton::OnTxStatusResolved, weak_ptr_factory_.GetWeakPtr()));
+}
+
+void WalletButton::OnTxStatusResolved(size_t count) {
+  running_tx_count_ = count;
+  status_resolver_.reset();
+  UpdateImageAndText();
+}
+
+void WalletButton::OnUnapprovedTxUpdated(
+    brave_wallet::mojom::TransactionInfoPtr tx_info) {
+  CheckTxStatus();
+}
+
+void WalletButton::OnTransactionStatusChanged(
+    brave_wallet::mojom::TransactionInfoPtr tx_info) {
+  CheckTxStatus();
+}
+
+void WalletButton::OnNewUnapprovedTx(
+    brave_wallet::mojom::TransactionInfoPtr tx_info) {
+  CheckTxStatus();
+}
+
+void WalletButton::OnTxServiceReset() {
+  OnTxStatusResolved(0u);
+}
 
 void WalletButton::OnWalletPressed(const ui::Event& event) {
   if (IsShowingBubble()) {
@@ -108,11 +169,38 @@ void WalletButton::OnWalletPressed(const ui::Event& event) {
   ShowWalletBubble();
 }
 
+std::pair<std::string, SkColor> WalletButton::GetBadgeTextAndBackground() {
+  if (running_tx_count_ > 0) {
+    std::string text = running_tx_count_ > 99
+                           ? "99+"
+                           : base::NumberToString(running_tx_count_);
+    return {text, brave::kBadgeNotificationBG};
+  }
+  return {"", brave::kBadgeNotificationBG};
+}
+
 void WalletButton::UpdateImageAndText() {
   const ui::ColorProvider* color_provider = GetColorProvider();
   SkColor icon_color = color_provider->GetColor(kColorToolbarButtonIcon);
+  auto icon = gfx::CreateVectorIcon(kWalletToolbarButtonIcon, icon_color);
+
+  size_t icon_size = std::max(icon.width(), icon.height());
+  auto badge_size = brave::BraveIconWithBadgeImageSource::GetBadgeSize();
+  gfx::Size preferred_size(icon_size + badge_size.width() / 2,
+                           icon_size + badge_size.height() / 2);
+
+  auto image_source = std::make_unique<brave::BraveIconWithBadgeImageSource>(
+      preferred_size,
+      base::BindRepeating(&GetColorProviderForView,
+                          weak_ptr_factory_.GetWeakPtr()),
+      icon_size, 0u);
+  image_source->SetIcon(gfx::Image(icon));
+
+  auto [text, background_color] = GetBadgeTextAndBackground();
+  image_source->SetBadge(std::make_unique<IconWithBadgeImageSource::Badge>(
+      text, brave::kBadgeTextColor, background_color));
   SetImage(views::Button::STATE_NORMAL,
-           gfx::CreateVectorIcon(kWalletToolbarButtonIcon, icon_color));
+           gfx::ImageSkia(std::move(image_source), preferred_size));
   SetTooltipText(
       brave_l10n::GetLocalizedResourceUTF16String(IDS_TOOLTIP_WALLET));
 }

@@ -88,6 +88,8 @@ export class WalletApiProxy {
       },
       onTransactionStatusChanged: function (txInfo) {
         store.dispatch(WalletActions.transactionStatusChanged({ txInfo: makeSerializableTransaction(txInfo) }))
+      },
+      onTxServiceReset: function () {
       }
     })
     this.txService.addObserver(txServiceManagerObserverReceiver.$.bindNewPipeAndPassRemote())

@@ -146,6 +146,12 @@ void TxService::GetAllTransactionInfo(mojom::CoinType coin_type,
   GetTxManager(coin_type)->GetAllTransactionInfo(from, std::move(callback));
 }
 
+void TxService::GetAllTransactionInfo(mojom::CoinType coin_type,
+                                      GetAllTransactionInfoCallback callback) {
+  GetTxManager(coin_type)->GetAllTransactionInfo(absl::nullopt,
+                                                 std::move(callback));
+}
+
 void TxService::SpeedupOrCancelTransaction(
     mojom::CoinType coin_type,
     const std::string& tx_meta_id,
@@ -193,6 +199,8 @@ void TxService::Reset() {
   ClearTxServiceProfilePrefs(prefs_);
   for (auto const& service : tx_manager_map_)
     service.second->Reset();
+  for (const auto& observer : observers_)
+    observer->OnTxServiceReset();
 }
 
 void TxService::MakeERC20TransferData(const std::string& to_address,

@@ -1144,6 +1144,9 @@ interface TxServiceObserver {
 
   // Fired when a transaction is updated
   OnTransactionStatusChanged(TransactionInfo tx_info);
+
+  // Fired when service is reseted
+  OnTxServiceReset();
 };
 
 // For transaction management such as creation, broadcasting, and storing
