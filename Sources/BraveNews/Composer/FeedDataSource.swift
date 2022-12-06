@@ -799,8 +799,12 @@ public class FeedDataSource: ObservableObject {
     })
     for (key, value) in Preferences.BraveNews.followedChannels.value {
       let channelForLocale = Set(value)
-      feedsFromEnabledSources.formUnion(Set(items.filter({
-        $0.source.localeDetails?.contains(where: {
+      feedsFromEnabledSources.formUnion(Set(items.filter({ item in
+        if overridenSources.first(where: { $0.publisherID == item.source.id })?.enabled == false {
+          // Hidden source
+          return false
+        }
+        return item.source.localeDetails?.contains(where: {
           $0.locale == key && !$0.channels.intersection(channelForLocale).isEmpty
         }) ?? false
       })))
