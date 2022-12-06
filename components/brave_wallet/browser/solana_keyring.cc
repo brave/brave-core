@@ -167,7 +167,7 @@ absl::optional<std::string> SolanaKeyring::GetAssociatedTokenAccount(
 
 // static
 // Derive metadata account using metadata seed constant, token metadata program
-// id, and the mint address as the seeds
+// id, and the mint address as the seeds.
 // https://docs.metaplex.com/programs/token-metadata/accounts#metadata
 absl::optional<std::string> SolanaKeyring::GetAssociatedMetadataAccount(
     const std::string& token_mint_address) {
