@@ -16,6 +16,7 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/core_metrics/core_metrics_service.h"
 #include "brave/components/decentralized_dns/core/utils.h"
@@ -130,6 +131,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   ntp_background_images::NTPP3AHelperImpl::RegisterLocalStatePrefs(registry);
 
   core_metrics::CoreMetricsService::RegisterPrefs(registry);
+
+  brave_wallet::RegisterLocalStatePrefs(registry);
 }
 
 }  // namespace brave

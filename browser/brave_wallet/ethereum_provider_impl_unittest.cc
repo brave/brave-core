@@ -49,6 +49,8 @@
 #include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/test/base/scoped_testing_local_state.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
@@ -198,6 +200,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   void SetUp() override {
+    local_state_ = std::make_unique<ScopedTestingLocalState>(
+        TestingBrowserProcess::GetGlobal());
     web_contents_ =
         content::TestWebContents::Create(browser_context(), nullptr);
     permissions::PermissionRequestManager::CreateForWebContents(web_contents());
@@ -873,6 +877,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
   std::unique_ptr<TestEventsListener> observer_;
 
  private:
+  std::unique_ptr<ScopedTestingLocalState> local_state_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   content::TestWebContentsFactory factory_;
   raw_ptr<TxService> tx_service_;

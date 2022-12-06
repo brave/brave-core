@@ -30,6 +30,8 @@
 #include "brave/components/permissions/brave_permission_manager.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
+#include "chrome/test/base/scoped_testing_local_state.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
@@ -106,6 +108,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
   }
 
   void SetUp() override {
+    local_state_ = std::make_unique<ScopedTestingLocalState>(
+        TestingBrowserProcess::GetGlobal());
     web_contents_ =
         content::TestWebContents::Create(browser_context(), nullptr);
     brave_wallet::BraveWalletTabHelper::CreateForWebContents(
@@ -441,6 +445,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
   raw_ptr<KeyringService> keyring_service_ = nullptr;
 
  private:
+  std::unique_ptr<ScopedTestingLocalState> local_state_;
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   raw_ptr<TxService> tx_service_ = nullptr;
   std::unique_ptr<content::TestWebContents> web_contents_;

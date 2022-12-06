@@ -1,4 +1,4 @@
-/* Copyright 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -11,6 +11,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 
@@ -29,6 +30,9 @@ extern const char kFilTransactionSentHistogramName[];
 extern const char kEthActiveAccountHistogramName[];
 extern const char kSolActiveAccountHistogramName[];
 extern const char kFilActiveAccountHistogramName[];
+extern const char kBraveWalletWeeklyHistogramName[];
+extern const char kBraveWalletMonthlyHistogramName[];
+extern const char kBraveWalletNewUserReturningHistogramName[];
 
 class BraveWalletService;
 class KeyringService;
@@ -40,7 +44,8 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
  public:
   BraveWalletP3A(BraveWalletService* wallet_service,
                  KeyringService* keyring_service,
-                 PrefService* pref_service);
+                 PrefService* profile_prefs,
+                 PrefService* local_state);
 
   ~BraveWalletP3A() override;
   BraveWalletP3A(const BraveWalletP3A&) = delete;
@@ -49,10 +54,9 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
   mojo::PendingRemote<mojom::BraveWalletP3A> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BraveWalletP3A> receiver);
 
-  void Update();
-
   void AddObservers();
 
+  void ReportUsage(bool unlocked);
   void ReportEthereumProvider(
       mojom::EthereumProviderType provider_type) override;
   void ReportOnboardingAction(
@@ -87,10 +91,17 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
       std::vector<mojom::BlockchainTokenPtr> discovered_assets) override {}
 
  private:
+  void MigrateUsageProfilePrefsToLocalState();
+  void OnUpdateTimerFired();
+  void WriteUsageStatsToHistogram(base::Time wallet_last_used,
+                                  base::Time first_p3a_used,
+                                  base::Time last_p3a_report,
+                                  unsigned use_days_in_week);
   void RecordInitialBraveWalletP3AState();
   raw_ptr<BraveWalletService> wallet_service_;
   raw_ptr<KeyringService> keyring_service_;
-  raw_ptr<PrefService> pref_service_;
+  raw_ptr<PrefService> profile_prefs_;
+  raw_ptr<PrefService> local_state_;
 
   mojo::Receiver<brave_wallet::mojom::BraveWalletServiceObserver>
       wallet_service_observer_receiver_{this};
@@ -98,6 +109,8 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
       keyring_service_observer_receiver_{this};
 
   mojo::ReceiverSet<mojom::BraveWalletP3A> receivers_;
+  base::RepeatingTimer update_timer_;
+  PrefChangeRegistrar pref_change_registrar_;
 };
 
 }  // namespace brave_wallet
