@@ -1,0 +1,12 @@
+diff --git a/ui/views/controls/textfield/textfield.cc b/ui/views/controls/textfield/textfield.cc
+index d7a9be21c5e2459ec73f18312cdb11f3c4f20f77..44f496de52c89758775f98a56ff2e72db2180a9e 100644
+--- a/ui/views/controls/textfield/textfield.cc
++++ b/ui/views/controls/textfield/textfield.cc
+@@ -1292,6 +1292,7 @@ bool Textfield::IsCommandIdEnabled(int command_id) const {
+ 
+ bool Textfield::GetAcceleratorForCommandId(int command_id,
+                                            ui::Accelerator* accelerator) const {
++  GET_ACCELERATOR_FOR_COMMAND_ID
+   switch (command_id) {
+     case kUndo:
+       *accelerator = ui::Accelerator(ui::VKEY_Z, ui::EF_PLATFORM_ACCELERATOR);

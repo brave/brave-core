@@ -16,7 +16,14 @@ class BraveOmniboxViewViews : public OmniboxViewViews {
   BraveOmniboxViewViews& operator=(const BraveOmniboxViewViews&) = delete;
   ~BraveOmniboxViewViews() override;
 
-  bool SelectedTextIsURL();
+  // views::Textfield:
+  void ExecuteCommand(int command_id, int event_flags) override;
+
+  // views::TextfieldController:
+  bool SelectedTextIsURL() override;
+  bool IsCleanLinkCommand(int command_id) const override;
+  void OnSanitizedCopy(ui::ClipboardBuffer clipboard_buffer) override;
+  void UpdateContextMenu(ui::SimpleMenuModel* menu_contents) override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_VIEW_VIEWS_H_

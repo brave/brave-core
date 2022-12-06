@@ -10,8 +10,15 @@
 
 // Manages logic to switch hotkey between copy and copy clean link item.
 @interface BraveAppController : AppController {
+  NSMenuItem* _copyMenuItem;
   NSMenuItem* _copyCleanLinkMenuItem;
+  absl::optional<bool> _hasSelectedURLForTesting;
 }
+
+// Testing API.
+- (void)setCopyMenuItemForTesting:(NSMenuItem*)menuItem;           // NOLINT
+- (void)setCopyCleanLinkMenuItemForTesting:(NSMenuItem*)menuItem;  // NOLINT
+- (void)setSelectedURLForTesting:(bool)selected;                   // NOLINT
 
 @end
 
