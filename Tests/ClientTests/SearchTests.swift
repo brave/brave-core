@@ -123,9 +123,9 @@ class SearchTests: XCTestCase {
     checkValidURL("http://ebаy.com/", afterFixup: "http://xn--eby-7cd.com/")
     checkValidURL("https://biṇaṇce.com", afterFixup: "https://xn--biace-4l1bb.com/")
     
-    XCTAssertEqual(URLFormatter.formatURL(forSecurityDisplay: "https://biṇaṇce.com", schemeDisplay: .show), "https://xn--biace-4l1bb.com")
-    XCTAssertEqual(URLFormatter.formatURL(forSecurityDisplay: "https://дом.рф", schemeDisplay: .show), "https://дом.рф")
-    XCTAssertEqual(URLFormatter.formatURL(forSecurityDisplay: "https://дoм.рф", schemeDisplay: .show), "https://xn--o-gtbz.рф")
+    XCTAssertEqual(URLFormatter.formatURLOrigin(forSecurityDisplay: "https://biṇaṇce.com", schemeDisplay: .show), "https://xn--biace-4l1bb.com")
+    XCTAssertEqual(URLFormatter.formatURLOrigin(forSecurityDisplay: "https://дом.рф", schemeDisplay: .show), "https://дом.рф")
+    XCTAssertEqual(URLFormatter.formatURLOrigin(forSecurityDisplay: "https://дoм.рф", schemeDisplay: .show), "https://xn--o-gtbz.рф")
   }
 
   fileprivate func checkValidURL(_ beforeFixup: String, afterFixup: String) {
