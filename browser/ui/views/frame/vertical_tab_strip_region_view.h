@@ -116,8 +116,6 @@ class VerticalTabStripRegionView : public views::View {
 
   bool mouse_events_for_test_ = false;
 
-  absl::optional<gfx::Size> last_layout_size_;
-
   base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };
 

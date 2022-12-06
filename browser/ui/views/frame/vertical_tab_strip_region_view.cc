@@ -207,11 +207,12 @@ class ScrollContentsView : public views::View {
     if (base::FeatureList::IsEnabled(features::kScrollableTabStrip))
       return;
 
-    container_->UpdateNewTabButtonVisibility();
-    if (height() == GetPreferredSize().height())
+    if (in_preferred_size_changed_)
       return;
 
-    SetSize({width(), GetPreferredSize().height()});
+    // Prevent reentrance caused by container_->Layout()
+    base::AutoReset<bool> in_preferred_size_change(&in_preferred_size_changed_,
+                                                   true);
     container_->Layout();
   }
 
@@ -225,6 +226,8 @@ class ScrollContentsView : public views::View {
  private:
   raw_ptr<VerticalTabStripRegionView> container_ = nullptr;
   raw_ptr<TabStrip> tab_strip_ = nullptr;
+
+  bool in_preferred_size_changed_ = false;
 };
 
 BEGIN_METADATA(ScrollContentsView, views::View)
@@ -367,11 +370,6 @@ gfx::Size VerticalTabStripRegionView::GetMinimumSize() const {
 }
 
 void VerticalTabStripRegionView::Layout() {
-  if (size() == last_layout_size_)
-    return;
-
-  last_layout_size_ = size();
-
   // As we have to update ScrollView's viewport size and its contents size,
   // layouting children manually will be more handy.
 
@@ -393,19 +391,22 @@ void VerticalTabStripRegionView::Layout() {
   scroll_view_->SetSize({contents_bounds.width(),
                          contents_bounds.height() - new_tab_button_->height()});
   scroll_view_->SetPosition(contents_bounds.origin());
-  auto scroll_contents_height = scroll_view_->height() - header_size.height();
-  scroll_view_->ClipHeightTo(0, scroll_contents_height);
+
+  auto scroll_viewport_height = scroll_view_->height() - header_size.height();
+  if (scroll_view_->GetMaxHeight() != scroll_viewport_height)
+    scroll_view_->ClipHeightTo(0, scroll_viewport_height);
 
   if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
     scroll_contents_view_->SetSize(
         {scroll_view_->width(), scroll_view_->height()});
     auto* nested_scroll_view = GetTabStripScrollContainer()->scroll_view_.get();
     nested_scroll_view->SetSize(
-        {scroll_view_->width(), scroll_contents_height});
-    nested_scroll_view->ClipHeightTo(0, scroll_contents_height);
+        {scroll_view_->width(), scroll_viewport_height});
+    nested_scroll_view->ClipHeightTo(0, scroll_viewport_height);
   } else {
     scroll_contents_view_->SetSize(
-        {scroll_view_->width(), scroll_contents_height});
+        {scroll_view_->width(),
+         scroll_contents_view_->GetPreferredSize().height()});
   }
 
   UpdateNewTabButtonVisibility();
@@ -457,7 +458,6 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
   }
 
   PreferredSizeChanged();
-  last_layout_size_ = {};
   Layout();
 }
 
