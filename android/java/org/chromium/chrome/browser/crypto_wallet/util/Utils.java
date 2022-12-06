@@ -637,6 +637,7 @@ public class Utils {
         res.to = to;
         res.value = value;
         res.data = data;
+        res.signedTransaction = "";
 
         return res;
     }
