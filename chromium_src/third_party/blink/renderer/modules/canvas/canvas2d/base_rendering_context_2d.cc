@@ -7,20 +7,14 @@
 
 #include "base/notreached.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
-#include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
 
-#define BRAVE_GET_IMAGE_DATA                                              \
-  if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
-    if (WebContentSettingsClient* settings =                              \
-            brave::GetContentSettingsClientFor(context)) {                \
-      SkPixmap image_data_pixmap = image_data->GetSkPixmap();             \
-      brave::BraveSessionCache::From(*context).PerturbPixels(             \
-          settings,                                                       \
-          static_cast<const unsigned char*>(                              \
-              image_data_pixmap.writable_addr()),                         \
-          image_data_pixmap.computeByteSize());                           \
-    }                                                                     \
+#define BRAVE_GET_IMAGE_DATA                                                  \
+  if (ExecutionContext* context = ExecutionContext::From(script_state)) {     \
+    SkPixmap image_data_pixmap = image_data->GetSkPixmap();                   \
+    brave::BraveSessionCache::From(*context).PerturbPixels(                   \
+        static_cast<const unsigned char*>(image_data_pixmap.writable_addr()), \
+        image_data_pixmap.computeByteSize());                                 \
   }
 
 #define BRAVE_GET_IMAGE_DATA_PARAMS ScriptState *script_state,
@@ -33,11 +27,8 @@
 namespace {
 
 bool AllowFingerprintingFromScriptState(blink::ScriptState* script_state) {
-  blink::ExecutionContext* context =
-      blink::ExecutionContext::From(script_state);
-  blink::WebContentSettingsClient* settings =
-      brave::GetContentSettingsClientFor(context);
-  return !settings || settings->AllowFingerprinting();
+  return brave::AllowFingerprinting(
+      blink::ExecutionContext::From(script_state));
 }
 
 }  // namespace

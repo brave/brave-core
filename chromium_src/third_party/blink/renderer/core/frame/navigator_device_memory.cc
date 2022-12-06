@@ -9,7 +9,6 @@
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/public/common/device_memory/approximated_device_memory.h"
-#include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/frame/navigator_device_memory.h"
 
 namespace brave {
@@ -17,17 +16,17 @@ namespace brave {
 float FarbleDeviceMemory(blink::ExecutionContext* context) {
   float true_value =
       blink::ApproximatedDeviceMemory::GetApproximatedDeviceMemory();
-  blink::WebContentSettingsClient* settings =
-      GetContentSettingsClientFor(context);
+  BraveFarblingLevel farbling_level =
+      brave::GetBraveFarblingLevelFor(context, BraveFarblingLevel::OFF);
   // If Brave Shields are down or anti-fingerprinting is off for this site,
   // return the true value.
-  if (!settings || settings->GetBraveFarblingLevel() == BraveFarblingLevel::OFF)
+  if (farbling_level == BraveFarblingLevel::OFF)
     return true_value;
 
   std::vector<float> valid_values = {0.25, 0.5, 1.0, 2.0, 4.0, 8.0};
   size_t min_farbled_index;
   size_t max_farbled_index;
-  if (settings->GetBraveFarblingLevel() == BraveFarblingLevel::MAXIMUM) {
+  if (farbling_level == BraveFarblingLevel::MAXIMUM) {
     // If anti-fingerprinting is at maximum, select a pseudo-random valid value
     // based on domain + sesson key.
     min_farbled_index = 0;

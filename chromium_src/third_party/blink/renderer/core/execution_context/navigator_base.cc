@@ -9,7 +9,6 @@
 #include "base/system/sys_info.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/abseil-cpp/absl/random/random.h"
-#include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -69,11 +68,10 @@ void ApplyBraveHardwareConcurrencyOverride(blink::ExecutionContext* context,
 namespace blink {
 
 String NavigatorBase::userAgent() const {
-  if (blink::WebContentSettingsClient* settings =
-          brave::GetContentSettingsClientFor(GetExecutionContext())) {
-    if (!settings->AllowFingerprinting()) {
-      return brave::BraveSessionCache::From(*(GetExecutionContext()))
-          .FarbledUserAgent(GetExecutionContext()->UserAgent());
+  if (ExecutionContext* context = GetExecutionContext()) {
+    if (!brave::AllowFingerprinting(context)) {
+      return brave::BraveSessionCache::From(*context).FarbledUserAgent(
+          context->UserAgent());
     }
   }
 

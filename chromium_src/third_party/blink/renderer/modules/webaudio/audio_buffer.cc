@@ -20,23 +20,16 @@
     size_t len = destination_array->length();                                 \
     if (len > 0) {                                                            \
       if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
-        if (WebContentSettingsClient* settings =                              \
-                brave::GetContentSettingsClientFor(context)) {                \
-          float* destination = destination_array->Data();                     \
-          brave::BraveSessionCache::From(*context).FarbleAudioChannel(        \
-              settings, destination, len);                                    \
-        }                                                                     \
+        float* destination = destination_array->Data();                       \
+        brave::BraveSessionCache::From(*context).FarbleAudioChannel(          \
+            destination, len);                                                \
       }                                                                       \
     }                                                                         \
   }
 
-#define BRAVE_AUDIOBUFFER_COPYFROMCHANNEL                                      \
-  if (ExecutionContext* context = ExecutionContext::From(script_state)) {      \
-    if (WebContentSettingsClient* settings =                                   \
-            brave::GetContentSettingsClientFor(context)) {                     \
-      brave::BraveSessionCache::From(*context).FarbleAudioChannel(settings,    \
-                                                                  dst, count); \
-    }                                                                          \
+#define BRAVE_AUDIOBUFFER_COPYFROMCHANNEL                                    \
+  if (ExecutionContext* context = ExecutionContext::From(script_state)) {    \
+    brave::BraveSessionCache::From(*context).FarbleAudioChannel(dst, count); \
   }
 
 #include "src/third_party/blink/renderer/modules/webaudio/audio_buffer.cc"

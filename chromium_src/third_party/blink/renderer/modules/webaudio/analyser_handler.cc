@@ -10,14 +10,10 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
 
-#define BRAVE_ANALYSERHANDLER_CONSTRUCTOR                                  \
-  if (ExecutionContext* context = node.GetExecutionContext()) {            \
-    if (WebContentSettingsClient* settings =                               \
-            brave::GetContentSettingsClientFor(context)) {                 \
-      analyser_.set_audio_farbling_helper(                                 \
-          brave::BraveSessionCache::From(*context).GetAudioFarblingHelper( \
-              settings));                                                  \
-    }                                                                      \
+#define BRAVE_ANALYSERHANDLER_CONSTRUCTOR                                   \
+  if (ExecutionContext* context = node.GetExecutionContext()) {             \
+    analyser_.set_audio_farbling_helper(                                    \
+        brave::BraveSessionCache::From(*context).GetAudioFarblingHelper()); \
   }
 
 #include "src/third_party/blink/renderer/modules/webaudio/analyser_handler.cc"
