@@ -57,6 +57,7 @@ class BraveNewsActionView : public views::LabelButton,
   SkColor GetIconColor(bool subscribed) const;
 
   BooleanPrefMember should_show_;
+  BooleanPrefMember opted_in_;
   BooleanPrefMember news_enabled_;
 
   base::raw_ptr<Profile> profile_;
