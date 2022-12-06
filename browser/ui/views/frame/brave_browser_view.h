@@ -74,7 +74,7 @@ class BraveBrowserView : public BrowserView {
 #endif
   bool ShouldShowWindowTitle() const override;
   void OnThemeChanged() override;
-
+  bool HasSelectedURL() const override;
   views::View* sidebar_host_view() { return sidebar_host_view_; }
   bool IsSidebarVisible() const;
 
@@ -114,6 +114,7 @@ class BraveBrowserView : public BrowserView {
   BraveBrowser* GetBraveBrowser() const;
 
   sidebar::Sidebar* InitSidebar() override;
+
   void UpdateSideBarHorizontalAlignment();
 
   bool closing_confirm_dialog_activated_ = false;

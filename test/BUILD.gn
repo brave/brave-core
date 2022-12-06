@@ -941,6 +941,7 @@ test("brave_browser_tests") {
 
   if (is_mac) {
     sources += [
+      "//brave/browser/brave_app_controller_mac_browsertest.mm",
       "//chrome/browser/ui/test/test_browser_dialog_mac.h",
       "//chrome/browser/ui/test/test_browser_dialog_mac.mm",
     ]
