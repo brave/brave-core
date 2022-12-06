@@ -626,8 +626,7 @@ void AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded(
       subscription_source_observers_.find(sub_url);
   DCHECK(subscription_source_observer != subscription_source_observers_.end());
 
-  subscription_filters_provider->second->LoadDAT(
-      (subscription_source_observer->second).get());
+  subscription_filters_provider->second->OnNewListSaved();
 
   NotifyObserversOfServiceEvent();
 }

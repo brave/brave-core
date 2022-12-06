@@ -34,9 +34,7 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
     return false;
   local_state_->SetString(prefs::kAdBlockCustomFilters, custom_filters);
 
-  auto buffer =
-      std::vector<unsigned char>(custom_filters.begin(), custom_filters.end());
-  OnDATLoaded(false, buffer);
+  NotifyObservers();
 
   return true;
 }

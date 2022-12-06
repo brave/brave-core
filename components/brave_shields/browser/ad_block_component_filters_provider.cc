@@ -50,14 +50,7 @@ void AdBlockComponentFiltersProvider::OnComponentReady(
     const base::FilePath& path) {
   component_path_ = path;
 
-  base::FilePath list_file_path = component_path_.AppendASCII(kListFile);
-
-  // Load the list as a string
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_path),
-      base::BindOnce(&AdBlockComponentFiltersProvider::OnDATLoaded,
-                     weak_factory_.GetWeakPtr(), false));
+  NotifyObservers();
 }
 
 void AdBlockComponentFiltersProvider::LoadDATBuffer(
