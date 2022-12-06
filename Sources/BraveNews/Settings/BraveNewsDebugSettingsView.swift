@@ -42,9 +42,11 @@ public struct BraveNewsDebugSettingsView: View {
     self.dismissAction = dismissAction
     // These values should always be overridden
     self._environment = .init(wrappedValue: dataSource.environment)
+    self._localeOverride = .init(wrappedValue: dataSource.selectedLocale)
   }
   
   @State private var environment: FeedDataSource.Environment = .production
+  @State private var localeOverride: String = "en_US"
   
   public var body: some View {
     List {
@@ -54,8 +56,13 @@ public struct BraveNewsDebugSettingsView: View {
             Text(env.name)
           }
         }
+        Picker("Selected Locale", selection: $localeOverride) {
+          ForEach(Array(feedDataSource.availableLocales).sorted(), id: \.self) { locale in
+            Text(locale).tag(locale)
+          }
+        }
       } footer: {
-        Text("Changing the environment or language will purge all cached resources immediately.")
+        Text("Changing the environment will purge all cached resources immediately.")
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section {
@@ -110,6 +117,10 @@ public struct BraveNewsDebugSettingsView: View {
     }
     .onChange(of: environment) { _ in
       feedDataSource.environment = environment
+    }
+    .onChange(of: localeOverride) { locale in
+      Preferences.BraveNews.selectedLocale.value = locale
+      feedDataSource.selectedLocale = locale
     }
   }
 }
