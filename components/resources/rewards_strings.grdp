@@ -326,7 +326,7 @@
     There was a problem processing your contribution.
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_CONTRIBUTION_FAILED_TITLE" desc="">
-    Monthly tip failed
+    Monthly contribution failed
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_TIP_COMPLETED_TITLE" desc="">
     Contributions and tips
