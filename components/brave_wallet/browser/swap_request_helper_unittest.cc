@@ -60,7 +60,8 @@ const char* GetJupiterQuoteTemplate() {
 TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
   auto* json_template = GetJupiterQuoteTemplate();
   std::string json = base::StringPrintf(json_template, "10000", "30");
-  mojom::JupiterQuotePtr swap_quote = ParseJupiterQuote(json);
+  mojom::JupiterQuotePtr swap_quote =
+      ParseJupiterQuote(*base::JSONReader::Read(json));
   ASSERT_TRUE(swap_quote);
 
   mojom::JupiterSwapParams params;
@@ -106,9 +107,7 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
     })");
 
   // OK: Jupiter transaction params with feeAccount
-  auto expected_params_value = base::JSONReader::Read(
-      expected_params,
-      base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
+  auto expected_params_value = base::JSONReader::Read(expected_params);
   ASSERT_NE(encoded_params, absl::nullopt);
   ASSERT_EQ(*encoded_params, GetJSON(*expected_params_value));
 
@@ -149,9 +148,7 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
       },
       "userPublicKey": "mockPubKey"
     })";
-  expected_params_value = base::JSONReader::Read(
-      expected_params,
-      base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
+  expected_params_value = base::JSONReader::Read(expected_params);
   ASSERT_NE(encoded_params, absl::nullopt);
   ASSERT_EQ(*encoded_params, GetJSON(*expected_params_value));
 

@@ -6,6 +6,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/json/json_reader.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/test/bind.h"
@@ -26,6 +27,10 @@
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
+
+base::Value ToValue(const std::string& json) {
+  return base::JSONReader::Read(json).value_or(base::Value());
+}
 
 // Matcher to check equality of two mojo structs. Matcher needs copyable value
 // which is not possible for some mojo types, so wrapping it with RefCounted.
@@ -321,8 +326,9 @@ TEST_F(SwapServiceUnitTest, GetPriceQuoteError) {
   SetErrorInterceptor(error);
 
   base::MockCallback<mojom::SwapService::GetPriceQuoteCallback> callback;
-  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapResponsePtr()),
-                            EqualsMojo(ParseSwapErrorResponse(error)), ""));
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::SwapResponsePtr()),
+                  EqualsMojo(ParseSwapErrorResponse(ToValue(error))), ""));
 
   swap_service_->GetPriceQuote(brave_wallet::mojom::SwapParams::New(),
                                callback.Get());
@@ -416,9 +422,9 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayloadError) {
 
   base::MockCallback<mojom::SwapService::GetTransactionPayloadCallback>
       callback;
-  auto expected_swap_error_response = ParseSwapErrorResponse(error);
-  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapResponsePtr()),
-                            EqualsMojo(expected_swap_error_response), ""));
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::SwapResponsePtr()),
+                  EqualsMojo(ParseSwapErrorResponse(ToValue(error))), ""));
 
   swap_service_->GetTransactionPayload(mojom::SwapParams::New(),
                                        callback.Get());
