@@ -21,6 +21,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/misc_metrics/general_browser_usage.h"
+
 #include "build/build_config.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -68,6 +70,8 @@ class BraveStatsUpdaterTest : public testing::Test {
     task_environment_.AdvanceClock(base::Minutes(30));
 
     brave_stats::RegisterLocalStatePrefs(testing_local_state_.registry());
+    misc_metrics::GeneralBrowserUsage::RegisterPrefs(
+        testing_local_state_.registry());
     brave::RegisterPrefsForBraveReferralsService(
         testing_local_state_.registry());
     brave_ads::BraveStatsUpdaterHelper::RegisterLocalStatePrefs(

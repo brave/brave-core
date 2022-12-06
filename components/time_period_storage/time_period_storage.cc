@@ -1,7 +1,7 @@
-/* Copyright 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/time_period_storage/time_period_storage.h"
 
@@ -18,10 +18,10 @@
 TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
                                      const char* pref_name,
                                      size_t period_days)
-    : prefs_(prefs),
+    : clock_(std::make_unique<base::DefaultClock>()),
+      prefs_(prefs),
       pref_name_(pref_name),
-      period_days_(period_days),
-      clock_(std::make_unique<base::DefaultClock>()) {
+      period_days_(period_days) {
   DCHECK(pref_name);
   if (prefs) {
     Load();
@@ -32,10 +32,10 @@ TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
                                      const char* pref_name,
                                      size_t period_days,
                                      std::unique_ptr<base::Clock> clock)
-    : prefs_(prefs),
+    : clock_(std::move(clock)),
+      prefs_(prefs),
       pref_name_(pref_name),
-      period_days_(period_days),
-      clock_(std::move(clock)) {
+      period_days_(period_days) {
   DCHECK(prefs);
   DCHECK(pref_name);
   Load();
@@ -89,18 +89,26 @@ void TimePeriodStorage::ReplaceIfGreaterForDate(const base::Time& date,
   Save();
 }
 
-uint64_t TimePeriodStorage::GetPeriodSum() const {
-  // We record only value for last N days.
-  const base::Time n_days_ago = clock_->Now() - base::Days(period_days_);
+uint64_t TimePeriodStorage::GetPeriodSumInTimeRange(
+    const base::Time& start_time,
+    const base::Time& end_time) const {
+  // We only record values between the specified time range (inclusive).
   return std::accumulate(daily_values_.begin(), daily_values_.end(), 0ull,
-                         [n_days_ago](const uint64_t acc, const auto& u2) {
+                         [start_time, end_time](uint64_t acc, const auto& u2) {
                            uint64_t add = 0;
                            // Check only last continious days.
-                           if (u2.day > n_days_ago) {
+                           if (u2.day >= start_time && u2.day <= end_time) {
                              add = u2.value;
                            }
                            return acc + add;
                          });
+}
+
+uint64_t TimePeriodStorage::GetPeriodSum() const {
+  const base::Time now = clock_->Now();
+  const base::Time n_days_ago =
+      now.LocalMidnight() - base::Days(period_days_ - 1);
+  return GetPeriodSumInTimeRange(n_days_ago, now);
 }
 
 uint64_t TimePeriodStorage::GetHighestValueInPeriod() const {

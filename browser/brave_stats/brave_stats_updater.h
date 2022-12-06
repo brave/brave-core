@@ -35,6 +35,10 @@ namespace network {
 class SimpleURLLoader;
 }
 
+namespace misc_metrics {
+class GeneralBrowserUsage;
+}
+
 namespace brave_stats {
 
 class BraveStatsUpdaterParams;
@@ -105,6 +109,8 @@ class BraveStatsUpdater {
   base::RepeatingClosure stats_preconditions_barrier_;
 
   scoped_refptr<network::SharedURLLoaderFactory> testing_url_loader_factory_;
+
+  std::unique_ptr<misc_metrics::GeneralBrowserUsage> general_browser_usage_p3a_;
 };
 
 // Registers the preferences used by BraveStatsUpdater

@@ -6,6 +6,7 @@
 #include "brave/components/misc_metrics/pref_names.h"
 
 namespace misc_metrics {
+const char kMiscMetricsBrowserUsageList[] = "brave.misc_metrics.browser_usage";
 const char kMiscMetricsMenuDismissStorage[] =
     "brave.misc_metrics.menu_dismiss_storage";
 const char kMiscMetricsMenuGroupActionCounts[] =

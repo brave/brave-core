@@ -80,6 +80,50 @@ TEST_F(TimePeriodStorageTest, SubDelta) {
   EXPECT_EQ(state_->GetPeriodSum(), 0U);
 }
 
+TEST_F(TimePeriodStorageTest, GetSumInCustomPeriod) {
+  InitStorage(14);
+  base::TimeDelta start_time_delta = base::Days(9);
+  base::TimeDelta end_time_delta = base::Days(4);
+  uint64_t saving = 10000;
+  clock_->Advance(base::Hours(1));
+  state_->AddDelta(saving);
+
+  clock_->Advance(base::Days(1));
+  state_->AddDelta(saving);
+  state_->AddDelta(saving);
+
+  clock_->Advance(base::Days(2));
+
+  base::Time midnight = clock_->Now().LocalMidnight();
+  EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
+                                            midnight - end_time_delta),
+            0u);
+
+  clock_->Advance(base::Days(1));
+  midnight = clock_->Now().LocalMidnight();
+  EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
+                                            midnight - end_time_delta),
+            saving);
+
+  clock_->Advance(base::Days(1));
+  midnight = clock_->Now().LocalMidnight();
+  EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
+                                            midnight - end_time_delta),
+            saving * 3);
+
+  clock_->Advance(base::Days(5));
+  midnight = clock_->Now().LocalMidnight();
+  EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
+                                            midnight - end_time_delta),
+            saving * 2);
+
+  clock_->Advance(base::Days(1));
+  midnight = clock_->Now().LocalMidnight();
+  EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
+                                            midnight - end_time_delta),
+            0u);
+}
+
 TEST_F(TimePeriodStorageTest, ForgetsOldSavingsWeekly) {
   InitStorage(7);
   uint64_t saving = 10000;
