@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/debug/dump_without_crashing.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_service_helper.h"
@@ -79,6 +80,12 @@ void BraveVpnAPIRequest::GetTimezonesForRegions(ResponseCallback callback) {
 
 void BraveVpnAPIRequest::GetHostnamesForRegion(ResponseCallback callback,
                                                const std::string& region) {
+  static bool dump_sent = false;
+  if (!dump_sent && region.empty()) {
+    base::debug::DumpWithoutCrashing();
+    dump_sent = true;
+  }
+
   auto internal_callback =
       base::BindOnce(&BraveVpnAPIRequest::OnGetResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
