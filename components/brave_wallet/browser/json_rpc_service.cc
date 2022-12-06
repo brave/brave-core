@@ -2410,9 +2410,9 @@ void JsonRpcService::OnGetSPLTokenAccountBalance(
                           mojom::SolanaProviderError::kSuccess, "");
 }
 
-void JsonRpcService::GetSolTokenMetadata(const std::string& nft_account_address,
+void JsonRpcService::GetSolTokenMetadata(const std::string& token_mint_address,
                                          GetSolTokenMetadataCallback callback) {
-  nft_metadata_fetcher_->GetSolTokenMetadata(nft_account_address,
+  nft_metadata_fetcher_->GetSolTokenMetadata(token_mint_address,
                                              std::move(callback));
 }
 

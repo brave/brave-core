@@ -1417,13 +1417,13 @@ class JsonRpcServiceUnitTest : public testing::Test {
     loop.Run();
   }
 
-  void TestGetSolTokenMetadata(const std::string& nft_account_address,
+  void TestGetSolTokenMetadata(const std::string& token_mint_address,
                                const std::string& expected_response,
                                mojom::SolanaProviderError expected_error,
                                const std::string& expected_error_message) {
     base::RunLoop loop;
     json_rpc_service_->GetSolTokenMetadata(
-        nft_account_address,
+        token_mint_address,
         base::BindLambdaForTesting([&](const std::string& response,
                                        mojom::SolanaProviderError error,
                                        const std::string& error_message) {
@@ -5685,7 +5685,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSolTokenMetadata) {
                           valid_metadata_response,
                           mojom::SolanaProviderError::kSuccess, "");
 
-  // Invalid nft_account_address yields internal error.
+  // Invalid token_mint_address yields internal error.
   SetSolTokenMetadataInterceptor(
       network_url, get_account_info_response,
       GURL("https://"
