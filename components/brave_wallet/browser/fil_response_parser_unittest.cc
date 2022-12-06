@@ -34,52 +34,40 @@ TEST(FilResponseParserUnitTest, ParseFilGetBalance) {
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"10000000000000000000000000000\"}";
   std::string value;
-  EXPECT_TRUE(brave_wallet::ParseFilGetBalance(ToValue(json), &value));
-  EXPECT_EQ(value, "10000000000000000000000000000");
+  EXPECT_EQ(ParseFilGetBalance(ToValue(json)), "10000000000000000000000000000");
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"\"}";
-  EXPECT_TRUE(brave_wallet::ParseFilGetBalance(ToValue(json), &value));
-  EXPECT_TRUE(value.empty());
+  EXPECT_TRUE(ParseFilGetBalance(ToValue(json))->empty());
 }
 
 TEST(FilResponseParserUnitTest, ParseFilGetTransactionCount) {
   std::string json =
       R"({"jsonrpc":2.0,"id":1,"result":"18446744073709551615"})";
 
-  uint64_t value = 0;
-  EXPECT_TRUE(brave_wallet::ParseFilGetTransactionCount(ToValue(json), &value));
-  EXPECT_EQ(value, UINT64_MAX);
+  EXPECT_EQ(ParseFilGetTransactionCount(ToValue(json)), UINT64_MAX);
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"1\"}";
-  value = 0;
-  EXPECT_TRUE(brave_wallet::ParseFilGetTransactionCount(ToValue(json), &value));
-  EXPECT_EQ(value, 1u);
+  EXPECT_EQ(ParseFilGetTransactionCount(ToValue(json)), 1u);
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":-1}";
-  EXPECT_FALSE(
-      brave_wallet::ParseFilGetTransactionCount(ToValue(json), &value));
+  EXPECT_FALSE(ParseFilGetTransactionCount(ToValue(json)));
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":1.2}";
-  EXPECT_FALSE(
-      brave_wallet::ParseFilGetTransactionCount(ToValue(json), &value));
+  EXPECT_FALSE(ParseFilGetTransactionCount(ToValue(json)));
 
   json = "bad json";
-  EXPECT_FALSE(
-      brave_wallet::ParseFilGetTransactionCount(ToValue(json), &value));
+  EXPECT_FALSE(ParseFilGetTransactionCount(ToValue(json)));
 
-  EXPECT_FALSE(brave_wallet::ParseFilGetTransactionCount(ToValue(""), &value));
+  EXPECT_FALSE(ParseFilGetTransactionCount(ToValue("")));
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":1}";
-  EXPECT_FALSE(
-      brave_wallet::ParseFilGetTransactionCount(ToValue(json), &value));
+  EXPECT_FALSE(ParseFilGetTransactionCount(ToValue(json)));
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{}}";
-  EXPECT_FALSE(
-      brave_wallet::ParseFilGetTransactionCount(ToValue(json), &value));
+  EXPECT_FALSE(ParseFilGetTransactionCount(ToValue(json)));
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1}";
-  EXPECT_FALSE(
-      brave_wallet::ParseFilGetTransactionCount(ToValue(json), &value));
+  EXPECT_FALSE(ParseFilGetTransactionCount(ToValue(json)));
 }
 
 TEST(FilResponseParserUnitTest, ParseFilEstimateGas) {

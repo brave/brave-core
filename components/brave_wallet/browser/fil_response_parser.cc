@@ -14,23 +14,25 @@
 
 namespace brave_wallet {
 
-bool ParseFilGetBalance(const base::Value& json_value, std::string* balance) {
-  return brave_wallet::ParseSingleStringResult(json_value, balance);
+absl::optional<std::string> ParseFilGetBalance(const base::Value& json_value) {
+  return ParseSingleStringResult(json_value);
 }
 
-bool ParseFilGetTransactionCount(const base::Value& json_value,
-                                 uint64_t* count) {
-  DCHECK(count);
-
+absl::optional<uint64_t> ParseFilGetTransactionCount(
+    const base::Value& json_value) {
   if (json_value.is_none())
-    return false;
+    return absl::nullopt;
 
-  std::string count_string;
-  if (!brave_wallet::ParseSingleStringResult(json_value, &count_string))
-    return false;
-  if (count_string.empty())
-    return false;
-  return base::StringToUint64(count_string, count);
+  auto count_string = ParseSingleStringResult(json_value);
+  if (!count_string)
+    return absl::nullopt;
+  if (count_string->empty())
+    return absl::nullopt;
+
+  uint64_t count = 0;
+  if (!base::StringToUint64(*count_string, &count))
+    return absl::nullopt;
+  return count;
 }
 
 bool ParseFilEstimateGas(const base::Value& json_value,

@@ -790,8 +790,8 @@ void JsonRpcService::OnFilGetBalance(GetBalanceCallback callback,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
-  std::string balance;
-  if (!ParseFilGetBalance(api_request_result.value_body(), &balance)) {
+  auto balance = ParseFilGetBalance(api_request_result.value_body());
+  if (!balance) {
     mojom::ProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
@@ -800,7 +800,7 @@ void JsonRpcService::OnFilGetBalance(GetBalanceCallback callback,
     return;
   }
 
-  std::move(callback).Run(balance, mojom::ProviderError::kSuccess, "");
+  std::move(callback).Run(*balance, mojom::ProviderError::kSuccess, "");
 }
 void JsonRpcService::GetFilStateSearchMsgLimited(
     const std::string& cid,
@@ -906,8 +906,8 @@ void JsonRpcService::OnFilGetTransactionCount(
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
-  uint64_t count = 0;
-  if (!ParseFilGetTransactionCount(api_request_result.value_body(), &count)) {
+  auto count = ParseFilGetTransactionCount(api_request_result.value_body());
+  if (!count) {
     mojom::FilecoinProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::FilecoinProviderError>(
@@ -916,7 +916,7 @@ void JsonRpcService::OnFilGetTransactionCount(
     return;
   }
 
-  std::move(callback).Run(static_cast<uint256_t>(count),
+  std::move(callback).Run(static_cast<uint256_t>(count.value()),
                           mojom::FilecoinProviderError::kSuccess, "");
 }
 
@@ -994,9 +994,9 @@ void JsonRpcService::OnSendRawTransaction(SendRawTxCallback callback,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
-  std::string tx_hash;
-  if (!eth::ParseEthSendRawTransaction(api_request_result.value_body(),
-                                       &tx_hash)) {
+  auto tx_hash =
+      eth::ParseEthSendRawTransaction(api_request_result.value_body());
+  if (!tx_hash) {
     mojom::ProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
@@ -1005,7 +1005,7 @@ void JsonRpcService::OnSendRawTransaction(SendRawTxCallback callback,
     return;
   }
 
-  std::move(callback).Run(tx_hash, mojom::ProviderError::kSuccess, "");
+  std::move(callback).Run(*tx_hash, mojom::ProviderError::kSuccess, "");
 }
 
 void JsonRpcService::GetERC20TokenBalance(
@@ -1039,8 +1039,8 @@ void JsonRpcService::OnGetERC20TokenBalance(
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
-  std::string result;
-  if (!eth::ParseEthCall(api_request_result.value_body(), &result)) {
+  auto result = eth::ParseEthCall(api_request_result.value_body());
+  if (!result) {
     mojom::ProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
@@ -1049,7 +1049,7 @@ void JsonRpcService::OnGetERC20TokenBalance(
     return;
   }
 
-  const auto& args = eth::DecodeEthCallResponse(result, {"uint256"});
+  const auto& args = eth::DecodeEthCallResponse(*result, {"uint256"});
   if (args == absl::nullopt) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
@@ -1091,8 +1091,8 @@ void JsonRpcService::OnGetERC20TokenAllowance(
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
-  std::string result;
-  if (!eth::ParseEthCall(api_request_result.value_body(), &result)) {
+  auto result = eth::ParseEthCall(api_request_result.value_body());
+  if (!result) {
     mojom::ProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
@@ -1101,7 +1101,7 @@ void JsonRpcService::OnGetERC20TokenAllowance(
     return;
   }
 
-  const auto& args = eth::DecodeEthCallResponse(result, {"uint256"});
+  const auto& args = eth::DecodeEthCallResponse(*result, {"uint256"});
   if (args == absl::nullopt) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
@@ -1776,8 +1776,8 @@ void JsonRpcService::OnGetEstimateGas(GetEstimateGasCallback callback,
     return;
   }
 
-  std::string result;
-  if (!eth::ParseEthEstimateGas(api_request_result.value_body(), &result)) {
+  auto result = eth::ParseEthEstimateGas(api_request_result.value_body());
+  if (!result) {
     mojom::ProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
@@ -1786,7 +1786,7 @@ void JsonRpcService::OnGetEstimateGas(GetEstimateGasCallback callback,
     return;
   }
 
-  std::move(callback).Run(result, mojom::ProviderError::kSuccess, "");
+  std::move(callback).Run(*result, mojom::ProviderError::kSuccess, "");
 }
 
 void JsonRpcService::GetGasPrice(GetGasPriceCallback callback) {
@@ -1807,8 +1807,8 @@ void JsonRpcService::OnGetGasPrice(GetGasPriceCallback callback,
     return;
   }
 
-  std::string result;
-  if (!eth::ParseEthGasPrice(api_request_result.value_body(), &result)) {
+  auto result = eth::ParseEthGasPrice(api_request_result.value_body());
+  if (!result) {
     mojom::ProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
@@ -1817,7 +1817,7 @@ void JsonRpcService::OnGetGasPrice(GetGasPriceCallback callback,
     return;
   }
 
-  std::move(callback).Run(result, mojom::ProviderError::kSuccess, "");
+  std::move(callback).Run(*result, mojom::ProviderError::kSuccess, "");
 }
 
 void JsonRpcService::GetIsEip1559(GetIsEip1559Callback callback) {
@@ -2192,8 +2192,8 @@ void JsonRpcService::OnGetSupportsInterface(
     return;
   }
 
-  bool is_supported = false;
-  if (!ParseBoolResult(api_request_result.value_body(), &is_supported)) {
+  auto is_supported = ParseBoolResult(api_request_result.value_body());
+  if (!is_supported.has_value()) {
     mojom::ProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
@@ -2202,7 +2202,8 @@ void JsonRpcService::OnGetSupportsInterface(
     return;
   }
 
-  std::move(callback).Run(is_supported, mojom::ProviderError::kSuccess, "");
+  std::move(callback).Run(is_supported.value(), mojom::ProviderError::kSuccess,
+                          "");
 }
 
 void JsonRpcService::GetPendingSwitchChainRequests(

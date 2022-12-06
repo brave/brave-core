@@ -76,8 +76,7 @@ TEST(EthResponseParserUnitTest, ParseEthCall) {
     "result": "0x0"
   })");
   std::string result;
-  ASSERT_TRUE(ParseEthGetBalance(ToValue(json), &result));
-  ASSERT_EQ(result, "0x0");
+  ASSERT_EQ(ParseEthCall(ToValue(json)), "0x0");
 }
 
 TEST(EthResponseParserUnitTest, DecodeEthCallResponse) {

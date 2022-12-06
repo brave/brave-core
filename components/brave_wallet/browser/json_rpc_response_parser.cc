@@ -12,59 +12,9 @@
 
 namespace brave_wallet {
 
-bool ParseSingleStringResult(const std::string& json, std::string* result) {
-  DCHECK(result);
-
-  auto result_v = ParseResultValue(json);
-  if (!result_v)
-    return false;
-
-  const std::string* result_str = result_v->GetIfString();
-  if (!result_str)
-    return false;
-
-  *result = *result_str;
-
-  return true;
-}
-
-bool ParseSingleStringResult(const base::Value& json_value,
-                             std::string* result) {
-  DCHECK(result);
-
-  auto result_v = ParseResultValue(json_value);
-  if (!result_v)
-    return false;
-
-  const std::string* result_str = result_v->GetIfString();
-  if (!result_str)
-    return false;
-
-  *result = *result_str;
-
-  return true;
-}
-
-absl::optional<std::string> ParseSingleStringResult(const std::string& json) {
-  std::string result;
-  if (!ParseSingleStringResult(json, &result))
-    return absl::nullopt;
-
-  return result;
-}
-
 absl::optional<std::string> ParseSingleStringResult(
     const base::Value& json_value) {
-  std::string result;
-  if (!ParseSingleStringResult(json_value, &result))
-    return absl::nullopt;
-
-  return result;
-}
-
-absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
-    const std::string& json) {
-  auto result_v = ParseResultValue(json);
+  auto result_v = ParseResultValue(json_value);
   if (!result_v)
     return absl::nullopt;
 
@@ -72,7 +22,7 @@ absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
   if (!result_str)
     return absl::nullopt;
 
-  return PrefixedHexStringToBytes(*result_str);
+  return *result_str;
 }
 
 absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
@@ -86,15 +36,6 @@ absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
     return absl::nullopt;
 
   return PrefixedHexStringToBytes(*result_str);
-}
-
-absl::optional<base::Value> ParseResultValue(const std::string& json) {
-  absl::optional<base::Value> value =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!value)
-    return absl::nullopt;
-  return ParseResultValue(*value);
 }
 
 absl::optional<base::Value> ParseResultValue(const base::Value& json_value) {
@@ -102,14 +43,6 @@ absl::optional<base::Value> ParseResultValue(const base::Value& json_value) {
   if (!response || !response->result)
     return absl::nullopt;
   return std::move(*response->result);
-}
-
-absl::optional<base::Value::Dict> ParseResultDict(const std::string& json) {
-  auto result = ParseResultValue(json);
-  if (!result || !result->is_dict())
-    return absl::nullopt;
-
-  return std::move(result->GetDict());
 }
 
 absl::optional<base::Value::Dict> ParseResultDict(
@@ -121,14 +54,6 @@ absl::optional<base::Value::Dict> ParseResultDict(
   return std::move(result->GetDict());
 }
 
-absl::optional<base::Value::List> ParseResultList(const std::string& json) {
-  auto result = ParseResultValue(json);
-  if (!result || !result->is_list())
-    return absl::nullopt;
-
-  return std::move(result->GetList());
-}
-
 absl::optional<base::Value::List> ParseResultList(
     const base::Value& json_value) {
   auto result = ParseResultValue(json_value);
@@ -138,46 +63,21 @@ absl::optional<base::Value::List> ParseResultList(
   return std::move(result->GetList());
 }
 
-bool ParseBoolResult(const std::string& json, bool* value) {
-  DCHECK(value);
+absl::optional<bool> ParseBoolResult(const base::Value& json_value) {
+  auto result = ParseSingleStringResult(json_value);
+  if (!result)
+    return absl::nullopt;
 
-  std::string result;
-  if (!ParseSingleStringResult(json, &result))
-    return false;
-
-  if (result ==
+  if (*result ==
       "0x0000000000000000000000000000000000000000000000000000000000000001") {
-    *value = true;
     return true;
-  } else if (result ==
+  } else if (*result ==
              "0x000000000000000000000000000000000000000000000000000000000000000"
              "0") {
-    *value = false;
-    return true;
-  }
-
-  return false;
-}
-
-bool ParseBoolResult(const base::Value& json_value, bool* value) {
-  DCHECK(value);
-
-  std::string result;
-  if (!ParseSingleStringResult(json_value, &result))
     return false;
-
-  if (result ==
-      "0x0000000000000000000000000000000000000000000000000000000000000001") {
-    *value = true;
-    return true;
-  } else if (result ==
-             "0x000000000000000000000000000000000000000000000000000000000000000"
-             "0") {
-    *value = false;
-    return true;
   }
 
-  return false;
+  return absl::nullopt;
 }
 
 absl::optional<std::string> ConvertUint64ToString(const std::string& path,

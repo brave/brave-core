@@ -13,6 +13,9 @@
 #include "base/values.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
+// TODO(apaymyshev): refactor utility methods to return absl::optional instead
+// of bool + out-parameter.
+
 namespace brave_wallet {
 
 struct SolanaSignatureStatus;

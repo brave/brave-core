@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_response_parser.h"
 
 #include <limits>
+#include <utility>
 
 #include "base/base64.h"
 #include "base/json/json_writer.h"
@@ -93,7 +94,11 @@ bool ParseGetTokenAccountBalance(const base::Value& json_value,
 }
 
 bool ParseSendTransaction(const base::Value& json_value, std::string* tx_id) {
-  return ParseSingleStringResult(json_value, tx_id);
+  auto string_result = ParseSingleStringResult(json_value);
+  if (!string_result)
+    return false;
+  *tx_id = std::move(*string_result);
+  return true;
 }
 
 bool ParseGetLatestBlockhash(const base::Value& json_value,
@@ -259,14 +264,14 @@ bool ParseGetBlockHeight(const base::Value& json_value,
                          uint64_t* block_height) {
   DCHECK(block_height);
 
-  std::string block_height_string;
-  if (!brave_wallet::ParseSingleStringResult(json_value, &block_height_string))
+  auto block_height_string = ParseSingleStringResult(json_value);
+  if (!block_height_string)
     return false;
 
-  if (block_height_string.empty())
+  if (block_height_string->empty())
     return false;
 
-  return base::StringToUint64(block_height_string, block_height);
+  return base::StringToUint64(*block_height_string, block_height);
 }
 
 base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>

@@ -343,13 +343,13 @@ void EnsResolverTask::OnFetchEnsip10SupportDone(
     return;
   }
 
-  bool is_supported = false;
-  if (!ParseBoolResult(api_request_result.value_body(), &is_supported)) {
+  auto is_supported = ParseBoolResult(api_request_result.value_body());
+  if (!is_supported.has_value()) {
     task_error_ = ParseErrorResult(api_request_result.value_body());
     return;
   }
 
-  supports_ensip_10_ = is_supported;
+  supports_ensip_10_ = is_supported.value();
 }
 
 void EnsResolverTask::FetchEnsRecord() {
