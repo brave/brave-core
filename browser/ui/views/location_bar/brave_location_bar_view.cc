@@ -78,11 +78,6 @@ absl::optional<BraveColorIds> GetFocusRingColor(Profile* profile) {
 
 }  // namespace
 
-bool BraveLocationBarView::ShowPageActions() const {
-  // Do not show actions whilst omnibar is open or url is being edited
-  return !ShouldHidePageActionIcons() || omnibox_view_->GetText().empty();
-}
-
 void BraveLocationBarView::Init() {
   // base method calls Update and Layout
   LocationBarView::Init();
@@ -144,7 +139,7 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
     brave_actions_->Update();
   }
 
-  auto show_page_actions = ShowPageActions();
+  auto show_page_actions = !ShouldHidePageActionIcons();
 #if BUILDFLAG(ENABLE_TOR)
   if (onion_location_view_)
     onion_location_view_->Update(contents, show_page_actions);
@@ -179,23 +174,25 @@ ui::ImageModel BraveLocationBarView::GetLocationIcon(
 }
 
 void BraveLocationBarView::OnChanged() {
-  auto show_page_actions = ShowPageActions();
+  auto hide_page_actions = ShouldHidePageActionIcons();
   if (brave_actions_) {
-    brave_actions_->SetShouldHide(!show_page_actions);
+    brave_actions_->SetShouldHide(hide_page_actions);
   }
 #if BUILDFLAG(ENABLE_TOR)
   if (onion_location_view_)
     onion_location_view_->Update(
-        browser_->tab_strip_model()->GetActiveWebContents(), show_page_actions);
+        browser_->tab_strip_model()->GetActiveWebContents(),
+        !hide_page_actions);
 #endif
 #if BUILDFLAG(ENABLE_IPFS)
   if (ipfs_location_view_)
     ipfs_location_view_->Update(
-        browser_->tab_strip_model()->GetActiveWebContents(), show_page_actions);
+        browser_->tab_strip_model()->GetActiveWebContents(),
+        !hide_page_actions);
 #endif
 
   if (brave_news_location_view_) {
-    brave_news_location_view_->SetVisible(show_page_actions);
+    brave_news_location_view_->SetVisible(!hide_page_actions);
   }
 
   // OnChanged calls Layout

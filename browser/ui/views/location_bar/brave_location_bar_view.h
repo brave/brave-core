@@ -40,8 +40,6 @@ class BraveLocationBarView : public LocationBarView {
   BraveLocationBarView(const BraveLocationBarView&) = delete;
   BraveLocationBarView& operator=(const BraveLocationBarView&) = delete;
 
-  bool ShowPageActions() const;
-
   void Init() override;
   void Update(content::WebContents* contents) override;
   void OnChanged() override;
