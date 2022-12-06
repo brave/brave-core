@@ -618,10 +618,9 @@ public class FeedDataSource: ObservableObject {
 
   public static let topNewsCategory = "Top News"
 
-  /// Whether or not a source is currently enabled (whether or not by default or by a user changing
-  /// said default)
-  public func isSourceEnabled(_ source: FeedItem.Source) -> Bool {
-    FeedSourceOverride.get(fromId: source.id)?.enabled ?? source.isDefault
+  /// Whether or not a source is currently hidden by the user
+  public func isSourceHidden(_ source: FeedItem.Source) -> Bool {
+    return FeedSourceOverride.get(fromId: source.id)?.enabled == false
   }
 
   /// Toggle a source's enabled status

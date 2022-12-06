@@ -453,7 +453,7 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       ].compactMap({ $0 })
 
       let manageActions = [
-        self.dataSource.isSourceEnabled(item.source) ? disableSource : enableSource
+        self.dataSource.isSourceHidden(item.source) ? enableSource : disableSource
       ]
 
       var children: [UIMenu] = [
