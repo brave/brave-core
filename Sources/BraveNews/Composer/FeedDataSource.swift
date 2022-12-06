@@ -63,7 +63,7 @@ public class FeedDataSource: ObservableObject {
       reloadChannels()
     }
   }
-  private var availableLocales: Set<String> = []
+  private(set) var availableLocales: Set<String> = []
   private var localesWithFollowing: Set<String> = []
   @Published private var allChannels: [String: Set<String>] = [:]
   var channels: Set<String> {
@@ -175,6 +175,7 @@ public class FeedDataSource: ObservableObject {
     "ja_JP",
     "es_ES",
     "es_MX",
+    "pt_BR",
   ]
 
   private struct NewsBucket {
