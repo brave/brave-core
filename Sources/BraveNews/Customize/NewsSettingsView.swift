@@ -102,7 +102,7 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
       // On iOS 14.4 and below `viewDidLoad` in a `UIHostingController` subclass is not called
       setUpController()
     }
-    navigationController?.setToolbarHidden(!Preferences.BraveNews.userOptedIn.value, animated: animated)
+    navigationController?.setToolbarHidden(!Preferences.BraveNews.isEnabled.value, animated: animated)
   }
   
   public override func viewWillDisappear(_ animated: Bool) {
