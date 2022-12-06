@@ -80,6 +80,7 @@ void BraveVpnAPIRequest::GetTimezonesForRegions(ResponseCallback callback) {
 
 void BraveVpnAPIRequest::GetHostnamesForRegion(ResponseCallback callback,
                                                const std::string& region) {
+  DCHECK(!region.empty());
   static bool dump_sent = false;
   if (!dump_sent && region.empty()) {
     base::debug::DumpWithoutCrashing();
