@@ -8,6 +8,7 @@
 #include <set>
 #include <string>
 
+#include "base/no_destructor.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -18,10 +19,11 @@ namespace brave_shields {
 ContentSetting GetBraveFPContentSettingFromRules(
     const ContentSettingsForOneType& fp_rules,
     const GURL& primary_url) {
+  static const base::NoDestructor<ContentSettingsPattern> kBalancedRule(
+      ContentSettingsPattern::FromString("https://balanced"));
   ContentSettingPatternSource fp_rule;
   for (const auto& rule : fp_rules) {
-    if (rule.secondary_pattern ==
-        ContentSettingsPattern::FromString("https://balanced"))
+    if (rule.secondary_pattern == *kBalancedRule)
       continue;
     if (rule.primary_pattern.Matches(primary_url)) {
       return rule.GetContentSetting();
