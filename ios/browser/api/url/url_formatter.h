@@ -22,10 +22,13 @@ OBJC_EXPORT
 NS_SWIFT_NAME(URLFormatter)
 @interface BraveURLFormatter : NSObject
 - (instancetype)init NS_UNAVAILABLE;
-+ (NSString*)formatURLForSecurityDisplay:(NSString*)origin
-                           schemeDisplay:(BraveURLSchemeDisplay)schemeDisplay;
-+ (NSString*)formatURLForDisplayOmitSchemePathAndTrivialSubdomains:
++ (NSString*)formatURLOriginForSecurityDisplay:(NSString*)origin
+                                 schemeDisplay:
+                                     (BraveURLSchemeDisplay)schemeDisplay;
++ (NSString*)formatURLOriginForDisplayOmitSchemePathAndTrivialSubdomains:
     (NSString*)origin;
+
++ (NSString*)formatURL:(NSString*)url;
 @end
 
 NS_ASSUME_NONNULL_END
