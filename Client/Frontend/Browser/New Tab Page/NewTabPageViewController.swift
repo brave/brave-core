@@ -576,15 +576,14 @@ class NewTabPageViewController: UIViewController {
         inNewTab: inNewTab,
         switchingToPrivateMode: switchingToPrivateMode
       )
-
-      /// Donate Open Brave News Activity for Custom Suggestions
+      // Donate Open Brave News Activity for Custom Suggestions
       let openBraveNewsActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .openBraveNews)
       self.userActivity = openBraveNewsActivity
       openBraveNewsActivity.becomeCurrent()
     case .itemAction(.toggledSource, let context):
-      let isEnabled = feedDataSource.isSourceEnabled(context.item.source)
-      feedDataSource.toggleSourceHidden(context.item.source, hidden: isEnabled)
-      if isEnabled {
+      let isHidden = feedDataSource.isSourceHidden(context.item.source)
+      feedDataSource.toggleSourceHidden(context.item.source, hidden: !isHidden)
+      if !isHidden {
         let alert = FeedActionAlertView.feedDisabledAlertView(for: context.item)
         alert.present(on: self)
       }
