@@ -27,6 +27,7 @@
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
+#include "chrome/browser/ui/views/tabs/tab_strip_observer.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/flex_layout.h"
@@ -143,18 +144,24 @@ void BraveTabStrip::UpdateTabContainer() {
         static_cast<views::View*>(base::to_address(tab_container_)));
 
     if (should_use_compound_tab_container) {
-      auto* brave_tab_container =
-          AddChildView(std::make_unique<BraveCompoundTabContainer>(
+      // Container should be attached before TabDragContext so that dragged
+      // views can be atop container.
+      auto* brave_tab_container = AddChildViewAt(
+          std::make_unique<BraveCompoundTabContainer>(
               raw_ref<TabContainerController>::from_ptr(this),
-              hover_card_controller_.get(), GetDragContext(), *this, this));
+              hover_card_controller_.get(), GetDragContext(), *this, this),
+          0);
       tab_container_ = *brave_tab_container;
       layout_lock =
           base::ScopedClosureRunner(brave_tab_container->LockLayout());
     } else {
+      // Container should be attached before TabDragContext so that dragged
+      // views can be atop container.
       auto* brave_tab_container =
-          AddChildView(std::make_unique<BraveTabContainer>(
-              *this, hover_card_controller_.get(), GetDragContext(), *this,
-              this));
+          AddChildViewAt(std::make_unique<BraveTabContainer>(
+                             *this, hover_card_controller_.get(),
+                             GetDragContext(), *this, this),
+                         0);
       tab_container_ = *brave_tab_container;
       layout_lock =
           base::ScopedClosureRunner(brave_tab_container->LockLayout());
@@ -187,6 +194,13 @@ void BraveTabStrip::UpdateTabContainer() {
       auto* visual_data = group->visual_data();
       tab_container_->OnGroupVisualsChanged(group_id, visual_data, visual_data);
     }
+
+    for (int i = 0; i < model->count(); i++) {
+      for (auto& observer : observers_)
+        observer.OnTabAdded(i);
+    }
+
+    SetSelection(model->selection_model());
   }
 
   // Update layout of TabContainer
