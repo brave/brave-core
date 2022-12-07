@@ -6,7 +6,7 @@
 #include "bat/ads/internal/diagnostics/entries/enabled_diagnostic_entry.h"
 
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/strings/string_conversions_util.h"
+#include "bat/ads/internal/common/strings/string_conversions_util.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads {

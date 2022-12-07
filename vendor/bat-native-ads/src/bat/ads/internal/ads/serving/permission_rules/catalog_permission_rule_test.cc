@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/ads/serving/permission_rules/catalog_permission_rule.h"
 
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

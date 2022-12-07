@@ -6,7 +6,7 @@
 #include "bat/ads/promoted_content_ad_value_util.h"
 
 #include "base/test/values_test_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/promoted_content_ad_builder.h"

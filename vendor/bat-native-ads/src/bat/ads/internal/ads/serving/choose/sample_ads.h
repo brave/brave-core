@@ -12,7 +12,7 @@
 #include "base/notreached.h"
 #include "base/rand_util.h"
 #include "bat/ads/internal/ads/serving/choose/ad_predictor_info.h"
-#include "bat/ads/internal/base/numbers/number_util.h"
+#include "bat/ads/internal/common/numbers/number_util.h"
 
 namespace ads {
 

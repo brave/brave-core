@@ -8,7 +8,7 @@
 #include <string>
 
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/features/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_constants.h"

@@ -11,7 +11,7 @@
 
 #include "base/observer_list.h"
 #include "bat/ads/internal/ads/serving/notification_ad_serving_observer.h"
-#include "bat/ads/internal/base/timer/timer.h"
+#include "bat/ads/internal/common/timer/timer.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/prefs/pref_manager_observer.h"
 #include "bat/ads/internal/segments/segment_alias.h"

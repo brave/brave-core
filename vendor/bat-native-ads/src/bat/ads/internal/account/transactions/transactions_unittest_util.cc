@@ -13,7 +13,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
-#include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/common/unittest/unittest_time_util.h"
 
 namespace ads {
 

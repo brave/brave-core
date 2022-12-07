@@ -7,9 +7,9 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_H_
 
 #include "base/observer_list.h"
-#include "bat/ads/internal/base/timer/backoff_timer.h"
-#include "bat/ads/internal/base/timer/timer.h"
 #include "bat/ads/internal/catalog/catalog_observer.h"
+#include "bat/ads/internal/common/timer/backoff_timer.h"
+#include "bat/ads/internal/common/timer/timer.h"
 #include "bat/ads/internal/database/database_manager_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 

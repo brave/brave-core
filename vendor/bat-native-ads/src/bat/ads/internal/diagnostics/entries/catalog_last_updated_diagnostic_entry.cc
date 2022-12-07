@@ -6,8 +6,8 @@
 #include "bat/ads/internal/diagnostics/entries/catalog_last_updated_diagnostic_entry.h"
 
 #include "base/time/time.h"
-#include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
+#include "bat/ads/internal/common/time/time_formatting_util.h"
 
 namespace ads {
 

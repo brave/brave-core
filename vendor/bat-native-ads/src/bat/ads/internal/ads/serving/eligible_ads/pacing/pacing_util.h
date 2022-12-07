@@ -9,7 +9,7 @@
 #include <ios>
 
 #include "bat/ads/internal/ads/serving/eligible_ads/pacing/pacing_random_util.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 
 namespace ads {
 

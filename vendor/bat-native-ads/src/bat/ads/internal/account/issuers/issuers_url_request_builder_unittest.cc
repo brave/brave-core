@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/account/issuers/issuers_url_request_builder.h"
 
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
 #include "url/gurl.h"
 

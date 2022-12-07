@@ -10,7 +10,7 @@
 
 #include "base/functional/bind.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
 #include "bat/ads/internal/legacy_migration/confirmations/legacy_confirmation_migration_util.h"

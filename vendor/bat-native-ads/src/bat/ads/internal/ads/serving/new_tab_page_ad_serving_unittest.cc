@@ -12,7 +12,7 @@
 #include "bat/ads/internal/ads/serving/new_tab_page_ad_serving_observer.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "bat/ads/internal/ads/serving/serving_features_unittest_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"

@@ -6,7 +6,7 @@
 #include "bat/ads/internal/ads/serving/targeting/top_segments_util.h"
 
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

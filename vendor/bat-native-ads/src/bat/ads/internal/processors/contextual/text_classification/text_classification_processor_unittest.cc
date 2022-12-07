@@ -7,7 +7,7 @@
 
 #include "bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_alias.h"
 #include "bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_model.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 

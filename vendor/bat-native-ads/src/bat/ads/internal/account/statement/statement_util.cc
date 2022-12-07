@@ -10,7 +10,7 @@
 #include "bat/ads/internal/account/statement/earnings_util.h"
 #include "bat/ads/internal/account/statement/next_payment_date_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/time/time_util.h"
+#include "bat/ads/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads {

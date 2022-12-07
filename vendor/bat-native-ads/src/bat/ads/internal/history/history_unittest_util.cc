@@ -8,7 +8,7 @@
 #include "bat/ads/history_filter_types.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/history_sort_types.h"
-#include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/internal/history/history_manager.h"
 
 namespace ads {

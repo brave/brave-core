@@ -10,7 +10,7 @@
 #include "bat/ads/ad_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 
 namespace ads {

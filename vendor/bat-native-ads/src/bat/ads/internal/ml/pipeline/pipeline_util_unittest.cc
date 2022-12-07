@@ -9,8 +9,8 @@
 #include <utility>
 
 #include "base/test/values_test_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_file_util.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_file_util.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

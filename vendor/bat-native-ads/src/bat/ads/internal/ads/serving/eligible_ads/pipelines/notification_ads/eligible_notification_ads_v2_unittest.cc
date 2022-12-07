@@ -10,7 +10,7 @@
 #include "base/functional/bind.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_builder_unittest_util.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"

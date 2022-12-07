@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/flags/flag_manager_util.h"
 
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/flags/environment/environment_types.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

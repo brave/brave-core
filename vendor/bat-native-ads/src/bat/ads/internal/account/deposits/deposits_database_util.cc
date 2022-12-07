@@ -7,7 +7,7 @@
 
 #include "base/functional/bind.h"
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 
 namespace ads::database {
 

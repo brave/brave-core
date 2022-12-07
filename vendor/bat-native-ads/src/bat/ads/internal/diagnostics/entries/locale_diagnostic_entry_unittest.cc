@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/diagnostics/entries/locale_diagnostic_entry.h"
 
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/diagnostics/diagnostic_entry_types.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 

@@ -11,7 +11,7 @@
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_factory.h"
 #include "bat/ads/internal/ads/serving/permission_rules/promoted_content_ads/promoted_content_ad_permission_rules.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/promoted_content_ad_builder.h"

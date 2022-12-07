@@ -8,9 +8,9 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "bat/ads/internal/base/containers/container_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/common/containers/container_util.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "url/gurl.h"
 

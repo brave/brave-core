@@ -8,8 +8,8 @@
 #include <memory>
 
 #include "bat/ads/internal/account/confirmations/confirmation_unittest_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_unittest_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"

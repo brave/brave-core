@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "bat/ads/internal/base/crypto/crypto_unittest_util.h"
+#include "bat/ads/internal/common/crypto/crypto_unittest_util.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "tweetnacl.h"  // NOLINT
 

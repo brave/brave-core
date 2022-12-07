@@ -11,7 +11,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/base/time/time_util.h"
+#include "bat/ads/internal/common/time/time_util.h"
 
 namespace ads::rewards {
 

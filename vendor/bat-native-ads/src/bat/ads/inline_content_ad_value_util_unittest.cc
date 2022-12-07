@@ -7,7 +7,7 @@
 
 #include "base/test/values_test_util.h"
 #include "bat/ads/inline_content_ad_info.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/inline_content_ads/inline_content_ad_builder.h"

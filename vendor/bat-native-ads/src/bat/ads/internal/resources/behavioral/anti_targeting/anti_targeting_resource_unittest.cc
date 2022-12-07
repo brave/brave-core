@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

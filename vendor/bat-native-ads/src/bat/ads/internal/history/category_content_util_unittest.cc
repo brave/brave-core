@@ -6,7 +6,7 @@
 #include "bat/ads/internal/history/category_content_util.h"
 
 #include "bat/ads/category_content_action_types.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

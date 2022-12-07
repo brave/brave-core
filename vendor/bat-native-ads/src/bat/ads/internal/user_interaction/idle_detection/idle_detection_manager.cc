@@ -6,7 +6,7 @@
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_manager.h"
 
 #include "base/time/time.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
 #include "bat/ads/internal/user_interaction/idle_detection/idle_detection_util.h"
 

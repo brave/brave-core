@@ -7,8 +7,8 @@
 
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/internal/base/containers/container_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/containers/container_util.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "bat/ads/internal/history/history_constants.h"

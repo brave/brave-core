@@ -8,7 +8,7 @@
 #include "absl/types/optional.h"
 #include "base/check.h"
 #include "bat/ads/internal/ads/ad_events/notification_ads/notification_ad_event_factory.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "bat/ads/notification_ad_info.h"
 

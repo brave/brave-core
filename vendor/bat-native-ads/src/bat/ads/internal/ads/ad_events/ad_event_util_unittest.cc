@@ -9,7 +9,7 @@
 
 #include "base/guid.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
-#include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep

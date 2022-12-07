@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/features/purchase_intent_features.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
 #include "bat/ads/internal/resources/resources_util_impl.h"

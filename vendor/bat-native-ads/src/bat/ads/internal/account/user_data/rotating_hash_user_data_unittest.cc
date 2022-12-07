@@ -6,8 +6,8 @@
 #include "bat/ads/internal/account/user_data/rotating_hash_user_data.h"
 
 #include "base/test/values_test_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/sys_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

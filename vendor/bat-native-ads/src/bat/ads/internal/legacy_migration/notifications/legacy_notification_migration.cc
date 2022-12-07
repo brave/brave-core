@@ -12,7 +12,7 @@
 #include "base/containers/circular_deque.h"
 #include "base/functional/bind.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/legacy_migration/notifications/legacy_notification_json_reader.h"
 #include "bat/ads/notification_ad_info.h"
 #include "bat/ads/notification_ad_value_util.h"

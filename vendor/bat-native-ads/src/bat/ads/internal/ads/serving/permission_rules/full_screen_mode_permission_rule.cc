@@ -7,7 +7,7 @@
 
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rule_features.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/platform/platform_helper.h"
+#include "bat/ads/internal/common/platform/platform_helper.h"
 
 namespace ads {
 

@@ -7,7 +7,7 @@
 
 #include "base/metrics/field_trial.h"
 #include "base/test/mock_entropy_provider.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

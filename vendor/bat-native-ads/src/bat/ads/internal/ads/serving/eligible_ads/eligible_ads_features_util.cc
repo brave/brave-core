@@ -10,7 +10,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
-#include "bat/ads/internal/base/numbers/number_util.h"
+#include "bat/ads/internal/common/numbers/number_util.h"
 
 namespace ads {
 

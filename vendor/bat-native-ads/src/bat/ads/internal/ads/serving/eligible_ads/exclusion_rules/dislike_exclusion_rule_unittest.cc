@@ -6,7 +6,7 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/dislike_exclusion_rule.h"
 
 #include "bat/ads/ad_content_info.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 
 namespace ads {
 

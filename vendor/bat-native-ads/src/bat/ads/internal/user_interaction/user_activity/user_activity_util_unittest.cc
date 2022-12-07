@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_util.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_trigger_info.h"
 

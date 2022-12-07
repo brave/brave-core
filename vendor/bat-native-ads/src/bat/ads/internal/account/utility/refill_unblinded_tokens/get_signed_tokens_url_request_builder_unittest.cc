@@ -6,7 +6,7 @@
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h"
 
 #include "bat/ads/internal/account/wallet/wallet_info.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
 #include "url/gurl.h"
 

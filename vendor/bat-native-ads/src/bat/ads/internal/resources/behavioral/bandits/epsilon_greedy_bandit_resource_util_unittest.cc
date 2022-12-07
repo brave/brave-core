@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource_util.h"
 
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/segments/segment_alias.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

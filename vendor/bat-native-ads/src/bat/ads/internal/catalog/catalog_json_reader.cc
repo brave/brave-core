@@ -12,10 +12,10 @@
 #include "base/time/time.h"
 #include "bat/ads/ad_constants.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/url/url_util.h"
 #include "bat/ads/internal/catalog/campaign/catalog_campaign_info.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
+#include "bat/ads/internal/common/logging_util.h"
+#include "bat/ads/internal/common/url/url_util.h"
 #include "bat/ads/internal/deprecated/json/json_helper.h"
 #include "url/gurl.h"
 

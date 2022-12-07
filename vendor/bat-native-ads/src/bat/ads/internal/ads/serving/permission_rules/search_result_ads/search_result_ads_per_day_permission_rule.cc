@@ -12,7 +12,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/ads/serving/serving_features.h"
-#include "bat/ads/internal/base/time/time_constraint_util.h"
+#include "bat/ads/internal/common/time/time_constraint_util.h"
 
 namespace ads::search_result_ads {
 

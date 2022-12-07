@@ -7,7 +7,7 @@
 
 #include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/base/metrics/field_trial_params_util.h"
+#include "bat/ads/internal/common/metrics/field_trial_params_util.h"
 #include "brave/components/brave_ads/common/constants.h"
 
 namespace ads::features {

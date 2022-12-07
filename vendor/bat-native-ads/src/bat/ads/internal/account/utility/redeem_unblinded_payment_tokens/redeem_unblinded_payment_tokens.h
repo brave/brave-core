@@ -10,8 +10,8 @@
 #include "base/memory/raw_ptr.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
-#include "bat/ads/internal/base/timer/backoff_timer.h"
-#include "bat/ads/internal/base/timer/timer.h"
+#include "bat/ads/internal/common/timer/backoff_timer.h"
+#include "bat/ads/internal/common/timer/timer.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 

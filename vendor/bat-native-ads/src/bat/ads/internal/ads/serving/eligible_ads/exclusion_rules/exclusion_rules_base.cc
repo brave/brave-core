@@ -20,7 +20,7 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/subdivision_targeting_exclusion_rule.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/total_max_exclusion_rule.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/transferred_exclusion_rule.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"

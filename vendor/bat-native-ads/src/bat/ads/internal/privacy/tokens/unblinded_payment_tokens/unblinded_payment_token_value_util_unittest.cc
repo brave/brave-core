@@ -6,7 +6,7 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_value_util.h"
 
 #include "base/test/values_test_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 

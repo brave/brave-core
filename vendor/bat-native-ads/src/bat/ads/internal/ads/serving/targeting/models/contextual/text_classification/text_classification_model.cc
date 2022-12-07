@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "bat/ads/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_alias.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/l10n/common/locale_util.h"
 

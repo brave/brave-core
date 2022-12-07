@@ -4,10 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/time/time.h"
-#include "bat/ads/internal/base/containers/container_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_constants.h"
-#include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/common/containers/container_util.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_constants.h"
+#include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"

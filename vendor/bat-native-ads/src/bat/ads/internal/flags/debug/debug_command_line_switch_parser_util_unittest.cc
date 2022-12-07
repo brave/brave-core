@@ -6,9 +6,9 @@
 #include <string>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/base/unittest/command_line_switch_info.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_command_line_switch_util.h"
+#include "bat/ads/internal/common/unittest/command_line_switch_info.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "bat/ads/internal/flags/flag_manager_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

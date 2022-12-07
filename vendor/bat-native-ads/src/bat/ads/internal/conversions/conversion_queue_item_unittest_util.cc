@@ -7,7 +7,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 
 namespace ads {

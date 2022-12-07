@@ -6,7 +6,7 @@
 #include "bat/ads/new_tab_page_ad_value_util.h"
 
 #include "base/test/values_test_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"

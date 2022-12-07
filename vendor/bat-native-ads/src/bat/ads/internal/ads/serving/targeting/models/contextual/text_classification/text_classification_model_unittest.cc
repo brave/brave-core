@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h"
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 

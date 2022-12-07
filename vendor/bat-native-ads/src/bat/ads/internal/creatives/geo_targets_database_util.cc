@@ -6,7 +6,7 @@
 #include "bat/ads/internal/creatives/geo_targets_database_util.h"
 
 #include "base/functional/bind.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/creatives/geo_targets_database_table.h"
 
 namespace ads::database {

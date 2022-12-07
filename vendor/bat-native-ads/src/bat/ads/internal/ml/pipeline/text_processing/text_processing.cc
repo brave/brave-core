@@ -11,7 +11,7 @@
 #include "absl/types/optional.h"
 #include "base/check.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/strings/string_strip_util.h"
+#include "bat/ads/internal/common/strings/string_strip_util.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"

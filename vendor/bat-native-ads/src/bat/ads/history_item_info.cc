@@ -5,7 +5,7 @@
 
 #include "bat/ads/history_item_info.h"
 
-#include "bat/ads/internal/base/numbers/number_util.h"
+#include "bat/ads/internal/common/numbers/number_util.h"
 
 namespace ads {
 

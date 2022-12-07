@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/diagnostics/entries/last_unidle_time_diagnostic_entry.h"
 
-#include "bat/ads/internal/base/time/time_formatting_util.h"
+#include "bat/ads/internal/common/time/time_formatting_util.h"
 
 namespace ads {
 

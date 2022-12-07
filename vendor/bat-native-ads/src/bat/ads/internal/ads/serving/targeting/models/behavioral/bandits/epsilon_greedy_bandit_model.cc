@@ -12,7 +12,7 @@
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/rand_util.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/features/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_util.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms_alias.h"

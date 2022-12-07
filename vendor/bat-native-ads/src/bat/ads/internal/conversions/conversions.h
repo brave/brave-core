@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "base/observer_list.h"
-#include "bat/ads/internal/base/timer/timer.h"
+#include "bat/ads/internal/common/timer/timer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/locale/locale_manager_observer.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversion_id_pattern_info.h"

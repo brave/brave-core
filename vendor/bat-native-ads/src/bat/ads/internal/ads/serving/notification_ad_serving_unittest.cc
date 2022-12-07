@@ -10,7 +10,7 @@
 #include "bat/ads/internal/ads/serving/notification_ad_serving_observer.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "bat/ads/internal/ads/serving/serving_features_unittest_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"

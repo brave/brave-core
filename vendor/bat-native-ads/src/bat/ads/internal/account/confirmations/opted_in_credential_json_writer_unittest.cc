@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/account/confirmations/opted_in_credential_json_writer.h"
 
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 

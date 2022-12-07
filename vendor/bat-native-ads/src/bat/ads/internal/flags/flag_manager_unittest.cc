@@ -10,9 +10,9 @@
 
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/base/unittest/command_line_switch_info.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_command_line_switch_util.h"
+#include "bat/ads/internal/common/unittest/command_line_switch_info.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "bat/ads/internal/flags/environment/environment_types.h"
 #include "bat/ads/internal/flags/environment/environment_types_unittest_util.h"
 #include "bat/ads/internal/flags/flag_manager_constants.h"

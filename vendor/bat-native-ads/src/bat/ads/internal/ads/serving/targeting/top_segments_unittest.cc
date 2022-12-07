@@ -15,7 +15,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_builder.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/features/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/features/purchase_intent_features.h"
 #include "bat/ads/internal/features/text_classification_features.h"

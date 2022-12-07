@@ -9,8 +9,8 @@
 #include "base/time/time.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/transactions/transactions_util.h"
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/time/time_util.h"
+#include "bat/ads/internal/common/logging_util.h"
+#include "bat/ads/internal/common/time/time_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_payments_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_constants.h"
 

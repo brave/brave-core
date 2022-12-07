@@ -6,9 +6,9 @@
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_processor.h"
 
 #include "base/check.h"
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/search_engine/search_engine_results_page_util.h"
-#include "bat/ads/internal/base/search_engine/search_engine_util.h"
+#include "bat/ads/internal/common/logging_util.h"
+#include "bat/ads/internal/common/search_engine/search_engine_results_page_util.h"
+#include "bat/ads/internal/common/search_engine/search_engine_util.h"
 #include "bat/ads/internal/features/text_embedding_features.h"
 #include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_info.h"

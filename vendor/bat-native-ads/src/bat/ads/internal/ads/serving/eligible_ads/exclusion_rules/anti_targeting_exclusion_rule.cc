@@ -9,7 +9,7 @@
 
 #include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/base/url/url_util.h"
+#include "bat/ads/internal/common/url/url_util.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 

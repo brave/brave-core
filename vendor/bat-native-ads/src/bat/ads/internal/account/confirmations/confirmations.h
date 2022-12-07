@@ -11,7 +11,7 @@
 #include "base/memory/raw_ptr.h"
 #include "bat/ads/internal/account/confirmations/confirmations_delegate.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
-#include "bat/ads/internal/base/timer/backoff_timer.h"
+#include "bat/ads/internal/common/timer/backoff_timer.h"
 
 namespace ads {
 

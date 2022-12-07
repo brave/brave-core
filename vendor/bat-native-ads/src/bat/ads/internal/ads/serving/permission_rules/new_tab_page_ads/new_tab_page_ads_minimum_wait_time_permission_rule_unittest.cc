@@ -7,7 +7,7 @@
 
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ads/serving/serving_features.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

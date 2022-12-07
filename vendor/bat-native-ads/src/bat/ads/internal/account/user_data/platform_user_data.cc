@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/base/platform/platform_helper.h"
+#include "bat/ads/internal/common/platform/platform_helper.h"
 
 namespace ads::user_data {
 

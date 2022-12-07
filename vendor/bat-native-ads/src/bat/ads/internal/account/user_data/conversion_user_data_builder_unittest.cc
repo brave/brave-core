@@ -7,7 +7,7 @@
 
 #include "absl/types/optional.h"
 #include "base/test/values_test_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_unittest_util.h"
 

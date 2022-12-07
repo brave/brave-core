@@ -6,8 +6,8 @@
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_unittest_util.h"
 
 #include "base/base64.h"
-#include "bat/ads/internal/base/crypto/crypto_util.h"
-#include "bat/ads/internal/base/unittest/unittest_constants.h"
+#include "bat/ads/internal/common/crypto/crypto_util.h"
+#include "bat/ads/internal/common/unittest/unittest_constants.h"
 
 namespace ads {
 

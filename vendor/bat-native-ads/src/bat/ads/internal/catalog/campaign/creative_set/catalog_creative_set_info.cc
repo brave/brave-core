@@ -6,8 +6,8 @@
 #include "bat/ads/internal/catalog/campaign/creative_set/catalog_creative_set_info.h"
 
 #include "base/ranges/algorithm.h"
-#include "bat/ads/internal/base/numbers/number_util.h"
-#include "bat/ads/internal/base/platform/platform_helper.h"
+#include "bat/ads/internal/common/numbers/number_util.h"
+#include "bat/ads/internal/common/platform/platform_helper.h"
 
 namespace ads {
 

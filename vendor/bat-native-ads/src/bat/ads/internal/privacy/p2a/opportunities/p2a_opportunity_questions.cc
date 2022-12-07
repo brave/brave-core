@@ -8,7 +8,7 @@
 #include "base/check.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/base/strings/string_strip_util.h"
+#include "bat/ads/internal/common/strings/string_strip_util.h"
 #include "bat/ads/internal/segments/segment_util.h"
 
 namespace ads::privacy::p2a {

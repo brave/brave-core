@@ -6,7 +6,7 @@
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
 
 #include "base/guid.h"
-#include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "url/gurl.h"
 

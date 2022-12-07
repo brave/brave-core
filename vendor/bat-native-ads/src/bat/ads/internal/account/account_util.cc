@@ -8,7 +8,7 @@
 #include "bat/ads/internal/account/confirmations/confirmation_util.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 
 namespace ads {

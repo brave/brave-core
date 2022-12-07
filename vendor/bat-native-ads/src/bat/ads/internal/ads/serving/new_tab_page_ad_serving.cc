@@ -16,7 +16,7 @@
 #include "bat/ads/internal/ads/serving/targeting/top_segments.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_builder.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ads_features.h"

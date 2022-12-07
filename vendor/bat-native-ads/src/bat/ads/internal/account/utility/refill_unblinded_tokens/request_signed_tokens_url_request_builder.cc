@@ -13,7 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/crypto/crypto_util.h"
+#include "bat/ads/internal/common/crypto/crypto_util.h"
 #include "bat/ads/internal/server/headers/via_header_util.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"

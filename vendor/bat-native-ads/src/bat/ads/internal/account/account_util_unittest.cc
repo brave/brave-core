@@ -9,7 +9,7 @@
 #include "bat/ads/internal/account/confirmations/confirmation_unittest_util.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"

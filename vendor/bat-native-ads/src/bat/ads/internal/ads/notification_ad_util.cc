@@ -7,8 +7,8 @@
 
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/platform/platform_helper.h"
 #include "bat/ads/internal/browser/browser_manager.h"
+#include "bat/ads/internal/common/platform/platform_helper.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "bat/ads/internal/settings/settings.h"
 #include "bat/ads/notification_ad_info.h"

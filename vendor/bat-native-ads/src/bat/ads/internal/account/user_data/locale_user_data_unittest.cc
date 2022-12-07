@@ -6,8 +6,8 @@
 #include "bat/ads/internal/account/user_data/locale_user_data.h"
 
 #include "base/test/values_test_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*

@@ -8,8 +8,8 @@
 #include "absl/types/optional.h"
 #include "base/json/json_reader.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_file_util.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_file_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

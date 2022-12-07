@@ -11,10 +11,10 @@
 #include "base/functional/bind.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/database/database_bind_util.h"
-#include "bat/ads/internal/base/database/database_column_util.h"
-#include "bat/ads/internal/base/database/database_transaction_util.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/database/database_bind_util.h"
+#include "bat/ads/internal/common/database/database_column_util.h"
+#include "bat/ads/internal/common/database/database_transaction_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads::database::table {

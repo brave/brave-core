@@ -10,7 +10,7 @@
 
 #include "base/functional/bind.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_info.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager_constants.h"
 #include "bat/ads/internal/legacy_migration/client/legacy_client_migration_util.h"

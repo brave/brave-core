@@ -10,7 +10,7 @@
 #include "base/check_op.h"
 #include "base/containers/contains.h"
 #include "base/notreached.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_info.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_util.h"

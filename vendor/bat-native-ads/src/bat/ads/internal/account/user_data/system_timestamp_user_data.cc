@@ -6,7 +6,7 @@
 #include "bat/ads/internal/account/user_data/system_timestamp_user_data.h"
 
 #include "base/time/time.h"
-#include "bat/ads/internal/base/time/time_util.h"
+#include "bat/ads/internal/common/time/time_util.h"
 
 namespace ads::user_data {
 

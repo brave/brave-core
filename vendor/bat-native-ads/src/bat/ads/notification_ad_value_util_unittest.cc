@@ -7,8 +7,8 @@
 
 #include "base/containers/circular_deque.h"
 #include "base/test/values_test_util.h"
-#include "bat/ads/internal/base/containers/container_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/containers/container_util.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"

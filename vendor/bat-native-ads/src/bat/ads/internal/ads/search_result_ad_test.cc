@@ -10,7 +10,7 @@
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
 #include "bat/ads/internal/history/history_unittest_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"

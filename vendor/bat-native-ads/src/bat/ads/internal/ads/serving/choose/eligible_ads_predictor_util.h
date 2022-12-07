@@ -13,7 +13,7 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_alias.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_features.h"
 #include "bat/ads/internal/ads/serving/targeting/top_segments.h"
-#include "bat/ads/internal/base/containers/container_util.h"
+#include "bat/ads/internal/common/containers/container_util.h"
 #include "bat/ads/internal/segments/segment_alias.h"
 
 namespace ads {

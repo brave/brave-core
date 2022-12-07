@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/history/history_manager.h"
 #include "bat/ads/notification_ad_info.h"
 

@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/features/text_classification_features.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
 #include "bat/ads/internal/resources/resources_util_impl.h"

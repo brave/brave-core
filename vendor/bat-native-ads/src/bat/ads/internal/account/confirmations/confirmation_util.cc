@@ -18,7 +18,7 @@
 #include "bat/ads/internal/account/confirmations/confirmation_payload_json_writer.h"
 #include "bat/ads/internal/account/confirmations/opted_in_credential_json_writer.h"
 #include "bat/ads/internal/account/confirmations/opted_in_info.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_util.h"

@@ -7,7 +7,7 @@
 
 #include "base/check_op.h"
 #include "base/hash/hash.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "url/gurl.h"
 
 namespace ads {

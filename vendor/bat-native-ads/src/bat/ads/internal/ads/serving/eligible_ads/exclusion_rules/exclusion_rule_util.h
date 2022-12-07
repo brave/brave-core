@@ -11,7 +11,7 @@
 #include "base/check.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 
 namespace base {
 class TimeDelta;

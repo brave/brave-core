@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "wrapper.hpp"
 
 namespace ads::privacy::cbr {

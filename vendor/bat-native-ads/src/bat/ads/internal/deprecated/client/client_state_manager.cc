@@ -17,7 +17,7 @@
 #include "bat/ads/ad_type.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/deprecated/client/client_info.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager_constants.h"
 #include "bat/ads/internal/features/text_classification_features.h"

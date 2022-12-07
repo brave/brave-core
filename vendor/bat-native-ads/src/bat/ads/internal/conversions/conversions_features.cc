@@ -6,7 +6,7 @@
 #include "bat/ads/internal/conversions/conversions_features.h"
 
 #include "base/metrics/field_trial_params.h"
-#include "bat/ads/internal/base/metrics/field_trial_params_util.h"
+#include "bat/ads/internal/common/metrics/field_trial_params_util.h"
 
 namespace ads::features {
 

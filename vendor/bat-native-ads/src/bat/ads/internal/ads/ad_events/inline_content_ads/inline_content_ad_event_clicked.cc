@@ -9,7 +9,7 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 
 namespace ads::inline_content_ads {
 

@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rule_interface.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 
 namespace ads {
 

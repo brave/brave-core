@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
-#include "bat/ads/internal/base/crypto/crypto_util.h"
+#include "bat/ads/internal/common/crypto/crypto_util.h"
 
 namespace ads {
 

@@ -6,7 +6,7 @@
 #include "bat/ads/internal/locale/locale_manager.h"
 
 #include "base/check_op.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {

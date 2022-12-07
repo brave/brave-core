@@ -20,7 +20,7 @@
 #include "bat/ads/internal/account/confirmations/confirmation_util.h"
 #include "bat/ads/internal/account/confirmations/opted_in_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"

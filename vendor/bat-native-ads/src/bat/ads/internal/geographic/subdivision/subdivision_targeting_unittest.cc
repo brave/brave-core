@@ -7,8 +7,8 @@
 
 #include <memory>
 
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "net/http/http_status_code.h"

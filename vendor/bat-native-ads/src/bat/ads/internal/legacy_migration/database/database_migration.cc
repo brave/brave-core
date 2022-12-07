@@ -13,7 +13,7 @@
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/database/database_transaction_util.h"
+#include "bat/ads/internal/common/database/database_transaction_util.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 #include "bat/ads/internal/conversions/conversions_database_table.h"
 #include "bat/ads/internal/creatives/campaigns_database_table.h"

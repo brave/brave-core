@@ -9,9 +9,9 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rule_features.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/browser/browser_manager.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_mock_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

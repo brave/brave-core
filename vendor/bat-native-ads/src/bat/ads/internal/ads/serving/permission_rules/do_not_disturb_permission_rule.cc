@@ -7,8 +7,8 @@
 
 #include "base/check.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/base/platform/platform_helper.h"
 #include "bat/ads/internal/browser/browser_manager.h"
+#include "bat/ads/internal/common/platform/platform_helper.h"
 
 namespace ads {
 

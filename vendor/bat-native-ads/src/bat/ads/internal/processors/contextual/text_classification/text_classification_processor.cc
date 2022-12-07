@@ -8,9 +8,9 @@
 #include <algorithm>
 
 #include "base/check.h"
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/search_engine/search_engine_results_page_util.h"
-#include "bat/ads/internal/base/search_engine/search_engine_util.h"
+#include "bat/ads/internal/common/logging_util.h"
+#include "bat/ads/internal/common/search_engine/search_engine_results_page_util.h"
+#include "bat/ads/internal/common/search_engine/search_engine_util.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"

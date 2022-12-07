@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.h"
 
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
