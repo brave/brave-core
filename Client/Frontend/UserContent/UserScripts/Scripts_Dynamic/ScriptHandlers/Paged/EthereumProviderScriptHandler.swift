@@ -90,7 +90,7 @@ class EthereumProviderScriptHandler: TabContentScript {
     }
     
     if !Preferences.Wallet.allowEthProviderAccess.value {
-      Logger.module.error("Ethereum provider access is disabled")
+      replyHandler(nil, "{\"message\":\"The user rejected the request.\",\"code\":4001}")
       return
     }
     

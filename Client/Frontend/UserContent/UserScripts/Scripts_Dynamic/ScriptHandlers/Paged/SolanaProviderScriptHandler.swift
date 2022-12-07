@@ -95,7 +95,7 @@ class SolanaProviderScriptHandler: TabContentScript {
     }
     
     if !Preferences.Wallet.allowSolProviderAccess.value {
-      Logger.module.error("Solana provider access is disabled")
+      replyHandler(nil, "{\"message\":\"The user rejected the request.\",\"code\":4001}")
       return
     }
     
