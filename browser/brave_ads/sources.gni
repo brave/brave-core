@@ -21,6 +21,8 @@ brave_browser_brave_ads_sources = [
   "//brave/browser/brave_ads/notifications/notification_ad_platform_bridge.h",
   "//brave/browser/brave_ads/search_result_ad/search_result_ad_service_factory.cc",
   "//brave/browser/brave_ads/search_result_ad/search_result_ad_service_factory.h",
+  "//brave/browser/brave_ads/stats_updater_helper.cc",
+  "//brave/browser/brave_ads/stats_updater_helper.h",
 ]
 
 brave_browser_brave_ads_deps = [

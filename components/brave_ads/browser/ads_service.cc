@@ -23,10 +23,6 @@ void AdsService::RemoveObserver(AdsServiceObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void AdsService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(ads::prefs::kEnabledForLastProfile, false);
-}
-
 void AdsService::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(prefs::kAdsWereDisabled, false);
