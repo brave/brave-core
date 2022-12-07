@@ -1108,37 +1108,19 @@ void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
 blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {
   blink::UserAgentMetadata metadata =
       ChromeContentBrowserClient::GetUserAgentMetadata();
-  if (metadata.brand_version_list.size() == 2) {
-    // some logic copied from upstream GetUserAgentBrandList and
-    // GenerateBrandVersionList
-    std::string major_version_string = version_info::GetMajorVersionNumber();
-    int seed = 0;
-    DCHECK(base::StringToInt(major_version_string, &seed));
-    DCHECK_GE(seed, 0);
-    blink::UserAgentBrandVersion greasey_bv =
-        metadata.brand_version_list[seed % 2];
-    blink::UserAgentBrandVersion chromium_bv =
-        metadata.brand_version_list[(seed + 1) % 2];
-    blink::UserAgentBrandVersion brave_bv = {
-        l10n_util::GetStringUTF8(IDS_PRODUCT_NAME), chromium_bv.version};
-    const int npermutations = 6;  // 3!
-    int permutation = seed % npermutations;
-    const std::vector<std::vector<int>> orders{{0, 1, 2}, {0, 2, 1}, {1, 0, 2},
-                                               {1, 2, 0}, {2, 0, 1}, {2, 1, 0}};
-    const std::vector<int> order = orders[permutation];
-    blink::UserAgentBrandList greased_brand_version_list(3);
-    greased_brand_version_list[order[0]] = greasey_bv;
-    greased_brand_version_list[order[1]] = chromium_bv;
-    greased_brand_version_list[order[2]] = brave_bv;
-    metadata.brand_version_list = greased_brand_version_list;
-    greasey_bv.version = base::StrCat({greasey_bv.version, ".0.0.0"});
-    chromium_bv.version = base::StrCat({chromium_bv.version, ".0.0.0"});
-    brave_bv.version = base::StrCat({brave_bv.version, ".0.0.0"});
-    blink::UserAgentBrandList greased_brand_full_version_list(3);
-    greased_brand_full_version_list[order[0]] = greasey_bv;
-    greased_brand_full_version_list[order[1]] = chromium_bv;
-    greased_brand_full_version_list[order[2]] = brave_bv;
-    metadata.brand_full_version_list = greased_brand_full_version_list;
+  // Expect the brand version lists to have brand version, chromium_version, and
+  // greased version.
+  DCHECK_EQ(3UL, metadata.brand_version_list.size());
+  DCHECK_EQ(3UL, metadata.brand_full_version_list.size());
+  // Zero out the last 3 version components in full version list versions.
+  for (auto& brand_version : metadata.brand_full_version_list) {
+    base::Version version(brand_version.version);
+    brand_version.version =
+        base::StrCat({base::NumberToString(version.components()[0]), ".0.0.0"});
   }
+  // Zero out the last 3 version components in full version.
+  base::Version version(metadata.full_version);
+  metadata.full_version =
+      base::StrCat({base::NumberToString(version.components()[0]), ".0.0.0"});
   return metadata;
 }
