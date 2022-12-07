@@ -1032,3 +1032,14 @@ export function getEthTxManagerProxy () {
   const { ethTxManagerProxy } = getAPIProxy()
   return ethTxManagerProxy
 }
+
+export async function getNFTMetadata (token: BraveWallet.BlockchainToken) {
+  const { jsonRpcService } = getAPIProxy()
+  if (token.coin === BraveWallet.CoinType.ETH) {
+    return await jsonRpcService.getERC721Metadata(token.contractAddress, token.tokenId, token.chainId)
+  } else if (token.coin === BraveWallet.CoinType.SOL) {
+    return await jsonRpcService.getSolTokenMetadata(token.contractAddress)
+  }
+
+  return undefined
+}

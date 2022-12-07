@@ -88,40 +88,55 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
           {nftMetadata &&
             <>
               <MultimediaWrapper>
-                <NftMultimedia nftMetadata={nftMetadata}/>
+                <NftMultimedia nftMetadata={nftMetadata} />
               </MultimediaWrapper>
               <DetailColumn>
                 <TokenName>
-                  {nftMetadata.contractInformation.name} {
-                  selectedAsset.tokenId
+                  {nftMetadata.contractInformation.name}{' '}
+                  {selectedAsset.tokenId
                     ? '#' + new Amount(selectedAsset.tokenId).toNumber()
-                    : ''
-                }
+                    : ''}
                 </TokenName>
                 {/* TODO: Add floorFiatPrice & floorCryptoPrice when data is available from backend: https://github.com/brave/brave-browser/issues/22627 */}
                 {/* <TokenFiatValue>{CurrencySymbols[defaultCurrencies.fiat]}{nftMetadata.floorFiatPrice}</TokenFiatValue> */}
                 {/* <TokenCryptoValue>{nftMetadata.floorCryptoPrice} {selectedNetwork.symbol}</TokenCryptoValue> */}
                 <DetailSectionRow>
                   <DetailSectionColumn>
-                    <DetailSectionTitle>{getLocale('braveWalletNFTDetailBlockchain')}</DetailSectionTitle>
-                    <DetailSectionValue>{nftMetadata.chainName}</DetailSectionValue>
+                    <DetailSectionTitle>
+                      {getLocale('braveWalletNFTDetailBlockchain')}
+                    </DetailSectionTitle>
+                    <DetailSectionValue>
+                      {nftMetadata.chainName}
+                    </DetailSectionValue>
                   </DetailSectionColumn>
                   <DetailSectionColumn>
-                    <DetailSectionTitle>{getLocale('braveWalletNFTDetailTokenStandard')}</DetailSectionTitle>
-                    <DetailSectionValue>{nftMetadata.tokenType}</DetailSectionValue>
+                    <DetailSectionTitle>
+                      {getLocale('braveWalletNFTDetailTokenStandard')}
+                    </DetailSectionTitle>
+                    <DetailSectionValue>
+                      {nftMetadata.tokenType}
+                    </DetailSectionValue>
                   </DetailSectionColumn>
                   <DetailSectionColumn>
-                    <DetailSectionTitle>{getLocale('braveWalletNFTDetailTokenID')}</DetailSectionTitle>
+                    <DetailSectionTitle>
+                      {getLocale('braveWalletNFTDetailTokenID')}
+                    </DetailSectionTitle>
                     <ProjectDetailIDRow>
                       <DetailSectionValue>
-                        {
-                          selectedAsset.tokenId
-                            ? '#' + new Amount(selectedAsset.tokenId).toNumber()
-                            : ''
-                        }
+                        {selectedAsset.tokenId
+                          ? '#' + new Amount(selectedAsset.tokenId).toNumber()
+                          : ''}
                       </DetailSectionValue>
-                      <ExplorerButton onClick={onClickViewOnBlockExplorer('nft', selectedAsset.contractAddress, selectedAsset.tokenId)}>
-                        <ExplorerIcon/>
+                      <ExplorerButton
+                        onClick={onClickViewOnBlockExplorer(
+                          selectedAsset.coin === BraveWallet.CoinType.ETH
+                            ? 'nft'
+                            : 'token',
+                          selectedAsset.contractAddress,
+                          selectedAsset.tokenId
+                        )}
+                      >
+                        <ExplorerIcon />
                       </ExplorerButton>
                     </ProjectDetailIDRow>
                   </DetailSectionColumn>
@@ -129,24 +144,30 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                 <ProjectDetailRow>
                   {/* TODO: Add nft logo when data is available from backend: https://github.com/brave/brave-browser/issues/22627 */}
                   {/* <ProjectDetailImage src={nftMetadata.contractInformation.logo} /> */}
-                  <ProjectDetailName>{nftMetadata.contractInformation.name}</ProjectDetailName>
-                  {nftMetadata.contractInformation.website && nftMetadata.contractInformation.twitter && nftMetadata.contractInformation.facebook &&
-                    <ProjectDetailButtonRow>
-                      <ProjectDetailButton onClick={onClickWebsite}>
-                        <ProjectWebsiteIcon/>
-                      </ProjectDetailButton>
-                      <ProjectDetailButtonSeperator/>
-                      <ProjectDetailButton onClick={onClickTwitter}>
-                        <ProjectTwitterIcon/>
-                      </ProjectDetailButton>
-                      <ProjectDetailButtonSeperator/>
-                      <ProjectDetailButton onClick={onClickFacebook}>
-                        <ProjectFacebookIcon/>
-                      </ProjectDetailButton>
-                    </ProjectDetailButtonRow>
-                  }
+                  <ProjectDetailName>
+                    {nftMetadata.contractInformation.name}
+                  </ProjectDetailName>
+                  {nftMetadata.contractInformation.website &&
+                    nftMetadata.contractInformation.twitter &&
+                    nftMetadata.contractInformation.facebook && (
+                      <ProjectDetailButtonRow>
+                        <ProjectDetailButton onClick={onClickWebsite}>
+                          <ProjectWebsiteIcon />
+                        </ProjectDetailButton>
+                        <ProjectDetailButtonSeperator />
+                        <ProjectDetailButton onClick={onClickTwitter}>
+                          <ProjectTwitterIcon />
+                        </ProjectDetailButton>
+                        <ProjectDetailButtonSeperator />
+                        <ProjectDetailButton onClick={onClickFacebook}>
+                          <ProjectFacebookIcon />
+                        </ProjectDetailButton>
+                      </ProjectDetailButtonRow>
+                    )}
                 </ProjectDetailRow>
-                <ProjectDetailDescription>{nftMetadata.contractInformation.description}</ProjectDetailDescription>
+                <ProjectDetailDescription>
+                  {nftMetadata.contractInformation.description}
+                </ProjectDetailDescription>
               </DetailColumn>
             </>
           }
