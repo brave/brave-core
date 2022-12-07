@@ -17,6 +17,7 @@
 #include "components/sync/driver/data_type_manager_impl.h"
 #include "components/sync/engine/nigori/key_derivation_params.h"
 #include "components/sync/engine/nigori/nigori.h"
+#include "components/sync/test/data_type_manager_mock.h"
 #include "components/sync/test/fake_data_type_controller.h"
 #include "components/sync/test/fake_sync_api_component_factory.h"
 #include "components/sync/test/fake_sync_engine.h"
@@ -27,6 +28,7 @@
 
 using testing::_;
 using testing::ByMove;
+using testing::NiceMock;
 using testing::Return;
 
 namespace syncer {
@@ -64,6 +66,20 @@ class SyncServiceImplDelegateMock : public SyncServiceImplDelegate {
   ~SyncServiceImplDelegateMock() override = default;
   void SuspendDeviceObserverForOwnReset() override {}
   void ResumeDeviceObserver() override {}
+};
+
+class SyncServiceObserverMock : public SyncServiceObserver {
+ public:
+  SyncServiceObserverMock() {}
+  ~SyncServiceObserverMock() override {}
+
+  MOCK_METHOD(void, OnStateChanged, (SyncService * sync), (override));
+  MOCK_METHOD(void, OnSyncCycleCompleted, (SyncService * sync), (override));
+  MOCK_METHOD(void,
+              OnSyncConfigurationCompleted,
+              (SyncService * sync),
+              (override));
+  MOCK_METHOD(void, OnSyncShutdown, (SyncService * sync), (override));
 };
 
 class BraveSyncServiceImplTest : public testing::Test {
@@ -266,6 +282,50 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   brave_sync_service_impl()->OnEngineInitialized(true, false);
   EXPECT_FALSE(
       brave_sync_service_impl()->GetUserSettings()->IsPassphraseRequired());
+
+  OSCryptMocker::TearDown();
+}
+
+TEST_F(BraveSyncServiceImplTest, OnSelfDeviceInfoDeleted) {
+  OSCryptMocker::SetUp();
+  CreateSyncService(SyncServiceImpl::MANUAL_START);
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+
+  brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  task_environment_.RunUntilIdle();
+
+  // Replace DataTypeManager with mock who gives CONFIGURING result on state()
+  // call. We need this to force SyncService::GetTransportState() give
+  // TransportState::CONFIGURING status to test behavior
+  // BraveSyncServiceImpl::OnSelfDeviceInfoDeleted
+  NiceMock<DataTypeManagerMock> data_type_manager_mock;
+  std::unique_ptr<DataTypeManager> data_type_manager_mock_ptr =
+      std::unique_ptr<DataTypeManager>(&data_type_manager_mock);
+
+  brave_sync_service_impl()->data_type_manager_ =
+      std::move(data_type_manager_mock_ptr);
+
+  ON_CALL(data_type_manager_mock, state())
+      .WillByDefault(Return(DataTypeManager::CONFIGURING));
+
+  EXPECT_EQ(brave_sync_service_impl()->GetTransportState(),
+            SyncServiceImpl::TransportState::CONFIGURING);
+
+  NiceMock<SyncServiceObserverMock> observer_mock;
+  brave_sync_service_impl()->AddObserver(&observer_mock);
+
+  // When OnSelfDeviceInfoDeleted arrived, but transport state is CONFIGURING,
+  // we must not stop and clear service.
+  EXPECT_CALL(observer_mock, OnStateChanged).Times(0);
+  brave_sync_service_impl()->OnSelfDeviceInfoDeleted(base::DoNothing());
+
+  brave_sync_service_impl()->RemoveObserver(&observer_mock);
+
+  // brave_sync_service_impl()->data_type_manager_ is owned by local var
+  // |data_type_manager_mock|, so release ownership for the correct destruction
+  brave_sync_service_impl()->data_type_manager_.release();
 
   OSCryptMocker::TearDown();
 }

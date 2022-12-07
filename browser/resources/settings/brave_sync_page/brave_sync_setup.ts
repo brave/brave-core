@@ -40,9 +40,11 @@ export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElement
       /**
       * Sync code dialog type. Can only have 1 at a time, so use a single property.
       * 'qr' | 'words' | 'input' | 'choose' | null
-      * @private
       */
-      syncCodeDialogType_: String,
+      syncCodeDialogType: {
+        type: String,
+        notify: true,
+      },
       isSubmittingSyncCode_: {
         type: Boolean,
         value: false,
@@ -59,7 +61,7 @@ export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElement
   }
 
   private syncCode: string | undefined;
-  private syncCodeDialogType_: 'qr' | 'words' | 'input' | 'choose' | null;
+  private syncCodeDialogType: 'qr' | 'words' | 'input' | 'choose' | null;
   private isSubmittingSyncCode_: boolean;
   private isGettingSyncCode_: boolean;
   private syncCodeValidationError_: string;
@@ -71,16 +73,16 @@ export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElement
     const syncCode = await this.syncBrowserProxy_.getSyncCode()
     this.isGettingSyncCode_ = false
     this.syncCode = syncCode;
-    this.syncCodeDialogType_ = 'choose'
+    this.syncCodeDialogType = 'choose'
   }
 
   handleJoinSyncChain_() {
     this.syncCode = undefined
-    this.syncCodeDialogType_ = 'input'
+    this.syncCodeDialogType = 'input'
   }
 
   handleSyncCodeDialogDone_() {
-    if (this.syncCodeDialogType_ === 'input') {
+    if (this.syncCodeDialogType === 'input') {
       const messageText = this.i18n('braveSyncFinalSecurityWarning')
       const shouldProceed = confirm(messageText)
       if (!shouldProceed) {
@@ -103,7 +105,7 @@ export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElement
     }
     this.isSubmittingSyncCode_ = false
     if (success) {
-      this.syncCodeDialogType_ = null
+      this.syncCodeDialogType = null
       this.dispatchEvent(new CustomEvent('setup-success'))
     }
   }
@@ -111,4 +113,3 @@ export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElement
 
 customElements.define(
   SettingsBraveSyncSetupElement.is, SettingsBraveSyncSetupElement)
-

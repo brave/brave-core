@@ -544,6 +544,9 @@
   <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGE_ACTION_LABEL" desc="Brave Sync manage action label">
     Manage your synced devices
   </message>
+  <message name="IDS_SETTINGS_BRAVE_SYNC_COULD_NOT_SYNC_ACTION_LABEL" desc="Could not sync devices action label. It is displayed in the case when Brave Sync could not decrypt code words and start work">
+    Could not sync Brave on your devices
+  </message>
   <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGER_TITLE" desc="Brave Sync manager title">
     Sync Manager
   </message>
@@ -638,7 +641,7 @@
     Enter a sync code
   </message>
   <message name="IDS_BRAVE_SYNC_ENTER_CODE_DESCRIPTION" desc="The Sync modal text for `enter sync code`">
-    Type your supplied sync chain code words into the form below.
+    Enter your sync chain passphrase below.
   </message>
   <message name="IDS_BRAVE_SYNC_ADD_DEVICE_BUTTON" desc="The Sync button `add device` for adding a new device to the sync chain. triggers a modal with device options">
     Add New Device
@@ -688,6 +691,12 @@
   </message>
   <message name="IDS_BRAVE_SYNC_PASSPHRASE_DECRYPTION_ERROR_MESSAGE" desc="Warning message that informs user about Brave Sync is not running and browser needs to have access to secure OS passwords store">
     Brave could not access your operating system's safe storage. This is what's used to secure data such as passwords and cookies; it's also required for Brave Sync to connect your browser profile between devices. This means Brave Sync is not running. To resolve this issue, please see the <ph name="BEGIN_LINK_SYNC_GUIDE">&lt;a target="_blank" href="$1"&gt;</ph>Brave Sync troubleshooting guide<ph name="END_LINK_SYNC_GUIDE">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_BRAVE_SYNC_PASSPHRASE_DECRYPTION_SS_UNLOCKED_ERROR_MESSAGE" desc="Warning">
+    It looks like the sync encryption key is different from the one used when you first set up Brave Sync. The easiest fix here is to reset and re-join the sync chain using the passphrase from one of your other synced devices.
+  </message>
+  <message name="IDS_BRAVE_SYNC_LEAVE_AND_REJOIN_THE_CHAIN_BUTTON" desc="Button which does reset the sync and offers to re-join the sync chain">
+    Reset and re-join sync chain
   </message>
 
   <!-- Settings / Search engine -->
