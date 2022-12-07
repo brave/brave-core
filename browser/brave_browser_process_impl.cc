@@ -12,6 +12,7 @@
 #include "base/bind.h"
 #include "base/path_service.h"
 #include "base/task/thread_pool.h"
+#include "brave/browser/brave_ads/stats_updater_helper.h"
 #include "brave/browser/brave_referrals/referrals_service_delegate.h"
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
@@ -113,6 +114,9 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
   // early initialize referrals
   brave_referrals_service();
+
+  // early initialize ads stats updater helper
+  ads_stats_updater_helper();
 
   // early initialize brave stats
   brave_stats_updater();
@@ -435,4 +439,12 @@ misc_metrics::MenuMetrics* BraveBrowserProcessImpl::menu_metrics() {
   if (!menu_metrics_)
     menu_metrics_ = std::make_unique<misc_metrics::MenuMetrics>(local_state());
   return menu_metrics_.get();
+}
+
+brave_ads::StatsUpdaterHelper*
+BraveBrowserProcessImpl::ads_stats_updater_helper() {
+  if (!ads_stats_updater_helper_)
+    ads_stats_updater_helper_ =
+        std::make_unique<brave_ads::StatsUpdaterHelper>();
+  return ads_stats_updater_helper_.get();
 }
