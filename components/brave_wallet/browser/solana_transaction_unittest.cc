@@ -36,7 +36,7 @@ namespace {
 constexpr char kMnemonic[] =
     "divide cruise upon flag harsh carbon filter merit once advice bright "
     "drive";
-constexpr char kFromAccount[] = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+constexpr char kFromAccount[] = "3JjmwHtdYkPAqnvNY67aqumBCQUSzjjk3As4igo1oQ3X";
 constexpr char kToAccount[] = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
 constexpr char kTestAccount[] = "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
 constexpr char kTestAccount2[] = "3QpJ3j1vq1PfqJdvCcHKWuePykqoUYSvxyRb3Cnh79BD";
@@ -91,6 +91,13 @@ class SolanaTransactionUnitTest : public testing::Test {
     return success;
   }
 
+  void SetSelectedAccount(const std::string& address) {
+    keyring_service()->SetSelectedAccountForCoin(mojom::CoinType::SOL, address);
+    ASSERT_EQ(
+        keyring_service()->GetSelectedAccount(mojom::CoinType::SOL).value(),
+        address);
+  }
+
  private:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -108,6 +115,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
 
   ASSERT_TRUE(AddAccount(keyring_service(), "Account 1", mojom::CoinType::SOL));
   ASSERT_TRUE(AddAccount(keyring_service(), "Account 2", mojom::CoinType::SOL));
+  SetSelectedAccount(kFromAccount);
 
   uint64_t last_valid_block_height = 3090;
 
@@ -126,10 +134,10 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
       // Signature compact array
       1,  // num of signatures
       // signature byte array
-      75, 128, 163, 160, 211, 120, 107, 238, 150, 64, 174, 92, 74, 8, 2, 134,
-      237, 91, 221, 42, 91, 63, 197, 4, 181, 31, 247, 134, 38, 14, 244, 79, 131,
-      43, 237, 96, 10, 161, 181, 22, 196, 36, 116, 73, 185, 231, 151, 96, 119,
-      245, 215, 94, 171, 25, 159, 127, 33, 119, 208, 242, 179, 63, 36, 15,
+      238, 59, 100, 156, 219, 89, 5, 163, 197, 171, 27, 93, 195, 252, 221, 8,
+      250, 21, 11, 112, 0, 143, 51, 69, 65, 30, 71, 140, 70, 36, 130, 68, 91,
+      73, 53, 109, 43, 57, 87, 213, 42, 4, 1, 169, 62, 107, 250, 191, 110, 23,
+      204, 119, 244, 122, 89, 15, 76, 9, 68, 85, 189, 116, 13, 15,
       // Message header
       1,  // num_required_signatures
       0,  // num_readonly_signed_accounts
@@ -138,8 +146,8 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
       // Account addresses compact array
       3,  // account addresses array length
       // account_addresses[0]: base58-decoded from account
-      161, 51, 89, 91, 115, 210, 217, 212, 76, 159, 171, 200, 40, 150, 157, 70,
-      197, 71, 24, 44, 209, 108, 143, 4, 58, 251, 215, 62, 201, 172, 159, 197,
+      34, 66, 156, 249, 123, 231, 124, 55, 10, 225, 0, 202, 134, 253, 103, 221,
+      118, 243, 120, 79, 62, 189, 65, 164, 49, 98, 194, 182, 97, 111, 161, 254,
       // account_addresses[1]: base58-decoded to account
       255, 224, 228, 245, 94, 238, 23, 132, 206, 40, 82, 249, 219, 203, 103,
       158, 110, 219, 93, 249, 143, 134, 207, 172, 179, 76, 67, 6, 169, 164, 149,
@@ -650,6 +658,12 @@ TEST_F(SolanaTransactionUnitTest, GetSerializedMessage) {
 }
 
 TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
+  ASSERT_TRUE(RestoreWallet(keyring_service(), kMnemonic, "brave", false));
+
+  ASSERT_TRUE(AddAccount(keyring_service(), "Account 1", mojom::CoinType::SOL));
+  ASSERT_TRUE(AddAccount(keyring_service(), "Account 2", mojom::CoinType::SOL));
+  SetSelectedAccount(kFromAccount);
+
   // Empty message is invalid
   std::vector<uint8_t> signature_bytes;
   std::string signature =
@@ -664,11 +678,11 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
   // Valid
   SolanaInstruction instruction_one_signer(
       mojom::kSolanaSystemProgramId,
-      {SolanaAccountMeta(kTestAccount, true, true),
+      {SolanaAccountMeta(kFromAccount, true, true),
        SolanaAccountMeta(kTestAccount2, false, true)},
       {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
   SolanaMessage message("9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6", 0,
-                        kTestAccount, {instruction_one_signer});
+                        kFromAccount, {instruction_one_signer});
   SolanaTransaction transaction2(std::move(message));
   EXPECT_NE(transaction2.GetSignedTransactionBytes(keyring_service(),
                                                    &signature_bytes),
@@ -680,19 +694,18 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
                                                    &empty_signature_bytes),
             absl::nullopt);
 
-  // Test empty signature will be appended for non-fee payer signers.
+  // Test empty signature will be appended for non-selected-account signers.
   SolanaInstruction instruction_three_signers(
       mojom::kSolanaSystemProgramId,
-      {SolanaAccountMeta(kTestAccount, true, true),
+      {SolanaAccountMeta(kFromAccount, true, true),
        SolanaAccountMeta(kTestAccount2, true, true),
        SolanaAccountMeta(kToAccount, true, true)},
-
       {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
   transaction2.message()->SetInstructionsForTesting(
       {instruction_three_signers});
   std::vector<mojom::SignaturePubkeyPairPtr> sig_key_pairs;
   sig_key_pairs.emplace_back(
-      mojom::SignaturePubkeyPair::New(absl::nullopt, kTestAccount));
+      mojom::SignaturePubkeyPair::New(absl::nullopt, kFromAccount));
   sig_key_pairs.emplace_back(
       mojom::SignaturePubkeyPair::New(absl::nullopt, kTestAccount2));
   sig_key_pairs.emplace_back(
@@ -729,6 +742,41 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
                 .GetSignedTransactionBytes(keyring_service(), &signature_bytes)
                 .value(),
             expect_signed_tx_bytes2);
+
+  // Test selected account is not the fee payer.
+  SolanaInstruction ins_not_fee_payer(
+      mojom::kSolanaSystemProgramId,
+      {SolanaAccountMeta(kTestAccount, true, true),
+       SolanaAccountMeta(kFromAccount, true, true)},
+      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+  SolanaMessage message2(kRecentBlockhash, 0, kTestAccount,
+                         {ins_not_fee_payer});
+  SolanaTransaction transaction3(std::move(message2));
+  std::vector<uint8_t> passed_sig_bytes(kSolanaSignatureSize, 1);
+  sig_key_pairs.clear();
+  sig_key_pairs.emplace_back(
+      mojom::SignaturePubkeyPair::New(passed_sig_bytes, kTestAccount));
+  sig_key_pairs.emplace_back(
+      mojom::SignaturePubkeyPair::New(absl::nullopt, kFromAccount));
+  seriazlied_msg = transaction3.message()->Serialize(nullptr);
+  ASSERT_TRUE(seriazlied_msg);
+  transaction3.set_sign_tx_param(mojom::SolanaSignTransactionParam::New(
+      Base58Encode(*seriazlied_msg), std::move(sig_key_pairs)));
+
+  expect_signed_tx_bytes = {2};  // 2 signatures
+  std::vector<uint8_t> selected_account_sig = keyring_service()->SignMessage(
+      mojom::kSolanaKeyringId, kFromAccount, *seriazlied_msg);
+  expect_signed_tx_bytes.insert(expect_signed_tx_bytes.end(),
+                                passed_sig_bytes.begin(),
+                                passed_sig_bytes.end());
+  expect_signed_tx_bytes.insert(expect_signed_tx_bytes.end(),
+                                selected_account_sig.begin(),
+                                selected_account_sig.end());
+  expect_signed_tx_bytes.insert(expect_signed_tx_bytes.end(),
+                                seriazlied_msg->begin(), seriazlied_msg->end());
+  auto result = transaction3.GetSignedTransactionBytes(keyring_service());
+  ASSERT_TRUE(result);
+  EXPECT_EQ(*result, expect_signed_tx_bytes);
 }
 
 }  // namespace brave_wallet
