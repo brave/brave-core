@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "bat/ads/ads_callback.h"
 #include "bat/ads/internal/account/account_observer.h"
@@ -65,7 +66,7 @@ class Account final : public PrefManagerObserver,
 
   static void GetStatement(GetStatementOfAccountsCallback callback);
 
-  void Process() const;
+  void Process();
 
  private:
   void MaybeGetIssuers() const;
@@ -83,7 +84,7 @@ class Account final : public PrefManagerObserver,
 
   void WalletDidChange(const WalletInfo& wallet) const;
 
-  void MaybeResetConfirmations() const;
+  void MaybeResetIssuersAndConfirmations();
 
   void TopUpUnblindedTokens() const;
 
@@ -120,6 +121,9 @@ class Account final : public PrefManagerObserver,
       const std::string& captcha_id) override;
 
   base::ObserverList<AccountObserver> observers_;
+
+  raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
+      nullptr;  // NOT OWNED
 
   std::unique_ptr<Confirmations> confirmations_;
   std::unique_ptr<Issuers> issuers_;

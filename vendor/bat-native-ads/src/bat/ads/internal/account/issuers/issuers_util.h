@@ -18,6 +18,7 @@ struct IssuersInfo;
 
 void SetIssuers(const IssuersInfo& issuers);
 absl::optional<IssuersInfo> GetIssuers();
+void ResetIssuers();
 
 bool IsIssuersValid(const IssuersInfo& issuers);
 
