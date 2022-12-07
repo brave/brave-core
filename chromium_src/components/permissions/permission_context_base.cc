@@ -43,17 +43,17 @@ void PermissionContextBase::SetPermissionLifetimeManagerFactory(
   permission_lifetime_manager_factory_ = factory;
 }
 
-void PermissionContextBase::PermissionDecided(
-    const PermissionRequestID& id,
-    const GURL& requesting_origin,
-    const GURL& embedding_origin,
-    BrowserPermissionCallback callback,
-    ContentSetting content_setting,
-    bool is_one_time) {
+void PermissionContextBase::PermissionDecided(const PermissionRequestID& id,
+                                              const GURL& requesting_origin,
+                                              const GURL& embedding_origin,
+                                              ContentSetting content_setting,
+                                              bool is_one_time,
+                                              bool is_final_decision) {
   if (permission_lifetime_manager_factory_) {
     const auto request_it = pending_requests_.find(id.ToString());
     if (request_it != pending_requests_.end()) {
-      const PermissionRequest* permission_request = request_it->second.get();
+      const PermissionRequest* permission_request =
+          request_it->second.first.get();
       DCHECK(permission_request);
       if (auto* permission_lifetime_manager =
               permission_lifetime_manager_factory_.Run(browser_context_)) {
@@ -95,7 +95,7 @@ void PermissionContextBase::DecidePermission(
                  id.ToString(), std::make_unique<GroupedPermissionRequests>()))
              .first;
   }
-  it->second->AddRequest(std::move(pending_request->second.first));
+  it->second->AddRequest(std::move(pending_request->second));
 
   pending_requests_.erase(pending_request);
 }
@@ -126,7 +126,8 @@ bool PermissionContextBase::GroupedPermissionRequests::IsDone() const {
 }
 
 void PermissionContextBase::GroupedPermissionRequests::AddRequest(
-    std::unique_ptr<PermissionRequest> request) {
+    std::pair<std::unique_ptr<PermissionRequest>, BrowserPermissionCallback>
+        request) {
   requests_.push_back(std::move(request));
 }
 
