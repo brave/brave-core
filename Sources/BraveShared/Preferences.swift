@@ -87,6 +87,8 @@ extension Preferences {
     public static let adblockStatsDataVersion = Option<Int?>(key: "stats.adblock-data-version", default: nil)
     /// Whether or not advanced controls in the shields UI are visible by default
     public static let advancedControlsVisible = Option<Bool>(key: "shields.advanced-controls-visible", default: false)
+    /// Whether or not we've reported the initial state of shields for p3a
+    public static let initialP3AStateReported = Option<Bool>(key: "shields.initial-p3a-state-reported", default: false)
   }
 
   public final class Rewards {

@@ -292,13 +292,19 @@ extension BrowserViewController: TopToolbarDelegate {
     }
 
     let shields = ShieldsViewController(tab: selectedTab)
-    shields.shieldsSettingsChanged = { [unowned self] _ in
+    shields.shieldsSettingsChanged = { [unowned self] _, shield in
       // Update the shields status immediately
       self.topToolbar.refreshShieldsStatus()
 
       // Reload this tab. This will also trigger an update of the brave icon in `TabLocationView` if
       // the setting changed is the global `.AllOff` shield
       self.tabManager.selectedTab?.reload()
+      
+      // Record P3A shield changes
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        // Record shields & FP related hisotgrams, wait a sec for CoreData to sync contexts
+        self.recordShieldsUpdateP3A(shield: shield)
+      }
 
       // In 1.6 we "reload" the whole web view state, dumping caches, etc. (reload():BraveWebView.swift:495)
       // BRAVE TODO: Port over proper tab reloading with Shields

@@ -576,6 +576,8 @@ public class BrowserViewController: UIViewController {
     // Eliminate the older usage days
     // Used in App Rating criteria
     AppReviewManager.shared.processMainCriteria(for: .daysInUse)
+    
+    maybeRecordInitialShieldsP3A()
   }
 
   private func setupAdsNotificationHandler() {
