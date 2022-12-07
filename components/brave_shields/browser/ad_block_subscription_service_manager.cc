@@ -533,16 +533,6 @@ void AdBlockSubscriptionServiceManager::ShouldStartRequest(
   }
 }
 
-void AdBlockSubscriptionServiceManager::EnableTag(const std::string& tag,
-                                                  bool enabled) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  base::AutoLock lock(subscription_services_lock_);
-
-  for (const auto& subscription_service : subscription_services_) {
-    subscription_service.second->EnableTag(tag, enabled);
-  }
-}
-
 void AdBlockSubscriptionServiceManager::UseResources(
     const std::string& resources) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

@@ -69,7 +69,6 @@ class AdBlockRegionalServiceManager
       const GURL& url,
       blink::mojom::ResourceType resource_type,
       const std::string& tab_host);
-  void EnableTag(const std::string& tag, bool enabled);
   void UseResources(const std::string& resources);
   bool IsFilterListAvailable(const std::string& uuid) const;
   bool IsFilterListEnabled(const std::string& uuid) const;

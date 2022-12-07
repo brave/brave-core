@@ -188,14 +188,6 @@ void AdBlockServiceTest::AssertTagExists(const std::string& tag,
   base::AutoLock lock(g_brave_browser_process->ad_block_service()
                           ->regional_service_manager()
                           ->regional_services_lock_);
-
-  for (const auto& regional_service :
-       g_brave_browser_process->ad_block_service()
-           ->regional_service_manager()
-           ->regional_services_) {
-    bool exists_regional = regional_service.second->TagExists(tag);
-    ASSERT_EQ(exists_regional, expected_exists);
-  }
 }
 
 void AdBlockServiceTest::InitEmbeddedTestServer() {
