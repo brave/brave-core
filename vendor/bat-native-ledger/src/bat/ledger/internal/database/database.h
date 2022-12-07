@@ -19,6 +19,7 @@
 #include "bat/ledger/internal/database/database_contribution_queue.h"
 #include "bat/ledger/internal/database/database_creds_batch.h"
 #include "bat/ledger/internal/database/database_event_log.h"
+#include "bat/ledger/internal/database/database_external_transactions.h"
 #include "bat/ledger/internal/database/database_initialize.h"
 #include "bat/ledger/internal/database/database_media_publisher_info.h"
 #include "bat/ledger/internal/database/database_multi_tables.h"
@@ -182,6 +183,16 @@ class Database {
                      ledger::LegacyResultCallback callback);
 
   void GetLastEventLogs(ledger::GetEventLogsCallback callback);
+
+  /**
+   * EXTERNAL TRANSACTIONS
+   */
+  void SaveExternalTransaction(mojom::ExternalTransactionPtr,
+                               ledger::ResultCallback);
+
+  void GetExternalTransactionId(const std::string& contribution_id,
+                                const std::string& destination,
+                                GetExternalTransactionIdCallback);
 
   /**
    * MEDIA PUBLISHER INFO
@@ -386,6 +397,7 @@ class Database {
   std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
   std::unique_ptr<DatabaseCredsBatch> creds_batch_;
   std::unique_ptr<DatabaseEventLog> event_log_;
+  std::unique_ptr<DatabaseExternalTransactions> external_transactions_;
   std::unique_ptr<DatabasePendingContribution> pending_contribution_;
   std::unique_ptr<DatabaseProcessedPublisher> processed_publisher_;
   std::unique_ptr<DatabasePromotion> promotion_;

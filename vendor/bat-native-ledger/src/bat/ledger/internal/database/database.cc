@@ -26,6 +26,8 @@ Database::Database(LedgerImpl* ledger) :
   contribution_info_ = std::make_unique<DatabaseContributionInfo>(ledger_);
   creds_batch_ = std::make_unique<DatabaseCredsBatch>(ledger_);
   event_log_ = std::make_unique<DatabaseEventLog>(ledger_);
+  external_transactions_ =
+      std::make_unique<DatabaseExternalTransactions>(ledger_);
   media_publisher_info_ =
       std::make_unique<DatabaseMediaPublisherInfo>(ledger_);
   multi_tables_ = std::make_unique<DatabaseMultiTables>(ledger_);
@@ -289,6 +291,23 @@ void Database::SaveEventLogs(const std::map<std::string, std::string>& records,
 
 void Database::GetLastEventLogs(ledger::GetEventLogsCallback callback) {
   event_log_->GetLastRecords(callback);
+}
+
+/**
+ * EXTERNAL TRANSACTIONS
+ */
+void Database::SaveExternalTransaction(
+    mojom::ExternalTransactionPtr transaction,
+    ledger::ResultCallback callback) {
+  external_transactions_->Insert(std::move(transaction), std::move(callback));
+}
+
+void Database::GetExternalTransactionId(
+    const std::string& contribution_id,
+    const std::string& destination,
+    GetExternalTransactionIdCallback callback) {
+  external_transactions_->GetTransactionId(contribution_id, destination,
+                                           std::move(callback));
 }
 
 /**

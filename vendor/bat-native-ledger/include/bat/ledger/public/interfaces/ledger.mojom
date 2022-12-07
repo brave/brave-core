@@ -533,3 +533,10 @@ struct RewardsWallet {
   string payment_id;
   array<uint8> recovery_seed;
 };
+
+struct ExternalTransaction {
+  string transaction_id;
+  string contribution_id;
+  string destination;
+  double amount;
+};
