@@ -33,7 +33,7 @@ extension BrowserViewController {
       UmaHistogramRecordValueToBucket("Brave.Shields.DomainAdsSettingsBelowGlobal", buckets: buckets, value: adsBelowGlobalCount)
       // Q52 On how many domains has the user set the adblock setting to be higher (block more) than the default?
       let adsAboveGlobalCount = Domain.totalDomainsWithAdblockShieldsIncreasedFromGlobal()
-      UmaHistogramRecordValueToBucket("Brave.Shields.DomainAdsSettingsAboveGlobal", buckets: buckets, value: adsBelowGlobalCount)
+      UmaHistogramRecordValueToBucket("Brave.Shields.DomainAdsSettingsAboveGlobal", buckets: buckets, value: adsAboveGlobalCount)
     case .FpProtection:
       // Q53 On how many domains has the user set the FP setting to be lower (block less) than the default?
       let fingerprintingBelowGlobalCount = Domain.totalDomainsWithFingerprintingProtectionLoweredFromGlobal()
