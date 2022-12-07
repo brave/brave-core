@@ -258,7 +258,10 @@ struct WalletPanelView: View {
         presentWalletWithContext(.editSiteConnection(origin, handler: { accounts in
           if keyringStore.selectedAccount.coin == .eth {
             ethPermittedAccounts = accounts
+          } else if keyringStore.selectedAccount.coin == .sol {
+            solConnectedAddresses = Set(accounts)
           }
+          isConnectHidden = isConnectButtonHidden()
         }))
       }
     } label: {
