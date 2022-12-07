@@ -852,8 +852,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_TAB_CXMENU_USE_FLOATING_VERTICAL_TABS" desc="The label of the tab context menu item for enabling floating mode for vertical tab strip">
           Float on mouseover
         </message>
-        <message name="IDS_TAB_CXMENU_TOGGLE_TAB_MUTED" desc="The label of the tab context menu item for muting a tab">
-          Mute tab
+        <message name="IDS_TAB_CXMENU_SOUND_MUTE_TAB" desc="The label of the tab context menu item for muting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Mute tab} other {Mute tabs}}
+        </message>
+        <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_TAB" desc="The label of the tab context menu item for unmuting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Unmute tab} other {Unmute tabs}}
         </message>
       </if>
       <if expr="use_titlecase">
@@ -869,8 +872,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_TAB_CXMENU_USE_FLOATING_VERTICAL_TABS" desc="The label of the tab context menu item for enabling floating mode for vertical tab strip">
           Float on Mouseover
         </message>
-        <message name="IDS_TAB_CXMENU_TOGGLE_TAB_MUTED" desc="In Title Case: The label of the tab context menu item for muting a tab">
-          Mute Tab
+        <message name="IDS_TAB_CXMENU_SOUND_MUTE_TAB" desc="The label of the tab context menu item for muting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Mute Tab} other {Mute Tabs}}
+        </message>
+        <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_TAB" desc="The label of the tab context menu item for unmuting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Unmute Tab} other {Unmute Tabs}}
         </message>
       </if>
 

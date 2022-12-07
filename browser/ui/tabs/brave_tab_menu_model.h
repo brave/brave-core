@@ -40,7 +40,7 @@ class BraveTabMenuModel : public TabMenuModel {
   ~BraveTabMenuModel() override;
 
  private:
-  void Build();
+  void Build(TabStripModel* tab_strip, int index);
   int GetRestoreTabCommandStringId() const;
 
   raw_ptr<content::WebContents> web_contents_ = nullptr;
