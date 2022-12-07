@@ -85,6 +85,22 @@ namespace brave_wallet {
 
 namespace {
 
+// Compare two JSON strings, ignoring the order of the keys and other
+// insignificant whitespace differences.
+void CompareJSON(const std::string& response,
+                 const std::string& expected_response) {
+  auto response_val = base::JSONReader::Read(response);
+  auto expected_response_val = base::JSONReader::Read(expected_response);
+  EXPECT_EQ(response_val, expected_response_val);
+  if (response_val) {
+    // If the JSON is valid, compare the parsed values.
+    EXPECT_EQ(*response_val, *expected_response_val);
+  } else {
+    // If the JSON is invalid, compare the raw strings.
+    EXPECT_EQ(response, expected_response);
+  }
+}
+
 void GetErrorCodeMessage(base::Value formed_response,
                          mojom::ProviderError* error,
                          std::string* error_message) {
@@ -923,6 +939,25 @@ class JsonRpcServiceUnitTest : public testing::Test {
         }));
   }
 
+  void SetSolTokenMetadataInterceptor(
+      const GURL& expected_rpc_url,
+      const std::string& get_account_info_response,
+      const GURL& expected_metadata_url,
+      const std::string& metadata_response) {
+    auto network_url =
+        GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL);
+    ASSERT_TRUE(expected_rpc_url.is_valid());
+    ASSERT_TRUE(expected_metadata_url.is_valid());
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, expected_rpc_url, get_account_info_response, expected_metadata_url,
+         metadata_response](const network::ResourceRequest& request) {
+          url_loader_factory_.AddResponse(expected_rpc_url.spec(),
+                                          get_account_info_response);
+          url_loader_factory_.AddResponse(expected_metadata_url.spec(),
+                                          metadata_response);
+        }));
+  }
+
   void SetInterceptor(const GURL& expected_url,
                       const std::string& expected_method,
                       const std::string& expected_cache_header,
@@ -1104,20 +1139,20 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  void TestGetTokenMetadata(const std::string& contract,
-                            const std::string& token_id,
-                            const std::string& chain_id,
-                            const std::string& interface_id,
-                            const std::string& expected_response,
-                            mojom::ProviderError expected_error,
-                            const std::string& expected_error_message) {
+  void TestGetEthTokenUri(const std::string& contract,
+                          const std::string& token_id,
+                          const std::string& chain_id,
+                          const std::string& interface_id,
+                          const GURL& expected_uri,
+                          mojom::ProviderError expected_error,
+                          const std::string& expected_error_message) {
     base::RunLoop run_loop;
-    json_rpc_service_->GetTokenMetadata(
-        contract, token_id, chain_id, interface_id,
-        base::BindLambdaForTesting([&](const std::string& response,
+    json_rpc_service_->GetEthTokenUri(
+        chain_id, contract, token_id, interface_id,
+        base::BindLambdaForTesting([&](const GURL& uri,
                                        mojom::ProviderError error,
                                        const std::string& error_message) {
-          EXPECT_EQ(response, expected_response);
+          EXPECT_EQ(uri, expected_uri);
           EXPECT_EQ(error, expected_error);
           EXPECT_EQ(error_message, expected_error_message);
           run_loop.Quit();
@@ -1395,6 +1430,24 @@ class JsonRpcServiceUnitTest : public testing::Test {
           loop.Quit();
         }));
 
+    loop.Run();
+  }
+
+  void TestGetSolTokenMetadata(const std::string& token_mint_address,
+                               const std::string& expected_response,
+                               mojom::SolanaProviderError expected_error,
+                               const std::string& expected_error_message) {
+    base::RunLoop loop;
+    json_rpc_service_->GetSolTokenMetadata(
+        token_mint_address,
+        base::BindLambdaForTesting([&](const std::string& response,
+                                       mojom::SolanaProviderError error,
+                                       const std::string& error_message) {
+          CompareJSON(response, expected_response);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          loop.Quit();
+        }));
     loop.Run();
   }
 
@@ -3349,246 +3402,9 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
   EXPECT_TRUE(callback_called);
 }
 
-TEST_F(JsonRpcServiceUnitTest, GetTokenMetadata) {
-  const std::string https_token_uri_response = R"({
-      "jsonrpc":"2.0",
-      "id":1,
-      "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002468747470733a2f2f696e76697369626c65667269656e64732e696f2f6170692f3138313700000000000000000000000000000000000000000000000000000000"
-  })";
-  const std::string http_token_uri_response = R"({
-      "jsonrpc":"2.0",
-      "id":1,
-      "result":"0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000020687474703a2f2f696e76697369626c65667269656e64732e696f2f6170692f31"
-  })";
-  const std::string data_token_uri_response = R"({
-      "jsonrpc":"2.0",
-      "id":1,
-      "result": "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000135646174613a6170706c69636174696f6e2f6a736f6e3b6261736536342c65794a686448527961574a316447567a496a6f69496977695a47567a59334a7063485270623234694f694a4f623234675a6e56755a326c696247556762476c7662694973496d6c745957646c496a6f695a474630595470706257466e5a53397a646d6372654731734f324a68633255324e43785153453479576e6c434e474a586548566a656a4270595568534d474e4562335a4d4d32517a5a486b314d3031354e585a6a62574e3254577042643031444f58706b62574e7053556861634670595a454e694d326335535770425a3031445154464e5245466e546c524264306c714e44686a5230597759554e436131425453576c4d656a513454444e4f4d6c70364e4430694c434a755957316c496a6f69546b5a4d496e303d0000000000000000000000"
-  })";
-  const std::string data_token_uri_response_invalid_json = R"({
-    "jsonrpc":"2.0",
-    "id":1,
-    "result":"0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000085646174613a6170706c69636174696f6e2f6a736f6e3b6261736536342c65794a755957316c496a6f69546b5a4d49697767496d526c63324e796158423061573975496a6f69546d397549475a31626d6470596d786c49477870623234694c43416959585230636d6c696458526c637949364969497349434a706257466e5a5349364969493d000000000000000000000000000000000000000000000000000000"
-  })";
-  const std::string data_token_uri_response_empty_string = R"({
-    "jsonrpc":"2.0",
-    "id":1,
-    "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001d646174613a6170706c69636174696f6e2f6a736f6e3b6261736536342c000000"
-  })";
-  const std::string interface_supported_response = R"({
-      "jsonrpc":"2.0",
-      "id":1,
-      "result": "0x0000000000000000000000000000000000000000000000000000000000000001"
-  })";
-  const std::string exceeds_limit_json = R"({
-    "jsonrpc":"2.0",
-    "id":1,
-    "error": {
-      "code":-32005,
-      "message": "Request exceeds defined limit"
-    }
-  })";
-  const std::string interface_not_supported_response = R"({
-      "jsonrpc":"2.0",
-      "id":1,
-      "result":"0x0000000000000000000000000000000000000000000000000000000000000000"
-  })";
-  const std::string invalid_json =
-      "It might make sense just to get some in case it catches on";
-  const std::string ipfs_token_uri_response = R"({
-      "jsonrpc":"2.0",
-      "id":1,
-      "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003a697066733a2f2f516d65536a53696e4870506e6d586d73704d6a776958794e367a533445397a63636172694752336a7863615774712f31383137000000000000"
-  })";
-  const std::string ipfs_metadata_response =
-      R"({"attributes":[{"trait_type":"Mouth","value":"Bored Cigarette"},{"trait_type":"Fur","value":"Gray"},{"trait_type":"Background","value":"Aquamarine"},{"trait_type":"Clothes","value":"Tuxedo Tee"},{"trait_type":"Hat","value":"Bayc Hat Black"},{"trait_type":"Eyes","value":"Coins"}],"image":"ipfs://QmQ82uDT3JyUMsoZuaFBYuEucF654CYE5ktPUrnA5d4VDH"})";
-
-  // Invalid inputs
-  // (1/3) Invalid contract address
-  TestGetTokenMetadata("", "0x1", mojom::kMainnetChainId,
-                       kERC721MetadataInterfaceId, "",
-                       mojom::ProviderError::kInvalidParams,
-                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-
-  // (2/3) Invalid token ID
-  TestGetTokenMetadata("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "",
-                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
-                       mojom::ProviderError::kInvalidParams,
-                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-
-  // (3/3) Invalid chain ID
-  TestGetTokenMetadata("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1", "",
-                       kERC721MetadataInterfaceId, "",
-                       mojom::ProviderError::kInvalidParams,
-                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-
-  // Mismatched
-  // (4/4) Unknown interfaceID
-  TestGetTokenMetadata("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1", "",
-                       kERC721InterfaceId, "",
-                       mojom::ProviderError::kInvalidParams,
-                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-
-  // Valid inputs
-  // (1/3) HTTP URI
-  SetTokenMetadataInterceptor(
-      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
-      interface_supported_response, https_token_uri_response,
-      https_metadata_response);
-  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                       mojom::kMainnetChainId, kERC721MetadataInterfaceId,
-                       https_metadata_response, mojom::ProviderError::kSuccess,
-                       "");
-
-  // (2/3) IPFS URI
-  SetTokenMetadataInterceptor(kERC721MetadataInterfaceId,
-                              mojom::kLocalhostChainId,
-                              interface_supported_response,
-                              ipfs_token_uri_response, ipfs_metadata_response);
-  TestGetTokenMetadata("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
-                       mojom::kLocalhostChainId, kERC721MetadataInterfaceId,
-                       ipfs_metadata_response, mojom::ProviderError::kSuccess,
-                       "");
-
-  // (3/3) Data URI
-  SetTokenMetadataInterceptor(
-      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
-      interface_supported_response, data_token_uri_response);
-  TestGetTokenMetadata(
-      "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
-      mojom::kMainnetChainId, kERC721MetadataInterfaceId,
-      R"({"attributes":"","description":"Non fungible lion","image":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgNTAwIj48cGF0aCBkPSIiLz48L3N2Zz4=","name":"NFL"})",
-      mojom::ProviderError::kSuccess, "");
-
-  // Invalid supportsInterface response
-  // (1/4) Timeout
-  SetTokenMetadataInterceptor(
-      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
-      interface_supported_response, https_token_uri_response, "",
-      net::HTTP_REQUEST_TIMEOUT);
-  TestGetTokenMetadata("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
-                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
-                       mojom::ProviderError::kInternalError,
-                       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-
-  // (2/4) Invalid JSON
-  SetTokenMetadataInterceptor(kERC721MetadataInterfaceId,
-                              mojom::kMainnetChainId, invalid_json);
-  TestGetTokenMetadata("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
-                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
-                       mojom::ProviderError::kParsingError,
-                       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-
-  // (3/4) Request exceeds provider limit
-  SetTokenMetadataInterceptor(kERC721MetadataInterfaceId,
-                              mojom::kMainnetChainId, exceeds_limit_json);
-  TestGetTokenMetadata("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
-                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
-                       mojom::ProviderError::kLimitExceeded,
-                       "Request exceeds defined limit");
-
-  // (4/4) Interface not supported
-  SetTokenMetadataInterceptor(kERC721MetadataInterfaceId,
-                              mojom::kMainnetChainId,
-                              interface_not_supported_response);
-  TestGetTokenMetadata(
-      "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d", "0x719",
-      mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
-      mojom::ProviderError::kMethodNotSupported,
-      l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
-
-  // Invalid tokenURI response (6 total)
-  // (1/6) Timeout
-  SetTokenMetadataInterceptor(
-      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
-      interface_supported_response, https_token_uri_response, "", net::HTTP_OK,
-      net::HTTP_REQUEST_TIMEOUT);
-  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
-                       mojom::ProviderError::kInternalError,
-                       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-
-  // (2/6) Invalid Provider JSON
-  SetTokenMetadataInterceptor(kERC721MetadataInterfaceId,
-                              mojom::kMainnetChainId,
-                              interface_supported_response, invalid_json);
-  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
-                       mojom::ProviderError::kParsingError,
-                       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-
-  // (3/6) Invalid JSON in data URI
-  SetTokenMetadataInterceptor(
-      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
-      interface_supported_response, data_token_uri_response_invalid_json);
-  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
-                       mojom::ProviderError::kParsingError,
-                       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-
-  // (4/6) Empty string as JSON in data URI
-  SetTokenMetadataInterceptor(
-      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
-      interface_supported_response, data_token_uri_response_empty_string);
-  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
-                       mojom::ProviderError::kParsingError,
-                       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-
-  // (5/6) Request exceeds limit
-  SetTokenMetadataInterceptor(kERC721MetadataInterfaceId,
-                              mojom::kMainnetChainId,
-                              interface_supported_response, exceeds_limit_json);
-  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
-                       mojom::ProviderError::kLimitExceeded,
-                       "Request exceeds defined limit");
-
-  // (6/6) URI scheme is not suported (HTTP)
-  SetTokenMetadataInterceptor(
-      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
-      interface_supported_response, http_token_uri_response);
-  TestGetTokenMetadata(
-      "0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-      mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
-      mojom::ProviderError::kMethodNotSupported,
-      l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
-
-  // Invalid metadata response (2 total)
-  // (1/2) Timeout
-  SetTokenMetadataInterceptor(
-      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
-      interface_supported_response, https_token_uri_response,
-      https_metadata_response, net::HTTP_OK, net::HTTP_OK,
-      net::HTTP_REQUEST_TIMEOUT);
-  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
-                       mojom::ProviderError::kInternalError,
-                       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-
-  // (2/2) Invalid JSON
-  SetTokenMetadataInterceptor(
-      kERC721MetadataInterfaceId, mojom::kMainnetChainId,
-      interface_supported_response, ipfs_token_uri_response, invalid_json);
-  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                       mojom::kMainnetChainId, kERC721MetadataInterfaceId, "",
-                       mojom::ProviderError::kParsingError,
-                       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-
-  // ERC1155
-  SetTokenMetadataInterceptor(
-      kERC1155MetadataInterfaceId, mojom::kMainnetChainId,
-      interface_supported_response, https_token_uri_response,
-      https_metadata_response);
-  TestGetTokenMetadata("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
-                       mojom::kMainnetChainId, kERC1155MetadataInterfaceId,
-                       https_metadata_response, mojom::ProviderError::kSuccess,
-                       "");
-}
-
 TEST_F(JsonRpcServiceUnitTest, GetERC721Metadata) {
   // Ensure GetERC721Metadata passes the correct interface ID to
-  // GetTokenMetadata
+  // GetEthTokenMetadata
   SetTokenMetadataInterceptor(kERC721MetadataInterfaceId,
                               mojom::kMainnetChainId,
                               R"({
@@ -3609,7 +3425,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Metadata) {
 
 TEST_F(JsonRpcServiceUnitTest, GetERC1155Metadata) {
   // Ensure GetERC1155Metadata passes the correct interface ID to
-  // GetTokenMetadata
+  // GetEthTokenMetadata
   SetTokenMetadataInterceptor(kERC1155MetadataInterfaceId,
                               mojom::kMainnetChainId,
                               R"({
@@ -5848,6 +5664,305 @@ TEST_F(JsonRpcServiceUnitTest, EthGetLogs) {
   TestEthGetLogs(mojom::kMainnetChainId, "earliest", "latest",
                  std::move(contract_addresses), std::move(topics),
                  std::move(expected_logs), mojom::ProviderError::kSuccess, "");
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetSolTokenMetadata) {
+  // Valid inputs should yield metadata JSON (happy case)
+  std::string get_account_info_response = R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.13.3",
+        "slot": 161038284
+      },
+      "value": {
+        "data": [
+          "BGUN5hJf2zSue3S0I/fCq16UREt5NxP6mQdaq4cdGPs3Q8PG/R6KFUSgce78Nwk9Frvkd9bMbvTIKCRSDy88nZQgAAAAU1BFQ0lBTCBTQVVDRQAAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAMgAAABodHRwczovL2JhZmtyZWlmNHd4NTR3anI3cGdmdWczd2xhdHIzbmZudHNmd25ndjZldXNlYmJxdWV6cnhlbmo2Y2s0LmlwZnMuZHdlYi5saW5rP2V4dD0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOgDAQIAAABlDeYSX9s0rnt0tCP3wqtelERLeTcT+pkHWquHHRj7NwFiDUmu+U8sXOOZQXL36xmknL+Zzd/z3uw2G0ERMo8Eth4BAgABAf8BAAEBoivvbAzLh2kD2cSu6IQIqGQDGeoh/UEDizyp6mLT1tUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+          "base64"
+        ],
+        "executable": false,
+        "lamports": 5616720,
+        "owner": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
+        "rentEpoch": 361
+      }
+    },
+    "id": 1
+  })";
+  const std::string valid_metadata_response = R"({
+    "attributes": [
+      {
+        "trait_type": "hair",
+        "value": "green & blue"
+      },
+      {
+        "trait_type": "pontus",
+        "value": "no"
+      }
+    ],
+    "description": "",
+    "external_url": "",
+    "image": "https://bafkreiagsgqhjudpta6trhjuv5y2n2exsrhbkkprl64tvg2mftjsdm3vgi.ipfs.dweb.link?ext=png",
+    "name": "SPECIAL SAUCE",
+    "properties": {
+      "category": "image",
+      "creators": [
+        {
+          "address": "7oUUEdptZnZVhSet4qobU9PtpPfiNUEJ8ftPnrC6YEaa",
+          "share": 98
+        },
+        {
+          "address": "tsU33UT3K2JTfLgHUo7hdzRhRe4wth885cqVbM8WLiq",
+          "share": 2
+        }
+      ],
+      "files": [
+        {
+          "type": "image/png",
+          "uri": "https://bafkreiagsgqhjudpta6trhjuv5y2n2exsrhbkkprl64tvg2mftjsdm3vgi.ipfs.dweb.link?ext=png"
+        }
+      ],
+      "maxSupply": 0
+    },
+    "seller_fee_basis_points": 1000,
+    "symbol": ""
+  })";
+  auto network_url = GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL);
+  SetSolTokenMetadataInterceptor(
+      network_url, get_account_info_response,
+      GURL("https://"
+           "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
+           "dweb.link/?ext="),
+      valid_metadata_response);
+  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh",
+                          valid_metadata_response,
+                          mojom::SolanaProviderError::kSuccess, "");
+
+  // Invalid token_mint_address yields internal error.
+  SetSolTokenMetadataInterceptor(
+      network_url, get_account_info_response,
+      GURL("https://"
+           "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
+           "dweb.link/?ext="),
+      valid_metadata_response);
+  TestGetSolTokenMetadata("Invalid", "",
+                          mojom::SolanaProviderError::kInternalError,
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // Non 200 getAccountInfo response of yields internal server error.
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
+                          mojom::SolanaProviderError::kInternalError,
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // Invalid getAccountInfo response JSON yields internal error
+  SetSolTokenMetadataInterceptor(
+      network_url, "Invalid json response",
+      GURL("https://"
+           "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
+           "dweb.link/?ext="),
+      valid_metadata_response);
+  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
+                          mojom::SolanaProviderError::kInternalError,
+                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // Valid response JSON, invalid account info (missing result.value.owner
+  // field) info yields parse error
+  get_account_info_response = R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.13.3",
+        "slot": 161038284
+      },
+      "value": {
+        "data": [
+          "BGUN5hJf2zSue3S0I/fCq16UREt5NxP6mQdaq4cdGPs3Q8PG/R6KFUSgce78Nwk9Frvkd9bMbvTIKCRSDy88nZQgAAAAU1BFQ0lBTCBTQVVDRQAAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAMgAAABodHRwczovL2JhZmtyZWlmNHd4NTR3anI3cGdmdWczd2xhdHIzbmZudHNmd25ndjZldXNlYmJxdWV6cnhlbmo2Y2s0LmlwZnMuZHdlYi5saW5rP2V4dD0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOgDAQIAAABlDeYSX9s0rnt0tCP3wqtelERLeTcT+pkHWquHHRj7NwFiDUmu+U8sXOOZQXL36xmknL+Zzd/z3uw2G0ERMo8Eth4BAgABAf8BAAEBoivvbAzLh2kD2cSu6IQIqGQDGeoh/UEDizyp6mLT1tUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+          "base64"
+        ],
+        "executable": false,
+        "lamports": 5616720,
+        "rentEpoch": 361
+      }
+    },
+    "id": 1
+  })";
+  SetSolTokenMetadataInterceptor(
+      network_url, get_account_info_response,
+      GURL("https://"
+           "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
+           "dweb.link/?ext="),
+      valid_metadata_response);
+  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
+                          mojom::SolanaProviderError::kParsingError,
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // Valid response JSON, parsable account info, but invalid account info data
+  // (invalid base64) yields parse error
+  get_account_info_response = R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.13.3",
+        "slot": 161038284
+      },
+      "value": {
+        "data": [
+          "*Invalid Base64*",
+          "base64"
+        ],
+        "executable": false,
+        "lamports": 5616720,
+        "owner": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
+        "rentEpoch": 361
+      }
+    },
+    "id": 1
+  })";
+  SetSolTokenMetadataInterceptor(
+      network_url, get_account_info_response,
+      GURL("https://"
+           "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
+           "dweb.link/?ext="),
+      valid_metadata_response);
+  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
+                          mojom::SolanaProviderError::kParsingError,
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // Valid response JSON, parsable account info, invalid account info data
+  // (valid base64, but invalid borsh encoded metadata) yields parse error
+  get_account_info_response = R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.13.3",
+        "slot": 161038284
+      },
+      "value": {
+        "data": [
+          "d2hvb3BzIQ==",
+          "base64"
+        ],
+        "executable": false,
+        "lamports": 5616720,
+        "owner": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
+        "rentEpoch": 361
+      }
+    },
+    "id": 1
+  })";
+  SetSolTokenMetadataInterceptor(
+      network_url, get_account_info_response,
+      GURL("https://"
+           "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
+           "dweb.link/?ext="),
+      valid_metadata_response);
+  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
+                          mojom::SolanaProviderError::kParsingError,
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // Valid response JSON, parsable account info, invalid account info data
+  // (valid base64, valid borsh encoding, but when decoded the URI is not a
+  // valid URI)
+  get_account_info_response = R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.13.3",
+        "slot": 161038284
+      },
+      "value": {
+        "data": [
+          "BGUN5hJf2zSue3S0I/fCq16UREt5NxP6mQdaq4cdGPs3Q8PG/R6KFUSgce78Nwk9Frvkd9bMbvTIKCRSDy88nZQgAAAAU1BFQ0lBTCBTQVVDRQAAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAAsAAABpbnZhbGlkIHVybOgDAQIAAABlDeYSX9s0rnt0tCP3wqtelERLeTcT+pkHWquHHRj7NwFiDUmu+U8sXOOZQXL36xmknL+Zzd/z3uw2G0ERMo8Eth4BAgABAf8BAAEBoivvbAzLh2kD2cSu6IQIqGQDGeoh/UEDizyp6mLT1tUA",
+          "base64"
+        ],
+        "executable": false,
+        "lamports": 5616720,
+        "owner": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
+        "rentEpoch": 361
+      }
+    },
+    "id": 1
+  })";
+  SetSolTokenMetadataInterceptor(
+      network_url, get_account_info_response,
+      GURL("https://"
+           "bafkreif4wx54wjr7pgfug3wlatr3nfntsfwngv6eusebbquezrxenj6ck4.ipfs."
+           "dweb.link/?ext="),
+      valid_metadata_response);
+  TestGetSolTokenMetadata("5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh", "",
+                          mojom::SolanaProviderError::kParsingError,
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetEthTokenUri) {
+  // Invalid contract address input
+  TestGetEthTokenUri("", "0x1", mojom::kMainnetChainId,
+                     kERC721MetadataInterfaceId, GURL(),
+                     mojom::ProviderError::kInvalidParams,
+                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Invalid token ID input
+  TestGetEthTokenUri("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "",
+                     mojom::kMainnetChainId, kERC721MetadataInterfaceId, GURL(),
+                     mojom::ProviderError::kInvalidParams,
+                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Invalid chain ID input
+  TestGetEthTokenUri("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1", "",
+                     kERC721MetadataInterfaceId, GURL(),
+                     mojom::ProviderError::kInvalidParams,
+                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Unknown interfaceID input
+  TestGetEthTokenUri("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+                     mojom::kMainnetChainId, "invalid interface", GURL(),
+                     mojom::ProviderError::kInvalidParams,
+                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Valid inputs but HTTP Timeout
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetEthTokenUri("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                     mojom::kMainnetChainId, kERC721MetadataInterfaceId, GURL(),
+                     mojom::ProviderError::kInternalError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // Valid inputs, request exceeds limit response
+  SetLimitExceededJsonErrorResponse();
+  TestGetEthTokenUri("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                     mojom::kMainnetChainId, kERC721MetadataInterfaceId, GURL(),
+                     mojom::ProviderError::kLimitExceeded,
+                     "Request exceeds defined limit");
+
+  // Valid inputs, invalid provider JSON
+  SetInvalidJsonInterceptor();
+  TestGetEthTokenUri("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                     mojom::kMainnetChainId, kERC721MetadataInterfaceId, GURL(),
+                     mojom::ProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // Valid inputs, valid RPC response JSON, valid RLP encoding, invalid URI
+  SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+                 "eth_call", "", R"({
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000b696e76616c69642075726c000000000000000000000000000000000000000000"
+  })");
+  TestGetEthTokenUri("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                     mojom::kMainnetChainId, kERC721MetadataInterfaceId, GURL(),
+                     mojom::ProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // All valid
+  SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+                 "eth_call", "", R"({
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002468747470733a2f2f696e76697369626c65667269656e64732e696f2f6170692f3138313700000000000000000000000000000000000000000000000000000000"
+  })");
+  TestGetEthTokenUri("0x59468516a8259058bad1ca5f8f4bff190d30e066", "0x719",
+                     mojom::kMainnetChainId, kERC721MetadataInterfaceId,
+                     GURL("https://invisiblefriends.io/api/1817"),
+                     mojom::ProviderError::kSuccess, "");
 }
 
 }  // namespace brave_wallet
