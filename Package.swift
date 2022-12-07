@@ -40,7 +40,7 @@ let package = Package(
     .package(url: "https://github.com/SwiftyJSON/SwiftyJSON", from: "5.0.0"),
     .package(url: "https://github.com/airbnb/lottie-ios", from: "3.1.9"),
     .package(url: "https://github.com/jrendel/SwiftKeychainWrapper", from: "4.0.1"),
-    .package(url: "https://github.com/SDWebImage/SDWebImage", from: "5.10.2"),
+    .package(url: "https://github.com/SDWebImage/SDWebImage", exact: "5.10.3"),
     .package(url: "https://github.com/SDWebImage/SDWebImageSVGNativeCoder", from: "0.1.1"),
     .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI", from: "2.2.0"),
     .package(url: "https://github.com/nmdias/FeedKit", from: "9.1.2"),
