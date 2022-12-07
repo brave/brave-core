@@ -52,6 +52,7 @@ int BraveTabMenuModel::GetRestoreTabCommandStringId() const {
 }
 
 void BraveTabMenuModel::Build() {
+  AddCheckItemWithStringId(CommandToggleTabMuted, IDS_TAB_CXMENU_TOGGLE_TAB_MUTED);
   AddSeparator(ui::NORMAL_SEPARATOR);
   AddItemWithStringId(CommandRestoreTab, GetRestoreTabCommandStringId());
   AddItemWithStringId(CommandBookmarkAllTabs, IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);

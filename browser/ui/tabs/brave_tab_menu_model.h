@@ -27,6 +27,7 @@ class BraveTabMenuModel : public TabMenuModel {
     CommandShowVerticalTabs,
     CommandShowTitleBar,
     CommandUseFloatingVerticalTabStrip,
+    CommandToggleTabMuted,
     CommandLast,
   };
 

@@ -15,6 +15,7 @@
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/tabs/tab_utils.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "components/sessions/core/tab_restore_service.h"
 #include "ui/views/controls/menu/menu_runner.h"
@@ -24,6 +25,7 @@ BraveTabContextMenuContents::BraveTabContextMenuContents(
     BraveBrowserTabStripController* controller,
     int index)
     : tab_(tab),
+      tab_index_(index),
       browser_(const_cast<Browser*>(controller->browser())),
       controller_(controller) {
   model_ = std::make_unique<BraveTabMenuModel>(
@@ -42,9 +44,8 @@ void BraveTabContextMenuContents::Cancel() {
   controller_ = nullptr;
 }
 
-void BraveTabContextMenuContents::RunMenuAt(
-    const gfx::Point& point,
-    ui::MenuSourceType source_type) {
+void BraveTabContextMenuContents::RunMenuAt(const gfx::Point& point,
+                                            ui::MenuSourceType source_type) {
   menu_runner_->RunMenuAt(tab_->GetWidget(), nullptr,
                           gfx::Rect(point, gfx::Size()),
                           views::MenuAnchorPosition::kTopLeft, source_type);
@@ -72,8 +73,7 @@ bool BraveTabContextMenuContents::IsCommandIdEnabled(int command_id) const {
     return IsBraveCommandIdEnabled(command_id);
 
   return controller_->IsCommandEnabledForTab(
-      static_cast<TabStripModel::ContextMenuCommand>(command_id),
-      tab_);
+      static_cast<TabStripModel::ContextMenuCommand>(command_id), tab_);
 }
 
 bool BraveTabContextMenuContents::IsCommandIdVisible(int command_id) const {
@@ -111,8 +111,7 @@ void BraveTabContextMenuContents::ExecuteCommand(int command_id,
   // Executing the command destroys |this|, and can also end up destroying
   // |controller_|. So stop the highlights before executing the command.
   controller_->ExecuteCommandForTab(
-      static_cast<TabStripModel::ContextMenuCommand>(command_id),
-      tab_);
+      static_cast<TabStripModel::ContextMenuCommand>(command_id), tab_);
 }
 
 bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
@@ -130,6 +129,8 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
     case BraveTabMenuModel::CommandShowTitleBar:
     case BraveTabMenuModel::CommandShowVerticalTabs:
     case BraveTabMenuModel::CommandUseFloatingVerticalTabStrip:
+      return true;
+    case BraveTabMenuModel::CommandToggleTabMuted:
       return true;
     default:
       NOTREACHED();
@@ -159,6 +160,10 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
     }
     case BraveTabMenuModel::CommandUseFloatingVerticalTabStrip: {
       brave::ToggleVerticalTabStripFloatingMode(browser_);
+      return;
+    }
+    case BraveTabMenuModel::CommandToggleTabMuted: {
+      controller_->ToggleTabAudioMute(tab_index_);
       return;
     }
     default:
