@@ -15,7 +15,6 @@ export interface ExternalWallet {
   username: string
   links: {
     account?: string
-    addFunds?: string
     reconnect?: string
   }
 }
@@ -90,7 +89,6 @@ export function externalWalletFromExtensionData (
     username: String(data.userName || ''),
     links: {
       account: String(data.accountUrl || ''),
-      addFunds: String(data.addUrl || ''),
       reconnect: String(data.loginUrl || '')
     }
   }

@@ -90,8 +90,6 @@ interface BatLedger {
   RemoveRecurringTip(string publisher_key) => (ledger.mojom.Result result);
   GetCreationStamp() => (uint64 boot_stamp);
 
-  HasSufficientBalanceToReconcile() => (bool sufficient);
-
   GetRewardsInternalsInfo() => (ledger.mojom.RewardsInternalsInfo info);
 
   SaveRecurringTip(ledger.mojom.RecurringTip info) => (ledger.mojom.Result result);

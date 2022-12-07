@@ -147,8 +147,6 @@ export function createHost (): Host {
 
     const { links } = externalWallet
     switch (action) {
-      case 'add-funds':
-        return links.addFunds || links.account || ''
       case 'reconnect':
         return links.reconnect || ''
       case 'verify':
@@ -513,9 +511,6 @@ export function createHost (): Host {
           break
         case 'claim-grant':
           loadGrantCaptcha((action as ClaimGrantAction).grantId, 'pending')
-          break
-        case 'add-funds':
-          handleExternalWalletAction('add-funds')
           break
         case 'reconnect-external-wallet':
           handleExternalWalletAction('reconnect')

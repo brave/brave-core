@@ -6,13 +6,11 @@ import { ExternalWalletProvider } from '../../lib/external_wallet'
 import { GrantInfo } from '../../lib/grant_info'
 
 export type NotificationType =
-  'add-funds' |
   'auto-contribute-completed' |
   'monthly-tip-completed' |
   'monthly-contribution-failed' |
   'grant-available' |
   'pending-publisher-verified' |
-  'pending-tip-failed' |
   'external-wallet-disconnected' |
   'uphold-bat-not-allowed' |
   'uphold-insufficient-capabilities'
@@ -30,7 +28,7 @@ export interface AutoContributeCompletedNotification extends Notification {
 
 export interface MonthlyContributionFailedNotification extends Notification {
   type: 'monthly-contribution-failed'
-  reason: 'insufficient-funds' | 'unknown'
+  reason: 'unknown'
 }
 
 export interface GrantAvailableNotification extends Notification {
@@ -41,11 +39,6 @@ export interface GrantAvailableNotification extends Notification {
 export interface PendingPublisherVerifiedNotification extends Notification {
   type: 'pending-publisher-verified'
   publisherName: string
-}
-
-export interface PendingTipFailedNotification extends Notification {
-  type: 'pending-tip-failed'
-  reason: 'insufficient-funds'
 }
 
 export interface ExternalWalletDisconnectedNotification extends Notification {
@@ -66,7 +59,6 @@ export interface UpholdInsufficientCapabilitiesNotification extends Notification
 export type NotificationActionType =
   'open-link' |
   'claim-grant' |
-  'add-funds' |
   'reconnect-external-wallet'
 
 export interface NotificationAction {

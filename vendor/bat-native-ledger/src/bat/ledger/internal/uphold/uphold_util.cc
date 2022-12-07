@@ -60,28 +60,6 @@ std::string GetLoginUrl(const std::string& state) {
       url.c_str(), id.c_str(), state.c_str());
 }
 
-std::string GetAddUrl(const std::string& address) {
-  const std::string url = GetUrl();
-
-  if (address.empty()) {
-    return "";
-  }
-
-  return base::StringPrintf("%s/dashboard/cards/%s/add", url.c_str(),
-                            address.c_str());
-}
-
-std::string GetWithdrawUrl(const std::string& address) {
-  const std::string url = GetUrl();
-
-  if (address.empty()) {
-    return "";
-  }
-
-  return base::StringPrintf("%s/dashboard/cards/%s/use", url.c_str(),
-                            address.c_str());
-}
-
 std::string GetAccountUrl() {
   const std::string url = GetUrl();
 
@@ -106,14 +84,10 @@ mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
 
   wallet->account_url = GetAccountUrl();
   wallet->activity_url = "";
-  wallet->add_url = "";
   wallet->login_url = GetLoginUrl(wallet->one_time_string);
-  wallet->withdraw_url = "";
 
   if (wallet->status == mojom::WalletStatus::kConnected) {
     wallet->activity_url = GetActivityUrl(wallet->address);
-    wallet->add_url = GetAddUrl(wallet->address);
-    wallet->withdraw_url = GetWithdrawUrl(wallet->address);
   }
 
   return wallet;

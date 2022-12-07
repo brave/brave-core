@@ -174,7 +174,6 @@ public class BraveRewardsPanel
         DO_NOTHING,
         RECONNECT,
         CLAIM,
-        ADD_FUNDS,
         TURN_ON_ADS;
     }
 
@@ -199,7 +198,6 @@ public class BraveRewardsPanel
     private LinearLayout mBtnSummary;
     private ImageView mImgSummary;
     private TextView mTextSummary;
-    private TextView mBtnAddFunds;
     private SwitchCompat mSwitchAutoContribute;
 
     private Timer mBalanceUpdater;
@@ -371,12 +369,6 @@ public class BraveRewardsPanel
             mActivity.startActivityForResult(intent, BraveConstants.SITE_BANNER_REQUEST_CODE);
         });
 
-        mBtnAddFunds = mPopupView.findViewById(R.id.btn_add_funds);
-        mBtnAddFunds.setOnClickListener(view -> {
-            dismiss();
-            mBraveActivity.openNewOrSelectExistingTab(mExternalWallet.getAddUrl());
-        });
-
         mBtnTip = mPopupView.findViewById(R.id.tip_btn);
         mImgTip = mPopupView.findViewById(R.id.tip_img);
         mTextTip = mPopupView.findViewById(R.id.tip_text);
@@ -479,7 +471,6 @@ public class BraveRewardsPanel
                 break;
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT:
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT_ADS:
-            case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS:
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_TIPS_PROCESSED:
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_ADS_ONBOARDING:
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_PENDING_NOT_ENOUGH_FUNDS:
@@ -573,13 +564,6 @@ public class BraveRewardsPanel
                                         R.string.brave_ui_rewards_contribute_description),
                                 valueString);
                         break;
-                    case AUTO_CONTRIBUTE_NOT_ENOUGH_FUNDS: // Not enough funds
-                        title = mPopupView.getResources().getString(
-                                R.string.monthly_tip_failed_notification_title);
-                        notificationIcon = R.drawable.ic_notification_error;
-                        description = mPopupView.getResources().getString(
-                                R.string.monthly_tip_failed_no_funds_notification_text);
-                        break;
                     case AUTO_CONTRIBUTE_GENERAL_ERROR: // General error
                         title = mPopupView.getResources().getString(
                                 R.string.monthly_tip_failed_notification_title);
@@ -637,18 +621,6 @@ public class BraveRewardsPanel
                 notificationClaimSubText.setText(
                         BraveRewardsHelper.spannedFromHtmlString(grantAdsMessage));
                 break;
-            case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS: // Add funds
-                notificationClaimImg.setVisibility(View.GONE);
-                notificationClaimSubText.setVisibility(View.GONE);
-                actionNotificationButton.setText(
-                        mPopupView.getResources().getString(R.string.add_funds));
-                notificationClickAction = NotificationClickAction.ADD_FUNDS;
-                notificationIcon = R.drawable.ic_info_rewards;
-                title = mPopupView.getResources().getString(
-                        R.string.brave_ui_insufficient_funds_msg);
-                description = mPopupView.getResources().getString(
-                        R.string.brave_ui_insufficient_funds_desc);
-                break;
             case BraveRewardsNativeWorker
                     .REWARDS_NOTIFICATION_TIPS_PROCESSED: // Monthly tip completed
                 notificationClaimImg.setVisibility(View.GONE);
@@ -683,18 +655,6 @@ public class BraveRewardsPanel
                 description = mPopupView.getResources().getString(
                         R.string.brave_ui_verified_publisher_notification, pubName);
                 notificationIcon = R.drawable.ic_notification_pending;
-                break;
-            case BraveRewardsNativeWorker
-                    .REWARDS_NOTIFICATION_PENDING_NOT_ENOUGH_FUNDS: // Pending tip failed
-                notificationClaimImg.setVisibility(View.GONE);
-                notificationClaimSubText.setVisibility(View.GONE);
-                notificationIcon = R.drawable.ic_notification_error;
-                actionNotificationButton.setText(mPopupView.getResources().getString(R.string.ok));
-                notificationClickAction = NotificationClickAction.DO_NOTHING;
-                title = mPopupView.getResources().getString(
-                        R.string.brave_ui_insufficient_funds_msg);
-                description = mPopupView.getResources().getString(
-                        R.string.brave_ui_insufficient_funds_pending_tips_desc);
                 break;
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GENERAL_LEDGER:
                 notificationClaimImg.setVisibility(View.GONE);
@@ -822,17 +782,6 @@ public class BraveRewardsPanel
                     mBraveRewardsNativeWorker.GetGrant(promId);
                     mWalletBalanceLayout.setAlpha(0.4f);
                     mWalletBalanceProgress.setVisibility(View.VISIBLE);
-                }
-            });
-        } else if (notificationClickAction == NotificationClickAction.ADD_FUNDS) {
-            actionNotificationButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mBraveRewardsNativeWorker.DeleteNotification(mCurrentNotificationId);
-                    if (mBraveActivity != null && mExternalWallet != null) {
-                        mBraveActivity.openNewOrSelectExistingTab(mExternalWallet.getAddUrl());
-                    }
-                    dismiss();
                 }
             });
         } else if (notificationClickAction == NotificationClickAction.RECONNECT) {
@@ -1849,11 +1798,6 @@ public class BraveRewardsPanel
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
                 btnVerifyWallet.setBackgroundColor(Color.TRANSPARENT);
                 verifyWalletArrowImg.setVisibility(View.VISIBLE);
-
-                // show Add funds button
-                if (mBtnAddFunds != null) {
-                    mBtnAddFunds.setVisibility(View.VISIBLE);
-                }
                 break;
             case WalletStatus.LOGGED_OUT:
                 rightDrawable = getWalletIcon(walletType);
@@ -1870,12 +1814,6 @@ public class BraveRewardsPanel
         btnVerifyWallet.setVisibility(View.VISIBLE);
         btnVerifyWallet.setText(mPopupView.getResources().getString(textId));
         setVerifyWalletButtonClickEvent(btnVerifyWallet, status);
-
-        // Update add funds button based on status
-        if (status != WalletStatus.CONNECTED) {
-            mBtnAddFunds.setEnabled(false);
-            return;
-        }
     }
 
     private void setVerifyWalletButtonClickEvent(View btnVerifyWallet, final int status) {
@@ -2187,13 +2125,11 @@ public class BraveRewardsPanel
 
         Intent intent = new Intent(ContextUtils.getApplicationContext(), clazz);
         intent.putExtra(BraveRewardsExternalWallet.ACCOUNT_URL, mExternalWallet.getAccountUrl());
-        intent.putExtra(BraveRewardsExternalWallet.ADD_URL, mExternalWallet.getAddUrl());
         intent.putExtra(BraveRewardsExternalWallet.ADDRESS, mExternalWallet.getAddress());
         intent.putExtra(BraveRewardsExternalWallet.LOGIN_URL, mExternalWallet.getLoginUrl());
         intent.putExtra(BraveRewardsExternalWallet.STATUS, mExternalWallet.getStatus());
         intent.putExtra(BraveRewardsExternalWallet.TOKEN, mExternalWallet.getToken());
         intent.putExtra(BraveRewardsExternalWallet.USER_NAME, mExternalWallet.getUserName());
-        intent.putExtra(BraveRewardsExternalWallet.WITHDRAW_URL, mExternalWallet.getWithdrawUrl());
         return intent;
     }
 

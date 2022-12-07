@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 
-import { Locale, LocaleContext, formatMessage } from '../../shared/lib/locale_context'
+import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
 import { TipKind } from '../lib/interfaces'
 import { HostContext } from '../lib/host_context'
 
@@ -13,7 +13,6 @@ import { CustomTipAmount } from './custom_tip_amount'
 import { ExchangeAmount } from '../../shared/components/exchange_amount'
 import { TipAmountSelector, TipAmountOption } from './tip_amount_selector'
 import { TermsOfService } from '../../shared/components/terms_of_service'
-import { NewTabLink } from '../../shared/components/new_tab_link'
 import { FormSubmitButton } from './form_submit_button'
 
 import { SadFaceIcon } from './icons/sad_face'
@@ -26,26 +25,6 @@ import * as style from './bat_tip_form.style'
 const minimumTip = 0.25
 const maximumTip = 100
 const tipAmountStep = 0.25
-
-function getInsufficientFundsMessage (locale: Locale) {
-  const { getString } = locale
-
-  return (
-    <>
-      {
-        formatMessage(getString('notEnoughTokens'), {
-          tags: {
-            $1: (content) => (
-              <NewTabLink key='add' href='chrome://rewards/#add-funds'>
-                {content}
-              </NewTabLink>
-            )
-          }
-        })
-      }
-    </>
-  )
-}
 
 interface Props {
   tipKind: TipKind
@@ -178,7 +157,7 @@ export function BatTipForm (props: Props) {
             </style.minimumAmount>
           : props.tipKind === 'one-time' && tipAmount > props.userBalance
             ? <style.notEnoughFunds>
-              <SadFaceIcon /> {getInsufficientFundsMessage(locale)}
+              <SadFaceIcon /> {getString('notEnoughTokens')}
             </style.notEnoughFunds>
           : showCustomInput
             ? <FormSubmitButton onClick={onSubmitCustomTip}>

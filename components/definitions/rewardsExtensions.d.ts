@@ -185,8 +185,6 @@ declare namespace RewardsExtension {
     address: string
     status: WalletStatus
     type: WalletType
-    addUrl: string
-    withdrawUrl: string
     userName: string
     accountUrl: string
     loginUrl: string

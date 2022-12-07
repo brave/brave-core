@@ -58,12 +58,9 @@ export const localeStrings = {
   captchaMaxAttemptsExceededText: 'Looks like this is not working, Brave ads will remain paused. Contact us if you need help with the captcha.',
   captchaContactSupport: 'Contact support',
 
-  notificationAddFunds: 'Add Funds',
   notificationReconnect: 'Reconnect',
   notificationClaimRewards: 'Claim Rewards',
   notificationClaimTokens: 'Claim Tokens',
-  notificationAddFundsTitle: 'Insufficient Funds',
-  notificationAddFundsText: 'Your Brave Rewards account is waiting for a deposit.',
   notificationAutoContributeCompletedTitle: 'Auto-Contribute',
   notificationAutoContributeCompletedText: 'You\'ve contributed $1.',
   notificationWalletDisconnectedTitle: 'You are logged out',
@@ -77,13 +74,10 @@ export const localeStrings = {
   notificationAdGrantAmount: '$1 Rewards: $2',
   notificationAdGrantTitle: 'Your $1 Ad Rewards are here!',
   notificationGrantDaysRemaining: 'You have $1 left to claim',
-  notificationInsufficientFundsText: 'Your scheduled monthly payment for Auto-Contribute and monthly contributions could not be completed due to insufficient funds. We’ll try again in 30 days.',
   notificationMonthlyContributionFailedText: 'There was a problem processing your contribution.',
   notificationMonthlyContributionFailedTitle: 'Monthly contribution failed',
   notificationMonthlyTipCompletedTitle: 'Contributions and tips',
   notificationMonthlyTipCompletedText: 'Your monthly contributions have been processed.',
   notificationPublisherVerifiedTitle: 'Pending contribution',
-  notificationPublisherVerifiedText: 'Creator $1 recently verified.',
-  notificationPendingTipFailedTitle: 'Insufficient funds',
-  notificationPendingTipFailedText: 'You have pending tips due to insufficient funds'
+  notificationPublisherVerifiedText: 'Creator $1 recently verified.'
 }

@@ -31,7 +31,7 @@ export const localeStrings = {
   monthlyText: 'Monthly',
   nextTipDate: 'Next tip date:',
   notEnoughPoints: 'Not enough points.',
-  notEnoughTokens: 'Not enough tokens. Please $1add funds$2.',
+  notEnoughTokens: 'Not enough tokens.',
   on: 'on',
   oneTimeTip: 'One-Time Tip',
   oneTimeTipAmount: 'One-time tip amount:',

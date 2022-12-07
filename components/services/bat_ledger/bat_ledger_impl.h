@@ -118,8 +118,6 @@ class BatLedgerImpl :
       const std::string& publisher_key,
       RemoveRecurringTipCallback callback) override;
   void GetCreationStamp(GetCreationStampCallback callback) override;
-  void HasSufficientBalanceToReconcile(
-      HasSufficientBalanceToReconcileCallback callback) override;
 
   void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) override;
@@ -320,10 +318,6 @@ class BatLedgerImpl :
   static void OnGetPendingContributionsTotal(
     CallbackHolder<GetPendingContributionsTotalCallback>* holder,
     double amount);
-
-  static void OnHasSufficientBalanceToReconcile(
-    CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,
-    bool sufficient);
 
   static void OnGetTransactionReport(
       CallbackHolder<GetTransactionReportCallback>* holder,

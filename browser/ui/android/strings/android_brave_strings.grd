@@ -756,9 +756,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_USD" desc="USD value of tokens">
         <ph name="VALUE">%1$s<ex>0.0</ex></ph> USD
       </message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_ADD_FUNDS" desc="Add Funds button text">
-        Add Funds
-      </message>
       <message name="IDS_BRAVE_UI_SETTINGS" desc="Settings button text">
         Settings
       </message>
@@ -794,15 +791,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BRAVE_ADS_NOTIFICATION_SUB_TEXT" desc='Brave Ads notification sub text'>
         You have <ph name="TOKEN">%1$s<ex>89</ex></ph> days left to claim
-      </message>
-      <message name="IDS_BRAVE_UI_INSUFFICIENT_FUNDS_MSG" desc="A message about not enough funds">
-        Insufficient Funds
-      </message>
-      <message name="IDS_BRAVE_UI_INSUFFICIENT_FUNDS_DESC" desc="A notification message about not enough funds">
-        Your Brave Rewards account is waiting for a deposit.
-      </message>
-      <message name="IDS_BRAVE_UI_INSUFFICIENT_FUNDS_PENDING_TIPS_DESC" desc="A notification message about not enough funds">
-        You have pending tips due to insufficient funds.
       </message>
       <message name="IDS_BRAVE_WALLET_PORTFOLIO_BALANCE_UPDATING" desc="A placeholder to display for unupdated balance" translateable="false">
         ...
@@ -1169,9 +1157,6 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_USER_WALLET_GOTO_PROVIDER">
         Go to my <ph name="WALLET_PROVIDER">%1$s</ph> account
-      </message>
-      <message name="IDS_USER_WALLET_WITHDRAW_FUNDS">
-        Withdraw Funds
       </message>
       <message name="IDS_USER_WALLET_STATUS_NOT_CONNECTED">
         Not connected
@@ -2544,9 +2529,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_CONTRACT_ADDRESS_ERROR" desc="Send input trying to send crypto to a tokens contract address">
       The receiving address is a token's contract address
     </message>
-    <message name="IDS_ADD_FUNDS" desc="Text for `Add funds` button in Brave rewards panel">
-      Add funds
-    </message>
     <message name="IDS_REWARDS_SUMMARY" desc="Text for `Rewards Summary` button in Brave rewards panel">
       Rewards Summary
     </message>
@@ -3317,9 +3299,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_MONTHLY_TIP_FAILED_NOTIFICATION_TEXT" desc="Rewards panel monthly tip failed notification text">
       There was a problem processing your contribution.
-    </message>
-    <message name="IDS_MONTHLY_TIP_FAILED_NO_FUNDS_NOTIFICATION_TEXT" desc="Rewards panel monthly tip failed no funds notification text">
-      Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due tu insufficient funds. We’ll try again in 30 days.
     </message>
     <message name="IDS_BAT_UNAVAILABLE_NOTIFICATION_TITLE" desc="Rewards panel BAT unavailable notification title">
       Error: BAT unavailable

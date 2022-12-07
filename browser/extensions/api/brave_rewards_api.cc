@@ -1249,8 +1249,6 @@ void BraveRewardsGetExternalWalletFunction::OnGetExternalWallet(
   data.Set("type", wallet->type);
   data.Set("address", wallet->address);
   data.Set("status", static_cast<int>(wallet->status));
-  data.Set("addUrl", wallet->add_url);
-  data.Set("withdrawUrl", wallet->withdraw_url);
   data.Set("userName", wallet->user_name);
   data.Set("accountUrl", wallet->account_url);
   data.Set("loginUrl", wallet->login_url);

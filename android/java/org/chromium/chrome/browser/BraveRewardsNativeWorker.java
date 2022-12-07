@@ -41,7 +41,6 @@ public class BraveRewardsNativeWorker {
     public static final int REWARDS_NOTIFICATION_GRANT_ADS = 3;
     public static final int REWARDS_NOTIFICATION_FAILED_CONTRIBUTION = 4;
     public static final int REWARDS_NOTIFICATION_IMPENDING_CONTRIBUTION = 5;
-    public static final int REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS = 6;
     public static final int REWARDS_NOTIFICATION_TIPS_PROCESSED = 8;
     public static final int REWARDS_NOTIFICATION_ADS_ONBOARDING = 9;
     public static final int REWARDS_NOTIFICATION_VERIFIED_PUBLISHER = 10;
