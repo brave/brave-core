@@ -572,6 +572,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   };
 
   html_source->AddLocalizedStrings(localized_strings);
+  html_source->AddString("braveShieldsExampleTemplate", "example.com");
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
   html_source->AddString("ipfsDNSLinkLearnMoreURL", kDNSLinkLearnMoreURL);
