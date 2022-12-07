@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 #include <algorithm>
 #include <iterator>
+#include <string>
 #include <vector>
 
 #include "brave/browser/ui/browser_commands.h"
@@ -183,11 +184,10 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
           indices.begin(), indices.end(), std::back_inserter(contentses),
           [&model](int index) { return model->GetWebContentsAt(index); });
 
-      auto all_muted =
-          std::all_of(contentses.begin(), contentses.end(),
-                      [](content::WebContents* contents) {
-                        return contents->IsAudioMuted();
-                      });
+      auto all_muted = std::all_of(contentses.begin(), contentses.end(),
+                                   [](content::WebContents* contents) {
+                                     return contents->IsAudioMuted();
+                                   });
 
       for (auto* contents : contentses) {
         chrome::SetTabAudioMuted(contents, !all_muted,

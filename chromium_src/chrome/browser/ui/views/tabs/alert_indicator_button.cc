@@ -24,14 +24,13 @@ void AlertIndicatorButton::UpdateEnabledForMuteToggle() {
   const bool pref_enabled =
       profile->GetPrefs()->GetBoolean(kBraveTabsMuteIndicatorClickable);
 
-  // Upstream has clickable mute indicators disabled by default. Thus, if and
-  // only if our pref is enabled (and the mute button isn't) we should set
-  // enabled to true.
-  // Note: We have a test which checks the feature is disabled by default. If
+  // We have clickable mute indicators enabled by default. Thus, if our pref is
+  // disabled we can force the indicator off.
+  // Note: We have a test which checks the feature is enabled by default. If
   // that changes this may need to as well.
-  if (pref_enabled) {
+  if (!pref_enabled) {
     if (was_enabled != pref_enabled)
-      SetEnabled(true);
+      SetEnabled(false);
     return;
   }
   AlertIndicatorButtonBase::UpdateEnabledForMuteToggle();
