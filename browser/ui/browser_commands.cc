@@ -18,7 +18,6 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/debounce/browser/debounce_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -273,11 +272,9 @@ void ToggleActiveTabAudioMute(Browser* browser) {
 }
 
 void ToggleSidebarPosition(Browser* browser) {
-#if BUILDFLAG(ENABLE_SIDEBAR)
   auto* prefs = browser->profile()->GetPrefs();
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment,
                     !prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
-#endif
 }
 
 }  // namespace brave

@@ -15,12 +15,12 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
@@ -36,10 +36,6 @@
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SIDEBAR)
-#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -197,12 +193,10 @@ void BraveBrowserCommandController::UpdateCommandForTor() {
 #endif
 
 void BraveBrowserCommandController::UpdateCommandForSidebar() {
-#if BUILDFLAG(ENABLE_SIDEBAR)
   if (sidebar::CanUseSidebar(browser_)) {
     UpdateCommandEnabled(IDC_SIDEBAR_SHOW_OPTION_MENU, true);
     UpdateCommandEnabled(IDC_SIDEBAR_TOGGLE_POSITION, true);
   }
-#endif
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
@@ -315,11 +309,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_MANAGE_BRAVE_VPN_PLAN:
       brave::OpenBraveVPNUrls(browser_, id);
       break;
-#if BUILDFLAG(ENABLE_SIDEBAR)
     case IDC_SIDEBAR_TOGGLE_POSITION:
       brave::ToggleSidebarPosition(browser_);
       break;
-#endif
     case IDC_COPY_CLEAN_LINK:
       brave::CopySanitizedURL(
           browser_,
