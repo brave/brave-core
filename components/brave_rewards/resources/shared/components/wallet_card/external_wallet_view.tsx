@@ -11,7 +11,7 @@ import { GeminiIcon } from '../icons/gemini_icon'
 import { BitflyerIcon } from '../icons/bitflyer_icon'
 import { UpholdIcon } from '../icons/uphold_icon'
 import { CaretIcon } from '../icons/caret_icon'
-import { ArrowCircleIcon } from './icons/arrow_circle_icon'
+import { ArrowNextIcon } from '../icons/arrow_next_icon'
 import { ExternalWalletBubble } from './external_wallet_bubble'
 
 import * as style from './external_wallet_view.style'
@@ -62,7 +62,7 @@ export function ExternalWalletView (props: Props) {
               {getString('walletUnverified')}
             </style.buttonText>
             <style.buttonIcons>
-              <ArrowCircleIcon />
+              <ArrowNextIcon />
             </style.buttonIcons>
           </button>
         </style.verifyWallet>

@@ -254,7 +254,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, NotVerifiedWallet) {
         uphold_auth_url(), 1);
 
   rewards_browsertest_util::WaitForElementToContain(
-      contents(), "[data-test-id=external-wallet-status-text]", "Verified");
+      contents(), "[data-test-id=external-wallet-status-text]", "Connected");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {

@@ -19,8 +19,8 @@ export const localeStrings = {
   walletPendingContributions: 'Pending contributions',
   walletRewardsFromAds: 'Rewards from Ads',
   walletRewardsSummary: 'Rewards Summary',
-  walletUnverified: 'Unverified',
+  walletUnverified: 'Connect',
   walletViewStatement: 'View statement',
-  walletVerified: 'Verified',
+  walletVerified: 'Connected',
   walletYourBalance: 'Your Balance'
 }
