@@ -42,7 +42,7 @@ CreateConfirmationUrlRequestBuilder::CreateConfirmationUrlRequestBuilder(
   DCHECK(IsValid(confirmation_));
 }
 
-// POST /v2/confirmation/{transactionId}/{credential}
+// POST /v3/confirmation/{transactionId}/{credential}
 
 mojom::UrlRequestInfoPtr CreateConfirmationUrlRequestBuilder::Build() {
   mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
@@ -65,7 +65,7 @@ GURL CreateConfirmationUrlRequestBuilder::BuildUrl() const {
   }
 
   const std::string spec = base::StringPrintf(
-      "%s/v2/confirmation/%s%s",
+      "%s/v3/confirmation/%s%s",
       GetAnonymousHost(confirmation_.ad_type).c_str(),
       confirmation_.transaction_id.c_str(), credential_base64_url.c_str());
 
