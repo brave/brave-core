@@ -33,6 +33,7 @@ class BraveTabStripModel : public TabStripModel {
   // Stop MRU cycling, called when releasing the Ctrl key
   void StopMRUCycling();
 
+  // Exposes a |TabStripModel| api to |BraveTabMenuModel|.
   std::vector<int> GetTabIndicesForCommandAt(int tab_index);
 
  private:

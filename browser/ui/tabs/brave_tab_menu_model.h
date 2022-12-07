@@ -39,12 +39,15 @@ class BraveTabMenuModel : public TabMenuModel {
   BraveTabMenuModel& operator=(const BraveTabMenuModel&) = delete;
   ~BraveTabMenuModel() override;
 
+  bool all_muted() const { return all_muted_; }
+
  private:
-  void Build(TabStripModel* tab_strip, int index);
+  void Build(int selected_tab_count);
   int GetRestoreTabCommandStringId() const;
 
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   sessions::TabRestoreService* restore_service_ = nullptr;
+  bool all_muted_;
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_MENU_MODEL_H_

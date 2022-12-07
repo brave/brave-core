@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -32,7 +33,13 @@ BraveTabMenuModel::BraveTabMenuModel(
         TabRestoreServiceFactory::GetForProfile(browser->profile());
   }
 
-  Build(tab_strip_model, index);
+  auto indices = static_cast<BraveTabStripModel*>(tab_strip_model)
+                     ->GetTabIndicesForCommandAt(index);
+  all_muted_ = std::all_of(
+      indices.begin(), indices.end(), [&tab_strip_model](int index) {
+        return tab_strip_model->GetWebContentsAt(index)->IsAudioMuted();
+      });
+  Build(indices.size());
 }
 
 BraveTabMenuModel::~BraveTabMenuModel() = default;
@@ -57,23 +64,15 @@ int BraveTabMenuModel::GetRestoreTabCommandStringId() const {
   return id;
 }
 
-void BraveTabMenuModel::Build(TabStripModel* tab_strip, int index) {
-  auto indices =
-      static_cast<BraveTabStripModel*>(tab_strip)->GetTabIndicesForCommandAt(
-          index);
-
+void BraveTabMenuModel::Build(int selected_tab_count) {
   AddSeparator(ui::NORMAL_SEPARATOR);
   auto mute_site_index =
       GetIndexOfCommandId(TabStripModel::CommandToggleSiteMuted);
-  auto is_muted =
-      std::all_of(indices.begin(), indices.end(), [&tab_strip](int index) {
-        return tab_strip->GetWebContentsAt(index)->IsAudioMuted();
-      });
 
   auto toggle_tab_mute_label = l10n_util::GetPluralStringFUTF16(
-      is_muted ? IDS_TAB_CXMENU_SOUND_UNMUTE_TAB
-               : IDS_TAB_CXMENU_SOUND_MUTE_TAB,
-      indices.size());
+      all_muted() ? IDS_TAB_CXMENU_SOUND_UNMUTE_TAB
+                  : IDS_TAB_CXMENU_SOUND_MUTE_TAB,
+      selected_tab_count);
   InsertItemAt(mute_site_index.value_or(GetItemCount()), CommandToggleTabMuted,
                toggle_tab_mute_label);
 

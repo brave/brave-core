@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
+
 #include <algorithm>
 #include <iterator>
 #include <string>
@@ -184,15 +185,11 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
           indices.begin(), indices.end(), std::back_inserter(contentses),
           [&model](int index) { return model->GetWebContentsAt(index); });
 
-      auto all_muted = std::all_of(contentses.begin(), contentses.end(),
-                                   [](content::WebContents* contents) {
-                                     return contents->IsAudioMuted();
-                                   });
-
+      auto all_muted = model_->all_muted();
       for (auto* contents : contentses) {
         chrome::SetTabAudioMuted(contents, !all_muted,
                                  TabMutedReason::AUDIO_INDICATOR,
-                                 std::string());
+                                 /*extension_id=*/std::string());
       }
       return;
     }
