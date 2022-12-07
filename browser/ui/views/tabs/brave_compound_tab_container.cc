@@ -79,15 +79,30 @@ int BraveCompoundTabContainer::GetAvailableWidthForUnpinnedTabContainer(
 void BraveCompoundTabContainer::TransferTabBetweenContainers(
     int from_model_index,
     int to_model_index) {
+  const bool was_pinned = to_model_index < NumPinnedTabs();
   CompoundTabContainer::TransferTabBetweenContainers(from_model_index,
                                                      to_model_index);
-  if (to_model_index < NumPinnedTabs() &&
-      !pinned_tab_container_->GetVisible()) {
+  const bool is_pinned = to_model_index < NumPinnedTabs();
+  bool layout_dirty = false;
+  if (is_pinned && !pinned_tab_container_->GetVisible()) {
     // When the browser was initialized without any pinned tabs, pinned tabs
     // could be hidden initially by the FlexLayout.
     pinned_tab_container_->SetVisible(true);
-    Layout();
+    layout_dirty = true;
   }
+
+  if (was_pinned != is_pinned) {
+    // After transferring a tab from one to another container, we should layout
+    // the previous container.
+    auto previous_container =
+        was_pinned ? pinned_tab_container_ : unpinned_tab_container_;
+    previous_container->CompleteAnimationAndLayout();
+    PreferredSizeChanged();
+    layout_dirty = true;
+  }
+
+  if (layout_dirty)
+    Layout();
 }
 
 BEGIN_METADATA(BraveCompoundTabContainer, CompoundTabContainer)
