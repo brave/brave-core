@@ -122,7 +122,7 @@ void BraveNewsActionView::Update() {
   }
 
   auto image = gfx::CreateVectorIcon(
-      subscribed ? kBraveTodaySubscribedIcon : kBraveTodaySubscribeIcon, 16,
+      kBraveNewsSubscribeIcon, 16,
       color_utils::DeriveDefaultIconColor(GetIconColor(subscribed)));
   SetImage(ButtonState::STATE_NORMAL, image);
   SetVisible(has_feeds);
