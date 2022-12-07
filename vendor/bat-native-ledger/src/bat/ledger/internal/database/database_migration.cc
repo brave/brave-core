@@ -40,6 +40,7 @@
 #include "bat/ledger/internal/database/migration/migration_v34.h"
 #include "bat/ledger/internal/database/migration/migration_v35.h"
 #include "bat/ledger/internal/database/migration/migration_v36.h"
+#include "bat/ledger/internal/database/migration/migration_v37.h"
 #include "bat/ledger/internal/database/migration/migration_v4.h"
 #include "bat/ledger/internal/database/migration/migration_v5.h"
 #include "bat/ledger/internal/database/migration/migration_v6.h"
@@ -134,7 +135,8 @@ void DatabaseMigration::Start(uint32_t table_version,
                                           migration::v33,
                                           migration::v34,
                                           migration::v35,
-                                          migration::v36};
+                                          migration::v36,
+                                          migration::v37};
 
   DCHECK_LE(target_version, mappings.size());
 

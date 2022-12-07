@@ -819,4 +819,11 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_36) {
   EXPECT_EQ(sql.ColumnInt64(0), 0);
 }
 
+TEST_F(LedgerDatabaseMigrationTest, Migration_37) {
+  DatabaseMigration::SetTargetVersionForTesting(37);
+  InitializeDatabaseAtVersion(36);
+  InitializeLedger();
+  EXPECT_TRUE(GetDB()->DoesTableExist("external_transactions"));
+}
+
 }  // namespace ledger
