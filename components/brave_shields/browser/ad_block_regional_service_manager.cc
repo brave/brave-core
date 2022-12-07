@@ -204,14 +204,6 @@ absl::optional<std::string> AdBlockRegionalServiceManager::GetCspDirectives(
   return csp_directives;
 }
 
-void AdBlockRegionalServiceManager::EnableTag(const std::string& tag,
-                                              bool enabled) {
-  base::AutoLock lock(regional_services_lock_);
-  for (const auto& regional_service : regional_services_) {
-    regional_service.second->EnableTag(tag, enabled);
-  }
-}
-
 void AdBlockRegionalServiceManager::UseResources(const std::string& resources) {
   base::AutoLock lock(regional_services_lock_);
   for (const auto& regional_service : regional_services_) {
