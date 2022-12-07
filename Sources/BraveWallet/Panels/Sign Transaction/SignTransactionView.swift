@@ -226,6 +226,7 @@ struct SignTransactionView: View {
         }
       }) {
         Label(Strings.Wallet.sign, braveSystemImage: "brave.key")
+          .fixedSize(horizontal: true, vertical: false)
           .imageScale(.large)
       }
       .buttonStyle(BraveFilledButtonStyle(size: .large))
@@ -245,7 +246,9 @@ struct SignTransactionView: View {
         onDismiss()
       }
     }) {
-      Text(Strings.cancelButtonTitle)
+      Label(Strings.cancelButtonTitle, systemImage: "xmark")
+        .fixedSize(horizontal: true, vertical: false)
+        .imageScale(.large)
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
   }
