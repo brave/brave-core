@@ -20,6 +20,7 @@
 #include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_filter_list_catalog_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -97,13 +98,13 @@ class AdBlockRegionalServiceManager
   std::string locale_;
   bool initialized_;
   base::Lock regional_services_lock_;
-  std::map<std::string,
-           std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>>
-      regional_services_ GUARDED_BY(regional_services_lock_);
+  std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter> regional_engine_
+      GUARDED_BY(regional_services_lock_);
   std::map<std::string, std::unique_ptr<AdBlockComponentFiltersProvider>>
       regional_filters_providers_;
-  std::map<std::string, std::unique_ptr<AdBlockService::SourceProviderObserver>>
-      regional_source_observers_;
+  std::unique_ptr<AdBlockService::SourceProviderObserver>
+      regional_source_observer_;
+  std::unique_ptr<AdBlockFiltersProviderManager> filters_manager_;
 
   std::vector<FilterListCatalogEntry> filter_list_catalog_;
 
