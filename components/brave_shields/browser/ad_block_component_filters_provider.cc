@@ -57,8 +57,9 @@ void AdBlockComponentFiltersProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {
   if (component_path_.empty()) {
-    // If the path is not ready yet, don't run the callback. An update should
-    // be pushed soon.
+    // If the path is not ready yet, run the callback with an empty list. An
+    // update will be pushed later to notify about the newly available list.
+    std::move(cb).Run(false, DATFileDataBuffer());
     return;
   }
 
