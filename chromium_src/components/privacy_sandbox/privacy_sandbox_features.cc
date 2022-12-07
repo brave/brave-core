@@ -11,6 +11,7 @@ namespace privacy_sandbox {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPrivacySandboxSettings3, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPrivacySandboxSettings4, base::FEATURE_DISABLED_BY_DEFAULT},
     {kOverridePrivacySandboxSettingsLocalTesting,
      base::FEATURE_DISABLED_BY_DEFAULT},
 }});

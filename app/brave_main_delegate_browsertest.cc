@@ -142,12 +142,14 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kSignedHTTPExchange,
 #if !BUILDFLAG(IS_ANDROID)
     &features::kTrustSafetySentimentSurvey,
+    &features::kTrustSafetySentimentSurveyV2,
 #endif
     &features::kWebOTP,
     &history_clusters::features::kOnDeviceClustering,
     &history_clusters::internal::kHistoryClustersInternalsPage,
     &history_clusters::internal::kJourneys,
     &history_clusters::internal::kOmniboxAction,
+    &history_clusters::internal::kPersistedClusters,
     &history_clusters::internal::kPersistContextAnnotationsInHistoryDb,
     &lens::features::kLensStandalone,
     &media::kLiveCaption,
@@ -167,6 +169,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &permissions::features::kPermissionOnDeviceNotificationPredictions,
     &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
     &privacy_sandbox::kPrivacySandboxSettings3,
+    &privacy_sandbox::kPrivacySandboxSettings4,
     &segmentation_platform::features::kSegmentationPlatformFeature,
     &send_tab_to_self::kSendTabToSelfSigninPromo,
     &shared_highlighting::kIOSSharedHighlightingV2,

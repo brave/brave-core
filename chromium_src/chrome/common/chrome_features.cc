@@ -20,6 +20,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kSCTAuditing, base::FEATURE_DISABLED_BY_DEFAULT},
 #if !BUILDFLAG(IS_ANDROID)
     {kTrustSafetySentimentSurvey, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kTrustSafetySentimentSurveyV2, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
     // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated
     // on this feature.
