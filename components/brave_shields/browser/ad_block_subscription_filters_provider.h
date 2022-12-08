@@ -31,7 +31,7 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
       base::OnceCallback<void(bool deserialize,
                               const DATFileDataBuffer& dat_buf)>) override;
 
-  void OnNewListSaved();
+  void OnListAvailable();
 
  private:
   base::FilePath list_file_;

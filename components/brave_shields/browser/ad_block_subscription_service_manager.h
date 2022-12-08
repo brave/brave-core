@@ -21,6 +21,7 @@
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
+#include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "components/component_updater/timer_update_scheduler.h"
@@ -166,12 +167,13 @@ class AdBlockSubscriptionServiceManager {
   base::FilePath subscription_path_;
   base::Value::Dict subscriptions_ GUARDED_BY(subscription_services_lock_);
 
-  std::map<GURL, std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>>
-      subscription_services_ GUARDED_BY(subscription_services_lock_);
+  std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter> subscription_engine_
+      GUARDED_BY(subscription_services_lock_);
   std::map<GURL, std::unique_ptr<AdBlockSubscriptionFiltersProvider>>
       subscription_filters_providers_ GUARDED_BY_CONTEXT(sequence_checker_);
-  std::map<GURL, std::unique_ptr<AdBlockService::SourceProviderObserver>>
-      subscription_source_observers_ GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockService::SourceProviderObserver>
+      subscription_source_observer_ GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockFiltersProviderManager> filters_manager_;
   std::unique_ptr<component_updater::TimerUpdateScheduler>
       subscription_update_timer_;
 
