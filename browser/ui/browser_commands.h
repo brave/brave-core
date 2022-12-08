@@ -35,6 +35,7 @@ void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser);
 void ToggleVerticalTabStrip(Browser* browser);
 void ToggleVerticalTabStripFloatingMode(Browser* browser);
 void ToggleActiveTabAudioMute(Browser* browser);
+void ToggleSidebarPosition(Browser* browser);
 
 }  // namespace brave
 

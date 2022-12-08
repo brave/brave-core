@@ -271,4 +271,10 @@ void ToggleActiveTabAudioMute(Browser* browser) {
                            std::string());
 }
 
+void ToggleSidebarPosition(Browser* browser) {
+  auto* prefs = browser->profile()->GetPrefs();
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment,
+                    !prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+}
+
 }  // namespace brave
