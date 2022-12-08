@@ -166,15 +166,6 @@ void AdBlockService::ShouldStartRequest(
 
   request_url =
       rewritten_url && !rewritten_url->empty() ? GURL(*rewritten_url) : url;
-  subscription_filters_service()->ShouldStartRequest(
-      request_url, resource_type, tab_host, aggressive_blocking, did_match_rule,
-      did_match_exception, did_match_important, mock_data_url, rewritten_url);
-  if (did_match_important && *did_match_important) {
-    return;
-  }
-
-  request_url =
-      rewritten_url && !rewritten_url->empty() ? GURL(*rewritten_url) : url;
   custom_filters_service()->ShouldStartRequest(
       request_url, resource_type, tab_host, aggressive_blocking, did_match_rule,
       did_match_exception, did_match_important, mock_data_url, rewritten_url);
@@ -214,15 +205,6 @@ absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
                        /*force_hide=*/true);
   }
 
-  absl::optional<base::Value> subscription_resources =
-      subscription_filters_service()->UrlCosmeticResources(url);
-
-  if (subscription_resources && subscription_resources->is_dict()) {
-    MergeResourcesInto(std::move(subscription_resources->GetDict()),
-                       resources->GetIfDict(),
-                       /*force_hide=*/true);
-  }
-
   return resources;
 }
 
@@ -246,15 +228,8 @@ base::Value::Dict AdBlockService::HiddenClassIdSelectors(
   base::Value::List custom_selectors =
       custom_filters_service()->HiddenClassIdSelectors(classes, ids,
                                                        exceptions);
-  base::Value::List subscription_selectors =
-      subscription_filters_service()->HiddenClassIdSelectors(classes, ids,
-                                                             exceptions);
 
   base::Value::List force_hide_selectors = std::move(custom_selectors);
-
-  for (auto& subscription_selector : subscription_selectors) {
-    force_hide_selectors.Append(std::move(subscription_selector));
-  }
 
   base::Value::Dict result;
   result.Set("hide_selectors", std::move(hide_selectors));
@@ -263,11 +238,11 @@ base::Value::Dict AdBlockService::HiddenClassIdSelectors(
 }
 
 AdBlockRegionalServiceManager* AdBlockService::regional_service_manager() {
-  subscription_filters_service();
+  custom_filters_service();
   if (!regional_service_manager_) {
     regional_service_manager_ =
         brave_shields::AdBlockRegionalServiceManagerFactory(
-            subscription_filters_manager_.get(), local_state_, locale_,
+            custom_filters_manager_.get(), local_state_, locale_,
             component_update_service_, GetTaskRunner());
     regional_service_manager_->Init(resource_provider_.get(),
                                     filter_list_catalog_provider_.get());
@@ -293,24 +268,10 @@ AdBlockEngine* AdBlockService::custom_filters_service() {
         std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
             new AdBlockEngine(), base::OnTaskRunnerDeleter(GetTaskRunner()));
     custom_filters_service_observer_ = std::make_unique<SourceProviderObserver>(
-        custom_filters_service_->AsWeakPtr(), custom_filters_provider_.get(),
+        custom_filters_service_->AsWeakPtr(), custom_filters_manager_.get(),
         resource_provider_.get(), GetTaskRunner());
   }
   return custom_filters_service_.get();
-}
-
-AdBlockEngine* AdBlockService::subscription_filters_service() {
-  if (!subscription_filters_service_) {
-    subscription_filters_service_ =
-        std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
-            new AdBlockEngine(), base::OnTaskRunnerDeleter(GetTaskRunner()));
-    subscription_service_observer_ =
-        std::make_unique<AdBlockService::SourceProviderObserver>(
-            subscription_filters_service_->AsWeakPtr(),
-            subscription_filters_manager_.get(), resource_provider_.get(),
-            GetTaskRunner());
-  }
-  return subscription_filters_service_.get();
 }
 
 brave_shields::AdBlockCustomFiltersProvider*
@@ -342,17 +303,14 @@ AdBlockService::AdBlockService(
       component_update_service_(cus),
       task_runner_(task_runner),
       custom_filters_service_(nullptr, base::OnTaskRunnerDeleter(task_runner_)),
-      default_service_(nullptr, base::OnTaskRunnerDeleter(task_runner_)),
-      subscription_filters_service_(nullptr,
-                                    base::OnTaskRunnerDeleter(task_runner_)) {
+      default_service_(nullptr, base::OnTaskRunnerDeleter(task_runner_)) {
   // Initializes adblock-rust's domain resolution implementation
   adblock::SetDomainResolver(AdBlockServiceDomainResolver);
 
-  subscription_filters_manager_ =
-      std::make_unique<AdBlockFiltersProviderManager>();
+  custom_filters_manager_ = std::make_unique<AdBlockFiltersProviderManager>();
   subscription_service_manager_ =
       std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
-          subscription_filters_manager_.get(), local_state_, GetTaskRunner(),
+          custom_filters_manager_.get(), local_state_, GetTaskRunner(),
           std::move(subscription_download_manager_getter_), profile_dir_);
 
   default_filters_provider_ =
@@ -368,6 +326,7 @@ AdBlockService::AdBlockService(
   custom_filters_provider_ =
       std::make_unique<brave_shields::AdBlockCustomFiltersProvider>(
           local_state_);
+  custom_filters_manager_->AddProvider(custom_filters_provider_.get());
 }
 
 AdBlockService::~AdBlockService() = default;

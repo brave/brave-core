@@ -53,4 +53,12 @@ void AdBlockCustomFiltersProvider::LoadDATBuffer(
       FROM_HERE, base::BindOnce(std::move(cb), false, std::move(buffer)));
 }
 
+// The custom filters provider can provide its filters immediately after being
+// observed.
+void AdBlockCustomFiltersProvider::AddObserver(
+    AdBlockFiltersProvider::Observer* observer) {
+  AdBlockFiltersProvider::AddObserver(observer);
+  NotifyObservers();
+}
+
 }  // namespace brave_shields
