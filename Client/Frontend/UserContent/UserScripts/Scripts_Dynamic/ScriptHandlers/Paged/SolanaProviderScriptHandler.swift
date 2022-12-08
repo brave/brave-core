@@ -94,11 +94,6 @@ class SolanaProviderScriptHandler: TabContentScript {
       return
     }
     
-    if !Preferences.Wallet.allowSolProviderAccess.value {
-      replyHandler(nil, "{\"message\":\"The user rejected the request.\",\"code\":4001}")
-      return
-    }
-    
     // The web page has communicated with `window.solana`, so we should show the wallet icon
     tab.isWalletIconVisible = true
     
