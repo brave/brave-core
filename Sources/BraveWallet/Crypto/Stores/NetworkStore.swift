@@ -225,6 +225,10 @@ public class NetworkStore: ObservableObject {
       completion(success)
     }
   }
+  
+  @MainActor func selectedNetwork(for coin: BraveWallet.CoinType) async -> BraveWallet.NetworkInfo {
+    await rpcService.network(coin)
+  }
 }
 
 extension NetworkStore: BraveWalletJsonRpcServiceObserver {
