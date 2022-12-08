@@ -580,6 +580,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON" desc="Announcement when the dismiss button is focused.">
           Dismiss Brave search conversion, press Enter to remove this suggestion
         </message>
+        <!-- obsolete system InfoBar -->
+        <message name="IDS_OBSOLERE_SYSTEM_INFOBAR_DONT_SHOW_BUTTON" desc="The text for don't show again button">
+          Don't show again
+        </message>
       </if>
 
       <!-- Brave Ads -->
