@@ -35,6 +35,7 @@ export const AccountSelector = (props: Props) => {
   // Selectors
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
+  const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
 
   // State
   const [showAccountSelector, setShowAccountSelector] = React.useState<boolean>(false)
@@ -54,8 +55,8 @@ export const AccountSelector = (props: Props) => {
 
   // Memos
   const accountsByNetwork = React.useMemo(() => {
-    return accounts.filter((account) => account.coin === selectedNetwork?.coin)
-  }, [accounts, selectedNetwork])
+    return accounts.filter((account) => account.coin === selectedNetwork?.coin && account.keyringId === selectedAccount?.keyringId)
+  }, [accounts, selectedNetwork, selectedAccount])
 
   // Hooks
   useOnClickOutside(
