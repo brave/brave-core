@@ -289,8 +289,8 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
                   ->regional_filters_providers_.size(),
               1ULL);
 
-    auto* regional_engine =
-        g_brave_browser_process->ad_block_service()->regional_filters_service();
+    auto* regional_engine = g_brave_browser_process->ad_block_service()
+                                ->subscription_filters_service();
     EngineTestObserver regional_engine_observer(regional_engine);
     auto regional_filters_provider =
         g_brave_browser_process->ad_block_service()
