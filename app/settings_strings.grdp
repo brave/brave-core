@@ -8,6 +8,9 @@
   <message name="IDS_SETTINGS_CONTINUE" desc="Label for 'Continue' buttons.">
     Continue
   </message>
+  <message name="IDS_SETTINGS_GOT_IT" desc="Label for the button to acknowledge the information in a dialog and dismiss it.">
+    Got it
+  </message>
   <message name="IDS_SETTINGS_MORE_ACTIONS" desc="Tooltip text (shows on hover or for screenreaders) for a button that shows a menu with more actions when clicked or tapped">
     More actions
   </message>
@@ -698,9 +701,6 @@
   </message>
   <message name="IDS_SETTINGS_PASSKEYS_EDIT_DIALOG_FOOTNOTE" desc="Footnote for the passkey edit dialog.">
     When you edit your passkey, your <ph name="RP_ID">$1<ex>relyingPartyId</ex></ph> account won't change
-  </message>
-  <message name="IDS_SETTINGS_GOT_IT" desc="Label for the button to acknowledge the information in a dialog and dismiss it.">
-    Got it
   </message>
   <message name="IDS_SETTINGS_ADDRESS_NONE" desc="Placeholder that is shown when there are no addresses in the list of saved addresses.">
     Saved addresses will appear here
@@ -1774,9 +1774,44 @@
     Private state tokens improve privacy on the web and can't be used to find out who you are.
   </message>
 
+  <!-- Privacy Sandbox Settings 4 - Privacy & Security Page -->
+  <message name="IDS_SETTINGS_AD_PRIVACY_LINK_ROW_LABEL" translateable="false" desc="Label for row linking to the Ad Privacy preferences page in the Privacy &amp; Security Page.">
+    Donec semper
+  </message>
+  <message name="IDS_SETTINGS_AD_PRIVACY_LINK_ROW_SUB_LABEL" translateable="false" desc="Sub label for row linking to the Ad Privacy preferences page in the Privacy &amp; Security Page.">
+    Fusce purus nibh, dictum sit amet mi in, fringilla ullamcorper tortor
+  </message>
+
   <!-- Privacy Sandbox Settings 4 - Ad Privacy Page -->
   <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_TITLE" translateable="false" desc="Title for the Ad Privacy preferences page.">
     Donec semper
+  </message>
+  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_LABEL" translateable="false" desc="Label for row linking to Topics page.">
+    Mauris interdum lectus vitae lacinia
+  </message>
+  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_SUB_LABEL_ENABLED" translateable="false" desc="Sub label for row linking to Topics page when Topics is enabled.">
+    Enabled Nulla eros tortor, placerat blandit dictum a, interdum id metus
+  </message>
+  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_SUB_LABEL_DISABLED" translateable="false" desc="Sub label for row linking to Topics page when Topics is disabled.">
+    Disabled Nulla eros tortor, placerat blandit dictum a, interdum id metus
+  </message>
+  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_LABEL" translateable="false" desc="Label for row linking to FLEDGE page.">
+    Aenean erat leo
+  </message>
+  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_SUB_LABEL_ENABLED" translateable="false" desc="Sub label for row linking to FLEDGE page when FLEDGE is enabled.">
+    Enabled Duis scelerisque a mi eget ultricies
+  </message>
+  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_SUB_LABEL_DISABLED" translateable="false" desc="Sub label for row linking to FLEDGE page when FLEDGE is disabled.">
+    Disabled Duis scelerisque a mi eget ultricies
+  </message>
+  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_LABEL" translateable="false" desc="Label for row linking to Ad Measurement page.">
+    Vestibulum augue erat
+  </message>
+  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_SUB_LABEL_ENABLED" translateable="false" desc="Sub label for row linking to Ad Measurement page when Ad Measurement is enabled.">
+    Enabled Vivamus id lacus et lacus porttitor vulputate. Sed semper egestas orci vel maximus.
+  </message>
+  <message name="IDS_SETTINGS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_SUB_LABEL_DISABLED" translateable="false" desc="Sub label for row linking to Ad Measurement page when Ad Measurement is disabled.">
+    Disabled Vivamus id lacus et lacus porttitor vulputate. Sed semper egestas orci vel maximus.
   </message>
 
   <!-- Privacy Sandbox Settings 4 - Topics Page -->
@@ -1792,6 +1827,27 @@
   <!-- Privacy Sandbox Settings 4 - Ad Measurement Page -->
   <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TITLE" translateable="false" desc="Title for the Ad Measurement preferences page.">
     Vestibulum augue
+  </message>
+  <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TOGGLE_LABEL" translateable="false" desc="Label for the toggle in the Ad Measurement preferences page.">
+    Vestibulum augue erat
+  </message>
+  <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_TOGGLE_SUB_LABEL" translateable="false" desc="Sublabel for the toggle in the Ad Measurement preferences page.">
+    Vestibulum eleifend nunc a viverra congue. Integer nec mauris rutrum, porta mauris et, pellentesque ligula. Nam et pulvinar eros, in gravida nisl.
+  </message>
+  <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_HEADING" translateable="false" desc="Heading for the 'When on' section in the Ad Measurement preferences page.">
+    Mauris
+  </message>
+  <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_CONSIDER_HEADING" translateable="false" desc="Heading for the 'Things to consider' section in the Ad Measurement preferences page.">
+    Aenean
+  </message>
+  <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_BULLET_1" translateable="false" desc="First bullet point underneath the 'When on' section in the Ad Measurement preferences page.">
+    Praesent sodales, magna eget volutpat iaculis, justo odio viverra justo, id venenatis est est sit amet ex
+  </message>
+  <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_ENABLED_BULLET_2" translateable="false" desc="Second bullet point underneath the 'When on' section in the Ad Measurement preferences page.">
+    Nunc metus est, faucibus sit amet lacus sit amet, aliquet rutrum libero. Maecenas vel euismod ante.
+  </message>
+  <message name="IDS_SETTINGS_AD_MEASUREMENT_PAGE_CONSIDER_BULLET_1" translateable="false" desc="First bullet point underneath the 'Things to consider' section in the Ad Measurement preferences page.">
+    Mauris mattis urna elit. Phasellus quis erat sapien. Praesent finibus pellentesque iaculis. Mauris hendrerit metus at enim rhoncus bibendum.
   </message>
 
   <!-- Privacy Guide -->
@@ -1995,13 +2051,32 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW" desc="Text for a button that allows users to review safety check findings, such as compromised passwords or blocklisted extensions.">
     Review
   </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_ALLOW_AGAIN_ARIA_LABEL" desc="'Unused Site Permissions' shows unused websites for which permissions have been revoked. This accessibility label describes the action to undo the revokation and grant permissions for the website again. Only visible by screen reader software.">
+    Allow permissions again for <ph name="WEBSITE">$1<ex>website.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_ALLOW_AGAIN_LABEL" desc="'Unused Site Permissions' shows unused websites for which permissions have been revoked. This label is for the action to undo the revokation and allow the site permissions again.">
+    Allow again
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_HEADER_ARIA_LABEL" desc="'Unused Site Permissions' shows the revoked permissions of unused websites. This label is the aria label for the review button on the Privacy and Security settings page.">
+    Review removed permissions
+  </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_HEADER_LABEL" desc="'Unused Site Permissions' shows the revoked permissions of unused websites. This label is the header of the module in the site settings page. The number represents the number of sites for which permissions were revoked.">
     {NUM_SITES, plural,
      =1 {Permissions removed from <ph name="BEGIN_BOLD">&lt;b&gt;</ph>1 site<ph name="END_BOLD">&lt;/b&gt;</ph> you haven’t visited recently}
      other {Permissions removed from <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{NUM_SITES} sites<ph name="END_BOLD">&lt;/b&gt;</ph> you haven’t visited recently}}
   </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_HEADER_ARIA_LABEL" desc="'Unused Site Permissions' shows the revoked permissions of unused websites. This label is the aria label for the review button on the Privacy and Security settings page.">
-    Review removed permissions
+  <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_PRIMARY_LABEL" desc="'Unused Site Permissions' shows unused websites for which permissions have been revoked. This label is the header of the module in the site settings page. The number represents the number of unused sites.">
+    {NUM_SITES, plural,
+     =1 {Permissions removed for 1 site}
+     other {Permissions removed for {NUM_SITES} sites}}
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_SECONDARY_LABEL" desc="'Unused Site Permissions' shows unused websites for which permissions have been revoked. This label is the description of the module in the site settings page.">
+    {NUM_SITES, plural,
+     =1 {To protect your data, permissions were removed from this site you haven't visited in 2 months}
+     other {To protect your data, permissions were removed from sites you haven't visited in 2 months}}
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_TOAST_LABEL" desc="'Unused Site Permissions' shows unused websites for which permissions have been revoked. This label is shown after a user has taken action to allow some permissions again.">
+    Permissions allowed again for <ph name="WEBSITE">$1<ex>www.example.com</ex></ph>
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_UPDATES_PRIMARY_LABEL" desc="'Updates' is an element in safety check that shows the update status of Brave.">
     Updates
@@ -2093,9 +2168,6 @@
      =1 {About 1 notification a day}
      other {About {NUM_NOTIFICATION} notifications a day}}
   </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_NOTIFICATION_PERMISSION_REVIEW_DONE_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is to inform users that there are no more permissions left to review.">
-    All done for now
-  </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_DONT_ALLOW_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is for the action to block notifications from a specific website.">
     Don't allow
   </message>
@@ -2117,9 +2189,6 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_MORE_ACTIONS_ARIA_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This ARIA (accessibility) label is to show more actions for a notification permissions item.">
     More actions for <ph name="WEBSITE">$1<ex>website.com</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_NOTIFICATION_PERMISSION_REVIEW_UNDO" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is for undoing the current action after blocking permission for a site.">
-    Undo
-  </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_HEADER_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is for the header in Privacy and Security Settings page that surface an entry point to the module itself. The integer input represents the number of notification permissions to be reviewed.">
     {NUM_SITES, plural,
      =1 {Review <ph name="BEGIN_BOLD">&lt;b&gt;</ph>1 site<ph name="END_BOLD">&lt;/b&gt;</ph> that recently sent a lot of notifications}
@@ -2132,6 +2201,12 @@
     {NUM_SITES, plural,
     =1 {Notifications not allowed for 1 site}
     other {Notifications not allowed for {NUM_SITES} sites}}
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_SITE_PERMISSIONS_REVIEW_DONE_LABEL" desc="Text indicating that the user has no more actions to perform. This text, together with a checkmark, appear in place of a UI where the user can review permissions for a list of websites. The text is shown after the user has taken action and there are no more websites listed.">
+    All done for now
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_TOAST_UNDO_BUTTON_LABEL" desc="After the user has modified permissions for a website, a toast popup message is shown with this text next to a description of the action taken. The user can click this text to undo the action. For example, this text would be next to a descriptiton that says 'Allowed notification permissions for example.com'.">
+    Undo
   </message>
   <if expr="is_win and _google_chrome">
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_PRIMARY_LABEL" desc="'Unwanted software protection' is an element in safety check that finds harmful software installed on the computer and allows users to remove it.">
@@ -2309,6 +2384,11 @@
   <message name="IDS_SETTINGS_SECURE_DNS_DESCRIPTION" desc="Secondary, continued explanation of secure DNS in Privacy options">
     Determines how to connect to websites over a secure connection
   </message>
+  <if expr="chromeos_ash">
+    <message name="IDS_SETTINGS_SECURE_DNS_WITH_IDENTIFIERS_DESCRIPTION" desc="Secondary, continued explanation of secure DNS in Privacy options">
+      Determines how to connect to websites over a secure connection. This uses a managed service provider at <ph name="DNS_SERVER_TEMPLATE_WITH_IDENTIFIER">$1<ex>https://dns.example.net/dns-query{?dns}</ex></ph>
+    </message>
+  </if>
   <message name="IDS_SETTINGS_AUTOMATIC_MODE_DESCRIPTION" desc="Text of the radio button that puts secure DNS in auto-upgrade mode">
     With your current service provider
   </message>
@@ -3810,6 +3890,9 @@
   </message>
   <message name="IDS_SETTINGS_ENCRYPT_WITH_SYNC_PASSPHRASE_LABEL" desc="Label for the radio button which, when selected, causes synced settings to be encrypted with a user-provided password.">
     Encrypt synced data with your own <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>sync passphrase<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>. This doesn't include payment methods and addresses from Google Pay.
+  </message>
+  <message name="IDS_NEW_SETTINGS_ENCRYPT_WITH_SYNC_PASSPHRASE_LABEL" desc="Label for the radio button which, when selected, causes synced settings to be encrypted with a user-provided password.">
+    Encrypt synced data with your own <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>sync passphrase<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>. Payment methods and addresses from Google Pay won’t be encrypted. Browsing history from Brave won’t sync.
   </message>
   <message name="IDS_SETTINGS_PASSPHRASE_EXPLANATION_TEXT" desc="Message shown when explicit passphrase is selected.">
     Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting, you'll need to <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.

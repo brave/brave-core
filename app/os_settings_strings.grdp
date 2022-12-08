@@ -44,6 +44,9 @@
   <message name="IDS_OS_SETTINGS_SEARCH_FEEDBACK_BUTTON" desc="Text description of feedback button in search.">
     Report this search result
   </message>
+  <message name="IDS_OS_SETTINGS_SEARCH_FEEDBACK_DESCRIPTION_TEMPLATE" desc="Template description of pre-populated search feedback description.">
+    <ph name="HASHTAG_SETTINGS">#Settings</ph> No search results returned for <ph name="SEARCH_QUERY">'$1'<ex>query</ex></ph>
+  </message>
 
   <!-- About (OS Settings) -->
   <message name="IDS_OS_SETTINGS_ABOUT_PAGE_BUILD_DETAILS" desc="Label of the row button that clicks into Build details">
@@ -1231,11 +1234,23 @@ Use Ctrl + Alt + Brightness down to zoom out.
   <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_DISABLED_DESCRIPTION" desc="In the settings tab, the description of a feature that will read on-screen text out loud. This text is shown when that feature is disabled.">
     Hear specific text read aloud. First, select the Select-to-speak icon on the bottom of your screen, then highlight text.
   </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_SPEECH" desc="In the Select-to-speak settings subpage, the label for the group of options where the user can adjust synthesized speech properties.">
+    Speech
+  </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_HIGHLIGHT" desc="In the Select-to-speak settings subpage, the label for the group of options controlling highlighting.">
     Highlighting
   </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_HIGHLIGHT_DESCRIPTION" desc="In the Select-to-speak settings subpage, the label for option to highlight spoken words rather than spoken nodes.">
     Highlight each word as it is spoken
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_VOICE_SWITCHING_DESCRIPTION" desc="In the Select-to-speak settings subpage, the label for option to toggle automatic voice switching.">
+    Automatically change language to match selected content
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_ENHANCED_NETWORK_VOICES_DESCRIPTION" desc="In the Select-to-speak settings subpage, the label for the control to enable support for high-quality voices streamed from the interent when the device is online.">
+    Use natural voice when device is online
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_ENHANCED_NETWORK_VOICES_SUBTITLE" desc="In the Select-to-speak settings subpage, informational text related to the Select-to-speak control that enables support for high-quality voices, mentioning that enabling these voices will send text to Brave for processing and generating audio.">
+    Text will be sent to Brave for processing.
   </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_HIGHLIGHT_COLOR_DESCRIPTION" desc="In the Select-to-speak settings subpage, the label for option to pick word highlight color.">
     Highlight color
@@ -1758,7 +1773,7 @@ Press an assigned switch or key to remove assignment.
     Cancel
   </message>
 
-  <!-- Used by both Crostini and Plugin VM -->
+  <!-- Used by Crostini, Plugin VM and Bruschetta -->
   <message name="IDS_SETTINGS_GUEST_OS_SHARED_PATHS" desc="Label for managing shared folders for Parallels.">
     Manage shared folders
   </message>
@@ -2094,7 +2109,18 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_USB_DEVICES_DESCRIPTION" translateable="false" desc="Description for managing shared USB devices.">
     Give Bruschetta permission to access USB devices. Bruschetta won't remember a USB device after it's removed.
   </message>
-
+  <!-- <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_PATHS_DESCRIPTION" translateable="false" desc="Description for managing shared paths.">
+    Give Bruschetta permission to access USB devices. Bruschetta won't remember a USB device after it's removed.
+  </message> -->
+  <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_PATHS_INSTRUCTIONS_LOCATE" translateable="false" desc="Instructions for how to locate shared folders in Bruschetta. Do not translate 'Bruschetta'.">
+    Shared folders are available in Bruschetta at <ph name="BASE_DIR">$1<ex>/mnt/chromeos</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_PATHS_INSTRUCTIONS_ADD" translateable="false" desc="Instructions for how to add shared folders in Bruschetta. Do not translate 'Bruschetta'.">
+    To share, right-click on a folder in Files app, then select "Share with Bruschetta".
+  </message>
+  <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_PATHS_REMOVE_FAILURE_DIALOG_MESSAGE" translateable="false" desc="Message to show user when unsharing a Bruschetta shared folder fails. Do not translate 'Bruschetta'.">
+    Couldn't unshare because an application is using this folder. The folder will be unshared when Bruschetta is next shut down.
+  </message>
   <!-- Android apps page (OS settings) -->
   <message name="IDS_SETTINGS_ANDROID_APPS_LABEL" desc="The text associated with the primary section setting.">
     Google Play Store
@@ -4198,6 +4224,10 @@ Press an assigned switch or key to remove assignment.
     Set date and time
   </message>
 
+  <!-- Per Device Keyboard page (OS settings) -->
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_TITLE" translateable="false" desc="In Device Settings, the title of the new Per-device keyboard settings subpage.">
+    Per-device Keyboard
+  </message>
   <!-- Device Keyboard page (OS settings) -->
   <message name="IDS_SETTINGS_KEYBOARD_TITLE" desc="In Device Settings, the title of the keyboard settings subpage.">
     Keyboard
