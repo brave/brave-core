@@ -24,7 +24,7 @@ export const localeStrings = {
   tip: 'Tip',
   unverifiedCreator: 'Unverified Creator',
   verifiedCreator: 'Verified Creator',
-  refreshStatus: 'Refresh',
+  refreshStatus: 'Refresh Creator verification status',
   pendingTipText: 'Any tip you make will remain pending and retry automatically for 90 days. $1Learn more$2',
   pendingTipTitle: 'This creator is not signed up yet.',
   pendingTipTitleRegistered: 'This creator is currently not configured to receive tips from your Rewards custodial wallet service.',
