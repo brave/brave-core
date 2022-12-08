@@ -487,6 +487,14 @@ extension String {
     }
     return nil
   }
+  
+  public func removeSchemeFromURLString(_ scheme: String?) -> String {
+    guard let scheme = scheme else {
+      return self
+    }
+    
+    return replacingOccurrences(of: "\(scheme)://", with: "")
+  }
 }
 
 // MARK: Helpers to deal with ErrorPage URLs
