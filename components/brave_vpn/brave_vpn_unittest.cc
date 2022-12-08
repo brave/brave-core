@@ -1148,6 +1148,15 @@ TEST_F(BraveVPNServiceTest, CheckConnectionStateAfterNetworkStateChanged) {
 
   SetMockConnectionAPI(nullptr);
 }
+
+// Ignore disconnected state change while connected. See the comment at
+// BraveVPNOSConnectionAPI::UpdateAndNotifyConnectionStateChange().
+TEST_F(BraveVPNServiceTest, IgnoreDisconnectedStateWhileConnecting) {
+  connection_state() = ConnectionState::CONNECTING;
+  UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
+  EXPECT_EQ(ConnectionState::CONNECTING, connection_state());
+}
+
 #endif
 
 TEST_F(BraveVPNServiceTest, GetPurchasedStateSync) {
