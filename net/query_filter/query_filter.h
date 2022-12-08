@@ -8,6 +8,7 @@
 
 #include "net/base/net_export.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/origin.h"
 
 class GURL;
 
@@ -16,6 +17,12 @@ namespace net::query_filter {
 // Return a new GURL with all trackers removed from from the URL's
 // query string if any known trackers were found.
 NET_EXPORT absl::optional<GURL> ApplyQueryFilter(const GURL& original_url);
+
+// Remove Twitter's t parameter from the query string for
+// eligible URLs (no other changes).
+NET_EXPORT void MaybeRemoveTrackingQueryParameters(
+    const absl::optional<url::Origin>& request_initiator,
+    GURL& url_to_load);
 
 }  // namespace net::query_filter
 

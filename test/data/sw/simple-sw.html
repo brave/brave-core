@@ -1,0 +1,42 @@
+<html>
+<head><title>Service Worker Test</title></head>
+<body>
+<script>
+var sw_status = 'inactive';
+
+const registerServiceWorker = async () => {
+  if ("serviceWorker" in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.register("/sw/simple-sw.js", {
+        scope: "/sw/",
+      });
+      if (registration.installing) {
+        console.log("Service worker installing");
+        sw_status = 'installing';
+      } else if (registration.waiting) {
+        console.log("Service worker installed");
+        sw_status = 'installed';
+      } else if (registration.active) {
+        console.log("Service worker active");
+        sw_status = 'active';
+      }
+    } catch (error) {
+      console.error(`Registration failed with ${error}`);
+      sw_status = 'failed';
+    }
+    window.domAutomationController.send(sw_status);
+    return sw_status;
+  }
+};
+
+function getServiceWorkerStatus() {
+  return sw_status;
+}
+
+registerServiceWorker();
+</script>
+<p>Service Worker installation... Check the devtools console for status.</p>
+<p>It should say "Service worker active", but you may need to reload the page first.</p>
+
+<body></body>
+</html>

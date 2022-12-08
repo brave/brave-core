@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/cxx20_erase_vector.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/logging.h"
@@ -137,6 +138,26 @@ absl::optional<GURL> ApplyQueryFilter(const GURL& original_url) {
     return original_url.ReplaceComponents(replacements);
   }
   return absl::nullopt;
+}
+
+void MaybeRemoveTrackingQueryParameters(
+    const absl::optional<url::Origin>& request_initiator,
+    GURL& url_to_load) {
+  // TODO(fmarier): check for GET
+
+  // TODO(fmarier): check for Shields
+
+  if (!(url_to_load.has_query() && url_to_load.DomainIs("twitter.com") &&
+        (!request_initiator || !request_initiator->DomainIs("twitter.com")))) {
+    // Ignore anything that's not a not cross-origin request to
+    // Twitter with a query string.
+    return;
+  }
+
+  auto url = ApplyQueryFilter(url_to_load);
+  if (url) {
+    url_to_load = *url;
+  }
 }
 
 }  // namespace net::query_filter

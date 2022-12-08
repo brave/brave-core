@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/navigation_controller_impl.cc b/content/browser/renderer_host/navigation_controller_impl.cc
-index ca48d1019d7f8feef5f0ecb3507c664822f99d2a..e420cb7814a02e09e8ba6b056a250cf488056479 100644
+index ca48d1019d7f8feef5f0ecb3507c664822f99d2a..738c242d83ad419fef4a6b01a15105c9b38d868a 100644
 --- a/content/browser/renderer_host/navigation_controller_impl.cc
 +++ b/content/browser/renderer_host/navigation_controller_impl.cc
 @@ -3444,16 +3444,17 @@ base::WeakPtr<NavigationHandle> NavigationControllerImpl::NavigateWithoutEntry(
@@ -23,3 +23,11 @@ index ca48d1019d7f8feef5f0ecb3507c664822f99d2a..e420cb7814a02e09e8ba6b056a250cf4
      return nullptr;
    }
  
+@@ -3733,6 +3734,7 @@ NavigationControllerImpl::CreateNavigationRequestFromLoadParams(
+     CHECK(!frame_entry || url_to_load == frame_entry->url());
+   }
+ 
++  BRAVE_NAVIGATION_CONTROLLER_IMPL_CREATE_NAVIGATION_REQUEST_FROM_LOAD_PARAMS
+   if (node->render_manager()->is_attaching_inner_delegate()) {
+     // Avoid starting any new navigations since this node is now preparing for
+     // attaching an inner delegate.

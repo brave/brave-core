@@ -12,12 +12,14 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/default_handlers.h"
@@ -59,6 +61,12 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     cross_site_post_url_ = https_server_.GetURL("b.com", "/post-to-site.html");
     same_site_url_ =
         https_server_.GetURL("sub.a.com", "/navigate-to-site.html");
+
+    twitter_link_url_ =
+        https_server_.GetURL("not-twitter.com", "/simple_link.html");
+    twitter_loading_url_ =
+        https_server_.GetURL("twitter.com", "/sw/loading.html");
+    twitter_sw_url_ = https_server_.GetURL("twitter.com", "/sw/simple-sw.html");
 
     onion_url_ = https_server_.GetURL("foobar.onion", "/navigate-to-site.html");
     onion_post_url_ =
@@ -148,6 +156,10 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
   }
   const GURL& same_site_url() { return same_site_url_; }
 
+  const GURL& twitter_link_url() { return twitter_link_url_; }
+  const GURL& twitter_loading_url() { return twitter_loading_url_; }
+  const GURL& twitter_sw_url() { return twitter_sw_url_; }
+
   const GURL& onion_url() { return onion_url_; }
   const GURL& onion_post_url() { return onion_post_url_; }
   const GURL& reflect_referrer_cross_origin_url() {
@@ -203,6 +215,42 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(contents()->GetLastCommittedURL(), landing_url);
   }
 
+  // Stripped-down version of
+  // ui_test_utils::NavigateToURLWithDispositionBlockUntilNavigationsComplete()
+  content::RenderFrameHost* NavigateToURL(Browser* browser,
+                                          const GURL& navigation_url,
+                                          const GURL& expected_url) {
+    TabStripModel* tab_strip = browser->tab_strip_model();
+    if (tab_strip->GetActiveWebContents()) {
+      content::WaitForLoadStop(tab_strip->GetActiveWebContents());
+    }
+    content::TestNavigationObserver same_tab_observer(
+        tab_strip->GetActiveWebContents(), /*number_of_navigations*/ 1,
+        content::MessageLoopRunner::QuitMode::DEFERRED,
+        /*ignore_uncommitted_navigations=*/false);
+    if (!blink::IsRendererDebugURL(navigation_url)) {
+      same_tab_observer.set_expected_initial_url(expected_url);
+    }
+
+    std::set<Browser*> initial_browsers;
+    for (auto* initial_browser : *BrowserList::GetInstance()) {
+      initial_browsers.insert(initial_browser);
+    }
+
+    ui_test_utils::AllBrowserTabAddedWaiter tab_added_waiter;
+
+    content::WebContents* web_contents = browser->OpenURL(
+        content::OpenURLParams(navigation_url, content::Referrer(),
+                               WindowOpenDisposition::CURRENT_TAB,
+                               ui::PAGE_TRANSITION_TYPED, false));
+
+    // The tab we navigated should be the active one.
+    EXPECT_EQ(web_contents, browser->tab_strip_model()->GetActiveWebContents());
+
+    same_tab_observer.Wait();
+    return web_contents->GetPrimaryMainFrame();
+  }
+
  private:
   GURL cross_site_url_;
   GURL cross_site_post_url_;
@@ -211,6 +259,9 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
   GURL redirect_to_same_site_landing_url_;
   GURL same_site_url_;
   GURL simple_landing_url_;
+  GURL twitter_link_url_;
+  GURL twitter_loading_url_;
+  GURL twitter_sw_url_;
 
   GURL onion_url_;
   GURL onion_post_url_;
@@ -366,6 +417,74 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
     GURL input = landing_url(inputs[i], simple_landing_url());
     GURL output = landing_url(outputs[i], simple_landing_url());
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), input));
+    EXPECT_EQ(contents()->GetLastCommittedURL(), output);
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
+                       QueryStringFilterTwitterServiceWorker) {
+  struct TestCase {
+    const char* input;
+    const char* output;
+  } const kTestCases[] = {
+      {"fbclid=1234", ""},
+      {"fbclid=12345&foo=bar", "foo=bar"},
+      {"value=yes&fbclid=123456", "value=yes"},
+  };
+
+  // Install the service worker
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), twitter_sw_url()));
+  content::DOMMessageQueue message_queue(contents());
+  std::string message;
+  while (message_queue.WaitForMessage(&message)) {
+    if (message == "\"installing\"") {
+      break;
+    }
+  }
+
+  // Check that the service worker is active in new tabs
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), twitter_sw_url(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  while (EvalJs(contents(), "getServiceWorkerStatus()") != "active") {
+  }
+
+  // Test browser-initiated navigations
+  for (const auto& test_case : kTestCases) {
+    SCOPED_TRACE(testing::Message() << "[browser-initiated] " << test_case.input
+                                    << " " << test_case.output);
+
+    GURL input = landing_url(test_case.input, twitter_loading_url());
+    GURL output = landing_url(test_case.output, twitter_loading_url());
+
+    // We can't use ui_test_utils::NavigateToURL() here since we
+    // modify the URL very early and that call will be left waiting
+    // forever for the load on the original URL to complete.
+    EXPECT_TRUE(NavigateToURL(browser(), input, output));
+    EXPECT_EQ(EvalJs(contents(), "tracked"), "not tracked");
+    EXPECT_EQ(contents()->GetLastCommittedURL(), output);
+  }
+
+  // Test renderer-initiated navigations
+  for (const auto& test_case : kTestCases) {
+    SCOPED_TRACE(testing::Message()
+                 << "[renderer-initiated] " << test_case.input << " "
+                 << test_case.output);
+
+    GURL input = landing_url(test_case.input, twitter_loading_url());
+    GURL output = landing_url(test_case.output, twitter_loading_url());
+
+    // Cross-origin link click
+    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), twitter_link_url()));
+    EXPECT_EQ(contents()->GetLastCommittedURL(), twitter_link_url());
+    std::string click_link =
+        "domAutomationController.send(clickLink('" + input.spec() + "'));";
+    bool success = false;
+    EXPECT_TRUE(ExecuteScriptAndExtractBool(contents(), click_link, &success));
+    EXPECT_TRUE(success);
+
+    EXPECT_TRUE(WaitForLoadStop(contents()));
+    EXPECT_EQ(EvalJs(contents(), "tracked"), "not tracked");
     EXPECT_EQ(contents()->GetLastCommittedURL(), output);
   }
 }

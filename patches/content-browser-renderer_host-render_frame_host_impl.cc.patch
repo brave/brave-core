@@ -1,0 +1,12 @@
+diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
+index add0355e0268610f97983402ea61f76dd9b004d6..0a838e316a6b8370780819470e26b457c9dc25b8 100644
+--- a/content/browser/renderer_host/render_frame_host_impl.cc
++++ b/content/browser/renderer_host/render_frame_host_impl.cc
+@@ -7820,6 +7820,7 @@ void RenderFrameHostImpl::BeginNavigation(
+     return;
+   }
+ 
++  BRAVE_RENDER_FRAME_HOST_IMPL_BEGIN_NAVIGATION
+   // BeginNavigation() should only be triggered when the navigation is
+   // initiated by a frame in the same process.
+   int initiator_process_id = GetProcess()->GetID();
