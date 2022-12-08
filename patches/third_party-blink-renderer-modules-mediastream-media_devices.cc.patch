@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/mediastream/media_devices.cc b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-index 7270dc91ca43b646b9b630228703af24689ba078..89f12890ee3f7d0925653b53edec9935bf2ee3d6 100644
+index 8b9a477469ed51dad8d78c4b544b77f3bb73088b..8d00de3e4de4bf5b1eb3f081a9f1082a0d7390e4 100644
 --- a/third_party/blink/renderer/modules/mediastream/media_devices.cc
 +++ b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-@@ -856,6 +856,7 @@ void MediaDevices::DevicesEnumerated(
+@@ -889,6 +889,7 @@ void MediaDevices::DevicesEnumerated(
      }
    }
  
 +  BRAVE_MEDIA_DEVICES_DEVICES_ENUMERATED
-   RecordEnumeratedDevices(resolver, media_devices);
-   RecordEnumerateDevicesLatency(request_metadata.start_time);
- 
+   RecordEnumeratedDevices(result_tracker->GetScriptState(), media_devices);
+   // TODO(crbug.com/1395324): Remove this custom EnumerateDevices latency
+   // tracking by reverting crrev.com/c/3944912/ once the

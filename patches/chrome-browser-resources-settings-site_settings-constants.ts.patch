@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/resources/settings/site_settings/constants.ts b/chrome/browser/resources/settings/site_settings/constants.ts
-index 4b5c3ba6ffe222098e2c7831cde47e4eff2b8d42..bb1658e65a638501cd2eec9312d82a9d8b1984d8 100644
+index a3823a5fa155b06463bb63192cfc72a180ea33c7..b3e196cfcc1c616a3cafcf5e210b1542dfb6798e 100644
 --- a/chrome/browser/resources/settings/site_settings/constants.ts
 +++ b/chrome/browser/resources/settings/site_settings/constants.ts
-@@ -47,6 +47,7 @@ export enum ContentSettingsTypes {
-   // The following item is not in the C++ kContentSettingsTypeGroupNames, but it
-   // is used everywhere where ContentSettingsTypes is used in JS.
+@@ -48,6 +48,7 @@ export enum ContentSettingsTypes {
+   // are used everywhere where ContentSettingsTypes is used in JS.
    PDF_DOCUMENTS = 'pdfDocuments',
+   SITE_DATA = 'site-data',
 +  AUTOPLAY = 'autoplay', ETHEREUM = 'ethereum', SOLANA = 'solana', BRAVE_SHIELDS = 'braveShields', GOOGLE_SIGN_IN = 'googleSignIn',
  }
  
