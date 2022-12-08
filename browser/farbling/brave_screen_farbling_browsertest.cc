@@ -249,8 +249,8 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
         if (!allow_fingerprinting && !IsFlagDisabled()) {
           EXPECT_GE(child_bounds.x(), parent_bounds.x());
           EXPECT_GE(child_bounds.y(), parent_bounds.y());
-          EXPECT_GE(parent_bounds.width(), child_bounds.width());
-          EXPECT_GE(parent_bounds.height(), child_bounds.height());
+          EXPECT_GE(10 + parent_bounds.width(), child_bounds.width());
+          EXPECT_GE(10 + parent_bounds.height(), child_bounds.height());
         } else {
           EXPECT_LE(child_bounds.x(), std::max(80, 10 + parent_bounds.x()));
           EXPECT_LE(child_bounds.y(), std::max(80, 10 + parent_bounds.y()));
