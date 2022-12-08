@@ -80,6 +80,7 @@ struct SubscriptionInfo {
 class AdBlockSubscriptionServiceManager {
  public:
   explicit AdBlockSubscriptionServiceManager(
+      AdBlockFiltersProviderManager* filters_manager,
       PrefService* local_state,
       scoped_refptr<base::SequencedTaskRunner> task_runner,
       AdBlockSubscriptionDownloadManager::DownloadManagerGetter getter,
@@ -97,22 +98,6 @@ class AdBlockSubscriptionServiceManager {
   void CreateSubscription(const GURL& sub_url);
 
   bool Start();
-  void ShouldStartRequest(const GURL& url,
-                          blink::mojom::ResourceType resource_type,
-                          const std::string& tab_host,
-                          bool aggressive_blocking,
-                          bool* did_match_rule,
-                          bool* did_match_exception,
-                          bool* did_match_important,
-                          std::string* mock_data_url,
-                          std::string* rewritten_url);
-  void UseResources(const std::string& resources);
-
-  absl::optional<base::Value> UrlCosmeticResources(const std::string& url);
-  base::Value::List HiddenClassIdSelectors(
-      const std::vector<std::string>& classes,
-      const std::vector<std::string>& ids,
-      const std::vector<std::string>& exceptions);
 
   AdBlockSubscriptionDownloadManager* download_manager() {
     return download_manager_.get();
@@ -161,19 +146,15 @@ class AdBlockSubscriptionServiceManager {
   raw_ptr<PrefService> local_state_ GUARDED_BY_CONTEXT(sequence_checker_);
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<AdBlockResourceProvider> resource_provider_;
+  raw_ptr<AdBlockFiltersProviderManager> filters_manager_;
   raw_ptr<brave_component_updater::BraveComponent::Delegate>
       delegate_;  // NOT OWNED
   base::WeakPtr<AdBlockSubscriptionDownloadManager> download_manager_;
   base::FilePath subscription_path_;
   base::Value::Dict subscriptions_ GUARDED_BY(subscription_services_lock_);
 
-  std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter> subscription_engine_
-      GUARDED_BY(subscription_services_lock_);
   std::map<GURL, std::unique_ptr<AdBlockSubscriptionFiltersProvider>>
       subscription_filters_providers_ GUARDED_BY_CONTEXT(sequence_checker_);
-  std::unique_ptr<AdBlockService::SourceProviderObserver>
-      subscription_source_observer_ GUARDED_BY_CONTEXT(sequence_checker_);
-  std::unique_ptr<AdBlockFiltersProviderManager> filters_manager_;
   std::unique_ptr<component_updater::TimerUpdateScheduler>
       subscription_update_timer_;
 

@@ -109,6 +109,7 @@ void SubscriptionInfo::RegisterJSONConverter(
 }
 
 AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
+    AdBlockFiltersProviderManager* filters_manager,
     PrefService* local_state,
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     AdBlockSubscriptionDownloadManager::DownloadManagerGetter
@@ -117,11 +118,8 @@ AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
     : initialized_(false),
       local_state_(local_state),
       task_runner_(task_runner),
+      filters_manager_(filters_manager),
       subscription_path_(profile_dir.Append(kSubscriptionsDir)),
-      subscription_engine_(
-          std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
-              new AdBlockEngine(),
-              base::OnTaskRunnerDeleter(task_runner))),
       subscription_update_timer_(
           std::make_unique<component_updater::TimerUpdateScheduler>()) {
   std::move(download_manager_getter)
@@ -135,11 +133,6 @@ void AdBlockSubscriptionServiceManager::Init(
   CHECK(!initialized_);
   base::AutoLock lock(subscription_services_lock_);
   resource_provider_ = resource_provider;
-  filters_manager_ = std::make_unique<AdBlockFiltersProviderManager>();
-  subscription_source_observer_ =
-      std::make_unique<AdBlockService::SourceProviderObserver>(
-          subscription_engine_->AsWeakPtr(), filters_manager_.get(),
-          resource_provider_, task_runner_);
   initialized_ = true;
 }
 
@@ -504,52 +497,6 @@ void AdBlockSubscriptionServiceManager::ClearSubscriptionPrefs(
 
 bool AdBlockSubscriptionServiceManager::Start() {
   return true;
-}
-
-void AdBlockSubscriptionServiceManager::ShouldStartRequest(
-    const GURL& url,
-    blink::mojom::ResourceType resource_type,
-    const std::string& tab_host,
-    bool aggressive_blocking,
-    bool* did_match_rule,
-    bool* did_match_exception,
-    bool* did_match_important,
-    std::string* mock_data_url,
-    std::string* rewritten_url) {
-  base::AutoLock lock(subscription_services_lock_);
-
-  GURL request_url;
-
-  request_url =
-      rewritten_url && !rewritten_url->empty() ? GURL(*rewritten_url) : url;
-  subscription_engine_->ShouldStartRequest(
-      request_url, resource_type, tab_host, aggressive_blocking, did_match_rule,
-      did_match_exception, did_match_important, mock_data_url, rewritten_url);
-}
-
-void AdBlockSubscriptionServiceManager::UseResources(
-    const std::string& resources) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  base::AutoLock lock(subscription_services_lock_);
-
-  subscription_engine_->UseResources(resources);
-}
-
-absl::optional<base::Value>
-AdBlockSubscriptionServiceManager::UrlCosmeticResources(
-    const std::string& url) {
-  base::AutoLock lock(subscription_services_lock_);
-
-  return subscription_engine_->UrlCosmeticResources(url);
-}
-
-base::Value::List AdBlockSubscriptionServiceManager::HiddenClassIdSelectors(
-    const std::vector<std::string>& classes,
-    const std::vector<std::string>& ids,
-    const std::vector<std::string>& exceptions) {
-  base::AutoLock lock(subscription_services_lock_);
-
-  return subscription_engine_->HiddenClassIdSelectors(classes, ids, exceptions);
 }
 
 void AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded(
