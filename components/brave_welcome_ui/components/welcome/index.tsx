@@ -15,14 +15,13 @@ import WebAnimationPlayer from '../../api/web_animation_player'
 
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
-import { useShouldPlayAnimations } from '../../state/hooks'
+import { shouldPlayAnimations } from '../../state/hooks'
 
 import braveLogoUrl from '../../assets/brave_logo_3d@2x.webp'
 
 function Welcome () {
   const { setViewType, scenes } = React.useContext(DataContext)
   const ref = React.useRef<HTMLDivElement>(null)
-  const shouldPlayAnimations = useShouldPlayAnimations()
 
   const handleSetAsDefaultBrowser = () => {
     WelcomeBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.DefaultBrowser, isFinished: false, isSkipped: false })

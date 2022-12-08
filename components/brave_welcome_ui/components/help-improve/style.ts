@@ -64,10 +64,10 @@ export const Grid = styled.div`
     width: 22px;
     height: 22px;
     border-radius: 4px;
-    border: 1px solid ${(p) => p.theme.color.interactive08};
+    border: 1px solid #AEB1C2;
 
     &:checked {
-      accent-color: var(--interactive5);
+      accent-color: #4C54D2;
     }
   }
 `

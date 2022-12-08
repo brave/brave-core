@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import DataContext from './state/context'
-import { useShouldPlayAnimations } from './state/hooks'
+import { shouldPlayAnimations } from './state/hooks'
 import { ViewType } from './state/component_types'
 
 import HelpImprove from './components/help-improve'
@@ -21,7 +21,6 @@ const SetupComplete = React.lazy(() => import('./components/setup-complete'))
 
 function MainContainer () {
   const { viewType, setViewType } = React.useContext(DataContext)
-  const shouldPlayAnimations = useShouldPlayAnimations()
 
   let mainEl = null
 

@@ -9,7 +9,7 @@ import classnames from '$web-common/classnames'
 
 import WebAnimationPlayer from '../../api/web_animation_player'
 import DataContext from '../../state/context'
-import { useShouldPlayAnimations } from '../../state/hooks'
+import { shouldPlayAnimations } from '../../state/hooks'
 
 import Stars01 from '../svg/stars01'
 import Stars02 from '../svg/stars02'
@@ -29,10 +29,10 @@ function Background (props: BackgroundProps) {
   const { setScenes } = React.useContext(DataContext)
   const [hasLoaded, setHasLoaded] = React.useState(false)
   const isReadyForAnimation = hasLoaded && !props.static
-  const shouldPlayAnimations = useShouldPlayAnimations()
 
   React.useEffect(() => {
     if (!ref.current) return
+    if (!isReadyForAnimation) return
 
     const s1 = new WebAnimationPlayer()
     const s2 = new WebAnimationPlayer()
@@ -67,6 +67,7 @@ function Background (props: BackgroundProps) {
 
   React.useEffect(() => {
     if (!ref.current) return
+    if (!isReadyForAnimation) return
 
     const s1 = new WebAnimationPlayer()
     const starsContainer = ref.current.querySelector('.stars-container')
