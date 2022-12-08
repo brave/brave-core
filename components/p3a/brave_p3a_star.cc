@@ -46,9 +46,7 @@ BraveP3AStar::BraveP3AStar(
                               base::Unretained(this)),
           config),
       message_callback_(message_callback),
-      null_public_key_(constellation::get_ppoprf_null_public_key()) {
-  UpdateRandomnessServerInfo();
-}
+      null_public_key_(constellation::get_ppoprf_null_public_key()) {}
 
 BraveP3AStar::~BraveP3AStar() {}
 

@@ -14,6 +14,7 @@
 #include "brave/components/p3a/brave_p3a_star.h"
 #include "brave/components/p3a/brave_p3a_star_log_store.h"
 #include "brave/components/p3a/brave_p3a_uploader.h"
+#include "brave/components/p3a/features.h"
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "components/metrics/log_store.h"
@@ -27,6 +28,10 @@ namespace {
 
 const size_t kMaxEpochsToRetain = 4;
 constexpr base::TimeDelta kPostRotationUploadDelay = base::Seconds(30);
+
+bool IsSTAREnabled() {
+  return base::FeatureList::IsEnabled(features::kSTAR);
+}
 
 }  // namespace
 
@@ -102,6 +107,9 @@ void BraveP3AMessageManager::Init(
       base::BindRepeating(&BraveP3AMessageManager::OnRandomnessServerInfoReady,
                           base::Unretained(this)),
       config_);
+  if (IsSTAREnabled()) {
+    star_manager_->UpdateRandomnessServerInfo();
+  }
 }
 
 void BraveP3AMessageManager::UpdateMetricValue(base::StringPiece histogram_name,
@@ -137,10 +145,13 @@ void BraveP3AMessageManager::DoJsonRotation(MetricLogType log_type) {
 }
 
 void BraveP3AMessageManager::DoStarRotation() {
-  VLOG(2) << "BraveP3AMessageManager doing star rotation at "
-          << base::Time::Now();
   star_prep_scheduler_->Stop();
   star_prep_log_store_->ResetUploadStamps();
+  if (!IsSTAREnabled()) {
+    return;
+  }
+  VLOG(2) << "BraveP3AMessageManager doing star rotation at "
+          << base::Time::Now();
   star_manager_->UpdateRandomnessServerInfo();
   delegate_->OnRotation(false, true);
 }
@@ -193,7 +204,7 @@ void BraveP3AMessageManager::OnNewStarMessage(
 
 void BraveP3AMessageManager::OnRandomnessServerInfoReady(
     RandomnessServerInfo* server_info) {
-  if (server_info == nullptr) {
+  if (server_info == nullptr || !IsSTAREnabled()) {
     return;
   }
   VLOG(2) << "BraveP3AMessageManager::OnRandomnessServerInfoReady";
@@ -258,7 +269,7 @@ void BraveP3AMessageManager::StartScheduledUpload(bool is_star,
 
 void BraveP3AMessageManager::StartScheduledStarPrep() {
   bool p3a_enabled = local_state_->GetBoolean(brave::kP3AEnabled);
-  if (!p3a_enabled) {
+  if (!p3a_enabled || !IsSTAREnabled()) {
     return;
   }
   if (base::Time::Now() - rotation_scheduler_->GetLastStarRotationTime() <
