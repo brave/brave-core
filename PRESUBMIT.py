@@ -6,12 +6,19 @@
 import os
 import sys
 
+import chromium_presubmit_overrides
 import override_utils
 
 USE_PYTHON3 = True
 PRESUBMIT_VERSION = '2.0.0'
 
 # pylint: disable=line-too-long
+
+
+# Adds support for chromium_presubmit_config.json5 and some helpers.
+def CheckToModifyInputApi(input_api, _output_api):
+    chromium_presubmit_overrides.modify_input_api(input_api)
+    return []
 
 
 def CheckChangeLintsClean(input_api, output_api):
