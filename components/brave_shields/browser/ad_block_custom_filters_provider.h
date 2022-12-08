@@ -34,6 +34,9 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
       base::OnceCallback<void(bool deserialize,
                               const DATFileDataBuffer& dat_buf)>) override;
 
+  // AdBlockFiltersProvider
+  void AddObserver(AdBlockFiltersProvider::Observer* observer);
+
  private:
   PrefService* local_state_;
 
