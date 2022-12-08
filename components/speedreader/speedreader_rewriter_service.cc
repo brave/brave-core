@@ -49,18 +49,9 @@ std::string WrapStylesheetWithCSP(const std::string& stylesheet) {
                               https://fonts.cdnfonts.com"
     >)html";
 
-  constexpr const char kFonts[] = R"html(
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css?family=Atkinson+Hyperlegible" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin>
-    <link href="https://fonts.cdnfonts.com/css/opendyslexic" rel="stylesheet">
-  )html";
-
   return base::StrCat({base::StringPrintf(kCSP, style_hash_b64.c_str()),
                        "<style id=\"brave_speedreader_style\">", stylesheet,
-                       "</style>", kFonts});
+                       "</style>"});
 }
 
 std::string GetDistilledPageStylesheet(const base::FilePath& stylesheet_path) {
