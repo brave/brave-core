@@ -89,11 +89,6 @@ class EthereumProviderScriptHandler: TabContentScript {
       return
     }
     
-    if !Preferences.Wallet.allowEthProviderAccess.value {
-      replyHandler(nil, "{\"message\":\"The user rejected the request.\",\"code\":4001}")
-      return
-    }
-    
     // The web page has communicated with `window.ethereum`, so we should show the wallet icon
     tab.isWalletIconVisible = true
     

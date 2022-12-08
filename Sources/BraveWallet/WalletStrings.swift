@@ -2420,14 +2420,14 @@ extension Strings {
       "wallet.web3PreferencesAllowEthProviderAccess",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Allow Sites to Access the Ethereum Provider API",
+      value: "Ask When a Site Wants to Access the Ethereum Provider API",
       comment: "The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API."
     )
     public static let web3PreferencesAllowSolProviderAccess = NSLocalizedString(
       "wallet.web3PreferencesAllowSolProviderAccess",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Allow Sites to Access the Solana Provider API",
+      value: "Ask When a Site Wants to Access the Solana Provider API",
       comment: "The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API."
     )
     public static let web3PreferencesDisplayWeb3Notifications = NSLocalizedString(
