@@ -146,10 +146,7 @@ export const getToAddressesFromSolanaTransaction = (
         return newAccountPubkey.toString() ?? ''
       }
 
-      case 'Unknown': {
-        return solanaTxData?.instructions[0]?.accountMetas[0]?.pubkey.toString() ?? ''
-      }
-
+      case 'Unknown':
       default: return to ?? ''
     }
   })
