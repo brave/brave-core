@@ -13,11 +13,13 @@
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "base/time/time_to_iso8601.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/p3a/brave_p3a_config.h"
 #include "brave/components/p3a/brave_p3a_service.h"
+#include "brave/components/p3a/features.h"
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/p3a/star_randomness_test_util.h"
@@ -47,7 +49,9 @@ class P3AMessageManagerTest : public testing::Test,
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
         shared_url_loader_factory(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory)) {}
+                &url_loader_factory)) {
+    scoped_feature_list_.InitWithFeatures({features::kSTAR}, {});
+  }
 
   absl::optional<MetricLogType> GetDynamicMetricLogType(
       const std::string& histogram_name) const override {
@@ -166,6 +170,7 @@ class P3AMessageManagerTest : public testing::Test,
   }
 
   content::BrowserTaskEnvironment task_environment_;
+  base::test::ScopedFeatureList scoped_feature_list_;
   network::TestURLLoaderFactory url_loader_factory;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory;
   BraveP3AConfig p3a_config;

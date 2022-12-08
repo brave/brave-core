@@ -109,6 +109,7 @@ TEST_F(P3AStarTest, CanRetrieveServerInfo) {
   ASSERT_TRUE(base::Time::FromString(kTestNextEpochTime, &exp_next_epoch_time));
 
   SetUpStarManager();
+  star_manager->UpdateRandomnessServerInfo();
   task_environment_.RunUntilIdle();
 
   ASSERT_TRUE(info_request_made);
@@ -121,6 +122,8 @@ TEST_F(P3AStarTest, CanRetrieveServerInfo) {
   // See if cached server info is used on next execution
   info_request_made = false;
   SetUpStarManager();
+  star_manager->UpdateRandomnessServerInfo();
+  task_environment_.RunUntilIdle();
 
   ASSERT_FALSE(info_request_made);
   EXPECT_NE(server_info_from_callback, nullptr);
@@ -130,6 +133,8 @@ TEST_F(P3AStarTest, CanRetrieveServerInfo) {
 
 TEST_F(P3AStarTest, GenerateBasicMessage) {
   SetUpStarManager();
+  star_manager->UpdateRandomnessServerInfo();
+  task_environment_.RunUntilIdle();
 
   MessageMetainfo meta_info;
   meta_info.Init(&local_state, "release", "2022-01-01");
