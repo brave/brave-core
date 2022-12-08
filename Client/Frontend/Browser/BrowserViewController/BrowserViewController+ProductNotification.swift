@@ -58,6 +58,12 @@ extension BrowserViewController {
       
       let domain = url.baseDomain ?? url.host ?? url.schemelessAbsoluteString
       
+      guard currentBenchmarkWebsite != domain else {
+        return
+      }
+      
+      currentBenchmarkWebsite = domain
+      
       guard let trackersDetail = BlockedTrackerParser.parse(
         blockedRequestURLs: blockedRequestURLs,
         selectedTabURL: url) else {

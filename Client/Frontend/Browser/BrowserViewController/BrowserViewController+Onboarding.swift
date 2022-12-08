@@ -116,7 +116,8 @@ extension BrowserViewController {
     }
 
     // If a controller is already presented (such as menu), do not show onboarding
-    guard presentedViewController == nil else {
+    // It also includes the case for overlay mode and tabtray opened
+    guard presentedViewController == nil, !topToolbar.inOverlayMode, !isTabTrayActive else {
       return
     }
     
