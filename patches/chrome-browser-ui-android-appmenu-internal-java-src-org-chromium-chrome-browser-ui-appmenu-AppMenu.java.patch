@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java b/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
-index b0de8e5672c922b4a36a4dc2175813536db1f82c..e1886d04627e612b25b2113db4663e76c37b8a3e 100644
+index 0642111d423c5ab12a7bda74749e5f15378cc900..b81ccd72d75bbc0fe96cd435268ca2d01bd61f29 100644
 --- a/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
 +++ b/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
-@@ -225,6 +225,7 @@ class AppMenu implements OnItemClickListener, OnKeyListener, AppMenuClickHandler
+@@ -222,6 +222,7 @@ class AppMenu implements OnItemClickListener, OnKeyListener, AppMenuClickHandler
              mPopup.setAnimationStyle(
                      isMenuIconAtStart ? R.style.StartIconMenuAnim : R.style.EndIconMenuAnim);
          }

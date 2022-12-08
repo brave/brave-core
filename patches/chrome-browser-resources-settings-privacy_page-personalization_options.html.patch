@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index c01b1dcf517e95faf4f808cf85799ee4319d68a6..034cc3865d3ca51c023ae8e562c711227a46820e 100644
+index 5c5dea3eb6c0b8ede27a972927a2214e1e356343..8af6a8fd4202653dddcf02c0b409f43a094d1344 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -13,6 +13,7 @@
@@ -43,7 +43,7 @@ index c01b1dcf517e95faf4f808cf85799ee4319d68a6..034cc3865d3ca51c023ae8e562c71122
  <if expr="_google_chrome">
      <settings-toggle-button id="spellCheckControl"
          class="hr"
-@@ -130,6 +134,7 @@
+@@ -119,6 +123,7 @@
        </settings-toggle-button>
      </template>
  
@@ -51,7 +51,7 @@ index c01b1dcf517e95faf4f808cf85799ee4319d68a6..034cc3865d3ca51c023ae8e562c71122
      <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
        <settings-signout-dialog sync-status="[[syncStatus]]"
            on-close="onSignoutDialogClosed_">
-@@ -147,3 +152,4 @@
+@@ -136,3 +141,4 @@
            on-close="onRelaunchDialogClose"></relaunch-confirmation-dialog>
      </template>
  </if>

@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/device_info_specifics.proto b/components/sync/protocol/device_info_specifics.proto
-index 99fb9895edd4830129068f3f0d47714942d0be67..a989d86d2a2f2b589032eefc9b42b00e96a19c36 100644
+index d14dec2b4aca53a69da5612bfb42e9585bd00834..36720b0f758a90f9e6c26db91ef84598c0219c09 100644
 --- a/components/sync/protocol/device_info_specifics.proto
 +++ b/components/sync/protocol/device_info_specifics.proto
 @@ -17,6 +17,7 @@ option optimize_for = LITE_RUNTIME;
@@ -10,7 +10,7 @@ index 99fb9895edd4830129068f3f0d47714942d0be67..a989d86d2a2f2b589032eefc9b42b00e
  
  // Information about a device that is running a sync-enabled Chrome browser.  We
  // are mapping the per-client cache guid to more specific information about the
-@@ -96,6 +97,7 @@ message DeviceInfoSpecifics {
+@@ -98,6 +99,7 @@ message DeviceInfoSpecifics {
  
    // The form factor of the device.
    optional SyncEnums.DeviceFormFactor device_form_factor = 20;
