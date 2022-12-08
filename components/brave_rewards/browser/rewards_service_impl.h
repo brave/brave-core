@@ -121,7 +121,8 @@ class RewardsServiceImpl : public RewardsService,
   void CreateRewardsWallet(const std::string& country,
                            CreateRewardsWalletCallback callback) override;
 
-  base::Version GetUserVersion() const override;
+  void GetUserType(
+      base::OnceCallback<void(ledger::mojom::UserType)> callback) override;
 
   std::string GetCountryCode() const override;
 

@@ -12,6 +12,7 @@ import { createLocaleContextForWebUI } from '../../../../brave_rewards/resources
 import { getProviderPayoutStatus } from '../../../../brave_rewards/resources/shared/lib/provider_payout_status'
 import { WithThemeVariables } from '../../../../brave_rewards/resources/shared/components/with_theme_variables'
 import { GrantInfo } from '../../../../brave_rewards/resources/shared/lib/grant_info'
+import { userTypeFromString } from '../../../../brave_rewards/resources/shared/lib/user_type'
 
 import {
   externalWalletFromExtensionData,
@@ -40,7 +41,7 @@ export function RewardsContextAdapter (props: { children: React.ReactNode }) {
 
 export interface RewardsProps {
   rewardsEnabled: boolean
-  userVersion: string
+  userType: string
   isUnsupportedRegion: boolean
   declaredCountry: string
   enabledAds: boolean
@@ -133,7 +134,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
   return (
     <RewardsCard
       rewardsEnabled={props.rewardsEnabled}
-      userVersion={props.userVersion || ''}
+      userType={userTypeFromString(props.userType)}
       isUnsupportedRegion={props.isUnsupportedRegion}
       declaredCountry={props.declaredCountry}
       adsEnabled={props.enabledAds}

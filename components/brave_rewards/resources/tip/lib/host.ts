@@ -5,6 +5,7 @@
 import { addWebUIListener } from 'chrome://resources/js/cr.m'
 
 import { createStateManager } from '../../shared/lib/state_manager'
+import { userTypeFromMojo } from '../../shared/lib/user_type'
 
 import {
   Host,
@@ -86,7 +87,7 @@ export function createHost (): Host {
         return
       }
 
-      chrome.send('getUserVersion')
+      chrome.send('getUserType')
       chrome.send('getRewardsParameters')
       chrome.send('fetchBalance')
       chrome.send('getReconcileStamp')
@@ -116,8 +117,8 @@ export function createHost (): Host {
       stateManager.update({ publisherInfo })
     },
 
-    userVersionUpdated (userVersion: string) {
-      stateManager.update({ userVersion })
+    userTypeUpdated (userType: number) {
+      stateManager.update({ userType: userTypeFromMojo(userType) })
     },
 
     rewardsParametersUpdated (rewardsParameters: RewardsParameters) {

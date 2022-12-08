@@ -13,7 +13,6 @@ import {
   OpenLinkAction
 } from '../../shared/components/notifications'
 
-import { getUserType } from '../../shared/lib/user_type'
 import { ExternalWalletAction } from '../../shared/components/wallet_card'
 import { getInitialState } from './initial_state'
 import { createStateManager } from '../../shared/lib/state_manager'
@@ -217,8 +216,7 @@ export function createHost (): Host {
 
   function updateNotifications () {
     apiAdapter.getNotifications().then((notifications) => {
-      const { userVersion, externalWallet } = stateManager.getState()
-      const userType = getUserType(userVersion, externalWallet)
+      const { userType } = stateManager.getState()
 
       // We do not want to display any "grant available" notifications if there
       // is no corresponding grant information available. (This can occur if the
@@ -336,8 +334,8 @@ export function createHost (): Host {
       apiAdapter.getRewardsEnabled().then((rewardsEnabled) => {
         stateManager.update({ rewardsEnabled })
       }),
-      apiAdapter.getUserVersion().then((userVersion) => {
-        stateManager.update({ userVersion })
+      apiAdapter.getUserType().then((userType) => {
+        stateManager.update({ userType })
       }),
       apiAdapter.getPublishersVisitedCount().then((publishersVisitedCount) => {
         stateManager.update({ publishersVisitedCount })

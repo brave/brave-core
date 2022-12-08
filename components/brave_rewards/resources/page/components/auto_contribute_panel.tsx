@@ -7,8 +7,6 @@ import * as React from 'react'
 
 import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
-import { getUserType } from '../../shared/lib/user_type'
-import { externalWalletFromExtensionData } from '../../shared/lib/external_wallet'
 
 import {
   SettingsPanel,
@@ -47,7 +45,7 @@ export function AutoContributePanel () {
     excludedList: state.excludedList,
     externalWallet: state.externalWallet,
     externalWalletProviderList: state.externalWalletProviderList,
-    userVersion: state.userVersion
+    userType: state.userType
   }))
 
   const [showModal, setShowModal] = React.useState(false)
@@ -65,10 +63,6 @@ export function AutoContributePanel () {
 
   const canShowModal =
     activityList.length > maxTableSize || data.excludedList.length > 0
-
-  const userType = getUserType(
-    data.userVersion,
-    externalWalletFromExtensionData(data.externalWallet))
 
   const toggleModal = () => {
     setShowModal(!showModal)
@@ -278,7 +272,7 @@ export function AutoContributePanel () {
       return renderDisabled()
     }
 
-    if (userType === 'unconnected') {
+    if (data.userType === 'unconnected') {
       return renderLimited()
     }
 
@@ -370,7 +364,7 @@ export function AutoContributePanel () {
           enabled={data.enabledContribute}
           showConfig={showConfig}
           onShowConfigChange={
-            userType === 'unconnected' ? undefined : setShowConfig
+            data.userType === 'unconnected' ? undefined : setShowConfig
           }
           onEnabledChange={onEnabledChange}
         />

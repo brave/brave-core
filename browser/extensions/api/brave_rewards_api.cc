@@ -717,17 +717,34 @@ BraveRewardsGetDeclaredCountryFunction::Run() {
   return RespondNow(OneArgument(base::Value(std::move(country))));
 }
 
-BraveRewardsGetUserVersionFunction::~BraveRewardsGetUserVersionFunction() =
-    default;
+BraveRewardsGetUserTypeFunction::~BraveRewardsGetUserTypeFunction() = default;
 
-ExtensionFunction::ResponseAction BraveRewardsGetUserVersionFunction::Run() {
+ExtensionFunction::ResponseAction BraveRewardsGetUserTypeFunction::Run() {
   auto* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
     return RespondNow(OneArgument(base::Value(std::string())));
   }
-  base::Version version = rewards_service->GetUserVersion();
-  return RespondNow(OneArgument(base::Value(version.GetString())));
+
+  rewards_service->GetUserType(
+      base::BindOnce(&BraveRewardsGetUserTypeFunction::Callback, this));
+
+  return RespondLater();
+}
+
+void BraveRewardsGetUserTypeFunction::Callback(
+    ledger::mojom::UserType user_type) {
+  auto map_user_type = [](ledger::mojom::UserType user_type) -> std::string {
+    switch (user_type) {
+      case ledger::mojom::UserType::kLegacyUnconnected:
+        return "legacy-unconnected";
+      case ledger::mojom::UserType::kConnected:
+        return "connected";
+      case ledger::mojom::UserType::kUnconnected:
+        return "unconnected";
+    }
+  };
+  Respond(OneArgument(base::Value(map_user_type(user_type))));
 }
 
 BraveRewardsGetPublishersVisitedCountFunction::

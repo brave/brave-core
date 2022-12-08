@@ -9,6 +9,7 @@ import {
   ExternalWalletProviderRegionInfo
 } from '../../shared/lib/external_wallet'
 
+import { UserType } from '../../shared/lib/user_type'
 import { GrantInfo } from '../../shared/lib/grant_info'
 import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { PublisherPlatform } from '../../shared/lib/publisher_platform'
@@ -96,7 +97,7 @@ export interface HostState {
   notifications: Notification[]
   availableCountries: string[]
   declaredCountry: string
-  userVersion: string
+  userType: UserType
   publishersVisitedCount: number
 }
 

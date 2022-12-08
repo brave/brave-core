@@ -69,7 +69,7 @@ export const defaultState: NewTab.State = {
     externalWalletProviders: [],
     dismissedNotifications: [],
     rewardsEnabled: false,
-    userVersion: '',
+    userType: '',
     isUnsupportedRegion: false,
     declaredCountry: '',
     enabledAds: false,
