@@ -175,7 +175,7 @@ void AdBlockService::ShouldStartRequest(
 
   request_url =
       rewritten_url && !rewritten_url->empty() ? GURL(*rewritten_url) : url;
-  subscription_service_manager()->ShouldStartRequest(
+  subscription_filters_service()->ShouldStartRequest(
       request_url, resource_type, tab_host, aggressive_blocking, did_match_rule,
       did_match_exception, did_match_important, mock_data_url, rewritten_url);
   if (did_match_important && *did_match_important) {
@@ -237,7 +237,7 @@ absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
   }
 
   absl::optional<base::Value> subscription_resources =
-      subscription_service_manager()->UrlCosmeticResources(url);
+      subscription_filters_service()->UrlCosmeticResources(url);
 
   if (subscription_resources && subscription_resources->is_dict()) {
     MergeResourcesInto(std::move(subscription_resources->GetDict()),
@@ -273,7 +273,7 @@ base::Value::Dict AdBlockService::HiddenClassIdSelectors(
       custom_filters_service()->HiddenClassIdSelectors(classes, ids,
                                                        exceptions);
   base::Value::List subscription_selectors =
-      subscription_service_manager()->HiddenClassIdSelectors(classes, ids,
+      subscription_filters_service()->HiddenClassIdSelectors(classes, ids,
                                                              exceptions);
 
   base::Value::List force_hide_selectors = std::move(regional_selectors);
@@ -345,6 +345,20 @@ AdBlockEngine* AdBlockService::custom_filters_service() {
   return custom_filters_service_.get();
 }
 
+AdBlockEngine* AdBlockService::subscription_filters_service() {
+  if (!subscription_filters_service_) {
+    subscription_filters_service_ =
+        std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
+            new AdBlockEngine(), base::OnTaskRunnerDeleter(GetTaskRunner()));
+    subscription_service_observer_ =
+        std::make_unique<AdBlockService::SourceProviderObserver>(
+            subscription_filters_service_->AsWeakPtr(),
+            subscription_filters_manager_.get(), resource_provider_.get(),
+            GetTaskRunner());
+  }
+  return subscription_filters_service_.get();
+}
+
 brave_shields::AdBlockCustomFiltersProvider*
 AdBlockService::custom_filters_provider() {
   return custom_filters_provider_.get();
@@ -363,19 +377,31 @@ AdBlockService::AdBlockService(
     std::string locale,
     component_updater::ComponentUpdateService* cus,
     scoped_refptr<base::SequencedTaskRunner> task_runner,
-    std::unique_ptr<AdBlockSubscriptionServiceManager>
-        subscription_service_manager)
+    AdBlockSubscriptionDownloadManager::DownloadManagerGetter
+        subscription_download_manager_getter,
+    const base::FilePath& profile_dir)
     : local_state_(local_state),
       locale_(locale),
+      profile_dir_(profile_dir),
+      subscription_download_manager_getter_(
+          std::move(subscription_download_manager_getter)),
       component_update_service_(cus),
       task_runner_(task_runner),
       regional_filters_service_(nullptr,
                                 base::OnTaskRunnerDeleter(task_runner_)),
       custom_filters_service_(nullptr, base::OnTaskRunnerDeleter(task_runner_)),
       default_service_(nullptr, base::OnTaskRunnerDeleter(task_runner_)),
-      subscription_service_manager_(std::move(subscription_service_manager)) {
+      subscription_filters_service_(nullptr,
+                                    base::OnTaskRunnerDeleter(task_runner_)) {
   // Initializes adblock-rust's domain resolution implementation
   adblock::SetDomainResolver(AdBlockServiceDomainResolver);
+
+  subscription_filters_manager_ =
+      std::make_unique<AdBlockFiltersProviderManager>();
+  subscription_service_manager_ =
+      std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
+          subscription_filters_manager_.get(), local_state_, GetTaskRunner(),
+          std::move(subscription_download_manager_getter_), profile_dir_);
 
   default_filters_provider_ =
       std::make_unique<brave_shields::AdBlockComponentFiltersProvider>(

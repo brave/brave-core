@@ -100,11 +100,8 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
         brave_component_updater_delegate_->local_state(),
         brave_component_updater_delegate_->locale(), nullptr,
         brave_component_updater_delegate_->GetTaskRunner(),
-        std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
-            brave_component_updater_delegate_->local_state(),
-            brave_component_updater_delegate_->GetTaskRunner(),
-            base::BindOnce(&FakeAdBlockSubscriptionDownloadManagerGetter),
-            user_data_dir));
+        base::BindOnce(&FakeAdBlockSubscriptionDownloadManagerGetter),
+        user_data_dir);
 
     TestingBraveBrowserProcess::GetGlobal()->SetAdBlockService(
         std::move(adblock_service));
