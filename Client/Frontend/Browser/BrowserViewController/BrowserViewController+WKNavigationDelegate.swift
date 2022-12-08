@@ -147,31 +147,26 @@ extension BrowserViewController: WKNavigationDelegate {
     return url.scheme == "rewards" && url.host == "uphold"
   }
 
-  public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
+  public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
     guard let url = navigationAction.request.url else {
-      decisionHandler(.cancel, preferences)
-      return
+      return (.cancel, preferences)
     }
 
     if InternalURL.isValid(url: url) {
       if navigationAction.navigationType != .backForward, navigationAction.isInternalUnprivileged {
         Logger.module.warning("Denying unprivileged request: \(navigationAction.request)")
-        decisionHandler(.cancel, preferences)
-        return
+        return (.cancel, preferences)
       }
 
-      decisionHandler(.allow, preferences)
-      return
+      return (.allow, preferences)
     }
 
     if url.scheme == "about" {
-      decisionHandler(.allow, preferences)
-      return
+      return (.allow, preferences)
     }
 
     if url.isBookmarklet {
-      decisionHandler(.cancel, preferences)
-      return
+      return (.cancel, preferences)
     }
 
     // Universal links do not work if the request originates from the app, manual handling is required.
@@ -180,8 +175,7 @@ extension BrowserViewController: WKNavigationDelegate {
       switch universalLink {
       case .buyVPN:
         presentCorrespondingVPNViewController()
-        decisionHandler(.cancel, preferences)
-        return
+        return (.cancel, preferences)
       }
     }
 
@@ -193,8 +187,7 @@ extension BrowserViewController: WKNavigationDelegate {
       
       // Do not allow opening external URLs from child tabs
       handleExternalURL(url, tab: tab, navigationAction: navigationAction)
-      decisionHandler(.cancel, preferences)
-      return
+      return (.cancel, preferences)
     }
 
     // Second special case are a set of URLs that look like regular http links, but should be handed over to iOS
@@ -204,23 +197,20 @@ extension BrowserViewController: WKNavigationDelegate {
     if isAppleMapsURL(url) {
       // Do not allow opening external URLs from child tabs
       handleExternalURL(url, tab: tab, navigationAction: navigationAction)
-      decisionHandler(.cancel, preferences)
-      return
+      return (.cancel, preferences)
     }
 
     if isStoreURL(url) {
       // Do not allow opening external URLs from child tabs
       handleExternalURL(url, tab: tab, navigationAction: navigationAction)
-      decisionHandler(.cancel, preferences)
-      return
+      return (.cancel, preferences)
     }
 
     // Handles custom mailto URL schemes.
     if url.scheme == "mailto" {
       // Do not allow opening external URLs from child tabs
       handleExternalURL(url, tab: tab, navigationAction: navigationAction)
-      decisionHandler(.cancel, preferences)
-      return
+      return (.cancel, preferences)
     }
 
     let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
@@ -230,10 +220,15 @@ extension BrowserViewController: WKNavigationDelegate {
        navigationAction.targetFrame?.isMainFrame == true,
        let redirectURL = WebsiteRedirects.redirect(for: url) {
       
-      decisionHandler(.cancel, preferences)
       tab?.loadRequest(URLRequest(url: redirectURL))
-      return
+      return (.cancel, preferences)
     }
+    
+    // before loading any ad-block scripts
+    // await the preparation of the ad-block services
+    await LaunchHelper.shared.prepareAdBlockServices(
+      adBlockService: self.braveCore.adblockService
+    )
     
     if let mainDocumentURL = navigationAction.request.mainDocumentURL {
       if mainDocumentURL != tab?.currentPageData?.mainFrameURL {
@@ -270,9 +265,6 @@ extension BrowserViewController: WKNavigationDelegate {
         
         // Once we check the redirect chain only need the last (final) url from our redirect chain
         if let redirectURL = redirectChain.last?.url {
-          // Cancel the original request. We don't want it to load as it's tracking us
-          decisionHandler(.cancel, preferences)
-
           // For now we only allow the `Referer`. The browser will add other headers during navigation.
           var modifiedRequest = URLRequest(url: redirectURL)
 
@@ -282,6 +274,8 @@ extension BrowserViewController: WKNavigationDelegate {
           }
 
           tab?.loadRequest(modifiedRequest)
+          // Cancel the original request. We don't want it to load as it's tracking us
+          return (.cancel, preferences)
         }
       }
       
@@ -327,12 +321,10 @@ extension BrowserViewController: WKNavigationDelegate {
 
       // Add Brave Search headers if Rewards is enabled
       if !isPrivateBrowsing && rewards.isEnabled && navigationAction.request.allHTTPHeaderFields?["X-Brave-Ads-Enabled"] == nil {
-        decisionHandler(.cancel, preferences)
-
         var modifiedRequest = URLRequest(url: url)
         modifiedRequest.setValue("1", forHTTPHeaderField: "X-Brave-Ads-Enabled")
         tab?.loadRequest(modifiedRequest)
-        return
+        return (.cancel, preferences)
       }
 
       // We fetch cookies to determine if backup search was enabled on the website.
@@ -423,8 +415,7 @@ extension BrowserViewController: WKNavigationDelegate {
         self.tabManager.selectedTab?.blockAllAlerts = false
       }
 
-      decisionHandler(.allow, preferences)
-      return
+      return (.allow, preferences)
     }
 
     // Standard schemes are handled in previous if-case.
@@ -442,7 +433,8 @@ extension BrowserViewController: WKNavigationDelegate {
         }
       }
     }
-    decisionHandler(.cancel, preferences)
+    
+    return (.cancel, preferences)
   }
 
   public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
