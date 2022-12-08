@@ -19,6 +19,8 @@ def Run(_original_function, **kwargs):
     ]
     if os.environ.get('PRESUBMIT_FIX') == '1':
         node_args += ['--fix']
+    # Don't ignore files/directories starting with a dot.
+    node_args += ['--ignore-pattern', '!.*']
     node_args += kwargs['args']
 
     return brave_node.RunNode(node_args)
