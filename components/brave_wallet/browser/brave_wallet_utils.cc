@@ -262,13 +262,13 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownEthNetworks() {
   static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
       // clang-format off
       GetEthMainnet(),
+      GetAuroraMainnet(),
       GetPolygonMainnet(),
       GetBscMainnet(),
       GetCeloMainnet(),
       GetAvalancheMainnet(),
       GetFantomOperaMainnet(),
       GetOptimismMainnet(),
-      GetAuroraMainnet(),
       GetGoerliTestNetwork(),
       GetSepoliaTestNetwork(),
       GetEthLocalhost(),
