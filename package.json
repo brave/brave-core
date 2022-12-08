@@ -31,7 +31,7 @@
     "test:scripts": "jest build/commands/lib build/commands/scripts",
     "test-security": "npm run check_security && npm run audit_deps && npm run network-audit",
     "tslint": "npm run eslint",
-    "eslint": "eslint -c .eslintrc.json ./components",
+    "eslint": "eslint ./components",
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "pylint": "node ./build/commands/scripts/commands.js pylint",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
