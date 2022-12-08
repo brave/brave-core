@@ -34,7 +34,7 @@ function InputCheckbox (props: InputCheckboxProps) {
 }
 
 function HelpImprove () {
-  const [isP3AEnabled, setP3AEnabled] = React.useState(false)
+  const [isP3AEnabled, setP3AEnabled] = React.useState(true)
   const [isMetricsReportingEnabled, setMetricsReportingEnabled] = React.useState(true)
 
   const handleP3AChange = () => {
@@ -70,15 +70,15 @@ function HelpImprove () {
       <S.Grid>
         <div className="list">
           <InputCheckbox
-            id="p3a"
-            onChange={handleP3AChange}
-            isChecked={isP3AEnabled}
-            labelText={getLocale('braveWelcomeSendReportsLabel')}
-          />
-          <InputCheckbox
             id="metrics"
             onChange={handleMetricsReportingChange}
             isChecked={isMetricsReportingEnabled}
+            labelText={getLocale('braveWelcomeSendReportsLabel')}
+          />
+          <InputCheckbox
+            id="p3a"
+            onChange={handleP3AChange}
+            isChecked={isP3AEnabled}
             labelText={getLocale('braveWelcomeSendInsightsLabel')}
           />
         </div>
