@@ -69,12 +69,10 @@ public class BraveVPNSettingsViewController: TableViewController {
   private var linkReceiptRows: [Row] {
     var rows = [Row]()
     
-    if BraveVPN.linkReceiptEnabled {
-      rows.append(Row(text: Strings.VPN.settingsLinkReceipt,
-                      selection: { [unowned self] in
-        openURL?(BraveUX.braveVPNLinkReceiptProd)
-      }, cellClass: ButtonCell.self))
-    }
+    rows.append(Row(text: Strings.VPN.settingsLinkReceipt,
+                    selection: { [unowned self] in
+      openURL?(BraveUX.braveVPNLinkReceiptProd)
+    }, cellClass: ButtonCell.self))
     
     if BraveVPN.isSandbox {
       rows += [Row(text: "[Staging] Link Receipt",
