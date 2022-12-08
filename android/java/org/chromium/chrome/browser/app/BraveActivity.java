@@ -333,7 +333,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (id == R.id.brave_wallet_id) {
             openBraveWallet(false);
         } else if (id == R.id.brave_playlist_id) {
-            PlaylistUtils.openPlaylistActivity(BraveActivity.this, PlaylistUtils.DEFAULT_PLAYLIST);
+            PlaylistUtils.openPlaylistActivity(BraveActivity.this, PlaylistUtils.DEFAULT_PLAYLIST_ID);
         } else if (id == R.id.brave_news_id) {
             openBraveNewsSettings();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {

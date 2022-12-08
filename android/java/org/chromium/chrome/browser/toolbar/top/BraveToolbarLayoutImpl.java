@@ -596,14 +596,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         org.chromium.url.mojom.Url contentUrl = new org.chromium.url.mojom.Url();
                         contentUrl.url = url;
                         mPlaylistPageHandler.addMediaFilesFromPageToPlaylist(
-                                PlaylistUtils.DEFAULT_PLAYLIST, contentUrl);
+                                PlaylistUtils.DEFAULT_PLAYLIST_ID, contentUrl);
                         SnackBarActionModel snackBarActionModel = new SnackBarActionModel(
                                 getContext().getResources().getString(R.string.view_action),
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         PlaylistUtils.openPlaylistActivity(
-                                                getContext(), PlaylistUtils.DEFAULT_PLAYLIST);
+                                                getContext(), PlaylistUtils.DEFAULT_PLAYLIST_ID);
                                     }
                                 });
 
@@ -615,7 +615,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     } else if (playlistOptionsModel.getOptionType()
                             == PlaylistOptions.OPEN_PLAYLIST) {
                         PlaylistUtils.openPlaylistActivity(
-                                getContext(), PlaylistUtils.DEFAULT_PLAYLIST);
+                                getContext(), PlaylistUtils.DEFAULT_PLAYLIST_ID);
                     } else if (playlistOptionsModel.getOptionType()
                             == PlaylistOptions.PLAYLIST_SETTINGS) {
                     } else if (playlistOptionsModel.getOptionType()
