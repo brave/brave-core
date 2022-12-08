@@ -559,6 +559,8 @@
       <message name="IDS_REWARDS_APP_ERROR_TITLE" desc="">Something went wrong</message>
 
       <!-- WebUI rewards internals resources -->
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_AD_DIAGNOSTIC_ID" desc="Ad diagnostic id">Diagnostic Id</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_AD_DIAGNOSTIC_INFO" desc="Ad diagnostic info">Diagnostic Info</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_ADS_NOT_INITIALIZED" desc="Ads not initialized">Ads not initialized, please refresh the page.</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_AMOUNT" desc="Amount">Amount:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_AUTO_REFRESH" desc="">Automatically refresh every 5 seconds</message>

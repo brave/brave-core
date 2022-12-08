@@ -6,7 +6,7 @@
 #include "bat/ads/internal/account/user_data/diagnostic_id_user_data.h"
 
 #include "base/test/values_test_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -25,7 +25,7 @@ TEST_F(BatAdsDiagnosticIdUserDataTest, GetDiagnosticId) {
 
   // Assert
   const base::Value expected_user_data = base::test::ParseJson(
-      R"({"diagnostic_id":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2"})");
+      R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2"})");
   ASSERT_TRUE(expected_user_data.is_dict());
 
   EXPECT_EQ(expected_user_data, user_data);
@@ -33,7 +33,8 @@ TEST_F(BatAdsDiagnosticIdUserDataTest, GetDiagnosticId) {
 
 TEST_F(BatAdsDiagnosticIdUserDataTest, DoNotGetInvalidDiagnosticId) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetStringPref(prefs::kDiagnosticId, "INVALID");
+  AdsClientHelper::GetInstance()->SetStringPref(prefs::kDiagnosticId,
+                                                "INVALID");
 
   // Act
   const base::Value::Dict user_data = GetDiagnosticId();

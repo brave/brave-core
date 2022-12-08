@@ -22,5 +22,6 @@ export const enum types {
   GET_EVENT_LOGS = '@@rewards_internals/GET_EVENT_LOGS',
   ON_EVENT_LOGS = '@@rewards_internals/ON_EVENT_LOGS',
   GET_AD_DIAGNOSTICS = '@@rewards_internals/GET_AD_DIAGNOSTICS',
-  ON_AD_DIAGNOSTICS = '@@rewards_internals/ON_AD_DIAGNOSTICS'
+  ON_AD_DIAGNOSTICS = '@@rewards_internals/ON_AD_DIAGNOSTICS',
+  SET_AD_DIAGNOSTIC_ID = '@@rewards_internals/SET_AD_DIAGNOSTIC_ID'
 }

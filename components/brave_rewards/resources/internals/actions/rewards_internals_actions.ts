@@ -73,3 +73,8 @@ export const onAdDiagnostics = (adDiagnostics: RewardsInternals.AdDiagnosticsEnt
   action(types.ON_AD_DIAGNOSTICS, {
     adDiagnostics
   })
+
+export const setAdDiagnosticId = (adDiagnosticId: string) =>
+  action(types.SET_AD_DIAGNOSTIC_ID, {
+    adDiagnosticId
+  })

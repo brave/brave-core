@@ -14,7 +14,7 @@
 namespace ads::user_data {
 
 namespace {
-constexpr char kDiagnosticIdKey[] = "diagnostic_id";
+constexpr char kDiagnosticIdKey[] = "diagnosticId";
 }  // namespace
 
 base::Value::Dict GetDiagnosticId() {
