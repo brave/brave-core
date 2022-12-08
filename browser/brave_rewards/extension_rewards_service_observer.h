@@ -63,6 +63,8 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
       const ledger::mojom::RewardsType type,
       const ledger::mojom::ContributionProcessor processor) override;
 
+  void OnExternalWalletConnected() override;
+
   void OnExternalWalletLoggedOut() override;
 
   void OnUnblindedTokensReady(
