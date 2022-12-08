@@ -96,8 +96,8 @@ void BraveVPNOSConnectionAPI::Connect(bool ignore_network_state) {
 
   if (GetIsSimulation() || connection_info_.IsValid()) {
     VLOG(2) << __func__
-            << " : direct connect as we already have valid connection info.";
-    ConnectImpl(target_vpn_entry_name_);
+            << " : Create os vpn entry with cached connection_info.";
+    CreateVPNConnectionImpl(connection_info_);
     return;
   }
 

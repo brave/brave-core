@@ -1092,6 +1092,35 @@ class MockBraveVPNOSConnectionAPI : public BraveVPNOSConnectionAPI {
   MOCK_METHOD(void, CheckConnectionImpl, (const std::string& name), (override));
 };
 
+// Create os vpn entry with cached connection_info when there is cached
+// connection info.
+TEST_F(BraveVPNServiceTest, CreateOSVPNEntryWhenConnectTest) {
+  MockBraveVPNOSConnectionAPI api;
+  SetMockConnectionAPI(&api);
+  std::string env = skus::GetDefaultEnvironment();
+  SetPurchasedState(env, PurchasedState::PURCHASED);
+
+  // Prepare valid connection info.
+  OnFetchHostnames("region-a", GetHostnamesData(), true);
+  prevent_creation() = true;
+  OnGetProfileCredentials(GetProfileCredentialData(), true);
+  EXPECT_TRUE(GetConnectionInfo().IsValid());
+
+  // With cached connection info, connect process starts with
+  // os vpn entry creation.
+  EXPECT_CALL(api, CreateVPNConnectionImpl(testing::_)).Times(1);
+  Connect();
+  testing::Mock::VerifyAndClearExpectations(&api);
+
+  // W/o valid connection info, connect will not try to create
+  // os vpn entry at the beginning.
+  GetBraveVPNConnectionAPI()->ResetConnectionInfo();
+  EXPECT_FALSE(GetConnectionInfo().IsValid());
+  EXPECT_CALL(api, CreateVPNConnectionImpl(testing::_)).Times(0);
+  Connect();
+  testing::Mock::VerifyAndClearExpectations(&api);
+}
+
 // Test connection check is asked only when purchased state.
 TEST_F(BraveVPNServiceTest, CheckConnectionStateAfterPurchased) {
   MockBraveVPNOSConnectionAPI api;
