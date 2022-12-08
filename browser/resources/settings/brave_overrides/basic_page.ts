@@ -17,6 +17,7 @@ import '../brave_search_engines_page/brave_search_engines_page.js'
 import '../brave_sync_page/brave_sync_page.js'
 import '../brave_tor_page/brave_tor_subpage.js'
 import '../brave_wallet_page/brave_wallet_page.js'
+import '../brave_web3_domains_page/brave_web3_domains_page.js'
 import '../default_brave_shields_page/default_brave_shields_page.js'
 import '../getting_started_page/getting_started.js'
 import '../social_blocking_page/social_blocking_page.js'
@@ -146,8 +147,9 @@ RegisterPolymerTemplateModifications({
       sectionIPFS.setAttribute('is', 'dom-if')
       sectionIPFS.setAttribute('restamp', true)
       sectionIPFS.setAttribute('if', '[[showPage_(pageVisibility.braveIPFS)]]')
-      sectionIPFS.content.appendChild(createSectionElement(
+      sectionIPFS.content.appendChild(createNestedSectionElement(
         'ipfs',
+        'web3',
         'braveIPFS',
         'settings-brave-ipfs-page',
         {
@@ -174,8 +176,9 @@ RegisterPolymerTemplateModifications({
         sectionWallet.setAttribute('is', 'dom-if')
         sectionWallet.setAttribute('restamp', true)
         sectionWallet.setAttribute('if', '[[showPage_(pageVisibility.braveWallet)]]')
-        sectionWallet.content.appendChild(createSectionElement(
+        sectionWallet.content.appendChild(createNestedSectionElement(
           'wallet',
+          'web3',
           'braveWallet',
           'settings-brave-wallet-page',
           {
@@ -183,6 +186,19 @@ RegisterPolymerTemplateModifications({
           }
         ))
       }
+      const sectionWeb3Domains = document.createElement('template')
+      sectionWeb3Domains.setAttribute('is', 'dom-if')
+      sectionWeb3Domains.setAttribute('restamp', true)
+      sectionWeb3Domains.setAttribute('if', '[[showPage_(pageVisibility.braveWeb3Domains)]]')
+      sectionWeb3Domains.content.appendChild(createNestedSectionElement(
+        'web3Domains',
+        'web3',
+        'braveWeb3Domains',
+        'settings-brave-web3-domains-page',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
       const sectionSync = document.createElement('template')
       sectionSync.setAttribute('is', 'dom-if')
       sectionSync.setAttribute('restamp', true)
@@ -288,8 +304,11 @@ RegisterPolymerTemplateModifications({
       }
       // Insert IPFS
       last = last.insertAdjacentElement('afterend', sectionIPFS)
+      // Insert Web3 Domains
+      last = last.insertAdjacentElement('afterend', sectionWeb3Domains)
       // Insert Tor
       last = last.insertAdjacentElement('afterend', sectionTor)
+
       // Advanced
       const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')
       if (!advancedTemplate) {

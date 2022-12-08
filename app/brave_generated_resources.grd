@@ -811,6 +811,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_IPFS_SETTINGS_SECTION" desc="Open IPFS settings section">
         IPFS
       </message>
+      <message name="IDS_BRAVE_WEB3_SETTINGS_SECTION" desc="Open Web3 settings section">
+        Web3
+      </message>
+      <message name="IDS_BRAVE_WEB3_DOMAINS_SETTINGS_SECTION" desc="Open Web3 Domains settings section">
+        Web3 Domains
+      </message>
       <message name="IDS_BRAVE_IPFS_LEARN_MORE">
         Learn more about IPFS and privacy
       </message>

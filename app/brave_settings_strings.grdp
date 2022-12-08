@@ -876,7 +876,7 @@
     The number of minutes to wait until the Brave Wallet is automatically locked
   </message>
   <message name="IDS_SETTINGS_WALLET_NETWORKS_ITEM" desc="The label for opening wallet networks list">
-    Networks
+    Wallet Networks
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO" desc="Reset wallet transactions">
     Clear wallet transaction and nonce information
