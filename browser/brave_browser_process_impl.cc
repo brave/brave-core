@@ -12,7 +12,7 @@
 #include "base/bind.h"
 #include "base/path_service.h"
 #include "base/task/thread_pool.h"
-#include "brave/browser/brave_ads/stats_updater_helper.h"
+#include "brave/browser/brave_ads/brave_stats_updater_helper.h"
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
@@ -118,8 +118,8 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   // early initialize referrals
   brave_referrals_service();
 #endif
-  // early initialize ads stats updater helper
-  ads_stats_updater_helper();
+  // initialize ads stats updater helper
+  InitBraveStatsUpdaterHelper();
   // early initialize brave stats
   brave_stats_updater();
 
@@ -302,6 +302,13 @@ void BraveBrowserProcessImpl::OnBraveDarkModeChanged() {
   UpdateBraveDarkMode();
 }
 
+void BraveBrowserProcessImpl::InitBraveStatsUpdaterHelper() {
+  if (!brave_stats_updater_helper_) {
+    brave_stats_updater_helper_ =
+        std::make_unique<brave_ads::BraveStatsUpdaterHelper>();
+  }
+}
+
 #if BUILDFLAG(ENABLE_TOR)
 tor::BraveTorClientUpdater* BraveBrowserProcessImpl::tor_client_updater() {
   if (tor_client_updater_)
@@ -428,12 +435,4 @@ brave::BraveFarblingService* BraveBrowserProcessImpl::brave_farbling_service() {
   if (!brave_farbling_service_)
     brave_farbling_service_ = std::make_unique<brave::BraveFarblingService>();
   return brave_farbling_service_.get();
-}
-
-brave_ads::StatsUpdaterHelper*
-BraveBrowserProcessImpl::ads_stats_updater_helper() {
-  if (!ads_stats_updater_helper_)
-    ads_stats_updater_helper_ =
-        std::make_unique<brave_ads::StatsUpdaterHelper>();
-  return ads_stats_updater_helper_.get();
 }

@@ -74,7 +74,6 @@ class SpeedreaderRewriterService;
 }
 
 namespace brave_ads {
-class StatsUpdaterHelper;
 class ResourceComponent;
 }
 
@@ -117,7 +116,6 @@ class BraveBrowserProcess {
 #endif
   virtual brave_ads::ResourceComponent* resource_component() = 0;
   virtual brave::BraveFarblingService* brave_farbling_service() = 0;
-  virtual brave_ads::StatsUpdaterHelper* ads_stats_updater_helper() = 0;
 };
 
 extern BraveBrowserProcess* g_brave_browser_process;
