@@ -595,6 +595,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_WEB_DISCOVERY_INFOBAR_NO_THANKS_LABEL" desc="The text for no thanks button in infobar">
           No thanks
         </message>
+        <!-- obsolete system InfoBar -->
+        <message name="IDS_OBSOLERE_SYSTEM_INFOBAR_DONT_SHOW_BUTTON" desc="The text for don't show again button">
+          Don't show again
+        </message>
       </if>
 
       <!-- Brave Ads -->

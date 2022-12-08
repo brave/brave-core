@@ -100,6 +100,8 @@ source_set("ui") {
       "omnibox/brave_omnibox_client_impl.cc",
       "omnibox/brave_omnibox_client_impl.h",
       "session_crashed_bubble_brave.cc",
+      "startup/brave_obsolete_system_infobar_delegate.cc",
+      "startup/brave_obsolete_system_infobar_delegate.h",
       "toolbar/brave_app_menu_model.cc",
       "toolbar/brave_app_menu_model.h",
       "toolbar/brave_recent_tabs_sub_menu_model.h",
