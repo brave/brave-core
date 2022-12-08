@@ -774,6 +774,8 @@ struct TxData {
   string to;
   string value;
   array<uint8> data;
+  bool sign_only;
+  string? signed_transaction;
 };
 
 struct GasEstimation1559 {
@@ -985,7 +987,8 @@ enum TransactionStatus {
   Submitted = 3,
   Confirmed = 4,
   Error = 5,
-  Dropped = 6
+  Dropped = 6,
+  Signed = 7 // dapps will submit the transaction
 };
 
 enum TransactionType {

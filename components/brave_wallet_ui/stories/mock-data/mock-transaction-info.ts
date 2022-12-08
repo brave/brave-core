@@ -17,7 +17,9 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
         gasLimit: '21000',
         to: '2',
         value: '0x15ddf09c97b0000',
-        data: Array.from(new Uint8Array(24))
+        data: Array.from(new Uint8Array(24)),
+        signOnly: false,
+        signedTransaction: undefined
       },
       chainId: '0x0',
       maxPriorityFeePerGas: '',

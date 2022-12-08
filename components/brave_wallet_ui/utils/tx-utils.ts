@@ -78,6 +78,8 @@ export const getTransactionStatusString = (statusId: number) => {
       return getLocale('braveWalletTransactionStatusError')
     case BraveWallet.TransactionStatus.Dropped:
       return getLocale('braveWalletTransactionStatusDropped')
+    case BraveWallet.TransactionStatus.Signed:
+      return getLocale('braveWalletTransactionStatusSigned')
     default:
       return ''
   }

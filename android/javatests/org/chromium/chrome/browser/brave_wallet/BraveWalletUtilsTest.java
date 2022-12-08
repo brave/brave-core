@@ -402,7 +402,8 @@ public class BraveWalletUtilsTest {
                     String varName = f.getName();
                     if (varName.equals("nonce") || varName.equals("gasPrice")
                             || varName.equals("gasLimit") || varName.equals("to")
-                            || varName.equals("value") || varName.equals("data")) {
+                            || varName.equals("value") || varName.equals("data")
+                            || varName.equals("signedTransaction")) {
                         continue;
                     }
                     if (v == null) {
@@ -424,6 +425,7 @@ public class BraveWalletUtilsTest {
         testStruct.to = "";
         testStruct.value = "";
         testStruct.data = new byte[0];
+        testStruct.signedTransaction = "";
         try {
             java.nio.ByteBuffer byteBuffer = testStruct.serialize();
             TxData testStructDeserialized = TxData.deserialize(byteBuffer);

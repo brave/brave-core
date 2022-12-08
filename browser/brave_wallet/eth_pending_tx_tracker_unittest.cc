@@ -172,8 +172,13 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
   tx_state_manager.AddOrUpdateTx(meta);
   meta.set_id("004");
   meta.set_from(addr2);
+  meta.tx()->set_nonce(uint256_t(4));
+  meta.set_status(mojom::TransactionStatus::Signed);
+  tx_state_manager.AddOrUpdateTx(meta);
+  meta.set_id("005");
+  meta.set_from(addr2);
   meta.tx()->set_nonce(uint256_t(5));
-  meta.set_status(mojom::TransactionStatus::Submitted);
+  meta.set_status(mojom::TransactionStatus::Signed);
   tx_state_manager.AddOrUpdateTx(meta);
 
   test_url_loader_factory()->SetInterceptor(
@@ -200,7 +205,7 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
 
   size_t num_pending;
   EXPECT_TRUE(pending_tx_tracker.UpdatePendingTransactions(&num_pending));
-  EXPECT_EQ(3UL, num_pending);
+  EXPECT_EQ(4UL, num_pending);
   WaitForResponse();
   auto meta_from_state = tx_state_manager.GetEthTx("001");
   ASSERT_NE(meta_from_state, nullptr);
@@ -212,6 +217,8 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
   meta_from_state = tx_state_manager.GetEthTx("003");
   ASSERT_EQ(meta_from_state, nullptr);
   meta_from_state = tx_state_manager.GetEthTx("004");
+  ASSERT_EQ(meta_from_state, nullptr);
+  meta_from_state = tx_state_manager.GetEthTx("005");
   ASSERT_NE(meta_from_state, nullptr);
   EXPECT_EQ(meta_from_state->status(), mojom::TransactionStatus::Confirmed);
   EXPECT_EQ(meta_from_state->tx_receipt().contract_address,

@@ -138,6 +138,13 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   tx_state_manager.AddOrUpdateTx(meta);
 
   GetNextNonce(&nonce_tracker, address, true, 5);
+
+  // tx count: 2, confirmed: [2, 3], pending: [4, 4], sign: [5]
+  meta.set_status(mojom::TransactionStatus::Signed);
+  meta.set_id(TxMeta::GenerateMetaID());
+  tx_state_manager.AddOrUpdateTx(meta);
+
+  GetNextNonce(&nonce_tracker, address, true, 5);
 }
 
 TEST_F(EthNonceTrackerUnitTest, NonceLock) {

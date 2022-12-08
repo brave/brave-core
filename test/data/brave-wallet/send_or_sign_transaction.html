@@ -15,8 +15,8 @@
     window.domAutomationController.send(permissionGranted)
   }
 
-  var sendTransactionResult, sendTransactionError
-  function sendTransaction(is1559, method, from, to, value, data) {
+  var sendOrSignTransactionResult, sendOrSignTransactionError
+  function sendOrSignTransaction(signOnly, is1559, method, from, to, value, data) {
     const params = [{
       from,
       to,
@@ -38,52 +38,52 @@
 
     if (method == 'request') {
       window.ethereum.request({
-        method: 'eth_sendTransaction',
+        method: signOnly ? 'eth_signTransaction' : 'eth_sendTransaction',
         params
       }).then(result => {
-        sendTransactionResult = result
+        sendOrSignTransactionResult = result
         window.domAutomationController.send('result ready')
       }).catch(error => {
-        sendTransactionError = error.message
+        sendOrSignTransactionError = error.message
         window.domAutomationController.send('result ready')
       })
     } else if (method == 'send1') {
       window.ethereum.send({
         id: 'hello',
-        method: 'eth_sendTransaction',
+        method: signOnly ? 'eth_signTransaction' : 'eth_sendTransaction',
         params
       }, (err, result) => {
-        sendTransactionError = err && err.error ? err.error.message : undefined
-        sendTransactionResult = result ? result.result : undefined
+        sendOrSignTransactionError = err && err.error ? err.error.message : undefined
+        sendOrSignTransactionResult = result ? result.result : undefined
         window.domAutomationController.send('result ready')
       })
     } else if (method == 'send2') {
-      window.ethereum.send('eth_sendTransaction', params)
+      window.ethereum.send(signOnly ? 'eth_signTransaction' : 'eth_sendTransaction', params)
         .then(result => {
-          sendTransactionResult = result.result
+          sendOrSignTransactionResult = result.result
           window.domAutomationController.send('result ready')
         }).catch(error => {
-          sendTransactionError = error.error.message
+          sendOrSignTransactionError = error.error.message
           window.domAutomationController.send('result ready')
         })
     } else if (method == 'sendAsync') {
       window.ethereum.sendAsync({
         id: 'hello',
-        method: 'eth_sendTransaction',
+        method: signOnly ? 'eth_signTransaction' : 'eth_sendTransaction',
         params
       }, (err, result) => {
-        sendTransactionError = err && err.error ? err.error.message : undefined
-        sendTransactionResult = result ? result.result : undefined
+        sendOrSignTransactionError = err && err.error ? err.error.message : undefined
+        sendOrSignTransactionResult = result ? result.result : undefined
         window.domAutomationController.send('result ready')
       })
     }
   }
 
-  function getSendTransactionResult() {
-    window.domAutomationController.send(sendTransactionResult)
+  function getSendOrSignTransactionResult() {
+    window.domAutomationController.send(sendOrSignTransactionResult)
   }
-  function getSendTransactionError() {
-    window.domAutomationController.send(sendTransactionError)
+  function getSendOrSignTransactionError() {
+    window.domAutomationController.send(sendOrSignTransactionError)
   }
   // window.ethereum.selectedAddress and not necessarily the selected account
   function getSelectedAddress() {

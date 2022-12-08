@@ -78,6 +78,7 @@ const getLocaleKeyForTxStatus = (status: BraveWallet.TransactionStatus) => {
     case BraveWallet.TransactionStatus.Confirmed: return 'braveWalletTransactionStatusConfirmed'
     case BraveWallet.TransactionStatus.Error: return 'braveWalletTransactionStatusError'
     case BraveWallet.TransactionStatus.Dropped: return 'braveWalletTransactionStatusDropped'
+    case BraveWallet.TransactionStatus.Signed: return 'braveWalletTransactionStatusSigned'
     default: return ''
   }
 }
