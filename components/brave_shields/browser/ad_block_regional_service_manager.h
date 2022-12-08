@@ -42,6 +42,7 @@ class AdBlockRegionalServiceManager
     : public AdBlockFilterListCatalogProvider::Observer {
  public:
   explicit AdBlockRegionalServiceManager(
+      AdBlockFiltersProviderManager* filters_manager,
       PrefService* local_state,
       std::string locale,
       component_updater::ComponentUpdateService* cus,
@@ -57,29 +58,9 @@ class AdBlockRegionalServiceManager
   const std::vector<FilterListCatalogEntry>& GetFilterListCatalog();
 
   bool Start();
-  void ShouldStartRequest(const GURL& url,
-                          blink::mojom::ResourceType resource_type,
-                          const std::string& tab_host,
-                          bool aggressive_blocking,
-                          bool* did_match_rule,
-                          bool* did_match_exception,
-                          bool* did_match_important,
-                          std::string* mock_data_url,
-                          std::string* rewritten_url);
-  absl::optional<std::string> GetCspDirectives(
-      const GURL& url,
-      blink::mojom::ResourceType resource_type,
-      const std::string& tab_host);
-  void UseResources(const std::string& resources);
   bool IsFilterListAvailable(const std::string& uuid) const;
   bool IsFilterListEnabled(const std::string& uuid) const;
   void EnableFilterList(const std::string& uuid, bool enabled);
-
-  absl::optional<base::Value> UrlCosmeticResources(const std::string& url);
-  base::Value::List HiddenClassIdSelectors(
-      const std::vector<std::string>& classes,
-      const std::vector<std::string>& ids,
-      const std::vector<std::string>& exceptions);
 
   void Init(AdBlockResourceProvider* resource_provider,
             AdBlockFilterListCatalogProvider* catalog_provider);
@@ -98,18 +79,14 @@ class AdBlockRegionalServiceManager
   std::string locale_;
   bool initialized_;
   base::Lock regional_services_lock_;
-  std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter> regional_engine_
-      GUARDED_BY(regional_services_lock_);
   std::map<std::string, std::unique_ptr<AdBlockComponentFiltersProvider>>
       regional_filters_providers_;
-  std::unique_ptr<AdBlockService::SourceProviderObserver>
-      regional_source_observer_;
-  std::unique_ptr<AdBlockFiltersProviderManager> filters_manager_;
 
   std::vector<FilterListCatalogEntry> filter_list_catalog_;
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
+  raw_ptr<AdBlockFiltersProviderManager> filters_manager_;
   raw_ptr<AdBlockResourceProvider> resource_provider_;
   raw_ptr<AdBlockFilterListCatalogProvider> catalog_provider_;
 
@@ -119,6 +96,7 @@ class AdBlockRegionalServiceManager
 // Creates the AdBlockRegionalServiceManager
 std::unique_ptr<AdBlockRegionalServiceManager>
 AdBlockRegionalServiceManagerFactory(
+    AdBlockFiltersProviderManager* filters_manager,
     PrefService* local_state,
     std::string locale,
     component_updater::ComponentUpdateService* cus,
