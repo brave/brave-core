@@ -250,21 +250,23 @@ void BraveVPNOSConnectionAPI::UpdateAndNotifyConnectionStateChange(
   if (connection_state_ == state)
     return;
 
-#if BUILDFLAG(IS_WIN)
-  // On Windows, we get disconnected status update twice.
-  // When user connects to different region while connected,
-  // we disconnect current connection and connect to newly selected
-  // region. To do that we monitor |DISCONNECTED| state and start
-  // connect when we get that state. But, Windows sends disconnected state
-  // noti again. So, ignore second one.
-  // On exception - we allow from connecting to disconnected in canceling
-  // scenario.
+  // Ignore disconnected state while connecting is in-progress.
+  // Network status can be changed during the vpn connection because
+  // establishing vpn connection could make system network offline temporarily.
+  // Whenever we get network status change, we check vpn connection state and
+  // it could give disconnected vpn connection during that situation.
+  // So, don't notify this disconnected state change while connecting because
+  // it's temporal state.
   if (connection_state_ == ConnectionState::CONNECTING &&
-      state == ConnectionState::DISCONNECTED && !cancel_connecting_) {
+      state == ConnectionState::DISCONNECTED) {
+    // When cancelling, status should be changed from disconnecting to
+    // disconnected.
+    DCHECK(!cancel_connecting_);
     VLOG(2) << __func__ << ": Ignore disconnected state while connecting";
     return;
   }
 
+#if BUILDFLAG(IS_WIN)
   // On Windows, we could get disconnected state after connect failed.
   // To make connect failed state as a last state, ignore disconnected state.
   if (connection_state_ == ConnectionState::CONNECT_FAILED &&
