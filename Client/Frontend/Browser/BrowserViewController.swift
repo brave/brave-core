@@ -219,6 +219,9 @@ public class BrowserViewController: UIViewController {
   /// Boolean which is tracking If a product notification is presented
   /// in order to not to try to present another one over existing popover
   var benchmarkNotificationPresented = false
+  /// The string domain will be kept temporarily which is tracking site notification presented
+  /// in order to not to process site list again and again
+  var currentBenchmarkWebsite = ""
 
   /// Used to determine when to present benchmark pop-overs
   /// Current session ad count is compared with live ad count
