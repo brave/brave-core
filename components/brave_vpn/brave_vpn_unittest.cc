@@ -286,8 +286,11 @@ class BraveVPNServiceTest : public testing::Test {
   void UpdateAndNotifyConnectionStateChange(mojom::ConnectionState state) {
     GetBraveVPNConnectionAPI()->UpdateAndNotifyConnectionStateChange(state);
   }
-  void Suspend() { GetBraveVPNConnectionAPI()->OnSuspend(); }
-  void OnDNSChanged() { GetBraveVPNConnectionAPI()->OnDNSChanged(); }
+
+  void OnNetworkChanged() {
+    GetBraveVPNConnectionAPI()->OnNetworkChanged(
+        net::NetworkChangeNotifier::CONNECTION_WIFI);
+  }
 
   void SetSelectedRegion(const std::string& region) {
     service_->SetSelectedRegion(region);
@@ -314,9 +317,6 @@ class BraveVPNServiceTest : public testing::Test {
   }
 
   bool& needs_connect() { return GetBraveVPNConnectionAPI()->needs_connect_; }
-  bool& reconnect_on_resume() {
-    return GetBraveVPNConnectionAPI()->reconnect_on_resume_;
-  }
 
   void Connect() { GetBraveVPNConnectionAPI()->Connect(); }
 
@@ -1049,50 +1049,6 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
   EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
 }
 
-TEST_F(BraveVPNServiceTest, ResumeAfterSuspend) {
-  std::string env = skus::GetDefaultEnvironment();
-  SetPurchasedState(env, PurchasedState::PURCHASED);
-
-  connection_state() = ConnectionState::DISCONNECTED;
-  reconnect_on_resume() = false;
-  Suspend();
-  EXPECT_FALSE(reconnect_on_resume());
-
-  connection_state() = ConnectionState::CONNECTED;
-  reconnect_on_resume() = false;
-  Suspend();
-  EXPECT_TRUE(reconnect_on_resume());
-  EXPECT_EQ(ConnectionState::DISCONNECTING, connection_state());
-
-  connection_state() = ConnectionState::DISCONNECTED;
-  SetTestTimezone("Asia/Seoul");
-  OnFetchTimezones(GetTimeZonesData(), true);
-  EXPECT_EQ(GetPurchasedStateSync(), PurchasedState::PURCHASED);
-  auto network_change_notifier = net::NetworkChangeNotifier::CreateIfNeeded();
-  net::test::ScopedMockNetworkChangeNotifier mock_notifier;
-  mock_notifier.mock_network_change_notifier()->SetConnectionType(
-      net::NetworkChangeNotifier::CONNECTION_NONE);
-  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_NONE,
-            net::NetworkChangeNotifier::GetConnectionType());
-  OnDNSChanged();
-  EXPECT_TRUE(reconnect_on_resume());
-
-  mock_notifier.mock_network_change_notifier()->SetConnectionType(
-      net::NetworkChangeNotifier::CONNECTION_UNKNOWN);
-  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_UNKNOWN,
-            net::NetworkChangeNotifier::GetConnectionType());
-  OnDNSChanged();
-  EXPECT_TRUE(reconnect_on_resume());
-
-  mock_notifier.mock_network_change_notifier()->SetConnectionType(
-      net::NetworkChangeNotifier::CONNECTION_ETHERNET);
-  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_ETHERNET,
-            net::NetworkChangeNotifier::GetConnectionType());
-  OnDNSChanged();
-  EXPECT_FALSE(reconnect_on_resume());
-  EXPECT_EQ(ConnectionState::CONNECTING, connection_state());
-}
-
 TEST_F(BraveVPNServiceTest, CheckInitialPurchasedStateTest) {
   // Purchased state is not checked for fresh user.
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
@@ -1147,6 +1103,18 @@ TEST_F(BraveVPNServiceTest, CheckConnectionStateAfterPurchased) {
   testing::Mock::VerifyAndClearExpectations(&api);
   EXPECT_CALL(api, CheckConnectionImpl(testing::_)).Times(1);
   SetPurchasedState(env, PurchasedState::PURCHASED);
+  testing::Mock::VerifyAndClearExpectations(&api);
+
+  SetMockConnectionAPI(nullptr);
+}
+
+TEST_F(BraveVPNServiceTest, CheckConnectionStateAfterNetworkStateChanged) {
+  MockBraveVPNOSConnectionAPI api;
+  SetMockConnectionAPI(&api);
+  std::string env = skus::GetDefaultEnvironment();
+
+  EXPECT_CALL(api, CheckConnectionImpl(testing::_)).Times(1);
+  OnNetworkChanged();
   testing::Mock::VerifyAndClearExpectations(&api);
 
   SetMockConnectionAPI(nullptr);
