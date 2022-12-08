@@ -49,13 +49,13 @@
     Rewards Summary
   </message>
   <message name="IDS_REWARDS_WALLET_UNVERIFIED" desc="">
-    Unverified
+    Connect
   </message>
   <message name="IDS_REWARDS_WALLET_VIEW_STATEMENT" desc="">
     View statement
   </message>
   <message name="IDS_REWARDS_WALLET_VERIFIED" desc="">
-    Verified
+    Connected
   </message>
   <message name="IDS_REWARDS_WALLET_YOUR_BALANCE" desc="">
     Your Balance
