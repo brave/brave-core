@@ -1230,10 +1230,17 @@ void RewardsServiceImpl::GetRewardsParameters(
 void RewardsServiceImpl::OnGetRewardsParameters(
     GetRewardsParametersCallback callback,
     ledger::mojom::RewardsParametersPtr parameters) {
-  if (parameters &&
-      base::FeatureList::IsEnabled(
-          brave_rewards::features::kAllowUnsupportedWalletProvidersFeature)) {
-    parameters->wallet_provider_regions.clear();
+  if (parameters) {
+    if (base::FeatureList::IsEnabled(
+            brave_rewards::features::kAllowUnsupportedWalletProvidersFeature)) {
+      parameters->wallet_provider_regions.clear();
+    }
+
+    // If the user has disabled the "VBAT notice" feature then clear the
+    // corresponding deadline from the returned data.
+    if (!base::FeatureList::IsEnabled(features::kVBatNoticeFeature)) {
+      parameters->vbat_deadline = base::Time();
+    }
   }
 
   std::move(callback).Run(std::move(parameters));

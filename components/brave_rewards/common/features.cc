@@ -25,6 +25,10 @@ BASE_FEATURE(kGeminiFeature,
              base::FEATURE_ENABLED_BY_DEFAULT);
 #endif
 
+BASE_FEATURE(kVBatNoticeFeature,
+             "BraveRewardsVBatNotice",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
 BASE_FEATURE(kVerboseLoggingFeature,
              "BraveRewardsVerboseLogging",
              base::FEATURE_DISABLED_BY_DEFAULT);
