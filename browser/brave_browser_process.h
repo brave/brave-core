@@ -77,7 +77,6 @@ class SpeedreaderRewriterService;
 }
 
 namespace brave_ads {
-class StatsUpdaterHelper;
 class ResourceComponent;
 }
 
