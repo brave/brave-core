@@ -65,21 +65,23 @@ class NFTDetailStore: ObservableObject {
     self.erc721Metadata = erc721Metadata
   }
   
-  func fetchMetadata() {
+  func update() {
     Task { @MainActor in
-      isLoading = true
-      
       let allNetworks = await rpcService.allNetworks(nft.coin)
       if let network = allNetworks.first(where: { $0.chainId.caseInsensitiveCompare(nft.chainId) == .orderedSame }) {
         networkInfo = network
       }
       
-      let (metaData, _, _) = await rpcService.erc721Metadata(nft.contractAddress, tokenId: nft.tokenId, chainId: nft.chainId)
-      
-      isLoading = false
-      if let data = metaData.data(using: .utf8),
-         let result = try? JSONDecoder().decode(ERC721Metadata.self, from: data) {
-        erc721Metadata = result
+      if erc721Metadata == nil {
+        isLoading = true
+        
+        let (metaData, _, _) = await rpcService.erc721Metadata(nft.contractAddress, tokenId: nft.tokenId, chainId: nft.chainId)
+        
+        isLoading = false
+        if let data = metaData.data(using: .utf8),
+           let result = try? JSONDecoder().decode(ERC721Metadata.self, from: data) {
+          erc721Metadata = result
+        }
       }
     }
   }

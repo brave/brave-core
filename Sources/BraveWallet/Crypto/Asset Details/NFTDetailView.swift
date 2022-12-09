@@ -69,7 +69,7 @@ struct NFTDetailView: View {
             .buttonStyle(BraveFilledButtonStyle(size: .large))
           }
         }
-        if let erc721Metadata = nftDetailStore.erc721Metadata, let description = erc721Metadata.description {
+        if let erc721Metadata = nftDetailStore.erc721Metadata, let description = erc721Metadata.description, !description.isEmpty {
           VStack(alignment: .leading, spacing: 8) {
             Text(Strings.Wallet.nftDetailDescription)
               .font(.headline.weight(.semibold))
@@ -132,9 +132,7 @@ struct NFTDetailView: View {
       .padding()
     }
     .onAppear {
-      if nftDetailStore.erc721Metadata == nil {
-        nftDetailStore.fetchMetadata()
-      }
+      nftDetailStore.update()
     }
     .background(Color(UIColor.braveGroupedBackground).ignoresSafeArea())
     .navigationBarTitle(Strings.Wallet.nftDetailTitle)

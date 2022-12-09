@@ -232,13 +232,24 @@ struct PortfolioView: View {
         ),
         destination: {
           if let nftViewModel = selectedNFTViewModel {
-            NFTDetailView(
-              nftDetailStore: cryptoStore.nftDetailStore(for: nftViewModel.token, erc721Metadata: nftViewModel.erc721Metadata),
-              buySendSwapDestination: buySendSwapDestination
-            )
+            if nftViewModel.token.isErc721 {
+              NFTDetailView(
+                nftDetailStore: cryptoStore.nftDetailStore(for: nftViewModel.token, erc721Metadata: nftViewModel.erc721Metadata),
+                buySendSwapDestination: buySendSwapDestination
+              )
               .onDisappear {
                 cryptoStore.closeNFTDetailStore(for: nftViewModel.token)
               }
+            } else {
+              AssetDetailView(
+                assetDetailStore: cryptoStore.assetDetailStore(for: nftViewModel.token),
+                keyringStore: keyringStore,
+                networkStore: cryptoStore.networkStore
+              )
+              .onDisappear {
+                cryptoStore.closeAssetDetailStore(for: nftViewModel.token)
+              }
+            }
           }
         },
         label: {
