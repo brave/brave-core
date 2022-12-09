@@ -198,11 +198,8 @@ const useMutationObserver = () => {
 
 const usePolling = (observer?: MutationObserver) => {
   if (observer) {
-    const mutations = observer.takeRecords()
     observer.disconnect()
-    if (mutations) {
-      queueAttrsFromMutations(mutations)
-    }
+    notYetQueriedElements.length = 0
   }
 
   const futureTimeMs = window.Date.now() + returnToMutationObserverIntervalMs
