@@ -799,8 +799,8 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   // Custom Polygon chain takes place of known one.
   // Custom unknown chain becomes last.
   auto expected_chains = std::move(known_chains);
-  EXPECT_EQ(expected_chains[1]->chain_id, mojom::kPolygonMainnetChainId);
-  expected_chains[1] = chain1.Clone();
+  EXPECT_EQ(expected_chains[2]->chain_id, mojom::kPolygonMainnetChainId);
+  expected_chains[2] = chain1.Clone();
   expected_chains.push_back(chain2.Clone());
 
   auto all_chains = GetAllChains(&prefs, mojom::CoinType::ETH);
@@ -1003,11 +1003,11 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
 
 TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
   const std::vector<std::string> expected_network_ids(
-      {"mainnet", mojom::kPolygonMainnetChainId,
+      {"mainnet", mojom::kAuroraMainnetChainId, mojom::kPolygonMainnetChainId,
        mojom::kBinanceSmartChainMainnetChainId, mojom::kCeloMainnetChainId,
        mojom::kAvalancheMainnetChainId, mojom::kFantomMainnetChainId,
-       mojom::kOptimismMainnetChainId, mojom::kAuroraMainnetChainId, "goerli",
-       "sepolia", "http://localhost:7545/"});
+       mojom::kOptimismMainnetChainId, "goerli", "sepolia",
+       "http://localhost:7545/"});
   ASSERT_EQ(GetAllKnownNetworksForTesting().size(),
             expected_network_ids.size());
   EXPECT_EQ(GetAllKnownEthNetworkIds(), expected_network_ids);
