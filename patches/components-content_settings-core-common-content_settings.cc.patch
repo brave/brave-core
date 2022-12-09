@@ -1,11 +1,11 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index c9e69f17d7a4c7ef390e688bc13aa6ab704bf4c0..fb03fe22d3c7ca0679a4576cedeed69aed7aa26b 100644
+index 7c1b5b6ccf737bbbef90f3638eb651d6cd565d0f..f0ef751051679ef62cdd80bb2ffc84d13d74b8ad 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
-@@ -109,6 +109,7 @@ constexpr HistogramValue kHistogramValue[] = {
-     {ContentSettingsType::NOTIFICATION_PERMISSION_REVIEW, 88},
-     {ContentSettingsType::PRIVATE_NETWORK_GUARD, 89},
+@@ -111,6 +111,7 @@ constexpr HistogramValue kHistogramValue[] = {
      {ContentSettingsType::PRIVATE_NETWORK_CHOOSER_DATA, 90},
+     {ContentSettingsType::FEDERATED_IDENTITY_IDENTITY_PROVIDER_SIGNIN_STATUS,
+      91},
 +    BRAVE_HISTOGRAM_VALUE_LIST
  };
  
