@@ -117,8 +117,8 @@ module.exports = async function (env, argv) {
           loader: 'url-loader?limit=13000&minetype=application/font-woff'
         },
         {
-          test: /\.(ttf|eot|ico|svg|png|jpg|jpeg|gif)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: 'file-loader'
+          test: /\.(ttf|eot|ico|svg|png|jpg|jpeg|gif|webp)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loaders: ['file-loader']
         },
         // In order to fix a memory leak in WDP we introduced the 'linkedom'
         // depencendy: https://github.com/brave/web-discovery-project/pull/197

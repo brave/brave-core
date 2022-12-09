@@ -15,7 +15,7 @@ interface DataContextProviderProps {
 }
 
 function DataContextProvider (props: DataContextProviderProps) {
-  const [viewType, setViewType] = React.useState<ViewType>(ViewType.DefaultBrowser)
+  const [viewType, setViewType] = React.useState<ViewType | undefined>(undefined)
   const [currentSelectedBrowser, setCurrentSelectedBrowser] = React.useState<string | undefined>(undefined)
   const { browserProfiles } = useInitializeImportData()
   const { profileCountRef, incrementCount, decrementCount } = useProfileCount()
