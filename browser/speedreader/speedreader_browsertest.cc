@@ -393,7 +393,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
       const link =
         document.getElementById('c93e2206-2f31-4ddc-9828-2bb8e8ed940e');
       link.click();
-      return link.text
+      return link.innerText
     })();
   )js";
 
