@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <cstring>
 #include <iostream>
-#include "wrapper.h"
+#include "wrapper.h"  // NOLINT - to make this work with the older Makefile too
 
 size_t num_passed = 0;
 size_t num_failed = 0;
