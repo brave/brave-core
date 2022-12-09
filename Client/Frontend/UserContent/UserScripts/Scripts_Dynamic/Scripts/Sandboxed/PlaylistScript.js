@@ -71,8 +71,8 @@ window.__firefox__.includeOnce("Playlist", function($) {
         "securityToken": SECURITY_TOKEN,
         "name": name,
         "src": node.src,
-        "pageSrc": window.location.href,
-        "pageTitle": document.title,
+        "pageSrc": window.top.location.href,
+        "pageTitle": window.top.document.title,
         "mimeType": type,
         "duration": clamp_duration(target.duration),
         "detected": detected,
@@ -85,7 +85,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
     if (target) {
       var name = target.title;
       if (!name || name == "") {
-        name = document.title;
+        name = window.top.document.title;
       }
     
       if (!type || type == "") {
