@@ -1,28 +1,29 @@
 package org.chromium.chrome.browser.notifications.permissions;
 
-import org.chromium.chrome.browser.BraveDialogFragment;
-import android.os.Bundle;
-import android.view.View;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import org.chromium.chrome.R;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveDialogFragment;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 
-
 public class BraveNotificationPermissionRationaleDialog extends BraveDialogFragment {
-
     public static BraveNotificationPermissionRationaleDialog newInstance() {
-        BraveNotificationPermissionRationaleDialog fragment = new BraveNotificationPermissionRationaleDialog();
+        BraveNotificationPermissionRationaleDialog fragment =
+                new BraveNotificationPermissionRationaleDialog();
         return fragment;
     }
 
-	@Override
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -30,7 +31,8 @@ public class BraveNotificationPermissionRationaleDialog extends BraveDialogFragm
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.brave_notification_permission_rationale_dialog, container, false);
+        View view = inflater.inflate(
+                R.layout.brave_notification_permission_rationale_dialog, container, false);
         if (getDialog() != null && getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
