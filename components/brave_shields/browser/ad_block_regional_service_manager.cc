@@ -212,10 +212,10 @@ void AdBlockRegionalServiceManager::EnableTag(const std::string& tag,
   }
 }
 
-void AdBlockRegionalServiceManager::AddResources(const std::string& resources) {
+void AdBlockRegionalServiceManager::UseResources(const std::string& resources) {
   base::AutoLock lock(regional_services_lock_);
   for (const auto& regional_service : regional_services_) {
-    regional_service.second->AddResources(resources);
+    regional_service.second->UseResources(resources);
   }
 }
 

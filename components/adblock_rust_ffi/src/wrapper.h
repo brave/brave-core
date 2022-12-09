@@ -86,7 +86,7 @@ class ADBLOCK_EXPORT Engine {
   void addResource(const std::string& key,
                    const std::string& content_type,
                    const std::string& data);
-  void addResources(const std::string& resources);
+  void useResources(const std::string& resources);
   void removeTag(const std::string& tag);
   bool tagExists(const std::string& tag);
   const std::string urlCosmeticResources(const std::string& url);

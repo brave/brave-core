@@ -142,8 +142,8 @@ void Engine::addResource(const std::string& key,
   engine_add_resource(raw, key.c_str(), content_type.c_str(), data.c_str());
 }
 
-void Engine::addResources(const std::string& resources) {
-  engine_add_resources(raw, resources.c_str());
+void Engine::useResources(const std::string& resources) {
+  engine_use_resources(raw, resources.c_str());
 }
 
 const std::string Engine::urlCosmeticResources(const std::string& url) {

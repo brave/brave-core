@@ -60,7 +60,7 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
       const GURL& url,
       blink::mojom::ResourceType resource_type,
       const std::string& tab_host);
-  void AddResources(const std::string& resources);
+  void UseResources(const std::string& resources);
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
 
