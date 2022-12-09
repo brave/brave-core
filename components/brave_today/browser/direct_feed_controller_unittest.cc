@@ -109,6 +109,18 @@ std::string GetFeedJson() {
       </rss>)";
 }
 
+std::string PartialDirective() {
+  // This feed has an issue that caused a crash with voca_rs < 1.15.2:
+  // - The description contains non-ascii &nbsp; and what might be the
+  //   start of a tag or directive at the end if entities are substituted
+  //   before tags are stripped.
+  return R"(<?xml version="1.0" encoding="UTF-8" standalone="no"?><?xml-stylesheet href="http://www.blogger.com/styles/atom.css" type="text/css"?><rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0"><channel><title>The Hacker News</title><description>Most trusted, widely-read independent cybersecurity news source for everyone; supported by hackers and IT professionals — Send TIPs to admin@thehackernews.com</description><managingEditor>noreply@blogger.com (Unknown)</managingEditor><pubDate>Mon, 7 Nov 2022 20:55:33 +0530</pubDate><generator>Blogger http://www.blogger.com</generator><openSearch:totalResults xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">10601</openSearch:totalResults><openSearch:startIndex xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">1</openSearch:startIndex><openSearch:itemsPerPage xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">25</openSearch:itemsPerPage><link>https://thehackernews.com/</link><language>en-us</language>
+<item><title>This Hidden Facebook Tool Lets Users Remove Their Email or Phone Number Shared by Others</title><link>https://thehackernews.com/2022/11/this-hidden-facebook-tool-lets-users.html</link><author>noreply@blogger.com (Ravie Lakshmanan)</author><pubDate>Mon, 7 Nov 2022 20:16:00 +0530</pubDate><guid isPermaLink="false">tag:blogger.com,1999:blog-4802841478634147276.post-6759991532662668798</guid><description>
+Facebook appears to have silently rolled out a tool that allows users to remove their contact information, such as phone numbers and email addresses, uploaded by others.
+The existence of the tool, which is buried inside a Help Center page about "Friending," was first reported by Business Insider last week. It's offered as a way for "Non-users" to "exercise their rights under applicable laws."
+&lt;!</description><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" height="72" url="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg_3QzeYvVDq275b1Wd2GTXuU1f3E6BtEWkVBdsRddiZttpyTAGt5gCNSRygjiyy-xEqb-am_Cj2WnMaJtrxhlbYzYNPO_OtqbLngzRHjsop-Pt_ZM11ZYCpe-StOIFO7UWH5P7ducBN9pL2rykjudSk9hq046n_X1DbVTYI9WVIKxj_apnisiEV6AT/s260-e100/facebook.jpg" width="72"/></item></channel></rss>)";
+}
+
 }  // namespace
 
 TEST(BraveNewsDirectFeed, ParseFeed) {
@@ -247,6 +259,25 @@ TEST(BraveNewsDirectFeed, ParseEUCJPFeed) {
       "国内、海外、犯罪、娯楽、政治、経済、テクノロジー、スポーツ等、日本のニュ"
       "ースを英語でお届け。英語の勉",
       (std::string)data.items[0].description);
+}
+
+TEST(BraveNewsDirectFeed, ParseFeedRegression) {
+  FeedData data;
+  // If this errors, probably our xml was not valid, but shouldn't crash.
+  auto rss = PartialDirective();
+  bool parse_success = brave_news::parse_feed_bytes(
+      ::rust::Slice<const uint8_t>((const uint8_t*)rss.data(), rss.size()),
+      data);
+
+  // String was parsed to data?
+  ASSERT_TRUE(parse_success);
+
+  // We got the expected number of items?
+  ASSERT_EQ(1u, data.items.size());
+
+  // &lt;! turned into an xml comment?
+  ASSERT_EQ(((std::string)data.items[0].description).find("<!--"),
+            std::string::npos);
 }
 
 TEST(BraveNewsDirectFeed, CanAddDirectFeed) {
