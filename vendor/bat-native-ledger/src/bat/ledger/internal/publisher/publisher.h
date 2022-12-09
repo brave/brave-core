@@ -83,7 +83,7 @@ class Publisher {
   void OnRestorePublishers(mojom::Result result,
                            ledger::ResultCallback callback);
 
-  bool IsConnectedOrVerified(const mojom::PublisherStatus status);
+  bool IsVerified(mojom::PublisherStatus);
 
   void SynopsisNormalizer();
 

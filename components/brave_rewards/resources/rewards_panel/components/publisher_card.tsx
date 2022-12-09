@@ -14,6 +14,7 @@ import { MonthlyTipView } from './monthly_tip_view'
 import { VerifiedIcon } from './icons/verified_icon'
 import { LoadingIcon } from '../../shared/components/icons/loading_icon'
 import { RefreshStatusIcon } from './icons/refresh_status_icon'
+import { getExternalWalletProviderName } from '../../shared/lib/external_wallet'
 
 import * as style from './publisher_card.style'
 
@@ -49,14 +50,14 @@ export function PublisherCard () {
       return false
     }
 
-    const { registered, supportedWalletProviders } = publisherInfo
+    const { supportedWalletProviders } = publisherInfo
 
-    // Show the bubble if the publisher is not registered.
-    if (!registered) {
+    // Show the bubble if the publisher is not verified.
+    if (supportedWalletProviders.length === 0) {
       return true
     }
 
-    // Do not show the bubble if the publisher is registered and the user does
+    // Do not show the bubble if the publisher is verified and the user does
     // not have an external wallet.
     if (!externalWallet) {
       return false
@@ -76,13 +77,18 @@ export function PublisherCard () {
       return null
     }
 
+    const { supportedWalletProviders } = publisherInfo
+
     return (
       <style.pendingBubble>
         <style.pendingBubbleHeader>
           {
-            getString(publisherInfo.registered
-              ? 'pendingTipTitleRegistered'
-              : 'pendingTipTitle')
+            supportedWalletProviders.length === 0
+            ? getString('pendingTipTitle')
+            : formatMessage(getString('pendingTipTitleRegistered'), [
+                getExternalWalletProviderName(externalWallet!.provider),
+                getExternalWalletProviderName(supportedWalletProviders[0])
+              ])
           }
         </style.pendingBubbleHeader>
         <style.pendingBubbleText>
@@ -107,13 +113,13 @@ export function PublisherCard () {
       return null
     }
 
-    const { registered } = publisherInfo
+    const verified = publisherInfo.supportedWalletProviders.length !== 0
 
     return (
-      <style.statusIndicator className={registered ? 'registered' : ''}>
+      <style.statusIndicator className={verified ? 'verified' : ''}>
         <div><VerifiedIcon /></div>
         <div>
-          {getString(registered ? 'verifiedCreator' : 'unverifiedCreator')}
+          {getString(verified ? 'verifiedCreator' : 'unverifiedCreator')}
           <div className='pending-bubble'>
             {renderPendingBubble()}
           </div>

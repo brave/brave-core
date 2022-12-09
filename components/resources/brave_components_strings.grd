@@ -813,7 +813,7 @@
       <message name="IDS_BRAVE_UI_VIEW_DETAILS" desc="">View Details</message>
       <message name="IDS_BRAVE_UI_REWARDS_CREATING_TEXT" desc="">Creating your Brave Rewards profile</message>
       <message name="IDS_BRAVE_UI_SITE_BANNER_NOTICE_NOTE" desc="">NOTE:</message>
-      <message name="IDS_BRAVE_UI_SITE_BANNER_NOTICE_TEXT" desc="">This creator is currently not configured to receive tips from your Rewards custodial wallet service. Any tip you make will remain pending and retry automatically for 90 days.</message>
+      <message name="IDS_BRAVE_UI_SITE_BANNER_NOTICE_TEXT" desc="">You're connected to <ph name="USER_PROVIDER">$1<ex>Uphold</ex></ph>, but this creator is connected to <ph name="CREATOR_PROVIDER">$2<ex>Gemini</ex></ph>. This means your tip can't reach this creator. For now, any tip you make will remain pending and retry automatically for 90 days.</message>
       <message name="IDS_BRAVE_UI_SITE_BANNER_NOTICE_NOT_REGISTERED" desc="">This creator is not signed up yet. Any tip you make will remain pending and retry automatically for 90 days.</message>
       <message name="IDS_BRAVE_UI_SITE_UNVERIFIED_TEXT_MORE" desc="">Learn more.</message>
       <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTIONS" desc="Title of pending contribution modal">Pending contributions</message>
