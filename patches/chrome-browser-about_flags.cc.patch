@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index ce932800fc12e959d8e1b741f701a355f1aa95c9..45b5c953da77c941436ecb2d6771ea0f1f8802a3 100644
+index 49c38a50214ee7ca39cf6091902b1e14178a1aa9..3199a0f2d30236ab4f5eff34fe84f85e316aa46f 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -3379,6 +3379,7 @@ const FeatureEntry::FeatureVariation
+@@ -3390,6 +3390,7 @@ const FeatureEntry::FeatureVariation kWebRtcApmDownmixMethodVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.ts b/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.ts
-index 001f438e666ea61c4038a49566c897b8274e2132..c3eff8c17737197a4657f8150b6b399ec234bcda 100644
+index 2e13c777517eae71cbf8da2b4e0d0f4ac3e066bf..f9d60fb20e02f9d224e09ee85461fcc1543e6320 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.ts
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.ts
 @@ -54,7 +54,7 @@ export interface SecureDnsSetting {

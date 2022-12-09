@@ -1,8 +1,8 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-index da8164afe9fac05c7742b50d7d2fe8ae35da646c..8105834589d104b98609114d12068605e070a6bc 100644
+index ac5c71ffb62eec1988e820b500cbb78ce6702bc9..89932eab0b83d7653b4ea7dc88b48647df71f19a 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-@@ -48,7 +48,7 @@ public class SiteSettingsCategory {
+@@ -47,7 +47,7 @@ public class SiteSettingsCategory {
              Type.PROTECTED_MEDIA, Type.SENSORS, Type.SOUND, Type.USB, Type.VIRTUAL_REALITY,
              Type.USE_STORAGE, Type.AUTO_DARK_WEB_CONTENT, Type.REQUEST_DESKTOP_SITE,
              Type.FEDERATED_IDENTITY_API, Type.THIRD_PARTY_COOKIES, Type.SITE_DATA,
@@ -11,7 +11,7 @@ index da8164afe9fac05c7742b50d7d2fe8ae35da646c..8105834589d104b98609114d12068605
      @Retention(RetentionPolicy.SOURCE)
      public @interface Type {
          // All updates here must also be reflected in {@link #preferenceKey(int)
-@@ -81,10 +81,11 @@ public class SiteSettingsCategory {
+@@ -80,10 +80,11 @@ public class SiteSettingsCategory {
          int FEDERATED_IDENTITY_API = 25;
          int THIRD_PARTY_COOKIES = 26;
          int SITE_DATA = 27;
