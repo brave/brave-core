@@ -30,6 +30,7 @@
 #include "components/segmentation_platform/public/features.h"
 #include "components/send_tab_to_self/features.h"
 #include "components/shared_highlighting/core/common/shared_highlighting_features.h"
+#include "components/subresource_filter/core/common/common_features.h"
 #include "content/public/common/content_features.h"
 #include "content/public/test/browser_test.h"
 #include "gpu/config/gpu_finch_features.h"
@@ -171,6 +172,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &send_tab_to_self::kSendTabToSelfSigninPromo,
     &shared_highlighting::kIOSSharedHighlightingV2,
     &shared_highlighting::kSharedHighlightingAmp,
+    &subresource_filter::kAdTagging,
 #if !BUILDFLAG(IS_ANDROID)
     &translate::kTFLiteLanguageDetectionEnabled,
 #endif
