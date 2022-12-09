@@ -94,7 +94,6 @@ import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
@@ -1472,8 +1471,11 @@ public class Utils {
                               : symbolLowerCase;
     }
 
-    public static void getTxExtraInfo(BraveWalletBaseActivity activity, NetworkInfo selectedNetwork,
-            AccountInfo[] accountInfos, BlockchainToken[] filterByTokens, boolean userAssetsOnly,
+    // Please only use this function when you need all the info (tokens, prices and balances) at the
+    // same time!
+    public static void getTxExtraInfo(BraveWalletBaseActivity activity, NetworkInfo[] allNetworks,
+            NetworkInfo selectedNetwork, AccountInfo[] accountInfos,
+            BlockchainToken[] filterByTokens, boolean userAssetsOnly,
             Callbacks.Callback4<HashMap<String, Double>, BlockchainToken[], HashMap<String, Double>,
                     HashMap<String, HashMap<String, Double>>> callback) {
         BraveWalletService braveWalletService = activity.getBraveWalletService();
@@ -1519,7 +1521,8 @@ public class Utils {
                     AsyncUtils.GetP3ABalancesContext getP3ABalancesContext =
                             new AsyncUtils.GetP3ABalancesContext(
                                     multiResponse.singleResponseComplete);
-                    BalanceHelper.getP3ABalances(activity, selectedNetwork, getP3ABalancesContext);
+                    BalanceHelper.getP3ABalances(
+                            activity, allNetworks, selectedNetwork, getP3ABalancesContext);
 
                     multiResponse.setWhenAllCompletedAction(() -> {
                         // P3A active accounts
@@ -1543,30 +1546,22 @@ public class Utils {
                 });
     }
 
-    public static void getP3ANetworks(Callbacks.Callback1<NetworkInfo[]> callback) {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity == null) {
-            callback.call(new NetworkInfo[0]);
-        }
+    public static void getP3ANetworks(
+            NetworkInfo[] allNetworks, Callbacks.Callback1<NetworkInfo[]> callback) {
         ArrayList<NetworkInfo> relevantNetworks = new ArrayList<NetworkInfo>();
         boolean countTestNetworks = CommandLine.getInstance().hasSwitch(
                 BraveWalletConstants.P3A_COUNT_TEST_NETWORKS_SWITCH);
-        LiveDataUtil.observeOnce(
-                activity.getWalletModel().getCryptoModel().getNetworkModel().mCryptoNetworks,
-                allNetworks -> {
-                    for (NetworkInfo network : allNetworks) {
-                        // Exclude testnet chain data by default.
-                        // Testnet chain counting can be enabled via the
-                        // --p3a-count-wallet-test-networks switch
-                        if (countTestNetworks
-                                || !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(
-                                        network.chainId)) {
-                            relevantNetworks.add(network);
-                        }
-                    }
+        for (NetworkInfo network : allNetworks) {
+            // Exclude testnet chain data by default.
+            // Testnet chain counting can be enabled via the
+            // --p3a-count-wallet-test-networks switch
+            if (countTestNetworks
+                    || !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(network.chainId)) {
+                relevantNetworks.add(network);
+            }
+        }
 
-                    callback.call(relevantNetworks.toArray(new NetworkInfo[0]));
-                });
+        callback.call(relevantNetworks.toArray(new NetworkInfo[0]));
     }
 
     public static boolean isNativeToken(NetworkInfo selectedNetwork, BlockchainToken token) {

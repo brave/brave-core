@@ -43,9 +43,12 @@ public class PortfolioHelper {
     private HashMap<String, Double> mPerTokenCryptoSum;
     private AssetTimePrice[] mFiatHistory;
     private int mFiatHistoryTimeframe;
+    private NetworkInfo[] mCryptoNetworks;
 
-    public PortfolioHelper(BraveWalletBaseActivity activity, AccountInfo[] accountInfos) {
+    public PortfolioHelper(BraveWalletBaseActivity activity, NetworkInfo[] cryptoNetworks,
+            AccountInfo[] accountInfos) {
         mActivity = new WeakReference<BraveWalletBaseActivity>(activity);
+        mCryptoNetworks = cryptoNetworks;
         mAccountInfos = accountInfos;
     }
 
@@ -103,7 +106,8 @@ public class PortfolioHelper {
         resetResultData();
         if (mActivity == null) return;
 
-        Utils.getTxExtraInfo(mActivity.get(), mSelectedNetwork, mAccountInfos, null, true,
+        Utils.getTxExtraInfo(mActivity.get(), mCryptoNetworks, mSelectedNetwork, mAccountInfos,
+                null, true,
                 (assetPrices, userAssetsList, nativeAssetsBalances, blockchainTokensBalances) -> {
                     mUserAssets = userAssetsList;
 

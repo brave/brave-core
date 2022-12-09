@@ -54,6 +54,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpac
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
 
 import java.util.HashMap;
@@ -144,8 +145,11 @@ public class PortfolioFragment
         mBtnChangeNetwork = view.findViewById(R.id.fragment_portfolio_btn_change_networks);
         mBtnChangeNetwork.setOnClickListener(v -> { openNetworkSelection(); });
         mBtnChangeNetwork.setOnLongClickListener(v -> {
-            NetworkInfo networkInfo =
-                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+            NetworkInfo networkInfo = null;
+            if (mWalletModel != null) {
+                networkInfo =
+                        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+            }
             if (networkInfo != null) {
                 Toast.makeText(requireContext(), networkInfo.chainName, Toast.LENGTH_SHORT).show();
             }
@@ -159,7 +163,7 @@ public class PortfolioFragment
                 updatePortfolioGetPendingTx();
             }
         });
-        setUpObservers();
+        if (mWalletModel != null) setUpObservers();
         return view;
     }
 
@@ -241,8 +245,11 @@ public class PortfolioFragment
         editVisibleAssets.setOnClickListener(v -> {
             JsonRpcService jsonRpcService = getJsonRpcService();
             assert jsonRpcService != null;
-            NetworkInfo selectedNetwork =
-                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+            NetworkInfo selectedNetwork = null;
+            if (mWalletModel != null) {
+                selectedNetwork =
+                        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+            }
             if (selectedNetwork == null) {
                 return;
             }
@@ -297,8 +304,11 @@ public class PortfolioFragment
 
     @Override
     public void onAssetClick(BlockchainToken asset) {
-        NetworkInfo selectedNetwork =
-                mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+        NetworkInfo selectedNetwork = null;
+        if (mWalletModel != null) {
+            selectedNetwork =
+                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+        }
         if (selectedNetwork == null) {
             return;
         }
@@ -399,6 +409,7 @@ public class PortfolioFragment
     private void updatePortfolioGetPendingTx() {
         KeyringService keyringService = getKeyringService();
         assert keyringService != null;
+        if (mWalletModel == null) return;
 
         final NetworkInfo selectedNetwork =
                 mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
@@ -412,26 +423,32 @@ public class PortfolioFragment
                         accountInfos = keyringInfo.accountInfos;
                     }
                     Activity activity = getActivity();
+                    final AccountInfo[] accountInfosFinal = accountInfos;
                     if (!(activity instanceof BraveWalletActivity)) return;
-                    mPortfolioHelper =
-                            new PortfolioHelper((BraveWalletActivity) activity, accountInfos);
+                    LiveDataUtil.observeOnce(
+                            mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,
+                            allNetworks -> {
+                                mPortfolioHelper =
+                                        new PortfolioHelper((BraveWalletActivity) activity,
+                                                allNetworks, accountInfosFinal);
 
-                    mPortfolioHelper.setSelectedNetwork(selectedNetwork);
-                    mPortfolioHelper.calculateBalances(() -> {
-                        final String fiatSumString = String.format(
-                                Locale.getDefault(), "$%,.2f", mPortfolioHelper.getTotalFiatSum());
-                        PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
-                            mFiatSumString = fiatSumString;
-                            mBalance.setText(mFiatSumString);
-                            mBalance.invalidate();
+                                mPortfolioHelper.setSelectedNetwork(selectedNetwork);
+                                mPortfolioHelper.calculateBalances(() -> {
+                                    final String fiatSumString = String.format(Locale.getDefault(),
+                                            "$%,.2f", mPortfolioHelper.getTotalFiatSum());
+                                    PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
+                                        mFiatSumString = fiatSumString;
+                                        mBalance.setText(mFiatSumString);
+                                        mBalance.invalidate();
 
-                            setUpCoinList(mPortfolioHelper.getUserAssets(),
-                                    mPortfolioHelper.getPerTokenCryptoSum(),
-                                    mPortfolioHelper.getPerTokenFiatSum());
+                                        setUpCoinList(mPortfolioHelper.getUserAssets(),
+                                                mPortfolioHelper.getPerTokenCryptoSum(),
+                                                mPortfolioHelper.getPerTokenFiatSum());
 
-                            updatePortfolioGraph();
-                        });
-                    });
+                                        updatePortfolioGraph();
+                                    });
+                                });
+                            });
                 });
     }
 
@@ -448,7 +465,7 @@ public class PortfolioFragment
     }
 
     public void callAnotherApproveDialog() {
-        if (!hasPendingTx()) {
+        if (!hasPendingTx() || mWalletModel == null) {
             return;
         }
         ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment =
