@@ -22,6 +22,26 @@ crypto.createHash = algorithm => crypto_orig_createHash(algorithm == "md4" ? "sh
 
 module.exports = async function (env, argv) {
   const isDevMode = argv.mode === 'development'
+  // webpack-cli no longer allows specifying entry name in cli args, so use
+  // a custom env param and parse ourselves.
+  const entry = {}
+  if (!env.brave_entries) {
+    throw new Error(
+      "Entry point(s) must be provided via env.brave_entries param."
+    )
+  }
+  const entryInput = env.brave_entries.split(',')
+  for (const entryInputItem of entryInput) {
+    const entryInputItemParts = entryInputItem.split('=')
+    if (entryInputItemParts.length !== 2) {
+      throw new Error(
+        'Brave Webpack config could not parse entry env param item: ' +
+        entryInputItem
+      )
+    }
+    entry[entryInputItemParts[0]] = entryInputItemParts[1]
+  }
+
   // Webpack config object
   const resolve = {
     extensions: ['.js', '.tsx', '.ts', '.json'],
@@ -29,27 +49,31 @@ module.exports = async function (env, argv) {
     modules: [ 'node_modules' ]
   }
 
-  if (argv.extra_modules) {
+  if (env.extra_modules) {
+    const extra_modules = env.extra_modules.split(',')
     resolve.modules = [
-      ...(
-        Array.isArray(argv.extra_modules)
-        ? argv.extra_modules
-        : [argv.extra_modules]
-      ),
+      ...extra_modules,
       ...resolve.modules
     ]
   }
 
-  if (argv.webpack_alias) {
-    resolve.aliasFields = Array.isArray(argv.webpack_alias) ? argv.webpack_alias : [ argv.webpack_alias ]
+  if (env.webpack_aliases) {
+    resolve.aliasFields = env.webpack_aliases.split(',')
   }
+
+  const output = {
+    path: process.env.TARGET_GEN_DIR,
+    filename: '[name].bundle.js',
+    chunkFilename: '[id].chunk.js'
+  }
+  if (env.output_public_path) {
+    output.publicPath = env.output_public_path
+  }
+
   return {
+    entry,
     devtool: isDevMode ? '#inline-source-map' : false,
-    output: {
-      path: process.env.TARGET_GEN_DIR,
-      filename: '[name].bundle.js',
-      chunkFilename: '[id].chunk.js'
-    },
+    output,
     resolve,
     optimization: {
       // Define NO_CONCATENATE for analyzing module size.
