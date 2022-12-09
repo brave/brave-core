@@ -16,14 +16,13 @@
 #include "brave/components/playlist/browser/playlist_download_request_manager.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/features.h"
-#include "brave/components/playlist/common/features.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
-#include "content/public/test/browser_test_utils.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 
@@ -43,14 +42,16 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
   }
 
   void WaitUntil(base::RepeatingCallback<bool()> condition) {
-    if (condition.Run())
+    if (condition.Run()) {
       return;
+    }
 
     base::RepeatingTimer scheduler;
     scheduler.Start(FROM_HERE, base::Milliseconds(100),
                     base::BindLambdaForTesting([this, &condition]() {
-                      if (condition.Run())
+                      if (condition.Run()) {
                         run_loop_->Quit();
+                      }
                     }));
     Run();
   }
