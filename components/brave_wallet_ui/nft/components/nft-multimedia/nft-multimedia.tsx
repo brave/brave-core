@@ -22,6 +22,7 @@ import {
 } from './nft-multimedia.styles'
 import { NftImage } from '../nft-image/nft-image'
 import placeholderImage from '../../../assets/svg-icons/placeholdr-image.svg'
+import { MediaIframe } from '../media-iframe/media-iframe'
 
 const placeholderImageMimeType = 'image/svg+xml'
 
@@ -72,6 +73,12 @@ export const NftMultimedia = (props: Props) => {
           imageUrl={mediaUrl}
           mimeType={mimeType}
           onMagnify={onClickMagnify}
+        />
+      )
+    } else if (mediaType === 'html') {
+      return (
+        <MediaIframe
+          iframeSrc={mediaUrl}
         />
       )
     }
