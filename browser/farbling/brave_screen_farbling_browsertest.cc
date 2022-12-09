@@ -21,6 +21,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
@@ -57,7 +58,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(embedded_test_server()->Start());
 
     top_level_page_url_ = embedded_test_server()->GetURL("a.com", "/");
-    farbling_url_ = embedded_test_server()->GetURL("a.com", "/simple.html");
+    farbling_url_ = embedded_test_server()->GetURL("a.com", "/iframe.html");
   }
 
   void TearDown() override {
@@ -87,13 +88,19 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
+  content::RenderFrameHost* Parent() const {
+    return Contents()->GetPrimaryMainFrame();
+  }
+
+  content::RenderFrameHost* IFrame() const { return ChildFrameAt(Parent(), 0); }
+
   bool NavigateToURLUntilLoadStop(const GURL& url) {
     EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     return WaitForLoadStop(Contents());
   }
 
-  Browser* OpenPopup(const std::string& script) const {
-    content::ExecuteScriptAsync(Contents(), script);
+  Browser* OpenPopup(const std::string& script, bool from_iframe) const {
+    content::ExecuteScriptAsync(from_iframe ? Parent() : IFrame(), script);
     Browser* popup = ui_test_utils::WaitForBrowserToOpen();
     EXPECT_NE(popup, browser());
     auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
@@ -116,34 +123,40 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
       for (bool allow_fingerprinting : {false, true}) {
         SetFingerprintingSetting(allow_fingerprinting);
         NavigateToURLUntilLoadStop(url);
-        if (!allow_fingerprinting && !IsFlagDisabled() && content_scheme) {
-          EXPECT_GE(
-              8, EvalJs(Contents(), "window.outerWidth - window.innerWidth"));
-          EXPECT_GE(
-              8, EvalJs(Contents(), "window.outerHeight - window.innerHeight"));
-          EXPECT_GE(8, EvalJs(Contents(),
-                              "window.screen.availWidth - window.innerWidth"));
-          EXPECT_GE(8,
-                    EvalJs(Contents(),
-                           "window.screen.availHeight - window.innerHeight"));
-          EXPECT_GE(
-              8, EvalJs(Contents(), "window.screen.width - window.innerWidth"));
-          EXPECT_GE(8, EvalJs(Contents(),
-                              "window.screen.height - window.innerHeight"));
-        } else {
-          EXPECT_LE(
-              0, EvalJs(Contents(), "window.outerWidth - window.innerWidth"));
-          EXPECT_LT(
-              8, EvalJs(Contents(), "window.outerHeight - window.innerHeight"));
-          EXPECT_LT(8, EvalJs(Contents(),
-                              "window.screen.availWidth - window.innerWidth"));
-          EXPECT_LT(8,
-                    EvalJs(Contents(),
-                           "window.screen.availHeight - window.innerHeight"));
-          EXPECT_LT(
-              8, EvalJs(Contents(), "window.screen.width - window.innerWidth"));
-          EXPECT_LT(8, EvalJs(Contents(),
-                              "window.screen.height - window.innerHeight"));
+        for (bool test_iframe : {false, true}) {
+          if (!content_scheme) {
+            continue;
+          }
+          content::RenderFrameHost* host = test_iframe ? Parent() : IFrame();
+          if (!allow_fingerprinting && !IsFlagDisabled() && content_scheme) {
+            EXPECT_GE(8, EvalJs(host, "window.outerWidth - parent.innerWidth"));
+            EXPECT_GE(8,
+                      EvalJs(host, "window.outerHeight - parent.innerHeight"));
+            EXPECT_GE(
+                8,
+                EvalJs(host, "window.screen.availWidth - parent.innerWidth"));
+            EXPECT_GE(
+                8,
+                EvalJs(host, "window.screen.availHeight - parent.innerHeight"));
+            EXPECT_GE(8,
+                      EvalJs(host, "window.screen.width - parent.innerWidth"));
+            EXPECT_GE(
+                8, EvalJs(host, "window.screen.height - parent.innerHeight"));
+          } else {
+            EXPECT_LE(0, EvalJs(host, "window.outerWidth - parent.innerWidth"));
+            EXPECT_LT(8,
+                      EvalJs(host, "window.outerHeight - parent.innerHeight"));
+            EXPECT_LT(
+                8,
+                EvalJs(host, "window.screen.availWidth - parent.innerWidth"));
+            EXPECT_LT(
+                8,
+                EvalJs(host, "window.screen.availHeight - parent.innerHeight"));
+            EXPECT_LT(8,
+                      EvalJs(host, "window.screen.width - parent.innerWidth"));
+            EXPECT_LT(
+                8, EvalJs(host, "window.screen.height - parent.innerHeight"));
+          }
         }
       }
     }
@@ -164,27 +177,26 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
       for (int i = 0; i < static_cast<int>(std::size(kTestWindowBounds)); ++i) {
         SetBounds(kTestWindowBounds[i]);
         NavigateToURLUntilLoadStop(FarblingUrl());
-        if (!allow_fingerprinting && !IsFlagDisabled()) {
-          EXPECT_GE(8, EvalJs(Contents(), "window.screenX"));
-          EXPECT_GE(8, EvalJs(Contents(), "window.screenY"));
-          EXPECT_GE(8, EvalJs(Contents(), "window.screen.availLeft"));
-          EXPECT_GE(8, EvalJs(Contents(), "window.screen.availTop"));
-          EXPECT_GE(
-              8,
-              EvalJs(
-                  Contents(), PREPARE_TEST_EVENT
-                  "testEvent.screenX - devicePixelRatio * testEvent.clientX"));
-          EXPECT_GE(
-              8,
-              EvalJs(
-                  Contents(), PREPARE_TEST_EVENT
-                  "testEvent.screenY - devicePixelRatio * testEvent.clientY"));
-        } else {
-          if (kTestWindowBounds[i].x() > 8) {
-            EXPECT_LT(8, EvalJs(Contents(), "window.screenX"));
-          }
-          if (kTestWindowBounds[i].y() > 8) {
-            EXPECT_LT(8, EvalJs(Contents(), "window.screenY"));
+        for (bool test_iframe : {false, true}) {
+          content::RenderFrameHost* host = test_iframe ? Parent() : IFrame();
+          if (!allow_fingerprinting && !IsFlagDisabled()) {
+            EXPECT_GE(8, EvalJs(host, "window.screenX"));
+            EXPECT_GE(8, EvalJs(host, "window.screenY"));
+            EXPECT_GE(8, EvalJs(host, "window.screen.availLeft"));
+            EXPECT_GE(8, EvalJs(host, "window.screen.availTop"));
+            EXPECT_GE(8, EvalJs(host, PREPARE_TEST_EVENT
+                                "testEvent.screenX - devicePixelRatio * "
+                                "testEvent.clientX"));
+            EXPECT_GE(8, EvalJs(host, PREPARE_TEST_EVENT
+                                "testEvent.screenY - devicePixelRatio * "
+                                "testEvent.clientY"));
+          } else {
+            if (kTestWindowBounds[i].x() > 8) {
+              EXPECT_LT(8, EvalJs(host, "window.screenX"));
+            }
+            if (kTestWindowBounds[i].y() > 8) {
+              EXPECT_LT(8, EvalJs(host, "window.screenY"));
+            }
           }
         }
       }
@@ -197,16 +209,18 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
       for (bool allow_fingerprinting : {false, true}) {
         SetFingerprintingSetting(allow_fingerprinting);
         NavigateToURLUntilLoadStop(FarblingUrl());
-        EXPECT_EQ(
-            !allow_fingerprinting && !IsFlagDisabled(),
-            EvalJs(Contents(),
-                   "matchMedia(`(max-device-width: ${innerWidth + 8}px) and "
-                   "(min-device-width: ${innerWidth}px)`).matches"));
-        EXPECT_EQ(
-            !allow_fingerprinting && !IsFlagDisabled(),
-            EvalJs(Contents(),
-                   "matchMedia(`(max-device-height: ${innerHeight + 8}px) and "
-                   "(min-device-height: ${innerHeight}px)`).matches"));
+        for (bool test_iframe : {false, true}) {
+          content::RenderFrameHost* host = test_iframe ? Parent() : IFrame();
+          EXPECT_EQ(
+              !allow_fingerprinting && !IsFlagDisabled(),
+              EvalJs(host,
+                     "matchMedia(`(device-width: ${outerWidth}px)`).matches"));
+          EXPECT_EQ(
+              !allow_fingerprinting && !IsFlagDisabled(),
+              EvalJs(
+                  host,
+                  "matchMedia(`(device-height: ${outerHeight}px)`).matches"));
+        }
       }
     }
   }
@@ -220,33 +234,35 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     for (bool allow_fingerprinting : {false, true}) {
       SetFingerprintingSetting(allow_fingerprinting);
       NavigateToURLUntilLoadStop(FarblingUrl());
-      auto* parent_contents = Contents();
-      const char* script =
-          "open('http://d.test/', '', `"
-          "left=10,"
-          "top=10,"
-          "width=${outerWidth + 200},"
-          "height=${outerHeight + 200}"
-          "`);";
-      Browser* popup = OpenPopup(script);
-      auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
-      content::WaitForLoadStop(popup_contents);
-      const int popup_inner_width =
-          EvalJs(popup_contents, "innerWidth").value.GetInt();
-      const int popup_inner_height =
-          EvalJs(popup_contents, "innerHeight").value.GetInt();
-      gfx::Rect child_bounds = popup->window()->GetBounds();
-      if (!allow_fingerprinting && !IsFlagDisabled()) {
-        EXPECT_GE(child_bounds.x(), parent_bounds.x());
-        EXPECT_GE(child_bounds.y(), parent_bounds.y());
-        EXPECT_LE(popup_inner_width, EvalJs(parent_contents, "innerWidth + 8"));
-        EXPECT_LE(popup_inner_height,
-                  EvalJs(parent_contents, "Math.max(150, innerHeight + 8)"));
-      } else {
-        EXPECT_LE(child_bounds.x(), std::max(80, 10 + parent_bounds.x()));
-        EXPECT_LE(child_bounds.y(), std::max(80, 10 + parent_bounds.y()));
-        EXPECT_GE(popup_inner_width, EvalJs(parent_contents, "innerWidth"));
-        EXPECT_GE(popup_inner_height, EvalJs(parent_contents, "innerHeight"));
+      for (bool test_iframe : {false, true}) {
+        content::RenderFrameHost* host = test_iframe ? Parent() : IFrame();
+        const char* script =
+            "open('http://d.test/', '', `"
+            "left=10,"
+            "top=10,"
+            "width=${outerWidth + 200},"
+            "height=${outerHeight + 200}"
+            "`);";
+        Browser* popup = OpenPopup(script, test_iframe);
+        auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
+        content::WaitForLoadStop(popup_contents);
+        const int popup_inner_width =
+            EvalJs(popup_contents, "innerWidth").value.GetInt();
+        const int popup_inner_height =
+            EvalJs(popup_contents, "innerHeight").value.GetInt();
+        gfx::Rect child_bounds = popup->window()->GetBounds();
+        if (!allow_fingerprinting && !IsFlagDisabled()) {
+          EXPECT_GE(child_bounds.x(), parent_bounds.x());
+          EXPECT_GE(child_bounds.y(), parent_bounds.y());
+          EXPECT_LE(popup_inner_width, EvalJs(host, "outerWidth"));
+          EXPECT_LE(popup_inner_height,
+                    EvalJs(host, "Math.max(150, outerHeight)"));
+        } else {
+          EXPECT_LE(child_bounds.x(), std::max(80, 10 + parent_bounds.x()));
+          EXPECT_LE(child_bounds.y(), std::max(80, 10 + parent_bounds.y()));
+          EXPECT_GE(popup_inner_width, EvalJs(host, "outerWidth"));
+          EXPECT_GE(popup_inner_height, EvalJs(host, "outerHeight"));
+        }
       }
     }
   }
