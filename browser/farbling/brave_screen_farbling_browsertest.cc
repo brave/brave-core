@@ -235,7 +235,6 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
       SetFingerprintingSetting(allow_fingerprinting);
       NavigateToURLUntilLoadStop(FarblingUrl());
       for (bool test_iframe : {false, true}) {
-        content::RenderFrameHost* host = test_iframe ? Parent() : IFrame();
         const char* script =
             "open('http://d.test/', '', `"
             "left=10,"
@@ -246,22 +245,17 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
         Browser* popup = OpenPopup(script, test_iframe);
         auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
         content::WaitForLoadStop(popup_contents);
-        const int popup_inner_width =
-            EvalJs(popup_contents, "innerWidth").value.GetInt();
-        const int popup_inner_height =
-            EvalJs(popup_contents, "innerHeight").value.GetInt();
         gfx::Rect child_bounds = popup->window()->GetBounds();
         if (!allow_fingerprinting && !IsFlagDisabled()) {
           EXPECT_GE(child_bounds.x(), parent_bounds.x());
           EXPECT_GE(child_bounds.y(), parent_bounds.y());
-          EXPECT_LE(popup_inner_width, EvalJs(host, "outerWidth"));
-          EXPECT_LE(popup_inner_height,
-                    EvalJs(host, "Math.max(150, outerHeight)"));
+          EXPECT_GE(10 + parent_bounds.width(), child_bounds.width());
+          EXPECT_GE(10 + parent_bounds.height(), child_bounds.height());
         } else {
           EXPECT_LE(child_bounds.x(), std::max(80, 10 + parent_bounds.x()));
           EXPECT_LE(child_bounds.y(), std::max(80, 10 + parent_bounds.y()));
-          EXPECT_GE(popup_inner_width, EvalJs(host, "outerWidth"));
-          EXPECT_GE(popup_inner_height, EvalJs(host, "outerHeight"));
+          EXPECT_LE(parent_bounds.width(), child_bounds.width());
+          EXPECT_LE(parent_bounds.height(), child_bounds.height());
         }
       }
     }
