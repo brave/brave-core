@@ -15,6 +15,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/debounce/browser/debounce_component_installer.h"
 #include "brave/components/debounce/common/features.h"
+#include "brave/components/debounce/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
@@ -120,6 +121,10 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
     DebounceComponentInstallerWaiter(component_installer).Wait();
   }
 
+  void ToggleDebouncePref(bool on) {
+    browser()->profile()->GetPrefs()->SetBoolean(prefs::kDebounceEnabled, on);
+  }
+
   GURL add_redirect_param(const GURL& original_url, const GURL& landing_url) {
     return net::AppendOrReplaceQueryParameter(original_url, "url",
                                               landing_url.spec());
@@ -158,14 +163,27 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
 // Test simple redirection by query parameter.
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, Redirect) {
   ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
   GURL base_url = embedded_test_server()->GetURL("simple.a.com", "/");
   GURL landing_url = embedded_test_server()->GetURL("simple.b.com", "/");
   GURL original_url = add_redirect_param(base_url, landing_url);
   NavigateToURLAndWaitForRedirects(original_url, landing_url);
 }
 
+// Test with pref off
+IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, DisabledIfPrefOff) {
+  ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(false);
+  web_contents()->GetController().Reload(content::ReloadType::NORMAL, false);
+  GURL base_url = embedded_test_server()->GetURL("simple.a.com", "/");
+  GURL landing_url = embedded_test_server()->GetURL("simple.b.com", "/");
+  GURL original_url = add_redirect_param(base_url, landing_url);
+  NavigateToURLAndWaitForRedirects(original_url, original_url);
+}
+
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, BackForward) {
   ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
 
   // starting page for back/foward
   GURL start_url = embedded_test_server()->GetURL("z.com", "/");
@@ -191,6 +209,7 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, BackForward) {
 // Test base64-encoded redirection by query parameter.
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, Base64Redirect) {
   ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
   GURL base_url = embedded_test_server()->GetURL("base64.a.com", "/");
   GURL landing_url = embedded_test_server()->GetURL("base64.b.com", "/");
   GURL original_url = add_base64_redirect_param(base_url, landing_url);
@@ -199,6 +218,7 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, Base64Redirect) {
 
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, DoubleRedirect) {
   ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
   GURL url_z = embedded_test_server()->GetURL("z.com", "/");
   GURL url_b = add_redirect_param(
       embedded_test_server()->GetURL("double.b.com", "/"), url_z);
@@ -217,6 +237,7 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, DoubleRedirect) {
 // Test a long redirect chain.
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, QuadRedirect) {
   ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
   GURL url_z = embedded_test_server()->GetURL("z.com", "/");
   GURL url_d = add_redirect_param(
       embedded_test_server()->GetURL("quad.d.com", "/"), url_z);
@@ -234,6 +255,7 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, QuadRedirect) {
 // the final URL share an eTLD+1.
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, SameSiteTracker) {
   ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
   GURL final_url = embedded_test_server()->GetURL("z.com", "/");
   GURL intermediate_url = add_redirect_param(
       embedded_test_server()->GetURL("tracker.z.com", "/"), final_url);
@@ -249,6 +271,7 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, RedirectThroughOriginalSite) {
   auto* old_client = content::SetBrowserClientForTesting(&browser_client);
 
   ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
   GURL url_z = embedded_test_server()->GetURL("z.com", "/");
   GURL url_tracker_a = add_redirect_param(
       embedded_test_server()->GetURL("tracker.a.com", "/"), url_z);
@@ -268,6 +291,7 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, RedirectThroughOriginalSite) {
 
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, RedirectLoop) {
   ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
   GURL finish_url = embedded_test_server()->GetURL("double.a.com", "/");
   GURL loop_url = add_redirect_param(
       embedded_test_server()->GetURL("double.b.com", "/"), finish_url);
@@ -282,6 +306,7 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, RedirectLoop) {
 // debounced because it matches a wildcard include pattern.
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, WildcardInclude) {
   ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
   GURL landing_url = embedded_test_server()->GetURL("z.com", "/");
   GURL start_url = add_redirect_param(
       embedded_test_server()->GetURL("included.c.com", "/"), landing_url);
@@ -291,6 +316,7 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, WildcardInclude) {
 // Test that unknown actions are ignored.
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, UnknownAction) {
   ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
   GURL landing_url = embedded_test_server()->GetURL("z.com", "/");
   GURL start_url = add_redirect_param(
       embedded_test_server()->GetURL("included.d.com", "/"), landing_url);
@@ -302,6 +328,7 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, UnknownAction) {
 // that should not be debounced because it matches an exclude pattern.
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, ExcludeOverridesWildcardInclude) {
   ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
   GURL landing_url = embedded_test_server()->GetURL("z.com", "/");
   GURL start_url_1 = add_redirect_param(
       embedded_test_server()->GetURL("included.e.com", "/"), landing_url);
@@ -315,6 +342,7 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, ExcludeOverridesWildcardInclude) {
 // exactly.
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, NoParamMatch) {
   ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
   GURL landing_url = embedded_test_server()->GetURL("z.com", "/");
   GURL start_url = add_redirect_param(
       embedded_test_server()->GetURL("included.f.com", "/"), landing_url);
@@ -325,6 +353,7 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, NoParamMatch) {
 // processed and applied.
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, IgnoreExtraKeys) {
   ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
   GURL base_url = embedded_test_server()->GetURL("simple.g.com", "/");
   GURL landing_url = embedded_test_server()->GetURL("z.com", "/");
   GURL original_url = add_redirect_param(base_url, landing_url);
@@ -334,6 +363,7 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, IgnoreExtraKeys) {
 // Test that URLs in private registries are treated the same as all other URLs.
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, ExcludePrivateRegistries) {
   ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
   GURL base_url = embedded_test_server()->GetURL("example.blogspot.com", "/");
   GURL landing_url = embedded_test_server()->GetURL("z.com", "/");
   GURL original_url = add_redirect_param(base_url, landing_url);

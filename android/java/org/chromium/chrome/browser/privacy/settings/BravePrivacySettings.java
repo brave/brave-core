@@ -72,6 +72,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
 
     private static final String PREF_HTTPSE = "httpse";
     private static final String PREF_DE_AMP = "de_amp";
+    private static final String PREF_DEBOUNCE = "debounce";
     private static final String PREF_IPFS_GATEWAY = "ipfs_gateway";
     private static final String PREF_BLOCK_COOKIE_CONSENT_NOTICES = "block_cookie_consent_notices";
     private static final String PREF_AD_BLOCK = "ad_block";
@@ -103,7 +104,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
 
     private static final String[] NEW_PRIVACY_PREFERENCE_ORDER = {
             PREF_BRAVE_SHIELDS_GLOBALS_SECTION, //  shields globals  section
-            PREF_SHIELDS_SUMMARY, PREF_BLOCK_TRACKERS_ADS, PREF_DE_AMP, PREF_HTTPSE,
+            PREF_SHIELDS_SUMMARY, PREF_BLOCK_TRACKERS_ADS, PREF_DE_AMP, PREF_DEBOUNCE, PREF_HTTPSE,
             PREF_HTTPS_FIRST_MODE, PREF_BLOCK_SCRIPTS, PREF_BLOCK_CROSS_SITE_COOKIES,
             PREF_FINGERPRINTING_PROTECTION, PREF_FINGERPRINT_LANGUAGE,
             PREF_CLEAR_DATA_SECTION, //  clear data automatically  section
@@ -137,6 +138,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private ChromeSwitchPreference mAutocompleteTopSites;
     private ChromeSwitchPreference mHttpsePref;
     private ChromeSwitchPreference mDeAmpPref;
+    private ChromeSwitchPreference mDebouncePref;
     private ChromeSwitchPreference mHttpsFirstModePref;
     private BraveDialogPreference mFingerprintingProtectionPref;
     private ChromeSwitchPreference mBlockScriptsPref;
@@ -198,6 +200,13 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
 
         mDeAmpPref = (ChromeSwitchPreference) findPreference(PREF_DE_AMP);
         mDeAmpPref.setOnPreferenceChangeListener(this);
+
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.DEBOUNCE)) {
+            mDebouncePref = (ChromeSwitchPreference) findPreference(PREF_DEBOUNCE);
+            mDebouncePref.setOnPreferenceChangeListener(this);
+        } else {
+            removePreferenceIfPresent(PREF_DEBOUNCE);
+        }
 
         mHttpsFirstModePref = (ChromeSwitchPreference) findPreference(PREF_HTTPS_FIRST_MODE);
         mHttpsFirstModePref.setVisible(mHttpsePref.isChecked());
@@ -353,7 +362,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             }
         } else if (PREF_DE_AMP.equals(key)) {
             BravePrefServiceBridge.getInstance().setDeAmpEnabled((boolean) newValue);
-
+        } else if (PREF_DEBOUNCE.equals(key)) {
+            UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    .setBoolean(BravePref.DEBOUNCE_ENABLED, (boolean) newValue);
         } else if (PREF_IPFS_GATEWAY.equals(key)) {
             BravePrefServiceBridge.getInstance().setIpfsGatewayEnabled((boolean) newValue);
         } else if (PREF_BLOCK_COOKIE_CONSENT_NOTICES.equals(key)) {
@@ -582,6 +593,11 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         if (mCookieListOptInPageAndroidHandler != null) {
             mCookieListOptInPageAndroidHandler.isFilterListEnabled(
                     isEnabled -> { mBlockCookieConsentNoticesPref.setChecked(isEnabled); });
+        }
+        // Debounce
+        if (mDebouncePref != null) {
+            mDebouncePref.setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                             .getBoolean(BravePref.DEBOUNCE_ENABLED));
         }
     }
 
