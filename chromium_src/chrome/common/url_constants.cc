@@ -271,4 +271,7 @@ const char kChromeRootStoreSettingsHelpCenterURL[] =
     "chrome_root_store/root_store.md";
 #endif
 
+const char kAddressesAndPaymentMethodsLearnMoreURL[] =
+    "https://support.brave.com";
+
 }  // namespace chrome
