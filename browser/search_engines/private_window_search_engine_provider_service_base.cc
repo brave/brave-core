@@ -50,7 +50,7 @@ void PrivateWindowSearchEngineProviderServiceBase::
     auto extension_id = extension_provider_url->GetExtensionId();
     extensions::ExtensionPrefs* prefs =
         extensions::ExtensionPrefs::Get(otr_profile_->GetOriginalProfile());
-    auto time = prefs->GetInstallTime(extension_id);
+    auto time = prefs->GetLastUpdateTime(extension_id);
 
     auto turl =
         std::make_unique<TemplateURL>(data, type, extension_id, time, true);
