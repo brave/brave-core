@@ -69,7 +69,6 @@ export function createWalletApi (
       'SelectedAccountAddress',
       'SelectedChainId',
       'SelectedCoin',
-      'TestnetsEnabled',
       'TokenSpotPrice',
       'UserBlockchainTokens',
       'WalletInfo'

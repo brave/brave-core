@@ -254,7 +254,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs);
 
   // Added 12/2022
-  prefs->ClearPref(kShowWalletTestNetworksDeprecated);
+  JsonRpcService::MigrateShowTestNetworksToggle(prefs);
 }
 
 }  // namespace brave_wallet
