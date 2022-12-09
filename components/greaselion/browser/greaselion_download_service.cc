@@ -18,7 +18,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
-#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
@@ -265,8 +264,8 @@ void GreaselionDownloadService::OnDevModeLocalFileChanged(bool error) {
 void GreaselionDownloadService::LoadDirectlyFromResourcePath() {
   base::FilePath dat_file_path =
       resource_dir_.AppendASCII(kGreaselionConfigFile);
-  base::PostTaskAndReplyWithResult(
-      GetTaskRunner().get(), FROM_HERE,
+  GetTaskRunner()->PostTaskAndReplyWithResult(
+      FROM_HERE,
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
                      dat_file_path),
       base::BindOnce(&GreaselionDownloadService::OnDATFileDataReady,

@@ -19,7 +19,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
-#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/common/url_readable_hints.h"
@@ -116,8 +115,8 @@ SpeedreaderRewriterService::SpeedreaderRewriterService()
     // Manually trigger the initial stylesheet load
     OnFileChanged(stylesheet_override_path_, false);
 
-    base::PostTaskAndReplyWithResult(
-        watch_task_runner_.get(), FROM_HERE,
+    watch_task_runner_->PostTaskAndReplyWithResult(
+        FROM_HERE,
         base::BindOnce(
             &CreateAndStartFilePathWatcher, stylesheet_override_path_,
             base::BindPostTask(
