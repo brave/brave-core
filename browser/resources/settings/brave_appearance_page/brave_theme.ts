@@ -53,7 +53,7 @@ export class SettingsBraveAppearanceThemeElement extends SettingsBraveAppearance
   override ready() {
     super.ready()
 
-    this.addWebUIListener('brave-theme-type-changed', (type: number) => {
+    this.addWebUiListener('brave-theme-type-changed', (type: number) => {
       this.braveThemeType_ = type;
     })
     this.browserProxy_.getBraveThemeList().then((list) => {

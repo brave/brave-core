@@ -40,7 +40,8 @@ class SettingsPinShortcutPage extends SettingsPinShortcutPageBase {
     this.pinned_ = false
 
     this.browserProxy_.checkShortcutPinState()
-    this.addWebUIListener('shortcut-pin-state-changed', pinned => this.set('pinned_', pinned))
+    this.addWebUiListener(
+      'shortcut-pin-state-changed', pinned => this.set('pinned_', pinned))
   }
 
   onPinShortcutTap_() {

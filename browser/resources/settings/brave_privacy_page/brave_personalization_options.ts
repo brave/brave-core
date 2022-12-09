@@ -87,12 +87,13 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
     // because p3a enabled is a local state setting, but PrefControlMixin
     // checks for a pref being valid, so have to fake it, same as upstream.
     const setP3AEnabledPref = (enabled: boolean) => this.setP3AEnabledPref_(enabled);
-    this.addWebUIListener('p3a-enabled-changed', setP3AEnabledPref);
+    this.addWebUiListener('p3a-enabled-changed', setP3AEnabledPref);
     this.browserProxy_.getP3AEnabled().then(
       (enabled: boolean) => setP3AEnabledPref(enabled));
 
     const setStatsUsagePingEnabledPref = (enabled: boolean) => this.setStatsUsagePingEnabledPref_(enabled);
-    this.addWebUIListener('stats-usage-ping-enabled-changed', setStatsUsagePingEnabledPref);
+    this.addWebUiListener(
+      'stats-usage-ping-enabled-changed', setStatsUsagePingEnabledPref);
     this.browserProxy_.getStatsUsagePingEnabled().then(
       (enabled: boolean) => setStatsUsagePingEnabledPref(enabled));
   }

@@ -58,8 +58,9 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
   override ready() {
     super.ready()
 
-    this.addWebUIListener('brave-needs-restart-changed', (needsRestart: boolean) => {
-      this.showRestartToast_ = needsRestart
+    this.addWebUiListener(
+      'brave-needs-restart-changed', (needsRestart: boolean) => {
+        this.showRestartToast_ = needsRestart
     })
     this.browserProxy_.getRestartNeeded().then(show => {
       this.showRestartToast_ = show
@@ -68,7 +69,7 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
     // PrefControlMixin checks for a pref being valid, so have to fake it,
     // same as upstream.
     const setWidevineEnabledPref = (enabled: boolean) => this.setWidevineEnabledPref_(enabled)
-    this.addWebUIListener('widevine-enabled-changed', setWidevineEnabledPref)
+    this.addWebUiListener('widevine-enabled-changed', setWidevineEnabledPref)
     this.browserProxy_.isWidevineEnabled().then(setWidevineEnabledPref)
   }
 
