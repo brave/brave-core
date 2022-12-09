@@ -2536,6 +2536,16 @@ are declared in tools/grit/grit_rule.gni.
             </message>
           </if>
       </if>
+      <if expr="not use_titlecase">
+          <message name="IDS_DOWNLOAD_BUBBLE_BACK_RECENT_DOWNLOADS" desc="Accessibility/tooltip label for returning to recent downloads">
+            Back to recent downloads
+          </message>
+        </if>
+        <if expr="use_titlecase">
+          <message name="IDS_DOWNLOAD_BUBBLE_BACK_RECENT_DOWNLOADS" desc="In Title Case: Accessibility/tooltip label for returning to recent downloads">
+            Back to Recent Downloads
+          </message>
+        </if>
 
       <!-- Tailored Warning in Download Bubble -->
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_COOKIE_THEFT" desc="Subpage summary for cookie theft warning.">
@@ -6319,6 +6329,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_DOODLE_SHARE_DIALOG_LINK_LABEL" desc="The text label for the share link text area on the doodle sharing dialog.">
         Doodle Link
       </message>
+      <message name="IDS_NTP_CUSTOMIZE_APPEARANCE_LABEL" desc="The label for the option to edit appearance in the Customize Brave side panel.">
+        Appearance
+      </message>
       <message name="IDS_NTP_CUSTOMIZE_MENU_BACKGROUND_LABEL" desc="The label for the backgrounds option in the customization menu on the New Tab Page.">
         Background
       </message>
@@ -6801,11 +6814,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
 
-      <!-- Bookmarks menu -->
-      <message name="IDS_BOOKMARK_FOLDER_CHILD_COUNT" desc="Text description for the number of children of a bookmark folder">
-        {NUM_BOOKMARKS, plural, =1 {1 bookmark} other {# bookmarks}}
-      </message>
-
       <!-- Read Later button and menu -->
       <if expr="use_titlecase">
         <message name="IDS_READ_LATER_TITLE" desc="Title of the Read later menu">
@@ -6928,6 +6936,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_BOOKMARKS_EMPTY_STATE_BODY" desc="Body text for the bookmarks side panel empty state">
         Bookmark things you want to come back to later
+      </message>
+      <message name="IDS_BOOKMARK_FOLDER_CHILD_COUNT" desc="Text description for the number of children of a bookmark folder">
+        {NUM_BOOKMARKS, plural, =1 {1 bookmark} other {# bookmarks}}
       </message>
 
       <!-- Read Anything strings -->
