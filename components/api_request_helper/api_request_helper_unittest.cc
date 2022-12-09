@@ -9,17 +9,19 @@
 #include <utility>
 
 #include "base/callback.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using base::test::ParseJson;
 
 namespace api_request_helper {
 
@@ -78,20 +80,16 @@ class ApiRequestHelperUnitTest : public testing::Test {
   }
 
   void SendRequest(const std::string& server_raw_response,
-                   const std::string& expected_sanitized_response,
+                   const std::string& expected_body,
+                   const base::Value& expected_value_body,
                    const int expected_http_code = 200,
                    const int expected_error_code = net::OK,
                    APIRequestHelper::ResponseConversionCallback
                        conversion_callback = base::NullCallback()) {
     GURL network_url("http://localhost/");
 
-    base::Value expected_sanitized_value_response =
-        base::JSONReader::Read(expected_sanitized_response)
-            .value_or(base::Value());
-
     APIRequestResult expected_result(
-        expected_http_code, expected_sanitized_response,
-        expected_sanitized_value_response.Clone(),
+        expected_http_code, expected_body, expected_value_body.Clone(),
         {{"content-type", "text/html"}}, expected_error_code, network_url);
     base::MockCallback<APIRequestHelper::ResultCallback> callback;
     EXPECT_CALL(callback, Run(MatchesAPIRequestResult(&expected_result)));
@@ -118,15 +116,16 @@ TEST_F(ApiRequestHelperUnitTest, SanitizedRequest) {
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":1.8446744073709552e+19}";
   std::string server_raw_response =
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":18446744073709551615}";
-  SendRequest(server_raw_response, expected_sanitized_response);
-  SendRequest("", "");
-  SendRequest("{}", "{}");
-  SendRequest("{", "");
-  SendRequest("0", "");
-  SendRequest("a", "");
+  SendRequest(server_raw_response, expected_sanitized_response,
+              ParseJson(expected_sanitized_response));
+  SendRequest("", "", base::Value());
+  SendRequest("{}", "{}", base::Value(base::Value::Type::DICT));
+  SendRequest("{", "", base::Value());
+  SendRequest("0", "", base::Value());
+  SendRequest("a", "", base::Value());
   // Android's sanitizer doesn't support trailing commas.
 #if !BUILDFLAG(IS_ANDROID)
-  SendRequest("{\"a\":1,}", "{\"a\":1}");
+  SendRequest("{\"a\":1,}", "{\"a\":1}", ParseJson("{\"a\":1}"));
 #endif
 }
 
@@ -135,24 +134,25 @@ TEST_F(ApiRequestHelperUnitTest, RequestWithConversion) {
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"18446744073709551615\"}";
   std::string server_raw_response =
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":18446744073709551615}";
-  SendRequest(server_raw_response, expected_sanitized_response, 200, net::OK,
+  SendRequest(server_raw_response, expected_sanitized_response,
+              ParseJson(expected_sanitized_response), 200, net::OK,
               base::BindOnce(&ConversionCallback, server_raw_response,
                              expected_sanitized_response));
 
   // Broken json after conversion
   // expecting empty response body after sanitization
   SendRequest(
-      server_raw_response, "", 200, net::OK,
+      server_raw_response, "", base::Value(), 200, net::OK,
       base::BindOnce(&ConversionCallback, server_raw_response, "broken json"));
   // Empty json after conversion
   // expecting empty response body after sanitization
-  SendRequest(server_raw_response, "", 200, net::OK,
+  SendRequest(server_raw_response, "", base::Value(), 200, net::OK,
               base::BindOnce(&ConversionCallback, server_raw_response, ""));
 
   // Returning absl::nullopt in conversion callback results in empty response
   server_raw_response = "{}";
   SendRequest(
-      server_raw_response, "", 422, net::OK,
+      server_raw_response, "", base::Value(), 422, net::OK,
       base::BindOnce(&ConversionCallback, server_raw_response, absl::nullopt));
 }
 

@@ -21,7 +21,7 @@ namespace api_request_helper {
 namespace {
 
 void OnParseJsonIsolated(
-    const int http_code,
+    int http_code,
     const base::flat_map<std::string, std::string>& headers,
     int error_code,
     GURL final_url,

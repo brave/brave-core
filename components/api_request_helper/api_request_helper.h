@@ -47,14 +47,21 @@ class APIRequestResult {
   bool Is2XXResponseCode() const;
   bool IsResponseCodeValid() const;
 
+  // HTTP response code.
   int response_code() const { return response_code_; }
-  int error_code() const { return error_code_; }
-  GURL final_url() const { return final_url_; }
+  // Sanitized json response.
   const std::string& body() const { return body_; }
+  // `base::Value` of sanitized json response.
   const base::Value& value_body() const { return value_body_; }
+  // HTTP response headers.
   const base::flat_map<std::string, std::string>& headers() const {
     return headers_;
   }
+  // `net::Error` code
+  int error_code() const { return error_code_; }
+  // Actual url requested. May differ from original request url in case of
+  // redirects happened.
+  GURL final_url() const { return final_url_; }
 
  private:
   int response_code_ = -1;

@@ -7,7 +7,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_responses.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -15,22 +15,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
-namespace {
-
-base::Value ToValue(const std::string& json) {
-  return base::JSONReader::Read(json).value_or(base::Value());
-}
-
-void CompareJSON(const std::string& request_string,
-                 const std::string& expected_request) {
-  auto request_json = base::JSONReader::Read(request_string);
-  ASSERT_TRUE(request_json);
-  auto expected_request_json = base::JSONReader::Read(expected_request);
-  ASSERT_TRUE(expected_request_json);
-  EXPECT_EQ(*request_json, *expected_request_json);
-}
-
-}  // namespace
+using base::test::ParseJson;
 
 namespace brave_wallet {
 
@@ -38,10 +23,10 @@ TEST(JsonRpcResponseParserUnitTest, ParseSingleStringResult) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"abc\"}";
-  EXPECT_EQ(ParseSingleStringResult(ToValue(json)), "abc");
+  EXPECT_EQ(ParseSingleStringResult(ParseJson(json)), "abc");
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"\"}";
-  EXPECT_TRUE(ParseSingleStringResult(ToValue(json))->empty());
+  EXPECT_TRUE(ParseSingleStringResult(ParseJson(json))->empty());
 }
 
 TEST(JsonRpcResponseParserUnitTest, ParseDecodedBytesResult) {
@@ -49,32 +34,32 @@ TEST(JsonRpcResponseParserUnitTest, ParseDecodedBytesResult) {
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x556f1830\"}";
   EXPECT_EQ(std::vector<uint8_t>({0x55, 0x6f, 0x18, 0x30}),
-            ParseDecodedBytesResult(ToValue(json)));
+            ParseDecodedBytesResult(ParseJson(json)));
 
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"\"}";
-  EXPECT_FALSE(ParseDecodedBytesResult(ToValue(json)));
+  EXPECT_FALSE(ParseDecodedBytesResult(ParseJson(json)));
 }
 
 TEST(JsonRpcResponseParserUnitTest, ParseBoolResult) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x0000000000000000000000000000000000000000000000000000000000000001\"}";
-  EXPECT_EQ(ParseBoolResult(ToValue(json)), absl::make_optional(true));
+  EXPECT_EQ(ParseBoolResult(ParseJson(json)), absl::make_optional(true));
 
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x0000000000000000000000000000000000000000000000000000000000000000\"}";
-  EXPECT_EQ(ParseBoolResult(ToValue(json)), absl::make_optional(false));
+  EXPECT_EQ(ParseBoolResult(ParseJson(json)), absl::make_optional(false));
 
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x00000000000000000000000000000000000000000\"}";
-  EXPECT_EQ(ParseBoolResult(ToValue(json)), absl::nullopt);
+  EXPECT_EQ(ParseBoolResult(ParseJson(json)), absl::nullopt);
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}";
-  EXPECT_EQ(ParseBoolResult(ToValue(json)), absl::nullopt);
+  EXPECT_EQ(ParseBoolResult(ParseJson(json)), absl::nullopt);
 }
 
 TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
@@ -93,12 +78,12 @@ TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
        })";
 
   // kMethodNotFound = -32601
-  ParseErrorResult<mojom::ProviderError>(ToValue(json), &eth_error,
+  ParseErrorResult<mojom::ProviderError>(ParseJson(json), &eth_error,
                                          &eth_error_message);
   EXPECT_EQ(eth_error, mojom::ProviderError::kMethodNotFound);
   EXPECT_EQ(eth_error_message, "method does not exist");
 
-  ParseErrorResult<mojom::SolanaProviderError>(ToValue(json), &solana_error,
+  ParseErrorResult<mojom::SolanaProviderError>(ParseJson(json), &solana_error,
                                                &solana_error_message);
   EXPECT_EQ(solana_error, mojom::SolanaProviderError::kMethodNotFound);
   EXPECT_EQ(solana_error_message, "method does not exist");
@@ -112,12 +97,12 @@ TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
          "code": -32601
        }
      })";
-  ParseErrorResult<mojom::ProviderError>(ToValue(json), &eth_error,
+  ParseErrorResult<mojom::ProviderError>(ParseJson(json), &eth_error,
                                          &eth_error_message);
   EXPECT_EQ(eth_error, mojom::ProviderError::kMethodNotFound);
   EXPECT_TRUE(eth_error_message.empty());
 
-  ParseErrorResult<mojom::SolanaProviderError>(ToValue(json), &solana_error,
+  ParseErrorResult<mojom::SolanaProviderError>(ParseJson(json), &solana_error,
                                                &solana_error_message);
   EXPECT_EQ(solana_error, mojom::SolanaProviderError::kMethodNotFound);
   EXPECT_TRUE(solana_error_message.empty());
@@ -134,18 +119,18 @@ TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
       R"({"jsonrpc": "2.0", "id": 1, "error": "0"})",
       R"({"jsonrpc": "2.0", "id": 1, "error": "0"})",
       R"({"jsonrpc": "2.0", "id": 1, "error": {}})",
-      "some string",
+      R"("some string")",
   };
 
   for (const std::string& json_error : errors) {
-    ParseErrorResult<mojom::ProviderError>(ToValue(json_error), &eth_error,
+    ParseErrorResult<mojom::ProviderError>(ParseJson(json_error), &eth_error,
                                            &eth_error_message);
     EXPECT_EQ(eth_error, mojom::ProviderError::kParsingError);
     EXPECT_EQ(eth_error_message,
               l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
     ParseErrorResult<mojom::SolanaProviderError>(
-        ToValue(json_error), &solana_error, &solana_error_message);
+        ParseJson(json_error), &solana_error, &solana_error_message);
     EXPECT_EQ(solana_error, mojom::SolanaProviderError::kParsingError);
     EXPECT_EQ(solana_error_message,
               l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -160,10 +145,10 @@ TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
          "code": 3
        }
      })";
-  ParseErrorResult<mojom::ProviderError>(ToValue(json), &eth_error,
+  ParseErrorResult<mojom::ProviderError>(ParseJson(json), &eth_error,
                                          &eth_error_message);
   EXPECT_EQ(mojom::ProviderError::kUnknown, eth_error);
-  ParseErrorResult<mojom::SolanaProviderError>(ToValue(json), &solana_error,
+  ParseErrorResult<mojom::SolanaProviderError>(ParseJson(json), &solana_error,
                                                &solana_error_message);
   EXPECT_EQ(mojom::SolanaProviderError::kUnknown, solana_error);
 }
@@ -226,9 +211,9 @@ TEST(JsonRpcResponseParserUnitTest, ConvertMultiUint64ToString) {
             "a":{"b":"18446744073709551615"}
             }})";
 
-  CompareJSON(
-      *ConvertMultiUint64ToString({"/result/value", "/result/a/b"}, json),
-      expected_json);
+  EXPECT_EQ(ParseJson(*ConvertMultiUint64ToString(
+                {"/result/value", "/result/a/b"}, json)),
+            ParseJson(expected_json));
 
   EXPECT_FALSE(ConvertMultiUint64ToString({}, json));
   EXPECT_FALSE(ConvertMultiUint64ToString({"", "/result/value"}, json));
@@ -251,9 +236,9 @@ TEST(JsonRpcResponseParserUnitTest, ConvertMultiUint64InObjectArrayToString) {
            {"key1":"18446744073709551615","key2":"18446744073709551615"},
            {"key1":"18446744073709551615","key2":"18446744073709551615"}
            ]}})";
-  CompareJSON(*ConvertMultiUint64InObjectArrayToString("/result/array",
-                                                       {"key1", "key2"}, json),
-              expected_json);
+  EXPECT_EQ(ParseJson(*ConvertMultiUint64InObjectArrayToString(
+                "/result/array", {"key1", "key2"}, json)),
+            ParseJson(expected_json));
 
   EXPECT_FALSE(
       ConvertMultiUint64InObjectArrayToString("", {"key1", "key2"}, json));

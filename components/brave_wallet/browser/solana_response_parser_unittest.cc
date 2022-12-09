@@ -7,27 +7,12 @@
 
 #include <string>
 
-#include "base/json/json_reader.h"
 #include "base/test/gtest_util.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace {
-
-base::Value ToValue(const std::string& json) {
-  return base::JSONReader::Read(json).value_or(base::Value());
-}
-
-void CompareJSON(const std::string& request_string,
-                 const std::string& expected_request) {
-  auto request_json = base::JSONReader::Read(request_string);
-  ASSERT_TRUE(request_json);
-  auto expected_request_json = base::JSONReader::Read(expected_request);
-  ASSERT_TRUE(expected_request_json);
-  EXPECT_EQ(*request_json, *expected_request_json);
-}
-
-}  // namespace
+using base::test::ParseJson;
 
 namespace brave_wallet {
 
@@ -39,29 +24,29 @@ TEST(SolanaResponseParserUnitTest, ParseSolanaGetBalance) {
             "context":{"slot":106921266},"value":"18446744073709551615"}})";
 
   uint64_t balance = 0;
-  EXPECT_TRUE(ParseGetBalance(ToValue(json), &balance));
+  EXPECT_TRUE(ParseGetBalance(ParseJson(json), &balance));
   EXPECT_EQ(balance, UINT64_MAX);
 
   json =
       R"({"jsonrpc":"2.0","id":1,"result":{
             "context":{"slot":1069},"value":"0"}})";
-  EXPECT_TRUE(ParseGetBalance(ToValue(json), &balance));
+  EXPECT_TRUE(ParseGetBalance(ParseJson(json), &balance));
   EXPECT_EQ(balance, 0ULL);
 
   json =
       R"({"jsonrpc":"2.0","id":1,"result":{
             "context":{"slot":1069},"value":0}})";
-  EXPECT_FALSE(ParseGetBalance(ToValue(json), &balance));
+  EXPECT_FALSE(ParseGetBalance(ParseJson(json), &balance));
 
   json =
       R"({"jsonrpc":"2.0","id":1,"result":{
             "context":{"slot":1069},"value":"63.33"}})";
-  EXPECT_FALSE(ParseGetBalance(ToValue(json), &balance));
+  EXPECT_FALSE(ParseGetBalance(ParseJson(json), &balance));
 
   json =
       R"({"jsonrpc":"2.0","id":1,"result":{
-            {"context":{"slot":1069},"value":"-1"}})";
-  EXPECT_FALSE(ParseGetBalance(ToValue(json), &balance));
+            "context":{"slot":1069},"value":"-1"}})";
+  EXPECT_FALSE(ParseGetBalance(ParseJson(json), &balance));
 }
 
 TEST(JsonRpcResponseParserUnitTest, ParseGetTokenAccountBalance) {
@@ -72,7 +57,7 @@ TEST(JsonRpcResponseParserUnitTest, ParseGetTokenAccountBalance) {
 
   std::string amount, ui_amount_string;
   uint8_t decimals = 0;
-  EXPECT_TRUE(ParseGetTokenAccountBalance(ToValue(json), &amount, &decimals,
+  EXPECT_TRUE(ParseGetTokenAccountBalance(ParseJson(json), &amount, &decimals,
                                           &ui_amount_string));
   EXPECT_EQ(amount, "9864");
   EXPECT_EQ(decimals, 2u);
@@ -83,14 +68,14 @@ TEST(JsonRpcResponseParserUnitTest, ParseGetTokenAccountBalance) {
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "{\"context\":{\"slot\":1069},\"value\":{\"amount\":\"9864\", "
       "\"decimals\":256, \"uiAmount\":98.64, \"uiAmountString\":\"98.64\"}}}";
-  EXPECT_FALSE(ParseGetTokenAccountBalance(ToValue(json), &amount, &decimals,
+  EXPECT_FALSE(ParseGetTokenAccountBalance(ParseJson(json), &amount, &decimals,
                                            &ui_amount_string));
 
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "{\"context\":{\"slot\":1069},\"value\":{\"amount\":\"9864\", "
       "\"decimals\":-1, \"uiAmount\":98.64, \"uiAmountString\":\"98.64\"}}}";
-  EXPECT_FALSE(ParseGetTokenAccountBalance(ToValue(json), &amount, &decimals,
+  EXPECT_FALSE(ParseGetTokenAccountBalance(ParseJson(json), &amount, &decimals,
                                            &ui_amount_string));
 }
 
@@ -100,7 +85,7 @@ TEST(SolanaResponseParserUnitTest, ParseSendTransaction) {
       "\"2id3YC2jK9G5Wo2phDx4gJVAew8DcY5NAojnVuao8rkxwPYPe8cSwE5GzhEgJA2y8fVjDE"
       "o6iR6ykBvDxrTQrtpb\"}";
   std::string tx_id;
-  EXPECT_TRUE(ParseSendTransaction(ToValue(json), &tx_id));
+  EXPECT_TRUE(ParseSendTransaction(ParseJson(json), &tx_id));
   EXPECT_EQ(tx_id,
             "2id3YC2jK9G5Wo2phDx4gJVAew8DcY5NAojnVuao8rkxwPYPe8cSwE5GzhEgJA2y8f"
             "VjDEo6iR6ykBvDxrTQrtpb");
@@ -121,8 +106,8 @@ TEST(SolanaResponseParserUnitTest, ParseGetLatestBlockhash) {
          })";
   std::string hash;
   uint64_t last_valid_block_height = 0;
-  EXPECT_TRUE(
-      ParseGetLatestBlockhash(ToValue(json), &hash, &last_valid_block_height));
+  EXPECT_TRUE(ParseGetLatestBlockhash(ParseJson(json), &hash,
+                                      &last_valid_block_height));
   EXPECT_EQ(hash, "EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N");
   EXPECT_EQ(last_valid_block_height, UINT64_MAX);
 
@@ -135,7 +120,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetLatestBlockhash) {
       R"({"jsonrpc":"2.0", "id":1, "result":{"value":{"lastValidBlockHeight": "3090"}}})",
   };
   for (const auto& invalid_json : invalid_jsons)
-    EXPECT_FALSE(ParseGetLatestBlockhash(ToValue(invalid_json), &hash,
+    EXPECT_FALSE(ParseGetLatestBlockhash(ParseJson(invalid_json), &hash,
                                          &last_valid_block_height))
         << invalid_json;
 }
@@ -177,7 +162,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetSignatureStatuses) {
   )";
 
   std::vector<absl::optional<SolanaSignatureStatus>> statuses;
-  ASSERT_TRUE(ParseGetSignatureStatuses(ToValue(json), &statuses));
+  ASSERT_TRUE(ParseGetSignatureStatuses(ParseJson(json), &statuses));
 
   std::vector<absl::optional<SolanaSignatureStatus>> expected_statuses(
       {SolanaSignatureStatus(UINT64_MAX, 10u, "", "confirmed"),
@@ -213,7 +198,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetSignatureStatuses) {
   )";
   expected_statuses =
       std::vector<absl::optional<SolanaSignatureStatus>>(4, absl::nullopt);
-  ASSERT_TRUE(ParseGetSignatureStatuses(ToValue(invalid), &statuses));
+  ASSERT_TRUE(ParseGetSignatureStatuses(ParseJson(invalid), &statuses));
   EXPECT_EQ(expected_statuses, statuses);
 }
 
@@ -242,7 +227,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
   expected_info.rent_epoch = UINT64_MAX;
 
   absl::optional<SolanaAccountInfo> info;
-  ASSERT_TRUE(ParseGetAccountInfo(ToValue(json), &info));
+  ASSERT_TRUE(ParseGetAccountInfo(ParseJson(json), &info));
   EXPECT_EQ(*info, expected_info);
 
   json = R"(
@@ -253,7 +238,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
         "value":null
       }
     })";
-  ASSERT_TRUE(ParseGetAccountInfo(ToValue(json), &info));
+  ASSERT_TRUE(ParseGetAccountInfo(ParseJson(json), &info));
   EXPECT_FALSE(info);
 
   // Parsing should fail if data string is not base64 encoded as it says.
@@ -272,7 +257,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
       }
     }
   )";
-  EXPECT_FALSE(ParseGetAccountInfo(ToValue(json), &info));
+  EXPECT_FALSE(ParseGetAccountInfo(ParseJson(json), &info));
 
   // data using base58 is not supported.
   json = R"(
@@ -290,7 +275,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
       }
     }
   )";
-  EXPECT_FALSE(ParseGetAccountInfo(ToValue(json), &info));
+  EXPECT_FALSE(ParseGetAccountInfo(ParseJson(json), &info));
 
   // data using jsonParsed encoding param is not supported.
   json = R"(
@@ -318,23 +303,24 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
       }
     }
   )";
-  EXPECT_FALSE(ParseGetAccountInfo(ToValue(json), &info));
+  EXPECT_FALSE(ParseGetAccountInfo(ParseJson(json), &info));
 
   json = R"({"jsonrpc":"2.0","id":1,"result":{"value":{}}})";
-  EXPECT_FALSE(ParseGetAccountInfo(ToValue(json), &info));
+  EXPECT_FALSE(ParseGetAccountInfo(ParseJson(json), &info));
 
-  EXPECT_DCHECK_DEATH(ParseGetAccountInfo(ToValue(json), nullptr));
+  EXPECT_DCHECK_DEATH(ParseGetAccountInfo(ParseJson(json), nullptr));
 }
 
 TEST(SolanaResponseParserUnitTest, ParseGetFeeForMessage) {
   uint64_t fee = 0u;
   std::string json =
       R"({"jsonrpc":"2.0", "id":1, "result":{"value":"18446744073709551615"}})";
-  EXPECT_TRUE(ParseGetFeeForMessage(ToValue(json), &fee));
+  EXPECT_TRUE(ParseGetFeeForMessage(ParseJson(json), &fee));
   EXPECT_EQ(fee, UINT64_MAX);
 
   EXPECT_TRUE(ParseGetFeeForMessage(
-      ToValue(R"({"jsonrpc":"2.0", "id":1, "result":{"value":null}})"), &fee));
+      ParseJson(R"({"jsonrpc":"2.0", "id":1, "result":{"value":null}})"),
+      &fee));
   EXPECT_EQ(fee, 0u);
 
   std::vector<std::string> invalid_jsons = {
@@ -342,10 +328,10 @@ TEST(SolanaResponseParserUnitTest, ParseGetFeeForMessage) {
       R"({"jsonrpc":"2.0", "id":1, "result":{}})",
       R"({"jsonrpc":"2.0", "id":1, "result":{"value":{}}})"};
   for (const auto& invalid_json : invalid_jsons)
-    EXPECT_FALSE(ParseGetFeeForMessage(ToValue(invalid_json), &fee))
+    EXPECT_FALSE(ParseGetFeeForMessage(ParseJson(invalid_json), &fee))
         << invalid_json;
 
-  EXPECT_DCHECK_DEATH(ParseGetFeeForMessage(ToValue(json), nullptr));
+  EXPECT_DCHECK_DEATH(ParseGetFeeForMessage(ParseJson(json), nullptr));
 }
 
 TEST(SolanaResponseParserUnitTest, ParseGetBlockHeight) {
@@ -353,7 +339,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetBlockHeight) {
       R"({"jsonrpc":"2.0","id":1,"result":"18446744073709551615"})";
 
   uint64_t block_height = 0;
-  EXPECT_TRUE(ParseGetBlockHeight(ToValue(json), &block_height));
+  EXPECT_TRUE(ParseGetBlockHeight(ParseJson(json), &block_height));
   EXPECT_EQ(block_height, UINT64_MAX);
 
   std::vector<std::string> invalid_jsons = {
@@ -364,10 +350,10 @@ TEST(SolanaResponseParserUnitTest, ParseGetBlockHeight) {
       R"({"jsonrpc":"2.0", "id":1, "result":1.2})",
       R"({"jsonrpc":"2.0", "id":1, "result":1})"};
   for (const auto& invalid_json : invalid_jsons)
-    EXPECT_FALSE(ParseGetBlockHeight(ToValue(invalid_json), &block_height))
+    EXPECT_FALSE(ParseGetBlockHeight(ParseJson(invalid_json), &block_height))
         << invalid_json;
 
-  EXPECT_DCHECK_DEATH(ParseGetBlockHeight(ToValue(json), nullptr));
+  EXPECT_DCHECK_DEATH(ParseGetBlockHeight(ParseJson(json), nullptr));
 }
 
 TEST(SolanaResponseParserUnitTest, ConverterForGetAccountInfo) {
@@ -404,7 +390,7 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetAccountInfo) {
   )";
   auto json_converted = ConverterForGetAccountInfo().Run(json);
   ASSERT_TRUE(json_converted);
-  CompareJSON(*json_converted, json_expected);
+  EXPECT_EQ(ParseJson(*json_converted), ParseJson(json_expected));
 }
 
 TEST(SolanaResponseParserUnitTest, ConverterForGetProrgamAccounts) {
@@ -447,7 +433,7 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetProrgamAccounts) {
   )";
   auto json_converted = ConverterForGetProrgamAccounts().Run(json);
   ASSERT_TRUE(json_converted);
-  CompareJSON(*json_converted, json_expected);
+  EXPECT_EQ(ParseJson(*json_converted), ParseJson(json_expected));
 
   json = R"(
     {
@@ -508,7 +494,7 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetProrgamAccounts) {
   )";
   json_converted = ConverterForGetProrgamAccounts().Run(json);
   ASSERT_TRUE(json_converted);
-  CompareJSON(*json_converted, json_expected);
+  EXPECT_EQ(ParseJson(*json_converted), ParseJson(json_expected));
 
   json = R"(
     {
@@ -529,7 +515,7 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetProrgamAccounts) {
   )";
   json_converted = ConverterForGetProrgamAccounts().Run(json);
   ASSERT_TRUE(json_converted);
-  CompareJSON(*json_converted, json_expected);
+  EXPECT_EQ(ParseJson(*json_converted), ParseJson(json_expected));
 }
 
 }  // namespace solana

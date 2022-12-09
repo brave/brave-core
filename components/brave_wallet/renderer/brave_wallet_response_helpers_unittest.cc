@@ -6,20 +6,14 @@
 #include <memory>
 #include <string>
 
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace {
-
-base::Value ToValue(const std::string& json) {
-  return base::JSONReader::Read(json).value_or(base::Value());
-}
-
-}  // namespace
+using base::test::ParseJson;
 
 namespace brave_wallet {
 
@@ -46,7 +40,7 @@ TEST(BraveWalletResponseHelpersTest,
       "available\"}}";
   bool reject = false;
   base::Value result = GetProviderRequestReturnFromEthJsonResponse(
-      200, ToValue(response), &reject);
+      200, ParseJson(response), &reject);
   EXPECT_TRUE(reject);
   ASSERT_TRUE(result.is_dict());
   auto& dict = result.GetDict();
@@ -62,10 +56,9 @@ TEST(BraveWalletResponseHelpersTest,
 
 TEST(BraveWalletResponseHelpersTest,
      GetProviderRequestReturnFromEthJsonResponseErrorHTTP) {
-  std::string response = "";
   bool reject = false;
-  base::Value result = GetProviderRequestReturnFromEthJsonResponse(
-      400, ToValue(response), &reject);
+  base::Value result =
+      GetProviderRequestReturnFromEthJsonResponse(400, base::Value(), &reject);
   ASSERT_TRUE(result.is_dict());
   auto& dict = result.GetDict();
   const auto result_code = dict.FindInt("code");
@@ -82,7 +75,7 @@ TEST(BraveWalletResponseHelpersTest,
       "{\"jsonrpc\":\"2.0\",\"id\":2025678280,\"result\":\"0xbb4323\"}";
   bool reject = false;
   auto result = GetProviderRequestReturnFromEthJsonResponse(
-      200, ToValue(response), &reject);
+      200, ParseJson(response), &reject);
 
   EXPECT_TRUE(result.is_string());
   EXPECT_FALSE(reject);

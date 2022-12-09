@@ -12,8 +12,8 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "base/json/json_reader.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_today/browser/channels_controller.h"
@@ -39,7 +39,7 @@ base::Value GetFeedJson() {
   // One item has a higher score, but a matching history domain - it should
   // appear earlier.
   // First item has a higher score, so it should appear later.
-  return *base::JSONReader::Read(R"([
+  return base::test::ParseJson(R"([
         {
           "category": "Technology",
           "publish_time": "2021-09-01 07:01:28",
