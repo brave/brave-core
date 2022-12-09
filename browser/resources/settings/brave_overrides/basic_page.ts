@@ -189,7 +189,8 @@ RegisterPolymerTemplateModifications({
       const sectionWeb3Domains = document.createElement('template')
       sectionWeb3Domains.setAttribute('is', 'dom-if')
       sectionWeb3Domains.setAttribute('restamp', true)
-      sectionWeb3Domains.setAttribute('if', '[[showPage_(pageVisibility.braveWeb3Domains)]]')
+      sectionWeb3Domains.setAttribute('if',
+        '[[showPage_(pageVisibility.braveWeb3Domains)]]')
       sectionWeb3Domains.content.appendChild(createNestedSectionElement(
         'web3Domains',
         'web3',
@@ -274,9 +275,11 @@ RegisterPolymerTemplateModifications({
         }
       ))
       // Get Started at top
-      let last = basicPageEl.insertAdjacentElement('afterbegin', sectionGetStarted)
+      let last = basicPageEl.insertAdjacentElement('afterbegin',
+        sectionGetStarted)
       // Move Appearance item
-      const sectionAppearance = getSectionElement(actualTemplate.content, 'appearance')
+      const sectionAppearance = getSectionElement(actualTemplate.content,
+        'appearance')
       last = last.insertAdjacentElement('afterend', sectionAppearance)
       // Insert New Tab
       last = last.insertAdjacentElement('afterend', sectionNewTab)

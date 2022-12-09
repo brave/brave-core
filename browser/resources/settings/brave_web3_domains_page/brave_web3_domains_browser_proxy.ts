@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { sendWithPromise } from 'chrome://resources/js/cr.m.js'
 import { DropdownMenuOptionList } from '../controls/settings_dropdown_menu.js';
@@ -14,7 +14,8 @@ export interface BraveWeb3DomainsBrowserProxy {
   isSnsEnabled(): boolean
 }
 
-export class BraveWeb3DomainsBrowserProxyImpl implements BraveWeb3DomainsBrowserProxy {
+export class BraveWeb3DomainsBrowserProxyImpl
+  implements BraveWeb3DomainsBrowserProxy {
   getDecentralizedDnsResolveMethodList() {
     return sendWithPromise('getDecentralizedDnsResolveMethodList')
   }
