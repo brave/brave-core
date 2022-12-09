@@ -7,6 +7,10 @@ module.exports = {
   'root': true, /* Don't read chromium's eslint config (https://eslint.org/docs/user-guide/configuring/configuration-files#cascading-and-hierarchy) */
   'extends': 'standard-with-typescript',
   'ignorePatterns': [
+    '.storybook/*',
+    'build/*',
+    'browser/*',
+    'ui/webui/resources/*',
     '*.js',
     '*.d.ts'
   ],
