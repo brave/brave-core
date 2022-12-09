@@ -67,26 +67,26 @@ bool IsTopFrameOriginCryptographic(const IsolationInfo& isolation_info) {
              isolation_info.top_frame_origin()->scheme());
 }
 
-std::string GetHSTSPartitionHash(
+TransportSecurityState::HashedHost GetHSTSPartitionHash(
     const NetworkAnonymizationKey& network_anonymization_key) {
   DCHECK(base::FeatureList::IsEnabled(features::kBravePartitionHSTS));
   // An empty top frame site cannot be used as a partition key, return an empty
   // hash which will be treated as a non-persistable partition.
   if (!network_anonymization_key.GetTopFrameSite().has_value()) {
-    return std::string();
+    return TransportSecurityState::HashedHost();
   }
 
   const std::string partition_domain =
       HSTSPartitionHashHelper::GetPartitionDomain(
           *network_anonymization_key.GetTopFrameSite());
   if (partition_domain.empty()) {
-    return std::string();
+    return TransportSecurityState::HashedHost();
   }
 
-  const std::string canonicalized_partition_domain =
+  const std::vector<uint8_t> canonicalized_partition_domain =
       CanonicalizeHost(partition_domain);
   if (canonicalized_partition_domain.empty()) {
-    return std::string();
+    return TransportSecurityState::HashedHost();
   }
 
   return HashHost(canonicalized_partition_domain);
@@ -96,8 +96,8 @@ std::string GetHSTSPartitionHash(
 // HSTS state storage. Check top frame site for equality with site for cookies,
 // don't store HSTS if it differs. IsolationInfo is not available everywhere,
 // that's why we're using it only when parsing new HSTS state.
-absl::optional<std::string> GetPartitionHashForAddingHSTS(
-    const IsolationInfo& isolation_info) {
+absl::optional<TransportSecurityState::HashedHost>
+GetPartitionHashForAddingHSTS(const IsolationInfo& isolation_info) {
   if (!base::FeatureList::IsEnabled(features::kBravePartitionHSTS)) {
     return absl::nullopt;
   }
@@ -109,14 +109,14 @@ absl::optional<std::string> GetPartitionHashForAddingHSTS(
   if (IsTopFrameOriginCryptographic(isolation_info) &&
       isolation_info.site_for_cookies().site() !=
           *isolation_info.network_anonymization_key().GetTopFrameSite()) {
-    return std::string();
+    return TransportSecurityState::HashedHost();
   }
 
   return GetHSTSPartitionHash(isolation_info.network_anonymization_key());
 }
 
 // Use NetworkIsolationKey to create PartitionHash for accessing/storing data.
-absl::optional<std::string> GetPartitionHashForHSTS(
+absl::optional<TransportSecurityState::HashedHost> GetPartitionHashForHSTS(
     const NetworkAnonymizationKey& network_anonymization_key) {
   if (!base::FeatureList::IsEnabled(features::kBravePartitionHSTS)) {
     return absl::nullopt;
@@ -127,8 +127,8 @@ absl::optional<std::string> GetPartitionHashForHSTS(
 // Use host-bound NetworkIsolationKey in cases when no NetworkIsolationKey is
 // available. Such cases may include net-internals page, PasswordManager.
 // All network::NetworkContext HSTS-related public methods will use this.
-absl::optional<std::string> GetHostBoundPartitionHashForHSTS(
-    const std::string& host) {
+absl::optional<TransportSecurityState::HashedHost>
+GetHostBoundPartitionHashForHSTS(const std::string& host) {
   if (!base::FeatureList::IsEnabled(features::kBravePartitionHSTS)) {
     return absl::nullopt;
   }
@@ -213,7 +213,7 @@ bool TransportSecurityState::DeleteDynamicDataForHost(const std::string& host) {
 
   bool brave_deleted = false;
   if (base::FeatureList::IsEnabled(features::kBravePartitionHSTS)) {
-    const std::string canonicalized_host = CanonicalizeHost(host);
+    const std::vector<uint8_t> canonicalized_host = CanonicalizeHost(host);
     if (!canonicalized_host.empty()) {
       if (enabled_sts_hosts_.DeleteDataInAllPartitions(
               HashHost(canonicalized_host))) {
