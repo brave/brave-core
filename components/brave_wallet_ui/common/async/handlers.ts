@@ -54,7 +54,8 @@ import {
   sendEthTransaction,
   sendFilTransaction,
   sendSolTransaction,
-  sendSPLTransaction
+  sendSPLTransaction,
+  getNFTMetadata
 } from './lib'
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
@@ -298,12 +299,12 @@ handler.on(WalletActions.getAllTokensList.type, async (store) => {
 })
 
 handler.on(WalletActions.addUserAsset.type, async (store: Store, payload: BraveWallet.BlockchainToken) => {
-  const { braveWalletService, jsonRpcService } = getAPIProxy()
-  if (payload.isErc721) {
-    // Get NFTMetadata
-    const result = await jsonRpcService.getERC721Metadata(payload.contractAddress, payload.tokenId, payload.chainId)
-    if (!result.error) {
-      const response = JSON.parse(result.response)
+  const { braveWalletService } = getAPIProxy()
+
+  if (payload.isErc721 || payload.isNft) {
+    const result = await getNFTMetadata(payload)
+    if (!result?.error) {
+      const response = result?.response && JSON.parse(result.response)
       payload.logo = response.image || payload.logo
     }
   }
@@ -311,7 +312,7 @@ handler.on(WalletActions.addUserAsset.type, async (store: Store, payload: BraveW
   const result = await braveWalletService.addUserAsset(payload)
 
   // Refresh balances here for adding ERC721 tokens if result is successful
-  if (payload.isErc721 && result.success) {
+  if ((payload.isErc721 || payload.isNft) && result.success) {
     refreshBalancesPricesAndHistory(store)
   }
   store.dispatch(WalletActions.addUserAssetError(!result.success))
