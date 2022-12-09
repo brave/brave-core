@@ -5,10 +5,13 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/extensions/extension_context_menu_model.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/focus/focus_manager.h"
