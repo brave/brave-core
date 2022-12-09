@@ -94,7 +94,7 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
     const std::string& resources_json) {
   if (dat_buf_.empty()) {
     task_runner_->PostTask(
-        FROM_HERE, base::BindOnce(&AdBlockEngine::AddResources, adblock_engine_,
+        FROM_HERE, base::BindOnce(&AdBlockEngine::UseResources, adblock_engine_,
                                   resources_json));
   } else {
     auto engine_load_callback = base::BindOnce(

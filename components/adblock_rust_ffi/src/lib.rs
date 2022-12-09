@@ -227,9 +227,9 @@ pub unsafe extern "C" fn engine_add_resource(
     engine.add_resource(resource).is_ok()
 }
 
-/// Adds a list of `Resource`s from JSON format
+/// Uses a list of `Resource`s from JSON format
 #[no_mangle]
-pub unsafe extern "C" fn engine_add_resources(engine: *mut Engine, resources: *const c_char) {
+pub unsafe extern "C" fn engine_use_resources(engine: *mut Engine, resources: *const c_char) {
     let resources = CStr::from_ptr(resources).to_str().unwrap();
     let resources: Vec<Resource> = serde_json::from_str(resources).unwrap_or_else(|e| {
         eprintln!("Failed to parse JSON adblock resources: {}", e);

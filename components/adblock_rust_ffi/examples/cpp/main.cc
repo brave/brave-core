@@ -187,7 +187,7 @@ void TestTags() {
 
 void TestRedirects() {
   adblock::Engine engine("-advertisement-$redirect=1x1-transparent.gif\n");
-  engine.addResources(
+  engine.useResources(
       "[{\"name\": \"1x1-transparent.gif\","
       "\"aliases\": [],"
       "\"kind\": {\"mime\": \"image/gif\"},"
@@ -355,7 +355,7 @@ void TestCosmeticScriptletResources() {
       R"({"hide_selectors":[],"style_selectors":{},"exceptions":[],"injected_script":"","generichide":false})");
   assert(a_unloaded == a_unloaded_result);
 
-  engine.addResources(R"([
+  engine.useResources(R"([
       {"name": "basic_scriptlet", "aliases": ["scriptlet1"], "kind": { "mime": "application/javascript" }, "content": "Y29uc29sZS5sb2coIkhpIik7" },
       {"name": "scriptlet2", "aliases": [], "kind": "template", "content": "d2luZG93LmxvY2F0aW9uLmhyZWYgPSAie3sxfX0i" }]
   )");
