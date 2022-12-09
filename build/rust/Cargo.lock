@@ -4,9 +4,9 @@ version = 3
 
 [[package]]
 name = "adblock"
-version = "0.5.8"
+version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d8131cf8eedd1cb0885adc7d207369c57b750fc525c976752cb8e37d6a66f2e1"
+checksum = "bc57c1028b214a35e6581bfe35e7afb7745a12e7c8a163de5bc8b7b160c40de3"
 dependencies = [
  "base64 0.13.0",
  "bitflags",

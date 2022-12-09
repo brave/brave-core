@@ -1674,6 +1674,83 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectWithoutBlockIsNoop) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
+std::unique_ptr<net::test_server::HttpResponse> NoParamHandler(
+    const net::test_server::HttpRequest& request) {
+  const GURL request_url = request.GetURL();
+
+  auto http_response = std::make_unique<net::test_server::BasicHttpResponse>();
+  http_response->set_code(net::HttpStatusCode::HTTP_OK);
+
+  if (request_url.has_query()) {
+    // Should not happen, abort test
+    CHECK(false);
+    return nullptr;
+  } else {
+    std::string body =
+        "<html><head><script>window.success = "
+        "true;</script></head><body><p>test</p></body></html>";
+    http_response->set_content(body);
+    http_response->set_content_type("text/html");
+    return http_response;
+  }
+}
+
+// `$removeparam` should be respected for subresource requests
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RemoveparamSubresource) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  UpdateAdBlockInstanceWithRules("*$subdocument,removeparam=evil");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  GURL frame_url = embedded_test_server()->GetURL(
+      "frame.com", "/cosmetic_frame.html?evil=true&test=true");
+  content::NavigateIframeToURL(contents, "iframe", frame_url);
+
+  ASSERT_EQ(nullptr,
+            content::FrameMatchingPredicateOrNullptr(
+                contents->GetPrimaryPage(),
+                base::BindRepeating(content::FrameHasSourceUrl, frame_url)));
+
+  GURL redirected_frame_url = embedded_test_server()->GetURL(
+      "frame.com", "/cosmetic_frame.html?test=true");
+
+  content::RenderFrameHost* inner_frame = content::FrameMatchingPredicate(
+      contents->GetPrimaryPage(),
+      base::BindRepeating(content::FrameHasSourceUrl, redirected_frame_url));
+
+  ASSERT_EQ("?test=true", EvalJs(inner_frame, "window.location.search"));
+}
+
+// `$removeparam` should be respected for top-level navigations
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RemoveparamTopLevelNavigation) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  UpdateAdBlockInstanceWithRules("*$document,removeparam=evil");
+
+  dynamic_server_.RegisterRequestHandler(base::BindRepeating(&NoParamHandler));
+  ASSERT_TRUE(dynamic_server_.Start());
+
+  GURL original_url = dynamic_server_.GetURL("/?evil=true");
+  GURL landing_url = dynamic_server_.GetURL("/");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), original_url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(contents->GetLastCommittedURL(), landing_url);
+
+  ASSERT_EQ(true, EvalJs(contents, "window.success"));
+
+  ASSERT_TRUE(dynamic_server_.ShutdownAndWaitUntilComplete());
+}
+
 // Verify that scripts violating a Content Security Policy from a `$csp` rule
 // are not loaded.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRule) {
