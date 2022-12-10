@@ -181,7 +181,8 @@ public class BalanceHelper {
         });
     }
 
-    public static void getP3ABalances(BraveWalletBaseActivity activity, NetworkInfo selectedNetwork,
+    public static void getP3ABalances(BraveWalletBaseActivity activity, NetworkInfo[] allNetworks,
+            NetworkInfo selectedNetwork,
             Callbacks.Callback1<HashMap<Integer, HashSet<String>>> callback) {
         KeyringService keyringService = activity.getKeyringService();
         BraveWalletService braveWalletService = activity.getBraveWalletService();
@@ -201,7 +202,7 @@ public class BalanceHelper {
             callback.call(activeAddresses);
             return;
         } else {
-            Utils.getP3ANetworks(relevantNetworks -> {
+            Utils.getP3ANetworks(allNetworks, relevantNetworks -> {
                 // Exclude selectedNetwork if in relevantNetworks, also sort by CoinType
                 HashMap<Integer, ArrayList<NetworkInfo>> sortedNetworks =
                         filterAndSortNetworksP3A(relevantNetworks, selectedNetwork);
