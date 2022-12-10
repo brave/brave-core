@@ -898,6 +898,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   std::unique_ptr<TestEventsListener> observer_;
   network::TestURLLoaderFactory url_loader_factory_;
+  std::unique_ptr<EthereumProviderImpl> provider_;
 
  private:
   std::unique_ptr<ScopedTestingLocalState> local_state_;
@@ -906,7 +907,6 @@ class EthereumProviderImplUnitTest : public testing::Test {
   raw_ptr<TxService> tx_service_;
   raw_ptr<AssetRatioService> asset_ratio_service_;
   std::unique_ptr<content::TestWebContents> web_contents_;
-  std::unique_ptr<EthereumProviderImpl> provider_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   base::ScopedTempDir temp_dir_;
@@ -2031,6 +2031,7 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
   response = CommonRequestOrSendAsync(request_payload.value());
   EXPECT_EQ(response.first, false);
   EXPECT_TRUE(response.second.is_string());
+  std::string first_subscription = *response.second.GetIfString();
   browser_task_environment_.FastForwardBy(
       base::Seconds(kBlockTrackerDefaultTimeInSeconds));
   EXPECT_TRUE(observer_->MessageEventFired());
@@ -2040,6 +2041,40 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
   std::string* difficulty = dict.FindString("difficulty");
   ASSERT_TRUE(difficulty);
   EXPECT_EQ(*difficulty, "0x1");
+
+  // Make a second subscription
+  request_payload_json =
+      R"({"id":1,"jsonrpc:": "2.0","method":"eth_subscribe",
+          "params": ["newHeads"]})";
+  request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_EQ(response.first, false);
+  EXPECT_TRUE(response.second.is_string());
+  std::string second_subscription = *response.second.GetIfString();
+
+  // The first unsubscribe should not stop the block tracker
+  request_payload_json = base::StringPrintf(R"({"id":1,"jsonrpc:": "2.0",
+                              "method":"eth_unsubscribe",
+                              "params": ["%s"]})",
+                                            first_subscription.c_str());
+  request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_TRUE(provider_->eth_block_tracker_.IsRunning());
+
+  // The second unsubscribe should stop the block tracker
+  request_payload_json = base::StringPrintf(R"({"id":1,"jsonrpc:": "2.0",
+                              "method":"eth_unsubscribe",
+                              "params": ["%s"]})",
+                                            second_subscription.c_str());
+  request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_FALSE(provider_->eth_block_tracker_.IsRunning());
 }
 
 TEST_F(EthereumProviderImplUnitTest, Web3ClientVersion) {

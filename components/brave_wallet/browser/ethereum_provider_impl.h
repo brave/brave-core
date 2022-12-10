@@ -169,6 +169,7 @@ class EthereumProviderImpl final
   FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest, RequestEthCoinbase);
   FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            RequestEthereumPermissionsWithAccounts);
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest, EthSubscribe);
   friend class EthereumProviderImplUnitTest;
 
   // mojom::BraveWalletProvider:
