@@ -13,24 +13,20 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
-#include "brave/browser/brave_wallet/tx_service_factory.h"
-#include "brave/components/brave_wallet/browser/tx_service.h"
-#include "brave/components/brave_wallet/browser/tx_status_resolver.h"
+#include "brave/browser/ui/views/toolbar/wallet_button_notification_source.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "content/public/browser/browser_context.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/button/menu_button_controller.h"
 
 class PrefService;
 
-class WalletButton : public ToolbarButton,
-                     brave_wallet::mojom::TxServiceObserver {
+class WalletButton : public ToolbarButton {
   METADATA_HEADER(WalletButton);
 
  public:
-  WalletButton(View* backup_anchor_view,
-               PrefService* prefs,
-               content::BrowserContext* browser_context);
+  WalletButton(View* backup_anchor_view, Profile* profile);
   ~WalletButton() override;
 
   WalletButton(const WalletButton&) = delete;
@@ -47,32 +43,22 @@ class WalletButton : public ToolbarButton,
 
   views::View* GetAsAnchorView();
 
-  void OnNewUnapprovedTx(
-      brave_wallet::mojom::TransactionInfoPtr tx_info) override;
-
-  void OnUnapprovedTxUpdated(
-      brave_wallet::mojom::TransactionInfoPtr tx_info) override;
-
-  void OnTransactionStatusChanged(
-      brave_wallet::mojom::TransactionInfoPtr tx_info) override;
-
-  void OnTxServiceReset() override;
-
  private:
   std::pair<std::string, SkColor> GetBadgeTextAndBackground();
-  void CheckTxStatus();
   void OnPreferenceChanged();
   void OnWalletPressed(const ui::Event& event);
-  void OnTxStatusResolved(size_t count);
+  void OnNotificationUpdate(bool show_suggest_badge, size_t counter);
 
-  PrefChangeRegistrar pref_change_registrar_;
   raw_ptr<PrefService> prefs_ = nullptr;
-  raw_ptr<brave_wallet::TxService> tx_service_;
   raw_ptr<views::MenuButtonController> menu_button_controller_ = nullptr;
   raw_ptr<views::View> backup_anchor_view_ = nullptr;
-  mojo::Receiver<brave_wallet::mojom::TxServiceObserver> tx_observer_{this};
-  std::unique_ptr<brave_wallet::TxStatusResolver> status_resolver_;
-  size_t running_tx_count_ = 0;
+  PrefChangeRegistrar pref_change_registrar_;
+
+  std::unique_ptr<brave::WalletButtonNotificationSource> notification_source_;
+
+  size_t counter_ = 0;
+  bool show_suggest_badge_ = false;
+
   base::WeakPtrFactory<WalletButton> weak_ptr_factory_{this};
 };
 

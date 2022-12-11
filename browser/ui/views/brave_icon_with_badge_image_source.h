@@ -30,15 +30,21 @@ class BraveIconWithBadgeImageSource : public IconWithBadgeImageSource {
   BraveIconWithBadgeImageSource& operator=(
       const BraveIconWithBadgeImageSource&) = delete;
 
+  void SetAllowEmptyText(bool v);
+
   static gfx::Size GetBadgeSize();
 
  private:
   void PaintBadge(gfx::Canvas* canvas) override;
+  void PaintBadgeWithText(gfx::Canvas* canvas);
+  void PaintBadgeWithoutText(gfx::Canvas* canvas);
+
   gfx::Rect GetIconAreaRect() const override;
   absl::optional<int> GetCustomGraphicSize() override;
   absl::optional<int> GetCustomGraphicXOffset() override;
   absl::optional<int> GetCustomGraphicYOffset() override;
 
+  bool allow_empty_text_ = false;
   size_t content_image_size_;
   size_t content_horizontal_margin_;
 };

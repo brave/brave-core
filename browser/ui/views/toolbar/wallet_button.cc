@@ -82,20 +82,16 @@ const ui::ColorProvider* GetColorProviderForView(
 
 }  // namespace
 
-WalletButton::WalletButton(View* backup_anchor_view,
-                           PrefService* prefs,
-                           content::BrowserContext* browser_context)
-    : ToolbarButton(base::BindRepeating(&WalletButton::OnWalletPressed,
-                                        base::Unretained(this)),
-                    std::make_unique<WalletButtonMenuModel>(prefs),
-                    nullptr,
-                    false),  // Long-pressing is not intended for something that
-                             // already shows a panel on click
-      prefs_(prefs),
+WalletButton::WalletButton(View* backup_anchor_view, Profile* profile)
+    : ToolbarButton(
+          base::BindRepeating(&WalletButton::OnWalletPressed,
+                              base::Unretained(this)),
+          std::make_unique<WalletButtonMenuModel>(profile->GetPrefs()),
+          nullptr,
+          false),  // Long-pressing is not intended for something that
+                   // already shows a panel on click
+      prefs_(profile->GetPrefs()),
       backup_anchor_view_(backup_anchor_view) {
-  tx_service_ =
-      brave_wallet::TxServiceFactory::GetServiceForContext(browser_context);
-
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
       kShowWalletIconOnToolbar,
@@ -115,50 +111,14 @@ WalletButton::WalletButton(View* backup_anchor_view,
   UpdateVisibility();
 
   if (brave_wallet::ShouldShowTxStatusInToolbar()) {
-    if (tx_service_) {
-      tx_service_->AddObserver(tx_observer_.BindNewPipeAndPassRemote());
-      CheckTxStatus();
-    }
+    notification_source_ =
+        std::make_unique<brave::WalletButtonNotificationSource>(
+            profile, base::BindRepeating(&WalletButton::OnNotificationUpdate,
+                                         weak_ptr_factory_.GetWeakPtr()));
   }
 }
 
 WalletButton::~WalletButton() = default;
-
-void WalletButton::CheckTxStatus() {
-  if (!tx_service_) {
-    NOTREACHED();
-    return;
-  }
-  status_resolver_ =
-      std::make_unique<brave_wallet::TxStatusResolver>(tx_service_);
-  status_resolver_->GetPendingTransactionsCount(base::BindOnce(
-      &WalletButton::OnTxStatusResolved, weak_ptr_factory_.GetWeakPtr()));
-}
-
-void WalletButton::OnTxStatusResolved(size_t count) {
-  running_tx_count_ = count;
-  status_resolver_.reset();
-  UpdateImageAndText();
-}
-
-void WalletButton::OnUnapprovedTxUpdated(
-    brave_wallet::mojom::TransactionInfoPtr tx_info) {
-  CheckTxStatus();
-}
-
-void WalletButton::OnTransactionStatusChanged(
-    brave_wallet::mojom::TransactionInfoPtr tx_info) {
-  CheckTxStatus();
-}
-
-void WalletButton::OnNewUnapprovedTx(
-    brave_wallet::mojom::TransactionInfoPtr tx_info) {
-  CheckTxStatus();
-}
-
-void WalletButton::OnTxServiceReset() {
-  OnTxStatusResolved(0u);
-}
 
 void WalletButton::OnWalletPressed(const ui::Event& event) {
   if (IsShowingBubble()) {
@@ -167,13 +127,19 @@ void WalletButton::OnWalletPressed(const ui::Event& event) {
   }
 
   ShowWalletBubble();
+  notification_source_->MarkWalletButtonWasClicked();
+}
+
+void WalletButton::OnNotificationUpdate(bool show_suggest_badge,
+                                        size_t counter) {
+  show_suggest_badge_ = show_suggest_badge;
+  counter_ = counter;
+  UpdateImageAndText();
 }
 
 std::pair<std::string, SkColor> WalletButton::GetBadgeTextAndBackground() {
-  if (running_tx_count_ > 0) {
-    std::string text = running_tx_count_ > 99
-                           ? "99+"
-                           : base::NumberToString(running_tx_count_);
+  if (counter_ > 0) {
+    std::string text = counter_ > 99 ? "99+" : base::NumberToString(counter_);
     return {text, brave::kBadgeNotificationBG};
   }
   return {"", brave::kBadgeNotificationBG};
@@ -193,7 +159,8 @@ void WalletButton::UpdateImageAndText() {
       preferred_size,
       base::BindRepeating(&GetColorProviderForView,
                           weak_ptr_factory_.GetWeakPtr()),
-      icon_size, 0u);
+      icon_size, 5u);
+  image_source->SetAllowEmptyText(show_suggest_badge_);
   image_source->SetIcon(gfx::Image(icon));
 
   auto [text, background_color] = GetBadgeTextAndBackground();

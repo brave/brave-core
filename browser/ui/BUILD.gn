@@ -744,6 +744,8 @@ source_set("ui") {
       "views/permission_bubble/brave_wallet_permission_prompt_impl.h",
       "views/toolbar/wallet_button.cc",
       "views/toolbar/wallet_button.h",
+      "views/toolbar/wallet_button_notification_source.cc",
+      "views/toolbar/wallet_button_notification_source.h",
       "views/ui_utils.cc",
       "views/ui_utils.h",
       "views/wallet_bubble_focus_observer.cc",

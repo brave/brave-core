@@ -52,10 +52,25 @@ gfx::Size BraveIconWithBadgeImageSource::GetBadgeSize() {
   return gfx::Size(kBadgeMaxWidth, kBadgeHeight);
 }
 
-void BraveIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
-  if (!badge_ || badge_->text.empty())
-    return;
+void BraveIconWithBadgeImageSource::SetAllowEmptyText(bool v) {
+  allow_empty_text_ = v;
+}
 
+void BraveIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
+  if (!badge_) {
+    return;
+  }
+  if (allow_empty_text_ && badge_->text.empty()) {
+    PaintBadgeWithoutText(canvas);
+  } else {
+    PaintBadgeWithText(canvas);
+  }
+}
+
+void BraveIconWithBadgeImageSource::PaintBadgeWithText(gfx::Canvas* canvas) {
+  if (badge_->text.empty()) {
+    return;
+  }
   SkColor text_color = SkColorGetA(badge_->text_color) == SK_AlphaTRANSPARENT
                            ? SK_ColorWHITE
                            : badge_->text_color;
@@ -159,6 +174,24 @@ void BraveIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
   // Draw string with ellipsis if it does not fit
   canvas->DrawStringRectWithFlags(utf16_text, base_font, text_color, rect,
                                   gfx::Canvas::TEXT_ALIGN_CENTER);
+}
+
+void BraveIconWithBadgeImageSource::PaintBadgeWithoutText(gfx::Canvas* canvas) {
+  const gfx::Rect icon_area = GetIconAreaRect();
+  SkColor background_color =
+      SkColorSetA(badge_->background_color, SK_AlphaOPAQUE);
+  // Calculate the badge background rect. It is anchored to a specific position
+  const int badge_offset_x = icon_area.width() - kBadgeMaxWidth;
+  const int badge_offset_y = kVMarginTop;
+  gfx::Rect rect(icon_area.x() + badge_offset_x, icon_area.y() + badge_offset_y,
+                 kBadgeHeight, kBadgeHeight);
+  cc::PaintFlags rect_flags;
+  rect_flags.setStyle(cc::PaintFlags::kFill_Style);
+  rect_flags.setAntiAlias(true);
+  rect_flags.setColor(background_color);
+
+  // Paint the backdrop.
+  canvas->DrawRoundRect(rect, kOuterCornerRadius, rect_flags);
 }
 
 gfx::Rect BraveIconWithBadgeImageSource::GetIconAreaRect() const {
