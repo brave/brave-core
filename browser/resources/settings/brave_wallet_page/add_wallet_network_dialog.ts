@@ -121,7 +121,15 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
       },
       submissionErrorMessage_: {
         type: String,
-        value: true
+        value: true,
+      },
+      isNegativeDecimalsErrorHidden_: {
+        type: Boolean,
+        value: true,
+      },
+      NegativeDecimalsErrorMessage_: {
+        type: String,
+        value: true,
       },
       selected: {
         type: Object,
@@ -165,6 +173,8 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
   private isCurrencyErrorHidden_: boolean;
   private isSubmissionErrorHidden_: boolean;
   private submissionErrorMessage_: string;
+  private isNegativeDecimalsErrorHidden_: boolean;
+  private NegativeDecimalsErrorMessage_: string;
   private selected: NetworkInfo;
   private currencyNameValue_: string;
   private currencySymbolValue_: string;
@@ -393,8 +403,13 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
     this.isCurrencyErrorHidden_ = false
   }
 
+  showNegativeDecimalsError() {
+    this.NegativeDecimalsErrorMessage_ = "Please enter a positive value for currency decimals"
+    this.isNegativeDecimalsErrorHidden_ = false
+  }
+
   setSubmissionResult(success: boolean, errorMessage: string) {
-    this.isCurrencyErrorHidden_ = this.isSubmissionErrorHidden_ = true
+    this.isNegativeDecimalsErrorHidden_ = this.isCurrencyErrorHidden_ = this.isSubmissionErrorHidden_ = true
     if (!success) {
       this.isSubmissionErrorHidden_ = false
       this.submissionErrorMessage_ = errorMessage
@@ -431,6 +446,10 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
     if ((nativeCurrency.name || nativeCurrency.symbol || nativeCurrency.decimals)) {
       if (!nativeCurrency.name || !nativeCurrency.symbol || !nativeCurrency.decimals) {
         this.showCurrencyError()
+        return;
+      }
+      else if(nativeCurrency.decimals < 0) {
+        this.showNegativeDecimalsError()
         return;
       }
       payload.nativeCurrency = nativeCurrency;
