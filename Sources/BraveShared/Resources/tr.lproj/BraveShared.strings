@@ -113,7 +113,7 @@
 "BlockAllCookiesFailedAlertMsg" = "Tercih ayarlanamadı. Lütfen yeniden deneyin.";
 
 /* A title for a toggle that allows user to block cookie consent notices */
-"BlockCookieConsentNotices" = "Çerez onay bildirimlerini engelle";
+"BlockCookieConsentNotices" = "Çerez Onay Bildirimlerini Engelle";
 
 /* A description for a popup that notifies the user that we can block cookie consent notices */
 "BlockCookieConsentNoticesPopupDescription" = "Brave, üçüncü taraf çerezlerini zaten engelliyor. Çerez onay bildirimlerini de engelleyebiliriz.";
@@ -1303,6 +1303,12 @@
 /* The title of the view showing no synced sessions */
 "opentabs.noSyncSessionPlaceHolderViewTitle" = "Bu alan, diğer cihazlarda açık olan Brave sekmelerini gösterir";
 
+/* The title for the action to hide open session with all tabs */
+"opentabs.openSessionHideAllActionTitle" = "Şimdilik gizle";
+
+/* The title for the action to open all the tabs in a synced open session */
+"opentabs.openSessionOpenAllActionTitle" = "Hepsini Aç";
+
 /* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "Geçen Hafta %@";
 
@@ -1385,10 +1391,10 @@
 "OtherSettingsSection" = "Diğer Ayarlar";
 
 /* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "Anonim, gizli ürün içgörüleri paylaşın. Bu şekilde en sık hangi Brave özelliklerinin kullanıldığını öğrenmemize yardımcı olabilirsiniz.";
+"p3a.settingSubtitle" = "Anonimleştirilmiş P3A bilgisi, Brave'in genel kullanımı tahmin etmesine yardımcı olur ve popüler özellikleri geliştirmeye devam etmemizi garanti eder.";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
-"p3a.settingTitle" = "Ürün Analizi";
+"p3a.settingTitle" = "Gizlilik Korumalı Ürün Analizine İzin Ver (P3A)";
 
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Varsayılan Web Sayfası Yakınlaştırma Seviyesi";
@@ -3181,9 +3187,6 @@
 /* History tableview section header */
 "Today" = "Bugün";
 
-/* The button title for adding a user RSS feed */
-"today.addSource" = "Kaynak Ekle";
-
 /* To add a list of 1 or more rss feeds */
 "today.addSourceAddButtonTitle" = "Ekle";
 
@@ -3202,23 +3205,29 @@
 /* The action title displayed in the iOS share menu */
 "today.addSourceShareTitle" = "Brave News'e Kaynak Ekle";
 
-/* No comment provided by engineer. */
-"today.allSources" = "Tüm Kaynaklar";
+/* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
+"today.availableRSSFeedsHeaderTitle" = "Mevcut RSS Akışı";
 
 /* The name of the feature */
 "today.braveToday" = "Brave News";
+
+/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+"today.channelsButtonSubtitle" = "İlginizi çeken konuları takip edin";
+
+/* A button title that when tapped shows users a list of channels/topics that they can follow */
+"today.channelsButtonTitle" = "Kanallar";
+
+/* A header title shown over a list of channels (i.e. Cars, Business, Fashion, etc.) */
+"today.channelsHeaderTitle" = "Kanallar";
+
+/* A title at the top of the screen that shows a list of topics the user can follow */
+"today.channelsTitle" = "Kanallar";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Yeni İçerik Mevcut";
 
 /* No comment provided by engineer. */
 "today.deals" = "Fırsatlar";
-
-/* A button title for an action that deletes a users custom source */
-"today.deleteUserSourceTitle" = "Sil";
-
-/* No comment provided by engineer. */
-"today.disableAll" = "Tümünü Devre Dışı Bırak";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
 "today.disabledAlertBody" = "Brave News, %@ kaynağından içerik göstermeyi durduracak";
@@ -3227,7 +3236,7 @@
 "today.disabledAlertTitle" = "Devre Dışı";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disablePublisherContent" = "%@ öğesinden içeriği devre dışı bırak";
+"today.disablePublisherContent" = "%@ öğesinden içeriği gizle";
 
 /* No comment provided by engineer. */
 "today.emptyFeedBody" = "Bazı haber kaynaklarını açmayı deneyin";
@@ -3235,11 +3244,8 @@
 /* No comment provided by engineer. */
 "today.emptyFeedTitle" = "Gösterilecek makale yok";
 
-/* No comment provided by engineer. */
-"today.enableAll" = "Tümünü Etkinleştir";
-
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.enablePublisherContent" = "% öğesinden içeriği etkinleştir @";
+"today.enablePublisherContent" = "%@ öğesinden gelen içeriği etkinleştir";
 
 /* No comment provided by engineer. */
 "today.errorGeneralBody" = "Brave News bazı sorunlar yaşıyor. Yeniden deneyin.";
@@ -3247,23 +3253,32 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Hop...";
 
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+"today.followingButtonSubtitle" = "Akışınızdaki kaynakları yönetin";
+
+/* A button title that when tapped shows users a list of sources & channels they are currently following */
+"today.followingButtonTitle" = "Takip Ediliyor";
+
+/* A title at the top of the screen that shows a list of the news content the user is following */
+"today.followingTitle" = "Takip Ediliyor";
+
+/* A toggle title shown next to a source or channel that the user can follow. When tapped switches to 'Unfollow' */
+"today.followToggleTitle" = "Takip Et";
+
+/* Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'. */
+"today.getFeedsFromSiteButtonTitle" = "Şuradan akış alın:";
+
 /* \"OPML\" is a file extension that contains a list of rss feeds. */
 "today.importOPML" = "OPML'i içeri aktar";
 
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "Güvensiz Kaynaklar - Riski göze alıyorsanız ekleyin";
 
-/* No comment provided by engineer. */
-"today.introCardBody" = "Brave News, cihazınızda eşleşen tamamen özel ve anonimleştirilmiş reklamlarla desteklenmektedir.";
+/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "Favori kaynaklarınızı tek akıştan takip edin. Sadece Brave'de bir sekme açın, aşağı kaydırın ve... işte oldu!\nBrave News özel, anonim reklamlarla desteklenir.";
 
-/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
-"today.introCardNew" = "Yeni";
-
-/* No comment provided by engineer. */
-"today.introCardNewTextBody" = "Özel CDN'mizle sunulan yüzlerce lider içerik kaynağını kullanarak akışınızı özelleştirin ve favori yayıncılarınızdan RSS akışları ekleyerek sizin için ideal bir akış oluşturun. ";
-
-/* No comment provided by engineer. */
-"today.introCardTitle" = "Bugünün en iyi hikayeleri tamamen özel bir akışta, sadece sizin için.";
+/* Shown above a button that turns on the \"Brave News\" product in the app. */
+"today.introCardTitle" = "Brave News'i açın ve hiçbir haberi kaçırmayın";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Brave News'i Göster";
@@ -3280,35 +3295,53 @@
 /* No comment provided by engineer. */
 "today.noInternetBody" = "Bağlantınızı kontrol etmeyi veya Wi-Fi'ye yeniden bağlanmayı deneyin.";
 
+/* Shown on the screen when a user searches for sources/channels but finds no results. */
+"today.noResultsFound" = "Sonuç Bulunamadı";
+
+/* Shown below 'Popular Sources' explaining what sources will be shown. */
+"today.popularSourcesButtonSubtitle" = "Kaynakların derecelenmiş listesi";
+
+/* A button title that when tapped shows users a list of news sources that are ranked the highest */
+"today.popularSourcesDestinationTitle" = "Popüler";
+
+/* A title at the top of the screen that shows a list of sources that are ranked the highest */
+"today.popularSourcesTitle" = "Popüler Kaynaklar";
+
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Desteklenen";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Yenile";
 
-/* No comment provided by engineer. */
-"today.resetSourceSettingsButtonTitle" = "Kaynak Ayarlarını Varsayılana Sıfırla";
+/* Placeholder text that appears in the search bar when empty. Site as in website. */
+"today.searchPlaceholder" = "Site, konu veya RSS akışı ara";
 
-/* An action title where the user is executing a search based on inputted text */
-"today.searchButtonTitle" = "Ara";
-
-/* The placeholder displayed on the text field where a user is expected to type in a website URL */
-"today.searchTextFieldPlaceholder" = "Özet Akışı veya Site URL'si";
-
-/* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "Varsayılan Kaynaklar";
+/* Shown on a row displaying a source. '%@' will be replaced with another sources name. For example: 'Similar to 9to5Mac' */
+"today.similarToSourceSubtitle" = "%@ öğesine benzer";
 
 /* No comment provided by engineer. */
 "today.sourcesAndSettings" = "Kaynaklar ve Ayarlar";
 
-/* No comment provided by engineer. */
-"today.sourceSearchPlaceholder" = "Ara";
+/* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
+"today.sourcesHeaderTitle" = "Kaynaklar";
+
+/* Shown below 'Suggested' explaining what sources will be shown. */
+"today.suggestedSourcesButtonSubtitle" = "Hoşunuza gidebilecek bazı kaynaklar";
+
+/* A button title that when tapped shows users a list of news sources that are suggested based on the ones they currently follow */
+"today.suggestedSourcesButtonTitle" = "Önerilen";
+
+/* A title at the top of the screen that shows a list of the news content the user is being suggested */
+"today.suggestedTitle" = "Önerilen";
 
 /* No comment provided by engineer. */
 "today.turnOnBraveToday" = "Brave News'i aç";
 
-/* The header above a list of the users RSS feed sources */
-"today.yourSources" = "Kaynaklarınız";
+/* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
+"today.unfollowToggleTitle" = "Takipten Çık";
+
+/* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
+"today.userSourcesHeaderTitle" = "Kullanıcı Kaynakları";
 
 /* Shields Trackers Stat */
 "TrackersrBlocked" = "İzleyiciler \nEngellenmiş";

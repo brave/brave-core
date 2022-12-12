@@ -113,7 +113,7 @@
 "BlockAllCookiesFailedAlertMsg" = "设置首选项失败。请重试。";
 
 /* A title for a toggle that allows user to block cookie consent notices */
-"BlockCookieConsentNotices" = "阻止 cookie 同意通知";
+"BlockCookieConsentNotices" = "阻止 Cookie 同意通知";
 
 /* A description for a popup that notifies the user that we can block cookie consent notices */
 "BlockCookieConsentNoticesPopupDescription" = "Brave 已经阻止了第三方 cookie。我们也可以阻止 cookie 同意通知。";
@@ -1303,6 +1303,12 @@
 /* The title of the view showing no synced sessions */
 "opentabs.noSyncSessionPlaceHolderViewTitle" = "此空间显示在其他设备中打开的 Brave 选项卡";
 
+/* The title for the action to hide open session with all tabs */
+"opentabs.openSessionHideAllActionTitle" = "暂时隐藏";
+
+/* The title for the action to open all the tabs in a synced open session */
+"opentabs.openSessionOpenAllActionTitle" = "全部开启";
+
 /* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "上周 %@";
 
@@ -1385,10 +1391,10 @@
 "OtherSettingsSection" = "其他设置";
 
 /* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "匿名分享私密的产品见解。这有助于我们了解 Brave 最常用的功能。";
+"p3a.settingSubtitle" = "匿名的 P3A 信息可协助 Brave 预估整体使用量，并确保我们可以改进受欢迎的功能。";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
-"p3a.settingTitle" = "产品分析";
+"p3a.settingTitle" = "允许保护隐私的产品分析 (P3A)";
 
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "默认网页缩放级别";
@@ -3181,9 +3187,6 @@
 /* History tableview section header */
 "Today" = "今天";
 
-/* The button title for adding a user RSS feed */
-"today.addSource" = "添加源";
-
 /* To add a list of 1 or more rss feeds */
 "today.addSourceAddButtonTitle" = "添加";
 
@@ -3202,23 +3205,29 @@
 /* The action title displayed in the iOS share menu */
 "today.addSourceShareTitle" = "将源添加到 Brave News";
 
-/* No comment provided by engineer. */
-"today.allSources" = "所有来源";
+/* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
+"today.availableRSSFeedsHeaderTitle" = "可用的 RSS 摘要";
 
 /* The name of the feature */
 "today.braveToday" = "Brave 新闻";
+
+/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+"today.channelsButtonSubtitle" = "关注您感兴趣的主题";
+
+/* A button title that when tapped shows users a list of channels/topics that they can follow */
+"today.channelsButtonTitle" = "频道";
+
+/* A header title shown over a list of channels (i.e. Cars, Business, Fashion, etc.) */
+"today.channelsHeaderTitle" = "频道";
+
+/* A title at the top of the screen that shows a list of topics the user can follow */
+"today.channelsTitle" = "頻道";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "新内容可供查阅";
 
 /* No comment provided by engineer. */
 "today.deals" = "交易";
-
-/* A button title for an action that deletes a users custom source */
-"today.deleteUserSourceTitle" = "删除";
-
-/* No comment provided by engineer. */
-"today.disableAll" = "全部禁用";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
 "today.disabledAlertBody" = "Brave News 将不再显示来自 %@ 的内容";
@@ -3227,7 +3236,7 @@
 "today.disabledAlertTitle" = "已阻止";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disablePublisherContent" = "阻止来自 %@ 的内容";
+"today.disablePublisherContent" = "隐藏来自 %@ 的內容";
 
 /* No comment provided by engineer. */
 "today.emptyFeedBody" = "尝试开启新的新闻来源";
@@ -3235,11 +3244,8 @@
 /* No comment provided by engineer. */
 "today.emptyFeedTitle" = "没有待显示的文章";
 
-/* No comment provided by engineer. */
-"today.enableAll" = "全部允许";
-
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.enablePublisherContent" = "允许来自 %@ 的内容";
+"today.enablePublisherContent" = "允许来自 %@ 的內容";
 
 /* No comment provided by engineer. */
 "today.errorGeneralBody" = "Brave News 出现问题。请重试。";
@@ -3247,23 +3253,32 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "哎呀...";
 
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+"today.followingButtonSubtitle" = "管理您的摘要来源";
+
+/* A button title that when tapped shows users a list of sources & channels they are currently following */
+"today.followingButtonTitle" = "关注中";
+
+/* A title at the top of the screen that shows a list of the news content the user is following */
+"today.followingTitle" = "关注中";
+
+/* A toggle title shown next to a source or channel that the user can follow. When tapped switches to 'Unfollow' */
+"today.followToggleTitle" = "跟隨";
+
+/* Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'. */
+"today.getFeedsFromSiteButtonTitle" = "获取以下来源的摘要：";
+
 /* \"OPML\" is a file extension that contains a list of rss feeds. */
 "today.importOPML" = "导入 OPML";
 
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "不安全源 - 如果添加，风险自负";
 
-/* No comment provided by engineer. */
-"today.introCardBody" = "Brave News 受您的设备上匹配的私人和匿名广告支持。";
+/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "通过单一摘要关注您喜爱的来源。只要在 Brave 中开启分页、向下滑动，一切搞定！\nBrave 新闻支援匿名投放私人广告。";
 
-/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
-"today.introCardNew" = "新增";
-
-/* No comment provided by engineer. */
-"today.introCardNewTextBody" = "使用我们的私有 CDN 交付的数百个主要内容源来定制您的订阅源，添加您最喜欢的出版商的 RSS 订阅源，制作您专属的订阅。";
-
-/* No comment provided by engineer. */
-"today.introCardTitle" = "今日热门故事，专属于您的私人提要。";
+/* Shown above a button that turns on the \"Brave News\" product in the app. */
+"today.introCardTitle" = "开启 Brave 新闻，绝不错过每一条消息";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "显示 Show Brave News";
@@ -3280,35 +3295,53 @@
 /* No comment provided by engineer. */
 "today.noInternetBody" = "请检查您的网络连接，或重新连接至 Wi-Fi。";
 
+/* Shown on the screen when a user searches for sources/channels but finds no results. */
+"today.noResultsFound" = "找不到结果";
+
+/* Shown below 'Popular Sources' explaining what sources will be shown. */
+"today.popularSourcesButtonSubtitle" = "来源排名清单";
+
+/* A button title that when tapped shows users a list of news sources that are ranked the highest */
+"today.popularSourcesDestinationTitle" = "热门";
+
+/* A title at the top of the screen that shows a list of sources that are ranked the highest */
+"today.popularSourcesTitle" = "热门来源";
+
 /* A button title that is placed on promoted cards */
 "today.promoted" = "已推广";
 
 /* No comment provided by engineer. */
 "today.refresh" = "刷新";
 
-/* No comment provided by engineer. */
-"today.resetSourceSettingsButtonTitle" = "将来源设置重置为默认";
+/* Placeholder text that appears in the search bar when empty. Site as in website. */
+"today.searchPlaceholder" = "搜索网站、主题或 RSS 摘要";
 
-/* An action title where the user is executing a search based on inputted text */
-"today.searchButtonTitle" = "搜索";
-
-/* The placeholder displayed on the text field where a user is expected to type in a website URL */
-"today.searchTextFieldPlaceholder" = "提要或网站 URL";
-
-/* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "默认源";
+/* Shown on a row displaying a source. '%@' will be replaced with another sources name. For example: 'Similar to 9to5Mac' */
+"today.similarToSourceSubtitle" = "类似于 %@";
 
 /* No comment provided by engineer. */
 "today.sourcesAndSettings" = "来源和设置";
 
-/* No comment provided by engineer. */
-"today.sourceSearchPlaceholder" = "搜索";
+/* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
+"today.sourcesHeaderTitle" = "来源";
+
+/* Shown below 'Suggested' explaining what sources will be shown. */
+"today.suggestedSourcesButtonSubtitle" = "您可能会喜欢的一些来源";
+
+/* A button title that when tapped shows users a list of news sources that are suggested based on the ones they currently follow */
+"today.suggestedSourcesButtonTitle" = "建议";
+
+/* A title at the top of the screen that shows a list of the news content the user is being suggested */
+"today.suggestedTitle" = "建议";
 
 /* No comment provided by engineer. */
 "today.turnOnBraveToday" = "开启 Brave News";
 
-/* The header above a list of the users RSS feed sources */
-"today.yourSources" = "您的 RSS 提要源";
+/* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
+"today.unfollowToggleTitle" = "取消跟隨";
+
+/* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
+"today.userSourcesHeaderTitle" = "用户来源";
 
 /* Shields Trackers Stat */
 "TrackersrBlocked" = "拦截器 \n被拦截";

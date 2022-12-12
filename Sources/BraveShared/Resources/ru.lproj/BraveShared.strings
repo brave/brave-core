@@ -1303,6 +1303,12 @@
 /* The title of the view showing no synced sessions */
 "opentabs.noSyncSessionPlaceHolderViewTitle" = "Здесь вы будете видеть вкладки Brave, открытые на других устройствах";
 
+/* The title for the action to hide open session with all tabs */
+"opentabs.openSessionHideAllActionTitle" = "Скрыть";
+
+/* The title for the action to open all the tabs in a synced open session */
+"opentabs.openSessionOpenAllActionTitle" = "Открыть все";
+
 /* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "На прошлой неделе (%@)";
 
@@ -1385,10 +1391,10 @@
 "OtherSettingsSection" = "Другие настройки";
 
 /* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "Делитесь анонимными и конфиденциальными сведениями о продукте. Эта информация поможет нам узнать, какими функциями Brave пользуются чаще всего.";
+"p3a.settingSubtitle" = "Анонимные данные аналитики продукта без нарушения конфиденциальности (P3A) помогают нам оценивать полную информацию об использовании Brave и улучшать популярные функции.";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
-"p3a.settingTitle" = "Аналитика продукта";
+"p3a.settingTitle" = "Разрешить выполнение аналитики продукта без нарушения конфиденциальности (P3A)";
 
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Масштаб по умолчанию для веб-страниц";
@@ -3181,9 +3187,6 @@
 /* History tableview section header */
 "Today" = "сегодня";
 
-/* The button title for adding a user RSS feed */
-"today.addSource" = "Добавить источник";
-
 /* To add a list of 1 or more rss feeds */
 "today.addSourceAddButtonTitle" = "Добавить";
 
@@ -3202,23 +3205,29 @@
 /* The action title displayed in the iOS share menu */
 "today.addSourceShareTitle" = "Добавить источник в Brave News";
 
-/* No comment provided by engineer. */
-"today.allSources" = "Все источники";
+/* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
+"today.availableRSSFeedsHeaderTitle" = "Доступные RSS-ленты";
 
 /* The name of the feature */
 "today.braveToday" = "Brave News";
+
+/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+"today.channelsButtonSubtitle" = "Следите за новыми публикациями на интересующие вас темы";
+
+/* A button title that when tapped shows users a list of channels/topics that they can follow */
+"today.channelsButtonTitle" = "Каналы";
+
+/* A header title shown over a list of channels (i.e. Cars, Business, Fashion, etc.) */
+"today.channelsHeaderTitle" = "Каналы";
+
+/* A title at the top of the screen that shows a list of topics the user can follow */
+"today.channelsTitle" = "Каналы";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Есть новый контент";
 
 /* No comment provided by engineer. */
 "today.deals" = "Сделки";
-
-/* A button title for an action that deletes a users custom source */
-"today.deleteUserSourceTitle" = "Удалить";
-
-/* No comment provided by engineer. */
-"today.disableAll" = "Отключить всё";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
 "today.disabledAlertBody" = "Контент из источника «%@» больше не будет появляться в Brave News.";
@@ -3227,7 +3236,7 @@
 "today.disabledAlertTitle" = "Отключено";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disablePublisherContent" = "%@: отключить показ контента";
+"today.disablePublisherContent" = "Скрыть контент источника «%@»";
 
 /* No comment provided by engineer. */
 "today.emptyFeedBody" = "Попробуйте включить источники новостей.";
@@ -3235,11 +3244,8 @@
 /* No comment provided by engineer. */
 "today.emptyFeedTitle" = "Нет статей";
 
-/* No comment provided by engineer. */
-"today.enableAll" = "Включить всё";
-
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.enablePublisherContent" = "%@: включить показ контента";
+"today.enablePublisherContent" = "Показывать контент источника «%@»";
 
 /* No comment provided by engineer. */
 "today.errorGeneralBody" = "Возникли неполадки. Повторите попытку позже.";
@@ -3247,23 +3253,32 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Ошибочка…";
 
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+"today.followingButtonSubtitle" = "Управляйте источниками в ленте";
+
+/* A button title that when tapped shows users a list of sources & channels they are currently following */
+"today.followingButtonTitle" = "Подписки";
+
+/* A title at the top of the screen that shows a list of the news content the user is following */
+"today.followingTitle" = "Подписки";
+
+/* A toggle title shown next to a source or channel that the user can follow. When tapped switches to 'Unfollow' */
+"today.followToggleTitle" = "Подписаться";
+
+/* Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'. */
+"today.getFeedsFromSiteButtonTitle" = "Получать ленты с сайта";
+
 /* \"OPML\" is a file extension that contains a list of rss feeds. */
 "today.importOPML" = "Импортировать OPML";
 
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "Небезопасные источники (добавьте на ваше усмотрение)";
 
-/* No comment provided by engineer. */
-"today.introCardBody" = "Реклама в Brave News подбирается прямо на вашем устройстве и не нарушает конфиденциальности ваших данных.";
+/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "Читайте новости из любимых источников в одной ленте. Просто откройте вкладку Brave и прокрутите вниз!\nСервис «Brave Новости» содержит рекламу, не нарушающую конфиденциальность ваших данных.";
 
-/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
-"today.introCardNew" = "Новинка";
-
-/* No comment provided by engineer. */
-"today.introCardNewTextBody" = "Настройте новостную ленту в соответствии со своими интересами: добавляйте RSS-фиды любимых издателей и выбирайте материалы из сотен источников качественного контента в нашей частной СДК.";
-
-/* No comment provided by engineer. */
-"today.introCardTitle" = "Читайте и смотрите главные новости дня в полностью приватной ленте.";
+/* Shown above a button that turns on the \"Brave News\" product in the app. */
+"today.introCardTitle" = "Включите Brave Новости и будьте в курсе всех событий";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Показывать Brave News";
@@ -3280,35 +3295,53 @@
 /* No comment provided by engineer. */
 "today.noInternetBody" = "Проверьте подключение к Интернету или повторно подключитесь к Wi-Fi.";
 
+/* Shown on the screen when a user searches for sources/channels but finds no results. */
+"today.noResultsFound" = "Ничего не найдено";
+
+/* Shown below 'Popular Sources' explaining what sources will be shown. */
+"today.popularSourcesButtonSubtitle" = "Список источников с учетом их рейтинга";
+
+/* A button title that when tapped shows users a list of news sources that are ranked the highest */
+"today.popularSourcesDestinationTitle" = "Популярное";
+
+/* A title at the top of the screen that shows a list of sources that are ranked the highest */
+"today.popularSourcesTitle" = "Популярные источники";
+
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Бонусы";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Обновить";
 
-/* No comment provided by engineer. */
-"today.resetSourceSettingsButtonTitle" = "Возврат к исходным настройкам источника";
+/* Placeholder text that appears in the search bar when empty. Site as in website. */
+"today.searchPlaceholder" = "Поиск сайта, темы или RSS-ленты";
 
-/* An action title where the user is executing a search based on inputted text */
-"today.searchButtonTitle" = "Поиск";
-
-/* The placeholder displayed on the text field where a user is expected to type in a website URL */
-"today.searchTextFieldPlaceholder" = "URL фида или сайта";
-
-/* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "Источники по умолчанию";
+/* Shown on a row displaying a source. '%@' will be replaced with another sources name. For example: 'Similar to 9to5Mac' */
+"today.similarToSourceSubtitle" = "%@: похожий контент";
 
 /* No comment provided by engineer. */
 "today.sourcesAndSettings" = "Источники и настройки";
 
-/* No comment provided by engineer. */
-"today.sourceSearchPlaceholder" = "Поиск";
+/* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
+"today.sourcesHeaderTitle" = "Источники";
+
+/* Shown below 'Suggested' explaining what sources will be shown. */
+"today.suggestedSourcesButtonSubtitle" = "Источники, которые могут вам понравиться";
+
+/* A button title that when tapped shows users a list of news sources that are suggested based on the ones they currently follow */
+"today.suggestedSourcesButtonTitle" = "Рекомендации";
+
+/* A title at the top of the screen that shows a list of the news content the user is being suggested */
+"today.suggestedTitle" = "Рекомендации";
 
 /* No comment provided by engineer. */
 "today.turnOnBraveToday" = "Включить Brave News";
 
-/* The header above a list of the users RSS feed sources */
-"today.yourSources" = "Ваши источники";
+/* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
+"today.unfollowToggleTitle" = "Отписаться";
+
+/* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
+"today.userSourcesHeaderTitle" = "Пользовательские источники";
 
 /* Shields Trackers Stat */
 "TrackersrBlocked" = "Трекеров\nзаблокировано";

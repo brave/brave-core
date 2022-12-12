@@ -1303,6 +1303,12 @@
 /* The title of the view showing no synced sessions */
 "opentabs.noSyncSessionPlaceHolderViewTitle" = "Det här utrymmet visar Brave-flikar som är öppna på andra enheter";
 
+/* The title for the action to hide open session with all tabs */
+"opentabs.openSessionHideAllActionTitle" = "Dölj för tillfället";
+
+/* The title for the action to open all the tabs in a synced open session */
+"opentabs.openSessionOpenAllActionTitle" = "Öppna alla";
+
 /* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "Förra veckan %@";
 
@@ -1385,10 +1391,10 @@
 "OtherSettingsSection" = "Andra inställningar";
 
 /* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "Dela privat produktstatistik anonymt. Det hjälper oss att förstå vilka Brave-funktioner som används mest.";
+"p3a.settingSubtitle" = "Anonymiserad P3A-info hjälper Brave att uppskatta den totala användningen och se till att vi förbättrar populära funktioner.";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
-"p3a.settingTitle" = "Produktanalys";
+"p3a.settingTitle" = "Tillåt integritetsbevarande produktanalys (P3A)";
 
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Zoomnivå för webbsida som standard";
@@ -3181,9 +3187,6 @@
 /* History tableview section header */
 "Today" = "idag";
 
-/* The button title for adding a user RSS feed */
-"today.addSource" = "Lägg till källa";
-
 /* To add a list of 1 or more rss feeds */
 "today.addSourceAddButtonTitle" = "Lägg till";
 
@@ -3202,23 +3205,29 @@
 /* The action title displayed in the iOS share menu */
 "today.addSourceShareTitle" = "Lägg till källa till Brave News";
 
-/* No comment provided by engineer. */
-"today.allSources" = "Alla källor";
+/* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
+"today.availableRSSFeedsHeaderTitle" = "Tillgängliga RSS-feeds";
 
 /* The name of the feature */
 "today.braveToday" = "Brave News";
+
+/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+"today.channelsButtonSubtitle" = "Följ ämnen som intresserar dig";
+
+/* A button title that when tapped shows users a list of channels/topics that they can follow */
+"today.channelsButtonTitle" = "Kanaler";
+
+/* A header title shown over a list of channels (i.e. Cars, Business, Fashion, etc.) */
+"today.channelsHeaderTitle" = "Kanaler";
+
+/* A title at the top of the screen that shows a list of topics the user can follow */
+"today.channelsTitle" = "Kanaler";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Nytt innehåll tillgängligt";
 
 /* No comment provided by engineer. */
 "today.deals" = "Erbjudanden";
-
-/* A button title for an action that deletes a users custom source */
-"today.deleteUserSourceTitle" = "Ta bort";
-
-/* No comment provided by engineer. */
-"today.disableAll" = "Inaktivera alla";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
 "today.disabledAlertBody" = "Brave News kommer att sluta visa innehåll från %@";
@@ -3227,7 +3236,7 @@
 "today.disabledAlertTitle" = "Inaktiverad";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disablePublisherContent" = "Inaktivera innehåll från %@";
+"today.disablePublisherContent" = "Dölj innehåll från %@";
 
 /* No comment provided by engineer. */
 "today.emptyFeedBody" = "Prova att aktivera några nyhetskällor";
@@ -3235,11 +3244,8 @@
 /* No comment provided by engineer. */
 "today.emptyFeedTitle" = "Inga artiklar att visa";
 
-/* No comment provided by engineer. */
-"today.enableAll" = "Aktivera alla";
-
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.enablePublisherContent" = "Aktivera innehåll från %@";
+"today.enablePublisherContent" = "Tillåt innehåll från %@";
 
 /* No comment provided by engineer. */
 "today.errorGeneralBody" = "Brave News har vissa problem. Försök igen.";
@@ -3247,23 +3253,32 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Hoppsan ...";
 
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+"today.followingButtonSubtitle" = "Hantera källor för ditt flöde";
+
+/* A button title that when tapped shows users a list of sources & channels they are currently following */
+"today.followingButtonTitle" = "Följer";
+
+/* A title at the top of the screen that shows a list of the news content the user is following */
+"today.followingTitle" = "Följer";
+
+/* A toggle title shown next to a source or channel that the user can follow. When tapped switches to 'Unfollow' */
+"today.followToggleTitle" = "Följ";
+
+/* Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'. */
+"today.getFeedsFromSiteButtonTitle" = "Hämta flöden från";
+
 /* \"OPML\" is a file extension that contains a list of rss feeds. */
 "today.importOPML" = "Importera OPML";
 
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "Osäkra källor - Lägg till på egen risk";
 
-/* No comment provided by engineer. */
-"today.introCardBody" = "Brave News stöds av annonsörer med helt privata och anonymiserade annonser som är matchade på din enhet.";
+/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "Följ dina favoritkällor i ett enda flöde. Öppna bara en flik i Brave, bläddra ner och … voila!\nBrave News stöds av annonser med privata, anonymiserade annonser.";
 
-/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
-"today.introCardNew" = "Nytt";
-
-/* No comment provided by engineer. */
-"today.introCardNewTextBody" = "Anpassa ditt flöde med hundratals ledande innehållskällor som levereras via vår privata CDN och lägg till RSS-flöden från dina favoritutgivare för att skapa ett flöde som passar just dig.";
-
-/* No comment provided by engineer. */
-"today.introCardTitle" = "Dagens topphistorier i ett helt privat flöde, endast för dig.";
+/* Shown above a button that turns on the \"Brave News\" product in the app. */
+"today.introCardTitle" = "Aktivera Brave News så missar du inga nyheter";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Visa Brave News";
@@ -3280,35 +3295,53 @@
 /* No comment provided by engineer. */
 "today.noInternetBody" = "Prova att kontrollera anslutningen eller återansluta till Wi-Fi.";
 
+/* Shown on the screen when a user searches for sources/channels but finds no results. */
+"today.noResultsFound" = "Inga resultat hittades";
+
+/* Shown below 'Popular Sources' explaining what sources will be shown. */
+"today.popularSourcesButtonSubtitle" = "Rankad lista över källor";
+
+/* A button title that when tapped shows users a list of news sources that are ranked the highest */
+"today.popularSourcesDestinationTitle" = "Populära";
+
+/* A title at the top of the screen that shows a list of sources that are ranked the highest */
+"today.popularSourcesTitle" = "Populära källor";
+
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Marknadsfört";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Uppdatera";
 
-/* No comment provided by engineer. */
-"today.resetSourceSettingsButtonTitle" = "Återställ källor till standardinställningen";
+/* Placeholder text that appears in the search bar when empty. Site as in website. */
+"today.searchPlaceholder" = "Sök efter webbplats, ämne eller RSS-feed";
 
-/* An action title where the user is executing a search based on inputted text */
-"today.searchButtonTitle" = "Sök";
-
-/* The placeholder displayed on the text field where a user is expected to type in a website URL */
-"today.searchTextFieldPlaceholder" = "Flöde eller webbadress";
-
-/* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "Standardkällor";
+/* Shown on a row displaying a source. '%@' will be replaced with another sources name. For example: 'Similar to 9to5Mac' */
+"today.similarToSourceSubtitle" = "Liknar %@";
 
 /* No comment provided by engineer. */
 "today.sourcesAndSettings" = "Källor och inställningar";
 
-/* No comment provided by engineer. */
-"today.sourceSearchPlaceholder" = "Sök";
+/* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
+"today.sourcesHeaderTitle" = "Källor";
+
+/* Shown below 'Suggested' explaining what sources will be shown. */
+"today.suggestedSourcesButtonSubtitle" = "Några källor du kanske gillar";
+
+/* A button title that when tapped shows users a list of news sources that are suggested based on the ones they currently follow */
+"today.suggestedSourcesButtonTitle" = "Förslag";
+
+/* A title at the top of the screen that shows a list of the news content the user is being suggested */
+"today.suggestedTitle" = "Föslag";
 
 /* No comment provided by engineer. */
 "today.turnOnBraveToday" = "Aktivera Brave News";
 
-/* The header above a list of the users RSS feed sources */
-"today.yourSources" = "Dina källor";
+/* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
+"today.unfollowToggleTitle" = "Sluta följa";
+
+/* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
+"today.userSourcesHeaderTitle" = "Användarkällor";
 
 /* Shields Trackers Stat */
 "TrackersrBlocked" = "Blockerade \nspårare";
