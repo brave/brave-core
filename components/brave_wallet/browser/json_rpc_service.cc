@@ -1853,6 +1853,39 @@ void JsonRpcService::OnGetIsEip1559(GetIsEip1559Callback callback,
                           mojom::ProviderError::kSuccess, "");
 }
 
+void JsonRpcService::GetBlockByNumber(const std::string& block_number,
+                                      GetBlockByNumberCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetBlockByNumber,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(eth::eth_getBlockByNumber(block_number, false), true,
+                  network_urls_[mojom::CoinType::ETH],
+                  std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetBlockByNumber(GetBlockByNumberCallback callback,
+                                        APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(
+        base::Value(), mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  auto result = ParseResultValue(api_request_result.body());
+  if (!result) {
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
+                                           &error_message);
+    std::move(callback).Run(base::Value(), error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(std::move(*result), mojom::ProviderError::kSuccess,
+                          "");
+}
+
 /*static*/
 bool JsonRpcService::IsValidDomain(const std::string& domain) {
   static const base::NoDestructor<re2::RE2> kDomainRegex(kDomainPattern);

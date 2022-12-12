@@ -144,6 +144,12 @@ class TestEventsListener : public brave_wallet::mojom::EventsListener {
     accounts_changed_fired_ = true;
   }
 
+  void MessageEvent(const std::string& subscription_id,
+                    base::Value result) override {
+    message_event_fired_ = true;
+    last_message_ = std::move(result);
+  }
+
   bool ChainChangedFired() const {
     base::RunLoop().RunUntilIdle();
     return chain_changed_fired_;
@@ -154,9 +160,19 @@ class TestEventsListener : public brave_wallet::mojom::EventsListener {
     return accounts_changed_fired_;
   }
 
+  bool MessageEventFired() const {
+    base::RunLoop().RunUntilIdle();
+    return message_event_fired_;
+  }
+
   std::string GetChainId() const {
     base::RunLoop().RunUntilIdle();
     return chain_id_;
+  }
+
+  base::Value GetLastMessage() const {
+    base::RunLoop().RunUntilIdle();
+    return last_message_.Clone();
   }
 
   std::vector<std::string> GetLowercaseAccounts() const {
@@ -173,14 +189,18 @@ class TestEventsListener : public brave_wallet::mojom::EventsListener {
     lowercase_accounts_.clear();
     chain_changed_fired_ = false;
     accounts_changed_fired_ = false;
+    message_event_fired_ = false;
     EXPECT_FALSE(ChainChangedFired());
     EXPECT_FALSE(AccountsChangedFired());
+    EXPECT_FALSE(MessageEventFired());
   }
 
   bool chain_changed_fired_ = false;
   bool accounts_changed_fired_ = false;
+  bool message_event_fired_ = false;
   std::vector<std::string> lowercase_accounts_;
   std::string chain_id_;
+  base::Value last_message_;
 
  private:
   mojo::Receiver<brave_wallet::mojom::EventsListener> observer_receiver_{this};
@@ -189,7 +209,9 @@ class TestEventsListener : public brave_wallet::mojom::EventsListener {
 class EthereumProviderImplUnitTest : public testing::Test {
  public:
   EthereumProviderImplUnitTest()
-      : shared_url_loader_factory_(
+      : browser_task_environment_(
+            base::test::TaskEnvironment::TimeSource::MOCK_TIME),
+        shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {}
 
@@ -875,6 +897,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   std::unique_ptr<TestEventsListener> observer_;
+  network::TestURLLoaderFactory url_loader_factory_;
+  std::unique_ptr<EthereumProviderImpl> provider_;
 
  private:
   std::unique_ptr<ScopedTestingLocalState> local_state_;
@@ -883,8 +907,6 @@ class EthereumProviderImplUnitTest : public testing::Test {
   raw_ptr<TxService> tx_service_;
   raw_ptr<AssetRatioService> asset_ratio_service_;
   std::unique_ptr<content::TestWebContents> web_contents_;
-  std::unique_ptr<EthereumProviderImpl> provider_;
-  network::TestURLLoaderFactory url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   base::ScopedTempDir temp_dir_;
@@ -1962,6 +1984,97 @@ TEST_F(EthereumProviderImplUnitTest, AccountsChangedEvent) {
   AddEthereumPermission(GetOrigin(), 1);
   SetSelectedAccount(from(0), mojom::CoinType::ETH);
   EXPECT_FALSE(observer_->AccountsChangedFired());
+}
+
+TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
+  CreateWallet();
+
+  // Unsupported subscription type
+  std::string request_payload_json =
+      R"({"id":1,"jsonrpc:": "2.0","method":"eth_subscribe",
+          "params": ["foo"]})";
+  absl::optional<base::Value> request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  auto response = CommonRequestOrSendAsync(request_payload.value());
+
+  mojom::ProviderError error_code;
+  std::string error_message;
+  GetErrorCodeMessage(std::move(response.second), &error_code, &error_message);
+  EXPECT_EQ(response.first, true);
+  EXPECT_EQ(error_code, mojom::ProviderError::kInternalError);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_UNSUPPORTED_SUBSCRIPTION_TYPE));
+
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        url_loader_factory_.ClearResponses();
+
+        std::string header_value;
+        EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
+        std::string content;
+        if (header_value == "eth_blockNumber" ||
+            header_value == "getBlockHeight")
+          content = R"({"id":1,"jsonrpc":"2.0","result":"0x131131"})";
+        else if (header_value == "eth_getBlockByNumber")
+          content = R"({"id":1,"jsonrpc":"2.0","result":{"difficulty":"0x1"}})";
+        url_loader_factory_.AddResponse(request.url.spec(), content);
+      }));
+
+  // Subscribing to newHeads
+  request_payload_json =
+      R"({"id":1,"jsonrpc:": "2.0","method":"eth_subscribe",
+          "params": ["newHeads"]})";
+  request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_EQ(response.first, false);
+  EXPECT_TRUE(response.second.is_string());
+  std::string first_subscription = *response.second.GetIfString();
+  browser_task_environment_.FastForwardBy(
+      base::Seconds(kBlockTrackerDefaultTimeInSeconds));
+  EXPECT_TRUE(observer_->MessageEventFired());
+  base::Value rv = observer_->GetLastMessage();
+  ASSERT_TRUE(rv.is_dict());
+  auto& dict = rv.GetDict();
+  std::string* difficulty = dict.FindString("difficulty");
+  ASSERT_TRUE(difficulty);
+  EXPECT_EQ(*difficulty, "0x1");
+
+  // Make a second subscription
+  request_payload_json =
+      R"({"id":1,"jsonrpc:": "2.0","method":"eth_subscribe",
+          "params": ["newHeads"]})";
+  request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_EQ(response.first, false);
+  EXPECT_TRUE(response.second.is_string());
+  std::string second_subscription = *response.second.GetIfString();
+
+  // The first unsubscribe should not stop the block tracker
+  request_payload_json = base::StringPrintf(R"({"id":1,"jsonrpc:": "2.0",
+                              "method":"eth_unsubscribe",
+                              "params": ["%s"]})",
+                                            first_subscription.c_str());
+  request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_TRUE(provider_->eth_block_tracker_.IsRunning());
+
+  // The second unsubscribe should stop the block tracker
+  request_payload_json = base::StringPrintf(R"({"id":1,"jsonrpc:": "2.0",
+                              "method":"eth_unsubscribe",
+                              "params": ["%s"]})",
+                                            second_subscription.c_str());
+  request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_FALSE(provider_->eth_block_tracker_.IsRunning());
 }
 
 TEST_F(EthereumProviderImplUnitTest, Web3ClientVersion) {
