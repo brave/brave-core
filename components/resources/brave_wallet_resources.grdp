@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <grit-part>
-  <include name="IDR_BRAVE_WALLET_SOLANA_WEB3_JS" file="../../node_modules/@solana/web3.js/lib/index.iife.min.js" type="BINDATA" />
+  <include name="IDR_BRAVE_WALLET_SOLANA_WEB3_JS" file="../brave_wallet/resources/solana_web3_1.47.1_script.js" type="BINDATA" />
 </grit-part>
 
