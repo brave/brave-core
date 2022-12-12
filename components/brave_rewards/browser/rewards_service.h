@@ -157,7 +157,7 @@ class RewardsService : public KeyedService {
   // Asynchronously returns a vector of ISO country codes that the user can
   // select when creating a Rewards ID.
   virtual void GetAvailableCountries(
-      GetAvailableCountriesCallback callback) const = 0;
+      GetAvailableCountriesCallback callback) = 0;
 
   virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
   virtual void GetActivityInfoList(const uint32_t start,

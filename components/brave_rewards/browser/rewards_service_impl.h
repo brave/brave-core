@@ -126,8 +126,7 @@ class RewardsServiceImpl : public RewardsService,
 
   std::string GetCountryCode() const override;
 
-  void GetAvailableCountries(
-      GetAvailableCountriesCallback callback) const override;
+  void GetAvailableCountries(GetAvailableCountriesCallback callback) override;
 
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
 

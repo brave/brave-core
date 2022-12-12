@@ -8,14 +8,13 @@ import * as React from 'react'
 const countryNames = new Intl.DisplayNames(undefined, { type: 'region' })
 
 export function getCountryName (code: string) {
-  return countryNames.of(code)
+  return countryNames.of(code) || code
 }
 
 function getCountryOptions (countries: string[]) {
   return countries
-    .map((code) => ({ code, name: countryNames.of(code) || '' }))
-    .filter((item) => Boolean(item.name))
-    .sort((a, b) => a.name?.localeCompare(b.name))
+    .map((code) => ({ code, name: getCountryName(code) }))
+    .sort((a, b) => a.name.localeCompare(b.name))
 }
 
 interface Props {

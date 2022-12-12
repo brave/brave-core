@@ -687,48 +687,14 @@ std::string RewardsServiceImpl::GetCountryCode() const {
 }
 
 void RewardsServiceImpl::GetAvailableCountries(
-    GetAvailableCountriesCallback callback) const {
-  static const std::vector<std::string> kISOCountries = GetISOCountries();
-
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), kISOCountries);
+    GetAvailableCountriesCallback callback) {
+  auto countries = GetISOCountries();
+  if (countries.empty()) {
+    BLOG(0, "An empty country list was returned from ICU");
   }
-
-  auto on_external_wallet = [](GetAvailableCountriesCallback callback,
-                               GetExternalWalletResult result) {
-    auto wallet = std::move(result).value_or(nullptr);
-    // If the user is not currently connected to any wallet provider, then all
-    // ISO country codes are available.
-    if (!wallet ||
-        wallet->status == ledger::mojom::WalletStatus::kNotConnected) {
-      return std::move(callback).Run(kISOCountries);
-    }
-
-    // If the user is currently connected to a bitFlyer wallet, then the only
-    // available countries are |kBitflyerCountries|.
-    if (wallet->type == ledger::constant::kWalletBitflyer) {
-      return std::move(callback).Run(std::vector<std::string>(
-          kBitflyerCountries.begin(), kBitflyerCountries.end()));
-    }
-
-    // If the user is currently connected to any other external wallet provider,
-    // then remove |kBitflyerCountries| from the list of ISO countries.
-    static const std::vector<std::string> kNonBitflyerCountries = []() {
-      auto countries = kISOCountries;
-      auto removed =
-          base::ranges::remove_if(countries, [](const std::string& country) {
-            return base::Contains(kBitflyerCountries, country);
-          });
-      countries.erase(removed, countries.end());
-      return countries;
-    }();
-
-    return std::move(callback).Run(kNonBitflyerCountries);
-  };
-
-  bat_ledger_->GetExternalWallet(
-      GetExternalWalletType(),
-      base::BindOnce(on_external_wallet, std::move(callback)));
+  // The country list is returned asynchrounously for backward compatibility.
+  // In the future we should consider whether it should be made synchronous.
+  DeferCallback(FROM_HERE, std::move(callback), std::move(countries));
 }
 
 void RewardsServiceImpl::GetActivityInfoList(
