@@ -10,6 +10,8 @@ import com.wireguard.android.backend.GoBackend;
 
 import org.chromium.chrome.browser.base.SplitCompatApplication;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
+import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
+import org.chromium.components.safe_browsing.SafeBrowsingApiBridge;
 
 public class BraveApplicationImplBase extends SplitCompatApplication.Impl {
     @Override
@@ -22,6 +24,8 @@ public class BraveApplicationImplBase extends SplitCompatApplication.Impl {
                     BraveVpnProfileUtils.getInstance().startVpn(getApplication());
                 }
             });
+            // Set a handler for SafeBrowsing. It has to be done only once for a process lifetime.
+            SafeBrowsingApiBridge.setHandler(BraveSafeBrowsingApiHandler.getInstance());
         }
     }
 }
