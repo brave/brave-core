@@ -45,7 +45,12 @@ jobs:
           [[ "${DEP:?}" =~ ^[a-zA-Z/-]+$ ]] || { echo Input dependency validation failed; exit 1; }
           if [[ -z "${DEPREF}" ]]; then
             echo "Attempting to guess ref hash"
-            DEP_REPO=$(sed -n '/deps = {/, /^}/p' DEPS | sed 's/deps = //' | python3 -c "import sys,ast; d=ast.literal_eval(sys.stdin.read()); dep=d[\""$DEP"\"]; print(dep) if isinstance(dep, str) else print(dep.get(\"url\"))" | grep -Po '(?<=github.com\/).*?(?=\.git)?(?=@)' | sed 's/\.git//' )
+            DEP_REPO=$(\
+                sed -n '/deps = {/, /^}/p' DEPS|\
+                sed 's/deps = //'|\
+                python3 -c "import sys,ast; d=ast.literal_eval(sys.stdin.read()); dep=d[\""$DEP"\"]; print(dep) if isinstance(dep, str) else print(dep.get(\"url\"))"|\
+                grep -Po '(?<=github.com\/).*?(?=\.git)?(?=@)'|\
+                sed 's/\.git//')
             gh api /repos/"${DEP_REPO}"/commits/master -q .sha > /tmp/DEPREF || gh api /repos/"${DEP_REPO}"/commits/main -q .sha > /tmp/DEPREF
             DEPREF=$(</tmp/DEPREF)
           fi
@@ -68,7 +73,13 @@ jobs:
             # git commit -m "Auto bump DEPS ${DEP}@${DEPREF}"
             git push --delete origin "$pr_branch" || : # TODO remove
             git push -u origin "$pr_branch"
-            gh api --method PUT /repos/${GITHUB_REPOSITORY}/contents/DEPS --field message="Auto bump DEPS ${DEP}@${DEPREF}" --field content=@<( base64 -i DEPS ) --field encoding="base64" --field branch="$pr_branch" --field sha=$( git rev-parse $pr_branch:DEPS )
+            gh api \
+                --method PUT "/repos/${GITHUB_REPOSITORY}/contents/DEPS" \
+                --field message="Auto bump DEPS ${DEP}@${DEPREF}" \
+                --field content=@<(base64 -i DEPS) \
+                --field encoding=base64 \
+                --field branch="$pr_branch" \
+                --field sha="$(git rev-parse "$pr_branch:DEPS")"
             git restore DEPS
             git pull
             gh pr create --base "${branch}" -f -t "Auto bump DEPS ${DEP}@${DEPREF}" -l "CI/run-audit-deps"
