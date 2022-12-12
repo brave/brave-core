@@ -124,7 +124,8 @@ const defaultState: WalletState = {
   solFeeEstimates: undefined,
   onRampCurrencies: [] as BraveWallet.OnRampCurrency[],
   selectedCurrency: undefined,
-  passwordAttempts: 0
+  passwordAttempts: 0,
+  assetAutoDiscoveryCompleted: false
 }
 
  // async actions
@@ -349,6 +350,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
       setAllTokensList (state: WalletState, { payload }: PayloadAction<BraveWallet.BlockchainToken[]>) {
         state.fullTokenList = payload
+      },
+
+      setAssetAutoDiscoveryCompleted (state: WalletState, { payload }: PayloadAction<BraveWallet.BlockchainToken[]>) {
+        state.assetAutoDiscoveryCompleted = true
       },
 
       setCoinMarkets (state: WalletState, { payload }: PayloadAction<GetCoinMarketsResponse>) {

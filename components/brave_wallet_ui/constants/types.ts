@@ -257,6 +257,7 @@ export interface WalletState {
   onRampCurrencies: BraveWallet.OnRampCurrency[]
   selectedCurrency: BraveWallet.OnRampCurrency | undefined
   passwordAttempts: number
+  assetAutoDiscoveryCompleted: boolean
 }
 
 export interface PanelState {

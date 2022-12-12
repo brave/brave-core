@@ -268,6 +268,7 @@ handler.on(WalletActions.initialized.type, async (store: Store, payload: WalletI
     await store.dispatch(refreshBalances())
     await store.dispatch(refreshPrices())
     await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
+    await braveWalletService.discoverAssetsOnAllSupportedChains()
   }
 
   // This can be 0 when the wallet is locked
