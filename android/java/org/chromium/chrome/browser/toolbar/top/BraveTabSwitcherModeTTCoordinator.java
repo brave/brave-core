@@ -7,8 +7,9 @@ package org.chromium.chrome.browser.toolbar.top;
 
 import android.view.ViewStub;
 
-import org.chromium.base.supplier.BooleanSupplier;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
+
+import java.util.function.BooleanSupplier;
 
 class BraveTabSwitcherModeTTCoordinator extends TabSwitcherModeTTCoordinator {
     private TabSwitcherModeTopToolbar mActiveTabSwitcherToolbar;
