@@ -45,6 +45,11 @@ absl::optional<IssuersInfo> GetIssuers() {
   return issuers;
 }
 
+void ResetIssuers() {
+  AdsClientHelper::GetInstance()->ClearPref(prefs::kIssuerPing);
+  AdsClientHelper::GetInstance()->ClearPref(prefs::kIssuers);
+}
+
 bool IsIssuersValid(const IssuersInfo& issuers) {
   return IsConfirmationsIssuerValid(issuers) && IsPaymentsIssuerValid(issuers);
 }
