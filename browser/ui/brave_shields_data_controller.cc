@@ -150,9 +150,14 @@ bool BraveShieldsDataController::GetBraveShieldsEnabled() {
 }
 
 void BraveShieldsDataController::SetBraveShieldsEnabled(bool is_enabled) {
-  brave_shields::SetBraveShieldsEnabled(
-      GetHostContentSettingsMap(web_contents()), is_enabled,
-      GetCurrentSiteURL());
+  auto* map = GetHostContentSettingsMap(web_contents());
+  if (map->GetDefaultContentSetting(ContentSettingsType::BRAVE_SHIELDS,
+                                    nullptr) == is_enabled) {
+    brave_shields::ResetBraveShieldsEnabled(map, GetCurrentSiteURL());
+    return;
+  }
+
+  brave_shields::SetBraveShieldsEnabled(map, is_enabled, GetCurrentSiteURL());
   ReloadWebContents();
 }
 
