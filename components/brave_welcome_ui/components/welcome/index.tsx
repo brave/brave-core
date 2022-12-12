@@ -20,19 +20,27 @@ import { shouldPlayAnimations } from '../../state/hooks'
 import braveLogoUrl from '../../assets/brave_logo_3d@2x.webp'
 
 function Welcome () {
-  const { setViewType, scenes } = React.useContext(DataContext)
+  const { setViewType, scenes, browserProfiles } = React.useContext(DataContext)
   const ref = React.useRef<HTMLDivElement>(null)
+
+  const goToImportThemeOrBrowser = () => {
+    if (!browserProfiles || browserProfiles.length === 0) {
+      setViewType(ViewType.ImportSelectTheme)
+      return
+    }
+    setViewType(ViewType.ImportSelectBrowser)
+  }
 
   const handleSetAsDefaultBrowser = () => {
     WelcomeBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.DefaultBrowser, isFinished: false, isSkipped: false })
     DefaultBrowserBrowserProxyImpl.getInstance().setAsDefaultBrowser()
-    setViewType(ViewType.ImportSelectBrowser)
+    goToImportThemeOrBrowser()
     scenes?.s1.play()
   }
 
   const handleSkip = () => {
     WelcomeBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.DefaultBrowser, isFinished: false, isSkipped: true })
-    setViewType(ViewType.ImportSelectBrowser)
+    goToImportThemeOrBrowser()
     scenes?.s1.play()
   }
 
