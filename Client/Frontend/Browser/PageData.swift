@@ -19,7 +19,7 @@ struct PageData {
   private(set) var mainFrameURL: URL
   /// A list of all currently available subframes for this current page
   /// These are loaded dyncamically as the user scrolls through the page
-  private var allSubframeURLs: Set<URL> = []
+  private(set) var allSubframeURLs: Set<URL> = []
   /// The stats class to get the engine data from
   private var adBlockStats: AdBlockStats
   /// A list of known frames for this page
