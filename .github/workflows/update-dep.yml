@@ -68,17 +68,17 @@ jobs:
           for branch in "${branches[@]}"
           do
             git switch "$branch"
-            pr_branch="pr-auto-update-dep-${branch}-${DEP}-${DEPREF}"
+            pr_branch="pr-update-dep-${branch}-${DEP}-${DEPREF}"
             if git rev-parse --verify "$pr_branch"; then continue; fi # Skip duplicate
             git switch -c "$pr_branch"
             "$SED" -i -e "s,^\(\s*\"$DEP\"\s*:\s*\"https.*\)@[^\"]*\",\1@$DEPREF\"," \
                       -e "/^\s*\"${DEP//\//\\/}\"\s*:\s*{/,/@/ s/@[^\"]*/@$DEPREF/" DEPS
             # git add DEPS
-            # git commit -m "Update DEPS ${DEP}@${DEPREF}"
+            # git commit -m "Update dependency ${DEP}@${DEPREF}"
             git push -u origin "$pr_branch"
             gh api \
                 --method PUT "/repos/${GITHUB_REPOSITORY}/contents/DEPS" \
-                --field message="Update DEPS ${DEP}@${DEPREF}" \
+                --field message="Update dependency ${DEP}@${DEPREF}" \
                 --field content=@<(base64 -i DEPS) \
                 --field encoding=base64 \
                 --field branch="$pr_branch" \
