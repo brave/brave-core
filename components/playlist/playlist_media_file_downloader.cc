@@ -56,7 +56,6 @@ PlaylistMediaFileDownloader::PlaylistMediaFileDownloader(
     content::BrowserContext* context,
     base::FilePath::StringType media_file_name)
     : delegate_(delegate),
-      context_(context),
       url_loader_factory_(
           context->content::BrowserContext::GetDefaultStoragePartition()
               ->GetURLLoaderFactoryForBrowserProcess()),
@@ -66,8 +65,8 @@ PlaylistMediaFileDownloader::~PlaylistMediaFileDownloader() {
   ResetDownloadStatus();
 
   if (download_manager_) {
-    while (!in_progress_downloads_.empty()) {
-      RemoveItem(in_progress_downloads_.front().get());
+    while (!download_items_to_be_removed_.empty()) {
+      RemoveItem(download_items_to_be_removed_.front().get());
     }
 
     download_manager_->ShutDown();
@@ -93,7 +92,7 @@ void PlaylistMediaFileDownloader::ScheduleToRemoveItem(
     download::DownloadItem* item) {
   for (auto& download : download_manager_->TakeInProgressDownloads()) {
     DCHECK(download_item_observation_.IsObservingSource(download.get()));
-    in_progress_downloads_.push_back(std::move(download));
+    download_items_to_be_removed_.push_back(std::move(download));
   }
 
   base::SequencedTaskRunnerHandle::Get()->PostTask(
@@ -104,15 +103,15 @@ void PlaylistMediaFileDownloader::ScheduleToRemoveItem(
 void PlaylistMediaFileDownloader::RemoveItem(download::DownloadItem* item) {
   // We allow only one item to be downloaded at a time.
   auto iter = base::ranges::find_if(
-      in_progress_downloads_,
+      download_items_to_be_removed_,
       [item](const auto& download) { return download.get() == item; });
-  DCHECK(iter != in_progress_downloads_.end());
+  DCHECK(iter != download_items_to_be_removed_.end());
 
   // Before removing item from the vector, extend DownloadItems' lifetimes
   // so that it can be deleted after removing the file. i.e. The item should
   // be deleted after calling Remove().
   auto will_be_removed = std::move(*iter);
-  in_progress_downloads_.erase(iter);
+  download_items_to_be_removed_.erase(iter);
 
   download_item_observation_.RemoveObservation(item);
 
@@ -204,7 +203,6 @@ void PlaylistMediaFileDownloader::OnDownloadUpdated(
 
 void PlaylistMediaFileDownloader::OnDownloadRemoved(
     download::DownloadItem* item) {
-  LOG(ERROR) << __FUNCTION__;
   NOTREACHED()
       << "`item` was removed out of this class. This could cause flaky tests";
 }

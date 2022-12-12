@@ -209,7 +209,7 @@ class PlaylistServiceUnitTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment task_environment_{
-      content::BrowserTaskEnvironment::REAL_IO_THREAD};
+      content::BrowserTaskEnvironment::IO_MAINLOOP};
 
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<playlist::MediaDetectorComponentManager> detector_manager_;

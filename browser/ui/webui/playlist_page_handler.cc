@@ -143,9 +143,7 @@ void PlaylistPageHandler::OnMediaFileDownloadProgressed(
     int64_t received_bytes,
     int percent_complete,
     base::TimeDelta time_remaining) {
-#if !BUILDFLAG(IS_ANDROID)
   page_->OnMediaFileDownloadProgressed(
       id, total_bytes, received_bytes, percent_complete,
       base::TimeDeltaToValue(time_remaining).GetString());
-#endif
 }

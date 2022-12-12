@@ -105,12 +105,11 @@ class PlaylistMediaFileDownloader
   base::SequencedTaskRunner* task_runner();
 
   raw_ptr<Delegate> delegate_ = nullptr;
-  raw_ptr<content::BrowserContext> context_ = nullptr;
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<download::InProgressDownloadManager> download_manager_;
   std::vector<std::unique_ptr<download::DownloadItemImpl>>
-      in_progress_downloads_;
+      download_items_to_be_removed_;
 
   base::ScopedObservation<download::SimpleDownloadManager,
                           download::SimpleDownloadManager::Observer>
