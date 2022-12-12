@@ -1872,12 +1872,12 @@ void JsonRpcService::OnGetBlockByNumber(GetBlockByNumberCallback callback,
     return;
   }
 
-  auto result = ParseResultValue(api_request_result.body());
+  auto result = ParseResultValue(api_request_result.value_body());
   if (!result) {
     mojom::ProviderError error;
     std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.body(), &error,
-                                           &error_message);
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
     std::move(callback).Run(base::Value(), error, error_message);
     return;
   }
