@@ -10,6 +10,8 @@ namespace brave_federated {
 
 Task::Task(int task_id, TaskType type) : task_id_(task_id), type_(type) {}
 
+Task::~Task() = default;
+
 int Task::GetId() {
   return task_id_;
 }
@@ -21,9 +23,18 @@ TaskType Task::GetType() {
 TaskResult::TaskResult(Task task, PerformanceReport report)
     : task_(task), report_(report) {}
 
+int TaskResult::GetTaskId() {
+  return task_.GetId();
+}
+
+TaskResult::~TaskResult() = default;
+
 TaskResultResponse::TaskResultResponse(bool success) : success_(success) {}
+
 bool TaskResultResponse::IsSuccessful() {
   return success_;
-};
+}
+
+TaskResultResponse::~TaskResultResponse() = default;
 
 }  // namespace brave_federated
