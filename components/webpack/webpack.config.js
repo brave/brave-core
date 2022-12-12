@@ -50,9 +50,9 @@ module.exports = async function (env, argv) {
   }
 
   if (env.extra_modules) {
-    const extra_modules = env.extra_modules.split(',')
+    const extraModules = env.extra_modules.split(',')
     resolve.modules = [
-      ...extra_modules,
+      ...extraModules,
       ...resolve.modules
     ]
   }

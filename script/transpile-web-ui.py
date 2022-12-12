@@ -120,8 +120,7 @@ def transpile_web_uis(options):
 
     # extra module locations
     if options['extra_modules']:
-        args.append("--env=extra_modules=" +
-                    ",".join(options['extra_modules']))
+        args.append("--env=extra_modules=" + ",".join(options['extra_modules']))
 
     # In webpack.config.js there is a custom parser to support named entry
     # points. As webpack-cli no longer supports named entries, we provide them
