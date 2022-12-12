@@ -118,11 +118,13 @@ if (!window.__firefox__) {
           }
         }
 
-        $.deepFreeze(toString);
+        //$.deepFreeze(toString);
       };
       
       // Secure our custom `toString`
+      // Freeze our custom `toString`
       secureToString(toString);
+      $.deepFreeze(toString);
 
       for (const [name, property] of $Object.entries(overrides)) {
         if (name == 'toString') {
@@ -130,6 +132,10 @@ if (!window.__firefox__) {
           // They are two different functions, so we should check for both before overriding them
           if (value[name] && value[name] !== Object.prototype.toString && value[name] !== Object.toString) {
             // Secure the existing custom toString function
+            // Do NOT deepFreeze existing toString functions
+            // on custom objects we don't own. We secure it,
+            // but not freeze it.
+            // The object may want to change it or override it, etc.
             secureToString(value[name]);
             continue;
           }
@@ -139,6 +145,10 @@ if (!window.__firefox__) {
           let descriptor = $Object.getOwnPropertyDescriptor(value, name);
           if (descriptor && descriptor.value !== Object.prototype.toString && descriptor.value !== Object.toString) {
             // Secure the existing custom toString function
+            // Do NOT deepFreeze existing toString functions
+            // on custom objects we don't own. We secure it,
+            // but not freeze it.
+            // The object may want to change it or override it, etc.
             secureToString(value[name]);
             continue;
           }
