@@ -305,7 +305,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         boolean safeBrowsingPrefEnabled =
                 SafeBrowsingBridge.getSafeBrowsingState() != SafeBrowsingState.NO_SAFE_BROWSING;
         if (safeBrowsingFlagEnabled && safeBrowsingPrefEnabled) {
-            mBraveSafeBrowsingApiHandler.initSafeBrowsing();
+            executeInitSafeBrowsing(0);
         } else if (!safeBrowsingFlagEnabled && safeBrowsingPrefEnabled) {
             SafeBrowsingBridge.setSafeBrowsingState(SafeBrowsingState.NO_SAFE_BROWSING);
         }
@@ -402,6 +402,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (mNotificationPermissionController != null) {
             NotificationPermissionController.detach(mNotificationPermissionController);
             mNotificationPermissionController = null;
+        }
+        if (mBraveSafeBrowsingApiHandler != null) {
+            mBraveSafeBrowsingApiHandler.shutdownSafeBrowsing();
         }
         super.onDestroyInternal();
         cleanUpNativeServices();
@@ -787,12 +790,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             SafeBrowsingApiBridge.setHandler(mBraveSafeBrowsingApiHandler);
             SafeBrowsingApiBridge.ensureInitialized();
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mBraveSafeBrowsingApiHandler.shutdownSafeBrowsing();
     }
 
     @Override
@@ -1937,5 +1934,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     public void addOrEditBookmark(final Tab tabToBookmark) {
         ((TabBookmarker) mTabBookmarkerSupplier.get()).addOrEditBookmark(tabToBookmark);
+    }
+
+    // We call that method with an interval
+    // BraveSafeBrowsingApiHandler.SAFE_BROWSING_INIT_INTERVAL_MS,
+    // as upstream does, to keep the GmsCore process alive.
+    private void executeInitSafeBrowsing(long delay) {
+        PostTask.postDelayedTask(TaskTraits.USER_VISIBLE_MAY_BLOCK, () -> {
+            mBraveSafeBrowsingApiHandler.initSafeBrowsing();
+            executeInitSafeBrowsing(BraveSafeBrowsingApiHandler.SAFE_BROWSING_INIT_INTERVAL_MS);
+        }, delay);
     }
 }
