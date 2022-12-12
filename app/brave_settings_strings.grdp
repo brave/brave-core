@@ -1171,8 +1171,8 @@
   <message name="IDS_SETTINGS_CLOSING_LAST_TAB_OPTION_LABEL" desc="The text for settings option">
     Close window when closing last tab
   </message>
-  <message name="IDS_SETTINGS_CLICKABLE_MUTE_INDICATORS" desc="The text for the settings option for toggling whether tab mute indicators are clickable">
-    Clickable tab mute indicators
+  <message name="IDS_SETTINGS_DISABLE_CLICKABLE_MUTE_INDICATORS" desc="The text for the settings option for disabling clickable tab mute indicators">
+    Disable mute function in tab speaker icons
   </message>
 
   <!-- Avatars. Generated via zsh and node:

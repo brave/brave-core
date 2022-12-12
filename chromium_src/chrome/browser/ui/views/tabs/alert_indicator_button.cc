@@ -21,15 +21,15 @@
 void AlertIndicatorButton::UpdateEnabledForMuteToggle() {
   const bool was_enabled = GetEnabled();
   auto* profile = GetTab()->controller()->GetBrowser()->profile();
-  const bool pref_enabled =
-      profile->GetPrefs()->GetBoolean(kBraveTabsMuteIndicatorClickable);
+  const bool not_clickable =
+      profile->GetPrefs()->GetBoolean(kBraveTabsMuteIndicatorNotClickable);
 
   // We have clickable mute indicators enabled by default. Thus, if our pref is
   // disabled we can force the indicator off.
   // Note: We have a test which checks the feature is enabled by default. If
   // that changes this may need to as well.
-  if (!pref_enabled) {
-    if (was_enabled != pref_enabled)
+  if (not_clickable) {
+    if (was_enabled)
       SetEnabled(false);
     return;
   }
