@@ -31,6 +31,8 @@ static_library("brave_federated") {
     "task/task_runner.h",
     "task/model.cc",
     "task/model.h",
+    "task/typing.cc",
+    "task/typing.h",
     "util/linear_algebra_util.cc",
     "util/linear_algebra_util.h",
     "util/synthetic_dataset.cc",

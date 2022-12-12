@@ -31,21 +31,23 @@ class CommunicationAdapter {
  public:
   explicit CommunicationAdapter(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  ~CommunicationAdapter();
 
   using PostResultCallback = base::OnceCallback<void(TaskResultResponse)>;
   using GetTaskCallback = base::OnceCallback<void(TaskList)>;
 
-  void GetTasks(const GetTaskCallback& callback);
-  void OnGetTasks(const GetTaskCallback& callback,
+  void GetTasks(GetTaskCallback callback);
+  void OnGetTasksHeader(scoped_refptr<net::HttpResponseHeaders> headers);
+  void OnGetTasks(GetTaskCallback callback,
                   const std::unique_ptr<std::string> response_body);
-  void PostTaskResult(TaskResult result, const PostResultCallback& callback);
-  void OnPostTaskResult(const PostResultCallback& callback,
+  void PostTaskResult(TaskResult result, PostResultCallback callback);
+  void OnPostTaskResult(PostResultCallback callback,
                         const std::unique_ptr<std::string> response_body);
 
  private:
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
-}
+};
 
 }  // namespace brave_federated
 

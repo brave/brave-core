@@ -23,24 +23,14 @@ constexpr char kWikiUrl[] =
 namespace brave_federated {
 
 std::string BuildGetTasksPayload() {
-  base::Value::Dict root;
-  root.Set("wiki-link", kWikiUrl);
+  // base::Value::Dict root;
+  // root.Set("wiki-link", kWikiUrl);
 
   std::string request;
   TaskRequestMessage task_request = GetTasksRequestMessage();
   task_request.SerializeToString(&request);
 
-  std::cerr << "** Request: " << request << std::endl;
-
-  TaskRequestMessage tr;
-  tr.ParseFromString(request);
-
-  std::cerr << "** Re-parsed request: " << tr.id() << std::endl;
-
-  std::string result;
-  base::JSONWriter::Write(root, &result);
-
-  return result;
+  return request;
 }
 
 std::string BuildPostTaskResultsPayload() {

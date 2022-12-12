@@ -58,16 +58,16 @@ void LearningService::HandleTasks(TaskList tasks) {
   Task task = tasks.at(0);
   std::cerr << "**: Received tasks to handle" << std::endl;
   // TODO(lminto): implement actual task handling
-  ModelSpec spec{32, 0.01, 500, 10, 0.5};
+  ModelSpec spec{32, 64, 0.01, 500, 0.5};
   Model* model = new Model(spec);
   TaskRunner* notification_ad_task_runner = new TaskRunner(task, model);
 
-  SyntheticDataset local_training_data = CreateDefaultSyntheticDataset();
-  SyntheticDataset local_test_data = local_training_data.SeparateTestData(5000);
+  SyntheticDataset* local_training_data = new SyntheticDataset(5000);
+  SyntheticDataset* local_test_data = new SyntheticDataset(500);
 
   notification_ad_task_runner->SetTrainingData(
-      local_training_data.GetDataPoints());
-  notification_ad_task_runner->SetTestData(local_test_data.GetDataPoints());
+      local_training_data->GetDataPoints());
+  notification_ad_task_runner->SetTestData(local_test_data->GetDataPoints());
 
   task_runners_.insert(std::make_pair(kNotificationAdTaskName,
                                       std::move(notification_ad_task_runner)));
@@ -79,6 +79,7 @@ void LearningService::HandleTasks(TaskList tasks) {
 }
 
 void LearningService::PostTaskResults(TaskResultList results) {
+  std::cerr << "**: Posting task results" << std::endl;
   for (const auto& result : results) {
     communication_adapter_->PostTaskResult(
         result, base::BindOnce(&LearningService::OnPostTaskResults,
@@ -89,6 +90,7 @@ void LearningService::PostTaskResults(TaskResultList results) {
 void LearningService::OnPostTaskResults(TaskResultResponse response) {
   if (response.IsSuccessful()) {
     std::cerr << "**: Succesfully posted results" << std::endl;
+    return;
   }
 
   std::cerr << "**: Failed posting results" << std::endl;
