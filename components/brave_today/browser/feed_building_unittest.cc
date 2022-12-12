@@ -13,7 +13,9 @@
 
 #include "base/containers/flat_map.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/feed_building.h"
 #include "brave/components/brave_today/browser/feed_parsing.h"
@@ -33,11 +35,11 @@ namespace {
 
 using Publishers = base::flat_map<std::string, mojom::PublisherPtr>;
 
-std::string GetFeedJson() {
+base::Value GetFeedJson() {
   // One item has a higher score, but a matching history domain - it should
   // appear earlier.
   // First item has a higher score, so it should appear later.
-  return R"([
+  return base::test::ParseJson(R"([
         {
           "category": "Technology",
           "publish_time": "2021-09-01 07:01:28",
@@ -109,7 +111,7 @@ std::string GetFeedJson() {
           "score": 13.97160989810695
         }
       ]
-    )";
+    )");
 }
 
 std::vector<mojom::LocaleInfoPtr> CreateLocales(

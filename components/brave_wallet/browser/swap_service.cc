@@ -304,7 +304,7 @@ void SwapService::OnGetPriceQuote(GetPriceQuoteCallback callback,
                                   APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     if (auto swap_error_response =
-            ParseSwapErrorResponse(api_request_result.body())) {
+            ParseSwapErrorResponse(api_request_result.value_body())) {
       std::move(callback).Run(nullptr, std::move(swap_error_response), "");
     } else {
       std::move(callback).Run(
@@ -314,7 +314,7 @@ void SwapService::OnGetPriceQuote(GetPriceQuoteCallback callback,
   }
 
   if (auto swap_response =
-          ParseSwapResponse(api_request_result.body(), false)) {
+          ParseSwapResponse(api_request_result.value_body(), false)) {
     std::move(callback).Run(std::move(swap_response), nullptr, "");
   } else {
     std::move(callback).Run(nullptr, nullptr,
@@ -348,7 +348,7 @@ void SwapService::OnGetTransactionPayload(
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     if (auto swap_error_response =
-            ParseSwapErrorResponse(api_request_result.body())) {
+            ParseSwapErrorResponse(api_request_result.value_body())) {
       std::move(callback).Run(nullptr, std::move(swap_error_response), "");
     } else {
       std::move(callback).Run(
@@ -358,7 +358,8 @@ void SwapService::OnGetTransactionPayload(
     return;
   }
 
-  if (auto swap_response = ParseSwapResponse(api_request_result.body(), true)) {
+  if (auto swap_response =
+          ParseSwapResponse(api_request_result.value_body(), true)) {
     std::move(callback).Run(std::move(swap_response), nullptr, "");
   } else {
     std::move(callback).Run(nullptr, nullptr,
@@ -395,7 +396,7 @@ void SwapService::OnGetJupiterQuote(GetJupiterQuoteCallback callback,
                                     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     if (auto error_response =
-            ParseJupiterErrorResponse(api_request_result.body())) {
+            ParseJupiterErrorResponse(api_request_result.value_body())) {
       std::move(callback).Run(nullptr, std::move(error_response), "");
     } else {
       std::move(callback).Run(
@@ -404,7 +405,7 @@ void SwapService::OnGetJupiterQuote(GetJupiterQuoteCallback callback,
     return;
   }
 
-  if (auto swap_quote = ParseJupiterQuote(api_request_result.body())) {
+  if (auto swap_quote = ParseJupiterQuote(api_request_result.value_body())) {
     std::move(callback).Run(std::move(swap_quote), nullptr, "");
   } else {
     std::move(callback).Run(nullptr, nullptr,
@@ -446,7 +447,7 @@ void SwapService::OnGetJupiterSwapTransactions(
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     if (auto error_response =
-            ParseJupiterErrorResponse(api_request_result.body())) {
+            ParseJupiterErrorResponse(api_request_result.value_body())) {
       std::move(callback).Run(nullptr, std::move(error_response), "");
     } else {
       std::move(callback).Run(
@@ -457,7 +458,7 @@ void SwapService::OnGetJupiterSwapTransactions(
   }
 
   if (auto swap_transactions =
-          ParseJupiterSwapTransactions(api_request_result.body())) {
+          ParseJupiterSwapTransactions(api_request_result.value_body())) {
     std::move(callback).Run(std::move(swap_transactions), nullptr, "");
   } else {
     std::move(callback).Run(nullptr, nullptr,

@@ -8,6 +8,7 @@
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/values.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -38,16 +39,16 @@ class SkusUrlLoaderImplUnitTest : public testing::Test {
   void SetResponseText(const std::string& response) {
     response_text_ = response;
   }
-  std::string GetRequestResponse(const std::string& method,
+  base::Value GetRequestResponse(const std::string& method,
                                  const std::string& url) {
     bool callback_called = false;
-    std::string response;
+    base::Value response;
     skus_url_loader()->Request(
         method, GURL(url), std::string(), std::string(), false,
         base::BindLambdaForTesting(
             [&](api_request_helper::APIRequestResult result) {
               callback_called = true;
-              response = result.body();
+              response = result.value_body().Clone();
             }),
         {}, -1u);
     base::RunLoop().RunUntilIdle();
@@ -65,7 +66,7 @@ class SkusUrlLoaderImplUnitTest : public testing::Test {
 
 TEST_F(SkusUrlLoaderImplUnitTest, SanitizedResponse) {
   SetResponseText("{}");
-  EXPECT_EQ(GetRequestResponse("GET", "https://brave.com"), "{}");
+  EXPECT_TRUE(GetRequestResponse("GET", "https://brave.com").is_dict());
   SetResponseText("{,}");
-  EXPECT_EQ(GetRequestResponse("GET", "https://brave.com"), "");
+  EXPECT_TRUE(GetRequestResponse("GET", "https://brave.com").is_none());
 }

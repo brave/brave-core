@@ -11,6 +11,7 @@
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/swap_response_parser.h"
@@ -24,6 +25,8 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
+
+using base::test::ParseJson;
 
 namespace {
 
@@ -321,8 +324,9 @@ TEST_F(SwapServiceUnitTest, GetPriceQuoteError) {
   SetErrorInterceptor(error);
 
   base::MockCallback<mojom::SwapService::GetPriceQuoteCallback> callback;
-  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapResponsePtr()),
-                            EqualsMojo(ParseSwapErrorResponse(error)), ""));
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::SwapResponsePtr()),
+                  EqualsMojo(ParseSwapErrorResponse(ParseJson(error))), ""));
 
   swap_service_->GetPriceQuote(brave_wallet::mojom::SwapParams::New(),
                                callback.Get());
@@ -416,9 +420,9 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayloadError) {
 
   base::MockCallback<mojom::SwapService::GetTransactionPayloadCallback>
       callback;
-  auto expected_swap_error_response = ParseSwapErrorResponse(error);
-  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapResponsePtr()),
-                            EqualsMojo(expected_swap_error_response), ""));
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::SwapResponsePtr()),
+                  EqualsMojo(ParseSwapErrorResponse(ParseJson(error))), ""));
 
   swap_service_->GetTransactionPayload(mojom::SwapParams::New(),
                                        callback.Get());

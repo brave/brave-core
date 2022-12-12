@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/json/json_writer.h"
 #include "base/strings/string_split.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
@@ -96,19 +97,20 @@ void SkusUrlLoaderImpl::OnFetchComplete(
   uint16_t response_code = api_request_result.response_code();
   bool success = api_request_result.IsResponseCodeValid();
 
-  std::vector<uint8_t> body_bytes;
-  if (!api_request_result.body().empty()) {
-    body_bytes.assign(api_request_result.body().begin(),
-                      api_request_result.body().end());
+  std::string safe_json;
+  if (api_request_result.value_body().is_none() ||
+      !base::JSONWriter::Write(api_request_result.value_body(), &safe_json)) {
+    success = false;
   }
 
-  std::vector<std::string> headers = {};
-  if (!api_request_result.headers().empty()) {
-    for (const auto& header : api_request_result.headers()) {
-      std::string new_header_value = header.first + ": " + header.second;
-      VLOG(1) << "header[" << new_header_value << "]";
-      headers.push_back(new_header_value);
-    }
+  std::vector<uint8_t> body_bytes(safe_json.begin(), safe_json.end());
+
+  std::vector<std::string> headers;
+  headers.reserve(api_request_result.headers().size());
+  for (const auto& header : api_request_result.headers()) {
+    std::string new_header_value = header.first + ": " + header.second;
+    VLOG(1) << "header[" << new_header_value << "]";
+    headers.push_back(std::move(new_header_value));
   }
 
   skus::HttpResponse resp = {
