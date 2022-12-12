@@ -84,7 +84,7 @@ extern const char kEnableClosingLastTab[];
 #endif
 extern const char kDefaultBrowserLaunchingCount[];
 extern const char kTabsSearchShow[];
-extern const char kBraveTabsMuteIndicatorNotClickable[];
+extern const char kTabMuteIndicatorNotClickable[];
 extern const char kDontAskForCrashReporting[];
 
 // Cast extension requires a browser restart once the setting is toggled.

@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "chrome/browser/ui/views/tabs/alert_indicator_button.h"
 
@@ -22,7 +22,7 @@ void AlertIndicatorButton::UpdateEnabledForMuteToggle() {
   const bool was_enabled = GetEnabled();
   auto* profile = GetTab()->controller()->GetBrowser()->profile();
   const bool not_clickable =
-      profile->GetPrefs()->GetBoolean(kBraveTabsMuteIndicatorNotClickable);
+      profile->GetPrefs()->GetBoolean(kTabMuteIndicatorNotClickable);
 
   // We have clickable mute indicators enabled by default. Thus, if our pref is
   // disabled we can force the indicator off.

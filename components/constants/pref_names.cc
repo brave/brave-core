@@ -79,7 +79,7 @@ const char kImportDialogExtensions[] = "import_dialog_extensions";
 const char kImportDialogPayments[] = "import_dialog_payments";
 const char kMRUCyclingEnabled[] = "brave.mru_cycling_enabled";
 const char kTabsSearchShow[] = "brave.tabs_search_show";
-const char kBraveTabsMuteIndicatorNotClickable[] =
+const char kTabMuteIndicatorNotClickable[] =
     "brave.tabs.mute_indicator_not_clickable";
 const char kDontAskForCrashReporting[] = "brave.dont_ask_for_crash_reporting";
 const char kEnableMediaRouterOnRestart[] =
