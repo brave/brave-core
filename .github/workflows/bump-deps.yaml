@@ -4,6 +4,7 @@
 # If `ref` is not given, we will try to use the latest commmit (tip) of a branch called `master` or `main`
 
 name: Bump/update dependency [ref] in DEPS
+
 on:
   workflow_dispatch:
     inputs:
