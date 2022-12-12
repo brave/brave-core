@@ -23,7 +23,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  auto-bump:
+  dep-update:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -33,7 +33,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Auto bump
+      - name: Update dependency
         run: |
           shopt -s inherit_errexit
           set -eEo pipefail
@@ -74,16 +74,16 @@ jobs:
             "$SED" -i -e "s,^\(\s*\"$DEP\"\s*:\s*\"https.*\)@[^\"]*\",\1@$DEPREF\"," \
                       -e "/^\s*\"${DEP//\//\\/}\"\s*:\s*{/,/@/ s/@[^\"]*/@$DEPREF/" DEPS
             # git add DEPS
-            # git commit -m "Auto bump DEPS ${DEP}@${DEPREF}"
+            # git commit -m "Update DEPS ${DEP}@${DEPREF}"
             git push -u origin "$pr_branch"
             gh api \
                 --method PUT "/repos/${GITHUB_REPOSITORY}/contents/DEPS" \
-                --field message="Auto bump DEPS ${DEP}@${DEPREF}" \
+                --field message="Update DEPS ${DEP}@${DEPREF}" \
                 --field content=@<(base64 -i DEPS) \
                 --field encoding=base64 \
                 --field branch="$pr_branch" \
                 --field sha="$(git rev-parse "$pr_branch:DEPS")"
             git restore DEPS
             git pull
-            gh pr create --base "${branch}" -f -t "Auto bump DEPS ${DEP}@${DEPREF}" -l "CI/run-audit-deps"
+            gh pr create --base "${branch}" -f -t "Update DEPS ${DEP}@${DEPREF}" -l "CI/run-audit-deps"
           done
