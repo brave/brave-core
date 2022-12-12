@@ -745,6 +745,33 @@
 /* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
 "wallet.next" = "Avanti";
 
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's blockchain */
+"wallet.nftDetailBlockchain" = "Blockchain";
+
+/* The title of a section in NFT detail screen that will display NFT's description if there is any. */
+"wallet.nftDetailDescription" = "Descrizione";
+
+/* This is one type of token standard. And most likey this does not need to be translated */
+"wallet.nftDetailERC721" = "ERC 721";
+
+/* A placeholder text, indicates this NFT image was not able to be loaded. */
+"wallet.nftDetailImageNotAvailable" = "L’immagine non è disponibile";
+
+/* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
+"wallet.nftDetailSendNFTButtonTitle" = "Invia";
+
+/* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
+"wallet.nftDetailSVGImageDisclaimer" = "L'immagine mostrata in alto potrebbe non essere esattamente identica all’NFT";
+
+/* The navigation title for NFT detail screen. */
+"wallet.nftDetailTitle" = "NFT in dettaglio";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value. */
+"wallet.nftDetailTokenID" = "ID token";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
+"wallet.nftDetailTokenStandard" = "Standard del token";
+
 /* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
 "wallet.nftsTitle" = "NFT";
 
@@ -1031,13 +1058,16 @@
 "wallet.signMessageConsecutiveNewlineWarning" = "Sono stati rilevati dei caratteri consecutivi di inizia riga!";
 
 /* A warning message to tell users that the sign request message contains non-ascii characters. */
-"wallet.signMessageRequestUnknownUnicodeWarning" = "Rilevati caratteri non-ASCII!";
+"wallet.signMessageRequestUnknownUnicodeWarning" = "È stata rilevata la presenza di caratteri non-ASCII!";
 
 /* The title of the button that users can click to display the sign request message as its original content. */
 "wallet.signMessageShowOriginalMessage" = "Visualizza il messaggio originario";
 
 /* The title of the button that users can click to display the sign request message in ASCII encoding. */
 "wallet.signMessageShowUnknownUnicode" = "Mostra il messaggio codificato";
+
+/* A title of a warning message that warns users the risk of signing a transaction. */
+"wallet.signTransactionSignRisk" = "Firma a tuo rischio";
 
 /* The title of the view shown over a dapps website that requests the user sign a transaction. */
 "wallet.signTransactionTitle" = "Firma la transazione";
@@ -1351,6 +1381,9 @@
 /* The title displayed on the unlock wallet screen */
 "wallet.unlockWalletTitle" = "Inserisci la password per sbloccare il portafoglio";
 
+/* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
+"wallet.userAssetSymbolNetwork" = "%1$@ su %2$@";
+
 /* The button title to verify if the user has put all recovery words in the right order */
 "wallet.verifyButtonTitle" = "Verifica";
 
@@ -1400,10 +1433,10 @@
 "wallet.warningAlertConfirmation" = "Confermi?";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
-"wallet.web3PreferencesAllowEthProviderAccess" = "Consenti ai siti di accedere all’API del provider Ethereum";
+"wallet.web3PreferencesAllowEthProviderAccess" = "Chiedi quando un sito vuole accedere all’API del provider Ethereum";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
-"wallet.web3PreferencesAllowSolProviderAccess" = "Consenti ai siti di accedere all’API del provider Solana";
+"wallet.web3PreferencesAllowSolProviderAccess" = "Chiedi quando un sito vuole accedere all’API del provider Solana";
 
 /* The title for the entry displaying the current preferred default Ethereum wallet is. */
 "wallet.web3PreferencesDefaultEthWallet" = "Wallet Ethereum predefinito";

@@ -745,6 +745,33 @@
 /* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
 "wallet.next" = "下一笔";
 
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's blockchain */
+"wallet.nftDetailBlockchain" = "區塊鏈";
+
+/* The title of a section in NFT detail screen that will display NFT's description if there is any. */
+"wallet.nftDetailDescription" = "描述";
+
+/* This is one type of token standard. And most likey this does not need to be translated */
+"wallet.nftDetailERC721" = "ERC 721";
+
+/* A placeholder text, indicates this NFT image was not able to be loaded. */
+"wallet.nftDetailImageNotAvailable" = "图片不可用";
+
+/* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
+"wallet.nftDetailSendNFTButtonTitle" = "发送";
+
+/* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
+"wallet.nftDetailSVGImageDisclaimer" = "上方呈现的图片可能与 NFT 不完全一致";
+
+/* The navigation title for NFT detail screen. */
+"wallet.nftDetailTitle" = "NFT 详细信息";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value. */
+"wallet.nftDetailTokenID" = "代幣 ID";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
+"wallet.nftDetailTokenStandard" = "代幣標準";
+
 /* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
 "wallet.nftsTitle" = "NFT";
 
@@ -1038,6 +1065,9 @@
 
 /* The title of the button that users can click to display the sign request message in ASCII encoding. */
 "wallet.signMessageShowUnknownUnicode" = "显示编码信息";
+
+/* A title of a warning message that warns users the risk of signing a transaction. */
+"wallet.signTransactionSignRisk" = "簽名風險自擔";
 
 /* The title of the view shown over a dapps website that requests the user sign a transaction. */
 "wallet.signTransactionTitle" = "签署交易";
@@ -1351,6 +1381,9 @@
 /* The title displayed on the unlock wallet screen */
 "wallet.unlockWalletTitle" = "输入密码以解锁钱包";
 
+/* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
+"wallet.userAssetSymbolNetwork" = "%2$@上的 %1$@";
+
 /* The button title to verify if the user has put all recovery words in the right order */
 "wallet.verifyButtonTitle" = "验证";
 
@@ -1400,10 +1433,10 @@
 "wallet.warningAlertConfirmation" = "您确定吗？";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
-"wallet.web3PreferencesAllowEthProviderAccess" = "允许站点访问以太坊提供商 API";
+"wallet.web3PreferencesAllowEthProviderAccess" = "网站希望访问以太坊提供者 API 时询问我";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
-"wallet.web3PreferencesAllowSolProviderAccess" = "允许站点访问索拉纳提供商 API";
+"wallet.web3PreferencesAllowSolProviderAccess" = "网站希望访问 Solana 提供者 API 时询问我";
 
 /* The title for the entry displaying the current preferred default Ethereum wallet is. */
 "wallet.web3PreferencesDefaultEthWallet" = "默认以太坊钱包";

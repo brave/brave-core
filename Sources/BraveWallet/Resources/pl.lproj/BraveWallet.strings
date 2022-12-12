@@ -745,6 +745,33 @@
 /* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
 "wallet.next" = "Dalej";
 
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's blockchain */
+"wallet.nftDetailBlockchain" = "Blockchain";
+
+/* The title of a section in NFT detail screen that will display NFT's description if there is any. */
+"wallet.nftDetailDescription" = "Opis";
+
+/* This is one type of token standard. And most likey this does not need to be translated */
+"wallet.nftDetailERC721" = "ERC 721";
+
+/* A placeholder text, indicates this NFT image was not able to be loaded. */
+"wallet.nftDetailImageNotAvailable" = "Ten obraz nie jest dostępny";
+
+/* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
+"wallet.nftDetailSendNFTButtonTitle" = "Wyślij";
+
+/* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
+"wallet.nftDetailSVGImageDisclaimer" = "Wyświetlony obraz może nie pasować do tokena NFT";
+
+/* The navigation title for NFT detail screen. */
+"wallet.nftDetailTitle" = "Dane tokena NFT";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value. */
+"wallet.nftDetailTokenID" = "ID tokenu";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
+"wallet.nftDetailTokenStandard" = "Standard tokena";
+
 /* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
 "wallet.nftsTitle" = "NFT";
 
@@ -1038,6 +1065,9 @@
 
 /* The title of the button that users can click to display the sign request message in ASCII encoding. */
 "wallet.signMessageShowUnknownUnicode" = "Pokaż zakodowaną wiadomość";
+
+/* A title of a warning message that warns users the risk of signing a transaction. */
+"wallet.signTransactionSignRisk" = "Podpisy składasz na własne ryzyko";
 
 /* The title of the view shown over a dapps website that requests the user sign a transaction. */
 "wallet.signTransactionTitle" = "Zatwierdź transakcję";
@@ -1351,6 +1381,9 @@
 /* The title displayed on the unlock wallet screen */
 "wallet.unlockWalletTitle" = "Wpisz hasło, aby odblokować portfel";
 
+/* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
+"wallet.userAssetSymbolNetwork" = "%1$@ na %2$@";
+
 /* The button title to verify if the user has put all recovery words in the right order */
 "wallet.verifyButtonTitle" = "Zweryfikuj";
 
@@ -1400,10 +1433,10 @@
 "wallet.warningAlertConfirmation" = "Czy na pewno?";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
-"wallet.web3PreferencesAllowEthProviderAccess" = "Zezwól stronom na dostęp do interfejsu API dostawcy sieci Ethereum";
+"wallet.web3PreferencesAllowEthProviderAccess" = "Pytaj, gdy witryna chce uzyskać dostęp do interfejsu API dostawcy Ethereum";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
-"wallet.web3PreferencesAllowSolProviderAccess" = "Zezwól stronom na dostęp do interfejsu API dostawcy sieci Solana";
+"wallet.web3PreferencesAllowSolProviderAccess" = "Pytaj, gdy witryna chce uzyskać dostęp do interfejsu API dostawcy Solana";
 
 /* The title for the entry displaying the current preferred default Ethereum wallet is. */
 "wallet.web3PreferencesDefaultEthWallet" = "Domyślny portfel Ethereum";

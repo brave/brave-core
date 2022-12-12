@@ -113,7 +113,7 @@
 "BlockAllCookiesFailedAlertMsg" = "Gagal mengatur preferensi. Coba lagi.";
 
 /* A title for a toggle that allows user to block cookie consent notices */
-"BlockCookieConsentNotices" = "Memblokir pemberitahuan izin kuki";
+"BlockCookieConsentNotices" = "Memblokir Pemberitahuan Izin Kuki";
 
 /* A description for a popup that notifies the user that we can block cookie consent notices */
 "BlockCookieConsentNoticesPopupDescription" = "Brave sudah memblokir kuki pihak ketiga. Kami juga dapat memblokir pemberitahuan persetujuan kuki.";
@@ -1303,6 +1303,12 @@
 /* The title of the view showing no synced sessions */
 "opentabs.noSyncSessionPlaceHolderViewTitle" = "Bidang ini menunjukkan tab Brave yang dibuka di perangkat lain";
 
+/* The title for the action to hide open session with all tabs */
+"opentabs.openSessionHideAllActionTitle" = "Sembunyikan sekarang";
+
+/* The title for the action to open all the tabs in a synced open session */
+"opentabs.openSessionOpenAllActionTitle" = "Buka Semua";
+
 /* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "Minggu Lalu %@";
 
@@ -1385,10 +1391,10 @@
 "OtherSettingsSection" = "Pengaturan Lain";
 
 /* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "Membagikan wawasan produk secara privat dan anonim. Ini membantu kami mempelajari fitur Brave mana yang paling sering digunakan.";
+"p3a.settingSubtitle" = "Info P3A yang anonim membantu Brave memperkirakan penggunaan keseluruhan dan memastikan kami meningkatkan fitur yang populer.";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
-"p3a.settingTitle" = "Analitik Produk";
+"p3a.settingTitle" = "Memungkinkan Analitik Produk yang Menjaga Privasi (P3A)";
 
 /* Title for the section for the global/default zoom level */
 "pagezoom.settings.defaultZoomLevelSectionTitle" = "Level Perbesar Halaman Web Bawaan";
@@ -3181,9 +3187,6 @@
 /* History tableview section header */
 "Today" = "Hari ini";
 
-/* The button title for adding a user RSS feed */
-"today.addSource" = "Tambahkan Sumber";
-
 /* To add a list of 1 or more rss feeds */
 "today.addSourceAddButtonTitle" = "Tambahkan";
 
@@ -3202,23 +3205,29 @@
 /* The action title displayed in the iOS share menu */
 "today.addSourceShareTitle" = "Tambahkan Sumber ke Berita Brave";
 
-/* No comment provided by engineer. */
-"today.allSources" = "Semua Sumber";
+/* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
+"today.availableRSSFeedsHeaderTitle" = "Umpan RSS yang Tersedia";
 
 /* The name of the feature */
 "today.braveToday" = "Berita Brave";
+
+/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+"today.channelsButtonSubtitle" = "Ikuti topik yang menarik bagi Anda";
+
+/* A button title that when tapped shows users a list of channels/topics that they can follow */
+"today.channelsButtonTitle" = "Saluran";
+
+/* A header title shown over a list of channels (i.e. Cars, Business, Fashion, etc.) */
+"today.channelsHeaderTitle" = "Saluran";
+
+/* A title at the top of the screen that shows a list of topics the user can follow */
+"today.channelsTitle" = "Saluran";
 
 /* No comment provided by engineer. */
 "today.contentAvailableButtonTitle" = "Konten Baru Telah Tersedia";
 
 /* No comment provided by engineer. */
 "today.deals" = "Penawaran Khusus";
-
-/* A button title for an action that deletes a users custom source */
-"today.deleteUserSourceTitle" = "Hapus";
-
-/* No comment provided by engineer. */
-"today.disableAll" = "Nonaktifkan Semua";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
 "today.disabledAlertBody" = "Berita Brave akan berhenti menampilkan konten dari %@";
@@ -3227,7 +3236,7 @@
 "today.disabledAlertTitle" = "Dinonaktifkan";
 
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disablePublisherContent" = "Nonaktifkan konten dari %@";
+"today.disablePublisherContent" = "Sembunyikan konten dari %@";
 
 /* No comment provided by engineer. */
 "today.emptyFeedBody" = "Cobalah untuk mengaktifkan sumber-sumber berita";
@@ -3235,11 +3244,8 @@
 /* No comment provided by engineer. */
 "today.emptyFeedTitle" = "Tidak ada artikel yang dapat ditampilkan";
 
-/* No comment provided by engineer. */
-"today.enableAll" = "Aktifkan Semua";
-
 /* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.enablePublisherContent" = "Aktifkan konten dari %@";
+"today.enablePublisherContent" = "Izinkan konten dari %@";
 
 /* No comment provided by engineer. */
 "today.errorGeneralBody" = "Berita Brave mengalami beberapa masalah. Coba lagi.";
@@ -3247,23 +3253,32 @@
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "Aduh...";
 
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+"today.followingButtonSubtitle" = "Kelola sumber umpan Anda";
+
+/* A button title that when tapped shows users a list of sources & channels they are currently following */
+"today.followingButtonTitle" = "Mengikuti";
+
+/* A title at the top of the screen that shows a list of the news content the user is following */
+"today.followingTitle" = "Mengikuti";
+
+/* A toggle title shown next to a source or channel that the user can follow. When tapped switches to 'Unfollow' */
+"today.followToggleTitle" = "Ikuti";
+
+/* Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'. */
+"today.getFeedsFromSiteButtonTitle" = "Dapatkan umpan dari";
+
 /* \"OPML\" is a file extension that contains a list of rss feeds. */
 "today.importOPML" = "Impor OPML";
 
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "Sumber Tidak Aman - Risiko Tanggung Sendiri";
 
-/* No comment provided by engineer. */
-"today.introCardBody" = "Berita Brave didukung iklan yang sepenuhnya tertutup dan anonim yang dicocokkan pada perangkat Anda.";
+/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "Ikuti sumber favorit Anda, dalam umpan tunggal. Cukup buka tab di Brave, gulir turun, dan... tara!\nBerita Brave didukung iklan dengan iklan privat yang anonim.";
 
-/* \"New\" as in a new feature being introduced, displayed above a body of text explaining said feature */
-"today.introCardNew" = "Baru";
-
-/* No comment provided by engineer. */
-"today.introCardNewTextBody" = "Sesuaikan umpan Anda dengan menggunakan ratusan sumber konten unggulan yang dikirimkan melalui CDN tertutup, dan menambahkan umpan RSS dari penerbit favorit Anda untuk membuat umpan yang bekerja untuk Anda.";
-
-/* No comment provided by engineer. */
-"today.introCardTitle" = "Berita teratas hari ini melalui umpan yang sepenuhnya privat, hanya untuk Anda. ";
+/* Shown above a button that turns on the \"Brave News\" product in the app. */
+"today.introCardTitle" = "Aktifkan Berita Brave, dan jangan lewatkan cerita apa pun";
 
 /* No comment provided by engineer. */
 "today.isEnabledToggleLabel" = "Tampilkan Berita Brave";
@@ -3280,35 +3295,53 @@
 /* No comment provided by engineer. */
 "today.noInternetBody" = "Cobalah periksa koneksi Anda atau coba sambungkan kembali Wi-Fi Anda.";
 
+/* Shown on the screen when a user searches for sources/channels but finds no results. */
+"today.noResultsFound" = "Hasil Tidak Ditemukan";
+
+/* Shown below 'Popular Sources' explaining what sources will be shown. */
+"today.popularSourcesButtonSubtitle" = "Daftar sumber yang diperingkatkan";
+
+/* A button title that when tapped shows users a list of news sources that are ranked the highest */
+"today.popularSourcesDestinationTitle" = "Populer";
+
+/* A title at the top of the screen that shows a list of sources that are ranked the highest */
+"today.popularSourcesTitle" = "Sumber Populer";
+
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Dipromosikan";
 
 /* No comment provided by engineer. */
 "today.refresh" = "Perbarui";
 
-/* No comment provided by engineer. */
-"today.resetSourceSettingsButtonTitle" = "Atur Ulang Pengaturan Sumber ke Pengaturan Bawaan";
+/* Placeholder text that appears in the search bar when empty. Site as in website. */
+"today.searchPlaceholder" = "Cari situs, topik, atau umpan RSS";
 
-/* An action title where the user is executing a search based on inputted text */
-"today.searchButtonTitle" = "Cari";
-
-/* The placeholder displayed on the text field where a user is expected to type in a website URL */
-"today.searchTextFieldPlaceholder" = "Umpan atau URL Situs";
-
-/* No comment provided by engineer. */
-"today.settingsSourceHeaderTitle" = "Sumber Default";
+/* Shown on a row displaying a source. '%@' will be replaced with another sources name. For example: 'Similar to 9to5Mac' */
+"today.similarToSourceSubtitle" = "Serupa dengan %@";
 
 /* No comment provided by engineer. */
 "today.sourcesAndSettings" = "Sumber & Pengaturan";
 
-/* No comment provided by engineer. */
-"today.sourceSearchPlaceholder" = "Cari";
+/* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
+"today.sourcesHeaderTitle" = "Sumber";
+
+/* Shown below 'Suggested' explaining what sources will be shown. */
+"today.suggestedSourcesButtonSubtitle" = "Beberapa sumber yang mungkin Anda sukai";
+
+/* A button title that when tapped shows users a list of news sources that are suggested based on the ones they currently follow */
+"today.suggestedSourcesButtonTitle" = "Diusulkan";
+
+/* A title at the top of the screen that shows a list of the news content the user is being suggested */
+"today.suggestedTitle" = "Diusulkan";
 
 /* No comment provided by engineer. */
 "today.turnOnBraveToday" = "Aktifkan Berita Brave";
 
-/* The header above a list of the users RSS feed sources */
-"today.yourSources" = "Sumber Anda";
+/* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
+"today.unfollowToggleTitle" = "Batal ikuti";
+
+/* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
+"today.userSourcesHeaderTitle" = "Sumber Pengguna";
 
 /* Shields Trackers Stat */
 "TrackersrBlocked" = "Pelacak \nDiblokir";
