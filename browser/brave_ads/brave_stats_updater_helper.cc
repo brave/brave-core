@@ -41,8 +41,11 @@ void BraveStatsUpdaterHelper::OnProfileAdded(Profile* profile) {
 #if BUILDFLAG(IS_ANDROID)
   if (profile == ProfileManager::GetPrimaryUserProfile()) {
 #else
-  if (profile->GetBaseName() ==
-      local_state_->GetFilePath(::prefs::kProfileLastUsed)) {
+  base::FilePath last_used_path =
+      local_state_->GetFilePath(::prefs::kProfileLastUsed);
+  if ((!last_used_path.empty() && profile->GetBaseName() == last_used_path) ||
+      (last_used_path.empty() &&
+       profile == ProfileManager::GetPrimaryUserProfile())) {
 #endif
     OnLastUsedProfileChanged();
   }
@@ -59,8 +62,13 @@ PrefService* BraveStatsUpdaterHelper::GetLastUsedProfilePrefs() {
 #else
   base::FilePath last_used_profile_path =
       local_state_->GetFilePath(::prefs::kProfileLastUsed);
-  Profile* profile = profile_manager_->GetProfileByPath(
-      profile_manager_->user_data_dir().Append(last_used_profile_path));
+  Profile* profile;
+  if (last_used_profile_path.empty()) {
+    profile = profile_manager_->GetPrimaryUserProfile();
+  } else {
+    profile = profile_manager_->GetProfileByPath(
+        profile_manager_->user_data_dir().Append(last_used_profile_path));
+  }
   if (profile == nullptr) {
     return nullptr;
   }
