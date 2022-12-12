@@ -8,6 +8,7 @@
 #include "base/callback.h"
 #include "base/containers/contains.h"
 #include "base/path_service.h"
+#include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
@@ -44,6 +45,7 @@ const char kEmbeddedTestServerDirectory[] = "brave-search";
 const char kAllowedDomain[] = "search.brave.com";
 const char kAllowedDomainDev[] = "search.brave.software";
 const char kNotAllowedDomain[] = "brave.com";
+const char kBraveSearchPath[] = "/bravesearch.html";
 const char kAdsStatusHeaderName[] = "X-Brave-Ads-Enabled";
 const char kAdsStatusHeaderValue[] = "1";
 const char kBackupSearchContent[] = "<html><body>results</body></html>";
@@ -135,7 +137,7 @@ class BraveSearchTest : public InProcessBrowserTest {
     GURL url = request.GetURL();
     auto path = url.path_piece();
 
-    if (path == "/" || path == "/sw.js" || path == "/bravesearch.html" ||
+    if (path == "/" || path == "/sw.js" || path == kBraveSearchPath ||
         path == "/search_provider_opensearch.xml")
       return nullptr;
 
@@ -186,7 +188,7 @@ class BraveSearchTestEnabled : public BraveSearchTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunction) {
-  GURL url = https_server()->GetURL(kAllowedDomain, "/bravesearch.html");
+  GURL url = https_server()->GetURL(kAllowedDomain, kBraveSearchPath);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -198,7 +200,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunction) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunctionDev) {
-  GURL url = https_server()->GetURL(kAllowedDomainDev, "/bravesearch.html");
+  GURL url = https_server()->GetURL(kAllowedDomainDev, kBraveSearchPath);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -210,7 +212,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunctionDev) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAnUndefinedFunction) {
-  GURL url = https_server()->GetURL(kNotAllowedDomain, "/bravesearch.html");
+  GURL url = https_server()->GetURL(kNotAllowedDomain, kBraveSearchPath);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -263,7 +265,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled,
                        DISABLED_DefaultAPIFalseNoOpenSearch) {
   // Opensearch providers are only allowed in the root of a site,
   // See SearchEngineTabHelper::GenerateKeywordFromNavigationEntry.
-  GURL url = https_server()->GetURL(kAllowedDomain, "/bravesearch.html");
+  GURL url = https_server()->GetURL(kAllowedDomain, kBraveSearchPath);
   search_test_utils::WaitForTemplateURLServiceToLoad(
       TemplateURLServiceFactory::GetForProfile(browser()->profile()));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -329,7 +331,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeader) {
         EXPECT_TRUE(base::Contains(request.headers, kAdsStatusHeaderName));
         EXPECT_EQ(kAdsStatusHeaderValue,
                   request.headers.at(kAdsStatusHeaderName));
-        if (request.GetURL().path_piece() == "/bravesearch.html") {
+        if (request.GetURL().path_piece() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
       },
@@ -338,7 +340,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeader) {
   PrefService* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(ads::prefs::kEnabled, true);
 
-  const GURL url = https_server()->GetURL(kAllowedDomain, "/bravesearch.html");
+  const GURL url = https_server()->GetURL(kAllowedDomain, kBraveSearchPath);
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   run_loop.Run();
@@ -351,7 +353,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderAdsDisabled) {
          const net::test_server::HttpRequest& request) {
         const GURL url = request.GetURL();
         EXPECT_FALSE(base::Contains(request.headers, kAdsStatusHeaderName));
-        if (request.GetURL().path_piece() == "/bravesearch.html") {
+        if (request.GetURL().path_piece() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
       },
@@ -360,7 +362,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderAdsDisabled) {
   PrefService* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(ads::prefs::kEnabled, false);
 
-  const GURL url = https_server()->GetURL(kAllowedDomain, "/bravesearch.html");
+  const GURL url = https_server()->GetURL(kAllowedDomain, kBraveSearchPath);
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   run_loop.Run();
@@ -373,7 +375,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderNotAllowedDomain) {
          const net::test_server::HttpRequest& request) {
         const GURL url = request.GetURL();
         EXPECT_FALSE(base::Contains(request.headers, kAdsStatusHeaderName));
-        if (request.GetURL().path_piece() == "/bravesearch.html") {
+        if (request.GetURL().path_piece() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
       },
@@ -382,8 +384,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderNotAllowedDomain) {
   PrefService* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(ads::prefs::kEnabled, true);
 
-  const GURL url =
-      https_server()->GetURL(kNotAllowedDomain, "/bravesearch.html");
+  const GURL url = https_server()->GetURL(kNotAllowedDomain, kBraveSearchPath);
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   run_loop.Run();
@@ -403,14 +404,14 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderForFetchRequest) {
         EXPECT_TRUE(base::Contains(request.headers, kAdsStatusHeaderName));
         EXPECT_EQ(kAdsStatusHeaderValue,
                   request.headers.at(kAdsStatusHeaderName));
-        if (request.GetURL().path_piece() == "/bravesearch.html") {
+        if (request.GetURL().path_piece() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
       },
       run_loop.QuitClosure()));
 
-  url = https_server()->GetURL(kAllowedDomain, "/bravesearch.html");
-  const std::string fetch_request = std::string("fetch('") + url.spec() + "')";
+  url = https_server()->GetURL(kAllowedDomain, kBraveSearchPath);
+  const std::string fetch_request = base::StrCat({"fetch('", url.spec(), "')"});
 
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -431,13 +432,13 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, FetchRequestForNonBraveSearchTab) {
       [](base::OnceClosure loop_closure,
          const net::test_server::HttpRequest& request) {
         EXPECT_FALSE(base::Contains(request.headers, kAdsStatusHeaderName));
-        if (request.GetURL().path_piece() == "/bravesearch.html") {
+        if (request.GetURL().path_piece() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
       },
       run_loop.QuitClosure()));
 
-  url = https_server()->GetURL(kAllowedDomain, "/bravesearch.html");
+  url = https_server()->GetURL(kAllowedDomain, kBraveSearchPath);
   const std::string fetch_request =
       std::string("fetch('") + url.spec() + "', {mode: 'no-cors'})";
 
@@ -454,7 +455,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderIncognitoBrowser) {
       [](base::OnceClosure loop_closure,
          const net::test_server::HttpRequest& request) {
         EXPECT_FALSE(base::Contains(request.headers, kAdsStatusHeaderName));
-        if (request.GetURL().path_piece() == "/bravesearch.html") {
+        if (request.GetURL().path_piece() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
       },
@@ -463,7 +464,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, AdsStatusHeaderIncognitoBrowser) {
   PrefService* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(ads::prefs::kEnabled, true);
 
-  const GURL url = https_server()->GetURL(kAllowedDomain, "/bravesearch.html");
+  const GURL url = https_server()->GetURL(kAllowedDomain, kBraveSearchPath);
   OpenURLOffTheRecord(browser()->profile(), url);
 
   run_loop.Run();
