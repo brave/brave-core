@@ -43,11 +43,14 @@ Model* TaskRunner::GetModel() {
 TaskResult TaskRunner::Run() {
   PerformanceReport report;
   if (task_.GetType() == TaskType::TrainingTask) {
-    report = Train();
+    std::cerr << "**: Training task type" << std::endl;
+    report = model_->Train(training_data_);
   } else if (task_.GetType() == TaskType::EvaluationTask) {
-    report = Evaluate();
+    std::cerr << "**: Evaluation task type" << std::endl;
+    report = model_->Evaluate(test_data_);
   }
 
+  std::cerr << "**: Got the report" << std::endl;
   TaskResult result(task_, report);
   return result;
 }

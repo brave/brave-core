@@ -10,7 +10,7 @@
 namespace brave_federated {
 
 Vector LinearAlgebraUtil::SubtractVector(Vector v1, Vector v2) {
-  Vector result(v1.size());
+  Vector result(v1.size(), 0.0);
   for (size_t i = 0; i < v1.size(); i++) {
     result[i] = v1[i] - v2[i];
   }

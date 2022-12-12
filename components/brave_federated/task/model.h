@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_CLIENT_MODEL_H_
-#define BRAVE_COMPONENTS_BRAVE_FEDERATED_CLIENT_MODEL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_MODEL_H_
+#define BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_MODEL_H_
 
 #include <memory>
 #include <tuple>
@@ -15,10 +15,10 @@
 namespace brave_federated {
 
 struct ModelSpec {
+  int num_params;
   int batch_size;
   float learning_rate;
   int num_iterations;
-  int num_params;
   float threshold;
 };
 
@@ -34,6 +34,7 @@ class Model {
   ~Model();
 
   std::vector<float> Predict(const DataSet& dataset);
+  // TODO(lminto): enforce data dim to model
   PerformanceReport Train(const DataSet& train_dataset);
   PerformanceReport Evaluate(const DataSet& test_dataset);
 
@@ -61,4 +62,4 @@ class Model {
 
 }  // namespace brave_federated
 
-#endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_CLIENT_MODEL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_MODEL_H_

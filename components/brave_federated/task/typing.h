@@ -34,9 +34,11 @@ class TaskResult {
   explicit TaskResult(Task task, PerformanceReport report);
   ~TaskResult();
 
+  int GetTaskId();
+
  private:
   Task task_;
-  PerformanceReport report_;
+  [[maybe_unused]] PerformanceReport report_;
 };
 
 class TaskResultResponse {
