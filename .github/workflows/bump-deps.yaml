@@ -57,10 +57,12 @@ jobs:
           [[ "${DEPREF:?}" =~ ^[a-z0-9]+$ ]] || { echo Dependency reference validation failed; exit 1; }
           ! $(grep -q "$DEPREF" DEPS) || { echo Dependency reference alread exists in DEPS. Cannot continue; exit 1; }
 
-          readarray -t milestones < <(gh api /repos/${GITHUB_REPOSITORY:?}/milestones -q ".[] | .title" | grep -Fv Closed)
-          branches=( "${milestones[@]/*Nightly/master}" )
-          branches=( "${branches[@]/ -*/}" )
-          echo "Branches to operate on: ${branches[*]}"
+          # readarray -t milestones < <(gh api /repos/${GITHUB_REPOSITORY:?}/milestones -q ".[] | .title" | grep -Fv Closed)
+          # branches=( "${milestones[@]/*Nightly/master}" )
+          # branches=( "${branches[@]/ -*/}" )
+          # echo "Branches to operate on: ${branches[*]}"
+          # For now, forcing branches to only master
+          branches=(master)
           for branch in "${branches[@]}"
           do
             git switch "$branch"
