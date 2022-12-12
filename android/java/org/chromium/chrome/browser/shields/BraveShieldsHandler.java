@@ -68,6 +68,8 @@ import org.json.JSONObject;
 
 import org.chromium.base.SysUtils;
 import org.chromium.base.task.AsyncTask;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -182,27 +184,28 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
     public void loadDisconnectEntityList(Context context) {
         if (context == null) return;
-        try {
-            String jsonString = loadDisconnectEntityJSONFromAsset(context);
-            if (jsonString == null) return;
-            JSONObject obj = new JSONObject(jsonString);
-            JSONObject entities = obj.getJSONObject("entities");
-            Iterator<String> keysItr = entities.keys();
-            while (keysItr.hasNext()) {
-                String key = keysItr.next();
-                Object value = entities.get(key);
-                JSONArray jsonProperties = ((JSONObject) value).getJSONArray("properties");
-                JSONArray jsonResources = ((JSONObject) value).getJSONArray("resources");
+        PostTask.postTask(TaskTraits.THREAD_POOL_BEST_EFFORT, () -> {
+            try {
+                String jsonString = loadDisconnectEntityJSONFromAsset(context);
+                if (jsonString == null) return;
+                JSONObject obj = new JSONObject(jsonString);
+                JSONObject entities = obj.getJSONObject("entities");
+                Iterator<String> keysItr = entities.keys();
+                while (keysItr.hasNext()) {
+                    String key = keysItr.next();
+                    Object value = entities.get(key);
+                    JSONArray jsonProperties = ((JSONObject) value).getJSONArray("properties");
+                    JSONArray jsonResources = ((JSONObject) value).getJSONArray("resources");
 
-                for (int i = 0; i < jsonResources.length(); i++) {
-                    mResourceToCompanyNameList.add(new Pair(jsonResources.getString(i), key));
+                    for (int i = 0; i < jsonResources.length(); i++) {
+                        mResourceToCompanyNameList.add(new Pair(jsonResources.getString(i), key));
+                    }
                 }
+                isDisconnectEntityLoaded = true;
+            } catch (JSONException exception) {
+                exception.printStackTrace();
             }
-            isDisconnectEntityLoaded = true;
-
-        } catch (JSONException exception) {
-            exception.printStackTrace();
-        }
+        });
     }
 
     private String loadDisconnectEntityJSONFromAsset(Context context) {

@@ -75,8 +75,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWelcomeSendInsightsLabel", IDS_BRAVE_WELCOME_SEND_INSIGHTS_LABEL},
     {"braveWelcomeSetupCompleteLabel", IDS_BRAVE_WELCOME_SETUP_COMPLETE_LABEL},
     {"braveWelcomeChangeSettingsNote", IDS_BRAVE_WELCOME_CHANGE_SETTINGS_NOTE},
-    {"braveWelcomePrivacyPolicyNote", IDS_BRAVE_WELCOME_PRIVACY_POLICY_NOTE},
-};
+    {"braveWelcomePrivacyPolicyNote", IDS_BRAVE_WELCOME_PRIVACY_POLICY_NOTE}};
 
 void OpenJapanWelcomePage(Profile* profile) {
   DCHECK(profile);
@@ -283,6 +282,8 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
       content::GpuDataManager::GetInstance()->HardwareAccelerationEnabled());
 
   profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
+
+  AddBackgroundColorToSource(source, web_ui->GetWebContents());
 }
 
 BraveWelcomeUI::~BraveWelcomeUI() = default;

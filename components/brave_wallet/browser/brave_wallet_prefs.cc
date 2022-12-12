@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/p3a_utils/feature_usage.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/pref_service_syncable.h"
@@ -47,6 +48,16 @@ base::Value::Dict GetDefaultSelectedNetworks() {
 
 }  // namespace
 
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
+  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
+  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
+  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
+  p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
+                                       kBraveWalletP3ALastUnlockTime,
+                                       kBraveWalletP3AUsedSecondDay, nullptr);
+}
+
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(prefs::kDisabledByPolicy, false);
   registry->RegisterIntegerPref(
@@ -65,10 +76,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       kBraveWalletSelectedCoin,
       static_cast<int>(brave_wallet::mojom::CoinType::ETH));
   registry->RegisterDictionaryPref(kBraveWalletTransactions);
-  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
-  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
   registry->RegisterDictionaryPref(kBraveWalletP3AActiveWalletDict);
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
   registry->RegisterBooleanPref(kBraveWalletKeyringEncryptionKeysMigrated,
@@ -82,12 +89,19 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes, 5);
   registry->RegisterStringPref(kBraveWalletSelectedAccount, "");
   registry->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
-  p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
-                                       kBraveWalletP3ALastUnlockTime,
-                                       kBraveWalletP3AUsedSecondDay, nullptr);
   registry->RegisterDictionaryPref(kBraveWalletLastTransactionSentTimeDict);
   registry->RegisterDictionaryPref(kBraveWalletNextAssetDiscoveryFromBlocks);
   registry->RegisterTimePref(kBraveWalletLastDiscoveredAssetsAt, base::Time());
+
+  // TODO(djandries): remove the following prefs at some point,
+  //                  since they're now maintained in local state
+  p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
+                                       kBraveWalletP3ALastUnlockTime,
+                                       kBraveWalletP3AUsedSecondDay, nullptr);
+  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
+  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
+  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
+  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
 }
 
 void RegisterProfilePrefsForMigration(

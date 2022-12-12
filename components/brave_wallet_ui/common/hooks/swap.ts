@@ -12,11 +12,9 @@ import {
   AmountPresetTypes,
   BraveWallet,
   ExpirationPresetObjectType,
-  JupiterErrorResponse,
   OrderTypes,
-  SendTransactionParams,
+  SendEthTransactionParams,
   SlippagePresetObjectType,
-  SwapErrorResponse,
   SwapValidationErrorType,
   ToOrFromType,
   WalletState
@@ -47,7 +45,6 @@ import usePreset from './select-preset'
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
 
-const SWAP_VALIDATION_ERROR_CODE = 100
 interface Args {
   fromAsset?: BraveWallet.BlockchainToken
   toAsset?: BraveWallet.BlockchainToken
@@ -72,13 +69,24 @@ interface OnSwapParamChangeArgs {
   full?: boolean
 }
 
+interface SwapErrorWithString {
+  swapError?: BraveWallet.SwapErrorResponse
+  stringError?: string
+}
+
+interface JupiterErrorWithString {
+  jupiterError?: BraveWallet.JupiterErrorResponse
+  stringError?: string
+}
+
 const hasDecimalsOverflow = (amount: string, asset?: BraveWallet.BlockchainToken) => {
   if (!asset) {
     return false
   }
 
   const amountBaseWrapped = new Amount(amount).multiplyByDecimals(asset.decimals)
-  return amountBaseWrapped.value && amountBaseWrapped.value.decimalPlaces() > 0
+  const amountBaseWrappedDP = amountBaseWrapped.value && amountBaseWrapped.value.decimalPlaces()
+  return amountBaseWrappedDP && amountBaseWrappedDP > 0
 }
 
 export enum SwapProvider {
@@ -146,12 +154,12 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
 
   // evm swaps (0x) state
   const [allowance, setAllowance] = React.useState<string | undefined>(undefined)
-  const [swapError, setSwapError] = React.useState<SwapErrorResponse | undefined>(undefined)
+  const [swapError, setSwapError] = React.useState<SwapErrorWithString | undefined>(undefined)
   const [swapQuote, setSwapQuote] = React.useState<BraveWallet.SwapResponse | undefined>(undefined)
 
   // solana swaps (jupiter) state
   const [jupiterQuote, setJupiterQuote] = React.useState<BraveWallet.JupiterQuote | undefined>(undefined)
-  const [jupiterError, setJupiterError] = React.useState<JupiterErrorResponse | undefined>(undefined)
+  const [jupiterError, setJupiterError] = React.useState<JupiterErrorWithString | undefined>(undefined)
 
   // custom hooks
   const isMounted = useIsMounted()
@@ -264,17 +272,11 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
         return
       }
 
-      const { code, validationErrors } = swapError
-      switch (code) {
-        case SWAP_VALIDATION_ERROR_CODE:
-          if (validationErrors?.find(err => err.reason === 'INSUFFICIENT_ASSET_LIQUIDITY')) {
-            return 'insufficientLiquidity'
-          }
-          break
-
-        default:
-          return 'unknownError'
+      if (swapError.swapError?.isInsufficientLiquidity) {
+        return 'insufficientLiquidity'
       }
+
+      return 'unknownError'
     }
 
     // Jupiter specific validations
@@ -283,7 +285,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
         return
       }
 
-      if (jupiterError.message.includes('No routes found for the input and output mints')) {
+      if (jupiterError.jupiterError?.isInsufficientLiquidity) {
         return 'insufficientLiquidity'
       }
 
@@ -406,7 +408,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       full ? swapService.getTransactionPayload(swapParams) : swapService.getPriceQuote(swapParams)
     )
 
-    if (quote.success && quote.response) {
+    if (quote.response) {
       if (isMounted) {
         setSwapError(undefined)
         setSwapQuote(quote.response)
@@ -442,7 +444,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
           maxFeePerGas = gasEstimates?.fastMaxFeePerGas
         }
 
-        const params: SendTransactionParams = {
+        const params: SendEthTransactionParams = {
           from: accountAddress,
           to,
           value: new Amount(value).toHex(),
@@ -450,7 +452,8 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
           data: hexStrToNumberArray(data),
           maxPriorityFeePerGas,
           maxFeePerGas,
-          coin: BraveWallet.CoinType.ETH
+          coin: BraveWallet.CoinType.ETH,
+          hasEIP1559Support: isEIP1559
         }
 
         dispatch(WalletActions.sendTransaction(params))
@@ -461,16 +464,15 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
         }
       }
     } else if (quote.errorResponse) {
-      try {
-        const err = JSON.parse(quote.errorResponse) as SwapErrorResponse
-        if (isMounted) {
-          setSwapError(err)
-        }
-      } catch (e) {
-        console.error(`[swap] error parsing response: ${e}`)
-      } finally {
-        console.error(`[swap] error querying 0x API: ${quote.errorResponse}`)
+      if (isMounted) {
+        setSwapError({ swapError: quote.errorResponse })
       }
+      console.error(`[swap] error querying 0x API: ${quote.errorResponse}`)
+    } else if (quote.errorString) {
+      if (isMounted) {
+        setSwapError({ stringError: quote.errorString })
+      }
+      console.error(`[swap] error querying 0x API: ${quote.errorString}`)
     }
   }, [isMounted, selectedAccount, selectedNetwork])
 
@@ -498,22 +500,21 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
         slippagePercentage: slippageTolerance.slippage
       })
 
-      if (quote.success && quote.response) {
+      if (quote.response) {
         if (isMounted) {
           setJupiterQuote(quote.response)
           setJupiterError(undefined)
         }
       } else if (quote.errorResponse) {
-        try {
-          const err = JSON.parse(quote.errorResponse) as JupiterErrorResponse
-          if (isMounted) {
-            setJupiterError(err)
-          }
-        } catch (e) {
-          console.error(`[swap] error parsing Jupiter response: ${e}`)
-        } finally {
-          console.error(`[swap] error querying Jupiter API: ${quote.errorResponse}`)
+        if (isMounted) {
+          setJupiterError({ jupiterError: quote.errorResponse })
         }
+        console.error(`[swap] error querying Jupiter API: ${quote.errorResponse}`)
+      } else if (quote.errorString) {
+        if (isMounted) {
+          setJupiterError({ stringError: quote.errorString })
+        }
+        console.error(`[swap] error querying Jupiter API: ${quote.errorString}`)
       }
     } else {
       if (!jupiterQuote || jupiterQuote?.routes.length === 0) {
@@ -526,7 +527,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
         outputMint: toAsset.contractAddress || WRAPPED_SOL_CONTRACT_ADDRESS
       })
 
-      if (swapTransactions.success && swapTransactions.response) {
+      if (swapTransactions.response) {
         const {
           setupTransaction,
           swapTransaction,
@@ -561,16 +562,15 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
           setJupiterError(undefined)
         }
       } else if (swapTransactions.errorResponse) {
-        try {
-          const err = JSON.parse(swapTransactions.errorResponse) as JupiterErrorResponse
-          if (isMounted) {
-            setJupiterError(err)
-          }
-        } catch (e) {
-          console.error(`[swap] error parsing Jupiter response: ${e}`)
-        } finally {
-          console.error(`[swap] error querying Jupiter swap API: ${swapTransactions.errorResponse}`)
+        if (isMounted) {
+          setJupiterError({ jupiterError: swapTransactions.errorResponse })
         }
+        console.error(`[swap] error querying Jupiter API: ${swapTransactions.errorResponse}`)
+      } else if (swapTransactions.errorString) {
+        if (isMounted) {
+          setJupiterError({ stringError: swapTransactions.errorString })
+        }
+        console.error(`[swap] error querying Jupiter API: ${swapTransactions.errorString}`)
       }
     }
   }, [isMounted, jupiterQuote])

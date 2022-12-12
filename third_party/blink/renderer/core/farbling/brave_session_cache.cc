@@ -9,6 +9,7 @@
 #include "base/feature_list.h"
 #include "base/sequence_checker.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/types/optional_util.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 #include "build/build_config.h"
@@ -45,23 +46,6 @@ inline uint64_t lfsr_next(uint64_t v) {
   return ((v >> 1) | (((v << 62) ^ (v << 61)) & (~(~zero << 63) << 62)));
 }
 
-float ConstantMultiplier(double fudge_factor, float value, size_t index) {
-  return value * fudge_factor;
-}
-
-float PseudoRandomSequence(uint64_t seed, float value, size_t index) {
-  static uint64_t v;
-  if (index == 0) {
-    // start of loop, reset to initial seed which was passed in and is based on
-    // the domain key
-    v = seed;
-  }
-  // get next value in PRNG sequence
-  v = lfsr_next(v);
-  // return pseudo-random float between 0 and 0.1
-  return (v / maxUInt64AsDouble) / 10;
-}
-
 }  // namespace
 
 namespace brave {
@@ -88,11 +72,17 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
     return settings;
   }
   if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
-    auto* frame = window->GetFrame();
-    if (!frame)
-      frame = window->GetDisconnectedFrame();
-    if (frame)
-      settings = frame->GetContentSettingsClient();
+    auto* local_frame = window->GetFrame();
+    if (!local_frame)
+      local_frame = window->GetDisconnectedFrame();
+    if (local_frame) {
+      if (auto* top_local_frame =
+              blink::DynamicTo<blink::LocalFrame>(&local_frame->Tree().Top())) {
+        settings = top_local_frame->GetContentSettingsClient();
+      } else {
+        settings = local_frame->GetContentSettingsClient();
+      }
+    }
   } else if (context->IsWorkerGlobalScope()) {
     settings =
         blink::To<blink::WorkerGlobalScope>(context)->ContentSettingsClient();
@@ -210,6 +200,10 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key_),
                sizeof session_key_));
   CHECK(h.Sign(domain, domain_key_, sizeof domain_key_));
+  const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
+  double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
+  uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
+  audio_farbling_helper_.emplace(fudge_factor, seed);
   farbling_enabled_ = true;
 }
 
@@ -228,27 +222,19 @@ void BraveSessionCache::Init() {
   RegisterAllowFontFamilyCallback(base::BindRepeating(&brave::AllowFontFamily));
 }
 
-OptionalAudioFarblingCallback BraveSessionCache::GetAudioFarblingCallback(
+absl::optional<blink::BraveAudioFarblingHelper>
+BraveSessionCache::GetAudioFarblingHelper(
     blink::WebContentSettingsClient* settings) {
-  if (farbling_enabled_ && settings) {
-    switch (settings->GetBraveFarblingLevel()) {
-      case BraveFarblingLevel::OFF: {
-        break;
-      }
-      case BraveFarblingLevel::BALANCED: {
-        const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
-        double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
-        VLOG(1) << "audio fudge factor (based on session token) = "
-                << fudge_factor;
-        return base::BindRepeating(&ConstantMultiplier, fudge_factor);
-      }
-      case BraveFarblingLevel::MAXIMUM: {
-        uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
-        return base::BindRepeating(&PseudoRandomSequence, seed);
-      }
-    }
+  return base::OptionalFromPtr(UpdateAndGetAudioFarblingHelper(settings));
+}
+
+void BraveSessionCache::FarbleAudioChannel(
+    blink::WebContentSettingsClient* settings,
+    float* dst,
+    size_t count) {
+  if (const auto* helper = UpdateAndGetAudioFarblingHelper(settings)) {
+    helper->FarbleAudioChannel(dst, count);
   }
-  return absl::nullopt;
 }
 
 void BraveSessionCache::PerturbPixels(blink::WebContentSettingsClient* settings,
@@ -382,6 +368,21 @@ FarblingPRNG BraveSessionCache::MakePseudoRandomGenerator(FarbleKey key) {
   uint64_t seed =
       *reinterpret_cast<uint64_t*>(domain_key_) ^ static_cast<uint64_t>(key);
   return FarblingPRNG(seed);
+}
+
+const blink::BraveAudioFarblingHelper*
+BraveSessionCache::UpdateAndGetAudioFarblingHelper(
+    blink::WebContentSettingsClient* settings) {
+  if (!farbling_enabled_)
+    return nullptr;
+  DCHECK(audio_farbling_helper_);
+  DCHECK(settings);
+  const auto farbling_level = settings->GetBraveFarblingLevel();
+  if (farbling_level == BraveFarblingLevel::OFF)
+    return nullptr;
+  audio_farbling_helper_->set_max(farbling_level ==
+                                  BraveFarblingLevel::MAXIMUM);
+  return &audio_farbling_helper_.value();
 }
 
 }  // namespace brave

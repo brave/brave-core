@@ -165,4 +165,31 @@ absl::optional<std::string> SolanaKeyring::GetAssociatedTokenAccount(
                                    mojom::kSolanaAssociatedTokenProgramId);
 }
 
+// static
+// Derive metadata account using metadata seed constant, token metadata program
+// id, and the mint address as the seeds.
+// https://docs.metaplex.com/programs/token-metadata/accounts#metadata
+absl::optional<std::string> SolanaKeyring::GetAssociatedMetadataAccount(
+    const std::string& token_mint_address) {
+  std::vector<std::vector<uint8_t>> seeds;
+  const std::string metadata_seed_constant = "metadata";
+  std::vector<uint8_t> metaplex_seed_constant_bytes(
+      metadata_seed_constant.begin(), metadata_seed_constant.end());
+  std::vector<uint8_t> metadata_program_id_bytes;
+  std::vector<uint8_t> token_mint_address_bytes;
+
+  if (!Base58Decode(mojom::kSolanaMetadataProgramId, &metadata_program_id_bytes,
+                    kSolanaPubkeySize) ||
+      !Base58Decode(token_mint_address, &token_mint_address_bytes,
+                    kSolanaPubkeySize)) {
+    return absl::nullopt;
+  }
+
+  seeds.push_back(std::move(metaplex_seed_constant_bytes));
+  seeds.push_back(std::move(metadata_program_id_bytes));
+  seeds.push_back(std::move(token_mint_address_bytes));
+
+  return FindProgramDerivedAddress(seeds, mojom::kSolanaMetadataProgramId);
+}
+
 }  // namespace brave_wallet

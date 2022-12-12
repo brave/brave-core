@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hi">
+<translation id="915758461293673891">योगदान की राशि:</translation>
+<translation id="8966035543003363155">Brave नोटिफ़िकेशन इसे आसान बना देते हैं</translation>
+<translation id="7662771815233894695">डाउनलोड की हुई चीज़ों को मैनेज करें, टोकन कमाएँ, साप्ताहिक इस्तेमाल के आँकड़े देखें और भी बहुत कुछ.</translation>
+<translation id="4265429476391459783">आप न ही कोई रिवॉर्ड कमा रहे हैं और न ही आपको गोपनीयता रिपोर्ट मिल रही हैं</translation>
+<translation id="1305714751384738456">आप Brave रिवॉर्ड नहीं कमा रहे हैं</translation>
+<translation id="1483391942610220726">आपको गोपनीयता रिपोर्ट नहीं मिल रही हैं</translation>
+<translation id="4683790942451502796">अगर आप BAT कमाना और साप्ताहिक गोपनीयता रिपोर्ट पाना जारी रखना चाहते हैं, तो नोटिफ़िकेशन को फिर से चालू करें.</translation>
+<translation id="1462722717055895108">अगर आप BAT कमाना जारी रखना चाहते हैं, तो नोटिफ़िकेशन को फिर से चालू करें</translation>
+<translation id="5457255168064266494">अगर आप साप्ताहिक गोपनीयता रिपोर्ट पाना जारी रखना चाहते हैं, तो नोटिफ़िकेशन को फिर से चालू करें.</translation>
+<translation id="6268959058971634697">आप कोई रिवॉर्ड नहीं कमा रहे हैं</translation>
+<translation id="1088637159642753509">Brave रिवॉर्ड पाने और गोपनीयता रिपोर्ट देखने के लिए डिवाइस नोटिफ़िकेशन चालू करें.</translation>
+<translation id="312404770066229090">Brave रिवॉर्ड कमाने के लिए डिवाइस नोटिफ़िकेशन को चालू करें.</translation>
+<translation id="2241529840361230499">गोपनीयता रिपोर्ट पाने के लिए डिवाइस नोटिफ़िकेशन चालू करें.</translation>
+<translation id="4930155581888391118">Brave रिवॉर्ड पाने के लिए Brave के नोटिफ़िकेशन चालू करें.</translation>
+<translation id="325187916104529570">सेटिंग खोलें और Brave विज्ञापन देखने के लिए डिवाइस नोटिफ़िकेशन चालू करें.</translation>
+<translation id="5744802588121897886">Brave के नोटिफ़िकेशन चालू करें</translation>
 <translation id="7307834434086582547">Brave शील्ड को सक्षम/अक्षम करें</translation>
 <translation id="6945863270524203017">ब्लॉक किए गए ट्रैकर और विज्ञापन पर साप्ताहिक अपडेट पाएँ.</translation>
 <translation id="4324735664183300693">नोटिफ़िकेशन चालू करें</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">हल निकालने का तरीका</translation>
 <translation id="2356070529366658676">पूछें</translation>
 <translation id="4176463684765177261">अक्षम</translation>
-<translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">सक्रिय</translation>
 <translation id="6252490671914511928">आज की शीर्ष कहानियाँ पूरी तरह से प्राइवेट फ़ीड में, सिर्फ आपके लिए.</translation>
 <translation id="7266075701303521777">Brave न्यूज़ आपके डिवाइस पर मेल खाने वाले पूरी तरह से प्राइवेट और अनजान ऐड से ऐड सपोर्टेड है.</translation>
 <translation id="4541978218358617681">विज्ञापन</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">ब्राउज़िंग डेटा साफ़ करें</translation>
 <translation id="5965081608816406060">पृष्ठभूमि वीडियो प्लेबैक</translation>
 <translation id="6332924730165919598">सभी टैब बंद करने से Brave बंद हो जाता है</translation>
-<translation id="1580125697191336644">प्रायोगिक। जब टैब सक्रिय नहीं होता है या डिवाइस स्क्रीन बंद हो जाता है, तो पृष्ठभूमि से वीडियो में ऑडियो चलाने में सक्षम बनाता है। यदि यह सुविधा काम नहीं कर रही है तो डेस्कटॉप मोड में जाने का प्रयास करें।</translation>
-<translation id="59174027418879706">सक्षम किया गया</translation>
+<translation id="3872768973878059926">जब आप Brave में किसी अन्य टैब पर जाते हैं, किसी अन्य ऐप को खोलते हैं या आपके डिवाइस की स्क्रीन बंद होने पर यह ऑडियो को चालू रहने की इजाज़त देता है.</translation>
 <translation id="4150201353443180367">डिसप्ले</translation>
 <translation id="2433507940547922241">प्रकटन</translation>
 <translation id="6333347122924254968">एड्रेस बार में Brave Rewards आइकॉन दिखाएं</translation>
@@ -309,16 +324,11 @@
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">अनुरोध की गई सेवाओं के आधार पर आपको अपनी पहचान सत्यापित करने के लिए Uphold की आवश्यकता हो सकती है।</translation>
 <translation id="3200197118442451932">जब आप Brave पर अपना अकाउंट बनाते हैं तो Brave Software Inc. आपकी किसी भी व्यक्तिगत जानकारी को प्रोसेस, स्टोर या एक्सेस नहीं करता है, जिसे आप <ph name="WALLET_PROVIDER"/> को अपना अकाउंट बनाते समय देते हैं.</translation>
-<translation id="3699674790322420653">वॉलेट सत्यापन पूरा करें</translation>
 <translation id="2193391216824305230">उपयोगकर्ता का वॉलेट</translation>
 <translation id="1665118090708049096">मेरे <ph name="WALLET_PROVIDER"/>अकाउंट पर जाएँ</translation>
 <translation id="1948959999802743233"><ph name="WALLET_PROVIDER"/> से डिस्कनेक्ट करें</translation>
 <translation id="6239274080752256452">धनराशि निकाले</translation>
 <translation id="8874184842967597500">कनेक्ट नहीं है</translation>
-<translation id="3368922792935385530">कनेक्टेड</translation>
-<translation id="5358719431303818601">डिस्कनेक्ट हो गया सत्यापित नहीं है</translation>
-<translation id="4241449868720191203">डिस्कनेक्ट हो गया सत्यापित है</translation>
-<translation id="3248185426436836442">लंबित है</translation>
 <translation id="2495032782748793764">Brave डिफ़ॉल्ट</translation>
 <translation id="9132378787893584761">Brave को अपने दोस्तों के साथ शेयर करें!</translation>
 <translation id="717952606991220586">ओह, कुछ गड़बड़ी है। कृपया पुनः प्रयास करें।</translation>
@@ -672,6 +682,7 @@
 <translation id="1597199892790541240">गैस शुल्क</translation>
 <translation id="1634828734222219955">संपूर्ण</translation>
 <translation id="7995708795274219641">मात्रा + गैस</translation>
+<translation id="2186011161688824046">राशि + शुल्क</translation>
 <translation id="1950052789869821983">लेन-देन</translation>
 <translation id="2304783958703511257">एडवांस सेटिंग</translation>
 <translation id="4220062530885628403">नोटिस</translation>
@@ -700,6 +711,7 @@
 <translation id="1133619932669546254"><ph name="TOKEN"/> ऐक्टिवेट करें</translation>
 <translation id="2199215899212542417">फ़ंक्शन का प्रकार : <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">कोई डेटा नहीं</translation>
+<translation id="1105525362447173583">Solana डीऐप साइन ट्रांज़ैक्शन</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> ने <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/> भेजा</translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> ने <ph name="ASSET"/> #<ph name="ASSET_ID"/> भेजा है - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> ने <ph name="ASSET"/> - <ph name="DATE"/> स्वीकृत किया है</translation>
@@ -799,6 +811,7 @@
 <translation id="8030169304546394654">डिसकनेक्ट हो गया है</translation>
 <translation id="3423275441470187644">भरोसा</translation>
 <translation id="2391762656119864333">निरस्‍त करें</translation>
+<translation id="3368922792935385530">कनेक्टेड</translation>
 <translation id="3432029672560911238">यूज़र अकाउंट</translation>
 <translation id="5753378322046059140">अकाउंट स्विच करें</translation>
 <translation id="3897092660631435901">मेनू</translation>
@@ -866,6 +879,7 @@
 <translation id="7080614857771109950">Ethereum ब्लॉकचेन (ERC-20, ERC-721, ERC-1551, ERC-1155) पर EVM कम्पैटिबल असेट को सपोर्ट करता</translation>
 <translation id="6577166808959668729">Solana ब्लॉकचेन पर SLP कम्पैटिबल असेट को सपोर्ट करता</translation>
 <translation id="6575120282593094155">आपके पास अभी तक <ph name="ACCOUNT_TYPE"/> अकाउंट नहीं है. क्या आप यह बनाना चाहते हैं?</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">शामिल नहीं किए गए ऐप</translation>
 <translation id="8463269357637177759">शामिल किए गए नियमित ऐप</translation>
@@ -888,6 +902,7 @@
 <translation id="4784306439879850873">ध्यान दें, आपके साइन करने से क्या होगा, यह Brave नहीं बता सकता. सिग्नेचर आपके अकाउंट में या आपकी ओर से लगभग सभी ऑपरेशन को ऑथराइज़ कर सकता है, जिसमें अनुरोध करने वाली साइट को आपके अकाउंट और क्रिप्टो ऐसेट का पूरा कंट्रोल देना शामिल है (लेकिन इसी तक सीमित नहीं है). अगर आप पक्के तौर पर यह काम करना चाहते हैं और अनुरोध करने वाली साइट पर भरोसा करते हों, तो ही साइन करें.</translation>
 <translation id="3474375934783434676">अपने जोखिम पर साइन करें</translation>
 <translation id="7134370164002095282"><ph name="SIZE"/> में से <ph name="CURRENT"/></translation>
+<translation id="756701799684433105">ट्रांज़ैक्शन मंज़ूर करें</translation>
 <translation id="6450792191436242818">सिस्टम प्रोग्राम</translation>
 <translation id="6252742184395380448">कॉन्फ़िगरेशन प्रोग्राम</translation>
 <translation id="5358970666412490132">स्टेक प्रोग्राम</translation>
@@ -897,6 +912,7 @@
 <translation id="6421371987002247943">टोकन प्रोग्राम</translation>
 <translation id="8780753288764281797">Secp256k1 प्रोग्राम</translation>
 <translation id="8504640708321980506">डेटा</translation>
+<translation id="3723411967118253067">प्रोग्राम की आईडी</translation>
 <translation id="4771176409524282426">अकाउंट बनाएँ</translation>
 <translation id="1755120947324658439">असाइन करें</translation>
 <translation id="7588707273764747927">स्थानांतरण</translation>
@@ -915,9 +931,14 @@
 <translation id="7474306790151660826">मल्टीसिग को शुरू करें</translation>
 <translation id="363258595406850968">अथॉरिटी सेट करें</translation>
 <translation id="2091563464450586155">में मिंट करें</translation>
+<translation id="1252941298291625577">बर्न</translation>
 <translation id="5211196599627796093">अकाउंट बंद करें</translation>
 <translation id="6988707241715050556">अकाउंट फ़्रीज़ करें</translation>
 <translation id="857250415816680832">थॉ अकाउंट</translation>
+<translation id="5453172892735755262">ट्रांसफ़र के लिए जाँचा गया</translation>
+<translation id="471669767157904431">मंज़ूरी के लिए जाँचा गया</translation>
+<translation id="3530340583186873359">मिंट करने के लिए जाँचा गया</translation>
+<translation id="5068456869800056740">बर्न के लिए जाँचा गया</translation>
 <translation id="3004830385467519189">अकाउंट 2 को शुरू करें</translation>
 <translation id="8026488633670875516">नेटिव सिंक करें</translation>
 <translation id="2024649614526778327">अकाउंट 3 को शुरू करें</translation>
@@ -931,4 +952,27 @@
 <translation id="7352651011704765696">कुछ गलत हो गया</translation>
 <translation id="7144878232160441200">पुन: प्रयास करें</translation>
 <translation id="6040143037577758943">बंद करें</translation>
+<translation id="7710469167917867539">ट्रांज़ैक्शन शुल्क</translation>
+<translation id="7843211152394841558">कोशिश की अधिकतम सीमा :</translation>
+<translation id="8496335570810457">प्रीफ़्लाइट संकल्प :</translation>
+<translation id="5100124500279922001">प्रीफ़्लाइट को छोड़ें :</translation>
+<translation id="7152095322071766507">सबसे ज़्यादा देखी गई साइट</translation>
+<translation id="7230006500876504868">Brave पर सर्च करें</translation>
+<translation id="5888208462949095139"><ph name="DEFAULT_SEARCH_ENGINE"/> पर सर्च करें</translation>
+<translation id="5456039738087398178">होम स्क्रीन विजेट</translation>
+<translation id="703185154752046151">विजेट होम स्क्रीन पर जोड़ दिया गया है</translation>
+<translation id="3290805388004282161">Brave सर्च विजेट को आज़माएँ</translation>
+<translation id="4809681171446727314">गोपनीय और स्वतंत्र रूप से सर्च करने की सुविधा को सीधे अपनी होम स्क्रीन से ऐक्सेस करें.</translation>
+<translation id="7751715172931488388">विजेट जोड़ें</translation>
+<translation id="7285167584112910782">Brave पर तुरंत सर्च करने की सुविधा</translation>
+<translation id="2326703104633309781">Brave ट्रांसलेट का इस्तेमाल करें</translation>
+<translation id="5802752138057422257">NON-ASCII कैरेक्टर मिटा दिए गए हैं!</translation>
+<translation id="442709594176931966">मूल मैसेज देखें</translation>
+<translation id="2239252396088484499">ASCII एनकोडिंग में मैसेज देखें</translation>
+<translation id="4220693114674044366">टोकन का पता</translation>
+<translation id="5658257029899993935">खरीदारी को अपने Brave अकाउंट से लिंक करें</translation>
+<translation id="1187061015547219282">अन्य डिवाइस पर Brave VPN का इस्तेमाल करने के लिए अपने Play Store की खरीदारी को अपने Brave अकाउंट से लिंक करें.</translation>
+<translation id="6662142137695589205">अपनी VPN की सदस्यता को लिंक करें</translation>
+<translation id="2674077112509133024">अपनी Brave Firewall + VPN की सुरक्षा को बढ़ाएँ</translation>
+<translation id="6365389672683343144">आपकी Brave VPN की सदस्यता Android, iOS और डेक्सटॉप पर 5 डिवाइस तक की सुरक्षा कर सकती है. बस अपनी Google Play की सदस्यता को अपने Brave अकाउंट से लिंक करें.</translation>
 </translationbundle>

@@ -48,6 +48,7 @@ class PublishersController {
   // live longer, take a clone.
   const mojom::Publisher* GetPublisherForSite(const GURL& site_url) const;
   const mojom::Publisher* GetPublisherForFeed(const GURL& feed_url) const;
+  const Publishers& GetLastPublishers() const;
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);

@@ -11,6 +11,7 @@ import { mapNotification } from './notification_adapter'
 
 import {
   ExternalWalletProvider,
+  ExternalWalletProviderRegionInfo,
   externalWalletProviderFromString,
   externalWalletFromExtensionData
 } from '../../shared/lib/external_wallet'
@@ -38,6 +39,7 @@ export function getSettings () {
   return new Promise<Settings>((resolve) => {
     chrome.braveRewards.getPrefs((prefs) => {
       resolve({
+        adsEnabled: prefs.adsEnabled,
         adsPerHour: prefs.adsPerHour,
         autoContributeEnabled: prefs.autoContributeEnabled,
         autoContributeAmount: prefs.autoContributeAmount
@@ -71,8 +73,17 @@ export function getRewardsParameters () {
 
   return new Promise<Result>((resolve) => {
     chrome.braveRewards.getRewardsParameters((parameters) => {
+      const regionMap = new Map<string, ExternalWalletProviderRegionInfo>()
+      for (const key of Object.keys(parameters.walletProviderRegions)) {
+        const info = parameters.walletProviderRegions[key]
+        if (info) {
+          regionMap.set(key, info)
+        }
+      }
+
       resolve({
         options: {
+          externalWalletRegions: regionMap,
           autoContributeAmounts: parameters.autoContributeChoices
         },
         exchangeInfo: {
@@ -87,12 +98,15 @@ export function getRewardsParameters () {
 
 export function getExternalWalletProviders () {
   return new Promise<ExternalWalletProvider[]>((resolve) => {
-    // The extension API currently does not support retrieving a list of
-    // external wallet providers. Instead, use the `getExternalWallet` function
-    // to retrieve the "currently selected" provider.
-    chrome.braveRewards.getExternalWallet((wallet) => {
-      const provider = wallet && externalWalletProviderFromString(wallet.type)
-      resolve(provider ? [provider] : [])
+    chrome.braveRewards.getExternalWalletProviders((providers) => {
+      let list: ExternalWalletProvider[] = []
+      for (const name of providers) {
+        const provider = externalWalletProviderFromString(name)
+        if (provider) {
+          list.push(provider)
+        }
+      }
+      resolve(list)
     })
   })
 }
@@ -189,6 +203,18 @@ export function getGrants () {
 export function getRewardsEnabled () {
   return new Promise<boolean>((resolve) => {
     chrome.braveRewards.getRewardsEnabled(resolve)
+  })
+}
+
+export function getUserVersion () {
+  return new Promise<string>((resolve) => {
+    chrome.braveRewards.getUserVersion(resolve)
+  })
+}
+
+export function getPublishersVisitedCount () {
+  return new Promise<number>((resolve) => {
+    chrome.braveRewards.getPublishersVisitedCount(resolve)
   })
 }
 

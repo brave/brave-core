@@ -103,8 +103,8 @@ components/permissions/**/*expiration* @goodov
 components/permissions/**/*lifetime* @goodov
 
 # Java patching
-build/android/bytecode/ @samartnik
-patches/*.java.patch @samartnik
+build/android/bytecode/ @brave/java-patch-reviewers
+patches/*.java.patch @brave/java-patch-reviewers
 
 # Bitcoin-core
 third_party/bitcoin-core/BUILD.gn @brave/sec-team

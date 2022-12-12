@@ -313,6 +313,8 @@ public class BytecodeTest {
                 "shouldCloseAppWithZeroTabs", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout",
                 "insertSiteSectionView", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                "isScrollableMvtEnabled", true, boolean.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/query_tiles/QueryTileSection",
                 "getMaxRowsForMostVisitedTiles", false, null));
         Assert.assertTrue(

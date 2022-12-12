@@ -89,6 +89,11 @@ void FeedController::DoesFeedVersionDiffer(
       base::Unretained(this), matching_hash, std::move(callback)));
 }
 
+void FeedController::AddListener(
+    mojo::PendingRemote<mojom::FeedListener> listener) {
+  listeners_.Add(std::move(listener));
+}
+
 void FeedController::GetOrFetchFeed(GetFeedCallback callback) {
   GetOrFetchFeed(base::BindOnce(
       [](FeedController* controller, GetFeedCallback callback) {
@@ -339,7 +344,7 @@ void FeedController::FetchCombinedFeed(GetFeedItemsCallback callback) {
                         << " etag: " << etag;
                 // Handle bad response
                 if (api_request_result.response_code() != 200 ||
-                    api_request_result.body().empty()) {
+                    api_request_result.value_body().is_none()) {
                   LOG(ERROR)
                       << "Bad response from brave news feed.json. Status: "
                       << api_request_result.response_code();
@@ -350,7 +355,7 @@ void FeedController::FetchCombinedFeed(GetFeedItemsCallback callback) {
                 // parsing was successful
                 controller->locale_feed_etags_[locale] = etag;
                 FeedItems feed_items;
-                ParseFeedItems(api_request_result.body(), &feed_items);
+                ParseFeedItems(api_request_result.value_body(), &feed_items);
                 std::move(callback).Run(std::move(feed_items));
               },
               base::Unretained(controller), locale, locales_fetched_callback);
@@ -394,6 +399,11 @@ void FeedController::NotifyUpdateDone() {
   // can be waited for.
   is_update_in_progress_ = false;
   on_current_update_complete_ = std::make_unique<base::OneShotEvent>();
+
+  // Notify listeners.
+  for (const auto& listener : listeners_) {
+    listener->OnUpdateAvailable(current_feed_.hash);
+  }
 }
 
 }  // namespace brave_news

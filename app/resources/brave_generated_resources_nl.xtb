@@ -3,7 +3,9 @@
 <translationbundle lang="nl">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="4615489450165434530">Meld een gebroken site</translation>
+<translation id="8097438084542431276">Clean link kopiëren</translation>
 <translation id="1209739344687072997">Meld een gebroken site</translation>
+<translation id="7630214457764713113">Clean link kopiëren</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">Wallet</translation>
 <translation id="2445484935443597917">Een nieuw profiel maken</translation>
@@ -73,7 +75,9 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="2638041073279639246">Een link in een privévenster met Tor openen</translation>
 <translation id="3425600262621021599">Een link in een Brave privévenster met Tor openen</translation>
 <translation id="3229091547987707389">Een directory importeren en delen</translation>
+<translation id="2804710924397009224">Verberg het Brave-beloningen-pictogram</translation>
 <translation id="5029193871181468990">Brave Beloningen-pictogram verbergen</translation>
+<translation id="2808103541110899519">Brave Wallet-pictogram verbergen</translation>
 <translation id="7595540212376041331">Brave-walletpictogram verbergen</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Bekijken in Web Extensions Store</translation>
@@ -170,7 +174,13 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="191143826155037518">Brave wordt aan u beschikbaar gesteld onder de <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) en omvat <ph name="BEGIN_LINK_OSS"/>open source software<ph name="END_LINK_OSS"/> onder verschillende andere licenties.
         U kunt <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instructies lezen over het downloaden en zelf bouwen<ph name="END_LINK_BUILD_INSTRUCTIONS"/> de specifieke <ph name="BEGIN_LINK_SOURCE_CODE"/>broncode die wordt gebruikt om deze kopij te maken<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Bladwijzer toevoegen aan alle tabbladen...</translation>
+<translation id="3987546108749866209">Verticale tabbladen gebruiken</translation>
+<translation id="5860254591544742609">Titelbalk weergeven</translation>
+<translation id="399928467800528208">Zweven door muis erover te bewegen</translation>
 <translation id="2336228925368920074">Bladwijzer toevoegen aan alle tabbladen...</translation>
+<translation id="2523967823495420116">Verticale tabbladen gebruiken</translation>
+<translation id="8888603463702767599">Titelbalk weergeven</translation>
+<translation id="2058818256505091369">Zweven door muis erover te bewegen</translation>
 <translation id="4235920711083356755">VPN-knop tonen</translation>
 <translation id="4070612712151038707">Laat de VPN-knop zien in de werkbalk</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -201,9 +211,9 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="8722651357687610395">Stel Brave in als standaard</translation>
 <translation id="2370739752330685659">Misschien later</translation>
 <translation id="7537601449003285327">Vastzetten op taakbalk</translation>
+<translation id="2307973900865360088">In Dock behouden</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">Geïmporteerd uit <ph name="BROWSER_NAME"/></translation>
-<translation id="7630214457764713113">Clean link kopiëren</translation>
 <translation id="9156965752763025780">Je wijzigingen worden toegepast wanneer je Brave opnieuw start.</translation>
 <translation id="7179921470347911571">Nu Opnieuw Opstarten</translation>
 <translation id="4472575034687746823">Aan de slag</translation>
@@ -245,6 +255,8 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="5919424224662539292">De achtergrondafbeelding en de widgets die verschijnen op de nieuwe tabbladpagina personaliseren</translation>
 <translation id="7461924472993315131">Vastzetten</translation>
 <translation id="7506648566440714944">Brave is al vastgemaakt</translation>
+<translation id="239275665037555969">Dock</translation>
+<translation id="4057614912106618659">Brave bevindt zich al in Dock</translation>
 <translation id="3195845168740336657">Instellingen Shields</translation>
 <translation id="754769152790647708">Status Shields</translation>
 <translation id="3615717588724840230">Sites kunnen trackers, advertenties en fingerprinting blokkeren met Shields</translation>
@@ -253,7 +265,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="6303294677342628402">Schilden</translation>
 <translation id="7133511168130368997">Blokkeer trackers en advertenties die u op het internet volgen.</translation>
 <translation id="2761825942249694703">Dit zijn de standaard Shields-instellingen. Ze zijn van toepassing op alle websites, tenzij u iets verandert via het Shields-configuratiescherm op een specifieke website. Deze veranderingen hebben geen invloed op uw bestaande instellingen per website.</translation>
-<translation id="1435116578479068303">Hiermee worden de meeste advertenties op websites geblokkeerd, behalve Brave privéadvertenties; die worden beheerd in de <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>-instellingen.</translation>
+<translation id="1435116578479068303">Hiermee worden de meeste advertenties op websites geblokkeerd, behalve Brave-privéadvertenties; die worden beheerd in de <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>-instellingen.</translation>
 <translation id="8452536890042542134">Hiermee kunt u de meeste advertenties op websites blokkeren.</translation>
 <translation id="4800195524776354947">Toon het aantal geblokkeerde items op het schild-icoontje</translation>
 <translation id="5510493033031835532">AMP-pagina's automatisch omleiden</translation>
@@ -384,6 +396,8 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="4581190919849683048">Naar welk type apparaat wil je synchroniseren?</translation>
 <translation id="4112587618563511470">Ongeldige synchronisatie code, check and probeer opnieuw.</translation>
 <translation id="3995714999835224798">Deze code is ongeldig</translation>
+<translation id="4432071071853308688">Deze code is leeg</translation>
+<translation id="955848693465029904">Interne fout bij synchroniseren instellingen</translation>
 <translation id="859506441384380749">Deze code is gegenereerd door een verouderde versie van Brave; upgrade eerst uw andere apparaat</translation>
 <translation id="3132642509209154999">Deze code is verlopen. Genereer een nieuwe code op je andere apparaat en probeer het opnieuw.</translation>
 <translation id="2859229680945501779">Deze code is ongeldig. Controleer of de tijd en tijdzone correct zijn ingesteld op uw apparaat.</translation>
@@ -403,17 +417,21 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="6864914031231797928">Google-login voor extensies toestaan</translation>
 <translation id="6554397389149987360">Gebruikt een Hangouts-component om het delen van het scherm en andere functies in de browser mogelijk te maken.</translation>
 <translation id="7878791177459550035">Mediarouter maakt castfunctie beschikbaar in de browser.</translation>
-<translation id="5927916530277631319">Methode om Unstoppable Domains op te lossen</translation>
-<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/> over privacy-overwegingen voor Ethereum.</translation>
-<translation id="5248318250177143470">Methode om Ethereum Name Service (ENS) op te lossen</translation>
+<translation id="2707635989000984973">Domeinnamen van Unstoppable Domains omzetten</translation>
+<translation id="1807158022157096592"><ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/> over privacyoverwegingen van Unstoppable Domains.</translation>
+<translation id="641308776160806829">Domeinnamen van Ethereum Name Service (ENS) omzetten</translation>
 <translation id="6421218422395686663">ENS-zoekopdrachten buiten blockchain toestaan.</translation>
+<translation id="4608449984413688436">Domeinnamen van Solana Name Service (SNS) omzetten</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/> over privacy-overwegingen voor ENS-zoekopdrachten buiten de blockchain.</translation>
 <translation id="6241402707160226266">Privéscherm met Tor</translation>
 <translation id="8762452230727230396">Tor verbergt je IP-adres van de websites die je bezoekt.</translation>
+<translation id="951983619130191090">Help anderen verbinding te maken met het Tor-netwerk</translation>
+<translation id="2223668809371912019">Schakel de Snowflake-extentie in om gebruikers in landen met censuur toegang te geven met het Tor-netwerk via uw netwerkverbinding.</translation>
 <translation id="2959986444009520721">Tor-bridges gebruiken</translation>
 <translation id="8416750895933172460">Met bruggen krijgt u toegang tot het Tor-netwerk op plaatsen waar Tor geblokkeerd is. Afhankelijk van waar u bent, werkt de ene brug beter dan de andere.</translation>
 <translation id="7206799843254049470">Tor-verbindingsinstellingen</translation>
 <translation id="3194502271166340944">Regelt hoe privévensters met Tor verbinding maakt met het Tor-netwerk</translation>
+<translation id="3717364961460790491">De vereiste Snowflake-extentie voor deze functie kan niet worden gedownload. Controleer uw internetverbinding en probeer het opnieuw.</translation>
 <translation id="4859228830700205299">Een ingebouwde brug selecteren</translation>
 <translation id="3233137871426528317">Een brug van torproject.org aanvragen</translation>
 <translation id="5701503934456421898">Een nieuwe brug aanvragen...</translation>
@@ -490,11 +508,13 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="1195880978080389104">Lokaal IPFS-knooppunt van Brave</translation>
 <translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Meer informatie<ph name="END_LINK_MPL"/> over het lokale IPFS-knooppunt van Brave en privacyoverwegingen voor de gateway.</translation>
 <translation id="4927734062756955434">Openbaar IPFS-gateway-adres</translation>
+<translation id="3707431725427930007">Openbaar IPFS-gateway-adres voor NFT</translation>
 <translation id="8425213833346101688">Wijzigen</translation>
 <translation id="585868419599255817">Terugvallen op de publieke IPFS-poort</translation>
 <translation id="2618080188892567155">Val automatisch terug op de openbare IPFS-gateway als uw lokale IPFS-knooppunt niet kan worden bereikt.</translation>
 <translation id="4107552920076294723">IPFS-bronnen omleiden naar de geconfigureerde IPFS-gateway</translation>
-<translation id="6494857428933042381">Gebruikt automatisch de geconfigureerde gateway voor IPFS-resoluties wanneer een IPFS-gatewaybron is aangetroffen.</translation>
+<translation id="4284166297897715283">Aanvragen voor IPFS-bronnen, gehost op IPFS-gateways van derde partijen, worden geladen via de geselecteerde lokale of externe gateway.
+    Let op: Als het lokale knooppunt is geselecteerd, wordt de bron rechtstreeks op uw computer aangevraagd en gegevens in cache kunnen voor enige tijd worden aangeleverd aan het IPFS-netwerk.</translation>
 <translation id="8655170717758778983">Indien mogelijk automatisch omleiden naar IPFS-pagina's via DNSLink</translation>
 <translation id="2233724520223030977">Gebruikt automatisch DNSLink om indien mogelijk naar een IPFS-versie van een website te navigeren</translation>
 <translation id="8068526464562249859">Gebruikt de IPFS Companion-extensie voor verbeterde IPFS-ondersteuning in Brave, inclusief toegang tot veelvoorkomende IPFS-taken vanuit uw browserbalk.</translation>

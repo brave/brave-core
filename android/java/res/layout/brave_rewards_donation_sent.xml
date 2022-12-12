@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#E62F3140"
-            tools:fontFamily="@font/poppins_bold"
+            tools:fontFamily="@font/poppins_600"
             android:gravity="center">
 
             <FrameLayout

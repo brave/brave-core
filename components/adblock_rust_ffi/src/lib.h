@@ -87,7 +87,8 @@ void engine_match(struct C_Engine* engine,
                   bool* did_match_rule,
                   bool* did_match_exception,
                   bool* did_match_important,
-                  char** redirect);
+                  char** redirect,
+                  char** rewritten_url);
 
 /**
  * Returns any CSP directives that should be added to a subdocument or document
@@ -119,9 +120,9 @@ bool engine_add_resource(struct C_Engine* engine,
                          const char* data);
 
 /**
- * Adds a list of `Resource`s from JSON format
+ * Uses a list of `Resource`s from JSON format
  */
-void engine_add_resources(struct C_Engine* engine, const char* resources);
+void engine_use_resources(struct C_Engine* engine, const char* resources);
 
 /**
  * Removes a tag to the engine for consideration

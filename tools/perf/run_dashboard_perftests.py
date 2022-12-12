@@ -38,6 +38,8 @@ def main():
   parser.add_argument('--report-only', action='store_true')
   parser.add_argument('--report-on-failure', action='store_true')
   parser.add_argument('--local-run', action='store_true')
+  parser.add_argument('--variations-repo-dir', type=str)
+
   parser.add_argument('--verbose', action='store_true')
   args = parser.parse_args()
 
@@ -50,8 +52,7 @@ def main():
   json_config = perf_test_utils.LoadJsonConfig(args.config)
   config = perf_config.PerfConfig(json_config)
 
-  common_options = perf_test_runner.CommonOptions.from_args(
-      args, config.benchmarks)
+  common_options = perf_test_runner.CommonOptions.from_args(args)
 
   if len(config.runners) != 1:
     raise RuntimeError('Only one configuration should be specified.')
@@ -59,8 +60,8 @@ def main():
   configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
       targets, config.runners[0])
 
-  return 0 if perf_test_runner.RunConfigurations(configurations,
-                                                 common_options) else 1
+  return 0 if perf_test_runner.RunConfigurations(
+      configurations, config.benchmarks, common_options) else 1
 
 
 if __name__ == '__main__':

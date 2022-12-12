@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
+#include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
@@ -30,6 +31,7 @@
 namespace {
 
 static constexpr webui::LocalizedString kStrings[] = {
+    {"aboutRewardsText", IDS_REWARDS_PANEL_ABOUT_REWARDS_TEXT},
     {"attention", IDS_REWARDS_PANEL_ATTENTION},
     {"cancel", IDS_REWARDS_PANEL_CANCEL},
     {"captchaContactSupport", IDS_REWARDS_CAPTCHA_CONTACT_SUPPORT},
@@ -41,6 +43,9 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"captchaSolvedText", IDS_REWARDS_CAPTCHA_SOLVED_TEXT},
     {"captchaSolvedTitle", IDS_REWARDS_CAPTCHA_SOLVED_TITLE},
     {"changeAmount", IDS_REWARDS_PANEL_CHANGE_AMOUNT},
+    {"connectAccount", IDS_REWARDS_CONNECT_ACCOUNT},
+    {"connectAccountText", IDS_REWARDS_CONNECT_ACCOUNT_TEXT},
+    {"connectAccountNoProviders", IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS},
     {"grantCaptchaAmountAds", IDS_REWARDS_GRANT_CAPTCHA_AMOUNT_ADS},
     {"grantCaptchaAmountUGP", IDS_REWARDS_GRANT_CAPTCHA_AMOUNT_UGP},
     {"grantCaptchaErrorText", IDS_REWARDS_GRANT_CAPTCHA_ERROR_TEXT},
@@ -53,11 +58,13 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"grantCaptchaPassedTitleAds", IDS_REWARDS_GRANT_CAPTCHA_PASSED_TITLE_ADS},
     {"grantCaptchaPassedTitleUGP", IDS_REWARDS_GRANT_CAPTCHA_PASSED_TITLE_UGP},
     {"grantCaptchaTitle", IDS_REWARDS_GRANT_CAPTCHA_TITLE},
+    {"headerTextAdsDisabled", IDS_REWARDS_PANEL_HEADER_TEXT_ADS_DISABLED},
+    {"headerTextAdsEnabled", IDS_REWARDS_PANEL_HEADER_TEXT_ADS_ENABLED},
+    {"headerTitle", IDS_REWARDS_PANEL_HEADER_TITLE},
     {"includeInAutoContribute", IDS_REWARDS_PANEL_INCLUDE_IN_AUTO_CONTRIBUTE},
+    {"learnMore", IDS_REWARDS_LEARN_MORE},
+    {"learnMoreAboutBAT", IDS_REWARDS_PANEL_LEARN_MORE_ABOUT_BAT},
     {"monthlyTip", IDS_REWARDS_PANEL_MONTHLY_TIP},
-    {"notificationAddFunds", IDS_REWARDS_NOTIFICATION_ADD_FUNDS},
-    {"notificationAddFundsText", IDS_REWARDS_NOTIFICATION_ADD_FUNDS_TEXT},
-    {"notificationAddFundsTitle", IDS_REWARDS_NOTIFICATION_ADD_FUNDS_TITLE},
     {"notificationAdGrantAmount", IDS_REWARDS_NOTIFICATION_AD_GRANT_AMOUNT},
     {"notificationAdGrantTitle", IDS_REWARDS_NOTIFICATION_AD_GRANT_TITLE},
     {"notificationAutoContributeCompletedText",
@@ -68,8 +75,6 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"notificationClaimTokens", IDS_REWARDS_NOTIFICATION_CLAIM_TOKENS},
     {"notificationGrantDaysRemaining",
      IDS_REWARDS_NOTIFICATION_GRANT_DAYS_REMAINING},
-    {"notificationInsufficientFundsText",
-     IDS_REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS_TEXT},
     {"notificationMonthlyContributionFailedText",
      IDS_REWARDS_NOTIFICATION_MONTHLY_CONTRIBUTION_FAILED_TEXT},
     {"notificationMonthlyContributionFailedTitle",
@@ -78,10 +83,6 @@ static constexpr webui::LocalizedString kStrings[] = {
      IDS_REWARDS_NOTIFICATION_MONTHLY_TIP_COMPLETED_TEXT},
     {"notificationMonthlyTipCompletedTitle",
      IDS_REWARDS_NOTIFICATION_MONTHLY_TIP_COMPLETED_TITLE},
-    {"notificationPendingTipFailedText",
-     IDS_REWARDS_NOTIFICATION_PENDING_TIP_FAILED_TEXT},
-    {"notificationPendingTipFailedTitle",
-     IDS_REWARDS_NOTIFICATION_PENDING_TIP_FAILED_TITLE},
     {"notificationPublisherVerifiedText",
      IDS_REWARDS_NOTIFICATION_PUBLISHER_VERIFIED_TEXT},
     {"notificationPublisherVerifiedTitle",
@@ -126,33 +127,16 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"onboardingPanelAcText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_TEXT},
     {"onboardingPanelAdsHeader", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_HEADER},
     {"onboardingPanelAdsText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_TEXT},
-    {"onboardingPanelBitflyerLearnMore",
-     IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_LEARN_MORE},
-    {"onboardingPanelBitflyerNote",
-     IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_NOTE},
-    {"onboardingPanelBitflyerText",
-     IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_TEXT},
     {"onboardingPanelCompleteHeader",
      IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_HEADER},
     {"onboardingPanelCompleteText",
      IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_TEXT},
-    {"onboardingPanelRedeemHeader",
-     IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_HEADER},
-    {"onboardingPanelRedeemText",
-     IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_TEXT},
-    {"onboardingPanelScheduleHeader",
-     IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_HEADER},
-    {"onboardingPanelScheduleText",
-     IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_TEXT},
     {"onboardingPanelSetupHeader",
      IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_HEADER},
-    {"onboardingPanelSetupText", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_TEXT},
     {"onboardingPanelTippingHeader",
      IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_HEADER},
     {"onboardingPanelTippingText",
      IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_TEXT},
-    {"onboardingPanelVerifyHeader",
-     IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_HEADER},
     {"onboardingPanelVerifyLater",
      IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_LATER},
     {"onboardingPanelVerifyNow", IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_NOW},
@@ -165,12 +149,10 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"onboardingSave", IDS_BRAVE_REWARDS_ONBOARDING_SAVE},
     {"onboardingSelectCountry", IDS_BRAVE_REWARDS_ONBOARDING_SELECT_COUNTRY},
     {"onboardingSetupAdsHeader", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER},
-    {"onboardingSetupAdsSubheader",
-     IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_SUBHEADER},
-    {"onboardingSetupContributeHeader",
-     IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_HEADER},
-    {"onboardingSetupContributeSubheader",
-     IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_SUBHEADER},
+    {"onboardingSetupAdsText1", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_TEXT_1},
+    {"onboardingSetupAdsText2", IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_TEXT_2},
+    {"onboardingSetupChangeLater",
+     IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CHANGE_LATER},
     {"onboardingStartUsingRewards",
      IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS},
     {"onboardingTakeTour", IDS_BRAVE_REWARDS_ONBOARDING_TAKE_TOUR},
@@ -188,11 +170,13 @@ static constexpr webui::LocalizedString kStrings[] = {
      IDS_REWARDS_PANEL_PENDING_TIP_TITLE_REGISTERED},
     {"platformPublisherTitle", IDS_REWARDS_PANEL_PLATFORM_PUBLISHER_TITLE},
     {"refreshStatus", IDS_REWARDS_PANEL_REFRESH_STATUS},
+    {"rewardsLearnMore", IDS_REWARDS_LEARN_MORE},
     {"rewardsLogInToSeeBalance", IDS_REWARDS_LOG_IN_TO_SEE_BALANCE},
     {"rewardsPaymentCheckStatus", IDS_REWARDS_PAYMENT_CHECK_STATUS},
     {"rewardsPaymentCompleted", IDS_REWARDS_PAYMENT_COMPLETED},
     {"rewardsPaymentPending", IDS_REWARDS_PAYMENT_PENDING},
     {"rewardsPaymentProcessing", IDS_REWARDS_PAYMENT_PROCESSING},
+    {"rewardsSettings", IDS_REWARDS_PANEL_REWARDS_SETTINGS},
     {"sendTip", IDS_REWARDS_PANEL_SEND_TIP},
     {"set", IDS_REWARDS_PANEL_SET},
     {"summary", IDS_REWARDS_PANEL_SUMMARY},
@@ -200,10 +184,8 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"unverifiedCreator", IDS_REWARDS_PANEL_UNVERIFIED_CREATOR},
     {"verifiedCreator", IDS_REWARDS_PANEL_VERIFIED_CREATOR},
     {"walletAccountLink", IDS_REWARDS_WALLET_ACCOUNT_LINK},
-    {"walletAddFunds", IDS_REWARDS_WALLET_ADD_FUNDS},
     {"walletAutoContribute", IDS_REWARDS_WALLET_AUTO_CONTRIBUTE},
     {"walletDisconnected", IDS_REWARDS_WALLET_DISCONNECTED},
-    {"walletDisconnectLink", IDS_REWARDS_WALLET_DISCONNECT_LINK},
     {"walletEstimatedEarnings", IDS_REWARDS_WALLET_ESTIMATED_EARNINGS},
     {"walletLogIntoYourAccount", IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT},
     {"walletMonthlyTips", IDS_REWARDS_WALLET_MONTHLY_TIPS},
@@ -223,6 +205,14 @@ RewardsPanelUI::RewardsPanelUI(content::WebUI* web_ui)
     panel_coordinator_ =
         brave_rewards::RewardsPanelCoordinator::FromBrowser(browser);
   }
+
+  auto plural_string_handler = std::make_unique<PluralStringHandler>();
+  plural_string_handler->AddLocalizedString("publisherCountText",
+                                            IDS_REWARDS_PUBLISHER_COUNT_TEXT);
+  plural_string_handler->AddLocalizedString(
+      "onboardingSetupAdsPerHour",
+      IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_PER_HOUR);
+  web_ui->AddMessageHandler(std::move(plural_string_handler));
 
   auto* source = content::WebUIDataSource::Create(kBraveRewardsPanelHost);
   source->AddLocalizedStrings(kStrings);

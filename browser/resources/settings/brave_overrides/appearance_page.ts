@@ -12,7 +12,6 @@ import {loadTimeData} from '../i18n_setup.js'
 
 import '../brave_appearance_page/super_referral.js'
 import '../brave_appearance_page/brave_theme.js'
-import '../brave_appearance_page/sidebar.js'
 import '../brave_appearance_page/toolbar.js'
 
 const superReferralStringId = 'superReferralThemeName'
@@ -60,9 +59,6 @@ RegisterPolymerTemplateModifications({
     if (!bookmarkBarToggle) {
       console.error(`[Brave Settings Overrides] Couldn't find bookmark bar toggle`)
     } else {
-      bookmarkBarToggle.insertAdjacentHTML('beforebegin', `
-        <settings-brave-appearance-sidebar prefs="{{prefs}}"></settings-brave-appearance-sidebar>
-      `)
       bookmarkBarToggle.insertAdjacentHTML('afterend', `
         <settings-brave-appearance-toolbar prefs="{{prefs}}"></settings-brave-appearance-toolbar>
       `)

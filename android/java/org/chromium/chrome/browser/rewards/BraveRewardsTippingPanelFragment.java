@@ -405,7 +405,7 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
         tosTextSS.setSpan(boldSpan, index, index + spanLength, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tosTextSS.setSpan(
                 clickableSpan, index, index + spanLength, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        Typeface typeface = ResourcesCompat.getFont(getActivity(), R.font.poppins_medium);
+        Typeface typeface = ResourcesCompat.getFont(getActivity(), R.font.poppins_500);
         tosTextSS.setSpan(new StyleSpan(typeface.getStyle()), index, index + spanLength,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tosTextSS.setSpan(new ForegroundColorSpan(

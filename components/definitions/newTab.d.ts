@@ -84,7 +84,7 @@ declare namespace NewTab {
     url: string
   }
 
-  export type StackWidget = 'rewards' | 'binance' | 'braveTalk' | 'gemini' | 'bitcoinDotCom' | 'cryptoDotCom' | 'ftx' | ''
+  export type StackWidget = 'rewards' | 'braveTalk' | 'bitcoinDotCom' | ''
 
   export interface GridSitesState {
     removedSites: Site[]
@@ -105,20 +105,12 @@ declare namespace NewTab {
     braveTalkPromptDismissed: boolean
     braveTalkSupported: boolean
     braveTalkPromptAutoDismissed: boolean
-    geminiSupported: boolean
-    binanceSupported: boolean
     bitcoinDotComSupported: boolean
-    cryptoDotComSupported: boolean
-    ftxSupported: boolean
     showEmptyPage: boolean
     rewardsState: RewardsWidgetState
     currentStackWidget: StackWidget
     removedStackWidgets: StackWidget[]
     widgetStackOrder: StackWidget[]
-    binanceState: BinanceWidgetState
-    geminiState: GeminiWidgetState
-    cryptoDotComState: CryptoDotComWidgetState
-    ftxState: FTXWidgetState
   }
 
   export type Preferences = {
@@ -126,16 +118,11 @@ declare namespace NewTab {
     brandedWallpaperOptIn: boolean
     showStats: boolean
     showToday: boolean
-    showBraveNewsButton: boolean
     showClock: boolean
     clockFormat: string
     showTopSites: boolean
     showRewards: boolean
     showBraveTalk: boolean
-    showBinance: boolean
-    showGemini: boolean
-    showCryptoDotCom: boolean
-    showFTX: boolean
     hideAllWidgets: boolean
     isBraveTodayOptedIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
@@ -148,7 +135,6 @@ declare namespace NewTab {
     featureFlagBraveNewsEnabled: boolean
     featureFlagBraveNewsV2Enabled: boolean
     featureFlagBraveNewsPromptEnabled: boolean
-    featureFlagBraveNewsSubscribeButtonEnabled: boolean
     searchPromotionEnabled: boolean
     featureCustomBackgroundEnabled: boolean
     isIncognito: boolean
@@ -173,11 +159,13 @@ declare namespace NewTab {
 
   export interface RewardsWidgetState {
     rewardsEnabled: boolean
+    userVersion: string
     isUnsupportedRegion: boolean
     declaredCountry: string
     adsSupported?: boolean
     balance: RewardsBalance
     externalWallet?: RewardsExtension.ExternalWallet
+    externalWalletProviders?: string[]
     report?: RewardsBalanceReport
     adsAccountStatement: AdsAccountStatement
     dismissedNotifications: string[]
@@ -186,67 +174,8 @@ declare namespace NewTab {
     promotions: Promotion[]
     parameters: RewardsParameters
     totalContribution: number
+    publishersVisitedCount: number
   }
-
-  export interface BinanceWidgetState {
-    binanceSupported?: boolean
-    userTLD: BinanceTLD
-    userLocale: string
-    initialFiat: string
-    initialAmount: string
-    initialAsset: string
-    userTLDAutoSet: boolean
-    accountBalances: Record<string, string>
-    authInProgress: boolean
-    assetBTCValues: Record<string, string>
-    assetUSDValues: Record<string, string>
-    assetBTCVolumes: Record<string, string>
-    userAuthed: boolean
-    btcBalanceValue: string
-    hideBalance: boolean
-    btcPrice: string
-    btcVolume: string
-    binanceClientUrl: string
-    assetDepositInfo: Record<string, any>
-    assetDepoitQRCodeSrcs: Record<string, string>
-    convertAssets: Record<string, Record<string, string>[]>
-    accountBTCValue: string
-    accountBTCUSDValue: string
-    disconnectInProgress: boolean
-    authInvalid: boolean
-    selectedView: string
-    depositInfoSaved: boolean
-  }
-
-  export interface GeminiWidgetState {
-    geminiClientUrl: string
-    userAuthed: boolean
-    authInProgress: boolean
-    tickerPrices: Record<string, string>
-    selectedView: string
-    assetAddresses: Record<string, string>
-    assetAddressQRCodes: Record<string, string>
-    hideBalance: boolean
-    accountBalances: Record<string, string>
-    disconnectInProgress: boolean
-    authInvalid: boolean
-  }
-
-  export interface CryptoDotComWidgetState {
-    optInTotal: boolean
-    optInBTCPrice: boolean
-    optInMarkets: boolean
-    tickerPrices: Record<string, any>
-    losersGainers: Record<string, any>
-    supportedPairs: Record<string, any>
-    charts: Record<string, any>
-  }
-
-  export interface FTXWidgetState {
-    optedIntoMarkets: boolean
-  }
-
-  export type BinanceTLD = 'us' | 'com'
 
   export const enum RewardsResult {
     LEDGER_OK = 0,
@@ -309,6 +238,7 @@ declare namespace NewTab {
     rate: number
     monthlyTipChoices: number[]
     payoutStatus?: Record<string, ProviderPayoutStatus>
+    walletProviderRegions?: Record<string, { allow: string[], block: string[] } | undefined>
   }
 
   export interface DefaultSuperReferralTopSite {

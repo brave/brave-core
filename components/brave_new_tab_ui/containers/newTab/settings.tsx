@@ -51,21 +51,15 @@ export interface Props {
   showSettingsMenu: boolean
   featureFlagBraveNewsEnabled: boolean
   featureCustomBackgroundEnabled: boolean
-  featureFlagBraveNewsSubscribeButtonEnabled: boolean
   onClose: () => void
   onDisplayTodaySection: () => any
   onClearTodayPrefs: () => any
   toggleShowBackgroundImage: () => void
   toggleShowToday: () => any
-  toggleShowBraveNewsButton: () => any
   toggleShowTopSites: () => void
   setMostVisitedSettings: (show: boolean, customize: boolean) => void
   toggleShowRewards: () => void
   toggleShowBraveTalk: () => void
-  toggleShowBinance: () => void
-  toggleShowGemini: () => void
-  toggleShowCryptoDotCom: () => void
-  toggleShowFTX: () => void
   toggleBrandedWallpaperOptIn: () => void
   toggleCards: (show: boolean) => void
   chooseNewCustomImageBackground: () => void
@@ -76,23 +70,14 @@ export interface Props {
   onEnableRewards: () => void
   showBackgroundImage: boolean
   showToday: boolean
-  showBraveNewsButton: boolean
   showTopSites: boolean
   customLinksEnabled: boolean
   brandedWallpaperOptIn: boolean
   allowSponsoredWallpaperUI: boolean
   showRewards: boolean
   showBraveTalk: boolean
-  showBinance: boolean
-  binanceSupported: boolean
   braveRewardsSupported: boolean
   braveTalkSupported: boolean
-  showGemini: boolean
-  geminiSupported: boolean
-  showCryptoDotCom: boolean
-  cryptoDotComSupported: boolean
-  showFTX: boolean
-  ftxSupported: boolean
   todayPublishers?: Publishers
   setActiveTab?: TabType
   cardsHidden: boolean
@@ -288,20 +273,8 @@ export default class Settings extends React.PureComponent<Props, State> {
       showRewards,
       showBraveTalk,
       brandedWallpaperOptIn,
-      toggleShowBinance,
-      showBinance,
-      binanceSupported,
       braveRewardsSupported,
       braveTalkSupported,
-      toggleShowGemini,
-      geminiSupported,
-      showGemini,
-      toggleShowCryptoDotCom,
-      cryptoDotComSupported,
-      showCryptoDotCom,
-      toggleShowFTX,
-      ftxSupported,
-      showFTX,
       toggleCards,
       cardsHidden,
       onEnableRewards
@@ -399,9 +372,6 @@ export default class Settings extends React.PureComponent<Props, State> {
                     onClearPrefs={this.props.onClearTodayPrefs}
                     showToday={this.props.showToday}
                     toggleShowToday={this.props.toggleShowToday}
-                    showBraveNewsButton={this.props.showBraveNewsButton}
-                    featureFlagBraveNewsSubscribeButtonEnabled={this.props.featureFlagBraveNewsSubscribeButtonEnabled}
-                    toggleShowBraveNewsButton={this.props.toggleShowBraveNewsButton}
                   />
                 ) : null
               }
@@ -412,24 +382,12 @@ export default class Settings extends React.PureComponent<Props, State> {
                     <CardsSettings
                       toggleCards={toggleCards}
                       cardsHidden={cardsHidden}
-                      toggleShowBinance={toggleShowBinance}
-                      showBinance={showBinance}
-                      binanceSupported={binanceSupported}
                       toggleShowBraveTalk={toggleShowBraveTalk}
                       showBraveTalk={showBraveTalk}
                       braveTalkSupported={braveTalkSupported}
                       toggleShowRewards={toggleShowRewards}
                       braveRewardsSupported={braveRewardsSupported}
                       showRewards={showRewards}
-                      showGemini={showGemini}
-                      toggleShowGemini={toggleShowGemini}
-                      geminiSupported={geminiSupported}
-                      toggleShowCryptoDotCom={toggleShowCryptoDotCom}
-                      cryptoDotComSupported={cryptoDotComSupported}
-                      showCryptoDotCom={showCryptoDotCom}
-                      toggleShowFTX={toggleShowFTX}
-                      ftxSupported={ftxSupported}
-                      showFTX={showFTX}
                     />
                   ) : null
               }

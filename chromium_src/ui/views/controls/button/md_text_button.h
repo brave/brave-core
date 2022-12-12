@@ -8,26 +8,28 @@
 
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/gfx/vector_icon_types.h"
+#include "ui/views/controls/button/label_button.h"
 
 // Rename MdTextButton to MdTextButtonBase
 #define MdTextButton MdTextButtonBase
 
-// Define a Brave-specific method we can get called from UpdateColors() to
-// extend its functionality instead of defining UpdateColors() "virtual" and
-// overriding it in our version of the MdTextButton class because there are some
-// subclasses that define their own UpdateColors() method (OmniboxChipButton)
-// now, which would not work with the virtual + override approach.
-#define UpdateColors                       \
-  UpdateColors_Unused();                   \
+// Define a Brave-specific method to be called from UpdateColors() to extend its
+// functionality instead of defining UpdateColors() "virtual" and overriding it
+// in our version of the MdTextButton class because there are some subclasses
+// that define their own UpdateColors() method (OmniboxChipButton) now, which
+// would not work with the virtual + override approach.
+// Note: We redefine UpdateBackgroundColor because we want it to be protected.
+#define UpdateBackgroundColor              \
+  UpdateBackgroundColor_Unused();          \
                                            \
  protected:                                \
   virtual void UpdateColorsForBrave() = 0; \
   virtual void UpdateIconForBrave() = 0;   \
-  void UpdateColors
+  void UpdateBackgroundColor
 
 #include "src/ui/views/controls/button/md_text_button.h"
 
-#undef UpdateColors
+#undef UpdateBackgroundColor
 #undef MdTextButton
 
 namespace views {
@@ -63,6 +65,7 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
   void UpdateOldColorsForBrave();
 
   // MdTextButtonBase:
+  void UpdateBackgroundColor() override;
   void UpdateColorsForBrave() override;
   void UpdateIconForBrave() override;
 

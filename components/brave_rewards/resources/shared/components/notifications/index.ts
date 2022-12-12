@@ -5,13 +5,11 @@
 import { Notification } from './notification'
 import { NotificationView } from './notification_view'
 
-import { AddFunds } from './add_funds'
 import { AutoContributeCompleted } from './auto_contribute_completed'
 import { MonthlyTipCompleted } from './monthly_tip_completed'
 import { MonthlyContributionFailed } from './monthly_contribution_failed'
 import { GrantAvailable } from './grant_available'
 import { PendingPublisherVerified } from './pending_publisher_verified'
-import { PendingTipFailed } from './pending_tip_failed'
 import { ExternalWalletDisconnected } from './external_wallet_disconnected'
 import { UpholdBATNotAllowed } from './uphold_bat_not_allowed'
 import { UpholdInsufficientCapabilities } from './uphold_insufficient_capabilities'
@@ -23,8 +21,6 @@ export function getNotificationView (
   notification: Notification
 ): NotificationView {
   switch (notification.type) {
-    case 'add-funds':
-      return AddFunds
     case 'auto-contribute-completed':
       return AutoContributeCompleted
     case 'monthly-tip-completed':
@@ -35,8 +31,6 @@ export function getNotificationView (
       return GrantAvailable
     case 'pending-publisher-verified':
       return PendingPublisherVerified
-    case 'pending-tip-failed':
-      return PendingTipFailed
     case 'external-wallet-disconnected':
       return ExternalWalletDisconnected
     case 'uphold-bat-not-allowed':

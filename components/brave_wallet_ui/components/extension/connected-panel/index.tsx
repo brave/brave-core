@@ -24,6 +24,7 @@ import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import Amount from '../../../utils/amount'
+import { deserializeOrigin } from '../../../utils/model-serialization-utils'
 
 // Hooks
 import { useExplorer, usePricing } from '../../../common/hooks'
@@ -34,17 +35,16 @@ import { useApiProxy } from '../../../common/hooks/use-api-proxy'
 import {
   PanelTypes,
   BraveWallet,
-  BuySupportedChains,
   WalletState,
   WalletOrigin
 } from '../../../constants/types'
 
 // Components
 import {
-  ConnectedBottomNav,
   ConnectedHeader
 } from '../'
 import { SelectNetworkButton, LoadingSkeleton } from '../../shared'
+import { PanelBottomNav } from '../panel-bottom-nav/panel-bottom-nav'
 
 // Styled Components
 import {
@@ -68,13 +68,11 @@ import {
 import { VerticalSpacer } from '../../shared/style'
 
 export interface Props {
-  isSwapSupported: boolean
   navAction: (path: PanelTypes) => void
 }
 
 export const ConnectedPanel = (props: Props) => {
   const {
-    isSwapSupported,
     navAction
   } = props
 
@@ -145,7 +143,7 @@ export const ConnectedPanel = (props: Props) => {
 
     if (selectedCoin) {
       (async () => {
-        await braveWalletService.isPermissionDenied(selectedCoin, originInfo.origin)
+        await braveWalletService.isPermissionDenied(selectedCoin, deserializeOrigin(originInfo.origin))
           .then(result => {
             if (subscribed) {
               setIsPermissionDenied(result.denied)
@@ -189,13 +187,6 @@ export const ConnectedPanel = (props: Props) => {
   const orb = React.useMemo(() => {
     return create({ seed: selectedAccountAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [selectedAccountAddress])
-
-  const isBuyDisabled = React.useMemo(() => {
-    if (!selectedNetwork) {
-      return true
-    }
-    return !BuySupportedChains.includes(selectedNetwork.chainId)
-  }, [BuySupportedChains, selectedNetwork])
 
   const selectedAccountFiatBalance = React.useMemo(() => {
     if (!selectedNetwork || !selectedAccount) {
@@ -318,10 +309,7 @@ export const ConnectedPanel = (props: Props) => {
         </BalanceColumn>
         <MoreAssetsButton onClick={navigate('assets')}>{getLocale('braveWalletPanelViewAccountAssets')}</MoreAssetsButton>
       </CenterColumn>
-      <ConnectedBottomNav
-        selectedNetwork={selectedNetwork}
-        isBuyDisabled={isBuyDisabled}
-        isSwapDisabled={!isSwapSupported}
+      <PanelBottomNav
         onNavigate={navAction}
       />
     </StyledWrapper>

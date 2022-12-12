@@ -21,7 +21,7 @@ import * as WalletPanelActions from '../../../panel/actions/wallet_panel_actions
 
 // Components
 import { Panel } from '../index'
-import { TransactionSubmitted } from './submitted'
+import { TransactionSubmittedOrSigned } from './submitted_or_signed'
 import { TransactionComplete } from './complete'
 import { TransactionFailed } from './failed'
 import { Loader } from './common/common.style'
@@ -61,9 +61,10 @@ export function TransactionStatus (props: Props) {
       ? getLocale('braveWalletButtonClose')
       : getLocale('braveWalletButtonNext')
 
-  if (liveTransaction.txStatus === BraveWallet.TransactionStatus.Submitted) {
+  if (liveTransaction.txStatus === BraveWallet.TransactionStatus.Submitted ||
+      liveTransaction.txStatus === BraveWallet.TransactionStatus.Signed) {
     return (
-      <TransactionSubmitted
+      <TransactionSubmittedOrSigned
         headerTitle={parsedTransaction.intent}
         transaction={liveTransaction}
         onClose={onClose}

@@ -62,8 +62,9 @@ bool BraveSyncServiceImpl::IsSetupInProgress() const {
 }
 
 void BraveSyncServiceImpl::StopAndClear() {
-  SyncServiceImpl::StopAndClear();
+  // Clear prefs before StopAndClear() to make NotifyObservers() be invoked
   brave_sync_prefs_.Clear();
+  SyncServiceImpl::StopAndClear();
 }
 
 std::string BraveSyncServiceImpl::GetOrCreateSyncCode() {
@@ -102,7 +103,23 @@ bool BraveSyncServiceImpl::SetSyncCode(const std::string& sync_code) {
 void BraveSyncServiceImpl::OnSelfDeviceInfoDeleted(base::OnceClosure cb) {
   // This function will follow normal reset process and set SyncRequested to
   // false
-  StopAndClear();
+
+  // We need this to avoid |StopAndClear| call below when initiating sync
+  // chain after clear data when the sync passphrase wasn't decrypted.
+  // Otherwise we have these calls:
+  // ---
+  // BraveSyncServiceImplDelegate::OnDeviceInfoChange()
+  // ...
+  // ClientTagBasedModelTypeProcessor::ClearAllMetadataAndResetStateImpl()
+  // ...
+  // ClientTagBasedModelTypeProcessor::OnSyncStarting()
+  // ---
+  // Note that `ClearAllTrackedMetadataAndResetState` will only be called during
+  // init when sync seed decryption key mismatched.
+  if (GetTransportState() != TransportState::CONFIGURING) {
+    StopAndClear();
+  }
+
   std::move(cb).Run();
 }
 

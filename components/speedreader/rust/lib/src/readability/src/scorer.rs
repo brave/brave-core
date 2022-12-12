@@ -910,6 +910,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                 | local_name!("input")
                 | local_name!("select")
                 | local_name!("button")
+                | local_name!("svg")
                 | local_name!("aside") => true,
                 local_name!("source") => {
                     if let Some(parent) = handle.parent().as_ref() {
@@ -973,18 +974,6 @@ pub fn clean<S: ::std::hash::BuildHasher>(
                         }
                         false
                     }
-                }
-                local_name!("svg") => {
-                    // If the SVG has a parent that is a <figure> it is probably
-                    // an icon to resize the image. This will not format
-                    // correctly in speedreader since images are styled as
-                    // "display: inline".
-                    for ancestor in handle.ancestors().elements() {
-                        if ancestor.name.local == local_name!("figure") {
-                            return true;
-                        }
-                    }
-                    false
                 }
                 _ => false,
             };

@@ -65,7 +65,7 @@
 </message>
 
 <message name="IDS_BRAVE_WELCOME_SEND_REPORTS_LABEL" desc="A checkbox label for user to opt-in opt-out to send diagnostic reports">
-  Send dianogstic reports if Brave crashes or freezes.
+  Send diagnostic reports if Brave crashes or freezes.
 </message>
 
 <message name="IDS_BRAVE_WELCOME_SEND_INSIGHTS_LABEL" desc="A checkbox label for user to opt-in opt-out to share anonymous, product insights information">

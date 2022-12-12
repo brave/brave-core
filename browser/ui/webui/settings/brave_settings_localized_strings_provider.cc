@@ -67,6 +67,8 @@ const char16_t kBraveSyncGuideUrl[] =
     u"https://support.brave.com/hc/en-us/articles/360047642371-Sync-FAQ";
 const char16_t kDeAmpLearnMoreUrl[] =
     u"https://support.brave.com/hc/en-us/articles/8611298579981";
+const char16_t kDebounceLearnMoreUrl[] =
+    u"https://brave.com/privacy-updates/11-debouncing/";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -96,20 +98,18 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES},
     {"appearanceSettingsShowBookmarksButton",
      IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_BOOKMARKS_BUTTON},
-    {"appearanceSettingsShowSidePanelButton",
-     IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_SIDE_PANEL_BUTTON},
     {"appearanceSettingsLocationBarIsWide",
      IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE},
     {"appearanceSettingsShowBraveRewardsButtonLabel",
      IDS_SETTINGS_SHOW_BRAVE_REWARDS_BUTTON_LABEL},
+    {"appearanceSettingsShowBraveNewsButtonLabel",
+     IDS_SETTINGS_SHOW_BRAVE_NEWS_BUTTON_LABEL},
     {"appearanceSettingsAlwaysShowBookmarkBarOnNTP",
      IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP},
     {"appearanceSettingsShowAutocompleteInAddressBar",
      IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR},
     {"appearanceSettingsUseTopSiteSuggestions",
      IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_TOP_SITES},
-    {"appearanceSettingsUseBraveSuggestedSiteSuggestions",
-     IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES},
     {"appearanceSettingsUseHistorySuggestions",
      IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_HISTORY},
     {"appearanceSettingsUseBookmarkSuggestions",
@@ -127,8 +127,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"appearanceSettingsTabHoverModeTooltip",
      IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_TOOLTIP},
 #if BUILDFLAG(ENABLE_SIDEBAR)
+    {"sideBar", IDS_SETTINGS_APPEARNCE_SETTINGS_SIDEBAR_PART_TITLE},
     {"appearanceSettingsShowOptionTitle",
      IDS_SETTINGS_SIDEBAR_SHOW_OPTION_TITLE},
+    {"appearanceSettingsShowSidebarButton",
+     IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_SIDEBAR_BUTTON},
     {"appearanceSettingsShowOptionAlways", IDS_SIDEBAR_SHOW_OPTION_ALWAYS},
     {"appearanceSettingsShowOptionMouseOver",
      IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER},
@@ -152,6 +155,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"speedreaderSettingSubLabel", IDS_SETTINGS_SPEEDREADER_SUB_LABEL},
     {"deAmpSettingLabel", IDS_SETTINGS_DE_AMP_LABEL},
     {"deAmpSettingSubLabel", IDS_SETTINGS_DE_AMP_SUB_LABEL},
+    {"debounceSettingLabel", IDS_SETTINGS_DEBOUNCE_LABEL},
+    {"debounceSettingSubLabel", IDS_SETTINGS_DEBOUNCE_SUB_LABEL},
     {"braveShieldsTitle", IDS_SETTINGS_BRAVE_SHIELDS_TITLE},
     {"braveShieldsDefaultsSectionTitle",
      IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE},
@@ -211,6 +216,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveSyncSetupTitle", IDS_SETTINGS_BRAVE_SYNC_SETUP_TITLE},
     {"braveSyncSetupSubtitle", IDS_SETTINGS_BRAVE_SYNC_SETUP_SUBTITLE},
     {"braveSyncManageActionLabel", IDS_SETTINGS_BRAVE_SYNC_MANAGE_ACTION_LABEL},
+    {"braveSyncCouldNotSyncActionLabel",
+     IDS_SETTINGS_BRAVE_SYNC_COULD_NOT_SYNC_ACTION_LABEL},
     {"braveSyncWordCount", IDS_SETTINGS_BRAVE_SYNC_WORD_COUNT},
     {"braveSyncCopied", IDS_SETTINGS_BRAVE_SYNC_COPIED_TEXT},
     {"braveSyncQRCodeAlt", IDS_SETTINGS_BRAVE_SYNC_QR_IMAGE_ALT},
@@ -260,6 +267,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_BRAVE_SYNC_DELETE_DEVICE_CONFIRMATION},
     {"braveSyncFinalSecurityWarning",
      IDS_BRAVE_SYNC_FINAL_SECURITY_WARNING_TEXT},
+    {"braveSyncPassphraseDecryptionErrorUnlockedSsMessage",
+     IDS_BRAVE_SYNC_PASSPHRASE_DECRYPTION_SS_UNLOCKED_ERROR_MESSAGE},
+    {"braveSyncLeaveAndRejoinTheChainButton",
+     IDS_BRAVE_SYNC_LEAVE_AND_REJOIN_THE_CHAIN_BUTTON},
     {"braveIPFS", IDS_BRAVE_IPFS_SETTINGS_SECTION},
     {"braveTor", IDS_BRAVE_TOR_SETTINGS_SECTION},
     {"braveWallet", IDS_BRAVE_WALLET_SETTINGS_SECTION},
@@ -571,10 +582,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   };
 
   html_source->AddLocalizedStrings(localized_strings);
+  html_source->AddString("braveShieldsExampleTemplate", "example.com");
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
   html_source->AddString("ipfsDNSLinkLearnMoreURL", kDNSLinkLearnMoreURL);
   html_source->AddString("deAmpLearnMoreURL", kDeAmpLearnMoreUrl);
+  html_source->AddString("debounceLearnMoreURL", kDebounceLearnMoreUrl);
   auto confirmation_phrase = brave_l10n::GetLocalizedResourceUTF16String(
       IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE);
   html_source->AddString("walletResetConfirmationPhrase", confirmation_phrase);
@@ -699,6 +712,10 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
     };
     html_source->AddLocalizedStrings(kSessionOnlyToEphemeralStrings);
   }
+
+  // Always disable upstream's side panel align option.
+  // We add our customized option at preferred position.
+  html_source->AddBoolean("showSidePanelOptions", false);
 }
 
 }  // namespace settings

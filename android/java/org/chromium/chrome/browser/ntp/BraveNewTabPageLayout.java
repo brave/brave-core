@@ -112,6 +112,7 @@ import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.base.WindowAndroid;
 
 import java.util.ArrayList;
@@ -134,6 +135,7 @@ public class BraveNewTabPageLayout
     private ViewGroup mMvTilesContainerLayout;
 
     // Own members.
+    private final Context mContext;
     private ImageView mBgImageView;
     private Profile mProfile;
     private SponsoredTab mSponsoredTab;
@@ -181,6 +183,7 @@ public class BraveNewTabPageLayout
     private SharedPreferencesManager.Observer mPreferenceObserver;
     private boolean mComesFromNewTab;
     private boolean mIsTopSitesEnabled;
+    private boolean mIsBraveStatsEnabled;
     private boolean mIsDisplayNews;
     private boolean mIsDisplayNewsOptin;
 
@@ -188,6 +191,8 @@ public class BraveNewTabPageLayout
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        mContext = context;
         mProfile = Profile.getLastUsedRegularProfile();
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         mNTPBackgroundImagesBridge.setNewTabPageListener(newTabPageListener);
@@ -367,15 +372,21 @@ public class BraveNewTabPageLayout
                 BackgroundImagesPreferences.PREF_SHOW_TOP_SITES, true);
     }
 
+    private boolean shouldDisplayBraveStats() {
+        return ContextUtils.getAppSharedPreferences().getBoolean(
+                BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, true);
+    }
+
     private void setNtpRecyclerView(LinearLayoutManager linearLayoutManager) {
         mIsTopSitesEnabled = shouldDisplayTopSites();
+        mIsBraveStatsEnabled = shouldDisplayBraveStats();
 
         if (mNtpAdapter == null) {
             mNtpAdapter = new BraveNtpAdapter(mActivity, this, Glide.with(mActivity),
                     mNewsItemsFeedCard, mBraveNewsController, mMvTilesContainerLayout,
                     mNtpImageGlobal, mSponsoredTab, mWallpaper, mSponsoredLogo,
                     mNTPBackgroundImagesBridge, false, mRecyclerView.getHeight(),
-                    mIsTopSitesEnabled, mIsDisplayNews, mIsDisplayNewsOptin);
+                    mIsTopSitesEnabled, mIsBraveStatsEnabled, mIsDisplayNews, mIsDisplayNewsOptin);
 
             mRecyclerView.setAdapter(mNtpAdapter);
 
@@ -389,6 +400,7 @@ public class BraveNewTabPageLayout
         } else {
             mNtpAdapter.setRecyclerViewHeight(mRecyclerView.getHeight());
             mNtpAdapter.setTopSitesEnabled(mIsTopSitesEnabled);
+            mNtpAdapter.setBraveStatsEnabled(mIsBraveStatsEnabled);
             mNtpAdapter.setDisplayNews(mIsDisplayNews);
         }
 
@@ -763,6 +775,9 @@ public class BraveNewTabPageLayout
             } else if (TextUtils.equals(key, BackgroundImagesPreferences.PREF_SHOW_TOP_SITES)) {
                 mIsTopSitesEnabled = shouldDisplayTopSites();
                 mNtpAdapter.setTopSitesEnabled(mIsTopSitesEnabled);
+            } else if (TextUtils.equals(key, BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS)) {
+                mIsBraveStatsEnabled = shouldDisplayBraveStats();
+                mNtpAdapter.setBraveStatsEnabled(mIsBraveStatsEnabled);
             }
         };
     }
@@ -1337,5 +1352,12 @@ public class BraveNewTabPageLayout
         if (mNtpAdapter != null) {
             mNtpAdapter.setBraveNewsController(mBraveNewsController);
         }
+    }
+
+    protected boolean isScrollableMvtEnabled() {
+        return ChromeFeatureList.isEnabled(ChromeFeatureList.SHOW_SCROLLABLE_MVT_ON_NTP_ANDROID)
+                && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(mContext)
+                && UserPrefs.get(Profile.getLastUsedRegularProfile())
+                           .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
     }
 }

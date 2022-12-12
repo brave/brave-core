@@ -66,10 +66,10 @@ ContentSetting GetDefaultBlockFromControlType(ControlType type) {
                                     : CONTENT_SETTING_BLOCK;
 }
 
-class CookieRules {
+class BraveCookieRules {
  public:
-  CookieRules(ContentSetting general_setting,
-              ContentSetting first_party_setting)
+  BraveCookieRules(ContentSetting general_setting,
+                   ContentSetting first_party_setting)
       : general_setting_(general_setting),
         first_party_setting_(first_party_setting) {}
 
@@ -81,30 +81,32 @@ class CookieRules {
            first_party_setting_ == CONTENT_SETTING_DEFAULT;
   }
 
-  static CookieRules Get(HostContentSettingsMap* map,
-                         const GURL& url,
-                         ContentSettingsType content_type) {
+  static BraveCookieRules Get(HostContentSettingsMap* map, const GURL& url) {
     content_settings::SettingInfo general_info;
     const base::Value& general_value = map->GetWebsiteSetting(
-        GURL::EmptyGURL(), url, content_type, &general_info);
+        GURL::EmptyGURL(), url, ContentSettingsType::BRAVE_COOKIES,
+        &general_info);
 
     content_settings::SettingInfo first_party_info;
-    const base::Value& first_party_value =
-        map->GetWebsiteSetting(url, url, content_type, &first_party_info);
+    const base::Value& first_party_value = map->GetWebsiteSetting(
+        url, url, ContentSettingsType::BRAVE_COOKIES, &first_party_info);
 
-    const ContentSettingsPattern& wildcard = ContentSettingsPattern::Wildcard();
-    if (general_info.primary_pattern == wildcard &&
-        general_info.secondary_pattern == wildcard &&
-        first_party_info.primary_pattern == wildcard &&
-        first_party_info.secondary_pattern == wildcard) {
-      return {CONTENT_SETTING_DEFAULT, CONTENT_SETTING_DEFAULT};
-    }
+    const auto normalize_value = [](const content_settings::SettingInfo& info,
+                                    const base::Value& value) {
+      const ContentSettingsPattern& wildcard =
+          ContentSettingsPattern::Wildcard();
+      if (info.primary_pattern == wildcard &&
+          info.secondary_pattern == wildcard) {
+        return CONTENT_SETTING_DEFAULT;
+      }
+      return content_settings::ValueToContentSetting(value);
+    };
 
-    return {content_settings::ValueToContentSetting(general_value),
-            content_settings::ValueToContentSetting(first_party_value)};
+    return {normalize_value(general_info, general_value),
+            normalize_value(first_party_info, first_party_value)};
   }
 
-  static CookieRules GetDefault(
+  static BraveCookieRules GetDefault(
       content_settings::CookieSettings* cookie_settings) {
     const ContentSetting default_cookies_setting =
         cookie_settings->GetDefaultCookieSetting(nullptr);
@@ -121,7 +123,7 @@ class CookieRules {
     return {CONTENT_SETTING_ALLOW, CONTENT_SETTING_ALLOW};
   }
 
-  void Merge(const CookieRules& other) {
+  void Merge(const BraveCookieRules& other) {
     if (general_setting_ == CONTENT_SETTING_DEFAULT)
       general_setting_ = other.general_setting_;
     if (first_party_setting_ == CONTENT_SETTING_DEFAULT)
@@ -411,14 +413,13 @@ void SetCookieControlType(HostContentSettingsMap* map,
                           ControlType type,
                           const GURL& url,
                           PrefService* local_state) {
-  const auto host_pattern = GetPatternFromURL(url);
-
-  if (!host_pattern.IsValid())
+  auto patterns = content_settings::CreateShieldsCookiesPatterns(url);
+  if (!patterns.host_pattern.IsValid())
     return;
 
   RecordShieldsSettingChanged(local_state);
 
-  if (host_pattern == ContentSettingsPattern::Wildcard()) {
+  if (patterns.host_pattern == ContentSettingsPattern::Wildcard()) {
     // Default settings.
     switch (type) {
       case ControlType::ALLOW:
@@ -446,33 +447,31 @@ void SetCookieControlType(HostContentSettingsMap* map,
     return;
   }
 
-  map->SetContentSettingCustomScope(host_pattern,
+  map->SetContentSettingCustomScope(patterns.host_pattern,
                                     ContentSettingsPattern::Wildcard(),
                                     ContentSettingsType::BRAVE_REFERRERS,
                                     GetDefaultBlockFromControlType(type));
-  const auto primary_pattern =
-      content_settings::CreatePrimaryPattern(host_pattern);
 
   switch (type) {
     case ControlType::BLOCK_THIRD_PARTY:
       // general-rule:
       map->SetContentSettingCustomScope(
-          ContentSettingsPattern::Wildcard(), host_pattern,
+          ContentSettingsPattern::Wildcard(), patterns.host_pattern,
           ContentSettingsType::BRAVE_COOKIES, CONTENT_SETTING_BLOCK);
       // first-party rule:
-      map->SetContentSettingCustomScope(primary_pattern, host_pattern,
-                                        ContentSettingsType::BRAVE_COOKIES,
-                                        CONTENT_SETTING_ALLOW);
+      map->SetContentSettingCustomScope(
+          patterns.domain_pattern, patterns.host_pattern,
+          ContentSettingsType::BRAVE_COOKIES, CONTENT_SETTING_ALLOW);
       break;
     case ControlType::ALLOW:
     case ControlType::BLOCK:
       // Remove first-party rule:
-      map->SetContentSettingCustomScope(primary_pattern, host_pattern,
-                                        ContentSettingsType::BRAVE_COOKIES,
-                                        CONTENT_SETTING_DEFAULT);
+      map->SetContentSettingCustomScope(
+          patterns.domain_pattern, patterns.host_pattern,
+          ContentSettingsType::BRAVE_COOKIES, CONTENT_SETTING_DEFAULT);
       // general-rule:
       map->SetContentSettingCustomScope(
-          ContentSettingsPattern::Wildcard(), host_pattern,
+          ContentSettingsPattern::Wildcard(), patterns.host_pattern,
           ContentSettingsType::BRAVE_COOKIES,
           (type == ControlType::ALLOW) ? CONTENT_SETTING_ALLOW
                                        : CONTENT_SETTING_BLOCK);
@@ -489,9 +488,9 @@ ControlType GetCookieControlType(
   DCHECK(map);
   DCHECK(cookie_settings);
 
-  auto result = CookieRules::Get(map, url, ContentSettingsType::COOKIES);
+  auto result = BraveCookieRules::Get(map, url);
   if (result.HasDefault()) {
-    const auto default_rules = CookieRules::GetDefault(cookie_settings);
+    const auto default_rules = BraveCookieRules::GetDefault(cookie_settings);
     result.Merge(default_rules);
   }
 

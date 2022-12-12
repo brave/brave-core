@@ -78,6 +78,8 @@ export const getTransactionStatusString = (statusId: number) => {
       return getLocale('braveWalletTransactionStatusError')
     case BraveWallet.TransactionStatus.Dropped:
       return getLocale('braveWalletTransactionStatusDropped')
+    case BraveWallet.TransactionStatus.Signed:
+      return getLocale('braveWalletTransactionStatusSigned')
     default:
       return ''
   }
@@ -144,10 +146,7 @@ export const getToAddressesFromSolanaTransaction = (
         return newAccountPubkey.toString() ?? ''
       }
 
-      case 'Unknown': {
-        return solanaTxData?.instructions[0]?.accountMetas[0]?.pubkey.toString() ?? ''
-      }
-
+      case 'Unknown':
       default: return to ?? ''
     }
   })

@@ -3,6 +3,7 @@ import("//build/config/android/rules.gni")
 
 declare_args() {
   brave_android_developer_options_code = ""
+  brave_safebrowsing_api_key = ""
 }
 
 java_cpp_enum("brave_android_java_enums_srcjar") {
@@ -17,5 +18,6 @@ java_cpp_template("brave_config_java") {
   defines = [
     "BRAVE_ANDROID_DEVELOPER_OPTIONS_CODE=\"$brave_android_developer_options_code\"",
     "BRAVE_ANDROID_P3A_ENABLED=$brave_p3a_enabled",
+    "BRAVE_SAFEBROWSING_API_KEY=\"$brave_safebrowsing_api_key\"",
   ]
 }

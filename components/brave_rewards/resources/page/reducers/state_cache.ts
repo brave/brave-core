@@ -29,6 +29,7 @@ function readCachedState (state: Rewards.State) {
 
   return {
     ...state,
+    userVersion: String(cached.userVersion || ''),
     enabledAds: Boolean(cached.enabledAds),
     enabledAdsMigrated: Boolean(cached.enabledAdsMigrated),
     enabledContribute: Boolean(cached.enabledContribute),
@@ -49,9 +50,11 @@ function readCachedState (state: Rewards.State) {
       ...state.adsData,
       adsEnabled: Boolean(cached.adsData.adsEnabled),
       adsPerHour: Number(cached.adsData.adsPerHour) || 0,
-      adsSubdivisionTargeting: String(cached.adsData.adsSubdivisionTargeting),
+      adsSubdivisionTargeting:
+        String(cached.adsData.adsSubdivisionTargeting || ''),
       automaticallyDetectedAdsSubdivisionTargeting:
-        String(cached.adsData.automaticallyDetectedAdsSubdivisionTargeting),
+        String(cached.adsData.automaticallyDetectedAdsSubdivisionTargeting ||
+               ''),
       shouldAllowAdsSubdivisionTargeting:
         Boolean(cached.adsData.shouldAllowAdsSubdivisionTargeting)
     },

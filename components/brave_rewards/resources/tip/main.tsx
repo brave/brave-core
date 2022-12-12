@@ -9,6 +9,7 @@ import { App } from './components/app'
 import { createHost } from './lib/host'
 import { HostContext } from './lib/host_context'
 import { LocaleContext } from '../shared/lib/locale_context'
+import { createLocaleContextForWebUI } from '../shared/lib/webui_locale_context'
 
 const host = createHost()
 
@@ -22,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function Root () {
     return (
       <HostContext.Provider value={host}>
-        <LocaleContext.Provider value={host}>
+        <LocaleContext.Provider value={createLocaleContextForWebUI()}>
           <App />
         </LocaleContext.Provider>
       </HostContext.Provider>

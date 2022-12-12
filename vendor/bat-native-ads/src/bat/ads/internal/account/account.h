@@ -83,6 +83,8 @@ class Account final : public PrefManagerObserver,
 
   void WalletDidChange(const WalletInfo& wallet) const;
 
+  void MaybeResetConfirmations() const;
+
   void TopUpUnblindedTokens() const;
 
   void NotifyWalletDidUpdate(const WalletInfo& wallet) const;

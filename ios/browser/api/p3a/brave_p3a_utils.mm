@@ -38,6 +38,7 @@
 
 - (void)setIsP3AEnabled:(bool)isP3AEnabled {
   _localState->SetBoolean(brave::kP3AEnabled, isP3AEnabled);
+  _localState->CommitPendingWrite();
 }
 
 - (bool)isNoticeAcknowledged {
@@ -46,6 +47,7 @@
 
 - (void)setIsNoticeAcknowledged:(bool)isNoticeAcknowledged {
   _localState->SetBoolean(brave::kP3ANoticeAcknowledged, isNoticeAcknowledged);
+  _localState->CommitPendingWrite();
 }
 
 - (BraveHistogramsController*)histogramsController {

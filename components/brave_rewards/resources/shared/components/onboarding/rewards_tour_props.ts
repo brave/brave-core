@@ -5,12 +5,10 @@
 export interface RewardsTourProps {
   layout?: 'narrow' | 'wide'
   firstTimeSetup: boolean
-  externalWalletProvider?: string
+  canAutoContribute: boolean
+  canConnectAccount: boolean
   adsPerHour: number
-  autoContributeAmount: number
-  autoContributeAmountOptions: number[]
   onAdsPerHourChanged: (adsPerHour: number) => void
-  onAutoContributeAmountChanged: (amount: number) => void
-  onVerifyWalletClick?: () => void
+  onConnectAccount: () => void
   onDone: () => void
 }

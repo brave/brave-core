@@ -17,11 +17,4 @@ chrome.test.runTests([
       chrome.test.fail();
     }
   },
-  function extensionsHaveNoBinanceAccess() {
-    if (!chrome.binance) {
-      chrome.test.succeed();
-    } else {
-      chrome.test.fail();
-    }
-  },
 ]);

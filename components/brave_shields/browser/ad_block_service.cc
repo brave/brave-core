@@ -94,7 +94,7 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
     const std::string& resources_json) {
   if (dat_buf_.empty()) {
     task_runner_->PostTask(
-        FROM_HERE, base::BindOnce(&AdBlockEngine::AddResources, adblock_engine_,
+        FROM_HERE, base::BindOnce(&AdBlockEngine::UseResources, adblock_engine_,
                                   resources_json));
   } else {
     auto engine_load_callback = base::BindOnce(
@@ -133,39 +133,52 @@ void AdBlockService::ShouldStartRequest(
     bool* did_match_rule,
     bool* did_match_exception,
     bool* did_match_important,
-    std::string* mock_data_url) {
+    std::string* mock_data_url,
+    std::string* rewritten_url) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+
+  GURL request_url;
+
   if (aggressive_blocking ||
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockDefault1pBlocking) ||
       !SameDomainOrHost(
           url, url::Origin::CreateFromNormalizedTuple("https", tab_host, 80),
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+    request_url =
+        rewritten_url && !rewritten_url->empty() ? GURL(*rewritten_url) : url;
     default_service()->ShouldStartRequest(
-        url, resource_type, tab_host, aggressive_blocking, did_match_rule,
-        did_match_exception, did_match_important, mock_data_url);
+        request_url, resource_type, tab_host, aggressive_blocking,
+        did_match_rule, did_match_exception, did_match_important, mock_data_url,
+        rewritten_url);
     if (did_match_important && *did_match_important) {
       return;
     }
   }
 
+  request_url =
+      rewritten_url && !rewritten_url->empty() ? GURL(*rewritten_url) : url;
   regional_service_manager()->ShouldStartRequest(
-      url, resource_type, tab_host, aggressive_blocking, did_match_rule,
-      did_match_exception, did_match_important, mock_data_url);
+      request_url, resource_type, tab_host, aggressive_blocking, did_match_rule,
+      did_match_exception, did_match_important, mock_data_url, rewritten_url);
   if (did_match_important && *did_match_important) {
     return;
   }
 
+  request_url =
+      rewritten_url && !rewritten_url->empty() ? GURL(*rewritten_url) : url;
   subscription_service_manager()->ShouldStartRequest(
-      url, resource_type, tab_host, aggressive_blocking, did_match_rule,
-      did_match_exception, did_match_important, mock_data_url);
+      request_url, resource_type, tab_host, aggressive_blocking, did_match_rule,
+      did_match_exception, did_match_important, mock_data_url, rewritten_url);
   if (did_match_important && *did_match_important) {
     return;
   }
 
+  request_url =
+      rewritten_url && !rewritten_url->empty() ? GURL(*rewritten_url) : url;
   custom_filters_service()->ShouldStartRequest(
-      url, resource_type, tab_host, aggressive_blocking, did_match_rule,
-      did_match_exception, did_match_important, mock_data_url);
+      request_url, resource_type, tab_host, aggressive_blocking, did_match_rule,
+      did_match_exception, did_match_important, mock_data_url, rewritten_url);
 }
 
 absl::optional<std::string> AdBlockService::GetCspDirectives(

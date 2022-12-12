@@ -54,13 +54,15 @@ import {
   sendEthTransaction,
   sendFilTransaction,
   sendSolTransaction,
-  sendSPLTransaction
+  sendSPLTransaction,
+  getNFTMetadata
 } from './lib'
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
 import { getCoinFromTxDataUnion, getNetworkInfo } from '../../utils/network-utils'
 import { isSolanaTransaction, shouldReportTransactionP3A } from '../../utils/tx-utils'
 import { walletApi } from '../slices/api.slice'
+import { deserializeOrigin, makeSerializableOriginInfo } from '../../utils/model-serialization-utils'
 
 const handler = new AsyncActionHandler()
 
@@ -149,7 +151,9 @@ handler.on(WalletActions.initialize.type, async (store) => {
   // Initialize active origin state.
   const braveWalletService = getAPIProxy().braveWalletService
   const { originInfo } = await braveWalletService.getActiveOrigin()
-  store.dispatch(WalletActions.activeOriginChanged(originInfo))
+  store.dispatch(WalletActions.activeOriginChanged(
+    makeSerializableOriginInfo(originInfo)
+  ))
   await refreshWalletInfo(store)
 })
 
@@ -295,12 +299,12 @@ handler.on(WalletActions.getAllTokensList.type, async (store) => {
 })
 
 handler.on(WalletActions.addUserAsset.type, async (store: Store, payload: BraveWallet.BlockchainToken) => {
-  const { braveWalletService, jsonRpcService } = getAPIProxy()
-  if (payload.isErc721) {
-    // Get NFTMetadata
-    const result = await jsonRpcService.getERC721Metadata(payload.contractAddress, payload.tokenId, payload.chainId)
-    if (!result.error) {
-      const response = JSON.parse(result.response)
+  const { braveWalletService } = getAPIProxy()
+
+  if (payload.isErc721 || payload.isNft) {
+    const result = await getNFTMetadata(payload)
+    if (!result?.error) {
+      const response = result?.response && JSON.parse(result.response)
       payload.logo = response.image || payload.logo
     }
   }
@@ -308,7 +312,7 @@ handler.on(WalletActions.addUserAsset.type, async (store: Store, payload: BraveW
   const result = await braveWalletService.addUserAsset(payload)
 
   // Refresh balances here for adding ERC721 tokens if result is successful
-  if (payload.isErc721 && result.success) {
+  if ((payload.isErc721 || payload.isNft) && result.success) {
     refreshBalancesPricesAndHistory(store)
   }
   store.dispatch(WalletActions.addUserAssetError(!result.success))
@@ -346,11 +350,20 @@ handler.on(WalletActions.selectPortfolioTimeline.type, async (store: Store, payl
 
 handler.on(WalletActions.sendTransaction.type, async (
   store: Store,
-  payload: SendEthTransactionParams | SendFilTransactionParams | SendSolTransactionParams
+  payload:
+    | Omit<SendEthTransactionParams, 'hasEIP1559Support'>
+    | SendFilTransactionParams
+    | SendSolTransactionParams
 ) => {
+  const { wallet: walletState } = store.getState()
+
   let addResult
   if (payload.coin === BraveWallet.CoinType.ETH) {
-    addResult = await sendEthTransaction(store, payload as SendEthTransactionParams)
+    addResult = await sendEthTransaction({
+      ...payload,
+      hasEIP1559Support: !!walletState.selectedNetwork && !!walletState.selectedAccount &&
+        hasEIP1559Support(walletState.selectedAccount, walletState.selectedNetwork)
+    })
   } else if (payload.coin === BraveWallet.CoinType.FIL) {
     addResult = await sendFilTransaction(payload as SendFilTransactionParams)
   } else if (payload.coin === BraveWallet.CoinType.SOL) {
@@ -586,13 +599,13 @@ handler.on(WalletActions.updateUnapprovedTransactionNonce.type, async (store: St
 
 handler.on(WalletActions.removeSitePermission.type, async (store: Store, payload: RemoveSitePermissionPayloadType) => {
   const braveWalletService = getAPIProxy().braveWalletService
-  await braveWalletService.resetPermission(payload.coin, payload.origin, payload.account)
+  await braveWalletService.resetPermission(payload.coin, deserializeOrigin(payload.origin), payload.account)
   await refreshWalletInfo(store)
 })
 
 handler.on(WalletActions.addSitePermission.type, async (store: Store, payload: AddSitePermissionPayloadType) => {
   const braveWalletService = getAPIProxy().braveWalletService
-  await braveWalletService.addPermission(payload.coin, payload.origin, payload.account)
+  await braveWalletService.addPermission(payload.coin, deserializeOrigin(payload.origin), payload.account)
   await refreshWalletInfo(store)
 })
 

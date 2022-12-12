@@ -169,13 +169,19 @@ void AdBlockRegionalServiceManager::ShouldStartRequest(
     bool* did_match_rule,
     bool* did_match_exception,
     bool* did_match_important,
-    std::string* mock_data_url) {
+    std::string* mock_data_url,
+    std::string* rewritten_url) {
   base::AutoLock lock(regional_services_lock_);
 
+  GURL request_url;
+
   for (const auto& regional_service : regional_services_) {
+    request_url =
+        rewritten_url && !rewritten_url->empty() ? GURL(*rewritten_url) : url;
     regional_service.second->ShouldStartRequest(
-        url, resource_type, tab_host, aggressive_blocking, did_match_rule,
-        did_match_exception, did_match_important, mock_data_url);
+        request_url, resource_type, tab_host, aggressive_blocking,
+        did_match_rule, did_match_exception, did_match_important, mock_data_url,
+        rewritten_url);
     if (did_match_important && *did_match_important) {
       return;
     }
@@ -206,10 +212,10 @@ void AdBlockRegionalServiceManager::EnableTag(const std::string& tag,
   }
 }
 
-void AdBlockRegionalServiceManager::AddResources(const std::string& resources) {
+void AdBlockRegionalServiceManager::UseResources(const std::string& resources) {
   base::AutoLock lock(regional_services_lock_);
   for (const auto& regional_service : regional_services_) {
-    regional_service.second->AddResources(resources);
+    regional_service.second->UseResources(resources);
   }
 }
 

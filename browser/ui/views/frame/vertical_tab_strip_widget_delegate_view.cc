@@ -157,11 +157,8 @@ void VerticalTabStripWidgetDelegateView::UpdateClip() {
   SkPath path;
   const bool is_vertical_tab_left_most =
       !static_cast<BraveBrowserView*>(browser_view_)->IsSidebarVisible() ||
-      !browser_view_->browser()
-           ->profile()
-           ->GetOriginalProfile()
-           ->GetPrefs()
-           ->GetBoolean(prefs::kSidePanelHorizontalAlignment);
+      !browser_view_->browser()->profile()->GetPrefs()->GetBoolean(
+          prefs::kSidePanelHorizontalAlignment);
 
   if (is_vertical_tab_left_most) {
     // We should clip the bottom-left corner too.

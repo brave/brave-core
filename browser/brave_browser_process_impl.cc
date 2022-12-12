@@ -41,8 +41,10 @@
 #include "build/build_config.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
 #include "chrome/browser/net/system_network_context_manager.h"
+#include "chrome/browser/obsolete_system/obsolete_system.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_paths.h"
+#include "chrome/common/pref_names.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
 #include "content/public/browser/browser_thread.h"
@@ -153,6 +155,14 @@ void BraveBrowserProcessImpl::Init() {
 #endif
 
   InitSystemRequestHandlerCallback();
+
+#if !BUILDFLAG(IS_ANDROID)
+  if (!ObsoleteSystem::IsObsoleteNowOrSoon()) {
+    // Clear to show unsupported warning infobar again even if user
+    // suppressed it from previous os.
+    local_state()->ClearPref(prefs::kSuppressUnsupportedOSWarning);
+  }
+#endif
 }
 
 #if !BUILDFLAG(IS_ANDROID)

@@ -29,6 +29,7 @@
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefs/browser_prefs.h"
+#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/grit/brave_components_strings.h"
@@ -257,6 +258,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
     TestingProfile::Builder builder;
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
+    local_state_ = std::make_unique<ScopedTestingLocalState>(
+        TestingBrowserProcess::GetGlobal());
     RegisterUserProfilePrefs(prefs->registry());
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
@@ -268,7 +271,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     tx_service = TxServiceFactory::GetServiceForContext(profile_.get());
     service_ = std::make_unique<BraveWalletService>(
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service, GetPrefs());
+        json_rpc_service_, tx_service, GetPrefs(), local_state_->Get());
     observer_ = std::make_unique<TestBraveWalletServiceObserver>();
     service_->AddObserver(observer_->GetReceiver());
 
@@ -356,6 +359,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   mojom::BlockchainTokenPtr GetBatToken() { return bat_token_.Clone(); }
 
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
+  TestingPrefServiceSimple* GetLocalState() { return local_state_->Get(); }
   BlockchainRegistry* GetRegistry() {
     return BlockchainRegistry::GetInstance();
   }
@@ -686,6 +690,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   }
 
   content::BrowserTaskEnvironment task_environment_;
+  std::unique_ptr<ScopedTestingLocalState> local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
   std::unique_ptr<BraveWalletService> service_;
@@ -1707,9 +1712,9 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsAddIsNFT) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, RecordWalletNoUse) {
-  EXPECT_EQ(GetPrefs()->GetTime(kBraveWalletP3ALastReportTime),
+  EXPECT_EQ(GetLocalState()->GetTime(kBraveWalletP3ALastReportTime),
             base::Time::Now());
-  EXPECT_EQ(GetPrefs()->GetTime(kBraveWalletP3AFirstReportTime),
+  EXPECT_EQ(GetLocalState()->GetTime(kBraveWalletP3AFirstReportTime),
             base::Time::Now());
 
   task_environment_.FastForwardBy(base::Days(3));
@@ -1726,31 +1731,29 @@ TEST_F(BraveWalletServiceUnitTest, RecordWalletNoUse) {
 TEST_F(BraveWalletServiceUnitTest, RecordWalletWeekly) {
   service_->RemovePrefListenersForTests();
   // skipping one week "no report" period
-  task_environment_.FastForwardBy(base::Days(8));
+  task_environment_.FastForwardBy(base::Days(8) + base::Seconds(2));
 
   // unlocked wallet on day 1
-  GetPrefs()->SetTime(kBraveWalletLastUnlockTime,
-                      base::Time::Now() + base::Minutes(1));
-  task_environment_.FastForwardBy(base::Days(1));
-  // now we are at day 2
+  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  task_environment_.RunUntilIdle();
   histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 1, 1);
 
   task_environment_.FastForwardBy(base::Days(2));
-  // day 4
+  // day 3
   histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 1, 3);
 
   // unlocked wallet on day 4
-  GetPrefs()->SetTime(kBraveWalletLastUnlockTime,
-                      base::Time::Now() + base::Minutes(1));
+  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  task_environment_.RunUntilIdle();
   task_environment_.FastForwardBy(base::Days(1));
   // day 5
   histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 1, 3);
-  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 2, 1);
+  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 2, 2);
 
   task_environment_.FastForwardBy(base::Days(2));
   // day 7
   histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 1, 3);
-  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 2, 3);
+  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 2, 4);
 
   task_environment_.FastForwardBy(base::Days(2));
   // day 9, first use is no longer in weekly lookback
@@ -1765,8 +1768,8 @@ TEST_F(BraveWalletServiceUnitTest, RecordWalletMonthly) {
   histogram_tester_->ExpectBucketCount(kBraveWalletMonthlyHistogramName, 0, 0);
 
   // unlocked wallet for first time during current month
-  GetPrefs()->SetTime(kBraveWalletLastUnlockTime,
-                      base::Time::Now() + base::Minutes(1));
+  GetLocalState()->SetTime(kBraveWalletLastUnlockTime,
+                           base::Time::Now() + base::Minutes(1));
   task_environment_.AdvanceClock(base::Days(1));
   task_environment_.FastForwardBy(base::Minutes(1));
   // we do not report the monthly use until the next month
@@ -2229,13 +2232,13 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssetAddress) {
 TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetric) {
   histogram_tester_->ExpectBucketCount(
       kBraveWalletNewUserReturningHistogramName, 0, 1);
-  GetPrefs()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
 
   task_environment_.FastForwardBy(base::Days(1));
   histogram_tester_->ExpectBucketCount(
       kBraveWalletNewUserReturningHistogramName, 2, 2);
 
-  GetPrefs()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
   task_environment_.RunUntilIdle();
 
   histogram_tester_->ExpectBucketCount(
@@ -2247,11 +2250,11 @@ TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetric) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetricMigration) {
-  GetPrefs()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
 
   task_environment_.RunUntilIdle();
-  GetPrefs()->SetTime(kBraveWalletP3AFirstUnlockTime, base::Time());
-  GetPrefs()->SetTime(kBraveWalletP3ALastUnlockTime, base::Time());
+  GetLocalState()->SetTime(kBraveWalletP3AFirstUnlockTime, base::Time());
+  GetLocalState()->SetTime(kBraveWalletP3ALastUnlockTime, base::Time());
 
   task_environment_.FastForwardBy(base::Hours(30));
   // Existing unlock timestamp should not trigger "new" value for new user
@@ -2262,6 +2265,35 @@ TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetricMigration) {
   task_environment_.FastForwardBy(base::Hours(30));
   histogram_tester_->ExpectBucketCount(
       kBraveWalletNewUserReturningHistogramName, 1, 2);
+}
+
+TEST_F(BraveWalletServiceUnitTest, LastUsageTimeMetric) {
+  histogram_tester_->ExpectTotalCount(kBraveWalletLastUsageTimeHistogramName,
+                                      0);
+
+  GetPrefs()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  task_environment_.RunUntilIdle();
+
+  histogram_tester_->ExpectUniqueSample(kBraveWalletLastUsageTimeHistogramName,
+                                        1, 1);
+
+  task_environment_.FastForwardBy(base::Days(7));
+
+  histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
+                                       2, 1);
+
+  task_environment_.FastForwardBy(base::Days(7));
+
+  histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
+                                       3, 1);
+  histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
+                                       1, 7);
+
+  GetPrefs()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  task_environment_.RunUntilIdle();
+
+  histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
+                                       1, 8);
 }
 
 }  // namespace brave_wallet

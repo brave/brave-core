@@ -21,10 +21,11 @@ import { StyledButton, ButtonIcon } from './buy-send-swap-deposit-button.style'
 export interface Props {
   option: NavOption
   isTab?: boolean
+  isSwap?: boolean
 }
 
 export const BuySendSwapDepositButton = (props: Props) => {
-  const { option, isTab } = props
+  const { option, isTab, isSwap } = props
 
   // State
   const [active, setActive] = React.useState(false)
@@ -59,6 +60,7 @@ export const BuySendSwapDepositButton = (props: Props) => {
         orientation='right'
         distance={46}
         showTip={!!isTab && active}
+        isSwap={isSwap}
       />
     </StyledButton>
   )

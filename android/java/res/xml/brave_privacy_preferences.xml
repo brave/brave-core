@@ -56,7 +56,10 @@
             android:title="@string/de_amp_switch"
             android:summary="@string/de_amp_summary"
             android:defaultValue="true" />
-
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="debounce"
+            android:title="@string/debounce_switch"
+            android:summary="@string/debounce_summary" />
     <PreferenceCategory
         android:key="clear_data_section"
         android:title="@string/prefs_section_clear_data"/>
@@ -141,11 +144,6 @@
             android:key="autocomplete_top_sites"
             android:order="25"
             android:title="@string/autocomplete_top_sites_title"
-            android:persistent="false"/>
-        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-            android:key="autocomplete_brave_suggested_sites"
-            android:title="@string/autocomplete_brave_suggested_sites_title"
-            android:order="25"
             android:persistent="false"/>
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="send_p3a_analytics"

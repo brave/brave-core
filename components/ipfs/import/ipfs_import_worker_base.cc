@@ -239,8 +239,7 @@ void IpfsImportWorkerBase::OnImportFilesMoved(
   url_loader_.reset();
   bool success = response.Is2XXResponseCode();
   if (!success) {
-    VLOG(1) << "response_code:" << response.response_code()
-            << " response_body:" << response.body();
+    VLOG(1) << "response_code:" << response.response_code();
   }
   if (!data_->hash.empty() && !key_to_publish_.empty()) {
     PublishContent();
@@ -274,8 +273,7 @@ void IpfsImportWorkerBase::OnContentPublished(
   if (success)
     data_->published_key = key_to_publish_;
   if (!success) {
-    VLOG(1) << "response_code:" << response_code
-            << " response_body:" << response.body();
+    VLOG(1) << "response_code:" << response_code;
   }
   url_loader_.reset();
   NotifyImportCompleted(success ? IPFS_IMPORT_SUCCESS

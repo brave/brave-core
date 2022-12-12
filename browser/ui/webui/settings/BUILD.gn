@@ -7,13 +7,20 @@ source_set("unittests") {
   if (!is_android) {
     testonly = true
 
-    sources = [ "brave_importer_observer_unittest.cc" ]
+    sources = [
+      "brave_importer_observer_unittest.cc",
+      "brave_site_settings_handler_unittest.cc",
+    ]
 
     deps = [
       "//base/test:test_support",
       "//brave/browser/ui",
+      "//brave/components/brave_shields/browser",
+      "//brave/components/resources:strings_grit",
       "//chrome/browser",
       "//chrome/browser/ui",
+      "//chrome/test:test_support",
+      "//components/sync_preferences:test_support",
       "//content/test:test_support",
       "//testing/gtest",
     ]

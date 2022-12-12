@@ -169,6 +169,10 @@ interface ChannelsListener {
   Changed(ChannelsEvent event);
 };
 
+interface FeedListener {
+  OnUpdateAvailable(string feed_hash);
+};
+
 // Browser-side handler
 interface BraveNewsController {
   // Gets the current locale.
@@ -204,8 +208,12 @@ interface BraveNewsController {
   GetFavIconData(string publisher_id) => (array<uint8>? image_data);
   SetPublisherPref(string publisher_id, UserEnabled new_status);
   ClearPrefs();
+
+  // DEPRECATED: Use AddFeedListener::OnUpdateAvailable instead.
   IsFeedUpdateAvailable(string displayed_feed_hash)
     => (bool is_update_available);
+  AddFeedListener(pending_remote<FeedListener> listener);
+
   GetDisplayAd() => (DisplayAd? ad);
   // Lets the browser know when a user begins viewing or scrolling
   // through Brave News, for statistics gathering purposes.

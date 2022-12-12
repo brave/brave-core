@@ -9,9 +9,8 @@ import { createStore, applyMiddleware } from 'redux'
 // Feature core reducer
 import { mainNewTabReducer } from './reducers'
 import todayAsyncHandler from './async/today'
-import ftxAsyncHandler from './widgets/ftx/ftx_async'
 
 export default createStore(
   mainNewTabReducer,
-  applyMiddleware(ftxAsyncHandler, todayAsyncHandler)
+  applyMiddleware(todayAsyncHandler)
 )

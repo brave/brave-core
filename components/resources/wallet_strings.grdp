@@ -101,6 +101,7 @@
   <message name="IDS_BRAVE_WALLET_SEARCH_NFTS" desc="Send tab search for nfts.">Search NFT by name, id</message>
   <message name="IDS_BRAVE_WALLET_BUY_NOT_SUPPORTED_TOOLTIP" desc="Tooltip text when buy action is not supported">Buy support is not available for <ph name="NETWORK"><ex>Binance Smart Chain</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_BUY_TAB_BUY_NOT_SUPPORTED_MESSAGE" desc="Message shown when the selected network is not supported for buy transactions">Buy not supported for selected network</message>
+  <message name="IDS_BRAVE_WALLET_SEARCHING_FOR_DOMAIN" desc="Message shown when searching for a UD or ENS domain">Searching for domain...</message>
   <message name="IDS_BRAVE_WALLET_SWAP_NOT_SUPPORTED_TOOLTIP" desc="Tooltip text when swap action is not supported">Swap support is not available for <ph name="NETWORK"><ex>Binance Smart Chain</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_WARNING" desc="Warning if slippage tolerance is to high">Transaction may be frontrun</message>
   <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_TITLE" desc="BuySendSwapo slippage tolerance title">Slippage tolerance</message>
@@ -374,6 +375,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_CONFIRMED" desc="Status label for confirmed transaction">Confirmed</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_ERROR" desc="Status label for error transaction">Error</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_DROPPED" desc="Status label for dropped transaction">Dropped</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_SIGNED" desc="Status label for signed transaction">Signed</message>
   <message name="IDS_BRAVE_WALLET_RECENT_TRANSACTIONS" desc="Transactions panel title">Recent transactions</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAILS" desc="Transaction details panel title">Transaction details</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_DATE" desc="Transaction Detail Panel Date of transactions">Date</message>
@@ -509,6 +511,8 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNT_FILTER_ALL_ACCOUNTS" desc="Account Filter Selector All Accounts">All Accounts</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_TITLE" desc="Transaction submitted title">Transaction submitted</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_DESCRIPTION" desc="Transaction submitted description">Transaction has been successfully sent to the network and awaits confirmation.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIGNED_TITLE" desc="Transaction signed title">Transaction signed</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIGNED_DESCRIPTION" desc="Transaction signed description">The transaction has been signed and will be sent to network by the DApp</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_HEADER_TITLE" desc="Transaction failed header title"><ph name="VALUE">$1<ex>1 ETH</ex></ph> was returned to your wallet</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_TITLE" desc="Transaction failed title">Transaction failed</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_DESCRIPTION" desc="Transaction failed description">Transaction was failed due to a large price movement. Increase slippage tolerance to succeed at a larger price movement.</message>
@@ -735,4 +739,63 @@
   <message name="IDS_BRAVE_WALLET_NFT_FETCHING_ERROR" desc="Error message displayed when nft metadata is not successfully fetched">Something went wrong when fetching NFT details. Please try again later.</message>
   <message name="IDS_BRAVE_WALLET_ENTER_A_PASSSWORD_TO_CONTINUE" desc="Prompt to enter a password before continuing">Enter a password to continue</message>
   <message name="IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD_TO_START_BACKUP" desc="Password prompt description for backing up wallet">Enter your Brave Wallet password to start backing up wallet.</message>
+  <message name="IDS_BRAVE_SWAP" desc="Swap main title">Swap</message>
+  <message name="IDS_BRAVE_SWAP_REVIEW_ORDER" desc="Text for swap button">Review order</message>
+  <message name="IDS_BRAVE_SWAP_APPROVE_TOKEN" desc="Text for swap button while approving ERC20 token">Approve <ph name="TOKEN">$1</ph></message>
+  <message name="IDS_BRAVE_SWAP_INSUFFICIENT_BALANCE" desc="Text for swap button when token token balance is insufficient">Insufficient <ph name="TOKEN">$1</ph> balance</message>
+  <message name="IDS_BRAVE_SWAP_INSUFFICIENT_LIQUIDITY" desc="Swap CTA text for insufficient liquidity">Insufficient liquidity</message>
+  <message name="IDS_BRAVE_SWAP_SELECT_TOKEN" desc="Dropdown text to select token">Select token</message>
+  <message name="IDS_BRAVE_SWAP_HALF" desc="Amount preset button text for half">Half</message>
+  <message name="IDS_BRAVE_SWAP_MAX" desc="Amount preset button text for max">Max</message>
+  <message name="IDS_BRAVE_SWAP_ENTER_AN_AMOUNT" desc="Text prompting to enter an amount">Enter an amount</message>
+  <message name="IDS_BRAVE_SWAP_FINDING_PRICE" desc="Loader text while quotes are fetched">Finding the best price for you</message>
+  <message name="IDS_BRAVE_SWAP_BALANCE" desc="Text indicating account balance">Balance:</message>
+  <message name="IDS_BRAVE_SWAP_SELECT_A_TOKEN" desc="Text prompting to select a token to swap">Select a token to swap</message>
+  <message name="IDS_BRAVE_SWAP_SHOW_TOKENS_WITH_ZERO_BALANCES" desc="Button text to show tokens with zero balance">Show tokens with no balance</message>
+  <message name="IDS_BRAVE_SWAP_HIDE_TOKENS_WITH_ZERO_BALANCES" desc="Button text to hide tokens with zero balance">Hide zero balance</message>
+  <message name="IDS_BRAVE_SWAP_SEARCH_TOKEN" desc="Text prompt to search token by name">Search token by name</message>
+  <message name="IDS_BRAVE_SWAP_OPTION" desc="Swap quote option">Option</message>
+  <message name="IDS_BRAVE_SWAP_RATE" desc="Swap exchange rate">Rate</message>
+  <message name="IDS_BRAVE_SWAP_PRICE_IMPACT" desc="Swap price impact">Price impact</message>
+  <message name="IDS_BRAVE_SWAP_MINIMUM_RECEIVED_AFTER_SLIPPAGE" desc="Minimum guaranteed amount user will get after the swap">Minimum received after slippage</message>
+  <message name="IDS_BRAVE_SWAP_NETWORK_FEE" desc="Text indicating network fees">Network fee</message>
+  <message name="IDS_BRAVE_SWAP_BRAVE_FEE" desc="Text indicating Brave fee for swaps">Brave fee</message>
+  <message name="IDS_BRAVE_SWAP_FREE" desc="Text indicating free Brave fees for swaps">Free</message>
+  <message name="IDS_BRAVE_SWAP_LIQUIDITY_PROVIDER" desc="Liquidity provider for the swap quote">Liquidity provider</message>
+  <message name="IDS_BRAVE_SWAP_SWAP_AND_SEND" desc="Swap and send to a specific address in one transaction">Swap &amp; send</message>
+  <message name="IDS_BRAVE_SWAP_NO_EXTRA_FEES" desc="Text indicating swap and send has no extra fees">NO extra fees!</message>
+  <message name="IDS_BRAVE_SWAP_CONFIRM_ADDRESS" desc="Text to confirm that the address is correct">I confirm that the address above is correct</message>
+  <message name="IDS_BRAVE_SWAP_ADDRESS_INPUT_PLACEHOLDER" desc="Text to prompt user to enter address for swap and send">Enter recipient's Ethereum address</message>
+  <message name="IDS_BRAVE_SWAP_SELECT_ACCOUNT" desc="Button text to select an account">Select an account</message>
+  <message name="IDS_BRAVE_SWAP_TO_ACCOUNT" desc="Text option indicating that Swap and Send must use one of user's accounts">To my account</message>
+  <message name="IDS_BRAVE_SWAP_TO_ADDRESS" desc="Text option indicating that Swap and Send must use a specific address">To another address</message>
+  <message name="IDS_BRAVE_SWAP_SLOW" desc="Gas price corresponding to slow speed for confirmation">Slow</message>
+  <message name="IDS_BRAVE_SWAP_AVERAGE" desc="Gas price corresponding to average speed for confirmation">Average</message>
+  <message name="IDS_BRAVE_SWAP_FAST" desc="Gas price corresponding to fast speed for confirmation">Fast</message>
+  <message name="IDS_BRAVE_SWAP_GWEI" desc="Unit to use for gas price (giga-wei)">Gwei</message>
+  <message name="IDS_BRAVE_SWAP_SETTINGS" desc="Swap settings">Swap settings</message>
+  <message name="IDS_BRAVE_SWAP_SLIPPAGE_TOLERANCE" desc="Percentage tolerance to allow for slippage during the swap">Slippage tolerance</message>
+  <message name="IDS_BRAVE_SWAP_EXCHANGES" desc="Exchanges to use for the swap trade">Exchanges</message>
+  <message name="IDS_BRAVE_SWAP_DIRECT_ROUTE_TITLE" desc="Text indicating that swap must use direct routes in the trade">Direct route only</message>
+  <message name="IDS_BRAVE_SWAP_DIRECT_ROUTE_DESCRIPTION" desc="Text description direct swap routes option">It insures only direct routing and also disables split trade trading</message>
+  <message name="IDS_BRAVE_SWAP_NETWORK_FEE_DESCRIPTION" desc="Network fee description">Brave uses the top 60 tokens for intermediate routing for performance optimization</message>
+  <message name="IDS_BRAVE_SWAP_COINGECKO_CHEAPER" desc="Quote rate is cheaper than CoinGecko"><ph name="VALUE">$1<ex>0.12</ex></ph>% cheaper than CoinGecko</message>
+  <message name="IDS_BRAVE_SWAP_COINGECKO_WITHIN" desc="Quote rate is within small percentage of CoinGecko">Within <ph name="VALUE">$1<ex>0.12</ex></ph>% CoinGecko</message>
+  <message name="IDS_BRAVE_SWAP_COINGECKO_EXPENSIVE" desc="Quote rate is more expensive than CoinGecko"><ph name="VALUE">$1<ex>12</ex></ph>% more expensive than CoinGecko</message>
+  <message name="IDS_BRAVE_SWAP_API" desc="Application Programming Interface (API)">API</message>
+  <message name="IDS_BRAVE_SWAP_NAME" desc="Name">Name</message>
+  <message name="IDS_BRAVE_SWAP_CONNECT_WALLET" desc="Connect wallet button text">Connect Wallet</message>
+  <message name="IDS_BRAVE_SWAP_DISCONNECT_WALLET" desc="Disconnect wallet">Disconnect</message>
+  <message name="IDS_BRAVE_SWAP_SWITCH_NETWORK" desc="Switch network button text">Switch Network</message>
+  <message name="IDS_BRAVE_SWAP_ADVANCED" desc="Advanced quote details">Advanced</message>
+  <message name="IDS_BRAVE_SWAP_ACCOUNTS" desc="Accounts">Accounts</message>
+  <message name="IDS_BRAVE_SWAP_WALLET" desc="Wallet">Wallet</message>
+  <message name="IDS_BRAVE_SWAP_BEST" desc="Best quote option">Best</message>
+  <message name="IDS_BRAVE_SWAP_HELP_CENTER" desc="Help center">Help Center</message>
+  <message name="IDS_BRAVE_SWAP_PRIVACY_POLICY" desc="Privacy policy">Privacy Policy</message>
+  <message name="IDS_BRAVE_SWAP_PRIVACY_DESCRIPTION" desc="Privacy policy description">This app uses the following third-party APIs:</message>
+  <message name="IDS_BRAVE_SWAP_ZERO_EX_DISCLAIMER" desc="0x swap privacy policy disclaimer">Brave Swap uses 0x as a DEX aggregator for supported EVM networks. 0x will process the Ethereum wallet address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.</message>
+  <message name="IDS_BRAVE_SWAP_JUPITER_DISCLAIMER" desc="Jupiter swap privacy policy disclaimer">Brave Swap uses Jupiter as a DEX aggregator for Solana network. Jupiter will process the Solana wallet address and IP address to fulfill a transaction (including getting quotes). Jupiter will ONLY use this data for the purposes of processing transactions.</message>
+  <message name="IDS_BRAVE_SWAP_ZERO_EX_PRIVACY" desc="0x swap full privacy policy link text">Click here for 0x Privacy Policy.</message>
+  <message name="IDS_BRAVE_SWAP_JUPITER_PRIVACY" desc="Jupiter swap full privacy policy link text">Click here for Jupiter Privacy Policy.</message>
 </grit-part>

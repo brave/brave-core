@@ -6,22 +6,23 @@
 import * as React from 'react'
 
 import DataContext from './state/context'
-import { useShouldPlayAnimations } from './state/hooks'
+import { shouldPlayAnimations } from './state/hooks'
 import { ViewType } from './state/component_types'
 
 import HelpImprove from './components/help-improve'
 import ImportInProgress from './components/import-in-progress'
-import SelectBrowser from './components/select-browser'
-import SelectProfile from './components/select-profile'
-import SetupComplete from './components/setup-complete'
 import Background from './components/background'
 import Welcome from './components/welcome'
+import Loader from './components/loader'
+
+const SelectBrowser = React.lazy(() => import('./components/select-browser'))
+const SelectProfile = React.lazy(() => import('./components/select-profile'))
+const SetupComplete = React.lazy(() => import('./components/setup-complete'))
 
 function MainContainer () {
-  const { viewType } = React.useContext(DataContext)
-  const shouldPlayAnimations = useShouldPlayAnimations()
+  const { viewType, setViewType } = React.useContext(DataContext)
 
-  let mainEl = <Welcome />
+  let mainEl = null
 
   if (viewType === ViewType.ImportSelectBrowser) {
     mainEl = <SelectBrowser />
@@ -47,9 +48,22 @@ function MainContainer () {
     mainEl = <HelpImprove />
   }
 
+  if (viewType === ViewType.DefaultBrowser) {
+    mainEl = <Welcome />
+  }
+
+  const onBackgroundImgLoad = () => {
+    setViewType(ViewType.DefaultBrowser)
+  }
+
   return (
-    <Background static={!shouldPlayAnimations}>
-      {mainEl}
+    <Background
+      static={!shouldPlayAnimations}
+      onLoad={onBackgroundImgLoad}
+    >
+      <React.Suspense fallback={<Loader />}>
+        {mainEl}
+      </React.Suspense>
     </Background>
   )
 }

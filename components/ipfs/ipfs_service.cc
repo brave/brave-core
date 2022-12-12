@@ -553,7 +553,7 @@ void IpfsService::OnGetConnectedPeers(
   }
 
   if (success)
-    success = IPFSJSONParser::GetPeersFromJSON(response.body(), &peers);
+    success = IPFSJSONParser::GetPeersFromJSON(response.value_body(), &peers);
 
   if (callback)
     std::move(callback).Run(success, peers);
@@ -601,7 +601,7 @@ void IpfsService::OnGetAddressesConfig(
     return;
   }
 
-  success = IPFSJSONParser::GetAddressesConfigFromJSON(response.body(),
+  success = IPFSJSONParser::GetAddressesConfigFromJSON(response.value_body(),
                                                        &addresses_config);
   std::move(callback).Run(success, addresses_config);
 }
@@ -773,7 +773,8 @@ void IpfsService::OnRepoStats(APIRequestList::iterator iter,
     return;
   }
 
-  success = IPFSJSONParser::GetRepoStatsFromJSON(response.body(), &repo_stats);
+  success =
+      IPFSJSONParser::GetRepoStatsFromJSON(response.value_body(), &repo_stats);
   std::move(callback).Run(success, repo_stats);
 }
 
@@ -813,7 +814,8 @@ void IpfsService::OnNodeInfo(APIRequestList::iterator iter,
     return;
   }
 
-  success = IPFSJSONParser::GetNodeInfoFromJSON(response.body(), &node_info);
+  success =
+      IPFSJSONParser::GetNodeInfoFromJSON(response.value_body(), &node_info);
   std::move(callback).Run(success, node_info);
 }
 
@@ -853,9 +855,7 @@ void IpfsService::OnGarbageCollection(
 
   std::string error;
   if (success) {
-    const std::string& body = response.body();
-    if (!body.empty())
-      IPFSJSONParser::GetGarbageCollectionFromJSON(body, &error);
+    IPFSJSONParser::GetGarbageCollectionFromJSON(response.value_body(), &error);
   }
   std::move(callback).Run(success && error.empty(), error);
 }

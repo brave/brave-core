@@ -28,15 +28,14 @@ OBJC_EXPORT
 
 /// Registers a filter list with the component updater and calls
 /// `componentReady` each time the component is updated
-- (void)registerFilterListComponent:(AdblockFilterListCatalogEntry*)filterList
-                     componentReady:
-                         (void (^)(AdblockFilterListCatalogEntry* filterList,
-                                   NSString* _Nullable installPath))
-                             componentReady;
+- (void)registerFilterListComponent:(AdblockFilterListCatalogEntry*)entry
+                 useLegacyComponent:(bool)useLegacyComponent
+                     componentReady:(void (^)(NSString* _Nullable installPath))
+                                        componentReady;
 
 /// Unregisters a filter list with the component updater
-- (void)unregisterFilterListComponent:
-    (AdblockFilterListCatalogEntry*)filterList;
+- (void)unregisterFilterListComponent:(AdblockFilterListCatalogEntry*)entry
+                   useLegacyComponent:(bool)useLegacyComponent;
 
 - (instancetype)init NS_UNAVAILABLE;
 

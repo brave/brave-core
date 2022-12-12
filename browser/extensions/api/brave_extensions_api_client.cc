@@ -28,54 +28,6 @@ bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
     return true;  // protected URL
   }
 
-  // Binance
-  URLPattern pattern1(URLPattern::SCHEME_HTTPS,
-      "https://accounts.binance.com/*/oauth/authorize*");
-  URLPattern pattern2(URLPattern::SCHEME_HTTPS,
-      "https://accounts.binance.com/oauth/token*");
-  if (pattern1.MatchesURL(request.url) || pattern2.MatchesURL(request.url)) {
-    return true;
-  }
-
-  if (request.url.SchemeIs(kBinanceScheme)) {
-    return true;
-  }
-
-  // Gemini
-  URLPattern auth_pattern(URLPattern::SCHEME_HTTPS,
-      "https://exchange.gemini.com/auth*");
-  URLPattern token_pattern(URLPattern::SCHEME_HTTPS,
-      "https://exchange.gemini.com/auth/token*");
-  if (auth_pattern.MatchesURL(request.url) ||
-      token_pattern.MatchesURL(request.url)) {
-    return true;
-  }
-
-  if (request.url.SchemeIs(kGeminiScheme)) {
-    return true;
-  }
-
-  // FTX
-  URLPattern ftx_us_auth_pattern(URLPattern::SCHEME_HTTPS,
-                                 "https://ftx.us/oauth*");
-  URLPattern ftx_us_token_pattern(URLPattern::SCHEME_HTTPS,
-                                  "https://ftx.us/api/oauth/token*");
-  URLPattern ftx_com_auth_pattern(URLPattern::SCHEME_HTTPS,
-                                  "https://ftx.com/oauth*");
-  URLPattern ftx_com_token_pattern(URLPattern::SCHEME_HTTPS,
-                                   "https://ftx.com/api/oauth/token*");
-
-  if (ftx_us_auth_pattern.MatchesURL(request.url) ||
-      ftx_us_token_pattern.MatchesURL(request.url) ||
-      ftx_com_auth_pattern.MatchesURL(request.url) ||
-      ftx_com_token_pattern.MatchesURL(request.url)) {
-    return true;
-  }
-
-  if (request.url.SchemeIs(kFTXScheme)) {
-    return true;
-  }
-
   return ChromeExtensionsAPIClient::ShouldHideBrowserNetworkRequest(context,
                                                                     request);
 }

@@ -21,8 +21,8 @@
         android:gravity="center"
         android:layout_marginTop="24dp"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/rewards_panel_text_color"/>
+        android:fontFamily="@font/poppins_600"
+        android:textColor="@color/rewards_panel_secondary_text_color"/>
 
       <TextView
         android:id="@+id/text_view"
@@ -30,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
+        android:fontFamily="@font/poppins_400"
         android:textSize="14sp"
         android:textColor="@color/rewards_panel_secondary_text_color"/>
 
@@ -42,6 +43,7 @@
           android:id="@+id/image_view"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:adjustViewBounds="true"
           android:layout_gravity="center"
           android:contentDescription="@null"/>
 

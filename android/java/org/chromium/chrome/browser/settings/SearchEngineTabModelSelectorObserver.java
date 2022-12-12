@@ -17,11 +17,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelectorObserver;
  *  we use different DSE for normal and private tab.
  */
 public class SearchEngineTabModelSelectorObserver implements TabModelSelectorObserver {
-    private TabModelSelector mTabModelSelector;
-
-    public SearchEngineTabModelSelectorObserver(TabModelSelector tabModelSelector) {
-        mTabModelSelector = tabModelSelector;
-    }
+    public SearchEngineTabModelSelectorObserver() {}
 
     @Override
     public void onChange() {}
@@ -32,7 +28,7 @@ public class SearchEngineTabModelSelectorObserver implements TabModelSelectorObs
     @Override
     public void onTabModelSelected(TabModel newModel, TabModel oldModel) {
         if (newModel.getProfile().isOffTheRecord()) {
-            BraveSearchEngineUtils.initializePrivateBraveSearchEngineStates(newModel.getProfile());
+            BraveSearchEngineUtils.initializeBraveSearchEngineStates(newModel.getProfile());
         } else {
             BraveSearchEngineUtils.updateActiveDSE(newModel.getProfile());
         }

@@ -35,6 +35,7 @@ namespace brave_wallet {
 extern const char kBraveWalletWeeklyHistogramName[];
 extern const char kBraveWalletMonthlyHistogramName[];
 extern const char kBraveWalletNewUserReturningHistogramName[];
+extern const char kBraveWalletLastUsageTimeHistogramName[];
 
 class KeyringService;
 class JsonRpcService;
@@ -63,7 +64,8 @@ class BraveWalletService : public KeyedService,
                      KeyringService* keyring_service,
                      JsonRpcService* json_rpc_service,
                      TxService* tx_service,
-                     PrefService* prefs);
+                     PrefService* profile_prefs,
+                     PrefService* local_state);
   ~BraveWalletService() override;
 
   BraveWalletService(const BraveWalletService&) = delete;
@@ -72,16 +74,18 @@ class BraveWalletService : public KeyedService,
   mojo::PendingRemote<mojom::BraveWalletService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BraveWalletService> receiver);
 
-  static void MigrateUserAssetEthContractAddress(PrefService* prefs);
-  static void MigrateMultichainUserAssets(PrefService* prefs);
-  static void MigrateUserAssetsAddPreloadingNetworks(PrefService* prefs);
-  static void MigrateUserAssetsAddIsNFT(PrefService* prefs);
+  static void MigrateUserAssetEthContractAddress(PrefService* profile_prefs);
+  static void MigrateMultichainUserAssets(PrefService* profile_prefs);
+  static void MigrateUserAssetsAddPreloadingNetworks(
+      PrefService* profile_prefs);
+  static void MigrateUserAssetsAddIsNFT(PrefService* profile_prefs);
 
-  static bool AddUserAsset(mojom::BlockchainTokenPtr token, PrefService* prefs);
+  static bool AddUserAsset(mojom::BlockchainTokenPtr token,
+                           PrefService* profile_prefs);
   static std::vector<mojom::BlockchainTokenPtr> GetUserAssets(
       const std::string& chain_id,
       mojom::CoinType coin,
-      PrefService* prefs);
+      PrefService* profile_prefs);
   static base::Value::Dict GetDefaultEthereumAssets();
   static base::Value::Dict GetDefaultSolanaAssets();
   static base::Value::Dict GetDefaultFilecoinAssets();
@@ -251,14 +255,6 @@ class BraveWalletService : public KeyedService,
       mojom::CoinType coin,
       const std::string& chain_id);
   void OnWalletUnlockPreferenceChanged(const std::string& pref_name);
-  void OnP3ATimerFired();
-
-  void RecordWalletUsage(bool unlocked);
-
-  void WriteStatsToHistogram(base::Time wallet_last_used,
-                             base::Time first_p3a_report,
-                             base::Time last_p3a_report,
-                             unsigned use_days_in_week);
 
   void OnGetImportInfo(
       const std::string& new_password,
@@ -316,12 +312,11 @@ class BraveWalletService : public KeyedService,
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   raw_ptr<TxService> tx_service_ = nullptr;
-  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<PrefService> profile_prefs_ = nullptr;
   BraveWalletP3A brave_wallet_p3a_;
   AssetDiscoveryManager asset_discovery_manager_;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
   PrefChangeRegistrar pref_change_registrar_;
-  base::RepeatingTimer p3a_periodic_timer_;
   base::WeakPtrFactory<BraveWalletService> weak_ptr_factory_;
 };
 

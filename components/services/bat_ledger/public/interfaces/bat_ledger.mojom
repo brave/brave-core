@@ -90,8 +90,6 @@ interface BatLedger {
   RemoveRecurringTip(string publisher_key) => (ledger.mojom.Result result);
   GetCreationStamp() => (uint64 boot_stamp);
 
-  HasSufficientBalanceToReconcile() => (bool sufficient);
-
   GetRewardsInternalsInfo() => (ledger.mojom.RewardsInternalsInfo info);
 
   SaveRecurringTip(ledger.mojom.RecurringTip info) => (ledger.mojom.Result result);
@@ -100,6 +98,8 @@ interface BatLedger {
 
   GetActivityInfoList(uint32 start, uint32 limit, ledger.mojom.ActivityInfoFilter? filter) =>
       (array<ledger.mojom.PublisherInfo> list);
+
+  GetPublishersVisitedCount() => (int32 count);
 
   GetExcludedList() => (array<ledger.mojom.PublisherInfo> list);
 
@@ -138,8 +138,6 @@ interface BatLedger {
   GetExternalWallet(string wallet_type) => (ledger.mojom.GetExternalWalletResult result);
 
   ConnectExternalWallet(string wallet_type, map<string, string> args) => (ledger.mojom.ConnectExternalWalletResult result);
-
-  DisconnectWallet(string wallet_type) => (ledger.mojom.Result result);
 
   GetTransactionReport(ledger.mojom.ActivityMonth month, int32 year) => (array<ledger.mojom.TransactionReportInfo> list);
 
@@ -253,7 +251,11 @@ interface BatLedgerClient {
 
   ClearAllNotifications();
 
-  WalletDisconnected(string wallet_type);
+  ExternalWalletConnected();
+
+  ExternalWalletLoggedOut();
+
+  ExternalWalletReconnected();
 
   DeleteLog() => (ledger.mojom.Result result);
 

@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/sync/driver/brave_sync_service_impl.h"
+#include "components/os_crypt/os_crypt.h"
 
 // IsSetupInProgress isn't accurate in brave sync flow especially for the first
 // time setup, we rely on it to display setup dialog
@@ -18,6 +19,8 @@
       bool failed_to_decrypt = false;                                       \
       brave_sync_service->prefs().GetSeed(&failed_to_decrypt);              \
       sync_status.Set("hasSyncWordsDecryptionError", failed_to_decrypt);    \
+      sync_status.Set("isOsEncryptionAvailable",                            \
+                      OSCrypt::IsEncryptionAvailable());                    \
     }                                                                       \
   }
 

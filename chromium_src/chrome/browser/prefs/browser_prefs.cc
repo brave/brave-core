@@ -118,6 +118,27 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
   NTPBackgroundPrefs(profile->GetPrefs()).MigrateOldPref();
 #endif
+
+  // Added 24/11/2022: https://github.com/brave/brave-core/pull/16027
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+  profile->GetPrefs()->ClearPref(kFTXAccessToken);
+  profile->GetPrefs()->ClearPref(kFTXOauthHost);
+  profile->GetPrefs()->ClearPref(kFTXNewTabPageShowFTX);
+  profile->GetPrefs()->ClearPref(kCryptoDotComNewTabPageShowCryptoDotCom);
+  profile->GetPrefs()->ClearPref(kCryptoDotComHasBoughtCrypto);
+  profile->GetPrefs()->ClearPref(kCryptoDotComHasInteracted);
+  profile->GetPrefs()->ClearPref(kGeminiAccessToken);
+  profile->GetPrefs()->ClearPref(kGeminiRefreshToken);
+  profile->GetPrefs()->ClearPref(kNewTabPageShowGemini);
+#endif
+
+  // Added 24/11/2022: https://github.com/brave/brave-core/pull/16027
+#if !BUILDFLAG(IS_IOS)
+  profile->GetPrefs()->ClearPref(kBinanceAccessToken);
+  profile->GetPrefs()->ClearPref(kBinanceRefreshToken);
+  profile->GetPrefs()->ClearPref(kNewTabPageShowBinance);
+  profile->GetPrefs()->ClearPref(kBraveSuggestedSiteSuggestionsEnabled);
+#endif
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 

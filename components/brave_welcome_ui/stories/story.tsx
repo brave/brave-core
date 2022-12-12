@@ -6,12 +6,11 @@
 import * as React from 'react'
 import welcomeDarkTheme from '../theme/welcome-dark'
 import welcomeLightTheme from '../theme/welcome-light'
-import { boolean, withKnobs } from '@storybook/addon-knobs'
+import { withKnobs } from '@storybook/addon-knobs'
 
 import './locale'
 
 // Components
-import WelcomePage from './page/index'
 import SelectBrowser from '../components/select-browser'
 import SelectProfile from '../components/select-profile'
 import HelpImprove from '../components/help-improve'
@@ -129,10 +128,6 @@ export default {
   ]
 }
 
-export const Page = () => (
-  <WelcomePage isDefaultSearchGoogle={boolean('Is default search google?', true)}/>
-)
-
 export const _SelectBrowser = () => {
   return <SelectBrowser />
 }
@@ -158,5 +153,5 @@ export const _Welcome = () => {
 }
 
 export const _Background = () => {
-  return <Background static={false} />
+  return <Background static={true} />
 }

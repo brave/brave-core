@@ -149,7 +149,11 @@ class LedgerClientMojoBridge :
 
   void ClearAllNotifications() override;
 
-  void WalletDisconnected(const std::string& wallet_type) override;
+  void ExternalWalletConnected() override;
+
+  void ExternalWalletLoggedOut() override;
+
+  void ExternalWalletReconnected() override;
 
   void DeleteLog(DeleteLogCallback callback) override;
 

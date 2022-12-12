@@ -80,6 +80,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ApplicationLifetime;
 import org.chromium.chrome.browser.BraveAdFreeCalloutDialogFragment;
 import org.chromium.chrome.browser.BraveAdaptiveCaptchaUtils;
+import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
@@ -146,6 +147,8 @@ import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rate.RateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
+import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
+import org.chromium.chrome.browser.safe_browsing.SafeBrowsingState;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserListener;
 import org.chromium.chrome.browser.settings.BraveNewsPreferences;
@@ -182,6 +185,8 @@ import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
+import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
+import org.chromium.components.safe_browsing.SafeBrowsingApiBridge;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
@@ -204,8 +209,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @JNINamespace("chrome::android")
 public abstract class BraveActivity<C extends ChromeActivityComponent> extends ChromeActivity
         implements BrowsingDataBridge.OnClearBrowsingDataListener, BraveVpnObserver,
-                   OnBraveSetDefaultBrowserListener, ConnectionErrorHandler, PrefObserver {
-    public static final String ADD_FUNDS_URL = "brave://rewards/#add-funds";
+                   OnBraveSetDefaultBrowserListener, ConnectionErrorHandler, PrefObserver,
+                   BraveSafeBrowsingApiHandler.BraveSafeBrowsingApiHandlerDelegate {
     public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
     public static final String BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL =
             "brave://rewards/#verify";
@@ -234,6 +239,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     private static final List<String> yandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
+
+    private BraveSafeBrowsingApiHandler mBraveSafeBrowsingApiHandler;
 
     private String mPurchaseToken = "";
     private String mProductId = "";
@@ -292,6 +299,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 return;
             }
             updateWalletBadgeVisibility();
+        }
+        boolean safeBrowsingFlagEnabled =
+                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_SAFE_BROWSING);
+        boolean safeBrowsingPrefEnabled =
+                SafeBrowsingBridge.getSafeBrowsingState() != SafeBrowsingState.NO_SAFE_BROWSING;
+        if (safeBrowsingFlagEnabled && safeBrowsingPrefEnabled) {
+            mBraveSafeBrowsingApiHandler.initSafeBrowsing();
+        } else if (!safeBrowsingFlagEnabled && safeBrowsingPrefEnabled) {
+            SafeBrowsingBridge.setSafeBrowsingState(SafeBrowsingState.NO_SAFE_BROWSING);
         }
     }
 
@@ -765,6 +781,18 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> { BraveStatsUtil.removeShareStatsFile(); });
+        if (mBraveSafeBrowsingApiHandler == null) {
+            mBraveSafeBrowsingApiHandler =
+                    new BraveSafeBrowsingApiHandler(this, BraveConfig.SAFEBROWSING_API_KEY, this);
+            SafeBrowsingApiBridge.setHandler(mBraveSafeBrowsingApiHandler);
+            SafeBrowsingApiBridge.ensureInitialized();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mBraveSafeBrowsingApiHandler.shutdownSafeBrowsing();
     }
 
     @Override
@@ -786,6 +814,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void onPreferenceChange() {
         maybeSolveAdaptiveCaptcha();
+    }
+
+    @Override
+    public void turnSafeBrowsingOff() {
+        SafeBrowsingBridge.setSafeBrowsingState(SafeBrowsingState.NO_SAFE_BROWSING);
     }
 
     public void maybeSolveAdaptiveCaptcha() {
@@ -1245,8 +1278,17 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             };
 
     private void checkAndshowNotificationWarningDialog() {
-        if (BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(this)) {
-            showNotificationWarningDialog();
+        OnboardingPrefManager.getInstance().updateLaunchCount();
+        if (OnboardingPrefManager.getInstance().launchCount() >= 3
+                && BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(this)
+                && !OnboardingPrefManager.getInstance()
+                            .isNotificationPermissionEnablingDialogShown()) {
+            if (BravePermissionUtils.hasNotificationPermission(this)) {
+                showNotificationWarningDialog();
+            } else {
+                maybeShowNotificationPermissionRetionale();
+            }
+            OnboardingPrefManager.getInstance().setNotificationPermissionEnablingDialogShown(true);
         } else {
             checkForNotificationData();
         }

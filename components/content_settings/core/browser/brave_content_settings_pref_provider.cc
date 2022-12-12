@@ -386,7 +386,8 @@ void BravePrefProvider::MigrateShieldsSettingsV2ToV3() {
     // Replace first party placeholder with actual pattern
     if (new_rule.primary_pattern == first_party) {
       new_rule.primary_pattern =
-          content_settings::CreatePrimaryPattern(new_rule.secondary_pattern);
+          content_settings::CreateShieldsCookiesDomainPattern(
+              new_rule.secondary_pattern);
     }
     new_rules.push_back(std::move(new_rule));
   }

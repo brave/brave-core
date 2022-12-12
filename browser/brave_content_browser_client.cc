@@ -34,7 +34,6 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
-#include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_status_header_throttle.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_federated/features.h"
@@ -66,8 +65,6 @@
 #include "brave/components/de_amp/browser/de_amp_throttle.h"
 #include "brave/components/debounce/browser/debounce_navigation_throttle.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
-#include "brave/components/ftx/browser/buildflags/buildflags.h"
-#include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/buildflags/buildflags.h"
 #include "brave/components/playlist/features.h"
@@ -164,18 +161,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/speedreader/speedreader_throttle.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
-#endif
-
-#if BUILDFLAG(BINANCE_ENABLED)
-#include "brave/browser/binance/binance_protocol_handler.h"
-#endif
-
-#if BUILDFLAG(GEMINI_ENABLED)
-#include "brave/browser/gemini/gemini_protocol_handler.h"
-#endif
-
-#if BUILDFLAG(ENABLE_FTX)
-#include "brave/browser/ftx/ftx_protocol_handler.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -677,30 +662,6 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     return true;
   }
 
-#if BUILDFLAG(BINANCE_ENABLED)
-  if (binance::IsBinanceProtocol(url)) {
-    binance::HandleBinanceProtocol(url, web_contents_getter, page_transition,
-                                   has_user_gesture, initiating_origin);
-    return true;
-  }
-#endif
-
-#if BUILDFLAG(GEMINI_ENABLED)
-  if (gemini::IsGeminiProtocol(url)) {
-    gemini::HandleGeminiProtocol(url, web_contents_getter, page_transition,
-                                 has_user_gesture, initiating_origin);
-    return true;
-  }
-#endif
-
-#if BUILDFLAG(ENABLE_FTX)
-  if (ftx::IsFTXProtocol(url)) {
-    ftx::HandleFTXProtocol(url, web_contents_getter, page_transition,
-                           has_user_gesture, initiating_origin);
-    return true;
-  }
-#endif
-
   return ChromeContentBrowserClient::HandleExternalProtocol(
       url, web_contents_getter, frame_tree_node_id, navigation_data,
       is_primary_main_frame, is_in_fenced_frame_tree, sandbox_flags,
@@ -771,24 +732,21 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
 
     auto* tab_helper =
         speedreader::SpeedreaderTabHelper::FromWebContents(contents);
-    if (tab_helper) {
-      const auto state = tab_helper->PageDistillState();
-      if (speedreader::PageWantsDistill(state) && isMainFrame) {
-        // Only check for disabled sites if we are in Speedreader mode
-        const bool check_disabled_sites =
-            state == speedreader::DistillState::kSpeedreaderModePending;
-        auto* speedreader_service =
-            speedreader::SpeedreaderServiceFactory::GetForProfile(
-                Profile::FromBrowserContext(browser_context));
-        std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
-            speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
-                g_brave_browser_process->speedreader_rewriter_service(),
-                speedreader_service, settings_map, tab_helper->GetWeakPtr(),
-                request.url, check_disabled_sites,
-                base::ThreadTaskRunnerHandle::Get());
-        if (throttle)
-          result.push_back(std::move(throttle));
-      }
+    if (tab_helper && isMainFrame) {
+      const bool check_disabled_sites =
+          tab_helper->PageDistillState() ==
+          speedreader::DistillState::kSpeedreaderModePending;
+      auto* speedreader_service =
+          speedreader::SpeedreaderServiceFactory::GetForProfile(
+              Profile::FromBrowserContext(browser_context));
+      std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
+          speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
+              g_brave_browser_process->speedreader_rewriter_service(),
+              speedreader_service, settings_map, tab_helper->GetWeakPtr(),
+              request.url, check_disabled_sites,
+              base::ThreadTaskRunnerHandle::Get());
+      if (throttle)
+        result.push_back(std::move(throttle));
     }
 #endif  // ENABLE_SPEEDREADER
 
@@ -1105,37 +1063,19 @@ void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
 blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {
   blink::UserAgentMetadata metadata =
       ChromeContentBrowserClient::GetUserAgentMetadata();
-  if (metadata.brand_version_list.size() == 2) {
-    // some logic copied from upstream GetUserAgentBrandList and
-    // GenerateBrandVersionList
-    std::string major_version_string = version_info::GetMajorVersionNumber();
-    int seed = 0;
-    DCHECK(base::StringToInt(major_version_string, &seed));
-    DCHECK_GE(seed, 0);
-    blink::UserAgentBrandVersion greasey_bv =
-        metadata.brand_version_list[seed % 2];
-    blink::UserAgentBrandVersion chromium_bv =
-        metadata.brand_version_list[(seed + 1) % 2];
-    blink::UserAgentBrandVersion brave_bv = {
-        l10n_util::GetStringUTF8(IDS_PRODUCT_NAME), chromium_bv.version};
-    const int npermutations = 6;  // 3!
-    int permutation = seed % npermutations;
-    const std::vector<std::vector<int>> orders{{0, 1, 2}, {0, 2, 1}, {1, 0, 2},
-                                               {1, 2, 0}, {2, 0, 1}, {2, 1, 0}};
-    const std::vector<int> order = orders[permutation];
-    blink::UserAgentBrandList greased_brand_version_list(3);
-    greased_brand_version_list[order[0]] = greasey_bv;
-    greased_brand_version_list[order[1]] = chromium_bv;
-    greased_brand_version_list[order[2]] = brave_bv;
-    metadata.brand_version_list = greased_brand_version_list;
-    greasey_bv.version = base::StrCat({greasey_bv.version, ".0.0.0"});
-    chromium_bv.version = base::StrCat({chromium_bv.version, ".0.0.0"});
-    brave_bv.version = base::StrCat({brave_bv.version, ".0.0.0"});
-    blink::UserAgentBrandList greased_brand_full_version_list(3);
-    greased_brand_full_version_list[order[0]] = greasey_bv;
-    greased_brand_full_version_list[order[1]] = chromium_bv;
-    greased_brand_full_version_list[order[2]] = brave_bv;
-    metadata.brand_full_version_list = greased_brand_full_version_list;
+  // Expect the brand version lists to have brand version, chromium_version, and
+  // greased version.
+  DCHECK_EQ(3UL, metadata.brand_version_list.size());
+  DCHECK_EQ(3UL, metadata.brand_full_version_list.size());
+  // Zero out the last 3 version components in full version list versions.
+  for (auto& brand_version : metadata.brand_full_version_list) {
+    base::Version version(brand_version.version);
+    brand_version.version =
+        base::StrCat({base::NumberToString(version.components()[0]), ".0.0.0"});
   }
+  // Zero out the last 3 version components in full version.
+  base::Version version(metadata.full_version);
+  metadata.full_version =
+      base::StrCat({base::NumberToString(version.components()[0]), ".0.0.0"});
   return metadata;
 }

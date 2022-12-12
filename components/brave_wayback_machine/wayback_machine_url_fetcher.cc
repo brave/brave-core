@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/json/json_reader.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
 #include "brave/components/brave_wayback_machine/url_constants.h"
 #include "net/base/load_flags.h"
@@ -69,18 +68,17 @@ void WaybackMachineURLFetcher::Fetch(const GURL& url) {
 void WaybackMachineURLFetcher::OnWaybackURLFetched(
     const GURL& original_url,
     api_request_helper::APIRequestResult api_request_result) {
-  const auto& response_body = api_request_result.body();
-  if (response_body.empty()) {
+  auto& value_body = api_request_result.value_body();
+  if (!value_body.is_dict()) {
+    client_->OnWaybackURLFetched(GURL::EmptyGURL());
+    return;
+  }
+  auto* url_string = value_body.GetDict().FindStringByDottedPath(
+      "archived_snapshots.closest.url");
+  if (!url_string) {
     client_->OnWaybackURLFetched(GURL::EmptyGURL());
     return;
   }
 
-  const auto result = base::JSONReader::Read(response_body);
-  if (!result || !result->FindPath("archived_snapshots.closest.url")) {
-    client_->OnWaybackURLFetched(GURL::EmptyGURL());
-    return;
-  }
-
-  client_->OnWaybackURLFetched(
-      GURL(result->FindPath("archived_snapshots.closest.url")->GetString()));
+  client_->OnWaybackURLFetched(GURL(*url_string));
 }

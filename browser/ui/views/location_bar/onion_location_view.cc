@@ -159,14 +159,15 @@ OnionLocationView::OnionLocationView(Profile* profile) {
 
 OnionLocationView::~OnionLocationView() = default;
 
-void OnionLocationView::Update(content::WebContents* web_contents) {
+void OnionLocationView::Update(content::WebContents* web_contents,
+                               bool show_page_actions) {
   if (!web_contents)
     return;
   tor::OnionLocationTabHelper* helper =
       tor::OnionLocationTabHelper::FromWebContents(web_contents);
   if (!helper)
     return;
-  SetVisible(helper->should_show_icon());
+  SetVisible(helper->should_show_icon() && show_page_actions);
   reinterpret_cast<OnionLocationButtonView*>(button_)->SetOnionLocation(
       helper->onion_location());
 }

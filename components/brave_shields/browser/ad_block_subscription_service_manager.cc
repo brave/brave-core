@@ -511,14 +511,21 @@ void AdBlockSubscriptionServiceManager::ShouldStartRequest(
     bool* did_match_rule,
     bool* did_match_exception,
     bool* did_match_important,
-    std::string* mock_data_url) {
+    std::string* mock_data_url,
+    std::string* rewritten_url) {
   base::AutoLock lock(subscription_services_lock_);
+
+  GURL request_url;
+
   for (const auto& subscription_service : subscription_services_) {
     auto info = GetInfo(subscriptions_, subscription_service.first);
     if (info && info->enabled) {
+      request_url =
+          rewritten_url && !rewritten_url->empty() ? GURL(*rewritten_url) : url;
       subscription_service.second->ShouldStartRequest(
-          url, resource_type, tab_host, aggressive_blocking, did_match_rule,
-          did_match_exception, did_match_important, mock_data_url);
+          request_url, resource_type, tab_host, aggressive_blocking,
+          did_match_rule, did_match_exception, did_match_important,
+          mock_data_url, rewritten_url);
       if (did_match_important && *did_match_important) {
         return;
       }
@@ -536,13 +543,13 @@ void AdBlockSubscriptionServiceManager::EnableTag(const std::string& tag,
   }
 }
 
-void AdBlockSubscriptionServiceManager::AddResources(
+void AdBlockSubscriptionServiceManager::UseResources(
     const std::string& resources) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   base::AutoLock lock(subscription_services_lock_);
 
   for (const auto& subscription_service : subscription_services_) {
-    subscription_service.second->AddResources(resources);
+    subscription_service.second->UseResources(resources);
   }
 }
 

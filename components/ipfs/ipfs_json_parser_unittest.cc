@@ -6,15 +6,16 @@
 #include <string>
 #include <vector>
 
-#include "base/json/json_reader.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/ipfs/ipfs_json_parser.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-typedef testing::Test IPFSJSONParserTest;
+using IPFSJSONParserTest = testing::Test;
+using base::test::ParseJson;
 
 TEST_F(IPFSJSONParserTest, GetPeersFromJSON) {
   std::vector<std::string> peers;
-  ASSERT_TRUE(IPFSJSONParser::GetPeersFromJSON(R"(
+  ASSERT_TRUE(IPFSJSONParser::GetPeersFromJSON(ParseJson(R"(
       {
         "Peers": [
           {
@@ -32,7 +33,7 @@ TEST_F(IPFSJSONParserTest, GetPeersFromJSON) {
             "Peer": "QmaNcj4BMFQgE884rZSMqWEcqquWuv8QALzhpvPeHZGeee"
           }
         ]
-      })",
+      })"),
                                                &peers));
 
   ASSERT_EQ(peers.size(), uint64_t(2));
@@ -46,7 +47,7 @@ TEST_F(IPFSJSONParserTest, GetPeersFromJSON) {
 
 TEST_F(IPFSJSONParserTest, GetAddressesConfigFromJSON) {
   ipfs::AddressesConfig config;
-  ASSERT_TRUE(IPFSJSONParser::GetAddressesConfigFromJSON(R"({
+  ASSERT_TRUE(IPFSJSONParser::GetAddressesConfigFromJSON(ParseJson(R"({
       "Key": "Addresses",
       "Value":
         {
@@ -61,7 +62,7 @@ TEST_F(IPFSJSONParserTest, GetAddressesConfigFromJSON) {
             "/ip6/::/udp/4001/quic"
           ]
         }
-      })",
+      })"),
                                                          &config));
 
   ASSERT_EQ(config.api, "/ip4/127.0.0.1/tcp/45001");
@@ -79,13 +80,13 @@ TEST_F(IPFSJSONParserTest, GetRepoStatsFromJSON) {
   ASSERT_EQ(stat.size, uint64_t(0));
   ASSERT_EQ(stat.storage_max, uint64_t(0));
 
-  ASSERT_TRUE(IPFSJSONParser::GetRepoStatsFromJSON(R"({
+  ASSERT_TRUE(IPFSJSONParser::GetRepoStatsFromJSON(ParseJson(R"({
         "NumObjects": 113,
         "RepoPath": "/some/path/to/repo",
         "RepoSize": 123456789,
         "StorageMax": 90000000,
         "Version": "fs-repo@10"
-      })",
+      })"),
                                                    &stat));
 
   ASSERT_EQ(stat.objects, uint64_t(113));
@@ -98,14 +99,14 @@ TEST_F(IPFSJSONParserTest, GetRepoStatsFromJSON) {
 TEST_F(IPFSJSONParserTest, GetNodeInfoFromJSON) {
   ipfs::NodeInfo info;
 
-  ASSERT_TRUE(IPFSJSONParser::GetNodeInfoFromJSON(R"({
+  ASSERT_TRUE(IPFSJSONParser::GetNodeInfoFromJSON(ParseJson(R"({
       "Addresses": ["111.111.111.111"],
       "AgentVersion": "1.2.3.4",
       "ID": "idididid",
       "ProtocolVersion": "5.6.7.8",
       "Protocols": ["one", "two"],
       "PublicKey": "public_key"
-    })",
+    })"),
                                                   &info));
 
   ASSERT_EQ(info.id, "idididid");
@@ -114,25 +115,26 @@ TEST_F(IPFSJSONParserTest, GetNodeInfoFromJSON) {
 
 TEST_F(IPFSJSONParserTest, GetGarbageCollectionFromJSON) {
   std::string error;
-  ASSERT_TRUE(IPFSJSONParser::GetGarbageCollectionFromJSON(R"({
+  ASSERT_TRUE(IPFSJSONParser::GetGarbageCollectionFromJSON(ParseJson(R"({
       "Error": "{error}",
       "Key": {
         "/": "{cid}"
       }
-    })",
+    })"),
                                                            &error));
 
   ASSERT_EQ(error, "{error}");
   error.erase();
-  ASSERT_TRUE(IPFSJSONParser::GetGarbageCollectionFromJSON(R"({
+  ASSERT_TRUE(IPFSJSONParser::GetGarbageCollectionFromJSON(ParseJson(R"({
       "Key": {
         "/": "{cid}"
       }
-    })",
+    })"),
                                                            &error));
   ASSERT_EQ(error, "");
   error.erase();
-  ASSERT_FALSE(IPFSJSONParser::GetGarbageCollectionFromJSON(R"()", &error));
+  ASSERT_FALSE(
+      IPFSJSONParser::GetGarbageCollectionFromJSON(base::Value(), &error));
   ASSERT_TRUE(error.empty());
 }
 
@@ -171,14 +173,16 @@ TEST_F(IPFSJSONParserTest, GetParseKeysFromJSON) {
   std::string response = R"({"Keys" : [)"
                          R"({"Name":"self","Id":"k51q...wal"},)"
                          R"({"Name":"MyCustomKey","Id":"k51q...wa1"}]})";
-  ASSERT_TRUE(IPFSJSONParser::GetParseKeysFromJSON(response, &parsed_keys));
+  ASSERT_TRUE(
+      IPFSJSONParser::GetParseKeysFromJSON(ParseJson(response), &parsed_keys));
   ASSERT_EQ(parsed_keys.size(), size_t(2));
   ASSERT_TRUE(parsed_keys.count("self"));
   ASSERT_TRUE(parsed_keys.count("MyCustomKey"));
   EXPECT_EQ(parsed_keys["self"], "k51q...wal");
   EXPECT_EQ(parsed_keys["MyCustomKey"], "k51q...wa1");
 
-  ASSERT_FALSE(IPFSJSONParser::GetParseKeysFromJSON("{}", &parsed_keys));
+  ASSERT_FALSE(
+      IPFSJSONParser::GetParseKeysFromJSON(ParseJson("{}"), &parsed_keys));
   ASSERT_EQ(parsed_keys.size(), size_t(2));
 }
 

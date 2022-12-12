@@ -58,6 +58,7 @@ reducer.on(Actions.connectToNewRegion, (state, payload): RootState => {
   return {
     ...state,
     isSelectingRegion: false,
+    hasError: false,
     currentRegion: payload.region
   }
 })
@@ -72,6 +73,7 @@ reducer.on(Actions.toggleRegionSelector, (state, payload): RootState => {
 reducer.on(Actions.connectionStateChanged, (state, payload): RootState => {
   return {
     ...state,
+    hasError: payload.connectionStatus === ConnectionState.CONNECTED ? false : state.hasError,
     connectionStatus: payload.connectionStatus
   }
 })

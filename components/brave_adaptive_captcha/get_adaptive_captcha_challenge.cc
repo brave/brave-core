@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -53,17 +52,16 @@ bool GetAdaptiveCaptchaChallenge::CheckStatusCode(int status_code) {
   return true;
 }
 
-bool GetAdaptiveCaptchaChallenge::ParseBody(const std::string& body,
+bool GetAdaptiveCaptchaChallenge::ParseBody(const base::Value& json_value,
                                             std::string* captcha_id) {
   DCHECK(captcha_id);
 
-  absl::optional<base::Value> value = base::JSONReader::Read(body);
-  if (!value || !value->is_dict()) {
+  if (!json_value.is_dict()) {
     LOG(ERROR) << "Invalid JSON";
     return false;
   }
 
-  const auto& dict = value->GetDict();
+  const auto& dict = json_value.GetDict();
   const std::string* captcha_id_value = dict.FindString("captchaID");
   if (!captcha_id_value) {
     LOG(ERROR) << "Missing captcha id";
@@ -95,7 +93,7 @@ void GetAdaptiveCaptchaChallenge::OnResponse(
   }
 
   std::string captcha_id;
-  bool parse_result = ParseBody(api_request_result.body(), &captcha_id);
+  bool parse_result = ParseBody(api_request_result.value_body(), &captcha_id);
   if (!parse_result) {
     std::move(callback).Run("");
     return;

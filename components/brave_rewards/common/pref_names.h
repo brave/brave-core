@@ -6,11 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_PREF_NAMES_H_
 
-namespace brave_rewards {
-namespace prefs {
+namespace brave_rewards::prefs {
 
 // Used to enable/disable Rewards via a policy.
 extern const char kDisabledByPolicy[];
+
+// Stores the "Rewards version" in which the user's Rewards account was created.
+// This value is intended to be used to distinguish "legacy" users when Rewards
+// features are migrated. Note that if the user has not yet created a Rewards
+// account, this value will default to the empty string. Prefer calling
+// `RewardsService::GetUserVersion`, which will always return a valid version.
+extern const char kUserVersion[];
+extern const char kCurrentUserVersion[];
 
 extern const char kHideButton[];  // DEPRECATED
 extern const char kShowButton[];
@@ -24,7 +31,7 @@ extern const char kBackupNotificationInterval[];  // DEPRECATED
 extern const char kBackupSucceeded[];             // DEPRECATED
 extern const char kUserHasFunded[];               // DEPRECATED
 extern const char kUserHasClaimedGrant[];         // DEPRECATED
-extern const char kAddFundsNotification[];
+extern const char kAddFundsNotification[];        // DEPRECATED
 extern const char kNotificationStartupDelay[];
 extern const char kExternalWallets[];  // DEPRECATED
 extern const char kBadgeText[];
@@ -67,7 +74,6 @@ extern const char kWalletUphold[];
 extern const char kWalletBitflyer[];
 extern const char kWalletGemini[];
 
-}  // namespace prefs
-}  // namespace brave_rewards
+}  // namespace brave_rewards::prefs
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_PREF_NAMES_H_

@@ -12,7 +12,6 @@
 #include "base/bind.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/views/brave_news/brave_news_bubble_view.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -23,10 +22,12 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/gfx/color_utils.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/native_theme/native_theme.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/label_button.h"
@@ -73,6 +74,9 @@ class BraveNewsButtonView : public views::LabelButton,
                       profile->GetPrefs(),
                       base::BindRepeating(&BraveNewsButtonView::Update,
                                           base::Unretained(this)));
+    opted_in_.Init(brave_news::prefs::kBraveTodayOptedIn, profile->GetPrefs(),
+                   base::BindRepeating(&BraveNewsButtonView::Update,
+                                       base::Unretained(this)));
     news_enabled_.Init(brave_news::prefs::kNewTabPageShowToday,
                        profile->GetPrefs(),
                        base::BindRepeating(&BraveNewsButtonView::Update,
@@ -92,7 +96,8 @@ class BraveNewsButtonView : public views::LabelButton,
   BraveNewsButtonView& operator=(const BraveNewsButtonView&) = delete;
 
   void Update() {
-    if (!should_show_.GetValue() || !news_enabled_.GetValue()) {
+    if (!should_show_.GetValue() || !news_enabled_.GetValue() ||
+        !opted_in_.GetValue()) {
       SetVisible(false);
       return;
     }
@@ -108,9 +113,8 @@ class BraveNewsButtonView : public views::LabelButton,
       has_feeds = !tab_helper->GetAvailableFeeds().empty();
     }
 
-    auto image = gfx::CreateVectorIcon(
-        subscribed ? kBraveTodaySubscribedIcon : kBraveTodaySubscribeIcon, 16,
-        color_utils::DeriveDefaultIconColor(GetIconColor(subscribed)));
+    auto image = gfx::CreateVectorIcon(kBraveNewsSubscribeIcon, 16,
+                                       GetIconColor(subscribed));
     SetImage(ButtonState::STATE_NORMAL, image);
     SetVisible(has_feeds);
   }
@@ -182,15 +186,15 @@ class BraveNewsButtonView : public views::LabelButton,
 
   SkColor GetIconColor(bool subscribed) const {
     if (!subscribed)
-      return GetCurrentTextColor();
+      return color_utils::DeriveDefaultIconColor(GetCurrentTextColor());
 
-    return dark_mode::GetActiveBraveDarkModeType() ==
-                   dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK
-               ? kSubscribedDarkColor
-               : kSubscribedLightColor;
+    auto is_dark = GetNativeTheme()->GetPreferredColorScheme() ==
+                   ui::NativeTheme::PreferredColorScheme::kDark;
+    return is_dark ? kSubscribedDarkColor : kSubscribedLightColor;
   }
 
   BooleanPrefMember should_show_;
+  BooleanPrefMember opted_in_;
   BooleanPrefMember news_enabled_;
 
   base::raw_ptr<Profile> profile_;

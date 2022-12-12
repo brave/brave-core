@@ -19,31 +19,23 @@ import org.chromium.ledger.mojom.WalletStatus;
 public class BraveRewardsExternalWallet {
     //fields
     public static final String ACCOUNT_URL = "account_url";
-    public static final String ADD_URL = "add_url";
     public static final String ADDRESS = "address";
     public static final String STATUS = "status";
     public static final String TOKEN = "token";
     public static final String TYPE = "type";
     public static final String USER_NAME = "user_name";
-    public static final String WITHDRAW_URL = "withdraw_url";
     public static final String LOGIN_URL = "login_url";
 
     private String mAccountUrl;
-    private String mAddUrl;
     private String mAddress;
     private int mStatus;
     private String mToken;
     private String mType;
     private String mUserName;
-    private String mWithdrawUrl;
     private String mLoginUrl;
 
     public String getAccountUrl() {
         return mAccountUrl;
-    }
-
-    public String getAddUrl() {
-        return mAddUrl;
     }
 
     public String getAddress() {
@@ -66,10 +58,6 @@ public class BraveRewardsExternalWallet {
         return mUserName;
     }
 
-    public String getWithdrawUrl() {
-        return mWithdrawUrl;
-    }
-
     public String getLoginUrl() {
         return mLoginUrl;
     }
@@ -81,13 +69,11 @@ public class BraveRewardsExternalWallet {
     private void fromJson(String json_external_wallet) throws JSONException {
         JSONObject jsonObj = new JSONObject(json_external_wallet);
         mAccountUrl = jsonObj.getString(ACCOUNT_URL);
-        mAddUrl = jsonObj.getString(ADD_URL);
         mAddress = jsonObj.getString(ADDRESS);
         mStatus = jsonObj.getInt(STATUS);
         mToken = jsonObj.getString(TOKEN);
         mType = jsonObj.getString(TYPE);
         mUserName = jsonObj.getString(USER_NAME);
-        mWithdrawUrl = jsonObj.getString(WITHDRAW_URL);
         mLoginUrl = jsonObj.getString(LOGIN_URL);
     }
 
@@ -95,10 +81,9 @@ public class BraveRewardsExternalWallet {
     @Override
     public String toString() {
         return "BraveRewardsExternalWallet{"
-                + "mAccountUrl='" + mAccountUrl + '\'' + ", mAddUrl='" + mAddUrl + '\''
-                + ", mAddress='" + mAddress + '\'' + ", mStatus=" + mStatus + ", mToken='" + mToken
-                + '\'' + ", mUserName='" + mUserName + '\'' + ", mWithdrawUrl='" + mWithdrawUrl
-                + '\'' + ", mLoginUrl='" + mLoginUrl + '\'' + '}';
+                + "mAccountUrl='" + mAccountUrl + '\'' + ", mAddress='" + mAddress + '\''
+                + ", mStatus=" + mStatus + ", mToken='" + mToken + '\'' + ", mUserName='"
+                + mUserName + '\'' + ", mLoginUrl='" + mLoginUrl + '\'' + '}';
     }
 
     public static String WalletStatusToString(int status) {

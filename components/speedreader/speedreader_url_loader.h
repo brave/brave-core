@@ -25,10 +25,10 @@ class BodySnifferThrottle;
 
 namespace speedreader {
 
-class SpeedreaderResultDelegate;
 class SpeedreaderRewriterService;
 class SpeedreaderService;
 class SpeedReaderThrottle;
+class SpeedreaderThrottleDelegate;
 
 // Loads the whole response body and tries to Speedreader-distill it.
 // Cargoculted from |`SniffingURLLoader|.
@@ -63,7 +63,7 @@ class SpeedReaderURLLoader : public body_sniffer::BodySnifferURLLoader {
                     mojo::PendingReceiver<network::mojom::URLLoaderClient>,
                     SpeedReaderURLLoader*>
   CreateLoader(base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
-               base::WeakPtr<SpeedreaderResultDelegate> delegate,
+               base::WeakPtr<SpeedreaderThrottleDelegate> delegate,
                const GURL& response_url,
                scoped_refptr<base::SingleThreadTaskRunner> task_runner,
                SpeedreaderRewriterService* rewriter_service,
@@ -72,7 +72,7 @@ class SpeedReaderURLLoader : public body_sniffer::BodySnifferURLLoader {
  private:
   SpeedReaderURLLoader(
       base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
-      base::WeakPtr<SpeedreaderResultDelegate> delegate,
+      base::WeakPtr<SpeedreaderThrottleDelegate> delegate,
       const GURL& response_url,
       mojo::PendingRemote<network::mojom::URLLoaderClient>
           destination_url_loader_client,
@@ -85,7 +85,7 @@ class SpeedReaderURLLoader : public body_sniffer::BodySnifferURLLoader {
 
   void CompleteLoading(std::string body) override;
   void OnCompleteSending() override;
-  base::WeakPtr<SpeedreaderResultDelegate> delegate_;
+  base::WeakPtr<SpeedreaderThrottleDelegate> delegate_;
 
   GURL response_url_;
 

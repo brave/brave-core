@@ -37,6 +37,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_view_host.h"
@@ -44,6 +45,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
+#include "ui/base/l10n/l10n_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
@@ -95,6 +97,7 @@ class RewardsDOMHandler
  private:
   void RestartBrowser(const base::Value::List& args);
   void IsInitialized(const base::Value::List& args);
+  void GetUserVersion(const base::Value::List& args);
   void GetRewardsParameters(const base::Value::List& args);
   void GetAutoContributeProperties(const base::Value::List& args);
   void FetchPromotions(const base::Value::List& args);
@@ -161,8 +164,6 @@ class RewardsDOMHandler
   void ConnectExternalWallet(const base::Value::List& args);
   void OnConnectExternalWallet(brave_rewards::ConnectExternalWalletResult);
 
-  void DisconnectWallet(const base::Value::List& args);
-
   void GetBalanceReport(const base::Value::List& args);
 
   void OnGetBalanceReport(const uint32_t month,
@@ -192,6 +193,8 @@ class RewardsDOMHandler
 
   void OnExternalWalletTypeUpdated(brave_rewards::GetExternalWalletResult);
   void GetIsUnsupportedRegion(const base::Value::List& args);
+
+  void GetPluralString(const base::Value::List& args);
 
   // RewardsServiceObserver implementation
   void OnRewardsInitialized(
@@ -235,9 +238,7 @@ class RewardsDOMHandler
       brave_rewards::RewardsService* rewards_service,
       const ledger::mojom::Result result) override;
 
-  void OnDisconnectWallet(brave_rewards::RewardsService* rewards_service,
-                          const ledger::mojom::Result result,
-                          const std::string& wallet_type) override;
+  void OnExternalWalletLoggedOut() override;
 
   void OnRewardsWalletUpdated() override;
 
@@ -320,6 +321,10 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards.isInitialized",
       base::BindRepeating(&RewardsDOMHandler::IsInitialized,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards.getUserVersion",
+      base::BindRepeating(&RewardsDOMHandler::GetUserVersion,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getRewardsParameters",
@@ -458,10 +463,6 @@ void RewardsDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsDOMHandler::ConnectExternalWallet,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards.disconnectWallet",
-      base::BindRepeating(&RewardsDOMHandler::DisconnectWallet,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
       "brave_rewards.getBalanceReport",
       base::BindRepeating(&RewardsDOMHandler::GetBalanceReport,
                           base::Unretained(this)));
@@ -500,6 +501,11 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getIsUnsupportedRegion",
       base::BindRepeating(&RewardsDOMHandler::GetIsUnsupportedRegion,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "getPluralString",
+      base::BindRepeating(&RewardsDOMHandler::GetPluralString,
                           base::Unretained(this)));
 }
 
@@ -590,6 +596,15 @@ void RewardsDOMHandler::IsInitialized(const base::Value::List& args) {
   if (rewards_service_ && rewards_service_->IsInitialized()) {
     CallJavascriptFunction("brave_rewards.initialized");
   }
+}
+
+void RewardsDOMHandler::GetUserVersion(const base::Value::List&) {
+  if (!IsJavascriptAllowed() || !rewards_service_) {
+    return;
+  }
+  base::Version version = rewards_service_->GetUserVersion();
+  CallJavascriptFunction("brave_rewards.userVersion",
+                         base::Value(version.GetString()));
 }
 
 void RewardsDOMHandler::OnJavascriptAllowed() {
@@ -1702,8 +1717,6 @@ void RewardsDOMHandler::OnGetExternalWallet(
     wallet_dict.Set("type", wallet->type);
     wallet_dict.Set("address", wallet->address);
     wallet_dict.Set("status", static_cast<int>(wallet->status));
-    wallet_dict.Set("addUrl", wallet->add_url);
-    wallet_dict.Set("withdrawUrl", wallet->withdraw_url);
     wallet_dict.Set("userName", wallet->user_name);
     wallet_dict.Set("accountUrl", wallet->account_url);
     wallet_dict.Set("loginUrl", wallet->login_url);
@@ -1751,24 +1764,12 @@ void RewardsDOMHandler::OnConnectExternalWallet(
                          std::move(data));
 }
 
-void RewardsDOMHandler::DisconnectWallet(const base::Value::List& args) {
-  if (!rewards_service_) {
+void RewardsDOMHandler::OnExternalWalletLoggedOut() {
+  if (!IsJavascriptAllowed()) {
     return;
   }
-  AllowJavascript();
-  rewards_service_->DisconnectWallet();
-}
 
-void RewardsDOMHandler::OnDisconnectWallet(
-    brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result,
-    const std::string& wallet_type) {
-  base::Value::Dict data;
-  data.Set("result", static_cast<int>(result));
-  data.Set("walletType", wallet_type);
-
-  CallJavascriptFunction("brave_rewards.disconnectWallet",
-                         base::Value(std::move(data)));
+  CallJavascriptFunction("brave_rewards.onExternalWalletLoggedOut");
 }
 
 void RewardsDOMHandler::OnRewardsWalletUpdated() {
@@ -1779,6 +1780,7 @@ void RewardsDOMHandler::OnRewardsWalletUpdated() {
   GetAdsData(base::Value::List());
   GetAutoContributeProperties(base::Value::List());
   GetOnboardingStatus(base::Value::List());
+  GetUserVersion(base::Value::List());
   GetExternalWallet(base::Value::List());
   GetCountryCode(base::Value::List());
 }
@@ -1965,6 +1967,30 @@ void RewardsDOMHandler::GetIsUnsupportedRegion(const base::Value::List& args) {
 
   CallJavascriptFunction("brave_rewards.onIsUnsupportedRegion",
                          base::Value(brave_rewards::IsUnsupportedRegion()));
+}
+
+void RewardsDOMHandler::GetPluralString(const base::Value::List& args) {
+  AllowJavascript();
+  CHECK_EQ(3U, args.size());
+
+  // Adapted from `chrome/browser/ui/webui/plural_string_handler.cc`. The
+  // `PluralStringHandler` class is not current built on Android. Since this
+  // WebUI is shared between Android and desktop, we need to provide our own
+  // implementation for now.
+  const base::Value& callback_id = args[0];
+  std::string message_name = args[1].GetString();
+  int count = args[2].GetInt();
+
+  static const base::flat_map<std::string, int> name_to_id = {
+      {"publisherCountText", IDS_REWARDS_PUBLISHER_COUNT_TEXT},
+      {"onboardingSetupAdsPerHour",
+       IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_PER_HOUR}};
+
+  auto message_id_it = name_to_id.find(message_name);
+  CHECK(name_to_id.end() != message_id_it);
+  auto string = l10n_util::GetPluralStringFUTF16(message_id_it->second, count);
+
+  ResolveJavascriptCallback(callback_id, base::Value(string));
 }
 
 void RewardsDOMHandler::CompleteReset(const base::Value::List& args) {

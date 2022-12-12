@@ -14,6 +14,7 @@
 #include "base/callback_helpers.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
+#include "base/values.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
@@ -30,32 +31,45 @@ class APIRequestResult {
   APIRequestResult();
   APIRequestResult(int response_code,
                    std::string body,
+                   base::Value value_body,
                    base::flat_map<std::string, std::string> headers,
                    int error_code,
                    GURL final_url);
-  APIRequestResult(const APIRequestResult&);
-  APIRequestResult& operator=(const APIRequestResult&);
+  APIRequestResult(const APIRequestResult&) = delete;
+  APIRequestResult& operator=(const APIRequestResult&) = delete;
   APIRequestResult(APIRequestResult&&);
   APIRequestResult& operator=(APIRequestResult&&);
   ~APIRequestResult();
 
+  bool operator==(const APIRequestResult& other) const;
+  bool operator!=(const APIRequestResult& other) const;
+
   bool Is2XXResponseCode() const;
   bool IsResponseCodeValid() const;
 
+  // HTTP response code.
   int response_code() const { return response_code_; }
-  int error_code() const { return error_code_; }
-  GURL final_url() const { return final_url_; }
+  // Sanitized json response.
   const std::string& body() const { return body_; }
+  // `base::Value` of sanitized json response.
+  const base::Value& value_body() const { return value_body_; }
+  // HTTP response headers.
   const base::flat_map<std::string, std::string>& headers() const {
     return headers_;
   }
+  // `net::Error` code
+  int error_code() const { return error_code_; }
+  // Actual url requested. May differ from original request url in case of
+  // redirects happened.
+  GURL final_url() const { return final_url_; }
 
  private:
-  GURL final_url_;
-  int error_code_ = -1;
   int response_code_ = -1;
   std::string body_;
+  base::Value value_body_;
   base::flat_map<std::string, std::string> headers_;
+  int error_code_ = -1;
+  GURL final_url_;
 };
 
 // Anyone is welcome to use APIRequestHelper to reduce boilerplate

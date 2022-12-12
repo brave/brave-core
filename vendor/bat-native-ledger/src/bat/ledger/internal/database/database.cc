@@ -91,6 +91,11 @@ void Database::DeleteActivityInfo(const std::string& publisher_key,
   activity_info_->DeleteRecord(publisher_key, callback);
 }
 
+void Database::GetPublishersVisitedCount(
+    base::OnceCallback<void(int)> callback) {
+  activity_info_->GetPublishersVisitedCount(std::move(callback));
+}
+
 /**
  * BALANCE REPORT INFO
  */

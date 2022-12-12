@@ -12,7 +12,6 @@ namespace omnibox {
 
 extern const char kAutocompleteEnabled[];
 extern const char kTopSiteSuggestionsEnabled[];
-extern const char kBraveSuggestedSiteSuggestionsEnabled[];
 extern const char kHistorySuggestionsEnabled[];
 extern const char kBookmarkSuggestionsEnabled[];
 

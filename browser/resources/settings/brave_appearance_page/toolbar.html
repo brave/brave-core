@@ -7,13 +7,18 @@
 </settings-toggle-button>
 <settings-toggle-button
   class="cr-row"
-  pref="{{prefs.brave.show_side_panel_button}}"
-  label="$i18n{appearanceSettingsShowSidePanelButton}">
+  pref="{{prefs.brave.today.should_show_toolbar_button}}"
+  label="$i18n{appearanceSettingsShowBraveNewsButtonLabel}">
 </settings-toggle-button>
 <settings-toggle-button
   class="cr-row"
   pref="{{prefs.brave.location_bar_is_wide}}"
   label="$i18n{appearanceSettingsLocationBarIsWide}">
+</settings-toggle-button>
+<settings-toggle-button
+  pref="{{prefs.omnibox.prevent_url_elisions}}"
+  class="cr-row"
+  label="$i18n{showFullUrls}">
 </settings-toggle-button>
 <settings-toggle-button
   class="cr-row"
@@ -29,10 +34,6 @@
       pref="{{prefs.brave.top_site_suggestions_enabled}}"
       label="$i18n{appearanceSettingsUseTopSiteSuggestions}">
     </settings-checkbox>
-    <settings-checkbox class="cr-row list-item"
-      pref="{{prefs.brave.brave_suggested_site_suggestions_enabled}}"
-      label="$i18n{appearanceSettingsUseBraveSuggestedSiteSuggestions}">
-    </settings-checkbox>
     <settings-checkbox
       class="cr-row list-item"
       pref="{{prefs.brave.omnibox.history_suggestions_enabled}}"
@@ -45,6 +46,9 @@
     </settings-checkbox>
   </div>
 </template>
+<if expr="enable_sidebar">
+  <settings-brave-appearance-sidebar prefs="{{prefs}}"></settings-brave-appearance-sidebar>
+</if>
 <if expr="enable_brave_vpn">
   <template is="dom-if" if="[[showBraveVPNOption_()]]">
     <settings-toggle-button
@@ -59,11 +63,6 @@
   pref="{{prefs.brave.always_show_bookmark_bar_on_ntp}}"
   class="cr-row"
   label="$i18n{appearanceSettingsAlwaysShowBookmarkBarOnNTP}">
-</settings-toggle-button>
-<settings-toggle-button
-  pref="{{prefs.omnibox.prevent_url_elisions}}"
-  class="cr-row"
-  label="$i18n{showFullUrls}">
 </settings-toggle-button>
 <settings-toggle-button
   pref="{{prefs.brave.tabs_search_show}}"

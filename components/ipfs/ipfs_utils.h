@@ -20,6 +20,7 @@ bool IsIpfsDisabledByFeatureOrPolicy(PrefService* prefs);
 bool IsIpfsMenuEnabled(PrefService* prefs);
 bool IsIpfsDisabledByPolicy(PrefService* prefs);
 bool IsValidCID(const std::string& cid);
+bool IsValidIPNSCID(const std::string& cid);
 bool HasIPFSPath(const GURL& url);
 bool IsDefaultGatewayURL(const GURL& url, PrefService* prefs);
 bool IsLocalGatewayURL(const GURL& url);
@@ -67,7 +68,8 @@ bool IsIpfsResolveMethodDisabled(PrefService* prefs);
 bool IsIpfsResolveMethodAsk(PrefService* prefs);
 std::string GetRegistryDomainFromIPNS(const GURL& url);
 bool IsValidCIDOrDomain(const std::string& value);
-absl::optional<GURL> TranslateToCurrentGatewayUrl(const GURL& url);
+std::string DecodeSingleLabelForm(const std::string& input);
+absl::optional<GURL> ExtractSourceFromGateway(const GURL& url);
 
 }  // namespace ipfs
 

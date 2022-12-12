@@ -12,6 +12,8 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "chrome/test/base/scoped_testing_local_state.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -27,6 +29,8 @@ class BraveWalletP3AUnitTest : public testing::Test {
 
   void SetUp() override {
     TestingProfile::Builder builder;
+    local_state_ = std::make_unique<ScopedTestingLocalState>(
+        TestingBrowserProcess::GetGlobal());
     profile_ = builder.Build();
     keyring_service_ =
         KeyringServiceFactory::GetServiceForContext(profile_.get());
@@ -38,6 +42,7 @@ class BraveWalletP3AUnitTest : public testing::Test {
   void WaitForResponse() { task_environment_.RunUntilIdle(); }
 
   content::BrowserTaskEnvironment task_environment_;
+  std::unique_ptr<ScopedTestingLocalState> local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
   KeyringService* keyring_service_;
@@ -195,6 +200,26 @@ TEST_F(BraveWalletP3AUnitTest, ActiveAccounts) {
   histogram_tester_->ExpectBucketCount(kEthActiveAccountHistogramName, 0, 1);
   histogram_tester_->ExpectBucketCount(kFilActiveAccountHistogramName, 1, 1);
   histogram_tester_->ExpectBucketCount(kSolActiveAccountHistogramName, 2, 1);
+}
+
+TEST_F(BraveWalletP3AUnitTest, EthProvider) {
+  histogram_tester_->ExpectTotalCount(kEthProviderHistogramName, 0);
+
+  wallet_p3a_->ReportEthereumProvider(mojom::EthereumProviderType::Native);
+  histogram_tester_->ExpectUniqueSample(kEthProviderHistogramName, 0, 1);
+
+  keyring_service_->CreateWallet("testing123", base::DoNothing());
+  WaitForResponse();
+
+  wallet_p3a_->ReportEthereumProvider(mojom::EthereumProviderType::Native);
+  histogram_tester_->ExpectBucketCount(kEthProviderHistogramName, 2, 1);
+
+  keyring_service_->Reset();
+  wallet_p3a_->ReportEthereumProvider(mojom::EthereumProviderType::Native);
+  histogram_tester_->ExpectBucketCount(kEthProviderHistogramName, 0, 2);
+
+  wallet_p3a_->ReportEthereumProvider(mojom::EthereumProviderType::ThirdParty);
+  histogram_tester_->ExpectBucketCount(kEthProviderHistogramName, 1, 1);
 }
 
 }  // namespace brave_wallet

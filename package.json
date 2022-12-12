@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.47.96",
+  "version": "1.48.47",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -262,7 +262,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "108.0.5359.48",
+        "tag": "108.0.5359.99",
         "repository": {
           "url": "https://github.com/chromium/chromium"
         }
@@ -272,6 +272,7 @@
   "devDependencies": {
     "@babel/core": "7.16.0",
     "@babel/plugin-proposal-export-namespace-from": "7.16.0",
+    "@brave/swap-interface": "0.12.6",
     "@storybook/addon-essentials": "6.4.13",
     "@storybook/addon-knobs": "6.4.0",
     "@storybook/addons": "6.4.13",

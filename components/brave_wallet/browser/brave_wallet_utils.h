@@ -124,7 +124,9 @@ std::string GetKnownEthNetworkId(const std::string& chain_id);
 GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id);
 std::string GetUnstoppableDomainsProxyReaderContractAddress(
     const std::string& chain_id);
+GURL GetEnsRpcUrl();
 std::string GetEnsRegistryContractAddress(const std::string& chain_id);
+GURL GetSnsRpcUrl();
 
 // Append chain value to kBraveWalletCustomNetworks dictionary pref.
 void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain);

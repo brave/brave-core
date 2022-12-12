@@ -27,13 +27,11 @@ namespace brave_vpn {
 using ConnectionState = mojom::ConnectionState;
 
 BraveVPNOSConnectionAPI::BraveVPNOSConnectionAPI() {
-  base::PowerMonitor::AddPowerSuspendObserver(this);
-  net::NetworkChangeNotifier::AddDNSObserver(this);
+  net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 }
 
 BraveVPNOSConnectionAPI::~BraveVPNOSConnectionAPI() {
-  base::PowerMonitor::RemovePowerSuspendObserver(this);
-  net::NetworkChangeNotifier::RemoveDNSObserver(this);
+  net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
 }
 
 void BraveVPNOSConnectionAPI::AddObserver(Observer* observer) {
@@ -67,14 +65,16 @@ void BraveVPNOSConnectionAPI::CreateVPNConnection() {
   CreateVPNConnectionImpl(connection_info_);
 }
 
-void BraveVPNOSConnectionAPI::Connect() {
+void BraveVPNOSConnectionAPI::Connect(bool ignore_network_state) {
   if (IsInProgress()) {
     VLOG(2) << __func__ << ": Current state: " << connection_state_
             << " : prevent connecting while previous operation is in-progress";
     return;
   }
 
-  DCHECK(!cancel_connecting_);
+  // Ignore connect request while cancelling is in-progress.
+  if (cancel_connecting_)
+    return;
 
   // User can ask connect again when user want to change region.
   if (connection_state() == ConnectionState::CONNECTED) {
@@ -88,7 +88,7 @@ void BraveVPNOSConnectionAPI::Connect() {
   VLOG(2) << __func__ << " : start connecting!";
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTING);
 
-  if (!IsNetworkAvailable()) {
+  if (!ignore_network_state && !IsNetworkAvailable()) {
     VLOG(2) << __func__ << ": Network is not available, failed to connect";
     UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
     return;
@@ -96,8 +96,8 @@ void BraveVPNOSConnectionAPI::Connect() {
 
   if (GetIsSimulation() || connection_info_.IsValid()) {
     VLOG(2) << __func__
-            << " : direct connect as we already have valid connection info.";
-    ConnectImpl(target_vpn_entry_name_);
+            << " : Create os vpn entry with cached connection_info.";
+    CreateVPNConnectionImpl(connection_info_);
     return;
   }
 
@@ -224,9 +224,10 @@ void BraveVPNOSConnectionAPI::OnDisconnected() {
 
   if (needs_connect_) {
     needs_connect_ = false;
-
-    if (connection_state_ == ConnectionState::DISCONNECTED)
-      Connect();
+    // Right after disconnected, network could be unavailable shortly.
+    // In this situation, connect process should go ahead because
+    // because BraveVpnAPIRequest could handle network failure by retrying.
+    Connect(true /* ignore_network_state */);
   }
 }
 
@@ -235,39 +236,12 @@ void BraveVPNOSConnectionAPI::OnIsDisconnecting() {
   UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
 }
 
-void BraveVPNOSConnectionAPI::OnSuspend() {
-  // Set reconnection state in case if computer/laptop is going to sleep.
-  // The disconnection event will be fired after waking up and we want to
-  // restore the connection.
-  if (connection_state_ == ConnectionState::CONNECTED) {
-    Disconnect();
-    reconnect_on_resume_ = true;
-  }
-  VLOG(2) << __func__
-          << " Should reconnect when resume:" << reconnect_on_resume_;
-}
-
-void BraveVPNOSConnectionAPI::OnResume() {
-#if BUILDFLAG(IS_MAC)
-  OnDNSChanged();
-#endif  // BUILDFLAG(IS_MAC)
-}
-
-void BraveVPNOSConnectionAPI::OnDNSChanged() {
-  if (!IsNetworkAvailable() ||
-      // This event is triggered before going to sleep while vpn is still
-      // active. Vpn is presented as CONNECTION_UNKNOWN and so we have to skip
-      // this to be notified only when default network active without VPN to
-      // reconnect.
-      net::NetworkChangeNotifier::GetConnectionType() ==
-          net::NetworkChangeNotifier::CONNECTION_UNKNOWN)
-    return;
-
-  VLOG(2) << __func__ << " Should reconnect:" << reconnect_on_resume_;
-  if (reconnect_on_resume_) {
-    Connect();
-    reconnect_on_resume_ = false;
-  }
+void BraveVPNOSConnectionAPI::OnNetworkChanged(
+    net::NetworkChangeNotifier::ConnectionType type) {
+  VLOG(2) << __func__ << " : " << type;
+  // It's rare but sometimes Brave doesn't get vpn status update from OS.
+  // Checking here will make vpn status update properly in that situation.
+  CheckConnection();
 }
 
 void BraveVPNOSConnectionAPI::UpdateAndNotifyConnectionStateChange(

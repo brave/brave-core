@@ -595,6 +595,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_WEB_DISCOVERY_INFOBAR_NO_THANKS_LABEL" desc="The text for no thanks button in infobar">
           No thanks
         </message>
+        <!-- obsolete system InfoBar -->
+        <message name="IDS_OBSOLERE_SYSTEM_INFOBAR_DONT_SHOW_BUTTON" desc="The text for don't show again button">
+          Don't show again
+        </message>
       </if>
 
       <!-- Brave Ads -->
@@ -628,12 +632,24 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <if expr="enable_sidebar">
         <if expr="not use_titlecase">
           <message name="IDS_HIDE_SIDE_PANEL_TOOLBAR_BUTTON" desc="The menu item to hide the side panel icon on the toolbar">
-            Hide side panel icon
+            Hide sidebar icon 
+          </message>
+          <message name="IDS_TOOLTIP_SIDEBAR_HIDE" desc="The tooltip for the sidebar button, when closed">
+            Hide sidebar
+          </message>
+          <message name="IDS_TOOLTIP_SIDEBAR_SHOW" desc="The tooltip for the sidebar button, when closed">
+            Show sidebar
           </message>
         </if>
         <if expr="use_titlecase">
           <message name="IDS_HIDE_SIDE_PANEL_TOOLBAR_BUTTON" desc="The menu item to hide the side panel icon on the toolbar">
-            Hide Side Panel Icon
+            Hide Sidebar Icon
+          </message>
+          <message name="IDS_TOOLTIP_SIDEBAR_HIDE" desc="The tooltip for the sidebar button, when closed">
+            Hide Sidebar
+          </message>
+          <message name="IDS_TOOLTIP_SIDEBAR_SHOW" desc="The tooltip for the sidebar button, when closed">
+            Show Sidebar
           </message>
         </if>
         <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_EDIT" desc="Menu for editing an existing item from sidebar">
@@ -662,6 +678,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_SIDEBAR_SHOW_OPTION_TITLE" desc="Title of sidebar show option menu">
           Show Sidebar
+        </message>
+        <message name="IDS_SIDEBAR_MENU_MODEL_POSITION_OPTION_TITLE" desc="Title of sidebar show option menu">
+          Position
+        </message>
+        <message name="IDS_SIDEBAR_MENU_MODEL_POSITION_MOVE_TO_RIGHT_OPTION" desc="Title of sidebar position option menu to move to the right">
+          Move to the right
+        </message>
+        <message name="IDS_SIDEBAR_MENU_MODEL_POSITION_MOVE_TO_LEFT_OPTION" desc="Title of sidebar position option menu to move to the left">
+          Move to the left
         </message>
         <message name="IDS_SETTINGS_SIDEBAR_SHOW_OPTION_TITLE" desc="Title of sidebar show option menu in settings">
           Show Sidebar

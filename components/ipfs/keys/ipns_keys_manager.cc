@@ -120,8 +120,8 @@ void IpnsKeysManager::OnKeyRemoved(
 
   bool success = response.Is2XXResponseCode();
   std::unordered_map<std::string, std::string> removed_keys;
-  success = success && IPFSJSONParser::GetParseKeysFromJSON(response.body(),
-                                                            &removed_keys);
+  success = success && IPFSJSONParser::GetParseKeysFromJSON(
+                           response.value_body(), &removed_keys);
   if (success) {
     if (removed_keys.count(key_to_remove))
       keys_.erase(key_to_remove);
@@ -169,7 +169,7 @@ void IpnsKeysManager::OnKeyCreated(
   std::string value;
   bool success = response.Is2XXResponseCode();
   success = success && IPFSJSONParser::GetParseSingleKeyFromJSON(
-                           response.body(), &name, &value);
+                           response.value_body(), &name, &value);
   if (success) {
     keys_[name] = value;
   } else {
@@ -241,6 +241,9 @@ void IpnsKeysManager::OnKeyImported(
   std::string name;
   std::string value;
   std::unordered_map<std::string, std::string> new_keys;
+
+  // TODO(apaymyshev): actually here we parse json from internet with browser
+  // main process.
   success = success && IPFSJSONParser::GetParseSingleKeyFromJSON(*response_body,
                                                                  &name, &value);
   if (success) {
@@ -275,8 +278,8 @@ void IpnsKeysManager::OnKeysLoaded(
 
   bool success = response.Is2XXResponseCode();
   std::unordered_map<std::string, std::string> new_keys;
-  success = success && !response.body().empty() &&
-            IPFSJSONParser::GetParseKeysFromJSON(response.body(), &new_keys);
+  success = success && IPFSJSONParser::GetParseKeysFromJSON(
+                           response.value_body(), &new_keys);
   if (success) {
     keys_.swap(new_keys);
   } else {

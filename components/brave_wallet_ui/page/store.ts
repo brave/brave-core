@@ -35,6 +35,7 @@ export const store = configureStore({
 })
 
 export type WalletPageRootStore = ReturnType<typeof store.getState>
+export type RootStoreState = ReturnType<typeof store.getState>
 
 const proxy = getWalletPageApiProxy()
 proxy.addJsonRpcServiceObserver(store)

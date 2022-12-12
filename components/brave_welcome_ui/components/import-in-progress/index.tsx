@@ -7,11 +7,10 @@ import * as React from 'react'
 
 import * as S from './style'
 import DataContext from '../../state/context'
-import { useShouldPlayAnimations } from '../../state/hooks'
+import { shouldPlayAnimations } from '../../state/hooks'
 
 function ImportInProgress () {
   const { scenes } = React.useContext(DataContext)
-  const shouldPlayAnimations = useShouldPlayAnimations()
   const ref = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {

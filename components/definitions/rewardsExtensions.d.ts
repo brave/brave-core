@@ -124,6 +124,7 @@ declare namespace RewardsExtension {
     monthlyTipChoices: number[]
     autoContributeChoices: number[]
     payoutStatus: Record<string, ProviderPayoutStatus>
+    walletProviderRegions: Record<string, { allow: string[], block: string[] } | undefined>
   }
 
   export interface BalanceReport {
@@ -184,8 +185,6 @@ declare namespace RewardsExtension {
     address: string
     status: WalletStatus
     type: WalletType
-    addUrl: string
-    withdrawUrl: string
     userName: string
     accountUrl: string
     loginUrl: string

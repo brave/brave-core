@@ -39,6 +39,8 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
@@ -50,6 +52,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 
 import java.util.ArrayList;
@@ -82,6 +85,7 @@ public class AssetDetailActivity
     private boolean mHasNewTx;
     private boolean mNativeInitialized;
     private boolean mShouldShowDialog;
+    private WalletModel mWalletModel;
 
     @Override
     protected void triggerLayoutInflation() {
@@ -301,7 +305,7 @@ public class AssetDetailActivity
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         KeyringService keyringService = getKeyringService();
         JsonRpcService jsonRpcService = getJsonRpcService();
-        if (keyringService != null && jsonRpcService != null) {
+        if (keyringService != null && jsonRpcService != null && mWalletModel != null) {
             keyringService.getKeyringInfo(
                     AssetUtils.getKeyringForCoinType(mCoinType), keyringInfo -> {
                         if (keyringInfo == null) return;
@@ -310,66 +314,90 @@ public class AssetDetailActivity
                             WalletListItemModel thisAssetItemModel =
                                     new WalletListItemModel(R.drawable.ic_eth, mAsset.name,
                                             mAsset.symbol, mAsset.tokenId, "", "");
-                            Utils.getTxExtraInfo(this, selectedNetwork, accountInfos,
-                                    new BlockchainToken[] {mAsset}, false,
-                                    (assetPrices, fullTokenList, nativeAssetsBalances,
-                                            blockchainTokensBalances) -> {
-                                        thisAssetItemModel.setBlockchainToken(mAsset);
-                                        Utils.setUpTransactionList(this, accountInfos,
-                                                thisAssetItemModel, assetPrices, fullTokenList,
-                                                nativeAssetsBalances, blockchainTokensBalances,
-                                                findViewById(R.id.rv_transactions), this,
-                                                mWalletTxCoinAdapter);
+                            LiveDataUtil.observeOnce(
+                                    mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,
+                                    allNetworks -> {
+                                        Utils.getTxExtraInfo(this, allNetworks, selectedNetwork,
+                                                accountInfos, new BlockchainToken[] {mAsset}, false,
+                                                (assetPrices, fullTokenList, nativeAssetsBalances,
+                                                        blockchainTokensBalances) -> {
+                                                    thisAssetItemModel.setBlockchainToken(mAsset);
+                                                    Utils.setUpTransactionList(this, accountInfos,
+                                                            thisAssetItemModel, assetPrices,
+                                                            fullTokenList, nativeAssetsBalances,
+                                                            blockchainTokensBalances,
+                                                            findViewById(R.id.rv_transactions),
+                                                            this, mWalletTxCoinAdapter);
 
-                                        double thisPrice = Utils.getOrDefault(assetPrices,
-                                                mAsset.symbol.toLowerCase(Locale.getDefault()),
-                                                0.0d);
-                                        List<WalletListItemModel> walletListItemModelList =
-                                                new ArrayList<>();
-                                        for (AccountInfo accountInfo : accountInfos) {
-                                            final String accountAddressLower =
-                                                    accountInfo.address.toLowerCase(
-                                                            Locale.getDefault());
-                                            double thisAccountBalance =
-                                                    Utils.isNativeToken(selectedNetwork, mAsset)
-                                                    ? Utils.getOrDefault(nativeAssetsBalances,
-                                                            accountAddressLower, 0.0d)
-                                                    : Utils.getOrDefault(
-                                                            Utils.getOrDefault(
-                                                                    blockchainTokensBalances,
-                                                                    accountAddressLower,
-                                                                    new HashMap<String, Double>()),
-                                                            Utils.tokenToString(mAsset), 0.0d);
-                                            final String fiatBalanceString =
-                                                    String.format(Locale.getDefault(), "$%,.2f",
-                                                            thisPrice * thisAccountBalance);
-                                            final String cryptoBalanceString =
-                                                    String.format(Locale.getDefault(), "%.4f %s",
-                                                            thisAccountBalance, mAsset.symbol);
+                                                    double thisPrice =
+                                                            Utils.getOrDefault(assetPrices,
+                                                                    mAsset.symbol.toLowerCase(
+                                                                            Locale.getDefault()),
+                                                                    0.0d);
+                                                    List<WalletListItemModel>
+                                                            walletListItemModelList =
+                                                                    new ArrayList<>();
+                                                    for (AccountInfo accountInfo : accountInfos) {
+                                                        final String accountAddressLower =
+                                                                accountInfo.address.toLowerCase(
+                                                                        Locale.getDefault());
+                                                        double thisAccountBalance =
+                                                                Utils.isNativeToken(
+                                                                        selectedNetwork, mAsset)
+                                                                ? Utils.getOrDefault(
+                                                                        nativeAssetsBalances,
+                                                                        accountAddressLower, 0.0d)
+                                                                : Utils.getOrDefault(
+                                                                        Utils.getOrDefault(
+                                                                                blockchainTokensBalances,
+                                                                                accountAddressLower,
+                                                                                new HashMap<String,
+                                                                                        Double>()),
+                                                                        Utils.tokenToString(mAsset),
+                                                                        0.0d);
+                                                        final String fiatBalanceString =
+                                                                String.format(Locale.getDefault(),
+                                                                        "$%,.2f",
+                                                                        thisPrice
+                                                                                * thisAccountBalance);
+                                                        final String cryptoBalanceString =
+                                                                String.format(Locale.getDefault(),
+                                                                        "%.4f %s",
+                                                                        thisAccountBalance,
+                                                                        mAsset.symbol);
 
-                                            // if NFT, only show the account that owns it (i.e.
-                                            // balance = 1)
-                                            if (mAsset.isNft && thisAccountBalance != 1.) continue;
+                                                        // if NFT, only show the account that owns
+                                                        // it (i.e. balance = 1)
+                                                        if (mAsset.isNft
+                                                                && thisAccountBalance != 1.)
+                                                            continue;
 
-                                            WalletListItemModel model = new WalletListItemModel(
-                                                    R.drawable.ic_eth, accountInfo.name,
-                                                    accountInfo.address, fiatBalanceString,
-                                                    cryptoBalanceString, accountInfo.isImported);
-                                            model.setAccountInfo(accountInfo);
-                                            walletListItemModelList.add(model);
-                                        }
+                                                        WalletListItemModel model =
+                                                                new WalletListItemModel(
+                                                                        R.drawable.ic_eth,
+                                                                        accountInfo.name,
+                                                                        accountInfo.address,
+                                                                        fiatBalanceString,
+                                                                        cryptoBalanceString,
+                                                                        accountInfo.isImported);
+                                                        model.setAccountInfo(accountInfo);
+                                                        walletListItemModelList.add(model);
+                                                    }
 
-                                        if (walletCoinAdapter != null) {
-                                            walletCoinAdapter.setWalletListItemModelList(
-                                                    walletListItemModelList);
-                                            walletCoinAdapter.setOnWalletListItemClick(
-                                                    AssetDetailActivity.this);
-                                            walletCoinAdapter.setWalletListItemType(
-                                                    Utils.ACCOUNT_ITEM);
-                                            rvAccounts.setAdapter(walletCoinAdapter);
-                                            rvAccounts.setLayoutManager(new LinearLayoutManager(
-                                                    AssetDetailActivity.this));
-                                        }
+                                                    if (walletCoinAdapter != null) {
+                                                        walletCoinAdapter
+                                                                .setWalletListItemModelList(
+                                                                        walletListItemModelList);
+                                                        walletCoinAdapter.setOnWalletListItemClick(
+                                                                AssetDetailActivity.this);
+                                                        walletCoinAdapter.setWalletListItemType(
+                                                                Utils.ACCOUNT_ITEM);
+                                                        rvAccounts.setAdapter(walletCoinAdapter);
+                                                        rvAccounts.setLayoutManager(
+                                                                new LinearLayoutManager(
+                                                                        AssetDetailActivity.this));
+                                                    }
+                                                });
                                     });
                         });
                     });
@@ -404,6 +432,10 @@ public class AssetDetailActivity
         getPriceHistory(mAssetSymbol, "usd", AssetPriceTimeframe.ONE_DAY);
         getPrice(mAssetSymbol, "btc", AssetPriceTimeframe.LIVE);
         getBlockchainToken(() -> setUpAccountList());
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mWalletModel = activity.getWalletModel();
+        }
     }
 
     @Override

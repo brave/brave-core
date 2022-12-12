@@ -75,10 +75,7 @@ class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
 class BraveNewsTabHelperTest : public InProcessBrowserTest {
  public:
   BraveNewsTabHelperTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    features_.InitWithFeatures(
-        {brave_today::features::kBraveNewsSubscribeButtonFeature}, {});
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   void SetUp() override {
     brave::RegisterPathProvider();
@@ -118,7 +115,6 @@ class BraveNewsTabHelperTest : public InProcessBrowserTest {
   net::EmbeddedTestServer* https_server() { return &https_server_; }
 
  private:
-  base::test::ScopedFeatureList features_;
   net::EmbeddedTestServer https_server_;
   content::ContentMockCertVerifier cert_verifier_;
 };

@@ -91,9 +91,7 @@ void BraveLocationBarView::Init() {
       focus_ring->SetColorId(color_id.value());
   }
 
-  if (base::FeatureList::IsEnabled(
-          brave_today::features::kBraveNewsSubscribeButtonFeature) &&
-      base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature) &&
+  if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature) &&
       !browser_->profile()->IsOffTheRecord()) {
     brave_news_location_view_ =
         AddChildView(std::make_unique<BraveNewsLocationView>(
@@ -140,13 +138,15 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
   if (brave_actions_) {
     brave_actions_->Update();
   }
+
+  auto show_page_actions = !ShouldHidePageActionIcons();
 #if BUILDFLAG(ENABLE_TOR)
   if (onion_location_view_)
-    onion_location_view_->Update(contents);
+    onion_location_view_->Update(contents, show_page_actions);
 #endif
 #if BUILDFLAG(ENABLE_IPFS)
   if (ipfs_location_view_)
-    ipfs_location_view_->Update(contents);
+    ipfs_location_view_->Update(contents, show_page_actions);
 #endif
 
   LocationBarView::Update(contents);
@@ -174,22 +174,26 @@ ui::ImageModel BraveLocationBarView::GetLocationIcon(
 }
 
 void BraveLocationBarView::OnChanged() {
+  auto hide_page_actions = ShouldHidePageActionIcons();
   if (brave_actions_) {
-    // Do not show actions whilst omnibar is open or url is being edited
-    const bool should_hide =
-        ShouldHidePageActionIcons() && !omnibox_view_->GetText().empty();
-    brave_actions_->SetShouldHide(should_hide);
+    brave_actions_->SetShouldHide(hide_page_actions);
   }
 #if BUILDFLAG(ENABLE_TOR)
   if (onion_location_view_)
     onion_location_view_->Update(
-        browser_->tab_strip_model()->GetActiveWebContents());
+        browser_->tab_strip_model()->GetActiveWebContents(),
+        !hide_page_actions);
 #endif
 #if BUILDFLAG(ENABLE_IPFS)
   if (ipfs_location_view_)
     ipfs_location_view_->Update(
-        browser_->tab_strip_model()->GetActiveWebContents());
+        browser_->tab_strip_model()->GetActiveWebContents(),
+        !hide_page_actions);
 #endif
+
+  if (brave_news_location_view_) {
+    brave_news_location_view_->SetVisible(!hide_page_actions);
+  }
 
   // OnChanged calls Layout
   LocationBarView::OnChanged();

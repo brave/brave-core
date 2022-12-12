@@ -111,6 +111,7 @@ public class TransactionUtils {
             case WalletConstants.SOL_INS_SYSTEM:
             case WalletConstants.SOL_INS_VOTE:
             case WalletConstants.SOL_INS_STAKE:
+            case WalletConstants.SOL_INS_TOKEN:
                 return false;
             default:
                 return true;

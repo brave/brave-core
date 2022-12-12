@@ -14,6 +14,7 @@
 namespace {
 
 const AcceleratorMapping kBraveAcceleratorMap[] = {
+    {ui::VKEY_M, ui::EF_CONTROL_DOWN, IDC_TOGGLE_TAB_MUTE},
 #if BUILDFLAG(IS_MAC)
     // Command-Option-N
     {ui::VKEY_N, ui::EF_ALT_DOWN | ui::EF_PLATFORM_ACCELERATOR,

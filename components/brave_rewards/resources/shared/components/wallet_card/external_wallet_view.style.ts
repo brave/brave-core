@@ -39,11 +39,11 @@ export const verifyWallet = styled.div`
   }
 
   .icon {
-    width: 17px;
+    width: 16px;
     height: auto;
     vertical-align: middle;
-    margin-left: 8px;
-    margin-bottom: 2px;
+    margin-left: 6px;
+    margin-bottom: 1px;
   }
 `
 

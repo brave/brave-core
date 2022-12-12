@@ -21,23 +21,17 @@
   <message name="IDS_REWARDS_WALLET_ACCOUNT_LINK" desc="">
     Go to my <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
   </message>
-  <message name="IDS_REWARDS_WALLET_ADD_FUNDS" desc="">
-    Add Funds
-  </message>
   <message name="IDS_REWARDS_WALLET_AUTO_CONTRIBUTE" desc="">
     Auto-Contribute
   </message>
   <message name="IDS_REWARDS_WALLET_DISCONNECTED" desc="">
     Logged out
   </message>
-  <message name="IDS_REWARDS_WALLET_DISCONNECT_LINK" desc="">
-    Disconnect from <ph name="PROVIDER">$1<ex>Uphold</ex></ph>
-  </message>
   <message name="IDS_REWARDS_WALLET_ESTIMATED_EARNINGS" desc="">
     Estimated Earnings
   </message>
   <message name="IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT" desc="">
-    Log into your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
+    Log in to your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
   </message>
   <message name="IDS_REWARDS_WALLET_MONTHLY_TIPS" desc="">
     Monthly Tips
@@ -55,16 +49,36 @@
     Rewards Summary
   </message>
   <message name="IDS_REWARDS_WALLET_UNVERIFIED" desc="">
-    Unverified
+    Connect
   </message>
   <message name="IDS_REWARDS_WALLET_VIEW_STATEMENT" desc="">
     View statement
   </message>
   <message name="IDS_REWARDS_WALLET_VERIFIED" desc="">
-    Verified
+    Connected
   </message>
   <message name="IDS_REWARDS_WALLET_YOUR_BALANCE" desc="">
     Your Balance
+  </message>
+
+  <!-- Rewards "limited" view -->
+  <message name="IDS_REWARDS_CONNECT_ACCOUNT" desc="">
+    Connect account
+  </message>
+  <message name="IDS_REWARDS_CONNECT_ACCOUNT_TEXT" desc="">
+    <ph name="BOLD_BEGIN">$1</ph>Ready to start earning BAT?<ph name="BOLD_END">$2</ph> Just connect your custodial account to your Rewards profile. If you don’t have an account, you’ll get the chance to create one.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS" desc="">
+    To start earning BAT, you need to connect a custodial account to Brave Rewards. Unfortunately, there’s no custodian available in your region, so earning isn’t available at this time. However, you’ll still be automatically supporting creators by using Rewards.
+  </message>
+  <message name="IDS_REWARDS_LEARN_MORE" desc="">
+    Learn more
+  </message>
+  <message name="IDS_REWARDS_PUBLISHER_COUNT_TEXT" desc="">
+    {PUBLISHER_COUNT, plural,
+      =1 {You’ve visited # creator supported by users like you this month}
+      other {You’ve visited # creators supported by users like you this month}
+    }
   </message>
 
   <!-- Rewards new tab page widget -->
@@ -100,9 +114,6 @@
   </message>
   <message name="IDS_REWARDS_WIDGET_GRANT_DAYS_REMAINING" desc="">
     You have <ph name="DAYS">$1<ex>80 days</ex></ph> left to claim
-  </message>
-  <message name="IDS_REWARDS_WIDGET_LEARN_MORE" desc="">
-    Learn more
   </message>
   <message name="IDS_REWARDS_WIDGET_OPT_IN_HEADER" desc="">
     Earn tokens and give back
@@ -152,7 +163,7 @@
     Verified Creator
   </message>
   <message name="IDS_REWARDS_PANEL_REFRESH_STATUS" desc="">
-    Refresh
+    Refresh Creator verification status
   </message>
   <message name="IDS_REWARDS_PANEL_PENDING_TIP_TEXT" desc="">
     Any tip you make will remain pending and retry automatically for 90 days. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph>
@@ -189,6 +200,24 @@
   </message>
   <message name="IDS_REWARDS_PANEL_CANCEL" desc="">
     Cancel
+  </message>
+  <message name="IDS_REWARDS_PANEL_ABOUT_REWARDS_TEXT" desc="">
+    Using Brave Rewards helps support content creators, and lets you earn BAT.
+  </message>
+  <message name="IDS_REWARDS_PANEL_HEADER_TITLE" desc="">
+    Brave Rewards
+  </message>
+  <message name="IDS_REWARDS_PANEL_HEADER_TEXT_ADS_ENABLED" desc="">
+    You are helping support content creators
+  </message>
+  <message name="IDS_REWARDS_PANEL_HEADER_TEXT_ADS_DISABLED" desc="">
+    Turn on to help support content creators
+  </message>
+  <message name="IDS_REWARDS_PANEL_REWARDS_SETTINGS" desc="">
+    Rewards settings
+  </message>
+  <message name="IDS_REWARDS_PANEL_LEARN_MORE_ABOUT_BAT" desc="">
+    Learn more about BAT
   </message>
 
   <!-- Rewards grant captcha modal -->
@@ -230,9 +259,6 @@
   </message>
 
   <!-- Rewards panel notifications -->
-  <message name="IDS_REWARDS_NOTIFICATION_ADD_FUNDS" desc="">
-    Add Funds
-  </message>
   <message name="IDS_REWARDS_NOTIFICATION_RECONNECT" desc="">
     Reconnect
   </message>
@@ -241,12 +267,6 @@
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_CLAIM_TOKENS" desc="">
     Claim Tokens
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_ADD_FUNDS_TITLE" desc="">
-    Insufficient Funds
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_ADD_FUNDS_TEXT" desc="">
-    Your Brave Rewards account is waiting for a deposit.
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_AUTO_CONTRIBUTE_COMPLETED_TITLE" desc="">
     Auto-Contribute
@@ -287,14 +307,11 @@
   <message name="IDS_REWARDS_NOTIFICATION_GRANT_DAYS_REMAINING" desc="">
     You have <ph name="DAYS">$1<ex>20 days</ex></ph> left to claim
   </message>
-  <message name="IDS_REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS_TEXT" desc="">
-    Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We’ll try again in 30 days.
-  </message>
   <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_CONTRIBUTION_FAILED_TEXT" desc="">
     There was a problem processing your contribution.
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_CONTRIBUTION_FAILED_TITLE" desc="">
-    Monthly tip failed
+    Monthly contribution failed
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_TIP_COMPLETED_TITLE" desc="">
     Contributions and tips
@@ -307,12 +324,6 @@
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_PUBLISHER_VERIFIED_TEXT" desc="">
     Creator <ph name="PUBLISHER_NAME">$1<ex>brave.com</ex></ph> recently verified.
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_PENDING_TIP_FAILED_TITLE" desc="">
-    Insufficient funds
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_PENDING_TIP_FAILED_TEXT" desc="">
-    You have pending tips due to insufficient funds
   </message>
 
   <!-- Adaptive captcha -->
@@ -402,14 +413,20 @@
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_HEADER" desc="">
     How often do you want to see ads?
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_SUBHEADER" desc="">
-    (ads per hour)
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_PER_HOUR" desc="">
+    {ADS_PER_HOUR, plural,
+      =1 {# Ad per hour}
+      other {# Ads per hour}
+    }
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_HEADER" desc="">
-    How much monthly support do you want to give to your favorite creators?
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_TEXT_1" desc="">
+    More private ads, more rewards
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CONTRIBUTE_SUBHEADER" desc="">
-    (from your ads earnings)
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_TEXT_2" desc="">
+    With more ads, you can support more creators
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SETUP_CHANGE_LATER" desc="">
+    You can change this later in settings.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS" desc="">
     Start using Brave Rewards
@@ -450,13 +467,7 @@
     Where do ads show up?
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_ADS_TEXT" desc="">
-    Brave Private Ads will appear as a normal notification. You control how often you see these ads in settings.
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_HEADER" desc="">
-    When do you receive rewards?
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SCHEDULE_TEXT" desc="">
-    Your earned tokens from Brave Private Ads throughout the current month will arrive on the 5th of the next month.
+    Brave Private Ads appear as notifications on your screen. You control how often you see these ads.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_AC_HEADER" desc="">
     Giving back made effortless
@@ -470,17 +481,8 @@
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_TIPPING_TEXT" desc="">
     Tipping is a way to personally encourage and support content or creators that you love. Get tippin!
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_HEADER" desc="">
-    What can you do with tokens?
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_REDEEM_TEXT" desc="">
-    Tokens can be used beyond supporting creators. You can buy digital content and other goods as merchants come onboard.
-  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_HEADER" desc="">
-    Lastly, let’s get you set up on the basic settings
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_SETUP_TEXT" desc="">
-    You can change this later.
+    Lastly, let’s get you set up
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_HEADER" desc="">
     Woohoo, you’re all set!
@@ -488,26 +490,14 @@
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_COMPLETE_TEXT" desc="">
     By using Brave Rewards you are helping make the web a better place for everyone. And that’s awesome!
   </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_HEADER" desc="">
-    Verify
-  </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_SUBTEXT" desc="">
-    In order to withdraw the BAT you earn for viewing ads, you’ll need to verify Brave Rewards.
+    Connect a custodial account so you can earn BAT and withdraw your rewards
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_LATER" desc="">
-    Do it later
+    I’ll do it later
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_VERIFY_NOW" desc="">
-    Verify Brave Rewards
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_NOTE" desc="">
-    The bitFlyer wallet is a service managed by bitFlyer, Inc.
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_TEXT" desc="">
-    By verifying your Brave Rewards and linking it to a bitFlyer account, you will be able to store and manage the tokens you have earned through Brave Rewards more easily
-  </message>
-  <message name="IDS_BRAVE_REWARDS_ONBOARDING_PANEL_BITFLYER_LEARN_MORE" desc="">
-    <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph> about how to link your Brave browser with your bitFlyer account.
+    Connect account
   </message>
 
   <!-- Rewards unsupported region notice -->

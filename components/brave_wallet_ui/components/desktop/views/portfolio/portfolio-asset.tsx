@@ -258,7 +258,7 @@ export const PortfolioAsset = (props: Props) => {
     const visibleAssetOptions = userAssetList
       .filter((token) =>
         token.asset.visible &&
-        !token.asset.isErc721
+        !(token.asset.isErc721 || token.asset.isNft)
       )
 
     if (visibleAssetOptions.length === 0) {
@@ -706,7 +706,7 @@ export const PortfolioAsset = (props: Props) => {
 
       <NftDetails
         onLoad={onNftDetailsLoad}
-        visible={selectedAsset?.isErc721}
+        visible={selectedAsset?.isErc721 || selectedAsset?.isNft}
         ref={nftDetailsRef}
         sandbox="allow-scripts allow-popups allow-same-origin"
         src='chrome-untrusted://nft-display'

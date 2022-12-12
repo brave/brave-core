@@ -106,7 +106,9 @@ const transactionDummyData: AccountTransactions = {
             gasPrice: '0x20000000000',
             nonce: '0x1',
             to: 'ETHEREUM ACCOUNT 2',
-            value: '0xb1a2bc2ec50000'
+            value: '0xb1a2bc2ec50000',
+            signOnly: false,
+            signedTransaction: undefined
           },
           chainId: '',
           maxFeePerGas: '',
@@ -139,7 +141,9 @@ const transactionDummyData: AccountTransactions = {
             gasPrice: '0x20000000000',
             nonce: '0x1',
             to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-            value: '0xb1a2bc2ec50000'
+            value: '0xb1a2bc2ec50000',
+            signOnly: false,
+            signedTransaction: undefined
           },
           chainId: '',
           maxFeePerGas: '',
@@ -172,7 +176,9 @@ const transactionDummyData: AccountTransactions = {
             gasPrice: '0x20000000000',
             nonce: '0x1',
             to: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
-            value: '0xb1a2bc2ec90000'
+            value: '0xb1a2bc2ec90000',
+            signOnly: false,
+            signedTransaction: undefined
           },
           chainId: '',
           maxFeePerGas: '',
@@ -205,7 +211,9 @@ const transactionDummyData: AccountTransactions = {
             gasPrice: '0x20000000000',
             nonce: '0x1',
             to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-            value: '0xb1a2bc2ec90000'
+            value: '0xb1a2bc2ec90000',
+            signOnly: false,
+            signedTransaction: undefined
           },
           chainId: '',
           maxFeePerGas: '',
@@ -238,7 +246,9 @@ const transactionDummyData: AccountTransactions = {
             gasPrice: '0x20000000000',
             nonce: '0x1',
             to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-            value: '0xb1a2bc2ec90000'
+            value: '0xb1a2bc2ec90000',
+            signOnly: false,
+            signedTransaction: undefined
           },
           chainId: '',
           maxFeePerGas: '',
@@ -273,7 +283,9 @@ const transactionDummyData: AccountTransactions = {
             gasPrice: '0x20000000000',
             nonce: '0x1',
             to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-            value: '0xb1a2bc2ec90000'
+            value: '0xb1a2bc2ec90000',
+            signOnly: false,
+            signedTransaction: undefined
           },
           chainId: '',
           maxFeePerGas: '',
@@ -306,7 +318,9 @@ const transactionDummyData: AccountTransactions = {
             gasPrice: '0x20000000000',
             nonce: '0x1',
             to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-            value: '0xb1a2bc2ec90000'
+            value: '0xb1a2bc2ec90000',
+            signOnly: false,
+            signedTransaction: undefined
           },
           chainId: '',
           maxFeePerGas: '',
@@ -710,7 +724,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
             {selectedPanel === 'main' ? (
               <ConnectedPanel
                 navAction={navigateTo}
-                isSwapSupported={true}
               />
             ) : (
               <>

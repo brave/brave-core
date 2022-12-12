@@ -38,8 +38,6 @@ TEST_F(WalletUtilTest, ExternalWalletPtrFromJSON) {
       "  \"one_time_string\": \"eda4c873eac72e1ecc30e77b25bb623b8b5bf99f\",\n"
       "  \"status\": 2,\n"
       "  \"user_name\": \"random_user\",\n"
-      "  \"add_url\": \"https://random.domain/add\","
-      "  \"withdraw_url\": \"https://random.domain/withdraw\","
       "  \"account_url\": \"https://random.domain/account\","
       "  \"login_url\": \"https://random.domain/login\","
       "  \"fees\": {\"brave\": 5.00}"
@@ -52,29 +50,27 @@ TEST_F(WalletUtilTest, ExternalWalletPtrFromJSON) {
             "eda4c873eac72e1ecc30e77b25bb623b8b5bf99f");
   EXPECT_EQ(wallet->status, ledger::mojom::WalletStatus::kConnected);
   EXPECT_EQ(wallet->user_name, "random_user");
-  EXPECT_EQ(wallet->add_url, "https://random.domain/add");
-  EXPECT_EQ(wallet->withdraw_url, "https://random.domain/withdraw");
   EXPECT_EQ(wallet->account_url, "https://random.domain/account");
   EXPECT_EQ(wallet->login_url, "https://random.domain/login");
   EXPECT_NE(wallet->fees.find("brave"), wallet->fees.end());
   EXPECT_EQ(wallet->fees["brave"], 5.00);
 }
 
-using TransitionWalletCreateOrResetParamType =
+using TransitionWalletCreateParamType =
     std::tuple<std::string,          // test name suffix
                mojom::WalletStatus,  // "to" WalletStatus
-               bool,                 // create wallet
+               bool,                 // wallet already exists
                bool                  // expected outcome
                >;
 
-class TransitionWalletCreateOrReset
+class TransitionWalletCreate
     : public BATLedgerTest,
-      public WithParamInterface<TransitionWalletCreateOrResetParamType> {};
+      public WithParamInterface<TransitionWalletCreateParamType> {};
 
-TEST_P(TransitionWalletCreateOrReset, Paths) {
-  const auto& [ignore, to, create, expected] = GetParam();
+TEST_P(TransitionWalletCreate, Paths) {
+  const auto& [ignore, to, wallet_already_exists, expected] = GetParam();
 
-  if (!create) {
+  if (wallet_already_exists) {
     GetTestLedgerClient()->SetStringState(
         state::kWalletUphold, FakeEncryption::Base64EncryptString("{}"));
   }
@@ -90,9 +86,7 @@ TEST_P(TransitionWalletCreateOrReset, Paths) {
     EXPECT_EQ(wallet->status, to);
     EXPECT_FALSE(wallet->account_url.empty());
     EXPECT_TRUE(wallet->activity_url.empty());
-    EXPECT_TRUE(wallet->add_url.empty());
     EXPECT_FALSE(wallet->login_url.empty());
-    EXPECT_TRUE(wallet->withdraw_url.empty());
 
     EXPECT_TRUE(wallet->token.empty());
     EXPECT_TRUE(wallet->address.empty());
@@ -102,41 +96,29 @@ TEST_P(TransitionWalletCreateOrReset, Paths) {
 // clang-format off
 INSTANTIATE_TEST_SUITE_P(
   WalletUtilTest,
-  TransitionWalletCreateOrReset,
+  TransitionWalletCreate,
   Values(
-    TransitionWalletCreateOrResetParamType{
+    TransitionWalletCreateParamType{
+      "wallet_already_exists",
+      mojom::WalletStatus::kNotConnected,
+      true,
+      false
+    },
+    TransitionWalletCreateParamType{
       "attempting_to_create_wallet_as_kConnected",
       mojom::WalletStatus::kConnected,
-      true,
+      false,
       false
     },
-    TransitionWalletCreateOrResetParamType{
+    TransitionWalletCreateParamType{
       "attempting_to_create_wallet_as_kLoggedOut",
       mojom::WalletStatus::kLoggedOut,
-      true,
+      false,
       false
     },
-    TransitionWalletCreateOrResetParamType{
+    TransitionWalletCreateParamType{
       "create_success",
       mojom::WalletStatus::kNotConnected,
-      true,
-      true
-    },
-    TransitionWalletCreateOrResetParamType{
-      "attempting_to_reset_wallet_to_kConnected",
-      mojom::WalletStatus::kConnected,
-      false,
-      false
-    },
-    TransitionWalletCreateOrResetParamType{
-      "reset_success_kNotConnected",
-      mojom::WalletStatus::kNotConnected,
-      false,
-      true
-    },
-    TransitionWalletCreateOrResetParamType{
-      "reset_success_kLoggedOut",
-      mojom::WalletStatus::kLoggedOut,
       false,
       true
     }
@@ -167,20 +149,19 @@ TEST_P(TransitionWalletTransition, Paths) {
 
   if (to_wallet) {
     EXPECT_EQ(to_wallet->type, constant::kWalletUphold);
-    EXPECT_TRUE(to_wallet->one_time_string.empty());
-    EXPECT_TRUE(to_wallet->code_verifier.empty());
     EXPECT_EQ(to_wallet->status, to);
     EXPECT_FALSE(to_wallet->account_url.empty());
     EXPECT_FALSE(to_wallet->login_url.empty());
 
     if (to == mojom::WalletStatus::kConnected) {
       EXPECT_FALSE(to_wallet->activity_url.empty());
-      EXPECT_FALSE(to_wallet->add_url.empty());
-      EXPECT_FALSE(to_wallet->withdraw_url.empty());
     } else {
+      EXPECT_TRUE(to == mojom::WalletStatus::kLoggedOut);
+
       EXPECT_TRUE(to_wallet->activity_url.empty());
-      EXPECT_TRUE(to_wallet->add_url.empty());
-      EXPECT_TRUE(to_wallet->withdraw_url.empty());
+
+      EXPECT_FALSE(to_wallet->one_time_string.empty());
+      EXPECT_FALSE(to_wallet->code_verifier.empty());
 
       EXPECT_TRUE(to_wallet->token.empty());
       EXPECT_TRUE(to_wallet->address.empty());
@@ -252,12 +233,11 @@ INSTANTIATE_TEST_SUITE_P(
       "kLoggedOut__kNotConnected",
       []{
         auto wallet = mojom::ExternalWallet::New();
-        wallet->type = constant::kWalletUphold;
         wallet->status = mojom::WalletStatus::kLoggedOut;
         return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
       }(),
       mojom::WalletStatus::kNotConnected,
-      true
+      false
     },
     TransitionWalletTransitionParamType{
       "kLoggedOut__kLoggedOut",
@@ -308,12 +288,11 @@ INSTANTIATE_TEST_SUITE_P(
       "kConnected__kNotConnected",
       []{
         auto wallet = mojom::ExternalWallet::New();
-        wallet->type = constant::kWalletUphold;
         wallet->status = mojom::WalletStatus::kConnected;
         return std::make_shared<mojom::ExternalWalletPtr>(std::move(wallet));
       }(),
       mojom::WalletStatus::kNotConnected,
-      true
+      false
     },
     TransitionWalletTransitionParamType{
       "kConnected__kLoggedOut",

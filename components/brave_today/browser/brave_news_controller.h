@@ -13,6 +13,7 @@
 #include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/timer/timer.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -57,7 +58,8 @@ namespace brave_news {
 // owning prefs data.
 // Controls remote feed update logic via Timer and prefs values.
 class BraveNewsController : public KeyedService,
-                            public mojom::BraveNewsController {
+                            public mojom::BraveNewsController,
+                            public PublishersController::Observer {
  public:
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
@@ -111,6 +113,7 @@ class BraveNewsController : public KeyedService,
   void ClearPrefs() override;
   void IsFeedUpdateAvailable(const std::string& displayed_feed_hash,
                              IsFeedUpdateAvailableCallback callback) override;
+  void AddFeedListener(mojo::PendingRemote<mojom::FeedListener>) override;
   void GetDisplayAd(GetDisplayAdCallback callback) override;
   void OnInteractionSessionStarted() override;
   void OnSessionCardVisitsCountChanged(
@@ -126,6 +129,9 @@ class BraveNewsController : public KeyedService,
   void OnDisplayAdView(const std::string& item_id,
                        const std::string& creative_instance_id) override;
   void OnDisplayAdPurgeOrphanedEvents() override;
+
+  // PublishersController::Observer:
+  void OnPublishersUpdated(brave_news::PublishersController*) override;
 
  private:
   void ConditionallyStartOrStopTimer();
@@ -155,6 +161,8 @@ class BraveNewsController : public KeyedService,
   base::RepeatingTimer timer_publishers_update_;
   base::CancelableTaskTracker task_tracker_;
 
+  base::ScopedObservation<PublishersController, PublishersController::Observer>
+      publishers_observation_;
   mojo::ReceiverSet<mojom::BraveNewsController> receivers_;
   mojo::RemoteSet<mojom::PublishersListener> publishers_listeners_;
   base::WeakPtrFactory<BraveNewsController> weak_ptr_factory_;

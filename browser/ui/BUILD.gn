@@ -1,9 +1,13 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
-import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/buildflags/buildflags.gni")
@@ -96,6 +100,8 @@ source_set("ui") {
       "omnibox/brave_omnibox_client_impl.cc",
       "omnibox/brave_omnibox_client_impl.h",
       "session_crashed_bubble_brave.cc",
+      "startup/brave_obsolete_system_infobar_delegate.cc",
+      "startup/brave_obsolete_system_infobar_delegate.h",
       "toolbar/brave_app_menu_model.cc",
       "toolbar/brave_app_menu_model.h",
       "toolbar/brave_recent_tabs_sub_menu_model.h",
@@ -149,6 +155,8 @@ source_set("ui") {
       "webui/settings/brave_search_engines_handler.h",
       "webui/settings/brave_settings_localized_strings_provider.cc",
       "webui/settings/brave_settings_localized_strings_provider.h",
+      "webui/settings/brave_site_settings_handler.cc",
+      "webui/settings/brave_site_settings_handler.h",
       "webui/settings/brave_sync_handler.cc",
       "webui/settings/brave_sync_handler.h",
       "webui/settings/brave_wallet_handler.cc",
@@ -368,8 +376,6 @@ source_set("ui") {
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/constants",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
-    "//brave/components/crypto_dot_com/browser/buildflags:buildflags",
-    "//brave/components/ftx/browser/buildflags:buildflags",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/common",
@@ -720,10 +726,6 @@ source_set("ui") {
       "webui/ethereum_remote_client/ethereum_remote_client_ui.h",
     ]
     deps += [ "//brave/browser/ui/webui/ethereum_remote_client:ethereum_remote_client_page_generated" ]
-  }
-
-  if (enable_ftx) {
-    deps += [ "//brave/components/ftx/common" ]
   }
 
   if (enable_playlist_webui) {

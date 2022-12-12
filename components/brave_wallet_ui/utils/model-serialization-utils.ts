@@ -3,11 +3,81 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { BraveWallet, SerializableSolanaTxData, SerializableSolanaTxDataSendOptions, SerializableTimeDelta, SerializableTransactionInfo, TimeDelta } from '../constants/types'
+import {
+  BraveWallet,
+  ObjWithOriginInfo,
+  SerializableDecryptRequest,
+  SerializableGetEncryptionPublicKeyRequest,
+  SerializableOrigin,
+  SerializableOriginInfo,
+  SerializableSignMessageRequest,
+  SerializableSolanaTxData,
+  SerializableSolanaTxDataSendOptions,
+  SerializableSwitchChainRequest,
+  SerializableTimeDelta,
+  SerializableTransactionInfo,
+  SerializableUnguessableToken,
+  TimeDelta,
+  WithSerializableOriginInfo
+} from '../constants/types'
 
 export function makeSerializableTimeDelta (td: TimeDelta | SerializableTimeDelta): SerializableTimeDelta {
   return {
     microseconds: Number(td.microseconds)
+  }
+}
+
+export function makeSerializableUnguessableToken (token: BraveWallet.OriginInfo['origin']['nonceIfOpaque']): SerializableUnguessableToken | undefined {
+  if (!token) {
+    return undefined
+  }
+
+  return {
+    high: token.high.toString(),
+    low: token.low.toString()
+  }
+}
+
+export function deserializableUnguessableToken (token?: SerializableUnguessableToken): BraveWallet.OriginInfo['origin']['nonceIfOpaque'] {
+  if (!token) {
+    return undefined
+  }
+
+  return {
+    high: BigInt(token.high),
+    low: BigInt(token.low)
+  }
+}
+
+export function makeSerializableOriginInfo <
+  T extends BraveWallet.OriginInfo | undefined
+> (originInfo: T): T extends BraveWallet.OriginInfo ? SerializableOriginInfo : undefined {
+  return (originInfo ? {
+    ...originInfo,
+    origin: {
+      ...originInfo?.origin,
+      nonceIfOpaque: makeSerializableUnguessableToken(originInfo?.origin.nonceIfOpaque)
+    }
+  } : undefined) as T extends BraveWallet.OriginInfo ? SerializableOriginInfo : undefined
+}
+
+export function deserializeOrigin (origin: SerializableOrigin): BraveWallet.OriginInfo['origin'] {
+  return {
+    ...origin,
+    nonceIfOpaque: deserializableUnguessableToken(origin.nonceIfOpaque)
+  }
+}
+
+export function revertSerializableOriginInfoProp <
+  G extends any,
+  T extends WithSerializableOriginInfo<ObjWithOriginInfo<G>>
+> (obj: T) {
+  return {
+    ...obj,
+    originInfo: {
+      ...obj.originInfo,
+      origin: deserializeOrigin(obj.originInfo.origin)
+    }
   }
 }
 
@@ -48,6 +118,7 @@ export function makeSerializableSolanaTxData (
 export function makeSerializableTransaction (tx: BraveWallet.TransactionInfo): SerializableTransactionInfo {
   return {
     ...tx,
+    originInfo: makeSerializableOriginInfo(tx.originInfo),
     txDataUnion: {
       ...tx.txDataUnion,
       solanaTxData: tx.txDataUnion.solanaTxData
@@ -58,4 +129,27 @@ export function makeSerializableTransaction (tx: BraveWallet.TransactionInfo): S
     createdTime: makeSerializableTimeDelta(tx.createdTime),
     submittedTime: makeSerializableTimeDelta(tx.submittedTime)
   }
+}
+
+export const makeOriginInfoPropSerializable = <T extends ObjWithOriginInfo>(req: T): WithSerializableOriginInfo<T> => {
+  return {
+    ...req,
+    originInfo: makeSerializableOriginInfo(req.originInfo)
+  }
+}
+
+export const makeSerializableSignMessageRequest = (req: BraveWallet.SignMessageRequest): SerializableSignMessageRequest => {
+  return makeOriginInfoPropSerializable(req)
+}
+
+export const makeSerializableGetEncryptionPublicKeyRequest = (req: BraveWallet.GetEncryptionPublicKeyRequest): SerializableGetEncryptionPublicKeyRequest => {
+  return makeOriginInfoPropSerializable(req)
+}
+
+export const makeSerializableDecryptRequest = (req: BraveWallet.DecryptRequest): SerializableDecryptRequest => {
+  return makeOriginInfoPropSerializable(req)
+}
+
+export const makeSerializableSwitchChainRequest = (req: BraveWallet.SwitchChainRequest): SerializableSwitchChainRequest => {
+  return makeOriginInfoPropSerializable(req)
 }

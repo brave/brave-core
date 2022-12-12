@@ -46,51 +46,53 @@ class AssetDiscoveryManagerUnitTest;
 // This class is not thread-safe and should have single owner
 class KeyringService : public KeyedService, public mojom::KeyringService {
  public:
-  KeyringService(JsonRpcService* json_rpc_service, PrefService* prefs);
+  KeyringService(JsonRpcService* json_rpc_service,
+                 PrefService* profile_prefs,
+                 PrefService* local_state);
   ~KeyringService() override;
 
   static absl::optional<int>& GetPbkdf2IterationsForTesting();
-  static void MigrateObsoleteProfilePrefs(PrefService* prefs);
+  static void MigrateObsoleteProfilePrefs(PrefService* profile_prefs);
 
-  static bool HasPrefForKeyring(const PrefService& prefs,
+  static bool HasPrefForKeyring(const PrefService& profile_prefs,
                                 const std::string& key,
                                 const std::string& id);
-  static const base::Value* GetPrefForKeyring(const PrefService& prefs,
+  static const base::Value* GetPrefForKeyring(const PrefService& profile_prefs,
                                               const std::string& key,
                                               const std::string& id);
-  static base::Value::Dict& GetPrefForKeyringUpdate(PrefService* prefs,
+  static base::Value::Dict& GetPrefForKeyringUpdate(PrefService* profile_prefs,
                                                     const std::string& key,
                                                     const std::string& id);
   static std::vector<std::string> GetAvailableKeyringsFromPrefs(
-      PrefService* prefs);
+      PrefService* profile_prefs);
   // If keyring dicionary for id doesn't exist, it will be created.
-  static void SetPrefForKeyring(PrefService* prefs,
+  static void SetPrefForKeyring(PrefService* profile_prefs,
                                 const std::string& key,
                                 base::Value value,
                                 const std::string& id);
   static absl::optional<std::vector<uint8_t>> GetPrefInBytesForKeyring(
-      const PrefService& prefs,
+      const PrefService& profile_prefs,
       const std::string& key,
       const std::string& id);
-  static void SetPrefInBytesForKeyring(PrefService* prefs,
+  static void SetPrefInBytesForKeyring(PrefService* profile_prefs,
                                        const std::string& key,
                                        base::span<const uint8_t> bytes,
                                        const std::string& id);
 
   // Account path will be used as key in kAccountMetas
   static void SetAccountMetaForKeyring(
-      PrefService* prefs,
+      PrefService* profile_prefs,
       const std::string& account_path,
       const absl::optional<std::string> name,
       const absl::optional<std::string> address,
       const std::string& id);
   static absl::optional<std::string> GetKeyringIdForCoinNonFIL(
       mojom::CoinType coin);
-  static std::string GetAccountNameForKeyring(const PrefService& prefs,
+  static std::string GetAccountNameForKeyring(const PrefService& profile_prefs,
                                               const std::string& account_path,
                                               const std::string& id);
   static std::string GetAccountAddressForKeyring(
-      const PrefService& prefs,
+      const PrefService& profile_prefs,
       const std::string& account_path,
       const std::string& id);
 
@@ -110,13 +112,13 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
     std::string encrypted_private_key;
     mojom::CoinType coin;
   };
-  static void SetImportedAccountForKeyring(PrefService* prefs,
+  static void SetImportedAccountForKeyring(PrefService* profile_prefs,
                                            const ImportedAccountInfo& info,
                                            const std::string& id);
   static std::vector<ImportedAccountInfo> GetImportedAccountsForKeyring(
-      const PrefService& prefs,
+      const PrefService& profile_prefs,
       const std::string& id);
-  static void RemoveImportedAccountForKeyring(PrefService* prefs,
+  static void RemoveImportedAccountForKeyring(PrefService* profile_prefs,
                                               const std::string& address,
                                               const std::string& id);
 
@@ -318,6 +320,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   friend class FilTxManagerUnitTest;
   friend class KeyringServiceUnitTest;
   friend class AssetDiscoveryManagerUnitTest;
+  friend class SolanaTransactionUnitTest;
 
   absl::optional<std::string> FindImportedFilecoinKeyringId(
       const std::string& address) const;
@@ -418,7 +421,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   base::flat_map<std::string, std::unique_ptr<PasswordEncryptor>> encryptors_;
 
   raw_ptr<JsonRpcService> json_rpc_service_;
-  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<PrefService> profile_prefs_ = nullptr;
+  raw_ptr<PrefService> local_state_ = nullptr;
   bool request_unlock_pending_ = false;
 
   mojo::RemoteSet<mojom::KeyringServiceObserver> observers_;

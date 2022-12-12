@@ -16,6 +16,8 @@ public abstract class BraveFeatureList {
     public static final String BRAVE_BACKGROUND_VIDEO_PLAYBACK = "BraveBackgroundVideoPlayback";
     public static final String BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL =
             "brave-background-video-playback";
+    public static final String BRAVE_ANDROID_SAFE_BROWSING = "BraveAndroidSafeBrowsing";
     public static final String BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI =
             "BraveVPNLinkSubscriptionAndroidUI";
+    public static final String DEBOUNCE = "BraveDebounce";
 }

@@ -1,5 +1,0 @@
-declare_args() {
-  enable_ftx = is_mac || is_linux || is_win
-  ftx_client_id = ""
-  ftx_client_secret = ""
-}

@@ -24,7 +24,8 @@ import {
   ERC721TransferFromParams,
   SendTransactionParams,
   SPLTransferFromParams,
-  SerializableTransactionInfo
+  SerializableTransactionInfo,
+  SerializableOriginInfo
 } from '../../constants/types'
 import {
   AddSitePermissionPayloadType,
@@ -191,7 +192,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
     name: 'wallet',
     initialState,
     reducers: {
-      activeOriginChanged (state: WalletState, { payload }: PayloadAction<BraveWallet.OriginInfo>) {
+      activeOriginChanged (state: WalletState, { payload }: PayloadAction<SerializableOriginInfo>) {
         state.activeOrigin = payload
       },
 

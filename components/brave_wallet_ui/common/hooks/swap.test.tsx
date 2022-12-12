@@ -353,7 +353,7 @@ describe('useSwap hook', () => {
           selectedAccount: {
             ...mockAccount,
             nativeBalanceRegistry: {
-              [mockWalletState.selectedNetwork.chainId]: '123456' // 123456 Wei
+              [mockWalletState.selectedNetwork?.chainId || '']: '123456' // 123456 Wei
             }
           }
         }),
@@ -394,7 +394,7 @@ describe('useSwap hook', () => {
           selectedAccount: {
             ...mockAccount,
             nativeBalanceRegistry: {
-              [mockWalletState.selectedNetwork.chainId]: '1234560' // 1234560 Wei
+              [mockWalletState.selectedNetwork?.chainId || '']: '1234560' // 1234560 Wei
             }
           }
         }),
@@ -446,11 +446,11 @@ describe('useSwap hook', () => {
 
       const ETH = {
         ...mockWalletState.userVisibleTokensInfo[0],
-        chainId: mockWalletState.selectedNetwork.chainId
+        chainId: mockWalletState.selectedNetwork?.chainId || ''
       }
       const USDC = {
         ...mockWalletState.userVisibleTokensInfo[1],
-        chainId: mockWalletState.selectedNetwork.chainId
+        chainId: mockWalletState.selectedNetwork?.chainId || ''
       }
 
       const mockStore = createStore(combineReducers({
@@ -525,15 +525,18 @@ describe('useSwap hook', () => {
           sellAmount: '100000000000000000' // 0.1 ETH
         })
         result.current.setSwapError({
-          code: 100, // SWAP_VALIDATION_ERROR_CODE
-          reason: 'mockReason',
-          validationErrors: [
-            {
-              field: 'mockField',
-              code: 12345,
-              reason: 'INSUFFICIENT_ASSET_LIQUIDITY'
-            }
-          ]
+          swapError: {
+            code: 100, // SWAP_VALIDATION_ERROR_CODE
+            reason: 'mockReason',
+            isInsufficientLiquidity: true,
+            validationErrors: [
+              {
+                field: 'mockField',
+                code: 12345,
+                reason: 'INSUFFICIENT_ASSET_LIQUIDITY'
+              }
+            ]
+          }
         })
       })
 
@@ -569,8 +572,48 @@ describe('useSwap hook', () => {
           sellAmount: '100000000000000000' // 0.1 ETH
         })
         result.current.setSwapError({
-          code: 111, // gas estimation failed
-          reason: 'Gas estimation failed'
+          swapError: {
+            code: 111, // gas estimation failed
+            isInsufficientLiquidity: false,
+            reason: 'Gas estimation failed',
+            validationErrors: []
+          }
+        })
+      })
+
+      // Step 2: Set a From amount, such that there is no validation error,
+      // and wait for at least 1000ms to avoid debouncing.
+      act(() => {
+        result.current.onSwapInputChange('0.1', 'from')
+        jest.advanceTimersByTime(1001)
+      })
+
+      // OK: Assert for swapValidationError to be 'unknownError'.
+      // KO: Test case times out.
+      await waitFor(() => {
+        expect(result.current.swapValidationError).toBe('unknownError')
+      })
+    })
+
+    it('should return error if parsing failed', async () => {
+      // Step 1: Initialize the useSwap hook with the following parameters.
+      //    From asset:  ETH
+      //    From amount: 0.1 ETH
+      //    Quote fees:  0.000000000001 ETH
+      //    Balance:     1 ETH
+      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(), renderHookOptions)
+
+      await waitForValueToChange(() => result.current.isSwapSupported)
+
+      await act(async () => {
+        result.current.setSwapQuote({
+          ...mockQuote,
+          gasPrice: '10',
+          gas: '100000',
+          sellAmount: '100000000000000000' // 0.1 ETH
+        })
+        result.current.setSwapError({
+          stringError: 'json parsing failed'
         })
       })
 

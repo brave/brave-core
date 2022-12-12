@@ -10,6 +10,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
@@ -65,7 +66,7 @@ KeyedService* KeyringServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   return new KeyringService(
       JsonRpcServiceFactory::GetServiceForContext(context),
-      user_prefs::UserPrefs::Get(context));
+      user_prefs::UserPrefs::Get(context), g_browser_process->local_state());
 }
 
 content::BrowserContext* KeyringServiceFactory::GetBrowserContextToUse(

@@ -13,6 +13,9 @@
 #include "base/values.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
+// TODO(apaymyshev): refactor utility methods to return absl::optional instead
+// of bool + out-parameter.
+
 namespace brave_wallet {
 
 struct SolanaSignatureStatus;
@@ -20,24 +23,25 @@ struct SolanaAccountInfo;
 
 namespace solana {
 
-bool ParseGetBalance(const std::string& json, uint64_t* balance);
-bool ParseGetTokenAccountBalance(const std::string& json,
+bool ParseGetBalance(const base::Value& json_value, uint64_t* balance);
+bool ParseGetTokenAccountBalance(const base::Value& json_value,
                                  std::string* amount,
                                  uint8_t* decimals,
                                  std::string* ui_amount_string);
-bool ParseSendTransaction(const std::string& json, std::string* tx_id);
-bool ParseGetLatestBlockhash(const std::string& json,
+bool ParseSendTransaction(const base::Value& json_value, std::string* tx_id);
+bool ParseGetLatestBlockhash(const base::Value& json_value,
                              std::string* hash,
                              uint64_t* last_valid_block_height);
 bool ParseGetSignatureStatuses(
-    const std::string& json,
+    const base::Value& json_value,
     std::vector<absl::optional<SolanaSignatureStatus>>* statuses);
-bool ParseGetAccountInfo(const std::string& json,
+bool ParseGetAccountInfo(const base::Value& json_value,
                          absl::optional<SolanaAccountInfo>* account_info_out);
-bool ParseGetAccountInfo(const base::Value::Dict& value_dict,
-                         absl::optional<SolanaAccountInfo>* account_info_out);
-bool ParseGetFeeForMessage(const std::string& json, uint64_t* fee);
-bool ParseGetBlockHeight(const std::string& json, uint64_t* block_height);
+bool ParseGetAccountInfoPayload(
+    const base::Value::Dict& value_dict,
+    absl::optional<SolanaAccountInfo>* account_info_out);
+bool ParseGetFeeForMessage(const base::Value& json_value, uint64_t* fee);
+bool ParseGetBlockHeight(const base::Value& json_value, uint64_t* block_height);
 
 base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
 ConverterForGetAccountInfo();

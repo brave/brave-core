@@ -62,7 +62,7 @@ export const BrowserListBox = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    color: ${(p) => p.theme.color.text01};
+    color: #212529;
     border: 0;
     box-shadow: 0 0 0 4px var(--border-color);
     position: relative;
@@ -97,4 +97,8 @@ export const ActionBox = styled.div`
   display: flex;
   grid-gap: 10px;
   margin-bottom: 40px;
+
+  button {
+    color: white;
+  }
 `

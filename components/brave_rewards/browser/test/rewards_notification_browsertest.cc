@@ -113,13 +113,6 @@ class RewardsNotificationBrowserTest
     const auto& notifications = rewards_service_->GetAllNotifications();
     for (const auto& notification : notifications) {
       switch (notification.second.type_) {
-        case RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS: {
-          insufficient_notification_would_have_already_shown_ = true;
-          if (wait_for_insufficient_notification_loop_) {
-            wait_for_insufficient_notification_loop_->Quit();
-          }
-          break;
-        }
         default: {
           add_notification_ = true;
           if (wait_for_add_notification_loop_) {
@@ -171,41 +164,6 @@ class RewardsNotificationBrowserTest
     wait_for_delete_notification_loop_->Run();
   }
 
-  void WaitForInsufficientFundsNotification() {
-    if (insufficient_notification_would_have_already_shown_) {
-      return;
-    }
-
-    wait_for_insufficient_notification_loop_ =
-        std::make_unique<base::RunLoop>();
-    wait_for_insufficient_notification_loop_->Run();
-  }
-
-  void CheckInsufficientFundsForTesting() {
-    rewards_service_->MaybeShowNotificationAddFundsForTesting(
-        base::BindOnce(
-            &RewardsNotificationBrowserTest::
-            ShowNotificationAddFundsForTesting,
-            base::Unretained(this)));
-  }
-
-  /**
-   * When using notification observer for insufficient funds, tests will fail
-   * for sufficient funds because observer will never be called for
-   * notification. Use this as callback to know when we come back with
-   * sufficient funds to prevent inf loop
-   * */
-  void ShowNotificationAddFundsForTesting(bool sufficient) {
-    if (!sufficient) {
-      return;
-    }
-
-    insufficient_notification_would_have_already_shown_ = true;
-    if (wait_for_insufficient_notification_loop_) {
-      wait_for_insufficient_notification_loop_->Quit();
-    }
-  }
-
   bool IsShowingNotificationForType(const RewardsNotificationType type) {
     const auto& notifications = rewards_service_->GetAllNotifications();
     for (const auto& notification : notifications) {
@@ -230,9 +188,6 @@ class RewardsNotificationBrowserTest
     last_added_notification_;
   brave_rewards::RewardsNotificationService::RewardsNotification
     last_deleted_notification_;
-
-  bool insufficient_notification_would_have_already_shown_ = false;
-  std::unique_ptr<base::RunLoop> wait_for_insufficient_notification_loop_;
 
   bool add_notification_ = false;
   std::unique_ptr<base::RunLoop> wait_for_add_notification_loop_;
@@ -312,103 +267,6 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_TRUE(
       last_deleted_notification_.type_ ==
       brave_rewards::RewardsNotificationService::REWARDS_NOTIFICATION_INVALID);
-}
-
-IN_PROC_BROWSER_TEST_F(
-    RewardsNotificationBrowserTest,
-    InsufficientNotificationForZeroAmountZeroPublishers) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  CheckInsufficientFundsForTesting();
-  WaitForInsufficientFundsNotification();
-  const auto& notifications = rewards_service_->GetAllNotifications();
-
-  bool is_showing_notification =
-      !notifications.empty() &&
-      IsShowingNotificationForType(
-          RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
-
-  EXPECT_FALSE(is_showing_notification);
-}
-
-IN_PROC_BROWSER_TEST_F(
-    RewardsNotificationBrowserTest,
-    InsufficientNotificationForACNotEnoughFunds) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  rewards_service_->SetAutoContributeEnabled(true);
-  context_helper_->LoadRewardsPage();
-  // Visit publishers
-  const bool verified = true;
-  context_helper_->VisitPublisher(
-      rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
-      verified);
-  context_helper_->VisitPublisher(
-      rewards_browsertest_util::GetUrl(https_server_.get(), "3zsistemi.si"),
-      verified);
-  context_helper_->VisitPublisher(
-      rewards_browsertest_util::GetUrl(https_server_.get(), "brave.com"),
-      !verified,
-      true);
-
-  CheckInsufficientFundsForTesting();
-  WaitForInsufficientFundsNotification();
-  const auto& notifications = rewards_service_->GetAllNotifications();
-
-  bool is_showing_notification =
-      !notifications.empty() &&
-      IsShowingNotificationForType(
-          RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
-
-  EXPECT_FALSE(is_showing_notification);
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsNotificationBrowserTest,
-                       InsufficientNotificationForInsufficientAmount) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  context_helper_->LoadRewardsPage();
-  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
-
-  contribution_->TipViaCode("duckduckgo.com", 20.0,
-                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 0,
-                            true);
-
-  contribution_->TipViaCode(
-      "brave.com", 50.0, ledger::mojom::PublisherStatus::NOT_VERIFIED, 0, true);
-
-  CheckInsufficientFundsForTesting();
-  WaitForInsufficientFundsNotification();
-  const auto& notifications = rewards_service_->GetAllNotifications();
-
-  bool is_showing_notification =
-      !notifications.empty() &&
-      IsShowingNotificationForType(
-          RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
-
-  EXPECT_FALSE(is_showing_notification);
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsNotificationBrowserTest,
-                       InsufficientNotificationForVerifiedInsufficientAmount) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  context_helper_->LoadRewardsPage();
-  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
-
-  contribution_->TipViaCode("duckduckgo.com", 50.0,
-                            ledger::mojom::PublisherStatus::UPHOLD_VERIFIED, 0,
-                            true);
-
-  contribution_->TipViaCode(
-      "brave.com", 50.0, ledger::mojom::PublisherStatus::NOT_VERIFIED, 0, true);
-
-  CheckInsufficientFundsForTesting();
-  WaitForInsufficientFundsNotification();
-  const auto& notifications = rewards_service_->GetAllNotifications();
-
-  bool is_showing_notification =
-      !notifications.empty() &&
-      IsShowingNotificationForType(
-          RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
-
-  EXPECT_TRUE(is_showing_notification);
 }
 
 }  // namespace rewards_browsertest

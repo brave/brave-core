@@ -72,6 +72,9 @@ class EthTransaction {
   // return rlp([nonce, gasPrice, gasLimit, to, value, data, v, r, s])
   virtual std::string GetSignedTransaction() const;
 
+  // return keccack(rlp([nonce, gasPrice, gasLimit, to, value, data, v, r, s]))
+  virtual std::string GetTransactionHash() const;
+
   // signature and recid will be used to produce v, r, s
   // Support EIP-155 chain id
   virtual void ProcessSignature(const std::vector<uint8_t> signature,
@@ -114,9 +117,12 @@ class EthTransaction {
                  const std::vector<uint8_t>& data);
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(EthTransactionUnitTest, GetSignedTransaction);
+  FRIEND_TEST_ALL_PREFIXES(EthTransactionUnitTest, GetSignedTransactionAndHash);
   FRIEND_TEST_ALL_PREFIXES(EthTransactionUnitTest, TransactionAndValue);
-  FRIEND_TEST_ALL_PREFIXES(Eip2930TransactionUnitTest, GetSignedTransaction);
+  FRIEND_TEST_ALL_PREFIXES(Eip2930TransactionUnitTest,
+                           GetSignedTransactionAndHash);
+
+  base::Value Serialize() const;
 };
 
 }  // namespace brave_wallet

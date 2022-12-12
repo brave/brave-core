@@ -8,6 +8,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
 class GURL;
@@ -24,6 +25,8 @@ class DebounceService : public KeyedService {
   DebounceService& operator=(const DebounceService&) = delete;
   ~DebounceService() override;
   bool Debounce(const GURL& original_url, GURL* final_url) const;
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+  bool IsEnabled();
 
  private:
   DebounceComponentInstaller* component_installer_ = nullptr;  // NOT OWNED

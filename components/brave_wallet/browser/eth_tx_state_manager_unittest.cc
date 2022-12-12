@@ -70,11 +70,11 @@ class EthTxStateManagerUnitTest : public testing::Test {
 
 TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   // type 0
-  std::unique_ptr<EthTransaction> tx =
-      std::make_unique<EthTransaction>(*EthTransaction::FromTxData(
-          mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
-                             "0x3535353535353535353535353535353535353535",
-                             "0x0de0b6b3a7640000", std::vector<uint8_t>())));
+  std::unique_ptr<EthTransaction> tx = std::make_unique<EthTransaction>(
+      *EthTransaction::FromTxData(mojom::TxData::New(
+          "0x09", "0x4a817c800", "0x5208",
+          "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
+          std::vector<uint8_t>(), false, absl::nullopt)));
   EthTxMeta meta(std::move(tx));
   meta.set_id(TxMeta::GenerateMetaID());
   meta.set_status(mojom::TransactionStatus::Submitted);
@@ -119,6 +119,8 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   EXPECT_EQ(meta_from_value->origin(), meta.origin());
   ASSERT_EQ(meta_from_value->tx()->type(), 0);
   EXPECT_EQ(*meta_from_value->tx(), *meta.tx());
+  // optional sign_only will be false by default
+  EXPECT_FALSE(meta_from_value->sign_only());
 
   EXPECT_EQ(*meta_from_value, meta);
 
@@ -127,7 +129,8 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
       std::make_unique<Eip2930Transaction>(*Eip2930Transaction::FromTxData(
           mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                              "0x3535353535353535353535353535353535353535",
-                             "0x0de0b6b3a7640000", std::vector<uint8_t>()),
+                             "0x0de0b6b3a7640000", std::vector<uint8_t>(),
+                             false, absl::nullopt),
           0x3));
   auto* access_list = tx1->access_list();
   Eip2930Transaction::AccessListItem item_a;
@@ -152,7 +155,8 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
           *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
               mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                                  "0x3535353535353535353535353535353535353535",
-                                 "0x0de0b6b3a7640000", std::vector<uint8_t>()),
+                                 "0x0de0b6b3a7640000", std::vector<uint8_t>(),
+                                 false, absl::nullopt),
               "0x3", "0x1E", "0x32",
               mojom::GasEstimation1559::New(
                   "0x3b9aca00" /* Hex of 1 * 1e9 */,
@@ -170,6 +174,24 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   Eip1559Transaction* tx_from_value2 =
       static_cast<Eip1559Transaction*>(meta_from_value2->tx());
   EXPECT_EQ(*tx_from_value2, *static_cast<Eip1559Transaction*>(meta2.tx()));
+
+  // test sign_only
+  std::unique_ptr<EthTransaction> tx3 = std::make_unique<EthTransaction>(
+      *EthTransaction::FromTxData(mojom::TxData::New(
+          "0x09", "0x4a817c800", "0x5208",
+          "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
+          std::vector<uint8_t>(), false, absl::nullopt)));
+  EthTxMeta meta3(std::move(tx3));
+  meta3.set_sign_only(true);
+  base::Value::Dict meta_value3 = meta3.ToValue();
+  auto meta_from_value3 = eth_tx_state_manager_->ValueToEthTxMeta(meta_value3);
+  ASSERT_NE(meta_from_value3, nullptr);
+  EXPECT_TRUE(meta_from_value3->sign_only());
+  meta3.set_sign_only(false);
+  meta_value3 = meta3.ToValue();
+  meta_from_value3 = eth_tx_state_manager_->ValueToEthTxMeta(meta_value3);
+  ASSERT_NE(meta_from_value3, nullptr);
+  EXPECT_FALSE(meta_from_value3->sign_only());
 }
 
 TEST_F(EthTxStateManagerUnitTest, GetTxPrefPathPrefix) {

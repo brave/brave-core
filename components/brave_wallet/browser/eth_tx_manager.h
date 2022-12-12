@@ -191,6 +191,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                      const absl::optional<std::string>& group_id,
                      std::unique_ptr<EthTransaction> tx,
                      AddUnapprovedTransactionCallback callback,
+                     bool sign_only,
                      const std::string& result,
                      mojom::ProviderError error,
                      const std::string& error_message);
@@ -200,6 +201,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const absl::optional<std::string>& group_id,
       std::unique_ptr<EthTransaction> tx,
       AddUnapprovedTransactionCallback callback,
+      bool sign_only,
       const std::string& result,
       mojom::ProviderError error,
       const std::string& error_message);
@@ -221,6 +223,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       const absl::optional<std::string>& group_id,
       std::unique_ptr<Eip1559Transaction> tx,
       AddUnapprovedTransactionCallback callback,
+      bool sign_only,
       mojom::GasEstimation1559Ptr gas_estimation);
   void UpdatePendingTransactions() override;
 

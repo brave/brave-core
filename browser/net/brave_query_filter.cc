@@ -55,6 +55,8 @@ static constexpr auto kSimpleQueryStringTrackers =
          "ss_email_id",
          // https://github.com/brave/brave-browser/issues/25238
          "bsft_uid", "bsft_clkid",
+         // https://github.com/brave/brave-browser/issues/25691
+         "guce_referrer", "guce_referrer_sig",
          // https://github.com/brave/brave-browser/issues/26295
          "vgo_ee"});
 
@@ -69,6 +71,9 @@ static constexpr auto kScopedQueryStringTrackers =
         {"igshid", "instagram.com"},
         // https://github.com/brave/brave-browser/issues/26756
         {"t", "twitter.com"},
+        // https://github.com/brave/brave-browser/issues/26966
+        {"ref_src", "twitter.com"},
+        {"ref_url", "twitter.com"},
     });
 
 // Remove tracking query parameters from a GURL, leaving all

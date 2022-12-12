@@ -10,10 +10,13 @@
 <translation id="8522292744959221145">Şifrelerinizin veri ihlali ve diğer güvenlik sorunlarına karşı güvende olup olmadığını kontrol etmek için <ph name="BEGIN_LINK"/>Brave'da oturum açın<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Brave hakkında</translation>
 <translation id="1203500561924088507">Yüklediğiniz için teşekkürler. <ph name="BUNDLE_NAME"/> uygulamasını kullanmadan önce tarayıcınızı yeniden başlatmanız gerekir.</translation>
+<translation id="8905049883018921395">Bu ayar açık olduğunda Brave, etkin olmayan sekmelerdeki belleği boşaltır. Böylece, etkin sekmeler ile diğer uygulamalar daha fazla bilgisayar kaynağına sahip olur ve Brave hızlı çalışmaya devam eder. Geri döndüğünüz etkin olmayan sekmeler otomatik olarak tekrar etkin hale gelir. <ph name="BEGIN_LINK"/>Daha fazla bilgi<ph name="END_LINK"/></translation>
+<translation id="4658574652223735641">Bellek Tasarrufu Sayesinde Brave Artık Daha Hızlı</translation>
 <translation id="4798342026247191171">Yeni Brave profilinizi oluşturun</translation>
 <translation id="6361779936989026201">Brave'da Brave Asistan</translation>
 <translation id="113959764510199339">Brave, şifreleri göstermeye çalışıyor.</translation>
 <translation id="8132634101975074716">Brave'da oturum açtınız!</translation>
+<translation id="4168469784091952813">Brave'dan en iyi şekilde yararlanabilirsiniz</translation>
 <translation id="5147525139567260139">Brave sekmesini paylaşın</translation>
 <translation id="1530633922026945685">Çevrenizin 3D haritasını oluşturmak için Brave'un kameranıza erişim iznine ihtiyacı var</translation>
 <translation id="4449148723378534338">Brave'daki önemli gizlilik ve güvenlik kontrollerini inceleyin</translation>
@@ -164,6 +167,7 @@
 <translation id="1786715389543715322">Brave güncelleniyor (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Brave'da oturum açmaya izin verin</translation>
 <translation id="5536657158619734169">Brave'un yeni bir sürümü çıktı.</translation>
+<translation id="5267531627648004734">Brave'dan kaldır</translation>
 <translation id="239760341987199724">Brave'u varsayılan tarayıcım olarak ayarla</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="894936507076470937">Brave artık bu Linux dağıtım sisteminde desteklenmediği için doğru şekilde çalışmayabilir</translation>
@@ -191,6 +195,7 @@
 <translation id="505042220086416644">Kullanabileceğiniz yeni bir Brave sürümü var ve bu sürüm her zamankinden daha hızlı.</translation>
 <translation id="9071554113102421877">&amp;Brave'da aç</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> Brave'a eklendi</translation>
+<translation id="3693188491491843187">Brave'u Daha Hızlı Hale Getirin</translation>
 <translation id="608006075545470555">Bu tarayıcıya İş Profili ekle</translation>
 <translation id="5849446944780602366">Brave'u özelleştirin ve kontrol edin. Güncelleme mevcut.</translation>
 <translation id="7433698744896946664">Uzantının, Brave araç çubuğunda erişim isteklerini göstermesine izin ver</translation>
@@ -234,6 +239,7 @@
 <translation id="1489465648257900784">Profiliniz daha yeni bir Brave sürümünden olduğundan kullanılamıyor.
 
 Bazı özellikler kullanılamayabilir. Lütfen farklı bir profil dizini belirtin veya daha yeni bir Brave sürümünü kullanın.</translation>
+<translation id="7870748924073900361">Bellek Tasarrufu sayesinde Brave artık daha hızlı</translation>
 <translation id="6666624454809779082">Brave zaten bilgisayarınızdaki tüm kullanıcılar için yüklendi.</translation>
 <translation id="5360050006043219962">Brave öğelerinize tüm cihazlarınızda erişmek için oturum açın ve senkronizasyonu etkinleştirin.</translation>
 <translation id="8291513491595858997">Ebeveyniniz, Brave'a yönelik "Siteler, uygulamalar ve uzantılar için izinler"i kapattı. Bu <ph name="EXTENSION_TYPE_PARAMETER"/> uzantısının etkinleştirilmesine izin verilmiyor.</translation>
@@ -271,6 +277,7 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="38294420683216447">Brave profilleri ile tüm Brave öğelerinizi ayırabilirsiniz. Bu özellik, iş ile eğlenceyi daha kolay ayırmayı sağlar.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="2034072705932785495">Brave'un bu sitede kameranıza erişmesi için izin gerekiyor</translation>
+<translation id="5296583608321648908">Gelecekteki Brave güncellemelerini almak için Windows 10 veya sonraki bir sürümün yüklü olması gerekir. Bu bilgisayar Windows 7 kullanıyor.</translation>
 <translation id="3962395975456095331">Brave yeniden başlatılsın mı?</translation>
 <translation id="2619516027171717873">Şu anda çalışan aynı Brave sürümünü yükleyemezsiniz. Lütfen Brave'u kapatın ve yeniden deneyin.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave 1 dakika içinde yeniden başlatılacak}other{Brave # dakika içinde yeniden başlatılacak}}</translation>
@@ -285,9 +292,9 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="8678991866891573053">Brave, sitelerin daha az veri kullanarak aynı tarama deneyimini sunmasını sağlayan yeni özellikleri keşfediyor</translation>
 <translation id="3343095737966473035">Brave varsayılan tarayıcınız değil</translation>
 <translation id="5477319665405831211">Brave'u cihazlarınız arasında senkronize edin ve kişiselleştirin</translation>
-<translation id="2280238321454602884">Bu ayar etkinleştirildiğinde Brave, aktif olarak kullanmadığınız sekmelerdeki belleği geri kazanır. Böylece, bilgisayarınızın kaynaklarında diğer görevler için yer açılır ve Brave hızlı çalışmaya devam eder. Aktif olmayan sekmeler boş görünür ve bunları tıkladığınızda otomatik olarak yeniden yüklenir. <ph name="BEGIN_LINK"/>Daha fazla bilgi edinin<ph name="END_LINK"/> veya <ph name="BEGIN_LINK_2"/>geri bildirim gönderin<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Bu işlem tarama verilerinizi bu cihazdan silecektir. Verilerinizi daha sonra geri almak için Brave'da <ph name="USER_EMAIL"/> hesabıyla oturum açın.</translation>
 <translation id="7747138024166251722">Yükleyici geçici bir dizin oluşturamadı. Lütfen, kullanılabilir disk alanını ve yazılım yükleme iznini kontrol edin.</translation>
+<translation id="1978509466033734608">Brave'u daha hızlı hale getirin</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="1652855885539187849">Cihazda bu hesaba sahip bir Brave profili zaten var</translation>
 <translation id="7845233973568007926">Yüklediğiniz için teşekkür ederiz. <ph name="BUNDLE_NAME"/> uygulamasını kullanmadan önce bilgisayarınızı yeniden başlatmanız gerekir.</translation>
@@ -310,15 +317,16 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="3360368475735266712">Brave'u cihazlarınız arasında senkronize etmek ve kişiselleştirmek için oturum açın</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> önceden Brave kullanıyordu</translation>
 <translation id="3098618823450433881">Brave öğelerinize tüm cihazlarınızda erişmek için oturum açın ve senkronizasyonu etkinleştirin</translation>
+<translation id="2569754604093464025">Gelecekteki Brave güncellemelerini almak için Windows 10 veya sonraki bir sürümün yüklü olması gerekir. Bu bilgisayar Windows 8 kullanıyor.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Brave'u bir gün içinde yeniden başlatın}other{Brave'u # gün içinde yeniden başlatın}}</translation>
 <translation id="6914496861676471566">Yükleyici arşivi bozuk veya geçersiz. Lütfen Brave'u yeniden indirin.</translation>
 <translation id="6431861494713261006">İsteğe bağlı: Teşhis ve kullanım verilerini Brave'a otomatik olarak göndererek ChromeOS özelliklerini ve performansını iyileştirmeye yardımcı olun.</translation>
 <translation id="2097604701283463988">Brave Sürümü Eski</translation>
-<translation id="607365808648940765">Brave, aktif olarak kullanmadığınız sekmelerdeki belleği gerektiğinde geri kazanır. İstediğiniz zaman bunu Ayarlar'dan değiştirebilirsiniz.</translation>
 <translation id="8550334526674375523">Bu iş profili, kişisel profilinizden tamamen ayrıdır.</translation>
 <translation id="2452889775041290116">Ebeveyniniz, Brave'a yönelik "Siteler, uygulamalar ve uzantılar için izinler"i kapattı. Bu <ph name="EXTENSION_TYPE_PARAMETER"/> uzantısını eklemeye izin verilmiyor.</translation>
 <translation id="8502436661255886343">Gelecekteki Brave güncellemelerini almak için macOS 10.13 veya sonraki bir sürümün yüklü olması gerekir. Bu bilgisayar macOS 10.12 kullanıyor.</translation>
 <translation id="227028348235968071">Brave, Brave Hesabınızla oturum açtığınızda şifrelerinizi kontrol edebilir</translation>
+<translation id="4226455268610449503">Bu ayar etkinleştirildiğinde Brave, arka plan etkinliğini ve görsel efektleri (ör. yumuşak kaydırma, video kare hızı) sınırlandırarak pil gücünden tasarruf eder. <ph name="BEGIN_LINK"/>Daha fazla bilgi<ph name="END_LINK"/></translation>
 <translation id="8121009781989288430">Telif Hakkı <ph name="YEAR"/> Brave Software Inc. Tüm hakları saklıdır.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Bu verileri kullanma şeklimiz:<ph name="END_BOLD"/> Siteler, ilgi alanlarınız hakkındaki bilgileri Brave'da saklayabilir. Örneğin, maraton ayakkabısı satın almak için ziyaret ettiğiniz bir site, maraton koşmayı ilgi alanınız olarak tanımlayabilir. Daha sonra bir yarışa kaydolmak için farklı bir siteyi ziyaret ettiğinizde o site ilgi alanlarınıza dayalı olarak size koşu ayakkabısı reklamı gösterebilir.</translation>
 <translation id="3052349005266761501">Brave başlatılıyor...</translation>
@@ -341,6 +349,7 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="82609232232243542">Brave'da oturum aç</translation>
 <translation id="5173820533850252773">Brave sürümü eski</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave bir saat içinde yeniden başlatılacak}other{Brave # saat içinde yeniden başlatılacak}}</translation>
+<translation id="5190991181158966940">Gelecekteki Brave güncellemelerini almak için Windows 10 veya sonraki bir sürümün yüklü olması gerekir. Bu bilgisayar Windows 8.1 kullanıyor.</translation>
 <translation id="7863882214613921971">Bağlantıyı Yeni Brave &amp;sekmesinde aç</translation>
 <translation id="911206726377975832">Tarama verileriniz de silinsin mi?</translation>
 <translation id="5708733457516068434">Denemeler sırasında, sitelerin size reklam göstermek için kullandığı ilgi alanlarını görebilir ve kaldırabilirsiniz. Brave, ilgi alanlarınızı tahmin ederken son tarama geçmişinizi kullanır.</translation>

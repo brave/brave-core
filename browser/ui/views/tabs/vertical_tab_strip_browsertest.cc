@@ -255,7 +255,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, SidebarAlignment) {
   // Pre-condition: sidebar is on the left by default.
-  auto* prefs = browser()->profile()->GetOriginalProfile()->GetPrefs();
+  auto* prefs = browser()->profile()->GetPrefs();
   ASSERT_TRUE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
                   ->IsDefaultValue());
   ASSERT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));

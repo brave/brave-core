@@ -83,6 +83,8 @@ declare namespace chrome.braveRewards {
   const createRewardsWallet: (country: string, callback: (result?: string) => void) => void
   const getAvailableCountries: (callback: (countries: string[]) => void) => void
   const getDeclaredCountry: (callback: (country: string) => void) => void
+  const getUserVersion: (callback: (version: string) => void) => void
+  const getPublishersVisitedCount: (callback: (count: number) => void) => void
   const getRewardsParameters: (callback: (properties: RewardsExtension.RewardsParameters) => void) => {}
   const updateMediaDuration: (tabId: number, publisherKey: string, duration: number, firstVisit: boolean) => {}
   const getPublisherInfo: (publisherKey: string, callback: (result: RewardsExtension.Result, properties: RewardsExtension.PublisherInfo) => void) => {}
@@ -150,10 +152,10 @@ declare namespace chrome.braveRewards {
 
   const getExternalWallet: (callback: (wallet?: RewardsExtension.ExternalWallet) => void) => {}
 
-  const disconnectWallet: () => {}
+  const getExternalWalletProviders: (callback: (providers: string[]) => void) => void
 
-  const onDisconnectWallet: {
-    addListener: (callback: (properties: {result: number, walletType: string}) => void) => void
+  const onExternalWalletLoggedOut: {
+    addListener: (callback: () => void) => void
   }
 
   const openRewardsPanel: () => void
@@ -191,80 +193,6 @@ declare namespace chrome.braveRewards {
 
   const getPrefs: (callback: (prefs: RewardsPrefs) => void) => void
   const updatePrefs: (prefs: Partial<RewardsPrefs>) => void
-}
-
-declare namespace chrome.binance {
-  const getUserTLD: (callback: (userTLD: string) => void) => {}
-  const isSupportedRegion: (callback: (supported: boolean) => void) => {}
-  const getClientUrl: (callback: (clientUrl: string) => void) => {}
-  const getAccessToken: (callback: (success: boolean) => void) => {}
-  const getAccountBalances: (callback: (balances: Record<string, Record<string, string>>, unauthorized: boolean) => void) => {}
-  const getConvertQuote: (from: string, to: string, amount: string, callback: (quote: any) => void) => {}
-  const getDepositInfo: (symbol: string, tickerNetwork: string, callback: (depositAddress: string, depositTag: string) => void) => {}
-  const getCoinNetworks: (callback: (networks: Record<string, string>) => void) => {}
-  const getConvertAssets: (callback: (supportedAssets: any) => void) => {}
-  const confirmConvert: (quoteId: string, callback: (success: boolean, message: string) => void) => {}
-  const revokeToken: (callback: (success: boolean) => void) => {}
-  const getLocaleForURL: (callback: (locale: string) => void) => {}
-}
-
-declare namespace chrome.gemini {
-  const getClientUrl: (callback: (clientUrl: string) => void) => {}
-  const getAccessToken: (callback: (success: boolean) => void) => {}
-  const refreshAccessToken: (callback: (success: boolean) => void) => {}
-  const getTickerPrice: (asset: string, callback: (price: string) => void) => {}
-  const getAccountBalances: (callback: (balances: Record<string, string>, authInvalid: boolean) => void) => {}
-  const getDepositInfo: (asset: string, callback: (depositAddress: string, depositTag: string) => void) => {}
-  const revokeToken: (callback: (success: boolean) => void) => {}
-  const getOrderQuote: (side: string, symbol: string, spend: string, callback: (quote: any, error: string) => void) => {}
-  const executeOrder: (symbol: string, side: string, quantity: string, price: string, fee: string, quoteId: number, callback: (success: boolean) => void) => {}
-  const isSupported: (callback: (supported: boolean) => void) => {}
-}
-
-declare namespace chrome.cryptoDotCom {
-  const getTickerInfo: (asset: string, callback: (info: any) => void) => {}
-  const getChartData: (asset: string, callback: (data: any[]) => void) => {}
-  const getSupportedPairs: (callback: (pairs: any[]) => void) => {}
-  const getAssetRankings: (callback: (assets: any) => void) => {}
-  const isSupported: (callback: (supported: boolean) => void) => {}
-  const onBuyCrypto: () => void
-  const onInteraction: () => void
-}
-
-declare namespace chrome.ftx {
-  type FTXOauthHost = 'ftx.us' | 'ftx.com'
-  type TokenPriceData = {
-    symbol: string
-    price: number
-    percentChangeDay: number
-    volumeDay: number
-  }
-  type Balances = {
-    [CurrencyName: string]: number
-  }
-  type ChartPoint = {
-    high: number
-    low: number
-    close: number
-  }
-  type ChartData = ChartPoint[]
-  type QuoteInfo = {
-    cost: string
-    price: string
-    proceeds: string
-  }
-  const getFuturesData: (callback: (data: TokenPriceData[]) => void) => {}
-  const getChartData: (symbol: string, start: string, end: string, callback: (data: ChartData) => unknown) => {}
-  const setOauthHost: (host: FTXOauthHost) => void
-  const getOauthHost: (callback: (host: FTXOauthHost) => void) => {}
-  const getClientUrl: (callback: (clientUrl: string) => void) => {}
-
-  const getAccountBalances: (callback: (balances: Balances, authInvalid: boolean) => void) => {}
-  const getConvertQuote: (from: string, to: string, amount: string, callback: (quoteId: string) => void) => {}
-  const getConvertQuoteInfo: (quoteId: string, callback: (quote: QuoteInfo) => void) => {}
-  const executeConvertQuote: (quoteId: string, callback: (success: boolean) => void) => {}
-  const isSupported: (callback: (supported: boolean) => void) => {}
-  const disconnect: (callback: () => void) => {}
 }
 
 declare namespace chrome.braveTalk {

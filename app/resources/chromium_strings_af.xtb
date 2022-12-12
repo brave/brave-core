@@ -12,10 +12,13 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="8522292744959221145"><ph name="BEGIN_LINK"/>Meld by Brave aan<ph name="END_LINK"/> om te kyk of jou wagwoorde teen dataskendings en ander sekuriteitkwessies beveilig word.</translation>
 <translation id="8541922081612557424">Meer oor Brave</translation>
 <translation id="1203500561924088507">Dankie dat jy geïnstalleer het. Jy moet jou blaaier herbegin voordat jy <ph name="BUNDLE_NAME"/> gebruik.</translation>
+<translation id="8905049883018921395">Wanneer dit aan is, maak Brave geheue uit onaktiewe oortjies beskikbaar. Dit gee aktiewe oortjies en ander programme meer rekenaarhulpbronne en hou Brave vinnig. Jou onaktiewe oortjies word outomaties weer aktief wanneer jy na hulle toe teruggaan. <ph name="BEGIN_LINK"/>Kom meer te wete<ph name="END_LINK"/></translation>
+<translation id="4658574652223735641">Geheuebespaarder het Brave vinniger gemaak</translation>
 <translation id="4798342026247191171">Stel jou nuwe Brave-profiel op</translation>
 <translation id="6361779936989026201">Brave Assistent in Brave</translation>
 <translation id="113959764510199339">Brave probeer tans om wagwoorde te wys.</translation>
 <translation id="8132634101975074716">Jy is by Brave aangemeld!</translation>
+<translation id="4168469784091952813">Jy kan Brave ten beste benut</translation>
 <translation id="5147525139567260139">Deel 'n Brave-oortjie</translation>
 <translation id="1530633922026945685">Brave moet toestemming hê om toegang te kry tot jou kamera om 'n 3D-kaart van jou omgewing te skep</translation>
 <translation id="4449148723378534338">Gaan belangrike privaatheid- en sekuriteitkontroles in Brave na</translation>
@@ -168,6 +171,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="1786715389543715322">Dateer Brave tans op (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Laat Brave-aanmelding toe</translation>
 <translation id="5536657158619734169">Daar is 'n nuwe weergawe van Brave beskikbaar.</translation>
+<translation id="5267531627648004734">Verwyder van Brave af</translation>
 <translation id="239760341987199724">Stel Brave as jou verstekblaaier</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="894936507076470937">Brave sal dalk nie reg werk nie omdat dit nie meer in hierdie Linux-uitreiking gesteun word nie</translation>
@@ -195,6 +199,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="505042220086416644">Daar is 'n nuwe weergawe van Brave beskikbaar, en dit is vinniger as ooit.</translation>
 <translation id="9071554113102421877">&amp;Maak in Brave oop</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> is by Brave gevoeg</translation>
+<translation id="3693188491491843187">Maak Brave vinniger</translation>
 <translation id="608006075545470555">Voeg werkprofiel by hierdie blaaier</translation>
 <translation id="5849446944780602366">Pasmaak en beheer Brave. Opdatering is beskikbaar.</translation>
 <translation id="7433698744896946664">Laat uitbreiding toe om toegangversoeke op die Brave-nutsbalk te wys</translation>
@@ -238,6 +243,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="1489465648257900784">Jou profiel kan nie gebruik word nie want dit is van 'n nuwer weergawe van Brave af.
 
 Sommige kenmerke sal dalk nie beskikbaar wees nie. Spesifiseer 'n ander profielgids of gebruik 'n nuwer weergawe van Brave.</translation>
+<translation id="7870748924073900361">Geheuebespaarder het Brave vinniger gemaak</translation>
 <translation id="6666624454809779082">Brave is reeds vir alle gebruikers op jou rekenaar geïnstalleer.</translation>
 <translation id="5360050006043219962">Meld aan en skakel dan sinkronisering aan om op al jou toestelle toegang tot jou Brave-goed te kry.</translation>
 <translation id="8291513491595858997">Jou ouer het "Toestemmings vir werwe, programme en uitbreidings" vir Brave afgeskakel. Hierdie <ph name="EXTENSION_TYPE_PARAMETER"/> mag nie geaktiveer word nie.</translation>
@@ -276,6 +282,7 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="38294420683216447">Met Brave-profiele kan jy al jou Brave-goed skei. Dit maak dit makliker om tussen werk en pret te verdeel.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="2034072705932785495">Brave het toestemming nodig om toegang te kry tot jou kamera vir hierdie werf</translation>
+<translation id="5296583608321648908">Jy het Windows 10 of nuwer nodig om in die toekoms Brave-opdaterings te kry. Hierdie rekenaar gebruik Windows 7.</translation>
 <translation id="3962395975456095331">Herbegin Brave?</translation>
 <translation id="2619516027171717873">Kan nie dieselfde Brave-weergawe installeer wat tans gebruik word nie. Maak Brave asseblief toe en probeer weer.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave sal oor 1 minuut herbegin}other{Brave sal oor # minute herbegin}}</translation>
@@ -290,9 +297,9 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="8678991866891573053">Brave verken tans nuwe kenmerke wat werwe in staat stel om minder van jou data te gebruik om dieselfde blaai-ervaring te lewer</translation>
 <translation id="3343095737966473035">Brave is nie jou verstekblaaier nie</translation>
 <translation id="5477319665405831211">Sinkroniseer en personaliseer Brave op al jou toestelle</translation>
-<translation id="2280238321454602884">Indien dit aan is, herwin Brave geheue vanaf oortjies wat jy nie aktief gebruik nie. Dit maak jou rekenaar se hulpbronne beskikbaar vir ander take en hou Brave vinnig. Onaktiewe oortjies kom leeg voor en herlaai outomaties wanneer jy hulle klik. <ph name="BEGIN_LINK"/>Kom meer te wete<ph name="END_LINK"/> of <ph name="BEGIN_LINK_2"/>stuur terugvoer<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Dit sal jou blaaierdata op hierdie toestel uitvee. Meld as <ph name="USER_EMAIL"/> by Brave aan om jou data later op te haal.</translation>
 <translation id="7747138024166251722">Die installeerder kon nie 'n tydelike gids skep nie. Gaan asseblief na vir beskikbare skyfspasie en toestemming om sagteware te installeer.</translation>
+<translation id="1978509466033734608">Maak Brave vinniger</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="1652855885539187849">'n Brave-profiel met hierdie rekening bestaan reeds op hierdie toestel</translation>
 <translation id="7845233973568007926">Dankie dat jy geïnstalleer het. Jy moet jou rekenaar herbegin voordat jy <ph name="BUNDLE_NAME"/> gebruik.</translation>
@@ -315,15 +322,16 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="3360368475735266712">Meld aan om Brave op al jou toestelle te sinkroniseer en personaliseer</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> het voorheen Brave gebruik</translation>
 <translation id="3098618823450433881">Meld aan en skakel dan sinkronisering aan om op al jou toestelle toegang tot jou Brave-blaaiergoed te kry.</translation>
+<translation id="2569754604093464025">Jy het Windows 10 of nuwer nodig om in die toekoms Brave-opdaterings te kry. Hierdie rekenaar gebruik Windows 8.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Herbegin Brave binne 'n dag}other{Herbegin Brave binne # dae}}</translation>
 <translation id="6914496861676471566">Die installeerderargief is korrup of ongeldig. Laai Brave asseblief weer af.</translation>
 <translation id="6431861494713261006">Opsioneel: Help om Brave-bedryfstelsel se kenmerke en werkverrigting beter te maak deur outomaties diagnostiese en gebruiksdata na Brave toe te stuur.</translation>
 <translation id="2097604701283463988">Brave is verouderd</translation>
-<translation id="607365808648940765">Indien dit nodig is, herwin Brave geheue vanaf oortjies wat jy nie aktief gebruik nie. Jy kan dit enige tyd in Instellings verander.</translation>
 <translation id="8550334526674375523">Hierdie werkprofiel is heeltemal apart van jou persoonlike profiel.</translation>
 <translation id="2452889775041290116">Jou ouer het "Toestemmings vir werwe, programme en uitbreidings" vir Brave afgeskakel. Hierdie <ph name="EXTENSION_TYPE_PARAMETER"/> mag nie bygevoeg word nie.</translation>
 <translation id="8502436661255886343">Jy het macOS 10.13 of nuwer nodig om in die toekoms Brave-opdaterings te kry. Hierdie rekenaar gebruik macOS 10.12.</translation>
 <translation id="227028348235968071">Brave kan jou wagwoorde nagaan as jy met jou Brave-rekening aanmeld</translation>
+<translation id="4226455268610449503">Wanneer dit aan is, bespaar Brave batterykrag deur agtergrondaktiwiteit en visuele effekte, soos gladde rollees en videoraamtempo's, te beperk. <ph name="BEGIN_LINK"/>Kom meer te wete<ph name="END_LINK"/></translation>
 <translation id="8121009781989288430">Kopiereg <ph name="YEAR"/> Die Brave-outeurs. Alle regte voorbehou.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Hoe ons hierdie data gebruik:<ph name="END_BOLD"/> Werwe kan inligting oor jou belangstellings in Brave stoor. As jy byvoorbeeld ’n werf besoek om skoene vir ’n marathon te koop, kan die werf jou belangstelling definieer as iemand wat marathons hardloop. As jy later ’n ander werf besoek om vir ’n wedloop te registreer, kan daardie werf vir jou ’n advertensie vir drafskoene op grond van jou belangstellings wys.</translation>
 <translation id="3052349005266761501">Begin tans Brave …</translation>
@@ -346,6 +354,7 @@ Brave kan nie jou instellings herwin nie.</translation>
 <translation id="82609232232243542">Meld by Brave aan</translation>
 <translation id="5173820533850252773">Brave is verouderd</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave sal oor 'n uur herbegin}other{Brave sal oor # uur herbegin}}</translation>
+<translation id="5190991181158966940">Jy het Windows 10 of nuwer nodig om in die toekoms Brave-opdaterings te kry. Hierdie rekenaar gebruik Windows 8.1.</translation>
 <translation id="7863882214613921971">Maak skakel in 'n nuwe Brave-oortjie oop</translation>
 <translation id="911206726377975832">Vee ook jou blaaidata uit?</translation>
 <translation id="5708733457516068434">Jy kan tydens die proeflopies onderwerpe van belangstelling wat werwe gebruik om vir jou advertensies te wys, sien en verwyder. Brave skat jou belangstellings op grond van jou onlangse blaaigeskiedenis.</translation>

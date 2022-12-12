@@ -14,7 +14,6 @@
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
-#include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
@@ -33,10 +32,8 @@
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/pref_names.h"
-#include "brave/components/ftx/browser/buildflags/buildflags.h"
-#include "brave/components/gemini/browser/buildflags/buildflags.h"
+#include "brave/components/debounce/browser/debounce_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
@@ -93,25 +90,12 @@
 #include "brave/components/ipfs/ipfs_service.h"
 #endif
 
-#if BUILDFLAG(GEMINI_ENABLED)
-#include "brave/components/gemini/browser/pref_names.h"
-#endif
-
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 #include "brave/browser/gcm_driver/brave_gcm_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_service.h"
-#endif
-
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-#include "brave/components/crypto_dot_com/browser/crypto_dot_com_pref_utils.h"
-#include "brave/components/crypto_dot_com/common/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_FTX)
-#include "brave/components/ftx/browser/ftx_pref_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -181,6 +165,27 @@ void RegisterProfilePrefsForMigration(
   // Added 11/2022
   registry->RegisterBooleanPref(kDontAskEnableWebDiscovery, false);
   registry->RegisterIntegerPref(kBraveSearchVisitCount, 0);
+#endif
+
+  // Added 24/11/2022: https://github.com/brave/brave-core/pull/16027
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+  registry->RegisterStringPref(kFTXAccessToken, "");
+  registry->RegisterStringPref(kFTXOauthHost, "");
+  registry->RegisterBooleanPref(kFTXNewTabPageShowFTX, false);
+  registry->RegisterBooleanPref(kCryptoDotComNewTabPageShowCryptoDotCom, false);
+  registry->RegisterBooleanPref(kCryptoDotComHasBoughtCrypto, false);
+  registry->RegisterBooleanPref(kCryptoDotComHasInteracted, false);
+  registry->RegisterStringPref(kGeminiAccessToken, "");
+  registry->RegisterStringPref(kGeminiRefreshToken, "");
+  registry->RegisterBooleanPref(kNewTabPageShowGemini, false);
+#endif
+
+  // Added 24/11/2022: https://github.com/brave/brave-core/pull/16027
+#if !BUILDFLAG(IS_IOS)
+  registry->RegisterStringPref(kBinanceAccessToken, "");
+  registry->RegisterStringPref(kBinanceRefreshToken, "");
+  registry->RegisterBooleanPref(kNewTabPageShowBinance, false);
+  registry->RegisterBooleanPref(kBraveSuggestedSiteSuggestionsEnabled, false);
 #endif
 }
 
@@ -327,9 +332,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kNewTabPageClockFormat, "");
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
-  registry->RegisterBooleanPref(kNewTabPageShowBinance, false);
   registry->RegisterBooleanPref(kNewTabPageShowBraveTalk, true);
-  registry->RegisterBooleanPref(kNewTabPageShowGemini, false);
   registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
 
 // Private New Tab Page
@@ -370,18 +373,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(prefs::kAddOpenSearchEngines,
                                 allow_open_search_engines);
 
-  // Binance widget
-#if BUILDFLAG(BINANCE_ENABLED)
-  registry->RegisterStringPref(kBinanceAccessToken, "");
-  registry->RegisterStringPref(kBinanceRefreshToken, "");
-#endif
-
-  // Gemini widget
-#if BUILDFLAG(GEMINI_ENABLED)
-  registry->RegisterStringPref(kGeminiAccessToken, "");
-  registry->RegisterStringPref(kGeminiRefreshToken, "");
-#endif
-
   omnibox::RegisterBraveProfilePrefs(registry);
 
   // Password leak detection should be disabled
@@ -407,14 +398,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #endif
 
   de_amp::RegisterProfilePrefs(registry);
-
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  crypto_dot_com::RegisterProfilePrefs(registry);
-#endif
-
-#if BUILDFLAG(ENABLE_FTX)
-  ftx::RegisterProfilePrefs(registry);
-#endif
+  debounce::DebounceService::RegisterProfilePrefs(registry);
 
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterProfilePrefs(registry);

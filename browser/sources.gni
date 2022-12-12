@@ -4,7 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/autocomplete/sources.gni")
-import("//brave/browser/binance/sources.gni")
 import("//brave/browser/brave_adaptive_captcha/sources.gni")
 import("//brave/browser/brave_ads/sources.gni")
 import("//brave/browser/brave_news/sources.gni")
@@ -17,12 +16,10 @@ import("//brave/browser/brave_wallet/notifications/sources.gni")
 import("//brave/browser/browsing_data/sources.gni")
 import("//brave/browser/component_updater/sources.gni")
 import("//brave/browser/core_metrics/sources.gni")
-import("//brave/browser/crypto_dot_com/sources.gni")
 import("//brave/browser/debounce/sources.gni")
 import("//brave/browser/download/sources.gni")
 import("//brave/browser/ephemeral_storage/sources.gni")
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
-import("//brave/browser/gemini/sources.gni")
 import("//brave/browser/greaselion/sources.gni")
 import("//brave/browser/importer/sources.gni")
 import("//brave/browser/ipfs/sources.gni")
@@ -45,7 +42,6 @@ import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
-import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/translate/core/common/buildflags.gni")
@@ -121,7 +117,6 @@ brave_chrome_browser_deps = [
   "//brave/browser/themes",
   "//brave/browser/ui",
   "//brave/common",
-  "//brave/components/binance/browser/buildflags",
   "//brave/components/brave_adaptive_captcha/buildflags",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/common",
@@ -147,10 +142,8 @@ brave_chrome_browser_deps = [
   "//brave/components/constants",
   "//brave/components/cosmetic_filters/browser",
   "//brave/components/cosmetic_filters/common:mojom",
-  "//brave/components/crypto_dot_com/browser/buildflags",
   "//brave/components/de_amp/browser",
   "//brave/components/de_amp/common",
-  "//brave/components/gemini/browser/buildflags",
   "//brave/components/greaselion/browser/buildflags",
   "//brave/components/ipfs/buildflags",
   "//brave/components/l10n/common",
@@ -327,10 +320,6 @@ if (enable_widevine) {
   ]
 }
 
-if (enable_ftx) {
-  brave_chrome_browser_deps += [ "//brave/browser/ftx" ]
-}
-
 if (enable_brave_translate_go) {
   brave_chrome_browser_sources += [
     "//brave/browser/translate/brave_translate_prefs_migration.cc",
@@ -379,7 +368,6 @@ if (is_mac) {
 }
 
 brave_chrome_browser_sources += brave_browser_autocomplete_sources
-brave_chrome_browser_sources += brave_browser_binance_sources
 brave_chrome_browser_sources += brave_browser_brave_adaptive_captcha_sources
 brave_chrome_browser_sources += brave_browser_brave_ads_sources
 brave_chrome_browser_sources += brave_browser_brave_wallet_sources
@@ -392,11 +380,9 @@ brave_chrome_browser_sources += brave_browser_brave_stats_updater_sources
 brave_chrome_browser_sources += brave_browser_browsing_data_sources
 brave_chrome_browser_sources += brave_browser_component_updater_sources
 brave_chrome_browser_sources += brave_browser_core_metrics_sources
-brave_chrome_browser_sources += brave_browser_crypto_dot_com_sources
 brave_chrome_browser_sources += brave_browser_debounce_sources
 brave_chrome_browser_sources += brave_browser_download_sources
 brave_chrome_browser_sources += brave_browser_ephemeral_storage_sources
-brave_chrome_browser_sources += brave_browser_gemini_sources
 brave_chrome_browser_sources += brave_browser_greaselion_sources
 brave_chrome_browser_sources += brave_browser_importer_sources
 brave_chrome_browser_sources += brave_browser_ipfs_sources
@@ -413,7 +399,6 @@ brave_chrome_browser_sources += brave_browser_url_sanitizer_sources
 brave_chrome_browser_sources += brave_browser_sharing_hub_sources
 
 brave_chrome_browser_deps += brave_browser_autocomplete_deps
-brave_chrome_browser_deps += brave_browser_binance_deps
 brave_chrome_browser_deps += brave_browser_brave_adaptive_captcha_deps
 brave_chrome_browser_deps += brave_browser_brave_ads_deps
 brave_chrome_browser_deps += brave_browser_brave_news_deps
@@ -425,11 +410,9 @@ brave_chrome_browser_deps += brave_browser_brave_stats_updater_deps
 brave_chrome_browser_deps += brave_browser_browsing_data_deps
 brave_chrome_browser_deps += brave_browser_component_updater_deps
 brave_chrome_browser_deps += brave_browser_core_metrics_deps
-brave_chrome_browser_deps += brave_browser_crypto_dot_com_deps
 brave_chrome_browser_deps += brave_browser_debounce_deps
 brave_chrome_browser_deps += brave_browser_download_deps
 brave_chrome_browser_deps += brave_browser_ephemeral_storage_deps
-brave_chrome_browser_deps += brave_browser_gemini_deps
 brave_chrome_browser_deps += brave_browser_greaselion_deps
 brave_chrome_browser_deps += brave_browser_importer_deps
 brave_chrome_browser_deps += brave_browser_ipfs_deps
