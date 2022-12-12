@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -429,8 +430,10 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
 
         TextView fromTo = view.findViewById(R.id.from_to);
         if (parsedTx.getSender() != null && !parsedTx.getSender().equals(parsedTx.getRecipient())) {
+            String recipient =
+                    TextUtils.isEmpty(parsedTx.getRecipient()) ? "..." : parsedTx.getRecipient();
             fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
-                    mAccountName, parsedTx.getSender(), "->", parsedTx.getRecipient()));
+                    mAccountName, parsedTx.getSender(), "->", recipient));
         } else {
             fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
                     mAccountName, parsedTx.getSender(), "", ""));
