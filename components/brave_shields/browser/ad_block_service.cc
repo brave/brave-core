@@ -62,13 +62,10 @@ AdBlockService::SourceProviderObserver::SourceProviderObserver(
     base::WeakPtr<AdBlockEngine> adblock_engine,
     AdBlockFiltersProvider* filters_provider,
     AdBlockResourceProvider* resource_provider,
-    scoped_refptr<base::SequencedTaskRunner> task_runner,
-    base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
-        on_metadata_retrieved)
+    scoped_refptr<base::SequencedTaskRunner> task_runner)
     : adblock_engine_(adblock_engine),
       filters_provider_(filters_provider),
       resource_provider_(resource_provider),
-      on_metadata_retrieved_(on_metadata_retrieved),
       task_runner_(task_runner) {
   filters_provider_->AddObserver(this);
   filters_provider_->LoadDAT(
@@ -107,29 +104,13 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
   } else {
     auto engine_load_callback = base::BindOnce(
         [](base::WeakPtr<AdBlockEngine> engine, bool deserialize,
-           DATFileDataBuffer dat_buf, const std::string& resources_json)
-            -> absl::optional<adblock::FilterListMetadata> {
+           DATFileDataBuffer dat_buf, const std::string& resources_json) {
           if (engine) {
-            return engine->Load(deserialize, std::move(dat_buf),
-                                resources_json);
-          } else {
-            return absl::nullopt;
+            engine->Load(deserialize, std::move(dat_buf), resources_json);
           }
         },
         adblock_engine_, deserialize_, std::move(dat_buf_), resources_json);
-    task_runner_->PostTaskAndReplyWithResult(
-        FROM_HERE, std::move(engine_load_callback),
-        base::BindOnce(&SourceProviderObserver::OnEngineReplaced,
-                       weak_factory_.GetWeakPtr()));
-  }
-}
-
-void AdBlockService::SourceProviderObserver::OnEngineReplaced(
-    const absl::optional<adblock::FilterListMetadata> maybe_metadata) {
-  if (maybe_metadata) {
-    if (on_metadata_retrieved_) {
-      on_metadata_retrieved_.Run(*maybe_metadata);
-    }
+    task_runner_->PostTask(FROM_HERE, std::move(engine_load_callback));
   }
 }
 

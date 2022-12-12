@@ -240,7 +240,10 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
   auto subscription_filters_provider =
       std::make_unique<AdBlockSubscriptionFiltersProvider>(
           local_state_,
-          GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText));
+          GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText),
+          base::BindRepeating(
+              &AdBlockSubscriptionServiceManager::OnListMetadata,
+              weak_ptr_factory_.GetWeakPtr(), sub_url));
 
   {
     base::AutoLock lock(subscription_services_lock_);
@@ -288,7 +291,10 @@ void AdBlockSubscriptionServiceManager::EnableSubscription(const GURL& sub_url,
     auto subscription_filters_provider =
         std::make_unique<AdBlockSubscriptionFiltersProvider>(
             local_state_,
-            GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText));
+            GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText),
+            base::BindRepeating(
+                &AdBlockSubscriptionServiceManager::OnListMetadata,
+                weak_ptr_factory_.GetWeakPtr(), sub_url));
     filters_manager_->AddProvider(subscription_filters_provider.get());
     subscription_filters_provider->OnListAvailable();
     subscription_filters_providers_.insert(
@@ -435,8 +441,12 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
       if (info.enabled) {
         auto subscription_filters_provider =
             std::make_unique<AdBlockSubscriptionFiltersProvider>(
-                local_state_, GetSubscriptionPath(sub_url).Append(
-                                  kCustomSubscriptionListText));
+                local_state_,
+                GetSubscriptionPath(sub_url).Append(
+                    kCustomSubscriptionListText),
+                base::BindRepeating(
+                    &AdBlockSubscriptionServiceManager::OnListMetadata,
+                    weak_ptr_factory_.GetWeakPtr(), sub_url));
 
         filters_manager_->AddProvider(subscription_filters_provider.get());
         subscription_filters_provider->OnListAvailable();

@@ -102,6 +102,22 @@ pub unsafe extern "C" fn engine_create_with_metadata(rules: *const c_char, metad
     engine_ptr
 }
 
+/// Scans the beginning of the list for metadata and returns it without parsing any other list
+/// content.
+#[no_mangle]
+pub unsafe extern "C" fn read_list_metadata(
+    data: *const c_char,
+    data_size: size_t,
+) -> *mut FilterListMetadata {
+    let data: &[u8] = std::slice::from_raw_parts(data as *const u8, data_size);
+    let list = std::str::from_utf8(data).unwrap_or_else(|_| {
+        eprintln!("Failed to parse filter list with invalid UTF-8 content");
+        ""
+    });
+    let metadata = adblock::lists::read_list_metadata(list);
+    Box::into_raw(Box::new(metadata))
+}
+
 fn engine_create_from_str(rules: &str) -> (*mut FilterListMetadata, *mut Engine) {
     let mut filter_set = adblock::lists::FilterSet::new(false);
     let metadata = filter_set.add_filter_list(&rules, Default::default());
@@ -276,7 +292,10 @@ pub unsafe extern "C" fn engine_destroy(engine: *mut Engine) {
 
 /// Puts a pointer to the homepage of the `FilterListMetadata` into `homepage`. Returns `true` if a homepage was returned.
 #[no_mangle]
-pub unsafe extern "C" fn filter_list_metadata_homepage(metadata: *const FilterListMetadata, homepage: *mut *mut c_char) -> bool {
+pub unsafe extern "C" fn filter_list_metadata_homepage(
+    metadata: *const FilterListMetadata,
+    homepage: *mut *mut c_char,
+) -> bool {
     if let Some(this_homepage) = (*metadata).homepage.as_ref() {
         let cstring = CString::new(this_homepage.as_str());
         match cstring {
@@ -293,7 +312,10 @@ pub unsafe extern "C" fn filter_list_metadata_homepage(metadata: *const FilterLi
 
 /// Puts a pointer to the title of the `FilterListMetadata` into `title`. Returns `true` if a title was returned.
 #[no_mangle]
-pub unsafe extern "C" fn filter_list_metadata_title(metadata: *const FilterListMetadata, title: *mut *mut c_char) -> bool {
+pub unsafe extern "C" fn filter_list_metadata_title(
+    metadata: *const FilterListMetadata,
+    title: *mut *mut c_char,
+) -> bool {
     if let Some(this_title) = (*metadata).title.as_ref() {
         let cstring = CString::new(this_title.as_str());
         match cstring {

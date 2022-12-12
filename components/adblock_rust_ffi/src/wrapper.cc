@@ -42,6 +42,12 @@ FilterListMetadata::FilterListMetadata(C_FilterListMetadata* metadata) {
   }
 }
 
+FilterListMetadata::FilterListMetadata(const std::string& list)
+    : FilterListMetadata(read_list_metadata(list.c_str(), list.size())) {}
+
+FilterListMetadata::FilterListMetadata(const char* data, size_t data_size)
+    : FilterListMetadata(read_list_metadata(data, data_size)) {}
+
 FilterListMetadata::~FilterListMetadata() = default;
 
 FilterListMetadata::FilterListMetadata(FilterListMetadata&&) = default;
