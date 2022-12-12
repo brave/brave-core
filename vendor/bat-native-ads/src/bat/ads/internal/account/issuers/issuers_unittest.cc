@@ -40,7 +40,7 @@ class BatAdsIssuersTest : public UnitTestBase {
 TEST_F(BatAdsIssuersTest, FetchIssuers) {
   // Arrange
   const URLResponseMap url_responses = {{// Issuers request
-                                         R"(/v2/issuers/)",
+                                         R"(/v3/issuers/)",
                                          {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
@@ -97,7 +97,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuers) {
 TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
   // Arrange
   const URLResponseMap url_responses = {{// Issuers request
-                                         R"(/v2/issuers/)",
+                                         R"(/v3/issuers/)",
                                          {{net::HTTP_OK, "FOOBAR"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -122,7 +122,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
 TEST_F(BatAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   // Arrange
   const URLResponseMap url_responses = {{// Issuers request
-                                         R"(/v2/issuers/)",
+                                         R"(/v3/issuers/)",
                                          {{net::HTTP_NOT_FOUND, {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
