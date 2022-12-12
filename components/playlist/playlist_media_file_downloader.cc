@@ -20,6 +20,7 @@
 #include "brave/components/playlist/playlist_constants.h"
 #include "brave/components/playlist/playlist_types.h"
 #include "build/build_config.h"
+#include "components/download/public/common/download_item_impl.h"
 #include "components/download/public/common/download_task_runner.h"
 #include "components/download/public/common/in_progress_download_manager.h"
 #include "content/public/browser/browser_context.h"
@@ -65,8 +66,8 @@ PlaylistMediaFileDownloader::~PlaylistMediaFileDownloader() {
   ResetDownloadStatus();
 
   if (download_manager_) {
-    while (!download_items_to_be_removed_.empty()) {
-      RemoveItem(download_items_to_be_removed_.front().get());
+    while (!download_items_to_be_detached_.empty()) {
+      DetachCachedFile(download_items_to_be_detached_.front().get());
     }
 
     download_manager_->ShutDown();
@@ -88,34 +89,40 @@ void PlaylistMediaFileDownloader::NotifySucceed(
   ResetDownloadStatus();
 }
 
-void PlaylistMediaFileDownloader::ScheduleToRemoveItem(
+void PlaylistMediaFileDownloader::ScheduleToDetachCachedFile(
     download::DownloadItem* item) {
   for (auto& download : download_manager_->TakeInProgressDownloads()) {
     DCHECK(download_item_observation_.IsObservingSource(download.get()));
-    download_items_to_be_removed_.push_back(std::move(download));
+    download_items_to_be_detached_.push_back(std::move(download));
   }
 
   base::SequencedTaskRunnerHandle::Get()->PostTask(
-      FROM_HERE, base::BindOnce(&PlaylistMediaFileDownloader::RemoveItem,
+      FROM_HERE, base::BindOnce(&PlaylistMediaFileDownloader::DetachCachedFile,
                                 weak_factory_.GetWeakPtr(), item));
 }
 
-void PlaylistMediaFileDownloader::RemoveItem(download::DownloadItem* item) {
+void PlaylistMediaFileDownloader::DetachCachedFile(
+    download::DownloadItem* item) {
   // We allow only one item to be downloaded at a time.
   auto iter = base::ranges::find_if(
-      download_items_to_be_removed_,
+      download_items_to_be_detached_,
       [item](const auto& download) { return download.get() == item; });
-  DCHECK(iter != download_items_to_be_removed_.end());
+  DCHECK(iter != download_items_to_be_detached_.end());
 
   // Before removing item from the vector, extend DownloadItems' lifetimes
   // so that it can be deleted after removing the file. i.e. The item should
-  // be deleted after calling Remove().
-  auto will_be_removed = std::move(*iter);
-  download_items_to_be_removed_.erase(iter);
+  // be deleted after the file is released.
+  auto will_be_detached = std::move(*iter);
+  download_items_to_be_detached_.erase(iter);
 
   download_item_observation_.RemoveObservation(item);
 
-  item->Remove();
+  if (item->GetLastReason() ==
+      download::DownloadInterruptReason::DOWNLOAD_INTERRUPT_REASON_NONE) {
+    will_be_detached->MarkAsComplete();
+  } else {
+    will_be_detached->Remove();
+  }
 }
 
 void PlaylistMediaFileDownloader::DownloadMediaFileForPlaylistItem(
@@ -183,7 +190,7 @@ void PlaylistMediaFileDownloader::OnDownloadUpdated(
     LOG(ERROR) << __func__ << ": Download interrupted - reason: "
                << download::DownloadInterruptReasonToString(
                       item->GetLastReason());
-    ScheduleToRemoveItem(item);
+    ScheduleToDetachCachedFile(item);
     OnMediaFileDownloaded({});
     return;
   }
@@ -194,8 +201,8 @@ void PlaylistMediaFileDownloader::OnDownloadUpdated(
       current_item_->id, item->GetTotalBytes(), item->GetReceivedBytes(),
       item->PercentComplete(), time_remaining);
 
-  if (item->AllDataSaved()) {
-    ScheduleToRemoveItem(item);
+  if (item->IsDone()) {
+    ScheduleToDetachCachedFile(item);
     OnMediaFileDownloaded(playlist_dir_path_.Append(media_file_name_));
     return;
   }

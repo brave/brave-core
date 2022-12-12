@@ -99,8 +99,8 @@ class PlaylistMediaFileDownloader
   void NotifyFail(const std::string& id);
   void NotifySucceed(const std::string& id, const std::string& media_file_path);
 
-  void ScheduleToRemoveItem(download::DownloadItem* item);
-  void RemoveItem(download::DownloadItem* item);
+  void ScheduleToDetachCachedFile(download::DownloadItem* item);
+  void DetachCachedFile(download::DownloadItem* item);
 
   base::SequencedTaskRunner* task_runner();
 
@@ -109,7 +109,7 @@ class PlaylistMediaFileDownloader
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<download::InProgressDownloadManager> download_manager_;
   std::vector<std::unique_ptr<download::DownloadItemImpl>>
-      download_items_to_be_removed_;
+      download_items_to_be_detached_;
 
   base::ScopedObservation<download::SimpleDownloadManager,
                           download::SimpleDownloadManager::Observer>
