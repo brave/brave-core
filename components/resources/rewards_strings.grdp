@@ -69,15 +69,15 @@
     <ph name="BOLD_BEGIN">$1</ph>Ready to start earning BAT?<ph name="BOLD_END">$2</ph> Just connect your custodial account to your Rewards profile. If you don’t have an account, you’ll get the chance to create one.
   </message>
   <message name="IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS" desc="">
-    To start earning BAT, you need to connect a custodial account to Brave Rewards. Unfortunately, there’s no custodian available in your region, so earning isn’t available at this time. However, you’ll still be automatically supporting creators by using Rewards.
+    To earn BAT, users must connect a custodial account to Brave Rewards. Unfortunately, there's no custodian available in your region, so earning isn't available. For now, turning on Brave Rewards will automatically support creators.
   </message>
   <message name="IDS_REWARDS_LEARN_MORE" desc="">
     Learn more
   </message>
   <message name="IDS_REWARDS_PUBLISHER_COUNT_TEXT" desc="">
     {PUBLISHER_COUNT, plural,
-      =1 {You’ve visited # creator supported by users like you this month}
-      other {You’ve visited # creators supported by users like you this month}
+      =1 {This month, you've visited # creator supported by Brave Rewards}
+      other {This month, you've visited # creators supported by Brave Rewards}
     }
   </message>
 
