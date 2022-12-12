@@ -75,6 +75,16 @@ class RequestBlockingContentScriptHandler: TabContentScript {
         resourceType: dto.data.resourceType
       ) { shouldBlock in
         assertIsMainThread("Result should happen on the main thread")
+        // Ensure we check that the stats we're tracking is still for the same page
+        // Some web pages (like youtube) like to rewrite their main frame urls
+        // so we check the source etld+1 agains the tab url etld+1
+        // For subframes which may use different etld+1 than the main frame (example `reddit.com` and `redditmedia.com`)
+        // We simply check the known subframeURLs on this page.
+        guard tab.url?.baseDomain == sourceURL.baseDomain ||
+              self.tab?.currentPageData?.allSubframeURLs.contains(sourceURL) == true else {
+          replyHandler(shouldBlock, nil)
+          return
+        }
         
         if shouldBlock, Preferences.PrivacyReports.captureShieldsData.value,
            let domainURL = URL(string: domainURLString),
