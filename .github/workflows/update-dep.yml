@@ -1,6 +1,6 @@
-# Description: Run this by visiting https://github.com/brave/brave-core/actions/workflows/bump-deps.yaml
+# Description: Run this by visiting https://github.com/brave/brave-core/actions/workflows/update-dep.yaml
 # and clicking the `Run workflow` button on the top-right.
-# You can also run it from cli by: `gh workflow run bump-dep.yml [-f dep=vendor/web-discovery-project] [-f ref=commit-hash]`
+# You can also run it from cli by: `gh workflow run update-dep.yml [-f dep=vendor/web-discovery-project] [-f ref=commit-hash]`
 # If `ref` is not given, we will try to use the latest commmit (tip) of a branch called `master` or `main`
 
 name: Update dependency in DEPS
@@ -68,7 +68,7 @@ jobs:
           for branch in "${branches[@]}"
           do
             git switch "$branch"
-            pr_branch="pr-auto-bump-deps-${branch}-${DEP}-${DEPREF}"
+            pr_branch="pr-auto-update-dep-${branch}-${DEP}-${DEPREF}"
             if git rev-parse --verify "$pr_branch"; then continue; fi # Skip duplicate
             git switch -c "$pr_branch"
             "$SED" -i -e "s,^\(\s*\"$DEP\"\s*:\s*\"https.*\)@[^\"]*\",\1@$DEPREF\"," \
