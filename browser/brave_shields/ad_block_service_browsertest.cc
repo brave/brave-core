@@ -857,10 +857,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
     ASSERT_EQ(subscriptions[0].last_successful_update_attempt,
               subscriptions[0].last_update_attempt);
     ASSERT_EQ(subscriptions[0].enabled, false);
-    /* TODO fix metadata
     ASSERT_EQ(subscriptions[0].homepage, "https://example.com/list.txt");
     ASSERT_EQ(subscriptions[0].title, "Test list");
-    */
   }
 
   EXPECT_EQ(true,
