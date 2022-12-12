@@ -23,7 +23,7 @@ FetchPaymentTokenUrlRequestBuilder::FetchPaymentTokenUrlRequestBuilder(
   DCHECK(IsValid(confirmation_));
 }
 
-// GET /v2/confirmation/{transactionId}/paymentToken
+// GET /v3/confirmation/{transactionId}/paymentToken
 
 mojom::UrlRequestInfoPtr FetchPaymentTokenUrlRequestBuilder::Build() {
   mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
@@ -37,7 +37,7 @@ mojom::UrlRequestInfoPtr FetchPaymentTokenUrlRequestBuilder::Build() {
 
 GURL FetchPaymentTokenUrlRequestBuilder::BuildUrl() const {
   const std::string spec =
-      base::StringPrintf("%s/v2/confirmation/%s/paymentToken",
+      base::StringPrintf("%s/v3/confirmation/%s/paymentToken",
                          GetAnonymousHost(confirmation_.ad_type).c_str(),
                          confirmation_.transaction_id.c_str());
   return GURL(spec);

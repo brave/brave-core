@@ -48,7 +48,7 @@ class BatAdsRedeemUnblindedPaymentTokensTest : public UnitTestBase {
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+      {R"(/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
               "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
@@ -104,7 +104,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
        RedeemUnblindedPaymentTokensMultipleTimes) {
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+      {R"(/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
               "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
@@ -174,7 +174,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+      {R"(/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
               "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
@@ -229,7 +229,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+      {R"(/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
               "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
@@ -285,7 +285,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+      {R"(/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
               "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
@@ -337,7 +337,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
+      {R"(/v3/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_NOT_FOUND, {}}, {net::HTTP_OK, R"(
             {
               "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",

@@ -36,7 +36,7 @@ TEST_F(BatAdsGetSignedTokensUrlRequestBuilderTest, BuildUrl) {
   // Assert
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(
-      R"(https://mywallet.ads.bravesoftware.com/v2/confirmation/token/d4ed0af0-bfa9-464b-abd7-67b29d891b8b?nonce=716c3381-66e6-46e4-962f-15d01455b5b9)");
+      R"(https://mywallet.ads.bravesoftware.com/v3/confirmation/token/d4ed0af0-bfa9-464b-abd7-67b29d891b8b?nonce=716c3381-66e6-46e4-962f-15d01455b5b9)");
   expected_url_request->method = mojom::UrlRequestMethodType::kGet;
 
   EXPECT_EQ(expected_url_request, url_request);

@@ -18,13 +18,13 @@ namespace {
 
 GURL BuildUrl() {
   const std::string spec =
-      base::StringPrintf("%s/v2/issuers/", server::GetStaticHost().c_str());
+      base::StringPrintf("%s/v3/issuers/", server::GetStaticHost().c_str());
   return GURL(spec);
 }
 
 }  // namespace
 
-// GET /v2/issuers/
+// GET /v3/issuers/
 
 mojom::UrlRequestInfoPtr IssuersUrlRequestBuilder::Build() {
   mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();

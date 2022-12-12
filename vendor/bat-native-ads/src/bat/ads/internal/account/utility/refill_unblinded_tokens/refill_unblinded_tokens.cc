@@ -121,7 +121,7 @@ void RefillUnblindedTokens::Refill() {
 
 void RefillUnblindedTokens::RequestSignedTokens() {
   BLOG(1, "RequestSignedTokens");
-  BLOG(2, "POST /v2/confirmation/token/{paymentId}");
+  BLOG(2, "POST /v3/confirmation/token/{paymentId}");
 
   const int count = CalculateAmountOfTokensToRefill();
   tokens_ = token_generator_->Generate(count);
@@ -182,7 +182,7 @@ void RefillUnblindedTokens::OnRequestSignedTokens(
 
 void RefillUnblindedTokens::GetSignedTokens() {
   BLOG(1, "GetSignedTokens");
-  BLOG(2, "GET /v2/confirmation/token/{paymentId}?nonce={nonce}");
+  BLOG(2, "GET /v3/confirmation/token/{paymentId}?nonce={nonce}");
 
   GetSignedTokensUrlRequestBuilder url_request_builder(wallet_, nonce_);
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
