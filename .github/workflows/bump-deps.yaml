@@ -2,6 +2,7 @@
 # and clicking the `Run workflow` button on the top-right.
 # You can also run it from cli by: `gh workflow run bump-deps.yaml [-f dep=vendor/web-discovery-project] [-f ref=commit-hash]`
 # If `ref` is not given, we will try to use the latest commmit (tip) of a branch called `master` or `main`
+
 name: Bump DEPS
 on:
   workflow_dispatch:
@@ -29,9 +30,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: "0"
+          fetch-depth: 0
 
-      - name: auto-bump
+      - name: Auto bump
         run: |
           shopt -s inherit_errexit
           set -eEo pipefail
@@ -42,7 +43,7 @@ jobs:
           DEP="${{ inputs.dep }}"
           DEPREF="${{ inputs.ref }}"
 
-          [[ "${DEP:?}" =~ ^[a-zA-Z/-]+$ ]] || { echo Input dependency validation failed; exit 1; }
+          [[ "${DEP:?}" =~ ^[a-zA-Z/-]+$ ]] || { echo "Input dependency validation failed"; exit 1; }
           if [[ -z "${DEPREF}" ]]; then
             echo "Attempting to guess ref hash"
             DEP_REPO=$(\
@@ -54,8 +55,8 @@ jobs:
             gh api /repos/"${DEP_REPO}"/commits/master -q .sha > /tmp/DEPREF || gh api /repos/"${DEP_REPO}"/commits/main -q .sha > /tmp/DEPREF
             DEPREF=$(</tmp/DEPREF)
           fi
-          [[ "${DEPREF:?}" =~ ^[a-z0-9]+$ ]] || { echo Dependency reference validation failed; exit 1; }
-          ! $(grep -q "$DEPREF" DEPS) || { echo Dependency reference alread exists in DEPS. Cannot continue; exit 1; }
+          [[ "${DEPREF:?}" =~ ^[a-z0-9]+$ ]] || { echo "Dependency reference validation failed"; exit 1; }
+          ! $(grep -q "$DEPREF" DEPS) || { echo "Dependency reference already exists in DEPS. Cannot continue"; exit 1; }
 
           # readarray -t milestones < <(gh api /repos/${GITHUB_REPOSITORY:?}/milestones -q ".[] | .title" | grep -Fv Closed)
           # branches=( "${milestones[@]/*Nightly/master}" )
@@ -73,7 +74,6 @@ jobs:
                       -e "/^\s*\"${DEP//\//\\/}\"\s*:\s*{/,/@/ s/@[^\"]*/@$DEPREF/" DEPS
             # git add DEPS
             # git commit -m "Auto bump DEPS ${DEP}@${DEPREF}"
-            git push --delete origin "$pr_branch" || : # TODO remove
             git push -u origin "$pr_branch"
             gh api \
                 --method PUT "/repos/${GITHUB_REPOSITORY}/contents/DEPS" \
