@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
 import org.chromium.base.jank_tracker.JankTracker;
@@ -292,8 +291,7 @@ public class BraveToolbarManager extends ToolbarManager {
                             newTabClickHandler, mWindowAndroid, mTabCountProvider,
                             mIncognitoStateProvider, mActivity.findViewById(R.id.control_container),
                             closeAllTabsAction);
-            ApiCompatibilityUtils.setAccessibilityTraversalBefore(
-                    mLocationBar.getContainerView(), R.id.bottom_toolbar);
+            mLocationBar.getContainerView().setAccessibilityTraversalBefore(R.id.bottom_toolbar);
         }
     }
 
