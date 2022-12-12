@@ -41,6 +41,7 @@
             android:background="@drawable/rounded_wallet_edittext"
             android:hint="@string/add_account"
             android:importantForAutofill="no"
+            android:maxLength="30"
             android:paddingEnd="18dp"
             android:paddingStart="18dp"
             android:paddingTop="10dp"
