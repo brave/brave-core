@@ -3,7 +3,7 @@
 # You can also run it from cli by: `gh workflow run bump-deps.yaml [-f dep=vendor/web-discovery-project] [-f ref=commit-hash]`
 # If `ref` is not given, we will try to use the latest commmit (tip) of a branch called `master` or `main`
 
-name: Bump/update dependency [ref] in DEPS
+name: Update dependency in DEPS
 
 on:
   workflow_dispatch:
