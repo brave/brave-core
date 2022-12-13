@@ -16,6 +16,7 @@
 #include "base/values.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
@@ -37,13 +38,14 @@ bool IsValidRegionValue(const base::Value::Dict& value) {
 
 mojom::Region GetRegionFromValue(const base::Value::Dict& value) {
   mojom::Region region;
-  if (auto* continent = value.FindString(kRegionContinentKey))
+  if (auto* continent = value.FindString(brave_vpn::kRegionContinentKey))
     region.continent = *continent;
-  if (auto* name = value.FindString(kRegionNameKey))
+  if (auto* name = value.FindString(brave_vpn::kRegionNameKey))
     region.name = *name;
-  if (auto* name_pretty = value.FindString(kRegionNamePrettyKey))
+  if (auto* name_pretty = value.FindString(brave_vpn::kRegionNamePrettyKey))
     region.name_pretty = *name_pretty;
-  if (auto* country_iso_code = value.FindString(kRegionCountryIsoCodeKey))
+  if (auto* country_iso_code =
+          value.FindString(brave_vpn::kRegionCountryIsoCodeKey))
     region.country_iso_code = *country_iso_code;
   return region;
 }
@@ -103,7 +105,6 @@ bool IsValidCredentialSummary(const base::Value& summary) {
       summary.GetDict().FindInt("remaining_credential_count").value_or(0);
   return active && remaining_credential_count > 0;
 }
-
 
 bool HasSubscriberCredential(PrefService* local_prefs) {
   const base::Value::Dict& sub_cred_dict =

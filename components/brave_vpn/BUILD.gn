@@ -22,123 +22,63 @@ static_library("brave_vpn") {
     "common",
     "mojom",
     "//base",
-    "//brave/components/api_request_helper:api_request_helper",
     "//brave/components/p3a_utils",
-    "//brave/components/resources:strings",
     "//brave/components/skus/browser",
-    "//brave/components/skus/common",
     "//brave/components/skus/common:mojom",
     "//brave/components/version_info",
+    "//build:buildflag_header_h",
     "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/prefs",
     "//components/version_info",
-    "//net",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//ui/base",
     "//url",
   ]
 
-  libs = []
-
   if (is_win || is_mac) {
-    sources += [
-      "brave_vpn_connection_info.cc",
-      "brave_vpn_connection_info.h",
-      "brave_vpn_os_connection_api.cc",
-      "brave_vpn_os_connection_api.h",
-      "brave_vpn_os_connection_api_sim.cc",
-      "brave_vpn_os_connection_api_sim.h",
-      "switches.h",
-    ]
-
-    if (is_win) {
-      sources += [
-        "brave_vpn_os_connection_api_win.cc",
-        "brave_vpn_os_connection_api_win.h",
-      ]
-
-      libs += [ "rasapi32.lib" ]
-    }
-
-    if (is_mac) {
-      sources += [
-        "brave_vpn_os_connection_api_mac.h",
-        "brave_vpn_os_connection_api_mac.mm",
-      ]
-
-      frameworks = [ "NetworkExtension.framework" ]
-      configs += [ "//build/config/compiler:enable_arc" ]
-    }
-
     deps += [
-      ":brave_vpn_internal",
-      "//third_party/icu",
-    ]
-  }
-}
-
-source_set("brave_vpn_internal") {
-  visibility = [
-    ":brave_vpn",
-    ":vpntool",
-  ]
-
-  sources = []
-  deps = [ "//base" ]
-
-  if (is_win) {
-    sources += [
-      "utils_win.cc",
-      "utils_win.h",
+      "connection",
+      "connection:api",
     ]
   }
 }
 
 source_set("unit_tests") {
-  if (enable_brave_vpn) {
-    testonly = true
+  assert(enable_brave_vpn)
+  testonly = true
 
-    sources = []
-
-    if (is_win || is_mac || is_android) {
-      sources += [
-        "brave_vpn_unittest.cc"
-      ]
-    }
-
-    deps = [
-      ":brave_vpn",
-      "api:unit_tests",
-      "common",
-      "//base",
-      "//brave/components/p3a_utils",
-      "//brave/components/skus/browser",
-      "//brave/components/skus/common",
-      "//brave/components/skus/common:mojom",
-      "//components/prefs:test_support",
-      "//components/sync_preferences:test_support",
-      "//content/test:test_support",
-      "//net:test_support",
-      "//services/data_decoder/public/cpp:test_support",
-      "//services/network:test_support",
-      "//testing/gmock",
-      "//testing/gtest",
-      "//third_party/abseil-cpp:absl",
-    ]
-  }
-}
-
-executable("vpntool") {
   sources = []
-  deps = [
-    ":brave_vpn_internal",
-    "//base",
-  ]
 
-  if (is_win) {
-    sources += [ "winvpntool.cc" ]
-    libs = [ "rasapi32.lib" ]
+  if (is_win || is_mac || is_android) {
+    sources += [ "brave_vpn_service_unittest.cc" ]
+  }
+
+  deps = [
+    ":brave_vpn",
+    "//base",
+    "//brave/components/brave_vpn/api",
+    "//brave/components/brave_vpn/api:unit_tests",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//services/data_decoder/public/cpp:test_support",
+    "//services/network:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+  ]
+  if (is_mac || is_win) {
+    deps += [
+      "//brave/components/brave_vpn/connection:api",
+      "//brave/components/brave_vpn/connection:common",
+      "//brave/components/brave_vpn/connection:sim",
+    ]
   }
 }

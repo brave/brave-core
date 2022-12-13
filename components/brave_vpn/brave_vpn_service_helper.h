@@ -22,20 +22,14 @@ class Value;
 }  // namespace base
 
 namespace brave_vpn {
-
-struct Hostname;
-
 bool ValidateCachedRegionData(const base::Value::List& region_value);
-std::string GetBraveVPNPaymentsEnv(const std::string& env);
-
-base::Value::Dict GetValueFromRegion(const mojom::Region& region);
-std::vector<mojom::Region> ParseRegionList(
-    const base::Value::List& region_list);
 mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
     const std::string& name,
     const std::vector<mojom::Region> region_list);
+std::vector<mojom::Region> ParseRegionList(
+    const base::Value::List& region_list);
+base::Value::Dict GetValueFromRegion(const mojom::Region& region);
 bool IsValidCredentialSummary(const base::Value& summary);
-bool HasValidSubscriberCredential(PrefService* local_prefs);
 bool HasSubscriberCredential(PrefService* local_prefs);
 std::string GetSubscriberCredential(PrefService* local_prefs);
 absl::optional<base::Time> GetExpirationTime(PrefService* local_prefs);

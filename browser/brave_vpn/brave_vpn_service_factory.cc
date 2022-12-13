@@ -8,9 +8,9 @@
 #include "base/feature_list.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
-#include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/connection/brave_vpn_os_connection_api.h"
 #include "brave/components/skus/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -62,9 +62,9 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
   auto* connection_api = BraveVPNOSConnectionAPI::GetInstance();
-  connection_api->set_shared_url_loader_factory(
+  connection_api->SetSharedUrlLoaderFactory(
       g_browser_process->shared_url_loader_factory());
-  connection_api->set_local_prefs(g_browser_process->local_state());
+  connection_api->SetLocalPrefs(g_browser_process->local_state());
 #endif
 }
 

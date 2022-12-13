@@ -1,9 +1,9 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/brave_vpn_os_connection_api_win.h"
+#include "brave/components/brave_vpn/connection/win/brave_vpn_os_connection_api_win.h"
 
 #include <windows.h>
 
@@ -13,7 +13,8 @@
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/brave_vpn/utils_win.h"
+#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
+#include "brave/components/brave_vpn/connection/win/utils.h"
 
 // Most of Windows implementations are based on Brian Clifton
 // (brian@clifton.me)'s work (https://github.com/bsclifton/winvpntool).
@@ -116,7 +117,7 @@ void BraveVPNOSConnectionAPIWin::OnCheckConnection(
     CheckConnectionResult result) {
   switch (result) {
     case CheckConnectionResult::CONNECTED:
-      BraveVPNOSConnectionAPI::OnConnected();
+      BraveVPNOSConnectionAPIBase::OnConnected();
       break;
     case CheckConnectionResult::CONNECTING:
       OnIsConnecting();
@@ -125,7 +126,7 @@ void BraveVPNOSConnectionAPIWin::OnCheckConnection(
       OnConnectFailed();
       break;
     case CheckConnectionResult::DISCONNECTED:
-      BraveVPNOSConnectionAPI::OnDisconnected();
+      BraveVPNOSConnectionAPIBase::OnDisconnected();
       break;
     case CheckConnectionResult::DISCONNECTING:
       OnIsDisconnecting();
@@ -142,18 +143,18 @@ void BraveVPNOSConnectionAPIWin::OnCreated(const std::string& name,
     return;
   }
 
-  BraveVPNOSConnectionAPI::OnCreated();
+  BraveVPNOSConnectionAPIBase::OnCreated();
 }
 
 void BraveVPNOSConnectionAPIWin::OnConnected(bool success) {
   if (!success)
-    BraveVPNOSConnectionAPI::OnConnectFailed();
+    BraveVPNOSConnectionAPIBase::OnConnectFailed();
 }
 
 void BraveVPNOSConnectionAPIWin::OnDisconnected(bool success) {
   // TODO(simonhong): Handle disconnect failed state.
   if (success)
-    BraveVPNOSConnectionAPI::OnDisconnected();
+    BraveVPNOSConnectionAPIBase::OnDisconnected();
 }
 
 void BraveVPNOSConnectionAPIWin::OnRemoved(const std::string& name,

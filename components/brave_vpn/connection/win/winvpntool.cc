@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <windows.h>
 
@@ -15,7 +15,7 @@
 
 #include "base/command_line.h"
 #include "base/logging.h"
-#include "brave/components/brave_vpn/utils_win.h"
+#include "brave/components/brave_vpn/connection/win/utils.h"
 
 // Simple Windows VPN configuration tool (using RAS API)
 // By Brian Clifton (brian@clifton.me)
@@ -80,73 +80,73 @@ int PrintConnectionDetails(HRASCONN connection) {
     if (lp_projection_info->type == PROJECTION_INFO_TYPE_IKEv2) {
       // See _RASIKEV2_PROJECTION_INFO in Ras.h for full list of fields.
       // Fields commented out are not implemented (ex: IPv6).
-      wprintf(L"\ttype=PROJECTION_INFO_TYPE_IKEv2");
+      VLOG(2) << "\ttype=PROJECTION_INFO_TYPE_IKEv2";
 
       // IPv4 Projection Parameters
-      wprintf(L"\n\tdwIPv4NegotiationError=%d",
-              lp_projection_info->ikev2.dwIPv4NegotiationError);
-      wprintf(L"\n\tipv4Address=");
-      printf("%s", inet_ntoa(lp_projection_info->ikev2.ipv4Address));
-      wprintf(L"\n\tipv4ServerAddress=");
-      printf("%s", inet_ntoa(lp_projection_info->ikev2.ipv4ServerAddress));
+      VLOG(2) << "\n\tdwIPv4NegotiationError="
+              << lp_projection_info->ikev2.dwIPv4NegotiationError;
+      VLOG(2) << "\n\tipv4Address=";
+      VLOG(2) << inet_ntoa(lp_projection_info->ikev2.ipv4Address);
+      VLOG(2) << "\n\tipv4ServerAddress=";
+      VLOG(2) << inet_ntoa(lp_projection_info->ikev2.ipv4ServerAddress);
 
       // AUTH
-      wprintf(L"\n\tdwAuthenticationProtocol=");
+      VLOG(2) << "\n\tdwAuthenticationProtocol=";
       if (lp_projection_info->ikev2.dwAuthenticationProtocol ==
           RASIKEv2_AUTH_MACHINECERTIFICATES)
-        wprintf(L"RASIKEv2_AUTH_MACHINECERTIFICATES");
+        VLOG(2) << "RASIKEv2_AUTH_MACHINECERTIFICATES";
       else if (lp_projection_info->ikev2.dwAuthenticationProtocol ==
                RASIKEv2_AUTH_EAP)
-        wprintf(L"RASIKEv2_AUTH_EAP");
-      wprintf(L"\n\tdwEapTypeId=%d", lp_projection_info->ikev2.dwEapTypeId);
+        VLOG(2) << "RASIKEv2_AUTH_EAP";
+      VLOG(2) << "\n\tdwEapTypeId=" << lp_projection_info->ikev2.dwEapTypeId;
 
-      wprintf(L"\n\tdwFlags=");
+      VLOG(2) << "\n\tdwFlags=";
       if (lp_projection_info->ikev2.dwFlags & RASIKEv2_FLAGS_MOBIKESUPPORTED)
-        wprintf(L"RASIKEv2_FLAGS_MOBIKESUPPORTED, ");
+        VLOG(2) << "RASIKEv2_FLAGS_MOBIKESUPPORTED, ";
       if (lp_projection_info->ikev2.dwFlags & RASIKEv2_FLAGS_BEHIND_NAT)
-        wprintf(L"RASIKEv2_FLAGS_BEHIND_NAT, ");
+        VLOG(2) << "RASIKEv2_FLAGS_BEHIND_NAT, ";
       if (lp_projection_info->ikev2.dwFlags & RASIKEv2_FLAGS_SERVERBEHIND_NAT)
-        wprintf(L"RASIKEv2_FLAGS_SERVERBEHIND_NAT");
-      wprintf(L"\n\tdwEncryptionMethod=");
+        VLOG(2) << "RASIKEv2_FLAGS_SERVERBEHIND_NAT";
+      VLOG(2) << "\n\tdwEncryptionMethod=";
       // https://docs.microsoft.com/en-us/windows/win32/api/ipsectypes/ne-ipsectypes-ipsec_cipher_type
       if (lp_projection_info->ikev2.dwEncryptionMethod == IPSEC_CIPHER_TYPE_DES)
-        wprintf(L"IPSEC_CIPHER_TYPE_DES");
+        VLOG(2) << "IPSEC_CIPHER_TYPE_DES";
       else if (lp_projection_info->ikev2.dwEncryptionMethod ==
                IPSEC_CIPHER_TYPE_3DES)
-        wprintf(L"IPSEC_CIPHER_TYPE_3DES");
+        VLOG(2) << "IPSEC_CIPHER_TYPE_3DES";
       else if (lp_projection_info->ikev2.dwEncryptionMethod ==
                IPSEC_CIPHER_TYPE_AES_128)
-        wprintf(L"IPSEC_CIPHER_TYPE_AES_128");
+        VLOG(2) << "IPSEC_CIPHER_TYPE_AES_128";
       else if (lp_projection_info->ikev2.dwEncryptionMethod ==
                IPSEC_CIPHER_TYPE_AES_192)
-        wprintf(L"IPSEC_CIPHER_TYPE_AES_192");
+        VLOG(2) << "IPSEC_CIPHER_TYPE_AES_192";
       else if (lp_projection_info->ikev2.dwEncryptionMethod ==
                IPSEC_CIPHER_TYPE_AES_256)
-        wprintf(L"IPSEC_CIPHER_TYPE_AES_256");
+        VLOG(2) << "IPSEC_CIPHER_TYPE_AES_256";
       else
-        wprintf(L"unknown (%d)", lp_projection_info->ikev2.dwEncryptionMethod);
+        VLOG(2) << "unknown (" << lp_projection_info->ikev2.dwEncryptionMethod
+                << ")";
 
       // -
-      wprintf(L"\n\tnumIPv4ServerAddresses=%d",
-              lp_projection_info->ikev2.numIPv4ServerAddresses);
-      wprintf(L"\n\tipv4ServerAddresses=");
+      VLOG(2) << "\n\tnumIPv4ServerAddresses="
+              << lp_projection_info->ikev2.numIPv4ServerAddresses;
+      VLOG(2) << "\n\tipv4ServerAddresses=";
       for (DWORD j = 0; j < lp_projection_info->ikev2.numIPv4ServerAddresses;
            j++) {
-        printf("%s",
-               inet_ntoa(lp_projection_info->ikev2.ipv4ServerAddresses[j]));
+        VLOG(2) << inet_ntoa(lp_projection_info->ikev2.ipv4ServerAddresses[j]);
         if ((j + 1) < lp_projection_info->ikev2.numIPv4ServerAddresses)
-          wprintf(L", ");
+          VLOG(2) << ", ";
       }
-      wprintf(L"\n\tnumIPv6ServerAddresses=%d",
-              lp_projection_info->ikev2.numIPv6ServerAddresses);
+      VLOG(2) << "\n\tnumIPv6ServerAddresses="
+              << lp_projection_info->ikev2.numIPv6ServerAddresses;
     } else if (lp_projection_info->type == PROJECTION_INFO_TYPE_PPP) {
-      wprintf(L"\ttype=PROJECTION_INFO_TYPE_PPP");
+      VLOG(2) << "\ttype=PROJECTION_INFO_TYPE_PPP";
     }
 
     HeapFree(GetProcessHeap(), 0, lp_projection_info);
     lp_projection_info = NULL;
   } else {
-    wprintf(L"\tError calling RasGetProjectionInfoEx: ");
+    VLOG(2) << "\tError calling RasGetProjectionInfoEx: ";
     PrintRasError(dw_ret);
   }
 
@@ -180,13 +180,13 @@ int PrintConnections() {
 
     // If successful, print the names of the active connections.
     if (ERROR_SUCCESS == dw_ret) {
-      wprintf(L"The following RAS connections are currently active:\n");
+      VLOG(2) << "The following RAS connections are currently active:\n";
       for (DWORD i = 0; i < dw_connections; i++) {
-        wprintf(L"%s\n", lp_ras_conn[i].szEntryName);
+        VLOG(2) << lp_ras_conn[i].szEntryName;
         PrintConnectionDetails(lp_ras_conn[i].hrasconn);
       }
     }
-    wprintf(L"\n");
+    VLOG(2) << "\n";
     // Deallocate memory for the connection buffer
     HeapFree(GetProcessHeap(), 0, lp_ras_conn);
     lp_ras_conn = NULL;
@@ -196,9 +196,9 @@ int PrintConnections() {
   // There was either a problem with RAS or there are no connections to
   // enumerate
   if (dw_connections >= 1) {
-    wprintf(L"The operation failed to acquire the buffer size.\n\n");
+    VLOG(2) << "The operation failed to acquire the buffer size.\n\n";
   } else {
-    wprintf(L"There are no active RAS connections.\n\n");
+    VLOG(2) << "There are no active RAS connections.\n\n";
   }
 
   return 0;
@@ -220,7 +220,7 @@ int PrintDevices() {
     lp_ras_dev_info =
         (LPRASDEVINFO)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_cb);
     if (lp_ras_dev_info == NULL) {
-      wprintf(L"HeapAlloc failed!\n");
+      VLOG(2) << "HeapAlloc failed!\n";
       return 0;
     }
     // The first RASDEVINFO structure in the array must contain the structure
@@ -232,12 +232,11 @@ int PrintDevices() {
 
     // If successful, print the names of the RAS devices
     if (ERROR_SUCCESS == dw_ret) {
-      wprintf(L"The following RAS devices were found:\n");
+      VLOG(2) << "The following RAS devices were found:\n";
       for (DWORD i = 0; i < dw_devices; i++) {
-        wprintf(L"%s\n", lp_ras_dev_info[i].szDeviceName);
+        VLOG(2) << lp_ras_dev_info[i].szDeviceName;
       }
     }
-    wprintf(L"\n");
     // Deallocate memory for the connection buffer
     HeapFree(GetProcessHeap(), 0, lp_ras_dev_info);
     lp_ras_dev_info = NULL;
@@ -247,182 +246,182 @@ int PrintDevices() {
   // There was either a problem with RAS or there are no RAS devices to
   // enumerate
   if (dw_devices >= 1) {
-    wprintf(L"The operation failed to acquire the buffer size.\n\n");
+    VLOG(2) << "The operation failed to acquire the buffer size.\n\n";
   } else {
-    wprintf(L"There were no RAS devices found.\n\n");
+    VLOG(2) << "There were no RAS devices found.\n\n";
   }
 
   return 0;
 }
 
 void PrintOptions(DWORD options) {
-  wprintf(L"\tdwfOptions = {\n");
+  VLOG(2) << "\tdwfOptions = {\n";
   if (options & RASEO_UseCountryAndAreaCodes)
-    wprintf(L"\t\tRASEO_UseCountryAndAreaCodes\n");
+    VLOG(2) << "\t\tRASEO_UseCountryAndAreaCodes\n";
   if (options & RASEO_SpecificIpAddr)
-    wprintf(L"\t\tRASEO_SpecificIpAddr\n");
+    VLOG(2) << "\t\tRASEO_SpecificIpAddr\n";
   if (options & RASEO_SpecificNameServers)
-    wprintf(L"\t\tRASEO_SpecificNameServers\n");
+    VLOG(2) << "\t\tRASEO_SpecificNameServers\n";
   if (options & RASEO_IpHeaderCompression)
-    wprintf(L"\t\tRASEO_IpHeaderCompression\n");
+    VLOG(2) << "\t\tRASEO_IpHeaderCompression\n";
   if (options & RASEO_RemoteDefaultGateway)
-    wprintf(L"\t\tRASEO_RemoteDefaultGateway\n");
+    VLOG(2) << "\t\tRASEO_RemoteDefaultGateway\n";
   if (options & RASEO_DisableLcpExtensions)
-    wprintf(L"\t\tRASEO_DisableLcpExtensions\n");
+    VLOG(2) << "\t\tRASEO_DisableLcpExtensions\n";
   if (options & RASEO_TerminalBeforeDial)
-    wprintf(L"\t\tRASEO_TerminalBeforeDial\n");
+    VLOG(2) << "\t\tRASEO_TerminalBeforeDial\n";
   if (options & RASEO_TerminalAfterDial)
-    wprintf(L"\t\tRASEO_TerminalAfterDial\n");
+    VLOG(2) << "\t\tRASEO_TerminalAfterDial\n";
   if (options & RASEO_ModemLights)
-    wprintf(L"\t\tRASEO_ModemLights\n");
+    VLOG(2) << "\t\tRASEO_ModemLights\n";
   if (options & RASEO_SwCompression)
-    wprintf(L"\t\tRASEO_SwCompression\n");
+    VLOG(2) << "\t\tRASEO_SwCompression\n";
   if (options & RASEO_RequireEncryptedPw)
-    wprintf(L"\t\tRASEO_RequireEncryptedPw\n");
+    VLOG(2) << "\t\tRASEO_RequireEncryptedPw\n";
   if (options & RASEO_RequireMsEncryptedPw)
-    wprintf(L"\t\tRASEO_RequireMsEncryptedPw\n");
+    VLOG(2) << "\t\tRASEO_RequireMsEncryptedPw\n";
   if (options & RASEO_RequireDataEncryption)
-    wprintf(L"\t\tRASEO_RequireDataEncryption\n");
+    VLOG(2) << "\t\tRASEO_RequireDataEncryption\n";
   if (options & RASEO_NetworkLogon)
-    wprintf(L"\t\tRASEO_NetworkLogon\n");
+    VLOG(2) << "\t\tRASEO_NetworkLogon\n";
   if (options & RASEO_UseLogonCredentials)
-    wprintf(L"\t\tRASEO_UseLogonCredentials\n");
+    VLOG(2) << "\t\tRASEO_UseLogonCredentials\n";
   if (options & RASEO_PromoteAlternates)
-    wprintf(L"\t\tRASEO_PromoteAlternates\n");
+    VLOG(2) << "\t\tRASEO_PromoteAlternates\n";
 
 #if (WINVER >= 0x401)
   if (options & RASEO_SecureLocalFiles)
-    wprintf(L"\t\tRASEO_SecureLocalFiles\n");
+    VLOG(2) << "\t\tRASEO_SecureLocalFiles\n";
 #endif
 
 #if (WINVER >= 0x500)
   if (options & RASEO_RequireEAP)
-    wprintf(L"\t\tRASEO_RequireEAP\n");
+    VLOG(2) << "\t\tRASEO_RequireEAP\n";
   if (options & RASEO_RequirePAP)
-    wprintf(L"\t\tRASEO_RequirePAP\n");
+    VLOG(2) << "\t\tRASEO_RequirePAP\n";
   if (options & RASEO_RequireSPAP)
-    wprintf(L"\t\tRASEO_RequireSPAP\n");
+    VLOG(2) << "\t\tRASEO_RequireSPAP\n";
   if (options & RASEO_Custom)
-    wprintf(L"\t\tRASEO_Custom\n");
+    VLOG(2) << "\t\tRASEO_Custom\n";
 
   if (options & RASEO_PreviewPhoneNumber)
-    wprintf(L"\t\tRASEO_PreviewPhoneNumber\n");
+    VLOG(2) << "\t\tRASEO_PreviewPhoneNumber\n";
   if (options & RASEO_SharedPhoneNumbers)
-    wprintf(L"\t\tRASEO_SharedPhoneNumbers\n");
+    VLOG(2) << "\t\tRASEO_SharedPhoneNumbers\n";
   if (options & RASEO_PreviewUserPw)
-    wprintf(L"\t\tRASEO_PreviewUserPw\n");
+    VLOG(2) << "\t\tRASEO_PreviewUserPw\n";
   if (options & RASEO_PreviewDomain)
-    wprintf(L"\t\tRASEO_PreviewDomain\n");
+    VLOG(2) << "\t\tRASEO_PreviewDomain\n";
   if (options & RASEO_ShowDialingProgress)
-    wprintf(L"\t\tRASEO_ShowDialingProgress\n");
+    VLOG(2) << "\t\tRASEO_ShowDialingProgress\n";
   if (options & RASEO_RequireCHAP)
-    wprintf(L"\t\tRASEO_RequireCHAP\n");
+    VLOG(2) << "\t\tRASEO_RequireCHAP\n";
   if (options & RASEO_RequireMsCHAP)
-    wprintf(L"\t\tRASEO_RequireMsCHAP\n");
+    VLOG(2) << "\t\tRASEO_RequireMsCHAP\n";
   if (options & RASEO_RequireMsCHAP2)
-    wprintf(L"\t\tRASEO_RequireMsCHAP2\n");
+    VLOG(2) << "\t\tRASEO_RequireMsCHAP2\n";
   if (options & RASEO_RequireW95MSCHAP)
-    wprintf(L"\t\tRASEO_RequireW95MSCHAP\n");
+    VLOG(2) << "\t\tRASEO_RequireW95MSCHAP\n";
   if (options & RASEO_CustomScript)
-    wprintf(L"\t\tRASEO_CustomScript\n");
+    VLOG(2) << "\t\tRASEO_CustomScript\n";
 #endif
 
-  wprintf(L"\t};\n");
+  VLOG(2) << "\t};\n";
 }
 
 void PrintOptions2(DWORD options) {
-  wprintf(L"\tdwfOptions2 = {\n");
+  VLOG(2) << "\tdwfOptions2 = {\n";
 
 #if (WINVER >= 0x501)
   if (options & RASEO2_SecureFileAndPrint)
-    wprintf(L"\t\tRASEO2_SecureFileAndPrint\n");
+    VLOG(2) << "\t\tRASEO2_SecureFileAndPrint\n";
   if (options & RASEO2_SecureClientForMSNet)
-    wprintf(L"\t\tRASEO2_SecureClientForMSNet\n");
+    VLOG(2) << "\t\tRASEO2_SecureClientForMSNet\n";
   if (options & RASEO2_DontNegotiateMultilink)
-    wprintf(L"\t\tRASEO2_DontNegotiateMultilink\n");
+    VLOG(2) << "\t\tRASEO2_DontNegotiateMultilink\n";
   if (options & RASEO2_DontUseRasCredentials)
-    wprintf(L"\t\tRASEO2_DontUseRasCredentials\n");
+    VLOG(2) << "\t\tRASEO2_DontUseRasCredentials\n";
   if (options & RASEO2_UsePreSharedKey)
-    wprintf(L"\t\tRASEO2_UsePreSharedKey\n");
+    VLOG(2) << "\t\tRASEO2_UsePreSharedKey\n";
   if (options & RASEO2_Internet)
-    wprintf(L"\t\tRASEO2_Internet\n");
+    VLOG(2) << "\t\tRASEO2_Internet\n";
   if (options & RASEO2_DisableNbtOverIP)
-    wprintf(L"\t\tRASEO2_DisableNbtOverIP\n");
+    VLOG(2) << "\t\tRASEO2_DisableNbtOverIP\n";
   if (options & RASEO2_UseGlobalDeviceSettings)
-    wprintf(L"\t\tRASEO2_UseGlobalDeviceSettings\n");
+    VLOG(2) << "\t\tRASEO2_UseGlobalDeviceSettings\n";
   if (options & RASEO2_ReconnectIfDropped)
-    wprintf(L"\t\tRASEO2_ReconnectIfDropped\n");
+    VLOG(2) << "\t\tRASEO2_ReconnectIfDropped\n";
   if (options & RASEO2_SharePhoneNumbers)
-    wprintf(L"\t\tRASEO2_SharePhoneNumbers\n");
+    VLOG(2) << "\t\tRASEO2_SharePhoneNumbers\n";
 #endif
 
 #if (WINVER >= 0x600)
   if (options & RASEO2_SecureRoutingCompartment)
-    wprintf(L"\t\tRASEO2_SecureRoutingCompartment\n");
+    VLOG(2) << "\t\tRASEO2_SecureRoutingCompartment\n";
   if (options & RASEO2_UseTypicalSettings)
-    wprintf(L"\t\tRASEO2_UseTypicalSettings\n");
+    VLOG(2) << "\t\tRASEO2_UseTypicalSettings\n";
   if (options & RASEO2_IPv6SpecificNameServers)
-    wprintf(L"\t\tRASEO2_IPv6SpecificNameServers\n");
+    VLOG(2) << "\t\tRASEO2_IPv6SpecificNameServers\n";
   if (options & RASEO2_IPv6RemoteDefaultGateway)
-    wprintf(L"\t\tRASEO2_IPv6RemoteDefaultGateway\n");
+    VLOG(2) << "\t\tRASEO2_IPv6RemoteDefaultGateway\n";
   if (options & RASEO2_RegisterIpWithDNS)
-    wprintf(L"\t\tRASEO2_RegisterIpWithDNS\n");
+    VLOG(2) << "\t\tRASEO2_RegisterIpWithDNS\n";
   if (options & RASEO2_UseDNSSuffixForRegistration)
-    wprintf(L"\t\tRASEO2_UseDNSSuffixForRegistration\n");
+    VLOG(2) << "\t\tRASEO2_UseDNSSuffixForRegistration\n";
   if (options & RASEO2_IPv4ExplicitMetric)
-    wprintf(L"\t\tRASEO2_IPv4ExplicitMetric\n");
+    VLOG(2) << "\t\tRASEO2_IPv4ExplicitMetric\n";
   if (options & RASEO2_IPv6ExplicitMetric)
-    wprintf(L"\t\tRASEO2_IPv6ExplicitMetric\n");
+    VLOG(2) << "\t\tRASEO2_IPv6ExplicitMetric\n";
   if (options & RASEO2_DisableIKENameEkuCheck)
-    wprintf(L"\t\tRASEO2_DisableIKENameEkuCheck\n");
+    VLOG(2) << "\t\tRASEO2_DisableIKENameEkuCheck\n";
 #endif
 
 #if (WINVER >= 0x601)
   if (options & RASEO2_DisableClassBasedStaticRoute)
-    wprintf(L"\t\tRASEO2_DisableClassBasedStaticRoute\n");
+    VLOG(2) << "\t\tRASEO2_DisableClassBasedStaticRoute\n";
   if (options & RASEO2_SpecificIPv6Addr)
-    wprintf(L"\t\tRASEO2_SpecificIPv6Addr\n");
+    VLOG(2) << "\t\tRASEO2_SpecificIPv6Addr\n";
   if (options & RASEO2_DisableMobility)
-    wprintf(L"\t\tRASEO2_DisableMobility\n");
+    VLOG(2) << "\t\tRASEO2_DisableMobility\n";
   if (options & RASEO2_RequireMachineCertificates)
-    wprintf(L"\t\tRASEO2_RequireMachineCertificates\n");
+    VLOG(2) << "\t\tRASEO2_RequireMachineCertificates\n";
 #endif
 
 #if (WINVER >= 0x602)
   if (options & RASEO2_UsePreSharedKeyForIkev2Initiator)
-    wprintf(L"\t\tRASEO2_UsePreSharedKeyForIkev2Initiator\n");
+    VLOG(2) << "\t\tRASEO2_UsePreSharedKeyForIkev2Initiator\n";
   if (options & RASEO2_UsePreSharedKeyForIkev2Responder)
-    wprintf(L"\t\tRASEO2_UsePreSharedKeyForIkev2Responder\n");
+    VLOG(2) << "\t\tRASEO2_UsePreSharedKeyForIkev2Responder\n";
   if (options & RASEO2_CacheCredentials)
-    wprintf(L"\t\tRASEO2_CacheCredentials\n");
+    VLOG(2) << "\t\tRASEO2_CacheCredentials\n";
 #endif
 
 #if (WINVER >= 0x603)
   if (options & RASEO2_AutoTriggerCapable)
-    wprintf(L"\t\tRASEO2_AutoTriggerCapable\n");
+    VLOG(2) << "\t\tRASEO2_AutoTriggerCapable\n";
   if (options & RASEO2_IsThirdPartyProfile)
-    wprintf(L"\t\tRASEO2_IsThirdPartyProfile\n");
+    VLOG(2) << "\t\tRASEO2_IsThirdPartyProfile\n";
   if (options & RASEO2_AuthTypeIsOtp)
-    wprintf(L"\t\tRASEO2_AuthTypeIsOtp\n");
+    VLOG(2) << "\t\tRASEO2_AuthTypeIsOtp\n";
 #endif
 
 #if (WINVER >= 0x604)
   if (options & RASEO2_IsAlwaysOn)
-    wprintf(L"\t\tRASEO2_IsAlwaysOn\n");
+    VLOG(2) << "\t\tRASEO2_IsAlwaysOn\n";
   if (options & RASEO2_IsPrivateNetwork)
-    wprintf(L"\t\tRASEO2_IsPrivateNetwork\n");
+    VLOG(2) << "\t\tRASEO2_IsPrivateNetwork\n";
 #endif
 
 #if (WINVER >= 0xA00)
   if (options & RASEO2_PlumbIKEv2TSAsRoutes)
-    wprintf(L"\t\tRASEO2_PlumbIKEv2TSAsRoutes\n");
+    VLOG(2) << "\t\tRASEO2_PlumbIKEv2TSAsRoutes\n";
 #endif
 
-  wprintf(L"\t};");
+  VLOG(2) << "\t};";
 }
 
 void PrintPolicyValue(LPCTSTR entry_name) {
-  std::wstring phone_book_path = GetPhonebookPath();
+  std::wstring phone_book_path = GetPhonebookPath(entry_name);
   if (phone_book_path.empty())
     return;
 
@@ -432,25 +431,25 @@ void PrintPolicyValue(LPCTSTR entry_name) {
                               policy_value, 1024, phone_book_path.c_str());
 
   if (dw_ret != 0) {
-    wprintf(L"\n\n\tCustomIPSecPolicies=%s", policy_value);
+    VLOG(2) << "\n\n\tCustomIPSecPolicies=" << policy_value;
   }
 }
 
 void PrintBytes(LPCWSTR name, LPBYTE bytes, DWORD len) {
   bool next_is_newline = false;
   constexpr int bytes_per_line = 12;
-  wprintf(L"\n\t[%s: %d bytes]\n\t\t", name, len);
+  VLOG(2) << "\n\t[%s: %d bytes]\n\t\t" << name << "," << len;
   for (DWORD i = 0; i < len; i++) {
     if (i > 0 && !next_is_newline) {
-      wprintf(L", ");
+      VLOG(2) << ", ";
     }
-    wprintf(L"0x%02x", bytes[i]);
+    VLOG(2) << std::hex << bytes[i];
     next_is_newline = ((i + 1) % bytes_per_line) == 0;
     if (next_is_newline) {
-      wprintf(L"\n\t\t");
+      VLOG(2) << "\n\t\t";
     }
   }
-  wprintf(L"\n\t[/%s]", name);
+  VLOG(2) << "\n\t[/" << name << "]";
 }
 
 int PrintEntryDetails(LPCTSTR entry_name) {
@@ -466,7 +465,7 @@ int PrintEntryDetails(LPCTSTR entry_name) {
     lp_ras_entry =
         (LPRASENTRY)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dw_cb);
     if (lp_ras_entry == NULL) {
-      wprintf(L"HeapAlloc failed!\n");
+      VLOG(2) << "HeapAlloc failed!\n";
       return 0;
     }
 
@@ -477,7 +476,7 @@ int PrintEntryDetails(LPCTSTR entry_name) {
                                    &dw_cb, NULL, NULL);
     switch (dw_ret) {
       case ERROR_INVALID_SIZE:
-        wprintf(L"An incorrect structure size was detected.\n");
+        VLOG(2) << "An incorrect structure size was detected.\n";
         break;
     }
 
@@ -505,7 +504,7 @@ int PrintEntryDetails(LPCTSTR entry_name) {
       PrintBytes(L"CustomAuthData", custom_auth_data, dw_cb);
       HeapFree(GetProcessHeap(), 0, custom_auth_data);
     } else if (dw_cb > 0) {
-      wprintf(L"\n\tError calling RasGetCustomAuthData: ");
+      VLOG(2) << "\n\tError calling RasGetCustomAuthData: ";
       PrintRasError(dw_ret);
     }
 
@@ -529,12 +528,12 @@ int PrintEntryDetails(LPCTSTR entry_name) {
       PrintBytes(L"EapUserData", eap_user_data, dw_cb);
       HeapFree(GetProcessHeap(), 0, eap_user_data);
     } else if (dw_cb > 0) {
-      wprintf(L"\n\tError calling RasGetEapUserData: ");
+      VLOG(2) << "\n\tError calling RasGetEapUserData: ";
       PrintRasError(dw_ret);
     }
 
     // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgetsubentrypropertiesa
-    wprintf(L"\n\tdwSubEntries: %d", lp_ras_entry->dwSubEntries);
+    VLOG(2) << "\n\tdwSubEntries: " << lp_ras_entry->dwSubEntries;
     if (lp_ras_entry->dwSubEntries > 0) {
       for (DWORD i = 0; i < lp_ras_entry->dwSubEntries; i++) {
         LPRASSUBENTRY lp_ras_sub_entry = NULL;
@@ -554,24 +553,24 @@ int PrintEntryDetails(LPCTSTR entry_name) {
             }
             return dw_ret;
           }
-          wprintf(L"\n\t\tdwSize=%d", lp_ras_sub_entry->dwSize);
-          wprintf(L"\n\t\tdwfFlags=%d", lp_ras_sub_entry->dwfFlags);
-          wprintf(L"\n\t\tszDeviceType=%s", lp_ras_sub_entry->szDeviceType);
-          wprintf(L"\n\t\tszDeviceName=%s", lp_ras_sub_entry->szDeviceName);
-          wprintf(L"\n\t\tszLocalPhoneNumber=%s",
-                  lp_ras_sub_entry->szLocalPhoneNumber);
-          wprintf(L"\n\t\tdwAlternateOffset=%d",
-                  lp_ras_sub_entry->dwAlternateOffset);
+          VLOG(2) << "\n\t\tdwSize=" << lp_ras_sub_entry->dwSize;
+          VLOG(2) << "\n\t\tdwfFlags=" << lp_ras_sub_entry->dwfFlags;
+          VLOG(2) << "\n\t\tszDeviceType=" << lp_ras_sub_entry->szDeviceType;
+          VLOG(2) << "\n\t\tszDeviceName=" << lp_ras_sub_entry->szDeviceName;
+          VLOG(2) << "\n\t\tszLocalPhoneNumber="
+                  << lp_ras_sub_entry->szLocalPhoneNumber;
+          VLOG(2) << "\n\t\tdwAlternateOffset="
+                  << lp_ras_sub_entry->dwAlternateOffset;
           HeapFree(GetProcessHeap(), 0, lp_ras_sub_entry);
           lp_ras_sub_entry = NULL;
         } else {
-          wprintf(L"\n\tError calling RasGetSubEntryProperties: ");
+          VLOG(2) << "\n\tError calling RasGetSubEntryProperties: ";
           PrintRasError(dw_ret);
         }
       }
     }
     PrintPolicyValue(entry_name);
-    wprintf(L"\n");
+    VLOG(2) << "\n";
     // Deallocate memory for the entry buffer
     HeapFree(GetProcessHeap(), 0, lp_ras_entry);
     lp_ras_entry = NULL;
@@ -608,9 +607,9 @@ int PrintEntries() {
 
     // If successful, print the RAS entry names
     if (ERROR_SUCCESS == dw_ret) {
-      wprintf(L"The following RAS entry names were found:\n");
+      VLOG(2) << "The following RAS entry names were found:\n";
       for (DWORD i = 0; i < dw_entries; i++) {
-        wprintf(L"%s\n", lp_ras_entry_name[i].szEntryName);
+        VLOG(2) << lp_ras_entry_name[i].szEntryName;
         dw_ret = PrintEntryDetails(lp_ras_entry_name[i].szEntryName);
       }
     }
@@ -623,9 +622,9 @@ int PrintEntries() {
   // There was either a problem with RAS or there are RAS entry names to
   // enumerate
   if (dw_entries >= 1) {
-    wprintf(L"The operation failed to acquire the buffer size.\n\n");
+    VLOG(2) << "The operation failed to acquire the buffer size.\n\n";
   } else {
-    wprintf(L"There were no RAS entry names found:.\n\n");
+    VLOG(2) << "There were no RAS entry names found:.\n\n";
   }
 
   return dw_ret;
@@ -665,11 +664,11 @@ void Demo() {
   copy_dword_bytes(&custom_ipsec_policies[20], policy.dwPfsGroup);
 
   // characters are either written in 02d or 02x format
-  wprintf(L"\nDEMO:\n");
+  VLOG(2) << "\nDEMO:\n";
   for (DWORD i = 0; i < 24; i++) {
-    wprintf(L"%02d", custom_ipsec_policies[i]);
+    VLOG(2) << custom_ipsec_policies[i];
   }
-  wprintf(L"\n");
+  VLOG(2) << "\n";
 }
 
 // Test program for create/remove Windows VPN entry.
@@ -699,9 +698,9 @@ int main(int argc, char* argv[]) {
     }
 
     if (CheckConnection(vpn_name) == CheckConnectionResult::CONNECTED) {
-      wprintf(L"\tFound %s connection", vpn_name.c_str());
+      VLOG(2) << "\tFound " << vpn_name << " connection";
     } else {
-      wprintf(L"\tNot found %s connection", vpn_name.c_str());
+      VLOG(2) << "\tNot found " << vpn_name << " connection";
     }
   }
 

@@ -15,8 +15,8 @@ source_set("android") {
 
   deps = [
     "//base",
-    "//brave/components/brave_vpn",
     "//brave/components/brave_vpn/buildflags",
+    "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/mojom",
     "//brave/components/skus/renderer",
     "//content/public/renderer",

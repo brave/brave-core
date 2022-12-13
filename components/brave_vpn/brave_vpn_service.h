@@ -6,15 +6,20 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_SERVICE_H_
 
+#include <memory>
 #include <string>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/scoped_observation.h"
 #include "base/sequence_checker.h"
+#include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/brave_vpn/api/brave_vpn_api_request.h"
+#include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
@@ -29,14 +34,7 @@
 #include "url/gurl.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include <memory>
-#include <vector>
-
-#include "base/scoped_observation.h"
-#include "base/timer/timer.h"
-#include "brave/components/brave_vpn/brave_vpn_connection_info.h"
-#include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
-#include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/connection/brave_vpn_os_connection_api.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace network {
@@ -197,9 +195,7 @@ class BraveVpnService :
 
   BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI() const;
 
-  void set_mock_brave_vpn_connection_api(BraveVPNOSConnectionAPI* api) {
-    mock_connection_api_ = api;
-  }
+  void SetMockBraveVpnConnectionApi(BraveVPNOSConnectionAPI* api);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   // KeyedService overrides:
@@ -236,7 +232,6 @@ class BraveVpnService :
 
   // Only for testing.
   std::string test_timezone_;
-  bool is_simulation_ = false;
   raw_ptr<BraveVPNOSConnectionAPI> mock_connection_api_ = nullptr;
 
   PrefChangeRegistrar pref_change_registrar_;

@@ -1,6 +1,7 @@
-# Copyright 2019 The Chromium Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//build/config/android/rules.gni")
 
@@ -37,7 +38,7 @@ java_cpp_strings("java_pref_names_srcjar") {
     "//brave/components/brave_adaptive_captcha/pref_names.cc",
     "//brave/components/brave_rewards/common/pref_names.cc",
     "//brave/components/brave_shields/common/pref_names.cc",
-    "//brave/components/brave_vpn/pref_names.cc",
+    "//brave/components/brave_vpn/common/pref_names.cc",
     "//brave/components/constants/pref_names.cc",
     "//brave/components/de_amp/common/pref_names.cc",
     "//brave/components/debounce/common/pref_names.cc",

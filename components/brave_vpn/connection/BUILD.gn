@@ -1,0 +1,65 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
+
+assert(enable_brave_vpn)
+
+source_set("api") {
+  sources = [ "brave_vpn_os_connection_api.h" ]
+  deps = [ "//brave/components/brave_vpn/mojom" ]
+}
+
+group("connection") {
+  deps = [
+    ":api",
+    ":common",
+  ]
+  if (is_win) {
+    deps += [ "win" ]
+  }
+
+  if (is_mac) {
+    deps += [ "mac" ]
+  }
+}
+
+source_set("common") {
+  sources = [
+    "brave_vpn_connection_info.cc",
+    "brave_vpn_connection_info.h",
+    "brave_vpn_os_connection_api_base.cc",
+    "brave_vpn_os_connection_api_base.h",
+  ]
+  deps = [
+    ":api",
+    "//brave/components/api_request_helper",
+    "//brave/components/brave_vpn/api",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/mojom",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common:mojom",
+    "//build:buildflag_header_h",
+    "//components/prefs",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+}
+
+source_set("sim") {
+  testonly = true
+  sources = [
+    "brave_vpn_os_connection_api_sim.cc",
+    "brave_vpn_os_connection_api_sim.h",
+  ]
+
+  deps = [
+    ":api",
+    ":common",
+    "//base",
+    "//brave/components/brave_vpn/common",
+    "//third_party/icu",
+  ]
+}

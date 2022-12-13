@@ -13,11 +13,10 @@
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
-#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_service_helper.h"
+#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
-#include "brave/components/brave_vpn/api/vpn_response_parser.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
@@ -35,7 +34,7 @@
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_vpn/switches.h"
+#include "brave/components/brave_vpn/api/brave_vpn_api_helper.h"
 #include "brave/components/version_info/version_info.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/version_info/version_info.h"
@@ -59,11 +58,9 @@ BraveVpnService::BraveVpnService(
       api_request_(url_loader_factory) {
   DCHECK(IsBraveVPNEnabled());
 #if !BUILDFLAG(IS_ANDROID)
-  auto* cmd = base::CommandLine::ForCurrentProcess();
-  is_simulation_ = cmd->HasSwitch(switches::kBraveVPNSimulation);
   observed_.Observe(GetBraveVPNConnectionAPI());
 
-  GetBraveVPNConnectionAPI()->set_target_vpn_entry_name(kBraveVPNEntryName);
+  GetBraveVPNConnectionAPI()->SetTargetVpnEntryName(kBraveVPNEntryName);
 
   pref_change_registrar_.Init(local_prefs_);
   pref_change_registrar_.Add(
@@ -161,7 +158,7 @@ void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
 
 mojom::ConnectionState BraveVpnService::GetConnectionState() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return GetBraveVPNConnectionAPI()->connection_state();
+  return GetBraveVPNConnectionAPI()->GetConnectionState();
 }
 
 bool BraveVpnService::IsConnected() const {
@@ -194,7 +191,7 @@ void BraveVpnService::ToggleConnection() {
 
 void BraveVpnService::GetConnectionState(GetConnectionStateCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  const auto state = GetBraveVPNConnectionAPI()->connection_state();
+  const auto state = GetBraveVPNConnectionAPI()->GetConnectionState();
   VLOG(2) << __func__ << " : " << state;
   std::move(callback).Run(state);
 }
@@ -488,8 +485,6 @@ BraveVPNOSConnectionAPI* BraveVpnService::GetBraveVPNConnectionAPI() const {
     return mock_connection_api_;
   }
 
-  if (is_simulation_)
-    return BraveVPNOSConnectionAPI::GetInstanceForTest();
   return BraveVPNOSConnectionAPI::GetInstance();
 }
 
@@ -511,6 +506,19 @@ void BraveVpnService::OnPreferenceChanged(const std::string& pref_name) {
     return;
   }
 }
+
+void BraveVpnService::SetMockBraveVpnConnectionApi(
+    BraveVPNOSConnectionAPI* api) {
+  if (observed_.IsObserving()) {
+    observed_.Reset();
+  }
+  mock_connection_api_ = api;
+  if (mock_connection_api_) {
+    observed_.Observe(mock_connection_api_);
+    mock_connection_api_->SetLocalPrefs(local_prefs_);
+  }
+}
+
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(IS_ANDROID)

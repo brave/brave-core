@@ -17,7 +17,7 @@ source_set("browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   deps = [
-    "//brave/components/brave_vpn",
+    "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/renderer/android",
     "//brave/components/skus/common",
     "//chrome/common",

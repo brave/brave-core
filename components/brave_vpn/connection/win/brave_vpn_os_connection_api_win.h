@@ -1,10 +1,10 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_WIN_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_WIN_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_CONNECTION_WIN_BRAVE_VPN_OS_CONNECTION_API_WIN_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_CONNECTION_WIN_BRAVE_VPN_OS_CONNECTION_API_WIN_H_
 
 #include <string>
 
@@ -12,14 +12,15 @@
 #include "base/no_destructor.h"
 #include "base/win/object_watcher.h"
 #include "base/win/windows_types.h"
-#include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/connection/brave_vpn_connection_info.h"
+#include "brave/components/brave_vpn/connection/brave_vpn_os_connection_api_base.h"
 
 namespace brave_vpn {
 namespace internal {
 enum class CheckConnectionResult;
 }  // namespace internal
 
-class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPI,
+class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPIBase,
                                    public base::win::ObjectWatcher::Delegate {
  public:
   BraveVPNOSConnectionAPIWin(const BraveVPNOSConnectionAPIWin&) = delete;
@@ -33,7 +34,7 @@ class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPI,
   ~BraveVPNOSConnectionAPIWin() override;
 
  private:
-  // BraveVPNOSConnectionAPI overrides:
+  // BraveVPNOSConnectionAPIBase interfaces:
   void CreateVPNConnectionImpl(const BraveVPNConnectionInfo& info) override;
   void RemoveVPNConnectionImpl(const std::string& name) override;
   void ConnectImpl(const std::string& name) override;
@@ -59,4 +60,4 @@ class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPI,
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_OS_CONNECTION_API_WIN_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_CONNECTION_WIN_BRAVE_VPN_OS_CONNECTION_API_WIN_H_
