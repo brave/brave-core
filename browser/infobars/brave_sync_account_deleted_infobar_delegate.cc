@@ -1,13 +1,14 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h"
 
 #include <memory>
 #include <utility>
 
+#include "base/memory/ptr_util.h"
 #include "brave/browser/ui/views/infobars/brave_sync_account_deleted_infobar.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -50,7 +51,7 @@ void BraveSyncAccountDeletedInfoBarDelegate::Create(
   // Create custom confirm infobar
   std::unique_ptr<infobars::InfoBar> infobar(
       std::make_unique<BraveSyncAccountDeletedInfoBar>(
-          std::unique_ptr<ConfirmInfoBarDelegate>(
+          base::WrapUnique<ConfirmInfoBarDelegate>(
               new BraveSyncAccountDeletedInfoBarDelegate(browser, profile))));
 
   // Show infobar

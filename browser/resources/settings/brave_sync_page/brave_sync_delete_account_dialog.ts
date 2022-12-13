@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import '../settings_shared.css.js';
 
@@ -17,9 +17,9 @@ import {getTemplate} from './brave_sync_delete_account_dialog.html.js'
 
 /**
  * @fileoverview
- * 'settings-brave-sync-delete-account-dialog' contains the dialog for displaying a
- * warning message and confirm further action or cancel. It is used for
- * confirmation of permanently delete account.
+ * 'settings-brave-sync-delete-account-dialog' contains the dialog for
+ * displaying a warning message and confirm further action or cancel.
+ * It is used for confirmation of permanently delete account.
  */
 
 const SettingsBraveSyncDeleteAccountDialogElementBase =
@@ -27,7 +27,8 @@ const SettingsBraveSyncDeleteAccountDialogElementBase =
     new(): PolymerElement & I18nMixinInterface
   }
 
-export class SettingsBraveSyncCodeDialogElement extends SettingsBraveSyncDeleteAccountDialogElementBase {
+export class SettingsBraveSyncCodeDialogElement
+             extends SettingsBraveSyncDeleteAccountDialogElementBase {
   static get is() {
     return 'settings-brave-sync-delete-account-dialog'
   }
@@ -56,8 +57,8 @@ export class SettingsBraveSyncCodeDialogElement extends SettingsBraveSyncDeleteA
       },
 
       /**
-       * Flag indicating that right now delete account was sent, but response not
-       * yet received. Used to hide controls.
+       * Flag indicating that right now delete account was sent, but response
+       * is not yet received. Used to hide controls.
        */
       deleteIsInProgress: {
         type: Boolean,
@@ -71,7 +72,8 @@ export class SettingsBraveSyncCodeDialogElement extends SettingsBraveSyncDeleteA
   private deleteIsInProgress: boolean;
   private doingDeleteAccount: boolean;
 
-  syncBrowserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();
+  syncBrowserProxy_: BraveSyncBrowserProxy =
+                                            BraveSyncBrowserProxy.getInstance();
 
   async handleDeleteAccount_() {
     let error_text = ''
