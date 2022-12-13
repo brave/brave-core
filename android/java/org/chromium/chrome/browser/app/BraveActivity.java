@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.app;
 
+import static org.chromium.chrome.browser.app.domain.NetworkSelectorModel.Mode.DEFAULT_WALLET_NETWORK;
+import static org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity.NETWORK_SELECTOR_MODE;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
@@ -92,6 +94,7 @@ import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import org.chromium.chrome.browser.DormantUsersEngagementDialogFragment;
 import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
+import org.chromium.chrome.browser.app.domain.NetworkSelectorModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
@@ -1227,8 +1230,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     // should only be called if the wallet is setup and unlocked
     public void openNetworkSelection() {
+        openNetworkSelection(DEFAULT_WALLET_NETWORK);
+    }
+
+    // should only be called if the wallet is setup and unlocked
+    public void openNetworkSelection(NetworkSelectorModel.Mode mode) {
         Intent braveNetworkSelectionIntent = new Intent(this, NetworkSelectorActivity.class);
         braveNetworkSelectionIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        // Either in global or local network selection mode
+        braveNetworkSelectionIntent.putExtra(NETWORK_SELECTOR_MODE, mode);
         startActivity(braveNetworkSelectionIntent);
     }
 
