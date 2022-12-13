@@ -18,8 +18,12 @@ constexpr char kBraveVPNRegionList[] = "brave.brave_vpn.region_list";
 constexpr char kBraveVPNDeviceRegion[] = "brave.brave_vpn.device_region_name";
 constexpr char kBraveVPNSelectedRegion[] =
     "brave.brave_vpn.selected_region_name";
-constexpr char kBraveVPNShowDNSPolicyWarningDialog[] =
+#if BUILDFLAG(IS_WIN)
+constexpr char kBraveVpnShowDNSPolicyWarningDialog[] =
     "brave.brave_vpn.show_dns_policy_warning_dialog";
+constexpr char kBraveVPNShowNotificationDialog[] =
+    "brave.brave_vpn.show_notification_dialog";
+#endif  // BUILDFLAG(IS_WIN)
 constexpr char kBraveVPNEnvironment[] = "brave.brave_vpn.env";
 // Dict that has subscriber credential its expiration date.
 constexpr char kBraveVPNSubscriberCredential[] =
@@ -36,7 +40,6 @@ constexpr char kBraveVPNLastUseTime[] = "brave.brave_vpn.last_use_time";
 constexpr char kBraveVPNUsedSecondDay[] = "brave.brave_vpn.used_second_day";
 constexpr char kBraveVPNDaysInMonthUsed[] =
     "brave.brave_vpn.days_in_month_used";
-
 }  // namespace prefs
 
 }  // namespace brave_vpn

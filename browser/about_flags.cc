@@ -229,7 +229,12 @@ constexpr char kBraveSyncDescription[] =
 
 constexpr char kBraveVPNName[] = "Enable experimental Brave VPN";
 constexpr char kBraveVPNDescription[] = "Experimental native VPN support";
-
+#if BUILDFLAG(IS_WIN)
+constexpr char kBraveVPNDnsProtectionName[] = "Enable DoH for Brave VPN";
+constexpr char kBraveVPNDnsProtectionDescription[] =
+    "Override DoH settings with Cloudflare dns if necessary to avoid leaking "
+    "requests due to Smart Multi-Home Named Resolution";
+#endif
 constexpr char kBraveSkusSdkName[] = "Enable experimental SKU SDK";
 constexpr char kBraveSkusSdkDescription[] = "Experimental SKU SDK support";
 
@@ -422,8 +427,19 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
      flag_descriptions::kBraveVPNDescription,             \
      kOsMac | kOsWin,                                     \
      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPN)},
+#if BUILDFLAG(IS_WIN)
+#define BRAVE_VPN_DNS_FEATURE_ENTRIES                                  \
+    {kBraveVPNDnsFeatureInternalName,                                  \
+     flag_descriptions::kBraveVPNDnsProtectionName,                    \
+     flag_descriptions::kBraveVPNDnsProtectionDescription,             \
+     kOsWin,                                                           \
+     FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNDnsProtection)},
+#else
+#define BRAVE_VPN_DNS_FEATURE_ENTRIES
+#endif
 #else
 #define BRAVE_VPN_FEATURE_ENTRIES
+#define BRAVE_VPN_DNS_FEATURE_ENTRIES
 #endif
 
 #define BRAVE_SKU_SDK_FEATURE_ENTRIES                   \
@@ -734,6 +750,7 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
     CRYPTO_WALLETS_FEATURE_ENTRIES                                          \
     BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                    \
     BRAVE_VPN_FEATURE_ENTRIES                                               \
+    BRAVE_VPN_DNS_FEATURE_ENTRIES                                           \
     BRAVE_SKU_SDK_FEATURE_ENTRIES                                           \
     SPEEDREADER_FEATURE_ENTRIES                                             \
     BRAVE_TRANSLATE_GO_FEATURE_ENTRIES                                      \

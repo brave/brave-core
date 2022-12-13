@@ -25,6 +25,11 @@ BASE_FEATURE(kBraveVPNLinkSubscriptionAndroidUI,
              "BraveVPNLinkSubscriptionAndroidUI",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+#if BUILDFLAG(IS_WIN)
+BASE_FEATURE(kBraveVPNDnsProtection,
+             "BraveVPNDnsProtection",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+#endif
 }  // namespace features
 
 }  // namespace brave_vpn
