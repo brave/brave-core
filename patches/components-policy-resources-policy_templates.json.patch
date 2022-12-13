@@ -1,0 +1,10 @@
+diff --git a/components/policy/resources/policy_templates.json b/components/policy/resources/policy_templates.json
+index 5238b76ba5466b3015157bc33e4efe13a2213418..382aeede0591a604f48d85cac70389ce38cf619d 100644
+--- a/components/policy/resources/policy_templates.json
++++ b/components/policy/resources/policy_templates.json
+@@ -1,4 +1,4 @@
+-{
++__import__('policy_source_helper').BravePolicies() + {
+ # policy_templates.json - Metafile for policy templates
+ #
+ # The content of this file is evaluated as a Python expression.

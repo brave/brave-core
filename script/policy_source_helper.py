@@ -9,7 +9,35 @@
 CHROMIUM_POLICY_KEY = 'SOFTWARE\\\\Policies\\\\BraveSoftware\\\\Brave'
 
 
-def AddBravePolicies(template_file_contents):
+class BravePolicies:  # pylint: disable=too-few-public-methods
+    """
+    We want to add Brave-specific values to policy_templates.json. Doing so in
+    policy_templates.json would produce a very large diff. This class implements
+    a trick that allows us to do it with a single-line change.
+
+    policy_templates.json is Python code that evaluates to a dictionary. It has
+    the form:
+
+        {
+        ...
+        }
+
+    We change it to:
+
+        BravePolicies() + {
+        ...
+        }
+
+    This invokes __add__(...) below. There, we can add our own values and return
+    the new dicitonary.
+    """
+
+    def __add__(self, policy_templates_dict):
+        _add_brave_policies(policy_templates_dict)
+        return policy_templates_dict
+
+
+def _add_brave_policies(template_file_contents):
     highest_id = template_file_contents['highest_id_currently_used']
     policies = [
         {
