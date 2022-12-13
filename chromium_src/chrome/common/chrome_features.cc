@@ -22,6 +22,9 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kTrustSafetySentimentSurvey, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTrustSafetySentimentSurveyV2, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
+#if BUILDFLAG(IS_MAC)
+    {kUseChromiumUpdater, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif
     // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated
     // on this feature.
     {kWebUIDarkMode, base::FEATURE_ENABLED_BY_DEFAULT},

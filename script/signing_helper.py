@@ -11,6 +11,7 @@ import signing.signing  # pylint: disable=import-error, wrong-import-position, u
 import signing.model    # pylint: disable=import-error, reimported, wrong-import-position, unused-import
 import collections
 import os
+import re
 import subprocess
 import sys
 
@@ -80,7 +81,7 @@ def GenerateBraveWidevineSigFile(paths, config, part):
         assert file_exists(sig_target_file), 'No sig file'
 
 
-def AddBravePartsForSigning(parts, config):
+def BraveModifyPartsForSigning(parts, config):
     """ Inserts Brave specific parts that need to be signed """
     parts = collections.OrderedDict(parts)
     from signing.model import CodeSignedProduct, VerifyOptions, CodeSignOptions  # pylint: disable=import-error
@@ -125,6 +126,17 @@ def AddBravePartsForSigning(parts, config):
     parts['helper-app'].options = (CodeSignOptions.RESTRICT
                                    | CodeSignOptions.KILL
                                    | CodeSignOptions.HARDENED_RUNTIME)
+
+    # Change privileged helper entry with hardcoded org.chromium.Chromium brand
+    # since we don't override branding file for it yet and we don't use it.
+    parts['privileged-helper'].path = re.sub(
+        r'com.brave.Browser(.*).UpdaterPrivilegedHelper',
+        'org.chromium.Chromium.UpdaterPrivilegedHelper',
+        parts['privileged-helper'].path, flags=re.VERBOSE)
+    parts['privileged-helper'].identifier = re.sub(
+        r'com.brave.Browser(.*).UpdaterPrivilegedHelper',
+        'org.chromium.Chromium.UpdaterPrivilegedHelper',
+        parts['privileged-helper'].identifier)
 
     return parts
 

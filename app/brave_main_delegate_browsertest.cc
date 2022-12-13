@@ -144,6 +144,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kTrustSafetySentimentSurvey,
     &features::kTrustSafetySentimentSurveyV2,
 #endif
+#if BUILDFLAG(IS_MAC)
+    &features::kUseChromiumUpdater,
+#endif
     &features::kWebOTP,
     &history_clusters::features::kOnDeviceClustering,
     &history_clusters::internal::kHistoryClustersInternalsPage,
