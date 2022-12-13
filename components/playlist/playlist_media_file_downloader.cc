@@ -66,6 +66,11 @@ PlaylistMediaFileDownloader::~PlaylistMediaFileDownloader() {
   ResetDownloadStatus();
 
   if (download_manager_) {
+    for (auto& download : download_manager_->TakeInProgressDownloads()) {
+      DCHECK(download_item_observation_.IsObservingSource(download.get()));
+      download_items_to_be_detached_.push_back(std::move(download));
+    }
+
     while (!download_items_to_be_detached_.empty()) {
       DetachCachedFile(download_items_to_be_detached_.front().get());
     }
