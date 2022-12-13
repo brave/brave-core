@@ -1540,8 +1540,14 @@ public class BraveRewardsPanel
             countryList.add(mActivity.getResources().getString(R.string.select_your_country_title));
             countryList.addAll(sortedCountryMap.keySet());
             String[] countryArray = countryList.toArray(new String[countryList.size()]);
-            Spinner countrySpinner =
-                    mBraveRewardsOnboardingModalView.findViewById(R.id.country_spinner);
+            Spinner countrySpinner;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                countrySpinner =
+                        mBraveRewardsOnboardingModalView.findViewById(R.id.country_spinner);
+            } else {
+                countrySpinner = mBraveRewardsOnboardingModalView.findViewById(
+                        R.id.country_spinner_low_device);
+            }
             countrySpinner.setVisibility(View.VISIBLE);
             ArrayAdapter countryArrayAdapter =
                     new ArrayAdapter(mActivity, android.R.layout.simple_spinner_item, countryArray);
