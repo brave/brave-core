@@ -5,14 +5,16 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import { useSelector } from 'react-redux'
+
+// Selectors
+import { useSafeWalletSelector, useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../../../common/selectors'
 
 // Types
 import {
   BraveWallet,
   UserAssetInfoType,
-  WalletRoutes,
-  WalletState
+  WalletRoutes
 } from '../../../../../../constants/types'
 import { RenderTokenFunc } from './virtualized-tokens-list'
 
@@ -26,6 +28,7 @@ import NetworkFilterSelector from '../../../../network-filter-selector/index'
 import { AccountFilterSelector } from '../../../../account-filter-selector/account-filter-selector'
 import { AssetFilterSelector } from '../../../../asset-filter-selector/asset-filter-selector'
 import { NFTGridView } from '../nft-grid-view/nft-grid-view'
+import { PortfolioAssetItemLoadingSkeleton } from '../../../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
 
 // Hooks
 import usePricing from '../../../../../../common/hooks/pricing'
@@ -66,9 +69,12 @@ export const TokenLists = ({
   // routing
   const history = useHistory()
 
-  // redux
-  const tokenSpotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
-  const selectedAssetFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAssetFilter)
+  // unsafe selectors
+  const tokenSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
+  const selectedAssetFilter = useUnsafeWalletSelector(WalletSelectors.selectedAssetFilter)
+
+  // safe selectors
+  const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
 
   // hooks
   const { computeFiatAmount } = usePricing(tokenSpotPrices)
@@ -156,6 +162,9 @@ export const TokenLists = ({
               {nonFungibleTokens.map((token, index) => renderToken({ index, item: token, viewMode: 'list' }))}
             </>
           }
+          {!assetAutoDiscoveryCompleted &&
+            <PortfolioAssetItemLoadingSkeleton />
+          }
         </>
       ) : (
         <NFTGridView
@@ -167,7 +176,8 @@ export const TokenLists = ({
     selectedAssetFilter.id,
     sortedFungibleTokensList,
     renderToken,
-    nonFungibleTokens
+    nonFungibleTokens,
+    assetAutoDiscoveryCompleted
   ])
 
   // effects

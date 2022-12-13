@@ -122,7 +122,7 @@ export class WalletApiProxy {
         store.dispatch(WalletActions.getAllNetworks())
       },
       onDiscoverAssetsCompleted: function (discoveredAssets) {
-        // TODO: Handle this event.
+        store.dispatch(WalletActions.setAssetAutoDiscoveryCompleted(discoveredAssets))
       }
     })
     this.braveWalletService.addObserver(braveWalletServiceObserverReceiver.$.bindNewPipeAndPassRemote())

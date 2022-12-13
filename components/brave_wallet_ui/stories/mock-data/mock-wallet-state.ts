@@ -396,5 +396,6 @@ export const mockWalletState: WalletState = {
   selectedCurrency: mockCurrency,
   passwordAttempts: 0,
   isLoadingCoinMarketData: false,
-  coinMarketData: mockCoinMarketData
+  coinMarketData: mockCoinMarketData,
+  assetAutoDiscoveryCompleted: false
 }
