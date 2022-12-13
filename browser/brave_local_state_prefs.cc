@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_local_state_prefs.h"
 
+#include <string>
+
 #include "base/values.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/metrics/buildflags/buildflags.h"
@@ -126,6 +128,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_vpn::RegisterLocalStatePrefs(registry);
   skus::RegisterLocalStatePrefs(registry);
 #endif
+
+  registry->RegisterStringPref(::prefs::kBraveVpnDnsConfig, std::string());
 
   ntp_background_images::NTPP3AHelperImpl::RegisterLocalStatePrefs(registry);
 
