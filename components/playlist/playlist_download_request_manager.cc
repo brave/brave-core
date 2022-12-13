@@ -150,7 +150,7 @@ void PlaylistDownloadRequestManager::DidFinishLoad(
 }
 
 void PlaylistDownloadRequestManager::GetMedia(content::WebContents* contents) {
-  VLOG(2) << __func__;
+  DVLOG(2) << __func__;
   DCHECK(contents && contents->GetPrimaryMainFrame());
 
   contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
@@ -163,7 +163,7 @@ void PlaylistDownloadRequestManager::GetMedia(content::WebContents* contents) {
 void PlaylistDownloadRequestManager::OnGetMedia(
     base::WeakPtr<content::WebContents> contents,
     base::Value value) {
-  VLOG(2) << __func__;
+  DVLOG(2) << __func__;
   ProcessFoundMedia(contents, std::move(value));
   FetchPendingRequest();
 }
@@ -199,7 +199,7 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
   Observe(nullptr);
 
   if (value.is_dict() && value.GetDict().empty()) {
-    VLOG(2) << "No media was detected";
+    DVLOG(2) << "No media was detected";
     return;
   }
 

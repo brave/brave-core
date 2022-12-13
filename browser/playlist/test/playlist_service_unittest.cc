@@ -247,9 +247,8 @@ TEST_F(PlaylistServiceUnitTest, CreatePlaylistItem) {
     expected_arg.change_type = PlaylistChangeParams::Type::kItemCached;
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .WillOnce(on_event);
-    EXPECT_CALL(observer,
-                OnMediaFileDownloadProgressed(
-                    testing::_, testing::_, testing::_, testing::_, testing::_))
+    using testing::_;
+    EXPECT_CALL(observer, OnMediaFileDownloadProgressed(_, _, _, _, _))
         .Times(testing::AtLeast(1));
 
     service->AddObserver(&observer);

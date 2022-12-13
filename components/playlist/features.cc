@@ -5,14 +5,17 @@
 
 #include "brave/components/playlist/features.h"
 
+#include "base/dcheck_is_on.h"
 #include "base/feature_list.h"
 
 namespace playlist::features {
 
-#ifndef NDEBUG
-BASE_FEATURE(kPlaylist, "Playlist", base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kPlaylist,
+             "Playlist",
+#if DCHECK_IS_ON()
+             base::FEATURE_ENABLED_BY_DEFAULT);
 #else
-BASE_FEATURE(kPlaylist, "Playlist", base::FEATURE_DISABLED_BY_DEFAULT);
-#endif  // NDEBUG
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif  // DCHECK_IS_ON()
 
 }  // namespace playlist::features

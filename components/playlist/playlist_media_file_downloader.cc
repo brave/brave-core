@@ -133,7 +133,7 @@ void PlaylistMediaFileDownloader::DownloadMediaFileForPlaylistItem(
   ResetDownloadStatus();
 
   if (item.media_file_cached) {
-    VLOG(2) << __func__ << ": media file is already downloaded";
+    DVLOG(2) << __func__ << ": media file is already downloaded";
     NotifySucceed(current_item_->id, current_item_->media_file_path);
     return;
   }
@@ -162,14 +162,14 @@ void PlaylistMediaFileDownloader::DownloadMediaFileForPlaylistItem(
     playlist_dir_path_ = base_dir.AppendASCII(current_item_->id);
     DownloadMediaFile(media_url);
   } else {
-    VLOG(2) << __func__ << ": media file is empty";
+    DVLOG(2) << __func__ << ": media file is empty";
     NotifyFail(current_item_->id);
   }
 }
 
 void PlaylistMediaFileDownloader::OnDownloadCreated(
     download::DownloadItem* item) {
-  VLOG(2) << __func__;
+  DVLOG(2) << __func__;
   DCHECK(current_item_) << "This shouldn't happen as we unobserve the manager "
                            "when a process for an item is done";
   DCHECK_EQ(item->GetGuid(), current_item_->id);
@@ -215,7 +215,7 @@ void PlaylistMediaFileDownloader::OnDownloadRemoved(
 }
 
 void PlaylistMediaFileDownloader::DownloadMediaFile(const GURL& url) {
-  VLOG(2) << __func__ << ": " << url.spec();
+  DVLOG(2) << __func__ << ": " << url.spec();
 
   const base::FilePath file_path = playlist_dir_path_.Append(media_file_name_);
   auto params = std::make_unique<download::DownloadUrlParameters>(
@@ -229,7 +229,7 @@ void PlaylistMediaFileDownloader::DownloadMediaFile(const GURL& url) {
 }
 
 void PlaylistMediaFileDownloader::OnMediaFileDownloaded(base::FilePath path) {
-  VLOG(2) << __func__ << ": downloaded media file at " << path;
+  DVLOG(2) << __func__ << ": downloaded media file at " << path;
 
   DCHECK(current_item_);
 
