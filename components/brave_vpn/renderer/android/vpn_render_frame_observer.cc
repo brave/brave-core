@@ -12,7 +12,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/skus/renderer/skus_utils.h"
 #include "build/build_config.h"

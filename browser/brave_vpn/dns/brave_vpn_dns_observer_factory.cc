@@ -11,9 +11,9 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service.h"
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
-#include "brave/components/brave_vpn/features.h"
-#include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/features.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"

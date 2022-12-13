@@ -11,24 +11,18 @@ static_library("brave_vpn") {
   sources = [
     "brave_vpn_api_request.cc",
     "brave_vpn_api_request.h",
-    "brave_vpn_constants.h",
     "brave_vpn_service.cc",
     "brave_vpn_service.h",
     "brave_vpn_service_helper.cc",
     "brave_vpn_service_helper.h",
     "brave_vpn_service_observer.cc",
     "brave_vpn_service_observer.h",
-    "brave_vpn_utils.cc",
-    "brave_vpn_utils.h",
-    "features.cc",
-    "features.h",
-    "pref_names.cc",
-    "pref_names.h",
     "vpn_response_parser.cc",
     "vpn_response_parser.h",
   ]
 
   deps = [
+    "common",
     "mojom",
     "//base",
     "//brave/components/api_request_helper:api_request_helper",
@@ -55,7 +49,6 @@ static_library("brave_vpn") {
     sources += [
       "brave_vpn_connection_info.cc",
       "brave_vpn_connection_info.h",
-      "brave_vpn_data_types.h",
       "brave_vpn_os_connection_api.cc",
       "brave_vpn_os_connection_api.h",
       "brave_vpn_os_connection_api_sim.cc",
@@ -115,13 +108,13 @@ source_set("unit_tests") {
     if (is_win || is_mac || is_android) {
       sources += [
         "brave_vpn_unittest.cc",
-        "brave_vpn_utils_unittest.cc",
         "vpn_response_parser_unittest.cc",
       ]
     }
 
     deps = [
       ":brave_vpn",
+      "common",
       "//base",
       "//brave/components/p3a_utils",
       "//brave/components/skus/browser",

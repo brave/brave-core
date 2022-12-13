@@ -38,8 +38,8 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
-#include "brave/components/brave_vpn/features.h"
-#include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/brave_vpn/common/features.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
 class BraveToolbarViewTest : public InProcessBrowserTest {

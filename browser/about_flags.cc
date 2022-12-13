@@ -37,7 +37,7 @@
 #include "third_party/blink/public/common/features.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
-#include "brave/components/brave_vpn/features.h"
+#include "brave/components/brave_vpn/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)

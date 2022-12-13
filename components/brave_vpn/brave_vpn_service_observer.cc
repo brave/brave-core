@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "brave/components/brave_vpn/brave_vpn_service.h"
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 
 namespace brave_vpn {
 

@@ -32,7 +32,7 @@
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/renderer/android/vpn_render_frame_observer.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 

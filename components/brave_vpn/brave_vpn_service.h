@@ -35,7 +35,7 @@
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_vpn/brave_vpn_connection_info.h"
-#include "brave/components/brave_vpn/brave_vpn_data_types.h"
+#include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 

@@ -1,19 +1,20 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 
 #include <utility>
 
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
+#include "base/json/values_util.h"
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
-#include "brave/components/brave_vpn/brave_vpn_constants.h"
-#include "brave/components/brave_vpn/features.h"
-#include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
+#include "brave/components/brave_vpn/common/features.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/features.h"
@@ -95,6 +96,28 @@ std::string GetManageUrl(const std::string& env) {
   return brave_vpn::kManageUrlProd;
 }
 
+// On desktop, the environment is tied to SKUs because you would purchase it
+// from `account.brave.com` (or similar, based on env). The credentials for VPN
+// will always be in the same environment as the SKU environment.
+//
+// When the vendor receives a credential from us during auth, it also includes
+// the environment. The vendor then can do a lookup using Payment Service.
+std::string GetBraveVPNPaymentsEnv(const std::string& env) {
+  if (env == skus::kEnvProduction)
+    return "";
+  // Use same value.
+  if (env == skus::kEnvStaging || env == skus::kEnvDevelopment)
+    return env;
+
+  NOTREACHED();
+
+#if defined(OFFICIAL_BUILD)
+  return "";
+#else
+  return "development";
+#endif
+}
+
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(prefs::kBraveVPNRootPref);
   registry->RegisterBooleanPref(prefs::kBraveVPNShowButton, true);
@@ -113,6 +136,39 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       registry, prefs::kBraveVPNFirstUseTime, prefs::kBraveVPNLastUseTime,
       prefs::kBraveVPNUsedSecondDay, prefs::kBraveVPNDaysInMonthUsed);
   RegisterVPNLocalStatePrefs(registry);
+}
+
+bool HasValidSubscriberCredential(PrefService* local_prefs) {
+  const base::Value::Dict& sub_cred_dict =
+      local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
+  if (sub_cred_dict.empty())
+    return false;
+
+  const std::string* cred = sub_cred_dict.FindString(kSubscriberCredentialKey);
+  const base::Value* expiration_time_value =
+      sub_cred_dict.Find(kSubscriberCredentialExpirationKey);
+
+  if (!cred || !expiration_time_value)
+    return false;
+
+  if (cred->empty())
+    return false;
+
+  auto expiration_time = base::ValueToTime(expiration_time_value);
+  if (!expiration_time || expiration_time < base::Time::Now())
+    return false;
+
+  return true;
+}
+
+std::string GetSubscriberCredential(PrefService* local_prefs) {
+  if (!HasValidSubscriberCredential(local_prefs))
+    return "";
+  const base::Value::Dict& sub_cred_dict =
+      local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
+  const std::string* cred = sub_cred_dict.FindString(kSubscriberCredentialKey);
+  DCHECK(cred);
+  return *cred;
 }
 
 }  // namespace brave_vpn

@@ -36,7 +36,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
-#include "brave/components/brave_vpn/features.h"
+#include "brave/components/brave_vpn/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)

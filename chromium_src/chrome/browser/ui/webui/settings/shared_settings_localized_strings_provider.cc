@@ -16,7 +16,7 @@
 #include "net/dns/public/secure_dns_mode.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/features.h"
+#include "brave/components/brave_vpn/common/features.h"
 
 namespace {
 

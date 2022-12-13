@@ -49,7 +49,7 @@
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #endif
 

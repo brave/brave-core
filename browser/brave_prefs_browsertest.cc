@@ -47,7 +47,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
-#include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
