@@ -254,7 +254,7 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
   // loads.
   EXPECT_TRUE(InstallDefaultAdBlockExtension());
   auto* default_engine =
-      g_brave_browser_process->ad_block_service()->default_service_.get();
+      g_brave_browser_process->ad_block_service()->default_engine_.get();
   EngineTestObserver default_engine_observer(default_engine);
   default_engine_observer.Wait();
 
@@ -289,8 +289,8 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
                   ->regional_filters_providers_.size(),
               1ULL);
 
-    auto* regional_engine =
-        g_brave_browser_process->ad_block_service()->custom_filters_service();
+    auto* regional_engine = g_brave_browser_process->ad_block_service()
+                                ->additional_filters_engine_.get();
     EngineTestObserver regional_engine_observer(regional_engine);
     auto regional_filters_provider =
         g_brave_browser_process->ad_block_service()

@@ -57,6 +57,10 @@ void AdBlockRegionalServiceManager::Init(
   initialized_ = true;
 }
 
+bool AdBlockRegionalServiceManager::IsInitialized() {
+  return initialized_;
+}
+
 AdBlockRegionalServiceManager::~AdBlockRegionalServiceManager() {
   catalog_provider_->RemoveObserver(this);
 }

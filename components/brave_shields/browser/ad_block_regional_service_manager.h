@@ -64,6 +64,7 @@ class AdBlockRegionalServiceManager
 
   void Init(AdBlockResourceProvider* resource_provider,
             AdBlockFilterListCatalogProvider* catalog_provider);
+  bool IsInitialized();
 
   // AdBlockFilterListCatalogProvider::Observer
   void OnFilterListCatalogLoaded(const std::string& catalog_json) override;
