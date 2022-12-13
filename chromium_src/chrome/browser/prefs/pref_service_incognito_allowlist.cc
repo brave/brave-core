@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "base/no_destructor.h"
+#include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/common/pref_names.h"
 
@@ -14,7 +15,7 @@ namespace {
 const std::vector<const char*>& GetBravePersistentPrefNames() {
   static base::NoDestructor<std::vector<const char*>> brave_allowlist({
 #if !BUILDFLAG(IS_ANDROID)
-    prefs::kSidePanelHorizontalAlignment,
+    prefs::kSidePanelHorizontalAlignment, kTabMuteIndicatorNotClickable,
 #endif
   });
 
