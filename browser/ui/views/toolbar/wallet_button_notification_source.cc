@@ -86,6 +86,14 @@ void WalletButtonNotificationSource::KeyringCreated(
   }
 }
 
+void WalletButtonNotificationSource::KeyringRestored(
+    const std::string& keyring_id) {
+  if (keyring_id == brave_wallet::mojom::kDefaultKeyringId) {
+    prefs_->SetBoolean(kWalletButtonClicked, true);
+    NotifyObservers();
+  }
+}
+
 void WalletButtonNotificationSource::NotifyObservers() {
   bool show_suggestion_badge =
       (wallet_created_.has_value() && !wallet_created_.value() &&

@@ -47,6 +47,7 @@ class WalletButtonNotificationSource
 
   // brave_wallet::KeyringServiceObserverBase
   void KeyringCreated(const std::string& keyring_id) override;
+  void KeyringRestored(const std::string& keyring_id) override;
 
   void CheckTxStatus();
   void OnTxStatusResolved(size_t count);
