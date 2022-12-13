@@ -26,13 +26,14 @@ import { Provider } from '../../ui/components/profile'
 // Utils
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
-import { convertBalance, isPublisherConnectedOrVerified } from './utils'
+import { convertBalance } from './utils'
 import { ExtendedActivityRow, SummaryItem, SummaryType } from '../../ui/components/modalActivity'
 import { DetailRow as TransactionRow } from '../../ui/components/tableTransactions'
 import { ConnectWalletModal } from './connect_wallet_modal'
 import { PendingContributionsModal } from './pending_contributions_modal'
 
 import * as mojom from '../../shared/lib/mojom'
+import { isPublisherVerified } from '../../shared/lib/publisher_status'
 
 interface State {
   activeTabId: number
@@ -279,7 +280,7 @@ class PageWallet extends React.Component<Props, State> {
         records = contribution.publishers
           .map((publisher: Rewards.Publisher): ExtendedActivityRow => {
             let faviconUrl = `chrome://favicon/size/64@1x/${publisher.url}`
-            const verified = isPublisherConnectedOrVerified(publisher.status)
+            const verified = isPublisherVerified(publisher.status)
             if (publisher.favIcon && verified) {
               faviconUrl = `chrome://favicon/size/64@1x/${publisher.favIcon}`
             }

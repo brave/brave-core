@@ -41,7 +41,11 @@ export const localeStrings = {
   sendDonation: 'Send Tip',
   siteBannerNoticeNote: 'NOTE:',
   siteBannerNoticeNotRegistered: 'This creator is not signed up yet. Any tip you make will remain pending and retry automatically for 90 days.',
-  siteBannerNoticeText: 'This creator is currently not configured to receive tips from your Rewards custodial wallet service. Any tip you make will remain pending and retry automatically for 90 days.',
+  siteBannerNoticeText: 'You\'re connected to $1, but this creator ' +
+                        'is connected to $2. This means your tip ' +
+                        'can\'t reach this creator. For now, any ' +
+                        'tip you make will remain pending and retry ' +
+                        'automatically for 90 days.',
   sorryToSeeYouGo: 'Sorry to see you go…',
   supportThisCreator: 'Support this creator',
   thanksForTheSupport: 'Thanks for the support!',

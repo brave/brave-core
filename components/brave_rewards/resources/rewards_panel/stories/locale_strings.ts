@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -25,9 +26,12 @@ export const localeStrings = {
   unverifiedCreator: 'Unverified Creator',
   verifiedCreator: 'Verified Creator',
   refreshStatus: 'Refresh Creator verification status',
-  pendingTipText: 'Any tip you make will remain pending and retry automatically for 90 days. $1Learn more$2',
+  pendingTipText: 'For now, any tip you make will remain pending ' +
+                  'and retry automatically for 90 days. $1Learn more$2',
   pendingTipTitle: 'This creator is not signed up yet.',
-  pendingTipTitleRegistered: 'This creator is currently not configured to receive tips from your Rewards custodial wallet service.',
+  pendingTipTitleRegistered: 'You\'re connected to $1, but this creator ' +
+                             'is connected to $2. This means your tip ' +
+                             'can\'t reach this creator.',
   platformPublisherTitle: '$1 on $2',
   attention: 'Attention',
   sendTip: 'Send Tip',

@@ -1,3 +1,8 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 declare namespace RewardsExtension {
   interface State {
     balance: Balance
@@ -31,13 +36,9 @@ declare namespace RewardsExtension {
     maxAttemptsExceeded: boolean
   }
 
-  export enum PublisherStatus {
-    NOT_VERIFIED = 0,
-    CONNECTED = 1,
-    UPHOLD_VERIFIED = 2,
-    BITFLYER_VERIFIED = 3,
-    GEMINI_VERIFIED = 4
-  }
+  type PublisherStatus = import(
+    '../../components/brave_rewards/resources/shared/lib/publisher_status'
+  ).PublisherStatus
 
   interface Publisher {
     excluded?: boolean
