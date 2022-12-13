@@ -250,6 +250,24 @@ def setup_per_check_file_filter(input_api):
                                                     affected_files):
             return original_method(*args, **kwargs)
 
+    if input_api.no_diffs:
+        # Modify upstream presubmit runner to check full file content when
+        # --files option is passed. This allows us to see all presubmit issues.
+        # Upstream uses "no_diffs" mode to speed up checks on all repository,
+        # but our codebase is pretty small, so we can run all checks as is.
+        input_api.no_diffs = False
+
+        @override_utils.override_method(input_api.change._AFFECTED_FILES)
+        def ChangedContents(self, *_, **__):
+            if self._cached_changed_contents is not None:
+                return self._cached_changed_contents[:]
+
+            result = []
+            for line_num, line in enumerate(self.NewContents(), start=1):
+                result.append((line_num, line))
+            self._cached_changed_contents = result
+            return self._cached_changed_contents[:]
+
 
 def Apply(_globals):
     override_global_checks(_globals)
