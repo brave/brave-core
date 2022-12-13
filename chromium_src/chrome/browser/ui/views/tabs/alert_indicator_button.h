@@ -13,6 +13,7 @@ class AlertIndicatorButton;
                    \
  protected:        \
   Tab* GetTab
+
 #define UpdateEnabledForMuteToggle virtual UpdateEnabledForMuteToggle
 #include "src/chrome/browser/ui/views/tabs/alert_indicator_button.h"
 #undef UpdateEnabledForMuteToggle
