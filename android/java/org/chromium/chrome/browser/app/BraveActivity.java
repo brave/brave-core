@@ -240,8 +240,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private static final List<String> yandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
-    private BraveSafeBrowsingApiHandler mBraveSafeBrowsingApiHandler;
-
     private String mPurchaseToken = "";
     private String mProductId = "";
     private boolean mIsVerification;
@@ -403,9 +401,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             NotificationPermissionController.detach(mNotificationPermissionController);
             mNotificationPermissionController = null;
         }
-        if (mBraveSafeBrowsingApiHandler != null) {
-            mBraveSafeBrowsingApiHandler.shutdownSafeBrowsing();
-        }
+        BraveSafeBrowsingApiHandler.getInstance().shutdownSafeBrowsing();
         super.onDestroyInternal();
         cleanUpNativeServices();
     }
@@ -784,12 +780,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> { BraveStatsUtil.removeShareStatsFile(); });
-        if (mBraveSafeBrowsingApiHandler == null) {
-            mBraveSafeBrowsingApiHandler =
-                    new BraveSafeBrowsingApiHandler(this, BraveConfig.SAFEBROWSING_API_KEY, this);
-            SafeBrowsingApiBridge.setHandler(mBraveSafeBrowsingApiHandler);
-            SafeBrowsingApiBridge.ensureInitialized();
-        }
+        BraveSafeBrowsingApiHandler.getInstance().setDelegate(
+                BraveConfig.SAFEBROWSING_API_KEY, this);
     }
 
     @Override
@@ -816,6 +808,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void turnSafeBrowsingOff() {
         SafeBrowsingBridge.setSafeBrowsingState(SafeBrowsingState.NO_SAFE_BROWSING);
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
     }
 
     public void maybeSolveAdaptiveCaptcha() {
@@ -1941,7 +1938,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     // as upstream does, to keep the GmsCore process alive.
     private void executeInitSafeBrowsing(long delay) {
         PostTask.postDelayedTask(TaskTraits.USER_VISIBLE_MAY_BLOCK, () -> {
-            mBraveSafeBrowsingApiHandler.initSafeBrowsing();
+            BraveSafeBrowsingApiHandler.getInstance().initSafeBrowsing();
             executeInitSafeBrowsing(BraveSafeBrowsingApiHandler.SAFE_BROWSING_INIT_INTERVAL_MS);
         }, delay);
     }
