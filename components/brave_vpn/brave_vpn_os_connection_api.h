@@ -67,7 +67,7 @@ class BraveVPNOSConnectionAPI
   void SetConnectionState(mojom::ConnectionState state);
   bool IsInProgress() const;
 
-  void Connect(bool ignore_network_state = false);
+  void Connect();
   void Disconnect();
   void ToggleConnection();
   void RemoveVPNConnection();
