@@ -117,10 +117,7 @@ class AdBlockService {
       const std::vector<std::string>& exceptions);
 
   AdBlockRegionalServiceManager* regional_service_manager();
-  AdBlockEngine* custom_filters_service();
-  AdBlockEngine* default_service();
   AdBlockSubscriptionServiceManager* subscription_service_manager();
-
   AdBlockCustomFiltersProvider* custom_filters_provider();
 
   void EnableTag(const std::string& tag, bool enabled);
@@ -173,15 +170,15 @@ class AdBlockService {
       regional_service_manager_;
 
   std::unique_ptr<brave_shields::AdBlockFiltersProviderManager>
-      custom_filters_manager_;
+      additional_filters_manager_;
 
   std::unique_ptr<brave_shields::AdBlockEngine, base::OnTaskRunnerDeleter>
-      custom_filters_service_;
+      default_engine_;
   std::unique_ptr<brave_shields::AdBlockEngine, base::OnTaskRunnerDeleter>
-      default_service_;
+      additional_filters_engine_;
 
   std::unique_ptr<SourceProviderObserver> default_service_observer_;
-  std::unique_ptr<SourceProviderObserver> custom_filters_service_observer_;
+  std::unique_ptr<SourceProviderObserver> additional_filters_service_observer_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 
