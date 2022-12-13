@@ -111,9 +111,5 @@ public class NetworkSelectorModel {
         }
     }
 
-    /**
-     * Mode to update either global network or {@link NetworkSelectorModel#mSelectedNetwork}
-     * network.
-     */
     public enum Mode { DEFAULT_WALLET_NETWORK, LOCAL_NETWORK_FILTER }
 }
