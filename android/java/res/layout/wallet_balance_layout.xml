@@ -28,7 +28,7 @@
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             android:paddingEnd="16dp"
-            android:text="@string/brave_ui_wallet_button_unverified"
+            android:text="@string/brave_ui_wallet_button_connect"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="14sp" />

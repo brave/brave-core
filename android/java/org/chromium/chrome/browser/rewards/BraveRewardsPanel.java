@@ -1792,7 +1792,7 @@ public class BraveRewardsPanel
         switch (status) {
             case WalletStatus.NOT_CONNECTED:
                 rightDrawable = R.drawable.ic_verify_wallet_arrow;
-                textId = R.string.brave_ui_wallet_button_unverified;
+                textId = R.string.brave_ui_wallet_button_connect;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
                 break;
             case WalletStatus.CONNECTED:
@@ -1800,7 +1800,7 @@ public class BraveRewardsPanel
                 editor.apply();
 
                 rightDrawable = getWalletIcon(walletType);
-                textId = R.string.brave_ui_wallet_button_verified;
+                textId = R.string.brave_ui_wallet_button_connected;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawable, 0);
                 btnVerifyWallet.setBackgroundColor(Color.TRANSPARENT);
                 verifyWalletArrowImg.setVisibility(View.VISIBLE);
