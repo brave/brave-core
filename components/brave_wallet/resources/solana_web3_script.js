@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+/* Auto generated from @solana/web3.js 1.47.1 index.iife.min.js */
+
 var solanaWeb3 = $(function (exports) {
   "use strict";
 
