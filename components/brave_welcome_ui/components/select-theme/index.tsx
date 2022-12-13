@@ -10,22 +10,20 @@ import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import Button from '$web-components/button'
 
-import { WelcomeBrowserProxyImpl } from '../../api/welcome_browser_proxy'
-
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
 
 interface ThemeModeItemProps {
-  themeType: number
+  themeType: chrome.braveTheme.ThemeType
   title: string
   isActive: boolean
-  onChange?: (themeType: number) => void
+  onChange?: (themeType: chrome.braveTheme.ThemeType) => void
 }
 
 const themeList = [
-  { themeType: 0, title: 'Match system setting' },
-  { themeType: 2, title: 'Light mode' },
-  { themeType: 1, title: 'Dark mode' }
+  { themeType: 'System', title: getLocale('braveWelcomeSelectThemeSystemLabel') },
+  { themeType: 'Light', title: getLocale('braveWelcomeSelectThemeLightLabel') },
+  { themeType: 'Dark', title: getLocale('braveWelcomeSelectThemeDarkLabel') }
 ]
 
 function ThemeModeItem (props: ThemeModeItemProps) {
@@ -39,9 +37,9 @@ function ThemeModeItem (props: ThemeModeItemProps) {
   })
 
   const logoBoxClass = classnames({
-    'logo-box': true,
-    'dark-mode': props.themeType === 1,
-    'system-mode': props.themeType === 0
+    'logo': true,
+    'dark-mode': props.themeType === 'Dark',
+    'system-mode': props.themeType === 'System'
   })
 
   return (
@@ -55,17 +53,19 @@ function ThemeModeItem (props: ThemeModeItemProps) {
           </svg>
         )}
       </i>
-      <div className={logoBoxClass} />
-      <p className="theme-name">{props.title}</p>
+      <div className="logo-box">
+        <div className={logoBoxClass} />
+        <p className="theme-name">{props.title}</p>
+      </div>
     </button>
   )
 }
 
 function SelectTheme () {
   const { setViewType, scenes } = React.useContext(DataContext)
-  const [currentSelectedTheme, setCurrentTheme] = React.useState(0)
+  const [currentSelectedTheme, setCurrentTheme] = React.useState<chrome.braveTheme.ThemeType>('System')
 
-  const handleSelectionChange = (themeType: number) => {
+  const handleSelectionChange = (themeType: chrome.braveTheme.ThemeType) => {
     setCurrentTheme?.(themeType)
   }
 
@@ -75,7 +75,7 @@ function SelectTheme () {
   }
 
   const handleNext = () => {
-    WelcomeBrowserProxyImpl.getInstance().setBraveThemeType(currentSelectedTheme)
+    chrome.braveTheme.setBraveThemeType(currentSelectedTheme)
     setViewType(ViewType.HelpImprove)
     scenes?.s2.play()
   }
@@ -92,14 +92,14 @@ function SelectTheme () {
       <S.ThemeListBox>
         <div className={classnames({
           'theme-list': true,
-          'is-selected-dark': currentSelectedTheme === 1,
-          'is-selected-light': currentSelectedTheme === 2
+          'is-selected-dark': currentSelectedTheme === 'Dark',
+          'is-selected-light': currentSelectedTheme === 'Light'
         })}>
           {themeList.map((entry, id) => {
             return (
               <ThemeModeItem
                 key={id}
-                themeType={entry.themeType}
+                themeType={entry.themeType as chrome.braveTheme.ThemeType}
                 title={entry.title}
                 isActive={entry.themeType === currentSelectedTheme}
                 onChange={handleSelectionChange}

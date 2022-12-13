@@ -31,7 +31,6 @@ export interface WelcomeBrowserProxy {
   setP3AEnabled: (enabled: boolean) => void
   setMetricsReportingEnabled: (enabled: boolean) => void
   openSettingsPage: () => void
-  setBraveThemeType: (value: number) => void
 }
 
 export { DefaultBrowserBrowserProxyImpl, ImportDataBrowserProxyImpl }
@@ -51,10 +50,6 @@ export class WelcomeBrowserProxyImpl implements WelcomeBrowserProxy {
 
   openSettingsPage () {
     chrome.send('openSettingsPage')
-  }
-
-  setBraveThemeType (value: number) {
-    chrome.send('setBraveThemeType', [value])
   }
 
   static getInstance (): WelcomeBrowserProxy {

@@ -11,7 +11,6 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
@@ -76,7 +75,13 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWelcomeChangeSettingsNote", IDS_BRAVE_WELCOME_CHANGE_SETTINGS_NOTE},
     {"braveWelcomePrivacyPolicyNote", IDS_BRAVE_WELCOME_PRIVACY_POLICY_NOTE},
     {"braveWelcomeSelectThemeLabel", IDS_BRAVE_WELCOME_SELECT_THEME_LABEL},
-    {"braveWelcomeSelectThemeNote", IDS_BRAVE_WELCOME_SELECT_THEME_NOTE}};
+    {"braveWelcomeSelectThemeNote", IDS_BRAVE_WELCOME_SELECT_THEME_NOTE},
+    {"braveWelcomeSelectThemeSystemLabel",
+     IDS_BRAVE_WELCOME_SELECT_THEME_SYSTEM_LABEL},
+    {"braveWelcomeSelectThemeLightLabel",
+     IDS_BRAVE_WELCOME_SELECT_THEME_LIGHT_LABEL},
+    {"braveWelcomeSelectThemeDarkLabel",
+     IDS_BRAVE_WELCOME_SELECT_THEME_DARK_LABEL}};
 
 void OpenJapanWelcomePage(Profile* profile) {
   DCHECK(profile);
@@ -121,7 +126,6 @@ class WelcomeDOMHandler : public WebUIMessageHandler {
   void SetP3AEnabled(const base::Value::List& args);
   void HandleOpenSettingsPage(const base::Value::List& args);
   void HandleSetMetricsReportingEnabled(const base::Value::List& args);
-  void SetBraveThemeType(const base::Value::List& args);
   Browser* GetBrowser();
 
   int screen_number_ = 0;
@@ -158,10 +162,6 @@ void WelcomeDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "setMetricsReportingEnabled",
       base::BindRepeating(&WelcomeDOMHandler::HandleSetMetricsReportingEnabled,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "setBraveThemeType",
-      base::BindRepeating(&WelcomeDOMHandler::SetBraveThemeType,
                           base::Unretained(this)));
 }
 
@@ -201,16 +201,6 @@ void WelcomeDOMHandler::HandleSetMetricsReportingEnabled(
   bool enabled = args[0].GetBool();
   ChangeMetricsReportingState(
       enabled, ChangeMetricsReportingStateCalledFrom::kUiSettings);
-}
-
-void WelcomeDOMHandler::SetBraveThemeType(const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  CHECK(args[0].is_int());
-  AllowJavascript();
-
-  int int_type = args[0].GetInt();
-  dark_mode::SetBraveDarkModeType(
-      static_cast<dark_mode::BraveDarkModeType>(int_type));
 }
 
 void WelcomeDOMHandler::SetLocalStateBooleanEnabled(

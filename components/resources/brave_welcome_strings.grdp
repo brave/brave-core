@@ -87,4 +87,16 @@
 <message name="IDS_BRAVE_WELCOME_SELECT_THEME_NOTE" desc="A note for user to change theme in settings">
   You can change this at any time in Brave settings.
 </message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_THEME_SYSTEM_LABEL" desc="A label to match system setting">
+  Match system setting
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_THEME_LIGHT_LABEL" desc="A label for light theme setting">
+  Light mode
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_THEME_DARK_LABEL" desc="A label for dark theme setting">
+  Dark mode
+</message>
 </grit-part>

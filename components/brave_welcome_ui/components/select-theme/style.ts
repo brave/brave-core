@@ -107,17 +107,26 @@ export const ThemeListBox = styled.div`
   .theme-name {
     font-weight: 400;
     font-size: 14px;
+    line-height: 1.2;
     margin: 0;
+    min-height: calc(2 * 14px * 1.2); // A min height of 2 lines
   }
 
   .logo-box {
+    display: grid;
+    grid-template-rows: 50px 1fr;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .logo {
     width: 48px;
     height: 48px;
     border-radius: 48px;
-    margin-bottom: 10px;
     background: var(--background-color-light);
     border: 1px solid #C2C4CF;
     position: relative;
+    margin: 0 auto;
 
     &.dark-mode {
       background: var(--background-color-dark);
