@@ -29,16 +29,8 @@ bool ValidateCachedRegionData(const base::Value::List& region_value);
 std::string GetBraveVPNPaymentsEnv(const std::string& env);
 
 base::Value::Dict GetValueFromRegion(const mojom::Region& region);
-std::unique_ptr<Hostname> PickBestHostname(
-    const std::vector<Hostname>& hostnames);
-std::vector<Hostname> ParseHostnames(const base::Value::List& hostnames);
 std::vector<mojom::Region> ParseRegionList(
     const base::Value::List& region_list);
-base::Value::Dict GetValueWithTicketInfos(
-    const std::string& email,
-    const std::string& subject,
-    const std::string& body,
-    const std::string& subscriber_credential);
 mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
     const std::string& name,
     const std::vector<mojom::Region> region_list);

@@ -1,11 +1,10 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/vpn_response_parser.h"
+#include "brave/components/brave_vpn/api/vpn_response_parser.h"
 
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_vpn {
@@ -14,7 +13,8 @@ TEST(VpnResponseParserUnitTest, ParseSubscriberCredentialFromJson) {
   std::string error_value;
   EXPECT_TRUE(brave_vpn::ParseSubscriberCredentialFromJson(
                   R"({
-    "error-message": "The provided token either does not exist or is no longer valid",
+    "error-message":
+      "The provided token either does not exist or is no longer valid",
     "error-title": "Token No Longer Valid"
     })",
                   &error_value)
