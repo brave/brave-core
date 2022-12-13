@@ -55,14 +55,11 @@ void BraveStartupBrowserCreatorImpl::Launch(
     std::unique_ptr<LaunchModeRecorder> launch_mode_recorder) {
 #if BUILDFLAG(ENABLE_TOR)
   if (StartupBrowserCreatorImpl::command_line_.HasSwitch(switches::kTor)) {
-    LOG(INFO) << "Switching to Tor profile and starting Tor service.";
-    profile = TorProfileManager::GetInstance().GetTorProfile(profile);
-
     // Call StartupBrowserCreatorImpl::Launch() with the Tor profile so that if
     // one runs brave-browser --tor "? search query" the search query is not
     // passed to the default search engine of the regular profile.
-    StartupBrowserCreatorImpl::Launch(profile, process_startup,
-                                      std::move(launch_mode_recorder));
+    LOG(INFO) << "Switching to Tor profile and starting Tor service.";
+    profile = TorProfileManager::GetInstance().GetTorProfile(profile);
   }
 #endif
 
