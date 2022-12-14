@@ -208,29 +208,43 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DisableSiteWorks) {
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   ToggleSpeedreader();
-  NavigateToPageSynchronously(kTestPageReadable);
+
+  content::WebContentsConsoleObserver console_observer(ActiveWebContents());
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::CURRENT_TAB);
+
   const std::string kGetStyleLength =
       "document.getElementById('brave_speedreader_style').innerHTML.length";
+  const std::string kGetFontsExists =
+      "!!(document.getElementById('atkinson_hyperligible_font') && "
+      "document.getElementById('open_dyslexic_font'))";
 
   const std::string kGetContentLength = "document.body.innerHTML.length";
 
-  const auto eval_js = [&](const std::string& script) {
-    int out;
-    EXPECT_TRUE(content::ExecuteScriptAndExtractInt(
-        ActiveWebContents(),
-        "window.domAutomationController.send(" + script + ")", &out));
-    return out;
-  };
-
   // Check that the document became much smaller and that non-empty speedreader
   // style is injected.
-  EXPECT_LT(0, eval_js(kGetStyleLength));
-  EXPECT_GT(17750 + 1, eval_js(kGetContentLength));
+  EXPECT_LT(0, content::EvalJs(ActiveWebContents(), kGetStyleLength,
+                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                               speedreader::kIsolatedWorldId)
+                   .ExtractInt());
+  EXPECT_TRUE(content::EvalJs(ActiveWebContents(), kGetFontsExists,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              speedreader::kIsolatedWorldId)
+                  .ExtractBool());
+  EXPECT_GT(17750, content::EvalJs(ActiveWebContents(), kGetContentLength,
+                                   content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                   speedreader::kIsolatedWorldId)
+                       .ExtractInt());
+
+  EXPECT_TRUE(console_observer.messages().empty());
 
   // Check that disabled speedreader doesn't affect the page.
   ToggleSpeedreader();
   NavigateToPageSynchronously(kTestPageReadable);
-  EXPECT_LT(106000, eval_js(kGetContentLength));
+  EXPECT_LT(106000, content::EvalJs(ActiveWebContents(), kGetContentLength,
+                                    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                    speedreader::kIsolatedWorldId)
+                        .ExtractInt());
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Redirect) {

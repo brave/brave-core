@@ -1,5 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Atkinson+Hyperlegible');
-@import url('https://fonts.cdnfonts.com/css/opendyslexic');
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
@@ -118,7 +120,7 @@ li {
   background-color: var(--link-color);
   -webkit-mask-size: 1.15rem;
   -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: left; 
+  -webkit-mask-position: left;
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='14' fill='none'%3E%3Cpath fill='%234C54D2' fill-rule='evenodd' d='m4.728 13.28 4.53-6.638.002-.001c.117-.17.334-.481.14-.827-.071-.127-.254-.34-.674-.34H6.4l1.237-4.4a.518.518 0 0 0 .01-.204.537.537 0 0 0-.217-.42.602.602 0 0 0-.817.097L.94 7.476l-.001.001c-.084.12-.337.477-.131.847.073.132.259.353.681.353h2.68l-.55 4.262a.325.325 0 0 0-.005.04L3.612 13l-.005.044a.19.19 0 0 0 .003.054.303.303 0 0 1 .005.054.559.559 0 0 0 .57.513c.252 0 .466-.16.543-.386Zm.738-7.006c.177.2.418.31.68.31h1.76l-2.833 4.18.288-2.239a.78.78 0 0 0-.176-.668c-.171-.192-.424-.29-.75-.29H2.338L5.884 3.24l-.663 2.167c-.055.303.04.635.245.867Zm4.43-4.982a.708.708 0 1 0 0 1.416h6.667a.708.708 0 0 0 0-1.416H9.896Zm.958 4.041c0-.391.318-.708.709-.708h5a.708.708 0 0 1 0 1.417h-5a.708.708 0 0 1-.709-.709ZM7.521 12c0-.391.317-.708.708-.708h8.334a.708.708 0 1 1 0 1.416H8.229A.708.708 0 0 1 7.521 12Zm2.083-3.333c0-.392.317-.709.709-.709h6.25a.708.708 0 0 1 0 1.417h-6.25a.708.708 0 0 1-.709-.708Z' clip-rule='evenodd'/%3E%3C/svg%3E");
 }
 
@@ -391,7 +393,7 @@ article table td, article table th {
 }
 
 .metadata.singleline .delimiter::after {
-  content: "•";
+  content: "\2022";
 }
 
 .metadata:not(.singleline) .delimiter {
@@ -481,11 +483,6 @@ iframe {
     max-width: 800px;
     margin: 0 auto;
   }
-
-  /* Readable margins. */
-  /* body #article {
-    max-width: 83.2ex;
-  } */
 }
 
 /* Use slightly smaller page padding when vertically constrained. */
