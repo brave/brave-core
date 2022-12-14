@@ -209,10 +209,12 @@ public struct CryptoView: View {
                   onCreate: {
                     // request is fullfilled.
                     request.responseHandler(.created)
+                    dismissAction?()
                   },
                   onDismiss: {
                     // request get declined by clicking `Cancel`
                     request.responseHandler(.rejected)
+                    dismissAction?()
                   }
                 )
               }
