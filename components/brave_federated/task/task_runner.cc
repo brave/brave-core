@@ -9,7 +9,6 @@
 #include <list>
 #include <map>
 #include <sstream>
-#include <tuple>
 
 #include "base/check.h"
 #include "base/task/sequenced_task_runner.h"
@@ -26,8 +25,6 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
-#include <iostream>
-
 namespace brave_federated {
 
 TaskRunner::TaskRunner(Task task, Model* model) : task_(task), model_(model) {
@@ -42,15 +39,12 @@ Model* TaskRunner::GetModel() {
 
 TaskResult TaskRunner::Run() {
   PerformanceReport report;
-  if (task_.GetType() == TaskType::TrainingTask) {
-    std::cerr << "**: Training task type" << std::endl;
+  if (task_.GetType() == TaskType::Training) {
     report = model_->Train(training_data_);
-  } else if (task_.GetType() == TaskType::EvaluationTask) {
-    std::cerr << "**: Evaluation task type" << std::endl;
+  } else if (task_.GetType() == TaskType::Evaluation) {
     report = model_->Evaluate(test_data_);
   }
 
-  std::cerr << "**: Got the report" << std::endl;
   TaskResult result(task_, report);
   return result;
 }

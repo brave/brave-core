@@ -11,7 +11,7 @@ static_library("flower") {
     # "src/cc/flwr/src/message_handler.cc",
     # "src/cc/flwr/src/serde.cc",
     # "src/cc/flwr/src/client_runner.cc",
-    "src/cc/flwr/include/serde2.h",
+    # "src/cc/flwr/include/serde2.h",
   ]
   deps = [
     "//brave/third_party/flower/src/proto/flwr/proto:transport_grpc_proto",

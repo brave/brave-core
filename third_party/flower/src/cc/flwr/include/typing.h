@@ -21,7 +21,18 @@
 #include <list>
 #include <map>
 #include <string>
-#include "brave/third_party/flower/src/cc/flwr/include/message_handler.h"
+// #include "brave/third_party/flower/src/cc/flwr/include/message_handler.h"
+
+using flower::ClientMessage;
+using flower::ServerMessage;
+using MessageParameters = flower::Parameters;
+using flower::Reason;
+using ProtoScalar = flower::Scalar;
+using flower::ClientMessage_EvaluateRes;
+using flower::ClientMessage_FitRes;
+using flower::ClientMessage_GetParametersRes;
+using flower::ServerMessage_EvaluateIns;
+using flower::ServerMessage_FitIns;
 
 namespace flower {
 /**

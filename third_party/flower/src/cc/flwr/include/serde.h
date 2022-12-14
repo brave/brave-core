@@ -18,7 +18,7 @@
 
 #include <string>
 
-#include "brave/third_party/flower/src/proto/flwr/proto/transport.grpc.pb.h"
+#include "brave/third_party/flower/src/proto/flwr/proto/transport.pb.h"
 #include "brave/third_party/flower/src/cc/flwr/include/typing.h"
 
 using flower::ClientMessage;

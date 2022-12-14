@@ -11,8 +11,6 @@
 
 #include "base/check.h"
 
-#include <iostream>
-
 namespace brave_federated {
 
 Model::Model(ModelSpec model_spec)
