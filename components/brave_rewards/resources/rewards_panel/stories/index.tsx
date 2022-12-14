@@ -88,7 +88,6 @@ function createHost (): Host {
       name: 'brave.com',
       icon: 'https://brave.com/static-assets/images/brave-favicon.png',
       platform: null,
-      registered: true,
       attentionScore: 0.17,
       autoContributeEnabled: true,
       monthlyTip: 5,

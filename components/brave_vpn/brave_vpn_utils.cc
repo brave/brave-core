@@ -21,19 +21,15 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "net/base/network_change_notifier.h"
 
 namespace brave_vpn {
 
 namespace {
-
 void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 #if !BUILDFLAG(IS_ANDROID)
   registry->RegisterListPref(prefs::kBraveVPNRegionList);
   registry->RegisterStringPref(prefs::kBraveVPNDeviceRegion, "");
   registry->RegisterStringPref(prefs::kBraveVPNSelectedRegion, "");
-  registry->RegisterBooleanPref(prefs::kBraveVPNShowDNSPolicyWarningDialog,
-                                true);
 #endif
   registry->RegisterStringPref(prefs::kBraveVPNEnvironment,
                                skus::GetDefaultEnvironment());
@@ -102,6 +98,9 @@ std::string GetManageUrl(const std::string& env) {
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(prefs::kBraveVPNRootPref);
   registry->RegisterBooleanPref(prefs::kBraveVPNShowButton, true);
+#if BUILDFLAG(IS_WIN)
+  registry->RegisterBooleanPref(prefs::kBraveVPNShowNotificationDialog, true);
+#endif
 #if BUILDFLAG(IS_ANDROID)
   registry->RegisterStringPref(prefs::kBraveVPNPurchaseTokenAndroid, "");
   registry->RegisterStringPref(prefs::kBraveVPNPackageAndroid, "");
@@ -115,12 +114,5 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       prefs::kBraveVPNUsedSecondDay, prefs::kBraveVPNDaysInMonthUsed);
   RegisterVPNLocalStatePrefs(registry);
 }
-
-#if !BUILDFLAG(IS_ANDROID)
-bool IsNetworkAvailable() {
-  return net::NetworkChangeNotifier::GetConnectionType() !=
-         net::NetworkChangeNotifier::CONNECTION_NONE;
-}
-#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace brave_vpn

@@ -27,7 +27,7 @@ export const localeStrings = {
   rewardsPaymentPending: 'Your $1 $2 rewards will arrive in $3',
   rewardsPaymentProcessing: 'Your $1 $2 rewards are on the way. Keep an eye out!',
   rewardsProgress: 'Progress',
-  rewardsPublisherCountText: 'You’ve visited $1 creators supported by users like you',
+  rewardsPublisherCountText: 'This month, you\'ve visited $1 creators supported by Brave Rewards',
   rewardsSelectCountryHeader: 'Select your country',
   rewardsSelectCountryText: 'To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. $1Privacy Policy$2',
   rewardsSettings: 'Rewards settings',

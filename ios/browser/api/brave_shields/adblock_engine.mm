@@ -108,8 +108,8 @@
                               base::SysNSStringToUTF8(data));
 }
 
-- (void)addResources:(NSString*)resources {
-  adblock_engine->addResources(base::SysNSStringToUTF8(resources));
+- (void)useResources:(NSString*)resources {
+  adblock_engine->useResources(base::SysNSStringToUTF8(resources));
 }
 
 - (NSString*)cosmeticResourcesForURL:(NSString*)url {

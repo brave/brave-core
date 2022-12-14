@@ -24,29 +24,44 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 
 public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
+    public static final long SAFE_BROWSING_INIT_INTERVAL_MS = 30000;
     private static final long DEFAULT_CHECK_DELTA = 10;
     private static final String SAFE_METADATA = "{}";
     private static final String TAG = "BraveSafeBrowsingApiHandler";
 
     public interface BraveSafeBrowsingApiHandlerDelegate {
         default void turnSafeBrowsingOff() {}
+        Activity getActivity();
     }
 
     private Observer mObserver;
-    private Activity mActivity;
     private String mApiKey;
     private boolean mInitialized;
     private int mTriesCount;
     private BraveSafeBrowsingApiHandlerDelegate mBraveSafeBrowsingApiHandlerDelegate;
+    private static final Object lock = new Object();
+    private static BraveSafeBrowsingApiHandler instance;
 
-    public BraveSafeBrowsingApiHandler(Activity activity, String apiKey,
+    public static BraveSafeBrowsingApiHandler getInstance() {
+        synchronized (lock) {
+            if (instance == null) {
+                instance = new BraveSafeBrowsingApiHandler();
+            }
+        }
+        return instance;
+    }
+
+    public void setDelegate(String apiKey,
             BraveSafeBrowsingApiHandlerDelegate braveSafeBrowsingApiHandlerDelegate) {
-        mActivity = activity;
         mApiKey = apiKey;
         mTriesCount = 0;
         mBraveSafeBrowsingApiHandlerDelegate = braveSafeBrowsingApiHandlerDelegate;
         assert mBraveSafeBrowsingApiHandlerDelegate
                 != null : "BraveSafeBrowsingApiHandlerDelegate has to be initialized";
+    }
+
+    private void resetDelegate() {
+        mBraveSafeBrowsingApiHandlerDelegate = null;
     }
 
     @Override
@@ -57,7 +72,7 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
 
     @Override
     public void startUriLookup(final long callbackId, String uri, int[] threatsOfInterest) {
-        if (mActivity == null) {
+        if (mBraveSafeBrowsingApiHandlerDelegate == null) {
             return;
         }
         mTriesCount++;
@@ -67,7 +82,7 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
 
         SafetyNet.getClient(ContextUtils.getApplicationContext())
                 .lookupUri(uri, mApiKey, threatsOfInterest)
-                .addOnSuccessListener(mActivity,
+                .addOnSuccessListener(mBraveSafeBrowsingApiHandlerDelegate.getActivity(),
                         sbResponse -> {
                             mTriesCount = 0;
                             try {
@@ -94,7 +109,7 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                             } catch (JSONException e) {
                             }
                         })
-                .addOnFailureListener(mActivity, e -> {
+                .addOnFailureListener(mBraveSafeBrowsingApiHandlerDelegate.getActivity(), e -> {
                     // An error occurred while communicating with the service.
                     if (e instanceof ApiException) {
                         // An error with the Google Play Services API contains some
@@ -141,7 +156,7 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
     }
 
     public void initSafeBrowsing() {
-        SafetyNet.getClient(mActivity).initSafeBrowsing();
+        SafetyNet.getClient(ContextUtils.getApplicationContext()).initSafeBrowsing();
         mInitialized = true;
     }
 
@@ -150,13 +165,17 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
             return;
         }
         SafetyNet.getClient(ContextUtils.getApplicationContext()).shutdownSafeBrowsing();
+        resetDelegate();
+        mInitialized = false;
     }
 
     private boolean isDebuggable() {
-        if (mActivity == null) {
+        if (mBraveSafeBrowsingApiHandlerDelegate == null) {
             return false;
         }
 
-        return 0 != (mActivity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE);
+        return 0
+                != (mBraveSafeBrowsingApiHandlerDelegate.getActivity().getApplicationInfo().flags
+                        & ApplicationInfo.FLAG_DEBUGGABLE);
     }
 }

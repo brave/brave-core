@@ -74,6 +74,9 @@ bool ParseRequestPermissionsParams(
 
 bool ParseEthSendRawTransactionParams(const std::string& json,
                                       std::string* signed_transaction);
+bool ParseEthSubscribeParams(const std::string& json, std::string* event_type);
+bool ParseEthUnsubscribeParams(const std::string& json,
+                               std::string* subscription_id);
 
 }  // namespace brave_wallet
 

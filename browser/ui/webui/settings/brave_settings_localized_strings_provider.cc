@@ -67,6 +67,8 @@ const char16_t kBraveSyncGuideUrl[] =
     u"https://support.brave.com/hc/en-us/articles/360047642371-Sync-FAQ";
 const char16_t kDeAmpLearnMoreUrl[] =
     u"https://support.brave.com/hc/en-us/articles/8611298579981";
+const char16_t kDebounceLearnMoreUrl[] =
+    u"https://brave.com/privacy-updates/11-debouncing/";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -153,6 +155,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"speedreaderSettingSubLabel", IDS_SETTINGS_SPEEDREADER_SUB_LABEL},
     {"deAmpSettingLabel", IDS_SETTINGS_DE_AMP_LABEL},
     {"deAmpSettingSubLabel", IDS_SETTINGS_DE_AMP_SUB_LABEL},
+    {"debounceSettingLabel", IDS_SETTINGS_DEBOUNCE_LABEL},
+    {"debounceSettingSubLabel", IDS_SETTINGS_DEBOUNCE_SUB_LABEL},
     {"braveShieldsTitle", IDS_SETTINGS_BRAVE_SHIELDS_TITLE},
     {"braveShieldsDefaultsSectionTitle",
      IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE},
@@ -276,6 +280,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveHelpTipsWarnBeforeClosingWindow",
      IDS_SETTINGS_WINDOW_CLOSING_CONFIRM_OPTION_LABEL},
     {"braveHelpTipsClosingLastTab", IDS_SETTINGS_CLOSING_LAST_TAB_OPTION_LABEL},
+    {"braveDisableClickableMuteIndicators",
+     IDS_SETTINGS_DISABLE_CLICKABLE_MUTE_INDICATORS},
     // New Tab Page
     {"braveNewTab", IDS_SETTINGS_NEW_TAB},
     {"braveNewTabBraveRewards", IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS},
@@ -583,6 +589,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
   html_source->AddString("ipfsDNSLinkLearnMoreURL", kDNSLinkLearnMoreURL);
   html_source->AddString("deAmpLearnMoreURL", kDeAmpLearnMoreUrl);
+  html_source->AddString("debounceLearnMoreURL", kDebounceLearnMoreUrl);
   auto confirmation_phrase = brave_l10n::GetLocalizedResourceUTF16String(
       IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE);
   html_source->AddString("walletResetConfirmationPhrase", confirmation_phrase);

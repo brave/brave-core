@@ -70,8 +70,8 @@ script/generate_licenses.py @fmarier
 # Crypto Wallets
 browser/brave_wallet/ @brave/crypto-wallets-core
 components/brave_wallet/ @brave/crypto-wallets-core
-components/brave_wallet/browser/brave_wallet_provider_delegate.h @brave/crypto-wallets @brave/ios
-components/brave_wallet/resources/*.js @brave/crypto-wallets @brave/ios
+components/brave_wallet/browser/brave_wallet_provider_delegate.h @brave/crypto-wallets-core @brave/ios
+components/brave_wallet/resources/*.js @brave/crypto-wallets-core @brave/ios
 components/brave_wallet_ui/ @brave/crypto-wallets-front-end
 
 # Brave Referrals Service

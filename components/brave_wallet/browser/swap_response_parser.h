@@ -7,19 +7,21 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_RESPONSE_PARSER_H_
 
 #include <string>
+
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
-mojom::SwapResponsePtr ParseSwapResponse(const std::string& json,
+mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
                                          bool expect_transaction_data);
-mojom::SwapErrorResponsePtr ParseSwapErrorResponse(const std::string& json);
+mojom::SwapErrorResponsePtr ParseSwapErrorResponse(
+    const base::Value& json_value);
 
-mojom::JupiterQuotePtr ParseJupiterQuote(const std::string& json);
+mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value);
 mojom::JupiterSwapTransactionsPtr ParseJupiterSwapTransactions(
-    const std::string& json);
+    const base::Value& json_value);
 mojom::JupiterErrorResponsePtr ParseJupiterErrorResponse(
-    const std::string& json);
+    const base::Value& json_value);
 absl::optional<std::string> ConvertAllNumbersToString(const std::string& json);
 }  // namespace brave_wallet
 

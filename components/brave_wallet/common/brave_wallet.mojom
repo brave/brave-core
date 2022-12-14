@@ -19,6 +19,9 @@ interface EventsListener {
   // Fired when the accounts have changed such as when the wallet locked, the
   // selected account changes, a new account is given permission, etc.
   AccountsChangedEvent(array<string> accounts);
+
+  // Fired when there is a message from eth_subscribe
+  MessageEvent(string subscription_id, mojo_base.mojom.Value result);
 };
 
 interface SolanaEventsListener {

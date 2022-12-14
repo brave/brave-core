@@ -26,6 +26,7 @@ public class BraveChannelDefinitions {
 
     public class ChannelGroupId {
         public static final String BRAVE_ADS = "com.brave.browser.ads";
+        public static final String GENERAL = "general";
     }
 
     @SuppressLint("NewApi")

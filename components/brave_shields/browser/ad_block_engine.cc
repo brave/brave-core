@@ -163,8 +163,8 @@ void AdBlockEngine::EnableTag(const std::string& tag, bool enabled) {
   }
 }
 
-void AdBlockEngine::AddResources(const std::string& resources) {
-  ad_block_client_->addResources(resources);
+void AdBlockEngine::UseResources(const std::string& resources) {
+  ad_block_client_->useResources(resources);
 }
 
 bool AdBlockEngine::TagExists(const std::string& tag) {
@@ -207,7 +207,7 @@ void AdBlockEngine::UpdateAdBlockClient(
     std::unique_ptr<adblock::Engine> ad_block_client,
     const std::string& resources_json) {
   ad_block_client_ = std::move(ad_block_client);
-  AddResources(resources_json);
+  UseResources(resources_json);
   AddKnownTagsToAdBlockInstance();
   if (test_observer_) {
     test_observer_->OnEngineUpdated();

@@ -71,6 +71,7 @@
   setAccountTransactions,
   setAllNetworks,
   setAllTokensList,
+  setAssetAutoDiscoveryCompleted,
   setCoinMarkets,
   setDefaultAccounts,
   setDefaultNetworks,

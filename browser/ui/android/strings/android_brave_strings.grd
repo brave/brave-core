@@ -311,6 +311,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_DE_AMP_SUMMARY" desc="Summary for De-AMP feature">
         Always visit original (non-AMP) page URLs, instead of Google's Accelerated Mobile Page versions
       </message>
+      <message name="IDS_DEBOUNCE_SWITCH" desc="Switch to activate Debounce feature">
+        Auto-redirect tracking URLs
+      </message>
+      <message name="IDS_DEBOUNCE_SUMMARY" desc="Summary for Debounce feature">
+        Enable support for bypassing top-level redirect tracking URLs.
+      </message>
       <message name="IDS_BRAVE_SHIELDS_BLOCKS_SCRIPTS_SWITCH" desc="Switch for Block Scripts.">
         Block Scripts
       </message>
@@ -3320,6 +3326,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WALLET_GENERATION_DISABLED_ERROR_TEXT" desc="wallet generation disabled error text">
       New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LEARN_MORE">%1$s</ph>
+    </message>
+    <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network Filter Selector All Networks">
+      All Networks
+    </message>
+    <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY" desc="Network Filter Selector Secondary Networks">
+      Secondary Networks
     </message>
   </messages>
   </release>

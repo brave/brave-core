@@ -158,7 +158,8 @@ void PublishersController::EnsurePublishersIsUpdating() {
          api_request_helper::APIRequestResult api_request_result) {
         // TODO(petemill): handle bad status or response
         Publishers publisher_list;
-        ParseCombinedPublisherList(api_request_result.body(), &publisher_list);
+        ParseCombinedPublisherList(api_request_result.value_body(),
+                                   &publisher_list);
         // Add user enabled statuses
         const auto& publisher_prefs =
             controller->prefs_->GetDict(prefs::kBraveTodaySources);

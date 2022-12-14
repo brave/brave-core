@@ -227,7 +227,8 @@ void SidebarControlView::OnButtonPressed(views::View* view) {
   if (view == sidebar_settings_view_) {
     browser_->sidebar_controller()->LoadAtTab(
         GURL("brave://settings?search=" +
-             l10n_util::GetStringUTF8(IDS_SETTINGS_SIDEBAR_SHOW_OPTION_TITLE)));
+             l10n_util::GetStringUTF8(
+                 IDS_SETTINGS_APPEARNCE_SETTINGS_SIDEBAR_PART_TITLE)));
   }
 }
 

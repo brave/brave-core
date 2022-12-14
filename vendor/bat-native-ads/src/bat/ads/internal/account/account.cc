@@ -36,7 +36,7 @@ namespace ads {
 
 namespace {
 
-bool ShouldResetConfirmations() {
+bool ShouldResetIssuersAndConfirmations() {
   return ShouldRewardUser() && AdsClientHelper::GetInstance()->GetBooleanPref(
                                    prefs::kShouldMigrateVerifiedRewardsUser);
 }
@@ -44,12 +44,13 @@ bool ShouldResetConfirmations() {
 }  // namespace
 
 Account::Account(privacy::TokenGeneratorInterface* token_generator)
-    : confirmations_(std::make_unique<Confirmations>(token_generator)),
+    : token_generator_(token_generator),
+      confirmations_(std::make_unique<Confirmations>(token_generator_)),
       issuers_(std::make_unique<Issuers>()),
       redeem_unblinded_payment_tokens_(
           std::make_unique<RedeemUnblindedPaymentTokens>()),
       refill_unblinded_tokens_(
-          std::make_unique<RefillUnblindedTokens>(token_generator)),
+          std::make_unique<RefillUnblindedTokens>(token_generator_)),
       wallet_(std::make_unique<Wallet>()) {
   PrefManager::GetInstance()->AddObserver(this);
 
@@ -101,8 +102,8 @@ const WalletInfo& Account::GetWallet() const {
   return wallet_->Get();
 }
 
-void Account::Process() const {
-  MaybeResetConfirmations();
+void Account::Process() {
+  MaybeResetIssuersAndConfirmations();
 
   NotifyStatementOfAccountsDidChange();
 
@@ -198,12 +199,14 @@ void Account::FailedToProcessDeposit(
 void Account::ProcessClearingCycle() const {
   confirmations_->ProcessRetryQueue();
 
-  if (ShouldRewardUser()) {
-    ProcessUnclearedTransactions();
-  }
+  ProcessUnclearedTransactions();
 }
 
 void Account::ProcessUnclearedTransactions() const {
+  if (!ShouldRewardUser()) {
+    return;
+  }
+
   const WalletInfo& wallet = GetWallet();
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 }
@@ -227,17 +230,34 @@ void Account::WalletDidChange(const WalletInfo& wallet) const {
   });
 }
 
-void Account::MaybeResetConfirmations() const {
-  if (!ShouldResetConfirmations()) {
+void Account::MaybeResetIssuersAndConfirmations() {
+  if (!ShouldResetIssuersAndConfirmations()) {
     return;
   }
 
+  confirmations_ = std::make_unique<Confirmations>(token_generator_);
+  confirmations_->SetDelegate(this);
   ResetConfirmations();
+
+  issuers_ = std::make_unique<Issuers>();
+  issuers_->SetDelegate(this);
+
+  redeem_unblinded_payment_tokens_ =
+      std::make_unique<RedeemUnblindedPaymentTokens>();
+  redeem_unblinded_payment_tokens_->SetDelegate(this);
+
+  refill_unblinded_tokens_ =
+      std::make_unique<RefillUnblindedTokens>(token_generator_);
+  refill_unblinded_tokens_->SetDelegate(this);
+
+  ResetIssuers();
 
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kShouldMigrateVerifiedRewardsUser, false);
 
-  TopUpUnblindedTokens();
+  MaybeGetIssuers();
+
+  ProcessClearingCycle();
 }
 
 void Account::TopUpUnblindedTokens() const {
@@ -292,11 +312,11 @@ void Account::NotifyStatementOfAccountsDidChange() const {
 
 void Account::OnPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
-    MaybeGetIssuers();
+    MaybeResetIssuersAndConfirmations();
 
-    MaybeResetConfirmations();
+    MaybeGetIssuers();
   } else if (path == prefs::kShouldMigrateVerifiedRewardsUser) {
-    MaybeResetConfirmations();
+    MaybeResetIssuersAndConfirmations();
   }
 }
 

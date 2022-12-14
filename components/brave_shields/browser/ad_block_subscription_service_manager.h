@@ -106,7 +106,7 @@ class AdBlockSubscriptionServiceManager {
                           std::string* mock_data_url,
                           std::string* rewritten_url);
   void EnableTag(const std::string& tag, bool enabled);
-  void AddResources(const std::string& resources);
+  void UseResources(const std::string& resources);
 
   absl::optional<base::Value> UrlCosmeticResources(const std::string& url);
   base::Value::List HiddenClassIdSelectors(

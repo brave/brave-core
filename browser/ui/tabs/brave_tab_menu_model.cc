@@ -5,6 +5,11 @@
 
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 
+#include <algorithm>
+#include <vector>
+
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -12,6 +17,8 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/sessions/core/tab_restore_service.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/base/models/list_selection_model.h"
 
 BraveTabMenuModel::BraveTabMenuModel(
     ui::SimpleMenuModel::Delegate* delegate,
@@ -26,7 +33,13 @@ BraveTabMenuModel::BraveTabMenuModel(
         TabRestoreServiceFactory::GetForProfile(browser->profile());
   }
 
-  Build();
+  auto indices = static_cast<BraveTabStripModel*>(tab_strip_model)
+                     ->GetTabIndicesForCommandAt(index);
+  all_muted_ = std::all_of(
+      indices.begin(), indices.end(), [&tab_strip_model](int index) {
+        return tab_strip_model->GetWebContentsAt(index)->IsAudioMuted();
+      });
+  Build(indices.size());
 }
 
 BraveTabMenuModel::~BraveTabMenuModel() = default;
@@ -44,15 +57,25 @@ int BraveTabMenuModel::GetRestoreTabCommandStringId() const {
     return id;
 
   if (restore_service_->entries().front()->type ==
-          sessions::TabRestoreService::WINDOW) {
-      id = IDS_RESTORE_WINDOW;
+      sessions::TabRestoreService::WINDOW) {
+    id = IDS_RESTORE_WINDOW;
   }
 
   return id;
 }
 
-void BraveTabMenuModel::Build() {
+void BraveTabMenuModel::Build(int selected_tab_count) {
   AddSeparator(ui::NORMAL_SEPARATOR);
+  auto mute_site_index =
+      GetIndexOfCommandId(TabStripModel::CommandToggleSiteMuted);
+
+  auto toggle_tab_mute_label = l10n_util::GetPluralStringFUTF16(
+      all_muted() ? IDS_TAB_CXMENU_SOUND_UNMUTE_TAB
+                  : IDS_TAB_CXMENU_SOUND_MUTE_TAB,
+      selected_tab_count);
+  InsertItemAt(mute_site_index.value_or(GetItemCount()), CommandToggleTabMuted,
+               toggle_tab_mute_label);
+
   AddItemWithStringId(CommandRestoreTab, GetRestoreTabCommandStringId());
   AddItemWithStringId(CommandBookmarkAllTabs, IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
   AddCheckItemWithStringId(CommandShowVerticalTabs,

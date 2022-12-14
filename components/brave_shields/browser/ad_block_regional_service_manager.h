@@ -70,7 +70,7 @@ class AdBlockRegionalServiceManager
       blink::mojom::ResourceType resource_type,
       const std::string& tab_host);
   void EnableTag(const std::string& tag, bool enabled);
-  void AddResources(const std::string& resources);
+  void UseResources(const std::string& resources);
   bool IsFilterListAvailable(const std::string& uuid) const;
   bool IsFilterListEnabled(const std::string& uuid) const;
   void EnableFilterList(const std::string& uuid, bool enabled);

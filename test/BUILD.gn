@@ -166,6 +166,7 @@ test("brave_unit_tests") {
     "//brave/browser",
     "//brave/browser:unit_tests",
     "//brave/browser/brave_rewards/rewards_panel:unit_tests",
+    "//brave/browser/brave_vpn/dns:unit_tests",
     "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:unit_tests",
     "//brave/browser/content_settings:unit_tests",

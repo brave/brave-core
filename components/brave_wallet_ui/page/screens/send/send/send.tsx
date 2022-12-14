@@ -25,8 +25,7 @@ import { reduceAddress } from '../../../../utils/reduce-address'
 import { endsWithAny } from '../../../../utils/string-utils'
 
 // Hooks
-import useSend from '../../../../common/hooks/send'
-import { usePreset } from '../../../../common/hooks'
+import { usePreset, useBalanceUpdater, useSend } from '../../../../common/hooks'
 
 // Styled Components
 import {
@@ -63,6 +62,9 @@ export const Send = (props: Props) => {
   const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
   const networks = useUnsafeWalletSelector(WalletSelectors.networkList)
+
+  // Hooks
+  useBalanceUpdater()
 
   const {
     toAddressOrUrl,

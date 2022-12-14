@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -12,9 +13,9 @@ export const localeStrings = {
   aboutRewardsText: 'Using Brave Rewards helps support content creators, and lets you earn BAT.',
   connectAccount: 'Connect account',
   connectAccountText: '$1Ready to start earning BAT?$2 Just connect your custodial account to your Rewards profile. If you don’t have an account, you’ll get the chance to create one.',
-  connectAccountNoProviders: 'To start earning BAT, you need to connect a custodial account to Brave Rewards. Unfortunately, there’s no custodian available in your region, so earning isn’t available at this time. However, you’ll still be automatically supporting creators by using Rewards.',
+  connectAccountNoProviders: 'To earn BAT, users must connect a custodial account to Brave Rewards. Unfortunately, there\'s no custodian available in your region, so earning isn\'t available. For now, turning on Brave Rewards will automatically support creators.',
   learnMore: 'Learn more',
-  publisherCountText: 'You’ve visited $1 creators supported by users like you',
+  publisherCountText: 'This month, you\'ve visited $1 creators supported by Brave Rewards',
   headerTitle: 'Brave Rewards',
   headerTextAdsEnabled: 'You are helping support content creators',
   headerTextAdsDisabled: 'Turn on to help support content creators',
@@ -25,9 +26,12 @@ export const localeStrings = {
   unverifiedCreator: 'Unverified Creator',
   verifiedCreator: 'Verified Creator',
   refreshStatus: 'Refresh Creator verification status',
-  pendingTipText: 'Any tip you make will remain pending and retry automatically for 90 days. $1Learn more$2',
+  pendingTipText: 'For now, any tip you make will remain pending ' +
+                  'and retry automatically for 90 days. $1Learn more$2',
   pendingTipTitle: 'This creator is not signed up yet.',
-  pendingTipTitleRegistered: 'This creator is currently not configured to receive tips from your Rewards custodial wallet service.',
+  pendingTipTitleRegistered: 'You\'re connected to $1, but this creator ' +
+                             'is connected to $2. This means your tip ' +
+                             'can\'t reach this creator.',
   platformPublisherTitle: '$1 on $2',
   attention: 'Attention',
   sendTip: 'Send Tip',

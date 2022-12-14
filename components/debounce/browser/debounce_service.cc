@@ -13,6 +13,8 @@
 #include "base/containers/flat_set.h"
 #include "base/logging.h"
 #include "brave/components/debounce/browser/debounce_component_installer.h"
+#include "brave/components/debounce/common/pref_names.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/origin.h"
 
@@ -47,6 +49,15 @@ bool DebounceService::Debounce(const GURL& original_url,
     }
   }
   return false;
+}
+
+// static
+void DebounceService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(prefs::kDebounceEnabled, true);  // default on
+}
+
+bool DebounceService::IsEnabled() {
+  return prefs_->GetBoolean(prefs::kDebounceEnabled);
 }
 
 }  // namespace debounce

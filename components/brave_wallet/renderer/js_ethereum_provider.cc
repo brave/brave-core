@@ -577,4 +577,15 @@ void JSEthereumProvider::AccountsChangedEvent(
   FireEvent(ethereum::kAccountsChangedEvent, std::move(event_args));
 }
 
+void JSEthereumProvider::MessageEvent(const std::string& subscription_id,
+                                      base::Value result) {
+  base::Value::Dict event_args;
+  base::Value::Dict data;
+  data.Set("subscription", subscription_id);
+  data.Set("result", std::move(result));
+  event_args.Set("type", "eth_subscription");
+  event_args.Set("data", std::move(data));
+  FireEvent(ethereum::kMessageEvent, base::Value(std::move(event_args)));
+}
+
 }  // namespace brave_wallet

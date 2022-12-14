@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.app;
 
+import static org.chromium.chrome.browser.app.domain.NetworkSelectorModel.Mode.DEFAULT_WALLET_NETWORK;
+import static org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity.NETWORK_SELECTOR_MODE;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
@@ -92,6 +94,7 @@ import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import org.chromium.chrome.browser.DormantUsersEngagementDialogFragment;
 import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
+import org.chromium.chrome.browser.app.domain.NetworkSelectorModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
@@ -240,8 +243,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private static final List<String> yandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
-    private BraveSafeBrowsingApiHandler mBraveSafeBrowsingApiHandler;
-
     private String mPurchaseToken = "";
     private String mProductId = "";
     private boolean mIsVerification;
@@ -305,7 +306,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         boolean safeBrowsingPrefEnabled =
                 SafeBrowsingBridge.getSafeBrowsingState() != SafeBrowsingState.NO_SAFE_BROWSING;
         if (safeBrowsingFlagEnabled && safeBrowsingPrefEnabled) {
-            mBraveSafeBrowsingApiHandler.initSafeBrowsing();
+            executeInitSafeBrowsing(0);
         } else if (!safeBrowsingFlagEnabled && safeBrowsingPrefEnabled) {
             SafeBrowsingBridge.setSafeBrowsingState(SafeBrowsingState.NO_SAFE_BROWSING);
         }
@@ -403,6 +404,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             NotificationPermissionController.detach(mNotificationPermissionController);
             mNotificationPermissionController = null;
         }
+        BraveSafeBrowsingApiHandler.getInstance().shutdownSafeBrowsing();
         super.onDestroyInternal();
         cleanUpNativeServices();
     }
@@ -781,18 +783,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> { BraveStatsUtil.removeShareStatsFile(); });
-        if (mBraveSafeBrowsingApiHandler == null) {
-            mBraveSafeBrowsingApiHandler =
-                    new BraveSafeBrowsingApiHandler(this, BraveConfig.SAFEBROWSING_API_KEY, this);
-            SafeBrowsingApiBridge.setHandler(mBraveSafeBrowsingApiHandler);
-            SafeBrowsingApiBridge.ensureInitialized();
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mBraveSafeBrowsingApiHandler.shutdownSafeBrowsing();
+        BraveSafeBrowsingApiHandler.getInstance().setDelegate(
+                BraveConfig.SAFEBROWSING_API_KEY, this);
     }
 
     @Override
@@ -819,6 +811,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void turnSafeBrowsingOff() {
         SafeBrowsingBridge.setSafeBrowsingState(SafeBrowsingState.NO_SAFE_BROWSING);
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
     }
 
     public void maybeSolveAdaptiveCaptcha() {
@@ -1233,8 +1230,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     // should only be called if the wallet is setup and unlocked
     public void openNetworkSelection() {
+        openNetworkSelection(DEFAULT_WALLET_NETWORK);
+    }
+
+    // should only be called if the wallet is setup and unlocked
+    public void openNetworkSelection(NetworkSelectorModel.Mode mode) {
         Intent braveNetworkSelectionIntent = new Intent(this, NetworkSelectorActivity.class);
         braveNetworkSelectionIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        // Either in global or local network selection mode
+        braveNetworkSelectionIntent.putExtra(NETWORK_SELECTOR_MODE, mode);
         startActivity(braveNetworkSelectionIntent);
     }
 
@@ -1278,10 +1282,16 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             };
 
     private void checkAndshowNotificationWarningDialog() {
-        if (BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(this)
+        OnboardingPrefManager.getInstance().updateLaunchCount();
+        if (OnboardingPrefManager.getInstance().launchCount() >= 3
+                && BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(this)
                 && !OnboardingPrefManager.getInstance()
                             .isNotificationPermissionEnablingDialogShown()) {
-            showNotificationWarningDialog();
+            if (BravePermissionUtils.hasNotificationPermission(this)) {
+                showNotificationWarningDialog();
+            } else {
+                maybeShowNotificationPermissionRetionale();
+            }
             OnboardingPrefManager.getInstance().setNotificationPermissionEnablingDialogShown(true);
         } else {
             checkForNotificationData();
@@ -1931,5 +1941,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     public void addOrEditBookmark(final Tab tabToBookmark) {
         ((TabBookmarker) mTabBookmarkerSupplier.get()).addOrEditBookmark(tabToBookmark);
+    }
+
+    // We call that method with an interval
+    // BraveSafeBrowsingApiHandler.SAFE_BROWSING_INIT_INTERVAL_MS,
+    // as upstream does, to keep the GmsCore process alive.
+    private void executeInitSafeBrowsing(long delay) {
+        PostTask.postDelayedTask(TaskTraits.USER_VISIBLE_MAY_BLOCK, () -> {
+            BraveSafeBrowsingApiHandler.getInstance().initSafeBrowsing();
+            executeInitSafeBrowsing(BraveSafeBrowsingApiHandler.SAFE_BROWSING_INIT_INTERVAL_MS);
+        }, delay);
     }
 }

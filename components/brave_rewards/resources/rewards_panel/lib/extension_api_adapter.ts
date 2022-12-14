@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -292,7 +293,6 @@ function defaultPublisherInfo (url: string) {
     name: parsedURL.hostname,
     icon: origin ? `chrome://favicon/size/64@1x/${parsedURL.origin}` : '',
     platform: null,
-    registered: false,
     attentionScore: 0,
     autoContributeEnabled: true,
     monthlyTip: 0,
@@ -338,11 +338,9 @@ export async function getPublisherInfo (tabId: number) {
   }
 
   const supportedWalletProviders: ExternalWalletProvider[] = []
-  let registered = true
 
   switch (Number(publisher.status) || 0) {
     case 0: // NOT_VERIFIED
-      registered = false
       break
     case 2: // UPHOLD_VERIFIED
       supportedWalletProviders.push('uphold')
@@ -362,7 +360,6 @@ export async function getPublisherInfo (tabId: number) {
     name: String(publisher.name || ''),
     icon: iconPath ? `chrome://favicon/size/64@1x/${iconPath}` : '',
     platform: getPublisherPlatform(String(publisher.provider || '')),
-    registered,
     attentionScore: Number(publisher.percentage) / 100 || 0,
     autoContributeEnabled: !publisher.excluded,
     monthlyTip: await getMonthlyTipAmount(publisherKey),

@@ -16,6 +16,7 @@ extern const char kDisconnectEvent[];
 namespace ethereum {
 extern const char kChainChangedEvent[];
 extern const char kAccountsChangedEvent[];
+extern const char kMessageEvent[];
 }  // namespace ethereum
 
 namespace solana {
@@ -44,6 +45,9 @@ constexpr char kEthDecrypt[] = "eth_decrypt";
 constexpr char kWalletWatchAsset[] = "wallet_watchAsset";
 constexpr char kMetamaskWatchAsset[] = "metamask_watchAsset";
 constexpr char kWeb3ClientVersion[] = "web3_clientVersion";
+constexpr char kEthSubscribe[] = "eth_subscribe";
+constexpr char kEthUnsubscribe[] = "eth_unsubscribe";
+constexpr char kEthSubscribeNewHeads[] = "newHeads";
 
 // We currently don't handle it until MetaMask point it to v3 or v4 other than
 // v1 or v2

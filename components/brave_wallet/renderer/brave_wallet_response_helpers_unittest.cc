@@ -6,12 +6,14 @@
 #include <memory>
 #include <string>
 
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using base::test::ParseJson;
 
 namespace brave_wallet {
 
@@ -37,8 +39,8 @@ TEST(BraveWalletResponseHelpersTest,
       "\"message\":\"The method eth_accountsq does not exist/is not "
       "available\"}}";
   bool reject = false;
-  base::Value result =
-      GetProviderRequestReturnFromEthJsonResponse(200, response, &reject);
+  base::Value result = GetProviderRequestReturnFromEthJsonResponse(
+      200, ParseJson(response), &reject);
   EXPECT_TRUE(reject);
   ASSERT_TRUE(result.is_dict());
   auto& dict = result.GetDict();
@@ -54,10 +56,9 @@ TEST(BraveWalletResponseHelpersTest,
 
 TEST(BraveWalletResponseHelpersTest,
      GetProviderRequestReturnFromEthJsonResponseErrorHTTP) {
-  std::string response = "";
   bool reject = false;
   base::Value result =
-      GetProviderRequestReturnFromEthJsonResponse(400, response, &reject);
+      GetProviderRequestReturnFromEthJsonResponse(400, base::Value(), &reject);
   ASSERT_TRUE(result.is_dict());
   auto& dict = result.GetDict();
   const auto result_code = dict.FindInt("code");
@@ -73,8 +74,8 @@ TEST(BraveWalletResponseHelpersTest,
   std::string response =
       "{\"jsonrpc\":\"2.0\",\"id\":2025678280,\"result\":\"0xbb4323\"}";
   bool reject = false;
-  auto result =
-      GetProviderRequestReturnFromEthJsonResponse(200, response, &reject);
+  auto result = GetProviderRequestReturnFromEthJsonResponse(
+      200, ParseJson(response), &reject);
 
   EXPECT_TRUE(result.is_string());
   EXPECT_FALSE(reject);

@@ -1,8 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as mojom from '../../shared/lib/mojom'
+import { PublisherStatus } from '../../shared/lib/publisher_status'
 
 type EmptyMediaData = {
   mediaType: 'none'
@@ -52,14 +54,6 @@ export interface DialogArgs {
 export type TipKind = 'one-time' | 'monthly'
 
 export type PaymentKind = 'bat'
-
-export enum PublisherStatus {
-  NOT_VERIFIED = 0,
-  CONNECTED = 1,
-  UPHOLD_VERIFIED = 2,
-  BITFLYER_VERIFIED = 3,
-  GEMINI_VERIFIED = 4
-}
 
 export interface PublisherInfo {
   publisherKey: string

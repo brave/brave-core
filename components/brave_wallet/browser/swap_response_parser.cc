@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/containers/contains.h"
-#include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -29,10 +28,8 @@ constexpr char kJupiterNoRoutesMessage[] =
 
 namespace brave_wallet {
 
-mojom::SwapResponsePtr ParseSwapResponse(const std::string& json,
+mojom::SwapResponsePtr ParseSwapResponse(const base::Value& json_value,
                                          bool expect_transaction_data) {
-  auto swap_response = mojom::SwapResponse::New();
-
   // {
   //   "price":"1916.27547998814058355",
   //   "guaranteedPrice":"1935.438234788021989386",
@@ -69,19 +66,12 @@ mojom::SwapResponsePtr ParseSwapResponse(const std::string& json,
   //   ]
   // }
 
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return nullptr;
-  }
-
   auto swap_response_value =
-      swap_responses::SwapResponse0x::FromValue(*records_v);
+      swap_responses::SwapResponse0x::FromValue(json_value);
   if (!swap_response_value)
     return nullptr;
 
+  auto swap_response = mojom::SwapResponse::New();
   swap_response->price = swap_response_value->price;
 
   if (expect_transaction_data) {
@@ -125,7 +115,8 @@ mojom::SwapResponsePtr ParseSwapResponse(const std::string& json,
   return swap_response;
 }
 
-mojom::SwapErrorResponsePtr ParseSwapErrorResponse(const std::string& json) {
+mojom::SwapErrorResponsePtr ParseSwapErrorResponse(
+    const base::Value& json_value) {
   // https://github.com/0xProject/0x-monorepo/blob/development/packages/json-schemas/schemas/relayer_api_error_response_schema.json
   //
   // {
@@ -149,14 +140,8 @@ mojom::SwapErrorResponsePtr ParseSwapErrorResponse(const std::string& json) {
   // 	]
   // }
 
-  absl::optional<base::Value> records_v = base::JSONReader::Read(json);
-  if (!records_v || !records_v->is_dict()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return nullptr;
-  }
-
   auto swap_error_response_value =
-      swap_responses::SwapErrorResponse0x::FromValue(*records_v);
+      swap_responses::SwapErrorResponse0x::FromValue(json_value);
   if (!swap_error_response_value) {
     return nullptr;
   }
@@ -183,7 +168,7 @@ mojom::SwapErrorResponsePtr ParseSwapErrorResponse(const std::string& json) {
   return result;
 }
 
-mojom::JupiterQuotePtr ParseJupiterQuote(const std::string& json) {
+mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value) {
   //    {
   //      "data": [
   //        {
@@ -220,16 +205,8 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const std::string& json) {
   //      ],
   //      "timeTaken": "0.044471802000089156"
   //    }
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return nullptr;
-  }
-
   auto quote_value =
-      swap_responses::JupiterQuoteResponse::FromValue(*records_v);
+      swap_responses::JupiterQuoteResponse::FromValue(json_value);
   if (!quote_value)
     return nullptr;
 
@@ -304,20 +281,12 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const std::string& json) {
 }
 
 mojom::JupiterSwapTransactionsPtr ParseJupiterSwapTransactions(
-    const std::string& json) {
-  auto swap_transactions = mojom::JupiterSwapTransactions::New();
-
-  auto records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return nullptr;
-  }
-
-  auto value = swap_responses::JupiterSwapTransactions::FromValue(*records_v);
+    const base::Value& json_value) {
+  auto value = swap_responses::JupiterSwapTransactions::FromValue(json_value);
   if (!value)
     return nullptr;
+
+  auto swap_transactions = mojom::JupiterSwapTransactions::New();
 
   swap_transactions->setup_transaction = "";
   if (value->setup_transaction)
@@ -332,16 +301,9 @@ mojom::JupiterSwapTransactionsPtr ParseJupiterSwapTransactions(
 }
 
 mojom::JupiterErrorResponsePtr ParseJupiterErrorResponse(
-    const std::string& json) {
-  auto records_v =
-      base::JSONReader::Read(json, base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return nullptr;
-  }
-
+    const base::Value& json_value) {
   auto jupiter_error_response_value =
-      swap_responses::JupiterErrorResponse::FromValue(*records_v);
+      swap_responses::JupiterErrorResponse::FromValue(json_value);
   if (!jupiter_error_response_value) {
     return nullptr;
   }

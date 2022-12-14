@@ -11,14 +11,18 @@
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/swap_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using base::test::ParseJson;
+
 namespace brave_wallet {
 
 namespace {
+
 const char* GetJupiterQuoteTemplate() {
   return R"(
     {
@@ -90,7 +94,8 @@ TEST(SwapResponseParserUnitTest, ParsePriceQuote) {
       ]
     }
   )");
-  mojom::SwapResponsePtr swap_response = ParseSwapResponse(json, false);
+  mojom::SwapResponsePtr swap_response =
+      ParseSwapResponse(ParseJson(json), false);
   ASSERT_TRUE(swap_response);
 
   ASSERT_EQ(swap_response->price, "1916.27547998814058355");
@@ -123,15 +128,14 @@ TEST(SwapResponseParserUnitTest, ParsePriceQuote) {
   ASSERT_EQ(swap_response->sources.at(0)->proportion, "1");
 
   json = R"({"price": "3"})";
-  ASSERT_FALSE(ParseSwapResponse(json, false));
+  ASSERT_FALSE(ParseSwapResponse(ParseJson(json), false));
   json = R"({"price": 3})";
-  ASSERT_FALSE(ParseSwapResponse(json, false));
+  ASSERT_FALSE(ParseSwapResponse(ParseJson(json), false));
   json = "3";
-  ASSERT_FALSE(ParseSwapResponse(json, false));
+  ASSERT_FALSE(ParseSwapResponse(ParseJson(json), false));
   json = "[3]";
-  ASSERT_FALSE(ParseSwapResponse(json, false));
-  json = "";
-  ASSERT_FALSE(ParseSwapResponse(json, false));
+  ASSERT_FALSE(ParseSwapResponse(ParseJson(json), false));
+  ASSERT_FALSE(ParseSwapResponse(base::Value(), false));
 }
 
 TEST(SwapResponseParserUnitTest, ParseTransactionPayload) {
@@ -164,7 +168,8 @@ TEST(SwapResponseParserUnitTest, ParseTransactionPayload) {
       ]
     }
   )");
-  mojom::SwapResponsePtr swap_response = ParseSwapResponse(json, true);
+  mojom::SwapResponsePtr swap_response =
+      ParseSwapResponse(ParseJson(json), true);
   ASSERT_TRUE(swap_response);
 
   ASSERT_EQ(swap_response->price, "1916.27547998814058355");
@@ -194,22 +199,21 @@ TEST(SwapResponseParserUnitTest, ParseTransactionPayload) {
   ASSERT_EQ(swap_response->sources.at(0)->proportion, "1");
 
   json = R"({"price": "3"})";
-  ASSERT_FALSE(ParseSwapResponse(json, true));
+  ASSERT_FALSE(ParseSwapResponse(ParseJson(json), true));
   json = R"({"price": 3})";
-  ASSERT_FALSE(ParseSwapResponse(json, true));
+  ASSERT_FALSE(ParseSwapResponse(ParseJson(json), true));
   json = "3";
-  ASSERT_FALSE(ParseSwapResponse(json, true));
+  ASSERT_FALSE(ParseSwapResponse(ParseJson(json), true));
   json = "[3]";
-  ASSERT_FALSE(ParseSwapResponse(json, true));
-  json = "";
-  ASSERT_FALSE(ParseSwapResponse(json, true));
+  ASSERT_FALSE(ParseSwapResponse(ParseJson(json), true));
+  ASSERT_FALSE(ParseSwapResponse(base::Value(), true));
 }
 
 TEST(SwapResponseParserUnitTest, ParseJupiterQuote) {
   auto* json_template = GetJupiterQuoteTemplate();
   std::string json = base::StringPrintf(json_template, "10000", "30");
 
-  mojom::JupiterQuotePtr swap_quote = ParseJupiterQuote(json);
+  mojom::JupiterQuotePtr swap_quote = ParseJupiterQuote(ParseJson(json));
   ASSERT_TRUE(swap_quote);
   ASSERT_EQ(swap_quote->routes.size(), 1UL);
   ASSERT_EQ(swap_quote->routes.at(0)->in_amount, 10000ULL);
@@ -246,38 +250,38 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuote) {
 
   // OK: Max uint64 amount value
   json = base::StringPrintf(json_template, "18446744073709551615", "30");
-  swap_quote = ParseJupiterQuote(json);
+  swap_quote = ParseJupiterQuote(ParseJson(json));
   ASSERT_TRUE(swap_quote);
 
   // OK: Max uint64 for lpFee value
   json = base::StringPrintf(json_template, "10000", "18446744073709551615");
-  swap_quote = ParseJupiterQuote(json);
+  swap_quote = ParseJupiterQuote(ParseJson(json));
   ASSERT_TRUE(swap_quote);
 
   // KO: Malformed quote
-  ASSERT_FALSE(ParseJupiterQuote(""));
+  ASSERT_FALSE(ParseJupiterQuote(base::Value()));
 
   // KO: Invalid quote
-  ASSERT_FALSE(ParseJupiterQuote(R"({"price": "3"})"));
+  ASSERT_FALSE(ParseJupiterQuote(ParseJson(R"({"price": "3"})")));
 
   // KO: uint64 amount value underflow
   json = base::StringPrintf(json_template, "-1", "30");
-  swap_quote = ParseJupiterQuote(json);
+  swap_quote = ParseJupiterQuote(ParseJson(json));
   ASSERT_FALSE(swap_quote);
 
   // KO: uint64 amount value overflow (UINT64_MAX + 1)
   json = base::StringPrintf(json_template, "18446744073709551616", "30");
-  swap_quote = ParseJupiterQuote(json);
+  swap_quote = ParseJupiterQuote(ParseJson(json));
   ASSERT_FALSE(swap_quote);
 
   // KO: Integer lpFee value underflow
   json = base::StringPrintf(json_template, "10000", "-1");
-  swap_quote = ParseJupiterQuote(json);
+  swap_quote = ParseJupiterQuote(ParseJson(json));
   ASSERT_FALSE(swap_quote);
 
   // KO: Integer lpFee value overflow (UINT64_MAX + 1)
   json = base::StringPrintf(json_template, "10000", "18446744073709551616");
-  swap_quote = ParseJupiterQuote(json);
+  swap_quote = ParseJupiterQuote(ParseJson(json));
   ASSERT_FALSE(swap_quote);
 }
 
@@ -289,14 +293,14 @@ TEST(SwapResponseParserUnitTest, ParseJupiterSwapTransactions) {
       "cleanupTransaction": "cleanup"
     })");
 
-  auto swap_transactions = ParseJupiterSwapTransactions(json);
+  auto swap_transactions = ParseJupiterSwapTransactions(ParseJson(json));
   ASSERT_TRUE(swap_transactions);
   ASSERT_EQ(swap_transactions->setup_transaction, "setup");
   ASSERT_EQ(swap_transactions->swap_transaction, "swap");
   ASSERT_EQ(swap_transactions->cleanup_transaction, "cleanup");
 
-  ASSERT_FALSE(ParseJupiterSwapTransactions(""));
-  ASSERT_FALSE(ParseJupiterSwapTransactions(R"({"foo": "bar"})"));
+  ASSERT_FALSE(ParseJupiterSwapTransactions(base::Value()));
+  ASSERT_FALSE(ParseJupiterSwapTransactions(ParseJson(R"({"foo": "bar"})")));
 }
 
 TEST(SwapResponseParserUnitTest, ParseSwapErrorResponse) {
@@ -314,7 +318,7 @@ TEST(SwapResponseParserUnitTest, ParseSwapErrorResponse) {
       ]
     })");
 
-    auto swap_error = ParseSwapErrorResponse(json);
+    auto swap_error = ParseSwapErrorResponse(ParseJson(json));
     EXPECT_EQ(swap_error->code, 100);
     EXPECT_EQ(swap_error->reason, "Validation Failed");
     EXPECT_EQ(swap_error->validation_errors.size(), 1u);
@@ -339,7 +343,7 @@ TEST(SwapResponseParserUnitTest, ParseSwapErrorResponse) {
       ]
     })");
 
-    auto swap_error = ParseSwapErrorResponse(json);
+    auto swap_error = ParseSwapErrorResponse(ParseJson(json));
     EXPECT_EQ(swap_error->code, 100);
     EXPECT_EQ(swap_error->reason, "Validation Failed");
     EXPECT_EQ(swap_error->validation_errors.size(), 1u);
@@ -360,7 +364,7 @@ TEST(SwapResponseParserUnitTest, ParseJupiterErrorResponse) {
       "message": "No routes found for the input and output mints"
     })");
 
-    auto jupiter_error = ParseJupiterErrorResponse(json);
+    auto jupiter_error = ParseJupiterErrorResponse(ParseJson(json));
     EXPECT_EQ(jupiter_error->status_code, "some code");
     EXPECT_EQ(jupiter_error->error, "error");
     EXPECT_EQ(jupiter_error->message,
@@ -376,7 +380,7 @@ TEST(SwapResponseParserUnitTest, ParseJupiterErrorResponse) {
       "message": "some message"
     })");
 
-    auto jupiter_error = ParseJupiterErrorResponse(json);
+    auto jupiter_error = ParseJupiterErrorResponse(ParseJson(json));
     EXPECT_EQ(jupiter_error->status_code, "some code");
     EXPECT_EQ(jupiter_error->error, "error");
     EXPECT_EQ(jupiter_error->message, "some message");

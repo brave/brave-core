@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
 
-#include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
@@ -18,7 +17,8 @@
 
 namespace brave_wallet {
 
-absl::optional<std::string> ParseSardineAuthToken(const std::string& json) {
+absl::optional<std::string> ParseSardineAuthToken(
+    const base::Value& json_value) {
   // Parses results like this:
   // {
   //   "clientToken":"74618e17-a537-4f5d-ab4d-9916739560b1",
@@ -26,16 +26,13 @@ absl::optional<std::string> ParseSardineAuthToken(const std::string& json) {
   //   "name": "brave-core",
   // }
 
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
-    VLOG(0) << "Invalid response, could not parse JSON, JSON is: " << json;
+  if (!json_value.is_dict()) {
+    VLOG(0) << "Invalid response, JSON is not a dict";
     return absl::nullopt;
   }
 
   const std::string* auth_token =
-      records_v->GetDict().FindString("clientToken");
+      json_value.GetDict().FindString("clientToken");
   if (!auth_token) {
     return absl::nullopt;
   }
@@ -43,7 +40,7 @@ absl::optional<std::string> ParseSardineAuthToken(const std::string& json) {
   return *auth_token;
 }
 
-bool ParseAssetPrice(const std::string& json,
+bool ParseAssetPrice(const base::Value& json_value,
                      const std::vector<std::string>& from_assets,
                      const std::vector<std::string>& to_assets,
                      std::vector<mojom::AssetPricePtr>* values) {
@@ -69,15 +66,12 @@ bool ParseAssetPrice(const std::string& json,
 
   DCHECK(values);
 
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+  if (!json_value.is_dict()) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
     return false;
   }
 
-  const auto& response_dict = records_v->GetDict();
+  const auto& response_dict = json_value.GetDict();
   const auto* payload = response_dict.FindDict("payload");
   if (!payload) {
     return false;
@@ -117,7 +111,7 @@ bool ParseAssetPrice(const std::string& json,
   return true;
 }
 
-bool ParseAssetPriceHistory(const std::string& json,
+bool ParseAssetPriceHistory(const base::Value& json_value,
                             std::vector<mojom::AssetTimePricePtr>* values) {
   DCHECK(values);
 
@@ -129,15 +123,12 @@ bool ParseAssetPriceHistory(const std::string& json,
   //   }
   // }
 
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+  if (!json_value.is_dict()) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
     return false;
   }
 
-  const auto& response_dict = records_v->GetDict();
+  const auto& response_dict = json_value.GetDict();
   const auto* payload = response_dict.FindDict("payload");
   if (!payload) {
     return false;
@@ -177,30 +168,7 @@ bool ParseAssetPriceHistory(const std::string& json,
   return true;
 }
 
-std::string ParseEstimatedTime(const std::string& json) {
-  // {
-  //   "payload": {
-  //     "status": "1",
-  //     "message": "",
-  //     "result": "3615"
-  //   },
-  //   "lastUpdated": "2021-09-22T21:45:40.015Z"
-  // }
-
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return "";
-  }
-
-  const std::string* result =
-      records_v->GetDict().FindStringByDottedPath("payload.result");
-  return result ? *result : "";
-}
-
-mojom::BlockchainTokenPtr ParseTokenInfo(const std::string& json,
+mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
                                          const std::string& chain_id,
                                          mojom::CoinType coin) {
   // {
@@ -238,15 +206,12 @@ mojom::BlockchainTokenPtr ParseTokenInfo(const std::string& json,
   //   "lastUpdated": "2021-12-09T22:02:23.187Z"
   // }
 
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+  if (!json_value.is_dict()) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
     return nullptr;
   }
 
-  const auto& response_dict = records_v->GetDict();
+  const auto& response_dict = json_value.GetDict();
   const auto* result = response_dict.FindListByDottedPath("payload.result");
   if (!result)
     return nullptr;
@@ -291,7 +256,7 @@ mojom::BlockchainTokenPtr ParseTokenInfo(const std::string& json,
       is_erc721 /* is_nft */, *symbol, decimals, true, "", "", chain_id, coin);
 }
 
-bool ParseCoinMarkets(const std::string& json,
+bool ParseCoinMarkets(const base::Value& json_value,
                       std::vector<mojom::CoinMarketPtr>* values) {
   DCHECK(values);
   // {
@@ -325,24 +290,17 @@ bool ParseCoinMarkets(const std::string& json,
   //   ],
   //   "lastUpdated": "2022-03-07T00:25:12.259823452Z"
   // }
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
-    VLOG(0) << "Invalid response, could not parse JSON, JSON is: " << json;
+
+  if (!json_value.is_dict()) {
     return false;
   }
 
-  if (!records_v->is_dict()) {
-    return false;
-  }
-
-  auto* payload = records_v->FindListKey("payload");
+  auto* payload = json_value.GetDict().FindList("payload");
   if (!payload) {
     return false;
   }
 
-  for (const auto& coin_market_list_it : payload->GetList()) {
+  for (const auto& coin_market_list_it : *payload) {
     if (!coin_market_list_it.is_dict()) {
       return false;
     }

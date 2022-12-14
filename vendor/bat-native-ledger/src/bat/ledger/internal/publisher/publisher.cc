@@ -277,7 +277,7 @@ void Publisher::SaveVisitInternal(const mojom::PublisherStatus status,
     return;
   }
 
-  bool is_verified = IsConnectedOrVerified(status);
+  bool is_verified = IsVerified(status);
 
   bool new_publisher = false;
   bool updated_publisher = false;
@@ -602,16 +602,8 @@ void Publisher::SynopsisNormalizerCallback(
                                                  [](const mojom::Result) {});
 }
 
-bool Publisher::IsConnectedOrVerified(const mojom::PublisherStatus status) {
-  switch (status) {
-    case mojom::PublisherStatus::CONNECTED:
-    case mojom::PublisherStatus::UPHOLD_VERIFIED:
-    case mojom::PublisherStatus::BITFLYER_VERIFIED:
-    case mojom::PublisherStatus::GEMINI_VERIFIED:
-      return true;
-    default:
-      return false;
-  }
+bool Publisher::IsVerified(mojom::PublisherStatus status) {
+  return status != mojom::PublisherStatus::NOT_VERIFIED;
 }
 
 void Publisher::GetPublisherActivityFromUrl(uint64_t windowId,

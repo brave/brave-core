@@ -198,8 +198,28 @@ void BraveVPNOSConnectionAPIMac::CreateVPNConnectionImpl(
         OnCreateFailed();
         return;
       }
-      VLOG(2) << "Create - saveToPrefs success";
-      OnCreated();
+      // Load & save twice avoid connect failure.
+      // This load & save twice hack could eliminate connect failure
+      // when os vpn entry needs to be newly created during the connect
+      // process.
+      VLOG(2) << "Create - load & save again.";
+      [vpn_manager loadFromPreferencesWithCompletionHandler:^(
+                       NSError* load_again_error) {
+        if (load_again_error) {
+          OnCreateFailed();
+          return;
+        }
+
+        [vpn_manager saveToPreferencesWithCompletionHandler:^(
+                         NSError* save_again_error) {
+          if (save_again_error) {
+            OnCreateFailed();
+            return;
+          }
+          OnCreated();
+        }];
+      }];
+
     }];
   }];
 }

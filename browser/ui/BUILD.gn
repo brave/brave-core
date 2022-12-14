@@ -291,7 +291,16 @@ source_set("ui") {
       "views/window_closing_confirm_dialog_view.cc",
       "views/window_closing_confirm_dialog_view.h",
     ]
-
+    if (enable_brave_vpn) {
+      if (is_win) {
+        sources += [
+          "views/brave_vpn/brave_vpn_dns_settings_notificiation_dialog_view.cc",
+          "views/brave_vpn/brave_vpn_dns_settings_notificiation_dialog_view.h",
+          "webui/settings/brave_settings_secure_dns_handler.cc",
+          "webui/settings/brave_settings_secure_dns_handler.h",
+        ]
+      }
+    }
     if (use_aura) {
       sources += [
         "views/renderer_context_menu/brave_render_view_context_menu_views.cc",

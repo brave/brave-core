@@ -9,9 +9,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +51,8 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.ApproveTxFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
@@ -61,6 +65,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.url.GURL;
 
@@ -87,6 +92,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     private Button mRejectAllTx;
     private int mCoinType;
     private long mSolanaEstimatedTxFee;
+    private WalletModel mWalletModel;
 
     public static ApproveTxBottomSheetDialogFragment newInstance(
             List<TransactionInfo> transactionInfos, TransactionInfo txInfo, String accountName,
@@ -203,6 +209,16 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     }
 
     @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mWalletModel = activity.getWalletModel();
+        }
+        return dialog;
+    }
+
+    @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         if (mApprovedTxObserver != null) {
@@ -288,17 +304,26 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                                         BlockchainToken[] filterByTokens =
                                                 tokens.toArray(new BlockchainToken[0]);
 
-                                        Utils.getTxExtraInfo(
-                                                (BraveWalletBaseActivity) getActivity(),
-                                                selectedNetwork, accounts, filterByTokens, false,
-                                                (assetPrices, fullTokenList, nativeAssetsBalances,
-                                                        blockchainTokensBalances) -> {
-                                                    if (!canUpdateUi()) return;
-                                                    fillAssetDependentControls(view,
-                                                            selectedNetwork, accounts, assetPrices,
-                                                            fullTokenList, nativeAssetsBalances,
-                                                            blockchainTokensBalances,
-                                                            mSolanaEstimatedTxFee);
+                                        if (mWalletModel == null) return;
+                                        LiveDataUtil.observeOnce(mWalletModel.getCryptoModel()
+                                                                         .getNetworkModel()
+                                                                         .mCryptoNetworks,
+                                                allNetworks -> {
+                                                    Utils.getTxExtraInfo(
+                                                            (BraveWalletBaseActivity) getActivity(),
+                                                            allNetworks, selectedNetwork, accounts,
+                                                            filterByTokens, false,
+                                                            (assetPrices, fullTokenList,
+                                                                    nativeAssetsBalances,
+                                                                    blockchainTokensBalances) -> {
+                                                                if (!canUpdateUi()) return;
+                                                                fillAssetDependentControls(view,
+                                                                        selectedNetwork, accounts,
+                                                                        assetPrices, fullTokenList,
+                                                                        nativeAssetsBalances,
+                                                                        blockchainTokensBalances,
+                                                                        mSolanaEstimatedTxFee);
+                                                            });
                                                 });
                                     });
                                 });
@@ -405,8 +430,10 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
 
         TextView fromTo = view.findViewById(R.id.from_to);
         if (parsedTx.getSender() != null && !parsedTx.getSender().equals(parsedTx.getRecipient())) {
+            String recipient =
+                    TextUtils.isEmpty(parsedTx.getRecipient()) ? "..." : parsedTx.getRecipient();
             fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
-                    mAccountName, parsedTx.getSender(), "->", parsedTx.getRecipient()));
+                    mAccountName, parsedTx.getSender(), "->", recipient));
         } else {
             fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
                     mAccountName, parsedTx.getSender(), "", ""));

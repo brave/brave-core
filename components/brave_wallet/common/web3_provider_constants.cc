@@ -13,6 +13,7 @@ const char kDisconnectEvent[] = "disconnect";
 namespace ethereum {
 const char kChainChangedEvent[] = "chainChanged";
 const char kAccountsChangedEvent[] = "accountsChanged";
+const char kMessageEvent[] = "message";
 }  // namespace ethereum
 
 namespace solana {

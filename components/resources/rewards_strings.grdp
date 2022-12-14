@@ -69,15 +69,15 @@
     <ph name="BOLD_BEGIN">$1</ph>Ready to start earning BAT?<ph name="BOLD_END">$2</ph> Just connect your custodial account to your Rewards profile. If you don’t have an account, you’ll get the chance to create one.
   </message>
   <message name="IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS" desc="">
-    To start earning BAT, you need to connect a custodial account to Brave Rewards. Unfortunately, there’s no custodian available in your region, so earning isn’t available at this time. However, you’ll still be automatically supporting creators by using Rewards.
+    To earn BAT, users must connect a custodial account to Brave Rewards. Unfortunately, there's no custodian available in your region, so earning isn't available. For now, turning on Brave Rewards will automatically support creators.
   </message>
   <message name="IDS_REWARDS_LEARN_MORE" desc="">
     Learn more
   </message>
   <message name="IDS_REWARDS_PUBLISHER_COUNT_TEXT" desc="">
     {PUBLISHER_COUNT, plural,
-      =1 {You’ve visited # creator supported by users like you this month}
-      other {You’ve visited # creators supported by users like you this month}
+      =1 {This month, you've visited # creator supported by Brave Rewards}
+      other {This month, you've visited # creators supported by Brave Rewards}
     }
   </message>
 
@@ -166,13 +166,13 @@
     Refresh Creator verification status
   </message>
   <message name="IDS_REWARDS_PANEL_PENDING_TIP_TEXT" desc="">
-    Any tip you make will remain pending and retry automatically for 90 days. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph>
+    For now, any tip you make will remain pending and retry automatically for 90 days. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph>
   </message>
   <message name="IDS_REWARDS_PANEL_PENDING_TIP_TITLE" desc="">
     This creator is not signed up yet.
   </message>
   <message name="IDS_REWARDS_PANEL_PENDING_TIP_TITLE_REGISTERED" desc="">
-    This creator is currently not configured to receive tips from your Rewards custodial wallet service.
+    You're connected to <ph name="USER_PROVIDER">$1<ex>Uphold</ex></ph>, but this creator is connected to <ph name="CREATOR_PROVIDER">$2<ex>Gemini</ex></ph>. This means your tip can't reach this creator.
   </message>
   <message name="IDS_REWARDS_PANEL_PLATFORM_PUBLISHER_TITLE" desc="">
     <ph name="NAME">$1<ex>Brave</ex></ph> on <ph name="PLATFORM">$2<ex>Twitter</ex></ph>
