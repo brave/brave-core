@@ -10,7 +10,7 @@ assert(enable_brave_vpn && is_win)
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "brave_vpn_dns_observer_service_unittest.cc" ]
+  sources = [ "brave_vpn_dns_observer_service_win_unittest.cc" ]
   deps = [
     "//brave/components/brave_vpn/common",
     "//chrome/common:constants",
