@@ -281,6 +281,12 @@ constexpr char kBraveRewardsVerboseLoggingDescription[] =
     "and access tokens depending on your activity. Please do not share it "
     "unless asked to by Brave staff.";
 
+constexpr char kBraveRewardsAllowUnsupportedWalletProvidersName[] =
+    "Always show Brave Rewards custodial connection options";
+constexpr char kBraveRewardsAllowUnsupportedWalletProvidersDescription[] =
+    "Allows all custodial options to be selected in Brave Rewards, "
+    "including those not supported for your Rewards country.";
+
 constexpr char kBraveSearchDefaultAPIName[] =
     "Enable Brave Search website default search provider API";
 constexpr char kBraveSearchDefaultAPIDescription[] =
@@ -697,6 +703,12 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
      flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \
      kOsDesktop | kOsAndroid,                                               \
      FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},  \
+    {"brave-rewards-allow-unsupported-wallet-providers",                    \
+     flag_descriptions::kBraveRewardsAllowUnsupportedWalletProvidersName,   \
+     flag_descriptions::kBraveRewardsAllowUnsupportedWalletProvidersDescription,\
+     kOsDesktop | kOsAndroid,                                               \
+     FEATURE_VALUE_TYPE(                                                    \
+       brave_rewards::features::kAllowUnsupportedWalletProvidersFeature)},  \
     {"brave-ads-custom-push-notifications-ads",                             \
      flag_descriptions::kBraveAdsCustomNotificationsName,                   \
      flag_descriptions::kBraveAdsCustomNotificationsDescription,            \
