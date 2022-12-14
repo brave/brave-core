@@ -18,8 +18,8 @@
 
 #include <tuple>
 
-#include "brave/third_party/flower/src/cc/flwr/include/client.h"
-#include "brave/third_party/flower/src/cc/flwr/include/serde.h"
+// #include "brave/third_party/flower/src/cc/flwr/include/client.h"
+// #include "brave/third_party/flower/src/cc/flwr/include/serde.h"
 
 using flower::ClientMessage;
 using flower::ClientMessage_DisconnectRes;

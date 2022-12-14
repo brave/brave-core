@@ -8,10 +8,12 @@
 
 #include <string>
 
+#include "brave/components/brave_federated/task/typing.h"
+
 namespace brave_federated {
 
 std::string BuildGetTasksPayload();
-std::string BuildPostTaskResultsPayload();
+std::string BuildPostTaskResultsPayload(TaskResult result);
 }  // namespace brave_federated
 
-#endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_CLIENT_COMMUNICATION_HELPER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_COMMUNICATION_HELPER_H_

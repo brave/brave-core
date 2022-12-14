@@ -5,9 +5,12 @@
 
 #include "brave/components/brave_federated/learning_service.h"
 
+#include <memory>
 #include <utility>
 #include <vector>
 
+#include "base/time/time.h"
+#include "base/timer/timer.h"
 #include "brave/components/brave_federated/communication_adapter.h"
 #include "brave/components/brave_federated/eligibility_service.h"
 #include "brave/components/brave_federated/notification_ad_task_constants.h"
@@ -19,8 +22,6 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-
-#include <iostream>
 
 namespace brave_federated {
 
@@ -45,8 +46,7 @@ LearningService::~LearningService() {
 
 void LearningService::StartParticipating() {
   participating_ = true;
-  communication_adapter_->GetTasks(
-      base::BindOnce(&LearningService::HandleTasks, base::Unretained(this)));
+  GetTasks();
 }
 
 void LearningService::StopParticipating() {
@@ -54,9 +54,20 @@ void LearningService::StopParticipating() {
   participating_ = false;
 }
 
-void LearningService::HandleTasks(TaskList tasks) {
+void LearningService::GetTasks() {
+  communication_adapter_->GetTasks(base::BindOnce(
+      &LearningService::HandleTasksOrReconnect, base::Unretained(this)));
+}
+
+void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
+  if (tasks.size() == 0) {
+    reconnect_timer_ = std::make_unique<base::RetainingOneShotTimer>();
+    reconnect_timer_->Start(FROM_HERE, base::Seconds(reconnect), this,
+                            &LearningService::GetTasks);
+    return;
+  }
+
   Task task = tasks.at(0);
-  std::cerr << "**: Received tasks to handle" << std::endl;
   // TODO(lminto): implement actual task handling
   ModelSpec spec{32, 64, 0.01, 500, 0.5};
   Model* model = new Model(spec);
@@ -79,7 +90,6 @@ void LearningService::HandleTasks(TaskList tasks) {
 }
 
 void LearningService::PostTaskResults(TaskResultList results) {
-  std::cerr << "**: Posting task results" << std::endl;
   for (const auto& result : results) {
     communication_adapter_->PostTaskResult(
         result, base::BindOnce(&LearningService::OnPostTaskResults,
@@ -89,11 +99,8 @@ void LearningService::PostTaskResults(TaskResultList results) {
 
 void LearningService::OnPostTaskResults(TaskResultResponse response) {
   if (response.IsSuccessful()) {
-    std::cerr << "**: Succesfully posted results" << std::endl;
     return;
   }
-
-  std::cerr << "**: Failed posting results" << std::endl;
 }
 
 void LearningService::OnEligibilityChanged(bool is_eligible) {

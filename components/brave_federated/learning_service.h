@@ -7,10 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_LEARNING_SERVICE_H_
 
 #include <map>
+#include <memory>
 #include <string>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/time/time.h"
+#include "base/timer/timer.h"
 #include "brave/components/brave_federated/eligibility_service_observer.h"
 #include "brave/components/brave_federated/task/task_runner.h"
 #include "brave/components/brave_federated/task/typing.h"
@@ -38,8 +41,9 @@ class LearningService : public Observer {
   void StartParticipating();
   void StopParticipating();
 
+  void GetTasks();
   void PostTaskResults(TaskResultList results);
-  void HandleTasks(TaskList tasks);
+  void HandleTasksOrReconnect(TaskList tasks, int reconnect);
   void OnPostTaskResults(TaskResultResponse response);
 
   void OnEligibilityChanged(bool is_eligible) override;
@@ -48,9 +52,10 @@ class LearningService : public Observer {
   scoped_refptr<network::SharedURLLoaderFactory>
       url_loader_factory_;  // NOT OWNED
   EligibilityService* eligibility_service_;
+  CommunicationAdapter* communication_adapter_;
 
   std::map<std::string, TaskRunner*> task_runners_;
-  CommunicationAdapter* communication_adapter_;
+  std::unique_ptr<base::RetainingOneShotTimer> reconnect_timer_;
   bool participating_;
 };
 

@@ -8,7 +8,8 @@
 
 namespace brave_federated {
 
-Task::Task(int task_id, TaskType type) : task_id_(task_id), type_(type) {}
+Task::Task(int task_id, TaskType type, std::string token)
+    : task_id_(task_id), type_(type), token_(token) {}
 
 Task::~Task() = default;
 
@@ -20,11 +21,19 @@ TaskType Task::GetType() {
   return type_;
 }
 
+std::string Task::GetToken() {
+  return token_;
+}
+
 TaskResult::TaskResult(Task task, PerformanceReport report)
     : task_(task), report_(report) {}
 
-int TaskResult::GetTaskId() {
-  return task_.GetId();
+Task TaskResult::GetTask() {
+  return task_;
+}
+
+PerformanceReport TaskResult::GetReport() {
+  return report_;
 }
 
 TaskResult::~TaskResult() = default;

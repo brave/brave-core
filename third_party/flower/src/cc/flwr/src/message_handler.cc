@@ -72,10 +72,3 @@ std::tuple<ClientMessage, int, bool> HandleMessage(flower::Client* client,
   // TODO(lminto): address else return
   return std::make_tuple(_GetParameters(client), 0, true);
 }
-
-GetTasksRequest GetTasksRequest() {
-  GetTasksRequest tr;
-  tr.set_cid(0);
-
-  return tr;
-}

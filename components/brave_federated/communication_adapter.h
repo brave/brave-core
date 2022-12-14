@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_federated/learning_service.h"
 #include "brave/components/brave_federated/task/typing.h"
@@ -34,10 +35,9 @@ class CommunicationAdapter {
   ~CommunicationAdapter();
 
   using PostResultCallback = base::OnceCallback<void(TaskResultResponse)>;
-  using GetTaskCallback = base::OnceCallback<void(TaskList)>;
+  using GetTaskCallback = base::OnceCallback<void(TaskList, int)>;
 
   void GetTasks(GetTaskCallback callback);
-  void OnGetTasksHeader(scoped_refptr<net::HttpResponseHeaders> headers);
   void OnGetTasks(GetTaskCallback callback,
                   const std::unique_ptr<std::string> response_body);
   void PostTaskResult(TaskResult result, PostResultCallback callback);
