@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_SWITCHES_H_
 #define BRAVE_COMPONENTS_P3A_BRAVE_P3A_SWITCHES_H_
@@ -23,6 +23,10 @@ constexpr char kP3ATypicalRotationIntervalSeconds[] =
 // Interval between restarting the uploading process for all gathered values.
 constexpr char kP3AExpressRotationIntervalSeconds[] =
     "p3a-express-rotation-interval-seconds";
+
+// Interval between restarting the uploading process for all gathered values.
+constexpr char kP3ASlowRotationIntervalSeconds[] =
+    "p3a-slow-rotation-interval-seconds";
 
 // P3A cloud backend URL.
 constexpr char kP3AUploadServerUrl[] = "p3a-upload-server-url";

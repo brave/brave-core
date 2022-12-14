@@ -87,8 +87,8 @@ void NTPP3AHelperImpl::SetLastTabURL(const GURL& url) {
   last_tab_hostname_ = url.host();
 }
 
-void NTPP3AHelperImpl::OnP3ARotation(bool is_express) {
-  if (!is_express) {
+void NTPP3AHelperImpl::OnP3ARotation(brave::MetricLogType log_type) {
+  if (log_type != brave::MetricLogType::kExpress) {
     return;
   }
   DictionaryPrefUpdate update(local_state_, kNewTabPageEventCountDictPref);

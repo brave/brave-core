@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_P3A_P3A_MESSAGE_H_
 #define BRAVE_COMPONENTS_P3A_P3A_MESSAGE_H_
@@ -11,6 +11,7 @@
 
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/p3a/metric_log_type.h"
 
 namespace brave {
 
@@ -30,6 +31,7 @@ struct MessageMetainfo {
 
 base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
                                          uint64_t metric_value,
+                                         MetricLogType log_type,
                                          const MessageMetainfo& meta,
                                          const std::string& upload_type);
 

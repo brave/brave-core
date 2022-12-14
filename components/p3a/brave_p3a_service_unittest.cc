@@ -31,6 +31,7 @@ constexpr size_t kUploadIntervalSeconds = 120;
 constexpr char kP2APrefix[] = "Brave.P2A";
 constexpr char kTestCreativeMetric1[] = "creativeInstanceId.abc.views";
 constexpr char kTestCreativeMetric2[] = "creativeInstanceId.abc.clicks";
+constexpr char kTestExampleMetric[] = "Brave.Core.TestMetric";
 
 }  // namespace
 
@@ -234,6 +235,53 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendExpress) {
   EXPECT_EQ(p3a_json_sent_metrics_.size(), 1U);
   EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
   // Dynamic metrics should have been removed
+  EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
+}
+
+TEST_F(P3AServiceTest, UpdateLogsAndSendSlow) {
+  std::vector<std::string> test_histograms(
+      {std::string(*p3a::kCollectedSlowHistograms.begin()),
+       kTestExampleMetric});
+
+  p3a_service_->RegisterDynamicMetric(kTestExampleMetric, MetricLogType::kSlow);
+
+  for (size_t i = 0; i < test_histograms.size(); i++) {
+    base::UmaHistogramExactLinear(test_histograms[i], i + 1, 8);
+    p3a_service_->OnHistogramChanged(test_histograms[i].c_str(), 0, i + 1);
+    task_environment_.RunUntilIdle();
+  }
+
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 100));
+
+  EXPECT_EQ(p3a_json_sent_metrics_.size(), 2U);
+  EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
+  EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
+
+  ResetInterceptorStores();
+  task_environment_.FastForwardBy(base::Days(20));
+
+  // Should not resend on same month
+  EXPECT_EQ(p3a_json_sent_metrics_.size(), 0U);
+  EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
+  EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
+
+  // Fast forward to the first of the next month
+  task_environment_.FastForwardBy(base::Days(8) +
+                                  base::Seconds(kUploadIntervalSeconds * 100));
+
+  EXPECT_EQ(p3a_json_sent_metrics_.size(), 2U);
+  EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
+  EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
+
+  ResetInterceptorStores();
+
+  p3a_service_->RemoveDynamicMetric(kTestExampleMetric);
+
+  task_environment_.FastForwardBy(base::Days(45));
+
+  // Dynamic metrics should have been removed
+  EXPECT_EQ(p3a_json_sent_metrics_.size(), 1U);
+  EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
   EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
 }
 

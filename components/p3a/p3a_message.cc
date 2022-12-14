@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/p3a/p3a_message.h"
 
@@ -22,6 +22,7 @@ MessageMetainfo::~MessageMetainfo() = default;
 
 base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
                                          uint64_t metric_value,
+                                         MetricLogType log_type,
                                          const MessageMetainfo& meta,
                                          const std::string& upload_type) {
   base::Value::Dict result;
@@ -62,6 +63,20 @@ base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
   result.Set("version", meta.version);
   result.Set("woi", meta.woi);
   result.Set("wos", meta.wos);
+
+  std::string cadence;
+  switch (log_type) {
+    case MetricLogType::kSlow:
+      cadence = "slow";
+      break;
+    case MetricLogType::kTypical:
+      cadence = "typical";
+      break;
+    case MetricLogType::kExpress:
+      cadence = "express";
+      break;
+  }
+  result.Set("cadence", cadence);
 
   return result;
 }

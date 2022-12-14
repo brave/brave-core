@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/p3a/brave_p3a_service.h"
 
@@ -58,6 +58,8 @@ namespace {
 constexpr int32_t kSuspendedMetricValue = INT_MAX - 1;
 constexpr uint64_t kSuspendedMetricBucket = INT_MAX - 1;
 
+constexpr char kLastSlowRotationTimeStampPref[] =
+    "p3a.last_slow_rotation_timestamp";
 constexpr char kLastTypicalRotationTimeStampPref[] =
     "p3a.last_rotation_timestamp";
 constexpr char kLastExpressRotationTimeStampPref[] =
@@ -82,6 +84,20 @@ base::TimeDelta GetRandomizedUploadInterval(
   const auto delta = base::Seconds(
       brave_base::random::Geometric(average_upload_interval.InSecondsF()));
   return delta;
+}
+
+base::Time NextFirstDayOfMonth(base::Time time) {
+  base::Time::Exploded exploded;
+  time.LocalMidnight().LocalExplode(&exploded);
+  exploded.month++;
+  if (exploded.month > 12) {
+    exploded.year++;
+    exploded.month = 1;
+  }
+  exploded.day_of_month = 1;
+  DCHECK(base::Time::FromLocalExploded(exploded, &time));
+  // Adding few hours of padding to prevent potential problems with DST.
+  return (time + base::Hours(4)).LocalMidnight();
 }
 
 base::Time NextMonday(base::Time time) {
@@ -109,6 +125,8 @@ base::Time NextDay(base::Time time) {
 
 const char* GetRotationTimestampPref(MetricLogType log_type) {
   switch (log_type) {
+    case MetricLogType::kSlow:
+      return kLastSlowRotationTimeStampPref;
     case MetricLogType::kTypical:
       return kLastTypicalRotationTimeStampPref;
     case MetricLogType::kExpress:
@@ -121,6 +139,8 @@ const char* GetRotationTimestampPref(MetricLogType log_type) {
 base::Time GetNextRotationTime(MetricLogType log_type,
                                base::Time last_rotation) {
   switch (log_type) {
+    case MetricLogType::kSlow:
+      return NextFirstDayOfMonth(last_rotation);
     case MetricLogType::kTypical:
       return NextMonday(last_rotation);
     case MetricLogType::kExpress:
@@ -161,6 +181,7 @@ void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry,
   BraveP3ALogStore::RegisterPrefs(registry);
   // Using "year ago" as default value to fix macOS test crashes
   const base::Time year_ago = base::Time::Now() - base::Days(365);
+  registry->RegisterTimePref(kLastSlowRotationTimeStampPref, year_ago);
   registry->RegisterTimePref(kLastTypicalRotationTimeStampPref, year_ago);
   registry->RegisterTimePref(kLastExpressRotationTimeStampPref, year_ago);
   registry->RegisterBooleanPref(kP3AEnabled, true);
@@ -171,24 +192,26 @@ void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry,
   registry->RegisterDictionaryPref(kDynamicMetricsDictPref);
 }
 
+void BraveP3AService::InitCallback(const base::StringPiece& histogram_name) {
+  histogram_sample_callbacks_.push_back(
+      std::make_unique<base::StatisticsRecorder::ScopedHistogramSampleObserver>(
+          std::string(histogram_name),
+          base::BindRepeating(&BraveP3AService::OnHistogramChanged,
+                              base::Unretained(this))));
+}
+
 void BraveP3AService::InitCallbacks() {
   for (const base::StringPiece& histogram_name :
        p3a::kCollectedTypicalHistograms) {
-    histogram_sample_callbacks_.push_back(
-        std::make_unique<
-            base::StatisticsRecorder::ScopedHistogramSampleObserver>(
-            std::string(histogram_name),
-            base::BindRepeating(&BraveP3AService::OnHistogramChanged,
-                                base::Unretained(this))));
+    InitCallback(histogram_name);
   }
   for (const base::StringPiece& histogram_name :
        p3a::kCollectedExpressHistograms) {
-    histogram_sample_callbacks_.push_back(
-        std::make_unique<
-            base::StatisticsRecorder::ScopedHistogramSampleObserver>(
-            std::string(histogram_name),
-            base::BindRepeating(&BraveP3AService::OnHistogramChanged,
-                                base::Unretained(this))));
+    InitCallback(histogram_name);
+  }
+  for (const base::StringPiece& histogram_name :
+       p3a::kCollectedSlowHistograms) {
+    InitCallback(histogram_name);
   }
   LoadDynamicMetrics();
 }
@@ -240,7 +263,7 @@ bool BraveP3AService::IsDynamicMetricRegistered(
 }
 
 base::CallbackListSubscription BraveP3AService::RegisterRotationCallback(
-    base::RepeatingCallback<void(bool is_express)> callback) {
+    base::RepeatingCallback<void(MetricLogType log_type)> callback) {
   DCheckCurrentlyOnUIThread();
   return rotation_callbacks_.Add(std::move(callback));
 }
@@ -273,7 +296,9 @@ void BraveP3AService::Init(
           << ", typical_rotation_interval_ = "
           << rotation_intervals_[MetricLogType::kTypical]
           << ", express_rotation_interval_ = "
-          << rotation_intervals_[MetricLogType::kExpress];
+          << rotation_intervals_[MetricLogType::kExpress]
+          << ", slow_rotation_interval_ = "
+          << rotation_intervals_[MetricLogType::kSlow];
 
   InitMessageMeta();
 
@@ -317,6 +342,7 @@ void BraveP3AService::Init(
 
 std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
                                        uint64_t value,
+                                       MetricLogType log_type,
                                        const std::string& upload_type) {
   // TRACE_EVENT0("brave_p3a", "SerializeMessage");
   // TODO(iefremov): Maybe we should store it in logs and pass here?
@@ -324,8 +350,8 @@ std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
   // the serialized value can be obtained from persisted log storage at the
   // point when the actual histogram is not ready yet.
   UpdateMessageMeta();
-  base::Value::Dict p3a_json_value =
-      GenerateP3AMessageDict(histogram_name, value, message_meta_, upload_type);
+  base::Value::Dict p3a_json_value = GenerateP3AMessageDict(
+      histogram_name, value, log_type, message_meta_, upload_type);
   std::string p3a_json_message;
   const bool ok = base::JSONWriter::Write(p3a_json_value, &p3a_json_message);
   DCHECK(ok);
@@ -337,6 +363,7 @@ bool
 BraveP3AService::IsActualMetric(base::StringPiece histogram_name) const {
   return p3a::kCollectedTypicalHistograms.contains(histogram_name) ||
          p3a::kCollectedExpressHistograms.contains(histogram_name) ||
+         p3a::kCollectedSlowHistograms.contains(histogram_name) ||
          dynamic_metric_log_types_.contains(histogram_name);
 }
 
@@ -383,6 +410,15 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
     int64_t seconds;
     if (base::StringToInt64(seconds_str, &seconds) && seconds > 0) {
       rotation_intervals_[MetricLogType::kExpress] = base::Seconds(seconds);
+    }
+  }
+
+  if (cmdline->HasSwitch(switches::kP3ASlowRotationIntervalSeconds)) {
+    std::string seconds_str =
+        cmdline->GetSwitchValueASCII(switches::kP3ASlowRotationIntervalSeconds);
+    int64_t seconds;
+    if (base::StringToInt64(seconds_str, &seconds) && seconds > 0) {
+      rotation_intervals_[MetricLogType::kSlow] = base::Seconds(seconds);
     }
   }
 
@@ -527,21 +563,32 @@ void BraveP3AService::OnHistogramChangedOnUI(const char* histogram_name,
   }
 }
 
+MetricLogType BraveP3AService::GetLogTypeForHistogram(
+    const std::string& histogram_name) {
+  MetricLogType result = MetricLogType::kTypical;
+  if (p3a::kCollectedExpressHistograms.contains(histogram_name) ||
+      (dynamic_metric_log_types_.contains(histogram_name) &&
+       dynamic_metric_log_types_[histogram_name] == MetricLogType::kExpress)) {
+    result = MetricLogType::kExpress;
+  } else if (p3a::kCollectedSlowHistograms.contains(histogram_name) ||
+             (dynamic_metric_log_types_.contains(histogram_name) &&
+              dynamic_metric_log_types_[histogram_name] ==
+                  MetricLogType::kSlow)) {
+    result = MetricLogType::kSlow;
+  }
+  return result;
+}
+
 void BraveP3AService::HandleHistogramChange(base::StringPiece histogram_name,
                                             size_t bucket) {
-  BraveP3ALogStore* log_store = log_stores_[MetricLogType::kTypical].get();
   std::string histogram_name_str = std::string(histogram_name);
-  if (p3a::kCollectedExpressHistograms.contains(histogram_name) ||
-      (dynamic_metric_log_types_.contains(histogram_name_str) &&
-       dynamic_metric_log_types_[histogram_name_str] ==
-           MetricLogType::kExpress)) {
-    log_store = log_stores_[MetricLogType::kExpress].get();
-  }
+  MetricLogType log_type = GetLogTypeForHistogram(histogram_name_str);
+  BraveP3ALogStore* log_store = log_stores_[log_type].get();
   if (IsSuspendedMetric(histogram_name, bucket)) {
-    log_store->RemoveValueIfExists(std::string(histogram_name));
+    log_store->RemoveValueIfExists(histogram_name_str);
     return;
   }
-  log_store->UpdateValue(std::string(histogram_name), bucket);
+  log_store->UpdateValue(histogram_name_str, bucket);
 }
 
 void BraveP3AService::OnLogUploadComplete(int response_code,
@@ -591,7 +638,7 @@ void BraveP3AService::DoRotation(MetricLogType log_type) {
   log_stores_[log_type]->ResetUploadStamps();
   last_rotation_times_[log_type] = base::Time::Now();
 
-  rotation_callbacks_.Notify(log_type == MetricLogType::kExpress);
+  rotation_callbacks_.Notify(log_type);
 
   UpdateRotationTimer(log_type);
 
