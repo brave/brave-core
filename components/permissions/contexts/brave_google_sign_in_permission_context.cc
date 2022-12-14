@@ -27,24 +27,4 @@ BraveGoogleSignInPermissionContext::~BraveGoogleSignInPermissionContext() =
 bool BraveGoogleSignInPermissionContext::IsRestrictedToSecureOrigins() const {
   return false;
 }
-
-void BraveGoogleSignInPermissionContext::UpdateTabContext(
-    const PermissionRequestID& id,
-    const GURL& requesting_frame,
-    bool allowed) {
-  auto* content_settings =
-      content_settings::PageSpecificContentSettings::GetForFrame(
-          id.render_process_id(), id.render_frame_id());
-  if (!content_settings) {
-    return;
-  }
-
-  if (allowed) {
-    content_settings->OnContentAllowed(
-        ContentSettingsType::BRAVE_GOOGLE_SIGN_IN);
-  } else {
-    content_settings->OnContentBlocked(
-        ContentSettingsType::BRAVE_GOOGLE_SIGN_IN);
-  }
-}
 }  // namespace permissions

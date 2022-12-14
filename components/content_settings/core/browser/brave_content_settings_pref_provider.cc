@@ -628,11 +628,6 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   const bool google_sign_in_pref_enabled =
       permissions::IsGoogleSignInPrefEnabled(prefs_);
 
-  static const base::NoDestructor<ContentSettingsPattern> google_auth_pattern(
-      ContentSettingsPattern::FromString(permissions::kGoogleAuthPattern));
-  static const base::NoDestructor<ContentSettingsPattern> firebase_auth_pattern(
-      ContentSettingsPattern::FromString(permissions::kFirebasePattern));
-
   // If Google Sign-In permission feature flag is disabled (default on),
   // we add 3p cookie exception globally for Google/Firebase auth domains.
   // TODO(ssahib): Remove this once we no longer need to support the flag.
@@ -650,14 +645,15 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
     //
     // PS: kGoogleLoginControlType preference might not be registered for tests.
     const auto google_auth_rule = Rule(
-        *google_auth_pattern, ContentSettingsPattern::Wildcard(),
+        permissions::GetGoogleAuthPattern(), ContentSettingsPattern::Wildcard(),
         ContentSettingToValue(CONTENT_SETTING_ALLOW),
         {.expiration = base::Time(), .session_model = SessionModel::Durable});
     rules.emplace_back(CloneRule(google_auth_rule));
     brave_cookie_rules_[incognito].emplace_back(CloneRule(google_auth_rule));
 
     const auto firebase_rule = Rule(
-        *firebase_auth_pattern, ContentSettingsPattern::Wildcard(),
+        permissions::GetFirebaseAuthPattern(),
+        ContentSettingsPattern::Wildcard(),
         ContentSettingToValue(CONTENT_SETTING_ALLOW),
         {.expiration = base::Time(), .session_model = SessionModel::Durable});
     rules.emplace_back(CloneRule(firebase_rule));
@@ -680,7 +676,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
               google_sign_in_rule.primary_pattern);
 
       const auto google_auth_rule =
-          Rule(*google_auth_pattern, embedding_pattern,
+          Rule(permissions::GetGoogleAuthPattern(), embedding_pattern,
                google_sign_in_rule.value.Clone(),
                {.expiration = google_sign_in_rule.metadata.expiration,
                 .session_model = google_sign_in_rule.metadata.session_model});
@@ -688,7 +684,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
       brave_cookie_rules_[incognito].emplace_back(CloneRule(google_auth_rule));
 
       const auto firebase_rule =
-          Rule(*firebase_auth_pattern, embedding_pattern,
+          Rule(permissions::GetFirebaseAuthPattern(), embedding_pattern,
                google_sign_in_rule.value.Clone(),
                {.expiration = google_sign_in_rule.metadata.expiration,
                 .session_model = google_sign_in_rule.metadata.session_model});

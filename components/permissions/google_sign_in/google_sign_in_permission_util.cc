@@ -8,10 +8,10 @@
 #include <utility>
 #include <vector>
 
-#include "base/callback_helpers.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
+#include "base/no_destructor.h"
 #include "brave/components/constants/pref_names.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/permissions/features.h"
@@ -31,13 +31,24 @@ namespace permissions {
 namespace {
 
 bool IsGoogleAuthUrl(const GURL& gurl) {
-  // Check if pattern matches the URL
-  auto google_pattern = ContentSettingsPattern::FromString(kGoogleAuthPattern);
-  auto firebase_pattern = ContentSettingsPattern::FromString(kFirebasePattern);
-
-  return google_pattern.Matches(gurl) || firebase_pattern.Matches(gurl);
+  // Check if pattern matches the URL.
+  return GetGoogleAuthPattern().Matches(gurl) ||
+         GetFirebaseAuthPattern().Matches(gurl);
 }
+
 }  // namespace
+
+ContentSettingsPattern GetGoogleAuthPattern() {
+  static const base::NoDestructor<ContentSettingsPattern> google_pattern(
+      ContentSettingsPattern::FromString(permissions::kGoogleAuthPattern));
+  return *google_pattern;
+}
+
+ContentSettingsPattern GetFirebaseAuthPattern() {
+  static const base::NoDestructor<ContentSettingsPattern> firebase_pattern(
+      ContentSettingsPattern::FromString(permissions::kFirebasePattern));
+  return *firebase_pattern;
+}
 
 bool IsGoogleAuthRelatedRequest(const GURL& request_url,
                                 const GURL& request_initiator_url) {
@@ -46,9 +57,7 @@ bool IsGoogleAuthRelatedRequest(const GURL& request_url,
          IsGoogleAuthUrl(request_url) &&
          !IsGoogleAuthUrl(request_initiator_url) &&
          !net::registry_controlled_domains::SameDomainOrHost(
-             request_initiator_url,
-             GURL(ContentSettingsPattern::FromString(kGoogleAuthPattern)
-                      .GetHost()),
+             request_initiator_url, GURL(GetGoogleAuthPattern().GetHost()),
              net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
@@ -93,8 +102,7 @@ bool GetPermissionAndMaybeCreatePrompt(
     const GURL& request_initiator_url,
     bool* defer,
     base::OnceCallback<void(const std::vector<blink::mojom::PermissionStatus>&)>
-        permission_result_callback,
-    base::OnceCallback<void()> denied_callback) {
+        permission_result_callback) {
   // Check current permission status
   content::PermissionControllerDelegate* permission_controller =
       contents->GetBrowserContext()->GetPermissionControllerDelegate();
@@ -107,7 +115,6 @@ bool GetPermissionAndMaybeCreatePrompt(
     }
 
     case blink::mojom::PermissionStatus::DENIED: {
-      std::move(denied_callback).Run();
       return false;
     }
 
@@ -122,13 +129,10 @@ bool GetPermissionAndMaybeCreatePrompt(
 
 GURL GetRequestInitiatingUrlFromRequest(
     const network::ResourceRequest& request) {
-  auto request_initiator_url =
-      request.request_initiator.value_or(url::Origin()).GetURL();
-  if (!request_initiator_url.is_valid()) {
-    // Try to get the embedding URL from the Referrer
-    request_initiator_url = request.referrer;
+  if (!request.request_initiator) {
+    return request.referrer;
   }
-  return request_initiator_url;
+  return request.request_initiator->GetURL();
 }
 
 bool CanCreateWindow(content::RenderFrameHost* opener,
@@ -139,14 +143,13 @@ bool CanCreateWindow(content::RenderFrameHost* opener,
 
   if (IsGoogleSignInFeatureEnabled() &&
       IsGoogleAuthRelatedRequest(target_url, opener_url)) {
-    PrefService* prefs =
-        user_prefs::UserPrefs::Get(contents->GetBrowserContext());
-    if (!IsGoogleSignInPrefEnabled(prefs)) {
+    if (!IsGoogleSignInPrefEnabled(
+            user_prefs::UserPrefs::Get(contents->GetBrowserContext()))) {
       return false;
     }
 
-    return GetPermissionAndMaybeCreatePrompt(
-        contents, opener_url, nullptr, base::DoNothing(), base::DoNothing());
+    return GetPermissionAndMaybeCreatePrompt(contents, opener_url, nullptr,
+                                             base::DoNothing());
   }
   // If not applying Google Sign-In permission logic, open window
   return true;

@@ -38,7 +38,6 @@ void OnPermissionRequestStatus(
     URLLoaderThrottle::Delegate* delegate,
     const std::vector<blink::mojom::PermissionStatus>& permission_statuses) {
   DCHECK_EQ(1u, permission_statuses.size());
-  const auto status = permission_statuses[0];
   // Check if current pending navigation is the one we started out with.
   // This is done to prevent us from accessing a deleted Delegate, if
   // the user navigated away while the prompt was still up, or closed the
@@ -46,13 +45,8 @@ void OnPermissionRequestStatus(
   if (pending_entry != contents->GetController().GetPendingEntry()) {
     return;
   }
-  if (status == blink::mojom::PermissionStatus::GRANTED) {
-    delegate->Resume();
-  } else if (status == blink::mojom::PermissionStatus::DENIED) {
-    delegate->CancelWithError(net::ERR_BLOCKED_BY_CLIENT);
-  }
-  // In case of ASK, we need to be careful because delegate may be deleted
-  return;
+  // Now that we have complete the permission request, resume navigation.
+  delegate->Resume();
 }
 
 std::unique_ptr<blink::URLLoaderThrottle>
@@ -86,11 +80,6 @@ GoogleSignInPermissionThrottle::~GoogleSignInPermissionThrottle() = default;
 
 void GoogleSignInPermissionThrottle::DetachFromCurrentSequence() {}
 
-void OnPermissionDeny(URLLoaderThrottle::Delegate* delegate) {
-  delegate->CancelWithError(net::ERR_BLOCKED_BY_CLIENT);
-  return;
-}
-
 void HandleRequest(bool* defer,
                    const GURL& request_url,
                    const GURL& request_initiator_url,
@@ -101,15 +90,11 @@ void HandleRequest(bool* defer,
   if (!contents)
     return;
 
-  // Check kGoogleLoginControlType pref and cancel request if false
-  // NOTE: This means that if the kGoogleLoginControlType permission in
-  // is turned off, all requests to kGoogleAuthPattern and kFirebaseUrlPattern
-  // will be disallowed
+  // Check kGoogleLoginControlType pref and return early if false.
   PrefService* prefs =
       user_prefs::UserPrefs::Get(contents->GetBrowserContext());
 
   if (!IsGoogleSignInPrefEnabled(prefs)) {
-    delegate->CancelWithError(net::ERR_BLOCKED_BY_CLIENT);
     return;
   }
 
@@ -117,8 +102,7 @@ void HandleRequest(bool* defer,
       contents, request_initiator_url, defer,
       base::BindOnce(&OnPermissionRequestStatus,
                      contents->GetController().GetPendingEntry(), contents,
-                     request_initiator_url, content_settings, delegate),
-      base::BindOnce(&OnPermissionDeny, delegate));
+                     request_initiator_url, content_settings, delegate));
 }
 
 void GoogleSignInPermissionThrottle::WillStartRequest(

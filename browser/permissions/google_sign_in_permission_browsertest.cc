@@ -11,11 +11,15 @@
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_test_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/cookie_settings_base.h"
 #include "components/permissions/features.h"
 #include "components/permissions/permission_request_manager.h"
@@ -41,9 +45,8 @@ const char kEmbeddingPageUrl[] = "/google_sign_in_link.html";
 const char kTestDomain[] = "a.com";
 const char kThirdPartyTestDomain[] = "b.com";
 
-// Used to identify the buttons on the test page
+// Used to identify the buttons on the test page.
 const char kAuthButtonHtmlId[] = "auth-button";
-const char kReloadButtonHtmlId[] = "reload-button";
 
 }  // namespace
 
@@ -56,9 +59,9 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
+    current_browser_ = InProcessBrowserTest::browser();
 
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
@@ -112,6 +115,7 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
   void SetUpInProcessBrowserTestFixture() override {
     InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
     mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+    current_browser_ = InProcessBrowserTest::browser();
   }
 
   void TearDownInProcessBrowserTestFixture() override {
@@ -123,6 +127,15 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
 
   permissions::MockPermissionPromptFactory* prompt_factory() {
     return prompt_factory_.get();
+  }
+
+  Browser* browser() { return current_browser_; }
+
+  void SetBrowser(Browser* browser) { current_browser_ = browser; }
+
+  void SetPromptFactory(permissions::PermissionRequestManager* manager) {
+    prompt_factory_ =
+        std::make_unique<permissions::MockPermissionPromptFactory>(manager);
   }
 
   void DefaultBlockAllCookies() {
@@ -178,12 +191,17 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
                                                  value);
   }
 
+  bool GetGoogleSignInPref() {
+    return browser()->profile()->GetPrefs()->GetBoolean(
+        kGoogleLoginControlType);
+  }
+
   void ClickButtonWithId(const std::string& id) {
-    std::string click_script = base::StringPrintf(
+    std::string click_script = content::JsReplace(
         R"(
         new Promise(async (resolve, reject) => {
             try {
-              const button = document.getElementById('%s');
+              const button = document.getElementById($1);
               button.click();
               resolve(true);
             } catch(error) {
@@ -191,9 +209,99 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
             }
           })
       )",
-        id.c_str());
+        id);
 
     ASSERT_EQ(true, EvalJs(contents(), click_script));
+  }
+
+  void CheckCookiesAndContentSetting(ContentSetting content_setting,
+                                     ContentSetting cookie_setting) {
+    EXPECT_EQ(content_settings()->GetContentSetting(
+                  embedding_url_, embedding_url_,
+                  ContentSettingsType::BRAVE_GOOGLE_SIGN_IN),
+              content_setting);
+    EXPECT_EQ(cookie_settings()->GetCookieSetting(
+                  GURL(kAccountsGoogleUrl), embedding_url_, nullptr,
+                  content_settings::CookieSettingsBase::QueryReason::kCookies),
+              cookie_setting);
+  }
+
+  void CheckIf3PCookiesCanBeSetFromAuthDomain(bool can_be_set) {
+    std::string expected_cookie_string = "";
+    if (can_be_set) {
+      expected_cookie_string = "oauth=true";
+    }
+    NavigateToPageWithFrame(https_cookie_iframe_url_);
+    ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
+    NavigateFrameTo(google_oauth_cookie_url_);
+    ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), expected_cookie_string);
+    // Try to set 3p cookies from non-auth domain, should never work.
+    NavigateFrameTo(third_party_cookie_url_);
+    ExpectCookiesOnHost(GURL(third_party_url_), "");
+  }
+
+  void CheckAllowFlow() {
+    EXPECT_EQ(0, prompt_factory()->show_count());
+    // Try to set 3p cookies from auth domain, should not work.
+    CheckIf3PCookiesCanBeSetFromAuthDomain(false);
+    // Verify default.
+    CheckCookiesAndContentSetting(ContentSetting::CONTENT_SETTING_ASK,
+                                  ContentSetting::CONTENT_SETTING_BLOCK);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+    // Accept prompt.
+    prompt_factory()->set_response_type(
+        permissions::PermissionRequestManager::ACCEPT_ALL);
+    // Have website issue request for Google auth URL.
+    ClickButtonWithId(kAuthButtonHtmlId);
+    prompt_factory()->WaitForPermissionBubble();
+    // Make sure prompt came up.
+    EXPECT_EQ(1, prompt_factory()->show_count());
+    // Check content settings and cookie settings are now ALLOWed
+    CheckCookiesAndContentSetting(ContentSetting::CONTENT_SETTING_ALLOW,
+                                  ContentSetting::CONTENT_SETTING_ALLOW);
+    // Try to set 3p cookies from auth domain, should work.
+    CheckIf3PCookiesCanBeSetFromAuthDomain(true);
+  }
+
+  void CheckDenyFlow() {
+    EXPECT_EQ(0, prompt_factory()->show_count());
+    // Try to set 3p cookies from auth domain, should not work.
+    CheckIf3PCookiesCanBeSetFromAuthDomain(false);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+    // Verify default.
+    CheckCookiesAndContentSetting(ContentSetting::CONTENT_SETTING_ASK,
+                                  ContentSetting::CONTENT_SETTING_BLOCK);
+    prompt_factory()->set_response_type(
+        permissions::PermissionRequestManager::DENY_ALL);
+    // Have website issue request for Google auth URL.
+    ClickButtonWithId(kAuthButtonHtmlId);
+    prompt_factory()->WaitForPermissionBubble();
+    // Make sure prompt comes up.
+    EXPECT_EQ(1, prompt_factory()->show_count());
+    CheckCookiesAndContentSetting(ContentSetting::CONTENT_SETTING_BLOCK,
+                                  ContentSetting::CONTENT_SETTING_BLOCK);
+    // Try to set 3p cookies from auth domain, should not work.
+    CheckIf3PCookiesCanBeSetFromAuthDomain(false);
+    // Coming back to page, DENY is respected.
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+    ClickButtonWithId(kAuthButtonHtmlId);
+    // Try to set 3p cookies from auth domain, should not work.
+    CheckIf3PCookiesCanBeSetFromAuthDomain(false);
+    // No additional prompt shown.
+    EXPECT_EQ(1, prompt_factory()->show_count());
+  }
+
+  void CheckPrefOffFlow() {
+    EXPECT_EQ(0, prompt_factory()->show_count());
+    // Try to set 3p cookies from auth domain, should not work.
+    CheckIf3PCookiesCanBeSetFromAuthDomain(false);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+    content::TestNavigationObserver error_observer(contents());
+    ClickButtonWithId(kAuthButtonHtmlId);
+    CheckCookiesAndContentSetting(ContentSetting::CONTENT_SETTING_ASK,
+                                  ContentSetting::CONTENT_SETTING_BLOCK);
+    // No prompt shown.
+    EXPECT_EQ(0, prompt_factory()->show_count());
   }
 
  protected:
@@ -208,6 +316,7 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   base::test::ScopedFeatureList feature_list_;
+  Browser* current_browser_;
 
  private:
   std::unique_ptr<permissions::MockPermissionPromptFactory> prompt_factory_;
@@ -215,210 +324,65 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionAllow) {
   SetGoogleSignInPref(true);
-  EXPECT_EQ(0, prompt_factory()->show_count());
-
-  // Try to set 3p cookies from auth domain, should not work
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
-
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
-
-  // Verify that content settings are as expected for Google Sign-In and cookies
-  EXPECT_EQ(content_settings()->GetContentSetting(
-                GURL(kAccountsGoogleUrl), embedding_url_,
-                ContentSettingsType::BRAVE_GOOGLE_SIGN_IN),
-            ContentSetting::CONTENT_SETTING_ASK);
-  EXPECT_EQ(cookie_settings()->GetCookieSetting(
-                GURL(kAccountsGoogleUrl), embedding_url_, nullptr,
-                content_settings::CookieSettingsBase::QueryReason::kCookies),
-            ContentSetting::CONTENT_SETTING_BLOCK);
-  // Accept prompt
-  prompt_factory()->set_response_type(
-      permissions::PermissionRequestManager::ACCEPT_ALL);
-
-  // Have website issue request for Google auth URL
-  ClickButtonWithId(kAuthButtonHtmlId);
-  prompt_factory()->WaitForPermissionBubble();
-  // Make sure prompt came up
-  EXPECT_EQ(1, prompt_factory()->show_count());
-
-  // Check content settings and cookie settings are as expected
-  EXPECT_EQ(content_settings()->GetContentSetting(
-                embedding_url_, embedding_url_,
-                ContentSettingsType::BRAVE_GOOGLE_SIGN_IN),
-            ContentSetting::CONTENT_SETTING_ALLOW);
-  EXPECT_EQ(cookie_settings()->GetCookieSetting(
-                GURL(kAccountsGoogleUrl), embedding_url_, nullptr,
-                content_settings::CookieSettingsBase::QueryReason::kCookies),
-            ContentSetting::CONTENT_SETTING_ALLOW);
-  // Try to set 3p cookies from auth domain, should work
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "oauth=true");
-  // Try to set 3p cookies from non-auth domain, should not work
-  NavigateFrameTo(third_party_cookie_url_);
-  ExpectCookiesOnHost(GURL(third_party_url_), "");
+  CheckAllowFlow();
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDeny) {
   SetGoogleSignInPref(true);
-  EXPECT_EQ(0, prompt_factory()->show_count());
-
-  // Try to set 3p cookies from auth domain, should not work
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
-
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
-
-  EXPECT_EQ(content_settings()->GetContentSetting(
-                GURL(kAccountsGoogleUrl), embedding_url_,
-                ContentSettingsType::BRAVE_GOOGLE_SIGN_IN),
-            ContentSetting::CONTENT_SETTING_ASK);
-  EXPECT_EQ(cookie_settings()->GetCookieSetting(
-                GURL(kAccountsGoogleUrl), embedding_url_, nullptr,
-                content_settings::CookieSettingsBase::QueryReason::kCookies),
-            ContentSetting::CONTENT_SETTING_BLOCK);
-
-  prompt_factory()->set_response_type(
-      permissions::PermissionRequestManager::DENY_ALL);
-
-  // Have website issue request for Google auth URL
-  ClickButtonWithId(kAuthButtonHtmlId);
-  prompt_factory()->WaitForPermissionBubble();
-  // Make sure prompt comes up
-  EXPECT_EQ(1, prompt_factory()->show_count());
-
-  EXPECT_EQ(content_settings()->GetContentSetting(
-                embedding_url_, embedding_url_,
-                ContentSettingsType::BRAVE_GOOGLE_SIGN_IN),
-            ContentSetting::CONTENT_SETTING_BLOCK);
-  EXPECT_EQ(cookie_settings()->GetCookieSetting(
-                GURL(kAccountsGoogleUrl), embedding_url_, nullptr,
-                content_settings::CookieSettingsBase::QueryReason::kCookies),
-            ContentSetting::CONTENT_SETTING_BLOCK);
-
-  // Try to set 3p cookies from auth domain, should not work
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
-  // Try to set 3p cookies from non-auth domain, should not work either
-  NavigateFrameTo(third_party_cookie_url_);
-  ExpectCookiesOnHost(GURL(third_party_url_), "");
-
-  // Coming back to page, DENY is respected
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
-  content::TestNavigationObserver error_observer(contents());
-
-  ClickButtonWithId(kAuthButtonHtmlId);
-  WaitForLoadStopWithoutSuccessCheck(contents());
-  error_observer.Wait();
-  // Navigation blocked
-  EXPECT_EQ(false, error_observer.last_navigation_succeeded());
-  EXPECT_EQ(net::ERR_BLOCKED_BY_CLIENT, error_observer.last_net_error_code());
-  // No additional prompt shown
-  EXPECT_EQ(1, prompt_factory()->show_count());
+  CheckDenyFlow();
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDismiss) {
   SetGoogleSignInPref(true);
   EXPECT_EQ(0, prompt_factory()->show_count());
-
-  // Try to set 3p cookies from auth domain, should not work
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
-
+  // Try to set 3p cookies from auth domain, should not work.
+  CheckIf3PCookiesCanBeSetFromAuthDomain(false);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
-
-  EXPECT_EQ(content_settings()->GetContentSetting(
-                GURL(kAccountsGoogleUrl), embedding_url_,
-                ContentSettingsType::BRAVE_GOOGLE_SIGN_IN),
-            ContentSetting::CONTENT_SETTING_ASK);
-  EXPECT_EQ(cookie_settings()->GetCookieSetting(
-                GURL(kAccountsGoogleUrl), embedding_url_, nullptr,
-                content_settings::CookieSettingsBase::QueryReason::kCookies),
-            ContentSetting::CONTENT_SETTING_BLOCK);
-
+  CheckCookiesAndContentSetting(ContentSetting::CONTENT_SETTING_ASK,
+                                ContentSetting::CONTENT_SETTING_BLOCK);
   prompt_factory()->set_response_type(
       permissions::PermissionRequestManager::DISMISS);
-
-  // Have website issue request for Google auth URL
+  // Have website issue request for Google auth URL.
   ClickButtonWithId(kAuthButtonHtmlId);
   prompt_factory()->WaitForPermissionBubble();
-
-  // Confirm that content settings did not change
-  EXPECT_EQ(content_settings()->GetContentSetting(
-                embedding_url_, embedding_url_,
-                ContentSettingsType::BRAVE_GOOGLE_SIGN_IN),
-            ContentSetting::CONTENT_SETTING_ASK);
-  EXPECT_EQ(cookie_settings()->GetCookieSetting(
-                GURL(kAccountsGoogleUrl), embedding_url_, nullptr,
-                content_settings::CookieSettingsBase::QueryReason::kCookies),
-            ContentSetting::CONTENT_SETTING_BLOCK);
-
+  // Confirm that content and cookie settings did not change.
+  CheckCookiesAndContentSetting(ContentSetting::CONTENT_SETTING_ASK,
+                                ContentSetting::CONTENT_SETTING_BLOCK);
   EXPECT_EQ(1, prompt_factory()->show_count());
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PrefTurnedOff) {
   SetGoogleSignInPref(false);
-  EXPECT_EQ(0, prompt_factory()->show_count());
-
-  // Try to set 3p cookies from auth domain, should not work
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
-
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
-  content::TestNavigationObserver error_observer(contents());
-
-  ClickButtonWithId(kAuthButtonHtmlId);
-  WaitForLoadStopWithoutSuccessCheck(contents());
-  error_observer.Wait();
-  // Navigation blocked
-  EXPECT_EQ(false, error_observer.last_navigation_succeeded());
-  EXPECT_EQ(net::ERR_BLOCKED_BY_CLIENT, error_observer.last_net_error_code());
-
-  EXPECT_EQ(cookie_settings()->GetCookieSetting(
-                GURL(kAccountsGoogleUrl), embedding_url_, nullptr,
-                content_settings::CookieSettingsBase::QueryReason::kCookies),
-            ContentSetting::CONTENT_SETTING_BLOCK);
-
-  // No prompt shown
-  EXPECT_EQ(0, prompt_factory()->show_count());
+  CheckPrefOffFlow();
 }
 
-IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, JSReloadOnBlockedPage) {
-  SetGoogleSignInPref(true);
-  EXPECT_EQ(0, prompt_factory()->show_count());
-
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
-  content::TestNavigationObserver error_observer(contents());
-  prompt_factory()->set_response_type(
-      permissions::PermissionRequestManager::DENY_ALL);
-
-  ClickButtonWithId(kAuthButtonHtmlId);
-  WaitForLoadStopWithoutSuccessCheck(contents());
-  error_observer.Wait();
-  // Navigation blocked
-  EXPECT_EQ(false, error_observer.last_navigation_succeeded());
-  EXPECT_EQ(net::ERR_BLOCKED_BY_CLIENT, error_observer.last_net_error_code());
-
-  // Click reload button on blocked page
-  ClickButtonWithId(kReloadButtonHtmlId);
-  WaitForLoadStopWithoutSuccessCheck(contents());
-  error_observer.Wait();
-
-  // Navigation is still blocked
-  EXPECT_EQ(false, error_observer.last_navigation_succeeded());
-  EXPECT_EQ(net::ERR_BLOCKED_BY_CLIENT, error_observer.last_net_error_code());
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, Profiles) {
+  // Set pref off in one profile and on in other and it should work correctly.
+  // Launch incognito in each profile and it should work correctly.
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  size_t starting_number_of_profiles = profile_manager->GetNumberOfProfiles();
+  SetGoogleSignInPref(false);
+  Profile* profile = browser()->profile();
+  Browser* incognito_browser = CreateIncognitoBrowser(profile);
+  SetBrowser(incognito_browser);
+  SetPromptFactory(GetPermissionRequestManager());
+  CheckPrefOffFlow();
+  base::FilePath new_path = profile_manager->GenerateNextProfileDirectoryPath();
+  Profile* new_profile =
+      profiles::testing::CreateProfileSync(profile_manager, new_path);
+  EXPECT_TRUE(new_profile);
+  ASSERT_EQ(starting_number_of_profiles + 1,
+            profile_manager->GetNumberOfProfiles());
+  Browser* new_browser = CreateBrowser(new_profile);
+  SetBrowser(new_browser);
+  SetPromptFactory(GetPermissionRequestManager());
+  // Check that pref is ON for new profile.
+  EXPECT_TRUE(GetGoogleSignInPref());
+  // Incognito behaves same as launching profile.
+  Browser* new_incognito_browser = CreateIncognitoBrowser(new_profile);
+  SetBrowser(new_incognito_browser);
+  SetPromptFactory(GetPermissionRequestManager());
+  CheckAllowFlow();
 }
 
 class GoogleSignInFlagDisabledTest : public GoogleSignInBrowserTest {

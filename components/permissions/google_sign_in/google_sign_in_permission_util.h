@@ -27,6 +27,9 @@ constexpr char kGoogleAuthPattern[] =
     "https://accounts.google.com/o/oauth2/auth/*";
 constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/__/auth/*";
 
+ContentSettingsPattern GetFirebaseAuthPattern();
+ContentSettingsPattern GetGoogleAuthPattern();
+
 bool IsGoogleAuthRelatedRequest(const GURL& request_url,
                                 const GURL& request_initiator_url);
 // Check if feature flag is enabled.
@@ -44,8 +47,7 @@ bool GetPermissionAndMaybeCreatePrompt(
     const GURL& request_initiator_url,
     bool* defer,
     base::OnceCallback<void(const std::vector<blink::mojom::PermissionStatus>&)>
-        permission_result_callback,
-    base::OnceCallback<void()> denied_callback);
+        permission_result_callback);
 
 }  // namespace permissions
 

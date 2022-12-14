@@ -24,9 +24,6 @@ class BraveGoogleSignInPermissionContext : public PermissionContextBase {
 
  private:
   bool IsRestrictedToSecureOrigins() const override;
-  void UpdateTabContext(const PermissionRequestID& id,
-                        const GURL& requesting_frame,
-                        bool allowed) override;
 };
 
 }  // namespace permissions
