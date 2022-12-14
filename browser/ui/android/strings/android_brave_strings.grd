@@ -3327,6 +3327,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_GENERATION_DISABLED_ERROR_TEXT" desc="wallet generation disabled error text">
       New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LEARN_MORE">%1$s</ph>
     </message>
+    <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network Filter Selector All Networks">
+      All Networks
+    </message>
+    <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY" desc="Network Filter Selector Secondary Networks">
+      Secondary Networks
+    </message>
   </messages>
   </release>
 </grit>
