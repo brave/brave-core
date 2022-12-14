@@ -16,7 +16,6 @@ if (!is_android) {
 
   brave_browser_ui_color_mixers_deps += [
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/sidebar/buildflags",
     "//brave/components/speedreader/common:buildflags",
     "//skia",
     "//ui/color",

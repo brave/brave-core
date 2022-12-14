@@ -38,7 +38,6 @@
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
-#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/buildflags.h"
@@ -115,7 +114,7 @@
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
+#if defined(TOOLKIT_VIEWS)
 #include "brave/components/sidebar/sidebar_service.h"
 #endif
 
@@ -405,7 +404,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   tor::TorProfileService::RegisterProfilePrefs(registry);
 #endif
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
+#if defined(TOOLKIT_VIEWS)
   sidebar::SidebarService::RegisterProfilePrefs(registry, chrome::GetChannel());
   // Set false for showing sidebar on left by default.
   registry->SetDefaultPrefValue(prefs::kSidePanelHorizontalAlignment,

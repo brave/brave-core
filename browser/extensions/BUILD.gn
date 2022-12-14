@@ -77,7 +77,6 @@ source_set("extensions") {
     "//brave/components/decentralized_dns/content",
     "//brave/components/ipfs/buildflags",
     "//brave/components/ntp_widget_utils/browser",
-    "//brave/components/sidebar/buildflags",
     "//brave/components/tor/buildflags",
     "//brave/vendor/bat-native-ads:headers",
     "//brave/vendor/bat-native-ledger:headers",

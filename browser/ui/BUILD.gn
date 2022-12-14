@@ -392,7 +392,6 @@ source_set("ui") {
     "//brave/components/p3a:buildflags",
     "//brave/components/playlist/buildflags",
     "//brave/components/resources:static_resources",
-    "//brave/components/sidebar/buildflags",
     "//brave/components/time_period_storage",
     "//brave/components/tor",
     "//brave/components/tor:pref_names",

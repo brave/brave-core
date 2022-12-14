@@ -629,7 +629,6 @@ if (!is_android) {
       "//brave/browser/ui",
       "//brave/components/brave_rewards/browser",
       "//brave/components/playlist/buildflags",
-      "//brave/components/sidebar/buildflags",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",

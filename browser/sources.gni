@@ -155,7 +155,6 @@ brave_chrome_browser_deps = [
   "//brave/components/playlist/buildflags",
   "//brave/components/privacy_sandbox",
   "//brave/components/resources",
-  "//brave/components/sidebar/buildflags",
   "//brave/components/skus/browser",
   "//brave/components/skus/common",
   "//brave/components/speedreader/common:buildflags",

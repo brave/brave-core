@@ -21,7 +21,6 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
-#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
@@ -45,7 +44,7 @@
 #include "brave/components/ipfs/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
+#if defined(TOOLKIT_VIEWS)
 #include "brave/components/sidebar/pref_names.h"
 #endif
 
@@ -174,7 +173,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[brave_vpn::prefs::kBraveVPNShowButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
-#if BUILDFLAG(ENABLE_SIDEBAR)
+#if defined(TOOLKIT_VIEWS)
   (*s_brave_allowlist)[sidebar::kSidebarShowOption] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
 #endif

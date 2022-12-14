@@ -7,24 +7,21 @@
 #include <utility>
 
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/sidebar/sidebar.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/common/url_constants.h"
 #include "url/gurl.h"
-
-#if BUILDFLAG(ENABLE_SIDEBAR)
-#include "brave/browser/ui/brave_browser_window.h"
-#include "brave/browser/ui/sidebar/sidebar.h"
-#include "brave/browser/ui/sidebar/sidebar_controller.h"
-#include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
-#endif
 
 namespace {
 
@@ -38,7 +35,6 @@ void BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(bool suppress) {
 }
 
 BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
-#if BUILDFLAG(ENABLE_SIDEBAR)
   if (!sidebar::CanUseSidebar(this))
     return;
   // Below call order is important.
@@ -50,7 +46,6 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
   sidebar_controller_ =
       std::make_unique<sidebar::SidebarController>(this, profile());
   sidebar_controller_->SetSidebar(brave_window()->InitSidebar());
-#endif
 }
 
 BraveBrowser::~BraveBrowser() = default;
@@ -59,7 +54,6 @@ void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
                                     unsigned changed_flags) {
   Browser::ScheduleUIUpdate(source, changed_flags);
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
   if (tab_strip_model_->GetIndexOfWebContents(source) == TabStripModel::kNoTab)
     return;
 
@@ -70,7 +64,6 @@ void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
         sidebar_controller_->sidebar()->UpdateSidebar();
     }
   }
-#endif
 }
 
 void BraveBrowser::TabStripEmpty() {
@@ -114,7 +107,6 @@ void BraveBrowser::OnTabStripModelChanged(
     const TabStripSelectionChange& selection) {
   Browser::OnTabStripModelChanged(tab_strip_model, change, selection);
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
   if (!sidebar_controller_)
     return;
   // We need to update sidebar UI whenever active tab is changed or
@@ -123,7 +115,6 @@ void BraveBrowser::OnTabStripModelChanged(
       change.type() == TabStripModelChange::Type::kRemoved ||
       selection.active_tab_changed())
     sidebar_controller_->sidebar()->UpdateSidebar();
-#endif
 }
 
 void BraveBrowser::FinishWarnBeforeClosing(WarnBeforeClosingResult result) {
