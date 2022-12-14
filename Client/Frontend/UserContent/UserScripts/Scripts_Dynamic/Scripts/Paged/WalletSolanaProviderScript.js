@@ -75,10 +75,9 @@ window.__firefox__.execute(function($, $Object, $Function, $Array) {
       })
       const signaturesMapped = signatures.map(convertSignaturePubkeyTuple);
       const object = $Object.create(null, undefined);
-      object.transaction = transaction;
       object.serializedMessage = serializedMessage;
       object.signatures = signaturesMapped;
-      return $.extensiveFreeze(object, freezeExceptions);
+      return object;
     })
     let createTransaction = $(function(serializedTx) {
       return $.extensiveFreeze(solanaWeb3.Transaction.from(new Uint8Array(serializedTx)), freezeExceptions)
@@ -106,6 +105,7 @@ window.__firefox__.execute(function($, $Object, $Function, $Array) {
         signAndSendTransaction: $(function(...payload) { /* -> Promise<{publicKey: <base58 encoded string>, signature: <base58 encoded string>}> */
           const object = convertTransaction(payload[0]);
           object.sendOptions = payload[1];
+          $.extensiveFreeze(object, freezeExceptions);
           return post('signAndSendTransaction', object)
         }),
         signMessage: $(function(...payload) { /* -> Promise{publicKey: <solanaWeb3.PublicKey>, signature: <Uint8Array>}> */
@@ -137,6 +137,8 @@ window.__firefox__.execute(function($, $Object, $Function, $Array) {
         /* Deprecated */
         signTransaction: $(function(transaction) { /* -> Promise<solanaWeb3.Transaction> */
           const object = convertTransaction(transaction);
+          $.extensiveFreeze(object, freezeExceptions);
+          
           function completion(serializedTx, resolve) {
             /* Convert `<[UInt8]>` -> `solanaWeb3.Transaction` */
             const result = createTransaction(serializedTx);
@@ -147,6 +149,8 @@ window.__firefox__.execute(function($, $Object, $Function, $Array) {
         /* Deprecated */
         signAllTransactions: $(function(transactions) { /* -> Promise<[solanaWeb3.Transaction]> */
           const objects = transactions.map(convertTransaction);
+          $.extensiveFreeze(objects, freezeExceptions);
+          
           function completion(serializedTxs, resolve) {
             /* Convert `<[[UInt8]]>` -> `[<solanaWeb3.Transaction>]` */
             const result = serializedTxs.map(createTransaction);
