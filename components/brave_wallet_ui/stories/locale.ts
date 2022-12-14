@@ -675,10 +675,10 @@ provideStrings({
   braveWalletNetworkFilterSecondary: 'Secondary Networks',
 
   // Asset Filter
-  braveWalletAssetFilterAllAssets: 'All Assets',
-  braveWalletAssetFilterNFTs: 'NFTs',
   braveWalletAssetFilterLowToHigh: 'Balance ↑',
   braveWalletAssetFilterHighToLow: 'Balance ↓',
+  braveWalletAssetFilterAToZ: 'Name ↓',
+  braveWalletAssetFilterZToA: 'Name ↑',
 
   // Account Filter
   braveWalletAccountFilterAllAccounts: 'All Accounts',

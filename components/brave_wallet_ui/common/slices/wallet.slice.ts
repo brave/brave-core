@@ -65,7 +65,7 @@ import {
 } from '../../utils/account-utils'
 
 // Options
-import { AllAssetsFilterOption } from '../../options/asset-filter-options'
+import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
 import { AllNetworksOption } from '../../options/network-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
@@ -119,7 +119,7 @@ const defaultState: WalletState = {
   defaultNetworks: [] as BraveWallet.NetworkInfo[],
   defaultAccounts: [] as BraveWallet.AccountInfo[],
   selectedNetworkFilter: AllNetworksOption,
-  selectedAssetFilter: AllAssetsFilterOption,
+  selectedAssetFilter: HighToLowAssetsFilterOption,
   selectedAccountFilter: AllAccountsOption,
   solFeeEstimates: undefined,
   onRampCurrencies: [] as BraveWallet.OnRampCurrency[],

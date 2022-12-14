@@ -883,10 +883,10 @@ export type OriginInfo = {
 }
 
 export type AssetFilterOptionIds =
-  | 'allAssets'
-  | 'nfts'
   | 'highToLow'
   | 'lowToHigh'
+  | 'aToZ'
+  | 'zToA'
 
 export interface AssetFilterOption {
   name: string
