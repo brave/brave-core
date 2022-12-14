@@ -226,10 +226,6 @@ public class ParsedTransaction extends ParsedTransactionFees {
                                         && instructionType == SolanaTokenInstruction.TRANSFER))) {
                     String fromPubKey = presenter.fromPubKey();
                     String toPubKey = presenter.toPubKey();
-                    if (TextUtils.isEmpty(to)) {
-                        to = toPubKey;
-                    }
-
                     // only show lamports as transferred if the amount is going to a different
                     // pubKey
                     if (!toPubKey.equals(fromPubKey)) {
@@ -241,9 +237,6 @@ public class ParsedTransaction extends ParsedTransactionFees {
                     String noncePubKey =
                             presenter.getPubKeyPerParamKey(WalletConstants.SOL_DAPP_NONCE_ACCOUNT);
                     String toPubKey = presenter.toPubKey();
-                    if (TextUtils.isEmpty(to)) {
-                        to = toPubKey;
-                    }
                     if (noncePubKey != null && noncePubKey.equals(txInfo.fromAddress)) {
                         lamportTransferredAmount =
                                 lamportTransferredAmount.add(new BigDecimal(lamport));
@@ -267,17 +260,11 @@ public class ParsedTransaction extends ParsedTransactionFees {
                                 lamportTransferredAmount.add(new BigDecimal(lamport));
                     }
                 } else {
-                    if (presenter.mIsUnknown) {
-                        if (TextUtils.isEmpty(to)) {
-                            try {
-                                to = solanaInstruction.accountMetas[0].pubkey;
-                            } catch (Exception ignored) {
-                            }
-                        }
-                    } else {
-                        lamportTransferredAmount =
-                                lamportTransferredAmount.add(new BigDecimal(lamport));
-                    }
+                    lamportTransferredAmount =
+                            lamportTransferredAmount.add(new BigDecimal(lamport));
+                }
+                if (TextUtils.isEmpty(to) && presenter.toPubKey() != null) {
+                    to = presenter.toPubKey();
                 }
             }
             final int decimals = token != null ? token.decimals : Utils.SOL_DEFAULT_DECIMALS;
