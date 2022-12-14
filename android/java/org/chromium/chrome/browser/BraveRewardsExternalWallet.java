@@ -95,8 +95,7 @@ public class BraveRewardsExternalWallet {
                     R.string.user_wallet_status_not_connected);
                 break;
             case WalletStatus.CONNECTED:
-                value = context.getResources().getString(
-                    R.string.user_wallet_status_verified);
+                value = context.getResources().getString(R.string.brave_ui_wallet_button_connected);
                 break;
             case WalletStatus.LOGGED_OUT:
                 value = context.getResources().getString(

@@ -23,17 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rect_up_round_corners_12"
-        android:backgroundTint="@color/cardview_light_background">
-
-        <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/user_wallet_activity_name"
-            android:textColor="@android:color/black"
-            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            android:layout_gravity="center"/>
-    </androidx.appcompat.widget.Toolbar>
+        android:backgroundTint="@color/cardview_light_background" />
 
     <LinearLayout
         android:layout_margin="12dp"

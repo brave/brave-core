@@ -1107,11 +1107,11 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_LOGGED_OUT" desc="Brave rewards panel logged out state text">
         Logged out
       </message>
-      <message name="IDS_BRAVE_UI_WALLET_BUTTON_UNVERIFIED" desc="">
-        Unverified
+      <message name="IDS_BRAVE_UI_WALLET_BUTTON_CONNECT" desc="">
+        Connect
       </message>
-      <message name="IDS_BRAVE_UI_WALLET_BUTTON_VERIFIED" desc="">
-        Verified
+      <message name="IDS_BRAVE_UI_WALLET_BUTTON_CONNECTED" desc="">
+        Connected
       </message>
       <message name="IDS_VERIFY_WALLET_HEADER">
         Verifying your wallet is optional
@@ -1137,9 +1137,6 @@ Are you sure you want to do this?
       <message name="IDS_VERIFY_WALLET_BITFLYER_BENEFITS3">
          Withdraw BAT that you may have previously added to your Brave Rewards wallet
       </message>
-      <message name="IDS_VERIFY_WALLET_BTN_TXT">
-        Unverified
-      </message>
       <message name="IDS_VERIFY_WALLET_SERVICE_NOTE">
         Our wallet service is provided by
       </message>
@@ -1158,17 +1155,11 @@ Are you sure you want to do this?
       <message name="IDS_VERIFY_WALLET_BRAVE_NOTE1">
         Brave Software Inc. does not process, store, or access any of the personal information that you provide to <ph name="WALLET_PROVIDER">%1$s</ph> when you establish an account with them.
       </message>
-      <message name="IDS_USER_WALLET_ACTIVITY_NAME">
-        User Wallet
-      </message>
       <message name="IDS_USER_WALLET_GOTO_PROVIDER">
         Go to my <ph name="WALLET_PROVIDER">%1$s</ph> account
       </message>
       <message name="IDS_USER_WALLET_STATUS_NOT_CONNECTED">
         Not connected
-      </message>
-      <message name="IDS_USER_WALLET_STATUS_VERIFIED">
-        Verified
       </message>
       <message name="IDS_BRAVE_DEFAULT" desc="Text for brave default settings option.">
         Brave Default
@@ -3268,7 +3259,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Just connect your custodial account to your Rewards profile. If you don’t have an account, you’ll get the chance to create one.
     </message>
     <message name="IDS_REWARDS_PANEL_UNVERIFIED_ON_SECTION_UNSUPPORTED_REGION_TEXT" desc="Rewards panel unverified state section text when rewards is enabled but region is not supported">
-      To start earning BAT, you need to connect a custodial account to Brave Rewards. Unfortunately, there's no custodian available in your region, so earning isn't available at this time. However, you'll still be automatically supporting creators by using Rewards.
+      To earn BAT, users must connect a custodial account to Brave Rewards. Unfortunately, there's no custodian available in your region, so earning isn't available. For now, turning on Brave Rewards will automatically support creators.
     </message>
     <message name="IDS_LEARN_MORE_ABOUT_BAT" desc="Rewards panel unverified state section learn more text">
       Learn more about BAT
@@ -3280,7 +3271,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Connect account
     </message>
     <message name="IDS_REWARDS_PANEL_UNVERIFIED_CREATOR_SECTION_TEXT" desc="Rewards panel unverified creator section text">
-      You've visited <ph name="CREATOR_COUNT">%1$s<ex>2</ex></ph> creators supported by users like you this month
+      This month, You've visited <ph name="CREATOR_COUNT">%1$s<ex>2</ex></ph> creators supported by Brave Rewards
     </message>
     <message name="IDS_EMPTY_UNVERIFIED_STATE_TEXT" desc="Rewards panel unverified state text" translateable="false">
       --
