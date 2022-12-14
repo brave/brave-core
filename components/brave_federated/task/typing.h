@@ -6,27 +6,31 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_TYPING_H_
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_TYPING_H_
 
+#include <string>
 #include <vector>
+
 #include "brave/components/brave_federated/task/model.h"
 
 namespace brave_federated {
 
 enum TaskType {
-  EvaluationTask,
-  TrainingTask,
+  Evaluation,
+  Training,
 };
 
 class Task {
  public:
-  Task(int task_id, TaskType type);
+  Task(int task_id, TaskType type, std::string token);
   ~Task();
 
   int GetId();
   TaskType GetType();
+  std::string GetToken();
 
  private:
   int task_id_;
   TaskType type_;
+  std::string token_;
 };
 
 class TaskResult {
@@ -34,11 +38,12 @@ class TaskResult {
   explicit TaskResult(Task task, PerformanceReport report);
   ~TaskResult();
 
-  int GetTaskId();
+  Task GetTask();
+  PerformanceReport GetReport();
 
  private:
   Task task_;
-  [[maybe_unused]] PerformanceReport report_;
+  PerformanceReport report_;
 };
 
 class TaskResultResponse {
