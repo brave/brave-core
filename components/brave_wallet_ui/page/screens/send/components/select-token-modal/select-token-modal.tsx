@@ -182,13 +182,15 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             >
               {account.name}
             </Text>
-            <Text
-              textColor='text03'
-              textSize='14px'
-              isBold={false}
-            >
-              {getAccountFiatValue(account)}
-            </Text>
+            {selectedSendOption === 'token' &&
+              <Text
+                textColor='text03'
+                textSize='14px'
+                isBold={false}
+              >
+                {getAccountFiatValue(account)}
+              </Text>
+            }
           </AccountSection>
           <Column columnWidth='full' horizontalPadding={8}>
             <VerticalSpacer size={8} />
@@ -203,7 +205,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           </Column>
         </Column>
       )
-    }, [getTokensBySearchValue, getAccountFiatValue, emptyTokensList])
+    }, [getTokensBySearchValue, getAccountFiatValue, emptyTokensList, selectedSendOption])
 
     // render
     return (
