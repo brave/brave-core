@@ -106,7 +106,7 @@ class APIRequestHelper {
 
   using DownloadCallback = base::OnceCallback<void(
       base::FilePath,
-      base::flat_map<std::string, std::string> response_headers)>;
+      const base::flat_map<std::string, std::string>& /*response_headers*/)>;
   Ticket Download(const GURL& url,
                   const std::string& payload,
                   const std::string& payload_content_type,

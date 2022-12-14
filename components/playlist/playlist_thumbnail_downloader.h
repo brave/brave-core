@@ -42,7 +42,6 @@ class PlaylistThumbnailDownloader {
   PlaylistThumbnailDownloader(content::BrowserContext* context,
                               Delegate* delegate);
   virtual ~PlaylistThumbnailDownloader();
-
   PlaylistThumbnailDownloader(const PlaylistThumbnailDownloader&) = delete;
   PlaylistThumbnailDownloader& operator=(const PlaylistThumbnailDownloader&) =
       delete;
@@ -60,7 +59,7 @@ class PlaylistThumbnailDownloader {
   void OnThumbnailDownloaded(
       const std::string& id,
       base::FilePath path,
-      base::flat_map<std::string, std::string> response_headers);
+      const base::flat_map<std::string, std::string>& response_headers);
 
 #if BUILDFLAG(IS_ANDROID)
   void RenameFilePerFormat(const std::string& id,

@@ -233,10 +233,8 @@ void PlaylistMediaFileDownloader::DownloadMediaFile(const GURL& url) {
   download_manager_->DownloadUrl(std::move(params));
 }
 
-void PlaylistMediaFileDownloader::OnMediaFileDownloaded(
-    base::FilePath path,
-    const base::flat_map<std::string, std::string>& response_headers) {
-  VLOG(2) << __func__ << ": downloaded media file at " << path;
+void PlaylistMediaFileDownloader::OnMediaFileDownloaded(base::FilePath path) {
+  DVLOG(2) << __func__ << ": downloaded media file at " << path;
 
   DCHECK(current_item_);
 

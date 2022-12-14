@@ -7,16 +7,13 @@
 
 #include <utility>
 
+#include "base/files/file_util.h"
+#include "base/task/thread_pool.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-
-#if BUILDFLAG(IS_ANDROID)
-#include "base/files/file_util.h"
-#include "base/task/thread_pool.h"
-#endif
 
 namespace {
 
@@ -85,7 +82,7 @@ void PlaylistThumbnailDownloader::CancelAllDownloadRequests() {
 void PlaylistThumbnailDownloader::OnThumbnailDownloaded(
     const std::string& id,
     base::FilePath path,
-    base::flat_map<std::string, std::string> response_headers) {
+    const base::flat_map<std::string, std::string>& response_headers) {
   VLOG(2) << __func__ << " id: " << id;
 #if BUILDFLAG(IS_ANDROID)
   if (!path.empty()) {
