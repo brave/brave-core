@@ -78,7 +78,7 @@ class TipMessageHandler : public WebUIMessageHandler,
   // Message handlers
   void DialogReady(const base::Value::List& args);
   void GetPublisherBanner(const base::Value::List& args);
-  void GetUserVersion(const base::Value::List& args);
+  void GetUserType(const base::Value::List& args);
   void GetRewardsParameters(const base::Value::List& args);
   void OnTip(const base::Value::List& args);
   void GetRecurringTips(const base::Value::List& args);
@@ -88,6 +88,8 @@ class TipMessageHandler : public WebUIMessageHandler,
   void FetchBalance(const base::Value::List& args);
 
   // Rewards service callbacks
+  void GetUserTypeCallback(ledger::mojom::UserType user_type);
+
   void OnTipCallback(double amount, ledger::mojom::Result result);
 
   void GetReconcileStampCallback(uint64_t reconcile_stamp);
@@ -131,8 +133,8 @@ void TipMessageHandler::RegisterMessages() {
                           base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
-      "getUserVersion", base::BindRepeating(&TipMessageHandler::GetUserVersion,
-                                            base::Unretained(this)));
+      "getUserType", base::BindRepeating(&TipMessageHandler::GetUserType,
+                                         base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
       "getRewardsParameters",
@@ -253,12 +255,17 @@ void TipMessageHandler::GetPublisherBanner(const base::Value::List& args) {
                      weak_factory_.GetWeakPtr()));
 }
 
-void TipMessageHandler::GetUserVersion(const base::Value::List& args) {
+void TipMessageHandler::GetUserType(const base::Value::List& args) {
   if (!IsJavascriptAllowed() || !rewards_service_) {
     return;
   }
-  base::Version version = rewards_service_->GetUserVersion();
-  FireWebUIListener("userVersionUpdated", base::Value(version.GetString()));
+  rewards_service_->GetUserType(base::BindOnce(
+      &TipMessageHandler::GetUserTypeCallback, weak_factory_.GetWeakPtr()));
+}
+
+void TipMessageHandler::GetUserTypeCallback(ledger::mojom::UserType user_type) {
+  FireWebUIListener("userTypeUpdated",
+                    base::Value(static_cast<int>(user_type)));
 }
 
 void TipMessageHandler::GetRewardsParameters(const base::Value::List& args) {

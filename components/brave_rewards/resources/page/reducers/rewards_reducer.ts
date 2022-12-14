@@ -5,6 +5,7 @@
 import { Reducer } from 'redux'
 
 import { types } from '../actions/rewards_types'
+import { userTypeFromMojo } from '../../shared/lib/user_type'
 
 const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {
@@ -16,13 +17,13 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.isInitialized')
       break
     }
-    case types.GET_USER_VERSION: {
-      chrome.send('brave_rewards.getUserVersion')
+    case types.GET_USER_TYPE: {
+      chrome.send('brave_rewards.getUserType')
       break
     }
-    case types.ON_USER_VERSION: {
+    case types.ON_USER_TYPE: {
       state = { ...state }
-      state.userVersion = action.payload.version
+      state.userType = userTypeFromMojo(action.payload.userType)
       break
     }
     case types.GET_AUTO_CONTRIBUTE_PROPERTIES: {

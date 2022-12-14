@@ -47,7 +47,7 @@ export function getInitialState (): HostState {
     notifications: [],
     availableCountries: [],
     declaredCountry: '',
-    userVersion: '',
+    userType: 'unconnected',
     publishersVisitedCount: 0
   }
 }

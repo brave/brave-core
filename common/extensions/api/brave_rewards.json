@@ -836,16 +836,16 @@
         ]
       },
       {
-        "name": "getUserVersion",
+        "name": "getUserType",
         "type": "function",
-        "description": "Returns the Rewards version in which the current user was created",
+        "description": "Returns the Rewards user type for the current user",
         "parameters": [
           {
             "name": "callback",
             "type": "function",
             "parameters": [
               {
-                "name": "version",
+                "name": "userType",
                 "type": "string"
               }
             ]

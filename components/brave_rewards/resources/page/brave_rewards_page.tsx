@@ -47,8 +47,8 @@ function initialize () {
     document.getElementById('root'))
 }
 
-function userVersion (version: string) {
-  actions.onUserVersion(version)
+function userType (userType: number) {
+  actions.onUserType(userType)
 }
 
 function rewardsParameters (properties: Rewards.RewardsParameters) {
@@ -262,7 +262,7 @@ function onIsUnsupportedRegion (isUnsupportedRegion: boolean) {
 Object.defineProperty(window, 'brave_rewards', {
   configurable: true,
   value: {
-    userVersion,
+    userType,
     rewardsParameters,
     promotions,
     promotionClaimStarted,

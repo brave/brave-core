@@ -4,7 +4,7 @@
 
 export function defaultState (): Rewards.State {
   return {
-    userVersion: '',
+    userType: 'unconnected',
     enabledAds: false,
     enabledAdsMigrated: false,
     enabledContribute: false,

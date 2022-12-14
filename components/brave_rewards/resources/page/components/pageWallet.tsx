@@ -13,8 +13,6 @@ import {
 import { WalletCard, ExternalWalletAction } from '../../shared/components/wallet_card'
 import { LayoutKind } from '../lib/layout_context'
 
-import { getUserType } from '../../shared/lib/user_type'
-
 import {
   ExternalWallet,
   ExternalWalletProvider,
@@ -537,7 +535,7 @@ class PageWallet extends React.Component<Props, State> {
       parameters,
       pendingContributionTotal,
       pendingContributions,
-      userVersion
+      userType
     } = this.props.rewardsData
     const { total } = balance
     const { modalBackup, modalConnect } = ui
@@ -553,8 +551,6 @@ class PageWallet extends React.Component<Props, State> {
         links: {}
       }
     }
-
-    const userType = getUserType(userVersion, externalWalletInfo)
 
     const summaryData = {
       adEarnings: balanceReport && balanceReport.ads || 0,

@@ -7,7 +7,6 @@ import * as React from 'react'
 
 import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
-import { getUserType } from '../../shared/lib/user_type'
 import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { adsPerHourOptions } from '../../shared/lib/ads_options'
 
@@ -45,7 +44,7 @@ export function AdsPanel () {
     externalWallet: state.externalWallet,
     externalWalletProviderList: state.externalWalletProviderList,
     parameters: state.parameters,
-    userVersion: state.userVersion
+    userType: state.userType
   }))
 
   const [showModal, setShowModal] = React.useState(false)
@@ -55,7 +54,6 @@ export function AdsPanel () {
 
   const canEnable = adsData.adsIsSupported && adsData.adsUIEnabled
   const externalWallet = externalWalletFromExtensionData(data.externalWallet)
-  const userType = getUserType(data.userVersion, externalWallet)
 
   const canConnectAccount = data.externalWalletProviderList.some((provider) => {
     const regionInfo = data.parameters.walletProviderRegions[provider] || null
@@ -342,7 +340,7 @@ export function AdsPanel () {
       return renderDisabled()
     }
 
-    if (userType === 'unconnected') {
+    if (data.userType === 'unconnected') {
       return renderLimited()
     }
 

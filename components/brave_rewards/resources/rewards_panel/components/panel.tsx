@@ -6,7 +6,6 @@ import * as React from 'react'
 
 import { HostContext, useHostListener } from '../lib/host_context'
 import { getProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
-import { getUserType } from '../../shared/lib/user_type'
 import { WalletCard } from '../../shared/components/wallet_card'
 import { LimitedView } from './limited_view'
 import { NavBar } from './navbar'
@@ -18,7 +17,7 @@ type ActiveView = 'tip' | 'summary'
 export function Panel () {
   const host = React.useContext(HostContext)
 
-  const [userVersion, setUserVersion] = React.useState(host.state.userVersion)
+  const [userType, setUserType] = React.useState(host.state.userType)
   const [balance, setBalance] = React.useState(host.state.balance)
   const [settings, setSettings] = React.useState(host.state.settings)
   const [externalWallet, setExternalWallet] =
@@ -37,7 +36,7 @@ export function Panel () {
     publisherInfo ? 'tip' : 'summary')
 
   useHostListener(host, (state) => {
-    setUserVersion(state.userVersion)
+    setUserType(state.userType)
     setBalance(state.balance)
     setSettings(state.settings)
     setExternalWallet(state.externalWallet)
@@ -52,11 +51,6 @@ export function Panel () {
 
   const providerPayoutStatus = getProviderPayoutStatus(
     payoutStatus, walletProvider)
-
-  function shouldShowFullView () {
-    const userType = getUserType(userVersion, externalWallet)
-    return userType !== 'unconnected'
-  }
 
   function renderFull () {
     return (
@@ -89,7 +83,7 @@ export function Panel () {
   return (
     <div>
       <div className='rewards-panel' data-test-id='rewards-panel'>
-        {shouldShowFullView() ? renderFull() : <LimitedView />}
+        { userType !== 'unconnected' ? renderFull() : <LimitedView />}
       </div>
       <PanelOverlays />
     </div>

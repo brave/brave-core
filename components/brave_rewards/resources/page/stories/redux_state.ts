@@ -207,6 +207,6 @@ export const reduxState: Rewards.ApplicationState = {
     },
     initializing: false,
     showOnboarding: false,
-    userVersion: '2.0'
+    userType: 'unconnected'
   }
 }

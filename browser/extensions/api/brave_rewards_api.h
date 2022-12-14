@@ -228,12 +228,16 @@ class BraveRewardsGetDeclaredCountryFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetUserVersionFunction : public ExtensionFunction {
+class BraveRewardsGetUserTypeFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getUserVersion", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getUserType", UNKNOWN)
+
  protected:
-  ~BraveRewardsGetUserVersionFunction() override;
+  ~BraveRewardsGetUserTypeFunction() override;
   ResponseAction Run() override;
+
+ private:
+  void Callback(ledger::mojom::UserType user_type);
 };
 
 class BraveRewardsGetPublishersVisitedCountFunction : public ExtensionFunction {

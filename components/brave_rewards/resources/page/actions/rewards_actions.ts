@@ -14,10 +14,10 @@ export const onSettingSave = (key: string, value: any, persist: boolean = true) 
   persist
 })
 
-export const onUserVersion =
-  (version: string) => action(types.ON_USER_VERSION, { version })
+export const onUserType =
+  (userType: number) => action(types.ON_USER_TYPE, { userType })
 
-export const getUserVersion = () => action(types.GET_USER_VERSION)
+export const getUserType = () => action(types.GET_USER_TYPE)
 
 export const getRewardsParameters = () => action(types.GET_REWARDS_PARAMETERS)
 

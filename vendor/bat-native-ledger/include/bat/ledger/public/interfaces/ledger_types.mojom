@@ -76,3 +76,9 @@ union ConnectExternalWalletResult {
   ConnectExternalWalletValue value;
   ConnectExternalWalletError error;
 };
+
+enum UserType {
+  kLegacyUnconnected,
+  kUnconnected,
+  kConnected
+};

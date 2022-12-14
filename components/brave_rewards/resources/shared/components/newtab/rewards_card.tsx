@@ -7,7 +7,7 @@ import * as React from 'react'
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { GrantInfo } from '../../lib/grant_info'
 import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
-import { getUserType } from '../../lib/user_type'
+import { UserType } from '../../lib/user_type'
 import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
 import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
 import { BatIcon } from '../icons/bat_icon'
@@ -68,7 +68,7 @@ export function RewardsCardHeader () {
 
 interface Props {
   rewardsEnabled: boolean
-  userVersion: string
+  userType: UserType
   isUnsupportedRegion: boolean
   declaredCountry: string
   adsEnabled: boolean
@@ -327,7 +327,7 @@ export function RewardsCard (props: Props) {
     return renderCountrySelect()
   }
 
-  if (getUserType(props.userVersion, props.externalWallet) === 'unconnected') {
+  if (props.userType === 'unconnected') {
     return renderLimited()
   }
 

@@ -147,9 +147,9 @@ class RewardsService : public KeyedService {
   // Returns the country code associated with the user's Rewards profile.
   virtual std::string GetCountryCode() const = 0;
 
-  // Returns the Rewards feature version associated with the current user. The
-  // returned `base::Version` will always be valid.
-  virtual base::Version GetUserVersion() const = 0;
+  // Returns the Rewards user type for the current profile.
+  virtual void GetUserType(
+      base::OnceCallback<void(ledger::mojom::UserType)> callback) = 0;
 
   using GetAvailableCountriesCallback =
       base::OnceCallback<void(std::vector<std::string>)>;

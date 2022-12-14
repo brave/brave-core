@@ -8,12 +8,7 @@ import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { PlatformContext } from '../lib/platform_context'
 import { LocaleContext } from '../../shared/lib/locale_context'
 import { LayoutContext } from '../lib/layout_context'
-import { getUserType } from '../../shared/lib/user_type'
-
-import {
-  externalWalletFromExtensionData,
-  isExternalWalletProviderAllowed
-} from '../../shared/lib/external_wallet'
+import { isExternalWalletProviderAllowed } from '../../shared/lib/external_wallet'
 
 import PageWallet from './pageWallet'
 
@@ -40,10 +35,6 @@ export function Settings () {
 
   const [showRewardsTour, setShowRewardsTour] = React.useState(false)
 
-  const userType = getUserType(
-    rewardsData.userVersion,
-    externalWalletFromExtensionData(rewardsData.externalWallet))
-
   const handleURL = () => {
     const { pathname } = location
 
@@ -62,7 +53,7 @@ export function Settings () {
   }
 
   React.useEffect(() => {
-    actions.getUserVersion()
+    actions.getUserType()
     actions.getIsUnsupportedRegion()
     const date = new Date()
     actions.getBalanceReport(date.getMonth() + 1, date.getFullYear())
@@ -225,13 +216,13 @@ export function Settings () {
             <AdsPanel />
           </style.settingGroup>
           {
-            userType !== 'unconnected' &&
+            rewardsData.userType !== 'unconnected' &&
               <style.settingGroup data-test-id='auto-contribute-settings'>
                 <AutoContributePanel />
               </style.settingGroup>
           }
           {
-            userType !== 'unconnected' &&
+            rewardsData.userType !== 'unconnected' &&
               <>
                 <style.settingGroup>
                   <TipsPanel />
@@ -243,7 +234,7 @@ export function Settings () {
           }
         </style.main>
         <style.sidebar>
-          {userType !== 'unconnected' && <GrantList />}
+          {rewardsData.userType !== 'unconnected' && <GrantList />}
           <PageWallet layout={layoutKind} />
           <SidebarPromotionPanel onTakeRewardsTour={onTakeTour} />
         </style.sidebar>

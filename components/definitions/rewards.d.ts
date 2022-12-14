@@ -27,9 +27,10 @@ declare namespace Rewards {
   export type Address = { address: string, qr: string | null }
 
   type ConnectExternalWalletError = import('gen/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.m.js').ConnectExternalWalletError
+  type UserType = import('../brave_rewards/resources/shared/lib/user_type').UserType
 
   export interface State {
-    userVersion: string
+    userType: UserType
     adsData: AdsData
     adsHistory: AdsHistory[]
     autoContributeList: Publisher[]
