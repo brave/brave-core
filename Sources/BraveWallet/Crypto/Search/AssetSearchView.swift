@@ -94,7 +94,9 @@ struct AssetSearchView: View {
                       NFTDetailView(
                         nftDetailStore: cryptoStore.nftDetailStore(for: assetViewModel.token, erc721Metadata: allERC721Metadata[assetViewModel.token.id]),
                         buySendSwapDestination: .constant(nil)
-                      )
+                      ) { metadata in
+                        allERC721Metadata[assetViewModel.token.id] = metadata
+                      }
                       .onDisappear {
                         cryptoStore.closeNFTDetailStore(for: assetViewModel.token)
                       }

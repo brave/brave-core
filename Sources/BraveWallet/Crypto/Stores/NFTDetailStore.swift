@@ -12,7 +12,7 @@ private extension String {
   }
 }
 
-struct ERC721Metadata: Codable {
+struct ERC721Metadata: Codable, Equatable {
   var imageURLString: String?
   var name: String?
   var description: String?

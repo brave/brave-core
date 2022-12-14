@@ -251,7 +251,10 @@ public class PortfolioStore: ObservableObject {
       
       // fetch ERC721 metadata for ERC721 tokens
       let erc721Tokens = allTokens.filter { $0.isErc721 }
-      metadataCache = await rpcService.fetchERC721Metadata(tokens: erc721Tokens)
+      let allMetadata = await rpcService.fetchERC721Metadata(tokens: erc721Tokens)
+      for (key, value) in allMetadata { // update cached values
+        metadataCache[key] = value
+      }
       
       guard !Task.isCancelled else { return }
       updatedUserVisibleAssets.removeAll()
@@ -338,6 +341,13 @@ public class PortfolioStore: ObservableObject {
       })
     }
     return priceHistories
+  }
+  
+  func updateERC721MetadataCache(for token: BraveWallet.BlockchainToken, metadata: ERC721Metadata) {
+    metadataCache[token.id] = metadata
+    if let index = userVisibleNFTs.firstIndex(where: { $0.token.id == token.id }), let viewModel = userVisibleNFTs[safe: index] {
+      userVisibleNFTs[index] = NFTAssetViewModel(token: viewModel.token, network: viewModel.network, balance: viewModel.balance, erc721Metadata: metadata)
+    }
   }
 }
 

@@ -236,7 +236,9 @@ struct PortfolioView: View {
               NFTDetailView(
                 nftDetailStore: cryptoStore.nftDetailStore(for: nftViewModel.token, erc721Metadata: nftViewModel.erc721Metadata),
                 buySendSwapDestination: buySendSwapDestination
-              )
+              ) { erc721Metadata in
+                portfolioStore.updateERC721MetadataCache(for: nftViewModel.token, metadata: erc721Metadata)
+              }
               .onDisappear {
                 cryptoStore.closeNFTDetailStore(for: nftViewModel.token)
               }

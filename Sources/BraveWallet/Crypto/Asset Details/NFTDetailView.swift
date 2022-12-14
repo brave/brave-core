@@ -11,7 +11,8 @@ import SDWebImageSwiftUI
 
 struct NFTDetailView: View {
   @ObservedObject var nftDetailStore: NFTDetailStore
-  @Binding var buySendSwapDestination: BuySendSwapDestination?
+  @Binding var buySendSwapDestination: BuySendSwapDestination? 
+  var onERC721MetadataRefreshed: ((ERC721Metadata) -> Void)?
   
   @Environment(\.openWalletURLAction) private var openWalletURL
   
@@ -131,6 +132,11 @@ struct NFTDetailView: View {
       }
       .padding()
     }
+    .onChange(of: nftDetailStore.erc721Metadata, perform: { newValue in
+      if let newMetadata = newValue {
+        onERC721MetadataRefreshed?(newMetadata)
+      }
+    })
     .onAppear {
       nftDetailStore.update()
     }
