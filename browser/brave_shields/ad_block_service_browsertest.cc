@@ -2080,7 +2080,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringHide1pContent) {
 // Test cosmetic filtering on elements added dynamically
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
-  UpdateAdBlockInstanceWithRules("##.blockme");
+  UpdateAdBlockInstanceWithRules("##.blockme\n##.hide-innerhtml");
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -2101,6 +2101,14 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(result_second.error.empty());
   EXPECT_EQ(base::Value(true), result_second.value);
+
+  // this class is added by setting an element's innerHTML, which doesn't
+  // trigger a MutationObserver update
+  auto result_third = EvalJs(
+      contents, R"(waitCSSSelector('.hide-innerhtml', 'display', 'none'))",
+      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  ASSERT_TRUE(result_third.error.empty());
+  EXPECT_EQ(base::Value(true), result_third.value);
 }
 
 // Test cosmetic filtering on elements added dynamically, using a rule from the

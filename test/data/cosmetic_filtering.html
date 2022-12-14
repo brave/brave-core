@@ -16,6 +16,12 @@ function addElementsDynamically() {
     e.className = 'dontblockme'
     root.appendChild(e);
   }
+
+  for (let i = 0; i < 10; i++) {
+    const e = document.createElement('div');
+    e.innerHTML = '<div class="hide-innerhtml"></div>';
+    root.appendChild(e);
+  }
 }
 
 let didWait = false;
