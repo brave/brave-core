@@ -775,18 +775,14 @@ public class BraveRewardsPanel
         setNotificationsControls();
         String rewardsCountryCode = UserPrefs.get(Profile.getLastUsedRegularProfile())
                                             .getString(BravePref.DECLARED_GEO);
-        if (mPopupView != null && PackageUtils.isFirstInstall(mActivity)
-                && mBraveRewardsNativeWorker.IsSupported()
-                && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
-                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                        Profile.getLastUsedRegularProfile())) {
-            showBraveRewardsOnboardingModal();
-            BraveRewardsHelper.updateBraveRewardsAppOpenCount();
-        } else if (mPopupView != null && !PackageUtils.isFirstInstall(mActivity)
-                && mBraveRewardsNativeWorker.IsSupported()
-                && BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
-                && TextUtils.isEmpty(rewardsCountryCode)) {
-            mBraveRewardsNativeWorker.getAvailableCountries();
+
+        if (mPopupView != null && mBraveRewardsNativeWorker.IsSupported()) {
+            if (!BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
+                    && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()) {
+                showBraveRewardsOnboardingModal();
+            } else if (TextUtils.isEmpty(rewardsCountryCode)) {
+                mBraveRewardsNativeWorker.getAvailableCountries();
+            }
         }
     }
 
@@ -1029,6 +1025,7 @@ public class BraveRewardsPanel
     }
 
     private void showRewardsResponseModal(boolean isSuccess, String errorMessage) {
+        fetchRewardsData();
         mRewardsResponseModal = mPopupView.findViewById(R.id.rewards_response_modal_id);
         mRewardsResponseModal.setVisibility(View.VISIBLE);
 
@@ -1087,14 +1084,17 @@ public class BraveRewardsPanel
         mBraveRewardsOnboardingModalView.setVisibility(View.GONE);
         if (result.equals(SUCCESS)) {
             mBraveRewardsNativeWorker.GetAutoContributeProperties();
+            BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
             if (!PackageUtils.isFirstInstall(mActivity)) {
                 showRewardsResponseModal(true, result);
             } else {
-                BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
                 showBraveRewardsOnboarding(true);
             }
         } else {
             showRewardsResponseModal(false, result);
+        }
+        if (!BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+            BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
         }
     }
 
