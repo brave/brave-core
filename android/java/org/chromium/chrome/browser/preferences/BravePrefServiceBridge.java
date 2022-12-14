@@ -36,45 +36,10 @@ public class BravePrefServiceBridge {
     }
 
     /**
-     * @param whether De-AMP should be enabled.
-     */
-    public void setDeAmpEnabled(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setDeAmpEnabled(enabled);
-    }
-
-    /**
      * @param whether the IPFS gateway should be enabled.
      */
     public void setIpfsGatewayEnabled(boolean enabled) {
         BravePrefServiceBridgeJni.get().setIpfsGatewayEnabled(enabled);
-    }
-
-    /**
-     * @param whether google login is enabled on third party sites.
-     */
-    public void setThirdPartyGoogleLoginEnabled(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setThirdPartyGoogleLoginEnabled(enabled);
-    }
-
-    /**
-     * @param whether facebook embeds are allowed on third party sites.
-     */
-    public void setThirdPartyFacebookEmbedEnabled(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setThirdPartyFacebookEmbedEnabled(enabled);
-    }
-
-    /**
-     * @param whether twitter embeds are allowed on third party sites.
-     */
-    public void setThirdPartyTwitterEmbedEnabled(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setThirdPartyTwitterEmbedEnabled(enabled);
-    }
-
-    /**
-     * @param whether linkedin embeds are allowed on third party sites.
-     */
-    public void setThirdPartyLinkedinEmbedEnabled(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setThirdPartyLinkedinEmbedEnabled(enabled);
     }
 
     /**
@@ -171,16 +136,8 @@ public class BravePrefServiceBridge {
         BravePrefServiceBridgeJni.get().setSafetynetStatus(status);
     }
 
-    public void setUseRewardsStagingServer(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setUseRewardsStagingServer(enabled);
-    }
-
     public void resetPromotionLastFetchStamp() {
         BravePrefServiceBridgeJni.get().resetPromotionLastFetchStamp();
-    }
-
-    public boolean getUseRewardsStagingServer() {
-        return BravePrefServiceBridgeJni.get().getUseRewardsStagingServer();
     }
 
     public void setOldTrackersBlockedCount(Profile profile, long count) {
@@ -302,14 +259,8 @@ public class BravePrefServiceBridge {
         String getNoScriptControlType();
 
         void setHTTPSEEnabled(boolean enabled);
-        void setDeAmpEnabled(boolean enabled);
         void setIpfsGatewayEnabled(boolean enabled);
         void setAdBlockEnabled(boolean enabled);
-
-        void setThirdPartyGoogleLoginEnabled(boolean enabled);
-        void setThirdPartyFacebookEmbedEnabled(boolean enabled);
-        void setThirdPartyTwitterEmbedEnabled(boolean enabled);
-        void setThirdPartyLinkedinEmbedEnabled(boolean enabled);
 
         void setPlayYTVideoInBrowserEnabled(boolean enabled);
         boolean getPlayYTVideoInBrowserEnabled();
@@ -335,9 +286,7 @@ public class BravePrefServiceBridge {
 
         void setSafetynetStatus(String status);
 
-        void setUseRewardsStagingServer(boolean enabled);
         void resetPromotionLastFetchStamp();
-        boolean getUseRewardsStagingServer();
         boolean getBooleanForContentSetting(int content_type);
 
         void setReferralAndroidFirstRunTimestamp(long time);

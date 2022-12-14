@@ -361,7 +361,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                         .setBoolean(Pref.HTTPS_ONLY_MODE_ENABLED, newValueBool);
             }
         } else if (PREF_DE_AMP.equals(key)) {
-            BravePrefServiceBridge.getInstance().setDeAmpEnabled((boolean) newValue);
+            UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    .setBoolean(BravePref.DE_AMP_PREF_ENABLED, (boolean) newValue);
         } else if (PREF_DEBOUNCE.equals(key)) {
             UserPrefs.get(Profile.getLastUsedRegularProfile())
                     .setBoolean(BravePref.DEBOUNCE_ENABLED, (boolean) newValue);
@@ -443,17 +444,17 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             UserPrefs.get(Profile.getLastUsedRegularProfile())
                     .setBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED, (boolean) newValue);
         } else if (PREF_SOCIAL_BLOCKING_GOOGLE.equals(key)) {
-            BravePrefServiceBridge.getInstance().setThirdPartyGoogleLoginEnabled(
-                    (boolean) newValue);
+            UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    .setBoolean(BravePref.GOOGLE_LOGIN_CONTROL_TYPE, (boolean) newValue);
         } else if (PREF_SOCIAL_BLOCKING_FACEBOOK.equals(key)) {
-            BravePrefServiceBridge.getInstance().setThirdPartyFacebookEmbedEnabled(
-                    (boolean) newValue);
+            UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    .setBoolean(BravePref.FB_EMBED_CONTROL_TYPE, (boolean) newValue);
         } else if (PREF_SOCIAL_BLOCKING_TWITTER.equals(key)) {
-            BravePrefServiceBridge.getInstance().setThirdPartyTwitterEmbedEnabled(
-                    (boolean) newValue);
+            UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    .setBoolean(BravePref.TWITTER_EMBED_CONTROL_TYPE, (boolean) newValue);
         } else if (PREF_SOCIAL_BLOCKING_LINKEDIN.equals(key)) {
-            BravePrefServiceBridge.getInstance().setThirdPartyLinkedinEmbedEnabled(
-                    (boolean) newValue);
+            UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    .setBoolean(BravePref.LINKED_IN_EMBED_CONTROL_TYPE, (boolean) newValue);
         } else if (PREF_CLEAR_ON_EXIT.equals(key)) {
             sharedPreferencesEditor.putBoolean(PREF_CLEAR_ON_EXIT, (boolean) newValue);
 
@@ -598,6 +599,33 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         if (mDebouncePref != null) {
             mDebouncePref.setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile())
                                              .getBoolean(BravePref.DEBOUNCE_ENABLED));
+        }
+
+        // Social blocking
+        if (mSocialBlockingGoogle != null) {
+            mSocialBlockingGoogle.setChecked(
+                    UserPrefs.get(Profile.getLastUsedRegularProfile())
+                            .getBoolean(BravePref.GOOGLE_LOGIN_CONTROL_TYPE));
+        }
+        if (mSocialBlockingFacebook != null) {
+            mSocialBlockingFacebook.setChecked(
+                    UserPrefs.get(Profile.getLastUsedRegularProfile())
+                            .getBoolean(BravePref.FB_EMBED_CONTROL_TYPE));
+        }
+        if (mSocialBlockingTwitter != null) {
+            mSocialBlockingTwitter.setChecked(
+                    UserPrefs.get(Profile.getLastUsedRegularProfile())
+                            .getBoolean(BravePref.TWITTER_EMBED_CONTROL_TYPE));
+        }
+        if (mSocialBlockingLinkedin != null) {
+            mSocialBlockingLinkedin.setChecked(
+                    UserPrefs.get(Profile.getLastUsedRegularProfile())
+                            .getBoolean(BravePref.LINKED_IN_EMBED_CONTROL_TYPE));
+        }
+
+        if (mDeAmpPref != null) {
+            mDeAmpPref.setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                          .getBoolean(BravePref.DE_AMP_PREF_ENABLED));
         }
     }
 

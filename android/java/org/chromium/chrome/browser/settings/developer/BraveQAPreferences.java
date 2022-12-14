@@ -36,13 +36,16 @@ import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.user_prefs.UserPrefs;
 
 import java.io.File;
 import java.io.IOException;
@@ -113,6 +116,8 @@ public class BraveQAPreferences extends BravePreferenceFragment
         if (mIsStagingServer != null) {
             mIsStagingServer.setOnPreferenceChangeListener(this);
         }
+        mIsStagingServer.setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                            .getBoolean(BravePref.USE_REWARDS_STAGING_SERVER));
 
         mIsSyncStagingServer =
                 (ChromeSwitchPreference) findPreference(PREF_USE_SYNC_STAGING_SERVER);
@@ -380,7 +385,8 @@ public class BraveQAPreferences extends BravePreferenceFragment
             sharedPreferencesEditor.apply();
 
             BravePrefServiceBridge.getInstance().setSafetynetCheckFailed(false);
-            BravePrefServiceBridge.getInstance().setUseRewardsStagingServer(mUseRewardsStagingServer);
+            UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    .setBoolean(BravePref.USE_REWARDS_STAGING_SERVER, mUseRewardsStagingServer);
             BraveRewardsHelper.setRewardsEnvChange(true);
 
             BraveRelaunchUtils.askForRelaunch(getActivity());

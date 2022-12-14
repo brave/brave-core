@@ -93,11 +93,6 @@ void JNI_BravePrefServiceBridge_SetHTTPSEEnabled(JNIEnv* env,
       enabled, GURL(), g_browser_process->local_state());
 }
 
-void JNI_BravePrefServiceBridge_SetDeAmpEnabled(JNIEnv* env, jboolean enabled) {
-  GetOriginalProfile()->GetPrefs()->SetBoolean(de_amp::kDeAmpPrefEnabled,
-                                               enabled);
-}
-
 void JNI_BravePrefServiceBridge_SetIpfsGatewayEnabled(JNIEnv* env,
                                                       jboolean enabled) {
 #if BUILDFLAG(ENABLE_IPFS)
@@ -107,34 +102,6 @@ void JNI_BravePrefServiceBridge_SetIpfsGatewayEnabled(JNIEnv* env,
   GetOriginalProfile()->GetPrefs()->SetInteger(kIPFSResolveMethod,
                                                static_cast<int>(type));
 #endif
-}
-
-void JNI_BravePrefServiceBridge_SetThirdPartyGoogleLoginEnabled(
-    JNIEnv* env,
-    jboolean enabled) {
-  GetOriginalProfile()->GetPrefs()->SetBoolean(kGoogleLoginControlType,
-                                               enabled);
-}
-
-void JNI_BravePrefServiceBridge_SetThirdPartyFacebookEmbedEnabled(
-    JNIEnv* env,
-    jboolean enabled) {
-  GetOriginalProfile()->GetPrefs()->SetBoolean(
-      brave_shields::prefs::kFBEmbedControlType, enabled);
-}
-
-void JNI_BravePrefServiceBridge_SetThirdPartyTwitterEmbedEnabled(
-    JNIEnv* env,
-    jboolean enabled) {
-  GetOriginalProfile()->GetPrefs()->SetBoolean(
-      brave_shields::prefs::kTwitterEmbedControlType, enabled);
-}
-
-void JNI_BravePrefServiceBridge_SetThirdPartyLinkedinEmbedEnabled(
-    JNIEnv* env,
-    jboolean enabled) {
-  GetOriginalProfile()->GetPrefs()->SetBoolean(
-      brave_shields::prefs::kLinkedInEmbedControlType, enabled);
 }
 
 void JNI_BravePrefServiceBridge_SetAdBlockEnabled(JNIEnv* env,
@@ -390,20 +357,9 @@ void JNI_BravePrefServiceBridge_SetSafetynetStatus(
       kSafetynetStatus, ConvertJavaStringToUTF8(env, status));
 }
 
-void JNI_BravePrefServiceBridge_SetUseRewardsStagingServer(JNIEnv* env,
-                                                           jboolean enabled) {
-  GetOriginalProfile()->GetPrefs()->SetBoolean(
-      brave_rewards::prefs::kUseRewardsStagingServer, enabled);
-}
-
 void JNI_BravePrefServiceBridge_ResetPromotionLastFetchStamp(JNIEnv* env) {
   GetOriginalProfile()->GetPrefs()->SetUint64(
       brave_rewards::prefs::kPromotionLastFetchStamp, 0);
-}
-
-jboolean JNI_BravePrefServiceBridge_GetUseRewardsStagingServer(JNIEnv* env) {
-  return GetOriginalProfile()->GetPrefs()->GetBoolean(
-      brave_rewards::prefs::kUseRewardsStagingServer);
 }
 
 jboolean JNI_BravePrefServiceBridge_GetBooleanForContentSetting(JNIEnv* env,
