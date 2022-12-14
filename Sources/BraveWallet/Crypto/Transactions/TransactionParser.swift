@@ -416,11 +416,6 @@ enum TransactionParser {
           symbol = "SOL"
           switch instructionType {
           case .transfer, .transferWithSeed:
-            if toAddress == nil || toAddress?.isEmpty == true,
-               let toPubkey = instruction.accountMetas[safe: 1]?.pubkey {
-              toAddress = toPubkey
-            }
-            
             if let instructionLamports = instruction.decodedData?.paramFor(.lamports)?.value,
                let instructionLamportsValue = BDouble(instructionLamports),
                let fromPubkey = instruction.accountMetas[safe: 0]?.pubkey,
@@ -439,10 +434,6 @@ enum TransactionParser {
               }
             }
           case .createAccount, .createAccountWithSeed:
-            if toAddress == nil || toAddress?.isEmpty == true,
-               let toPubkey = instruction.accountMetas[safe: 1]?.pubkey {
-              toAddress = toPubkey
-            }
             if let instructionLamports = instruction.decodedData?.paramFor(.lamports)?.value,
                let instructionLamportsValue = BDouble(instructionLamports) {
               if let fromPubkey = instruction.accountMetas[safe: 0]?.pubkey,
@@ -464,6 +455,10 @@ enum TransactionParser {
               fromAmount = transactionTotalFormatted
             }
           }
+        }
+        if (toAddress == nil || toAddress?.isEmpty == true),
+           let toPubkey = instruction.toPubkey {
+          toAddress = toPubkey
         }
       }
       

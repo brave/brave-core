@@ -37,6 +37,18 @@ extension BraveWallet.SolanaInstruction {
     }
     return Strings.Wallet.solanaUnknownInstructionName
   }
+  
+  /// Returns the `to_account` pubkey for the instruction if available
+  var toPubkey: String? {
+    guard let index = decodedData?.accountParams.firstIndex(where: { $0.name == "to_account" }) else { return nil }
+    return accountMetas[safe: index]?.pubkey
+  }
+  
+  /// Returns the `from_account` pubkey for the instruction if available
+  var fromPubkey: String? {
+    guard let index = decodedData?.accountParams.firstIndex(where: { $0.name == "from_account" }) else { return nil }
+    return accountMetas[safe: index]?.pubkey
+  }
 }
 
 extension BraveWallet.SolanaSystemInstruction {

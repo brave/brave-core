@@ -25,7 +25,7 @@ struct TransactionHeader: View {
   var body: some View {
     VStack(spacing: 8) {
       VStack(spacing: 8) {
-        if fromAccountAddress == toAccountAddress {
+        if fromAccountAddress == toAccountAddress || toAccountAddress.isEmpty {
           Blockie(address: fromAccountAddress)
             .frame(width: min(blockieSize, maxBlockieSize), height: min(blockieSize, maxBlockieSize))
           AddressView(address: fromAccountAddress) {
