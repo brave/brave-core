@@ -16,10 +16,11 @@ public class PlaylistUtils {
     public static final String TAG = "BravePlaylist";
     public static final String DEFAULT_PLAYLIST_ID = "default";
     public static final String PLAYLIST_NAME = "playlist_name";
+    public static final String PLAYLIST_ID = "playlist_id";
 
-    public static void openPlaylistActivity(Context context, String playlistName) {
+    public static void openPlaylistActivity(Context context, String playlistId) {
         Intent playlistActivityIntent = new Intent(context, PlaylistHostActivity.class);
-        playlistActivityIntent.putExtra(PLAYLIST_NAME, playlistName);
+        playlistActivityIntent.putExtra(PLAYLIST_ID, playlistId);
         playlistActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(playlistActivityIntent);
     }

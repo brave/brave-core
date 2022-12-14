@@ -346,6 +346,8 @@ void PlaylistService::CreatePlaylist(PlaylistInfo& info) {
   playlist.Set(kPlaylistNameKey, info.name);
   playlist.Set(kPlaylistItemsKey, base::Value::List());
 
+  LOG(ERROR) << "BravePlaylist : " << info.id;
+
   prefs::ScopedDictionaryPrefUpdate playlists_update(prefs_, kPlaylistsPref);
   playlists_update.Get()->Set(
       info.id, std::make_unique<base::Value>(std::move(playlist)));

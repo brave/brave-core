@@ -13,8 +13,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.brave.playlist.PlaylistViewModel;
 import com.brave.playlist.enums.PlaylistOptions;
+import com.brave.playlist.fragment.AllPlaylistFragment;
 import com.brave.playlist.fragment.PlaylistFragment;
 import com.brave.playlist.listener.PlaylistOptionsListener;
+import com.brave.playlist.model.MediaModel;
+import com.brave.playlist.model.PlaylistModel;
 import com.brave.playlist.model.PlaylistOptionsModel;
 
 import org.json.JSONArray;
@@ -26,6 +29,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.playlist.PlaylistBaseActivity;
 import org.chromium.chrome.browser.playlist.PlaylistUtils;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.playlist.mojom.Playlist;
 import org.chromium.playlist.mojom.PlaylistItem;
 
@@ -42,11 +46,47 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
         super.finishNativeInitialization();
         playlistViewModel =
                 new ViewModelProvider(PlaylistHostActivity.this).get(PlaylistViewModel.class);
-        openPlaylist(PlaylistUtils.DEFAULT_PLAYLIST_ID);
-        openAllPlaylists();
+
+        playlistViewModel.getCreatePlaylistOption().observe(PlaylistHostActivity.this, newName -> {
+            if (mPlaylistPageHandler != null) {
+                Playlist playlist = new Playlist();
+                playlist.name = newName;
+                playlist.items = new PlaylistItem[0];
+                Log.e(PlaylistUtils.TAG, "Name : " + playlist.name);
+                mPlaylistPageHandler.createPlaylist(playlist);
+                Log.e(PlaylistUtils.TAG, "after Name : " + playlist.name);
+                openAllPlaylists();
+            }
+        });
+
+        playlistViewModel.getPlaylistToOpen().observe(PlaylistHostActivity.this, playlistId -> {
+            if (mPlaylistPageHandler != null) {
+                openPlaylist(playlistId, true);
+            }
+        });
+
+        playlistViewModel.getDeletePlaylistItems().observe(
+                PlaylistHostActivity.this, playlistItems -> {
+                    if (mPlaylistPageHandler != null) {
+                        for (MediaModel playlistItem : playlistItems.getItems()) {
+                            mPlaylistPageHandler.removeItemFromPlaylist(
+                                    playlistItems.getId(), playlistItem.getId());
+                        }
+                        openPlaylist(playlistItems.getId(), false);
+                    }
+                });
+
+        if (getIntent() != null && getIntent().getStringExtra(PlaylistUtils.PLAYLIST_ID) != null) {
+            String playlistId = getIntent().getStringExtra(PlaylistUtils.PLAYLIST_ID);
+            if (playlistId.equals("all")) {
+                openAllPlaylists();
+            } else {
+                openPlaylist(playlistId, true);
+            }
+        }
     }
 
-    private void openPlaylist(String playlistId) {
+    private void openPlaylist(String playlistId, boolean recreateFragment) {
         if (mPlaylistPageHandler != null) {
             mPlaylistPageHandler.getPlaylist(playlistId, playlist -> {
                 JSONObject playlistJsonObject = new JSONObject();
@@ -60,6 +100,7 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                         playlistItemObject.put("name", playlistItem.name);
                         playlistItemObject.put("page_source", playlistItem.pageSource.url);
                         playlistItemObject.put("media_path", playlistItem.mediaPath.url);
+                        playlistItemObject.put("media_src", playlistItem.mediaSrc.url);
                         playlistItemObject.put("thumbnail_path", playlistItem.thumbnailPath.url);
                         playlistItemObject.put("cached", playlistItem.cached);
                         playlistItemObject.put("author", playlistItem.author);
@@ -71,12 +112,14 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                         playlistViewModel.setPlaylistData(playlistJsonObject.toString(2));
                     }
 
-                    PlaylistFragment playlistFragment = new PlaylistFragment();
-                    playlistFragment.setPlaylistOptionsListener(this);
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container_view_tag, playlistFragment)
-                            .commit();
+                    if (recreateFragment) {
+                        PlaylistFragment playlistFragment = new PlaylistFragment();
+                        playlistFragment.setPlaylistOptionsListener(this);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container_view_tag, playlistFragment)
+                                .commit();
+                    }
                 } catch (JSONException e) {
                     Log.e(PlaylistUtils.TAG, "PlaylistHostActivity -> JSONException error " + e);
                 }
@@ -101,6 +144,7 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                             playlistItemObject.put("name", playlistItem.name);
                             playlistItemObject.put("page_source", playlistItem.pageSource.url);
                             playlistItemObject.put("media_path", playlistItem.mediaPath.url);
+                            playlistItemObject.put("media_src", playlistItem.mediaSrc.url);
                             playlistItemObject.put(
                                     "thumbnail_path", playlistItem.thumbnailPath.url);
                             playlistItemObject.put("cached", playlistItem.cached);
@@ -109,19 +153,20 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                             playlistItemsJsonArray.put(playlistItemObject);
                         }
                         playlistJsonObject.put("items", playlistItemsJsonArray);
+                        Log.e(PlaylistUtils.TAG, "playlistJsonObject : " + playlistJsonObject);
                         playlistsJsonArray.put(playlistJsonObject);
                     }
-                    Log.e(PlaylistUtils.TAG, "ALl Playlists : "+ playlistsJsonArray.toString(2));
-                    // if (playlistViewModel != null) {
-                    //     playlistViewModel.setPlaylistData(playlistsJsonArray.toString(2));
-                    // }
+                    Log.e(PlaylistUtils.TAG, "playlistsJsonArray : " + playlistsJsonArray);
+                    if (playlistViewModel != null) {
+                        playlistViewModel.setAllPlaylistData(playlistsJsonArray.toString(2));
+                    }
 
-                    // PlaylistFragment playlistFragment = new PlaylistFragment();
-                    // playlistFragment.setPlaylistOptionsListener(this);
-                    // getSupportFragmentManager()
-                    //         .beginTransaction()
-                    //         .replace(R.id.fragment_container_view_tag, playlistFragment)
-                    //         .commit();
+                    AllPlaylistFragment allPlaylistFragment = new AllPlaylistFragment();
+                    // allPlaylistFragment.setPlaylistOptionsListener(this);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container_view_tag, allPlaylistFragment)
+                            .commit();
                 } catch (JSONException e) {
                     Log.e(PlaylistUtils.TAG, "PlaylistHostActivity -> JSONException error " + e);
                 }

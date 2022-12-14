@@ -23,6 +23,7 @@ struct PlaylistItem {
   
   url.mojom.Url page_source;
   url.mojom.Url media_path;
+  url.mojom.Url media_src;
   url.mojom.Url thumbnail_path;
 
   // When it's |cached|, |media_path| and |thumbnail_path| will be
