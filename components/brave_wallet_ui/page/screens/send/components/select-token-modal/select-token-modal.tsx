@@ -90,7 +90,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     }, [userVisibleTokensInfo, networks])
 
     const getTokenListWithBalances = React.useCallback((account: WalletAccountType) => {
-      return getTokenListByAccount(account).filter((token) => getBalance(account, token) !== '0')
+      return getTokenListByAccount(account).filter((token) => getBalance(account, token) > '0')
     }, [getTokenListByAccount])
 
     const getTokensBySelectedSendOption = React.useCallback((account: WalletAccountType) => {
