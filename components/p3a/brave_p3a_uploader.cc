@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/p3a/brave_p3a_uploader.h"
 
@@ -103,11 +103,13 @@ void BraveP3AUploader::UploadLog(const std::string& compressed_log_data,
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   resource_request->method = "POST";
 
-  url_loader_ = network::SimpleURLLoader::Create(
+  url_loaders_[log_type] = network::SimpleURLLoader::Create(
       std::move(resource_request), GetNetworkTrafficAnnotation(upload_type));
-  url_loader_->AttachStringForUpload(compressed_log_data, "application/json");
+  network::SimpleURLLoader* url_loader = url_loaders_[log_type].get();
 
-  url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+  url_loader->AttachStringForUpload(compressed_log_data, "application/json");
+
+  url_loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
       base::BindOnce(&BraveP3AUploader::OnUploadComplete,
                      base::Unretained(this), log_type));
@@ -117,13 +119,14 @@ void BraveP3AUploader::OnUploadComplete(
     MetricLogType log_type,
     std::unique_ptr<std::string> response_body) {
   int response_code = -1;
-  if (url_loader_->ResponseInfo() && url_loader_->ResponseInfo()->headers)
-    response_code = url_loader_->ResponseInfo()->headers->response_code();
+  network::SimpleURLLoader* url_loader = url_loaders_[log_type].get();
+  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
+    response_code = url_loader->ResponseInfo()->headers->response_code();
 
-  int error_code = url_loader_->NetError();
+  int error_code = url_loader->NetError();
 
-  bool was_https = url_loader_->GetFinalURL().SchemeIs(url::kHttpsScheme);
-  url_loader_.reset();
+  bool was_https = url_loader->GetFinalURL().SchemeIs(url::kHttpsScheme);
+  url_loaders_.erase(log_type);
   on_upload_complete_.Run(response_code, error_code, was_https, log_type);
 }
 

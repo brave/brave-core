@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_UPLOADER_H_
 #define BRAVE_COMPONENTS_P3A_BRAVE_P3A_UPLOADER_H_
@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/callback.h"
+#include "base/containers/flat_map.h"
 #include "base/memory/ref_counted.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "url/gurl.h"
@@ -59,7 +60,8 @@ class BraveP3AUploader {
   const GURL p3a_creative_endpoint_;
   const GURL p2a_endpoint_;
   const UploadCallback on_upload_complete_;
-  std::unique_ptr<network::SimpleURLLoader> url_loader_;
+  base::flat_map<MetricLogType, std::unique_ptr<network::SimpleURLLoader>>
+      url_loaders_;
 };
 
 }  // namespace brave
