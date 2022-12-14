@@ -327,6 +327,8 @@ Config.prototype.buildArgs = function () {
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     use_goma: this.use_goma,
     use_libfuzzer: this.use_libfuzzer,
+    enable_updater: this.isOfficialBuild(),
+    enable_update_notifications: this.isOfficialBuild(),
     ...this.extraGnArgs,
   }
 
