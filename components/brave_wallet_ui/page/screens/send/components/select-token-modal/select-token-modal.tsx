@@ -161,6 +161,13 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       return accounts.map((account) => getTokensBySearchValue(account)).flat(1).length === 0
     }, [accounts, getTokensBySearchValue])
 
+    const modalTitle = React.useMemo(() => {
+      if (selectedSendOption === 'nft') {
+        return getLocale('braveWalletSendTabSelectNFTTitle')
+      }
+      return getLocale('braveWalletSendTabSelectTokenTitle')
+    }, [selectedSendOption])
+
     const tokensByAccount = React.useMemo(() => {
       if (emptyTokensList) {
         return <Text textSize='14px' isBold={false} textColor='text03'>
@@ -213,7 +220,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         <Modal ref={forwardedRef}>
           <Row rowWidth='full' horizontalPadding={24} verticalPadding={20}>
             <Text textSize='18px' isBold={true}>
-              {getLocale('braveWalletSendTabSelectTitle')}
+              {modalTitle}
             </Text>
             <IconButton icon={CloseIcon} onClick={onClose} size={20} />
           </Row>

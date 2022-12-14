@@ -91,7 +91,8 @@
   <message name="IDS_BRAVE_WALLET_SEND_NFT" desc="Send tab Send NFT button">Send NFT</message>
   <message name="IDS_BRAVE_WALLET_SELECT_TOKEN" desc="Send tab Select token button">Select token</message>
   <message name="IDS_BRAVE_WALLET_SELECT_NFT" desc="Send tab Select NFT button">Select NFT</message>
-  <message name="IDS_BRAVE_WALLET_SEND_TAB_SELECT_TITLE" desc="Send tab Select token title">Select a token to send</message>
+  <message name="IDS_BRAVE_WALLET_SEND_TAB_SELECT_TOKEN_TITLE" desc="Send tab Select token title">Select a token to send</message>
+  <message name="IDS_BRAVE_WALLET_SEND_TAB_SELECT_NFT_TITLE" desc="Send tab Select NFT title">Select an NFT to send</message>
   <message name="IDS_BRAVE_WALLET_ENTER_RECIPIENT_ADDRESS" desc="Send tab Enter recipient address">Enter recipient address</message>
   <message name="IDS_BRAVE_WALLET_NOT_ENOUGH_FUNDS" desc="Send tab Not enough funds error">Not enough funds</message>
   <message name="IDS_BRAVE_WALLET_SEND_HALF" desc="Send tab Send Half button">HALF</message>
