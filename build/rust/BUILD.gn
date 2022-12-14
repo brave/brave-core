@@ -1,3 +1,8 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/build/cargo.gni")
 
 if (is_mac) {
@@ -19,7 +24,7 @@ config("strip_rust_symbols") {
     # Too many personalities workaround. Will be fixed in llvm see
     # https://reviews.llvm.org/D135728
     if (!is_component_build && !use_lld) {
-      ldflags = [ "-Wl,-no_compact_unwind" ]
+      ldflags += [ "-Wl,-no_compact_unwind" ]
     }
   }
 }
