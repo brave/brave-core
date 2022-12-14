@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_writer.h"
 #include "base/strings/string_split.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
@@ -97,13 +96,12 @@ void SkusUrlLoaderImpl::OnFetchComplete(
   uint16_t response_code = api_request_result.response_code();
   bool success = api_request_result.IsResponseCodeValid();
 
-  std::string safe_json;
-  if (api_request_result.value_body().is_none() ||
-      !base::JSONWriter::Write(api_request_result.value_body(), &safe_json)) {
-    success = false;
+  // Body might be empty here which is still a success.
+  std::vector<uint8_t> body_bytes;
+  if (!api_request_result.body().empty()) {
+    body_bytes.assign(api_request_result.body().begin(),
+                      api_request_result.body().end());
   }
-
-  std::vector<uint8_t> body_bytes(safe_json.begin(), safe_json.end());
 
   std::vector<std::string> headers;
   headers.reserve(api_request_result.headers().size());
