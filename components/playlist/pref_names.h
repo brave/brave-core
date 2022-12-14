@@ -24,6 +24,9 @@ constexpr char kPlaylistsPref[] = "brave.playlist.lists";
 // it's metadata(such as, title, media file path and etc..).
 constexpr char kPlaylistItemsPref[] = "brave.playlist.items";
 
+// Boolean pref indicates that we should cache media file when adding items.
+constexpr char kPlaylistCacheByDefault[] = "brave.playlist.cache";
+
 }  // namespace playlist
 
 #endif  // BRAVE_COMPONENTS_PLAYLIST_PREF_NAMES_H_
