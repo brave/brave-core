@@ -124,7 +124,7 @@ class TestKeyringServiceObserver
   void AccountsChanged() override { accounts_changed_fired_count_++; }
   void AccountsAdded(mojom::CoinType coin,
                      const std::vector<std::string>& addresses) override {
-    addresses_added_ = addresses;
+    addresses_added_.push_back(addresses);
   }
   bool AutoLockMinutesChangedFired() {
     return auto_lock_minutes_changed_fired_;
@@ -147,8 +147,9 @@ class TestKeyringServiceObserver
     return observer_receiver_.BindNewPipeAndPassRemote();
   }
   void ExpectAddressesAddedEq(
-      const std::vector<std::string> expected_addresses) {
+      const std::vector<std::vector<std::string>> expected_addresses) {
     EXPECT_EQ(expected_addresses, addresses_added_);
+    addresses_added_.clear();
   }
 
   void Reset() {
@@ -162,7 +163,7 @@ class TestKeyringServiceObserver
   }
 
  private:
-  std::vector<std::string> addresses_added_;
+  std::vector<std::vector<std::string>> addresses_added_;
   bool auto_lock_minutes_changed_fired_ = false;
   int accounts_changed_fired_count_ = 0;
   bool keyring_reset_fired_ = false;
@@ -4377,23 +4378,27 @@ TEST_F(KeyringServiceUnitTest, AccountsAdded) {
   service.AddObserver(observer.GetReceiver());
 
   // RestoreWallet
-  RestoreWallet(
-      &service, kMnemonic1, kPasswordBrave,
-      false);  // Creates account 0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db
+  RestoreWallet(&service, kMnemonic1, kPasswordBrave, false);
   base::RunLoop().RunUntilIdle();
   observer.ExpectAddressesAddedEq(
-      {"0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db"});
+      {{"0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db"},
+       {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8"}});
   task_environment_.FastForwardBy(
       base::Minutes(kAssetDiscoveryMinutesPerRequest));
 
-  // AddAccount
-  ASSERT_TRUE(AddAccount(
-      &service, "Account",
-      mojom::CoinType::ETH));  // Creates account
-                               // 0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0
+  // AddAccount ETH
+  ASSERT_TRUE(AddAccount(&service, "Account", mojom::CoinType::ETH));
   base::RunLoop().RunUntilIdle();
   observer.ExpectAddressesAddedEq(
-      {"0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0"});
+      {{"0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0"}});
+  task_environment_.FastForwardBy(
+      base::Minutes(kAssetDiscoveryMinutesPerRequest));
+
+  // AddAccount SOL
+  ASSERT_TRUE(AddAccount(&service, "Account", mojom::CoinType::SOL));
+  base::RunLoop().RunUntilIdle();
+  observer.ExpectAddressesAddedEq(
+      {{"JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"}});
   task_environment_.FastForwardBy(
       base::Minutes(kAssetDiscoveryMinutesPerRequest));
 
@@ -4405,7 +4410,7 @@ TEST_F(KeyringServiceUnitTest, AccountsAdded) {
   service.AddHardwareAccounts(std::move(hardware_accounts));
   base::RunLoop().RunUntilIdle();
   observer.ExpectAddressesAddedEq(
-      {"0x595a0583621FDe81A935021707e81343f75F9324"});
+      {{"0x595a0583621FDe81A935021707e81343f75F9324"}});
   task_environment_.FastForwardBy(
       base::Minutes(kAssetDiscoveryMinutesPerRequest));
 
@@ -4418,7 +4423,7 @@ TEST_F(KeyringServiceUnitTest, AccountsAdded) {
       mojom::kDefaultKeyringId, "Imported Account", private_key_bytes));
   base::RunLoop().RunUntilIdle();
   observer.ExpectAddressesAddedEq(
-      {"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"});
+      {{"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"}});
 }
 
 #if !defined(OFFICIAL_BUILD)

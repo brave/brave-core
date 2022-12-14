@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 
+#include <map>
 #include <utility>
 #include <vector>
 
@@ -1371,16 +1372,27 @@ void BraveWalletService::Base58Encode(
 }
 
 void BraveWalletService::DiscoverAssetsOnAllSupportedChains() {
+  std::map<mojom::CoinType, std::vector<std::string>> addresses;
+  // Fetch ETH addresses
   mojom::KeyringInfoPtr keyring_info = keyring_service_->GetKeyringInfoSync(
       brave_wallet::mojom::kDefaultKeyringId);
-
-  std::vector<std::string> account_addresses;
+  std::vector<std::string> eth_account_addresses;
   for (auto& account_info : keyring_info->account_infos) {
-    account_addresses.push_back(account_info->address);
+    eth_account_addresses.push_back(account_info->address);
   }
+  addresses[mojom::CoinType::ETH] = std::move(eth_account_addresses);
 
-  asset_discovery_manager_.DiscoverAssetsOnAllSupportedChainsRefresh(
-      account_addresses);
+  // Fetch SOL addresses
+  keyring_info = keyring_service_->GetKeyringInfoSync(
+      brave_wallet::mojom::kSolanaKeyringId);
+  std::vector<std::string> sol_account_addresses;
+  for (const auto& account_info : keyring_info->account_infos) {
+    sol_account_addresses.push_back(account_info->address);
+  }
+  addresses[mojom::CoinType::SOL] = std::move(sol_account_addresses);
+
+  // Discover assets owned by the SOL and ETH addresses on all supported chains
+  asset_discovery_manager_.DiscoverAssetsOnAllSupportedChainsRefresh(addresses);
 }
 
 void BraveWalletService::CancelAllSuggestedTokenCallbacks() {

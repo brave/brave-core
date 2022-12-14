@@ -723,6 +723,8 @@ void KeyringService::MaybeCreateDefaultSolanaAccount() {
       // to network change events.
       json_rpc_service_->SetNetwork(brave_wallet::mojom::kSolanaMainnet,
                                     mojom::CoinType::SOL, false);
+
+      NotifyAccountsAdded(mojom::CoinType::SOL, {address.value()});
     }
   }
 }
@@ -818,6 +820,7 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
       if (address) {
         SetPrefForKeyring(profile_prefs_, kSelectedAccount,
                           base::Value(*address), mojom::kSolanaKeyringId);
+        NotifyAccountsAdded(mojom::CoinType::SOL, {address.value()});
       }
     } else {
       MaybeCreateDefaultSolanaAccount();
