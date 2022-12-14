@@ -505,10 +505,10 @@
   <message name="IDS_BRAVE_WALLET_BUY_WYRE_DESCRIPTION" desc="Wyre description in buy options list">Buy crypto with Visa or Mastercard.</message>
   <message name="IDS_BRAVE_WALLET_BUY_SARDINE_DESCRIPTION" desc="Sardine description in buy options list">Instant buy with your bank account. Lower fees.</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network Filter Selector All Networks">All Networks</message>
-  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_ALL_ASSETS" desc="Aseet Filter Selector All Assets">All Assets</message>
-  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_NFTS" desc="Aseet Filter Selector NFTs">NFTs</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_LOW_TO_HIGH" desc="Aseet Filter Selector Low to High">Balance ↑</message>
-  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_HIGHT_TO_LOW" desc="Aseet Filter Selector High to Low">Balance ↓</message>
+  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_HIGH_TO_LOW" desc="Aseet Filter Selector High to Low">Balance ↓</message>
+  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_A_TO_Z" desc="Aseet Filter Selector A to Z">Name ↓</message>
+  <message name="IDS_BRAVE_WALLET_ASSET_FILTER_Z_TO_A" desc="Aseet Filter Selector Z to A">Name ↑</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_FILTER_ALL_ACCOUNTS" desc="Account Filter Selector All Accounts">All Accounts</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_TITLE" desc="Transaction submitted title">Transaction submitted</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_DESCRIPTION" desc="Transaction submitted description">Transaction has been successfully sent to the network and awaits confirmation.</message>

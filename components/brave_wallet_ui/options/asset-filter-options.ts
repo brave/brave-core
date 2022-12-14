@@ -6,23 +6,23 @@
 import { AssetFilterOption } from '../constants/types'
 import { getLocale } from '../../common/locale'
 
-export const AllAssetsFilterOption: AssetFilterOption = {
-  id: 'allAssets',
-  name: getLocale('braveWalletAssetFilterAllAssets')
+export const HighToLowAssetsFilterOption: AssetFilterOption = {
+  id: 'highToLow',
+  name: getLocale('braveWalletAssetFilterHighToLow')
 }
 
 export const AssetFilterOptions: AssetFilterOption[] = [
-  AllAssetsFilterOption,
-  {
-    id: 'nfts',
-    name: getLocale('braveWalletAssetFilterNFTs')
-  },
+  HighToLowAssetsFilterOption,
   {
     id: 'lowToHigh',
     name: getLocale('braveWalletAssetFilterLowToHigh')
   },
   {
-    id: 'highToLow',
-    name: getLocale('braveWalletAssetFilterHighToLow')
+    id: 'aToZ',
+    name: getLocale('braveWalletAssetFilterAToZ')
+  },
+  {
+    id: 'zToA',
+    name: getLocale('braveWalletAssetFilterZToA')
   }
 ]
