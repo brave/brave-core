@@ -28,6 +28,7 @@ void BraveRegisterBrowserStatePrefs(
 
 void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_stats::RegisterLocalStatePrefs(registry);
+  brave_wallet::RegisterLocalStatePrefs(registry);
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   brave::BraveP3AService::RegisterPrefs(registry, false);
 #endif
