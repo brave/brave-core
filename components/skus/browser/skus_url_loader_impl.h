@@ -26,11 +26,14 @@ class SkusUrlLoaderImpl : public SkusUrlLoader {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~SkusUrlLoaderImpl() override;
 
+  using FetchResponseCallback = rust::cxxbridge1::Fn<void(
+      rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
+      skus::HttpResponse)>;
+  using FetchResponseCallbackForTesting =
+      base::OnceCallback<void(const skus::HttpResponse&)>;
   void BeginFetch(
       const skus::HttpRequest& req,
-      rust::cxxbridge1::Fn<
-          void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
-               skus::HttpResponse)> callback,
+      FetchResponseCallback callback,
       rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx) override;
 
   void Request(const std::string& method,
@@ -41,18 +44,19 @@ class SkusUrlLoaderImpl : public SkusUrlLoader {
                api_request_helper::APIRequestHelper::ResultCallback callback,
                const base::flat_map<std::string, std::string>& headers,
                size_t max_body_size /* = -1u */);
+  void SetFetchCompleteCallbackForTesting(
+      FetchResponseCallbackForTesting callback);
 
  private:
   friend class SkusUrlLoaderImplUnitTest;
 
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
-
-  void OnFetchComplete(rust::cxxbridge1::Fn<void(
-                           rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
-                           skus::HttpResponse)> callback,
+  void OnFetchComplete(FetchResponseCallback callback,
                        rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx,
                        api_request_helper::APIRequestResult api_request_result);
+
+  FetchResponseCallbackForTesting fetch_complete_callback_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 };
 
 }  // namespace skus
