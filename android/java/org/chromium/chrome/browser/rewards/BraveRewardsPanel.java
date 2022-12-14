@@ -778,9 +778,9 @@ public class BraveRewardsPanel
         String rewardsCountryCode = UserPrefs.get(Profile.getLastUsedRegularProfile())
                                             .getString(BravePref.DECLARED_GEO);
 
-        if (mPopupView != null) {
-            if (!BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                        Profile.getLastUsedRegularProfile())) {
+        if (mPopupView != null && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
+            if (!BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
+                    && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()) {
                 showBraveRewardsOnboardingModal();
             } else if (TextUtils.isEmpty(rewardsCountryCode)) {
                 mBraveRewardsNativeWorker.getAvailableCountries();
@@ -1027,6 +1027,7 @@ public class BraveRewardsPanel
     }
 
     private void showRewardsResponseModal(boolean isSuccess, String errorMessage) {
+        fetchRewardsData();
         mRewardsResponseModal = mPopupView.findViewById(R.id.rewards_response_modal_id);
         mRewardsResponseModal.setVisibility(View.VISIBLE);
 
@@ -1085,16 +1086,18 @@ public class BraveRewardsPanel
         mBraveRewardsOnboardingModalView.setVisibility(View.GONE);
         if (result.equals(SUCCESS)) {
             mBraveRewardsNativeWorker.GetAutoContributeProperties();
+            BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
             if (!PackageUtils.isFirstInstall(mActivity)) {
                 showRewardsResponseModal(true, result);
-                fetchRewardsData();
             } else {
                 BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
                 showBraveRewardsOnboarding(true);
             }
         } else {
             showRewardsResponseModal(false, result);
-            fetchRewardsData();
+        }
+        if (!BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+            BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
         }
     }
 
