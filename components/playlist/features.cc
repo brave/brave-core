@@ -5,6 +5,7 @@
 
 #include "brave/components/playlist/features.h"
 
+#include "base/dcheck_is_on.h"
 #include "base/feature_list.h"
 
 namespace playlist::features {
