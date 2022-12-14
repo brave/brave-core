@@ -777,18 +777,14 @@ public class BraveRewardsPanel
         setNotificationsControls();
         String rewardsCountryCode = UserPrefs.get(Profile.getLastUsedRegularProfile())
                                             .getString(BravePref.DECLARED_GEO);
-        if (mPopupView != null && PackageUtils.isFirstInstall(mActivity)
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
-                && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
-                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+
+        if (mPopupView != null) {
+            if (!BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                         Profile.getLastUsedRegularProfile())) {
-            showBraveRewardsOnboardingModal();
-            BraveRewardsHelper.updateBraveRewardsAppOpenCount();
-        } else if (mPopupView != null && !PackageUtils.isFirstInstall(mActivity)
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
-                && BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
-                && TextUtils.isEmpty(rewardsCountryCode)) {
-            mBraveRewardsNativeWorker.getAvailableCountries();
+                showBraveRewardsOnboardingModal();
+            } else if (TextUtils.isEmpty(rewardsCountryCode)) {
+                mBraveRewardsNativeWorker.getAvailableCountries();
+            }
         }
     }
 
@@ -1091,12 +1087,14 @@ public class BraveRewardsPanel
             mBraveRewardsNativeWorker.GetAutoContributeProperties();
             if (!PackageUtils.isFirstInstall(mActivity)) {
                 showRewardsResponseModal(true, result);
+                fetchRewardsData();
             } else {
                 BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
                 showBraveRewardsOnboarding(true);
             }
         } else {
             showRewardsResponseModal(false, result);
+            fetchRewardsData();
         }
     }
 
