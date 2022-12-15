@@ -9,7 +9,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"

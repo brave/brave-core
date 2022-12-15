@@ -50,7 +50,7 @@
 #include "brave/components/brave_shields/browser/domain_block_navigation_throttle.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a_private.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"

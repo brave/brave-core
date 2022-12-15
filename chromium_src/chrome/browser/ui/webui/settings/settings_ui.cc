@@ -6,7 +6,7 @@
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
 #include "brave/browser/ui/webui/settings/brave_site_settings_handler.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/settings/settings_secure_dns_handler.h"
 #include "chrome/browser/ui/webui/settings/site_settings_handler.h"
 

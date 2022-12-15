@@ -14,7 +14,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/debounce/browser/debounce_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"

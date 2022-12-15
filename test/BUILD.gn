@@ -9,7 +9,7 @@ import("//brave/browser/metrics/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
-import("//brave/components/brave_vpn/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
@@ -851,7 +851,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_sync:prefs",
-    "//brave/components/brave_vpn/buildflags",
+    "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:permission_utils",

@@ -9,7 +9,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"

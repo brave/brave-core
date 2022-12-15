@@ -58,7 +58,7 @@ const char kTestVpnOrders[] = R"(
                         "expires_at": "{year}-05-13T00:00:00",
                         "issued_at": "2022-05-11T00:00:00",
                         "item_id": "424bc657-633f-4fcc-bd8e-92a51c8e4971",
-                        "token": "q7gunpfaAVvnoP6uvnLaZHLivyky1VmF4NqryK3Hx+dq67LNtA3KLx8251Pc5tLH"
+                        "token": "q7gunpfaAVvnoP"
                     }
                 ],
                 "item_id": "424bc657-633f-4fcc-bd8e-92a51c8e4971",
@@ -117,7 +117,7 @@ std::string GenerateTestingCreds(const std::string& domain,
   base::Time::Exploded exploded;
   now.LocalExplode(&exploded);
   std::string year =
-      std::to_string(active_subscription ? exploded.year + 1 : 0);
+      base::NumberToString(active_subscription ? exploded.year + 1 : 0);
   base::ReplaceSubstringsAfterOffset(&json, 0, "{year}", year);
   base::ReplaceSubstringsAfterOffset(&json, 0, "{domain}", domain);
   return json;

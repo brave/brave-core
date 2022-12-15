@@ -5,7 +5,7 @@
 
 #include "chrome/browser/net/stub_resolver_config_reader.h"
 #include "base/feature_list.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "build/buildflag.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/common/pref_names.h"
