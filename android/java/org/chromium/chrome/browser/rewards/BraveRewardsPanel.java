@@ -385,15 +385,18 @@ public class BraveRewardsPanel
         showSummarySection();
         mBtnTip.setEnabled(false);
 
-        String monthName = (String) android.text.format.DateFormat.format("MMM", new Date());
+        String monthName = (String) android.text.format.DateFormat.format("MMMM", new Date());
+        String monthNameShort = (String) android.text.format.DateFormat.format("MMM", new Date());
         int lastDate = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
-        String adsMonthlyStatement = new StringBuilder(monthName)
-                                             .append(" 1 - ")
-                                             .append(monthName)
+        String adsMonthlyStatement = new StringBuilder("1")
                                              .append(" ")
+                                             .append(monthNameShort.replaceAll("\\.", ""))
+                                             .append(" - ")
                                              .append(lastDate)
+                                             .append(" ")
+                                             .append(monthNameShort.replaceAll("\\.", ""))
                                              .toString();
         String monthYear = new StringBuilder(monthName).append(" ").append(currentYear).toString();
 
