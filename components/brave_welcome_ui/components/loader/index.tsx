@@ -26,20 +26,10 @@ const Graphic = styled('div')`
 `
 
 export default function Loader () {
-  const [show, setShow] = React.useState(false)
-
-  React.useEffect(() => {
-    const timerId = setTimeout(() => setShow(true), 100)
-
-    return () => {
-      clearTimeout(timerId)
-    }
-  }, [])
-
   return (
     <Loading aria-busy='true'>
       <Graphic aria-label='Loading'>
-        { show ? <LoaderIcon /> : null }
+        <LoaderIcon />
       </Graphic>
     </Loading>
   )
