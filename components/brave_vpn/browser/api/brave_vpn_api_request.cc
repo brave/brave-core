@@ -231,10 +231,11 @@ void BraveVpnAPIRequest::CreateSupportTicket(
       base::BindOnce(&BraveVpnAPIRequest::OnCreateSupportTicket,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  OAuthRequest(GetURLWithPath(kVpnHost, kCreateSupportTicket), "POST",
-               CreateJSONRequestBody(GetValueWithTicketInfos(
-                   email, subject, body, subscriber_credential)),
-               std::move(internal_callback));
+  OAuthRequest(
+      GetURLWithPath(kVpnHost, kCreateSupportTicket), "POST",
+      CreateJSONRequestBody(GetValueWithTicketInfos(
+          email, subject, body, subscriber_credential, GetTimeZoneName())),
+      std::move(internal_callback));
 }
 
 void BraveVpnAPIRequest::OAuthRequest(

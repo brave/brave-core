@@ -50,6 +50,7 @@ provideStrings({
   braveVpnSupportOptionalVpnHostname: 'VPN hostname:',
   braveVpnSupportOptionalAppVersion: 'App version:',
   braveVpnSupportOptionalOsVersion: 'OS version:',
+  braveVpnSupportTimezone: 'Timezone:',
   braveVpnSupportNotes: 'Support provided in partnership with Guardian.',
   braveVpnSupportSubmit: 'Submit',
   braveVpnConnectNotAllowed: 'VPN connection failed. Please try connecting again, and be sure to click Allow to enable Brave\'s VPN configuration.'

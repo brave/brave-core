@@ -20,6 +20,7 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/icu/source/i18n/unicode/timezone.h"
 
 namespace brave_vpn {
 
@@ -69,11 +70,21 @@ std::vector<Hostname> ParseHostnames(const base::Value::List& hostnames_value) {
   return hostnames;
 }
 
+std::string GetTimeZoneName() {
+  std::unique_ptr<icu::TimeZone> zone(icu::TimeZone::createDefault());
+  icu::UnicodeString id;
+  zone->getID(id);
+  std::string current_time_zone;
+  id.toUTF8String<std::string>(current_time_zone);
+  return current_time_zone;
+}
+
 base::Value::Dict GetValueWithTicketInfos(
     const std::string& email,
     const std::string& subject,
     const std::string& body,
-    const std::string& subscriber_credential) {
+    const std::string& subscriber_credential,
+    const std::string& timezone) {
   base::Value::Dict dict;
 
   std::string email_trimmed, subject_trimmed, body_trimmed, body_encoded;
@@ -94,8 +105,8 @@ base::Value::Dict GetValueWithTicketInfos(
   dict.Set(kSupportTicketSubjectKey, subject_trimmed);
   dict.Set(kSupportTicketSupportTicketKey, body_encoded);
   dict.Set(kSupportTicketPartnerClientIdKey, "com.brave.browser");
+  dict.Set(kSupportTicketTimezoneKey, timezone);
 
   return dict;
 }
-
 }  // namespace brave_vpn

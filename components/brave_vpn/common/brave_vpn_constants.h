@@ -29,6 +29,7 @@ constexpr char kSupportTicketEmailKey[] = "email";
 constexpr char kSupportTicketSubjectKey[] = "subject";
 constexpr char kSupportTicketSupportTicketKey[] = "support-ticket";
 constexpr char kSupportTicketPartnerClientIdKey[] = "partner-client-id";
+constexpr char kSupportTicketTimezoneKey[] = "timezone";
 
 constexpr char kVpnHost[] = "connect-api.guardianapp.com";
 constexpr char kAllServerRegions[] = "api/v1/servers/all-server-regions";
