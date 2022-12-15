@@ -20,6 +20,8 @@ static_library("brave_vpn") {
   deps = [
     "api",
     "common",
+    "connection",
+    "connection:api",
     "mojom",
     "//base",
     "//brave/components/p3a_utils",
@@ -36,24 +38,12 @@ static_library("brave_vpn") {
     "//ui/base",
     "//url",
   ]
-
-  if (is_win || is_mac) {
-    deps += [
-      "connection",
-      "connection:api",
-    ]
-  }
 }
 
 source_set("unit_tests") {
-  assert(enable_brave_vpn)
   testonly = true
 
-  sources = []
-
-  if (is_win || is_mac || is_android) {
-    sources += [ "brave_vpn_service_unittest.cc" ]
-  }
+  sources = [ "brave_vpn_service_unittest.cc" ]
 
   deps = [
     ":brave_vpn",
@@ -61,6 +51,9 @@ source_set("unit_tests") {
     "//brave/components/brave_vpn/api",
     "//brave/components/brave_vpn/api:unit_tests",
     "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/connection:api",
+    "//brave/components/brave_vpn/connection:common",
+    "//brave/components/brave_vpn/connection:sim",
     "//brave/components/skus/browser",
     "//brave/components/skus/common",
     "//brave/components/skus/common:mojom",
@@ -74,11 +67,4 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//third_party/abseil-cpp:absl",
   ]
-  if (is_mac || is_win) {
-    deps += [
-      "//brave/components/brave_vpn/connection:api",
-      "//brave/components/brave_vpn/connection:common",
-      "//brave/components/brave_vpn/connection:sim",
-    ]
-  }
 }

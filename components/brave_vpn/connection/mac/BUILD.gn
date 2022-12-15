@@ -25,6 +25,9 @@ source_set("mac") {
     "//net",
     "//services/network/public/cpp",
   ]
-  frameworks = [ "NetworkExtension.framework" ]
+  frameworks = [
+    "NetworkExtension.framework",
+    "Foundation.framework",
+  ]
   configs += [ "//build/config/compiler:enable_arc" ]
 }

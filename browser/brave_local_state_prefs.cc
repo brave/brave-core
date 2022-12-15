@@ -26,6 +26,7 @@
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
+#include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/common/pref_names.h"
@@ -50,7 +51,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
-#include "brave/components/skus/browser/skus_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)

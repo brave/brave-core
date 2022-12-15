@@ -5,6 +5,8 @@
 
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 
+assert(enable_brave_vpn)
+
 source_set("common") {
   sources = [
     "brave_vpn_constants.h",
@@ -28,24 +30,18 @@ source_set("common") {
 }
 
 source_set("unit_tests") {
-  if (enable_brave_vpn) {
-    testonly = true
+  testonly = true
 
-    sources = []
+  sources = [ "brave_vpn_utils_unittest.cc" ]
 
-    if (is_win || is_mac || is_android) {
-      sources += [ "brave_vpn_utils_unittest.cc" ]
-    }
-
-    deps = [
-      ":common",
-      "//base",
-      "//components/prefs",
-      "//components/prefs:test_support",
-      "//components/sync_preferences:test_support",
-      "//testing/gmock",
-      "//testing/gtest",
-      "//third_party/abseil-cpp:absl",
-    ]
-  }
+  deps = [
+    ":common",
+    "//base",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+  ]
 }

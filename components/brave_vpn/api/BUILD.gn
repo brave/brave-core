@@ -31,24 +31,22 @@ source_set("api") {
 }
 
 source_set("unit_tests") {
-  if (enable_brave_vpn) {
-    testonly = true
+  testonly = true
 
-    sources = []
+  sources = []
 
-    if (is_win || is_mac || is_android) {
-      sources += [
-        "brave_vpn_api_helper_unittest.cc",
-        "vpn_response_parser_unittest.cc",
-      ]
-    }
-
-    deps = [
-      ":api",
-      "//base",
-      "//brave/components/brave_vpn/common",
-      "//testing/gtest",
-      "//third_party/abseil-cpp:absl",
+  if (is_win || is_mac || is_android) {
+    sources += [
+      "brave_vpn_api_helper_unittest.cc",
+      "vpn_response_parser_unittest.cc",
     ]
   }
+
+  deps = [
+    ":api",
+    "//base",
+    "//brave/components/brave_vpn/common",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+  ]
 }

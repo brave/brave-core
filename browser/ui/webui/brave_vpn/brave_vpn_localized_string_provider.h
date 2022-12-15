@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_VPN_BRAVE_VPN_LOCALIZED_STRING_PROVIDER_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_VPN_BRAVE_VPN_LOCALIZED_STRING_PROVIDER_H_
 
-#include "base/no_destructor.h"
-
 namespace content {
 class WebUIDataSource;
 }

@@ -15,10 +15,12 @@
 #include "build/build_config.h"
 #include "content/public/browser/webui_config_map.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_vpn/vpn_panel_ui.h"
+#endif  // !BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
