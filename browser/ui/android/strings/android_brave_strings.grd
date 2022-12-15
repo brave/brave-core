@@ -571,7 +571,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Help make Brave better.
       </message>
       <message name="IDS_P3A_CRASH" desc="Text for p3a crash onboarding">
-        Send anonymous diagnostic reports if you experience a crash or freeze.
+        Send diagnostic reports if you experience a crash or freeze.
       </message>
       <message name="IDS_P3A_INSIGHTS" desc="Text for p3a insights onboarding">
         Share completely private and anonymous product insights about what features are being used by Brave's users.
