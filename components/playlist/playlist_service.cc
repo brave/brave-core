@@ -84,9 +84,10 @@ void PlaylistService::Shutdown() {
   task_runner_.reset();
 }
 
-void PlaylistService::RequestDownloadMediaFilesFromContents(
+void PlaylistService::AddMediaFilesFromContentsToPlaylist(
     const std::string& playlist_id,
-    content::WebContents* contents) {
+    content::WebContents* contents,
+    bool cache) {
   DCHECK(contents);
   if (!contents->GetPrimaryMainFrame())
     return;
@@ -100,23 +101,22 @@ void PlaylistService::RequestDownloadMediaFilesFromContents(
   else
     request.url_or_contents = contents->GetWeakPtr();
 
-  request.callback =
-      base::BindOnce(&PlaylistService::RequestDownloadMediaFilesFromItems,
-                     base::Unretained(this),
-                     playlist_id.empty() ? kDefaultPlaylistID : playlist_id);
+  request.callback = base::BindOnce(
+      &PlaylistService::AddMediaFilesFromItems, base::Unretained(this),
+      playlist_id.empty() ? kDefaultPlaylistID : playlist_id, cache);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
-void PlaylistService::RequestDownloadMediaFilesFromPage(
+void PlaylistService::AddMediaFilesFromPageToPlaylist(
     const std::string& playlist_id,
-    const std::string& url) {
+    const std::string& url,
+    bool cache) {
   VLOG(2) << __func__ << " " << playlist_id << " " << url;
   PlaylistDownloadRequestManager::Request request;
   request.url_or_contents = url;
-  request.callback =
-      base::BindOnce(&PlaylistService::RequestDownloadMediaFilesFromItems,
-                     base::Unretained(this),
-                     playlist_id.empty() ? kDefaultPlaylistID : playlist_id);
+  request.callback = base::BindOnce(
+      &PlaylistService::AddMediaFilesFromItems, base::Unretained(this),
+      playlist_id.empty() ? kDefaultPlaylistID : playlist_id, cache);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
@@ -200,8 +200,9 @@ bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
   return true;
 }
 
-void PlaylistService::RequestDownloadMediaFilesFromItems(
+void PlaylistService::AddMediaFilesFromItems(
     const std::string& playlist_id,
+    bool cache,
     const std::vector<PlaylistItemInfo>& params) {
   if (params.empty())
     return;
@@ -211,8 +212,9 @@ void PlaylistService::RequestDownloadMediaFilesFromItems(
                           [](const auto& item) { return item.id; });
   AddItemsToPlaylist(playlist_id, ids);
 
-  base::ranges::for_each(
-      params, [this](const auto& info) { CreatePlaylistItem(info); });
+  base::ranges::for_each(params, [this, cache](const auto& info) {
+    CreatePlaylistItem(info, cache);
+  });
 }
 
 void PlaylistService::NotifyPlaylistChanged(
@@ -265,7 +267,8 @@ void PlaylistService::RemovePlaylistItemValue(const std::string& id) {
   playlist_items->Remove(id);
 }
 
-void PlaylistService::CreatePlaylistItem(const PlaylistItemInfo& params) {
+void PlaylistService::CreatePlaylistItem(const PlaylistItemInfo& params,
+                                         bool cache) {
   VLOG(2) << __func__;
 
   UpdatePlaylistItemValue(params.id,
@@ -277,7 +280,7 @@ void PlaylistService::CreatePlaylistItem(const PlaylistItemInfo& params) {
       FROM_HERE,
       base::BindOnce(&base::CreateDirectory, GetPlaylistItemDirPath(params.id)),
       base::BindOnce(&PlaylistService::OnPlaylistItemDirCreated,
-                     weak_factory_.GetWeakPtr(), params));
+                     weak_factory_.GetWeakPtr(), params, cache));
 }
 
 bool PlaylistService::ShouldDownloadOnBackground(
@@ -287,6 +290,7 @@ bool PlaylistService::ShouldDownloadOnBackground(
 }
 
 void PlaylistService::OnPlaylistItemDirCreated(const PlaylistItemInfo& info,
+                                               bool cache,
                                                bool directory_ready) {
   VLOG(2) << __func__;
   if (!directory_ready) {
@@ -295,7 +299,8 @@ void PlaylistService::OnPlaylistItemDirCreated(const PlaylistItemInfo& info,
   }
 
   DownloadThumbnail(info);
-  DownloadMediaFile(info);
+  if (cache)
+    DownloadMediaFile(info);
 }
 
 void PlaylistService::DownloadThumbnail(const PlaylistItemInfo& info) {
@@ -530,7 +535,9 @@ void PlaylistService::RecoverPlaylistItem(const std::string& id) {
 
   auto on_path_exists = base::BindOnce(
       [](base::WeakPtr<PlaylistService> service, PlaylistItemInfo info) {
-        service->OnPlaylistItemDirCreated(info, /* directory_created = */ true);
+        service->OnPlaylistItemDirCreated(info,
+                                          /* cache = */ true,
+                                          /* directory_created = */ true);
       },
       weak_factory_.GetWeakPtr(), info);
 
@@ -544,7 +551,7 @@ void PlaylistService::RecoverPlaylistItem(const std::string& id) {
             base::BindOnce(&base::CreateDirectory,
                            service->GetPlaylistItemDirPath(info.id)),
             base::BindOnce(&PlaylistService::OnPlaylistItemDirCreated, service,
-                           info));
+                           info, /* cache = */ true));
       },
       weak_factory_.GetWeakPtr(), info);
 

@@ -17,6 +17,7 @@ import Loader from './components/loader'
 
 const SelectBrowser = React.lazy(() => import('./components/select-browser'))
 const SelectProfile = React.lazy(() => import('./components/select-profile'))
+const SelectTheme = React.lazy(() => import('./components/select-theme'))
 const SetupComplete = React.lazy(() => import('./components/setup-complete'))
 
 function MainContainer () {
@@ -30,6 +31,10 @@ function MainContainer () {
 
   if (viewType === ViewType.ImportSelectProfile) {
     mainEl = <SelectProfile />
+  }
+
+  if (viewType === ViewType.ImportSelectTheme) {
+    mainEl = <SelectTheme />
   }
 
   if (viewType === ViewType.ImportInProgress) {

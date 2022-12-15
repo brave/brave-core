@@ -50,8 +50,7 @@ SkusUrlLoaderImpl::~SkusUrlLoaderImpl() = default;
 
 void SkusUrlLoaderImpl::BeginFetch(
     const skus::HttpRequest& req,
-    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
-                              skus::HttpResponse)> callback,
+    FetchResponseCallback callback,
     rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx) {
   base::flat_map<std::string, std::string> headers;
   for (const auto& header : req.headers) {
@@ -89,8 +88,7 @@ void SkusUrlLoaderImpl::Request(
 }
 
 void SkusUrlLoaderImpl::OnFetchComplete(
-    rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::HttpRoundtripContext>,
-                              skus::HttpResponse)> callback,
+    FetchResponseCallback callback,
     rust::cxxbridge1::Box<skus::HttpRoundtripContext> ctx,
     api_request_helper::APIRequestResult api_request_result) {
   uint16_t response_code = api_request_result.response_code();
@@ -117,8 +115,16 @@ void SkusUrlLoaderImpl::OnFetchComplete(
       headers,
       body_bytes,
   };
-
+  if (fetch_complete_callback_) {
+    std::move(fetch_complete_callback_).Run(resp);
+    return;
+  }
   callback(std::move(ctx), resp);
+}
+
+void SkusUrlLoaderImpl::SetFetchCompleteCallbackForTesting(
+    FetchResponseCallbackForTesting callback) {
+  fetch_complete_callback_ = std::move(callback);
 }
 
 }  // namespace skus

@@ -283,6 +283,15 @@ void ExtensionRewardsServiceObserver::OnReconcileComplete(
   event_router->BroadcastEvent(std::move(event));
 }
 
+void ExtensionRewardsServiceObserver::OnExternalWalletConnected() {
+  if (auto* event_router = extensions::EventRouter::Get(profile_)) {
+    event_router->BroadcastEvent(std::make_unique<extensions::Event>(
+        extensions::events::BRAVE_START,
+        extensions::api::brave_rewards::OnExternalWalletConnected::kEventName,
+        base::Value::List()));
+  }
+}
+
 void ExtensionRewardsServiceObserver::OnExternalWalletLoggedOut() {
   if (auto* event_router = extensions::EventRouter::Get(profile_)) {
     event_router->BroadcastEvent(std::make_unique<extensions::Event>(

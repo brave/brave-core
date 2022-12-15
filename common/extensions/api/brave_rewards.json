@@ -292,6 +292,12 @@
         ]
       },
       {
+        "name": "onExternalWalletConnected",
+        "type": "function",
+        "description": "Fired when an external wallet is connected",
+        "parameters": []
+      },
+      {
         "name": "onExternalWalletLoggedOut",
         "type": "function",
         "description": "Fired when an external wallet is logged out",

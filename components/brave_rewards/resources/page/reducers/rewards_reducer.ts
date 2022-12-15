@@ -329,6 +329,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       const { value, error } = action.payload.result
 
       if (value) {
+        chrome.send('brave_rewards.getUserType')
         chrome.send('brave_rewards.fetchBalance')
         ui.modalRedirect = 'hide'
       } else {

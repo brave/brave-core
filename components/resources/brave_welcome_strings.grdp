@@ -79,4 +79,24 @@
 <message name="IDS_BRAVE_WELCOME_PRIVACY_POLICY_NOTE" desc="A footnote with a link to Brave's privacy polcy.">
   Read our full <ph name="LINK_BEFORE">$1</ph>Privacy Policy<ph name="LINK_AFTER">$2</ph>
 </message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_THEME_LABEL" desc="A title for screen to select color theme">
+  Choose your theme
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_THEME_NOTE" desc="A note for user to change theme in settings">
+  You can change this at any time in Brave settings.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_THEME_SYSTEM_LABEL" desc="A label to match system setting">
+  Match system setting
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_THEME_LIGHT_LABEL" desc="A label for light theme setting">
+  Light mode
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_THEME_DARK_LABEL" desc="A label for dark theme setting">
+  Dark mode
+</message>
 </grit-part>
