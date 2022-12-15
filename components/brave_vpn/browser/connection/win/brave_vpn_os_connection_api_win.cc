@@ -40,9 +40,9 @@ RasOperationResult DisconnectEntry(const std::wstring& name) {
 }  // namespace
 
 // static
-BraveVPNOSConnectionAPI* BraveVPNOSConnectionAPI::GetInstance() {
-  static base::NoDestructor<BraveVPNOSConnectionAPIWin> s_manager;
-  return s_manager.get();
+BraveVPNOSConnectionAPI* BraveVPNOSConnectionAPI::GetInstanceImpl() {
+  static base::NoDestructor<BraveVPNOSConnectionAPIWin> s_connection_api;
+  return s_connection_api.get();
 }
 
 BraveVPNOSConnectionAPIWin::BraveVPNOSConnectionAPIWin() {

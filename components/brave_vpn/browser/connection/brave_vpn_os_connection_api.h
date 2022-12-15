@@ -23,7 +23,6 @@ namespace brave_vpn {
 // Interface for managing OS' vpn connection.
 class BraveVPNOSConnectionAPI {
  public:
-  BraveVPNOSConnectionAPI() = default;
   virtual ~BraveVPNOSConnectionAPI() = default;
 
   class Observer : public base::CheckedObserver {
@@ -34,6 +33,9 @@ class BraveVPNOSConnectionAPI {
     ~Observer() override = default;
   };
 
+  static void Init(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* local_state);
   static BraveVPNOSConnectionAPI* GetInstance();
   static std::unique_ptr<BraveVPNOSConnectionAPI> GetInstanceForTest();
 
@@ -55,6 +57,14 @@ class BraveVPNOSConnectionAPI {
   // Returns user friendly error string if existed.
   // Otherwise returns empty.
   virtual std::string GetLastConnectionError() const = 0;
+
+ protected:
+  BraveVPNOSConnectionAPI() = default;
+
+ private:
+  virtual bool IsInitialized() const = 0;
+
+  static BraveVPNOSConnectionAPI* GetInstanceImpl();
 };
 
 }  // namespace brave_vpn

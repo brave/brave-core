@@ -1,15 +1,16 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+
+#include <utility>
 
 #include "base/feature_list.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/skus/common/features.h"
 #include "build/build_config.h"
@@ -58,13 +59,6 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
 
 #if BUILDFLAG(IS_WIN)
   DependsOn(brave_vpn::BraveVpnDnsObserverFactory::GetInstance());
-#endif
-
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
-  auto* connection_api = BraveVPNOSConnectionAPI::GetInstance();
-  connection_api->SetSharedUrlLoaderFactory(
-      g_browser_process->shared_url_loader_factory());
-  connection_api->SetLocalPrefs(g_browser_process->local_state());
 #endif
 }
 

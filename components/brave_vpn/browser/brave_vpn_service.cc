@@ -9,36 +9,29 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/bind.h"
+#include "base/check_is_test.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/logging.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
+#include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/skus/browser/skus_utils.h"
+#include "brave/components/version_info/version_info.h"
 #include "components/prefs/pref_service.h"
+#include "components/version_info/version_info.h"
 #include "net/cookies/cookie_inclusion_status.h"
 #include "net/cookies/cookie_util.h"
 #include "net/cookies/parsed_cookie.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/url_util.h"
-
-#if !BUILDFLAG(IS_ANDROID)
-#include "base/bind.h"
-#include "base/check_is_test.h"
-#include "base/command_line.h"
-#include "base/logging.h"
-#include "base/notreached.h"
-#include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
-#include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
-#include "brave/components/version_info/version_info.h"
-#include "components/prefs/scoped_user_pref_update.h"
-#include "components/version_info/version_info.h"
-#endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace brave_vpn {
 

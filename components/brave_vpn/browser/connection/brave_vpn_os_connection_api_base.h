@@ -101,6 +101,9 @@ class BraveVPNOSConnectionAPIBase
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            ClearLastConnectionErrorWhenNewConnectionStart);
 
+  // BraveVPNOSConnectionAPI
+  bool IsInitialized() const override;
+
   // net::NetworkChangeNotifier::NetworkChangeObserver
   void OnNetworkChanged(
       net::NetworkChangeNotifier::ConnectionType type) override;
@@ -119,9 +122,9 @@ class BraveVPNOSConnectionAPIBase
                                bool success);
   void UpdateAndNotifyConnectionStateChange(mojom::ConnectionState state);
   BraveVpnAPIRequest* GetAPIRequest();
+
   // True when do quick cancel.
   bool QuickCancelIfPossible();
-
   void SetPreventCreationForTesting(bool value);
 
   bool cancel_connecting_ = false;

@@ -157,9 +157,9 @@ NEVPNProtocolIKEv2* CreateProtocolConfig(const BraveVPNConnectionInfo& info) {
 }  // namespace
 
 // static
-BraveVPNOSConnectionAPI* BraveVPNOSConnectionAPI::GetInstance() {
-  static base::NoDestructor<BraveVPNOSConnectionAPIMac> s_manager;
-  return s_manager.get();
+BraveVPNOSConnectionAPI* BraveVPNOSConnectionAPI::GetInstanceImpl() {
+  static base::NoDestructor<BraveVPNOSConnectionAPIMac> s_connection_api;
+  return s_connection_api.get();
 }
 
 BraveVPNOSConnectionAPIMac::BraveVPNOSConnectionAPIMac() {

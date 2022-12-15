@@ -24,6 +24,24 @@ namespace brave_vpn {
 
 using ConnectionState = mojom::ConnectionState;
 
+// static
+void BraveVPNOSConnectionAPI::Init(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PrefService* local_state) {
+  DCHECK(url_loader_factory && local_state);
+  auto* instance = GetInstanceImpl();
+  DCHECK(!instance->IsInitialized()) << "Initizlizing should be done only once";
+  instance->SetSharedUrlLoaderFactory(url_loader_factory);
+  instance->SetLocalPrefs(local_state);
+}
+
+// static
+BraveVPNOSConnectionAPI* BraveVPNOSConnectionAPI::GetInstance() {
+  auto* instance = GetInstanceImpl();
+  DCHECK(instance->IsInitialized()) << "Use CreateInstance to initialize API";
+  return instance;
+}
+
 BraveVPNOSConnectionAPIBase::BraveVPNOSConnectionAPIBase() {
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 }
@@ -70,6 +88,10 @@ void BraveVPNOSConnectionAPIBase::CreateVPNConnection() {
 
 void BraveVPNOSConnectionAPIBase::SetPreventCreationForTesting(bool value) {
   prevent_creation_ = value;
+}
+
+bool BraveVPNOSConnectionAPIBase::IsInitialized() const {
+  return local_prefs_ && url_loader_factory_;
 }
 
 void BraveVPNOSConnectionAPIBase::Connect() {
@@ -317,14 +339,17 @@ BraveVpnAPIRequest* BraveVPNOSConnectionAPIBase::GetAPIRequest() {
 }
 
 std::string BraveVPNOSConnectionAPIBase::GetDeviceRegion() const {
+  CHECK(local_prefs_);
   return local_prefs_->GetString(prefs::kBraveVPNDeviceRegion);
 }
 
 std::string BraveVPNOSConnectionAPIBase::GetSelectedRegion() const {
+  CHECK(local_prefs_);
   return local_prefs_->GetString(prefs::kBraveVPNSelectedRegion);
 }
 
 std::string BraveVPNOSConnectionAPIBase::GetCurrentEnvironment() const {
+  CHECK(local_prefs_);
   return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
 }
 
@@ -403,6 +428,7 @@ void BraveVPNOSConnectionAPIBase::ParseAndCacheHostnames(
   VLOG(2) << __func__ << " : request profile credential:"
           << GetBraveVPNPaymentsEnv(GetCurrentEnvironment());
 
+  CHECK(local_prefs_);
   GetAPIRequest()->GetProfileCredentials(
       base::BindOnce(&BraveVPNOSConnectionAPIBase::OnGetProfileCredentials,
                      base::Unretained(this)),

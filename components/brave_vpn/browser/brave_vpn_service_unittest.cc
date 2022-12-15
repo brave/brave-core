@@ -207,6 +207,11 @@ class BraveVPNServiceTest : public testing::Test {
             &url_loader_factory_);
     url_loader_factory_.SetInterceptor(base::BindRepeating(
         &BraveVPNServiceTest::Interceptor, base::Unretained(this)));
+#if !BUILDFLAG(IS_ANDROID)
+    // To avoid DCHECK at BraveVpnService ctor.
+    BraveVPNOSConnectionAPI::Init(url_loader_factory_.GetSafeWeakWrapper(),
+                                  &local_pref_service_);
+#endif
     // Setup required for SKU (dependency of VPN)
     skus_service_ = std::make_unique<skus::SkusServiceImpl>(
         &local_pref_service_, url_loader_factory_.GetSafeWeakWrapper());
@@ -215,6 +220,9 @@ class BraveVPNServiceTest : public testing::Test {
 
   void TearDown() override {
 #if !BUILDFLAG(IS_ANDROID)
+    auto* instance = BraveVPNOSConnectionAPI::GetInstance();
+    instance->SetSharedUrlLoaderFactory(nullptr);
+    instance->SetLocalPrefs(nullptr);
     SetMockConnectionAPI(nullptr);
 #endif
     if (service_) {
