@@ -22,6 +22,7 @@
     &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,\
     &brave_wallet::features::kNativeBraveWalletFeature,      \
     &brave_wallet::features::kBraveWalletSolanaFeature,      \
+    &brave_wallet::features::kBraveWalletSnsFeature,         \
     &preferences::features::kBraveBackgroundVideoPlayback,   \
     &safe_browsing::features::kBraveAndroidSafeBrowsing,     \
     &debounce::features::kBraveDebounce

@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.decentralized_dns.settings;
 
@@ -20,7 +20,7 @@ import org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayou
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class RadioButtonGroupENSResolveMethodPreference
+public class RadioButtonGroupDDnsResolveMethodPreference
         extends Preference implements RadioGroup.OnCheckedChangeListener {
     static final int OPTIONS_SIZE = ResolveMethodTypes.MAX_VALUE + 1;
 
@@ -29,9 +29,9 @@ public class RadioButtonGroupENSResolveMethodPreference
     private RadioButtonWithDescriptionLayout mGroup;
     private ArrayList<RadioButtonWithDescription> mButtons;
 
-    public RadioButtonGroupENSResolveMethodPreference(Context context, AttributeSet attrs) {
+    public RadioButtonGroupDDnsResolveMethodPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setLayoutResource(R.layout.radio_button_group_ens_resolve_method_preference);
+        setLayoutResource(R.layout.radio_button_group_ddns_resolve_method_preference);
 
         mButtons = new ArrayList<>(Collections.nCopies(OPTIONS_SIZE, null));
     }
@@ -45,18 +45,18 @@ public class RadioButtonGroupENSResolveMethodPreference
         super.onBindViewHolder(holder);
 
         mGroup = (RadioButtonWithDescriptionLayout) holder.findViewById(
-                R.id.ens_resolve_method_radio_group);
+                R.id.ddns_resolve_method_radio_group);
         mGroup.setOnCheckedChangeListener(this);
 
         mButtons.set(ResolveMethodTypes.ASK,
                 (RadioButtonWithDescription) holder.findViewById(
-                        R.id.ens_resolve_method_ask_radio_button));
+                        R.id.ddns_resolve_method_ask_radio_button));
         mButtons.set(ResolveMethodTypes.DISABLED,
                 (RadioButtonWithDescription) holder.findViewById(
-                        R.id.ens_resolve_method_disabled_radio_button));
+                        R.id.ddns_resolve_method_disabled_radio_button));
         mButtons.set(ResolveMethodTypes.ENABLED,
                 (RadioButtonWithDescription) holder.findViewById(
-                        R.id.ens_resolve_method_enabled_radio_button));
+                        R.id.ddns_resolve_method_enabled_radio_button));
 
         mSettingRadioButton = mButtons.get(mSetting);
         mSettingRadioButton.setChecked(true);

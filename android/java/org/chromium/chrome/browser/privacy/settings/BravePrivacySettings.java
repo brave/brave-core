@@ -93,7 +93,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_SOCIAL_BLOCKING_LINKEDIN = "social_blocking_linkedin";
     private static final String PREF_WEBRTC_POLICY = "webrtc_policy";
     private static final String PREF_UNSTOPPABLE_DOMAINS = "unstoppable_domains";
-    private static final String PREF_ETH_NAMED_SERVICE = "ens";
+    private static final String PREF_ENS = "ens";
+    private static final String PREF_SNS = "sns";
     private static final String PREF_HTTPS_ONLY_MODE_ENABLED_SAVED_STATE =
             "https_only_mode_enabled_saved_state";
 
@@ -114,7 +115,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             PREF_SOCIAL_BLOCKING_TWITTER, PREF_SOCIAL_BLOCKING_LINKEDIN,
             PREF_OTHER_PRIVACY_SETTINGS_SECTION, // other section
             PREF_WEBRTC_POLICY, PREF_SAFE_BROWSING, PREF_INCOGNITO_LOCK, PREF_CAN_MAKE_PAYMENT,
-            PREF_UNSTOPPABLE_DOMAINS, PREF_ETH_NAMED_SERVICE, PREF_IPFS_GATEWAY, PREF_SECURE_DNS,
+            PREF_UNSTOPPABLE_DOMAINS, PREF_ENS, PREF_SNS, PREF_IPFS_GATEWAY, PREF_SECURE_DNS,
             PREF_BLOCK_COOKIE_CONSENT_NOTICES, PREF_DO_NOT_TRACK, PREF_PHONE_AS_A_SECURITY_KEY,
             PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A, PREF_SEND_CRASH_REPORTS,
             PREF_BRAVE_STATS_USAGE_PING, PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR,
@@ -626,6 +627,10 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         if (mDeAmpPref != null) {
             mDeAmpPref.setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile())
                                           .getBoolean(BravePref.DE_AMP_PREF_ENABLED));
+        }
+
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_WALLET_SNS)) {
+            removePreferenceIfPresent(PREF_SNS);
         }
     }
 

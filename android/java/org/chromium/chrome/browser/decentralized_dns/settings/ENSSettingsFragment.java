@@ -22,14 +22,14 @@ public class ENSSettingsFragment extends PreferenceFragmentCompat {
         getActivity().setTitle(R.string.ens_title);
         SettingsUtils.addPreferencesFromResource(this, R.xml.ens_preferences);
 
-        RadioButtonGroupENSResolveMethodPreference radioButtonGroupENSResolveMethodPreference =
-                (RadioButtonGroupENSResolveMethodPreference) findPreference(
+        RadioButtonGroupDDnsResolveMethodPreference radioButtonGroupDDnsResolveMethodPreference =
+                (RadioButtonGroupDDnsResolveMethodPreference) findPreference(
                         PREF_ENS_RESOLVE_METHOD);
 
-        radioButtonGroupENSResolveMethodPreference.initialize(
+        radioButtonGroupDDnsResolveMethodPreference.initialize(
                 BravePrefServiceBridge.getInstance().getENSResolveMethod());
 
-        radioButtonGroupENSResolveMethodPreference.setOnPreferenceChangeListener(
+        radioButtonGroupDDnsResolveMethodPreference.setOnPreferenceChangeListener(
                 (preference, newValue) -> {
                     int method = (int) newValue;
                     BravePrefServiceBridge.getInstance().setENSResolveMethod(method);

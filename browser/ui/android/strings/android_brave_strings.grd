@@ -386,6 +386,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ENS_TITLE" desc="Title for ENS settings.">
         Ethereum Name Service
       </message>
+      <message name="IDS_SNS_TITLE" desc="Title for Sns settings.">
+        Solana Name Service
+      </message>
       <message name="IDS_RESOLVE_METHOD_TITLE" desc="Title for resolve method preference category.">
         Resolve Method
       </message>
