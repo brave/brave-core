@@ -499,6 +499,16 @@ jint JNI_BravePrefServiceBridge_GetENSResolveMethod(JNIEnv* env) {
       decentralized_dns::kENSResolveMethod);
 }
 
+void JNI_BravePrefServiceBridge_SetSnsResolveMethod(JNIEnv* env, jint method) {
+  g_browser_process->local_state()->SetInteger(
+      decentralized_dns::kSnsResolveMethod, method);
+}
+
+jint JNI_BravePrefServiceBridge_GetSnsResolveMethod(JNIEnv* env) {
+  return g_browser_process->local_state()->GetInteger(
+      decentralized_dns::kSnsResolveMethod);
+}
+
 void JNI_BravePrefServiceBridge_SetNewsOptIn(JNIEnv* env, jboolean value) {
   GetOriginalProfile()->GetPrefs()->SetBoolean(
       brave_news::prefs::kBraveTodayOptedIn, value);

@@ -308,6 +308,10 @@ constexpr char kBraveWalletSolanaProviderName[] =
     "Enable Brave Wallet Solana provider support";
 constexpr char kBraveWalletSolanaProviderDescription[] =
     "Solana provider support for native Brave Wallet";
+constexpr char kBraveWalletSnsName[] = "Enable Solana Name Service support";
+constexpr char kBraveWalletSnsDescription[] =
+    "Enable Solana Name Service(.sol) support for Wallet and omnibox address "
+    "resolution";
 constexpr char kBraveWalletDappsSupportName[] =
     "Enable Brave Wallet Dapps support";
 constexpr char kBraveWalletDappsSupportDescription[] =
@@ -502,7 +506,12 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
      kOsDesktop | kOsAndroid,                                                  \
      FEATURE_VALUE_TYPE(                                                       \
       brave_wallet::features::kBraveWalletSolanaProviderFeature)},             \
-     {"brave-wallet-dapps-support",                                            \
+    {"brave-wallet-sns",                                                       \
+     flag_descriptions::kBraveWalletSnsName,                                   \
+     flag_descriptions::kBraveWalletSnsDescription,                            \
+     kOsDesktop | kOsAndroid,                                                  \
+     FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletSnsFeature)},      \
+    {"brave-wallet-dapps-support",                                             \
      flag_descriptions::kBraveWalletDappsSupportName,                          \
      flag_descriptions::kBraveWalletDappsSupportDescription,                   \
      kOsDesktop | kOsAndroid,                                                  \

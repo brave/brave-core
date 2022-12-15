@@ -127,6 +127,11 @@
             android:key="ens"
             android:order="25"
             android:title="@string/ens_title" />
+        <Preference
+            android:fragment="org.chromium.chrome.browser.decentralized_dns.settings.SnsSettingsFragment"
+            android:key="sns"
+            android:order="25"
+            android:title="@string/sns_title" />
 
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="show_autocomplete_in_address_bar"

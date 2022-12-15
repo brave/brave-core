@@ -220,6 +220,14 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getENSResolveMethod();
     }
 
+    public void setSnsResolveMethod(int method) {
+        BravePrefServiceBridgeJni.get().setSnsResolveMethod(method);
+    }
+
+    public int getSnsResolveMethod() {
+        return BravePrefServiceBridgeJni.get().getSnsResolveMethod();
+    }
+
     public void setWebrtcPolicy(int policy) {
         BravePrefServiceBridgeJni.get().setWebrtcPolicy(policy);
     }
@@ -305,9 +313,11 @@ public class BravePrefServiceBridge {
         boolean getStatsReportingEnabled();
 
         void setUnstoppableDomainsResolveMethod(int method);
-        void setENSResolveMethod(int method);
         int getUnstoppableDomainsResolveMethod();
+        void setENSResolveMethod(int method);
         int getENSResolveMethod();
+        void setSnsResolveMethod(int method);
+        int getSnsResolveMethod();
 
         void setWebrtcPolicy(int policy);
         int getWebrtcPolicy();
