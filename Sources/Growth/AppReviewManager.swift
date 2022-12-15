@@ -39,9 +39,47 @@ public class AppReviewManager: ObservableObject {
   private let daysInUseMaxPeriod = AppConstants.buildChannel.isPublic ? 7.days : 7.minutes
   private let daysInUseRequiredPeriod = 4
   
+  // MARK: Legacy properties - Added for swithing back to legacy logic easily
+  private let legacyAppReviewLogicEnabled = true
+  let legacyFirstThreshold = 14
+  let legacySecondThreshold = 41
+  let legacyLastThreshold = 121
+  private let legacyMinimumDaysBetweenReviewRequest = 60
+  
   // MARK: Lifecycle
   
   public static var shared = AppReviewManager()
+  
+  // MARK: Legacy Review Methods
+  
+  public func legacyShouldRequestReview(date: Date = Date()) -> Bool {
+     let launchCount = Preferences.Review.launchCount.value
+     let threshold = Preferences.LegacyReview.threshold.value
+
+     var daysSinceLastRequest = 0
+     if let previousRequest = Preferences.LegacyReview.lastReviewDate.value {
+       daysSinceLastRequest = Calendar.current.dateComponents([.day], from: previousRequest, to: date).day ?? 0
+     } else {
+       daysSinceLastRequest = legacyMinimumDaysBetweenReviewRequest
+     }
+
+     if launchCount <= threshold || daysSinceLastRequest < legacyMinimumDaysBetweenReviewRequest {
+       return false
+     }
+
+     Preferences.LegacyReview.lastReviewDate.value = date
+
+     switch threshold {
+     case legacyFirstThreshold:
+       Preferences.LegacyReview.threshold.value = legacySecondThreshold
+     case legacySecondThreshold:
+       Preferences.LegacyReview.threshold.value = legacyLastThreshold
+     default:
+       break
+     }
+
+     return legacyAppReviewLogicEnabled
+   }
   
   // MARK: Review Handler Methods
   
@@ -125,7 +163,7 @@ public class AppReviewManager: ObservableObject {
       }
     }
     
-    return mainCriteriaSatisfied && subCriteriaSatisfied
+    return legacyAppReviewLogicEnabled ? false :  mainCriteriaSatisfied && subCriteriaSatisfied
   }
   
   /// This method is for checking App Review Sub Criteria is satisfied for a type

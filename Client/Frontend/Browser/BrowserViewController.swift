@@ -817,6 +817,15 @@ public class BrowserViewController: UIViewController {
     setupConstraints()
     updateToolbarStateForTraitCollection(self.traitCollection)
     
+    // Legacy Review Handling
+    if AppConstants.buildChannel.isPublic && AppReviewManager.shared.legacyShouldRequestReview() {
+      // Request Review when the main-queue is free or on the next cycle.
+      DispatchQueue.main.async {
+        guard let windowScene = self.currentScene else { return }
+        SKStoreReviewController.requestReview(in: windowScene)
+      }
+    }
+    
     // Do some migratins
     LegacyBookmarksHelper.restore_1_12_Bookmarks() {
       Logger.module.info("Bookmarks from old database were successfully restored")
