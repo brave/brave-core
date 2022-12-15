@@ -53,7 +53,30 @@ const getApplicableFilters = (suite) => {
   return filterFilePaths
 }
 
-const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, options) => {
+const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, options = {}) => {
+  buildTests(suite, buildConfig, options)
+  runTests(passthroughArgs, suite, buildConfig, options)
+}
+
+const buildTests = (suite, buildConfig = config.defaultBuildConfig, options = {}) => {
+  config.buildConfig = buildConfig
+  config.update(options)
+
+  let testSuites = [
+    'brave_unit_tests',
+    'brave_browser_tests',
+    'brave_network_audit_tests',
+  ]
+  if (testSuites.includes(suite)) {
+    config.buildTarget = 'brave/test:' + suite
+  } else {
+    config.buildTarget = suite
+  }
+  util.touchOverriddenFiles()
+  util.buildTarget()
+}
+
+const runTests = (passthroughArgs, suite, buildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
 
@@ -96,20 +119,6 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
 
   braveArgs = braveArgs.concat(passthroughArgs)
 
-  // Build the tests
-  let testSuites = [
-    'brave_unit_tests',
-    'brave_browser_tests',
-    'brave_network_audit_tests',
-  ]
-  if (testSuites.includes(suite)) {
-    config.buildTarget = 'brave/test:' + suite
-  } else {
-    config.buildTarget = suite
-  }
-  util.touchOverriddenFiles()
-  util.buildTarget()
-
   // Filter out upstream tests that are known to fail for Brave
   let upstreamTestSuites = [
     'unit_tests',
@@ -148,4 +157,8 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
   }
 }
 
-module.exports = test
+module.exports = {
+  test,
+  buildTests,
+  runTests
+}
