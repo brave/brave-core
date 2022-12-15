@@ -6,7 +6,7 @@
 #include "brave/browser/ui/webui/settings/brave_settings_secure_dns_handler.h"
 
 #include "base/feature_list.h"
-#include "brave/components/brave_vpn/features.h"
+#include "brave/components/brave_vpn/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"

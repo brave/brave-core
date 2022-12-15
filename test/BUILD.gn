@@ -5,7 +5,7 @@ import("//brave/build/config.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
-import("//brave/components/brave_vpn/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
@@ -165,7 +165,6 @@ test("brave_unit_tests") {
     "//brave/browser",
     "//brave/browser:unit_tests",
     "//brave/browser/brave_rewards/rewards_panel:unit_tests",
-    "//brave/browser/brave_vpn/dns:unit_tests",
     "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:unit_tests",
     "//brave/browser/content_settings:unit_tests",
@@ -306,9 +305,12 @@ test("brave_unit_tests") {
 
   if (enable_brave_vpn) {
     deps += [
-      "//brave/components/brave_vpn:unit_tests",
+      "//brave/components/brave_vpn/browser:unit_tests",
       "//brave/components/skus/browser:unit_tests",
     ]
+    if (is_win) {
+      deps += [ "//brave/browser/brave_vpn/dns:unit_tests" ]
+    }
   }
   if (toolkit_views) {
     deps += [ "//chrome/browser/ui/views" ]
@@ -870,7 +872,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_sync:prefs",
-    "//brave/components/brave_vpn/buildflags",
+    "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:permission_utils",
@@ -981,7 +983,8 @@ test("brave_browser_tests") {
 
   if (enable_brave_vpn) {
     deps += [
-      "//brave/components/brave_vpn",
+      "//brave/components/brave_vpn/browser",
+      "//brave/components/brave_vpn/common",
       "//brave/renderer/brave_vpn:browser_tests",
     ]
   }

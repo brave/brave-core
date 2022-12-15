@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_COLOR_BRAVE_COLOR_ID_H_
 #define BRAVE_BROWSER_UI_COLOR_BRAVE_COLOR_ID_H_
 
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"

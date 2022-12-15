@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_FEATURES_INTERNAL_NAMES_H_
 #define BRAVE_BROWSER_BRAVE_FEATURES_INTERNAL_NAMES_H_
 
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 
 constexpr char kPlaylistFeatureInternalName[] = "playlist";

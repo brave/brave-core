@@ -1,7 +1,7 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
-import("//brave/components/brave_vpn/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
@@ -373,7 +373,7 @@ source_set("ui") {
     "//brave/components/brave_search/common",
     "//brave/components/brave_search_conversion",
     "//brave/components/brave_shields/browser",
-    "//brave/components/brave_vpn/buildflags",
+    "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/constants",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
@@ -633,13 +633,15 @@ source_set("ui") {
     sources += [
       "toolbar/brave_vpn_menu_model.cc",
       "toolbar/brave_vpn_menu_model.h",
+      "webui/brave_vpn/brave_vpn_localized_string_provider.cc",
+      "webui/brave_vpn/brave_vpn_localized_string_provider.h",
       "webui/brave_vpn/vpn_panel_handler.cc",
       "webui/brave_vpn/vpn_panel_handler.h",
       "webui/brave_vpn/vpn_panel_ui.cc",
       "webui/brave_vpn/vpn_panel_ui.h",
     ]
     deps += [
-      "//brave/components/brave_vpn",
+      "//brave/components/brave_vpn/browser",
       "//brave/components/brave_vpn/mojom",
       "//brave/components/brave_vpn/resources/panel:brave_vpn_panel_generated",
       "//mojo/public/cpp/bindings",

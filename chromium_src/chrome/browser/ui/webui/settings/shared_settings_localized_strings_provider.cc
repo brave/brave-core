@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/secure_dns_config.h"
@@ -15,9 +15,11 @@
 #include "components/prefs/pref_service.h"
 #include "net/dns/public/secure_dns_mode.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/features.h"
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/features.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
 namespace {
 
 bool ShouldReplaceSecureDNSDisabledDescription() {
