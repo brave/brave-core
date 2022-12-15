@@ -63,6 +63,7 @@ void PlaylistServiceFactory::RegisterProfilePrefs(
   registry->RegisterDictionaryPref(kPlaylistsPref,
                                    base::Value(std::move(dict)));
   registry->RegisterDictionaryPref(kPlaylistItemsPref);
+  registry->RegisterBooleanPref(kPlaylistCacheByDefault, true);
 }
 
 PlaylistServiceFactory::PlaylistServiceFactory()

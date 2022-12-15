@@ -12,9 +12,11 @@
 #include "base/json/values_util.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/playlist_constants.h"
+#include "brave/components/playlist/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "components/prefs/pref_service.h"
 
 using PlaylistId = playlist::PlaylistService::PlaylistId;
 using PlaylistItemId = playlist::PlaylistService::PlaylistItemId;
@@ -76,8 +78,9 @@ void PlaylistPageHandler::GetPlaylist(
 
 void PlaylistPageHandler::AddMediaFilesFromPageToPlaylist(const std::string& id,
                                                           const GURL& url) {
-  GetPlaylistService(profile_)->RequestDownloadMediaFilesFromPage(id,
-                                                                  url.spec());
+  GetPlaylistService(profile_)->AddMediaFilesFromPageToPlaylist(
+      id, url.spec(),
+      profile_->GetPrefs()->GetBoolean(playlist::kPlaylistCacheByDefault));
 }
 
 void PlaylistPageHandler::AddMediaFilesFromOpenTabsToPlaylist(
@@ -92,8 +95,9 @@ void PlaylistPageHandler::AddMediaFilesFromOpenTabsToPlaylist(
   for (auto i = 0; i < tab_strip_model->count(); i++) {
     if (auto* contents = tab_strip_model->GetWebContentsAt(i);
         contents != web_contents_) {
-      GetPlaylistService(profile_)->RequestDownloadMediaFilesFromContents(
-          playlist_id, contents);
+      GetPlaylistService(profile_)->AddMediaFilesFromContentsToPlaylist(
+          playlist_id, contents,
+          profile_->GetPrefs()->GetBoolean(playlist::kPlaylistCacheByDefault));
     }
   }
 }

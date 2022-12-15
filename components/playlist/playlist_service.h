@@ -93,16 +93,18 @@ class PlaylistService : public KeyedService,
 
   // Finds media files from |contents| or |url| and adds them to given
   // |playlist_id|.
-  void RequestDownloadMediaFilesFromContents(const std::string& playlist_id,
-                                             content::WebContents* contents);
-  void RequestDownloadMediaFilesFromPage(const std::string& playlist_id,
-                                         const std::string& url);
+  void AddMediaFilesFromContentsToPlaylist(const std::string& playlist_id,
+                                           content::WebContents* contents,
+                                           bool cache);
+  void AddMediaFilesFromPageToPlaylist(const std::string& playlist_id,
+                                       const std::string& url,
+                                       bool cache);
 
   // Add given |items| to the |playlist_id|. Usually follows after
   // FindMediaFilesFromContents().
-  void RequestDownloadMediaFilesFromItems(
-      const std::string& playlist_id,
-      const std::vector<PlaylistItemInfo>& items);
+  void AddMediaFilesFromItems(const std::string& playlist_id,
+                              bool cache,
+                              const std::vector<PlaylistItemInfo>& items);
 
   // Unlike Request methods above, do nothing with prefs or downloading. Just
   // find media files from given |contents| and return them via callback.
@@ -157,6 +159,7 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, MediaRecoverTest);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, DeleteItem);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, RemoveAndRestoreLocalData);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CachingBehavior);
 
   // KeyedService overrides:
   void Shutdown() override;
@@ -180,9 +183,10 @@ class PlaylistService : public KeyedService,
   bool ShouldDownloadOnBackground(content::WebContents* contents) const;
 
   void OnPlaylistItemDirCreated(const PlaylistItemInfo& info,
+                                bool cache,
                                 bool directory_ready);
 
-  void CreatePlaylistItem(const PlaylistItemInfo& info);
+  void CreatePlaylistItem(const PlaylistItemInfo& info, bool cache);
   void DownloadThumbnail(const PlaylistItemInfo& info);
   void DownloadMediaFile(const PlaylistItemInfo& info);
 
