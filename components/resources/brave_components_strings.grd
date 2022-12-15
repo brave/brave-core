@@ -351,7 +351,7 @@
       <message name="IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_OK_BUTTON_TEXT" desc="">Solve</message>
       <message name="IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_CANCEL_BUTTON_TEXT" desc="">Later</message>
 
-      <if expr="enable_sidebar">
+      <if expr="toolkit_views">
         <message name="IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE" desc="Title for Brave Talk item in sidebar">
           Brave Talk
         </message>

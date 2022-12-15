@@ -3,11 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/sidebar/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
+
+assert(toolkit_views)
 
 static_library("sidebar") {
-  assert(enable_sidebar)
-
   sources = [
     "constants.h",
     "pref_names.h",
@@ -34,21 +34,19 @@ static_library("sidebar") {
 
 source_set("unit_tests") {
   testonly = true
-  if (enable_sidebar) {
-    sources = [ "sidebar_service_unittest.cc" ]
+  sources = [ "sidebar_service_unittest.cc" ]
 
-    deps = [
-      "//base",
-      "//base/test:test_support",
-      "//brave/components/playlist:playlist_features",
-      "//brave/components/sidebar",
-      "//components/prefs",
-      "//components/prefs:test_support",
-      "//components/version_info",
-      "//content/public/browser",
-      "//content/test:test_support",
-      "//testing/gmock",
-      "//testing/gtest",
-    ]
-  }
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/playlist:playlist_features",
+    "//brave/components/sidebar",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//components/version_info",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
 }

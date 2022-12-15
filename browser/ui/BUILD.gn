@@ -11,7 +11,6 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/buildflags/buildflags.gni")
-import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/translate/core/common/buildflags.gni")
@@ -472,7 +471,7 @@ source_set("ui") {
     ]
   }
 
-  if (enable_sidebar) {
+  if (toolkit_views) {
     deps += [
       "//brave/browser/ui/sidebar",
       "//brave/components/sidebar",

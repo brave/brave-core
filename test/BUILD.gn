@@ -16,7 +16,6 @@ import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/buildflags/buildflags.gni")
-import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/translate/core/common/buildflags.gni")
@@ -321,13 +320,6 @@ test("brave_unit_tests") {
     deps += [ "//brave/components/brave_adaptive_captcha/test:brave_adaptive_captcha_unit_tests" ]
   }
 
-  if (enable_sidebar) {
-    deps += [
-      "//brave/browser/ui/sidebar:unit_tests",
-      "//brave/components/sidebar:unit_tests",
-    ]
-  }
-
   if (enable_playlist) {
     deps += [ "//brave/browser/playlist/test:unit_tests" ]
   }
@@ -422,8 +414,10 @@ test("brave_unit_tests") {
       "//brave/browser/ui/views/brave_tooltips/brave_tooltips_unittest.cc",
     ]
     deps += [
+      "//brave/browser/ui/sidebar:unit_tests",
       "//brave/browser/ui/views/brave_ads",
       "//brave/browser/ui/views/brave_tooltips",
+      "//brave/components/sidebar:unit_tests",
     ]
   }
 
@@ -641,7 +635,7 @@ if (!is_android) {
       "//third_party/re2",
     ]
 
-    if (enable_sidebar) {
+    if (toolkit_views) {
       deps += [
         "//brave/browser/ui/sidebar",
         "//brave/components/sidebar",
@@ -1057,8 +1051,11 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/toolbar/wallet_button_browsertest.cc",
     ]
     deps += [
+      "//brave/browser/ui/sidebar",
+      "//brave/browser/ui/sidebar:browser_tests",
       "//brave/browser/ui/views/brave_ads",
       "//brave/browser/ui/views/tabs:browser_tests",
+      "//brave/components/sidebar",
       "//brave/test/views/snapshot",
     ]
 
@@ -1069,17 +1066,6 @@ test("brave_browser_tests") {
 
   if (!is_android) {
     deps += [ "//brave/browser/sharing_hub:browser_tests" ]
-  }
-
-  if (enable_sidebar) {
-    sources += [
-      "//brave/browser/ui/views/sidebar/sidebar_container_view_browsertest.cc",
-    ]
-    deps += [
-      "//brave/browser/ui/sidebar",
-      "//brave/browser/ui/sidebar:browser_tests",
-      "//brave/components/sidebar",
-    ]
   }
 
   if (enable_custom_background) {
