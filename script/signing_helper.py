@@ -13,7 +13,7 @@ import re
 import subprocess
 import sys
 import signing.signing  # pylint: disable=import-error, wrong-import-position, unused-import
-import signing.model    # pylint: disable=import-error, reimported, wrong-import-position, unused-import
+import signing.model  # pylint: disable=import-error, reimported, wrong-import-position, unused-import
 
 from signing import model  # pylint: disable=import-error, reimported
 
@@ -130,7 +130,8 @@ def BraveModifyPartsForSigning(parts, config):
     parts['privileged-helper'].path = re.sub(
         r'com.brave.Browser(.*).UpdaterPrivilegedHelper',
         'org.chromium.Chromium.UpdaterPrivilegedHelper',
-        parts['privileged-helper'].path, flags=re.VERBOSE)
+        parts['privileged-helper'].path,
+        flags=re.VERBOSE)
     parts['privileged-helper'].identifier = re.sub(
         r'com.brave.Browser(.*).UpdaterPrivilegedHelper',
         'org.chromium.Chromium.UpdaterPrivilegedHelper',
