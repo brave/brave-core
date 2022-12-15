@@ -39,29 +39,39 @@ def _add_brave_policies(template_file_contents):
     highest_id = template_file_contents['highest_id_currently_used']
     policies = [
         {
-            'name': 'TorDisabled',
-            'type': 'main',
-            'schema': {'type': 'boolean'},
-            'supported_on': ['chrome.win:78-',
-                             'chrome.mac:93-',
-                             'chrome.linux:93-'],
+            'name':
+            'TorDisabled',
+            'type':
+            'main',
+            'schema': {
+                'type': 'boolean'
+            },
+            'supported_on':
+            ['chrome.win:78-', 'chrome.mac:93-', 'chrome.linux:93-'],
             'features': {
                 'dynamic_refresh': False,
                 'per_profile': False,
                 'can_be_recommended': False,
                 'can_be_mandatory': True
             },
-            'example_value': True,
-            'id': 0,
-            'caption': '''Disables the tor feature.''',
+            'example_value':
+            True,
+            'id':
+            0,
+            'caption':
+            '''Disables the tor feature.''',
             'tags': [],
             'desc': ('''This policy allows an admin to specify that tor '''
                      '''must be disabled at startup.'''),
         },
         {
-            'name': 'IPFSEnabled',
-            'type': 'main',
-            'schema': {'type': 'boolean'},
+            'name':
+            'IPFSEnabled',
+            'type':
+            'main',
+            'schema': {
+                'type': 'boolean'
+            },
             'supported_on': ['chrome.*:87-'],
             'future_on': ['android'],
             'features': {
@@ -70,17 +80,24 @@ def _add_brave_policies(template_file_contents):
                 'can_be_recommended': False,
                 'can_be_mandatory': True
             },
-            'example_value': True,
-            'id': 1,
-            'caption': '''Enable IPFS feature''',
+            'example_value':
+            True,
+            'id':
+            1,
+            'caption':
+            '''Enable IPFS feature''',
             'tags': [],
             'desc': ('''This policy allows an admin to specify whether IPFS '''
                      '''feature can be enabled.'''),
         },
         {
-            'name': 'BraveRewardsDisabled',
-            'type': 'main',
-            'schema': {'type': 'boolean'},
+            'name':
+            'BraveRewardsDisabled',
+            'type':
+            'main',
+            'schema': {
+                'type': 'boolean'
+            },
             'supported_on': ['chrome.*:105-'],
             'features': {
                 'dynamic_refresh': False,
@@ -88,17 +105,24 @@ def _add_brave_policies(template_file_contents):
                 'can_be_recommended': False,
                 'can_be_mandatory': True
             },
-            'example_value': True,
-            'id': 2,
-            'caption': '''Disable Brave Rewards feature.''',
+            'example_value':
+            True,
+            'id':
+            2,
+            'caption':
+            '''Disable Brave Rewards feature.''',
             'tags': [],
             'desc': ('''This policy allows an admin to specify that Brave '''
                      '''Rewards feature will be disabled.'''),
         },
         {
-            'name': 'BraveWalletDisabled',
-            'type': 'main',
-            'schema': {'type': 'boolean'},
+            'name':
+            'BraveWalletDisabled',
+            'type':
+            'main',
+            'schema': {
+                'type': 'boolean'
+            },
             'supported_on': ['chrome.*:106-'],
             'features': {
                 'dynamic_refresh': False,
@@ -106,19 +130,26 @@ def _add_brave_policies(template_file_contents):
                 'can_be_recommended': False,
                 'can_be_mandatory': True
             },
-            'example_value': True,
-            'id': 3,
-            'caption': '''Disable Brave Wallet feature.''',
+            'example_value':
+            True,
+            'id':
+            3,
+            'caption':
+            '''Disable Brave Wallet feature.''',
             'tags': [],
             'desc': ('''This policy allows an admin to specify that Brave '''
                      '''Wallet feature will be disabled.'''),
         },
         {
-            'name': 'BraveShieldsDisabledForUrls',
-            'type': 'list',
+            'name':
+            'BraveShieldsDisabledForUrls',
+            'type':
+            'list',
             'schema': {
-              'type': 'array',
-              'items': { 'type': 'string' },
+                'type': 'array',
+                'items': {
+                    'type': 'string'
+                },
             },
             'supported_on': ['chrome.*:107-'],
             'features': {
@@ -128,18 +159,24 @@ def _add_brave_policies(template_file_contents):
                 'can_be_mandatory': True
             },
             'example_value': ['https://brave.com'],
-            'id': 4,
-            'caption': '''Disables Brave Shields for urls.''',
+            'id':
+            4,
+            'caption':
+            '''Disables Brave Shields for urls.''',
             'tags': [],
             'desc': ('''This policy allows an admin to specify that Brave '''
                      '''Shields disabled.'''),
         },
         {
-            'name': 'BraveShieldsEnabledForUrls',
-            'type': 'list',
+            'name':
+            'BraveShieldsEnabledForUrls',
+            'type':
+            'list',
             'schema': {
-              'type': 'array',
-              'items': { 'type': 'string' },
+                'type': 'array',
+                'items': {
+                    'type': 'string'
+                },
             },
             'supported_on': ['chrome.*:107-'],
             'features': {
@@ -149,8 +186,10 @@ def _add_brave_policies(template_file_contents):
                 'can_be_mandatory': True
             },
             'example_value': ['https://brave.com'],
-            'id': 5,
-            'caption': '''Enables Brave Shields for urls.''',
+            'id':
+            5,
+            'caption':
+            '''Enables Brave Shields for urls.''',
             'tags': [],
             'desc': ('''This policy allows an admin to specify that Brave '''
                      '''Shields enabled.'''),
