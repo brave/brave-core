@@ -115,7 +115,7 @@ def _add_brave_policies(template_file_contents):
         },
         {
             'name': 'BraveShieldsDisabledForUrls',
-            'type': 'main',
+            'type': 'list',
             'schema': {
               'type': 'array',
               'items': { 'type': 'string' },
@@ -136,7 +136,7 @@ def _add_brave_policies(template_file_contents):
         },
         {
             'name': 'BraveShieldsEnabledForUrls',
-            'type': 'main',
+            'type': 'list',
             'schema': {
               'type': 'array',
               'items': { 'type': 'string' },
