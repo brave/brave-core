@@ -13,7 +13,7 @@ import { getLocale, splitStringForTag } from '$web-common/locale'
 
 interface InputCheckboxProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-  labelText: string
+  children: React.ReactNode
   id?: string
   isChecked: boolean
 }
@@ -27,15 +27,15 @@ function InputCheckbox (props: InputCheckboxProps) {
         onChange={props.onChange}
       />
       <div>
-        {props.labelText}
+        {props.children}
       </div>
     </label>
   )
 }
 
 function HelpImprove () {
-  const [isP3AEnabled, setP3AEnabled] = React.useState(false)
   const [isMetricsReportingEnabled, setMetricsReportingEnabled] = React.useState(true)
+  const [isP3AEnabled, setP3AEnabled] = React.useState(true)
 
   const handleP3AChange = () => {
     setP3AEnabled(!isP3AEnabled)
@@ -58,29 +58,40 @@ function HelpImprove () {
 
   const changeSettingsNote = splitStringForTag(getLocale('braveWelcomeChangeSettingsNote'))
   const readPrivacyPolicy = splitStringForTag(getLocale('braveWelcomePrivacyPolicyNote'))
+  const diagnosticReportsLabel = splitStringForTag(getLocale('braveWelcomeSendReportsLabel'))
+  const braveProductUsageDataLabel = splitStringForTag(getLocale('braveWelcomeSendInsightsLabel'))
 
   return (
     <S.MainBox>
       <div className="view-header-box">
         <div className="view-details">
           <h1 className="view-title">{getLocale('braveWelcomeHelpImproveBraveTitle')}</h1>
-          <p className="view-desc">{getLocale('braveWelcomeHelpImproveBraveDesc')}</p>
         </div>
       </div>
       <S.Grid>
         <div className="list">
           <InputCheckbox
-            id="p3a"
-            onChange={handleP3AChange}
-            isChecked={isP3AEnabled}
-            labelText={getLocale('braveWelcomeSendReportsLabel')}
-          />
-          <InputCheckbox
             id="metrics"
             onChange={handleMetricsReportingChange}
             isChecked={isMetricsReportingEnabled}
-            labelText={getLocale('braveWelcomeSendInsightsLabel')}
-          />
+          >
+            {diagnosticReportsLabel.beforeTag}
+            <a href="https://support.brave.com/hc/en-us/articles/360017905872-How-do-I-enable-or-disable-automatic-crash-reporting" target="_blank" onClick={handleOpenSettingsPage}>
+              {diagnosticReportsLabel.duringTag}
+            </a>
+            {diagnosticReportsLabel.afterTag}
+          </InputCheckbox>
+          <InputCheckbox
+            id="p3a"
+            onChange={handleP3AChange}
+            isChecked={isP3AEnabled}
+          >
+            {braveProductUsageDataLabel.beforeTag}
+            <a href="https://support.brave.com/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave-" target="_blank" onClick={handleOpenSettingsPage}>
+              {braveProductUsageDataLabel.duringTag}
+            </a>
+            {braveProductUsageDataLabel.afterTag}
+          </InputCheckbox>
         </div>
       </S.Grid>
       <S.ActionBox>

@@ -12,8 +12,9 @@ class WebAnimationPlayer {
     this.timingOption = timingOption
   }
 
-  to (element: Element | null, keyframeEffectOption: PropertyIndexedKeyframes) {
-    const kF = new KeyframeEffect(element, keyframeEffectOption, this.timingOption)
+  to (element: Element | null, keyFrame: PropertyIndexedKeyframes, keyFrameOption?: OptionalEffectTiming) {
+    const kFOptions = { ...this.timingOption, ...keyFrameOption }
+    const kF = new KeyframeEffect(element, keyFrame, kFOptions)
     const animation = new Animation(kF)
     this.animations.push(animation)
     return this

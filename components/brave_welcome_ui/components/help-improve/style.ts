@@ -19,7 +19,7 @@ export const MainBox = styled.div`
 
   .view-header-box {
     display: grid;
-    grid-template-columns: 0.5fr 1fr 0.5fr;
+    grid-template-columns: 0.2fr 1fr 0.2fr;
     padding: 40px 40px 50px 40px;
   }
 
@@ -30,12 +30,6 @@ export const MainBox = styled.div`
   .view-title {
     font-weight: 600;
     font-size: 36px;
-    margin: 0 0 18px 0;
-  }
-
-  .view-desc {
-    font-weight: 400;
-    font-size: 20px;
     margin: 0;
   }
 `
@@ -58,16 +52,21 @@ export const Grid = styled.div`
     gap: 10px;
     margin-bottom: 20px;
     line-height: 20px;
+
+    a {
+      text-decoration: none;
+      color: rgba(160, 165, 235, 1);
+    }
   }
 
   input[type="checkbox"] {
     width: 22px;
     height: 22px;
     border-radius: 4px;
-    border: 1px solid ${(p) => p.theme.color.interactive08};
+    border: 1px solid #AEB1C2;
 
     &:checked {
-      accent-color: ${(p) => p.theme.color.interactive05};
+      accent-color: #4C54D2;
     }
   }
 `
