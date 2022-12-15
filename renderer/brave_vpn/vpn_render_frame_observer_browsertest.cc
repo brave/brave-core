@@ -6,7 +6,7 @@
 #include "brave/components/brave_vpn/renderer/android/vpn_render_frame_observer.h"
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_vpn/features.h"
+#include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "content/public/test/content_mock_cert_verifier.h"

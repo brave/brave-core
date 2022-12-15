@@ -13,7 +13,7 @@
 #include "base/values.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/build/android/jni_headers/BraveVpnNativeWorker_jni.h"
-#include "brave/components/brave_vpn/brave_vpn_service.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 

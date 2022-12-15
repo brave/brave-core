@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_vpn/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 
 import("//testing/test.gni")
 
@@ -17,7 +17,7 @@ source_set("browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   deps = [
-    "//brave/components/brave_vpn",
+    "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/renderer/android",
     "//brave/components/skus/common",
     "//chrome/common",

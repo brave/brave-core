@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "ui/base/models/menu_model.h"
 #include "ui/views/controls/menu/menu_item_view.h"
 
