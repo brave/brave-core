@@ -154,6 +154,10 @@ declare namespace chrome.braveRewards {
 
   const getExternalWalletProviders: (callback: (providers: string[]) => void) => void
 
+  const onExternalWalletConnected: {
+    addListener: (callback: () => void) => void
+  }
+
   const onExternalWalletLoggedOut: {
     addListener: (callback: () => void) => void
   }
