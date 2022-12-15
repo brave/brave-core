@@ -7,13 +7,13 @@
 
 """ This helper is a collection of functions used for signing on MacOS """
 
-import signing.signing  # pylint: disable=import-error, wrong-import-position, unused-import
-import signing.model    # pylint: disable=import-error, reimported, wrong-import-position, unused-import
 import collections
 import os
 import re
 import subprocess
 import sys
+import signing.signing  # pylint: disable=import-error, wrong-import-position, unused-import
+import signing.model    # pylint: disable=import-error, reimported, wrong-import-position, unused-import
 
 from signing import model  # pylint: disable=import-error, reimported
 
@@ -56,7 +56,7 @@ def GenerateBraveWidevineSigFile(paths, config, part):
         # file. The calling script will re-sign it after Widevine signature
         # file has been added (see signing.py from where this function is
         # called).
-        from signing.signing import sign_part  # pylint: disable=import-error
+        from signing.signing import sign_part  # pylint: disable=import-error, import-outside-toplevel
         sign_part(paths, config, part)
         # Generate signature file
         chrome_framework_name = config.app_product + ' Framework'
@@ -84,11 +84,9 @@ def GenerateBraveWidevineSigFile(paths, config, part):
 def BraveModifyPartsForSigning(parts, config):
     """ Inserts Brave specific parts that need to be signed """
     parts = collections.OrderedDict(parts)
-    from signing.model import CodeSignedProduct, VerifyOptions, CodeSignOptions  # pylint: disable=import-error
+    from signing.model import CodeSignedProduct, VerifyOptions, CodeSignOptions  # pylint: disable=import-error, import-outside-toplevel
 
-    development = (
-        True if config.provisioning_profile_basename is None else False
-    )
+    development = (config.provisioning_profile_basename is None)
 
     full_hardened_runtime_options = (
         CodeSignOptions.HARDENED_RUNTIME | CodeSignOptions.RESTRICT
@@ -98,8 +96,8 @@ def BraveModifyPartsForSigning(parts, config):
     if not development:
         # Add Sparkle binaries
         parts['sparkle-framework-fileop'] = CodeSignedProduct(
-            '{0.framework_dir}/Versions/{1.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/fileop'  # pylint: disable=line-too-long
-            .format(config, config),
+            '{0.framework_dir}/Versions/{0.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/fileop'  # pylint: disable=line-too-long
+            .format(config),
             'fileop',
             verify_options=VerifyOptions.DEEP | VerifyOptions.NO_STRICT)
         parts['sparkle-framework-fileop'].options = (
@@ -107,8 +105,8 @@ def BraveModifyPartsForSigning(parts, config):
         )
 
         parts['sparkle-framework-autoupdate'] = CodeSignedProduct(
-            '{0.framework_dir}/Versions/{1.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/Autoupdate'  # pylint: disable=line-too-long
-            .format(config, config),
+            '{0.framework_dir}/Versions/{0.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/Autoupdate'  # pylint: disable=line-too-long
+            .format(config),
             'org.sparkle-project.Sparkle.Autoupdate',
             verify_options=VerifyOptions.DEEP | VerifyOptions.NO_STRICT)
         parts['sparkle-framework-autoupdate'].options = (
