@@ -33,14 +33,10 @@ source_set("api") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = []
-
-  if (is_win || is_mac || is_android) {
-    sources += [
-      "brave_vpn_api_helper_unittest.cc",
-      "vpn_response_parser_unittest.cc",
-    ]
-  }
+  sources = [
+    "brave_vpn_api_helper_unittest.cc",
+    "vpn_response_parser_unittest.cc",
+  ]
 
   deps = [
     ":api",
