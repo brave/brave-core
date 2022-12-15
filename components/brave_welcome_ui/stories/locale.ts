@@ -20,10 +20,9 @@ provideStrings({
   braveWelcomeFinishButtonLabel: 'Finish',
   braveWelcomeSetDefaultButtonLabel: 'Set Brave as default browser',
   braveWelcomeSelectAllButtonLabel: 'Select All',
-  braveWelcomeHelpImproveBraveTitle: 'Help improve Brave',
-  braveWelcomeHelpImproveBraveDesc: 'Fine-tuning the product. Protecting your privacy. Every day.',
-  braveWelcomeSendReportsLabel: 'Send dianogstic reports if Brave crashes or freezes.',
-  braveWelcomeSendInsightsLabel: 'Share anonymous, private product insights. This helps us learn what Brave features are used most often.',
+  braveWelcomeHelpImproveBraveTitle: 'Help make Brave better.',
+  braveWelcomeSendReportsLabel: 'Send diagnostic reports if you experience a crash or freeze. $1Learn more.$2',
+  braveWelcomeSendInsightsLabel: 'Share completely private and anonymous product insights about what features are being used by Brave\'s users. $1Learn more.$2',
   braveWelcomeSetupCompleteLabel: 'Setup complete',
   braveWelcomeChangeSettingsNote: ' Change these choices at any time in Brave at $1brave://settings/privacy$2.',
   braveWelcomePrivacyPolicyNote: 'Read our full $1Privacy Policy$2'
