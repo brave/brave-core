@@ -513,17 +513,6 @@ class BraveWalletServiceUnitTest : public testing::Test {
     return default_cryptocurrency;
   }
 
-  bool GetShowWalletTestNetworks() {
-    base::RunLoop run_loop;
-    bool show_wallet_test_networks;
-    service_->GetShowWalletTestNetworks(base::BindLambdaForTesting([&](bool b) {
-      show_wallet_test_networks = b;
-      run_loop.Quit();
-    }));
-    run_loop.Run();
-    return show_wallet_test_networks;
-  }
-
   mojom::CoinType GetSelectedCoin() {
     base::RunLoop run_loop;
     mojom::CoinType selected_coin;
@@ -1174,15 +1163,6 @@ TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultBaseCryptocurrency) {
   // SetDefaultBaseCryptocurrency will check that the observer is not fired.
   SetDefaultBaseCryptocurrency("ETH");
   EXPECT_EQ(GetDefaultBaseCryptocurrency(), "ETH");
-}
-
-TEST_F(BraveWalletServiceUnitTest, GetShowWalletTestNetworks) {
-  // Default value for kShowWalletTestNetworks should be false
-  EXPECT_FALSE(GetPrefs()->GetBoolean(kShowWalletTestNetworks));
-  EXPECT_FALSE(GetShowWalletTestNetworks());
-
-  GetPrefs()->SetBoolean(kShowWalletTestNetworks, true);
-  EXPECT_TRUE(GetShowWalletTestNetworks());
 }
 
 TEST_F(BraveWalletServiceUnitTest, SelectedCoin) {

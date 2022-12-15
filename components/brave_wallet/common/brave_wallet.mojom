@@ -1289,9 +1289,6 @@ interface BraveWalletService {
   // Sets the default base cryptocurrency
   SetDefaultBaseCryptocurrency(string cryptocurrency);
 
-  // Obtains the show test networks user pref from settings
-  GetShowWalletTestNetworks() => (bool isEnabled);
-
   // Controls last selected coin pref.
   GetSelectedCoin() => (CoinType coin);
   SetSelectedCoin(CoinType coin);

@@ -1229,10 +1229,6 @@ void SetDefaultBaseCryptocurrency(PrefService* prefs,
   prefs->SetString(kDefaultBaseCryptocurrency, cryptocurrency);
 }
 
-bool GetShowWalletTestNetworks(PrefService* prefs) {
-  return prefs->GetBoolean(kShowWalletTestNetworks);
-}
-
 mojom::CoinType GetSelectedCoin(PrefService* prefs) {
   return static_cast<mojom::CoinType>(
       prefs->GetInteger(kBraveWalletSelectedCoin));
@@ -1344,20 +1340,20 @@ void RemoveCustomNetwork(PrefService* prefs,
   });
 }
 
-std::vector<std::string> GetAllHiddenNetworks(PrefService* prefs,
-                                              mojom::CoinType coin) {
+std::vector<std::string> GetHiddenNetworks(PrefService* prefs,
+                                           mojom::CoinType coin) {
   std::vector<std::string> result;
   const auto& hidden_networks = prefs->GetDict(kBraveWalletHiddenNetworks);
 
-  auto* hidden_eth_networks =
+  auto* hidden_networks_list =
       hidden_networks.FindList(GetPrefKeyForCoinType(coin));
-  if (!hidden_eth_networks)
+  if (!hidden_networks_list)
     return result;
 
-  for (const auto& it : *hidden_eth_networks) {
-    auto* chain_id = it.GetIfString();
-    if (chain_id)
-      result.push_back(base::ToLowerASCII(std::move(*chain_id)));
+  for (const auto& it : *hidden_networks_list) {
+    if (auto* chain_id = it.GetIfString()) {
+      result.push_back(base::ToLowerASCII(*chain_id));
+    }
   }
 
   return result;

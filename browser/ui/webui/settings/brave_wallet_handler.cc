@@ -189,7 +189,7 @@ void BraveWalletHandler::GetNetworksList(const base::Value::List& args) {
 
   auto& hiddenNetworks =
       result.Set("hiddenNetworks", base::Value::List())->GetList();
-  for (const auto& it : brave_wallet::GetAllHiddenNetworks(prefs, *coin)) {
+  for (const auto& it : brave_wallet::GetHiddenNetworks(prefs, *coin)) {
     hiddenNetworks.Append(it);
   }
 

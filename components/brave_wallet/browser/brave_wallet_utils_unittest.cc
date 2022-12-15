@@ -1244,34 +1244,47 @@ TEST(BraveWalletUtilsUnitTest, RemoveCustomNetwork) {
 }
 
 TEST(BraveWalletUtilsUnitTest, HiddenNetworks) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::ETH),
+              ElementsAreArray<std::string>({mojom::kGoerliChainId,
+                                             mojom::kSepoliaChainId,
+                                             mojom::kLocalhostChainId}));
+  EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::FIL),
+              ElementsAreArray<std::string>(
+                  {mojom::kFilecoinTestnet, mojom::kLocalhostChainId}));
+  EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::SOL),
+              ElementsAreArray<std::string>({mojom::kSolanaDevnet,
+                                             mojom::kSolanaTestnet,
+                                             mojom::kLocalhostChainId}));
+
   for (auto coin :
        {mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL}) {
-    TestingPrefServiceSimple prefs;
-    prefs.registry()->RegisterDictionaryPref(kBraveWalletHiddenNetworks);
+    for (auto& default_hidden : GetHiddenNetworks(&prefs, coin)) {
+      RemoveHiddenNetwork(&prefs, coin, default_hidden);
+    }
 
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin),
                 ElementsAreArray<std::string>({}));
 
     AddHiddenNetwork(&prefs, coin, "0x123");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
-                ElementsAreArray({"0x123"}));
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin), ElementsAreArray({"0x123"}));
     AddHiddenNetwork(&prefs, coin, "0x123");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
-                ElementsAreArray({"0x123"}));
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin), ElementsAreArray({"0x123"}));
 
     RemoveHiddenNetwork(&prefs, coin, "0x555");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
-                ElementsAreArray({"0x123"}));
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin), ElementsAreArray({"0x123"}));
 
     AddHiddenNetwork(&prefs, coin, "0x7");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin),
                 ElementsAreArray({"0x123", "0x7"}));
 
     RemoveHiddenNetwork(&prefs, coin, "0x123");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin), ElementsAreArray({"0x7"}));
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin), ElementsAreArray({"0x7"}));
 
     RemoveHiddenNetwork(&prefs, coin, "0x7");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin),
                 ElementsAreArray<std::string>({}));
   }
 }

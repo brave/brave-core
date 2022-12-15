@@ -674,6 +674,7 @@ provideStrings({
   // Network Filter
   braveWalletNetworkFilterAll: 'All Networks',
   braveWalletNetworkFilterSecondary: 'Secondary Networks',
+  braveWalletNetworkFilterTestNetworks: 'Test Networks',
 
   // Asset Filter
   braveWalletAssetFilterLowToHigh: 'Balance ↑',
