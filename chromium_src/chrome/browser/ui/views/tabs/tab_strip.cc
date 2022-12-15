@@ -86,7 +86,6 @@
 
 #include "src/chrome/browser/ui/views/tabs/tab_strip.cc"
 
-#undef kSplitTabStrip
 #undef BRAVE_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
 #undef BRAVE_CALCULATE_INSERTION_INDEX
 #undef TabHoverCardController
