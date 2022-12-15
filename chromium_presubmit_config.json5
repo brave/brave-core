@@ -293,9 +293,5 @@
       "components/cosmetic_filters/renderer/cosmetic_filters_js_handler\\.h",
       "components/speedreader/renderer/speedreader_js_handler\\.h",
     ],
-    "CheckWebDevStyle": [
-      // CSSChecker fails because of multiline comment. Need to fix later.
-      "components/speedreader/resources/speedreader-desktop\\.css",
-    ],
   },
 }
