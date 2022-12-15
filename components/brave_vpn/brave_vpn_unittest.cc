@@ -870,70 +870,6 @@ TEST_F(BraveVPNServiceTest, NeedsConnectTest) {
   EXPECT_EQ(ConnectionState::CONNECTING, connection_state());
 }
 
-TEST_F(BraveVPNServiceTest, OnDisconnectedWithoutNetwork) {
-  std::string env = skus::GetDefaultEnvironment();
-  // Connection state can be changed with purchased.
-  SetPurchasedState(env, PurchasedState::PURCHASED);
-
-  SetDeviceRegion("eu-es");
-  auto network_change_notifier = net::NetworkChangeNotifier::CreateIfNeeded();
-  net::test::ScopedMockNetworkChangeNotifier mock_notifier;
-  mock_notifier.mock_network_change_notifier()->SetConnectionType(
-      net::NetworkChangeNotifier::CONNECTION_NONE);
-  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_NONE,
-            net::NetworkChangeNotifier::GetConnectionType());
-
-  // Handle connect after disconnect current connection.
-  // When we need another connect, it should make next connect call
-  // even if network is not available.
-  connection_state() = ConnectionState::CONNECTED;
-  needs_connect() = true;
-  OnDisconnected();
-  EXPECT_FALSE(needs_connect());
-  EXPECT_EQ(ConnectionState::CONNECTING, connection_state());
-
-  // Set connect failed when we don't want another connect.
-  connection_state() = ConnectionState::CONNECTED;
-  needs_connect() = false;
-  OnDisconnected();
-  EXPECT_EQ(ConnectionState::CONNECT_FAILED, connection_state());
-}
-
-TEST_F(BraveVPNServiceTest, ConnectWithoutNetwork) {
-  std::string env = skus::GetDefaultEnvironment();
-  SetPurchasedState(env, PurchasedState::PURCHASED);
-  auto network_change_notifier = net::NetworkChangeNotifier::CreateIfNeeded();
-  net::test::ScopedMockNetworkChangeNotifier mock_notifier;
-  mock_notifier.mock_network_change_notifier()->SetConnectionType(
-      net::NetworkChangeNotifier::CONNECTION_NONE);
-  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_NONE,
-            net::NetworkChangeNotifier::GetConnectionType());
-
-  // Handle connect without network.
-  connection_state() = ConnectionState::DISCONNECTED;
-  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_NONE,
-            net::NetworkChangeNotifier::GetConnectionType());
-  TestBraveVPNServiceObserver observer;
-  AddObserver(observer.GetReceiver());
-  {
-    // State changed to Connecting.
-    base::RunLoop loop;
-    observer.WaitConnectionStateChange(loop.QuitClosure());
-    Connect();
-    loop.Run();
-    EXPECT_EQ(observer.GetConnectionState(), ConnectionState::CONNECTING);
-  }
-  {
-    // State changed to connection failed.
-    base::RunLoop loop;
-    observer.WaitConnectionStateChange(loop.QuitClosure());
-    loop.Run();
-    EXPECT_EQ(observer.GetConnectionState(), ConnectionState::CONNECT_FAILED);
-    EXPECT_FALSE(needs_connect());
-    EXPECT_EQ(ConnectionState::CONNECT_FAILED, connection_state());
-  }
-}
-
 TEST_F(BraveVPNServiceTest, LoadRegionDataFromPrefsTest) {
   std::string env = skus::GetDefaultEnvironment();
   // Initially, prefs doesn't have region data.
@@ -957,29 +893,6 @@ TEST_F(BraveVPNServiceTest, LoadRegionDataFromPrefsTest) {
   SetPurchasedState(env, PurchasedState::LOADING);
   LoadCachedRegionData();
   EXPECT_FALSE(regions().empty());
-}
-
-// Load purchased state without connection.
-TEST_F(BraveVPNServiceTest, PurchasedStateWithoutConnection) {
-  std::string env = skus::GetDefaultEnvironment();
-  std::string domain = skus::GetDomain("vpn", env);
-  TestBraveVPNServiceObserver observer;
-  AddObserver(observer.GetReceiver());
-  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
-  SetPurchasedState(env, PurchasedState::PURCHASED);
-
-  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
-  connection_state() = ConnectionState::CONNECTED;
-  auto network_change_notifier = net::NetworkChangeNotifier::CreateIfNeeded();
-  net::test::ScopedMockNetworkChangeNotifier mock_notifier;
-  mock_notifier.mock_network_change_notifier()->SetConnectionType(
-      net::NetworkChangeNotifier::CONNECTION_NONE);
-  EXPECT_EQ(net::NetworkChangeNotifier::CONNECTION_NONE,
-            net::NetworkChangeNotifier::GetConnectionType());
-  LoadPurchasedState(domain);
-  base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
-  EXPECT_EQ(observer.GetConnectionState(), ConnectionState::CONNECT_FAILED);
 }
 
 TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnvFailed) {
@@ -1092,6 +1005,35 @@ class MockBraveVPNOSConnectionAPI : public BraveVPNOSConnectionAPI {
   MOCK_METHOD(void, CheckConnectionImpl, (const std::string& name), (override));
 };
 
+// Create os vpn entry with cached connection_info when there is cached
+// connection info.
+TEST_F(BraveVPNServiceTest, CreateOSVPNEntryWhenConnectTest) {
+  MockBraveVPNOSConnectionAPI api;
+  SetMockConnectionAPI(&api);
+  std::string env = skus::GetDefaultEnvironment();
+  SetPurchasedState(env, PurchasedState::PURCHASED);
+
+  // Prepare valid connection info.
+  OnFetchHostnames("region-a", GetHostnamesData(), true);
+  prevent_creation() = true;
+  OnGetProfileCredentials(GetProfileCredentialData(), true);
+  EXPECT_TRUE(GetConnectionInfo().IsValid());
+
+  // With cached connection info, connect process starts with
+  // os vpn entry creation.
+  EXPECT_CALL(api, CreateVPNConnectionImpl(testing::_)).Times(1);
+  Connect();
+  testing::Mock::VerifyAndClearExpectations(&api);
+
+  // W/o valid connection info, connect will not try to create
+  // os vpn entry at the beginning.
+  GetBraveVPNConnectionAPI()->ResetConnectionInfo();
+  EXPECT_FALSE(GetConnectionInfo().IsValid());
+  EXPECT_CALL(api, CreateVPNConnectionImpl(testing::_)).Times(0);
+  Connect();
+  testing::Mock::VerifyAndClearExpectations(&api);
+}
+
 // Test connection check is asked only when purchased state.
 TEST_F(BraveVPNServiceTest, CheckConnectionStateAfterPurchased) {
   MockBraveVPNOSConnectionAPI api;
@@ -1119,6 +1061,15 @@ TEST_F(BraveVPNServiceTest, CheckConnectionStateAfterNetworkStateChanged) {
 
   SetMockConnectionAPI(nullptr);
 }
+
+// Ignore disconnected state change while connected. See the comment at
+// BraveVPNOSConnectionAPI::UpdateAndNotifyConnectionStateChange().
+TEST_F(BraveVPNServiceTest, IgnoreDisconnectedStateWhileConnecting) {
+  connection_state() = ConnectionState::CONNECTING;
+  UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
+  EXPECT_EQ(ConnectionState::CONNECTING, connection_state());
+}
+
 #endif
 
 TEST_F(BraveVPNServiceTest, GetPurchasedStateSync) {

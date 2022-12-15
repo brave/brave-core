@@ -585,14 +585,6 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
     return;
   }
 
-#if !BUILDFLAG(IS_ANDROID)
-  if (!IsNetworkAvailable()) {
-    VLOG(2) << __func__ << ": Network is not available, failed to connect";
-    GetBraveVPNConnectionAPI()->SetConnectionState(
-        ConnectionState::CONNECT_FAILED);
-    return;
-  }
-#endif
   if (!purchased_state_.has_value())
     SetPurchasedState(requested_env, PurchasedState::LOADING);
 
