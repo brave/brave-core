@@ -1,12 +1,11 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import { WebUIListenerMixin, WebUIListenerMixinInterface } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import { SettingsCheckboxElement } from '../controls/settings_checkbox.js';
-import { DropdownMenuOptionList } from '../controls/settings_dropdown_menu.js';
 import { loadTimeData } from '../i18n_setup.js';
 import { PrefsMixin, PrefsMixinInterface } from '../prefs/prefs_mixin.js'
 import { BraveDefaultExtensionsBrowserProxyImpl } from './brave_default_extensions_browser_proxy.js'
@@ -24,7 +23,6 @@ export interface SettingBraveDefaultExtensionsPageElement {
   }
 }
 
-
 /**
  * 'settings-brave-default-extensions-page' is the settings page containing
  * brave's default extensions.
@@ -41,13 +39,6 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
   static get properties() {
     return {
       showRestartToast_: Boolean,
-      showSnsRow_: Boolean,
-      resolveMethod_: Array,
-      ensOffchainResolveMethod_: Array,
-      showEnsOffchainLookupRow_: {
-        type: Boolean,
-        computed: 'computeShowEnsOffchainLookupRow_(prefs.*)',
-      },
       widevineEnabledPref_: {
         type: Object,
         value() {
@@ -61,28 +52,16 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
 
   private browserProxy_ = BraveDefaultExtensionsBrowserProxyImpl.getInstance()
   showRestartToast_: boolean
-  showSnsRow_: boolean
-  resolveMethod_: DropdownMenuOptionList
-  ensOffchainResolveMethod_: DropdownMenuOptionList
   widevineEnabledPref_: chrome.settingsPrivate.PrefObject
 
   override ready() {
     super.ready()
 
-    this.showSnsRow_ = this.browserProxy_.isSnsEnabled()
-
     this.addWebUIListener('brave-needs-restart-changed', (needsRestart: boolean) => {
       this.showRestartToast_ = needsRestart
     })
-
     this.browserProxy_.getRestartNeeded().then(show => {
       this.showRestartToast_ = show
-    })
-    this.browserProxy_.getDecentralizedDnsResolveMethodList().then(list => {
-      this.resolveMethod_ = list
-    })
-    this.browserProxy_.getEnsOffchainResolveMethodList().then(list => {
-      this.ensOffchainResolveMethod_ = list
     })
 
     // PrefControlMixin checks for a pref being valid, so have to fake it,
@@ -136,12 +115,6 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
 
   shouldShowRestartForMediaRouter_(value: boolean) {
     return this.browserProxy_.isMediaRouterEnabled() != value
-  }
-
-  computeShowEnsOffchainLookupRow_() {
-    if (!this.browserProxy_.isENSL2Enabled())
-      return false
-    return !!this.prefs && this.getPref('brave.ens.resolve_method').value === 3
   }
 }
 

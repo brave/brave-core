@@ -28,7 +28,8 @@ function getPageVisibility () {
       getStarted: false,
       newTab: false,
       braveIPFS: false,
-      braveWallet: false
+      braveWallet: false,
+      braveWeb3: false
     }
   }
   // We need to specify values for every attribute in pageVisibility instead of

@@ -102,7 +102,7 @@ class SettingsBraveIpfsPageElement extends SettingBraveIpfsPageElementBase {
     this.setupOptionsVisibility()
     if (this.isKeysEditorRoute() && !this.isLocalNodeEnabled_) {
       const router = Router.getInstance()
-      router.navigateTo(router.getRoutes().BRAVE_IPFS)
+      router.navigateTo(router.getRoutes().BRAVE_WEB3)
     }
   }
 
