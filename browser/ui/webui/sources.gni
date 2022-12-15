@@ -19,5 +19,6 @@ if (enable_playlist_webui) {
 }
 
 if (enable_brave_vpn) {
-  brave_browser_ui_webui_configs_deps += [ "//brave/components/brave_vpn" ]
+  brave_browser_ui_webui_configs_deps +=
+      [ "//brave/components/brave_vpn/browser" ]
 }

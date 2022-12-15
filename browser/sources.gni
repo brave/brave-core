@@ -227,7 +227,7 @@ if (enable_sparkle) {
 }
 
 if (enable_brave_vpn) {
-  brave_chrome_browser_deps += [ "//brave/components/brave_vpn" ]
+  brave_chrome_browser_deps += [ "//brave/components/brave_vpn/browser" ]
 }
 
 if (ethereum_remote_client_enabled) {

@@ -307,7 +307,7 @@ test("brave_unit_tests") {
 
   if (enable_brave_vpn) {
     deps += [
-      "//brave/components/brave_vpn:unit_tests",
+      "//brave/components/brave_vpn/browser:unit_tests",
       "//brave/components/skus/browser:unit_tests",
     ]
   }
@@ -962,7 +962,7 @@ test("brave_browser_tests") {
 
   if (enable_brave_vpn) {
     deps += [
-      "//brave/components/brave_vpn",
+      "//brave/components/brave_vpn/browser",
       "//brave/components/brave_vpn/common",
       "//brave/renderer/brave_vpn:browser_tests",
     ]

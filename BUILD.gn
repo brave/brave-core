@@ -559,7 +559,7 @@ action("audit_deps") {
 
 group("tools") {
   if (is_win && enable_brave_vpn) {
-    deps = [ "//brave/components/brave_vpn/connection/win:vpntool" ]
+    deps = [ "//brave/components/brave_vpn/browser/connection/win:vpntool" ]
   }
 }
 

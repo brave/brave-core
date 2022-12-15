@@ -6,28 +6,48 @@
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 
 assert(enable_brave_vpn)
-assert(is_mac)
+assert(is_win)
 
-source_set("mac") {
+source_set("utils") {
+  sources = [
+    "utils.cc",
+    "utils.h",
+  ]
+  libs = [ "rasapi32.lib" ]
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/common",
+  ]
+}
+
+source_set("win") {
   visibility = [ "//brave/components/brave_vpn/browser/connection/*" ]
 
   sources = [
-    "brave_vpn_os_connection_api_mac.h",
-    "brave_vpn_os_connection_api_mac.mm",
+    "brave_vpn_os_connection_api_win.cc",
+    "brave_vpn_os_connection_api_win.h",
   ]
 
   deps = [
+    ":utils",
     "//base",
-    "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/browser/connection:common",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/mojom",
     "//net",
     "//services/network/public/cpp",
   ]
-  frameworks = [
-    "NetworkExtension.framework",
-    "Foundation.framework",
+}
+
+executable("vpntool") {
+  sources = [ "winvpntool.cc" ]
+  libs = [
+    "rasapi32.lib",
+    "userenv.lib",
   ]
-  configs += [ "//build/config/compiler:enable_arc" ]
+  deps = [
+    ":win",
+    "//base",
+    "//brave/components/brave_vpn/browser/connection/win:utils",
+  ]
 }

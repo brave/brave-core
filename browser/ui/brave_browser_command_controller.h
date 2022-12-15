@@ -16,7 +16,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/brave_vpn_service_observer.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
 #endif
 
 class BraveAppMenuBrowserTest;

@@ -31,7 +31,7 @@ if (enable_brave_vpn) {
   }
   brave_browser_brave_vpn_deps += [
     "//base",
-    "//brave/components/brave_vpn",
+    "//brave/components/brave_vpn/browser",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
     "//components/user_prefs",
