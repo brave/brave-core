@@ -6,17 +6,17 @@
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
+assert(enable_brave_vpn && is_win)
+
 source_set("unit_tests") {
   testonly = true
-  if (enable_brave_vpn && is_win) {
-    sources = [ "brave_vpn_dns_observer_service_unittest.cc" ]
-    deps = [
-      "//brave/components/brave_vpn/common",
-      "//chrome/common:constants",
-      "//chrome/test:test_support",
-      "//net",
-      "//testing/gtest",
-      "//third_party/abseil-cpp:absl",
-    ]
-  }
+  sources = [ "brave_vpn_dns_observer_service_unittest.cc" ]
+  deps = [
+    "//brave/components/brave_vpn/common",
+    "//chrome/common:constants",
+    "//chrome/test:test_support",
+    "//net",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+  ]
 }
