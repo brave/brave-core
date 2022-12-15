@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
+#include "components/tab_groups/tab_group_id.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace gfx {
@@ -17,6 +18,9 @@ class Rect;
 
 class TabStripLayoutHelper;
 class TabWidthConstraints;
+class TabStripController;
+class TabContainer;
+class TabSlotView;
 struct TabLayoutConstants;
 
 namespace tabs {
@@ -28,6 +32,20 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
     const TabLayoutConstants& layout_constants,
     const std::vector<TabWidthConstraints>& tabs,
     absl::optional<int> width);
+
+std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
+    const std::vector<TabSlotView*>& views);
+
+void UpdateInsertionIndexForVerticalTabs(
+    const gfx::Rect& dragged_bounds,
+    int first_dragged_tab_index,
+    int num_dragged_tabs,
+    absl::optional<tab_groups::TabGroupId> dragged_group,
+    int candidate_index,
+    TabStripController* tab_strip_controller,
+    TabContainer* tab_container,
+    int& min_distance,
+    int& min_distance_index);
 
 }  // namespace tabs
 
