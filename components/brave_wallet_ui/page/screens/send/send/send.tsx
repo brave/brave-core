@@ -340,7 +340,7 @@ export const Send = (props: Props) => {
           }
         </SectionBox>
         <SectionBox hasError={false} boxDirection='row'>
-          {showResolvedDomainAddress &&
+          {showResolvedDomainAddress && foundAddressPosition !== 0 &&
             <FoundAddress
               textSize='16px'
               textColor='text03'
