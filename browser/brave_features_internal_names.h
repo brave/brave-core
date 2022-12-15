@@ -6,7 +6,15 @@
 #ifndef BRAVE_BROWSER_BRAVE_FEATURES_INTERNAL_NAMES_H_
 #define BRAVE_BROWSER_BRAVE_FEATURES_INTERNAL_NAMES_H_
 
-constexpr char kBraveVPNFeatureInternalName[] = "brave-vpn";
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "build/build_config.h"
+
 constexpr char kPlaylistFeatureInternalName[] = "playlist";
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+constexpr char kBraveVPNFeatureInternalName[] = "brave-vpn";
+#if BUILDFLAG(IS_WIN)
+constexpr char kBraveVPNDnsFeatureInternalName[] = "brave-vpn-dns";
+#endif
+#endif
 
 #endif  // BRAVE_BROWSER_BRAVE_FEATURES_INTERNAL_NAMES_H_
