@@ -975,3 +975,9 @@ export enum TokenStandards {
 export type ERC721Metadata = {
   image?: string
 }
+
+export type AddressMessageInfo = {
+  title: string
+  description?: string
+  url?: string
+}
