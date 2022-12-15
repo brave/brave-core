@@ -10,9 +10,11 @@
 
 #include "chrome/browser/ui/browser.h"
 
+#if defined(TOOLKIT_VIEWS)
 namespace sidebar {
 class SidebarController;
 }  // namespace sidebar
+#endif
 
 class BraveBrowserWindow;
 
@@ -51,9 +53,11 @@ class BraveBrowser : public Browser {
   // any warning/onbeforeunload handlers.
   bool ShouldAskForBrowserClosingBeforeHandlers();
 
+#if defined(TOOLKIT_VIEWS)
   sidebar::SidebarController* sidebar_controller() {
     return sidebar_controller_.get();
   }
+#endif
 
   BraveBrowserWindow* brave_window();
 

@@ -50,9 +50,11 @@ class BraveAppMenuModel : public AppMenuModel {
   size_t GetIndexOfBraveRewardsItem() const;
   size_t GetLastIndexOfSecondSection() const;
   size_t GetIndexOfBraveSyncItem() const;
-  size_t GetIndexOfBraveSidebarItem() const;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   size_t GetIndexOfBraveVPNItem() const;
+#endif
+#if defined(TOOLKIT_VIEWS)
+  size_t GetIndexOfBraveSidebarItem() const;
 #endif
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   int AddIpnsKeysToSubMenu(ui::SimpleMenuModel* submenu,

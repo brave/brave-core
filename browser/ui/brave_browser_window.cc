@@ -18,6 +18,8 @@ gfx::Rect BraveBrowserWindow::GetShieldsBubbleRect() {
   return gfx::Rect();
 }
 
+#if defined(TOOLKIT_VIEWS)
 sidebar::Sidebar* BraveBrowserWindow::InitSidebar() {
   return nullptr;
 }
+#endif

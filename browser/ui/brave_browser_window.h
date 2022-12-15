@@ -13,9 +13,11 @@ namespace content {
 class WebContents;
 }  // namespace content
 
+#if defined(TOOLKIT_VIEWS)
 namespace sidebar {
 class Sidebar;
 }  // namespace sidebar
+#endif
 
 namespace speedreader {
 class SpeedreaderBubbleView;
@@ -42,7 +44,10 @@ class BraveBrowserWindow : public BrowserWindow {
   virtual void HideSpeedreaderWebUIBubble() {}
 #endif
 
+#if defined(TOOLKIT_VIEWS)
   virtual sidebar::Sidebar* InitSidebar();
+#endif
+
   virtual void ShowBraveVPNBubble() {}
 };
 
