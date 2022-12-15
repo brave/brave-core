@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 
+#include <limits>
+
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
