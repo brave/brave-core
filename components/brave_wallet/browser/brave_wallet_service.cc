@@ -161,10 +161,11 @@ BraveWalletService::BraveWalletService(
       tx_service_(tx_service),
       profile_prefs_(profile_prefs),
       brave_wallet_p3a_(this, keyring_service, profile_prefs, local_state),
-      asset_discovery_manager_(this,
-                               json_rpc_service,
-                               keyring_service,
-                               profile_prefs),
+      asset_discovery_manager_(
+          std::make_unique<AssetDiscoveryManager>(this,
+                                                  json_rpc_service,
+                                                  keyring_service,
+                                                  profile_prefs)),
       weak_ptr_factory_(this) {
   if (delegate_)
     delegate_->AddObserver(this);
@@ -376,7 +377,8 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
 
 bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token) {
   mojom::BlockchainTokenPtr clone = token.Clone();
-  bool result = BraveWalletService::AddUserAsset(std::move(token), profile_prefs_);
+  bool result =
+      BraveWalletService::AddUserAsset(std::move(token), profile_prefs_);
 
   if (result) {
     for (const auto& observer : token_observers_) {
