@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_PLAYLIST_PAGE_HANDLER_H_
-#define BRAVE_BROWSER_UI_WEBUI_PLAYLIST_PAGE_HANDLER_H_
+#ifndef BRAVE_BROWSER_PLAYLIST_PLAYLIST_PAGE_HANDLER_H_
+#define BRAVE_BROWSER_PLAYLIST_PLAYLIST_PAGE_HANDLER_H_
 
 #include <string>
 
@@ -22,11 +22,15 @@ class Profile;
 class PlaylistPageHandler : public playlist::mojom::PageHandler,
                             public playlist::PlaylistServiceObserver {
  public:
+#if !BUILDFLAG(IS_ANDROID)
   PlaylistPageHandler(
       Profile* profile,
       content::WebContents* contents,
       mojo::PendingReceiver<playlist::mojom::PageHandler> pending_page_handler,
       mojo::PendingRemote<playlist::mojom::Page> pending_page);
+#else
+  PlaylistPageHandler(Profile* profile);
+#endif
   ~PlaylistPageHandler() override;
 
   // playlist::mojom::PageHandler:
@@ -60,14 +64,16 @@ class PlaylistPageHandler : public playlist::mojom::PageHandler,
 
  private:
   raw_ptr<Profile> profile_ = nullptr;
+#if !BUILDFLAG(IS_ANDROID)
   raw_ptr<content::WebContents> web_contents_ = nullptr;
 
   mojo::Remote<playlist::mojom::Page> page_;
   mojo::Receiver<playlist::mojom::PageHandler> handler_;
+#endif
 
   base::ScopedObservation<playlist::PlaylistService,
                           playlist::PlaylistServiceObserver>
       observation_{this};
 };
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_PLAYLIST_PAGE_HANDLER_H_
+#endif  // BRAVE_BROWSER_PLAYLIST_PLAYLIST_PAGE_HANDLER_H_

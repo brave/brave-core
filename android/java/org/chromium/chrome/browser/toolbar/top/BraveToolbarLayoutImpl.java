@@ -128,6 +128,8 @@ import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.playlist.mojom.PageHandler;
+import org.chromium.playlist.mojom.Playlist;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
@@ -200,6 +202,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             Collections.synchronizedSet(new HashSet<Integer>());
 
     private CookieListOptInPageAndroidHandler mCookieListOptInPageAndroidHandler;
+    private PageHandler mPlaylistPageHandler;
 
     private enum BIGTECH_COMPANY { Google, Facebook, Amazon }
 

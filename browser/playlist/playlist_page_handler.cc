@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/playlist_page_handler.h"
+#include "brave/browser/playlist/playlist_page_handler.h"
 
 #include <string>
 #include <utility>
@@ -14,8 +14,10 @@
 #include "brave/components/playlist/playlist_constants.h"
 #include "brave/components/playlist/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#if !defined(OS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#endif
 #include "components/prefs/pref_service.h"
 
 using PlaylistId = playlist::PlaylistService::PlaylistId;
@@ -25,6 +27,7 @@ playlist::PlaylistService* GetPlaylistService(Profile* profile) {
   return playlist::PlaylistServiceFactory::GetForBrowserContext(profile);
 }
 
+#if !BUILDFLAG(IS_ANDROID)
 PlaylistPageHandler::PlaylistPageHandler(
     Profile* profile,
     content::WebContents* contents,
@@ -37,6 +40,13 @@ PlaylistPageHandler::PlaylistPageHandler(
   DCHECK(profile_);
   observation_.Observe(GetPlaylistService(profile_));
 }
+#else
+PlaylistPageHandler::PlaylistPageHandler(Profile* profile) : profile_(profile) {
+  DCHECK(profile_);
+  // TODO DEEP : check if we need observer for android
+  // observation_.Observe(GetPlaylistService(profile_));
+}
+#endif
 
 PlaylistPageHandler::~PlaylistPageHandler() = default;
 
@@ -85,6 +95,9 @@ void PlaylistPageHandler::AddMediaFilesFromPageToPlaylist(const std::string& id,
 
 void PlaylistPageHandler::AddMediaFilesFromOpenTabsToPlaylist(
     const std::string& playlist_id) {
+#if defined(OS_ANDROID)
+  NOTIMPLEMENTED();
+#else
   auto* browser = chrome::FindLastActive();
   if (!browser) {
     LOG(ERROR) << "No active browser";
@@ -100,6 +113,7 @@ void PlaylistPageHandler::AddMediaFilesFromOpenTabsToPlaylist(
           profile_->GetPrefs()->GetBoolean(playlist::kPlaylistCacheByDefault));
     }
   }
+#endif  // defined(OS_ANDROID)
 }
 
 void PlaylistPageHandler::RemoveItemFromPlaylist(const std::string& playlist_id,
@@ -138,7 +152,11 @@ void PlaylistPageHandler::RemovePlaylist(const std::string& playlist_id) {
 void PlaylistPageHandler::OnPlaylistStatusChanged(
     const playlist::PlaylistChangeParams& params) {
   // TODO(sko) Send proper events based on |params|
+#if BUILDFLAG(IS_ANDROID)
+  NOTIMPLEMENTED();
+#else
   page_->OnEvent(playlist::mojom::PlaylistEvent::kUpdated);
+#endif
 }
 
 void PlaylistPageHandler::OnMediaFileDownloadProgressed(
@@ -147,7 +165,11 @@ void PlaylistPageHandler::OnMediaFileDownloadProgressed(
     int64_t received_bytes,
     int percent_complete,
     base::TimeDelta time_remaining) {
+#if BUILDFLAG(IS_ANDROID)
+  NOTIMPLEMENTED();
+#else
   page_->OnMediaFileDownloadProgressed(
       id, total_bytes, received_bytes, percent_complete,
       base::TimeDeltaToValue(time_remaining).GetString());
+#endif
 }

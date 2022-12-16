@@ -9,9 +9,9 @@
 #include <utility>
 
 #include "base/feature_list.h"
+#include "brave/browser/playlist/playlist_page_handler.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/browser/ui/webui/playlist_page_handler.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/features.h"
 #include "brave/components/playlist/resources/grit/playlist_generated_map.h"
