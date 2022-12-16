@@ -27,6 +27,7 @@ namespace {
 
 char kIntentParamName[] = "intent";
 char kIntentParamValue[] = "connect-receipt";
+char kIntentParamTestValue[] = "connect-receipt-test";
 char kProductParamName[] = "product";
 char kProductParamValue[] = "vpn";
 
@@ -106,7 +107,9 @@ bool VpnRenderFrameObserver::IsAllowed() {
   GURL current_url(
       render_frame()->GetWebFrame()->GetDocument().Url().GetString().Utf8());
   return ExtractParam(current_url, kIntentParamName) == kIntentParamValue &&
-         ExtractParam(current_url, kProductParamName) == kProductParamValue;
+         (ExtractParam(current_url, kProductParamName) == kProductParamValue ||
+          ExtractParam(current_url, kProductParamName) ==
+              kIntentParamTestValue);
 }
 
 void VpnRenderFrameObserver::OnDestruct() {
