@@ -195,4 +195,42 @@ TEST(TimeLimitedWordsTest, Parse) {
   }
 }
 
+TEST(TimeLimitedWordsTest, ParseIgnoreDate) {
+  using ValidationStatus = TimeLimitedWords::ValidationStatus;
+  base::expected<std::string, ValidationStatus> pure_words_with_status;
+
+  const base::Time anchorDayForWordsV2 =
+      TimeLimitedWords::GetWordsV2Epoch() + base::Days(20);
+
+  {
+    // Valid v2 sync code, after sunset date, expired, but pure words should be
+    // extracted
+    const std::string valid25thExpiredWord =
+        TimeLimitedWords::GetWordByIndex(15);
+    const std::string valid25thExpiredWords =
+        base::StrCat({kValidSyncCode, " ", valid25thExpiredWord});
+
+    auto time_override = OverrideWithTimeNow(anchorDayForWordsV2);
+    pure_words_with_status =
+        TimeLimitedWords::ParseIgnoreDate(valid25thExpiredWords);
+    EXPECT_TRUE(pure_words_with_status.has_value());
+    EXPECT_EQ(pure_words_with_status.value(), kValidSyncCode);
+  }
+
+  {
+    // Valid v2 sync code, after sunset date, valid for too long, but pure words
+    // should be extracted
+    const std::string valid25thValidTooLongWord =
+        TimeLimitedWords::GetWordByIndex(25);
+    const std::string valid25thValidTooLongWords =
+        base::StrCat({kValidSyncCode, " ", valid25thValidTooLongWord});
+
+    auto time_override = OverrideWithTimeNow(anchorDayForWordsV2);
+    pure_words_with_status =
+        TimeLimitedWords::ParseIgnoreDate(valid25thValidTooLongWords);
+    EXPECT_TRUE(pure_words_with_status.has_value());
+    EXPECT_EQ(pure_words_with_status.value(), kValidSyncCode);
+  }
+}
+
 }  // namespace brave_sync
