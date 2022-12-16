@@ -156,7 +156,8 @@ void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
 
   // Sync code arrives here with time-limit 25th word, remove it to get proper
   // pure seed for QR generation  (QR codes have their own expiry)
-  auto pure_words_with_status = TimeLimitedWords::Parse(time_limited_sync_code);
+  auto pure_words_with_status =
+      TimeLimitedWords::ParseIgnoreDate(time_limited_sync_code);
   CHECK(pure_words_with_status.has_value());
   CHECK_NE(pure_words_with_status.value().size(), 0u);
 
