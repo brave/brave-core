@@ -158,6 +158,9 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
   // Register google sign in social media permission default value as Ask.
+  // This is INHERIT_IN_INCOGNITO because it sets cookie rules, and cookies
+  // are INHERIT_IN_INCOGNITO.
+  // See https://github.com/brave/brave-core/pull/15330#discussion_r1049643580
   Register(ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, "brave_google_sign_in",
            CONTENT_SETTING_ASK, WebsiteSettingsInfo::UNSYNCABLE,
            AllowlistedSchemes(),
@@ -166,7 +169,7 @@ void ContentSettingsRegistry::BraveInit() {
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
-           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
+           ContentSettingsInfo::INHERIT_IN_INCOGNITO,
            ContentSettingsInfo::PERSISTENT,
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
