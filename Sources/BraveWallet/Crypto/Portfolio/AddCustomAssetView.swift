@@ -251,7 +251,6 @@ struct AddCustomAssetView: View {
             addCustomToken()
           }) {
             Text(Strings.Wallet.add)
-              .foregroundColor(Color(.braveBlurpleTint))
           }
           .disabled(addButtonDisabled)
         }
