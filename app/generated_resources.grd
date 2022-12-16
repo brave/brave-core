@@ -5416,6 +5416,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSIONS_MENU_EXTENSIONS_TAB_DISCOVER_MORE_TITLE" desc="Text of the button in the installed extensions tab used to open the webstore page">
         Discover more extensions
       </message>
+      <message name="IDS_EXTENSIONS_MENU_REQUESTS_ACCESS_SECTION_TITLE" desc="Title of the requests access section that lists the extensions requesting site access">
+        Requests access
+      </message>
 
       <!-- Settings API bubble -->
       <message name="IDS_EXTENSIONS_SETTINGS_API_TITLE_HOME_PAGE_BUBBLE" desc="Title of a bubble warning users that an extension has overridden their home page setting">
@@ -6982,6 +6985,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_BOOKMARKS_EMPTY_STATE_BODY" desc="Body text for the bookmarks side panel empty state">
         Bookmark things you want to come back to later
+      </message>
+      <message name="IDS_BOOKMARKS_EMPTY_STATE_TITLE_GUEST" desc="Title for the bookmarks side panel empty state in guest mode">
+        Sign in to see your bookmarks
+      </message>
+      <message name="IDS_BOOKMARKS_EMPTY_STATE_BODY_GUEST" desc="Body text for the bookmarks side panel empty state in guest mode">
+        Bookmarks are unavailable in guest mode
       </message>
       <message name="IDS_BOOKMARK_FOLDER_CHILD_COUNT" desc="Text description for the number of children of a bookmark folder">
         {NUM_BOOKMARKS, plural, =1 {1 bookmark} other {# bookmarks}}
@@ -12034,6 +12043,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBHID_DEVICE_CONNECTED_BY_EXTENSION_NOTIFICATION_MESSAGE" desc="Notification content shown to the user when a HID device is being accessed by an extension.">
         Click to manage permissions for "<ph name="EXTENSION">$1<ex>Brave Translate</ex></ph>"
+      </message>
+      <message name="IDS_WEBHID_SYSTEM_TRAY_ICON_BUTTON_FOR_MANAGE_HID_DEVICE" desc="The text for WebHID system tray icon button for managing HID devices.">
+        Manage HID devices
+      </message>
+      <message name="IDS_WEBHID_SYSTEM_TRAY_ICON_BUTTON_FOR_MANAGE_HID_DEVICE_WITH_PROFILE_NAME" desc="The text with profile name for WebHID system tray icon button for managing HID devices.">
+        Manage HID devices for <ph name="PROFILE_NAME">$1<ex>Nina@gmail.com</ex></ph>
       </message>
     </if>
 
