@@ -1,5 +1,19 @@
 <link rel="stylesheet" href="chrome://resources/brave/fonts/poppins.css">
 <style include="br-shared-style">
+  #menuButtonContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #menuButton {
+    --cr-icon-button-fill-color: currentColor;
+  }
+
   .br-toolbar {
     --toolbar-background: var(--brave-toolbar-gradient);
     background: var(--toolbar-background);
@@ -101,6 +115,15 @@
 
 </style>
 <div class$="br-toolbar [[fontsLoadedClassName]]">
+  <template is="dom-if" if="[[showMenu]]">
+    <div id="menuButtonContainer">
+      <cr-icon-button id="menuButton"
+          iron-icon="cr20:menu" on-click="onMenuTap_"
+          aria-label$="[[menuLabel]]"
+          title="[[menuLabel]]">
+      </cr-icon-button>
+    </div>
+  </template>
   <ul class="nav-items" role="navigation" aria-label="Category navigation">
     <li class="nav-items-list-item" title="[[settingsTitle]]">
       <a class$="nav-item [[getNavItemSelectedClassName('settings')]]" href="chrome://settings">
