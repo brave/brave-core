@@ -32,8 +32,8 @@ export const _TransactionSubmitted = () => {
   )
 }
 
-_TransactionSubmittedOrSigned.story = {
+_TransactionSubmitted.story = {
   name: 'Transaction Submitted/Signed'
 }
 
-export default _TransactionSubmittedOrSigned
+export default _TransactionSubmitted

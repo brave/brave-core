@@ -11,6 +11,7 @@ import { TransactionStatusIcon, TransactionStatusText } from '../common/common.s
 
 export const SubmittedOrSignedIcon = styled(TransactionStatusIcon)`
   background: url(${SubmittedOrSignedSvg});
+  background-size: contain;
 `
 
 export const Title = styled(TransactionStatusText)`
