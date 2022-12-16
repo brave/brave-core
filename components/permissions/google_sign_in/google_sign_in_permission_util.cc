@@ -38,15 +38,15 @@ bool IsGoogleAuthUrl(const GURL& gurl) {
 
 }  // namespace
 
-ContentSettingsPattern GetGoogleAuthPattern() {
+const ContentSettingsPattern& GetGoogleAuthPattern() {
   static const base::NoDestructor<ContentSettingsPattern> google_pattern(
-      ContentSettingsPattern::FromString(permissions::kGoogleAuthPattern));
+      ContentSettingsPattern::FromString(kGoogleAuthPattern));
   return *google_pattern;
 }
 
-ContentSettingsPattern GetFirebaseAuthPattern() {
+const ContentSettingsPattern& GetFirebaseAuthPattern() {
   static const base::NoDestructor<ContentSettingsPattern> firebase_pattern(
-      ContentSettingsPattern::FromString(permissions::kFirebasePattern));
+      ContentSettingsPattern::FromString(kFirebasePattern));
   return *firebase_pattern;
 }
 

@@ -83,7 +83,7 @@ void GoogleSignInPermissionThrottle::DetachFromCurrentSequence() {}
 void HandleRequest(bool* defer,
                    const GURL& request_url,
                    const GURL& request_initiator_url,
-                   const content::WebContents::Getter contents_getter,
+                   const content::WebContents::Getter& contents_getter,
                    scoped_refptr<HostContentSettingsMap> content_settings,
                    URLLoaderThrottle::Delegate* delegate) {
   auto* contents = contents_getter.Run();

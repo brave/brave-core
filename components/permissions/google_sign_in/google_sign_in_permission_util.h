@@ -27,8 +27,8 @@ constexpr char kGoogleAuthPattern[] =
     "https://accounts.google.com/o/oauth2/auth/*";
 constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/__/auth/*";
 
-ContentSettingsPattern GetFirebaseAuthPattern();
-ContentSettingsPattern GetGoogleAuthPattern();
+const ContentSettingsPattern& GetFirebaseAuthPattern();
+const ContentSettingsPattern& GetGoogleAuthPattern();
 
 bool IsGoogleAuthRelatedRequest(const GURL& request_url,
                                 const GURL& request_initiator_url);

@@ -85,10 +85,8 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
     third_party_url_ = https_server_->GetURL(kThirdPartyTestDomain, "/");
     third_party_cookie_url_ = https_server_->GetURL(
         kThirdPartyTestDomain, "/set-cookie?test=true;SameSite=None;Secure");
-    cookie_iframe_url_ =
-        https_server_->GetURL(kTestDomain, "/cookie_iframe.html");
     embedding_url_ = https_server_->GetURL(kTestDomain, kEmbeddingPageUrl);
-    https_cookie_iframe_url_ =
+    cookie_iframe_url_ =
         https_server_->GetURL(kTestDomain, "/cookie_iframe.html");
     google_oauth_cookie_url_ = https_server_->GetURL(
         "accounts.google.com", "/set-cookie?oauth=true;SameSite=None;Secure");
@@ -210,7 +208,6 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
           })
       )",
         id);
-
     ASSERT_EQ(true, EvalJs(contents(), click_script));
   }
 
@@ -231,22 +228,27 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
     if (can_be_set) {
       expected_cookie_string = "oauth=true";
     }
-    NavigateToPageWithFrame(https_cookie_iframe_url_);
+    NavigateToPageWithFrame(cookie_iframe_url_);
     ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
     NavigateFrameTo(google_oauth_cookie_url_);
     ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), expected_cookie_string);
     // Try to set 3p cookies from non-auth domain, should never work.
     NavigateFrameTo(third_party_cookie_url_);
     ExpectCookiesOnHost(GURL(third_party_url_), "");
+    // Delete set cookie
+    DeleteCookies(contents()->GetBrowserContext(),
+                  network::mojom::CookieDeletionFilter());
   }
 
-  void CheckAllowFlow() {
-    EXPECT_EQ(0, prompt_factory()->show_count());
-    // Try to set 3p cookies from auth domain, should not work.
-    CheckIf3PCookiesCanBeSetFromAuthDomain(false);
+  void CheckCurrentStatusIsAsk() {
     // Verify default.
     CheckCookiesAndContentSetting(ContentSetting::CONTENT_SETTING_ASK,
                                   ContentSetting::CONTENT_SETTING_BLOCK);
+    CheckIf3PCookiesCanBeSetFromAuthDomain(false);
+  }
+
+  void CheckAskAndAcceptFlow() {
+    EXPECT_EQ(0, prompt_factory()->show_count());
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
     // Accept prompt.
     prompt_factory()->set_response_type(
@@ -261,16 +263,14 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
                                   ContentSetting::CONTENT_SETTING_ALLOW);
     // Try to set 3p cookies from auth domain, should work.
     CheckIf3PCookiesCanBeSetFromAuthDomain(true);
+    // Coming back to page should automatically work
+    CheckAllowedFlow(1);
   }
 
-  void CheckDenyFlow() {
+  void CheckAskAndDenyFlow() {
     EXPECT_EQ(0, prompt_factory()->show_count());
-    // Try to set 3p cookies from auth domain, should not work.
-    CheckIf3PCookiesCanBeSetFromAuthDomain(false);
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
-    // Verify default.
-    CheckCookiesAndContentSetting(ContentSetting::CONTENT_SETTING_ASK,
-                                  ContentSetting::CONTENT_SETTING_BLOCK);
+    // Deny prompt.
     prompt_factory()->set_response_type(
         permissions::PermissionRequestManager::DENY_ALL);
     // Have website issue request for Google auth URL.
@@ -283,12 +283,35 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
     // Try to set 3p cookies from auth domain, should not work.
     CheckIf3PCookiesCanBeSetFromAuthDomain(false);
     // Coming back to page, DENY is respected.
+    CheckBlockedFlow(1);
+  }
+
+  void CheckAllowedFlow(int initial_prompts_shown = 0) {
+    EXPECT_EQ(initial_prompts_shown, prompt_factory()->show_count());
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+    // Have website issue request for Google auth URL.
     ClickButtonWithId(kAuthButtonHtmlId);
-    // Try to set 3p cookies from auth domain, should not work.
+    // Make sure prompt did not come up again.
+    EXPECT_EQ(initial_prompts_shown, prompt_factory()->show_count());
+    // Check content settings and cookie settings are ALLOWed
+    CheckCookiesAndContentSetting(ContentSetting::CONTENT_SETTING_ALLOW,
+                                  ContentSetting::CONTENT_SETTING_ALLOW);
+    // Try to set 3p cookies from auth domain, should work.
+    CheckIf3PCookiesCanBeSetFromAuthDomain(true);
+  }
+
+  void CheckBlockedFlow(int initial_prompts_shown = 0) {
+    EXPECT_EQ(initial_prompts_shown, prompt_factory()->show_count());
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+    // Have website issue request for Google auth URL.
+    ClickButtonWithId(kAuthButtonHtmlId);
+    // Make sure prompt did not come up again.
+    EXPECT_EQ(initial_prompts_shown, prompt_factory()->show_count());
+    // Check content settings and cookie settings are BLOCKed
+    CheckCookiesAndContentSetting(ContentSetting::CONTENT_SETTING_BLOCK,
+                                  ContentSetting::CONTENT_SETTING_BLOCK);
+    // Try to set 3p cookies from auth domain, should NOT work.
     CheckIf3PCookiesCanBeSetFromAuthDomain(false);
-    // No additional prompt shown.
-    EXPECT_EQ(1, prompt_factory()->show_count());
   }
 
   void CheckPrefOffFlow() {
@@ -296,7 +319,6 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
     // Try to set 3p cookies from auth domain, should not work.
     CheckIf3PCookiesCanBeSetFromAuthDomain(false);
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
-    content::TestNavigationObserver error_observer(contents());
     ClickButtonWithId(kAuthButtonHtmlId);
     CheckCookiesAndContentSetting(ContentSetting::CONTENT_SETTING_ASK,
                                   ContentSetting::CONTENT_SETTING_BLOCK);
@@ -309,7 +331,6 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
   GURL top_level_page_url_;
   GURL https_top_level_page_url_;
   GURL cookie_iframe_url_;
-  GURL https_cookie_iframe_url_;
   GURL google_oauth_cookie_url_;
   GURL third_party_url_;
   GURL third_party_cookie_url_;
@@ -324,30 +345,28 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionAllow) {
   SetGoogleSignInPref(true);
-  CheckAllowFlow();
+  CheckCurrentStatusIsAsk();
+  CheckAskAndAcceptFlow();
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDeny) {
   SetGoogleSignInPref(true);
-  CheckDenyFlow();
+  CheckCurrentStatusIsAsk();
+  CheckAskAndDenyFlow();
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDismiss) {
   SetGoogleSignInPref(true);
   EXPECT_EQ(0, prompt_factory()->show_count());
-  // Try to set 3p cookies from auth domain, should not work.
-  CheckIf3PCookiesCanBeSetFromAuthDomain(false);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
-  CheckCookiesAndContentSetting(ContentSetting::CONTENT_SETTING_ASK,
-                                ContentSetting::CONTENT_SETTING_BLOCK);
+  CheckCurrentStatusIsAsk();
   prompt_factory()->set_response_type(
       permissions::PermissionRequestManager::DISMISS);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
   // Have website issue request for Google auth URL.
   ClickButtonWithId(kAuthButtonHtmlId);
   prompt_factory()->WaitForPermissionBubble();
   // Confirm that content and cookie settings did not change.
-  CheckCookiesAndContentSetting(ContentSetting::CONTENT_SETTING_ASK,
-                                ContentSetting::CONTENT_SETTING_BLOCK);
+  CheckCurrentStatusIsAsk();
   EXPECT_EQ(1, prompt_factory()->show_count());
 }
 
@@ -356,33 +375,51 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PrefTurnedOff) {
   CheckPrefOffFlow();
 }
 
-IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, Profiles) {
-  // Set pref off in one profile and on in other and it should work correctly.
-  // Launch incognito in each profile and it should work correctly.
-  ProfileManager* profile_manager = g_browser_process->profile_manager();
-  size_t starting_number_of_profiles = profile_manager->GetNumberOfProfiles();
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PrefOffInheritedInIncognito) {
+  // Allowed permission for a website is inherited in incognito
   SetGoogleSignInPref(false);
   Profile* profile = browser()->profile();
   Browser* incognito_browser = CreateIncognitoBrowser(profile);
   SetBrowser(incognito_browser);
   SetPromptFactory(GetPermissionRequestManager());
   CheckPrefOffFlow();
-  base::FilePath new_path = profile_manager->GenerateNextProfileDirectoryPath();
-  Profile* new_profile =
-      profiles::testing::CreateProfileSync(profile_manager, new_path);
-  EXPECT_TRUE(new_profile);
-  ASSERT_EQ(starting_number_of_profiles + 1,
-            profile_manager->GetNumberOfProfiles());
-  Browser* new_browser = CreateBrowser(new_profile);
-  SetBrowser(new_browser);
+}
+
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeInheritAllow) {
+  // Allowed permission for a website is inherited in incognito
+  SetGoogleSignInPref(true);
+  CheckAskAndAcceptFlow();
+  Profile* profile = browser()->profile();
+  Browser* incognito_browser = CreateIncognitoBrowser(profile);
+  SetBrowser(incognito_browser);
   SetPromptFactory(GetPermissionRequestManager());
-  // Check that pref is ON for new profile.
-  EXPECT_TRUE(GetGoogleSignInPref());
-  // Incognito behaves same as launching profile.
-  Browser* new_incognito_browser = CreateIncognitoBrowser(new_profile);
-  SetBrowser(new_incognito_browser);
+  CheckAllowedFlow();
+}
+
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeInheritBlock) {
+  // Blocked permission for a website is inherited in incognito
+  SetGoogleSignInPref(true);
+  CheckAskAndDenyFlow();
+  Profile* profile = browser()->profile();
+  Browser* incognito_browser = CreateIncognitoBrowser(profile);
+  SetBrowser(incognito_browser);
   SetPromptFactory(GetPermissionRequestManager());
-  CheckAllowFlow();
+  CheckBlockedFlow();
+}
+
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeDoesNotLeak) {
+  // Permission set in Incognito does not leak back to normal mode.
+  SetGoogleSignInPref(true);
+  Browser* original_browser = browser();
+  Browser* incognito_browser = CreateIncognitoBrowser();
+  SetBrowser(incognito_browser);
+  SetPromptFactory(GetPermissionRequestManager());
+  CheckCurrentStatusIsAsk();
+  CheckAskAndAcceptFlow();
+  // Check permission did not leak.
+  SetBrowser(original_browser);
+  SetPromptFactory(GetPermissionRequestManager());
+  CheckCurrentStatusIsAsk();
 }
 
 class GoogleSignInFlagDisabledTest : public GoogleSignInBrowserTest {
@@ -401,7 +438,7 @@ class GoogleSignInFlagDisabledTest : public GoogleSignInBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieAllowed) {
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
+  NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
   NavigateFrameTo(google_oauth_cookie_url_);
@@ -411,7 +448,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
 IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieDefaultAllowSiteOverride) {
   AllowCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
+  NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
   NavigateFrameTo(google_oauth_cookie_url_);
@@ -421,7 +458,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
 IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieDefaultBlock3pSiteOverride) {
   BlockThirdPartyCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
+  NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
   NavigateFrameTo(google_oauth_cookie_url_);
@@ -431,7 +468,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
 IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieDefaultBlockSiteOverride) {
   BlockCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
+  NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
   // Cookies for accounts.google.com will be allowed since the exception
@@ -444,7 +481,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieAllowAllAlowSiteOverride) {
   DefaultAllowAllCookies();
   AllowCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
+  NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
   NavigateFrameTo(google_oauth_cookie_url_);
@@ -455,7 +492,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieAllowAllBlock3pSiteOverride) {
   DefaultAllowAllCookies();
   BlockThirdPartyCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
+  NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
   NavigateFrameTo(google_oauth_cookie_url_);
@@ -466,7 +503,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieAllowAllBlockSiteOverride) {
   DefaultAllowAllCookies();
   BlockCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
+  NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
   NavigateFrameTo(google_oauth_cookie_url_);
@@ -477,7 +514,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieBlockAllAllowSiteOverride) {
   DefaultBlockAllCookies();
   AllowCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
+  NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(https_top_level_page_url_, "name=Good");
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
@@ -489,7 +526,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieBlockAllBlock3pSiteOverride) {
   DefaultBlockAllCookies();
   BlockThirdPartyCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
+  NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(https_top_level_page_url_, "name=Good");
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
@@ -501,7 +538,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieBlockAllBlockSiteOverride) {
   DefaultBlockAllCookies();
   BlockCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
+  NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(https_top_level_page_url_, "");
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
@@ -512,7 +549,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
 IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieBlocked) {
   SetGoogleSignInPref(false);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
+  NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
   NavigateFrameTo(google_oauth_cookie_url_);
