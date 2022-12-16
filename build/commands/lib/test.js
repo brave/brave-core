@@ -152,7 +152,18 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         // Specify emulator to run tests on
         braveArgs.push(`--avd-config tools/android/avd/proto/generic_android28.textpb`)
       }
-      util.run(path.join(config.outputDir, getTestBinary(testSuite)), braveArgs, config.defaultOptions)
+      let options = config.defaultOptions
+      if (options.output)
+        // When test results are saved to a file, callers (such as CI) generate
+        // and analyze test reports as a next step. These callers are typically
+        // not interested in the exit code of running the tests, because they
+        // get the information about test success or failure from the output
+        // file. On the other hand, callers are interested in errors that
+        // produce an exit code, such as test compilation failures. By ignoring
+        // the test exit code here, we give callers a chance to distinguish test
+        // failures (by looking at the output file) from compilation errors.
+        options.continueOnFail = true
+      util.run(path.join(config.outputDir, getTestBinary(testSuite)), braveArgs, options)
     })
   }
 }
