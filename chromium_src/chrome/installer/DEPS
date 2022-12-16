@@ -1,4 +1,6 @@
 include_rules = [
+  "+brave/components/brave_vpn/browser/connection/win/brave_vpn_helper",
+  "+brave/components/brave_vpn/common/buildflags",
   "+brave/installer",
   "+chrome/common",
   "+chrome/install_static",

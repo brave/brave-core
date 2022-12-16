@@ -11,11 +11,12 @@ index 6523364f6870b376a65efd1593b5e87ba98fe0d5..8d08f939270da3fdbd4d9f59940270f8
  chrome_proxy.exe: %(ChromeDir)s\
  #
  # Chrome version dir assembly manifest.
-@@ -18,9 +18,14 @@ chrome_proxy.exe: %(ChromeDir)s\
+@@ -18,9 +18,15 @@ chrome_proxy.exe: %(ChromeDir)s\
  #
  # Chrome version dir entries, sorted alphabetically.
  #
 +brave.exe.sig: %(VersionDir)s\
++brave_vpn_helper.exe: %(VersionDir)s\
  chrome.dll: %(VersionDir)s\
 +chrome.dll.sig: %(VersionDir)s\
 +brave_resources.pak: %(VersionDir)s\
