@@ -47,6 +47,7 @@ source_set("unit_tests") {
 
   deps = [
     ":browser",
+    "connection:unit_tests",
     "//base",
     "//brave/components/brave_vpn/browser/api",
     "//brave/components/brave_vpn/browser/api:unit_tests",

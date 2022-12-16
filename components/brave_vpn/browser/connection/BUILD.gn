@@ -63,3 +63,20 @@ source_set("sim") {
     "//third_party/icu",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_vpn_os_connection_api_unittest.cc" ]
+
+  deps = [
+    ":api",
+    ":sim",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/mojom",
+    "//components/sync_preferences:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+  ]
+}
