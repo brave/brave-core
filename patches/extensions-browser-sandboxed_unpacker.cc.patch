@@ -1,11 +1,11 @@
 diff --git a/extensions/browser/sandboxed_unpacker.cc b/extensions/browser/sandboxed_unpacker.cc
-index 3c0c30858dde7341e22129d7a993b95368b1162b..93534619d9da0549857f3da3279efd83ea8de4fe 100644
+index 182ba5bd4eab8c23789fafb9e0943e78fd730c99..5d973142c728120b5612e60afce4a70f4f029f5a 100644
 --- a/extensions/browser/sandboxed_unpacker.cc
 +++ b/extensions/browser/sandboxed_unpacker.cc
-@@ -1049,6 +1049,7 @@ absl::optional<base::Value> SandboxedUnpacker::RewriteManifestFile(
+@@ -1045,6 +1045,7 @@ absl::optional<base::Value::Dict> SandboxedUnpacker::RewriteManifestFile(
    DCHECK(!public_key_.empty());
-   base::Value final_manifest = manifest.Clone();
-   final_manifest.SetStringKey(manifest_keys::kPublicKey, public_key_);
+   base::Value::Dict final_manifest = manifest.Clone();
+   final_manifest.Set(manifest_keys::kPublicKey, public_key_);
 +  BRAVE_SANDBOXEDUNPACKER_REWRITEMANIFESTFILE
  
    {
