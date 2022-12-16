@@ -710,6 +710,9 @@ const util = {
     if (options.verbose) {
       args.push(...Array(options.verbose).fill('--verbose'))
     }
+    if (options.fix) {
+      cmd_options.env.PRESUBMIT_FIX = '1'
+    }
     util.run(cmd, args, cmd_options)
   },
 

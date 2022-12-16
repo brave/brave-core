@@ -9,6 +9,7 @@
 
 import copy
 import inspect
+import os
 import re
 import sys
 
@@ -129,7 +130,18 @@ def override_canned_checks(canned_checks):
             'bypass_warnings': False,
             'check_python': True,
         }
-        result = original_check(input_api, output_api, **kwargs)
+
+        # pylint: disable=import-outside-toplevel
+        import git_cl
+
+        def RunGitWithCode(original_function, args, **kwargs):
+            if input_api.PRESUBMIT_FIX and '--dry-run' in args:
+                args.remove('--dry-run')
+            return original_function(args, **kwargs)
+
+        with override_utils.override_scope_function(git_cl, RunGitWithCode):
+            result = original_check(input_api, output_api, **kwargs)
+
         # If presubmit generates "Please run git cl format --js" message, we
         # should replace the command with "npm run format -- --js". The
         # order of these replacements ensure we do this properly.
@@ -169,9 +181,10 @@ def override_canned_checks(canned_checks):
 
 # Overrides canned checks and installs per-check file filter.
 def modify_input_api(input_api):
+    input_api.DEFAULT_FILES_TO_SKIP += (*config['default_files_to_skip'], )
+    input_api.PRESUBMIT_FIX = os.environ.get('PRESUBMIT_FIX') == '1'
     override_canned_checks(input_api.canned_checks)
     setup_per_check_file_filter(input_api)
-    input_api.DEFAULT_FILES_TO_SKIP += (*config['default_files_to_skip'], )
 
 
 # Disables checks or forces presubmit errors for checks listed in the config.
@@ -236,6 +249,24 @@ def setup_per_check_file_filter(input_api):
                                                     '_affected_files',
                                                     affected_files):
             return original_method(*args, **kwargs)
+
+    if input_api.no_diffs:
+        # Modify upstream presubmit runner to check full file content when
+        # --files option is passed. This allows us to see all presubmit issues.
+        # Upstream uses "no_diffs" mode to speed up checks on all repository,
+        # but our codebase is pretty small, so we can run all checks as is.
+        input_api.no_diffs = False
+
+        @override_utils.override_method(input_api.change._AFFECTED_FILES)
+        def ChangedContents(self, *_, **__):
+            if self._cached_changed_contents is not None:
+                return self._cached_changed_contents[:]
+
+            result = []
+            for line_num, line in enumerate(self.NewContents(), start=1):
+                result.append((line_num, line))
+            self._cached_changed_contents = result
+            return self._cached_changed_contents[:]
 
 
 def Apply(_globals):

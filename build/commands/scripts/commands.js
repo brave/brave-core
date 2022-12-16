@@ -277,6 +277,7 @@ program
   .option('--files <file list>',
     'semicolon-separated list files to run presubmit on')
   .option('--verbose [arg]', 'pass --verbose 2 for more debugging info', JSON.parse)
+  .option('--fix', 'try to fix found issues automatically')
   .action(util.presubmit)
 
 program

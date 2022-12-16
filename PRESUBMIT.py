@@ -6,10 +6,19 @@
 import os
 import sys
 
+import chromium_presubmit_overrides
+import override_utils
+
 USE_PYTHON3 = True
 PRESUBMIT_VERSION = '2.0.0'
 
 # pylint: disable=line-too-long
+
+
+# Adds support for chromium_presubmit_config.json5 and some helpers.
+def CheckToModifyInputApi(input_api, _output_api):
+    chromium_presubmit_overrides.modify_input_api(input_api)
+    return []
 
 
 def CheckChangeLintsClean(input_api, output_api):
@@ -124,3 +133,20 @@ def CheckLicense(input_api, output_api):
             output_api.PresubmitPromptWarning(expected_license_message,
                                               items=bad_files))
     return result
+
+
+def CheckWebDevStyle(input_api, output_api):
+    results = []
+    try:
+        old_sys_path = sys.path[:]
+        cwd = input_api.PresubmitLocalPath()
+        sys.path += [input_api.os_path.join(cwd, '..', 'tools')]
+        # pylint: disable=import-error, import-outside-toplevel
+        from web_dev_style import presubmit_support
+        with override_utils.override_scope_variable(output_api,
+                                                    'PresubmitPromptWarning',
+                                                    output_api.PresubmitError):
+            results += presubmit_support.CheckStyle(input_api, output_api)
+    finally:
+        sys.path = old_sys_path
+    return results
