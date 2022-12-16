@@ -13,6 +13,16 @@ import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.browser.profiles.Profile;
 
+/**
+ * Please don't add anything in that file. We are going to refactor it soon.
+ * The only exceptions are preferences that are stored in a local_state
+ * g_browser_process->local_state().
+ * Check this PRs on how to handle preferences correctly:
+ * https://github.com/brave/brave-core/pull/16356
+ * https://github.com/brave/brave-core/pull/15905
+ * Contact code owners if you have additional questions.
+ */
+
 @JNINamespace("chrome::android")
 public class BravePrefServiceBridge {
     private BravePrefServiceBridge() {
