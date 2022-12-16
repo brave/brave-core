@@ -83,7 +83,7 @@ class MockJsonRpcService : public JsonRpcService {
                void(const std::string& contract_address,
                     const std::string& token_id,
                     const std::string& chain_id,
-                    GetTokenMetadataCallback callback));
+                    GetERC721MetadataCallback callback));
 
   ~MockJsonRpcService() override {}
 };
@@ -126,7 +126,7 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
         .WillByDefault(::testing::Invoke(
             [](const std::string& contract_address, const std::string& token_id,
                const std::string& chain_id,
-               MockJsonRpcService::GetTokenMetadataCallback callback) {
+               MockJsonRpcService::GetERC721MetadataCallback callback) {
               EXPECT_EQ("0x1", chain_id);
               EXPECT_EQ("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
                         contract_address);
@@ -183,7 +183,7 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
         .WillByDefault(::testing::Invoke(
             [](const std::string& contract_address, const std::string& token_id,
                const std::string& chain_id,
-               MockJsonRpcService::GetTokenMetadataCallback callback) {
+               MockJsonRpcService::GetERC721MetadataCallback callback) {
               EXPECT_EQ("0x1", chain_id);
               EXPECT_EQ("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
                         contract_address);
