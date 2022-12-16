@@ -435,6 +435,7 @@ class TransactionParserTests: XCTestCase {
       details: .ethErc20Approve(
         .init(
           token: .previewDaiToken,
+          tokenContractAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
           approvalValue: "0x2386f26fc10000",
           approvalAmount: "0.01",
           isUnlimited: false,
@@ -514,6 +515,7 @@ class TransactionParserTests: XCTestCase {
       details: .ethErc20Approve(
         .init(
           token: .previewDaiToken,
+          tokenContractAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
           approvalValue: "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
           approvalAmount: "Unlimited",
           isUnlimited: true,

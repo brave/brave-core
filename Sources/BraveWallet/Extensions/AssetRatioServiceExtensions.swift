@@ -108,4 +108,20 @@ extension BraveWalletAssetRatioService {
     let prices = Dictionary(uniqueKeysWithValues: priceResult.assetPrices.map { ($0.fromAsset, $0.price) })
     return prices
   }
+  
+  /// Fetches the BlockchainToken for the given contract addresses. The token for a given contract
+  /// address is not guaranteed to be found, and will not be provided in the result if not found.
+  @MainActor func fetchTokens(
+    for contractAddresses: [String]
+  ) async -> [BraveWallet.BlockchainToken] {
+    await withTaskGroup(of: [BraveWallet.BlockchainToken?].self) { @MainActor group in
+      for contractAddress in contractAddresses {
+        group.addTask { @MainActor in
+          let token = await self.tokenInfo(contractAddress)
+          return [token]
+        }
+      }
+      return await group.reduce([BraveWallet.BlockchainToken?](), { $0 + $1 })
+    }.compactMap { $0 }
+  }
 }
