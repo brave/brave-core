@@ -1,11 +1,11 @@
 diff --git a/net/http/transport_security_state.cc b/net/http/transport_security_state.cc
-index e04f41c18f12ea9c9b95bdbb8dd149e142728718..f099e718a640b9fa2b7f18de2e65ebe4aa1edf4d 100644
+index 059cce8d44b076a926dc95932db4875727133657..16f4f02bb911c4697ee3d9c0fc24f6a4becac145 100644
 --- a/net/http/transport_security_state.cc
 +++ b/net/http/transport_security_state.cc
-@@ -410,6 +410,7 @@ TransportSecurityState::TransportSecurityState(
+@@ -382,6 +382,7 @@ TransportSecurityState::TransportSecurityState(
+ // others don't end up with pins that cannot be easily updated.
  #if !BUILDFLAG(GOOGLE_CHROME_BRANDING) || BUILDFLAG(IS_IOS)
    enable_static_pins_ = false;
-   enable_static_expect_ct_ = false;
 +  BRAVE_ENABLE_STATIC_PINS
  #endif
    // Check that there no invalid entries in the static HSTS bypass list.

@@ -1,11 +1,11 @@
 diff --git a/components/download/public/background_service/clients.h b/components/download/public/background_service/clients.h
-index 9943c8c5c2b230a427b13a9b32eeffeb42dae4bf..31a65ea21f9d4a15caf0ecfcd4b68e77005be39a 100644
+index d2547050c34bba5a336253860ac8a0d7e19b255f..baf131b6da0ef355543b7de50a931b494e6aae0e 100644
 --- a/components/download/public/background_service/clients.h
 +++ b/components/download/public/background_service/clients.h
-@@ -46,6 +46,7 @@ enum class DownloadClient {
+@@ -48,6 +48,7 @@ enum class DownloadClient {
  
    // New clients should be added above here.
-   BOUNDARY = 7,
+   BOUNDARY = 8,
 +  BRAVE_DOWNLOAD_CLIENT
  };
  
