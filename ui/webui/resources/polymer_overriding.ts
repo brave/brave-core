@@ -344,7 +344,9 @@ export function define (name, component, options?) {
       acc + v + strings[idx + 1], strings[0])
   // Utilize polymer's tagged template element creation for no other reason than we are allowed
   // to call innerHTML there.
-  return polymerHtml([htmlRaw]).content.cloneNode(true)
+  const htmlStrings = [htmlRaw]
+  htmlStrings.raw = htmlStrings
+  return polymerHtml(htmlStrings).content.cloneNode(true)
 }
 
 // Overrides for all pages

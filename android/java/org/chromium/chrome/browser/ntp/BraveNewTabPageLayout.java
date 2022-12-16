@@ -97,9 +97,11 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.query_tiles.BraveQueryTileSection;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
+import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesGridLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
@@ -1058,6 +1060,22 @@ public class BraveNewTabPageLayout
         super.initialize(manager, activity, tileGroupDelegate, searchProviderHasLogo,
                 searchProviderIsGoogle, scrollDelegate, touchEnabledDelegate, uiConfig,
                 lifecycleDispatcher, uma, isIncognito, windowAndroid);
+
+        assert mMvTilesContainerLayout != null : "Something has changed in the upstream!";
+
+        if (mMvTilesContainerLayout != null && !isScrollableMvtEnabled()) {
+            ViewGroup tilesLayout = mMvTilesContainerLayout.findViewById(R.id.mv_tiles_layout);
+
+            assert tilesLayout
+                    instanceof MostVisitedTilesGridLayout
+                : "Something has changed in the upstream!";
+
+            if (tilesLayout instanceof MostVisitedTilesGridLayout) {
+                ((MostVisitedTilesGridLayout) tilesLayout)
+                        .setMaxRows(
+                                BraveQueryTileSection.getMaxRowsForMostVisitedTiles(getContext()));
+            }
+        }
 
         assert (activity instanceof BraveActivity);
         mActivity = activity;

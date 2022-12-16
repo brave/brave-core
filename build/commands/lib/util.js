@@ -1,3 +1,8 @@
+// Copyright (c) 2016 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 const path = require('path')
 const { spawn, spawnSync } = require('child_process')
 const config = require('./config')
@@ -245,9 +250,9 @@ const util = {
     fileMap.add([path.join(braveBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg'), path.join(chromeBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'settings', 'images'), path.join(chromeBrowserResourcesDir, 'settings', 'images')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'signin', 'profile_picker', 'images'), path.join(chromeBrowserResourcesDir, 'signin', 'profile_picker', 'images')])
-    // Copy to make our ${branding_path_component}_behaviors.cc
+    // Copy to make our ${branding_path_product}_behaviors.cc
     fileMap.add([path.join(config.braveCoreDir, 'chromium_src', 'chrome', 'installer', 'setup', 'brave_behaviors.cc'),
-                 path.join(config.srcDir, 'chrome', 'installer', 'setup', 'brave_behaviors.cc')])
+                 path.join(config.srcDir, 'chrome', 'installer', 'setup', config.getBrandingPathProduct() + '_behaviors.cc')])
     // Replace webui CSS to use our fonts.
     fileMap.add([path.join(config.braveCoreDir, 'ui', 'webui', 'resources', 'css', 'text_defaults_md.css'),
                  path.join(config.srcDir, 'ui', 'webui', 'resources', 'css', 'text_defaults_md.css')])

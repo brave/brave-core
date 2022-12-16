@@ -64,7 +64,7 @@ source_set("app") {
     "//ios/chrome/app:tests_fake_hook",
     "//ios/chrome/app/startup:startup",
     "//ios/chrome/app/startup:startup_basic",
-    "//ios/chrome/browser",
+    "//ios/chrome/browser/application_context:application_context",
     "//ios/chrome/browser/bookmarks",
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/flags:system_flags",

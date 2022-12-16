@@ -32,11 +32,10 @@
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "services/preferences/public/cpp/dictionary_value_update.h"
-#include "services/preferences/public/cpp/scoped_pref_update.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content_settings {
@@ -296,31 +295,21 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIdsForOneType(
   CHECK(prefs_->HasPrefPath(preference_path))
       << "Attempted to migrate unsupported shields setting.";
 
-  prefs::ScopedDictionaryPrefUpdate update(prefs_, preference_path);
-  std::unique_ptr<prefs::DictionaryValueUpdate> shield_settings = update.Get();
+  ScopedDictPrefUpdate update(prefs_, preference_path);
 
-  std::unique_ptr<prefs::DictionaryValueUpdate> shield_settings_dictionary;
-  bool found = shield_settings->GetDictionaryWithoutPathExpansion(
-      patterns_string, &shield_settings_dictionary);
+  base::Value::Dict* shield_settings = update->EnsureDict(patterns_string);
+  DCHECK(shield_settings);
 
-  if (!found) {
-    shield_settings_dictionary =
-        shield_settings->SetDictionaryWithoutPathExpansion(
-            patterns_string, std::make_unique<base::DictionaryValue>());
-  }
-  DCHECK(shield_settings_dictionary);
-
-  shield_settings_dictionary->SetKey(
+  shield_settings->Set(
       kExpirationPath,
-      base::Value(base::NumberToString(
-          expiration.ToDeltaSinceWindowsEpoch().InMicroseconds())));
-  shield_settings_dictionary->SetKey(
+      base::NumberToString(
+          expiration.ToDeltaSinceWindowsEpoch().InMicroseconds()));
+  shield_settings->Set(
       kLastModifiedPath,
-      base::Value(base::NumberToString(
-          last_modified.ToDeltaSinceWindowsEpoch().InMicroseconds())));
-  shield_settings_dictionary->SetKey(
-      kSessionModelPath, base::Value(static_cast<int>(session_model)));
-  shield_settings_dictionary->SetKey(kSettingPath, base::Value(setting));
+      base::NumberToString(
+          last_modified.ToDeltaSinceWindowsEpoch().InMicroseconds()));
+  shield_settings->Set(kSessionModelPath, static_cast<int>(session_model));
+  shield_settings->Set(kSettingPath, setting);
 }
 
 void BravePrefProvider::MigrateShieldsSettingsV1ToV2() {

@@ -645,3 +645,32 @@
     public <init>(...);
     *** updateVisibility(...);
 }
+
+
+-keep class org.chromium.chrome.browser.paint_preview.StartupPaintPreviewHelper {
+    *** isEnabled(...);
+}
+
+-keep class org.chromium.chrome.browser.document.ChromeLauncherActivity {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.document.BraveLauncherActivity {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.permissions.PermissionDialogDelegate {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.permissions.BravePermissionDialogDelegate {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tracing.settings.DeveloperSettings {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.settings.BravePreferenceFragment {
+    public <init>(...);
+}

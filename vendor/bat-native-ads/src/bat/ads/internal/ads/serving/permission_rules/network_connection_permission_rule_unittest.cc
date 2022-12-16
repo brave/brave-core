@@ -47,7 +47,7 @@ TEST_F(BatAdsNetworkConnectionPermissionRuleTest,
   // Arrange
   base::FieldTrialParams kParameters;
   kParameters["should_only_serve_ads_with_valid_internet_connection"] = "false";
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(permission_rules::features::kFeature,
                                 kParameters);
 

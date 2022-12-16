@@ -126,7 +126,7 @@ are declared in tools/grit/grit_rule.gni.
        <if expr="not is_android">
         </if>
 
-      <if expr="enable_basic_printing">
+      <if expr="enable_printing">
         </if>
 
       <if expr="enable_vr">
@@ -1065,6 +1065,14 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="chromeos_ash">
         </if>
       </if>
+
+    <if expr="not is_android and not is_chromeos">
+      <message name="IDS_IDLE_TIMEOUT_INCOGNITO" desc="The text in the Idle Timeout dialog when there are Private windows open. This warns the user that Private windows will close automatically, and their content will be lost.">
+        {COUNT, plural,
+          =1 {Your Private window won't reopen.}
+          other {Your # Private windows won't reopen.}}
+      </message>
+    </if>
 
     <if expr="toolkit_views">
       <if expr="is_macosx">

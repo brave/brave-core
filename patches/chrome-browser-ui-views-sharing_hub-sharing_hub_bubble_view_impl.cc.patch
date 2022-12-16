@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/sharing_hub/sharing_hub_bubble_view_impl.cc b/chrome/browser/ui/views/sharing_hub/sharing_hub_bubble_view_impl.cc
-index dedba93f8c1e63643e28d8a22cb7d9b77348f57d..544cceb49dbf914915f63b50e885d9c1e3e1a9e8 100644
+index f0d7f4cd57f9fd51e7b84e47817539dd1ca51fef..d4f50c1d32b1f9eb7437c10ee1a8f6fec877e226 100644
 --- a/chrome/browser/ui/views/sharing_hub/sharing_hub_bubble_view_impl.cc
 +++ b/chrome/browser/ui/views/sharing_hub/sharing_hub_bubble_view_impl.cc
-@@ -163,6 +163,7 @@ void SharingHubBubbleViewImpl::PopulateScrollView(
+@@ -165,6 +165,7 @@ void SharingHubBubbleViewImpl::PopulateScrollView(
      view->SetGroup(kActionButtonGroup);
    }
  

@@ -1,12 +1,12 @@
 diff --git a/services/network/public/cpp/cors/cors.cc b/services/network/public/cpp/cors/cors.cc
-index 3991f7823b2d94bc304e248dceaa0bbb26d4ea3d..c332dc9cd7c53b03383fca098eff978902f21523 100644
+index 4932adaf98606fbedb402b0cb5e6e751a2d26096..bd6aae0dfa7d5474fad3c2c9bc9b2b6ca1c30268 100644
 --- a/services/network/public/cpp/cors/cors.cc
 +++ b/services/network/public/cpp/cors/cors.cc
-@@ -345,6 +345,7 @@ bool IsCorsSafelistedHeader(const std::string& name, const std::string& value) {
-       // was introduced to enable safely experimenting with sending a reduced
-       // user agent string in the `User-Agent` header.
-       "sec-ch-ua-reduced",
+@@ -332,6 +332,7 @@ bool IsCorsSafelistedHeader(const std::string& name, const std::string& value) {
+       "sec-ch-ua-mobile",
+       "sec-ch-ua-full-version",
+       "sec-ch-ua-platform-version",
 +      "x-brave-partner", // Prevent Allow-Cross-Origin-Request-Header failures
- 
        // The `Sec-CH-Prefers-Color-Scheme` header field is modeled after the
        // prefers-color-scheme user preference media feature. It reflects the
+       // user’s desire that the page use a light or dark color theme. This is

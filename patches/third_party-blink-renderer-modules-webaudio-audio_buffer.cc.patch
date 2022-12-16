@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
-index 495348c9667011299f37583459c8ecf6df312713..5f0cfe7e79a9fc201ffdc442d1ffd6e443dfa096 100644
+index 1d323417ea4c7c04b07f12922208f03f84d0b946..4393324122ff96d7ca0fac6b3e02d36b2b7c50cd 100644
 --- a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
 +++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
 @@ -197,6 +197,7 @@ AudioBuffer::AudioBuffer(AudioBus* bus)
@@ -37,7 +37,7 @@ index 495348c9667011299f37583459c8ecf6df312713..5f0cfe7e79a9fc201ffdc442d1ffd6e4
                                    int32_t channel_number,
                                    size_t buffer_offset,
                                    ExceptionState& exception_state) {
-@@ -264,6 +268,7 @@ void AudioBuffer::copyFromChannel(NotShared<DOMFloat32Array> destination,
+@@ -266,6 +270,7 @@ void AudioBuffer::copyFromChannel(NotShared<DOMFloat32Array> destination,
    DCHECK_LE(buffer_offset + count, data_length);
  
    memmove(dst, src + buffer_offset, count * sizeof(*src));

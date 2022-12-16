@@ -16,7 +16,6 @@
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
-#include "base/stl_util.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/sys_byteorder.h"
@@ -318,7 +317,7 @@ absl::optional<SolanaAddress> GetDomainKey(const std::string& domain,
   // Subdomains get one-bytes prefix depending on requested record type.
   // https://bonfida.github.io/solana-name-service-guide/domain-name/records.html#difference-between-records-and-subdomains
   std::string prefix = "";
-  if (base::STLCount(domain, '.') > 1)
+  if (base::ranges::count(domain, '.') > 1)
     prefix = (record ? '\x01' : '\x00');
 
   return GetNameAccountKey(GetHashedName(prefix + name),

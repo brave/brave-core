@@ -19,14 +19,16 @@
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 
-#define GetDefaultWebClientSetPermission GetDefaultWebClientSetPermission_Unused
+#define GetPlatformSpecificDefaultWebClientSetPermission \
+  GetPlatformSpecificDefaultWebClientSetPermission_Unused
 #include "src/chrome/browser/shell_integration_mac.mm"
-#undef GetDefaultWebClientSetPermission
+#undef GetPlatformSpecificDefaultWebClientSetPermission
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 
 namespace shell_integration {
 
-DefaultWebClientSetPermission GetDefaultWebClientSetPermission() {
+DefaultWebClientSetPermission
+GetPlatformSpecificDefaultWebClientSetPermission() {
   return SET_DEFAULT_UNATTENDED;
 }
 

@@ -14,8 +14,7 @@
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/skus_url_loader_impl.h"
 #include "components/prefs/pref_service.h"
-#include "services/preferences/public/cpp/dictionary_value_update.h"
-#include "services/preferences/public/cpp/scoped_pref_update.h"
+#include "components/prefs/scoped_user_pref_update.h"
 
 namespace {
 
@@ -141,19 +140,15 @@ std::string SkusContextImpl::GetValueFromStore(std::string key) const {
 
 void SkusContextImpl::PurgeStore() const {
   VLOG(1) << "shim_purge";
-  ::prefs::ScopedDictionaryPrefUpdate update(prefs_, prefs::kSkusState);
-  std::unique_ptr<::prefs::DictionaryValueUpdate> state = update.Get();
-  DCHECK(state);
-  state->Clear();
+  ScopedDictPrefUpdate state(prefs_, prefs::kSkusState);
+  state->clear();
 }
 
 void SkusContextImpl::UpdateStoreValue(std::string key,
                                        std::string value) const {
   VLOG(1) << "shim_set: `" << key << "` = `" << value << "`";
-  ::prefs::ScopedDictionaryPrefUpdate update(prefs_, prefs::kSkusState);
-  std::unique_ptr<::prefs::DictionaryValueUpdate> state = update.Get();
-  DCHECK(state);
-  state->SetString(key, value);
+  ScopedDictPrefUpdate state(prefs_, prefs::kSkusState);
+  state->Set(key, value);
 }
 
 }  // namespace skus

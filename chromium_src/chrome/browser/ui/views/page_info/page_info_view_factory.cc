@@ -14,14 +14,14 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/ui/page_info/chrome_page_info_ui_delegate.h"
-#include "chrome/browser/ui/views/page_info/page_info_hover_button.h"
+#include "chrome/browser/ui/views/controls/rich_hover_button.h"
 #include "components/grit/brave_components_strings.h"
 
 namespace {
 
 const char kIPFSDocsURL[] = "https://docs.ipfs.io/";
 
-std::unique_ptr<PageInfoHoverButton> CreateButton(
+std::unique_ptr<RichHoverButton> CreateButton(
     int logo_resource_id,
     int text_resource_id,
     int tooltip_resource_id,
@@ -31,7 +31,7 @@ std::unique_ptr<PageInfoHoverButton> CreateButton(
   const std::u16string& tooltip =
       brave_l10n::GetLocalizedResourceUTF16String(tooltip_resource_id);
 
-  return std::make_unique<PageInfoHoverButton>(
+  return std::make_unique<RichHoverButton>(
       std::move(callback), ui::ImageModel::FromImageSkia(ipfs_logo),
       text_resource_id, std::u16string(),
       PageInfoViewFactory::VIEW_ID_PAGE_INFO_LINK_OR_BUTTON_COOKIE_DIALOG,

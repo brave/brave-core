@@ -12,7 +12,6 @@ namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kLensStandalone, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kLensUnifiedSidePanelFooter, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace features

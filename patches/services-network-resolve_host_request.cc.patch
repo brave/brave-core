@@ -1,8 +1,8 @@
 diff --git a/services/network/resolve_host_request.cc b/services/network/resolve_host_request.cc
-index 02294aa3ca450661b798315034e122ff74e248ad..149631b0f8a920b140a2db9f6aaf8a2cd4f1cc53 100644
+index 64f3e88eb86a501853cd728d89f524c08f9479a6..166a0d14fee3efb28504d629e449f01a05e5ab25 100644
 --- a/services/network/resolve_host_request.cc
 +++ b/services/network/resolve_host_request.cc
-@@ -70,6 +70,7 @@ int ResolveHostRequest::Start(
+@@ -71,6 +71,7 @@ int ResolveHostRequest::Start(
    mojo::Remote<mojom::ResolveHostClient> response_client(
        std::move(pending_response_client));
    if (rv != net::ERR_IO_PENDING) {

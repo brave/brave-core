@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
-index f9d8f8e2d785cb728d1a48db72e226eb0b2099c9..dc9d5137ef11bce8ea1b67e015f4805071438684 100644
+index 7c6266a03ef194fa5c605c41c92f1eaa120dab58..3829a0796c718eec165dc3589f03c33a9fb2aa79 100644
 --- a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
-@@ -5213,6 +5213,7 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
+@@ -5237,6 +5237,7 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
                                                       GLenum pname) {
    if (isContextLost())
      return ScriptValue::CreateNull(script_state->GetIsolate());
@@ -10,7 +10,7 @@ index f9d8f8e2d785cb728d1a48db72e226eb0b2099c9..dc9d5137ef11bce8ea1b67e015f48050
    switch (pname) {
      case GL_SHADING_LANGUAGE_VERSION: {
        return WebGLAny(
-@@ -5756,6 +5757,7 @@ ScriptValue WebGL2RenderingContextBase::getFramebufferAttachmentParameter(
+@@ -5780,6 +5781,7 @@ ScriptValue WebGL2RenderingContextBase::getFramebufferAttachmentParameter(
    if (isContextLost() || !ValidateGetFramebufferAttachmentParameterFunc(
                               kFunctionName, target, attachment))
      return ScriptValue::CreateNull(script_state->GetIsolate());
@@ -18,7 +18,7 @@ index f9d8f8e2d785cb728d1a48db72e226eb0b2099c9..dc9d5137ef11bce8ea1b67e015f48050
  
    WebGLFramebuffer* framebuffer_binding = GetFramebufferBinding(target);
    DCHECK(!framebuffer_binding || framebuffer_binding->Object());
-@@ -5974,6 +5976,7 @@ ScriptValue WebGL2RenderingContextBase::getTexParameter(
+@@ -5998,6 +6000,7 @@ ScriptValue WebGL2RenderingContextBase::getTexParameter(
      GLenum pname) {
    if (isContextLost() || !ValidateTextureBinding("getTexParameter", target))
      return ScriptValue::CreateNull(script_state->GetIsolate());
