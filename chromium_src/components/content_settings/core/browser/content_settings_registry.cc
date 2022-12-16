@@ -163,9 +163,9 @@ void ContentSettingsRegistry::BraveInit() {
   // See https://github.com/brave/brave-core/pull/15330#discussion_r1049643580
   Register(ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, "brave_google_sign_in",
            CONTENT_SETTING_ASK, WebsiteSettingsInfo::UNSYNCABLE,
-           AllowlistedSchemes(),
-           ValidSettings(CONTENT_SETTING_ASK, CONTENT_SETTING_ALLOW,
-                         CONTENT_SETTING_BLOCK),
+           /*allowlisted_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
