@@ -592,6 +592,9 @@ class RewardsServiceImpl : public RewardsService,
 
   bool IsValidWalletType(const std::string& wallet_type) const;
 
+  static void OnGetRewardsParameters(GetRewardsParametersCallback,
+                                     ledger::mojom::RewardsParametersPtr);
+
 #if BUILDFLAG(IS_ANDROID)
   ledger::mojom::Environment GetServerEnvironmentForAndroid();
   safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;

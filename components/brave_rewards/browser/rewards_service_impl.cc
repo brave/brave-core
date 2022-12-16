@@ -1222,7 +1222,20 @@ void RewardsServiceImpl::GetRewardsParameters(
     return DeferCallback(FROM_HERE, std::move(callback), nullptr);
   }
 
-  bat_ledger_->GetRewardsParameters(std::move(callback));
+  bat_ledger_->GetRewardsParameters(
+      base::BindOnce(&OnGetRewardsParameters, std::move(callback)));
+}
+
+void RewardsServiceImpl::OnGetRewardsParameters(
+    GetRewardsParametersCallback callback,
+    ledger::mojom::RewardsParametersPtr parameters) {
+  if (parameters &&
+      base::FeatureList::IsEnabled(
+          brave_rewards::features::kAllowUnsupportedWalletProvidersFeature)) {
+    parameters->wallet_provider_regions.clear();
+  }
+
+  std::move(callback).Run(std::move(parameters));
 }
 
 void RewardsServiceImpl::FetchPromotions(FetchPromotionsCallback callback) {
