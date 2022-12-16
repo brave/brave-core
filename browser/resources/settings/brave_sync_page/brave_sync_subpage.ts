@@ -16,7 +16,7 @@ import '../people_page/sync_controls.js';
 import './brave_sync_configure.js';
 import './brave_sync_setup.js';
 
-import { assert } from 'chrome://resources/js/assert.js';
+import { assert } from 'chrome://resources/js/assert_ts.js';
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js';
 

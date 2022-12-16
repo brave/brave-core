@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { assert } from 'chrome://resources/js/assert.js'
+import { assert } from 'chrome://resources/js/assert_ts.js'
 import { BraveWallet } from '../../../constants/types'
 import { LedgerSolanaKeyring } from '../interfaces'
 import {
@@ -131,7 +131,7 @@ export default class SolanaLedgerBridgeKeyring extends LedgerBridgeKeyring imple
     if (scheme === SolDerivationPaths.LedgerLive) {
       return `44'/501'/${index}'`
     }
-    assert(scheme === SolDerivationPaths.Default)
+    assert(scheme === SolDerivationPaths.Default, '')
 
     return `44'/501'/${index}'/0'`
   }
