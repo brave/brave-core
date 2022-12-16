@@ -1154,6 +1154,9 @@ Private state tokens improve privacy on the web and can’t be used to find out 
       <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_LEARN_MORE_LINK" translateable="false" desc="Privacy Sandbox dialog consent EEA: Non-interactable link out 'Learn more with Brave's etc ect'">
         Esed purus vestibulum velit convalli
       </message>
+      <message name="IDS_PRIVACY_SANDBOX_M1_DIALOG_MORE_BUTTON" translateable="false" desc="Privacy Sandbox dialog more button: Clicking on it makes the dialog scrolling to the bottom to show all the content.">
+        More
+      </message>
 
       <!-- Privacy Sandbox v4 - Notice EEA. -->
       <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_TITLE" translateable="false" desc="Privacy Sandbox dialog notice EEA: title.">
@@ -1268,17 +1271,26 @@ Private state tokens improve privacy on the web and can’t be used to find out 
       <message name="IDS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_SUB_LABEL_ENABLED" translateable="false" desc="Description for topics preference when enabled.">
         Enabled Nulla eros tortor, placerat blandit dictum a, interdum id metus
       </message>
+      <message name="IDS_AD_PRIVACY_PAGE_TOPICS_LINK_ROW_SUB_LABEL_DISABLED" translateable="false" desc="Description for topics preference when enabled.">
+        Disabled Nulla eros tortor, placerat blandit dictum a, interdum id metus
+      </message>
       <message name="IDS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_LABEL" translateable="false" desc="Title for the fledge preference.">
         Aenean erat leo
       </message>
       <message name="IDS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_SUB_LABEL_ENABLED" translateable="false" desc="Description for the fledge preference when enabled.">
         Enabled Duis scelerisque a mi eget ultricies
       </message>
+      <message name="IDS_AD_PRIVACY_PAGE_FLEDGE_LINK_ROW_SUB_LABEL_DISABLED" translateable="false" desc="Description for the fledge preference when enabled.">
+        Disabled Duis scelerisque a mi eget ultricies
+      </message>
       <message name="IDS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_LABEL" translateable="false" desc="Title for the ad measurement preference.">
         Vestibulum augue erat
       </message>
       <message name="IDS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_SUB_LABEL_ENABLED" translateable="false" desc="Description for the ad measurement preference when enabled.">
         Enabled Vivamus id lacus et lacus porttitor vulputate. Sed semper egestas orci vel maximus.
+      </message>
+      <message name="IDS_AD_PRIVACY_PAGE_AD_MEASUREMENT_LINK_ROW_SUB_LABEL_DISABLED" translateable="false" desc="Description for the ad measurement preference when enabled.">
+        Disabled Vivamus id lacus et lacus porttitor vulputate. Sed semper egestas orci vel maximus.
       </message>
 
       <!-- Privacy Sandbox v4 - Topics Page -->
@@ -1969,13 +1981,13 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
 
         <!-- Mixed content download -->
-        <message name="IDS_MIXED_CONTENT_DOWNLOAD_DIALOG_TITLE" desc="Title of the dialog for asking user to confirm a mixed content download">
+        <message name="IDS_INSECURE_DOWNLOAD_DIALOG_TITLE" desc="Title of the dialog for asking user to confirm an insecure download">
           File can’t be downloaded securely
         </message>
-        <message name="IDS_MIXED_CONTENT_DOWNLOAD_DIALOG_CONFIRM_TEXT" desc="Text label for the confirm button on the mixed content download dialog for user to confirm the download.">
+        <message name="IDS_INSECURE_DOWNLOAD_DIALOG_CONFIRM_TEXT" desc="Text label for the confirm button on the insecure download dialog for user to confirm the download.">
           Keep
         </message>
-        <message name="IDS_MIXED_CONTENT_DOWNLOAD_DIALOG_DISCARD_TEXT" desc="Text label for the cancel button on the mixed content download dialog for user to confirm the download.">
+        <message name="IDS_INSECURE_DOWNLOAD_DIALOG_DISCARD_TEXT" desc="Text label for the cancel button on the insecure download dialog for user to confirm the download.">
           Discard
         </message>
 
@@ -2105,6 +2117,7 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_ACCOUNT_MANAGEMENT_NO_PARENTAL_DATA" desc="String saying that we are waiting for family information.">
         Waiting for details of parents.
       </message>
+
       <message name="IDS_ACCOUNT_MANAGEMENT_ONE_PARENT_NAME" desc="String for name of single parent for child account.">
         This browser is managed by <ph name="PARENT_NAME">%1$s<ex>parent1@gmail.com</ex></ph>.
       </message>
@@ -2122,6 +2135,15 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_ACCOUNT_MANAGEMENT_CHILD_CONTENT_ALL" desc="Setting that permits child accounts to visit any websites.">
         Allow all sites
+      </message>
+      <message name="IDS_ACCOUNT_MANAGEMENT_HEADER_NO_PARENTAL_DATA" desc="String saying that child should go to parent for help for child account.">
+        If you need help, ask your parent
+        </message>
+      <message name="IDS_ACCOUNT_MANAGEMENT_HEADER_ONE_PARENT_NAME" desc="String saying that child should go to parent for help with email of single parent for child account.">
+        If you need help, ask your parent (<ph name="PARENT_NAME">%1$s<ex>parent1@gmail.com</ex></ph>)
+      </message>
+      <message name="IDS_ACCOUNT_MANAGEMENT_HEADER_TWO_PARENT_NAMES" desc="String saying that child should go to parent for help with email of two parents for child account.">
+        If you need help, ask your parent (<ph name="PARENT_NAME_1">%1$s<ex>parent1@gmail.com</ex></ph> or <ph name="PARENT_NAME_2">%2$s<ex>parent2@gmail.com</ex></ph>)
       </message>
 
       <!-- Parent approval widget. -->
@@ -4460,8 +4482,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_WEB_FEED_FOLLOW_SUCCESS_SNACKBAR_ACTION_GO_TO_FOLLOWING" desc="The snackbar action after a successful Web Feed follow request, that will take the user to the Following feed.">
         Go to Following
       </message>
-      <message name="IDS_WEB_FEED_FOLLOW_SUCCESS_SNACKBAR_ACTION_REFRESH" desc="The snackbar action after a successful Web Feed follow request, that will refresh the Following feed contents.">
-        Refresh to view
+      <message name="IDS_WEB_FEED_FOLLOW_SUCCESS_SNACKBAR_ACTION_REFRESH" desc="The snackbar action after a successful Web Feed follow request, that will refresh the Following feed contents. [CHAR_LIMIT=20]">
+        Refresh
       </message>
       <message name="IDS_WEB_FEED_FOLLOW_GENERIC_FAILURE_SNACKBAR_MESSAGE" desc="The generic snackbar message after an unsuccessful Web Feed follow request.">
         Can’t follow. Something went wrong.
@@ -5121,10 +5143,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <!-- Tab Group Tab Switcher strings -->
       <message name="IDS_TAB_MANAGEMENT_MODULE_TITLE" desc="Text shown when the Tab Management module is referenced in install start, success, failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Tab management for Brave…').">
         Tab management
-      </message>
-
-      <message name="IDS_AUTOFILL_ASSISTANT_MODULE_TITLE" desc="Text shown when the Foo module is referenced in install start, success,         failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to         'Installing Assistant for Brave…').">
-  Brave Assistant in Brave
       </message>
 
       <message name="IDS_DEV_UI_MODULE_TITLE" desc="Text shown when the Developer UI module is referenced in install start, success, failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Developer UI for Brave…').">

@@ -788,12 +788,6 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT1" desc="The name of the Lens Region Search command in the content area context menu">
             Search page with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
           </message>
-          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT2" desc="The name of the Lens Region Search command in the content area context menu">
-            Search any part of the page with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
-          </message>
-          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT3" desc="The name of the Lens Region Search command in the content area context menu">
-            Search inside image with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
-          </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH" desc="The name of the Lens Region Search command in the content area context menu">
             Search images with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
           </message>
@@ -1056,12 +1050,6 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT1" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
             Search Page with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave</ex></ph>
-          </message>
-          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT2" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
-            Search Any Part of the Page with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
-          </message>
-          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT3" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
-              Search inside Image with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
             Search Images with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
@@ -1855,7 +1843,7 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_PROMPT_DEEP_SCANNING_APP_DOWNLOAD" desc="Message shown in the download shelf when a download is being scanned for an Advanced Protection user">
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> is being scanned.
       </message>
-      <message name="IDS_PROMPT_CONFIRM_MIXED_CONTENT_DOWNLOAD" desc="Message shown to the user to validate the download when the download content is a mixed-content download.">
+      <message name="IDS_PROMPT_CONFIRM_INSECURE_DOWNLOAD" desc="Message shown to the user to validate the download when the download content is an insecure download.">
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> can't be downloaded securely
       </message>
       <message name="IDS_PROMPT_DOWNLOAD_BLOCKED_TOO_LARGE" desc="Message shown in the download shelf when a download is blocked for being too large">
@@ -1876,10 +1864,10 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_PROMPT_DOWNLOAD_DEEP_SCANNED_OPENED_DANGEROUS" desc="Message shown in the download shelf when a download is finished being scanned, and issues were found">
         This file is dangerous
       </message>
-      <message name="IDS_PROMPT_DOWNLOAD_MIXED_CONTENT_WARNING" desc="Message shown in the download shelf when a download is mixed content, and Brave needs to show a warning.">
+      <message name="IDS_PROMPT_DOWNLOAD_INSECURE_WARNING" desc="Message shown in the download shelf when a download is insecure, and Brave needs to show a warning.">
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> can't be downloaded securely
       </message>
-      <message name="IDS_PROMPT_DOWNLOAD_MIXED_CONTENT_BLOCKED" desc="Message shown in the download shelf when a download is mixed content, and Brave has blocked it.">
+      <message name="IDS_PROMPT_DOWNLOAD_INSECURE_BLOCKED" desc="Message shown in the download shelf when a download is insecure, and Brave has blocked it.">
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> can't be downloaded securely
       </message>
       <message name="IDS_PROMPT_APP_DEEP_SCANNING" desc="Message shown in the download shelf when Brave recommends uploading the file for additional scanning">
@@ -1897,7 +1885,7 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_BLOCK_REASON_GENERIC_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it may be dangerous.">
         This type of file may harm your computer.
       </message>
-      <message name="IDS_BLOCK_REASON_MIXED_CONTENT" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is mixed-content.">
+      <message name="IDS_BLOCK_REASON_INSECURE_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it was insecurely delivered.">
         This file can't be downloaded securely
       </message>
       <message name="IDS_BLOCK_REASON_DEEP_SCANNING" desc="Message shown on chrome://downloads when a download is being scanned">
@@ -1926,7 +1914,7 @@ are declared in tools/grit/grit_rule.gni.
       </message>
 
       <if expr="is_chromeos">
-        <message name="IDS_PROMPT_BLOCKED_MIXED_DOWNLOAD_TITLE" desc="In the download notification, a title of the message shown on a download blocked for being insecure.">
+        <message name="IDS_PROMPT_BLOCKED_INSECURE_DOWNLOAD_TITLE" desc="In the download notification, a title of the message shown on a download blocked for being insecure.">
           Insecure download blocked
         </message>
       </if>
@@ -2136,17 +2124,17 @@ are declared in tools/grit/grit_rule.gni.
           </message>
         </else>
       </if>
-      <message name="IDS_DEEP_SCANNING_ACCESSIBLE_ALERT" desc="The title of a download notification inidcating that the file may be malicious, and the Advanced Protection Program recommends sending the file to Brave. This message is for screen reader users">
+      <message name="IDS_DEEP_SCANNING_ACCESSIBLE_ALERT" desc="The title of a download notification indicating that the file may be malicious, and the Advanced Protection Program recommends sending the file to Brave. This message is for screen reader users">
         <ph name="FILE_NAME">$1<ex>file.exe</ex></ph> is being scanned.
       </message>
       <if expr="is_macosx">
         <then>
-          <message name="IDS_PROMPT_DOWNLOAD_MIXED_CONTENT_BLOCKED_ACCESSIBLE_ALERT" desc="The title of a download notification inidcating that the download was delivered insecurely. This message is for screen reader users">
+          <message name="IDS_PROMPT_DOWNLOAD_INSECURE_BLOCKED_ACCESSIBLE_ALERT" desc="The title of a download notification indicating that the download was delivered insecurely. This message is for screen reader users">
             <ph name="FILE_NAME">$1<ex>file.exe</ex></ph> can't be downloaded securely.
           </message>
         </then>
         <else>
-          <message name="IDS_PROMPT_DOWNLOAD_MIXED_CONTENT_BLOCKED_ACCESSIBLE_ALERT" desc="The title of a download notification inidcating that the download was delivered insecurely. This message is for screen reader users">
+          <message name="IDS_PROMPT_DOWNLOAD_INSECURE_BLOCKED_ACCESSIBLE_ALERT" desc="The title of a download notification indicating that the download was delivered insecurely. This message is for screen reader users">
             <ph name="FILE_NAME">$1<ex>file.exe</ex></ph> can't be downloaded securely. Press Shift+F6 to cycle to the downloads bar area.
           </message>
         </else>
@@ -2206,7 +2194,7 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_INTERRUPTED" desc="Download context menu: Show information about interrupted downloads">
             &amp;More information
           </message>
-          <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_MIXED_CONTENT" desc="Download context menu: Show information about mixed content downloads">
+          <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_INSECURE" desc="Download context menu: Show information about insecure downloads">
             &amp;Learn more
           </message>
         </if>
@@ -2257,7 +2245,7 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_INTERRUPTED" desc="In Title Case: Download context menu: Show information about interrupted downloads">
             &amp;More Information
           </message>
-          <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_MIXED_CONTENT" desc="In Title Case: Download context menu: Show information about mixed content downloads">
+          <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_INSECURE" desc="In Title Case: Download context menu: Show information about insecure downloads">
             &amp;Learn More
           </message>
         </if>  <!-- not use_titlecase -->
@@ -2380,6 +2368,9 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_DELETE" desc="Label for the Delete button on the blocked download bubble subpage.">
         Delete
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_MAIN_BUTTON_SUBPAGE" desc="Accessibility label for the main button on the download bubble main page. It opens the bubble subpage when activated.">
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> <ph name="STATUS">$2<ex>blocked dangerous</ex></ph> more details
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_RESUME" desc="Label for the button prompting to resume a paused download">
         Resume
@@ -2507,32 +2498,53 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_INCOGNITO_INFORMATION_ROW" desc="For Private/Guest mode, text notifying that downloads are visible to others on the device.">
         Anyone using this device can see downloaded files
       </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_RESUME_QUICK_ACTION" desc="Accessibility/tooltip label for action to resume a download.">
+      <message name="IDS_DOWNLOAD_BUBBLE_RESUME_QUICK_ACTION" desc="Tooltip label for action to resume a download.">
         Resume
       </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_PAUSE_QUICK_ACTION" desc="Accessibility/tooltip label for action to pause a download.">
+      <message name="IDS_DOWNLOAD_BUBBLE_RESUME_QUICK_ACTION_ACCESSIBILITY" desc="Accessibility label for action to resume a download.">
+        Resume <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph>
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_PAUSE_QUICK_ACTION" desc="Tooltip label for action to pause a download.">
         Pause
       </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_CANCEL_QUICK_ACTION" desc="Accessibility/tooltip label for action to cancel a download.">
+      <message name="IDS_DOWNLOAD_BUBBLE_PAUSE_QUICK_ACTION_ACCESSIBILITY" desc="Accessibility label for action to pause a download.">
+        Pause <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph>
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_CANCEL_QUICK_ACTION" desc="Tooltip label for action to cancel a download.">
         Cancel
       </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_OPEN_QUICK_ACTION" desc="Accessibility/tooltip label for action to open a download.">
+      <message name="IDS_DOWNLOAD_BUBBLE_CANCEL_QUICK_ACTION_ACCESSIBILITY" desc="Accessibility label for action to cancel a download.">
+        Cancel <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph>
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_OPEN_QUICK_ACTION" desc="Tooltip label for action to open a download.">
         Open
       </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_OPEN_QUICK_ACTION_ACCESSIBILITY" desc="Accessibility label for action to open a download.">
+        Open <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph>
+      </message>
       <if expr="is_macosx">
-            <message name="IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION" desc="Mac: Accessibility/tooltip label for showing the file in the Finder">
+            <message name="IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION" desc="Mac: Tooltip label for showing the file in the Finder">
               Show in Finder
+            </message>
+            <message name="IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION_ACCESSIBILITY" desc="Mac: Accessibility label for showing the file in the Finder">
+              Show <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> in Finder
             </message>
       </if>
       <if expr="not is_macosx">
         <if expr="not use_titlecase">
-            <message name="IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION" desc="Accessibility/tooltip label for showing the file in file explorer">
+            <message name="IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION" desc="Tooltip label for showing the file in file explorer">
               Show in folder
+            </message>
+            <message name="IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION_ACCESSIBILITY" desc="Accessibility label for showing the file in file explorer">
+              Show <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> in folder
             </message>
           </if>
           <if expr="use_titlecase">
-            <message name="IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION" desc="In Title Case: Accessibility/tooltip label for showing the file in file explorer">
+            <message name="IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION" desc="In Title Case: Tooltip label for showing the file in file explorer">
               Show in Folder
+            </message>
+            <message name="IDS_DOWNLOAD_BUBBLE_SHOW_IN_FOLDER_QUICK_ACTION_ACCESSIBILITY" desc="In Title Case: Accessibility label for showing the file in file explorer">
+              Show <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> in Folder
             </message>
           </if>
       </if>
@@ -3683,6 +3695,22 @@ are declared in tools/grit/grit_rule.gni.
        Switch to captured tab
       </message>
 
+      <!-- Tab casting infobar -->
+      <message name="IDS_TAB_CASTING_INFOBAR_CASTING_CURRENT_TAB_LABEL" desc="Text displayed on an infobar when current tab is being casted.">
+       Casting this tab
+      </message>
+      <message name="IDS_TAB_CASTING_INFOBAR_CASTING_ANOTHER_UNTITLED_TAB_LABEL" desc="Text displayed on an infobar when another (non-current) untitled tab is being casted.">
+       Casting a tab
+      </message>
+      <message name="IDS_TAB_CASTING_INFOBAR_CASTING_ANOTHER_TAB_LABEL" desc="Text displayed on an infobar when another (non-current) tab is being shacastedred.">
+       Casting <ph name="TAB_NAME">$1<ex>youtube.com</ex></ph>
+      </message>
+      <message name="IDS_TAB_CASTING_INFOBAR_CAST_BUTTON" desc="Text displayed on the button to cast current tab.">
+       Cast this tab instead
+      </message>
+      <message name="IDS_TAB_CASTING_INFOBAR_STOP_BUTTON" desc="Text displayed on the button to stop casting a tab.">
+       Stop casting
+      </message>
 
       <!-- Task Manager Window -->
       <if expr="not is_android">
@@ -5237,6 +5265,24 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
       <!-- End Force Installed Deprecated Apps Deletion Dialog strings. -->
+      <!-- Force Installed Preinstalled Deprecated Apps Deletion Dialog strings. -->
+      <message name="IDS_FORCE_INSTALLED_PREINSTALLED_DEPRECATED_APPS_TITLE" desc="Title of the force installed deprecated app dialog, prompting the user to contact their organization's administrator.">
+        Ask your admin to update this app
+      </message>
+      <message name="IDS_FORCE_INSTALLED_PREINSTALLED_DEPRECATED_APPS_CONTENT" desc="Content of the force installed preinstalled deprecated app dialog">
+        Brave Apps are migrating to Progressive Web Apps. This Brave App was installed on your browser by your organization. To open the Progressive Web App from the Apps list, first contact your administrator and ask them to uninstall the Brave App. In the meantime, you can visit <ph name="EXTENSION_LAUNCH_URL">$1<ex>sheets.google.com</ex></ph> to open <ph name="EXTENSION_NAME">$2<ex>Brave Sheets</ex></ph> on the web.
+      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_FORCE_INSTALLED_PREINSTALLED_DEPRECATED_APPS_GO_TO_SITE_BUTTON" desc="Label for the button that opens the website for the app">
+          Go To Site
+        </message>
+      </if>
+        <if expr="not use_titlecase">
+        <message name="IDS_FORCE_INSTALLED_PREINSTALLED_DEPRECATED_APPS_GO_TO_SITE_BUTTON" desc="Label for the button that opens the website for the app">
+          Go to site
+        </message>
+      </if>
+      <!-- End Force Installed Preinstalled Deprecated Apps Deletion Dialog strings. -->
       <!-- Deprecated Apps Deletion Dialog strings. -->
       <message name="IDS_DEPRECATED_APPS_RENDERER_TITLE_PLURAL" desc="The title of the deprecated app dialog">
         <ph name="APPS">$1<ex>2</ex></ph> apps are no longer supported
@@ -8200,6 +8246,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_PICTURE_IN_PICTURE_PREVIOUS_TRACK_CONTROL_ACCESSIBLE_TEXT" desc="Accessible text label used for the controls button in the Picture-in-Picture window. The button invokes previous track action.">
         Previous track
+      </message>
+      <message name="IDS_PICTURE_IN_PICTURE_PREVIOUS_SLIDE_CONTROL_ACCESSIBLE_TEXT" desc="Accessible text label used for the controls button in the Picture-in-Picture window. The button invokes previous slide action.">
+        Previous slide
+      </message>
+      <message name="IDS_PICTURE_IN_PICTURE_NEXT_SLIDE_CONTROL_ACCESSIBLE_TEXT" desc="Accessible text label used for the controls button in the Picture-in-Picture window. The button invokes next slide action.">
+        Next slide
       </message>
 
       <!-- Load State -->
@@ -11179,8 +11231,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_MIC_TURNED_OFF_IN_MACOS" desc="Title for the media status bubble that is used when a site requests microphone access, but microphone is blocked on an OS level in macOS.">
           Microphone is turned off in Mac System Preferences
         </message>
-        <message name="IDS_OPEN_PREFERENCES_LINK" desc="Title for the button that takes the user to the Security and Privacy settings in macOS, in order for the user to be able to modify the ability to access camera and microphone for Brave.">
+        <message name="IDS_OPEN_PREFERENCES_LINK" desc="Title for the button that takes the user to the Security and Privacy settings in macOS, in order for the user to be able to modify the ability to access camera and microphone for Brave. System Preferences was renamed to System Settings in macOS 13 so this string shouldn't be used past macOS 12.">
           Open Preferences
+        </message>
+        <message name="IDS_OPEN_SETTINGS_LINK" desc="Title for the button that takes the user to System Settings in macOS &gt;= 13. The translation for this string should match the translation of the System Settings app title in the macOS target locale. You can find this by selecting the locale from https://support.apple.com/guide/mac-help/mh15217/mac/localeselector. The title of the next page after that includes the desired translation. Note that, for size reasons, the English string omits 'System' and the same contraction may be suitable in other languages.">
+          Open Settings
         </message>
         <message name="IDS_CAMERA" desc="Description text for the camera.">
           Camera
@@ -11949,6 +12004,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DEVICE_LOG_TYPE_CAMERA" desc="Checkbox to enable showing events of type Camera">
         Camera
       </message>
+      <message name="IDS_DEVICE_LOG_TYPE_GEOLOCATION" desc="Checkbox to enable showing events of type Geolocation">
+        Geolocation
+      </message>
       <message name="IDS_DEVICE_LOG_FILEINFO" desc="File info checkbox in device event log">
         File Info
       </message>
@@ -11968,6 +12026,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_WEBUSB_DEVICE_DETECTED_NOTIFICATION_TITLE" desc="Title for notification shown to the user when a USB device gets plugged in.">
       <ph name="USB_DEVICE_NAME">$1<ex>Nexus 5</ex></ph> detected
     </message>
+
+    <if expr="not is_android">
+      <!-- WebHID Notification -->
+      <message name="IDS_WEBHID_DEVICE_CONNECTED_BY_EXTENSION_NOTIFICATION_TITLE" desc="Notification title shown to the user when a HID device is being accessed by an extension.">
+        An extension is using a HID device
+      </message>
+      <message name="IDS_WEBHID_DEVICE_CONNECTED_BY_EXTENSION_NOTIFICATION_MESSAGE" desc="Notification content shown to the user when a HID device is being accessed by an extension.">
+        Click to manage permissions for "<ph name="EXTENSION">$1<ex>Brave Translate</ex></ph>"
+      </message>
+    </if>
 
     <if expr="chromeos_ash">
       <!-- CrOSUsb Notification -->
@@ -13434,13 +13502,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <!-- Lens Region Search bubble dialog -->
     <message name="IDS_LENS_REGION_SEARCH_BUBBLE_TEXT" desc="Text that is shown in the Lens Region Search education bubble when starting the feature. Informs the user to drag over the screen to select a region to search with Google Lens.">
-      Drag over any image to search
-    </message>
-    <message name="IDS_LENS_REGION_SEARCH_BUBBLE_TEXT_ALT1" desc="Text that is shown in the Lens Region Search education bubble when starting the feature. Informs the user to drag over the screen to select a region to search with Google Lens.">
       Select image area to search
-    </message>
-    <message name="IDS_LENS_REGION_SEARCH_BUBBLE_TEXT_ALT2" desc="Text that is shown in the Lens Region Search education bubble when starting the feature. Informs the user to drag over the screen to select a region to search with Google Lens.">
-     Select any part of the page to search
     </message>
     <!-- BraveLabs Thumbnail Tab Strip -->
     <message name="IDS_THUMBNAIL_TAB_STRIP_EXPERIMENT_NAME" desc="Name for Thumbnail Tab Strip experiment">
