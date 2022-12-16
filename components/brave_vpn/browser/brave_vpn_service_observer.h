@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_BRAVE_VPN_SERVICE_OBSERVER_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_BRAVE_VPN_SERVICE_OBSERVER_H_
 
-#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "build/build_config.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 

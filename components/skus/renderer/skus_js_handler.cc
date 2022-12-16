@@ -14,7 +14,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/arguments.h"

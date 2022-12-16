@@ -33,7 +33,7 @@ source_set("win") {
     "//base",
     "//brave/components/brave_vpn/browser/connection:common",
     "//brave/components/brave_vpn/common",
-    "//brave/components/brave_vpn/mojom",
+    "//brave/components/brave_vpn/common/mojom",
     "//net",
     "//services/network/public/cpp",
   ]

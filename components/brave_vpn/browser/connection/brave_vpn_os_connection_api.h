@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base/observer_list_types.h"
-#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 
 namespace network {
 class SharedURLLoaderFactory;

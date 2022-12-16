@@ -23,7 +23,7 @@ static_library("browser") {
     "connection:api",
     "//base",
     "//brave/components/brave_vpn/common",
-    "//brave/components/brave_vpn/mojom",
+    "//brave/components/brave_vpn/common/mojom",
     "//brave/components/p3a_utils",
     "//brave/components/skus/browser",
     "//brave/components/skus/common:mojom",

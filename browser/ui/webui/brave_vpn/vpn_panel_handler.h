@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"

@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -12,8 +12,9 @@
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api_sim.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
-#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
+#include "build/build_config.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -99,7 +100,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest,
 
   EXPECT_TRUE(test_api->IsConnectionCreated());
 }
-
+#if !BUILDFLAG(IS_ANDROID)
 TEST_F(BraveVPNOSConnectionAPIUnitTest, CreateOSVPNEntryWithInvalidInfoTest) {
   GetConnectionAPI()->CheckConnection();
   local_state()->SetString(prefs::kBraveVPNSelectedRegion, "region-a");
@@ -117,6 +118,35 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, CreateOSVPNEntryWithInvalidInfoTest) {
   EXPECT_FALSE(test_api->IsConnectionCreated());
 }
 
+TEST_F(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest) {
+  auto* test_api =
+      static_cast<BraveVPNOSConnectionAPIBase*>(GetConnectionAPI());
+
+  GetConnectionAPI()->CheckConnection();
+
+  // Check ignore Connect() request while connecting or disconnecting is
+  // in-progress.
+  local_state()->SetString(prefs::kBraveVPNSelectedRegion, "eu-es");
+  test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
+  test_api->Connect();
+  EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
+
+  test_api->connection_state_ = mojom::ConnectionState::DISCONNECTING;
+  test_api->Connect();
+  EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
+            test_api->GetConnectionState());
+
+  // Handle connect after disconnect current connection.
+  test_api->connection_state_ = mojom::ConnectionState::CONNECTED;
+  test_api->Connect();
+  EXPECT_TRUE(test_api->needs_connect_);
+  EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
+            test_api->GetConnectionState());
+  test_api->OnDisconnected();
+  EXPECT_FALSE(test_api->needs_connect_);
+  EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
+}
+#endif
 TEST_F(BraveVPNOSConnectionAPIUnitTest,
        CheckConnectionStateAfterNetworkStateChanged) {
   auto* test_api = static_cast<BraveVPNOSConnectionAPISim*>(GetConnectionAPI());
@@ -220,35 +250,6 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, CancelConnectingTest) {
   EXPECT_FALSE(test_api->cancel_connecting_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
             test_api->GetConnectionState());
-}
-
-TEST_F(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest) {
-  auto* test_api =
-      static_cast<BraveVPNOSConnectionAPIBase*>(GetConnectionAPI());
-
-  GetConnectionAPI()->CheckConnection();
-
-  // Check ignore Connect() request while connecting or disconnecting is
-  // in-progress.
-  local_state()->SetString(prefs::kBraveVPNSelectedRegion, "eu-es");
-  test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
-  test_api->Connect();
-  EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
-
-  test_api->connection_state_ = mojom::ConnectionState::DISCONNECTING;
-  test_api->Connect();
-  EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
-            test_api->GetConnectionState());
-
-  // Handle connect after disconnect current connection.
-  test_api->connection_state_ = mojom::ConnectionState::CONNECTED;
-  test_api->Connect();
-  EXPECT_TRUE(test_api->needs_connect_);
-  EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
-            test_api->GetConnectionState());
-  test_api->OnDisconnected();
-  EXPECT_FALSE(test_api->needs_connect_);
-  EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 }
 
 // Ignore disconnected state change while connected. See the comment at

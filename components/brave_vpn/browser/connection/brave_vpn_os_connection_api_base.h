@@ -17,7 +17,7 @@
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
-#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"

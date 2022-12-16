@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/values.h"
-#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;

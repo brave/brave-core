@@ -1,7 +1,7 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 module brave_vpn.mojom;
 
@@ -67,7 +67,8 @@ interface ServiceHandler {
   GetSupportData() => (string app_version, string os_version, string hostname, string timezone);
 
   [EnableIfNot=is_android]
-  CreateSupportTicket(string email, string subject, string body) => (bool success, string response);
+  CreateSupportTicket(string email, string subject, string body) =>
+    (bool success, string response);
 
   [EnableIf=is_android]
   GetPurchaseToken() => (string token);
@@ -100,8 +101,9 @@ enum PurchasedState {
   FAILED,
 };
 
-// Make sure updating BraveVpnService properly when member is added to Region struct.
-// Ex, IsValidRegion() or IsValidRegionValue(). It should also check new member.
+// Make sure updating BraveVpnService properly when member is added to Region
+// struct. Ex, IsValidRegion() or IsValidRegionValue(). It should also check
+// new member.
 struct Region {
   string continent;
   string name;
