@@ -33,7 +33,7 @@ struct EditPermissionsView: View {
     
     var decimals: Int = 18
     if case .ethErc20Approve(let details) = confirmationStore.activeParsedTransaction.details {
-      decimals = Int(details.token.decimals)
+      decimals = Int(details.token?.decimals ?? networkStore.selectedChain.decimals)
     }
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: decimals))
     let customAllowanceInWei = weiFormatter.weiString(from: customAllowance, radix: .hex, decimals: decimals) ?? "0"

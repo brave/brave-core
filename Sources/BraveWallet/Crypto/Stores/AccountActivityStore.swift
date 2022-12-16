@@ -32,6 +32,9 @@ class AccountActivityStore: ObservableObject {
   private let txService: BraveWalletTxService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+  /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
+  /// This could occur with a dapp creating a transaction.
+  private var tokenInfoCache: [String: BraveWallet.BlockchainToken] = [:]
 
   init(
     account: BraveWallet.AccountInfo,
@@ -76,6 +79,7 @@ class AccountActivityStore: ObservableObject {
         let sortOrder: Int
       }
       let allVisibleUserAssets = await walletService.allVisibleUserAssets(in: networks)
+      let allTokens = await blockchainRegistry.allTokens(in: networks).flatMap(\.tokens)
       var updatedUserVisibleAssets: [AssetViewModel] = []
       var updatedUserVisibleNFTs: [NFTAssetViewModel] = []
       for networkAssets in allVisibleUserAssets {
@@ -133,17 +137,17 @@ class AccountActivityStore: ObservableObject {
         })
       })
       
-      // fetch price for every token
-      let allTokens = allVisibleUserAssets.flatMap(\.tokens)
-      let allAssetRatioIds = allTokens.map(\.assetRatioId)
+      // fetch price for every visible token
+      let allVisibleTokens = allVisibleUserAssets.flatMap(\.tokens)
+      let allVisibleTokenAssetRatioIds = allVisibleTokens.map(\.assetRatioId)
       let prices: [String: String] = await assetRatioService.fetchPrices(
-        for: allAssetRatioIds,
+        for: allVisibleTokenAssetRatioIds,
         toAssets: [currencyFormatter.currencyCode],
         timeframe: .oneDay
       )
       
       // fetch ERC721 metadata for ERC721 tokens
-      let allErc721Metadata = await rpcService.fetchERC721Metadata(tokens: allTokens.filter { $0.isErc721 })
+      let allErc721Metadata = await rpcService.fetchERC721Metadata(tokens: userVisibleNFTs.map(\.token).filter(\.isErc721))
       
       guard !Task.isCancelled else { return }
       updatedUserVisibleAssets.removeAll()
@@ -200,6 +204,21 @@ class AccountActivityStore: ObservableObject {
     var solEstimatedTxFees: [String: UInt64] = [:]
     if account.coin == .sol {
       solEstimatedTxFees = await solTxManagerProxy.estimatedTxFees(for: transactions.map(\.id))
+    }
+    let unknownTokenContractAddresses = transactions
+      .flatMap { $0.tokenContractAddresses }
+      .filter { contractAddress in
+        !userVisibleTokens.contains(where: { $0.contractAddress.caseInsensitiveCompare(contractAddress) == .orderedSame })
+        && !allTokens.contains(where: { $0.contractAddress.caseInsensitiveCompare(contractAddress) == .orderedSame })
+        && !tokenInfoCache.keys.contains(where: { $0.caseInsensitiveCompare(contractAddress) == .orderedSame })
+      }
+    var allTokens = allTokens
+    if !unknownTokenContractAddresses.isEmpty {
+      let unknownTokens = await assetRatioService.fetchTokens(for: unknownTokenContractAddresses)
+      for unknownToken in unknownTokens {
+        tokenInfoCache[unknownToken.contractAddress] = unknownToken
+      }
+      allTokens.append(contentsOf: unknownTokens)
     }
     return transactions
       .sorted(by: { $0.createdTime > $1.createdTime })

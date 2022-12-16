@@ -56,6 +56,7 @@ public class TransactionConfirmationStore: ObservableObject {
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
     didSet {
       currencyFormatter.currencyCode = currencyCode
+      guard currencyCode != oldValue else { return }
       updateTransaction(with: activeTransaction)
     }
   }
@@ -163,6 +164,7 @@ public class TransactionConfirmationStore: ObservableObject {
       let userVisibleTokens = await walletService.userAssets(network.chainId, coin: coin)
       await fetchAssetRatios(for: userVisibleTokens)
     }
+    await fetchUnknownTokens(for: transactions)
   }
   
   func updateTransaction(
@@ -176,7 +178,7 @@ public class TransactionConfirmationStore: ObservableObject {
       let coin = transaction.coin
       let keyring = await keyringService.keyringInfo(coin.keyringId)
       let network = await rpcService.network(coin)
-      let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: coin)
+      let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: coin) + tokenInfoCache.map(\.value)
       let userVisibleTokens = await walletService.userAssets(network.chainId, coin: coin)
       
       var solEstimatedTxFee: UInt64?
@@ -226,6 +228,9 @@ public class TransactionConfirmationStore: ObservableObject {
   private var assetRatios: [String: Double] = [:]
   private var currentAllowanceCache: [String: String] = [:]
   private var gasTokenBalanceCache: [String: Double] = [:]
+  /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
+  /// This could occur with a dapp creating a transaction.
+  private var tokenInfoCache: [String: BraveWallet.BlockchainToken] = [:]
   
   @MainActor private func fetchAssetRatios(for userVisibleTokens: [BraveWallet.BlockchainToken]) async {
     let priceResult = await assetRatioService.priceWithIndividualRetry(
@@ -249,8 +254,8 @@ public class TransactionConfirmationStore: ObservableObject {
     }
     
     let formatter = WeiFormatter(decimalFormatStyle: .balance)
-    let (allowance, _, _) = await rpcService.erc20TokenAllowance(details.token.contractAddress(in: selectedChain), ownerAddress: parsedTransaction.fromAddress, spenderAddress: details.spenderAddress)
-    let allowanceString = formatter.decimalString(for: allowance.removingHexPrefix, radix: .hex, decimals: Int(details.token.decimals)) ?? ""
+    let (allowance, _, _) = await rpcService.erc20TokenAllowance(details.token?.contractAddress(in: selectedChain) ?? "", ownerAddress: parsedTransaction.fromAddress, spenderAddress: details.spenderAddress)
+    let allowanceString = formatter.decimalString(for: allowance.removingHexPrefix, radix: .hex, decimals: Int(details.token?.decimals ?? selectedChain.decimals)) ?? ""
     currentAllowanceCache[parsedTransaction.transaction.id] = allowanceString
     updateTransaction(with: activeTransaction, shouldFetchCurrentAllowance: false, shouldFetchGasTokenBalance: false)
   }
@@ -264,6 +269,27 @@ public class TransactionConfirmationStore: ObservableObject {
       gasTokenBalanceCache["\(token.symbol)\(account.address)"] = gasTokenBalance
       updateTransaction(with: activeTransaction, shouldFetchCurrentAllowance: false, shouldFetchGasTokenBalance: false)
     }
+  }
+  
+  @MainActor private func fetchUnknownTokens(
+    for transactions: [BraveWallet.TransactionInfo]
+  ) async {
+    let coin = await walletService.selectedCoin()
+    let network = await rpcService.network(coin)
+    let userVisibleTokens = await walletService.userAssets(network.chainId, coin: network.coin)
+    let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
+    let unknownTokenContractAddresses = transactions.flatMap(\.tokenContractAddresses)
+      .filter { contractAddress in
+        !userVisibleTokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(contractAddress) == .orderedSame })
+        && !allTokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(contractAddress) == .orderedSame })
+        && !tokenInfoCache.keys.contains(where: { $0.caseInsensitiveCompare(contractAddress) == .orderedSame })
+      }
+    guard !unknownTokenContractAddresses.isEmpty else { return }
+    let unknownTokens = await assetRatioService.fetchTokens(for: unknownTokenContractAddresses)
+    for unknownToken in unknownTokens {
+      tokenInfoCache[unknownToken.contractAddress] = unknownToken
+    }
+    updateTransaction(with: activeTransaction, shouldFetchCurrentAllowance: false, shouldFetchGasTokenBalance: false)
   }
   
   @MainActor func fetchActiveTransactionDetails(
@@ -282,7 +308,7 @@ public class TransactionConfirmationStore: ObservableObject {
       let .erc20Transfer(details),
       let .solSystemTransfer(details),
       let .solSplTokenTransfer(details):
-      symbol = details.fromToken.symbol
+      symbol = details.fromToken?.symbol ?? ""
       value = details.fromAmount
       fiat = details.fromFiat ?? ""
       
@@ -307,12 +333,13 @@ public class TransactionConfirmationStore: ObservableObject {
           }
         }
       }
-      
-      totalFiat = totalFiat(value: value, tokenAssetRatioId: details.fromToken.assetRatioId, gasValue: gasValue, gasSymbol: gasSymbol, assetRatios: assetRatios, currencyFormatter: currencyFormatter)
+      if let fromToken = details.fromToken {
+        totalFiat = totalFiat(value: value, tokenAssetRatioId: fromToken.assetRatioId, gasValue: gasValue, gasSymbol: gasSymbol, assetRatios: assetRatios, currencyFormatter: currencyFormatter)
+      }
       
     case let .ethErc20Approve(details):
       value = details.approvalAmount
-      symbol = details.token.symbol
+      symbol = details.token?.symbol ?? ""
       proposedAllowance = details.approvalValue
       isUnlimitedApprovalRequested = details.isUnlimited
       

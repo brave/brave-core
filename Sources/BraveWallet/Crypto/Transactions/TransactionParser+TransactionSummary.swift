@@ -74,7 +74,7 @@ extension TransactionParser {
     }
     switch parsedTransaction.details {
     case let .ethSend(details):
-      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, details.fromAmount, details.fromToken.symbol, details.fromFiat ?? "")
+      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, details.fromAmount, details.fromToken?.symbol ?? "", details.fromFiat ?? "")
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
@@ -84,7 +84,7 @@ extension TransactionParser {
         networkSymbol: parsedTransaction.networkSymbol
       )
     case let .erc20Transfer(details):
-      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, details.fromAmount, details.fromToken.symbol, details.fromFiat ?? "")
+      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, details.fromAmount, details.fromToken?.symbol ?? "", details.fromFiat ?? "")
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
@@ -110,9 +110,9 @@ extension TransactionParser {
     case let .ethErc20Approve(details):
       let title: String
       if details.isUnlimited {
-        title = String.localizedStringWithFormat(Strings.Wallet.transactionApproveSymbolTitle, Strings.Wallet.editPermissionsApproveUnlimited, details.token.symbol)
+        title = String.localizedStringWithFormat(Strings.Wallet.transactionApproveSymbolTitle, Strings.Wallet.editPermissionsApproveUnlimited, details.token?.symbol ?? "")
       } else {
-        title = String.localizedStringWithFormat(Strings.Wallet.transactionApproveSymbolTitle, details.approvalAmount, details.token.symbol)
+        title = String.localizedStringWithFormat(Strings.Wallet.transactionApproveSymbolTitle, details.approvalAmount, details.token?.symbol ?? "")
       }
       return .init(
         txInfo: transaction,
@@ -138,7 +138,7 @@ extension TransactionParser {
         networkSymbol: parsedTransaction.networkSymbol
       )
     case let .solSystemTransfer(details), let .solSplTokenTransfer(details):
-      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, details.fromAmount, details.fromToken.symbol, details.fromFiat ?? "").replacingOccurrences(of: "()", with: "") // if fiat is empty string, remove `()`
+      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, details.fromAmount, details.fromToken?.symbol ?? "", details.fromFiat ?? "").replacingOccurrences(of: "()", with: "") // if fiat is empty string, remove `()`
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
