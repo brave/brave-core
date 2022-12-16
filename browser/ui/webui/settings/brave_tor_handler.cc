@@ -44,6 +44,8 @@ namespace {
 constexpr const char kTorBridgesUrl[] =
     "https://bridges.torproject.org/bridges?transport=obfs4";
 
+constexpr const char kShimToken[] = "shim-token: LVOippNS8UiKLH6kXf1D8pI1clLc";
+
 constexpr const char16_t kGetCaptchaScript[] =
     uR"js(
   (function() {
@@ -111,6 +113,7 @@ class BridgeRequest : public content::WebContentsObserver {
 
     const GURL url(kTorBridgesUrl);
     content::NavigationController::LoadURLParams load_params(url);
+    load_params.extra_headers += kShimToken;
     web_contents_->GetController().LoadURLWithParams(load_params);
   }
 
