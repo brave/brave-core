@@ -28,8 +28,6 @@
     "format": "node ./build/commands/scripts/commands.js format",
     "mass_rename": "node ./build/commands/scripts/commands.js mass_rename",
     "test": "node ./build/commands/scripts/commands.js test",
-    "build_tests": "node ./build/commands/scripts/commands.js build_tests",
-    "run_tests": "node ./build/commands/scripts/commands.js run_tests",
     "test:scripts": "jest build/commands/lib build/commands/scripts",
     "test-security": "npm run check_security && npm run audit_deps && npm run network-audit",
     "tslint": "npm run eslint",

@@ -157,8 +157,4 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
   }
 }
 
-module.exports = {
-  test,
-  buildTests,
-  runTests
-}
+module.exports = test
