@@ -22,8 +22,8 @@
 #include "content/public/browser/storage_partition.h"
 
 #if BUILDFLAG(IS_WIN)
-#include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_factory.h"
-#include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service.h"
+#include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_factory_win.h"
+#include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service_win.h"
 #endif
 
 namespace brave_vpn {
