@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5 b/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
-index afa13c20e94797da3c130b78a94d67f36eb2968a..69f83c713c04543f007c2ba3373a4ac7f0b9ad9b 100644
+index e677d78fc33d6ea2afe4ba9ff4dfe0307b9d723d..7f1cba8ea9379a793acd0f06d80cb9ab1b21e119 100644
 --- a/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
 +++ b/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
-@@ -404,5 +404,13 @@
+@@ -408,5 +408,13 @@
        name: "WindowPlacement",
        permissions_policy_name: "window-placement",
      },

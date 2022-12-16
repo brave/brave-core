@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index c62487f605cb87f1177ae6bdab75a90c26d1fe22..24c85f6022a694ffa5406092b6ee042bc9703423 100644
+index 9a0e0445b992df159da545c8f4815e2d63c1f9ea..187ffefcf2d121db3daefdf0538f1dfca4e29808 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1301,6 +1301,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1302,6 +1302,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
    DeviceOAuth2TokenStoreDesktop::RegisterPrefs(registry);
  #endif
  
@@ -11,7 +11,7 @@ index c62487f605cb87f1177ae6bdab75a90c26d1fe22..24c85f6022a694ffa5406092b6ee042b
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -1681,6 +1683,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -1686,6 +1688,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #endif
  
    registry->RegisterTimePref(prefs::kDIPSTimerLastUpdate, base::Time());
