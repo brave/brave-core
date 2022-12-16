@@ -67,8 +67,6 @@ class BraveWalletService : public KeyedService,
                      PrefService* profile_prefs,
                      PrefService* local_state);
 
-  // For tests
-  BraveWalletService();
   ~BraveWalletService() override;
 
   BraveWalletService(const BraveWalletService&) = delete;
