@@ -32,9 +32,10 @@ WebSecurityOrigin GetEphemeralOrOriginalSecurityOrigin(
 }  // namespace
 }  // namespace blink
 
-#define URLStoreForOrigin(ORIGIN, URL_STORE) \
-  URLStoreForOrigin(                         \
-      GetEphemeralOrOriginalSecurityOrigin(context, ORIGIN).Get(), URL_STORE);
+#define URLStoreForOrigin(ORIGIN, URL_STORE)                                 \
+  URLStoreForOrigin(                                                         \
+      GetEphemeralOrOriginalSecurityOrigin(execution_context, ORIGIN).Get(), \
+      URL_STORE);
 
 #include "src/third_party/blink/renderer/core/fileapi/public_url_manager.cc"
 

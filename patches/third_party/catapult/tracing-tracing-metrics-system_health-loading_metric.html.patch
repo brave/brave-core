@@ -1,8 +1,8 @@
 diff --git a/tracing/tracing/metrics/system_health/loading_metric.html b/tracing/tracing/metrics/system_health/loading_metric.html
-index 2c5ab4b2d038cafca4201c8445cfe677c93c24c4..d3618406df4c181a92cab73ba4388b0ce9d88923 100644
+index f20338b5b9f7b99b4404717cf661144ca0b3480f..456074bb88700162a8d753334764d7fea38c3153 100644
 --- a/tracing/tracing/metrics/system_health/loading_metric.html
 +++ b/tracing/tracing/metrics/system_health/loading_metric.html
-@@ -744,6 +744,7 @@ tr.exportTo('tr.metrics.sh', function() {
+@@ -751,6 +751,7 @@ tr.exportTo('tr.metrics.sh', function() {
      for (const pid in chromeHelper.rendererHelpers) {
        const rendererHelper = chromeHelper.rendererHelpers[pid];
        if (rendererHelper.isChromeTracingUI) continue;

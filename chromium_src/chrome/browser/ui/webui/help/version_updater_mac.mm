@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2018 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/webui/help/version_updater_mac.h"
 
@@ -12,6 +13,7 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/mac/keystone_glue.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
+#include "chrome/browser/updater/browser_updater_helper_client_mac.h"
 #include "chrome/grit/chromium_strings.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"

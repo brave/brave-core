@@ -1,6 +1,7 @@
-// Copyright 2020 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "components/privacy_sandbox/privacy_sandbox_settings.h"
 
@@ -43,7 +44,7 @@ class PrivacySandboxSettingsTest : public testing::Test {
 
     host_content_settings_map_ = new HostContentSettingsMap(
         &prefs_, false /* is_off_the_record */, false /* store_last_modified */,
-        false /* restore_session */);
+        false /* restore_session */, false /* should_record_metrics */);
     cookie_settings_ = new content_settings::CookieSettings(
         host_content_settings_map_.get(), &prefs_, false, "chrome-extension");
   }

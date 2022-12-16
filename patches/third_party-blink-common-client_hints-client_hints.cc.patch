@@ -1,9 +1,9 @@
 diff --git a/third_party/blink/common/client_hints/client_hints.cc b/third_party/blink/common/client_hints/client_hints.cc
-index 7aab94e771ca01b38ae7146c7402f6c208d17d78..0ebf3b039f2c6fe4448f3f587eaf2d318e0891c1 100644
+index 57840abb04c1765bf013e28b87d7a092d17fd279..23c3bcd17d9e0c25a4f8f3a2407d6ca74e45fc6f 100644
 --- a/third_party/blink/common/client_hints/client_hints.cc
 +++ b/third_party/blink/common/client_hints/client_hints.cc
-@@ -113,6 +113,7 @@ const size_t kWebEffectiveConnectionTypeMappingCount =
-     std::size(kWebEffectiveConnectionTypeMapping);
+@@ -105,6 +105,7 @@ const PolicyFeatureToClientHintMap& GetPolicyFeatureToClientHintMap() {
+ }
  
  bool IsClientHintSentByDefault(network::mojom::WebClientHintsType type) {
 +  BRAVE_CLIENT_HINTS_IS_CLIENT_HINT_SENT_BY_DEFAULT

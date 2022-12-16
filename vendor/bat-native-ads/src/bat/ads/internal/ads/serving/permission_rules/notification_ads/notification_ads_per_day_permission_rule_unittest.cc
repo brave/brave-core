@@ -21,8 +21,7 @@ class BatAdsNotificationAdsPerDayPermissionRuleTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-        enabled_features;
+    const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
     const std::vector<base::test::FeatureRef> disabled_features;
 

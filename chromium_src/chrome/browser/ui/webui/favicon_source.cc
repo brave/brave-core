@@ -26,8 +26,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "url/gurl.h"
 // Just dummy values to avoid build errors
-namespace {
 namespace extensions {
+namespace {
 class Manifest {
  public:
   enum Type { NUM_LOAD_TYPES };
@@ -52,8 +52,8 @@ class ExtensionRegistry {
     return std::make_unique<UnusedClassA>();
   }
 };
-}  // namespace extensions
 }  // namespace
+}  // namespace extensions
 #endif  // #if !BUILDFLAG(ENABLE_EXTENSIONS)
 // InstantService is only used on desktop
 #define CHROME_BROWSER_SEARCH_INSTANT_SERVICE_H_

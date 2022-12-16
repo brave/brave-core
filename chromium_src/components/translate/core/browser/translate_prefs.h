@@ -8,11 +8,9 @@
 
 // This is done to allow the same renaming in
 // chromium_src/chrome/browser/prefs/browser_prefs.cc
-#define MigrateObsoleteProfilePrefs MigrateObsoleteProfilePrefs_ChromiumImpl
 #define TranslatePrefs TranslatePrefs_ChromiumImpl
 #include "src/components/translate/core/browser/translate_prefs.h"
 #undef TranslatePrefs
-#undef MigrateObsoleteProfilePrefs
 
 namespace translate {
 class TranslatePrefs : public TranslatePrefs_ChromiumImpl {

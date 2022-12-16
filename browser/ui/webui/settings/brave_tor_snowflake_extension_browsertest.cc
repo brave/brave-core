@@ -112,7 +112,7 @@ IN_PROC_BROWSER_TEST_F(TorSnowflakeExtensionBrowserTest, InstallFail) {
   content::WebContentsConsoleObserver console_observer(web_contents);
   console_observer.SetPattern("Could not fetch data from the Chrome Web Store");
   ClickSnowflakeToggle(web_contents);
-  console_observer.Wait();
+  ASSERT_TRUE(console_observer.Wait());
   EXPECT_FALSE(IsSnowflakeToggled(web_contents));
   EXPECT_TRUE(IsSnowflakeToggleEnabled(web_contents));
 }

@@ -83,7 +83,7 @@ if (is_win) {
       visibility = [ ":mini_installer_dependencies" ]
       deps = [ zucchini ]
       sources = [ get_label_info(zucchini, "root_out_dir") + "/zucchini.exe" ]
-      outputs = [ "$root_out_dir/$last_chrome_installer/courgette.exe" ]
+      outputs = [ "$root_out_dir/$last_chrome_installer/courgette64.exe" ]
     }
   }
 

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/external_protocol/external_protocol_handler.cc b/chrome/browser/external_protocol/external_protocol_handler.cc
-index c85970d9465dfd02a94c5d2202589b550a6bdf1d..6337fe7701144097e098a374ffdd969c57f9c11a 100644
+index e6459bc3474df327be5eee03180c32ebc4587130..52291de2148b0669a641744f420b2941d88f5784 100644
 --- a/chrome/browser/external_protocol/external_protocol_handler.cc
 +++ b/chrome/browser/external_protocol/external_protocol_handler.cc
-@@ -337,7 +337,7 @@ ExternalProtocolHandler::BlockState ExternalProtocolHandler::GetBlockState(
+@@ -345,7 +345,7 @@ ExternalProtocolHandler::BlockState ExternalProtocolHandler::GetBlockState(
    // Always allow the hard-coded allowed schemes.
    for (size_t i = 0; i < std::size(kAllowedSchemes); ++i) {
      if (kAllowedSchemes[i] == scheme)
