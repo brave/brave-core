@@ -197,7 +197,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
 #endif
     &media::kEnableTabMuting,
     &net::features::kPartitionConnectionsByNetworkIsolationKey,
-    &net::features::kPartitionExpectCTStateByNetworkIsolationKey,
     &net::features::kPartitionHttpServerPropertiesByNetworkIsolationKey,
     &net::features::kPartitionSSLSessionsByNetworkIsolationKey,
     &net::features::kSplitHostCacheByNetworkIsolationKey,

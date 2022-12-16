@@ -13,9 +13,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 
-#define BRAVE_ENABLE_STATIC_PINS \
-  enable_static_pins_ = true;    \
-  enable_static_expect_ct_ = true;
+#define BRAVE_ENABLE_STATIC_PINS enable_static_pins_ = true;
 
 #else
 

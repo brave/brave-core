@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #define ParseJSON ParseJSON_ChromiumImpl
 #define ParseCertificatesFile ParseCertificatesFile_ChromiumImpl
@@ -368,9 +368,9 @@ bool ParseJSON(base::StringPiece json,
 
   for (auto& entry : chromium_entries) {
     // Google has asked us not to include the pins that ship with Chrome,
-    // but we do want the preloaded HSTS and Expect CT entries.
+    // but we do want the preloaded HSTS entries.
     entry->pinset = "";
-    if (!entry->force_https && !entry->expect_ct) {
+    if (!entry->force_https) {
       continue;
     }
 
