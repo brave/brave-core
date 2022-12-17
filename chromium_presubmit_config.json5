@@ -131,6 +131,8 @@
       "components/services/bat_ledger/bat_ledger_impl\\.cc",
       "components/services/bat_ledger/public/cpp/ledger_client_mojo_bridge\\.cc",
       "ios/browser/api/ads/ads_client_ios\\.h",
+      "ios/browser/api/certificate/brave_certificate\\.mm",
+      "ios/browser/api/net/certificate_utility\\.mm",
       "utility/importer/chrome_importer\\.cc",
       "vendor/bat-native-ads/src/bat/ads/internal/common/crypto/crypto_util\\.cc",
       "vendor/bat-native-ads/src/bat/ads/internal/account/account_util\\.h",
