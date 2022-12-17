@@ -5,7 +5,7 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import { sendWithPromise } from 'chrome://resources/js/cr.m.js';
+import { sendWithPromise } from 'chrome://resources/js/cr.js';
 
 export interface BraveTorBrowserProxy {
   getBridgesConfig(): Promise<any> // TODO(petemill): Define the expected type

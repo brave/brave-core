@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { addWebUIListener, sendWithPromise } from 'chrome://resources/js/cr.m'
+import { addWebUiListener, sendWithPromise } from 'chrome://resources/js/cr.js'
 
 //
 // Manages get and set of NTP preference data
@@ -55,5 +55,5 @@ export function saveSetAllStackWidgets (visible: boolean): void {
 }
 
 export function addChangeListener (listener: PreferencesUpdatedHandler): void {
-  addWebUIListener('preferences-changed', listener)
+  addWebUiListener('preferences-changed', listener)
 }

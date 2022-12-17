@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as Cr from 'chrome://resources/js/cr.m'
+import * as Cr from 'chrome://resources/js/cr.js'
 
 //
 // Manages get and set of NTP private data
@@ -28,5 +28,5 @@ export function toggleAlternativePrivateSearchEngine (): void {
 }
 
 export function addChangeListener (listener: PrivateTabDataUpdatedHandler): void {
-  Cr.addWebUIListener('private-tab-data-updated', listener)
+  Cr.addWebUiListener('private-tab-data-updated', listener)
 }
