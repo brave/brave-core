@@ -100,7 +100,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest,
 
   EXPECT_TRUE(test_api->IsConnectionCreated());
 }
-#if !BUILDFLAG(IS_ANDROID)
+
 TEST_F(BraveVPNOSConnectionAPIUnitTest, CreateOSVPNEntryWithInvalidInfoTest) {
   GetConnectionAPI()->CheckConnection();
   local_state()->SetString(prefs::kBraveVPNSelectedRegion, "region-a");
@@ -146,7 +146,7 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest) {
   EXPECT_FALSE(test_api->needs_connect_);
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 }
-#endif
+
 TEST_F(BraveVPNOSConnectionAPIUnitTest,
        CheckConnectionStateAfterNetworkStateChanged) {
   auto* test_api = static_cast<BraveVPNOSConnectionAPISim*>(GetConnectionAPI());
