@@ -85,9 +85,9 @@ void PrivateWindowSearchEngineProviderServiceBase::
   otr_profile_->GetPrefs()->SetString(prefs::kSyncedDefaultSearchProviderGUID,
                                       data.sync_guid);
 
-  otr_profile_->GetPrefs()->Set(
+  otr_profile_->GetPrefs()->SetDict(
       DefaultSearchManager::kDefaultSearchProviderDataPrefName,
-      *TemplateURLDataToDictionary(data));
+      TemplateURLDataToDictionary(data));
 #endif
 }
 
