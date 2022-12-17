@@ -99,15 +99,15 @@ void TabDragController::MoveAttached(const gfx::Point& point_in_screen,
   if (!is_showing_vertical_tabs_)
     return;
 
-  // Update |last_move_screen_loc_| only when tab strip actually changed just
-  // like Chromium impl does. But we set y coordinate as we're in vertical
-  // tab strip.
+  // Update |last_move_attached_context_loc_| only when tab strip actually
+  // changed just like Chromium impl does. But we set y coordinate as we're in
+  // vertical tab strip.
   WebContents* last_contents = drag_data_.back().contents;
   auto* attached_model = attached_context_->GetTabStripModel();
   int index_of_last_item = attached_model->GetIndexOfWebContents(last_contents);
   if (index_of_last_item !=
       attached_model->GetIndexOfWebContents(last_contents)) {
-    last_move_screen_loc_ = point_in_screen.y();
+    last_move_attached_context_loc_ = point_in_screen.y();
   }
 }
 
