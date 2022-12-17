@@ -13,9 +13,9 @@
 namespace brave_vpn {
 
 TEST(BraveVPNAPIHelperTest, TicketInfoTest) {
-  base::Value::Dict ticket_value =
-      GetValueWithTicketInfos("brave-vpn@brave.com", "It's cool feature",
-                              "Love the Brave VPN!", "credential");
+  base::Value::Dict ticket_value = GetValueWithTicketInfos(
+      "brave-vpn@brave.com", "It's cool feature", "Love the Brave VPN!",
+      "credential", "USA/Boston");
 
   // Check ticket dict has four required fields.
   EXPECT_TRUE(ticket_value.FindString(kSupportTicketEmailKey));
@@ -24,7 +24,9 @@ TEST(BraveVPNAPIHelperTest, TicketInfoTest) {
   const auto support_ticket_encoded =
       *ticket_value.FindString(kSupportTicketSupportTicketKey);
   EXPECT_TRUE(!support_ticket_encoded.empty());
-
+  auto* timezone = ticket_value.FindString(kSupportTicketTimezoneKey);
+  ASSERT_TRUE(timezone);
+  EXPECT_EQ(*timezone, "USA/Boston");
   // Check body contents
   std::string support_ticket_decoded;
   EXPECT_TRUE(

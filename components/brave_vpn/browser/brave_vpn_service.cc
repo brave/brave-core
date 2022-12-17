@@ -38,7 +38,6 @@
 #include "brave/components/version_info/version_info.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/version_info/version_info.h"
-#include "third_party/icu/source/i18n/unicode/timezone.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace brave_vpn {
@@ -395,12 +394,7 @@ std::string BraveVpnService::GetCurrentTimeZone() {
   if (!test_timezone_.empty())
     return test_timezone_;
 
-  std::unique_ptr<icu::TimeZone> zone(icu::TimeZone::createDefault());
-  icu::UnicodeString id;
-  zone->getID(id);
-  std::string current_time_zone;
-  id.toUTF8String<std::string>(current_time_zone);
-  return current_time_zone;
+  return GetTimeZoneName();
 }
 
 void BraveVpnService::GetAllRegions(GetAllRegionsCallback callback) {
@@ -476,7 +470,8 @@ void BraveVpnService::GetSupportData(GetSupportDataCallback callback) {
   std::string os_version = version_info::GetOSType();
 
   std::move(callback).Run(brave_version, os_version,
-                          GetBraveVPNConnectionAPI()->GetHostname());
+                          GetBraveVPNConnectionAPI()->GetHostname(),
+                          GetTimeZoneName());
 }
 
 BraveVPNOSConnectionAPI* BraveVpnService::GetBraveVPNConnectionAPI() const {

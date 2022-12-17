@@ -73,6 +73,7 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source) {
       {"braveVpnSupportNotes", IDS_BRAVE_VPN_SUPPORT_NOTES},
       {"braveVpnSupportSubmit", IDS_BRAVE_VPN_SUPPORT_SUBMIT},
       {"braveVpnConnectNotAllowed", IDS_BRAVE_VPN_CONNECT_NOT_ALLOWED},
+      {"braveVpnSupportTimezone", IDS_BRAVE_VPN_SUPPORT_TIMEZONE},
   };
 
   for (const auto& str : kLocalizedStrings) {

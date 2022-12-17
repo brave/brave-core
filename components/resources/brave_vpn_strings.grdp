@@ -245,4 +245,7 @@
   <message name="IDS_BRAVE_VPN_DNS_POLICY_CHECKBOX" desc="A text shown to user on dialog's checkbpox when he enabled Brave VPN with disabled DoH by policies">
     Do not warn me about this anymore.
   </message>
+  <message name="IDS_BRAVE_VPN_SUPPORT_TIMEZONE" desc="Label on dialog to report bug to technical support ">
+    Timezone:
+  </message>
 </grit-part>

@@ -24,11 +24,13 @@ struct Hostname;
 std::unique_ptr<Hostname> PickBestHostname(
     const std::vector<Hostname>& hostnames);
 std::vector<Hostname> ParseHostnames(const base::Value::List& hostnames);
+std::string GetTimeZoneName();
 base::Value::Dict GetValueWithTicketInfos(
     const std::string& email,
     const std::string& subject,
     const std::string& body,
-    const std::string& subscriber_credential);
+    const std::string& subscriber_credential,
+    const std::string& timezone);
 
 }  // namespace brave_vpn
 
