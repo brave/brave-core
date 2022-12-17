@@ -26,6 +26,7 @@ source_set("api") {
     "//components/prefs",
     "//net/traffic_annotation",
     "//services/network/public/cpp",
+    "//third_party/icu",
     "//url",
   ]
 }

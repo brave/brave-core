@@ -35,7 +35,8 @@ BraveVPN.setPanelBrowserApiForTesting({
     getSupportData: () => Promise.resolve({
       appVersion: '1',
       osVersion: '2',
-      hostname: 'site.example.com'
+      hostname: 'site.example.com',
+      timezone: 'USA/Boston'
     }),
     createSupportTicket: (email: string, subject: string, body: string) => Promise.resolve({
       success: true,
