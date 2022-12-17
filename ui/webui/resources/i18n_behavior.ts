@@ -22,7 +22,7 @@
  * code.
  */
 
-import {loadTimeData} from '//resources/js/load_time_data.m.js';
+import {loadTimeData} from '//resources/js/load_time_data.js';
 import {parseHtmlSubset, sanitizeInnerHtml, SanitizeInnerHtmlOpts} from '//resources/js/parse_html_subset.js';
 
 /** @polymerBehavior */

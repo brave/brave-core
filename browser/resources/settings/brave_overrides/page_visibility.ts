@@ -5,7 +5,7 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
+import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
 
 import {pageVisibility as chromiumPageVisibility, setPageVisibilityForTesting} from '../page_visibility.js'
 
