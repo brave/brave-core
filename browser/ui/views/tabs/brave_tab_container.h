@@ -21,6 +21,13 @@ class BraveTabContainer : public TabContainerImpl {
                     views::View* scroll_contents_view);
   ~BraveTabContainer() override;
 
+  // Calling this will freeze this view's layout. When the returned closure
+  // runs, layout will be unlocked and run immediately.
+  // This is to avoid accessing invalid index during reconstruction
+  // of TabContainer. In addition, we can avoid redundant layout as a side
+  // effect.
+  base::OnceClosure LockLayout();
+
   // TabContainer:
   gfx::Size CalculatePreferredSize() const override;
   void UpdateClosingModeOnRemovedTab(int model_index, bool was_active) override;
@@ -32,13 +39,20 @@ class BraveTabContainer : public TabContainerImpl {
   void StartInsertTabAnimation(int model_index) override;
   void RemoveTab(int index, bool was_active) override;
   void OnTabCloseAnimationCompleted(Tab* tab) override;
+  void CompleteAnimationAndLayout() override;
 
  private:
   void UpdateLayoutOrientation();
 
+  void OnUnlockLayout();
+
   base::flat_set<Tab*> closing_tabs_;
 
+  raw_ptr<TabDragContext> drag_context_;
+
   BooleanPrefMember show_vertical_tabs_;
+
+  bool layout_locked_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_

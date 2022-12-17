@@ -58,6 +58,11 @@ class VerticalTabStripRegionView : public views::View {
   [[nodiscard]] ScopedStateResetter ExpandTabStripForDragging();
   gfx::Vector2d GetOffsetForDraggedTab() const;
 
+  int GetAvailableWidthForTabContainer();
+
+  // This should be called when height of this view or tab strip changes.
+  void UpdateNewTabButtonVisibility();
+
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
   gfx::Size GetMinimumSize() const override;
@@ -75,7 +80,6 @@ class VerticalTabStripRegionView : public views::View {
 
   void UpdateLayout(bool in_destruction = false);
 
-  void UpdateNewTabButtonVisibility();
   void UpdateTabSearchButtonVisibility();
 
   void OnCollapsedPrefChanged();
@@ -84,6 +88,7 @@ class VerticalTabStripRegionView : public views::View {
   void ScheduleFloatingModeTimer();
 
   gfx::Size GetPreferredSizeForState(State state) const;
+  int GetPreferredWidthForState(State state) const;
 
   // Returns valid object only when the related flag is enabled.
   TabStripScrollContainer* GetTabStripScrollContainer();
@@ -110,8 +115,6 @@ class VerticalTabStripRegionView : public views::View {
   base::OneShotTimer mouse_enter_timer_;
 
   bool mouse_events_for_test_ = false;
-
-  absl::optional<gfx::Size> last_layout_size_;
 
   base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };

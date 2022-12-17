@@ -28,9 +28,11 @@ using TabDragControllerBrave = TabDragController;
 #define CalculateNonMaximizedDraggedBrowserBounds \
   virtual CalculateNonMaximizedDraggedBrowserBounds
 #define CalculateDraggedBrowserBounds virtual CalculateDraggedBrowserBounds
+#define InitDragData virtual InitDragData
 
 #include "src/chrome/browser/ui/views/tabs/tab_drag_controller.h"
 
+#undef InitDragData
 #undef CalculateDraggedBrowserBounds
 #undef CalculateNonMaximizedDraggedBrowserBounds
 #undef DetachAndAttachToNewContext
@@ -82,6 +84,8 @@ class TabDragController : public TabDragControllerChromium {
       TabDragContext* source,
       const gfx::Point& point_in_screen,
       std::vector<gfx::Rect>* drag_bounds) override;
+
+  void InitDragData(TabSlotView* view, TabDragData* drag_data) override;
 
  private:
   gfx::Vector2d GetVerticalTabStripWidgetOffset();

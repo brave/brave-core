@@ -18,6 +18,7 @@ class BraveTab : public Tab {
   BraveTab& operator=(const BraveTab&) = delete;
   ~BraveTab() override;
 
+  // Tab:
   std::u16string GetTooltipText(const gfx::Point& p) const override;
 
   // Overridden because we moved alert button to left side in the tab whereas

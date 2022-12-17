@@ -61,10 +61,16 @@ absl::optional<SkColor> BraveTab::GetGroupColor() const {
 void BraveTab::UpdateIconVisibility() {
   Tab::UpdateIconVisibility();
   if (IsAtMinWidthForVerticalTabStrip()) {
-    const bool is_active = IsActive();
-    center_icon_ = true;
-    showing_icon_ = !is_active && !showing_alert_indicator_;
-    showing_close_button_ = is_active;
+    if (data().pinned) {
+      center_icon_ = true;
+      showing_icon_ = !showing_alert_indicator_;
+      showing_close_button_ = false;
+    } else {
+      const bool is_active = IsActive();
+      center_icon_ = true;
+      showing_icon_ = !is_active && !showing_alert_indicator_;
+      showing_close_button_ = is_active;
+    }
   }
 }
 
@@ -72,7 +78,7 @@ void BraveTab::Layout() {
   Tab::Layout();
   if (IsAtMinWidthForVerticalTabStrip()) {
     if (showing_close_button_) {
-      close_button_->SetX(bounds().CenterPoint().x() -
+      close_button_->SetX(GetLocalBounds().CenterPoint().x() -
                           (close_button_->width() / 2));
       close_button_->SetButtonPadding({});
     }
@@ -90,5 +96,5 @@ bool BraveTab::ShouldRenderAsNormalTab() const {
 
 bool BraveTab::IsAtMinWidthForVerticalTabStrip() const {
   return tabs::features::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
-         width() == tabs::kVerticalTabMinWidth;
+         width() <= tabs::kVerticalTabMinWidth;
 }
