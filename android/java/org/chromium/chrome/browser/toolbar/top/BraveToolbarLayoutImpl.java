@@ -50,6 +50,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
@@ -74,6 +75,7 @@ import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindo
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.lifecycle.ConfigurationChangedObserver;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
@@ -85,6 +87,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.SearchActivity;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
+import org.chromium.chrome.browser.playlist.PlaylistPageHandlerFactory;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
@@ -130,6 +133,7 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PageHandler;
 import org.chromium.playlist.mojom.Playlist;
+import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
@@ -217,6 +221,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         if (mCookieListOptInPageAndroidHandler != null) {
             mCookieListOptInPageAndroidHandler.close();
+        }
+        if (mPlaylistPageHandler != null) {
+            mPlaylistPageHandler.close();
         }
         super.destroy();
         if (mBraveRewardsNativeWorker != null) {
@@ -359,6 +366,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public void onConnectionError(MojoException e) {
         mCookieListOptInPageAndroidHandler = null;
         initCookieListOptInPageAndroidHandler();
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
+            mPlaylistPageHandler = null;
+            initPlaylistPageHandler();
+        }
     }
 
     private void initCookieListOptInPageAndroidHandler() {
@@ -371,10 +382,22 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         this);
     }
 
+    private void initPlaylistPageHandler() {
+        if (mPlaylistPageHandler != null) {
+            return;
+        }
+
+        mPlaylistPageHandler =
+                PlaylistPageHandlerFactory.getInstance().getPlaylistPageHandler(this);
+    }
+
     @Override
     protected void onNativeLibraryReady() {
         super.onNativeLibraryReady();
         initCookieListOptInPageAndroidHandler();
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
+            initPlaylistPageHandler();
+        }
         mBraveShieldsContentSettings = BraveShieldsContentSettings.getInstance();
         mBraveShieldsContentSettings.addObserver(mBraveShieldsContentSettingsObserver);
 
@@ -489,6 +512,25 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         && mBraveRewardsNativeWorker != null
                         && mBraveRewardsNativeWorker.IsSupported()) {
                     showBraveRewardsOnboardingModal();
+                }
+
+                if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
+                        && !tab.getUrl().getSpec().startsWith(UrlConstants.CHROME_SCHEME)
+                        && !UrlUtilities.isNTPUrl(tab.getUrl().getSpec())
+                        && mPlaylistPageHandler != null) {
+                    // TODO DEEP : find contents from the page and show the playlist button
+                    // org.chromium.url.mojom.Url contentUrl = new org.chromium.url.mojom.Url();
+                    // contentUrl.url = "https://www.youtube.com/watch?v=WETz6EaohrM";
+                    // mPlaylistPageHandler.addMediaFilesFromPageToPlaylist("default", contentUrl);
+
+                    mPlaylistPageHandler.getPlaylist("default", pl -> {
+                        Log.e("NTP", "mPlaylistPageHandler 4");
+                        PlaylistItem playlistItem = pl.items[0];
+                        Log.e("NTP",
+                                playlistItem.name + " : " + playlistItem.pageSource.url + " : "
+                                        + playlistItem.mediaPath.url + " : "
+                                        + playlistItem.thumbnailPath.url);
+                    });
                 }
             }
 

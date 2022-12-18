@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_PLAYLIST_PLAYLIST_ANDROID_PAGE_HANDLER_FACTORY_H_
-#define BRAVE_BROWSER_PLAYLIST_PLAYLIST_ANDROID_PAGE_HANDLER_FACTORY_H_
+#ifndef BRAVE_BROWSER_PLAYLIST_ANDROID_PLAYLIST_PAGE_HANDLER_FACTORY_H_
+#define BRAVE_BROWSER_PLAYLIST_ANDROID_PLAYLIST_PAGE_HANDLER_FACTORY_H_
 
 #include "base/memory/singleton.h"
-#include "brave/browser/playlist/playlist_android_page_handler.h"
+#include "brave/browser/playlist/android/playlist_android_page_handler.h"
 #include "brave/components/playlist/mojom/playlist.mojom.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -18,28 +18,21 @@ class PlaylistAndroidPageHandler;
 
 namespace playlist {
 
-class PlaylistAndroidPageHandlerFactory
-    : public BrowserContextKeyedServiceFactory {
+class PlaylistPageHandlerFactory : public BrowserContextKeyedServiceFactory {
  public:
-  PlaylistAndroidPageHandlerFactory(const PlaylistAndroidPageHandlerFactory&) =
+  PlaylistPageHandlerFactory(const PlaylistPageHandlerFactory&) = delete;
+  PlaylistPageHandlerFactory& operator=(const PlaylistPageHandlerFactory&) =
       delete;
-  PlaylistAndroidPageHandlerFactory& operator=(
-      const PlaylistAndroidPageHandlerFactory&) = delete;
 
   static mojo::PendingRemote<mojom::PageHandler> GetForContext(
       content::BrowserContext* context);
-  static PlaylistAndroidPageHandler* GetServiceForContext(
-      content::BrowserContext* context);
-  static PlaylistAndroidPageHandlerFactory* GetInstance();
-  static void BindForContext(
-      content::BrowserContext* context,
-      mojo::PendingReceiver<mojom::PageHandler> receiver);
+  static PlaylistPageHandlerFactory* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<PlaylistAndroidPageHandlerFactory>;
+  friend struct base::DefaultSingletonTraits<PlaylistPageHandlerFactory>;
 
-  PlaylistAndroidPageHandlerFactory();
-  ~PlaylistAndroidPageHandlerFactory() override;
+  PlaylistPageHandlerFactory();
+  ~PlaylistPageHandlerFactory() override;
 
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
@@ -49,4 +42,4 @@ class PlaylistAndroidPageHandlerFactory
 
 }  // namespace playlist
 
-#endif  // BRAVE_BROWSER_PLAYLIST_PLAYLIST_PAGE_HANDLER_FACTORY_H_
+#endif  // BRAVE_BROWSER_PLAYLIST_ANDROID_PLAYLIST_PAGE_HANDLER_FACTORY_H_

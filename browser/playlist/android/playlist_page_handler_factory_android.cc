@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 #include "base/android/jni_android.h"
-#include "brave/browser/playlist/playlist_android_page_handler_factory.h"
+#include "brave/browser/playlist/android/playlist_page_handler_factory.h"
 #include "brave/build/android/jni_headers/PlaylistPageHandlerFactory_jni.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
@@ -18,7 +18,7 @@ static jint JNI_PlaylistPageHandlerFactory_GetInterfaceToPlaylistPageHandler(
   if (profile == nullptr)
     return static_cast<jint>(-1);
   auto pending =
-      playlist::PlaylistAndroidPageHandlerFactory::GetInstance()->GetForContext(
+      playlist::PlaylistPageHandlerFactory::GetInstance()->GetForContext(
           profile);
 
   return static_cast<jint>(pending.PassPipe().release().value());

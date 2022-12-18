@@ -30,11 +30,11 @@ if (enable_playlist) {
 
   if (is_android) {
     brave_browser_playlist_sources += [
+      "//brave/browser/playlist/android/playlist_android_page_handler.cc",
+      "//brave/browser/playlist/android/playlist_android_page_handler.h",
+      "//brave/browser/playlist/android/playlist_page_handler_factory.cc",
+      "//brave/browser/playlist/android/playlist_page_handler_factory.h",
       "//brave/browser/playlist/android/playlist_page_handler_factory_android.cc",
-      "//brave/browser/playlist/playlist_android_page_handler.cc",
-      "//brave/browser/playlist/playlist_android_page_handler.h",
-      "//brave/browser/playlist/playlist_android_page_handler_factory.cc",
-      "//brave/browser/playlist/playlist_android_page_handler_factory.h",
     ]
 
     brave_browser_playlist_deps += [

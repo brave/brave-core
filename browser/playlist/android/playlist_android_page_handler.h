@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_PLAYLIST_PLAYLIST_ANDROID_PAGE_HANDLER_H_
-#define BRAVE_BROWSER_PLAYLIST_PLAYLIST_ANDROID_PAGE_HANDLER_H_
+#ifndef BRAVE_BROWSER_PLAYLIST_ANDROID_PLAYLIST_ANDROID_PAGE_HANDLER_H_
+#define BRAVE_BROWSER_PLAYLIST_ANDROID_PLAYLIST_ANDROID_PAGE_HANDLER_H_
 
 #include <string>
 
@@ -27,7 +27,6 @@ class PlaylistAndroidPageHandler : public PlaylistPageHandler,
  public:
   PlaylistAndroidPageHandler(Profile* profile);
   mojo::PendingRemote<playlist::mojom::PageHandler> MakeRemote();
-  void Bind(mojo::PendingReceiver<playlist::mojom::PageHandler> receiver);
   ~PlaylistAndroidPageHandler() override;
 
  private:
@@ -35,4 +34,4 @@ class PlaylistAndroidPageHandler : public PlaylistPageHandler,
   mojo::ReceiverSet<playlist::mojom::PageHandler> receivers_;
 };
 
-#endif  // BRAVE_BROWSER_PLAYLIST_PLAYLIST_ANDROID_PAGE_HANDLER_H_
+#endif  // BRAVE_BROWSER_PLAYLIST_ANDROID_PLAYLIST_ANDROID_PAGE_HANDLER_H_

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/playlist/playlist_android_page_handler_factory.h"
+#include "brave/browser/playlist/android/playlist_page_handler_factory.h"
 
 #include <utility>
 
@@ -17,50 +17,28 @@
 namespace playlist {
 
 // static
-PlaylistAndroidPageHandlerFactory*
-PlaylistAndroidPageHandlerFactory::GetInstance() {
-  return base::Singleton<PlaylistAndroidPageHandlerFactory>::get();
+PlaylistPageHandlerFactory* PlaylistPageHandlerFactory::GetInstance() {
+  return base::Singleton<PlaylistPageHandlerFactory>::get();
 }
 
 // static
 mojo::PendingRemote<mojom::PageHandler>
-PlaylistAndroidPageHandlerFactory::GetForContext(
-    content::BrowserContext* context) {
+PlaylistPageHandlerFactory::GetForContext(content::BrowserContext* context) {
   return static_cast<PlaylistAndroidPageHandler*>(
              GetInstance()->GetServiceForBrowserContext(context, true))
       ->MakeRemote();
 }
 
-// static
-PlaylistAndroidPageHandler*
-PlaylistAndroidPageHandlerFactory::GetServiceForContext(
-    content::BrowserContext* context) {
-  return static_cast<PlaylistAndroidPageHandler*>(
-      GetInstance()->GetServiceForBrowserContext(context, true));
-}
-
-// static
-void PlaylistAndroidPageHandlerFactory::BindForContext(
-    content::BrowserContext* context,
-    mojo::PendingReceiver<mojom::PageHandler> receiver) {
-  auto* playlist_page_handler =
-      PlaylistAndroidPageHandlerFactory::GetServiceForContext(context);
-  if (playlist_page_handler) {
-    playlist_page_handler->Bind(std::move(receiver));
-  }
-}
-
-PlaylistAndroidPageHandlerFactory::PlaylistAndroidPageHandlerFactory()
+PlaylistPageHandlerFactory::PlaylistPageHandlerFactory()
     : BrowserContextKeyedServiceFactory(
           "PlaylistAndroidPageHandler",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(playlist::PlaylistServiceFactory::GetInstance());
 }
 
-PlaylistAndroidPageHandlerFactory::~PlaylistAndroidPageHandlerFactory() =
-    default;
+PlaylistPageHandlerFactory::~PlaylistPageHandlerFactory() = default;
 
-KeyedService* PlaylistAndroidPageHandlerFactory::BuildServiceInstanceFor(
+KeyedService* PlaylistPageHandlerFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
   playlist::PlaylistServiceFactory::GetInstance()->GetForBrowserContext(
@@ -68,8 +46,7 @@ KeyedService* PlaylistAndroidPageHandlerFactory::BuildServiceInstanceFor(
   return new PlaylistAndroidPageHandler(profile);
 }
 
-content::BrowserContext*
-PlaylistAndroidPageHandlerFactory::GetBrowserContextToUse(
+content::BrowserContext* PlaylistPageHandlerFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }

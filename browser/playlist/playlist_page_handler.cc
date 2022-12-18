@@ -14,10 +14,10 @@
 #include "brave/components/playlist/playlist_constants.h"
 #include "brave/components/playlist/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
-#endif
+#endif  // BUILDFLAG(IS_ANDROID)
 #include "components/prefs/pref_service.h"
 
 using PlaylistId = playlist::PlaylistService::PlaylistId;
@@ -46,7 +46,7 @@ PlaylistPageHandler::PlaylistPageHandler(Profile* profile) : profile_(profile) {
   // TODO DEEP : check if we need observer for android
   // observation_.Observe(GetPlaylistService(profile_));
 }
-#endif
+#endif  // BUILDFLAG(IS_ANDROID)
 
 PlaylistPageHandler::~PlaylistPageHandler() = default;
 
@@ -57,8 +57,9 @@ void PlaylistPageHandler::GetAllPlaylists(
     std::vector<mojo::StructPtr<playlist::mojom::PlaylistItem>> items;
     for (const auto& item : playlist.items) {
       items.push_back(playlist::mojom::PlaylistItem::New(
-          item.id, item.title, GURL(item.page_src), GURL(item.media_file_path),
-          GURL(item.thumbnail_path), item.media_file_cached));
+          item.id, item.title, GURL(item.page_src),
+          GURL("file://" + item.media_file_path),
+          GURL("file://" + item.thumbnail_path), item.media_file_cached));
     }
     playlists.push_back(playlist::mojom::Playlist::New(
         playlist.id, playlist.name, std::move(items)));
@@ -79,8 +80,9 @@ void PlaylistPageHandler::GetPlaylist(
   std::vector<mojo::StructPtr<playlist::mojom::PlaylistItem>> items;
   for (const auto& item : playlist->items) {
     items.push_back(playlist::mojom::PlaylistItem::New(
-        item.id, item.title, GURL(item.page_src), GURL(item.media_file_path),
-        GURL(item.thumbnail_path), item.media_file_cached));
+        item.id, item.title, GURL(item.page_src),
+        GURL("file://" + item.media_file_path),
+        GURL("file://" + item.thumbnail_path), item.media_file_cached));
   }
   std::move(callback).Run(playlist::mojom::Playlist::New(
       playlist->id, playlist->name, std::move(items)));
@@ -95,7 +97,7 @@ void PlaylistPageHandler::AddMediaFilesFromPageToPlaylist(const std::string& id,
 
 void PlaylistPageHandler::AddMediaFilesFromOpenTabsToPlaylist(
     const std::string& playlist_id) {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   NOTIMPLEMENTED();
 #else
   auto* browser = chrome::FindLastActive();
@@ -113,7 +115,7 @@ void PlaylistPageHandler::AddMediaFilesFromOpenTabsToPlaylist(
           profile_->GetPrefs()->GetBoolean(playlist::kPlaylistCacheByDefault));
     }
   }
-#endif  // defined(OS_ANDROID)
+#endif  // BUILDFLAG(IS_ANDROID)
 }
 
 void PlaylistPageHandler::RemoveItemFromPlaylist(const std::string& playlist_id,
@@ -156,7 +158,7 @@ void PlaylistPageHandler::OnPlaylistStatusChanged(
   NOTIMPLEMENTED();
 #else
   page_->OnEvent(playlist::mojom::PlaylistEvent::kUpdated);
-#endif
+#endif  // BUILDFLAG(IS_ANDROID)
 }
 
 void PlaylistPageHandler::OnMediaFileDownloadProgressed(
@@ -171,5 +173,5 @@ void PlaylistPageHandler::OnMediaFileDownloadProgressed(
   page_->OnMediaFileDownloadProgressed(
       id, total_bytes, received_bytes, percent_complete,
       base::TimeDeltaToValue(time_remaining).GetString());
-#endif
+#endif  // BUILDFLAG(IS_ANDROID)
 }
