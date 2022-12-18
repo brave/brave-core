@@ -21,7 +21,7 @@
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
-#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "build/build_config.h"

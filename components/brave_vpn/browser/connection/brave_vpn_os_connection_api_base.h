@@ -17,7 +17,7 @@
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
-#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
@@ -81,23 +81,21 @@ class BraveVPNOSConnectionAPIBase
   std::string target_vpn_entry_name() const { return target_vpn_entry_name_; }
 
  private:
-  friend class BraveVPNServiceTest;
   friend class BraveVPNOSConnectionAPISim;
-  friend class BraveVPNOsConnectionAPIBaseTest;
+  friend class BraveVPNOSConnectionAPIUnitTest;
 
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            CreateOSVPNEntryWithValidInfoWhenConnectTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            CreateOSVPNEntryWithInvalidInfoTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            CheckConnectionStateAfterNetworkStateChanged);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, HostnamesTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, CancelConnectingTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, ConnectionInfoTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, NeedsConnectTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, ConnectWithoutNetwork);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, OnDisconnectedWithoutNetwork);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, HostnamesTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+                           CancelConnectingTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, ConnectionInfoTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            IgnoreDisconnectedStateWhileConnecting);
   // net::NetworkChangeNotifier::NetworkChangeObserver
   void OnNetworkChanged(

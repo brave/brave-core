@@ -52,9 +52,9 @@ class BraveVPNOSConnectionAPISim : public BraveVPNOSConnectionAPIBase {
  private:
   friend class BraveVPNServiceTest;
 
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            CreateOSVPNEntryWithValidInfoWhenConnectTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            CreateOSVPNEntryWithInvalidInfoTest);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest,
                            ConnectionStateUpdateWithPurchasedStateTest);

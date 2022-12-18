@@ -9,7 +9,7 @@ assert(enable_brave_vpn)
 
 source_set("api") {
   sources = [ "brave_vpn_os_connection_api.h" ]
-  deps = [ "//brave/components/brave_vpn/mojom" ]
+  deps = [ "//brave/components/brave_vpn/common/mojom" ]
 }
 
 group("connection") {
@@ -38,7 +38,7 @@ source_set("common") {
     "//brave/components/api_request_helper",
     "//brave/components/brave_vpn/browser/api",
     "//brave/components/brave_vpn/common",
-    "//brave/components/brave_vpn/mojom",
+    "//brave/components/brave_vpn/common/mojom",
     "//brave/components/skus/browser",
     "//brave/components/skus/common:mojom",
     "//build:buildflag_header_h",
@@ -61,5 +61,22 @@ source_set("sim") {
     "//base",
     "//brave/components/brave_vpn/common",
     "//third_party/icu",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_vpn_os_connection_api_unittest.cc" ]
+
+  deps = [
+    ":api",
+    ":sim",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/mojom",
+    "//components/sync_preferences:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
   ]
 }
