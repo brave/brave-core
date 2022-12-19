@@ -201,8 +201,10 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
           GetContentSettingsClientFor(&context)) {
     farbling_level_ = settings->GetBraveFarblingLevel();
   }
-  audio_farbling_helper_.emplace(
-      fudge_factor, seed, farbling_level_ == BraveFarblingLevel::MAXIMUM);
+  if (farbling_level_ != BraveFarblingLevel::OFF) {
+    audio_farbling_helper_.emplace(
+        fudge_factor, seed, farbling_level_ == BraveFarblingLevel::MAXIMUM);
+  }
   farbling_enabled_ = true;
 }
 
@@ -221,19 +223,9 @@ void BraveSessionCache::Init() {
   RegisterAllowFontFamilyCallback(base::BindRepeating(&brave::AllowFontFamily));
 }
 
-absl::optional<blink::BraveAudioFarblingHelper>
-BraveSessionCache::GetAudioFarblingHelper() {
-  if (!farbling_enabled_ || (farbling_level_ == BraveFarblingLevel::OFF))
-    return absl::nullopt;
-  DCHECK(audio_farbling_helper_);
-  return audio_farbling_helper_;
-}
-
 void BraveSessionCache::FarbleAudioChannel(float* dst, size_t count) {
-  if (absl::optional<blink::BraveAudioFarblingHelper> helper =
-          GetAudioFarblingHelper()) {
-    helper->FarbleAudioChannel(dst, count);
-  }
+  if (audio_farbling_helper_)
+    audio_farbling_helper_->FarbleAudioChannel(dst, count);
 }
 
 void BraveSessionCache::PerturbPixels(const unsigned char* data, size_t size) {

@@ -86,11 +86,11 @@ class CORE_EXPORT BraveSessionCache final
   bool AllowFontFamily(blink::WebContentSettingsClient* settings,
                        const AtomicString& family_name);
   FarblingPRNG MakePseudoRandomGenerator(FarbleKey key = FarbleKey::kNone);
-  absl::optional<blink::BraveAudioFarblingHelper> GetAudioFarblingHelper();
+  absl::optional<blink::BraveAudioFarblingHelper> GetAudioFarblingHelper() {
+    return audio_farbling_helper_;
+  }
 
  private:
-  const blink::BraveAudioFarblingHelper* UpdateAndGetAudioFarblingHelper();
-
   bool farbling_enabled_;
   uint64_t session_key_;
   uint8_t domain_key_[32];
