@@ -516,30 +516,29 @@ void Contribution::Process(mojom::ContributionQueuePtr queue,
 void Contribution::TransferFunds(const mojom::SKUTransaction& transaction,
                                  const std::string& destination,
                                  const std::string& wallet_type,
-                                 client::TransactionCallback callback) {
+                                 const std::string& contribution_id,
+                                 client::LegacyResultCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
-    ledger_->uphold()->TransferFunds(
-        transaction.amount,
-        destination,
-        callback);
+    ledger_->uphold()->TransferFunds(transaction.amount, destination,
+                                     contribution_id, callback);
     return;
   }
 
-  if (wallet_type == constant::kWalletBitflyer) {
-    ledger_->bitflyer()->TransferFunds(transaction.amount, destination,
-                                       callback);
-    return;
-  }
+  // if (wallet_type == constant::kWalletBitflyer) {
+  //   ledger_->bitflyer()->TransferFunds(transaction.amount, destination,
+  //                                      callback);
+  //   return;
+  // }
 
-  if (wallet_type == constant::kWalletGemini) {
-    ledger_->gemini()->TransferFunds(transaction.amount, destination, callback);
-    return;
-  }
+  // if (wallet_type == constant::kWalletGemini) {
+  //   ledger_->gemini()->TransferFunds(transaction.amount, destination,
+  //   callback); return;
+  // }
 
-  if (wallet_type == constant::kWalletUnBlinded) {
-    sku_->Merchant(transaction, callback);
-    return;
-  }
+  // if (wallet_type == constant::kWalletUnBlinded) {
+  //   sku_->Merchant(transaction, callback);
+  //   return;
+  // }
 
   NOTREACHED();
   BLOG(0, "Wallet type not supported: " << wallet_type);

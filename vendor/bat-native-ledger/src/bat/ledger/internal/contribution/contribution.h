@@ -66,7 +66,8 @@ class Contribution {
   void TransferFunds(const mojom::SKUTransaction& transaction,
                      const std::string& destination,
                      const std::string& wallet_type,
-                     client::TransactionCallback callback);
+                     const std::string& contribution_id,
+                     client::LegacyResultCallback callback);
 
   void SKUAutoContribution(const std::string& contribution_id,
                            const std::string& wallet_type,

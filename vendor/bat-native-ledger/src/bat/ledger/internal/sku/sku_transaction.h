@@ -37,12 +37,18 @@ class SKUTransaction {
                           const mojom::SKUTransaction& transaction,
                           const std::string& destination,
                           const std::string& wallet_type,
+                          const std::string& contribution_id,
                           ledger::LegacyResultCallback callback);
 
   void OnTransfer(mojom::Result result,
-                  const std::string& external_transaction_id,
                   const mojom::SKUTransaction& transaction,
+                  const std::string& contribution_id,
+                  const std::string& destination,
                   ledger::LegacyResultCallback callback);
+
+  void OnGetExternalTransactionId(ledger::LegacyResultCallback,
+                                  mojom::SKUTransaction&&,
+                                  std::string&& external_transaction_id);
 
   void OnSaveSKUExternalTransaction(mojom::Result result,
                                     const mojom::SKUTransaction& transaction,
