@@ -65,7 +65,9 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
+#if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/playlist/android/playlist_page_handler_factory.h"
+#endif
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/features.h"
 #endif
@@ -126,10 +128,11 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     playlist::PlaylistServiceFactory::GetInstance();
+#if BUILDFLAG(IS_ANDROID)
     playlist::PlaylistPageHandlerFactory::GetInstance();
+#endif  // BUILDFLAG(IS_ANDROID)
   }
-#endif
-
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
   BraveSyncAlertsServiceFactory::GetInstance();
 }
 
