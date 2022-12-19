@@ -17,6 +17,7 @@
 #include "net/base/net_errors.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
 using testing::Return;
@@ -25,6 +26,8 @@ namespace {
 
 constexpr char kBraveSearchRequestUrl[] =
     "https://search.brave.com/search?q=qwerty";
+constexpr char kBraveSearchImageRequestUrl[] =
+    "https://search.brave.com/img.png";
 constexpr char kNonBraveSearchRequestUrl[] =
     "https://brave.com/search?q=qwerty";
 constexpr char kBraveSearchTabUrl[] = "https://search.brave.com";
@@ -58,21 +61,54 @@ class AdsStatusHeaderDelegateHelperTest : public testing::Test {
 };
 
 TEST_F(AdsStatusHeaderDelegateHelperTest, BraveSearchTabAdsEnabled) {
-  auto request_info =
-      std::make_shared<brave::BraveRequestInfo>(GURL(kBraveSearchRequestUrl));
+  auto request_info = std::make_shared<brave::BraveRequestInfo>();
   request_info->browser_context = profile();
   request_info->tab_origin = GURL(kBraveSearchTabUrl);
   brave_ads::MockAdsService* ads_service = SetUpAdsService(profile());
-  EXPECT_CALL(*ads_service, IsEnabled()).WillOnce(Return(true));
+  ASSERT_TRUE(ads_service);
+  EXPECT_CALL(*ads_service, IsEnabled()).WillRepeatedly(Return(true));
 
-  net::HttpRequestHeaders headers;
-  const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
-      &headers, brave::ResponseCallback(), request_info);
-  EXPECT_EQ(rc, net::OK);
+  {
+    request_info->request_url = GURL(kBraveSearchTabUrl);
+    request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
-  std::string ads_status_header;
-  EXPECT_TRUE(headers.GetHeader(brave::kAdsStatusHeader, &ads_status_header));
-  EXPECT_EQ(ads_status_header, brave::kAdsEnabledStatusValue);
+    net::HttpRequestHeaders headers;
+    const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
+        &headers, brave::ResponseCallback(), request_info);
+    EXPECT_EQ(rc, net::OK);
+
+    std::string ads_status_header;
+    EXPECT_TRUE(headers.GetHeader(brave::kAdsStatusHeader, &ads_status_header));
+    EXPECT_EQ(ads_status_header, brave::kAdsEnabledStatusValue);
+  }
+
+  {
+    request_info->request_url = GURL(kBraveSearchTabUrl);
+    request_info->resource_type = blink::mojom::ResourceType::kXhr;
+
+    net::HttpRequestHeaders headers;
+    const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
+        &headers, brave::ResponseCallback(), request_info);
+    EXPECT_EQ(rc, net::OK);
+
+    std::string ads_status_header;
+    EXPECT_TRUE(headers.GetHeader(brave::kAdsStatusHeader, &ads_status_header));
+    EXPECT_EQ(ads_status_header, brave::kAdsEnabledStatusValue);
+  }
+
+  {
+    request_info->request_url = GURL(kBraveSearchImageRequestUrl);
+    request_info->resource_type = blink::mojom::ResourceType::kImage;
+
+    net::HttpRequestHeaders headers;
+    const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
+        &headers, brave::ResponseCallback(), request_info);
+    EXPECT_EQ(rc, net::OK);
+
+    std::string ads_status_header;
+    EXPECT_TRUE(headers.GetHeader(brave::kAdsStatusHeader, &ads_status_header));
+    EXPECT_EQ(ads_status_header, brave::kAdsEnabledStatusValue);
+  }
 }
 
 TEST_F(AdsStatusHeaderDelegateHelperTest, NonBraveSearchTabAdsEnabled) {
@@ -80,7 +116,9 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, NonBraveSearchTabAdsEnabled) {
       std::make_shared<brave::BraveRequestInfo>(GURL(kBraveSearchRequestUrl));
   request_info->browser_context = profile();
   request_info->tab_origin = GURL(kNonBraveSearchTabUrl);
+  request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
   brave_ads::MockAdsService* ads_service = SetUpAdsService(profile());
+  ASSERT_TRUE(ads_service);
   EXPECT_CALL(*ads_service, IsEnabled()).WillOnce(Return(true));
 
   net::HttpRequestHeaders headers;
@@ -96,7 +134,9 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, NonBraveSearchRequestAdsEnabled) {
       GURL(kNonBraveSearchRequestUrl));
   request_info->browser_context = profile();
   request_info->tab_origin = GURL(kBraveSearchTabUrl);
+  request_info->resource_type = blink::mojom::ResourceType::kXhr;
   brave_ads::MockAdsService* ads_service = SetUpAdsService(profile());
+  ASSERT_TRUE(ads_service);
   EXPECT_CALL(*ads_service, IsEnabled()).WillOnce(Return(true));
 
   net::HttpRequestHeaders headers;
@@ -113,14 +153,30 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, BraveSearchHostAdsDisabled) {
   request_info->browser_context = profile();
   request_info->tab_origin = GURL(kBraveSearchTabUrl);
   brave_ads::MockAdsService* ads_service = SetUpAdsService(profile());
-  EXPECT_CALL(*ads_service, IsEnabled()).WillOnce(Return(false));
+  ASSERT_TRUE(ads_service);
+  EXPECT_CALL(*ads_service, IsEnabled()).WillRepeatedly(Return(false));
 
-  net::HttpRequestHeaders headers;
-  const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
-      &headers, brave::ResponseCallback(), request_info);
-  EXPECT_EQ(rc, net::OK);
+  {
+    request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
-  EXPECT_FALSE(headers.HasHeader(brave::kAdsStatusHeader));
+    net::HttpRequestHeaders headers;
+    const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
+        &headers, brave::ResponseCallback(), request_info);
+    EXPECT_EQ(rc, net::OK);
+
+    EXPECT_FALSE(headers.HasHeader(brave::kAdsStatusHeader));
+  }
+
+  {
+    request_info->resource_type = blink::mojom::ResourceType::kXhr;
+
+    net::HttpRequestHeaders headers;
+    const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
+        &headers, brave::ResponseCallback(), request_info);
+    EXPECT_EQ(rc, net::OK);
+
+    EXPECT_FALSE(headers.HasHeader(brave::kAdsStatusHeader));
+  }
 }
 
 TEST_F(AdsStatusHeaderDelegateHelperTest, BraveSearchHostIncognitoProfile) {
@@ -130,6 +186,7 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, BraveSearchHostIncognitoProfile) {
       std::make_shared<brave::BraveRequestInfo>(GURL(kBraveSearchRequestUrl));
   request_info->browser_context = incognito_profile;
   request_info->tab_origin = GURL(kBraveSearchTabUrl);
+  request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
   brave_ads::MockAdsService* ads_service = SetUpAdsService(incognito_profile);
   EXPECT_FALSE(ads_service);
 
