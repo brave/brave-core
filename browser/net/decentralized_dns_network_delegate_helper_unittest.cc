@@ -146,7 +146,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   } test_cases[] = {
       {"https://brave.crypto", true},
       {"https://brave.x", true},
-      {"https://brave.coin", true},
+      {"https://brave.coin", false},
       {"https://brave.nft", true},
       {"https://brave.dao", true},
       {"https://brave.wallet", true},

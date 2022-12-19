@@ -71,9 +71,9 @@ constexpr char kDomainPattern[] =
 // Non empty group of symbols of a-z | 0-9 | hyphen(-).
 // Then a dot.
 // Then one of fixed suffixes(should match `supportedUDExtensions` array from
-// send.ts).
+// domain-extensions.ts).
 constexpr char kUDPattern[] =
-    "(?:[a-z0-9-]+)\\.(?:crypto|x|coin|nft|dao|wallet|blockchain|bitcoin|zil)";
+    "(?:[a-z0-9-]+)\\.(?:crypto|x|nft|dao|wallet|blockchain|bitcoin|zil)";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("json_rpc_service", R"(

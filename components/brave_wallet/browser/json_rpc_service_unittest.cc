@@ -3317,7 +3317,6 @@ TEST_F(JsonRpcServiceUnitTest, IsValidUnstoppableDomain) {
   std::vector<std::string> valid_domains = {
       "test.crypto",
       "test.x",
-      "test.coin",
       "test.nft",
       "test.dao",
       "test.wallet",
@@ -3337,6 +3336,7 @@ TEST_F(JsonRpcServiceUnitTest, IsValidUnstoppableDomain) {
       "crypto.brave",
       "brave.crypto-",
       "brave.test.crypto",
+      "test.coin",
       "test.888",
   };
   // clang-format on
