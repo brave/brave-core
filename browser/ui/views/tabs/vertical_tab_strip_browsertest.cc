@@ -41,17 +41,6 @@
 
 namespace {
 
-class TallLayoutManager : public views::FlexLayout {
- public:
-  using FlexLayout::FlexLayout;
-  ~TallLayoutManager() override = default;
-
-  // views::FlexLayout:
-  gfx::Size GetMinimumSize(const views::View* host) const override {
-    return {300, 1000};
-  }
-};
-
 class FullscreenNotificationObserver : public FullscreenObserver {
  public:
   explicit FullscreenNotificationObserver(Browser* browser);
@@ -242,13 +231,26 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, NewTabVisibility) {
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
   ToggleVerticalTabStrip();
 
-  // TabStripRegionView's min height shouldn't affect that of browser window.
-  const auto min_size = browser_view()->GetMinimumSize();
-  auto* layout = browser_view()->tab_strip_region_view()->SetLayoutManager(
-      std::make_unique<TallLayoutManager>());
-  layout->SetOrientation(views::LayoutOrientation::kVertical);
-  browser_view()->tab_strip_region_view()->layout_manager_ = layout;
-  EXPECT_EQ(min_size.height(), browser_view()->GetMinimumSize().height());
+  // Add a tab to flush cached min size.
+  chrome::AddTabAt(browser(), {}, -1, true);
+
+  const auto browser_view_min_size = browser_view()->GetMinimumSize();
+  const auto browser_non_client_frame_view_min_size =
+      browser_view()->frame()->GetFrameView()->GetMinimumSize();
+
+  // Add tabs as much as it can grow mih height of tab strip.
+  auto tab_strip_min_height =
+      browser_view()->tab_strip_region_view()->GetMinimumSize().height();
+  for (int i = 0; i < 10; i++)
+    chrome::AddTabAt(browser(), {}, -1, true);
+  ASSERT_LE(tab_strip_min_height,
+            browser_view()->tab_strip_region_view()->GetMinimumSize().height());
+
+  // TabStrip's min height shouldn't affect that of browser window.
+  EXPECT_EQ(browser_view_min_size.height(),
+            browser_view()->GetMinimumSize().height());
+  EXPECT_EQ(browser_non_client_frame_view_min_size.height(),
+            browser_view()->frame()->GetFrameView()->GetMinimumSize().height());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
