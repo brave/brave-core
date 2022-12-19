@@ -25,10 +25,7 @@ using blink::URLLoaderThrottle;
 
 namespace permissions {
 
-GoogleSignInPermissionThrottle::GoogleSignInPermissionThrottle(
-    const content::WebContents::Getter& wc_getter,
-    scoped_refptr<HostContentSettingsMap> settings_map)
-    : wc_getter_(wc_getter), settings_map_(settings_map) {}
+namespace {
 
 void OnPermissionRequestStatus(
     content::NavigationEntry* pending_entry,
@@ -48,6 +45,13 @@ void OnPermissionRequestStatus(
   // Now that we have complete the permission request, resume navigation.
   delegate->Resume();
 }
+
+}  // namespace
+
+GoogleSignInPermissionThrottle::GoogleSignInPermissionThrottle(
+    const content::WebContents::Getter& wc_getter,
+    scoped_refptr<HostContentSettingsMap> settings_map)
+    : wc_getter_(wc_getter), settings_map_(settings_map) {}
 
 std::unique_ptr<blink::URLLoaderThrottle>
 GoogleSignInPermissionThrottle::MaybeCreateThrottleFor(
