@@ -14,16 +14,12 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_engine.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 
 using brave_shields::features::kBraveAdblockCookieListDefault;
@@ -35,30 +31,16 @@ AdBlockRegionalServiceManager::AdBlockRegionalServiceManager(
     PrefService* local_state,
     std::string locale,
     component_updater::ComponentUpdateService* cus,
-    scoped_refptr<base::SequencedTaskRunner> task_runner)
+    AdBlockFilterListCatalogProvider* catalog_provider)
     : local_state_(local_state),
       locale_(locale),
-      initialized_(false),
-      task_runner_(task_runner),
       component_update_service_(cus),
-      filters_manager_(filters_manager) {}
-
-void AdBlockRegionalServiceManager::Init(
-    AdBlockResourceProvider* resource_provider,
-    AdBlockFilterListCatalogProvider* catalog_provider) {
-  DCHECK(!initialized_);
-  base::AutoLock lock(regional_services_lock_);
-  resource_provider_ = resource_provider;
-  catalog_provider_ = catalog_provider;
+      filters_manager_(filters_manager),
+      catalog_provider_(catalog_provider) {
   catalog_provider_->LoadFilterListCatalog(
       base::BindOnce(&AdBlockRegionalServiceManager::OnFilterListCatalogLoaded,
                      weak_factory_.GetWeakPtr()));
   catalog_provider_->AddObserver(this);
-  initialized_ = true;
-}
-
-bool AdBlockRegionalServiceManager::IsInitialized() {
-  return initialized_;
 }
 
 AdBlockRegionalServiceManager::~AdBlockRegionalServiceManager() {
@@ -156,10 +138,6 @@ void AdBlockRegionalServiceManager::RecordP3ACookieListEnabled() {
                         IsFilterListEnabled(kCookieListUuid));
 }
 
-bool AdBlockRegionalServiceManager::Start() {
-  return true;
-}
-
 bool AdBlockRegionalServiceManager::IsFilterListAvailable(
     const std::string& uuid) const {
   DCHECK(!uuid.empty());
@@ -217,10 +195,7 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
 
   // Update preferences to reflect enabled/disabled state of specified
   // filter list
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE,
-      base::BindOnce(&AdBlockRegionalServiceManager::UpdateFilterListPrefs,
-                     weak_factory_.GetWeakPtr(), uuid, enabled));
+  UpdateFilterListPrefs(uuid, enabled);
 }
 
 void AdBlockRegionalServiceManager::SetFilterListCatalog(
@@ -262,19 +237,6 @@ base::Value::List AdBlockRegionalServiceManager::GetRegionalLists() {
 void AdBlockRegionalServiceManager::OnFilterListCatalogLoaded(
     const std::string& catalog_json) {
   SetFilterListCatalog(FilterListCatalogFromJSON(catalog_json));
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-std::unique_ptr<AdBlockRegionalServiceManager>
-AdBlockRegionalServiceManagerFactory(
-    AdBlockFiltersProviderManager* filters_manager,
-    PrefService* local_state,
-    std::string locale,
-    component_updater::ComponentUpdateService* cus,
-    scoped_refptr<base::SequencedTaskRunner> task_runner) {
-  return std::make_unique<AdBlockRegionalServiceManager>(
-      filters_manager, local_state, locale, cus, task_runner);
 }
 
 }  // namespace brave_shields

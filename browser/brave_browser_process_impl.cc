@@ -193,7 +193,6 @@ ProfileManager* BraveBrowserProcessImpl::profile_manager() {
 void BraveBrowserProcessImpl::StartBraveServices() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  ad_block_service()->Start();
   https_everywhere_service()->Start();
   resource_component();
 
