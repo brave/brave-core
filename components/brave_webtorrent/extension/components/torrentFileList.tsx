@@ -123,7 +123,11 @@ export default function TorrentFileList ({ torrent, torrentId, onSaveAllFiles }:
     return <Container>
       <HeaderRow>
         <Header>Files</Header>
-        <Button onClick={saveAllFiles} text="Save all files"/>
+        <Button
+          onClick={saveAllFiles}
+          disabled={torrent?.progress !== 1}
+          text="Save all files"
+        />
       </HeaderRow>
       <FilesContainer>
         <Table header={tableHeader} rows={rows}>

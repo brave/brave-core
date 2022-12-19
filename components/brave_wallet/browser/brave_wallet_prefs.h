@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PREFS_H_
 
 class PrefService;
+class PrefRegistrySimple;
 
 namespace user_prefs {
 class PrefRegistrySyncable;
@@ -14,6 +15,7 @@ class PrefRegistrySyncable;
 
 namespace brave_wallet {
 
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry);

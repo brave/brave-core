@@ -5,7 +5,21 @@
 
 import * as React from 'react'
 import { Provider } from 'react-redux'
-import { combineReducers, createStore } from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
+
+import './locale'
+import {
+  AccountTransactions,
+  AppsListType,
+  BraveWallet,
+  BuySendSwapViewTypes,
+  PanelTypes,
+  SerializableTransactionInfo,
+  WalletAccountType,
+  WalletState
+} from '../constants/types'
+import { AppsList } from '../options/apps-list-options'
+import { filterAppList } from '../utils/filter-app-list'
 
 // Components
 import {
@@ -33,18 +47,6 @@ import {
   SelectAccount,
   CreateAccountTab
 } from '../components/buy-send-swap'
-import {
-  BraveWallet,
-  WalletAccountType,
-  PanelTypes,
-  AppsListType,
-  BuySendSwapViewTypes,
-  WalletState,
-  AccountTransactions,
-  SerializableTransactionInfo
-} from '../constants/types'
-import { AppsList } from '../options/apps-list-options'
-import { filterAppList } from '../utils/filter-app-list'
 import LockPanel from '../components/extension/lock-panel'
 import {
   StyledExtensionWrapperLonger,
@@ -56,8 +58,11 @@ import {
 } from './style'
 import { mockNetworks } from './mock-data/mock-networks'
 import { PanelTitles } from '../options/panel-titles'
-import './locale'
 import { LibContext } from '../common/context/lib.context'
+import WalletPanelStory from './wrappers/wallet-panel-story-wrapper'
+
+// reducers & slices
+import { walletApi } from '../common/slices/api.slice'
 import { createSendCryptoReducer } from '../common/reducers/send_crypto_reducer'
 import { createWalletReducer } from '../common/slices/wallet.slice'
 import { createPageReducer } from '../page/reducers/page_reducer'
@@ -102,7 +107,9 @@ const transactionDummyData: AccountTransactions = {
             gasPrice: '0x20000000000',
             nonce: '0x1',
             to: 'ETHEREUM ACCOUNT 2',
-            value: '0xb1a2bc2ec50000'
+            value: '0xb1a2bc2ec50000',
+            signOnly: false,
+            signedTransaction: undefined
           },
           chainId: '',
           maxFeePerGas: '',
@@ -135,7 +142,9 @@ const transactionDummyData: AccountTransactions = {
             gasPrice: '0x20000000000',
             nonce: '0x1',
             to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-            value: '0xb1a2bc2ec50000'
+            value: '0xb1a2bc2ec50000',
+            signOnly: false,
+            signedTransaction: undefined
           },
           chainId: '',
           maxFeePerGas: '',
@@ -168,7 +177,9 @@ const transactionDummyData: AccountTransactions = {
             gasPrice: '0x20000000000',
             nonce: '0x1',
             to: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
-            value: '0xb1a2bc2ec90000'
+            value: '0xb1a2bc2ec90000',
+            signOnly: false,
+            signedTransaction: undefined
           },
           chainId: '',
           maxFeePerGas: '',
@@ -201,7 +212,9 @@ const transactionDummyData: AccountTransactions = {
             gasPrice: '0x20000000000',
             nonce: '0x1',
             to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-            value: '0xb1a2bc2ec90000'
+            value: '0xb1a2bc2ec90000',
+            signOnly: false,
+            signedTransaction: undefined
           },
           chainId: '',
           maxFeePerGas: '',
@@ -234,7 +247,9 @@ const transactionDummyData: AccountTransactions = {
             gasPrice: '0x20000000000',
             nonce: '0x1',
             to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-            value: '0xb1a2bc2ec90000'
+            value: '0xb1a2bc2ec90000',
+            signOnly: false,
+            signedTransaction: undefined
           },
           chainId: '',
           maxFeePerGas: '',
@@ -269,7 +284,9 @@ const transactionDummyData: AccountTransactions = {
             gasPrice: '0x20000000000',
             nonce: '0x1',
             to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-            value: '0xb1a2bc2ec90000'
+            value: '0xb1a2bc2ec90000',
+            signOnly: false,
+            signedTransaction: undefined
           },
           chainId: '',
           maxFeePerGas: '',
@@ -302,7 +319,9 @@ const transactionDummyData: AccountTransactions = {
             gasPrice: '0x20000000000',
             nonce: '0x1',
             to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-            value: '0xb1a2bc2ec90000'
+            value: '0xb1a2bc2ec90000',
+            signOnly: false,
+            signedTransaction: undefined
           },
           chainId: '',
           maxFeePerGas: '',
@@ -329,12 +348,25 @@ const transactionDummyData: AccountTransactions = {
 
 const originInfo = mockOriginInfo
 
-const store = createStore(combineReducers({
-  wallet: createWalletReducer(mockWalletState),
-  page: createPageReducer(mockPageState),
-  panel: createPanelReducer(mockPanelState),
-  sendCrypto: createSendCryptoReducer(mockSendCryptoState)
-}))
+function createStoreWithCustomState (customWalletState: Partial<WalletState> = {}) {
+  return configureStore({
+    reducer: {
+      wallet: createWalletReducer({
+        ...mockWalletState,
+        ...customWalletState
+      }),
+      page: createPageReducer(mockPageState),
+      panel: createPanelReducer(mockPanelState),
+      [walletApi.reducerPath]: walletApi.reducer,
+      sendCrypto: createSendCryptoReducer(mockSendCryptoState)
+
+    },
+    devTools: true,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(walletApi.middleware)
+  })
+}
+
+const store = createStoreWithCustomState()
 
 const transactionList = {
   [mockedTransactionAccounts[0].address]: [
@@ -351,16 +383,6 @@ const mockCustomStoreState: Partial<WalletState> = {
   fullTokenList: mockNewAssetOptions,
   activeOrigin: originInfo,
   transactions: transactionList
-}
-
-function createStoreWithCustomState (customWalletState: Partial<WalletState> = {}) {
-  return createStore(combineReducers({
-    wallet: createWalletReducer({
-      ...mockWalletState,
-      ...customWalletState
-    }),
-    page: createPageReducer(mockPageState)
-  }))
 }
 
 export const _ConfirmTransaction = () => {
@@ -700,7 +722,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   }, [])
 
   return (
-    <Provider store={store}>
+    <WalletPanelStory>
       <StyledExtensionWrapper>
         {walletLocked ? (
           <LockPanel
@@ -712,7 +734,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
             {selectedPanel === 'main' ? (
               <ConnectedPanel
                 navAction={navigateTo}
-                isSwapSupported={true}
               />
             ) : (
               <>
@@ -822,7 +843,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
         )
         }
       </StyledExtensionWrapper>
-    </Provider>
+    </WalletPanelStory>
   )
 }
 

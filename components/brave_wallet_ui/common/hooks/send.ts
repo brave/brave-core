@@ -70,9 +70,11 @@ export default function useSend (isSendTab?: boolean) {
   const setToAddress = (payload?: string | undefined) => {
     dispatch(SendCryptoActions.setToAddress(payload))
   }
-  const setShowEnsOffchainLookupOptions = (payload: boolean) => {
-    dispatch(SendCryptoActions.setShowEnsOffchainLookupOptions(payload))
-  }
+  const setShowEnsOffchainLookupOptions = React.useCallback(
+    (payload: boolean) => {
+      dispatch(SendCryptoActions.setShowEnsOffchainLookupOptions(payload))
+    }, [])
+
   const setEnsOffchainLookupOptions = (payload?: BraveWallet.EnsOffchainLookupOptions | undefined) => {
     dispatch(SendCryptoActions.setEnsOffchainLookupOptions(payload))
   }
@@ -89,6 +91,9 @@ export default function useSend (isSendTab?: boolean) {
     dispatch(SendCryptoActions.setToAddressOrUrl(payload))
   }
 
+  // State
+  const [searchingForDomain, setSearchingForDomain] = React.useState<boolean>(false)
+
   const selectSendAsset = (asset: BraveWallet.BlockchainToken | undefined) => {
     if (asset?.isErc721 || asset?.isNft) {
       setSendAmount('1')
@@ -102,36 +107,58 @@ export default function useSend (isSendTab?: boolean) {
     setAddressError(getLocale('braveWalletNotDomain').replace('$1', url))
   }
 
+  const handleDomainLookupResponse = React.useCallback((address: string, error: BraveWallet.ProviderError, requireOffchainConsent: boolean) => {
+    if (requireOffchainConsent) {
+      setAddressError('')
+      setAddressWarning('')
+      setShowEnsOffchainLookupOptions(true)
+      setSearchingForDomain(false)
+      return
+    }
+    if (address && error === BraveWallet.ProviderError.kSuccess) {
+      setAddressError('')
+      setAddressWarning('')
+      setToAddress(address)
+      // If found UD address is the same as the selectedAccounts Wallet Address
+      if (address.toLowerCase() === selectedAccount?.address?.toLowerCase()) {
+        setAddressError(getLocale('braveWalletSameAddressError'))
+      }
+      setSearchingForDomain(false)
+      return
+    }
+    setShowEnsOffchainLookupOptions(false)
+    setNotRegisteredError(toAddressOrUrl)
+    setSearchingForDomain(false)
+  }, [selectedAccount?.address, toAddressOrUrl, setShowEnsOffchainLookupOptions])
+
+  const handleUDAddressLookUp = React.useCallback(() => {
+    setSearchingForDomain(true)
+    setToAddress('')
+    findUnstoppableDomainAddress(toAddressOrUrl, selectedSendAsset ?? null).then((value: GetUnstoppableDomainsWalletAddrReturnInfo) => {
+      handleDomainLookupResponse(value.address, value.error, false)
+    }).catch(e => console.log(e))
+  }, [findUnstoppableDomainAddress, handleDomainLookupResponse, findSNSAddress, findENSAddress, toAddressOrUrl, selectedSendAsset, selectedAccount?.coin])
+
   const processEthereumAddress = React.useCallback((toAddressOrUrl: string) => {
     const valueToLowerCase = toAddressOrUrl.toLowerCase()
+
     // If value ends with a supported ENS extension, will call findENSAddress.
     // If success true, will set toAddress else will return error message.
     if (endsWithAny(supportedENSExtensions, valueToLowerCase)) {
+      setSearchingForDomain(true)
+      setToAddress('')
       findENSAddress(toAddressOrUrl, ensOffchainLookupOptions).then((value: GetEthAddrReturnInfo) => {
-        if (value.error === BraveWallet.ProviderError.kSuccess) {
-          setAddressError('')
-          setAddressWarning('')
-          setToAddress(value.address)
-          setShowEnsOffchainLookupOptions(value.requireOffchainConsent)
-          return
-        }
-        setShowEnsOffchainLookupOptions(false)
-        setNotRegisteredError(valueToLowerCase)
+        handleDomainLookupResponse(value.address, value.error, value.requireOffchainConsent)
       }).catch(e => console.log(e))
       return
     }
+
+    setShowEnsOffchainLookupOptions(false)
+
     // If value ends with a supported UD extension, will call findUnstoppableDomainAddress.
     // If success true, will set toAddress else will return error message.
     if (endsWithAny(supportedUDExtensions, valueToLowerCase)) {
-      findUnstoppableDomainAddress(toAddressOrUrl, selectedSendAsset ?? null).then((value: GetUnstoppableDomainsWalletAddrReturnInfo) => {
-        if (value.address && value.error === BraveWallet.ProviderError.kSuccess) {
-          setAddressError('')
-          setAddressWarning('')
-          setToAddress(value.address)
-          return
-        }
-        setNotRegisteredError(valueToLowerCase)
-      }).catch(e => console.log(e))
+      handleUDAddressLookUp()
       return
     }
 
@@ -184,13 +211,14 @@ export default function useSend (isSendTab?: boolean) {
       setAddressError('')
       setAddressWarning('')
       setToAddress('')
+      setShowEnsOffchainLookupOptions(false)
       return
     }
 
     // Fallback error state
     setAddressWarning('')
     setAddressError(getLocale('braveWalletNotValidAddress'))
-  }, [selectedAccount?.address, selectedSendAsset, ensOffchainLookupOptions])
+  }, [selectedAccount?.address, ensOffchainLookupOptions, handleUDAddressLookUp, handleDomainLookupResponse, setShowEnsOffchainLookupOptions])
 
   const processFilecoinAddress = React.useCallback((toAddressOrUrl: string) => {
     const valueToLowerCase = toAddressOrUrl.toLowerCase()
@@ -198,15 +226,7 @@ export default function useSend (isSendTab?: boolean) {
     // If value ends with a supported UD extension, will call findUnstoppableDomainAddress.
     // If success true, will set toAddress else will return error message.
     if (endsWithAny(supportedUDExtensions, valueToLowerCase)) {
-      findUnstoppableDomainAddress(toAddressOrUrl, selectedSendAsset ?? null).then((value: GetUnstoppableDomainsWalletAddrReturnInfo) => {
-        if (value.address && value.error === BraveWallet.ProviderError.kSuccess) {
-          setAddressError('')
-          setAddressWarning('')
-          setToAddress(value.address)
-          return
-        }
-        setNotRegisteredError(valueToLowerCase)
-      }).catch(e => console.log(e))
+      handleUDAddressLookUp()
       return
     }
 
@@ -235,7 +255,7 @@ export default function useSend (isSendTab?: boolean) {
     // Reset error and warning state back to normal
     setAddressWarning('')
     setAddressError('')
-  }, [selectedSendAsset, selectedAccount?.address])
+  }, [selectedAccount?.address, handleUDAddressLookUp])
 
   const processSolanaAddress = React.useCallback((toAddressOrUrl: string) => {
     const valueToLowerCase = toAddressOrUrl.toLowerCase()
@@ -243,27 +263,17 @@ export default function useSend (isSendTab?: boolean) {
     // If value ends with a supported UD extension, will call findUnstoppableDomainAddress.
     // If success true, will set toAddress else will return error message.
     if (endsWithAny(supportedUDExtensions, valueToLowerCase)) {
-      findUnstoppableDomainAddress(toAddressOrUrl, selectedSendAsset ?? null).then((value: GetUnstoppableDomainsWalletAddrReturnInfo) => {
-        if (value.address && value.error === BraveWallet.ProviderError.kSuccess) {
-          setAddressError('')
-          setAddressWarning('')
-          setToAddress(value.address)
-          return
-        }
-        setNotRegisteredError(valueToLowerCase)
-      }).catch(e => console.log(e))
+      handleUDAddressLookUp()
       return
     }
 
+    // If value ends with a supported SNS extension, will call findENSAddress.
+    // If success true, will set toAddress else will return error message.
     if (endsWithAny(supportedSNSExtensions, valueToLowerCase)) {
+      setSearchingForDomain(true)
+      setToAddress('')
       findSNSAddress(toAddressOrUrl).then((value: GetSolAddrReturnInfo) => {
-        if (value.error === BraveWallet.ProviderError.kSuccess) {
-          setAddressError('')
-          setAddressWarning('')
-          setToAddress(value.address)
-          return
-        }
-        setNotRegisteredError(valueToLowerCase)
+        handleDomainLookupResponse(value.address, value.error, false)
       }).catch(e => console.log(e))
       return
     }
@@ -309,7 +319,7 @@ export default function useSend (isSendTab?: boolean) {
       setAddressWarning('')
       setAddressError('')
     })
-  }, [selectedAccount?.address, selectedSendAsset, fullTokenList])
+  }, [selectedAccount?.address, fullTokenList, handleUDAddressLookUp, handleDomainLookupResponse])
 
   const resetSendFields = React.useCallback((reselectSendAsset?: boolean) => {
     if (isSendTab) {
@@ -421,7 +431,8 @@ export default function useSend (isSendTab?: boolean) {
       .multiplyByDecimals(selectedSendAsset.decimals) // ETH → Wei conversion
       .value // extract BigNumber object wrapped by Amount
 
-    return amountBN && amountBN.decimalPlaces() > 0
+    const amountDP = amountBN && amountBN.decimalPlaces()
+    return amountDP && amountDP > 0
       ? 'fromAmountDecimalsOverflow'
       : undefined
   }, [sendAmount, selectedSendAsset])
@@ -473,6 +484,8 @@ export default function useSend (isSendTab?: boolean) {
     sendAmountValidationError,
     showEnsOffchainLookupOptions,
     ensOffchainLookupOptions,
-    setEnsOffchainLookupOptions
+    setShowEnsOffchainLookupOptions,
+    setEnsOffchainLookupOptions,
+    searchingForDomain
   }
 }

@@ -8,7 +8,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory android:title="@string/resolve_method_title">
-	      <org.chromium.chrome.browser.decentralized_dns.settings.RadioButtonGroupENSResolveMethodPreference
+	      <org.chromium.chrome.browser.decentralized_dns.settings.RadioButtonGroupDDnsResolveMethodPreference
 	          android:key="ens_resolve_method"
             app:allowDividerBelow="false" />
     </PreferenceCategory>

@@ -28,7 +28,7 @@ provideStrings({
   braveVpnFeature1: 'Block trackers & ads across all apps',
   braveVpnFeature2: 'Protects you from unwanted network connections',
   braveVpnFeature3: 'Choose your VPN location',
-  braveVpnFeature4: 'Fast and unlimited up to 100 Mbps',
+  braveVpnFeature4: 'Fast and unlimited up to 500 Mbps',
   braveVpnFeature5: '24/7 support',
   braveVpnLoading: 'One moment while loading…',
   braveVpnPurchaseFailed: 'Unable to check the status of your purchase, probably a network problem, try again or contact support.',
@@ -50,6 +50,7 @@ provideStrings({
   braveVpnSupportOptionalVpnHostname: 'VPN hostname:',
   braveVpnSupportOptionalAppVersion: 'App version:',
   braveVpnSupportOptionalOsVersion: 'OS version:',
+  braveVpnSupportTimezone: 'Timezone:',
   braveVpnSupportNotes: 'Support provided in partnership with Guardian.',
   braveVpnSupportSubmit: 'Submit',
   braveVpnConnectNotAllowed: 'VPN connection failed. Please try connecting again, and be sure to click Allow to enable Brave\'s VPN configuration.'

@@ -38,7 +38,7 @@ TEST_F(UtilsUnitTest, IsUnstoppableDomainsResolveMethodAsk) {
   EXPECT_TRUE(IsUnstoppableDomainsResolveMethodAsk(local_state()));
 
   local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
-                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+                            static_cast<int>(ResolveMethodTypes::ENABLED));
   EXPECT_FALSE(IsUnstoppableDomainsResolveMethodAsk(local_state()));
 }
 
@@ -46,7 +46,7 @@ TEST_F(UtilsUnitTest, IsUnstoppableDomainsResolveMethodEthereum) {
   EXPECT_FALSE(IsUnstoppableDomainsResolveMethodEthereum(local_state()));
 
   local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
-                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+                            static_cast<int>(ResolveMethodTypes::ENABLED));
   EXPECT_TRUE(IsUnstoppableDomainsResolveMethodEthereum(local_state()));
 }
 
@@ -61,7 +61,7 @@ TEST_F(UtilsUnitTest, IsENSResolveMethodAsk) {
   EXPECT_TRUE(IsENSResolveMethodAsk(local_state()));
 
   local_state()->SetInteger(kENSResolveMethod,
-                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+                            static_cast<int>(ResolveMethodTypes::ENABLED));
   EXPECT_FALSE(IsENSResolveMethodAsk(local_state()));
 }
 
@@ -69,7 +69,7 @@ TEST_F(UtilsUnitTest, IsENSResolveMethodEthereum) {
   EXPECT_FALSE(IsENSResolveMethodEthereum(local_state()));
 
   local_state()->SetInteger(kENSResolveMethod,
-                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+                            static_cast<int>(ResolveMethodTypes::ENABLED));
   EXPECT_TRUE(IsENSResolveMethodEthereum(local_state()));
 }
 

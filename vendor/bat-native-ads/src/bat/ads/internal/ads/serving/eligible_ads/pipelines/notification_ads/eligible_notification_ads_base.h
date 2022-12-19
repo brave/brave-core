@@ -38,7 +38,7 @@ class EligibleAdsBase {
   virtual ~EligibleAdsBase();
 
   virtual void GetForUserModel(
-      const targeting::UserModelInfo& user_model,
+      targeting::UserModelInfo user_model,
       GetEligibleAdsCallback<CreativeNotificationAdList> callback) = 0;
 
   void SetLastServedAd(const AdInfo& ad) { last_served_ad_ = ad; }

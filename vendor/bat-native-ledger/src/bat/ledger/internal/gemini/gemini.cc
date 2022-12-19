@@ -119,7 +119,7 @@ void Gemini::OnFetchBalance(FetchBalanceCallback callback,
 
   if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    if (!DisconnectWallet()) {
+    if (!LogOutWallet()) {
       BLOG(0, "Failed to disconnect " << constant::kWalletGemini << " wallet!");
       return std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
     }
@@ -247,9 +247,8 @@ bool Gemini::SetWallet(mojom::ExternalWalletPtr wallet) {
   return ledger::wallet::SetWallet(ledger_, std::move(wallet));
 }
 
-bool Gemini::DisconnectWallet(bool manual) {
-  return ledger::wallet::DisconnectWallet(ledger_, constant::kWalletGemini,
-                                          manual);
+bool Gemini::LogOutWallet() {
+  return ledger::wallet::LogOutWallet(ledger_, constant::kWalletGemini);
 }
 
 void Gemini::RemoveTransferFee(const std::string& contribution_id) {

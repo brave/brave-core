@@ -50,7 +50,7 @@ class NewTabPageAd final : public new_tab_page_ads::EventHandlerObserver,
 
   ~NewTabPageAd() override;
 
-  void MaybeServe(const MaybeServeNewTabPageAdCallback& callback);
+  void MaybeServe(MaybeServeNewTabPageAdCallback callback);
 
   void TriggerEvent(const std::string& placement_id,
                     const std::string& creative_instance_id,

@@ -23,6 +23,8 @@ import useSend from '../../../../../common/hooks/send'
 import { getLocale } from '../../../../../../common/locale'
 import { getFilecoinKeyringIdFromNetwork, getTokensNetwork } from '../../../../../utils/network-utils'
 import { getBalance } from '../../../../../utils/balance-utils'
+import { computeFiatAmount } from '../../../../../utils/pricing-utils'
+import Amount from '../../../../../utils/amount'
 
 // Options
 import { AllNetworksOption } from '../../../../../options/network-filter-options'
@@ -57,6 +59,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const networks = useUnsafeWalletSelector(WalletSelectors.networkList)
     const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
     const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
+    const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
+    const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
 
     // State
     const [searchValue, setSearchValue] = React.useState<string>('')
@@ -86,7 +90,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     }, [userVisibleTokensInfo, networks])
 
     const getTokenListWithBalances = React.useCallback((account: WalletAccountType) => {
-      return getTokenListByAccount(account).filter((token) => getBalance(account, token) !== '0')
+      return getTokenListByAccount(account).filter((token) => getBalance(account, token) > '0')
     }, [getTokenListByAccount])
 
     const getTokensBySelectedSendOption = React.useCallback((account: WalletAccountType) => {
@@ -119,6 +123,19 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       )
     }, [getTokensByNetwork, searchValue])
 
+    const getAccountFiatValue = React.useCallback((account: WalletAccountType) => {
+      const amounts = getTokensBySearchValue(account).map((token) => {
+        const balance = getBalance(account, token)
+        return computeFiatAmount(spotPrices, { decimals: token.decimals, symbol: token.symbol, value: balance }).format()
+      })
+      const reducedAmounts = amounts.reduce(function (a, b) {
+        return a !== '' && b !== ''
+          ? new Amount(a).plus(b).format()
+          : ''
+      })
+      return new Amount(reducedAmounts).formatAsFiat(defaultCurrencies.fiat)
+    }, [getTokensBySearchValue, spotPrices, defaultCurrencies.fiat])
+
     const onSelectSendAsset = React.useCallback((token: BraveWallet.BlockchainToken, account: WalletAccountType) => {
       selectSendAsset(token)
       dispatch(WalletActions.selectAccount(account))
@@ -144,6 +161,13 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       return accounts.map((account) => getTokensBySearchValue(account)).flat(1).length === 0
     }, [accounts, getTokensBySearchValue])
 
+    const modalTitle = React.useMemo(() => {
+      if (selectedSendOption === 'nft') {
+        return getLocale('braveWalletSendTabSelectNFTTitle')
+      }
+      return getLocale('braveWalletSendTabSelectTokenTitle')
+    }, [selectedSendOption])
+
     const tokensByAccount = React.useMemo(() => {
       if (emptyTokensList) {
         return <Text textSize='14px' isBold={false} textColor='text03'>
@@ -165,6 +189,15 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             >
               {account.name}
             </Text>
+            {selectedSendOption === 'token' &&
+              <Text
+                textColor='text03'
+                textSize='14px'
+                isBold={false}
+              >
+                {getAccountFiatValue(account)}
+              </Text>
+            }
           </AccountSection>
           <Column columnWidth='full' horizontalPadding={8}>
             <VerticalSpacer size={8} />
@@ -179,7 +212,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           </Column>
         </Column>
       )
-    }, [getTokensBySearchValue, emptyTokensList])
+    }, [getTokensBySearchValue, getAccountFiatValue, emptyTokensList, selectedSendOption])
 
     // render
     return (
@@ -187,7 +220,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         <Modal ref={forwardedRef}>
           <Row rowWidth='full' horizontalPadding={24} verticalPadding={20}>
             <Text textSize='18px' isBold={true}>
-              {getLocale('braveWalletSendTabSelectTitle')}
+              {modalTitle}
             </Text>
             <IconButton icon={CloseIcon} onClick={onClose} size={20} />
           </Row>

@@ -170,7 +170,6 @@
 
     <color name="brave_rewards_modal_text_color">#495057</color>
     <color name="brave_rewards_modal_theme_color">#4C54D2</color>
-    <color name="brave_rewards_modal_close_button_color">#5E5F6C</color>
     <color name="brave_rewards_tos_color">#868E96</color>
     <color name="brave_blue_tint_color">#4C54D2</color>
 
@@ -205,9 +204,15 @@
     <color name="rewards_panel_card_bg_color">#FFFFFF</color>
     <color name="rewards_panel_action_color">#4C54D2</color>
     <color name="rewards_panel_verified_button_border">#E9E9F4</color>
+    <color name="rewards_panel_notification_date_border">#AEB1C2</color>
     <color name="rewards_panel_summary_title_bg">#66FFFFFF</color>
     <color name="rewards_panel_summary_bg">#FFFFFF</color>
     <color name="rewards_panel_summary_divider_color">#E9E9F4</color>
+    <color name="rewards_unverified_section_bg_color">#1A000000</color>
+    <color name="rewards_panel_notification_text_color">#1D1F25</color>
+    <color name="rewards_panel_notification_secondary_text_color">#6B7084</color>
+    <color name="rewards_panel_notification_action_color">#F0F2FF</color>
+    <color name="rewards_panel_notification_bg_color">#F4F6F8</color>
 
     <color name="rewards_panel_foreground_color">#80000000</color>
     <color name="rewards_divider_color">#E9E9F4</color>
@@ -227,6 +232,8 @@
     <color name="rewards_tipping_panel_divider_color">#80AEB1C2</color>
     <color name="rewards_tipping_black_color">#000000</color>
     <color name="rewards_tipping_white_color">#FFFFFF</color>
+    <color name="rewards_tipping_publisher_name_color">#F8F9FA</color>
+    <color name="rewards_tipping_text_color">#212529</color>
 
     <color name="brave_rewards_theme_color">#4C54D2</color>
     <color name="cookie_consent_action_color">@color/brave_action_color</color>
@@ -246,4 +253,6 @@
     <color name="search_widget_promo_bg_color">#FFFFFF</color>
 
     <color name="notification_button_color">#423EEE</color>
+    <color name="rewards_onboarding_ac_slider_track_color">#E4DBFF</color>
+    <color name="rewards_onboarding_ac_slider_active_track_color">#845EF7</color>
 </resources>

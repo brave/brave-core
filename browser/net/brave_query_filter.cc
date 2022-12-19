@@ -55,15 +55,26 @@ static constexpr auto kSimpleQueryStringTrackers =
          "ss_email_id",
          // https://github.com/brave/brave-browser/issues/25238
          "bsft_uid", "bsft_clkid",
+         // https://github.com/brave/brave-browser/issues/25691
+         "guce_referrer", "guce_referrer_sig",
          // https://github.com/brave/brave-browser/issues/26295
-         "vgo_ee",
-         // https://github.com/brave/brave-browser/issues/11580
-         "igshid"});
+         "vgo_ee"});
 
 static constexpr auto kConditionalQueryStringTrackers =
     base::MakeFixedFlatMap<base::StringPiece, base::StringPiece>(
         {// https://github.com/brave/brave-browser/issues/9018
          {"mkt_tok", "[uU]nsubscribe"}});
+
+static constexpr auto kScopedQueryStringTrackers =
+    base::MakeFixedFlatMap<base::StringPiece, base::StringPiece>({
+        // https://github.com/brave/brave-browser/issues/11580
+        {"igshid", "instagram.com"},
+        // https://github.com/brave/brave-browser/issues/26756
+        {"t", "twitter.com"},
+        // https://github.com/brave/brave-browser/issues/26966
+        {"ref_src", "twitter.com"},
+        {"ref_url", "twitter.com"},
+    });
 
 // Remove tracking query parameters from a GURL, leaving all
 // other parts untouched.
@@ -86,6 +97,8 @@ absl::optional<std::string> StripQueryParameter(const base::StringPiece& query,
     const base::StringPiece& key = pieces.empty() ? "" : pieces[0];
     if (pieces.size() >= 2 &&
         (kSimpleQueryStringTrackers.count(key) == 1 ||
+         (kScopedQueryStringTrackers.count(key) == 1 &&
+          GURL(spec).DomainIs(kScopedQueryStringTrackers.at(key).data())) ||
          (kConditionalQueryStringTrackers.count(key) == 1 &&
           !re2::RE2::PartialMatch(
               spec, kConditionalQueryStringTrackers.at(key).data())))) {

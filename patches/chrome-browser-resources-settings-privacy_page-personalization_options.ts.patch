@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index 3941dbb1589d98d34471524312736e50d1bf8a99..3fe4cad9cdb5d9e31c87ca0743e3a06d01455038 100644
+index d6b00eff7e54916680ba062b67491ec0728e3ecc..60c8fcff449dd746cd47b2a49f7f47cfcc661c3e 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 @@ -76,7 +76,7 @@ export class SettingsPersonalizationOptionsElement extends

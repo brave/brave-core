@@ -34,10 +34,6 @@ std::string GetFeeAddress();
 std::string GetLoginUrl(const std::string& state,
                         const std::string& code_verifier);
 
-std::string GetAddUrl();
-
-std::string GetWithdrawUrl();
-
 std::string GetAccountUrl();
 
 std::string GetActivityUrl();

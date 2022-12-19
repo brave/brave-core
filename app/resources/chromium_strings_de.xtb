@@ -10,10 +10,13 @@
 <translation id="8522292744959221145">Wenn du prüfen möchtest, ob deine Passwörter von Datenpannen und anderen Sicherheitsproblemen betroffen sind, <ph name="BEGIN_LINK"/>melde dich in Brave an<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Über Brave</translation>
 <translation id="1203500561924088507">Vielen Dank für die Installation. Du musst deinen Browser neu starten, bevor du <ph name="BUNDLE_NAME"/> verwenden kannst.</translation>
+<translation id="8905049883018921395">Wenn diese Option aktiviert ist, gibt Brave von inaktiven Tabs belegten Arbeitsspeicher frei. Dadurch können aktive Tabs und andere Apps auf mehr Ressourcen zugreifen und Brave bleibt schnell. Deine inaktiven Tabs werden automatisch wieder aktiviert, sobald du sie aufrufst. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
+<translation id="4658574652223735641">Dank Arbeitsspeicher-Sparmodus ist Brave jetzt noch schneller</translation>
 <translation id="4798342026247191171">Neues Brave-Profil erstellen</translation>
 <translation id="6361779936989026201">Brave Assistant in Brave</translation>
 <translation id="113959764510199339">Brave versucht, Passwörter anzuzeigen.</translation>
 <translation id="8132634101975074716">Du bist in Brave angemeldet.</translation>
+<translation id="4168469784091952813">Brave optimal nutzen</translation>
 <translation id="5147525139567260139">Brave-Tab freigeben</translation>
 <translation id="1530633922026945685">Brave benötigt Zugriff auf die Kamera, um eine 3D-Karte deiner Umgebung zu erstellen</translation>
 <translation id="4449148723378534338">Hiermit kannst du dir die wichtigsten Datenschutz- und Sicherheitseinstellungen in Brave ansehen</translation>
@@ -166,6 +169,7 @@
 <translation id="1786715389543715322">Brave wird aktualisiert (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Anmeldung in Brave zulassen</translation>
 <translation id="5536657158619734169">Eine neue Version von Brave ist verfügbar.</translation>
+<translation id="5267531627648004734">Aus Brave entfernen</translation>
 <translation id="239760341987199724">Brave als Standardbrowser festlegen</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="894936507076470937">Brave funktioniert unter Umständen nicht ordnungsgemäß, da es unter dieser Linux-Distribution nicht mehr unterstützt wird</translation>
@@ -193,6 +197,7 @@
 <translation id="505042220086416644">Es gibt eine neue Version von Brave, die schneller ist als je zuvor.</translation>
 <translation id="9071554113102421877">In Chr&amp;omium öffnen</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> wurde zu Brave hinzugefügt</translation>
+<translation id="3693188491491843187">Brave noch schneller machen</translation>
 <translation id="608006075545470555">Arbeitsprofil zu diesem Browser hinzufügen</translation>
 <translation id="5849446944780602366">Brave anpassen und Einstellungen festlegen. Ein Update ist verfügbar.</translation>
 <translation id="7433698744896946664">Zulassen, dass die Erweiterung Zugriffsanfragen in der Brave-Symbolleiste anzeigt</translation>
@@ -236,6 +241,7 @@
 <translation id="1489465648257900784">Dein Profil kann nicht verwendet werden, da es aus einer neueren Version von Brave stammt.
 
 Einige Funktionen stehen möglicherweise nicht zur Verfügung. Gib bitte ein anderes Profilverzeichnis an oder verwende eine neuere Version von Brave.</translation>
+<translation id="7870748924073900361">Dank Arbeitsspeicher-Sparmodus ist Brave jetzt noch schneller</translation>
 <translation id="6666624454809779082">Brave ist bereits für alle Nutzer auf deinem Computer installiert.</translation>
 <translation id="5360050006043219962">Wenn du auf allen deinen Geräten auf deine Brave-Inhalte zugreifen möchtest, melde dich an und aktiviere die Synchronisierung.</translation>
 <translation id="8291513491595858997">Dein Elternteil hat "Berechtigungen für Websites, Apps und Erweiterungen" für Brave deaktiviert. Das Aktivieren dieser <ph name="EXTENSION_TYPE_PARAMETER"/> ist nicht zulässig.</translation>
@@ -273,6 +279,7 @@ Brave kann deine Einstellungen nicht wiederherstellen.</translation>
 <translation id="38294420683216447">Mit Brave-Profilen kannst du deine Brave-Inhalte voneinander trennen. Das macht es einfacher, Arbeit und Freizeitspaß auseinanderzuhalten.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="2034072705932785495">Brave benötigt für diese Website die Berechtigung, auf deine Kamera zuzugreifen</translation>
+<translation id="5296583608321648908">Du benötigst Windows 10 oder höher, um zukünftige Brave-Updates zu erhalten. Dieser Computer verwendet Windows 7.</translation>
 <translation id="3962395975456095331">Brave neu starten?</translation>
 <translation id="2619516027171717873">Die Brave-Version kann nicht installiert werden, da sie aktuell ausgeführt wird. Schließe Brave bitte und versuche es erneut.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave wird in einer Minute neu gestartet}other{Brave wird in # Minuten neu gestartet}}</translation>
@@ -287,9 +294,9 @@ Brave kann deine Einstellungen nicht wiederherstellen.</translation>
 <translation id="8678991866891573053">In Brave werden neue Funktionen ausprobiert, mit denen Websites bei gleichbleibender Nutzererfahrung beim Surfen weniger Nutzerdaten verwenden</translation>
 <translation id="3343095737966473035">Brave ist nicht als dein Standardbrowser festgelegt</translation>
 <translation id="5477319665405831211">Brave wird auf allen deinen Geräten synchronisiert und personalisiert</translation>
-<translation id="2280238321454602884">Wenn diese Option aktiviert ist, gibt Brave den für Tabs genutzten Arbeitsspeicher wieder frei, wenn du sie gerade nicht aktiv verwendest. Dadurch werden die Ressourcen deines Computers für andere Aufgaben frei und Brave wird schneller. Inaktive Tabs erscheinen leer und werden automatisch aktualisiert, wenn du sie anklickst. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/> oder <ph name="BEGIN_LINK_2"/>Feedback senden<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Dadurch werden deine Browserdaten von diesem Gerät gelöscht. Wenn du deine Daten später abrufen möchtest, melde dich als <ph name="USER_EMAIL"/> in Brave an.</translation>
 <translation id="7747138024166251722">Das Installationsprogramm konnte kein temporäres Verzeichnis erstellen. Überprüfe, ob freier Speicherplatz und die Rechte zum Installieren von Software vorhanden sind.</translation>
+<translation id="1978509466033734608">Brave noch schneller machen</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="1652855885539187849">Ein Brave-Profil mit diesem Konto ist auf diesem Gerät bereits vorhanden</translation>
 <translation id="7845233973568007926">Vielen Dank für die Installation. Du musst deinen Computer neu starten, bevor du <ph name="BUNDLE_NAME"/> verwenden kannst.</translation>
@@ -312,15 +319,16 @@ Brave kann deine Einstellungen nicht wiederherstellen.</translation>
 <translation id="3360368475735266712">Wenn du dich anmeldest, wird Brave auf allen deinen Geräten synchronisiert und personalisiert</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> hat zuvor Brave verwendet</translation>
 <translation id="3098618823450433881">Wenn du auf allen deinen Geräten auf deine Brave-Browserinhalte zugreifen möchtest, melde dich an und aktiviere die Synchronisierung</translation>
+<translation id="2569754604093464025">Du benötigst Windows 10 oder höher, um zukünftige Brave-Updates zu erhalten. Auf diesem Computer wird Windows 8 ausgeführt.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Brave innerhalb eines Tages neu starten}other{Brave innerhalb von # Tagen neu starten}}</translation>
 <translation id="6914496861676471566">Das Installationsarchiv ist beschädigt oder ungültig. Bitte lade Brave erneut herunter.</translation>
 <translation id="6431861494713261006">Optional: Diagnose- und Nutzungsdaten automatisch an Brave senden, um die Funktionen und die Leistung von Brave OS zu verbessern.</translation>
 <translation id="2097604701283463988">Brave ist veraltet.</translation>
-<translation id="607365808648940765">Bei Bedarf gibt Brave den für Tabs genutzten Arbeitsspeicher wieder frei, wenn du sie gerade nicht aktiv verwendest. Du kannst dies jederzeit in den Einstellungen ändern.</translation>
 <translation id="8550334526674375523">Dieses Arbeitsprofil wird getrennt von deinem persönlichen Profil verwaltet.</translation>
 <translation id="2452889775041290116">Dein Elternteil hat "Berechtigungen für Websites, Apps und Erweiterungen" für Brave deaktiviert. Das Hinzufügen dieser <ph name="EXTENSION_TYPE_PARAMETER"/> ist nicht zulässig.</translation>
 <translation id="8502436661255886343">Du benötigst macOS 10.13 oder höher, um zukünftige Brave-Updates zu erhalten. Auf diesem Computer wird macOS 10.12 ausgeführt.</translation>
 <translation id="227028348235968071">Brave kann deine Passwörter prüfen, wenn du dich mit deinem Brave-Konto anmeldest</translation>
+<translation id="4226455268610449503">Wenn die Option aktiviert ist, reduziert Brave den Akkuverbrauch, indem Hintergrundaktivitäten und visuelle Effekte wie optimiertes Scrollen und Video-Framerates eingeschränkt werden. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Die Brave-Autoren. Alle Rechte vorbehalten.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>So verwenden wir diese Daten<ph name="END_BOLD"/>: Websites können Daten zu deinen Interessen bei Brave speichern. Wenn du beispielsweise im Internet Schuhe für einen Marathon kaufst, definiert die Website möglicherweise Marathons als eines deiner Interessen. Wenn du dann später eine andere Website besuchst, um dich für ein Wettrennen anzumelden, kann dir auf Grundlage deiner Interessen Werbung zu Laufschuhen angezeigt werden.</translation>
 <translation id="3052349005266761501">Brave wird gestartet…</translation>
@@ -343,6 +351,7 @@ Brave kann deine Einstellungen nicht wiederherstellen.</translation>
 <translation id="82609232232243542">In Brave anmelden</translation>
 <translation id="5173820533850252773">Brave ist veraltet.</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave wird in einer Stunde neu gestartet}other{Brave wird in # Stunden neu gestartet}}</translation>
+<translation id="5190991181158966940">Du benötigst Windows 10 oder höher, um zukünftige Brave-Updates zu erhalten. Dieser Computer verwendet Windows 8.1.</translation>
 <translation id="7863882214613921971">Link in neuem Brave-Tab öffnen</translation>
 <translation id="911206726377975832">Auch die Browserdaten löschen?</translation>
 <translation id="5708733457516068434">Während die Tests laufen, kannst du Themen von Interesse sehen, die von Websites verwendet werden, um dir Werbung anzuzeigen, und diese Themen entfernen. Brave schätzt auf Grundlage deines aktuellen Browserverlaufs, welche Themen dich interessieren.</translation>

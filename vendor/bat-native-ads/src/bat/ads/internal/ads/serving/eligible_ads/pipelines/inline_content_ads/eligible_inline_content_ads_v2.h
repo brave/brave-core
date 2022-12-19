@@ -36,23 +36,38 @@ class EligibleAdsV2 final : public EligibleAdsBase {
                 resource::AntiTargeting* anti_targeting);
 
   void GetForUserModel(
-      const targeting::UserModelInfo& user_model,
+      targeting::UserModelInfo user_model,
       const std::string& dimensions,
       GetEligibleAdsCallback<CreativeInlineContentAdList> callback) override;
 
  private:
+  void OnGetForUserModel(
+      targeting::UserModelInfo user_model,
+      const std::string& dimensions,
+      GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+      bool success,
+      const AdEventList& ad_events);
+
   void GetBrowsingHistory(
-      const targeting::UserModelInfo& user_model,
+      targeting::UserModelInfo user_model,
       const AdEventList& ad_events,
       const std::string& dimensions,
       GetEligibleAdsCallback<CreativeInlineContentAdList> callback);
 
   void GetEligibleAds(
-      const targeting::UserModelInfo& user_model,
+      targeting::UserModelInfo user_model,
       const AdEventList& ad_events,
       const std::string& dimensions,
-      const GetEligibleAdsCallback<CreativeInlineContentAdList>& callback,
+      GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
       const BrowsingHistoryList& browsing_history);
+
+  void OnGetEligibleAds(
+      const targeting::UserModelInfo& user_model,
+      const AdEventList& ad_events,
+      const BrowsingHistoryList& browsing_history,
+      GetEligibleAdsCallback<CreativeInlineContentAdList> callback,
+      bool success,
+      const CreativeInlineContentAdList& creative_ads);
 
   CreativeInlineContentAdList FilterCreativeAds(
       const CreativeInlineContentAdList& creative_ads,

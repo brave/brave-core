@@ -31,9 +31,10 @@ import Amount from '../../utils/amount'
 import { sortTransactionByDate } from '../../utils/tx-utils'
 import { addLogoToToken, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
 import { loadTimeData } from '../../../common/loadTimeData'
+import { walletApi } from '../slices/api.slice'
 
 import getAPIProxy from './bridge'
-import { Dispatch, State, Store } from './types'
+import { Dispatch, State } from './types'
 import { getHardwareKeyring } from '../api/hardware_keyrings'
 import { GetAccountsHardwareOperationResult, SolDerivationPaths } from '../hardware/types'
 import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
@@ -42,7 +43,7 @@ import { AllNetworksOption } from '../../options/network-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
-import { makeSerializableTransaction } from '../../utils/model-serialization-utils'
+import { deserializeOrigin, makeSerializableTransaction } from '../../utils/model-serialization-utils'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -60,7 +61,7 @@ export const getERC20Allowance = (
     if (result.error === BraveWallet.ProviderError.kSuccess) {
       resolve(result.allowance)
     } else {
-      reject()
+      reject(result.errorMessage)
     }
   })
 }
@@ -106,25 +107,50 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
   })
 }
 
-export const getBalance = (address: string, coin: BraveWallet.CoinType): Promise<string> => {
+export const getBalance = async (address: string, coin: BraveWallet.CoinType): Promise<string> => {
+  const { jsonRpcService } = getAPIProxy()
+  const chainId = await jsonRpcService.getChainId(coin)
+  return await getBalanceForChainId(address, coin, chainId.chainId)
+}
+
+export function getBalanceForChainId (address: string, coin: BraveWallet.CoinType, chainId: string): Promise<string> {
   return new Promise(async (resolve, reject) => {
     const { jsonRpcService } = getAPIProxy()
-    const chainId = await jsonRpcService.getChainId(coin)
-
     if (coin === BraveWallet.CoinType.SOL) {
-      const result = await jsonRpcService.getSolanaBalance(address, chainId.chainId)
+      const result = await jsonRpcService.getSolanaBalance(address, chainId)
       if (result.error === BraveWallet.SolanaProviderError.kSuccess) {
         resolve(Amount.normalize(result.balance.toString()))
       } else {
-        reject()
+        reject(result.errorMessage)
       }
       return
     }
-    const result = await jsonRpcService.getBalance(address, coin, chainId.chainId)
+    const result = await jsonRpcService.getBalance(address, coin, chainId)
     if (result.error === BraveWallet.ProviderError.kSuccess) {
       resolve(Amount.normalize(result.balance))
     } else {
-      reject()
+      reject(result.errorMessage)
+    }
+  })
+}
+
+export function getTokenBalanceForChainId (contract: string, address: string, coin: BraveWallet.CoinType, chainId: string): Promise<string> {
+  return new Promise(async (resolve, reject) => {
+    const { jsonRpcService } = getAPIProxy()
+    if (coin === BraveWallet.CoinType.SOL) {
+      const result = await jsonRpcService.getSPLTokenAccountBalance(address, contract, chainId)
+      if (result.error === BraveWallet.SolanaProviderError.kSuccess) {
+        resolve(Amount.normalize(result.amount))
+      } else {
+        reject(result.errorMessage)
+      }
+      return
+    }
+    const result = await jsonRpcService.getERC20TokenBalance(contract, address, chainId)
+    if (result.error === BraveWallet.ProviderError.kSuccess) {
+      resolve(Amount.normalize(result.balance))
+    } else {
+      reject(result.errorMessage)
     }
   })
 }
@@ -733,40 +759,29 @@ export function refreshTransactionHistory (address?: string) {
 export function refreshFullNetworkList () {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
-    const { jsonRpcService, braveWalletService } = apiProxy
+    const { jsonRpcService } = apiProxy
     const { wallet: { isFilecoinEnabled, isSolanaEnabled } } = getState()
 
-    // Get isTestNetworkEnabled
-    const isTestNetworksEnabled = await braveWalletService.getShowWalletTestNetworks()
-
     // Get All Networks
-    const getFullNetworkList = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
+    const filteredSupportedCoinTypes = SupportedCoinTypes.filter((coin) => {
       // MULTICHAIN: While we are still in development for FIL and SOL,
       // we will not use their networks unless enabled by brave://flags
-      if (coin === BraveWallet.CoinType.FIL && !isFilecoinEnabled) {
-        return []
-      }
-      if (coin === BraveWallet.CoinType.SOL && !isSolanaEnabled) {
-        return []
-      }
-      const networkList = await jsonRpcService.getAllNetworks(coin)
-      return networkList.networks
-    }))
-    const flattenedNetworkList = getFullNetworkList.flat(1)
-    let networkList =
-      isTestNetworksEnabled.isEnabled
-        ? flattenedNetworkList
-        : flattenedNetworkList.filter((network) => !SupportedTestNetworks.includes(network.chainId))
-
-    const defaultEthChainId = (await jsonRpcService.getChainId(BraveWallet.CoinType.ETH)).chainId
-    const hiddenEthNetworkList = (await jsonRpcService.getHiddenNetworks(BraveWallet.CoinType.ETH)).chainIds
-    networkList = networkList.filter((network: BraveWallet.NetworkInfo) => {
-      return !(network.coin === BraveWallet.CoinType.ETH &&
-        network.chainId !== defaultEthChainId &&
-        hiddenEthNetworkList.includes(network.chainId))
+      return (
+        (coin === BraveWallet.CoinType.FIL && isFilecoinEnabled) ||
+        (coin === BraveWallet.CoinType.SOL && isSolanaEnabled) ||
+        coin === BraveWallet.CoinType.ETH
+      )
     })
 
-    dispatch(WalletActions.setAllNetworks(networkList))
+    const networks = (await Promise.all(
+      filteredSupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
+        const { networks } = await jsonRpcService.getAllNetworks(coin)
+        const { chainIds: hiddenChains } = await jsonRpcService.getHiddenNetworks(coin)
+        return networks.filter((n) => !hiddenChains.includes(n.chainId))
+      })
+    )).flat(1)
+
+    dispatch(WalletActions.setAllNetworks(networks))
   }
 }
 
@@ -777,7 +792,7 @@ export function refreshNetworkInfo () {
 
     const apiProxy = getAPIProxy()
     const { jsonRpcService } = apiProxy
-    const { wallet: { selectedCoin, networkList } } = getState()
+    const { wallet: { networkList } } = getState()
 
     // Get default network for each coinType
     const defaultNetworks = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
@@ -788,6 +803,7 @@ export function refreshNetworkInfo () {
     dispatch(WalletActions.setDefaultNetworks(defaultNetworks))
 
     // Get current selected networks info
+    const selectedCoin = await dispatch(walletApi.endpoints.getSelectedCoin.initiate()).unwrap()
     const chainId = await jsonRpcService.getChainId(selectedCoin)
 
     const currentNetwork = getNetworkInfo(chainId.chainId, selectedCoin, networkList)
@@ -798,8 +814,6 @@ export function refreshNetworkInfo () {
 
 export function refreshKeyringInfo () {
   return async (dispatch: Dispatch, getState: () => State) => {
-    const { wallet: { selectedCoin } } = getState()
-
     const apiProxy = getAPIProxy()
     const { keyringService, walletHandler, jsonRpcService } = apiProxy
     const walletInfoBase = await walletHandler.getWalletInfo()
@@ -822,6 +836,7 @@ export function refreshKeyringInfo () {
     }))
     const filteredDefaultAccounts = defaultAccounts.filter((account) => Object.keys(account).length !== 0)
     dispatch(WalletActions.setDefaultAccounts(filteredDefaultAccounts))
+    const selectedCoin = await dispatch(walletApi.endpoints.getSelectedCoin.initiate()).unwrap()
     const coinsChainId = await jsonRpcService.getChainId(selectedCoin)
 
     // Get selectedAccountAddress
@@ -864,7 +879,7 @@ export function refreshSitePermissions () {
 
     // Get a list of accounts with permissions of the active origin
     const getAllPermissions = await Promise.all(accounts.map(async (account) => {
-      const result = await braveWalletService.hasPermission(account.coin, activeOrigin.origin, account.address)
+      const result = await braveWalletService.hasPermission(account.coin, deserializeOrigin(activeOrigin.origin), account.address)
       if (result.success && result.hasPermission) {
         return account
       }
@@ -904,7 +919,7 @@ export function hasEIP1559Support (account: WalletAccountType, network: BraveWal
   return keyringSupportsEIP1559 && network.isEip1559
 }
 
-export async function sendEthTransaction (store: Store, payload: SendEthTransactionParams) {
+export async function sendEthTransaction (payload: SendEthTransactionParams) {
   const apiProxy = getAPIProxy()
   /***
    * Determine whether to create a legacy or EIP-1559 transaction.
@@ -931,10 +946,7 @@ export async function sendEthTransaction (store: Store, payload: SendEthTransact
 
     // Check if network and keyring support EIP-1559.
     default:
-      const { selectedAccount, selectedNetwork } = store.getState().wallet
-      isEIP1559 = selectedNetwork && selectedAccount
-        ? hasEIP1559Support(selectedAccount, selectedNetwork)
-        : false
+      isEIP1559 = payload.hasEIP1559Support
   }
 
   const { chainId } = await apiProxy.jsonRpcService.getChainId(BraveWallet.CoinType.ETH)
@@ -948,7 +960,9 @@ export async function sendEthTransaction (store: Store, payload: SendEthTransact
     gasLimit: payload.gas || '',
     to: payload.to,
     value: payload.value,
-    data: payload.data || []
+    data: payload.data || [],
+    signOnly: false,
+    signedTransaction: ''
   }
 
   if (isEIP1559) {
@@ -1010,7 +1024,7 @@ export async function sendSolanaSerializedTransaction (payload: SolanaSerialized
   )
   if (result.error !== BraveWallet.ProviderError.kSuccess) {
     console.error(`Failed to sign Solana message: ${result.errorMessage}`)
-    return { success: false, errorMessage: result.errorMessage }
+    return { success: false, errorMessage: result.errorMessage, txMetaId: '' }
   } else {
     return await txService.addUnapprovedTransaction(
       // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
@@ -1020,4 +1034,25 @@ export async function sendSolanaSerializedTransaction (payload: SolanaSerialized
       payload.groupId || null
     )
   }
+}
+
+export function getSwapService () {
+  const { swapService } = getAPIProxy()
+  return swapService
+}
+
+export function getEthTxManagerProxy () {
+  const { ethTxManagerProxy } = getAPIProxy()
+  return ethTxManagerProxy
+}
+
+export async function getNFTMetadata (token: BraveWallet.BlockchainToken) {
+  const { jsonRpcService } = getAPIProxy()
+  if (token.coin === BraveWallet.CoinType.ETH) {
+    return await jsonRpcService.getERC721Metadata(token.contractAddress, token.tokenId, token.chainId)
+  } else if (token.coin === BraveWallet.CoinType.SOL) {
+    return await jsonRpcService.getSolTokenMetadata(token.contractAddress)
+  }
+
+  return undefined
 }

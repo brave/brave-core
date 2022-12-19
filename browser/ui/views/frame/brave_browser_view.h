@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_H_
@@ -12,7 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
@@ -80,8 +80,15 @@ class BraveBrowserView : public BrowserView {
   bool GetSupportsTitle() const override;
 #endif
   bool ShouldShowWindowTitle() const override;
+  void OnThemeChanged() override;
 
   views::View* sidebar_host_view() { return sidebar_host_view_; }
+  bool IsSidebarVisible() const;
+
+  VerticalTabStripWidgetDelegateView*
+  vertical_tab_strip_widget_delegate_view() {
+    return vertical_tab_strip_widget_delegate_view_;
+  }
 
  private:
   class TabCyclingEventHandler;

@@ -18,6 +18,9 @@ BASE_FEATURE(kUseBraveTranslateGo,
 const base::FeatureParam<bool> kUpdateLanguageListParam{
     &kUseBraveTranslateGo, "update-languages", false};
 
+BASE_FEATURE(kBraveEnableAutoTranslate,
+             "BraveEnableAutoTranslate",
+             base::FeatureState::FEATURE_ENABLED_BY_DEFAULT);
 }  // namespace features
 
 bool IsBraveTranslateGoAvailable() {
@@ -33,6 +36,10 @@ bool UseGoogleTranslateEndpoint() {
   return IsBraveTranslateGoAvailable() &&
          base::CommandLine::ForCurrentProcess()->HasSwitch(
              switches::kBraveTranslateUseGoogleEndpoint);
+}
+
+bool IsBraveAutoTranslateEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveEnableAutoTranslate);
 }
 
 }  // namespace translate

@@ -22,6 +22,7 @@ import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.mojo.bindings.Callbacks;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class AsyncUtils {
     private final static String TAG = "AsyncUtils";
@@ -279,7 +280,8 @@ public class AsyncUtils {
     }
 
     public static class GetNativeAssetsBalancesResponseContext extends SingleResponseBaseContext
-            implements Callbacks.Callback1<HashMap<String, Double>> {
+            implements Callbacks.Callback2<Integer, HashMap<String, Double>> {
+        public int coinType;
         public HashMap<String, Double> nativeAssetsBalances;
 
         public GetNativeAssetsBalancesResponseContext(Runnable responseCompleteCallback) {
@@ -287,22 +289,26 @@ public class AsyncUtils {
         }
 
         @Override
-        public void call(HashMap<String, Double> nativeAssetsBalances) {
+        public void call(Integer coinType, HashMap<String, Double> nativeAssetsBalances) {
+            this.coinType = coinType;
             this.nativeAssetsBalances = nativeAssetsBalances;
             super.fireResponseCompleteCallback();
         }
     }
 
     public static class GetBlockchainTokensBalancesResponseContext extends SingleResponseBaseContext
-            implements Callbacks.Callback1<HashMap<String, HashMap<String, Double>>> {
+            implements Callbacks.Callback2<Integer, HashMap<String, HashMap<String, Double>>> {
         public HashMap<String, HashMap<String, Double>> blockchainTokensBalances;
+        public int coinType;
 
         public GetBlockchainTokensBalancesResponseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
 
         @Override
-        public void call(HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {
+        public void call(Integer coinType,
+                HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {
+            this.coinType = coinType;
             this.blockchainTokensBalances = blockchainTokensBalances;
             super.fireResponseCompleteCallback();
         }
@@ -365,6 +371,21 @@ public class AsyncUtils {
         @Override
         public void call(String selectedAccount) {
             this.selectedAccount = selectedAccount;
+            super.fireResponseCompleteCallback();
+        }
+    }
+
+    public static class GetP3ABalancesContext extends SingleResponseBaseContext
+            implements Callbacks.Callback1<HashMap<Integer, HashSet<String>>> {
+        public HashMap<Integer, HashSet<String>> activeAddresses;
+
+        public GetP3ABalancesContext(Runnable responseCompleteCallback) {
+            super(responseCompleteCallback);
+        }
+
+        @Override
+        public void call(HashMap<Integer, HashSet<String>> activeAddresses) {
+            this.activeAddresses = activeAddresses;
             super.fireResponseCompleteCallback();
         }
     }

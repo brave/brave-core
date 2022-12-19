@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils_internal.h"
@@ -145,6 +146,12 @@ BraveDarkModeType GetActiveBraveDarkModeType() {
   if (command_line.HasSwitch(switches::kDarkMode))
     return GetDarkModeSwitchValue(command_line);
 
+  if (!g_browser_process || !g_browser_process->local_state()) {
+    // In unittest, local_state() could not be initialzed.
+    CHECK_IS_TEST();
+    return BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT;
+  }
+
   BraveDarkModeType type = static_cast<BraveDarkModeType>(
       g_browser_process->local_state()->GetInteger(kBraveDarkMode));
   if (type == BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT) {
@@ -164,6 +171,12 @@ BraveDarkModeType GetBraveDarkModeType() {
       *base::CommandLine::ForCurrentProcess();
   if (command_line.HasSwitch(switches::kDarkMode))
     return GetDarkModeSwitchValue(command_line);
+
+  if (!g_browser_process || !g_browser_process->local_state()) {
+    // In unittest, local_state() could not be initialzed.
+    CHECK_IS_TEST();
+    return BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT;
+  }
 
   BraveDarkModeType type = static_cast<BraveDarkModeType>(
       g_browser_process->local_state()->GetInteger(kBraveDarkMode));

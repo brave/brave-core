@@ -9,8 +9,8 @@
 #include <utility>
 
 #include "absl/types/optional.h"
-#include "base/bind.h"
 #include "base/containers/circular_deque.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/legacy_migration/notifications/legacy_notification_json_reader.h"

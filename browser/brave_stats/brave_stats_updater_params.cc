@@ -121,7 +121,7 @@ void BraveStatsUpdaterParams::LoadPrefs() {
   first_check_made_ = stats_pref_service_->GetBoolean(kFirstCheckMade);
   week_of_installation_ = stats_pref_service_->GetString(kWeekOfInstallation);
   wallet_last_unlocked_ =
-      profile_pref_service_->GetTime(kBraveWalletLastUnlockTime);
+      stats_pref_service_->GetTime(kBraveWalletLastUnlockTime);
   last_reported_wallet_unlock_ =
       stats_pref_service_->GetTime(kBraveWalletPingReportedUnlockTime);
   if (week_of_installation_.empty())

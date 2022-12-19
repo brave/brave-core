@@ -173,8 +173,13 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                                         break;
                                     }
                                 }
-                                onWalletListItemClick.onAssetCheckedChanged(
-                                        walletListItemModel, holder.assetCheck, isChecked);
+                                if ("noOnClickListener".equals(
+                                            (String) holder.assetCheck.getTag())) {
+                                    holder.assetCheck.setTag(null);
+                                } else {
+                                    onWalletListItemClick.onAssetCheckedChanged(
+                                            walletListItemModel, holder.assetCheck, isChecked);
+                                }
                             }
                         });
             }

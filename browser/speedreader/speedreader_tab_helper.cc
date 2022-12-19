@@ -287,12 +287,6 @@ void SpeedreaderTabHelper::ShowBubble(bool is_bubble_speedreader) {
 }
 
 void SpeedreaderTabHelper::HideBubble() {
-  Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
-  if (browser) {
-    static_cast<BraveBrowserWindow*>(browser->window())
-        ->HideSpeedreaderWebUIBubble();
-  }
-
   if (speedreader_bubble_) {
     speedreader_bubble_->Hide();
     speedreader_bubble_ = nullptr;
@@ -504,7 +498,7 @@ void SpeedreaderTabHelper::DOMContentLoaded(
         getElementById('c93e2206-2f31-4ddc-9828-2bb8e8ed940e');
       if (!link)
         return;
-      link.text = "$1";
+      link.innerText = "$1";
       link.addEventListener('click', (e) => {
         window.speedreader.showOriginalPage();
       })
@@ -535,6 +529,10 @@ void SpeedreaderTabHelper::WebContentsDestroyed() {
   pref_change_registrar_.reset();
   content_rules_ = nullptr;
   HideBubble();
+}
+
+bool SpeedreaderTabHelper::IsPageDistillationAllowed() {
+  return speedreader::PageWantsDistill(distill_state_);
 }
 
 void SpeedreaderTabHelper::OnDistillComplete() {

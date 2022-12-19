@@ -16,7 +16,6 @@ import {
 
 import {
   PublisherInfo,
-  PublisherStatus,
   ExternalWalletInfo,
   MediaMetaData
 } from '../lib/interfaces'
@@ -28,6 +27,12 @@ import {
   LocaleContext,
   formatMessage
 } from '../../shared/lib/locale_context'
+import { getExternalWalletProviderName } from '../../shared/lib/external_wallet'
+import {
+  isPublisherVerified,
+  PublisherStatus,
+  publisherStatusToWalletProviderName
+} from '../../shared/lib/publisher_status'
 
 import { MediaCard } from './media_card'
 import { NewTabLink } from '../../shared/components/new_tab_link'
@@ -39,7 +44,7 @@ import * as mojom from '../../shared/lib/mojom'
 
 function getLogoURL (publisherInfo: PublisherInfo) {
   const { logo } = publisherInfo
-  if (!logo || publisherInfo.status === PublisherStatus.NOT_VERIFIED) {
+  if (!logo || !isPublisherVerified(publisherInfo.status)) {
     return ''
   }
   if (/^https:\/\/[a-z0-9-]+\.invalid(\/)?$/.test(logo)) {
@@ -154,7 +159,7 @@ function getTitle (
 }
 
 function getVerifiedIcon (publisherInfo: PublisherInfo) {
-  if (publisherInfo.status === PublisherStatus.NOT_VERIFIED) {
+  if (!isPublisherVerified(publisherInfo.status)) {
     return null
   }
   return <VerifiedIcon />
@@ -164,12 +169,12 @@ function showUnverifiedNotice (
   publisherInfo: PublisherInfo,
   externalWalletInfo?: ExternalWalletInfo
 ) {
-  // Show the notice if the publisher is not registered.
-  if (publisherInfo.status === PublisherStatus.NOT_VERIFIED) {
+  // Show the notice if the publisher is not verified.
+  if (!isPublisherVerified(publisherInfo.status)) {
     return true
   }
 
-  // Do not show the notice if the publisher is registered and the user does
+  // Do not show the notice if the publisher is verified and the user does
   // not have a connected external wallet.
   if (!externalWalletInfo) {
     return false
@@ -205,9 +210,13 @@ function getUnverifiedNotice (
 
   const { getString } = locale
 
-  const text = getString(publisherInfo.status === PublisherStatus.NOT_VERIFIED
-    ? 'siteBannerNoticeNotRegistered'
-    : 'siteBannerNoticeText')
+  const text =
+    !isPublisherVerified(publisherInfo.status)
+    ? getString('siteBannerNoticeNotRegistered')
+    : formatMessage(getString('siteBannerNoticeText'), [
+        getExternalWalletProviderName(walletInfo!.type),
+        publisherStatusToWalletProviderName(publisherInfo.status)
+      ])
 
   return (
     <style.unverifiedNotice>
@@ -343,9 +352,9 @@ export function PublisherBanner () {
     ? `url(${publisherInfo.background})`
     : undefined
 
-  const verifiedType = publisherInfo.status === PublisherStatus.NOT_VERIFIED
-    ? 'not-verified'
-    : 'verified'
+  const verifiedType = isPublisherVerified(publisherInfo.status)
+    ? 'verified'
+    : 'not-verified'
 
   return (
     <style.root style={{ backgroundImage }}>

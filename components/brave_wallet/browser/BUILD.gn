@@ -1,6 +1,7 @@
 import("//brave/build/config.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//build/config/features.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
 
 declare_args() {
   sardine_client_id = ""
@@ -14,6 +15,8 @@ if (is_official_build) {
 
 static_library("browser") {
   sources = [
+    "asset_discovery_manager.cc",
+    "asset_discovery_manager.h",
     "asset_ratio_response_parser.cc",
     "asset_ratio_response_parser.h",
     "asset_ratio_service.cc",
@@ -88,6 +91,8 @@ static_library("browser") {
     "json_rpc_service.h",
     "keyring_service.cc",
     "keyring_service.h",
+    "nft_metadata_fetcher.cc",
+    "nft_metadata_fetcher.h",
     "nonce_tracker.cc",
     "nonce_tracker.h",
     "password_encryptor.cc",
@@ -145,6 +150,8 @@ static_library("browser") {
   ]
   deps = [
     ":constants",
+    ":generated_json_rpc_responses",
+    ":generated_swap_responses",
     ":hd_keyring",
     ":pref_names",
     ":transaction",
@@ -178,6 +185,7 @@ static_library("browser") {
     "//third_party/abseil-cpp:absl",
     "//third_party/boringssl",
     "//third_party/re2",
+    "//tools/json_schema_compiler:generated_api_util",
     "//ui/base:base",
     "//url",
   ]
@@ -306,6 +314,26 @@ source_set("transaction") {
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/filecoin/rs:cxx",
     "//brave/components/json/rs:cxx",
+  ]
+}
+
+generated_types("generated_json_rpc_responses") {
+  sources = [ "json_rpc_responses.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [
+    ":browser",
+    "test:brave_wallet_unit_tests",
+  ]
+}
+
+generated_types("generated_swap_responses") {
+  sources = [ "swap_responses.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [
+    ":browser",
+    "test:brave_wallet_unit_tests",
   ]
 }
 

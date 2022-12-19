@@ -30,10 +30,6 @@ export function saveShowToday (value: boolean): void {
   sendSavePref('showToday', value)
 }
 
-export function saveShowBraveNewsButton (value: boolean): void {
-  sendSavePref('showBraveNewsButton', value)
-}
-
 export function saveShowRewards (value: boolean): void {
   sendSavePref('showRewards', value)
 }
@@ -42,28 +38,12 @@ export function saveShowBraveTalk (value: boolean): void {
   sendSavePref('showBraveTalk', value)
 }
 
-export function saveShowBinance (value: boolean): void {
-  sendSavePref('showBinance', value)
-}
-
 export function saveBrandedWallpaperOptIn (value: boolean): void {
   sendSavePref('brandedWallpaperOptIn', value)
 }
 
 export function saveIsBrandedWallpaperNotificationDismissed (value: boolean): void {
   sendSavePref('isBrandedWallpaperNotificationDismissed', value)
-}
-
-export function saveShowGemini (value: boolean): void {
-  sendSavePref('showGemini', value)
-}
-
-export function saveShowCryptoDotCom (value: boolean): void {
-  sendSavePref('showCryptoDotCom', value)
-}
-
-export function saveShowFTX (value: boolean): void {
-  sendSavePref('showFTX', value)
 }
 
 export function saveIsBraveTodayOptedIn (value: boolean): void {

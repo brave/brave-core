@@ -14,38 +14,39 @@
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "net/base/data_url.h"
+#include "tools/json_schema_compiler/util.h"
 
 namespace brave_wallet {
 
 namespace eth {
 
-bool ParseStringResult(const std::string& json, std::string* value) {
+bool ParseStringResult(const base::Value& json_value, std::string* value) {
   DCHECK(value);
 
-  std::string result;
-  if (!ParseSingleStringResult(json, &result))
+  auto result = ParseSingleStringResult(json_value);
+  if (!result)
     return false;
 
   size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
-  return brave_wallet::DecodeString(offset, result, value);
+  return brave_wallet::DecodeString(offset, *result, value);
 }
 
-bool ParseAddressResult(const std::string& json, std::string* address) {
+bool ParseAddressResult(const base::Value& json_value, std::string* address) {
   DCHECK(address);
 
-  std::string result;
-  if (!ParseSingleStringResult(json, &result))
+  auto result = ParseSingleStringResult(json_value);
+  if (!result)
     return false;
 
   // Expected result: 0x prefix + 24 leading 0s + 40 characters for address.
-  if (result.size() != 66) {
+  if (result->size() != 66) {
     return false;
   }
 
   size_t offset = 2 /* len of "0x" */ + 24 /* len of leading zeros */;
-  *address = "0x" + result.substr(offset);
+  *address = "0x" + result->substr(offset);
 
-  auto eth_addr = EthAddress::FromHex("0x" + result.substr(offset));
+  auto eth_addr = EthAddress::FromHex("0x" + result->substr(offset));
   if (eth_addr.IsEmpty())
     return false;
 
@@ -53,18 +54,19 @@ bool ParseAddressResult(const std::string& json, std::string* address) {
   return true;
 }
 
-bool ParseEthGetBlockNumber(const std::string& json, uint256_t* block_num) {
-  std::string block_num_str;
-  if (!brave_wallet::ParseSingleStringResult(json, &block_num_str))
+bool ParseEthGetBlockNumber(const base::Value& json_value,
+                            uint256_t* block_num) {
+  auto block_num_str = ParseSingleStringResult(json_value);
+  if (!block_num_str)
     return false;
 
-  if (!HexValueToUint256(block_num_str, block_num))
+  if (!HexValueToUint256(*block_num_str, block_num))
     return false;
 
   return true;
 }
 
-bool ParseEthGetFeeHistory(const std::string& json,
+bool ParseEthGetFeeHistory(const base::Value& json_value,
                            std::vector<std::string>* base_fee_per_gas,
                            std::vector<double>* gas_used_ratio,
                            std::string* oldest_block,
@@ -79,162 +81,109 @@ bool ParseEthGetFeeHistory(const std::string& json,
   oldest_block->clear();
   reward->clear();
 
-  auto result = ParseResultDict(json);
-  if (!result)
+  auto value = ParseResultValue(json_value);
+  if (!value)
     return false;
 
-  const auto* base_fee_list = result->FindList("baseFeePerGas");
-  if (!base_fee_list)
-    return false;
-  for (const base::Value& entry : *base_fee_list) {
-    const std::string* v = entry.GetIfString();
-    // If we have unexpected output, so just return false
-    if (!v)
-      return false;
-    base_fee_per_gas->push_back(*v);
-  }
-
-  base_fee_list = result->FindList("gasUsedRatio");
-  if (!base_fee_list)
+  auto fee_item_value =
+      json_rpc_responses::EthGetFeeHistoryResult::FromValue(*value);
+  if (!fee_item_value)
     return false;
 
-  for (const base::Value& entry : *base_fee_list) {
-    absl::optional<double> v = entry.GetIfDouble();
-    // If we have unexpected output, so just return false
-    if (!v)
-      return false;
-    gas_used_ratio->push_back(*v);
-  }
+  *base_fee_per_gas = fee_item_value->base_fee_per_gas;
+  *gas_used_ratio = fee_item_value->gas_used_ratio;
+  *oldest_block = fee_item_value->oldest_block;
 
-  const auto* oldest_block_str = result->FindString("oldestBlock");
-  if (!oldest_block_str)
-    return false;
-  *oldest_block = *oldest_block_str;
-
-  const base::Value::List* reward_list_list = result->FindList("reward");
-  if (reward_list_list) {
-    for (const base::Value& item : *reward_list_list) {
-      // If we have unexpected output, so just return false
-      const auto* reward_list = item.GetIfList();
+  if (fee_item_value->reward) {
+    for (const auto& reward_list_value : *fee_item_value->reward) {
+      const auto* reward_list = reward_list_value.GetIfList();
       if (!reward_list)
         return false;
-
       reward->push_back(std::vector<std::string>());
       std::vector<std::string>& current_reward_vector = reward->back();
-      for (const auto& entry : *reward_list) {
-        const std::string* v = entry.GetIfString();
-        // If we have unexpected output, so just return false
-        if (!v)
-          return false;
-        current_reward_vector.push_back(*v);
-      }
+      if (!json_schema_compiler::util::PopulateArrayFromList(
+              *reward_list, &current_reward_vector))
+        return false;
     }
   }
 
   return true;
 }
 
-bool ParseEthGetBalance(const std::string& json, std::string* hex_balance) {
-  return brave_wallet::ParseSingleStringResult(json, hex_balance);
+bool ParseEthGetBalance(const base::Value& json_value,
+                        std::string* hex_balance) {
+  auto result = ParseSingleStringResult(json_value);
+  if (!result)
+    return false;
+  *hex_balance = std::move(*result);
+  return true;
 }
 
-bool ParseEthGetTransactionCount(const std::string& json, uint256_t* count) {
-  std::string count_str;
-  if (!brave_wallet::ParseSingleStringResult(json, &count_str))
+bool ParseEthGetTransactionCount(const base::Value& json_value,
+                                 uint256_t* count) {
+  auto count_str = ParseSingleStringResult(json_value);
+  if (!count_str)
     return false;
 
-  if (!HexValueToUint256(count_str, count))
+  if (!HexValueToUint256(*count_str, count))
     return false;
 
   return true;
 }
 
-bool ParseEthGetTransactionReceipt(const std::string& json,
+bool ParseEthGetTransactionReceipt(const base::Value& json_value,
                                    TransactionReceipt* receipt) {
   DCHECK(receipt);
 
-  auto result = ParseResultDict(json);
+  auto result = ParseResultValue(json_value);
   if (!result)
     return false;
 
-  if (const auto* transaction_hash = result->FindString("transactionHash"))
-    receipt->transaction_hash = *transaction_hash;
-  else
+  auto tx_receipt_value =
+      json_rpc_responses::TransactionReceipt::FromValue(*result);
+  if (!tx_receipt_value)
     return false;
 
-  if (const auto* transaction_index = result->FindString("transactionIndex")) {
-    if (!HexValueToUint256(*transaction_index, &receipt->transaction_index))
-      return false;
-  } else {
-    return false;
-  }
-
-  if (const auto* block_number = result->FindString("blockNumber")) {
-    if (!HexValueToUint256(*block_number, &receipt->block_number))
-      return false;
-  } else {
-    return false;
-  }
-
-  if (const auto* block_hash = result->FindString("blockHash"))
-    receipt->block_hash = *block_hash;
-  else
+  receipt->transaction_hash = tx_receipt_value->transaction_hash;
+  if (!HexValueToUint256(tx_receipt_value->transaction_index,
+                         &receipt->transaction_index))
     return false;
 
-  std::string cumulative_gas_used;
-  if (const auto* cumulative_gas_used_string =
-          result->FindString("cumulativeGasUsed")) {
-    if (!HexValueToUint256(*cumulative_gas_used_string,
-                           &receipt->cumulative_gas_used))
-      return false;
-  } else {
+  if (!HexValueToUint256(tx_receipt_value->block_number,
+                         &receipt->block_number))
     return false;
-  }
 
-  if (const auto* gas_used = result->FindString("gasUsed")) {
-    if (!HexValueToUint256(*gas_used, &receipt->gas_used))
-      return false;
-  } else {
+  receipt->block_hash = tx_receipt_value->block_hash;
+
+  if (!HexValueToUint256(tx_receipt_value->cumulative_gas_used,
+                         &receipt->cumulative_gas_used))
     return false;
-  }
 
-  // contractAddress can be null
-  if (const auto* contract_address = result->FindString("contractAddress")) {
-    receipt->contract_address = *contract_address;
-  }
+  if (!HexValueToUint256(tx_receipt_value->gas_used, &receipt->gas_used))
+    return false;
+
+  if (tx_receipt_value->contract_address.is_string())
+    receipt->contract_address = tx_receipt_value->contract_address.GetString();
 
   // TODO(darkdh): logs
-#if 0
-  const base::Value::List* logs = result->FindList("logs");
-  if (!logs)
-    return false;
-  for (const std::string& entry : *logs)
-    receipt->logs.push_back(entry);
-#endif
 
-  if (const auto* logs_bloom = result->FindString("logsBloom"))
-    receipt->logs_bloom = *logs_bloom;
-  else
-    return false;
+  receipt->logs_bloom = tx_receipt_value->logs_bloom;
 
-  if (const auto* status = result->FindString("status")) {
-    uint32_t status_int = 0;
-    if (!base::HexStringToUInt(*status, &status_int))
-      return false;
-    receipt->status = status_int == 1;
-  } else {
+  uint32_t status_int = 0;
+  if (!base::HexStringToUInt(tx_receipt_value->status, &status_int))
     return false;
-  }
+  receipt->status = status_int == 1;
 
   return true;
 }
 
-bool ParseEthSendRawTransaction(const std::string& json, std::string* tx_hash) {
-  return ParseSingleStringResult(json, tx_hash);
+absl::optional<std::string> ParseEthSendRawTransaction(
+    const base::Value& json_value) {
+  return ParseSingleStringResult(json_value);
 }
 
-bool ParseEthCall(const std::string& json, std::string* result) {
-  return ParseSingleStringResult(json, result);
+absl::optional<std::string> ParseEthCall(const base::Value& json_value) {
+  return ParseSingleStringResult(json_value);
 }
 
 absl::optional<std::vector<std::string>> DecodeEthCallResponse(
@@ -255,110 +204,63 @@ absl::optional<std::vector<std::string>> DecodeEthCallResponse(
   return args;
 }
 
-bool ParseEthEstimateGas(const std::string& json, std::string* result) {
-  return ParseSingleStringResult(json, result);
+absl::optional<std::string> ParseEthEstimateGas(const base::Value& json_value) {
+  return ParseSingleStringResult(json_value);
 }
 
-bool ParseEthGasPrice(const std::string& json, std::string* result) {
-  return ParseSingleStringResult(json, result);
+absl::optional<std::string> ParseEthGasPrice(const base::Value& json_value) {
+  return ParseSingleStringResult(json_value);
 }
 
-bool ParseEthGetLogs(const std::string& json, std::vector<Log>* logs) {
+bool ParseEthGetLogs(const base::Value& json_value, std::vector<Log>* logs) {
   DCHECK(logs);
-  auto result = ParseResultList(json);
+  auto result = ParseResultList(json_value);
   if (!result)
     return false;
 
   DCHECK(result);
 
   for (const auto& logs_list_it : *result) {
+    auto log_item_value =
+        json_rpc_responses::EthGetLogsResult::FromValue(logs_list_it.Clone());
+    if (!log_item_value)
+      return false;
+
     Log log;
-    const auto* log_dict = logs_list_it.GetIfDict();
-    if (!log_dict) {
-      return false;
-    }
+    log.address = log_item_value->address;
+    log.block_hash = log_item_value->block_hash;
 
-    const std::string* address = log_dict->FindString("address");
-    if (!address) {
-      return false;
-    }
-    log.address = *address;
-
-    const std::string* block_hash = log_dict->FindString("blockHash");
-    if (!block_hash) {
-      return false;
-    }
-    log.block_hash = *block_hash;
-
-    const std::string* block_number = log_dict->FindString("blockNumber");
-    if (!block_number) {
-      return false;
-    }
     uint256_t block_number_int = 0;
-    if (!HexValueToUint256(*block_number, &block_number_int))
+    if (!HexValueToUint256(log_item_value->block_number, &block_number_int))
       return false;
     log.block_number = block_number_int;
+    log.data = log_item_value->data;
 
-    const std::string* data = log_dict->FindString("data");
-    if (!data) {
-      return false;
-    }
-    log.data = *data;
-
-    const std::string* log_index = log_dict->FindString("logIndex");
-    if (!log_index) {
-      return false;
-    }
     uint32_t log_index_int = 0;
-    if (!base::HexStringToUInt(*log_index, &log_index_int))
+    if (!base::HexStringToUInt(log_item_value->log_index, &log_index_int))
       return false;
     log.log_index = log_index_int;
+    log.removed = log_item_value->removed;
+    log.transaction_hash = log_item_value->transaction_hash;
 
-    absl::optional<bool> removed = log_dict->FindBool("removed");
-    if (!removed.has_value())
-      return false;
-    log.removed = removed.value_or(false);
-
-    const std::string* transaction_hash =
-        log_dict->FindString("transactionHash");
-    if (!transaction_hash) {
-      return false;
-    }
-    log.transaction_hash = *transaction_hash;
-
-    const std::string* transaction_index =
-        log_dict->FindString("transactionIndex");
-    if (!transaction_index) {
-      return false;
-    }
     uint32_t transaction_index_int = 0;
-    if (!base::HexStringToUInt(*transaction_index, &transaction_index_int))
+    if (!base::HexStringToUInt(log_item_value->transaction_index,
+                               &transaction_index_int))
       return false;
     log.transaction_index = transaction_index_int;
-
-    std::vector<std::string> topics;
-    const auto* topics_list = log_dict->FindList("topics");
-    if (!topics_list) {
-      return false;
-    }
-    for (const auto& entry : *topics_list) {
-      if (!entry.is_string())
-        continue;
-      topics.push_back(entry.GetString());
-    }
-    log.topics = topics;
+    log.topics = log_item_value->topics;
     logs->push_back(log);
   }
 
   return true;
 }
 
-bool ParseEnsResolverContentHash(const std::string& json,
+bool ParseEnsResolverContentHash(const base::Value& json_value,
                                  std::vector<uint8_t>* content_hash) {
   content_hash->clear();
 
   std::string string_content_hash;
-  if (!ParseStringResult(json, &string_content_hash)) {
+  if (!ParseStringResult(json_value, &string_content_hash)) {
     return false;
   }
   content_hash->assign(string_content_hash.begin(), string_content_hash.end());
@@ -366,35 +268,35 @@ bool ParseEnsResolverContentHash(const std::string& json,
 }
 
 absl::optional<std::vector<std::string>>
-ParseUnstoppableDomainsProxyReaderGetMany(const std::string& json) {
-  std::string result;
-  if (!ParseSingleStringResult(json, &result))
+ParseUnstoppableDomainsProxyReaderGetMany(const base::Value& json_value) {
+  auto result = ParseSingleStringResult(json_value);
+  if (!result)
     return absl::nullopt;
 
   size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
-  if (offset > result.size())
+  if (offset > result->size())
     return absl::nullopt;
 
   std::vector<std::string> values;
-  if (!brave_wallet::DecodeStringArray(result.substr(offset), &values))
+  if (!brave_wallet::DecodeStringArray(result->substr(offset), &values))
     return absl::nullopt;
 
   return values;
 }
 
 absl::optional<std::string> ParseUnstoppableDomainsProxyReaderGet(
-    const std::string& json) {
+    const base::Value& json_value) {
   std::string value;
-  if (!ParseStringResult(json, &value)) {
+  if (!ParseStringResult(json_value, &value)) {
     return absl::nullopt;
   }
 
   return value;
 }
 
-bool ParseTokenUri(const std::string& json, GURL* url) {
+bool ParseTokenUri(const base::Value& json_value, GURL* url) {
   std::string result;
-  if (!ParseStringResult(json, &result)) {
+  if (!ParseStringResult(json_value, &result)) {
     return false;
   }
 

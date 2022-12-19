@@ -28,10 +28,6 @@ std::string GetFeeAddress();
 
 std::string GetLoginUrl(const std::string& state);
 
-std::string GetAddUrl();
-
-std::string GetWithdrawUrl();
-
 std::string GetAccountUrl();
 
 std::string GetActivityUrl();

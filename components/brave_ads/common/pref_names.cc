@@ -110,6 +110,8 @@ const char kHasMigratedNotificationState[] =
     "brave.brave_ads.has_migrated.notification_state";
 const char kHasMigratedRewardsState[] =
     "brave.brave_ads.migrated.rewards_state";
+const char kShouldMigrateVerifiedRewardsUser[] =
+    "brave.brave_ads.rewards.verified_user.should_migrate";
 
 const char kConfirmationsHash[] = "brave.brave_ads.confirmations.hash";
 const char kClientHash[] = "brave.brave_ads.client.hash";

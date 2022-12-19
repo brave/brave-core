@@ -35,10 +35,24 @@
   </div>
 </div>
 
-<!-- Sync words decryption error -->
-<div class="cr-row first" hidden="[[!hasSyncWordsDecryptionError_]]">
+<!-- Sync words decryption error, safe storage locked-->
+<div class="cr-row first" hidden="[[!hasLockedSafeStorage_]]">
   <div class="flex cr-padded-text">
     $i18nRaw{braveSyncPassphraseDecryptionErrorMessage}
+  </div>
+</div>
+
+<!-- Sync words decryption error, safe storage unlocked-->
+<div class="cr-row first" hidden="[[!hasUnlockedSafeStorageCannotDecryptSeed_]]">
+  <div class="flex cr-padded-text">
+    <p>$i18nRaw{braveSyncPassphraseDecryptionErrorUnlockedSsMessage}</p>
+    <div class="actions">
+      <cr-button class="action-button"
+        on-click="onRejoin_"
+      >
+        $i18n{braveSyncLeaveAndRejoinTheChainButton}
+      </cr-button>
+    </div>
   </div>
 </div>
 
@@ -59,7 +73,8 @@
     </template>
 
     <template is="dom-if" if="[[isStatus_('setup', pageStatus_)]]">
-      <settings-brave-sync-setup on-setup-success="onSetupSuccess_">
+      <settings-brave-sync-setup on-setup-success="onSetupSuccess_"
+       sync-code-dialog-type="{{syncCodeDialogType}}">
       </settings-brave-sync-setup>
     </template>
   </div>

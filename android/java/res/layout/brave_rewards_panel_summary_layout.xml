@@ -10,26 +10,6 @@
     android:orientation="vertical"
     android:paddingBottom="8dp">
 
-    <TextView
-        android:id="@+id/btn_add_funds"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/white_48_rounded_bg"
-        android:drawablePadding="8dp"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
-        android:text="@string/add_funds"
-        android:fontFamily="@font/poppins_regular"
-        android:visibility="gone"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="16dp"
-        app:drawableStartCompat="@drawable/ic_plus"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,7 +26,7 @@
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:textStyle="bold"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/poppins_600"
             android:text="@string/rewards_summary"
             android:textColor="@android:color/white"
             android:textSize="14sp" />
@@ -55,7 +35,7 @@
             android:id="@+id/month_year_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/poppins_600"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="14sp" />
@@ -83,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="0.5"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:text="@string/rewards_from_ads"
@@ -96,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:layout_marginEnd="4dp"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:textSize="14sp" />
 
             <TextView
@@ -104,7 +84,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:textColor="@color/rewards_panel_secondary_text_color"
                 android:textSize="12sp" />
 
@@ -135,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="0.5"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:text="@string/auto_contribute"
@@ -148,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:layout_marginEnd="4dp"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:textColor="@color/rewards_settings_button_color"
                 android:textSize="14sp" />
 
@@ -157,7 +137,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:textColor="@color/rewards_panel_secondary_text_color"
                 android:textSize="12sp" />
 
@@ -184,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="0.5"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:text="@string/one_time_tip"
@@ -197,7 +177,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:layout_marginEnd="4dp"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:textColor="@color/rewards_settings_button_color"
                 android:textSize="14sp" />
 
@@ -206,7 +186,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:textColor="@color/rewards_panel_secondary_text_color"
                 android:textSize="12sp" />
 
@@ -233,7 +213,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="0.5"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:text="@string/monthly_tips"
@@ -246,7 +226,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
                 android:layout_marginEnd="4dp"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:textColor="@color/rewards_settings_button_color"
                 android:textSize="14sp" />
 
@@ -255,7 +235,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:textColor="@color/rewards_panel_secondary_text_color"
                 android:textSize="12sp" />
 

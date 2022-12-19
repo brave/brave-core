@@ -1,3 +1,8 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 package org.chromium.chrome.browser.app.domain;
 
 import android.content.Context;
@@ -17,13 +22,16 @@ import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
+import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkResponsesCollector;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.util.Triple;
 import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.mojo.system.MojoException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NetworkModel implements JsonRpcServiceObserver {
@@ -41,6 +49,9 @@ public class NetworkModel implements JsonRpcServiceObserver {
             _mChainNetworkAllNetwork;
     private final Context mContext;
     private final MediatorLiveData<String[]> _mCustomNetworkIds;
+    private final MediatorLiveData<List<NetworkInfo>> _mPrimaryNetworks;
+    private final MediatorLiveData<List<NetworkInfo>> _mSecondaryNetworks;
+    private NetworkSelectorModel mNetworkSelectorModel;
     public final LiveData<String[]> mCustomNetworkIds;
     public LiveData<NetworkInfo> mNeedToCreateAccountForNetwork;
     public final LiveData<Triple<String, NetworkInfo, NetworkInfo[]>> mChainNetworkAllNetwork;
@@ -49,6 +60,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
     public final LiveData<NetworkInfo[]> mDefaultCoinCryptoNetworks;
     public final LiveData<NetworkInfo[]> mCryptoNetworks;
     public final LiveData<NetworkInfo> mDefaultNetwork;
+    public final LiveData<List<NetworkInfo>> mPrimaryNetworks;
+    public final LiveData<List<NetworkInfo>> mSecondaryNetworks;
 
     public NetworkModel(JsonRpcService jsonRpcService, CryptoSharedData sharedData,
             CryptoSharedActions cryptoSharedActions, Context context) {
@@ -74,7 +87,12 @@ public class NetworkModel implements JsonRpcServiceObserver {
         _mCustomNetworkIds = new MediatorLiveData<>();
         _mCustomNetworkIds.postValue(new String[0]);
         mCustomNetworkIds = _mCustomNetworkIds;
+        _mPrimaryNetworks = new MediatorLiveData<>();
+        mPrimaryNetworks = _mPrimaryNetworks;
+        _mSecondaryNetworks = new MediatorLiveData<>();
+        mSecondaryNetworks = _mSecondaryNetworks;
         jsonRpcService.addObserver(this);
+        mNetworkSelectorModel = new NetworkSelectorModel(this, mContext);
         _mPairChainAndNetwork.setValue(Pair.create("", new NetworkInfo[] {}));
         _mPairChainAndNetwork.addSource(_mChainId, chainId -> {
             _mPairChainAndNetwork.setValue(
@@ -124,6 +142,38 @@ public class NetworkModel implements JsonRpcServiceObserver {
             mJsonRpcService.getCustomNetworks(
                     coinType, customNetworks -> { _mCustomNetworkIds.postValue(customNetworks); });
         });
+        _mPrimaryNetworks.addSource(mCryptoNetworks, networkInfos -> {
+            List<NetworkInfo> primaryNws = new ArrayList<>();
+            for (NetworkInfo networkInfo : networkInfos) {
+                if (WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(networkInfo.chainId)) {
+                    primaryNws.add(networkInfo);
+                }
+            }
+            _mPrimaryNetworks.postValue(primaryNws);
+        });
+        _mSecondaryNetworks.addSource(mCryptoNetworks, networkInfos -> {
+            List<NetworkInfo> primaryNws = new ArrayList<>();
+            for (NetworkInfo networkInfo : networkInfos) {
+                if (!WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(networkInfo.chainId)
+                        && !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(networkInfo.chainId)) {
+                    primaryNws.add(networkInfo);
+                }
+            }
+            _mSecondaryNetworks.postValue(primaryNws);
+        });
+    }
+
+    /**
+     * Create a network model to handle default wallet network selector events
+     * @return mNetworkSelectorModel object in DEFAULT_WALLET_NETWORK mode
+     */
+    public NetworkSelectorModel openNetworkSelectorModel() {
+        return openNetworkSelectorModel(NetworkSelectorModel.Mode.DEFAULT_WALLET_NETWORK);
+    }
+
+    public NetworkSelectorModel openNetworkSelectorModel(NetworkSelectorModel.Mode mode) {
+        mNetworkSelectorModel.updateSelectorMode(mode);
+        return mNetworkSelectorModel;
     }
 
     public void setAccountInfosFromKeyRingModel(
@@ -176,19 +226,9 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     public void setNetworkWithAccountCheck(
             NetworkInfo networkToBeSetAsSelected, Callbacks.Callback1<Boolean> callback) {
-        List<AccountInfo> accountInfos = mSharedData.getAccounts().getValue();
-        boolean hasAccountOfNetworkType = false;
-        for (AccountInfo accountInfo : accountInfos) {
-            hasAccountOfNetworkType = accountInfo.coin == networkToBeSetAsSelected.coin;
-            if (hasAccountOfNetworkType) {
-                break;
-            }
-        }
         NetworkInfo selectedNetwork = _mDefaultNetwork.getValue();
-        if (selectedNetwork != null
-                && selectedNetwork.chainId.equals(networkToBeSetAsSelected.chainId)
-                && selectedNetwork.coin == networkToBeSetAsSelected.coin)
-            return;
+        if (isSameNetwork(networkToBeSetAsSelected, selectedNetwork)) return;
+        boolean hasAccountOfNetworkType = hasAccountOfNetworkType(networkToBeSetAsSelected);
         if (hasAccountOfNetworkType) {
             mJsonRpcService.setNetwork(
                     networkToBeSetAsSelected.chainId, networkToBeSetAsSelected.coin, isSelected -> {
@@ -245,8 +285,53 @@ public class NetworkModel implements JsonRpcServiceObserver {
                     networkInfosFiltered.add(networkInfo);
                 }
             }
-            return networkInfosFiltered.toArray(new NetworkInfo[networkInfosFiltered.size()]);
+            return networkInfosFiltered.toArray(new NetworkInfo[0]);
         }
+    }
+
+    List<NetworkInfo> getSubTestNetworks(NetworkInfo networkInfo) {
+        NetworkInfo[] cryptoNws = _mCryptoNetworks.getValue();
+        if (cryptoNws == null || cryptoNws.length == 0
+                || !WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(networkInfo.chainId))
+            return Collections.emptyList();
+        List<NetworkInfo> list = new ArrayList<>();
+        for (NetworkInfo info : cryptoNws) {
+            if (WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(info.chainId)
+                    && networkInfo.coin == info.coin && networkInfo.symbol.equals(info.symbol)
+                    && !isCustomChain(info.chainId)) {
+                list.add(info);
+            }
+        }
+        return list;
+    }
+
+    private boolean isCustomChain(String netWorkChainId) {
+        String[] customNetworkChains = JavaUtils.safeVal(_mCustomNetworkIds.getValue());
+        for (String chain : customNetworkChains) {
+            if (chain.equals(netWorkChainId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    boolean hasAccountOfNetworkType(NetworkInfo networkToBeSetAsSelected) {
+        List<AccountInfo> accountInfos = mSharedData.getAccounts().getValue();
+        boolean hasAccountOfNetworkType = false;
+        for (AccountInfo accountInfo : accountInfos) {
+            hasAccountOfNetworkType = accountInfo.coin == networkToBeSetAsSelected.coin;
+            if (hasAccountOfNetworkType) {
+                break;
+            }
+        }
+        return hasAccountOfNetworkType;
+    }
+
+    private boolean isSameNetwork(
+            NetworkInfo networkToBeSetAsSelected, NetworkInfo selectedNetwork) {
+        return selectedNetwork != null
+                && selectedNetwork.chainId.equals(networkToBeSetAsSelected.chainId)
+                && selectedNetwork.coin == networkToBeSetAsSelected.coin;
     }
 
     @Override

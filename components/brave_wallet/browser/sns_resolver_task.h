@@ -58,6 +58,7 @@ struct SnsResolverTaskResult {
   ~SnsResolverTaskResult() = default;
 
   SolanaAddress resolved_address;
+  GURL resolved_url;
 };
 
 struct SnsResolverTaskError {
@@ -91,7 +92,8 @@ class SnsResolverTask {
   SnsResolverTask(DoneCallback done_callback,
                   APIRequestHelper* api_request_helper,
                   const std::string& domain,
-                  const GURL& network_url);
+                  const GURL& network_url,
+                  bool resolve_address);
   SnsResolverTask(const SnsResolverTask&) = delete;
   SnsResolverTask& operator=(const SnsResolverTask&) = delete;
   ~SnsResolverTask();
@@ -113,13 +115,22 @@ class SnsResolverTask {
   void FetchSolRecordRegistryState();
   void OnFetchSolRecordRegistryState(APIRequestResult api_request_result);
 
+  void FetchUrlRecordRegistryState();
+  void OnFetchUrlRecordRegistryState(APIRequestResult api_request_result);
+  void FetchIpfsRecordRegistryState();
+  void OnFetchIpfsRecordRegistryState(APIRequestResult api_request_result);
+
  private:
   template <typename T>
   friend class SnsResolverTaskContainer;
   friend class ScopedWorkOnSnsTask;
   void ScheduleWorkOnTask();
   void WorkOnTask();
+  void WorkOnWalletAddressTask();
+  void WorkOnDomainResolveTask();
 
+  void SetAddressResult(SolanaAddress address);
+  void SetUrlResult(GURL url);
   void SetError(SnsResolverTaskError error);
   void NftOwnerDone(absl::optional<SolanaAddress> nft_owner);
 
@@ -132,6 +143,7 @@ class SnsResolverTask {
   raw_ptr<APIRequestHelper> api_request_helper_;
   std::string domain_;
   GURL network_url_;
+  bool resolve_address_ = false;
 
   absl::optional<SolanaAddress> domain_address_;
 
@@ -141,7 +153,8 @@ class SnsResolverTask {
 
   absl::optional<NameRegistryState> domain_name_registry_state_;
   SolanaAddress sol_record_address_;
-  absl::optional<NameRegistryState> sol_record_name_registry_state_;
+
+  bool url_record_check_done_ = false;
 
   absl::optional<SnsResolverTaskResult> task_result_;
   absl::optional<SnsResolverTaskError> task_error_;

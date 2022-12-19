@@ -104,7 +104,7 @@ export function SidebarPromotionPanel (props: Props) {
   }
 
   return (
-    <div>
+    <>
       {renderOnboardingPromo()}
       {
         getAvailablePromotions(
@@ -174,6 +174,6 @@ export function SidebarPromotionPanel (props: Props) {
           )
         })
       }
-    </div>
+    </>
   )
 }

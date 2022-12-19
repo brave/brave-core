@@ -732,10 +732,19 @@ TEST_F(IpfsUtilsUnitTest, TranslateXIPFSPath) {
   ASSERT_FALSE(ipfs::TranslateXIPFSPath("/ipns/"));
 }
 
-TEST_F(IpfsUtilsUnitTest, TranslateToCurrentGatewayUrl) {
+TEST_F(IpfsUtilsUnitTest, DecodeSingleLabelForm) {
+  EXPECT_EQ("en.wikipedia-on-ipfs.org",
+            ipfs::DecodeSingleLabelForm("en-wikipedia--on--ipfs-org"));
+  EXPECT_EQ("a-b.c-d", ipfs::DecodeSingleLabelForm("a--b-c--d"));
+  EXPECT_EQ("en.wikipedia-on-ipfs.org",
+            ipfs::DecodeSingleLabelForm("en.wikipedia-on-ipfs.org"));
+  EXPECT_EQ("", ipfs::DecodeSingleLabelForm(""));
+}
+
+TEST_F(IpfsUtilsUnitTest, ExtractSourceFromGateway) {
   {
     GURL url =
-        ipfs::TranslateToCurrentGatewayUrl(
+        ipfs::ExtractSourceFromGateway(
             GURL("https://ipfs.io/ipfs/"
                  "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"))
             .value();
@@ -745,7 +754,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateToCurrentGatewayUrl) {
   }
 
   {
-    GURL url = ipfs::TranslateToCurrentGatewayUrl(
+    GURL url = ipfs::ExtractSourceFromGateway(
                    GURL("https://ipfs.io/ipfs//////"
                         "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
                         "avhwq////p1////Index.html#ref"))
@@ -756,7 +765,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateToCurrentGatewayUrl) {
   }
 
   {
-    GURL url = ipfs::TranslateToCurrentGatewayUrl(
+    GURL url = ipfs::ExtractSourceFromGateway(
                    GURL("https://ipfs.io/ipfs////"
                         "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
                         "avhwq////p1/Index.html?a=b#ref"))
@@ -767,7 +776,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateToCurrentGatewayUrl) {
   }
 
   {
-    GURL url = ipfs::TranslateToCurrentGatewayUrl(
+    GURL url = ipfs::ExtractSourceFromGateway(
                    GURL("https://"
                         "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
                         "avhwq.ipfs.ipfs.io/p1/Index.html?a=b#ref"))
@@ -778,14 +787,79 @@ TEST_F(IpfsUtilsUnitTest, TranslateToCurrentGatewayUrl) {
   }
 
   {
-    EXPECT_FALSE(ipfs::TranslateToCurrentGatewayUrl(
+    EXPECT_FALSE(ipfs::ExtractSourceFromGateway(
         GURL("https://"
              "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy"
              "avhwq.abc.io")));
   }
 
   {
-    EXPECT_FALSE(
-        ipfs::TranslateToCurrentGatewayUrl(GURL("https://abc.io/ipfs/")));
+    EXPECT_FALSE(ipfs::ExtractSourceFromGateway(GURL("https://abc.io/ipfs/")));
+  }
+}
+
+TEST_F(IpfsUtilsUnitTest, ExtractIPNSSourceFromGateway) {
+  {
+    GURL url =
+        ipfs::ExtractSourceFromGateway(GURL("https://ipfs.io/ipns/"
+                                            "en-wikipedia--on--ipfs-org"))
+            .value();
+    EXPECT_EQ(url, GURL("https://en.wikipedia-on-ipfs.org"));
+  }
+
+  {
+    GURL url = ipfs::ExtractSourceFromGateway(
+                   GURL("https://ipfs.io/ipns//////en.wikipedia-on-ipfs.org////"
+                        "p1////Index.html#ref"))
+                   .value();
+    EXPECT_EQ(url, GURL("https://en.wikipedia-on-ipfs.org/p1/Index.html#ref"));
+  }
+
+  {
+    GURL url = ipfs::ExtractSourceFromGateway(
+                   GURL("https://ipfs.io/ipns////en-wikipedia--on--ipfs-org////"
+                        "p1/Index.html?a=b#ref"))
+                   .value();
+    EXPECT_EQ(url,
+              GURL("https://en.wikipedia-on-ipfs.org/p1/Index.html?a=b#ref"));
+  }
+
+  {
+    GURL url =
+        ipfs::ExtractSourceFromGateway(GURL("https://"
+                                            "en-wikipedia--on--ipfs-org.ipns."
+                                            "ipfs.io/p1/Index.html?a=b#ref"))
+            .value();
+    EXPECT_EQ(url,
+              GURL("https://en.wikipedia-on-ipfs.org/p1/Index.html?a=b#ref"));
+  }
+
+  {
+    GURL url =
+        ipfs::ExtractSourceFromGateway(GURL("https://"
+                                            "k51qzi5uqu5dlvj2baxnqndepeb86cbk3n"
+                                            "g7n3i46uzyxzyqj2xjonzllnv0v8.ipns."
+                                            "ipfs.io/p1/Index.html?a=b#ref"))
+            .value();
+    EXPECT_EQ(url, GURL("ipns://"
+                        "k51qzi5uqu5dlvj2baxnqndepeb86cbk3ng7n3i46uzyxzyqj2xjon"
+                        "zllnv0v8/p1/Index.html?a=b#ref"));
+  }
+
+  {
+    GURL url =
+        ipfs::ExtractSourceFromGateway(GURL("https://ipfs.io/ipns////"
+                                            "k51qzi5uqu5dlvj2baxnqndepeb86cbk3n"
+                                            "g7n3i46uzyxzyqj2xjonzllnv0v8////"
+                                            "p1/Index.html?a=b#ref"))
+            .value();
+    EXPECT_EQ(url, GURL("ipns://"
+                        "k51qzi5uqu5dlvj2baxnqndepeb86cbk3ng7n3i46uzyxzyqj2xjon"
+                        "zllnv0v8/p1/Index.html?a=b#ref"));
+  }
+  { EXPECT_FALSE(ipfs::ExtractSourceFromGateway(GURL("https://abc.abc.io"))); }
+
+  {
+    EXPECT_FALSE(ipfs::ExtractSourceFromGateway(GURL("https://abc.io/ipns/")));
   }
 }

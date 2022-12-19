@@ -94,10 +94,10 @@ TEST(EthereumKeyringUnitTest, Accounts) {
 TEST(EthereumKeyringUnitTest, SignTransaction) {
   // Specific signature check is in eth_transaction_unittest.cc
   EthereumKeyring keyring;
-  EthTransaction tx = *EthTransaction::FromTxData(
-      mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
-                         "0x3535353535353535353535353535353535353535",
-                         "0x0de0b6b3a7640000", std::vector<uint8_t>()));
+  EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
+      "0x09", "0x4a817c800", "0x5208",
+      "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
+      std::vector<uint8_t>(), false, absl::nullopt));
   keyring.SignTransaction("0xDEADBEEFdeadbeefdeadbeefdeadbeefDEADBEEF", &tx, 0);
   EXPECT_FALSE(tx.IsSigned());
 
@@ -220,10 +220,10 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
                   .empty());
 
   // Sign Transaction
-  EthTransaction tx = *EthTransaction::FromTxData(
-      mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
-                         "0x3535353535353535353535353535353535353535",
-                         "0x0de0b6b3a7640000", std::vector<uint8_t>()));
+  EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
+      "0x09", "0x4a817c800", "0x5208",
+      "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
+      std::vector<uint8_t>(), false, absl::nullopt));
   keyring.SignTransaction("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB", &tx, 0);
   EXPECT_FALSE(tx.IsSigned());
 

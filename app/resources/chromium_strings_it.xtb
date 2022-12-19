@@ -10,10 +10,13 @@
 <translation id="8522292744959221145">Per controllare che le tue password siano protette da violazioni dei dati e altri problemi di sicurezza, <ph name="BEGIN_LINK"/>accedi a Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Informazioni su Brave</translation>
 <translation id="1203500561924088507">L'installazione è terminata. Dovrai riavviare il browser per poter utilizzare <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="8905049883018921395">Se attivi l'opzione, Brave libera spazio dalle schede non attive. In questo modo le schede attive e altre app hanno più risorse per il computer e mantengono Brave veloce. Le schede inattive si riattivano automaticamente quando ci torni. <ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/></translation>
+<translation id="4658574652223735641">Risparmio memoria ha reso Brave più veloce</translation>
 <translation id="4798342026247191171">Configura il tuo nuovo profilo di Brave</translation>
 <translation id="6361779936989026201">Assistente Brave in Brave</translation>
 <translation id="113959764510199339">Brave sta cercando di visualizzare le password.</translation>
 <translation id="8132634101975074716">Hai eseguito l'accesso a Brave.</translation>
+<translation id="4168469784091952813">Puoi goderti al meglio l'esperienza di Brave</translation>
 <translation id="5147525139567260139">Condividi una scheda di Brave</translation>
 <translation id="1530633922026945685">Brave ha bisogno dell'autorizzazione ad accedere alla fotocamera per creare una mappa 3D dell'ambiente circostante</translation>
 <translation id="4449148723378534338">Esamina i controlli per la privacy e la sicurezza più importanti in Brave</translation>
@@ -166,6 +169,7 @@
 <translation id="1786715389543715322">Aggiornamento di Brave in corso (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Consenti l'accesso a Brave</translation>
 <translation id="5536657158619734169">È disponibile una nuova versione di Brave.</translation>
+<translation id="5267531627648004734">Rimuovi da Brave</translation>
 <translation id="239760341987199724">Imposta Brave come browser predefinito</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave beta</translation>
 <translation id="894936507076470937">Brave potrebbe non funzionare correttamente perché non è più supportato su questa distribuzione Linux</translation>
@@ -193,6 +197,7 @@
 <translation id="505042220086416644">È disponibile una nuova versione di Brave con una velocità senza precedenti.</translation>
 <translation id="9071554113102421877">&amp;Apri in Brave</translation>
 <translation id="7861579472672677409">L'estensione <ph name="EXTENSION_NAME"/> è stata aggiunta a Brave</translation>
+<translation id="3693188491491843187">Rendi Brave più veloce</translation>
 <translation id="608006075545470555">Aggiungi profilo di lavoro a questo browser</translation>
 <translation id="5849446944780602366">È disponibile un nuovo aggiornamento.</translation>
 <translation id="7433698744896946664">Consenti all'estensione di mostrare le richieste di accesso nella barra degli strumenti di Brave</translation>
@@ -236,6 +241,7 @@
 <translation id="1489465648257900784">Impossibile utilizzare il tuo profilo perché proviene da una versione più recente di Brave.
 
 Alcune funzioni potrebbero non essere disponibili. Specifica un'altra directory per il profilo o utilizza una versione più recente di Brave.</translation>
+<translation id="7870748924073900361">Risparmio memoria ha reso Brave più veloce</translation>
 <translation id="6666624454809779082">Brave è già installato per tutti gli utenti sul computer.</translation>
 <translation id="5360050006043219962">Per accedere ai tuoi contenuti Brave su tutti i tuoi dispositivi, accedi e attiva la sincronizzazione.</translation>
 <translation id="8291513491595858997">Uno dei tuoi genitori ha disattivato "Autorizzazioni per siti, app ed estensioni" per Brave. L'attivazione di <ph name="EXTENSION_TYPE_PARAMETER"/> non è consentita.</translation>
@@ -273,6 +279,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="38294420683216447">Con i profili Brave puoi separare tutti i tuoi contenuti di Brave. In questo modo potrai alternare lavoro e divertimento con più facilità.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave per gli sviluppatori</translation>
 <translation id="2034072705932785495">Per questo sito Brave ha bisogno dell'autorizzazione ad accedere alla fotocamera</translation>
+<translation id="5296583608321648908">Per ricevere gli aggiornamenti futuri di Brave, devi avere Windows 10 o versioni successive. Su questo computer è installato Windows 7.</translation>
 <translation id="3962395975456095331">Vuoi riavviare Brave?</translation>
 <translation id="2619516027171717873">Impossibile installare una versione di Brave uguale a quella in esecuzione. Chiudi Brave e riprova.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave verrà riavviato tra 1 minuto}other{Brave verrà riavviato tra # minuti}}</translation>
@@ -287,9 +294,9 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="8678991866891573053">Brave sta esplorando nuove funzionalità che consentono ai siti di offrire la stessa esperienza di navigazione utilizzando meno dati di tua proprietà</translation>
 <translation id="3343095737966473035">Brave non è il browser predefinito</translation>
 <translation id="5477319665405831211">Sincronizza e personalizza Brave sui tuoi dispositivi</translation>
-<translation id="2280238321454602884">Quando questa impostazione è attiva, Brave recupera memoria dalle schede che non utilizzi attivamente. Questo consente di liberare risorse del computer da usare per altre attività e di fare in modo che Brave sia sempre veloce. Le schede non attive appaiono vuote e vengono ricaricate automaticamente quando ci fai clic sopra. <ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/> o <ph name="BEGIN_LINK_2"/>invia feedback<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Verranno eliminati i tuoi dati di navigazione da questo dispositivo. Per recuperare i dati in un secondo momento, accedi a Brave come <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Il programma di installazione non ha creato una directory temporanea. Verifica di disporre di spazio libero sul disco e dell'autorizzazione per l'installazione del software.</translation>
+<translation id="1978509466033734608">Rendi Brave più veloce</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="1652855885539187849">Esiste già un profilo Brave con questo account su questo dispositivo</translation>
 <translation id="7845233973568007926">L'installazione è terminata. Dovrai riavviare il computer per poter utilizzare <ph name="BUNDLE_NAME"/>.</translation>
@@ -312,15 +319,16 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="3360368475735266712">Accedi per sincronizzare e personalizzare Brave sui tuoi dispositivi</translation>
 <translation id="2591326305549412656">L'indirizzo <ph name="USER_EMAIL_ADDRESS"/> utilizzava in precedenza Brave</translation>
 <translation id="3098618823450433881">Per accedere ai tuoi contenuti del browser Brave su tutti i tuoi dispositivi, accedi e attiva la sincronizzazione</translation>
+<translation id="2569754604093464025">Per ricevere gli aggiornamenti futuri di Brave, devi avere Windows 10 o versioni successive. Su questo computer è installato Windows 8.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Riavvia Brave entro un giorno}other{Riavvia Brave entro # giorni}}</translation>
 <translation id="6914496861676471566">L'archivio di installazione è danneggiato o non valido. Scarica di nuovo Brave.</translation>
 <translation id="6431861494713261006">(Facoltativo) Contribuisci a migliorare le funzionalità e le prestazioni di Chrome OS inviando automaticamente a Brave dati diagnostici e sull'utilizzo.</translation>
 <translation id="2097604701283463988">Brave non è aggiornato</translation>
-<translation id="607365808648940765">Se necessario, Brave recupera memoria dalle schede che non utilizzi attivamente. Puoi modificare questa preferenza in qualsiasi momento nelle Impostazioni.</translation>
 <translation id="8550334526674375523">Questo profilo di lavoro è completamente separato dal tuo profilo personale.</translation>
 <translation id="2452889775041290116">Uno dei tuoi genitori ha disattivato "Autorizzazioni per siti, app ed estensioni" per Brave. L'aggiunta di <ph name="EXTENSION_TYPE_PARAMETER"/> non è consentita.</translation>
 <translation id="8502436661255886343">Per ricevere gli aggiornamenti futuri di Brave, devi avere macOS 10.13 o versioni successive. Su questo computer è installato macOS 10.12.</translation>
 <translation id="227028348235968071">Brave può controllare le tue password quando accedi con il tuo Account Brave</translation>
+<translation id="4226455268610449503">Quando questa modalità è attiva, Brave risparmia carica della batteria limitando l'attività in background e gli effetti visivi, ad esempio lo scorrimento continuo e le frequenze di fotogrammi dei video. <ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/></translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Brave Software Inc. Tutti i diritti riservati.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Come utilizziamo questi dati:<ph name="END_BOLD"/> i siti possono memorizzare su Brave informazioni relative ai tuoi interessi. Ad esempio, se visiti un sito per acquistare scarpe per una maratona, il sito potrebbe definire come tuo interesse le maratone. Se in un secondo momento visiti un altro sito per registrarti a una gara, il sito può mostrarti un annuncio relativo a scarpe da corsa in base ai tuoi interessi.</translation>
 <translation id="3052349005266761501">Avvio di Brave...</translation>
@@ -343,6 +351,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="82609232232243542">Accedi a Brave</translation>
 <translation id="5173820533850252773">Brave non è aggiornato</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave verrà riavviato tra un'ora}other{Brave verrà riavviato tra # ore}}</translation>
+<translation id="5190991181158966940">Per ricevere gli aggiornamenti futuri di Brave, devi avere Windows 10 o versioni successive. Su questo computer è installato Windows 8.1.</translation>
 <translation id="7863882214613921971">Apri link in una nuova &amp;scheda di Brave</translation>
 <translation id="911206726377975832">Eliminare anche i tuoi dati di navigazione?</translation>
 <translation id="5708733457516068434">Durante le prove, puoi vedere e rimuovere argomenti di interesse che i siti hanno usato per mostrarti annunci. Brave stima i tuoi interessi in base alla tua recente cronologia di navigazione.</translation>

@@ -11,8 +11,15 @@
 
 namespace content_settings {
 
-ContentSettingsPattern CreatePrimaryPattern(
-    const ContentSettingsPattern& host_pattern);
+struct ShieldsCookiesPatterns {
+  ContentSettingsPattern host_pattern;
+  ContentSettingsPattern domain_pattern;
+};
+
+ShieldsCookiesPatterns CreateShieldsCookiesPatterns(const GURL& url);
+
+ContentSettingsPattern CreateShieldsCookiesDomainPattern(
+    ContentSettingsPattern host_pattern);
 
 }  // namespace content_settings
 

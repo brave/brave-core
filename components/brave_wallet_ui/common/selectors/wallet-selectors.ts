@@ -24,8 +24,8 @@ export const isWalletBackedUp = ({ wallet }: State) => wallet.isWalletBackedUp
 export const isWalletCreated = ({ wallet }: State) => wallet.isWalletCreated
 export const isWalletLocked = ({ wallet }: State) => wallet.isWalletLocked
 export const passwordAttempts = ({ wallet }: State) => wallet.passwordAttempts
-export const selectedCoin = ({ wallet }: State) => wallet.selectedCoin
 export const selectedPortfolioTimeline = ({ wallet }: State) => wallet.selectedPortfolioTimeline
+export const assetAutoDiscoveryCompleted = ({ wallet }: State) => wallet.assetAutoDiscoveryCompleted
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects and lists)
 export const accounts = ({ wallet }: State) => wallet.accounts

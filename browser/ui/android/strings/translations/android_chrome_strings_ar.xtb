@@ -100,7 +100,6 @@
 <translation id="1448440926884431741">يمكنك تنظيم منتجاتك التي تتتبّع سعرها في "إشارات مرجعية".</translation>
 <translation id="1450753235335490080">تعذَّرت مشاركة <ph name="CONTENT_TYPE"/>.</translation>
 <translation id="5598889255595678761">‏اختيار لغة Brave</translation>
-<translation id="147113415845704694">جرِب سؤال "ما هي حالة الطقس اليوم؟"</translation>
 <translation id="1474893630593443211">التحكّم بشكل أكبر في الإعلانات التي تظهر لك</translation>
 <translation id="1477626028522505441">تعذّر تنزيل الملف <ph name="FILE_NAME"/> بسبب مشاكل بالخادم.</translation>
 <translation id="148482509007564431">مسار حفظ الإشارات المرجعية</translation>
@@ -330,6 +329,7 @@
 <translation id="6518254564747115579">‏لن تتوفّر بعض ميزات Brave بعد الآن.</translation>
 <translation id="2870560284913253234">الموقع</translation>
 <translation id="2871733351037274014">تحميل الصفحات مُسبقًا</translation>
+<translation id="2876136027428473467">"<ph name="CHILD_NAME"/>" بحاجة إلى موافقتك على زيارة هذا الموقع الإلكتروني:</translation>
 <translation id="2886836735871983413">ستظهر هنا قائمة المواقع الإلكترونية أثناء تصفُّحك للويب.</translation>
 <translation id="8541922081612557424">‏لمحة عن Brave</translation>
 <translation id="2891154217021530873">إيقاف تحميل الصفحة</translation>
@@ -344,6 +344,7 @@
 <translation id="6355102470683871794">‏مساحة تخزين <ph name="APP_NAME"/> Brave</translation>
 <translation id="2932222164150889403">لن يتم تغيير اللغة في لوحة المفاتيح.</translation>
 <translation id="6537665929855787038">‏تنفيذ المهام بسهولة من خلال إشعارات Brave</translation>
+<translation id="2940075786175545812">خيار للموافقة أو عدم الموافقة على زيارة موقع إلكتروني</translation>
 <translation id="2942036813789421260">علامة تبويب المعاينة مغلقة</translation>
 <translation id="4700262879698141140">‏جارٍ تحديث متصفِّح Brave لربط الهاتف بالأجهزة الأخرى</translation>
 <translation id="2951071800649516099">يمكنك إضافة صفحات إلى قائمة القراءة للاطّلاع عليها لاحقًا</translation>
@@ -366,9 +367,8 @@
 <translation id="3029276696788198026">إيقاف التحميل المُسبق</translation>
 <translation id="3029704984691124060">عبارات المرور غير متطابقة</translation>
 <translation id="3031225630520268969">‏واجهة المستخدم الخاصة بالموافقة على استخدام ميزة "البحث الصوتي" في "مساعد Brave"</translation>
-<translation id="3034163383943672781">سيبدأ التنزيل بتاريخ <ph name="DATE"/></translation>
 <translation id="3036750288708366620"><ph name="BEGIN_LINK"/>الحصول على مساعدة<ph name="END_LINK"/></translation>
-<translation id="3037177537145227281">يتم حاليًا تتبُّع السعر</translation>
+<translation id="3037177537145227281">تتبُّع السعر</translation>
 <translation id="3251012123600267109">‏عرض رسائل مطالبة تسجيل الدخول إلى Brave</translation>
 <translation id="3046945242843292318">الوصول إلى هذا الموقع الإلكتروني بسرعة أكبر في المرة القادمة</translation>
 <translation id="3055113921564083271">الاهتمامات التي أزلتها</translation>
@@ -411,6 +411,7 @@
 <translation id="3259831549858767975">تصغير كامل محتوى الصفحة</translation>
 <translation id="3264124641674805320">كيفية تنزيل محتوى للاستخدام لاحقًا</translation>
 <translation id="3264259168916048410">يريد جهاز الكمبيوتر استخدام هذا الجهاز لتسجيل الدخول إلى موقع إلكتروني.</translation>
+<translation id="3265093782546847662">جميع صفحات النطاق <ph name="DOMAIN"/></translation>
 <translation id="3265534588625245297">إدارة المواقع الإلكترونية التي تتابعها</translation>
 <translation id="3269093882174072735">تحميل الصورة</translation>
 <translation id="3280562213547448728">بحث صوتي</translation>
@@ -443,7 +444,6 @@
 <translation id="3443221991560634068">إعادة تحميل الصفحة الحالية</translation>
 <translation id="3444179773590444986">هل تريد مشاركة ملاحظاتك وآرائك حول وضع "المظهر الداكن" للمواقع الإلكترونية؟</translation>
 <translation id="7384339501748168186">‏لحماية خصوصيتك، لن يملء متصفِّح Brave تلقائيًا كلمة المرور في هذا الحقل.</translation>
-<translation id="3469665409713263828">{FILE_COUNT,plural, =1{تمّت جدوَلة عملية تنزيل واحدة.}zero{تمّت جدوَلة # عملية تنزيل.}two{تمّت جدوَلة عمليتَي تنزيل.}few{تمّت جدوَلة # عمليات تنزيل.}many{تمّت جدوَلة # عملية تنزيل.}other{تمّت جدوَلة # عملية تنزيل.}}</translation>
 <translation id="3474624961160222204">المتابعة باسم <ph name="NAME"/></translation>
 <translation id="3478363558367712427">يمكنك استخدام محرّك بحث آخر.</translation>
 <translation id="3479552764303398839">ليس الآن</translation>
@@ -701,7 +701,6 @@
 <translation id="4925120120285606924">لقطة شاشة بتاريخ <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="49268022542405662">سيتم تصدير كلمات المرور الخاصة بك وتنزيلها كملف نصي. وستكون مرئية لأي شخص وأي تطبيق لديه إمكانية الوصول إلى هذا الملف النصي.</translation>
 <translation id="1955495299630319741">‏لأنك بصدد الخروج من حساب تتم إدارته من خلال <ph name="DOMAIN_NAME"/>، سيتم حذف بيانات Brave من هذا الجهاز. وستظل البيانات في حسابك على Brave.</translation>
-<translation id="4941179133499732445">انقر على الميكروفون لاستخدام البحث الصوتي.</translation>
 <translation id="4943703118917034429">الواقع الافتراضي</translation>
 <translation id="4943872375798546930">لا نتائج</translation>
 <translation id="5742837711075932301">‏عند تسجيل الدخول إلى حساب Brave نفسه على أجهزة أخرى، يمكن لهذه الأجهزة استخدام هذا الهاتف كمفتاح أمان.</translation>
@@ -712,6 +711,7 @@
 <translation id="4985248278475639481">لمحة عن تخصيص الإعلانات</translation>
 <translation id="4987271110129728827">لم نتمكّن من العثور على تلك الصفحة. تحقّق من تهجئة الكلمات أو جرِّب البحث على الويب.</translation>
 <translation id="4988526792673242964">الصفحات</translation>
+<translation id="4991110219272367918">تم إغلاق نافذة خيار الموافقة أو عدم الموافقة على زيارة موقع إلكتروني.</translation>
 <translation id="499724277181351974">الانتقال إلى <ph name="WEBSITE_TITLE"/>: <ph name="WEBSITE_URL"/></translation>
 <translation id="5001388021414335527">متابعة هذا الموقع الإلكتروني هنا</translation>
 <translation id="500351648694011114">التصفُّح بسهولة أكبر</translation>
@@ -724,7 +724,6 @@
 <translation id="5039804452771397117">سماح</translation>
 <translation id="504456571576643789">ملاحظات مهمّة</translation>
 <translation id="4858031288914533863">‏قد يتم حفظ <ph name="BEGIN_LINK1"/>بيانات الأنشطة الأخرى<ph name="END_LINK1"/> في حسابك على Brave عند تسجيل الدخول إليه. ويمكنك حذفها في أي وقت.</translation>
-<translation id="5061533557687621530">للتحقّق من حالة الطقس، انقر على الميكروفون واسأل "ما هي حالة الطقس اليوم؟"</translation>
 <translation id="506254248375231072">ما مِن علامات تبويب</translation>
 <translation id="4744980273298156620">‏قريبًا، ستظهر لك قصص من <ph name="SITE_NAME"/> عند فتح علامة تبويب جديدة. تم حفظ المواقع الإلكترونية التي تتابعها في حسابك على Brave. ويمكنك إدارة هذه المواقع الإلكترونية من خلال إعدادات "اقتراحات".</translation>
 <translation id="5091249083535528968">بيانات الاستخدام الموسَّعة</translation>
@@ -744,7 +743,6 @@
 <translation id="5171045022955879922">‏البحث أو إدخال عنوان URL</translation>
 <translation id="517734441743343109">تشير المتابعة إلى موافقتك على <ph name="BEGIN_TOS_LINK"/>بنود الخدمة<ph name="END_TOS_LINK"/> و<ph name="BEGIN_PRIVACY_LINK"/>سياسة الخصوصية<ph name="END_PRIVACY_LINK"/>.</translation>
 <translation id="8445059357334030806">‏فتح في Brave</translation>
-<translation id="5188992787241350004">إجراء بحث صوتي</translation>
 <translation id="5191251636205085390">يمكنك التعرّف على تقنيات جديدة تهدف إلى استبدال ملفات تعريف الارتباط التابعة لجهات خارجية وكيفية التحكُّم في تلك التقنيات.</translation>
 <translation id="5193988420012215838">تم النسخ إلى الحافظة</translation>
 <translation id="5199929503336119739">الملف الشخصي للعمل</translation>
@@ -871,7 +869,6 @@
 <translation id="5869789175361934029">متابعة من جهاز آخر</translation>
 <translation id="5604589745019948682">‏لمتابعة موقع إلكتروني، انتقِل إلى الموقع الإلكتروني وافتح قائمة Brave وانقر على "متابعة".</translation>
 <translation id="5879072387416556377">الحصول على اقتراحات أفضل</translation>
-<translation id="5880748256563468367">الانتقال إلى الخلاصة</translation>
 <translation id="9037412730408024068">‏لمساعدتك على إنجاز المهام، ستتلقى Brave عناوين URL للمواقع الإلكترونية ومحتواها عند استخدامك "مساعد Brave" على تلك المواقع، بالإضافة إلى المعلومات التي يتم إرسالها من خلال "مساعد Brave".</translation>
 <translation id="1985257319311245640">‏عند معرفة عناوين URL الخاصة بالمواقع الإلكترونية، يَسهُل على "مساعد Brave" مساعدتك في إكمال المهام. ويمكنك إيقاف "مساعد Brave" في إعدادات Brave.</translation>
 <translation id="5916664084637901428">مفعّل</translation>
@@ -883,6 +880,7 @@
 <translation id="305870044889644984">‏فتح مركز مساعدة Brave في علامة تبويب جديدة</translation>
 <translation id="5957442310066583693">للاطّلاع على أهم المواقع الإلكترونية، انقر على زر "الشاشة الرئيسية".</translation>
 <translation id="5958275228015807058">العثور على الملفات والصفحات في مجلد "المحتوى الذي تم تنزيله"</translation>
+<translation id="5958994127112619898">تبسيط الصفحة</translation>
 <translation id="5962718611393537961">النقر للتصغير</translation>
 <translation id="5964869237734432770">إيقاف عرض أوصاف الصور</translation>
 <translation id="9135546826883360971">‏سيتذكر متصفِّح Brave خياراتك</translation>
@@ -923,10 +921,10 @@
 <translation id="7087658909840709934">‏يتيح هذا الإعداد التحميل المُسبق لصفحات الويب التي يظن Brave أنّه من المرجّح أن تنتقل إليها.</translation>
 <translation id="6186394685773237175">لم يتم العثور على أي كلمات مرور محتمَل تعرّضها للاختراق.</translation>
 <translation id="6192907950379606605">عرض أوصاف الصور</translation>
+<translation id="6193448654517602979">اختيار علامات التبويب</translation>
 <translation id="8367262879301982880">‏يتم حفظ كلمات المرور في تطبيق "مدير كلمات المرور في Brave" على هذا الجهاز.</translation>
 <translation id="620197886010707372">‏هل تريد فتح تطبيق <ph name="APPNAME"/> باستخدام Google Play؟</translation>
 <translation id="6202812185118613467">سجِّل الدخول مرة أخرى لبدء المزامنة.</translation>
-<translation id="6203593061661911168">‏ستبدأ عملية التنزيل عند الاتصال بشبكة Wi-Fi.</translation>
 <translation id="6210748933810148297">ليس <ph name="EMAIL"/>؟</translation>
 <translation id="6211386937064921208">جارٍ معاينة هذه الصفحة</translation>
 <translation id="6221633008163990886">فتح القفل لتصدير كلمات المرور</translation>
@@ -1075,12 +1073,14 @@
 <translation id="6896758677409633944">نسخ</translation>
 <translation id="6900532703269623216">حماية مُحسّنة</translation>
 <translation id="6903907808598579934">تفعيل المزامنة</translation>
+<translation id="6908998565271542516">تم فتح نافذة بطول الشاشة لخيار الموافقة أو عدم الموافقة على زيارة موقع إلكتروني.</translation>
 <translation id="6909589135458168665">تحميل الصفحات مُسبقًا</translation>
 <translation id="6942665639005891494">تغيير موقع التنزيل التلقائي في أي وقت باستخدام خيار قائمة "الإعدادات"</translation>
 <translation id="694267552845942083">يتم حاليًا تخصيص إعدادات المزامنة. لتفعيل المزامنة، يُرجى الضغط على زر "التأكيد" بالقرب من أسفل الشاشة. الانتقال إلى أعلى</translation>
 <translation id="6945221475159498467">تحديد</translation>
 <translation id="6955535239952325894">لقد تم إيقاف هذا الإعداد على متصفّحات مُدارة.</translation>
 <translation id="6963766334940102469">حذف الإشارات المرجعية</translation>
+<translation id="6971862865055170158">عدم الموافقة</translation>
 <translation id="6979737339423435258">جميع الأوقات</translation>
 <translation id="6995899638241819463">التحذير إذا تم الكشف عن كلمات المرور في عملية اختراق بيانات</translation>
 <translation id="7020741890149022655">الإضافة إلى قائمة القراءة <ph name="BEGIN_NEW"/>جديد<ph name="END_NEW"/></translation>
@@ -1155,7 +1155,6 @@
 <translation id="7431991332293347422">التحكُّم في كيفية استخدامنا لسِجل التصفُّح لتخصيص البحث والمزيد</translation>
 <translation id="7435356471928173109">أوقَف المشرف وضع "التصفُّح الآمن".</translation>
 <translation id="6234515504547364178">‏تسجيل الخروج من Brave</translation>
-<translation id="7444811645081526538">مزيد من الفئات</translation>
 <translation id="3699067418237091329">‏سيتم تسجيل الخروج من معظم المواقع الإلكترونية، لكن لن يتم تسجيل الخروج من حسابك على Brave.</translation>
 <translation id="7454641608352164238">مساحة التخزين غير كافية</translation>
 <translation id="7456774706094330779">التحميل المُسبق الموسّع</translation>
@@ -1178,7 +1177,6 @@
 <translation id="751961395872307827">يتعذّر الاتصال بالموقع</translation>
 <translation id="752220631458524187">‏يُرجي نزع كابل USB من الهاتف عند الانتهاء.</translation>
 <translation id="7523960634226602883">‏البحث من خلال الكاميرا باستخدام "عدسة Brave"</translation>
-<translation id="753225086557513863">عمليات التنزيل المجدوَلة لوقتٍ لاحق</translation>
 <translation id="7562080006725997899">جارٍ محو بيانات التصفح</translation>
 <translation id="7814200940910057384">‏بيانات Brave التي تم محوها</translation>
 <translation id="7577900504646297215">إدارة الاهتمامات</translation>
@@ -1236,7 +1234,6 @@
 <translation id="784934925303690534">النطاق الزمني</translation>
 <translation id="7851858861565204677">أجهزة أخرى</translation>
 <translation id="7853202427316060426">النشاط</translation>
-<translation id="7857691613771368249">السؤال عن وقت حفظ الملفات</translation>
 <translation id="7859988229622350291">لغات لا أريد ترجمتها مطلقًا</translation>
 <translation id="7866213166286285359">يمكنك ترجمة الصفحات هنا.</translation>
 <translation id="78707286264420418">يجب تفعيل الإذن "الأجهزة المجاورة" ليتمكّن <ph name="PRODUCT_NAME"/> من الاتصال بجهازك.</translation>
@@ -1272,6 +1269,7 @@
 <translation id="8015452622527143194">إعادة كامل محتوى الصفحة إلى الحجم التلقائي</translation>
 <translation id="8026334261755873520">محو بيانات التصفُّح</translation>
 <translation id="8027863900915310177">اختيار مكان التنزيل</translation>
+<translation id="8030852056903932865">أوافق</translation>
 <translation id="8032569120109842252">تتم متابعته حاليًا</translation>
 <translation id="8035133914807600019">مجلد جديد...</translation>
 <translation id="8037750541064988519">عدد الأيام المتبقية: <ph name="DAYS"/></translation>
@@ -1310,7 +1308,6 @@
 <translation id="8200772114523450471">استئناف</translation>
 <translation id="8209050860603202033">فتح الصورة</translation>
 <translation id="8216351761227087153">مشاهدة</translation>
-<translation id="8218052821161047641">صفحة سريعة الاستجابة</translation>
 <translation id="8218622182176210845">إدارة حسابك</translation>
 <translation id="8221656072740924283">متابعة</translation>
 <translation id="8223642481677794647">قائمة بطاقات الخلاصة</translation>
@@ -1339,6 +1336,7 @@
 <translation id="8387617938027387193">إثبات هويتك</translation>
 <translation id="8393700583063109961">إرسال رسالة</translation>
 <translation id="7651600795135059130">‏يعمل هذا الوضع على التحقّق من عناوين URL باستخدام قائمة بمواقع إلكترونية غير آمنة مُخزّنة في Brave.</translation>
+<translation id="8402673309244746971">الانتقال إلى خلاصة "محتوى تتابعه"</translation>
 <translation id="8410695015584479363">تتبُّع الأسعار</translation>
 <translation id="8413126021676339697">عرض السجلّ بكامله</translation>
 <translation id="8414396119627470038">يُرجى تسجيل الدخول إلى <ph name="SITE_ETLD_PLUS_ONE"/> باستخدام <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>.</translation>
@@ -1358,7 +1356,7 @@
 <translation id="8460448946170646641">مراجعة العناصر الرئيسية للتحكّم في الخصوصية والأمان</translation>
 <translation id="8461694314515752532">ترميز البيانات المتزامنة باستخدام عبارة مرور المزامنة الخاصة بك</translation>
 <translation id="8466613982764129868">يُرجى التأكُّد من اتصال الجهاز <ph name="TARGET_DEVICE_NAME"/> بالإنترنت.</translation>
-<translation id="5633907266617216186">العناوين والمزيد</translation>
+<translation id="8473863474539038330">العناوين والمزيد</translation>
 <translation id="8481921391193215807">‏عند تفعيل "مبادرة حماية الخصوصية"، قد تستخدم المواقع الإلكترونية التقنيات الموضحة هنا للحفاظ على خصوصية المستخدمين مع توفير المحتوى والخدمات لهم. وتشمل هذه التقنيات بدائل عن آليات التتبُّع في المواقع الإلكترونية. قد تتم إضافة إصدارات تجريبية بمرور الوقت.
 
 <ph name="BEGIN_LIST_ITEM1"/>يمكن للمعلِنين والناشرين استخدام تقنية "التعلُّم الموحّد للمجموعات النموذجية" (FLoC).<ph name="END_LIST_ITEM1"/>
@@ -1471,7 +1469,6 @@
 <translation id="9065203028668620118">تعديل</translation>
 <translation id="5496925146144075335">‏البيانات المُخزَّنة التي لا يعتبرها متصفِّح Brave مهمة (على سبيل المثال، المواقع الإلكترونية التي لا تتضمَّن إعدادات محفوظة أو تلك التي لا تزورها كثيرًا)</translation>
 <translation id="906781307897697745">في <ph name="PRODUCT_NAME"/></translation>
-<translation id="9069543557624799859">سيبدأ التنزيل في <ph name="TIME"/>.</translation>
 <translation id="9069999660519089861">ما مِن صفحات غير مقروءة.</translation>
 <translation id="9070377983101773829">بدء البحث الصوتي</translation>
 <translation id="8494430740943879273">‏للحصول على محتوى مُخصَّص اقترحته Brave، يُرجى تسجيل الدخول وتفعيل المزامنة.</translation>

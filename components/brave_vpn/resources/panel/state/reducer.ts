@@ -33,6 +33,7 @@ const reducer = createReducer<RootState>({}, defaultState)
 reducer.on(Actions.connect, (state): RootState => {
   return {
     ...state,
+    hasError: false,
     connectionStatus: ConnectionState.CONNECTING
   }
 })
@@ -57,6 +58,7 @@ reducer.on(Actions.connectToNewRegion, (state, payload): RootState => {
   return {
     ...state,
     isSelectingRegion: false,
+    hasError: false,
     currentRegion: payload.region
   }
 })
@@ -71,6 +73,7 @@ reducer.on(Actions.toggleRegionSelector, (state, payload): RootState => {
 reducer.on(Actions.connectionStateChanged, (state, payload): RootState => {
   return {
     ...state,
+    hasError: payload.connectionStatus === ConnectionState.CONNECTED ? false : state.hasError,
     connectionStatus: payload.connectionStatus
   }
 })
@@ -79,13 +82,6 @@ reducer.on(Actions.selectedRegionChanged, (state, payload): RootState => {
   return {
     ...state,
     currentRegion: payload.region
-  }
-})
-
-reducer.on(Actions.retryConnect, (state): RootState => {
-  return {
-    ...state,
-    hasError: false
   }
 })
 

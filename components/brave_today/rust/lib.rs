@@ -21,17 +21,18 @@ mod ffi {
     }
 
     extern "Rust" {
-        fn parse_feed_string(source: String, output: &mut FeedData) -> bool;
+        fn parse_feed_bytes(source: &[u8], output: &mut FeedData) -> bool;
     }
 }
 
-fn parse_feed_string(source: String, output: &mut ffi::FeedData) -> bool {
+fn parse_feed_bytes(source: &[u8], output: &mut ffi::FeedData) -> bool {
     lazy_static! {
         static ref IMAGE_REGEX: Regex = Regex::new("<img[^>]+src=\"?([^\" >]+)").unwrap();
     }
+
     // TODO(petemill): To see these errors, put `env_logger::init()` in an
     // 'init' function which only gets called once.
-    let feed_result = parser::parse(source.as_bytes());
+    let feed_result = parser::parse(source);
     if let Err(error) = feed_result {
         log::debug!("Could not parse feed: {}", error);
         return false;
@@ -115,7 +116,7 @@ fn parse_feed_string(source: String, output: &mut ffi::FeedData) -> bool {
             description: voca_rs::strip::strip_tags(&summary),
             image_url,
             destination_url: feed_item_data.links[0].href.clone(),
-            published_timestamp: feed_item_data.published.map_or(0, |date| date.timestamp())
+            published_timestamp: feed_item_data.published.map_or(0, |date| date.timestamp()),
         };
         output.items.push(feed_item);
     }

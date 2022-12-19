@@ -11,6 +11,8 @@ export const localeStrings = {
   cancelMonthlyTip: 'Cancel Monthly Tip',
   changeAmount: 'Change Amount',
   confirmCancel: 'Confirm Canceling Monthly',
+  connectAccountButton: 'Connect account',
+  connectAccountText: 'Just connect a custodial account so you can start earning BAT and tip creators.',
   continue: 'Continue',
   currentMonthlyTip: 'Current monthly tip',
   currentlySupporting: 'You’re currently supporting this creator',
@@ -29,7 +31,7 @@ export const localeStrings = {
   monthlyText: 'Monthly',
   nextTipDate: 'Next tip date:',
   notEnoughPoints: 'Not enough points.',
-  notEnoughTokens: 'Not enough tokens. Please $1add funds$2.',
+  notEnoughTokens: 'Not enough tokens.',
   on: 'on',
   oneTimeTip: 'One-Time Tip',
   oneTimeTipAmount: 'One-time tip amount:',
@@ -39,12 +41,17 @@ export const localeStrings = {
   sendDonation: 'Send Tip',
   siteBannerNoticeNote: 'NOTE:',
   siteBannerNoticeNotRegistered: 'This creator is not signed up yet. Any tip you make will remain pending and retry automatically for 90 days.',
-  siteBannerNoticeText: 'This creator is currently not configured to receive tips from your Rewards custodial wallet service. Any tip you make will remain pending and retry automatically for 90 days.',
+  siteBannerNoticeText: 'You\'re connected to $1, but this creator ' +
+                        'is connected to $2. This means your tip ' +
+                        'can\'t reach this creator. For now, any ' +
+                        'tip you make will remain pending and retry ' +
+                        'automatically for 90 days.',
   sorryToSeeYouGo: 'Sorry to see you go…',
   supportThisCreator: 'Support this creator',
   thanksForTheSupport: 'Thanks for the support!',
   tipAmount: 'Tip amount:',
   tipCanceled: 'Your monthly tip to this creator has been canceled.',
+  tipFavoriteCreators: 'Want to tip your favorite creators?',
   tipDelayNote: 'Note: Your tip can take several minutes to process',
   tipHasBeenSent: 'Your one-time tip has been sent.',
   tipIsPending: 'You’ve set up a pending tip!',

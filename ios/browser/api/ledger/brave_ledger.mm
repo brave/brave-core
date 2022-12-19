@@ -71,8 +71,6 @@ BraveGeneralLedgerNotificationID const
     BATBraveGeneralLedgerNotificationIDWalletDisconnected =
         @"wallet_disconnected";
 
-static NSString* const kNextAddFundsDateNotificationKey =
-    @"BATNextAddFundsDateNotification";
 static NSString* const kMigrationSucceeded = @"BATRewardsMigrationSucceeded";
 
 static NSString* const kContributionQueueAutoincrementID =
@@ -166,8 +164,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     if (!self.prefs) {
       self.prefs = [[NSMutableDictionary alloc] init];
       // Setup defaults
-      self.prefs[kNextAddFundsDateNotificationKey] =
-          @([[NSDate date] timeIntervalSince1970]);
       self.prefs[kMigrationSucceeded] = @(NO);
       [self savePrefs];
     }
@@ -548,10 +544,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
           }
         });
       }));
-}
-
-- (void)hasSufficientBalanceToReconcile:(void (^)(BOOL))completion {
-  ledger->HasSufficientBalanceToReconcile(completion);
 }
 
 - (void)pendingContributionsTotal:(void (^)(double amount))completion {
@@ -1500,45 +1492,7 @@ BATLedgerBridge(BOOL,
 - (void)checkForNotificationsAndFetchGrants {
   self.lastNotificationCheckDate = [NSDate date];
 
-  [self showAddFundsNotificationIfNeccessary];
   [self fetchPromotions:nil];
-}
-
-- (void)showAddFundsNotificationIfNeccessary {
-  const auto stamp = ledger->GetReconcileStamp();
-  const auto now = [[NSDate date] timeIntervalSince1970];
-
-  // Show add funds notification if reconciliation will occur in the
-  // next 3 days and balance is too low.
-  if (stamp - now > 3 * kOneDay) {
-    return;
-  }
-  // Make sure it hasnt already been shown
-  const auto upcomingAddFundsNotificationTime =
-      [self.prefs[kNextAddFundsDateNotificationKey] doubleValue];
-  if (upcomingAddFundsNotificationTime != 0.0 &&
-      now < upcomingAddFundsNotificationTime) {
-    return;
-  }
-
-  const auto __weak weakSelf = self;
-  // Make sure they don't have a sufficient balance
-  [self hasSufficientBalanceToReconcile:^(BOOL sufficient) {
-    if (sufficient) {
-      return;
-    }
-    const auto strongSelf = weakSelf;
-
-    // Set next add funds notification in 3 days
-    const auto nextTime = [[NSDate date] timeIntervalSince1970] + (kOneDay * 3);
-    strongSelf.prefs[kNextAddFundsDateNotificationKey] = @(nextTime);
-    [strongSelf savePrefs];
-
-    [strongSelf
-        addNotificationOfKind:RewardsNotificationKindInsufficientFunds
-                     userInfo:nil
-               notificationID:@"rewards_notification_insufficient_funds"];
-  }];
 }
 
 - (void)showTipsProcessedNotificationIfNeccessary {
@@ -1813,11 +1767,6 @@ BATLedgerBridge(BOOL,
                             publisherKey:(const std::string&)publisher_key
                            publisherName:(const std::string&)publisher_name {
   switch (result) {
-    case ledger::mojom::Result::PENDING_NOT_ENOUGH_FUNDS:
-      [self addNotificationOfKind:RewardsNotificationKindPendingNotEnoughFunds
-                         userInfo:nil
-                   notificationID:@"not_enough_funds_for_pending"];
-      break;
     case ledger::mojom::Result::PENDING_PUBLISHER_REMOVED: {
       const auto publisherID = base::SysUTF8ToNSString(publisher_key);
       for (BraveLedgerObserver* observer in [self.observers copy]) {

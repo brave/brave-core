@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Types
-import { BraveWallet, WalletAccountType } from '../../../constants/types'
+import { BraveWallet, SerializableSignMessageRequest, WalletAccountType } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -50,7 +50,7 @@ export interface Props {
   accounts: WalletAccountType[]
   defaultNetworks: BraveWallet.NetworkInfo[]
   selectedNetwork?: BraveWallet.NetworkInfo
-  signMessageData: BraveWallet.SignMessageRequest[]
+  signMessageData: SerializableSignMessageRequest[]
   onSign: () => void
   onCancel: () => void
   showWarning: boolean
@@ -84,7 +84,7 @@ export const SignPanel = (props: Props) => {
 
   // state
   const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignData)
-  const [selectedQueueData, setSelectedQueueData] = React.useState<BraveWallet.SignMessageRequest>(signMessageData[0])
+  const [selectedQueueData, setSelectedQueueData] = React.useState<SerializableSignMessageRequest>(signMessageData[0])
   const [renderUnicode, setRenderUnicode] = React.useState<boolean>(true)
 
   // memos

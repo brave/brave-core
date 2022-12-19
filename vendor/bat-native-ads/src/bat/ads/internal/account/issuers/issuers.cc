@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "absl/types/optional.h"
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_json_reader.h"
@@ -58,7 +58,7 @@ void Issuers::Fetch() {
   is_fetching_ = true;
 
   BLOG(1, "FetchIssuers");
-  BLOG(2, "GET /v1/issuers/");
+  BLOG(2, "GET /v3/issuers/");
 
   IssuersUrlRequestBuilder url_request_builder;
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();

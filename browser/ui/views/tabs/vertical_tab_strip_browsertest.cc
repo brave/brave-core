@@ -18,6 +18,7 @@
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "ui/views/layout/flex_layout.h"
@@ -25,10 +26,6 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "chrome/browser/ui/views/frame/glass_browser_frame_view.h"
-#endif
-
-#if BUILDFLAG(IS_LINUX)
-#include "chrome/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(IS_MAC)
@@ -141,11 +138,20 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
   browser()->profile()->GetPrefs()->SetBoolean(prefs::kUseCustomChromeFrame,
                                                true);
 #endif
-  // Pre-condition: Window title is "visible" by default on vertical tabs
+  // Pre-condition: Window title is "hidden" by default on vertical tabs
   ASSERT_TRUE(tabs::features::ShouldShowVerticalTabs(browser()));
-  ASSERT_TRUE(tabs::features::ShouldShowWindowTitleForVerticalTabs(browser()));
-  ASSERT_TRUE(browser_view()->ShouldShowWindowTitle());
-  ASSERT_TRUE(IsWindowTitleViewVisible());
+  ASSERT_FALSE(tabs::features::ShouldShowWindowTitleForVerticalTabs(browser()));
+  ASSERT_FALSE(browser_view()->ShouldShowWindowTitle());
+  ASSERT_FALSE(IsWindowTitleViewVisible());
+
+  // Show window title bar
+  brave::ToggleWindowTitleVisibilityForVerticalTabs(browser());
+  browser_non_client_frame_view()->Layout();
+  EXPECT_TRUE(tabs::features::ShouldShowWindowTitleForVerticalTabs(browser()));
+  EXPECT_TRUE(browser_view()->ShouldShowWindowTitle());
+  EXPECT_GE(browser_non_client_frame_view()->GetTopInset(/*restored=*/false),
+            0);
+  EXPECT_TRUE(IsWindowTitleViewVisible());
 
   // Hide window title bar
   brave::ToggleWindowTitleVisibilityForVerticalTabs(browser());
@@ -159,15 +165,6 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
             browser_non_client_frame_view()->GetTopInset(/*restored=*/false));
 #endif
   EXPECT_FALSE(IsWindowTitleViewVisible());
-
-  // Show window title bar
-  brave::ToggleWindowTitleVisibilityForVerticalTabs(browser());
-  browser_non_client_frame_view()->Layout();
-  EXPECT_TRUE(tabs::features::ShouldShowWindowTitleForVerticalTabs(browser()));
-  EXPECT_TRUE(browser_view()->ShouldShowWindowTitle());
-  EXPECT_GE(browser_non_client_frame_view()->GetTopInset(/*restored=*/false),
-            0);
-  EXPECT_TRUE(IsWindowTitleViewVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, NewTabVisibility) {
@@ -254,4 +251,40 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
     region_view->OnMouseEntered(event);
     EXPECT_NE(State::kFloating, region_view->state());
   }
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, SidebarAlignment) {
+  // Pre-condition: sidebar is on the left by default.
+  auto* prefs = browser()->profile()->GetPrefs();
+  ASSERT_TRUE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
+                  ->IsDefaultValue());
+  ASSERT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+
+  // When enabling vertical tab strip, sidebar moves to the right.
+  ToggleVerticalTabStrip();
+  EXPECT_FALSE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
+                   ->IsDefaultValue());
+  EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+
+  // When disabling vertical tab strip, sidebar should be restored to the
+  // default position.
+  ToggleVerticalTabStrip();
+  EXPECT_TRUE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
+                  ->IsDefaultValue());
+  EXPECT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+
+  // When user explicitly set position, sidebar shouldn't move.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  EXPECT_FALSE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
+                   ->IsDefaultValue());
+  ToggleVerticalTabStrip();
+  EXPECT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+
+  // Turning off vertical tab strip also shouldn't affect sidebar's position.
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+  ToggleVerticalTabStrip();
+  ToggleVerticalTabStrip();
+  EXPECT_FALSE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
+                   ->IsDefaultValue());
+  EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
 }

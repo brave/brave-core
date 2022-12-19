@@ -9,9 +9,6 @@
 extern const char kChromeExtensionScheme[];
 extern const char kBraveUIScheme[];
 extern const char kMagnetScheme[];
-extern const char kBinanceScheme[];
-extern const char kGeminiScheme[];
-extern const char kFTXScheme[];
 extern const char kWidevineTOS[];
 extern const char kRewardsUpholdSupport[];
 extern const char kP3ALearnMoreURL[];
@@ -21,7 +18,7 @@ extern const char kCryptoWalletsLearnMoreURL[];
 extern const char kPermissionPromptLearnMoreUrl[];
 extern const char kSpeedreaderLearnMoreUrl[];
 extern const char kWebDiscoveryLearnMoreUrl[];
-extern const char kBraveSearchUrl[];
+extern const char kBraveSearchHost[];
 extern const char kWidevineLearnMoreUrl[];
 
 // This is introduced to replace |kDownloadChromeUrl| in

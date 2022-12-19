@@ -24,7 +24,9 @@ export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
           data: [] as number[],
           nonce: '0x03',
           gasLimit: '0x5208', // 2100
-          gasPrice: '0x22ecb25c00' // 150 Gwei
+          gasPrice: '0x22ecb25c00', // 150 Gwei
+          signOnly: false,
+          signedTransaction: undefined
         },
         chainId: '1337',
         maxPriorityFeePerGas: '',

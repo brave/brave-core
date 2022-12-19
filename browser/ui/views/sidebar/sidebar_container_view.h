@@ -60,6 +60,8 @@ class SidebarContainerView
   void Init();
   void SetSidebarOnLeft(bool sidebar_on_left);
 
+  bool IsSidebarVisible() const;
+
   BraveSidePanel* side_panel() { return side_panel_; }
 
   // Sidebar overrides:

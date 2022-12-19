@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_COMMON_CLIENT_HINTS_ENABLED_CLIENT_HINTS_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_COMMON_CLIENT_HINTS_ENABLED_CLIENT_HINTS_H_
 
+#include "services/network/public/mojom/web_client_hints_types.mojom-shared.h"
+
 // We can't do a `#define SetIsEnabled SetIsEnabled_Unused` because there are
 // two different signatures for that method, so we redefine IsEnabled() instead
 // and make the most of that to squeeze those methods there instead.

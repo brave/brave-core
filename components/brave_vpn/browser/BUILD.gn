@@ -1,0 +1,73 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+assert(enable_brave_vpn)
+
+static_library("browser") {
+  sources = [
+    "brave_vpn_service.cc",
+    "brave_vpn_service.h",
+    "brave_vpn_service_helper.cc",
+    "brave_vpn_service_helper.h",
+    "brave_vpn_service_observer.cc",
+    "brave_vpn_service_observer.h",
+  ]
+
+  deps = [
+    "api",
+    "connection",
+    "connection:api",
+    "//base",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/p3a_utils",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common:mojom",
+    "//brave/components/version_info",
+    "//build:buildflag_header_h",
+    "//components/keyed_service/core",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//components/version_info",
+    "//services/network/public/cpp",
+    "//third_party/abseil-cpp:absl",
+    "//ui/base",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_vpn_service_unittest.cc" ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//brave/components/brave_vpn/browser/api",
+    "//brave/components/brave_vpn/browser/api:unit_tests",
+    "//brave/components/brave_vpn/browser/connection:api",
+    "//brave/components/brave_vpn/browser/connection:common",
+    "//brave/components/brave_vpn/browser/connection:sim",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//services/data_decoder/public/cpp:test_support",
+    "//services/network:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+  ]
+  if (!is_android) {
+    deps += [ "connection:unit_tests" ]
+  }
+}

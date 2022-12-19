@@ -36,7 +36,7 @@ class BraveSyncDeviceTracker : public syncer::DeviceInfoTracker::Observer {
  public:
   BraveSyncDeviceTracker(syncer::DeviceInfoTracker* device_info_tracker,
                          std::function<void()> on_device_info_changed_callback);
-  virtual ~BraveSyncDeviceTracker();
+  ~BraveSyncDeviceTracker() override;
 
  private:
   void OnDeviceInfoChange() override;

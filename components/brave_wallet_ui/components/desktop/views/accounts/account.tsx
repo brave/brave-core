@@ -6,15 +6,18 @@
 import * as React from 'react'
 import { Redirect, useParams, useLocation } from 'react-router'
 import {
-  useDispatch,
-  useSelector
+  useDispatch
 } from 'react-redux'
 import { create } from 'ethereum-blockies'
 
+// Selectors
+import { useSafeWalletSelector, useUnsafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../common/selectors'
+
+// Types
 import {
   BraveWallet,
   CoinTypesMap,
-  WalletState,
   WalletRoutes,
   AccountButtonOptionsObjectType
 } from '../../../../constants/types'
@@ -44,6 +47,7 @@ import { TransactionPlaceholderText, Spacer } from '../portfolio/style'
 // Components
 import { BackButton } from '../../../shared'
 import { PortfolioTransactionItem } from '../../portfolio-transaction-item/index'
+import { PortfolioAssetItemLoadingSkeleton } from '../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
 import { PortfolioAssetItem } from '../../portfolio-asset-item/index'
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
 import { AccountListItemOptionButton } from '../../account-list-item/account-list-item-option-button'
@@ -71,10 +75,15 @@ export const Account = ({
 
   // redux
   const dispatch = useDispatch()
-  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
-  const transactions = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactions)
-  const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
-  const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
+
+  // unsafe selectors
+  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
+  const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
+  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
+
+  // safe selectors
+  const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
 
   // custom hooks
   const scrollIntoView = useScrollIntoView()
@@ -223,6 +232,10 @@ export const Account = ({
           token={item}
         />
       )}
+
+      {!assetAutoDiscoveryCompleted &&
+        <PortfolioAssetItemLoadingSkeleton />
+      }
 
       <Spacer />
 

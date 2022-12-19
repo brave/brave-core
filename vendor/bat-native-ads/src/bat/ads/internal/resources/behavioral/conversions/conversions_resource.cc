@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/conversions/conversions_features.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_info.h"

@@ -56,7 +56,9 @@ export class MockedWalletApiProxy {
     sellAmount: '124067000000000000',
     allowanceTarget: '0x0000000000000000000000000000000000000000',
     sellTokenToEthRate: '1',
-    buyTokenToEthRate: '1720.180416'
+    buyTokenToEthRate: '1720.180416',
+    estimatedPriceImpact: '0.0782',
+    sources: []
   }
 
   mockTransaction = {
@@ -76,7 +78,9 @@ export class MockedWalletApiProxy {
     buyAmount: '0',
     sellAmount: '0',
     sellTokenToEthRate: '1',
-    buyTokenToEthRate: '1'
+    buyTokenToEthRate: '1',
+    estimatedPriceImpact: '0.0782',
+    sources: []
   }
 
   swapService: Partial<InstanceType<typeof BraveWallet.SwapServiceInterface>> = {
@@ -86,12 +90,16 @@ export class MockedWalletApiProxy {
       sellAmount,
       sellToken
     }: BraveWallet.SwapParams): Promise<{
-      success: boolean
-      errorResponse: any
       response: BraveWallet.SwapResponse
+      errorResponse: BraveWallet.SwapErrorResponse
+      errorString: string
     }> => ({
-      success: true,
-      errorResponse: {},
+      errorResponse: {
+        code: 0,
+        isInsufficientLiquidity: false,
+        reason: '',
+        validationErrors: []
+      },
       response: {
         ...this.mockQuote,
         buyTokenAddress: buyToken,
@@ -99,12 +107,13 @@ export class MockedWalletApiProxy {
         buyAmount: buyAmount || '',
         sellAmount: sellAmount || '',
         price: '1'
-      }
+      },
+      errorString: ''
     }),
     getPriceQuote: async () => ({
-      success: true,
+      response: this.mockTransaction,
       errorResponse: null,
-      response: this.mockTransaction
+      errorString: ''
     })
   }
 

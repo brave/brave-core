@@ -11,7 +11,7 @@ import { USDCIconUrl } from '../../assets/asset-icons'
 // types
 import { BraveWallet, WalletAccountType, WalletState } from '../../constants/types'
 import { AllNetworksOption } from '../../options/network-filter-options'
-import { AllAssetsFilterOption } from '../../options/asset-filter-options'
+import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
 import { mockMoonCatNFT } from './mock-asset-options'
 
@@ -379,9 +379,8 @@ export const mockWalletState: WalletState = {
   ],
   transactionProviderErrorRegistry: {},
   defaultNetworks: [mockNetwork],
-  selectedCoin: BraveWallet.CoinType.ETH,
   selectedNetworkFilter: AllNetworksOption,
-  selectedAssetFilter: AllAssetsFilterOption,
+  selectedAssetFilter: HighToLowAssetsFilterOption,
   selectedAccountFilter: AllAccountsOption,
   defaultAccounts: [
     {
@@ -397,5 +396,6 @@ export const mockWalletState: WalletState = {
   selectedCurrency: mockCurrency,
   passwordAttempts: 0,
   isLoadingCoinMarketData: false,
-  coinMarketData: mockCoinMarketData
+  coinMarketData: mockCoinMarketData,
+  assetAutoDiscoveryCompleted: false
 }

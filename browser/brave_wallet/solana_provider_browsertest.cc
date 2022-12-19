@@ -144,6 +144,54 @@ constexpr uint8_t kSecondAccountSignature[] = {
     51,  217, 107, 224, 154, 137, 48,  99,  56,  163, 98,  175, 238,
     202, 28,  149, 75,  73,  167, 209, 91,  209, 125, 53,  15};
 
+// First byte = 0 is the length of signatures.
+// Rest bytes are from the serialized message below.
+// SolanaInstruction instruction1(
+//     mojom::kSolanaSystemProgramId,
+//     {SolanaAccountMeta(kSecondAccount, true, true),
+//     SolanaAccountMeta(kFirstAccount, false, true)},
+//     {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+// SolanaInstruction instruction2(
+//     mojom::kSolanaSystemProgramId,
+//     {SolanaAccountMeta(kFirstAccount, true, true),
+//     SolanaAccountMeta(kSecondAccount, false, true)},
+//     {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+// SolanaMessage msg("9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6", 0,
+//                   kSecondAccount, {instruction1, instruction2});
+constexpr char kUnsignedTxArrayStr3[] =
+    "0,2,0,1,3,178,214,107,40,5,90,152,248,228,193,154,254,176,38,253,12,47,"
+    "103,85,191,24,48,173,84,45,134,214,75,36,218,67,194,108,100,57,137,161,"
+    "117,30,158,157,136,81,70,62,51,111,138,48,102,91,148,103,82,143,30,248,0,"
+    "4,91,18,170,94,82,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+    "0,0,0,0,131,191,83,201,108,193,222,255,176,67,136,209,219,42,6,169,240,"
+    "137,142,185,169,6,17,87,123,6,42,55,162,64,120,91,2,2,2,0,1,12,2,0,0,0,"
+    "128,150,152,0,0,0,0,0,2,2,1,0,12,2,0,0,0,128,150,152,0,0,0,0,0";
+
+// Signature of kUnsignedTxArrayStr3 signed by kSecondAccount.
+constexpr char kSecondAccountSignatureArray2[] =
+    "146,134,13,206,131,77,84,101,99,222,35,128,221,21,100,139,108,149,44,61,"
+    "214,79,184,146,38,197,52,202,72,37,110,188,4,149,164,116,43,93,49,165,106,"
+    "101,195,194,60,223,166,173,127,102,129,19,13,67,20,197,213,167,131,107,"
+    "132,109,25,7";
+
+// Result of the above transaction signed by kFirstAccount, with the first
+// signature signed by kSecondAccount provided via tx.addSignature before
+// calling APIs.
+constexpr char kSignedTxArrayStr3[] =
+    "2,146,134,13,206,131,77,84,101,99,222,35,128,221,21,100,139,108,149,44,61,"
+    "214,79,184,146,38,197,52,202,72,37,110,188,4,149,164,116,43,93,49,165,106,"
+    "101,195,194,60,223,166,173,127,102,129,19,13,67,20,197,213,167,131,107,"
+    "132,109,25,7,64,80,2,141,31,0,136,77,254,119,123,202,223,237,54,78,90,33,"
+    "83,40,134,168,122,131,27,159,219,82,66,35,195,239,14,17,2,110,95,103,216,"
+    "30,207,59,87,230,134,153,195,56,245,125,171,2,194,244,233,61,15,58,239,17,"
+    "221,71,171,12,2,0,1,3,178,214,107,40,5,90,152,248,228,193,154,254,176,38,"
+    "253,12,47,103,85,191,24,48,173,84,45,134,214,75,36,218,67,194,108,100,57,"
+    "137,161,117,30,158,157,136,81,70,62,51,111,138,48,102,91,148,103,82,143,"
+    "30,248,0,4,91,18,170,94,82,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+    "0,0,0,0,0,0,0,0,0,131,191,83,201,108,193,222,255,176,67,136,209,219,42,6,"
+    "169,240,137,142,185,169,6,17,87,123,6,42,55,162,64,120,91,2,2,2,0,1,12,2,"
+    "0,0,0,128,150,152,0,0,0,0,0,2,2,1,0,12,2,0,0,0,128,150,152,0,0,0,0,0";
+
 std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
     const net::test_server::HttpRequest& request) {
   std::unique_ptr<net::test_server::BasicHttpResponse> http_response(
@@ -208,6 +256,17 @@ class TestTxServiceObserver : public mojom::TxServiceObserver {
   std::unique_ptr<base::RunLoop> run_loop_rejected_;
 };
 
+bool WaitForWalletBubble(content::WebContents* web_contents) {
+  auto* tab_helper =
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents);
+  if (!tab_helper->IsShowingBubble()) {
+    base::RunLoop run_loop;
+    tab_helper->SetShowBubbleCallbackForTesting(run_loop.QuitClosure());
+    run_loop.Run();
+  }
+
+  return tab_helper->IsShowingBubble();
+}
 }  // namespace
 
 class SolanaProviderTest : public InProcessBrowserTest {
@@ -218,8 +277,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
     base::FieldTrialParams parameters;
     parameters[features::kCreateDefaultSolanaAccount.name] = "false";
 
-    std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-        enabled_features;
+    std::vector<base::test::FeatureRefAndParams> enabled_features;
     enabled_features.emplace_back(
         brave_wallet::features::kBraveWalletSolanaFeature, parameters);
     enabled_features.emplace_back(
@@ -396,19 +454,11 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
   void CallSolanaConnect(const content::ToRenderFrameHost& execution_target,
                          bool is_expect_bubble = true) {
-    base::RunLoop run_loop;
-    auto* tab_helper =
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents());
-    tab_helper->SetShowBubbleCallbackForTesting(run_loop.QuitClosure());
-
     ASSERT_TRUE(ExecJs(execution_target, "solanaConnect()"));
-
     if (is_expect_bubble) {
-      run_loop.Run();
-      ASSERT_TRUE(tab_helper->IsShowingBubble());
-    } else {
-      run_loop.RunUntilIdle();
+      WaitForWalletBubble(web_contents());
     }
+    base::RunLoop().RunUntilIdle();
   }
 
   void CallSolanaDisconnect(
@@ -693,9 +743,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
 
   size_t request_index = 0;
   CallSolanaSignMessage(kMessage, "utf8");
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   // user rejected request
   brave_wallet_service_->NotifySignMessageRequestProcessed(
       false, request_index++, nullptr, absl::nullopt);
@@ -705,9 +753,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
 
   for (const std::string& encoding : {"utf8", "hex", "invalid", ""}) {
     CallSolanaSignMessage(kMessage, encoding);
-    EXPECT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_TRUE(WaitForWalletBubble(web_contents()));
     // user approved request
     brave_wallet_service_->NotifySignMessageRequestProcessed(
         true, request_index++, nullptr, absl::nullopt);
@@ -765,9 +811,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
 
   CallSolanaSignAndSendTransaction(kUnsignedTxArrayStr);
   observer()->WaitForNewUnapprovedTx();
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  EXPECT_TRUE(WaitForWalletBubble(web_contents()));
 
   auto infos = GetAllTransactionInfo();
   EXPECT_EQ(1UL, infos.size());
@@ -796,9 +840,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
       R"({"maxRetries":1,"preflightCommitment":"confirmed","skipPreflight":true})";
   CallSolanaSignAndSendTransaction(kUnsignedTxArrayStr, send_options);
   observer()->WaitForNewUnapprovedTx();
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  EXPECT_TRUE(WaitForWalletBubble(web_contents()));
 
   infos = GetAllTransactionInfo();
   EXPECT_EQ(2UL, infos.size());
@@ -839,9 +881,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
                                    kSecondAccount,
                                    kSecondAccountSignatureArray);
   observer()->WaitForNewUnapprovedTx();
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  EXPECT_TRUE(WaitForWalletBubble(web_contents()));
 
   // Test transaction.signatures.
   infos = GetAllTransactionInfo();
@@ -944,9 +984,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
   size_t request_index = 0;
   CallSolanaSignTransaction(kUnsignedTxArrayStr);
 
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   // user rejected request
   brave_wallet_service_->NotifySignTransactionRequestProcessed(
       false, request_index++, nullptr, absl::nullopt);
@@ -955,9 +993,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 
   CallSolanaSignTransaction(kUnsignedTxArrayStr);
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   // user approved request
   brave_wallet_service_->NotifySignTransactionRequestProcessed(
       true, request_index++, nullptr, absl::nullopt);
@@ -966,14 +1002,23 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
 
   CallSolanaSignTransaction(kUnsignedTxArrayStr2, kSecondAccount,
                             kSecondAccountSignatureArray);
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   // user approved request
   brave_wallet_service_->NotifySignTransactionRequestProcessed(
       true, request_index++, nullptr, absl::nullopt);
   WaitForResultReady();
   EXPECT_EQ(GetSignTransactionResult(), kSignedTxArrayStr2);
+
+  // Test the case where the transaction is already signed by the fee-payer,
+  // and ask for the connected wallet account to co-sign the transaction.
+  CallSolanaSignTransaction(kUnsignedTxArrayStr3, kSecondAccount,
+                            kSecondAccountSignatureArray2);
+  EXPECT_TRUE(WaitForWalletBubble(web_contents()));
+  // user approved request
+  brave_wallet_service_->NotifySignTransactionRequestProcessed(
+      true, request_index++, nullptr, absl::nullopt);
+  WaitForResultReady();
+  EXPECT_EQ(GetSignTransactionResult(), kSignedTxArrayStr3);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
@@ -991,9 +1036,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
   size_t request_index = 0;
   CallSolanaSignAllTransactions(kUnsignedTxArrayStr, kSignedTxArrayStr);
 
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   // user rejected request
   brave_wallet_service_->NotifySignAllTransactionsRequestProcessed(
       false, request_index++, absl::nullopt, absl::nullopt);
@@ -1002,9 +1045,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 
   CallSolanaSignAllTransactions(kUnsignedTxArrayStr, kSignedTxArrayStr);
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   // user approved request
   brave_wallet_service_->NotifySignAllTransactionsRequestProcessed(
       true, request_index++, absl::nullopt, absl::nullopt);
@@ -1013,9 +1054,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
 
   CallSolanaSignAllTransactions(kUnsignedTxArrayStr2, kSignedTxArrayStr2,
                                 kSecondAccount, kSecondAccountSignatureArray);
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   // user approved request
   brave_wallet_service_->NotifySignAllTransactionsRequestProcessed(
       true, request_index++, absl::nullopt, absl::nullopt);
@@ -1033,10 +1072,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
 
   // connect and accept
   CallSolanaRequest(R"({method: "connect"})");
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   permissions::BraveWalletPermissionContext::AcceptOrCancel(
       std::vector<std::string>{kFirstAccount}, web_contents());
   WaitForResultReady();
@@ -1062,9 +1098,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   CallSolanaRequest(base::StringPrintf(R"(
     {method: "signMessage", params: { message: new Uint8Array([%s]) }})",
                                        kEncodedMessage));
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  EXPECT_TRUE(WaitForWalletBubble(web_contents()));
+
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, 0, nullptr,
                                                            absl::nullopt);
   WaitForResultReady();
@@ -1074,9 +1109,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   CallSolanaRequest(base::StringPrintf(R"(
     {method: "signTransaction", params: { message: '%s' }})",
                                        kEncodedUnsignedTxArrayStr));
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   brave_wallet_service_->NotifySignTransactionRequestProcessed(true, 0, nullptr,
                                                                absl::nullopt);
   WaitForResultReady();
@@ -1090,9 +1123,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
                                        kEncodedUnsignedTxArrayStr,
                                        send_options.c_str()));
   observer()->WaitForNewUnapprovedTx();
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   auto infos = GetAllTransactionInfo();
   ASSERT_EQ(infos.size(), 1u);
   ASSERT_TRUE(infos[0]->tx_data_union->is_solana_tx_data());
@@ -1109,9 +1140,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
     {method: "signAllTransactions", params: { message: ['%s', '%s'] }})",
                                        kEncodedUnsignedTxArrayStr,
                                        kEncodedUnsignedTxArrayStr));
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
+  EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   brave_wallet_service_->NotifySignAllTransactionsRequestProcessed(
       true, 0, absl::nullopt, absl::nullopt);
   WaitForResultReady();

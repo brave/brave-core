@@ -11,11 +11,11 @@ import BraveIcon from '../../../../assets/svg-icons/brave-icon.svg'
 import { URLText } from '../../shared-panel-styles'
 import CreateSiteOrigin from '../../../shared/create-site-origin'
 
-// Constants
-import { BraveWallet } from '../../../../constants/types'
+// Types
+import { SerializableOriginInfo } from '../../../../constants/types'
 
 interface Props {
-  originInfo: BraveWallet.OriginInfo
+  originInfo: SerializableOriginInfo
 }
 
 export function Origin (props: Props) {

@@ -3,7 +3,9 @@
 <translationbundle lang="ja">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="4615489450165434530">サイト表示の不具合を報告</translation>
+<translation id="8097438084542431276">クリーンリンクをコピー</translation>
 <translation id="1209739344687072997">サイト表示の不具合を報告</translation>
+<translation id="7630214457764713113">クリーンリンクをコピー</translation>
 <translation id="6406506848690869874">同期</translation>
 <translation id="1544192797660353713">ウォレット</translation>
 <translation id="2445484935443597917">新しいプロフィールを作成</translation>
@@ -73,7 +75,9 @@
 <translation id="2638041073279639246">Torのプライベートウィンドウでリンクを開きます</translation>
 <translation id="3425600262621021599">Torのプライベートウィンドウで Brave内のリンクを開く</translation>
 <translation id="3229091547987707389">ディレクトリをインポートおよびシェア</translation>
+<translation id="2804710924397009224">Brave Rewards アイコンを非表示にします</translation>
 <translation id="5029193871181468990">Brave Rewardsアイコンを非表示にする</translation>
+<translation id="2808103541110899519">Braveウォレットのアイコンを非表示</translation>
 <translation id="7595540212376041331">Braveウォレットのアイコンを非表示</translation>
 <translation id="4928988318462976765">ウェブ拡張機能ストア</translation>
 <translation id="9181207987584064303">ウェブ拡張ストアを見る</translation>
@@ -170,7 +174,13 @@
 <translation id="191143826155037518">Braveは、<ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) に基づき利用可能となっており、そこには他のさまざまなライセンスに基づく<ph name="BEGIN_LINK_OSS"/>オープンソース・ソフトウェア<ph name="END_LINK_OSS"/>が含まれています。
 <ph name="BEGIN_LINK_SOURCE_CODE"/>このコピーの作成に使われた特定のソースコード<ph name="END_LINK_SOURCE_CODE"/>を<ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>ダウンロードして、自分で構築する方法については説明書<ph name="END_LINK_BUILD_INSTRUCTIONS"/>をお読みください。</translation>
 <translation id="4474155171896946103">すべてのタブをブックマークに追加...</translation>
+<translation id="3987546108749866209">垂直タブを使用</translation>
+<translation id="5860254591544742609">タイトルバーを表示</translation>
+<translation id="399928467800528208">マウスオーバーでフロート</translation>
 <translation id="2336228925368920074">すべてのタブをブックマークに追加...</translation>
+<translation id="2523967823495420116">垂直タブを使用</translation>
+<translation id="8888603463702767599">タイトルバーを表示</translation>
+<translation id="2058818256505091369">マウスオーバーでフロート</translation>
 <translation id="4235920711083356755">VPNボタンを表示</translation>
 <translation id="4070612712151038707">ツールバーにVPNボタンを表示します</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -201,9 +211,9 @@
 <translation id="8722651357687610395">Braveをデフォルトに設定</translation>
 <translation id="2370739752330685659">あとで</translation>
 <translation id="7537601449003285327">タスクバーにピン留めする</translation>
+<translation id="2307973900865360088">Dockにキープ</translation>
 <translation id="961012016278832836">Microsoft Edgeレガシー</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/>からインポート</translation>
-<translation id="7630214457764713113">クリーンリンクをコピー</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
 <translation id="4472575034687746823">Get started</translation>
@@ -245,6 +255,8 @@
 <translation id="5919424224662539292">新しいタブページに表示される背景画像とウィジェットをカスタマイズ</translation>
 <translation id="7461924472993315131">固定</translation>
 <translation id="7506648566440714944">Braveは既に固定されています</translation>
+<translation id="239275665037555969">Dock</translation>
+<translation id="4057614912106618659">Braveは既にDockに登録されています</translation>
 <translation id="3195845168740336657">シールド設定</translation>
 <translation id="754769152790647708">シールドのステータス</translation>
 <translation id="3615717588724840230">シールドを使用して、サイトはトラッカー、広告、フィンガープリント採取をブロックできます</translation>
@@ -385,6 +397,8 @@
 <translation id="4581190919849683048">同期したいデバイスの種類はどれですか？</translation>
 <translation id="4112587618563511470">同期コードが無効ですので、確認してからやり直してください。</translation>
 <translation id="3995714999835224798">このコードは無効です</translation>
+<translation id="4432071071853308688">このコードは空です</translation>
+<translation id="955848693465029904">内部同期の設定でエラーが発生しました</translation>
 <translation id="859506441384380749">このコードは非推奨バージョンのBraveで生成されました。まず他のデバイスをアップグレードしてください</translation>
 <translation id="3132642509209154999">このコードは期限切れです。他のデバイスであたらしいコードを生成してもう一度お試しください。</translation>
 <translation id="2859229680945501779">このコードは無効です。お使いの端末の時刻とタイムゾーンが正しく設定されていることをご確認ください。</translation>
@@ -404,17 +418,21 @@
 <translation id="6864914031231797928">拡張機能のGoogleログインを許可する</translation>
 <translation id="6554397389149987360">ハングアウトコンポーネントでスクリーン共有やその他の機能を有効にします</translation>
 <translation id="7878791177459550035">メディアルーターは、ブラウザのキャスト機能を有効にします。</translation>
-<translation id="5927916530277631319">「Unstoppable Domains」を解決する方法</translation>
-<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>でイーサリアムのプライバシーに関する考慮事項をご確認ください。</translation>
-<translation id="5248318250177143470">イーサリアムネームサービス（ENS）を解決する方法</translation>
+<translation id="2707635989000984973">Unstoppable Domainsのドメイン名を解決</translation>
+<translation id="1807158022157096592"><ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>でUnstoppable Domainsのプライバシーに関する考慮事項をご確認ください。</translation>
+<translation id="641308776160806829">イーサリアムネームサービス（ENS）のドメイン名を解決</translation>
 <translation id="6421218422395686663">ENSオフチェーン検索を許可します。</translation>
+<translation id="4608449984413688436">ソラナネームサービス（SNS）のドメイン名を解決</translation>
 <translation id="7831978744512353629"><ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>でENSオフチェーン検索に関する考慮事項をご確認ください。</translation>
 <translation id="6241402707160226266">Tor搭載のプライベートウィンドウ</translation>
 <translation id="8762452230727230396">Torは訪問サイトからあなたのIPアドレスを隠します。</translation>
+<translation id="951983619130191090">他のユーザーがTorネットワークに接続するヘルプをボランティアとして提供</translation>
+<translation id="2223668809371912019">Snowflakeエクステンションを有効にして、検閲された国のユーザーがあなたのネットワーク接続を介してTorネットワークに接続できるようにします。</translation>
 <translation id="2959986444009520721">ブリッジの使用</translation>
 <translation id="8416750895933172460">ブリッジは、Torがブロックされている場所でTorネットワークにアクセスするのに役立ちます。いる場所によって、よく機能するブリッジが異なる場合があります。</translation>
 <translation id="7206799843254049470">Tor接続設定</translation>
 <translation id="3194502271166340944">プライベートウィンドウのTorネットワークへの接続方法を制御します。</translation>
+<translation id="3717364961460790491">この機能に必要なSnowflakeエクステンションをダウンロードすることができませんでした。インターネット接続をご確認の上、再度お試しください。</translation>
 <translation id="4859228830700205299">内蔵ブリッジを選択</translation>
 <translation id="3233137871426528317">torproject.orgのブリッジをリクエストする</translation>
 <translation id="5701503934456421898">新しいブリッジをリクエストする...</translation>
@@ -491,11 +509,13 @@
 <translation id="1195880978080389104">BraveローカルIPFSノード</translation>
 <translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>こちら<ph name="END_LINK_MPL"/>からBraveローカルIPFSノードとゲートウェイのプライバシーに関連する考慮事項を確認できます。</translation>
 <translation id="4927734062756955434">IPFSパブリックゲートウェイアドレス</translation>
+<translation id="3707431725427930007">NFT用IPFSパブリックゲートウェイアドレス</translation>
 <translation id="8425213833346101688">変更</translation>
 <translation id="585868419599255817">IPFSパブリックゲートウェイのフォールバック</translation>
 <translation id="2618080188892567155">BraveのローカルIPFSノードに到達できない場合は、自動的にパブリックIPFSゲートウェイにフォールバックします。</translation>
 <translation id="4107552920076294723">IPFSリソースを構成済みIPFSゲートウェイにリダイレクトします</translation>
-<translation id="6494857428933042381">IPFSゲートウェイリソースが検出されると、IPFSの解決のために構成済みゲートウェイを自動的に使用します。</translation>
+<translation id="4284166297897715283">サードパーティのIPFSゲートウェイでホストされているIPFSリソースへのリクエストは、選択したローカルまたはリモートゲートウェイを介して読み込まれます。
+注: ローカルノードを選択した場合、リソースはお使いのコンピュータから直接要求され、しばらくの間はキャッシュされたデータがIPFSネットワークに提供される可能性があります。</translation>
 <translation id="8655170717758778983">可能な場合は、DNSLink経由でIPFSページに自動的にリダイレクトする</translation>
 <translation id="2233724520223030977">可能な場合、DNSLinkを自動的に使用してウェブサイトのIPFSバージョンに移動する</translation>
 <translation id="8068526464562249859">ブラウザーバーからの一般的なIPFSタスクにアクセスするなど、BraveでのIPFSサポートを強化するために「IPFS Companion」拡張機能を使用します。</translation>

@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "bat/ledger/internal/endpoints/gemini/get_recipient_id/get_recipient_id_gemini.h"
 #include "bat/ledger/internal/wallet_provider/connect_external_wallet.h"
 #include "bat/ledger/ledger.h"
 
@@ -38,10 +39,14 @@ class ConnectGeminiWallet : public wallet_provider::ConnectExternalWallet {
                    mojom::Result,
                    std::string&& token) const;
 
-  void OnFetchRecipientId(ledger::ConnectExternalWalletCallback,
-                          std::string&& token,
-                          mojom::Result,
-                          std::string&& recipient_id) const;
+  void OnGetRecipientID(ledger::ConnectExternalWalletCallback,
+                        std::string&& token,
+                        endpoints::GetRecipientIDGemini::Result&&) const;
+
+  void OnPostRecipientID(ledger::ConnectExternalWalletCallback,
+                         std::string&& token,
+                         mojom::Result,
+                         std::string&& recipient_id) const;
 
   void OnPostAccount(ledger::ConnectExternalWalletCallback,
                      std::string&& token,

@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"

@@ -21,8 +21,6 @@ import { PageSelectors } from './selectors'
 
 // types
 import {
-  BuySendSwapTypes,
-  WalletAccountType,
   WalletRoutes
 } from '../constants/types'
 
@@ -42,16 +40,15 @@ import {
 // components
 import { CryptoView, LockScreen, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
 import { Skeleton } from '../components/shared/loading-skeleton/styles'
-import BuySendSwap from '../stories/screens/buy-send-swap'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
 import { BackupWalletRoutes } from './screens/backup-wallet/backup-wallet.routes'
-import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 import { FundWalletScreen } from './screens/fund-wallet/fund-wallet'
 import { OnboardingSuccess } from './screens/onboarding/onboarding-success/onboarding-success'
 import { DepositFundsScreen } from './screens/fund-wallet/deposit-funds'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import { Swap } from './screens/swap/swap'
 import { SendScreen } from './screens/send/send-page/send-screen'
+import { BuySendSwapDepositNav } from '../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
 
 const featureRequestUrl = 'https://community.brave.com/tags/c/wallet/131/feature-request'
 
@@ -79,7 +76,6 @@ export const Container = () => {
   // state
   const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
   const [inputValue, setInputValue] = React.useState<string>('')
-  const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
 
   // methods
   const onToggleShowRestore = React.useCallback(() => {
@@ -99,10 +95,6 @@ export const Container = () => {
       history.push(WalletRoutes.Restore)
     }
   }, [walletLocation])
-
-  const onSelectAccount = (account: WalletAccountType) => {
-    dispatch(WalletActions.selectAccount(account))
-  }
 
   const unlockWallet = React.useCallback(() => {
     dispatch(WalletActions.unlockWallet({ password: inputValue }))
@@ -297,12 +289,7 @@ export const Container = () => {
 
       {showBuySendSwapSidebar &&
         <WalletWidgetStandIn>
-          <BuySendSwap
-            selectedTab={selectedWidgetTab}
-            onSelectAccount={onSelectAccount}
-            onSelectTab={setSelectedWidgetTab}
-          />
-          <SweepstakesBanner />
+          <BuySendSwapDepositNav />
         </WalletWidgetStandIn>
       }
 

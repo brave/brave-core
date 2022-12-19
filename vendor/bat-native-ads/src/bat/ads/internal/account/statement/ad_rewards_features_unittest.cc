@@ -26,11 +26,10 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsEnabled) {
 
 TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDisabled) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kAdRewards);
+  disabled_features.emplace_back(kAdRewards);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -45,7 +44,7 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDisabled) {
 
 TEST(BatAdsAdRewardsFeaturesTest, AdRewardsNextPaymentDay) {
   // Arrange
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams kAdRewardsParameters;
   const char kNextPaymentDayParameter[] = "next_payment_day";
   kAdRewardsParameters[kNextPaymentDayParameter] = "5";
@@ -67,8 +66,7 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsNextPaymentDay) {
 
 TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDefaultNextPaymentDay) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -85,11 +83,10 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDefaultNextPaymentDay) {
 
 TEST(BatAdsAdRewardsFeaturesTest, DisabledAdRewardsDefaultNextPaymentDay) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kAdRewards);
+  disabled_features.emplace_back(kAdRewards);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,

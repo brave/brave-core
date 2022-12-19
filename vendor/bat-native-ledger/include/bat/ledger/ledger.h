@@ -40,8 +40,6 @@ using CreateRewardsWalletCallback =
 
 using OnRefreshPublisherCallback = std::function<void(mojom::PublisherStatus)>;
 
-using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
-
 using FetchBalanceCallback =
     base::OnceCallback<void(mojom::Result, mojom::BalancePtr)>;
 
@@ -181,6 +179,9 @@ class LEDGER_EXPORT Ledger {
                                    mojom::ActivityInfoFilterPtr filter,
                                    PublisherInfoListCallback callback) = 0;
 
+  virtual void GetPublishersVisitedCount(
+      base::OnceCallback<void(int)> callback) = 0;
+
   virtual void GetExcludedList(PublisherInfoListCallback callback) = 0;
 
   virtual void SetPublisherMinVisitTime(int duration_in_seconds) = 0;
@@ -273,9 +274,6 @@ class LEDGER_EXPORT Ledger {
 
   virtual uint64_t GetCreationStamp() = 0;
 
-  virtual void HasSufficientBalanceToReconcile(
-      HasSufficientBalanceToReconcileCallback callback) = 0;
-
   virtual void GetRewardsInternalsInfo(
       RewardsInternalsInfoCallback callback) = 0;
 
@@ -339,9 +337,6 @@ class LEDGER_EXPORT Ledger {
       const std::string& wallet_type,
       const base::flat_map<std::string, std::string>& args,
       ConnectExternalWalletCallback) = 0;
-
-  virtual void DisconnectWallet(const std::string& wallet_type,
-                                LegacyResultCallback callback) = 0;
 
   virtual void GetAllPromotions(GetAllPromotionsCallback callback) = 0;
 

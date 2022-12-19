@@ -1,0 +1,12 @@
+diff --git a/ui/webui/resources/cr_elements/cr_lottie/cr_lottie.ts b/ui/webui/resources/cr_elements/cr_lottie/cr_lottie.ts
+index 941508638cbc43dac79176766a0384824b502fba..75bc6070e80a514310ea5f93c42d4ad1e5f98468 100644
+--- a/ui/webui/resources/cr_elements/cr_lottie/cr_lottie.ts
++++ b/ui/webui/resources/cr_elements/cr_lottie/cr_lottie.ts
+@@ -345,6 +345,7 @@ export class CrLottieElement extends PolymerElement {
+       this.fire_('cr-lottie-paused');
+     } else if (event.data.name === 'stopped') {
+       this.fire_('cr-lottie-stopped');
++    } else if (event.data.name === 'complete') { this.fire_('cr-lottie-complete');
+     } else if (event.data.name === 'resized') {
+       this.fire_('cr-lottie-resized', event.data.size);
+     }

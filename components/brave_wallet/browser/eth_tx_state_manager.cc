@@ -67,6 +67,11 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
   const base::Value::Dict* tx = value.FindDict("tx");
   if (!tx)
     return nullptr;
+
+  absl::optional<bool> sign_only = value.FindBool("sign_only");
+  if (sign_only)
+    meta->set_sign_only(*sign_only);
+
   absl::optional<int> type = tx->FindInt("type");
   if (!type)
     return nullptr;

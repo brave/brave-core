@@ -506,28 +506,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
       </if>
 
-      <!-- Web Discovery dialog -->
-      <if expr="not is_android">
-        <message name="IDS_WEB_DISCOVERY_DIALOG_HEADER_TEXT" desc="The text for web discovery dialog header">
-          Want to make Brave Search even better?
-        </message>
-        <message name="IDS_WEB_DISCOVERY_DIALOG_CONTENTS_TEXT" desc="The text for web discovery dialog contents">
-          Opt in to the Web Discovery Project to anonymously contribute some search &amp; browsing data, and improve Brave Search results for all. Privacy-preserving. And zero effort. <ph name="LEARN_MORE_TEXT">$1<ex>Learn more</ex></ph>
-        </message>
-        <message name="IDS_WEB_DISCOVERY_DIALOG_CONTENTS_TEXT_LEARN_MORE_PART" desc="The text learn more link for web discovery dialog contents. This text should be same with above Learn more text in CONTENTS_TEXT">
-          Learn more
-        </message>
-        <message name="IDS_WEB_DISCOVERY_DIALOG_DONT_ASK_AGAIN_TEXT" desc="The text for disabling web discovery dialog checkbox">
-          Don't ask again
-        </message>
-        <message name="IDS_WEB_DISCOVERY_DIALOG_OK_BUTTON_TEXT" desc="The text for ok button">
-          Turn on
-        </message>
-        <message name="IDS_WEB_DISCOVERY_DIALOG_CANCEL_BUTTON_TEXT" desc="The text for cancel button">
-          No thanks
-        </message>
-      </if>
-
       <!-- Brave crash report permission ask dialog -->
       <if expr="not is_android">
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_OK_BUTTON_LABEL" desc="The text for ok button">
@@ -601,6 +579,26 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON" desc="Announcement when the dismiss button is focused.">
           Dismiss Brave search conversion, press Enter to remove this suggestion
         </message>
+        <!-- web Discovery InfoBar -->
+        <message name="IDS_WEB_DISCOVERY_INFOBAR_MESSAGE" desc="The text for web discovery infobar message">
+          Help improve <ph name="SEARCH_NAME">$1<ex>Brave Search</ex></ph> by sending anonymous usage data.  <ph name="MORE_INFO">$2<ex>More info</ex></ph>
+        </message>
+        <message name="IDS_WEB_DISCOVERY_INFOBAR_MESSAGE_BRAVE_SEARCH" desc="The text for brave search part in message">
+          Brave Search
+        </message>
+        <message name="IDS_WEB_DISCOVERY_INFOBAR_MESSAGE_MORE_INFO" desc="The text for more info link part in message">
+          More info
+        </message>
+        <message name="IDS_WEB_DISCOVERY_INFOBAR_OK_BUTTON_LABEL" desc="The text for ok button in infobar">
+          OK
+        </message>
+        <message name="IDS_WEB_DISCOVERY_INFOBAR_NO_THANKS_LABEL" desc="The text for no thanks button in infobar">
+          No thanks
+        </message>
+        <!-- obsolete system InfoBar -->
+        <message name="IDS_OBSOLERE_SYSTEM_INFOBAR_DONT_SHOW_BUTTON" desc="The text for don't show again button">
+          Don't show again
+        </message>
       </if>
 
       <!-- Brave Ads -->
@@ -634,12 +632,24 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <if expr="enable_sidebar">
         <if expr="not use_titlecase">
           <message name="IDS_HIDE_SIDE_PANEL_TOOLBAR_BUTTON" desc="The menu item to hide the side panel icon on the toolbar">
-            Hide side panel icon
+            Hide sidebar icon 
+          </message>
+          <message name="IDS_TOOLTIP_SIDEBAR_HIDE" desc="The tooltip for the sidebar button, when closed">
+            Hide sidebar
+          </message>
+          <message name="IDS_TOOLTIP_SIDEBAR_SHOW" desc="The tooltip for the sidebar button, when closed">
+            Show sidebar
           </message>
         </if>
         <if expr="use_titlecase">
           <message name="IDS_HIDE_SIDE_PANEL_TOOLBAR_BUTTON" desc="The menu item to hide the side panel icon on the toolbar">
-            Hide Side Panel Icon
+            Hide Sidebar Icon
+          </message>
+          <message name="IDS_TOOLTIP_SIDEBAR_HIDE" desc="The tooltip for the sidebar button, when closed">
+            Hide Sidebar
+          </message>
+          <message name="IDS_TOOLTIP_SIDEBAR_SHOW" desc="The tooltip for the sidebar button, when closed">
+            Show Sidebar
           </message>
         </if>
         <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_EDIT" desc="Menu for editing an existing item from sidebar">
@@ -668,6 +678,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_SIDEBAR_SHOW_OPTION_TITLE" desc="Title of sidebar show option menu">
           Show Sidebar
+        </message>
+        <message name="IDS_SIDEBAR_MENU_MODEL_POSITION_OPTION_TITLE" desc="Title of sidebar show option menu">
+          Position
+        </message>
+        <message name="IDS_SIDEBAR_MENU_MODEL_POSITION_MOVE_TO_RIGHT_OPTION" desc="Title of sidebar position option menu to move to the right">
+          Move to the right
+        </message>
+        <message name="IDS_SIDEBAR_MENU_MODEL_POSITION_MOVE_TO_LEFT_OPTION" desc="Title of sidebar position option menu to move to the left">
+          Move to the left
         </message>
         <message name="IDS_SETTINGS_SIDEBAR_SHOW_OPTION_TITLE" desc="Title of sidebar show option menu in settings">
           Show Sidebar
@@ -792,6 +811,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_IPFS_SETTINGS_SECTION" desc="Open IPFS settings section">
         IPFS
       </message>
+      <message name="IDS_BRAVE_WEB3_SETTINGS_SECTION" desc="Open Web3 settings section">
+        Web3
+      </message>
+      <message name="IDS_BRAVE_WEB3_DOMAINS_SETTINGS_SECTION" desc="Open Web3 Domains settings section">
+        Web3 Domains
+      </message>
       <message name="IDS_BRAVE_IPFS_LEARN_MORE">
         Learn more about IPFS and privacy
       </message>
@@ -833,6 +858,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_TAB_CXMENU_USE_FLOATING_VERTICAL_TABS" desc="The label of the tab context menu item for enabling floating mode for vertical tab strip">
           Float on mouseover
         </message>
+        <message name="IDS_TAB_CXMENU_SOUND_MUTE_TAB" desc="The label of the tab context menu item for muting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Mute tab} other {Mute tabs}}
+        </message>
+        <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_TAB" desc="The label of the tab context menu item for unmuting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Unmute tab} other {Unmute tabs}}
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
@@ -846,6 +877,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_TAB_CXMENU_USE_FLOATING_VERTICAL_TABS" desc="The label of the tab context menu item for enabling floating mode for vertical tab strip">
           Float on Mouseover
+        </message>
+        <message name="IDS_TAB_CXMENU_SOUND_MUTE_TAB" desc="The label of the tab context menu item for muting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Mute Tab} other {Mute Tabs}}
+        </message>
+        <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_TAB" desc="The label of the tab context menu item for unmuting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Unmute Tab} other {Unmute Tabs}}
         </message>
       </if>
 

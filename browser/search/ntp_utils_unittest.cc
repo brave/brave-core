@@ -8,17 +8,12 @@
 #include <memory>
 
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-#include "brave/components/crypto_dot_com/common/pref_names.h"
-#endif
 
 class NTPUtilsTest : public ::testing::Test {
  public:
@@ -42,11 +37,6 @@ TEST_F(NTPUtilsTest, MigratesHideWidgetTrue) {
   auto* prefs = profile()->GetPrefs();
   prefs->SetBoolean(kNewTabPageShowRewards, false);
   prefs->SetBoolean(kNewTabPageShowBraveTalk, false);
-  prefs->SetBoolean(kNewTabPageShowBinance, false);
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  prefs->SetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom, false);
-#endif
-  prefs->SetBoolean(kNewTabPageShowGemini, false);
   // Migrate
   new_tab_page::MigrateNewTabPagePrefs(profile());
   // Expect migrated to off
@@ -58,11 +48,6 @@ TEST_F(NTPUtilsTest, MigratesHideWidgetFalse) {
   auto* prefs = profile()->GetPrefs();
   prefs->SetBoolean(kNewTabPageShowRewards, false);
   prefs->SetBoolean(kNewTabPageShowBraveTalk, true);
-  prefs->SetBoolean(kNewTabPageShowBinance, false);
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  prefs->SetBoolean(kCryptoDotComNewTabPageShowCryptoDotCom, false);
-#endif
-  prefs->SetBoolean(kNewTabPageShowGemini, false);
   // Migrate
   new_tab_page::MigrateNewTabPagePrefs(profile());
   // Expect not migrated

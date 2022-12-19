@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/new_tab_page_ad_serving.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "base/rand_util.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_base.h"
@@ -46,22 +48,22 @@ void Serving::RemoveObserver(ServingObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void Serving::MaybeServeAd(const MaybeServeNewTabPageAdCallback& callback) {
+void Serving::MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
   if (!features::IsEnabled()) {
     BLOG(1, "New tab page ad not served: Feature is disabled");
-    FailedToServeAd(callback);
+    FailedToServeAd(std::move(callback));
     return;
   }
 
   if (!IsSupported()) {
     BLOG(1, "New tab page ad not served: Unsupported version");
-    FailedToServeAd(callback);
+    FailedToServeAd(std::move(callback));
     return;
   }
 
   if (!PermissionRules::HasPermission()) {
     BLOG(1, "New tab page ad not served: Not allowed due to permission rules");
-    FailedToServeAd(callback);
+    FailedToServeAd(std::move(callback));
     return;
   }
 
@@ -69,28 +71,33 @@ void Serving::MaybeServeAd(const MaybeServeNewTabPageAdCallback& callback) {
 
   DCHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
-      user_model, [=](const bool had_opportunity,
-                      const CreativeNewTabPageAdList& creative_ads) {
-        if (had_opportunity) {
-          const SegmentList segments =
-              targeting::GetTopChildSegments(user_model);
-          NotifyOpportunityAroseToServeNewTabPageAd(segments);
-        }
+      user_model,
+      base::BindOnce(&Serving::OnGetForUserModel, base::Unretained(this),
+                     std::move(callback), user_model));
+}
 
-        if (creative_ads.empty()) {
-          BLOG(1, "New tab page ad not served: No eligible ads found");
-          FailedToServeAd(callback);
-          return;
-        }
+void Serving::OnGetForUserModel(MaybeServeNewTabPageAdCallback callback,
+                                const targeting::UserModelInfo& user_model,
+                                const bool had_opportunity,
+                                const CreativeNewTabPageAdList& creative_ads) {
+  if (had_opportunity) {
+    const SegmentList segments = targeting::GetTopChildSegments(user_model);
+    NotifyOpportunityAroseToServeNewTabPageAd(segments);
+  }
 
-        BLOG(1, "Found " << creative_ads.size() << " eligible ads");
+  if (creative_ads.empty()) {
+    BLOG(1, "New tab page ad not served: No eligible ads found");
+    FailedToServeAd(std::move(callback));
+    return;
+  }
 
-        const int rand = base::RandInt(0, creative_ads.size() - 1);
-        const CreativeNewTabPageAdInfo& creative_ad = creative_ads.at(rand);
+  BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
-        const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
-        ServeAd(ad, callback);
-      });
+  const int rand = base::RandInt(0, creative_ads.size() - 1);
+  const CreativeNewTabPageAdInfo& creative_ad = creative_ads.at(rand);
+
+  const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
+  ServeAd(ad, std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -100,10 +107,10 @@ bool Serving::IsSupported() const {
 }
 
 void Serving::ServeAd(const NewTabPageAdInfo& ad,
-                      const MaybeServeNewTabPageAdCallback& callback) {
+                      MaybeServeNewTabPageAdCallback callback) {
   if (!ad.IsValid()) {
     BLOG(1, "Failed to serve new tab page ad");
-    FailedToServeAd(callback);
+    FailedToServeAd(std::move(callback));
     return;
   }
 
@@ -129,13 +136,13 @@ void Serving::ServeAd(const NewTabPageAdInfo& ad,
 
   NotifyDidServeNewTabPageAd(ad);
 
-  callback(ad);
+  std::move(callback).Run(ad);
 }
 
-void Serving::FailedToServeAd(const MaybeServeNewTabPageAdCallback& callback) {
+void Serving::FailedToServeAd(MaybeServeNewTabPageAdCallback callback) {
   NotifyFailedToServeNewTabPageAd();
 
-  callback(/*ads*/ absl::nullopt);
+  std::move(callback).Run(/*ads*/ absl::nullopt);
 }
 
 void Serving::NotifyOpportunityAroseToServeNewTabPageAd(

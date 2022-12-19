@@ -10,6 +10,7 @@
 
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/i18n/icu_string_conversions.h"
 #include "base/logging.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
@@ -30,8 +31,14 @@ constexpr auto kSupportedRels =
 
 }  // namespace
 
-std::vector<GURL> GetFeedURLsFromHTMLDocument(const std::string& html_body,
+std::vector<GURL> GetFeedURLsFromHTMLDocument(const std::string& charset,
+                                              const std::string& raw_body,
                                               const GURL& html_url) {
+  std::string html_body;
+  if (!base::ConvertToUtf8AndNormalize(raw_body, charset, &html_body)) {
+    return std::vector<GURL>();
+  }
+
   VLOG(1) << "GetFeedURLsFromHTMLDocument";
   std::vector<GURL> results;
   // Find most `<link` elements from most types of html documents

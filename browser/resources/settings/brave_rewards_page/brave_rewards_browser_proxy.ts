@@ -9,6 +9,7 @@ export interface BraveRewardsBrowserProxy {
   getAdsData(): Promise<any>
   getRewardsEnabled(): Promise<boolean>
   getRewardsParameters(): Promise<any>
+  getUserType(): Promise<boolean>
   isAutoContributeSupported(): Promise<boolean>
 }
 
@@ -29,6 +30,11 @@ export class BraveRewardsBrowserProxyImpl implements BraveRewardsBrowserProxy {
   getRewardsParameters () {
     return new Promise((resolve) => chrome.braveRewards.getRewardsParameters(
       (parameters) => { resolve(parameters) }))
+  }
+
+  getUserType () {
+    return new Promise((resolve) => chrome.braveRewards.getUserType(
+      (userType) => { resolve(userType) }))
   }
 
   isAutoContributeSupported () {

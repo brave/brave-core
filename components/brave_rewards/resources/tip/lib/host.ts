@@ -3,9 +3,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { addWebUIListener } from 'chrome://resources/js/cr.m'
-import { loadTimeData } from '../../../../common/loadTimeData'
 
 import { createStateManager } from '../../shared/lib/state_manager'
+import { userTypeFromMojo } from '../../shared/lib/user_type'
 
 import {
   Host,
@@ -87,6 +87,7 @@ export function createHost (): Host {
         return
       }
 
+      chrome.send('getUserType')
       chrome.send('getRewardsParameters')
       chrome.send('fetchBalance')
       chrome.send('getReconcileStamp')
@@ -114,6 +115,10 @@ export function createHost (): Host {
 
     publisherBannerUpdated (publisherInfo: PublisherInfo) {
       stateManager.update({ publisherInfo })
+    },
+
+    userTypeUpdated (userType: number) {
+      stateManager.update({ userType: userTypeFromMojo(userType) })
     },
 
     rewardsParametersUpdated (rewardsParameters: RewardsParameters) {
@@ -200,10 +205,6 @@ export function createHost (): Host {
 
     get state () {
       return stateManager.getState()
-    },
-
-    getString (key: string) {
-      return loadTimeData.getString(key)
     },
 
     getDialogArgs () {

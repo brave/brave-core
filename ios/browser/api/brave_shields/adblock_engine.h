@@ -21,6 +21,7 @@ NS_SWIFT_NAME(AdblockEngine.MatchResult)
 @property(nonatomic, readonly) bool didMatchException;
 @property(nonatomic, readonly) bool didMatchImportant;
 @property(nonatomic, readonly) NSString* redirect;
+@property(nonatomic, readonly) NSString* rewrittenURL;
 @end
 
 OBJC_EXPORT
@@ -71,8 +72,8 @@ OBJC_EXPORT
                       data:(NSString*)data
     NS_SWIFT_NAME(addResource(key:contentType:data:));
 
-/// Adds a list of `Resource`s from JSON format
-- (void)addResources:(NSString*)resources;
+/// Uses a list of `Resource`s from JSON format
+- (void)useResources:(NSString*)resources;
 
 /// Returns a set of cosmetic filtering resources specific to the given url, in
 /// JSON format

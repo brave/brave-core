@@ -143,7 +143,8 @@ IPFSLocationView::IPFSLocationView(Profile* profile) {
 
 IPFSLocationView::~IPFSLocationView() = default;
 
-void IPFSLocationView::Update(content::WebContents* web_contents) {
+void IPFSLocationView::Update(content::WebContents* web_contents,
+                              bool show_page_actions) {
   if (!web_contents)
     return;
   ipfs::IPFSTabHelper* helper =
@@ -151,7 +152,7 @@ void IPFSLocationView::Update(content::WebContents* web_contents) {
   if (!helper)
     return;
   auto ipfs_resolved_url = helper->GetIPFSResolvedURL();
-  SetVisible(ipfs_resolved_url.is_valid());
+  SetVisible(ipfs_resolved_url.is_valid() && show_page_actions);
   reinterpret_cast<IPFSLocationButtonView*>(button_)->SetIPFSLocation(
       ipfs_resolved_url);
 }

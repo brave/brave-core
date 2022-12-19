@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/split_test_exclusion_rule.h"
 
 #include "base/metrics/field_trial.h"
+#include "base/test/mock_entropy_provider.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -20,9 +21,9 @@ constexpr char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
 
 scoped_refptr<base::FieldTrial> CreateFieldTrial(
     const std::string& trial_name) {
-  return base::FieldTrialList::FactoryGetFieldTrial(
-      trial_name, 100, "default",
-      base::FieldTrialList::GetEntropyProviderForSessionRandomization());
+  base::MockEntropyProvider entropy_provider(0.9);
+  return base::FieldTrialList::FactoryGetFieldTrial(trial_name, 100, "default",
+                                                    entropy_provider);
 }
 
 }  // namespace

@@ -33,13 +33,10 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
     public static final int UNDEFINED_WALLET_STATUS = -1;
 
     private String walletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
-    private String walletTypeString;
 
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.user_wallet_activity);
-
-        walletTypeString = getWalletString(walletType);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,33 +56,14 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
                 intent.getIntExtra(BraveRewardsExternalWallet.STATUS, UNDEFINED_WALLET_STATUS);
         TextView txtUserId = (TextView) findViewById(R.id.user_id);
         TextView txtUserStatus = (TextView) findViewById(R.id.user_status);
-        Button btn1 = (Button) findViewById(R.id.user_wallet_btn1);
-        Button btn2 = null;
         Button btnGotoProvider = (Button) findViewById(R.id.user_wallet_go_to_provider);
-        btnGotoProvider.setText(String.format(
-                getResources().getString(R.string.user_wallet_goto_provider), walletTypeString));
+        btnGotoProvider.setText(
+                String.format(getResources().getString(R.string.user_wallet_goto_provider),
+                        getWalletString(walletType)));
 
         switch (status) {
             case WalletStatus.CONNECTED:
-                // set 2nd button visible
-                findViewById(R.id.user_wallet_btn2_separator).setVisibility(View.VISIBLE);
-                btn2 = (Button) findViewById(R.id.user_wallet_btn2);
-                btn2.setVisibility(View.VISIBLE);
-
-                // Buttons:
-                // Add funds
-                // Withdraw
-                // Go to provider
-                // Disconnect
-                btn1.setText(
-                        getResources().getString(R.string.brave_rewards_local_panel_add_funds));
-                btn2.setText(getResources().getString(R.string.user_wallet_withdraw_funds));
                 txtUserStatus.setText(BraveRewardsExternalWallet.WalletStatusToString(status));
-
-                SetBtnOpenUrlClickHandler(
-                        btn1, intent.getStringExtra(BraveRewardsExternalWallet.ADD_URL));
-                SetBtnOpenUrlClickHandler(
-                        btn2, intent.getStringExtra(BraveRewardsExternalWallet.WITHDRAW_URL));
                 break;
             case UNDEFINED_WALLET_STATUS:
                 finish();
@@ -98,7 +76,6 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
         String userId = intent.getStringExtra(BraveRewardsExternalWallet.USER_NAME);
         txtUserId.setText(userId);
         txtUserId.setCompoundDrawablesWithIntrinsicBounds(getWalletIcon(walletType), 0, 0, 0);
-        SetDisconnectBtnClickHandler();
     }
 
     private int getWalletIcon(String walletType) {
@@ -128,14 +105,6 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
             setResult(RESULT_OK, intent);
             finish();
         });
-    }
-
-    private void SetDisconnectBtnClickHandler() {
-        Button btnDisconnect = (Button) findViewById(R.id.user_wallet_disconnect);
-        btnDisconnect.setText(
-                String.format(getResources().getString(R.string.user_wallet_disconnect_rewards),
-                        walletTypeString));
-        SetBtnOpenUrlClickHandler(btnDisconnect, DISCONNECT_WALLET_URL);
     }
 
     @Override

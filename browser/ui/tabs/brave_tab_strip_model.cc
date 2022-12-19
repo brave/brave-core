@@ -6,6 +6,7 @@
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 
 #include <algorithm>
+#include <vector>
 
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/components/constants/pref_names.h"
@@ -14,6 +15,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_delegate.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 
@@ -75,4 +77,8 @@ void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
 
 void BraveTabStripModel::StopMRUCycling() {
   mru_cycle_list_.clear();
+}
+
+std::vector<int> BraveTabStripModel::GetTabIndicesForCommandAt(int tab_index) {
+  return TabStripModel::GetIndicesForCommand(tab_index);
 }

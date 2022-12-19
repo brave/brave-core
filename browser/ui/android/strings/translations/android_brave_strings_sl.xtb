@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sl">
+<translation id="915758461293673891">Znesek prispevka:</translation>
+<translation id="8966035543003363155">Z obvestili Brave je lažje</translation>
+<translation id="7662771815233894695">Upravljajte prenose, pridobite žetone, oglejte si tedensko statistiko uporabe in drugo.</translation>
+<translation id="4265429476391459783">Ne pridobivate nagrad ali prejemate poročil o zasebnosti</translation>
+<translation id="1305714751384738456">Ne pridobivate nagrad Brave</translation>
+<translation id="1483391942610220726">Ne prejemate poročil o zasebnosti</translation>
+<translation id="4683790942451502796">Ponovno vklopite obvestila, če želite še naprej pridobivati BAT in prejemati tedenska poročila o zasebnosti.</translation>
+<translation id="1462722717055895108">Ponovno vklopite obvestila, če želite še naprej pridobivati BAT</translation>
+<translation id="5457255168064266494">Ponovno vklopite obvestila, če želite še naprej prejemati tedenska poročila o zasebnosti.</translation>
+<translation id="6268959058971634697">Ne pridobivate nagrad Brave</translation>
+<translation id="1088637159642753509">Omogočite obvestila naprave, da lahko pridobivate nagrade Brave in si ogledate poročila o zasebnosti.</translation>
+<translation id="312404770066229090">Omogočite obvestila naprave, da pridobite nagrade Brave.</translation>
+<translation id="2241529840361230499">Omogočite obvestila naprave, če želite prejemati poročila o zasebnosti Brave.</translation>
+<translation id="4930155581888391118">Omogočite obvestila od Brave, da lahko pridobivate nagrade Brave.</translation>
+<translation id="325187916104529570">Odprite nastavitve in vklopite obvestila naprave za oglase Brave.</translation>
+<translation id="5744802588121897886">Vklopite obvestila Brave</translation>
 <translation id="7307834434086582547">Omogoči/onemogoči ščite Brave</translation>
 <translation id="6945863270524203017">Prejemajte tedenske posodobitve zasebnosti na sledilniku za blokiranje oglasov &amp;.</translation>
 <translation id="4324735664183300693">Vklopite obvestila</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">Način reševanja</translation>
 <translation id="2356070529366658676">Vprašaj</translation>
 <translation id="4176463684765177261">Onemogočeno</translation>
-<translation id="1448289340149908413">Ethereum</translation>
+<translation id="59174027418879706">Omogočeno</translation>
 <translation id="6252490671914511928">Sveže novice z današnjega dne v popolnoma zasebnem viru, samo za vas.</translation>
 <translation id="7266075701303521777">Brave novice podpirajo oglasi s popolnoma zasebnimi in anonimiziranimi oglasi, ki se ujemajo v vaši napravi.</translation>
 <translation id="4541978218358617681">Oglas</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">Izbriši podatke brskanja</translation>
 <translation id="5965081608816406060">Predvajanje videoposnetka v ozadju</translation>
 <translation id="6332924730165919598">Če zaprete vse zavihke, se zapre tudi brskalnik Brave</translation>
-<translation id="1580125697191336644">Eksperimentalno. Omogoči predvajanje zvoka iz videoposnetka v ozadju, kadar zavihek ni aktiven ali je zaslon naprave izklopljen. Poskusite preklopiti v namizni način, če ta funkcija ne deluje.</translation>
-<translation id="59174027418879706">Omogočena</translation>
+<translation id="3872768973878059926">Omogoča nadaljevanje predvajanja zvoka, ko preklopite na drug zavihek v Brave, preklopite na drugo aplikacijo ali je zaslon vaše naprave izklopljen.</translation>
 <translation id="4150201353443180367">Prikaz</translation>
 <translation id="2433507940547922241">Videz</translation>
 <translation id="6333347122924254968">Pokaži ikono Brave Rewards v naslovni vrstici</translation>
@@ -310,16 +325,11 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Platforma Uphold lahko zahteva, da preverite svojo identiteto na podlagi zahtevanih storitev.</translation>
 <translation id="3200197118442451932">Brave Software Inc. ne obdeluje, ne shranjuje in ne dostopa do nobenih osebnih podatkov, ki jih posredujete <ph name="WALLET_PROVIDER"/>ob ustvaritvi računa.</translation>
-<translation id="3699674790322420653">Zaključi preverjanje denarnice</translation>
 <translation id="2193391216824305230">Uporabnikova denarnica</translation>
 <translation id="1665118090708049096">Pojdi v moj račun <ph name="WALLET_PROVIDER"/></translation>
 <translation id="1948959999802743233">Prekini povezavo z <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Dvig sredstev</translation>
 <translation id="8874184842967597500">Povezava ni vzpostavljena</translation>
-<translation id="3368922792935385530">Povezano</translation>
-<translation id="5358719431303818601">Odklop ni potrjen</translation>
-<translation id="4241449868720191203">Odklop je potrjen</translation>
-<translation id="3248185426436836442">Na čakanju</translation>
 <translation id="2495032782748793764">Privzeto za brskalnik Brave</translation>
 <translation id="9132378787893584761">Delite brskalnik Brave s svojimi prijatelji!</translation>
 <translation id="717952606991220586">Ups, nekaj je šlo narobe. Poskusite znova kasneje.</translation>
@@ -673,6 +683,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="1597199892790541240">Gas Fee</translation>
 <translation id="1634828734222219955">Skupno</translation>
 <translation id="7995708795274219641">Znesek + Gas</translation>
+<translation id="2186011161688824046">Znesek + provizija</translation>
 <translation id="1950052789869821983">Transakcija</translation>
 <translation id="2304783958703511257">Napredne nastavitve</translation>
 <translation id="4220062530885628403">Žeton</translation>
@@ -701,6 +712,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="1133619932669546254">Aktiviraj <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">VRSTA FUNKCIJE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Ni podatkov</translation>
+<translation id="1105525362447173583">Podpis transakcije Solana Dapp</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> je poslal <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> poslan <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> je potrjen za <ph name="ASSET"/> - <ph name="DATE"/></translation>
@@ -800,6 +812,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="8030169304546394654">Prekinjeno</translation>
 <translation id="3423275441470187644">Zaupaj</translation>
 <translation id="2391762656119864333">Prekliči</translation>
+<translation id="3368922792935385530">Povezano</translation>
 <translation id="3432029672560911238">Uporabniški račun</translation>
 <translation id="5753378322046059140">Preklopi račun</translation>
 <translation id="3897092660631435901">Meni</translation>
@@ -867,6 +880,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="7080614857771109950">Podpira sredstva, ki so združljiva z EVM na blokovni verigi Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Podpira sredstva, združljiva s SPL, na blokovni verigi Solana</translation>
 <translation id="6575120282593094155">Nimate še računa <ph name="ACCOUNT_TYPE"/>. Ga želite ustvariti zdaj?</translation>
+<translation id="1448289340149908413">Ethereum</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">Izvzete aplikacije</translation>
 <translation id="8463269357637177759">Dovoljene redne aplikacije</translation>
@@ -889,6 +903,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="4784306439879850873">Upoštevajte, da Brave ne more preveriti, kaj se bo zgodilo, če podpišete. Podpis lahko pooblasti skoraj vse operacije v vašem računu ali v vašem imenu, vključno z (vendar ne omejeno na) popolnim nadzorom vašega računa in kriptovalut spletnega mesta, ki poda zahtevo. Podpišite se le, če ste prepričani, da želite izvesti to dejanje, in če zaupate mestu, ki to zahteva.</translation>
 <translation id="3474375934783434676">Podpišite se na lastno odgovornost</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> od <ph name="SIZE"/></translation>
+<translation id="756701799684433105">Odobri transakcijo</translation>
 <translation id="6450792191436242818">Program sistema</translation>
 <translation id="6252742184395380448">Konfiguracijski program</translation>
 <translation id="5358970666412490132">Program deležev</translation>
@@ -898,6 +913,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="6421371987002247943">Program žetonov</translation>
 <translation id="8780753288764281797">Program Secp256k1</translation>
 <translation id="8504640708321980506">Podatki</translation>
+<translation id="3723411967118253067">ID programa</translation>
 <translation id="4771176409524282426">Ustvari račun</translation>
 <translation id="1755120947324658439">Dodeli</translation>
 <translation id="7588707273764747927">Prenesi</translation>
@@ -937,4 +953,27 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="7352651011704765696">Prišlo je do napake</translation>
 <translation id="7144878232160441200">Poskusi znova</translation>
 <translation id="6040143037577758943">Zapri</translation>
+<translation id="7710469167917867539">Stroški transakcije</translation>
+<translation id="7843211152394841558">Največ ponovitev:</translation>
+<translation id="8496335570810457">Simulacija transakcij:</translation>
+<translation id="5100124500279922001">Preskoči simulacijo transakcij:</translation>
+<translation id="7152095322071766507">Najbolj obiskano spletno mesto</translation>
+<translation id="7230006500876504868">Iščite z Brave</translation>
+<translation id="5888208462949095139">Iščite z <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
+<translation id="5456039738087398178">Pripomoček za začetni zaslon</translation>
+<translation id="703185154752046151">Pripomoček, dodan na začetni zaslon</translation>
+<translation id="3290805388004282161">Preizkusite iskalni pripomoček Brave</translation>
+<translation id="4809681171446727314">Dostopajte do zasebnega, neodvisnega iskanja neposredno z domačega zaslona.</translation>
+<translation id="7751715172931488388">Dodajte pripomoček</translation>
+<translation id="7285167584112910782">Hitro dinamično iskanje Brave</translation>
+<translation id="2326703104633309781">Uporabite prevajalnik Brave</translation>
+<translation id="5802752138057422257">Zaznani so znaki, ki niso ASCII!</translation>
+<translation id="442709594176931966">Prikaži izvirno sporočilo</translation>
+<translation id="2239252396088484499">Prikaži sporočilo v kodiranju ASCII</translation>
+<translation id="4220693114674044366">Naslov žetona</translation>
+<translation id="5658257029899993935">Povežite nakup z računom Brave</translation>
+<translation id="1187061015547219282">Povežite nakup v Trgovini Play s svojim računom Brave, če želite uporabljati Brave VPN v drugih napravah.</translation>
+<translation id="6662142137695589205">Povežite svojo naročnino VPN</translation>
+<translation id="2674077112509133024">Razširite zaščito požarnega zidu Brave + VPN</translation>
+<translation id="6365389672683343144">Vaša naročnina na Brave VPN lahko zaščiti do 5 naprav v sistemu Android, iOS in namizju. Preprosto povežite svojo naročnino Google Play s svojim računom Brave.</translation>
 </translationbundle>

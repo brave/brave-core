@@ -157,4 +157,8 @@
   <message name="IDS_BRAVE_SHIELDS_COOKIE_LIST_NO_THANKS" desc="Label for link to decline the CookieList filter">
     No thanks
   </message>
+
+  <message name="IDS_BRAVE_SHIELDS_NOT_VALID_ADDRESS" desc="Label for link about invalid pattern for content setting page dialog to add a site">
+    Wildcards are not allowed for Brave Shields.
+  </message>
 </grit-part>

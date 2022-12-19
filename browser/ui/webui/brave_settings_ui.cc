@@ -1,7 +1,7 @@
-/* Copyright (c) 2019 The Brave Authors
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 
@@ -23,9 +23,10 @@
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
+#include "brave/components/debounce/common/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags.h"
@@ -37,6 +38,7 @@
 #include "components/sync/base/command_line_switches.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/content_features.h"
+#include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
 #include "brave/browser/ui/webui/settings/pin_shortcut_handler.h"
@@ -52,6 +54,10 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/webui/settings/brave_tor_handler.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/ui/webui/settings/brave_tor_snowflake_extension_handler.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -70,6 +76,10 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
   web_ui->AddMessageHandler(std::make_unique<BraveAdBlockHandler>());
 #if BUILDFLAG(ENABLE_TOR)
   web_ui->AddMessageHandler(std::make_unique<BraveTorHandler>());
+#endif
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  web_ui->AddMessageHandler(
+      std::make_unique<BraveTorSnowflakeExtensionHandler>());
 #endif
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
   web_ui->AddMessageHandler(std::make_unique<PinShortcutHandler>());
@@ -114,6 +124,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isDeAmpFeatureEnabled",
       base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP));
+  html_source->AddBoolean(
+      "isDebounceFeatureEnabled",
+      base::FeatureList::IsEnabled(debounce::features::kBraveDebounce));
   html_source->AddBoolean("isBraveRewardsSupported",
                           brave_rewards::IsSupportedForProfile(profile));
 
@@ -123,6 +136,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 
   html_source->AddBoolean("shouldExposeElementsForTesting",
                           ShouldExposeElementsForTesting());
+
+  html_source->AddBoolean("enable_extensions", BUILDFLAG(ENABLE_EXTENSIONS));
 }
 
 // static

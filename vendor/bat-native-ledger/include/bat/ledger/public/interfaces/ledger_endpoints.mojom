@@ -4,6 +4,12 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 module ledger.mojom;
 
+enum GetRecipientIDGeminiError {
+  kFailedToCreateRequest,
+  kUnexpectedStatusCode,                // HTTP xxx
+  kFailedToParseBody
+};
+
 enum GetParametersError {
   kFailedToCreateRequest,
   kFailedToGetParameters,               // HTTP 500

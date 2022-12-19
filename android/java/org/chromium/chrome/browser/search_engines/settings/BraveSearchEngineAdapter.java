@@ -37,7 +37,7 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
         // Only need last used profile because we are in settings
         if (mProfile == null) {
             if (!mIsPrivate) {
-                mProfile = Profile.getLastUsedRegularProfile().getOriginalProfile();
+                mProfile = Profile.getLastUsedRegularProfile();
             } else {
                 mProfile = Profile.getLastUsedRegularProfile().getPrimaryOTRProfile(
                         /* createIfNeeded= */ true);
@@ -78,7 +78,7 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
             // overwrite.
             if (BraveSearchEnginePrefHelper.getInstance().getFetchSEFromNative()) {
                 // Set it for normal tab only
-                setDSEPrefs(dseTemplateUrl, profile.getOriginalProfile());
+                setDSEPrefs(dseTemplateUrl, Profile.getLastUsedRegularProfile());
                 BraveSearchEnginePrefHelper.getInstance().setFetchSEFromNative(false);
             }
         }

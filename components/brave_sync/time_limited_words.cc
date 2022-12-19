@@ -132,7 +132,8 @@ TimeLimitedWords::GenerateForDate(const std::string& pure_words,
 }
 
 base::expected<std::string, TimeLimitedWords::ValidationStatus>
-TimeLimitedWords::Parse(const std::string& time_limited_words) {
+TimeLimitedWords::ParseImpl(const std::string& time_limited_words,
+                            WrongDateBehaviour wrong_date_behaviour) {
   using ValidationStatus = TimeLimitedWords::ValidationStatus;
 
   static constexpr size_t kPureWordsCount = 24u;
@@ -171,6 +172,8 @@ TimeLimitedWords::Parse(const std::string& time_limited_words) {
       int days_abs_diff = std::abs(days_actual - days_encoded);
       if (days_abs_diff <= 1) {
         return recombined_pure_words;
+      } else if (wrong_date_behaviour == WrongDateBehaviour::kIgnore) {
+        return recombined_pure_words;
       } else if (days_actual > days_encoded) {
         return base::unexpected(ValidationStatus::kExpired);
       } else if (days_encoded > days_actual) {
@@ -185,6 +188,16 @@ TimeLimitedWords::Parse(const std::string& time_limited_words) {
 
   NOTREACHED();
   return base::unexpected(ValidationStatus::kNotValidPureWords);
+}
+
+base::expected<std::string, TimeLimitedWords::ValidationStatus>
+TimeLimitedWords::Parse(const std::string& time_limited_words) {
+  return ParseImpl(time_limited_words, WrongDateBehaviour::kDontAllow);
+}
+
+base::expected<std::string, TimeLimitedWords::ValidationStatus>
+TimeLimitedWords::ParseIgnoreDate(const std::string& time_limited_words) {
+  return ParseImpl(time_limited_words, WrongDateBehaviour::kIgnore);
 }
 
 std::string TimeLimitedWords::GenerateResultToText(

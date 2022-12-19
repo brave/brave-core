@@ -98,13 +98,18 @@ provideStrings({
   braveWalletSwapFeesNotice: 'Quote includes a $1 Brave fee.',
   braveWalletDecimalPlacesError: 'Too many decimal places',
   braveWalletBuyTapBuyNotSupportedMessage: 'Buy not supported for selected network',
+  braveWalletSearchingForDomain: 'Searching for domain...',
+  braveWalletEnsOffChainLookupTitle: 'Brave supports using off-chain gateways to resolve .eth domains.',
+  braveWalletEnsOffChainLookupDescription: 'It looks like youve entered an ENS address. Well need to use a third-party resolver to resolve this request. This helps ensure your .eth domain isnt leaked, and that your transaction is secure.',
+  braveWalletEnsOffChainButton: 'Use ENS domain',
 
   // Send Tab
   braveWalletSendToken: 'Send token',
   braveWalletSendNFT: 'Send NFT',
   braveWalletSelectToken: 'Select token',
   braveWalletSelectNFT: 'Select NFT',
-  braveWalletSendTabSelectTitle: 'Select a token to send',
+  braveWalletSendTabSelectTokenTitle: 'Select a token to send',
+  braveWalletSendTabSelectNFTTitle: 'Select an NFT to send',
   braveWalletEnterRecipientAddress: 'Enter recipient address',
   braveWalletNotEnoughFunds: 'Not enough funds',
   braveWalletSendHalf: 'HALF',
@@ -642,6 +647,7 @@ provideStrings({
   braveWalletTransactionStatusConfirmed: 'Confirmed',
   braveWalletTransactionStatusError: 'Error',
   braveWalletTransactionStatusDropped: 'Dropped',
+  braveWalletTransactionStatusSigned: 'Signed',
 
   // NFT Details Page
   braveWalletNFTDetailBlockchain: 'Blockchain',
@@ -674,12 +680,13 @@ provideStrings({
   // Network Filter
   braveWalletNetworkFilterAll: 'All Networks',
   braveWalletNetworkFilterSecondary: 'Secondary Networks',
+  braveWalletNetworkFilterTestNetworks: 'Test Networks',
 
   // Asset Filter
-  braveWalletAssetFilterAllAssets: 'All Assets',
-  braveWalletAssetFilterNFTs: 'NFTs',
   braveWalletAssetFilterLowToHigh: 'Balance ↑',
   braveWalletAssetFilterHighToLow: 'Balance ↓',
+  braveWalletAssetFilterAToZ: 'Name ↓',
+  braveWalletAssetFilterZToA: 'Name ↑',
 
   // Account Filter
   braveWalletAccountFilterAllAccounts: 'All Accounts',

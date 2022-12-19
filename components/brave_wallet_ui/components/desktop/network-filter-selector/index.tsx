@@ -31,11 +31,9 @@ import {
   DropDownButton,
   DropDownIcon,
   SelectorLeftSide,
-  SubDropDown,
   SecondaryNetworkText,
   ClickAwayArea
 } from './style'
-import { useGetIsTestNetworksEnabledQuery } from '../../../common/slices/api.slice'
 
 interface Props {
   networkListSubset?: BraveWallet.NetworkInfo[]
@@ -50,9 +48,6 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
   const selectedAccountFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccountFilter)
   const reduxNetworkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
-
-  // api
-  const { data: isTestNetworksEnabled } = useGetIsTestNetworksEnabledQuery()
 
   // memos
   const networkList: BraveWallet.NetworkInfo[] = React.useMemo(() => {
@@ -79,7 +74,10 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
     return sortedNetworks.filter((network) => !primaryList.includes(network.chainId))
   }, [sortedNetworks])
 
-  // methods
+  const testNetworks = React.useMemo(() => {
+    return networkList.filter((network) => SupportedTestNetworks.includes(network.chainId))
+  }, [networkList])
+
   const toggleShowNetworkFilter = React.useCallback(() => {
     setShowNetworkFilter(prev => !prev)
   }, [])
@@ -115,27 +113,7 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
               network={network}
               onSelectNetwork={onSelectAndClose}
               selectedNetwork={selectedNetworkFilter}
-              isSubItem={isTestNetworksEnabled ? !SupportedTopLevelChainIds.includes(network.chainId) : true}
             >
-              {isTestNetworksEnabled &&
-                <SubDropDown>
-                  {sortedNetworks.filter((n) =>
-                    n.coin === network.coin &&
-                    n.symbol.toLowerCase() === network.symbol.toLowerCase() &&
-                    // Optimism's native asset is considered ETH, so we want to make sure
-                    // we dont include it under Ethereum's submenu.
-                    n.chainId !== BraveWallet.OPTIMISM_MAINNET_CHAIN_ID)
-                    .map((subNetwork) =>
-                      <NetworkFilterItem
-                        key={`${subNetwork.chainId + subNetwork.chainName}`}
-                        network={subNetwork}
-                        onSelectNetwork={onSelectAndClose}
-                        selectedNetwork={selectedNetworkFilter}
-                        isSubItem={true}
-                      />
-                    )}
-                </SubDropDown>
-              }
             </NetworkFilterItem>
           )}
 
@@ -148,7 +126,20 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
                   network={network}
                   onSelectNetwork={onSelectAndClose}
                   selectedNetwork={selectedNetworkFilter}
-                  isSubItem={true}
+                />
+              )}
+            </>
+          }
+
+          {testNetworks.length > 0 &&
+            <>
+              <SecondaryNetworkText>{getLocale('braveWalletNetworkFilterTestNetworks')}</SecondaryNetworkText>
+              {testNetworks.map((network) =>
+                <NetworkFilterItem
+                  key={`${network.chainId + network.chainName}`}
+                  network={network}
+                  onSelectNetwork={onSelectAndClose}
+                  selectedNetwork={selectedNetworkFilter}
                 />
               )}
             </>

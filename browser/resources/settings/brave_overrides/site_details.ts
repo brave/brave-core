@@ -19,6 +19,12 @@ RegisterPolymerTemplateModifications({
         idleDetectionItem.hidden = true
       }
     }
+    const adsItem = templateContent.querySelector('[category="[[contentSettingsTypesEnum_.ADS]]"]')
+    if (!adsItem) {
+      console.error(`[Brave Settings Overrides] Couldn't find ads item`)
+    } else {
+      adsItem.hidden = true
+    }
     const firstPermissionItem = templateContent.querySelector('div.list-frame > site-details-permission:nth-child(1)')
     if (!firstPermissionItem) {
       console.error(`[Brave Settings Overrides] Couldn't find first permission item`)

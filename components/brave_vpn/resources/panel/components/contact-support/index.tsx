@@ -243,6 +243,13 @@ function ContactSupport (props: Props) {
                 onChange={getOnChangeToggle('shareOsVersion')}
               />
             </S.OptionalValueLabel>
+            <S.OptionalValueLabel>
+              <div className={'optionalValueTitle'}>
+                <span className={'optionalValueTitleKey'}>
+                  {getLocale('braveVpnSupportTimezone')}
+                </span> {supportData?.timezone}
+              </div>
+            </S.OptionalValueLabel>
           </S.OptionalValues>
           <S.Notes>
             <p>{getLocale('braveVpnSupportNotes')}</p>

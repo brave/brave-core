@@ -22,9 +22,8 @@
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/content_settings/core/test/content_settings_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/test/browser_task_environment.h"
-#include "services/preferences/public/cpp/dictionary_value_update.h"
-#include "services/preferences/public/cpp/scoped_pref_update.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
@@ -52,57 +51,55 @@ ContentSettingsPattern SecondaryUrlToPattern(const GURL& gurl) {
     return ContentSettingsPattern::FromString("https://firstParty/*");
 }
 
-std::unique_ptr<prefs::DictionaryValueUpdate>
-InitializeCommonSettingsAndGetPerResourceDictionary(
-    prefs::DictionaryValueUpdate* dictionary,
+base::Value::Dict* InitializeCommonSettingsAndGetPerResourceDictionary(
+    base::Value::Dict* dict,
     const base::Time& last_modified_time) {
   const uint64_t last_modified_time_in_ms =
       last_modified_time.ToDeltaSinceWindowsEpoch().InMicroseconds();
 
-  dictionary->SetInteger(kExpirationPath, 0);
-  dictionary->SetString(kLastModifiedPath,
+  dict->SetByDottedPath(kExpirationPath, 0);
+  dict->SetByDottedPath(kLastModifiedPath,
                         base::NumberToString(last_modified_time_in_ms));
-  dictionary->SetInteger(
+  dict->SetByDottedPath(
       kSessionModelPath,
       static_cast<int>(content_settings::SessionModel::Durable));
 
-  return dictionary->SetDictionaryWithoutPathExpansion(
-      kPerResourcePath, std::make_unique<base::DictionaryValue>());
+  return dict->EnsureDict(kPerResourcePath);
 }
 
 void InitializeAllShieldSettingsInDictionary(
-    prefs::DictionaryValueUpdate* dictionary,
+    base::Value::Dict* dict,
     const base::Time& last_modified_time,
     int value) {
-  std::unique_ptr<prefs::DictionaryValueUpdate> per_resource_dict =
-      InitializeCommonSettingsAndGetPerResourceDictionary(dictionary,
+  base::Value::Dict* per_resource_dict =
+      InitializeCommonSettingsAndGetPerResourceDictionary(dict,
                                                           last_modified_time);
-  per_resource_dict->SetInteger(brave_shields::kAds, value);
-  per_resource_dict->SetInteger(brave_shields::kCookies, value);
-  per_resource_dict->SetInteger(brave_shields::kCosmeticFiltering, value);
-  per_resource_dict->SetInteger(brave_shields::kFingerprintingV2, value);
-  per_resource_dict->SetInteger(brave_shields::kHTTPUpgradableResources, value);
-  per_resource_dict->SetInteger(brave_shields::kReferrers, value);
-  per_resource_dict->SetInteger(brave_shields::kTrackers, value);
+  per_resource_dict->Set(brave_shields::kAds, value);
+  per_resource_dict->Set(brave_shields::kCookies, value);
+  per_resource_dict->Set(brave_shields::kCosmeticFiltering, value);
+  per_resource_dict->Set(brave_shields::kFingerprintingV2, value);
+  per_resource_dict->Set(brave_shields::kHTTPUpgradableResources, value);
+  per_resource_dict->Set(brave_shields::kReferrers, value);
+  per_resource_dict->Set(brave_shields::kTrackers, value);
 }
 
 void InitializeBraveShieldsSettingInDictionary(
-    prefs::DictionaryValueUpdate* dictionary,
+    base::Value::Dict* dict,
     const base::Time& last_modified_time,
     int value) {
-  std::unique_ptr<prefs::DictionaryValueUpdate> per_resource_dict =
-      InitializeCommonSettingsAndGetPerResourceDictionary(dictionary,
+  base::Value::Dict* per_resource_dict =
+      InitializeCommonSettingsAndGetPerResourceDictionary(dict,
                                                           last_modified_time);
-  per_resource_dict->SetInteger(brave_shields::kBraveShields, value);
+  per_resource_dict->Set(brave_shields::kBraveShields, value);
 }
 
 void InitializeUnsupportedShieldSettingInDictionary(
-    prefs::DictionaryValueUpdate* dictionary,
+    base::Value::Dict* dict,
     const base::Time& last_modified_time) {
-  std::unique_ptr<prefs::DictionaryValueUpdate> per_resource_dict =
-      InitializeCommonSettingsAndGetPerResourceDictionary(dictionary,
+  base::Value::Dict* per_resource_dict =
+      InitializeCommonSettingsAndGetPerResourceDictionary(dict,
                                                           last_modified_time);
-  per_resource_dict->SetInteger("unknown_setting", 1);
+  per_resource_dict->Set("unknown_setting", 1);
 }
 
 void CheckMigrationFromResourceIdentifierForDictionary(
@@ -531,41 +528,31 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
 
   // Manually write settings under the PLUGINS type using the no longer existing
   // ResourceIdentifier names, and then perform the migration.
-  prefs::ScopedDictionaryPrefUpdate plugins_pref_update(
-      pref_service, kUserProfilePluginsPath);
-  std::unique_ptr<prefs::DictionaryValueUpdate> plugins_dictionary =
-      plugins_pref_update.Get();
-  EXPECT_NE(plugins_dictionary, nullptr);
+  ScopedDictPrefUpdate plugins(pref_service, kUserProfilePluginsPath);
 
   base::Time expected_last_modified = base::Time::Now();
 
   // Seed global shield settings with non-default values.
-  std::unique_ptr<prefs::DictionaryValueUpdate> global_settings_dict =
-      plugins_dictionary->SetDictionaryWithoutPathExpansion(
-          "*,*", std::make_unique<base::DictionaryValue>());
+  base::Value::Dict* global_settings = plugins->EnsureDict("*,*");
 
   const int expected_global_settings_value = 1;
-  InitializeAllShieldSettingsInDictionary(global_settings_dict.get(),
-                                          expected_last_modified,
-                                          expected_global_settings_value);
+  InitializeAllShieldSettingsInDictionary(
+      global_settings, expected_last_modified, expected_global_settings_value);
 
   // Change all of those global settings for www.example.com.
-  std::unique_ptr<prefs::DictionaryValueUpdate> example_settings_dict =
-      plugins_dictionary->SetDictionaryWithoutPathExpansion(
-          "www.example.com,*", std::make_unique<base::DictionaryValue>());
+  base::Value::Dict* example_settings =
+      plugins->EnsureDict("www.example.com,*");
 
   const int expected_example_com_settings_value = 1;
-  InitializeAllShieldSettingsInDictionary(example_settings_dict.get(),
+  InitializeAllShieldSettingsInDictionary(example_settings,
                                           expected_last_modified,
                                           expected_example_com_settings_value);
 
   // Disable Brave Shields for www.brave.com.
-  std::unique_ptr<prefs::DictionaryValueUpdate> brave_settings_dict =
-      plugins_dictionary->SetDictionaryWithoutPathExpansion(
-          "www.brave.com,*", std::make_unique<base::DictionaryValue>());
+  base::Value::Dict* brave_settings = plugins->EnsureDict("www.brave.com,*");
 
   const int expected_brave_com_settings_value = 1;
-  InitializeBraveShieldsSettingInDictionary(brave_settings_dict.get(),
+  InitializeBraveShieldsSettingInDictionary(brave_settings,
                                             expected_last_modified,
                                             expected_brave_com_settings_value);
 
@@ -604,11 +591,7 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromUnknownSettings) {
 
   // Manually write invalid settings under the PLUGINS type using the no longer
   // existing ResourceIdentifier names, to attempt the migration.
-  prefs::ScopedDictionaryPrefUpdate plugins_pref_update(
-      pref_service, kUserProfilePluginsPath);
-  std::unique_ptr<prefs::DictionaryValueUpdate> plugins_dictionary =
-      plugins_pref_update.Get();
-  EXPECT_NE(plugins_dictionary, nullptr);
+  ScopedDictPrefUpdate plugins(pref_service, kUserProfilePluginsPath);
 
   // Seed both global and per-site shield settings preferences using unsupported
   // names, so that we can test that Brave doesn't crash while attempting the
@@ -617,15 +600,12 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromUnknownSettings) {
   // For a list of supported names, see |kBraveContentSettingstypes| inside the
   // components/content_settings/core/browser/content_settings_registry.cc
   // override, in the chromium_src/ directory.
-  std::unique_ptr<prefs::DictionaryValueUpdate> global_settings_dict =
-      plugins_dictionary->SetDictionaryWithoutPathExpansion(
-          "*,*", std::make_unique<base::DictionaryValue>());
-  InitializeUnsupportedShieldSettingInDictionary(global_settings_dict.get(),
+  base::Value::Dict* global_settings = plugins->EnsureDict("*,*");
+  InitializeUnsupportedShieldSettingInDictionary(global_settings,
                                                  base::Time::Now());
-  std::unique_ptr<prefs::DictionaryValueUpdate> example_settings_dict =
-      plugins_dictionary->SetDictionaryWithoutPathExpansion(
-          "www.example.com,*", std::make_unique<base::DictionaryValue>());
-  InitializeUnsupportedShieldSettingInDictionary(example_settings_dict.get(),
+  base::Value::Dict* example_settings =
+      plugins->EnsureDict("www.example.com,*");
+  InitializeUnsupportedShieldSettingInDictionary(example_settings,
                                                  base::Time::Now());
 
   // Doing the migration below should NOT get a crash due to invalid settings.

@@ -1,7 +1,7 @@
 import("//brave/build/config.gni")
 import("//build/linux/extract_symbols.gni")
 
-if (should_generate_breakpad_symbols) {
+if (should_generate_symbols) {
   action("generate_breakpad_symbols") {
     # host_toolchain must be used for cross-compilation case.
     # See chrome/updater/mac:syms

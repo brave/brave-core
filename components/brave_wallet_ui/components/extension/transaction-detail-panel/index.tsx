@@ -152,6 +152,11 @@ const TransactionDetailPanel = (props: Props) => {
       liveTransaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom) {
       return transactionDetails.erc721BlockchainToken?.name + ' ' + transactionDetails.erc721TokenId
     }
+
+    if (liveTransaction.txType === BraveWallet.TransactionType.ERC20Approve && transactionDetails.isApprovalUnlimited) {
+      return `${getLocale('braveWalletTransactionApproveUnlimited')} ${transactionDetails.symbol}`
+    }
+
     return new Amount(transactionDetails.value)
       .formatAsAsset(undefined, transactionDetails.symbol)
   }, [transactionDetails, liveTransaction])

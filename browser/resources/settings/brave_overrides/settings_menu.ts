@@ -297,29 +297,15 @@ RegisterPolymerTemplateModifications({
     )
     searchEl.insertAdjacentElement('afterend', extensionEl)
 
-    const isBraveWalletAllowed = loadTimeData.getBoolean('isBraveWalletAllowed')
-    let walletEl = undefined
-    if (isBraveWalletAllowed) {
-      walletEl = createMenuElement(
-        loadTimeData.getString('braveWallet'),
-        '/wallet',
-        'brave_settings:wallet',
-        'wallet',
-      )
-      extensionEl.insertAdjacentElement('afterend', walletEl)
-    }
 
-    const ipfsEl = createMenuElement(
-      loadTimeData.getString('braveIPFS'),
-      '/ipfs',
-      'brave_settings:ipfs',
-      'ipfs',
+    const web3El = createMenuElement(
+      loadTimeData.getString('braveWeb3'),
+      '/web3',
+      'brave_settings:wallet',
+      'wallet',
     )
-    if (isBraveWalletAllowed) {
-      walletEl.insertAdjacentElement('afterend', ipfsEl)
-    } else {
-      extensionEl.insertAdjacentElement('afterend', ipfsEl)
-    }
+
+    extensionEl.insertAdjacentElement('afterend', web3El)
 
     // Move autofill to advanced
     const autofillEl = getMenuElement(templateContent, '/autofill')

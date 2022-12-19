@@ -28,9 +28,9 @@ class GeoTargets;
 class Segments;
 
 using GetCreativeNotificationAdsCallback =
-    std::function<void(const bool,
-                       const std::vector<std::string>&,
-                       const CreativeNotificationAdList&)>;
+    base::OnceCallback<void(const bool,
+                            const std::vector<std::string>&,
+                            const CreativeNotificationAdList&)>;
 
 class CreativeNotificationAds final : public TableInterface {
  public:

@@ -16,7 +16,7 @@
 #include "brave/browser/ui/views/tabs/features.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -38,7 +38,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
-#include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
 namespace {
@@ -287,7 +287,8 @@ void BraveToolbarView::UpdateBookmarkVisibility() {
 }
 
 void BraveToolbarView::UpdateHorizontalPadding() {
-  if (tabs::features::ShouldShowWindowTitleForVerticalTabs(browser())) {
+  if (!tabs::features::ShouldShowVerticalTabs(browser()) ||
+      tabs::features::ShouldShowWindowTitleForVerticalTabs(browser())) {
     SetBorder(nullptr);
   } else {
     auto [leading, trailing] =

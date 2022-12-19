@@ -27,3 +27,18 @@ export default function getBraveNewsController () {
   }
   return braveNewsControllerInstance
 }
+
+export const isPublisherEnabled = (publisher: BraveNews.Publisher) => {
+  if (!publisher) return false
+
+  // Direct Sources are enabled if they're available.
+  if (publisher.type === BraveNews.PublisherType.DIRECT_SOURCE) return true
+
+  // Publishers enabled via channel are not shown in the sidebar.
+  return publisher.userEnabledStatus === BraveNews.UserEnabled.ENABLED
+}
+
+export const isDirectFeed = (publisher: BraveNews.Publisher) => {
+  if (!publisher) return false
+  return publisher.type === BraveNews.PublisherType.DIRECT_SOURCE
+}

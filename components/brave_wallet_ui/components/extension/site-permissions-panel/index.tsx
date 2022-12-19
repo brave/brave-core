@@ -17,6 +17,7 @@ import { WalletAccountType, WalletState } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
+import { useGetSelectedCoinQuery } from '../../../common/slices/api.slice'
 
 // Components
 import {
@@ -43,9 +44,11 @@ export const SitePermissions = () => {
   const {
     accounts,
     connectedAccounts,
-    activeOrigin,
-    selectedCoin
+    activeOrigin
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+
+  // api
+  const { data: selectedCoin } = useGetSelectedCoinQuery()
 
   // methods
   const onAddAccount = React.useCallback(() => {

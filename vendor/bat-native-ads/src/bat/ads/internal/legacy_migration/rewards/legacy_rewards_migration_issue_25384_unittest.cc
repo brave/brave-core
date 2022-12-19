@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/base/unittest/unittest_base.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
 #include "brave/components/brave_ads/common/pref_names.h"

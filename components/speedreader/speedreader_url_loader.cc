@@ -19,10 +19,10 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
-#include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
+#include "brave/components/speedreader/speedreader_throttle_delegate.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 
 namespace speedreader {
@@ -57,7 +57,7 @@ std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
            SpeedReaderURLLoader*>
 SpeedReaderURLLoader::CreateLoader(
     base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
-    base::WeakPtr<SpeedreaderResultDelegate> delegate,
+    base::WeakPtr<SpeedreaderThrottleDelegate> delegate,
     const GURL& response_url,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner,
     SpeedreaderRewriterService* rewriter_service,
@@ -81,7 +81,7 @@ SpeedReaderURLLoader::CreateLoader(
 
 SpeedReaderURLLoader::SpeedReaderURLLoader(
     base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
-    base::WeakPtr<SpeedreaderResultDelegate> delegate,
+    base::WeakPtr<SpeedreaderThrottleDelegate> delegate,
     const GURL& response_url,
     mojo::PendingRemote<network::mojom::URLLoaderClient>
         destination_url_loader_client,

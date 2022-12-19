@@ -72,6 +72,11 @@ class Eip1559Transaction : public Eip2930Transaction {
   // signatureS])
   std::string GetSignedTransaction() const override;
 
+  // keccacak(0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas,
+  // gasLimit, destination, value, data, accessList, signatureYParity,
+  // signatureR,signatureS]))
+  std::string GetTransactionHash() const override;
+
   base::Value::Dict ToValue() const override;
 
   uint256_t GetUpfrontCost(uint256_t block_base_fee = 0) const override;
@@ -93,6 +98,9 @@ class Eip1559Transaction : public Eip2930Transaction {
 
   // Gas estimation result
   GasEstimation gas_estimation_;
+
+ private:
+  std::vector<uint8_t> Serialize() const;
 };
 
 }  // namespace brave_wallet

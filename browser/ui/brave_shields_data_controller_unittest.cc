@@ -377,3 +377,27 @@ TEST_F(BraveShieldsDataControllerTest, Observer_OnShieldsEnabledChangedTest) {
   ctrl_2->RemoveObserver(&observer_2);
   ctrl_3->RemoveObserver(&observer_3);
 }
+
+TEST_F(BraveShieldsDataControllerTest, SetBraveShieldsEnabledAsDefaultValue) {
+  // Set url for default web contents.
+  SetLastCommittedUrl(GURL("http://brave.com"));
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
+  EXPECT_EQ(map->GetDefaultContentSetting(ContentSettingsType::BRAVE_SHIELDS,
+                                          nullptr),
+            CONTENT_SETTING_ALLOW);
+
+  EXPECT_TRUE(GetShieldsDataController()->GetBraveShieldsEnabled());
+  GetShieldsDataController()->SetBraveShieldsEnabled(false);
+  EXPECT_FALSE(GetShieldsDataController()->GetBraveShieldsEnabled());
+  EXPECT_FALSE(profile()
+                   ->GetPrefs()
+                   ->GetDict("profile.content_settings.exceptions.braveShields")
+                   .empty());
+
+  GetShieldsDataController()->SetBraveShieldsEnabled(true);
+  EXPECT_TRUE(GetShieldsDataController()->GetBraveShieldsEnabled());
+  EXPECT_TRUE(profile()
+                  ->GetPrefs()
+                  ->GetDict("profile.content_settings.exceptions.braveShields")
+                  .empty());
+}

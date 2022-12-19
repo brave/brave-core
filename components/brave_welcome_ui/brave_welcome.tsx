@@ -1,48 +1,33 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { render } from 'react-dom'
-import { bindActionCreators } from 'redux'
-import { Provider } from 'react-redux'
+import { initLocale } from 'brave-ui'
 
-import welcomeDarkTheme from './theme/welcome-dark'
-import welcomeLightTheme from './theme/welcome-light'
-import BraveCoreThemeProvider from '../common/BraveCoreThemeProvider'
+import { loadTimeData } from '$web-common/loadTimeData'
 
-// Components
-import App from './containers/app'
+import BraveCoreThemeProvider from '$web-common/BraveCoreThemeProvider'
 
-// Utils
-import store from './store'
-import * as welcomeActions from './actions/welcome_actions'
+import MainContainer from './main_container'
+import DataContextProvider from './state/data-context-provider'
 
-function loadWelcomeData () {
-  const actions = bindActionCreators(welcomeActions, store.dispatch.bind(store))
-  actions.getSearchEngineProviders()
-  actions.getBrowserProfiles()
+function App () {
+  return (
+    <DataContextProvider>
+      <BraveCoreThemeProvider>
+        <MainContainer />
+      </BraveCoreThemeProvider>
+    </DataContextProvider>
+  )
 }
 
 function initialize () {
-  loadWelcomeData()
-  new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
-  .then((themeType: chrome.braveTheme.ThemeType) => {
-    render(
-      <Provider store={store}>
-        <BraveCoreThemeProvider
-          initialThemeType={themeType}
-          dark={welcomeDarkTheme}
-          light={welcomeLightTheme}
-        >
-          <App />
-        </BraveCoreThemeProvider>
-      </Provider>,
-      document.getElementById('root'))
-  })
-  .catch((error) => {
-    console.error('Problem mounting brave welcome', error)
-  })
+  initLocale(loadTimeData.data_)
+  render(<App />, document.getElementById('root'),
+  () => {})
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

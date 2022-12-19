@@ -24,7 +24,8 @@ import {
   ERC721TransferFromParams,
   SendTransactionParams,
   SPLTransferFromParams,
-  SerializableTransactionInfo
+  SerializableTransactionInfo,
+  SerializableOriginInfo
 } from '../../constants/types'
 import {
   AddSitePermissionPayloadType,
@@ -64,7 +65,7 @@ import {
 } from '../../utils/account-utils'
 
 // Options
-import { AllAssetsFilterOption } from '../../options/asset-filter-options'
+import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
 import { AllNetworksOption } from '../../options/network-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
@@ -108,7 +109,6 @@ const defaultState: WalletState = {
   gasEstimates: undefined,
   connectedAccounts: [],
   isMetaMaskInstalled: false,
-  selectedCoin: BraveWallet.CoinType.ETH,
   defaultCurrencies: {
     fiat: '',
     crypto: ''
@@ -119,12 +119,13 @@ const defaultState: WalletState = {
   defaultNetworks: [] as BraveWallet.NetworkInfo[],
   defaultAccounts: [] as BraveWallet.AccountInfo[],
   selectedNetworkFilter: AllNetworksOption,
-  selectedAssetFilter: AllAssetsFilterOption,
+  selectedAssetFilter: HighToLowAssetsFilterOption,
   selectedAccountFilter: AllAccountsOption,
   solFeeEstimates: undefined,
   onRampCurrencies: [] as BraveWallet.OnRampCurrency[],
   selectedCurrency: undefined,
-  passwordAttempts: 0
+  passwordAttempts: 0,
+  assetAutoDiscoveryCompleted: false
 }
 
  // async actions
@@ -192,7 +193,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
     name: 'wallet',
     initialState,
     reducers: {
-      activeOriginChanged (state: WalletState, { payload }: PayloadAction<BraveWallet.OriginInfo>) {
+      activeOriginChanged (state: WalletState, { payload }: PayloadAction<SerializableOriginInfo>) {
         state.activeOrigin = payload
       },
 
@@ -351,6 +352,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.fullTokenList = payload
       },
 
+      setAssetAutoDiscoveryCompleted (state: WalletState, { payload }: PayloadAction<BraveWallet.BlockchainToken[]>) {
+        state.assetAutoDiscoveryCompleted = true
+      },
+
       setCoinMarkets (state: WalletState, { payload }: PayloadAction<GetCoinMarketsResponse>) {
         state.coinMarketData = payload.success
           ? payload.values.map(coin => {
@@ -399,10 +404,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
       setSelectedAssetFilterItem (state: WalletState, { payload }: PayloadAction<AssetFilterOption>) {
         state.selectedAssetFilter = payload
-      },
-
-      setSelectedCoin (state: WalletState, { payload }: PayloadAction<BraveWallet.CoinType>) {
-        state.selectedCoin = payload
       },
 
       setSitePermissions (state: WalletState, { payload }: PayloadAction<SitePermissionsPayloadType>) {

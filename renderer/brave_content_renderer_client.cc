@@ -9,6 +9,7 @@
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 #include "brave/components/playlist/buildflags/buildflags.h"
@@ -31,10 +32,12 @@
 #include "brave/components/speedreader/renderer/speedreader_render_frame_observer.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/renderer/android/vpn_render_frame_observer.h"
 #endif  // BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/features.h"
@@ -61,6 +64,7 @@ void BraveContentRendererClient::
   blink::WebRuntimeFeatures::EnableFeatureFromString("Serial", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString(
       "SpeculationRulesPrefetchProxy", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
 }
 
 BraveContentRendererClient::~BraveContentRendererClient() = default;

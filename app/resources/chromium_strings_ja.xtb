@@ -10,10 +10,13 @@
 <translation id="8522292744959221145">パスワードにデータ侵害などセキュリティに関する問題がないかどうかを確認するには、<ph name="BEGIN_LINK"/>Brave にログイン<ph name="END_LINK"/>してください。</translation>
 <translation id="8541922081612557424">Brave について</translation>
 <translation id="1203500561924088507">インストールいただきありがとうございます。<ph name="BUNDLE_NAME"/> を使用するにはブラウザを再起動してください。</translation>
+<translation id="8905049883018921395">オンにすると、アクティブでないタブのメモリを解放します。これにより、アクティブなタブや他のアプリで利用できるコンピュータ リソースが増え、Brave の速度低下を抑えられます。アクティブでないタブは、再度アクセスすると自動的にアクティブになります。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
+<translation id="4658574652223735641">メモリセーバーで Brave の速度を向上</translation>
 <translation id="4798342026247191171">新しい Brave プロファイルの設定</translation>
 <translation id="6361779936989026201">Brave の Brave アシスタント</translation>
 <translation id="113959764510199339">Brave はパスワードを表示しようとしています。</translation>
 <translation id="8132634101975074716">Brave にログインしました</translation>
+<translation id="4168469784091952813">Brave を最大限に活用できます</translation>
 <translation id="5147525139567260139">Brave タブの共有</translation>
 <translation id="1530633922026945685">周囲の 3D マップを作成するには、Brave にカメラの使用を許可する必要があります</translation>
 <translation id="4449148723378534338">Brave のプライバシーとセキュリティに関する重要な設定を確認します</translation>
@@ -166,6 +169,7 @@
 <translation id="1786715389543715322">Brave を更新しています（<ph name="PROGRESS_PERCENT"/>）</translation>
 <translation id="7021823858304886493">Brave へのログインを許可する</translation>
 <translation id="5536657158619734169">Brave の最新バージョンをぜひお試しください。</translation>
+<translation id="5267531627648004734">Brave から削除</translation>
 <translation id="239760341987199724">Brave をデフォルト ブラウザに設定する</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="894936507076470937">この Linux ディストリビューションはサポートされなくなったため、Brave は正常に機能しない可能性があります</translation>
@@ -193,6 +197,7 @@
 <translation id="505042220086416644">Brave がさらに速くなりました！最新バージョンをぜひお試しください。</translation>
 <translation id="9071554113102421877">Brave で開く(&amp;O)</translation>
 <translation id="7861579472672677409">「<ph name="EXTENSION_NAME"/>」が Brave に追加されました</translation>
+<translation id="3693188491491843187">Brave を高速化する</translation>
 <translation id="608006075545470555">このブラウザに仕事用プロファイルを追加</translation>
 <translation id="5849446944780602366">Brave をカスタマイズしてご活用ください。アップデートが利用可能です。</translation>
 <translation id="7433698744896946664">拡張機能に Brave ツールバーへのアクセス リクエストの表示を許可する</translation>
@@ -236,6 +241,7 @@
 <translation id="1489465648257900784">バージョンが新しい Brave のプロフィールは使用できません。
 
 一部の機能が利用できない可能性があります。別の場所のプロフィールを指定するか、新しいバージョンの Brave をご使用ください。</translation>
+<translation id="7870748924073900361">メモリセーバーで Brave の速度を向上</translation>
 <translation id="6666624454809779082">Brave は既にパソコンのすべてのユーザーに対してインストールされています。</translation>
 <translation id="5360050006043219962">お使いのすべてのデバイスで Brave の設定やデータを使用するには、ログインして同期を有効にしてください。</translation>
 <translation id="8291513491595858997">保護者が Brave の「サイト、アプリ、拡張機能の権限」をオフにしました。この <ph name="EXTENSION_TYPE_PARAMETER"/> を有効にすることはできません。</translation>
@@ -273,6 +279,7 @@
 <translation id="38294420683216447">Brave プロフィールを使うと、Brave のあらゆる項目や設定を個別に管理できます。これにより、仕事と遊びの使い分けが簡単になります。</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="2034072705932785495">このサイトを利用するには、Brave でカメラの使用を許可する必要があります</translation>
+<translation id="5296583608321648908">今後、Brave のアップデートを受信するには、Windows 10 以降が必要となります。このパソコンでは Windows 7 が実行されています。</translation>
 <translation id="3962395975456095331">Brave を再起動しますか？</translation>
 <translation id="2619516027171717873">実行中の Brave と同じバージョンをインストールすることはできません。Brave を閉じてからもう一度お試しください。</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave は 1 分後に再起動されます}other{Brave は # 分後に再起動されます}}</translation>
@@ -287,9 +294,9 @@
 <translation id="8678991866891573053">Brave では、使用されるユーザーデータの量を抑えつつ、同じようにサイトをブラウジングできる新機能をテストしています</translation>
 <translation id="3343095737966473035">Brave はデフォルトのブラウザとして設定されていません</translation>
 <translation id="5477319665405831211">同期してカスタマイズした Brave をどのデバイスでも使用できます</translation>
-<translation id="2280238321454602884">オンにすると、使用していないタブのメモリが再利用されます。これにより、パソコンのリソースを他のタスクに解放して、Brave を高速な状態に維持できます。使用していないタブは空白になり、クリックすると自動的に再読み込みされます。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/>または<ph name="BEGIN_LINK_2"/>フィードバックを送信<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">このデバイスから閲覧データを削除します。後でデータを取得するには、<ph name="USER_EMAIL"/> として Brave にログインしてください。</translation>
 <translation id="7747138024166251722">インストーラーの一時ディレクトリを作成できませんでした。ディスクの空き領域とソフトウェアのインストール許可があることを確認してください。</translation>
+<translation id="1978509466033734608">Brave を高速化する</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="1652855885539187849">このアカウントの Brave プロファイルは、このデバイスにすでに存在します</translation>
 <translation id="7845233973568007926">インストールいただきありがとうございます。<ph name="BUNDLE_NAME"/> を使用するにはコンピュータを再起動してください。</translation>
@@ -312,15 +319,16 @@
 <translation id="3360368475735266712">ログインすると、同期してカスタマイズした Brave をどのデバイスでも使用できます</translation>
 <translation id="2591326305549412656">Brave の前回の使用者は <ph name="USER_EMAIL_ADDRESS"/> です</translation>
 <translation id="3098618823450433881">お使いのすべてのデバイスで Brave ブラウザの設定やデータを使用するには、ログインして同期を有効にしてください</translation>
+<translation id="2569754604093464025">今後、Brave のアップデートを受信するには、Windows 10 以降が必要となります。このパソコンでは Windows 8 が実行されています。</translation>
 <translation id="5337999052834672687">{0,plural, =1{1 日以内に Brave を再起動してください}other{# 日以内に Brave を再起動してください}}</translation>
 <translation id="6914496861676471566">インストーラ アーカイブが壊れているか無効です。Brave をダウンロードし直してください。</translation>
 <translation id="6431861494713261006">任意: 診断と使用状況のデータを Brave に自動送信して、Chrome OS の機能とパフォーマンスの改善に協力する。</translation>
 <translation id="2097604701283463988">Brave は古いバージョンです</translation>
-<translation id="607365808648940765">Brave では必要に応じて、使用していないタブのメモリが再利用されます。これは [設定] でいつでも変更できます。</translation>
 <translation id="8550334526674375523">この仕事用プロファイルは個人用プロファイルとは別に管理されます。</translation>
 <translation id="2452889775041290116">保護者が Brave の「サイト、アプリ、拡張機能の権限」をオフにしました。この <ph name="EXTENSION_TYPE_PARAMETER"/> を追加することはできません。</translation>
 <translation id="8502436661255886343">今後、Brave のアップデートを受信するには、macOS 10.13 以降が必要となります。このコンピュータでは macOS 10.12 が実行されています。</translation>
 <translation id="227028348235968071">Brave アカウントでログインすると、Brave がパスワードを確認できます。</translation>
+<translation id="4226455268610449503">オンにすると、バックグラウンド アクティビティと視覚効果（滑らかなスクロールや動画のフレームレートなど）を制限することで、バッテリーを節約します。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> The Brave Authors. All rights reserved.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>このデータの利用方法:<ph name="END_BOLD"/> サイトでは、ユーザーの興味 / 関心に関する情報を Brave に保存できます。たとえば、マラソン用のシューズを購入するためにあるサイトにアクセスすると、そのサイトでは「ランニング」をユーザーの興味 / 関心として定義する可能性があります。その後、別のサイトにアクセスして競技に登録しようとすると、そのサイトでは、ユーザーの興味 / 関心に基づいてランニング用シューズの広告が表示される場合があります。</translation>
 <translation id="3052349005266761501">Brave を起動しています...</translation>
@@ -343,6 +351,7 @@
 <translation id="82609232232243542">Brave にログイン</translation>
 <translation id="5173820533850252773">Brave は古いバージョンです</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave は 1 時間後に再起動されます}other{Brave は # 時間後に再起動されます}}</translation>
+<translation id="5190991181158966940">今後、Brave のアップデートを受信するには、Windows 10 以降が必要となります。このパソコンでは Windows 8.1 が実行されています。</translation>
 <translation id="7863882214613921971">新しい Brave タブでリンクを開く(&amp;T)</translation>
 <translation id="911206726377975832">閲覧データも削除しますか？</translation>
 <translation id="5708733457516068434">テスト期間中、サイトでの広告表示に使用される興味 / 関心のトピックを表示、削除できます。Brave では最近の閲覧履歴に基づいてユーザーの興味 / 関心を推定します。</translation>

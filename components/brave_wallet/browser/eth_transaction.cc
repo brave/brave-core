@@ -173,18 +173,15 @@ std::vector<uint8_t> EthTransaction::GetMessageToSign(uint256_t chain_id,
 
 std::string EthTransaction::GetSignedTransaction() const {
   DCHECK(nonce_);
-  base::Value::List list;
-  list.Append(RLPUint256ToBlob(nonce_.value()));
-  list.Append(RLPUint256ToBlob(gas_price_));
-  list.Append(RLPUint256ToBlob(gas_limit_));
-  list.Append(base::Value::BlobStorage(to_.bytes()));
-  list.Append(RLPUint256ToBlob(value_));
-  list.Append(base::Value(data_));
-  list.Append(RLPUint256ToBlob(v_));
-  list.Append(base::Value(r_));
-  list.Append(base::Value(s_));
 
-  return ToHex(RLPEncode(base::Value(std::move(list))));
+  return ToHex(RLPEncode(Serialize()));
+}
+
+std::string EthTransaction::GetTransactionHash() const {
+  DCHECK(IsSigned());
+  DCHECK(nonce_);
+
+  return KeccakHash(RLPEncode(Serialize()));
 }
 
 bool EthTransaction::ProcessVRS(const std::string& v,
@@ -276,6 +273,21 @@ uint256_t EthTransaction::GetDataFee() const {
 
 uint256_t EthTransaction::GetUpfrontCost(uint256_t block_base_fee) const {
   return gas_limit_ * gas_price_ + value_;
+}
+
+base::Value EthTransaction::Serialize() const {
+  base::Value::List list;
+  list.Append(RLPUint256ToBlob(nonce_.value()));
+  list.Append(RLPUint256ToBlob(gas_price_));
+  list.Append(RLPUint256ToBlob(gas_limit_));
+  list.Append(base::Value::BlobStorage(to_.bytes()));
+  list.Append(RLPUint256ToBlob(value_));
+  list.Append(base::Value(data_));
+  list.Append(RLPUint256ToBlob(v_));
+  list.Append(base::Value(r_));
+  list.Append(base::Value(s_));
+
+  return base::Value(std::move(list));
 }
 
 }  // namespace brave_wallet

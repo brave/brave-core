@@ -13,7 +13,9 @@
 
 #include "base/containers/flat_map.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/feed_building.h"
 #include "brave/components/brave_today/browser/feed_parsing.h"
@@ -33,11 +35,11 @@ namespace {
 
 using Publishers = base::flat_map<std::string, mojom::PublisherPtr>;
 
-std::string GetFeedJson() {
+base::Value GetFeedJson() {
   // One item has a higher score, but a matching history domain - it should
   // appear earlier.
   // First item has a higher score, so it should appear later.
-  return R"([
+  return base::test::ParseJson(R"([
         {
           "category": "Technology",
           "publish_time": "2021-09-01 07:01:28",
@@ -109,7 +111,7 @@ std::string GetFeedJson() {
           "score": 13.97160989810695
         }
       ]
-    )";
+    )");
 }
 
 std::vector<mojom::LocaleInfoPtr> CreateLocales(
@@ -448,6 +450,33 @@ TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsedWhenV2IsEnabled) {
   // Publisher: DISABLED, Channel: Subscribed in en_US, Should not display.
   channel->subscribed_locales = {"en_US"};
   EXPECT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list, channels));
+}
+
+TEST_F(BraveNewsFeedBuildingTest, DuplicateItemsAreNotIncluded) {
+  // Use v2 feed strategy by subscribing to a channel
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeature(brave_today::features::kBraveNewsV2Feature);
+
+  ChannelsController::SetChannelSubscribedPref(profile_.GetPrefs(), "en_US",
+                                               "Top Sources", true);
+
+  Publishers publisher_list;
+  PopulatePublishers(&publisher_list);
+
+  std::unordered_set<std::string> history_hosts = {"www.espn.com"};
+
+  std::vector<mojom::FeedItemPtr> feed_items;
+
+  // Parse the feed items twice so we get two copies of everything.
+  ParseFeedItems(GetFeedJson(), &feed_items);
+  ParseFeedItems(GetFeedJson(), &feed_items);
+
+  mojom::Feed feed;
+
+  ASSERT_TRUE(BuildFeed(feed_items, history_hosts, &publisher_list, &feed,
+                        profile_.GetPrefs()));
+  ASSERT_EQ(feed.pages.size(), 1u);
+  ASSERT_EQ(feed.pages[0]->items.size(), 18u);
 }
 
 }  // namespace brave_news

@@ -5,7 +5,7 @@
 
 #include "brave/browser/brave_ads/background_helper/background_helper_android.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 
 namespace brave_ads {

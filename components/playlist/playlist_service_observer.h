@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_PLAYLIST_SERVICE_OBSERVER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_PLAYLIST_SERVICE_OBSERVER_H_
 
+#include <string>
+
 #include "base/observer_list_types.h"
 
 namespace playlist {
@@ -15,6 +17,13 @@ struct PlaylistChangeParams;
 class PlaylistServiceObserver : public base::CheckedObserver {
  public:
   virtual void OnPlaylistStatusChanged(const PlaylistChangeParams& params) = 0;
+
+  virtual void OnMediaFileDownloadProgressed(
+      const std::string& id,
+      int64_t total_bytes,
+      int64_t received_bytes,
+      int percent_complete,
+      base::TimeDelta remaining_time) = 0;
 };
 
 }  // namespace playlist

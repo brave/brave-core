@@ -8,8 +8,8 @@
 #include <string>
 #include <utility>
 
-#include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
+#include "brave/components/speedreader/speedreader_throttle_delegate.h"
 #include "brave/components/speedreader/speedreader_url_loader.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -28,26 +28,30 @@ SpeedReaderThrottle::MaybeCreateThrottleFor(
     SpeedreaderRewriterService* rewriter_service,
     SpeedreaderService* speedreader_service,
     HostContentSettingsMap* content_settings,
-    base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
+    base::WeakPtr<SpeedreaderThrottleDelegate> delegate,
     const GURL& url,
     bool check_disabled_sites,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner) {
+  DCHECK(delegate);
+  if (!delegate->IsPageDistillationAllowed())
+    return nullptr;
+
   if (check_disabled_sites && !IsEnabledForSite(content_settings, url))
     return nullptr;
 
   return std::make_unique<SpeedReaderThrottle>(
-      rewriter_service, speedreader_service, result_delegate, task_runner);
+      rewriter_service, speedreader_service, delegate, task_runner);
 }
 
 SpeedReaderThrottle::SpeedReaderThrottle(
     SpeedreaderRewriterService* rewriter_service,
     SpeedreaderService* speedreader_service,
-    base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
+    base::WeakPtr<SpeedreaderThrottleDelegate> delegate,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner)
     : task_runner_(task_runner),
       rewriter_service_(rewriter_service),
       speedreader_service_(speedreader_service),
-      result_delegate_(result_delegate) {}
+      delegate_(delegate) {}
 
 SpeedReaderThrottle::~SpeedReaderThrottle() = default;
 
@@ -55,6 +59,11 @@ void SpeedReaderThrottle::WillProcessResponse(
     const GURL& response_url,
     network::mojom::URLResponseHead* response_head,
     bool* defer) {
+  if (!delegate_ || !delegate_->IsPageDistillationAllowed()) {
+    // The page was redirected to an ineligible URL. Skip.
+    return;
+  }
+
   std::string mime_type;
   if (!response_head || !response_head->headers->GetMimeType(&mime_type) ||
       base::CompareCaseInsensitiveASCII(mime_type, "text/html")) {
@@ -72,7 +81,7 @@ void SpeedReaderThrottle::WillProcessResponse(
   mojo::ScopedDataPipeConsumerHandle body;
   std::tie(new_remote, new_receiver, speedreader_loader) =
       SpeedReaderURLLoader::CreateLoader(
-          AsWeakPtr(), result_delegate_, response_url, task_runner_,
+          AsWeakPtr(), std::move(delegate_), response_url, task_runner_,
           rewriter_service_, speedreader_service_);
   BodySnifferThrottle::InterceptAndStartLoader(
       std::move(source_loader), std::move(source_client_receiver),

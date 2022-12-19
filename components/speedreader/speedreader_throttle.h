@@ -20,7 +20,7 @@ class HostContentSettingsMap;
 
 namespace speedreader {
 
-class SpeedreaderResultDelegate;
+class SpeedreaderThrottleDelegate;
 class SpeedreaderRewriterService;
 class SpeedreaderService;
 
@@ -41,14 +41,14 @@ class SpeedReaderThrottle : public body_sniffer::BodySnifferThrottle {
   // current sequence.
   SpeedReaderThrottle(SpeedreaderRewriterService* rewriter_service,
                       SpeedreaderService* speedreader_service,
-                      base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
+                      base::WeakPtr<SpeedreaderThrottleDelegate> delegate,
                       scoped_refptr<base::SingleThreadTaskRunner> task_runner);
 
   static std::unique_ptr<SpeedReaderThrottle> MaybeCreateThrottleFor(
       SpeedreaderRewriterService* rewriter_service,
       SpeedreaderService* speedreader_service,
       HostContentSettingsMap* content_settings,
-      base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
+      base::WeakPtr<SpeedreaderThrottleDelegate> delegate,
       const GURL& url,
       bool check_disabled_sites,
       scoped_refptr<base::SingleThreadTaskRunner> task_runner);
@@ -62,7 +62,7 @@ class SpeedReaderThrottle : public body_sniffer::BodySnifferThrottle {
   scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
   raw_ptr<SpeedreaderRewriterService> rewriter_service_ = nullptr;  // not owned
   raw_ptr<SpeedreaderService> speedreader_service_ = nullptr;
-  base::WeakPtr<SpeedreaderResultDelegate> result_delegate_;
+  base::WeakPtr<SpeedreaderThrottleDelegate> delegate_;
 };
 
 }  // namespace speedreader

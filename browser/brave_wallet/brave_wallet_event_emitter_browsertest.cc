@@ -40,12 +40,16 @@ namespace {
 const char kEmbeddedTestServerDirectory[] = "brave-wallet";
 
 std::string CheckForEventScript(const std::string& event_var) {
-  return base::StringPrintf(R"(function waitForEvent() {
-             if (%s) {
-               window.domAutomationController.send(true);
-             }
+  return base::StringPrintf(R"(
+          let attempts = 100;
+          function waitForEvent() {
+            if (%s) {
+              window.domAutomationController.send(true);
+            } else if (attempts-- > 0) {
+              setInterval(waitForEvent, 100)
             }
-          setInterval(waitForEvent, 100);)",
+          }
+          setInterval(waitForEvent, 100); )",
                             event_var.c_str());
 }
 

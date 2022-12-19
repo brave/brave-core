@@ -49,7 +49,7 @@ InstallStatus UninstallProduct(const ModifyParams& modify_params,
                                const base::CommandLine& cmd_line) {
   DeleteBraveFileKeys(HKEY_CURRENT_USER);
 
-  const InstallerState& installer_state = modify_params.installer_state;
+  const InstallerState& installer_state = *modify_params.installer_state;
   const base::FilePath chrome_exe(
       installer_state.target_path().Append(installer::kChromeExe));
   const std::wstring suffix(

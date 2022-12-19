@@ -16,27 +16,27 @@ import { LayoutKind } from '../lib/layout_context'
 import {
   ExternalWallet,
   ExternalWalletProvider,
-  lookupExternalWalletProviderName
+  lookupExternalWalletProviderName,
+  isExternalWalletProviderAllowed
 } from '../../shared/lib/external_wallet'
 
 import { Provider } from '../../ui/components/profile'
 // Utils
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
-import { convertBalance, isPublisherConnectedOrVerified } from './utils'
+import { convertBalance } from './utils'
 import { ExtendedActivityRow, SummaryItem, SummaryType } from '../../ui/components/modalActivity'
 import { DetailRow as TransactionRow } from '../../ui/components/tableTransactions'
 import { ConnectWalletModal } from './connect_wallet_modal'
-import { ManageWalletButton } from './manage_wallet_button'
 import { PendingContributionsModal } from './pending_contributions_modal'
 
 import * as mojom from '../../shared/lib/mojom'
+import { isPublisherVerified } from '../../shared/lib/publisher_status'
 
 interface State {
   activeTabId: number
   modalActivity: boolean
   modalPendingContribution: boolean
-  modalVerify: boolean
 }
 
 interface Props extends Rewards.ComponentProps {
@@ -49,8 +49,7 @@ class PageWallet extends React.Component<Props, State> {
     this.state = {
       activeTabId: 0,
       modalActivity: false,
-      modalPendingContribution: false,
-      modalVerify: false
+      modalPendingContribution: false
     }
   }
 
@@ -60,7 +59,6 @@ class PageWallet extends React.Component<Props, State> {
 
   componentDidMount () {
     this.isBackupUrl()
-    this.isDisconnectUrl()
     this.isVerifyUrl()
     this.actions.getMonthlyReportIds()
     this.actions.getExternalWalletProviders()
@@ -126,19 +124,13 @@ class PageWallet extends React.Component<Props, State> {
     }
   }
 
-  isDisconnectUrl = () => {
-    if (this.urlHashIs('#disconnect-wallet')) {
-      this.actions.disconnectWallet()
-    }
-  }
-
   toggleVerifyModal = () => {
-    if (this.state.modalVerify) {
+    if (this.props.rewardsData.ui.modalConnect) {
       window.history.replaceState({}, 'Rewards', '/')
+      this.actions.onModalConnectClose()
+    } else {
+      this.actions.onModalConnectOpen()
     }
-    this.setState({
-      modalVerify: !this.state.modalVerify
-    })
   }
 
   onModalActivityAction = (action: string, value: string, node: any) => {
@@ -214,35 +206,6 @@ class PageWallet extends React.Component<Props, State> {
     }
   }
 
-  onFundsAction = (action: string) => {
-    const { externalWallet } = this.props.rewardsData
-
-    if (!externalWallet) {
-      return
-    }
-
-    switch (action) {
-      case 'add': {
-        if (externalWallet.addUrl) {
-          window.open(externalWallet.addUrl, '_self')
-          return
-        }
-        break
-      }
-      case 'withdraw': {
-        if (externalWallet.withdrawUrl) {
-          window.open(externalWallet.withdrawUrl, '_self')
-          return
-        }
-        break
-      }
-    }
-
-    if (externalWallet.loginUrl) {
-      this.handleExternalWalletLink()
-    }
-  }
-
   goToExternalWallet = () => {
     const { externalWallet } = this.props.rewardsData
 
@@ -252,10 +215,6 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     window.open(externalWallet.accountUrl, '_self')
-  }
-
-  onDisconnectClick = () => {
-    this.actions.disconnectWallet()
   }
 
   getBalanceToken = (key: string) => {
@@ -319,7 +278,7 @@ class PageWallet extends React.Component<Props, State> {
         records = contribution.publishers
           .map((publisher: Rewards.Publisher): ExtendedActivityRow => {
             let faviconUrl = `chrome://favicon/size/64@1x/${publisher.url}`
-            const verified = isPublisherConnectedOrVerified(publisher.status)
+            const verified = isPublisherVerified(publisher.status)
             if (publisher.favIcon && verified) {
               faviconUrl = `chrome://favicon/size/64@1x/${publisher.favIcon}`
             }
@@ -538,20 +497,8 @@ class PageWallet extends React.Component<Props, State> {
 
   isWalletProviderEnabled = (walletProvider: string) => {
     const { currentCountryCode, parameters } = this.props.rewardsData
-    const regions = parameters.walletProviderRegions[walletProvider]
-
-    if (!regions) {
-      return true
-    }
-
-    const { allow, block } = regions
-
-    if (allow.length === 0 && block.length === 0) {
-      return true
-    }
-
-    return allow.includes(currentCountryCode) ||
-      block.length !== 0 && !block.includes(currentCountryCode)
+    const regions = parameters.walletProviderRegions[walletProvider] || null
+    return isExternalWalletProviderAllowed(currentCountryCode, regions)
   }
 
   generateExternalWalletProviderList = (walletProviders: string[]) => {
@@ -564,12 +511,6 @@ class PageWallet extends React.Component<Props, State> {
 
   onExternalWalletAction = (action: ExternalWalletAction) => {
     switch (action) {
-      case 'add-funds':
-        this.onFundsAction('add')
-        break
-      case 'disconnect':
-        this.onDisconnectClick()
-        break
       case 'reconnect':
         this.handleExternalWalletLink()
         break
@@ -593,10 +534,11 @@ class PageWallet extends React.Component<Props, State> {
       externalWallet,
       parameters,
       pendingContributionTotal,
-      pendingContributions
+      pendingContributions,
+      userType
     } = this.props.rewardsData
     const { total } = balance
-    const { modalBackup } = ui
+    const { modalBackup, modalConnect } = ui
 
     let externalWalletInfo: ExternalWallet | null = null
     const walletStatus = this.getExternalWalletStatus()
@@ -619,24 +561,26 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     return (
-      <div>
-        <WalletCard
-          balance={total}
-          externalWallet={externalWalletInfo}
-          providerPayoutStatus={'off'}
-          earningsThisMonth={adsData.adsEarningsThisMonth || 0}
-          earningsLastMonth={adsData.adsEarningsLastMonth || 0}
-          nextPaymentDate={0}
-          exchangeRate={parameters.rate}
-          exchangeCurrency={'USD'}
-          showSummary={true}
-          summaryData={summaryData}
-          autoContributeEnabled={enabledContribute}
-          onExternalWalletAction={this.onExternalWalletAction}
-          onViewPendingTips={this.onModalPendingToggle}
-          onViewStatement={this.props.layout === 'wide' ? this.onModalActivityToggle : undefined}
-        />
-        { this.props.layout === 'wide' && <ManageWalletButton onClick={this.onModalBackupOpen} /> }
+      <>
+        {
+          userType !== 'unconnected' &&
+            <WalletCard
+              balance={total}
+              externalWallet={externalWalletInfo}
+              providerPayoutStatus={'off'}
+              earningsThisMonth={adsData.adsEarningsThisMonth || 0}
+              earningsLastMonth={adsData.adsEarningsLastMonth || 0}
+              nextPaymentDate={0}
+              exchangeRate={parameters.rate}
+              exchangeCurrency={'USD'}
+              showSummary={true}
+              summaryData={summaryData}
+              autoContributeEnabled={enabledContribute}
+              onExternalWalletAction={this.onExternalWalletAction}
+              onViewPendingTips={this.onModalPendingToggle}
+              onViewStatement={this.props.layout === 'wide' ? this.onModalActivityToggle : undefined}
+            />
+        }
         {
           modalBackup
             ? <ModalBackupReset
@@ -661,7 +605,7 @@ class PageWallet extends React.Component<Props, State> {
           )
         }
         {
-          this.state.modalVerify
+          modalConnect
             ? <ConnectWalletModal
                 rewardsBalance={balance.total}
                 providers={this.generateExternalWalletProviderList(externalWalletProviderList)}
@@ -675,7 +619,7 @@ class PageWallet extends React.Component<Props, State> {
             ? this.generateMonthlyReport()
             : null
         }
-      </div>
+      </>
     )
   }
 }

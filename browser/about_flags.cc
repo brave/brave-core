@@ -17,7 +17,7 @@
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_today/common/features.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/common/features.h"
@@ -36,8 +36,8 @@
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
-#include "brave/components/brave_vpn/features.h"
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -58,6 +58,7 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/android/preferences/features.h"
+#include "brave/browser/android/safe_browsing/features.h"
 #endif
 
 using brave_shields::features::kBraveAdblockCnameUncloaking;
@@ -83,6 +84,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 
 #if BUILDFLAG(IS_ANDROID)
 using preferences::features::kBraveBackgroundVideoPlayback;
+using safe_browsing::features::kBraveAndroidSafeBrowsing;
 #endif
 
 namespace flag_descriptions {
@@ -227,7 +229,12 @@ constexpr char kBraveSyncDescription[] =
 
 constexpr char kBraveVPNName[] = "Enable experimental Brave VPN";
 constexpr char kBraveVPNDescription[] = "Experimental native VPN support";
-
+#if BUILDFLAG(IS_WIN)
+constexpr char kBraveVPNDnsProtectionName[] = "Enable DoH for Brave VPN";
+constexpr char kBraveVPNDnsProtectionDescription[] =
+    "Override DoH settings with Cloudflare dns if necessary to avoid leaking "
+    "requests due to Smart Multi-Home Named Resolution";
+#endif
 constexpr char kBraveSkusSdkName[] = "Enable experimental SKU SDK";
 constexpr char kBraveSkusSdkDescription[] = "Experimental SKU SDK support";
 
@@ -274,6 +281,12 @@ constexpr char kBraveRewardsVerboseLoggingDescription[] =
     "and access tokens depending on your activity. Please do not share it "
     "unless asked to by Brave staff.";
 
+constexpr char kBraveRewardsAllowUnsupportedWalletProvidersName[] =
+    "Always show Brave Rewards custodial connection options";
+constexpr char kBraveRewardsAllowUnsupportedWalletProvidersDescription[] =
+    "Allows all custodial options to be selected in Brave Rewards, "
+    "including those not supported for your Rewards country.";
+
 constexpr char kBraveSearchDefaultAPIName[] =
     "Enable Brave Search website default search provider API";
 constexpr char kBraveSearchDefaultAPIDescription[] =
@@ -301,6 +314,10 @@ constexpr char kBraveWalletSolanaProviderName[] =
     "Enable Brave Wallet Solana provider support";
 constexpr char kBraveWalletSolanaProviderDescription[] =
     "Solana provider support for native Brave Wallet";
+constexpr char kBraveWalletSnsName[] = "Enable Solana Name Service support";
+constexpr char kBraveWalletSnsDescription[] =
+    "Enable Solana Name Service(.sol) support for Wallet and omnibox address "
+    "resolution";
 constexpr char kBraveWalletDappsSupportName[] =
     "Enable Brave Wallet Dapps support";
 constexpr char kBraveWalletDappsSupportDescription[] =
@@ -320,12 +337,6 @@ constexpr char kBraveNewsCardPeekFeatureName[] =
 constexpr char kBraveNewsCardPeekFeatureDescription[] =
     "Prompt Brave News via the top featured article peeking up from the bottom "
     "of the New Tab Page, after a short delay.";
-
-constexpr char kBraveNewsSubscribeButtonName[] =
-    "Enable Brave News Subscribe Button";
-constexpr char kBraveNewsSubscribeButtonDescription[] =
-    "Show a button in the toolbar to allow you to add supported sites to Brave "
-    "News.";
 
 constexpr char kCryptoWalletsForNewInstallsName[] =
     "Enable Crypto Wallets option in settings";
@@ -406,6 +417,10 @@ constexpr char kBraveBackgroundVideoPlaybackDescription[] =
     "Enables play audio from video in background when tab is not active or "
     "device screen is turned off. Try to switch to desktop mode if this "
     "feature is not working.";
+constexpr char kBraveAndroidSafeBrowsingName[] = "Safe Browsing";
+constexpr char kBraveAndroidSafeBrowsingDescription[] =
+    "Enables Google Safe Browsing for determining whether a URL has been "
+    "marked as a known threat.";
 #endif
 }  // namespace
 
@@ -415,15 +430,26 @@ constexpr char kBraveBackgroundVideoPlaybackDescription[] =
 // file so we turn it off for the macro sections.
 // clang-format off
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
 #define BRAVE_VPN_FEATURE_ENTRIES                         \
     {kBraveVPNFeatureInternalName,                        \
      flag_descriptions::kBraveVPNName,                    \
      flag_descriptions::kBraveVPNDescription,             \
      kOsMac | kOsWin,                                     \
      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPN)},
+#if BUILDFLAG(IS_WIN)
+#define BRAVE_VPN_DNS_FEATURE_ENTRIES                                  \
+    {kBraveVPNDnsFeatureInternalName,                                  \
+     flag_descriptions::kBraveVPNDnsProtectionName,                    \
+     flag_descriptions::kBraveVPNDnsProtectionDescription,             \
+     kOsWin,                                                           \
+     FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNDnsProtection)},
+#else
+#define BRAVE_VPN_DNS_FEATURE_ENTRIES
+#endif
 #else
 #define BRAVE_VPN_FEATURE_ENTRIES
+#define BRAVE_VPN_DNS_FEATURE_ENTRIES
 #endif
 
 #define BRAVE_SKU_SDK_FEATURE_ENTRIES                   \
@@ -486,7 +512,12 @@ constexpr char kBraveBackgroundVideoPlaybackDescription[] =
      kOsDesktop | kOsAndroid,                                                  \
      FEATURE_VALUE_TYPE(                                                       \
       brave_wallet::features::kBraveWalletSolanaProviderFeature)},             \
-     {"brave-wallet-dapps-support",                                            \
+    {"brave-wallet-sns",                                                       \
+     flag_descriptions::kBraveWalletSnsName,                                   \
+     flag_descriptions::kBraveWalletSnsDescription,                            \
+     kOsDesktop | kOsAndroid,                                                  \
+     FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletSnsFeature)},      \
+    {"brave-wallet-dapps-support",                                             \
      flag_descriptions::kBraveWalletDappsSupportName,                          \
      flag_descriptions::kBraveWalletDappsSupportDescription,                   \
      kOsDesktop | kOsAndroid,                                                  \
@@ -509,12 +540,6 @@ constexpr char kBraveBackgroundVideoPlaybackDescription[] =
      flag_descriptions::kBraveNewsCardPeekFeatureDescription,               \
      kOsDesktop,                                                            \
      FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsCardPeekFeature)}, \
-    {"brave-news-subscribe-button",                                         \
-     flag_descriptions::kBraveNewsSubscribeButtonName,                      \
-     flag_descriptions::kBraveNewsSubscribeButtonDescription,               \
-     kOsLinux | kOsMac | kOsWin,                                            \
-     FEATURE_VALUE_TYPE(                                                    \
-      brave_today::features::kBraveNewsSubscribeButtonFeature)},
 
 #define BRAVE_FEDERATED_FEATURE_ENTRIES                                 \
     {"brave-federated",                                                 \
@@ -575,8 +600,15 @@ constexpr char kBraveBackgroundVideoPlaybackDescription[] =
      flag_descriptions::kBraveBackgroundVideoPlaybackDescription, \
      kOsAndroid,                                                  \
      FEATURE_VALUE_TYPE(kBraveBackgroundVideoPlayback)},
+#define BRAVE_SAFE_BROWSING_ANDROID                               \
+    {"brave-safe-browsing",                                       \
+     flag_descriptions::kBraveAndroidSafeBrowsingName,            \
+     flag_descriptions::kBraveAndroidSafeBrowsingDescription,     \
+     kOsAndroid,                                                  \
+     FEATURE_VALUE_TYPE(kBraveAndroidSafeBrowsing)},
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
+#define BRAVE_SAFE_BROWSING_ANDROID
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES                                   \
@@ -680,6 +712,12 @@ constexpr char kBraveBackgroundVideoPlaybackDescription[] =
      flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \
      kOsDesktop | kOsAndroid,                                               \
      FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},  \
+    {"brave-rewards-allow-unsupported-wallet-providers",                    \
+     flag_descriptions::kBraveRewardsAllowUnsupportedWalletProvidersName,   \
+     flag_descriptions::kBraveRewardsAllowUnsupportedWalletProvidersDescription,\
+     kOsDesktop | kOsAndroid,                                               \
+     FEATURE_VALUE_TYPE(                                                    \
+       brave_rewards::features::kAllowUnsupportedWalletProvidersFeature)},  \
     {"brave-ads-custom-push-notifications-ads",                             \
      flag_descriptions::kBraveAdsCustomNotificationsName,                   \
      flag_descriptions::kBraveAdsCustomNotificationsDescription,            \
@@ -733,10 +771,12 @@ constexpr char kBraveBackgroundVideoPlaybackDescription[] =
     CRYPTO_WALLETS_FEATURE_ENTRIES                                          \
     BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                    \
     BRAVE_VPN_FEATURE_ENTRIES                                               \
+    BRAVE_VPN_DNS_FEATURE_ENTRIES                                           \
     BRAVE_SKU_SDK_FEATURE_ENTRIES                                           \
     SPEEDREADER_FEATURE_ENTRIES                                             \
     BRAVE_TRANSLATE_GO_FEATURE_ENTRIES                                      \
     BRAVE_FEDERATED_FEATURE_ENTRIES                                         \
     PLAYLIST_FEATURE_ENTRIES                                                \
     BRAVE_VERTICAL_TABS_FEATURE_ENTRY                                       \
-    BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
+    BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                 \
+    BRAVE_SAFE_BROWSING_ANDROID

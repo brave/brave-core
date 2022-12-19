@@ -1,6 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ko">
+<translation id="915758461293673891">팁 금액:</translation>
+<translation id="8966035543003363155">Brave 알림으로 더욱 편하게</translation>
+<translation id="7662771815233894695">다운로드 관리, 토큰 적립, 주간 사용 통계 등을 받습니다.</translation>
+<translation id="4265429476391459783">Rewards 미적립/프라이버시 보고서 미수신 중</translation>
+<translation id="1305714751384738456">Rewards 미적립 중</translation>
+<translation id="1483391942610220726">프라이버시 보고서 미수신 중</translation>
+<translation id="4683790942451502796">BAT를 계속 적립하고 주간 프라이버시 보고서를 받으려면 알림을 다시 켜세요.</translation>
+<translation id="1462722717055895108">BAT를 계속 적립하려면 알림을 다시 켜세요.</translation>
+<translation id="5457255168064266494">주간 프라이버시 보고서를 받으려면 알림을 다시 켜세요.</translation>
+<translation id="6268959058971634697">Rewards 미적립 중</translation>
+<translation id="1088637159642753509">BAT를 적립하고 프라이버시 보고서를 받으려면 기기 알림을 활성화하세요.</translation>
+<translation id="312404770066229090">BAT를 적립하려면 기기 알림을 활성화하세요.</translation>
+<translation id="2241529840361230499">Brave 프라이버시 보고서를 받으려면 기기 알림을 활성화하세요.</translation>
+<translation id="4930155581888391118">Brave Rewards를 적립하려면 Brave 알림을 활성화하세요.</translation>
+<translation id="325187916104529570">기기에서 설정을 열고 Brave Ads 알림을 켜세요.</translation>
+<translation id="5744802588121897886">Brave 알림 켜기</translation>
 <translation id="7307834434086582547">Brave Shields 활성화/비활성화</translation>
 <translation id="6945863270524203017">트래커 및 광고 차단과 관련한 프라이버시 업데이트를 매주 받습니다.</translation>
 <translation id="4324735664183300693">알림 켜기</translation>
@@ -61,7 +77,7 @@
 <translation id="3894650624018948468">해결 방법</translation>
 <translation id="2356070529366658676">확인</translation>
 <translation id="4176463684765177261">사용 중지</translation>
-<translation id="1448289340149908413">이더리움</translation>
+<translation id="59174027418879706">사용함</translation>
 <translation id="6252490671914511928">오늘의 주요 스토리가 완전 맞춤형 비공개 피드에 제공됩니다.</translation>
 <translation id="7266075701303521777">Brave News는 광고의 도움으로 제공되는 서비스로, 기기에 맞춘 비공개 익명 광고를 표시합니다.</translation>
 <translation id="4541978218358617681">광고</translation>
@@ -101,8 +117,7 @@
 <translation id="8026334261755873520">인터넷 사용 기록 삭제</translation>
 <translation id="5965081608816406060">백그라운드 동영상 재생</translation>
 <translation id="6332924730165919598">모든 탭을 닫으면 Brave를 닫습니다</translation>
-<translation id="1580125697191336644">실험 기능. 탭이 활성화 상태가 아니거나 기기 화면이 꺼져 있을 때 백그라운드에서 동영상의 소리를 재생합니다. 이 기능이 작동하지 않으면 데스크톱 모드로 전환해 보세요.</translation>
-<translation id="59174027418879706">사용 설정됨</translation>
+<translation id="3872768973878059926">Brave 내 다른 탭 또는 다른 앱으로 전환하거나 기기 화면이 꺼져도 오디오가 계속 재생됩니다.</translation>
 <translation id="4150201353443180367">디스플레이</translation>
 <translation id="2433507940547922241">모양</translation>
 <translation id="6333347122924254968">주소 표시줄에 Brave Rewards 아이콘 표시</translation>
@@ -310,16 +325,11 @@
 <translation id="8533411848724153701">제미니</translation>
 <translation id="8465442795593991224">Uphold가 요청된 서비스에 기반하여 귀하의 신원 확인을 요구할 수도 있습니다.</translation>
 <translation id="3200197118442451932">Brave Software Inc.는 사용자가 계정을 생성할 때 <ph name="WALLET_PROVIDER"/>에 제공하는 개인 정보를 처리, 저장 또는 액세스하지 않습니다.</translation>
-<translation id="3699674790322420653">지갑 인증 완료</translation>
 <translation id="2193391216824305230">사용자 지갑</translation>
 <translation id="1665118090708049096">내 <ph name="WALLET_PROVIDER"/> 계정으로 이동</translation>
 <translation id="1948959999802743233"><ph name="WALLET_PROVIDER"/> 연결 해제</translation>
 <translation id="6239274080752256452">자금 인출</translation>
 <translation id="8874184842967597500">연결되지 않음</translation>
-<translation id="3368922792935385530">연결됨</translation>
-<translation id="5358719431303818601">연결이 끊어진 것이 확인되지 않았습니다</translation>
-<translation id="4241449868720191203">연결 해제 확인</translation>
-<translation id="3248185426436836442">대기 중</translation>
 <translation id="2495032782748793764">Brave 기본</translation>
 <translation id="9132378787893584761">친구들과 Brave를 공유하세요!</translation>
 <translation id="717952606991220586">이런, 뭔가 잘못되었습니다. 나중에 다시 시도해 주세요.</translation>
@@ -673,6 +683,7 @@
 <translation id="1597199892790541240">가스 수수료</translation>
 <translation id="1634828734222219955">합계</translation>
 <translation id="7995708795274219641">수량 + 가스</translation>
+<translation id="2186011161688824046">금액 + 수수료</translation>
 <translation id="1950052789869821983">트랜잭션</translation>
 <translation id="2304783958703511257">고급 설정</translation>
 <translation id="4220062530885628403">임시</translation>
@@ -701,6 +712,7 @@
 <translation id="1133619932669546254"><ph name="TOKEN"/> 활성화</translation>
 <translation id="2199215899212542417">기능 유형: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">데이터 없음</translation>
+<translation id="1105525362447173583">Solana Dapp 서명 트랜잭션</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> 보냄 <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> 님이 <ph name="ASSET"/> #<ph name="ASSET_ID"/> 보냄 - <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/>에서 <ph name="ASSET"/> 승인함 - <ph name="DATE"/></translation>
@@ -800,6 +812,7 @@
 <translation id="8030169304546394654">연결 해제됨</translation>
 <translation id="3423275441470187644">신뢰함</translation>
 <translation id="2391762656119864333">취소</translation>
+<translation id="3368922792935385530">연결됨</translation>
 <translation id="3432029672560911238">사용자 계정</translation>
 <translation id="5753378322046059140">계정 전환</translation>
 <translation id="3897092660631435901">메뉴</translation>
@@ -867,6 +880,7 @@
 <translation id="7080614857771109950">이더리움 블록체인(ERC-20, ERC-721, ERC-1551, ERC-1155)에 EVM 호환 자산 지원</translation>
 <translation id="6577166808959668729">솔라나 블록체인에 SPL 호환 자산 지원</translation>
 <translation id="6575120282593094155">아직 <ph name="ACCOUNT_TYPE"/> 계정이 없습니다. 새로 만드시겠습니까?</translation>
+<translation id="1448289340149908413">이더리움</translation>
 <translation id="5390923430722428146">Solana</translation>
 <translation id="1599766910146472906">제외된 앱</translation>
 <translation id="8463269357637177759">허용된 일반 앱</translation>
@@ -889,6 +903,7 @@
 <translation id="4784306439879850873">서명하면 어떤 일이 일어나든 Brave가 검증하지 않습니다. 서명은 요청하는 사이트에 귀하의 계정 내 거의 모든 동작에 대한 권한을 부여하며, 암호화폐 자산에 대한 전체적인 제어권도 포함하되 이에 국한되지 않습니다. 이 행동에 대한 책임을 스스로 지고 요청 사이트를 신뢰할 수 있는 경우에만 서명하세요.</translation>
 <translation id="3474375934783434676">모든 책임을 지고 서명</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> / <ph name="SIZE"/></translation>
+<translation id="756701799684433105">트랜잭션 승인</translation>
 <translation id="6450792191436242818">시스템 프로그램</translation>
 <translation id="6252742184395380448">구성 프로그램</translation>
 <translation id="5358970666412490132">스테이크 프로그램</translation>
@@ -898,6 +913,7 @@
 <translation id="6421371987002247943">토큰 프로그램</translation>
 <translation id="8780753288764281797">Secp256k1 프로그램</translation>
 <translation id="8504640708321980506">데이터</translation>
+<translation id="3723411967118253067">프로그램 ID</translation>
 <translation id="4771176409524282426">계정 만들기</translation>
 <translation id="1755120947324658439">배정</translation>
 <translation id="7588707273764747927">전송</translation>
@@ -937,4 +953,27 @@
 <translation id="7352651011704765696">문제가 생겼습니다</translation>
 <translation id="7144878232160441200">재시도</translation>
 <translation id="6040143037577758943">닫기</translation>
+<translation id="7710469167917867539">트랜잭션 수수료</translation>
+<translation id="7843211152394841558">최대 재시도 횟수:</translation>
+<translation id="8496335570810457">프리플라이트 약속:</translation>
+<translation id="5100124500279922001">프리플라이트 건너뛰기:</translation>
+<translation id="7152095322071766507">가장 자주 방문한 사이트</translation>
+<translation id="7230006500876504868">Brave로 검색</translation>
+<translation id="5888208462949095139"><ph name="DEFAULT_SEARCH_ENGINE"/>(으)로 검색</translation>
+<translation id="5456039738087398178">홈 화면 위젯</translation>
+<translation id="703185154752046151">홈 화면에 위젯 추가됨</translation>
+<translation id="3290805388004282161">Brave 검색 위젯을 사용해보세요</translation>
+<translation id="4809681171446727314">프라이버시가 보호되는 독립적인 검색을 홈 화면에서 바로 이용할 수 있습니다.</translation>
+<translation id="7751715172931488388">위젯 추가</translation>
+<translation id="7285167584112910782">Brave 퀵 액션 검색</translation>
+<translation id="2326703104633309781">Brave 번역 사용</translation>
+<translation id="5802752138057422257">비ASCII 문자가 감지되었습니다!</translation>
+<translation id="442709594176931966">원본 메시지 보기</translation>
+<translation id="2239252396088484499">메시지를 ASCII 인코딩으로 보기</translation>
+<translation id="4220693114674044366">토큰 주소</translation>
+<translation id="5658257029899993935">구매한 항목을 Brave 계정에 연결</translation>
+<translation id="1187061015547219282">다른 기기에서도 Brave VPN을 사용하려면 Play 스토어 구매 항목을 Brave 계정에 연결하세요.</translation>
+<translation id="6662142137695589205">VPN 구독 연결</translation>
+<translation id="2674077112509133024">Brave Firewall + VPN 보호를 더 폭넓게 활용</translation>
+<translation id="6365389672683343144">Brave VPN 구독은 최대 5대의 Android, iOS, 데스크톱 기기를 보호할 수 있습니다. Google Play 구독을 Brave 계정에 연결하기만 하면 됩니다.</translation>
 </translationbundle>

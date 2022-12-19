@@ -17,8 +17,8 @@ source_set("renderer") {
 
   deps = [
     "//base",
-    "//brave/components/brave_vpn/buildflags",
-    "//brave/components/brave_vpn/mojom",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_vpn/common/mojom",
     "//brave/components/skus/common",
     "//brave/components/skus/common:mojom",
     "//content/public/renderer",

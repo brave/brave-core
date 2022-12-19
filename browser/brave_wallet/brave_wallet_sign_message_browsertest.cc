@@ -35,6 +35,22 @@
 
 namespace brave_wallet {
 
+namespace {
+
+bool WaitForWalletBubble(content::WebContents* web_contents) {
+  auto* tab_helper =
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents);
+  if (!tab_helper->IsShowingBubble()) {
+    base::RunLoop run_loop;
+    tab_helper->SetShowBubbleCallbackForTesting(run_loop.QuitClosure());
+    run_loop.Run();
+  }
+
+  return tab_helper->IsShowingBubble();
+}
+
+}  // namespace
+
 class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
  public:
   BraveWalletSignMessageBrowserTest()
@@ -112,10 +128,7 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
   }
   void CallEthereumEnable() {
     ASSERT_TRUE(ExecJs(web_contents(), "ethereumEnable()"));
-    base::RunLoop().RunUntilIdle();
-    ASSERT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   }
 
  protected:
@@ -149,9 +162,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {
                            method.c_str())));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_TRUE(WaitForWalletBubble(web_contents()));
     brave_wallet_service_->NotifySignMessageRequestProcessed(
         true, request_index++, nullptr, absl::nullopt);
     EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
@@ -181,9 +192,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserRejectedRequest) {
                            method.c_str())));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(
-        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-            ->IsShowingBubble());
+    EXPECT_TRUE(WaitForWalletBubble(web_contents()));
     brave_wallet_service_->NotifySignMessageRequestProcessed(
         false, request_index++, nullptr, absl::nullopt);
     EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",

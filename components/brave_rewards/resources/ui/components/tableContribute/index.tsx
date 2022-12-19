@@ -22,7 +22,7 @@ interface ProfileCell {
   verified: boolean
   name: string
   src: string
-  provider?: Provider
+  provider?: string
 }
 
 export interface DetailRow {
@@ -98,7 +98,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
               <StyledLink href={row.url} target={'_blank'} data-test-id={'ac_link_' + row.profile.name}>
                 <Profile
                   title={row.profile.name}
-                  provider={row.profile.provider}
+                  provider={row.profile.provider as Provider}
                   verified={row.profile.verified}
                   src={row.profile.src}
                   tableCell={this.props.isMobile}

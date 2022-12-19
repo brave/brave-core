@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/serving/inline_content_ad_serving.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "base/rand_util.h"
 #include "bat/ads/inline_content_ad_info.h"
@@ -47,23 +49,23 @@ void Serving::RemoveObserver(ServingObserver* observer) {
 }
 
 void Serving::MaybeServeAd(const std::string& dimensions,
-                           const MaybeServeInlineContentAdCallback& callback) {
+                           MaybeServeInlineContentAdCallback callback) {
   if (!features::IsEnabled()) {
     BLOG(1, "Inline content ad not served: Feature is disabled");
-    FailedToServeAd(dimensions, callback);
+    FailedToServeAd(dimensions, std::move(callback));
     return;
   }
 
   if (!IsSupported()) {
     BLOG(1, "Inline content ad not served: Unsupported version");
-    FailedToServeAd(dimensions, callback);
+    FailedToServeAd(dimensions, std::move(callback));
     return;
   }
 
   if (!PermissionRules::HasPermission()) {
     BLOG(1,
          "Inline content ad not served: Not allowed due to permission rules");
-    FailedToServeAd(dimensions, callback);
+    FailedToServeAd(dimensions, std::move(callback));
     return;
   }
 
@@ -72,28 +74,34 @@ void Serving::MaybeServeAd(const std::string& dimensions,
   DCHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model, dimensions,
-      [=](const bool had_opportunity,
-          const CreativeInlineContentAdList& creative_ads) {
-        if (had_opportunity) {
-          const SegmentList segments =
-              targeting::GetTopChildSegments(user_model);
-          NotifyOpportunityAroseToServeInlineContentAd(segments);
-        }
+      base::BindOnce(&Serving::OnGetForUserModel, base::Unretained(this),
+                     user_model, dimensions, std::move(callback)));
+}
 
-        if (creative_ads.empty()) {
-          BLOG(1, "Inline content ad not served: No eligible ads found");
-          FailedToServeAd(dimensions, callback);
-          return;
-        }
+void Serving::OnGetForUserModel(
+    const targeting::UserModelInfo& user_model,
+    const std::string& dimensions,
+    MaybeServeInlineContentAdCallback callback,
+    const bool had_opportunity,
+    const CreativeInlineContentAdList& creative_ads) {
+  if (had_opportunity) {
+    const SegmentList segments = targeting::GetTopChildSegments(user_model);
+    NotifyOpportunityAroseToServeInlineContentAd(segments);
+  }
 
-        BLOG(1, "Found " << creative_ads.size() << " eligible ads");
+  if (creative_ads.empty()) {
+    BLOG(1, "Inline content ad not served: No eligible ads found");
+    FailedToServeAd(dimensions, std::move(callback));
+    return;
+  }
 
-        const int rand = base::RandInt(0, creative_ads.size() - 1);
-        const CreativeInlineContentAdInfo& creative_ad = creative_ads.at(rand);
+  BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
-        const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
-        ServeAd(ad, callback);
-      });
+  const int rand = base::RandInt(0, creative_ads.size() - 1);
+  const CreativeInlineContentAdInfo& creative_ad = creative_ads.at(rand);
+
+  const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
+  ServeAd(ad, std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -103,10 +111,10 @@ bool Serving::IsSupported() const {
 }
 
 void Serving::ServeAd(const InlineContentAdInfo& ad,
-                      const MaybeServeInlineContentAdCallback& callback) {
+                      MaybeServeInlineContentAdCallback callback) {
   if (!ad.IsValid()) {
     BLOG(1, "Failed to serve inline content ad");
-    FailedToServeAd(ad.dimensions, callback);
+    FailedToServeAd(ad.dimensions, std::move(callback));
     return;
   }
 
@@ -129,15 +137,14 @@ void Serving::ServeAd(const InlineContentAdInfo& ad,
 
   NotifyDidServeInlineContentAd(ad);
 
-  callback(ad.dimensions, ad);
+  std::move(callback).Run(ad.dimensions, ad);
 }
 
-void Serving::FailedToServeAd(
-    const std::string& dimensions,
-    const MaybeServeInlineContentAdCallback& callback) {
+void Serving::FailedToServeAd(const std::string& dimensions,
+                              MaybeServeInlineContentAdCallback callback) {
   NotifyFailedToServeInlineContentAd();
 
-  callback(dimensions, absl::nullopt);
+  std::move(callback).Run(dimensions, absl::nullopt);
 }
 
 void Serving::NotifyOpportunityAroseToServeInlineContentAd(

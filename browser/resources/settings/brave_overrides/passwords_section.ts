@@ -13,11 +13,5 @@ RegisterPolymerTemplateModifications({
     } else {
       checkPasswordsLinkRow.remove()
     }
-    const manageLink = templateContent.querySelector('#manageLink')
-    if (!manageLink) {
-      console.error('[Brave Settings Overrides] Could not find manageLink in passwords_section')
-    } else {
-      manageLink.remove()
-    }
   }
 })

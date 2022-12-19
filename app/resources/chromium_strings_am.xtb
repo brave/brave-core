@@ -9,13 +9,16 @@
 <translation id="2796517443093885402">Brave ደህንነትዎ ከውሂብ ጥሰቶች፣ ከመጥፎ ቅጥያዎች እና ተጨማሪ ነገሮች እንደተጠበቀ እንዲቆይ ሊያግዝ ይችላል</translation>
 <translation id="5918095577778020936">Brave የእርስዎን የይለፍ ቃላት ወደ ውጭ መላክ ይፈልጋል። ይህንን ለመፍቀድ የWindows የይለፍ ቃልዎን ይተይቡ።</translation>
 <translation id="5468853758063275923">Brave የእርስዎ ነባሪ አሳሽ ነው</translation>
-<translation id="8522292744959221145">የእርስዎ የይለፍ ቃላት ከውሂብ ጥሰቶች እና ሌሎች የደህንነት ችግሮች ነጻ መሆናቸውን ለማረጋገጥ <ph name="BEGIN_LINK"/>በመለያ ወደ Brave ይግቡ<ph name="END_LINK"/>።</translation>
+<translation id="8522292744959221145">የእርስዎ የይለፍ ቃላት ከውሂብ ጥሰቶች እና ሌሎች የደህንነት ችግሮች ነፃ መሆናቸውን ለማረጋገጥ <ph name="BEGIN_LINK"/>በመለያ ወደ Brave ይግቡ<ph name="END_LINK"/>።</translation>
 <translation id="8541922081612557424">ስለBrave</translation>
 <translation id="1203500561924088507">ሰለተጫኑ እናመሰግናለን። <ph name="BUNDLE_NAME"/>ን ከመጠቀምዎ በፊት አሳሽዎን እንደገና ማስጀመር አለብዎት።</translation>
+<translation id="8905049883018921395">ሲበራ፣ Brave ገቢር ካልሆኑ ትሮች ማህደረ ትውስታን ነፃ ያደርጋል። ይህ ገቢር ለሆኑ ትሮች እና ለሌሎች መተግበሪያዎች ተጨማሪ የኮምፒውተር ግብዓቶችን ይሰጣቸዋል እና Braveን ፈጣን አድርጎ ያቆየዋል። የእርስዎ ገቢር ያልሆኑ ትሮች ተመልሰው ወደ እነሱ ሲሄዱ በራስ-ሰር እንደገና ገቢር ይሆናሉ። <ph name="BEGIN_LINK"/>የበለጠ ለመረዳት<ph name="END_LINK"/></translation>
+<translation id="4658574652223735641">የማህደረ ትውስታ ቆጣቢ Braveን የበለጠ ፈጣን አድርጎታል</translation>
 <translation id="4798342026247191171">አዲሱን የBrave መገለጫዎ ያቀናብሩት</translation>
 <translation id="6361779936989026201">በBrave ውስጥ የBrave ረዳት</translation>
 <translation id="113959764510199339">Brave የይለፍ ቃላትን ለማሳየት እየሞከረ ነው።</translation>
 <translation id="8132634101975074716">ወደ Brave ገብተዋል!</translation>
+<translation id="4168469784091952813">ከBrave ማግኘት የሚችሉትን ሁሉ በማግኘት መደሰት ይችላሉ</translation>
 <translation id="5147525139567260139">የBrave ትር ያጋሩ</translation>
 <translation id="1530633922026945685">Brave የዙሪያዎ 3ል ካርታ መፍጠር እንዲችል ካሜራዎን የመድረስ ፈቃድ ያስፈልገዋል</translation>
 <translation id="4449148723378534338">በBrave ውስጥ ቁልፍ የግላዊነት እና የደህንነት ቁጥጥሮችን ይገምግሙ</translation>
@@ -33,7 +36,7 @@
 <translation id="1775322105159056176">Brave ነባሪ አሳሹን ማወቅ ወይም ማቀናበር አልቻለም</translation>
 <translation id="9220324636239049437">ይሄ 1 ንጥል ከዚህ መሣሪያ ይሰርዛል። ውሂብዎን በኋላ ላይ ሰርስረው ለማውጣት እንደ <ph name="USER_EMAIL"/> ሆነው ወደ Brave ይግቡ።</translation>
 <translation id="2018879682492276940">መጫን አልተሳካም። እባክዎ እንደገና ይሞክሩ።</translation>
-<translation id="831418749472885028">ሌሎች የእርስዎ ይለፍ ቃላት ከውሂብ ጥሰቶች እና ሌሎች የደህንነት ችግሮች ነጻ መሆናቸውን ለማረጋገጥ <ph name="BEGIN_LINK"/>በመለያ ወደ Brave ይግቡ<ph name="END_LINK"/>።</translation>
+<translation id="831418749472885028">ሌሎች የእርስዎ ይለፍ ቃላት ከውሂብ ጥሰቶች እና ሌሎች የደህንነት ችግሮች ነፃ መሆናቸውን ለማረጋገጥ <ph name="BEGIN_LINK"/>በመለያ ወደ Brave ይግቡ<ph name="END_LINK"/>።</translation>
 <translation id="5499149312981370855">በBrave አገልግሎቶች ውስጥ ተጨማሪ ግላዊነት የተላበሱ ተሞክሮዎችን ለማግኘት የBrave ታሪክን ለማካተት እና ላለማካተት ይምረጡ</translation>
 <translation id="849607431499549468">Brave እንዴት የስር እውቅና ማረጋገጫዎቹን እንደሚያስተዳድር ላይ መረጃ</translation>
 <translation id="142389341645668510">Braveን አብጅ</translation>
@@ -168,6 +171,7 @@
 <translation id="1786715389543715322">Braveን በማዘመን ላይ (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">የBrave በመለያ መግባትን ይፍቀዱ</translation>
 <translation id="5536657158619734169">አዲስ የBrave ስሪት አለ።</translation>
+<translation id="5267531627648004734">ከBrave አስወግድ</translation>
 <translation id="239760341987199724">Brave እንደ ነባሪ አሳሽዎ አድርገው ያዋቅሩት</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave ቅድመ-ይሁንታ</translation>
 <translation id="894936507076470937">በዚህ የLinux ስርጭት ላይ ከእንግዲህ ስለማይደገፍ Brave በአግባቡ ላይሰራ ይችላል።</translation>
@@ -195,6 +199,7 @@
 <translation id="505042220086416644">አዲስ የBrave ስሪት ይገኛል፣ እና ከመቼውም በበለጠ ፈጣን ሆኗል።</translation>
 <translation id="9071554113102421877">በBrave ውስጥ &amp;ክፈት</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> ወደ Brave ታክሏል።</translation>
+<translation id="3693188491491843187">Braveን የበለጠ ፈጣን ያድርጉት</translation>
 <translation id="608006075545470555">የስራ መገለጫ ወደዚህ አሳሽ ያክሉ</translation>
 <translation id="5849446944780602366">Braveን ያብጁትና ይቆጣጠሩት። ዝማኔ ይገኛል።</translation>
 <translation id="7433698744896946664">ቅጥያ በBrave የመሣሪያ አሞሌ ውስጥ የመዳረሻ ጥያቄዎችን እንዲያሳይ ፍቀድ</translation>
@@ -238,6 +243,7 @@
 <translation id="1489465648257900784">መገለጫዎ ከአዲስ የBrave ስሪት ስለሆነ የመጣው ስራ ላይ ሊውል አይችልም።
 
 አንዳንድ ባህሪያት ላይገኙ ይችላሉ። እባክዎ የተለየ የመገለጫ አቃፊ ይግለጹ ወይም ይበልጥ አዲስ የሆነ የBrave ስሪት ይጠቀሙ።</translation>
+<translation id="7870748924073900361">የማህደረ ትውስታ ቆጣቢ Braveን ፈጣን አድርጎታል</translation>
 <translation id="6666624454809779082">Brave ለሁሉም በእርስዎ ኮምፒውተር ላይ ላሉ ተጠቃሚዎች አስቀድሞ ተጭኗል።</translation>
 <translation id="5360050006043219962">በሁሉም መሣሪያዎችዎ ላይ የእርስዎን Brave ነገሮች ለመድረስ ይግቡ፣ ከዚያ ስምረትን ያብሩ።</translation>
 <translation id="8291513491595858997">የእርስዎ ወላጅ ለBrave «የጣቢያዎች፣ መተግበሪያዎች እና ቅጥያዎች ፈቃዶች»ን አጥፍተዋል። ይህን <ph name="EXTENSION_TYPE_PARAMETER"/> ማንቃት አይፈቀድም።</translation>
@@ -275,6 +281,7 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="38294420683216447">በBrave መገለጫዎች ሁሉንም የBrave ነገሮችዎን መለየት ይችላሉ። ይህ በስራ እና በመዝናኛ መካከል መከፋፈልን ቀላል ያደርገዋል።</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave ግንባታ</translation>
 <translation id="2034072705932785495">Brave ለዚህ ጣቢያ የእርስዎን ካሜራ ለመድረስ ፈቃድ ያስፈልገዋል</translation>
+<translation id="5296583608321648908">የወደፊት የBrave ዝማኔዎችን ለማግኘት Windows 10 ወይም ከዚያ በላይ ያስፈልግዎታል። ይህ ኮምፒውተር Windows 7ን እየተጠቀመ ነው።</translation>
 <translation id="3962395975456095331">Brave ዳግም ይጀመር?</translation>
 <translation id="2619516027171717873">እየሄደ ያለውን ተመሳሳዩን የBrave ስሪት መጫን አይቻልም። እባክዎ Braveን ይዝጉና እንደገና ይሞክሩ።</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave በ1 ደቂቃ ውስጥ ዳግም ይጀመራል}one{Brave በ# ደቂቃዎች ውስጥ ዳግም ይጀመራል}other{Brave በ# ደቂቃዎች ውስጥ ዳግም ይጀመራል}}</translation>
@@ -289,9 +296,9 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="8678991866891573053">Brave ጣቢያዎች ያነሰ ውሂብዎን ተጠቅመው ተመሳሳይ የአሰሳ ተሞክሮ እንዲያቀርቡ የሚያስችሏቸውን አዳዲስ ባህሪያትን እያሰሰ ነው።</translation>
 <translation id="3343095737966473035">Brave ነባሪ አሳሽዎ አይደለም</translation>
 <translation id="5477319665405831211">በመላ መሣሪያዎችዎ ላይ Braveን ያሳምሩ እና ግላዊነት ያላብሱ</translation>
-<translation id="2280238321454602884">ሲበራ፣ Brave በንቃት እየተጠቀሟቸው ካልሆኑ ትሮች ማህደረ ትውስታን መልሶ ይወስዳል። ይህ የእርስዎን ኮምፒውተር ንብረቶች ለሌሎች ተግባሮች ቦታ ያስለቅቃል እና Brave ፈጣን ሆኖ እንዲቆይ ያደርጋል። ንቁ ያልሆኑ ትሮች ባዶ ሆነው ይታያሉ እና ጠቅ ሲያደርጓቸው በራስ-ሰር እንደገና ይጭናሉ። <ph name="BEGIN_LINK"/>የበለጠ ይወቁ<ph name="END_LINK"/> ወይም <ph name="BEGIN_LINK_2"/>ግብረመልስ ይላኩ<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">ይሄ የአሰሳ ውሂብዎን ከዚህ መሣሪያ ይሰርዘዋል። ውሂብዎን በኋላ ላይ ሰርስረው ለማውጣት እንደ <ph name="USER_EMAIL"/> ሆነው ወደ Brave ይግቡ።</translation>
 <translation id="7747138024166251722">ጫኝው ጊዜያዊ ማውጫ መፍጠር አልቻለም። እባክዎ ነፃ የዲስክ ቦታ እና ሶፍትዌር የመጫን ፍቃድ እንዳለ ይፈትሹ።</translation>
+<translation id="1978509466033734608">Braveን የበለጠ ፈጣን ያድርጉት</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="1652855885539187849">ይህን መለያ ያለው አንድ የBrave መገለጫ አስቀድሞ በዚህ መሣሪያ ላይ አለ</translation>
 <translation id="7845233973568007926">ሰለተጫኑ እናመሰግናለን። <ph name="BUNDLE_NAME"/>ን ከመጠቀምዎ በፊት ኮምፒውተርዎን እንደገና ማስጀመር አለብዎት።</translation>
@@ -314,15 +321,16 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="3360368475735266712">Braveን በመላ መሣሪያዎችዎ ላይ ለማሳመር እና ግላዊነት ለማላበስ</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> ከዚህ ቀደም Braveን እየተጠቀመ ነበር</translation>
 <translation id="3098618823450433881">በሁሉም መሣሪያዎችዎ ላይ የእርስዎን የBrave አሳሽ ነገሮች ለመድረስ ይግቡ፣ ከዚያ ስምረትን ያብሩ</translation>
+<translation id="2569754604093464025">የወደፊት የBrave ዝማኔዎችን ለማግኘት Windows 10 ወይም ከዚያ በላይ ያስፈልግዎታል። ይህ ኮምፒውተር Windows 8 እየተጠቀመ ነው።</translation>
 <translation id="5337999052834672687">{0,plural, =1{በአንድ ቀን ውስጥ Braveን ዳግም አስጀምር}one{በ# ቀኖች ውስጥ Braveን ዳግም አስጀምር}other{በ# ቀኖች ውስጥ Braveን ዳግም አስጀምር}}</translation>
 <translation id="6914496861676471566">የጫኚው መዝገብ ተበላሽቷል ወይም ትክክል አይደለም። እባክዎ Braveን እንደገና ያውርዱ።</translation>
 <translation id="6431861494713261006">ከተፈለገ፦ የምርመራ እና የአጠቃቀም ውሂብ ወደ Brave በራስ-ሰር በመላክ የChromeOS ባህሪያትን እና አፈጻጸምን እንዲሻሻል ያግዙ።</translation>
 <translation id="2097604701283463988">Brave ጊዜው አልፎበታል</translation>
-<translation id="607365808648940765">እንደ አስፈላጊነቱ፣ Brave በንቃት የማይጠቀሟቸውን ትሮች ማህደረ ትውስታ መልሶ ይወስዳል። ይህንን በማንኛውም ጊዜ በቅንብሮች ውስጥ መቀየር ይችላሉ።</translation>
 <translation id="8550334526674375523">ይህ የስራ መገለጫ ከግል መገለጫዎ ሙሉ ለሙሉ የተለየ ነው።</translation>
 <translation id="2452889775041290116">የእርስዎ ወላጅ ለBrave «የጣቢያዎች፣ መተግበሪያዎች እና ቅጥያዎች ፈቃዶች»ን አጥፍተዋል። ይህን <ph name="EXTENSION_TYPE_PARAMETER"/> ማከል አይፈቀድም።</translation>
 <translation id="8502436661255886343">የወደፊቱን የBrave ዝመኔዎችን ለማግኘት፣ macOS 10.13 ወይም ከዚያ በኋላ ያለው ያስፈልግዎታል። ይህ ኮምፒተር macOS 10.12 እየተጠቀመ ነው።</translation>
 <translation id="227028348235968071">Brave በእርስዎ የBrave መለያ በሚገቡበት ጊዜ የእርስዎን የይለፍ ቃላትን ሊፈትሽ ይችላል</translation>
+<translation id="4226455268610449503">ሲበራ፣ Brave የዳራ እንቅስቃሴን እና እንደ ለስላሳ ሽብለላ እና የቪድዮ የክፈፍ ፍጥነቶች ያሉ ምስላዊ ተጽዕኖዎችን በመገደብ የባትሪ ኃይልን ይቆጥባል። <ph name="BEGIN_LINK"/>የበለጠ ለመረዳት<ph name="END_LINK"/></translation>
 <translation id="8121009781989288430">የቅጂ መብት <ph name="YEAR"/> የBrave ደራሲያን። ሁሉም መብቶች የተጠበቁ ናቸው።</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>ይህንን ውሂብ እንዴት እንደሚጠቀሙበት፦<ph name="END_BOLD"/> ጣቢያዎች ስለዝንባሌዎችዎ መረጃን በBrave አማካኝነት ማከማቸት ይችላሉ። ለምሳሌ፣ ለማራቶን ጫማ ለመግዛት ጣቢያን ከጎበኙ ጣቢያው ዝንባሌዎን እንደ ማራቶን መሮጥ ሊገልጽ ይችላል። በኋላ ላይ ለሩጫ ለመመዝገብ ሌላ ጣቢያ ከጎበኙ ይህ ጣቢያ በዝንባሌዎችዎ ላይ ተመስርቶ የመሮጫ ጫማ ማስታወቂያ ሊያሳየዎት ይችላል።</translation>
 <translation id="3052349005266761501">Braveን በማስጀመር ላይ...</translation>
@@ -345,6 +353,7 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="82609232232243542">Brave ውስጥ ይግቡ</translation>
 <translation id="5173820533850252773">Brave ጊዜው አልፎበታል</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave በአንድ ሰዓት ውስጥ ዳግም ይጀምራል}one{Brave በ# ሰዓቶች ውስጥ ዳግም ይጀምራል}other{Brave በ# ሰዓቶች ውስጥ ዳግም ይጀምራል}}</translation>
+<translation id="5190991181158966940">የወደፊት የBrave ዝማኔዎችን ለማግኘት Windows 10 ወይም ከዚያ በላይ ያስፈልግዎታል። ይህ ኮምፒውተር Windows 8.1ን እየተጠቀመ ነው።</translation>
 <translation id="7863882214613921971">አገናኙን በBrave አዲስ &amp;ትር ውስጥ ክፈት</translation>
 <translation id="911206726377975832">የአሰሳ ውሂብዎም ይሰረዝ?</translation>
 <translation id="5708733457516068434">በሙከራዎቹ ጊዜ ማስታወቂያዎችን ለእርስዎ ለማሳየት የሚጠቀሙባቸውን የዝንባሌ ጣቢያዎች ርዕሶች ማየት እና ማስወገድ ይችላሉ። Brave በቅርብ ጊዜ የአሰሳ ታሪክዎ ላይ ተመስርቶ የእርስዎን ፍላጎቶች ይገምታል።</translation>

@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/account/account_util.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/account/confirmations/confirmation_unittest_util.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"

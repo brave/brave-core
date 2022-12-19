@@ -13,7 +13,6 @@ const char kDefaultBaseCryptocurrency[] =
 const char kBraveWalletTransactions[] = "brave.wallet.transactions";
 const char kShowWalletIconOnToolbar[] =
     "brave.wallet.show_wallet_icon_on_toolbar";
-const char kShowWalletTestNetworks[] = "brave.wallet.show_wallet_test_networks";
 const char kBraveWalletSelectedCoin[] = "brave.wallet.selected_coin";
 const char kBraveWalletLastUnlockTime[] =
     "brave.wallet.wallet_last_unlock_time_v2";
@@ -55,8 +54,14 @@ const char kBraveWalletKeyringEncryptionKeysMigrated[] =
     "brave.wallet.keyring_encryption_keys_migrated";
 const char kBraveWalletLastTransactionSentTimeDict[] =
     "brave.wallet.last_transaction_sent_time_dict";
+const char kBraveWalletNextAssetDiscoveryFromBlocks[] =
+    "brave.wallet.next_asset_discovery_from_blocks";
+const char kBraveWalletLastDiscoveredAssetsAt[] =
+    "brave.wallet.last_discovered_assets_at";
 
 // DEPRECATED
+const char kShowWalletTestNetworksDeprecated[] =
+    "brave.wallet.show_wallet_test_networks";
 const char kBraveWalletSelectedAccount[] = "brave.wallet.selected_account";
 const char kBraveWalletWeb3ProviderDeprecated[] = "brave.wallet.web3_provider";
 const char kDefaultWalletDeprecated[] = "brave.wallet.default_wallet";

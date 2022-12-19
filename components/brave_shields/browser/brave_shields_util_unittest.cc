@@ -22,6 +22,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -558,6 +559,67 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_Default) {
   setting = brave_shields::GetCookieControlType(map, cookies.get(),
                                                 GURL("http://brave.com"));
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
+}
+
+TEST_F(BraveShieldsUtilTest, GetCookieControlType_WithUserSettings) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
+  auto cookies = CookieSettingsFactory::GetForProfile(profile());
+
+  struct CookieState {
+    bool block_first_party = false;
+    bool block_third_party = false;
+  };
+
+  auto get_effective_cookie_state =
+      [](content_settings::CookieSettings* cookie_settings,
+         const GURL& url) -> CookieState {
+    const auto first_party_blocked =
+        cookie_settings->GetCookieSetting(
+            url, url, nullptr,
+            content_settings::CookieSettings::QueryReason::kCookies) ==
+        CONTENT_SETTING_BLOCK;
+
+    const auto third_party_blocked =
+        cookie_settings->GetCookieSetting(
+            GURL::EmptyGURL(), url, nullptr,
+            content_settings::CookieSettings::QueryReason::kCookies) ==
+        CONTENT_SETTING_BLOCK;
+
+    return {first_party_blocked, third_party_blocked};
+  };
+
+  auto cookies_settings =
+      get_effective_cookie_state(cookies.get(), GURL("http://brave.com"));
+  EXPECT_FALSE(cookies_settings.block_first_party);
+  EXPECT_TRUE(cookies_settings.block_third_party);
+
+  // block all
+  map->SetContentSettingCustomScope(
+      ContentSettingsPattern::Wildcard(),
+      ContentSettingsPattern::FromURL(GURL("http://brave.com")),
+      ContentSettingsType::COOKIES, CONTENT_SETTING_BLOCK);
+
+  auto setting = brave_shields::GetCookieControlType(map, cookies.get(),
+                                                     GURL("http://brave.com"));
+  // User settings doesn't affect BRAVE_COOKIES
+  EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
+
+  cookies_settings =
+      get_effective_cookie_state(cookies.get(), GURL("http://brave.com"));
+  EXPECT_TRUE(cookies_settings.block_first_party);
+  EXPECT_TRUE(cookies_settings.block_third_party);
+
+  brave_shields::SetCookieControlType(
+      map, profile()->GetPrefs(), ControlType::ALLOW, GURL("http://brave.com"));
+  setting = brave_shields::GetCookieControlType(map, cookies.get(),
+                                                GURL("http://brave.com"));
+  // User settings still doesn't affect BRAVE_COOKIES
+  EXPECT_EQ(ControlType::ALLOW, setting);
+
+  cookies_settings =
+      get_effective_cookie_state(cookies.get(), GURL("http://brave.com"));
+  EXPECT_FALSE(cookies_settings.block_first_party);
+  EXPECT_FALSE(cookies_settings.block_third_party);
 }
 
 TEST_F(BraveShieldsUtilTest, GetCookieControlType_ForOrigin) {

@@ -26,11 +26,10 @@ TEST(BatAdsExclusionRuleFeaturesTest, IsEnabled) {
 
 TEST(BatAdsExclusionRuleFeaturesTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kFeature);
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -47,7 +46,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, ShouldExcludeAdIfConverted) {
   // Arrange
   base::FieldTrialParams kParameters;
   kParameters["should_exclude_ad_if_converted"] = "false";
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, kParameters);
 
   const std::vector<base::test::FeatureRef> disabled_features;
@@ -67,8 +66,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, ShouldExcludeAdIfConverted) {
 
 TEST(BatAdsExclusionRuleFeaturesTest, DefaultShouldExcludeAdIfConverted) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -86,11 +84,10 @@ TEST(BatAdsExclusionRuleFeaturesTest, DefaultShouldExcludeAdIfConverted) {
 
 TEST(BatAdsExclusionRuleFeaturesTest, DisabledShouldExcludeAdIfConverted) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kFeature);
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -110,7 +107,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, ExcludeAdIfDismissedWithinTimeWindow) {
   base::FieldTrialParams parameters;
   const char kParameter[] = "exclude_ad_if_dismissed_within_time_window";
   parameters[kParameter] = "24h";
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, parameters);
 
   const std::vector<base::test::FeatureRef> disabled_features;
@@ -130,8 +127,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, ExcludeAdIfDismissedWithinTimeWindow) {
 TEST(BatAdsExclusionRuleFeaturesTest,
      DefaultExcludeAdIfDismissedWithinTimeWindow) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -150,11 +146,10 @@ TEST(BatAdsExclusionRuleFeaturesTest,
 TEST(BatAdsExclusionRuleFeaturesTest,
      DefaultExcludeAdIfDismissedWithinTimeWindowWhenDisabled) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kFeature);
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -173,7 +168,7 @@ TEST(BatAdsUserActivityFeaturesTest, ExcludeAdIfTransferredWithinTimeWindow) {
   base::FieldTrialParams parameters;
   const char kParameter[] = "exclude_ad_if_transferred_within_time_window";
   parameters[kParameter] = "24h";
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, parameters);
 
   const std::vector<base::test::FeatureRef> disabled_features;
@@ -193,8 +188,7 @@ TEST(BatAdsUserActivityFeaturesTest, ExcludeAdIfTransferredWithinTimeWindow) {
 TEST(BatAdsUserActivityFeaturesTest,
      DefaultExcludeAdIfTransferredWithinTimeWindow) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -213,11 +207,10 @@ TEST(BatAdsUserActivityFeaturesTest,
 TEST(BatAdsUserActivityFeaturesTest,
      DefaultExcludeAdIfTransferredWithinTimeWindowWhenDisabled) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.push_back(kFeature);
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,

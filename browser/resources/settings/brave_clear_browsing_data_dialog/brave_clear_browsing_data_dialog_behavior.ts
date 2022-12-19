@@ -8,15 +8,18 @@
 import "./brave_clear_browsing_data_on_exit_page.js"
 
 import {loadTimeData} from "../i18n_setup.js"
-import {WebUIListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
+import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {SettingsClearBrowsingDataDialogElement} from '../clear_browsing_data_dialog/clear_browsing_data_dialog.js'
 import type {SettingsClearBrowsingDataDialogElement as BraveSettingsClearBrowsingDataDialogElement} from '../clear_browsing_data_dialog/clear_browsing_data_dialog.js'
 
-const BaseElement = WebUIListenerMixin(SettingsClearBrowsingDataDialogElement)
+const BaseElement = WebUiListenerMixin(SettingsClearBrowsingDataDialogElement)
 export class BraveSettingsClearBrowsingDataDialogElement extends BaseElement {
   override ready() {
     super.ready()
-    this.addOnExitElements_();
+
+    // Append On exit tab to tab selector.
+    this.tabsNames_.push(loadTimeData.getString('onExitPageTitle'));
+
     this.addWebUIListener(
       'update-counter-text', this.updateOnExitCountersText.bind(this));
   }
@@ -62,30 +65,6 @@ export class BraveSettingsClearBrowsingDataDialogElement extends BaseElement {
   private onSelectedTabChangedCallback_: (() => void) | null = null
   private updateSaveButtonStateCallback_: (() => void) | null = null
   private saveOnExitSettingsCallback_: (() => void) | null = null
-
-  /**
-   * Adds OnExit tab and Save button to the DOM.
-   * @private
-   */
-  addOnExitElements_() {
-    // Append On exit tab to tab selector.
-    this.tabsNames_.push(loadTimeData.getString('onExitPageTitle'));
-    // Append On exit tab page.
-    let onExitPage = document.createElement(
-        'settings-brave-clear-browsing-data-on-exit-page');
-    onExitPage.id = 'on-exit-tab';
-    onExitPage.prefs = this.prefs;
-    this.$.tabs.appendChild(onExitPage);
-    // Append Save button.
-    let saveButton = document.createElement('cr-button');
-    saveButton.id = 'saveOnExitSettingsConfirm';
-    saveButton.disabled = true;
-    saveButton.hidden = true;
-    saveButton.className = 'action-button';
-    saveButton.innerText = this.i18n('save');
-    this.$.clearBrowsingDataConfirm.parentNode.appendChild(
-        saveButton);
-  }
 
 /**
   * Updates the text of a browsing data counter corresponding to the given

@@ -77,8 +77,8 @@ void BraveWalletPermissionContext::RequestPermission(
   if (!brave_wallet::ParseRequestingOrigin(
           type, requesting_origin, &origin,
           is_new_id ? &address_queue : nullptr)) {
-    content::RenderFrameHost* rfh = content::RenderFrameHost::FromID(
-        id.render_process_id(), id.render_frame_id());
+    content::RenderFrameHost* rfh =
+        content::RenderFrameHost::FromID(id.global_render_frame_host_id());
     content::WebContents* web_contents =
         content::WebContents::FromRenderFrameHost(rfh);
     GURL embedding_origin =

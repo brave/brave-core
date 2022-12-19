@@ -11,6 +11,7 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_alias.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_base.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 
 namespace ads {
 
@@ -34,20 +35,34 @@ class EligibleAdsV2 final : public EligibleAdsBase {
                 resource::AntiTargeting* anti_targeting);
 
   void GetForUserModel(
-      const targeting::UserModelInfo& user_model,
+      targeting::UserModelInfo user_model,
       GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) override;
 
  private:
+  void OnGetForUserModel(
+      targeting::UserModelInfo user_model,
+      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+      bool success,
+      const AdEventList& ad_events);
+
   void GetBrowsingHistory(
-      const targeting::UserModelInfo& user_model,
+      targeting::UserModelInfo user_model,
       const AdEventList& ad_events,
       GetEligibleAdsCallback<CreativeNewTabPageAdList> callback);
 
-  void GetEligibleAds(
+  void GetEligibleAds(targeting::UserModelInfo user_model,
+                      const AdEventList& ad_events,
+                      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+                      const BrowsingHistoryList& browsing_history);
+
+  void OnGetEligibleAds(
       const targeting::UserModelInfo& user_model,
       const AdEventList& ad_events,
-      const GetEligibleAdsCallback<CreativeNewTabPageAdList>& callback,
-      const BrowsingHistoryList& browsing_history);
+      const BrowsingHistoryList& browsing_history,
+      GetEligibleAdsCallback<CreativeNewTabPageAdList> callback,
+      bool success,
+      const SegmentList& segments,
+      const CreativeNewTabPageAdList& creative_ads);
 
   CreativeNewTabPageAdList FilterCreativeAds(
       const CreativeNewTabPageAdList& creative_ads,

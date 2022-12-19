@@ -59,6 +59,10 @@ class Eip2930Transaction : public EthTransaction {
   // accessList, signatureYParity, signatureR, signatureS])
   std::string GetSignedTransaction() const override;
 
+  // keccack(0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
+  // accessList, signatureYParity, signatureR, signatureS]))
+  std::string GetTransactionHash() const override;
+
   void ProcessSignature(const std::vector<uint8_t> signature,
                         int recid,
                         uint256_t chain_id = 0) override;
@@ -80,6 +84,9 @@ class Eip2930Transaction : public EthTransaction {
 
   uint256_t chain_id_;
   AccessList access_list_;
+
+ private:
+  std::vector<uint8_t> Serialize() const;
 };
 
 }  // namespace brave_wallet

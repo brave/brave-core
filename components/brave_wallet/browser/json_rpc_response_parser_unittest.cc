@@ -7,25 +7,15 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
+#include "brave/components/brave_wallet/browser/json_rpc_responses.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
-namespace {
-
-void CompareJSON(const std::string& request_string,
-                 const std::string& expected_request) {
-  auto request_json = base::JSONReader::Read(request_string);
-  ASSERT_TRUE(request_json);
-  auto expected_request_json = base::JSONReader::Read(expected_request);
-  ASSERT_TRUE(expected_request_json);
-  EXPECT_EQ(*request_json, *expected_request_json);
-}
-
-}  // namespace
+using base::test::ParseJson;
 
 namespace brave_wallet {
 
@@ -33,15 +23,10 @@ TEST(JsonRpcResponseParserUnitTest, ParseSingleStringResult) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"abc\"}";
-  std::string value;
-  EXPECT_TRUE(brave_wallet::ParseSingleStringResult(json, &value));
-  EXPECT_EQ(value, "abc");
+  EXPECT_EQ(ParseSingleStringResult(ParseJson(json)), "abc");
 
-  json =
-      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-      "\"\"}";
-  EXPECT_TRUE(brave_wallet::ParseSingleStringResult(json, &value));
-  EXPECT_TRUE(value.empty());
+  json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"\"}";
+  EXPECT_TRUE(ParseSingleStringResult(ParseJson(json))->empty());
 }
 
 TEST(JsonRpcResponseParserUnitTest, ParseDecodedBytesResult) {
@@ -49,35 +34,32 @@ TEST(JsonRpcResponseParserUnitTest, ParseDecodedBytesResult) {
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x556f1830\"}";
   EXPECT_EQ(std::vector<uint8_t>({0x55, 0x6f, 0x18, 0x30}),
-            brave_wallet::ParseDecodedBytesResult(json));
+            ParseDecodedBytesResult(ParseJson(json)));
 
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"\"}";
-  EXPECT_FALSE(brave_wallet::ParseDecodedBytesResult(json));
+  EXPECT_FALSE(ParseDecodedBytesResult(ParseJson(json)));
 }
 
 TEST(JsonRpcResponseParserUnitTest, ParseBoolResult) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x0000000000000000000000000000000000000000000000000000000000000001\"}";
-  bool value;
-  EXPECT_TRUE(brave_wallet::ParseBoolResult(json, &value));
-  EXPECT_TRUE(value);
+  EXPECT_EQ(ParseBoolResult(ParseJson(json)), absl::make_optional(true));
 
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x0000000000000000000000000000000000000000000000000000000000000000\"}";
-  EXPECT_TRUE(brave_wallet::ParseBoolResult(json, &value));
-  EXPECT_FALSE(value);
+  EXPECT_EQ(ParseBoolResult(ParseJson(json)), absl::make_optional(false));
 
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x00000000000000000000000000000000000000000\"}";
-  EXPECT_FALSE(brave_wallet::ParseBoolResult(json, &value));
+  EXPECT_EQ(ParseBoolResult(ParseJson(json)), absl::nullopt);
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}";
-  EXPECT_FALSE(brave_wallet::ParseBoolResult(json, &value));
+  EXPECT_EQ(ParseBoolResult(ParseJson(json)), absl::nullopt);
 }
 
 TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
@@ -96,11 +78,12 @@ TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
        })";
 
   // kMethodNotFound = -32601
-  ParseErrorResult<mojom::ProviderError>(json, &eth_error, &eth_error_message);
+  ParseErrorResult<mojom::ProviderError>(ParseJson(json), &eth_error,
+                                         &eth_error_message);
   EXPECT_EQ(eth_error, mojom::ProviderError::kMethodNotFound);
   EXPECT_EQ(eth_error_message, "method does not exist");
 
-  ParseErrorResult<mojom::SolanaProviderError>(json, &solana_error,
+  ParseErrorResult<mojom::SolanaProviderError>(ParseJson(json), &solana_error,
                                                &solana_error_message);
   EXPECT_EQ(solana_error, mojom::SolanaProviderError::kMethodNotFound);
   EXPECT_EQ(solana_error_message, "method does not exist");
@@ -114,11 +97,12 @@ TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
          "code": -32601
        }
      })";
-  ParseErrorResult<mojom::ProviderError>(json, &eth_error, &eth_error_message);
+  ParseErrorResult<mojom::ProviderError>(ParseJson(json), &eth_error,
+                                         &eth_error_message);
   EXPECT_EQ(eth_error, mojom::ProviderError::kMethodNotFound);
   EXPECT_TRUE(eth_error_message.empty());
 
-  ParseErrorResult<mojom::SolanaProviderError>(json, &solana_error,
+  ParseErrorResult<mojom::SolanaProviderError>(ParseJson(json), &solana_error,
                                                &solana_error_message);
   EXPECT_EQ(solana_error, mojom::SolanaProviderError::kMethodNotFound);
   EXPECT_TRUE(solana_error_message.empty());
@@ -135,22 +119,38 @@ TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
       R"({"jsonrpc": "2.0", "id": 1, "error": "0"})",
       R"({"jsonrpc": "2.0", "id": 1, "error": "0"})",
       R"({"jsonrpc": "2.0", "id": 1, "error": {}})",
-      "some string",
+      R"("some string")",
   };
 
   for (const std::string& json_error : errors) {
-    ParseErrorResult<mojom::ProviderError>(json_error, &eth_error,
+    ParseErrorResult<mojom::ProviderError>(ParseJson(json_error), &eth_error,
                                            &eth_error_message);
     EXPECT_EQ(eth_error, mojom::ProviderError::kParsingError);
     EXPECT_EQ(eth_error_message,
               l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
-    ParseErrorResult<mojom::SolanaProviderError>(json_error, &solana_error,
-                                                 &solana_error_message);
+    ParseErrorResult<mojom::SolanaProviderError>(
+        ParseJson(json_error), &solana_error, &solana_error_message);
     EXPECT_EQ(solana_error, mojom::SolanaProviderError::kParsingError);
     EXPECT_EQ(solana_error_message,
               l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
   }
+
+  // Unknown error code.
+  json =
+      R"({
+       "jsonrpc": "2.0",
+       "id": 1,
+       "error": {
+         "code": 3
+       }
+     })";
+  ParseErrorResult<mojom::ProviderError>(ParseJson(json), &eth_error,
+                                         &eth_error_message);
+  EXPECT_EQ(mojom::ProviderError::kUnknown, eth_error);
+  ParseErrorResult<mojom::SolanaProviderError>(ParseJson(json), &solana_error,
+                                               &solana_error_message);
+  EXPECT_EQ(mojom::SolanaProviderError::kUnknown, solana_error);
 }
 
 TEST(JsonRpcResponseParserUnitTest, ConvertUint64ToString) {
@@ -211,9 +211,9 @@ TEST(JsonRpcResponseParserUnitTest, ConvertMultiUint64ToString) {
             "a":{"b":"18446744073709551615"}
             }})";
 
-  CompareJSON(
-      *ConvertMultiUint64ToString({"/result/value", "/result/a/b"}, json),
-      expected_json);
+  EXPECT_EQ(ParseJson(*ConvertMultiUint64ToString(
+                {"/result/value", "/result/a/b"}, json)),
+            ParseJson(expected_json));
 
   EXPECT_FALSE(ConvertMultiUint64ToString({}, json));
   EXPECT_FALSE(ConvertMultiUint64ToString({"", "/result/value"}, json));
@@ -236,9 +236,9 @@ TEST(JsonRpcResponseParserUnitTest, ConvertMultiUint64InObjectArrayToString) {
            {"key1":"18446744073709551615","key2":"18446744073709551615"},
            {"key1":"18446744073709551615","key2":"18446744073709551615"}
            ]}})";
-  CompareJSON(*ConvertMultiUint64InObjectArrayToString("/result/array",
-                                                       {"key1", "key2"}, json),
-              expected_json);
+  EXPECT_EQ(ParseJson(*ConvertMultiUint64InObjectArrayToString(
+                "/result/array", {"key1", "key2"}, json)),
+            ParseJson(expected_json));
 
   EXPECT_FALSE(
       ConvertMultiUint64InObjectArrayToString("", {"key1", "key2"}, json));
@@ -302,6 +302,45 @@ TEST(JsonRpcResponseParserUnitTest, ConvertInt64ToString) {
              }
             })";
   EXPECT_EQ(*ConvertInt64ToString("/result", json), json);
+}
+
+TEST(JsonRpcResponseParserUnitTest, RPCResponse) {
+  constexpr char json[] =
+      R"({
+       "jsonrpc": "2.0",
+       "id": 1,
+       "result": "hi"
+     })";
+
+  auto value = base::JSONReader::Read(json);
+  ASSERT_TRUE(value);
+  auto response = json_rpc_responses::RPCResponse::FromValue(*value);
+  ASSERT_TRUE(response);
+  EXPECT_EQ(response->jsonrpc, "2.0");
+  EXPECT_EQ(response->id, base::Value(1));
+  ASSERT_TRUE(response->result);
+  EXPECT_EQ(*response->result, base::Value("hi"));
+  EXPECT_FALSE(response->error);
+
+  constexpr char error_json[] =
+      R"({
+       "jsonrpc": "2.0",
+       "id": 2,
+       "error": {
+         "code":-32601,
+         "message":"method does not exist"
+       }
+     })";
+  value = base::JSONReader::Read(error_json);
+  ASSERT_TRUE(value);
+  response = json_rpc_responses::RPCResponse::FromValue(*value);
+  ASSERT_TRUE(response);
+  EXPECT_EQ(response->jsonrpc, "2.0");
+  EXPECT_EQ(response->id, base::Value(2));
+  EXPECT_EQ(response->result, absl::nullopt);
+  ASSERT_TRUE(response->error);
+  EXPECT_EQ(response->error->code, -32601);
+  EXPECT_EQ(response->error->message, "method does not exist");
 }
 
 }  // namespace brave_wallet

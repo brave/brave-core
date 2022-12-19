@@ -14,6 +14,7 @@
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/sidebar/sidebar_service_delegate.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/version_info/channel.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -62,7 +63,7 @@ class SidebarServiceTest : public testing::Test {
   void TearDown() override { ResetService(); }
 
   void InitService() {
-    service_ = std::make_unique<SidebarService>(&prefs_);
+    service_ = std::make_unique<SidebarService>(&prefs_, nullptr);
     service_->AddObserver(&observer_);
   }
 

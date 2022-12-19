@@ -135,8 +135,12 @@ void EventHandler::FireEvent(
         if (event_type == mojom::PromotedContentAdEventType::kViewed) {
           // We must fire an ad served event due to promoted content ads not
           // being delivered by the library
-          FireEvent(placement_id, creative_instance_id,
-                    mojom::PromotedContentAdEventType::kServed);
+          const auto served_ad_event =
+              AdEventFactory::Build(mojom::PromotedContentAdEventType::kServed);
+          served_ad_event->FireEvent(ad);
+
+          NotifyPromotedContentAdEvent(
+              ad, mojom::PromotedContentAdEventType::kServed);
         }
 
         const auto ad_event = AdEventFactory::Build(event_type);

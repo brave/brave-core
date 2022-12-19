@@ -18,49 +18,34 @@ import org.chromium.components.search_engines.TemplateUrlService;
 
 public class BraveSearchEngineUtils {
     static public void initializeBraveSearchEngineStates(TabModelSelector tabModelSelector) {
-        tabModelSelector.addObserver(new SearchEngineTabModelSelectorObserver(tabModelSelector));
+        // There is no point in creating service for OTR profile in advance since they change
+        // It will be initialized in SearchEngineTabModelSelectorObserver when called on an OTR
+        // profile
+        tabModelSelector.addObserver(new SearchEngineTabModelSelectorObserver());
 
-        // For first-run initialization, it needs default TemplateUrl.
-        // So, doing it after TemplateUrlService is loaded to get it if it isn't loaded yet.
-        // Init on current (regular) profile only, leave the rest to observer, since
+        // For first-run initialization, it needs default TemplateUrl,
+        // so do it after TemplateUrlService is loaded to get it if it isn't loaded yet.
+        // Init on regular profile only, leave the rest to listener, since
         // user shouldn't be able to go directly into a private tab on first run.
-        Profile profile = tabModelSelector.getCurrentModel().getProfile();
-        if (profile == null) profile = Profile.getLastUsedRegularProfile().getOriginalProfile();
-        if (BraveTemplateUrlServiceFactory.getForProfile(profile.getOriginalProfile()).isLoaded()) {
-            doInitializeBraveSearchEngineStates(profile.getOriginalProfile());
-            return;
-        }
-
-        // Regular profile
-        final Profile regularProfile = profile.getOriginalProfile();
-        BraveTemplateUrlServiceFactory.getForProfile(regularProfile)
-                .registerLoadListener(new TemplateUrlService.LoadListener() {
-                    @Override
-                    public void onTemplateUrlServiceLoaded() {
-                        BraveTemplateUrlServiceFactory.getForProfile(regularProfile)
-                                .unregisterLoadListener(this);
-                        doInitializeBraveSearchEngineStates(regularProfile);
-                    }
-                });
+        final Profile profile = Profile.getLastUsedRegularProfile();
+        initializeBraveSearchEngineStates(profile);
     }
 
-    // There is no point in creating service for OTR profile in advance since they change
-    // This is for SearchEngineTabModelSelectorObserver when called on an OTR profile
-    static public void initializePrivateBraveSearchEngineStates(Profile oTRProfile) {
+    static public void initializeBraveSearchEngineStates(Profile profile) {
         TemplateUrlService templateUrlService =
-                BraveTemplateUrlServiceFactory.getForProfile(oTRProfile);
+                BraveTemplateUrlServiceFactory.getForProfile(profile);
         if (!templateUrlService.isLoaded()) {
             templateUrlService.registerLoadListener(new TemplateUrlService.LoadListener() {
                 @Override
                 public void onTemplateUrlServiceLoaded() {
-                    BraveTemplateUrlServiceFactory.getForProfile(oTRProfile)
-                            .unregisterLoadListener(this);
-                    doInitializeBraveSearchEngineStates(oTRProfile);
+                    BraveTemplateUrlServiceFactory.getForProfile(profile).unregisterLoadListener(
+                            this);
+                    doInitializeBraveSearchEngineStates(profile);
                 }
             });
             templateUrlService.load();
         } else {
-            doInitializeBraveSearchEngineStates(oTRProfile);
+            doInitializeBraveSearchEngineStates(profile);
         }
     }
 

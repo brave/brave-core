@@ -8,7 +8,9 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/features.h"
 #include "base/threading/sequenced_task_runner_handle.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_interstitial_controller_client.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_opt_in_page.h"
 #include "brave/components/decentralized_dns/content/ens_offchain_lookup_interstitial_controller_client.h"
@@ -59,7 +61,10 @@ DecentralizedDnsNavigationThrottle::WillStartRequest() {
   GURL url = navigation_handle()->GetURL();
   if ((IsUnstoppableDomainsTLD(url) &&
        IsUnstoppableDomainsResolveMethodAsk(local_state_)) ||
-      (IsENSTLD(url) && IsENSResolveMethodAsk(local_state_))) {
+      (IsENSTLD(url) && IsENSResolveMethodAsk(local_state_)) ||
+      (base::FeatureList::IsEnabled(
+           brave_wallet::features::kBraveWalletSnsFeature) &&
+       IsSnsTLD(url) && IsSnsResolveMethodAsk(local_state_))) {
     base::SequencedTaskRunnerHandle::Get()->PostTask(
         FROM_HERE,
         base::BindOnce(&DecentralizedDnsNavigationThrottle::ShowInterstitial,

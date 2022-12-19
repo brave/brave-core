@@ -243,10 +243,16 @@ export default class Amount {
     let decimals
     let value
 
-    if (this.value === undefined || this.value.isNaN()) {
+    const valueDP = this.value && this.value.decimalPlaces()
+    if (
+        this.value === undefined ||
+        this.value.isNaN() ||
+        valueDP === null ||
+        valueDP === undefined
+    ) {
       return ''
     } else if (
-        this.value.decimalPlaces() < 2 || this.value.isGreaterThanOrEqualTo(10)
+        valueDP < 2 || this.value.isGreaterThanOrEqualTo(10)
     ) {
       decimals = 2
       value = this.value.toNumber()

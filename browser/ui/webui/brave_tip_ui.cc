@@ -78,6 +78,7 @@ class TipMessageHandler : public WebUIMessageHandler,
   // Message handlers
   void DialogReady(const base::Value::List& args);
   void GetPublisherBanner(const base::Value::List& args);
+  void GetUserType(const base::Value::List& args);
   void GetRewardsParameters(const base::Value::List& args);
   void OnTip(const base::Value::List& args);
   void GetRecurringTips(const base::Value::List& args);
@@ -87,6 +88,8 @@ class TipMessageHandler : public WebUIMessageHandler,
   void FetchBalance(const base::Value::List& args);
 
   // Rewards service callbacks
+  void GetUserTypeCallback(ledger::mojom::UserType user_type);
+
   void OnTipCallback(double amount, ledger::mojom::Result result);
 
   void GetReconcileStampCallback(uint64_t reconcile_stamp);
@@ -128,6 +131,10 @@ void TipMessageHandler::RegisterMessages() {
       "getPublisherBanner",
       base::BindRepeating(&TipMessageHandler::GetPublisherBanner,
                           base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "getUserType", base::BindRepeating(&TipMessageHandler::GetUserType,
+                                         base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
       "getRewardsParameters",
@@ -246,6 +253,19 @@ void TipMessageHandler::GetPublisherBanner(const base::Value::List& args) {
       publisher_key,
       base::BindOnce(&TipMessageHandler::GetPublisherBannerCallback,
                      weak_factory_.GetWeakPtr()));
+}
+
+void TipMessageHandler::GetUserType(const base::Value::List& args) {
+  if (!IsJavascriptAllowed() || !rewards_service_) {
+    return;
+  }
+  rewards_service_->GetUserType(base::BindOnce(
+      &TipMessageHandler::GetUserTypeCallback, weak_factory_.GetWeakPtr()));
+}
+
+void TipMessageHandler::GetUserTypeCallback(ledger::mojom::UserType user_type) {
+  FireWebUIListener("userTypeUpdated",
+                    base::Value(static_cast<int>(user_type)));
 }
 
 void TipMessageHandler::GetRewardsParameters(const base::Value::List& args) {

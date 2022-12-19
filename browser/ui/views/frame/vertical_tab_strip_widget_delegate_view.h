@@ -42,6 +42,10 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
                                                     views::View* host_view);
   ~VerticalTabStripWidgetDelegateView() override;
 
+  VerticalTabStripRegionView* vertical_tab_strip_region_view() const {
+    return region_view_;
+  }
+
   // views::WidgetDelegateView:
   void ChildPreferredSizeChanged(views::View* child) override;
 
@@ -62,6 +66,10 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
   VerticalTabStripWidgetDelegateView(BrowserView* browser_view,
                                      views::View* host);
   void UpdateWidgetBounds();
+
+#if BUILDFLAG(IS_MAC)
+  void UpdateClip();
+#endif
 
   raw_ptr<BrowserView> browser_view_ = nullptr;
   raw_ptr<views::View> host_ = nullptr;

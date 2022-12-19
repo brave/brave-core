@@ -116,32 +116,6 @@ TEST_F(BitflyerUtilTest, GetLoginUrl) {
            "&code_challenge=5Cxs3JXozcwTeteCIu4BcTieAhEIqjn643F10PxPD_w"}));
 }
 
-TEST_F(BitflyerUtilTest, GetAddUrl) {
-  // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
-  std::string result = bitflyer::GetAddUrl();
-  ASSERT_EQ(result, std::string(kUrlProduction) + "/ex/Home?login=1");
-
-  // staging
-  ledger::_environment = mojom::Environment::STAGING;
-  result = bitflyer::GetAddUrl();
-  ASSERT_EQ(result, base::StrCat(
-                        {BUILDFLAG(BITFLYER_STAGING_URL), "/ex/Home?login=1"}));
-}
-
-TEST_F(BitflyerUtilTest, GetWithdrawUrl) {
-  // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
-  std::string result = bitflyer::GetWithdrawUrl();
-  ASSERT_EQ(result, std::string(kUrlProduction) + "/ex/Home?login=1");
-
-  // staging
-  ledger::_environment = mojom::Environment::STAGING;
-  result = bitflyer::GetWithdrawUrl();
-  ASSERT_EQ(result, base::StrCat(
-                        {BUILDFLAG(BITFLYER_STAGING_URL), "/ex/Home?login=1"}));
-}
-
 TEST_F(BitflyerUtilTest, GetActivityUrl) {
   // production
   ledger::_environment = mojom::Environment::PRODUCTION;
@@ -164,7 +138,6 @@ TEST_F(BitflyerUtilTest, GetWallet) {
 
   const std::string wallet = FakeEncryption::Base64EncryptString(R"({
     "account_url": "https://bitflyer.com/ex/Home?login=1",
-    "add_url": "",
     "address": "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af",
     "fees": {},
     "login_url": "https://sandbox.bitflyer.com/authorize/4c2b665ca060d",
@@ -172,8 +145,7 @@ TEST_F(BitflyerUtilTest, GetWallet) {
     "code_verifier": "1234567890",
     "status": 2,
     "token": "4c80232r219c30cdf112208890a32c7e00",
-    "user_name": "test",
-    "withdraw_url": ""
+    "user_name": "test"
   })");
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBitflyer))
@@ -225,24 +197,18 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
   // Not connected
   wallet->status = mojom::WalletStatus::kNotConnected;
   auto result = bitflyer::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url, "");
-  ASSERT_EQ(result->withdraw_url, "");
   ASSERT_EQ(result->login_url, kLoginUrl);
   ASSERT_EQ(result->account_url, kStagingUrl);
 
   // Connected
   wallet->status = mojom::WalletStatus::kConnected;
   result = bitflyer::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url, kStagingUrl);
-  ASSERT_EQ(result->withdraw_url, kStagingUrl);
   ASSERT_EQ(result->login_url, kLoginUrl);
   ASSERT_EQ(result->account_url, kStagingUrl);
 
   // Logged out
   wallet->status = mojom::WalletStatus::kLoggedOut;
   result = bitflyer::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url, "");
-  ASSERT_EQ(result->withdraw_url, "");
   ASSERT_EQ(result->login_url, kLoginUrl);
   ASSERT_EQ(result->account_url, kStagingUrl);
 }

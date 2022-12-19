@@ -8,8 +8,8 @@
 #include <map>
 #include <utility>
 
-#include "base/bind.h"
 #include "base/containers/contains.h"
+#include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -186,27 +186,27 @@ void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
 }
 
 void OnGetForSegments(const SegmentList& segments,
-                      const GetCreativeNewTabPageAdsCallback& callback,
+                      GetCreativeNewTabPageAdsCallback callback,
                       mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative new tab page ads");
-    callback(/*success*/ false, segments, {});
+    std::move(callback).Run(/*success*/ false, segments, {});
     return;
   }
 
   const CreativeNewTabPageAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(response));
 
-  callback(/*success*/ true, segments, creative_ads);
+  std::move(callback).Run(/*success*/ true, segments, creative_ads);
 }
 
-void OnGetAll(const GetCreativeNewTabPageAdsCallback& callback,
+void OnGetAll(GetCreativeNewTabPageAdsCallback callback,
               mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative new tab page ads");
-    callback(/*success*/ false, {}, {});
+    std::move(callback).Run(/*success*/ false, {}, {});
     return;
   }
 
@@ -215,7 +215,7 @@ void OnGetAll(const GetCreativeNewTabPageAdsCallback& callback,
 
   const SegmentList segments = GetSegments(creative_ads);
 
-  callback(/*success*/ true, segments, creative_ads);
+  std::move(callback).Run(/*success*/ true, segments, creative_ads);
 }
 
 void MigrateToV24(mojom::DBTransactionInfo* transaction) {
@@ -406,7 +406,7 @@ void CreativeNewTabPageAds::GetForSegments(
     const SegmentList& segments,
     GetCreativeNewTabPageAdsCallback callback) const {
   if (segments.empty()) {
-    callback(/*success*/ true, segments, {});
+    std::move(callback).Run(/*success*/ true, segments, {});
     return;
   }
 
@@ -509,7 +509,7 @@ void CreativeNewTabPageAds::GetForSegments(
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetForSegments, segments, callback));
+      base::BindOnce(&OnGetForSegments, segments, std::move(callback)));
 }
 
 void CreativeNewTabPageAds::GetAll(
@@ -603,7 +603,7 @@ void CreativeNewTabPageAds::GetAll(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetAll, callback));
+      std::move(transaction), base::BindOnce(&OnGetAll, std::move(callback)));
 }
 
 std::string CreativeNewTabPageAds::GetTableName() const {

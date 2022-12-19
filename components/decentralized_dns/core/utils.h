@@ -29,6 +29,10 @@ void SetEnsOffchainResolveMethod(PrefService* local_state,
                                  EnsOffchainResolveMethod method);
 EnsOffchainResolveMethod GetEnsOffchainResolveMethod(PrefService* local_state);
 
+bool IsSnsTLD(const GURL& url);
+bool IsSnsResolveMethodAsk(PrefService* local_state);
+bool IsSnsResolveMethodEnabled(PrefService* local_state);
+
 }  // namespace decentralized_dns
 
 #endif  // BRAVE_COMPONENTS_DECENTRALIZED_DNS_CORE_UTILS_H_

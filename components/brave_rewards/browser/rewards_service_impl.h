@@ -121,6 +121,9 @@ class RewardsServiceImpl : public RewardsService,
   void CreateRewardsWallet(const std::string& country,
                            CreateRewardsWalletCallback callback) override;
 
+  void GetUserType(
+      base::OnceCallback<void(ledger::mojom::UserType)> callback) override;
+
   std::string GetCountryCode() const override;
 
   void GetAvailableCountries(
@@ -143,6 +146,9 @@ class RewardsServiceImpl : public RewardsService,
                            const uint32_t limit,
                            ledger::mojom::ActivityInfoFilterPtr filter,
                            GetPublisherInfoListCallback callback) override;
+
+  void GetPublishersVisitedCount(
+      base::OnceCallback<void(int)> callback) override;
 
   void GetExcludedList(GetPublisherInfoListCallback callback) override;
 
@@ -301,8 +307,6 @@ class RewardsServiceImpl : public RewardsService,
                              const std::string& query,
                              ConnectExternalWalletCallback) override;
 
-  void DisconnectWallet() override;
-
   void SetAutoContributeEnabled(bool enabled) override;
 
   void GetMonthlyReport(
@@ -331,9 +335,6 @@ class RewardsServiceImpl : public RewardsService,
   void SetLedgerStateTargetVersionForTesting(int version);
   void PrepareLedgerEnvForTesting();
   void StartMonthlyContributionForTest();
-  void MaybeShowNotificationAddFundsForTesting(
-      base::OnceCallback<void(bool)> callback);
-  void CheckInsufficientFundsForTesting();
   void ForTestingSetTestResponseCallback(
       const GetTestResponseCallback& callback);
   void StartProcessForTesting(base::OnceClosure callback);
@@ -383,8 +384,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnRecurringTip(const ledger::mojom::Result result);
 
-  void MaybeShowAddFundsNotification(uint64_t reconcile_stamp);
-
   void OnURLLoaderComplete(SimpleURLLoaderList::iterator url_loader_it,
                            ledger::client::LoadURLCallback callback,
                            std::unique_ptr<std::string> response_body);
@@ -393,23 +392,12 @@ class RewardsServiceImpl : public RewardsService,
   void StopNotificationTimers();
   void OnNotificationTimerFired();
 
-  void MaybeShowNotificationAddFunds();
-  bool ShouldShowNotificationAddFunds() const;
-  void ShowNotificationAddFunds(bool sufficient);
-
-  void OnMaybeShowNotificationAddFundsForTesting(
-      base::OnceCallback<void(bool)> callback,
-      const bool result);
-
   void MaybeShowNotificationTipsPaid();
   void ShowNotificationTipsPaid(bool ac_enabled);
 
   void OnPendingContributionRemoved(const ledger::mojom::Result result);
 
   void OnRemoveAllPendingContributions(const ledger::mojom::Result result);
-
-  void OnDisconnectWallet(const std::string& wallet_type,
-                          const ledger::mojom::Result result);
 
   void OnSetPublisherExclude(const std::string& publisher_key,
                              const bool exclude,
@@ -542,7 +530,11 @@ class RewardsServiceImpl : public RewardsService,
 
   void ClearAllNotifications() override;
 
-  void WalletDisconnected(const std::string& wallet_type) override;
+  void ExternalWalletConnected() const override;
+
+  void ExternalWalletLoggedOut() const override;
+
+  void ExternalWalletReconnected() const override;
 
   void DeleteLog(ledger::LegacyResultCallback callback) override;
 
@@ -599,6 +591,9 @@ class RewardsServiceImpl : public RewardsService,
   bool IsBitFlyerRegion() const;
 
   bool IsValidWalletType(const std::string& wallet_type) const;
+
+  static void OnGetRewardsParameters(GetRewardsParametersCallback,
+                                     ledger::mojom::RewardsParametersPtr);
 
 #if BUILDFLAG(IS_ANDROID)
   ledger::mojom::Environment GetServerEnvironmentForAndroid();

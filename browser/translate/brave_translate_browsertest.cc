@@ -310,6 +310,40 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
   EXPECT_TRUE(TranslateDownloadManager::IsSupportedLanguage("ar"));
   EXPECT_TRUE(TranslateDownloadManager::IsSupportedLanguage("vi"));
 }
+
+class BraveTranslateBrowserNoAutoTranslateTest
+    : public BraveTranslateBrowserTest {
+ public:
+  BraveTranslateBrowserNoAutoTranslateTest() {
+    scoped_feature_list_.InitAndDisableFeature(
+        features::kBraveEnableAutoTranslate);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserNoAutoTranslateTest,
+                       NoAutoTranslate) {
+  // Set auto translate from es to en.
+  GetChromeTranslateClient()
+      ->GetTranslatePrefs()
+      ->AddLanguagePairToAlwaysTranslateList("es", "en");
+  ResetObserver();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), embedded_test_server()->GetURL("/espanol_page.html")));
+  WaitUntilLanguageDetermined();
+
+  auto* bubble = TranslateBubbleController::FromWebContents(
+                     browser()->tab_strip_model()->GetActiveWebContents())
+                     ->GetTranslateBubble();
+  ASSERT_TRUE(bubble);
+
+  // Check that the we see BEFORE translation bubble (not in-progress bubble).
+  ASSERT_EQ(bubble->GetWindowTitle(),
+            brave_l10n::GetLocalizedResourceUTF16String(
+                IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE));
+}
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 
 class BraveTranslateBrowserGoogleRedirectTest

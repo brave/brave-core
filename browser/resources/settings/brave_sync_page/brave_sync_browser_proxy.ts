@@ -4,16 +4,25 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {sendWithPromise} from 'chrome://resources/js/cr.m.js';
+import {SyncStatus} from '../people_page/sync_browser_proxy.js';
 
 export type BraveDeviceInfo = {
   name: string
+  guid: string
   id: string
   os: string
   type: string
   chromeVersion: string
   lastUpdatedTimestamp: number
   sendTabToSelfReceivingEnabled: boolean
+  supportsSelfDelete: boolean
+  isCurrentDevice: boolean
   hasSharingInfo: boolean
+}
+
+export interface BraveSyncStatus extends SyncStatus {
+  hasSyncWordsDecryptionError: boolean
+  isOsEncryptionAvailable: boolean
 }
 
 export class BraveSyncBrowserProxy {
@@ -37,6 +46,9 @@ export class BraveSyncBrowserProxy {
   }
   deleteDevice(deviceId: string): Promise<boolean> {
     return sendWithPromise('SyncDeleteDevice', deviceId);
+  }
+  getSyncStatus(): Promise<BraveSyncStatus> {
+    return sendWithPromise('SyncSetupGetSyncStatus');
   }
   static getInstance() {
     return instance || (instance = new BraveSyncBrowserProxy())

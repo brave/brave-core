@@ -159,7 +159,7 @@ TEST_P(BatAdsTopSegmentsTest, GetSegments) {
     ProcessPurchaseIntent();
   }
 
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   std::vector<base::test::FeatureRef> disabled_features;
 
   if (param.epsilon_greedy_bandits_enabled) {
@@ -170,19 +170,19 @@ TEST_P(BatAdsTopSegmentsTest, GetSegments) {
     enabled_features.emplace_back(features::kEpsilonGreedyBandit,
                                   kEpsilonGreedyBanditParameters);
   } else {
-    disabled_features.push_back(features::kEpsilonGreedyBandit);
+    disabled_features.emplace_back(features::kEpsilonGreedyBandit);
   }
 
   if (param.purchase_intent_enabled) {
     enabled_features.push_back({features::kPurchaseIntent, {}});
   } else {
-    disabled_features.push_back(features::kPurchaseIntent);
+    disabled_features.emplace_back(features::kPurchaseIntent);
   }
 
   if (param.text_classification_enabled) {
     enabled_features.push_back({features::kTextClassification, {}});
   } else {
-    disabled_features.push_back(features::kTextClassification);
+    disabled_features.emplace_back(features::kTextClassification);
   }
 
   base::test::ScopedFeatureList scoped_feature_list;

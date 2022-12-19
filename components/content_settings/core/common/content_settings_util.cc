@@ -7,25 +7,72 @@
 
 #include "base/strings/strcat.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "url/gurl.h"
 
 namespace content_settings {
 
-// Since Shields work at the domain level, we create a pattern for
-// subdomains. In the case of an IP address, we take it as is.
-ContentSettingsPattern CreatePrimaryPattern(
-    const ContentSettingsPattern& host_pattern) {
+namespace {
+ContentSettingsPattern CreateHostPattern(const GURL& url) {
+  DCHECK(url.is_empty() ? url.possibly_invalid_spec() == "" : url.is_valid());
+  if (url.is_empty() && url.possibly_invalid_spec() == "")
+    return ContentSettingsPattern::Wildcard();
+  return ContentSettingsPattern::FromString("*://" + url.host() + "/*");
+}
+
+}  // namespace
+
+// To control cookies block mode on given |url| in brave shields we need:
+//
+//   |host_pattern| is *://url.host()/*
+//   |domain_pattern| is *://[*.]host_pattern.host()/*
+//
+// 1. To allow all cookies:
+//    Add cookies rule: [*, host_pattern] -> allow
+//    * It allows all cookies from any sites on the given host
+//
+// 2. To block all cookies:
+//    Add cookies rule: [*, host_pattern] -> block
+//    * It blocks all cookies from any sites on the given host
+//
+// 3. To block 3p cookies:
+//    Add two cookies rules:
+//      a. [*, host_pattern] -> block
+//      * It blocks all cookies from any sites on the given host
+//
+//      b. [domain_pattern, host_pattern] -> allow
+//      * It allows all cookies from the same site on the given host
+//
+// Example:
+//    For https://www.cnn.com we got:
+//       |host_pattern| ==  *://www.cnn.com/*
+//       |domain_pattern| == *://[*.]cnn.com/*
+
+ShieldsCookiesPatterns CreateShieldsCookiesPatterns(const GURL& url) {
+  ShieldsCookiesPatterns result;
+  result.host_pattern = CreateHostPattern(url);
+  if (result.host_pattern.GetHost().empty()) {
+    result.domain_pattern = result.host_pattern;
+    return result;
+  }
+  result.domain_pattern =
+      CreateShieldsCookiesDomainPattern(result.host_pattern);
+  return result;
+}
+
+ContentSettingsPattern CreateShieldsCookiesDomainPattern(
+    ContentSettingsPattern host_pattern) {
   DCHECK(!host_pattern.GetHost().empty());
 
-  auto host = net::registry_controlled_domains::GetDomainAndRegistry(
+  auto domain = net::registry_controlled_domains::GetDomainAndRegistry(
       host_pattern.GetHost(),
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  if (host.empty()) {
+  if (domain.empty()) {
     // IP Address.
     return host_pattern;
   }
 
   return ContentSettingsPattern::FromString(
-      base::StrCat({"*://[*.]", host, "/*"}));
+      base::StrCat({"*://[*.]", domain, "/*"}));
 }
 
 }  // namespace content_settings

@@ -140,4 +140,53 @@ TEST(SolanaUtilsUnitTest, IsBase58EncodedSolanaPubkey) {
       Base58Encode(std::vector<uint8_t>(kSolanaPubkeySize - 1, 0))));
 }
 
+TEST(SolanaUtilsUnitTest, Uint8ArrayDecode) {
+  const struct {
+    const char* input;
+    const size_t len;
+    const std::vector<uint8_t> output;
+  } valid_cases[] = {{"[34,  208, 53,  54,  75,  46,  112, 55]", 8,
+                      std::vector<uint8_t>({34, 208, 53, 54, 75, 46, 112, 55})},
+                     {"[0, 0, 0, 0]", 4, std::vector<uint8_t>({0, 0, 0, 0})},
+                     {"[34,  208, 53,  54,  75,  46,  112, 55, 123, 15,  232, "
+                      "9,   45,  178, 252, 196, 62,  64,  169, 213, 66,  87,  "
+                      "192, 16, 152, 108, 254, 148, 183, 39,  51,  192]",
+                      kSolanaPubkeySize,
+                      std::vector<uint8_t>(
+                          {34,  208, 53,  54,  75,  46,  112, 55,  123, 15, 232,
+                           9,   45,  178, 252, 196, 62,  64,  169, 213, 66, 87,
+                           192, 16,  152, 108, 254, 148, 183, 39,  51,  192})}};
+
+  for (const auto& valid_case : valid_cases) {
+    SCOPED_TRACE(valid_case.input);
+    std::vector<uint8_t> bytes;
+    EXPECT_TRUE(Uint8ArrayDecode(valid_case.input, &bytes, valid_case.len));
+    EXPECT_EQ(bytes, valid_case.output);
+  }
+
+  const struct {
+    const char* input;
+    const size_t len;
+  } invalid_cases[] = {{"[]", 0},
+                       {"[,]", 0},
+                       {"", 0},
+                       {"[", 0},
+                       {"]", 0},
+                       {"[34]", 0},
+                       {"[34}", 1},
+                       {"{34]", 1},
+                       {"[34:208:53]", 3},
+                       {"[34, HELLO]", 2},
+                       {"[34, 256]", 2},
+                       {"[34, 208, 53, 43]", 8},
+                       {"44, [34, 208, 53, 43]", 5}};
+  for (const auto& invalid_case : invalid_cases) {
+    SCOPED_TRACE(invalid_case.input);
+    std::vector<uint8_t> bytes;
+    EXPECT_FALSE(
+        Uint8ArrayDecode(invalid_case.input, &bytes, invalid_case.len));
+    EXPECT_TRUE(bytes.empty());
+  }
+}
+
 }  // namespace brave_wallet

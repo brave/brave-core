@@ -2,6 +2,8 @@ source_set("brave_wayback_machine") {
   # Remove when https://github.com/brave/brave-browser/issues/10652 is resolved
   check_includes = false
   sources = [
+    "brave_infobar_container_view.cc",
+    "brave_infobar_container_view.h",
     "brave_wayback_machine_infobar_button_container.cc",
     "brave_wayback_machine_infobar_button_container.h",
     "brave_wayback_machine_infobar_contents_view.cc",
@@ -10,6 +12,12 @@ source_set("brave_wayback_machine") {
     "brave_wayback_machine_infobar_throbber.h",
     "brave_wayback_machine_infobar_view.cc",
     "brave_wayback_machine_infobar_view.h",
+    "custom_styled_label.cc",
+    "custom_styled_label.h",
+    "web_discovery_infobar_content_view.cc",
+    "web_discovery_infobar_content_view.h",
+    "web_discovery_infobar_view.cc",
+    "web_discovery_infobar_view.h",
   ]
 
   deps = [

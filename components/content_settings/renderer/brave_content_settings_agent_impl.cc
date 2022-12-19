@@ -302,13 +302,13 @@ BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
   }
 
   if (setting == CONTENT_SETTING_BLOCK) {
-    VLOG(1) << "farbling level MAXIMUM";
+    DVLOG(1) << "farbling level MAXIMUM";
     return BraveFarblingLevel::MAXIMUM;
   } else if (setting == CONTENT_SETTING_ALLOW) {
-    VLOG(1) << "farbling level OFF";
+    DVLOG(1) << "farbling level OFF";
     return BraveFarblingLevel::OFF;
   } else {
-    VLOG(1) << "farbling level BALANCED";
+    DVLOG(1) << "farbling level BALANCED";
     return BraveFarblingLevel::BALANCED;
   }
 }
@@ -318,7 +318,7 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool play_requested) {
   auto origin = frame->GetSecurityOrigin();
   // default allow local files
   if (origin.IsNull() || origin.Protocol().Ascii() == url::kFileScheme) {
-    VLOG(1) << "AllowAutoplay=true because no origin or file scheme";
+    DVLOG(1) << "AllowAutoplay=true because no origin or file scheme";
     return true;
   }
 
@@ -327,25 +327,25 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool play_requested) {
     ContentSetting setting = GetContentSettingFromRulesImpl(
         content_setting_rules_->autoplay_rules, url::Origin(origin).GetURL());
     if (setting == CONTENT_SETTING_BLOCK) {
-      VLOG(1) << "AllowAutoplay=false because rule=CONTENT_SETTING_BLOCK";
+      DVLOG(1) << "AllowAutoplay=false because rule=CONTENT_SETTING_BLOCK";
       if (play_requested)
         DidBlockContentType(ContentSettingsType::AUTOPLAY);
       return false;
     } else if (setting == CONTENT_SETTING_ALLOW) {
-      VLOG(1) << "AllowAutoplay=true because rule=CONTENT_SETTING_ALLOW";
+      DVLOG(1) << "AllowAutoplay=true because rule=CONTENT_SETTING_ALLOW";
       return true;
     }
   }
 
   bool allow = ContentSettingsAgentImpl::AllowAutoplay(play_requested);
   if (allow) {
-    VLOG(1) << "AllowAutoplay=true because "
-               "ContentSettingsAgentImpl::AllowAutoplay says so";
+    DVLOG(1) << "AllowAutoplay=true because "
+                "ContentSettingsAgentImpl::AllowAutoplay says so";
   } else {
     if (play_requested)
       DidBlockContentType(ContentSettingsType::AUTOPLAY);
-    VLOG(1) << "AllowAutoplay=false because "
-               "ContentSettingsAgentImpl::AllowAutoplay says so";
+    DVLOG(1) << "AllowAutoplay=false because "
+                "ContentSettingsAgentImpl::AllowAutoplay says so";
   }
   return allow;
 }

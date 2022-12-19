@@ -99,7 +99,7 @@
         android:fontFamily="sans-serif"
         android:paddingStart="44dp"
         android:paddingEnd="44dp"
-        android:text="@string/verify_wallet_btn_txt"
+        android:text="@string/brave_ui_wallet_button_connect"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="@dimen/verify_wallet_header3_font_size"/>

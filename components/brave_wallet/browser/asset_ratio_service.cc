@@ -291,7 +291,7 @@ void AssetRatioService::OnGetSardineAuthToken(
     return;
   }
 
-  auto auth_token = ParseSardineAuthToken(api_request_result.body());
+  auto auth_token = ParseSardineAuthToken(api_request_result.value_body());
   if (!auth_token) {
     std::move(callback).Run("", "INTERNAL_SERVICE_ERROR");
     return;
@@ -311,7 +311,7 @@ void AssetRatioService::OnGetPrice(std::vector<std::string> from_assets,
     std::move(callback).Run(false, std::move(prices));
     return;
   }
-  if (!ParseAssetPrice(api_request_result.body(), from_assets, to_assets,
+  if (!ParseAssetPrice(api_request_result.value_body(), from_assets, to_assets,
                        &prices)) {
     std::move(callback).Run(false, std::move(prices));
     return;
@@ -342,7 +342,7 @@ void AssetRatioService::OnGetPriceHistory(GetPriceHistoryCallback callback,
     std::move(callback).Run(false, std::move(values));
     return;
   }
-  if (!ParseAssetPriceHistory(api_request_result.body(), &values)) {
+  if (!ParseAssetPriceHistory(api_request_result.value_body(), &values)) {
     std::move(callback).Run(false, std::move(values));
     return;
   }
@@ -377,8 +377,9 @@ void AssetRatioService::OnGetTokenInfo(GetTokenInfoCallback callback,
     return;
   }
 
-  std::move(callback).Run(ParseTokenInfo(
-      api_request_result.body(), mojom::kMainnetChainId, mojom::CoinType::ETH));
+  std::move(callback).Run(ParseTokenInfo(api_request_result.value_body(),
+                                         mojom::kMainnetChainId,
+                                         mojom::CoinType::ETH));
 }
 
 // static
@@ -412,7 +413,7 @@ void AssetRatioService::OnGetCoinMarkets(GetCoinMarketsCallback callback,
     return;
   }
 
-  if (!ParseCoinMarkets(api_request_result.body(), &values)) {
+  if (!ParseCoinMarkets(api_request_result.value_body(), &values)) {
     std::move(callback).Run(false, std::move(values));
     return;
   }

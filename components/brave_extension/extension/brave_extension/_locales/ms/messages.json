@@ -56,19 +56,19 @@
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
-    "message": "Penjejak & iklan disekat",
+    "message": "Penjejak &amp; iklan disekat",
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Penjejak & iklan disekat (agresif)",
+    "message": "Penjejak &amp; iklan disekat (agresif)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Penjejak & iklan disekat (standard)",
+    "message": "Penjejak &amp; iklan disekat (standard)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Benarkan semua penjejak & iklan",
+    "message": "Benarkan semua penjejak &amp; iklan",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {

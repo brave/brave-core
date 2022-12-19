@@ -13,6 +13,7 @@
 #include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/timer/timer.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -28,9 +29,12 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -49,14 +53,13 @@ class HistoryService;
 
 namespace brave_news {
 
-bool IsPublisherEnabled(const mojom::Publisher* publisher);
-
 // Browser-side handler for Brave News mojom API, 1 per profile
 // Orchestrates FeedController and PublishersController for data, as well as
 // owning prefs data.
 // Controls remote feed update logic via Timer and prefs values.
 class BraveNewsController : public KeyedService,
-                            public mojom::BraveNewsController {
+                            public mojom::BraveNewsController,
+                            public PublishersController::Observer {
  public:
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
@@ -84,11 +87,15 @@ class BraveNewsController : public KeyedService,
   void GetLocale(GetLocaleCallback callback) override;
   void GetFeed(GetFeedCallback callback) override;
   void GetPublishers(GetPublishersCallback callback) override;
+  void AddPublishersListener(
+      mojo::PendingRemote<mojom::PublishersListener> listener) override;
   void GetSuggestedPublisherIds(
       GetSuggestedPublisherIdsCallback callback) override;
   void FindFeeds(const GURL& possible_feed_or_site_url,
                  FindFeedsCallback callback) override;
   void GetChannels(GetChannelsCallback callback) override;
+  void AddChannelsListener(
+      mojo::PendingRemote<mojom::ChannelsListener> listener) override;
   void SetChannelSubscribed(const std::string& locale,
                             const std::string& channel_id,
                             bool subscribed,
@@ -106,6 +113,7 @@ class BraveNewsController : public KeyedService,
   void ClearPrefs() override;
   void IsFeedUpdateAvailable(const std::string& displayed_feed_hash,
                              IsFeedUpdateAvailableCallback callback) override;
+  void AddFeedListener(mojo::PendingRemote<mojom::FeedListener>) override;
   void GetDisplayAd(GetDisplayAdCallback callback) override;
   void OnInteractionSessionStarted() override;
   void OnSessionCardVisitsCountChanged(
@@ -121,6 +129,9 @@ class BraveNewsController : public KeyedService,
   void OnDisplayAdView(const std::string& item_id,
                        const std::string& creative_instance_id) override;
   void OnDisplayAdPurgeOrphanedEvents() override;
+
+  // PublishersController::Observer:
+  void OnPublishersUpdated(brave_news::PublishersController*) override;
 
  private:
   void ConditionallyStartOrStopTimer();
@@ -150,7 +161,10 @@ class BraveNewsController : public KeyedService,
   base::RepeatingTimer timer_publishers_update_;
   base::CancelableTaskTracker task_tracker_;
 
+  base::ScopedObservation<PublishersController, PublishersController::Observer>
+      publishers_observation_;
   mojo::ReceiverSet<mojom::BraveNewsController> receivers_;
+  mojo::RemoteSet<mojom::PublishersListener> publishers_listeners_;
   base::WeakPtrFactory<BraveNewsController> weak_ptr_factory_;
 };
 

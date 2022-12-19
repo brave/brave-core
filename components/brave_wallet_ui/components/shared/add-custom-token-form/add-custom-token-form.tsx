@@ -127,12 +127,11 @@ export const AddCustomTokenForm = (props: Props) => {
       if (foundTokenInfoByContractAddress.isErc721) {
         onNftAssetFound(foundTokenInfoByContractAddress.contractAddress)
       }
-      let foundToken = foundTokenInfoByContractAddress
+      let foundToken = { ...foundTokenInfoByContractAddress }
       foundToken.coingeckoId = coingeckoID !== '' ? coingeckoID : foundTokenInfoByContractAddress.coingeckoId
       foundToken.logo = foundToken.logo ? foundToken.logo : iconURL
       foundToken.chainId = customAssetsNetwork.chainId
       onAddCustomAsset(foundToken)
-      onHideForm()
     } else {
       const newToken: BraveWallet.BlockchainToken = {
         contractAddress: tokenContractAddress,

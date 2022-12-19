@@ -28,6 +28,22 @@
 
 namespace {
 
+// RegEx to validate the node name:
+// go-ipfs_v0.9.0-rc1_windows-amd64 - valid
+// go-ipfs_v0.9.0_windows-amd64 - valid
+constexpr char kExecutableRegEx[] =
+    "go-ipfs_v(\\d+\\.\\d+\\.\\d+)(-rc\\d+)?\\_\\w+-\\w+";
+
+// Valid CID multibase prefix, "code" character
+// from https://github.com/multiformats/multibase/blob/master/multibase.csv
+const char kCIDv1Codes[] = "079fFvVtTbBcChkKzZmMuU";
+const char kCIDv0Prefix[] = "Qm";
+
+// Ipfs codes from multicodec table
+// https://github.com/multiformats/multicodec/blob/master/table.csv
+const int64_t kIpfsNSCodec = 0xE3;
+const int64_t kIpnsNSCodec = 0xE5;
+
 // Decodes a varint from the given string piece into the given int64_t. Returns
 // remaining span if the string had a valid varint (where a byte was found with
 // it's top bit set).
@@ -57,21 +73,69 @@ GURL AppendLocalPort(const std::string& port) {
   return gateway.ReplaceComponents(replacements);
 }
 
-// RegEx to validate the node name:
-// go-ipfs_v0.9.0-rc1_windows-amd64 - valid
-// go-ipfs_v0.9.0_windows-amd64 - valid
-constexpr char kExecutableRegEx[] =
-    "go-ipfs_v(\\d+\\.\\d+\\.\\d+)(-rc\\d+)?\\_\\w+-\\w+";
+absl::optional<GURL> ExtractSourceFromGatewayHost(const GURL& url) {
+  std::vector<std::string> host_parts = base::SplitStringUsingSubstr(
+      url.host(), ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
 
-// Valid CID multibase prefix, "code" character
-// from https://github.com/multiformats/multibase/blob/master/multibase.csv
-const char kCIDv1Codes[] = "079fFvVtTbBcChkKzZmMuU";
-const char kCIDv0Prefix[] = "Qm";
+  if (host_parts.size() <= 2) {
+    return absl::nullopt;
+  }
+  GURL final_url;
+  if (host_parts.at(1) == "ipfs" && ipfs::IsValidCID(host_parts.at(0))) {
+    final_url = GURL("ipfs://" + host_parts.at(0) + url.path());
+  } else if (host_parts.at(1) == "ipns" &&
+             ipfs::IsValidIPNSCID(host_parts.at(0))) {
+    final_url = GURL("ipns://" + host_parts.at(0) + url.path());
+  } else if (host_parts.at(1) == "ipns") {
+    std::string decoded = ipfs::DecodeSingleLabelForm(host_parts.at(0));
+    final_url = GURL("https://" + decoded + url.path());
+  }
 
-// Ipfs codes from multicodec table
-// https://github.com/multiformats/multicodec/blob/master/table.csv
-const int64_t kIpfsNSCodec = 0xE3;
-const int64_t kIpnsNSCodec = 0xE5;
+  if (!final_url.is_valid()) {
+    return absl::nullopt;
+  }
+
+  GURL::Replacements replacements;
+  replacements.SetQueryStr(url.query_piece());
+  replacements.SetRefStr(url.ref_piece());
+  return final_url.ReplaceComponents(replacements);
+}
+
+absl::optional<GURL> ExtractSourceFromGatewayPath(const GURL& url) {
+  std::vector<std::string> path_parts = base::SplitStringUsingSubstr(
+      url.path(), "/", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+
+  if (path_parts.size() < 2) {
+    return absl::nullopt;
+  }
+  GURL final_url;
+
+  std::string final_path;
+  if (path_parts.size() >= 3) {
+    std::vector<std::string> final_path_parts(path_parts.begin() + 2,
+                                              path_parts.end());
+    final_path = "/" + base::JoinString(final_path_parts, "/");
+  }
+
+  if (path_parts.at(0) == "ipfs" && ipfs::IsValidCID(path_parts.at(1))) {
+    final_url = GURL("ipfs://" + path_parts.at(1) + final_path);
+  } else if (path_parts.at(0) == "ipns" &&
+             ipfs::IsValidIPNSCID(path_parts.at(1))) {
+    final_url = GURL("ipns://" + path_parts.at(1) + final_path);
+  } else if (path_parts.at(0) == "ipns") {
+    std::string decoded = ipfs::DecodeSingleLabelForm(path_parts.at(1));
+    final_url = GURL("https://" + decoded + final_path);
+  }
+
+  if (!final_url.is_valid()) {
+    return absl::nullopt;
+  }
+
+  GURL::Replacements replacements;
+  replacements.SetQueryStr(url.query_piece());
+  replacements.SetRefStr(url.ref_piece());
+  return final_url.ReplaceComponents(replacements);
+}
 
 }  // namespace
 
@@ -88,6 +152,10 @@ bool IsValidCID(const std::string& cid) {
   if (std::string(kCIDv1Codes).find(cid.at(0)) != std::string::npos)
     return true;
   return base::StartsWith(cid, kCIDv0Prefix);
+}
+
+bool IsValidIPNSCID(const std::string& cid) {
+  return IsValidCID(cid) && cid.at(0) == 'k';
 }
 
 bool IsIpfsResolveMethodDisabled(PrefService* prefs) {
@@ -460,47 +528,59 @@ std::string GetRegistryDomainFromIPNS(const GURL& url) {
       cid, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
-// gateway.io/ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy ->
-// ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy
+// https://github.com/ipfs/specs/blob/main/http-gateways/SUBDOMAIN_GATEWAY.md#host-request-header
+std::string DecodeSingleLabelForm(const std::string& input) {
+  // Normal form URLs such as en.wikipedia-on-ipfs.org should stay as is
+  if (input.find('.') != std::string::npos) {
+    return input;
+  }
+  std::string result;
+  const char* chars = input.c_str();
+  size_t i = 0;
+  for (i = 0; i < input.size(); i++) {
+    if (chars[i] == '-' && (i < input.size() - 1) && chars[i + 1] == '-') {
+      result.push_back('-');
+      i++;
+    } else if (chars[i] == '-') {
+      result.push_back('.');
+    } else {
+      result.push_back(chars[i]);
+    }
+  }
+  return result;
+}
+
+// Subdomain based gateway URL:
+// 1) CID:
 // bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy.ipfs.gateway.io ->
 // ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy
-absl::optional<GURL> TranslateToCurrentGatewayUrl(const GURL& url) {
+// 2) Single-label domain:
+// en-wikipedia--on--ipfs-org.ipns.gateway.io ->
+// https://en.wikipedia-on-ipfs.org
+// Path based gateway URL:
+// 1) CID:
+// gateway.io/ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy ->
+// ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfy
+// 2) Non-single-label domain:
+// gateway.io/ipns/en.wikipedia-on-ipfs.org ->
+// https://en.wikipedia-on-ipfs.org
+// 3) Single-label domain:
+// gateway.io/ipns/en-wikipedia--on--ipfs-org ->
+// https://en.wikipedia-on-ipfs.org
+// 4) IPNS key:
+// gateway.io/ipns/k2k4r8k4oiuzuccssu5jj27hrth43yqoq55wvm46e7ygqokvlz4ixmfn ->
+// ipns://k2k4r8k4oiuzuccssu5jj27hrth43yqoq55wvm46e7ygqokvlz4ixmfn
+absl::optional<GURL> ExtractSourceFromGateway(const GURL& url) {
   if (!url.is_valid() || !url.SchemeIsHTTPOrHTTPS()) {
     return absl::nullopt;
   }
 
-  std::vector<std::string> host_parts = base::SplitStringUsingSubstr(
-      url.host(), ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-
-  if (host_parts.size() > 2 && IsValidCID(host_parts.at(0)) &&
-      host_parts.at(1) == "ipfs") {
-    GURL final_url = GURL("ipfs://" + host_parts.at(0) + url.path());
-    GURL::Replacements replacements;
-    replacements.SetQueryStr(url.query_piece());
-    replacements.SetRefStr(url.ref_piece());
-    return final_url.ReplaceComponents(replacements);
+  auto result = ExtractSourceFromGatewayHost(url);
+  if (result) {
+    return result;
   }
 
-  std::vector<std::string> path_parts = base::SplitStringUsingSubstr(
-      url.path(), "/", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
-  if (path_parts.size() >= 2 && path_parts.at(0) == "ipfs" &&
-      IsValidCID(path_parts.at(1))) {
-    std::string final_path;
-    if (path_parts.size() >= 3) {
-      std::vector<std::string> final_path_parts(path_parts.begin() + 2,
-                                                path_parts.end());
-      final_path = "/" + base::JoinString(final_path_parts, "/");
-    }
-
-    GURL final_url = GURL("ipfs://" + path_parts.at(1) + final_path);
-    GURL::Replacements replacements;
-    replacements.SetQueryStr(url.query_piece());
-    replacements.SetRefStr(url.ref_piece());
-    return final_url.ReplaceComponents(replacements);
-  }
-
-  return absl::nullopt;
+  return ExtractSourceFromGatewayPath(url);
 }
 
 }  // namespace ipfs

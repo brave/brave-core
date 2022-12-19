@@ -28,7 +28,9 @@ NodeScript* ScriptTracker::AddScriptNode(v8::Isolate* isolate,
   const ScriptKey script_key{isolate, script_id};
   auto it = scripts_.find(script_key);
   if (it != scripts_.end()) {
-    CHECK(it->second->GetScriptData() == script_data) << script_key;
+    CHECK(it->second->GetScriptData() == script_data)
+        << "isolate: " << script_key.first
+        << " script id: " << script_key.second;
     return it->second;
   }
   auto* script_node =
@@ -41,14 +43,9 @@ NodeScript* ScriptTracker::GetScriptNode(v8::Isolate* isolate,
                                          ScriptId script_id) const {
   const ScriptKey script_key{isolate, script_id};
   auto it = scripts_.find(script_key);
-  CHECK(it != scripts_.end()) << script_key;
+  CHECK(it != scripts_.end())
+      << "isolate: " << script_key.first << " script id: " << script_key.second;
   return it->second;
-}
-
-std::ostream& operator<<(std::ostream& os,
-                         const ScriptTracker::ScriptKey& script_key) {
-  os << "isolate: " << script_key.first << " script id: " << script_key.second;
-  return os;
 }
 
 }  // namespace brave_page_graph

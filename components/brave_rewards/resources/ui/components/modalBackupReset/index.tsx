@@ -17,7 +17,7 @@ import {
   StyledText,
   StyledTextWrapper
 } from './style'
-import { Modal, Button } from 'brave-ui/components'
+import { Button, Checkbox, Modal } from 'brave-ui/components'
 import { getLocale } from 'brave-ui/helpers'
 import { Tab } from '../'
 
@@ -36,6 +36,7 @@ export interface Props {
 
 interface State {
   recoveryKey: string
+  resetConsent: boolean
   errorShown: boolean
 }
 
@@ -48,6 +49,7 @@ export default class ModalBackupReset extends React.PureComponent<Props, State> 
     super(props)
     this.state = {
       recoveryKey: '',
+      resetConsent: false,
       errorShown: false
     }
   }
@@ -111,24 +113,48 @@ export default class ModalBackupReset extends React.PureComponent<Props, State> 
   }
 
   getReset = () => {
-    const getText = () => {
-      if (this.props.internalFunds <= 0) {
-        return getLocale('rewardsResetTextNoFunds')
-      }
+    const visitSupportURL = (event: React.UIEvent) => {
+      window.open('https://support.brave.com/hc/en-us/articles/10007969237901', '_blank', 'noopener')
+      event.stopPropagation()
+    }
 
+    const onResetConsentChange = () => {
+      this.setState({
+        resetConsent: !this.state.resetConsent
+      })
+    }
+
+    const getResetText = () => {
+      return formatMessage(getLocale('rewardsResetText'), {
+        tags: {
+          $1: (content) => (
+            <StyledLink key='link' onClick={visitSupportURL}>
+              {content}
+            </StyledLink>
+          )
+        }
+      })
+    }
+
+    const getConsentText = () => {
+      return formatMessage(getLocale('rewardsResetConsent'), {
+        tags: {
+          $1: (content) => (
+            <StyledLink key='link' onClick={visitSupportURL}>
+              {content}
+            </StyledLink>
+          )
+        }
+      })
+    }
+
+    const getFundsWarningText = () => {
       return formatMessage(getLocale('rewardsResetTextFunds'), {
         placeholders: {
           $1: (
             <b key='amount'>
               {this.props.internalFunds.toString()} BAT
             </b>
-          )
-        },
-        tags: {
-          $2: (content) => (
-            <StyledLink key='link' onClick={this.props.onVerify}>
-              {content}
-            </StyledLink>
           )
         }
       })
@@ -138,12 +164,31 @@ export default class ModalBackupReset extends React.PureComponent<Props, State> 
       <>
         <StyledTextWrapper>
           <StyledText data-test-id={'reset-text'}>
-            {getText()}
+            {getResetText()}
           </StyledText>
         </StyledTextWrapper>
+        {
+          this.props.internalFunds > 0 &&
+          <StyledTextWrapper>
+            <StyledText data-test-id={'funds-warning-text'}>
+              {getFundsWarningText()}
+            </StyledText>
+          </StyledTextWrapper>
+        }
+        <Checkbox
+          value={{ resetConsent: this.state.resetConsent }}
+          onChange={onResetConsentChange}
+        >
+          <StyledTextWrapper data-key="resetConsent">
+            <StyledText data-test-id={'funds-warning-text'}>
+              {getConsentText()}
+            </StyledText>
+          </StyledTextWrapper>
+        </Checkbox>
         <StyledActionsWrapper>
           <ActionButton
             id={'reset-button'}
+            disabled={!this.state.resetConsent}
             level={'primary'}
             type={'accent'}
             text={getLocale('reset')}

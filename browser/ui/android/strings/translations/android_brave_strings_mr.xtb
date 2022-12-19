@@ -16,6 +16,7 @@
 <translation id="9148058034647219655">निर्गमन</translation>
 <translation id="2356070529366658676">विचारा</translation>
 <translation id="4176463684765177261">अक्षम</translation>
+<translation id="59174027418879706">सक्षम केलेले</translation>
 <translation id="6527303717912515753">शेअर करा</translation>
 <translation id="5787084571334399599">ब्राउझरला फिंगरप्रिंटिंगपासून प्रतिबंधित करते</translation>
 <translation id="7459000603787995422">बाहेर पडताना टॅब बंद करा</translation>
@@ -25,7 +26,6 @@
 <translation id="7445411102860286510">साइटना स्वयंचलितपणे नि:शब्द केलेले व्हिडिओ प्ले करण्याची अनुमती द्या (शिफारस केलेले)</translation>
 <translation id="7837721118676387834">एका विशिष्ट साइटकरिता नि:शब्द केलेल्या व्हिडिओंच्या ऑटोप्ले ला अनुमती द्या.</translation>
 <translation id="8026334261755873520">ब्राउझिंग डेटा साफ करा</translation>
-<translation id="59174027418879706">सक्षम केलेले</translation>
 <translation id="4150201353443180367">डिस्प्ले करा</translation>
 <translation id="2433507940547922241">स्वरूप</translation>
 <translation id="7207456302801184289">Brave मध्ये स्वागत आहे</translation>
@@ -47,7 +47,6 @@
 <translation id="1426410128494586442">होय</translation>
 <translation id="6336451774241870485">नवीन गुप्त टॅब</translation>
 <translation id="8874184842967597500">कनेक्ट केलेले नाही</translation>
-<translation id="3368922792935385530">कनेक्ट केले</translation>
 <translation id="987264212798334818">सामान्य</translation>
 <translation id="1116694919640316211">बद्दल</translation>
 <translation id="6680650203439190394">रेट करा</translation>
@@ -95,6 +94,7 @@
 <translation id="5233638681132016545">नवीन टॅब</translation>
 <translation id="5308380583665731573">कनेक्‍ट करा</translation>
 <translation id="2391762656119864333">मागे घ्या</translation>
+<translation id="3368922792935385530">कनेक्ट केले</translation>
 <translation id="385051799172605136">मागील</translation>
 <translation id="3355936511340229503">कनेक्शन एरर</translation>
 <translation id="4804818685124855865">‍डिस्कनेक्ट</translation>

@@ -84,6 +84,10 @@ class DecentralizedDnsNavigationThrottleBrowserTest
   ~DecentralizedDnsNavigationThrottleBrowserTest() override = default;
 
   PrefService* local_state() { return g_browser_process->local_state(); }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature{
+      brave_wallet::features::kBraveWalletSnsFeature};
 };
 
 IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
@@ -103,7 +107,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
   SendInterstitialCommandSync(
       browser(),
       security_interstitials::SecurityInterstitialCommand::CMD_PROCEED);
-  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ETHEREUM),
+  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ENABLED),
             local_state()->GetInteger(kUnstoppableDomainsResolveMethod));
 }
 
@@ -144,7 +148,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
   SendInterstitialCommandSync(
       browser(),
       security_interstitials::SecurityInterstitialCommand::CMD_PROCEED);
-  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ETHEREUM),
+  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ENABLED),
             local_state()->GetInteger(kENSResolveMethod));
 }
 
@@ -194,7 +198,7 @@ class EnsL2OffchanLookupNavigationThrottleBrowserTest
 IN_PROC_BROWSER_TEST_F(EnsL2OffchanLookupNavigationThrottleBrowserTest,
                        ShowENSOffchainLookupInterstitialAndProceed) {
   local_state()->SetInteger(kENSResolveMethod,
-                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+                            static_cast<int>(ResolveMethodTypes::ENABLED));
   SetEnsResolverResult(EnsResolverTaskResult({}, true), absl::nullopt);
 
   EnsResolverTask::GetWorkOnTaskForTesting() =
@@ -227,7 +231,7 @@ IN_PROC_BROWSER_TEST_F(EnsL2OffchanLookupNavigationThrottleBrowserTest,
 IN_PROC_BROWSER_TEST_F(EnsL2OffchanLookupNavigationThrottleBrowserTest,
                        ShowENSOffchainLookupInterstitialAndDontProceed) {
   local_state()->SetInteger(kENSResolveMethod,
-                            static_cast<int>(ResolveMethodTypes::ETHEREUM));
+                            static_cast<int>(ResolveMethodTypes::ENABLED));
   SetEnsResolverResult(EnsResolverTaskResult({}, true), absl::nullopt);
 
   EnsResolverTask::GetWorkOnTaskForTesting() =
@@ -255,6 +259,46 @@ IN_PROC_BROWSER_TEST_F(EnsL2OffchanLookupNavigationThrottleBrowserTest,
       security_interstitials::SecurityInterstitialCommand::CMD_DONT_PROCEED);
   EXPECT_EQ(EnsOffchainResolveMethod::kDisabled,
             GetEnsOffchainResolveMethod(local_state()));
+}
+
+IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
+                       ShowSnsInterstitialAndProceed) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("http://test.sol")));
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
+  EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
+            GetInterstitialType(web_contents));
+
+  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ASK),
+            local_state()->GetInteger(kSnsResolveMethod));
+  SendInterstitialCommandSync(
+      browser(),
+      security_interstitials::SecurityInterstitialCommand::CMD_PROCEED);
+  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ENABLED),
+            local_state()->GetInteger(kSnsResolveMethod));
+}
+
+IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
+                       ShowSnsInterstitialAndReject) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("http://test.sol")));
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
+  EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
+            GetInterstitialType(web_contents));
+
+  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ASK),
+            local_state()->GetInteger(kSnsResolveMethod));
+  SendInterstitialCommandSync(
+      browser(),
+      security_interstitials::SecurityInterstitialCommand::CMD_DONT_PROCEED);
+  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::DISABLED),
+            local_state()->GetInteger(kSnsResolveMethod));
 }
 
 }  // namespace decentralized_dns

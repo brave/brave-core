@@ -51,7 +51,7 @@ class InlineContentAd final : public inline_content_ads::EventHandlerObserver,
   ~InlineContentAd() override;
 
   void MaybeServe(const std::string& dimensions,
-                  const MaybeServeInlineContentAdCallback& callback);
+                  MaybeServeInlineContentAdCallback callback);
 
   void TriggerEvent(const std::string& placement_id,
                     const std::string& creative_instance_id,

@@ -3,7 +3,9 @@
 <translationbundle lang="ca">
 <translation id="3333887201479867589">Premis de Brave</translation>
 <translation id="4615489450165434530">Informa d'una pàgina web inexistent</translation>
+<translation id="8097438084542431276">Copia l'enllaç net</translation>
 <translation id="1209739344687072997">Informa d'una pàgina web inexistent</translation>
+<translation id="7630214457764713113">Copia l'enllaç net</translation>
 <translation id="6406506848690869874">Sincronització</translation>
 <translation id="1544192797660353713">Cartera</translation>
 <translation id="2445484935443597917">Crea un perfil</translation>
@@ -73,7 +75,9 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2638041073279639246">Obre l'enllaç a una finestra privada amb Tor</translation>
 <translation id="3425600262621021599">Obre l'enllaç a una finestra privada de Brave amb Tor</translation>
 <translation id="3229091547987707389">Importa i comparteix un directori</translation>
+<translation id="2804710924397009224">Amaga icones Premis de Brave</translation>
 <translation id="5029193871181468990">Amaga la icona Premis de Brave</translation>
+<translation id="2808103541110899519">Amaga la icona de la cartera de Brave</translation>
 <translation id="7595540212376041331">Amaga la icona de la cartera de Brave</translation>
 <translation id="4928988318462976765">Botiga d'extensions web</translation>
 <translation id="9181207987584064303">Veure a la botiga d'extensions web</translation>
@@ -170,7 +174,13 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="191143826155037518">Pots accedir a Brave a través de <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) and includes <ph name="BEGIN_LINK_OSS"/>open source software<ph name="END_LINK_OSS"/> under a variety of other licenses.
         You can read <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instructions on how to download and build for yourself<ph name="END_LINK_BUILD_INSTRUCTIONS"/> the specific <ph name="BEGIN_LINK_SOURCE_CODE"/>source code used to create this copy<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Afegeix totes les pestanyes a les adreces d'interès...</translation>
+<translation id="3987546108749866209">Utilitza pestanyes verticals</translation>
+<translation id="5860254591544742609">Mostra la barra de títol</translation>
+<translation id="399928467800528208">Flota en passar-hi el cursor per sobre</translation>
 <translation id="2336228925368920074">Afegeix totes les pestanyes a les adreces d'interès...</translation>
+<translation id="2523967823495420116">Utilitza pestanyes verticals</translation>
+<translation id="8888603463702767599">Mostra la barra de títol</translation>
+<translation id="2058818256505091369">Flota en passar-hi el cursor per sobre</translation>
 <translation id="4235920711083356755">Mostra el botó VPN</translation>
 <translation id="4070612712151038707">Mostra el botó VPN a la barra d'eines</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -201,6 +211,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8722651357687610395">Estableix Brave com a predeterminat</translation>
 <translation id="2370739752330685659">Potser més tard</translation>
 <translation id="7537601449003285327">Ancora a la barra de tasques</translation>
+<translation id="2307973900865360088">Mantén al panell d'accés ràpid</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">Importat des de <ph name="BROWSER_NAME"/>.</translation>
 <translation id="9156965752763025780">Els canvis s'aplicaran la propera vegada que reinicieu Brave.</translation>
@@ -243,9 +254,18 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5448570825852364919">Pàgina en blanc</translation>
 <translation id="5919424224662539292">Personalitzeu la imatge de fons i els ginys que apareixen a la nova pestanya</translation>
 <translation id="7461924472993315131">Fixa</translation>
+<translation id="7506648566440714944">Brave ja està fixat</translation>
+<translation id="239275665037555969">Panell d'accés ràpid</translation>
+<translation id="4057614912106618659">El Brave ja és al panell d'accés ràpid</translation>
+<translation id="3195845168740336657">Configuració d'Escut</translation>
+<translation id="754769152790647708">Estat de l'escut</translation>
+<translation id="3615717588724840230">Els llocs web poden blocar rastrejadors, anuncis i empremtes dactilars mitjançant Escuts</translation>
+<translation id="5690973901138662477">Escuts activats</translation>
+<translation id="4697275813919189958">Escuts desactivats</translation>
 <translation id="6303294677342628402">Escuts</translation>
 <translation id="7133511168130368997">Bloquejar rastrejadors i anuncis que et segueixen pel web.</translation>
 <translation id="2761825942249694703">Aquests són els ajustos predeterminats de Brave. S'apliquen a tots els llocs web, llevat que en canviïs algun en concret al panell dels escuts d'un lloc particular. El fet de canviar-los no afectarà els ajustos existents per a la resta de llocs.</translation>
+<translation id="1435116578479068303">Això bloquejarà la majoria d'anuncis als llocs web, però no els Brave Private Ads, els quals es controlen des de la configuració de <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>.</translation>
 <translation id="8452536890042542134">Això bloquejarà la majoria d'anuncis als llocs web.</translation>
 <translation id="4800195524776354947">Mostrar el nombre d'elements bloquejats a la icona dels escuts</translation>
 <translation id="5510493033031835532">Redirigeix automàticament les pàgines AMP</translation>
@@ -264,10 +284,13 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7390783310074170337">Vista per defecte</translation>
 <translation id="130615081792797568">Vista senzilla</translation>
 <translation id="2360360976480535628">Vista avançada</translation>
+<translation id="101592339984642584">Filtració del contingut</translation>
 <translation id="8694564340481124390">Habilita filtres personalitzats que bloquegin elements molestos i rastrejadors regionals i específics de l'idioma.</translation>
+<translation id="4877657558909976793">Habilita filtres personalitzats que bloquegen elements molestos i <ph name="BEGIN_LINK"/> rastrejadors <ph name="END_LINK"/> regionals i específics de l'idioma.</translation>
 <translation id="3482656215021340727">Afegeix llistes de filtres personalitzats</translation>
 <translation id="1020877116991797978">Afegeix llistes addicionals creades i mantingudes per la teva comunitat de confiança.</translation>
 <translation id="7617831480435794399">Subscriu-te només a llistes d'entitats de confiança. El teu navegador comprovarà periòdicament si hi ha actualitzacions de la llista des de l'URL que introdueixis, revelant la teva adreça IP al seu servidor.</translation>
+<translation id="8580328754808744073">Crea filtres personalitzats</translation>
 <translation id="4618274268052410139">Afegeix filtres personalitzats que hagis creat, un per línia, en el camp següent. Assegura't que utilitzes la <ph name="BEGIN_LINK"/>sintaxi de filtres d'Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Afegeix</translation>
 <translation id="571950783952070673">URL de la llista</translation>
@@ -283,6 +306,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5438573563213942361">Llistes personalitzades</translation>
 <translation id="4182731739150761577">Mostra la llista completa</translation>
 <translation id="1340263054776016283">Introdueis l'URL de la llista de filtres</translation>
+<translation id="8578397014396032341">Filtres de contingut</translation>
 <translation id="6821903322090655051">Brave Rewards està inhabilitat</translation>
 <translation id="413570371620795359">Obre el panell de recompenses per activar i començar</translation>
 <translation id="3849957491997306859">Detectat automàticament</translation>
@@ -372,6 +396,8 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4581190919849683048">Amb quin tipus de dispositiu us agradaria sincronitzar?</translation>
 <translation id="4112587618563511470">Codi de sincronització invàlid, si us plau comproveu-ho i torneu-ho a intentar.</translation>
 <translation id="3995714999835224798">El codi no és vàlid</translation>
+<translation id="4432071071853308688">Aquest codi és buit</translation>
+<translation id="955848693465029904">Error intern de la configuració de sincronització</translation>
 <translation id="859506441384380749">Aquest codi s'ha generat amb una versió obsoleta de Brave, actualitza primer l'altre dispositiu</translation>
 <translation id="3132642509209154999">Aquest codi ha caducat. Genera'n un de nou a l'altre dispositiu i torna-ho a provar.</translation>
 <translation id="2859229680945501779">Aquest codi no és vàlid. Comproveu que l'hora i la zona horària s'han establert correctament al vostre dispositiu.</translation>
@@ -391,15 +417,21 @@ Segur que vols continuar?</translation>
 <translation id="6864914031231797928">Permetre l'accés a Google per obtenir extensions</translation>
 <translation id="6554397389149987360">Fa servir un component de Hangouts per permetre que es comparteixi la pantalla i altres característiques al navegador.</translation>
 <translation id="7878791177459550035">L'encaminador multimèdia habilita la funció de transmissió al navegador.</translation>
-<translation id="5927916530277631319">Mètode per resoldre Unstoppable Domains</translation>
-<translation id="2889554198027690581"><ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/>sobre consideracions de privadesa d'Ethereum.</translation>
-<translation id="5248318250177143470">Mètode per resoldre el servei de noms Ethereum (ENS)</translation>
+<translation id="2707635989000984973">Resol els noms dels dominis de Unstoppable Domains</translation>
+<translation id="1807158022157096592"><ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/> sobre les consideracions de privadesa de Unstoppable Domains.</translation>
+<translation id="641308776160806829">Resol els noms de domini del Servei de noms Ethereum (ENS)</translation>
+<translation id="6421218422395686663">Permet la cerca fora de cadena ENS.</translation>
+<translation id="4608449984413688436">Resol els noms de domini del Servei de noms Solana (SNS)</translation>
+<translation id="7831978744512353629"><ph name="BEGIN_LINK"/>Saber-ne més<ph name="END_LINK"/> sobre les consideracions de privacitat de la cerca dfora de cadena ENS.</translation>
 <translation id="6241402707160226266">Finestra Privada amb Tor</translation>
 <translation id="8762452230727230396">Tor amaga la vostra adreça IP dels llocs que visiteu.</translation>
+<translation id="951983619130191090">Ofereix-te voluntari per ajudar els altres a connectar-se a la xarxa Tor</translation>
+<translation id="2223668809371912019">Habiliteu l'extensió Snowflake per permetre als usuaris dels països censurats connectar-se a la xarxa Tor a través de la vostra connexió de xarxa.</translation>
 <translation id="2959986444009520721">Utilitzeu ponts</translation>
 <translation id="8416750895933172460">Els ponts us ajuden a accedir a la xarxa Tor al lloc on Tor està bloquejat. Depenent d'on estigueu situats, un pont pot funcionar millor que un altre.</translation>
 <translation id="7206799843254049470">Configuració de connexió Tor</translation>
 <translation id="3194502271166340944">Controla com Windows privat amb Tor es connecta a la xarxa Tor</translation>
+<translation id="3717364961460790491">No s'ha pogut baixar l'extensió Snowflake necessària per a aquesta funcionalitat. Comproveu la connexió a Internet i torneu-ho a provar.</translation>
 <translation id="4859228830700205299">Seleccioneu un pont integrat</translation>
 <translation id="3233137871426528317">Sol·liciteu un pont a torproject.org</translation>
 <translation id="5701503934456421898">Demaneu un pont nou...</translation>
@@ -476,11 +508,13 @@ Segur que vols continuar?</translation>
 <translation id="1195880978080389104">Node local IPFS Brave</translation>
 <translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Més informació<ph name="END_LINK_MPL"/> sobre el node local IPFS Brave i les consideracions de privacitat de la passarel·la.</translation>
 <translation id="4927734062756955434">Adreça d'entrada IPFS pública</translation>
+<translation id="3707431725427930007">Adreça d'entrada IPFS pública per a NFT</translation>
 <translation id="8425213833346101688">Canvia</translation>
 <translation id="585868419599255817">Tornar a la passarel·la pública IPFS</translation>
 <translation id="2618080188892567155">Tornar automàticament a la passarel·la pública IPFS quan no es pot accedir al node local IPFS Brave.</translation>
 <translation id="4107552920076294723">Redirigiu els recursos IPFS a l'entrada IPFS configurada</translation>
-<translation id="6494857428933042381">Utilitza automàticament l'entrada configurada per a resolucions IPFS quan es troba un recurs d'entrada IPFS.</translation>
+<translation id="4284166297897715283">Les sol·licituds als recursos IPFS, allotjats a les passarel·les IPFS de tercers es carregaran mitjançant la passarel·la local o remota seleccionada.
+    Nota: Si se selecciona un node local, el recurs es demanarà directament des del vostre ordinador i les dades emmagatzemades a la memòria cau es poden proporcionar a la xarxa IPFS durant un temps.</translation>
 <translation id="8655170717758778983">Redirigeix automàticament a les pàgines IPFS mitjançant DNSLink quan sigui possible</translation>
 <translation id="2233724520223030977">Utilitza automàticament DNSLink per anar a la versió IPFS d'un lloc web quan sigui possible</translation>
 <translation id="8068526464562249859">Fa servir l'extensió d'IPFS Companion per a una ajuda millorada a Brave, incloent-hi accés a tasques comunes d'IPFS des de la vostra barra de navegació.</translation>

@@ -58,6 +58,7 @@ import org.chromium.brave_wallet.mojom.GasEstimation1559;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OnRampProvider;
 import org.chromium.brave_wallet.mojom.ProviderError;
+import org.chromium.brave_wallet.mojom.SwapErrorResponse;
 import org.chromium.brave_wallet.mojom.SwapParams;
 import org.chromium.brave_wallet.mojom.SwapResponse;
 import org.chromium.brave_wallet.mojom.SwapService;
@@ -294,15 +295,16 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
         assert mSwapService != null;
         if (!sendTx) {
-            mSwapService.getPriceQuote(swapParams, (success, response, error_response) -> {
+            mSwapService.getPriceQuote(swapParams, (response, errorResponse, errorString) -> {
                 workWithSwapQuota(
-                        success, response, error_response, calculatePerSellAsset, sendTx, from);
+                        response, errorResponse, errorString, calculatePerSellAsset, sendTx, from);
             });
         } else {
-            mSwapService.getTransactionPayload(swapParams, (success, response, error_response) -> {
-                workWithSwapQuota(
-                        success, response, error_response, calculatePerSellAsset, sendTx, from);
-            });
+            mSwapService.getTransactionPayload(
+                    swapParams, (response, errorResponse, errorString) -> {
+                        workWithSwapQuota(response, errorResponse, errorString,
+                                calculatePerSellAsset, sendTx, from);
+                    });
         }
     }
 
@@ -332,16 +334,16 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         return swapParams;
     }
 
-    private void workWithSwapQuota(boolean success, SwapResponse response, String errorResponse,
-            boolean calculatePerSellAsset, boolean sendTx, String from) {
-        if (!success) {
+    private void workWithSwapQuota(SwapResponse response, SwapErrorResponse errorResponse,
+            String errorString, boolean calculatePerSellAsset, boolean sendTx, String from) {
+        if (response == null) {
             response = new SwapResponse();
             response.sellAmount = "0";
             response.buyAmount = "0";
             response.price = "0";
-            if (errorResponse != null) {
+            if (errorString != null) {
                 if (sendTx) {
-                    Log.e(TAG, "Swap error: " + errorResponse);
+                    Log.e(TAG, "Swap error: " + errorString);
                 }
             }
             mBtnBuySendSwap.setEnabled(true);
@@ -353,7 +355,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 sendSwapTransaction(data, from);
             }
         }
-        updateSwapControls(response, calculatePerSellAsset, errorResponse);
+        updateSwapControls(response, calculatePerSellAsset, errorResponse, errorString);
     }
 
     private void sendSwapTransaction(TxData data, String from) {
@@ -377,8 +379,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         });
     }
 
-    private void updateSwapControls(
-            SwapResponse response, boolean calculatePerSellAsset, String errorResponse) {
+    private void updateSwapControls(SwapResponse response, boolean calculatePerSellAsset,
+            SwapErrorResponse errorResponse, String errorString) {
+        assert response != null;
         int decimals = Utils.ETH_DEFAULT_DECIMALS;
         if (!calculatePerSellAsset) {
             if (mCurrentBlockchainToken != null) {
@@ -410,7 +413,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             symbol = mCurrentBlockchainToken.symbol;
         }
         mMarketLimitPriceText.setText(String.format(getString(R.string.market_price_in), symbol));
-        checkBalanceShowError(response, errorResponse);
+        checkBalanceShowError(response, errorResponse, errorString);
     }
 
     private void resetSwapFromToAssets() {
@@ -488,7 +491,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         }
     }
 
-    private void checkBalanceShowError(SwapResponse response, String errorResponse) {
+    private void checkBalanceShowError(
+            SwapResponse response, SwapErrorResponse errorResponse, String errorString) {
+        assert response != null;
         String value = mFromValueText.getText().toString();
         double valueFrom = 0;
         double gasLimit = 0;
@@ -526,7 +531,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                         }
                     }
 
-                    if (errorResponse == null) {
+                    if (errorResponse == null && errorString.isEmpty()) {
                         mBtnBuySendSwap.setText(getString(R.string.swap));
                         mBtnBuySendSwap.setEnabled(true);
                         enableDisableSwapButton();
@@ -538,7 +543,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                     response.allowanceTarget, fromValue);
                         }
                     } else {
-                        if (Utils.isSwapLiquidityErrorReason(errorResponse)) {
+                        if (errorResponse != null && errorResponse.isInsufficientLiquidity) {
                             mBtnBuySendSwap.setText(
                                     getString(R.string.crypto_wallet_error_insufficient_liquidity));
                         } else {

@@ -8,15 +8,10 @@
 
 class Browser;
 
-namespace content {
-class WebContents;
-}  // namespace content
-
 namespace brave {
 
 // Tab restore dialog will be launched after ask dialog is closed.
 void ShowCrashReportPermissionAskDialog(Browser* browser);
-void ShowWebDiscoveryDialog(Browser* browser, content::WebContents* contents);
 
 }  // namespace brave
 

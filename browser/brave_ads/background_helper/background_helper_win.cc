@@ -7,7 +7,7 @@
 
 #include <windows.h>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window.h"

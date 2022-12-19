@@ -140,7 +140,7 @@ export const PortfolioOverview = () => {
   }, [visibleTokensForFilteredAccount, selectedAccountFilter, networkList, fullAssetBalance])
 
   const visibleAssetOptions = React.useMemo((): UserAssetInfoType[] => {
-    return userAssetList.filter(({ asset }) => asset.visible && !asset.isErc721)
+    return userAssetList.filter(({ asset }) => asset.visible && !(asset.isErc721 || asset.isNft))
   }, [userAssetList])
 
   // This will scrape all of the user's accounts and combine the fiat value for every asset
@@ -194,13 +194,13 @@ export const PortfolioOverview = () => {
       history.push(`${WalletRoutes.Portfolio}/${asset.symbol}`)
       return
     } else if (asset.isErc721) {
-      history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}/${asset.tokenId}`)
+       history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}/${asset.tokenId}`)
     } else {
       history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}`)
     }
 
     dispatch(WalletPageActions.selectAsset({ asset, timeFrame: selectedTimeline }))
-    if (asset.isErc721 && nftMetadata) {
+    if ((asset.isErc721 || asset.isNft) && nftMetadata) {
       // reset nft metadata
       dispatch(WalletPageActions.updateNFTMetadata(undefined))
     }

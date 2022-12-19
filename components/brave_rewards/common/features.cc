@@ -29,5 +29,9 @@ BASE_FEATURE(kVerboseLoggingFeature,
              "BraveRewardsVerboseLogging",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kAllowUnsupportedWalletProvidersFeature,
+             "BraveRewardsAllowUnsupportedWalletProviders",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace features
 }  // namespace brave_rewards

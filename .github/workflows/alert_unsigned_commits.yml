@@ -1,0 +1,42 @@
+name: Alert Unsigned Commits
+on:
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  pull-requests: write
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  alert-unsigned:
+    if: github.event.review.state == 'approved'
+    name: Alert Unsigned Commits
+    runs-on: ubuntu-latest
+    steps:
+      - name: Alert Unsigned Commits
+        run: |
+          set -x
+          HEAD_SHA=${{ github.event.pull_request.head.sha }}
+          PR_NUMBER=${{ github.event.pull_request.number }}
+
+          BRAVE_CORE_PATH=brave/brave-core
+          post_once() {
+              comments=$(gh -R "$BRAVE_CORE_PATH" pr view "$PR_NUMBER" --json comments --jq ".comments[].body")
+              grep -F -q "$(head -1 <<<"$1")" <<<"$comments" || gh -R "$BRAVE_CORE_PATH" pr comment "$PR_NUMBER" -b "$1"
+          }
+
+          commit=$(gh api -H "Accept: application/vnd.github+json" "/repos/${BRAVE_CORE_PATH}/commits/${HEAD_SHA}")
+          verification=$(jq -r .commit.verification <<<"$commit")
+          verified=$(jq -r .verified <<<"$verification")
+          author_login=$(jq -r .author.login <<<"$commit")
+          if [[ "$verified" != "true" ]]; then
+              msg=":warning: PR head is an unsigned commit
+          commit: ${HEAD_SHA}
+          reason: $(jq -r .reason <<<"$verification")
+          Please follow the handbook to configure [commit signing](https://github.com/brave/handbook/blob/master/development/commit-and-tag-signing.md)
+          cc: @${author_login}
+          "
+              post_once "$msg"
+          fi

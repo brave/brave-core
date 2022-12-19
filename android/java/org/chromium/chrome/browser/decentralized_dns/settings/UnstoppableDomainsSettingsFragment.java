@@ -23,15 +23,14 @@ public class UnstoppableDomainsSettingsFragment extends PreferenceFragmentCompat
         getActivity().setTitle(R.string.unstoppable_domains_title);
         SettingsUtils.addPreferencesFromResource(this, R.xml.unstoppable_domains_preferences);
 
-        RadioButtonGroupUnstoppableDomainsResolveMethodPreference
-                radioButtonGroupUnstoppableDomainsResolveMethodPreference =
-                        (RadioButtonGroupUnstoppableDomainsResolveMethodPreference) findPreference(
-                                PREF_UNSTOPPABLE_DOMAINS_RESOLVE_METHOD);
+        RadioButtonGroupDDnsResolveMethodPreference radioButtonGroupDDnsResolveMethodPreference =
+                (RadioButtonGroupDDnsResolveMethodPreference) findPreference(
+                        PREF_UNSTOPPABLE_DOMAINS_RESOLVE_METHOD);
 
-        radioButtonGroupUnstoppableDomainsResolveMethodPreference.initialize(
+        radioButtonGroupDDnsResolveMethodPreference.initialize(
                 BravePrefServiceBridge.getInstance().getUnstoppableDomainsResolveMethod());
 
-        radioButtonGroupUnstoppableDomainsResolveMethodPreference.setOnPreferenceChangeListener(
+        radioButtonGroupDDnsResolveMethodPreference.setOnPreferenceChangeListener(
                 (preference, newValue) -> {
                     int method = (int) newValue;
                     BravePrefServiceBridge.getInstance().setUnstoppableDomainsResolveMethod(method);

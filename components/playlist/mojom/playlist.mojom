@@ -67,5 +67,12 @@ interface Page {
   // TODO(sko) For now, we only send |kUpdated| event. Need to make more events
   // and parameters for client side.
   OnEvent(PlaylistEvent event);
+
+  OnMediaFileDownloadProgressed(
+      string id,
+      int64 total_bytes,
+      int64 received_bytes,
+      int8 percent_complete,
+      string time_remaining);
 };
 

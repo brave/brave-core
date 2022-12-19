@@ -76,7 +76,7 @@ std::string GetHTML() {
 
 TEST(BraveNewsHTMLParsing, GetFeedUrlsFromHTML) {
   GURL site_url = GURL("https://www.example.com/page");
-  auto feed_urls = GetFeedURLsFromHTMLDocument(GetHTML(), site_url);
+  auto feed_urls = GetFeedURLsFromHTMLDocument("utf8", GetHTML(), site_url);
   // There are 3 <link> elements in the sample.
   // But only 2 should be treated as valid pointers to potential feeds.
   ASSERT_EQ(feed_urls.size(), 2u);

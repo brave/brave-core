@@ -5,14 +5,16 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import { useSelector } from 'react-redux'
+
+// Selectors
+import { useSafeWalletSelector, useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../../../common/selectors'
 
 // Types
 import {
   BraveWallet,
   UserAssetInfoType,
-  WalletRoutes,
-  WalletState
+  WalletRoutes
 } from '../../../../../../constants/types'
 import { RenderTokenFunc } from './virtualized-tokens-list'
 
@@ -25,7 +27,7 @@ import AddButton from '../../../../add-button/index'
 import NetworkFilterSelector from '../../../../network-filter-selector/index'
 import { AccountFilterSelector } from '../../../../account-filter-selector/account-filter-selector'
 import { AssetFilterSelector } from '../../../../asset-filter-selector/asset-filter-selector'
-import { NFTGridView } from '../nft-grid-view/nft-grid-view'
+import { PortfolioAssetItemLoadingSkeleton } from '../../../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
 
 // Hooks
 import usePricing from '../../../../../../common/hooks/pricing'
@@ -66,9 +68,12 @@ export const TokenLists = ({
   // routing
   const history = useHistory()
 
-  // redux
-  const tokenSpotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
-  const selectedAssetFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAssetFilter)
+  // unsafe selectors
+  const tokenSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
+  const selectedAssetFilter = useUnsafeWalletSelector(WalletSelectors.selectedAssetFilter)
+
+  // safe selectors
+  const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
 
   // hooks
   const { computeFiatAmount } = usePricing(tokenSpotPrices)
@@ -137,6 +142,18 @@ export const TokenLists = ({
           : aFiatBalance.toNumber() - bFiatBalance.toNumber()
       })
     }
+    if (
+      selectedAssetFilter.id === 'aToZ' ||
+      selectedAssetFilter.id === 'zToA'
+    ) {
+      return [...fungibleTokens].sort(function (a, b) {
+        const aName = a.asset.name.toUpperCase()
+        const bName = b.asset.name.toUpperCase()
+        return selectedAssetFilter.id === 'aToZ'
+          ? aName.localeCompare(bName)
+          : bName.localeCompare(aName)
+      })
+    }
     return fungibleTokens
   }, [
     selectedAssetFilter.id,
@@ -145,29 +162,25 @@ export const TokenLists = ({
   ])
 
   const listUi = React.useMemo(() => {
-    return selectedAssetFilter.id !== 'nfts' ? (
+    return <>
+      {sortedFungibleTokensList.map((token, index) => renderToken({ index, item: token, viewMode: 'list' }))}
+      {!assetAutoDiscoveryCompleted &&
+        <PortfolioAssetItemLoadingSkeleton />
+      }
+      {nonFungibleTokens.length !== 0 &&
         <>
-          {sortedFungibleTokensList.map((token, index) => renderToken({ index, item: token, viewMode: 'list' }))}
-          {nonFungibleTokens.length !== 0 &&
-            <>
-              <Spacer />
-              <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
-              <SubDivider />
-              {nonFungibleTokens.map((token, index) => renderToken({ index, item: token, viewMode: 'list' }))}
-            </>
-          }
+          <Spacer />
+          <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
+          <SubDivider />
+          {nonFungibleTokens.map((token, index) => renderToken({ index, item: token, viewMode: 'list' }))}
         </>
-      ) : (
-        <NFTGridView
-          nonFungibleTokens={nonFungibleTokens}
-          renderToken={(token, index) => renderToken({ index, item: token, viewMode: 'list' })}
-        />
-      )
+      }
+    </>
   }, [
-    selectedAssetFilter.id,
     sortedFungibleTokensList,
     renderToken,
-    nonFungibleTokens
+    nonFungibleTokens,
+    assetAutoDiscoveryCompleted
   ])
 
   // effects

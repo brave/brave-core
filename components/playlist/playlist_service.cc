@@ -24,10 +24,9 @@
 #include "brave/components/playlist/playlist_types.h"
 #include "brave/components/playlist/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
-#include "services/preferences/public/cpp/dictionary_value_update.h"
-#include "services/preferences/public/cpp/scoped_pref_update.h"
 
 namespace playlist {
 namespace {
@@ -84,9 +83,10 @@ void PlaylistService::Shutdown() {
   task_runner_.reset();
 }
 
-void PlaylistService::RequestDownloadMediaFilesFromContents(
+void PlaylistService::AddMediaFilesFromContentsToPlaylist(
     const std::string& playlist_id,
-    content::WebContents* contents) {
+    content::WebContents* contents,
+    bool cache) {
   DCHECK(contents);
   if (!contents->GetPrimaryMainFrame())
     return;
@@ -100,39 +100,36 @@ void PlaylistService::RequestDownloadMediaFilesFromContents(
   else
     request.url_or_contents = contents->GetWeakPtr();
 
-  request.callback =
-      base::BindOnce(&PlaylistService::RequestDownloadMediaFilesFromItems,
-                     base::Unretained(this),
-                     playlist_id.empty() ? kDefaultPlaylistID : playlist_id);
+  request.callback = base::BindOnce(
+      &PlaylistService::AddMediaFilesFromItems, base::Unretained(this),
+      playlist_id.empty() ? kDefaultPlaylistID : playlist_id, cache);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
-void PlaylistService::RequestDownloadMediaFilesFromPage(
+void PlaylistService::AddMediaFilesFromPageToPlaylist(
     const std::string& playlist_id,
-    const std::string& url) {
+    const std::string& url,
+    bool cache) {
   VLOG(2) << __func__ << " " << playlist_id << " " << url;
   PlaylistDownloadRequestManager::Request request;
   request.url_or_contents = url;
-  request.callback =
-      base::BindOnce(&PlaylistService::RequestDownloadMediaFilesFromItems,
-                     base::Unretained(this),
-                     playlist_id.empty() ? kDefaultPlaylistID : playlist_id);
+  request.callback = base::BindOnce(
+      &PlaylistService::AddMediaFilesFromItems, base::Unretained(this),
+      playlist_id.empty() ? kDefaultPlaylistID : playlist_id, cache);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
 bool PlaylistService::AddItemsToPlaylist(
     const std::string& playlist_id,
     const std::vector<std::string>& item_ids) {
-  prefs::ScopedDictionaryPrefUpdate playlists_update(prefs_, kPlaylistsPref);
-  std::unique_ptr<prefs::DictionaryValueUpdate> target_playlist_update;
-  if (!playlists_update->GetDictionary(playlist_id, &target_playlist_update)) {
+  ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
+  base::Value::Dict* target_playlist = playlists_update->FindDict(playlist_id);
+  if (!target_playlist) {
     LOG(ERROR) << __func__ << " Playlist " << playlist_id << " not found";
     return false;
   }
 
-  base::Value::List* ids_list = nullptr;
-  target_playlist_update->GetListWithoutPathExpansion(kPlaylistItemsKey,
-                                                      &ids_list);
+  base::Value::List* ids_list = target_playlist->FindList(kPlaylistItemsKey);
   DCHECK(ids_list) << __func__ << " Playlist " << playlist_id
                    << " doesn't have |items| field";
 
@@ -149,9 +146,7 @@ bool PlaylistService::AddItemsToPlaylist(
     ids_list->Append(id);
   }
 
-  target_playlist_update->Set(
-      kPlaylistItemsKey,
-      base::Value::ToUniquePtrValue(base::Value(std::move(*ids_list))));
+  target_playlist->Set(kPlaylistItemsKey, std::move(*ids_list));
   return true;
 }
 
@@ -163,18 +158,15 @@ bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
   DCHECK(!item_id->empty());
 
   {
-    prefs::ScopedDictionaryPrefUpdate playlists_update(prefs_, kPlaylistsPref);
-    std::unique_ptr<prefs::DictionaryValueUpdate> target_playlist_update;
-    if (!playlists_update->GetDictionary(
-            playlist_id->empty() ? kDefaultPlaylistID : *playlist_id,
-            &target_playlist_update)) {
+    ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
+    base::Value::Dict* target_playlist = playlists_update->FindDict(
+        playlist_id->empty() ? kDefaultPlaylistID : *playlist_id);
+    if (!target_playlist) {
       VLOG(2) << __func__ << " Playlist " << playlist_id << " not found";
       return false;
     }
 
-    base::Value::List* item_ids = nullptr;
-    target_playlist_update->GetListWithoutPathExpansion(kPlaylistItemsKey,
-                                                        &item_ids);
+    base::Value::List* item_ids = target_playlist->FindList(kPlaylistItemsKey);
     DCHECK(item_ids) << __func__ << " Playlist " << playlist_id
                      << " doesn't have |items| field";
 
@@ -187,9 +179,7 @@ bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
 
     item_ids->erase(it);
 
-    target_playlist_update->Set(
-        kPlaylistItemsKey,
-        base::Value::ToUniquePtrValue(base::Value(std::move(*item_ids))));
+    target_playlist->Set(kPlaylistItemsKey, std::move(*item_ids));
   }
 
   // TODO(sko) Once we can support to share an item between playlists, we should
@@ -200,8 +190,9 @@ bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
   return true;
 }
 
-void PlaylistService::RequestDownloadMediaFilesFromItems(
+void PlaylistService::AddMediaFilesFromItems(
     const std::string& playlist_id,
+    bool cache,
     const std::vector<PlaylistItemInfo>& params) {
   if (params.empty())
     return;
@@ -211,8 +202,9 @@ void PlaylistService::RequestDownloadMediaFilesFromItems(
                           [](const auto& item) { return item.id; });
   AddItemsToPlaylist(playlist_id, ids);
 
-  base::ranges::for_each(
-      params, [this](const auto& info) { CreatePlaylistItem(info); });
+  base::ranges::for_each(params, [this, cache](const auto& info) {
+    CreatePlaylistItem(info, cache);
+  });
 }
 
 void PlaylistService::NotifyPlaylistChanged(
@@ -254,18 +246,17 @@ content::WebContents* PlaylistService::GetBackgroundWebContentsForTesting() {
 
 void PlaylistService::UpdatePlaylistItemValue(const std::string& id,
                                               base::Value value) {
-  prefs::ScopedDictionaryPrefUpdate update(prefs_, kPlaylistItemsPref);
-  auto playlist_items = update.Get();
-  playlist_items->Set(id, base::Value::ToUniquePtrValue(std::move(value)));
+  ScopedDictPrefUpdate playlist_items(prefs_, kPlaylistItemsPref);
+  playlist_items->Set(id, std::move(value));
 }
 
 void PlaylistService::RemovePlaylistItemValue(const std::string& id) {
-  prefs::ScopedDictionaryPrefUpdate update(prefs_, kPlaylistItemsPref);
-  auto playlist_items = update.Get();
+  ScopedDictPrefUpdate playlist_items(prefs_, kPlaylistItemsPref);
   playlist_items->Remove(id);
 }
 
-void PlaylistService::CreatePlaylistItem(const PlaylistItemInfo& params) {
+void PlaylistService::CreatePlaylistItem(const PlaylistItemInfo& params,
+                                         bool cache) {
   VLOG(2) << __func__;
 
   UpdatePlaylistItemValue(params.id,
@@ -277,7 +268,7 @@ void PlaylistService::CreatePlaylistItem(const PlaylistItemInfo& params) {
       FROM_HERE,
       base::BindOnce(&base::CreateDirectory, GetPlaylistItemDirPath(params.id)),
       base::BindOnce(&PlaylistService::OnPlaylistItemDirCreated,
-                     weak_factory_.GetWeakPtr(), params));
+                     weak_factory_.GetWeakPtr(), params, cache));
 }
 
 bool PlaylistService::ShouldDownloadOnBackground(
@@ -287,6 +278,7 @@ bool PlaylistService::ShouldDownloadOnBackground(
 }
 
 void PlaylistService::OnPlaylistItemDirCreated(const PlaylistItemInfo& info,
+                                               bool cache,
                                                bool directory_ready) {
   VLOG(2) << __func__;
   if (!directory_ready) {
@@ -295,7 +287,8 @@ void PlaylistService::OnPlaylistItemDirCreated(const PlaylistItemInfo& info,
   }
 
   DownloadThumbnail(info);
-  DownloadMediaFile(info);
+  if (cache)
+    DownloadMediaFile(info);
 }
 
 void PlaylistService::DownloadThumbnail(const PlaylistItemInfo& info) {
@@ -343,9 +336,8 @@ void PlaylistService::CreatePlaylist(PlaylistInfo& info) {
   playlist.Set(kPlaylistNameKey, info.name);
   playlist.Set(kPlaylistItemsKey, base::Value::List());
 
-  prefs::ScopedDictionaryPrefUpdate playlists_update(prefs_, kPlaylistsPref);
-  playlists_update.Get()->Set(
-      info.id, std::make_unique<base::Value>(std::move(playlist)));
+  ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
+  playlists_update->Set(info.id, std::move(playlist));
 
   NotifyPlaylistChanged({PlaylistChangeParams::Type::kListCreated, info.id});
 }
@@ -355,32 +347,30 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
     return;
 
   DCHECK(!playlist_id.empty());
-  std::unique_ptr<base::Value::List> id_list;
+  base::Value::List id_list;
   {
-    prefs::ScopedDictionaryPrefUpdate playlists_update(prefs_, kPlaylistsPref);
-    std::unique_ptr<prefs::DictionaryValueUpdate> target_playlist_update;
-    if (!playlists_update->GetDictionary(playlist_id,
-                                         &target_playlist_update)) {
+    ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
+    base::Value::Dict* target_playlist =
+        playlists_update->FindDict(playlist_id);
+    if (!target_playlist) {
       LOG(ERROR) << __func__ << " Playlist " << playlist_id << " not found";
       return;
     }
 
-    base::Value::List* item_ids = nullptr;
-    if (!target_playlist_update->GetListWithoutPathExpansion(kPlaylistItemsKey,
-                                                             &item_ids)) {
+    base::Value::List* item_ids = target_playlist->FindList(kPlaylistItemsKey);
+    if (!item_ids) {
       NOTREACHED() << __func__ << " Playlist " << playlist_id
                    << " doesn't have |items| field";
       return;
     }
 
-    id_list = std::make_unique<base::Value::List>(std::move(*item_ids));
+    id_list = std::move(*item_ids);
     playlists_update->Remove(playlist_id);
   }
 
   // TODO(sko) Iterating this will cause a callback to be called a lot of
   // times.
-  DCHECK(id_list);
-  for (const auto& item_id : *id_list)
+  for (const auto& item_id : id_list)
     DeletePlaylistItemData(item_id.GetString());
 
   NotifyPlaylistChanged(
@@ -530,7 +520,9 @@ void PlaylistService::RecoverPlaylistItem(const std::string& id) {
 
   auto on_path_exists = base::BindOnce(
       [](base::WeakPtr<PlaylistService> service, PlaylistItemInfo info) {
-        service->OnPlaylistItemDirCreated(info, /* directory_created = */ true);
+        service->OnPlaylistItemDirCreated(info,
+                                          /* cache = */ true,
+                                          /* directory_created = */ true);
       },
       weak_factory_.GetWeakPtr(), info);
 
@@ -544,7 +536,7 @@ void PlaylistService::RecoverPlaylistItem(const std::string& id) {
             base::BindOnce(&base::CreateDirectory,
                            service->GetPlaylistItemDirPath(info.id)),
             base::BindOnce(&PlaylistService::OnPlaylistItemDirCreated, service,
-                           info));
+                           info, /* cache = */ true));
       },
       weak_factory_.GetWeakPtr(), info);
 
@@ -611,6 +603,21 @@ void PlaylistService::AddObserver(PlaylistServiceObserver* observer) {
 
 void PlaylistService::RemoveObserver(PlaylistServiceObserver* observer) {
   observers_.RemoveObserver(observer);
+}
+
+void PlaylistService::OnMediaFileDownloadProgressed(
+    const std::string& id,
+    int64_t total_bytes,
+    int64_t received_bytes,
+    int percent_complete,
+    base::TimeDelta time_remaining) {
+  VLOG(2) << __func__ << " " << total_bytes << " " << received_bytes << " "
+          << percent_complete << " " << time_remaining;
+
+  for (auto& observer : observers_) {
+    observer.OnMediaFileDownloadProgressed(id, total_bytes, received_bytes,
+                                           percent_complete, time_remaining);
+  }
 }
 
 void PlaylistService::OnMediaFileReady(const std::string& id,

@@ -44,6 +44,8 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
   // mojom::EventsListener
   void AccountsChangedEvent(const std::vector<std::string>& accounts) override;
   void ChainChangedEvent(const std::string& chain_id) override;
+  void MessageEvent(const std::string& subscription_id,
+                    base::Value result) override;
 
  private:
   explicit JSEthereumProvider(content::RenderFrame* render_frame);
@@ -53,6 +55,7 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
   void OnDestruct() override {}
   void WillReleaseScriptContext(v8::Local<v8::Context>,
                                 int32_t world_id) override;
+  void DidDispatchDOMContentLoadedEvent() override;
 
   bool EnsureConnected();
 
@@ -103,6 +106,7 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
   mojo::Remote<mojom::EthereumProvider> ethereum_provider_;
   mojo::Receiver<mojom::EventsListener> receiver_{this};
   bool is_connected_ = false;
+  bool script_context_released_ = false;
   std::string chain_id_;
   std::string first_allowed_account_;
   base::WeakPtrFactory<JSEthereumProvider> weak_ptr_factory_{this};

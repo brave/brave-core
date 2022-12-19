@@ -228,6 +228,31 @@ class BraveRewardsGetDeclaredCountryFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsGetUserTypeFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getUserType", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetUserTypeFunction() override;
+  ResponseAction Run() override;
+
+ private:
+  void Callback(ledger::mojom::UserType user_type);
+};
+
+class BraveRewardsGetPublishersVisitedCountFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getPublishersVisitedCount", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetPublishersVisitedCountFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void Callback(int count);
+};
+
 class BraveRewardsGetBalanceReportFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getBalanceReport", UNKNOWN)
@@ -446,6 +471,17 @@ class BraveRewardsFetchBalanceFunction : public ExtensionFunction {
                  ledger::mojom::BalancePtr balance);
 };
 
+class BraveRewardsGetExternalWalletProvidersFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getExternalWalletProviders", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetExternalWalletProvidersFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsGetExternalWalletFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getExternalWallet", UNKNOWN)
@@ -459,16 +495,6 @@ class BraveRewardsGetExternalWalletFunction : public ExtensionFunction {
   void OnGetExternalWallet(
       base::expected<ledger::mojom::ExternalWalletPtr,
                      ledger::mojom::GetExternalWalletError> result);
-};
-
-class BraveRewardsDisconnectWalletFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.disconnectWallet", UNKNOWN)
-
- protected:
-  ~BraveRewardsDisconnectWalletFunction() override;
-
-  ResponseAction Run() override;
 };
 
 class BraveRewardsGetRewardsEnabledFunction : public ExtensionFunction {

@@ -74,11 +74,12 @@ class FilTxManagerUnitTest : public testing::Test {
     feature_list_.InitAndEnableFeature(
         brave_wallet::features::kBraveWalletFilecoinFeature);
 
+    brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     json_rpc_service_ =
         std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
-    keyring_service_ =
-        std::make_unique<KeyringService>(json_rpc_service_.get(), &prefs_);
+    keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
+                                                        &prefs_, &local_state_);
     tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(),
                                               keyring_service_.get(), &prefs_);
 
@@ -234,6 +235,7 @@ class FilTxManagerUnitTest : public testing::Test {
   base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;

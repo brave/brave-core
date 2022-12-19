@@ -27,7 +27,7 @@ source_set("exporter") {
     "//components/favicon_base",
     "//components/keyed_service/core",
     "//components/strings:components_strings_grit",
-    "//ios/chrome/browser",
+    "//ios/chrome/browser/application_context:application_context",
     "//ios/chrome/browser/bookmarks",
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/favicon:favicon",

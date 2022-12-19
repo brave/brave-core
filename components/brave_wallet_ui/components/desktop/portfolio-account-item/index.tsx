@@ -50,6 +50,7 @@ interface Props {
   selectedNetwork?: BraveWallet.NetworkInfo
   name: string
   hideBalances?: boolean
+  isNft?: boolean
 }
 
 export const PortfolioAccountItem = (props: Props) => {
@@ -62,7 +63,8 @@ export const PortfolioAccountItem = (props: Props) => {
     defaultCurrencies,
     hideBalances,
     name,
-    spotPrices
+    spotPrices,
+    isNft
   } = props
 
   // Routing
@@ -122,9 +124,11 @@ export const PortfolioAccountItem = (props: Props) => {
             size='small'
             hideBalances={hideBalances ?? false}
           >
-            <FiatBalanceText>
-              {fiatBalance.formatAsFiat(defaultCurrencies.fiat)}
-            </FiatBalanceText>
+            {!isNft &&
+              <FiatBalanceText>
+                {fiatBalance.formatAsFiat(defaultCurrencies.fiat)}
+              </FiatBalanceText>
+            }
             <AssetBalanceText>{`${formattedAssetBalance} ${assetTicker}`}</AssetBalanceText>
           </WithHideBalancePlaceholder>
         </BalanceColumn>

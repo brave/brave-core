@@ -1156,8 +1156,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
             mShowCategoriesButton.setVisibility(View.VISIBLE);
             mAddDeviceButton.setVisibility(View.VISIBLE);
-
-            setAppropriateView();
         }
     }
 
@@ -1168,9 +1166,10 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 leaveSyncChainComplete();
             } else {
                 InvalidateCodephrase();
-                setAppropriateView();
             }
         }
+
+        setAppropriateView();
     }
 
   private void setJoinExistingChainLayout() {

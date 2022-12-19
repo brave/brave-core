@@ -228,7 +228,6 @@ enum Result {
 
 enum PublisherStatus {
   NOT_VERIFIED = 0,
-  CONNECTED = 1,
   UPHOLD_VERIFIED = 2,
   BITFLYER_VERIFIED = 3,
   GEMINI_VERIFIED = 4

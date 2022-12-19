@@ -321,6 +321,15 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithVerticalTabs,
 
   // Check vertical tabs is located right after sidebar.
   EXPECT_EQ(sidebar_container->bounds().right(), vertical_tabs_container->x());
+
+  // Check sidebar position option is synced between normal and private window.
+  auto* private_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* private_prefs = private_browser->profile()->GetPrefs();
+  EXPECT_EQ(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment),
+            private_prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+  EXPECT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+  private_prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+  EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
 }
 
 }  // namespace sidebar

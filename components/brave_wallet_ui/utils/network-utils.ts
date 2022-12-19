@@ -28,21 +28,6 @@ export const getNetworkInfo = (chainId: string, coin: BraveWallet.CoinType, list
   return emptyNetwork
 }
 
-export const reduceNetworkDisplayName = (name: string) => {
-  if (!name) {
-    return ''
-  } else {
-    const firstWord = name.split(' ')[0]
-    if (firstWord.length > 9) {
-      const firstEight = firstWord.slice(0, 6)
-      const reduced = firstEight.concat('..')
-      return reduced
-    } else {
-      return firstWord
-    }
-  }
-}
-
 export const getNetworksByCoinType = (networks: BraveWallet.NetworkInfo[], coin: BraveWallet.CoinType): BraveWallet.NetworkInfo[] => {
   if (!networks) {
     return []

@@ -23,7 +23,7 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kTabHoverMode, TabHoverMode::CARD);
   registry->RegisterBooleanPref(kVerticalTabsEnabled, false);
   registry->RegisterBooleanPref(kVerticalTabsCollapsed, false);
-  registry->RegisterBooleanPref(kVerticalTabsShowTitleOnWindow, true);
+  registry->RegisterBooleanPref(kVerticalTabsShowTitleOnWindow, false);
   registry->RegisterBooleanPref(kVerticalTabsFloatingEnabled, true);
 }
 

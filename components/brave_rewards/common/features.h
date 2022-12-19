@@ -23,6 +23,8 @@ BASE_DECLARE_FEATURE(kGeminiFeature);
 
 BASE_DECLARE_FEATURE(kVerboseLoggingFeature);
 
+BASE_DECLARE_FEATURE(kAllowUnsupportedWalletProvidersFeature);
+
 }  // namespace features
 }  // namespace brave_rewards
 

@@ -10,7 +10,10 @@
 
 #include "base/callback.h"
 #include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -18,9 +21,16 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using base::test::ParseJson;
+
 namespace api_request_helper {
 
 namespace {
+
+MATCHER_P(MatchesAPIRequestResult, request_result, "") {
+  return arg == *request_result;
+}
+
 absl::optional<std::string> ConversionCallback(
     const std::string& expected_raw_response,
     const absl::optional<std::string>& converted_response,
@@ -70,23 +80,25 @@ class ApiRequestHelperUnitTest : public testing::Test {
   }
 
   void SendRequest(const std::string& server_raw_response,
-                   const std::string& expected_sanitized_response,
+                   const std::string& expected_body,
+                   const base::Value& expected_value_body,
                    const int expected_http_code = 200,
                    const int expected_error_code = net::OK,
                    APIRequestHelper::ResponseConversionCallback
                        conversion_callback = base::NullCallback()) {
-    bool callback_called = false;
     GURL network_url("http://localhost/");
+
+    APIRequestResult expected_result(
+        expected_http_code, expected_body, expected_value_body.Clone(),
+        {{"content-type", "text/html"}}, expected_error_code, network_url);
+    base::MockCallback<APIRequestHelper::ResultCallback> callback;
+    EXPECT_CALL(callback, Run(MatchesAPIRequestResult(&expected_result)));
+
     SetInterceptor("POST", network_url, server_raw_response);
-    api_request_helper_->Request(
-        "POST", network_url, "", "application/json", false,
-        base::BindOnce(&ApiRequestHelperUnitTest::OnRequestResponse,
-                       base::Unretained(this), &callback_called,
-                       expected_sanitized_response, network_url,
-                       expected_http_code, expected_error_code),
-        {}, -1u, std::move(conversion_callback));
+    api_request_helper_->Request("POST", network_url, "", "application/json",
+                                 false, callback.Get(), {}, -1u,
+                                 std::move(conversion_callback));
     base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(callback_called);
   }
 
  protected:
@@ -101,22 +113,19 @@ class ApiRequestHelperUnitTest : public testing::Test {
 
 TEST_F(ApiRequestHelperUnitTest, SanitizedRequest) {
   std::string expected_sanitized_response =
-#if BUILDFLAG(IS_ANDROID)
-      "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":1.8446744073709552E19}";
-#else
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":1.8446744073709552e+19}";
-#endif
   std::string server_raw_response =
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":18446744073709551615}";
-  SendRequest(server_raw_response, expected_sanitized_response);
-  SendRequest("", "");
-  SendRequest("{}", "{}");
-  SendRequest("{", "");
-  SendRequest("0", "");
-  SendRequest("a", "");
+  SendRequest(server_raw_response, expected_sanitized_response,
+              ParseJson(expected_sanitized_response));
+  SendRequest("", "", base::Value());
+  SendRequest("{}", "{}", base::Value(base::Value::Type::DICT));
+  SendRequest("{", "", base::Value());
+  SendRequest("0", "", base::Value());
+  SendRequest("a", "", base::Value());
   // Android's sanitizer doesn't support trailing commas.
 #if !BUILDFLAG(IS_ANDROID)
-  SendRequest("{\"a\":1,}", "{\"a\":1}");
+  SendRequest("{\"a\":1,}", "{\"a\":1}", ParseJson("{\"a\":1}"));
 #endif
 }
 
@@ -125,50 +134,50 @@ TEST_F(ApiRequestHelperUnitTest, RequestWithConversion) {
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"18446744073709551615\"}";
   std::string server_raw_response =
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":18446744073709551615}";
-  SendRequest(server_raw_response, expected_sanitized_response, 200, net::OK,
+  SendRequest(server_raw_response, expected_sanitized_response,
+              ParseJson(expected_sanitized_response), 200, net::OK,
               base::BindOnce(&ConversionCallback, server_raw_response,
                              expected_sanitized_response));
 
   // Broken json after conversion
   // expecting empty response body after sanitization
   SendRequest(
-      server_raw_response, "", 200, net::OK,
+      server_raw_response, "", base::Value(), 200, net::OK,
       base::BindOnce(&ConversionCallback, server_raw_response, "broken json"));
   // Empty json after conversion
   // expecting empty response body after sanitization
-  SendRequest(server_raw_response, "", 200, net::OK,
+  SendRequest(server_raw_response, "", base::Value(), 200, net::OK,
               base::BindOnce(&ConversionCallback, server_raw_response, ""));
 
-  // Returning absl::nullopt in conversion callback doesn't override the
-  // response
+  // Returning absl::nullopt in conversion callback results in empty response
   server_raw_response = "{}";
   SendRequest(
-      server_raw_response, server_raw_response, 422, net::OK,
+      server_raw_response, "", base::Value(), 422, net::OK,
       base::BindOnce(&ConversionCallback, server_raw_response, absl::nullopt));
 }
 
 TEST_F(ApiRequestHelperUnitTest, Is2XXResponseCode) {
   EXPECT_TRUE(
-      APIRequestResult(200, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(200, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_TRUE(
-      APIRequestResult(201, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(201, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_TRUE(
-      APIRequestResult(250, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(250, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_TRUE(
-      APIRequestResult(299, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(299, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
 
   EXPECT_FALSE(
-      APIRequestResult(0, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(0, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
-      APIRequestResult(1, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(1, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
-      APIRequestResult(-1, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(-1, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
-      APIRequestResult(199, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(199, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
-      APIRequestResult(300, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(300, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
-      APIRequestResult(500, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+      APIRequestResult(500, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
 }
 
 }  // namespace api_request_helper

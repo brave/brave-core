@@ -40,7 +40,7 @@ base::Value GetSolanaProviderErrorDictionary(mojom::SolanaProviderError code,
 
 base::Value GetProviderRequestReturnFromEthJsonResponse(
     int http_code,
-    const std::string& service_response,
+    const base::Value& json_value,
     bool* reject) {
   DCHECK(reject);
   *reject = true;
@@ -52,29 +52,30 @@ base::Value GetProviderRequestReturnFromEthJsonResponse(
     return GetProviderErrorDictionary(code, message);
   }
 
-  absl::optional<base::Value> response = base::JSONReader::Read(
-      service_response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                            base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!response || !response->is_dict()) {
+  if (!json_value.is_dict()) {
     mojom::ProviderError code = mojom::ProviderError::kUnsupportedMethod;
-    std::string message =
-        "Invalid response, could not parse JSON: " + service_response;
+    std::string message = "Invalid response: JSON is not a dict";
 
     return GetProviderErrorDictionary(code, message);
   }
 
-  auto& dict = response->GetDict();
-  base::Value* error = dict.Find("error");
+  auto& dict = json_value.GetDict();
+  const base::Value* error = dict.Find("error");
   if (error) {
-    return std::move(*error);
+    return error->Clone();
   }
 
   // We have a result
-  base::Value* result = dict.Find("result");
-  DCHECK(result);
+  const base::Value* result = dict.Find("result");
+  if (!result) {
+    mojom::ProviderError code = mojom::ProviderError::kUnsupportedMethod;
+    std::string message = "Invalid response: no result field";
+
+    return GetProviderErrorDictionary(code, message);
+  }
 
   *reject = false;
-  return std::move(*result);
+  return result->Clone();
 }
 
 base::Value ToProviderResponse(base::Value id,

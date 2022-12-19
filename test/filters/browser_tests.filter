@@ -32,6 +32,7 @@
 # available.
 -PrivacySandboxPromptHelperTestWithParamInstance/PrivacySandboxPromptHelperTestWithParam.NoPromptNonDefaultNtp/*
 -PermissionRequestChipGestureSensitiveBrowserTest.ShouldUpdateActiverPRMAndObservations
+-LensDesktopNTPSearchEnabledPolicyTest.LensSearchButtonHidden
 
 # The tests listed below are disabled because sharedStorage is not enabled in
 # Brave
@@ -206,12 +207,19 @@
 # policy::policy_prefs::kIsolatedAppsDeveloperModeAllowed. See
 # https://github.com/brave/brave-browser/issues/11546 for additional
 # information.
--DirectSocketsTcpApiTest.*
--DirectSocketsUdpApiTest.*
+-ChromeDirectSocketsTcpApiTest.TcpReadWrite
+-ChromeDirectSocketsTcpIsolatedWebAppTest.TcpReadWrite
+-ChromeDirectSocketsUdpApiTest.UdpReadWrite
+-ChromeDirectSocketsUdpIsolatedWebAppTest.UdpReadWrite
+-IsolatedWebAppsDeveloperModeAllowedPolicyTest.MockTcp/0
+-IsolatedWebAppsDeveloperModeAllowedPolicyTest.MockUdp/0
 
 # This test fails because we've already implemented similar changes to prevent
 # language fingerprinting, regardless of the feature flag state
 -DisableFeatureReduceAcceptLanguageBrowserTest.NoAcceptLanguageHeader
+-SameOriginReduceAcceptLanguageOTBrowserTest.IframeRequestOriginTrial
+-SameOriginReduceAcceptLanguageOTBrowserTest.ImgSubresourceRequestOriginTrial
+-SameOriginReduceAcceptLanguageOTBrowserTest.SubresourceRequestNoRestart
 
 # These tests fail because the primary account consent level is null instead of
 # signin::ConsentLevel::kSignin
@@ -221,6 +229,7 @@
 # of CONTENT_SETTING_DEFAULT which is not allowed as an integer value by
 # content_settings::ParseContentSettingValue
 # https://github.com/brave/brave-browser/issues/25733
+-UnusedSitePermissionsServiceBrowserTest.TestIncognitoProfile
 -UnusedSitePermissionsServiceBrowserTest.TestNavigationUpdatesLastUsedDate
 
 # These tests fail because of the following failed DCHECK in web_view_guest.cc:
@@ -243,8 +252,10 @@
 
 # These tests fail because they expect the record of a cookie to go to the
 # "Standard" histogram mode, but instead it goes to the "Block3PC" mode.
--DIPSTabHelperBrowserTest.Histograms_MultipleClicksThenStorage
--DIPSTabHelperBrowserTest.Histograms_MultipleStoragesThenClick
+-All/DIPSTabHelperBrowserTest.Histograms_ClickThenStorage/*
+-All/DIPSTabHelperBrowserTest.Histograms_MultipleClicksThenStorage/*
+-All/DIPSTabHelperBrowserTest.Histograms_MultipleStoragesThenClick/*
+-All/DIPSTabHelperBrowserTest.Histograms_StorageThenClick/*
 
 # These tests fail because of the shields. Didn't investigate in depth, but
 # the tests pass when run with --disable-brave-extension.
@@ -264,6 +275,17 @@
 # This test times out because we Disable "Use a prediction service to load 
 # pages more quickly" (via prefetch::prefs::kNetworkPredictionOptions pref).
 -SearchNavigationPrefetchNoCancelBrowserTest.PrefetchIsNotCancelled
+
+# The tests below are being disabled due to current incompatibilities between
+# Chromium storage partitioning and Brave epehemeral storage.
+-ChromeWebPlatformSecurityMetricsBrowserTest.BlobUrl
+-ChromeWebPlatformSecurityMetricsBrowserTest.BlobUrlFromDataUrl
+-ChromeWebPlatformSecurityMetricsBrowserTest.BlobUrlPopup
+
+# The tests below are disabled as extension_urls::GetWebstoreUpdateUrl() relies
+# on brave overrides that require a command line argument for the webstore.
+-All/WebstoreInstallerWithWithholdingUIBrowserTest.WithholdingHostsOnInstall/*
+-WebstoreInstallerMV2BrowserTest.WebstoreInstall
 
 # These tests fail because we disable subresource web bundles.
 -All/DeclarativeNetRequestSubresourceWebBundlesBrowserTest.RequestCanceled/*
@@ -289,6 +311,23 @@
 -ServiceWorkerWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.RequestCanceled/0
 -ServiceWorkerWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.RequestRedirected/0
 -ServiceWorkerWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.WebBundleRequestRedirected/0
+
+# These tests fail because of our fix to WebRequest onHeadersReceived bug. See
+# Chromium bug https://bugs.chromium.org/p/chromium/issues/detail?id=809761 and
+# our fix in https://github.com/brave/brave-core/pull/784.
+-PersistentBackground/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequired/0
+-PersistentBackground/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequiredAsync/0
+-PersistentBackgroundIncognito/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequired/0
+-PersistentBackgroundIncognito/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequiredAsync/0
+-ServiceWorker/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequired/0
+-ServiceWorker/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequiredAsync/0
+-ServiceWorkerIncognito/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequired/0
+-ServiceWorkerIncognito/ExtensionWebRequestApiAuthRequiredTest.WebRequestAuthRequiredAsync/0
+
+# These tests fail because we change the default value for kPromptForDownload to
+# true.
+-WebViewTests/WebViewTest.DownloadCookieIsolation_CrossSession/SiteIsolationForGuestsDisabled
+-WebViewTests/WebViewTest.DownloadCookieIsolation_CrossSession/SiteIsolationForGuestsEnabled
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
@@ -496,8 +535,6 @@
 -DIPSBounceDetectorBrowserTest.DetectStatefulRedirect_Client_IgnoreThirdPartySubresource
 -DIPSBounceDetectorBrowserTest.Histograms_BounceCategory_Client
 -DIPSBounceDetectorBrowserTest.Histograms_BounceCategory_Server
--DIPSTabHelperBrowserTest.Histograms_ClickThenStorage
--DIPSTabHelperBrowserTest.Histograms_StorageThenClick
 -DiskCachesizeExperiment.*
 -DistillablePageUtilsBrowserTestAllArticles.*
 -DNSErrorPageTest.*

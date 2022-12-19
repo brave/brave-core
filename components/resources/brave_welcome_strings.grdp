@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_BRAVE_WELCOME_TITLE" desc="A title for screen on the first step of welcome page">
+  Privacy. By Default.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_DESC" desc="A subtitle for screen on the first step of welcome page">
+  Get Brave protection on every link you click. Just set Brave as default and browse. Privately.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_IMPORT_SETTINGS_TITLE" desc="A title for screen to select browser">
+  Import Settings
+</message>
+
+<message name="IDS_BRAVE_WELCOME_IMPORT_SETTINGS_DESC" desc="A subtitle for screen to select browser">
+  Easily import bookmarks, extensions, even saved passwords from your old browser.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_PROFILE_LABEL" desc="A title for screen to select one or more profiles">
+  Select profile to import
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_PROFILE_DESC" desc="A subtitle for screen to select one or more profiles">
+  The browser you chose has multiple profiles. Select the profile(s) you'd like to import.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_IMPORT_BUTTON_LABEL" desc="A button that triggers importing single profile from the selected browser">
+  Import
+</message>
+
+<message name="IDS_BRAVE_WELCOME_IMPORT_PROFILES_BUTTON_LABEL" desc="A button that triggers importing bulk profiles from the selected browser">
+  Import profiles
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SKIP_BUTTON_LABEL" desc="A button to skip the current step">
+  Skip
+</message>
+
+<message name="IDS_BRAVE_WELCOME_BACK_BUTTON_LABEL" desc="A button that goes back from selecting profile">
+  Back
+</message>
+
+<message name="IDS_BRAVE_WELCOME_NEXT_BUTTON_LABEL" desc="A button that changes the current screen and moves forward with the steps">
+  Next
+</message>
+
+<message name="IDS_BRAVE_WELCOME_FINISH_BUTTON_LABEL" desc="A button that exits the welcome page, inidicating all steps has been completed">
+  Finish
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SET_DEFAULT_BUTTON_LABEL" desc="A button that sets Brave browser as default">
+  Set Brave as default browser
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_ALL_BUTTON_LABEL" desc="A button label to select all profiles">
+  Select All
+</message>
+
+<message name="IDS_BRAVE_WELCOME_HELP_IMPROVE_BRAVE_TITLE" desc="A title for screen that asks user to opt-in for analytics and reports">
+  Help make Brave better.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SEND_REPORTS_LABEL" desc="A checkbox label for user to opt-in opt-out to send diagnostic reports">
+  Send diagnostic reports if you experience a crash or freeze. <ph name="LINK_BEFORE">$1</ph>Learn more.<ph name="LINK_AFTER">$2</ph>
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SEND_INSIGHTS_LABEL" desc="A checkbox label for user to opt-in opt-out to share anonymous, product insights information">
+  Share completely private and anonymous product insights about what features are being used by Brave's users. <ph name="LINK_BEFORE">$1</ph>Learn more.<ph name="LINK_AFTER">$2</ph>
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SETUP_COMPLETE_LABEL" desc="A title for screen when user has completed all the steps">
+  Setup complete
+</message>
+
+<message name="IDS_BRAVE_WELCOME_CHANGE_SETTINGS_NOTE" desc="A footnote with a link to change settings.">
+  Change these choices at any time in Brave at <ph name="LINK_BEFORE1">$1</ph>brave://settings/privacy<ph name="LINK_AFTER2">$2</ph>.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_PRIVACY_POLICY_NOTE" desc="A footnote with a link to Brave's privacy polcy.">
+  Read our full <ph name="LINK_BEFORE">$1</ph>Privacy Policy<ph name="LINK_AFTER">$2</ph>
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_THEME_LABEL" desc="A title for screen to select color theme">
+  Choose your theme
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_THEME_NOTE" desc="A note for user to change theme in settings">
+  You can change this at any time in Brave settings.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_THEME_SYSTEM_LABEL" desc="A label to match system setting">
+  Match system setting
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_THEME_LIGHT_LABEL" desc="A label for light theme setting">
+  Light mode
+</message>
+
+<message name="IDS_BRAVE_WELCOME_SELECT_THEME_DARK_LABEL" desc="A label for dark theme setting">
+  Dark mode
+</message>
+</grit-part>

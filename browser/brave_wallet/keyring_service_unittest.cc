@@ -28,12 +28,14 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/switches.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -120,7 +122,10 @@ class TestKeyringServiceObserver
   }
 
   void AccountsChanged() override { accounts_changed_fired_count_++; }
-
+  void AccountsAdded(mojom::CoinType coin,
+                     const std::vector<std::string>& addresses) override {
+    addresses_added_ = addresses;
+  }
   bool AutoLockMinutesChangedFired() {
     return auto_lock_minutes_changed_fired_;
   }
@@ -141,6 +146,10 @@ class TestKeyringServiceObserver
   GetReceiver() {
     return observer_receiver_.BindNewPipeAndPassRemote();
   }
+  void ExpectAddressesAddedEq(
+      const std::vector<std::string> expected_addresses) {
+    EXPECT_EQ(expected_addresses, addresses_added_);
+  }
 
   void Reset() {
     auto_lock_minutes_changed_fired_ = false;
@@ -149,9 +158,11 @@ class TestKeyringServiceObserver
     selected_account_change_fired_.clear();
     keyring_created_.clear();
     keyring_restored_.clear();
+    addresses_added_.clear();
   }
 
  private:
+  std::vector<std::string> addresses_added_;
   bool auto_lock_minutes_changed_fired_ = false;
   int accounts_changed_fired_count_ = 0;
   bool keyring_reset_fired_ = false;
@@ -174,6 +185,7 @@ class KeyringServiceUnitTest : public testing::Test {
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
     RegisterUserProfilePrefs(prefs->registry());
+    RegisterLocalState(local_state_.registry());
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
     shared_url_loader_factory_ =
@@ -196,6 +208,8 @@ class KeyringServiceUnitTest : public testing::Test {
   }
 
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
+
+  PrefService* GetLocalState() { return &local_state_; }
 
   content::BrowserContext* browser_context() { return profile_.get(); }
 
@@ -662,6 +676,7 @@ class KeyringServiceUnitTest : public testing::Test {
 
  private:
   std::unique_ptr<TestingProfile> profile_;
+  TestingPrefServiceSimple local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
@@ -725,7 +740,7 @@ TEST_F(KeyringServiceUnitTest, GetAvailableKeyringsFromPrefs) {
 }
 
 TEST_F(KeyringServiceUnitTest, GetPrefInBytesForKeyring) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   KeyringService::SetPrefForKeyring(GetPrefs(), kEncryptedMnemonic,
                                     base::Value("3q2+7w=="),
                                     mojom::kDefaultKeyringId);
@@ -768,7 +783,7 @@ TEST_F(KeyringServiceUnitTest, GetPrefInBytesForKeyring) {
 
 TEST_F(KeyringServiceUnitTest, SetPrefInBytesForKeyring) {
   const uint8_t bytes_array[] = {0xde, 0xad, 0xbe, 0xef};
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   KeyringService::SetPrefInBytesForKeyring(
       GetPrefs(), kEncryptedMnemonic, bytes_array, mojom::kDefaultKeyringId);
   EXPECT_EQ(
@@ -788,7 +803,7 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateNonceForKeyring) {
   std::string encoded_nonce;
   std::string encoded_nonce2;
   {
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     const std::vector<uint8_t> nonce =
         service.GetOrCreateNonceForKeyring(mojom::kDefaultKeyringId);
     encoded_nonce = base::Base64Encode(nonce);
@@ -801,7 +816,7 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateNonceForKeyring) {
               GetStringPrefForKeyring(kPasswordEncryptorNonce, "keyring2"));
   }
   {  // It should be the same nonce as long as the pref exists
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     const std::vector<uint8_t> nonce =
         service.GetOrCreateNonceForKeyring(mojom::kDefaultKeyringId);
     EXPECT_EQ(base::Base64Encode(nonce), encoded_nonce);
@@ -815,7 +830,7 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateNonceForKeyring) {
   }
   GetPrefs()->ClearPref(kBraveWalletKeyrings);
   {  // nonce should be different now
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     const std::vector<uint8_t> nonce =
         service.GetOrCreateNonceForKeyring(mojom::kDefaultKeyringId);
     EXPECT_NE(base::Base64Encode(nonce), encoded_nonce);
@@ -824,7 +839,7 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateNonceForKeyring) {
     EXPECT_NE(base::Base64Encode(nonce2), encoded_nonce2);
   }
   {  // nonce should change after calling with force_reset
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     const std::vector<uint8_t> nonce =
         service.GetOrCreateNonceForKeyring(mojom::kDefaultKeyringId);
     const std::vector<uint8_t> nonce2 =
@@ -847,7 +862,7 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateSaltForKeyring) {
   std::string encoded_salt;
   std::string encoded_salt2;
   {
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     const std::vector<uint8_t> salt =
         service.GetOrCreateSaltForKeyring(mojom::kDefaultKeyringId);
     encoded_salt = base::Base64Encode(salt);
@@ -860,7 +875,7 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateSaltForKeyring) {
               GetStringPrefForKeyring(kPasswordEncryptorSalt, "keyring2"));
   }
   {  // It should be the same salt as long as the pref exists
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     const std::vector<uint8_t> salt =
         service.GetOrCreateSaltForKeyring(mojom::kDefaultKeyringId);
     EXPECT_EQ(base::Base64Encode(salt), encoded_salt);
@@ -874,7 +889,7 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateSaltForKeyring) {
   }
   GetPrefs()->ClearPref(kBraveWalletKeyrings);
   {  // salt should be different now
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     const std::vector<uint8_t> salt =
         service.GetOrCreateSaltForKeyring(mojom::kDefaultKeyringId);
     EXPECT_NE(base::Base64Encode(salt), encoded_salt);
@@ -883,7 +898,7 @@ TEST_F(KeyringServiceUnitTest, GetOrCreateSaltForKeyring) {
     EXPECT_NE(base::Base64Encode(salt2), encoded_salt2);
   }
   {  // salt should change after calling with force_reset
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     const std::vector<uint8_t> salt =
         service.GetOrCreateSaltForKeyring(mojom::kDefaultKeyringId);
     const std::vector<uint8_t> salt2 =
@@ -906,7 +921,7 @@ TEST_F(KeyringServiceUnitTest, CreateEncryptorForKeyring) {
   std::string encoded_salt;
   std::string encoded_salt2;
   {
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     EXPECT_TRUE(
         service.CreateEncryptorForKeyring("123", mojom::kDefaultKeyringId));
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
@@ -921,7 +936,7 @@ TEST_F(KeyringServiceUnitTest, CreateEncryptorForKeyring) {
     EXPECT_FALSE(encoded_salt2.empty());
   }
   {
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     EXPECT_TRUE(
         service.CreateEncryptorForKeyring("123", mojom::kDefaultKeyringId));
     EXPECT_TRUE(service.CreateEncryptorForKeyring("456", "keyring2"));
@@ -932,7 +947,7 @@ TEST_F(KeyringServiceUnitTest, CreateEncryptorForKeyring) {
               encoded_salt2);
   }
   {
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     EXPECT_FALSE(
         service.CreateEncryptorForKeyring("", mojom::kDefaultKeyringId));
     ASSERT_TRUE(service.encryptors_.empty());
@@ -942,7 +957,7 @@ TEST_F(KeyringServiceUnitTest, CreateEncryptorForKeyring) {
 }
 
 TEST_F(KeyringServiceUnitTest, CreateDefaultKeyringInternal) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   // encryptor is nullptr
   ASSERT_FALSE(service.CreateKeyringInternal(mojom::kDefaultKeyringId,
@@ -985,7 +1000,7 @@ TEST_F(KeyringServiceUnitTest, CreateDefaultKeyring) {
   std::string nonce;
   std::string mnemonic;
   {
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     EXPECT_EQ(service.CreateKeyring(mojom::kDefaultKeyringId, ""), nullptr);
     EXPECT_FALSE(
         HasPrefForKeyring(kPasswordEncryptorSalt, mojom::kDefaultKeyringId));
@@ -1034,7 +1049,7 @@ TEST_F(KeyringServiceUnitTest, CreateDefaultKeyring) {
 }
 
 TEST_F(KeyringServiceUnitTest, RestoreDefaultKeyring) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   absl::optional<std::string> mnemonic = CreateWallet(&service, "brave");
   ASSERT_TRUE(mnemonic.has_value());
 
@@ -1155,7 +1170,7 @@ TEST_F(KeyringServiceUnitTest, UnlockResumesDefaultKeyring) {
   std::string mnemonic;
   std::string nonce;
   {
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     ASSERT_TRUE(CreateWallet(&service, "brave"));
     ASSERT_TRUE(AddAccount(&service, "Account2", mojom::CoinType::ETH));
 
@@ -1168,7 +1183,7 @@ TEST_F(KeyringServiceUnitTest, UnlockResumesDefaultKeyring) {
   }
   {
     // KeyringService is now destructed, simlulating relaunch
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     EXPECT_TRUE(Unlock(&service, "brave"));
     ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
 
@@ -1185,7 +1200,7 @@ TEST_F(KeyringServiceUnitTest, UnlockResumesDefaultKeyring) {
         2u, service.GetAccountInfosForKeyring(mojom::kDefaultKeyringId).size());
   }
   {
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     // wrong password
     EXPECT_FALSE(Unlock(&service, "brave123"));
     ASSERT_TRUE(service.IsLocked());
@@ -1198,7 +1213,7 @@ TEST_F(KeyringServiceUnitTest, UnlockResumesDefaultKeyring) {
 TEST_F(KeyringServiceUnitTest, GetMnemonicForDefaultKeyring) {
   // Needed to skip unnecessary migration in CreateEncryptorForKeyring.
   GetPrefs()->SetBoolean(kBraveWalletKeyringEncryptionKeysMigrated, true);
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(service.CreateEncryptorForKeyring(kPasswordBrave,
                                                 mojom::kDefaultKeyringId));
 
@@ -1230,7 +1245,7 @@ TEST_F(KeyringServiceUnitTest, GetMnemonicForDefaultKeyring) {
 }
 
 TEST_F(KeyringServiceUnitTest, ValidatePassword) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
 
   EXPECT_TRUE(ValidatePassword(&service, "brave"));
@@ -1243,7 +1258,7 @@ TEST_F(KeyringServiceUnitTest, ValidatePassword) {
 }
 
 TEST_F(KeyringServiceUnitTest, GetKeyringInfo) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   EXPECT_TRUE(IsKeyringInfoEmpty(&service, mojom::kDefaultKeyringId));
 
@@ -1299,7 +1314,7 @@ TEST_F(KeyringServiceUnitTest, LockAndUnlock) {
       {});
 
   {
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     // No encryptor
     service.Lock();
     EXPECT_TRUE(service.IsLocked());
@@ -1331,7 +1346,7 @@ TEST_F(KeyringServiceUnitTest, LockAndUnlock) {
     EXPECT_TRUE(service.IsLocked(mojom::kSolanaKeyringId));
   }
   {
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     ASSERT_NE(
         service.CreateKeyring(brave_wallet::mojom::kDefaultKeyringId, "brave"),
         nullptr);
@@ -1376,7 +1391,7 @@ TEST_F(KeyringServiceUnitTest, LockAndUnlock) {
 }
 
 TEST_F(KeyringServiceUnitTest, Reset) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
   TestKeyringServiceObserver observer;
   service.AddObserver(observer.GetReceiver());
@@ -1411,7 +1426,7 @@ TEST_F(KeyringServiceUnitTest, Reset) {
 }
 
 TEST_F(KeyringServiceUnitTest, BackupComplete) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   EXPECT_FALSE(IsWalletBackedUp(&service));
 
@@ -1425,7 +1440,7 @@ TEST_F(KeyringServiceUnitTest, BackupComplete) {
 }
 
 TEST_F(KeyringServiceUnitTest, AccountMetasForKeyring) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   EXPECT_TRUE(
       service.CreateEncryptorForKeyring("brave", mojom::kDefaultKeyringId));
   ASSERT_TRUE(service.CreateKeyringInternal(
@@ -1487,13 +1502,13 @@ TEST_F(KeyringServiceUnitTest, CreateAndRestoreWallet) {
   base::FieldTrialParams parameters;
   parameters[features::kCreateDefaultSolanaAccount.name] = "false";
 
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(
       brave_wallet::features::kBraveWalletSolanaFeature, parameters);
 
   feature_list.InitWithFeaturesAndParameters(enabled_features, {});
 
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   TestKeyringServiceObserver observer;
   service.AddObserver(observer.GetReceiver());
@@ -1587,7 +1602,7 @@ TEST_F(KeyringServiceUnitTest, CreateAndRestoreWallet) {
 }
 
 TEST_F(KeyringServiceUnitTest, DefaultSolanaAccountCreated) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_NE(CreateWallet(&service, "brave"), absl::nullopt);
 
   std::vector<mojom::AccountInfoPtr> account_infos =
@@ -1598,7 +1613,7 @@ TEST_F(KeyringServiceUnitTest, DefaultSolanaAccountCreated) {
 }
 
 TEST_F(KeyringServiceUnitTest, DefaultSolanaAccountRestored) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
 
   std::vector<mojom::AccountInfoPtr> account_infos =
@@ -1609,7 +1624,7 @@ TEST_F(KeyringServiceUnitTest, DefaultSolanaAccountRestored) {
 }
 
 TEST_F(KeyringServiceUnitTest, AddAccount) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_NE(CreateWallet(&service, "brave"), absl::nullopt);
   EXPECT_TRUE(AddAccount(&service, "Account5566", mojom::CoinType::ETH));
 
@@ -1677,7 +1692,7 @@ TEST_F(KeyringServiceUnitTest, MigrationPrefs) {
 }
 
 TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   TestKeyringServiceObserver observer;
   service.AddObserver(observer.GetReceiver());
@@ -1873,7 +1888,7 @@ TEST_F(KeyringServiceUnitTest, ImportedAccountFromJson) {
   const std::string expected_address =
       "0xB14Ab53E38DA1C172f877DBC6d65e4a1B0474C3c";
 
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
 
   EXPECT_EQ(
@@ -1919,13 +1934,13 @@ TEST_F(KeyringServiceUnitTest, GetPrivateKeyForKeyringAccount) {
   base::FieldTrialParams parameters;
   parameters[features::kCreateDefaultSolanaAccount.name] = "false";
 
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(
       brave_wallet::features::kBraveWalletSolanaFeature, parameters);
 
   feature_list.InitWithFeaturesAndParameters(enabled_features, {});
 
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
 
   // Can't get private key with wrong password.
@@ -1986,7 +2001,7 @@ TEST_F(KeyringServiceUnitTest, GetMainKeyringIdForCoin) {
 }
 
 TEST_F(KeyringServiceUnitTest, SetDefaultKeyringDerivedAccountMeta) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   TestKeyringServiceObserver observer;
   service.AddObserver(observer.GetReceiver());
@@ -2066,7 +2081,7 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringDerivedAccountMeta) {
 }
 
 TEST_F(KeyringServiceUnitTest, SetDefaultKeyringImportedAccountName) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   TestKeyringServiceObserver observer;
   service.AddObserver(observer.GetReceiver());
@@ -2170,7 +2185,7 @@ TEST_F(KeyringServiceUnitTest, RestoreLegacyBraveWallet) {
   const char* mnemonic12 =
       "drip caution abandon festival order clown oven regular absorb evidence "
       "crew where";
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   auto verify_restore_wallet = base::BindLambdaForTesting(
       [&service](const char* mnemonic, const char* address, bool is_legacy,
                  bool expect_result) {
@@ -2208,7 +2223,7 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   feature_list.InitAndEnableFeature(
       brave_wallet::features::kBraveWalletFilecoinFeature);
 
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   SetNetwork(brave_wallet::mojom::kFilecoinMainnet, mojom::CoinType::FIL);
 
   TestKeyringServiceObserver observer;
@@ -2453,7 +2468,7 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
 }
 
 TEST_F(KeyringServiceUnitTest, AutoLock) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   absl::optional<std::string> mnemonic = CreateWallet(&service, "brave");
   ASSERT_TRUE(mnemonic.has_value());
   ASSERT_FALSE(service.IsLocked());
@@ -2516,7 +2531,7 @@ TEST_F(KeyringServiceUnitTest, AutoLock) {
 }
 
 TEST_F(KeyringServiceUnitTest, NotifyUserInteraction) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
   ASSERT_FALSE(service.IsLocked());
 
@@ -2536,13 +2551,13 @@ TEST_F(KeyringServiceUnitTest, SelectAddedAccount) {
   base::FieldTrialParams parameters;
   parameters[features::kCreateDefaultSolanaAccount.name] = "false";
 
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(
       brave_wallet::features::kBraveWalletSolanaFeature, parameters);
 
   feature_list.InitWithFeaturesAndParameters(enabled_features, {});
 
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
 
   AddAccount(&service, "eth acc 1", mojom::CoinType::ETH);
@@ -2569,7 +2584,7 @@ TEST_F(KeyringServiceUnitTest, SelectAddedAccount) {
 }
 
 TEST_F(KeyringServiceUnitTest, SelectAddedFilecoinAccount) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -2603,7 +2618,7 @@ TEST_F(KeyringServiceUnitTest, SelectAddedFilecoinAccount) {
 }
 
 TEST_F(KeyringServiceUnitTest, SelectImportedFilecoinAccount) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
   ASSERT_FALSE(service.IsLocked());
 
@@ -2663,7 +2678,7 @@ TEST_F(KeyringServiceUnitTest, SelectImportedFilecoinAccount) {
 }
 
 TEST_F(KeyringServiceUnitTest, SelectImportedAccount) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
 
   ImportAccount(
@@ -2685,7 +2700,7 @@ TEST_F(KeyringServiceUnitTest, SelectImportedAccount) {
 }
 
 TEST_F(KeyringServiceUnitTest, SelectHardwareAccount) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
 
   std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
@@ -2715,7 +2730,7 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
        brave_wallet::features::kBraveWalletSolanaFeature},
       {});
 
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   SetNetwork(brave_wallet::mojom::kFilecoinTestnet,
              brave_wallet::mojom::CoinType::FIL);
 
@@ -2850,7 +2865,7 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
 }
 
 TEST_F(KeyringServiceUnitTest, AddAccountsWithDefaultName) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
   base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(service.IsLocked());
@@ -2879,7 +2894,7 @@ TEST_F(KeyringServiceUnitTest, AddAccountsWithDefaultName) {
 
 TEST_F(KeyringServiceUnitTest, SignMessageByDefaultKeyring) {
   // HDKeyringUnitTest.SignMessage already tests the correctness of signature
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
   ASSERT_FALSE(service.IsLocked());
 
@@ -2931,7 +2946,7 @@ TEST_F(KeyringServiceUnitTest, SignMessageByDefaultKeyring) {
 }
 
 TEST_F(KeyringServiceUnitTest, GetSetAutoLockMinutes) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   TestKeyringServiceObserver observer;
   service.AddObserver(observer.GetReceiver());
 
@@ -2957,7 +2972,7 @@ TEST_F(KeyringServiceUnitTest, GetSetAutoLockMinutes) {
 }
 
 TEST_F(KeyringServiceUnitTest, UpdateNameForHardwareAccountSync) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   ASSERT_TRUE(CreateWallet(&service, "brave"));
 
@@ -3030,7 +3045,7 @@ TEST_F(KeyringServiceUnitTest, UpdateNameForHardwareAccountSync) {
 }
 
 TEST_F(KeyringServiceUnitTest, SetDefaultKeyringHardwareAccountName) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   ASSERT_TRUE(CreateWallet(&service, "brave"));
 
@@ -3115,7 +3130,7 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringHardwareAccountName) {
 }
 
 TEST_F(KeyringServiceUnitTest, IsStrongPassword) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   // Strong password that meets all requirements passes
   EXPECT_TRUE(IsStrongPassword(&service, "LDKH66BJbLsHQPEAK@4_zak*"));
   // Must have at least one number
@@ -3139,7 +3154,7 @@ TEST_F(KeyringServiceUnitTest, IsStrongPassword) {
 }
 
 TEST_F(KeyringServiceUnitTest, GetChecksumEthAddress) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   EXPECT_EQ(GetChecksumEthAddress(&service,
                                   "0x0D8775F648430679A709E98D2B0CB6250D2887EF"),
             "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
@@ -3160,7 +3175,7 @@ TEST_F(KeyringServiceUnitTest, GetChecksumEthAddress) {
 }
 
 TEST_F(KeyringServiceUnitTest, SignTransactionByFilecoinKeyring) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   SetNetwork(mojom::kFilecoinTestnet, mojom::CoinType::FIL);
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(
@@ -3208,7 +3223,7 @@ TEST_F(KeyringServiceUnitTest, SignTransactionByFilecoinKeyring) {
 }
 
 TEST_F(KeyringServiceUnitTest, AddFilecoinAccounts) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   {
     ASSERT_TRUE(CreateWallet(&service, "brave"));
 #if BUILDFLAG(IS_ANDROID)
@@ -3312,7 +3327,7 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
   feature_list.InitAndEnableFeature(
       brave_wallet::features::kBraveWalletFilecoinFeature);
 
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   TestKeyringServiceObserver observer;
   service.AddObserver(observer.GetReceiver());
@@ -3513,7 +3528,7 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
   base::FieldTrialParams parameters;
   parameters[features::kCreateDefaultSolanaAccount.name] = "false";
 
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(
       brave_wallet::features::kBraveWalletSolanaFeature, parameters);
 
@@ -3522,7 +3537,7 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
   {
     // Create default wallet with disabled filecoin feature.
     // Solana feature is enabled on desktop and disabled on Android.
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     ASSERT_TRUE(CreateWallet(&service, "brave"));
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
@@ -3540,7 +3555,7 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
          brave_wallet::features::kBraveWalletSolanaFeature},
         {});
 
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     ASSERT_TRUE(CreateWallet(&service, "brave"));
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
@@ -3548,7 +3563,7 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
   }
   {
     // Create wallet and enable filecoin & solana before unlock
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     ASSERT_TRUE(CreateWallet(&service, "brave"));
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
@@ -3571,7 +3586,7 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
   }
   {
     // Create default wallet and enable filecoin solana before restore
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     TestKeyringServiceObserver observer;
     service.AddObserver(observer.GetReceiver());
     absl::optional<std::string> mnemonic_to_be_restored =
@@ -3593,8 +3608,7 @@ TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
     base::FieldTrialParams local_parameters;
     local_parameters[features::kCreateDefaultSolanaAccount.name] = "false";
 
-    std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-        local_enabled_features;
+    std::vector<base::test::FeatureRefAndParams> local_enabled_features;
     local_enabled_features.emplace_back(
         brave_wallet::features::kBraveWalletSolanaFeature, local_parameters);
     local_enabled_features.emplace_back(
@@ -3627,14 +3641,14 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
   base::FieldTrialParams parameters;
   parameters[features::kCreateDefaultSolanaAccount.name] = "false";
 
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(
       brave_wallet::features::kBraveWalletSolanaFeature, parameters);
 
   feature_list.InitWithFeaturesAndParameters(enabled_features, {});
 
   {
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     TestKeyringServiceObserver observer;
     service.AddObserver(observer.GetReceiver());
     ASSERT_TRUE(CreateWallet(&service, "brave"));
@@ -3679,7 +3693,7 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
     service.Reset();
   }
   {
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     TestKeyringServiceObserver observer;
     service.AddObserver(observer.GetReceiver());
     ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
@@ -3717,7 +3731,7 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
   }
 
   {
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     TestKeyringServiceObserver observer;
     service.AddObserver(observer.GetReceiver());
     ASSERT_TRUE(CreateWallet(&service, "brave"));
@@ -3755,6 +3769,18 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
         &service, "Imported Account 2",
         "4pNHX6ATNXad3KZTb2PXTosW5ceaxqx45M9NH9pjcZCH9qoQKx6RMzUjuzm6J9Y2uwjCxJ"
         "c5JsjL1TrGr1X3nPFP",
+        mojom::CoinType::SOL);
+    ASSERT_TRUE(imported_account.has_value());
+    ASSERT_TRUE(RemoveImportedAccount(&service, *imported_account,
+                                      kPasswordBrave, mojom::CoinType::SOL));
+
+    // import using uint8array
+    imported_account = ImportAccount(
+        &service, "Imported Account 3",
+        " [4,109,17,28,245,96,126,232,185,242,61,170,96,51,225,202,152,85,104,"
+        "63,4,171,245,175,118,67,238,247,208,163,247,211,201,215,12,121,255,"
+        "182,188,11,4,82,78,239,173,146,246,74,66,126,34,173,46,211,145,49,211,"
+        "176,28,89,250,190,34,254]\t\n",
         mojom::CoinType::SOL);
     ASSERT_TRUE(imported_account.has_value());
     ASSERT_TRUE(RemoveImportedAccount(&service, *imported_account,
@@ -3803,13 +3829,13 @@ TEST_F(KeyringServiceUnitTest, SignMessage) {
   base::FieldTrialParams parameters;
   parameters[features::kCreateDefaultSolanaAccount.name] = "false";
 
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(
       brave_wallet::features::kBraveWalletSolanaFeature, parameters);
 
   feature_list.InitWithFeaturesAndParameters(enabled_features, {});
 
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
   base::RunLoop().RunUntilIdle();
 
@@ -3858,7 +3884,7 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
         &KeyringServiceAccountDiscoveryUnitTest::Interceptor,
         base::Unretained(this)));
 
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     saved_mnemonic_ = CreateWallet(&service, "brave").value_or("");
     EXPECT_FALSE(saved_mnemonic_.empty());
 
@@ -3906,7 +3932,7 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
 };
 
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, AccountDiscovery) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   TestKeyringServiceObserver observer;
   service.AddObserver(observer.GetReceiver());
@@ -3939,7 +3965,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, AccountDiscovery) {
 }
 
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, StopsOnError) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   TestKeyringServiceObserver observer;
   service.AddObserver(observer.GetReceiver());
@@ -3975,7 +4001,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, StopsOnError) {
 }
 
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, ManuallyAddAccount) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   TestKeyringServiceObserver observer;
   service.AddObserver(observer.GetReceiver());
@@ -4029,7 +4055,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, ManuallyAddAccount) {
 }
 
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   TestKeyringServiceObserver observer;
   service.AddObserver(observer.GetReceiver());
@@ -4089,7 +4115,7 @@ class KeyringServiceEncryptionKeysMigrationUnitTest
   }
 
   void SetupKeyring() {
-    KeyringService service(json_rpc_service(), GetPrefs());
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     saved_mnemonic_ = *CreateWallet(&service, "brave");
 
     absl::optional<std::string> imported_eth_account = ImportAccount(
@@ -4212,7 +4238,7 @@ TEST_F(KeyringServiceEncryptionKeysMigrationUnitTest, NoMigration) {
   EXPECT_TRUE(
       GetPrefs()->GetBoolean(kBraveWalletKeyringEncryptionKeysMigrated));
 
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   EXPECT_TRUE(Unlock(&service, "brave"));
   ValidateImportedAccountsForUnlockedKeyring(&service);
 }
@@ -4230,7 +4256,7 @@ TEST_F(KeyringServiceEncryptionKeysMigrationUnitTest, MigrateWithUnlock) {
   EXPECT_FALSE(
       GetPrefs()->GetBoolean(kBraveWalletKeyringEncryptionKeysMigrated));
 
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   EXPECT_TRUE(Unlock(&service, "brave"));
   EXPECT_TRUE(
       GetPrefs()->GetBoolean(kBraveWalletKeyringEncryptionKeysMigrated));
@@ -4266,7 +4292,7 @@ TEST_F(KeyringServiceEncryptionKeysMigrationUnitTest,
       GetPrefs()->GetBoolean(kBraveWalletKeyringEncryptionKeysMigrated));
 
   // Restore wallet.
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   EXPECT_TRUE(RestoreWallet(&service, saved_mnemonic(), "brave", false));
   EXPECT_TRUE(
       GetPrefs()->GetBoolean(kBraveWalletKeyringEncryptionKeysMigrated));
@@ -4290,7 +4316,7 @@ TEST_F(KeyringServiceEncryptionKeysMigrationUnitTest,
       GetPrefs()->GetBoolean(kBraveWalletKeyringEncryptionKeysMigrated));
 
   // Restore wallet.
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   EXPECT_TRUE(RestoreWallet(&service, saved_mnemonic(), "brave123", false));
 
   // No migration needed after wallet is reset with a new password.
@@ -4306,7 +4332,7 @@ TEST_F(KeyringServiceEncryptionKeysMigrationUnitTest, NoMigrationAfterResote) {
       GetPrefs()->GetBoolean(kBraveWalletKeyringEncryptionKeysMigrated));
 
   // Restore wallet.
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   EXPECT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
 
   // No migration needed after wallet is created with reset.
@@ -4328,7 +4354,7 @@ TEST_F(KeyringServiceEncryptionKeysMigrationUnitTest,
   EXPECT_FALSE(
       GetPrefs()->GetBoolean(kBraveWalletKeyringEncryptionKeysMigrated));
 
-  KeyringService service(json_rpc_service(), GetPrefs());
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   // Password is good, but no migration happens.
   EXPECT_TRUE(ValidatePassword(&service, "brave"));
@@ -4342,235 +4368,48 @@ TEST_F(KeyringServiceEncryptionKeysMigrationUnitTest,
   EXPECT_TRUE(ValidatePassword(&service, "brave"));
 }
 
-TEST_F(KeyringServiceUnitTest, DiscoverAssets) {
-  // Verifies JsonRpcService::DiscoverAssets is run as expected in AddAccount
+TEST_F(KeyringServiceUnitTest, AccountsAdded) {
+  // Verifies AccountsAdded event is emitted as expected in AddAccount
   // CreateWallet, RestoreWallet, AddHardwareAccounts, and
   // ImportAccountForKeyring
-  KeyringService service(json_rpc_service(), GetPrefs());
-  auto* blockchain_registry = BlockchainRegistry::GetInstance();
-  TokenListMap token_list_map;
-  std::string token_list_json = R"({
-    "0x6b175474e89094c44da98b954eedeac495271d0f":{
-      "name":"Dai Stablecoin",
-      "logo":"dai.svg",
-      "erc20":true,
-      "symbol":"DAI",
-      "decimals":18,
-      "chainId":"0x1"
-    },
-    "0x4b10701Bfd7BFEdc47d50562b76b436fbB5BdB3B":{
-      "name":"Lil Nouns",
-      "logo":"lilnouns.svg",
-      "erc20":false,
-      "erc721":true,
-      "symbol":"LilNouns",
-      "chainId":"0x1"
-    },
-    "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd":{
-      "name":"JoeToken",
-      "logo":"joe.svg",
-      "erc20":true,
-      "symbol":"JOE",
-      "decimals":18,
-      "chainId":"0xa86a"
-    },
-    "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48":{
-      "name":"USD Coin",
-      "logo":"usdc.svg",
-      "erc20":true,
-      "symbol":"USDC",
-      "decimals":18,
-      "chainId":"0x1"
-    },
-    "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2":{
-      "name":"Wrapped Eth",
-      "logo":"weth.svg",
-      "erc20":true,
-      "symbol":"WETH",
-      "decimals":18,
-      "chainId":"0x1"
-    },
-    "0x03ab458634910aad20ef5f1c8ee96f1d6ac54919":{
-      "name":"Rai Reflex Index",
-      "logo":"rai.svg",
-      "erc20":true,
-      "symbol":"RAI",
-      "decimals":18,
-      "chainId":"0x1"
-    }
-  })";
-  ASSERT_TRUE(
-      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
-  blockchain_registry->UpdateTokenList(std::move(token_list_map));
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  TestKeyringServiceObserver observer;
+  service.AddObserver(observer.GetReceiver());
 
   // RestoreWallet
-  // Mock an eth_getLogs response that includes
-  //  * DAI transfers to next account,
-  //  0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db (valid)
-  //  * JOE transfers to next account (invalid, wrong network)
-  //  * LilNouns transfers to next account (invalid, not an ERC20 token)
-  std::string response = R"({
-    "jsonrpc":"2.0",
-    "id":1,
-    "result":[
-      {
-        "address":"0x6b175474e89094c44da98b954eedeac495271d0f",
-        "blockHash":"0x2961ceb6c16bab72a55f79e394a35f2bf1c62b30446e3537280f7c22c3115e6e",
-        "blockNumber":"0xd6464c",
-        "data":"0x00000000000000000000000000000000000000000000000555aff1f0fae8c000",
-        "logIndex":"0x159",
-        "removed":false,
-        "topics":[
-          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-          "0x000000000000000000000000503828976d22510aad0201ac7ec88293211d23da",
-          "0x000000000000000000000000f81229FE54D8a20fBc1e1e2a3451D1c7489437Db"
-        ],
-        "transactionHash":"0x2e652b70966c6a05f4b3e68f20d6540b7a5ab712385464a7ccf62774d39b7066",
-        "transactionIndex":"0x9f"
-      },
-      {
-        "address":"0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd",
-        "blockHash":"0x2961ceb6c16bab72a55f79e394a35f2bf1c62b30446e3537280f7c22c3115e6e",
-        "blockNumber":"0xd6464c",
-        "data":"0x00000000000000000000000000000000000000000000000555aff1f0fae8c000",
-        "logIndex":"0x159",
-        "removed":false,
-        "topics":[
-          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-          "0x000000000000000000000000503828976d22510aad0201ac7ec88293211d23da",
-          "0x000000000000000000000000f81229FE54D8a20fBc1e1e2a3451D1c7489437Db"
-        ],
-        "transactionHash":"0x2e652b70966c6a05f4b3e68f20d6540b7a5ab712385464a7ccf62774d39b7066",
-        "transactionIndex":"0x9f"
-      },
-      {
-        "address":"0x4b10701Bfd7BFEdc47d50562b76b436fbB5BdB3B",
-        "blockHash":"0x2961ceb6c16bab72a55f79e394a35f2bf1c62b30446e3537280f7c22c3115e6e",
-        "blockNumber":"0xd6464c",
-        "data":"0x00000000000000000000000000000000000000000000000555aff1f0fae8c000",
-        "logIndex":"0x159",
-        "removed":false,
-        "topics":[
-          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-          "0x000000000000000000000000503828976d22510aad0201ac7ec88293211d23da",
-          "0x000000000000000000000000f81229FE54D8a20fBc1e1e2a3451D1c7489437Db"
-        ],
-        "transactionHash":"0x2e652b70966c6a05f4b3e68f20d6540b7a5ab712385464a7ccf62774d39b7066",
-        "transactionIndex":"0x9f"
-      }
-    ]
-  })";
-  SetInterceptor(response);
   RestoreWallet(
       &service, kMnemonic1, kPasswordBrave,
       false);  // Creates account 0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db
   base::RunLoop().RunUntilIdle();
-  std::vector<mojom::AccountInfoPtr> account_infos =
-      service.GetAccountInfosForKeyring(mojom::kDefaultKeyringId);
-  EXPECT_EQ(account_infos.size(), 1u);
-  std::vector<mojom::BlockchainTokenPtr> user_assets =
-      BraveWalletService::GetUserAssets(mojom::kMainnetChainId,
-                                        mojom::CoinType::ETH, GetPrefs());
-  EXPECT_EQ(user_assets.size(), 3u);
-  EXPECT_EQ(user_assets[user_assets.size() - 1]->symbol, "DAI");
+  observer.ExpectAddressesAddedEq(
+      {"0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db"});
+  task_environment_.FastForwardBy(
+      base::Minutes(kAssetDiscoveryMinutesPerRequest));
 
   // AddAccount
-  // Mock an eth_getLogs response that includes logs for WETH transfers to the
-  // account to be added, 0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0
-  response = R"({
-    "jsonrpc":"2.0",
-    "id":1,
-    "result":[
-      {
-        "address":"0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-        "blockHash":"0x2961ceb6c16bab72a55f79e394a35f2bf1c62b30446e3537280f7c22c3115e6e",
-        "blockNumber":"0xd6464c",
-        "data":"0x00000000000000000000000000000000000000000000000555aff1f0fae8c000",
-        "logIndex":"0x159",
-        "removed":false,
-        "topics":[
-          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-          "0x000000000000000000000000503828976d22510aad0201ac7ec88293211d23da",
-          "0x00000000000000000000000000c0f72E601C31DEb7890612cB92Ac0Fb7090EB0"
-        ],
-        "transactionHash":"0x2e652b70966c6a05f4b3e68f20d6540b7a5ab712385464a7ccf62774d39b7066",
-        "transactionIndex":"0x9f"
-      }
-    ]
-  })";
-  SetInterceptor(response);
-  EXPECT_TRUE(AddAccount(
+  ASSERT_TRUE(AddAccount(
       &service, "Account",
       mojom::CoinType::ETH));  // Creates account
                                // 0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0
   base::RunLoop().RunUntilIdle();
-  user_assets = BraveWalletService::GetUserAssets(
-      mojom::kMainnetChainId, mojom::CoinType::ETH, GetPrefs());
-  EXPECT_EQ(user_assets.size(), 4u);
-  EXPECT_EQ(user_assets[user_assets.size() - 1]->symbol, "WETH");
+  observer.ExpectAddressesAddedEq(
+      {"0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0"});
+  task_environment_.FastForwardBy(
+      base::Minutes(kAssetDiscoveryMinutesPerRequest));
 
   // AddHardwareAccounts
-  // Mock an eth_getLogs response that includes logs for USDC transfers to the
-  // hardware account to be added, 0x595a0583621FDe81A935021707e81343f75F9324
-  response = R"({
-    "jsonrpc":"2.0",
-    "id":1,
-    "result":[
-      {
-        "address":"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-        "blockHash":"0x2961ceb6c16bab72a55f79e394a35f2bf1c62b30446e3537280f7c22c3115e6e",
-        "blockNumber":"0xd6464c",
-        "data":"0x00000000000000000000000000000000000000000000000555aff1f0fae8c000",
-        "logIndex":"0x159",
-        "removed":false,
-        "topics":[
-          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-          "0x000000000000000000000000503828976d22510aad0201ac7ec88293211d23da",
-          "0x000000000000000000000000595a0583621FDe81A935021707e81343f75F9324"
-        ],
-        "transactionHash":"0x2e652b70966c6a05f4b3e68f20d6540b7a5ab712385464a7ccf62774d39b7066",
-        "transactionIndex":"0x9f"
-      }
-    ]
-  })";
-  SetInterceptor(response);
   std::vector<mojom::HardwareWalletAccountPtr> hardware_accounts;
   hardware_accounts.push_back(mojom::HardwareWalletAccount::New(
       "0x595a0583621FDe81A935021707e81343f75F9324", "m/44'/60'/1'/0/0",
       "name 1", "Ledger", "device1", mojom::CoinType::ETH, absl::nullopt));
   service.AddHardwareAccounts(std::move(hardware_accounts));
   base::RunLoop().RunUntilIdle();
-  account_infos = service.GetAccountInfosForKeyring(mojom::kDefaultKeyringId);
-  user_assets = BraveWalletService::GetUserAssets(
-      mojom::kMainnetChainId, mojom::CoinType::ETH, GetPrefs());
-  EXPECT_EQ(user_assets[user_assets.size() - 1]->symbol, "USDC");
-  EXPECT_EQ(user_assets.size(), 5u);
+  observer.ExpectAddressesAddedEq(
+      {"0x595a0583621FDe81A935021707e81343f75F9324"});
+  task_environment_.FastForwardBy(
+      base::Minutes(kAssetDiscoveryMinutesPerRequest));
 
   // ImportAccountForKeyring
-  // Mock an eth_getLogs response that includes logs for RAI transfers to the
-  // account to be imported, 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-  response = R"({
-    "jsonrpc":"2.0",
-    "id":1,
-    "result":[
-      {
-        "address":"0x03ab458634910aad20ef5f1c8ee96f1d6ac54919",
-        "blockHash":"0x2961ceb6c16bab72a55f79e394a35f2bf1c62b30446e3537280f7c22c3115e6e",
-        "blockNumber":"0xd6464c",
-        "data":"0x00000000000000000000000000000000000000000000000555aff1f0fae8c000",
-        "logIndex":"0x159",
-        "removed":false,
-        "topics":[
-          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-          "0x000000000000000000000000503828976d22510aad0201ac7ec88293211d23da",
-          "0x000000000000000000000000f39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
-        ],
-        "transactionHash":"0x2e652b70966c6a05f4b3e68f20d6540b7a5ab712385464a7ccf62774d39b7066",
-        "transactionIndex":"0x9f"
-      }
-    ]
-  })";
-  SetInterceptor(response);
   const std::string private_key_str =
       "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
   std::vector<uint8_t> private_key_bytes;
@@ -4578,10 +4417,42 @@ TEST_F(KeyringServiceUnitTest, DiscoverAssets) {
   ASSERT_TRUE(service.ImportAccountForKeyring(
       mojom::kDefaultKeyringId, "Imported Account", private_key_bytes));
   base::RunLoop().RunUntilIdle();
-  user_assets = BraveWalletService::GetUserAssets(
-      mojom::kMainnetChainId, mojom::CoinType::ETH, GetPrefs());
-  EXPECT_EQ(user_assets[user_assets.size() - 1]->symbol, "RAI");
-  EXPECT_EQ(user_assets.size(), 6u);
+  observer.ExpectAddressesAddedEq(
+      {"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"});
 }
+
+#if !defined(OFFICIAL_BUILD)
+TEST_F(KeyringServiceUnitTest, DevWalletPassword) {
+  base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
+
+  // Setup wallet.
+  {
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+    CreateWallet(&service, "some_password");
+  }
+
+  // Locked on start by default.
+  {
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+    EXPECT_TRUE(service.IsLocked());
+  }
+
+  // Unlocked on start with right password.
+  {
+    cmdline->AppendSwitchASCII(switches::kDevWalletPassword, "some_password");
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+    EXPECT_FALSE(service.IsLocked());
+    cmdline->RemoveSwitch(switches::kDevWalletPassword);
+  }
+
+  // Locked on start with wrong password.
+  {
+    cmdline->AppendSwitchASCII(switches::kDevWalletPassword, "wrong_password");
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+    EXPECT_TRUE(service.IsLocked());
+    cmdline->RemoveSwitch(switches::kDevWalletPassword);
+  }
+}
+#endif  // !defined(OFFICIAL_BUILD)
 
 }  // namespace brave_wallet

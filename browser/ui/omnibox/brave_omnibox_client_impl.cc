@@ -96,7 +96,7 @@ void BraveOmniboxClientImpl::OnInputAccepted(const AutocompleteMatch& match) {
 void BraveOmniboxClientImpl::OnURLOpenedFromOmnibox(OmniboxLog* log) {
   if (log->selected_index <= 0)
     return;
-  const auto match = log->result.match_at(log->selected_index);
+  const auto match = log->result->match_at(log->selected_index);
   if (IsBraveSearchPromotionMatch(match)) {
     brave_search_conversion::p3a::RecordPromoTrigger(
         g_browser_process->local_state(), GetConversionTypeFromMatch(match));

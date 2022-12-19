@@ -1,7 +1,7 @@
-// Copyright 2019 The Brave Authors. All rights reserved.
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "base/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
@@ -38,8 +38,8 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
-#include "brave/components/brave_vpn/features.h"
-#include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/brave_vpn/common/features.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
 class BraveToolbarViewTest : public InProcessBrowserTest {

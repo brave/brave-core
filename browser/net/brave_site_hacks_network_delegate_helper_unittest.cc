@@ -251,6 +251,9 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringFiltered) {
        {"https://example.com/?fbclid=1&a+b+c=some%20thing&1%202=3+4",
         "https://example.com/?a+b+c=some%20thing&1%202=3+4"},
        // Conditional query parameter stripping
+       {"https://example.com/?igshid=1234", ""},
+       {"https://www.instagram.com/?igshid=1234", "https://www.instagram.com/"},
+       {"https://example.com/?mkt_tok=123&foo=bar&mkt_unsubscribe=1", ""},
        {"https://example.com/?mkt_tok=123&foo=bar",
         "https://example.com/?foo=bar"}});
   for (const auto& pair : urls) {

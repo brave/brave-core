@@ -163,7 +163,11 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void ClearAllNotifications() = 0;
 
-  virtual void WalletDisconnected(const std::string& wallet_type) = 0;
+  virtual void ExternalWalletConnected() const = 0;
+
+  virtual void ExternalWalletLoggedOut() const = 0;
+
+  virtual void ExternalWalletReconnected() const = 0;
 
   virtual void DeleteLog(client::LegacyResultCallback callback) = 0;
 

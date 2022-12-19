@@ -10,11 +10,16 @@ type Event = MouseEvent | TouchEvent
 export const useOnClickOutside = <T extends HTMLElement = HTMLElement> (
   ref: React.RefObject<T>,
   handler: (event: Event) => void,
-  startListening: boolean
+  startListening: boolean,
+  // Include a buttonId if you have a button outside of the click away area
+  // that causes reopening when clicking to close.
+  buttonId?: string
 ) => {
   React.useEffect(() => {
     const listener = (event: Event) => {
-      if (!ref.current || ref.current.contains((event?.target as Node) || null)) {
+      if ((!ref.current || ref.current.contains((event?.target as Node) || null) ||
+        (buttonId === (event.target as HTMLButtonElement).id))
+      ) {
         return
       }
       handler(event)
@@ -31,5 +36,5 @@ export const useOnClickOutside = <T extends HTMLElement = HTMLElement> (
       document.removeEventListener('mousedown', listener)
       document.removeEventListener('touchstart', listener)
     }
-  }, [ref, startListening, handler])
+  }, [ref, startListening, handler, buttonId])
 }

@@ -21,10 +21,13 @@
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/download/public/common/download_task_runner.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/pref_service_mock_factory.h"
 #include "components/sync_preferences/pref_service_syncable.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_host_resolver.h"
 #include "net/dns/mock_host_resolver.h"
@@ -68,6 +71,14 @@ class MockObserver : public PlaylistServiceObserver {
   MOCK_METHOD(void,
               OnPlaylistStatusChanged,
               (const PlaylistChangeParams& params),
+              (override));
+  MOCK_METHOD(void,
+              OnMediaFileDownloadProgressed,
+              (const std::string& id,
+               int64_t total_bytes,
+               int64_t received_bytes,
+               int percent_complete,
+               base::TimeDelta remaining_time),
               (override));
 };
 
@@ -163,6 +174,12 @@ class PlaylistServiceUnitTest : public testing::Test {
     builder.SetPrefService(std::move(pref_service));
     builder.SetPath(temp_dir_->GetPath());
     profile_ = builder.Build();
+
+    DCHECK(!download::GetIOTaskRunner());
+    // Sets the same IO task runner as TestProfile::GetIOTaskRunner() uses.
+    download::SetIOTaskRunner(
+        base::SingleThreadTaskRunner::GetCurrentDefault());
+
     ASSERT_EQ(pref_service_ptr, profile_->GetPrefs());
 
     detector_manager_ =
@@ -184,6 +201,8 @@ class PlaylistServiceUnitTest : public testing::Test {
     detector_manager_.reset();
     profile_.reset();
     temp_dir_.reset();
+
+    download::ClearIOTaskRunnerForTesting();
 
     testing::Test::TearDown();
   }
@@ -228,12 +247,15 @@ TEST_F(PlaylistServiceUnitTest, CreatePlaylistItem) {
     expected_arg.change_type = PlaylistChangeParams::Type::kItemCached;
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .WillOnce(on_event);
+    using testing::_;
+    EXPECT_CALL(observer, OnMediaFileDownloadProgressed(_, _, _, _, _))
+        .Times(testing::AtLeast(1));
 
     service->AddObserver(&observer);
 
     playlist::PlaylistItemInfo params = GetValidCreateParams();
     params.id = id;
-    service->CreatePlaylistItem(params);
+    service->CreatePlaylistItem(params, /* cache = */ true);
 
     WaitUntil(
         base::BindLambdaForTesting([&]() { return expected_call_count == 0; }));
@@ -270,7 +292,7 @@ TEST_F(PlaylistServiceUnitTest, ThumbnailFailed) {
   params.id = id;
   params.media_file_path = GetValidCreateParams().media_file_path;
   params.media_src = params.media_file_path;
-  service->CreatePlaylistItem(params);
+  service->CreatePlaylistItem(params, /* cache = */ true);
 
   WaitUntil(
       base::BindLambdaForTesting([&]() { return expected_call_count == 0; }));
@@ -306,7 +328,7 @@ TEST_F(PlaylistServiceUnitTest, MediaDownloadFailed) {
 
   auto params = GetValidCreateParamsForIncompleteMediaFileList();
   params.id = id;
-  service->CreatePlaylistItem(params);
+  service->CreatePlaylistItem(params, /* cache = */ true);
 
   WaitUntil(
       base::BindLambdaForTesting([&]() { return expected_call_count == 0; }));
@@ -341,7 +363,7 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
 
     auto params = GetValidCreateParamsForIncompleteMediaFileList();
     params.id = id;
-    service->CreatePlaylistItem(params);
+    service->CreatePlaylistItem(params, /* cache = */ true);
 
     WaitUntil(
         base::BindLambdaForTesting([&]() { return expected_call_count == 0; }));
@@ -423,7 +445,7 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
 
     auto params = GetValidCreateParams();
     params.id = id;
-    service->CreatePlaylistItem(params);
+    service->CreatePlaylistItem(params, /* cache = */ true);
 
     WaitUntil(
         base::BindLambdaForTesting([&]() { return expected_call_count == 0; }));
@@ -544,7 +566,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
 
     auto params = GetValidCreateParams();
     params.id = id;
-    service->CreatePlaylistItem(params);
+    service->CreatePlaylistItem(params, /* cache = */ true);
 
     WaitUntil(
         base::BindLambdaForTesting([&]() { return expected_call_count == 0; }));
@@ -712,6 +734,47 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
   base::ranges::transform(*items, std::inserter(stored_ids, stored_ids.end()),
                           [](const auto& item) { return item.GetString(); });
   EXPECT_EQ(item_ids, stored_ids);
+}
+
+TEST_F(PlaylistServiceUnitTest, CachingBehavior) {
+  auto* service = playlist_service();
+
+  // Try multiple times
+  for (auto should_cache : {true, false}) {
+    auto id = base::Token::CreateRandom().ToString();
+    // When a playlist is created and all goes well, we will receive 3
+    // notifications: added, thumbnail ready and play ready.
+    int expected_call_count = 3 - (should_cache ? 0 : 1);
+    testing::NiceMock<MockObserver> observer;
+    auto on_event = [&]() { expected_call_count--; };
+    auto expected_arg = PlaylistChangeParams(
+        PlaylistChangeParams::Type::kItemThumbnailReady, id);
+    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+        .WillOnce(on_event);
+    expected_arg.change_type = PlaylistChangeParams::Type::kItemAdded;
+    EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+        .WillOnce(on_event);
+
+    expected_arg.change_type = PlaylistChangeParams::Type::kItemCached;
+    if (should_cache) {
+      EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+          .WillOnce(on_event);
+    } else {
+      EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
+          .Times(testing::Exactly(0));
+    }
+
+    service->AddObserver(&observer);
+
+    playlist::PlaylistItemInfo params = GetValidCreateParams();
+    params.id = id;
+    service->CreatePlaylistItem(params, should_cache);
+
+    WaitUntil(
+        base::BindLambdaForTesting([&]() { return expected_call_count == 0; }));
+
+    service->RemoveObserver(&observer);
+  }
 }
 
 }  // namespace playlist

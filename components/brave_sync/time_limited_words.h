@@ -43,6 +43,11 @@ class TimeLimitedWords {
   static base::expected<std::string, ValidationStatus> Parse(
       const std::string& time_limited_words);
 
+  // The same as |Parse| but never give |kExpired| and |kValidForTooLong|
+  // statuses
+  static base::expected<std::string, ValidationStatus> ParseIgnoreDate(
+      const std::string& time_limited_words);
+
   static std::string GenerateResultToText(
       const GenerateResult& generate_result);
 
@@ -52,12 +57,15 @@ class TimeLimitedWords {
   FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, GetRoundedDaysDiff);
   FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, GetWordByIndex);
   FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, Parse);
+  FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, ParseIgnoreDate);
+
+  enum class WrongDateBehaviour { kIgnore = 1, kDontAllow = 2 };
+  static base::expected<std::string, ValidationStatus> ParseImpl(
+      const std::string& time_limited_words,
+      WrongDateBehaviour wrong_date_behaviour);
 
   static base::Time GetWordsV1SunsetDay();
   static base::Time GetWordsV2Epoch();
-
-  static ValidationStatus Validate(const std::string& time_limited_words,
-                                   std::string* pure_words);
 
   static base::expected<std::string, GenerateResult> GenerateForDate(
       const std::string& pure_words,

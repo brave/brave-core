@@ -6,8 +6,8 @@
 # When update this method, feature_compiler.py should be touched to make
 # feature_compiler.py run. json_feature target doesn't have this in its
 # dependency.
-# below discard list comes from common/extensions/api/_api_features.json.
 def DiscardBraveOverridesFromDupes(dupes):
+    # below discard list comes from common/extensions/api/_api_features.json.
     dupes.discard('topSites')
     dupes.discard('extension.inIncognitoContext')
     dupes.discard('bookmarkManagerPrivate')
@@ -18,3 +18,6 @@ def DiscardBraveOverridesFromDupes(dupes):
     dupes.discard('sockets.udp')
     dupes.discard('sockets.tcpServer')
     dupes.discard('tabs')
+    # discard list from common/extensions/api/_permission_features.json.
+    dupes.discard('hid')
+    dupes.discard('usbDevices')

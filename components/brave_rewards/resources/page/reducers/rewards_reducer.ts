@@ -5,6 +5,7 @@
 import { Reducer } from 'redux'
 
 import { types } from '../actions/rewards_types'
+import { userTypeFromMojo } from '../../shared/lib/user_type'
 
 const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {
@@ -16,14 +17,17 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.isInitialized')
       break
     }
-    case types.GET_AUTO_CONTRIBUTE_PROPERTIES: {
-      chrome.send('brave_rewards.getAutoContributeProperties')
+    case types.GET_USER_TYPE: {
+      chrome.send('brave_rewards.getUserType')
       break
     }
-    case types.DISCONNECT_WALLET_ERROR: {
+    case types.ON_USER_TYPE: {
       state = { ...state }
-      let ui = state.ui
-      ui.disconnectWalletError = true
+      state.userType = userTypeFromMojo(action.payload.userType)
+      break
+    }
+    case types.GET_AUTO_CONTRIBUTE_PROPERTIES: {
+      chrome.send('brave_rewards.getAutoContributeProperties')
       break
     }
     case types.ON_AUTO_CONTRIBUTE_PROPERTIES: {
@@ -67,7 +71,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_MODAL_BACKUP_CLOSE: {
-      state = { ...state }
       let ui = state.ui
       ui.modalBackup = false
       state = {
@@ -79,6 +82,24 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_MODAL_BACKUP_OPEN: {
       let ui = state.ui
       ui.modalBackup = true
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_MODAL_CONNECT_CLOSE: {
+      let ui = state.ui
+      ui.modalConnect = false
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_MODAL_CONNECT_OPEN: {
+      let ui = state.ui
+      ui.modalConnect = true
       state = {
         ...state,
         ui
@@ -308,6 +329,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       const { value, error } = action.payload.result
 
       if (value) {
+        chrome.send('brave_rewards.getUserType')
         chrome.send('brave_rewards.fetchBalance')
         ui.modalRedirect = 'hide'
       } else {
@@ -327,10 +349,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         ...state,
         ui
       }
-      break
-    }
-    case types.DISCONNECT_WALLET: {
-      chrome.send('brave_rewards.disconnectWallet')
       break
     }
     case types.DISMISS_PROMO_PROMPT: {

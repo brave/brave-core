@@ -58,17 +58,14 @@ bool RemoveValueFromList(base::Value::List* root, const T& value_to_remove) {
 //      }
 //    ]
 // }
-bool IPFSJSONParser::GetPeersFromJSON(const std::string& json,
+bool IPFSJSONParser::GetPeersFromJSON(const base::Value& json_value,
                                       std::vector<std::string>* peers) {
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+  if (!json_value.is_dict()) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is not a dict";
     return false;
   }
 
-  auto& dict = records_v->GetDict();
+  auto& dict = json_value.GetDict();
   const auto* peers_arr = dict.FindList("Peers");
   if (!peers_arr) {
     VLOG(1) << "Invalid response, can not find Peers array.";
@@ -105,17 +102,9 @@ bool IPFSJSONParser::GetPeersFromJSON(const std::string& json,
 //        ]
 //      }
 // }
-bool IPFSJSONParser::GetAddressesConfigFromJSON(const std::string& json,
+bool IPFSJSONParser::GetAddressesConfigFromJSON(const base::Value& json_value,
                                                 ipfs::AddressesConfig* config) {
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return false;
-  }
-
-  const auto* response_dict = records_v->GetIfDict();
+  const auto* response_dict = json_value.GetIfDict();
   if (!response_dict) {
     return false;
   }
@@ -155,19 +144,11 @@ bool IPFSJSONParser::GetAddressesConfigFromJSON(const std::string& json,
 //  "StorageMax": "<uint64>",
 //  "Version": "<string>"
 //}
-bool IPFSJSONParser::GetRepoStatsFromJSON(const std::string& json,
+bool IPFSJSONParser::GetRepoStatsFromJSON(const base::Value& json_value,
                                           ipfs::RepoStats* stats) {
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return false;
-  }
-
-  const auto* response_dict = records_v->GetIfDict();
+  const auto* response_dict = json_value.GetIfDict();
   if (!response_dict) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is not a dict";
     return false;
   }
 
@@ -201,19 +182,11 @@ bool IPFSJSONParser::GetRepoStatsFromJSON(const std::string& json,
 //  "Protocols": ["<string>"],
 //  "PublicKey": "<string>"
 //}
-bool IPFSJSONParser::GetNodeInfoFromJSON(const std::string& json,
+bool IPFSJSONParser::GetNodeInfoFromJSON(const base::Value& json_value,
                                          ipfs::NodeInfo* info) {
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return false;
-  }
-
-  const auto* response_dict = records_v->GetIfDict();
+  const auto* response_dict = json_value.GetIfDict();
   if (!response_dict) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is not a dict";
     return false;
   }
   const std::string* version = response_dict->FindString("AgentVersion");
@@ -237,20 +210,11 @@ bool IPFSJSONParser::GetNodeInfoFromJSON(const std::string& json,
 //     "/": "<cid-string>"
 //   }
 // }
-bool IPFSJSONParser::GetGarbageCollectionFromJSON(const std::string& json,
+bool IPFSJSONParser::GetGarbageCollectionFromJSON(const base::Value& json_value,
                                                   std::string* error) {
-  auto records_v = base::JSONReader::ReadAndReturnValueWithError(
-      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v.has_value()) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json
-            << " error is:" << records_v.error().message;
-    return false;
-  }
-
-  const auto* response_dict = records_v->GetIfDict();
+  const auto* response_dict = json_value.GetIfDict();
   if (!response_dict) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is not a dict";
     return false;
   }
   const std::string* error_message = response_dict->FindString("Error");
@@ -302,21 +266,13 @@ bool IPFSJSONParser::GetImportResponseFromJSON(const std::string& json,
 //   {"Name":"self","Id":"k51q...wal"}
 // ]}
 bool IPFSJSONParser::GetParseKeysFromJSON(
-    const std::string& json,
+    const base::Value& json_value,
     std::unordered_map<std::string, std::string>* data) {
   DCHECK(data);
-  auto records_v = base::JSONReader::ReadAndReturnValueWithError(
-      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v.has_value()) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json
-            << " error is:" << records_v.error().message;
-    return false;
-  }
 
-  const auto* dict = records_v->GetIfDict();
+  const auto* dict = json_value.GetIfDict();
   if (!dict) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is not a dict";
     return false;
   }
 
@@ -342,8 +298,6 @@ bool IPFSJSONParser::GetParseKeysFromJSON(
 }
 
 // static
-// Response Format for /api/v0/key/gen
-// {"Name":"self","Id":"k51q...wal"}
 bool IPFSJSONParser::GetParseSingleKeyFromJSON(const std::string& json,
                                                std::string* name,
                                                std::string* value) {
@@ -356,9 +310,18 @@ bool IPFSJSONParser::GetParseSingleKeyFromJSON(const std::string& json,
     return false;
   }
 
-  const auto* response_dict = records_v->GetIfDict();
+  return GetParseSingleKeyFromJSON(records_v.value(), name, value);
+}
+
+// static
+// Response Format for /api/v0/key/gen
+// {"Name":"self","Id":"k51q...wal"}
+bool IPFSJSONParser::GetParseSingleKeyFromJSON(const base::Value& json_value,
+                                               std::string* name,
+                                               std::string* value) {
+  const auto* response_dict = json_value.GetIfDict();
   if (!response_dict) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is not a dict";
     return false;
   }
   const std::string* key_name = response_dict->FindString("Name");

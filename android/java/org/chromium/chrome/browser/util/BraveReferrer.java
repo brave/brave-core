@@ -36,7 +36,8 @@ public class BraveReferrer implements InstallReferrerStateListener {
     private static final String APP_CHROME_DIR = "app_chrome";
     private static final String PROMO_CODE_FILE_NAME = "promoCode";
     private static final String BRAVE_REFERRER_RECEIVED = "brave_referrer_received";
-    private static final String GOOGLE_ADS_REFERRAL_CODE = "UAC001";
+    private static final String PLAY_STORE_AD_REFERRAL_CODE = "UAC001";
+    private static final String GOOGLE_SEARCH_AD_REFERRAL_CODE = "UAC002";
 
     private String promoCodeFilePath;
     private InstallReferrerClient referrerClient;
@@ -135,7 +136,14 @@ public class BraveReferrer implements InstallReferrerStateListener {
                     if (urpc == null || urpc.isEmpty()) {
                         urpc = uri.getQueryParameter("gclid");
                         if (urpc != null && !urpc.isEmpty()) {
-                            urpc = GOOGLE_ADS_REFERRAL_CODE;
+                            urpc = PLAY_STORE_AD_REFERRAL_CODE;
+                        }
+                    }
+                    if (urpc == null || urpc.isEmpty()) {
+                        // This detection was found empirically. Unfortunately we are not able to
+                        // get any more info from the referrer at the moment.
+                        if (referrer.contains("gclid")) {
+                            urpc = GOOGLE_SEARCH_AD_REFERRAL_CODE;
                         }
                     }
                     if (urpc != null && !urpc.isEmpty()) {

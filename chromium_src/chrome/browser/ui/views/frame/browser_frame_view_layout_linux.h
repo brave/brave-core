@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_FRAME_VIEW_LAYOUT_LINUX_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_FRAME_VIEW_LAYOUT_LINUX_H_
 
+#include "chrome/browser/ui/views/frame/opaque_browser_frame_view_layout.h"
+
 #define GetInputInsets                                  \
   Unused() { return {}; }                               \
   int NonClientTopHeight(bool restored) const override; \

@@ -54,6 +54,18 @@ bool UpdateConfigJSON(const std::string& source,
   dict->SetByDottedPath("Swarm.ConnMgr.HighWater", 40);
   dict->SetByDottedPath("Datastore.StorageMax", config->storage_max);
 
+  base::Value::Dict localhost_gateway_settings;
+  localhost_gateway_settings.Set("UseSubdomains", true);
+  localhost_gateway_settings.Set("InlineDNSLink", true);
+  base::Value::List path_list;
+  path_list.Append("/ipfs");
+  path_list.Append("/ipns");
+  path_list.Append("/api");
+  localhost_gateway_settings.Set("Paths", std::move(path_list));
+  base::Value::Dict public_gateways;
+  public_gateways.Set("localhost", std::move(localhost_gateway_settings));
+  dict->SetByDottedPath("Gateway.PublicGateways", std::move(public_gateways));
+
   if (config->doh_server_url) {
     base::Value::Dict dns_resolvers;
     std::string doh_url = *(config->doh_server_url);

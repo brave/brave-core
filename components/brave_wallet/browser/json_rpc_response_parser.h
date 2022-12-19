@@ -12,6 +12,7 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/json_rpc_responses.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "components/grit/brave_components_strings.h"
@@ -20,15 +21,15 @@
 // Common JSON RPC response parsing functions across different blockchains.
 namespace brave_wallet {
 
-// TODO(apaymyshev): fix callers with the function below.
-bool ParseSingleStringResult(const std::string& json, std::string* result);
-absl::optional<std::string> ParseSingleStringResult(const std::string& json);
+absl::optional<std::string> ParseSingleStringResult(
+    const base::Value& json_value);
+absl::optional<base::Value> ParseResultValue(const base::Value& json_value);
 
 absl::optional<std::vector<uint8_t>> ParseDecodedBytesResult(
-    const std::string& json);
+    const base::Value& json_value);
 
 template <typename Error>
-void ParseErrorResult(const std::string& json,
+void ParseErrorResult(const base::Value& json_value,
                       Error* error,
                       std::string* error_message) {
   DCHECK(error);
@@ -39,31 +40,23 @@ void ParseErrorResult(const std::string& json,
   *error = Error::kParsingError;
   *error_message = l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR);
 
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+  auto response = json_rpc_responses::RPCResponse::FromValue(json_value);
+  if (!response || !response->error)
     return;
-  }
-
-  const auto& dict = records_v->GetDict();
-  absl::optional<int> code_int = dict.FindIntByDottedPath("error.code");
-  const std::string* message_string =
-      dict.FindStringByDottedPath("error.message");
-  if (!code_int)
-    return;
-
-  *error = static_cast<Error>(*code_int);
-  if (message_string) {
-    *error_message = *message_string;
-  } else {
+  *error = static_cast<Error>(response->error->code);
+  if (!mojom::IsKnownEnumValue(*error))
+    *error = Error::kUnknown;
+  if (response->error->message)
+    *error_message = *response->error->message;
+  else
     error_message->clear();
-  }
 }
 
-absl::optional<base::Value::Dict> ParseResultDict(const std::string& json);
-absl::optional<base::Value::List> ParseResultList(const std::string& json);
-bool ParseBoolResult(const std::string& json, bool* value);
+absl::optional<base::Value::Dict> ParseResultDict(
+    const base::Value& json_value);
+absl::optional<base::Value::List> ParseResultList(
+    const base::Value& json_value);
+absl::optional<bool> ParseBoolResult(const base::Value& json_value);
 
 absl::optional<std::string> ConvertInt64ToString(const std::string& path,
                                                  const std::string& json);

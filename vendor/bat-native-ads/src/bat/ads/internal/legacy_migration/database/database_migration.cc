@@ -7,8 +7,8 @@
 
 #include <utility>
 
-#include "base/bind.h"
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"

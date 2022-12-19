@@ -73,7 +73,7 @@ class SolanaTransaction {
   std::string GetBase64EncodedMessage() const;
   absl::optional<std::vector<uint8_t>> GetSignedTransactionBytes(
       KeyringService* keyring_service,
-      const std::vector<uint8_t>* fee_payer_signature = nullptr) const;
+      const std::vector<uint8_t>* selected_account_signature = nullptr) const;
 
   // Returns message bytes and signer addresses (public keys).
   absl::optional<std::pair<std::vector<uint8_t>, std::vector<std::string>>>

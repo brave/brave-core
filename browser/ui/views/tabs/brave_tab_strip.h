@@ -14,19 +14,29 @@ class Tab;
 class BraveTabStrip : public TabStrip {
  public:
   METADATA_HEADER(BraveTabStrip);
+
   explicit BraveTabStrip(std::unique_ptr<TabStripController> controller);
   ~BraveTabStrip() override;
   BraveTabStrip(const BraveTabStrip&) = delete;
   BraveTabStrip& operator=(const BraveTabStrip&) = delete;
 
+  // TabStrip:
   void UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) override;
+  void MaybeStartDrag(
+      TabSlotView* source,
+      const ui::LocatedEvent& event,
+      const ui::ListSelectionModel& original_selection) override;
+  void AddedToWidget() override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(ColorPaletteTest, LightThemeMinimumContrast);
 
+  void UpdateTabContainer();
+
   // TabStrip overrides:
   SkColor GetTabSeparatorColor() const override;
   bool ShouldDrawStrokes() const override;
+  void Layout() override;
 
   // Exposed for testing.
   static constexpr float kBraveMinimumContrastRatioForOutlines = 1.2797f;

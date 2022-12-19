@@ -6,6 +6,10 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_
 
+#include <memory>
+
+#include "base/callback_helpers.h"
+#include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
@@ -15,6 +19,7 @@ class ScrollView;
 }
 
 class Browser;
+class TabStripScrollContainer;
 
 // Wraps TabStripRegion and show it vertically.
 class VerticalTabStripRegionView : public views::View {
@@ -46,6 +51,18 @@ class VerticalTabStripRegionView : public views::View {
 
   const Browser* browser() const { return browser_; }
 
+  // Expand vertical tabstrip temporarily. When the returned
+  // ScopedCallbackRunner is destroyed, the state will be restored to the
+  // previous state.
+  using ScopedStateResetter = std::unique_ptr<base::ScopedClosureRunner>;
+  [[nodiscard]] ScopedStateResetter ExpandTabStripForDragging();
+  gfx::Vector2d GetOffsetForDraggedTab() const;
+
+  int GetAvailableWidthForTabContainer();
+
+  // This should be called when height of this view or tab strip changes.
+  void UpdateNewTabButtonVisibility();
+
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
   gfx::Size GetMinimumSize() const override;
@@ -63,7 +80,6 @@ class VerticalTabStripRegionView : public views::View {
 
   void UpdateLayout(bool in_destruction = false);
 
-  void UpdateNewTabButtonVisibility();
   void UpdateTabSearchButtonVisibility();
 
   void OnCollapsedPrefChanged();
@@ -72,6 +88,10 @@ class VerticalTabStripRegionView : public views::View {
   void ScheduleFloatingModeTimer();
 
   gfx::Size GetPreferredSizeForState(State state) const;
+  int GetPreferredWidthForState(State state) const;
+
+  // Returns valid object only when the related flag is enabled.
+  TabStripScrollContainer* GetTabStripScrollContainer();
 
   raw_ptr<Browser> browser_ = nullptr;
 
@@ -95,6 +115,8 @@ class VerticalTabStripRegionView : public views::View {
   base::OneShotTimer mouse_enter_timer_;
 
   bool mouse_events_for_test_ = false;
+
+  base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_VERTICAL_TAB_STRIP_REGION_VIEW_H_

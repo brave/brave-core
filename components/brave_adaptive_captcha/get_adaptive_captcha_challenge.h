@@ -12,6 +12,7 @@
 #include "base/callback.h"
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
+#include "base/values.h"
 
 // GET /v3/captcha/challenge/{payment_id}
 //
@@ -51,7 +52,7 @@ class GetAdaptiveCaptchaChallenge {
 
   bool CheckStatusCode(int status_code);
 
-  bool ParseBody(const std::string& body, std::string* captcha_id);
+  bool ParseBody(const base::Value& json_value, std::string* captcha_id);
 
   void OnResponse(OnGetAdaptiveCaptchaChallenge callback,
                   api_request_helper::APIRequestResult api_request_result);

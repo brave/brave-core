@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 
@@ -30,6 +30,7 @@
 #include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
@@ -45,7 +46,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
-#include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPARKLE)
@@ -507,6 +508,19 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
     return true;
 
   return false;
+}
+
+void BraveBrowserView::OnThemeChanged() {
+  BrowserView::OnThemeChanged();
+  if (vertical_tab_strip_host_view_) {
+    const auto background_color = GetColorProvider()->GetColor(kColorToolbar);
+    vertical_tab_strip_host_view_->SetBackground(
+        views::CreateSolidBackground(background_color));
+  }
+}
+
+bool BraveBrowserView::IsSidebarVisible() const {
+  return sidebar_container_view_ && sidebar_container_view_->IsSidebarVisible();
 }
 
 BraveBrowser* BraveBrowserView::GetBraveBrowser() const {

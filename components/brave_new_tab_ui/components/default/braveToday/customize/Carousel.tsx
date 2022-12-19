@@ -75,6 +75,7 @@ const CarouselContainer = styled.div`
 const ItemsContainer = styled(Flex)`
   margin: 8px 0;
   overflow-x: auto;
+  overflow-y: hidden;
   scroll-snap-type: x mandatory;
 
   &::-webkit-scrollbar {

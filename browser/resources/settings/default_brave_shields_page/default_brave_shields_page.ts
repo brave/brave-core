@@ -79,6 +79,13 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       isAdBlockRoute_: {
         type: Boolean,
         value: false
+      },
+      isDebounceFeatureEnabled_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isDebounceFeatureEnabled')
+        }
       }
     }
   }

@@ -7,10 +7,10 @@
 
 #include <utility>
 
-#include "base/callback.h"
 #include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"  // IWYU pragma: keep
+#include "base/functional/callback.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_parsing.h"

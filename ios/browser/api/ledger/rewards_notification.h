@@ -20,8 +20,8 @@ typedef NS_ENUM(NSInteger, RewardsNotificationKind) {
   RewardsNotificationKindTipsProcessed,
   RewardsNotificationKindAdsLaunch,  // Unused
   RewardsNotificationKindVerifiedPublisher,
-  RewardsNotificationKindPendingNotEnoughFunds,
-  RewardsNotificationKindGeneralLedger  // Comes from ledger
+  RewardsNotificationKindPendingNotEnoughFunds,  // Unused
+  RewardsNotificationKindGeneralLedger           // Comes from ledger
 } NS_SWIFT_NAME(RewardsNotification.Kind);
 
 OBJC_EXPORT

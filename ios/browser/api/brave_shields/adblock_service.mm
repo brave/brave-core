@@ -75,22 +75,32 @@
 }
 
 - (void)registerFilterListComponent:(AdblockFilterListCatalogEntry*)entry
-                     componentReady:
-                         (void (^)(AdblockFilterListCatalogEntry* entry,
-                                   NSString* _Nullable installPath))
-                             componentReady {
+                 useLegacyComponent:(bool)useLegacyComponent
+                     componentReady:(void (^)(NSString* _Nullable installPath))
+                                        componentReady {
+  std::string base64PublicKey = base::SysNSStringToUTF8(entry.base64PublicKey);
+  std::string componentId = base::SysNSStringToUTF8(entry.componentId);
+
+  if (useLegacyComponent) {
+    base64PublicKey = base::SysNSStringToUTF8(entry.iosBase64PublicKey);
+    componentId = base::SysNSStringToUTF8(entry.iosComponentId);
+  }
+
   brave_shields::RegisterAdBlockFiltersComponent(
-      _cus, base::SysNSStringToUTF8(entry.iosBase64PublicKey),
-      base::SysNSStringToUTF8(entry.iosComponentId),
-      base::SysNSStringToUTF8(entry.title),
+      _cus, base64PublicKey, componentId, base::SysNSStringToUTF8(entry.title),
       base::BindRepeating(^(const base::FilePath& install_path) {
         const auto installPath = base::SysUTF8ToNSString(install_path.value());
-        componentReady(entry, installPath);
+        componentReady(installPath);
       }));
 }
 
-- (void)unregisterFilterListComponent:(AdblockFilterListCatalogEntry*)entry {
-  _cus->UnregisterComponent(base::SysNSStringToUTF8(entry.iosComponentId));
+- (void)unregisterFilterListComponent:(AdblockFilterListCatalogEntry*)entry
+                   useLegacyComponent:(bool)useLegacyComponent {
+  if (useLegacyComponent) {
+    _cus->UnregisterComponent(base::SysNSStringToUTF8(entry.iosComponentId));
+  } else {
+    _cus->UnregisterComponent(base::SysNSStringToUTF8(entry.componentId));
+  }
 }
 
 @end

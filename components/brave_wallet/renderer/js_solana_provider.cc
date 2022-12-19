@@ -134,23 +134,12 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
 
   // window.solana will be removed in the future, we use window.braveSolana
   // mainly from now on and keep window.solana for compatibility
-  v8::Local<v8::Value> solana_value;
-  if (!global->Get(context, gin::StringToV8(isolate, kSolana))
-           .ToLocal(&solana_value) ||
-      !solana_value->IsObject()) {
-    if (!allow_overwrite_window_solana) {
-      SetProviderNonWritable(context, global, provider_value,
-                             gin::StringToV8(isolate, kSolana), true);
-    } else {
-      global
-          ->Set(context, gin::StringToSymbol(isolate, kSolana), provider_value)
-          .Check();
-    }
+  if (!allow_overwrite_window_solana) {
+    SetProviderNonWritable(context, global, provider_value,
+                           gin::StringToV8(isolate, kSolana), true);
   } else {
-    render_frame->GetWebFrame()->AddMessageToConsole(
-        blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
-                                 "Brave Wallet will not insert window.solana "
-                                 "because it already exists!"));
+    global->Set(context, gin::StringToSymbol(isolate, kSolana), provider_value)
+        .Check();
   }
 
   // Non-function properties are readonly guaranteed by gin::Wrappable

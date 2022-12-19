@@ -1,16 +1,17 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/android/android_browser_tests.gni")
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/metrics/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
-import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
-import("//brave/components/brave_vpn/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
-import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
-import("//brave/components/gemini/browser/buildflags/buildflags.gni")
-import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
@@ -86,7 +87,11 @@ static_library("brave_test_support_unit") {
 test("brave_unit_tests") {
   testonly = true
 
-  configs += [ "//chrome/test:disable_thinlto_cache_flags" ]
+  configs += [
+    "//build/config:precompiled_headers",
+    "//chrome/test:disable_thinlto_cache_flags",
+    "//chrome/test:pdb_larger_than_4gb",
+  ]
 
   sources = [
     "//brave/browser/brave_ads/search_result_ad/search_result_ad_service_unittest.cc",
@@ -301,9 +306,12 @@ test("brave_unit_tests") {
 
   if (enable_brave_vpn) {
     deps += [
-      "//brave/components/brave_vpn:unit_tests",
+      "//brave/components/brave_vpn/browser:unit_tests",
       "//brave/components/skus/browser:unit_tests",
     ]
+    if (is_win) {
+      deps += [ "//brave/browser/brave_vpn/dns:unit_tests" ]
+    }
   }
   if (toolkit_views) {
     deps += [ "//chrome/browser/ui/views" ]
@@ -417,26 +425,6 @@ test("brave_unit_tests") {
       "//brave/browser/ui/views/brave_ads",
       "//brave/browser/ui/views/brave_tooltips",
     ]
-  }
-
-  if (binance_enabled) {
-    sources +=
-        [ "//brave/components/binance/browser/binance_json_parser_unittest.cc" ]
-    deps += [ "//brave/components/binance/browser" ]
-  }
-
-  if (gemini_enabled) {
-    sources +=
-        [ "//brave/components/gemini/browser/gemini_json_parser_unittest.cc" ]
-    deps += [
-      "//brave/components/binance/browser",
-      "//brave/components/gemini/browser",
-    ]
-  }
-
-  if (crypto_dot_com_enabled) {
-    sources += [ "//brave/components/crypto_dot_com/browser/crypto_dot_com_json_parser_unittest.cc" ]
-    deps += [ "//brave/components/crypto_dot_com/browser" ]
   }
 
   if (is_linux) {
@@ -719,7 +707,7 @@ test("brave_browser_tests") {
     "//brave/browser/brave_wallet/brave_wallet_sign_message_browsertest.cc",
     "//brave/browser/brave_wallet/brave_wallet_tab_helper_browsertest.cc",
     "//brave/browser/brave_wallet/ethereum_provider_browsertest.cc",
-    "//brave/browser/brave_wallet/send_transaction_browsertest.cc",
+    "//brave/browser/brave_wallet/send_or_sign_transaction_browsertest.cc",
     "//brave/browser/brave_wallet/solana_provider_browsertest.cc",
     "//brave/browser/brave_wallet/solana_provider_renderer_browsertest.cc",
     "//brave/browser/brave_wallet/wallet_watch_asset_browsertest.cc",
@@ -843,6 +831,7 @@ test("brave_browser_tests") {
     "//brave/browser/ui/tabs",
     "//brave/browser/ui/tabs/test:browser_tests",
     "//brave/browser/ui/views/tabs:browser_tests",
+    "//brave/browser/web_discovery:browser_tests",
     "//brave/browser/widevine:browser_tests",
     "//brave/common",
     "//brave/components/adblock_rust_ffi",
@@ -864,7 +853,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_sync:prefs",
-    "//brave/components/brave_vpn/buildflags",
+    "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:permission_utils",
@@ -879,7 +868,6 @@ test("brave_browser_tests") {
     "//brave/components/brave_wayback_machine",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/constants",
-    "//brave/components/crypto_dot_com/browser",
     "//brave/components/de_amp/browser/test:browser_tests",
     "//brave/components/de_amp/common:common",
     "//brave/components/debounce/browser",
@@ -921,6 +909,7 @@ test("brave_browser_tests") {
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
     "//components/content_settings/renderer",
+    "//components/country_codes",
     "//components/crx_file",
     "//components/embedder_support",
     "//components/gcm_driver:gcm_buildflags",
@@ -947,6 +936,7 @@ test("brave_browser_tests") {
     "//components/send_tab_to_self",
     "//components/shared_highlighting/core/common",
     "//components/spellcheck/browser",
+    "//components/subresource_filter/core/common",
     "//components/user_prefs",
     "//extensions/browser:test_support",
     "//extensions/common:common_constants",
@@ -974,7 +964,8 @@ test("brave_browser_tests") {
 
   if (enable_brave_vpn) {
     deps += [
-      "//brave/components/brave_vpn",
+      "//brave/components/brave_vpn/browser",
+      "//brave/components/brave_vpn/common",
       "//brave/renderer/brave_vpn:browser_tests",
     ]
   }
@@ -1004,27 +995,6 @@ test("brave_browser_tests") {
       "//components/infobars/content",
       "//components/infobars/core",
     ]
-  }
-
-  # Binance is enabled on Android but the test contains Desktop only code
-  if (binance_enabled && !is_android) {
-    sources +=
-        [ "//brave/components/binance/browser/binance_service_browsertest.cc" ]
-
-    deps += [
-      "//brave/components/binance/browser",
-      "//components/country_codes",
-    ]
-  }
-
-  if (gemini_enabled) {
-    sources +=
-        [ "//brave/components/gemini/browser/gemini_service_browsertest.cc" ]
-    deps += [ "//brave/components/gemini/browser" ]
-  }
-
-  if (crypto_dot_com_enabled) {
-    sources += [ "//brave/components/crypto_dot_com/browser/crypto_dot_com_service_browsertest.cc" ]
   }
 
   if (enable_brave_wayback_machine) {
@@ -1123,6 +1093,7 @@ test("brave_browser_tests") {
   if (enable_extensions) {
     sources += [
       "//brave/browser/extensions/brave_shields_apitest.cc",
+      "//brave/browser/ui/webui/settings/brave_tor_snowflake_extension_browsertest.cc",
       "//chrome/browser/extensions/extension_apitest.cc",
       "//chrome/browser/extensions/extension_apitest.h",
     ]

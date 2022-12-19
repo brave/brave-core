@@ -7,8 +7,8 @@
 
 #include <vector>
 
-#include "base/bind.h"
 #include "base/check_op.h"
+#include "base/functional/bind.h"
 #include "base/guid.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"

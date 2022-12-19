@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_SERVICE_H_
 #define BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_SERVICE_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -22,6 +23,8 @@ class PrefRegistrySimple;
 class PrefService;
 
 namespace sidebar {
+
+class SidebarServiceDelegate;
 
 struct SidebarItemUpdate {
   size_t index = 0;
@@ -74,7 +77,8 @@ class SidebarService : public KeyedService {
   static void RegisterProfilePrefs(PrefRegistrySimple* registry,
                                    version_info::Channel channel);
 
-  explicit SidebarService(PrefService* prefs);
+  SidebarService(PrefService* prefs,
+                 std::unique_ptr<SidebarServiceDelegate> delegate);
   ~SidebarService() override;
 
   const std::vector<SidebarItem>& items() const { return items_; }
@@ -97,6 +101,9 @@ class SidebarService : public KeyedService {
   ShowSidebarOption GetSidebarShowOption() const;
   void SetSidebarShowOption(ShowSidebarOption show_options);
 
+  void MoveSidebarToRightTemporarily();
+  void RestoreSidebarAlignmentIfNeeded();
+
   absl::optional<SidebarItem> GetDefaultPanelItem() const;
   bool IsEditableItemAt(size_t index) const;
 
@@ -117,7 +124,11 @@ class SidebarService : public KeyedService {
   void MigratePrefSidebarBuiltInItemsToHidden();
 
   raw_ptr<PrefService> prefs_ = nullptr;
+
+  std::unique_ptr<SidebarServiceDelegate> delegate_;
+
   std::vector<SidebarItem> items_;
+
   base::ObserverList<Observer> observers_;
   PrefChangeRegistrar pref_change_registrar_;
 };

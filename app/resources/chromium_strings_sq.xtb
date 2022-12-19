@@ -12,10 +12,13 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="8522292744959221145">Për të kontrolluar nëse fjalëkalimet e tua janë të sigurta nga nxjerrjet e paautorizuara të të dhënave dhe probleme të tjera të sigurisë, <ph name="BEGIN_LINK"/>identifikohu në Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Rreth Brave</translation>
 <translation id="1203500561924088507">Faleminderit që e instalove. Duhet të rinisësh shfletuesin përpara se të përdorësh <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="8905049883018921395">Kur është aktiv, Brave liron memorien nga skedat joaktive. Kjo u jep më shumë burime kompjuterike skedave aktive dhe aplikacioneve të tjera dhe bën që Brave të jetë i shpejtë. Skedat e tua joaktive bëhen përsëri aktive në mënyrë automatike kur kthehesh tek ato. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/></translation>
+<translation id="4658574652223735641">"Kursyesi i memories" e ka bërë Brave më të shpejtë</translation>
 <translation id="4798342026247191171">Konfiguro profilin tënd të ri të Brave</translation>
 <translation id="6361779936989026201">"Asistenti i Brave" në Brave</translation>
 <translation id="113959764510199339">Brave po përpiqet të shfaqë fjalëkalimet.</translation>
 <translation id="8132634101975074716">Je i identifikuar në Brave!</translation>
+<translation id="4168469784091952813">Mund të përfitosh në maksimum nga Brave</translation>
 <translation id="5147525139567260139">Ndaj një skedë të Brave</translation>
 <translation id="1530633922026945685">Brave ka nevojë për leje për t'u qasur te kamera jote për të krijuar një hartë 3D të ambientit tënd rrethues</translation>
 <translation id="4449148723378534338">Shqyrto kontrollet kryesore të sigurisë dhe privatësisë në Brave</translation>
@@ -168,6 +171,7 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="1786715389543715322">Po përditëson Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Lejo identifikimin në Brave</translation>
 <translation id="5536657158619734169">Ofrohet një version i ri i Brave.</translation>
+<translation id="5267531627648004734">Hiq nga Brave</translation>
 <translation id="239760341987199724">Caktoje Brave si shfletuesin tënd të parazgjedhur</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="894936507076470937">Brave mund të mos funksionojë si duhet sepse nuk mbështetet më në këtë version të Linux</translation>
@@ -195,6 +199,7 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="505042220086416644">Ofrohet një version i ri i Brave dhe është më i shpejtë se kurrë.</translation>
 <translation id="9071554113102421877">&amp;Hape në Brave</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> është shtuar te Brave</translation>
+<translation id="3693188491491843187">Bëje Brave më të shpejtë</translation>
 <translation id="608006075545470555">Shto profilin e punës në këtë shfletues</translation>
 <translation id="5849446944780602366">Personalizo dhe kontrollo Brave. Ofrohet përditësim.</translation>
 <translation id="7433698744896946664">Lejo që shtesat të shfaqin kërkesat për qasje në shiritin e veglave të Brave</translation>
@@ -238,6 +243,7 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="1489465648257900784">Profili yt nuk mund të përdoret sepse është nga një version më i ri i Brave.
 
 Disa funksione mund të mos ofrohen. Specifiko një direktori tjetër profili ose përdor një version më të ri të Brave.</translation>
+<translation id="7870748924073900361">"Kursyesi i memories" e ka bërë Brave më të shpejtë</translation>
 <translation id="6666624454809779082">Brave është i instaluar tashmë për të gjithë përdoruesit në kompjuterin tënd.</translation>
 <translation id="5360050006043219962">Për t'u qasur te gjërat e Brave nëpër të gjitha pajisjet, identifikohu dhe më pas aktivizo sinkronizimin.</translation>
 <translation id="8291513491595858997">Prindi yt ka çaktivizuar "Lejet për sajtet, aplikacionet dhe shtesat" për Brave. Nuk lejohet aktivizimi për këtë <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
@@ -275,6 +281,7 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="38294420683216447">Me profilet e Brave mund t'i mbash veçmas të gjitha gjërat e tua të Brave. Kjo e bën më të lehtë ta ndash punën nga argëtimi.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="2034072705932785495">Brave ka nevojë për leje për t'u qasur te kamera jote për këtë sajt</translation>
+<translation id="5296583608321648908">Për të marrë përditësimet e ardhshme të Brave, do të të duhet Windows 10 ose një version i mëvonshëm. Ky kompjuter përdor Windows 7.</translation>
 <translation id="3962395975456095331">Të niset sërish Brave?</translation>
 <translation id="2619516027171717873">Nuk mund të instalohet i njëjti version i Brave që po ekzekutohet aktualisht. Mbylle Brave dhe provo përsëri.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave do të hapet përsëri për 1 minutë}other{Brave do të hapet përsëri për # minuta}}</translation>
@@ -289,9 +296,9 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="8678991866891573053">Brave po eksploron veçori të reja që u lejojnë sajteve të ofrojnë të njëjtën përvojë shfletimi duke përdorur më pak nga të dhënat e tua</translation>
 <translation id="3343095737966473035">Brave nuk është shfletuesi i parazgjedhur</translation>
 <translation id="5477319665405831211">Sinkronizo dhe personalizo Brave nëpër pajisjet e tua</translation>
-<translation id="2280238321454602884">Kur është aktiv, Brave rikuperon memorien nga skedat që ti nuk po i përdor në mënyrë aktive. Kjo liron burimet e kompjuterit për detyra të tjera dhe bën që Brave të jetë i shpejtë. Skedat joaktive shfaqen bosh dhe ringarkohen automatikisht kur klikon tek ato. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/> ose <ph name="BEGIN_LINK_2"/>dërgo komente<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Kjo do të fshijë të dhënat e shfletimit nga kjo pajisje. Për t'i marrë më vonë të dhënat, identifikohu te Brave si <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Instaluesi nuk mund të krijonte një direktori të përkohshme. Kontrollo për hapësirë të lirë në disk dhe për lejen për të instaluar softuerin.</translation>
+<translation id="1978509466033734608">Bëje Brave më të shpejtë</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="1652855885539187849">Një profil i Brave me këtë llogari ekziston tashmë në këtë pajisje</translation>
 <translation id="7845233973568007926">Faleminderit që e instalove. Duhet të rinisësh kompjuterin përpara se të përdorësh <ph name="BUNDLE_NAME"/>.</translation>
@@ -314,15 +321,16 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="3360368475735266712">Identifikohu për të sinkronizuar dhe personalizuar Brave nëpër pajisjet e tua</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> ka përdorur më parë Brave</translation>
 <translation id="3098618823450433881">Për t'u qasur te gjërat e shfletuesit Brave nëpër të gjitha pajisjet e tua, identifikohu dhe më pas aktivizo sinkronizimin</translation>
+<translation id="2569754604093464025">Për të marrë përditësimet e ardhshme të Brave, do të të duhet Windows 10 ose një version i mëvonshëm. Ky kompjuter përdor Windows 8.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Hap përsëri Brave brenda një dite}other{Hap përsëri Brave brenda # ditësh}}</translation>
 <translation id="6914496861676471566">Arkivi i instaluesit është i dëmtuar ose i pavlefshëm. Shkarkoje Brave përsëri.</translation>
 <translation id="6431861494713261006">Opsionale: Ndihmo në përmirësimin e veçorive dhe performancës së ChromeOS duke dërguar automatikisht te Brave të dhëna diagnostikuese dhe përdorimi.</translation>
 <translation id="2097604701283463988">Brave nuk është i përditësuar</translation>
-<translation id="607365808648940765">Sipas nevojës, Brave rikuperon memorien nga skedat që ti nuk po i përdor në mënyrë aktive. Këtë mund ta ndryshosh në çdo kohë te cilësimet.</translation>
 <translation id="8550334526674375523">Ky profil pune është plotësisht i veçuar nga profili yt personal.</translation>
 <translation id="2452889775041290116">Prindi yt ka çaktivizuar "Lejet për sajtet, aplikacionet dhe shtesat" për Brave. Nuk lejohet shtimi për këtë <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8502436661255886343">Për të marrë përditësimet e ardhshme të Brave, do të të duhet macOS 10.13 e lart. Ky kompjuter përdor macOS 10.12.</translation>
 <translation id="227028348235968071">Brave mund t'i kontrollojë fjalëkalimet e tua kur të identifikohesh me "Llogarinë tënde të Brave"</translation>
+<translation id="4226455268610449503">Kur ai është aktiv, Brave kursen energjinë e baterisë duke kufizuar aktivitetin në sfond dhe efektet vizuale, si p.sh. lëvizjen e butë dhe shpejtësitë e kuadrove për videot. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/></translation>
 <translation id="8121009781989288430">Të drejtat e autorit <ph name="YEAR"/> Autorët e Brave. Të gjitha të drejtat të rezervuara.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Si i përdorim këto të dhëna:<ph name="END_BOLD"/> Sajtet mund të ruajnë informacione për interesat e tua në Brave. Për shembull, nëse viziton një sajt për të blerë këpucë për një maratonë, sajti mund ta përcaktojë interesin tënd si vrapim në maratona. Më vonë, nëse viziton një sajt tjetër për t'u regjistruar për një garë, ai sajt mund të të shfaqë një reklamë për këpucë vrapimi bazuar në interesat e tua.</translation>
 <translation id="3052349005266761501">Po hapet Brave...</translation>
@@ -345,6 +353,7 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="82609232232243542">Identifikohu në Brave</translation>
 <translation id="5173820533850252773">Brave nuk është i përditësuar</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave do të hapet përsëri për një orë}other{Brave do të hapet përsëri për # orë}}</translation>
+<translation id="5190991181158966940">Për të marrë përditësimet e ardhshme të Brave, do të të duhet Windows 10 ose një version i mëvonshëm. Ky kompjuter përdor Windows 8.1.</translation>
 <translation id="7863882214613921971">Hape lidhjen në një &amp;skedë të re të Brave</translation>
 <translation id="911206726377975832">Të fshihen po ashtu të dhënat e shfletimit?</translation>
 <translation id="5708733457516068434">Gjatë provave, mund të shikosh dhe të heqësh temat e interesit, të cilat sajtet i përdorin për të të shfaqur reklama. Brave përllogarit interesat e tua bazuar në historikun më të fundit të shfletimit.</translation>

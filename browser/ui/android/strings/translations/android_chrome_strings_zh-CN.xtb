@@ -100,7 +100,6 @@
 <translation id="1448440926884431741">在“书签”页面中整理您跟踪的商品</translation>
 <translation id="1450753235335490080">无法分享<ph name="CONTENT_TYPE"/></translation>
 <translation id="5598889255595678761">选择要让 Brave 采用的语言</translation>
-<translation id="147113415845704694">试着说“今天的天气如何？”</translation>
 <translation id="1474893630593443211">更好地控制您看到的广告</translation>
 <translation id="1477626028522505441">未能成功下载 <ph name="FILE_NAME"/>，因为服务器出现了问题。</translation>
 <translation id="148482509007564431">书签保存流程</translation>
@@ -329,6 +328,7 @@
 <translation id="6518254564747115579">部分 Brave 功能将不再可用</translation>
 <translation id="2870560284913253234">网站</translation>
 <translation id="2871733351037274014">预加载网页</translation>
+<translation id="2876136027428473467"><ph name="CHILD_NAME"/>请求您批准访问此网站：</translation>
 <translation id="2886836735871983413">随着您浏览网页，此处会显示一个网站列表</translation>
 <translation id="8541922081612557424">关于 Brave</translation>
 <translation id="2891154217021530873">停止加载网页</translation>
@@ -343,6 +343,7 @@
 <translation id="6355102470683871794">Brave <ph name="APP_NAME"/> 存储数据</translation>
 <translation id="2932222164150889403">您的键盘不会有变化</translation>
 <translation id="6537665929855787038">Brave 通知让一切更轻松</translation>
+<translation id="2940075786175545812">选项表单，用于批准/禁止访问某个网站</translation>
 <translation id="2942036813789421260">预览标签页已关闭</translation>
 <translation id="4700262879698141140">正在更新 Brave 以连接到其他设备</translation>
 <translation id="2951071800649516099">将网页添加到阅读清单以供日后阅读</translation>
@@ -365,7 +366,6 @@
 <translation id="3029276696788198026">无预加载</translation>
 <translation id="3029704984691124060">密码不匹配</translation>
 <translation id="3031225630520268969">针对 Brave 助理语音搜索功能的用户意见征求界面</translation>
-<translation id="3034163383943672781">将于 <ph name="DATE"/>开始下载。</translation>
 <translation id="3036750288708366620"><ph name="BEGIN_LINK"/>获取帮助<ph name="END_LINK"/></translation>
 <translation id="3037177537145227281">正在跟踪价格</translation>
 <translation id="3251012123600267109">显示意在引导用户登录 Brave 的提示</translation>
@@ -410,6 +410,7 @@
 <translation id="3259831549858767975">缩小网页上的所有内容</translation>
 <translation id="3264124641674805320">如何下载内容以备后用</translation>
 <translation id="3264259168916048410">您的计算机希望使用此设备以登录网站</translation>
+<translation id="3265093782546847662"><ph name="DOMAIN"/> 的所有网页</translation>
 <translation id="3265534588625245297">管理您关注的网站</translation>
 <translation id="3269093882174072735">加载图片</translation>
 <translation id="3280562213547448728">语音搜索</translation>
@@ -442,7 +443,6 @@
 <translation id="3443221991560634068">重新加载当前网页</translation>
 <translation id="3444179773590444986">针对为网站开启深色主题分享反馈？</translation>
 <translation id="7384339501748168186">为保护您的隐私，Brave 不会在此字段中自动填充您的密码。</translation>
-<translation id="3469665409713263828">{FILE_COUNT,plural, =1{已排定 1 项下载}other{已排定 # 项下载}}</translation>
 <translation id="3474624961160222204">继续以<ph name="NAME"/>的身份使用</translation>
 <translation id="3478363558367712427">您可自行选择要使用的搜索引擎</translation>
 <translation id="3479552764303398839">以后再说</translation>
@@ -700,7 +700,6 @@
 <translation id="4925120120285606924">屏幕截图 <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="49268022542405662">系统会导出您的密码并将其下载为一个文本文件。有权访问目标文件夹的任何人和任何应用都能看到您的密码。</translation>
 <translation id="1955495299630319741">您将要退出由 <ph name="DOMAIN_NAME"/> 管理的帐号，因此您的 Brave 数据将会从这部设备中删除，但仍会保留在您的 Brave 帐号中。</translation>
-<translation id="4941179133499732445">点按麦克风图标即可使用语音进行搜索</translation>
 <translation id="4943703118917034429">虚拟实境</translation>
 <translation id="4943872375798546930">找不到结果</translation>
 <translation id="5742837711075932301">当您登录同一 Brave 帐号后，其他设备便可将此手机用作安全密钥。</translation>
@@ -711,6 +710,7 @@
 <translation id="4985248278475639481">关于广告个性化</translation>
 <translation id="4987271110129728827">找不到这个页面。请检查拼写，或尝试进行网页搜索。</translation>
 <translation id="4988526792673242964">页面</translation>
+<translation id="4991110219272367918">选项表单，用于批准/禁止访问某个网站，已关闭</translation>
 <translation id="499724277181351974">前往：<ph name="WEBSITE_TITLE"/>：<ph name="WEBSITE_URL"/></translation>
 <translation id="5001388021414335527">点击此处关注此网站</translation>
 <translation id="500351648694011114">更轻松地浏览</translation>
@@ -723,7 +723,6 @@
 <translation id="5039804452771397117">允许</translation>
 <translation id="504456571576643789">注意事项</translation>
 <translation id="4858031288914533863">当您登录后，系统可能会将<ph name="BEGIN_LINK1"/>其他形式的活动记录<ph name="END_LINK1"/>保存在您的 Brave 帐号中。您可以随时删除这些记录。</translation>
-<translation id="5061533557687621530">若要查询天气，请点按麦克风图标并说“今天的天气如何？”</translation>
 <translation id="506254248375231072">没有任何标签页</translation>
 <translation id="4744980273298156620">不久之后，当打开新标签页时，您将看到来自<ph name="SITE_NAME"/>的故事。您关注的网站会保存在您的 Brave 帐号中。您可在“探索”设置中管理它们。</translation>
 <translation id="5091249083535528968">扩展的使用情况数据</translation>
@@ -743,7 +742,6 @@
 <translation id="5171045022955879922">搜索或输入网址</translation>
 <translation id="517734441743343109">继续操作即表示您同意遵守<ph name="BEGIN_TOS_LINK"/>服务条款<ph name="END_TOS_LINK"/>和<ph name="BEGIN_PRIVACY_LINK"/>隐私权政策<ph name="END_PRIVACY_LINK"/>。</translation>
 <translation id="8445059357334030806">在 Brave 中打开</translation>
-<translation id="5188992787241350004">使用语音进行搜索</translation>
 <translation id="5191251636205085390">了解和掌控旨在取代第三方 Cookie 的新技术</translation>
 <translation id="5193988420012215838">已复制到剪贴板</translation>
 <translation id="5199929503336119739">工作资料</translation>
@@ -870,7 +868,6 @@
 <translation id="5869789175361934029">在此设备上继续浏览另一设备上的标签页</translation>
 <translation id="5604589745019948682">若要关注某个网站，请转到该网站，打开 Brave 菜单，然后点按“关注”。</translation>
 <translation id="5879072387416556377">获得更好的建议</translation>
-<translation id="5880748256563468367">转到 Feed</translation>
 <translation id="9037412730408024068">为了帮助您执行各种操作，Brave 将会收到您使用 Brave 助理时所在网站的网址和内容，以及您通过 Brave 助理提交的信息</translation>
 <translation id="1985257319311245640">知道网站网址后，Brave 助理便可帮助您完成任务。您可在 Brave 的“设置”中停用 Brave 助理。</translation>
 <translation id="5916664084637901428">启用</translation>
@@ -882,6 +879,7 @@
 <translation id="305870044889644984">在新标签页中打开 Brave 帮助中心</translation>
 <translation id="5957442310066583693">若要查看为您推荐的热门网站，请点按“主屏幕”按钮</translation>
 <translation id="5958275228015807058">在“下载内容”中查找您的文件和网页</translation>
+<translation id="5958994127112619898">简化网页</translation>
 <translation id="5962718611393537961">点按即可收起</translation>
 <translation id="5964869237734432770">停止获取图片说明</translation>
 <translation id="9135546826883360971">Brave 会记住您的选择</translation>
@@ -922,10 +920,10 @@ Privacy Sandbox 试用版功能尚处于积极开发阶段，目前只能在部�
 <translation id="7087658909840709934">预加载 Brave 认为您可能会访问的网页。</translation>
 <translation id="6186394685773237175">未发现任何已泄露的密码</translation>
 <translation id="6192907950379606605">获取图片说明</translation>
+<translation id="6193448654517602979">选择标签页</translation>
 <translation id="8367262879301982880">系统会将密码保存到此设备上的 Brave 密码管理工具中</translation>
 <translation id="620197886010707372">要通过 Google Play 打开“<ph name="APPNAME"/>”应用吗？</translation>
 <translation id="6202812185118613467">重新登录即可开始同步</translation>
-<translation id="6203593061661911168">一旦有 Wi-Fi 可用即开始下载</translation>
 <translation id="6210748933810148297">不是 <ph name="EMAIL"/>？</translation>
 <translation id="6211386937064921208">正在预览此页</translation>
 <translation id="6221633008163990886">需解锁才能导出您的密码</translation>
@@ -1074,12 +1072,14 @@ Privacy Sandbox 试用版功能尚处于积极开发阶段，目前只能在部�
 <translation id="6896758677409633944">复制</translation>
 <translation id="6900532703269623216">增强型保护</translation>
 <translation id="6903907808598579934">开启同步功能</translation>
+<translation id="6908998565271542516">选项表单，用于批准/禁止访问某个网站，已全屏打开</translation>
 <translation id="6909589135458168665">预加载网页</translation>
 <translation id="6942665639005891494">使用“设置”菜单选项随时更改默认的下载内容保存位置</translation>
 <translation id="694267552845942083">您正在自定义您的同步设置。如需完成开启同步功能的操作，请点按屏幕底部附近的“确认”按钮。转到上一层级</translation>
 <translation id="6945221475159498467">选择</translation>
 <translation id="6955535239952325894">在受管理的浏览器上，此设置已被停用</translation>
 <translation id="6963766334940102469">删除书签</translation>
+<translation id="6971862865055170158">禁止</translation>
 <translation id="6979737339423435258">时间不限</translation>
 <translation id="6995899638241819463">若密码遭遇了数据泄露，发出警告</translation>
 <translation id="7020741890149022655">添加到阅读清单<ph name="BEGIN_NEW"/>新功能<ph name="END_NEW"/></translation>
@@ -1154,7 +1154,6 @@ Privacy Sandbox 试用版功能尚处于积极开发阶段，目前只能在部�
 <translation id="7431991332293347422">控制 Brave 如何利用您的浏览记录为您提供个性化的 Brave 搜索和其他 Brave 服务</translation>
 <translation id="7435356471928173109">已被您的管理员关闭</translation>
 <translation id="6234515504547364178">退出 Brave</translation>
-<translation id="7444811645081526538">更多类别</translation>
 <translation id="3699067418237091329">您会从大多数网站退出，但不会退出自己的 Brave 帐号。</translation>
 <translation id="7454641608352164238">空间不足</translation>
 <translation id="7456774706094330779">扩展型预加载</translation>
@@ -1177,7 +1176,6 @@ Privacy Sandbox 试用版功能尚处于积极开发阶段，目前只能在部�
 <translation id="751961395872307827">无法连接到该网站</translation>
 <translation id="752220631458524187">完成当前操作后断开连接</translation>
 <translation id="7523960634226602883">借助摄像头使用 Brave 智能镜头进行搜索</translation>
-<translation id="753225086557513863">已安排为延后下载</translation>
 <translation id="7562080006725997899">正在清除浏览数据</translation>
 <translation id="7814200940910057384">已清除 Brave 数据</translation>
 <translation id="7577900504646297215">管理我的兴趣</translation>
@@ -1235,7 +1233,6 @@ Privacy Sandbox 试用版功能尚处于积极开发阶段，目前只能在部�
 <translation id="784934925303690534">时间范围</translation>
 <translation id="7851858861565204677">来自其他设备的同步</translation>
 <translation id="7853202427316060426">活动</translation>
-<translation id="7857691613771368249">询问何时保存文件</translation>
 <translation id="7859988229622350291">一律不翻译</translation>
 <translation id="7866213166286285359">翻译此处显示的网页</translation>
 <translation id="78707286264420418"><ph name="PRODUCT_NAME"/> 需要“附近的设备”权限，才能连接到您的设备</translation>
@@ -1271,6 +1268,7 @@ Privacy Sandbox 试用版功能尚处于积极开发阶段，目前只能在部�
 <translation id="8015452622527143194">将网页上的所有内容恢复到默认大小</translation>
 <translation id="8026334261755873520">清除浏览数据</translation>
 <translation id="8027863900915310177">选择要下载到何处</translation>
+<translation id="8030852056903932865">批准</translation>
 <translation id="8032569120109842252">已关注</translation>
 <translation id="8035133914807600019">新建文件夹…</translation>
 <translation id="8037750541064988519">还剩 <ph name="DAYS"/> 天</translation>
@@ -1309,7 +1307,6 @@ Privacy Sandbox 试用版功能尚处于积极开发阶段，目前只能在部�
 <translation id="8200772114523450471">继续</translation>
 <translation id="8209050860603202033">打开图片</translation>
 <translation id="8216351761227087153">观看</translation>
-<translation id="8218052821161047641">此网页能快速加载</translation>
 <translation id="8218622182176210845">管理您的帐号</translation>
 <translation id="8221656072740924283">继续</translation>
 <translation id="8223642481677794647">动态卡片上的菜单</translation>
@@ -1338,6 +1335,7 @@ Privacy Sandbox 试用版功能尚处于积极开发阶段，目前只能在部�
 <translation id="8387617938027387193">请验证是您本人在操作</translation>
 <translation id="8393700583063109961">发送消息</translation>
 <translation id="7651600795135059130">将网址与存储在 Brave 中的不安全网站列表进行比对</translation>
+<translation id="8402673309244746971">前往“已关注”</translation>
 <translation id="8410695015584479363">跟踪价格</translation>
 <translation id="8413126021676339697">显示全部历史记录</translation>
 <translation id="8414396119627470038">通过 <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> 登录 <ph name="SITE_ETLD_PLUS_ONE"/></translation>
@@ -1357,7 +1355,7 @@ Privacy Sandbox 试用版功能尚处于积极开发阶段，目前只能在部�
 <translation id="8460448946170646641">检查重要的隐私控制设置和安全控件</translation>
 <translation id="8461694314515752532">使用您自己的同步密码加密已同步的数据</translation>
 <translation id="8466613982764129868">请确保<ph name="TARGET_DEVICE_NAME"/>已连接到互联网</translation>
-<translation id="5633907266617216186">地址和其他信息</translation>
+<translation id="8473863474539038330">地址和其他信息</translation>
 <translation id="8481921391193215807">如果此控件已开启，网站可能会使用此处所示的隐私保护技术来提供其内容和服务。这些技术包括跨网站跟踪机制的替代方案。随着时间的推移，我们可能会添加更多试用版功能。
 
 <ph name="BEGIN_LIST_ITEM1"/>广告主和发布商可使用 FLoC。<ph name="END_LIST_ITEM1"/>
@@ -1470,7 +1468,6 @@ Privacy Sandbox 试用版功能尚处于积极开发阶段，目前只能在部�
 <translation id="9065203028668620118">编辑</translation>
 <translation id="5496925146144075335">Brave 认为不重要的网站（例如未保存任何设置的网站或您不常访问的网站）存储的数据</translation>
 <translation id="906781307897697745">在 <ph name="PRODUCT_NAME"/> 中</translation>
-<translation id="9069543557624799859">将于<ph name="TIME"/> 开始下载。</translation>
 <translation id="9069999660519089861">无未读页面</translation>
 <translation id="9070377983101773829">开始语音搜索</translation>
 <translation id="8494430740943879273">要获取 Brave 推荐的个性化内容，请登录您的帐号并开启同步功能</translation>

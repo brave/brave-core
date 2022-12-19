@@ -1,9 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Notification } from '../../shared/components/notifications'
 import { GrantInfo } from '../../shared/lib/grant_info'
+import { UserType, userTypeFromString } from '../../shared/lib/user_type'
 import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { RewardsSummaryData } from '../../shared/components/wallet_card'
 import { OnboardingResult } from '../../shared/components/onboarding'
@@ -11,6 +13,7 @@ import { mapNotification } from './notification_adapter'
 
 import {
   ExternalWalletProvider,
+  ExternalWalletProviderRegionInfo,
   externalWalletProviderFromString,
   externalWalletFromExtensionData
 } from '../../shared/lib/external_wallet'
@@ -38,6 +41,7 @@ export function getSettings () {
   return new Promise<Settings>((resolve) => {
     chrome.braveRewards.getPrefs((prefs) => {
       resolve({
+        adsEnabled: prefs.adsEnabled,
         adsPerHour: prefs.adsPerHour,
         autoContributeEnabled: prefs.autoContributeEnabled,
         autoContributeAmount: prefs.autoContributeAmount
@@ -71,8 +75,17 @@ export function getRewardsParameters () {
 
   return new Promise<Result>((resolve) => {
     chrome.braveRewards.getRewardsParameters((parameters) => {
+      const regionMap = new Map<string, ExternalWalletProviderRegionInfo>()
+      for (const key of Object.keys(parameters.walletProviderRegions)) {
+        const info = parameters.walletProviderRegions[key]
+        if (info) {
+          regionMap.set(key, info)
+        }
+      }
+
       resolve({
         options: {
+          externalWalletRegions: regionMap,
           autoContributeAmounts: parameters.autoContributeChoices
         },
         exchangeInfo: {
@@ -87,12 +100,15 @@ export function getRewardsParameters () {
 
 export function getExternalWalletProviders () {
   return new Promise<ExternalWalletProvider[]>((resolve) => {
-    // The extension API currently does not support retrieving a list of
-    // external wallet providers. Instead, use the `getExternalWallet` function
-    // to retrieve the "currently selected" provider.
-    chrome.braveRewards.getExternalWallet((wallet) => {
-      const provider = wallet && externalWalletProviderFromString(wallet.type)
-      resolve(provider ? [provider] : [])
+    chrome.braveRewards.getExternalWalletProviders((providers) => {
+      let list: ExternalWalletProvider[] = []
+      for (const name of providers) {
+        const provider = externalWalletProviderFromString(name)
+        if (provider) {
+          list.push(provider)
+        }
+      }
+      resolve(list)
     })
   })
 }
@@ -192,6 +208,20 @@ export function getRewardsEnabled () {
   })
 }
 
+export function getUserType () {
+  return new Promise<UserType>((resolve) => {
+    chrome.braveRewards.getUserType((userType) => {
+      resolve(userTypeFromString(userType))
+    })
+  })
+}
+
+export function getPublishersVisitedCount () {
+  return new Promise<number>((resolve) => {
+    chrome.braveRewards.getPublishersVisitedCount(resolve)
+  })
+}
+
 export function getDeclaredCountry () {
   return new Promise<string>((resolve) => {
     chrome.braveRewards.getDeclaredCountry(resolve)
@@ -266,7 +296,6 @@ function defaultPublisherInfo (url: string) {
     name: parsedURL.hostname,
     icon: origin ? `chrome://favicon/size/64@1x/${parsedURL.origin}` : '',
     platform: null,
-    registered: false,
     attentionScore: 0,
     autoContributeEnabled: true,
     monthlyTip: 0,
@@ -312,11 +341,9 @@ export async function getPublisherInfo (tabId: number) {
   }
 
   const supportedWalletProviders: ExternalWalletProvider[] = []
-  let registered = true
 
   switch (Number(publisher.status) || 0) {
     case 0: // NOT_VERIFIED
-      registered = false
       break
     case 2: // UPHOLD_VERIFIED
       supportedWalletProviders.push('uphold')
@@ -336,7 +363,6 @@ export async function getPublisherInfo (tabId: number) {
     name: String(publisher.name || ''),
     icon: iconPath ? `chrome://favicon/size/64@1x/${iconPath}` : '',
     platform: getPublisherPlatform(String(publisher.provider || '')),
-    registered,
     attentionScore: Number(publisher.percentage) / 100 || 0,
     autoContributeEnabled: !publisher.excluded,
     monthlyTip: await getMonthlyTipAmount(publisherKey),

@@ -145,7 +145,8 @@ export const StatusBubble = styled.div<{ status: BraveWallet.TransactionStatus }
   border-radius: 100%;
   opacity: ${(p) => p.status === BraveWallet.TransactionStatus.Submitted ||
     p.status === BraveWallet.TransactionStatus.Approved ||
-    p.status === BraveWallet.TransactionStatus.Unapproved
+    p.status === BraveWallet.TransactionStatus.Unapproved ||
+    p.status === BraveWallet.TransactionStatus.Signed
     ? 0.4
     : 1
   };

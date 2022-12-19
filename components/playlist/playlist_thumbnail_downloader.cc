@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/files/file_util.h"
+#include "base/task/thread_pool.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -77,10 +79,54 @@ void PlaylistThumbnailDownloader::CancelAllDownloadRequests() {
   ticket_map_.clear();
 }
 
-void PlaylistThumbnailDownloader::OnThumbnailDownloaded(const std::string& id,
-                                                        base::FilePath path) {
+void PlaylistThumbnailDownloader::OnThumbnailDownloaded(
+    const std::string& id,
+    base::FilePath path,
+    const base::flat_map<std::string, std::string>& response_headers) {
   VLOG(2) << __func__ << " id: " << id;
+#if BUILDFLAG(IS_ANDROID)
+  if (!path.empty()) {
+    // Anroid requires spedific format for thumbnail file.
+    std::string extension = "png";
+    if (response_headers.contains("content-type")) {
+      std::string content_type = response_headers.at("content-type");
+      if (base::StartsWith(content_type, "image/")) {
+        extension = content_type.substr(6);
+      }
+    }
+    RenameFilePerFormat(id, path, extension);
+    return;
+  }
+#endif
   DCHECK(!ticket_map_.empty());
   ticket_map_.erase(id);
   delegate_->OnThumbnailDownloaded(id, path);
 }
+
+#if BUILDFLAG(IS_ANDROID)
+void PlaylistThumbnailDownloader::RenameFilePerFormat(
+    const std::string& id,
+    const base::FilePath& path,
+    const std::string& extension) {
+  if (!task_runner_) {
+    task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+         base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
+  }
+  base::FilePath new_path = path.AddExtension(extension);
+  task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE, base::BindOnce(&base::ReplaceFile, path, new_path, nullptr),
+      base::BindOnce(&PlaylistThumbnailDownloader::OnRenameFilePerFormat,
+                     base::Unretained(this), id, new_path));
+}
+
+void PlaylistThumbnailDownloader::OnRenameFilePerFormat(
+    const std::string& id,
+    const base::FilePath& new_path,
+    bool result) {
+  DCHECK(!ticket_map_.empty());
+  ticket_map_.erase(id);
+  delegate_->OnThumbnailDownloaded(
+      id, result ? new_path : new_path.RemoveExtension());
+}
+#endif

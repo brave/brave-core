@@ -21,7 +21,7 @@ class OnionLocationView : public views::View {
   explicit OnionLocationView(Profile* profile);
   ~OnionLocationView() override;
 
-  void Update(content::WebContents* web_contents);
+  void Update(content::WebContents* web_contents, bool show_page_actions);
 
   views::LabelButton* GetButton() { return button_; }
 

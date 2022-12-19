@@ -102,7 +102,7 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::
 RedeemUnblindedPaymentTokensUrlRequestBuilder::
     ~RedeemUnblindedPaymentTokensUrlRequestBuilder() = default;
 
-// PUT /v2/confirmation/payment/{paymentId}
+// PUT /v3/confirmation/payment/{paymentId}
 
 mojom::UrlRequestInfoPtr
 RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
@@ -121,7 +121,7 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
 
 GURL RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildUrl() const {
   const std::string spec = base::StringPrintf(
-      "%s/v2/confirmation/payment/%s", server::GetNonAnonymousHost().c_str(),
+      "%s/v3/confirmation/payment/%s", server::GetNonAnonymousHost().c_str(),
       wallet_.id.c_str());
   return GURL(spec);
 }

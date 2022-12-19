@@ -292,26 +292,16 @@
         ]
       },
       {
-        "name": "onDisconnectWallet",
+        "name": "onExternalWalletConnected",
         "type": "function",
-        "description": "Fired when we disconnect wallet",
-        "parameters": [
-          {
-            "name": "properties",
-            "type": "object",
-            "properties": {
-              "result": {
-                "type": "integer",
-                "description": "result for disconnection"
-              },
-              "walletType": {
-                "type": "string",
-                "description": "wallet that was disconnected"
-              }
-
-            }
-          }
-        ]
+        "description": "Fired when an external wallet is connected",
+        "parameters": []
+      },
+      {
+        "name": "onExternalWalletLoggedOut",
+        "type": "function",
+        "description": "Fired when an external wallet is logged out",
+        "parameters": []
       },
       {
         "name": "onUnblindedTokensReady",
@@ -780,6 +770,12 @@
                     "additionalProperties": {
                       "type": "string"
                     }
+                  },
+                  "walletProviderRegions": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "any"
+                    }
                   }
                 }
               }
@@ -840,6 +836,40 @@
               {
                 "name": "country",
                 "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getUserType",
+        "type": "function",
+        "description": "Returns the Rewards user type for the current user",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "userType",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getPublishersVisitedCount",
+        "type": "function",
+        "description": "Returns the number of publisher sites that a user has visited",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "count",
+                "type": "number"
               }
             ]
           }
@@ -1346,6 +1376,26 @@
         ]
       },
       {
+        "name": "getExternalWalletProviders",
+        "type": "function",
+        "description": "Returns the supported external wallet providers for the current profile",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "providers",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getExternalWallet",
         "type": "function",
         "description": "Get external wallet for provided wallet type",
@@ -1368,12 +1418,6 @@
                   "status": {
                     "type": "any"
                   },
-                  "addUrl": {
-                    "type": "any"
-                  },
-                  "withdrawUrl": {
-                    "type": "any"
-                  },
                   "userName": {
                     "type": "any"
                   },
@@ -1391,12 +1435,6 @@
             ]
           }
         ]
-      },
-      {
-        "name": "disconnectWallet",
-        "type": "function",
-        "description": "Disconnect wallet",
-        "parameters": []
       },
       {
         "name": "getAdsAccountStatement",

@@ -176,26 +176,14 @@ std::string Eip2930Transaction::GetSignedTransaction() const {
   DCHECK(IsSigned());
   DCHECK(nonce_);
 
-  base::Value::List list;
-  list.Append(RLPUint256ToBlob(chain_id_));
-  list.Append(RLPUint256ToBlob(nonce_.value()));
-  list.Append(RLPUint256ToBlob(gas_price_));
-  list.Append(RLPUint256ToBlob(gas_limit_));
-  list.Append(base::Value::BlobStorage(to_.bytes()));
-  list.Append(RLPUint256ToBlob(value_));
-  list.Append(base::Value(data_));
-  list.Append(base::Value(AccessListToValue(access_list_)));
-  list.Append(RLPUint256ToBlob(v_));
-  list.Append(base::Value(r_));
-  list.Append(base::Value(s_));
+  return ToHex(Serialize());
+}
 
-  std::vector<uint8_t> result;
-  result.push_back(type_);
+std::string Eip2930Transaction::GetTransactionHash() const {
+  DCHECK(IsSigned());
+  DCHECK(nonce_);
 
-  const std::string rlp_msg = RLPEncode(base::Value(std::move(list)));
-  result.insert(result.end(), rlp_msg.begin(), rlp_msg.end());
-
-  return ToHex(result);
+  return ToHex(KeccakHash(Serialize()));
 }
 
 void Eip2930Transaction::ProcessSignature(const std::vector<uint8_t> signature,
@@ -225,6 +213,29 @@ uint256_t Eip2930Transaction::GetDataFee() const {
     fee += uint256_t(item.storage_keys.size()) * kAccessListStorageKeyCost;
   }
   return fee;
+}
+
+std::vector<uint8_t> Eip2930Transaction::Serialize() const {
+  base::Value::List list;
+  list.Append(RLPUint256ToBlob(chain_id_));
+  list.Append(RLPUint256ToBlob(nonce_.value()));
+  list.Append(RLPUint256ToBlob(gas_price_));
+  list.Append(RLPUint256ToBlob(gas_limit_));
+  list.Append(base::Value::BlobStorage(to_.bytes()));
+  list.Append(RLPUint256ToBlob(value_));
+  list.Append(base::Value(data_));
+  list.Append(base::Value(AccessListToValue(access_list_)));
+  list.Append(RLPUint256ToBlob(v_));
+  list.Append(base::Value(r_));
+  list.Append(base::Value(s_));
+
+  std::vector<uint8_t> result;
+  result.push_back(type_);
+
+  const std::string rlp_msg = RLPEncode(base::Value(std::move(list)));
+  result.insert(result.end(), rlp_msg.begin(), rlp_msg.end());
+
+  return result;
 }
 
 }  // namespace brave_wallet

@@ -12,10 +12,13 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="8522292744959221145">Če želite preveriti, ali so gesla varna pred podatkovnimi kršitvami in drugimi varnostnimi težavami, <ph name="BEGIN_LINK"/>se prijavite v Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">O Braveu</translation>
 <translation id="1203500561924088507">Hvala, ker ste se odločili za namestitev. Preden uporabite <ph name="BUNDLE_NAME"/>, morate znova zagnati brskalnik.</translation>
+<translation id="8905049883018921395">Če je vklopljeno, Brave sprosti pomnilnik z neaktivnih zavihkov. Tako imajo aktivni zavihki in druge aplikacije več računalniških sredstev, Brave pa je še naprej hiter. Neaktivni zavihki znova postanejo aktivni, ko se vrnete nanje. <ph name="BEGIN_LINK"/>Več o tem<ph name="END_LINK"/></translation>
+<translation id="4658574652223735641">Varčevanje s pomnilnikom je pospešilo Brave</translation>
 <translation id="4798342026247191171">Nastavitev novega profila v Braveu</translation>
 <translation id="6361779936989026201">Pomočnik Brave v Braveu</translation>
 <translation id="113959764510199339">Brave poskuša prikazati gesla.</translation>
 <translation id="8132634101975074716">Prijavljeni ste v Brave.</translation>
+<translation id="4168469784091952813">Kar najbolje izkoristite Brave</translation>
 <translation id="5147525139567260139">Deljenje zavihka v Braveu</translation>
 <translation id="1530633922026945685">Brave potrebuje dovoljenje za dostop do fotoaparata zaradi ustvarjanja tridimenzionalnega zemljevida okolice.</translation>
 <translation id="4449148723378534338">Oglejte si ključne kontrolnike zasebnosti in varnosti v Braveu.</translation>
@@ -168,6 +171,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="1786715389543715322">Posodabljanje Bravea (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Omogočanje prijave v Brave</translation>
 <translation id="5536657158619734169">Na voljo je nova različica Bravea.</translation>
+<translation id="5267531627648004734">Odstrani iz Bravea</translation>
 <translation id="239760341987199724">Nastavitev Bravea za privzeti brskalnik</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – različica beta Bravea</translation>
 <translation id="894936507076470937">Brave morda ne bo deloval pravilno, ker ni več podprt v tej distribuciji Linuxa.</translation>
@@ -195,6 +199,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="505042220086416644">Na voljo je nova različica Bravea, ki je najhitrejša doslej.</translation>
 <translation id="9071554113102421877">&amp;Odpri v Braveu</translation>
 <translation id="7861579472672677409">Razširitev <ph name="EXTENSION_NAME"/> je dodana v Brave</translation>
+<translation id="3693188491491843187">Pospešite Brave</translation>
 <translation id="608006075545470555">Dodajanje delovnega profila v ta brskalnik</translation>
 <translation id="5849446944780602366">Prilagodite in nadzirajte Brave. Posodobitev je na voljo.</translation>
 <translation id="7433698744896946664">Omogočanje razširitve za prikaz zahtev za dostop v orodni vrstici Bravea</translation>
@@ -238,6 +243,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="1489465648257900784">Vašega profila ni mogoče uporabiti, ker je iz novejše različice Bravea.
 
 Nekatere funkcije morda ne bodo na voljo. Določite drug imenik profila ali uporabite novejšo različico Bravea.</translation>
+<translation id="7870748924073900361">Varčevanje s pomnilnikom je pospešilo Brave</translation>
 <translation id="6666624454809779082">Brave je že nameščen za vse uporabnike v računalniku.</translation>
 <translation id="5360050006043219962">Če želite do stvari v Braveu dostopati v vseh svojih napravah, se prijavite in nato vklopite sinhronizacijo.</translation>
 <translation id="8291513491595858997">Tvoj starš je izklopil »Dovoljenja za spletna mesta, aplikacije in razširitve« za Brave. Omogočanje tega ni dovoljeno: <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
@@ -276,6 +282,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="38294420683216447">S profili v Braveu lahko ločite vse stvari v Braveu. Tako laže ločite delo in zabavo.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – različica Bravea za razvijalce</translation>
 <translation id="2034072705932785495">Brave potrebuje dovoljenje za dostop do fotoaparata za to spletno mesto</translation>
+<translation id="5296583608321648908">Če želite prejemati prihodnje posodobitve Bravea, potrebujete Windows 10 ali novejšega. V tem računalniku je nameščen Windows 7.</translation>
 <translation id="3962395975456095331">Želite znova zagnati Brave?</translation>
 <translation id="2619516027171717873">Ni mogoče namestiti iste različice Bravea, ki se trenutno izvaja. Zaprite Brave in poskusite znova.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave se bo znova zagnal čez eno minuto}one{Brave se bo znova zagnal čez # minuto}two{Brave se bo znova zagnal čez # minuti}few{Brave se bo znova zagnal čez # minute}other{Brave se bo znova zagnal čez # minut}}</translation>
@@ -290,9 +297,9 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="8678991866891573053">Brave raziskuje nove funkcije, ki spletnim mestom omogočajo, da z manjšo količino prenesenih podatkov zagotavljajo isto izkušnjo pri brskanju.</translation>
 <translation id="3343095737966473035">Brave ni privzeti brskalnik</translation>
 <translation id="5477319665405831211">V vseh svojih napravah sinhronizirajte in prilagodite Brave</translation>
-<translation id="2280238321454602884">Če je vklopljena ta nastavitev, Brave znova pridobi pomnilnik z zavihkov, ki jih ne uporabljate aktivno. S tem sprostite sredstva računalnika za druga opravila in poskrbite, da Brave še naprej deluje hitro. Neaktivni zavihki so videti prazni in se samodejno znova naložijo, ko jih kliknete. <ph name="BEGIN_LINK"/>Preberite več<ph name="END_LINK"/> ali <ph name="BEGIN_LINK_2"/>pošljite povratne informacije<ph name="END_LINK_2"/>.</translation>
 <translation id="4784414698887946907">S tem bodo iz te naprave izbrisani podatki brskanja. Če želite pozneje prenesti podatke, se v Brave prijavite kot <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Namestitvenemu programu ni uspelo ustvariti začasnega imenika. Preverite, ali je na disku dovolj prostora in ali imate dovoljenje za namestitev programske opreme.</translation>
+<translation id="1978509466033734608">Pospešite Brave</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – delovna različica Bravea</translation>
 <translation id="1652855885539187849">Profil v Braveu s tem računom že obstaja v tej napravi.</translation>
 <translation id="7845233973568007926">Hvala, ker ste se odločili za namestitev. Preden uporabite <ph name="BUNDLE_NAME"/>, morate znova zagnati računalnik.</translation>
@@ -315,15 +322,16 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="3360368475735266712">Prijavite se, da boste lahko Brave sinhronizirali in prilagodili v vseh svojih napravah</translation>
 <translation id="2591326305549412656">Uporabnik <ph name="USER_EMAIL_ADDRESS"/> je prej uporabljal Brave</translation>
 <translation id="3098618823450433881">Če želite do stvari v brskalniku Brave dostopati v vseh svojih napravah, se prijavite in nato vklopite sinhronizacijo.</translation>
+<translation id="2569754604093464025">Če želite prejemati prihodnje posodobitve Bravea, potrebujete Windows 10 ali novejšega. V tem računalniku je nameščen Windows 8.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Brave znova zaženite v enem dnevu}one{Brave znova zaženite v # dnevu}two{Brave znova zaženite v # dnevih}few{Brave znova zaženite v # dnevih}other{Brave znova zaženite v # dnevih}}</translation>
 <translation id="6914496861676471566">Arhiv namestitvenega programa je poškodovan ali neveljaven. Znova prenesite Brave.</translation>
 <translation id="6431861494713261006">Izbirno: Pomagajte izboljšati funkcije sistema Chrome OS in njegovo delovanje s samodejnim pošiljanjem diagnostičnih podatkov in podatkov o uporabi Googlu.</translation>
 <translation id="2097604701283463988">Brave je zastarel</translation>
-<translation id="607365808648940765">Brave po potrebi znova pridobi pomnilnik z zavihkov, ki jih ne uporabljate aktivno. To lahko kadar koli spremenite v nastavitvah.</translation>
 <translation id="8550334526674375523">Ta delovni profil je v celoti ločen od osebnega profila.</translation>
 <translation id="2452889775041290116">Tvoj starš je izklopil »Dovoljenja za spletna mesta, aplikacije in razširitve« za Brave. Dodajanje tega ni dovoljeno: <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8502436661255886343">Če želite prejemati prihodnje posodobitve Bravea, potrebujete macOS 10.13 ali novejšega. V tem računalniku je nameščen macOS 10.12.</translation>
 <translation id="227028348235968071">Brave lahko preveri vaša gesla, ko se prijavite z računom Brave</translation>
+<translation id="4226455268610449503">Če je vklopljena ta nastavitev, Brave varčuje z energijo baterije tako, da omeji dejavnost v ozadju in vizualne učinke, kot sta tekoče pomikanje in število sličic v sekundi pri videoposnetkih. <ph name="BEGIN_LINK"/>Več o tem<ph name="END_LINK"/></translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Ustvarjalci Bravea. Vse pravice pridržane.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Kako uporabljamo te podatke:<ph name="END_BOLD"/> Spletna mesta lahko v Braveu shranjujejo podatke o vaših zanimanjih. Če na primer obiščete spletno mesto zaradi nakupa športnih copatov za maraton, bo spletno mesto morda določilo vaše zanimanje kot udeleževanje maratonov. Če pozneje obiščete drugo spletno mesto za registriranje za tek, vam lahko to spletno mesto glede na vaša zanimanja prikaže oglas za tekaško obutev.</translation>
 <translation id="3052349005266761501">Zagon Bravea …</translation>
@@ -346,6 +354,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="82609232232243542">Prijava v Brave</translation>
 <translation id="5173820533850252773">Brave je zastarel</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave se bo znova zagnal čez eno uro}one{Brave se bo znova zagnal čez # uro}two{Brave se bo znova zagnal čez # uri}few{Brave se bo znova zagnal čez # ure}other{Brave se bo znova zagnal čez # ur}}</translation>
+<translation id="5190991181158966940">Če želite prejemati prihodnje posodobitve Bravea, potrebujete Windows 10 ali novejšega. V tem računalniku je nameščen Windows 8.1.</translation>
 <translation id="7863882214613921971">Odpiranje povezave na novem &amp;zavihku v Braveu</translation>
 <translation id="911206726377975832">Ali želite izbrisati tudi podatke brskanja?</translation>
 <translation id="5708733457516068434">Med temi preizkusi lahko vidite ali odstranite teme zanimanja, ki jih spletna mesta uporabljajo, da vam prikazujejo oglase. Brave oceni vaša zanimanja glede na nedavno zgodovino brskanja.</translation>

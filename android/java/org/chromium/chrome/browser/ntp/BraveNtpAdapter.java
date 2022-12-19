@@ -48,7 +48,9 @@ import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -74,6 +76,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private boolean mIsNewContent;
     private boolean mIsNewContentLoading;
     private boolean mIsTopSitesEnabled;
+    private boolean mIsBraveStatsEnabled;
     private int mRecyclerViewHeight;
     private int mStatsHeight;
     private int mTopSitesHeight;
@@ -97,8 +100,8 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             BraveNewsController braveNewsController, View mvTilesContainerLayout, NTPImage ntpImage,
             SponsoredTab sponsoredTab, Wallpaper wallpaper, Bitmap sponsoredLogo,
             NTPBackgroundImagesBridge nTPBackgroundImagesBridge, boolean isNewsLoading,
-            int recyclerViewHeight, boolean isTopSitesEnabled, boolean isDisplayNews,
-            boolean isDisplayNewsOptin) {
+            int recyclerViewHeight, boolean isTopSitesEnabled, boolean isBraveStatsEnabled,
+            boolean isDisplayNews, boolean isDisplayNewsOptin) {
         mActivity = activity;
         mOnBraveNtpListener = onBraveNtpListener;
         mGlide = glide;
@@ -113,6 +116,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mIsNewsLoading = isNewsLoading;
         mRecyclerViewHeight = recyclerViewHeight;
         mIsTopSitesEnabled = isTopSitesEnabled;
+        mIsBraveStatsEnabled = isBraveStatsEnabled;
         mIsDisplayNews = isDisplayNews;
         mIsDisplayNewsOptin = isDisplayNewsOptin;
     }
@@ -122,7 +126,10 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (holder instanceof StatsViewHolder) {
             StatsViewHolder statsViewHolder = (StatsViewHolder) holder;
 
-            statsViewHolder.titleLayout.setVisibility(View.GONE);
+            statsViewHolder.hideStatsImg.setOnClickListener(view -> {
+                SharedPreferencesManager.getInstance().writeBoolean(
+                        BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, false);
+            });
             List<Pair<String, String>> statsPairs = BraveStatsUtil.getStatsPairs();
 
             statsViewHolder.adsBlockedCountTv.setText(statsPairs.get(0).first);
@@ -402,7 +409,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     // Will be used in privacy hub feature
     private boolean isStatsEnabled() {
-        return true;
+        return mIsBraveStatsEnabled;
     }
 
     public int getTopSitesCount() {
@@ -419,6 +426,17 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
             notifyItemRangeChanged(getStatsCount(),
                     getStatsCount() + getTopSitesCount() + getNewContentCount() + ONE_ITEM_SPACE);
+        }
+    }
+
+    public void setBraveStatsEnabled(boolean isBraveStatsEnabled) {
+        if (mIsBraveStatsEnabled != isBraveStatsEnabled) {
+            mIsBraveStatsEnabled = isBraveStatsEnabled;
+            if (mIsBraveStatsEnabled) {
+                notifyItemInserted(getStatsCount());
+            } else {
+                notifyItemRemoved(getStatsCount());
+            }
         }
     }
 
@@ -517,6 +535,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public static class StatsViewHolder extends RecyclerView.ViewHolder {
         LinearLayout ntpStatsLayout;
         LinearLayout titleLayout;
+        ImageView hideStatsImg;
         TextView adsBlockedCountTv;
         TextView adsBlockedCountTextTv;
         TextView dataSavedValueTv;
@@ -528,6 +547,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
             this.ntpStatsLayout = (LinearLayout) itemView.findViewById(R.id.ntp_stats_layout);
             this.titleLayout = (LinearLayout) itemView.findViewById(R.id.brave_stats_title_layout);
+            this.hideStatsImg = (ImageView) itemView.findViewById(R.id.widget_more_option);
             this.adsBlockedCountTv =
                     (TextView) itemView.findViewById(R.id.brave_stats_text_ads_count);
             this.adsBlockedCountTextTv =

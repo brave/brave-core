@@ -11,7 +11,7 @@ import { ConnectWalletModal } from '../components/connect_wallet_modal'
 import { ClaimGrantView } from '../components/claim_grant_view'
 import { Settings } from '../components/settings'
 import { PlatformContext } from '../lib/platform_context'
-import { LocaleContext } from '../../shared/lib/locale_context'
+import { LocaleContext, createLocaleContextForTesting } from '../../shared/lib/locale_context'
 import { LayoutManager } from '../components/layout_manager'
 import { WithThemeVariables } from '../../shared/components/with_theme_variables'
 import { localeStrings } from './locale_strings'
@@ -21,11 +21,7 @@ export default {
   title: 'Rewards/Settings'
 }
 
-const locale = {
-  getString (key: string) {
-    return localeStrings[key] || 'MISSING'
-  }
-}
+const locale = createLocaleContextForTesting(localeStrings)
 
 function actionLogger (name: string) {
   return (...args: any[]) => {
@@ -96,9 +92,11 @@ export function Page () {
       <LocaleContext.Provider value={locale}>
         <WithThemeVariables>
           <PlatformContext.Provider value={{ isAndroid: false }}>
-            <LayoutManager layout={narrow ? 'narrow' : 'wide'}>
-              <Settings />
-            </LayoutManager>
+            <div style={{ width: narrow ? '375px' : 'auto' }}>
+              <LayoutManager layout={narrow ? 'narrow' : 'wide'}>
+                <Settings />
+              </LayoutManager>
+            </div>
           </PlatformContext.Provider>
         </WithThemeVariables>
       </LocaleContext.Provider>

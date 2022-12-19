@@ -17,6 +17,7 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
         default void keyringReset() {}
         default void unlocked() {}
         default void accountsChanged() {}
+        default void accountsAdded(int coin, String[] addresses) {}
         default void autoLockMinutesChanged() {}
         default void selectedAccountChanged(int coin) {}
     }
@@ -74,6 +75,13 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
         if (mDelegate == null) return;
 
         mDelegate.accountsChanged();
+    }
+
+    @Override
+    public void accountsAdded(int coin, String[] addresses) {
+        if (mDelegate == null) return;
+
+        mDelegate.accountsAdded(coin, addresses);
     }
 
     @Override

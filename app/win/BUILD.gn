@@ -2,15 +2,14 @@ import("//brave/build/config.gni")
 import("//build/util/branding.gni")
 import("//media/cdm/library_cdm/cdm_paths.gni")
 
-if (should_generate_breakpad_symbols) {
+if (should_generate_symbols) {
   action("generate_breakpad_symbols") {
     symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
-    outputs = [ symbols_dir ]
-
-    if (brave_debug_symbol_level == 2) {
-      platform_symbols_dir = "$brave_dist_dir/$brave_product_name.pdb.syms"
-      outputs += [ platform_symbols_dir ]
-    }
+    platform_symbols_dir = "$brave_dist_dir/$brave_product_name.pdb.syms"
+    outputs = [
+      symbols_dir,
+      platform_symbols_dir,
+    ]
 
     # We want to use x64 dump_syms for x86. The obvious way of doing this would
     # be to depend on dump_sums($host_toolchain). But on Windows, host_toolchain
@@ -29,15 +28,12 @@ if (should_generate_breakpad_symbols) {
       "--installer-config=" +
           rebase_path("//chrome/installer/mini_installer/chrome.release"),
       "--symbols-dir=" + rebase_path(symbols_dir),
+      "--platform-symbols-dir=" + rebase_path(platform_symbols_dir),
       "--build-dir=" + rebase_path(root_out_dir),
       "--dump-syms-path=" + rebase_path(dump_syms_path),
       "--verbose",
       "--clear",
     ]
-
-    if (brave_debug_symbol_level == 2) {
-      args += [ "--platform-symbols-dir=" + rebase_path(platform_symbols_dir) ]
-    }
 
     script = "//brave/tools/win/generate_breakpad_symbols.py"
   }

@@ -16,7 +16,6 @@
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
-#include "base/stl_util.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/sys_byteorder.h"
@@ -54,10 +53,10 @@ uint64_t FromLE(uint64_t uint64_le) {
 #endif
 }
 
-SnsResolverTaskError ParseErrorResult(const std::string& json) {
+SnsResolverTaskError ParseErrorResult(const base::Value& json_value) {
   SnsResolverTaskError task_error;
   brave_wallet::ParseErrorResult<mojom::SolanaProviderError>(
-      json, &task_error.error, &task_error.error_message);
+      json_value, &task_error.error, &task_error.error_message);
 
   return task_error;
 }
@@ -208,8 +207,12 @@ std::string getProgramAccounts(const SolanaAddress& mint_token) {
 // Parsing result of getProgramAccounts call. Exepected to find 1 token account
 // for mint. If parsing fails first element of pair is `false`.
 std::pair<bool, absl::optional<SolanaAddress>>
-GetTokenOwnerFromGetProgramAccountsResult(const std::string& json) {
-  auto result = ParseResultList(json);
+GetTokenOwnerFromGetProgramAccountsResult(const base::Value& json_value) {
+  auto response = json_rpc_responses::RPCResponse::FromValue(json_value);
+  if (!response || !response->result)
+    return {false, absl::nullopt};
+
+  auto* result = response->result->GetIfList();
   if (!result)
     return {false, absl::nullopt};
 
@@ -224,7 +227,7 @@ GetTokenOwnerFromGetProgramAccountsResult(const std::string& json) {
     return {false, absl::nullopt};
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(*account, &account_info)) {
+  if (!solana::ParseGetAccountInfoPayload(*account, &account_info)) {
     return {false, absl::nullopt};
   }
 
@@ -314,7 +317,7 @@ absl::optional<SolanaAddress> GetDomainKey(const std::string& domain,
   // Subdomains get one-bytes prefix depending on requested record type.
   // https://bonfida.github.io/solana-name-service-guide/domain-name/records.html#difference-between-records-and-subdomains
   std::string prefix = "";
-  if (base::STLCount(domain, '.') > 1)
+  if (base::ranges::count(domain, '.') > 1)
     prefix = (record ? '\x01' : '\x00');
 
   return GetNameAccountKey(GetHashedName(prefix + name),
@@ -376,11 +379,13 @@ class ScopedWorkOnSnsTask {
 SnsResolverTask::SnsResolverTask(DoneCallback done_callback,
                                  APIRequestHelper* api_request_helper,
                                  const std::string& domain,
-                                 const GURL& network_url)
+                                 const GURL& network_url,
+                                 bool resolve_address)
     : done_callback_(std::move(done_callback)),
       api_request_helper_(api_request_helper),
       domain_(domain),
-      network_url_(network_url) {
+      network_url_(network_url),
+      resolve_address_(resolve_address) {
   DCHECK(api_request_helper_);
 }
 
@@ -433,6 +438,14 @@ void SnsResolverTask::WorkOnTask() {
     }
   }
 
+  if (resolve_address_) {
+    WorkOnWalletAddressTask();
+  } else {
+    WorkOnDomainResolveTask();
+  }
+}
+
+void SnsResolverTask::WorkOnWalletAddressTask() {
   // Check if there is an nft token associated with domain.
   if (!nft_owner_check_done_) {
     if (!nft_mint_address_) {
@@ -462,10 +475,26 @@ void SnsResolverTask::WorkOnTask() {
     return;
   }
 
-  if (!sol_record_name_registry_state_) {
-    FetchSolRecordRegistryState();
+  FetchSolRecordRegistryState();
+}
+
+void SnsResolverTask::WorkOnDomainResolveTask() {
+  if (!url_record_check_done_) {
+    FetchUrlRecordRegistryState();
     return;
   }
+
+  FetchIpfsRecordRegistryState();
+}
+
+void SnsResolverTask::SetAddressResult(SolanaAddress address) {
+  task_result_.emplace();
+  task_result_->resolved_address = std::move(address);
+}
+
+void SnsResolverTask::SetUrlResult(GURL url) {
+  task_result_.emplace();
+  task_result_->resolved_url = std::move(url);
 }
 
 void SnsResolverTask::SetError(SnsResolverTaskError error) {
@@ -500,8 +529,9 @@ void SnsResolverTask::OnFetchNftSplMint(APIRequestResult api_request_result) {
   }
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(api_request_result.body(), &account_info)) {
-    SetError(ParseErrorResult(api_request_result.body()));
+  if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
+                                   &account_info)) {
+    SetError(ParseErrorResult(api_request_result.value_body()));
     return;
   }
 
@@ -538,10 +568,10 @@ void SnsResolverTask::OnFetchNftTokenOwner(
     return;
   }
 
-  auto [parsing_ok, token_owner] =
-      GetTokenOwnerFromGetProgramAccountsResult(api_request_result.body());
+  auto [parsing_ok, token_owner] = GetTokenOwnerFromGetProgramAccountsResult(
+      api_request_result.value_body());
   if (!parsing_ok) {
-    SetError(ParseErrorResult(api_request_result.body()));
+    SetError(ParseErrorResult(api_request_result.value_body()));
     return;
   }
 
@@ -569,8 +599,9 @@ void SnsResolverTask::OnFetchDomainRegistryState(
   }
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(api_request_result.body(), &account_info)) {
-    SetError(ParseErrorResult(api_request_result.body()));
+  if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
+                                   &account_info)) {
+    SetError(ParseErrorResult(api_request_result.value_body()));
     return;
   }
 
@@ -588,8 +619,6 @@ void SnsResolverTask::OnFetchDomainRegistryState(
 }
 
 void SnsResolverTask::FetchSolRecordRegistryState() {
-  DCHECK(!sol_record_name_registry_state_);
-
   auto sol_record_address = GetDomainKey("SOL." + domain_, true);
   if (!sol_record_address) {
     // Put the domain owner as a fallback result and use it if there is no SOL
@@ -619,32 +648,155 @@ void SnsResolverTask::OnFetchSolRecordRegistryState(
   }
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(api_request_result.body(), &account_info)) {
-    SetError(ParseErrorResult(api_request_result.body()));
+  if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
+                                   &account_info)) {
+    SetError(ParseErrorResult(api_request_result.value_body()));
     return;
   }
 
   if (!account_info) {
     // No such account, use owner address.
-    task_result_.emplace(domain_name_registry_state_->owner);
+    SetAddressResult(domain_name_registry_state_->owner);
     return;
   }
 
-  sol_record_name_registry_state_ =
+  auto sol_record_name_registry_state =
       FromBase64<NameRegistryState>(account_info->data);
-  if (!sol_record_name_registry_state_) {
+  if (!sol_record_name_registry_state) {
     SetError(MakeInternalError());
     return;
   }
 
   if (auto sol_record_payload_address = ParseAndVerifySolRecordData(
-          base::make_span(sol_record_name_registry_state_->data),
+          base::make_span(sol_record_name_registry_state->data),
           sol_record_address_, domain_name_registry_state_->owner)) {
-    task_result_.emplace(*sol_record_payload_address);
+    SetAddressResult(*sol_record_payload_address);
   } else {
     // No valid address for SOL record, use owner address.
-    task_result_.emplace(domain_name_registry_state_->owner);
+    SetAddressResult(domain_name_registry_state_->owner);
   }
+}
+
+void SnsResolverTask::FetchUrlRecordRegistryState() {
+  auto url_record_address = GetDomainKey("url." + domain_, true);
+  if (!url_record_address) {
+    SetError(MakeInternalError());
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&SnsResolverTask::OnFetchUrlRecordRegistryState,
+                     weak_ptr_factory_.GetWeakPtr());
+  RequestInternal(solana::getAccountInfo(url_record_address->ToBase58()),
+                  std::move(internal_callback),
+                  solana::ConverterForGetAccountInfo());
+}
+
+void SnsResolverTask::OnFetchUrlRecordRegistryState(
+    APIRequestResult api_request_result) {
+  ScopedWorkOnSnsTask work_on_task(this);
+
+  if (!api_request_result.Is2XXResponseCode()) {
+    SetError(MakeInternalError());
+    return;
+  }
+
+  absl::optional<SolanaAccountInfo> account_info;
+  if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
+                                   &account_info)) {
+    SetError(ParseErrorResult(api_request_result.value_body()));
+    return;
+  }
+
+  if (!account_info) {
+    // No url record account, will proceed with ipfs record.
+    url_record_check_done_ = true;
+    return;
+  }
+
+  auto url_record_name_registry_state =
+      FromBase64<NameRegistryState>(account_info->data);
+  if (!url_record_name_registry_state) {
+    SetError(MakeInternalError());
+    return;
+  }
+
+  // https://bonfida.github.io/solana-name-service-guide/registry.html
+  // Parse NameRegistry data as a string trimming possible zeros at the end.
+  std::string url_string(
+      std::string(url_record_name_registry_state->data.begin(),
+                  url_record_name_registry_state->data.end())
+          .c_str());
+
+  GURL url(url_string);
+  if (!url.is_valid()) {
+    SetError(MakeInternalError());
+    return;
+  }
+
+  SetUrlResult(std::move(url));
+}
+
+void SnsResolverTask::FetchIpfsRecordRegistryState() {
+  auto ipfs_record_address = GetDomainKey("IPFS." + domain_, true);
+  if (!ipfs_record_address) {
+    SetError(MakeInternalError());
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&SnsResolverTask::OnFetchIpfsRecordRegistryState,
+                     weak_ptr_factory_.GetWeakPtr());
+  RequestInternal(solana::getAccountInfo(ipfs_record_address->ToBase58()),
+                  std::move(internal_callback),
+                  solana::ConverterForGetAccountInfo());
+}
+
+void SnsResolverTask::OnFetchIpfsRecordRegistryState(
+    APIRequestResult api_request_result) {
+  ScopedWorkOnSnsTask work_on_task(this);
+
+  if (!api_request_result.Is2XXResponseCode()) {
+    SetError(MakeInternalError());
+    return;
+  }
+
+  absl::optional<SolanaAccountInfo> account_info;
+  if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
+                                   &account_info)) {
+    SetError(ParseErrorResult(api_request_result.value_body()));
+    return;
+  }
+
+  if (!account_info) {
+    // No ipfs record account, resolve as error.
+    SetError(MakeInternalError());
+    return;
+  }
+
+  auto ipfs_record_name_registry_state =
+      FromBase64<NameRegistryState>(account_info->data);
+  if (!ipfs_record_name_registry_state) {
+    SetError(MakeInternalError());
+    return;
+  }
+
+  // https://bonfida.github.io/solana-name-service-guide/registry.html
+  // Parse NameRegistry data as a string trimming possible zeros at the end.
+  std::string url_string(
+      std::string(ipfs_record_name_registry_state->data.begin(),
+                  ipfs_record_name_registry_state->data.end())
+          .c_str());
+
+  GURL url(url_string);
+  if (!url.is_valid()) {
+    SetError(MakeInternalError());
+    return;
+  }
+
+  SetUrlResult(std::move(url));
 }
 
 void SnsResolverTask::RequestInternal(

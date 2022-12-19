@@ -13,4 +13,6 @@ component("renderer") {
   deps = [ "//brave/components/brave_drm:brave_drm_blink" ]
 
   defines = [ "BLINK_IMPLEMENTATION=1" ]
+
+  output_name = "brave_blink_renderer_addon"
 }

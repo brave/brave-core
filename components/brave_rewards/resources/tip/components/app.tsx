@@ -9,6 +9,7 @@ import { WithThemeVariables } from '../../shared/components/with_theme_variables
 
 import { AppError } from './app_error'
 import { PublisherBanner } from './publisher_banner'
+import { LimitedTipForm } from './limited_tip_form'
 import { TipForm } from './tip_form'
 import { CloseIcon } from '../../shared/components/icons/close_icon'
 
@@ -16,13 +17,24 @@ import * as style from './app.style'
 
 export function App () {
   const host = React.useContext(HostContext)
+
   const [hostError, setHostError] = React.useState(host.state.hostError)
+  const [userType, setUserType] = React.useState(host.state.userType)
 
   React.useEffect(() => {
     return host.addListener((state) => {
       setHostError(state.hostError)
+      setUserType(state.userType)
     })
   })
+
+  function shouldShowFullView () {
+    return userType !== 'unconnected'
+  }
+
+  function renderTipForm () {
+    return shouldShowFullView() ? <TipForm /> : <LimitedTipForm />
+  }
 
   return (
     <WithThemeVariables>
@@ -34,7 +46,7 @@ export function App () {
           <style.close>
             <button onClick={host.closeDialog}><CloseIcon /></button>
           </style.close>
-          {hostError ? <AppError hostError={hostError} /> : <TipForm />}
+          {hostError ? <AppError hostError={hostError} /> : renderTipForm()}
         </style.form>
       </style.root>
     </WithThemeVariables>

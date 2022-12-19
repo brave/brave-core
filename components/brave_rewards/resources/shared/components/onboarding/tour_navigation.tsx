@@ -76,10 +76,8 @@ export function TourNavigation (props: Props) {
     ? () => props.onDone()
     : stepCallback(props.currentStep + 1)
 
-  const forwardContent = isLast
-    ? getString(props.postTourContent
-        ? 'onboardingTourContinue'
-        : 'onboardingTourDone')
+  const forwardContent = isLast && !props.postTourContent
+    ? getString('onboardingTourDone')
     : <>{getString('onboardingTourContinue')}<CaretIcon direction='right' /></>
 
   return (

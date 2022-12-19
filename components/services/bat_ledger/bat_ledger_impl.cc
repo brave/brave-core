@@ -294,24 +294,6 @@ void BatLedgerImpl::GetCreationStamp(GetCreationStampCallback callback) {
   std::move(callback).Run(ledger_->GetCreationStamp());
 }
 
-void BatLedgerImpl::OnHasSufficientBalanceToReconcile(
-    CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,
-    bool sufficient) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(sufficient);
-  }
-  delete holder;
-}
-
-void BatLedgerImpl::HasSufficientBalanceToReconcile(
-    HasSufficientBalanceToReconcileCallback callback) {
-  auto* holder = new CallbackHolder<HasSufficientBalanceToReconcileCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->HasSufficientBalanceToReconcile(
-      std::bind(BatLedgerImpl::OnHasSufficientBalanceToReconcile, holder, _1));
-}
-
 void BatLedgerImpl::OnGetRewardsInternalsInfo(
     CallbackHolder<GetRewardsInternalsInfoCallback>* holder,
     ledger::mojom::RewardsInternalsInfoPtr info) {
@@ -412,6 +394,11 @@ void BatLedgerImpl::GetActivityInfoList(
       limit,
       std::move(filter),
       std::bind(BatLedgerImpl::OnGetActivityInfoList, holder, _1));
+}
+
+void BatLedgerImpl::GetPublishersVisitedCount(
+    GetPublishersVisitedCountCallback callback) {
+  ledger_->GetPublishersVisitedCount(std::move(callback));
 }
 
 // static
@@ -677,29 +664,6 @@ void BatLedgerImpl::ConnectExternalWallet(
     const base::flat_map<std::string, std::string>& args,
     ConnectExternalWalletCallback callback) {
   ledger_->ConnectExternalWallet(wallet_type, args, std::move(callback));
-}
-
-// static
-void BatLedgerImpl::OnDisconnectWallet(
-    CallbackHolder<DisconnectWalletCallback>* holder,
-    ledger::mojom::Result result) {
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void BatLedgerImpl::DisconnectWallet(
-    const std::string& wallet_type,
-    DisconnectWalletCallback callback) {
-  auto* holder = new CallbackHolder<DisconnectWalletCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_->DisconnectWallet(
-      wallet_type,
-      std::bind(BatLedgerImpl::OnDisconnectWallet,
-                holder,
-                _1));
 }
 
 // static

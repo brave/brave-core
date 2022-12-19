@@ -85,16 +85,24 @@ void Engine::matches(const std::string& url,
                      bool* did_match_rule,
                      bool* did_match_exception,
                      bool* did_match_important,
-                     std::string* redirect) {
+                     std::string* redirect,
+                     std::string* rewritten_url) {
   char* redirect_char_ptr = nullptr;
+  char* rewritten_url_ptr = nullptr;
   engine_match(raw, url.c_str(), host.c_str(), tab_host.c_str(), is_third_party,
                resource_type.c_str(), did_match_rule, did_match_exception,
-               did_match_important, &redirect_char_ptr);
+               did_match_important, &redirect_char_ptr, &rewritten_url_ptr);
   if (redirect_char_ptr) {
     if (redirect) {
       *redirect = redirect_char_ptr;
     }
     c_char_buffer_destroy(redirect_char_ptr);
+  }
+  if (rewritten_url_ptr) {
+    if (rewritten_url) {
+      *rewritten_url = rewritten_url_ptr;
+    }
+    c_char_buffer_destroy(rewritten_url_ptr);
   }
 }
 
@@ -134,8 +142,8 @@ void Engine::addResource(const std::string& key,
   engine_add_resource(raw, key.c_str(), content_type.c_str(), data.c_str());
 }
 
-void Engine::addResources(const std::string& resources) {
-  engine_add_resources(raw, resources.c_str());
+void Engine::useResources(const std::string& resources) {
+  engine_use_resources(raw, resources.c_str());
 }
 
 const std::string Engine::urlCosmeticResources(const std::string& url) {

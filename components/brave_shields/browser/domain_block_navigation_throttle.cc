@@ -24,6 +24,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -31,7 +32,7 @@
 
 namespace {
 
-bool ShouldBlockDomainOnTaskRunner(
+std::pair<bool, std::string> ShouldBlockDomainOnTaskRunner(
     brave_shields::AdBlockService* ad_block_service,
     const GURL& url) {
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.DomainBlock.ShouldBlock");
@@ -39,6 +40,7 @@ bool ShouldBlockDomainOnTaskRunner(
   bool did_match_rule = false;
   bool did_match_important = false;
   std::string mock_data_url;
+  std::string rewritten_url;
   // force aggressive blocking to `true` for domain blocking - these requests
   // are all "first-party", but the throttle is already only called when
   // necessary.
@@ -46,8 +48,12 @@ bool ShouldBlockDomainOnTaskRunner(
   ad_block_service->ShouldStartRequest(
       url, blink::mojom::ResourceType::kMainFrame, url.host(),
       aggressive_blocking, &did_match_rule, &did_match_exception,
-      &did_match_important, &mock_data_url);
-  return (did_match_important || (did_match_rule && !did_match_exception));
+      &did_match_important, &mock_data_url, &rewritten_url);
+
+  const bool should_block =
+      did_match_important || (did_match_rule && !did_match_exception);
+
+  return std::pair(should_block, rewritten_url);
 }
 
 }  // namespace
@@ -154,8 +160,10 @@ DomainBlockNavigationThrottle::WillProcessResponse() {
 }
 
 void DomainBlockNavigationThrottle::OnShouldBlockDomain(
-    bool should_block_domain) {
-  if (!should_block_domain) {
+    std::pair<bool, std::string> block_result) {
+  const bool should_block = block_result.first;
+  const GURL new_url(block_result.second);
+  if (!should_block && !new_url.is_valid()) {
     DomainBlockTabStorage* tab_storage = DomainBlockTabStorage::FromWebContents(
         navigation_handle()->GetWebContents());
     if (tab_storage)
@@ -163,6 +171,35 @@ void DomainBlockNavigationThrottle::OnShouldBlockDomain(
     // Navigation was deferred while we called the ad block service on a task
     // runner, but now we know that we want to allow navigation to continue.
     Resume();
+    return;
+  } else if (new_url.is_valid()) {
+    content::NavigationHandle* handle = navigation_handle();
+
+    content::WebContents* contents = handle->GetWebContents();
+
+    // Cancel without an error status to surface any real errors during page
+    // load.
+    CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
+        content::NavigationThrottle::CANCEL));
+
+    content::OpenURLParams params =
+        content::OpenURLParams::FromNavigationHandle(handle);
+    params.url = new_url;
+    params.transition = ui::PAGE_TRANSITION_CLIENT_REDIRECT;
+    // We get a DCHECK here if we don't clear the redirect chain because
+    // technically this is a new navigation
+    params.redirect_chain.clear();
+
+    base::SequencedTaskRunnerHandle::Get()->PostTask(
+        FROM_HERE, base::BindOnce(
+                       [](base::WeakPtr<content::WebContents> web_contents,
+                          const content::OpenURLParams& params) {
+                         if (!web_contents)
+                           return;
+                         web_contents->OpenURL(params);
+                       },
+                       contents->GetWeakPtr(), std::move(params)));
+
     return;
   }
 

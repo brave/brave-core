@@ -102,6 +102,16 @@ bool PlaylistMediaFileDownloadManager::IsCurrentDownloadingInProgress() const {
   return media_file_downloader_->in_progress();
 }
 
+void PlaylistMediaFileDownloadManager::OnMediaFileDownloadProgressed(
+    const std::string& id,
+    int64_t total_bytes,
+    int64_t received_bytes,
+    int percent_complete,
+    base::TimeDelta time_remaining) {
+  delegate_->OnMediaFileDownloadProgressed(id, total_bytes, received_bytes,
+                                           percent_complete, time_remaining);
+}
+
 void PlaylistMediaFileDownloadManager::OnMediaFileReady(
     const std::string& id,
     const std::string& media_file_path) {

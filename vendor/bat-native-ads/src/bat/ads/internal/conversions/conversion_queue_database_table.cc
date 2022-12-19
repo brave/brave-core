@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/ads_client_helper.h"

@@ -10,10 +10,13 @@
 <translation id="8522292744959221145">Để kiểm tra xem mật khẩu của bạn có bị ảnh hưởng bởi các vụ rò rỉ dữ liệu và sự cố bảo mật khác hay không, hãy <ph name="BEGIN_LINK"/>đăng nhập vào Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Giới thiệu về Brave</translation>
 <translation id="1203500561924088507">Cảm ơn bạn đã cài đặt. Bạn phải khởi động lại trình duyệt trước khi sử dụng <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="8905049883018921395">Khi bạn bật chế độ này, Brave sẽ giải phóng bộ nhớ khỏi các thẻ không hoạt động. Nhờ đó, các thẻ đang hoạt động và ứng dụng khác sẽ được sử dụng nhiều tài nguyên máy tính hơn, còn Brave thì hoạt động nhanh chóng. Các thẻ không hoạt động sẽ tự động hoạt động trở lại khi bạn quay lại các thẻ đó. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>
+<translation id="4658574652223735641">Trình tiết kiệm bộ nhớ giúp Brave hoạt động nhanh hơn</translation>
 <translation id="4798342026247191171">Thiết lập hồ sơ Brave mới</translation>
 <translation id="6361779936989026201">Trợ lý Brave trong Brave</translation>
 <translation id="113959764510199339">Brave đang cố gắng hiển thị mật khẩu.</translation>
 <translation id="8132634101975074716">Bạn đã đăng nhập vào Brave!</translation>
+<translation id="4168469784091952813">Bạn có thể khai thác tối đa Brave</translation>
 <translation id="5147525139567260139">Chia sẻ một thẻ Brave</translation>
 <translation id="1530633922026945685">Brave cần có quyền sử dụng máy ảnh của bạn để tạo bản đồ 3D về các khu vực xung quanh bạn</translation>
 <translation id="4449148723378534338">Xem các chế độ kiểm soát quan trọng đối với quyền riêng tư và tính bảo mật trong Brave</translation>
@@ -166,6 +169,7 @@
 <translation id="1786715389543715322">Đang cập nhật Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Cho phép đăng nhập vào Brave</translation>
 <translation id="5536657158619734169">Hiện đã có phiên bản Brave mới.</translation>
+<translation id="5267531627648004734">Xóa khỏi Brave</translation>
 <translation id="239760341987199724">Đặt Brave là trình duyệt mặc định của bạn</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave phiên bản beta</translation>
 <translation id="894936507076470937">Brave có thể không hoạt động đúng cách do không còn được hỗ trợ trên bản phân phối Linux này</translation>
@@ -193,6 +197,7 @@
 <translation id="505042220086416644">Hiện đã có phiên bản Brave mới và phiên bản này nhanh hơn bao giờ hết.</translation>
 <translation id="9071554113102421877">&amp;Mở trong Brave</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> đã được thêm vào Brave</translation>
+<translation id="3693188491491843187">Giúp Brave hoạt động nhanh hơn</translation>
 <translation id="608006075545470555">Thêm Hồ sơ công việc vào trình duyệt này</translation>
 <translation id="5849446944780602366">Tùy chỉnh và kiểm soát Brave. Đã có bản cập nhật.</translation>
 <translation id="7433698744896946664">Cho phép tiện ích hiện các yêu cầu truy cập trong thanh công cụ của Brave</translation>
@@ -236,6 +241,7 @@
 <translation id="1489465648257900784">Không thể sử dụng cấu hình của bạn do cấu hình này đến từ một phiên bản Brave mới hơn.
 
 Một số tính năng có thể không khả dụng. Hãy chỉ định thư mục cấu hình khác hoặc sử dụng phiên bản Brave mới hơn.</translation>
+<translation id="7870748924073900361">Trình tiết kiệm bộ nhớ giúp Brave hoạt động nhanh hơn</translation>
 <translation id="6666624454809779082">Brave đã được cài đặt cho tất cả người dùng trên máy tính của bạn.</translation>
 <translation id="5360050006043219962">Để truy cập vào nội dung của bạn trên Brave bằng mọi thiết bị, hãy đăng nhập rồi bật tính năng đồng bộ hóa.</translation>
 <translation id="8291513491595858997">Cha mẹ bạn đã tắt tùy chọn "Quyền của các trang web, ứng dụng và tiện ích" đối với Brave. Bạn không được phép bật <ph name="EXTENSION_TYPE_PARAMETER"/> này.</translation>
@@ -274,6 +280,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="38294420683216447">Với các hồ sơ trên Brave, bạn có thể tách biệt mọi nội dung của mình khi dùng trình duyệt này. Nhờ vậy, việc phân tách nội dung công việc với nội dung giải trí sẽ trở nên dễ dàng hơn.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave dành cho nhà phát triển</translation>
 <translation id="2034072705932785495">Brave cần có quyền truy cập vào máy ảnh của bạn cho trang web này</translation>
+<translation id="5296583608321648908">Để nhận các bản cập nhật Brave sau này, bạn cần có Windows 10 trở lên. Máy tính này đang sử dụng Windows 7.</translation>
 <translation id="3962395975456095331">Chạy lại Brave?</translation>
 <translation id="2619516027171717873">Không thể cài đặt phiên bản Brave giống với phiên bản hiện đang chạy. Hãy đóng Brave và thử lại.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave sẽ khởi động lại sau 1 phút}other{Brave sẽ khởi động lại sau # phút}}</translation>
@@ -288,9 +295,9 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="8678991866891573053">Brave đang khám phá các tính năng mới cho phép các trang web mang lại trải nghiệm duyệt web như nhau nhưng tiêu tốn ít dữ liệu hơn</translation>
 <translation id="3343095737966473035">Brave không phải là trình duyệt mặc định của bạn</translation>
 <translation id="5477319665405831211">Đồng bộ hóa và cá nhân hóa Brave trên các thiết bị của bạn</translation>
-<translation id="2280238321454602884">Khi bật, Brave sẽ lấy lại bộ nhớ từ những thẻ mà bạn hiện không sử dụng. Việc này sẽ giải phóng tài nguyên của máy tính để thực hiện các tác vụ khác và giúp Brave luôn chạy nhanh. Các thẻ không hoạt động sẽ ở trạng thái trống và tự động tải lại khi bạn nhấp vào thẻ. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/> hoặc <ph name="BEGIN_LINK_2"/>gửi ý kiến phản hồi<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">Thao tác này sẽ xóa dữ liệu duyệt web của bạn khỏi thiết bị này. Để truy xuất dữ liệu của bạn sau, hãy đăng nhập vào Brave dưới dạng <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Trình cài đặt không thể tạo thư mục tạm thời. Vui lòng kiểm tra dung lượng ổ đĩa còn trống và quyền cài đặt phần mềm.</translation>
+<translation id="1978509466033734608">Giúp Brave hoạt động nhanh hơn</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="1652855885539187849">Thiết bị này đã có một hồ sơ trên Brave sử dụng tài khoản này</translation>
 <translation id="7845233973568007926">Cảm ơn bạn đã cài đặt. Bạn phải khởi động lại máy tính trước khi sử dụng <ph name="BUNDLE_NAME"/>.</translation>
@@ -313,15 +320,16 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="3360368475735266712">Đăng nhập để đồng bộ hóa và cá nhân hóa Brave trên các thiết bị của bạn</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> trước đó đã sử dụng Brave</translation>
 <translation id="3098618823450433881">Để truy cập vào nội dung của bạn trên trình duyệt Brave bằng mọi thiết bị, hãy đăng nhập rồi bật tính năng đồng bộ hóa</translation>
+<translation id="2569754604093464025">Để nhận các bản cập nhật Brave sau này, bạn cần có Windows 10 trở lên. Máy tính này đang sử dụng Windows 8.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Khởi động lại Brave trong vòng một ngày}other{Khởi động lại Brave trong vòng # ngày}}</translation>
 <translation id="6914496861676471566">Tệp lưu trữ trình cài đặt bị hỏng hoặc không hợp lệ. Hãy tải xuống Brave lại lần nữa.</translation>
 <translation id="6431861494713261006">Không bắt buộc: Giúp cải thiện hiệu suất và các tính năng của ChromeOS bằng cách tự động gửi dữ liệu sử dụng và chẩn đoán cho Brave.</translation>
 <translation id="2097604701283463988">Brave đã lỗi thời</translation>
-<translation id="607365808648940765">Khi cần, Brave sẽ lấy lại bộ nhớ từ những thẻ mà bạn hiện không sử dụng. Bạn có thể thay đổi chế độ cài đặt này bất kỳ lúc nào trong phần cài đặt.</translation>
 <translation id="8550334526674375523">Hồ sơ công việc này hoàn toàn riêng biệt với hồ sơ cá nhân của bạn.</translation>
 <translation id="2452889775041290116">Cha mẹ bạn đã tắt tùy chọn "Quyền của các trang web, ứng dụng và tiện ích" đối với Brave. Bạn không được phép thêm <ph name="EXTENSION_TYPE_PARAMETER"/> này.</translation>
 <translation id="8502436661255886343">Để nhận các bản cập nhật Brave sau này, bạn cần có macOS 10.13 trở lên. Máy tính này đang sử dụng macOS 10.12.</translation>
 <translation id="227028348235968071">Brave có thể kiểm tra mật khẩu khi bạn đăng nhập bằng Tài khoản Brave của mình</translation>
+<translation id="4226455268610449503">Khi chế độ này bật, Brave sẽ tiết kiệm pin bằng cách hạn chế hoạt động trong nền và hiệu ứng hình ảnh, chẳng hạn như hiệu ứng cuộn mượt và tốc độ khung hình của video. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>
 <translation id="8121009781989288430">Bản quyền <ph name="YEAR"/> Tác giả Brave. Mọi quyền được bảo lưu.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Cách chúng tôi sử dụng dữ liệu này:<ph name="END_BOLD"/> Các trang web có thể lưu trữ thông tin trên Brave về mối quan tâm của bạn. Ví dụ: sau khi bạn truy cập một trang web bán giày chạy marathon, trang web đó có thể sẽ xác định rằng bạn quan tâm đến chạy marathon. Sau đó, nếu bạn truy cập một trang web khác để đăng ký thi chạy, thì trang web đó sẽ hiện quảng cáo giày chạy dựa trên mối quan tâm của bạn.</translation>
 <translation id="3052349005266761501">Đang khởi động Brave...</translation>
@@ -344,6 +352,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="82609232232243542">Đăng nhập vào Brave</translation>
 <translation id="5173820533850252773">Brave đã lỗi thời</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave sẽ khởi động lại sau một giờ}other{Brave sẽ khởi động lại sau # giờ}}</translation>
+<translation id="5190991181158966940">Để nhận các bản cập nhật Brave sau này, bạn cần có Windows 10 trở lên. Máy tính này đang sử dụng Windows 8.1.</translation>
 <translation id="7863882214613921971">Mở đường liên kết trong thẻ mới của Brave</translation>
 <translation id="911206726377975832">Bạn cũng muốn xóa dữ liệu duyệt web của mình?</translation>
 <translation id="5708733457516068434">Trong thời gian thử nghiệm, bạn có thể xem và xoá những chủ đề quan tâm mà các trang web dựa vào để hiện quảng cáo cho bạn. Brave ước đoán các mối quan tâm của bạn dựa trên nhật ký duyệt web gần đây của bạn.</translation>

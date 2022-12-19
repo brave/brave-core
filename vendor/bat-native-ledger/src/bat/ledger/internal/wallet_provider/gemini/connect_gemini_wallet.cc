@@ -19,6 +19,7 @@
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "crypto/sha2.h"
 
+using ledger::endpoints::GetRecipientIDGemini;
 using ledger::endpoints::PostConnectGemini;
 using ledger::endpoints::RequestFor;
 using ledger::wallet_provider::ConnectExternalWallet;
@@ -80,13 +81,44 @@ void ConnectGeminiWallet::OnAuthorize(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
   }
 
-  gemini_server_->post_recipient_id()->Request(
-      token,
-      base::BindOnce(&ConnectGeminiWallet::OnFetchRecipientId,
-                     base::Unretained(this), std::move(callback), token));
+  auto on_get_recipient_id =
+      base::BindOnce(&ConnectGeminiWallet::OnGetRecipientID,
+                     base::Unretained(this), std::move(callback), token);
+
+  RequestFor<GetRecipientIDGemini>(ledger_, std::move(token))
+      .Send(std::move(on_get_recipient_id));
 }
 
-void ConnectGeminiWallet::OnFetchRecipientId(
+void ConnectGeminiWallet::OnGetRecipientID(
+    ledger::ConnectExternalWalletCallback callback,
+    std::string&& token,
+    endpoints::GetRecipientIDGemini::Result&& result) const {
+  if (!ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kNotConnected,
+                                       mojom::WalletStatus::kLoggedOut})) {
+    return std::move(callback).Run(
+        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+  }
+
+  if (!result.has_value()) {
+    return std::move(callback).Run(
+        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+  }
+
+  auto recipient_id = std::move(result).value();
+  if (recipient_id.empty()) {
+    return gemini_server_->post_recipient_id()->Request(
+        token,
+        base::BindOnce(&ConnectGeminiWallet::OnPostRecipientID,
+                       base::Unretained(this), std::move(callback), token));
+  }
+
+  gemini_server_->post_account()->Request(
+      token, base::BindOnce(&ConnectGeminiWallet::OnPostAccount,
+                            base::Unretained(this), std::move(callback), token,
+                            std::move(recipient_id)));
+}
+
+void ConnectGeminiWallet::OnPostRecipientID(
     ledger::ConnectExternalWalletCallback callback,
     std::string&& token,
     mojom::Result result,
@@ -112,7 +144,7 @@ void ConnectGeminiWallet::OnFetchRecipientId(
   }
 
   if (result != mojom::Result::LEDGER_OK) {
-    BLOG(0, "Failed to fetch recipient ID!");
+    BLOG(0, "Failed to create recipient ID!");
     return std::move(callback).Run(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
   }

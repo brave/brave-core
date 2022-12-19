@@ -9,7 +9,7 @@
 #include <functional>
 #include <vector>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
 namespace base {

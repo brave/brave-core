@@ -1,9 +1,13 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
-import("//brave/components/brave_vpn/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
-import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/buildflags/buildflags.gni")
@@ -96,6 +100,8 @@ source_set("ui") {
       "omnibox/brave_omnibox_client_impl.cc",
       "omnibox/brave_omnibox_client_impl.h",
       "session_crashed_bubble_brave.cc",
+      "startup/brave_obsolete_system_infobar_delegate.cc",
+      "startup/brave_obsolete_system_infobar_delegate.h",
       "toolbar/brave_app_menu_model.cc",
       "toolbar/brave_app_menu_model.h",
       "toolbar/brave_recent_tabs_sub_menu_model.h",
@@ -149,6 +155,8 @@ source_set("ui") {
       "webui/settings/brave_search_engines_handler.h",
       "webui/settings/brave_settings_localized_strings_provider.cc",
       "webui/settings/brave_settings_localized_strings_provider.h",
+      "webui/settings/brave_site_settings_handler.cc",
+      "webui/settings/brave_site_settings_handler.h",
       "webui/settings/brave_sync_handler.cc",
       "webui/settings/brave_sync_handler.h",
       "webui/settings/brave_wallet_handler.cc",
@@ -190,6 +198,12 @@ source_set("ui") {
       sources += [
         "webui/settings/brave_tor_handler.cc",
         "webui/settings/brave_tor_handler.h",
+      ]
+    }
+    if (enable_extensions) {
+      sources += [
+        "webui/settings/brave_tor_snowflake_extension_handler.cc",
+        "webui/settings/brave_tor_snowflake_extension_handler.h",
       ]
     }
 
@@ -274,12 +288,19 @@ source_set("ui") {
       "views/toolbar/bookmark_button.h",
       "views/toolbar/brave_app_menu.cc",
       "views/toolbar/brave_app_menu.h",
-      "views/web_discovery_dialog_view.cc",
-      "views/web_discovery_dialog_view.h",
       "views/window_closing_confirm_dialog_view.cc",
       "views/window_closing_confirm_dialog_view.h",
     ]
-
+    if (enable_brave_vpn) {
+      if (is_win) {
+        sources += [
+          "views/brave_vpn/brave_vpn_dns_settings_notificiation_dialog_view.cc",
+          "views/brave_vpn/brave_vpn_dns_settings_notificiation_dialog_view.h",
+          "webui/settings/brave_settings_secure_dns_handler.cc",
+          "webui/settings/brave_settings_secure_dns_handler.h",
+        ]
+      }
+    }
     if (use_aura) {
       sources += [
         "views/renderer_context_menu/brave_render_view_context_menu_views.cc",
@@ -360,12 +381,10 @@ source_set("ui") {
     "//brave/components/brave_search/common",
     "//brave/components/brave_search_conversion",
     "//brave/components/brave_shields/browser",
-    "//brave/components/brave_vpn/buildflags",
+    "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/constants",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
-    "//brave/components/crypto_dot_com/browser/buildflags:buildflags",
-    "//brave/components/ftx/browser/buildflags:buildflags",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/common",
@@ -620,14 +639,16 @@ source_set("ui") {
     sources += [
       "toolbar/brave_vpn_menu_model.cc",
       "toolbar/brave_vpn_menu_model.h",
+      "webui/brave_vpn/brave_vpn_localized_string_provider.cc",
+      "webui/brave_vpn/brave_vpn_localized_string_provider.h",
       "webui/brave_vpn/vpn_panel_handler.cc",
       "webui/brave_vpn/vpn_panel_handler.h",
       "webui/brave_vpn/vpn_panel_ui.cc",
       "webui/brave_vpn/vpn_panel_ui.h",
     ]
     deps += [
-      "//brave/components/brave_vpn",
-      "//brave/components/brave_vpn/mojom",
+      "//brave/components/brave_vpn/browser",
+      "//brave/components/brave_vpn/common/mojom",
       "//brave/components/brave_vpn/resources/panel:brave_vpn_panel_generated",
       "//mojo/public/cpp/bindings",
       "//ui/webui:webui",
@@ -716,10 +737,6 @@ source_set("ui") {
       "webui/ethereum_remote_client/ethereum_remote_client_ui.h",
     ]
     deps += [ "//brave/browser/ui/webui/ethereum_remote_client:ethereum_remote_client_page_generated" ]
-  }
-
-  if (enable_ftx) {
-    deps += [ "//brave/components/ftx/common" ]
   }
 
   if (enable_playlist_webui) {

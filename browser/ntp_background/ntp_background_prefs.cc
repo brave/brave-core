@@ -14,8 +14,6 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "services/preferences/public/cpp/dictionary_value_update.h"
-#include "services/preferences/public/cpp/scoped_pref_update.h"
 
 namespace {
 
@@ -88,8 +86,8 @@ void NTPBackgroundPrefs::SetType(Type type) {
   if (type == GetType())
     return;
 
-  prefs::ScopedDictionaryPrefUpdate update(service_, kPrefName);
-  update->Set(kTypeKey, std::make_unique<base::Value>(TypeToString(type)));
+  ScopedDictPrefUpdate update(service_, kPrefName);
+  update->Set(kTypeKey, TypeToString(type));
 }
 
 bool NTPBackgroundPrefs::IsBraveType() const {
@@ -111,13 +109,13 @@ bool NTPBackgroundPrefs::ShouldUseRandomValue() const {
 }
 
 void NTPBackgroundPrefs::SetShouldUseRandomValue(bool random) {
-  prefs::ScopedDictionaryPrefUpdate update(service_, kPrefName);
-  update->Set(kRandomKey, std::make_unique<base::Value>(random));
+  ScopedDictPrefUpdate update(service_, kPrefName);
+  update->Set(kRandomKey, random);
 }
 
 void NTPBackgroundPrefs::SetSelectedValue(const std::string& value) {
-  prefs::ScopedDictionaryPrefUpdate update(service_, kPrefName);
-  update->Set(kSelectedValueKey, std::make_unique<base::Value>(value));
+  ScopedDictPrefUpdate update(service_, kPrefName);
+  update->Set(kSelectedValueKey, value);
 }
 
 absl::variant<GURL, std::string> NTPBackgroundPrefs::GetSelectedValue() const {

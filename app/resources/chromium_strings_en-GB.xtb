@@ -12,10 +12,13 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="8522292744959221145">To check if your passwords are safe from data breaches and other security issues, <ph name="BEGIN_LINK"/>sign in to Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">About Brave</translation>
 <translation id="1203500561924088507">Thanks for installing. You must restart your browser before using <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="8905049883018921395">When on, Brave frees up memory from inactive tabs. This gives active tabs and other apps more computer resources and keeps Brave fast. Your inactive tabs automatically become active again when you go back to them. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
+<translation id="4658574652223735641">Memory Saver Made Brave Faster</translation>
 <translation id="4798342026247191171">Set up your new Brave profile</translation>
 <translation id="6361779936989026201">Brave Assistant in Brave</translation>
 <translation id="113959764510199339">Brave is trying to show passwords.</translation>
 <translation id="8132634101975074716">You're signed in to Brave!</translation>
+<translation id="4168469784091952813">You can enjoy the most out of Brave</translation>
 <translation id="5147525139567260139">Share a Brave tab</translation>
 <translation id="1530633922026945685">Brave needs permission to access your camera to create a 3D map of your surroundings</translation>
 <translation id="4449148723378534338">Review key privacy and security controls in Brave</translation>
@@ -168,6 +171,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="1786715389543715322">Updating Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Allow Brave sign-in</translation>
 <translation id="5536657158619734169">There is a new version of Brave available.</translation>
+<translation id="5267531627648004734">Remove from Brave</translation>
 <translation id="239760341987199724">Set Brave as your default browser</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="894936507076470937">Brave may not function correctly because it is no longer supported on this Linux distribution</translation>
@@ -195,6 +199,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="505042220086416644">There's a new version of Brave available and it's faster than ever.</translation>
 <translation id="9071554113102421877">&amp;Open in Brave</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> has been added to Brave</translation>
+<translation id="3693188491491843187">Make Brave Faster</translation>
 <translation id="608006075545470555">Add work profile to this browser</translation>
 <translation id="5849446944780602366">Customise and control Brave. Update is available.</translation>
 <translation id="7433698744896946664">Allow extension to show access requests in the Brave toolbar</translation>
@@ -238,6 +243,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="1489465648257900784">Your profile can not be used because it is from a newer version of Brave.
 
 Some features may be unavailable. Please specify a different profile directory or use a newer version of Brave.</translation>
+<translation id="7870748924073900361">Memory saver made Brave faster</translation>
 <translation id="6666624454809779082">Brave is already installed for all users on your computer.</translation>
 <translation id="5360050006043219962">To access your Brave stuff across all your devices, sign in, then turn on sync.</translation>
 <translation id="8291513491595858997">Your parent has turned off 'Permissions for sites, apps and extensions' for Brave. Enabling this <ph name="EXTENSION_TYPE_PARAMETER"/> is not allowed.</translation>
@@ -275,6 +281,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="38294420683216447">With Brave profiles, you can separate all of your Brave things. This makes it easier to split between work and fun.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="2034072705932785495">Brave needs permission to access your camera for this site</translation>
+<translation id="5296583608321648908">To get future Brave updates, you'll need Windows 10 or later. This computer is using Windows 7.</translation>
 <translation id="3962395975456095331">Relaunch Brave?</translation>
 <translation id="2619516027171717873">Cannot install the same Brave version that is currently running. Please close Brave and try again.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave will relaunch in 1 minute}other{Brave will relaunch in # minutes}}</translation>
@@ -289,9 +296,9 @@ Brave is unable to recover your settings.</translation>
 <translation id="8678991866891573053">Brave is exploring new features that allow sites to deliver the same browsing experience using less of your data</translation>
 <translation id="3343095737966473035">Brave isn't your default browser</translation>
 <translation id="5477319665405831211">Sync and personalise Brave across your devices</translation>
-<translation id="2280238321454602884">When on, Brave reclaims memory from tabs that you aren't actively using. This frees up your computer's resources for other tasks and keeps Brave speedy. Inactive tabs appear empty and automatically reload when you click them. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/> or <ph name="BEGIN_LINK_2"/>send feedback<ph name="END_LINK_2"/></translation>
 <translation id="4784414698887946907">This will delete your browsing data from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">The installer couldn't create a temporary directory. Please check for free disk space and permission to install software.</translation>
+<translation id="1978509466033734608">Make Brave faster</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="1652855885539187849">A Brave profile with this account already exists on this device</translation>
 <translation id="7845233973568007926">Thanks for installing. You must restart your computer before using <ph name="BUNDLE_NAME"/>.</translation>
@@ -314,15 +321,16 @@ Brave is unable to recover your settings.</translation>
 <translation id="3360368475735266712">Sign in to sync and personalise Brave across your devices</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> was previously using Brave</translation>
 <translation id="3098618823450433881">To access your Brave browser across all your devices, sign in, then turn on sync</translation>
+<translation id="2569754604093464025">To get future Brave updates, you'll need Windows 10 or later. This computer is using Windows 8.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Relaunch Brave within a day}other{Relaunch Brave within # days}}</translation>
 <translation id="6914496861676471566">The installer archive is corrupted or invalid. Please download Brave again.</translation>
 <translation id="6431861494713261006">Optional: Help improve Chrome OS features and performance by automatically sending diagnostic and usage data to Brave.</translation>
 <translation id="2097604701283463988">Brave is Out of Date</translation>
-<translation id="607365808648940765">As needed, Brave reclaims memory from tabs that you aren't actively using. You can change this at any time in settings.</translation>
 <translation id="8550334526674375523">This work profile is completely separate from your personal profile.</translation>
 <translation id="2452889775041290116">Your parent has turned off 'Permissions for sites, apps and extensions' for Brave. Adding this <ph name="EXTENSION_TYPE_PARAMETER"/> is not allowed.</translation>
 <translation id="8502436661255886343">To get future Brave updates, you'll need macOS 10.13 or later. This computer is using macOS 10.12.</translation>
 <translation id="227028348235968071">Brave can check your passwords when you sign in with your Brave sync chain</translation>
+<translation id="4226455268610449503">When on, Brave conserves battery power by limiting background activity and visual effects, such as smooth scrolling and video frame rates. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> The Brave Authors. All rights reserved.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>How we use this data:<ph name="END_BOLD"/> Sites can store information with Brave about your interests. For example, if you visit a site to buy shoes for a marathon, the site might define your interest as running marathons. Later, if you visit a different site to register for a race, that site can show you an ad for running shoes based on your interests.</translation>
 <translation id="3052349005266761501">Launching Brave...</translation>
@@ -345,6 +353,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="82609232232243542">Sign in to Brave</translation>
 <translation id="5173820533850252773">Brave is out of date</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave will relaunch in an hour}other{Brave will relaunch in # hours}}</translation>
+<translation id="5190991181158966940">To get future Brave updates, you'll need Windows 10 or later. This computer is using Windows 8.1.</translation>
 <translation id="7863882214613921971">Open Link in New Brave &amp;tab</translation>
 <translation id="911206726377975832">Also delete your browsing data?</translation>
 <translation id="5708733457516068434">During the trials, you can see and remove topics of interest sites used to show you ads. Brave estimates your interests based on your recent browsing history.</translation>

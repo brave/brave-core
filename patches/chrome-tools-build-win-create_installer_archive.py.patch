@@ -1,5 +1,5 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index 349d09418308d39c580c75bcbd552b49f474143d..50138c90a3fc2bea57e20043e0683bf6e9295782 100755
+index 795992c863c9ca35b8393980a1166e139da890b5..5eda7318178a5f54d9bda88b555eb45289914b6d 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
 @@ -42,6 +42,8 @@ SETUP_PATCH_FILE_PREFIX = "setup_patch"

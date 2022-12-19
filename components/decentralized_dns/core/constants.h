@@ -13,8 +13,8 @@ enum class ResolveMethodTypes {
   ASK,
   DISABLED,
   DEPRECATED_DNS_OVER_HTTPS,
-  ETHEREUM,
-  MAX_VALUE = ETHEREUM,
+  ENABLED,
+  MAX_VALUE = ENABLED,
 };
 
 enum class EnsOffchainResolveMethod { kAsk, kDisabled, kEnabled };

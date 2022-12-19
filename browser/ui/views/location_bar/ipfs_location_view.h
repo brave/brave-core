@@ -21,7 +21,7 @@ class IPFSLocationView : public views::View {
   explicit IPFSLocationView(Profile* profile);
   ~IPFSLocationView() override;
 
-  void Update(content::WebContents* web_contents);
+  void Update(content::WebContents* web_contents, bool show_page_actions);
 
   views::LabelButton* GetButton() { return button_; }
 

@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "absl/types/optional.h"
+#include "base/functional/bind.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
@@ -47,13 +48,13 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, Serve) {
 
   // Act
   GetAds()->MaybeServeNewTabPageAd(
-      [](const absl::optional<NewTabPageAdInfo>& ad) {
+      base::BindOnce([](const absl::optional<NewTabPageAdInfo>& ad) {
         // Assert
         EXPECT_TRUE(ad);
         EXPECT_TRUE(ad->IsValid());
         EXPECT_EQ(1, GetAdEventCount(AdType::kNewTabPageAd,
                                      ConfirmationType::kServed));
-      });
+      }));
 }
 
 TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {

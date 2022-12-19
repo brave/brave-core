@@ -799,8 +799,8 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   // Custom Polygon chain takes place of known one.
   // Custom unknown chain becomes last.
   auto expected_chains = std::move(known_chains);
-  EXPECT_EQ(expected_chains[1]->chain_id, mojom::kPolygonMainnetChainId);
-  expected_chains[1] = chain1.Clone();
+  EXPECT_EQ(expected_chains[2]->chain_id, mojom::kPolygonMainnetChainId);
+  expected_chains[2] = chain1.Clone();
   expected_chains.push_back(chain2.Clone());
 
   auto all_chains = GetAllChains(&prefs, mojom::CoinType::ETH);
@@ -1027,11 +1027,11 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
 
 TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
   const std::vector<std::string> expected_network_ids(
-      {"mainnet", mojom::kPolygonMainnetChainId,
+      {"mainnet", mojom::kAuroraMainnetChainId, mojom::kPolygonMainnetChainId,
        mojom::kBinanceSmartChainMainnetChainId, mojom::kCeloMainnetChainId,
        mojom::kAvalancheMainnetChainId, mojom::kFantomMainnetChainId,
-       mojom::kOptimismMainnetChainId, mojom::kAuroraMainnetChainId, "goerli",
-       "sepolia", "http://localhost:7545/"});
+       mojom::kOptimismMainnetChainId, "goerli", "sepolia",
+       "http://localhost:7545/"});
   ASSERT_EQ(GetAllKnownNetworksForTesting().size(),
             expected_network_ids.size());
   EXPECT_EQ(GetAllKnownEthNetworkIds(), expected_network_ids);
@@ -1244,34 +1244,47 @@ TEST(BraveWalletUtilsUnitTest, RemoveCustomNetwork) {
 }
 
 TEST(BraveWalletUtilsUnitTest, HiddenNetworks) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::ETH),
+              ElementsAreArray<std::string>({mojom::kGoerliChainId,
+                                             mojom::kSepoliaChainId,
+                                             mojom::kLocalhostChainId}));
+  EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::FIL),
+              ElementsAreArray<std::string>(
+                  {mojom::kFilecoinTestnet, mojom::kLocalhostChainId}));
+  EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::SOL),
+              ElementsAreArray<std::string>({mojom::kSolanaDevnet,
+                                             mojom::kSolanaTestnet,
+                                             mojom::kLocalhostChainId}));
+
   for (auto coin :
        {mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL}) {
-    TestingPrefServiceSimple prefs;
-    prefs.registry()->RegisterDictionaryPref(kBraveWalletHiddenNetworks);
+    for (auto& default_hidden : GetHiddenNetworks(&prefs, coin)) {
+      RemoveHiddenNetwork(&prefs, coin, default_hidden);
+    }
 
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin),
                 ElementsAreArray<std::string>({}));
 
     AddHiddenNetwork(&prefs, coin, "0x123");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
-                ElementsAreArray({"0x123"}));
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin), ElementsAreArray({"0x123"}));
     AddHiddenNetwork(&prefs, coin, "0x123");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
-                ElementsAreArray({"0x123"}));
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin), ElementsAreArray({"0x123"}));
 
     RemoveHiddenNetwork(&prefs, coin, "0x555");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
-                ElementsAreArray({"0x123"}));
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin), ElementsAreArray({"0x123"}));
 
     AddHiddenNetwork(&prefs, coin, "0x7");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin),
                 ElementsAreArray({"0x123", "0x7"}));
 
     RemoveHiddenNetwork(&prefs, coin, "0x123");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin), ElementsAreArray({"0x7"}));
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin), ElementsAreArray({"0x7"}));
 
     RemoveHiddenNetwork(&prefs, coin, "0x7");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin),
                 ElementsAreArray<std::string>({}));
   }
 }
@@ -1345,6 +1358,22 @@ TEST(BraveWalletUtilsUnitTest, GetActiveEndpointUrl) {
   chain.active_rpc_endpoint_index = 0;
   chain.rpc_endpoints.clear();
   EXPECT_EQ(GURL(), GetActiveEndpointUrl(chain));
+}
+
+TEST(BraveWalletUtilsUnitTest, GetUnstoppableDomainsRpcUrl) {
+  EXPECT_EQ(AddInfuraProjectId(GURL("https://mainnet-infura.brave.com")),
+            GetUnstoppableDomainsRpcUrl(mojom::kMainnetChainId));
+  EXPECT_EQ(AddInfuraProjectId(GURL("https://mainnet-polygon.brave.com")),
+            GetUnstoppableDomainsRpcUrl(mojom::kPolygonMainnetChainId));
+}
+
+TEST(BraveWalletUtilsUnitTest, GetEnsRpcUrl) {
+  EXPECT_EQ(AddInfuraProjectId(GURL("https://mainnet-infura.brave.com")),
+            GetEnsRpcUrl());
+}
+
+TEST(BraveWalletUtilsUnitTest, GetSnsRpcUrl) {
+  EXPECT_EQ(GURL("https://mainnet-beta-solana.brave.com/rpc"), GetSnsRpcUrl());
 }
 
 }  // namespace brave_wallet

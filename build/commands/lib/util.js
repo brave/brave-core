@@ -1,3 +1,8 @@
+// Copyright (c) 2016 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 const path = require('path')
 const { spawn, spawnSync } = require('child_process')
 const config = require('./config')
@@ -245,12 +250,30 @@ const util = {
     fileMap.add([path.join(braveBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg'), path.join(chromeBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'settings', 'images'), path.join(chromeBrowserResourcesDir, 'settings', 'images')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'signin', 'profile_picker', 'images'), path.join(chromeBrowserResourcesDir, 'signin', 'profile_picker', 'images')])
-    // Copy to make our ${branding_path_component}_behaviors.cc
+    // Copy to make our ${branding_path_product}_behaviors.cc
     fileMap.add([path.join(config.braveCoreDir, 'chromium_src', 'chrome', 'installer', 'setup', 'brave_behaviors.cc'),
-                 path.join(config.srcDir, 'chrome', 'installer', 'setup', 'brave_behaviors.cc')])
+                 path.join(config.srcDir, 'chrome', 'installer', 'setup', config.getBrandingPathProduct() + '_behaviors.cc')])
     // Replace webui CSS to use our fonts.
     fileMap.add([path.join(config.braveCoreDir, 'ui', 'webui', 'resources', 'css', 'text_defaults_md.css'),
                  path.join(config.srcDir, 'ui', 'webui', 'resources', 'css', 'text_defaults_md.css')])
+
+    let explicitSourceFiles = new Set()
+    if (process.platform === 'darwin') {
+      // Set proper mac app icon for channel to chrome/app/theme/mac/app.icns.
+      // Each channel's app icons are stored in brave/app/theme/$channel/app.icns.
+      // With this copying, we don't need to modify chrome/BUILD.gn for this.
+      const iconSource = path.join(braveAppDir, 'theme', 'brave', 'mac', config.channel, 'app.icns')
+      const iconDest = path.join(chromeAppDir, 'theme', 'brave', 'mac', 'app.icns')
+      explicitSourceFiles[iconDest] = iconSource
+
+      // Set proper branding file.
+      let branding_file_name = 'BRANDING'
+      if (config.channel)
+        branding_file_name = branding_file_name + '.' + config.channel
+      const brandingSource = path.join(braveAppDir, 'theme', 'brave', branding_file_name)
+      const brandingDest = path.join(chromeAppDir, 'theme', 'brave', 'BRANDING')
+      explicitSourceFiles[brandingDest] = brandingSource
+    }
 
     for (const [source, output] of fileMap) {
       if (!fs.existsSync(source)) {
@@ -267,50 +290,17 @@ const util = {
         sourceFiles = [source]
       }
 
-      for (const sourceFile of sourceFiles) {
-        let destinationFile = path.join(output, path.relative(source, sourceFile))
-
-        // The destination file might be newer when updating chromium so
-        // we check for an exact match on the timestamp. We use seconds instead
-        // of ms because utimesSync doesn't set the times with ms precision
+      for (let sourceFile of sourceFiles) {
+        const destinationFile = path.join(output, path.relative(source, sourceFile))
+        sourceFile = explicitSourceFiles[destinationFile] || sourceFile
         if (!fs.existsSync(destinationFile) ||
-            Math.floor(new Date(fs.statSync(sourceFile).mtimeMs).getTime() / 1000) !=
-            Math.floor(new Date(fs.statSync(destinationFile).mtimeMs).getTime() / 1000)) {
+            util.calculateFileChecksum(sourceFile) != util.calculateFileChecksum(destinationFile)) {
           fs.copySync(sourceFile, destinationFile)
-          // can't set the date in the past so update the source file
-          // to match the newly copied destionation file
-          const date = fs.statSync(destinationFile).mtime
-          fs.utimesSync(sourceFile, date, date)
           console.log(sourceFile + ' copied to ' + destinationFile)
         }
       }
     }
 
-    if (process.platform === 'darwin') {
-      // Copy proper mac app icon for channel to chrome/app/theme/mac/app.icns.
-      // Each channel's app icons are stored in brave/app/theme/$channel/app.icns.
-      // With this copying, we don't need to modify chrome/BUILD.gn for this.
-      const iconSource = path.join(braveAppDir, 'theme', 'brave', 'mac', config.channel, 'app.icns')
-      const iconDest = path.join(chromeAppDir, 'theme', 'brave', 'mac', 'app.icns')
-      if (!fs.existsSync(iconDest) ||
-          util.calculateFileChecksum(iconSource) != util.calculateFileChecksum(iconDest)) {
-        console.log('copy app icon')
-        fs.copySync(iconSource, iconDest)
-      }
-
-      // Copy branding file
-      let branding_file_name = 'BRANDING'
-      if (config.channel)
-        branding_file_name = branding_file_name + '.' + config.channel
-
-      const brandingSource = path.join(braveAppDir, 'theme', 'brave', branding_file_name)
-      const brandingDest = path.join(chromeAppDir, 'theme', 'brave', 'BRANDING')
-      if (!fs.existsSync(brandingDest) ||
-          util.calculateFileChecksum(brandingSource) != util.calculateFileChecksum(brandingDest)) {
-        console.log('copy branding file')
-        fs.copySync(brandingSource, brandingDest)
-      }
-    }
     if (config.targetOS === 'android') {
 
       let braveOverwrittenFiles = new Set();
@@ -414,7 +404,7 @@ const util = {
     }
   },
 
-  touchOverriddenFiles: () => {
+  touchOverriddenChromiumSrcFiles: () => {
     console.log('touch original files overridden by chromium_src...')
 
     // Return true when original file of |file| should be touched.
@@ -474,10 +464,9 @@ const util = {
     })
   },
 
-  touchOverriddenFilesAndUpdateBranding: () => {
-    util.touchOverriddenFiles()
+  touchOverriddenFiles: () => {
+    util.touchOverriddenChromiumSrcFiles()
     util.touchOverriddenVectorIconFiles()
-    util.updateBranding()
   },
 
   // Chromium compares pre-installed midl files and generated midl files from IDL during the build to check integrity.
@@ -720,6 +709,9 @@ const util = {
       args.push('--files', options.files)
     if (options.verbose) {
       args.push(...Array(options.verbose).fill('--verbose'))
+    }
+    if (options.fix) {
+      cmd_options.env.PRESUBMIT_FIX = '1'
     }
     util.run(cmd, args, cmd_options)
   },
