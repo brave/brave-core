@@ -41,6 +41,8 @@ const defaultState: PageState = {
   isFetchingNFTMetadata: true,
   nftMetadata: undefined,
   nftMetadataError: undefined,
+  enablingAutoPin: false,
+  autoPinEnabled: false,
   pinStatusOverview: undefined,
   selectedAssetFiatPrice: undefined,
   selectedAssetCryptoPrice: undefined,
@@ -74,7 +76,11 @@ export const WalletPageAsyncActions = {
   selectAsset: createAction<UpdateSelectedAssetType>('selectAsset'),
   updateAccountName: createAction<UpdateAccountNamePayloadType>('updateAccountName'),
   updateNFTPinStatus: createAction<BraveWallet.TokenPinOverview | undefined>('updateNFTPinStatus'),
-  getPinStatus: createAction<BraveWallet.BlockchainToken>('getPinStatus')
+  getPinStatus: createAction<BraveWallet.BlockchainToken>('getPinStatus'),
+  getIsAutoPinEnabled: createAction('getAutoPinEnabled'),
+  setAutoPinEnabled: createAction<boolean>('setAutoPinEnabled'),
+  updateEnablingAutoPin: createAction<boolean>('updateEnablingAutoPin'),
+  updateAutoPinEnabled: createAction<boolean>('updateAutoPinEnabled')
 }
 
 export const createPageSlice = (initialState: PageState = defaultState) => {
@@ -184,6 +190,14 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
       updateNFTPinStatus (state, { payload }: PayloadAction<BraveWallet.TokenPinOverview | undefined>) {
         state.pinStatusOverview = payload
+      },
+
+      updateEnablingAutoPin (state, { payload }: PayloadAction<boolean>) {
+        state.enablingAutoPin = payload
+      },
+
+      updateAutoPinEnabled (state, { payload }: PayloadAction<boolean>) {
+        state.autoPinEnabled = payload
       }
     }
   })

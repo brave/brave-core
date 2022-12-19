@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { Route, useHistory, useParams, Switch, Redirect } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 // actions
 import { AccountsTabState } from '../../../../page/reducers/accounts-tab-reducer'
@@ -41,6 +41,7 @@ import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/
 import TransactionsScreen from '../../../../page/screens/transactions/transactions-screen'
 import { LocalIpfsNodeScreen } from '../../local-ipfs-node/local-ipfs-node'
 import { InspectNftsScreen } from '../../inspect-nfts/inspect-nfts'
+import { WalletPageActions } from '../../../../page/actions'
 
 interface ParamsType {
   category?: TopTabNavTypes
@@ -73,6 +74,8 @@ const CryptoView = (props: Props) => {
   const accountToRemove = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.accountToRemove)
   const showAccountModal = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.showAccountModal)
   const selectedAccount = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.selectedAccount)
+
+  const dispatch = useDispatch()
 
   // state
   // const [hideNav, setHideNav] = React.useState<boolean>(false)
@@ -197,6 +200,11 @@ const CryptoView = (props: Props) => {
     showBackupWarning,
     showMore
   ])
+
+  // effects
+  React.useEffect(() => {
+    dispatch(WalletPageActions.getIsAutoPinEnabled())
+  }, [])
 
   // render
   return (

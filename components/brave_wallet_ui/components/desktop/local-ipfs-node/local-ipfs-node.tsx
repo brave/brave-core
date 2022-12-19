@@ -4,10 +4,17 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
-import { WalletRoutes } from '../../../constants/types'
-import { Row } from '../../shared/style'
 
+// types
+import { PageState, WalletRoutes } from '../../../constants/types'
+
+// actions
+import { WalletPageActions } from '../../../page/actions'
+
+// components
+import { Row } from '../../shared/style'
 import Illustration from '../../../assets/svg-icons/nft-ipfs/nfts-illustration.svg'
 
 // styles
@@ -23,7 +30,7 @@ import {
   Section,
   SectionText,
   Description,
-  RunLocalNodeButton,
+  ActionButton,
   CheckNftsButton,
   BenefitHeading,
   LeftWrapper,
@@ -40,10 +47,20 @@ interface Props {
 
 export const LocalIpfsNodeScreen = (props: Props) => {
   const { onClose } = props
+
+  // routing
   const history = useHistory()
+
+  // redux
+  const dispatch = useDispatch()
+  const autoPinEnabled = useSelector(({ page }: { page: PageState }) => page.autoPinEnabled)
 
   const onClickCheckNfts = React.useCallback(() => {
     history.push(WalletRoutes.InspectNfts)
+  }, [])
+
+  const onClickRunNode = React.useCallback(() => {
+    dispatch(WalletPageActions.setAutoPinEnabled(true))
   }, [])
 
   return (
@@ -81,11 +98,16 @@ export const LocalIpfsNodeScreen = (props: Props) => {
         <Section>
           <LeftWrapper>
             <Row gap='16px' alignItems='center' justifyContent='flex-start'>
-              <RunLocalNodeButton>Run my local IPFS Node</RunLocalNodeButton>
-              <IpfsNodeRunningStatus>
-                <IpfsStatus />
-                You’re running IPFS node
-              </IpfsNodeRunningStatus>
+              {autoPinEnabled
+                ? <>
+                  <ActionButton>Keep my NFTs always online</ActionButton>
+                  <IpfsNodeRunningStatus>
+                    <IpfsStatus />
+                    You’re running IPFS node
+                  </IpfsNodeRunningStatus>
+                </>
+                : <ActionButton onClick={onClickRunNode}>Run my local IPFS Node</ActionButton>
+              }
             </Row>
             <CheckNftsButton onClick={onClickCheckNfts}>Check which NFTs of mine can be pinned</CheckNftsButton>
           </LeftWrapper>

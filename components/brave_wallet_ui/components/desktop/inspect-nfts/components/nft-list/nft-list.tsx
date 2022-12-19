@@ -8,6 +8,7 @@ import * as React from 'react'
 import { useUnsafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../../common/selectors'
 import { getTokensNetwork } from '../../../../../utils/network-utils'
+import { reverseHttpifiedIpfsUrl, stripERC20TokenImageURL } from '../../../../../utils/string-utils'
 
 // components
 import { NftIconWithNetworkIcon } from '../../../../shared/nft-icon/nft-icon-with-network-icon'
@@ -23,20 +24,30 @@ export const NftList = () => {
   const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
 
   const nonFungibleTokens = React.useMemo(() => {
-    return userVisibleTokensInfo.filter(
+    const tokens = userVisibleTokensInfo.filter(
       (token) => token.isErc721 || token.isNft
     )
+    return tokens.map(token => {
+      const canBePinned = reverseHttpifiedIpfsUrl(stripERC20TokenImageURL(token.logo)).startsWith('ipfs://')
+      return { canBePinned, token }
+    })
   }, [userVisibleTokensInfo])
 
-  const isPinnable = true
+  const pinnableNftsCount = React.useMemo(() => {
+    return nonFungibleTokens
+      .map(token => token.canBePinned)
+      .reduce((accumulator, current) => {
+        return current ? accumulator + 1 : accumulator
+      }, 0)
+  }, [nonFungibleTokens])
 
   return (
     <NftListWrapper>
-      <NftCountHeading>8 out of 10 are available!</NftCountHeading>
+      <NftCountHeading>{pinnableNftsCount} out of {nonFungibleTokens.length} are available!</NftCountHeading>
       <List>
-        {nonFungibleTokens.map((token) => (
-          <NftItem>
-            {!isPinnable &&
+        {nonFungibleTokens.map(({ canBePinned, token }) => (
+          <NftItem key={`nft-item-${token.contractAddress}-${token.tokenId}`}>
+            {!canBePinned &&
               <NftItemOverlay>
                 <PiningMessage>Unable to pin</PiningMessage>
               </NftItemOverlay>
@@ -47,7 +58,7 @@ export const NftList = () => {
               icon={token.logo}
               circular={true}
               responsive={true}
-              disabled={!isPinnable}
+              disabled={canBePinned}
             />
           </NftItem>
         ))}

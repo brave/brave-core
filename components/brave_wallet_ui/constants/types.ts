@@ -295,6 +295,8 @@ export interface PageState {
   isFetchingNFTMetadata: boolean
   nftMetadata: NFTMetadataReturnType | undefined
   nftMetadataError: string | undefined
+  enablingAutoPin: boolean
+  autoPinEnabled: boolean
   pinStatusOverview: BraveWallet.TokenPinOverview | undefined
   selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
   selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
