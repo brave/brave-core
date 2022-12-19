@@ -30,6 +30,10 @@ namespace permissions {
 
 namespace {
 
+constexpr char kGoogleAuthPattern[] =
+    "https://accounts.google.com/o/oauth2/auth/*";
+constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/__/auth/*";
+
 bool IsGoogleAuthUrl(const GURL& gurl) {
   // Check if pattern matches the URL.
   return GetGoogleAuthPattern().Matches(gurl) ||

@@ -16,7 +16,7 @@ BASE_FEATURE(kPermissionLifetime,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 // When enabled, Brave will prompt for permission on sites which want to use
-// Google Sign In
+// Google Sign In.
 BASE_FEATURE(kBraveGoogleSignInPermission,
              "BraveGoogleSignInPermission",
 #if BUILDFLAG(IS_ANDROID)

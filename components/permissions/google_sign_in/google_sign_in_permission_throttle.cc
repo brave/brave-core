@@ -26,7 +26,7 @@ using blink::URLLoaderThrottle;
 namespace permissions {
 
 GoogleSignInPermissionThrottle::GoogleSignInPermissionThrottle(
-    const content::WebContents::Getter wc_getter,
+    const content::WebContents::Getter& wc_getter,
     scoped_refptr<HostContentSettingsMap> settings_map)
     : wc_getter_(wc_getter), settings_map_(settings_map) {}
 
@@ -52,7 +52,7 @@ void OnPermissionRequestStatus(
 std::unique_ptr<blink::URLLoaderThrottle>
 GoogleSignInPermissionThrottle::MaybeCreateThrottleFor(
     const network::ResourceRequest& request,
-    const content::WebContents::Getter wc_getter,
+    const content::WebContents::Getter& wc_getter,
     HostContentSettingsMap* content_settings) {
   if (!IsGoogleSignInFeatureEnabled()) {
     return nullptr;
@@ -60,6 +60,16 @@ GoogleSignInPermissionThrottle::MaybeCreateThrottleFor(
 
   if (request.resource_type !=
       static_cast<int>(blink::mojom::ResourceType::kMainFrame)) {
+    return nullptr;
+  }
+
+  // Check kGoogleLoginControlType pref and return early if false.
+  auto* contents = wc_getter.Run();
+  if (!contents) {
+    return nullptr;
+  }
+  if (!IsGoogleSignInPrefEnabled(
+          user_prefs::UserPrefs::Get(contents->GetBrowserContext()))) {
     return nullptr;
   }
 
@@ -80,21 +90,14 @@ GoogleSignInPermissionThrottle::~GoogleSignInPermissionThrottle() = default;
 
 void GoogleSignInPermissionThrottle::DetachFromCurrentSequence() {}
 
-void HandleRequest(bool* defer,
-                   const GURL& request_url,
-                   const GURL& request_initiator_url,
-                   const content::WebContents::Getter& contents_getter,
-                   scoped_refptr<HostContentSettingsMap> content_settings,
-                   URLLoaderThrottle::Delegate* delegate) {
-  auto* contents = contents_getter.Run();
-  if (!contents)
-    return;
+void GoogleSignInPermissionThrottle::WillStartRequest(
+    network::ResourceRequest* request,
+    bool* defer) {
+  const auto& request_initiator_url =
+      GetRequestInitiatingUrlFromRequest(*request);
 
-  // Check kGoogleLoginControlType pref and return early if false.
-  PrefService* prefs =
-      user_prefs::UserPrefs::Get(contents->GetBrowserContext());
-
-  if (!IsGoogleSignInPrefEnabled(prefs)) {
+  auto* contents = wc_getter_.Run();
+  if (!contents) {
     return;
   }
 
@@ -102,18 +105,7 @@ void HandleRequest(bool* defer,
       contents, request_initiator_url, defer,
       base::BindOnce(&OnPermissionRequestStatus,
                      contents->GetController().GetPendingEntry(), contents,
-                     request_initiator_url, content_settings, delegate));
-}
-
-void GoogleSignInPermissionThrottle::WillStartRequest(
-    network::ResourceRequest* request,
-    bool* defer) {
-  const auto& request_url = request->url;
-  const auto& request_initiator_url =
-      GetRequestInitiatingUrlFromRequest(*request);
-
-  HandleRequest(defer, request_url, request_initiator_url, wc_getter_,
-                settings_map_, delegate_);
+                     request_initiator_url, settings_map_, delegate_));
 }
 
 }  // namespace permissions

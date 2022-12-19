@@ -22,13 +22,13 @@ namespace permissions {
 class GoogleSignInPermissionThrottle : public blink::URLLoaderThrottle {
  public:
   GoogleSignInPermissionThrottle(
-      const content::WebContents::Getter wc_getter,
+      const content::WebContents::Getter& wc_getter,
       scoped_refptr<HostContentSettingsMap> settings_map);
   ~GoogleSignInPermissionThrottle() override;
 
   static std::unique_ptr<blink::URLLoaderThrottle> MaybeCreateThrottleFor(
       const network::ResourceRequest& request,
-      const content::WebContents::Getter wc_getter,
+      const content::WebContents::Getter& wc_getter,
       HostContentSettingsMap* settings_map);
 
   GoogleSignInPermissionThrottle(const GoogleSignInPermissionThrottle&) =

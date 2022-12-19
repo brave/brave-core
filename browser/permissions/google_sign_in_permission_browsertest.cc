@@ -81,7 +81,6 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
         std::make_unique<permissions::MockPermissionPromptFactory>(manager);
 
     top_level_page_url_ = https_server_->GetURL(kTestDomain, "/");
-    https_top_level_page_url_ = https_server_->GetURL(kTestDomain, "/");
     third_party_url_ = https_server_->GetURL(kThirdPartyTestDomain, "/");
     third_party_cookie_url_ = https_server_->GetURL(
         kThirdPartyTestDomain, "/set-cookie?test=true;SameSite=None;Secure");
@@ -329,7 +328,6 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
  protected:
   GURL embedding_url_;
   GURL top_level_page_url_;
-  GURL https_top_level_page_url_;
   GURL cookie_iframe_url_;
   GURL google_oauth_cookie_url_;
   GURL third_party_url_;
@@ -447,7 +445,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieDefaultAllowSiteOverride) {
-  AllowCookies(https_top_level_page_url_);
+  AllowCookies(top_level_page_url_);
   NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
@@ -457,7 +455,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieDefaultBlock3pSiteOverride) {
-  BlockThirdPartyCookies(https_top_level_page_url_);
+  BlockThirdPartyCookies(top_level_page_url_);
   NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
@@ -467,7 +465,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieDefaultBlockSiteOverride) {
-  BlockCookies(https_top_level_page_url_);
+  BlockCookies(top_level_page_url_);
   NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
@@ -480,7 +478,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
 IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieAllowAllAlowSiteOverride) {
   DefaultAllowAllCookies();
-  AllowCookies(https_top_level_page_url_);
+  AllowCookies(top_level_page_url_);
   NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
@@ -491,7 +489,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
 IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieAllowAllBlock3pSiteOverride) {
   DefaultAllowAllCookies();
-  BlockThirdPartyCookies(https_top_level_page_url_);
+  BlockThirdPartyCookies(top_level_page_url_);
   NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
@@ -502,7 +500,7 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
 IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieAllowAllBlockSiteOverride) {
   DefaultAllowAllCookies();
-  BlockCookies(https_top_level_page_url_);
+  BlockCookies(top_level_page_url_);
   NavigateToPageWithFrame(cookie_iframe_url_);
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
@@ -513,9 +511,9 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
 IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieBlockAllAllowSiteOverride) {
   DefaultBlockAllCookies();
-  AllowCookies(https_top_level_page_url_);
+  AllowCookies(top_level_page_url_);
   NavigateToPageWithFrame(cookie_iframe_url_);
-  ExpectCookiesOnHost(https_top_level_page_url_, "name=Good");
+  ExpectCookiesOnHost(top_level_page_url_, "name=Good");
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
   NavigateFrameTo(google_oauth_cookie_url_);
@@ -525,9 +523,9 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
 IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieBlockAllBlock3pSiteOverride) {
   DefaultBlockAllCookies();
-  BlockThirdPartyCookies(https_top_level_page_url_);
+  BlockThirdPartyCookies(top_level_page_url_);
   NavigateToPageWithFrame(cookie_iframe_url_);
-  ExpectCookiesOnHost(https_top_level_page_url_, "name=Good");
+  ExpectCookiesOnHost(top_level_page_url_, "name=Good");
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
   NavigateFrameTo(google_oauth_cookie_url_);
@@ -537,9 +535,9 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
 IN_PROC_BROWSER_TEST_F(GoogleSignInFlagDisabledTest,
                        ThirdPartyGoogleOauthCookieBlockAllBlockSiteOverride) {
   DefaultBlockAllCookies();
-  BlockCookies(https_top_level_page_url_);
+  BlockCookies(top_level_page_url_);
   NavigateToPageWithFrame(cookie_iframe_url_);
-  ExpectCookiesOnHost(https_top_level_page_url_, "");
+  ExpectCookiesOnHost(top_level_page_url_, "");
   ExpectCookiesOnHost(GURL(kAccountsGoogleUrl), "");
 
   NavigateFrameTo(google_oauth_cookie_url_);

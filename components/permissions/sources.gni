@@ -35,6 +35,7 @@ brave_components_permissions_deps = [
   "//components/content_settings/core/common",
   "//components/keyed_service/core",
   "//components/pref_registry",
+  "//services/network/public/cpp",
   "//services/preferences/public/cpp",
   "//third_party/blink/public/common",
   "//ui/base",

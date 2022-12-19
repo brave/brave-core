@@ -23,10 +23,6 @@
 
 namespace permissions {
 
-constexpr char kGoogleAuthPattern[] =
-    "https://accounts.google.com/o/oauth2/auth/*";
-constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/__/auth/*";
-
 const ContentSettingsPattern& GetFirebaseAuthPattern();
 const ContentSettingsPattern& GetGoogleAuthPattern();
 
