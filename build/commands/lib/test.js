@@ -152,7 +152,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         // Specify emulator to run tests on
         braveArgs.push(`--avd-config tools/android/avd/proto/generic_android28.textpb`)
       }
-      let runOptions = config.defaultrunOptions
+      let runOptions = config.defaultOptions
       if (runOptions.output)
         // When test results are saved to a file, callers (such as CI) generate
         // and analyze test reports as a next step. These callers are typically
