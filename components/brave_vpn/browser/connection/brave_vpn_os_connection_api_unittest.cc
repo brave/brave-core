@@ -8,15 +8,17 @@
 #include <memory>
 #include <utility>
 
+#include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api_sim.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
-#include "build/build_config.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_vpn {
@@ -232,24 +234,25 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, CancelConnectingTest) {
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
 
+  // Test quick cancelled when |api_request_| is not null.
+  // See the comment of BraveVPNOSConnectionAPIBase::api_request_.
+  test_api->cancel_connecting_ = false;
+  test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
+  network::TestURLLoaderFactory url_loader_factory_;
+  test_api->SetSharedUrlLoaderFactory(
+      base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+          &url_loader_factory_));
+  // Explicitely create |api_request_|.
+  test_api->GetAPIRequest();
+  test_api->Disconnect();
+  EXPECT_FALSE(test_api->cancel_connecting_);
+  EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
+            test_api->GetConnectionState());
+
   test_api->cancel_connecting_ = true;
   test_api->CreateVPNConnection();
   EXPECT_FALSE(test_api->cancel_connecting_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTED, test_api->connection_state_);
-
-  test_api->cancel_connecting_ = true;
-  test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
-  test_api->OnFetchHostnames("", "", true);
-  EXPECT_FALSE(test_api->cancel_connecting_);
-  EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
-            test_api->GetConnectionState());
-
-  test_api->cancel_connecting_ = true;
-  test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
-  test_api->OnGetProfileCredentials("", true);
-  EXPECT_FALSE(test_api->cancel_connecting_);
-  EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
-            test_api->GetConnectionState());
 }
 
 // Ignore disconnected state change while connected. See the comment at
