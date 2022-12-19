@@ -21,9 +21,10 @@ public class BraveLogoCoordinator extends LogoCoordinator {
 
     public BraveLogoCoordinator(Context context, Callback<LoadUrlParams> logoClickedCallback,
             LogoView logoView, boolean shouldFetchDoodle, Callback<Logo> onLogoAvailableCallback,
-            Runnable onCachedLogoRevalidatedRunnable, boolean isParentSurfaceShown) {
+            Runnable onCachedLogoRevalidatedRunnable, boolean isParentSurfaceShown,
+            LogoCoordinator.VisibilityObserver visibilityObserver) {
         super(context, logoClickedCallback, logoView, shouldFetchDoodle, onLogoAvailableCallback,
-                onCachedLogoRevalidatedRunnable, isParentSurfaceShown);
+                onCachedLogoRevalidatedRunnable, isParentSurfaceShown, visibilityObserver);
 
         mLogoView = logoView;
     }
