@@ -138,7 +138,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
     ], config.defaultOptions)
   } else {
     // Run the tests
-    getTestsToRun(config, suite).forEach((testSuite) => {
+    getTestsToRun(config, suite).every((testSuite) => {
       if (options.output) {
         braveArgs.splice(braveArgs.indexOf('--gtest_output=xml:' + options.output), 1)
         braveArgs.push(`--gtest_output=xml:${testSuite}.xml`)
@@ -153,7 +153,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         braveArgs.push(`--avd-config tools/android/avd/proto/generic_android28.textpb`)
       }
       let runOptions = config.defaultOptions
-      if (runOptions.output)
+      if (options.output)
         // When test results are saved to a file, callers (such as CI) generate
         // and analyze test reports as a next step. These callers are typically
         // not interested in the exit code of running the tests, because they
@@ -163,7 +163,10 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
         // the test exit code here, we give callers a chance to distinguish test
         // failures (by looking at the output file) from compilation errors.
         runOptions.continueOnFail = true
-      util.run(path.join(config.outputDir, getTestBinary(testSuite)), braveArgs, runOptions)
+      let prog = util.run(path.join(config.outputDir, getTestBinary(testSuite)), braveArgs, runOptions)
+      // Don't run other tests if one has failed already, especially because
+      // this would overwrite the --output file (if given).
+      return prog.status === 0
     })
   }
 }
