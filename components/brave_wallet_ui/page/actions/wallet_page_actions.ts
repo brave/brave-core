@@ -44,5 +44,9 @@ export const {
   walletCreated,
   walletSetupComplete,
   updateNFTPinStatus,
-  getPinStatus
+  getPinStatus,
+  getIsAutoPinEnabled,
+  setAutoPinEnabled,
+  updateEnablingAutoPin,
+  updateAutoPinEnabled
 } = PageActions

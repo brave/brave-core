@@ -24,6 +24,11 @@ export const httpifyIpfsUrl = (url: string | undefined) => {
   return trimmedUrl.startsWith('ipfs://') ? trimmedUrl.replace('ipfs://', 'https://ipfs.io/ipfs/') : trimmedUrl
 }
 
+export const reverseHttpifiedIpfsUrl = (url: string | undefined) => {
+  const trimmedUrl = url ? url.trim() : ''
+  return trimmedUrl.startsWith('https://ipfs.io/ipfs/') ? trimmedUrl.replace('https://ipfs.io/ipfs/', 'ipfs://') : trimmedUrl
+}
+
 export const isIpfs = (url?: string) => url?.startsWith('ipfs://')
 
 export const isDataURL = (url?: string) => url?.startsWith('chrome://erc-token-images/')

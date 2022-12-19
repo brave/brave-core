@@ -187,7 +187,7 @@ export const Description = styled.span`
   padding: 0;
 `
 
-export const RunLocalNodeButton = styled(WalletButton)`
+export const ActionButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;

@@ -237,7 +237,7 @@ export const PortfolioOverview = () => {
     <StyledWrapper>
       {showBanner &&
         <BannerWrapper>
-          <NftIpfsBanner onDismiss={onDismissIpfsBanner} status='uploading' />
+          <NftIpfsBanner onDismiss={onDismissIpfsBanner} status='start' />
         </BannerWrapper>
       }
 

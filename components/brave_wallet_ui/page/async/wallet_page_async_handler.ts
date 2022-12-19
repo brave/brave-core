@@ -309,6 +309,22 @@ handler.on(WalletPageActions.getNFTMetadata.type, async (store, payload: BraveWa
   store.dispatch(WalletPageActions.setIsFetchingNFTMetadata(false))
 })
 
+handler.on(WalletPageActions.getIsAutoPinEnabled.type, async (store) => {
+  const { braveWalletAutoPinService } = getWalletPageApiProxy()
+  const { enabled } = await braveWalletAutoPinService.isAutoPinEnabled()
+  store.dispatch(WalletPageActions.updateAutoPinEnabled(enabled))
+})
+
+handler.on(WalletPageActions.setAutoPinEnabled.type, async (store, payload: boolean) => {
+  const { braveWalletAutoPinService } = getWalletPageApiProxy()
+  store.dispatch(WalletPageActions.updateEnablingAutoPin(true))
+  await braveWalletAutoPinService.setAutoPinEnabled(payload)
+  store.dispatch(WalletPageActions.updateEnablingAutoPin(false))
+  const { enabled } = await braveWalletAutoPinService.isAutoPinEnabled()
+  console.log({ enabled })
+  store.dispatch(WalletPageActions.updateAutoPinEnabled(enabled))
+})
+
 handler.on(WalletPageActions.getPinStatus.type, async (store, payload: BraveWallet.BlockchainToken) => {
   const braveWalletPinService = getWalletPageApiProxy().braveWalletPinService
   const result = await braveWalletPinService.getTokenStatus(payload)

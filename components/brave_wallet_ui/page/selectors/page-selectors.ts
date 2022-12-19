@@ -25,6 +25,8 @@ export const showAddModal = ({ page }: State) => page.showAddModal
 export const showIsRestoring = ({ page }: State) => page.showIsRestoring
 export const showRecoveryPhrase = ({ page }: State) => page.showRecoveryPhrase
 export const walletTermsAcknowledged = ({ page }: State) => page.walletTermsAcknowledged
+export const enablingAutoPin = ({ page }: State) => page.enablingAutoPin
+export const autoPinEnabled = ({ page }: State) => page.autoPinEnabled
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects and lists)
 export const importWalletError = ({ page }: State) => page.importWalletError

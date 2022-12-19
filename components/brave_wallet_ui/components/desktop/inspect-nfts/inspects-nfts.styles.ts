@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 // styles
 import { WalletButton } from '../../shared/style'
-import { RunLocalNodeButton } from '../local-ipfs-node/local-ipfs-node.styles'
+import { ActionButton } from '../local-ipfs-node/local-ipfs-node.styles'
 
 // icons
 import Background from '../../../assets/svg-icons/nft-ipfs/inspect-nfts-background.svg'
@@ -97,7 +97,7 @@ export const NftCountHeading = styled.h1`
   padding: 0;
 `
 
-export const PinNftsButton = styled(RunLocalNodeButton)`
+export const PinNftsButton = styled(ActionButton)`
   margin: 32px;
 `
 
