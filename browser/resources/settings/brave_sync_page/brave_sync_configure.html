@@ -7,12 +7,12 @@
 
   .device-list
   {
-    margin: 24px 0;
-    min-width: 100%;
     border-collapse: collapse;
     font-family: Poppins, sans-serif;
     font-weight: 500;
-    text-align: left;
+    margin: 24px 0;
+    min-width: 100%;
+    text-align: left;  /* csschecker-disable-line left-right */
   }
 
   thead
@@ -35,39 +35,39 @@
   th:first-child,
   td:first-child
   {
-    padding-left: 12px;
+    padding-inline-start: 12px;
   }
 
   th:last-child,
   td:last-child
   {
-    padding-right: 12px;
+    padding-inline-end: 12px;
   }
 
 
   .device-name
   {
-    max-width: 30ch;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
     display: block;
+    max-width: 30ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .device-actions
   {
+    column-gap: 8px;
     display: grid;
     grid-template-columns: auto auto;
     grid-template-rows: auto;
-    column-gap: 8px;
     justify-content: end;
   }
 
   .delete-button
   {
+    height: 24px;
     margin: 0;
     width: 24px;
-    height: 24px;
   }
 
   section
@@ -77,10 +77,10 @@
 
   .chain-actions
   {
+    column-gap: 8px;
     display: grid;
     grid-template-columns: auto auto;
     grid-template-rows: auto;
-    column-gap: 8px;
     justify-content: start;
   }
 </style>

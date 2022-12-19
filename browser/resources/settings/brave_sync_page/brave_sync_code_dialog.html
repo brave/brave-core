@@ -12,34 +12,34 @@
   .dialog-title
   {
     display: block;
-    line-height: 1.6;
     font-weight: 700;
+    line-height: 1.6;
   }
   .dialog-subtitle
   {
-    margin-top: 10px;
     display: block;
-    line-height: 1.4;
     font-size: 90%;
+    line-height: 1.4;
+    margin-top: 10px;
   }
   .tertiary-button
   {
-    border: none;
     background: none;
+    border: none;
     color: var(--cr-primary-text-color);
-    text-decoration: underline;
+    cursor: pointer;
     font-family: Poppins, sans-serif;
     font-size: 13px;
     font-weight: 500;
-    cursor: pointer;
+    text-decoration: underline;
   }
   .button-group > *
   {
-    margin-right: 8px;
+    margin-inline-end: 8px;
   }
   .button-group:last-child
   {
-    margin-right: 0;
+    margin-inline-end: 0;
   }
   .invalid-sync-code
   {
@@ -47,34 +47,34 @@
   }
   .devices
   {
+    align-items: center;
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    height: 220px;
+    justify-content: center;
     margin: 0 20px 20px 20px;
     padding: 0;
     width: -webkit-fill-available;
-    height: 220px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr;
-    grid-gap: 30px;
-    align-items: center;
-    justify-content: center;
   }
   .device
   {
     -webkit-appearance: none;
+    align-items: center;
     background: none;
-    box-sizing: border-box;
-    height: 100%;
-    border-width: 1px;
-    border-style: solid;
     border-color: var(--line-color);
     border-image: initial;
     border-radius: 6px;
-    padding: 0;
+    border-style: solid;
+    border-width: 1px;
+    box-sizing: border-box;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    height: 100%;
     justify-content: center;
-    cursor: pointer;
+    padding: 0;
   }
   .device[disabled]
   {
@@ -83,8 +83,8 @@
 
   .device-image
   {
-    margin-bottom: 20px;
     height: 100px;
+    margin-bottom: 20px;
   }
   [disabled] > .device-image
   {
@@ -92,20 +92,20 @@
   }
   .device-title
   {
-    color: var(--cr-primary-text-color);
     align-self: unset;
-    font-weight: 600;
+    color: var(--cr-primary-text-color);
+    font-family: Poppins, sans-serif;
     font-size: 20px;
+    font-weight: 600;
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    font-family: Poppins, sans-serif;
   }
   .device-subtitle
   {
     align-self: unset;
-    font-weight: 400;
     font-style: italic;
+    font-weight: 400;
     margin: 0;
   }
   [disabled] > .device-title,
@@ -116,82 +116,82 @@
 
   .qr-viewer
   {
-    padding-left: 50%;
+    align-items: center;
     background-image: url(chrome://settings/brave_sync_page/qr_scanning.svg);
     background-position: left center;
     background-repeat: no-repeat;
     background-size: 40%;
-    min-height: 130px;
+    color: var(--cr-primary-text-color);
     display: flex;
     justify-content: center;
-    align-items: center;
-    color: var(--cr-primary-text-color);
+    min-height: 130px;
+    padding-inline-start: 50%;
   }
 
   .qr-image
   {
-    box-sizing: border-box;
-    border: solid 1px var(--line-color);
     background: white;
+    border: solid 1px var(--line-color);
+    box-sizing: border-box;
+    max-width: 100%;
     padding: 15px;
     width: 300px;
-    max-width: 100%;
   }
 
   .sync-code-widget
   {
-    margin: 0 20px;
-    width: -webkit-fill-available;
-    font-family: Poppins, sans-serif;
-    padding: 10px;
-    border-width: 1px;
-    border-style: solid;
     border-color: var(--line-color);
     border-image: initial;
     border-radius: 6px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Poppins, sans-serif;
+    margin: 0 20px;
+    padding: 10px;
+    width: -webkit-fill-available;
   }
   .sync-code-text
   {
-    box-sizing: border-box;
-    min-height: 140px;
-    width: 100%;
-    border-width: 1px;
-    border-style: solid;
     border-color: var(--line-color);
     border-radius: 6px;
-    padding: 15px 20px;
+    border-style: solid;
+    border-width: 1px;
+    box-sizing: border-box;
     font-family: inherit;
     font-size: 16px;
     line-height: 26px;
+    min-height: 140px;
+    padding: 15px 20px;
     resize: vertical;
+    width: 100%;
   }
   .sync-code-footer
   {
-    margin-top: 10px;
+    align-items: center;
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: auto;
-    align-items: center;
+    margin-top: 10px;
     /* check muli */
   }
   .clipboard-button
   {
+    height: 24px;
     margin: 0;
     width: 24px;
-    height: 24px;
   }
   .sync-code-clipboard
   {
+    align-items: center;
     display: grid;
+    gap: 10px;
     grid-template-columns: auto auto;
     grid-template-rows: auto;
-    align-items: center;
-    gap: 10px;
   }
   .clipboard-success
   {
-    transition: opacity 2s cubic-bezier(0.23, 1, 0.32, 1);
     opacity: 0;
+    transition: opacity 2s cubic-bezier(0.23, 1, 0.32, 1);
   }
   .clipboard-success.is-success-true
   {

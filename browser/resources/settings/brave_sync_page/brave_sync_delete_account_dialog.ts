@@ -76,17 +76,17 @@ export class SettingsBraveSyncCodeDialogElement
                                             BraveSyncBrowserProxy.getInstance();
 
   async handleDeleteAccount_() {
-    let error_text = ''
+    let errorText = ''
     this.deleteIsInProgress = true
     this.deleteAccountError = ''
     try {
       await this.syncBrowserProxy_.permanentlyDeleteSyncAccount()
     } catch (e: unknown) {
-      error_text = (e as string)
+      errorText = (e as string)
     }
 
     this.deleteIsInProgress = false
-    this.deleteAccountError = error_text
+    this.deleteAccountError = errorText
 
     if (!this.deleteAccountError) {
       this.doingDeleteAccount = false
