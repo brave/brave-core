@@ -13,7 +13,6 @@ class GURL;
 
 #define AllowStorageAccessSync                                               \
   AllowAutoplay(bool play_requested) { return true; }                        \
-  virtual bool AllowFingerprinting() { return true; }                        \
   virtual bool IsCosmeticFilteringEnabled(const GURL& url) { return false; } \
   virtual bool IsFirstPartyCosmeticFilteringEnabled(const GURL& url) {       \
     return false;                                                            \
