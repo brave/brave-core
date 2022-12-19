@@ -519,18 +519,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         && !UrlUtilities.isNTPUrl(tab.getUrl().getSpec())
                         && mPlaylistPageHandler != null) {
                     // TODO DEEP : find contents from the page and show the playlist button
-                    // org.chromium.url.mojom.Url contentUrl = new org.chromium.url.mojom.Url();
-                    // contentUrl.url = "https://www.youtube.com/watch?v=WETz6EaohrM";
-                    // mPlaylistPageHandler.addMediaFilesFromPageToPlaylist("default", contentUrl);
-
-                    mPlaylistPageHandler.getPlaylist("default", pl -> {
-                        Log.e("NTP", "mPlaylistPageHandler 4");
-                        PlaylistItem playlistItem = pl.items[0];
-                        Log.e("NTP",
-                                playlistItem.name + " : " + playlistItem.pageSource.url + " : "
-                                        + playlistItem.mediaPath.url + " : "
-                                        + playlistItem.thumbnailPath.url);
-                    });
                 }
             }
 
