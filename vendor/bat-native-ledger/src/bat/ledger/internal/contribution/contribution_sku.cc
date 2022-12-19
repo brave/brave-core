@@ -207,7 +207,7 @@ void ContributionSKU::CredsStepSaved(mojom::Result result,
 }
 
 void ContributionSKU::Merchant(const mojom::SKUTransaction& transaction,
-                               client::TransactionCallback callback) {
+                               client::LegacyResultCallback callback) {
   auto get_callback = std::bind(&ContributionSKU::GetUnblindedTokens,
       this,
       _1,
@@ -221,10 +221,10 @@ void ContributionSKU::Merchant(const mojom::SKUTransaction& transaction,
 void ContributionSKU::GetUnblindedTokens(
     std::vector<mojom::UnblindedTokenPtr> list,
     const mojom::SKUTransaction& transaction,
-    client::TransactionCallback callback) {
+    client::LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(0, "List is empty");
-    callback(mojom::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -241,7 +241,7 @@ void ContributionSKU::GetUnblindedTokens(
 
   if (current_amount < transaction.amount) {
     BLOG(0, "Not enough funds");
-    callback(mojom::Result::NOT_ENOUGH_FUNDS, "");
+    callback(mojom::Result::NOT_ENOUGH_FUNDS);
     return;
   }
 
@@ -263,10 +263,10 @@ void ContributionSKU::GetUnblindedTokens(
 void ContributionSKU::GetOrderMerchant(
     mojom::SKUOrderPtr order,
     const credential::CredentialsRedeem& redeem,
-    client::TransactionCallback callback) {
+    client::LegacyResultCallback callback) {
   if (!order) {
     BLOG(0, "Order was not found");
-    callback(mojom::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -281,15 +281,15 @@ void ContributionSKU::GetOrderMerchant(
   credentials_->RedeemTokens(new_redeem, creds_callback);
 }
 
-void ContributionSKU::OnRedeemTokens(const mojom::Result result,
-                                     client::TransactionCallback callback) {
+void ContributionSKU::OnRedeemTokens(mojom::Result result,
+                                     client::LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Problem redeeming tokens");
-    callback(result, "");
+    callback(result);
     return;
   }
 
-  callback(result, "");
+  callback(result);
 }
 
 void ContributionSKU::Retry(mojom::ContributionInfoPtr contribution,

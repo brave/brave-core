@@ -12,6 +12,7 @@
 
 #include "bat/ledger/internal/endpoint/payment/payment_server.h"
 #include "bat/ledger/ledger.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -37,12 +38,18 @@ class SKUTransaction {
                           const mojom::SKUTransaction& transaction,
                           const std::string& destination,
                           const std::string& wallet_type,
+                          const std::string& contribution_id,
                           ledger::LegacyResultCallback callback);
 
   void OnTransfer(mojom::Result result,
-                  const std::string& external_transaction_id,
                   const mojom::SKUTransaction& transaction,
+                  const std::string& contribution_id,
+                  const std::string& destination,
                   ledger::LegacyResultCallback callback);
+
+  void OnGetExternalTransaction(ledger::LegacyResultCallback,
+                                mojom::SKUTransaction&&,
+                                absl::optional<mojom::ExternalTransactionPtr>);
 
   void OnSaveSKUExternalTransaction(mojom::Result result,
                                     const mojom::SKUTransaction& transaction,

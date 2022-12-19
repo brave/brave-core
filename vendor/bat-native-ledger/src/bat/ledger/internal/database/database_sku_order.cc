@@ -112,7 +112,7 @@ void DatabaseSKUOrder::GetRecord(
 
   const std::string query = base::StringPrintf(
       "SELECT order_id, total_amount, merchant_id, location, status, "
-      "created_at FROM %s WHERE order_id = ?",
+      "contribution_id, created_at FROM %s WHERE order_id = ?",
       kTableName);
 
   auto command = mojom::DBCommand::New();
@@ -126,6 +126,7 @@ void DatabaseSKUOrder::GetRecord(
                               mojom::DBCommand::RecordBindingType::STRING_TYPE,
                               mojom::DBCommand::RecordBindingType::STRING_TYPE,
                               mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
                               mojom::DBCommand::RecordBindingType::INT64_TYPE};
 
   transaction->commands.push_back(std::move(command));
@@ -161,7 +162,8 @@ void DatabaseSKUOrder::OnGetRecord(mojom::DBCommandResponsePtr response,
   info->merchant_id = GetStringColumn(record, 2);
   info->location = GetStringColumn(record, 3);
   info->status = static_cast<mojom::SKUOrderStatus>(GetIntColumn(record, 4));
-  info->created_at = GetInt64Column(record, 5);
+  info->contribution_id = GetStringColumn(record, 5);
+  info->created_at = GetInt64Column(record, 6);
 
   auto items_callback =
       std::bind(&DatabaseSKUOrder::OnGetRecordItems, this, _1,
@@ -195,7 +197,7 @@ void DatabaseSKUOrder::GetRecordByContributionId(
 
   const std::string query = base::StringPrintf(
       "SELECT order_id, total_amount, merchant_id, location, status, "
-      "created_at FROM %s WHERE contribution_id = ?",
+      "contribution_id, created_at FROM %s WHERE contribution_id = ?",
       kTableName);
 
   auto command = mojom::DBCommand::New();
@@ -209,6 +211,7 @@ void DatabaseSKUOrder::GetRecordByContributionId(
                               mojom::DBCommand::RecordBindingType::STRING_TYPE,
                               mojom::DBCommand::RecordBindingType::STRING_TYPE,
                               mojom::DBCommand::RecordBindingType::INT_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
                               mojom::DBCommand::RecordBindingType::INT64_TYPE};
 
   transaction->commands.push_back(std::move(command));
