@@ -239,6 +239,8 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
     Browser* browser,
     TabStripRegionView* region_view)
     : browser_(browser), region_view_(region_view) {
+  browser->tab_strip_model()->AddObserver(this);
+
   SetNotifyEnterExitOnChild(true);
 
   scroll_view_ = AddChildView(std::make_unique<CustomScrollView>());
@@ -494,6 +496,22 @@ void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
   ScheduleFloatingModeTimer();
 }
 
+void VerticalTabStripRegionView::OnBoundsChanged(
+    const gfx::Rect& previous_bounds) {
+  if (previous_bounds.size() != size())
+    ScrollActiveTabToBeVisible();
+}
+
+void VerticalTabStripRegionView::OnTabStripModelChanged(
+    TabStripModel* tab_strip_model,
+    const TabStripModelChange& change,
+    const TabStripSelectionChange& selection) {
+  if (!selection.active_tab_changed())
+    return;
+
+  ScrollActiveTabToBeVisible();
+}
+
 void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
   bool overflowed =
       tabs::features::ShouldShowVerticalTabs(browser_) &&
@@ -568,6 +586,43 @@ void VerticalTabStripRegionView::ScheduleFloatingModeTimer() {
         FROM_HERE, base::Milliseconds(400),
         base::BindOnce(&VerticalTabStripRegionView::SetState,
                        base::Unretained(this), State::kFloating));
+  }
+}
+
+void VerticalTabStripRegionView::ScrollActiveTabToBeVisible() {
+  if (!tabs::features::ShouldShowVerticalTabs(browser_))
+    return;
+
+  auto active_index = browser_->tab_strip_model()->active_index();
+  if (active_index == TabStripModel::kNoTab) {
+    // This could happen on destruction.
+    return;
+  }
+
+  auto* active_tab = region_view_->tab_strip_->tab_at(active_index);
+  DCHECK(active_tab);
+
+  gfx::RectF tab_bounds_in_contents_view(active_tab->GetLocalBounds());
+  views::View::ConvertRectToTarget(active_tab, scroll_contents_view_,
+                                   &tab_bounds_in_contents_view);
+
+  auto visible_rect = scroll_view_->GetVisibleRect();
+  if (visible_rect.Contains(gfx::Rect(0, tab_bounds_in_contents_view.y(),
+                                      tab_bounds_in_contents_view.width(),
+                                      tab_bounds_in_contents_view.height()))) {
+    return;
+  }
+
+  // Unfortunately, ScrollView's API doesn't work well for us. So we manually
+  // adjust scroll offset. Note that we change contents view's position as
+  // we disabled layered scroll view.
+  if (visible_rect.y() > tab_bounds_in_contents_view.bottom()) {
+    scroll_contents_view_->SetPosition(
+        {0, -static_cast<int>(tab_bounds_in_contents_view.y())});
+  } else {
+    scroll_contents_view_->SetPosition(
+        {0, -static_cast<int>(tab_bounds_in_contents_view.bottom()) +
+                scroll_view_->height() - scroll_view_header_->height()});
   }
 }
 
