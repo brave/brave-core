@@ -17,6 +17,13 @@ enum GetParametersError {
   kFailedToParseBody
 };
 
+enum GetTransactionStatusUpholdError {
+  kFailedToCreateRequest,
+  kAccessTokenExpired,                  // HTTP 401
+  kUnexpectedStatusCode,                // HTTP xxx
+  kFailedToParseBody
+};
+
 enum PatchWalletsError {
   kFailedToCreateRequest,
   kInvalidRequest,                      // HTTP 400, HTTP 403
@@ -42,6 +49,20 @@ enum PostConnectError {
   kTransactionVerificationFailure,      // HTTP 403
   kDeviceLimitReached,                  // HTTP 409
   kUnexpectedError,                     // HTTP 500
+  kUnexpectedStatusCode,                // HTTP xxx
+  kFailedToParseBody
+};
+
+enum PostCommitTransactionUpholdError {
+  kFailedToCreateRequest,
+  kAccessTokenExpired,                  // HTTP 401
+  kTransactionNotFound,                 // HTTP 404
+  kUnexpectedStatusCode                 // HTTP xxx
+};
+
+enum PostCreateTransactionUpholdError {
+  kFailedToCreateRequest,
+  kAccessTokenExpired,                  // HTTP 401
   kUnexpectedStatusCode,                // HTTP xxx
   kFailedToParseBody
 };
