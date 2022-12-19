@@ -199,6 +199,7 @@ source_set("unit_tests") {
   deps = [
     "//brave/browser/net",
     "//brave/browser/net:geolocation",
+    "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/browser",
     "//chrome/test:test_support",
     "//content/test:test_support",

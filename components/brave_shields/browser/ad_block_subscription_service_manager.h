@@ -19,7 +19,6 @@
 #include "base/synchronization/lock.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
@@ -43,8 +42,6 @@ class AdBlockSubscriptionFiltersProvider;
 }  // namespace brave_shields
 
 class AdBlockServiceTest;
-
-using brave_component_updater::BraveComponent;
 
 namespace brave_shields {
 
@@ -82,7 +79,6 @@ class AdBlockSubscriptionServiceManager {
   explicit AdBlockSubscriptionServiceManager(
       AdBlockFiltersProviderManager* filters_manager,
       PrefService* local_state,
-      scoped_refptr<base::SequencedTaskRunner> task_runner,
       AdBlockSubscriptionDownloadManager::DownloadManagerGetter getter,
       const base::FilePath& profile_dir);
   ~AdBlockSubscriptionServiceManager();
@@ -97,8 +93,6 @@ class AdBlockSubscriptionServiceManager {
   void RefreshSubscription(const GURL& sub_url, bool from_ui);
   void CreateSubscription(const GURL& sub_url);
 
-  bool Start();
-
   AdBlockSubscriptionDownloadManager* download_manager() {
     return download_manager_.get();
   }
@@ -108,9 +102,6 @@ class AdBlockSubscriptionServiceManager {
 
   void AddObserver(AdBlockSubscriptionServiceManagerObserver* observer);
   void RemoveObserver(AdBlockSubscriptionServiceManagerObserver* observer);
-
-  void Init(AdBlockResourceProvider* resource_provider);
-  bool IsInitialized();
 
  private:
   friend class ::AdBlockServiceTest;
@@ -144,11 +135,7 @@ class AdBlockSubscriptionServiceManager {
                                     base::TimeDelta* retry_interval);
 
   raw_ptr<PrefService> local_state_ GUARDED_BY_CONTEXT(sequence_checker_);
-  scoped_refptr<base::SequencedTaskRunner> task_runner_;
-  raw_ptr<AdBlockResourceProvider> resource_provider_;
   raw_ptr<AdBlockFiltersProviderManager> filters_manager_;
-  raw_ptr<brave_component_updater::BraveComponent::Delegate>
-      delegate_;  // NOT OWNED
   base::WeakPtr<AdBlockSubscriptionDownloadManager> download_manager_;
   base::FilePath subscription_path_;
   base::Value::Dict subscriptions_ GUARDED_BY(subscription_services_lock_);

@@ -219,10 +219,6 @@ base::Value::Dict AdBlockService::HiddenClassIdSelectors(
 }
 
 AdBlockRegionalServiceManager* AdBlockService::regional_service_manager() {
-  if (!regional_service_manager_->IsInitialized()) {
-    regional_service_manager_->Init(resource_provider_.get(),
-                                    filter_list_catalog_provider_.get());
-  }
   return regional_service_manager_.get();
 }
 
@@ -233,9 +229,6 @@ AdBlockService::custom_filters_provider() {
 
 brave_shields::AdBlockSubscriptionServiceManager*
 AdBlockService::subscription_service_manager() {
-  if (!subscription_service_manager_->IsInitialized()) {
-    subscription_service_manager_->Init(resource_provider_.get());
-  }
   return subscription_service_manager_.get();
 }
 
@@ -279,12 +272,12 @@ AdBlockService::AdBlockService(
           component_update_service_, g_ad_block_component_id_,
           g_ad_block_component_base64_public_key_, kAdBlockComponentName);
   regional_service_manager_ =
-      brave_shields::AdBlockRegionalServiceManagerFactory(
+      std::make_unique<brave_shields::AdBlockRegionalServiceManager>(
           additional_filters_manager_.get(), local_state_, locale_,
-          component_update_service_, GetTaskRunner());
+          component_update_service_, filter_list_catalog_provider_.get());
   subscription_service_manager_ =
       std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
-          additional_filters_manager_.get(), local_state_, GetTaskRunner(),
+          additional_filters_manager_.get(), local_state_,
           std::move(subscription_download_manager_getter_), profile_dir_);
   custom_filters_provider_ =
       std::make_unique<brave_shields::AdBlockCustomFiltersProvider>(
@@ -302,16 +295,6 @@ AdBlockService::AdBlockService(
 }
 
 AdBlockService::~AdBlockService() = default;
-
-bool AdBlockService::Start() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  // Initialize regional and subscription services:
-  regional_service_manager();
-  subscription_service_manager();
-
-  return true;
-}
 
 void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

@@ -20,9 +20,6 @@
 #include "base/thread_annotations.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/adblock_rust_ffi/src/wrapper.h"
-#include "brave/components/brave_shields/browser/ad_block_engine.h"
-#include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -111,13 +108,11 @@ void SubscriptionInfo::RegisterJSONConverter(
 AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
     AdBlockFiltersProviderManager* filters_manager,
     PrefService* local_state,
-    scoped_refptr<base::SequencedTaskRunner> task_runner,
     AdBlockSubscriptionDownloadManager::DownloadManagerGetter
         download_manager_getter,
     const base::FilePath& profile_dir)
     : initialized_(false),
       local_state_(local_state),
-      task_runner_(task_runner),
       filters_manager_(filters_manager),
       subscription_path_(profile_dir.Append(kSubscriptionsDir)),
       subscription_update_timer_(
@@ -126,18 +121,6 @@ AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
       .Run(base::BindOnce(
           &AdBlockSubscriptionServiceManager::OnGetDownloadManager,
           weak_ptr_factory_.GetWeakPtr()));
-}
-
-void AdBlockSubscriptionServiceManager::Init(
-    AdBlockResourceProvider* resource_provider) {
-  CHECK(!initialized_);
-  base::AutoLock lock(subscription_services_lock_);
-  resource_provider_ = resource_provider;
-  initialized_ = true;
-}
-
-bool AdBlockSubscriptionServiceManager::IsInitialized() {
-  return initialized_;
 }
 
 AdBlockSubscriptionServiceManager::~AdBlockSubscriptionServiceManager() =
@@ -503,10 +486,6 @@ void AdBlockSubscriptionServiceManager::ClearSubscriptionPrefs(
   // TODO(bridiver) - change to pref registrar
   base::AutoLock lock(subscription_services_lock_);
   subscriptions_ = subscriptions_dict.Clone();
-}
-
-bool AdBlockSubscriptionServiceManager::Start() {
-  return true;
 }
 
 void AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded(

@@ -124,8 +124,6 @@ class AdBlockService {
 
   base::SequencedTaskRunner* GetTaskRunner();
 
-  bool Start();
-
  private:
   friend class ::BraveAdBlockTPNetworkDelegateHelperTest;
   friend class ::AdBlockServiceTest;
