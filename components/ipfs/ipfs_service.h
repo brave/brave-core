@@ -71,7 +71,7 @@ class IpfsService : public KeyedService,
   IpfsService(const IpfsService&) = delete;
   IpfsService& operator=(const IpfsService&) = delete;
   ~IpfsService() override;
-
+  IpfsService();
   using GetConnectedPeersCallback =
       base::OnceCallback<void(bool, const std::vector<std::string>&)>;
   using GetAddressesConfigCallback =
@@ -83,7 +83,7 @@ class IpfsService : public KeyedService,
   using GarbageCollectionCallback =
       base::OnceCallback<void(bool, const std::string&)>;
   // Local pins
-  using AddPinCallback =
+  using AddPinsCallback =
       base::OnceCallback<void(bool, absl::optional<AddPinResult>)>;
   using RemovePinCallback =
       base::OnceCallback<void(bool, absl::optional<RemovePinResult>)>;
@@ -118,12 +118,13 @@ class IpfsService : public KeyedService,
   void ValidateGateway(const GURL& url, BoolCallback callback);
 
   virtual void PreWarmShareableLink(const GURL& url);
+  virtual void X() {}
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   // Local pins
   virtual void AddPin(const std::vector<std::string>& cids,
                       bool recursive,
-                      AddPinCallback callback);
+                      AddPinsCallback callback);
   virtual void RemovePin(const std::vector<std::string>& cid,
                          RemovePinCallback callback);
   virtual void GetPins(const absl::optional<std::vector<std::string>>& cid,
@@ -150,6 +151,8 @@ class IpfsService : public KeyedService,
                  const base::FilePath& target_path,
                  BoolCallback callback);
 #endif
+  virtual void XXX() { }
+
   virtual void GetConnectedPeers(GetConnectedPeersCallback callback,
                                  int retries = kPeersDefaultRetries);
   void GetAddressesConfig(GetAddressesConfigCallback callback);
@@ -170,6 +173,7 @@ class IpfsService : public KeyedService,
   int GetLastPeersRetryForTest() const;
   void SetZeroPeersDeltaForTest(bool value);
 
+
   void SetPreWarmCalbackForTesting(base::OnceClosure callback) {
     prewarm_callback_for_testing_ = std::move(callback);
   }
@@ -177,7 +181,7 @@ class IpfsService : public KeyedService,
   IpnsKeysManager* GetIpnsKeysManager() { return ipns_keys_manager_.get(); }
 #endif
  protected:
-  IpfsService();
+
   void OnConfigLoaded(GetConfigCallback, const std::pair<bool, std::string>&);
 
  private:
@@ -215,7 +219,7 @@ class IpfsService : public KeyedService,
                        GetPinsCallback callback,
                        api_request_helper::APIRequestResult response);
   void OnPinAddResult(APIRequestList::iterator iter,
-                      AddPinCallback callback,
+                      AddPinsCallback callback,
                       api_request_helper::APIRequestResult response);
   void OnPinRemoveResult(APIRequestList::iterator iter,
                          RemovePinCallback callback,
@@ -287,6 +291,23 @@ class IpfsService : public KeyedService,
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   IpfsP3A ipfs_p3a_;
   base::WeakPtrFactory<IpfsService> weak_factory_;
+};
+
+class XXX : public IpfsService {
+  public:
+    XXX() :IpfsService() {}
+
+    ~XXX() override {}
+
+
+  void RemovePin(const std::vector<std::string>& cid,
+                 IpfsService::RemovePinCallback callback) override {
+  }
+};
+
+class IpfsServiceaa : public IpfsService {
+  void RemovePin(const std::vector<std::string>& cid,
+                 RemovePinCallback callback) override;
 };
 
 }  // namespace ipfs

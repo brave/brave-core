@@ -22,6 +22,8 @@ source_set("brave_ipfs_unit_tests") {
     ]
 
     deps = [
+    "//testing/gmock",
+    "//testing/gtest",
       "//base/test:test_support",
       "//brave/components/ipfs",
       "//chrome/test:test_support",

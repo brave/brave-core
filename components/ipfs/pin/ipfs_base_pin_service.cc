@@ -84,9 +84,9 @@ void IpfsBasePinService::MaybeStartDaemon() {
     return;
   }
 
-  if (!ipfs::IsLocalGatewayConfigured(pref_service_)) {
-    return;
-  }
+//  if (!ipfs::IsLocalGatewayConfigured(pref_service_)) {
+//    return;
+//  }
 
   ipfs_service_->StartDaemonAndLaunch(base::BindOnce(
       &IpfsBasePinService::OnDaemonStarted, base::Unretained(this)));

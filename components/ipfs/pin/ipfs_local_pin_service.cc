@@ -32,6 +32,7 @@ AddLocalPinJob::AddLocalPinJob(PrefService* prefs_service,
 AddLocalPinJob::~AddLocalPinJob() {}
 
 void AddLocalPinJob::Start() {
+  LOG(ERROR) << "XXXZZZ add start " << ipfs_service_;
   ipfs_service_->AddPin(
       cids_, true,
       base::BindOnce(&AddLocalPinJob::OnAddPinResult, base::Unretained(this)));
@@ -39,6 +40,7 @@ void AddLocalPinJob::Start() {
 
 void AddLocalPinJob::OnAddPinResult(bool status,
                                     absl::optional<AddPinResult> result) {
+  LOG(ERROR) << "XXXZZZ " << status;
   if (status && result) {
     for (const auto& cid : cids_) {
       if (std::find(result->pins.begin(), result->pins.end(), cid) ==

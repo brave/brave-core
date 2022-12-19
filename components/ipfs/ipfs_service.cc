@@ -379,7 +379,8 @@ void IpfsService::NotifyIpnsKeysLoaded(bool result) {
 // Local pinning
 void IpfsService::AddPin(const std::vector<std::string>& cids,
                          bool recursive,
-                         AddPinCallback callback) {
+                         AddPinsCallback callback) {
+  LOG(ERROR) << "XXXZZZ add pin";
   if (!IsDaemonLaunched()) {
     std::move(callback).Run(false, absl::nullopt);
     return;
@@ -1013,7 +1014,7 @@ void IpfsService::OnGetPinsResult(
 
 void IpfsService::OnPinAddResult(
     APIRequestList::iterator iter,
-    AddPinCallback callback,
+    AddPinsCallback callback,
     api_request_helper::APIRequestResult response) {
   int response_code = response.response_code();
   requests_list_.erase(iter);
