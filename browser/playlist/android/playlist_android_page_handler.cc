@@ -11,7 +11,7 @@
 PlaylistAndroidPageHandler::PlaylistAndroidPageHandler(Profile* profile)
     : PlaylistPageHandler(profile) {
   // DCHECK(playlistPageHandler_);
-  // TODO DEEP : check if we need observer for android
+  // TODO(deeppandya) : check if we need observer for android
   // observation_.Observe(GetPlaylistService(profile_));
 }
 

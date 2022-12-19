@@ -43,7 +43,7 @@ PlaylistPageHandler::PlaylistPageHandler(
 #else
 PlaylistPageHandler::PlaylistPageHandler(Profile* profile) : profile_(profile) {
   DCHECK(profile_);
-  // TODO DEEP : check if we need observer for android
+  // TODO(deeppandya) : check if we need observer for android
   // observation_.Observe(GetPlaylistService(profile_));
 }
 #endif  // BUILDFLAG(IS_ANDROID)

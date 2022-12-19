@@ -29,7 +29,7 @@ class PlaylistPageHandler : public playlist::mojom::PageHandler,
       mojo::PendingReceiver<playlist::mojom::PageHandler> pending_page_handler,
       mojo::PendingRemote<playlist::mojom::Page> pending_page);
 #else
-  PlaylistPageHandler(Profile* profile);
+  explicit PlaylistPageHandler(Profile* profile);
 #endif
   ~PlaylistPageHandler() override;
 

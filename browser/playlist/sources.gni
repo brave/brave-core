@@ -19,7 +19,6 @@ if (enable_playlist) {
   brave_browser_playlist_deps += [
     "//base",
     "//brave/browser/profiles:util",
-    "//brave/browser/ui",
     "//brave/components/playlist",
     "//brave/components/playlist/mojom",
     "//chrome/browser:browser_process",

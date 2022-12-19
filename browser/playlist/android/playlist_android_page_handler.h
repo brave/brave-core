@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_PLAYLIST_ANDROID_PLAYLIST_ANDROID_PAGE_HANDLER_H_
 #define BRAVE_BROWSER_PLAYLIST_ANDROID_PLAYLIST_ANDROID_PAGE_HANDLER_H_
 
-#include <string>
-
 #include "base/scoped_observation.h"
 #include "brave/browser/playlist/playlist_page_handler.h"
 #include "brave/components/playlist/mojom/playlist.mojom.h"
@@ -25,7 +23,7 @@ class Profile;
 class PlaylistAndroidPageHandler : public PlaylistPageHandler,
                                    public KeyedService {
  public:
-  PlaylistAndroidPageHandler(Profile* profile);
+  explicit PlaylistAndroidPageHandler(Profile* profile);
   mojo::PendingRemote<playlist::mojom::PageHandler> MakeRemote();
   ~PlaylistAndroidPageHandler() override;
 
