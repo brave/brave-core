@@ -1,7 +1,7 @@
 {
   "disabled_checks": {
     // Checks defined in the PRESUBMIT.py global scope.
-    "global": [
+    "PRESUBMIT.py": [
       // We don't use OWNERS files.
       "CheckSecurityOwners",
       // This validates added strings with screenshot tests which we don't use.
@@ -28,12 +28,14 @@
       "CheckChangeWasUploaded",
       "CheckChangeHasBugField",
       "CheckTreeIsOpen",
+      // We run our own format check.
+      "CheckPatchFormatted",
     ],
   },
 
   // Checks that should trigger presubmit errors instead of warnings.
   "checks_to_force_presubmit_errors": {
-    "global": [
+    "PRESUBMIT.py": [
       "CheckBuildConfigMacrosWithoutInclude",
       "CheckForSuperfluousStlIncludesInHeaders",
       "CheckForIncludeGuards",
@@ -43,7 +45,6 @@
     "canned": [
       "CheckChangeLintsClean",
       "GetPylint",
-      "CheckPatchFormatted",
     ],
   },
 

@@ -7,7 +7,6 @@
 # functions from a global scope to change them. This allows us to alter root
 # Chromium presubmit checks without introducing too much conflict.
 
-import copy
 import inspect
 import os
 import re
@@ -18,7 +17,6 @@ import import_inline
 
 # pylint: disable=line-too-long,protected-access,unused-variable
 
-GLOBAL_CHECKS_KEY = 'global'
 CANNED_CHECKS_KEY = 'canned'
 
 
@@ -61,7 +59,7 @@ def override_check(scope, name=None):
 
         if not callable(original_check):
             print(f'WARNING: {check_name} check to override not found.\n'
-                  'Please update chromium_presubmit_overrides.py!')
+                  'Please update presubmit overrides!')
 
             return noop_check
 
@@ -70,93 +68,9 @@ def override_check(scope, name=None):
     return decorator
 
 
-# Returns first Check* method from the scope.
-def get_first_check_name(scope):
-    assert isinstance(scope, dict)
-    for key, value in scope.items():
-        if key.startswith('Check') and callable(value):
-            return key
-    raise LookupError('Check* method not found in scope')
-
-
-# Override src/PRESUBMIT.py checks.
-def override_global_checks(global_checks):
-    apply_generic_check_overrides(global_checks, GLOBAL_CHECKS_KEY)
-
-    # Changes from upstream:
-    # 1. Add 'brave/' prefix for header guard checks to properly validate
-    #    guards.
-    @override_check(global_checks)
-    def CheckForIncludeGuards(original_check, input_api, output_api, **kwargs):
-        def AffectedSourceFiles(self, original_method, source_file):
-            def PrependBrave(affected_file):
-                affected_file = copy.copy(affected_file)
-                affected_file._path = f'brave/{affected_file._path}'
-                return affected_file
-
-            return [
-                PrependBrave(f) for f in filter(self.FilterSourceFile,
-                                                original_method(source_file))
-            ]
-
-        with override_utils.override_scope_function(input_api,
-                                                    AffectedSourceFiles):
-            return original_check(input_api, output_api, **kwargs)
-
-    # Changes from upstream:
-    # 1. Remove ^(chrome|components|content|extensions) filter to cover all
-    #    files in the repository, because brave/ structure is slightly
-    #    different.
-    @override_check(global_checks)
-    def CheckMPArchApiUsage(original_check, input_api, output_api, **kwargs):
-        def AffectedFiles(self, original_method, *args, **kwargs):
-            kwargs['file_filter'] = self.FilterSourceFile
-            return original_method(*args, **kwargs)
-
-        with override_utils.override_scope_function(input_api, AffectedFiles):
-            return original_check(input_api, output_api, **kwargs)
-
-
 # Override canned checks (depot_tools/presubmit_canned_checks.py).
 def override_canned_checks(canned_checks):
     apply_generic_check_overrides(canned_checks, CANNED_CHECKS_KEY)
-
-    # Changes from upstream:
-    # 1. Replace suggested command from upstream-specific to 'npm run format'.
-    @override_check(canned_checks)
-    def CheckPatchFormatted(original_check, input_api, output_api, **kwargs):
-        kwargs = {
-            **kwargs,
-            'bypass_warnings': False,
-            'check_python': True,
-        }
-
-        # pylint: disable=import-outside-toplevel
-        import git_cl
-
-        def RunGitWithCode(original_function, args, **kwargs):
-            if input_api.PRESUBMIT_FIX and '--dry-run' in args:
-                args.remove('--dry-run')
-            return original_function(args, **kwargs)
-
-        with override_utils.override_scope_function(git_cl, RunGitWithCode):
-            result = original_check(input_api, output_api, **kwargs)
-
-        # If presubmit generates "Please run git cl format --js" message, we
-        # should replace the command with "npm run format -- --js". The
-        # order of these replacements ensure we do this properly.
-        replacements = [
-            (' format --', ' format -- --'),
-            ('git cl format', 'npm run format'),
-            ('gn format', 'npm run format'),
-            ('rust-fmt', 'rust'),
-            ('swift-format', 'swift'),
-        ]
-        for item in result:
-            for replacement in replacements:
-                item._message = item._message.replace(replacement[0],
-                                                      replacement[1])
-        return result
 
     # Changes from upstream:
     # 1. Run pylint only on *changed* files instead of getting *all* files
@@ -269,12 +183,42 @@ def setup_per_check_file_filter(input_api):
             return self._cached_changed_contents[:]
 
 
-def Apply(_globals):
-    override_global_checks(_globals)
+# Inlines presubmit file as if it was run from the dir where it's located.
+def inline_presubmit_from_src(filename, _globals, _locals):
+    class State:
+        def __init__(self, filename):
+            self.presubmit_dir = os.path.dirname(
+                import_inline.join_src_dir(filename))
+            self.orig_cwd = os.getcwd()
+            self.orig_presubmit_dir = ''
 
-    # Override the first global check to modify input_api before any check is
-    # run.
-    @override_check(_globals, get_first_check_name(_globals))
-    def OverriddenFirstCheck(original_check, input_api, output_api, **kwargs):
-        modify_input_api(input_api)
-        return original_check(input_api, output_api, **kwargs)
+        def PreRunChecks(self, input_api):
+            os.chdir(self.presubmit_dir)
+            self.orig_presubmit_dir = input_api._current_presubmit_path
+            input_api._current_presubmit_path = self.presubmit_dir
+
+        def PostRunChecks(self, input_api):
+            input_api._current_presubmit_path = self.orig_presubmit_dir
+            os.chdir(self.orig_cwd)
+
+    state = State(filename)
+
+    def PreRunChecks(input_api, _output_api):
+        state.PreRunChecks(input_api)
+        return []
+
+    func_suffix = re.sub(r'[^\w]', '_', filename)
+    pre_check_name = f'Check_Pre_{func_suffix}'
+    assert pre_check_name not in _globals
+    _globals[pre_check_name] = PreRunChecks
+
+    import_inline.inline_file_from_src(filename, _globals, _locals)
+    apply_generic_check_overrides(_globals, filename)
+
+    def PostRunChecks(input_api, _output_api):
+        state.PostRunChecks(input_api)
+        return []
+
+    post_check_name = f'Check_Post_{func_suffix}'
+    assert post_check_name not in _globals
+    _globals[post_check_name] = PostRunChecks

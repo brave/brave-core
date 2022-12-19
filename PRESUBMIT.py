@@ -3,22 +3,107 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import copy
 import os
 import sys
 
+import import_inline
 import chromium_presubmit_overrides
+import git_cl
 import override_utils
 
 USE_PYTHON3 = True
 PRESUBMIT_VERSION = '2.0.0'
 
-# pylint: disable=line-too-long
+# pylint: disable=line-too-long,protected-access
 
 
 # Adds support for chromium_presubmit_config.json5 and some helpers.
 def CheckToModifyInputApi(input_api, _output_api):
     chromium_presubmit_overrides.modify_input_api(input_api)
     return []
+
+
+# Check and fix formatting issues (supports --fix).
+def CheckPatchFormatted(input_api, output_api):
+    # Use git cl format to format supported files with Chromium formatters.
+    git_cl_format_cmd = [
+        '-C',
+        input_api.change.RepositoryRoot(),
+        'cl',
+        'format',
+        '--presubmit',
+        '--python',
+    ]
+
+    # Make sure the passed --upstream branch is applied to git cl format.
+    if input_api.change.UpstreamBranch():
+        git_cl_format_cmd.extend(
+            ['--upstream', input_api.change.UpstreamBranch()])
+
+    # Do a dry run if --fix was not passed.
+    if not input_api.PRESUBMIT_FIX:
+        git_cl_format_cmd.append('--dry-run')
+
+    # Pass a path where the current PRESUBMIT.py file is located.
+    git_cl_format_cmd.append(input_api.PresubmitLocalPath())
+
+    # Run git cl format and get return code.
+    git_cl_format_code, _ = git_cl.RunGitWithCode(git_cl_format_cmd,
+                                                  suppress_stderr=True)
+
+    is_format_required = git_cl_format_code == 2
+
+    if is_format_required:
+        if input_api.PRESUBMIT_FIX:
+            raise RuntimeError('--fix was passed, but format has failed')
+        short_path = input_api.basename(input_api.change.RepositoryRoot())
+        return [
+            output_api.PresubmitError(
+                f'The {short_path} directory requires source formatting. '
+                'Please run: npm run presubmit -- --fix')
+        ]
+    return []
+
+
+# Check and fix ESLint issues (supports --fix).
+def CheckESLint(input_api, output_api):
+    files_to_check = (
+        r'.+\.js$',
+        r'.+\.ts$',
+        r'.+\.tsx$',
+    )
+    files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
+
+    file_filter = lambda f: input_api.FilterSourceFile(
+        f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+    files_to_check = input_api.AffectedFiles(file_filter=file_filter,
+                                             include_deletes=False)
+
+    with import_inline.sys_path(
+            input_api.os_path.join(input_api.PresubmitLocalPath(), '..',
+                                   'tools')):
+        # pylint: disable=import-error,import-outside-toplevel
+        from web_dev_style import js_checker
+        return js_checker.JSChecker(input_api,
+                                    output_api).RunEsLintChecks(files_to_check)
+
+
+def CheckWebDevStyle(input_api, output_api):
+    with import_inline.sys_path(
+            input_api.os_path.join(input_api.PresubmitLocalPath(), '..',
+                                   'tools')):
+        # pylint: disable=import-error,import-outside-toplevel
+        from web_dev_style import presubmit_support, js_checker
+        with override_utils.override_scope_variable(output_api,
+                                                    'PresubmitPromptWarning',
+                                                    output_api.PresubmitError):
+            # Disable RunEsLintChecks, it's run separately in CheckESLint.
+            with override_utils.override_scope_function(
+                    js_checker.JSChecker,
+                    chromium_presubmit_overrides.noop_check,
+                    name='RunEsLintChecks'):
+                return presubmit_support.CheckStyle(input_api, output_api)
 
 
 def CheckChangeLintsClean(input_api, output_api):
@@ -135,18 +220,44 @@ def CheckLicense(input_api, output_api):
     return result
 
 
-def CheckWebDevStyle(input_api, output_api):
-    results = []
-    try:
-        old_sys_path = sys.path[:]
-        cwd = input_api.PresubmitLocalPath()
-        sys.path += [input_api.os_path.join(cwd, '..', 'tools')]
-        # pylint: disable=import-error, import-outside-toplevel
-        from web_dev_style import presubmit_support
-        with override_utils.override_scope_variable(output_api,
-                                                    'PresubmitPromptWarning',
-                                                    output_api.PresubmitError):
-            results += presubmit_support.CheckStyle(input_api, output_api)
-    finally:
-        sys.path = old_sys_path
-    return results
+# DON'T ADD NEW BRAVE CHECKS AFTER THIS LINE.
+#
+# This call inlines Chromium checks into current scope from src/PRESUBMIT.py. We
+# do this to have the right order of checks, so all `--fix`-aware checks are
+# executed first.
+chromium_presubmit_overrides.inline_presubmit_from_src('PRESUBMIT.py',
+                                                       globals(), locals())
+
+
+@chromium_presubmit_overrides.override_check(globals())
+def CheckForIncludeGuards(original_check, input_api, output_api, **kwargs):
+    # Add 'brave/' prefix for header guard checks to properly validate guards.
+    def AffectedSourceFiles(self, original_method, source_file):
+        def PrependBrave(affected_file):
+            affected_file = copy.copy(affected_file)
+            affected_file._path = f'brave/{affected_file._path}'
+            return affected_file
+
+        return [
+            PrependBrave(f) for f in filter(self.FilterSourceFile,
+                                            original_method(source_file))
+        ]
+
+    with override_utils.override_scope_function(input_api,
+                                                AffectedSourceFiles):
+        return original_check(input_api, output_api, **kwargs)
+
+
+@chromium_presubmit_overrides.override_check(globals())
+def CheckMPArchApiUsage(original_check, input_api, output_api, **kwargs):
+    # Remove ^(chrome|components|content|extensions) filter to cover all files
+    # in the repository, because brave/ structure is slightly different.
+    def AffectedFiles(self, original_method, *args, **kwargs):
+        kwargs['file_filter'] = self.FilterSourceFile
+        return original_method(*args, **kwargs)
+
+    with override_utils.override_scope_function(input_api, AffectedFiles):
+        return original_check(input_api, output_api, **kwargs)
+
+
+# DON'T ADD NEW CHECKS HERE, ADD THEM BEFORE FIRST inline_presubmit_from_src().
