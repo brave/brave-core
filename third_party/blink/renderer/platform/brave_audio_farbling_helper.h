@@ -15,10 +15,8 @@ namespace blink {
 
 class PLATFORM_EXPORT BraveAudioFarblingHelper final {
  public:
-  BraveAudioFarblingHelper(double fudge_factor, uint64_t seed);
+  BraveAudioFarblingHelper(double fudge_factor, uint64_t seed, bool max);
   ~BraveAudioFarblingHelper();
-
-  void set_max(bool max) { max_ = max; }
 
   void FarbleAudioChannel(float* dst, size_t count) const;
   void FarbleFloatTimeDomainData(const float* input_buffer,
@@ -45,7 +43,7 @@ class PLATFORM_EXPORT BraveAudioFarblingHelper final {
  private:
   double fudge_factor_;
   uint64_t seed_;
-  bool max_ = false;
+  bool max_;
 };
 
 }  // namespace blink

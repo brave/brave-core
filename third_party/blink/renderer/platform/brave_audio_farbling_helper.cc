@@ -22,8 +22,9 @@ inline uint64_t lfsr_next(uint64_t v) {
 }  // namespace
 
 BraveAudioFarblingHelper::BraveAudioFarblingHelper(double fudge_factor,
-                                                   uint64_t seed)
-    : fudge_factor_(fudge_factor), seed_(seed) {}
+                                                   uint64_t seed,
+                                                   bool max)
+    : fudge_factor_(fudge_factor), seed_(seed), max_(max) {}
 
 BraveAudioFarblingHelper::~BraveAudioFarblingHelper() = default;
 

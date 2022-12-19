@@ -9,7 +9,6 @@
 #include "base/feature_list.h"
 #include "base/sequence_checker.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/types/optional_util.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 #include "build/build_config.h"
@@ -198,11 +197,12 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
   double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
   uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
-  audio_farbling_helper_.emplace(fudge_factor, seed);
   if (blink::WebContentSettingsClient* settings =
           GetContentSettingsClientFor(&context)) {
     farbling_level_ = settings->GetBraveFarblingLevel();
   }
+  audio_farbling_helper_.emplace(
+      fudge_factor, seed, farbling_level_ == BraveFarblingLevel::MAXIMUM);
   farbling_enabled_ = true;
 }
 
@@ -223,11 +223,15 @@ void BraveSessionCache::Init() {
 
 absl::optional<blink::BraveAudioFarblingHelper>
 BraveSessionCache::GetAudioFarblingHelper() {
-  return base::OptionalFromPtr(UpdateAndGetAudioFarblingHelper());
+  if (!farbling_enabled_ || (farbling_level_ == BraveFarblingLevel::OFF))
+    return absl::nullopt;
+  DCHECK(audio_farbling_helper_);
+  return audio_farbling_helper_;
 }
 
 void BraveSessionCache::FarbleAudioChannel(float* dst, size_t count) {
-  if (const auto* helper = UpdateAndGetAudioFarblingHelper()) {
+  if (absl::optional<blink::BraveAudioFarblingHelper> helper =
+          GetAudioFarblingHelper()) {
     helper->FarbleAudioChannel(dst, count);
   }
 }
@@ -350,18 +354,6 @@ FarblingPRNG BraveSessionCache::MakePseudoRandomGenerator(FarbleKey key) {
   uint64_t seed =
       *reinterpret_cast<uint64_t*>(domain_key_) ^ static_cast<uint64_t>(key);
   return FarblingPRNG(seed);
-}
-
-const blink::BraveAudioFarblingHelper*
-BraveSessionCache::UpdateAndGetAudioFarblingHelper() {
-  if (!farbling_enabled_)
-    return nullptr;
-  DCHECK(audio_farbling_helper_);
-  if (farbling_level_ == BraveFarblingLevel::OFF)
-    return nullptr;
-  audio_farbling_helper_->set_max(farbling_level_ ==
-                                  BraveFarblingLevel::MAXIMUM);
-  return &audio_farbling_helper_.value();
 }
 
 }  // namespace brave
