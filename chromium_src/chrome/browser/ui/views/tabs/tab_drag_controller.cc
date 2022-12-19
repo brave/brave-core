@@ -107,8 +107,7 @@ void TabDragController::MoveAttached(const gfx::Point& point_in_screen,
   int index_of_last_item = attached_model->GetIndexOfWebContents(last_contents);
   if (index_of_last_item !=
       attached_model->GetIndexOfWebContents(last_contents)) {
-    gfx::Point point_in_attached_context =
-        gfx::Point(point_in_screen.x(), point_in_screen.y());
+    gfx::Point point_in_attached_context = point_in_screen;
     views::View::ConvertPointFromScreen(attached_context_,
                                         &point_in_attached_context);
     last_move_attached_context_loc_ = point_in_attached_context.y();
