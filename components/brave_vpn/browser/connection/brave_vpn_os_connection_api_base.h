@@ -17,7 +17,7 @@
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
-#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
@@ -81,23 +81,21 @@ class BraveVPNOSConnectionAPIBase
   std::string target_vpn_entry_name() const { return target_vpn_entry_name_; }
 
  private:
-  friend class BraveVPNServiceTest;
   friend class BraveVPNOSConnectionAPISim;
-  friend class BraveVPNOsConnectionAPIBaseTest;
+  friend class BraveVPNOSConnectionAPIUnitTest;
 
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            CreateOSVPNEntryWithValidInfoWhenConnectTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            CreateOSVPNEntryWithInvalidInfoTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            CheckConnectionStateAfterNetworkStateChanged);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, HostnamesTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, CancelConnectingTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, ConnectionInfoTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, NeedsConnectTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, ConnectWithoutNetwork);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, OnDisconnectedWithoutNetwork);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, HostnamesTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+                           CancelConnectingTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, ConnectionInfoTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            IgnoreDisconnectedStateWhileConnecting);
   // net::NetworkChangeNotifier::NetworkChangeObserver
   void OnNetworkChanged(
@@ -119,6 +117,8 @@ class BraveVPNOSConnectionAPIBase
   virtual void UpdateAndNotifyConnectionStateChange(
       mojom::ConnectionState state);
   BraveVpnAPIRequest* GetAPIRequest();
+  // True when do quick cancel.
+  bool QuickCancelIfPossible();
 
   bool cancel_connecting_ = false;
   bool needs_connect_ = false;
@@ -130,6 +130,11 @@ class BraveVPNOSConnectionAPIBase
   raw_ptr<PrefService> local_prefs_ = nullptr;
   std::unique_ptr<Hostname> hostname_;
   base::ObserverList<Observer> observers_;
+  // Only not null when there is active network request.
+  // When network request is done, we reset this so we can know
+  // whether we're waiting the response or not.
+  // We can cancel connecting request quickly when fetching hostnames or
+  // profile credentials is not yet finished by reset this.
   std::unique_ptr<BraveVpnAPIRequest> api_request_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 };

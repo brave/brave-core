@@ -130,6 +130,12 @@ void BraveVPNOSConnectionAPIBase::Disconnect() {
   cancel_connecting_ = true;
   VLOG(2) << __func__ << " : Start cancelling connect request";
   UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
+
+  if (QuickCancelIfPossible()) {
+    VLOG(2) << __func__ << " : Do quick cancel";
+    UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
+    cancel_connecting_ = false;
+  }
 }
 
 void BraveVPNOSConnectionAPIBase::ToggleConnection() {
@@ -276,6 +282,16 @@ void BraveVPNOSConnectionAPIBase::UpdateAndNotifyConnectionStateChange(
     obs.OnConnectionStateChanged(connection_state_);
 }
 
+bool BraveVPNOSConnectionAPIBase::QuickCancelIfPossible() {
+  if (!api_request_)
+    return false;
+
+  // We're waiting responce from vpn server.
+  // Can do quick cancel in this situation by cancel that request.
+  api_request_.reset();
+  return true;
+}
+
 BraveVpnAPIRequest* BraveVPNOSConnectionAPIBase::GetAPIRequest() {
   if (!url_loader_factory_) {
     CHECK_IS_TEST();
@@ -323,18 +339,17 @@ void BraveVPNOSConnectionAPIBase::FetchHostnamesForRegion(
 void BraveVPNOSConnectionAPIBase::OnFetchHostnames(const std::string& region,
                                                    const std::string& hostnames,
                                                    bool success) {
+  // This response should not be called if cancelled.
+  DCHECK(!cancel_connecting_);
   VLOG(2) << __func__;
-  if (cancel_connecting_) {
-    UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
-    cancel_connecting_ = false;
-    return;
-  }
 
   if (!success) {
     VLOG(2) << __func__ << " : failed to fetch hostnames for " << region;
     UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
     return;
   }
+
+  api_request_.reset();
 
   absl::optional<base::Value> value = base::JSONReader::Read(hostnames);
   if (value && value->is_list()) {
@@ -386,17 +401,15 @@ void BraveVPNOSConnectionAPIBase::ParseAndCacheHostnames(
 void BraveVPNOSConnectionAPIBase::OnGetProfileCredentials(
     const std::string& profile_credential,
     bool success) {
-  if (cancel_connecting_) {
-    UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
-    cancel_connecting_ = false;
-    return;
-  }
+  DCHECK(!cancel_connecting_);
 
   if (!success) {
     VLOG(2) << __func__ << " : failed to get profile credential";
     UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
     return;
   }
+
+  api_request_.reset();
 
   VLOG(2) << __func__ << " : received profile credential";
 

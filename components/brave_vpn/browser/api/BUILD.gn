@@ -21,7 +21,7 @@ source_set("api") {
     "//base",
     "//brave/components/api_request_helper:api_request_helper",
     "//brave/components/brave_vpn/common",
-    "//brave/components/brave_vpn/mojom",
+    "//brave/components/brave_vpn/common/mojom",
     "//brave/components/skus/browser",
     "//components/prefs",
     "//net/traffic_annotation",
