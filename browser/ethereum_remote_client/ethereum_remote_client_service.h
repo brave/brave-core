@@ -16,7 +16,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "extensions/buildflags/buildflags.h"
 #include "url/gurl.h"
 
 class EthereumRemoteClientDelegate;
