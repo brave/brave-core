@@ -741,7 +741,6 @@ test("brave_browser_tests") {
     "//brave/browser/ui/brave_browser_command_controller_browsertest.cc",
     "//brave/browser/ui/content_settings/brave_autoplay_blocked_image_model_browsertest.cc",
     "//brave/browser/ui/toolbar/brave_app_menu_model_browsertest.cc",
-    "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc",
     "//brave/browser/ui/webui/brave_wallet/wallet_panel_ui_browsertest.cc",
     "//brave/browser/ui/webui/brave_welcome_ui_browsertest.cc",
     "//brave/browser/ui/webui/new_tab_page/brave_new_tab_ui_browsertest.cc",
@@ -1081,6 +1080,7 @@ test("brave_browser_tests") {
   }
 
   if (!is_android) {
+    sources += [ "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc" ]
     deps += [ "//brave/browser/sharing_hub:browser_tests" ]
   }
 

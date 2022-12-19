@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/pref_names.h"
 
-const char kWalletButtonClicked[] = "brave.wallet.wallet_button_clicked";
+const char kShouldShowWalletSuggestionBadge[] =
+    "brave.wallet.should_show_wallet_suggestion_badge";
 const char kDefaultEthereumWallet[] = "brave.wallet.default_wallet2";
 const char kDefaultSolanaWallet[] = "brave.wallet.default_solana_wallet";
 const char kDefaultBaseCurrency[] = "brave.wallet.default_base_currency";

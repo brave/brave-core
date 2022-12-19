@@ -77,6 +77,8 @@ class TxService : public KeyedService,
                              GetAllTransactionInfoCallback) override;
   void GetAllTransactionInfo(mojom::CoinType coin_type,
                              GetAllTransactionInfoCallback);
+  void GetPendingTransactionsCount(
+      GetPendingTransactionsCountCallback callback) override;
 
   void SpeedupOrCancelTransaction(
       mojom::CoinType coin_type,
@@ -103,8 +105,6 @@ class TxService : public KeyedService,
   // Resets things back to the original state of TxService
   // To be used when the Wallet is reset / erased
   void Reset() override;
-
-  bool HasRunningTransactions(base::OnceCallback<bool> callback);
 
   // mojom::EthTxManagerProxy
   void MakeERC20TransferData(const std::string& to_address,
@@ -192,6 +192,11 @@ class TxService : public KeyedService,
   friend class EthTxManagerUnitTest;
   friend class SolanaTxManagerUnitTest;
   friend class FilTxManagerUnitTest;
+
+  void OnTxResolved(GetPendingTransactionsCountCallback callback,
+                    size_t counter,
+                    mojom::CoinType coin,
+                    std::vector<mojom::TransactionInfoPtr> result);
 
   TxManager* GetTxManager(mojom::CoinType coin_type);
   EthTxManager* GetEthTxManager();

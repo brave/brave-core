@@ -44,6 +44,7 @@ class WalletButton : public ToolbarButton {
   views::View* GetAsAnchorView();
 
  private:
+  void AddedToWidget() override;
   std::pair<std::string, SkColor> GetBadgeTextAndBackground();
   void OnPreferenceChanged();
   void OnWalletPressed(const ui::Event& event);

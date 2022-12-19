@@ -29,6 +29,17 @@ mojom::CoinType GetCoinTypeFromTxDataUnion(
   return mojom::CoinType::ETH;
 }
 
+size_t CalculatePendingTxCount(
+    const std::vector<mojom::TransactionInfoPtr>& result) {
+  size_t counter = 0u;
+  for (const auto& tx : result) {
+    if (tx->tx_status == mojom::TransactionStatus::Unapproved) {
+      counter++;
+    }
+  }
+  return counter;
+}
+
 }  // namespace
 
 TxService::TxService(JsonRpcService* json_rpc_service,
@@ -150,6 +161,43 @@ void TxService::GetAllTransactionInfo(mojom::CoinType coin_type,
                                       GetAllTransactionInfoCallback callback) {
   GetTxManager(coin_type)->GetAllTransactionInfo(absl::nullopt,
                                                  std::move(callback));
+}
+
+void TxService::GetPendingTransactionsCount(
+    GetPendingTransactionsCountCallback callback) {
+  if (tx_manager_map_.empty()) {
+    std::move(callback).Run(0u);
+    return;
+  }
+
+  auto it = ++tx_manager_map_.begin();
+
+  GetAllTransactionInfo(
+      it->first,
+      base::BindOnce(&TxService::OnTxResolved, weak_factory_.GetWeakPtr(),
+                     std::move(callback), 0u, it->first));
+}
+
+void TxService::OnTxResolved(GetPendingTransactionsCountCallback callback,
+                             size_t counter,
+                             mojom::CoinType coin,
+                             std::vector<mojom::TransactionInfoPtr> result) {
+  absl::optional<mojom::CoinType> next_coin_to_check;
+  counter += CalculatePendingTxCount(result);
+
+  auto it = ++tx_manager_map_.find(coin);
+  if (it != tx_manager_map_.end()) {
+    next_coin_to_check = (it)->first;
+  } else {
+    std::move(callback).Run(counter);
+    return;
+  }
+
+  DCHECK(next_coin_to_check);
+  GetAllTransactionInfo(
+      *next_coin_to_check,
+      base::BindOnce(&TxService::OnTxResolved, weak_factory_.GetWeakPtr(),
+                     std::move(callback), counter, *next_coin_to_check));
 }
 
 void TxService::SpeedupOrCancelTransaction(

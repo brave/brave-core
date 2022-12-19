@@ -1,4 +1,4 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -11,17 +11,13 @@
 #include "base/strings/utf_string_conversions.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/grit/theme_resources.h"
-#include "extensions/common/constants.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/canvas.h"
-#include "ui/gfx/color_palette.h"
 #include "ui/gfx/font.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
-#include "ui/gfx/image/image_skia_operations.h"
-#include "ui/gfx/skia_paint_util.h"
 
 namespace {
 // Always use same height to avoid jumping up and down with different
@@ -61,7 +57,7 @@ void BraveIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
     return;
   }
   if (allow_empty_text_ && badge_->text.empty()) {
-    PaintBadgeWithoutText(canvas);
+    PaintBadgeWithoutText(GetBadgeRect(kBadgeHeight), canvas);
   } else {
     PaintBadgeWithText(canvas);
   }
@@ -71,12 +67,6 @@ void BraveIconWithBadgeImageSource::PaintBadgeWithText(gfx::Canvas* canvas) {
   if (badge_->text.empty()) {
     return;
   }
-  SkColor text_color = SkColorGetA(badge_->text_color) == SK_AlphaTRANSPARENT
-                           ? SK_ColorWHITE
-                           : badge_->text_color;
-
-  SkColor background_color =
-      SkColorSetA(badge_->background_color, SK_AlphaOPAQUE);
 
   int h_padding = 2;
   int text_max_width = kBadgeMaxWidth - (h_padding * 2);
@@ -142,6 +132,10 @@ void BraveIconWithBadgeImageSource::PaintBadgeWithText(gfx::Canvas* canvas) {
     }
   }
 
+  SkColor text_color = SkColorGetA(badge_->text_color) == SK_AlphaTRANSPARENT
+                           ? SK_ColorWHITE
+                           : badge_->text_color;
+
   // Calculate badge size. It is clamped to a min width just because it looks
   // silly if it is too skinny.
   int badge_width = text_width + h_padding * 2;
@@ -154,18 +148,9 @@ void BraveIconWithBadgeImageSource::PaintBadgeWithText(gfx::Canvas* canvas) {
   if (icon_area.width() != 0 && (badge_width % 2 != icon_area.width() % 2))
     badge_width += 1;
 
-  // Calculate the badge background rect. It is anchored to a specific position
-  const int badge_offset_x = icon_area.width() - kBadgeMaxWidth;
-  const int badge_offset_y = kVMarginTop;
-  gfx::Rect rect(icon_area.x() + badge_offset_x, icon_area.y() + badge_offset_y,
-                 badge_width, kBadgeHeight);
-  cc::PaintFlags rect_flags;
-  rect_flags.setStyle(cc::PaintFlags::kFill_Style);
-  rect_flags.setAntiAlias(true);
-  rect_flags.setColor(background_color);
+  auto rect = GetBadgeRect(badge_width);
 
-  // Paint the backdrop.
-  canvas->DrawRoundRect(rect, kOuterCornerRadius, rect_flags);
+  PaintBadgeWithoutText(rect, canvas);
 
   // Paint the text.
   const int kTextExtraVerticalPadding = (kTextHeightTarget - text_height) / 2;
@@ -176,22 +161,29 @@ void BraveIconWithBadgeImageSource::PaintBadgeWithText(gfx::Canvas* canvas) {
                                   gfx::Canvas::TEXT_ALIGN_CENTER);
 }
 
-void BraveIconWithBadgeImageSource::PaintBadgeWithoutText(gfx::Canvas* canvas) {
-  const gfx::Rect icon_area = GetIconAreaRect();
+void BraveIconWithBadgeImageSource::PaintBadgeWithoutText(
+    const gfx::Rect& badge_rect,
+    gfx::Canvas* canvas) {
   SkColor background_color =
       SkColorSetA(badge_->background_color, SK_AlphaOPAQUE);
-  // Calculate the badge background rect. It is anchored to a specific position
-  const int badge_offset_x = icon_area.width() - kBadgeMaxWidth;
-  const int badge_offset_y = kVMarginTop;
-  gfx::Rect rect(icon_area.x() + badge_offset_x, icon_area.y() + badge_offset_y,
-                 kBadgeHeight, kBadgeHeight);
+
   cc::PaintFlags rect_flags;
   rect_flags.setStyle(cc::PaintFlags::kFill_Style);
   rect_flags.setAntiAlias(true);
   rect_flags.setColor(background_color);
 
   // Paint the backdrop.
-  canvas->DrawRoundRect(rect, kOuterCornerRadius, rect_flags);
+  canvas->DrawRoundRect(badge_rect, kOuterCornerRadius, rect_flags);
+}
+
+gfx::Rect BraveIconWithBadgeImageSource::GetBadgeRect(
+    size_t badge_width) const {
+  const gfx::Rect icon_area = GetIconAreaRect();
+  // Calculate the badge background rect. It is anchored to a specific position
+  const int badge_offset_x = icon_area.width() - kBadgeMaxWidth;
+  const int badge_offset_y = kVMarginTop;
+  return gfx::Rect(icon_area.x() + badge_offset_x,
+                   icon_area.y() + badge_offset_y, badge_width, kBadgeHeight);
 }
 
 gfx::Rect BraveIconWithBadgeImageSource::GetIconAreaRect() const {

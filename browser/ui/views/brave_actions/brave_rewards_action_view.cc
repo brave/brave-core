@@ -13,7 +13,7 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/views/brave_icon_with_badge_image_source.h"
-#include "brave/browser/ui/views/ui_utils.h"
+#include "brave/browser/ui/views/constants.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"

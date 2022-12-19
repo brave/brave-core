@@ -1179,6 +1179,9 @@ interface TxService {
   // Adds an observer for TxService
   AddObserver(pending_remote<TxServiceObserver> observer);
 
+  // Returns number of pending transactions
+  GetPendingTransactionsCount() => (uint64 count);
+
   // Resets the keyring and the related preferences
   Reset();
 };

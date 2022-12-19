@@ -1,4 +1,4 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -37,9 +37,11 @@ class BraveIconWithBadgeImageSource : public IconWithBadgeImageSource {
  private:
   void PaintBadge(gfx::Canvas* canvas) override;
   void PaintBadgeWithText(gfx::Canvas* canvas);
-  void PaintBadgeWithoutText(gfx::Canvas* canvas);
+  void PaintBadgeWithoutText(const gfx::Rect& badge_rect, gfx::Canvas* canvas);
 
   gfx::Rect GetIconAreaRect() const override;
+  gfx::Rect GetBadgeRect(size_t badge_width) const;
+
   absl::optional<int> GetCustomGraphicSize() override;
   absl::optional<int> GetCustomGraphicXOffset() override;
   absl::optional<int> GetCustomGraphicYOffset() override;

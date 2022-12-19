@@ -10,7 +10,7 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ui/views/brave_icon_with_badge_image_source.h"
-#include "brave/browser/ui/views/ui_utils.h"
+#include "brave/browser/ui/views/constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -119,6 +119,12 @@ WalletButton::WalletButton(View* backup_anchor_view, Profile* profile)
 }
 
 WalletButton::~WalletButton() = default;
+
+void WalletButton::AddedToWidget() {
+  if (notification_source_) {
+    notification_source_->Init();
+  }
+}
 
 void WalletButton::OnWalletPressed(const ui::Event& event) {
   if (IsShowingBubble()) {

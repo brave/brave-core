@@ -128,7 +128,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
   registry->RegisterDictionaryPref(kPinnedNFTAssets);
   registry->RegisterBooleanPref(kAutoPinEnabled, false);
-  registry->RegisterBooleanPref(kWalletButtonClicked, false);
+  registry->RegisterBooleanPref(kShouldShowWalletSuggestionBadge, true);
 }
 
 void RegisterProfilePrefsForMigration(
