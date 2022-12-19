@@ -46,9 +46,6 @@ class BraveVPNOSConnectionAPISim : public BraveVPNOSConnectionAPIBase {
   void DisconnectImpl(const std::string& name) override;
   void CheckConnectionImpl(const std::string& name) override;
 
-  void UpdateAndNotifyConnectionStateChange(
-      mojom::ConnectionState state) override;
-
  private:
   friend class BraveVPNServiceTest;
 

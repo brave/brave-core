@@ -268,4 +268,20 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest,
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 }
 
+TEST_F(BraveVPNOSConnectionAPIUnitTest,
+       ClearLastConnectionErrorWhenNewConnectionStart) {
+  auto* test_api =
+      static_cast<BraveVPNOSConnectionAPIBase*>(GetConnectionAPI());
+
+  // Prepare valid connection info.
+  test_api->OnFetchHostnames("region-a", kHostNamesTestData, true);
+  test_api->OnGetProfileCredentials(kProfileCredentialData, true);
+
+  const std::string last_error = "Last error";
+  test_api->SetLastConnectionError(last_error);
+  EXPECT_EQ(last_error, test_api->GetLastConnectionError());
+  test_api->Connect();
+  EXPECT_TRUE(test_api->GetLastConnectionError().empty());
+}
+
 }  // namespace brave_vpn

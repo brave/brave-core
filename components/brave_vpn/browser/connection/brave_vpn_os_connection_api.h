@@ -52,6 +52,9 @@ class BraveVPNOSConnectionAPI {
   virtual void AddObserver(Observer* observer) = 0;
   virtual void RemoveObserver(Observer* observer) = 0;
   virtual void SetConnectionState(mojom::ConnectionState state) = 0;
+  // Returns user friendly error string if existed.
+  // Otherwise returns empty.
+  virtual std::string GetLastConnectionError() const = 0;
 };
 
 }  // namespace brave_vpn

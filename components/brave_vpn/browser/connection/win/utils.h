@@ -22,16 +22,23 @@ enum class CheckConnectionResult {
   DISCONNECTED,
 };
 
-void PrintRasError(DWORD error);
+struct RasOperationResult {
+  bool success;
+  // If not success, store user friendly error description.
+  std::string error_description;
+};
+
+// Returns human readable error description.
+std::string GetRasErrorMessage(DWORD error);
 std::wstring GetPhonebookPath(const std::wstring& entry_name);
 
-bool CreateEntry(const std::wstring& entry_name,
-                 const std::wstring& hostname,
-                 const std::wstring& username,
-                 const std::wstring& password);
-bool RemoveEntry(const std::wstring& entry_name);
-bool DisconnectEntry(const std::wstring& entry_name);
-bool ConnectEntry(const std::wstring& entry_name);
+RasOperationResult CreateEntry(const std::wstring& entry_name,
+                               const std::wstring& hostname,
+                               const std::wstring& username,
+                               const std::wstring& password);
+RasOperationResult RemoveEntry(const std::wstring& entry_name);
+RasOperationResult DisconnectEntry(const std::wstring& entry_name);
+RasOperationResult ConnectEntry(const std::wstring& entry_name);
 CheckConnectionResult CheckConnection(const std::wstring& entry_name);
 
 }  // namespace internal

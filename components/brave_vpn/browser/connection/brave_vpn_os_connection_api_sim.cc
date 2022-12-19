@@ -131,11 +131,6 @@ bool BraveVPNOSConnectionAPISim::IsConnectionChecked() const {
   return check_connection_called_;
 }
 
-void BraveVPNOSConnectionAPISim::UpdateAndNotifyConnectionStateChange(
-    mojom::ConnectionState state) {
-  BraveVPNOSConnectionAPIBase::UpdateAndNotifyConnectionStateChange(state);
-}
-
 void BraveVPNOSConnectionAPISim::OnConnected(const std::string& name,
                                              bool success) {
   // Cancelling connecting request simulation.
