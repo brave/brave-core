@@ -114,7 +114,7 @@
     Articles automatically load in reader mode, saving you time
   </message>
 
-  <if expr="enable_sidebar">
+  <if expr="toolkit_views">
     <message name="IDS_SETTINGS_APPEARNCE_SETTINGS_SIDEBAR_PART_TITLE" desc="Title of sidebar part in settings">
       Sidebar
     </message>

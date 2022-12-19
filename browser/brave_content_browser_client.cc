@@ -68,7 +68,6 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/buildflags/buildflags.h"
 #include "brave/components/playlist/features.h"
-#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/components/speedreader/common/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"

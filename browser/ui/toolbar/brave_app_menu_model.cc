@@ -7,11 +7,14 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/grit/generated_resources.h"
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
@@ -27,12 +30,10 @@
 #include "ui/gfx/paint_vector_icon.h"
 #endif
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
+#if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/sidebar/sidebar_service.h"
-#include "chrome/browser/ui/browser.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -41,8 +42,7 @@
 
 namespace {
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
-
+#if defined(TOOLKIT_VIEWS)
 using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
 
 class SidebarMenuModel : public ui::SimpleMenuModel,
@@ -103,9 +103,8 @@ class SidebarMenuModel : public ui::SimpleMenuModel,
     return ShowSidebarOption::kShowAlways;
   }
 
-  Browser* browser_ = nullptr;
+  raw_ptr<Browser> browser_ = nullptr;
 };
-
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
@@ -223,7 +222,7 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
                              IDS_SHOW_BRAVE_SYNC);
   }
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
+#if defined(TOOLKIT_VIEWS)
   if (sidebar::CanUseSidebar(browser())) {
     sub_menus_.push_back(std::make_unique<SidebarMenuModel>(browser()));
     InsertSubMenuWithStringIdAt(
@@ -462,7 +461,7 @@ size_t BraveAppMenuModel::GetIndexOfBraveSyncItem() const {
   return GetProperItemIndex(commands_to_check, true).value();
 }
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
+#if defined(TOOLKIT_VIEWS)
 size_t BraveAppMenuModel::GetIndexOfBraveSidebarItem() const {
   std::vector<int> commands_to_check = {
       IDC_SHOW_BRAVE_SYNC, IDC_MANAGE_EXTENSIONS, IDC_SHOW_BRAVE_WALLET,

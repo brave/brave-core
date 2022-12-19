@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 
-#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags.h"
 #include "chrome/browser/ui/browser_window.h"
 
@@ -14,9 +13,11 @@ namespace content {
 class WebContents;
 }  // namespace content
 
+#if defined(TOOLKIT_VIEWS)
 namespace sidebar {
 class Sidebar;
 }  // namespace sidebar
+#endif
 
 namespace speedreader {
 class SpeedreaderBubbleView;
@@ -43,7 +44,7 @@ class BraveBrowserWindow : public BrowserWindow {
   virtual void HideSpeedreaderWebUIBubble() {}
 #endif
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
+#if defined(TOOLKIT_VIEWS)
   virtual sidebar::Sidebar* InitSidebar();
 #endif
 

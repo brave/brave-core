@@ -8,10 +8,10 @@ import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
-import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
+import("//build/config/ui.gni")
 import("//components/gcm_driver/config.gni")
 
 source_set("extensions") {
@@ -77,7 +77,6 @@ source_set("extensions") {
     "//brave/components/decentralized_dns/content",
     "//brave/components/ipfs/buildflags",
     "//brave/components/ntp_widget_utils/browser",
-    "//brave/components/sidebar/buildflags",
     "//brave/components/tor/buildflags",
     "//brave/vendor/bat-native-ads:headers",
     "//brave/vendor/bat-native-ledger:headers",
@@ -99,7 +98,7 @@ source_set("extensions") {
     "//url",
   ]
 
-  if (enable_sidebar) {
+  if (toolkit_views) {
     deps += [ "//brave/components/sidebar" ]
   }
 
