@@ -241,25 +241,30 @@ struct PinError {
 struct TokenPinStatus {
   TokenPinStatusCode code;
   PinError? error;
-  mojo_base.mojom.Time? validate_time;
+  mojo_base.mojom.Time validate_time;
 };
 
 struct TokenPinOverview {
-  TokenPinStatus local;
+  TokenPinStatus? local;
   map<string, TokenPinStatus> remotes;
 };
 
 interface BraveWalletPinServiceObserver {
-  OnTokenStatusChanged(string? service, BlockchainToken token, TokenPinStatus status);
+  OnTokenStatusChanged(string? service, BlockchainToken token,
+                       TokenPinStatus status);
 };
 
 interface WalletPinService {
   AddObserver(pending_remote<BraveWalletPinServiceObserver> observer);
 
-  AddPin(BlockchainToken token, string? service) => (bool result, PinError? error);
-  RemovePin(BlockchainToken token, string? service) => (bool result, PinError? response);
-  GetTokenStatus(BlockchainToken token) => (TokenPinOverview? status, PinError? error);
-  Validate(BlockchainToken token, string? service) => (bool result, PinError? error);
+  AddPin(BlockchainToken token, string? service) =>(bool result,
+                                                    PinError? error);
+  RemovePin(BlockchainToken token, string? service) => (bool result,
+                                                        PinError? response);
+  GetTokenStatus(BlockchainToken token) => (TokenPinOverview? status,
+                                            PinError? error);
+  Validate(BlockchainToken token, string? service) => (bool result,
+                                                       PinError? error);
 };
 
 interface WalletAutoPinService {
@@ -305,7 +310,8 @@ interface PageHandlerFactory {
                     pending_receiver<BraveWalletService> brave_wallet_service,
                     pending_receiver<BraveWalletP3A> brave_wallet_p3a,
                     pending_receiver<WalletPinService> brave_wallet_pin_service,
-                    pending_receiver<WalletAutoPinService> brave_wallet_auto_pin_service);
+                    pending_receiver<WalletAutoPinService>
+                        brave_wallet_auto_pin_service);
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -1299,6 +1305,9 @@ interface BraveWalletService {
   AddObserver(pending_remote<BraveWalletServiceObserver> observer);
 
   AddTokenObserver(pending_remote<BraveWalletServiceTokenObserver> observer);
+
+  // Obtains all the user assets.
+  GetAllUserAssets() => (array<BlockchainToken> tokens);
 
   // Obtains the user assets for the specified chain ID and coin type.
   GetUserAssets(string chain_id, CoinType coin) => (array<BlockchainToken> tokens);

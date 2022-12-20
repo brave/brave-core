@@ -87,6 +87,8 @@ class BraveWalletService : public KeyedService,
       const std::string& chain_id,
       mojom::CoinType coin,
       PrefService* profile_prefs);
+  static std::vector<mojom::BlockchainTokenPtr> GetUserAssets(
+      PrefService* profile_prefs);
   static base::Value::Dict GetDefaultEthereumAssets();
   static base::Value::Dict GetDefaultSolanaAssets();
   static base::Value::Dict GetDefaultFilecoinAssets();
@@ -101,6 +103,7 @@ class BraveWalletService : public KeyedService,
   void GetUserAssets(const std::string& chain_id,
                      mojom::CoinType coin,
                      GetUserAssetsCallback callback) override;
+  void GetAllUserAssets(GetUserAssetsCallback callback) override;
   void AddUserAsset(mojom::BlockchainTokenPtr token,
                     AddUserAssetCallback callback) override;
   void RemoveUserAsset(mojom::BlockchainTokenPtr token,

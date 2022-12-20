@@ -55,6 +55,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   JsonRpcService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* prefs);
+  // For testing:
   JsonRpcService();
   ~JsonRpcService() override;
 

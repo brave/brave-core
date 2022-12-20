@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #ifndef BRAVE_COMPONENTS_IPFS_PIN_IPFS_LOCAL_PIN_SERVICE_H_
 #define BRAVE_COMPONENTS_IPFS_PIN_IPFS_LOCAL_PIN_SERVICE_H_
@@ -35,13 +35,14 @@ class AddLocalPinJob : public IpfsBaseJob {
   void Start() override;
 
  private:
-  void OnAddPinResult(bool status, absl::optional<AddPinResult> result);
+  void OnAddPinResult(absl::optional<AddPinResult> result);
 
-  PrefService* prefs_service_;
-  IpfsService* ipfs_service_;
+  raw_ptr<PrefService> prefs_service_;
+  raw_ptr<IpfsService> ipfs_service_;
   std::string prefix_;
   std::vector<std::string> cids_;
   AddPinCallback callback_;
+  base::WeakPtrFactory<AddLocalPinJob> weak_ptr_factory_{this};
 };
 
 class RemoveLocalPinJob : public IpfsBaseJob {
@@ -54,9 +55,10 @@ class RemoveLocalPinJob : public IpfsBaseJob {
   void Start() override;
 
  private:
-  PrefService* prefs_service_;
+  raw_ptr<PrefService> prefs_service_;
   std::string prefix_;
   RemovePinCallback callback_;
+  base::WeakPtrFactory<RemoveLocalPinJob> weak_ptr_factory_{this};
 };
 
 class VerifyLocalPinJob : public IpfsBaseJob {
@@ -71,13 +73,14 @@ class VerifyLocalPinJob : public IpfsBaseJob {
   void Start() override;
 
  private:
-  void OnGetPinsResult(bool status, absl::optional<GetPinsResult> result);
+  void OnGetPinsResult(absl::optional<GetPinsResult> result);
 
-  PrefService* prefs_service_;
-  IpfsService* ipfs_service_;
+  raw_ptr<PrefService> prefs_service_;
+  raw_ptr<IpfsService> ipfs_service_;
   std::string prefix_;
   std::vector<std::string> cids_;
   ValidatePinsCallback callback_;
+  base::WeakPtrFactory<VerifyLocalPinJob> weak_ptr_factory_{this};
 };
 
 class GcJob : public IpfsBaseJob {
@@ -90,12 +93,13 @@ class GcJob : public IpfsBaseJob {
   void Start() override;
 
  private:
-  void OnGetPinsResult(bool status, absl::optional<GetPinsResult> result);
-  void OnPinsRemovedResult(bool status, absl::optional<RemovePinResult> result);
+  void OnGetPinsResult(absl::optional<GetPinsResult> result);
+  void OnPinsRemovedResult(absl::optional<RemovePinResult> result);
 
-  PrefService* prefs_service_;
-  IpfsService* ipfs_service_;
+  raw_ptr<PrefService> prefs_service_;
+  raw_ptr<IpfsService> ipfs_service_;
   GcCallback callback_;
+  base::WeakPtrFactory<GcJob> weak_ptr_factory_{this};
 };
 
 class IpfsLocalPinService : public KeyedService {
@@ -126,8 +130,10 @@ class IpfsLocalPinService : public KeyedService {
 
   bool gc_task_posted_ = false;
   std::unique_ptr<IpfsBasePinService> ipfs_base_pin_service_;
-  PrefService* prefs_service_;
-  IpfsService* ipfs_service_;
+  raw_ptr<PrefService> prefs_service_;
+  raw_ptr<IpfsService> ipfs_service_;
+
+  base::WeakPtrFactory<IpfsLocalPinService> weak_ptr_factory_{this};
 };
 
 }  // namespace ipfs

@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #ifndef BRAVE_COMPONENTS_IPFS_PIN_IPFS_BASE_PIN_SERVICE_H_
 #define BRAVE_COMPONENTS_IPFS_PIN_IPFS_BASE_PIN_SERVICE_H_
@@ -27,7 +27,7 @@ class IpfsBaseJob {
 
 class IpfsBasePinService : public IpfsServiceObserver {
  public:
-  IpfsBasePinService(PrefService* pref_service, IpfsService* service);
+  explicit IpfsBasePinService(IpfsService* service);
   ~IpfsBasePinService() override;
 
   virtual void AddJob(std::unique_ptr<IpfsBaseJob> job);
@@ -50,8 +50,7 @@ class IpfsBasePinService : public IpfsServiceObserver {
   void DoNextJob();
 
   bool daemon_ready_ = false;
-  PrefService* pref_service_;
-  IpfsService* ipfs_service_;
+  raw_ptr<IpfsService> ipfs_service_;
   PrefChangeRegistrar pref_change_registrar_;
   std::unique_ptr<IpfsBaseJob> current_job_;
   std::queue<std::unique_ptr<IpfsBaseJob>> jobs_;

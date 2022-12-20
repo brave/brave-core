@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_AUTO_PIN_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_AUTO_PIN_SERVICE_H_
@@ -30,7 +30,7 @@ using brave_wallet::mojom::BlockchainTokenPtr;
 
 namespace brave_wallet {
 
-enum Operation { ADD = 0, DELETE = 1, VALIDATE = 2 };
+enum Operation { kAdd = 0, kDelete = 1, kValidate = 2 };
 
 struct IntentData {
   BlockchainTokenPtr token;
@@ -92,12 +92,14 @@ class BraveWalletAutoPinService
       token_observer_{this};
   mojo::ReceiverSet<brave_wallet::mojom::WalletAutoPinService> receivers_;
 
-  PrefService* pref_service_;
-  BraveWalletService* brave_wallet_service_;
-  BraveWalletPinService* brave_wallet_pin_service_;
+  raw_ptr<PrefService> pref_service_;
+  raw_ptr<BraveWalletService> brave_wallet_service_;
+  raw_ptr<BraveWalletPinService> brave_wallet_pin_service_;
 
   std::unique_ptr<IntentData> current_;
   std::deque<std::unique_ptr<IntentData>> queue_;
+
+  base::WeakPtrFactory<BraveWalletAutoPinService> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet
