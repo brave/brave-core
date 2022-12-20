@@ -66,19 +66,6 @@ base::OnceClosure BraveCompoundTabContainer::LockLayout() {
       std::move(closures));
 }
 
-int BraveCompoundTabContainer::GetAvailableWidthForUnpinnedTabContainer(
-    base::RepeatingCallback<int()> available_width_callback) {
-  // At this moment, Chromium upstream has a bug which causes crash.
-  // In a near future, this patch won't be needed as upstream checks if the
-  // `available_width_callback` is null.
-  if (!available_width_callback) {
-    return parent() ? parent()->GetAvailableSize(this).width().value() : 0;
-  }
-
-  return CompoundTabContainer::GetAvailableWidthForUnpinnedTabContainer(
-      available_width_callback);
-}
-
 void BraveCompoundTabContainer::TransferTabBetweenContainers(
     int from_model_index,
     int to_model_index) {
