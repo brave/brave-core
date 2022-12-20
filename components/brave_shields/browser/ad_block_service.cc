@@ -59,7 +59,7 @@ std::string g_ad_block_component_base64_public_key_(
 namespace brave_shields {
 
 AdBlockService::SourceProviderObserver::SourceProviderObserver(
-    base::WeakPtr<AdBlockEngine> adblock_engine,
+    AdBlockEngine* adblock_engine,
     AdBlockFiltersProvider* filters_provider,
     AdBlockResourceProvider* resource_provider,
     scoped_refptr<base::SequencedTaskRunner> task_runner)
@@ -99,8 +99,9 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
     const std::string& resources_json) {
   if (dat_buf_.empty()) {
     task_runner_->PostTask(
-        FROM_HERE, base::BindOnce(&AdBlockEngine::UseResources, adblock_engine_,
-                                  resources_json));
+        FROM_HERE,
+        base::BindOnce(&AdBlockEngine::UseResources,
+                       adblock_engine_->AsWeakPtr(), resources_json));
   } else {
     auto engine_load_callback = base::BindOnce(
         [](base::WeakPtr<AdBlockEngine> engine, bool deserialize,
@@ -109,7 +110,8 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
             engine->Load(deserialize, std::move(dat_buf), resources_json);
           }
         },
-        adblock_engine_, deserialize_, std::move(dat_buf_), resources_json);
+        adblock_engine_->AsWeakPtr(), deserialize_, std::move(dat_buf_),
+        resources_json);
     task_runner_->PostTask(FROM_HERE, std::move(engine_load_callback));
   }
 }
@@ -285,13 +287,12 @@ AdBlockService::AdBlockService(
   additional_filters_manager_->AddProvider(custom_filters_provider_.get());
 
   default_service_observer_ = std::make_unique<SourceProviderObserver>(
-      default_engine_->AsWeakPtr(), default_filters_provider_.get(),
+      default_engine_.get(), default_filters_provider_.get(),
       resource_provider_.get(), GetTaskRunner());
   additional_filters_service_observer_ =
       std::make_unique<SourceProviderObserver>(
-          additional_filters_engine_->AsWeakPtr(),
-          additional_filters_manager_.get(), resource_provider_.get(),
-          GetTaskRunner());
+          additional_filters_engine_.get(), additional_filters_manager_.get(),
+          resource_provider_.get(), GetTaskRunner());
 }
 
 AdBlockService::~AdBlockService() = default;
@@ -325,7 +326,7 @@ void AdBlockService::UseSourceProvidersForTest(
     AdBlockFiltersProvider* source_provider,
     AdBlockResourceProvider* resource_provider) {
   default_service_observer_ = std::make_unique<SourceProviderObserver>(
-      default_engine_->AsWeakPtr(), source_provider, resource_provider,
+      default_engine_.get(), source_provider, resource_provider,
       GetTaskRunner());
 }
 
@@ -334,8 +335,8 @@ void AdBlockService::UseCustomSourceProvidersForTest(
     AdBlockResourceProvider* resource_provider) {
   additional_filters_service_observer_ =
       std::make_unique<SourceProviderObserver>(
-          additional_filters_engine_->AsWeakPtr(), source_provider,
-          resource_provider, GetTaskRunner());
+          additional_filters_engine_.get(), source_provider, resource_provider,
+          GetTaskRunner());
 }
 
 bool AdBlockService::TagExistsForTest(const std::string& tag) {
