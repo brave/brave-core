@@ -59,7 +59,7 @@ class AdBlockService {
                                  public AdBlockFiltersProvider::Observer {
    public:
     SourceProviderObserver(
-        base::WeakPtr<AdBlockEngine> adblock_engine,
+        AdBlockEngine* adblock_engine,
         AdBlockFiltersProvider* source_provider,
         AdBlockResourceProvider* resource_provider,
         scoped_refptr<base::SequencedTaskRunner> task_runner);
@@ -78,7 +78,7 @@ class AdBlockService {
 
     bool deserialize_;
     DATFileDataBuffer dat_buf_;
-    base::WeakPtr<AdBlockEngine> adblock_engine_;
+    raw_ptr<AdBlockEngine> adblock_engine_;
     raw_ptr<AdBlockFiltersProvider> filters_provider_;    // not owned
     raw_ptr<AdBlockResourceProvider> resource_provider_;  // not owned
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
