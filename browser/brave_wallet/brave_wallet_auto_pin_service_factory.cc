@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/brave_wallet/brave_wallet_auto_pin_service_factory.h"
 
@@ -12,6 +12,8 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_pin_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+// TODO(cypt4) : Refactor brave/browser into separate component (#27486)
+#include "brave/browser/ipfs/ipfs_service_factory.h"  // nogncheck
 
 #include "brave/components/brave_wallet/browser/brave_wallet_pin_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -44,6 +46,9 @@ BraveWalletAutoPinService*
 BraveWalletAutoPinServiceFactory::GetServiceForContext(
     content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
+    return nullptr;
+  }
+  if (!ipfs::IpfsServiceFactory::IsIpfsEnabled(context)) {
     return nullptr;
   }
   return static_cast<BraveWalletAutoPinService*>(

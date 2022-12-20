@@ -48,13 +48,12 @@ class IPFSJSONParser {
                                               const std::string& peer_id,
                                               const std::string& address);
   // Local pins
-  static bool GetAddPinsResultFromJSON(const std::string& json,
-                                       ipfs::AddPinResult* add_pin_result);
-  static bool GetGetPinsResultFromJSON(const std::string& json,
-                                       ipfs::GetPinsResult* result);
-  static bool GetRemovePinsResultFromJSON(
-      const std::string& json,
-      ipfs::RemovePinResult* add_pin_result);
+  static absl::optional<ipfs::AddPinResult> GetAddPinsResultFromJSON(
+      const base::Value& value);
+  static absl::optional<ipfs::GetPinsResult> GetGetPinsResultFromJSON(
+      const base::Value& value);
+  static absl::optional<ipfs::RemovePinResult> GetRemovePinsResultFromJSON(
+      const base::Value& value);
 };
 
 #endif  // BRAVE_COMPONENTS_IPFS_IPFS_JSON_PARSER_H_

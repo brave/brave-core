@@ -83,12 +83,11 @@ class IpfsService : public KeyedService,
   using GarbageCollectionCallback =
       base::OnceCallback<void(bool, const std::string&)>;
   // Local pins
-  using AddPinCallback =
-      base::OnceCallback<void(bool, absl::optional<AddPinResult>)>;
+  using AddPinCallback = base::OnceCallback<void(absl::optional<AddPinResult>)>;
   using RemovePinCallback =
-      base::OnceCallback<void(bool, absl::optional<RemovePinResult>)>;
+      base::OnceCallback<void(absl::optional<RemovePinResult>)>;
   using GetPinsCallback =
-      base::OnceCallback<void(bool, absl::optional<GetPinsResult>)>;
+      base::OnceCallback<void(absl::optional<GetPinsResult>)>;
 
   using BoolCallback = base::OnceCallback<void(bool)>;
   using GetConfigCallback = base::OnceCallback<void(bool, const std::string&)>;

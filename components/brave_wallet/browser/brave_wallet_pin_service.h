@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PIN_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_PIN_SERVICE_H_
@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/cxx20_erase_deque.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -70,26 +71,26 @@ class BraveWalletPinService : public KeyedService,
       const absl::optional<std::string>& service);
 
   virtual mojom::TokenPinStatusPtr GetTokenStatus(
-      absl::optional<std::string> service,
+      const absl::optional<std::string>& service,
       const mojom::BlockchainTokenPtr& token);
   virtual absl::optional<base::Time> GetLastValidateTime(
-      absl::optional<std::string> service,
+      const absl::optional<std::string>& service,
       const mojom::BlockchainTokenPtr& token);
   virtual std::set<std::string> GetTokens(
       const absl::optional<std::string>& service);
 
  private:
-  void CreateToken(absl::optional<std::string> service,
+  void CreateToken(const absl::optional<std::string>& service,
                    const mojom::BlockchainTokenPtr& token,
                    const std::vector<std::string>& cids);
-  void RemoveToken(absl::optional<std::string> service,
+  void RemoveToken(const absl::optional<std::string>& service,
                    const mojom::BlockchainTokenPtr& token);
-  void SetTokenStatus(absl::optional<std::string> service,
+  void SetTokenStatus(const absl::optional<std::string>& service,
                       const mojom::BlockchainTokenPtr& token,
                       mojom::TokenPinStatusCode,
                       const mojom::PinErrorPtr& error);
 
-  void FinishAddingWithResult(absl::optional<std::string> service,
+  void FinishAddingWithResult(const absl::optional<std::string>& service,
                               const mojom::BlockchainTokenPtr& token,
                               bool result,
                               mojom::PinErrorPtr error,
@@ -124,11 +125,11 @@ class BraveWalletPinService : public KeyedService,
   mojo::RemoteSet<mojom::BraveWalletPinServiceObserver> observers_;
 
   // Prefs service is used to store list of pinned items
-  PrefService* prefs_;
+  raw_ptr<PrefService> prefs_;
 
   // JsonRpcService is used to fetch token metadata
-  JsonRpcService* json_rpc_service_;
-  ipfs::IpfsLocalPinService* local_pin_service_;
+  raw_ptr<JsonRpcService> json_rpc_service_;
+  raw_ptr<ipfs::IpfsLocalPinService> local_pin_service_;
 };
 
 }  // namespace brave_wallet

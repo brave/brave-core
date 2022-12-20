@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/brave_wallet/browser/brave_wallet_auto_pin_service.h"
 
@@ -29,6 +29,8 @@ using testing::_;
 
 namespace brave_wallet {
 
+namespace {
+
 class MockBraveWalletPinService : public BraveWalletPinService {
  public:
   MockBraveWalletPinService()
@@ -48,10 +50,10 @@ class MockBraveWalletPinService : public BraveWalletPinService {
   MOCK_METHOD1(GetTokens,
                std::set<std::string>(const absl::optional<std::string>&));
   MOCK_METHOD2(GetTokenStatus,
-               mojom::TokenPinStatusPtr(absl::optional<std::string>,
+               mojom::TokenPinStatusPtr(const absl::optional<std::string>&,
                                         const mojom::BlockchainTokenPtr&));
   MOCK_METHOD2(GetLastValidateTime,
-               absl::optional<base::Time>(absl::optional<std::string>,
+               absl::optional<base::Time>(const absl::optional<std::string>&,
                                           const mojom::BlockchainTokenPtr&));
   MOCK_METHOD2(MarkAsPendingForPinning,
                void(const mojom::BlockchainTokenPtr&,
@@ -63,15 +65,15 @@ class MockBraveWalletPinService : public BraveWalletPinService {
 
 class MockBraveWalletService : public BraveWalletService {
  public:
-  MOCK_METHOD3(GetUserAssets,
-               void(const std::string&,
-                    mojom::CoinType,
-                    BraveWalletService::GetUserAssetsCallback));
+  MOCK_METHOD1(GetAllUserAssets,
+               void(BraveWalletService::GetUserAssetsCallback));
 };
 
 MATCHER_P(TokenPathMatches, path, "") {
   return arg == BraveWalletPinService::TokenFromPath(path);
 }
+
+}  // namespace
 
 class BraveWalletAutoPinServiceTest : public testing::Test {
  public:
@@ -84,7 +86,7 @@ class BraveWalletAutoPinServiceTest : public testing::Test {
  protected:
   void SetUp() override {
     auto* registry = pref_service_.registry();
-    registry->RegisterBooleanPref(kAutoPinEnabled, false);
+    registry->RegisterBooleanPref(kAutoPinEnabled, true);
     brave_wallet_auto_pin_service_ =
         std::make_unique<BraveWalletAutoPinService>(
             GetPrefs(), GetBraveWalletService(), GetBraveWalletPinService());
@@ -175,10 +177,8 @@ TEST_F(BraveWalletAutoPinServiceTest, UnpinUnknownTokens_WhenRestore) {
           }));
   ON_CALL(*GetBraveWalletPinService(), GetTokens(_))
       .WillByDefault(::testing::Return(known_tokens));
-  ON_CALL(*GetBraveWalletService(), GetUserAssets(_, _, _))
-      .WillByDefault(::testing::Invoke([](const std::string& chain_id,
-                                          mojom::CoinType coin,
-                                          BraveWalletService::
+  ON_CALL(*GetBraveWalletService(), GetAllUserAssets(_))
+      .WillByDefault(::testing::Invoke([](BraveWalletService::
                                               GetUserAssetsCallback callback) {
         std::vector<mojom::BlockchainTokenPtr> result;
         result.push_back(BraveWalletPinService::TokenFromPath(
@@ -233,10 +233,8 @@ TEST_F(BraveWalletAutoPinServiceTest, ValidateOldTokens_WhenRestore) {
           }));
   ON_CALL(*GetBraveWalletPinService(), GetTokens(_))
       .WillByDefault(::testing::Return(known_tokens));
-  ON_CALL(*GetBraveWalletService(), GetUserAssets(_, _, _))
-      .WillByDefault(::testing::Invoke([](const std::string& chain_id,
-                                          mojom::CoinType coin,
-                                          BraveWalletService::
+  ON_CALL(*GetBraveWalletService(), GetAllUserAssets(_))
+      .WillByDefault(::testing::Invoke([](BraveWalletService::
                                               GetUserAssetsCallback callback) {
         std::vector<mojom::BlockchainTokenPtr> result;
         result.push_back(BraveWalletPinService::TokenFromPath(
@@ -316,10 +314,8 @@ TEST_F(BraveWalletAutoPinServiceTest, PinContinue_WhenRestore) {
           }));
   ON_CALL(*GetBraveWalletPinService(), GetTokens(_))
       .WillByDefault(::testing::Return(known_tokens));
-  ON_CALL(*GetBraveWalletService(), GetUserAssets(_, _, _))
-      .WillByDefault(::testing::Invoke([](const std::string& chain_id,
-                                          mojom::CoinType coin,
-                                          BraveWalletService::
+  ON_CALL(*GetBraveWalletService(), GetAllUserAssets(_))
+      .WillByDefault(::testing::Invoke([](BraveWalletService::
                                               GetUserAssetsCallback callback) {
         std::vector<mojom::BlockchainTokenPtr> result;
         result.push_back(BraveWalletPinService::TokenFromPath(
@@ -392,10 +388,8 @@ TEST_F(BraveWalletAutoPinServiceTest, UnpinContinue_WhenRestore) {
           }));
   ON_CALL(*GetBraveWalletPinService(), GetTokens(_))
       .WillByDefault(::testing::Return(known_tokens));
-  ON_CALL(*GetBraveWalletService(), GetUserAssets(_, _, _))
-      .WillByDefault(::testing::Invoke([](const std::string& chain_id,
-                                          mojom::CoinType coin,
-                                          BraveWalletService::
+  ON_CALL(*GetBraveWalletService(), GetAllUserAssets(_))
+      .WillByDefault(::testing::Invoke([](BraveWalletService::
                                               GetUserAssetsCallback callback) {
         std::vector<mojom::BlockchainTokenPtr> result;
         result.push_back(BraveWalletPinService::TokenFromPath(
@@ -423,6 +417,12 @@ TEST_F(BraveWalletAutoPinServiceTest, UnpinContinue_WhenRestore) {
               RemovePin(TokenPathMatches(
                             "nft.local.60.0x1."
                             "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"),
+                        testing::Eq(absl::nullopt), _))
+      .Times(1);
+  EXPECT_CALL(*GetBraveWalletPinService(),
+              RemovePin(TokenPathMatches(
+                            "nft.local.60.0x1."
+                            "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3"),
                         testing::Eq(absl::nullopt), _))
       .Times(1);
 
@@ -473,10 +473,8 @@ TEST_F(BraveWalletAutoPinServiceTest, PinOldTokens_WhenAutoPinEnabled) {
           }));
   ON_CALL(*GetBraveWalletPinService(), GetTokens(_))
       .WillByDefault(::testing::Return(known_tokens));
-  ON_CALL(*GetBraveWalletService(), GetUserAssets(_, _, _))
-      .WillByDefault(::testing::Invoke([](const std::string& chain_id,
-                                          mojom::CoinType coin,
-                                          BraveWalletService::
+  ON_CALL(*GetBraveWalletService(), GetAllUserAssets(_))
+      .WillByDefault(::testing::Invoke([](BraveWalletService::
                                               GetUserAssetsCallback callback) {
         std::vector<mojom::BlockchainTokenPtr> result;
         result.push_back(BraveWalletPinService::TokenFromPath(

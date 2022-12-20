@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/ipfs/pin/ipfs_base_pin_service.h"
 
@@ -36,24 +36,13 @@ class IpfsBasePinServiceTest : public testing::Test {
   IpfsBasePinServiceTest() = default;
 
   void SetUp() override {
-    auto* registry = pref_service_.registry();
-    IpfsService::RegisterProfilePrefs(registry);
     ipfs_base_pin_service_ =
-        std::make_unique<IpfsBasePinService>(GetPrefs(), GetIpfsService());
+        std::make_unique<IpfsBasePinService>(GetIpfsService());
   }
 
   void TearDown() override {
     ipfs_base_pin_service_->RemovePrefListenersForTests();
   }
-
-  void SetLocalNodeEnabled(bool enabled) {
-    GetPrefs()->SetInteger(
-        kIPFSResolveMethod,
-        static_cast<int>(enabled ? IPFSResolveMethodTypes::IPFS_LOCAL
-                                 : IPFSResolveMethodTypes::IPFS_DISABLED));
-  }
-
-  PrefService* GetPrefs() { return &pref_service_; }
 
   testing::NiceMock<MockIpfsService>* GetIpfsService() {
     return &ipfs_service_;
@@ -64,7 +53,6 @@ class IpfsBasePinServiceTest : public testing::Test {
  private:
   std::unique_ptr<IpfsBasePinService> ipfs_base_pin_service_;
   testing::NiceMock<MockIpfsService> ipfs_service_;
-  TestingPrefServiceSimple pref_service_;
   content::BrowserTaskEnvironment task_environment_;
 };
 
@@ -101,12 +89,6 @@ TEST_F(IpfsBasePinServiceTest, TasksExecuted) {
 
   service()->OnJobDone(true);
   EXPECT_TRUE(second_method_called.value());
-}
-
-TEST_F(IpfsBasePinServiceTest, LaunchDaemon_AfterSettingChange) {
-  SetLocalNodeEnabled(false);
-  EXPECT_CALL(*GetIpfsService(), StartDaemonAndLaunch(_)).Times(1);
-  SetLocalNodeEnabled(true);
 }
 
 }  // namespace ipfs

@@ -279,6 +279,36 @@ absl::optional<std::string> BraveWalletService::GetChecksumAddress(
 
 // static
 std::vector<mojom::BlockchainTokenPtr> BraveWalletService::GetUserAssets(
+    PrefService* profile_prefs) {
+  std::vector<mojom::BlockchainTokenPtr> result;
+  const auto& user_assets_dict = profile_prefs->GetDict(kBraveWalletUserAssets);
+  for (auto coin_it : user_assets_dict) {
+    auto coin = GetCoinFromPref(coin_it.first);
+    if (!coin)
+      continue;
+
+    for (auto network_it : coin_it.second.GetDict()) {
+      auto chain_id = GetChainId(profile_prefs, coin.value(), network_it.first);
+
+      if (!chain_id)
+        continue;
+
+      for (const auto& item : network_it.second.GetList()) {
+        const auto* token = item.GetIfDict();
+        if (!token)
+          continue;
+        mojom::BlockchainTokenPtr tokenPtr =
+            ValueToBlockchainToken(*token, chain_id.value(), coin.value());
+        if (tokenPtr)
+          result.push_back(std::move(tokenPtr));
+      }
+    }
+  }
+  return result;
+}
+
+// static
+std::vector<mojom::BlockchainTokenPtr> BraveWalletService::GetUserAssets(
     const std::string& chain_id,
     mojom::CoinType coin,
     PrefService* profile_prefs) {
@@ -373,6 +403,11 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
                                        GetUserAssetsCallback callback) {
   std::vector<mojom::BlockchainTokenPtr> result =
       GetUserAssets(chain_id, coin, profile_prefs_);
+  std::move(callback).Run(std::move(result));
+}
+
+void BraveWalletService::GetAllUserAssets(GetUserAssetsCallback callback) {
+  std::vector<mojom::BlockchainTokenPtr> result = GetUserAssets(profile_prefs_);
   std::move(callback).Run(std::move(result));
 }
 

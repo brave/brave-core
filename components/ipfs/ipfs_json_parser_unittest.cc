@@ -386,105 +386,119 @@ TEST_F(IPFSJSONParserTest, RemovePeerFromConfigJSONTest) {
 TEST_F(IPFSJSONParserTest, GetGetPinsResultFromJSONTest) {
   {
     std::string json = R"({})";
-    ipfs::GetPinsResult result;
-    EXPECT_FALSE(IPFSJSONParser::GetGetPinsResultFromJSON(json, &result));
+    auto result =
+        IPFSJSONParser::GetGetPinsResultFromJSON(base::test::ParseJson(json));
+    EXPECT_FALSE(result.has_value());
   }
 
   {
     std::string json = R"({"Keys":{"QmA" : {"Type" : "Recursive"}}})";
-    ipfs::GetPinsResult result;
-    EXPECT_TRUE(IPFSJSONParser::GetGetPinsResultFromJSON(json, &result));
-    EXPECT_EQ(result.at("QmA"), "Recursive");
+    auto result =
+        IPFSJSONParser::GetGetPinsResultFromJSON(base::test::ParseJson(json));
+    EXPECT_TRUE(result.has_value());
+    EXPECT_EQ(result->at("QmA"), "Recursive");
   }
 
   {
     std::string json = R"({"Keys":{}})";
-    ipfs::GetPinsResult result;
-    EXPECT_TRUE(IPFSJSONParser::GetGetPinsResultFromJSON(json, &result));
-    EXPECT_TRUE(result.empty());
+    auto result =
+        IPFSJSONParser::GetGetPinsResultFromJSON(base::test::ParseJson(json));
+    EXPECT_TRUE(result.has_value());
+    EXPECT_TRUE(result->empty());
   }
 
   {
     std::string json = R"({"Keys":[]})";
-    ipfs::GetPinsResult result;
-    EXPECT_FALSE(IPFSJSONParser::GetGetPinsResultFromJSON(json, &result));
+    auto result =
+        IPFSJSONParser::GetGetPinsResultFromJSON(base::test::ParseJson(json));
+    EXPECT_FALSE(result.has_value());
   }
 
   {
     std::string json =
         R"({"Keys":{"QmA" :  {"Type" :"Recursive"}, "QmB" :  {"Type" :"Direct"}}})";
-    ipfs::GetPinsResult result;
-    EXPECT_TRUE(IPFSJSONParser::GetGetPinsResultFromJSON(json, &result));
-    EXPECT_EQ(result.at("QmA"), "Recursive");
-    EXPECT_EQ(result.at("QmB"), "Direct");
+    auto result =
+        IPFSJSONParser::GetGetPinsResultFromJSON(base::test::ParseJson(json));
+    EXPECT_TRUE(result.has_value());
+    EXPECT_EQ(result->at("QmA"), "Recursive");
+    EXPECT_EQ(result->at("QmB"), "Direct");
   }
 }
 
 TEST_F(IPFSJSONParserTest, GetRemovePinsResultFromJSONTest) {
   {
     std::string json = R"({})";
-    ipfs::RemovePinResult result;
-    EXPECT_FALSE(IPFSJSONParser::GetRemovePinsResultFromJSON(json, &result));
+    auto result = IPFSJSONParser::GetRemovePinsResultFromJSON(
+        base::test::ParseJson(json));
+    EXPECT_FALSE(result.has_value());
   }
 
   {
     std::string json = R"({"Pins" : {}})";
-    ipfs::RemovePinResult result;
-    EXPECT_FALSE(IPFSJSONParser::GetRemovePinsResultFromJSON(json, &result));
+    auto result = IPFSJSONParser::GetRemovePinsResultFromJSON(
+        base::test::ParseJson(json));
+    EXPECT_FALSE(result.has_value());
   }
 
   {
     std::string json = R"({"Pins" : []})";
-    ipfs::RemovePinResult result;
-    EXPECT_TRUE(IPFSJSONParser::GetRemovePinsResultFromJSON(json, &result));
-    EXPECT_TRUE(result.empty());
+    auto result = IPFSJSONParser::GetRemovePinsResultFromJSON(
+        base::test::ParseJson(json));
+    EXPECT_TRUE(result.has_value());
+    EXPECT_TRUE(result.value().empty());
   }
 
   {
     std::string json = R"({"Pins" : ["QmA", "QmB"]})";
-    ipfs::RemovePinResult result;
-    EXPECT_TRUE(IPFSJSONParser::GetRemovePinsResultFromJSON(json, &result));
-    EXPECT_EQ(result.at(0), "QmA");
-    EXPECT_EQ(result.at(1), "QmB");
+    auto result = IPFSJSONParser::GetRemovePinsResultFromJSON(
+        base::test::ParseJson(json));
+    EXPECT_TRUE(result.has_value());
+    EXPECT_EQ(result->at(0), "QmA");
+    EXPECT_EQ(result->at(1), "QmB");
   }
 }
 
 TEST_F(IPFSJSONParserTest, GetAddPinsResultFromJSONTest) {
   {
     std::string json = R"({})";
-    ipfs::AddPinResult result;
-    EXPECT_FALSE(IPFSJSONParser::GetAddPinsResultFromJSON(json, &result));
+    auto result =
+        IPFSJSONParser::GetAddPinsResultFromJSON(base::test::ParseJson(json));
+    EXPECT_FALSE(result.has_value());
   }
 
   {
     std::string json = R"({"Pins" : {}})";
-    ipfs::AddPinResult result;
-    EXPECT_FALSE(IPFSJSONParser::GetAddPinsResultFromJSON(json, &result));
+    auto result =
+        IPFSJSONParser::GetAddPinsResultFromJSON(base::test::ParseJson(json));
+    EXPECT_FALSE(result.has_value());
   }
 
   {
     std::string json = R"({"Pins" : []})";
-    ipfs::AddPinResult result;
-    EXPECT_TRUE(IPFSJSONParser::GetAddPinsResultFromJSON(json, &result));
-    EXPECT_TRUE(result.pins.empty());
-    EXPECT_EQ(result.progress, -1);
+    auto result =
+        IPFSJSONParser::GetAddPinsResultFromJSON(base::test::ParseJson(json));
+    EXPECT_TRUE(result.has_value());
+    EXPECT_TRUE(result->pins.empty());
+    EXPECT_EQ(result->progress, -1);
   }
 
   {
     std::string json = R"({"Pins" : ["QmA", "QmB"]})";
-    ipfs::AddPinResult result;
-    EXPECT_TRUE(IPFSJSONParser::GetAddPinsResultFromJSON(json, &result));
-    EXPECT_EQ(result.pins.at(0), "QmA");
-    EXPECT_EQ(result.pins.at(1), "QmB");
-    EXPECT_EQ(result.progress, -1);
+    auto result =
+        IPFSJSONParser::GetAddPinsResultFromJSON(base::test::ParseJson(json));
+    EXPECT_TRUE(result.has_value());
+    EXPECT_EQ(result->pins.at(0), "QmA");
+    EXPECT_EQ(result->pins.at(1), "QmB");
+    EXPECT_EQ(result->progress, -1);
   }
 
   {
     std::string json = R"({"Pins" : ["QmA", "QmB"], "Progress" : 10})";
-    ipfs::AddPinResult result;
-    EXPECT_TRUE(IPFSJSONParser::GetAddPinsResultFromJSON(json, &result));
-    EXPECT_EQ(result.pins.at(0), "QmA");
-    EXPECT_EQ(result.pins.at(1), "QmB");
-    EXPECT_EQ(result.progress, 10);
+    auto result =
+        IPFSJSONParser::GetAddPinsResultFromJSON(base::test::ParseJson(json));
+    EXPECT_TRUE(result.has_value());
+    EXPECT_EQ(result->pins.at(0), "QmA");
+    EXPECT_EQ(result->pins.at(1), "QmB");
+    EXPECT_EQ(result->progress, 10);
   }
 }
