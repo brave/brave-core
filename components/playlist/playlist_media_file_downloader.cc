@@ -123,7 +123,8 @@ void PlaylistMediaFileDownloader::DetachCachedFile(
   download_item_observation_.RemoveObservation(item);
 
   if (item->GetLastReason() ==
-      download::DownloadInterruptReason::DOWNLOAD_INTERRUPT_REASON_NONE) {
+          download::DownloadInterruptReason::DOWNLOAD_INTERRUPT_REASON_NONE &&
+      item->IsDone()) {
     will_be_detached->MarkAsComplete();
   } else {
     will_be_detached->Remove();
