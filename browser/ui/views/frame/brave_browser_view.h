@@ -96,6 +96,7 @@ class BraveBrowserView : public BrowserView {
   friend class sidebar::SidebarBrowserTest;
 
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, Fullscreen);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
