@@ -75,7 +75,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
       u"https://www.coinbase.com/legal/cloud/terms-of-service/",
       u"https://www.coinbase.com/legal/privacy/"};
 
-  if (IsUnstoppableDomainsTLD(request_url_)) {
+  if (IsUnstoppableDomainsTLD(request_url_.host_piece())) {
     load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
                                        IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE));
     load_time_data.Set("heading", brave_l10n::GetLocalizedResourceUTF16String(
@@ -87,7 +87,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
             brave_l10n::GetLocalizedResourceUTF16String(
                 IDS_UNSTOPPABLE_DOMAINS_OPT_IN_PRIMARY_PARAGRAPH),
             infura_links, nullptr));
-  } else if (IsENSTLD(request_url_)) {
+  } else if (IsENSTLD(request_url_.host_piece())) {
     load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
                                        IDS_ENS_OPT_IN_TITLE));
     load_time_data.Set("heading", brave_l10n::GetLocalizedResourceUTF16String(
@@ -97,7 +97,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
                            brave_l10n::GetLocalizedResourceUTF16String(
                                IDS_ENS_OPT_IN_PRIMARY_PARAGRAPH),
                            infura_links, nullptr));
-  } else if (IsSnsTLD(request_url_)) {
+  } else if (IsSnsTLD(request_url_.host_piece())) {
     load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
                                        IDS_SNS_OPT_IN_TITLE));
     load_time_data.Set("heading", brave_l10n::GetLocalizedResourceUTF16String(
@@ -111,7 +111,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
     NOTREACHED();
   }
 
-  if (IsSnsTLD(request_url_)) {
+  if (IsSnsTLD(request_url_.host_piece())) {
     load_time_data.Set(
         "primaryButtonText",
         brave_l10n::GetLocalizedResourceUTF16String(

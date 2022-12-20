@@ -87,7 +87,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   brave_request_info->browser_context = profile();
 
   // No redirect if resolve method is not set to Ethereum.
-  EXPECT_FALSE(IsUnstoppableDomainsResolveMethodEthereum(local_state()));
+  EXPECT_FALSE(IsUnstoppableDomainsResolveMethodEnabled(local_state()));
   int rc = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
       base::DoNothing(), brave_request_info);
   EXPECT_EQ(rc, net::OK);
@@ -95,7 +95,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
 
   local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
                             static_cast<int>(ResolveMethodTypes::ENABLED));
-  EXPECT_TRUE(IsUnstoppableDomainsResolveMethodEthereum(local_state()));
+  EXPECT_TRUE(IsUnstoppableDomainsResolveMethodEnabled(local_state()));
 
   // No redirect for OTR context.
   brave_request_info->browser_context =
@@ -119,7 +119,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   EXPECT_EQ(rc, net::ERR_IO_PENDING);
 
   // No redirect if ENS resolve method is not set to Ethereum.
-  EXPECT_FALSE(IsENSResolveMethodEthereum(local_state()));
+  EXPECT_FALSE(IsENSResolveMethodEnabled(local_state()));
   brave_request_info->request_url = GURL("http://brave.eth");
   rc = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(base::DoNothing(),
                                                           brave_request_info);
@@ -128,7 +128,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
 
   local_state()->SetInteger(kENSResolveMethod,
                             static_cast<int>(ResolveMethodTypes::ENABLED));
-  EXPECT_TRUE(IsENSResolveMethodEthereum(local_state()));
+  EXPECT_TRUE(IsENSResolveMethodEnabled(local_state()));
   brave_request_info->request_url = GURL("http://brave.eth");
   rc = OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(base::DoNothing(),
                                                           brave_request_info);

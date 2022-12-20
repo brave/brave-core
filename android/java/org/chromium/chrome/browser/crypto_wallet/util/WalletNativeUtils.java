@@ -15,8 +15,23 @@ public class WalletNativeUtils {
         WalletNativeUtilsJni.get().resetWallet(profile);
     }
 
+    public static boolean isUnstoppableDomainsTld(String domain) {
+        return WalletNativeUtilsJni.get().isUnstoppableDomainsTld(domain);
+    }
+
+    public static boolean isEnsTld(String domain) {
+        return WalletNativeUtilsJni.get().isEnsTld(domain);
+    }
+
+    public static boolean isSnsTld(String domain) {
+        return WalletNativeUtilsJni.get().isSnsTld(domain);
+    }
+
     @NativeMethods
     interface Natives {
         void resetWallet(Profile profile);
+        boolean isUnstoppableDomainsTld(String domain);
+        boolean isEnsTld(String domain);
+        boolean isSnsTld(String domain);
     }
 }
