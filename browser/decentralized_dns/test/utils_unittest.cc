@@ -28,10 +28,10 @@ class UtilsUnitTest : public testing::Test {
 };
 
 TEST_F(UtilsUnitTest, IsUnstoppableDomainsTLD) {
-  EXPECT_TRUE(IsUnstoppableDomainsTLD(GURL("http://test.crypto")));
-  EXPECT_FALSE(IsUnstoppableDomainsTLD(GURL("http://test.com")));
-  EXPECT_FALSE(IsUnstoppableDomainsTLD(GURL("http://test.eth")));
-  EXPECT_FALSE(IsUnstoppableDomainsTLD(GURL("http://crypto")));
+  EXPECT_TRUE(IsUnstoppableDomainsTLD("test.crypto"));
+  EXPECT_FALSE(IsUnstoppableDomainsTLD("test.com"));
+  EXPECT_FALSE(IsUnstoppableDomainsTLD("test.eth"));
+  EXPECT_FALSE(IsUnstoppableDomainsTLD("crypto"));
 }
 
 TEST_F(UtilsUnitTest, IsUnstoppableDomainsResolveMethodAsk) {
@@ -42,19 +42,26 @@ TEST_F(UtilsUnitTest, IsUnstoppableDomainsResolveMethodAsk) {
   EXPECT_FALSE(IsUnstoppableDomainsResolveMethodAsk(local_state()));
 }
 
-TEST_F(UtilsUnitTest, IsUnstoppableDomainsResolveMethodEthereum) {
-  EXPECT_FALSE(IsUnstoppableDomainsResolveMethodEthereum(local_state()));
+TEST_F(UtilsUnitTest, IsUnstoppableDomainsResolveMethodEnabled) {
+  EXPECT_FALSE(IsUnstoppableDomainsResolveMethodEnabled(local_state()));
 
   local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
                             static_cast<int>(ResolveMethodTypes::ENABLED));
-  EXPECT_TRUE(IsUnstoppableDomainsResolveMethodEthereum(local_state()));
+  EXPECT_TRUE(IsUnstoppableDomainsResolveMethodEnabled(local_state()));
 }
 
 TEST_F(UtilsUnitTest, IsENSTLD) {
-  EXPECT_TRUE(IsENSTLD(GURL("http://test.eth")));
-  EXPECT_FALSE(IsENSTLD(GURL("http://test.com")));
-  EXPECT_FALSE(IsENSTLD(GURL("http://test.crypto")));
-  EXPECT_FALSE(IsENSTLD(GURL("http://eth")));
+  EXPECT_TRUE(IsENSTLD("test.eth"));
+  EXPECT_FALSE(IsENSTLD("test.com"));
+  EXPECT_FALSE(IsENSTLD("test.crypto"));
+  EXPECT_FALSE(IsENSTLD("eth"));
+}
+
+TEST_F(UtilsUnitTest, IsSnsTLD) {
+  EXPECT_TRUE(IsSnsTLD("test.sol"));
+  EXPECT_FALSE(IsSnsTLD("test.com"));
+  EXPECT_FALSE(IsSnsTLD("test.crypto"));
+  EXPECT_FALSE(IsSnsTLD("eth"));
 }
 
 TEST_F(UtilsUnitTest, IsENSResolveMethodAsk) {
@@ -65,12 +72,12 @@ TEST_F(UtilsUnitTest, IsENSResolveMethodAsk) {
   EXPECT_FALSE(IsENSResolveMethodAsk(local_state()));
 }
 
-TEST_F(UtilsUnitTest, IsENSResolveMethodEthereum) {
-  EXPECT_FALSE(IsENSResolveMethodEthereum(local_state()));
+TEST_F(UtilsUnitTest, IsENSResolveMethodEnabledd) {
+  EXPECT_FALSE(IsENSResolveMethodEnabled(local_state()));
 
   local_state()->SetInteger(kENSResolveMethod,
                             static_cast<int>(ResolveMethodTypes::ENABLED));
-  EXPECT_TRUE(IsENSResolveMethodEthereum(local_state()));
+  EXPECT_TRUE(IsENSResolveMethodEnabled(local_state()));
 }
 
 TEST_F(UtilsUnitTest, ResolveMethodMigration) {
@@ -85,8 +92,8 @@ TEST_F(UtilsUnitTest, ResolveMethodMigration) {
       static_cast<int>(ResolveMethodTypes::DEPRECATED_DNS_OVER_HTTPS));
   EXPECT_FALSE(IsUnstoppableDomainsResolveMethodAsk(local_state()));
   EXPECT_FALSE(IsENSResolveMethodAsk(local_state()));
-  EXPECT_FALSE(IsUnstoppableDomainsResolveMethodEthereum(local_state()));
-  EXPECT_FALSE(IsENSResolveMethodEthereum(local_state()));
+  EXPECT_FALSE(IsUnstoppableDomainsResolveMethodEnabled(local_state()));
+  EXPECT_FALSE(IsENSResolveMethodEnabled(local_state()));
 
   MigrateObsoleteLocalStatePrefs(local_state());
   EXPECT_FALSE(local_state()->HasPrefPath(kUnstoppableDomainsResolveMethod));

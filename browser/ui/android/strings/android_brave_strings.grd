@@ -3327,6 +3327,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY" desc="Network Filter Selector Secondary Networks">
       Secondary Networks
     </message>
+    <message name="IDS_WALLET_DOMAIN_NOT_REGISTERED_ERROR_TEXT" desc="ENS/SNS/UD domain not registered text">
+      Domain <ph name="DOMAIN">%1$s</ph> is not registered
+    </message>
   </messages>
   </release>
 </grit>

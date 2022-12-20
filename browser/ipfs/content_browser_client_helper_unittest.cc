@@ -192,13 +192,13 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteLocal) {
 TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteENS) {
   profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
-  EXPECT_FALSE(decentralized_dns::IsENSResolveMethodEthereum(local_state()));
+  EXPECT_FALSE(decentralized_dns::IsENSResolveMethodEnabled(local_state()));
   GURL ens_uri("https://brave.eth");
   ASSERT_FALSE(HandleIPFSURLRewrite(&ens_uri, browser_context()));
   local_state()->SetInteger(
       decentralized_dns::kENSResolveMethod,
       static_cast<int>(decentralized_dns::ResolveMethodTypes::ENABLED));
-  EXPECT_TRUE(decentralized_dns::IsENSResolveMethodEthereum(local_state()));
+  EXPECT_TRUE(decentralized_dns::IsENSResolveMethodEnabled(local_state()));
   ASSERT_TRUE(HandleIPFSURLRewrite(&ens_uri, browser_context()));
 }
 

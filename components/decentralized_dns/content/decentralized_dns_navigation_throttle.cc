@@ -59,12 +59,12 @@ DecentralizedDnsNavigationThrottle::~DecentralizedDnsNavigationThrottle() =
 content::NavigationThrottle::ThrottleCheckResult
 DecentralizedDnsNavigationThrottle::WillStartRequest() {
   GURL url = navigation_handle()->GetURL();
-  if ((IsUnstoppableDomainsTLD(url) &&
+  if ((IsUnstoppableDomainsTLD(url.host_piece()) &&
        IsUnstoppableDomainsResolveMethodAsk(local_state_)) ||
-      (IsENSTLD(url) && IsENSResolveMethodAsk(local_state_)) ||
+      (IsENSTLD(url.host_piece()) && IsENSResolveMethodAsk(local_state_)) ||
       (base::FeatureList::IsEnabled(
            brave_wallet::features::kBraveWalletSnsFeature) &&
-       IsSnsTLD(url) && IsSnsResolveMethodAsk(local_state_))) {
+       IsSnsTLD(url.host_piece()) && IsSnsResolveMethodAsk(local_state_))) {
     base::SequencedTaskRunnerHandle::Get()->PostTask(
         FROM_HERE,
         base::BindOnce(&DecentralizedDnsNavigationThrottle::ShowInterstitial,

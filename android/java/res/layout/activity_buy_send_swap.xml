@@ -330,6 +330,16 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/resolved_addr_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:textColor="@color/wallet_text_color"
+                    android:textIsSelectable="true"
+                    android:textSize="12sp"
+                    android:visibility="gone"/>
+
+                <TextView
                     android:id="@+id/to_send_error_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
