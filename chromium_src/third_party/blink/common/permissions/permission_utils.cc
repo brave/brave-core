@@ -22,6 +22,8 @@
     return "BraveCookies";                              \
   case PermissionType::BRAVE_SPEEDREADER:               \
     return "BraveSpeedreaders";                         \
+  case PermissionType::BRAVE_GOOGLE_SIGN_IN:            \
+    return "BraveGoogleSignInPermission";               \
   case PermissionType::BRAVE_ETHEREUM:                  \
     return "BraveEthereum";                             \
   case PermissionType::BRAVE_SOLANA:                    \

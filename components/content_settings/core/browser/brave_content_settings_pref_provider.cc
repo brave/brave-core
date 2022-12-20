@@ -21,6 +21,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
+#include "brave/components/permissions/google_sign_in/google_sign_in_permission_util.h"
 #include "build/build_config.h"
 #include "components/content_settings/core/browser/content_settings_info.h"
 #include "components/content_settings/core/browser/content_settings_pref.h"
@@ -46,10 +47,6 @@ constexpr char kObsoleteShieldCookies[] =
     "profile.content_settings.exceptions.shieldsCookies";
 constexpr char kBraveShieldsFPSettingsMigration[] =
     "brave.shields_fp_settings_migration";
-
-constexpr char kGoogleAuthPattern[] =
-    "https://accounts.google.com/o/oauth2/auth/*";
-constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/__/auth/*";
 
 const char kExpirationPath[] = "expiration";
 const char kLastModifiedPath[] = "last_modified";
@@ -624,39 +621,80 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   std::vector<Rule> rules;
   auto old_rules = std::move(brave_cookie_rules_[incognito]);
   auto old_shields_down_rules = std::move(brave_shield_down_rules_[incognito]);
-
   brave_cookie_rules_[incognito].clear();
 
-  // kGoogleLoginControlType preference adds an exception for
-  // accounts.google.com to access cookies in 3p context to allow login using
-  // google oauth. The exception is added before all overrides to allow google
-  // oauth to work when the user sets custom overrides for a site.
-  // For example: Google OAuth will be allowed if the user allows all cookies
-  // and sets 3p cookie blocking for a site.
-  //
-  // We also create the same exception for firebase apps, since they
-  // are tightly bound to google, and require google auth to work.
-  // See: #5075, #9852, #10367
-  //
-  // PS: kGoogleLoginControlType preference might not be registered for tests.
-  if (prefs_->FindPreference(kGoogleLoginControlType) &&
-      prefs_->GetBoolean(kGoogleLoginControlType)) {
+  const bool google_sign_in_flag_enabled =
+      permissions::IsGoogleSignInFeatureEnabled();
+  const bool google_sign_in_pref_enabled =
+      permissions::IsGoogleSignInPrefEnabled(prefs_);
+
+  // If Google Sign-In permission feature flag is disabled (default on),
+  // we add 3p cookie exception globally for Google/Firebase auth domains.
+  // TODO(ssahib): Remove this once we no longer need to support the flag.
+  if (!google_sign_in_flag_enabled && google_sign_in_pref_enabled) {
+    // kGoogleLoginControlType preference adds an exception for
+    // accounts.google.com to access cookies in 3p context to allow login using
+    // google oauth. The exception is added before all overrides to allow google
+    // oauth to work when the user sets custom overrides for a site.
+    // For example: Google OAuth will be allowed if the user allows all cookies
+    // and sets 3p cookie blocking for a site.
+    //
+    // We also create the same exception for firebase apps, since they
+    // are tightly bound to google, and require google auth to work.
+    // See: #5075, #9852, #10367
+    //
+    // PS: kGoogleLoginControlType preference might not be registered for tests.
     const auto google_auth_rule = Rule(
-        ContentSettingsPattern::FromString(kGoogleAuthPattern),
-        ContentSettingsPattern::Wildcard(),
+        permissions::GetGoogleAuthPattern(), ContentSettingsPattern::Wildcard(),
         ContentSettingToValue(CONTENT_SETTING_ALLOW),
         {.expiration = base::Time(), .session_model = SessionModel::Durable});
     rules.emplace_back(CloneRule(google_auth_rule));
     brave_cookie_rules_[incognito].emplace_back(CloneRule(google_auth_rule));
 
     const auto firebase_rule = Rule(
-        ContentSettingsPattern::FromString(kFirebasePattern),
+        permissions::GetFirebaseAuthPattern(),
         ContentSettingsPattern::Wildcard(),
         ContentSettingToValue(CONTENT_SETTING_ALLOW),
         {.expiration = base::Time(), .session_model = SessionModel::Durable});
     rules.emplace_back(CloneRule(firebase_rule));
     brave_cookie_rules_[incognito].emplace_back(CloneRule(firebase_rule));
+  } else if (google_sign_in_pref_enabled) {
+    // Add per-site cookie exception for Google/Firebase auth domains.
+    // Get all sites that have BRAVE_GOOGLE_SIGN_IN turned on, and add exception
+    // for them
+    auto google_sign_in_content_setting_it = PrefProvider::GetRuleIterator(
+        ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, incognito);
+    while (google_sign_in_content_setting_it &&
+           google_sign_in_content_setting_it->HasNext()) {
+      const auto google_sign_in_rule =
+          google_sign_in_content_setting_it->Next();
+      // The embedding pattern for the cookie rule will be the primary pattern
+      // for the BRAVE_GOOGLE_SIGN_IN permission.
+      // We want to get all subdomains for the cookie rule...
+      auto embedding_pattern = ContentSettingsPattern::ToDomainWildcardPattern(
+          google_sign_in_rule.primary_pattern);
+      // ... but if that doesn't work, fallback to stored pattern.
+      if (!embedding_pattern.IsValid()) {
+        embedding_pattern = google_sign_in_rule.primary_pattern;
+      }
+      const auto google_auth_rule =
+          Rule(permissions::GetGoogleAuthPattern(), embedding_pattern,
+               google_sign_in_rule.value.Clone(),
+               {.expiration = google_sign_in_rule.metadata.expiration,
+                .session_model = google_sign_in_rule.metadata.session_model});
+      rules.emplace_back(CloneRule(google_auth_rule));
+      brave_cookie_rules_[incognito].emplace_back(CloneRule(google_auth_rule));
+
+      const auto firebase_rule =
+          Rule(permissions::GetFirebaseAuthPattern(), embedding_pattern,
+               google_sign_in_rule.value.Clone(),
+               {.expiration = google_sign_in_rule.metadata.expiration,
+                .session_model = google_sign_in_rule.metadata.session_model});
+      rules.emplace_back(CloneRule(firebase_rule));
+      brave_cookie_rules_[incognito].emplace_back(CloneRule(firebase_rule));
+    }
   }
+
   // non-pref based exceptions should go in the cookie_settings_base.cc
   // chromium_src override
 
@@ -765,8 +803,10 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   }
 
   // Notify brave cookie changes as ContentSettingsType::COOKIES
-  if (initialized_ && (content_type == ContentSettingsType::BRAVE_COOKIES ||
-                       content_type == ContentSettingsType::BRAVE_SHIELDS)) {
+  if (initialized_ &&
+      (content_type == ContentSettingsType::BRAVE_COOKIES ||
+       content_type == ContentSettingsType::BRAVE_SHIELDS ||
+       content_type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN)) {
     NotifyChanges(brave_cookie_updates, incognito);
   }
 }
@@ -795,7 +835,8 @@ void BravePrefProvider::OnContentSettingChanged(
     ContentSettingsType content_type) {
   if (content_type == ContentSettingsType::COOKIES ||
       content_type == ContentSettingsType::BRAVE_COOKIES ||
-      content_type == ContentSettingsType::BRAVE_SHIELDS) {
+      content_type == ContentSettingsType::BRAVE_SHIELDS ||
+      content_type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN) {
     OnCookieSettingsChanged(content_type);
   }
 }
