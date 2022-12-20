@@ -43,9 +43,9 @@ class MediaDetectorComponentManager {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  void RegisterIfNeeded();
-
-  std::string script() const { return script_; }
+  // Returns a script to get media from page. If the script isn't fetched
+  // from component yet, will return a local script.
+  const std::string& GetMediaDetectorScript();
 
   void SetUseLocalScriptForTesting();
 
@@ -57,6 +57,8 @@ class MediaDetectorComponentManager {
   }
 
  private:
+  void RegisterIfNeeded();
+
   void OnComponentReady(const base::FilePath& install_path);
   void OnGetScript(const std::string& script);
 

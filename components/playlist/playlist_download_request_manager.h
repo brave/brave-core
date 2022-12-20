@@ -37,9 +37,7 @@ namespace playlist {
 
 // This class finds media files and their thumbnails and title from a page
 // by injecting media detector script to dedicated WebContents.
-class PlaylistDownloadRequestManager
-    : public MediaDetectorComponentManager::Observer,
-      public content::WebContentsObserver {
+class PlaylistDownloadRequestManager : public content::WebContentsObserver {
  public:
   struct Request {
     using Callback =
@@ -106,9 +104,6 @@ class PlaylistDownloadRequestManager
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override;
 
-  // MediaDetectorComponentManager::Observer overrides:
-  void OnScriptReady(const std::string& script) override;
-
   // We create |web_contents_| on demand. So, when downloading media is
   // requested, |web_contents_| may not be ready to inject js script. This
   // list caches already requested urls and used after |web_contents_| is
@@ -125,13 +120,9 @@ class PlaylistDownloadRequestManager
   int in_progress_urls_count_ = 0;
   Request::Callback callback_for_current_request_ = base::NullCallback();
 
-  std::string media_detector_script_;
   raw_ptr<content::BrowserContext> context_;
 
   raw_ptr<MediaDetectorComponentManager> media_detector_component_manager_;
-  base::ScopedObservation<MediaDetectorComponentManager,
-                          MediaDetectorComponentManager::Observer>
-      observed_{this};
   std::unique_ptr<base::RetainingOneShotTimer> web_contents_destroy_timer_;
 
   base::WeakPtrFactory<PlaylistDownloadRequestManager> weak_factory_{this};
