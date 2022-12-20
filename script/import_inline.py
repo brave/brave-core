@@ -3,8 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import contextlib
 import importlib.util
 import os.path
+import sys
 
 
 def get_src_dir():
@@ -51,3 +53,21 @@ def inline_file_from_src(location, _globals, _locals):
     """Locates src/ dir and inlines relative file by executing it using passed
     scopes."""
     _inline_file(join_src_dir(location), _globals, _locals)
+
+
+@contextlib.contextmanager
+def sys_path(path, position=None):
+    path_exists = path in sys.path
+    if not path_exists:
+        if position is None:
+            sys.path.append(path)
+        else:
+            sys.path.insert(position, path)
+    try:
+        yield
+    finally:
+        if not path_exists:
+            if sys.path[-1] == path:
+                sys.path.pop()
+            else:
+                sys.path.remove(path)

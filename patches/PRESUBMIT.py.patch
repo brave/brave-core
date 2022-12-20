@@ -1,9 +1,0 @@
-diff --git a/PRESUBMIT.py b/PRESUBMIT.py
-index 9f8def5db6e6b22dfe3f778b9b2b87e35e740fb6..c07c9ee374ec1121e987e30f0f6ce28db3722d40 100644
---- a/PRESUBMIT.py
-+++ b/PRESUBMIT.py
-@@ -6701,3 +6701,4 @@ def CheckNoJsInIos(input_api, output_api):
-             'scripts on iOS.', error_paths))
- 
-     return results
-+import chromium_presubmit_overrides; chromium_presubmit_overrides.Apply(globals())
