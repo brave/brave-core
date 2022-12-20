@@ -9,7 +9,6 @@
 #include "base/feature_list.h"
 #include "base/sequence_checker.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/types/optional_util.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 #include "build/build_config.h"
@@ -93,20 +92,14 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
 BraveFarblingLevel GetBraveFarblingLevelFor(ExecutionContext* context,
                                             BraveFarblingLevel default_value) {
   BraveFarblingLevel value = default_value;
-  // This is safe to call with a null pointer.
-  blink::WebContentSettingsClient* settings =
-      GetContentSettingsClientFor(context);
-  if (settings)
-    value = settings->GetBraveFarblingLevel();
+  if (context)
+    value = brave::BraveSessionCache::From(*context).GetBraveFarblingLevel();
   return value;
 }
 
 bool AllowFingerprinting(ExecutionContext* context) {
-  blink::WebContentSettingsClient* settings =
-      GetContentSettingsClientFor(context);
-  if (settings)
-    return settings->AllowFingerprinting();
-  return true;
+  return (GetBraveFarblingLevelFor(context, BraveFarblingLevel::OFF) !=
+          BraveFarblingLevel::MAXIMUM);
 }
 
 bool AllowFontFamily(ExecutionContext* context,
@@ -164,6 +157,7 @@ int FarbledPointerScreenCoordinate(const DOMWindow* view,
 BraveSessionCache::BraveSessionCache(ExecutionContext& context)
     : Supplement<ExecutionContext>(context) {
   farbling_enabled_ = false;
+  farbling_level_ = BraveFarblingLevel::OFF;
   scoped_refptr<const blink::SecurityOrigin> origin;
   if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
     auto* frame = window->GetFrame();
@@ -203,7 +197,14 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
   double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
   uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
-  audio_farbling_helper_.emplace(fudge_factor, seed);
+  if (blink::WebContentSettingsClient* settings =
+          GetContentSettingsClientFor(&context)) {
+    farbling_level_ = settings->GetBraveFarblingLevel();
+  }
+  if (farbling_level_ != BraveFarblingLevel::OFF) {
+    audio_farbling_helper_.emplace(
+        fudge_factor, seed, farbling_level_ == BraveFarblingLevel::MAXIMUM);
+  }
   farbling_enabled_ = true;
 }
 
@@ -222,38 +223,15 @@ void BraveSessionCache::Init() {
   RegisterAllowFontFamilyCallback(base::BindRepeating(&brave::AllowFontFamily));
 }
 
-absl::optional<blink::BraveAudioFarblingHelper>
-BraveSessionCache::GetAudioFarblingHelper(
-    blink::WebContentSettingsClient* settings) {
-  return base::OptionalFromPtr(UpdateAndGetAudioFarblingHelper(settings));
+void BraveSessionCache::FarbleAudioChannel(float* dst, size_t count) {
+  if (audio_farbling_helper_)
+    audio_farbling_helper_->FarbleAudioChannel(dst, count);
 }
 
-void BraveSessionCache::FarbleAudioChannel(
-    blink::WebContentSettingsClient* settings,
-    float* dst,
-    size_t count) {
-  if (const auto* helper = UpdateAndGetAudioFarblingHelper(settings)) {
-    helper->FarbleAudioChannel(dst, count);
-  }
-}
-
-void BraveSessionCache::PerturbPixels(blink::WebContentSettingsClient* settings,
-                                      const unsigned char* data,
-                                      size_t size) {
-  if (!farbling_enabled_ || !settings)
+void BraveSessionCache::PerturbPixels(const unsigned char* data, size_t size) {
+  if (!farbling_enabled_ || farbling_level_ == BraveFarblingLevel::OFF)
     return;
-  switch (settings->GetBraveFarblingLevel()) {
-    case BraveFarblingLevel::OFF:
-      break;
-    case BraveFarblingLevel::BALANCED:
-    case BraveFarblingLevel::MAXIMUM: {
-      PerturbPixelsInternal(data, size);
-      break;
-    }
-    default:
-      NOTREACHED();
-  }
-  return;
+  PerturbPixelsInternal(data, size);
 }
 
 void BraveSessionCache::PerturbPixelsInternal(const unsigned char* data,
@@ -346,7 +324,7 @@ bool BraveSessionCache::AllowFontFamily(
     const AtomicString& family_name) {
   if (!farbling_enabled_ || !settings || !settings->IsReduceLanguageEnabled())
     return true;
-  switch (settings->GetBraveFarblingLevel()) {
+  switch (farbling_level_) {
     case BraveFarblingLevel::OFF:
       break;
     case BraveFarblingLevel::BALANCED:
@@ -368,21 +346,6 @@ FarblingPRNG BraveSessionCache::MakePseudoRandomGenerator(FarbleKey key) {
   uint64_t seed =
       *reinterpret_cast<uint64_t*>(domain_key_) ^ static_cast<uint64_t>(key);
   return FarblingPRNG(seed);
-}
-
-const blink::BraveAudioFarblingHelper*
-BraveSessionCache::UpdateAndGetAudioFarblingHelper(
-    blink::WebContentSettingsClient* settings) {
-  if (!farbling_enabled_)
-    return nullptr;
-  DCHECK(audio_farbling_helper_);
-  DCHECK(settings);
-  const auto farbling_level = settings->GetBraveFarblingLevel();
-  if (farbling_level == BraveFarblingLevel::OFF)
-    return nullptr;
-  audio_farbling_helper_->set_max(farbling_level ==
-                                  BraveFarblingLevel::MAXIMUM);
-  return &audio_farbling_helper_.value();
 }
 
 }  // namespace brave

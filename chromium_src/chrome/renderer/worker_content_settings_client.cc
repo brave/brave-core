@@ -38,10 +38,6 @@ BraveFarblingLevel WorkerContentSettingsClient::GetBraveFarblingLevel() {
   }
 }
 
-bool WorkerContentSettingsClient::AllowFingerprinting() {
-  return GetBraveFarblingLevel() != BraveFarblingLevel::MAXIMUM;
-}
-
 blink::WebSecurityOrigin
 WorkerContentSettingsClient::GetEphemeralStorageOriginSync() {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))

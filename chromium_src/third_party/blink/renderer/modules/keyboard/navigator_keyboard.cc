@@ -18,11 +18,9 @@ namespace blink {
 // static
 Keyboard* NavigatorKeyboard::keyboard(Navigator& navigator) {
   if (ExecutionContext* context = navigator.GetExecutionContext()) {
-    if (WebContentSettingsClient* settings =
-            brave::GetContentSettingsClientFor(context)) {
-      if (settings->GetBraveFarblingLevel() != BraveFarblingLevel::OFF) {
-        return nullptr;
-      }
+    if (brave::BraveSessionCache::From(*context).GetBraveFarblingLevel() !=
+        BraveFarblingLevel::OFF) {
+      return nullptr;
     }
   }
   return keyboard_ChromiumImpl(navigator);

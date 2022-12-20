@@ -7,15 +7,6 @@
 
 namespace content {
 
-void SharedWorkerContentSettingsProxyImpl::AllowFingerprinting(
-    AllowFingerprintingCallback callback) {
-  if (!origin_.opaque()) {
-    owner_->AllowFingerprinting(origin_.GetURL(), std::move(callback));
-  } else {
-    std::move(callback).Run(false);
-  }
-}
-
 void SharedWorkerContentSettingsProxyImpl::GetBraveFarblingLevel(
     GetBraveFarblingLevelCallback callback) {
   if (!origin_.opaque()) {

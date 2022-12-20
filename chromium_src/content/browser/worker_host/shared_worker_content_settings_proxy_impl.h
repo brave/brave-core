@@ -10,9 +10,8 @@
 // affects this class.
 #include "third_party/blink/public/mojom/worker/worker_content_settings_proxy.mojom.h"
 
-#define RequestFileSystemAccessSync                                            \
-  AllowFingerprinting(AllowFingerprintingCallback callback) override;          \
-  void GetBraveFarblingLevel(GetBraveFarblingLevelCallback callback) override; \
+#define RequestFileSystemAccessSync                                       \
+  GetBraveFarblingLevel(GetBraveFarblingLevelCallback callback) override; \
   void RequestFileSystemAccessSync
 
 #include "src/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h"

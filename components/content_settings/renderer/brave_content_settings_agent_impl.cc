@@ -232,16 +232,6 @@ bool BraveContentSettingsAgentImpl::IsBraveShieldsDown(
              frame, secondary_url, content_setting_rules_->brave_shields_rules);
 }
 
-bool BraveContentSettingsAgentImpl::AllowFingerprinting() {
-  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
-  const GURL secondary_url(url::Origin(frame->GetSecurityOrigin()).GetURL());
-  if (IsBraveShieldsDown(frame, secondary_url)) {
-    return true;
-  }
-
-  return GetBraveFarblingLevel() != BraveFarblingLevel::MAXIMUM;
-}
-
 bool BraveContentSettingsAgentImpl::IsCosmeticFilteringEnabled(
     const GURL& url) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();

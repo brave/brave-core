@@ -7,14 +7,6 @@
 
 namespace content {
 
-void SharedWorkerHost::AllowFingerprinting(
-    const GURL& url,
-    base::OnceCallback<void(bool)> callback) {
-  std::move(callback).Run(
-      GetContentClient()->browser()->AllowWorkerFingerprinting(
-          url, GetProcessHost()->GetBrowserContext()));
-}
-
 void SharedWorkerHost::GetBraveFarblingLevel(
     const GURL& url,
     base::OnceCallback<void(uint8_t)> callback) {
