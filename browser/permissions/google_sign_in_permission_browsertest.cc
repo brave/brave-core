@@ -262,8 +262,6 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
                                   ContentSetting::CONTENT_SETTING_ALLOW);
     // Try to set 3p cookies from auth domain, should work.
     CheckIf3PCookiesCanBeSetFromAuthDomain(true);
-    // Coming back to page should automatically work
-    CheckAllowedFlow(1);
   }
 
   void CheckAskAndDenyFlow() {
@@ -281,8 +279,6 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
                                   ContentSetting::CONTENT_SETTING_BLOCK);
     // Try to set 3p cookies from auth domain, should not work.
     CheckIf3PCookiesCanBeSetFromAuthDomain(false);
-    // Coming back to page, DENY is respected.
-    CheckBlockedFlow(1);
   }
 
   void CheckAllowedFlow(int initial_prompts_shown = 0) {
@@ -343,20 +339,22 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionAllow) {
   SetGoogleSignInPref(true);
-  CheckCurrentStatusIsAsk();
   CheckAskAndAcceptFlow();
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDeny) {
   SetGoogleSignInPref(true);
-  CheckCurrentStatusIsAsk();
   CheckAskAndDenyFlow();
+}
+
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, Default) {
+  SetGoogleSignInPref(true);
+  CheckCurrentStatusIsAsk();
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDismiss) {
   SetGoogleSignInPref(true);
   EXPECT_EQ(0, prompt_factory()->show_count());
-  CheckCurrentStatusIsAsk();
   prompt_factory()->set_response_type(
       permissions::PermissionRequestManager::DISMISS);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
@@ -412,7 +410,6 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeDoesNotLeak) {
   Browser* incognito_browser = CreateIncognitoBrowser();
   SetBrowser(incognito_browser);
   SetPromptFactory(GetPermissionRequestManager());
-  CheckCurrentStatusIsAsk();
   CheckAskAndAcceptFlow();
   // Check permission did not leak.
   SetBrowser(original_browser);
