@@ -106,10 +106,11 @@ bool VpnRenderFrameObserver::IsAllowed() {
 
   GURL current_url(
       render_frame()->GetWebFrame()->GetDocument().Url().GetString().Utf8());
-  return ExtractParam(current_url, kIntentParamName) == kIntentParamValue &&
-         (ExtractParam(current_url, kProductParamName) == kProductParamValue ||
-          ExtractParam(current_url, kProductParamName) ==
-              kIntentParamTestValue);
+
+  std::string intent = ExtractParam(current_url, kIntentParamName);
+  std::string product = ExtractParam(current_url, kProductParamName);
+  return (intent == kIntentParamValue || intent == kIntentParamTestValue) &&
+         product == kProductParamValue;
 }
 
 void VpnRenderFrameObserver::OnDestruct() {
