@@ -95,15 +95,12 @@ def CheckWebDevStyle(input_api, output_api):
                                    'tools')):
         # pylint: disable=import-error,import-outside-toplevel
         from web_dev_style import presubmit_support, js_checker
-        with override_utils.override_scope_variable(output_api,
-                                                    'PresubmitPromptWarning',
-                                                    output_api.PresubmitError):
-            # Disable RunEsLintChecks, it's run separately in CheckESLint.
-            with override_utils.override_scope_function(
-                    js_checker.JSChecker,
-                    chromium_presubmit_overrides.noop_check,
-                    name='RunEsLintChecks'):
-                return presubmit_support.CheckStyle(input_api, output_api)
+        # Disable RunEsLintChecks, it's run separately in CheckESLint.
+        with override_utils.override_scope_function(
+                js_checker.JSChecker,
+                chromium_presubmit_overrides.noop_check,
+                name='RunEsLintChecks'):
+            return presubmit_support.CheckStyle(input_api, output_api)
 
 
 def CheckChangeLintsClean(input_api, output_api):
