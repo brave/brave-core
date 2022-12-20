@@ -261,12 +261,12 @@ bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
 }
 
 const std::string& MediaDetectorComponentManager::GetMediaDetectorScript() {
-  if (!script_.empty()) {
-    RegisterIfNeeded();
+  if (!script_.empty())
     return script_;
-  }
 
-  // In case we have yet to fetch the script, use local script instead.
+  // In case we have yet to fetch the script, use local script instead. At the
+  // same time, fetch the script from component.
+  RegisterIfNeeded();
   return GetLocalScript();
 }
 
