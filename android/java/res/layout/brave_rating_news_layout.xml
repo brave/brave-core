@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_bg"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/brave_logo_id"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_brave_logo"
+        app:layout_constraintBottom_toBottomOf="@+id/tell_us_what_you_think_id"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/brave_liking_id" />
+
+    <TextView
+        android:id="@+id/brave_liking_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/liking_brave"
+        android:textColor="@color/news_text_color"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/brave_logo_id"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tell_us_what_you_think_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tell_us_what_you_think"
+        android:textColor="@color/news_text_color"
+        app:layout_constraintStart_toStartOf="@+id/brave_liking_id"
+        app:layout_constraintTop_toBottomOf="@+id/brave_liking_id" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/brave_rate_id"
+        android:layout_width="96dp"
+        android:layout_height="36dp"
+        android:background="@drawable/rating_news_button_background"
+        android:gravity="center"
+        android:text="@string/rate_brave"
+        android:textAllCaps="false"
+        android:textColor="#AAA8F7"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tell_us_what_you_think_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/brave_liking_id"
+        tools:ignore="TouchTargetSizeCheck" />
+</androidx.constraintlayout.widget.ConstraintLayout>

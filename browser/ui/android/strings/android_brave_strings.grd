@@ -143,6 +143,39 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
   </translations>
   <release seq="1" allow_pseudo="false">
     <messages fallback_to_english="true">
+      <message name="IDS_TELL_US_WHAT_YOU_THINK"  desc="Text for Tell us what you think!">
+        Tell us what you think!
+      </message>
+      <message name="IDS_RATE_BRAVE"  desc="Text for Rate Brave">
+        Rate Brave
+      </message>
+      <message name="IDS_BRAVE_RATING_THANKS"  desc="Text for Brave Rating Thanks">
+        Thanks!
+      </message>
+      <message name="IDS_ADD_YOUR_SUGGESTIONS"  desc="Text for Add your suggestions">
+        Add your suggestions
+      </message>
+      <message name="IDS_BRAVE_OPTIONAL"  desc="Text for Optional">
+        Optional
+      </message>
+      <message name="IDS_IN_ONE_EMOJI_EXPERIENCE_WITH_BRAVE"  desc="Text for In one emoji, how's your experience with Brave?">
+        In one emoji, how's your experience with Brave?
+      </message>
+      <message name="IDS_RATE_NOW"  desc="Text for Rate now">
+        Rate now
+      </message>
+      <message name="IDS_LIKING_BRAVE"  desc="Text for Liking Brave?">
+        Liking Brave?
+      </message>
+      <message name="IDS_LEAVE_A_PLAY_STORE_RATING"  desc="Text for Leave a Play Store rating?">
+        Leave a Play Store rating?
+      </message>
+      <message name="IDS_THANKS_FOR_YOUR_FEEDBACK"  desc="Text for Thanks for your feedback!">
+        Thanks for your feedback!
+      </message>
+      <message name="IDS_LET_US_KNOW_HOW_WE_CAN_IMPROVE_BRAVE"  desc="Text for Let us know how we can improve Brave.">
+        Let us know how we can improve Brave.
+      </message>
       <message name="IDS_TIP_AMOUNT_TEXT"  desc="Text for Tip amount">
         Tip amount:
       </message>
@@ -1213,29 +1246,11 @@ Are you sure you want to do this?
       <message name="IDS_PREFS_ABOUT_SECTION" desc="Title for the about section in settings.">
         About
       </message>
-      <message name="IDS_RATE" desc="Text for rate brave dialog button.">
-        Rate
-      </message>
-      <message name="IDS_HOW_WOULD_YOU_RATE" desc="Text for rate brave dialog.">
-        How would you rate your experience with Brave?
-      </message>
-      <message name="IDS_SHARE_YOUR_THOUGHTS" desc="Text for rate brave dialog button.">
-        Share your thoughts
-      </message>
       <message name="IDS_NEVER" desc="Text for rate brave dialog button.">
         Never
       </message>
       <message name="IDS_MAYBE_LATER" desc="Text for rate brave dialog button.">
         Maybe Later
-      </message>
-      <message name="IDS_LATER" desc="Text for rate brave dialog button.">
-        Later
-      </message>
-      <message name="IDS_WOULD_YOU_MIND_LEAVING_RATING" desc="Text for rate brave dialog title.">
-        Great! Would you mind leaving us a rating on the Play Store?
-      </message>
-      <message name="IDS_RATE_FEEDBACK_HINT" desc="Text for rate feedback hint.">
-        Let us know know how we can improve
       </message>
       <message name="IDS_EARN_TOKENS_FOR_VIEWING" desc="Text for brave rewards banner.">
         Earn tokens for viewing this image and pay it forward to creators. <ph name="LEARN_MORE">%1$s</ph>

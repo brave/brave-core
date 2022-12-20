@@ -36,7 +36,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
-import org.chromium.chrome.browser.rate.RateDialogFragment;
+import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
@@ -429,7 +429,7 @@ public class BraveMainPreferencesBase
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(RateUtils.FROM_SETTINGS, true);
 
-                RateDialogFragment mRateDialogFragment = new RateDialogFragment();
+                BraveRateDialogFragment mRateDialogFragment = new BraveRateDialogFragment();
                 mRateDialogFragment.setArguments(bundle);
                 mRateDialogFragment.show(getParentFragmentManager(), "RateDialogFragment");
                 return true;

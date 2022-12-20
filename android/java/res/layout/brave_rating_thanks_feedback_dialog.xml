@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/rating_bottomsheet_background"
+    android:padding="24dp">
+
+
+    <TextView
+        android:id="@+id/askRatingDialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/thanks_for_your_feedback"
+        android:textColor="@color/brave_rating_title_color"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/askRatingDialogDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/let_us_know_how_we_can_improve_brave"
+        android:textColor="@color/brave_rating_title_color"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/askRatingDialogTitle" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addSuggestionInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:hint="@string/brave_optional"
+        app:boxStrokeColor="@color/brave_rating_text_input_stroke_color"
+        app:hintTextColor="@color/brave_rating_hint_text_color"
+        app:layout_constraintTop_toBottomOf="@id/askRatingDialogDescription"
+        tools:layout_editor_absoluteX="24dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/feedbackEditText"
+            android:layout_width="match_parent"
+            android:layout_height="109dp"
+            android:focusable="true"
+            android:gravity="top"
+            android:hint="@string/add_your_suggestions" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/rate_done_button"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/blue_48_rounded_bg"
+        android:text="@string/brave_sync_btn_done"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/addSuggestionInputLayout" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

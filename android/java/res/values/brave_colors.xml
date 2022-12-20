@@ -259,4 +259,18 @@
     <color name="notification_button_color">#423EEE</color>
     <color name="rewards_onboarding_ac_slider_track_color">#E4DBFF</color>
     <color name="rewards_onboarding_ac_slider_active_track_color">#845EF7</color>
+
+    <color name="brave_rate_bg_color">#F4F6F8</color>
+    <color name="brave_smiley_sad_color">#E32444</color>
+    <color name="brave_smiley_happy_color">#4C54D2</color>
+    <color name="brave_rating_emoji_bg_color">#FFFFFF</color>
+    <color name="brave_rating_title_color">#000000</color>
+    <color name="brave_rating_sub_title_color">#424552</color>
+    <color name="brave_rating_not_now_text_color">#4C54D2</color>
+    <color name="brave_rating_rate_now_bg_color">#4C54D2</color>
+    <color name="brave_rating_text_input_stroke_color">#E2E3E7</color>
+    <color name="brave_rating_hint_text_color">#1D1F25</color>
+
+
+
 </resources>
