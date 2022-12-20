@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/ipfs/pin/ipfs_local_pin_service.h"
 
@@ -20,6 +20,8 @@
 using testing::_;
 
 namespace ipfs {
+
+namespace {
 
 class MockIpfsService : public IpfsService {
  public:
@@ -48,6 +50,8 @@ class MockIpfsBasePinService : public IpfsBasePinService {
     std::move(job)->Start();
   }
 };
+
+}  // namespace
 
 class IpfsLocalPinServiceTest : public testing::Test {
  public:
@@ -85,7 +89,7 @@ TEST_F(IpfsLocalPinServiceTest, AddLocalPinJobTest) {
                IpfsService::AddPinCallback callback) {
               AddPinResult result;
               result.pins = cids;
-              std::move(callback).Run(true, result);
+              std::move(callback).Run(result);
             }));
 
     absl::optional<bool> success;
@@ -112,7 +116,7 @@ TEST_F(IpfsLocalPinServiceTest, AddLocalPinJobTest) {
                IpfsService::AddPinCallback callback) {
               AddPinResult result;
               result.pins = cids;
-              std::move(callback).Run(true, result);
+              std::move(callback).Run(result);
             }));
 
     absl::optional<bool> success;
@@ -140,7 +144,7 @@ TEST_F(IpfsLocalPinServiceTest, AddLocalPinJobTest) {
                IpfsService::AddPinCallback callback) {
               AddPinResult result;
               result.pins = {"Qma", "Qmb", "Qmc"};
-              std::move(callback).Run(true, result);
+              std::move(callback).Run(result);
             }));
 
     absl::optional<bool> success;
@@ -166,7 +170,7 @@ TEST_F(IpfsLocalPinServiceTest, AddLocalPinJobTest) {
         .WillByDefault(::testing::Invoke(
             [](const std::vector<std::string>& cids, bool recursive,
                IpfsService::AddPinCallback callback) {
-              std::move(callback).Run(false, absl::nullopt);
+              std::move(callback).Run(absl::nullopt);
             }));
 
     absl::optional<bool> success;
@@ -278,7 +282,7 @@ TEST_F(IpfsLocalPinServiceTest, VerifyLocalPinJobTest) {
                                             IpfsService::GetPinsCallback
                                                 callback) {
           GetPinsResult result = {{"Qma", "Recursive"}, {"Qmb", "Recursive"}};
-          std::move(callback).Run(true, result);
+          std::move(callback).Run(result);
         }));
 
     absl::optional<bool> success;
@@ -301,7 +305,7 @@ TEST_F(IpfsLocalPinServiceTest, VerifyLocalPinJobTest) {
               GetPinsResult result = {{"Qma", "Recursive"},
                                       {"Qmb", "Recursive"},
                                       {"Qmc", "Recursive"}};
-              std::move(callback).Run(true, result);
+              std::move(callback).Run(result);
             }));
 
     absl::optional<bool> success;
@@ -321,7 +325,7 @@ TEST_F(IpfsLocalPinServiceTest, VerifyLocalPinJobTest) {
                const std::string& type, bool quiet,
                IpfsService::GetPinsCallback callback) {
               GetPinsResult result = {};
-              std::move(callback).Run(true, result);
+              std::move(callback).Run(result);
             }));
 
     absl::optional<bool> success = false;
@@ -348,7 +352,7 @@ TEST_F(IpfsLocalPinServiceTest, VerifyLocalPinJobTest) {
             [](const absl::optional<std::vector<std::string>>& cid,
                const std::string& type, bool quiet,
                IpfsService::GetPinsCallback callback) {
-              std::move(callback).Run(false, absl::nullopt);
+              std::move(callback).Run(absl::nullopt);
             }));
 
     job.Start();
@@ -387,7 +391,7 @@ TEST_F(IpfsLocalPinServiceTest, GcJobTest) {
               GetPinsResult result = {{"Qma", "Recursive"},
                                       {"Qmb", "Recursive"},
                                       {"Qmc", "Recursive"}};
-              std::move(callback).Run(true, result);
+              std::move(callback).Run(result);
             }));
 
     EXPECT_CALL(*GetIpfsService(), RemovePin(_, _)).Times(0);
@@ -412,7 +416,7 @@ TEST_F(IpfsLocalPinServiceTest, GcJobTest) {
           EXPECT_FALSE(cid.has_value());
           EXPECT_TRUE(quiet);
           GetPinsResult result = {{"Qm1", "Recursive"}, {"Qm2", "Recursive"}};
-          std::move(callback).Run(true, result);
+          std::move(callback).Run(result);
         }));
     EXPECT_CALL(*GetIpfsService(), RemovePin(_, _)).Times(1);
 
@@ -424,7 +428,7 @@ TEST_F(IpfsLocalPinServiceTest, GcJobTest) {
               EXPECT_EQ(cid[0], "Qm1");
               EXPECT_EQ(cid[1], "Qm2");
               RemovePinResult result = cid;
-              std::move(callback).Run(true, result);
+              std::move(callback).Run(result);
             }));
 
     job.Start();
@@ -443,7 +447,7 @@ TEST_F(IpfsLocalPinServiceTest, GcJobTest) {
             [](const absl::optional<std::vector<std::string>>& cid,
                const std::string& type, bool quiet,
                IpfsService::GetPinsCallback callback) {
-              std::move(callback).Run(false, absl::nullopt);
+              std::move(callback).Run(absl::nullopt);
             }));
 
     EXPECT_CALL(*GetIpfsService(), RemovePin(_, _)).Times(0);

@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/ipfs/pin/ipfs_local_pin_service.h"
 
@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
@@ -32,17 +33,15 @@ AddLocalPinJob::AddLocalPinJob(PrefService* prefs_service,
 AddLocalPinJob::~AddLocalPinJob() {}
 
 void AddLocalPinJob::Start() {
-  ipfs_service_->AddPin(
-      cids_, true,
-      base::BindOnce(&AddLocalPinJob::OnAddPinResult, base::Unretained(this)));
+  ipfs_service_->AddPin(cids_, true,
+                        base::BindOnce(&AddLocalPinJob::OnAddPinResult,
+                                       weak_ptr_factory_.GetWeakPtr()));
 }
 
-void AddLocalPinJob::OnAddPinResult(bool status,
-                                    absl::optional<AddPinResult> result) {
-  if (status && result) {
+void AddLocalPinJob::OnAddPinResult(absl::optional<AddPinResult> result) {
+  if (result) {
     for (const auto& cid : cids_) {
-      if (std::find(result->pins.begin(), result->pins.end(), cid) ==
-          result->pins.end()) {
+      if (!base::Contains(result->pins, cid)) {
         std::move(callback_).Run(false);
         return;
       }
@@ -53,12 +52,7 @@ void AddLocalPinJob::OnAddPinResult(bool status,
       base::Value::Dict& update_dict = update->GetDict();
 
       for (const auto& cid : cids_) {
-        base::Value::List* list = update_dict.FindList(cid);
-        if (!list) {
-          update_dict.Set(cid, base::Value::List());
-          list = update_dict.FindList(cid);
-        }
-        DCHECK(list);
+        base::Value::List* list = update_dict.EnsureList(cid);
         list->EraseValue(base::Value(prefix_));
         list->Append(base::Value(prefix_));
       }
@@ -116,26 +110,25 @@ VerifyLocalPinJob::~VerifyLocalPinJob() {}
 void VerifyLocalPinJob::Start() {
   ipfs_service_->GetPins(absl::nullopt, kRecursiveMode, true,
                          base::BindOnce(&VerifyLocalPinJob::OnGetPinsResult,
-                                        base::Unretained(this)));
+                                        weak_ptr_factory_.GetWeakPtr()));
 }
 
-void VerifyLocalPinJob::OnGetPinsResult(bool status,
-                                        absl::optional<GetPinsResult> result) {
-  if (status && result) {
+void VerifyLocalPinJob::OnGetPinsResult(absl::optional<GetPinsResult> result) {
+  if (result) {
     DictionaryPrefUpdate update(prefs_service_, kIPFSPinnedCids);
     base::Value::Dict& update_dict = update->GetDict();
 
-    bool verification_pased = true;
+    bool verification_passed = true;
     for (const auto& cid : cids_) {
       base::Value::List* list = update_dict.FindList(cid);
       if (!list) {
-        verification_pased = false;
+        verification_passed = false;
       } else {
         if (result->find(cid) != result->end()) {
           list->EraseValue(base::Value(prefix_));
           list->Append(base::Value(prefix_));
         } else {
-          verification_pased = false;
+          verification_passed = false;
           list->EraseValue(base::Value(prefix_));
         }
         if (list->empty()) {
@@ -143,7 +136,7 @@ void VerifyLocalPinJob::OnGetPinsResult(bool status,
         }
       }
     }
-    std::move(callback_).Run(verification_pased);
+    std::move(callback_).Run(verification_passed);
   } else {
     std::move(callback_).Run(absl::nullopt);
   }
@@ -160,12 +153,12 @@ GcJob::~GcJob() {}
 void GcJob::Start() {
   ipfs_service_->GetPins(
       absl::nullopt, kRecursiveMode, true,
-      base::BindOnce(&GcJob::OnGetPinsResult, base::Unretained(this)));
+      base::BindOnce(&GcJob::OnGetPinsResult, weak_ptr_factory_.GetWeakPtr()));
 }
 
-void GcJob::OnGetPinsResult(bool status, absl::optional<GetPinsResult> result) {
+void GcJob::OnGetPinsResult(absl::optional<GetPinsResult> result) {
   std::vector<std::string> cids_to_delete;
-  if (status && result) {
+  if (result) {
     const base::Value::Dict& dict = prefs_service_->GetDict(kIPFSPinnedCids);
     for (const auto& pair : result.value()) {
       const base::Value::List* list = dict.FindList(pair.first);
@@ -175,9 +168,9 @@ void GcJob::OnGetPinsResult(bool status, absl::optional<GetPinsResult> result) {
     }
 
     if (!cids_to_delete.empty()) {
-      ipfs_service_->RemovePin(
-          cids_to_delete,
-          base::BindOnce(&GcJob::OnPinsRemovedResult, base::Unretained(this)));
+      ipfs_service_->RemovePin(cids_to_delete,
+                               base::BindOnce(&GcJob::OnPinsRemovedResult,
+                                              weak_ptr_factory_.GetWeakPtr()));
     } else {
       std::move(callback_).Run(true);
     }
@@ -186,23 +179,18 @@ void GcJob::OnGetPinsResult(bool status, absl::optional<GetPinsResult> result) {
   }
 }
 
-void GcJob::OnPinsRemovedResult(bool status,
-                                absl::optional<RemovePinResult> result) {
-  if (status && result) {
-    std::move(callback_).Run(true);
-  } else {
-    std::move(callback_).Run(false);
-  }
+void GcJob::OnPinsRemovedResult(absl::optional<RemovePinResult> result) {
+  std::move(callback_).Run(result.has_value());
 }
 
 IpfsLocalPinService::IpfsLocalPinService(PrefService* prefs_service,
                                          IpfsService* ipfs_service)
     : prefs_service_(prefs_service), ipfs_service_(ipfs_service) {
-  ipfs_base_pin_service_ =
-      std::make_unique<IpfsBasePinService>(prefs_service_, ipfs_service_);
+  ipfs_base_pin_service_ = std::make_unique<IpfsBasePinService>(ipfs_service_);
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
       FROM_HERE,
-      base::BindOnce(&IpfsLocalPinService::AddGcTask, base::Unretained(this)),
+      base::BindOnce(&IpfsLocalPinService::AddGcTask,
+                     weak_ptr_factory_.GetWeakPtr()),
       base::Minutes(1));
 }
 
@@ -221,7 +209,7 @@ void IpfsLocalPinService::AddPins(const std::string& prefix,
   ipfs_base_pin_service_->AddJob(std::make_unique<AddLocalPinJob>(
       prefs_service_, ipfs_service_, prefix, cids,
       base::BindOnce(&IpfsLocalPinService::OnAddJobFinished,
-                     base::Unretained(this), std::move(callback))));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
 }
 
 void IpfsLocalPinService::RemovePins(const std::string& prefix,
@@ -229,7 +217,7 @@ void IpfsLocalPinService::RemovePins(const std::string& prefix,
   ipfs_base_pin_service_->AddJob(std::make_unique<RemoveLocalPinJob>(
       prefs_service_, prefix,
       base::BindOnce(&IpfsLocalPinService::OnRemovePinsFinished,
-                     base::Unretained(this), std::move(callback))));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
 }
 
 void IpfsLocalPinService::ValidatePins(const std::string& prefix,
@@ -238,7 +226,7 @@ void IpfsLocalPinService::ValidatePins(const std::string& prefix,
   ipfs_base_pin_service_->AddJob(std::make_unique<VerifyLocalPinJob>(
       prefs_service_, ipfs_service_, prefix, cids,
       base::BindOnce(&IpfsLocalPinService::OnValidateJobFinished,
-                     base::Unretained(this), std::move(callback))));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
 }
 
 void IpfsLocalPinService::OnRemovePinsFinished(RemovePinCallback callback,
@@ -247,7 +235,8 @@ void IpfsLocalPinService::OnRemovePinsFinished(RemovePinCallback callback,
   if (status) {
     base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
         FROM_HERE,
-        base::BindOnce(&IpfsLocalPinService::AddGcTask, base::Unretained(this)),
+        base::BindOnce(&IpfsLocalPinService::AddGcTask,
+                       weak_ptr_factory_.GetWeakPtr()),
         base::Minutes(1));
   }
   ipfs_base_pin_service_->OnJobDone(status);
@@ -273,7 +262,7 @@ void IpfsLocalPinService::AddGcTask() {
   ipfs_base_pin_service_->AddJob(std::make_unique<GcJob>(
       prefs_service_, ipfs_service_,
       base::BindOnce(&IpfsLocalPinService::OnGcFinishedCallback,
-                     base::Unretained(this))));
+                     weak_ptr_factory_.GetWeakPtr())));
 }
 
 void IpfsLocalPinService::OnGcFinishedCallback(bool status) {

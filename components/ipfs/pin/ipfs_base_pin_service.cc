@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/ipfs/pin/ipfs_base_pin_service.h"
 
@@ -10,19 +10,13 @@
 
 namespace ipfs {
 
-IpfsBaseJob::IpfsBaseJob() {}
+IpfsBaseJob::IpfsBaseJob() = default;
 
-IpfsBaseJob::~IpfsBaseJob() {}
+IpfsBaseJob::~IpfsBaseJob() = default;
 
-IpfsBasePinService::IpfsBasePinService(PrefService* pref_service,
-                                       IpfsService* ipfs_service)
-    : pref_service_(pref_service), ipfs_service_(ipfs_service) {
+IpfsBasePinService::IpfsBasePinService(IpfsService* ipfs_service)
+    : ipfs_service_(ipfs_service) {
   ipfs_service_->AddObserver(this);
-  pref_change_registrar_.Init(pref_service_);
-  pref_change_registrar_.Add(
-      kIPFSResolveMethod,
-      base::BindRepeating(&IpfsBasePinService::MaybeStartDaemon,
-                          base::Unretained(this)));
 }
 
 IpfsBasePinService::IpfsBasePinService() {}
@@ -64,6 +58,8 @@ void IpfsBasePinService::DoNextJob() {
     return;
   }
 
+  DCHECK(!current_job_);
+
   current_job_ = std::move(jobs_.front());
   jobs_.pop();
 
@@ -83,10 +79,6 @@ void IpfsBasePinService::MaybeStartDaemon() {
   if (daemon_ready_) {
     return;
   }
-
-//  if (!ipfs::IsLocalGatewayConfigured(pref_service_)) {
-//    return;
-//  }
 
   ipfs_service_->StartDaemonAndLaunch(base::BindOnce(
       &IpfsBasePinService::OnDaemonStarted, base::Unretained(this)));

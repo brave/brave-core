@@ -15,7 +15,6 @@
 #include "brave/browser/brave_federated/brave_federated_service_factory.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/brave_wallet/brave_wallet_auto_pin_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -45,6 +44,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS)
+#include "brave/browser/brave_wallet/brave_wallet_auto_pin_service_factory.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #endif
 
@@ -94,11 +94,11 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
     return;
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
-  brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
-  brave_wallet::BraveWalletAutoPinServiceFactory::GetServiceForContext(profile);
 #if BUILDFLAG(ENABLE_IPFS)
+  brave_wallet::BraveWalletAutoPinServiceFactory::GetServiceForContext(profile);
   ipfs::IpfsServiceFactory::GetForContext(profile);
 #endif
+  brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   gcm::BraveGCMChannelStatus* status =
       gcm::BraveGCMChannelStatus::GetForProfile(profile);

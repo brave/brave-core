@@ -1191,6 +1191,19 @@ std::string GetNetworkId(PrefService* prefs,
   return base::ToLowerASCII(id);
 }
 
+absl::optional<std::string> GetChainId(PrefService* prefs,
+                                       const mojom::CoinType& coin,
+                                       const std::string& network_id) {
+  std::vector<mojom::NetworkInfoPtr> networks = GetAllChains(prefs, coin);
+  for (const auto& network : networks) {
+    std::string id = GetKnownNetworkId(coin, network->chain_id);
+    if (id == network_id) {
+      return network->chain_id;
+    }
+  }
+  return absl::nullopt;
+}
+
 mojom::DefaultWallet GetDefaultEthereumWallet(PrefService* prefs) {
   return static_cast<brave_wallet::mojom::DefaultWallet>(
       prefs->GetInteger(kDefaultEthereumWallet));
@@ -1408,6 +1421,18 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
   }
   NOTREACHED();
   return "";
+}
+
+absl::optional<mojom::CoinType> GetCoinFromPref(const std::string& pref) {
+  if (pref == kEthereumPrefKey) {
+    return mojom::CoinType::ETH;
+  } else if (pref == kFilecoinPrefKey) {
+    return mojom::CoinType::FIL;
+  } else if (pref == kSolanaPrefKey) {
+    return mojom::CoinType::SOL;
+  }
+  NOTREACHED();
+  return absl::nullopt;
 }
 
 std::string eTLDPlusOne(const url::Origin& origin) {

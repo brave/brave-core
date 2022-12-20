@@ -1,13 +1,12 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PIN_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_PIN_SERVICE_FACTORY_H_
 
 #include "base/memory/singleton.h"
-#include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
