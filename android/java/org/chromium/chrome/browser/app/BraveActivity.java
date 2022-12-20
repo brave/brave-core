@@ -149,7 +149,7 @@ import org.chromium.chrome.browser.prefetch.settings.PreloadPagesSettingsBridge;
 import org.chromium.chrome.browser.prefetch.settings.PreloadPagesState;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.rate.RateDialogFragment;
+import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingState;
@@ -896,13 +896,21 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         checkAndshowNotificationWarningDialog();
 
-        if (!RateUtils.getInstance(this).getPrefRateEnabled()) {
-            RateUtils.getInstance(this).setPrefRateEnabled(true);
-            RateUtils.getInstance(this).setNextRateDateAndCount();
+        if (RateUtils.getInstance().isLastSessionShown()) {
+            RateUtils.getInstance().setPrefNextRateDate();
+            RateUtils.getInstance().setLastSessionShown(false);
         }
 
-        if (RateUtils.getInstance(this).shouldShowRateDialog())
+        if (!RateUtils.getInstance().getPrefRateEnabled()) {
+            RateUtils.getInstance().setPrefRateEnabled(true);
+            RateUtils.getInstance().setPrefNextRateDate();
+        }
+        RateUtils.getInstance().setTodayDate();
+
+        if (RateUtils.getInstance().shouldShowRateDialog(this)) {
             showBraveRateDialog();
+            RateUtils.getInstance().setLastSessionShown(true);
+        }
 
         // TODO commenting out below code as we may use it in next release
 
@@ -1617,8 +1625,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     private void showBraveRateDialog() {
-        RateDialogFragment mRateDialogFragment = new RateDialogFragment();
-        mRateDialogFragment.show(getSupportFragmentManager(), "RateDialogFragment");
+        BraveRateDialogFragment mRateDialogFragment = new BraveRateDialogFragment();
+        mRateDialogFragment.show(getSupportFragmentManager(), "BraveRateDialogFragment");
     }
 
     private void showCrossPromotionalDialog() {
@@ -1942,6 +1950,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public void addOrEditBookmark(final Tab tabToBookmark) {
+        RateUtils.getInstance().setPrefAddedBookmarkCount();
         ((TabBookmarker) mTabBookmarkerSupplier.get()).addOrEditBookmark(tabToBookmark);
     }
 

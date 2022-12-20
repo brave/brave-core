@@ -50,6 +50,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.base.task.AsyncTask;
@@ -67,6 +68,7 @@ import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
+import org.chromium.chrome.browser.brave_news.CardBuilderFeedCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
@@ -98,6 +100,7 @@ import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.query_tiles.BraveQueryTileSection;
+import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
@@ -190,6 +193,8 @@ public class BraveNewTabPageLayout
     private boolean mIsDisplayNewsOptin;
 
     private Supplier<Tab> mTabProvider;
+
+    private static final int SHOW_BRAVE_RATE_ENTRY_AT = 10; // 10th row
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -952,6 +957,16 @@ public class BraveNewTabPageLayout
                             }
 
                             mNewsItemsFeedCard.add(feedItemsCard);
+
+                            // For show brave rating UI in news list at 10 th row
+                            if (RateUtils.getInstance().shouldShowRateDialog(mActivity)
+                                    && mNewsItemsFeedCard.size() == SHOW_BRAVE_RATE_ENTRY_AT) {
+                                // Dummy entry for Rating prompt
+                                FeedItemsCard dummy = new FeedItemsCard();
+                                dummy.setCardType(CardBuilderFeedCard.CARDTYPE_BRAVE_RATING);
+                                dummy.setUuid(UUID.randomUUID().toString());
+                                mNewsItemsFeedCard.add(dummy);
+                            }
                         }
                     } // end page loop
 
