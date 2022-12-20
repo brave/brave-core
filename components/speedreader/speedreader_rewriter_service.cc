@@ -36,22 +36,27 @@ namespace {
 
 constexpr const char kSpeedreaderStylesheet[] = "speedreader-stylesheet";
 
-std::string WrapStylesheetWithCSP(const std::string& stylesheet) {
-  const std::string& style_hash = crypto::SHA256HashString(stylesheet);
-  const std::string& style_hash_b64 =
-      base::Base64Encode(base::as_bytes(base::make_span(style_hash)));
+std::string WrapStylesheetWithCSP(const std::string& stylesheet,
+                                  const std::string& atkinson,
+                                  const std::string& open_dyslexic) {
+  auto get_sha256 = [](const std::string& v) {
+    const std::string& style_hash = crypto::SHA256HashString(v);
+    return base::Base64Encode(base::as_bytes(base::make_span(style_hash)));
+  };
+
   constexpr const char kCSP[] = R"html(
     <meta http-equiv="Content-Security-Policy"
       content="script-src 'none';
-               style-src-elem 'sha256-%s'
-                              https://fonts.googleapis.com
-                              https://fonts.gstatic.com
-                              https://fonts.cdnfonts.com"
+               style-src-elem 'sha256-%s' 'sha256-%s' 'sha256-%s'"
     >)html";
 
-  return base::StrCat({base::StringPrintf(kCSP, style_hash_b64.c_str()),
-                       "<style id=\"brave_speedreader_style\">", stylesheet,
-                       "</style>"});
+  return base::StrCat(
+      {base::StringPrintf(kCSP, get_sha256(stylesheet).c_str(),
+                          get_sha256(atkinson).c_str(),
+                          get_sha256(open_dyslexic).c_str()),
+       "<style id=\"brave_speedreader_style\">", stylesheet, "</style>",
+       "<style id=\"atkinson_hyperligible_font\">", atkinson, "</style>",
+       "<style id=\"open_dyslexic_font\">", open_dyslexic, "</style>"});
 }
 
 std::string GetDistilledPageStylesheet(const base::FilePath& stylesheet_path) {
@@ -67,7 +72,12 @@ std::string GetDistilledPageStylesheet(const base::FilePath& stylesheet_path) {
 
   base::ReplaceChars(stylesheet, "\r\n", "\n", &stylesheet);
 
-  return WrapStylesheetWithCSP(stylesheet);
+  return WrapStylesheetWithCSP(
+      stylesheet,
+      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+          IDR_SPEEDREADER_ATKINSON_HYPERLIGIBLE),
+      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+          IDR_SPEEDREADER_OPEN_DYSLEXIC_FONT));
 }
 
 base::FilePathWatcher* CreateAndStartFilePathWatcher(
@@ -89,7 +99,11 @@ SpeedreaderRewriterService::SpeedreaderRewriterService()
   // Load the built-in stylesheet as the default
   content_stylesheet_ = WrapStylesheetWithCSP(
       ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
-          IDR_SPEEDREADER_STYLE_DESKTOP));
+          IDR_SPEEDREADER_STYLE_DESKTOP),
+      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+          IDR_SPEEDREADER_ATKINSON_HYPERLIGIBLE),
+      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+          IDR_SPEEDREADER_OPEN_DYSLEXIC_FONT));
 
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(
           kSpeedreaderStylesheet)) {
