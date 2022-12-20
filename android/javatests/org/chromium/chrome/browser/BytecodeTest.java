@@ -105,6 +105,7 @@ import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
 import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
+import org.chromium.components.browser_ui.site_settings.SiteSettingsDelegate;
 import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
@@ -399,9 +400,6 @@ public class BytecodeTest {
                 "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
                 "resetList", false, null));
         Assert.assertTrue(methodExists(
-                "org/chromium/components/browser_ui/site_settings/ContentSettingsResources",
-                "getResourceItem", false, null));
-        Assert.assertTrue(methodExists(
                 "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
                 "getPreferenceKey", false, null));
         Assert.assertTrue(methodExists(
@@ -493,13 +491,13 @@ public class BytecodeTest {
                 "getResourceItem", true,
                 getClassForPath(
                         "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"),
-                int.class));
+                int.class, SiteSettingsDelegate.class));
         Assert.assertTrue(methodExists(
                 "org/chromium/components/browser_ui/site_settings/ContentSettingsResources",
                 "getResourceItem", true,
                 getClassForPath(
                         "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"),
-                int.class));
+                int.class, SiteSettingsDelegate.class));
         Assert.assertTrue(methodExists(
                 "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
                 "getAddExceptionDialogMessage", true, String.class));
