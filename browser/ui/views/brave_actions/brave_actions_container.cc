@@ -111,9 +111,7 @@ void BraveActionsContainer::Init() {
     actions_[brave_rewards_extension_id].position_ = ACTION_ANY_POSITION;
   }
 
-  if (base::FeatureList::IsEnabled(
-          brave_today::features::kBraveNewsSubscribeButtonFeature) &&
-      base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature) &&
+  if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature) &&
       !browser_->profile()->IsOffTheRecord()) {
     AddActionViewForNews();
   }

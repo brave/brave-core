@@ -56,7 +56,6 @@ interface Props {
   getBraveNewsDisplayAd: GetDisplayAdContent
   saveShowBackgroundImage: (value: boolean) => void
   saveShowToday: (value: boolean) => any
-  saveShowBraveNewsButton: (value: boolean) => any
   saveShowRewards: (value: boolean) => void
   saveShowBraveTalk: (value: boolean) => void
   saveShowBinance: (value: boolean) => void
@@ -285,12 +284,6 @@ class NewTabPage extends React.Component<Props, State> {
   toggleShowTopSites = () => {
     const { showTopSites, customLinksEnabled } = this.props.newTabData
     this.props.actions.setMostVisitedSettings(!showTopSites, customLinksEnabled)
-  }
-
-  toggleShowBraveNewsButton = () => {
-    this.props.saveShowBraveNewsButton(
-      !this.props.newTabData.showBraveNewsButton
-    )
   }
 
   toggleCustomLinksEnabled = () => {
@@ -1291,14 +1284,12 @@ class NewTabPage extends React.Component<Props, State> {
           showSettingsMenu={showSettingsMenu}
           featureFlagBraveNewsEnabled={newTabData.featureFlagBraveNewsEnabled}
           featureCustomBackgroundEnabled={newTabData.featureCustomBackgroundEnabled}
-          featureFlagBraveNewsSubscribeButtonEnabled={newTabData.featureFlagBraveNewsSubscribeButtonEnabled}
           onClose={this.closeSettings}
           setActiveTab={this.state.activeSettingsTab || undefined}
           onDisplayTodaySection={this.props.actions.today.ensureSettingsData}
           onClearTodayPrefs={this.props.actions.today.resetTodayPrefsToDefault}
           toggleShowBackgroundImage={this.toggleShowBackgroundImage}
           toggleShowToday={this.toggleShowToday}
-          toggleShowBraveNewsButton={this.toggleShowBraveNewsButton}
           toggleShowTopSites={this.toggleShowTopSites}
           setMostVisitedSettings={this.setMostVisitedSettings}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
@@ -1309,7 +1300,6 @@ class NewTabPage extends React.Component<Props, State> {
           setColorBackground={this.props.setColorBackground}
           showBackgroundImage={newTabData.showBackgroundImage}
           showToday={newTabData.showToday}
-          showBraveNewsButton={newTabData.showBraveNewsButton}
           showTopSites={newTabData.showTopSites}
           customLinksEnabled={newTabData.customLinksEnabled}
           showRewards={newTabData.showRewards}
