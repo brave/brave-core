@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import './brave_sync_code_dialog.js';
+import './brave_sync_delete_account_dialog.js';
 
 import {DomRepeatEvent, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
@@ -59,6 +60,13 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
        * @private
        */
       syncCodeDialogType_: String,
+      /**
+       * Displaying delete account dialog when true
+       */
+      syncDoingDeleteAccount_: {
+        type: Boolean,
+        value: false
+      },
     };
   }
 
@@ -66,6 +74,7 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
   private syncCode: string | undefined;
   private deviceList_: BraveDeviceInfo[];
   private syncCodeDialogType_: string | null;
+  private syncDoingDeleteAccount_: Boolean | false;
 
   browserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();
 
@@ -123,6 +132,14 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
     this.syncCode = undefined
     const router = Router.getInstance();
     router.navigateTo((router.getRoutes() as {BRAVE_SYNC: Route}).BRAVE_SYNC);
+  }
+
+  async onPermanentlyDeleteSyncAccount_() {
+    // Clear sync code because after permanently deleting the chain user might
+    // use the same page to create a new sync chain without reload. In worse
+    // case, we will reload the sync code
+    this.syncCode = undefined
+    this.syncDoingDeleteAccount_ = true;
   }
 
   async onDeleteDevice_(e: DomRepeatEvent<BraveDeviceInfo>) {

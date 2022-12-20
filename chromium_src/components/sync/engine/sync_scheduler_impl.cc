@@ -7,8 +7,14 @@
   HandleBraveConfigurationFailure(model_neutral_state);
 
 #include "src/components/sync/engine/sync_scheduler_impl.cc"
+#include "base/callback_forward.h"
 
 #undef BRAVE_SYNC_SCHEDULER_IMPL_HANDLE_FAILURE
+
+#include "brave/components/sync/engine/brave_sync_server_commands.h"
+
+#include "base/callback.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 
 namespace syncer {
 
@@ -24,6 +30,25 @@ void SyncSchedulerImpl::HandleBraveConfigurationFailure(
     wait_interval_ = std::make_unique<WaitInterval>(
         WaitInterval::BlockingMode::kThrottled, base::Seconds(3));
   }
+}
+
+void SyncSchedulerImpl::SchedulePermanentlyDeleteAccount(
+    base::OnceCallback<void(const SyncProtocolError&)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&SyncSchedulerImpl::PermanentlyDeleteAccountImpl,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void SyncSchedulerImpl::PermanentlyDeleteAccountImpl(
+    base::OnceCallback<void(const SyncProtocolError&)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  SyncCycle cycle(cycle_context_, this);
+  BraveSyncServerCommands::PermanentlyDeleteAccount(&cycle,
+                                                    std::move(callback));
 }
 
 }  // namespace syncer

@@ -9,15 +9,9 @@
 #include "base/compiler_specific.h"
 #include "base/memory/raw_ptr.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
-#include "url/gurl.h"
 
 class Browser;
 class Profile;
-class PrefService;
-
-namespace brave_sync {
-class Prefs;
-}  // namespace brave_sync
 
 namespace infobars {
 class ContentInfoBarManager;

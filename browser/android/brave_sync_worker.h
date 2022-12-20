@@ -54,6 +54,17 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
       JNIEnv* env,
       bool sync_v2_migration_notice_dismissed);
 
+  void PermanentlyDeleteAccount(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jobject>& callback);
+
+  void SetJoinSyncChainCallback(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jobject>& callback);
+
+  void ClearAccountDeletedNoticePending(JNIEnv* env);
+  bool IsAccountDeletedNoticePending(JNIEnv* env);
+
  private:
   syncer::BraveSyncServiceImpl* GetSyncService() const;
   void MarkFirstSetupComplete();

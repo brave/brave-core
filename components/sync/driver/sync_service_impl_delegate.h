@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_DELEGATE_H_
 #define BRAVE_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_DELEGATE_H_
 
+#include "base/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 
 namespace syncer {
@@ -17,6 +18,9 @@ class SyncServiceImplDelegate {
   virtual ~SyncServiceImplDelegate() {}
   virtual void SuspendDeviceObserverForOwnReset() = 0;
   virtual void ResumeDeviceObserver() = 0;
+
+  virtual void SetLocalDeviceAppearedCallback(
+      base::OnceCallback<void()> local_device_appeared_callback) = 0;
 
   void set_profile_sync_service(BraveSyncServiceImpl* sync_service_impl) {
     sync_service_impl_ = sync_service_impl;

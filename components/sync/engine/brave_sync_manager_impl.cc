@@ -5,6 +5,11 @@
 
 #include "brave/components/sync/engine/brave_sync_manager_impl.h"
 
+#include <utility>
+
+#include "components/sync/engine/sync_scheduler.h"
+#include "components/sync/protocol/sync_protocol_error.h"
+
 namespace syncer {
 
 BraveSyncManagerImpl::BraveSyncManagerImpl(
@@ -18,6 +23,12 @@ void BraveSyncManagerImpl::StartSyncingNormally(base::Time last_poll_time) {
   SyncManagerImpl::StartSyncingNormally(last_poll_time);
   // Remove this hack when we have FCM invalidation integrated.
   RefreshTypes(ModelTypeSet::All());
+}
+
+void BraveSyncManagerImpl::PermanentlyDeleteAccount(
+    base::OnceCallback<void(const SyncProtocolError&)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  scheduler_->SchedulePermanentlyDeleteAccount(std::move(callback));
 }
 
 }  // namespace syncer

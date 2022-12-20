@@ -12,6 +12,7 @@
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "chrome/services/qrcode_generator/public/cpp/qrcode_generator_service.h"
 #include "chrome/services/qrcode_generator/public/mojom/qrcode_generator.mojom.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 #include "components/sync_device_info/device_info_tracker.h"
 
 namespace syncer {
@@ -46,8 +47,13 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   void HandleGetQRCode(const base::Value::List& args);
   void HandleReset(const base::Value::List& args);
   void HandleDeleteDevice(const base::Value::List& args);
+  void HandlePermanentlyDeleteAccount(const base::Value::List& args);
 
   void OnResetDone(base::Value callback_id);
+  void OnAccountPermanentlyDeleted(base::Value callback_id,
+                                   const syncer::SyncProtocolError& spe);
+
+  void OnJoinChainResult(base::Value callback_id, const bool& result);
 
   base::Value::List GetSyncDeviceList();
   syncer::BraveSyncServiceImpl* GetSyncService() const;

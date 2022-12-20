@@ -52,6 +52,10 @@ void BraveSyncServiceImplDelegate::OnDeviceInfoChange() {
     }
   }
 
+  if (found_local_device && local_device_appeared_callback_) {
+    std::move(local_device_appeared_callback_).Run();
+  }
+
   // When our device was removed from the sync chain by some other device,
   // we don't seee it in devices list, we must reset sync in a proper way
   if (!found_local_device) {
@@ -88,6 +92,11 @@ void BraveSyncServiceImplDelegate::RecordP3ASyncStatus() {
   int p3a_value = std::min(num_devices, 3);
 
   base::UmaHistogramExactLinear("Brave.Sync.Status.2", p3a_value, 3);
+}
+
+void BraveSyncServiceImplDelegate::SetLocalDeviceAppearedCallback(
+    base::OnceCallback<void()> local_device_appeared_callback) {
+  local_device_appeared_callback_ = std::move(local_device_appeared_callback);
 }
 
 }  // namespace syncer

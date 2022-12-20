@@ -763,6 +763,8 @@ public class BytecodeTest {
                 fieldExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
                         "mSyncReadingList"));
         Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mSyncAutofill"));
+        Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mTurnOffSync"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator",
