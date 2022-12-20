@@ -184,10 +184,6 @@ void AdBlockServiceTest::AssertTagExists(const std::string& tag,
   bool exists_default =
       g_brave_browser_process->ad_block_service()->TagExistsForTest(tag);
   ASSERT_EQ(exists_default, expected_exists);
-
-  base::AutoLock lock(g_brave_browser_process->ad_block_service()
-                          ->regional_service_manager()
-                          ->regional_services_lock_);
 }
 
 void AdBlockServiceTest::InitEmbeddedTestServer() {
@@ -281,21 +277,18 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
     g_brave_browser_process->ad_block_service()
         ->regional_service_manager()
         ->EnableFilterList(uuid, true);
-    base::AutoLock lock(g_brave_browser_process->ad_block_service()
-                            ->regional_service_manager()
-                            ->regional_services_lock_);
-    EXPECT_EQ(g_brave_browser_process->ad_block_service()
-                  ->regional_service_manager()
-                  ->regional_filters_providers_.size(),
-              1ULL);
+
+    const auto& regional_filters_providers =
+        g_brave_browser_process->ad_block_service()
+            ->regional_service_manager()
+            ->regional_filters_providers();
+
+    EXPECT_EQ(regional_filters_providers.size(), 1ULL);
 
     auto* regional_engine = g_brave_browser_process->ad_block_service()
                                 ->additional_filters_engine_.get();
     EngineTestObserver regional_engine_observer(regional_engine);
-    auto regional_filters_provider =
-        g_brave_browser_process->ad_block_service()
-            ->regional_service_manager()
-            ->regional_filters_providers_.find(uuid);
+    auto regional_filters_provider = regional_filters_providers.find(uuid);
     regional_filters_provider->second->OnComponentReady(
         ad_block_extension->path());
     regional_engine_observer.Wait();

@@ -13,7 +13,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/synchronization/lock.h"
+#include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
@@ -65,17 +65,29 @@ class AdBlockRegionalServiceManager
 
   void RecordP3ACookieListEnabled();
 
-  raw_ptr<PrefService> local_state_;
-  std::string locale_;
-  base::Lock regional_services_lock_;
+  // for tests
+  const std::map<std::string, std::unique_ptr<AdBlockComponentFiltersProvider>>&
+  regional_filters_providers() {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    return regional_filters_providers_;
+  }
+
+  raw_ptr<PrefService> local_state_ GUARDED_BY_CONTEXT(sequence_checker_);
+  std::string locale_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::map<std::string, std::unique_ptr<AdBlockComponentFiltersProvider>>
-      regional_filters_providers_;
+      regional_filters_providers_ GUARDED_BY_CONTEXT(sequence_checker_);
 
-  std::vector<FilterListCatalogEntry> filter_list_catalog_;
+  std::vector<FilterListCatalogEntry> filter_list_catalog_
+      GUARDED_BY_CONTEXT(sequence_checker_);
 
-  raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
-  raw_ptr<AdBlockFiltersProviderManager> filters_manager_;
-  raw_ptr<AdBlockFilterListCatalogProvider> catalog_provider_;
+  raw_ptr<component_updater::ComponentUpdateService> component_update_service_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  raw_ptr<AdBlockFiltersProviderManager> filters_manager_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  raw_ptr<AdBlockFilterListCatalogProvider> catalog_provider_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+
+  SEQUENCE_CHECKER(sequence_checker_);
 
   base::WeakPtrFactory<AdBlockRegionalServiceManager> weak_factory_{this};
 };

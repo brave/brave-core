@@ -16,7 +16,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/sequence_checker.h"
-#include "base/synchronization/lock.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
@@ -94,6 +93,7 @@ class AdBlockSubscriptionServiceManager {
   void CreateSubscription(const GURL& sub_url);
 
   AdBlockSubscriptionDownloadManager* download_manager() {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
     return download_manager_.get();
   }
 
@@ -126,27 +126,27 @@ class AdBlockSubscriptionServiceManager {
                       const adblock::FilterListMetadata& metadata);
 
   // static to enforce locking on `subscriptions_`
-  static absl::optional<SubscriptionInfo> GetInfo(
-      const base::Value::Dict& subscriptions,
-      const GURL& sub_url);
+  absl::optional<SubscriptionInfo> GetInfo(const GURL& sub_url);
   void NotifyObserversOfServiceEvent();
 
   void SetUpdateIntervalsForTesting(base::TimeDelta* initial_delay,
                                     base::TimeDelta* retry_interval);
 
   raw_ptr<PrefService> local_state_ GUARDED_BY_CONTEXT(sequence_checker_);
-  raw_ptr<AdBlockFiltersProviderManager> filters_manager_;
-  base::WeakPtr<AdBlockSubscriptionDownloadManager> download_manager_;
+  raw_ptr<AdBlockFiltersProviderManager> filters_manager_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  base::WeakPtr<AdBlockSubscriptionDownloadManager> download_manager_
+      GUARDED_BY_CONTEXT(sequence_checker_);
   base::FilePath subscription_path_;
-  base::Value::Dict subscriptions_ GUARDED_BY(subscription_services_lock_);
+  base::Value::Dict subscriptions_ GUARDED_BY_CONTEXT(sequence_checker_);
 
   std::map<GURL, std::unique_ptr<AdBlockSubscriptionFiltersProvider>>
       subscription_filters_providers_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<component_updater::TimerUpdateScheduler>
-      subscription_update_timer_;
+      subscription_update_timer_ GUARDED_BY_CONTEXT(sequence_checker_);
 
-  base::ObserverList<AdBlockSubscriptionServiceManagerObserver> observers_;
-  base::Lock subscription_services_lock_;
+  base::ObserverList<AdBlockSubscriptionServiceManagerObserver> observers_
+      GUARDED_BY_CONTEXT(sequence_checker_);
 
   SEQUENCE_CHECKER(sequence_checker_);
 

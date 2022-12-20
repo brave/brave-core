@@ -44,11 +44,12 @@ AdBlockRegionalServiceManager::AdBlockRegionalServiceManager(
 }
 
 AdBlockRegionalServiceManager::~AdBlockRegionalServiceManager() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   catalog_provider_->RemoveObserver(this);
 }
 
 void AdBlockRegionalServiceManager::StartRegionalServices() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_)
     return;
 
@@ -73,7 +74,6 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
       local_state_->GetBoolean(prefs::kAdBlockCookieListSettingTouched);
 
   // Start all regional services associated with enabled filter lists
-  base::AutoLock lock(regional_services_lock_);
   const auto& regional_filters_dict =
       local_state_->GetDict(prefs::kAdBlockRegionalFilters);
 
@@ -117,7 +117,7 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
 void AdBlockRegionalServiceManager::UpdateFilterListPrefs(
     const std::string& uuid,
     bool enabled) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_)
     return;
   DictionaryPrefUpdate update(local_state_, prefs::kAdBlockRegionalFilters);
@@ -134,12 +134,14 @@ void AdBlockRegionalServiceManager::UpdateFilterListPrefs(
 }
 
 void AdBlockRegionalServiceManager::RecordP3ACookieListEnabled() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   UMA_HISTOGRAM_BOOLEAN(kCookieListEnabledHistogram,
                         IsFilterListEnabled(kCookieListUuid));
 }
 
 bool AdBlockRegionalServiceManager::IsFilterListAvailable(
     const std::string& uuid) const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(!uuid.empty());
   auto catalog_entry =
       brave_shields::FindAdBlockFilterListByUUID(filter_list_catalog_, uuid);
@@ -148,7 +150,7 @@ bool AdBlockRegionalServiceManager::IsFilterListAvailable(
 
 bool AdBlockRegionalServiceManager::IsFilterListEnabled(
     const std::string& uuid) const {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(!uuid.empty());
   DCHECK(local_state_);
 
@@ -170,12 +172,12 @@ bool AdBlockRegionalServiceManager::IsFilterListEnabled(
 
 void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
                                                      bool enabled) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(!uuid.empty());
   auto catalog_entry =
       brave_shields::FindAdBlockFilterListByUUID(filter_list_catalog_, uuid);
 
   // Enable or disable the specified filter list
-  base::AutoLock lock(regional_services_lock_);
   DCHECK(catalog_entry != filter_list_catalog_.end());
   auto it = regional_filters_providers_.find(uuid);
   if (enabled) {
@@ -200,6 +202,7 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
 
 void AdBlockRegionalServiceManager::SetFilterListCatalog(
     std::vector<FilterListCatalogEntry> catalog) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   filter_list_catalog_ = std::move(catalog);
   StartRegionalServices();
   RecordP3ACookieListEnabled();
@@ -207,11 +210,12 @@ void AdBlockRegionalServiceManager::SetFilterListCatalog(
 
 const std::vector<FilterListCatalogEntry>&
 AdBlockRegionalServiceManager::GetFilterListCatalog() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return filter_list_catalog_;
 }
 
 base::Value::List AdBlockRegionalServiceManager::GetRegionalLists() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(local_state_);
 
   base::Value::List list;
@@ -236,6 +240,7 @@ base::Value::List AdBlockRegionalServiceManager::GetRegionalLists() {
 
 void AdBlockRegionalServiceManager::OnFilterListCatalogLoaded(
     const std::string& catalog_json) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   SetFilterListCatalog(FilterListCatalogFromJSON(catalog_json));
 }
 
