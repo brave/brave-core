@@ -30,12 +30,6 @@
 #include "url/gurl.h"
 
 class AdBlockServiceTest;
-class BraveAdBlockTPNetworkDelegateHelperTest;
-class DomainBlockTest;
-class EphemeralStorage1pDomainBlockBrowserTest;
-class HTTPSEverywhereServiceTest;
-class PerfPredictorTabHelperTest;
-class PrefChangeRegistrar;
 class PrefService;
 
 namespace component_updater {
@@ -124,23 +118,19 @@ class AdBlockService {
 
   base::SequencedTaskRunner* GetTaskRunner();
 
- private:
-  friend class ::BraveAdBlockTPNetworkDelegateHelperTest;
-  friend class ::AdBlockServiceTest;
-  friend class ::DomainBlockTest;
-  friend class ::EphemeralStorage1pDomainBlockBrowserTest;
-  friend class ::HTTPSEverywhereServiceTest;
-  friend class ::PerfPredictorTabHelperTest;
-
-  static std::string g_ad_block_dat_file_version_;
-
-  AdBlockResourceProvider* resource_provider();
-
   void UseSourceProvidersForTest(AdBlockFiltersProvider* source_provider,
                                  AdBlockResourceProvider* resource_provider);
   void UseCustomSourceProvidersForTest(
       AdBlockFiltersProvider* source_provider,
       AdBlockResourceProvider* resource_provider);
+
+ private:
+  friend class ::AdBlockServiceTest;
+
+  static std::string g_ad_block_dat_file_version_;
+
+  AdBlockResourceProvider* resource_provider();
+
   bool TagExistsForTest(const std::string& tag);
 
   raw_ptr<PrefService> local_state_;
