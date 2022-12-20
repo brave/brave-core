@@ -1,5 +1,7 @@
 name: Alert Unsigned Commits
 on:
+  pull_request:
+    types: [assigned, opened, reopened, synchronize, ready_for_review, review_requested, auto_merge_enabled]
   pull_request_review:
     types: [submitted]
 
