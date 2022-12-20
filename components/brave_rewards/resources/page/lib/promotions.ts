@@ -16,13 +16,7 @@ function getSupportedLocales (key: PromotionKey) {
     case 'bitflyer-verification':
       return ['JP']
     case 'gemini':
-      return [
-        'AR', 'AT', 'AU', 'BE', 'BG', 'BM', 'BR', 'BS', 'BT', 'CA', 'CH', 'CL',
-        'CY', 'CZ', 'DK', 'EE', 'EG', 'ES', 'FI', 'GB', 'GG', 'GI', 'GR', 'HK',
-        'HR', 'HU', 'IL', 'IN', 'IS', 'IT', 'JE', 'KR', 'KY', 'LI', 'LT', 'LU',
-        'LV', 'MM', 'MT', 'NG', 'NL', 'NO', 'NZ', 'PE', 'PH', 'PL', 'PT', 'RO',
-        'SE', 'SG', 'SI', 'SK', 'TR', 'TW', 'US', 'UY', 'VC', 'VG', 'VN', 'ZA'
-      ]
+      return ['US']
     case 'tap-network':
       return ['US']
     case 'uphold-card':
