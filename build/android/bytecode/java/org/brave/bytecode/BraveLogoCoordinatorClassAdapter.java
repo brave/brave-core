@@ -16,10 +16,7 @@ public class BraveLogoCoordinatorClassAdapter extends BraveClassVisitor {
 
         redirectConstructor(sLogoCoordinator, sBraveLogoCoordinator);
 
-        deleteField(sBraveLogoCoordinator, "mShouldShowLogo");
-        makeProtectedField(sLogoCoordinator, "mShouldShowLogo");
-
-        makePublicMethod(sLogoCoordinator, "updateVisibility");
-        addMethodAnnotation(sBraveLogoCoordinator, "updateVisibility", "Ljava/lang/Override;");
+        deleteField(sBraveLogoCoordinator, "mLogoModel");
+        makeProtectedField(sLogoCoordinator, "mLogoModel");
     }
 }

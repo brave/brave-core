@@ -11,10 +11,11 @@ import android.view.View;
 import org.chromium.base.Callback;
 import org.chromium.chrome.browser.logo.LogoBridge.Logo;
 import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.ui.modelutil.PropertyModel;
 
 public class BraveLogoCoordinator extends LogoCoordinator {
     // To delete in bytecode, members from parent class will be used instead.
-    private boolean mShouldShowLogo;
+    private PropertyModel mLogoModel;
 
     // Own members.
     private final LogoView mLogoView;
@@ -29,10 +30,15 @@ public class BraveLogoCoordinator extends LogoCoordinator {
         mLogoView = logoView;
     }
 
-    public void updateVisibility() {
+    @Override
+    public void updateVisibilityAndMaybeCleanUp(
+            boolean isParentSurfaceShown, boolean shouldDestroyBridge, boolean animationEnabled) {
         // We don't want any logo to be shown regardless of the search engine chosen.
-        mShouldShowLogo = false;
+        mLogoModel.set(LogoProperties.VISIBILITY, false);
 
         mLogoView.setVisibility(View.GONE);
+
+        super.updateVisibilityAndMaybeCleanUp(
+                isParentSurfaceShown, shouldDestroyBridge, animationEnabled);
     }
 }

@@ -459,8 +459,6 @@ public class BytecodeTest {
                 "isJavascriptSchemeOrInvalidUrl", true, boolean.class, String.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
                 "extractUrlFromIntent", true, String.class, Intent.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/logo/LogoCoordinator",
-                "updateVisibility", true, void.class));
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
                 "setWidgetEnabled", false, null));
@@ -926,7 +924,7 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "mAssistantVoiceSearchServiceSupplier"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/logo/LogoCoordinator", "mShouldShowLogo"));
+                fieldExists("org/chromium/chrome/browser/logo/LogoCoordinator", "mLogoModel"));
     }
 
     @Test
