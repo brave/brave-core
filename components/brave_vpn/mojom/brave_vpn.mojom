@@ -64,7 +64,7 @@ interface ServiceHandler {
   GetProductUrls() => (ProductUrls urls);
 
   [EnableIfNot=is_android]
-  GetSupportData() => (string app_version, string os_version, string hostname);
+  GetSupportData() => (string app_version, string os_version, string hostname, string timezone);
 
   [EnableIfNot=is_android]
   CreateSupportTicket(string email, string subject, string body) => (bool success, string response);

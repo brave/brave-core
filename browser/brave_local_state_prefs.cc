@@ -17,7 +17,8 @@
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/core_metrics/core_metrics_service.h"
 #include "brave/components/decentralized_dns/core/utils.h"
@@ -25,6 +26,7 @@
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
+#include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/common/pref_names.h"
@@ -48,8 +50,7 @@
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
-#include "brave/components/skus/browser/skus_utils.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)

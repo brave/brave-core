@@ -5,7 +5,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/components/brave_vpn/features.h"
+#include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
