@@ -25,6 +25,9 @@ int OnBeforeStartTransaction_AdsStatusHeader(
       brave_ads::AdsServiceFactory::GetForProfile(
           Profile::FromBrowserContext(ctx->browser_context));
 
+  // The X-Brave-Ads-Enabled header should be added when Brave Private Ads are
+  // enabled, the requested URL host is one of the Brave Search domains, and the
+  // request originates from one of the Brave Search domains.
   if (!ads_service || !ads_service->IsEnabled() ||
       !brave_search::IsAllowedHost(ctx->tab_origin) ||
       !brave_search::IsAllowedHost(ctx->request_url)) {
