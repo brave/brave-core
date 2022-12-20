@@ -25,7 +25,9 @@ const store = configureStore({
     [walletApi.reducerPath]: walletApi.reducer,
     sendCrypto: sendCryptoReducer
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false
+  }).concat(
     walletAsyncHandler,
     walletPanelAsyncHandler,
     walletApi.middleware
