@@ -79,6 +79,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                                       show_badge_suggest;
                                   count_result = count;
                                 })));
+  notification_source->Init();
 
   // Wait until WalletButtonNotificationSource checks are finished
   run_loop.RunUntilIdle();
@@ -102,6 +103,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                                       show_badge_suggest;
                                   count_result = count;
                                 })));
+  notification_source->Init();
 
   // Wait until WalletButtonNotificationSource checks are finished
   run_loop.RunUntilIdle();
@@ -123,6 +125,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                                       show_badge_suggest;
                                   count_result = count;
                                 })));
+  notification_source->Init();
 
   // Wait until WalletButtonNotificationSource checks are finished
   run_loop.RunUntilIdle();
@@ -152,6 +155,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                                       show_badge_suggest;
                                   count_result = count;
                                 })));
+  notification_source->Init();
 
   // Wait until WalletButtonNotificationSource checks are finished
   run_loop.RunUntilIdle();
@@ -208,6 +212,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                                       show_badge_suggest;
                                   count_result = count;
                                 })));
+  notification_source->Init();
 
   // Wait until WalletButtonNotificationSource checks are finished
   run_loop.RunUntilIdle();
@@ -323,6 +328,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                                       show_badge_suggest;
                                   count_result = count;
                                 })));
+  notification_source->Init();
 
   // Wait until WalletButtonNotificationSource checks are finished
   run_loop.RunUntilIdle();

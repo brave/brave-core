@@ -60,7 +60,7 @@ class WalletButtonNotificationSource
 
   void OnKeyringReady(const std::string& keyring_id);
   void CheckTxStatus();
-  void OnTxStatusResolved(size_t count);
+  void OnTxStatusResolved(uint32_t count);
   void OnKeyringInfoResolved(brave_wallet::mojom::KeyringInfoPtr keyring_info);
 
   void NotifyObservers();
@@ -77,7 +77,7 @@ class WalletButtonNotificationSource
   WalletButtonNotificationSourceCallback callback_;
 
   absl::optional<bool> wallet_created_ = false;
-  size_t running_tx_count_ = 0;
+  uint32_t running_tx_count_ = 0;
 
   base::WeakPtrFactory<WalletButtonNotificationSource> weak_ptr_factory_{this};
 };

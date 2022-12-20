@@ -105,7 +105,7 @@ void WalletButtonNotificationSource::OnTxServiceReset() {
   OnTxStatusResolved(0u);
 }
 
-void WalletButtonNotificationSource::OnTxStatusResolved(size_t count) {
+void WalletButtonNotificationSource::OnTxStatusResolved(uint32_t count) {
   running_tx_count_ = count;
   NotifyObservers();
 }
