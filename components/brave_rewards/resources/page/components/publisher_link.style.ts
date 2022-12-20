@@ -7,11 +7,12 @@ import styled from 'styled-components'
 
 export const root = styled.span`
   font-weight: 600;
-  white-space: nowrap;
 
   a {
     text-decoration: none;
     color: #3b3e4f;
+    display: inline-flex;
+    align-items: center;
   }
 `
 
@@ -40,6 +41,10 @@ export const verified = styled.div`
     background-color: #FFFFFF;
     border-radius: 50%;
   }
+`
+
+export const name = styled.span`
+  flex: 1 1 auto;
 `
 
 export const platform = styled.span``
