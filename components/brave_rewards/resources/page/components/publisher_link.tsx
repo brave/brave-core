@@ -38,13 +38,15 @@ export function PublisherLink (props: Props) {
               </style.verified>
           }
         </style.icon>
-        {props.name}
-        {
-          platformName &&
-            <style.platform>
-              &nbsp;{getString('on')}&nbsp;{platformName}
-            </style.platform>
-        }
+        <style.name>
+          {props.name}
+          {
+            platformName &&
+              <style.platform>
+                &nbsp;{getString('on')}&nbsp;{platformName}
+              </style.platform>
+          }
+        </style.name>
       </NewTabLink>
     </style.root>
   )

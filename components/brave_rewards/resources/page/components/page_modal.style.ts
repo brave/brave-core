@@ -14,6 +14,7 @@ export const root = styled.div`
 
   .layout-narrow & {
     min-width: unset;
+    margin: 0 8px;
   }
 `
 
