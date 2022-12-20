@@ -669,12 +669,14 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
       const auto google_sign_in_rule =
           google_sign_in_content_setting_it->Next();
       // The embedding pattern for the cookie rule will be the primary pattern
-      // for the BRAVE_GOOGLE_SIGN_IN permission
-      // We want to get all subdomains for the cookie rule
-      const auto embedding_pattern =
-          ContentSettingsPattern::ToDomainWildcardPattern(
-              google_sign_in_rule.primary_pattern);
-
+      // for the BRAVE_GOOGLE_SIGN_IN permission.
+      // We want to get all subdomains for the cookie rule...
+      auto embedding_pattern = ContentSettingsPattern::ToDomainWildcardPattern(
+          google_sign_in_rule.primary_pattern);
+      // ... but if that doesn't work, fallback to stored pattern.
+      if (!embedding_pattern.IsValid()) {
+        embedding_pattern = google_sign_in_rule.primary_pattern;
+      }
       const auto google_auth_rule =
           Rule(permissions::GetGoogleAuthPattern(), embedding_pattern,
                google_sign_in_rule.value.Clone(),
