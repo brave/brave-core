@@ -1,5 +1,7 @@
 name: Alert Unsigned Commits
 on:
+  pull_request:
+    types: [assigned, opened, reopened, synchronize, ready_for_review, review_requested, auto_merge_enabled]
   pull_request_review:
     types: [submitted]
 
@@ -11,7 +13,6 @@ env:
 
 jobs:
   alert-unsigned:
-    if: github.event.review.state == 'approved'
     name: Alert Unsigned Commits
     runs-on: ubuntu-latest
     steps:
