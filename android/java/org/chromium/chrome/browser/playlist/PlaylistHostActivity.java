@@ -78,23 +78,70 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                     }
                 });
 
+        playlistViewModel.getPlaylistOption().observe(
+                PlaylistHostActivity.this, playlistOptionsModel -> {
+                    if (mPlaylistPageHandler != null) {
+                        PlaylistOptions option = playlistOptionsModel.getOptionType();
+                        if (option == PlaylistOptions.EDIT_PLAYLIST) {
+                            Log.e(PlaylistUtils.TAG, "PlaylistOptions.EDIT_PLAYLIST");
+                        } else if (option == PlaylistOptions.RENAME_PLAYLIST) {
+                            Log.e(PlaylistUtils.TAG, "PlaylistOptions.RENAME_PLAYLIST");
+                        } else if (option == PlaylistOptions.REMOVE_PLAYLIST_OFFLINE_DATA) {
+                            Log.e(PlaylistUtils.TAG,
+                                    "PlaylistOptions.REMOVE_PLAYLIST_OFFLINE_DATA");
+                        } else if (option == PlaylistOptions.DOWNLOAD_PLAYLIST_FOR_OFFLINE_USE) {
+                            Log.e(PlaylistUtils.TAG,
+                                    "PlaylistOptions.DOWNLOAD_PLAYLIST_FOR_OFFLINE_USE");
+                        } else if (option == PlaylistOptions.DELETE_PLAYLIST) {
+                            Log.e(PlaylistUtils.TAG, "PlaylistOptions.DELETE_PLAYLIST");
+                            if (mPlaylistPageHandler != null
+                                    && playlistOptionsModel.getPlaylistModel() != null) {
+                                mPlaylistPageHandler.removePlaylist(
+                                        playlistOptionsModel.getPlaylistModel().getId());
+                                finish();
+                            }
+                        }
+                    }
+                });
+
+        playlistViewModel.getAllPlaylistOption().observe(
+                PlaylistHostActivity.this, playlistOptionsModel -> {
+                    if (mPlaylistPageHandler != null) {
+                        PlaylistOptions option = playlistOptionsModel.getOptionType();
+                        if (option == PlaylistOptions.REMOVE_ALL_OFFLINE_DATA) {
+                            Log.e(PlaylistUtils.TAG, "PlaylistOptions.REMOVE_ALL_OFFLINE_DATA");
+                        } else if (option
+                                == PlaylistOptions.DOWNLOAD_ALL_PLAYLISTS_FOR_OFFLINE_USE) {
+                            Log.e(PlaylistUtils.TAG,
+                                    "PlaylistOptions.DOWNLOAD_ALL_PLAYLISTS_FOR_OFFLINE_USE");
+                        }
+                    }
+                });
+
         playlistViewModel.getPlaylistItemOption().observe(
                 PlaylistHostActivity.this, playlistItemOption -> {
                     if (mPlaylistPageHandler != null) {
                         PlaylistOptions option = playlistItemOption.getPlaylistOptions();
                         if (option == PlaylistOptions.MOVE_PLAYLIST_ITEM) {
+                            Log.e(PlaylistUtils.TAG, "PlaylistOptions.MOVE_PLAYLIST_ITEM");
                         } else if (option == PlaylistOptions.COPY_PLAYLIST_ITEM) {
+                            Log.e(PlaylistUtils.TAG, "PlaylistOptions.COPY_PLAYLIST_ITEM");
                         } else if (option == PlaylistOptions.DELETE_ITEMS_OFFLINE_DATA) {
+                            Log.e(PlaylistUtils.TAG, "PlaylistOptions.DELETE_ITEMS_OFFLINE_DATA");
                             mPlaylistPageHandler.removeLocalDataForItem(
                                     playlistItemOption.getPlaylistItemModel().getId());
                         } else if (option == PlaylistOptions.SHARE_PLAYLIST_ITEM) {
+                            Log.e(PlaylistUtils.TAG, "PlaylistOptions.SHARE_PLAYLIST_ITEM");
                         } else if (option == PlaylistOptions.OPEN_IN_NEW_TAB) {
+                            Log.e(PlaylistUtils.TAG, "PlaylistOptions.OPEN_IN_NEW_TAB");
                             openPlaylistInTab(false,
                                     playlistItemOption.getPlaylistItemModel().getPageSource());
                         } else if (option == PlaylistOptions.OPEN_IN_PRIVATE_TAB) {
+                            Log.e(PlaylistUtils.TAG, "PlaylistOptions.OPEN_IN_PRIVATE_TAB");
                             openPlaylistInTab(true,
                                     playlistItemOption.getPlaylistItemModel().getPageSource());
                         } else if (option == PlaylistOptions.DELETE_PLAYLIST_ITEM) {
+                            Log.e(PlaylistUtils.TAG, "PlaylistOptions.DELETE_PLAYLIST_ITEM");
                             mPlaylistPageHandler.removeItemFromPlaylist(
                                     playlistItemOption.getPlaylistId(),
                                     playlistItemOption.getPlaylistItemModel().getId());

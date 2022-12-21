@@ -10,6 +10,8 @@ package org.chromium.chrome.browser.playlist;
 import android.content.Context;
 import android.content.Intent;
 
+import com.brave.playlist.activity.PlaylistOnboardingActivity;
+
 import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
 
 public class PlaylistUtils {
@@ -25,6 +27,12 @@ public class PlaylistUtils {
     public static void openPlaylistActivity(Context context, String playlistId) {
         Intent playlistActivityIntent = new Intent(context, PlaylistHostActivity.class);
         playlistActivityIntent.putExtra(PLAYLIST_ID, playlistId);
+        playlistActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(playlistActivityIntent);
+    }
+
+    public static void openPlaylistOnboardingActivity(Context context) {
+        Intent playlistActivityIntent = new Intent(context, PlaylistOnboardingActivity.class);
         playlistActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(playlistActivityIntent);
     }
