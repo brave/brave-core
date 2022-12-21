@@ -63,13 +63,6 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
           return {};
         },
       },
-      isGoogleSignInFeatureEnabled_: {
-        readOnly: true,
-        type: Boolean,
-        value: function () {
-          return loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
-        }
-      },
     };
   }
 

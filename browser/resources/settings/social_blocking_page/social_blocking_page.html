@@ -1,14 +1,20 @@
 <link rel="import" href="chrome://resources/cr_elements/md_select.css.html">
 <style include="settings-shared md-select iron-flex">
 </style>
-<template is="dom-if" if="[[!isGoogleSignInFeatureEnabled_]]">
-    <settings-toggle-button id="googleLoginControlType"
-        class="cr-row first"
-        pref="{{prefs.brave.google_login_default}}"
-        label="$i18n{googleLoginControlLabel}"
-        learn-more-url="$i18n{googleLoginLearnMoreURL}">
-    </settings-toggle-button>
-</template>
+<settings-toggle-button id="googleLoginControlType"
+    class="cr-row first"
+    pref="{{prefs.brave.google_login_default}}"
+    label="$i18n{googleLoginControlLabel}"
+    learn-more-url="$i18n{googleLoginLearnMoreURL}"
+    on-settings-boolean-control-change="setSignInEnabledAtNextStartup_"
+    >
+    <template is="dom-if" if="[[shouldShowRestart_(
+      prefs.brave.google_login_default.value)]]">
+    <cr-button on-click="restartBrowser_" slot="more-actions">
+      $i18n{restart}
+    </cr-button>
+    </template>
+</settings-toggle-button>
 <settings-toggle-button id="fbEmbedControlType"
     class="cr-row"
     pref="{{prefs.brave.fb_embed_default}}"

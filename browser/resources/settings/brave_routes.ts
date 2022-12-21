@@ -56,10 +56,6 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
   if (r.SITE_SETTINGS) {
     r.SITE_SETTINGS_AUTOPLAY = r.SITE_SETTINGS.createChild('autoplay')
-    const isGoogleSignInFeatureEnabled = loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
-    if (isGoogleSignInFeatureEnabled) {
-      r.SITE_SETTINGS_GOOGLE_SIGN_IN = r.SITE_SETTINGS.createChild('googleSignIn')
-    }
     const isNativeBraveWalletFeatureEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
     if (isNativeBraveWalletFeatureEnabled) {
       r.SITE_SETTINGS_ETHEREUM = r.SITE_SETTINGS.createChild('ethereum')

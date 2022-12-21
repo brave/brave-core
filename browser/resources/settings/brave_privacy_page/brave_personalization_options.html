@@ -42,11 +42,3 @@
     sub-label="$i18n{statsUsagePingEnabledDesc}"
     on-settings-boolean-control-change="onStatsUsagePingEnabledChange_">
 </settings-toggle-button>
-<template is="dom-if" if="[[isGoogleSignInFeatureEnabled_]]">
-  <settings-toggle-button id="googleLoginControlType"
-      class="cr-row"
-      pref="{{prefs.brave.google_login_default}}"
-      label="$i18n{googleLoginControlLabel}"
-      learn-more-url="$i18n{googleLoginLearnMoreURL}">
-  </settings-toggle-button>
-</template>
