@@ -66,15 +66,12 @@ class RequestBlockingContentScriptHandler: TabContentScript {
       guard let requestURL = NSURL(idnString: dto.data.resourceURL) as URL? else { return }
       guard let sourceURL = NSURL(idnString: dto.data.sourceURL) as URL? else { return }
       let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
-      let domain = Domain.getOrCreate(forUrl: currentTabURL, persistent: !isPrivateBrowsing)
-      guard let domainURLString = domain.url else { return }
       
-      AdBlockStats.shared.shouldBlock(
-        requestURL: requestURL,
-        sourceURL: sourceURL,
-        resourceType: dto.data.resourceType
-      ) { shouldBlock in
-        assertIsMainThread("Result should happen on the main thread")
+      Task { @MainActor in
+        let domain = Domain.getOrCreate(forUrl: currentTabURL, persistent: !isPrivateBrowsing)
+        guard let domainURLString = domain.url else { return }
+        let shouldBlock = await AdBlockStats.shared.shouldBlock(requestURL: requestURL, sourceURL: sourceURL, resourceType: dto.data.resourceType)
+        
         // Ensure we check that the stats we're tracking is still for the same page
         // Some web pages (like youtube) like to rewrite their main frame urls
         // so we check the source etld+1 agains the tab url etld+1

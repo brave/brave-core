@@ -57,8 +57,7 @@ class DomainTests: CoreDataTestCase {
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 4)
   }
 
-  func testDefaultShieldSettings() {
-
+  @MainActor func testDefaultShieldSettings() {
     let domain = Domain.getOrCreate(forUrl: url, persistent: true)
     XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
     XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, considerAllShieldsOption: true))
@@ -71,7 +70,7 @@ class DomainTests: CoreDataTestCase {
     XCTAssertEqual(domain.url, url.domainURL.absoluteString)
   }
 
-  func testAllShieldsOff() {
+  @MainActor func testAllShieldsOff() {
     let domain = Domain.getOrCreate(forUrl: url, persistent: true)
 
     backgroundSaveAndWaitForExpectation {
@@ -96,7 +95,7 @@ class DomainTests: CoreDataTestCase {
   }
 
   /// Tests non-HTTPSE shields
-  func testNormalShieldSettings() {
+  @MainActor func testNormalShieldSettings() {
 
     backgroundSaveAndWaitForExpectation {
       Domain.setBraveShield(forUrl: url2HTTPS, shield: .SafeBrowsing, isOn: true, isPrivateBrowsing: false)
@@ -200,7 +199,7 @@ class DomainTests: CoreDataTestCase {
     XCTAssertFalse(raydiumDomain.walletPermissions(for: .sol, account: walletSolAccount))
   }
   
-  func testSafeBrowsing() {
+  @MainActor func testSafeBrowsing() {
     Preferences.Shields.blockPhishingAndMalware.reset()
     DataController.shared = DataController()
     DataController.shared.initializeOnce()

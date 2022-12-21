@@ -8,7 +8,7 @@ import WebKit
 @testable import Brave
 
 final class PageDataTests: XCTestCase {
-  func testBasicExample() throws {
+  @MainActor func testBasicExample() throws {
     // Given
     // Page data with empty ad-block stats
     let mainFrameURL = URL(string: "http://example.com")!
@@ -16,28 +16,67 @@ final class PageDataTests: XCTestCase {
     let upgradedMainFrameURL = URL(string: "https://example.com")!
     let upgradedSubFrameURL = URL(string: "https://example.com/1p/subframe")!
     var pageData = PageData(mainFrameURL: mainFrameURL, adBlockStats: AdBlockStats())
+    let expectation = expectation(description: "")
     
-    // When
-    // We get the script types for the main frame
-    let mainFrameRequestTypes = pageData.makeUserScriptTypes(
-      forRequestURL: mainFrameURL, isForMainFrame: true, persistentDomain: false
-    )
+    Task { @MainActor in
+      // When
+      // We get the script types for the main frame
+      let domain = pageData.domain(persistent: false)
+      let mainFrameRequestTypes = pageData.makeUserScriptTypes(domain: domain)
+      
+      // Then
+      // We get only entries of the main frame
+      // NOTE: If we were to add some engines we might see additional types
+      let expectedMainFrameTypes: Set<UserScriptType> = [
+        .siteStateListener, .nacl, .farblingProtection(etld: "example.com")
+      ]
+      XCTAssertEqual(mainFrameRequestTypes, expectedMainFrameTypes)
+      
+      // When
+      // Nothing has changed
+      let unchangedScriptTypes = pageData.makeUserScriptTypes(domain: domain)
+      
+      // Then
+      // We get the same result as before
+      XCTAssertEqual(mainFrameRequestTypes, unchangedScriptTypes)
+      
+      // When
+      // Added sub frame
+      pageData.addSubframeURL(forRequestURL: subFrameURL, isForMainFrame: false)
+      
+      // Then
+      // We get an aditional scripts for sub-frame
+      // NOTE: This is because we have no engines on AdBlockStats.
+      // If we were to add some engines we might see additional types
+      let addedSubFrameFrameRequestTypes = pageData.makeUserScriptTypes(domain: domain)
+      let expectedMainAndSubFrameTypes: Set<UserScriptType> = [
+        .siteStateListener, .nacl, .farblingProtection(etld: "example.com")
+      ]
+      XCTAssertEqual(expectedMainAndSubFrameTypes, addedSubFrameFrameRequestTypes)
+      
+      // When
+      // Upgraded main frame
+      let isUpgradedMainFrame = pageData.upgradeFrameURL(forResponseURL: upgradedMainFrameURL, isForMainFrame: true)
+      
+      // Then
+      // We get the same result as before
+      XCTAssertTrue(isUpgradedMainFrame)
+      let upgradedMainFrameRequestTypes = pageData.makeUserScriptTypes(domain: domain)
+      XCTAssertEqual(upgradedMainFrameRequestTypes, unchangedScriptTypes)
+      
+      // When
+      // Upgraded subframe
+      let isUpgradedSubFrame = pageData.upgradeFrameURL(forResponseURL: subFrameURL, isForMainFrame: true)
+      
+      // Then
+      // We get the same result as before
+      XCTAssertTrue(isUpgradedSubFrame)
+      let upgradedSubFrameFrameRequestTypes = pageData.makeUserScriptTypes(domain: domain)
+      XCTAssertEqual(upgradedSubFrameFrameRequestTypes, unchangedScriptTypes)
+      
+      expectation.fulfill()
+    }
     
-    // Then
-    // We get only entries of the main frame
-    let expectedMainFrameTypes: Set<UserScriptType> = [
-      .siteStateListener, .nacl, .farblingProtection(etld: "example.com")
-    ]
-    XCTAssertEqual(mainFrameRequestTypes, expectedMainFrameTypes)
-    
-    // When
-    // Nothing has changed
-    let unchangedScriptTypes = pageData.makeUserScriptTypes(
-      forRequestURL: mainFrameURL, isForMainFrame: true, persistentDomain: false
-    )
-    
-    // Then
-    // We get the same result as before
-    XCTAssertEqual(mainFrameRequestTypes, unchangedScriptTypes)
+    waitForExpectations(timeout: 10)
   }
 }

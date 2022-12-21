@@ -148,7 +148,6 @@ final public class ContentBlockerManager: Sendable {
     self.data = SyncData()
   }
   
-  
   public func cleanupDeadRuleLists() async {
     guard let identifiers = await ruleStore.availableIdentifiers() else { return }
     let enabledResources = await data.enabledResources
@@ -262,7 +261,7 @@ final public class ContentBlockerManager: Sendable {
             let ruleList = try await self.compile(resource: resource, forIdentifier: identifier)
             self.cachedCompileResults[identifier] = (resource.sourceType, .success(ruleList))
           } catch {
-            Self.log.error("\(error.localizedDescription)")
+            Self.log.error("Failed to compile rule list `\(identifier)`: \(error)")
             self.cachedCompileResults[identifier] = (resource.sourceType, .failure(error))
           }
           await self.data.movePendingResource(forIdentifier: identifier)
@@ -315,7 +314,7 @@ final public class ContentBlockerManager: Sendable {
   }
   
   /// Return the enabled rule types for this domain and the enabled settings
-  public func compiledRuleTypes(for domain: Domain) -> Set<RuleTypeWithSourceType> {
+  @MainActor public func compiledRuleTypes(for domain: Domain) -> Set<RuleTypeWithSourceType> {
     let filterLists = FilterListResourceDownloader.shared.filterLists
     
     if domain.shield_allOff == 1 {
