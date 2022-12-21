@@ -74,6 +74,9 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
 #endif
   brave_ads::ResourceComponent* resource_component() override;
   brave::BraveFarblingService* brave_farbling_service() override;
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+  brave_vpn::BraveVPNOSConnectionAPI* brave_vpn_os_connection_api() override;
+#endif
 
   // Populate the mock process with services. Consumer is responsible for
   // cleaning these up after completion of a test.

@@ -6,24 +6,20 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_MAC_BRAVE_VPN_OS_CONNECTION_API_MAC_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_MAC_BRAVE_VPN_OS_CONNECTION_API_MAC_H_
 
-#import <Foundation/Foundation.h>
 #include <string>
 
-#include "base/no_destructor.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api_base.h"
 
 namespace brave_vpn {
 
 class BraveVPNOSConnectionAPIMac : public BraveVPNOSConnectionAPIBase {
  public:
+  BraveVPNOSConnectionAPIMac(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* local_prefs);
   BraveVPNOSConnectionAPIMac(const BraveVPNOSConnectionAPIMac&) = delete;
   BraveVPNOSConnectionAPIMac& operator=(const BraveVPNOSConnectionAPIMac&) =
       delete;
-
- protected:
-  friend class base::NoDestructor<BraveVPNOSConnectionAPIMac>;
-
-  BraveVPNOSConnectionAPIMac();
   ~BraveVPNOSConnectionAPIMac() override;
 
  private:

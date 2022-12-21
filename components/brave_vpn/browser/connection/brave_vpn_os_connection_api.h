@@ -12,12 +12,6 @@
 #include "base/observer_list_types.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 
-namespace network {
-class SharedURLLoaderFactory;
-}
-
-class PrefService;
-
 namespace brave_vpn {
 
 // Interface for managing OS' vpn connection.
@@ -33,15 +27,6 @@ class BraveVPNOSConnectionAPI {
     ~Observer() override = default;
   };
 
-  static void Init(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* local_state);
-  static BraveVPNOSConnectionAPI* GetInstance();
-  static std::unique_ptr<BraveVPNOSConnectionAPI> GetInstanceForTest();
-
-  virtual void SetSharedUrlLoaderFactory(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) = 0;
-  virtual void SetLocalPrefs(PrefService* prefs) = 0;
   virtual void SetTargetVpnEntryName(const std::string& name) = 0;
   virtual mojom::ConnectionState GetConnectionState() const = 0;
   virtual void RemoveVPNConnection() = 0;
@@ -60,11 +45,6 @@ class BraveVPNOSConnectionAPI {
 
  protected:
   BraveVPNOSConnectionAPI() = default;
-
- private:
-  virtual bool IsInitialized() const = 0;
-
-  static BraveVPNOSConnectionAPI* GetInstanceImpl();
 };
 
 }  // namespace brave_vpn

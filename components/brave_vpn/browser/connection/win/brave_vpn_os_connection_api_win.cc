@@ -39,13 +39,10 @@ RasOperationResult DisconnectEntry(const std::wstring& name) {
 
 }  // namespace
 
-// static
-BraveVPNOSConnectionAPI* BraveVPNOSConnectionAPI::GetInstanceImpl() {
-  static base::NoDestructor<BraveVPNOSConnectionAPIWin> s_connection_api;
-  return s_connection_api.get();
-}
-
-BraveVPNOSConnectionAPIWin::BraveVPNOSConnectionAPIWin() {
+BraveVPNOSConnectionAPIWin::BraveVPNOSConnectionAPIWin(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PrefService* local_prefs)
+    : BraveVPNOSConnectionAPIBase(url_loader_factory, local_prefs) {
   StartVPNConnectionChangeMonitoring();
 }
 

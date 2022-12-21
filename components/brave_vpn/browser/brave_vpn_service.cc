@@ -39,6 +39,9 @@ using ConnectionState = mojom::ConnectionState;
 using PurchasedState = mojom::PurchasedState;
 
 BraveVpnService::BraveVpnService(
+#if !BUILDFLAG(IS_ANDROID)
+    BraveVPNOSConnectionAPI* connection_api,
+#endif
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
     PrefService* profile_prefs,
@@ -50,6 +53,7 @@ BraveVpnService::BraveVpnService(
       api_request_(url_loader_factory) {
   DCHECK(IsBraveVPNEnabled());
 #if !BUILDFLAG(IS_ANDROID)
+  connection_api_ = connection_api;
   observed_.Observe(GetBraveVPNConnectionAPI());
 
   GetBraveVPNConnectionAPI()->SetTargetVpnEntryName(kBraveVPNEntryName);
@@ -468,12 +472,8 @@ void BraveVpnService::GetSupportData(GetSupportDataCallback callback) {
 }
 
 BraveVPNOSConnectionAPI* BraveVpnService::GetBraveVPNConnectionAPI() const {
-  if (mock_connection_api_) {
-    CHECK_IS_TEST();
-    return mock_connection_api_;
-  }
-
-  return BraveVPNOSConnectionAPI::GetInstance();
+  DCHECK(connection_api_);
+  return connection_api_;
 }
 
 // NOTE(bsclifton): Desktop uses API to create a ticket.
@@ -494,19 +494,6 @@ void BraveVpnService::OnPreferenceChanged(const std::string& pref_name) {
     return;
   }
 }
-
-void BraveVpnService::SetMockBraveVpnConnectionApi(
-    BraveVPNOSConnectionAPI* api) {
-  if (observed_.IsObserving()) {
-    observed_.Reset();
-  }
-  mock_connection_api_ = api;
-  if (mock_connection_api_) {
-    observed_.Observe(mock_connection_api_);
-    mock_connection_api_->SetLocalPrefs(local_prefs_);
-  }
-}
-
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(IS_ANDROID)

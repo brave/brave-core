@@ -16,7 +16,6 @@ class BraveBrowserMainParts : public ChromeBrowserMainParts {
   BraveBrowserMainParts& operator=(const BraveBrowserMainParts&) = delete;
   ~BraveBrowserMainParts() override = default;
 
-  int PreMainMessageLoopRun() override;
   void PreBrowserStart() override;
   void PostBrowserStart() override;
   void PreShutdown() override;

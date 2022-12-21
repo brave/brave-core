@@ -13,7 +13,6 @@
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_sync/features.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -70,23 +69,6 @@
 #include "chrome/browser/extensions/extension_service.h"
 #include "extensions/browser/extension_system.h"
 #endif
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
-#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
-#endif
-
-int BraveBrowserMainParts::PreMainMessageLoopRun() {
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
-  if (brave_vpn::IsBraveVPNEnabled()) {
-    brave_vpn::BraveVPNOSConnectionAPI::Init(
-        g_browser_process->shared_url_loader_factory(),
-        g_browser_process->local_state());
-  }
-#endif
-
-  return ChromeBrowserMainParts::PreMainMessageLoopRun();
-}
 
 void BraveBrowserMainParts::PreBrowserStart() {
 #if BUILDFLAG(ENABLE_SPEEDREADER)

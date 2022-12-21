@@ -71,14 +71,17 @@ class BraveVPNOSConnectionAPIUnitTest : public testing::Test {
 
   void SetUp() override {
     brave_vpn::RegisterLocalStatePrefs(local_pref_service_.registry());
-    connection_api_ = BraveVPNOSConnectionAPI::GetInstanceForTest();
-    connection_api_->SetLocalPrefs(local_state());
+    connection_api_ = std::make_unique<BraveVPNOSConnectionAPISim>(
+        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+            &url_loader_factory_),
+        local_state());
   }
   PrefService* local_state() { return &local_pref_service_; }
   BraveVPNOSConnectionAPI* GetConnectionAPI() { return connection_api_.get(); }
 
  private:
   TestingPrefServiceSimple local_pref_service_;
+  network::TestURLLoaderFactory url_loader_factory_;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<BraveVPNOSConnectionAPI> connection_api_;
 };
@@ -238,10 +241,6 @@ TEST_F(BraveVPNOSConnectionAPIUnitTest, CancelConnectingTest) {
   // See the comment of BraveVPNOSConnectionAPIBase::api_request_.
   test_api->cancel_connecting_ = false;
   test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
-  network::TestURLLoaderFactory url_loader_factory_;
-  test_api->SetSharedUrlLoaderFactory(
-      base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-          &url_loader_factory_));
   // Explicitely create |api_request_|.
   test_api->GetAPIRequest();
   test_api->Disconnect();
