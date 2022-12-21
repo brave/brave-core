@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -13,6 +14,8 @@
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
@@ -48,6 +51,52 @@ class TallLayoutManager : public views::FlexLayout {
     return {300, 1000};
   }
 };
+
+class FullscreenNotificationObserver : public FullscreenObserver {
+ public:
+  explicit FullscreenNotificationObserver(Browser* browser);
+
+  FullscreenNotificationObserver(const FullscreenNotificationObserver&) =
+      delete;
+  FullscreenNotificationObserver& operator=(
+      const FullscreenNotificationObserver&) = delete;
+
+  ~FullscreenNotificationObserver() override;
+
+  // Runs a loop until a fullscreen change is seen (unless one has already been
+  // observed, in which case it returns immediately).
+  void Wait();
+
+  // FullscreenObserver:
+  void OnFullscreenStateChanged() override;
+
+ protected:
+  bool observed_change_ = false;
+  base::ScopedObservation<FullscreenController, FullscreenObserver>
+      observation_{this};
+  base::RunLoop run_loop_;
+};
+
+FullscreenNotificationObserver::FullscreenNotificationObserver(
+    Browser* browser) {
+  observation_.Observe(
+      browser->exclusive_access_manager()->fullscreen_controller());
+}
+
+FullscreenNotificationObserver::~FullscreenNotificationObserver() = default;
+
+void FullscreenNotificationObserver::OnFullscreenStateChanged() {
+  observed_change_ = true;
+  if (run_loop_.running())
+    run_loop_.Quit();
+}
+
+void FullscreenNotificationObserver::Wait() {
+  if (observed_change_)
+    return;
+
+  run_loop_.Run();
+}
 
 }  // namespace
 
@@ -287,4 +336,64 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, SidebarAlignment) {
   EXPECT_FALSE(prefs->FindPreference(prefs::kSidePanelHorizontalAlignment)
                    ->IsDefaultValue());
   EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+}
+
+#if BUILDFLAG(IS_MAC)
+// Mac test bots are not able to enter fullscreen.
+#define MAYBE_Fullscreen DISABLED_Fullscreen
+#else
+#define MAYBE_Fullscreen Fullscreen
+#endif
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
+  ToggleVerticalTabStrip();
+  ASSERT_TRUE(browser_view()
+                  ->vertical_tab_strip_host_view_->GetPreferredSize()
+                  .width());
+  auto* fullscreen_controller =
+      browser_view()->GetExclusiveAccessManager()->fullscreen_controller();
+  fullscreen_controller->ToggleBrowserFullscreenMode();
+  { FullscreenNotificationObserver(browser()).Wait(); }
+
+  // Vertical tab strip should be visible on browser fullscreen.
+  ASSERT_TRUE(fullscreen_controller->IsFullscreenForBrowser());
+  ASSERT_TRUE(browser_view()->IsFullscreen());
+  EXPECT_TRUE(browser_view()
+                  ->vertical_tab_strip_host_view_->GetPreferredSize()
+                  .width());
+
+  fullscreen_controller->ToggleBrowserFullscreenMode();
+  { FullscreenNotificationObserver(browser()).Wait(); }
+  ASSERT_FALSE(fullscreen_controller->IsFullscreenForBrowser());
+  ASSERT_FALSE(browser_view()->IsFullscreen());
+
+  // Vertical tab strip should become invisible on tab fullscreen.
+  fullscreen_controller->EnterFullscreenModeForTab(browser_view()
+                                                       ->browser()
+                                                       ->tab_strip_model()
+                                                       ->GetActiveWebContents()
+                                                       ->GetPrimaryMainFrame());
+  { FullscreenNotificationObserver(browser()).Wait(); }
+  ASSERT_TRUE(fullscreen_controller->IsTabFullscreen());
+
+  base::RunLoop run_loop;
+  auto wait_until = base::BindLambdaForTesting(
+      [&](base::RepeatingCallback<bool()> predicate) {
+        if (predicate.Run())
+          return;
+
+        base::RepeatingTimer scheduler;
+        scheduler.Start(FROM_HERE, base::Milliseconds(100),
+                        base::BindLambdaForTesting([&]() {
+                          if (predicate.Run())
+                            run_loop.Quit();
+                        }));
+        run_loop.Run();
+      });
+
+  wait_until.Run(base::BindLambdaForTesting([&]() {
+    return !browser_view()
+                ->vertical_tab_strip_host_view_->GetPreferredSize()
+                .width();
+  }));
 }

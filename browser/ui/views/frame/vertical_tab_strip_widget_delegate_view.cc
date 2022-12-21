@@ -114,7 +114,9 @@ void VerticalTabStripWidgetDelegateView::OnViewIsDeleting(
 void VerticalTabStripWidgetDelegateView::OnWidgetBoundsChanged(
     views::Widget* widget,
     const gfx::Rect& new_bounds) {
-  UpdateWidgetBounds();
+  // The parent widget could be resized because fullscreen status changed.
+  // Try resetting preferred size.
+  ChildPreferredSizeChanged(region_view_);
 }
 
 void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
