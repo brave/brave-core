@@ -252,6 +252,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistBaseActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistHostActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistWarningDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePreferenceKeys.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",

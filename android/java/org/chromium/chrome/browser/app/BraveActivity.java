@@ -128,6 +128,8 @@ import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
 import org.chromium.chrome.browser.playlist.PlaylistUtils;
+import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment;
+import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment.PlaylistWarningDialogListener;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
@@ -1070,6 +1072,17 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void setDormantUsersPrefs() {
         OnboardingPrefManager.getInstance().setDormantUsersPrefs();
         RetentionNotificationUtil.scheduleDormantUsersNotifications(this);
+    }
+
+    public void showPlaylistWarningDialog(
+            PlaylistWarningDialogListener playlistWarningDialogListener) {
+        PlaylistWarningDialogFragment playlistWarningDialogFragment =
+                new PlaylistWarningDialogFragment();
+        playlistWarningDialogFragment.setCancelable(false);
+        playlistWarningDialogFragment.setPlaylistWarningDialogListener(
+                playlistWarningDialogListener);
+        playlistWarningDialogFragment.show(
+                getSupportFragmentManager(), "PlaylistWarningDialogFragment");
     }
 
     private void showVpnCalloutDialog() {

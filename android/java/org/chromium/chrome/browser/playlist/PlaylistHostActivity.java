@@ -16,7 +16,7 @@ import com.brave.playlist.enums.PlaylistOptions;
 import com.brave.playlist.fragment.AllPlaylistFragment;
 import com.brave.playlist.fragment.PlaylistFragment;
 import com.brave.playlist.listener.PlaylistOptionsListener;
-import com.brave.playlist.model.MediaModel;
+import com.brave.playlist.model.PlaylistItemModel;
 import com.brave.playlist.model.PlaylistModel;
 import com.brave.playlist.model.PlaylistOptionsModel;
 
@@ -26,10 +26,12 @@ import org.json.JSONObject;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ChromeTabbedActivity;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.playlist.PlaylistBaseActivity;
 import org.chromium.chrome.browser.playlist.PlaylistUtils;
-import org.chromium.chrome.browser.util.LiveDataUtil;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.playlist.mojom.Playlist;
 import org.chromium.playlist.mojom.PlaylistItem;
 
@@ -68,11 +70,35 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
         playlistViewModel.getDeletePlaylistItems().observe(
                 PlaylistHostActivity.this, playlistItems -> {
                     if (mPlaylistPageHandler != null) {
-                        for (MediaModel playlistItem : playlistItems.getItems()) {
+                        for (PlaylistItemModel playlistItem : playlistItems.getItems()) {
                             mPlaylistPageHandler.removeItemFromPlaylist(
                                     playlistItems.getId(), playlistItem.getId());
                         }
                         openPlaylist(playlistItems.getId(), false);
+                    }
+                });
+
+        playlistViewModel.getPlaylistItemOption().observe(
+                PlaylistHostActivity.this, playlistItemOption -> {
+                    if (mPlaylistPageHandler != null) {
+                        PlaylistOptions option = playlistItemOption.getPlaylistOptions();
+                        if (option == PlaylistOptions.MOVE_PLAYLIST_ITEM) {
+                        } else if (option == PlaylistOptions.COPY_PLAYLIST_ITEM) {
+                        } else if (option == PlaylistOptions.DELETE_ITEMS_OFFLINE_DATA) {
+                            mPlaylistPageHandler.removeLocalDataForItem(
+                                    playlistItemOption.getPlaylistItemModel().getId());
+                        } else if (option == PlaylistOptions.SHARE_PLAYLIST_ITEM) {
+                        } else if (option == PlaylistOptions.OPEN_IN_NEW_TAB) {
+                            openPlaylistInTab(false,
+                                    playlistItemOption.getPlaylistItemModel().getPageSource());
+                        } else if (option == PlaylistOptions.OPEN_IN_PRIVATE_TAB) {
+                            openPlaylistInTab(true,
+                                    playlistItemOption.getPlaylistItemModel().getPageSource());
+                        } else if (option == PlaylistOptions.DELETE_PLAYLIST_ITEM) {
+                            mPlaylistPageHandler.removeItemFromPlaylist(
+                                    playlistItemOption.getPlaylistId(),
+                                    playlistItemOption.getPlaylistItemModel().getId());
+                        }
                     }
                 });
 
@@ -114,7 +140,6 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
 
                     if (recreateFragment) {
                         PlaylistFragment playlistFragment = new PlaylistFragment();
-                        playlistFragment.setPlaylistOptionsListener(this);
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.fragment_container_view_tag, playlistFragment)
@@ -185,5 +210,10 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                 finish();
             }
         }
+    }
+
+    private void openPlaylistInTab(boolean isIncognito, String url) {
+        finish();
+        TabUtils.openUrlInNewTab(isIncognito, url);
     }
 }

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/playlist_warning_dialog_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/playlist_warning_title"
+            android:textSize="20sp"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/brave_stats_text_color"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/playlist_warning_text"
+            android:textSize="16sp"
+            android:layout_marginBottom="32dp"
+            android:textColor="@color/brave_stats_text_color"/>
+
+        <android.widget.Button
+            android:id="@+id/btn_add_media"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/blue_48_rounded_bg"
+            android:text="@string/add_item_to_playlist"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <android.widget.Button
+            android:id="@+id/btn_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/brave_ui_settings"
+            android:textAllCaps="false"
+            android:textColor="@color/playlist_warning_settings_color"
+            android:textSize="16sp"
+            style="?android:attr/borderlessButtonStyle"/>
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/modal_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:layout_gravity="end|top"
+        android:tint="@color/brave_stats_close_button_color"
+        android:padding="16dp"
+        app:srcCompat="@drawable/btn_close"/>
+
+</FrameLayout>

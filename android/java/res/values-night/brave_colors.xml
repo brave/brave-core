@@ -137,4 +137,6 @@
     <color name="search_widget_promo_add_widget_text_color">#FFFFFF</color>
     <color name="search_widget_promo_not_now_text_color">#F0F2FF</color>
     <color name="search_widget_promo_bg_color">#495057</color>
+
+    <color name="playlist_warning_dialog_bg">#17171F</color>
 </resources>

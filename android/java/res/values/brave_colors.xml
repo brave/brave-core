@@ -244,4 +244,7 @@
     <color name="search_widget_promo_add_widget_text_color">#FFFFFF</color>
     <color name="search_widget_promo_not_now_text_color">#4C54D2</color>
     <color name="search_widget_promo_bg_color">#FFFFFF</color>
+
+    <color name="playlist_warning_dialog_bg">#FFFFFF</color>
+    <color name="playlist_warning_settings_color">#A0A5EB</color>
 </resources>

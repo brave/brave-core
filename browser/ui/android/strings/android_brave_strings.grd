@@ -3246,8 +3246,17 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SAVED" desc="Saved text">
       Saved
     </message>
-    <message name="IDS_ADDED_TO_PLAYLIST" desc="\Added to specific playlist text">
+    <message name="IDS_ADDED_TO_PLAYLIST" desc="Added to specific playlist text">
       Added to '<ph name="PLAYLIST_NAME">%1$s</ph>'
+    </message>
+    <message name="IDS_PLAYLIST_WARNING_TITLE" desc="Playlist warning dialog title text">
+      Managing your playlist data
+    </message>
+    <message name="IDS_PLAYLIST_WARNING_TEXT" desc="Playlist warning dialog text">
+      By default, Playlist will auto save content to your device for offline playback (on both private &amp; shared  playlists). If you’re not on WiFi, auto save will use your cellular data.\n\nTo change this default, use settings.
+    </message>
+    <message name="IDS_ADD_ITEM_TO_PLAYLIST" desc="Playlist warning dialog action button text">
+      Add item to Playlist
     </message>
   </messages>
   </release>

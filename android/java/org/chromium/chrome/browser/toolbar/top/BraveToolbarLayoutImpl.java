@@ -98,6 +98,7 @@ import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
 import org.chromium.chrome.browser.playlist.PlaylistUtils;
+import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment.PlaylistWarningDialogListener;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
@@ -473,16 +474,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 }
                 mBraveShieldsHandler.clearBraveShieldsCount(tab.getId());
                 dismissShieldsTooltip();
-                if (BraveActivity.getBraveActivity() != null) {
-                    ViewGroup viewGroup = BraveActivity.getBraveActivity()
-                                                  .getWindow()
-                                                  .getDecorView()
-                                                  .findViewById(android.R.id.content);
-                    View playlistButton = viewGroup.findViewById(R.id.playlist_button_id);
-                    if (playlistButton != null && playlistButton.getVisibility() == View.VISIBLE) {
-                        playlistButton.setVisibility(View.GONE);
-                    }
-                }
+                hidePlaylistButton();
             }
 
             @Override
@@ -542,8 +534,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
                         && !tab.getUrl().getSpec().startsWith(UrlConstants.CHROME_SCHEME)
                         && !UrlUtilities.isNTPUrl(tab.getUrl().getSpec())
-                        // && tab.getUrl().domainIs(YOUTUBE_DOMAIN)
-                        && mPlaylistPageHandler != null) {
+                        && tab.getUrl().domainIs(YOUTUBE_DOMAIN) && mPlaylistPageHandler != null) {
                     // TODO DEEP : find contents from the page and show the playlist button
                     showPlaylistButton(tab.getUrl().getSpec());
                 }
@@ -582,6 +573,18 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         };
     }
 
+    private void hidePlaylistButton() {
+        if (BraveActivity.getBraveActivity() != null) {
+            ViewGroup viewGroup =
+                    BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
+                            android.R.id.content);
+            View playlistButton = viewGroup.findViewById(R.id.playlist_button_id);
+            if (playlistButton != null && playlistButton.getVisibility() == View.VISIBLE) {
+                playlistButton.setVisibility(View.GONE);
+            }
+        }
+    }
+
     private void showPlaylistButton(String url) {
         if (BraveActivity.getBraveActivity() != null) {
             BraveActivity braveActivity = BraveActivity.getBraveActivity();
@@ -595,23 +598,32 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         Log.e(PlaylistUtils.TAG, "URL : " + url);
                         org.chromium.url.mojom.Url contentUrl = new org.chromium.url.mojom.Url();
                         contentUrl.url = url;
-                        mPlaylistPageHandler.addMediaFilesFromPageToPlaylist(
-                                PlaylistUtils.DEFAULT_PLAYLIST_ID, contentUrl);
-                        SnackBarActionModel snackBarActionModel = new SnackBarActionModel(
-                                getContext().getResources().getString(R.string.view_action),
-                                new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        PlaylistUtils.openPlaylistActivity(
-                                                getContext(), PlaylistUtils.DEFAULT_PLAYLIST_ID);
-                                    }
-                                });
+                        int mediaCount = SharedPreferencesManager.getInstance().readInt(
+                                PlaylistUtils.ADD_MEDIA_COUNT);
+                        if (mediaCount < 2) {
+                            SharedPreferencesManager.getInstance().writeInt(
+                                    PlaylistUtils.ADD_MEDIA_COUNT, mediaCount + 1);
+                        }
+                        if (mediaCount == 2) {
+                            if (BraveActivity.getBraveActivity() != null) {
+                                PlaylistWarningDialogListener playlistWarningDialogListener =
+                                        new PlaylistWarningDialogListener() {
+                                            @Override
+                                            public void onActionClicked() {
+                                                addMediaToPlaylist(contentUrl, viewGroup);
+                                            }
 
-                        PlaylistViewUtils.showSnackBarWithActions(viewGroup,
-                                String.format(getContext().getResources().getString(
-                                                      R.string.added_to_playlist),
-                                        getContext().getResources().getString(R.string.saved)),
-                                snackBarActionModel);
+                                            @Override
+                                            public void onSettingsClicked() {
+                                                Log.e(PlaylistUtils.TAG, "Settings clicked : ");
+                                            }
+                                        };
+                                BraveActivity.getBraveActivity().showPlaylistWarningDialog(
+                                        playlistWarningDialogListener);
+                            }
+                        } else {
+                            addMediaToPlaylist(contentUrl, viewGroup);
+                        }
                     } else if (playlistOptionsModel.getOptionType()
                             == PlaylistOptions.OPEN_PLAYLIST) {
                         PlaylistUtils.openPlaylistActivity(
@@ -620,18 +632,40 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             == PlaylistOptions.PLAYLIST_SETTINGS) {
                     } else if (playlistOptionsModel.getOptionType()
                             == PlaylistOptions.PLAYLIST_HIDE) {
+                        hidePlaylistButton();
                     }
                 }
             };
 
             PlaylistViewUtils.showPlaylistButton(braveActivity, viewGroup, playlistOptionsListener);
             if (SharedPreferencesManager.getInstance().readBoolean(
-                        BravePreferenceKeys.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
+                        PlaylistUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
                 new PlaylistOnboardingPanel((FragmentActivity) braveActivity,
                         viewGroup.findViewById(R.id.playlist_button_id), viewGroup);
                 SharedPreferencesManager.getInstance().writeBoolean(
-                        BravePreferenceKeys.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
+                        PlaylistUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
             }
+        }
+    }
+
+    private void addMediaToPlaylist(org.chromium.url.mojom.Url contentUrl, ViewGroup viewGroup) {
+        if (mPlaylistPageHandler != null) {
+            mPlaylistPageHandler.addMediaFilesFromPageToPlaylist(
+                    PlaylistUtils.DEFAULT_PLAYLIST_ID, contentUrl);
+            SnackBarActionModel snackBarActionModel = new SnackBarActionModel(
+                    getContext().getResources().getString(R.string.view_action),
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            PlaylistUtils.openPlaylistActivity(
+                                    getContext(), PlaylistUtils.DEFAULT_PLAYLIST_ID);
+                        }
+                    });
+
+            PlaylistViewUtils.showSnackBarWithActions(viewGroup,
+                    String.format(getContext().getResources().getString(R.string.added_to_playlist),
+                            getContext().getResources().getString(R.string.saved)),
+                    snackBarActionModel);
         }
     }
 
