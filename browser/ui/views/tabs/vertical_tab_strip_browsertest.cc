@@ -52,6 +52,52 @@ class TallLayoutManager : public views::FlexLayout {
   }
 };
 
+class FullscreenNotificationObserver : public FullscreenObserver {
+ public:
+  explicit FullscreenNotificationObserver(Browser* browser);
+
+  FullscreenNotificationObserver(const FullscreenNotificationObserver&) =
+      delete;
+  FullscreenNotificationObserver& operator=(
+      const FullscreenNotificationObserver&) = delete;
+
+  ~FullscreenNotificationObserver() override;
+
+  // Runs a loop until a fullscreen change is seen (unless one has already been
+  // observed, in which case it returns immediately).
+  void Wait();
+
+  // FullscreenObserver:
+  void OnFullscreenStateChanged() override;
+
+ protected:
+  bool observed_change_ = false;
+  base::ScopedObservation<FullscreenController, FullscreenObserver>
+      observation_{this};
+  base::RunLoop run_loop_;
+};
+
+FullscreenNotificationObserver::FullscreenNotificationObserver(
+    Browser* browser) {
+  observation_.Observe(
+      browser->exclusive_access_manager()->fullscreen_controller());
+}
+
+FullscreenNotificationObserver::~FullscreenNotificationObserver() = default;
+
+void FullscreenNotificationObserver::OnFullscreenStateChanged() {
+  observed_change_ = true;
+  if (run_loop_.running())
+    run_loop_.Quit();
+}
+
+void FullscreenNotificationObserver::Wait() {
+  if (observed_change_)
+    return;
+
+  run_loop_.Run();
+}
+
 }  // namespace
 
 class VerticalTabStripBrowserTest : public InProcessBrowserTest {
@@ -300,6 +346,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, Fullscreen) {
   auto* fullscreen_controller =
       browser_view()->GetExclusiveAccessManager()->fullscreen_controller();
   fullscreen_controller->ToggleBrowserFullscreenMode();
+  { FullscreenNotificationObserver(browser()).Wait(); }
 
   // Vertical tab strip should be visible on browser fullscreen.
   ASSERT_TRUE(fullscreen_controller->IsFullscreenForBrowser());
@@ -309,6 +356,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, Fullscreen) {
                   .width());
 
   fullscreen_controller->ToggleBrowserFullscreenMode();
+  { FullscreenNotificationObserver(browser()).Wait(); }
   ASSERT_FALSE(fullscreen_controller->IsFullscreenForBrowser());
   ASSERT_FALSE(browser_view()->IsFullscreen());
 
@@ -318,6 +366,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, Fullscreen) {
                                                        ->tab_strip_model()
                                                        ->GetActiveWebContents()
                                                        ->GetPrimaryMainFrame());
+  { FullscreenNotificationObserver(browser()).Wait(); }
   ASSERT_TRUE(fullscreen_controller->IsTabFullscreen());
 
   base::RunLoop run_loop;
