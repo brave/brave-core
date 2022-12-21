@@ -27,60 +27,7 @@ std::string ReadScript(const base::FilePath& path) {
   return contents;
 }
 
-}  // namespace
-
-MediaDetectorComponentManager::MediaDetectorComponentManager(
-    component_updater::ComponentUpdateService* component_update_service)
-    : component_update_service_(component_update_service) {
-  // TODO(sko) This list should be dynamically updated from the playlist.
-  // Once it's done, remove this line.
-  SetUseLocalListToHideMediaSrcAPI();
-}
-
-MediaDetectorComponentManager::~MediaDetectorComponentManager() = default;
-
-void MediaDetectorComponentManager::AddObserver(Observer* observer) {
-  observer_list_.AddObserver(observer);
-}
-
-void MediaDetectorComponentManager::RemoveObserver(Observer* observer) {
-  observer_list_.RemoveObserver(observer);
-}
-
-void MediaDetectorComponentManager::RegisterIfNeeded() {
-  if (register_requested_)
-    return;
-
-  register_requested_ = true;
-  RegisterMediaDetectorComponent(
-      component_update_service_,
-      base::BindRepeating(&MediaDetectorComponentManager::OnComponentReady,
-                          weak_factory_.GetWeakPtr()));
-}
-
-void MediaDetectorComponentManager::OnComponentReady(
-    const base::FilePath& install_path) {
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, base::MayBlock(),
-      base::BindOnce(&ReadScript, GetScriptPath(install_path)),
-      base::BindOnce(&MediaDetectorComponentManager::OnGetScript,
-                     weak_factory_.GetWeakPtr()));
-}
-
-void MediaDetectorComponentManager::OnGetScript(const std::string& script) {
-  if (script.empty()) {
-    LOG(ERROR) << __FUNCTION__ << " script is empty!";
-    return;
-  }
-
-  script_ = script;
-
-  for (auto& observer : observer_list_)
-    observer.OnScriptReady(script_);
-}
-
-void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
-  register_requested_ = true;
+const std::string& GetLocalScript() {
   // This script is modified version of
   // https://github.com/brave/brave-ios/blob/development/Client/Frontend/UserContent/UserScripts/Playlist.js
   static const std::string kScript = R"-(
@@ -243,7 +190,65 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
 })();
   )-";
 
-  OnGetScript(kScript);
+  return kScript;
+}
+
+}  // namespace
+
+MediaDetectorComponentManager::MediaDetectorComponentManager(
+    component_updater::ComponentUpdateService* component_update_service)
+    : component_update_service_(component_update_service) {
+  // TODO(sko) This list should be dynamically updated from the playlist.
+  // Once it's done, remove this line.
+  SetUseLocalListToHideMediaSrcAPI();
+}
+
+MediaDetectorComponentManager::~MediaDetectorComponentManager() = default;
+
+void MediaDetectorComponentManager::AddObserver(Observer* observer) {
+  observer_list_.AddObserver(observer);
+}
+
+void MediaDetectorComponentManager::RemoveObserver(Observer* observer) {
+  observer_list_.RemoveObserver(observer);
+}
+
+void MediaDetectorComponentManager::RegisterIfNeeded() {
+  if (register_requested_)
+    return;
+
+  register_requested_ = true;
+  RegisterMediaDetectorComponent(
+      component_update_service_,
+      base::BindRepeating(&MediaDetectorComponentManager::OnComponentReady,
+                          weak_factory_.GetWeakPtr()));
+}
+
+void MediaDetectorComponentManager::OnComponentReady(
+    const base::FilePath& install_path) {
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, base::MayBlock(),
+      base::BindOnce(&ReadScript, GetScriptPath(install_path)),
+      base::BindOnce(&MediaDetectorComponentManager::OnGetScript,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void MediaDetectorComponentManager::OnGetScript(const std::string& script) {
+  if (script.empty()) {
+    LOG(ERROR) << __FUNCTION__ << " script is empty!";
+    return;
+  }
+
+  script_ = script;
+
+  for (auto& observer : observer_list_)
+    observer.OnScriptReady(script_);
+}
+
+void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
+  register_requested_ = true;
+
+  OnGetScript(GetLocalScript());
 }
 
 bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
@@ -253,6 +258,16 @@ bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
                               [&schemeful_site](const auto& site_to_hide) {
                                 return site_to_hide == schemeful_site;
                               });
+}
+
+const std::string& MediaDetectorComponentManager::GetMediaDetectorScript() {
+  if (!script_.empty())
+    return script_;
+
+  // In case we have yet to fetch the script, use local script instead. At the
+  // same time, fetch the script from component.
+  RegisterIfNeeded();
+  return GetLocalScript();
 }
 
 void MediaDetectorComponentManager::SetUseLocalListToHideMediaSrcAPI() {

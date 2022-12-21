@@ -59,11 +59,7 @@ void PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
 PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
     content::BrowserContext* context,
     MediaDetectorComponentManager* manager)
-    : context_(context), media_detector_component_manager_(manager) {
-  observed_.Observe(media_detector_component_manager_);
-
-  media_detector_script_ = media_detector_component_manager_->script();
-}
+    : context_(context), media_detector_component_manager_(manager) {}
 
 PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;
 
@@ -82,18 +78,10 @@ void PlaylistDownloadRequestManager::GetMediaFilesFromPage(Request request) {
 
   if (!ReadyToRunMediaDetectorScript()) {
     pending_requests_.push_back(std::move(request));
-    if (media_detector_script_.empty())
-      media_detector_component_manager_->RegisterIfNeeded();
     return;
   }
 
   RunMediaDetector(std::move(request));
-}
-
-void PlaylistDownloadRequestManager::OnScriptReady(const std::string& script) {
-  media_detector_script_ = script;
-
-  FetchPendingRequest();
 }
 
 void PlaylistDownloadRequestManager::FetchPendingRequest() {
@@ -134,7 +122,7 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
 }
 
 bool PlaylistDownloadRequestManager::ReadyToRunMediaDetectorScript() const {
-  return !media_detector_script_.empty() && in_progress_urls_count_ == 0;
+  return in_progress_urls_count_ == 0;
 }
 
 void PlaylistDownloadRequestManager::DidFinishLoad(
@@ -153,8 +141,12 @@ void PlaylistDownloadRequestManager::GetMedia(content::WebContents* contents) {
   DVLOG(2) << __func__;
   DCHECK(contents && contents->GetPrimaryMainFrame());
 
+  const auto& media_detector_script =
+      media_detector_component_manager_->GetMediaDetectorScript();
+  DCHECK(!media_detector_script.empty());
+
   contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-      base::UTF8ToUTF16(media_detector_script_),
+      base::UTF8ToUTF16(media_detector_script),
       base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
                      weak_factory_.GetWeakPtr(), contents->GetWeakPtr()),
       g_playlist_javascript_world_id);

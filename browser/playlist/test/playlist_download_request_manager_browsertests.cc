@@ -61,7 +61,7 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
     ASSERT_TRUE(content::NavigateToURL(active_web_contents, url));
 
     // Run script and find media files
-    ASSERT_FALSE(component_manager_->script().empty());
+    ASSERT_FALSE(component_manager_->GetMediaDetectorScript().empty());
     playlist::PlaylistDownloadRequestManager::Request request;
     request.url_or_contents = active_web_contents->GetWeakPtr();
     request.callback =
