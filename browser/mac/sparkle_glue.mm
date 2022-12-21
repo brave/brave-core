@@ -490,9 +490,7 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
         command->GetSwitchValueASCII(switches::kUpdateFeedURL));
   }
 
-  return [NSString stringWithFormat:@"https://updates.bravesoftware.com/"
-                                    @"sparkle/Brave-Browser/%s/appcast.xml",
-                                    GetUpdateChannel().c_str()];
+  return [NSString stringWithFormat:@"http://127.0.0.1:8000/appcast.xml"];
 }
 @end
 
