@@ -14,6 +14,7 @@
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/json/values_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "base/token.h"
@@ -390,30 +391,7 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
 std::vector<PlaylistItemInfo> PlaylistService::GetAllPlaylistItems() {
   std::vector<PlaylistItemInfo> items;
   for (const auto it : prefs_->GetDict(kPlaylistItemsPref)) {
-    const auto& dict = it.second.GetDict();
-    DCHECK(dict.contains(playlist::kPlaylistItemIDKey));
-    DCHECK(dict.contains(playlist::kPlaylistItemTitleKey));
-    DCHECK(dict.contains(playlist::kPlaylistItemPageSrcKey));
-    DCHECK(dict.contains(playlist::kPlaylistItemMediaSrcKey));
-    DCHECK(dict.contains(playlist::kPlaylistItemThumbnailSrcKey));
-    DCHECK(dict.contains(playlist::kPlaylistItemMediaFilePathKey));
-    DCHECK(dict.contains(playlist::kPlaylistItemThumbnailPathKey));
-    DCHECK(dict.contains(playlist::kPlaylistItemMediaFileCachedKey));
-
-    PlaylistItemInfo item;
-    item.id = *dict.FindString(playlist::kPlaylistItemIDKey);
-    item.title = *dict.FindString(playlist::kPlaylistItemTitleKey);
-    item.page_src = *dict.FindString(playlist::kPlaylistItemPageSrcKey);
-    item.thumbnail_src =
-        *dict.FindString(playlist::kPlaylistItemThumbnailSrcKey);
-    item.thumbnail_path =
-        *dict.FindString(playlist::kPlaylistItemThumbnailPathKey);
-    item.media_src = *dict.FindString(playlist::kPlaylistItemMediaSrcKey);
-    item.media_file_path =
-        *dict.FindString(playlist::kPlaylistItemMediaFilePathKey);
-    item.media_file_cached =
-        *dict.FindBool(playlist::kPlaylistItemMediaFileCachedKey);
-    items.push_back(std::move(item));
+    items.push_back(GetPlaylistItemInfoFromValue(it.second.GetDict()));
   }
 
   return items;
@@ -426,30 +404,7 @@ PlaylistItemInfo PlaylistService::GetPlaylistItem(const std::string& id) {
   if (!item_value)
     return {};
 
-  DCHECK(item_value->contains(playlist::kPlaylistItemIDKey));
-  DCHECK(item_value->contains(playlist::kPlaylistItemTitleKey));
-  DCHECK(item_value->contains(playlist::kPlaylistItemPageSrcKey));
-  DCHECK(item_value->contains(playlist::kPlaylistItemMediaSrcKey));
-  DCHECK(item_value->contains(playlist::kPlaylistItemThumbnailSrcKey));
-  DCHECK(item_value->contains(playlist::kPlaylistItemMediaFilePathKey));
-  DCHECK(item_value->contains(playlist::kPlaylistItemThumbnailPathKey));
-  DCHECK(item_value->contains(playlist::kPlaylistItemMediaFileCachedKey));
-
-  PlaylistItemInfo item;
-  item.id = *item_value->FindString(playlist::kPlaylistItemIDKey);
-  item.title = *item_value->FindString(playlist::kPlaylistItemTitleKey);
-  item.page_src = *item_value->FindString(playlist::kPlaylistItemPageSrcKey);
-  item.thumbnail_src =
-      *item_value->FindString(playlist::kPlaylistItemThumbnailSrcKey);
-  item.thumbnail_path =
-      *item_value->FindString(playlist::kPlaylistItemThumbnailPathKey);
-  item.media_src = *item_value->FindString(playlist::kPlaylistItemMediaSrcKey);
-  item.media_file_path =
-      *item_value->FindString(playlist::kPlaylistItemMediaFilePathKey);
-  item.media_file_cached =
-      *item_value->FindBool(playlist::kPlaylistItemMediaFileCachedKey);
-
-  return item;
+  return GetPlaylistItemInfoFromValue(*item_value);
 }
 
 absl::optional<PlaylistInfo> PlaylistService::GetPlaylist(
@@ -638,7 +593,7 @@ void PlaylistService::OnMediaFileReady(const std::string& id,
   const auto* item_value_ptr = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   base::Value::Dict item = item_value_ptr->Clone();
   item.Set(kPlaylistItemMediaFileCachedKey, true);
-  item.Set(kPlaylistItemMediaFilePathKey, media_file_path);
+  item.Set(kPlaylistItemMediaFilePathKey, "file://" + media_file_path);
   UpdatePlaylistItemValue(id, base::Value(std::move(item)));
 
   NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemCached, id});
@@ -686,12 +641,7 @@ void PlaylistService::CleanUpMalformedPlaylistItems() {
             DCHECK(dict);
 
             DCHECK(dict->contains(playlist::kPlaylistItemIDKey));
-
-            // As of 2022. Sep., properties of PlaylistItemInfo was updated.
-            return !dict->contains(playlist::kPlaylistItemPageSrcKey) ||
-                   !dict->contains(playlist::kPlaylistItemMediaSrcKey) ||
-                   !dict->contains(playlist::kPlaylistItemThumbnailSrcKey) ||
-                   !dict->contains(playlist::kPlaylistItemMediaFileCachedKey);
+            return IsItemValueMalformed(*dict);
           })) {
     return;
   }
@@ -756,6 +706,13 @@ bool PlaylistService::MoveItem(const PlaylistId& from,
   NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemDeleted, *from});
   NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemAdded, *to});
   return true;
+}
+
+void PlaylistService::UpdateItem(const PlaylistItemInfo& item) {
+  UpdatePlaylistItemValue(item.id,
+                          base::Value(GetValueFromPlaylistItemInfo(item)));
+
+  NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemUpdated, item.id});
 }
 
 base::SequencedTaskRunner* PlaylistService::task_runner() {

@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/time/time.h"
 #include "base/types/strong_alias.h"
 
 namespace playlist {
@@ -21,6 +22,7 @@ struct PlaylistChangeParams {
     kItemThumbnailFailed,   // Failed to fetch thumbnail
     kItemCached,            // The item is cached in local storage
     kItemDeleted,           // An item deleted
+    kItemUpdated,           // An item's properties have been changed
     kItemAborted,           // Aborted during the creation process
     kItemLocalDataRemoved,  // Local data removed
 
@@ -75,11 +77,19 @@ struct PlaylistItemInfo {
   std::string media_file_path;
   bool media_file_cached{false};
 
+  // Could be null
+  base::TimeDelta duration;
+  std::string author;
+
+  int last_played_position = 0;
+
   friend std::ostream& operator<<(std::ostream& os,
                                   const PlaylistItemInfo& item) {
     return os << "{ media_file_path: " << item.media_file_path
               << ", title: " << item.title
-              << ", thumbnail_path: " << item.thumbnail_path << " }";
+              << ", thumbnail_path: " << item.thumbnail_path
+              << ", duration: " << item.duration << ", author: " << item.author
+              << ", last_played_position: " << item.last_played_position << "}";
   }
 };
 
