@@ -338,7 +338,14 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, SidebarAlignment) {
   EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
 }
 
-IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, Fullscreen) {
+#if BUILDFLAG(IS_MAC)
+// Mac test bots are not able to enter fullscreen.
+#define MAYBE_Fullscreen DISABLED_Fullscreen
+#else
+#define MAYBE_Fullscreen Fullscreen
+#endif
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
   ToggleVerticalTabStrip();
   ASSERT_TRUE(browser_view()
                   ->vertical_tab_strip_host_view_->GetPreferredSize()
