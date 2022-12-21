@@ -175,4 +175,5 @@
     <color name="notification_rationale_dialog_card_bg_color">#17171F</color>
     <color name="you_are_not_earning_rewards_bg_color">#17171F</color>
 
+    <color name="playlist_warning_dialog_bg">#17171F</color>
 </resources>

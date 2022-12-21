@@ -18,6 +18,10 @@ public class PlaylistUtils {
     public static final String PLAYLIST_NAME = "playlist_name";
     public static final String PLAYLIST_ID = "playlist_id";
 
+    // pref names
+    public static final String SHOULD_SHOW_PLAYLIST_ONBOARDING = "should_show_playlist_onboarding";
+    public static final String ADD_MEDIA_COUNT = "add_media_count";
+
     public static void openPlaylistActivity(Context context, String playlistId) {
         Intent playlistActivityIntent = new Intent(context, PlaylistHostActivity.class);
         playlistActivityIntent.putExtra(PLAYLIST_ID, playlistId);

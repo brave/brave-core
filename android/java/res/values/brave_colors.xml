@@ -296,4 +296,6 @@
     <color name="notification_rationale_dialog_card_bg_color">@android:color/white</color>
     <color name="you_are_not_earning_rewards_bg_color">#F8F9FA</color>
 
+    <color name="playlist_warning_dialog_bg">#FFFFFF</color>
+    <color name="playlist_warning_settings_color">#A0A5EB</color>
 </resources>
