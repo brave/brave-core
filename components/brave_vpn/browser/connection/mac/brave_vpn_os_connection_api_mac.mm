@@ -73,9 +73,12 @@ OSStatus RemoveKeychainItemForAccount() {
   return result;
 }
 
-OSStatus StorePassword(const NSString* password) {
+OSStatus StorePassword(const NSString* password, std::string* error_str) {
+  DCHECK(error_str);
+  std::string error;
   if (password == nil || [password length] == 0) {
-    LOG(ERROR) << "Error: password is empty";
+    *error_str = "Error: password is empty";
+    LOG(ERROR) << *error_str;
     return errSecParam;
   }
 
@@ -102,8 +105,10 @@ OSStatus StorePassword(const NSString* password) {
                            (__bridge CFDictionaryRef)sec_item);
   }
 
-  if (status != errSecSuccess)
-    LOG(ERROR) << "Error: storing password";
+  if (status != errSecSuccess) {
+    *error_str = "Error: storing password";
+    LOG(ERROR) << *error_str;
+  }
 
   return status;
 }
@@ -170,8 +175,10 @@ BraveVPNOSConnectionAPIMac::~BraveVPNOSConnectionAPIMac() {
 
 void BraveVPNOSConnectionAPIMac::CreateVPNConnectionImpl(
     const BraveVPNConnectionInfo& info) {
-  if (StorePassword(base::SysUTF8ToNSString(info.password())) !=
-      errSecSuccess) {
+  std::string store_pwd_error;
+  if (StorePassword(base::SysUTF8ToNSString(info.password()),
+                    &store_pwd_error) != errSecSuccess) {
+    SetLastConnectionError(store_pwd_error);
     OnCreateFailed();
     return;
   }
@@ -179,8 +186,10 @@ void BraveVPNOSConnectionAPIMac::CreateVPNConnectionImpl(
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
     if (error) {
+      SetLastConnectionError(
+          base::SysNSStringToUTF8([error localizedDescription]));
       LOG(ERROR) << "Create - loadFromPrefs error: "
-                 << base::SysNSStringToUTF8([error localizedDescription]);
+                 << GetLastConnectionError();
       OnCreateFailed();
       return;
     }
@@ -192,9 +201,10 @@ void BraveVPNOSConnectionAPIMac::CreateVPNConnectionImpl(
 
     [vpn_manager saveToPreferencesWithCompletionHandler:^(NSError* save_error) {
       if (save_error) {
+        SetLastConnectionError(
+            base::SysNSStringToUTF8([save_error localizedDescription]));
         LOG(ERROR) << "Create - saveToPrefs error: "
-                   << base::SysNSStringToUTF8(
-                          [save_error localizedDescription]);
+                   << GetLastConnectionError();
         OnCreateFailed();
         return;
       }
@@ -206,6 +216,10 @@ void BraveVPNOSConnectionAPIMac::CreateVPNConnectionImpl(
       [vpn_manager loadFromPreferencesWithCompletionHandler:^(
                        NSError* load_again_error) {
         if (load_again_error) {
+          SetLastConnectionError(
+              base::SysNSStringToUTF8([load_again_error localizedDescription]));
+          LOG(ERROR) << "Create - load again error: "
+                     << GetLastConnectionError();
           OnCreateFailed();
           return;
         }
@@ -213,6 +227,10 @@ void BraveVPNOSConnectionAPIMac::CreateVPNConnectionImpl(
         [vpn_manager saveToPreferencesWithCompletionHandler:^(
                          NSError* save_again_error) {
           if (save_again_error) {
+            SetLastConnectionError(base::SysNSStringToUTF8(
+                [save_again_error localizedDescription]));
+            LOG(ERROR) << "Create - save again error: "
+                       << GetLastConnectionError();
             OnCreateFailed();
             return;
           }
@@ -228,15 +246,18 @@ void BraveVPNOSConnectionAPIMac::RemoveVPNConnectionImpl(
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
     if (error) {
+      SetLastConnectionError(
+          base::SysNSStringToUTF8([error localizedDescription]));
       LOG(ERROR) << "RemoveVPNConnection - loadFromPrefs: "
-                 << base::SysNSStringToUTF8([error localizedDescription]);
+                 << GetLastConnectionError();
     } else {
       [vpn_manager
           removeFromPreferencesWithCompletionHandler:^(NSError* remove_error) {
             if (remove_error) {
+              SetLastConnectionError(
+                  base::SysNSStringToUTF8([remove_error localizedDescription]));
               LOG(ERROR) << "RemoveVPNConnection - removeFromPrefs: "
-                         << base::SysNSStringToUTF8(
-                                [remove_error localizedDescription]);
+                         << GetLastConnectionError();
             }
             VLOG(2) << "RemoveVPNConnection - successfully removed";
           }];
@@ -249,8 +270,10 @@ void BraveVPNOSConnectionAPIMac::ConnectImpl(const std::string& name) {
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
     if (error) {
+      SetLastConnectionError(
+          base::SysNSStringToUTF8([error localizedDescription]));
       LOG(ERROR) << "Connect - loadFromPrefs error: "
-                 << base::SysNSStringToUTF8([error localizedDescription]);
+                 << GetLastConnectionError();
       OnConnectFailed();
       return;
     }

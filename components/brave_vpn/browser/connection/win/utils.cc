@@ -15,6 +15,7 @@
 #include "base/logging.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 
 #define DEFAULT_PHONE_BOOK NULL
@@ -42,7 +43,7 @@ class ScopedHeapAlloc {
 };
 
 // https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-formatmessage
-void PrintSystemError(DWORD error) {
+std::string GetSystemError(DWORD error) {
   constexpr DWORD kBufSize = 512;
   TCHAR lpsz_error_string[kBufSize];
 
@@ -50,13 +51,17 @@ void PrintSystemError(DWORD error) {
       FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
                     NULL, error, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
                     lpsz_error_string, kBufSize, NULL);
-  if (buf_len) {
-    LOG(ERROR) << lpsz_error_string;
-  }
+  if (!buf_len)
+    return "";
+
+  LOG(ERROR) << lpsz_error_string;
+  return base::WideToUTF8(lpsz_error_string);
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rassetcredentialsa
-DWORD SetCredentials(LPCTSTR entry_name, LPCTSTR username, LPCTSTR password) {
+absl::optional<std::string> SetCredentials(LPCTSTR entry_name,
+                                           LPCTSTR username,
+                                           LPCTSTR password) {
   RASCREDENTIALS credentials;
 
   ZeroMemory(&credentials, sizeof(RASCREDENTIALS));
@@ -69,11 +74,10 @@ DWORD SetCredentials(LPCTSTR entry_name, LPCTSTR username, LPCTSTR password) {
   DWORD dw_ret =
       RasSetCredentials(DEFAULT_PHONE_BOOK, entry_name, &credentials, FALSE);
   if (dw_ret != ERROR_SUCCESS) {
-    internal::PrintRasError(dw_ret);
-    return dw_ret;
+    return internal::GetRasErrorMessage(dw_ret);
   }
 
-  return ERROR_SUCCESS;
+  return absl::nullopt;
 }
 
 std::wstring TryGetPhonebookPath(int key, const std::wstring& entry_name) {
@@ -121,27 +125,40 @@ std::wstring TryGetPhonebookPath(int key, const std::wstring& entry_name) {
   return L"";
 }
 
+internal::RasOperationResult GetRasSuccessResult() {
+  internal::RasOperationResult result;
+  result.success = true;
+  return result;
+}
+
+internal::RasOperationResult GetRasErrorResult(const std::string& error) {
+  internal::RasOperationResult result;
+  result.success = false;
+  result.error_description = error;
+  return result;
+}
+
 }  // namespace
 
 namespace internal {
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgeterrorstringa
-void PrintRasError(DWORD error) {
+std::string GetRasErrorMessage(DWORD error) {
   constexpr DWORD kBufSize = 512;
   TCHAR lpsz_error_string[kBufSize];
 
   if (error > RASBASE && error < RASBASEEND) {
     if (RasGetErrorString(error, lpsz_error_string, kBufSize) ==
         ERROR_SUCCESS) {
-      LOG(ERROR) << lpsz_error_string;
-      return;
+      return base::WideToUTF8(lpsz_error_string);
     }
   }
 
-  PrintSystemError(error);
+  return GetSystemError(error);
 }
 
-std::wstring GetPhonebookPath(const std::wstring& entry_name) {
+std::wstring GetPhonebookPath(const std::wstring& entry_name,
+                              std::string* error) {
   std::wstring path;
 
   // look initially in %APPDATA%
@@ -149,13 +166,16 @@ std::wstring GetPhonebookPath(const std::wstring& entry_name) {
   if (!path.empty()) {
     return path;
   }
+  *error = "failed to get phonebook path from APPDATA";
 
   // fall back to the %ALLUSERSPROFILE% directory
   path = TryGetPhonebookPath(base::DIR_COMMON_APP_DATA, entry_name);
   if (!path.empty()) {
+    *error = "";
     return path;
   }
 
+  *error = "failed to get phonebook path from ALLUSERSPROFILE";
   VLOG(2) << __func__
           << " : did not find phone book file. This is required to add the VPN "
              "entry.";
@@ -164,13 +184,13 @@ std::wstring GetPhonebookPath(const std::wstring& entry_name) {
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasenumconnectionsa
-bool DisconnectEntry(const std::wstring& entry_name) {
+RasOperationResult DisconnectEntry(const std::wstring& entry_name) {
   auto connection_result = CheckConnection(entry_name);
   if (connection_result == CheckConnectionResult::DISCONNECTING) {
     VLOG(2) << __func__
             << " Don't try to disconnect while brave vpn entry is already in "
                "disconnecting state";
-    return true;
+    return GetRasSuccessResult();
   }
 
   DWORD dw_cb = 0;
@@ -187,8 +207,7 @@ bool DisconnectEntry(const std::wstring& entry_name) {
     ScopedHeapAlloc ras_conn(dw_cb);
     lp_ras_conn = reinterpret_cast<LPRASCONN>(ras_conn.lp_alloc_mem());
     if (lp_ras_conn == NULL) {
-      LOG(ERROR) << "HeapAlloc failed!";
-      return false;
+      return GetRasErrorResult("HeapAlloc failed at DisconnectEntry()");
     }
     // The first RASCONN structure in the array must contain the RASCONN
     // structure size
@@ -213,29 +232,34 @@ bool DisconnectEntry(const std::wstring& entry_name) {
         }
       }
     }
-    return dw_ret == ERROR_SUCCESS;
+
+    if (dw_ret == ERROR_SUCCESS)
+      return GetRasSuccessResult();
+
+    return GetRasErrorResult(GetRasErrorMessage(dw_ret));
   }
 
   // There was either a problem with RAS or there are no connections to
   // enumerate
   if (dw_connections >= 1) {
-    LOG(ERROR) << "The operation failed to acquire the buffer size.";
-    return false;
+    return GetRasErrorResult(
+        "The operation failed to acquire the buffer size at "
+        "DisconnectEntry().");
   }
 
   VLOG(2) << "There are no active RAS connections.";
-  return true;
+  return GetRasSuccessResult();
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasdiala
-bool ConnectEntry(const std::wstring& entry_name) {
+RasOperationResult ConnectEntry(const std::wstring& entry_name) {
   auto connection_result = CheckConnection(entry_name);
   if (connection_result == CheckConnectionResult::CONNECTING ||
       connection_result == CheckConnectionResult::CONNECTED) {
     VLOG(2)
         << __func__
         << " Don't try to connect when it's in-progress or already connected.";
-    return true;
+    return GetRasSuccessResult();
   }
 
   LPRASDIALPARAMS lp_ras_dial_params = NULL;
@@ -245,8 +269,7 @@ bool ConnectEntry(const std::wstring& entry_name) {
   lp_ras_dial_params =
       reinterpret_cast<LPRASDIALPARAMS>(ras_dial_params.lp_alloc_mem());
   if (lp_ras_dial_params == NULL) {
-    LOG(ERROR) << "HeapAlloc failed!";
-    return false;
+    return GetRasErrorResult("HeapAlloc failed at ConnectEntry().");
   }
   lp_ras_dial_params->dwSize = sizeof(RASDIALPARAMS);
   wcscpy_s(lp_ras_dial_params->szEntryName, RAS_MaxEntryName + 1,
@@ -261,8 +284,7 @@ bool ConnectEntry(const std::wstring& entry_name) {
   DWORD dw_ret =
       RasGetCredentials(DEFAULT_PHONE_BOOK, entry_name.c_str(), &credentials);
   if (dw_ret != ERROR_SUCCESS) {
-    PrintRasError(dw_ret);
-    return false;
+    return GetRasErrorResult(GetRasErrorMessage(dw_ret));
   }
   wcscpy_s(lp_ras_dial_params->szUserName, UNLEN + 1, credentials.szUserName);
   wcscpy_s(lp_ras_dial_params->szPassword, PWLEN + 1, credentials.szPassword);
@@ -275,45 +297,45 @@ bool ConnectEntry(const std::wstring& entry_name) {
   if (dw_ret == ERROR_DIAL_ALREADY_IN_PROGRESS) {
     // We should not treat this as failure state.
     // Just return when already dialed.
-    PrintRasError(dw_ret);
-    return true;
+    VLOG(2) << __func__ << GetRasErrorMessage(dw_ret);
+    return GetRasSuccessResult();
   }
 
   if (dw_ret != ERROR_SUCCESS) {
-    PrintRasError(dw_ret);
+    auto result = GetRasErrorResult(GetRasErrorMessage(dw_ret));
 
     // To clear state.
     VLOG(2) << __func__ << ": RasDial() failed. Try RasHangUp() to clear state";
     if (dw_ret = RasHangUp(h_ras_conn); dw_ret != ERROR_SUCCESS)
-      PrintRasError(dw_ret);
+      result.error_description = GetRasErrorMessage(dw_ret);
 
-    return false;
+    return result;
   }
 
-  return true;
+  return GetRasSuccessResult();
 }
 
-bool RemoveEntry(const std::wstring& entry_name) {
+RasOperationResult RemoveEntry(const std::wstring& entry_name) {
   DWORD dw_ret = RasDeleteEntry(DEFAULT_PHONE_BOOK, entry_name.c_str());
   if (dw_ret != ERROR_SUCCESS) {
-    PrintRasError(dw_ret);
-    return false;
+    return GetRasErrorResult(GetRasErrorMessage(dw_ret));
   }
-  return true;
+
+  return GetRasSuccessResult();
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rassetentrypropertiesa
-bool CreateEntry(const std::wstring& entry_name,
-                 const std::wstring& hostname,
-                 const std::wstring& username,
-                 const std::wstring& password) {
+RasOperationResult CreateEntry(const std::wstring& entry_name,
+                               const std::wstring& hostname,
+                               const std::wstring& username,
+                               const std::wstring& password) {
   auto connection_result = CheckConnection(entry_name);
   if (connection_result == CheckConnectionResult::CONNECTING ||
       connection_result == CheckConnectionResult::CONNECTED) {
     VLOG(2) << __func__
             << " Don't try to create entry when brave vpn entry is in "
                "connecting or connected state";
-    return true;
+    return GetRasSuccessResult();
   }
 
   RASENTRY entry;
@@ -344,13 +366,12 @@ bool CreateEntry(const std::wstring& entry_name,
   DWORD dw_ret = RasSetEntryProperties(DEFAULT_PHONE_BOOK, entry_name.c_str(),
                                        &entry, entry.dwSize, NULL, NULL);
   if (dw_ret != ERROR_SUCCESS) {
-    PrintRasError(dw_ret);
-    return false;
+    return GetRasErrorResult(GetRasErrorMessage(dw_ret));
   }
 
-  if (SetCredentials(entry_name.c_str(), username.c_str(), password.c_str()) !=
-      ERROR_SUCCESS) {
-    return false;
+  if (const auto error = SetCredentials(entry_name.c_str(), username.c_str(),
+                                        password.c_str())) {
+    return GetRasErrorResult(*error);
   }
 
   // Policy needs to be set, otherwise you'll see an error like this in
@@ -386,30 +407,31 @@ bool CreateEntry(const std::wstring& entry_name,
   constexpr wchar_t kNumCustomPolicy[] = L"1";
   constexpr wchar_t kCustomIPSecPolicies[] =
       L"030000000400000002000000050000000200000000000000";
-  std::wstring phone_book_path = GetPhonebookPath(entry_name);
-  if (phone_book_path.empty())
-    return false;
+  std::string error;
+  std::wstring phone_book_path = GetPhonebookPath(entry_name, &error);
+  if (phone_book_path.empty()) {
+    return GetRasErrorResult("GetPhonebookPath() failed.");
+  }
 
   // https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-writeprivateprofilestringw
   BOOL wrote_entry =
       WritePrivateProfileString(entry_name.c_str(), L"NumCustomPolicy",
                                 kNumCustomPolicy, phone_book_path.c_str());
   if (!wrote_entry) {
-    LOG(ERROR)
-        << "ERROR: failed to write \"NumCustomPolicy\" field to `rasphone.pbk`";
-    return false;
+    return GetRasErrorResult(
+        "ERROR: failed to write \"NumCustomPolicy\" field to `rasphone.pbk`");
   }
 
   wrote_entry =
       WritePrivateProfileString(entry_name.c_str(), L"CustomIPSecPolicies",
                                 kCustomIPSecPolicies, phone_book_path.c_str());
   if (!wrote_entry) {
-    LOG(ERROR) << "ERROR: failed to write \"CustomIPSecPolicies\" field to "
-                  "`rasphone.pbk`";
-    return false;
+    return GetRasErrorResult(
+        "ERROR: failed to write \"CustomIPSecPolicies\" field to "
+        "`rasphone.pbk`");
   }
 
-  return true;
+  return GetRasSuccessResult();
 }
 
 CheckConnectionResult GetConnectionState(HRASCONN h_ras_conn) {

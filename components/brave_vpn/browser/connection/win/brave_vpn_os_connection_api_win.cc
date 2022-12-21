@@ -22,18 +22,18 @@
 using brave_vpn::internal::CheckConnectionResult;
 using brave_vpn::internal::CreateEntry;
 using brave_vpn::internal::GetPhonebookPath;
-using brave_vpn::internal::PrintRasError;
+using brave_vpn::internal::RasOperationResult;
 using brave_vpn::internal::RemoveEntry;
 
 namespace brave_vpn {
 
 namespace {
 
-bool ConnectEntry(const std::wstring& name) {
+RasOperationResult ConnectEntry(const std::wstring& name) {
   return brave_vpn::internal::ConnectEntry(name);
 }
 
-bool DisconnectEntry(const std::wstring& name) {
+RasOperationResult DisconnectEntry(const std::wstring& name) {
   return brave_vpn::internal::DisconnectEntry(name);
 }
 
@@ -137,8 +137,9 @@ void BraveVPNOSConnectionAPIWin::OnCheckConnection(
 }
 
 void BraveVPNOSConnectionAPIWin::OnCreated(const std::string& name,
-                                           bool success) {
-  if (!success) {
+                                           const RasOperationResult& result) {
+  if (!result.success) {
+    SetLastConnectionError(result.error_description);
     OnCreateFailed();
     return;
   }
@@ -146,19 +147,29 @@ void BraveVPNOSConnectionAPIWin::OnCreated(const std::string& name,
   BraveVPNOSConnectionAPIBase::OnCreated();
 }
 
-void BraveVPNOSConnectionAPIWin::OnConnected(bool success) {
-  if (!success)
+void BraveVPNOSConnectionAPIWin::OnConnected(const RasOperationResult& result) {
+  if (!result.success) {
+    SetLastConnectionError(result.error_description);
     BraveVPNOSConnectionAPIBase::OnConnectFailed();
+  }
 }
 
-void BraveVPNOSConnectionAPIWin::OnDisconnected(bool success) {
+void BraveVPNOSConnectionAPIWin::OnDisconnected(
+    const RasOperationResult& result) {
   // TODO(simonhong): Handle disconnect failed state.
-  if (success)
+  if (result.success) {
     BraveVPNOSConnectionAPIBase::OnDisconnected();
+    return;
+  }
+  SetLastConnectionError(result.error_description);
 }
 
 void BraveVPNOSConnectionAPIWin::OnRemoved(const std::string& name,
-                                           bool success) {}
+                                           const RasOperationResult& result) {
+  if (!result.success) {
+    SetLastConnectionError(result.error_description);
+  }
+}
 
 void BraveVPNOSConnectionAPIWin::StartVPNConnectionChangeMonitoring() {
   DCHECK(!event_handle_for_connected_disconnected_);

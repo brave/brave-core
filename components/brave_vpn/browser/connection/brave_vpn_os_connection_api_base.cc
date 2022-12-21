@@ -45,6 +45,10 @@ void BraveVPNOSConnectionAPIBase::SetConnectionState(
   UpdateAndNotifyConnectionStateChange(state);
 }
 
+std::string BraveVPNOSConnectionAPIBase::GetLastConnectionError() const {
+  return last_connection_error_;
+}
+
 bool BraveVPNOSConnectionAPIBase::IsInProgress() const {
   return connection_state_ == ConnectionState::DISCONNECTING ||
          connection_state_ == ConnectionState::CONNECTING;
@@ -89,6 +93,7 @@ void BraveVPNOSConnectionAPIBase::Connect() {
   }
 
   VLOG(2) << __func__ << " : start connecting!";
+  last_connection_error_.clear();
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTING);
 
   if (connection_info_.IsValid()) {
@@ -237,6 +242,12 @@ void BraveVPNOSConnectionAPIBase::OnDisconnected() {
 void BraveVPNOSConnectionAPIBase::OnIsDisconnecting() {
   VLOG(2) << __func__;
   UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
+}
+
+void BraveVPNOSConnectionAPIBase::SetLastConnectionError(
+    const std::string& error) {
+  VLOG(2) << __func__ << " : " << error;
+  last_connection_error_ = error;
 }
 
 void BraveVPNOSConnectionAPIBase::OnNetworkChanged(

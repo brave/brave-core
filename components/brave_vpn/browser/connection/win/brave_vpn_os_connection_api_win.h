@@ -14,6 +14,7 @@
 #include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api_base.h"
+#include "brave/components/brave_vpn/browser/connection/win/utils.h"
 
 namespace brave_vpn {
 namespace internal {
@@ -44,10 +45,12 @@ class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPIBase,
   // base::win::ObjectWatcher::Delegate overrides:
   void OnObjectSignaled(HANDLE object) override;
 
-  void OnCreated(const std::string& name, bool success);
-  void OnConnected(bool success);
-  void OnDisconnected(bool success);
-  void OnRemoved(const std::string& name, bool success);
+  void OnCreated(const std::string& name,
+                 const internal::RasOperationResult& result);
+  void OnConnected(const internal::RasOperationResult& result);
+  void OnDisconnected(const internal::RasOperationResult& result);
+  void OnRemoved(const std::string& name,
+                 const internal::RasOperationResult& result);
   void OnCheckConnection(const std::string& name,
                          internal::CheckConnectionResult result);
 

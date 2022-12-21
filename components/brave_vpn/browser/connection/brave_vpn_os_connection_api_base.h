@@ -56,7 +56,7 @@ class BraveVPNOSConnectionAPIBase
   void AddObserver(Observer* observer) override;
   void RemoveObserver(Observer* observer) override;
   void SetConnectionState(mojom::ConnectionState state) override;
-  void SetPreventCreationForTesting(bool value);
+  std::string GetLastConnectionError() const override;
 
  protected:
   BraveVPNOSConnectionAPIBase();
@@ -78,6 +78,7 @@ class BraveVPNOSConnectionAPIBase
   void OnDisconnected();
   void OnIsDisconnecting();
 
+  void SetLastConnectionError(const std::string& error);
   std::string target_vpn_entry_name() const { return target_vpn_entry_name_; }
 
  private:
@@ -97,6 +98,9 @@ class BraveVPNOSConnectionAPIBase
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
                            IgnoreDisconnectedStateWhileConnecting);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,
+                           ClearLastConnectionErrorWhenNewConnectionStart);
+
   // net::NetworkChangeNotifier::NetworkChangeObserver
   void OnNetworkChanged(
       net::NetworkChangeNotifier::ConnectionType type) override;
@@ -113,17 +117,18 @@ class BraveVPNOSConnectionAPIBase
                               const base::Value::List& hostnames_value);
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success);
-
-  virtual void UpdateAndNotifyConnectionStateChange(
-      mojom::ConnectionState state);
+  void UpdateAndNotifyConnectionStateChange(mojom::ConnectionState state);
   BraveVpnAPIRequest* GetAPIRequest();
   // True when do quick cancel.
   bool QuickCancelIfPossible();
+
+  void SetPreventCreationForTesting(bool value);
 
   bool cancel_connecting_ = false;
   bool needs_connect_ = false;
   bool prevent_creation_ = false;
   std::string target_vpn_entry_name_;
+  std::string last_connection_error_;
   mojom::ConnectionState connection_state_ =
       mojom::ConnectionState::DISCONNECTED;
   BraveVPNConnectionInfo connection_info_;
