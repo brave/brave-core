@@ -63,38 +63,36 @@ extension ContentBlockerHelper: TabContentScript {
       let data = try JSONSerialization.data(withJSONObject: message.body)
       let dto = try JSONDecoder().decode(ContentBlockerDTO.self, from: data)
     
-      let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
-      let domain = Domain.getOrCreate(forUrl: currentTabURL, persistent: !isPrivateBrowsing)
-      if let shieldsAllOff = domain.shield_allOff, Bool(truncating: shieldsAllOff) {
-        // if domain is "all_off", can just skip
-        return
-      }
-
-      if dto.data.resourceType == .script && domain.isShieldExpected(.NoScript, considerAllShieldsOption: true) {
-        self.stats = self.stats.adding(scriptCount: 1)
-        BraveGlobalShieldStats.shared.scripts += 1
-        return
-      }
-      
-      // Because javascript urls allow some characters that `URL` does not,
-      // we use `NSURL(idnString: String)` to parse them
-      guard let requestURL = NSURL(idnString: dto.data.resourceURL) as URL? else { return }
-      guard let sourceURL = NSURL(idnString: dto.data.sourceURL) as URL? else { return }
-      guard let domainURLString = domain.url else { return }
-      
-      // Getting this domain and current tab urls before going into asynchronous closure
-      // to avoid threading problems(#1094, #1096)
-      assertIsMainThread("Getting enabled blocklists should happen on main thread")
-      let loadedRuleTypes = Set(loadedRuleTypeWithSourceTypes.map({ $0.ruleType }))
-
-      TPStatsBlocklistChecker.shared.isBlocked(
-        requestURL: requestURL,
-        sourceURL: sourceURL,
-        loadedRuleTypes: loadedRuleTypes,
-        resourceType: dto.data.resourceType
-      ) { blockedType in
+      Task { @MainActor in
+        let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+        let domain = Domain.getOrCreate(forUrl: currentTabURL, persistent: !isPrivateBrowsing)
+        if let shieldsAllOff = domain.shield_allOff, Bool(truncating: shieldsAllOff) {
+          // if domain is "all_off", can just skip
+          return
+        }
+        
+        if dto.data.resourceType == .script && domain.isShieldExpected(.NoScript, considerAllShieldsOption: true) {
+          self.stats = self.stats.adding(scriptCount: 1)
+          BraveGlobalShieldStats.shared.scripts += 1
+          return
+        }
+        
+        // Because javascript urls allow some characters that `URL` does not,
+        // we use `NSURL(idnString: String)` to parse them
+        guard let requestURL = NSURL(idnString: dto.data.resourceURL) as URL? else { return }
+        guard let sourceURL = NSURL(idnString: dto.data.sourceURL) as URL? else { return }
+        guard let domainURLString = domain.url else { return }
+        let loadedRuleTypes = Set(self.loadedRuleTypeWithSourceTypes.map({ $0.ruleType }))
+        
+        let blockedType = await TPStatsBlocklistChecker.shared.blockedTypes(
+          requestURL: requestURL,
+          sourceURL: sourceURL,
+          loadedRuleTypes: loadedRuleTypes,
+          resourceType: dto.data.resourceType
+        )
+        
         guard let blockedType = blockedType else { return }
- 
+        
         if blockedType == .http && dto.data.resourceType != .image && currentTabURL.scheme == "https" && requestURL.scheme == "http" {
           // WKWebView will block loading this URL so we can't count it due to mixed content restrictions
           // Unfortunately, it does not check to see if a content blocker would promote said URL to https
@@ -124,7 +122,7 @@ extension ContentBlockerHelper: TabContentScript {
         // First check to make sure we're not counting the same repetitive requests multiple times
         guard !self.blockedRequests.contains(requestURL) else { return }
         self.blockedRequests.insert(requestURL)
-
+        
         // Increase global stats (here due to BlocklistName being in Client and BraveGlobalShieldStats being
         // in BraveShared)
         let stats = BraveGlobalShieldStats.shared

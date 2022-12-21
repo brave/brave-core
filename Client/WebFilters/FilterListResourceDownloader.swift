@@ -271,13 +271,7 @@ public class FilterListResourceDownloader: ObservableObject {
   private func loadShields(fromFolderURL folderURL: URL) async {
     let version = folderURL.lastPathComponent
     
-    // Make sure we remove the old resource if there is one
-    await AdBlockEngineManager.shared.removeResources(
-      for: .adBlock,
-      resourceTypes: [.dat, .jsonResources]
-    )
-    
-    // Let's the new ones back in
+    // Lets add these new resources
     await AdBlockEngineManager.shared.add(
       resource: AdBlockEngineManager.Resource(type: .dat, source: .adBlock),
       fileURL: folderURL.appendingPathComponent("rs-ABPFilterParserData.dat"),
@@ -439,13 +433,6 @@ public class FilterListResourceDownloader: ObservableObject {
       
     case .filterListAdBlockRules:
       // TODO: Compile rulelist to blocklist
-      // Make sure we remove the old resource if there is one
-      await AdBlockEngineManager.shared.removeResources(
-        for: .filterList(uuid: uuid),
-        resourceTypes: [.ruleList]
-      )
-      
-      // Add the new one back in
       await AdBlockEngineManager.shared.add(
         resource: AdBlockEngineManager.Resource(type: .ruleList, source: .filterList(uuid: uuid)),
         fileURL: downloadedFileURL,
@@ -460,12 +447,6 @@ public class FilterListResourceDownloader: ObservableObject {
   /// Handle the downloaded folder url for the given filter list. The folder URL should point to a `AdblockFilterList` resource
   /// This will also start fetching any additional resources for the given filter list given it is still enabled.
   private func handle(downloadedFolderURL: URL, forFilterListUUID uuid: String, index: Int) async {
-    // Make sure we remove the old resource if there is one
-    await AdBlockEngineManager.shared.removeResources(
-      for: .filterList(uuid: uuid),
-      resourceTypes: [.jsonResources, .dat]
-    )
-    
     // Let's add the new ones in
     await AdBlockEngineManager.shared.add(
       resource: AdBlockEngineManager.Resource(type: .dat, source: .filterList(uuid: uuid)),

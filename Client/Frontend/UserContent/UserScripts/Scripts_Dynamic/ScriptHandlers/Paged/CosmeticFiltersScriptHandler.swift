@@ -52,21 +52,25 @@ class CosmeticFiltersScriptHandler: TabContentScript {
         return
       }
       
-      let domain = Domain.getOrCreate(forUrl: frameURL, persistent: tab?.isPrivate == true ? false : true)
-      let selectors = AdBlockStats.shared.cachedEngines(for: domain).flatMap { cachedEngine -> [String] in
-        do {
-          return try cachedEngine.selectorsForCosmeticRules(
-            frameURL: frameURL,
-            ids: dto.data.ids,
-            classes: dto.data.classes
-          )
-        } catch {
-          Logger.module.error("\(error.localizedDescription)")
-          return []
+      Task { @MainActor in
+        let domain = Domain.getOrCreate(forUrl: frameURL, persistent: tab?.isPrivate == true ? false : true)
+        let cachedEngines = AdBlockStats.shared.cachedEngines(for: domain)
+        
+        let selectorArrays = await cachedEngines.asyncConcurrentMap { cachedEngine -> [String] in
+          do {
+            return try cachedEngine.selectorsForCosmeticRules(
+              frameURL: frameURL,
+              ids: dto.data.ids,
+              classes: dto.data.classes
+            )
+          } catch {
+            Logger.module.error("\(error.localizedDescription)")
+            return []
+          }
         }
+        
+        replyHandler(selectorArrays.flatMap({ $0 }), nil)
       }
-      
-      replyHandler(selectors, nil)
     } catch {
       assertionFailure("Invalid type of message. Fix the `RequestBlocking.js` script")
       replyHandler(nil, nil)

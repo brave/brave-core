@@ -94,7 +94,7 @@ public final class FilterListSetting: NSManagedObject, CRUD {
     }
     
     // We take the path after the base url
-    if let range = folderURL.path.range(of: baseURL.path) {
+    if let range = folderURL.path.range(of: [baseURL.path, "/"].joined()) {
       let folderPath = folderURL.path[range.upperBound...]
       return String(folderPath)
     } else {

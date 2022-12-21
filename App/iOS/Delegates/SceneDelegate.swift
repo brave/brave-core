@@ -51,7 +51,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     DataController.shared.initializeOnce()
     Migration.postCoreDataInitMigrations()
     
-    Task {
+    Task(priority: .high) {
       // Start preparing the ad-block services right away
       // So it's ready a lot faster
       await LaunchHelper.shared.prepareAdBlockServices(

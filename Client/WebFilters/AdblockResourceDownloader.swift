@@ -72,12 +72,13 @@ public actor AdblockResourceDownloader: Sendable {
   /// Load cached data for the given resource. Ensures this is done on the MainActor
   private func loadCachedData(for resource: ResourceDownloader.Resource) async {
     if let fileURL = ResourceDownloader.downloadedFileURL(for: resource) {
-      await handle(downloadedFileURL: fileURL, for: resource)
+      let date = try? ResourceDownloader.creationDate(for: resource)
+      await handle(downloadedFileURL: fileURL, for: resource, date: date)
     }
   }
   
   /// Handle the downloaded file url for the given resource
-  private func handle(downloadedFileURL: URL, for resource: ResourceDownloader.Resource, date: Date? = nil) async {
+  private func handle(downloadedFileURL: URL, for resource: ResourceDownloader.Resource, date: Date?) async {
     let version = date != nil ? fileVersionDateFormatter.string(from: date!) : nil
     
     switch resource {

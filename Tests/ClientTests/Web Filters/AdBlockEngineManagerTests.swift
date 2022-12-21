@@ -86,13 +86,13 @@ class AdBlockEngineManagerTests: XCTestCase {
         let cachedEngines = stats.cachedEngines(for: domain)
         XCTAssertEqual(cachedEngines.count, 3)
         
-        let types = stats.makeEngineScriptTypes(frameURL: url, isMainFrame: true, domain: domain)
+        let types = await stats.makeEngineScriptTypes(frameURL: url, isMainFrame: true, domain: domain)
         // We should have no scripts injected
         XCTAssertEqual(types.count, 0)
         
         let url2 = URL(string:  "https://stackoverflow.com")!
         let domain2 = Domain.getOrCreate(forUrl: url2, persistent: false)
-        let types2 = stats.makeEngineScriptTypes(frameURL: URL(string:  "https://reddit.com")!, isMainFrame: true, domain: domain2)
+        let types2 = await stats.makeEngineScriptTypes(frameURL: URL(string:  "https://reddit.com")!, isMainFrame: true, domain: domain2)
         // We should have 1 engine script injected
         XCTAssertEqual(types2.count, 1)
         XCTAssertTrue(types2.contains(where: { scriptType in
@@ -106,5 +106,57 @@ class AdBlockEngineManagerTests: XCTestCase {
     }
     
     waitForExpectations(timeout: 10)
+  }
+  
+  func testPerformance() throws {
+    AdblockEngine.setDomainResolver(AdblockEngine.defaultDomainResolver)
+    // Given
+    // Ad block data and an engine manager
+    let sampleAdBlockDatURL = Bundle.module.url(forResource: "rs-ABPFilterParserData", withExtension: "dat")!
+    let sampleResourceURL = Bundle.module.url(forResource: "resources", withExtension: "json")!
+    let engineManager = AdBlockEngineManager(stats: AdBlockStats())
+    
+    // When
+    // Added number of resources to the engine manager
+    let numberOfEngines = 10
+    let setupExpectation = expectation(description: "Compiled engine resources")
+    
+    Task {
+      for _ in (0..<numberOfEngines) {
+        let uuid = UUID().uuidString
+        
+        await engineManager.add(
+          resource: .init(type: .dat, source: .filterList(uuid: uuid)),
+          fileURL: sampleAdBlockDatURL,
+          version: nil
+        )
+        
+        await engineManager.add(
+          resource: .init(type: .jsonResources, source: .filterList(uuid: uuid)),
+          fileURL: sampleResourceURL,
+          version: nil
+        )
+      }
+      
+      setupExpectation.fulfill()
+    }
+    
+    wait(for: [setupExpectation], timeout: 10)
+    
+    // Then
+    // Measure performance
+    let options = XCTMeasureOptions()
+    options.iterationCount = 10
+    
+    measure(metrics: [XCTClockMetric(), XCTCPUMetric(), XCTMemoryMetric()], options: options) {
+      let exp = expectation(description: "Finished")
+
+      Task {
+        await engineManager.compileResources()
+        exp.fulfill()
+      }
+      
+      wait(for: [exp], timeout: 20)
+    }
   }
 }

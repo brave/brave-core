@@ -297,21 +297,13 @@ extension BrowserViewController: WKNavigationDelegate {
                                    domainForMainFrame.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true)
         ])
       }
-    }
-
-    // Check if custom user scripts must be added to or removed from the web view.
-    if let targetFrame = navigationAction.targetFrame,
-       let scriptTypes = tab?.currentPageData?.makeUserScriptTypes(
-        forRequestURL: url,
-        isForMainFrame: targetFrame.isMainFrame,
-        persistentDomain: !isPrivateBrowsing
-       ) {
-      tab?.setCustomUserScript(scripts: scriptTypes)
-    }
-    
-    if let targetFrame = navigationAction.targetFrame {
-      // Add the frame info so that we can execute scripts later on
-      tab?.currentPageData?.framesInfo[url] = targetFrame
+      
+      // Check if custom user scripts must be added to or removed from the web view.
+      if let targetFrame = navigationAction.targetFrame {
+        tab?.currentPageData?.addSubframeURL(forRequestURL: url, isForMainFrame: targetFrame.isMainFrame)
+        let scriptTypes = tab?.currentPageData?.makeUserScriptTypes(domain: domainForMainFrame) ?? []
+        tab?.setCustomUserScript(scripts: scriptTypes)
+      }
     }
 
     // Brave Search logic.
@@ -437,24 +429,17 @@ extension BrowserViewController: WKNavigationDelegate {
     return (.cancel, preferences)
   }
 
-  public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+  public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse) async -> WKNavigationResponsePolicy {
     let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
     let response = navigationResponse.response
     let responseURL = response.url
     let tab = tab(for: webView)
     
     // Check if we upgraded to https and if so we need to update the url of frame evaluations
-    if let responseURL = responseURL {
-      tab?.currentPageData?.upgradeFrames(forResponseURL: responseURL)
-    }
-    
-    // We also add subframe urls in case a frame upgraded to https
     if let responseURL = responseURL,
-       let scriptTypes = tab?.currentPageData?.makeUserScriptTypes(
-        forResponseURL: responseURL,
-        isForMainFrame: navigationResponse.isForMainFrame,
-        persistentDomain: !isPrivateBrowsing
-       ) {
+       let domain = tab?.currentPageData?.domain(persistent: !isPrivateBrowsing),
+       tab?.currentPageData?.upgradeFrameURL(forResponseURL: responseURL, isForMainFrame: navigationResponse.isForMainFrame) == true {
+      let scriptTypes = tab?.currentPageData?.makeUserScriptTypes(domain: domain) ?? []
       tab?.setCustomUserScript(scripts: scriptTypes)
     }
 
@@ -488,8 +473,7 @@ extension BrowserViewController: WKNavigationDelegate {
     if let passbookHelper = OpenPassBookHelper(request: request, response: response, canShowInWebView: canShowInWebView, forceDownload: forceDownload, browserViewController: self) {
       // Open our helper and cancel this response from the webview.
       passbookHelper.open()
-      decisionHandler(.cancel)
-      return
+      return .cancel
     }
 
     // Check if this response should be downloaded.
@@ -507,8 +491,8 @@ extension BrowserViewController: WKNavigationDelegate {
       if let downloadAlert = downloadHelper.downloadAlert(from: view, okAction: downloadAlertAction) {
         present(downloadAlert, animated: true, completion: nil)
       }
-      decisionHandler(.cancel)
-      return
+      
+      return .cancel
     }
 
     // If the content type is not HTML, create a temporary document so it can be downloaded and
@@ -522,20 +506,16 @@ extension BrowserViewController: WKNavigationDelegate {
 
       tab.mimeType = response.mimeType
     }
-
-    // If none of our helpers are responsible for handling this response,
-    // just let the webview handle it as normal.
-    decisionHandler(.allow)
-    
-    guard let url = responseURL, let tab = tab else {
-      return
-    }
     
     // Record the navigation visit type for the URL after navigation actions
     // this is done in decidePolicyFor to handle all the cases like redirects etc.
-    if !url.isReaderModeURL, !url.isFileURL, url.isWebPage(), !tab.isPrivate {
+    if let url = responseURL, let tab = tab, !url.isReaderModeURL, !url.isFileURL, url.isWebPage(), !tab.isPrivate {
       recordNavigationInTab(url, visitType: lastEnteredURLVisitType)
     }
+    
+    // If none of our helpers are responsible for handling this response,
+    // just let the webview handle it as normal.
+    return .allow
   }
 
   public func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {

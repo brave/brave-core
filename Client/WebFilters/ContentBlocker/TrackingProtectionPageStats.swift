@@ -40,51 +40,40 @@ struct TPPageStats {
 
 class TPStatsBlocklistChecker {
   static let shared = TPStatsBlocklistChecker()
-  private let adblockSerialQueue = AdBlockStats.adblockSerialQueue
   
-  enum BlockedType {
+  enum BlockedType: Hashable {
     case image
     case ad
     case http
   }
 
-  func isBlocked(requestURL: URL, sourceURL: URL, loadedRuleTypes: Set<ContentBlockerManager.BlocklistRuleType>, resourceType: AdblockEngine.ResourceType, callback: @escaping (BlockedType?) -> Void) {
+  @MainActor func blockedTypes(requestURL: URL, sourceURL: URL, loadedRuleTypes: Set<ContentBlockerManager.BlocklistRuleType>, resourceType: AdblockEngine.ResourceType) async -> BlockedType? {
     guard let host = requestURL.host, !host.isEmpty else {
       // TP Stats init isn't complete yet
-      callback(nil)
-      return
+      return nil
     }
 
     if resourceType == .image && Preferences.Shields.blockImages.value {
-      callback(.image)
+      return .image
     }
 
-    adblockSerialQueue.async {
-      if (loadedRuleTypes.contains(.general(.blockAds)) || loadedRuleTypes.contains(.general(.blockTrackers)))
-          && AdBlockStats.shared.shouldBlock(requestURL: requestURL, sourceURL: sourceURL, resourceType: resourceType) {
-        DispatchQueue.main.async {
-          callback(.ad)
-        }
-        
-        return
+    if loadedRuleTypes.contains(.general(.blockAds)) || loadedRuleTypes.contains(.general(.blockTrackers)) {
+      if await AdBlockStats.shared.shouldBlock(requestURL: requestURL, sourceURL: sourceURL, resourceType: resourceType) {
+        return .ad
       }
+    }
 
-      // TODO: Downgrade to 14.5 once api becomes available.
-      if #unavailable(iOS 15.0) {
-        HttpsEverywhereStats.shared.shouldUpgrade(requestURL) { shouldUpgrade in
-          DispatchQueue.main.async {
-            if loadedRuleTypes.contains(.general(.upgradeHTTP)) && shouldUpgrade {
-              callback(.http)
-            } else {
-              callback(nil)
-            }
-          }
-        }
+    // TODO: Downgrade to 14.5 once api becomes available.
+    if #unavailable(iOS 15.0) {
+      let shouldUpgrade = await HttpsEverywhereStats.shared.shouldUpgrade(requestURL)
+      
+      if loadedRuleTypes.contains(.general(.upgradeHTTP)) && shouldUpgrade {
+        return .http
       } else {
-        DispatchQueue.main.async {
-          callback(nil)
-        }
+        return nil
       }
+    } else {
+      return nil
     }
   }
 }

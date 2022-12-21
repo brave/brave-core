@@ -564,20 +564,17 @@ extension PlaylistWebLoader: WKNavigationDelegate {
     self.handler?(nil)
   }
 
-  func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
+  func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
     guard let url = navigationAction.request.url else {
-      decisionHandler(.cancel, preferences)
-      return
+      return (.cancel, preferences)
     }
 
     if url.scheme == "about" || url.isBookmarklet {
-      decisionHandler(.cancel, preferences)
-      return
+      return (.cancel, preferences)
     }
 
     if navigationAction.isInternalUnprivileged && navigationAction.navigationType != .backForward {
-      decisionHandler(.cancel, preferences)
-      return
+      return (.cancel, preferences)
     }
 
     // Universal links do not work if the request originates from the app, manual handling is required.
@@ -585,16 +582,14 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       let universalLink = UniversalLinkManager.universalLinkType(for: mainDocURL, checkPath: true) {
       switch universalLink {
       case .buyVPN:
-        decisionHandler(.cancel, preferences)
-        return
+        return (.cancel, preferences)
       }
     }
 
     // First special case are some schemes that are about Calling. We prompt the user to confirm this action. This
     // gives us the exact same behaviour as Safari.
     if url.scheme == "tel" || url.scheme == "facetime" || url.scheme == "facetime-audio" || url.scheme == "mailto" || isAppleMapsURL(url) || isStoreURL(url) {
-      decisionHandler(.cancel, preferences)
-      return
+      return (.cancel, preferences)
     }
     
     // Ad-blocking checks
@@ -607,17 +602,15 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       
       let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
       let domainForMainFrame = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: !isPrivateBrowsing)
+      
+      if let requestURL = navigationAction.request.url,
+         let targetFrame = navigationAction.targetFrame {
+        tab.currentPageData?.addSubframeURL(forRequestURL: requestURL, isForMainFrame: targetFrame.isMainFrame)
+        let scriptTypes = tab.currentPageData?.makeUserScriptTypes(domain: domainForMainFrame) ?? []
+        tab.setCustomUserScript(scripts: scriptTypes)
+      }
+      
       webView.configuration.preferences.isFraudulentWebsiteWarningEnabled = domainForMainFrame.isShieldExpected(.SafeBrowsing, considerAllShieldsOption: true)
-    }
-
-    if let requestURL = navigationAction.request.url,
-       let targetFrame = navigationAction.targetFrame,
-       let customUserScripts = tab.currentPageData?.makeUserScriptTypes(
-        forRequestURL: requestURL,
-        isForMainFrame: targetFrame.isMainFrame,
-        persistentDomain: false
-       ) {
-      tab.setCustomUserScript(scripts: customUserScripts)
     }
 
     if ["http", "https", "data", "blob", "file"].contains(url.scheme) {
@@ -665,14 +658,13 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       // Cookie Blocking code below
       tab.setScript(script: .cookieBlocking, enabled: Preferences.Privacy.blockAllCookies.value)
 
-      decisionHandler(.allow, preferences)
-      return
+      return (.allow, preferences)
     }
 
-    decisionHandler(.cancel, preferences)
+    return (.cancel, preferences)
   }
 
-  func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+  func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse) async -> WKNavigationResponsePolicy {
     let response = navigationResponse.response
     let responseURL = response.url
 
@@ -684,11 +676,9 @@ extension PlaylistWebLoader: WKNavigationDelegate {
     
     // We also add subframe urls in case a frame upgraded to https
     if let responseURL = responseURL,
-       let scriptTypes = tab.currentPageData?.makeUserScriptTypes(
-        forResponseURL: responseURL,
-        isForMainFrame: navigationResponse.isForMainFrame,
-        persistentDomain: false
-       ) {
+       tab.currentPageData?.upgradeFrameURL(forResponseURL: responseURL, isForMainFrame: navigationResponse.isForMainFrame) == true,
+       let domain = tab.currentPageData?.domain(persistent: false) {
+      let scriptTypes = tab.currentPageData?.makeUserScriptTypes(domain: domain) ?? []
       tab.setCustomUserScript(scripts: scriptTypes)
     }
 
@@ -709,15 +699,13 @@ extension PlaylistWebLoader: WKNavigationDelegate {
     if let browserController = webView.currentScene?.browserViewController {
       // Check if this response should be handed off to Passbook.
       if OpenPassBookHelper(request: request, response: response, canShowInWebView: false, forceDownload: false, browserViewController: browserController) != nil {
-        decisionHandler(.cancel)
-        return
+        return .cancel
       }
     }
 
     if navigationResponse.isForMainFrame {
       if response.mimeType?.isKindOfHTML == false, request != nil {
-        decisionHandler(.cancel)
-        return
+        return .cancel
       } else {
         tab.temporaryDocument = nil
       }
@@ -725,7 +713,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       tab.mimeType = response.mimeType
     }
 
-    decisionHandler(.allow)
+    return .allow
   }
 
   func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {

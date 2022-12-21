@@ -100,7 +100,7 @@ public final class Domain: NSManagedObject, CRUD {
   }
 
   /// Whether or not a given shield should be enabled based on domain exceptions and the users global preference
-  public func isShieldExpected(_ shield: BraveShield, considerAllShieldsOption: Bool) -> Bool {
+  @MainActor public func isShieldExpected(_ shield: BraveShield, considerAllShieldsOption: Bool) -> Bool {
     let isShieldOn = { () -> Bool in
       switch shield {
       case .AllOff:
