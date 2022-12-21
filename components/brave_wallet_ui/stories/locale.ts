@@ -100,7 +100,7 @@ provideStrings({
   braveWalletBuyTapBuyNotSupportedMessage: 'Buy not supported for selected network',
   braveWalletSearchingForDomain: 'Searching for domain...',
   braveWalletEnsOffChainLookupTitle: 'Brave supports using off-chain gateways to resolve .eth domains.',
-  braveWalletEnsOffChainLookupDescription: 'It looks like youve entered an ENS address. Well need to use a third-party resolver to resolve this request. This helps ensure your .eth domain isnt leaked, and that your transaction is secure.',
+  braveWalletEnsOffChainLookupDescription: 'It looks like you\'ve entered an ENS address. We\'ll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain.',
   braveWalletEnsOffChainButton: 'Use ENS domain',
 
   // Send Tab
