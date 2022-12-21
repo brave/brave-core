@@ -12,7 +12,7 @@ export const Wrapper = styled.div<{ isTab?: boolean }>`
   flex-direction: column;
   background-color: var(--nav-background);
   border-radius: ${(p) => p.isTab ? 12 : 8}px;
-  padding: ${(p) => p.isTab ? 8 : 0}px;
+  padding: ${(p) => p.isTab ? 14 : 0}px;
   border: 2px solid var(--nav-border);
   width: ${(p) => p.isTab ? 'unset' : '285px'};
   position: ${(p) => p.isTab ? 'fixed' : 'relative'};

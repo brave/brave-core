@@ -13,7 +13,7 @@ export const StyledButton = styled(WalletButton) <{ isTab?: boolean }>`
   justify-content: flex-start;
   width: 100%;
   cursor: pointer;
-  padding: ${(p) => p.isTab ? 10 : 18}px;
+  padding: ${(p) => p.isTab ? 16 : 18}px;
   outline: none;
   border: none;
   background-color: var(--nav-button-background);
@@ -38,8 +38,8 @@ export const ButtonIcon = styled.div <{ icon: string, isTab?: boolean }>`
   -webkit-mask-image: url(${(p) => p.icon});
   mask-image: url(${(p) => p.icon});
   mask-size: contain;
-  width: 20px;
-  height: 20px;
+  width: ${(p) => p.isTab ? 24 : 20}px;
+  height: ${(p) => p.isTab ? 24 : 20}px;
   background-color: var(--nav-button-color);
   margin-right: ${(p) => p.isTab ? 0 : 10}px;
 `
