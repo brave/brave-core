@@ -115,7 +115,7 @@ void PlaylistService::AddMediaFilesFromPageToPlaylist(
   request.url_or_contents = url;
   request.callback = base::BindOnce(
       &PlaylistService::AddMediaFilesFromItems, base::Unretained(this),
-      playlist_id.empty() ? kDefaultPlaylistID : playlist_id, cache);
+      playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id, cache);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
@@ -200,7 +200,8 @@ void PlaylistService::AddMediaFilesFromItems(
   std::vector<std::string> ids;
   base::ranges::transform(params, std::back_inserter(ids),
                           [](const auto& item) { return item.id; });
-  AddItemsToPlaylist(playlist_id, ids);
+  AddItemsToPlaylist(
+      playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id, ids);
 
   base::ranges::for_each(params, [this, cache](const auto& info) {
     CreatePlaylistItem(info, cache);
