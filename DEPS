@@ -48,7 +48,7 @@ hooks = [
     'name': 'download_sparkle',
     'pattern': '.',
     'condition': 'checkout_mac and download_prebuilt_sparkle',
-    'action': ['vpython3', 'build/mac/download_sparkle.py', '1.24.2'],
+    'action': ['vpython3', 'build/mac/download_sparkle.py', '1ba10369c4a7fe4b791b5a8d8ef130bd808087b7'],
   },
   {
     'name': 'download_rust_deps',
