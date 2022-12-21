@@ -458,7 +458,6 @@ Config.prototype.buildArgs = function () {
 
   if (this.targetOS === 'android') {
     args.android_channel = this.channel
-    args.enable_jdk_library_desugaring = false
     if (!this.isReleaseBuild()) {
       args.android_channel = 'default'
       args.chrome_public_manifest_package = 'com.brave.browser_default'
