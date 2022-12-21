@@ -10,9 +10,9 @@
 #include "chrome/common/importer/importer_type.h"
 
 #if !BUILDFLAG(IS_WIN)
-#define TYPE_BOOKMARKS_FILE TYPE_OPERA
+#define TYPE_BOOKMARKS_FILE TYPE_YANDEX
 #else
-#define TYPE_EDGE TYPE_OPERA
+#define TYPE_EDGE TYPE_YANDEX
 #endif
 #include "src/chrome/common/importer/profile_import_process_param_traits_macros.h"
 #if !BUILDFLAG(IS_WIN)

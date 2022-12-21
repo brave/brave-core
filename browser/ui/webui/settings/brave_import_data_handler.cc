@@ -9,8 +9,8 @@
 #include <string>
 #include <unordered_map>
 
+#include "brave/browser/importer/brave_external_process_importer_host.h"
 #include "brave/browser/ui/webui/settings/import_feature.h"
-#include "chrome/browser/importer/external_process_importer_host.h"
 #include "chrome/browser/importer/profile_writer.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -90,7 +90,7 @@ void BraveImportDataHandler::StartImportImpl(
     import_observers_.erase(source_profile.source_path);
 
   // Using weak pointers because it destroys itself when finshed.
-  auto* importer_host = new ExternalProcessImporterHost();
+  auto* importer_host = new BraveExternalProcessImporterHost();
   import_observers_[source_profile.source_path] =
       std::make_unique<BraveImporterObserver>(
           importer_host, source_profile, imported_items,
