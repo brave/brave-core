@@ -102,7 +102,7 @@ void PlaylistService::AddMediaFilesFromContentsToPlaylist(
 
   request.callback = base::BindOnce(
       &PlaylistService::AddMediaFilesFromItems, base::Unretained(this),
-      playlist_id.empty() ? kDefaultPlaylistID : playlist_id, cache);
+      playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id, cache);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
@@ -242,6 +242,15 @@ void PlaylistService::ConfigureWebPrefsForBackgroundWebContents(
 
 content::WebContents* PlaylistService::GetBackgroundWebContentsForTesting() {
   return download_request_manager_->GetBackgroundWebContentsForTesting();
+}
+
+std::string PlaylistService::GetDefaultSaveTargetListID() {
+  auto id = prefs_->GetString(kPlaylistDefaultSaveTargetListID);
+  if (!prefs_->GetDict(kPlaylistsPref).contains(id)) {
+    prefs_->SetString(kPlaylistDefaultSaveTargetListID, kDefaultPlaylistID);
+    id = kDefaultPlaylistID;
+  }
+  return id;
 }
 
 void PlaylistService::UpdatePlaylistItemValue(const std::string& id,
