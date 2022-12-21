@@ -53,9 +53,10 @@ public class BraveVpnUtils {
     public static final String VERIFY_CREDENTIALS_FAILED = "verify_credentials_failed";
     public static final String DESKTOP_CREDENTIAL = "desktop_credential";
 
-    private static final String BRAVE_ACCOUNT_PROD_PAGE_URL = "https://account.brave.com";
+    private static final String BRAVE_ACCOUNT_PROD_PAGE_URL =
+            "https://account.brave.com?intent=connect-receipt&product=vpn";
     private static final String BRAVE_ACCOUNT_STAGING_PAGE_URL =
-            "https://account.bravesoftware.com";
+            "https://account.bravesoftware.com?intent=connect-receipt&product=vpn";
 
     public static boolean mIsServerLocationChanged;
     public static boolean mUpdateProfileAfterSplitTunnel;
