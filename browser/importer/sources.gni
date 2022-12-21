@@ -23,6 +23,7 @@ if (!is_android) {
       "//brave/browser/importer/extensions_import_helpers.h",
     ]
     brave_browser_importer_deps += [
+      "//brave/common/importer",
       "//components/value_store",
       "//extensions/browser",
       "//extensions/common:common_constants",
