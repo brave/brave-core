@@ -81,7 +81,8 @@ mojo::StructPtr<mojom::PlaylistItem> GetPlaylistItemMojoFromInfo(
       info.last_played_position);
 }
 
-PlaylistItemInfo GetPlaylistItemInfoFromMojo(const mojom::PlaylistItemPtr& mojo) {
+PlaylistItemInfo GetPlaylistItemInfoFromMojo(
+    const mojom::PlaylistItemPtr& mojo) {
   PlaylistItemInfo info;
   info.id = mojo->id;
   info.title = mojo->name;

@@ -798,4 +798,41 @@ TEST_F(PlaylistServiceUnitTest, DefaultSaveTargetListID) {
             prefs->GetString(kPlaylistDefaultSaveTargetListID));
 }
 
+TEST_F(PlaylistServiceUnitTest, UpdateItem) {
+  PlaylistItemInfo info;
+  info.id = base::Token::CreateRandom().ToString();
+  info.page_src = "https://foo.com/";
+  info.title = "test";
+  info.thumbnail_src = "https://thumbnail.src/";
+  info.thumbnail_path = "file://thumbnail/path/";
+  info.media_src = "https://media.src/";
+  info.media_file_path = "file://media/path/";
+  info.media_file_cached = false;
+  info.author = "me";
+
+  playlist_service()->AddMediaFilesFromItems(
+      std::string() /* will be saved to default list*/, /* cache= */ false,
+      {info});
+
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return !!prefs()->GetDict(kPlaylistItemsPref).FindDict(info.id);
+  }));
+
+  testing::NiceMock<MockObserver> observer;
+  EXPECT_CALL(observer,
+              OnPlaylistStatusChanged(PlaylistChangeParams(
+                  PlaylistChangeParams::Type::kItemUpdated, info.id)));
+  playlist_service()->AddObserver(&observer);
+
+  info.title = "new title";
+  info.last_played_position = 100;
+  playlist_service()->UpdateItem(info);
+
+  info = playlist_service()->GetPlaylistItem(info.id);
+  EXPECT_EQ("new title", info.title);
+  EXPECT_EQ(100, info.last_played_position);
+
+  playlist_service()->RemoveObserver(&observer);
+}
+
 }  // namespace playlist

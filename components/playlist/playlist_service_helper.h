@@ -23,7 +23,8 @@ PlaylistItemInfo GetPlaylistItemInfoFromValue(const base::Value::Dict& dict);
 mojo::StructPtr<mojom::PlaylistItem> GetPlaylistItemMojoFromInfo(
     const PlaylistItemInfo& info);
 
-PlaylistItemInfo GetPlaylistItemInfoFromMojo(const mojom::PlaylistItemPtr& mojo);
+PlaylistItemInfo GetPlaylistItemInfoFromMojo(
+    const mojom::PlaylistItemPtr& mojo);
 
 }  // namespace playlist
 
