@@ -27,7 +27,9 @@ export const store = configureStore({
     accountsTab: accountsTabReducer,
     [walletApi.reducerPath]: walletApi.reducer
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false
+  }).concat(
     walletAsyncHandler,
     walletPageAsyncHandler,
     walletApi.middleware
