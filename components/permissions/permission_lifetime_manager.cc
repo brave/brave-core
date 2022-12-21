@@ -17,7 +17,6 @@
 #include "components/content_settings/core/browser/content_settings_utils.h"
 #include "components/content_settings/core/browser/website_settings_info.h"
 #include "components/content_settings/core/browser/website_settings_registry.h"
-#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
 using content_settings::WebsiteSettingsInfo;

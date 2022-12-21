@@ -14,9 +14,6 @@ namespace features {
 COMPONENT_EXPORT(PERMISSIONS_COMMON)
 BASE_DECLARE_FEATURE(kPermissionLifetime);
 
-COMPONENT_EXPORT(PERMISSIONS_COMMON)
-BASE_DECLARE_FEATURE(kBraveGoogleSignInPermission);
-
 }  // namespace features
 }  // namespace permissions
 

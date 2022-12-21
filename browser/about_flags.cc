@@ -32,7 +32,6 @@
 #include "build/build_config.h"
 #include "components/content_settings/core/common/features.h"
 #include "components/flags_ui/flags_state.h"
-#include "components/permissions/features.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
@@ -79,7 +78,6 @@ using brave_shields::features::kCosmeticFilteringSyncLoad;
 
 using de_amp::features::kBraveDeAMP;
 using debounce::features::kBraveDebounce;
-using permissions::features::kBraveGoogleSignInPermission;
 
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
 using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
@@ -172,11 +170,6 @@ constexpr char kBraveDebounceDescription[] =
 
 constexpr char kBraveDeAMPName[] = "Enable De-AMP";
 constexpr char kBraveDeAMPDescription[] = "Enable De-AMPing feature";
-
-constexpr char kBraveGoogleSignInPermissionName[] =
-    "Enable Google Sign-In Permission Prompt";
-constexpr char kBraveGoogleSignInPermissionDescription[] =
-    "Enable permissioning access to legacy Google Sign-In";
 
 constexpr char kBraveExtensionNetworkBlockingName[] =
     "Enable extension network blocking";
@@ -684,10 +677,6 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
         flag_descriptions::kBraveDeAMPName,                                 \
         flag_descriptions::kBraveDeAMPDescription, kOsAll,                  \
         FEATURE_VALUE_TYPE(kBraveDeAMP)},                                   \
-    {"brave-google-sign-in-permission",                                     \
-        flag_descriptions::kBraveGoogleSignInPermissionName,                \
-        flag_descriptions::kBraveGoogleSignInPermissionDescription, kOsAll, \
-        FEATURE_VALUE_TYPE(kBraveGoogleSignInPermission)},                  \
     {"brave-extension-network-blocking",                                    \
      flag_descriptions::kBraveExtensionNetworkBlockingName,                 \
      flag_descriptions::kBraveExtensionNetworkBlockingDescription, kOsAll,  \

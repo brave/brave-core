@@ -32,8 +32,7 @@ constexpr int brave_value(int incr) {
   {ContentSettingsType::BRAVE_COOKIES, brave_value(7)},                   \
   {ContentSettingsType::BRAVE_SPEEDREADER, brave_value(8)},               \
   {ContentSettingsType::BRAVE_ETHEREUM, brave_value(9)},                  \
-  {ContentSettingsType::BRAVE_SOLANA, brave_value(10)},                   \
-  {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, brave_value(11)}
+  {ContentSettingsType::BRAVE_SOLANA, brave_value(10)}
 // clang-format on
 
 #define ContentSettingTypeToHistogramValue \
@@ -77,7 +76,6 @@ bool RendererContentSettingRules::IsRendererContentSetting(
          content_type == ContentSettingsType::AUTOPLAY ||
          content_type == ContentSettingsType::BRAVE_COSMETIC_FILTERING ||
          content_type == ContentSettingsType::BRAVE_FINGERPRINTING_V2 ||
-         content_type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN ||
          content_type == ContentSettingsType::BRAVE_SHIELDS;
 }
 

@@ -31,9 +31,7 @@
   case PermissionType::BRAVE_ETHEREUM:                           \
     return ContentSettingsType::BRAVE_ETHEREUM;                  \
   case PermissionType::BRAVE_SOLANA:                             \
-    return ContentSettingsType::BRAVE_SOLANA;                    \
-  case PermissionType::BRAVE_GOOGLE_SIGN_IN:                     \
-    return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;
+    return ContentSettingsType::BRAVE_SOLANA;
 
 #include "src/components/permissions/permission_util.cc"
 #undef PermissionUtil
@@ -49,8 +47,6 @@ std::string PermissionUtil::GetPermissionString(
       return "BraveEthereum";
     case ContentSettingsType::BRAVE_SOLANA:
       return "BraveSolana";
-    case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
-      return "BraveGoogleSignInPermission";
     default:
       return PermissionUtil_ChromiumImpl::GetPermissionString(content_type);
   }
@@ -64,10 +60,6 @@ bool PermissionUtil::GetPermissionType(ContentSettingsType type,
     *out = PermissionType::WINDOW_MANAGEMENT;
     return true;
   }
-  if (type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN) {
-    *out = PermissionType::BRAVE_GOOGLE_SIGN_IN;
-    return true;
-  }
 
   return PermissionUtil_ChromiumImpl::GetPermissionType(type, out);
 }
@@ -77,7 +69,6 @@ bool PermissionUtil::IsPermission(ContentSettingsType type) {
   switch (type) {
     case ContentSettingsType::BRAVE_ETHEREUM:
     case ContentSettingsType::BRAVE_SOLANA:
-    case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return true;
     default:
       return PermissionUtil_ChromiumImpl::IsPermission(type);
@@ -109,8 +100,6 @@ PermissionType PermissionUtil::ContentSettingTypeToPermissionType(
       return PermissionType::BRAVE_ETHEREUM;
     case ContentSettingsType::BRAVE_SOLANA:
       return PermissionType::BRAVE_SOLANA;
-    case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
-      return PermissionType::BRAVE_GOOGLE_SIGN_IN;
     default:
       return PermissionUtil_ChromiumImpl::ContentSettingTypeToPermissionType(
           permission);

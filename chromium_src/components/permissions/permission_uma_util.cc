@@ -8,11 +8,10 @@
 #include "components/permissions/permissions_client.h"
 
 // Since we don't do UMA just reuse an existing UMA type instead of adding one.
-#define BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE      \
-  case RequestType::kWidevine:                    \
-  case RequestType::kBraveEthereum:               \
-  case RequestType::kBraveSolana:                 \
-  case RequestType::kBraveGoogleSignInPermission: \
+#define BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE \
+  case RequestType::kWidevine:               \
+  case RequestType::kBraveEthereum:          \
+  case RequestType::kBraveSolana:            \
     return RequestTypeForUma::PERMISSION_VR;
 
 // We do not record permissions UKM and this can save us from patching

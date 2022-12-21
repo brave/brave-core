@@ -9,7 +9,6 @@
 
 #include "base/containers/contains.h"
 #include "build/build_config.h"
-#include "components/grit/brave_components_strings.h"
 #include "components/strings/grit/components_strings.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
@@ -18,16 +17,13 @@
 
 // `kWidevine` handled by an override in `WidevinePermissionRequest` and the
 // Brave Ethereum/Solana permission has its own permission request prompt.
-#define BRAVE_ENUM_ITEMS_FOR_SWITCH                      \
-  case RequestType::kBraveGoogleSignInPermission:        \
-    message_id = IDS_GOOGLE_SIGN_IN_PERMISSION_FRAGMENT; \
-    break;                                               \
-  case RequestType::kBraveEthereum:                      \
-  case RequestType::kBraveSolana:                        \
-    NOTREACHED();                                        \
-    return std::u16string();                             \
-  case RequestType::kWidevine:                           \
-    NOTREACHED();                                        \
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH \
+  case RequestType::kBraveEthereum: \
+  case RequestType::kBraveSolana:   \
+    NOTREACHED();                   \
+    return std::u16string();        \
+  case RequestType::kWidevine:      \
+    NOTREACHED();                   \
     return std::u16string();
 
 namespace {
