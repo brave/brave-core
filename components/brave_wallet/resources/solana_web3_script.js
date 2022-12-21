@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-/* Auto generated from @solana/web3.js 1.47.1 index.iife.min.js */
-
+/* Auto generated from @solana/web3.js 1.58.0 index.iife.min.js */
+  
 var solanaWeb3 = $(function (exports) {
   "use strict";
 
@@ -210,11 +210,11 @@ var solanaWeb3 = $(function (exports) {
     buffer[offset + i - d] |= s * 128;
   });
   /*!
-     * The buffer module from node.js, for the browser.
-     *
-     * @author   Feross Aboukhadijeh <https://feross.org>
-     * @license  MIT
-     */
+  	 * The buffer module from node.js, for the browser.
+  	 *
+  	 * @author   Feross Aboukhadijeh <https://feross.org>
+  	 * @license  MIT
+  	 */
   $(function (exports) {
     const base64 = base64Js;
     const ieee754$1 = ieee754;
@@ -1855,8 +1855,6 @@ var solanaWeb3 = $(function (exports) {
   })();
   var assert$3 = assert$2;
   /*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
-  const u32$1 = arr => new Uint32Array(arr.buffer, arr.byteOffset, Math.floor(arr.byteLength / 4));
-  $(u32$1);
   const createView = arr => new DataView(arr.buffer, arr.byteOffset, arr.byteLength);
   $(createView);
   const rotr = (word, shift) => word << 32 - shift | word >>> shift;
@@ -1896,16 +1894,6 @@ var solanaWeb3 = $(function (exports) {
     return hashC;
   }
   $(wrapConstructor);
-  function wrapConstructorWithOpts(hashCons) {
-    const hashC = (msg, opts) => hashCons(opts).update(toBytes(msg)).digest();
-    $(hashC);
-    const tmp = hashCons($Object.create(null, undefined));
-    hashC.outputLen = tmp.outputLen;
-    hashC.blockLen = tmp.blockLen;
-    hashC.create = $(opts => hashCons(opts));
-    return hashC;
-  }
-  $(wrapConstructorWithOpts);
   function setBigUint64(view, byteOffset, value, isLE) {
     if (typeof view.setBigUint64 === "function") return view.setBigUint64(byteOffset, value, isLE);
     const _32n = BigInt(32);
@@ -2348,16 +2336,16 @@ var solanaWeb3 = $(function (exports) {
     return result;
   })());
   /*! noble-ed25519 - MIT License (c) 2019 Paul Miller (paulmillr.com) */
-  const _0n$2 = BigInt(0);
-  const _1n$2 = BigInt(1);
-  const _2n$2 = BigInt(2);
+  const _0n$1 = BigInt(0);
+  const _1n$1 = BigInt(1);
+  const _2n$1 = BigInt(2);
   const _255n = BigInt(255);
-  const CURVE_ORDER = _2n$2 ** BigInt(252) + BigInt("27742317777372353535851937790883648493");
+  const CURVE_ORDER = _2n$1 ** BigInt(252) + BigInt("27742317777372353535851937790883648493");
   const CURVE$1 = $Object.freeze($(function () {
     let result = $Object.create(null, undefined);
     result.a = BigInt(-1);
     result.d = BigInt("37095705934669439343138083508754565189542113879843219016388785533085940283555");
-    result.P = _2n$2 ** _255n - BigInt(19);
+    result.P = _2n$1 ** _255n - BigInt(19);
     result.l = CURVE_ORDER;
     result.n = CURVE_ORDER;
     result.h = BigInt(8);
@@ -2365,7 +2353,7 @@ var solanaWeb3 = $(function (exports) {
     result.Gy = BigInt("46316835694926478169428394003475163141307993866256225615783033603165251855960");
     return result;
   })());
-  const MAX_256B = _2n$2 ** BigInt(256);
+  const MAX_256B = _2n$1 ** BigInt(256);
   const SQRT_M1 = BigInt("19681161376707505956807079304988542015446066515923890162744021073123829784752");
   BigInt("6853475219497561581579357271197624642482790079785650197046958215289687604742");
   BigInt("25063068953384623474111414158702152701244531502492656460079210482610430750235");
@@ -2384,7 +2372,7 @@ var solanaWeb3 = $(function (exports) {
         throw new TypeError("ExtendedPoint#fromAffine: expected Point");
       }
       if (p.equals(Point$1.ZERO)) return ExtendedPoint.ZERO;
-      return new ExtendedPoint(p.x, p.y, _1n$2, mod$1(p.x * p.y));
+      return new ExtendedPoint(p.x, p.y, _1n$1, mod$1(p.x * p.y));
     }
     static toAffineBatch(points) {
       const toInv = invertBatch$1(points.map($(p => p.z)));
@@ -2423,11 +2411,11 @@ var solanaWeb3 = $(function (exports) {
       const {
         a: a
       } = CURVE$1;
-      const A = mod$1(X1 ** _2n$2);
-      const B = mod$1(Y1 ** _2n$2);
-      const C = mod$1(_2n$2 * mod$1(Z1 ** _2n$2));
+      const A = mod$1(X1 ** _2n$1);
+      const B = mod$1(Y1 ** _2n$1);
+      const C = mod$1(_2n$1 * mod$1(Z1 ** _2n$1));
       const D = mod$1(a * A);
-      const E = mod$1(mod$1((X1 + Y1) ** _2n$2) - A - B);
+      const E = mod$1(mod$1((X1 + Y1) ** _2n$1) - A - B);
       const G = D + B;
       const F = G - C;
       const H = D - B;
@@ -2454,9 +2442,9 @@ var solanaWeb3 = $(function (exports) {
       const A = mod$1((Y1 - X1) * (Y2 + X2));
       const B = mod$1((Y1 + X1) * (Y2 - X2));
       const F = mod$1(B - A);
-      if (F === _0n$2) return this.double();
-      const C = mod$1(Z1 * _2n$2 * T2);
-      const D = mod$1(T1 * _2n$2 * Z2);
+      if (F === _0n$1) return this.double();
+      const C = mod$1(Z1 * _2n$1 * T2);
+      const D = mod$1(T1 * _2n$1 * Z2);
       const E = D + C;
       const G = B + A;
       const H = D - C;
@@ -2512,7 +2500,7 @@ var solanaWeb3 = $(function (exports) {
         n >>= shiftBy;
         if (wbits > windowSize) {
           wbits -= maxNumber;
-          n += _1n$2;
+          n += _1n$1;
         }
         if (wbits === 0) {
           let pr = precomputes[offset];
@@ -2533,15 +2521,15 @@ var solanaWeb3 = $(function (exports) {
       let n = normalizeScalar$1(scalar, CURVE$1.l, false);
       const G = ExtendedPoint.BASE;
       const P0 = ExtendedPoint.ZERO;
-      if (n === _0n$2) return P0;
-      if (this.equals(P0) || n === _1n$2) return this;
+      if (n === _0n$1) return P0;
+      if (this.equals(P0) || n === _1n$1) return this;
       if (this.equals(G)) return this.wNAF(n);
       let p = P0;
       let d = this;
-      while (n > _0n$2) {
-        if (n & _1n$2) p = p.add(d);
+      while (n > _0n$1) {
+        if (n & _1n$1) p = p.add(d);
         d = d.double();
-        n >>= _1n$2;
+        n >>= _1n$1;
       }
       return p;
     }
@@ -2560,7 +2548,7 @@ var solanaWeb3 = $(function (exports) {
       const ax = mod$1(x * invZ);
       const ay = mod$1(y * invZ);
       const zz = mod$1(z * invZ);
-      if (zz !== _1n$2) throw new Error("invZ was invalid");
+      if (zz !== _1n$1) throw new Error("invZ was invalid");
       return new Point$1(ax, ay);
     }
     fromRistrettoBytes() {
@@ -2573,8 +2561,8 @@ var solanaWeb3 = $(function (exports) {
       legacyRist();
     }
   }
-  ExtendedPoint.BASE = new ExtendedPoint(CURVE$1.Gx, CURVE$1.Gy, _1n$2, mod$1(CURVE$1.Gx * CURVE$1.Gy));
-  ExtendedPoint.ZERO = new ExtendedPoint(_0n$2, _1n$2, _1n$2, _0n$2);
+  ExtendedPoint.BASE = new ExtendedPoint(CURVE$1.Gx, CURVE$1.Gy, _1n$1, mod$1(CURVE$1.Gx * CURVE$1.Gy));
+  ExtendedPoint.ZERO = new ExtendedPoint(_0n$1, _1n$1, _1n$1, _0n$1);
   function assertExtPoint(other) {
     if (!(other instanceof ExtendedPoint)) throw new TypeError("ExtendedPoint expected");
   }
@@ -2605,14 +2593,14 @@ var solanaWeb3 = $(function (exports) {
       if (strict && y >= P) throw new Error("Expected 0 < hex < P");
       if (!strict && y >= MAX_256B) throw new Error("Expected 0 < hex < 2**256");
       const y2 = mod$1(y * y);
-      const u = mod$1(y2 - _1n$2);
-      const v = mod$1(d * y2 + _1n$2);
+      const u = mod$1(y2 - _1n$1);
+      const v = mod$1(d * y2 + _1n$1);
       let {
         isValid: isValid,
         value: x
       } = uvRatio(u, v);
       if (!isValid) throw new Error("Point.fromHex: invalid y coordinate");
-      const isXOdd = (x & _1n$2) === _1n$2;
+      const isXOdd = (x & _1n$1) === _1n$1;
       const isLastByteOdd = (hex[31] & 128) !== 0;
       if (isLastByteOdd !== isXOdd) {
         x = mod$1(-x);
@@ -2624,7 +2612,7 @@ var solanaWeb3 = $(function (exports) {
     }
     toRawBytes() {
       const bytes = numberTo32BytesLE(this.y);
-      bytes[31] |= this.x & _1n$2 ? 128 : 0;
+      bytes[31] |= this.x & _1n$1 ? 128 : 0;
       return bytes;
     }
     toHex() {
@@ -2634,7 +2622,7 @@ var solanaWeb3 = $(function (exports) {
       const {
         y: y
       } = this;
-      const u = mod$1((_1n$2 + y) * invert$1(_1n$2 - y));
+      const u = mod$1((_1n$1 + y) * invert$1(_1n$1 - y));
       return numberTo32BytesLE(u);
     }
     isTorsionFree() {
@@ -2657,7 +2645,7 @@ var solanaWeb3 = $(function (exports) {
     }
   }
   Point$1.BASE = new Point$1(CURVE$1.Gx, CURVE$1.Gy);
-  Point$1.ZERO = new Point$1(_0n$2, _1n$2);
+  Point$1.ZERO = new Point$1(_0n$1, _1n$1);
   class Signature$1 {
     constructor(r, s) {
       this.r = r;
@@ -2743,7 +2731,7 @@ var solanaWeb3 = $(function (exports) {
   }
   $(numberTo32BytesLE);
   function edIsNegative(num) {
-    return (mod$1(num) & _1n$2) === _1n$2;
+    return (mod$1(num) & _1n$1) === _1n$1;
   }
   $(edIsNegative);
   function bytesToNumberLE(uint8a) {
@@ -2753,38 +2741,38 @@ var solanaWeb3 = $(function (exports) {
   $(bytesToNumberLE);
   function mod$1(a, b = CURVE$1.P) {
     const res = a % b;
-    return res >= _0n$2 ? res : b + res;
+    return res >= _0n$1 ? res : b + res;
   }
   $(mod$1);
   function invert$1(number, modulo = CURVE$1.P) {
-    if (number === _0n$2 || modulo <= _0n$2) {
+    if (number === _0n$1 || modulo <= _0n$1) {
       throw new Error(`invert: expected positive integers, got n=${number} mod=${modulo}`);
     }
     let a = mod$1(number, modulo);
     let b = modulo;
-    let x = _0n$2,
-      u = _1n$2;
-    while (a !== _0n$2) {
+    let x = _0n$1,
+      u = _1n$1;
+    while (a !== _0n$1) {
       const q = b / a;
       const r = b % a;
       const m = x - u * q;
       b = a, a = r, x = u, u = m;
     }
     const gcd = b;
-    if (gcd !== _1n$2) throw new Error("invert: does not exist");
+    if (gcd !== _1n$1) throw new Error("invert: does not exist");
     return mod$1(x, modulo);
   }
   $(invert$1);
   function invertBatch$1(nums, p = CURVE$1.P) {
     const tmp = new Array(nums.length);
     const lastMultiplied = nums.reduce($((acc, num, i) => {
-      if (num === _0n$2) return acc;
+      if (num === _0n$1) return acc;
       tmp[i] = acc;
       return mod$1(acc * num, p);
-    }), _1n$2);
+    }), _1n$1);
     const inverted = invert$1(lastMultiplied, p);
     nums.reduceRight($((acc, num, i) => {
-      if (num === _0n$2) return acc;
+      if (num === _0n$1) return acc;
       tmp[i] = mod$1(acc * tmp[i], p);
       return mod$1(acc * num, p);
     }), inverted);
@@ -2796,7 +2784,7 @@ var solanaWeb3 = $(function (exports) {
       P: P
     } = CURVE$1;
     let res = x;
-    while (power-- > _0n$2) {
+    while (power-- > _0n$1) {
       res *= res;
       res %= P;
     }
@@ -2814,8 +2802,8 @@ var solanaWeb3 = $(function (exports) {
     const _80n = BigInt(80);
     const x2 = x * x % P;
     const b2 = x2 * x % P;
-    const b4 = pow2$1(b2, _2n$2) * b2 % P;
-    const b5 = pow2$1(b4, _1n$2) * x % P;
+    const b4 = pow2$1(b2, _2n$1) * b2 % P;
+    const b5 = pow2$1(b4, _1n$1) * x % P;
     const b10 = pow2$1(b5, _5n) * b5 % P;
     const b20 = pow2$1(b10, _10n) * b10 % P;
     const b40 = pow2$1(b20, _20n) * b20 % P;
@@ -2823,7 +2811,7 @@ var solanaWeb3 = $(function (exports) {
     const b160 = pow2$1(b80, _80n) * b80 % P;
     const b240 = pow2$1(b160, _80n) * b80 % P;
     const b250 = pow2$1(b240, _10n) * b10 % P;
-    const pow_p_5_8 = pow2$1(b250, _2n$2) * x % P;
+    const pow_p_5_8 = pow2$1(b250, _2n$1) * x % P;
     return $(function () {
       let result = $Object.create(null, undefined);
       result.pow_p_5_8 = pow_p_5_8;
@@ -2869,9 +2857,9 @@ var solanaWeb3 = $(function (exports) {
     if (typeof num === "number" && Number.isSafeInteger(num)) num = BigInt(num);
     if (typeof num === "bigint" && num < max) {
       if (strict) {
-        if (_0n$2 < num) return num;
+        if (_0n$1 < num) return num;
       } else {
-        if (_0n$2 <= num) return num;
+        if (_0n$1 <= num) return num;
       }
     }
     throw new TypeError("Expected valid scalar: 0 < scalar < max");
@@ -3003,7 +2991,7 @@ var solanaWeb3 = $(function (exports) {
     result.hashToPrivateScalar = $(hash => {
       hash = ensureBytes$1(hash);
       if (hash.length < 40 || hash.length > 1024) throw new Error("Expected 40-1024 bytes of private key as per FIPS 186");
-      return mod$1(bytesToNumberLE(hash), CURVE$1.l - _1n$2) + _1n$2;
+      return mod$1(bytesToNumberLE(hash), CURVE$1.l - _1n$1) + _1n$1;
     });
     result.randomBytes = $((bytesLength = 32) => {
       if (crypto$2.web) {
@@ -3032,7 +3020,7 @@ var solanaWeb3 = $(function (exports) {
     result.precompute = $(function (windowSize = 8, point = Point$1.BASE) {
       const cached = point.equals(Point$1.BASE) ? point : new Point$1(point.x, point.y);
       cached._setWindowSize(windowSize);
-      cached.multiply(_2n$2);
+      cached.multiply(_2n$1);
       return cached;
     });
     result.sha512Sync = undefined;
@@ -8137,8 +8125,6 @@ var solanaWeb3 = $(function (exports) {
   $(lockup);
   const voteInit = (property = "voteInit") => struct($Array.of(publicKey("nodePubkey"), publicKey("authorizedVoter"), publicKey("authorizedWithdrawer"), u8("commission")), property);
   $(voteInit);
-  const voteAuthorizeWithSeedArgs = (property = "voteAuthorizeWithSeedArgs") => struct($Array.of(u32("voteAuthorizationType"), publicKey("currentAuthorityDerivedKeyOwnerPubkey"), rustString("currentAuthorityDerivedKeySeed"), publicKey("newAuthorized")), property);
-  $(voteAuthorizeWithSeedArgs);
   function getAlloc(type, fields) {
     const getItemAlloc = item => {
       if (item.span >= 0) {
@@ -8150,12 +8136,6 @@ var solanaWeb3 = $(function (exports) {
         if ($Array.isArray(field)) {
           return field.length * getItemAlloc(item.elementLayout);
         }
-      } else if ("fields" in item) {
-        return getAlloc($(function () {
-          let result = $Object.create(null, undefined);
-          result.layout = item;
-          return result;
-        })(), fields[item.property]);
       }
       return 0;
     };
@@ -8357,16 +8337,7 @@ var solanaWeb3 = $(function (exports) {
       return index < this.header.numRequiredSignatures;
     }
     isAccountWritable(index) {
-      const numSignedAccounts = this.header.numRequiredSignatures;
-      if (index >= this.header.numRequiredSignatures) {
-        const unsignedAccountIndex = index - numSignedAccounts;
-        const numUnsignedAccounts = this.accountKeys.length - numSignedAccounts;
-        const numWritableUnsignedAccounts = numUnsignedAccounts - this.header.numReadonlyUnsignedAccounts;
-        return unsignedAccountIndex < numWritableUnsignedAccounts;
-      } else {
-        const numWritableSignedAccounts = numSignedAccounts - this.header.numReadonlySignedAccounts;
-        return index < numWritableSignedAccounts;
-      }
+      return index < this.header.numRequiredSignatures - this.header.numReadonlySignedAccounts || index >= this.header.numRequiredSignatures && index < this.accountKeys.length - this.header.numReadonlyUnsignedAccounts;
     }
     isProgramId(index) {
       return this.indexToProgramIds.has(index);
@@ -8506,37 +8477,17 @@ var solanaWeb3 = $(function (exports) {
     }
     getAccountKeys(args) {
       let accountKeysFromLookups;
-      if (args && "accountKeysFromLookups" in args && args.accountKeysFromLookups) {
+      if (args && "accountKeysFromLookups" in args) {
         if (this.numAccountKeysFromLookups != args.accountKeysFromLookups.writable.length + args.accountKeysFromLookups.readonly.length) {
           throw new Error("Failed to get account keys because of a mismatch in the number of account keys from lookups");
         }
         accountKeysFromLookups = args.accountKeysFromLookups;
-      } else if (args && "addressLookupTableAccounts" in args && args.addressLookupTableAccounts) {
+      } else if (args && "addressLookupTableAccounts" in args) {
         accountKeysFromLookups = this.resolveAddressTableLookups(args.addressLookupTableAccounts);
       } else if (this.addressTableLookups.length > 0) {
         throw new Error("Failed to get account keys because address table lookups were not resolved");
       }
       return new MessageAccountKeys(this.staticAccountKeys, accountKeysFromLookups);
-    }
-    isAccountSigner(index) {
-      return index < this.header.numRequiredSignatures;
-    }
-    isAccountWritable(index) {
-      const numSignedAccounts = this.header.numRequiredSignatures;
-      const numStaticAccountKeys = this.staticAccountKeys.length;
-      if (index >= numStaticAccountKeys) {
-        const lookupAccountKeysIndex = index - numStaticAccountKeys;
-        const numWritableLookupAccountKeys = this.addressTableLookups.reduce($((count, lookup) => count + lookup.writableIndexes.length), 0);
-        return lookupAccountKeysIndex < numWritableLookupAccountKeys;
-      } else if (index >= this.header.numRequiredSignatures) {
-        const unsignedAccountIndex = index - numSignedAccounts;
-        const numUnsignedAccounts = numStaticAccountKeys - numSignedAccounts;
-        const numWritableUnsignedAccounts = numUnsignedAccounts - this.header.numReadonlyUnsignedAccounts;
-        return unsignedAccountIndex < numWritableUnsignedAccounts;
-      } else {
-        const numWritableSignedAccounts = numSignedAccounts - this.header.numReadonlySignedAccounts;
-        return index < numWritableSignedAccounts;
-      }
     }
     resolveAddressTableLookups(addressLookupTableAccounts) {
       const accountKeysFromLookups = $(function () {
@@ -9257,10 +9208,10 @@ var solanaWeb3 = $(function (exports) {
   }
   class TransactionMessage {
     constructor(args) {
-      this.payerKey = void 0;
+      this.accountKeys = void 0;
       this.instructions = void 0;
       this.recentBlockhash = void 0;
-      this.payerKey = args.payerKey;
+      this.accountKeys = args.accountKeys;
       this.instructions = args.instructions;
       this.recentBlockhash = args.recentBlockhash;
     }
@@ -9280,10 +9231,6 @@ var solanaWeb3 = $(function (exports) {
       const numWritableUnsignedAccounts = message.staticAccountKeys.length - numReadonlyUnsignedAccounts;
       assert$1(numWritableUnsignedAccounts >= 0, "Message header is invalid");
       const accountKeys = message.getAccountKeys(args);
-      const payerKey = accountKeys.get(0);
-      if (payerKey === undefined) {
-        throw new Error("Failed to decompile message because no account keys were found");
-      }
       const instructions = $Array.of();
       for (const compiledIx of compiledInstructions) {
         const keys = $Array.of();
@@ -9323,25 +9270,33 @@ var solanaWeb3 = $(function (exports) {
       }
       return new TransactionMessage($(function () {
         let result = $Object.create(null, undefined);
-        result.payerKey = payerKey;
+        result.accountKeys = accountKeys;
         result.instructions = instructions;
         result.recentBlockhash = recentBlockhash;
         return result;
       })());
     }
     compileToLegacyMessage() {
+      const payerKey = this.accountKeys.get(0);
+      if (payerKey === undefined) {
+        throw new Error("Failed to compile message because no account keys were found");
+      }
       return Message.compile($(function () {
         let result = $Object.create(null, undefined);
-        result.payerKey = this.payerKey;
+        result.payerKey = payerKey;
         result.recentBlockhash = this.recentBlockhash;
         result.instructions = this.instructions;
         return result;
       }).bind(this)());
     }
     compileToV0Message(addressLookupTableAccounts) {
+      const payerKey = this.accountKeys.get(0);
+      if (payerKey === undefined) {
+        throw new Error("Failed to compile message because no account keys were found");
+      }
       return MessageV0.compile($(function () {
         let result = $Object.create(null, undefined);
-        result.payerKey = this.payerKey;
+        result.payerKey = payerKey;
         result.recentBlockhash = this.recentBlockhash;
         result.instructions = this.instructions;
         result.addressLookupTableAccounts = addressLookupTableAccounts;
@@ -9350,9 +9305,6 @@ var solanaWeb3 = $(function (exports) {
     }
   }
   class VersionedTransaction {
-    get version() {
-      return this.message.version;
-    }
     constructor(message, signatures) {
       this.signatures = void 0;
       this.message = void 0;
@@ -9401,13 +9353,6 @@ var solanaWeb3 = $(function (exports) {
         assert$1(signerIndex >= 0, `Cannot sign with non signer key ${signer.publicKey.toBase58()}`);
         this.signatures[signerIndex] = sign(messageData, signer.secretKey);
       }
-    }
-    addSignature(publicKey, signature) {
-      assert$1(signature.byteLength === 64, "Signature must be 64 bytes long");
-      const signerPubkeys = this.message.staticAccountKeys.slice(0, this.message.header.numRequiredSignatures);
-      const signerIndex = signerPubkeys.findIndex($(pubkey => pubkey.equals(publicKey)));
-      assert$1(signerIndex >= 0, `Can not add signature; \`${publicKey.toBase58()}\` is not required to sign this transaction`);
-      this.signatures[signerIndex] = signature;
     }
   }
   const SYSVAR_CLOCK_PUBKEY = new PublicKey("SysvarC1ock11111111111111111111111111111111");
@@ -13037,7 +12982,7 @@ var solanaWeb3 = $(function (exports) {
       this.state = args.state;
     }
     isActive() {
-      const U64_MAX = BigInt("0xffffffffffffffff");
+      const U64_MAX = 2n ** 64n - 1n;
       return this.state.deactivationSlot === U64_MAX;
     }
     static deserialize(accountData) {
@@ -13706,7 +13651,6 @@ var solanaWeb3 = $(function (exports) {
         result.pubkey = PublicKeyFromString;
         result.signer = boolean();
         result.writable = boolean();
-        result.source = optional(union($Array.of(literal("transaction"), literal("lookupTable"))));
         return result;
       })()));
       result.instructions = array(ParsedOrRawInstruction);
@@ -13784,30 +13728,6 @@ var solanaWeb3 = $(function (exports) {
       let result = $Object.create(null, undefined);
       result.transaction = ConfirmedTransactionResult;
       result.meta = nullable(ConfirmedTransactionMetaResult);
-      result.version = optional(TransactionVersionStruct);
-      return result;
-    })()));
-    result.rewards = optional(array(type($(function () {
-      let result = $Object.create(null, undefined);
-      result.pubkey = string();
-      result.lamports = number();
-      result.postBalance = nullable(number());
-      result.rewardType = nullable(string());
-      return result;
-    })())));
-    result.blockTime = nullable(number());
-    result.blockHeight = nullable(number());
-    return result;
-  })())));
-  const GetParsedBlockRpcResult = jsonRpcResult(nullable(type($(function () {
-    let result = $Object.create(null, undefined);
-    result.blockhash = string();
-    result.previousBlockhash = string();
-    result.parentSlot = number();
-    result.transactions = array(type($(function () {
-      let result = $Object.create(null, undefined);
-      result.transaction = ParsedConfirmedTransactionResult;
-      result.meta = nullable(ParsedConfirmedTransactionMetaResult);
       result.version = optional(TransactionVersionStruct);
       return result;
     })()));
@@ -14196,20 +14116,6 @@ var solanaWeb3 = $(function (exports) {
         throw new Error("failed to get info about account " + publicKey.toBase58() + ": " + e);
       }
     }
-    async getMultipleParsedAccounts(publicKeys, rawConfig) {
-      const {
-        commitment: commitment,
-        config: config
-      } = extractCommitmentFromConfig(rawConfig);
-      const keys = publicKeys.map($(key => key.toBase58()));
-      const args = this._buildArgs($Array.of(keys), commitment, "jsonParsed", config);
-      const unsafeRes = await this._rpcRequest("getMultipleAccounts", args);
-      const res = create(unsafeRes, jsonRpcResultAndContext(array(nullable(ParsedAccountInfoResult))));
-      if ("error" in res) {
-        throw new SolanaJSONRPCError(res.error, `failed to get info for accounts ${keys}`);
-      }
-      return res.result;
-    }
     async getMultipleAccountsInfoAndContext(publicKeys, commitmentOrConfig) {
       const {
         commitment: commitment,
@@ -14593,7 +14499,7 @@ var solanaWeb3 = $(function (exports) {
       const unsafeRes = await this._rpcRequest("getFeeForMessage", args);
       const res = create(unsafeRes, jsonRpcResultAndContext(nullable(number())));
       if ("error" in res) {
-        throw new SolanaJSONRPCError(res.error, "failed to get fee for message");
+        throw new SolanaJSONRPCError(res.error, "failed to get slot");
       }
       if (res.result === null) {
         throw new Error("invalid blockhash");
@@ -14679,19 +14585,6 @@ var solanaWeb3 = $(function (exports) {
         })()));
         return result;
       })();
-    }
-    async getParsedBlock(slot, rawConfig) {
-      const {
-        commitment: commitment,
-        config: config
-      } = extractCommitmentFromConfig(rawConfig);
-      const args = this._buildArgsAtLeastConfirmed($Array.of(slot), commitment, "jsonParsed", config);
-      const unsafeRes = await this._rpcRequest("getBlock", args);
-      const res = create(unsafeRes, GetParsedBlockRpcResult);
-      if ("error" in res) {
-        throw new SolanaJSONRPCError(res.error, "failed to get block");
-      }
-      return res.result;
     }
     async getBlockHeight(commitmentOrConfig) {
       const {
@@ -15227,7 +15120,7 @@ var solanaWeb3 = $(function (exports) {
       return res.result;
     }
     async sendTransaction(transaction, signersOrOptions, options) {
-      if ("version" in transaction) {
+      if ("message" in transaction) {
         if (signersOrOptions && $Array.isArray(signersOrOptions)) {
           throw new Error("Invalid arguments");
         }
@@ -15312,7 +15205,7 @@ var solanaWeb3 = $(function (exports) {
     }
     _wsOnClose(code) {
       this._rpcWebSocketConnected = false;
-      this._rpcWebSocketGeneration = (this._rpcWebSocketGeneration + 1) % Number.MAX_SAFE_INTEGER;
+      this._rpcWebSocketGeneration++;
       if (this._rpcWebSocketIdleTimeout) {
         clearTimeout(this._rpcWebSocketIdleTimeout);
         this._rpcWebSocketIdleTimeout = null;
@@ -15779,7 +15672,7 @@ var solanaWeb3 = $(function (exports) {
       return new PublicKey(this._keypair.publicKey);
     }
     get secretKey() {
-      return new Uint8Array(this._keypair.secretKey);
+      return this._keypair.secretKey;
     }
   }
   const LOOKUP_TABLE_INSTRUCTION_LAYOUTS = $Object.freeze($(function () {
@@ -16294,192 +16187,685 @@ var solanaWeb3 = $(function (exports) {
     }
   }
   Ed25519Program.programId = new PublicKey("Ed25519SigVerify111111111111111111111111111");
-  const [SHA3_PI, SHA3_ROTL, _SHA3_IOTA] = $Array.of($Array.of(), $Array.of(), $Array.of());
-  const _0n$1 = BigInt(0);
-  const _1n$1 = BigInt(1);
-  const _2n$1 = BigInt(2);
-  const _7n = BigInt(7);
-  const _256n = BigInt(256);
-  const _0x71n = BigInt(113);
-  for (let round = 0, R = _1n$1, x = 1, y = 0; round < 24; round++) {
-    [x, y] = $Array.of(y, (2 * x + 3 * y) % 5);
-    SHA3_PI.push(2 * (5 * y + x));
-    SHA3_ROTL.push((round + 1) * (round + 2) / 2 % 64);
-    let t = _0n$1;
-    for (let j = 0; j < 7; j++) {
-      R = (R << _1n$1 ^ (R >> _7n) * _0x71n) % _256n;
-      if (R & _2n$1) t ^= _1n$1 << (_1n$1 << BigInt(j)) - _1n$1;
-    }
-    _SHA3_IOTA.push(t);
-  }
-  const [SHA3_IOTA_H, SHA3_IOTA_L] = u64$2.split(_SHA3_IOTA, true);
-  const rotlH = (h, l, s) => s > 32 ? u64$2.rotlBH(h, l, s) : u64$2.rotlSH(h, l, s);
-  $(rotlH);
-  const rotlL = (h, l, s) => s > 32 ? u64$2.rotlBL(h, l, s) : u64$2.rotlSL(h, l, s);
-  $(rotlL);
-  function keccakP(s, rounds = 24) {
-    const B = new Uint32Array(5 * 2);
-    for (let round = 24 - rounds; round < 24; round++) {
-      for (let x = 0; x < 10; x++) B[x] = s[x] ^ s[x + 10] ^ s[x + 20] ^ s[x + 30] ^ s[x + 40];
-      for (let x = 0; x < 10; x += 2) {
-        const idx1 = (x + 8) % 10;
-        const idx0 = (x + 2) % 10;
-        const B0 = B[idx0];
-        const B1 = B[idx0 + 1];
-        const Th = rotlH(B0, B1, 1) ^ B[idx1];
-        const Tl = rotlL(B0, B1, 1) ^ B[idx1 + 1];
-        for (let y = 0; y < 50; y += 10) {
-          s[x + y] ^= Th;
-          s[x + y + 1] ^= Tl;
+  var sha3$1 = $(function () {
+    let result = $Object.create(null, undefined);
+    result.exports = $Object.create(null, undefined);
+    return result;
+  })();
+  /**
+  	 * [js-sha3]{@link https://github.com/emn178/js-sha3}
+  	 *
+  	 * @version 0.8.0
+  	 * @author Chen, Yi-Cyuan [emn178@gmail.com]
+  	 * @copyright Chen, Yi-Cyuan 2015-2018
+  	 * @license MIT
+  	 */
+  $(function (module) {
+    $(function () {
+      var INPUT_ERROR = "input is invalid type";
+      var FINALIZE_ERROR = "finalize already called";
+      var WINDOW = typeof window === "object";
+      var root = WINDOW ? window : $Object.create(null, undefined);
+      if (root.JS_SHA3_NO_WINDOW) {
+        WINDOW = false;
+      }
+      var WEB_WORKER = !WINDOW && typeof self === "object";
+      var NODE_JS = !root.JS_SHA3_NO_NODE_JS && typeof process === "object" && process.versions && process.versions.node;
+      if (NODE_JS) {
+        root = commonjsGlobal;
+      } else if (WEB_WORKER) {
+        root = self;
+      }
+      var COMMON_JS = !root.JS_SHA3_NO_COMMON_JS && "object" === "object" && module.exports;
+      var ARRAY_BUFFER = !root.JS_SHA3_NO_ARRAY_BUFFER && typeof ArrayBuffer !== "undefined";
+      var HEX_CHARS = "0123456789abcdef".split("");
+      var SHAKE_PADDING = $Array.of(31, 7936, 2031616, 520093696);
+      var CSHAKE_PADDING = $Array.of(4, 1024, 262144, 67108864);
+      var KECCAK_PADDING = $Array.of(1, 256, 65536, 16777216);
+      var PADDING = $Array.of(6, 1536, 393216, 100663296);
+      var SHIFT = $Array.of(0, 8, 16, 24);
+      var RC = $Array.of(1, 0, 32898, 0, 32906, 2147483648, 2147516416, 2147483648, 32907, 0, 2147483649, 0, 2147516545, 2147483648, 32777, 2147483648, 138, 0, 136, 0, 2147516425, 0, 2147483658, 0, 2147516555, 0, 139, 2147483648, 32905, 2147483648, 32771, 2147483648, 32770, 2147483648, 128, 2147483648, 32778, 0, 2147483658, 2147483648, 2147516545, 2147483648, 32896, 2147483648, 2147483649, 0, 2147516424, 2147483648);
+      var BITS = $Array.of(224, 256, 384, 512);
+      var SHAKE_BITS = $Array.of(128, 256);
+      var OUTPUT_TYPES = $Array.of("hex", "buffer", "arrayBuffer", "array", "digest");
+      var CSHAKE_BYTEPAD = $(function () {
+        let result = $Object.create(null, undefined);
+        result[128] = 168;
+        result[256] = 136;
+        return result;
+      })();
+      if (root.JS_SHA3_NO_NODE_JS || !$Array.isArray) {
+        $Array.isArray = $(function (obj) {
+          return $Object.prototype.toString.call(obj) === "[object Array]";
+        });
+      }
+      if (ARRAY_BUFFER && (root.JS_SHA3_NO_ARRAY_BUFFER_IS_VIEW || !ArrayBuffer.isView)) {
+        ArrayBuffer.isView = $(function (obj) {
+          return typeof obj === "object" && obj.buffer && obj.buffer.constructor === ArrayBuffer;
+        });
+      }
+      var createOutputMethod = function (bits, padding, outputType) {
+        return $(function (message) {
+          return new Keccak(bits, padding, bits).update(message)[outputType]();
+        });
+      };
+      $(createOutputMethod);
+      var createShakeOutputMethod = function (bits, padding, outputType) {
+        return $(function (message, outputBits) {
+          return new Keccak(bits, padding, outputBits).update(message)[outputType]();
+        });
+      };
+      $(createShakeOutputMethod);
+      var createCshakeOutputMethod = function (bits, padding, outputType) {
+        return $(function (message, outputBits, n, s) {
+          return methods["cshake" + bits].update(message, outputBits, n, s)[outputType]();
+        });
+      };
+      $(createCshakeOutputMethod);
+      var createKmacOutputMethod = function (bits, padding, outputType) {
+        return $(function (key, message, outputBits, s) {
+          return methods["kmac" + bits].update(key, message, outputBits, s)[outputType]();
+        });
+      };
+      $(createKmacOutputMethod);
+      var createOutputMethods = function (method, createMethod, bits, padding) {
+        for (var i = 0; i < OUTPUT_TYPES.length; ++i) {
+          var type = OUTPUT_TYPES[i];
+          method[type] = createMethod(bits, padding, type);
+        }
+        return method;
+      };
+      $(createOutputMethods);
+      var createMethod = function (bits, padding) {
+        var method = createOutputMethod(bits, padding, "hex");
+        method.create = $(function () {
+          return new Keccak(bits, padding, bits);
+        });
+        method.update = $(function (message) {
+          return method.create().update(message);
+        });
+        return createOutputMethods(method, createOutputMethod, bits, padding);
+      };
+      $(createMethod);
+      var createShakeMethod = function (bits, padding) {
+        var method = createShakeOutputMethod(bits, padding, "hex");
+        method.create = $(function (outputBits) {
+          return new Keccak(bits, padding, outputBits);
+        });
+        method.update = $(function (message, outputBits) {
+          return method.create(outputBits).update(message);
+        });
+        return createOutputMethods(method, createShakeOutputMethod, bits, padding);
+      };
+      $(createShakeMethod);
+      var createCshakeMethod = function (bits, padding) {
+        var w = CSHAKE_BYTEPAD[bits];
+        var method = createCshakeOutputMethod(bits, padding, "hex");
+        method.create = $(function (outputBits, n, s) {
+          if (!n && !s) {
+            return methods["shake" + bits].create(outputBits);
+          } else {
+            return new Keccak(bits, padding, outputBits).bytepad($Array.of(n, s), w);
+          }
+        });
+        method.update = $(function (message, outputBits, n, s) {
+          return method.create(outputBits, n, s).update(message);
+        });
+        return createOutputMethods(method, createCshakeOutputMethod, bits, padding);
+      };
+      $(createCshakeMethod);
+      var createKmacMethod = function (bits, padding) {
+        var w = CSHAKE_BYTEPAD[bits];
+        var method = createKmacOutputMethod(bits, padding, "hex");
+        method.create = $(function (key, outputBits, s) {
+          return new Kmac(bits, padding, outputBits).bytepad($Array.of("KMAC", s), w).bytepad($Array.of(key), w);
+        });
+        method.update = $(function (key, message, outputBits, s) {
+          return method.create(key, outputBits, s).update(message);
+        });
+        return createOutputMethods(method, createKmacOutputMethod, bits, padding);
+      };
+      $(createKmacMethod);
+      var algorithms = $Array.of($(function () {
+        let result = $Object.create(null, undefined);
+        result.name = "keccak";
+        result.padding = KECCAK_PADDING;
+        result.bits = BITS;
+        result.createMethod = createMethod;
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.name = "sha3";
+        result.padding = PADDING;
+        result.bits = BITS;
+        result.createMethod = createMethod;
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.name = "shake";
+        result.padding = SHAKE_PADDING;
+        result.bits = SHAKE_BITS;
+        result.createMethod = createShakeMethod;
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.name = "cshake";
+        result.padding = CSHAKE_PADDING;
+        result.bits = SHAKE_BITS;
+        result.createMethod = createCshakeMethod;
+        return result;
+      })(), $(function () {
+        let result = $Object.create(null, undefined);
+        result.name = "kmac";
+        result.padding = CSHAKE_PADDING;
+        result.bits = SHAKE_BITS;
+        result.createMethod = createKmacMethod;
+        return result;
+      })());
+      var methods = $Object.create(null, undefined),
+        methodNames = $Array.of();
+      for (var i = 0; i < algorithms.length; ++i) {
+        var algorithm = algorithms[i];
+        var bits = algorithm.bits;
+        for (var j = 0; j < bits.length; ++j) {
+          var methodName = algorithm.name + "_" + bits[j];
+          methodNames.push(methodName);
+          methods[methodName] = algorithm.createMethod(bits[j], algorithm.padding);
+          if (algorithm.name !== "sha3") {
+            var newMethodName = algorithm.name + bits[j];
+            methodNames.push(newMethodName);
+            methods[newMethodName] = methods[methodName];
+          }
         }
       }
-      let curH = s[2];
-      let curL = s[3];
-      for (let t = 0; t < 24; t++) {
-        const shift = SHA3_ROTL[t];
-        const Th = rotlH(curH, curL, shift);
-        const Tl = rotlL(curH, curL, shift);
-        const PI = SHA3_PI[t];
-        curH = s[PI];
-        curL = s[PI + 1];
-        s[PI] = Th;
-        s[PI + 1] = Tl;
+      function Keccak(bits, padding, outputBits) {
+        this.blocks = $Array.of();
+        this.s = $Array.of();
+        this.padding = padding;
+        this.outputBits = outputBits;
+        this.reset = true;
+        this.finalized = false;
+        this.block = 0;
+        this.start = 0;
+        this.blockCount = 1600 - (bits << 1) >> 5;
+        this.byteCount = this.blockCount << 2;
+        this.outputBlocks = outputBits >> 5;
+        this.extraBytes = (outputBits & 31) >> 3;
+        for (var i = 0; i < 50; ++i) {
+          this.s[i] = 0;
+        }
       }
-      for (let y = 0; y < 50; y += 10) {
-        for (let x = 0; x < 10; x++) B[x] = s[y + x];
-        for (let x = 0; x < 10; x++) s[y + x] ^= ~B[(x + 2) % 10] & B[(x + 4) % 10];
+      $(Keccak);
+      Keccak.prototype.update = $(function (message) {
+        if (this.finalized) {
+          throw new Error(FINALIZE_ERROR);
+        }
+        var notString,
+          type = typeof message;
+        if (type !== "string") {
+          if (type === "object") {
+            if (message === null) {
+              throw new Error(INPUT_ERROR);
+            } else if (ARRAY_BUFFER && message.constructor === ArrayBuffer) {
+              message = new Uint8Array(message);
+            } else if (!$Array.isArray(message)) {
+              if (!ARRAY_BUFFER || !ArrayBuffer.isView(message)) {
+                throw new Error(INPUT_ERROR);
+              }
+            }
+          } else {
+            throw new Error(INPUT_ERROR);
+          }
+          notString = true;
+        }
+        var blocks = this.blocks,
+          byteCount = this.byteCount,
+          length = message.length,
+          blockCount = this.blockCount,
+          index = 0,
+          s = this.s,
+          i,
+          code;
+        while (index < length) {
+          if (this.reset) {
+            this.reset = false;
+            blocks[0] = this.block;
+            for (i = 1; i < blockCount + 1; ++i) {
+              blocks[i] = 0;
+            }
+          }
+          if (notString) {
+            for (i = this.start; index < length && i < byteCount; ++index) {
+              blocks[i >> 2] |= message[index] << SHIFT[i++ & 3];
+            }
+          } else {
+            for (i = this.start; index < length && i < byteCount; ++index) {
+              code = message.charCodeAt(index);
+              if (code < 128) {
+                blocks[i >> 2] |= code << SHIFT[i++ & 3];
+              } else if (code < 2048) {
+                blocks[i >> 2] |= (192 | code >> 6) << SHIFT[i++ & 3];
+                blocks[i >> 2] |= (128 | code & 63) << SHIFT[i++ & 3];
+              } else if (code < 55296 || code >= 57344) {
+                blocks[i >> 2] |= (224 | code >> 12) << SHIFT[i++ & 3];
+                blocks[i >> 2] |= (128 | code >> 6 & 63) << SHIFT[i++ & 3];
+                blocks[i >> 2] |= (128 | code & 63) << SHIFT[i++ & 3];
+              } else {
+                code = 65536 + ((code & 1023) << 10 | message.charCodeAt(++index) & 1023);
+                blocks[i >> 2] |= (240 | code >> 18) << SHIFT[i++ & 3];
+                blocks[i >> 2] |= (128 | code >> 12 & 63) << SHIFT[i++ & 3];
+                blocks[i >> 2] |= (128 | code >> 6 & 63) << SHIFT[i++ & 3];
+                blocks[i >> 2] |= (128 | code & 63) << SHIFT[i++ & 3];
+              }
+            }
+          }
+          this.lastByteIndex = i;
+          if (i >= byteCount) {
+            this.start = i - byteCount;
+            this.block = blocks[blockCount];
+            for (i = 0; i < blockCount; ++i) {
+              s[i] ^= blocks[i];
+            }
+            f(s);
+            this.reset = true;
+          } else {
+            this.start = i;
+          }
+        }
+        return this;
+      });
+      Keccak.prototype.encode = $(function (x, right) {
+        var o = x & 255,
+          n = 1;
+        var bytes = $Array.of(o);
+        x = x >> 8;
+        o = x & 255;
+        while (o > 0) {
+          bytes.unshift(o);
+          x = x >> 8;
+          o = x & 255;
+          ++n;
+        }
+        if (right) {
+          bytes.push(n);
+        } else {
+          bytes.unshift(n);
+        }
+        this.update(bytes);
+        return bytes.length;
+      });
+      Keccak.prototype.encodeString = $(function (str) {
+        var notString,
+          type = typeof str;
+        if (type !== "string") {
+          if (type === "object") {
+            if (str === null) {
+              throw new Error(INPUT_ERROR);
+            } else if (ARRAY_BUFFER && str.constructor === ArrayBuffer) {
+              str = new Uint8Array(str);
+            } else if (!$Array.isArray(str)) {
+              if (!ARRAY_BUFFER || !ArrayBuffer.isView(str)) {
+                throw new Error(INPUT_ERROR);
+              }
+            }
+          } else {
+            throw new Error(INPUT_ERROR);
+          }
+          notString = true;
+        }
+        var bytes = 0,
+          length = str.length;
+        if (notString) {
+          bytes = length;
+        } else {
+          for (var i = 0; i < str.length; ++i) {
+            var code = str.charCodeAt(i);
+            if (code < 128) {
+              bytes += 1;
+            } else if (code < 2048) {
+              bytes += 2;
+            } else if (code < 55296 || code >= 57344) {
+              bytes += 3;
+            } else {
+              code = 65536 + ((code & 1023) << 10 | str.charCodeAt(++i) & 1023);
+              bytes += 4;
+            }
+          }
+        }
+        bytes += this.encode(bytes * 8);
+        this.update(str);
+        return bytes;
+      });
+      Keccak.prototype.bytepad = $(function (strs, w) {
+        var bytes = this.encode(w);
+        for (var i = 0; i < strs.length; ++i) {
+          bytes += this.encodeString(strs[i]);
+        }
+        var paddingBytes = w - bytes % w;
+        var zeros = $Array.of();
+        zeros.length = paddingBytes;
+        this.update(zeros);
+        return this;
+      });
+      Keccak.prototype.finalize = $(function () {
+        if (this.finalized) {
+          return;
+        }
+        this.finalized = true;
+        var blocks = this.blocks,
+          i = this.lastByteIndex,
+          blockCount = this.blockCount,
+          s = this.s;
+        blocks[i >> 2] |= this.padding[i & 3];
+        if (this.lastByteIndex === this.byteCount) {
+          blocks[0] = blocks[blockCount];
+          for (i = 1; i < blockCount + 1; ++i) {
+            blocks[i] = 0;
+          }
+        }
+        blocks[blockCount - 1] |= 2147483648;
+        for (i = 0; i < blockCount; ++i) {
+          s[i] ^= blocks[i];
+        }
+        f(s);
+      });
+      Keccak.prototype.toString = Keccak.prototype.hex = $(function () {
+        this.finalize();
+        var blockCount = this.blockCount,
+          s = this.s,
+          outputBlocks = this.outputBlocks,
+          extraBytes = this.extraBytes,
+          i = 0,
+          j = 0;
+        var hex = "",
+          block;
+        while (j < outputBlocks) {
+          for (i = 0; i < blockCount && j < outputBlocks; ++i, ++j) {
+            block = s[i];
+            hex += HEX_CHARS[block >> 4 & 15] + HEX_CHARS[block & 15] + HEX_CHARS[block >> 12 & 15] + HEX_CHARS[block >> 8 & 15] + HEX_CHARS[block >> 20 & 15] + HEX_CHARS[block >> 16 & 15] + HEX_CHARS[block >> 28 & 15] + HEX_CHARS[block >> 24 & 15];
+          }
+          if (j % blockCount === 0) {
+            f(s);
+            i = 0;
+          }
+        }
+        if (extraBytes) {
+          block = s[i];
+          hex += HEX_CHARS[block >> 4 & 15] + HEX_CHARS[block & 15];
+          if (extraBytes > 1) {
+            hex += HEX_CHARS[block >> 12 & 15] + HEX_CHARS[block >> 8 & 15];
+          }
+          if (extraBytes > 2) {
+            hex += HEX_CHARS[block >> 20 & 15] + HEX_CHARS[block >> 16 & 15];
+          }
+        }
+        return hex;
+      });
+      Keccak.prototype.arrayBuffer = $(function () {
+        this.finalize();
+        var blockCount = this.blockCount,
+          s = this.s,
+          outputBlocks = this.outputBlocks,
+          extraBytes = this.extraBytes,
+          i = 0,
+          j = 0;
+        var bytes = this.outputBits >> 3;
+        var buffer;
+        if (extraBytes) {
+          buffer = new ArrayBuffer(outputBlocks + 1 << 2);
+        } else {
+          buffer = new ArrayBuffer(bytes);
+        }
+        var array = new Uint32Array(buffer);
+        while (j < outputBlocks) {
+          for (i = 0; i < blockCount && j < outputBlocks; ++i, ++j) {
+            array[j] = s[i];
+          }
+          if (j % blockCount === 0) {
+            f(s);
+          }
+        }
+        if (extraBytes) {
+          array[i] = s[i];
+          buffer = buffer.slice(0, bytes);
+        }
+        return buffer;
+      });
+      Keccak.prototype.buffer = Keccak.prototype.arrayBuffer;
+      Keccak.prototype.digest = Keccak.prototype.array = $(function () {
+        this.finalize();
+        var blockCount = this.blockCount,
+          s = this.s,
+          outputBlocks = this.outputBlocks,
+          extraBytes = this.extraBytes,
+          i = 0,
+          j = 0;
+        var array = $Array.of(),
+          offset,
+          block;
+        while (j < outputBlocks) {
+          for (i = 0; i < blockCount && j < outputBlocks; ++i, ++j) {
+            offset = j << 2;
+            block = s[i];
+            array[offset] = block & 255;
+            array[offset + 1] = block >> 8 & 255;
+            array[offset + 2] = block >> 16 & 255;
+            array[offset + 3] = block >> 24 & 255;
+          }
+          if (j % blockCount === 0) {
+            f(s);
+          }
+        }
+        if (extraBytes) {
+          offset = j << 2;
+          block = s[i];
+          array[offset] = block & 255;
+          if (extraBytes > 1) {
+            array[offset + 1] = block >> 8 & 255;
+          }
+          if (extraBytes > 2) {
+            array[offset + 2] = block >> 16 & 255;
+          }
+        }
+        return array;
+      });
+      function Kmac(bits, padding, outputBits) {
+        Keccak.call(this, bits, padding, outputBits);
       }
-      s[0] ^= SHA3_IOTA_H[round];
-      s[1] ^= SHA3_IOTA_L[round];
-    }
-    B.fill(0);
-  }
-  $(keccakP);
-  class Keccak extends Hash {
-    constructor(blockLen, suffix, outputLen, enableXOF = false, rounds = 24) {
-      super();
-      this.blockLen = blockLen;
-      this.suffix = suffix;
-      this.outputLen = outputLen;
-      this.enableXOF = enableXOF;
-      this.rounds = rounds;
-      this.pos = 0;
-      this.posOut = 0;
-      this.finished = false;
-      this.destroyed = false;
-      assert$3.number(outputLen);
-      if (0 >= this.blockLen || this.blockLen >= 200) throw new Error("Sha3 supports only keccak-f1600 function");
-      this.state = new Uint8Array(200);
-      this.state32 = u32$1(this.state);
-    }
-    keccak() {
-      keccakP(this.state32, this.rounds);
-      this.posOut = 0;
-      this.pos = 0;
-    }
-    update(data) {
-      assert$3.exists(this);
-      const {
-        blockLen: blockLen,
-        state: state
-      } = this;
-      data = toBytes(data);
-      const len = data.length;
-      for (let pos = 0; pos < len;) {
-        const take = Math.min(blockLen - this.pos, len - pos);
-        for (let i = 0; i < take; i++) state[this.pos++] ^= data[pos++];
-        if (this.pos === blockLen) this.keccak();
+      $(Kmac);
+      Kmac.prototype = new Keccak();
+      Kmac.prototype.finalize = $(function () {
+        this.encode(this.outputBits, true);
+        return Keccak.prototype.finalize.call(this);
+      });
+      var f = function (s) {
+        var h, l, n, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, b0, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16, b17, b18, b19, b20, b21, b22, b23, b24, b25, b26, b27, b28, b29, b30, b31, b32, b33, b34, b35, b36, b37, b38, b39, b40, b41, b42, b43, b44, b45, b46, b47, b48, b49;
+        for (n = 0; n < 48; n += 2) {
+          c0 = s[0] ^ s[10] ^ s[20] ^ s[30] ^ s[40];
+          c1 = s[1] ^ s[11] ^ s[21] ^ s[31] ^ s[41];
+          c2 = s[2] ^ s[12] ^ s[22] ^ s[32] ^ s[42];
+          c3 = s[3] ^ s[13] ^ s[23] ^ s[33] ^ s[43];
+          c4 = s[4] ^ s[14] ^ s[24] ^ s[34] ^ s[44];
+          c5 = s[5] ^ s[15] ^ s[25] ^ s[35] ^ s[45];
+          c6 = s[6] ^ s[16] ^ s[26] ^ s[36] ^ s[46];
+          c7 = s[7] ^ s[17] ^ s[27] ^ s[37] ^ s[47];
+          c8 = s[8] ^ s[18] ^ s[28] ^ s[38] ^ s[48];
+          c9 = s[9] ^ s[19] ^ s[29] ^ s[39] ^ s[49];
+          h = c8 ^ (c2 << 1 | c3 >>> 31);
+          l = c9 ^ (c3 << 1 | c2 >>> 31);
+          s[0] ^= h;
+          s[1] ^= l;
+          s[10] ^= h;
+          s[11] ^= l;
+          s[20] ^= h;
+          s[21] ^= l;
+          s[30] ^= h;
+          s[31] ^= l;
+          s[40] ^= h;
+          s[41] ^= l;
+          h = c0 ^ (c4 << 1 | c5 >>> 31);
+          l = c1 ^ (c5 << 1 | c4 >>> 31);
+          s[2] ^= h;
+          s[3] ^= l;
+          s[12] ^= h;
+          s[13] ^= l;
+          s[22] ^= h;
+          s[23] ^= l;
+          s[32] ^= h;
+          s[33] ^= l;
+          s[42] ^= h;
+          s[43] ^= l;
+          h = c2 ^ (c6 << 1 | c7 >>> 31);
+          l = c3 ^ (c7 << 1 | c6 >>> 31);
+          s[4] ^= h;
+          s[5] ^= l;
+          s[14] ^= h;
+          s[15] ^= l;
+          s[24] ^= h;
+          s[25] ^= l;
+          s[34] ^= h;
+          s[35] ^= l;
+          s[44] ^= h;
+          s[45] ^= l;
+          h = c4 ^ (c8 << 1 | c9 >>> 31);
+          l = c5 ^ (c9 << 1 | c8 >>> 31);
+          s[6] ^= h;
+          s[7] ^= l;
+          s[16] ^= h;
+          s[17] ^= l;
+          s[26] ^= h;
+          s[27] ^= l;
+          s[36] ^= h;
+          s[37] ^= l;
+          s[46] ^= h;
+          s[47] ^= l;
+          h = c6 ^ (c0 << 1 | c1 >>> 31);
+          l = c7 ^ (c1 << 1 | c0 >>> 31);
+          s[8] ^= h;
+          s[9] ^= l;
+          s[18] ^= h;
+          s[19] ^= l;
+          s[28] ^= h;
+          s[29] ^= l;
+          s[38] ^= h;
+          s[39] ^= l;
+          s[48] ^= h;
+          s[49] ^= l;
+          b0 = s[0];
+          b1 = s[1];
+          b32 = s[11] << 4 | s[10] >>> 28;
+          b33 = s[10] << 4 | s[11] >>> 28;
+          b14 = s[20] << 3 | s[21] >>> 29;
+          b15 = s[21] << 3 | s[20] >>> 29;
+          b46 = s[31] << 9 | s[30] >>> 23;
+          b47 = s[30] << 9 | s[31] >>> 23;
+          b28 = s[40] << 18 | s[41] >>> 14;
+          b29 = s[41] << 18 | s[40] >>> 14;
+          b20 = s[2] << 1 | s[3] >>> 31;
+          b21 = s[3] << 1 | s[2] >>> 31;
+          b2 = s[13] << 12 | s[12] >>> 20;
+          b3 = s[12] << 12 | s[13] >>> 20;
+          b34 = s[22] << 10 | s[23] >>> 22;
+          b35 = s[23] << 10 | s[22] >>> 22;
+          b16 = s[33] << 13 | s[32] >>> 19;
+          b17 = s[32] << 13 | s[33] >>> 19;
+          b48 = s[42] << 2 | s[43] >>> 30;
+          b49 = s[43] << 2 | s[42] >>> 30;
+          b40 = s[5] << 30 | s[4] >>> 2;
+          b41 = s[4] << 30 | s[5] >>> 2;
+          b22 = s[14] << 6 | s[15] >>> 26;
+          b23 = s[15] << 6 | s[14] >>> 26;
+          b4 = s[25] << 11 | s[24] >>> 21;
+          b5 = s[24] << 11 | s[25] >>> 21;
+          b36 = s[34] << 15 | s[35] >>> 17;
+          b37 = s[35] << 15 | s[34] >>> 17;
+          b18 = s[45] << 29 | s[44] >>> 3;
+          b19 = s[44] << 29 | s[45] >>> 3;
+          b10 = s[6] << 28 | s[7] >>> 4;
+          b11 = s[7] << 28 | s[6] >>> 4;
+          b42 = s[17] << 23 | s[16] >>> 9;
+          b43 = s[16] << 23 | s[17] >>> 9;
+          b24 = s[26] << 25 | s[27] >>> 7;
+          b25 = s[27] << 25 | s[26] >>> 7;
+          b6 = s[36] << 21 | s[37] >>> 11;
+          b7 = s[37] << 21 | s[36] >>> 11;
+          b38 = s[47] << 24 | s[46] >>> 8;
+          b39 = s[46] << 24 | s[47] >>> 8;
+          b30 = s[8] << 27 | s[9] >>> 5;
+          b31 = s[9] << 27 | s[8] >>> 5;
+          b12 = s[18] << 20 | s[19] >>> 12;
+          b13 = s[19] << 20 | s[18] >>> 12;
+          b44 = s[29] << 7 | s[28] >>> 25;
+          b45 = s[28] << 7 | s[29] >>> 25;
+          b26 = s[38] << 8 | s[39] >>> 24;
+          b27 = s[39] << 8 | s[38] >>> 24;
+          b8 = s[48] << 14 | s[49] >>> 18;
+          b9 = s[49] << 14 | s[48] >>> 18;
+          s[0] = b0 ^ ~b2 & b4;
+          s[1] = b1 ^ ~b3 & b5;
+          s[10] = b10 ^ ~b12 & b14;
+          s[11] = b11 ^ ~b13 & b15;
+          s[20] = b20 ^ ~b22 & b24;
+          s[21] = b21 ^ ~b23 & b25;
+          s[30] = b30 ^ ~b32 & b34;
+          s[31] = b31 ^ ~b33 & b35;
+          s[40] = b40 ^ ~b42 & b44;
+          s[41] = b41 ^ ~b43 & b45;
+          s[2] = b2 ^ ~b4 & b6;
+          s[3] = b3 ^ ~b5 & b7;
+          s[12] = b12 ^ ~b14 & b16;
+          s[13] = b13 ^ ~b15 & b17;
+          s[22] = b22 ^ ~b24 & b26;
+          s[23] = b23 ^ ~b25 & b27;
+          s[32] = b32 ^ ~b34 & b36;
+          s[33] = b33 ^ ~b35 & b37;
+          s[42] = b42 ^ ~b44 & b46;
+          s[43] = b43 ^ ~b45 & b47;
+          s[4] = b4 ^ ~b6 & b8;
+          s[5] = b5 ^ ~b7 & b9;
+          s[14] = b14 ^ ~b16 & b18;
+          s[15] = b15 ^ ~b17 & b19;
+          s[24] = b24 ^ ~b26 & b28;
+          s[25] = b25 ^ ~b27 & b29;
+          s[34] = b34 ^ ~b36 & b38;
+          s[35] = b35 ^ ~b37 & b39;
+          s[44] = b44 ^ ~b46 & b48;
+          s[45] = b45 ^ ~b47 & b49;
+          s[6] = b6 ^ ~b8 & b0;
+          s[7] = b7 ^ ~b9 & b1;
+          s[16] = b16 ^ ~b18 & b10;
+          s[17] = b17 ^ ~b19 & b11;
+          s[26] = b26 ^ ~b28 & b20;
+          s[27] = b27 ^ ~b29 & b21;
+          s[36] = b36 ^ ~b38 & b30;
+          s[37] = b37 ^ ~b39 & b31;
+          s[46] = b46 ^ ~b48 & b40;
+          s[47] = b47 ^ ~b49 & b41;
+          s[8] = b8 ^ ~b0 & b2;
+          s[9] = b9 ^ ~b1 & b3;
+          s[18] = b18 ^ ~b10 & b12;
+          s[19] = b19 ^ ~b11 & b13;
+          s[28] = b28 ^ ~b20 & b22;
+          s[29] = b29 ^ ~b21 & b23;
+          s[38] = b38 ^ ~b30 & b32;
+          s[39] = b39 ^ ~b31 & b33;
+          s[48] = b48 ^ ~b40 & b42;
+          s[49] = b49 ^ ~b41 & b43;
+          s[0] ^= RC[n];
+          s[1] ^= RC[n + 1];
+        }
+      };
+      $(f);
+      if (COMMON_JS) {
+        module.exports = methods;
+      } else {
+        for (i = 0; i < methodNames.length; ++i) {
+          root[methodNames[i]] = methods[methodNames[i]];
+        }
       }
-      return this;
-    }
-    finish() {
-      if (this.finished) return;
-      this.finished = true;
-      const {
-        state: state,
-        suffix: suffix,
-        pos: pos,
-        blockLen: blockLen
-      } = this;
-      state[pos] ^= suffix;
-      if ((suffix & 128) !== 0 && pos === blockLen - 1) this.keccak();
-      state[blockLen - 1] ^= 128;
-      this.keccak();
-    }
-    writeInto(out) {
-      assert$3.exists(this, false);
-      assert$3.bytes(out);
-      this.finish();
-      const bufferOut = this.state;
-      const {
-        blockLen: blockLen
-      } = this;
-      for (let pos = 0, len = out.length; pos < len;) {
-        if (this.posOut >= blockLen) this.keccak();
-        const take = Math.min(blockLen - this.posOut, len - pos);
-        out.set(bufferOut.subarray(this.posOut, this.posOut + take), pos);
-        this.posOut += take;
-        pos += take;
-      }
-      return out;
-    }
-    xofInto(out) {
-      if (!this.enableXOF) throw new Error("XOF is not possible for this instance");
-      return this.writeInto(out);
-    }
-    xof(bytes) {
-      assert$3.number(bytes);
-      return this.xofInto(new Uint8Array(bytes));
-    }
-    digestInto(out) {
-      assert$3.output(out, this);
-      if (this.finished) throw new Error("digest() was already called");
-      this.writeInto(out);
-      this.destroy();
-      return out;
-    }
-    digest() {
-      return this.digestInto(new Uint8Array(this.outputLen));
-    }
-    destroy() {
-      this.destroyed = true;
-      this.state.fill(0);
-    }
-    _cloneInto(to) {
-      const {
-        blockLen: blockLen,
-        suffix: suffix,
-        outputLen: outputLen,
-        rounds: rounds,
-        enableXOF: enableXOF
-      } = this;
-      to || (to = new Keccak(blockLen, suffix, outputLen, enableXOF, rounds));
-      to.state32.set(this.state32);
-      to.pos = this.pos;
-      to.posOut = this.posOut;
-      to.finished = this.finished;
-      to.rounds = rounds;
-      to.suffix = suffix;
-      to.outputLen = outputLen;
-      to.enableXOF = enableXOF;
-      to.destroyed = this.destroyed;
-      return to;
-    }
-  }
-  const gen = (suffix, blockLen, outputLen) => wrapConstructor($(() => new Keccak(blockLen, suffix, outputLen)));
-  $(gen);
-  gen(6, 144, 224 / 8);
-  gen(6, 136, 256 / 8);
-  gen(6, 104, 384 / 8);
-  gen(6, 72, 512 / 8);
-  gen(1, 144, 224 / 8);
-  const keccak_256 = gen(1, 136, 256 / 8);
-  gen(1, 104, 384 / 8);
-  gen(1, 72, 512 / 8);
-  const genShake = (suffix, blockLen, outputLen) => wrapConstructorWithOpts($((opts = $Object.create(null, undefined)) => new Keccak(blockLen, suffix, opts.dkLen === undefined ? outputLen : opts.dkLen, true)));
-  $(genShake);
-  genShake(31, 168, 128 / 8);
-  genShake(31, 136, 256 / 8);
+    })();
+  })(sha3$1);
+  var sha3 = sha3$1.exports;
   class HMAC extends Hash {
     constructor(hash, _key) {
       super();
@@ -17615,7 +18001,7 @@ var solanaWeb3 = $(function (exports) {
     static publicKeyToEthAddress(publicKey) {
       assert$1(publicKey.length === PUBLIC_KEY_BYTES, `Public key must be ${PUBLIC_KEY_BYTES} bytes but received ${publicKey.length} bytes`);
       try {
-        return buffer.Buffer.from(keccak_256(toBuffer(publicKey))).slice(-ETHEREUM_ADDRESS_BYTES);
+        return buffer.Buffer.from(sha3.keccak_256.update(toBuffer(publicKey)).digest()).slice(-ETHEREUM_ADDRESS_BYTES);
       } catch (error) {
         throw new Error(`Error constructing Ethereum address: ${error}`);
       }
@@ -17697,7 +18083,7 @@ var solanaWeb3 = $(function (exports) {
       try {
         const privateKey = toBuffer(pkey);
         const publicKey = publicKeyCreate(privateKey, false).slice(1);
-        const messageHash = buffer.Buffer.from(keccak_256(toBuffer(message)));
+        const messageHash = buffer.Buffer.from(sha3.keccak_256.update(toBuffer(message)).digest());
         const [signature, recoveryId] = ecdsaSign(messageHash, privateKey);
         return this.createInstructionWithPublicKey($(function () {
           let result = $Object.create(null, undefined);
@@ -18509,32 +18895,6 @@ var solanaWeb3 = $(function (exports) {
         return result;
       })();
     }
-    static decodeAuthorizeWithSeed(instruction) {
-      this.checkProgramId(instruction.programId);
-      this.checkKeyLength(instruction.keys, 3);
-      const {
-        voteAuthorizeWithSeedArgs: {
-          currentAuthorityDerivedKeyOwnerPubkey: currentAuthorityDerivedKeyOwnerPubkey,
-          currentAuthorityDerivedKeySeed: currentAuthorityDerivedKeySeed,
-          newAuthorized: newAuthorized,
-          voteAuthorizationType: voteAuthorizationType
-        }
-      } = decodeData$1(VOTE_INSTRUCTION_LAYOUTS.AuthorizeWithSeed, instruction.data);
-      return $(function () {
-        let result = $Object.create(null, undefined);
-        result.currentAuthorityDerivedKeyBasePubkey = instruction.keys[2].pubkey;
-        result.currentAuthorityDerivedKeyOwnerPubkey = new PublicKey(currentAuthorityDerivedKeyOwnerPubkey);
-        result.currentAuthorityDerivedKeySeed = currentAuthorityDerivedKeySeed;
-        result.newAuthorizedPubkey = new PublicKey(newAuthorized);
-        result.voteAuthorizationType = $(function () {
-          let result = $Object.create(null, undefined);
-          result.index = voteAuthorizationType;
-          return result;
-        })();
-        result.votePubkey = instruction.keys[0].pubkey;
-        return result;
-      })();
-    }
     static decodeWithdraw(instruction) {
       this.checkProgramId(instruction.programId);
       this.checkKeyLength(instruction.keys, 3);
@@ -18579,12 +18939,6 @@ var solanaWeb3 = $(function (exports) {
       let result = $Object.create(null, undefined);
       result.index = 3;
       result.layout = struct($Array.of(u32("instruction"), ns64("lamports")));
-      return result;
-    })();
-    result.AuthorizeWithSeed = $(function () {
-      let result = $Object.create(null, undefined);
-      result.index = 10;
-      result.layout = struct($Array.of(u32("instruction"), voteAuthorizeWithSeedArgs()));
       return result;
     })();
     return result;
@@ -18705,55 +19059,6 @@ var solanaWeb3 = $(function (exports) {
       })(), $(function () {
         let result = $Object.create(null, undefined);
         result.pubkey = authorizedPubkey;
-        result.isSigner = true;
-        result.isWritable = false;
-        return result;
-      })());
-      return new Transaction().add($(function () {
-        let result = $Object.create(null, undefined);
-        result.keys = keys;
-        result.programId = this.programId;
-        result.data = data;
-        return result;
-      }).bind(this)());
-    }
-    static authorizeWithSeed(params) {
-      const {
-        currentAuthorityDerivedKeyBasePubkey: currentAuthorityDerivedKeyBasePubkey,
-        currentAuthorityDerivedKeyOwnerPubkey: currentAuthorityDerivedKeyOwnerPubkey,
-        currentAuthorityDerivedKeySeed: currentAuthorityDerivedKeySeed,
-        newAuthorizedPubkey: newAuthorizedPubkey,
-        voteAuthorizationType: voteAuthorizationType,
-        votePubkey: votePubkey
-      } = params;
-      const type = VOTE_INSTRUCTION_LAYOUTS.AuthorizeWithSeed;
-      const data = encodeData(type, $(function () {
-        let result = $Object.create(null, undefined);
-        result.voteAuthorizeWithSeedArgs = $(function () {
-          let result = $Object.create(null, undefined);
-          result.currentAuthorityDerivedKeyOwnerPubkey = toBuffer(currentAuthorityDerivedKeyOwnerPubkey.toBuffer());
-          result.currentAuthorityDerivedKeySeed = currentAuthorityDerivedKeySeed;
-          result.newAuthorized = toBuffer(newAuthorizedPubkey.toBuffer());
-          result.voteAuthorizationType = voteAuthorizationType.index;
-          return result;
-        })();
-        return result;
-      })());
-      const keys = $Array.of($(function () {
-        let result = $Object.create(null, undefined);
-        result.pubkey = votePubkey;
-        result.isSigner = false;
-        result.isWritable = true;
-        return result;
-      })(), $(function () {
-        let result = $Object.create(null, undefined);
-        result.pubkey = SYSVAR_CLOCK_PUBKEY;
-        result.isSigner = false;
-        result.isWritable = false;
-        return result;
-      })(), $(function () {
-        let result = $Object.create(null, undefined);
-        result.pubkey = currentAuthorityDerivedKeyBasePubkey;
         result.isSigner = true;
         result.isWritable = false;
         return result;
