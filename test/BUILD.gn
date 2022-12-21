@@ -16,7 +16,7 @@ import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/buildflags/buildflags.gni")
-import("//brave/components/speedreader/common/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/translate/core/common/buildflags.gni")
 import("//brave/test/testing.gni")
@@ -857,6 +857,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common:solana_utils",
     "//brave/components/brave_wallet/common:test_support",
+    "//brave/components/brave_wallet/renderer",
     "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
     "//brave/components/brave_wayback_machine",
     "//brave/components/brave_wayback_machine:buildflags",
@@ -959,8 +960,11 @@ test("brave_browser_tests") {
     deps += [
       "//brave/components/brave_vpn/browser",
       "//brave/components/brave_vpn/common",
-      "//brave/renderer/brave_vpn:browser_tests",
     ]
+
+    if (is_android) {
+      deps += [ "//brave/components/brave_vpn/renderer/android:browser_tests" ]
+    }
   }
 
   if (enable_crash_dialog) {

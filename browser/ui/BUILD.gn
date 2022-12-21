@@ -11,7 +11,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/buildflags/buildflags.gni")
-import("//brave/components/speedreader/common/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/translate/core/common/buildflags.gni")
 import("//build/config/features.gni")
@@ -380,7 +380,9 @@ source_set("ui") {
     "//brave/components/brave_search/common",
     "//brave/components/brave_search_conversion",
     "//brave/components/brave_shields/browser",
+    "//brave/components/brave_shields/common:mojom",
     "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_vpn/common/mojom",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/constants",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
@@ -652,7 +654,6 @@ source_set("ui") {
     ]
     deps += [
       "//brave/components/brave_vpn/browser",
-      "//brave/components/brave_vpn/common/mojom",
       "//brave/components/brave_vpn/resources/panel:brave_vpn_panel_generated",
       "//mojo/public/cpp/bindings",
       "//ui/webui:webui",

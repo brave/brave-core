@@ -1,24 +1,24 @@
-import("//brave/components/speedreader/common/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+
+assert(enable_speedreader)
 
 source_set("renderer") {
-  if (enable_speedreader) {
-    sources = [
-      "speedreader_js_handler.cc",
-      "speedreader_js_handler.h",
-      "speedreader_render_frame_observer.cc",
-      "speedreader_render_frame_observer.h",
-    ]
+  sources = [
+    "speedreader_js_handler.cc",
+    "speedreader_js_handler.h",
+    "speedreader_render_frame_observer.cc",
+    "speedreader_render_frame_observer.h",
+  ]
 
-    deps = [
-      "//base",
-      "//brave/components/speedreader/common:common",
-      "//brave/components/speedreader/common:mojom",
-      "//content/public/renderer",
-      "//gin",
-      "//mojo/public/cpp/bindings",
-      "//third_party/blink/public:blink",
-      "//third_party/blink/public/common",
-      "//v8",
-    ]
-  }
+  deps = [
+    "//base",
+    "//brave/components/speedreader/common:common",
+    "//brave/components/speedreader/common:mojom",
+    "//content/public/renderer",
+    "//gin",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/public/common",
+    "//v8",
+  ]
 }

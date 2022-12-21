@@ -14,5 +14,8 @@ brave_components_sync_driver_sources = [
 ]
 brave_components_sync_driver_deps = [
   "//brave/components/brave_sync",
+  "//brave/components/brave_sync:crypto",
+  "//brave/components/brave_sync:network_time_helper",
+  "//brave/components/brave_sync:prefs",
   "//brave/components/constants",
 ]

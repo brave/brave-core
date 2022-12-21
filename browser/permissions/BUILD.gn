@@ -16,6 +16,7 @@ if (!is_android) {
     deps = [
       "//brave/browser",
       "//brave/browser/brave_wallet",
+      "//brave/components/brave_shields/common",
       "//brave/components/brave_wallet/browser",
       "//brave/components/brave_wallet/browser:permission_utils",
       "//brave/components/brave_wallet/common",

@@ -14,7 +14,7 @@
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/speedreader/common/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"

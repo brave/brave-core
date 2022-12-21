@@ -14,8 +14,6 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "net/dns/dns_config.h"
-#include "net/dns/dns_config_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
