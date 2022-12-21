@@ -46,9 +46,4 @@ KeyedService* PlaylistPageHandlerFactory::BuildServiceInstanceFor(
   return new PlaylistAndroidPageHandler(profile);
 }
 
-content::BrowserContext* PlaylistPageHandlerFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
-}
-
 }  // namespace playlist

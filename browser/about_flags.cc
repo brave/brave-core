@@ -576,7 +576,7 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
      {kPlaylistFeatureInternalName,                                        \
      flag_descriptions::kPlaylistName,                                     \
      flag_descriptions::kPlaylistDescription,                              \
-     kOsDesktop | kOsAndroid,             \
+     kOsMac | kOsWin | kOsLinux | kOsAndroid,                              \
      FEATURE_VALUE_TYPE(playlist::features::kPlaylist)},
 #else
 #define PLAYLIST_FEATURE_ENTRIES

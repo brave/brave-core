@@ -6,17 +6,12 @@
 #ifndef BRAVE_BROWSER_PLAYLIST_ANDROID_PLAYLIST_ANDROID_PAGE_HANDLER_H_
 #define BRAVE_BROWSER_PLAYLIST_ANDROID_PLAYLIST_ANDROID_PAGE_HANDLER_H_
 
-#include "base/scoped_observation.h"
 #include "brave/browser/playlist/playlist_page_handler.h"
 #include "brave/components/playlist/mojom/playlist.mojom.h"
 #include "brave/components/playlist/playlist_service.h"
-#include "brave/components/playlist/playlist_service_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
-#include "mojo/public/cpp/bindings/remote.h"
 
 class Profile;
 
@@ -28,7 +23,6 @@ class PlaylistAndroidPageHandler : public PlaylistPageHandler,
   ~PlaylistAndroidPageHandler() override;
 
  private:
-  raw_ptr<PlaylistPageHandler> playlistPageHandler_ = nullptr;
   mojo::ReceiverSet<playlist::mojom::PageHandler> receivers_;
 };
 

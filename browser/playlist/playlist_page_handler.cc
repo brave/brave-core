@@ -14,11 +14,11 @@
 #include "brave/components/playlist/playlist_constants.h"
 #include "brave/components/playlist/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #endif  // BUILDFLAG(IS_ANDROID)
-#include "components/prefs/pref_service.h"
 
 using PlaylistId = playlist::PlaylistService::PlaylistId;
 using PlaylistItemId = playlist::PlaylistService::PlaylistItemId;
@@ -44,7 +44,7 @@ PlaylistPageHandler::PlaylistPageHandler(
 PlaylistPageHandler::PlaylistPageHandler(Profile* profile) : profile_(profile) {
   DCHECK(profile_);
   // TODO(deeppandya) : check if we need observer for android
-  // observation_.Observe(GetPlaylistService(profile_));
+  observation_.Observe(GetPlaylistService(profile_));
 }
 #endif  // BUILDFLAG(IS_ANDROID)
 
@@ -57,9 +57,8 @@ void PlaylistPageHandler::GetAllPlaylists(
     std::vector<mojo::StructPtr<playlist::mojom::PlaylistItem>> items;
     for (const auto& item : playlist.items) {
       items.push_back(playlist::mojom::PlaylistItem::New(
-          item.id, item.title, GURL(item.page_src),
-          GURL("file://" + item.media_file_path),
-          GURL("file://" + item.thumbnail_path), item.media_file_cached));
+          item.id, item.title, GURL(item.page_src), GURL(item.media_file_path),
+          GURL(item.thumbnail_path), item.media_file_cached));
     }
     playlists.push_back(playlist::mojom::Playlist::New(
         playlist.id, playlist.name, std::move(items)));
@@ -80,9 +79,8 @@ void PlaylistPageHandler::GetPlaylist(
   std::vector<mojo::StructPtr<playlist::mojom::PlaylistItem>> items;
   for (const auto& item : playlist->items) {
     items.push_back(playlist::mojom::PlaylistItem::New(
-        item.id, item.title, GURL(item.page_src),
-        GURL("file://" + item.media_file_path),
-        GURL("file://" + item.thumbnail_path), item.media_file_cached));
+        item.id, item.title, GURL(item.page_src), GURL(item.media_file_path),
+        GURL(item.thumbnail_path), item.media_file_cached));
   }
   std::move(callback).Run(playlist::mojom::Playlist::New(
       playlist->id, playlist->name, std::move(items)));
