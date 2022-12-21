@@ -58,7 +58,7 @@ export const BuySendSwapDepositButton = (props: Props) => {
       <NavTooltip
         text={getLocale(option.name)}
         orientation='right'
-        distance={46}
+        distance={60}
         showTip={!!isTab && active}
         isSwap={isSwap}
       />
