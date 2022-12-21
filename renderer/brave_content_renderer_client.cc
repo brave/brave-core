@@ -20,6 +20,7 @@
 #include "brave/renderer/brave_render_thread_observer.h"
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "chrome/renderer/chrome_render_thread_observer.h"
 #include "content/public/renderer/render_thread.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
@@ -108,7 +109,8 @@ void BraveContentRendererClient::RenderFrameCreated(
         render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
   }
 
-  if (base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
+  if (base::FeatureList::IsEnabled(skus::features::kSkusFeature) &&
+      !ChromeRenderThreadObserver::is_incognito_process()) {
     new skus::SkusRenderFrameObserver(render_frame);
   }
 
