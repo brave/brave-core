@@ -95,7 +95,6 @@ android_aar_prebuilt("com_brave_playlist_java") {
     "//third_party/androidx:androidx_transition_transition_java",
     "//third_party/androidx:androidx_viewpager2_viewpager2_java",
   ]
-  ignore_manifest = true
   bytecode_rewriter_target =
       "//build/android/bytecode:fragment_activity_replacer"
 }

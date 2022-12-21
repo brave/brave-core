@@ -600,7 +600,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         contentUrl.url = url;
                         int mediaCount = SharedPreferencesManager.getInstance().readInt(
                                 PlaylistUtils.ADD_MEDIA_COUNT);
-                        if (mediaCount < 2) {
+                        if (mediaCount <= 2) {
                             SharedPreferencesManager.getInstance().writeInt(
                                     PlaylistUtils.ADD_MEDIA_COUNT, mediaCount + 1);
                         }

@@ -194,8 +194,6 @@
     android:exported="false">
 </service>
 
-<service android:name="com.brave.playlist.PlaylistVideoService" />
-
 <service
     android:name="com.wireguard.android.backend.GoBackend$VpnService"
     android:permission="android.permission.BIND_VPN_SERVICE"
