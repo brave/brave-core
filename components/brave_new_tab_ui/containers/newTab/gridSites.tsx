@@ -18,16 +18,25 @@ import createWidget from '../../components/default/widget'
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
 import { useMaintainScrollPosition } from '../../helpers/scrolling'
 import AddSiteTile from './addSiteTile'
-import { GridPageButtons } from './gridPageButtons'
 // Component groups
 import GridSiteTile from './gridTile'
 import { TopSiteDragOverlay } from './gridTileOverlay'
+import Navdots from '@brave/leo/react/navdots'
+import styled from 'styled-components'
 
 // Note: to increase the number of pages, you will also need to increase
 // kMaxNumCustomLinks in ntp_tiles/constants.cc
 const MAX_PAGES = 4
 const activationConstraint: PointerActivationConstraint = { distance: 2 }
 const autoScrollOptions: AutoScrollOptions = { interval: 500 }
+
+const NavDotsContainer = styled.div`
+  --leo-navdots-active-color: white;
+  --leo-navdots-active-color-hover: white;
+  --leo-navdots-color: rgba(255,255,255,0.5);
+  --leo-navdots-color-hover: rgba(255,255,255,0.8);
+  --leo-navdots-transition-duration: 0;
+`
 
 interface Props {
   actions: typeof newTabActions & typeof gridSitesActions
@@ -91,6 +100,32 @@ function TopSitesList (props: Props) {
 
   useMaintainScrollPosition('grid-pages-container-scroll-position', gridPagesContainerRef)
 
+  const showPage = (e: CustomEvent<{ activeDot: number }>) => {
+    const el = gridPagesContainerRef.current?.children[e.detail.activeDot] as HTMLElement
+    if (!el) return
+
+    gridPagesContainerRef.current?.scrollTo({ left: el.offsetLeft, behavior: 'smooth' })
+  }
+
+  const navdotsRef = React.useRef<{ activeDot: number }>()
+  React.useEffect(() => {
+    if (!gridPagesContainerRef.current) return
+
+    const handler = () => {
+      if (!navdotsRef.current) return
+      const currentPercent = gridPagesContainerRef.current
+        ? gridPagesContainerRef.current?.scrollLeft / (gridPagesContainerRef.current?.scrollWidth - gridPagesContainerRef.current?.clientWidth)
+        : 0
+      navdotsRef.current.activeDot = currentPercent * (pageCount - 1);
+    };
+    gridPagesContainerRef.current.addEventListener('scroll', handler)
+    handler()
+
+    return () => {
+      gridPagesContainerRef.current?.removeEventListener('scroll', handler)
+    }
+  }, [])
+
   return <PagesContainer>
     <GridPagesContainer customLinksEnabled={customLinksEnabled} ref={gridPagesContainerRef as any}>
       <DndContext onDragEnd={handleDragEnd} autoScroll={autoScrollOptions} sensors={sensors}>
@@ -102,7 +137,9 @@ function TopSitesList (props: Props) {
     </GridPagesContainer>
     {customLinksEnabled &&
       pageCount > 1 &&
-      <GridPageButtons numPages={pageCount} pageContainerRef={gridPagesContainerRef} />}
+      <NavDotsContainer>
+        <Navdots ref={navdotsRef} dotCount={pageCount} onChange={showPage} />
+      </NavDotsContainer>}
   </PagesContainer>
 }
 
