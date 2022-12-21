@@ -189,9 +189,10 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteLocal) {
   ASSERT_TRUE(HandleIPFSURLRewrite(&ipfs_uri, browser_context()));
 }
 
-TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteENS) {
+TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteDDns) {
   profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
+
   EXPECT_FALSE(decentralized_dns::IsENSResolveMethodEnabled(local_state()));
   GURL ens_uri("https://brave.eth");
   ASSERT_FALSE(HandleIPFSURLRewrite(&ens_uri, browser_context()));
@@ -200,6 +201,32 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteENS) {
       static_cast<int>(decentralized_dns::ResolveMethodTypes::ENABLED));
   EXPECT_TRUE(decentralized_dns::IsENSResolveMethodEnabled(local_state()));
   ASSERT_TRUE(HandleIPFSURLRewrite(&ens_uri, browser_context()));
+
+  EXPECT_FALSE(decentralized_dns::IsSnsResolveMethodEnabled(local_state()));
+  GURL sns_uri("https://brave.sol");
+  ASSERT_FALSE(HandleIPFSURLRewrite(&sns_uri, browser_context()));
+  local_state()->SetInteger(
+      decentralized_dns::kSnsResolveMethod,
+      static_cast<int>(decentralized_dns::ResolveMethodTypes::ENABLED));
+  EXPECT_TRUE(decentralized_dns::IsSnsResolveMethodEnabled(local_state()));
+  ASSERT_TRUE(HandleIPFSURLRewrite(&sns_uri, browser_context()));
+
+  EXPECT_FALSE(decentralized_dns::IsUnstoppableDomainsResolveMethodEnabled(
+      local_state()));
+  GURL ud_uri("https://brave.crypto");
+  ASSERT_FALSE(HandleIPFSURLRewrite(&ud_uri, browser_context()));
+  local_state()->SetInteger(
+      decentralized_dns::kUnstoppableDomainsResolveMethod,
+      static_cast<int>(decentralized_dns::ResolveMethodTypes::ENABLED));
+  EXPECT_TRUE(decentralized_dns::IsUnstoppableDomainsResolveMethodEnabled(
+      local_state()));
+  ASSERT_TRUE(HandleIPFSURLRewrite(&ud_uri, browser_context()));
+
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_ASK));
+  ASSERT_FALSE(HandleIPFSURLRewrite(&ens_uri, browser_context()));
+  ASSERT_FALSE(HandleIPFSURLRewrite(&sns_uri, browser_context()));
+  ASSERT_FALSE(HandleIPFSURLRewrite(&ud_uri, browser_context()));
 }
 
 TEST_F(ContentBrowserClientHelperUnitTest, HandleIPNSURLRewriteLocal) {
