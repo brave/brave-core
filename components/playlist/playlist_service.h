@@ -160,6 +160,7 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, DeleteItem);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, RemoveAndRestoreLocalData);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CachingBehavior);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, DefaultSaveTargetListID);
 
   // KeyedService overrides:
   void Shutdown() override;
@@ -219,6 +220,8 @@ class PlaylistService : public KeyedService,
   void OnGetMetadata(base::Value value);
 
   content::WebContents* GetBackgroundWebContentsForTesting();
+
+  std::string GetDefaultSaveTargetListID();
 
   const base::FilePath base_dir_;
   base::ObserverList<PlaylistServiceObserver> observers_;

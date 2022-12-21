@@ -64,6 +64,8 @@ void PlaylistServiceFactory::RegisterProfilePrefs(
                                    base::Value(std::move(dict)));
   registry->RegisterDictionaryPref(kPlaylistItemsPref);
   registry->RegisterBooleanPref(kPlaylistCacheByDefault, true);
+  registry->RegisterStringPref(kPlaylistDefaultSaveTargetListID,
+                               kDefaultPlaylistID);
 }
 
 PlaylistServiceFactory::PlaylistServiceFactory()

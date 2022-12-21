@@ -27,6 +27,10 @@ constexpr char kPlaylistItemsPref[] = "brave.playlist.items";
 // Boolean pref indicates that we should cache media file when adding items.
 constexpr char kPlaylistCacheByDefault[] = "brave.playlist.cache";
 
+// A string indicates to which playlist items should be added by default.
+constexpr char kPlaylistDefaultSaveTargetListID[] =
+    "brave.playlist.default_save_target_list_id";
+
 }  // namespace playlist
 
 #endif  // BRAVE_COMPONENTS_PLAYLIST_PREF_NAMES_H_

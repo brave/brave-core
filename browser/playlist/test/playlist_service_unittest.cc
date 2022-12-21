@@ -777,4 +777,25 @@ TEST_F(PlaylistServiceUnitTest, CachingBehavior) {
   }
 }
 
+TEST_F(PlaylistServiceUnitTest, DefaultSaveTargetListID) {
+  // The default playlist is the save target to begin with.
+  auto* prefs = this->prefs();
+  auto* service = playlist_service();
+  EXPECT_EQ(kDefaultPlaylistID,
+            prefs->GetString(kPlaylistDefaultSaveTargetListID));
+  EXPECT_EQ(kDefaultPlaylistID, service->GetDefaultSaveTargetListID());
+
+  // Set another playlist as a default save target.
+  playlist::PlaylistInfo another_playlist;
+  service->CreatePlaylist(another_playlist);
+  prefs->SetString(kPlaylistDefaultSaveTargetListID, another_playlist.id);
+  EXPECT_EQ(another_playlist.id, service->GetDefaultSaveTargetListID());
+
+  // When the target id is invalid, reset to the default one.
+  service->RemovePlaylist(another_playlist.id);
+  EXPECT_EQ(kDefaultPlaylistID, service->GetDefaultSaveTargetListID());
+  EXPECT_EQ(kDefaultPlaylistID,
+            prefs->GetString(kPlaylistDefaultSaveTargetListID));
+}
+
 }  // namespace playlist
