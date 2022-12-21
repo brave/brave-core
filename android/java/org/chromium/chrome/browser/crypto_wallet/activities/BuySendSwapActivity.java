@@ -1194,10 +1194,10 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         if (result == null || result.isEmpty()) {
             mResolvedAddrText.setVisibility(View.GONE);
             mResolvedAddrText.setText("");
-            String notRegsteredErrorText = String.format(
+            String notRegisteredErrorText = String.format(
                     getString(R.string.wallet_domain_not_registered_error_text), domain);
 
-            setSendToFromValueValidationResult(notRegsteredErrorText, true, true);
+            setSendToFromValueValidationResult(notRegisteredErrorText, true, true);
         } else {
             mResolvedAddrText.setVisibility(View.VISIBLE);
             mResolvedAddrText.setText(result);
