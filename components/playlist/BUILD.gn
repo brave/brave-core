@@ -51,6 +51,7 @@ source_set("playlist") {
     "//base",
     "//brave/components/api_request_helper:api_request_helper",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/playlist/mojom",
     "//components/component_updater",
     "//components/download/public/common:public",
     "//components/keyed_service/core",
