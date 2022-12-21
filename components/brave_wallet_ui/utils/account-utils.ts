@@ -33,7 +33,10 @@ export const groupAccountsById = (accounts: WalletAccountType[], key: string) =>
   }, {})
 }
 
-export const findAccountByAddress = (accounts: WalletAccountType[], address: string): WalletAccountType | undefined => {
+export const findAccountByAddress = <T extends { address: string }>(
+  accounts: T[],
+  address: string
+): T | undefined => {
   return accounts.find((account) => address === account.address)
 }
 

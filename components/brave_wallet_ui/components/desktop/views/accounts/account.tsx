@@ -5,9 +5,7 @@
 
 import * as React from 'react'
 import { Redirect, useParams, useLocation } from 'react-router'
-import {
-  useDispatch
-} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { create } from 'ethereum-blockies'
 
 // Selectors
@@ -27,6 +25,10 @@ import { reduceAddress } from '../../../../utils/reduce-address'
 import { getLocale } from '../../../../../common/locale'
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
 import { getBalance } from '../../../../utils/balance-utils'
+import { getFilecoinKeyringIdFromNetwork, getNetworkFromTXDataUnion } from '../../../../utils/network-utils'
+import { parseTransactionWithPrices } from '../../../../common/hooks/transaction-parser'
+import { selectAllBlockchainTokensFromQueryResult, selectAllUserAssetsFromQueryResult } from '../../../../common/slices/entities/blockchain-token.entity'
+import { selectAllNetworksFromQueryResult } from '../../../../common/slices/entities/network.entity'
 
 // Styled Components
 import {
@@ -57,9 +59,9 @@ import { AccountButtonOptions } from '../../../../options/account-list-button-op
 
 // Hooks
 import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view'
+import { useGetAllNetworksQuery, useGetTokensRegistryQuery, useGetUserTokensRegistryQuery } from '../../../../common/slices/api.slice'
 
 // Actions
-import { getFilecoinKeyringIdFromNetwork } from '../../../../utils/network-utils'
 import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reducer'
 
 export interface Props {
@@ -77,10 +79,28 @@ export const Account = ({
   const dispatch = useDispatch()
 
   // unsafe selectors
-  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
   const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
+  const solFeeEstimates = useUnsafeWalletSelector(WalletSelectors.solFeeEstimates)
+  const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
+
+  // queries
+  const { networkList } = useGetAllNetworksQuery(undefined, {
+    selectFromResult: (result) => ({
+      networkList: selectAllNetworksFromQueryResult(result)
+    })
+  })
+  const { fullTokenList } = useGetTokensRegistryQuery(undefined, {
+    selectFromResult: (result) => ({
+      fullTokenList: selectAllBlockchainTokensFromQueryResult(result)
+    })
+  })
+  const { userVisibleTokensList } = useGetUserTokensRegistryQuery(undefined, {
+    selectFromResult: result => ({
+      userVisibleTokensList: selectAllUserAssetsFromQueryResult(result)
+    })
+  })
 
   // safe selectors
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
@@ -103,11 +123,32 @@ export const Account = ({
 
   const transactionList = React.useMemo(() => {
     if (selectedAccount?.address && transactions[selectedAccount.address]) {
-      return sortTransactionByDate(transactions[selectedAccount.address], 'descending')
+      return sortTransactionByDate(
+        transactions[selectedAccount.address],
+        'descending'
+      ).map(tx => parseTransactionWithPrices({
+        tx,
+        accounts,
+        fullTokenList,
+        userVisibleTokensList,
+        solFeeEstimates,
+        transactionNetwork: getNetworkFromTXDataUnion(tx.txDataUnion, networkList),
+        spotPrices
+      }))
     } else {
       return []
     }
-  }, [selectedAccount, transactions])
+  }, [
+    accounts,
+    selectedAccount?.address,
+    transactions,
+    accounts,
+    fullTokenList,
+    userVisibleTokensList,
+    solFeeEstimates,
+    networkList,
+    spotPrices
+  ])
 
   const accountsTokensList = React.useMemo(() => {
     if (!selectedAccount) {
@@ -267,8 +308,6 @@ export const Account = ({
             <PortfolioTransactionItem
               key={transaction?.id}
               transaction={transaction}
-              account={selectedAccount}
-              accounts={accounts}
               displayAccountName={false}
               ref={(ref) => handleScrollIntoView(transaction.id, ref)}
               isFocused={checkIsTransactionFocused(transaction.id)}

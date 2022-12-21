@@ -14,7 +14,7 @@ import {
 
 interface Props {
   placeholder: string
-  action?: (event: any) => void | undefined
+  action?: React.ChangeEventHandler<HTMLInputElement> | undefined
   autoFocus?: boolean
   value?: string
   useWithFilter?: boolean

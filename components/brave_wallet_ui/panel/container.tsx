@@ -51,10 +51,10 @@ import {
 
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
-import { getNetworkInfo } from '../utils/network-utils'
+import { getCoinFromTxDataUnion, getNetworkInfo } from '../utils/network-utils'
 import { isHardwareAccount } from '../utils/address-utils'
 import { useAssets, useHasAccount, usePrevNetwork, useBalanceUpdater } from '../common/hooks'
-import { isSolanaTransaction } from '../utils/tx-utils'
+import { findTransactionAccount, isSolanaTransaction } from '../utils/tx-utils'
 import { ConfirmSolanaTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-solana-transaction-panel'
 import { SignTransactionPanel } from '../components/extension/sign-panel/sign-transaction-panel'
 import { useDispatch } from 'react-redux'
@@ -284,15 +284,27 @@ function Container () {
   }
 
   const onRetryTransaction = (transaction: SerializableTransactionInfo) => {
-    dispatch(WalletActions.retryTransaction(transaction))
+    dispatch(WalletActions.retryTransaction({
+      coinType: getCoinFromTxDataUnion(transaction.txDataUnion),
+      fromAddress: findTransactionAccount(accounts, transaction)?.address || '',
+      transactionId: transaction.id
+    }))
   }
 
   const onSpeedupTransaction = (transaction: SerializableTransactionInfo) => {
-    dispatch(WalletActions.speedupTransaction(transaction))
+    dispatch(WalletActions.speedupTransaction({
+      coinType: getCoinFromTxDataUnion(transaction.txDataUnion),
+      fromAddress: findTransactionAccount(accounts, transaction)?.address || '',
+      transactionId: transaction.id
+    }))
   }
 
   const onCancelTransaction = (transaction: SerializableTransactionInfo) => {
-    dispatch(WalletActions.cancelTransaction(transaction))
+    dispatch(WalletActions.cancelTransaction({
+      coinType: getCoinFromTxDataUnion(transaction.txDataUnion),
+      fromAddress: findTransactionAccount(accounts, transaction)?.address || '',
+      transactionId: transaction.id
+    }))
   }
 
   const onGoBackToTransactions = () => {

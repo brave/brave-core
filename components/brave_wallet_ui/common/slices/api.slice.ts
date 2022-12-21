@@ -22,7 +22,7 @@ import {
 import {
   networkEntityAdapter,
   networkEntityInitalState,
-  NetworkEntityState
+  NetworkEntityAdaptorState
 } from './entities/network.entity'
 import {
   AccountInfoEntityState,
@@ -39,7 +39,7 @@ import {
 import { cacher } from '../../utils/query-cache-utils'
 import getAPIProxy from '../async/bridge'
 import WalletApiProxy from '../wallet_api_proxy'
-import { addLogoToToken, getAssetIdKey, GetBlockchainTokenIdArg } from '../../utils/asset-utils'
+import { addChainIdToToken, addLogoToToken, getAssetIdKey, GetBlockchainTokenIdArg } from '../../utils/asset-utils'
 import { getEntitiesListFromEntityState } from '../../utils/entities.utils'
 import { makeNetworkAsset } from '../../options/asset-options'
 import { getTokenParam } from '../../utils/api-utils'
@@ -49,13 +49,20 @@ export type AssetPriceById = BraveWallet.AssetPrice & {
   fromAssetId: EntityId
 }
 
+/**
+ * A function to return the ref to either the main api proxy, or a mocked proxy
+ * @returns function that returns an ApiProxy instance
+ */
+let apiProxyFetcher = () => getAPIProxy()
+
 export function createWalletApi (
   getProxy: () => WalletApiProxy = () => getAPIProxy()
 ) {
+  apiProxyFetcher = getProxy // update the proxy whenever a new api is created
   const walletApi = createApi({
     reducerPath: 'walletApi',
     baseQuery: () => {
-      return { data: getProxy() }
+      return { data: apiProxyFetcher() }
     },
     tagTypes: [
       ...cacher.defaultTags,
@@ -231,7 +238,7 @@ export function createWalletApi (
           }
         }
       }),
-      getAllNetworks: query<NetworkEntityState, void>({
+      getAllNetworks: query<NetworkEntityAdaptorState, void>({
         async queryFn (arg, { dispatch }, extraOptions, baseQuery) {
           try {
             const { jsonRpcService } = baseQuery(undefined).data
@@ -253,6 +260,8 @@ export function createWalletApi (
               )
             })
 
+            const idsByCoinType: Record<EntityId, EntityId[]> = {}
+
             // Get all networks for supported coin types
             const networkLists: BraveWallet.NetworkInfo[][] = await Promise.all(
               filteredSupportedCoinTypes.map(
@@ -262,7 +271,13 @@ export function createWalletApi (
                     walletApi.endpoints.getHiddenNetworkChainIdsForCoin.initiate(coin)
                   ).unwrap()
 
-                  return networks.filter((n) => !hiddenChains.includes(n.chainId))
+                  const availableNetworks = networks.filter((n) =>
+                    !hiddenChains.includes(n.chainId)
+                  )
+
+                  idsByCoinType[coin] = availableNetworks.map(n => n.chainId)
+
+                  return availableNetworks
                 }
               )
             )
@@ -413,7 +428,7 @@ export function createWalletApi (
         async queryFn (arg, { dispatch }, extraOptions, baseQuery) {
           try {
             const { blockchainRegistry } = baseQuery(undefined).data
-            const networksState: NetworkEntityState = await dispatch(
+            const networksState: NetworkEntityAdaptorState = await dispatch(
               walletApi.endpoints.getAllNetworks.initiate()
             ).unwrap()
 
@@ -427,8 +442,10 @@ export function createWalletApi (
                 const { tokens } = await blockchainRegistry.getAllTokens(network.chainId, network.coin)
 
                 const fullTokensListForNetwork: BraveWallet.BlockchainToken[] = tokens.map(token => {
-                  token.chainId = network.chainId
-                  return addLogoToToken(token)
+                  return addChainIdToToken(
+                    addLogoToToken(token),
+                    network.chainId
+                  )
                 })
 
                 tokenIdsByChainId[network.chainId] =
@@ -466,7 +483,7 @@ export function createWalletApi (
         async queryFn (arg, { dispatch }, extraOptions, baseQuery) {
           try {
             const { braveWalletService } = baseQuery(undefined).data
-            const networksState: NetworkEntityState = await dispatch(
+            const networksState: NetworkEntityAdaptorState = await dispatch(
               walletApi.endpoints.getAllNetworks.initiate()
             ).unwrap()
             const networksList: BraveWallet.NetworkInfo[] =
@@ -663,7 +680,9 @@ export const {
   useGetAllNetworksQuery,
   useGetChainIdForCoinQuery,
   useGetDefaultAccountAddressesQuery,
+  useGetDefaultFiatCurrencyQuery,
   useGetERC721MetadataQuery,
+  useGetHiddenNetworkChainIdsForCoinQuery,
   useGetSelectedAccountAddressQuery,
   useGetSelectedChainIdQuery,
   useGetSelectedCoinQuery,
@@ -676,7 +695,9 @@ export const {
   useLazyGetAllNetworksQuery,
   useLazyGetChainIdForCoinQuery,
   useLazyGetDefaultAccountAddressesQuery,
+  useLazyGetDefaultFiatCurrencyQuery,
   useLazyGetERC721MetadataQuery,
+  useLazyGetHiddenNetworkChainIdsForCoinQuery,
   useLazyGetSelectedAccountAddressQuery,
   useLazyGetSelectedChainIdQuery,
   useLazyGetSelectedCoinQuery,
@@ -685,8 +706,12 @@ export const {
   useLazyGetUserTokensRegistryQuery,
   useLazyGetWalletInfoBaseQuery,
   usePrefetch,
+  useRemoveUserTokenMutation,
+  useSetDefaultFiatCurrencyMutation,
   useSetSelectedAccountMutation,
-  useSetSelectedCoinMutation
+  useSetSelectedCoinMutation,
+  useUpdateUserAssetVisibleMutation,
+  useUpdateUserTokenMutation
 } = walletApi
 
 export type WalletApiSliceState = ReturnType<typeof walletApi['reducer']>
@@ -709,8 +734,7 @@ async function fetchUserAssetsForNetwork (
   // Adds a logo and chainId to each token object
   const tokenList: BraveWallet.BlockchainToken[] = getTokenList.tokens.map(token => {
     const updatedToken = addLogoToToken(token)
-    updatedToken.chainId = network.chainId
-    return updatedToken
+    return addChainIdToToken(updatedToken, network.chainId)
   })
 
   if (tokenList.length === 0) {

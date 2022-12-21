@@ -61,7 +61,14 @@ export const getCoinFromTxDataUnion = <T extends TxDataPresence> (txDataUnion: T
   return BraveWallet.CoinType.ETH
 }
 
-export const getNetworkFromTXDataUnion = <T extends TxDataPresence> (txDataUnion: T, networks: BraveWallet.NetworkInfo[], selectedNetwork?: BraveWallet.NetworkInfo) => {
+export const getNetworkFromTXDataUnion = <
+  T extends TxDataPresence,
+  N extends BraveWallet.NetworkInfo
+> (
+  txDataUnion: T,
+  networks: N[],
+  selectedNetwork?: N | undefined
+): N | undefined => {
   const coin = getCoinFromTxDataUnion(txDataUnion)
   return networks.find((network) => network.coin === coin) ?? selectedNetwork
 }

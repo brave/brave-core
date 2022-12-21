@@ -8,15 +8,13 @@ import * as React from 'react'
 // Types
 import {
   BraveWallet,
-  AddAccountNavTypes,
-  SerializableTransactionInfo
+  AddAccountNavTypes
 } from '../../../../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
 import Amount from '../../../../../../utils/amount'
 import { getTokensNetwork } from '../../../../../../utils/network-utils'
-import { findAccountByAddress } from '../../../../../../utils/account-utils'
 import { WalletSelectors } from '../../../../../../common/selectors'
 import { getBalance } from '../../../../../../utils/balance-utils'
 
@@ -46,13 +44,14 @@ import {
   Row,
   ToggleVisibilityButton
 } from '../../../../../shared/style'
+import { ParsedTransaction } from '../../../../../../common/hooks/transaction-parser'
 
 export interface Props {
   selectedAsset: BraveWallet.BlockchainToken | undefined
   networkList: BraveWallet.NetworkInfo[]
   fullAssetFiatBalance: Amount
   formattedFullAssetBalance: string
-  selectedAssetTransactions: SerializableTransactionInfo[]
+  selectedAssetTransactions: ParsedTransaction[]
   onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
 }
 
@@ -101,7 +100,7 @@ export const AccountsAndTransactionsList = ({
 
   const nonRejectedTransactions = React.useMemo(() => {
     return selectedAssetTransactions
-      .filter(t => t.txStatus !== BraveWallet.TransactionStatus.Rejected)
+      .filter(t => t.status !== BraveWallet.TransactionStatus.Rejected)
   }, [selectedAssetTransactions])
 
   return (
@@ -158,12 +157,7 @@ export const AccountsAndTransactionsList = ({
               {nonRejectedTransactions.map((transaction) =>
                 <PortfolioTransactionItem
                   key={transaction.id}
-                  accounts={filteredAccountsByCoinType}
                   transaction={transaction}
-                  account={findAccountByAddress(
-                    filteredAccountsByCoinType,
-                    transaction.fromAddress
-                  )}
                   displayAccountName={true}
                 />
               )}

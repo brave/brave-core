@@ -269,7 +269,10 @@ export default class Amount {
       maximumFractionDigits: decimals || 20
     }
 
-    if (currency && CurrencySymbols[currency]) {
+    // currency code must be upper-case
+    const upperCaseCurrency = currency?.toUpperCase()
+
+    if (upperCaseCurrency && CurrencySymbols[upperCaseCurrency]) {
       options.style = 'currency'
       options.currency = currency
       options.currencyDisplay = 'narrowSymbol'

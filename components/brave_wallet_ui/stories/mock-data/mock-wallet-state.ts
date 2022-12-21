@@ -17,14 +17,14 @@ import { mockMoonCatNFT } from './mock-asset-options'
 
 // mocks
 import { mockNetwork } from '../../common/constants/mocks'
-import { mockedErc20ApprovalTransaction } from './mock-transaction-info'
+import { mockedErc20ApprovalTransaction, mockTransactionInfo } from './mock-transaction-info'
 
 const mockAccount: WalletAccountType = {
   accountType: 'Primary',
-  address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
+  address: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1',
   coin: 60,
   deviceId: '',
-  id: '1',
+  id: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1',
   name: 'Account 1',
   tokenBalanceRegistry: {
     '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
@@ -39,10 +39,10 @@ const mockAccount: WalletAccountType = {
 
 const mockAccount2: WalletAccountType = {
   accountType: 'Primary',
-  address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
+  address: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
   coin: 60,
   deviceId: '',
-  id: '1',
+  id: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
   name: 'Account 2',
   tokenBalanceRegistry: {
     '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
@@ -57,11 +57,11 @@ const mockAccount2: WalletAccountType = {
 
 const mockAccount3: WalletAccountType = {
   accountType: 'Primary',
-  address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
+  address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3',
   coin: 60,
   deviceId: '',
-  id: '1',
-  name: 'Account 2',
+  id: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3',
+  name: 'Account 3',
   tokenBalanceRegistry: {
     '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
     '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69': '450346'
@@ -293,7 +293,9 @@ export const mockWalletState: WalletState = {
   selectedNetwork: mockNetworkList[0],
   selectedPendingTransaction: mockedErc20ApprovalTransaction,
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
-  transactions: {},
+  transactions: {
+    [mockAccount.address]: [mockTransactionInfo]
+  },
   transactionSpotPrices: [
     {
       assetTimeframeChange: '',

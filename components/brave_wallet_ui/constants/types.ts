@@ -128,6 +128,7 @@ export type TopTabNavTypes =
   | 'nfts'
   | 'accounts'
   | 'market'
+  | 'transactions'
 
 export type AddAccountNavTypes =
   | 'create'
@@ -768,6 +769,9 @@ export enum WalletRoutes {
   Restore = '/crypto/restore-wallet',
   Unlock = '/crypto/unlock',
 
+  // Transactions
+  Transactions = '/crypto/transactions',
+
   // portfolio
   Portfolio = '/crypto/portfolio',
   PortfolioAsset = '/crypto/portfolio/:id/:tokenId?',
@@ -780,7 +784,7 @@ export enum WalletRoutes {
   Swap = '/swap',
 
   // send
-  Send = '/send'
+  Send = '/send',
 }
 
 export const WalletOrigin = 'chrome://wallet'
