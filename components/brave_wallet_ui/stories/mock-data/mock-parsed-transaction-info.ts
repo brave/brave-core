@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // utils
-import { parseTransactionWithPrices } from '../../common/hooks/transaction-parser'
 import { getNetworkFromTXDataUnion } from '../../utils/network-utils'
+import { parseTransactionWithPrices } from '../../utils/tx-utils'
 
 // mocks
 import { mockWalletState } from './mock-wallet-state'

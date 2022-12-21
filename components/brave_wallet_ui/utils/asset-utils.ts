@@ -199,12 +199,15 @@ export const getAssetIdKey = (asset: GetBlockchainTokenIdArg) => {
  */
 export const isSardineSupported = () => navigator.language.toLowerCase() === 'en-us'
 
-export const findTokenByContractAddress = (
+export const findTokenByContractAddress = <
+  T extends Pick<BraveWallet.BlockchainToken, 'contractAddress'>
+>(
   contractAddress: string,
-  tokensList: BraveWallet.BlockchainToken[]
-) => {
-  return tokensList.find((token) =>
-    token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
+  tokensList: T[]
+): T | undefined => {
+  return tokensList.find(
+    (token) =>
+      token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
   )
 }
 

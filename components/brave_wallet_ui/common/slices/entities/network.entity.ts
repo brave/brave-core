@@ -3,12 +3,22 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { createDraftSafeSelector, createEntityAdapter, EntityId } from '@reduxjs/toolkit'
+import {
+  createDraftSafeSelector,
+  createEntityAdapter,
+  EntityAdapter,
+  EntityId
+} from '@reduxjs/toolkit'
 import { BraveWallet } from '../../../constants/types'
 
-export const networkEntityAdapter = createEntityAdapter<BraveWallet.NetworkInfo>({
-  selectId: ({ chainId }) => chainId
-})
+export type NetworkEntityAdaptor = EntityAdapter<BraveWallet.NetworkInfo> & {
+  selectId: (network: { chainId: string }) => EntityId
+}
+
+export const networkEntityAdapter: NetworkEntityAdaptor =
+  createEntityAdapter<BraveWallet.NetworkInfo>({
+    selectId: ({ chainId }) => chainId
+  })
 
 export type NetworkEntityAdaptorState = ReturnType<
   typeof networkEntityAdapter['getInitialState']
@@ -16,7 +26,7 @@ export type NetworkEntityAdaptorState = ReturnType<
   idsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
 }
 
-export const networkEntityInitalState: NetworkEntityAdaptorState = {
+export const networkEntityInitialState: NetworkEntityAdaptorState = {
   ...networkEntityAdapter.getInitialState(),
   idsByCoinType: {}
 }
@@ -27,7 +37,7 @@ export const networkEntityInitalState: NetworkEntityAdaptorState = {
 export const selectNetworksRegistryFromQueryResult = (result: {
   data?: NetworkEntityAdaptorState
 }) => {
-  return result.data ?? networkEntityInitalState
+  return result.data ?? networkEntityInitialState
 }
 
 export const {

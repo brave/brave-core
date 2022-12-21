@@ -16,6 +16,8 @@ import registry from '../common/constants/registry'
 
 // utils
 import { reduceAddress } from './reduce-address'
+import { EntityState } from '@reduxjs/toolkit'
+import { AccountInfoEntity } from '../common/slices/entities/account-info.entity'
 
 export const sortAccountsByName = (accounts: WalletAccountType[]) => {
   return [...accounts].sort(function (a: WalletAccountType, b: WalletAccountType) {
@@ -67,10 +69,24 @@ export const getAccountType = (info: AccountInfo): WalletAccountTypeName => {
   return info.isImported ? 'Secondary' : 'Primary'
 }
 
-export const getAddressLabel = (address: string, accounts: WalletAccountType[]): string => {
+export const getAddressLabel = (
+  address: string,
+  accounts: WalletAccountType[]
+): string => {
   return (
     registry[address.toLowerCase()] ??
     findAccountName(accounts, address) ??
+    reduceAddress(address)
+  )
+}
+
+export const getAddressLabelFromRegistry = (
+  address: string,
+  accounts: EntityState<AccountInfoEntity>
+): string => {
+  return (
+    registry[address.toLowerCase()] ??
+    accounts.entities[address.toLowerCase()]?.name ??
     reduceAddress(address)
   )
 }
