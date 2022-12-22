@@ -51,9 +51,7 @@ export default function useSend (isSendTab?: boolean) {
     selectedSendAsset,
     sendAmount,
     toAddress,
-    toAddressOrUrl,
-    showEnsOffchainLookupOptions,
-    ensOffchainLookupOptions
+    toAddressOrUrl
   } = useSelector((state: { sendCrypto: PendingCryptoSendState }) => state.sendCrypto)
 
   // custom hooks
@@ -70,14 +68,6 @@ export default function useSend (isSendTab?: boolean) {
   const setToAddress = (payload?: string | undefined) => {
     dispatch(SendCryptoActions.setToAddress(payload))
   }
-  const setShowEnsOffchainLookupOptions = React.useCallback(
-    (payload: boolean) => {
-      dispatch(SendCryptoActions.setShowEnsOffchainLookupOptions(payload))
-    }, [])
-
-  const setEnsOffchainLookupOptions = (payload?: BraveWallet.EnsOffchainLookupOptions | undefined) => {
-    dispatch(SendCryptoActions.setEnsOffchainLookupOptions(payload))
-  }
   const setAddressWarning = (payload?: string | undefined) => {
     dispatch(SendCryptoActions.setAddressWarning(payload))
   }
@@ -93,6 +83,8 @@ export default function useSend (isSendTab?: boolean) {
 
   // State
   const [searchingForDomain, setSearchingForDomain] = React.useState<boolean>(false)
+  const [showEnsOffchainWarning, setShowEnsOffchainWarning] = React.useState<boolean>(false)
+  const [ensOffchainExplicitlyAllowed, setEnsOffchainExplicitlyAllowed] = React.useState<boolean>(false)
 
   const selectSendAsset = (asset: BraveWallet.BlockchainToken | undefined) => {
     if (asset?.isErc721 || asset?.isNft) {
@@ -111,7 +103,7 @@ export default function useSend (isSendTab?: boolean) {
     if (requireOffchainConsent) {
       setAddressError('')
       setAddressWarning('')
-      setShowEnsOffchainLookupOptions(true)
+      setShowEnsOffchainWarning(true)
       setSearchingForDomain(false)
       return
     }
@@ -119,17 +111,17 @@ export default function useSend (isSendTab?: boolean) {
       setAddressError('')
       setAddressWarning('')
       setToAddress(address)
-      // If found UD address is the same as the selectedAccounts Wallet Address
+      // If found address is the same as the selectedAccounts Wallet Address
       if (address.toLowerCase() === selectedAccount?.address?.toLowerCase()) {
         setAddressError(getLocale('braveWalletSameAddressError'))
       }
       setSearchingForDomain(false)
       return
     }
-    setShowEnsOffchainLookupOptions(false)
+    setShowEnsOffchainWarning(false)
     setNotRegisteredError(toAddressOrUrl)
     setSearchingForDomain(false)
-  }, [selectedAccount?.address, toAddressOrUrl, setShowEnsOffchainLookupOptions])
+  }, [selectedAccount?.address, toAddressOrUrl, setShowEnsOffchainWarning])
 
   const handleUDAddressLookUp = React.useCallback(() => {
     setSearchingForDomain(true)
@@ -147,13 +139,13 @@ export default function useSend (isSendTab?: boolean) {
     if (endsWithAny(supportedENSExtensions, valueToLowerCase)) {
       setSearchingForDomain(true)
       setToAddress('')
-      findENSAddress(toAddressOrUrl, ensOffchainLookupOptions).then((value: GetEthAddrReturnInfo) => {
+      findENSAddress(toAddressOrUrl, ensOffchainExplicitlyAllowed).then((value: GetEthAddrReturnInfo) => {
         handleDomainLookupResponse(value.address, value.error, value.requireOffchainConsent)
       }).catch(e => console.log(e))
       return
     }
 
-    setShowEnsOffchainLookupOptions(false)
+    setShowEnsOffchainWarning(false)
 
     // If value ends with a supported UD extension, will call findUnstoppableDomainAddress.
     // If success true, will set toAddress else will return error message.
@@ -211,14 +203,14 @@ export default function useSend (isSendTab?: boolean) {
       setAddressError('')
       setAddressWarning('')
       setToAddress('')
-      setShowEnsOffchainLookupOptions(false)
+      setShowEnsOffchainWarning(false)
       return
     }
 
     // Fallback error state
     setAddressWarning('')
     setAddressError(getLocale('braveWalletNotValidAddress'))
-  }, [selectedAccount?.address, ensOffchainLookupOptions, handleUDAddressLookUp, handleDomainLookupResponse, setShowEnsOffchainLookupOptions])
+  }, [selectedAccount?.address, ensOffchainExplicitlyAllowed, handleUDAddressLookUp, handleDomainLookupResponse, setShowEnsOffchainWarning])
 
   const processFilecoinAddress = React.useCallback((toAddressOrUrl: string) => {
     const valueToLowerCase = toAddressOrUrl.toLowerCase()
@@ -267,7 +259,7 @@ export default function useSend (isSendTab?: boolean) {
       return
     }
 
-    // If value ends with a supported SNS extension, will call findENSAddress.
+    // If value ends with a supported SNS extension, will call findSNSAddress.
     // If success true, will set toAddress else will return error message.
     if (endsWithAny(supportedSNSExtensions, valueToLowerCase)) {
       setSearchingForDomain(true)
@@ -464,7 +456,6 @@ export default function useSend (isSendTab?: boolean) {
   }, [
     toAddressOrUrl,
     selectedAccount?.coin,
-    ensOffchainLookupOptions,
     processEthereumAddress,
     processFilecoinAddress,
     processSolanaAddress
@@ -482,10 +473,9 @@ export default function useSend (isSendTab?: boolean) {
     addressWarning,
     selectedSendAsset,
     sendAmountValidationError,
-    showEnsOffchainLookupOptions,
-    ensOffchainLookupOptions,
-    setShowEnsOffchainLookupOptions,
-    setEnsOffchainLookupOptions,
+    showEnsOffchainWarning,
+    setShowEnsOffchainWarning,
+    setEnsOffchainExplicitlyAllowed,
     searchingForDomain
   }
 }

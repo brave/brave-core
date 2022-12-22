@@ -1287,7 +1287,7 @@ void JsonRpcService::OnEnsGetContentHash(EnsGetContentHashCallback callback,
 }
 
 void JsonRpcService::EnsGetEthAddr(const std::string& domain,
-                                   mojom::EnsOffchainLookupOptionsPtr options,
+                                   bool offchain_explicitly_allowed,
                                    EnsGetEthAddrCallback callback) {
   if (!IsValidDomain(domain)) {
     std::move(callback).Run(
@@ -1302,16 +1302,14 @@ void JsonRpcService::EnsGetEthAddr(const std::string& domain,
       return;
     }
 
-    if (options && options->remember) {
-      SetEnsOffchainPref(local_state_prefs_, options->allow);
+    if (offchain_explicitly_allowed) {
+      SetEnsOffchainPref(local_state_prefs_, true);
     }
 
     absl::optional<bool> allow_offchain;
-    if (EnsOffchainPrefEnabled(local_state_prefs_) ||
-        (options && options->allow)) {
+    if (EnsOffchainPrefEnabled(local_state_prefs_)) {
       allow_offchain = true;
-    } else if (EnsOffchainPrefDisabled(local_state_prefs_) ||
-               (options && !options->allow)) {
+    } else if (EnsOffchainPrefDisabled(local_state_prefs_)) {
       allow_offchain = false;
     }
 
