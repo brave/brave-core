@@ -67,12 +67,18 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
     
     // Listen to changes on filter lists so we know we need to reload the section
     FilterListResourceDownloader.shared.$filterLists
-      .receive(on: DispatchQueue.main)
       .sink { filterLists in
         let filterList = filterLists.first(where: { $0.componentId == FilterList.cookieConsentNoticesComponentID })
-        let isEnabled = filterList?.isEnabled == true
         
-        if isEnabled != self.currentCookieConsentNoticeBlockingState {
+        Task { @MainActor in
+          let isEnabled = FilterListResourceDownloader.shared.isEnabled(for: FilterList.cookieConsentNoticesComponentID)
+          
+          guard filterList?.isEnabled == isEnabled else {
+            assertionFailure("The two should be in sync")
+            return
+          }
+          
+          guard isEnabled != self.currentCookieConsentNoticeBlockingState else { return }
           self.currentCookieConsentNoticeBlockingState = isEnabled
           
           guard let sectionIndex = self.dataSource.sections.firstIndex(where: { $0.uuid == self.shieldsSection.uuid }) else {
@@ -361,9 +367,10 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
         for: FilterList.cookieConsentNoticesComponentID
       ),
       valueChange: { isEnabled in
-        if !FilterListResourceDownloader.shared.enableFilterList(for: FilterList.cookieConsentNoticesComponentID, isEnabled: isEnabled) {
-          assertionFailure("This filter list should exist or this UI is completely useless")
-        }
+        self.currentCookieConsentNoticeBlockingState = isEnabled
+        FilterListResourceDownloader.shared.enableFilterList(
+          for: FilterList.cookieConsentNoticesComponentID, isEnabled: isEnabled
+        )
       }, cellReuseId: "blockCookieConsentNoticesReuseIdentifier"
     )
   }

@@ -15,12 +15,12 @@ public final class FilterListSetting: NSManagedObject, CRUD {
     return FileManager.default.urls(for: location, in: .userDomainMask).first
   }
   
-  @NSManaged public var uuid: String
-  @NSManaged public var componentId: String?
-  @NSManaged public var isEnabled: Bool
-  @NSManaged private var folderPath: String?
+  @MainActor @NSManaged public var uuid: String
+  @MainActor @NSManaged public var componentId: String?
+  @MainActor @NSManaged public var isEnabled: Bool
+  @MainActor @NSManaged private var folderPath: String?
 
-  public var folderURL: URL? {
+  @MainActor public var folderURL: URL? {
     get {
       return Self.makeFolderURL(forFilterListFolderPath: folderPath)
     }
@@ -31,12 +31,12 @@ public final class FilterListSetting: NSManagedObject, CRUD {
   }
   
   /// Load all the flter list settings
-  public class func loadAllSettings(fromMemory: Bool) -> [FilterListSetting] {
+  @MainActor public class func loadAllSettings(fromMemory: Bool) -> [FilterListSetting] {
     return all(context: fromMemory ? DataController.viewContextInMemory : DataController.viewContext) ?? []
   }
   
   /// Create a filter list setting for the given UUID and enabled status
-  public class func create(uuid: String, componentId: String?, isEnabled: Bool, inMemory: Bool) -> FilterListSetting {
+  @MainActor public class func create(uuid: String, componentId: String?, isEnabled: Bool, inMemory: Bool) -> FilterListSetting {
     var newSetting: FilterListSetting!
 
     // Settings are usually accesed on view context, but when the setting doesn't exist,
@@ -55,12 +55,12 @@ public final class FilterListSetting: NSManagedObject, CRUD {
     return settingOnCorrectContext ?? newSetting
   }
   
-  public class func save(inMemory: Bool) {
+  @MainActor public class func save(inMemory: Bool) {
     self.save(on: inMemory ? DataController.viewContextInMemory : DataController.viewContext)
   }
   
   /// Save this entry
-  private class func save(
+  @MainActor private class func save(
     on writeContext: NSManagedObjectContext,
     changes: (() -> Void)? = nil
   ) {
@@ -78,7 +78,7 @@ public final class FilterListSetting: NSManagedObject, CRUD {
   }
   
   // Currently required, because not `syncable`
-  private static func entity(_ context: NSManagedObjectContext) -> NSEntityDescription {
+  @MainActor private static func entity(_ context: NSManagedObjectContext) -> NSEntityDescription {
     return NSEntityDescription.entity(forEntityName: "FilterListSetting", in: context)!
   }
 
