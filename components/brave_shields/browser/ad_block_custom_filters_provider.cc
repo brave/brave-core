@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/threading/thread_task_runner_handle.h"
+#include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
@@ -16,9 +17,13 @@ namespace brave_shields {
 
 AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
     PrefService* local_state)
-    : local_state_(local_state) {}
+    : local_state_(local_state) {
+  AdBlockFiltersProviderManager::GetInstance()->AddProvider(this);
+}
 
-AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() = default;
+AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() {
+  AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(this);
+}
 
 std::string AdBlockCustomFiltersProvider::GetCustomFilters() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

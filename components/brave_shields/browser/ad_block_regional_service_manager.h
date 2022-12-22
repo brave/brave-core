@@ -36,7 +36,6 @@ class AdBlockRegionalServiceManager
     : public AdBlockFilterListCatalogProvider::Observer {
  public:
   explicit AdBlockRegionalServiceManager(
-      AdBlockFiltersProviderManager* filters_manager,
       PrefService* local_state,
       std::string locale,
       component_updater::ComponentUpdateService* cus,
@@ -81,8 +80,6 @@ class AdBlockRegionalServiceManager
       GUARDED_BY_CONTEXT(sequence_checker_);
 
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_
-      GUARDED_BY_CONTEXT(sequence_checker_);
-  raw_ptr<AdBlockFiltersProviderManager> filters_manager_
       GUARDED_BY_CONTEXT(sequence_checker_);
   raw_ptr<AdBlockFilterListCatalogProvider> catalog_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);

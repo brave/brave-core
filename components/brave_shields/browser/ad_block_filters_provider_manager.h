@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/callback.h"
+#include "base/memory/singleton.h"
 #include "base/observer_list.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
@@ -25,11 +26,11 @@ namespace brave_shields {
 class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
                                       public AdBlockFiltersProvider::Observer {
  public:
-  AdBlockFiltersProviderManager();
-  ~AdBlockFiltersProviderManager() override;
   AdBlockFiltersProviderManager(const AdBlockFiltersProviderManager&) = delete;
   AdBlockFiltersProviderManager& operator=(
       const AdBlockFiltersProviderManager&) = delete;
+
+  static AdBlockFiltersProviderManager* GetInstance();
 
   void LoadDATBuffer(
       base::OnceCallback<void(bool deserialize,
@@ -44,6 +45,8 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   void RemoveProvider(AdBlockFiltersProvider* provider);
 
  private:
+  friend struct base::DefaultSingletonTraits<AdBlockFiltersProviderManager>;
+
   void FinishCombinating(
       base::OnceCallback<void(bool, const DATFileDataBuffer&)> cb,
       const std::vector<DATFileDataBuffer>& results);
@@ -52,6 +55,9 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   base::CancelableTaskTracker task_tracker_;
 
   base::WeakPtrFactory<AdBlockFiltersProviderManager> weak_factory_{this};
+
+  AdBlockFiltersProviderManager();
+  ~AdBlockFiltersProviderManager() override;
 };
 
 }  // namespace brave_shields

@@ -76,7 +76,6 @@ struct SubscriptionInfo {
 class AdBlockSubscriptionServiceManager {
  public:
   explicit AdBlockSubscriptionServiceManager(
-      AdBlockFiltersProviderManager* filters_manager,
       PrefService* local_state,
       AdBlockSubscriptionDownloadManager::DownloadManagerGetter getter,
       const base::FilePath& profile_dir);
@@ -133,8 +132,6 @@ class AdBlockSubscriptionServiceManager {
                                     base::TimeDelta* retry_interval);
 
   raw_ptr<PrefService> local_state_ GUARDED_BY_CONTEXT(sequence_checker_);
-  raw_ptr<AdBlockFiltersProviderManager> filters_manager_
-      GUARDED_BY_CONTEXT(sequence_checker_);
   base::WeakPtr<AdBlockSubscriptionDownloadManager> download_manager_
       GUARDED_BY_CONTEXT(sequence_checker_);
   base::FilePath subscription_path_;

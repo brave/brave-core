@@ -259,9 +259,6 @@ AdBlockService::AdBlockService(
   // Initializes adblock-rust's domain resolution implementation
   adblock::SetDomainResolver(AdBlockServiceDomainResolver);
 
-  additional_filters_manager_ =
-      std::make_unique<AdBlockFiltersProviderManager>();
-
   resource_provider_ =
       std::make_unique<brave_shields::AdBlockDefaultResourceProvider>(
           component_update_service_);
@@ -275,23 +272,23 @@ AdBlockService::AdBlockService(
           g_ad_block_component_base64_public_key_, kAdBlockComponentName);
   regional_service_manager_ =
       std::make_unique<brave_shields::AdBlockRegionalServiceManager>(
-          additional_filters_manager_.get(), local_state_, locale_,
-          component_update_service_, filter_list_catalog_provider_.get());
+          local_state_, locale_, component_update_service_,
+          filter_list_catalog_provider_.get());
   subscription_service_manager_ =
       std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
-          additional_filters_manager_.get(), local_state_,
-          std::move(subscription_download_manager_getter_), profile_dir_);
+          local_state_, std::move(subscription_download_manager_getter_),
+          profile_dir_);
   custom_filters_provider_ =
       std::make_unique<brave_shields::AdBlockCustomFiltersProvider>(
           local_state_);
-  additional_filters_manager_->AddProvider(custom_filters_provider_.get());
 
   default_service_observer_ = std::make_unique<SourceProviderObserver>(
       default_engine_.get(), default_filters_provider_.get(),
       resource_provider_.get(), GetTaskRunner());
   additional_filters_service_observer_ =
       std::make_unique<SourceProviderObserver>(
-          additional_filters_engine_.get(), additional_filters_manager_.get(),
+          additional_filters_engine_.get(),
+          AdBlockFiltersProviderManager::GetInstance(),
           resource_provider_.get(), GetTaskRunner());
 }
 
