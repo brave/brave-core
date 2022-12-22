@@ -13,6 +13,10 @@
 
 namespace brave {
 
+namespace {
+constexpr base::TimeDelta kReconnectTime = base::Seconds(5);
+}  // namespace
+
 WalletButtonNotificationSource::WalletButtonNotificationSource(
     Profile* profile,
     WalletButtonNotificationSourceCallback callback)
@@ -60,7 +64,7 @@ void WalletButtonNotificationSource::OnTxServiceConnectionError() {
       FROM_HERE,
       base::BindOnce(&WalletButtonNotificationSource::EnsureTxServiceConnected,
                      weak_ptr_factory_.GetWeakPtr()),
-      base::Seconds(30));
+      kReconnectTime);
 }
 
 void WalletButtonNotificationSource::OnKeyringServiceConnectionError() {
@@ -71,7 +75,7 @@ void WalletButtonNotificationSource::OnKeyringServiceConnectionError() {
       base::BindOnce(
           &WalletButtonNotificationSource::EnsureKeyringServiceConnected,
           weak_ptr_factory_.GetWeakPtr()),
-      base::Seconds(30));
+      kReconnectTime);
 }
 
 WalletButtonNotificationSource::~WalletButtonNotificationSource() {}
@@ -106,7 +110,7 @@ void WalletButtonNotificationSource::OnTxServiceReset() {
 }
 
 void WalletButtonNotificationSource::OnTxStatusResolved(uint32_t count) {
-  running_tx_count_ = count;
+  pending_tx_count_ = count;
   NotifyObservers();
 }
 
@@ -132,7 +136,7 @@ void WalletButtonNotificationSource::NotifyObservers() {
   bool show_suggestion_badge =
       (wallet_created_.has_value() && !wallet_created_.value() &&
        prefs_->GetBoolean(kShouldShowWalletSuggestionBadge));
-  callback_.Run(show_suggestion_badge, running_tx_count_);
+  callback_.Run(show_suggestion_badge, pending_tx_count_);
 }
 
 void WalletButtonNotificationSource::OnKeyringInfoResolved(

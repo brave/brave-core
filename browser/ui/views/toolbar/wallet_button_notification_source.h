@@ -77,7 +77,7 @@ class WalletButtonNotificationSource
   WalletButtonNotificationSourceCallback callback_;
 
   absl::optional<bool> wallet_created_ = false;
-  uint32_t running_tx_count_ = 0;
+  uint32_t pending_tx_count_ = 0;
 
   base::WeakPtrFactory<WalletButtonNotificationSource> weak_ptr_factory_{this};
 };

@@ -193,10 +193,10 @@ class TxService : public KeyedService,
   friend class SolanaTxManagerUnitTest;
   friend class FilTxManagerUnitTest;
 
-  void OnTxResolved(GetPendingTransactionsCountCallback callback,
-                    size_t counter,
-                    mojom::CoinType coin,
-                    std::vector<mojom::TransactionInfoPtr> result);
+  void OnGetAllTransactionInfo(GetPendingTransactionsCountCallback callback,
+                               size_t counter,
+                               mojom::CoinType coin,
+                               std::vector<mojom::TransactionInfoPtr> result);
 
   TxManager* GetTxManager(mojom::CoinType coin_type);
   EthTxManager* GetEthTxManager();

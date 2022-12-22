@@ -170,18 +170,19 @@ void TxService::GetPendingTransactionsCount(
     return;
   }
 
-  auto it = ++tx_manager_map_.begin();
+  auto it = tx_manager_map_.begin();
 
   GetAllTransactionInfo(
-      it->first,
-      base::BindOnce(&TxService::OnTxResolved, weak_factory_.GetWeakPtr(),
-                     std::move(callback), 0u, it->first));
+      it->first, base::BindOnce(&TxService::OnGetAllTransactionInfo,
+                                weak_factory_.GetWeakPtr(), std::move(callback),
+                                0u, it->first));
 }
 
-void TxService::OnTxResolved(GetPendingTransactionsCountCallback callback,
-                             size_t counter,
-                             mojom::CoinType coin,
-                             std::vector<mojom::TransactionInfoPtr> result) {
+void TxService::OnGetAllTransactionInfo(
+    GetPendingTransactionsCountCallback callback,
+    size_t counter,
+    mojom::CoinType coin,
+    std::vector<mojom::TransactionInfoPtr> result) {
   absl::optional<mojom::CoinType> next_coin_to_check;
   counter += CalculatePendingTxCount(result);
 
@@ -196,8 +197,9 @@ void TxService::OnTxResolved(GetPendingTransactionsCountCallback callback,
   DCHECK(next_coin_to_check);
   GetAllTransactionInfo(
       *next_coin_to_check,
-      base::BindOnce(&TxService::OnTxResolved, weak_factory_.GetWeakPtr(),
-                     std::move(callback), counter, *next_coin_to_check));
+      base::BindOnce(&TxService::OnGetAllTransactionInfo,
+                     weak_factory_.GetWeakPtr(), std::move(callback), counter,
+                     *next_coin_to_check));
 }
 
 void TxService::SpeedupOrCancelTransaction(

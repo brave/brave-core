@@ -176,7 +176,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
                        PendingTransactionsCounter) {
   RestoreWallet();
 
-  // Add initial transaction
+  // Add initial FIL transaction
   std::string first_tx_meta_id;
   {
     base::RunLoop run_loop;
@@ -220,24 +220,53 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   EXPECT_FALSE(show_badge_suggest_result.value());
   EXPECT_EQ(1u, count_result.value());
 
-  // Add second transaction
+  // Add second ETH transaction
   std::string second_tx_meta_id;
   {
     base::RunLoop run_loop;
 
     const std::string from_account =
-        "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
-    const std::string to_account = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
-    auto tx_data = brave_wallet::mojom::TxDataUnion::NewFilTxData(
-        brave_wallet::mojom::FilTxData::New(
-            "" /* nonce */, "10" /* gas_premium */, "10" /* gas_fee_cap */,
-            "100" /* gas_limit */, "" /* max_fee */, to_account, from_account,
-            "11"));
+        "0xbe862ad9abfe6f22bcb087716c7d89a260511111";
+    const std::string to_account = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
+
+    auto tx_data = brave_wallet::mojom::TxData::New(
+        "0x06", "0x09184e72a000", "0x0974", to_account, "0x016345785d8a0000",
+        std::vector<uint8_t>(), false, absl::nullopt);
     tx_service()->AddUnapprovedTransaction(
-        std::move(tx_data), from_account, absl::nullopt, absl::nullopt,
+        brave_wallet::mojom::TxDataUnion::NewEthTxData(std::move(tx_data)),
+        from_account, absl::nullopt, absl::nullopt,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           second_tx_meta_id = id;
+          EXPECT_TRUE(success);
+          run_loop.Quit();
+        }));
+
+    run_loop.Run();
+  }
+
+  // Add third SOL transaction
+  std::string third_tx_meta_id;
+  {
+    base::RunLoop run_loop;
+
+    std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+    std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+
+    auto tx_data = brave_wallet::mojom::SolanaTxData::New(
+        "" /* recent_blockhash */, 0, from_account, to_account,
+        "" /* spl_token_mint_address */, 10000000u /* lamport */,
+        0 /* amount */,
+        brave_wallet::mojom::TransactionType::SolanaSystemTransfer,
+        std::vector<brave_wallet::mojom::SolanaInstructionPtr>(), nullptr,
+        nullptr);
+
+    tx_service()->AddUnapprovedTransaction(
+        brave_wallet::mojom::TxDataUnion::NewSolanaTxData(std::move(tx_data)),
+        from_account, absl::nullopt, absl::nullopt,
+        base::BindLambdaForTesting([&](bool success, const std::string& id,
+                                       const std::string& err_message) {
+          third_tx_meta_id = id;
           EXPECT_TRUE(success);
           run_loop.Quit();
         }));
@@ -249,7 +278,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   run_loop.RunUntilIdle();
 
   EXPECT_FALSE(show_badge_suggest_result.value());
-  EXPECT_EQ(2u, count_result.value());
+  EXPECT_EQ(3u, count_result.value());
 
   // Reject first transaction
   {
@@ -267,13 +296,31 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   run_loop.RunUntilIdle();
 
   EXPECT_FALSE(show_badge_suggest_result.value());
-  EXPECT_EQ(1u, count_result.value());
+  EXPECT_EQ(2u, count_result.value());
 
   // Reject second transaction
   {
     base::RunLoop run_loop;
     tx_service()->RejectTransaction(
-        brave_wallet::mojom::CoinType::FIL, second_tx_meta_id,
+        brave_wallet::mojom::CoinType::ETH, second_tx_meta_id,
+        base::BindLambdaForTesting([&](bool result) {
+          EXPECT_TRUE(result);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  // Wait until WalletButtonNotificationSource checks are finished
+  run_loop.RunUntilIdle();
+
+  EXPECT_FALSE(show_badge_suggest_result.value());
+  EXPECT_EQ(1u, count_result.value());
+
+  // Reject third transaction
+  {
+    base::RunLoop run_loop;
+    tx_service()->RejectTransaction(
+        brave_wallet::mojom::CoinType::SOL, third_tx_meta_id,
         base::BindLambdaForTesting([&](bool result) {
           EXPECT_TRUE(result);
           run_loop.Quit();
