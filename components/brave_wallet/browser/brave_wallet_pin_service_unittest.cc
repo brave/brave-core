@@ -179,9 +179,8 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
               *(token_record->FindString("status")));
     EXPECT_EQ(nullptr, token_record->FindDict("error"));
     EXPECT_EQ(expected_cids, *(token_record->FindList("cids")));
-    EXPECT_EQ(
-        123u,
-        base::ValueToTime(token_record->Find("validate_timestamp"))->ToTimeT());
+    EXPECT_EQ(base::Time::FromTimeT(123u),
+              base::ValueToTime(token_record->Find("validate_timestamp")));
   }
 
   {
@@ -529,7 +528,7 @@ TEST_F(BraveWalletPinServiceTest, GetPath) {
     token->token_id = "0x2";
     token->chain_id = "mainnet";
     auto path = BraveWalletPinService::GetPath(absl::nullopt, token);
-    EXPECT_EQ("nft.local.60.mainnet.abc.0x2", path);
+    EXPECT_EQ("nft.local.60.mainnet.abc.0x2", path.value());
   }
 
   {
@@ -539,7 +538,7 @@ TEST_F(BraveWalletPinServiceTest, GetPath) {
     token->token_id = "0x2";
     token->chain_id = "mainnet";
     auto path = BraveWalletPinService::GetPath("nftstorage", token);
-    EXPECT_EQ("nft.nftstorage.60.mainnet.abc.0x2", path);
+    EXPECT_EQ("nft.nftstorage.60.mainnet.abc.0x2", path.value());
   }
 }
 
