@@ -14,6 +14,8 @@
 
 namespace playlist {
 
+// TODO(sko) Try removing these types. We can use mojom type directly.
+// https://github.com/brave/brave-browser/issues/27516
 struct PlaylistChangeParams {
   enum class Type {
     kNone,

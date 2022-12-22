@@ -15,11 +15,14 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/values.h"
+#include "brave/components/playlist/mojom/playlist.mojom.h"
 #include "brave/components/playlist/playlist_download_request_manager.h"
 #include "brave/components/playlist/playlist_media_file_download_manager.h"
 #include "brave/components/playlist/playlist_thumbnail_downloader.h"
 #include "brave/components/playlist/playlist_types.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 
 namespace base {
 class SequencedTaskRunner;
@@ -69,7 +72,8 @@ class MediaDetectorComponentManager;
 // type - PlaylistItemChangeParams::Type.
 class PlaylistService : public KeyedService,
                         public PlaylistMediaFileDownloadManager::Delegate,
-                        public PlaylistThumbnailDownloader::Delegate {
+                        public PlaylistThumbnailDownloader::Delegate,
+                        public playlist::mojom::PageHandler {
  public:
   using PlaylistId = base::StrongAlias<class PlaylistIdTag, std::string>;
   using PlaylistItemId =
@@ -83,7 +87,6 @@ class PlaylistService : public KeyedService,
 
   // This function will fill |info|'s id with a new generated id.
   void CreatePlaylist(PlaylistInfo& info);
-  void RemovePlaylist(const std::string& id);
 
   std::vector<PlaylistItemInfo> GetAllPlaylistItems();
   PlaylistItemInfo GetPlaylistItem(const std::string& id);
@@ -114,8 +117,6 @@ class PlaylistService : public KeyedService,
   void FindMediaFilesFromContents(content::WebContents* contents,
                                   FindMediaFilesCallback callback);
 
-  void RecoverPlaylistItem(const std::string& id);
-
   // Add |item_ids| to playlist's item list
   bool AddItemsToPlaylist(const std::string& playlist_id,
                           const std::vector<std::string>& item_ids);
@@ -132,10 +133,10 @@ class PlaylistService : public KeyedService,
 
   // Removes Item value from prefs and related cached data.
   void DeletePlaylistItemData(const std::string& id);
-  // Removes only cached data.
-  void DeletePlaylistLocalData(const std::string& id);
   void DeleteAllPlaylistItems();
 
+  void AddPage(mojo::PendingRemote<mojom::Page> page,
+               mojo::PendingReceiver<mojom::PageHandler> page_handler);
   void AddObserver(PlaylistServiceObserver* observer);
   void RemoveObserver(PlaylistServiceObserver* observer);
 
@@ -148,6 +149,26 @@ class PlaylistService : public KeyedService,
   void ConfigureWebPrefsForBackgroundWebContents(
       content::WebContents* web_contents,
       blink::web_pref::WebPreferences* web_prefs);
+
+  // playlist::mojom::PageHandler:
+  void GetAllPlaylists(GetAllPlaylistsCallback callback) override;
+  void GetPlaylist(const std::string& id,
+                   GetPlaylistCallback callback) override;
+  void AddMediaFilesFromPageToPlaylist(const std::string& playlist_id,
+                                       const GURL& url) override;
+  void AddMediaFilesFromOpenTabsToPlaylist(
+      const std::string& playlist_id) override;
+  void RemoveItemFromPlaylist(const std::string& playlist_id,
+                              const std::string& item_id) override;
+  void MoveItem(const std::string& from_playlist_id,
+                const std::string& to_playlist_id,
+                const std::string& item_id) override;
+  void UpdateItem(playlist::mojom::PlaylistItemPtr item) override;
+  void RecoverLocalDataForItem(const std::string& item_id) override;
+  void RemoveLocalDataForItem(const std::string& item_id) override;
+
+  void CreatePlaylist(playlist::mojom::PlaylistPtr playlist) override;
+  void RemovePlaylist(const std::string& playlist_id) override;
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
@@ -226,6 +247,9 @@ class PlaylistService : public KeyedService,
 
   const base::FilePath base_dir_;
   base::ObserverList<PlaylistServiceObserver> observers_;
+
+  mojo::ReceiverSet<mojom::PageHandler> page_handlers_;
+  mojo::RemoteSet<mojom::Page> pages_;
 
   std::unique_ptr<PlaylistMediaFileDownloadManager>
       media_file_download_manager_;

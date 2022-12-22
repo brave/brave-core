@@ -77,6 +77,7 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
 PlaylistService::~PlaylistService() = default;
 
 void PlaylistService::Shutdown() {
+  page_handlers_.Clear();
   download_request_manager_.reset();
   media_file_download_manager_.reset();
   thumbnail_downloader_.reset();
@@ -217,6 +218,10 @@ void PlaylistService::NotifyPlaylistChanged(
 
   for (PlaylistServiceObserver& obs : observers_)
     obs.OnPlaylistStatusChanged(params);
+
+  // TODO(sko) Send proper events based on |params|
+  for (auto& page : pages_)
+    page->OnEvent(playlist::mojom::PlaylistEvent::kUpdated);
 }
 
 bool PlaylistService::HasPrefStorePlaylistItem(const std::string& id) const {
@@ -240,6 +245,71 @@ void PlaylistService::ConfigureWebPrefsForBackgroundWebContents(
     blink::web_pref::WebPreferences* web_prefs) {
   download_request_manager_->ConfigureWebPrefsForBackgroundWebContents(
       web_contents, web_prefs);
+}
+
+void PlaylistService::GetAllPlaylists(GetAllPlaylistsCallback callback) {
+  std::vector<mojo::StructPtr<playlist::mojom::Playlist>> playlists;
+  for (const auto& playlist : GetAllPlaylists()) {
+    std::vector<mojo::StructPtr<playlist::mojom::PlaylistItem>> items;
+    for (const auto& item : playlist.items) {
+      items.push_back(playlist::GetPlaylistItemMojoFromInfo(item));
+    }
+    playlists.push_back(playlist::mojom::Playlist::New(
+        playlist.id, playlist.name, std::move(items)));
+  }
+
+  std::move(callback).Run(std::move(playlists));
+}
+
+void PlaylistService::GetPlaylist(
+    const std::string& id,
+    PlaylistService::GetPlaylistCallback callback) {
+  const auto& playlist = GetPlaylist(id);
+  if (!playlist.has_value()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  std::vector<mojo::StructPtr<playlist::mojom::PlaylistItem>> items;
+  for (const auto& item : playlist->items) {
+    items.push_back(playlist::GetPlaylistItemMojoFromInfo(item));
+  }
+  std::move(callback).Run(playlist::mojom::Playlist::New(
+      playlist->id, playlist->name, std::move(items)));
+}
+
+void PlaylistService::AddMediaFilesFromPageToPlaylist(const std::string& id,
+                                                      const GURL& url) {
+  AddMediaFilesFromPageToPlaylist(
+      id, url.spec(), prefs_->GetBoolean(playlist::kPlaylistCacheByDefault));
+}
+
+void PlaylistService::AddMediaFilesFromOpenTabsToPlaylist(
+    const std::string& playlist_id) {
+  // TODO(sko) Should be able to get web contents from chrome layer.
+  NOTIMPLEMENTED();
+}
+
+void PlaylistService::RemoveItemFromPlaylist(const std::string& playlist_id,
+                                             const std::string& item_id) {
+  RemoveItemFromPlaylist(PlaylistId(playlist_id), PlaylistItemId(item_id));
+}
+
+void PlaylistService::MoveItem(const std::string& from_playlist_id,
+                               const std::string& to_playlist_id,
+                               const std::string& item_id) {
+  MoveItem(PlaylistId(from_playlist_id), PlaylistId(to_playlist_id),
+           PlaylistItemId(item_id));
+}
+
+void PlaylistService::UpdateItem(playlist::mojom::PlaylistItemPtr item) {
+  UpdateItem(playlist::GetPlaylistItemInfoFromMojo(item));
+}
+
+void PlaylistService::CreatePlaylist(playlist::mojom::PlaylistPtr playlist) {
+  playlist::PlaylistInfo info;
+  info.name = playlist->name;
+  CreatePlaylist(info);
 }
 
 content::WebContents* PlaylistService::GetBackgroundWebContentsForTesting() {
@@ -455,7 +525,7 @@ void PlaylistService::FindMediaFilesFromContents(
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
-void PlaylistService::RecoverPlaylistItem(const std::string& id) {
+void PlaylistService::RecoverLocalDataForItem(const std::string& id) {
   const auto* playlist_value = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   if (!playlist_value) {
     LOG(ERROR) << __func__ << ": Invalid playlist id for recovery: " << id;
@@ -526,7 +596,7 @@ void PlaylistService::DeletePlaylistItemData(const std::string& id) {
                                          GetPlaylistItemDirPath(id)));
 }
 
-void PlaylistService::DeletePlaylistLocalData(const std::string& id) {
+void PlaylistService::RemoveLocalDataForItem(const std::string& id) {
   const auto* item_value_ptr = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   base::Value::Dict item = item_value_ptr->Clone();
   item.Set(kPlaylistItemMediaFileCachedKey, false);
@@ -562,6 +632,12 @@ void PlaylistService::DeleteAllPlaylistItems() {
   CleanUpOrphanedPlaylistItemDirs();
 }
 
+void PlaylistService::AddPage(mojo::PendingRemote<mojom::Page> page,
+               mojo::PendingReceiver<mojom::PageHandler> page_handler) {
+  pages_.Add(std::move(page));
+  page_handlers_.Add(this, std::move(page_handler));
+}
+
 void PlaylistService::AddObserver(PlaylistServiceObserver* observer) {
   observers_.AddObserver(observer);
 }
@@ -583,6 +659,11 @@ void PlaylistService::OnMediaFileDownloadProgressed(
     observer.OnMediaFileDownloadProgressed(id, total_bytes, received_bytes,
                                            percent_complete, time_remaining);
   }
+
+  for (auto& page : pages_)
+    page->OnMediaFileDownloadProgressed(
+        id, total_bytes, received_bytes, percent_complete,
+        base::TimeDeltaToValue(time_remaining).GetString());
 }
 
 void PlaylistService::OnMediaFileReady(const std::string& id,

@@ -52,8 +52,6 @@ class PlaylistUI : public ui::UntrustedWebUIController,
       override;
 
  private:
-  std::unique_ptr<PlaylistPageHandler> page_handler_;
-
   base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
 
   mojo::Receiver<playlist::mojom::PageHandlerFactory> page_factory_receiver_{

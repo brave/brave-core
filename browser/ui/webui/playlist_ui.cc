@@ -11,14 +11,14 @@
 #include "base/feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/browser/ui/webui/playlist_page_handler.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/features.h"
+#include "brave/components/playlist/playlist_service.h"
 #include "brave/components/playlist/resources/grit/playlist_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
-#include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "content/public/browser/web_ui.h"
 #include "content/public/common/bindings_policy.h"
 #include "content/public/common/url_constants.h"
 #include "url/gurl.h"
@@ -77,9 +77,10 @@ void PlaylistUI::CreatePageHandler(
     mojo::PendingRemote<playlist::mojom::Page> pending_page,
     mojo::PendingReceiver<playlist::mojom::PageHandler> pending_page_handler) {
   DCHECK(pending_page.is_valid());
-  page_handler_ = std::make_unique<PlaylistPageHandler>(
-      Profile::FromWebUI(web_ui()), web_ui()->GetWebContents(),
-      std::move(pending_page_handler), std::move(pending_page));
+
+  playlist::PlaylistServiceFactory::GetForBrowserContext(
+      Profile::FromWebUI(web_ui()))->AddPage(std::move(pending_page), 
+          std::move(pending_page_handler));
 
   // When WebUI calls this, mark that the page can be shown on sidebar.
   if (embedder_)
