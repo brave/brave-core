@@ -100,3 +100,17 @@ void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleAndControls() {
       FROM_HERE, base::BindOnce(&views::Widget::ResetWindowControlsPosition,
                                 frame()->GetWeakPtr()));
 }
+
+gfx::Size BraveBrowserNonClientFrameViewMac::GetMinimumSize() const {
+  if (tabs::features::ShouldShowVerticalTabs(browser_view()->browser())) {
+    // In order to ignore tab strip height, skip BrowserNonClientFrameViewMac's
+    // implementation.
+    auto size = frame()->client_view()->GetMinimumSize();
+    size.SetToMax(gfx::Size(0, (size.width() * 3) / 4));
+    // Note that we can't set empty bounds on Mac.
+    size.SetToMax({1, 1});
+    return size;
+  }
+
+  return BrowserNonClientFrameViewMac::GetMinimumSize();
+}
