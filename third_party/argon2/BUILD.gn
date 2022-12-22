@@ -2,7 +2,10 @@ config("warnings") {
   cflags = []
 
   if (is_clang) {
-    cflags += [ "-Wno-implicit-fallthrough" ]
+    cflags += [
+      "-Wno-implicit-fallthrough",
+      "-Wno-deprecated-declarations",
+    ]
   }
 }
 
