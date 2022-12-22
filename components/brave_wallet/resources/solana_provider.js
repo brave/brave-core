@@ -31,4 +31,8 @@
       writable: false
     }
   })
+
+  const WalletStandard = require('@brave/wallet-standard-brave')
+
+  WalletStandard.initialize(window.braveSolana);
 })()
