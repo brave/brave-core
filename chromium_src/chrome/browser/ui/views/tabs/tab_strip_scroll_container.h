@@ -9,6 +9,7 @@
 #define GetTabStripAvailableWidth                   \
   GetTabStripAvailableWidth_Unused() { return {}; } \
   friend class VerticalTabStripRegionView;          \
+  friend class BraveTabStrip;                       \
   int GetTabStripAvailableWidth
 
 #include "src/chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"

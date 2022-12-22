@@ -28,6 +28,7 @@
 #include "chrome/browser/ui/views/tabs/tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_observer.h"
+#include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/flex_layout.h"
@@ -221,7 +222,20 @@ void BraveTabStrip::UpdateTabContainer() {
     tab_container_->SetLayoutManager(std::make_unique<views::FlexLayout>())
         ->SetOrientation(views::LayoutOrientation::kVertical);
   } else {
-    SetAvailableWidthCallback(base::NullCallback());
+    if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
+      auto* browser_view = static_cast<BraveBrowserView*>(
+          BrowserView::GetBrowserViewForBrowser(browser));
+      DCHECK(browser_view);
+      auto* scroll_container = static_cast<TabStripScrollContainer*>(
+          browser_view->tab_strip_region_view()->tab_strip_container_);
+      DCHECK(scroll_container);
+      SetAvailableWidthCallback(base::BindRepeating(
+          &TabStripScrollContainer::GetTabStripAvailableWidth,
+          base::Unretained(scroll_container)));
+    } else {
+      SetAvailableWidthCallback(base::NullCallback());
+    }
+
     if (should_use_compound_tab_container) {
       tab_container_->SetLayoutManager(std::make_unique<views::FlexLayout>())
           ->SetOrientation(views::LayoutOrientation::kVertical);
