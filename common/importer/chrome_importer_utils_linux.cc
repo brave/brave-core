@@ -100,3 +100,14 @@ base::FilePath GetOperaSnapUserDataFolder() {
 
   return result;
 }
+
+base::FilePath GetYandexUserDataFolder() {
+  base::FilePath result;
+  if (!base::PathService::Get(base::DIR_HOME, &result))
+    return base::FilePath();
+
+  result = result.Append(".config");
+  result = result.Append("yandex-browser");
+
+  return result;
+}
