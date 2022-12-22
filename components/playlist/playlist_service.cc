@@ -77,6 +77,7 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
 PlaylistService::~PlaylistService() = default;
 
 void PlaylistService::Shutdown() {
+  service_observers_.Clear();
   service_receivers_.Clear();
   download_request_manager_.reset();
   media_file_download_manager_.reset();
