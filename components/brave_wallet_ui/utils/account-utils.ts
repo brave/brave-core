@@ -4,7 +4,12 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // types
-import { AccountInfo, BraveWallet, WalletAccountType } from '../constants/types'
+import {
+  AccountInfo,
+  BraveWallet,
+  WalletAccountType,
+  WalletAccountTypeName
+} from '../constants/types'
 
 // constants
 import registry from '../common/constants/registry'
@@ -44,13 +49,20 @@ export const findAccountName = (accounts: WalletAccountType[], address: string) 
   return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name
 }
 
-export const createTokenBalanceRegistryKey = (token: BraveWallet.BlockchainToken) => {
+export const createTokenBalanceRegistryKey = (
+  token: Pick<
+    BraveWallet.BlockchainToken,
+    | 'tokenId'
+    | 'isErc721'
+    | 'contractAddress'
+  >
+) => {
   return token.isErc721 ? `${token.contractAddress.toLowerCase()}#${token.tokenId}` : token.contractAddress.toLowerCase()
 }
 
-export const getAccountType = (info: AccountInfo) => {
+export const getAccountType = (info: AccountInfo): WalletAccountTypeName => {
   if (info.hardware) {
-    return info.hardware.vendor
+    return info.hardware.vendor as 'Ledger' | 'Trezor'
   }
   return info.isImported ? 'Secondary' : 'Primary'
 }
