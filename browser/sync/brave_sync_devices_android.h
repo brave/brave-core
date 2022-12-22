@@ -26,7 +26,7 @@ class BraveSyncDevicesAndroid : public syncer::DeviceInfoTracker::Observer {
  public:
   BraveSyncDevicesAndroid(JNIEnv* env,
                           const base::android::JavaRef<jobject>& obj);
-  virtual ~BraveSyncDevicesAndroid();
+  ~BraveSyncDevicesAndroid() override;
 
   void Destroy(JNIEnv* env);
 

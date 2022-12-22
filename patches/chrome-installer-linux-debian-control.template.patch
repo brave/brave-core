@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/control.template b/chrome/installer/linux/debian/control.template
-index 03224f07c09f4d6d2a7c9778f797202197161f10..764952501ef14b317dabec07f1e0655f2dd9855d 100644
+index 93c075c8822ff843cc44199669b59664a9cd2a8e..588bab340769807ac1c36da570d52dcf836fc0e6 100644
 --- a/chrome/installer/linux/debian/control.template
 +++ b/chrome/installer/linux/debian/control.template
 @@ -1,11 +1,11 @@

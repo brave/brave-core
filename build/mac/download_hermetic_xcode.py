@@ -1,12 +1,8 @@
 #!/usr/bin/env vpython3
-
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
-
-# Copyright 2018 The Chromium Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import argparse
 import os
@@ -27,12 +23,12 @@ def LoadPList(path):
         return plistlib.load(f)
 
 
-# This contains binaries from Xcode 13.3, along with the macOS 12.1 SDK
-XCODE_VERSION = '13.3'
+# This contains binaries from Xcode 14.1, along with the macOS 13.0 SDK
+XCODE_VERSION = '14.1'
 HERMETIC_XCODE_BINARY = (
     DEPS_PACKAGES_URL +
     '/xcode-hermetic-toolchain/xcode-hermetic-toolchain-xcode-' +
-    XCODE_VERSION + '-sdk-12.3-12.1.tar.gz')
+    XCODE_VERSION + '-sdk-13.0-12.3.tar.gz')
 
 # The toolchain will not be downloaded if the minimum OS version is not met. 19
 # is the major version number for macOS 10.15. Xcode 13.2 13C90 only runs on

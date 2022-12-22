@@ -7,7 +7,7 @@ import './brave_sync_code_dialog.js';
 
 import {DomRepeatEvent, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
-import {WebUIListenerMixin, WebUIListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
+import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {BaseMixin} from '../base_mixin.js'
 import {Route,Router} from '../router.js';
 import {BraveDeviceInfo, BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
@@ -21,8 +21,8 @@ import {getTemplate} from './brave_sync_configure.html.js'
  */
 
 const SettingsBraveSyncConfigureElementBase =
-  I18nMixin(WebUIListenerMixin(BaseMixin(PolymerElement))) as {
-    new(): PolymerElement & WebUIListenerMixinInterface & I18nMixinInterface
+  I18nMixin(WebUiListenerMixin(BaseMixin(PolymerElement))) as {
+    new(): PolymerElement & WebUiListenerMixinInterface & I18nMixinInterface
   }
 
 export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigureElementBase {

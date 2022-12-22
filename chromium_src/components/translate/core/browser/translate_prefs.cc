@@ -9,11 +9,9 @@
 
 #include "brave/components/translate/core/common/brave_translate_features.h"
 
-#define MigrateObsoleteProfilePrefs MigrateObsoleteProfilePrefs_ChromiumImpl
 #define TranslatePrefs TranslatePrefs_ChromiumImpl
 #include "src/components/translate/core/browser/translate_prefs.cc"
 #undef TranslatePrefs
-#undef MigrateObsoleteProfilePrefs
 
 namespace translate {
 

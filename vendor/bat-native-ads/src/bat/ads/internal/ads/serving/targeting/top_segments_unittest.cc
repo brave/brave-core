@@ -159,7 +159,7 @@ TEST_P(BatAdsTopSegmentsTest, GetSegments) {
     ProcessPurchaseIntent();
   }
 
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   std::vector<base::test::FeatureRef> disabled_features;
 
   if (param.epsilon_greedy_bandits_enabled) {

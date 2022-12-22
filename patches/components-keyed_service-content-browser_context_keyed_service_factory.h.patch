@@ -1,8 +1,8 @@
 diff --git a/components/keyed_service/content/browser_context_keyed_service_factory.h b/components/keyed_service/content/browser_context_keyed_service_factory.h
-index a7bdf5cdcd52bb4ae652df375c05752901a5055f..85c729c8f56e54a9b207cf58caf587d9e19e1e84 100644
+index 2d15bc4016deb2425a1e3f0554478c185db7435b..2a87693b509b6b5976cbce17ca06eb64fe2861e0 100644
 --- a/components/keyed_service/content/browser_context_keyed_service_factory.h
 +++ b/components/keyed_service/content/browser_context_keyed_service_factory.h
-@@ -154,6 +154,7 @@ class KEYED_SERVICE_EXPORT BrowserContextKeyedServiceFactory
+@@ -161,6 +161,7 @@ class KEYED_SERVICE_EXPORT BrowserContextKeyedServiceFactory
    // and the default implementation removes it from |mapping_| and deletes
    // the pointer.
    virtual void BrowserContextShutdown(content::BrowserContext* context);

@@ -1,8 +1,8 @@
 diff --git a/tools/licenses.py b/tools/licenses.py
-index c4ffc17fb5b372d56f68bc69e9d4fc93ae40d45f..a1d12e1ee5cd21fa3f79762dee3653b0bb30eb46 100755
+index de49fae95801e402cef4cda481bdf17222c9525c..fee2b33b157778166239c3410b6ea08342d5337a 100755
 --- a/tools/licenses.py
 +++ b/tools/licenses.py
-@@ -35,6 +35,7 @@ else:
+@@ -39,6 +39,7 @@ from spdx_writer import SpdxWriter
  _REPOSITORY_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
  sys.path.insert(0, os.path.join(_REPOSITORY_ROOT, 'build/android/gyp'))
  from util import build_utils
@@ -10,15 +10,15 @@ index c4ffc17fb5b372d56f68bc69e9d4fc93ae40d45f..a1d12e1ee5cd21fa3f79762dee3653b0
  
  
  # Paths from the root of the tree to directories to skip.
-@@ -348,6 +349,7 @@ SPECIAL_CASES = {
-         "/third_party/swiftshader/third_party/SPIRV-Headers/LICENSE",
+@@ -385,6 +386,7 @@ SPECIAL_CASES = {
+         "License File": "/third_party/selenium-atoms/LICENSE.closure",
      },
  }
 +(PRUNE_DIRS, ADDITIONAL_PATHS) = AddBraveCredits(PRUNE_PATHS, SPECIAL_CASES, PRUNE_DIRS, ADDITIONAL_PATHS)
  
  # Special value for 'License File' field used to indicate that the license file
  # should not be used in about:credits.
-@@ -541,7 +543,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
+@@ -578,7 +580,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
        if skip in dirs:
          dirs.remove(skip)
  
@@ -28,7 +28,7 @@ index c4ffc17fb5b372d56f68bc69e9d4fc93ae40d45f..a1d12e1ee5cd21fa3f79762dee3653b0
        # Add all subdirectories that are not marked for skipping.
        for dir in dirs:
          dirpath = os.path.join(path, dir)
-@@ -745,7 +748,8 @@ def GenerateCredits(file_template_file,
+@@ -801,7 +804,8 @@ def GenerateCredits(file_template_file,
    for path in third_party_dirs:
      try:
        metadata = ParseDir(path, _REPOSITORY_ROOT)

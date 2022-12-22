@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.logo;
 
+import android.content.Context;
 import android.view.View;
 
 import org.chromium.base.Callback;
@@ -18,10 +19,10 @@ public class BraveLogoCoordinator extends LogoCoordinator {
     // Own members.
     private final LogoView mLogoView;
 
-    public BraveLogoCoordinator(Callback<LoadUrlParams> logoClickedCallback, LogoView logoView,
-            boolean shouldFetchDoodle, Callback<Logo> onLogoAvailableCallback,
+    public BraveLogoCoordinator(Context context, Callback<LoadUrlParams> logoClickedCallback,
+            LogoView logoView, boolean shouldFetchDoodle, Callback<Logo> onLogoAvailableCallback,
             Runnable onCachedLogoRevalidatedRunnable, boolean isParentSurfaceShown) {
-        super(logoClickedCallback, logoView, shouldFetchDoodle, onLogoAvailableCallback,
+        super(context, logoClickedCallback, logoView, shouldFetchDoodle, onLogoAvailableCallback,
                 onCachedLogoRevalidatedRunnable, isParentSurfaceShown);
 
         mLogoView = logoView;

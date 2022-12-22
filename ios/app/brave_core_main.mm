@@ -13,6 +13,7 @@
 #include "base/i18n/icu_util.h"
 #include "base/logging.h"
 #include "base/mac/bundle_locations.h"
+#include "base/mac/foundation_util.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
@@ -37,6 +38,7 @@
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/component_updater/component_updater_utils.h"
+#include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/installer_policies/safety_tips_component_installer.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
@@ -49,12 +51,14 @@
 #include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/browser_state/chrome_browser_state_removal_controller.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
 #include "ios/chrome/browser/main/browser.h"
 #include "ios/chrome/browser/main/browser_list.h"
 #include "ios/chrome/browser/main/browser_list_factory.h"
 #include "ios/chrome/browser/passwords/ios_chrome_password_store_factory.h"
+#include "ios/chrome/browser/paths/paths.h"
 #include "ios/chrome/browser/sync/send_tab_to_self_sync_service_factory.h"
 #include "ios/chrome/browser/sync/session_sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_service_factory.h"
@@ -63,6 +67,7 @@
 #include "ios/chrome/browser/undo/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/web_state_list/web_state_list.h"
 #include "ios/public/provider/chrome/browser/chrome_browser_provider.h"
+#include "ios/public/provider/chrome/browser/overrides/overrides_api.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
 #include "ios/web/public/init/web_main.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -82,6 +87,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @interface BraveCoreMain () {
   std::unique_ptr<BraveWebClient> _webClient;
   std::unique_ptr<BraveMainDelegate> _delegate;
+  std::vector<std::string> _argv_store;
+  std::unique_ptr<const char*[]> _raw_args;
   std::unique_ptr<web::WebMain> _webMain;
   std::unique_ptr<Browser> _browser;
   BrowserList* _browserList;
@@ -126,16 +133,33 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
                name:UIApplicationWillTerminateNotification
              object:nil];
 
+    @autoreleasepool {
+      ios::RegisterPathProvider();
+
+      // Bundled components are not supported on ios, so DIR_USER_DATA is passed
+      // for all three arguments.
+      component_updater::RegisterPathProvider(
+          ios::DIR_USER_DATA, ios::DIR_USER_DATA, ios::DIR_USER_DATA);
+    }
+
+    NSBundle* baseBundle = base::mac::OuterBundle();
+    base::mac::SetBaseBundleID(
+        base::SysNSStringToUTF8([baseBundle bundleIdentifier]).c_str());
+
     // Register all providers before calling any Chromium code.
     [ProviderRegistration registerProviders];
 
+    // Setup WebClient ([ClientRegistration registerClients])
     _webClient.reset(new BraveWebClient());
     _webClient->SetUserAgent(base::SysNSStringToUTF8(userAgent));
     web::SetWebClient(_webClient.get());
 
     _delegate.reset(new BraveMainDelegate());
 
+    // Start Main ([ChromeMainStarter startChromeMain])
     web::WebMainParams params(_delegate.get());
+
+    // Parse Switches, Features, Arguments (Command-Line Arguments)
     NSMutableArray* arguments =
         [[[NSProcessInfo processInfo] arguments] mutableCopy];
     NSMutableArray* switches = [[NSMutableArray alloc] init];
@@ -149,29 +173,25 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     }
     [arguments addObjectsFromArray:switches];
     params.argc = [arguments count];
-    const char* argv[params.argc];
-    std::vector<std::string> argv_store;
-    argv_store.resize([arguments count]);
+
+    // Allocate memory to convert from iOS arguments to Native arguments
+    _raw_args.reset(new const char*[params.argc]);
+    _argv_store.resize([arguments count]);
+
     for (NSUInteger i = 0; i < [arguments count]; i++) {
-      argv_store[i] = base::SysNSStringToUTF8([arguments objectAtIndex:i]);
-      argv[i] = argv_store[i].c_str();
+      _argv_store[i] = base::SysNSStringToUTF8([arguments objectAtIndex:i]);
+      _raw_args[i] = _argv_store[i].c_str();
     }
-    params.argv = argv;
+    params.argv = _raw_args.get();
+
+    // Setup WebMain
     _webMain = std::make_unique<web::WebMain>(std::move(params));
 
-    ios::provider::InitializeUI();
+    // Remove the extra browser states as Chrome iOS is single profile in M48+.
+    ChromeBrowserStateRemovalController::GetInstance()
+        ->RemoveBrowserStatesIfNecessary();
 
-    web::WebUIIOSControllerFactory::RegisterFactory(
-        ChromeWebUIIOSControllerFactory::GetInstance());
-
-    component_updater::ComponentUpdateService* cus =
-        GetApplicationContext()->GetComponentUpdateService();
-    DCHECK(cus);
-
-    _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
-
-    [self registerComponentsForUpdate:cus];
-
+    // Initialize and set the main browser state.
     ios::ChromeBrowserStateManager* browserStateManager =
         GetApplicationContext()->GetChromeBrowserStateManager();
     ChromeBrowserState* chromeBrowserState =
@@ -181,6 +201,21 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     _browserList = BrowserListFactory::GetForBrowserState(_mainBrowserState);
     _browser = Browser::Create(_mainBrowserState);
     _browserList->AddBrowser(_browser.get());
+
+    // Initialize the provider UI global state.
+    ios::provider::InitializeUI();
+
+    // Setup WebUI (Sync Internals and other WebViews)
+    web::WebUIIOSControllerFactory::RegisterFactory(
+        ChromeWebUIIOSControllerFactory::GetInstance());
+
+    // Setup Component Updater
+    component_updater::ComponentUpdateService* cus =
+        GetApplicationContext()->GetComponentUpdateService();
+    DCHECK(cus);
+
+    _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
+    [self registerComponentsForUpdate:cus];
   }
   return self;
 }
@@ -204,6 +239,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
   _mainBrowserState = nullptr;
   _webMain.reset();
+  _raw_args.reset();
+  _argv_store = {};
   _delegate.reset();
   _webClient.reset();
 
@@ -234,6 +271,10 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 }
 
 - (void)scheduleLowPriorityStartupTasks {
+  // Install overrides
+  ios::provider::InstallOverrides();
+
+  // Schedule low priority tasks
   [StartupTasks scheduleDeferredBrowserStateInitialization:_mainBrowserState];
 }
 

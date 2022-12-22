@@ -33,7 +33,6 @@ source_set("opentabs") {
     "//components/send_tab_to_self",
     "//components/sync/driver",
     "//components/sync_sessions",
-    "//ios/chrome/browser",
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/main:public",
     "//ios/chrome/browser/sessions",

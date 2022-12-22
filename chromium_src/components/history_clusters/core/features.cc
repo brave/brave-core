@@ -14,6 +14,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kHistoryClustersInternalsPage, base::FEATURE_DISABLED_BY_DEFAULT},
     {kJourneys, base::FEATURE_DISABLED_BY_DEFAULT},
     {kOmniboxAction, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPersistedClusters, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPersistContextAnnotationsInHistoryDb, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/stl_util.h"
-#include "base/strings/strcat.h"
 #include "brave/components/permissions/permission_lifetime_pref_names.h"
 #include "components/content_settings/core/browser/content_settings_registry.h"
 #include "components/content_settings/core/browser/content_settings_utils.h"
@@ -18,13 +17,10 @@
 #include "components/content_settings/core/browser/website_settings_registry.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
-#include "services/preferences/public/cpp/dictionary_value_update.h"
-#include "services/preferences/public/cpp/scoped_pref_update.h"
+#include "components/prefs/scoped_user_pref_update.h"
 
 using content_settings::WebsiteSettingsInfo;
 using content_settings::WebsiteSettingsRegistry;
-using prefs::DictionaryValueUpdate;
-using prefs::ScopedDictionaryPrefUpdate;
 
 namespace permissions {
 
@@ -201,18 +197,15 @@ void PermissionExpirations::UpdateExpirationsPref(
   }
 
   // Use a scoped pref update to update only changed pref subkeys.
-  ScopedDictionaryPrefUpdate update(prefs_,
-                                    prefs::kPermissionLifetimeExpirations);
-  std::unique_ptr<DictionaryValueUpdate> key_expirations_val = update.Get();
-  DCHECK(key_expirations_val);
-
+  ScopedDictPrefUpdate key_expirations(prefs_,
+                                       prefs::kPermissionLifetimeExpirations);
   const std::string& content_type_name =
       WebsiteSettingsRegistry::GetInstance()->Get(content_type)->name();
 
   const auto& expirations_it = expirations_.find(content_type);
   if (expirations_it == expirations_.end()) {
     // Remove content type if it's absent in a runtime container.
-    key_expirations_val->RemovePath(content_type_name, nullptr);
+    key_expirations->RemoveByDottedPath(content_type_name);
     return;
   }
 
@@ -223,17 +216,15 @@ void PermissionExpirations::UpdateExpirationsPref(
     if (key_expirations_it == key_expirations_map.end() ||
         key_expirations_it->second.empty()) {
       // Remove a key element if it's absent or empty in a runtime container.
-      std::unique_ptr<DictionaryValueUpdate> content_type_expirations_val;
-      if (key_expirations_val->GetDictionaryWithoutPathExpansion(
-              content_type_name, &content_type_expirations_val)) {
-        DCHECK(content_type_expirations_val);
-        content_type_expirations_val->RemoveWithoutPathExpansion(key, nullptr);
+      base::Value::Dict* content_type_expirations =
+          key_expirations->FindDict(content_type_name);
+      if (content_type_expirations) {
+        content_type_expirations->Remove(key);
       }
     } else {
       // Update a key element if it's not empty in a runtime container.
-      key_expirations_val->SetPath(
-          {content_type_name, key},
-          ExpiringPermissionsToValue(key_expirations_it->second));
+      key_expirations->EnsureDict(content_type_name)
+          ->Set(key, ExpiringPermissionsToList(key_expirations_it->second));
     }
   }
 }
@@ -278,12 +269,10 @@ void PermissionExpirations::ReadExpirationsFromPrefs() {
   }
 
   if (!invalid_content_type_names.empty()) {
-    ::prefs::ScopedDictionaryPrefUpdate update(
-        prefs_, prefs::kPermissionLifetimeExpirations);
-    std::unique_ptr<::prefs::DictionaryValueUpdate> key_expirations_val =
-        update.Get();
+    ScopedDictPrefUpdate key_expirations(prefs_,
+                                         prefs::kPermissionLifetimeExpirations);
     for (const auto& invalid_content_type_name : invalid_content_type_names) {
-      key_expirations_val->RemovePath(invalid_content_type_name, nullptr);
+      key_expirations->RemoveByDottedPath(invalid_content_type_name);
     }
   }
 }
@@ -317,7 +306,7 @@ PermissionExpirations::ParseExpiringPermissions(
   return expiring_permissions;
 }
 
-base::Value PermissionExpirations::ExpiringPermissionsToValue(
+base::Value::List PermissionExpirations::ExpiringPermissionsToList(
     const ExpiringPermissions& expiring_permissions) const {
   base::Value::List items;
   items.reserve(expiring_permissions.size());
@@ -335,7 +324,7 @@ base::Value PermissionExpirations::ExpiringPermissionsToValue(
     items.Append(std::move(value));
   }
 
-  return base::Value(std::move(items));
+  return items;
 }
 
 }  // namespace permissions

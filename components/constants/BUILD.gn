@@ -45,3 +45,16 @@ source_set("constants") {
   public_deps = [ ":brave_services_key" ]
   deps = [ "//base" ]
 }
+
+source_set("brave_service_key_helper") {
+  sources = [
+    "brave_services_key_helper.cc",
+    "brave_services_key_helper.h",
+  ]
+
+  deps = [
+    ":constants",
+    "//brave/extensions:common",  # instead of //extensions/common, for iOS
+    "//url",
+  ]
+}

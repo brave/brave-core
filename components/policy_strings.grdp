@@ -373,6 +373,15 @@ Additional details:
   <message name="IDS_EXPORT_POLICIES_JSON" desc="Label for the button that exports policies in JSON format.">
     Export to JSON
   </message>
+  <message name="IDS_UPLOAD_REPORT" desc="Label for the button that uplaod Brave usage report">
+    Upload Report
+  </message>
+  <message name="IDS_REPORT_UPLOADING" desc="Screen reader message indicates report is being uploaded">
+    Upload Report
+  </message>
+  <message name="IDS_REPORT_UPLOADED" desc="Screen reader message indicates report has been uploaded">
+    Report is uploaded
+  </message>
   <message name="IDS_POLICY_STATUS" desc="Title of the status section.">
     Status
   </message>
@@ -410,6 +419,9 @@ Additional details:
   </message>
   <message name="IDS_POLICY_LABEL_CLIENT_ID" desc="Label for the client IDs in the policy status boxes.">
     Client ID:
+  </message>
+  <message name="IDS_POLICY_LABEL_PROFILE_ID" desc="Label for the user profile ID in the user policy status box.">
+    Profile ID:
   </message>
   <message name="IDS_POLICY_LABEL_ASSET_ID" desc="Label for the asset ID in the device policy status box.">
     Asset ID:
@@ -875,6 +887,20 @@ Additional details:
   </message>
   <message name="IDS_POLICY_DLP_CLIPBOARD_BUBBLE_MESSAGE" desc="Text for a bubble that informs the user that their copy and paste action has been blocked/warned with a link to a help center article about Data Leak Prevention.">
     <ph name="BUBBLE_MESSAGE">$1<ex>Pasting from corp.google.com to this location is blocked by administrator policy</ex></ph>. <ph name="LEARN_MORE_TEXT">$2<ex>Learn more</ex></ph>
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_DOWNLOAD_BLOCK_TITLE" desc="The title of the notification informing the user that downloading files is blocked.">
+    Blocked download
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_DOWNLOAD_BLOCK_MESSAGE" desc="The message of the notification informing the user that downloading files is blocked.">
+    Downloading this file is blocked by administrator policy
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_UPLOAD_BLOCK_TITLE" desc="The title of the notification informing the user that uploading files is blocked.">
+    Blocked upload
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_UPLOAD_BLOCK_MESSAGE" desc="The title of the notification informing the user that uploading files is blocked.">
+     {0, plural,
+                =1 {Uploading this file is blocked by administrator policy}
+                other {Uploading # files is blocked by administrator policy}}
   </message>
   <message name="IDS_POLICY_DEVICE_SCHEDULED_REBOOT_TITLE" desc="The title for notification informing the user that the device will restart soon.">
     Device will restart very soon

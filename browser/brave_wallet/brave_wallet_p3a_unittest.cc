@@ -115,7 +115,7 @@ TEST_F(BraveWalletP3AUnitTest, KeyringCreated) {
   base::FieldTrialParams parameters;
   parameters[features::kCreateDefaultSolanaAccount.name] = "false";
 
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(
       brave_wallet::features::kBraveWalletSolanaFeature, parameters);
 

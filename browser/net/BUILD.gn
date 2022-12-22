@@ -1,3 +1,8 @@
+# Copyright (c) 2017 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
@@ -66,7 +71,6 @@ source_set("net") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/safebrowsing",
-    "//brave/common",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/brave_shields/browser",
@@ -74,6 +78,8 @@ source_set("net") {
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_webtorrent/browser/buildflags",
+    "//brave/components/constants",
+    "//brave/components/constants:brave_service_key_helper",
     "//brave/components/decentralized_dns/content",
     "//brave/components/ipfs/buildflags",
     "//brave/components/update_client:buildflags",
