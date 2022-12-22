@@ -77,7 +77,7 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
 PlaylistService::~PlaylistService() = default;
 
 void PlaylistService::Shutdown() {
-  page_handlers_.Clear();
+  service_receivers_.Clear();
   download_request_manager_.reset();
   media_file_download_manager_.reset();
   thumbnail_downloader_.reset();
@@ -220,8 +220,8 @@ void PlaylistService::NotifyPlaylistChanged(
     obs.OnPlaylistStatusChanged(params);
 
   // TODO(sko) Send proper events based on |params|
-  for (auto& page : pages_)
-    page->OnEvent(playlist::mojom::PlaylistEvent::kUpdated);
+  for (auto& service_observer : service_observers_)
+    service_observer->OnEvent(playlist::mojom::PlaylistEvent::kUpdated);
 }
 
 bool PlaylistService::HasPrefStorePlaylistItem(const std::string& id) const {
@@ -632,10 +632,11 @@ void PlaylistService::DeleteAllPlaylistItems() {
   CleanUpOrphanedPlaylistItemDirs();
 }
 
-void PlaylistService::AddPage(mojo::PendingRemote<mojom::Page> page,
-               mojo::PendingReceiver<mojom::PageHandler> page_handler) {
-  pages_.Add(std::move(page));
-  page_handlers_.Add(this, std::move(page_handler));
+void PlaylistService::AddServiceObserver(
+    mojo::PendingRemote<mojom::ServiceObserver> service_observer,
+    mojo::PendingReceiver<mojom::Service> service) {
+  service_observers_.Add(std::move(service_observer));
+  service_receivers_.Add(this, std::move(service));
 }
 
 void PlaylistService::AddObserver(PlaylistServiceObserver* observer) {
@@ -660,10 +661,11 @@ void PlaylistService::OnMediaFileDownloadProgressed(
                                            percent_complete, time_remaining);
   }
 
-  for (auto& page : pages_)
-    page->OnMediaFileDownloadProgressed(
+  for (auto& service_observer : service_observers_) {
+    service_observer->OnMediaFileDownloadProgressed(
         id, total_bytes, received_bytes, percent_complete,
         base::TimeDeltaToValue(time_remaining).GetString());
+  }
 }
 
 void PlaylistService::OnMediaFileReady(const std::string& id,

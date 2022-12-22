@@ -21,8 +21,8 @@
 #include "brave/components/playlist/playlist_thumbnail_downloader.h"
 #include "brave/components/playlist/playlist_types.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "mojo/public/cpp/bindings/remote_set.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 
 namespace base {
 class SequencedTaskRunner;
@@ -73,7 +73,7 @@ class MediaDetectorComponentManager;
 class PlaylistService : public KeyedService,
                         public PlaylistMediaFileDownloadManager::Delegate,
                         public PlaylistThumbnailDownloader::Delegate,
-                        public playlist::mojom::PageHandler {
+                        public playlist::mojom::Service {
  public:
   using PlaylistId = base::StrongAlias<class PlaylistIdTag, std::string>;
   using PlaylistItemId =
@@ -135,8 +135,9 @@ class PlaylistService : public KeyedService,
   void DeletePlaylistItemData(const std::string& id);
   void DeleteAllPlaylistItems();
 
-  void AddPage(mojo::PendingRemote<mojom::Page> page,
-               mojo::PendingReceiver<mojom::PageHandler> page_handler);
+  void AddServiceObserver(
+      mojo::PendingRemote<mojom::ServiceObserver> service_observer,
+      mojo::PendingReceiver<mojom::Service> service);
   void AddObserver(PlaylistServiceObserver* observer);
   void RemoveObserver(PlaylistServiceObserver* observer);
 
@@ -150,7 +151,7 @@ class PlaylistService : public KeyedService,
       content::WebContents* web_contents,
       blink::web_pref::WebPreferences* web_prefs);
 
-  // playlist::mojom::PageHandler:
+  // playlist::mojom::Service:
   void GetAllPlaylists(GetAllPlaylistsCallback callback) override;
   void GetPlaylist(const std::string& id,
                    GetPlaylistCallback callback) override;
@@ -248,8 +249,8 @@ class PlaylistService : public KeyedService,
   const base::FilePath base_dir_;
   base::ObserverList<PlaylistServiceObserver> observers_;
 
-  mojo::ReceiverSet<mojom::PageHandler> page_handlers_;
-  mojo::RemoteSet<mojom::Page> pages_;
+  mojo::ReceiverSet<mojom::Service> service_receivers_;
+  mojo::RemoteSet<mojom::ServiceObserver> service_observers_;
 
   std::unique_ptr<PlaylistMediaFileDownloadManager>
       media_file_download_manager_;

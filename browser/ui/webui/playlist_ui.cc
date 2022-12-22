@@ -17,8 +17,8 @@
 #include "brave/components/playlist/resources/grit/playlist_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
-#include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
 #include "content/public/common/url_constants.h"
 #include "url/gurl.h"
@@ -65,22 +65,21 @@ PlaylistUI::PlaylistUI(content::WebUI* web_ui, const std::string& name)
 PlaylistUI::~PlaylistUI() = default;
 
 void PlaylistUI::BindInterface(
-    mojo::PendingReceiver<playlist::mojom::PageHandlerFactory>
-        pending_receiver) {
-  if (page_factory_receiver_.is_bound())
-    page_factory_receiver_.reset();
+    mojo::PendingReceiver<playlist::mojom::ServiceFactory> pending_receiver) {
+  if (service_factory_receiver_.is_bound())
+    service_factory_receiver_.reset();
 
-  page_factory_receiver_.Bind(std::move(pending_receiver));
+  service_factory_receiver_.Bind(std::move(pending_receiver));
 }
 
-void PlaylistUI::CreatePageHandler(
-    mojo::PendingRemote<playlist::mojom::Page> pending_page,
-    mojo::PendingReceiver<playlist::mojom::PageHandler> pending_page_handler) {
-  DCHECK(pending_page.is_valid());
+void PlaylistUI::CreateService(
+    mojo::PendingRemote<playlist::mojom::ServiceObserver> service_observer,
+    mojo::PendingReceiver<playlist::mojom::Service> service) {
+  DCHECK(service_observer.is_valid());
 
   playlist::PlaylistServiceFactory::GetForBrowserContext(
-      Profile::FromWebUI(web_ui()))->AddPage(std::move(pending_page), 
-          std::move(pending_page_handler));
+      Profile::FromWebUI(web_ui()))
+      ->AddServiceObserver(std::move(service_observer), std::move(service));
 
   // When WebUI calls this, mark that the page can be shown on sidebar.
   if (embedder_)

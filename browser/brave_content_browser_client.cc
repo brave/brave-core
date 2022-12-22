@@ -490,7 +490,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     registry.ForWebUI<playlist::PlaylistUI>()
-        .Add<playlist::mojom::PageHandlerFactory>();
+        .Add<playlist::mojom::ServiceFactory>();
   }
 #endif
 }
@@ -611,7 +611,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     content::RegisterWebUIControllerInterfaceBinder<
-        playlist::mojom::PageHandlerFactory, playlist::PlaylistUI>(map);
+        playlist::mojom::ServiceFactory, playlist::PlaylistUI>(map);
   }
 #endif
 

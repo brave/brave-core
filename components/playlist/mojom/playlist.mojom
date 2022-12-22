@@ -39,16 +39,16 @@ struct PlaylistItem {
   int8 last_played_position;
 };
 
-// Used by the WebUI page to bootstrap bidirectional communication.
-interface PageHandlerFactory {
-  // The WebUI page's |BrowserProxy| singleton calls this method when the page
-  // is first initialized.
-  CreatePageHandler(pending_remote<Page> page,
-                    pending_receiver<PageHandler> handler);
+// Used by the UI to bootstrap bidirectional communication.
+interface ServiceFactory {
+  // On Desktop, the WebUI page's |BrowserProxy| singleton calls this method 
+  // when the page is first initialized.
+  CreateService(pending_remote<ServiceObserver> service_observer,
+                pending_receiver<Service> service);
 };
 
-// Browser-side handler for requests from WebUI page.
-interface PageHandler {
+// Service-side handler for requests from UI.
+interface Service {
   GetAllPlaylists() => (array<Playlist> playlists);
 
   GetPlaylist(string id) => (Playlist? playlist);
@@ -73,8 +73,8 @@ interface PageHandler {
   RemovePlaylist(string id);
 };
 
-// WebUI-side handler for requests from the browser.
-interface Page {
+// UI-side handler for response from the service.
+interface ServiceObserver {
   // TODO(sko) For now, we only send |kUpdated| event. Need to make more events
   // and parameters for client side.
   OnEvent(PlaylistEvent event);
