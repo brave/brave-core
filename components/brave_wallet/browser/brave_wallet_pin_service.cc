@@ -177,9 +177,19 @@ void BraveWalletPinService::AddObserver(
 }
 
 // static
-std::string BraveWalletPinService::GetPath(
+absl::optional<std::string> BraveWalletPinService::GetPath(
     const absl::optional<std::string>& service,
     const BlockchainTokenPtr& token) {
+  if (service && base::ContainsOnlyChars(service.value(), ".")) {
+    return absl::nullopt;
+  }
+  if (base::ContainsOnlyChars(token->contract_address, ".")) {
+    return absl::nullopt;
+  }
+  if (base::ContainsOnlyChars(token->token_id, ".")) {
+    return absl::nullopt;
+  }
+  DCHECK(!base::ContainsOnlyChars(token->chain_id, "."));
   return base::StrCat({kNftPart, ".", service.value_or(kLocalService), ".",
                        base::NumberToString(static_cast<int>(token->coin)), ".",
                        token->chain_id, ".", token->contract_address, ".",
@@ -247,9 +257,18 @@ void BraveWalletPinService::Validate(BlockchainTokenPtr token,
     return;
   }
 
+  auto path = GetPath(absl::nullopt, token);
+  if (!path) {
+    std::move(callback).Run(
+        false,
+        mojom::PinError::New(mojom::WalletPinServiceErrorCode::ERR_WRONG_TOKEN,
+                             "Wrong token data"));
+    return;
+  }
+
   if (!service) {
     local_pin_service_->ValidatePins(
-        GetPath(absl::nullopt, token), cids.value(),
+        path.value(), cids.value(),
         base::BindOnce(&BraveWalletPinService::OnTokenValidated,
                        base::Unretained(this), service, std::move(callback),
                        std::move(token)));
@@ -314,16 +333,24 @@ void BraveWalletPinService::RemovePin(
     return;
   }
 
+  auto path = GetPath(absl::nullopt, token);
+  if (!path) {
+    std::move(callback).Run(
+        false,
+        mojom::PinError::New(mojom::WalletPinServiceErrorCode::ERR_WRONG_TOKEN,
+                             "Wrong token data"));
+    return;
+  }
+
   SetTokenStatus(service, token,
                  mojom::TokenPinStatusCode::STATUS_UNPINNING_IN_PROGRESS,
                  nullptr);
 
   if (!service) {
     local_pin_service_->RemovePins(
-        GetPath(service, token),
-        base::BindOnce(&BraveWalletPinService::OnPinsRemoved,
-                       base::Unretained(this), service, std::move(callback),
-                       std::move(token)));
+        path.value(), base::BindOnce(&BraveWalletPinService::OnPinsRemoved,
+                                     base::Unretained(this), service,
+                                     std::move(callback), std::move(token)));
   } else {
     // Remote pinning not implemented yet
     std::move(callback).Run(false, nullptr);
@@ -407,6 +434,15 @@ void BraveWalletPinService::OnTokenMetaDataReceived(
     }
   }
 
+  auto path = GetPath(service, token);
+  if (!path) {
+    std::move(callback).Run(
+        false,
+        mojom::PinError::New(mojom::WalletPinServiceErrorCode::ERR_WRONG_TOKEN,
+                             "Wrong token data"));
+    return;
+  }
+
   CreateToken(service, token, cids);
   SetTokenStatus(service, token,
                  mojom::TokenPinStatusCode::STATUS_PINNING_IN_PROGRESS,
@@ -414,7 +450,7 @@ void BraveWalletPinService::OnTokenMetaDataReceived(
 
   if (!service) {
     local_pin_service_->AddPins(
-        GetPath(service, token), cids,
+        path.value(), cids,
         base::BindOnce(&BraveWalletPinService::OnTokenPinned,
                        base::Unretained(this), absl::nullopt,
                        std::move(callback), std::move(token)));
@@ -465,10 +501,15 @@ void BraveWalletPinService::OnTokenValidated(
   std::move(callback).Run(true, nullptr);
 }
 
-void BraveWalletPinService::CreateToken(
+bool BraveWalletPinService::CreateToken(
     const absl::optional<std::string>& service,
     const mojom::BlockchainTokenPtr& token,
     const std::vector<std::string>& cids) {
+  auto path = GetPath(service, token);
+  if (!path) {
+    return false;
+  }
+
   DictionaryPrefUpdate update(prefs_, kPinnedErc721Assets);
   base::Value::Dict& update_dict = update->GetDict();
 
@@ -483,57 +524,68 @@ void BraveWalletPinService::CreateToken(
   token_data.Set(kAssetStatus,
                  StatusToString(mojom::TokenPinStatusCode::STATUS_NOT_PINNED));
 
-  update_dict.SetByDottedPath(GetPath(service, token), std::move(token_data));
+  update_dict.SetByDottedPath(path.value(), std::move(token_data));
+  return true;
 }
 
-void BraveWalletPinService::RemoveToken(
+bool BraveWalletPinService::RemoveToken(
     const absl::optional<std::string>& service,
     const mojom::BlockchainTokenPtr& token) {
+  auto path = GetPath(service, token);
+  if (!path) {
+    return false;
+  }
+
   {
     DictionaryPrefUpdate update(prefs_, kPinnedErc721Assets);
     base::Value::Dict& update_dict = update->GetDict();
-    update_dict.RemoveByDottedPath(GetPath(service, token));
+    update_dict.RemoveByDottedPath(path.value());
   }
   for (const auto& observer : observers_) {
     observer->OnTokenStatusChanged(service, token.Clone(),
                                    GetTokenStatus(service, token));
   }
+  return true;
 }
 
-void BraveWalletPinService::SetTokenStatus(
+bool BraveWalletPinService::SetTokenStatus(
     const absl::optional<std::string>& service,
     const mojom::BlockchainTokenPtr& token,
     mojom::TokenPinStatusCode status,
     const mojom::PinErrorPtr& error) {
+  auto path = GetPath(service, token);
+  if (!path) {
+    return false;
+  }
+
   {
     DictionaryPrefUpdate update(prefs_, kPinnedErc721Assets);
     base::Value::Dict& update_dict = update->GetDict();
 
-    update_dict.SetByDottedPath(GetPath(service, token) + "." + kAssetStatus,
+    update_dict.SetByDottedPath(path.value() + "." + kAssetStatus,
                                 StatusToString(status));
     if (error) {
       base::Value::Dict error_dict;
       error_dict.Set(kErrorCode, ErrorCodeToString(error->error_code));
       error_dict.Set(kErrorMessage, error->message);
-      update_dict.SetByDottedPath(GetPath(service, token) + "." + kError,
+      update_dict.SetByDottedPath(path.value() + "." + kError,
                                   std::move(error_dict));
     } else {
-      update_dict.RemoveByDottedPath(GetPath(service, token) + "." + kError);
+      update_dict.RemoveByDottedPath(path.value() + "." + kError);
     }
 
     if (status == mojom::TokenPinStatusCode::STATUS_PINNED) {
-      update_dict.SetByDottedPath(
-          GetPath(service, token) + "." + kValidateTimestamp,
-          base::TimeToValue(base::Time::Now()));
+      update_dict.SetByDottedPath(path.value() + "." + kValidateTimestamp,
+                                  base::TimeToValue(base::Time::Now()));
     } else {
-      update_dict.RemoveByDottedPath(GetPath(service, token) + "." +
-                                     kValidateTimestamp);
+      update_dict.RemoveByDottedPath(path.value() + "." + kValidateTimestamp);
     }
   }
   for (const auto& observer : observers_) {
     observer->OnTokenStatusChanged(service, token.Clone(),
                                    GetTokenStatus(service, token));
   }
+  return true;
 }
 
 absl::optional<std::vector<std::string>> BraveWalletPinService::ResolvePinItems(
@@ -542,9 +594,13 @@ absl::optional<std::vector<std::string>> BraveWalletPinService::ResolvePinItems(
   const base::Value::Dict& pinned_assets_pref =
       prefs_->GetDict(kPinnedErc721Assets);
 
-  const std::string& path = GetPath(service, token);
+  auto path = GetPath(service, token);
+  if (!path) {
+    return absl::nullopt;
+  }
 
-  auto* token_data_as_dict = pinned_assets_pref.FindDictByDottedPath(path);
+  auto* token_data_as_dict =
+      pinned_assets_pref.FindDictByDottedPath(path.value());
   if (!token_data_as_dict) {
     return absl::nullopt;
   }
@@ -568,9 +624,13 @@ mojom::TokenPinStatusPtr BraveWalletPinService::GetTokenStatus(
   const base::Value::Dict& pinned_assets_pref =
       prefs_->GetDict(kPinnedErc721Assets);
 
-  const std::string& path = GetPath(service, token);
+  auto path = GetPath(service, token);
+  if (!path) {
+    return nullptr;
+  }
 
-  auto* token_data_as_dict = pinned_assets_pref.FindDictByDottedPath(path);
+  auto* token_data_as_dict =
+      pinned_assets_pref.FindDictByDottedPath(path.value());
   if (!token_data_as_dict) {
     return mojom::TokenPinStatus::New(
         mojom::TokenPinStatusCode::STATUS_NOT_PINNED, nullptr, base::Time());
@@ -618,9 +678,13 @@ absl::optional<base::Time> BraveWalletPinService::GetLastValidateTime(
   const base::Value::Dict& pinned_assets_pref =
       prefs_->GetDict(kPinnedErc721Assets);
 
-  const std::string& path = GetPath(service, token);
+  auto path = GetPath(service, token);
+  if (!path) {
+    return absl::nullopt;
+  }
 
-  auto* token_data_as_dict = pinned_assets_pref.FindDictByDottedPath(path);
+  auto* token_data_as_dict =
+      pinned_assets_pref.FindDictByDottedPath(path.value());
   if (!token_data_as_dict) {
     return absl::nullopt;
   }
