@@ -106,8 +106,7 @@ gfx::Size BraveBrowserNonClientFrameViewMac::GetMinimumSize() const {
     // In order to ignore tab strip height, skip BrowserNonClientFrameViewMac's
     // implementation.
     auto size = frame()->client_view()->GetMinimumSize();
-    // Note that we can't set empty size for the widget.
-    size.SetToMax({1, 1});
+    size.SetToMax(gfx::Size(0, (size.width() * 3) / 4));
     return size;
   }
 
