@@ -539,8 +539,8 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
 
     // load solana web3 script
     if (g_provider_solana_web3_script->empty()) {
-      *g_provider_solana_web3_script =
-          brave_wallet::LoadDataResource(IDR_BRAVE_WALLET_SOLANA_WEB3_JS);
+      *g_provider_solana_web3_script = brave_wallet::LoadDataResource(
+          IDR_BRAVE_WALLET_SOLANA_WEB3_JS_FOR_TEST);
     }
   }
 
@@ -1250,4 +1250,12 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SecureContextOnly) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   main_frame = web_contents(browser())->GetPrimaryMainFrame();
   EXPECT_TRUE(content::EvalJs(main_frame, kEvalSolana).ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
+                       SolanaWeb3PrototypePollution) {
+  ASSERT_TRUE(ExecJs(web_contents(browser()), "Object.freeze = ()=>{}"));
+  auto result = EvalJs(web_contents(browser()), ConnectScript(""),
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(kTestPublicKey), result.value);
 }

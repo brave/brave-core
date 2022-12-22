@@ -51,10 +51,11 @@ std::string CreateExceptionString(v8::Local<v8::Context> context,
 v8::Local<v8::String> WrapSource(v8::Isolate* isolate,
                                  v8::Local<v8::String> source) {
   v8::EscapableHandleScope handle_scope(isolate);
-  v8::Local<v8::String> left = gin::StringToV8(isolate,
-                                               "(function($Object) {"
-                                               "'use strict';");
-  v8::Local<v8::String> right = gin::StringToV8(isolate, "\n})");
+  v8::Local<v8::String> left =
+      gin::StringToV8(isolate,
+                      "(function($, $Object, $Function, $Array) {"
+                      "'use strict'; return ");
+  v8::Local<v8::String> right = gin::StringToV8(isolate, "\n;})");
   return handle_scope.Escape(v8::Local<v8::String>(v8::String::Concat(
       isolate, left, v8::String::Concat(isolate, source, right))));
 }
@@ -97,27 +98,29 @@ v8::Local<v8::Value> RunScript(v8::Local<v8::Context> context,
   return handle_scope.Escape(result);
 }
 
-void SafeCallFunction(blink::WebLocalFrame* web_frame,
-                      v8::Local<v8::Context> context,
-                      const v8::Local<v8::Function>& function,
-                      int argc,
-                      v8::Local<v8::Value> argv[]) {
+v8::MaybeLocal<v8::Value> SafeCallFunction(
+    blink::WebLocalFrame* web_frame,
+    v8::Local<v8::Context> context,
+    const v8::Local<v8::Function>& function,
+    int argc,
+    v8::Local<v8::Value> argv[]) {
   v8::HandleScope handle_scope(context->GetIsolate());
   v8::Context::Scope scope(context);
   v8::MicrotasksScope microtasks(context->GetIsolate(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Object> global = context->Global();
   if (web_frame) {
-    web_frame->RequestExecuteV8Function(context, function, global, argc, argv,
-                                        {});
+    return web_frame->ExecuteMethodAndReturnValue(function, global, argc, argv);
   }
+  return v8::MaybeLocal<v8::Value>();
 }
 
 }  // namespace
 
-void LoadScriptWithSafeBuiltins(blink::WebLocalFrame* web_frame,
-                                const std::string& script,
-                                const std::string& name) {
+v8::MaybeLocal<v8::Value> LoadScriptWithSafeBuiltins(
+    blink::WebLocalFrame* web_frame,
+    const std::string& script,
+    const std::string& name) {
   v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
   v8::Local<v8::String> wrapped_source(WrapSource(
       context->GetIsolate(), gin::StringToV8(context->GetIsolate(), script)));
@@ -130,15 +133,17 @@ void LoadScriptWithSafeBuiltins(blink::WebLocalFrame* web_frame,
     web_frame->AddMessageToConsole(
         blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kError,
                                  blink::WebString::FromUTF8(message)));
-    return;
+    return v8::MaybeLocal<v8::Value>();
   }
 
   v8::Local<v8::Function> func = v8::Local<v8::Function>::Cast(func_as_value);
   SafeBuiltins safe_builtins(context);
   // These must match the argument order in WrapSource.
-  v8::Local<v8::Value> args[] = {safe_builtins.GetObjekt()};
+  v8::Local<v8::Value> args[] = {
+      safe_builtins.GetFunctionOverride(), safe_builtins.GetObjekt(),
+      safe_builtins.GetFunction(), safe_builtins.GetArray()};
 
-  SafeCallFunction(web_frame, context, func, std::size(args), args);
+  return SafeCallFunction(web_frame, context, func, std::size(args), args);
 }
 
 }  //  namespace brave
