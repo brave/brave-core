@@ -290,22 +290,20 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         removePreferenceIfPresent(PREF_SYNC_AND_SERVICES_LINK);
         removePreferenceIfPresent(PREF_NETWORK_PREDICTIONS);
         removePreferenceIfPresent(PREF_PRIVACY_SANDBOX);
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_SAFE_BROWSING)) {
-            removePreferenceIfPresent(PREF_SAFE_BROWSING);
-        } else {
-            Preference preference = getPreferenceScreen().findPreference(PREF_SAFE_BROWSING);
-            if (preference != null) {
-                preference.setOnPreferenceClickListener((pref) -> {
-                    if (!ChromiumPlayServicesAvailability.isGooglePlayServicesAvailable(
-                                getActivity())) {
-                        NoGooglePlayServicesDialog.create(getContext()).show();
-                        // Don't show the menu if Google Play Services are not available
-                        return true;
-                    }
 
-                    return false;
-                });
-            }
+        // Safe Browsing menu preference handler
+        Preference preference = getPreferenceScreen().findPreference(PREF_SAFE_BROWSING);
+        if (preference != null) {
+            preference.setOnPreferenceClickListener((pref) -> {
+                if (!ChromiumPlayServicesAvailability.isGooglePlayServicesAvailable(
+                            getActivity())) {
+                    NoGooglePlayServicesDialog.create(getContext()).show();
+                    // Don't show the menu if Google Play Services are not available
+                    return true;
+                }
+
+                return false;
+            });
         }
 
         if (mCookieListOptInPageAndroidHandler != null) {

@@ -58,7 +58,6 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/android/preferences/features.h"
-#include "brave/browser/android/safe_browsing/features.h"
 #endif
 
 using brave_shields::features::kBraveAdblockCnameUncloaking;
@@ -84,7 +83,6 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 
 #if BUILDFLAG(IS_ANDROID)
 using preferences::features::kBraveBackgroundVideoPlayback;
-using safe_browsing::features::kBraveAndroidSafeBrowsing;
 #endif
 
 namespace flag_descriptions {
@@ -417,10 +415,6 @@ constexpr char kBraveBackgroundVideoPlaybackDescription[] =
     "Enables play audio from video in background when tab is not active or "
     "device screen is turned off. Try to switch to desktop mode if this "
     "feature is not working.";
-constexpr char kBraveAndroidSafeBrowsingName[] = "Safe Browsing";
-constexpr char kBraveAndroidSafeBrowsingDescription[] =
-    "Enables Google Safe Browsing for determining whether a URL has been "
-    "marked as a known threat.";
 #endif
 }  // namespace
 
@@ -600,15 +594,8 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
      flag_descriptions::kBraveBackgroundVideoPlaybackDescription, \
      kOsAndroid,                                                  \
      FEATURE_VALUE_TYPE(kBraveBackgroundVideoPlayback)},
-#define BRAVE_SAFE_BROWSING_ANDROID                               \
-    {"brave-safe-browsing",                                       \
-     flag_descriptions::kBraveAndroidSafeBrowsingName,            \
-     flag_descriptions::kBraveAndroidSafeBrowsingDescription,     \
-     kOsAndroid,                                                  \
-     FEATURE_VALUE_TYPE(kBraveAndroidSafeBrowsing)},
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
-#define BRAVE_SAFE_BROWSING_ANDROID
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES                                   \
@@ -778,5 +765,4 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
     BRAVE_FEDERATED_FEATURE_ENTRIES                                         \
     PLAYLIST_FEATURE_ENTRIES                                                \
     BRAVE_VERTICAL_TABS_FEATURE_ENTRY                                       \
-    BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                 \
-    BRAVE_SAFE_BROWSING_ANDROID
+    BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID

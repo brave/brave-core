@@ -5,7 +5,6 @@
 
 #include "base/feature_override.h"
 #include "brave/browser/android/preferences/features.h"
-#include "brave/browser/android/safe_browsing/features.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_today/common/features.h"
@@ -24,7 +23,6 @@
     &brave_wallet::features::kBraveWalletSolanaFeature,      \
     &brave_wallet::features::kBraveWalletSnsFeature,         \
     &preferences::features::kBraveBackgroundVideoPlayback,   \
-    &safe_browsing::features::kBraveAndroidSafeBrowsing,     \
     &debounce::features::kBraveDebounce
 // clang-format on
 
