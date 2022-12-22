@@ -1,14 +1,14 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_vpn/renderer/android/vpn_render_frame_observer.h"
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/skus/common/features.h"
-#include "chrome/common/chrome_isolated_world_ids.h"
+#include "content/public/common/isolated_world_ids.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/render_view_test.h"
 #include "url/gurl.h"
