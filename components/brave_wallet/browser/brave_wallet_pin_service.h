@@ -43,8 +43,9 @@ class BraveWalletPinService : public KeyedService,
   mojo::PendingRemote<mojom::WalletPinService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::WalletPinService> receiver);
 
-  static std::string GetPath(const absl::optional<std::string>& service,
-                             const BlockchainTokenPtr& token);
+  static absl::optional<std::string> GetPath(
+      const absl::optional<std::string>& service,
+      const BlockchainTokenPtr& token);
   static BlockchainTokenPtr TokenFromPath(const std::string& path);
   static absl::optional<std::string> ServiceFromPath(const std::string& path);
 
@@ -80,12 +81,12 @@ class BraveWalletPinService : public KeyedService,
       const absl::optional<std::string>& service);
 
  private:
-  void CreateToken(const absl::optional<std::string>& service,
+  bool CreateToken(const absl::optional<std::string>& service,
                    const mojom::BlockchainTokenPtr& token,
                    const std::vector<std::string>& cids);
-  void RemoveToken(const absl::optional<std::string>& service,
+  bool RemoveToken(const absl::optional<std::string>& service,
                    const mojom::BlockchainTokenPtr& token);
-  void SetTokenStatus(const absl::optional<std::string>& service,
+  bool SetTokenStatus(const absl::optional<std::string>& service,
                       const mojom::BlockchainTokenPtr& token,
                       mojom::TokenPinStatusCode,
                       const mojom::PinErrorPtr& error);

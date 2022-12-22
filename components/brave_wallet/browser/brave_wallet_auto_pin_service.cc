@@ -76,10 +76,13 @@ void BraveWalletAutoPinService::OnTokenListResolved(
     if (!token->is_nft) {
       continue;
     }
-    std::string current_token_path =
+    auto current_token_path =
         BraveWalletPinService::GetPath(absl::nullopt, token);
+    if (!current_token_path) {
+      continue;
+    }
 
-    auto it = known_tokens.find(current_token_path);
+    auto it = known_tokens.find(current_token_path.value());
     if (it != known_tokens.end()) {
       known_tokens.erase(it);
     }
