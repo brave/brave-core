@@ -43,6 +43,7 @@ class PlaylistPageHandler : public playlist::mojom::PageHandler,
   void MoveItem(const std::string& from_playlist_id,
                 const std::string& to_playlist_id,
                 const std::string& item_id) override;
+  void UpdateItem(playlist::mojom::PlaylistItemPtr item) override;
   void RecoverLocalDataForItem(const std::string& item_id) override;
   void RemoveLocalDataForItem(const std::string& item_id) override;
 

@@ -21,13 +21,22 @@ struct PlaylistItem {
   string id;
   string name;
   
+  // original sources
   url.mojom.Url page_source;
+  url.mojom.Url media_source;
+  url.mojom.Url thumbnail_source;
+
+  // cached path or original src url
   url.mojom.Url media_path;
   url.mojom.Url thumbnail_path;
 
   // When it's |cached|, |media_path| and |thumbnail_path| will be
   // local path.
   bool cached;
+
+  string author;
+  string duration;
+  int8 last_played_position;
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.
@@ -51,6 +60,8 @@ interface PageHandler {
 
   RemoveItemFromPlaylist(string playlist_id, string item_id);
   MoveItem(string from_playlist_id, string to_playlist_id, string item_id);
+
+  UpdateItem(PlaylistItem item);
 
   // Try downloading thumbnail and media files again
   RecoverLocalDataForItem(string id);

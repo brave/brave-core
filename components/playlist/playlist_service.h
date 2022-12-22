@@ -128,6 +128,7 @@ class PlaylistService : public KeyedService,
   bool MoveItem(const PlaylistId& from,
                 const PlaylistId& to,
                 const PlaylistItemId& item);
+  void UpdateItem(const PlaylistItemInfo& item);
 
   // Removes Item value from prefs and related cached data.
   void DeletePlaylistItemData(const std::string& id);

@@ -12,6 +12,7 @@
 #include "base/json/values_util.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/playlist_constants.h"
+#include "brave/components/playlist/playlist_service_helper.h"
 #include "brave/components/playlist/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -46,9 +47,7 @@ void PlaylistPageHandler::GetAllPlaylists(
   for (const auto& playlist : GetPlaylistService(profile_)->GetAllPlaylists()) {
     std::vector<mojo::StructPtr<playlist::mojom::PlaylistItem>> items;
     for (const auto& item : playlist.items) {
-      items.push_back(playlist::mojom::PlaylistItem::New(
-          item.id, item.title, GURL(item.page_src), GURL(item.media_file_path),
-          GURL(item.thumbnail_path), item.media_file_cached));
+      items.push_back(playlist::GetPlaylistItemMojoFromInfo(item));
     }
     playlists.push_back(playlist::mojom::Playlist::New(
         playlist.id, playlist.name, std::move(items)));
@@ -68,9 +67,7 @@ void PlaylistPageHandler::GetPlaylist(
 
   std::vector<mojo::StructPtr<playlist::mojom::PlaylistItem>> items;
   for (const auto& item : playlist->items) {
-    items.push_back(playlist::mojom::PlaylistItem::New(
-        item.id, item.title, GURL(item.page_src), GURL(item.media_file_path),
-        GURL(item.thumbnail_path), item.media_file_cached));
+    items.push_back(playlist::GetPlaylistItemMojoFromInfo(item));
   }
   std::move(callback).Run(playlist::mojom::Playlist::New(
       playlist->id, playlist->name, std::move(items)));
@@ -114,6 +111,11 @@ void PlaylistPageHandler::MoveItem(const std::string& from_playlist_id,
   GetPlaylistService(profile_)->MoveItem(PlaylistId(from_playlist_id),
                                          PlaylistId(to_playlist_id),
                                          PlaylistItemId(item_id));
+}
+
+void PlaylistPageHandler::UpdateItem(playlist::mojom::PlaylistItemPtr item) {
+  GetPlaylistService(profile_)->UpdateItem(
+      playlist::GetPlaylistItemInfoFromMojo(item));
 }
 
 void PlaylistPageHandler::RecoverLocalDataForItem(const std::string& item_id) {
