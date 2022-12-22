@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 
 // Shared Styles
-import { Icon, StyledButton } from '../../shared.styles'
+import { Icon, StyledButton, Text } from '../../shared.styles'
 
 import {
   AssetIconProps,
@@ -61,4 +61,10 @@ export const IconsWrapper = styled.div<{
   flex-direction: row;
   position: relative;
   margin-right: ${(p) => p.marginRight || '6px'};
+`
+
+export const ButtonText = styled(Text) <{ isNFT: boolean }>`
+  max-width: ${(p) => p.isNFT ? '250px' : 'unset'};
+  overflow: hidden;
+  white-space: ${(p) => p.isNFT ? 'pre-wrap' : 'nowrap'};
 `
