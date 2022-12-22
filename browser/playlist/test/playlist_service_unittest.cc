@@ -386,7 +386,7 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
         .Times(testing::AtMost(1));
 
     service->AddObserver(&observer);
-    service->RecoverPlaylistItem(id);
+    service->RecoverLocalDataForItem(id);
     WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
 
     service->RemoveObserver(&observer);
@@ -414,7 +414,7 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
     item_value.Set(kPlaylistItemMediaFilePathKey, media_src);
     service->UpdatePlaylistItemValue(id, base::Value(std::move(item_value)));
 
-    service->RecoverPlaylistItem(id);
+    service->RecoverLocalDataForItem(id);
     WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
 
     service->RemoveObserver(&observer);
@@ -599,7 +599,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
 
     // Remove local data for the item. When we remove local data, we remove only
     // media file.
-    service->DeletePlaylistLocalData(items.front().id);
+    service->RemoveLocalDataForItem(items.front().id);
     items = service->GetAllPlaylistItems();
     EXPECT_EQ(1UL, items.size());
 
@@ -615,7 +615,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
 
   // Restore local media for the item.
   {
-    service->RecoverPlaylistItem(item.id);
+    service->RecoverLocalDataForItem(item.id);
     items = service->GetAllPlaylistItems();
     EXPECT_EQ(1UL, items.size());
 
