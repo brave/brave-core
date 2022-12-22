@@ -117,7 +117,7 @@ void SidebarShowOptionsEventDetectWidget::AdjustWidgetBounds() {
   contents_view_->SetPreferredSize(rect.size());
 
 #if BUILDFLAG(IS_MAC)
-  // On Mac, we can set empty bounds for the widget.
+  // On Mac, we can't set empty bounds for the widget.
   if (rect.IsEmpty())
     rect.set_size({kWidgetNarrowWidth, 1});
 #endif
