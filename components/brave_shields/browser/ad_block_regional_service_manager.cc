@@ -27,7 +27,6 @@ using brave_shields::features::kBraveAdblockCookieListDefault;
 namespace brave_shields {
 
 AdBlockRegionalServiceManager::AdBlockRegionalServiceManager(
-    AdBlockFiltersProviderManager* filters_manager,
     PrefService* local_state,
     std::string locale,
     component_updater::ComponentUpdateService* cus,
@@ -35,7 +34,6 @@ AdBlockRegionalServiceManager::AdBlockRegionalServiceManager(
     : local_state_(local_state),
       locale_(locale),
       component_update_service_(cus),
-      filters_manager_(filters_manager),
       catalog_provider_(catalog_provider) {
   catalog_provider_->LoadFilterListCatalog(
       base::BindOnce(&AdBlockRegionalServiceManager::OnFilterListCatalogLoaded,
@@ -106,7 +104,8 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
         auto regional_filters_provider =
             std::make_unique<AdBlockComponentFiltersProvider>(
                 component_update_service_, *catalog_entry);
-        filters_manager_->AddProvider(regional_filters_provider.get());
+        AdBlockFiltersProviderManager::GetInstance()->AddProvider(
+            regional_filters_provider.get());
         regional_filters_providers_.insert(
             {uuid, std::move(regional_filters_provider)});
       }
@@ -185,12 +184,14 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
     auto regional_filters_provider =
         std::make_unique<AdBlockComponentFiltersProvider>(
             component_update_service_, *catalog_entry);
-    filters_manager_->AddProvider(regional_filters_provider.get());
+    AdBlockFiltersProviderManager::GetInstance()->AddProvider(
+        regional_filters_provider.get());
     regional_filters_providers_.insert(
         {uuid, std::move(regional_filters_provider)});
   } else {
     DCHECK(it != regional_filters_providers_.end());
-    filters_manager_->RemoveProvider(it->second.get());
+    AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(
+        it->second.get());
     std::move(*it->second).Delete();
     regional_filters_providers_.erase(it);
   }

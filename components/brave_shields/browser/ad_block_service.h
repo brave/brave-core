@@ -157,9 +157,6 @@ class AdBlockService {
   std::unique_ptr<brave_shields::AdBlockRegionalServiceManager>
       regional_service_manager_;
 
-  std::unique_ptr<brave_shields::AdBlockFiltersProviderManager>
-      additional_filters_manager_;
-
   std::unique_ptr<brave_shields::AdBlockEngine, base::OnTaskRunnerDeleter>
       default_engine_;
   std::unique_ptr<brave_shields::AdBlockEngine, base::OnTaskRunnerDeleter>
