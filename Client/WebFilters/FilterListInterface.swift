@@ -7,12 +7,12 @@ import Foundation
 import Data
 
 protocol FilterListInterface {
-  var uuid: String { get }
-  var filterListComponentId: String? { get }
+  @MainActor var uuid: String { get }
+  @MainActor var filterListComponentId: String? { get }
 }
  
 extension FilterListInterface {
-  var resources: [ResourceDownloader.Resource] {
+  @MainActor var resources: [ResourceDownloader.Resource] {
     guard let filterListComponentId = self.filterListComponentId else { return [] }
     
     return [
@@ -22,9 +22,9 @@ extension FilterListInterface {
 }
 
 extension FilterListSetting: FilterListInterface {
-  var filterListComponentId: String? { return componentId }
+  @MainActor var filterListComponentId: String? { return componentId }
 }
 
 extension FilterList: FilterListInterface {
-  var filterListComponentId: String? { return componentId }
+  @MainActor var filterListComponentId: String? { return componentId }
 }
