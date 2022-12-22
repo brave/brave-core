@@ -698,24 +698,25 @@ TEST_F(BraveVPNServiceTest, CancelConnectingTest) {
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
 
+  // Test quick cancelled when |api_request_| is not null.
+  // See the comment of BraveVPNOSConnectionAPIBase::api_request_.
+  test_api->cancel_connecting_ = false;
+  test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
+  // Configure factory and instantiate |api_request_|.
+  network::TestURLLoaderFactory url_loader_factory_;
+  test_api->SetSharedUrlLoaderFactory(
+      base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+          &url_loader_factory_));
+  test_api->GetAPIRequest();
+  test_api->Disconnect();
+  EXPECT_FALSE(test_api->cancel_connecting_);
+  EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
+            test_api->GetConnectionState());
+
   test_api->cancel_connecting_ = true;
   test_api->CreateVPNConnection();
   EXPECT_FALSE(test_api->cancel_connecting_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTED, test_api->connection_state_);
-
-  test_api->cancel_connecting_ = true;
-  test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
-  test_api->OnFetchHostnames("", "", true);
-  EXPECT_FALSE(test_api->cancel_connecting_);
-  EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
-            test_api->GetConnectionState());
-
-  test_api->cancel_connecting_ = true;
-  test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
-  test_api->OnGetProfileCredentials("", true);
-  EXPECT_FALSE(test_api->cancel_connecting_);
-  EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
-            test_api->GetConnectionState());
 }
 
 TEST_F(BraveVPNServiceTest, ConnectionStateUpdateWithPurchasedStateTest) {

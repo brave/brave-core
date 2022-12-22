@@ -119,6 +119,8 @@ class BraveVPNOSConnectionAPIBase
   virtual void UpdateAndNotifyConnectionStateChange(
       mojom::ConnectionState state);
   BraveVpnAPIRequest* GetAPIRequest();
+  // True when do quick cancel.
+  bool QuickCancelIfPossible();
 
   bool cancel_connecting_ = false;
   bool needs_connect_ = false;
@@ -130,6 +132,11 @@ class BraveVPNOSConnectionAPIBase
   raw_ptr<PrefService> local_prefs_ = nullptr;
   std::unique_ptr<Hostname> hostname_;
   base::ObserverList<Observer> observers_;
+  // Only not null when there is active network request.
+  // When network request is done, we reset this so we can know
+  // whether we're waiting the response or not.
+  // We can cancel connecting request quickly when fetching hostnames or
+  // profile credentials is not yet finished by reset this.
   std::unique_ptr<BraveVpnAPIRequest> api_request_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 };
