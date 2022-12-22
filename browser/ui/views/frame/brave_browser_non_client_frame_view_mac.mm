@@ -107,6 +107,8 @@ gfx::Size BraveBrowserNonClientFrameViewMac::GetMinimumSize() const {
     // implementation.
     auto size = frame()->client_view()->GetMinimumSize();
     size.SetToMax(gfx::Size(0, (size.width() * 3) / 4));
+    // Note that we can't set empty bounds on Mac.
+    size.SetToMax({1, 1});
     return size;
   }
 
