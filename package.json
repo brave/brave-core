@@ -42,7 +42,8 @@
     "test-unit": "jest -t",
     "test-unit:wallet": "jest --coverage=false components/brave_wallet_ui",
     "test-python-scripts": "npm run pep8 && PYTHONPATH=./script python -m unittest discover -s ./script/test",
-    "update_symlink": "node ./build/commands/scripts/commands.js update_symlink"
+    "update_symlink": "node ./build/commands/scripts/commands.js update_symlink",
+    "build_fuzzer": "node ./build/commands/scripts/commands.js build_fuzzer"
   },
   "repository": {
     "type": "git",

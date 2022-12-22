@@ -325,6 +325,7 @@ Config.prototype.buildArgs = function () {
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     use_goma: this.use_goma,
+    use_libfuzzer: this.use_libfuzzer || false,
     ...this.extraGnArgs,
   }
 
@@ -923,6 +924,10 @@ Config.prototype.update = function (options) {
 
   if (options.target) {
     this.buildTarget = options.target
+  }
+
+  if (options.use_libfuzzer) {
+    this.use_libfuzzer = options.use_libfuzzer
   }
 }
 
