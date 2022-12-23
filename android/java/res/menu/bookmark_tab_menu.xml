@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2022 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:id="@+id/bookmark">
+       <item 
+            android:id="@+id/add_bookmark"
+            android:icon="@drawable/ic_bookmark_menu_add"
+            android:title="@string/add_bookmark_menu" />
+
+        <item 
+            android:id="@+id/edit_bookmark"
+            android:icon="@drawable/ic_bookmark_menu_edit"
+            android:title="@string/edit_bookmark_menu" />
+
+        <item 
+            android:id="@+id/view_bookmarks"
+            android:icon="@drawable/ic_bookmark_menu_view"
+            android:title="@string/view_bookmarks_menu" />
+    </group>
+    <group android:id="@+id/delete">
+        <item
+            android:id="@+id/delete_bookmark"
+            android:icon="@drawable/ic_bookmark_menu_delete"
+            android:title="@string/delete_bookmark_menu" />
+    </group>
+</menu>

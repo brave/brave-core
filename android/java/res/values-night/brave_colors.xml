@@ -159,4 +159,7 @@
     <color name="brave_rating_rate_now_bg_color">#585C6D</color>
     <color name="brave_rating_text_input_stroke_color">#2E3039</color>
     <color name="brave_rating_hint_text_color">#ECEFF2</color>
+
+    <color name="bookmark_menu_text_color">#C2C4CF</color>
+    <color name="bookmark_menu_bg_color">#2E3039</color>
 </resources>
