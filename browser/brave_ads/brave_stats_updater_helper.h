@@ -9,6 +9,7 @@
 #include "base/scoped_observation.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
+#include "chrome/browser/profiles/profile_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 
 class PrefRegistrySimple;
@@ -16,7 +17,8 @@ class Profile;
 
 namespace brave_ads {
 
-class BraveStatsUpdaterHelper : public ProfileManagerObserver {
+class BraveStatsUpdaterHelper : public ProfileManagerObserver,
+                                public ProfileObserver {
  public:
   BraveStatsUpdaterHelper();
   ~BraveStatsUpdaterHelper() override;
@@ -25,6 +27,8 @@ class BraveStatsUpdaterHelper : public ProfileManagerObserver {
 
   void OnProfileAdded(Profile* profile) override;
   void OnProfileManagerDestroying() override;
+
+  void OnProfileWillBeDestroyed(Profile* profile) override;
 
  private:
   PrefService* GetLastUsedProfilePrefs();
@@ -35,6 +39,7 @@ class BraveStatsUpdaterHelper : public ProfileManagerObserver {
   PrefChangeRegistrar last_used_profile_pref_change_registrar_;
 #endif
   PrefChangeRegistrar ads_enabled_pref_change_registrar_;
+  raw_ptr<Profile> current_profile_;
 
   base::ScopedObservation<ProfileManager, ProfileManagerObserver>
       profile_manager_observer_{this};
