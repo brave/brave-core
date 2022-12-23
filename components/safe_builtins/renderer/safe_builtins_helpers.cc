@@ -104,13 +104,14 @@ v8::MaybeLocal<v8::Value> SafeCallFunction(
     const v8::Local<v8::Function>& function,
     int argc,
     v8::Local<v8::Value> argv[]) {
-  v8::HandleScope handle_scope(context->GetIsolate());
+  v8::EscapableHandleScope handle_scope(context->GetIsolate());
   v8::Context::Scope scope(context);
   v8::MicrotasksScope microtasks(context->GetIsolate(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Object> global = context->Global();
   if (web_frame) {
-    return web_frame->ExecuteMethodAndReturnValue(function, global, argc, argv);
+    return handle_scope.EscapeMaybe(
+        web_frame->ExecuteMethodAndReturnValue(function, global, argc, argv));
   }
   return v8::MaybeLocal<v8::Value>();
 }
