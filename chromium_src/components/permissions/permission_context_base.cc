@@ -63,9 +63,36 @@ void PermissionContextBase::PermissionDecided(const PermissionRequestID& id,
       }
     }
   }
-  PermissionContextBase_ChromiumImpl::PermissionDecided(
-      id, requesting_origin, embedding_origin, content_setting, is_one_time,
-      is_final_decision);
+
+  if (!IsGroupedPermissionType(content_settings_type())) {
+    PermissionContextBase_ChromiumImpl::PermissionDecided(
+        id, requesting_origin, embedding_origin, content_setting, is_one_time,
+        is_final_decision);
+    return;
+  }
+
+  DCHECK(content_setting == CONTENT_SETTING_ALLOW ||
+         content_setting == CONTENT_SETTING_BLOCK ||
+         content_setting == CONTENT_SETTING_DEFAULT);
+  UserMadePermissionDecision(id, requesting_origin, embedding_origin,
+                             content_setting);
+
+  bool persist = content_setting != CONTENT_SETTING_DEFAULT;
+
+  auto grouped_request = pending_grouped_requests_.find(id.ToString());
+  DCHECK(grouped_request != pending_grouped_requests_.end());
+  DCHECK(grouped_request->second);
+
+  if (grouped_request->second->IsDone()) {
+    return;
+  }
+
+  auto callback = grouped_request->second->GetNextCallback();
+  if (callback) {
+    NotifyPermissionSet(id, requesting_origin, embedding_origin,
+                        std::move(callback), persist, content_setting,
+                        is_one_time, is_final_decision);
+  }
 }
 
 void PermissionContextBase::DecidePermission(
@@ -129,6 +156,13 @@ void PermissionContextBase::GroupedPermissionRequests::AddRequest(
     std::pair<std::unique_ptr<PermissionRequest>, BrowserPermissionCallback>
         request) {
   requests_.push_back(std::move(request));
+}
+
+BrowserPermissionCallback
+PermissionContextBase::GroupedPermissionRequests::GetNextCallback() {
+  DCHECK(!IsDone());
+  DCHECK(next_callback_index_ < requests_.size());
+  return std::move(requests_[next_callback_index_++].second);
 }
 
 void PermissionContextBase::GroupedPermissionRequests::RequestFinished() {

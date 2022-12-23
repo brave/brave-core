@@ -75,6 +75,7 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
     bool IsDone() const;
     void AddRequest(std::pair<std::unique_ptr<PermissionRequest>,
                               BrowserPermissionCallback> request);
+    BrowserPermissionCallback GetNextCallback();
     void RequestFinished();
 
    private:
@@ -82,6 +83,7 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
                           BrowserPermissionCallback>>
         requests_;
     size_t finished_request_count_ = 0;
+    size_t next_callback_index_ = 0;
   };
 
   void PermissionDecided(const PermissionRequestID& id,
