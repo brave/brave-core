@@ -25,7 +25,7 @@ class PlaylistPageHandler;
 namespace playlist {
 
 class PlaylistUI : public ui::UntrustedWebUIController,
-                   public playlist::mojom::ServiceFactory {
+                   public playlist::mojom::PageHandlerFactory {
  public:
   static bool ShouldBlockPlaylistWebUI(content::BrowserContext* browser_context,
                                        const GURL& url);
@@ -35,8 +35,8 @@ class PlaylistUI : public ui::UntrustedWebUIController,
   PlaylistUI(const PlaylistUI&) = delete;
   PlaylistUI& operator=(const PlaylistUI&) = delete;
 
-  void BindInterface(
-      mojo::PendingReceiver<playlist::mojom::ServiceFactory> pending_receiver);
+  void BindInterface(mojo::PendingReceiver<playlist::mojom::PageHandlerFactory>
+                         pending_receiver);
 
   // Set by BubbleContentsWrapperT. MojoBubbleWebUIController provides default
   // implementation for this but we don't use it.
@@ -45,16 +45,16 @@ class PlaylistUI : public ui::UntrustedWebUIController,
     embedder_ = embedder;
   }
 
-  // playlist::mojom::ServiceFactory:
-  void CreateService(
+  // playlist::mojom::PageHandlerFactory:
+  void BindInterface(
       mojo::PendingRemote<playlist::mojom::ServiceObserver> service_observer,
       mojo::PendingReceiver<playlist::mojom::Service> service) override;
 
  private:
   base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
 
-  mojo::Receiver<playlist::mojom::ServiceFactory> service_factory_receiver_{
-      this};
+  mojo::Receiver<playlist::mojom::PageHandlerFactory>
+      page_handler_factory_receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

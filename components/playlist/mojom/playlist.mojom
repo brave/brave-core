@@ -40,10 +40,10 @@ struct PlaylistItem {
 };
 
 // Used by the UI to bootstrap bidirectional communication.
-interface ServiceFactory {
+interface PageHandlerFactory {
   // On Desktop, the WebUI page's |BrowserProxy| singleton calls this method 
   // when the page is first initialized.
-  CreateService(pending_remote<ServiceObserver> service_observer,
+  BindInterface(pending_remote<ServiceObserver> service_observer,
                 pending_receiver<Service> service);
 };
 

@@ -65,14 +65,15 @@ PlaylistUI::PlaylistUI(content::WebUI* web_ui, const std::string& name)
 PlaylistUI::~PlaylistUI() = default;
 
 void PlaylistUI::BindInterface(
-    mojo::PendingReceiver<playlist::mojom::ServiceFactory> pending_receiver) {
-  if (service_factory_receiver_.is_bound())
-    service_factory_receiver_.reset();
+    mojo::PendingReceiver<playlist::mojom::PageHandlerFactory>
+        pending_receiver) {
+  if (page_handler_factory_receiver_.is_bound())
+    page_handler_factory_receiver_.reset();
 
-  service_factory_receiver_.Bind(std::move(pending_receiver));
+  page_handler_factory_receiver_.Bind(std::move(pending_receiver));
 }
 
-void PlaylistUI::CreateService(
+void PlaylistUI::BindInterface(
     mojo::PendingRemote<playlist::mojom::ServiceObserver> service_observer,
     mojo::PendingReceiver<playlist::mojom::Service> service) {
   DCHECK(service_observer.is_valid());

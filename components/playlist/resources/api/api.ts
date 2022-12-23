@@ -14,8 +14,8 @@ class API {
   #pageHandler = new PlaylistMojo.ServiceRemote()
 
   constructor () {
-    const factory = PlaylistMojo.ServiceFactory.getRemote()
-    factory.createService(
+    const factory = PlaylistMojo.PageHandlerFactory.getRemote()
+    factory.bindInterface(
         this.#pageCallbackRouter.$.bindNewPipeAndPassRemote(),
         this.#pageHandler.$.bindNewPipeAndPassReceiver())
   }
