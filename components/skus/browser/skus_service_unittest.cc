@@ -329,7 +329,7 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummaryFailed) {
 
   prefs()->Set(skus::prefs::kSkusState, std::move(state));
   auto credentials = GetCredentialsSummary(domain);
-  EXPECT_TRUE(credentials.empty());
+  EXPECT_EQ(credentials, "{}");
 }
 
 TEST_F(SkusServiceTestUnitTest, CredentialSummaryWrongEnv) {
@@ -338,5 +338,5 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummaryWrongEnv) {
   state.SetStringKey("skus:staging", testing_payload);
   prefs()->Set(skus::prefs::kSkusState, std::move(state));
   auto credentials = GetCredentialsSummary("vpn.brave.software");
-  EXPECT_TRUE(credentials.empty());
+  EXPECT_EQ(credentials, "{}");
 }
