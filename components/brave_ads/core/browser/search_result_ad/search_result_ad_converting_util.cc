@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/browser/search_result_ad/search_result_ad_parsing.h"
+#include "brave/components/brave_ads/core/browser/search_result_ad/search_result_ad_converting_util.h"
 
 #include <string>
 #include <utility>
@@ -193,8 +193,8 @@ bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
   return false;
 }
 
-void ParseSearchResultAdEntity(const schema_org::mojom::EntityPtr& ad_entity,
-                               SearchResultAdMap* search_result_ads) {
+void ConvertSearchResultAdEntity(const schema_org::mojom::EntityPtr& ad_entity,
+                                 SearchResultAdMap* search_result_ads) {
   DCHECK(search_result_ads);
 
   // Wrong search result ad type specified.
@@ -246,8 +246,9 @@ void ParseSearchResultAdEntity(const schema_org::mojom::EntityPtr& ad_entity,
                              std::move(search_result_ad));
 }
 
-void ParseWebPageEntityProperty(const schema_org::mojom::PropertyPtr& property,
-                                SearchResultAdMap* search_result_ads) {
+void ConvertWebPageEntityProperty(
+    const schema_org::mojom::PropertyPtr& property,
+    SearchResultAdMap* search_result_ads) {
   if (!property || property->name != kCreativesPropertyName) {
     return;
   }
@@ -258,7 +259,7 @@ void ParseWebPageEntityProperty(const schema_org::mojom::PropertyPtr& property,
   }
 
   for (const auto& ad_entity : values->get_entity_values()) {
-    ParseSearchResultAdEntity(ad_entity, search_result_ads);
+    ConvertSearchResultAdEntity(ad_entity, search_result_ads);
   }
 }
 
@@ -267,44 +268,42 @@ void LogSearchResultAdMap(const SearchResultAdMap& search_result_ads) {
     return;
   }
 
-  if (search_result_ads.empty()) {
-    return;
-  }
-
-  VLOG(2) << "Parsed search result ads list:";
   for (const auto& search_result_ad_pair : search_result_ads) {
     const auto& search_result_ad = search_result_ad_pair.second;
-    VLOG(2) << "Ad with \"" << kDataPlacementId
-            << "\": " << search_result_ad->placement_id;
-    VLOG(2) << "  \"" << kDataCreativeInstanceId
-            << "\": " << search_result_ad->creative_instance_id;
-    VLOG(2) << "  \"" << kDataCreativeSetId
-            << "\": " << search_result_ad->creative_set_id;
-    VLOG(2) << "  \"" << kDataCampaignId
-            << "\": " << search_result_ad->campaign_id;
-    VLOG(2) << "  \"" << kDataAdvertiserId
-            << "\": " << search_result_ad->advertiser_id;
-    VLOG(2) << "  \"" << kDataLandingPage
-            << "\": " << search_result_ad->target_url;
-    VLOG(2) << "  \"" << kDataHeadlineText
-            << "\": " << search_result_ad->headline_text;
-    VLOG(2) << "  \"" << kDataDescription
-            << "\": " << search_result_ad->description;
-    VLOG(2) << "  \"" << kDataRewardsValue << "\": " << search_result_ad->value;
-    VLOG(2) << "  \"" << kDataConversionTypeValue
-            << "\": " << search_result_ad->conversion->type;
-    VLOG(2) << "  \"" << kDataConversionUrlPatternValue
-            << "\": " << search_result_ad->conversion->url_pattern;
-    VLOG(2) << "  \"" << kDataConversionAdvertiserPublicKeyValue
-            << "\": " << search_result_ad->conversion->advertiser_public_key;
-    VLOG(2) << "  \"" << kDataConversionObservationWindowValue
+    VLOG(2) << "Converted search result ad with \"" << kDataPlacementId
+            << "\": " << search_result_ad->placement_id << "\n"
+            << "  \"" << kDataCreativeInstanceId
+            << "\": " << search_result_ad->creative_instance_id << "\n"
+            << "  \"" << kDataCreativeSetId
+            << "\": " << search_result_ad->creative_set_id << "\n"
+            << "  \"" << kDataCampaignId
+            << "\": " << search_result_ad->campaign_id << "\n"
+            << "  \"" << kDataAdvertiserId
+            << "\": " << search_result_ad->advertiser_id << "\n"
+            << "  \"" << kDataLandingPage
+            << "\": " << search_result_ad->target_url << "\n"
+            << "  \"" << kDataHeadlineText
+            << "\": " << search_result_ad->headline_text << "\n"
+            << "  \"" << kDataDescription
+            << "\": " << search_result_ad->description << "\n"
+            << "  \"" << kDataRewardsValue << "\": " << search_result_ad->value
+            << "\n"
+            << "  \"" << kDataConversionTypeValue
+            << "\": " << search_result_ad->conversion->type << "\n"
+            << "  \"" << kDataConversionUrlPatternValue
+            << "\": " << search_result_ad->conversion->url_pattern << "\n"
+            << "  \"" << kDataConversionAdvertiserPublicKeyValue
+            << "\": " << search_result_ad->conversion->advertiser_public_key
+            << "\n"
+            << "  \"" << kDataConversionObservationWindowValue
             << "\": " << search_result_ad->conversion->observation_window;
   }
 }
 
 }  // namespace
 
-SearchResultAdMap ParseWebPageEntities(blink::mojom::WebPagePtr web_page) {
+SearchResultAdMap ConvertWebPageToSearchResultAds(
+    blink::mojom::WebPagePtr web_page) {
   SearchResultAdMap search_result_ads;
   if (!web_page) {
     return search_result_ads;
@@ -316,7 +315,7 @@ SearchResultAdMap ParseWebPageEntities(blink::mojom::WebPagePtr web_page) {
     }
 
     for (const auto& property : entity->properties) {
-      ParseWebPageEntityProperty(property, &search_result_ads);
+      ConvertWebPageEntityProperty(property, &search_result_ads);
     }
   }
 

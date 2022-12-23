@@ -10,7 +10,7 @@
 #include "base/memory/ptr_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/features.h"
-#include "brave/components/brave_ads/core/browser/search_result_ad/search_result_ad_parsing.h"
+#include "brave/components/brave_ads/core/browser/search_result_ad/search_result_ad_converting_util.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "content/public/browser/render_frame_host.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
@@ -97,7 +97,7 @@ void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
     return;
   }
 
-  search_result_ads_ = ParseWebPageEntities(std::move(web_page));
+  search_result_ads_ = ConvertWebPageToSearchResultAds(std::move(web_page));
 
   if (search_result_ads_ && should_trigger_viewed_event_) {
     for (const auto& [key, search_result_ad] : *search_result_ads_) {

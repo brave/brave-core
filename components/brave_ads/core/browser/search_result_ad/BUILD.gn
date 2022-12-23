@@ -5,8 +5,8 @@
 
 source_set("search_result_ad") {
   sources = [
-    "search_result_ad_parsing.cc",
-    "search_result_ad_parsing.h",
+    "search_result_ad_converting_util.cc",
+    "search_result_ad_converting_util.h",
   ]
 
   deps = [

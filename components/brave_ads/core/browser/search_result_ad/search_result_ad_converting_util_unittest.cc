@@ -5,7 +5,7 @@
 
 #include <utility>
 
-#include "brave/components/brave_ads/core/browser/search_result_ad/search_result_ad_parsing.h"
+#include "brave/components/brave_ads/core/browser/search_result_ad/search_result_ad_converting_util.h"
 #include "brave/components/brave_ads/core/browser/search_result_ad/test_web_page_util.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
@@ -14,9 +14,10 @@
 
 namespace brave_ads {
 
-TEST(SearchResultAdParsingTest, ValidWebPage) {
+TEST(SearchResultAdConvertingTest, ValidWebPage) {
   blink::mojom::WebPagePtr web_page = CreateTestWebPage();
-  const SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
+  const SearchResultAdMap ads =
+      ConvertWebPageToSearchResultAds(std::move(web_page));
   EXPECT_EQ(ads.size(), 1U);
   const ads::mojom::SearchResultAdInfoPtr& search_result_ad =
       ads.at(GURL(kTargetUrl));
@@ -40,24 +41,27 @@ TEST(SearchResultAdParsingTest, ValidWebPage) {
   EXPECT_EQ(search_result_ad->conversion->advertiser_public_key, "value8");
 }
 
-TEST(SearchResultAdParsingTest, NotValidWebPage) {
+TEST(SearchResultAdConvertingTest, NotValidWebPage) {
   {
     blink::mojom::WebPagePtr web_page = blink::mojom::WebPage::New();
-    const SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
+    const SearchResultAdMap ads =
+        ConvertWebPageToSearchResultAds(std::move(web_page));
     EXPECT_TRUE(ads.empty());
   }
 
   {
     blink::mojom::WebPagePtr web_page = CreateTestWebPage();
     web_page->entities[0]->type = "Not-Product";
-    const SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
+    const SearchResultAdMap ads =
+        ConvertWebPageToSearchResultAds(std::move(web_page));
     EXPECT_TRUE(ads.empty());
   }
 
   {
     blink::mojom::WebPagePtr web_page = CreateTestWebPage();
     web_page->entities[0]->properties.clear();
-    const SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
+    const SearchResultAdMap ads =
+        ConvertWebPageToSearchResultAds(std::move(web_page));
     EXPECT_TRUE(ads.empty());
   }
 
@@ -65,7 +69,8 @@ TEST(SearchResultAdParsingTest, NotValidWebPage) {
     blink::mojom::WebPagePtr web_page = CreateTestWebPage();
     auto& property = web_page->entities[0]->properties[0];
     property->name = "not-creatives";
-    const SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
+    const SearchResultAdMap ads =
+        ConvertWebPageToSearchResultAds(std::move(web_page));
     EXPECT_TRUE(ads.empty());
   }
 
@@ -73,7 +78,8 @@ TEST(SearchResultAdParsingTest, NotValidWebPage) {
     blink::mojom::WebPagePtr web_page = CreateTestWebPage();
     auto& property = web_page->entities[0]->properties[0];
     property->values = schema_org::mojom::Values::NewEntityValues({});
-    const SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
+    const SearchResultAdMap ads =
+        ConvertWebPageToSearchResultAds(std::move(web_page));
     EXPECT_TRUE(ads.empty());
   }
 
@@ -81,18 +87,20 @@ TEST(SearchResultAdParsingTest, NotValidWebPage) {
     blink::mojom::WebPagePtr web_page = CreateTestWebPage();
     auto& property = web_page->entities[0]->properties[0];
     property->values = schema_org::mojom::Values::NewStringValues({"creative"});
-    const SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
+    const SearchResultAdMap ads =
+        ConvertWebPageToSearchResultAds(std::move(web_page));
     EXPECT_TRUE(ads.empty());
   }
 }
 
-TEST(SearchResultAdParsingTest, NotValidAdEntityExtraProperty) {
+TEST(SearchResultAdConvertingTest, NotValidAdEntityExtraProperty) {
   {
     blink::mojom::WebPagePtr web_page = CreateTestWebPage();
     auto& property = web_page->entities[0]->properties[0];
     auto& ad_entity = property->values->get_entity_values()[0];
     ad_entity->type = "Not-SearchResultAd";
-    const SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
+    const SearchResultAdMap ads =
+        ConvertWebPageToSearchResultAds(std::move(web_page));
     EXPECT_TRUE(ads.empty());
   }
 
@@ -108,21 +116,23 @@ TEST(SearchResultAdParsingTest, NotValidAdEntityExtraProperty) {
         schema_org::mojom::Values::NewStringValues({"extra-value"});
     ad_entity->properties.push_back(std::move(extra_property));
 
-    const SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
+    const SearchResultAdMap ads =
+        ConvertWebPageToSearchResultAds(std::move(web_page));
     EXPECT_FALSE(ads.empty());
   }
 }
 
-TEST(SearchResultAdParsingTest, NotValidAdEntityPropertySkipped) {
+TEST(SearchResultAdConvertingTest, NotValidAdEntityPropertySkipped) {
   constexpr int kSearchResultAdAttributesCount = 12;
   for (int index = 0; index < kSearchResultAdAttributesCount; ++index) {
     blink::mojom::WebPagePtr web_page = CreateTestWebPage(index);
-    const SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
+    const SearchResultAdMap ads =
+        ConvertWebPageToSearchResultAds(std::move(web_page));
     EXPECT_TRUE(ads.empty());
   }
 }
 
-TEST(SearchResultAdParsingTest, NotValidAdEntityWrongPropertyType) {
+TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
   {
     // Skip "data-landing-page".
     blink::mojom::WebPagePtr web_page = CreateTestWebPage(0);
@@ -136,7 +146,8 @@ TEST(SearchResultAdParsingTest, NotValidAdEntityWrongPropertyType) {
         schema_org::mojom::Values::NewStringValues({kTargetUrl});
     ad_entity->properties.push_back(std::move(extra_property));
 
-    const SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
+    const SearchResultAdMap ads =
+        ConvertWebPageToSearchResultAds(std::move(web_page));
     EXPECT_TRUE(ads.empty());
   }
 
@@ -153,7 +164,8 @@ TEST(SearchResultAdParsingTest, NotValidAdEntityWrongPropertyType) {
         schema_org::mojom::Values::NewStringValues({"0-5"});
     ad_entity->properties.push_back(std::move(extra_property));
 
-    const SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
+    const SearchResultAdMap ads =
+        ConvertWebPageToSearchResultAds(std::move(web_page));
     EXPECT_TRUE(ads.empty());
   }
 
@@ -169,7 +181,8 @@ TEST(SearchResultAdParsingTest, NotValidAdEntityWrongPropertyType) {
     extra_property->values = schema_org::mojom::Values::NewStringValues({"1"});
     ad_entity->properties.push_back(std::move(extra_property));
 
-    const SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
+    const SearchResultAdMap ads =
+        ConvertWebPageToSearchResultAds(std::move(web_page));
     EXPECT_TRUE(ads.empty());
   }
 
@@ -185,7 +198,8 @@ TEST(SearchResultAdParsingTest, NotValidAdEntityWrongPropertyType) {
     extra_property->values = schema_org::mojom::Values::NewLongValues({101});
     ad_entity->properties.push_back(std::move(extra_property));
 
-    const SearchResultAdMap ads = ParseWebPageEntities(std::move(web_page));
+    const SearchResultAdMap ads =
+        ConvertWebPageToSearchResultAds(std::move(web_page));
     EXPECT_TRUE(ads.empty());
   }
 }
