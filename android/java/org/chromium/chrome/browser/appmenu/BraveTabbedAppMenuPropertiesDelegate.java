@@ -31,7 +31,9 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
+import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabbed_mode.TabbedAppMenuPropertiesDelegate;
@@ -148,9 +150,16 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         MenuItem bravePlaylist = menu.findItem(R.id.brave_playlist_id);
         if (bravePlaylist != null) {
-            if (shouldShowIconBeforeItem()) {
-                bravePlaylist.setIcon(
-                        AppCompatResources.getDrawable(mContext, R.drawable.ic_open_playlist));
+            if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
+                    && SharedPreferencesManager.getInstance().readBoolean(
+                            BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)) {
+                bravePlaylist.setVisible(true);
+                if (shouldShowIconBeforeItem()) {
+                    bravePlaylist.setIcon(
+                            AppCompatResources.getDrawable(mContext, R.drawable.ic_open_playlist));
+                }
+            } else {
+                bravePlaylist.setVisible(false);
             }
         }
 

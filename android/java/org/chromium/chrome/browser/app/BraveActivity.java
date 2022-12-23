@@ -130,6 +130,7 @@ import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
 import org.chromium.chrome.browser.playlist.PlaylistUtils;
 import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment;
 import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment.PlaylistWarningDialogListener;
+import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
@@ -1169,6 +1170,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         BraveShieldsContentSettings.ALLOW_RESOURCE);
             }
         }
+    }
+
+    public void openBravePlaylistSettings() {
+        SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+        settingsLauncher.launchSettingsActivity(this, BravePlaylistPreferences.class);
     }
 
     private void openBraveNewsSettings() {

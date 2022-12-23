@@ -57,6 +57,8 @@ public class PlaylistWarningDialogFragment
         } else if (view.getId() == R.id.btn_settings) {
             playlistWarningDialogListener.onSettingsClicked();
         }
-        dismiss();
+        if (view.getId() == R.id.btn_add_media || view.getId() == R.id.modal_close) {
+            dismiss();
+        }
     }
 }

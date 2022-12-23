@@ -70,6 +70,7 @@ public class BraveMainPreferencesBase
     private static final String PREF_SHIELDS_AND_PRIVACY = "brave_shields_and_privacy";
     private static final String PREF_BRAVE_SEARCH_ENGINES = "brave_search_engines";
     private static final String PREF_BRAVE_NEWS = "brave_news";
+    private static final String PREF_BRAVE_PLAYLIST = "brave_playlist";
     private static final String PREF_SYNC = "brave_sync_layout";
     private static final String PREF_PASSWORDS = "passwords";
     private static final String PREF_NOTIFICATIONS = "notifications";
@@ -140,6 +141,9 @@ public class BraveMainPreferencesBase
         removePreferenceIfPresent(PREF_BRAVE_VPN_CALLOUT);
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
             removePreferenceIfPresent(PREF_BRAVE_NEWS);
+        }
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
+            removePreferenceIfPresent(PREF_BRAVE_PLAYLIST);
         }
         updateSearchEnginePreference();
 
@@ -215,6 +219,12 @@ public class BraveMainPreferencesBase
             findPreference(PREF_BRAVE_WALLET).setOrder(++firstSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_WALLET);
+        }
+
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
+            findPreference(PREF_BRAVE_PLAYLIST).setOrder(++firstSectionOrder);
+        } else {
+            removePreferenceIfPresent(PREF_BRAVE_PLAYLIST);
         }
 
         if (BraveVpnUtils.isBraveVpnFeatureEnable()

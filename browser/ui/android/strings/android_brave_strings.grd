@@ -3238,7 +3238,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Brave quick action search
     </message>
     <message name="IDS_BRAVE_PLAYLIST" desc="Playlist menu item text">
-      Playlist
+      Brave Playlist
     </message>
     <message name="IDS_VIEW_ACTION" desc="View action text">
       View
@@ -3257,6 +3257,51 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_ADD_ITEM_TO_PLAYLIST" desc="Playlist warning dialog action button text">
       Add item to Playlist
+    </message>
+    <message name="IDS_ENABLE_PLAYLIST" desc="Enable playlist settings title">
+      Enable Playlist
+    </message>
+    <message name="IDS_ENABLE_PLAYLIST_SUMMARY" desc="Enable playlist settings summary">
+      Make playlists of your favorite audio and videos, and play anytime, anywhere.
+    </message>
+    <message name="IDS_ADD_TO_PLAYLIST_BUTTON" desc="Add to playlist button settings title">
+      Add to Playlist button
+    </message>
+    <message name="IDS_ADD_TO_PLAYLIST_BUTTON_SUMMARY" desc="Add to playlist button settings summary">
+      Show or hide "Add to Playlist" button for quick access to add or remove media.
+    </message>
+    <message name="IDS_AUTO_PLAY" desc="Auto play settings title">
+      Auto-Play
+    </message>
+    <message name="IDS_AUTO_PLAY_SUMMARY" desc="Auto play settings summary">
+      Enables auto-play when Playlist is opened.
+    </message>
+    <message name="IDS_START_PLAYBACK" desc="Start playback settings title">
+      Start Playback Where I Left Off
+    </message>
+    <message name="IDS_START_PLAYBACK_SUMMARY" desc="Start playback settings summary">
+      Automatically sync any changes the creator made to a shared playlist.
+    </message>
+    <message name="IDS_AUTO_SAVE_MEDIA_FOR_OFFLINE" desc="Auto save media for offline settings title">
+      Auto-Save for Offline
+    </message>
+    <message name="IDS_AUTO_SAVE_MEDIA_FOR_OFFLINE_SUMMARY" desc="Auto save media for offline settings summary">
+      Automatically saves new playlist items to your device so you can play without an internet connection.
+    </message>
+    <message name="IDS_AUTO_SAVE_ON" desc="Auto save media for offline options title">
+      Auto-Save ON
+    </message>
+    <message name="IDS_AUTO_SAVE_OFF" desc="Auto save media for offline options title">
+      Auto-Save OFF
+    </message>
+    <message name="IDS_AUTO_SAVE_WIFI" desc="Auto save media for offline options title">
+      Auto-Save only when connected to Wi-Fi
+    </message>
+    <message name="IDS_RESET_PLAYLIST" desc="Reset settings title">
+      Reset
+    </message>
+    <message name="IDS_RESET_PLAYLIST_SUMMARY" desc="Reset settings summary">
+      Remove all videos from Playlist, including offline mode storage.
     </message>
   </messages>
   </release>
