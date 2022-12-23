@@ -7,9 +7,13 @@
 
 #include <memory>
 
+#include "base/files/file_path.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_test_util.h"
-#include "chrome/test/base/testing_browser_process.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -18,15 +22,14 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
 
 namespace brave_ads {
 
-class BraveStatsUpdaterHelperTest : public PlatformBrowserTest {
+class BraveStatsUpdaterHelperBrowserTest : public PlatformBrowserTest {
  public:
-  BraveStatsUpdaterHelperTest() {}
+  BraveStatsUpdaterHelperBrowserTest() {}
 
  protected:
   void SetUpOnMainThread() override {
@@ -61,7 +64,7 @@ class BraveStatsUpdaterHelperTest : public PlatformBrowserTest {
   std::unique_ptr<BraveStatsUpdaterHelper> brave_stats_updater_helper_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterHelperTest,
+IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterHelperBrowserTest,
                        PrimaryProfileEnabledUpdate) {
   Profile* primary_profile = profile_manager_->GetPrimaryUserProfile();
 
@@ -77,7 +80,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterHelperTest,
 }
 
 #if !BUILDFLAG(IS_ANDROID)
-IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterHelperTest, ProfileSwitch) {
+IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterHelperBrowserTest, ProfileSwitch) {
   CreateMultipleProfiles();
   profile_one_->GetPrefs()->SetBoolean(ads::prefs::kEnabled, true);
 
@@ -92,7 +95,8 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterHelperTest, ProfileSwitch) {
   EXPECT_EQ(local_state_->GetBoolean(ads::prefs::kEnabledForLastProfile), true);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterHelperTest, MultiProfileEnabledUpdate) {
+IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterHelperBrowserTest,
+                       MultiProfileEnabledUpdate) {
   CreateMultipleProfiles();
   profile_one_->GetPrefs()->SetBoolean(ads::prefs::kEnabled, true);
 

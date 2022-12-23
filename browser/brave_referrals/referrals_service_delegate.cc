@@ -48,7 +48,7 @@ ReferralsServiceDelegate::GetFirstRunSentinelCreationTimeCallback() {
 #endif
 
 void ReferralsServiceDelegate::OnProfileAdded(Profile* profile) {
-  if (profile != ProfileManager::GetPrimaryUserProfile())
+  if (profile != ProfileManager::GetLastUsedProfileIfLoaded())
     return;
 
   service_->Start();

@@ -91,8 +91,7 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
 
   std::unique_ptr<AdsServiceImpl> ads_service =
       std::make_unique<AdsServiceImpl>(
-          profile,
-          brave_adaptive_captcha_service,
+          profile, brave_adaptive_captcha_service,
           CreateAdsTooltipsDelegate(profile), std::make_unique<DeviceIdImpl>(),
           history_service, rewards_service, notification_ad_async_data_store);
   return ads_service.release();

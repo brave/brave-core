@@ -5,14 +5,12 @@
 
 #include "brave/browser/brave_ads/brave_stats_updater_helper.h"
 
+#include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
-#include "components/prefs/pref_service.h"
 
 namespace brave_ads {
 
@@ -30,7 +28,11 @@ BraveStatsUpdaterHelper::BraveStatsUpdaterHelper()
   profile_manager_observer_.Observe(profile_manager_);
 }
 
-BraveStatsUpdaterHelper::~BraveStatsUpdaterHelper() = default;
+BraveStatsUpdaterHelper::~BraveStatsUpdaterHelper() {
+  if (current_profile_) {
+    current_profile_->RemoveObserver(this);
+  }
+}
 
 void BraveStatsUpdaterHelper::RegisterLocalStatePrefs(
     PrefRegistrySimple* registry) {
@@ -51,8 +53,27 @@ void BraveStatsUpdaterHelper::OnProfileAdded(Profile* profile) {
   }
 }
 
-void BraveStatsUpdaterHelper::OnProfileManagerDestroying() {
+void BraveStatsUpdaterHelper::OnProfileWillBeDestroyed(Profile* profile) {
+  if (profile != current_profile_) {
+    return;
+  }
+  profile->RemoveObserver(this);
+  current_profile_ = nullptr;
+#if !BUILDFLAG(IS_ANDROID)
+  last_used_profile_pref_change_registrar_.RemoveAll();
+#endif
   ads_enabled_pref_change_registrar_.RemoveAll();
+}
+
+void BraveStatsUpdaterHelper::OnProfileManagerDestroying() {
+  if (current_profile_ != nullptr) {
+#if !BUILDFLAG(IS_ANDROID)
+    last_used_profile_pref_change_registrar_.RemoveAll();
+#endif
+    ads_enabled_pref_change_registrar_.RemoveAll();
+    current_profile_->RemoveObserver(this);
+    current_profile_ = nullptr;
+  }
   profile_manager_observer_.Reset();
 }
 
@@ -60,6 +81,7 @@ PrefService* BraveStatsUpdaterHelper::GetLastUsedProfilePrefs() {
 #if BUILDFLAG(IS_ANDROID)
   return ProfileManager::GetPrimaryUserProfile()->GetPrefs();
 #else
+
   base::FilePath last_used_profile_path =
       local_state_->GetFilePath(::prefs::kProfileLastUsed);
   Profile* profile;
@@ -69,9 +91,15 @@ PrefService* BraveStatsUpdaterHelper::GetLastUsedProfilePrefs() {
     profile = profile_manager_->GetProfileByPath(
         profile_manager_->user_data_dir().Append(last_used_profile_path));
   }
-  if (profile == nullptr) {
+  if (profile == nullptr || profile->IsOffTheRecord()) {
     return nullptr;
   }
+  if (current_profile_ != nullptr) {
+    current_profile_->RemoveObserver(this);
+    current_profile_ = nullptr;
+  }
+  current_profile_ = profile;
+  profile->AddObserver(this);
   return profile->GetPrefs();
 #endif
 }
