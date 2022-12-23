@@ -7,7 +7,7 @@ const gnCheck = (buildConfig = config.defaultBuildConfig, options) => {
   util.run('gn', ['check', config.outputDir, '//brave/*'],
     config.defaultOptions)
   // TODO(bridiver) fix android deps
-  if (config.targetOS !== 'ios' && config.targetOS !== 'android') {
+  if (config.targetOS !== 'ios') {
     // switch to just `//chrome` after sorting out chrome common sources
     util.run('gn', ['check', config.outputDir, '//chrome/browser/*'],
       config.defaultOptions)

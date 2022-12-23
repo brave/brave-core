@@ -22,7 +22,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/tor/tor_constants.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
@@ -45,6 +45,10 @@
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/components/tor/tor_constants.h"
 #endif
 
 using content::BrowserThread;
@@ -121,6 +125,7 @@ bool BraveProfileManager::IsAllowedProfilePath(
 bool BraveProfileManager::LoadProfileByPath(const base::FilePath& profile_path,
                          bool incognito,
                          ProfileLoadedCallback callback) {
+#if BUILDFLAG(ENABLE_TOR)
   // Prevent legacy tor session profile to be loaded so we won't hit
   // DCHECK(!GetProfileAttributesWithPath(...)). Workaround for legacy tor guest
   // profile won't work because when AddProfile to storage we will hit
@@ -129,7 +134,7 @@ bool BraveProfileManager::LoadProfileByPath(const base::FilePath& profile_path,
   if (profile_path.BaseName().value() == tor::kTorProfileDir) {
     return false;
   }
-
+#endif
   return ProfileManager::LoadProfileByPath(profile_path, incognito,
                                            std::move(callback));
 }
