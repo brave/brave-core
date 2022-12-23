@@ -95,6 +95,7 @@ brave_chrome_browser_sources = [
   "//brave/browser/metrics/metrics_reporting_util.h",
   "//brave/browser/update_util.cc",
   "//brave/browser/update_util.h",
+  "//brave/chromium_src/chrome/browser/notifications/notification_handler_impl.h",
 ]
 
 brave_chrome_browser_deps = [
@@ -132,6 +133,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_private_new_tab_ui/common:mojom",
   "//brave/components/brave_referrals/buildflags",
   "//brave/components/brave_rewards/common",
+  "//brave/components/brave_rewards/common:features",
   "//brave/components/brave_rewards/common:mojom",
   "//brave/components/brave_rewards/common/buildflags",
   "//brave/components/brave_search/browser",
@@ -150,7 +152,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_wallet/browser:utils",
   "//brave/components/brave_wallet/common",
   "//brave/components/brave_wallet/common:mojom",
-  "//brave/components/brave_wayback_machine:buildflags",
+  "//brave/components/brave_wayback_machine/buildflags",
   "//brave/components/brave_webtorrent/browser/buildflags",
   "//brave/components/constants",
   "//brave/components/cosmetic_filters/browser",
