@@ -71,7 +71,7 @@ source_set("extensions") {
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common:common_utils",
-    "//brave/components/brave_wayback_machine:buildflags",
+    "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
     "//brave/components/de_amp/common",
     "//brave/components/decentralized_dns/content",
@@ -141,6 +141,7 @@ source_set("extensions") {
       "brave_webtorrent_navigation_throttle.h",
     ]
   }
+
   if (enable_brave_wayback_machine) {
     deps += [ "//brave/components/brave_wayback_machine" ]
   }

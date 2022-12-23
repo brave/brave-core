@@ -357,7 +357,6 @@ source_set("ui") {
     "//brave/browser:sparkle_buildflags",
     "//brave/browser/gcm_driver",
     "//brave/browser/profiles",
-    "//brave/browser/tor",
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
@@ -383,7 +382,7 @@ source_set("ui") {
     "//brave/components/brave_shields/common:mojom",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_vpn/common/mojom",
-    "//brave/components/brave_wayback_machine:buildflags",
+    "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/l10n/common",
@@ -394,8 +393,6 @@ source_set("ui") {
     "//brave/components/playlist/buildflags",
     "//brave/components/resources:static_resources",
     "//brave/components/time_period_storage",
-    "//brave/components/tor",
-    "//brave/components/tor:pref_names",
     "//brave/components/tor/buildflags",
     "//brave/components/vector_icons",
     "//brave/components/webcompat_reporter/browser",
@@ -429,6 +426,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/ui/views/brave_ads",
       "//brave/browser/ui/views/brave_tooltips",
+      "//brave/browser/ui/views/infobars",
       "//brave/components/brave_shields/common:common",
     ]
   }
@@ -612,6 +610,11 @@ source_set("ui") {
       sources += [
         "views/location_bar/onion_location_view.cc",
         "views/location_bar/onion_location_view.h",
+      ]
+
+      deps += [
+        "//brave/browser/tor",
+        "//brave/components/tor:pref_names",
       ]
     }
 

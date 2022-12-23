@@ -13,7 +13,7 @@
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wayback_machine/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/common/pref_names.h"

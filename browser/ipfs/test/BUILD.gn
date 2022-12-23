@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import("//brave/build/config.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
 source_set("unittests") {
@@ -23,7 +23,6 @@ source_set("unittests") {
     "//base/test:test_support",
     "//brave/browser",
     "//brave/browser/net",
-    "//brave/browser/tor",
     "//brave/common",
     "//brave/components/decentralized_dns/content",
     "//brave/components/decentralized_dns/core",
@@ -38,6 +37,10 @@ source_set("unittests") {
     "//testing/gtest",
     "//url",
   ]
+
+  if (enable_tor) {
+    deps += [ "//brave/browser/tor" ]
+  }
 }  # source_set("unittests")
 
 source_set("browsertests") {
@@ -61,7 +64,6 @@ source_set("browsertests") {
     deps = [
       "//base/test:test_support",
       "//brave/browser",
-      "//brave/browser/tor",
       "//brave/common:common",
       "//brave/components/constants",
       "//brave/components/ipfs",
