@@ -93,6 +93,26 @@ void JNI_BravePrefServiceBridge_SetHTTPSEEnabled(JNIEnv* env,
       enabled, GURL(), g_browser_process->local_state());
 }
 
+void JNI_BravePrefServiceBridge_SetHttpsUpgradeControlType(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& type) {
+  brave_shields::SetHttpsUpgradeControlType(
+      HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
+      brave_shields::ControlTypeFromString(
+          base::android::ConvertJavaStringToUTF8(env, type)),
+      GURL(), g_browser_process->local_state());
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+JNI_BravePrefServiceBridge_GetHttpsUpgradeControlType(JNIEnv* env) {
+  brave_shields::ControlType control_type =
+      brave_shields::GetHttpsUpgradeControlType(
+          HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
+          GURL());
+  return base::android::ConvertUTF8ToJavaString(
+      env, brave_shields::ControlTypeToString(control_type));
+}
+
 void JNI_BravePrefServiceBridge_SetIpfsGatewayEnabled(JNIEnv* env,
                                                       jboolean enabled) {
 #if BUILDFLAG(ENABLE_IPFS)

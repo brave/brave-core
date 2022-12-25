@@ -46,6 +46,20 @@ public class BravePrefServiceBridge {
     }
 
     /**
+     * @param HttpsUpgrade setting
+     */
+    public void setHttpsUpgradeControlType(String type) {
+        BravePrefServiceBridgeJni.get().setHttpsUpgradeControlType(type);
+    }
+
+    /**
+     * @param HttpsUpgrade setting
+     */
+    public String getHttpsUpgradeControlType() {
+        return BravePrefServiceBridgeJni.get().getHttpsUpgradeControlType();
+    }
+
+    /**
      * @param whether the IPFS gateway should be enabled.
      */
     public void setIpfsGatewayEnabled(boolean enabled) {
@@ -285,6 +299,10 @@ public class BravePrefServiceBridge {
         String getNoScriptControlType();
 
         void setHTTPSEEnabled(boolean enabled);
+
+        void setHttpsUpgradeControlType(String type);
+        String getHttpsUpgradeControlType();
+
         void setIpfsGatewayEnabled(boolean enabled);
         void setAdBlockEnabled(boolean enabled);
 

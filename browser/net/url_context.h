@@ -83,6 +83,7 @@ struct BraveRequestInfo {
   // initiated.
   bool aggressive_blocking = false;
   bool allow_http_upgradable_resource = false;
+  int https_upgrade_setting = 0;
   bool allow_referrers = false;
   bool is_webtorrent_disabled = false;
   int frame_tree_node_id = 0;

@@ -35,6 +35,18 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::PERSISTENT,
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
+  Register(ContentSettingsType::BRAVE_HTTPS_UPGRADE,
+           brave_shields::kHTTPSUpgrades, CONTENT_SETTING_ASK,
+           WebsiteSettingsInfo::SYNCABLE, /*allowlisted_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_ASK, CONTENT_SETTING_BLOCK},
+           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+           WebsiteSettingsRegistry::DESKTOP |
+               WebsiteSettingsRegistry::PLATFORM_ANDROID,
+           ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+           ContentSettingsInfo::PERSISTENT,
+           ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+
   Register(ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
            brave_shields::kHTTPUpgradableResources, CONTENT_SETTING_BLOCK,
            WebsiteSettingsInfo::SYNCABLE, /*allowlisted_schemes=*/{},

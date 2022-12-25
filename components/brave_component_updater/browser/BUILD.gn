@@ -1,3 +1,8 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//extensions/buildflags/buildflags.gni")
 
 static_library("browser") {
@@ -10,6 +15,8 @@ static_library("browser") {
     "dat_file_util.h",
     "features.cc",
     "features.h",
+    "https_upgrade_exceptions_service.cc",
+    "https_upgrade_exceptions_service.h",
     "local_data_files_observer.cc",
     "local_data_files_observer.h",
     "local_data_files_service.cc",

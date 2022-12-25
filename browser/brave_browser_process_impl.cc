@@ -51,6 +51,7 @@
 #include "content/public/browser/child_process_security_policy.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/blink/public/common/features.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
@@ -61,6 +62,8 @@
 #include "brave/common/extensions/whitelist.h"
 #include "brave/components/brave_component_updater/browser/extension_whitelist_service.h"
 #endif
+
+#include "brave/components/brave_component_updater/browser/https_upgrade_exceptions_service.h"
 
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
@@ -196,6 +199,10 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   https_everywhere_service()->Start();
   resource_component();
 
+  if (base::FeatureList::IsEnabled(blink::features::kHttpsByDefault)) {
+    https_upgrade_exceptions_service();
+  }
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extension_whitelist_service();
 #endif
@@ -252,6 +259,16 @@ BraveBrowserProcessImpl::extension_whitelist_service() {
   return extension_whitelist_service_.get();
 }
 #endif
+
+brave_component_updater::HttpsUpgradeExceptionsService*
+BraveBrowserProcessImpl::https_upgrade_exceptions_service() {
+  if (!https_upgrade_exceptions_service_) {
+    https_upgrade_exceptions_service_ =
+        brave_component_updater::HttpsUpgradeExceptionsServiceFactory(
+            local_data_files_service());
+  }
+  return https_upgrade_exceptions_service_.get();
+}
 
 #if BUILDFLAG(ENABLE_GREASELION)
 greaselion::GreaselionDownloadService*

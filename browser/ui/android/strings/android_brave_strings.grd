@@ -560,6 +560,24 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BLOCK_TRACKERS_ADS_SUMMARY" desc="Text summary for Block trackers and ads.">
         Prevents trackers &amp; ads from loading and showing in webpages
       </message>
+      <message name="IDS_HTTPS_UPGRADE_TEXT" desc="Text for shields option.">
+        Ensure the connections to websites are secure.
+      </message>
+      <message name="IDS_HTTPS_UPGRADE_TITLE" desc="Summary for shields option.">
+        Upgrade connections to HTTPS
+      </message>
+      <message name="IDS_HTTPS_UPGRADE_SUMMARY" desc="Summary for shields option.">
+        Ensure the connections to websites are secure.
+      </message>
+      <message name="IDS_HTTPS_UPGRADE_OPTION_1" desc="Title for shields option.">
+        Require all connections to use HTTPS (strict)
+      </message>
+      <message name="IDS_HTTPS_UPGRADE_OPTION_2" desc="Title for shields option.">
+        Upgrade to HTTPS whenever possible (default)
+      </message>
+      <message name="IDS_HTTPS_UPGRADE_OPTION_3" desc="Title for shields option.">
+        Don't upgrade connections to HTTPS (disabled)
+      </message>
       <message name="IDS_CLOSE_TABS_ON_EXIT_SUMMARY" desc="Summary for closing tabs on exit.">
         Don't persist tabs between browsing sessions
       </message>

@@ -19,6 +19,7 @@ BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kRestrictWebSocketsPool);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveBlockScreenFingerprinting);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveTorWindowsHttpsOnly);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveRoundTimeStamps);
+BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kHttpsByDefault);
 
 }  // namespace features
 }  // namespace blink

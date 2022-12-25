@@ -26,7 +26,8 @@
     &brave_wallet::features::kBraveWalletSnsFeature,         \
     &preferences::features::kBraveBackgroundVideoPlayback,   \
     &safe_browsing::features::kBraveAndroidSafeBrowsing,     \
-    &debounce::features::kBraveDebounce
+    &debounce::features::kBraveDebounce,                     \
+    &blink::features::kHttpsByDefault
 // clang-format on
 
 #include "src/chrome/browser/flags/android/chrome_feature_list.cc"

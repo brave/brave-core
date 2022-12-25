@@ -242,6 +242,35 @@ jboolean JNI_BraveShieldsContentSettings_GetHTTPSEverywhereEnabled(JNIEnv* env,
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 }
 
+void JNI_BraveShieldsContentSettings_SetHttpsUpgradeControlType(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& type,
+    const base::android::JavaParamRef<jstring>& url,
+    const base::android::JavaParamRef<jobject>& j_profile) {
+  brave_shields::SetHttpsUpgradeControlType(
+      HostContentSettingsMapFactory::GetForProfile(
+          ProfileAndroid::FromProfileAndroid(j_profile)),
+      brave_shields::ControlTypeFromString(
+          base::android::ConvertJavaStringToUTF8(env, type)),
+      GURL(base::android::ConvertJavaStringToUTF8(env, url)),
+      g_browser_process->local_state());
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+JNI_BraveShieldsContentSettings_GetHttpsUpgradeControlType(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& url,
+    const base::android::JavaParamRef<jobject>& j_profile) {
+  brave_shields::ControlType control_type =
+      brave_shields::GetHttpsUpgradeControlType(
+          HostContentSettingsMapFactory::GetForProfile(
+              ProfileAndroid::FromProfileAndroid(j_profile)),
+          GURL(base::android::ConvertJavaStringToUTF8(env, url)));
+
+  return base::android::ConvertUTF8ToJavaString(
+      env, brave_shields::ControlTypeToString(control_type));
+}
+
 void JNI_BraveShieldsContentSettings_SetNoScriptControlType(JNIEnv* env,
     const base::android::JavaParamRef<jstring>& type,
     const base::android::JavaParamRef<jstring>& url,

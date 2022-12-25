@@ -20,6 +20,7 @@
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
@@ -28,6 +29,7 @@
 #include "brave/components/tor/tor_profile_service.h"
 #include "brave/components/tor/tor_utils.h"
 #include "build/build_config.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -346,25 +348,52 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, ResetBridges) {
   EXPECT_FALSE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
 }
 
-class BraveTorTest_EnableTorHttpsOnlyFlag : public BraveTorTest {
+class BraveTorTest_EnableTorHttpsOnlyFlag
+    : public BraveTorTest,
+      public ::testing::WithParamInterface<bool> {
  public:
   BraveTorTest_EnableTorHttpsOnlyFlag() {
-    feature_list_.InitAndEnableFeature(
-        blink::features::kBraveTorWindowsHttpsOnly);
+    if (IsBraveHttpsByDefaultEnabled()) {
+      scoped_feature_list_.InitWithFeatures(
+          {blink::features::kBraveTorWindowsHttpsOnly,
+           blink::features::kHttpsByDefault} /* enabled */,
+          {} /* disabled */
+      );
+    } else {
+      scoped_feature_list_.InitWithFeatures(
+          {blink::features::kBraveTorWindowsHttpsOnly} /* enabled */,
+          {blink::features::kHttpsByDefault} /* disabled */
+      );
+    }
+    //    BraveTorTest::SetUp();
   }
 
+  ~BraveTorTest_EnableTorHttpsOnlyFlag() override = default;
+
+  bool IsBraveHttpsByDefaultEnabled() { return GetParam(); }
+
  protected:
-  base::test::ScopedFeatureList feature_list_;
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveTorTest_EnableTorHttpsOnlyFlag,
+IN_PROC_BROWSER_TEST_P(BraveTorTest_EnableTorHttpsOnlyFlag,
                        TorWindowHttpsOnly) {
   EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
   DownloadTorClient();
 
   Profile* tor_profile = OpenTorWindow();
   PrefService* prefs = tor_profile->GetPrefs();
-
-  // Check that HTTPS-Only Mode has been enabled for the Tor window.
-  EXPECT_TRUE(prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled));
+  if (IsBraveHttpsByDefaultEnabled()) {
+    // Check that HTTPS-Only Mode is not enabled for the Tor window,
+    // because we already force HTTPS upgrade when the HTTPS by Default
+    // flag is enabled.
+    EXPECT_FALSE(prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled));
+  } else {
+    // Check that HTTPS-Only Mode has been enabled for the Tor window.
+    EXPECT_TRUE(prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled));
+  }
 }
+
+INSTANTIATE_TEST_SUITE_P(BraveTorTest_EnableTorHttpsOnlyFlag,
+                         BraveTorTest_EnableTorHttpsOnlyFlag,
+                         ::testing::Bool());

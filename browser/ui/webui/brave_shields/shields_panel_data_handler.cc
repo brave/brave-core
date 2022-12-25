@@ -71,6 +71,8 @@ void ShieldsPanelDataHandler::GetSiteSettings(
       active_shields_data_controller_->GetCookieBlockMode();
   settings.is_https_everywhere_enabled =
       active_shields_data_controller_->GetHTTPSEverywhereEnabled();
+  settings.https_upgrade_mode =
+      active_shields_data_controller_->GetHttpsUpgradeMode();
   settings.is_noscript_enabled =
       active_shields_data_controller_->GetNoScriptEnabled();
 
@@ -96,6 +98,13 @@ void ShieldsPanelDataHandler::SetCookieBlockMode(CookieBlockMode mode) {
     return;
 
   active_shields_data_controller_->SetCookieBlockMode(mode);
+}
+
+void ShieldsPanelDataHandler::SetHttpsUpgradeMode(HttpsUpgradeMode mode) {
+  if (!active_shields_data_controller_)
+    return;
+
+  active_shields_data_controller_->SetHttpsUpgradeMode(mode);
 }
 
 void ShieldsPanelDataHandler::SetIsNoScriptsEnabled(bool is_enabled) {

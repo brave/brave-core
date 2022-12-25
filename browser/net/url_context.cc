@@ -149,6 +149,8 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
       brave_shields::ControlType::BLOCK;
   ctx->allow_http_upgradable_resource =
       !brave_shields::GetHTTPSEverywhereEnabled(map, ctx->tab_origin);
+  ctx->https_upgrade_setting =
+      brave_shields::GetHttpsUpgradeControlType(map, ctx->tab_origin);
 
   // HACK: after we fix multiple creations of BraveRequestInfo we should
   // use only tab_origin. Since we recreate BraveRequestInfo during consequent

@@ -1,7 +1,7 @@
-/* Copyright (c) 2021 The Brave Software Team. Distributed under the MPL2
- * license. This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/test/base/testing_brave_browser_process.h"
 
@@ -74,6 +74,11 @@ TestingBraveBrowserProcess::debounce_component_installer() {
 brave::URLSanitizerComponentInstaller*
 TestingBraveBrowserProcess::URLSanitizerComponentInstaller() {
   NOTREACHED();
+  return nullptr;
+}
+
+brave_component_updater::HttpsUpgradeExceptionsService*
+TestingBraveBrowserProcess::https_upgrade_exceptions_service() {
   return nullptr;
 }
 
