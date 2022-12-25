@@ -201,7 +201,7 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
     return;
   }
 
-  std::vector<PlaylistItemInfo> items;
+  std::vector<mojom::PlaylistItemPtr> items;
   for (const auto& media : value.GetList()) {
     if (!media.is_dict()) {
       LOG(ERROR) << __func__ << " Got invalid item";
@@ -220,17 +220,17 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
     DCHECK(mime_type);
     DCHECK(src);
 
-    PlaylistItemInfo info;
-    info.id = base::Token::CreateRandom().ToString();
-    info.page_src = *page_source;
-    info.title = *name;
+    auto item = mojom::PlaylistItem::New();
+    item->id = base::Token::CreateRandom().ToString();
+    item->page_source = GURL(*page_source);
+    item->name = *name;
     if (thumbnail) {
-      info.thumbnail_src = *thumbnail;
-      info.thumbnail_path = *thumbnail;
+      item->thumbnail_source = GURL(*thumbnail);
+      item->thumbnail_path = GURL(*thumbnail);
     }
-    info.media_src = *src;
-    info.media_file_path = *src;
-    items.push_back(std::move(info));
+    item->media_source = GURL(*src);
+    item->media_path = GURL(*src);
+    items.push_back(std::move(item));
   }
 
   std::move(callback).Run(std::move(items));

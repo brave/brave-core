@@ -117,37 +117,37 @@ class PlaylistServiceUnitTest : public testing::Test {
     run_loop()->Run();
   }
 
-  PlaylistItemInfo GetValidCreateParams() {
-    PlaylistItemInfo params;
-    params.title = "Valid playlist creation params";
-    params.page_src = "https://example.com/";
-    params.thumbnail_src = params.thumbnail_path =
-        https_server()->GetURL("/valid_thumbnail").spec();
-    params.media_src = params.media_file_path =
-        https_server()->GetURL("/valid_media_file_1").spec();
-    return params;
+  mojom::PlaylistItemPtr GetValidCreateParams() {
+    auto item = mojom::PlaylistItem::New();
+    item->name = "Valid playlist creation item";
+    item->page_source = GURL("https://example.com/");
+    item->thumbnail_source = item->thumbnail_path =
+        https_server()->GetURL("/valid_thumbnail");
+    item->media_source = item->media_path =
+        https_server()->GetURL("/valid_media_file_1");
+    return item;
   }
 
-  PlaylistItemInfo GetValidCreateParamsForIncompleteMediaFileList() {
-    PlaylistItemInfo params;
-    params.title = "Valid playlist creation params";
-    params.page_src = "https://example.com/";
-    params.thumbnail_src = params.thumbnail_path =
-        https_server()->GetURL("/valid_thumbnail").spec();
-    params.media_src = params.media_file_path =
-        https_server()->GetURL("/invalid_media_file").spec();
-    return params;
+  mojom::PlaylistItemPtr GetValidCreateParamsForIncompleteMediaFileList() {
+    auto item = mojom::PlaylistItem::New();
+    item->name = "Valid playlist creation item";
+    item->page_source = GURL("https://example.com/");
+    item->thumbnail_source = item->thumbnail_path =
+        https_server()->GetURL("/valid_thumbnail");
+    item->media_source = item->media_path =
+        https_server()->GetURL("/invalid_media_file");
+    return item;
   }
 
-  PlaylistItemInfo GetInvalidCreateParams() {
-    PlaylistItemInfo params;
-    params.title = "Valid playlist creation params";
-    params.page_src = "https://example.com/";
-    params.thumbnail_src = params.thumbnail_path =
-        https_server()->GetURL("/invalid_thumbnail").spec();
-    params.media_src = params.media_file_path =
-        https_server()->GetURL("/invalid_media_file").spec();
-    return params;
+  mojom::PlaylistItemPtr GetInvalidCreateParams() {
+    auto item = mojom::PlaylistItem::New();
+    item->name = "Valid playlist creation params";
+    item->page_source = GURL("https://example.com/");
+    item->thumbnail_source = item->thumbnail_path =
+        https_server()->GetURL("/invalid_thumbnail");
+    item->media_source = item->media_path =
+        https_server()->GetURL("/invalid_media_file");
+    return item;
   }
 
   // testing::Test:
@@ -186,7 +186,7 @@ class PlaylistServiceUnitTest : public testing::Test {
         std::make_unique<playlist::MediaDetectorComponentManager>(nullptr);
     detector_manager_->SetUseLocalScriptForTesting();
     service_ = std::make_unique<playlist::PlaylistService>(
-        profile_.get(), detector_manager_.get());
+        profile_.get(), detector_manager_.get(), nullptr);
 
     // Set up embedded test server to handle fake responses.
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
@@ -253,14 +253,17 @@ TEST_F(PlaylistServiceUnitTest, CreatePlaylistItem) {
 
     service->AddObserver(&observer);
 
-    playlist::PlaylistItemInfo params = GetValidCreateParams();
-    params.id = id;
-    service->CreatePlaylistItem(params, /* cache = */ true);
+    auto item = GetValidCreateParams();
+    item->id = id;
+    service->CreatePlaylistItem(std::move(item), /* cache = */ true);
 
     WaitUntil(
         base::BindLambdaForTesting([&]() { return expected_call_count == 0; }));
 
-    EXPECT_EQ(i + 1u, service->GetAllPlaylistItems().size());
+    service->GetAllPlaylistItems(base::BindLambdaForTesting(
+        [&](std::vector<mojom::PlaylistItemPtr> items) {
+          EXPECT_EQ(i + 1u, items.size());
+        }));
 
     service->RemoveObserver(&observer);
   }
@@ -289,15 +292,18 @@ TEST_F(PlaylistServiceUnitTest, ThumbnailFailed) {
   service->AddObserver(&observer);
 
   auto params = GetInvalidCreateParams();
-  params.id = id;
-  params.media_file_path = GetValidCreateParams().media_file_path;
-  params.media_src = params.media_file_path;
-  service->CreatePlaylistItem(params, /* cache = */ true);
+  params->id = id;
+  params->media_path = GetValidCreateParams()->media_path;
+  params->media_source = params->media_path;
+  service->CreatePlaylistItem(std::move(params), /* cache = */ true);
 
   WaitUntil(
       base::BindLambdaForTesting([&]() { return expected_call_count == 0; }));
 
-  EXPECT_EQ(1u, service->GetAllPlaylistItems().size());
+  service->GetAllPlaylistItems(
+      base::BindLambdaForTesting([](std::vector<mojom::PlaylistItemPtr> items) {
+        EXPECT_EQ(1u, items.size());
+      }));
 
   service->RemoveObserver(&observer);
 }
@@ -327,13 +333,16 @@ TEST_F(PlaylistServiceUnitTest, MediaDownloadFailed) {
   service->AddObserver(&observer);
 
   auto params = GetValidCreateParamsForIncompleteMediaFileList();
-  params.id = id;
-  service->CreatePlaylistItem(params, /* cache = */ true);
+  params->id = id;
+  service->CreatePlaylistItem(std::move(params), /* cache = */ true);
 
   WaitUntil(
       base::BindLambdaForTesting([&]() { return expected_call_count == 0; }));
 
-  EXPECT_EQ(1u, service->GetAllPlaylistItems().size());
+  service->GetAllPlaylistItems(
+      base::BindLambdaForTesting([](std::vector<mojom::PlaylistItemPtr> items) {
+        EXPECT_EQ(1u, items.size());
+      }));
 
   service->RemoveObserver(&observer);
 }
@@ -362,13 +371,16 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
     service->AddObserver(&observer);
 
     auto params = GetValidCreateParamsForIncompleteMediaFileList();
-    params.id = id;
-    service->CreatePlaylistItem(params, /* cache = */ true);
+    params->id = id;
+    service->CreatePlaylistItem(std::move(params), /* cache = */ true);
 
     WaitUntil(
         base::BindLambdaForTesting([&]() { return expected_call_count == 0; }));
 
-    EXPECT_EQ(1u, service->GetAllPlaylistItems().size());
+    service->GetAllPlaylistItems(base::BindLambdaForTesting(
+        [](std::vector<mojom::PlaylistItemPtr> items) {
+          EXPECT_EQ(1u, items.size());
+        }));
 
     service->RemoveObserver(&observer);
   }
@@ -407,15 +419,19 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
 
     service->AddObserver(&observer);
 
-    auto item = service->GetPlaylistItem(id);
-    auto item_value = GetValueFromPlaylistItemInfo(item);
-    auto media_src = https_server()->GetURL("/valid_media_file_1").spec();
-    item_value.Set(kPlaylistItemMediaSrcKey, media_src);
-    item_value.Set(kPlaylistItemMediaFilePathKey, media_src);
-    service->UpdatePlaylistItemValue(id, base::Value(std::move(item_value)));
+    service->GetPlaylistItem(
+        id, base::BindLambdaForTesting([&](mojom::PlaylistItemPtr item) {
+          auto item_value =
+              GetValueFromPlaylistItemInfo(GetPlaylistItemInfoFromMojo(item));
+          auto media_src = https_server()->GetURL("/valid_media_file_1").spec();
+          item_value.Set(kPlaylistItemMediaSrcKey, media_src);
+          item_value.Set(kPlaylistItemMediaFilePathKey, media_src);
+          service->UpdatePlaylistItemValue(id,
+                                           base::Value(std::move(item_value)));
 
-    service->RecoverLocalDataForItem(id);
-    WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
+          service->RecoverLocalDataForItem(id);
+          WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
+        }));
 
     service->RemoveObserver(&observer);
   }
@@ -444,35 +460,42 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
     service->AddObserver(&observer);
 
     auto params = GetValidCreateParams();
-    params.id = id;
-    service->CreatePlaylistItem(params, /* cache = */ true);
+    params->id = id;
+    service->CreatePlaylistItem(std::move(params), /* cache = */ true);
 
     WaitUntil(
         base::BindLambdaForTesting([&]() { return expected_call_count == 0; }));
 
-    EXPECT_EQ(i + 1u, service->GetAllPlaylistItems().size());
+    service->GetAllPlaylistItems(base::BindLambdaForTesting(
+        [&i](std::vector<mojom::PlaylistItemPtr> items) {
+          EXPECT_EQ(i + 1u, items.size());
+        }));
 
     service->RemoveObserver(&observer);
   }
 
   // Delete the first item
-  {
-    auto all_items = service->GetAllPlaylistItems();
-    auto id = all_items.front().id;
-    bool called = false;
-    testing::NiceMock<MockObserver> observer;
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(PlaylistChangeParams(
-                              PlaylistChangeParams::Type::kItemDeleted, id)))
-        .WillOnce([&]() { called = true; });
-    service->AddObserver(&observer);
+  service->GetAllPlaylistItems(base::BindLambdaForTesting(
+      [&](std::vector<mojom::PlaylistItemPtr> items) {
+        auto id = items.front()->id;
+        bool called = false;
+        testing::NiceMock<MockObserver> observer;
+        EXPECT_CALL(observer,
+                    OnPlaylistStatusChanged(PlaylistChangeParams(
+                        PlaylistChangeParams::Type::kItemDeleted, id)))
+            .WillOnce([&]() { called = true; });
+        service->AddObserver(&observer);
 
-    service->DeletePlaylistItemData(id);
-    WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
+        service->DeletePlaylistItemData(id);
+        WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
 
-    EXPECT_EQ(all_items.size() - 1, service->GetAllPlaylistItems().size());
+        service->GetAllPlaylistItems(base::BindLambdaForTesting(
+            [&items](std::vector<mojom::PlaylistItemPtr> new_items) {
+              EXPECT_EQ(items.size() - 1, new_items.size());
+            }));
 
-    service->RemoveObserver(&observer);
-  }
+        service->RemoveObserver(&observer);
+      }));
 
   // Delete all items
   {
@@ -486,7 +509,10 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
     service->DeleteAllPlaylistItems();
     WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
 
-    EXPECT_FALSE(service->GetAllPlaylistItems().size());
+    service->GetAllPlaylistItems(base::BindLambdaForTesting(
+        [](std::vector<mojom::PlaylistItemPtr> items) {
+          EXPECT_FALSE(items.size());
+        }));
 
     service->RemoveObserver(&observer);
   }
@@ -496,12 +522,16 @@ TEST_F(PlaylistServiceUnitTest, CreateAndRemovePlaylist) {
   auto* service = playlist_service();
 
   // There's only one playlist in the beginning.
-  auto initial_playlists = service->GetAllPlaylists();
-  ASSERT_EQ(1UL, initial_playlists.size());
+  std::vector<mojom::PlaylistPtr> initial_playlists;
+  service->GetAllPlaylists(base::BindLambdaForTesting(
+      [&](std::vector<mojom::PlaylistPtr> playlists) {
+        ASSERT_EQ(1UL, playlists.size());
+        initial_playlists = std::move(playlists);
+      }));
 
   // Add a new playlist
-  playlist::PlaylistInfo new_playlist;
-  new_playlist.name = "new playlist";
+  mojom::PlaylistPtr new_playlist = mojom::Playlist::New();
+  new_playlist->name = "new playlist";
   {
     bool called = false;
     testing::NiceMock<MockObserver> observer;
@@ -511,35 +541,51 @@ TEST_F(PlaylistServiceUnitTest, CreateAndRemovePlaylist) {
         .WillOnce([&]() { called = true; });
     service->AddObserver(&observer);
 
-    service->CreatePlaylist(new_playlist);
-    EXPECT_EQ(initial_playlists.size() + 1, service->GetAllPlaylists().size());
+    service->CreatePlaylist(
+        new_playlist->Clone(),
+        base::BindLambdaForTesting([&](mojom::PlaylistPtr new_list) {
+          new_playlist->id = *new_list->id;
+        }));
+
+    service->GetAllPlaylists(base::BindLambdaForTesting(
+        [&](std::vector<mojom::PlaylistPtr> playlists) {
+          EXPECT_EQ(initial_playlists.size() + 1, playlists.size());
+        }));
 
     service->RemoveObserver(&observer);
   }
 
-  auto playlists = service->GetAllPlaylists();
-  auto iter = base::ranges::find(playlists, new_playlist.name,
-                                 &playlist::PlaylistInfo::name);
-  EXPECT_NE(iter, playlists.end());
+  service->GetAllPlaylists(base::BindLambdaForTesting(
+      [&](std::vector<mojom::PlaylistPtr> playlists) {
+        auto iter = base::ranges::find_if(
+            playlists, [&](const mojom::PlaylistPtr& playlist) {
+              return new_playlist->id == playlist->id;
+            });
+        EXPECT_NE(iter, playlists.end());
 
-  // Remove the new playlist
-  {
-    bool called = false;
-    testing::NiceMock<MockObserver> observer;
-    EXPECT_CALL(observer, OnPlaylistStatusChanged(testing::Field(
-                              &PlaylistChangeParams::change_type,
-                              PlaylistChangeParams::Type::kListRemoved)))
-        .WillOnce([&]() { called = true; });
-    service->AddObserver(&observer);
+        // Remove the new playlist
+        bool called = false;
+        testing::NiceMock<MockObserver> observer;
+        EXPECT_CALL(observer, OnPlaylistStatusChanged(testing::Field(
+                                  &PlaylistChangeParams::change_type,
+                                  PlaylistChangeParams::Type::kListRemoved)))
+            .WillOnce([&]() { called = true; });
+        service->AddObserver(&observer);
 
-    service->RemovePlaylist(iter->id);
-    playlists = service->GetAllPlaylists();
-    EXPECT_EQ(initial_playlists.size(), playlists.size());
-    EXPECT_FALSE(base::Contains(playlists, new_playlist.id,
-                                &playlist::PlaylistInfo::id));
+        service->RemovePlaylist((*iter)->id.value());
 
-    service->RemoveObserver(&observer);
-  }
+        service->RemoveObserver(&observer);
+      }));
+
+  service->GetAllPlaylists(base::BindLambdaForTesting(
+      [&](std::vector<mojom::PlaylistPtr> playlists) {
+        EXPECT_EQ(initial_playlists.size(), playlists.size());
+        auto iter = base::ranges::find_if(
+            playlists, [&](const mojom::PlaylistPtr& playlist) {
+              return new_playlist->id == playlist->id;
+            });
+        EXPECT_EQ(iter, playlists.end());
+      }));
 }
 
 TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
@@ -565,79 +611,99 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
     service->AddObserver(&observer);
 
     auto params = GetValidCreateParams();
-    params.id = id;
-    service->CreatePlaylistItem(params, /* cache = */ true);
+    params->id = id;
+    service->CreatePlaylistItem(std::move(params), /* cache = */ true);
 
     WaitUntil(
         base::BindLambdaForTesting([&]() { return expected_call_count == 0; }));
 
-    auto all_items = service->GetAllPlaylistItems();
-    ASSERT_EQ(1UL, all_items.size());
+    service->GetAllPlaylistItems(base::BindLambdaForTesting(
+        [&](std::vector<mojom::PlaylistItemPtr> all_items) {
+          ASSERT_EQ(1UL, all_items.size());
 
-    auto item = all_items.front();
-    ASSERT_TRUE(item.media_file_cached);
-    ASSERT_NE(item.media_src, item.media_file_path);
-    ASSERT_NE(item.thumbnail_src, item.thumbnail_path);
-    {
-      base::ScopedAllowBlockingForTesting allow_blocking;
-      ASSERT_TRUE(
-          base::DirectoryExists(service->GetPlaylistItemDirPath(item.id)));
-    }
+          const auto& item = all_items.front();
+          ASSERT_TRUE(item->cached);
+          ASSERT_NE(item->media_source, item->media_path);
+          ASSERT_NE(item->thumbnail_source, item->thumbnail_path);
+          {
+            base::ScopedAllowBlockingForTesting allow_blocking;
+            ASSERT_TRUE(base::DirectoryExists(
+                service->GetPlaylistItemDirPath(item->id)));
+          }
+        }));
 
     service->RemoveObserver(&observer);
   }
 
   // Remove local media file. Thumbnail shouldn't be removed
-  auto items = service->GetAllPlaylistItems();
-  auto item = items.front();
-  {
-    // Store the item's local file path first
-    base::FilePath media_path;
-    base::FilePath thumbnail_path;
-    ASSERT_TRUE(service->GetMediaPath(item.id, &media_path));
-    ASSERT_TRUE(service->GetThumbnailPath(item.id, &thumbnail_path));
+  service->GetAllPlaylistItems(base::BindLambdaForTesting(
+      [&](std::vector<mojom::PlaylistItemPtr> items) {
+        const auto& item = items.front();
+        // Store the item's local file path first
+        base::FilePath media_path;
+        base::FilePath thumbnail_path;
+        ASSERT_TRUE(service->GetMediaPath(item->id, &media_path));
+        ASSERT_TRUE(service->GetThumbnailPath(item->id, &thumbnail_path));
 
-    // Remove local data for the item. When we remove local data, we remove only
-    // media file.
-    service->RemoveLocalDataForItem(items.front().id);
-    items = service->GetAllPlaylistItems();
-    EXPECT_EQ(1UL, items.size());
+        // Remove local data for the item. When we remove local data, we remove
+        // only media file.
+        service->RemoveLocalDataForItem(items.front()->id);
+      }));
 
-    item = items.front();
-    EXPECT_FALSE(item.media_file_cached);
-    EXPECT_EQ(item.media_src, item.media_file_path);
-    EXPECT_EQ(item.thumbnail_src, item.thumbnail_path);
-    WaitUntil(base::BindLambdaForTesting([&]() {
-      base::ScopedAllowBlockingForTesting allow_blocking;
-      return !base::DirectoryExists(service->GetPlaylistItemDirPath(item.id));
-    }));
-  }
+  service->GetAllPlaylistItems(base::BindLambdaForTesting(
+      [&](std::vector<mojom::PlaylistItemPtr> items) {
+        // Verify if RemoveLocalDataForItem() worked.
+        EXPECT_EQ(1UL, items.size());
+        const auto& item = items.front();
+        EXPECT_FALSE(item->cached);
+        EXPECT_EQ(item->media_source, item->media_path);
+        EXPECT_EQ(item->thumbnail_source, item->thumbnail_path);
+        WaitUntil(base::BindLambdaForTesting([&]() {
+          base::ScopedAllowBlockingForTesting allow_blocking;
+          return !base::DirectoryExists(
+              service->GetPlaylistItemDirPath(item->id));
+        }));
+      }));
 
   // Restore local media for the item.
-  {
-    service->RecoverLocalDataForItem(item.id);
-    items = service->GetAllPlaylistItems();
-    EXPECT_EQ(1UL, items.size());
+  service->GetAllPlaylistItems(base::BindLambdaForTesting(
+      [&](std::vector<mojom::PlaylistItemPtr> items) {
+        EXPECT_EQ(1UL, items.size());
 
-    item = items.front();
-    WaitUntil(base::BindLambdaForTesting([&]() {
-      base::ScopedAllowBlockingForTesting allow_blocking;
-      return base::DirectoryExists(service->GetPlaylistItemDirPath(item.id));
-    }));
+        const auto& item = items.front();
+        service->RecoverLocalDataForItem(item->id);
 
-    WaitUntil(base::BindLambdaForTesting([&]() {
-      auto items = service->GetAllPlaylistItems();
-      return items.size() && items.front().media_file_cached;
-    }));
-    item = service->GetAllPlaylistItems().front();
-    EXPECT_NE(item.media_src, item.media_file_path);
+        WaitUntil(base::BindLambdaForTesting([&]() {
+          base::ScopedAllowBlockingForTesting allow_blocking;
+          return base::DirectoryExists(
+              service->GetPlaylistItemDirPath(item->id));
+        }));
+      }));
 
-    WaitUntil(base::BindLambdaForTesting([&]() {
-      auto items = service->GetAllPlaylistItems();
-      return items.size() &&
-             items.front().thumbnail_path != items.front().thumbnail_src;
-    }));
-  }
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    bool result = false;
+    service->GetAllPlaylistItems(base::BindLambdaForTesting(
+        [&](std::vector<mojom::PlaylistItemPtr> items) {
+          result = items.size() && items.front()->cached;
+        }));
+    return result;
+  }));
+
+  service->GetAllPlaylistItems(base::BindLambdaForTesting(
+      [&](std::vector<mojom::PlaylistItemPtr> items) {
+        const auto& item = items.front();
+        EXPECT_NE(item->media_source, item->media_path);
+      }));
+
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    bool result = false;
+    service->GetAllPlaylistItems(base::BindLambdaForTesting(
+        [&](std::vector<mojom::PlaylistItemPtr> items) {
+          result = items.size() && items.front()->thumbnail_path !=
+                                       items.front()->thumbnail_source;
+        }));
+    return result;
+  }));
 }
 
 TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
@@ -692,11 +758,15 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
   auto* items = playlist_value->FindList(playlist::kPlaylistItemsKey);
   ASSERT_EQ(item_ids.size(), items->size());
 
-  playlist::PlaylistInfo another_playlist;
-  service->CreatePlaylist(another_playlist);
+  mojom::Playlist another_playlist;
+  service->CreatePlaylist(
+      another_playlist.Clone(),
+      base::BindLambdaForTesting([&](mojom::PlaylistPtr new_list) {
+        another_playlist.id = new_list->id;
+      }));
 
   playlist_value =
-      prefs->GetDict(playlist::kPlaylistsPref).FindDict(another_playlist.id);
+      prefs->GetDict(playlist::kPlaylistsPref).FindDict(*another_playlist.id);
   ASSERT_TRUE(playlist_value);
   items = playlist_value->FindList(playlist::kPlaylistItemsKey);
   ASSERT_TRUE(items->empty());
@@ -704,11 +774,11 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
   // Try moving all items from default list to another playlist.
   for (const auto& id : item_ids) {
     EXPECT_TRUE(service->MoveItem(PlaylistId(playlist::kDefaultPlaylistID),
-                                  PlaylistId(another_playlist.id),
+                                  PlaylistId(*another_playlist.id),
                                   PlaylistItemId(id)));
   }
   playlist_value =
-      prefs->GetDict(playlist::kPlaylistsPref).FindDict(another_playlist.id);
+      prefs->GetDict(playlist::kPlaylistsPref).FindDict(*another_playlist.id);
   EXPECT_TRUE(playlist_value);
   items = playlist_value->FindList(playlist::kPlaylistItemsKey);
   base::flat_set<std::string> stored_ids;
@@ -722,12 +792,12 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
   // Try moving items to non-existing playlist. Then it should fail and the
   // original playlist should be unchanged.
   for (const auto& id : item_ids) {
-    EXPECT_FALSE(service->MoveItem(PlaylistId(another_playlist.id),
+    EXPECT_FALSE(service->MoveItem(PlaylistId(*another_playlist.id),
                                    PlaylistId("non-existing-id"),
                                    PlaylistItemId(id)));
   }
   playlist_value =
-      prefs->GetDict(playlist::kPlaylistsPref).FindDict(another_playlist.id);
+      prefs->GetDict(playlist::kPlaylistsPref).FindDict(*another_playlist.id);
   EXPECT_TRUE(playlist_value);
   items = playlist_value->FindList(playlist::kPlaylistItemsKey);
   stored_ids.clear();
@@ -766,9 +836,9 @@ TEST_F(PlaylistServiceUnitTest, CachingBehavior) {
 
     service->AddObserver(&observer);
 
-    playlist::PlaylistItemInfo params = GetValidCreateParams();
-    params.id = id;
-    service->CreatePlaylistItem(params, should_cache);
+    auto params = GetValidCreateParams();
+    params->id = id;
+    service->CreatePlaylistItem(std::move(params), should_cache);
 
     WaitUntil(
         base::BindLambdaForTesting([&]() { return expected_call_count == 0; }));
@@ -786,51 +856,59 @@ TEST_F(PlaylistServiceUnitTest, DefaultSaveTargetListID) {
   EXPECT_EQ(kDefaultPlaylistID, service->GetDefaultSaveTargetListID());
 
   // Set another playlist as a default save target.
-  playlist::PlaylistInfo another_playlist;
-  service->CreatePlaylist(another_playlist);
-  prefs->SetString(kPlaylistDefaultSaveTargetListID, another_playlist.id);
-  EXPECT_EQ(another_playlist.id, service->GetDefaultSaveTargetListID());
+  mojom::Playlist another_playlist;
+  service->CreatePlaylist(
+      another_playlist.Clone(),
+      base::BindLambdaForTesting([&](mojom::PlaylistPtr new_list) {
+        another_playlist.id = new_list->id;
+      }));
+
+  prefs->SetString(kPlaylistDefaultSaveTargetListID, *another_playlist.id);
+  EXPECT_EQ(*another_playlist.id, service->GetDefaultSaveTargetListID());
 
   // When the target id is invalid, reset to the default one.
-  service->RemovePlaylist(another_playlist.id);
+  service->RemovePlaylist(*another_playlist.id);
   EXPECT_EQ(kDefaultPlaylistID, service->GetDefaultSaveTargetListID());
   EXPECT_EQ(kDefaultPlaylistID,
             prefs->GetString(kPlaylistDefaultSaveTargetListID));
 }
 
 TEST_F(PlaylistServiceUnitTest, UpdateItem) {
-  PlaylistItemInfo info;
-  info.id = base::Token::CreateRandom().ToString();
-  info.page_src = "https://foo.com/";
-  info.title = "test";
-  info.thumbnail_src = "https://thumbnail.src/";
-  info.thumbnail_path = "file://thumbnail/path/";
-  info.media_src = "https://media.src/";
-  info.media_file_path = "file://media/path/";
-  info.media_file_cached = false;
-  info.author = "me";
+  mojom::PlaylistItem item;
+  item.id = base::Token::CreateRandom().ToString();
+  item.page_source = GURL("https://foo.com/");
+  item.name = "test";
+  item.thumbnail_source = GURL("https://thumbnail.src/");
+  item.thumbnail_path = GURL("file://thumbnail/path/");
+  item.media_source = GURL("https://media.src/");
+  item.media_path = GURL("file://media/path/");
+  item.cached = false;
+  item.author = "me";
 
-  playlist_service()->AddMediaFilesFromItems(
-      std::string() /* will be saved to default list*/, /* cache= */ false,
-      {info});
+  std::vector<mojom::PlaylistItemPtr> items;
+  items.push_back(item.Clone());
+  playlist_service()->AddMediaFiles(
+      std::move(items), std::string() /* will be saved to default list*/);
 
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return !!prefs()->GetDict(kPlaylistItemsPref).FindDict(info.id);
+    return !!prefs()->GetDict(kPlaylistItemsPref).FindDict(item.id);
   }));
 
   testing::NiceMock<MockObserver> observer;
   EXPECT_CALL(observer,
               OnPlaylistStatusChanged(PlaylistChangeParams(
-                  PlaylistChangeParams::Type::kItemUpdated, info.id)));
+                  PlaylistChangeParams::Type::kItemUpdated, item.id)));
   playlist_service()->AddObserver(&observer);
 
-  info.title = "new title";
-  info.last_played_position = 100;
-  playlist_service()->UpdateItem(info);
+  item.name = "new name";
+  item.last_played_position = 100;
+  playlist_service()->UpdateItem(item.Clone());
 
-  info = playlist_service()->GetPlaylistItem(info.id);
-  EXPECT_EQ("new title", info.title);
-  EXPECT_EQ(100, info.last_played_position);
+  playlist_service()->GetPlaylistItem(
+      item.id, base::BindLambdaForTesting([](mojom::PlaylistItemPtr new_item) {
+        EXPECT_EQ("new name", new_item->name);
+        EXPECT_EQ(100, new_item->last_played_position);
+      }));
 
   playlist_service()->RemoveObserver(&observer);
 }

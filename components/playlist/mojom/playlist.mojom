@@ -49,14 +49,24 @@ interface PageHandlerFactory {
 
 // Service-side handler for requests from UI.
 interface Service {
+  // Getters for playlists.
   GetAllPlaylists() => (array<Playlist> playlists);
-
   GetPlaylist(string id) => (Playlist? playlist);
 
+  // Getters for playlist items.
+  GetAllPlaylistItems() => (array<PlaylistItem> items);
+  GetPlaylistItem(string id) => (PlaylistItem? item);
+
+  // Store all media files from given URL.
   AddMediaFilesFromPageToPlaylist(string playlist_id, url.mojom.Url url);
   
   // Store all media files from tabs in this window.
   AddMediaFilesFromOpenTabsToPlaylist(string playlist_id);
+  AddMediaFilesFromActiveTabToPlaylist(string playlist_id);
+  
+  FindMediaFilesFromActiveTab() => (array<PlaylistItem> items);
+
+  AddMediaFiles(array<PlaylistItem> items, string playlist_id);
 
   RemoveItemFromPlaylist(string playlist_id, string item_id);
   MoveItem(string from_playlist_id, string to_playlist_id, string item_id);
@@ -69,7 +79,10 @@ interface Service {
   // Removes thumbnail and media files for a item stored in local directory.
   RemoveLocalDataForItem(string id);
 
-  CreatePlaylist(Playlist playlist);
+  // Creates a new playlist with given |playlist| and return created Playlist
+  // with a new ID of the playlist.
+  CreatePlaylist(Playlist playlist) => (Playlist created_list);
+
   RemovePlaylist(string id);
 };
 

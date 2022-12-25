@@ -81,7 +81,8 @@ PlaylistServiceFactory::~PlaylistServiceFactory() = default;
 KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   DCHECK(media_detector_component_manager_);
-  return new PlaylistService(context, media_detector_component_manager_.get());
+  return new PlaylistService(context, media_detector_component_manager_.get(),
+                             nullptr);
 }
 
 void PlaylistServiceFactory::PrepareMediaDetectorComponentManager() {
