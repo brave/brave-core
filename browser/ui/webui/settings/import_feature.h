@@ -8,8 +8,10 @@
 
 #include "base/feature_list.h"
 
+class GURL;
+
 namespace settings {
-bool IsParallelImportEnabled();
+bool IsParallelImportEnabled(const GURL& url);
 }  // namespace settings
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_IMPORT_FEATURE_H_
