@@ -10,10 +10,12 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/components/tor/tor_profile_service.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -21,7 +23,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/translate/core/browser/translate_pref_names.h"
-#include "third_party/blink/public/common/features.h"
+#include "net/base/features.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 
 namespace {
@@ -118,9 +120,14 @@ void TorProfileManager::InitTorProfileUserPrefs(Profile* profile) {
   pref_service->SetString(prefs::kWebRTCIPHandlingPolicy,
                           blink::kWebRTCIPHandlingDisableNonProxiedUdp);
   pref_service->SetBoolean(prefs::kSafeBrowsingEnabled, false);
-  if (base::FeatureList::IsEnabled(
-          blink::features::kBraveTorWindowsHttpsOnly)) {
-    pref_service->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
+  if (base::FeatureList::IsEnabled(net::features::kBraveTorWindowsHttpsOnly)) {
+    if (base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
+      brave_shields::SetHttpsUpgradeControlType(
+          HostContentSettingsMapFactory::GetForProfile(profile),
+          brave_shields::ControlType::BLOCK, GURL());
+    } else {
+      pref_service->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
+    }
   }
   // https://blog.torproject.org/bittorrent-over-tor-isnt-good-idea
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)

@@ -1,3 +1,8 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 if (!is_ios) {
   static_library("browser") {
     sources = [
@@ -71,6 +76,7 @@ if (!is_ios) {
       "//brave/components/content_settings/core/common",
       "//brave/components/debounce/common",
       "//brave/components/ephemeral_storage",
+      "//brave/components/https_upgrade_exceptions/browser",
       "//brave/components/l10n/common",
       "//brave/components/p3a",
       "//brave/components/p3a_utils",

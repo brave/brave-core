@@ -190,6 +190,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"cookieControlLabel", IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL},
     {"fingerprintingControlLabel",
      IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL},
+    {"httpsUpgradeControlLabel",
+     IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_UPGRADE_CONTROL_LABEL},
     {"reduceLanguageControlLabel",
      IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_CONTROL_LABEL},
     {"reduceLanguageDesc", IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_SUBITEM},
@@ -219,6 +221,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"standardFingerprinting", IDS_SETTINGS_STANDARD_FINGERPRINTING},
     {"allowAllFingerprinting", IDS_SETTINGS_ALLOW_ALL_FINGERPRINTING},
     {"strictFingerprinting", IDS_SETTINGS_STRICT_FINGERPRINTING},
+    {"standardHttpsUpgrade", IDS_SETTINGS_STANDARD_HTTPS_UPGRADE},
+    {"disabledHttpsUpgrade", IDS_SETTINGS_DISABLED_HTTPS_UPGRADE},
+    {"strictHttpsUpgrade", IDS_SETTINGS_STRICT_HTTPS_UPGRADE},
     {"webRTCPolicyLabel", IDS_SETTINGS_WEBRTC_POLICY_LABEL},
     {"webRTCPolicySubLabel", IDS_SETTINGS_WEBRTC_POLICY_SUB_LABEL},
     {"webRTCDefault", IDS_SETTINGS_WEBRTC_POLICY_DEFAULT},
@@ -735,6 +740,10 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   html_source->AddBoolean("isSnsEnabled",
                           base::FeatureList::IsEnabled(
                               brave_wallet::features::kBraveWalletSnsFeature));
+
+  html_source->AddBoolean(
+      "isHttpsByDefaultEnabled",
+      base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault));
 
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {

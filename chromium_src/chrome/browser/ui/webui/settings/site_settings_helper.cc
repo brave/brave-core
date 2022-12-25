@@ -26,7 +26,8 @@
   {ContentSettingsType::BRAVE_SPEEDREADER, nullptr},               \
   {ContentSettingsType::BRAVE_ETHEREUM, nullptr},                  \
   {ContentSettingsType::BRAVE_SOLANA, nullptr},                    \
-  {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, nullptr},
+  {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, nullptr},            \
+  {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr}
 // clang-format on
 
 #define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME \
