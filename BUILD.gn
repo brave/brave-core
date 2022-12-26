@@ -174,7 +174,7 @@ if (!is_ios) {
         "test:brave_network_audit_tests",
       ]
     }
-    if (use_libfuzzer) { 
+    if (use_libfuzzer) {
       deps += [ "//brave/fuzzers:brave_fuzzers" ]
     }
   }

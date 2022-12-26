@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <fuzzer/FuzzedDataProvider.h>
+
 #include <iostream>
 #include <string>
 
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
-#include "fuzzer/FuzzedDataProvider.h"
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
   FuzzedDataProvider data_provider(data, size);

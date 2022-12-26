@@ -1,3 +1,8 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//testing/libfuzzer/fuzzer_test.gni")
 import("//third_party/libprotobuf-mutator/fuzzable_proto_library.gni")
 
@@ -37,6 +42,7 @@ fuzzer_test("adblock_engine_matches_fuzzer") {
   deps = [
     ":adblock_fuzzer_proto",
     "//base",
+    "//base:i18n",
     "//brave/components/adblock_rust_ffi",
     "//brave/components/brave_component_updater/browser:browser",
     "//testing/libfuzzer/proto:url_proto",
