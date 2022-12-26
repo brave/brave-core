@@ -16,6 +16,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list_types.h"
+#include "base/sequence_checker.h"
 #include "base/values.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
@@ -91,7 +92,8 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   void OnDATLoaded(const DATFileDataBuffer& dat_buf,
                    const std::string& resources_json);
 
-  std::unique_ptr<adblock::Engine> ad_block_client_;
+  std::unique_ptr<adblock::Engine> ad_block_client_
+      GUARDED_BY_CONTEXT(sequence_checker_);
 
  private:
   friend class ::AdBlockServiceTest;
@@ -99,9 +101,11 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   friend class ::EphemeralStorage1pDomainBlockBrowserTest;
   friend class ::PerfPredictorTabHelperTest;
 
-  std::set<std::string> tags_;
+  std::set<std::string> tags_ GUARDED_BY_CONTEXT(sequence_checker_);
 
   raw_ptr<TestObserver> test_observer_ = nullptr;
+
+  SEQUENCE_CHECKER(sequence_checker_);
 };
 
 }  // namespace brave_shields
