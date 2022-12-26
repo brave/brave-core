@@ -181,9 +181,12 @@ void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
 
 void AdBlockServiceTest::AssertTagExists(const std::string& tag,
                                          bool expected_exists) const {
-  bool exists_default =
-      g_brave_browser_process->ad_block_service()->TagExistsForTest(tag);
-  ASSERT_EQ(exists_default, expected_exists);
+  g_brave_browser_process->ad_block_service()->TagExistsForTest(
+      tag, base::BindOnce(
+               [](bool expected_exists, bool actual_exists) {
+                 ASSERT_EQ(expected_exists, actual_exists);
+               },
+               expected_exists));
 }
 
 void AdBlockServiceTest::InitEmbeddedTestServer() {
@@ -212,7 +215,8 @@ bool AdBlockServiceTest::InstallDefaultAdBlockExtension(
     return false;
 
   g_brave_browser_process->ad_block_service()
-      ->default_filters_provider_->OnComponentReady(ad_block_extension->path());
+      ->default_filters_provider()
+      ->OnComponentReady(ad_block_extension->path());
   WaitForAdBlockServiceThreads();
 
   return true;

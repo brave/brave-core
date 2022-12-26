@@ -130,8 +130,13 @@ class AdBlockService {
   static std::string g_ad_block_dat_file_version_;
 
   AdBlockResourceProvider* resource_provider();
+  AdBlockComponentFiltersProvider* default_filters_provider() {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    return default_filters_provider_.get();
+  }
 
-  bool TagExistsForTest(const std::string& tag);
+  void TagExistsForTest(const std::string& tag,
+                        base::OnceCallback<void(bool)> cb);
 
   raw_ptr<PrefService> local_state_;
   std::string locale_;
@@ -144,26 +149,27 @@ class AdBlockService {
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
-  std::unique_ptr<brave_shields::AdBlockDefaultResourceProvider>
-      resource_provider_;
-  std::unique_ptr<brave_shields::AdBlockCustomFiltersProvider>
-      custom_filters_provider_;
-  std::unique_ptr<brave_shields::AdBlockComponentFiltersProvider>
-      default_filters_provider_;
-  std::unique_ptr<brave_shields::AdBlockFilterListCatalogProvider>
-      filter_list_catalog_provider_;
-  std::unique_ptr<brave_shields::AdBlockSubscriptionServiceManager>
-      subscription_service_manager_;
-  std::unique_ptr<brave_shields::AdBlockRegionalServiceManager>
-      regional_service_manager_;
+  std::unique_ptr<AdBlockDefaultResourceProvider> resource_provider_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockCustomFiltersProvider> custom_filters_provider_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockComponentFiltersProvider> default_filters_provider_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockFilterListCatalogProvider>
+      filter_list_catalog_provider_ GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockSubscriptionServiceManager>
+      subscription_service_manager_ GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockRegionalServiceManager> regional_service_manager_
+      GUARDED_BY_CONTEXT(sequence_checker_);
 
-  std::unique_ptr<brave_shields::AdBlockEngine, base::OnTaskRunnerDeleter>
-      default_engine_;
-  std::unique_ptr<brave_shields::AdBlockEngine, base::OnTaskRunnerDeleter>
+  std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter> default_engine_;
+  std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>
       additional_filters_engine_;
 
-  std::unique_ptr<SourceProviderObserver> default_service_observer_;
-  std::unique_ptr<SourceProviderObserver> additional_filters_service_observer_;
+  std::unique_ptr<SourceProviderObserver> default_service_observer_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<SourceProviderObserver> additional_filters_service_observer_
+      GUARDED_BY_CONTEXT(sequence_checker_);
 
   SEQUENCE_CHECKER(sequence_checker_);
 

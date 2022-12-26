@@ -98,7 +98,9 @@ std::string ResourceTypeToString(blink::mojom::ResourceType resource_type) {
 
 namespace brave_shields {
 
-AdBlockEngine::AdBlockEngine() : ad_block_client_(new adblock::Engine()) {}
+AdBlockEngine::AdBlockEngine() : ad_block_client_(new adblock::Engine()) {
+  DETACH_FROM_SEQUENCE(sequence_checker_);
+}
 
 AdBlockEngine::~AdBlockEngine() = default;
 
@@ -111,6 +113,7 @@ void AdBlockEngine::ShouldStartRequest(const GURL& url,
                                        bool* did_match_important,
                                        std::string* mock_data_url,
                                        std::string* rewritten_url) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
   // a URL or origin and not a string to a host name.
@@ -133,6 +136,7 @@ absl::optional<std::string> AdBlockEngine::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
   // a URL or origin and not a string to a host name.
@@ -152,6 +156,7 @@ absl::optional<std::string> AdBlockEngine::GetCspDirectives(
 }
 
 void AdBlockEngine::EnableTag(const std::string& tag, bool enabled) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (enabled) {
     if (tags_.find(tag) == tags_.end()) {
       ad_block_client_->addTag(tag);
@@ -164,15 +169,18 @@ void AdBlockEngine::EnableTag(const std::string& tag, bool enabled) {
 }
 
 void AdBlockEngine::UseResources(const std::string& resources) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ad_block_client_->useResources(resources);
 }
 
 bool AdBlockEngine::TagExists(const std::string& tag) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return base::Contains(tags_, tag);
 }
 
 absl::optional<base::Value> AdBlockEngine::UrlCosmeticResources(
     const std::string& url) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return base::JSONReader::Read(ad_block_client_->urlCosmeticResources(url));
 }
 
@@ -180,6 +188,7 @@ base::Value::List AdBlockEngine::HiddenClassIdSelectors(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   absl::optional<base::Value> result = base::JSONReader::Read(
       ad_block_client_->hiddenClassIdSelectors(classes, ids, exceptions));
 
@@ -204,6 +213,7 @@ void AdBlockEngine::Load(bool deserialize,
 void AdBlockEngine::UpdateAdBlockClient(
     std::unique_ptr<adblock::Engine> ad_block_client,
     const std::string& resources_json) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ad_block_client_ = std::move(ad_block_client);
   UseResources(resources_json);
   AddKnownTagsToAdBlockInstance();
@@ -213,8 +223,11 @@ void AdBlockEngine::UpdateAdBlockClient(
 }
 
 void AdBlockEngine::AddKnownTagsToAdBlockInstance() {
-  std::for_each(tags_.begin(), tags_.end(),
-                [&](const std::string tag) { ad_block_client_->addTag(tag); });
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  std::for_each(tags_.begin(), tags_.end(), [&](const std::string tag) {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    ad_block_client_->addTag(tag);
+  });
 }
 
 void AdBlockEngine::OnListSourceLoaded(const DATFileDataBuffer& filters,

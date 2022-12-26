@@ -13,6 +13,7 @@
 #include "base/callback_helpers.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/strings/string_number_conversions.h"
@@ -221,16 +222,18 @@ base::Value::Dict AdBlockService::HiddenClassIdSelectors(
 }
 
 AdBlockRegionalServiceManager* AdBlockService::regional_service_manager() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return regional_service_manager_.get();
 }
 
-brave_shields::AdBlockCustomFiltersProvider*
-AdBlockService::custom_filters_provider() {
+AdBlockCustomFiltersProvider* AdBlockService::custom_filters_provider() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return custom_filters_provider_.get();
 }
 
-brave_shields::AdBlockSubscriptionServiceManager*
+AdBlockSubscriptionServiceManager*
 AdBlockService::subscription_service_manager() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return subscription_service_manager_.get();
 }
 
@@ -259,28 +262,24 @@ AdBlockService::AdBlockService(
   // Initializes adblock-rust's domain resolution implementation
   adblock::SetDomainResolver(AdBlockServiceDomainResolver);
 
-  resource_provider_ =
-      std::make_unique<brave_shields::AdBlockDefaultResourceProvider>(
-          component_update_service_);
+  resource_provider_ = std::make_unique<AdBlockDefaultResourceProvider>(
+      component_update_service_);
   filter_list_catalog_provider_ =
-      std::make_unique<brave_shields::AdBlockFilterListCatalogProvider>(
+      std::make_unique<AdBlockFilterListCatalogProvider>(
           component_update_service_);
 
-  default_filters_provider_ =
-      std::make_unique<brave_shields::AdBlockComponentFiltersProvider>(
-          component_update_service_, g_ad_block_component_id_,
-          g_ad_block_component_base64_public_key_, kAdBlockComponentName);
-  regional_service_manager_ =
-      std::make_unique<brave_shields::AdBlockRegionalServiceManager>(
-          local_state_, locale_, component_update_service_,
-          filter_list_catalog_provider_.get());
+  default_filters_provider_ = std::make_unique<AdBlockComponentFiltersProvider>(
+      component_update_service_, g_ad_block_component_id_,
+      g_ad_block_component_base64_public_key_, kAdBlockComponentName);
+  regional_service_manager_ = std::make_unique<AdBlockRegionalServiceManager>(
+      local_state_, locale_, component_update_service_,
+      filter_list_catalog_provider_.get());
   subscription_service_manager_ =
-      std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
+      std::make_unique<AdBlockSubscriptionServiceManager>(
           local_state_, std::move(subscription_download_manager_getter_),
           profile_dir_);
   custom_filters_provider_ =
-      std::make_unique<brave_shields::AdBlockCustomFiltersProvider>(
-          local_state_);
+      std::make_unique<AdBlockCustomFiltersProvider>(local_state_);
 
   default_service_observer_ = std::make_unique<SourceProviderObserver>(
       default_engine_.get(), default_filters_provider_.get(),
@@ -316,12 +315,14 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
 }
 
 AdBlockResourceProvider* AdBlockService::resource_provider() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return resource_provider_.get();
 }
 
 void AdBlockService::UseSourceProvidersForTest(
     AdBlockFiltersProvider* source_provider,
     AdBlockResourceProvider* resource_provider) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   default_service_observer_ = std::make_unique<SourceProviderObserver>(
       default_engine_.get(), source_provider, resource_provider,
       GetTaskRunner());
@@ -330,14 +331,21 @@ void AdBlockService::UseSourceProvidersForTest(
 void AdBlockService::UseCustomSourceProvidersForTest(
     AdBlockFiltersProvider* source_provider,
     AdBlockResourceProvider* resource_provider) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   additional_filters_service_observer_ =
       std::make_unique<SourceProviderObserver>(
           additional_filters_engine_.get(), source_provider, resource_provider,
           GetTaskRunner());
 }
 
-bool AdBlockService::TagExistsForTest(const std::string& tag) {
-  return default_engine_->TagExists(tag);
+void AdBlockService::TagExistsForTest(const std::string& tag,
+                                      base::OnceCallback<void(bool)> cb) {
+  GetTaskRunner()->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&AdBlockEngine::TagExists,
+                     base::Unretained(default_engine_.get()), tag),
+      std::move(cb));
+  // return default_engine_->TagExists(tag);
 }
 
 // static
