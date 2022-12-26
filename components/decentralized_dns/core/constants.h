@@ -17,6 +17,7 @@ enum class ResolveMethodTypes {
   MAX_VALUE = ENABLED,
 };
 
+// GENERATED_JAVA_ENUM_PACKAGE: org.chromium.chrome.browser.decentralized_dns
 enum class EnsOffchainResolveMethod { kAsk, kDisabled, kEnabled };
 
 }  // namespace decentralized_dns
