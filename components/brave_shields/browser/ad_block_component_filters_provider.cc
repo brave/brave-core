@@ -44,7 +44,12 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
                                       catalog_entry.base64_public_key,
                                       catalog_entry.title) {}
 
-AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() = default;
+AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() {
+  // Can be nullptr in unit tests
+  if (component_updater_service_) {
+    component_updater_service_->UnregisterComponent(component_id_);
+  }
+}
 
 void AdBlockComponentFiltersProvider::OnComponentReady(
     const base::FilePath& path) {
@@ -69,10 +74,6 @@ void AdBlockComponentFiltersProvider::LoadDATBuffer(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_path),
       base::BindOnce(std::move(cb), false));
-}
-
-bool AdBlockComponentFiltersProvider::Delete() && {
-  return component_updater_service_->UnregisterComponent(component_id_);
 }
 
 }  // namespace brave_shields

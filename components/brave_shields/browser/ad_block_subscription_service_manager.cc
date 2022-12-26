@@ -277,7 +277,6 @@ void AdBlockSubscriptionServiceManager::EnableSubscription(const GURL& sub_url,
     DCHECK(it != subscription_filters_providers_.end());
     AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(
         it->second.get());
-    std::move(*it->second).Delete();
     subscription_filters_providers_.erase(it);
   }
 
