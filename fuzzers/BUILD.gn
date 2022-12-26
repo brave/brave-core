@@ -13,9 +13,19 @@ fuzzer_test("brave_today_parse_feed_bytes_fuzzer") {
   dict = "//third_party/libxml/fuzz/xml.dict"
 }
 
+fuzzer_test("brave_wallet_utils_fuzzer") {
+  sources = [ "brave_wallet/brave_wallet_utils_fuzzer.cc" ]
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/browser:utils",
+  ]
+}
 
 group("fuzzers") {
   testonly = true
 
-  deps = [":brave_today_parse_feed_bytes_fuzzer"]
+  deps = [
+    ":brave_today_parse_feed_bytes_fuzzer",
+    ":brave_wallet_utils_fuzzer",
+  ]
 }
