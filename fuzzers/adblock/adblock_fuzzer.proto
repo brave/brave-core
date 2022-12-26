@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+import "url.proto";
+
+package adblock_fuzzer;
+
+// blink::mojom::ResourceType
+enum ResourceType {
+  kMainFrame = 0;
+  kSubFrame = 1;
+  kStylesheet = 2;
+  kScript = 3;
+  kImage = 4;
+  kFontResource = 5;
+  kSubResource = 6;
+  kObject = 7;
+  kMedia = 8;
+  kWorker = 9;
+  kSharedWorker = 10;
+  kPrefetch = 11;
+  kFavicon = 12;
+  kXhr = 13;
+  kPing = 14;
+  kServiceWorker = 15;
+  kCspReport = 16;
+  kPluginResource = 17;
+  kNavigationPreloadMainFrame = 19;
+  kNavigationPreloadSubFrame = 20;
+}
+
+message EngineMatches {
+  url_proto.Url url = 1;
+  url_proto.Url tab_host = 2;
+  bool is_third_party = 3;
+  ResourceType resource_type = 4;
+}
