@@ -1,0 +1,21 @@
+import("//testing/libfuzzer/fuzzer_test.gni")
+
+assert(use_libfuzzer)
+
+fuzzer_test("brave_today_parse_feed_bytes_fuzzer") {
+  sources = [ "brave_today/parse_feed_bytes_fuzzer.cc" ]
+  deps = [
+    "//base",
+    "//brave/components/brave_today/rust:rust-rs",
+  ]
+
+  seed_corpus = "brave_today/corpus/parse_feed_bytes_fuzzer/"
+  dict = "//third_party/libxml/fuzz/xml.dict"
+}
+
+
+group("fuzzers") {
+  testonly = true
+
+  deps = [":brave_today_parse_feed_bytes_fuzzer"]
+}
