@@ -1,4 +1,5 @@
 import("//testing/libfuzzer/fuzzer_test.gni")
+import("//third_party/libprotobuf-mutator/fuzzable_proto_library.gni")
 
 assert(use_libfuzzer)
 
@@ -21,10 +22,45 @@ fuzzer_test("brave_wallet_utils_fuzzer") {
   ]
 }
 
-group("fuzzers") {
+fuzzable_proto_library("adblock_fuzzer_proto") {
+  proto_in_dir = "//"
+  import_dirs = [ "//testing/libfuzzer/proto" ]
+
+  sources = [ "adblock/adblock_fuzzer.proto" ]
+
+  deps = [ "//testing/libfuzzer/proto:url_proto" ]
+}
+
+fuzzer_test("adblock_engine_matches_fuzzer") {
+  sources = [ "adblock/adblock_engine_matches_fuzzer.cc" ]
+
+  deps = [
+    ":adblock_fuzzer_proto",
+    "//base",
+    "//brave/components/adblock_rust_ffi",
+    "//brave/components/brave_component_updater/browser:browser",
+    "//testing/libfuzzer/proto:url_proto",
+    "//testing/libfuzzer/proto:url_proto_converter",
+    "//third_party/libprotobuf-mutator",
+  ]
+}
+
+fuzzer_test("adblock_engine_useresources_fuzzer") {
+  sources = [ "adblock/adblock_engine_useresources_fuzzer.cc" ]
+  deps = [
+    "//base",
+    "//brave/components/adblock_rust_ffi",
+  ]
+
+  dict = "//testing/libfuzzer/fuzzers/dicts/json.dict"
+}
+
+group("brave_fuzzers") {
   testonly = true
 
   deps = [
+    ":adblock_engine_matches_fuzzer",
+    ":adblock_engine_useresources_fuzzer",
     ":brave_today_parse_feed_bytes_fuzzer",
     ":brave_wallet_utils_fuzzer",
   ]

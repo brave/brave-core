@@ -175,7 +175,7 @@ if (!is_ios) {
       ]
     }
     if (use_libfuzzer) { 
-      deps += [ "//brave/fuzzers" ]
+      deps += [ "//brave/fuzzers:brave_fuzzers" ]
     }
   }
 }
