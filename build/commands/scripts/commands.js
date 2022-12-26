@@ -9,6 +9,7 @@ const config = require('../lib/config')
 const util = require('../lib/util')
 const build = require('../lib/build')
 const build_fuzzer = require('../lib/build_fuzzer')
+const run_fuzzer = require('../lib/run_fuzzer')
 const versions = require('../lib/versions')
 const start = require('../lib/start')
 const applyPatches = require('../lib/applyPatches')
@@ -308,6 +309,10 @@ program
   .option('--use_goma [arg]', 'whether to use Goma for building', JSON.parse)
   .option('--goma_offline', 'use offline mode for goma')
   .action(build_fuzzer)
+
+program
+  .command('run_fuzzer <suite>')
+  .action(run_fuzzer)
 
 program
   .parse(process.argv)
