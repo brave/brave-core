@@ -1286,8 +1286,11 @@ void JsonRpcService::OnEnsGetContentHash(EnsGetContentHashCallback callback,
                           "");
 }
 
+void JsonRpcService::EnableEnsOffchainLookup() {
+  SetEnsOffchainPref(local_state_prefs_, true);
+}
+
 void JsonRpcService::EnsGetEthAddr(const std::string& domain,
-                                   bool offchain_explicitly_allowed,
                                    EnsGetEthAddrCallback callback) {
   if (!IsValidDomain(domain)) {
     std::move(callback).Run(
@@ -1300,10 +1303,6 @@ void JsonRpcService::EnsGetEthAddr(const std::string& domain,
     if (ens_get_eth_addr_tasks_.ContainsTaskForDomain(domain)) {
       ens_get_eth_addr_tasks_.AddCallbackForDomain(domain, std::move(callback));
       return;
-    }
-
-    if (offchain_explicitly_allowed) {
-      SetEnsOffchainPref(local_state_prefs_, true);
     }
 
     absl::optional<bool> allow_offchain;

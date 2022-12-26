@@ -74,9 +74,9 @@ export const Send = (props: Props) => {
   const {
     toAddressOrUrl,
     toAddress,
+    enableEnsOffchainLookup,
     showEnsOffchainWarning,
     setShowEnsOffchainWarning,
-    setEnsOffchainExplicitlyAllowed,
     addressError,
     addressWarning,
     sendAmount,
@@ -131,12 +131,12 @@ export const Send = (props: Props) => {
 
   const onClickReviewOrENSConsent = React.useCallback(() => {
     if (showEnsOffchainWarning) {
-      setEnsOffchainExplicitlyAllowed(true)
+      enableEnsOffchainLookup()
       setShowEnsOffchainWarning(false)
       return
     }
     submitSend()
-  }, [showEnsOffchainWarning, setShowEnsOffchainWarning, submitSend, setEnsOffchainExplicitlyAllowed])
+  }, [showEnsOffchainWarning, setShowEnsOffchainWarning, submitSend, enableEnsOffchainLookup])
 
   // Memos
   const sendAssetBalance = React.useMemo(() => {

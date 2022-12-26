@@ -1256,8 +1256,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         }
 
         if (mCurrentBlockchainToken.coin == CoinType.ETH && WalletNativeUtils.isEnsTld(domain)) {
-            mJsonRpcService.ensGetEthAddr(domain, false,
-                    (response, requireOffchainConsent, errorResponse, errorString) -> {
+            mJsonRpcService.ensGetEthAddr(
+                    domain, (response, requireOffchainConsent, errorResponse, errorString) -> {
                         onResolveWalletAddressDone(domain, response, requireOffchainConsent);
                     });
             return true;

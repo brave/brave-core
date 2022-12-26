@@ -56,6 +56,7 @@ export default function useSend (isSendTab?: boolean) {
 
   // custom hooks
   const {
+    enableEnsOffchainLookup,
     findENSAddress,
     findSNSAddress,
     findUnstoppableDomainAddress,
@@ -84,7 +85,6 @@ export default function useSend (isSendTab?: boolean) {
   // State
   const [searchingForDomain, setSearchingForDomain] = React.useState<boolean>(false)
   const [showEnsOffchainWarning, setShowEnsOffchainWarning] = React.useState<boolean>(false)
-  const [ensOffchainExplicitlyAllowed, setEnsOffchainExplicitlyAllowed] = React.useState<boolean>(false)
 
   const selectSendAsset = (asset: BraveWallet.BlockchainToken | undefined) => {
     if (asset?.isErc721 || asset?.isNft) {
@@ -139,7 +139,7 @@ export default function useSend (isSendTab?: boolean) {
     if (endsWithAny(supportedENSExtensions, valueToLowerCase)) {
       setSearchingForDomain(true)
       setToAddress('')
-      findENSAddress(toAddressOrUrl, ensOffchainExplicitlyAllowed).then((value: GetEthAddrReturnInfo) => {
+      findENSAddress(toAddressOrUrl).then((value: GetEthAddrReturnInfo) => {
         handleDomainLookupResponse(value.address, value.error, value.requireOffchainConsent)
       }).catch(e => console.log(e))
       return
@@ -210,7 +210,7 @@ export default function useSend (isSendTab?: boolean) {
     // Fallback error state
     setAddressWarning('')
     setAddressError(getLocale('braveWalletNotValidAddress'))
-  }, [selectedAccount?.address, ensOffchainExplicitlyAllowed, handleUDAddressLookUp, handleDomainLookupResponse, setShowEnsOffchainWarning])
+  }, [selectedAccount?.address, handleUDAddressLookUp, handleDomainLookupResponse, setShowEnsOffchainWarning])
 
   const processFilecoinAddress = React.useCallback((toAddressOrUrl: string) => {
     const valueToLowerCase = toAddressOrUrl.toLowerCase()
@@ -475,7 +475,7 @@ export default function useSend (isSendTab?: boolean) {
     sendAmountValidationError,
     showEnsOffchainWarning,
     setShowEnsOffchainWarning,
-    setEnsOffchainExplicitlyAllowed,
+    enableEnsOffchainLookup,
     searchingForDomain
   }
 }
