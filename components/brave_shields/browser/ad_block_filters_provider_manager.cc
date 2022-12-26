@@ -102,8 +102,4 @@ void AdBlockFiltersProviderManager::FinishCombinating(
   std::move(cb).Run(false, combined_list);
 }
 
-bool AdBlockFiltersProviderManager::Delete() && {
-  return true;
-}
-
 }  // namespace brave_shields

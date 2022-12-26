@@ -36,8 +36,6 @@ class AdBlockFiltersProvider {
   void LoadDAT(base::OnceCallback<void(bool deserialize,
                                        const DATFileDataBuffer& dat_buf)>);
 
-  virtual bool Delete() &&;
-
  protected:
   virtual void LoadDATBuffer(
       base::OnceCallback<void(bool deserialize,

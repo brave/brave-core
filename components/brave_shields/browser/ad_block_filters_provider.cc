@@ -37,8 +37,4 @@ void AdBlockFiltersProvider::LoadDAT(
   LoadDATBuffer(std::move(cb));
 }
 
-bool AdBlockFiltersProvider::Delete() && {
-  return false;
-}
-
 }  // namespace brave_shields
