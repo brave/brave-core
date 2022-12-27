@@ -453,14 +453,16 @@ where
                                     "Could not parse issued at".to_string(),
                                 )
                             })?
-                            .and_hms(0, 0, 0),
+                            .and_hms_opt(0, 0, 0)
+                            .unwrap(),  //  guaranteed to succeed because of (0, 0, 0)
                         expires_at: NaiveDate::parse_from_str(&expires_at, "%Y-%m-%d")
                             .map_err(|_| {
                                 InternalError::InvalidResponse(
                                     "Could not parse expires at".to_string(),
                                 )
                             })?
-                            .and_hms(0, 0, 0),
+                            .and_hms_opt(0, 0, 0)
+                            .unwrap(),  //  guaranteed to succeed because of (0, 0, 0)
                         token,
                     };
                     if let Some(item_creds) = time_limited_creds.get_mut(&item_id) {
