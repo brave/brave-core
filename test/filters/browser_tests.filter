@@ -134,6 +134,8 @@
 -LazyLoadPrerenderBrowserTest.*
 -LiveTabCountPageLoadMetricsBrowserTest.LoadSingleTabWithPrerendering
 -LoginDetectionPrerenderBrowserTest.*
+-LookalikeUrlNavigationThrottleBrowserTest.*
+-LookalikeUrlNavigationThrottleSignedExchangeBrowserTest.*
 -MediaEngagementContentsObserverPrerenderBrowserTest.*
 -MediaHistoryForPrerenderBrowserTest.*
 -MixedContentSettingsTabHelperPrerenderBrowserTest.*
@@ -362,9 +364,6 @@
 -All/IntentPickerBubbleViewFencedFrameBrowserTest.*
 -All/LoadingPredictorNetworkIsolationKeyBrowserTest.*
 -All/LoginPromptBrowserTest.*
--All/LookalikeUrlNavigationThrottleBrowserTest.*
--All/LookalikeUrlNavigationThrottleDigitalAssetLinksBrowserTest.*
--All/LookalikeUrlNavigationThrottleSignedExchangeBrowserTest.*
 -All/MultiActionAPICanvasTest.*
 -All/MultiActionAPITest.*
 -All/NetInfoNetworkQualityEstimatorHoldbackBrowserTest.*
