@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK;
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -37,6 +38,7 @@ public class NetworkSelectorActivity
         extends BraveWalletBaseActivity implements NetworkSelectorAdapter.NetworkClickListener {
     public static String NETWORK_SELECTOR_MODE = "network_selector_mode";
     private static final String TAG = NetworkSelectorActivity.class.getSimpleName();
+    private static final int REQUEST_CODE_ADD_NETWORK = 1;
     private NetworkSelectorModel.Mode mMode;
     private RecyclerView mRVNetworkSelector;
     private NetworkSelectorAdapter networkSelectorAdapter;
@@ -70,24 +72,36 @@ public class NetworkSelectorActivity
         initState();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) return;
+
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            activity.getWalletModel().getCryptoModel().getNetworkModel().init();
+        }
+        networkSelectorAdapter.notifyDataSetChanged();
+    }
+
     private void initState() {
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
             mWalletModel = activity.getWalletModel();
+            activity.getWalletModel().getCryptoModel().getNetworkModel().init();
         }
         mNetworkSelectorModel =
                 mWalletModel.getCryptoModel().getNetworkModel().openNetworkSelectorModel(mMode);
         networkSelectorAdapter = new NetworkSelectorAdapter(this, new ArrayList<>());
         mRVNetworkSelector.setAdapter(networkSelectorAdapter);
         networkSelectorAdapter.setOnNetworkItemSelected(this);
-        LiveDataUtil.observeOnce(mNetworkSelectorModel.mPrimaryNetworks, primaryNetworkInfos -> {
+        mNetworkSelectorModel.mPrimaryNetworks.observe(this, primaryNetworkInfos -> {
             networkSelectorAdapter.addPrimaryNetwork(primaryNetworkInfos);
         });
-
-        LiveDataUtil.observeOnce(
-                mNetworkSelectorModel.mSecondaryNetworks, secondaryNetworkInfos -> {
-                    networkSelectorAdapter.addSecondaryNetwork(secondaryNetworkInfos);
-                });
+        mNetworkSelectorModel.mSecondaryNetworks.observe(this, secondaryNetworkInfos -> {
+            networkSelectorAdapter.addSecondaryNetwork(secondaryNetworkInfos);
+        });
         setSelectedNetworkObserver();
     }
 
