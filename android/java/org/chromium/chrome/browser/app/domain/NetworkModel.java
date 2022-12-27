@@ -152,14 +152,14 @@ public class NetworkModel implements JsonRpcServiceObserver {
             _mPrimaryNetworks.postValue(primaryNws);
         });
         _mSecondaryNetworks.addSource(mCryptoNetworks, networkInfos -> {
-            List<NetworkInfo> primaryNws = new ArrayList<>();
+            List<NetworkInfo> secondaryNws = new ArrayList<>();
             for (NetworkInfo networkInfo : networkInfos) {
                 if (!WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(networkInfo.chainId)
                         && !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(networkInfo.chainId)) {
-                    primaryNws.add(networkInfo);
+                    secondaryNws.add(networkInfo);
                 }
             }
-            _mSecondaryNetworks.postValue(primaryNws);
+            _mSecondaryNetworks.postValue(secondaryNws);
         });
     }
 
