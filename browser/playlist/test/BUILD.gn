@@ -20,6 +20,7 @@ source_set("browser_tests") {
   deps = [
     "//base",
     "//brave/components/playlist",
+    "//brave/components/playlist/mojom",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
@@ -48,6 +49,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//brave/components/playlist",
+    "//brave/components/playlist/mojom",
     "//chrome/test:test_support",
     "//components/pref_registry",
     "//content/test:test_support",
