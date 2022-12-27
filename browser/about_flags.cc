@@ -383,6 +383,12 @@ constexpr char kAllowIncognitoPermissionInheritanceDescription[] =
     "in incognito profile if they are less permissive, for ex. Geolocation "
     "BLOCK will be automatically set to BLOCK in incognito.";
 
+constexpr char kBraveSyncHistoryDiagnosticsName[] =
+    "Enable Brave Sync History Diagnostics";
+constexpr char kBraveSyncHistoryDiagnosticsDescription[] =
+    "Brave Sync History Diagnostics flag displays additional sync related "
+    "information on History page";
+
 // Blink features.
 constexpr char kFileSystemAccessAPIName[] = "File System Access API";
 constexpr char kFileSystemAccessAPIDescription[] =
@@ -788,6 +794,11 @@ constexpr char kBraveChangeActiveTabOnScrollEventDescription[] =
       flag_descriptions::kTranslateDescription,                             \
       kOsDesktop | kOsAndroid,                                              \
       FEATURE_VALUE_TYPE(translate::kTranslate)},                           \
+    {"brave-sync-history-diagnostics",                                      \
+      flag_descriptions::kBraveSyncHistoryDiagnosticsName,                  \
+      flag_descriptions::kBraveSyncHistoryDiagnosticsDescription,           \
+      kOsAll, FEATURE_VALUE_TYPE(                                           \
+          brave_sync::features::kBraveSyncHistoryDiagnostics)},             \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
     BRAVE_NEWS_FEATURE_ENTRIES                                              \

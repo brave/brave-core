@@ -6,7 +6,9 @@
 #include <string>
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "base/strings/strcat.h"
+#include "brave/components/brave_sync/features.h"
 // Forward include to avoid re-define of URLResult::set_blocked_visit
 #include "components/history/core/browser/history_types.h"
 #include "components/history/core/browser/url_row.h"
@@ -56,13 +58,18 @@ bool ShouldSyncVisit(int typed_count, ui::PageTransition transition) {
 
 std::u16string GetDiagnosticTitle(const history::URLResult& url_result,
                                   const history::VisitRow& visit) {
-  return base::StrCat(
-      {u"ShouldSync:",
-       ShouldSyncVisit(url_result.typed_count(), visit.transition) ? u"1"
-                                                                   : u"0",
-       u" ", std::u16string(u"TypedCount:"),
-       base::NumberToString16(url_result.typed_count()), u" ",
-       GetTransitionString(visit.transition), u" ", url_result.title()});
+  if (base::FeatureList::IsEnabled(
+          brave_sync::features::kBraveSyncHistoryDiagnostics)) {
+    return base::StrCat(
+        {u"ShouldSync:",
+         ShouldSyncVisit(url_result.typed_count(), visit.transition) ? u"1"
+                                                                     : u"0",
+         u" ", std::u16string(u"TypedCount:"),
+         base::NumberToString16(url_result.typed_count()), u" ",
+         GetTransitionString(visit.transition), u" ", url_result.title()});
+  } else {
+    return url_result.title();
+  }
 }
 
 }  // namespace
