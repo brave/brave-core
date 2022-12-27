@@ -12,9 +12,13 @@
   UnUsed() { return {}; }              \
   friend class BraveBrowserViewLayout; \
   virtual int LayoutTabStripRegion
+#define LayoutBookmarkAndInfoBars virtual LayoutBookmarkAndInfoBars
+#define LayoutContentsContainerView virtual LayoutContentsContainerView
 
 #include "src/chrome/browser/ui/views/frame/browser_view_layout.h"
 
+#undef LayoutContentsContainerView
+#undef LayoutBookmarkAndInfoBars
 #undef LayoutTabStripRegion
 #undef LayoutSidePanelView
 
