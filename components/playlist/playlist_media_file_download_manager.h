@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/containers/queue.h"
+#include "brave/components/playlist/mojom/playlist.mojom.h"
 #include "brave/components/playlist/playlist_media_file_downloader.h"
 
 namespace base {
@@ -59,7 +60,7 @@ class PlaylistMediaFileDownloadManager
   PlaylistMediaFileDownloadManager& operator=(
       const PlaylistMediaFileDownloadManager&) = delete;
 
-  void DownloadMediaFile(const PlaylistItemInfo& playlist_item);
+  void DownloadMediaFile(const mojom::PlaylistItemPtr& playlist_item);
   void CancelDownloadRequest(const std::string& id);
   void CancelAllDownloadRequests();
 
@@ -75,16 +76,16 @@ class PlaylistMediaFileDownloadManager
   void OnMediaFileGenerationFailed(const std::string& id) override;
 
   void TryStartingDownloadTask();
-  std::unique_ptr<PlaylistItemInfo> GetNextPlaylistItemTarget();
+  mojom::PlaylistItemPtr GetNextPlaylistItemTarget();
   std::string GetCurrentDownloadingPlaylistItemID() const;
   void CancelCurrentDownloadingPlaylistItem();
   bool IsCurrentDownloadingInProgress() const;
 
   const base::FilePath base_dir_;
   raw_ptr<Delegate> delegate_;
-  base::queue<PlaylistItemInfo> pending_media_file_creation_jobs_;
+  base::queue<mojom::PlaylistItemPtr> pending_media_file_creation_jobs_;
 
-  std::unique_ptr<PlaylistItemInfo> current_item_;
+  mojom::PlaylistItemPtr current_item_;
 
   std::unique_ptr<PlaylistMediaFileDownloader> media_file_downloader_;
 

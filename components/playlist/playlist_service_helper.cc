@@ -13,24 +13,6 @@
 
 namespace playlist {
 
-base::Value::Dict GetValueFromPlaylistItemInfo(const PlaylistItemInfo& info) {
-  base::Value::Dict playlist_value;
-  playlist_value.Set(kPlaylistItemIDKey, info.id);
-  playlist_value.Set(kPlaylistItemTitleKey, info.title);
-  playlist_value.Set(kPlaylistItemPageSrcKey, info.page_src);
-  playlist_value.Set(kPlaylistItemMediaSrcKey, info.media_src);
-  playlist_value.Set(kPlaylistItemThumbnailSrcKey, info.thumbnail_src);
-  playlist_value.Set(kPlaylistItemThumbnailPathKey, info.thumbnail_path);
-  playlist_value.Set(kPlaylistItemMediaFilePathKey, info.media_file_path);
-  playlist_value.Set(kPlaylistItemMediaFileCachedKey, info.media_file_cached);
-  playlist_value.Set(kPlaylistItemAuthorKey, info.author);
-  playlist_value.Set(kPlaylistItemDurationKey,
-                     base::TimeDeltaToValue(info.duration));
-  playlist_value.Set(kPlaylistItemLastPlayedPositionKey,
-                     info.last_played_position);
-  return playlist_value;
-}
-
 bool IsItemValueMalformed(const base::Value::Dict& dict) {
   return !dict.contains(playlist::kPlaylistItemIDKey) ||
          !dict.contains(playlist::kPlaylistItemTitleKey) ||
@@ -47,55 +29,46 @@ bool IsItemValueMalformed(const base::Value::Dict& dict) {
          !dict.contains(playlist::kPlaylistItemLastPlayedPositionKey);
 }
 
-PlaylistItemInfo GetPlaylistItemInfoFromValue(const base::Value::Dict& dict) {
+mojom::PlaylistItemPtr GetPlaylistItemFromValue(const base::Value::Dict& dict) {
   DCHECK(!IsItemValueMalformed(dict));
 
-  PlaylistItemInfo item;
-  item.id = *dict.FindString(playlist::kPlaylistItemIDKey);
-  item.title = *dict.FindString(playlist::kPlaylistItemTitleKey);
-  item.page_src = *dict.FindString(playlist::kPlaylistItemPageSrcKey);
-  item.thumbnail_src = *dict.FindString(playlist::kPlaylistItemThumbnailSrcKey);
-  item.thumbnail_path =
-      *dict.FindString(playlist::kPlaylistItemThumbnailPathKey);
-  item.media_src = *dict.FindString(playlist::kPlaylistItemMediaSrcKey);
-  item.media_file_path =
-      *dict.FindString(playlist::kPlaylistItemMediaFilePathKey);
-  item.media_file_cached =
-      *dict.FindBool(playlist::kPlaylistItemMediaFileCachedKey);
-  item.duration =
-      base::ValueToTimeDelta(dict.Find(playlist::kPlaylistItemDurationKey))
-          .value_or(base::TimeDelta());
-  item.author = *dict.FindString(playlist::kPlaylistItemAuthorKey);
-  item.last_played_position =
+  auto item = mojom::PlaylistItem::New();
+  item->id = *dict.FindString(playlist::kPlaylistItemIDKey);
+  item->name = *dict.FindString(playlist::kPlaylistItemTitleKey);
+  item->page_source = GURL(*dict.FindString(playlist::kPlaylistItemPageSrcKey));
+  item->thumbnail_source =
+      GURL(*dict.FindString(playlist::kPlaylistItemThumbnailSrcKey));
+  item->thumbnail_path =
+      GURL(*dict.FindString(playlist::kPlaylistItemThumbnailPathKey));
+  item->media_source =
+      GURL(*dict.FindString(playlist::kPlaylistItemMediaSrcKey));
+  item->media_path =
+      GURL(*dict.FindString(playlist::kPlaylistItemMediaFilePathKey));
+  item->cached = *dict.FindBool(playlist::kPlaylistItemMediaFileCachedKey);
+  item->duration = *dict.FindString(playlist::kPlaylistItemDurationKey);
+  item->author = *dict.FindString(playlist::kPlaylistItemAuthorKey);
+  item->last_played_position =
       *dict.FindInt(playlist::kPlaylistItemLastPlayedPositionKey);
   return item;
 }
 
-mojo::StructPtr<mojom::PlaylistItem> GetPlaylistItemMojoFromInfo(
-    const PlaylistItemInfo& info) {
-  return mojom::PlaylistItem::New(
-      info.id, info.title, GURL(info.page_src), GURL(info.media_src),
-      GURL(info.thumbnail_src), GURL(info.media_file_path),
-      GURL(info.thumbnail_path), info.media_file_cached, info.author,
-      base::TimeDeltaToValue(info.duration).GetString(),
-      info.last_played_position);
-}
-
-PlaylistItemInfo GetPlaylistItemInfoFromMojo(
-    const mojom::PlaylistItemPtr& mojo) {
-  PlaylistItemInfo info;
-  info.id = mojo->id;
-  info.title = mojo->name;
-  info.page_src = mojo->page_source.spec();
-  info.media_src = mojo->media_source.spec();
-  info.thumbnail_src = mojo->thumbnail_source.spec();
-  info.media_file_path = mojo->media_path.spec();
-  info.media_file_cached = mojo->cached;
-  info.author = mojo->author;
-  info.duration = base::ValueToTimeDelta(base::Value(mojo->duration))
-                      .value_or(base::TimeDelta());
-  info.last_played_position = mojo->last_played_position;
-  return info;
+base::Value::Dict GetValueFromPlaylistItem(const mojom::PlaylistItemPtr& item) {
+  base::Value::Dict playlist_value;
+  playlist_value.Set(kPlaylistItemIDKey, item->id);
+  playlist_value.Set(kPlaylistItemTitleKey, item->name);
+  playlist_value.Set(kPlaylistItemPageSrcKey, item->page_source.spec());
+  playlist_value.Set(kPlaylistItemMediaSrcKey, item->media_source.spec());
+  playlist_value.Set(kPlaylistItemThumbnailSrcKey,
+                     item->thumbnail_source.spec());
+  playlist_value.Set(kPlaylistItemThumbnailPathKey,
+                     item->thumbnail_path.spec());
+  playlist_value.Set(kPlaylistItemMediaFilePathKey, item->media_path.spec());
+  playlist_value.Set(kPlaylistItemMediaFileCachedKey, item->cached);
+  playlist_value.Set(kPlaylistItemAuthorKey, item->author);
+  playlist_value.Set(kPlaylistItemDurationKey, item->duration);
+  playlist_value.Set(kPlaylistItemLastPlayedPositionKey,
+                     item->last_played_position);
+  return playlist_value;
 }
 
 }  // namespace playlist

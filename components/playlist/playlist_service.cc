@@ -243,8 +243,7 @@ bool PlaylistService::HasPrefStorePlaylistItem(const std::string& id) const {
 
 void PlaylistService::DownloadMediaFile(const mojom::PlaylistItemPtr& item) {
   VLOG(2) << __func__;
-  media_file_download_manager_->DownloadMediaFile(
-      GetPlaylistItemInfoFromMojo(item));
+  media_file_download_manager_->DownloadMediaFile(item);
 }
 
 base::FilePath PlaylistService::GetPlaylistItemDirPath(
@@ -316,8 +315,7 @@ void PlaylistService::GetAllPlaylistItems(
     GetAllPlaylistItemsCallback callback) {
   std::vector<mojom::PlaylistItemPtr> items;
   for (const auto it : prefs_->GetDict(kPlaylistItemsPref)) {
-    items.push_back(GetPlaylistItemMojoFromInfo(
-        GetPlaylistItemInfoFromValue(it.second.GetDict())));
+    items.push_back(GetPlaylistItemFromValue(it.second.GetDict()));
   }
 
   std::move(callback).Run(std::move(items));
@@ -333,8 +331,7 @@ void PlaylistService::GetPlaylistItem(const std::string& id,
     return;
   }
 
-  return std::move(callback).Run(
-      GetPlaylistItemMojoFromInfo(GetPlaylistItemInfoFromValue(*item_value)));
+  return std::move(callback).Run(GetPlaylistItemFromValue(*item_value));
 }
 
 void PlaylistService::AddMediaFilesFromPageToPlaylist(
@@ -407,8 +404,8 @@ void PlaylistService::MoveItem(const std::string& from_playlist_id,
 }
 
 void PlaylistService::UpdateItem(mojom::PlaylistItemPtr item) {
-  UpdatePlaylistItemValue(item->id, base::Value(GetValueFromPlaylistItemInfo(
-                                        GetPlaylistItemInfoFromMojo(item))));
+  UpdatePlaylistItemValue(item->id,
+                          base::Value(GetValueFromPlaylistItem(item)));
 
   NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemUpdated, item->id});
 }
@@ -461,8 +458,8 @@ void PlaylistService::CreatePlaylistItem(const mojom::PlaylistItemPtr& item,
                                          bool cache) {
   VLOG(2) << __func__;
 
-  UpdatePlaylistItemValue(item->id, base::Value(GetValueFromPlaylistItemInfo(
-                                        GetPlaylistItemInfoFromMojo(item))));
+  UpdatePlaylistItemValue(item->id,
+                          base::Value(GetValueFromPlaylistItem(item)));
 
   NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemAdded, item->id});
 

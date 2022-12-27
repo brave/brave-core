@@ -28,8 +28,8 @@ PlaylistMediaFileDownloadManager::PlaylistMediaFileDownloadManager(
 PlaylistMediaFileDownloadManager::~PlaylistMediaFileDownloadManager() = default;
 
 void PlaylistMediaFileDownloadManager::DownloadMediaFile(
-    const PlaylistItemInfo& playlist_item) {
-  pending_media_file_creation_jobs_.push(playlist_item);
+    const mojom::PlaylistItemPtr& playlist_item) {
+  pending_media_file_creation_jobs_.push(playlist_item.Clone());
 
   // If either media file controller is generating a playlist media file,
   // delay the next playlist generation. It will be triggered when the current
@@ -67,23 +67,23 @@ void PlaylistMediaFileDownloadManager::TryStartingDownloadTask() {
   if (!current_item_)
     return;
 
-  VLOG(2) << __func__ << ": " << current_item_->title;
+  VLOG(2) << __func__ << ": " << current_item_->name;
 
-  media_file_downloader_->DownloadMediaFileForPlaylistItem(*current_item_,
+  media_file_downloader_->DownloadMediaFileForPlaylistItem(current_item_,
                                                            base_dir_);
 }
 
-std::unique_ptr<PlaylistItemInfo>
+mojom::PlaylistItemPtr
 PlaylistMediaFileDownloadManager::GetNextPlaylistItemTarget() {
   while (!pending_media_file_creation_jobs_.empty()) {
     auto playlist_item(std::move(pending_media_file_creation_jobs_.front()));
     pending_media_file_creation_jobs_.pop();
 
-    if (delegate_->IsValidPlaylistItem(playlist_item.id))
-      return std::make_unique<PlaylistItemInfo>(std::move(playlist_item));
+    if (delegate_->IsValidPlaylistItem(playlist_item->id))
+      return playlist_item;
   }
 
-  return nullptr;
+  return {};
 }
 
 std::string

@@ -51,63 +51,6 @@ struct PlaylistChangeParams {
   }
 };
 
-struct PlaylistItemInfo {
-  using Title = base::StrongAlias<struct TitleTag, std::string>;
-  using ThumbnailPath = base::StrongAlias<struct ThumbnailPathTag, std::string>;
-  using MediaFilePath = base::StrongAlias<struct MediaFilePathTag, std::string>;
-
-  PlaylistItemInfo();
-  PlaylistItemInfo(const Title& title,
-                   const ThumbnailPath& thumbnail_path,
-                   const MediaFilePath& media_file_path);
-  PlaylistItemInfo(const PlaylistItemInfo& rhs);
-  PlaylistItemInfo& operator=(const PlaylistItemInfo& rhs);
-  PlaylistItemInfo(PlaylistItemInfo&& rhs) noexcept;
-  PlaylistItemInfo& operator=(PlaylistItemInfo&& rhs) noexcept;
-  ~PlaylistItemInfo();
-
-  std::string id;
-  std::string title;
-
-  // These are origin urls from web page.
-  std::string page_src;
-  std::string thumbnail_src;
-  std::string media_src;
-
-  // These are either local path or web url.
-  std::string thumbnail_path;
-  std::string media_file_path;
-  bool media_file_cached{false};
-
-  // Could be null
-  base::TimeDelta duration;
-  std::string author;
-
-  int last_played_position = 0;
-
-  friend std::ostream& operator<<(std::ostream& os,
-                                  const PlaylistItemInfo& item) {
-    return os << "{ media_file_path: " << item.media_file_path
-              << ", title: " << item.title
-              << ", thumbnail_path: " << item.thumbnail_path
-              << ", duration: " << item.duration << ", author: " << item.author
-              << ", last_played_position: " << item.last_played_position << "}";
-  }
-};
-
-struct PlaylistInfo {
-  PlaylistInfo();
-  PlaylistInfo(const PlaylistInfo& rhs);
-  PlaylistInfo& operator=(const PlaylistInfo& rhs);
-  PlaylistInfo(PlaylistInfo&& rhs) noexcept;
-  PlaylistInfo& operator=(PlaylistInfo&& rhs) noexcept;
-  ~PlaylistInfo();
-
-  std::string id;
-  std::string name;
-  std::vector<PlaylistItemInfo> items;
-};
-
 }  // namespace playlist
 
 #endif  // BRAVE_COMPONENTS_PLAYLIST_PLAYLIST_TYPES_H_

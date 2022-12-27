@@ -12,17 +12,11 @@
 
 namespace playlist {
 
-base::Value::Dict GetValueFromPlaylistItemInfo(const PlaylistItemInfo& info);
-
 bool IsItemValueMalformed(const base::Value::Dict& dict);
 
-PlaylistItemInfo GetPlaylistItemInfoFromValue(const base::Value::Dict& dict);
+mojom::PlaylistItemPtr GetPlaylistItemFromValue(const base::Value::Dict& dict);
 
-mojo::StructPtr<mojom::PlaylistItem> GetPlaylistItemMojoFromInfo(
-    const PlaylistItemInfo& info);
-
-PlaylistItemInfo GetPlaylistItemInfoFromMojo(
-    const mojom::PlaylistItemPtr& mojo);
+base::Value::Dict GetValueFromPlaylistItem(const mojom::PlaylistItemPtr& item);
 
 }  // namespace playlist
 
