@@ -14,7 +14,6 @@ struct Environment {
   Environment() { logging::SetMinLogLevel(logging::LOG_FATAL); }
 };
 
-// To run: ../out/Fuzzer/brave_wallet_utils_fuzzer
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
   static Environment env;
 

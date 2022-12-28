@@ -61,6 +61,17 @@ fuzzer_test("adblock_engine_useresources_fuzzer") {
   dict = "//testing/libfuzzer/fuzzers/dicts/json.dict"
 }
 
+fuzzer_test("speedreader_rewriter_fuzzer") {
+  sources = [ "speedreader/rewriter_fuzzer.cc" ]
+  deps = [
+    "//base",
+    "//brave/components/speedreader/rust/ffi",
+  ]
+
+  seed_corpus = "speedreader/corpus/rewriter_fuzzer"
+  dict = "//third_party/libxml/src/fuzz/html.dict"
+}
+
 group("brave_fuzzers") {
   testonly = true
 
@@ -69,5 +80,6 @@ group("brave_fuzzers") {
     ":adblock_engine_useresources_fuzzer",
     ":brave_today_parse_feed_bytes_fuzzer",
     ":brave_wallet_utils_fuzzer",
+    ":speedreader_rewriter_fuzzer",
   ]
 }

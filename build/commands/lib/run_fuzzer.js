@@ -13,7 +13,7 @@ const getBinary = (suite) => {
   return (process.platform === 'win32') ? `${suite}.exe` : suite
 }
 
-const runFuzzer = (suite) => {
+const runFuzzer = (passthroughArgs, suite) => {
   options = { C: 'Fuzzer' }
   config.buildConfig = 'Fuzzer'
   config.update(options)
@@ -33,6 +33,10 @@ const runFuzzer = (suite) => {
     fuzzerArgs.push(seedCorpus)
     unzip(fs.readFileSync(seedCorpusFile), { to: seedCorpus })
   }
+
+  fuzzerArgs = fuzzerArgs.concat(passthroughArgs)
+
+  console.log('Running ' + getBinary(suite) + ' ' + fuzzerArgs)
 
   spawn(path.join(config.outputDir, getBinary(suite)), fuzzerArgs, {
     stdio: "inherit"

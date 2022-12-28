@@ -313,7 +313,8 @@ program
 
 program
   .command('run_fuzzer <suite>')
-  .action(runFuzzer)
+  .allowUnknownOption(true)
+  .action(runFuzzer.bind(null, parsedArgs.unknown))
 
 program
   .parse(process.argv)
