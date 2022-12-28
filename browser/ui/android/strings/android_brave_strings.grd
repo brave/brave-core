@@ -3370,6 +3370,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_BUTTON" desc="ENS off chain lookup button text.">
       Use ENS offchain domain
     </message>
+    <message name="IDS_BRAVE_WALLET_SEARCHING_FOR_DOMAIN" desc="Searching for wallet domain progress message.">
+      Searching for domain...
+    </message>
   </messages>
   </release>
 </grit>

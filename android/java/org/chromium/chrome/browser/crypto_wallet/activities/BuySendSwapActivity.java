@@ -176,6 +176,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     private EditText mSendToAddrText;
     private TextView mResolvedAddrText;
     private LinearLayout mEnsOffchainLookupSection;
+    private LinearLayout mSearchingForDomainSection;
     private TextView mMarketPriceValueText;
     private TextView mFromBalanceText;
     private TextView mToBalanceText;
@@ -768,6 +769,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
         mResolvedAddrText = findViewById(R.id.resolved_addr_text);
         mEnsOffchainLookupSection = findViewById(R.id.ens_offchain_lookup_section);
+        mSearchingForDomainSection = findViewById(R.id.searching_for_domain_section);
 
         // Individual
         if (mActivityType == ActivityType.BUY) {
@@ -1192,6 +1194,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
     private void onResolveWalletAddressDone(
             String domain, String result, Boolean requireEnsOffchainConsent) {
+        mSearchingForDomainSection.setVisibility(View.GONE);
+
         if (!domain.equals(mSendToAddrText.getText().toString())) {
             return;
         }
@@ -1248,6 +1252,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         String domain = mSendToAddrText.getText().toString();
 
         if (WalletNativeUtils.isUnstoppableDomainsTld(domain)) {
+            mSearchingForDomainSection.setVisibility(View.VISIBLE);
+            mSendToValidation.setText("");
+            mSendToValidation.setVisibility(View.GONE);
             mJsonRpcService.unstoppableDomainsGetWalletAddr(
                     domain, mCurrentBlockchainToken, (response, errorResponse, errorString) -> {
                         onResolveWalletAddressDone(domain, response, false);
@@ -1256,6 +1263,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         }
 
         if (mCurrentBlockchainToken.coin == CoinType.ETH && WalletNativeUtils.isEnsTld(domain)) {
+            mSearchingForDomainSection.setVisibility(View.VISIBLE);
+            mSendToValidation.setText("");
+            mSendToValidation.setVisibility(View.GONE);
             mJsonRpcService.ensGetEthAddr(
                     domain, (response, requireOffchainConsent, errorResponse, errorString) -> {
                         onResolveWalletAddressDone(domain, response, requireOffchainConsent);
@@ -1264,6 +1274,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         }
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_WALLET_SNS)) {
+            mSearchingForDomainSection.setVisibility(View.VISIBLE);
+            mSendToValidation.setText("");
+            mSendToValidation.setVisibility(View.GONE);
             if (mCurrentBlockchainToken.coin == CoinType.SOL
                     && WalletNativeUtils.isSnsTld(domain)) {
                 mJsonRpcService.snsGetSolAddr(domain, (response, errorResponse, errorString) -> {
@@ -1273,6 +1286,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             }
         }
 
+        mSearchingForDomainSection.setVisibility(View.GONE);
         mEnsOffchainLookupSection.setVisibility(View.GONE);
         mResolvedAddrText.setVisibility(View.GONE);
         mResolvedAddrText.setText("");
