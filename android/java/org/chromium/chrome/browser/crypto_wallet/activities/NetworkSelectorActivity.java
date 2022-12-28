@@ -43,7 +43,7 @@ public class NetworkSelectorActivity
     private NetworkSelectorAdapter networkSelectorAdapter;
     private MaterialToolbar mToolbar;
     private String mSelectedNetwork;
-    private SettingsLauncher mSettingsLauncher = new BraveSettingsLauncherImpl();
+    private SettingsLauncher mSettingsLauncher;
     private WalletModel mWalletModel;
     private NetworkSelectorModel mNetworkSelectorModel;
 
@@ -88,6 +88,7 @@ public class NetworkSelectorActivity
             mWalletModel = activity.getWalletModel();
             activity.getWalletModel().getCryptoModel().getNetworkModel().init();
         }
+        mSettingsLauncher = new BraveSettingsLauncherImpl();
         mNetworkSelectorModel =
                 mWalletModel.getCryptoModel().getNetworkModel().openNetworkSelectorModel(mMode);
         networkSelectorAdapter = new NetworkSelectorAdapter(this, new ArrayList<>());
