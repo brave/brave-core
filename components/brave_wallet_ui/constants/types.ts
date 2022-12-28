@@ -20,13 +20,19 @@ interface TokenBalanceRegistry {
 const BraveKeyringsTypes = [BraveWallet.DEFAULT_KEYRING_ID, BraveWallet.FILECOIN_KEYRING_ID, BraveWallet.SOLANA_KEYRING_ID] as const
 export type BraveKeyrings = typeof BraveKeyringsTypes[number]
 
+export type WalletAccountTypeName =
+  | 'Primary'
+  | 'Secondary'
+  | 'Ledger'
+  | 'Trezor'
+
 export interface WalletAccountType {
   id: string
   name: string
   address: string
   tokenBalanceRegistry: TokenBalanceRegistry
   nativeBalanceRegistry: TokenBalanceRegistry
-  accountType: 'Primary' | 'Secondary' | 'Ledger' | 'Trezor'
+  accountType: WalletAccountTypeName
   deviceId?: string
   coin: BraveWallet.CoinType
   // Used to separate networks for filecoin.

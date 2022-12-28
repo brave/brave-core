@@ -878,10 +878,10 @@ bool JSSolanaProvider::LoadSolanaWeb3ModuleIfNeeded(v8::Isolate* isolate) {
       base::StrCat({"(function() {", *g_provider_solana_web3_script,
                     "return solanaWeb3; })()"});
 
-  solana_web3_module_.Reset(
-      isolate, render_frame()->GetWebFrame()->ExecuteScriptAndReturnValue(
-                   blink::WebScriptSource(
-                       blink::WebString::FromUTF8(solana_web3_module_str))));
+  solana_web3_module_.Reset(isolate,
+                            ExecuteScript(render_frame()->GetWebFrame(),
+                                          solana_web3_module_str, "solana_web3")
+                                .ToLocalChecked());
   // loading SolanaWeb3 module failed
   if (solana_web3_module_.IsEmpty())
     return false;

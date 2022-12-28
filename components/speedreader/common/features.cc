@@ -5,18 +5,11 @@
 
 #include "brave/components/speedreader/common/features.h"
 
-#include "brave/components/speedreader/common/buildflags.h"
-
 namespace speedreader {
 
 BASE_FEATURE(kSpeedreaderFeature,
              "Speedreader",
-#if BUILDFLAG(ENABLE_SPEEDREADER_FEATURE)
-             base::FEATURE_ENABLED_BY_DEFAULT
-#else
-             base::FEATURE_DISABLED_BY_DEFAULT
-#endif
-);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kSpeedreaderPanelV2,
              "SpeedreaderPanelV2",

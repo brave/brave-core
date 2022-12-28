@@ -1,6 +1,8 @@
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//chrome/common/features.gni")
 
+assert(enable_tor)
+
 static_library("tor") {
   public_deps = [
     ":common",
@@ -14,35 +16,33 @@ static_library("tor") {
     "//base",
   ]
 
-  if (enable_tor) {
-    sources += [
-      "brave_tor_client_updater.cc",
-      "brave_tor_client_updater.h",
-      "brave_tor_pluggable_transport_updater.cc",
-      "brave_tor_pluggable_transport_updater.h",
-      "onion_location_navigation_throttle.cc",
-      "onion_location_navigation_throttle.h",
-      "onion_location_tab_helper.cc",
-      "onion_location_tab_helper.h",
-      "tor_control.cc",
-      "tor_control.h",
-      "tor_control_event.cc",
-      "tor_control_event.h",
-      "tor_control_event_list.h",
-      "tor_file_watcher.cc",
-      "tor_file_watcher.h",
-      "tor_launcher_factory.cc",
-      "tor_launcher_factory.h",
-      "tor_navigation_throttle.cc",
-      "tor_navigation_throttle.h",
-      "tor_profile_service.cc",
-      "tor_profile_service.h",
-      "tor_profile_service_impl.cc",
-      "tor_profile_service_impl.h",
-      "tor_tab_helper.cc",
-      "tor_tab_helper.h",
-    ]
-  }
+  sources += [
+    "brave_tor_client_updater.cc",
+    "brave_tor_client_updater.h",
+    "brave_tor_pluggable_transport_updater.cc",
+    "brave_tor_pluggable_transport_updater.h",
+    "onion_location_navigation_throttle.cc",
+    "onion_location_navigation_throttle.h",
+    "onion_location_tab_helper.cc",
+    "onion_location_tab_helper.h",
+    "tor_control.cc",
+    "tor_control.h",
+    "tor_control_event.cc",
+    "tor_control_event.h",
+    "tor_control_event_list.h",
+    "tor_file_watcher.cc",
+    "tor_file_watcher.h",
+    "tor_launcher_factory.cc",
+    "tor_launcher_factory.h",
+    "tor_navigation_throttle.cc",
+    "tor_navigation_throttle.h",
+    "tor_profile_service.cc",
+    "tor_profile_service.h",
+    "tor_profile_service_impl.cc",
+    "tor_profile_service_impl.h",
+    "tor_tab_helper.cc",
+    "tor_tab_helper.h",
+  ]
 
   deps += [
     "//brave/components/brave_component_updater/browser",
@@ -88,20 +88,19 @@ source_set("pref_names") {
 
 source_set("tor_unit_tests") {
   testonly = true
-  if (enable_tor) {
-    sources = [
-      "tor_control_unittest.cc",
-      "tor_file_watcher_unittest.cc",
-    ]
 
-    deps = [
-      "//base/test:test_support",
-      "//brave/components/tor",
-      "//content/public/browser",
-      "//content/test:test_support",
-      "//testing/gtest",
-    ]
-  }
+  sources = [
+    "tor_control_unittest.cc",
+    "tor_file_watcher_unittest.cc",
+  ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/tor",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
 }
 
 source_set("test_support") {

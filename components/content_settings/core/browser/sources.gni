@@ -16,9 +16,11 @@ if (!is_ios) {
 
   brave_components_content_settings_core_browser_deps += [
     "//base",
+    "//brave/components/brave_shields/common",
     "//brave/components/constants",
     "//brave/components/content_settings/core/common",
     "//components/prefs",
+    "//content/public/browser",
     "//net",
     "//url",
   ]

@@ -8,6 +8,9 @@
 
 #include <string>
 
+#include "v8/include/v8-local-handle.h"
+#include "v8/include/v8-value.h"
+
 namespace blink {
 class WebLocalFrame;
 }  // namespace blink
@@ -17,9 +20,10 @@ namespace brave {
 // Load script in a closure that will use safe builtin types to prevent
 // prototype pollution attack. When a new type is added, we need to update
 // WrapSource and args for SafeCallFunction.
-void LoadScriptWithSafeBuiltins(blink::WebLocalFrame* web_frame,
-                                const std::string& script,
-                                const std::string& name);
+v8::MaybeLocal<v8::Value> LoadScriptWithSafeBuiltins(
+    blink::WebLocalFrame* web_frame,
+    const std::string& script,
+    const std::string& name);
 
 }  //  namespace brave
 

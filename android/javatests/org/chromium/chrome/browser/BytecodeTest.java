@@ -252,10 +252,6 @@ public class BytecodeTest {
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/partnercustomizations/BraveCustomizationProviderDelegateImpl"));
         Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/partnerbookmarks/PartnerBookmarksDelegateImpl"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/partnerbookmarks/BravePartnerBookmarksDelegateImpl"));
-        Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager"));
@@ -648,9 +644,6 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateImpl",
                 "org/chromium/chrome/browser/partnercustomizations/BraveCustomizationProviderDelegateImpl"));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/partnerbookmarks/PartnerBookmarksDelegateImpl",
-                "org/chromium/chrome/browser/partnerbookmarks/BravePartnerBookmarksDelegateImpl"));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView",
                 "org/chromium/chrome/browser/share/send_tab_to_self/BraveManageAccountDevicesLinkView",

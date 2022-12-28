@@ -76,8 +76,6 @@ BraveExternalProcessImporterHost::~BraveExternalProcessImporterHost() = default;
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 void BraveExternalProcessImporterHost::LaunchExtensionsImport() {
-  DCHECK_EQ(importer::TYPE_CHROME, source_profile_.importer_type);
-
   const base::FilePath pref_file = source_profile_.source_path.AppendASCII(
       kChromeExtensionsPreferencesFile);
   base::ThreadPool::PostTaskAndReplyWithResult(

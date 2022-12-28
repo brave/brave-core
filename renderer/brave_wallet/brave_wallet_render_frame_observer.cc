@@ -12,8 +12,6 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "build/buildflag.h"
-#include "chrome/common/channel_info.h"
-#include "components/version_info/channel.h"
 #include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -103,11 +101,6 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
           brave_wallet::features::kBraveWalletSolanaProviderFeature) &&
       web_frame->GetDocument().IsDOMFeaturePolicyEnabled(context, "solana") &&
       dynamic_params.brave_use_native_solana_wallet) {
-    // Disable Solana dapps support on android release channel
-#if BUILDFLAG(IS_ANDROID)
-    if (chrome::GetChannel() == version_info::Channel::STABLE)
-      return;
-#endif
     JSSolanaProvider::Install(
         dynamic_params.allow_overwrite_window_solana_provider, render_frame());
   }

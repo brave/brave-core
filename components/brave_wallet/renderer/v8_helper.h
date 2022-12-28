@@ -40,9 +40,9 @@ v8::MaybeLocal<v8::Value> CallMethodOfObject(
     const base::StringPiece& method_name,
     std::vector<v8::Local<v8::Value>>&& args);
 
-void ExecuteScript(blink::WebLocalFrame* web_frame,
-                   const std::string& script,
-                   const std::string& name);
+v8::MaybeLocal<v8::Value> ExecuteScript(blink::WebLocalFrame* web_frame,
+                                        const std::string& script,
+                                        const std::string& name);
 
 // By default we allow extensions to overwrite the window.[provider] object
 // but if the user goes into settings and explicitly selects to use Brave Wallet

@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/importer/importer_list.h"
 #include "base/files/file_path.h"
@@ -94,6 +94,12 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
       GetChromeSourceProfiles(GetOperaUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
       GetOperaUserDataFolder(), "Opera ", importer::TYPE_OPERA);
+
+  AddChromeToProfiles(
+      profiles,
+      GetChromeSourceProfiles(GetYandexUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
+      GetYandexUserDataFolder(), "Yandex ", importer::TYPE_YANDEX);
 
 #if BUILDFLAG(IS_LINUX)
   // Installed via snap Opera has different profile path.

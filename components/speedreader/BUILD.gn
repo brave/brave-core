@@ -3,11 +3,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+
+assert(enable_speedreader)
+
 static_library("speedreader") {
   public_deps = [
     "rust/ffi",
     "//brave/components/speedreader/common",
-    "//brave/components/speedreader/common:buildflags",
+    "//brave/components/speedreader/common/buildflags",
   ]
 
   sources = [

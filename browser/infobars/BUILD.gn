@@ -28,6 +28,7 @@ source_set("infobars") {
     "//brave/common:common",
     "//brave/components/brave_sync:features",
     "//brave/components/brave_sync:prefs",
+    "//brave/components/constants",
     "//brave/components/p3a",
     "//chrome/app:chromium_strings",
     "//chrome/browser/ui",
@@ -53,9 +54,6 @@ source_set("infobars") {
       "brave_wayback_machine_delegate_impl.h",
     ]
 
-    deps += [
-      "//brave/components/brave_wayback_machine",
-      "//brave/components/constants",
-    ]
+    deps += [ "//brave/components/brave_wayback_machine" ]
   }
 }

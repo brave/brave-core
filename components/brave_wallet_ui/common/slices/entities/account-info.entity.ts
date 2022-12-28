@@ -6,11 +6,10 @@
 import {
   createEntityAdapter,
   EntityAdapter,
-  EntityId,
-  EntityState
+  EntityId
 } from '@reduxjs/toolkit'
 
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, WalletAccountTypeName } from '../../../constants/types'
 import { RootStoreState } from '../../../page/store'
 import { walletApi } from '../api.slice'
 import {
@@ -18,15 +17,21 @@ import {
   makeSelectEntityByIdFromRegistryQuery
 } from './entity.selectors'
 
+export type AccountInfoEntity = BraveWallet.AccountInfo & {
+  accountType: WalletAccountTypeName
+  deviceId: Exclude<BraveWallet.AccountInfo['hardware'], undefined>['deviceId']
+}
+
 export type AccountInfoEntityAdaptor =
-  EntityAdapter<BraveWallet.AccountInfo> & {
+  EntityAdapter<AccountInfoEntity> & {
     selectId: (accountInfo: { address: string }) => EntityId
   }
 
 export const accountInfoEntityAdaptor: AccountInfoEntityAdaptor =
-  createEntityAdapter<BraveWallet.AccountInfo>({
+  createEntityAdapter<AccountInfoEntity>({
     selectId: (accountInfo) => accountInfo.address.toLowerCase()
   })
+
 export const accountInfoEntityAdaptorInitialState = accountInfoEntityAdaptor.getInitialState()
 export type AccountInfoEntityState = typeof accountInfoEntityAdaptorInitialState
 
@@ -47,7 +52,7 @@ export const {
 // Selectors from Query Results
 export const selectAccountInfosRegistryFromQuery = (result: {
   data?: AccountInfoEntityState
-}): EntityState<BraveWallet.AccountInfo> => {
+}): AccountInfoEntityState => {
   return result.data ?? accountInfoEntityAdaptorInitialState
 }
 

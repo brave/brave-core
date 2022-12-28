@@ -1,3 +1,8 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/android/brave_android_wireguard_sources.gni")
 import("//brave/android/brave_java_resources.gni")
 import("//brave/android/brave_java_sources.gni")
@@ -46,7 +51,6 @@ brave_chrome_java_deps = [
 
 brave_chrome_all_java_deps = [
   "//brave/android/features/tab_ui:java",
-  "//brave/browser/partnerbookmarks:delegate_public_impl_java",
   "//brave/browser/partnercustomizations:delegate_public_impl_java",
 ]
 

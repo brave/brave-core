@@ -12,6 +12,7 @@ brave_browser_search_engines_sources = [
 
 brave_browser_search_engines_deps = [
   "//base",
+  "//brave/components/brave_search_conversion",
   "//brave/components/time_period_storage",
   "//components/keyed_service/content",
   "//components/keyed_service/core",

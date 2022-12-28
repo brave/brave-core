@@ -33,9 +33,10 @@ import {
   NetworkIconWrapper,
   Button,
   ButtonIcon,
-  IconsWrapper
+  IconsWrapper,
+  ButtonText
 } from './select-token-button.style'
-import { Row, Text } from '../../shared.styles'
+import { Row } from '../../shared.styles'
 
 interface Props {
   onClick: () => void
@@ -86,13 +87,14 @@ export const SelectTokenButton = (props: Props) => {
             )}
           </IconsWrapper>
         )}
-        <Text
+        <ButtonText
           isBold={token !== undefined}
           textColor={token !== undefined ? 'text01' : 'text03'}
           textSize={token !== undefined ? '18px' : '16px'}
+          isNFT={selectedSendOption === 'nft'}
         >
           {buttonText}
-        </Text>
+        </ButtonText>
       </Row>
       <ButtonIcon size={12} icon={CaratDownIcon} />
     </Button>

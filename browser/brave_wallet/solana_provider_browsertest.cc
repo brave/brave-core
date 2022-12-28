@@ -315,7 +315,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
     // load solana web3 script
     if (g_provider_solana_web3_script->empty()) {
       *g_provider_solana_web3_script =
-          LoadDataResource(IDR_BRAVE_WALLET_SOLANA_WEB3_JS);
+          LoadDataResource(IDR_BRAVE_WALLET_SOLANA_WEB3_JS_FOR_TEST);
     }
   }
 

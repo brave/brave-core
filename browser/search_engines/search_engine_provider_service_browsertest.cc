@@ -10,7 +10,6 @@
 #include "brave/browser/search_engines/pref_names.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
-#include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -41,6 +40,10 @@
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/common/extension.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_manager.h"
 #endif
 
 using SearchEngineProviderServiceTest = InProcessBrowserTest;
