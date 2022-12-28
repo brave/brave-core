@@ -16,6 +16,9 @@ RegisterStyleOverride(
         display: block;
         margin-inline-start: unset;
       }
+      #release-notes > .secondary {
+        var(--cr-link-color);
+      }
     </style>
   `
 )
