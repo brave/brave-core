@@ -37,7 +37,6 @@ public class NetworkSelectorActivity
         extends BraveWalletBaseActivity implements NetworkSelectorAdapter.NetworkClickListener {
     public static String NETWORK_SELECTOR_MODE = "network_selector_mode";
     private static final String TAG = NetworkSelectorActivity.class.getSimpleName();
-    private static final int REQUEST_CODE_ADD_NETWORK = 1;
     private NetworkSelectorModel.Mode mMode;
     private RecyclerView mRVNetworkSelector;
     private NetworkSelectorAdapter networkSelectorAdapter;
@@ -71,17 +70,6 @@ public class NetworkSelectorActivity
         initState();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK) return;
-
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
-            activity.getWalletModel().getCryptoModel().getNetworkModel().refreshNetworks();
-        }
-    }
-
     private void initState() {
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
@@ -108,7 +96,7 @@ public class NetworkSelectorActivity
         fragmentArgs.putBoolean(ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK, false);
         Intent intent = mSettingsLauncher.createSettingsActivityIntent(
                 this, BraveWalletAddNetworksFragment.class.getName(), fragmentArgs);
-        startActivityForResult(intent, REQUEST_CODE_ADD_NETWORK);
+        startActivity(intent);
     }
 
     private void setSelectedNetworkObserver() {
