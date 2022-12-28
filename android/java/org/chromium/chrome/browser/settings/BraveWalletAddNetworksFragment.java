@@ -24,6 +24,7 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -324,18 +325,20 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
                 mJsonRpcService.removeChain(mChainId, CoinType.ETH, success -> {
                     // We just do nothing here as we added a chain with a diff
                     // chainId already
-                    finishFragment();
+                    refreshNetworksFinishFragment();
                 });
             }
-            finishFragment();
+            refreshNetworksFinishFragment();
 
             return;
         });
     }
 
-    private void finishFragment() {
-        Intent intent = new Intent();
-        getActivity().setResult(Activity.RESULT_OK, intent);
+    private void refreshNetworksFinishFragment() {
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            activity.getWalletModel().getCryptoModel().getNetworkModel().refreshNetworks();
+        }
         getActivity().finish();
     }
 }
