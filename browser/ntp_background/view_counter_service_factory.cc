@@ -51,7 +51,7 @@ ViewCounterServiceFactory::ViewCounterServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(brave_ads::AdsServiceFactory::GetInstance());
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-  DependsOn(NTPCustomBackgroundImagesServiceFactory::GetInstance());
+  DependsOn(BraveNTPCustomBackgroundServiceFactory::GetInstance());
 #endif
 }
 
@@ -79,7 +79,7 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
     return new ViewCounterService(
         service,
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-        NTPCustomBackgroundImagesServiceFactory::GetForContext(profile),
+        BraveNTPCustomBackgroundServiceFactory::GetForContext(profile),
 #else
         nullptr,
 #endif

@@ -14,35 +14,35 @@
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 // static
-ntp_background_images::NTPCustomBackgroundImagesService*
-NTPCustomBackgroundImagesServiceFactory::GetForContext(
+ntp_background_images::BraveNTPCustomBackgroundService*
+BraveNTPCustomBackgroundServiceFactory::GetForContext(
     content::BrowserContext* context) {
-  return static_cast<ntp_background_images::NTPCustomBackgroundImagesService*>(
+  return static_cast<ntp_background_images::BraveNTPCustomBackgroundService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
 // static
-NTPCustomBackgroundImagesServiceFactory*
-NTPCustomBackgroundImagesServiceFactory::GetInstance() {
-  return base::Singleton<NTPCustomBackgroundImagesServiceFactory>::get();
+BraveNTPCustomBackgroundServiceFactory*
+BraveNTPCustomBackgroundServiceFactory::GetInstance() {
+  return base::Singleton<BraveNTPCustomBackgroundServiceFactory>::get();
 }
 
-NTPCustomBackgroundImagesServiceFactory::
-    NTPCustomBackgroundImagesServiceFactory()
+BraveNTPCustomBackgroundServiceFactory::
+    BraveNTPCustomBackgroundServiceFactory()
     : BrowserContextKeyedServiceFactory(
-          "NTPCustomBackgroundImagesService",
+          "BraveNTPCustomBackgroundService",
           BrowserContextDependencyManager::GetInstance()) {}
 
-NTPCustomBackgroundImagesServiceFactory::
-    ~NTPCustomBackgroundImagesServiceFactory() = default;
+BraveNTPCustomBackgroundServiceFactory::
+    ~BraveNTPCustomBackgroundServiceFactory() = default;
 
-KeyedService* NTPCustomBackgroundImagesServiceFactory::BuildServiceInstanceFor(
+KeyedService* BraveNTPCustomBackgroundServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   // Custom NTP background is only used in normal profile.
   if (!brave::IsRegularProfile(context))
     return nullptr;
 
-  return new ntp_background_images::NTPCustomBackgroundImagesService(
-      std::make_unique<NTPCustomBackgroundImagesServiceDelegate>(
+  return new ntp_background_images::BraveNTPCustomBackgroundService(
+      std::make_unique<BraveNTPCustomBackgroundServiceDelegate>(
           Profile::FromBrowserContext(context)));
 }
