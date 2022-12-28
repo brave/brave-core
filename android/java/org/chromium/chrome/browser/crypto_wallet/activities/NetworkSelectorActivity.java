@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK;
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -72,7 +71,6 @@ public class NetworkSelectorActivity
         initState();
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -82,7 +80,6 @@ public class NetworkSelectorActivity
         if (activity != null) {
             activity.getWalletModel().getCryptoModel().getNetworkModel().init();
         }
-        networkSelectorAdapter.notifyDataSetChanged();
     }
 
     private void initState() {
