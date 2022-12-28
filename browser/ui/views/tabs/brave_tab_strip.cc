@@ -21,6 +21,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/tab_group.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -101,6 +102,20 @@ void BraveTabStrip::AddedToWidget() {
         FROM_HERE, base::BindOnce(&BraveTabStrip::UpdateTabContainer,
                                   base::Unretained(this)));
   }
+}
+
+SkColor BraveTabStrip::GetTabBackgroundColor(
+    TabActive active,
+    BrowserFrameActiveState active_state) const {
+  if (!tabs::features::ShouldShowVerticalTabs(GetBrowser()))
+    return TabStrip::GetTabBackgroundColor(active, active_state);
+
+  const ui::ColorProvider* cp = GetColorProvider();
+  if (!cp)
+    return gfx::kPlaceholderColor;
+
+  return cp->GetColor(active == TabActive::kActive ? kColorLocationBarBackground
+                                                   : kColorToolbar);
 }
 
 SkColor BraveTabStrip::GetTabSeparatorColor() const {

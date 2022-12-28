@@ -8,7 +8,9 @@
 #include <algorithm>
 
 #include "brave/browser/ui/views/tabs/features.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "ui/gfx/geometry/skia_conversions.h"
@@ -44,6 +46,9 @@ gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
   gfx::Size size = kButtonSize;
   const auto insets = GetInsets();
   size.Enlarge(insets.width(), insets.height());
+  if (tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser()))
+    size.set_height(kHeightForVerticalTabs);
+
   return size;
 }
 
@@ -53,6 +58,8 @@ SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
   return GetBorderPath(origin, scale, extend_to_top, GetCornerRadius(),
                        GetContentsBounds().size());
 }
+
+BraveNewTabButton::~BraveNewTabButton() = default;
 
 void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
   // Overriden to fix chromium assumption that border radius
@@ -84,4 +91,26 @@ gfx::Insets BraveNewTabButton::GetInsets() const {
   // TabStripRegionView::UpdateNewTabButtonBorder() gives this button's inset.
   // So, adding more insets here is easy solution.
   return NewTabButton::GetInsets() + gfx::Insets::TLBR(0, 6, 0, 0);
+}
+
+void BraveNewTabButton::PaintFill(gfx::Canvas* canvas) const {
+  if (!tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {
+    NewTabButton::PaintFill(canvas);
+    return;
+  }
+
+  if (tab_strip_->GetCustomBackgroundId(BrowserFrameActiveState::kUseCurrent)
+          .has_value()) {
+    NewTabButton::PaintFill(canvas);
+    return;
+  }
+
+  // Override stroke color
+  gfx::ScopedCanvas scoped_canvas(canvas);
+  canvas->UndoDeviceScaleFactor();
+  cc::PaintFlags flags;
+  flags.setAntiAlias(true);
+  flags.setColor(GetColorProvider()->GetColor(kColorToolbar));
+  canvas->DrawPath(GetBorderPath(gfx::Point(), canvas->image_scale(), false),
+                   flags);
 }

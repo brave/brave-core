@@ -9,11 +9,15 @@
 
 #include "base/check_is_test.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/features.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/tab_drag_controller.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/gfx/canvas.h"
+#include "ui/views/view_utils.h"
 
 BraveTabContainer::BraveTabContainer(
     TabContainerController& controller,
@@ -96,6 +100,15 @@ gfx::Size BraveTabContainer::CalculatePreferredSize() const {
           : absl::optional<int>(available_width_callback_.Run()));
   height =
       std::max(height, slots_bounds.empty() ? 0 : slots_bounds.back().bottom());
+
+  if (tab_count) {
+    if (Tab* last_tab = tabs_view_model_.view_at(tab_count - 1);
+        last_tab->group().has_value() &&
+        !controller_->IsGroupCollapsed(*last_tab->group())) {
+      height += BraveTabGroupHeader::kPaddingForGroup;
+    }
+  }
+
   return gfx::Size(TabStyle::GetStandardWidth(), height);
 }
 
@@ -216,6 +229,16 @@ void BraveTabContainer::CompleteAnimationAndLayout() {
     return;
 
   TabContainerImpl::CompleteAnimationAndLayout();
+}
+
+void BraveTabContainer::OnPaintBackground(gfx::Canvas* canvas) {
+  if (!tabs::features::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
+    TabContainerImpl::OnPaintBackground(canvas);
+    return;
+  }
+
+  canvas->DrawColor(GetColorProvider()->GetColor(kColorToolbar));
 }
 
 BEGIN_METADATA(BraveTabContainer, TabContainerImpl)

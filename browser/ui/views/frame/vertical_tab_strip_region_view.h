@@ -81,6 +81,8 @@ class VerticalTabStripRegionView : public views::View,
       const TabStripSelectionChange& selection) override;
 
  private:
+  class ScrollHeaderView;
+
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
 
   bool IsTabFullscreen() const;
@@ -112,7 +114,7 @@ class VerticalTabStripRegionView : public views::View,
   // Contains TabStripRegion.
   raw_ptr<views::ScrollView> scroll_view_ = nullptr;
   raw_ptr<views::View> scroll_contents_view_ = nullptr;
-  raw_ptr<views::View> scroll_view_header_ = nullptr;
+  raw_ptr<ScrollHeaderView> scroll_view_header_ = nullptr;
 
   // New tab button created for vertical tabs
   raw_ptr<NewTabButton> new_tab_button_ = nullptr;

@@ -5,8 +5,21 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_group_underline.h"
 
+#include <algorithm>
+
+#include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/features.h"
+#include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/views/tabs/tab_group_views.h"
+#include "ui/gfx/canvas.h"
+#include "ui/gfx/geometry/skia_conversions.h"
+
+BraveTabGroupUnderline::BraveTabGroupUnderline(
+    TabGroupViews* tab_group_views,
+    const tab_groups::TabGroupId& group)
+    : TabGroupUnderline(tab_group_views, group) {
+  SetEnabled(false);
+}
 
 BraveTabGroupUnderline::~BraveTabGroupUnderline() = default;
 
@@ -26,15 +39,21 @@ void BraveTabGroupUnderline::UpdateBounds(views::View* leading_view,
   gfx::RectF trailing_bounds = gfx::RectF(trailing_view->bounds());
   ConvertRectToTarget(trailing_view->parent(), parent(), &trailing_bounds);
   trailing_bounds.Inset(gfx::InsetsF(GetInsetsForUnderline(trailing_view)));
+  if (trailing_bounds.height()) {
+    trailing_bounds.set_height(trailing_bounds.height() +
+                               BraveTabGroupHeader::kPaddingForGroup);
+  }
 
   gfx::Rect group_bounds = ToEnclosingRect(leading_bounds);
-  group_bounds.UnionEvenIfEmpty(ToEnclosingRect(trailing_bounds));
+  group_bounds.Union(ToEnclosingRect(trailing_bounds));
   if (group_bounds.height() == 0) {
     SetVisible(false);
     return;
   }
 
-  SetBounds(0, group_bounds.y(), kStrokeThickness, group_bounds.height());
+  SetBounds(0, group_bounds.y(),
+            std::max(leading_view->width(), trailing_view->width()),
+            group_bounds.height());
 }
 
 gfx::Insets BraveTabGroupUnderline::GetInsetsForUnderline(
@@ -42,36 +61,41 @@ gfx::Insets BraveTabGroupUnderline::GetInsetsForUnderline(
   if (!tabs::features::ShouldShowVerticalTabs(tab_group_views_->GetBrowser()))
     return TabGroupUnderline::GetInsetsForUnderline(sibling_view);
 
-  constexpr int kStrokeInsetForVerticalTabs = 4;
-  return gfx::Insets::VH(kStrokeInsetForVerticalTabs, 0);
+  return {};
 }
 
 SkPath BraveTabGroupUnderline::GetPath() const {
   if (!tabs::features::ShouldShowVerticalTabs(tab_group_views_->GetBrowser()))
     return TabGroupUnderline::GetPath();
 
-  // In vertical tabs, underline is not actually "underline'. It's vertical line
-  // at the left side of the tab group. And it has half rounded corners.
-  //
-  //  +  group header   | '+' is the underline.
-  // ++  tab 1          | Drawing starts from top-right and goes
-  // ++  tab 2          | counter-clockwise
-  //  +  tab 3          |
-  //
+  // In vertical tabs, underline is not actually "underline'. It's a enclosing
+  // rounded rect for views in the group.
+  constexpr SkScalar kRadius = 4;
+  auto rect = GetContentsBounds();
+  rect.Inset(gfx::Insets().set_left_right(kRadius, kRadius));
+
   SkPath path;
-  path.moveTo(kStrokeThickness, 0);
-  path.arcTo(/* rx = */ kStrokeThickness,
-             /* ry = */ kStrokeThickness,
-             /* angle = */ 180.f, SkPath::kSmall_ArcSize, SkPathDirection::kCCW,
-             /* x = */ 0,
-             /* y = */ kStrokeThickness);
-  path.lineTo(0, height() - kStrokeThickness);
-  path.arcTo(/* rx = */ kStrokeThickness,
-             /* ry = */ kStrokeThickness,
-             /* angle = */ 180.f, SkPath::kSmall_ArcSize, SkPathDirection::kCCW,
-             /* x = */ kStrokeThickness,
-             /* y = */ height());
-  path.close();
+  path.addRoundRect(gfx::RectToSkRect(rect), kRadius, kRadius);
 
   return path;
+}
+
+void BraveTabGroupUnderline::OnPaint(gfx::Canvas* canvas) {
+  if (!tabs::features::ShouldShowVerticalTabs(tab_group_views_->GetBrowser())) {
+    TabGroupUnderline::OnPaint(canvas);
+    return;
+  }
+
+  cc::PaintFlags flags;
+  flags.setAntiAlias(true);
+
+  SkColor color = tab_group_views_->GetGroupColor();
+  color = color_utils::HSLShift(
+      color,
+      {.h = -1 /*unchanged*/,
+       .s = 0.5 /*unchanged*/,
+       .l = GetNativeTheme()->ShouldUseDarkColors() ? 0.7 : 0.8 /*lighter*/});
+  flags.setColor(color);
+  flags.setStyle(cc::PaintFlags::kFill_Style);
+  canvas->DrawPath(GetPath(), flags);
 }

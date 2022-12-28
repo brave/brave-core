@@ -18,20 +18,25 @@ class ButtonListener;
 
 class BraveNewTabButton : public NewTabButton {
  public:
+  // These static members are shared with BraveTabSearchButton
+  // TODO(sko) If we could make TabSearchButton inherit BraveNewTabButton,
+  // we might not need theses any more.
   static const gfx::Size kButtonSize;
+  static constexpr int kHeightForVerticalTabs = 50;
   static SkPath GetBorderPath(const gfx::Point& origin,
                               float scale,
                               bool extend_to_top,
                               int border_radius,
                               const gfx::Size& contents_bounds);
-
   using NewTabButton::NewTabButton;
 
   BraveNewTabButton(const BraveNewTabButton&) = delete;
   BraveNewTabButton& operator=(const BraveNewTabButton&) = delete;
+  ~BraveNewTabButton() override;
 
  protected:
   void PaintIcon(gfx::Canvas* canvas) override;
+  void PaintFill(gfx::Canvas* canvas) const override;
 
  private:
   gfx::Size CalculatePreferredSize() const override;

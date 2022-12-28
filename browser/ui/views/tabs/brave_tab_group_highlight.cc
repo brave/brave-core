@@ -15,12 +15,7 @@ SkPath BraveTabGroupHighlight::GetPath() const {
   if (!tabs::features::ShouldShowVerticalTabs(tab_group_views_->GetBrowser()))
     return TabGroupHighlight::GetPath();
 
-  SkPath path;
-  path.moveTo(BraveTabGroupHeader::GetLeftPaddingForVerticalTabs(), height());
-  path.lineTo(width(), height());
-  path.lineTo(width(), 0);
-  path.lineTo(BraveTabGroupHeader::GetLeftPaddingForVerticalTabs(), 0);
-  path.close();
-
-  return path;
+  // We don't have to paint highlight as we have TabGroupUnderline draw a
+  // enclosing box.
+  return {};
 }

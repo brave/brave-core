@@ -4,7 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
+#include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/features.h"
+#include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 
 #define BRAVE_GM2_TAB_STYLE_H \
  protected:                   \
@@ -31,8 +33,18 @@ class BraveGM2TabStyle : public GM2TabStyle {
   TabStyle::TabColors CalculateColors() const override;
   const gfx::FontList& GetFontList() const override;
   SeparatorBounds GetSeparatorBounds(float scale) const override;
+  void PaintTab(gfx::Canvas* canvas) const override;
 
  private:
+  bool IsVerticalTab() const {
+    return tabs::features::ShouldShowVerticalTabs(
+        tab_->controller()->GetBrowser());
+  }
+
+  bool IsInactiveAndInGroup() const {
+    return !tab_->IsActive() && tab_->group().has_value();
+  }
+
   raw_ptr<Tab> tab_;
   gfx::FontList active_tab_font_;
 };
@@ -47,39 +59,26 @@ SkPath BraveGM2TabStyle::GetPath(PathType path_type,
                                  float scale,
                                  bool force_active,
                                  RenderUnits render_units) const {
-  if (!tabs::features::ShouldShowVerticalTabs(tab_->controller()->GetBrowser()))
+  if (!IsVerticalTab())
     return GM2TabStyle::GetPath(path_type, scale, force_active, render_units);
 
-  const int stroke_thickness = GetStrokeThickness(force_active);
-  gfx::RectF aligned_bounds =
-      ScaleAndAlignBounds(tab_->bounds(), scale, stroke_thickness);
+  // Don't paint border.
+  if (path_type == PathType::kBorder)
+    return {};
+
+  gfx::RectF aligned_bounds = ScaleAndAlignBounds(tab_->bounds(), scale, 0);
+
+  constexpr int kHorizontalInset = BraveTabGroupHeader::kPaddingForGroup;
 
   // Calculate the bounds of the actual path.
   float tab_top = aligned_bounds.y();
-  float tab_left = aligned_bounds.x();
-  float tab_right = aligned_bounds.right();
+  float tab_left = aligned_bounds.x() + kHorizontalInset * scale;
+  float tab_right = aligned_bounds.right() - kHorizontalInset * scale;
   float tab_bottom = aligned_bounds.bottom();
 
-  const float stroke_adjustment = stroke_thickness * scale;
-  if (path_type == PathType::kInteriorClip) {
-    // Inside of the border runs |stroke_thickness| inside the outer edge.
-    tab_left += stroke_adjustment;
-    tab_right -= stroke_adjustment;
-    tab_top += stroke_adjustment;
-  } else if (path_type == PathType::kFill || path_type == PathType::kBorder) {
-    tab_left += 0.5f * stroke_adjustment;
-    tab_right -= 0.5f * stroke_adjustment;
-    tab_top += 0.5f * stroke_adjustment;
-    tab_bottom -= 0.5f * stroke_adjustment;
-  } else if (path_type == PathType::kHitTest) {
-    // Outside border needs to draw its bottom line a stroke width above the
-    // bottom of the tab, to line up with the stroke that runs across the rest
-    // of the bottom of the tab bar (when strokes are enabled).
-    tab_bottom -= stroke_adjustment;
-  }
-
   SkPath path;
-  path.addRect(tab_left, tab_top, tab_right, tab_bottom);
+  path.addRoundRect({tab_left, tab_top, tab_right, tab_bottom},
+                    kHorizontalInset * scale, kHorizontalInset * scale);
 
   // Convert path to be relative to the tab origin.
   gfx::PointF origin(tab_->origin());
@@ -98,10 +97,18 @@ TabStyle::TabColors BraveGM2TabStyle::CalculateColors() const {
   const SkColor inactive_non_hovered_fg_color = SkColorSetA(
       colors.foreground_color,
       gfx::Tween::IntValueBetween(0.7, SK_AlphaTRANSPARENT, SK_AlphaOPAQUE));
-  const SkColor final_fg_color = (tab_->IsActive() || tab_->mouse_hovered())
-                                     ? colors.foreground_color
-                                     : inactive_non_hovered_fg_color;
-  return {final_fg_color, colors.background_color, colors.focus_ring_color,
+  SkColor final_fg_color = (tab_->IsActive() || tab_->mouse_hovered())
+                               ? colors.foreground_color
+                               : inactive_non_hovered_fg_color;
+  SkColor final_bg_color = colors.background_color;
+  if (IsVerticalTab() && IsInactiveAndInGroup()) {
+    final_fg_color = BraveTabGroupHeader::GetDarkerColorForGroup(
+        tab_->group().value(), tab_->controller(),
+        tab_->GetNativeTheme()->ShouldUseDarkColors());
+    final_bg_color = SK_ColorTRANSPARENT;
+  }
+
+  return {final_fg_color, final_bg_color, colors.focus_ring_color,
           colors.close_button_focus_ring_color};
 }
 
@@ -115,12 +122,37 @@ const gfx::FontList& BraveGM2TabStyle::GetFontList() const {
 
 BraveGM2TabStyle::SeparatorBounds BraveGM2TabStyle::GetSeparatorBounds(
     float scale) const {
-  if (tabs::features::ShouldShowVerticalTabs(
-          tab_->controller()->GetBrowser())) {
+  if (IsVerticalTab())
     return {};
-  }
 
   return GM2TabStyle::GetSeparatorBounds(scale);
+}
+
+void BraveGM2TabStyle::PaintTab(gfx::Canvas* canvas) const {
+  if (!IsVerticalTab() || !IsInactiveAndInGroup()) {
+    GM2TabStyle::PaintTab(canvas);
+    return;
+  }
+
+  // When a tab is in a group while vertical tab is enabled, make tab's
+  // background transparent so that the group's background can be visible
+  // instead.
+  // Skip painting background for inactive tab and paint throbbing background.
+  const float throb_value = GetThrobValue();
+  if (throb_value <= 0)
+    return;
+
+  absl::optional<int> active_tab_fill_id;
+  int active_tab_y_inset = 0;
+  if (tab_->GetThemeProvider()->HasCustomImage(IDR_THEME_TOOLBAR)) {
+    active_tab_fill_id = IDR_THEME_TOOLBAR;
+    active_tab_y_inset = GetStrokeThickness(true);
+  }
+  canvas->SaveLayerAlpha(base::ClampRound<uint8_t>(throb_value * 0xff),
+                         tab_->GetLocalBounds());
+  PaintTabBackground(canvas, TabActive::kActive, active_tab_fill_id,
+                     active_tab_y_inset);
+  canvas->Restore();
 }
 
 }  // namespace

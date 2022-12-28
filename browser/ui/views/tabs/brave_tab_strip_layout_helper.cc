@@ -19,6 +19,8 @@
 
 namespace tabs {
 
+constexpr int kVerticalMarginForTabs = 4;
+
 std::vector<gfx::Rect> CalculateVerticalTabBounds(
     const TabLayoutConstants& layout_constants,
     const std::vector<TabWidthConstraints>& tabs,
@@ -62,15 +64,15 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
     // This method is called by two separated containers. One contains only
     // pinned tabs and the other contains only non-pinned tabs. So we don't need
     // to consider the last pinned tab's bottom coordinate here.
-    rect.set_x(tab.is_tab_in_group()
-                   ? BraveTabGroupHeader::GetLeftPaddingForVerticalTabs()
-                   : 0);
-    rect.set_width(width.value_or(tab.GetPreferredWidth()) - rect.x());
+    rect.set_x(tab.is_tab_in_group() ? BraveTabGroupHeader::kPaddingForGroup
+                                     : 0);
+    rect.set_width(width.value_or(tab.GetPreferredWidth()) - rect.x() * 2);
     rect.set_height(tab.state().open() == TabOpen::kOpen ? kVerticalTabHeight
                                                          : 0);
     bounds.push_back(rect);
+
     if (tab.state().open() == TabOpen::kOpen)
-      rect.set_y(rect.bottom());
+      rect.set_y(rect.bottom() + kVerticalMarginForTabs);
   }
   return bounds;
 }
@@ -81,6 +83,7 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
   int x = 0;
   int y = 0;
   for (const TabSlotView* view : views) {
+    auto width = TabStyle::GetStandardWidth();
     const int height = view->height();
     if (view->GetTabSlotViewType() == TabSlotView::ViewType::kTab) {
       if (const Tab* tab = static_cast<const Tab*>(view); tab->data().pinned) {
@@ -92,12 +95,13 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
       }
       if (view->group().has_value()) {
         // In case it's a tab in a group, set left padding
-        x = BraveTabGroupHeader::GetLeftPaddingForVerticalTabs();
+        x = BraveTabGroupHeader::kPaddingForGroup;
+        width -= x * 2;
       }
     }
-    bounds.emplace_back(x, y, TabStyle::GetStandardWidth() - x, height);
+    bounds.emplace_back(x, y, width, height);
     // unpinned dragged tabs are laid out vertically
-    y += height;
+    y += height + kVerticalMarginForTabs;
   }
   return bounds;
 }
