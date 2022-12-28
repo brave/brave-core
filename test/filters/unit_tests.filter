@@ -8,6 +8,8 @@
 # These tests crash due to TestingBraveBrowserProcess::greaselion_download_service()
 # having NOTREACHED which causes an immediate crash
 # https://github.com/brave/brave-browser/issues/25726
+-All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_Disabled
+-All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_Enabled
 -All/PriceTrackingViewFeatureFlagTest.PriceTrackingViewCreation/*
 -ApcScrimManagerImplTest.DisabledScrimCannotBeShown
 -ApcScrimManagerImplTest.HideDoesNotImmediatelySetOriginalAxMode
@@ -19,6 +21,7 @@
 -BatterySaverButtonTest.*
 -BrowserViewTestWithStopLoadingAnimationForHiddenWindow.LoadingAnimationNotRenderedWhenWindowHidden
 -ChromeBrowsingDataRemoverDelegateOriginTrialsTest.PersistentOriginTrialsAreDeleted
+-DownloadBubbleRowViewTest.CopyAcceleratorCopiesFile
 -ExtensionActionViewControllerFeatureUnitTest.*
 -ExtensionActionViewControllerGrayscaleTest.*
 -ExtensionActionViewControllerUnitTest.*
@@ -29,6 +32,16 @@
 -PeopleHandlerSignoutTest.SignoutNotAllowedSyncOn
 -PeopleHandlerSignoutTest.SignoutWithSyncOff
 -PeopleHandlerSignoutTest.SignoutWithSyncOn
+-SavedTabGroupModelListenerTest.CreatesRemovesBrowserListener
+-SavedTabGroupModelListenerTest.GetTabStripModelWithTabGroupId
+
+# These tests crash due to TestingBraveBrowserProcess::extension_whitelist_service()
+# having NOTREACHED which causes an immediate crash
+-All/UnpackedInstallerUnitTest.WithheldHostPermissionsWithFlag/*
+-ChromeAppsIconFactoryTest.LoadCompressedIcon
+-ChromeAppsIconFactoryTest.LoadCompressedIconWithoutEffect
+-ChromeAppsIconFactoryTest.LoadStandardIcon
+-ChromeAppsIconFactoryTest.LoadUncompressedIcon
 
 # These tests crash when BraveExtensionManagement is initialized via a
 # TestExtensionSystem
@@ -97,6 +110,28 @@
 # Test flaky in cr109, although corrected in newer revisions
 -TabStripScrollSessionTestWithVariableSpeed.GivenScrollSessionWhenMaybeStartThenTimerCallback
 
+# These tests fail because we intentionally disable DICE signin via
+# BraveAccountConsistencyModeManager::IsDiceSignInAllowed()
+-All/DiceWebSigninInterceptorManagedAccountTest.*
+-All/ProcessDiceHeaderDelegateImplTestEnableSync.*
+-All/ProcessDiceHeaderDelegateImplTestHandleTokenExchangeFailure.*
+-DiceSigninUiUtilTest.*
+-DiceTurnSyncOnHelperTest.*
+-DiceWebSigninInterceptorForcedSeparationTest.*
+-DiceWebSigninInterceptorTest.*
+-GAIAInfoUpdateServiceDiceTest.*
+
+# This test fails because we disable the privacy sandbox
+-PrivacySandboxServiceTest.MetricsLoggingOccursCorrectly
+
+# This test fails because we intentionally disable the Federated Credential
+# Management API via features::kFedCm
+-FederatedIdentityApiPermissionContextTest.WhitelistedSiteForThirdPartyCookies
+
+# These tests fail because we intentionally disable preloading via
+# features::kEarlyHintsPreloadForNavigation
+-PreconnectManagerTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
@@ -112,7 +147,6 @@
 -ActivityLogTestWithoutSwitch.*
 -All/ActionTrackerTest.*
 -All/ChromeLabs*Test.*
--All/DiceWebSigninInterceptorManagedAccountTest.*
 -All/EnterpriseProfileWelcomeHandleProceedTest.HandleProceed/*
 -All/ExtensionActionAPIUnitTest.*
 -All/ExtensionContextMenuModelWithUserHostControlsTest.PageAccessItemsVisibilityBasedOnSiteSettings/*
@@ -123,8 +157,6 @@
 -All/MultipleRulesetsTest.*
 -All/ParameterizedDeclarativeContentActionTest.*
 -All/PreinstalledWebAppManagerTest.ReplacementExtensionBlockedByPolicy/*
--All/ProcessDiceHeaderDelegateImplTestEnableSync.*
--All/ProcessDiceHeaderDelegateImplTestHandleTokenExchangeFailure.*
 -All/RulesetManagerTest.*
 -All/SearchProviderCommandLineOverrideTest.CommandLineOverrides/*
 -All/SearchProviderTest.*
@@ -227,10 +259,6 @@
 -DevicePermissionsManagerTest.*
 -DevToolsUIBindingsTest.*
 -DevToolsUIDataSourceTest.*
--DiceSigninUiUtilTest.*
--DiceTurnSyncOnHelperTest.*
--DiceWebSigninInterceptorForcedSeparationTest.*
--DiceWebSigninInterceptorTest.*
 -DocumentOverlayWindowViewsTest.*
 -DownloadBubblePrefsTest.EnhancedProtectionEnabled
 -DownloadProtectionServiceTest.*
@@ -271,6 +299,7 @@
 -ExtensionsMenuViewUnitTest.*
 -ExtensionSourcePriorityTest.*
 -ExtensionsTabbedMenuViewUnitTest.*
+-ExtensionsToolbarButtonUnitTest.ButtonOpensMenu
 -ExtensionsToolbarContainerUnitTest.*
 -ExtensionsToolbarControlsTest.*
 -ExtensionsToolbarControlsUnitTest.*
@@ -293,7 +322,6 @@
 -ForegroundedOrClosedTest.*
 -FullscreenControllerStateUnitTest.*
 -FullStreamUIPolicyTest.*
--GAIAInfoUpdateServiceDiceTest.*
 -GalleryWatchManagerTest.*
 -GCMProfileServiceTest.*
 -GeolocationPermissionContextDelegateTests.*
