@@ -28,8 +28,8 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.settings.BraveSettingsLauncherImpl;
 import org.chromium.chrome.browser.settings.BraveWalletAddNetworksFragment;
 import org.chromium.chrome.browser.util.LiveDataUtil;
-import org.chromium.content_public.browser.UiThreadTaskTraits;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
+import org.chromium.content_public.browser.UiThreadTaskTraits;
 
 import java.util.ArrayList;
 
