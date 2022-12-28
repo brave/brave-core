@@ -8,6 +8,7 @@ import os
 import logging
 import subprocess
 import json
+import platform
 import shutil
 import re
 
@@ -20,6 +21,11 @@ from distutils.dir_util import copy_tree
 
 from components import path_util
 from components.perf_test_utils import GetProcessOutput
+
+
+def _GetBraveDownloadUrl(tag: str, binary: str) -> str:
+  return ('https://github.com/brave/brave-browser/releases/download/' +
+          f'{tag}/{binary}')
 
 
 def _DownloadArchiveAndUnpack(output_directory: str, url: str) -> str:
@@ -119,10 +125,9 @@ class BraveBrowserTypeImpl(BrowserType):
     self._channel = channel
     self._use_field_trials = use_field_trials
 
-  @classmethod
-  def _GetSetupDownloadUrl(cls, tag) -> str:
-    return ('https://github.com/brave/brave-browser/releases/download/' +
-            f'{tag}/BraveBrowserStandaloneSilentNightlySetup.exe')
+  def _GetSetupDownloadUrl(self, tag) -> str:
+    return _GetBraveDownloadUrl(
+        tag, f'BraveBrowserStandaloneSilent{self._channel}Setup.exe')
 
   def _GetWinInstallPath(self) -> str:
     return os.path.join(os.path.expanduser('~'), 'AppData', 'Local',
@@ -131,16 +136,45 @@ class BraveBrowserTypeImpl(BrowserType):
 
   @classmethod
   def _GetZipDownloadUrl(cls, tag) -> str:
+    platform_name = None
     if sys.platform == 'win32':
-      platform = 'win32-x64'
-      return ('https://github.com/brave/brave-browser/releases/' +
-              f'download/{tag}/brave-{tag}-{platform}.zip')
-    raise NotImplementedError()
+      platform_name = 'win32-x64'
+    if not platform_name:
+      raise NotImplementedError()
+
+    return _GetBraveDownloadUrl(tag, f'brave-{tag}-{platform_name}.zip')
+
+  def _DownloadDmgAndExtract(self, tag: str, out_dir: str) -> str:
+    assert sys.platform == 'darwin'
+    dmg_name = f'Brave-Browser-{self._channel}-{platform.machine()}.dmg'
+    url = _GetBraveDownloadUrl(tag, dmg_name)
+    logging.info('Downloading %s', url)
+    f = urlopen(url)
+    data = f.read()
+    dmg_path = os.path.join(out_dir, dmg_name)
+    with open(dmg_path, 'wb') as output_file:
+      output_file.write(data)
+    _, output = GetProcessOutput(
+        ['hdiutil', 'attach', '-noautoopen', '-nobrowse', dmg_path], check=True)
+    mount_path = output.rsplit('\t')[-1].rstrip()
+
+    app_name = f'Brave Browser {self._channel}'
+    GetProcessOutput(
+        ['cp', '-R',
+         os.path.join(mount_path, app_name + '.app'), out_dir],
+        check=True)
+    GetProcessOutput(['xattr', '-r', '-d', 'com.apple.quarantine', out_dir],
+                     check=True)
+    GetProcessOutput(['hdiutil', 'detach', mount_path], check=True)
+    return os.path.join(out_dir, app_name + '.app', 'Contents', 'MacOS',
+                        app_name)
 
   def DownloadBrowserBinary(self, tag: str, out_dir: str) -> str:
     m = re.match(r'^v(\d+)\.(\d+)\.\d+$', tag)
     if not m:
       raise RuntimeError(f'Failed to parse tag "{tag}"')
+    if sys.platform == 'darwin':
+      return self._DownloadDmgAndExtract(tag, out_dir)
     if (sys.platform == 'win32' and int(m.group(1)) == 1
         and int(m.group(2)) < 35):
       return _DownloadWinInstallerAndExtract(out_dir,
