@@ -113,7 +113,7 @@ std::unique_ptr<NTPBackgroundImagesData> GetDemoBackgroundWallpaper() {
 }
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-class TestDelegate : public NTPCustomBackgroundImagesService::Delegate {
+class TestDelegate : public BraveNTPCustomBackgroundService::Delegate {
  public:
   TestDelegate() = default;
   ~TestDelegate() override = default;
@@ -161,7 +161,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     auto delegate = std::make_unique<TestDelegate>();
     delegate_ = delegate.get();
     custom_bi_service_ =
-        std::make_unique<NTPCustomBackgroundImagesService>(std::move(delegate));
+        std::make_unique<BraveNTPCustomBackgroundService>(std::move(delegate));
     view_counter_ = std::make_unique<ViewCounterService>(
         service_.get(), custom_bi_service_.get(), &ads_service_, prefs(),
         &local_pref_,
@@ -255,7 +255,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
   std::unique_ptr<ViewCounterService> view_counter_;
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-  std::unique_ptr<NTPCustomBackgroundImagesService> custom_bi_service_;
+  std::unique_ptr<BraveNTPCustomBackgroundService> custom_bi_service_;
   raw_ptr<TestDelegate> delegate_ = nullptr;
 #endif
 
