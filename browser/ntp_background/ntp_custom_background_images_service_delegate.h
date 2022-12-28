@@ -18,27 +18,27 @@
 class CustomBackgroundFileManager;
 class Profile;
 
-class NTPCustomBackgroundImagesServiceDelegate
-    : public ntp_background_images::NTPCustomBackgroundImagesService::Delegate {
+class BraveNTPCustomBackgroundServiceDelegate
+    : public ntp_background_images::BraveNTPCustomBackgroundService::Delegate {
  public:
-  explicit NTPCustomBackgroundImagesServiceDelegate(Profile* profile);
-  ~NTPCustomBackgroundImagesServiceDelegate() override;
-  NTPCustomBackgroundImagesServiceDelegate(
-      const NTPCustomBackgroundImagesServiceDelegate&) = delete;
-  NTPCustomBackgroundImagesServiceDelegate& operator=(
-      const NTPCustomBackgroundImagesServiceDelegate&) = delete;
+  explicit BraveNTPCustomBackgroundServiceDelegate(Profile* profile);
+  ~BraveNTPCustomBackgroundServiceDelegate() override;
+  BraveNTPCustomBackgroundServiceDelegate(
+      const BraveNTPCustomBackgroundServiceDelegate&) = delete;
+  BraveNTPCustomBackgroundServiceDelegate& operator=(
+      const BraveNTPCustomBackgroundServiceDelegate&) = delete;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(NTPCustomBackgroundImagesServiceDelegateUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveNTPCustomBackgroundServiceDelegateUnitTest,
                            MigrationSuccess);
-  FRIEND_TEST_ALL_PREFIXES(NTPCustomBackgroundImagesServiceDelegateUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveNTPCustomBackgroundServiceDelegateUnitTest,
                            MigrationFail);
 
   bool ShouldMigrateCustomImagePref() const;
   void MigrateCustomImage(
       base::OnceCallback<void(bool)> callback = base::DoNothing());
 
-  // NTPCustomBackgroundImagesService::Delegate overrides:
+  // BraveNTPCustomBackgroundService::Delegate overrides:
   bool IsCustomImageBackgroundEnabled() const override;
   base::FilePath GetCustomBackgroundImageLocalFilePath(
       const GURL& url) const override;
