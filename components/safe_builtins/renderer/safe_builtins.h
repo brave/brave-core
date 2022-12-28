@@ -31,6 +31,10 @@ class SafeBuiltins {
   // //brave/components/brave_wallt/resources for now.
   // see //extensions/renderer/safe_builtins.h for reason of the naming.
   v8::Local<v8::Object> GetObjekt() const;
+  v8::Local<v8::Object> GetFunction() const;
+  // This is only used as compatibility of iOS overwrite.
+  v8::Local<v8::Object> GetFunctionOverride() const;
+  v8::Local<v8::Object> GetArray() const;
   // Add more safe builtins if needed.
 
  private:

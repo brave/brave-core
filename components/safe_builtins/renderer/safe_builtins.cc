@@ -68,7 +68,17 @@ const char kScript[] =
     "// Save only what is needed by wallet scripts.\n"
     "saveBuiltin(Object,\n"
     "            ['hasOwnProperty'],\n"
-    "            ['defineProperty', 'defineProperties', 'freeze']);\n"
+    "            ['create', 'defineProperty', 'freeze',\n"
+    "             'getOwnPropertyDescriptor', 'getPrototypeOf', 'keys',\n"
+    "             'assign', 'setPrototypeOf', 'defineProperties']);\n"
+    "saveBuiltin(Function,\n"
+    "            ['apply', 'bind', 'call']);\n"
+    "saveBuiltin(Array,\n"
+    "            ['concat', 'forEach', 'indexOf', 'join', 'push', 'slice',\n"
+    "             'splice', 'map', 'filter', 'shift', 'unshift', 'pop',\n"
+    "             'reverse'],\n"
+    "            ['from', 'isArray', 'of']);\n"
+    "Save('$', function (value) { return value; })\n"
     "\n"
     "}());\n";
 
@@ -213,4 +223,15 @@ v8::Local<v8::Object> SafeBuiltins::GetObjekt() const {
   return Load("Object", v8::Local<v8::Context>::New(isolate_, context_));
 }
 
+v8::Local<v8::Object> SafeBuiltins::GetFunction() const {
+  return Load("Function", v8::Local<v8::Context>::New(isolate_, context_));
+}
+
+v8::Local<v8::Object> SafeBuiltins::GetFunctionOverride() const {
+  return Load("$", v8::Local<v8::Context>::New(isolate_, context_));
+}
+
+v8::Local<v8::Object> SafeBuiltins::GetArray() const {
+  return Load("Array", v8::Local<v8::Context>::New(isolate_, context_));
+}
 }  //  namespace brave
