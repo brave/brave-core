@@ -21,10 +21,10 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-class NTPCustomBackgroundImagesServiceDelegateUnitTest : public testing::Test {
+class BraveNTPCustomBackgroundServiceDelegateUnitTest : public testing::Test {
  public:
-  NTPCustomBackgroundImagesServiceDelegateUnitTest() = default;
-  ~NTPCustomBackgroundImagesServiceDelegateUnitTest() override = default;
+  BraveNTPCustomBackgroundServiceDelegateUnitTest() = default;
+  ~BraveNTPCustomBackgroundServiceDelegateUnitTest() override = default;
 
   void SetUp() override {
     testing::Test::SetUp();
@@ -34,7 +34,7 @@ class NTPCustomBackgroundImagesServiceDelegateUnitTest : public testing::Test {
     ASSERT_TRUE(profile_manager_->SetUp());
     profile_ = profile_manager_->CreateTestingProfile("Test");
     service_delegate_ =
-        std::make_unique<NTPCustomBackgroundImagesServiceDelegate>(profile_);
+        std::make_unique<BraveNTPCustomBackgroundServiceDelegate>(profile_);
   }
 
   void TearDown() override {
@@ -46,7 +46,7 @@ class NTPCustomBackgroundImagesServiceDelegateUnitTest : public testing::Test {
 
  protected:
   TestingProfile& profile() { return *profile_; }
-  NTPCustomBackgroundImagesServiceDelegate& service_delegate() {
+  BraveNTPCustomBackgroundServiceDelegate& service_delegate() {
     return *service_delegate_;
   }
 
@@ -56,10 +56,10 @@ class NTPCustomBackgroundImagesServiceDelegateUnitTest : public testing::Test {
   std::unique_ptr<TestingProfileManager> profile_manager_;
   raw_ptr<TestingProfile> profile_ = nullptr;
 
-  std::unique_ptr<NTPCustomBackgroundImagesServiceDelegate> service_delegate_;
+  std::unique_ptr<BraveNTPCustomBackgroundServiceDelegate> service_delegate_;
 };
 
-TEST_F(NTPCustomBackgroundImagesServiceDelegateUnitTest, MigrationSuccess) {
+TEST_F(BraveNTPCustomBackgroundServiceDelegateUnitTest, MigrationSuccess) {
   NTPBackgroundPrefs ntp_prefs(profile().GetPrefs());
 
   // Get ready for old data.
@@ -103,7 +103,7 @@ TEST_F(NTPCustomBackgroundImagesServiceDelegateUnitTest, MigrationSuccess) {
             ntp_prefs.GetCustomImageList().front());
 }
 
-TEST_F(NTPCustomBackgroundImagesServiceDelegateUnitTest, MigrationFail) {
+TEST_F(BraveNTPCustomBackgroundServiceDelegateUnitTest, MigrationFail) {
   NTPBackgroundPrefs ntp_prefs(profile().GetPrefs());
 
   // Get ready for old data but doesn't have image file
