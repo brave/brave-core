@@ -32,7 +32,7 @@ std::string ReadFileToString(const base::FilePath& path) {
 }  // namespace
 
 NTPCustomImagesSource::NTPCustomImagesSource(
-    NTPCustomBackgroundImagesService* service)
+    BraveNTPCustomBackgroundService* service)
     : service_(service), weak_factory_(this) {
   DCHECK(service_);
 }

@@ -10,27 +10,27 @@
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 namespace ntp_background_images {
-class NTPCustomBackgroundImagesService;
+class BraveNTPCustomBackgroundService;
 }
 
-class NTPCustomBackgroundImagesServiceFactory
+class BraveNTPCustomBackgroundServiceFactory
     : public BrowserContextKeyedServiceFactory {
  public:
-  static ntp_background_images::NTPCustomBackgroundImagesService* GetForContext(
+  static ntp_background_images::BraveNTPCustomBackgroundService* GetForContext(
       content::BrowserContext* context);
-  static NTPCustomBackgroundImagesServiceFactory* GetInstance();
+  static BraveNTPCustomBackgroundServiceFactory* GetInstance();
 
  private:
   friend struct base::DefaultSingletonTraits<
-      NTPCustomBackgroundImagesServiceFactory>;
+      BraveNTPCustomBackgroundServiceFactory>;
 
-  NTPCustomBackgroundImagesServiceFactory();
-  ~NTPCustomBackgroundImagesServiceFactory() override;
+  BraveNTPCustomBackgroundServiceFactory();
+  ~BraveNTPCustomBackgroundServiceFactory() override;
 
-  NTPCustomBackgroundImagesServiceFactory(
-      const NTPCustomBackgroundImagesServiceFactory&) = delete;
-  NTPCustomBackgroundImagesServiceFactory& operator=(
-      const NTPCustomBackgroundImagesServiceFactory&) = delete;
+  BraveNTPCustomBackgroundServiceFactory(
+      const BraveNTPCustomBackgroundServiceFactory&) = delete;
+  BraveNTPCustomBackgroundServiceFactory& operator=(
+      const BraveNTPCustomBackgroundServiceFactory&) = delete;
 
   // BrowserContextKeyedServiceFactory overrides:
   KeyedService* BuildServiceInstanceFor(
