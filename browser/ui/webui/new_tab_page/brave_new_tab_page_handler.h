@@ -68,7 +68,7 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   void UseColorBackground(const std::string& color,
                           bool use_random_color) override;
 
-  // Observe NTPCustomBackgroundImagesService.
+  // Observe BraveNTPCustomBackgroundService.
   void OnBackgroundUpdated();
   void OnCustomImageBackgroundsUpdated();
 
