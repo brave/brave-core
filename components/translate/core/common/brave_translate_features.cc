@@ -20,7 +20,7 @@ const base::FeatureParam<bool> kUpdateLanguageListParam{
 
 BASE_FEATURE(kBraveEnableAutoTranslate,
              "BraveEnableAutoTranslate",
-             base::FeatureState::FEATURE_ENABLED_BY_DEFAULT);
+             base::FeatureState::FEATURE_DISABLED_BY_DEFAULT);
 }  // namespace features
 
 bool IsBraveTranslateGoAvailable() {
