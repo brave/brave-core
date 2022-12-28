@@ -16,9 +16,6 @@ RegisterStyleOverride(
         display: block;
         margin-inline-start: unset;
       }
-      #release-notes > .secondary {
-        var(--cr-link-color);
-      }
     </style>
   `
 )
@@ -33,6 +30,7 @@ RegisterPolymerTemplateModifications({
       }
       const parent = version.parentNode
       const wrapper = document.createElement('a')
+      version.setAttribute('style', '{ color: var(--cr-link-color); })}')
       wrapper.setAttribute('id', 'release-notes')
       wrapper.setAttribute('target', '_blank')
       wrapper.setAttribute('rel', 'noopener noreferrer')
