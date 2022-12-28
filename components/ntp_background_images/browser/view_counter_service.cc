@@ -69,7 +69,7 @@ void ViewCounterService::RegisterProfilePrefs(
 
 ViewCounterService::ViewCounterService(
     NTPBackgroundImagesService* service,
-    NTPCustomBackgroundImagesService* custom_service,
+    BraveNTPCustomBackgroundService* custom_service,
     brave_ads::AdsService* ads_service,
     PrefService* prefs,
     PrefService* local_state,

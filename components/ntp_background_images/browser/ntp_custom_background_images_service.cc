@@ -15,21 +15,21 @@
 
 namespace ntp_background_images {
 
-NTPCustomBackgroundImagesService::NTPCustomBackgroundImagesService(
+BraveNTPCustomBackgroundService::BraveNTPCustomBackgroundService(
     std::unique_ptr<Delegate> delegate)
     : delegate_(std::move(delegate)) {
   DCHECK(delegate_);
 }
 
-NTPCustomBackgroundImagesService::~NTPCustomBackgroundImagesService() = default;
+BraveNTPCustomBackgroundService::~BraveNTPCustomBackgroundService() = default;
 
-bool NTPCustomBackgroundImagesService::ShouldShowCustomBackground() const {
+bool BraveNTPCustomBackgroundService::ShouldShowCustomBackground() const {
   return delegate_->IsCustomImageBackgroundEnabled() ||
          delegate_->IsColorBackgroundEnabled() ||
          delegate_->HasPreferredBraveBackground();
 }
 
-base::Value::Dict NTPCustomBackgroundImagesService::GetBackground() const {
+base::Value::Dict BraveNTPCustomBackgroundService::GetBackground() const {
   DCHECK(ShouldShowCustomBackground());
 
   if (delegate_->HasPreferredBraveBackground()) {
@@ -60,12 +60,12 @@ base::Value::Dict NTPCustomBackgroundImagesService::GetBackground() const {
   return data;
 }
 
-base::FilePath NTPCustomBackgroundImagesService::GetImageFilePath(
+base::FilePath BraveNTPCustomBackgroundService::GetImageFilePath(
     const GURL& url) {
   return delegate_->GetCustomBackgroundImageLocalFilePath(url);
 }
 
-void NTPCustomBackgroundImagesService::Shutdown() {
+void BraveNTPCustomBackgroundService::Shutdown() {
   delegate_.reset();
 }
 
