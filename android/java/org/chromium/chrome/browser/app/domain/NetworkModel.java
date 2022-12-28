@@ -204,6 +204,10 @@ public class NetworkModel implements JsonRpcServiceObserver {
         init();
     }
 
+    public void refreshNetworks() {
+        init();
+    }
+
     public void init() {
         synchronized (mLock) {
             if (mJsonRpcService == null) {

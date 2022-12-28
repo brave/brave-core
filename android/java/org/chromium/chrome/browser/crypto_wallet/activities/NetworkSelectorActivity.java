@@ -78,7 +78,7 @@ public class NetworkSelectorActivity
 
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
-            activity.getWalletModel().getCryptoModel().getNetworkModel().init();
+            activity.getWalletModel().getCryptoModel().getNetworkModel().refreshNetworks();
         }
     }
 
@@ -86,7 +86,7 @@ public class NetworkSelectorActivity
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
             mWalletModel = activity.getWalletModel();
-            activity.getWalletModel().getCryptoModel().getNetworkModel().init();
+            activity.getWalletModel().getCryptoModel().getNetworkModel().refreshNetworks();
         }
         mSettingsLauncher = new BraveSettingsLauncherImpl();
         mNetworkSelectorModel =
