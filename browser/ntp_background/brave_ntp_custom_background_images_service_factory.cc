@@ -9,7 +9,7 @@
 
 #include "brave/browser/ntp_background/brave_ntp_custom_background_images_service_delegate.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/components/ntp_background_images/browser/ntp_custom_background_images_service.h"
+#include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ntp_background_images/browser/ntp_custom_background_images_service.h"
+#include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 
 #include <string>
 #include <utility>
