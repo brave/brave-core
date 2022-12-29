@@ -336,7 +336,7 @@ test("brave_unit_tests") {
   data = [ "data/" ]
 
   if (enable_custom_background) {
-    sources += [ "//brave/browser/ntp_background/ntp_custom_background_images_service_delegate_unittest.cc" ]
+    sources += [ "//brave/browser/ntp_background/brave_ntp_custom_background_images_service_delegate_unittest.cc" ]
   }
 
   public_deps = [
