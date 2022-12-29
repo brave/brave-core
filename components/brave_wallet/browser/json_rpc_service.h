@@ -180,8 +180,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void EnsGetContentHash(const std::string& domain,
                          EnsGetContentHashCallback callback);
+  void EnableEnsOffchainLookup() override;
   void EnsGetEthAddr(const std::string& domain,
-                     mojom::EnsOffchainLookupOptionsPtr options,
                      EnsGetEthAddrCallback callback) override;
   void SnsGetSolAddr(const std::string& domain,
                      SnsGetSolAddrCallback callback) override;

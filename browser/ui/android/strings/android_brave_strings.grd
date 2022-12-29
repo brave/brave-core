@@ -392,6 +392,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_RESOLVE_METHOD_TITLE" desc="Title for resolve method preference category.">
         Resolve Method
       </message>
+      <message name="IDS_ENS_OFFCHAIN_LOOKUP_METHOD_TITLE" desc="Title for ENS offchain lookup preference category.">
+        ENS offchain lookup
+      </message>
       <message name="IDS_RESOLVE_METHOD_ASK" desc="Text for resolve method Ask.">
         Ask
       </message>
@@ -3357,6 +3360,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WALLET_DOMAIN_NOT_REGISTERED_ERROR_TEXT" desc="ENS/SNS/UD domain not registered text">
       Domain <ph name="DOMAIN">%1$s</ph> is not registered
+    </message>
+    <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_LOOKUP_LEARN_MORE" desc="'Learn more' part of description shown when requesting to do an ENS off chain lookup.">
+      Learn more
+    </message>
+    <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_LOOKUP_DESCRIPTION" desc="Message description shown when requesting to do an ENS off chain lookup.">
+      It looks like you've entered an ENS address. We'll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain. <ph name="LEARN_MORE">%1$s</ph>.
+    </message>
+    <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_BUTTON" desc="ENS off chain lookup button text.">
+      Use ENS offchain domain
+    </message>
+    <message name="IDS_BRAVE_WALLET_SEARCHING_FOR_DOMAIN" desc="Searching for wallet domain progress message.">
+      Searching for domain...
     </message>
   </messages>
   </release>

@@ -74,9 +74,9 @@ export const Send = (props: Props) => {
   const {
     toAddressOrUrl,
     toAddress,
-    showEnsOffchainLookupOptions,
-    setEnsOffchainLookupOptions,
-    setShowEnsOffchainLookupOptions,
+    enableEnsOffchainLookup,
+    showEnsOffchainWarning,
+    setShowEnsOffchainWarning,
     addressError,
     addressWarning,
     sendAmount,
@@ -130,13 +130,13 @@ export const Send = (props: Props) => {
   }, [selectedSendAsset])
 
   const onClickReviewOrENSConsent = React.useCallback(() => {
-    if (showEnsOffchainLookupOptions) {
-      setEnsOffchainLookupOptions({ remember: true, allow: true })
-      setShowEnsOffchainLookupOptions(false)
+    if (showEnsOffchainWarning) {
+      enableEnsOffchainLookup()
+      setShowEnsOffchainWarning(false)
       return
     }
     submitSend()
-  }, [showEnsOffchainLookupOptions, setEnsOffchainLookupOptions, submitSend, setShowEnsOffchainLookupOptions])
+  }, [showEnsOffchainWarning, setShowEnsOffchainWarning, submitSend, enableEnsOffchainLookup])
 
   // Memos
   const sendAssetBalance = React.useMemo(() => {
@@ -192,7 +192,7 @@ export const Send = (props: Props) => {
   }, [spotPrices, selectedSendAsset, sendAmount, defaultCurrencies.fiat, sendAssetBalance, selectedSendOption])
 
   const reviewButtonText = React.useMemo(() => {
-    return showEnsOffchainLookupOptions
+    return showEnsOffchainWarning
       ? getLocale('braveWalletEnsOffChainButton')
       : searchingForDomain
         ? getLocale('braveWalletSearchingForDomain')
@@ -205,7 +205,7 @@ export const Send = (props: Props) => {
               : (addressWarning !== undefined && addressWarning !== '')
                 ? addressWarning
                 : getLocale('braveWalletReviewOrder')
-  }, [insufficientFundsError, addressError, addressWarning, sendAmountValidationError, searchingForDomain, showEnsOffchainLookupOptions])
+  }, [insufficientFundsError, addressError, addressWarning, sendAmountValidationError, searchingForDomain, showEnsOffchainWarning])
 
   const isReviewButtonDisabled = React.useMemo(() => {
     return searchingForDomain ||
@@ -245,11 +245,11 @@ export const Send = (props: Props) => {
   const addressMessageInformation: AddressMessageInfo | undefined = React.useMemo(() => {
     // ToDo: Implement Invalid Checksum warning and other longer warnings here in the future.
     // https://github.com/brave/brave-browser/issues/26957
-    if (showEnsOffchainLookupOptions) {
+    if (showEnsOffchainWarning) {
       return ENSOffchainLookupMessage
     }
     return undefined
-  }, [showEnsOffchainLookupOptions])
+  }, [showEnsOffchainWarning])
 
   // Effects
   React.useEffect(() => {

@@ -230,6 +230,14 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getENSResolveMethod();
     }
 
+    public void setENSOffchainResolveMethod(int method) {
+        BravePrefServiceBridgeJni.get().setENSOffchainResolveMethod(method);
+    }
+
+    public int getENSOffchainResolveMethod() {
+        return BravePrefServiceBridgeJni.get().getENSOffchainResolveMethod();
+    }
+
     public void setSnsResolveMethod(int method) {
         BravePrefServiceBridgeJni.get().setSnsResolveMethod(method);
     }
@@ -326,6 +334,8 @@ public class BravePrefServiceBridge {
         int getUnstoppableDomainsResolveMethod();
         void setENSResolveMethod(int method);
         int getENSResolveMethod();
+        void setENSOffchainResolveMethod(int method);
+        int getENSOffchainResolveMethod();
         void setSnsResolveMethod(int method);
         int getSnsResolveMethod();
 

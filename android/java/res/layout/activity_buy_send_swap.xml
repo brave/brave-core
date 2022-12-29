@@ -339,6 +339,67 @@
                     android:textSize="12sp"
                     android:visibility="gone"/>
 
+                <LinearLayout
+                    android:id="@+id/ens_offchain_lookup_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/ens_offchain_lookup_description_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brave_wallet_ens_off_chain_lookup_description"
+                        android:textColor="@color/wallet_text_color"
+                        android:textSize="12sp"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_enable_ens_offchain_lookup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:layout_marginVertical="8dp"
+                        android:background="@drawable/crypto_wallet_blue_button"
+                        android:text="@string/brave_wallet_ens_off_chain_button"
+                        android:textAllCaps="false"
+                        android:textSize="14sp"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="0dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textColor="@android:color/white"
+                        style="?android:attr/borderlessButtonStyle"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/searching_for_domain_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:orientation="horizontal">
+
+                    <ProgressBar
+                        android:indeterminateDrawable="@drawable/progress_indeterminate_orange"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:visibility="visible"/>
+
+                    <TextView
+                        android:layout_gravity="start | center_vertical"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:inputType="none"
+                        android:textColor="@color/wallet_text_color"
+                        android:textIsSelectable="true"
+                        android:textSize="12sp"
+                        android:text="@string/brave_wallet_searching_for_domain"
+                     />
+
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/to_send_error_text"
                     android:layout_width="wrap_content"

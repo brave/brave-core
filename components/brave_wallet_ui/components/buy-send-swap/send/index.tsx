@@ -44,9 +44,6 @@ function Send (props: Props) {
   const {
     toAddressOrUrl,
     toAddress,
-    showEnsOffchainLookupOptions,
-    ensOffchainLookupOptions,
-    setEnsOffchainLookupOptions,
     addressError,
     addressWarning,
     sendAmount,
@@ -154,9 +151,6 @@ function Send (props: Props) {
         addressError={addressError}
         addressWarning={addressWarning}
         toAddress={toAddress}
-        showEnsOffchainLookupOptions={showEnsOffchainLookupOptions}
-        ensOffchainLookupOptions={ensOffchainLookupOptions}
-        setEnsOffchainLookupOptions={setEnsOffchainLookupOptions}
         inputName='address'
         onPaste={onPasteFromClipboard}
         selectedNetwork={selectedNetwork}

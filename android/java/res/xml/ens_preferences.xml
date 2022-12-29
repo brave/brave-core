@@ -9,7 +9,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory android:title="@string/resolve_method_title">
 	      <org.chromium.chrome.browser.decentralized_dns.settings.RadioButtonGroupDDnsResolveMethodPreference
-	          android:key="ens_resolve_method"
+	          android:key="ens_resolve_method" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/ens_offchain_lookup_method_title">
+	      <org.chromium.chrome.browser.decentralized_dns.settings.RadioButtonGroupEnsOffchainResolveMethodPreference
+	          android:key="ens_offchain_lookup"
             app:allowDividerBelow="false" />
     </PreferenceCategory>
 </PreferenceScreen>
