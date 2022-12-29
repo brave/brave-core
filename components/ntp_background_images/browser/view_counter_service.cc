@@ -35,7 +35,7 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-#include "brave/components/ntp_background_images/browser/ntp_custom_background_images_service.h"
+#include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #endif
 
 namespace {
