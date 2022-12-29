@@ -14,6 +14,7 @@ import './locale'
 import WelcomePage from './page/index'
 import SelectBrowser from '../components/select-browser'
 import SelectProfile from '../components/select-profile'
+import SelectTheme from '../components/select-theme'
 import HelpImprove from '../components/help-improve'
 import ImportInProgress from '../components/import-in-progress'
 import SetupComplete from '../components/setup-complete'
@@ -139,6 +140,10 @@ export const _SelectBrowser = () => {
 
 export const _SelectProfile = () => {
   return <SelectProfile />
+}
+
+export const _SelectTheme = () => {
+  return <SelectTheme />
 }
 
 export const _HelpImprove = () => {

@@ -8,6 +8,7 @@ import WebAnimationPlayer from '../api/web_animation_player'
 export enum ViewType {
   DefaultBrowser, // the welcome ui
   ImportSelectBrowser,
+  ImportSelectTheme,
   ImportSelectProfile,
   ImportInProgress,
   ImportSucceeded,
