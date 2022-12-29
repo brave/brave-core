@@ -5,7 +5,11 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK;
+import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID;
+
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +25,10 @@ import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSelectorAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.settings.BraveSettingsLauncherImpl;
+import org.chromium.chrome.browser.settings.BraveWalletAddNetworksFragment;
 import org.chromium.chrome.browser.util.LiveDataUtil;
+import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
 
 import java.util.ArrayList;
@@ -35,6 +42,7 @@ public class NetworkSelectorActivity
     private NetworkSelectorAdapter networkSelectorAdapter;
     private MaterialToolbar mToolbar;
     private String mSelectedNetwork;
+    private SettingsLauncher mSettingsLauncher;
     private WalletModel mWalletModel;
     private NetworkSelectorModel mNetworkSelectorModel;
 
@@ -43,7 +51,11 @@ public class NetworkSelectorActivity
         setContentView(R.layout.activity_network_selector);
         mToolbar = findViewById(R.id.toolbar);
         mToolbar.setTitle(R.string.brave_wallet_network_activity_title);
-        setSupportActionBar(mToolbar);
+        mToolbar.setOnMenuItemClickListener(item -> {
+            launchAddNetwork();
+            return true;
+        });
+
         Intent intent = getIntent();
         mMode = JavaUtils.safeVal(
                 (NetworkSelectorModel.Mode) intent.getSerializableExtra(NETWORK_SELECTOR_MODE),
@@ -63,20 +75,28 @@ public class NetworkSelectorActivity
         if (activity != null) {
             mWalletModel = activity.getWalletModel();
         }
+        mSettingsLauncher = new BraveSettingsLauncherImpl();
         mNetworkSelectorModel =
                 mWalletModel.getCryptoModel().getNetworkModel().openNetworkSelectorModel(mMode);
         networkSelectorAdapter = new NetworkSelectorAdapter(this, new ArrayList<>());
         mRVNetworkSelector.setAdapter(networkSelectorAdapter);
         networkSelectorAdapter.setOnNetworkItemSelected(this);
-        LiveDataUtil.observeOnce(mNetworkSelectorModel.mPrimaryNetworks, primaryNetworkInfos -> {
+        mNetworkSelectorModel.mPrimaryNetworks.observe(this, primaryNetworkInfos -> {
             networkSelectorAdapter.addPrimaryNetwork(primaryNetworkInfos);
         });
-
-        LiveDataUtil.observeOnce(
-                mNetworkSelectorModel.mSecondaryNetworks, secondaryNetworkInfos -> {
-                    networkSelectorAdapter.addSecondaryNetwork(secondaryNetworkInfos);
-                });
+        mNetworkSelectorModel.mSecondaryNetworks.observe(this, secondaryNetworkInfos -> {
+            networkSelectorAdapter.addSecondaryNetwork(secondaryNetworkInfos);
+        });
         setSelectedNetworkObserver();
+    }
+
+    private void launchAddNetwork() {
+        Bundle fragmentArgs = new Bundle();
+        fragmentArgs.putString(ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID, "");
+        fragmentArgs.putBoolean(ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK, false);
+        Intent intent = mSettingsLauncher.createSettingsActivityIntent(
+                this, BraveWalletAddNetworksFragment.class.getName(), fragmentArgs);
+        startActivity(intent);
     }
 
     private void setSelectedNetworkObserver() {

@@ -892,6 +892,7 @@ brave_java_resources = [
   "java/res/menu/menu_account_selector.xml",
   "java/res/menu/menu_brave_vpn.xml",
   "java/res/menu/menu_dapps_panel.xml",
+  "java/res/menu/menu_network_selector.xml",
   "java/res/menu/monthly_contribution_popup_menu.xml",
   "java/res/menu/new_tab_menu.xml",
   "java/res/menu/split_tunnel_menu.xml",
