@@ -28,7 +28,7 @@
 #include "content/public/browser/url_data_source.h"
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-#include "brave/browser/ntp_background/brave_ntp_custom_background_images_service_factory.h"
+#include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #endif
 
 namespace ntp_background_images {
