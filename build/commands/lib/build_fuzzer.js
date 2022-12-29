@@ -11,7 +11,6 @@ const buildFuzzer = (fuzzer_test_target, options) => {
   options.C = 'Fuzzer'
   options.target = fuzzer_test_target
   options.is_component_build = false
-  options.is_debug = true
 
   build('Fuzzer', options)
 }
