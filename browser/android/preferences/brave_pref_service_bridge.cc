@@ -18,7 +18,6 @@
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/p3a/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -32,10 +31,6 @@
 #include "components/prefs/pref_service.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 #include "url/gurl.h"
-
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
-#include "brave/components/p3a/pref_names.h"
-#endif
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -421,51 +416,6 @@ void JNI_BravePrefServiceBridge_SetWebrtcPolicy(JNIEnv* env, jint policy) {
       prefs::kWebRTCIPHandlingPolicy,
       GetWebRTCIPHandlingPreference((WebRTCIPHandlingPolicy)policy));
 }
-
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
-void JNI_BravePrefServiceBridge_SetP3AEnabled(JNIEnv* env, jboolean value) {
-  /* Saving pref value to the disk as soon as the pref value
-   * is set to avoid delay in pref value update.*/
-  g_browser_process->local_state()->SetBoolean(brave::kP3AEnabled, value);
-  g_browser_process->local_state()->CommitPendingWrite();
-}
-
-static jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(JNIEnv* env) {
-  return g_browser_process->local_state()->GetBoolean(brave::kP3AEnabled);
-}
-
-jboolean JNI_BravePrefServiceBridge_HasPathP3AEnabled(JNIEnv* env) {
-  return g_browser_process->local_state()->HasPrefPath(brave::kP3AEnabled);
-}
-
-void JNI_BravePrefServiceBridge_SetP3ANoticeAcknowledged(JNIEnv* env,
-                                                         jboolean value) {
-  return g_browser_process->local_state()->SetBoolean(
-      brave::kP3ANoticeAcknowledged, value);
-}
-
-jboolean JNI_BravePrefServiceBridge_GetP3ANoticeAcknowledged(JNIEnv* env) {
-  return g_browser_process->local_state()->GetBoolean(
-      brave::kP3ANoticeAcknowledged);
-}
-
-#else
-
-void JNI_BravePrefServiceBridge_SetP3AEnabled(JNIEnv* env, jboolean value) {}
-
-static jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(JNIEnv* env) {
-  return false;
-}
-
-jboolean JNI_BravePrefServiceBridge_HasPathP3AEnabled(JNIEnv* env) {}
-
-void JNI_BravePrefServiceBridge_SetP3ANoticeAcknowledged(JNIEnv* env,
-                                                         jboolean value) {}
-
-jboolean JNI_BravePrefServiceBridge_GetP3ANoticeAcknowledged(JNIEnv* env) {
-  return false;
-}
-#endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 
 void JNI_BravePrefServiceBridge_SetStatsReportingEnabled(JNIEnv* env,
                                                          jboolean value) {

@@ -186,32 +186,12 @@ public class BravePrefServiceBridge {
         BravePrefServiceBridgeJni.get().setReferralDownloadId(downloadId);
     }
 
-    public void setP3AEnabled(boolean value) {
-        BravePrefServiceBridgeJni.get().setP3AEnabled(value);
-    }
-
-    public boolean getP3AEnabled() {
-        return BravePrefServiceBridgeJni.get().getP3AEnabled();
-    }
-
     public void setStatsReportingEnabled(boolean value) {
         BravePrefServiceBridgeJni.get().setStatsReportingEnabled(value);
     }
 
     public boolean getStatsReportingEnabled() {
         return BravePrefServiceBridgeJni.get().getStatsReportingEnabled();
-    }
-
-    public boolean hasPathP3AEnabled() {
-        return BravePrefServiceBridgeJni.get().hasPathP3AEnabled();
-    }
-
-    public void setP3ANoticeAcknowledged(boolean value) {
-        BravePrefServiceBridgeJni.get().setP3ANoticeAcknowledged(value);
-    }
-
-    public boolean getP3ANoticeAcknowledged() {
-        return BravePrefServiceBridgeJni.get().getP3ANoticeAcknowledged();
     }
 
     public void setUnstoppableDomainsResolveMethod(int method) {
@@ -320,12 +300,6 @@ public class BravePrefServiceBridge {
         void setReferralInitialization(boolean value);
         void setReferralPromoCode(String promoCode);
         void setReferralDownloadId(String downloadId);
-
-        void setP3AEnabled(boolean value);
-        boolean getP3AEnabled();
-        boolean hasPathP3AEnabled();
-        void setP3ANoticeAcknowledged(boolean value);
-        boolean getP3ANoticeAcknowledged();
 
         void setStatsReportingEnabled(boolean value);
         boolean getStatsReportingEnabled();
