@@ -311,8 +311,7 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
   EXPECT_TRUE(TranslateDownloadManager::IsSupportedLanguage("vi"));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest,
-                       NoAutoTranslate) {
+IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, NoAutoTranslate) {
   // Set auto translate from es to en.
   GetChromeTranslateClient()
       ->GetTranslatePrefs()
