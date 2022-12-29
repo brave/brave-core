@@ -18,6 +18,7 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.components.browser_ui.widget.TintedDrawable;
@@ -116,6 +117,10 @@ public class BraveWalletNetworksPreference extends Preference
     }
 
     private void updateNetworksList() {
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            activity.getWalletModel().getCryptoModel().getNetworkModel().refreshNetworks();
+        }
         assert mJsonRpcService != null;
         mJsonRpcService.getChainId(CoinType.ETH, chainId -> {
             mJsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
