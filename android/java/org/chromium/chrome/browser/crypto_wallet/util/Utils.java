@@ -142,6 +142,8 @@ public class Utils {
 
     private static final String PREF_CRYPTO_ONBOARDING = "crypto_onboarding";
     public static final String DEX_AGGREGATOR_URL = "https://0x.org/";
+    public static final String ENS_OFFCHAIN_LEARN_MORE_URL =
+            "https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup";
     public static final String BRAVE_SUPPORT_URL = "https://support.brave.com";
     public static final String ADDRESS = "address";
     public static final String NAME = "name";
