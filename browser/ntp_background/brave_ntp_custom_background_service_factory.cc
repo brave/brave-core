@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "brave/browser/ntp_background/brave_ntp_custom_background_images_service_delegate.h"
+#include "brave/browser/ntp_background/brave_ntp_custom_background_service_delegate.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #include "chrome/browser/profiles/profile.h"
