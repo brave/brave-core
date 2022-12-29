@@ -72,10 +72,8 @@ const makeStoreWithActionSpies = (actionSpies: Array<{
         sendAmount: '',
         toAddress: '',
         toAddressOrUrl: '',
-        showEnsOffchainLookupOptions: false,
         addressError: '',
-        addressWarning: '',
-        ensOffchainLookupOptions: undefined
+        addressWarning: ''
       })
     },
     middleware: [listener.middleware]

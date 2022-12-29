@@ -10,7 +10,5 @@ export const mockSendCryptoState: PendingCryptoSendState = {
   toAddressOrUrl: '',
   addressError: undefined,
   addressWarning: undefined,
-  selectedSendAsset: undefined,
-  showEnsOffchainLookupOptions: false,
-  ensOffchainLookupOptions: undefined
+  selectedSendAsset: undefined
 }
