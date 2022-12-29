@@ -20,7 +20,6 @@ class BrowserContext;
 }  // namespace content
 
 class GURL;
-class PlaylistPageHandler;
 
 namespace playlist {
 
