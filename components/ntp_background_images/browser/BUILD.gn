@@ -61,8 +61,8 @@ static_library("browser") {
 
   if (enable_custom_background) {
     sources += [
-      "ntp_custom_background_images_service.cc",
-      "ntp_custom_background_images_service.h",
+      "brave_ntp_custom_background_service.cc",
+      "brave_ntp_custom_background_service.h",
       "ntp_custom_images_source.cc",
       "ntp_custom_images_source.h",
     ]
