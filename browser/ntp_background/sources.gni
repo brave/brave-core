@@ -42,7 +42,7 @@ if (enable_custom_background) {
     "//brave/browser/ntp_background/custom_background_file_manager.h",
     "//brave/browser/ntp_background/ntp_background_prefs.cc",
     "//brave/browser/ntp_background/ntp_background_prefs.h",
-    "//brave/browser/ntp_background/brave_ntp_custom_background_images_service_delegate.cc",
+    "//brave/browser/ntp_background/brave_ntp_custom_background_service_delegate.cc",
     "//brave/browser/ntp_background/brave_ntp_custom_background_service_delegate.h",
     "//brave/browser/ntp_background/brave_ntp_custom_background_service_factory.cc",
     "//brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h",
