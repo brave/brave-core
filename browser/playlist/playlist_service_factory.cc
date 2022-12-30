@@ -18,11 +18,44 @@
 #include "brave/components/playlist/playlist_service.h"
 #include "brave/components/playlist/pref_names.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
-
 namespace playlist {
+
+namespace {
+
+class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
+ public:
+  explicit PlaylistServiceDelegateImpl(Profile* profile) : profile_(profile) {}
+  ~PlaylistServiceDelegateImpl() override = default;
+
+  content::WebContents* GetActiveTabWebContents() override {
+    auto* browser = chrome::FindLastActiveWithProfile(profile_);
+    DCHECK(browser);
+
+    return browser->tab_strip_model()->GetActiveWebContents();
+  }
+
+  std::vector<content::WebContents*> GetOpenTabsWebContentses() override {
+    std::vector<content::WebContents*> web_contentses;
+    auto* browser = chrome::FindLastActiveWithProfile(profile_);
+    DCHECK(browser);
+
+    auto* model = browser->tab_strip_model();
+    for (int i = 0; i < model->count(); i++) {
+      web_contentses.push_back(model->GetWebContentsAt(i));
+    }
+    return web_contentses;
+  }
+
+ private:
+  raw_ptr<Profile> profile_;
+};
+
+}  // namespace
 
 // static
 PlaylistServiceFactory* PlaylistServiceFactory::GetInstance() {
@@ -82,7 +115,8 @@ KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   DCHECK(media_detector_component_manager_);
   return new PlaylistService(context, media_detector_component_manager_.get(),
-                             nullptr);
+                             std::make_unique<PlaylistServiceDelegateImpl>(
+                                 Profile::FromBrowserContext(context)));
 }
 
 void PlaylistServiceFactory::PrepareMediaDetectorComponentManager() {
