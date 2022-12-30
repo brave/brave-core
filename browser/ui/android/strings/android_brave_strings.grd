@@ -606,13 +606,13 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Clear browsing data
       </message>
       <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK" desc="Title for background video playback preference in controls section">
-        Background video playback
+        Background play
       </message>
       <message name="IDS_PREFS_CLOSING_ALL_TABS_CLOSES_BRAVE" desc="Title for closing all tabs closes brave in controls section">
         Closing all tabs closes Brave
       </message>
       <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK_ON" desc="Text for background video playback is on">
-        Allows audio to continue playing when you switch to another tab in Brave, switch to another app, or your device screen is off.
+        Allows audio to play when you switch to another tab in Brave or another app or your device screen is off.
       </message>
       <message name="IDS_TEXT_ENABLED" desc="Text indicating that an option is enabled">
         Enabled
