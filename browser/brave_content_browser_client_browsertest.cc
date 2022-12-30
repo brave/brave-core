@@ -13,7 +13,7 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/tor/onion_location_navigation_throttle.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -38,6 +38,10 @@
 #include "extensions/common/constants.h"
 #include "net/dns/mock_host_resolver.h"
 #include "url/origin.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/components/tor/onion_location_navigation_throttle.h"
+#endif
 
 class BraveContentBrowserClientTest : public InProcessBrowserTest {
  public:
@@ -485,6 +489,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
       << "No changes on the real URL";
 }
 
+#if BUILDFLAG(ENABLE_TOR)
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
   // Don't block the mock .onion requests.
   tor::OnionLocationNavigationThrottle::BlockOnionRequestsOutsideTorForTesting(
@@ -558,6 +563,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
     ASSERT_TRUE(console_observer.Wait());
   }
 }
+#endif
 
 #if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,

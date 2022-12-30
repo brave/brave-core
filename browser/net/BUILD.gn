@@ -6,6 +6,7 @@
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 
@@ -155,7 +156,7 @@ source_set("browser_tests") {
     "//brave/browser/net",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
-    "//brave/components/tor",
+    "//brave/components/tor/buildflags",
     "//chrome/browser",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
@@ -173,6 +174,9 @@ source_set("browser_tests") {
       "//net:test_support",
       "//net/traffic_annotation:test_support",
     ]
+  }
+  if (enable_tor) {
+    deps += [ "//brave/components/tor" ]
   }
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }

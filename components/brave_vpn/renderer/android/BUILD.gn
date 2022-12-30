@@ -6,6 +6,7 @@
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 
 assert(enable_brave_vpn)
+assert(is_android)
 
 source_set("android") {
   sources = [
@@ -26,6 +27,24 @@ source_set("android") {
     "//third_party/blink/public/common",
     "//third_party/blink/public/strings",
     "//v8",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "vpn_render_frame_observer_browsertest.cc" ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  deps = [
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/renderer/android",
+    "//brave/components/skus/common",
+    "//chrome/common",
+    "//content/public/common",
+    "//content/test:test_support",
+    "//url",
   ]
 }
 

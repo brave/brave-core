@@ -39,6 +39,8 @@ scoped_refptr<Importer> CreateImporterByType(importer::ImporterType type) {
       return new ChromeImporter();
     case importer::TYPE_OPERA:
       return new ChromeImporter();
+    case importer::TYPE_YANDEX:
+      return new ChromeImporter();
     default:
       NOTREACHED();
       return nullptr;
@@ -71,6 +73,8 @@ void BraveProfileImportImpl::StartImport(
     command_line->AppendSwitch("import-chromium");
   } else if (source_profile.importer_type == importer::TYPE_OPERA) {
     command_line->AppendSwitch("import-opera");
+  } else if (source_profile.importer_type == importer::TYPE_YANDEX) {
+    command_line->AppendSwitch("import-yandex");
   } else if (source_profile.importer_type == importer::TYPE_VIVALDI) {
     command_line->AppendSwitch("import-vivaldi");
   }

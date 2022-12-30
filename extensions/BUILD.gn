@@ -4,7 +4,8 @@ if (is_android || is_ios) {
   source_set("common") {
     sources = [
       "//extensions/common/constants.cc",
-      "//extensions/common/constants.h",
+
+      # "//extensions/common/constants.h", this triggers gn check errors in upstream
       "//extensions/common/error_utils.cc",
       "//extensions/common/error_utils.h",
       "//extensions/common/url_pattern.cc",

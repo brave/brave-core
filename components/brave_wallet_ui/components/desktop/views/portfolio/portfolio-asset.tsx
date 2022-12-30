@@ -557,7 +557,7 @@ export const PortfolioAsset = (props: Props) => {
 
   React.useEffect(() => {
     setDontShowAuroraWarning(JSON.parse(localStorage.getItem(bridgeToAuroraDontShowAgainKey) || 'false'))
-  })
+  }, [])
 
   // Receive postMessage from chrome-untrusted://nft-display
   React.useEffect(() => {

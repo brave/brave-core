@@ -157,6 +157,23 @@ module.exports = async function (env, argv) {
             },
           ],
         },
+        {
+          test: (input) => {
+            // Handle both Windows and Linux/Mac paths formats
+            return (
+              input.endsWith('/wallet-standard-brave/lib/esm/wallet.js') ||
+              input.endsWith('\\wallet-standard-brave\\lib\\esm\\wallet.js')
+            );
+          },
+          use: [
+            {
+              loader: 'babel-loader', // This should be the last loader of course
+              options: {
+                plugins: ['@babel/plugin-proposal-optional-chaining'],
+              },
+            },
+          ],
+        },
       ]
     },
     node: {

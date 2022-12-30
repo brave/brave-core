@@ -11,7 +11,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/speedreader/common/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"

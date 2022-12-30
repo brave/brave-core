@@ -11,7 +11,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/buildflags/buildflags.gni")
-import("//brave/components/speedreader/common/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/translate/core/common/buildflags.gni")
 import("//build/config/features.gni")
@@ -357,7 +357,6 @@ source_set("ui") {
     "//brave/browser:sparkle_buildflags",
     "//brave/browser/gcm_driver",
     "//brave/browser/profiles",
-    "//brave/browser/tor",
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
@@ -380,8 +379,10 @@ source_set("ui") {
     "//brave/components/brave_search/common",
     "//brave/components/brave_search_conversion",
     "//brave/components/brave_shields/browser",
+    "//brave/components/brave_shields/common:mojom",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/brave_wayback_machine:buildflags",
+    "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/l10n/common",
@@ -392,8 +393,6 @@ source_set("ui") {
     "//brave/components/playlist/buildflags",
     "//brave/components/resources:static_resources",
     "//brave/components/time_period_storage",
-    "//brave/components/tor",
-    "//brave/components/tor:pref_names",
     "//brave/components/tor/buildflags",
     "//brave/components/vector_icons",
     "//brave/components/webcompat_reporter/browser",
@@ -427,6 +426,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/ui/views/brave_ads",
       "//brave/browser/ui/views/brave_tooltips",
+      "//brave/browser/ui/views/infobars",
       "//brave/components/brave_shields/common:common",
     ]
   }
@@ -611,6 +611,11 @@ source_set("ui") {
         "views/location_bar/onion_location_view.cc",
         "views/location_bar/onion_location_view.h",
       ]
+
+      deps += [
+        "//brave/browser/tor",
+        "//brave/components/tor:pref_names",
+      ]
     }
 
     if (enable_ipfs) {
@@ -652,7 +657,6 @@ source_set("ui") {
     ]
     deps += [
       "//brave/components/brave_vpn/browser",
-      "//brave/components/brave_vpn/common/mojom",
       "//brave/components/brave_vpn/resources/panel:brave_vpn_panel_generated",
       "//mojo/public/cpp/bindings",
       "//ui/webui:webui",

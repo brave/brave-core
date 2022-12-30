@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 source_set("renderer") {
@@ -23,10 +24,13 @@ source_set("renderer") {
     "//brave/components/brave_shields/common",
     "//brave/components/brave_wallet/renderer",
     "//brave/components/cosmetic_filters/renderer",
-    "//brave/components/speedreader/renderer",
     "//brave/renderer/brave_wallet/",
     "//v8",
   ]
+
+  if (enable_speedreader) {
+    deps += [ "//brave/components/speedreader/renderer" ]
+  }
 
   if (enable_brave_vpn && is_android) {
     deps += [ "//brave/components/brave_vpn/renderer/android" ]

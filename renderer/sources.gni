@@ -4,6 +4,8 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/playlist/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
 brave_chrome_renderer_sources = [
   "//brave/renderer/brave_content_renderer_client.cc",
@@ -14,21 +16,48 @@ brave_chrome_renderer_sources = [
   "//brave/renderer/brave_url_loader_throttle_provider.h",
 ]
 
-brave_chrome_renderer_public_deps = [
+brave_chrome_renderer_deps = [
+  "//brave/common:mojo_bindings",
   "//brave/components/brave_ads/renderer",
+  "//brave/components/brave_search/common",
   "//brave/components/brave_search/renderer",
   "//brave/components/brave_shields/common",
+  "//brave/components/brave_vpn/common/buildflags",
+  "//brave/components/brave_wallet/common",
   "//brave/components/brave_wallet/renderer",
   "//brave/components/cosmetic_filters/renderer",
+  "//brave/components/playlist/buildflags",
+  "//brave/components/safe_builtins/renderer",
+  "//brave/components/skus/common",
   "//brave/components/skus/renderer",
-  "//brave/components/speedreader/renderer",
+  "//brave/components/speedreader/common/buildflags",
   "//brave/renderer/brave_wallet",
   "//mojo/public/cpp/bindings",
   "//third_party/blink/public:blink",
   "//third_party/blink/public/common",
 ]
 
-if (enable_brave_vpn && is_android) {
-  brave_chrome_renderer_public_deps +=
-      [ "//brave/components/brave_vpn/renderer/android" ]
+if (enable_speedreader) {
+  brave_chrome_renderer_deps += [
+    "//brave/components/speedreader/common",
+    "//brave/components/speedreader/renderer",
+  ]
 }
+
+if (enable_playlist) {
+  brave_chrome_renderer_deps += [
+    "//brave/components/playlist:playlist_features",
+    "//brave/components/playlist/renderer",
+  ]
+}
+
+if (enable_brave_vpn) {
+  brave_chrome_renderer_deps += [ "//brave/components/brave_vpn/common" ]
+  if (is_android) {
+    brave_chrome_renderer_deps +=
+        [ "//brave/components/brave_vpn/renderer/android:android" ]
+  }
+}
+
+# do not add anything else here
+brave_chrome_renderer_public_deps = []

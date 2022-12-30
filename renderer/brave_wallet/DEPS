@@ -1,6 +1,5 @@
 include_rules = [
   "+brave/common",
-  "+components/version_info",
   "+content/public/common",
   "+content/public/renderer",
   "+gin/converter.h",

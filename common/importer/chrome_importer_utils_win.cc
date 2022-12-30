@@ -99,3 +99,15 @@ base::FilePath GetOperaUserDataFolder() {
 
   return result;
 }
+
+base::FilePath GetYandexUserDataFolder() {
+  base::FilePath result;
+  if (!base::PathService::Get(base::DIR_LOCAL_APP_DATA, &result))
+    return base::FilePath();
+
+  result = result.AppendASCII("Yandex");
+  result = result.AppendASCII("YandexBrowser");
+  result = result.AppendASCII("User Data");
+
+  return result;
+}
