@@ -7,20 +7,14 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
-namespace {
-
-base::Value ToValue(const std::string& json) {
-  return base::JSONReader::Read(json).value_or(base::Value());
-}
-
-}  // namespace
+using base::test::ParseJson;
 
 namespace brave_wallet {
 
@@ -34,27 +28,26 @@ TEST(EthResponseParserUnitTest, ParseEthGetBalance) {
     "result": "0xe670ec64341771606e55d6b4ca35a1a6b75ee3d5145a99d05921026d1527331"
   })");
   std::string balance;
-  ASSERT_TRUE(ParseEthGetBalance(ToValue(json), &balance));
+  ASSERT_TRUE(ParseEthGetBalance(ParseJson(json), &balance));
   ASSERT_EQ(
       balance,
       "0xe670ec64341771606e55d6b4ca35a1a6b75ee3d5145a99d05921026d1527331");
 }
 
 TEST(EthResponseParserUnitTest, ParseEthGetBalanceInvalidJSON) {
-  std::string json("invalid JSON");
   std::string balance;
-  ASSERT_FALSE(ParseEthGetBalance(ToValue(json), &balance));
+  ASSERT_FALSE(ParseEthGetBalance(base::Value(), &balance));
 }
 
 TEST(EthResponseParserUnitTest, ParseEthGetBalanceError) {
   std::string json(
       R"({
-    code: 3,
-    message: 'Error',
-    data: []
-  }")");
+    "code": 3,
+    "message": "Error",
+    "data": []
+  })");
   std::string balance;
-  ASSERT_FALSE(ParseEthGetBalance(ToValue(json), &balance));
+  ASSERT_FALSE(ParseEthGetBalance(ParseJson(json), &balance));
 }
 
 TEST(EthResponseParserUnitTest, ParseEthGetBlockNumber) {
@@ -64,7 +57,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetBlockNumber) {
     "result": "0x4b7" // 1207
   })");
   uint256_t block_num;
-  ASSERT_TRUE(ParseEthGetBlockNumber(ToValue(json), &block_num));
+  ASSERT_TRUE(ParseEthGetBlockNumber(ParseJson(json), &block_num));
   EXPECT_EQ(block_num, uint256_t(1207));
 }
 
@@ -76,7 +69,7 @@ TEST(EthResponseParserUnitTest, ParseEthCall) {
     "result": "0x0"
   })");
   std::string result;
-  ASSERT_EQ(ParseEthCall(ToValue(json)), "0x0");
+  ASSERT_EQ(ParseEthCall(ParseJson(json)), "0x0");
 }
 
 TEST(EthResponseParserUnitTest, DecodeEthCallResponse) {
@@ -124,7 +117,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetTransactionReceipt) {
       }
     })");
   TransactionReceipt receipt;
-  ASSERT_TRUE(ParseEthGetTransactionReceipt(ToValue(json), &receipt));
+  ASSERT_TRUE(ParseEthGetTransactionReceipt(ParseJson(json), &receipt));
   EXPECT_EQ(
       receipt.transaction_hash,
       "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238");
@@ -160,7 +153,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetTransactionReceiptNullContractAddr) {
       }
     })");
   TransactionReceipt receipt;
-  ASSERT_TRUE(ParseEthGetTransactionReceipt(ToValue(json), &receipt));
+  ASSERT_TRUE(ParseEthGetTransactionReceipt(ParseJson(json), &receipt));
   EXPECT_EQ(
       receipt.transaction_hash,
       "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238");
@@ -181,7 +174,7 @@ TEST(EthResponseParserUnitTest, ParseAddressResult) {
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x0000000000000000000000004976fb03c32e5b8cfe2b6ccb31c09ba78ebaba41\"}";
   std::string addr;
-  EXPECT_TRUE(ParseAddressResult(ToValue(json), &addr));
+  EXPECT_TRUE(ParseAddressResult(ParseJson(json), &addr));
   // Will be converted to checksum address.
   EXPECT_EQ(addr, "0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41");
 
@@ -190,7 +183,7 @@ TEST(EthResponseParserUnitTest, ParseAddressResult) {
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x0000000000000000000000004976fb03c32e5b8cfe2b6ccb31c09ba78eba\"}";
-  EXPECT_FALSE(ParseAddressResult(ToValue(json), &addr));
+  EXPECT_FALSE(ParseAddressResult(ParseJson(json), &addr));
   EXPECT_TRUE(addr.empty());
 }
 
@@ -217,7 +210,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetLogs) {
       }
     ]
   })");
-  EXPECT_TRUE(ParseEthGetLogs(ToValue(json), &logs));
+  EXPECT_TRUE(ParseEthGetLogs(ParseJson(json), &logs));
   EXPECT_EQ(logs[0].address, "0x6b175474e89094c44da98b954eedeac495271d0f");
   EXPECT_EQ(
       logs[0].block_hash,
@@ -242,7 +235,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetLogs) {
   EXPECT_EQ(logs[0].transaction_index, static_cast<uint32_t>(159));
 
   // Invalid JSON
-  EXPECT_FALSE(ParseEthGetLogs(ToValue(""), &logs));
+  EXPECT_FALSE(ParseEthGetLogs(base::Value(), &logs));
 
   // Missing address
   json = R"({
@@ -266,7 +259,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetLogs) {
     ]
   })";
 
-  EXPECT_FALSE(ParseEthGetLogs(ToValue(json), &logs));
+  EXPECT_FALSE(ParseEthGetLogs(ParseJson(json), &logs));
 }
 
 TEST(EthResponseParserUnitTest, ParseEnsResolverContentHash) {
@@ -278,7 +271,7 @@ TEST(EthResponseParserUnitTest, ParseEnsResolverContentHash) {
       "e0160eec32d7875c19c5ac7c03bc1f306dc260080d621454bc5f631e7310a70000000000"
       "000000000000000000000000000000000000000000\"}";
   std::vector<uint8_t> content_hash;
-  EXPECT_TRUE(ParseEnsResolverContentHash(ToValue(json), &content_hash));
+  EXPECT_TRUE(ParseEnsResolverContentHash(ParseJson(json), &content_hash));
   EXPECT_EQ(
       ipfs::ContentHashToCIDv1URL(content_hash).spec(),
       "ipfs://bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
@@ -286,9 +279,10 @@ TEST(EthResponseParserUnitTest, ParseEnsResolverContentHash) {
   content_hash = {};
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-      "\"0x000000000000000000000000000000000000000000000000000000000000002000";
+      "\"0x000000000000000000000000000000000000000000000000000000000000002000\""
+      "}";
 
-  EXPECT_FALSE(ParseEnsResolverContentHash(ToValue(json), &content_hash));
+  EXPECT_FALSE(ParseEnsResolverContentHash(ParseJson(json), &content_hash));
   EXPECT_TRUE(content_hash.empty());
 }
 
@@ -338,14 +332,15 @@ TEST(EthResponseParserUnitTest, ParseUnstoppableDomainsProxyReaderGetMany) {
       "https://fallback2.test.com",  // ipfs.redirect_domain.value
   };
 
-  auto values = ParseUnstoppableDomainsProxyReaderGetMany(ToValue(json));
+  auto values = ParseUnstoppableDomainsProxyReaderGetMany(ParseJson(json));
   ASSERT_TRUE(values);
   EXPECT_EQ(values, expected_values);
 
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-      "\"0x000000000000000000000000000000000000000000000000000000000000002000";
-  values = ParseUnstoppableDomainsProxyReaderGetMany(ToValue(json));
+      "\"0x000000000000000000000000000000000000000000000000000000000000002000\""
+      "}";
+  values = ParseUnstoppableDomainsProxyReaderGetMany(ParseJson(json));
   ASSERT_FALSE(values);
 }
 
@@ -359,14 +354,15 @@ TEST(EthResponseParserUnitTest, ParseUnstoppableDomainsProxyReaderGet) {
       // Encoded string of 0x8aaD44321A86b170879d7A244c1e8d360c99DdA8
       "3078386161443434333231413836623137303837396437413234346331653864"
       "3336306339394464413800000000000000000000000000000000000000000000\"}";
-  auto value = ParseUnstoppableDomainsProxyReaderGet(ToValue(json));
+  auto value = ParseUnstoppableDomainsProxyReaderGet(ParseJson(json));
   EXPECT_TRUE(value);
   EXPECT_EQ(value, "0x8aaD44321A86b170879d7A244c1e8d360c99DdA8");
 
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-      "\"0x000000000000000000000000000000000000000000000000000000000000002000";
-  value = ParseUnstoppableDomainsProxyReaderGet(ToValue(json));
+      "\"0x000000000000000000000000000000000000000000000000000000000000002000\""
+      "}";
+  value = ParseUnstoppableDomainsProxyReaderGet(ParseJson(json));
   EXPECT_FALSE(value);
 }
 
@@ -427,7 +423,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
   std::vector<double> gas_used_ratio;
   std::string oldest_block;
   std::vector<std::vector<std::string>> reward;
-  EXPECT_TRUE(ParseEthGetFeeHistory(ToValue(json), &base_fee_per_gas,
+  EXPECT_TRUE(ParseEthGetFeeHistory(ParseJson(json), &base_fee_per_gas,
                                     &gas_used_ratio, &oldest_block, &reward));
   EXPECT_EQ(base_fee_per_gas,
             (std::vector<std::string>{"0x257093e880", "0x20f4138789",
@@ -461,7 +457,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
   gas_used_ratio.clear();
   oldest_block.clear();
   reward.clear();
-  EXPECT_TRUE(ParseEthGetFeeHistory(ToValue(json), &base_fee_per_gas,
+  EXPECT_TRUE(ParseEthGetFeeHistory(ParseJson(json), &base_fee_per_gas,
                                     &gas_used_ratio, &oldest_block, &reward));
   EXPECT_EQ(base_fee_per_gas, std::vector<std::string>());
   EXPECT_EQ(gas_used_ratio, std::vector<double>());
@@ -484,7 +480,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
   gas_used_ratio.clear();
   oldest_block.clear();
   reward.clear();
-  EXPECT_TRUE(ParseEthGetFeeHistory(ToValue(json), &base_fee_per_gas,
+  EXPECT_TRUE(ParseEthGetFeeHistory(ParseJson(json), &base_fee_per_gas,
                                     &gas_used_ratio, &oldest_block, &reward));
   EXPECT_EQ(base_fee_per_gas, std::vector<std::string>());
   EXPECT_EQ(gas_used_ratio, std::vector<double>());
@@ -492,13 +488,11 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
   EXPECT_EQ(reward, std::vector<std::vector<std::string>>());
 
   // Unexpected input
-  EXPECT_FALSE(ParseEthGetFeeHistory(ToValue(""), &base_fee_per_gas,
+  EXPECT_FALSE(ParseEthGetFeeHistory(base::Value(), &base_fee_per_gas,
                                      &gas_used_ratio, &oldest_block, &reward));
-  EXPECT_FALSE(ParseEthGetFeeHistory(ToValue("3"), &base_fee_per_gas,
+  EXPECT_FALSE(ParseEthGetFeeHistory(ParseJson("3"), &base_fee_per_gas,
                                      &gas_used_ratio, &oldest_block, &reward));
-  EXPECT_FALSE(ParseEthGetFeeHistory(ToValue("{"), &base_fee_per_gas,
-                                     &gas_used_ratio, &oldest_block, &reward));
-  EXPECT_FALSE(ParseEthGetFeeHistory(ToValue("{}"), &base_fee_per_gas,
+  EXPECT_FALSE(ParseEthGetFeeHistory(ParseJson("{}"), &base_fee_per_gas,
                                      &gas_used_ratio, &oldest_block, &reward));
 
   // Invalid reward input
@@ -513,7 +507,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
           "reward": [[3]]
         }
       })";
-  EXPECT_FALSE(ParseEthGetFeeHistory(ToValue(json), &base_fee_per_gas,
+  EXPECT_FALSE(ParseEthGetFeeHistory(ParseJson(json), &base_fee_per_gas,
                                      &gas_used_ratio, &oldest_block, &reward));
 
   // Invalid oldest block type
@@ -528,7 +522,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
           "reward": [[]]
         }
       })";
-  EXPECT_FALSE(ParseEthGetFeeHistory(ToValue(json), &base_fee_per_gas,
+  EXPECT_FALSE(ParseEthGetFeeHistory(ParseJson(json), &base_fee_per_gas,
                                      &gas_used_ratio, &oldest_block, &reward));
 
   // Invalid used ratio value
@@ -543,7 +537,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
           "reward": [[]]
         }
       })";
-  EXPECT_FALSE(ParseEthGetFeeHistory(ToValue(json), &base_fee_per_gas,
+  EXPECT_FALSE(ParseEthGetFeeHistory(ParseJson(json), &base_fee_per_gas,
                                      &gas_used_ratio, &oldest_block, &reward));
 
   // Invalid base fee type
@@ -558,7 +552,7 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
           "reward": [[]]
         }
       })";
-  EXPECT_FALSE(ParseEthGetFeeHistory(ToValue(json), &base_fee_per_gas,
+  EXPECT_FALSE(ParseEthGetFeeHistory(ParseJson(json), &base_fee_per_gas,
                                      &gas_used_ratio, &oldest_block, &reward));
 }
 
@@ -599,7 +593,7 @@ TEST(EthResponseParserUnitTest, ParseTokenUri) {
       "id":1,
       "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003a697066733a2f2f516d65536a53696e4870506e6d586d73704d6a776958794e367a533445397a63636172694752336a7863615774712f31383137000000000000"
   })";
-  EXPECT_TRUE(eth::ParseTokenUri(ToValue(body), &url));
+  EXPECT_TRUE(eth::ParseTokenUri(ParseJson(body), &url));
   EXPECT_EQ(url.spec(),
             "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1817");
 
@@ -609,7 +603,7 @@ TEST(EthResponseParserUnitTest, ParseTokenUri) {
       "id":1,
       "result":"0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000135646174613a6170706c69636174696f6e2f6a736f6e3b6261736536342c65794a686448527961574a316447567a496a6f69496977695a47567a59334a7063485270623234694f694a4f623234675a6e56755a326c696247556762476c7662694973496d6c745957646c496a6f695a474630595470706257466e5a53397a646d6372654731734f324a68633255324e43785153453479576e6c434e474a586548566a656a4270595568534d474e4562335a4d4d32517a5a486b314d3031354e585a6a62574e3254577042643031444f58706b62574e7053556861634670595a454e694d326335535770425a3031445154464e5245466e546c524264306c714e44686a5230597759554e436131425453576c4d656a513454444e4f4d6c70364e4430694c434a755957316c496a6f69546b5a4d496e303d0000000000000000000000"
   })";
-  EXPECT_TRUE(eth::ParseTokenUri(ToValue(body), &url));
+  EXPECT_TRUE(eth::ParseTokenUri(ParseJson(body), &url));
   EXPECT_EQ(
       url.spec(),
       R"(data:application/json;base64,eyJhdHRyaWJ1dGVzIjoiIiwiZGVzY3JpcHRpb24iOiJOb24gZnVuZ2libGUgbGlvbiIsImltYWdlIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhacFpYZENiM2c5SWpBZ01DQTFNREFnTlRBd0lqNDhjR0YwYUNCa1BTSWlMejQ4TDNOMlp6ND0iLCJuYW1lIjoiTkZMIn0=)");
@@ -620,7 +614,7 @@ TEST(EthResponseParserUnitTest, ParseTokenUri) {
       "id":1,
       "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002468747470733a2f2f696e76697369626c65667269656e64732e696f2f6170692f3138313700000000000000000000000000000000000000000000000000000000"
   })";
-  EXPECT_TRUE(eth::ParseTokenUri(ToValue(body), &url));
+  EXPECT_TRUE(eth::ParseTokenUri(ParseJson(body), &url));
   EXPECT_EQ(url.spec(), "https://invisiblefriends.io/api/1817");
 
   // Invalid (2 total)
@@ -634,7 +628,7 @@ TEST(EthResponseParserUnitTest, ParseTokenUri) {
      "message": "Request exceeds defined limit"
    }
  })";
-  EXPECT_FALSE(eth::ParseTokenUri(ToValue(body), &url));
+  EXPECT_FALSE(eth::ParseTokenUri(ParseJson(body), &url));
   EXPECT_EQ(url.spec(), "");
 
   // (2/2) Invalid URL returns false (https//brave.com)
@@ -643,7 +637,7 @@ TEST(EthResponseParserUnitTest, ParseTokenUri) {
       "id":1,
       "result":"0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001068747470732f2f62726176652e636f6d00000000000000000000000000000000"
   })";
-  EXPECT_FALSE(eth::ParseTokenUri(ToValue(body), &url));
+  EXPECT_FALSE(eth::ParseTokenUri(ParseJson(body), &url));
   EXPECT_EQ(url.spec(), "");
 }
 
@@ -656,15 +650,14 @@ TEST(EthResponseParserUnitTest, ParseStringResult) {
       "id":1,
       "result": "0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73000000000000000000000000000000000000000000000000000000"
   })";
-  EXPECT_TRUE(eth::ParseStringResult(ToValue(json), &value));
+  EXPECT_TRUE(eth::ParseStringResult(ParseJson(json), &value));
   EXPECT_EQ(
       value,
       "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks");
 
   // Invalid JSON
-  json = "Invalid JSON";
   value = "";
-  EXPECT_FALSE(eth::ParseStringResult(ToValue(json), &value));
+  EXPECT_FALSE(eth::ParseStringResult(base::Value(), &value));
   EXPECT_TRUE(value.empty());
 
   // Valid JSON, invalid result (too short)
@@ -674,7 +667,7 @@ TEST(EthResponseParserUnitTest, ParseStringResult) {
       "id":1,
       "result":"0x00000000000000000000000000000007"
   })";
-  EXPECT_FALSE(eth::ParseStringResult(ToValue(json), &value));
+  EXPECT_FALSE(eth::ParseStringResult(ParseJson(json), &value));
   EXPECT_TRUE(value.empty());
 }
 

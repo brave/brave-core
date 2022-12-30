@@ -33,6 +33,7 @@ absl::optional<std::vector<uint8_t>> ExtractBytes(Span bytes_encoded);
 absl::optional<std::string> ExtractString(Span string_encoded);
 
 absl::optional<std::string> ExtractStringFromTuple(Span data, size_t tuple_pos);
+absl::optional<std::vector<std::string>> ExtractStringArray(Span data);
 absl::optional<std::vector<std::string>> ExtractStringArrayFromTuple(
     Span data,
     size_t tuple_pos);

@@ -53,8 +53,6 @@ bool EncodeStringArray(const std::vector<std::string>& input,
                        std::string* output);
 
 bool DecodeString(size_t offset, const std::string& input, std::string* output);
-bool DecodeStringArray(const std::string& input,
-                       std::vector<std::string>* output);
 
 // Updates preferences for when the wallet is unlocked.
 // This is done in a utils function instead of in the KeyringService
