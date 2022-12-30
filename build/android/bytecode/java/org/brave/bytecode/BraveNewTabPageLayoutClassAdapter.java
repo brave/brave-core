@@ -19,6 +19,9 @@ public class BraveNewTabPageLayoutClassAdapter extends BraveClassVisitor {
         deleteField(sBraveNewTabPageLayoutClassName, "mMvTilesContainerLayout");
         makeProtectedField(sNewTabPageLayoutClassName, "mMvTilesContainerLayout");
 
+        deleteField(sBraveNewTabPageLayoutClassName, "mLogoCoordinator");
+        makeProtectedField(sNewTabPageLayoutClassName, "mLogoCoordinator");
+
         makePublicMethod(sNewTabPageLayoutClassName, "insertSiteSectionView");
         addMethodAnnotation(
                 sBraveNewTabPageLayoutClassName, "insertSiteSectionView", "Ljava/lang/Override;");
@@ -26,6 +29,9 @@ public class BraveNewTabPageLayoutClassAdapter extends BraveClassVisitor {
         makePublicMethod(sNewTabPageLayoutClassName, "isScrollableMvtEnabled");
         addMethodAnnotation(
                 sBraveNewTabPageLayoutClassName, "isScrollableMvtEnabled", "Ljava/lang/Override;");
+
+        deleteMethod(sBraveNewTabPageLayoutClassName, "hasLoadCompleted");
+        makePublicMethod(sNewTabPageLayoutClassName, "hasLoadCompleted");
 
         changeSuperName(sNewTabPageLayoutClassName, sNewTabPageLayoutSuperClassName);
     }

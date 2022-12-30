@@ -23,6 +23,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -76,6 +77,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.TopSiteTable;
+import org.chromium.chrome.browser.logo.LogoCoordinator;
 import org.chromium.chrome.browser.native_page.ContextMenuManager;
 import org.chromium.chrome.browser.ntp.NewTabPageLayout;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
@@ -135,6 +137,7 @@ public class BraveNewTabPageLayout
 
     // To delete in bytecode, parent variable will be used instead.
     private ViewGroup mMvTilesContainerLayout;
+    private LogoCoordinator mLogoCoordinator;
 
     // Own members.
     private final Context mContext;
@@ -187,6 +190,8 @@ public class BraveNewTabPageLayout
     private boolean mIsTopSitesEnabled;
     private boolean mIsDisplayNews;
     private boolean mIsDisplayNewsOptin;
+    private Pair<Boolean, Integer> mDeferredSetSearchProviderTopMargin;
+    private Pair<Boolean, Integer> mDeferredSetSearchProviderBottomMargin;
 
     private Supplier<Tab> mTabProvider;
 
@@ -198,6 +203,8 @@ public class BraveNewTabPageLayout
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         mNTPBackgroundImagesBridge.setNewTabPageListener(newTabPageListener);
         mDatabaseHelper = DatabaseHelper.getInstance();
+        mDeferredSetSearchProviderTopMargin = new Pair<>(false, 0);
+        mDeferredSetSearchProviderBottomMargin = new Pair<>(false, 0);
     }
 
     @Override
@@ -319,6 +326,8 @@ public class BraveNewTabPageLayout
                 SharedPreferencesManager.getInstance().addObserver(mPreferenceObserver);
             }
         }
+
+        runDeferredSetMargins();
         setNtpViews();
     }
 
@@ -1366,5 +1375,46 @@ public class BraveNewTabPageLayout
                 && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(mContext)
                 && UserPrefs.get(Profile.getLastUsedRegularProfile())
                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
+    }
+
+    @Override
+    void setSearchProviderTopMargin(int topMargin) {
+        if (hasLoadCompleted()) {
+            mLogoCoordinator.setTopMargin(topMargin);
+        } else {
+            mDeferredSetSearchProviderTopMargin = new Pair<>(true, topMargin);
+        }
+    }
+
+    @Override
+    void setSearchProviderBottomMargin(int bottomMargin) {
+        if (hasLoadCompleted()) {
+            mLogoCoordinator.setBottomMargin(bottomMargin);
+        } else {
+            mDeferredSetSearchProviderBottomMargin = new Pair<>(true, bottomMargin);
+        }
+    }
+
+    @Override
+    public void onTilesLoaded() {
+        super.onTilesLoaded();
+        runDeferredSetMargins();
+    }
+
+    private void runDeferredSetMargins() {
+        if (mDeferredSetSearchProviderTopMargin != null
+                && mDeferredSetSearchProviderTopMargin.first) {
+            mLogoCoordinator.setTopMargin(mDeferredSetSearchProviderTopMargin.second);
+            mDeferredSetSearchProviderTopMargin = new Pair<>(false, 0);
+        }
+        if (mDeferredSetSearchProviderBottomMargin != null
+                && mDeferredSetSearchProviderBottomMargin.first) {
+            mLogoCoordinator.setBottomMargin(mDeferredSetSearchProviderBottomMargin.second);
+            mDeferredSetSearchProviderBottomMargin = new Pair<>(false, 0);
+        }
+    }
+
+    private boolean hasLoadCompleted() {
+        return false;
     }
 }
