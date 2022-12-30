@@ -886,8 +886,10 @@ TEST_F(PlaylistServiceUnitTest, UpdateItem) {
 
   std::vector<mojom::PlaylistItemPtr> items;
   items.push_back(item.Clone());
-  playlist_service()->AddMediaFiles(
-      std::move(items), std::string() /* will be saved to default list*/);
+  playlist_service()->AddMediaFilesFromItems(
+      std::string() /* will be saved to default list*/,
+      false /* no caching */,
+      std::move(items));
 
   WaitUntil(base::BindLambdaForTesting([&]() {
     return !!prefs()->GetDict(kPlaylistItemsPref).FindDict(item.id);
