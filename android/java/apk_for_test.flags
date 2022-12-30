@@ -37,8 +37,10 @@
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
     *** mMvTilesContainerLayout;
+    *** mLogoCoordinator;
     *** insertSiteSectionView(...);
     *** isScrollableMvtEnabled(...);
+    *** hasLoadCompleted(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
