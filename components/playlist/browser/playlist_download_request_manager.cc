@@ -222,11 +222,8 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
     auto* page_source = media.FindStringKey("pageSrc");
     auto* mime_type = media.FindStringKey("mimeType");
     auto* src = media.FindStringKey("src");
-    DCHECK(name);
-    DCHECK(page_source);
-    DCHECK(page_title);
-    DCHECK(mime_type);
-    DCHECK(src);
+    if (!name || !page_source || !page_title || !mime_type || !src)
+      continue;
 
     // nullable data
     auto* thumbnail = media.FindStringKey("thumbnail");
@@ -237,6 +234,15 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
     item->id = base::Token::CreateRandom().ToString();
     item->page_source = GURL(*page_source);
     item->name = *name;
+    // URL data
+    if (GURL media_url(*src); !media_url.SchemeIsHTTPOrHTTPS())
+      continue;
+
+    if (thumbnail) {
+      if (GURL thumbnail_url(*thumbnail); !thumbnail_url.SchemeIsHTTPOrHTTPS())
+        continue;
+    }
+
     if (duration.has_value()) {
       item->duration = 
           base::TimeDeltaToValue(base::Seconds(*duration)).GetString();
