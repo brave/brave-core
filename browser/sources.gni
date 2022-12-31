@@ -161,6 +161,7 @@ brave_chrome_browser_deps = [
   "//brave/components/de_amp/common",
   "//brave/components/decentralized_dns/content",
   "//brave/components/decentralized_dns/core",
+  "//brave/components/google_sign_in_permission",
   "//brave/components/greaselion/browser/buildflags",
   "//brave/components/ipfs/buildflags",
   "//brave/components/l10n/common",

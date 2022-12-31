@@ -65,6 +65,8 @@
 #include "brave/components/de_amp/browser/de_amp_throttle.h"
 #include "brave/components/debounce/browser/debounce_navigation_throttle.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
+#include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
+#include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/buildflags/buildflags.h"
 #include "brave/components/playlist/features.h"
@@ -528,6 +530,30 @@ BraveContentBrowserClient::AllowWebBluetooth(
   return ContentBrowserClient::AllowWebBluetoothResult::BLOCK_GLOBALLY_DISABLED;
 }
 
+bool BraveContentBrowserClient::CanCreateWindow(
+    content::RenderFrameHost* opener,
+    const GURL& opener_url,
+    const GURL& opener_top_level_frame_url,
+    const url::Origin& source_origin,
+    content::mojom::WindowContainerType container_type,
+    const GURL& target_url,
+    const content::Referrer& referrer,
+    const std::string& frame_name,
+    WindowOpenDisposition disposition,
+    const blink::mojom::WindowFeatures& features,
+    bool user_gesture,
+    bool opener_suppressed,
+    bool* no_javascript_access) {
+  // Check base implementation first
+  bool can_create_window = ChromeContentBrowserClient::CanCreateWindow(
+      opener, opener_url, opener_top_level_frame_url, source_origin,
+      container_type, target_url, referrer, frame_name, disposition, features,
+      user_gesture, opener_suppressed, no_javascript_access);
+
+  return can_create_window && google_sign_in_permission::CanCreateWindow(
+                                  opener, opener_url, target_url);
+}
+
 void BraveContentBrowserClient::ExposeInterfacesToRenderer(
     service_manager::BinderRegistry* registry,
     blink::AssociatedInterfaceRegistry* associated_registry,
@@ -724,13 +750,13 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
     const bool isMainFrame =
         request.resource_type ==
         static_cast<int>(blink::mojom::ResourceType::kMainFrame);
+
     // Speedreader
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-    auto* settings_map = HostContentSettingsMapFactory::GetForProfile(
-        Profile::FromBrowserContext(browser_context));
-
     auto* tab_helper =
         speedreader::SpeedreaderTabHelper::FromWebContents(contents);
+    auto* settings_map = HostContentSettingsMapFactory::GetForProfile(
+        Profile::FromBrowserContext(browser_context));
     if (tab_helper && isMainFrame) {
       const bool check_disabled_sites =
           tab_helper->PageDistillState() ==
@@ -764,6 +790,12 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
                   ads_service, request)) {
         result.push_back(std::move(ads_status_header_throttle));
       }
+    }
+
+    if (auto google_sign_in_permission_throttle =
+            google_sign_in_permission::GoogleSignInPermissionThrottle::
+                MaybeCreateThrottleFor(request, wc_getter)) {
+      result.push_back(std::move(google_sign_in_permission_throttle));
     }
   }
 

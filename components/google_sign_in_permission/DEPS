@@ -1,0 +1,8 @@
+include_rules = [
+  "+base",
+  "+content/public/browser",
+  "+services/network/public/cpp",
+  "+third_party/blink/public/common",
+  "+third_party/blink/public/mojom",
+  "+url",
+]

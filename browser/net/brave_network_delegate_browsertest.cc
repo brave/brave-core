@@ -87,7 +87,6 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
         https_server_.GetURL("a.com", "/nested_iframe_script.html");
 
     top_level_page_url_ = https_server_.GetURL("a.com", "/");
-    https_top_level_page_url_ = https_server_.GetURL("a.com", "/");
 
     cookie_iframe_url_ = https_server_.GetURL("a.com", "/cookie_iframe.html");
     https_cookie_iframe_url_ =
@@ -107,9 +106,6 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
         https_server_.GetURL("blah.twitter.com",
                              "/set-cookie?name=blahtwittercom;domain=twitter."
                              "com;SameSite=None;Secure");
-
-    google_oauth_cookie_url_ = https_server_.GetURL(
-        "accounts.google.com", "/set-cookie?oauth=true;SameSite=None;Secure");
 
     top_level_page_pattern_ =
         ContentSettingsPattern::FromString("https://a.com/*");
@@ -205,11 +201,6 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
     EXPECT_TRUE(NavigateIframeToURL(web_contents, id, url));
   }
 
-  void BlockGoogleOAuthCookies() {
-    browser()->profile()->GetPrefs()->SetBoolean(kGoogleLoginControlType,
-                                                 false);
-  }
-
   void MonitorHTTPRequest(const net::test_server::HttpRequest& request) {
     auto cookie_it = request.headers.find(net::HttpRequestHeaders::kCookie);
     if (cookie_it != request.headers.end()) {
@@ -225,7 +216,6 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   GURL url_;
   GURL nested_iframe_script_url_;
   GURL top_level_page_url_;
-  GURL https_top_level_page_url_;
   GURL cookie_iframe_url_;
   GURL https_cookie_iframe_url_;
   GURL third_party_cookie_url_;
@@ -233,7 +223,6 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   GURL subdomain_first_party_cookie_url_;
   GURL domain_registry_url_;
   GURL iframe_domain_registry_url_;
-  GURL google_oauth_cookie_url_;
   GURL wordpress_top_url_;
   GURL wordpress_frame_url_;
   GURL wp_top_url_;
@@ -460,126 +449,6 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 
   ExpectCookiesOnHost(top_level_page_url_, "");
   ExpectCookiesOnHost(GURL("https://b.com"), "");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
-                       ThirdPartyGoogleOauthCookieAllowed) {
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "");
-
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "oauth=true");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
-                       ThirdPartyGoogleOauthCookieDefaultAllowSiteOverride) {
-  AllowCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "");
-
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "oauth=true");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
-                       ThirdPartyGoogleOauthCookieDefaultBlock3pSiteOverride) {
-  BlockThirdPartyCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "");
-
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "oauth=true");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
-                       ThirdPartyGoogleOauthCookieDefaultBlockSiteOverride) {
-  BlockCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "");
-
-  // Cookies for accounts.google.com will be allowed since the exception
-  // for google oauth will be parsed first.
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "oauth=true");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
-                       ThirdPartyGoogleOauthCookieAllowAllAlowSiteOverride) {
-  DefaultAllowAllCookies();
-  AllowCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "");
-
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "oauth=true");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
-                       ThirdPartyGoogleOauthCookieAllowAllBlock3pSiteOverride) {
-  DefaultAllowAllCookies();
-  BlockThirdPartyCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "");
-
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "oauth=true");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
-                       ThirdPartyGoogleOauthCookieAllowAllBlockSiteOverride) {
-  DefaultAllowAllCookies();
-  BlockCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "");
-
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "oauth=true");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
-                       ThirdPartyGoogleOauthCookieBlockAllAllowSiteOverride) {
-  DefaultBlockAllCookies();
-  AllowCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(https_top_level_page_url_, "name=Good");
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "");
-
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "oauth=true");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
-                       ThirdPartyGoogleOauthCookieBlockAllBlock3pSiteOverride) {
-  DefaultBlockAllCookies();
-  BlockThirdPartyCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(https_top_level_page_url_, "name=Good");
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "");
-
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "oauth=true");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
-                       ThirdPartyGoogleOauthCookieBlockAllBlockSiteOverride) {
-  DefaultBlockAllCookies();
-  BlockCookies(https_top_level_page_url_);
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(https_top_level_page_url_, "");
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "");
-
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "oauth=true");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
-                       ThirdPartyGoogleOauthCookieBlocked) {
-  BlockGoogleOAuthCookies();
-  NavigateToPageWithFrame(https_cookie_iframe_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "");
-
-  NavigateFrameTo(google_oauth_cookie_url_);
-  ExpectCookiesOnHost(GURL("https://accounts.google.com"), "");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
