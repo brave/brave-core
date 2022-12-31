@@ -41,7 +41,7 @@ static JSONLD_ARTICLE_TYPES: [&str; 19] = [
 lazy_static! {
     static ref SEPARATORS: Regex = Regex::new(r#"\s+[\|\\/>»]\s+"#).unwrap();
     static ref END_DASH: Regex = Regex::new(r#"\s+(:?[—\-–])\s+.*$"#).unwrap();
-    static ref JSONLD_SCHEMA: Regex = Regex::new(r#"^https?://schema\.org$"#).unwrap();
+    static ref JSONLD_SCHEMA: Regex = Regex::new(r#"^https?://schema\.org[/?\w/?]*$"#).unwrap();
 }
 
 #[derive(Debug)]
