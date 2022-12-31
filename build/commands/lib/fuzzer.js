@@ -3,18 +3,30 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+const build = require('./build')
 const config = require('../lib/config')
-const path = require('path')
 const fs = require('fs-extra')
+const path = require('path')
 const { spawn } = require('child_process')
 const unzip = require('jszip-unzip').default
+
+const fuzzerBuildConfig = 'Fuzzer'
+
+const buildFuzzer = (fuzzer_test_target, options) => {
+  options.use_libfuzzer = true
+  options.is_asan = true
+  options.target = fuzzer_test_target
+  options.is_component_build = false
+
+  build(fuzzerBuildConfig, options)
+}
 
 const getBinary = (suite) => {
   return (process.platform === 'win32') ? `${suite}.exe` : suite
 }
 
 const runFuzzer = (passthroughArgs, suite) => {
-  config.buildConfig = 'Fuzzer'
+  config.buildConfig = fuzzerBuildConfig
   config.update({})
 
   let fuzzerArgs = []
@@ -42,4 +54,4 @@ const runFuzzer = (passthroughArgs, suite) => {
   })
 }
 
-module.exports = runFuzzer
+module.exports = { buildFuzzer, runFuzzer }
