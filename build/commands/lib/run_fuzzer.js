@@ -14,9 +14,8 @@ const getBinary = (suite) => {
 }
 
 const runFuzzer = (passthroughArgs, suite) => {
-  options = { C: 'Fuzzer' }
   config.buildConfig = 'Fuzzer'
-  config.update(options)
+  config.update({})
 
   let fuzzerArgs = []
 

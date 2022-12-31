@@ -10,9 +10,9 @@
 
 #include "base/files/file_path.h"
 #include "base/i18n/icu_util.h"
-#include "brave/components/adblock_rust_ffi/src/adblock_fuzzer.pb.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/fuzzers/adblock/adblock_fuzzer.pb.h"
 #include "testing/libfuzzer/proto/lpm_interface.h"
 #include "testing/libfuzzer/proto/url_proto_converter.h"
 
