@@ -140,8 +140,8 @@ void BraveTabStrip::UpdateTabContainer() {
   base::ScopedClosureRunner layout_lock;
   if (should_use_compound_tab_container != is_using_compound_tab_container) {
     // Resets TabContainer to use.
-    RemoveChildViewT(
-        static_cast<views::View*>(base::to_address(tab_container_)));
+    auto original_container = RemoveChildViewT(
+        static_cast<TabContainer*>(base::to_address(tab_container_)));
 
     if (should_use_compound_tab_container) {
       // Container should be attached before TabDragContext so that dragged
@@ -168,19 +168,14 @@ void BraveTabStrip::UpdateTabContainer() {
     }
 
     // Resets TabSlotViews for the new TabContainer.
-    base::flat_set<tab_groups::TabGroupId> groups;
     auto* model = GetBrowser()->tab_strip_model();
     for (int i = 0; i < model->count(); i++) {
-      auto data = TabRendererData::FromTabInModel(model, i);
-      const bool pinned = data.pinned;
-      auto* tab = tab_container_->AddTab(
-          std::make_unique<BraveTab>(this), i,
-          pinned ? TabPinned::kPinned : TabPinned::kUnpinned);
-
-      tab->set_context_menu_controller(&context_menu_controller_);
-      tab->AddObserver(this);
-
-      tab->SetData(std::move(data));
+      auto* tab = original_container->GetTabAtModelIndex(i);
+      tab_container_->AddTab(
+          tab->parent()->RemoveChildViewT(tab), i,
+          tab->data().pinned ? TabPinned::kPinned : TabPinned::kUnpinned);
+      if (tab->dragging())
+        GetDragContext()->AddChildView(tab);
     }
 
     auto* group_model = model->group_model();
@@ -188,10 +183,29 @@ void BraveTabStrip::UpdateTabContainer() {
       auto* group = group_model->GetTabGroup(group_id);
       tab_container_->OnGroupCreated(group_id);
       const auto tabs = group->ListTabs();
-      for (auto i = tabs.start(); i < tabs.end(); i++)
+      for (auto i = tabs.start(); i < tabs.end(); i++) {
         AddTabToGroup(group_id, i);
+        tab_at(i)->SchedulePaint();
+      }
+      auto* group_views = tab_container_->GetGroupViews(group_id);
+      group_views->UpdateBounds();
 
-      auto* visual_data = group->visual_data();
+      if (auto* original_header =
+              original_container->GetGroupViews(group_id)->header();
+          original_header->dragging()) {
+        group_views->header()->set_dragging(true);
+        GetDragContext()->AddChildView(group_views->header());
+
+        group_views->header()->SetBoundsRect(original_header->bounds());
+        DCHECK_NE(original_header->parent(), original_container.get())
+            << "The header should be child of TabDragContext at this point.";
+        original_container->AddChildView(
+            original_header->parent()->RemoveChildViewT(original_header));
+      }
+    }
+
+    for (auto group_id : group_model->ListTabGroups()) {
+      auto* visual_data = group_model->GetTabGroup(group_id)->visual_data();
       tab_container_->OnGroupVisualsChanged(group_id, visual_data, visual_data);
     }
 
@@ -200,7 +214,11 @@ void BraveTabStrip::UpdateTabContainer() {
         observer.OnTabAdded(i);
     }
 
-    SetSelection(model->selection_model());
+    // During drag-and-drop session, the active value could be invalid.
+    if (const auto& selection_model = model->selection_model();
+        selection_model.active().has_value()) {
+      SetSelection(selection_model);
+    }
   }
 
   // Update layout of TabContainer
