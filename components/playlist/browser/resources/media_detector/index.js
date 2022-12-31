@@ -97,6 +97,14 @@
     const isThumbnailValid = (thumbnail) => { return thumbnail && thumbnail !== '' }
 
     let thumbnail = document.querySelector('meta[property="og:image"]')?.content
+    if (isThumbnailValid(thumbnail)) { return fixUpRelativeUrl(thumbnail) }
+
+    // Try getting mobile youtube specific data
+    thumbnail = window.ytplayer?.bootstrapPlayerResponse?.videoDetails?.thumbnail?.thumbnails
+    if (thumbnail && Array.isArray(thumbnail)) {
+      thumbnail = thumbnail[0]?.url
+    }
+
     return fixUpRelativeUrl(thumbnail)
   }
 
@@ -106,16 +114,21 @@
     let title = node.title
     if (!isTitleValid(title)) { title = document.title }
 
+    // Try getting mobile youtube specific data
+    if (!isTitleValid(title)) {title = window.ytplayer?.bootstrapPlayerResponse?.videoDetails?.title }
+
     return title
   }
 
   function getMediaAuthor (node) {
-    // TODO(sko) Get metadata of author
-    return null
+    // TODO(sko) Get metadata of author in more general way
+    // Try getting mobile youtube specific data
+    return window.ytplayer?.bootstrapPlayerResponse?.videoDetails?.author
   }
 
   function getMediaDurationInSeconds (node) {
     let duration = node.duration
+    if (!duration) { duration =  window.ytplayer?.bootstrapPlayerResponse?.videoDetails?.lengthSeconds }
     const isNan = (value) => { return typeof value === 'number' && Number.isNaN(value) }
     const isInfinite = (value) => { return typeof value === 'number' && (value === Infinity || value === -Infinity) }
     const clampDuration = (value) => {
