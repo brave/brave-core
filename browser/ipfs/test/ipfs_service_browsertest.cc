@@ -707,7 +707,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetConnectedPeers) {
                           base::Unretained(this)));
   ipfs_service()->GetConnectedPeers(
       base::BindOnce(&IpfsServiceBrowserTest::OnGetConnectedPeersSuccess,
-                     base::Unretained(this)));
+                     base::Unretained(this)),
+      absl::nullopt);
   WaitForRequest();
 }
 
@@ -717,7 +718,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, GetConnectedPeersServerError) {
                           base::Unretained(this)));
   ipfs_service()->GetConnectedPeers(
       base::BindOnce(&IpfsServiceBrowserTest::OnGetConnectedPeersFail,
-                     base::Unretained(this)));
+                     base::Unretained(this)),
+      absl::nullopt);
   WaitForRequest();
 }
 
