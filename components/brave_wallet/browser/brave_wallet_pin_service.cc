@@ -50,7 +50,7 @@ absl::optional<mojom::TokenPinStatusCode> StringToStatus(
     return mojom::TokenPinStatusCode::STATUS_PINNING_IN_PROGRESS;
   } else if (status == "unpinning_in_progress") {
     return mojom::TokenPinStatusCode::STATUS_UNPINNING_IN_PROGRESS;
-  } else if (status == "unpining_failed") {
+  } else if (status == "unpinning_failed") {
     return mojom::TokenPinStatusCode::STATUS_UNPINNING_FAILED;
   } else if (status == "pinning_pendig") {
     return mojom::TokenPinStatusCode::STATUS_PINNING_PENDING;

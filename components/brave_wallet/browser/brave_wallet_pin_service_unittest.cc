@@ -338,9 +338,8 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
         GetPrefs()
             ->GetDict(kPinnedErc721Assets)
             .FindDictByDottedPath(kMonkey1Path);
-    EXPECT_EQ(
-        345u,
-        base::ValueToTime(token_record->Find("validate_timestamp"))->ToTimeT());
+    EXPECT_EQ(base::Time::FromTimeT(345u),
+              base::ValueToTime(token_record->Find("validate_timestamp")));
   }
 
   {
@@ -368,9 +367,8 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
         GetPrefs()
             ->GetDict(kPinnedErc721Assets)
             .FindDictByDottedPath(kMonkey1Path);
-    EXPECT_EQ(
-        345u,
-        base::ValueToTime(token_record->Find("validate_timestamp"))->ToTimeT());
+    EXPECT_EQ(base::Time::FromTimeT(345u),
+              base::ValueToTime(token_record->Find("validate_timestamp")));
   }
 
   {

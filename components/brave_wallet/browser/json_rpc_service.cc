@@ -2123,7 +2123,6 @@ void JsonRpcService::OnGetEthTokenUri(GetEthTokenUriCallback callback,
     std::move(callback).Run(GURL(), error, error_message);
     return;
   }
-  std::string token_url_spec = url.spec();
 
   std::move(callback).Run(url, mojom::ProviderError::kSuccess, "");
 }

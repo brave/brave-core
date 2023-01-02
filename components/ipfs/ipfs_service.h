@@ -150,7 +150,7 @@ class IpfsService : public KeyedService,
                  BoolCallback callback);
 #endif
   virtual void GetConnectedPeers(GetConnectedPeersCallback callback,
-                                 int retries = kPeersDefaultRetries);
+                                 absl::optional<int> retries);
   void GetAddressesConfig(GetAddressesConfigCallback callback);
   virtual void LaunchDaemon(BoolCallback callback);
   void ShutdownDaemon(BoolCallback callback);
