@@ -33,11 +33,13 @@ std::string ErrorCodeToString(
     const mojom::WalletPinServiceErrorCode& error_code);
 
 class BraveWalletPinService : public KeyedService,
-                              public brave_wallet::mojom::WalletPinService {
+                              public brave_wallet::mojom::WalletPinService,
+                              public ipfs::IpfsServiceObserver {
  public:
   BraveWalletPinService(PrefService* prefs,
                         JsonRpcService* service,
-                        ipfs::IpfsLocalPinService* local_pin_service);
+                        ipfs::IpfsLocalPinService* local_pin_service,
+                        IpfsService* ipfs_service);
   ~BraveWalletPinService() override;
 
   mojo::PendingRemote<mojom::WalletPinService> MakeRemote();
@@ -63,6 +65,7 @@ class BraveWalletPinService : public KeyedService,
   void Validate(BlockchainTokenPtr token,
                 const absl::optional<std::string>& service,
                 ValidateCallback callback) override;
+  void IsLocalNodeRunning(IsLocalNodeRunningCallback callback) override;
 
   virtual void MarkAsPendingForPinning(
       const mojom::BlockchainTokenPtr& token,
@@ -79,6 +82,10 @@ class BraveWalletPinService : public KeyedService,
       const mojom::BlockchainTokenPtr& token);
   virtual std::set<std::string> GetTokens(
       const absl::optional<std::string>& service);
+
+ protected:
+  // For testing
+  BraveWalletPinService();
 
  private:
   bool CreateToken(const absl::optional<std::string>& service,
@@ -122,6 +129,10 @@ class BraveWalletPinService : public KeyedService,
                                mojom::ProviderError error,
                                const std::string& error_message);
 
+  // ipfs::IpfsServiceObserver
+  void OnIpfsLaunched(bool result, int64_t pid) override;
+  void OnIpfsShutdown() override;
+
   mojo::ReceiverSet<brave_wallet::mojom::WalletPinService> receivers_;
   mojo::RemoteSet<mojom::BraveWalletPinServiceObserver> observers_;
 
@@ -131,6 +142,7 @@ class BraveWalletPinService : public KeyedService,
   // JsonRpcService is used to fetch token metadata
   raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<ipfs::IpfsLocalPinService> local_pin_service_;
+  raw_ptr<IpfsService> ipfs_service_;
 };
 
 }  // namespace brave_wallet

@@ -152,12 +152,21 @@ std::string ErrorCodeToString(
 BraveWalletPinService::BraveWalletPinService(
     PrefService* prefs,
     JsonRpcService* service,
-    ipfs::IpfsLocalPinService* local_pin_service)
+    ipfs::IpfsLocalPinService* local_pin_service,
+    IpfsService* ipfs_service)
     : prefs_(prefs),
       json_rpc_service_(service),
-      local_pin_service_(local_pin_service) {}
+      local_pin_service_(local_pin_service),
+      ipfs_service_(ipfs_service) {
+  ipfs_service_->AddObserver(this);
+}
 
-BraveWalletPinService::~BraveWalletPinService() {}
+// For testing
+BraveWalletPinService::BraveWalletPinService() = default;
+
+BraveWalletPinService::~BraveWalletPinService() {
+  ipfs_service_->RemoveObserver(this);
+}
 
 mojo::PendingRemote<mojom::WalletPinService>
 BraveWalletPinService::MakeRemote() {
@@ -275,6 +284,23 @@ void BraveWalletPinService::Validate(BlockchainTokenPtr token,
   } else {
     // Remote pinning not implemented yet
     std::move(callback).Run(false, nullptr);
+  }
+}
+
+void BraveWalletPinService::IsLocalNodeRunning(
+    IsLocalNodeRunningCallback callback) {
+  std::move(callback).Run(ipfs_service_->IsDaemonLaunched());
+}
+
+void BraveWalletPinService::OnIpfsLaunched(bool result, int64_t pid) {
+  for (const auto& observer : observers_) {
+    observer->OnLocalNodeStatusChanged(result);
+  }
+}
+
+void BraveWalletPinService::OnIpfsShutdown() {
+  for (const auto& observer : observers_) {
+    observer->OnLocalNodeStatusChanged(false);
   }
 }
 

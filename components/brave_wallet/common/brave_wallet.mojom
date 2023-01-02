@@ -252,6 +252,7 @@ struct TokenPinOverview {
 interface BraveWalletPinServiceObserver {
   OnTokenStatusChanged(string? service, BlockchainToken token,
                        TokenPinStatus status);
+  OnLocalNodeStatusChanged(bool running);
 };
 
 interface WalletPinService {
@@ -265,6 +266,7 @@ interface WalletPinService {
                                             PinError? error);
   Validate(BlockchainToken token, string? service) => (bool result,
                                                        PinError? error);
+  IsLocalNodeRunning() => (bool result);
 };
 
 interface WalletAutoPinService {

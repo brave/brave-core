@@ -66,6 +66,7 @@ BraveWalletPinServiceFactory::BraveWalletPinServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(brave_wallet::JsonRpcServiceFactory::GetInstance());
   DependsOn(ipfs::IpfsLocalPinServiceFactory::GetInstance());
+  DependsOn(ipfs::IpfsServiceFactory::GetInstance());
 }
 
 BraveWalletPinServiceFactory::~BraveWalletPinServiceFactory() = default;
@@ -75,7 +76,8 @@ KeyedService* BraveWalletPinServiceFactory::BuildServiceInstanceFor(
   return new BraveWalletPinService(
       user_prefs::UserPrefs::Get(context),
       JsonRpcServiceFactory::GetServiceForContext(context),
-      ipfs::IpfsLocalPinServiceFactory::GetServiceForContext(context));
+      ipfs::IpfsLocalPinServiceFactory::GetServiceForContext(context),
+      ipfs::IpfsServiceFactory::GetForContext(context));
 }
 
 content::BrowserContext* BraveWalletPinServiceFactory::GetBrowserContextToUse(
