@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/json/json_writer.h"
+#include "base/check_is_test.h"
 #include "base/json/values_util.cc"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
@@ -143,7 +143,8 @@ void PlaylistDownloadRequestManager::GetMedia(content::WebContents* contents) {
   DCHECK(contents && contents->GetPrimaryMainFrame());
 
   const auto& media_detector_script =
-      media_detector_component_manager_->GetMediaDetectorScript();
+      media_detector_component_manager_->GetMediaDetectorScript(
+          contents->GetVisibleURL());
   DCHECK(!media_detector_script.empty());
 
 #if BUILDFLAG(IS_ANDROID)
@@ -153,11 +154,19 @@ void PlaylistDownloadRequestManager::GetMedia(content::WebContents* contents) {
       base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
                      weak_factory_.GetWeakPtr(), contents->GetWeakPtr()));
 #else
-  contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-      base::UTF8ToUTF16(media_detector_script),
-      base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
-                     weak_factory_.GetWeakPtr(), contents->GetWeakPtr()),
-      g_playlist_javascript_world_id);
+  if (run_script_on_main_world_) {
+    contents->GetPrimaryMainFrame()->ExecuteJavaScriptForTests(
+        base::UTF8ToUTF16(media_detector_script),
+        base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
+                       weak_factory_.GetWeakPtr(), contents->GetWeakPtr()));
+
+  } else {
+    contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+        base::UTF8ToUTF16(media_detector_script),
+        base::BindOnce(&PlaylistDownloadRequestManager::OnGetMedia,
+                       weak_factory_.GetWeakPtr(), contents->GetWeakPtr()),
+        g_playlist_javascript_world_id);
+  }
 #endif
 }
 
@@ -222,8 +231,10 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
     auto* page_source = media.FindStringKey("pageSrc");
     auto* mime_type = media.FindStringKey("mimeType");
     auto* src = media.FindStringKey("src");
-    if (!name || !page_source || !page_title || !mime_type || !src)
+    if (!name || !page_source || !page_title || !mime_type || !src) {
+      LOG(ERROR) << __func__ << " required fields are not satisfied";
       continue;
+    }
 
     // nullable data
     auto* thumbnail = media.FindStringKey("thumbnail");
@@ -235,12 +246,17 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
     item->page_source = GURL(*page_source);
     item->name = *name;
     // URL data
-    if (GURL media_url(*src); !media_url.SchemeIsHTTPOrHTTPS())
+    if (GURL media_url(*src); !media_url.SchemeIsHTTPOrHTTPS()) {
+      LOG(ERROR) << __func__ << "media scheme";
       continue;
+    }
 
     if (thumbnail) {
-      if (GURL thumbnail_url(*thumbnail); !thumbnail_url.SchemeIsHTTPOrHTTPS())
+      if (GURL thumbnail_url(*thumbnail);
+          !thumbnail_url.SchemeIsHTTPOrHTTPS()) {
+        LOG(ERROR) << __func__ << "thumbnail scheme";
         continue;
+      }
     }
 
     if (duration.has_value()) {
@@ -274,6 +290,11 @@ void PlaylistDownloadRequestManager::ScheduleWebContentsDestroying() {
 
 void PlaylistDownloadRequestManager::DestroyWebContents() {
   web_contents_.reset();
+}
+
+void PlaylistDownloadRequestManager::SetRunScriptOnMainWorldForTest() {
+  CHECK_IS_TEST();
+  run_script_on_main_world_ = true;
 }
 
 void PlaylistDownloadRequestManager::ConfigureWebPrefsForBackgroundWebContents(

@@ -80,6 +80,8 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
     return media_detector_component_manager_;
   }
 
+  void SetRunScriptOnMainWorldForTest();
+
  private:
   // Calling this will trigger loading |url| on a web contents,
   // and we'll inject javascript on the contents to get a list of
@@ -124,6 +126,8 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
 
   raw_ptr<MediaDetectorComponentManager> media_detector_component_manager_;
   std::unique_ptr<base::RetainingOneShotTimer> web_contents_destroy_timer_;
+
+  bool run_script_on_main_world_ = false;
 
   base::WeakPtrFactory<PlaylistDownloadRequestManager> weak_factory_{this};
 };

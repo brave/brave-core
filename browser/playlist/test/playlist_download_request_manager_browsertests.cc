@@ -12,6 +12,9 @@
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/content_mock_cert_verifier.h"
+#include "net/base/schemeful_site.h"
+#include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -34,6 +37,9 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
   }
   ~PlaylistDownloadRequestManagerBrowserTest() override = default;
 
+  auto* https_server() { return https_server_.get(); }
+  auto* request_manager() { return request_manager_.get(); }
+
   playlist::mojom::PlaylistItemPtr CreateItem(const ExpectedData& data) {
     auto item = playlist::mojom::PlaylistItem::New();
     item->name = data.name;
@@ -45,31 +51,39 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
   }
 
   void LoadHTMLAndCheckResult(const std::string& html,
-                              const std::vector<ExpectedData>& items) {
+                              const std::vector<ExpectedData>& items,
+                              const GURL& url = GURL()) {
     const auto* test_info =
         testing::UnitTest::GetInstance()->current_test_info();
     VLOG(2) << test_info->name() << ": " << __func__;
 
-    if (embedded_test_server()->Started())
-      ASSERT_TRUE(embedded_test_server()->ShutdownAndWaitUntilComplete());
-    embedded_test_server()->RegisterRequestHandler(
+    if (https_server()->Started())
+      ASSERT_TRUE(https_server()->ShutdownAndWaitUntilComplete());
+    https_server()->RegisterRequestHandler(
         base::BindRepeating(&PlaylistDownloadRequestManagerBrowserTest::Serve,
                             base::Unretained(this), html));
-    ASSERT_TRUE(embedded_test_server()->Start());
+    ASSERT_TRUE(https_server()->Start());
 
     // Load given |html| contents.
-    const GURL url = embedded_test_server()->GetURL("/test");
     auto* active_web_contents = chrome_test_utils::GetActiveWebContents(this);
 
-    ASSERT_TRUE(content::NavigateToURL(active_web_contents, url));
+    GURL destination_url = url;
+    if (destination_url.is_valid()) {
+      destination_url = https_server()->GetURL(destination_url.host(),
+                                               destination_url.path());
+    } else {
+      destination_url = https_server()->GetURL("/test");
+    }
+    ASSERT_TRUE(content::NavigateToURL(active_web_contents, destination_url));
 
     // Run script and find media files
-    ASSERT_FALSE(component_manager_->GetMediaDetectorScript().empty());
+    ASSERT_FALSE(component_manager_->GetMediaDetectorScript({}).empty());
     playlist::PlaylistDownloadRequestManager::Request request;
     request.url_or_contents = active_web_contents->GetWeakPtr();
-    request.callback = base::BindOnce(
-        &PlaylistDownloadRequestManagerBrowserTest::OnGetMedia,
-        base::Unretained(this), test_info->name(), std::move(items));
+    request.callback =
+        base::BindOnce(&PlaylistDownloadRequestManagerBrowserTest::OnGetMedia,
+                       base::Unretained(this), test_info->name(), items,
+                       url.is_valid() ? url.host() : destination_url.host());
     request_manager_->GetMediaFilesFromPage(std::move(request));
 
     // Block until result is received from OnGetMedia().
@@ -82,6 +96,12 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
   void SetUpOnMainThread() override {
     PlatformBrowserTest::SetUpOnMainThread();
 
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+    host_resolver()->AddRule("*", "127.0.0.1");
+
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+
     component_manager_ =
         std::make_unique<playlist::MediaDetectorComponentManager>(nullptr);
     component_manager_->SetUseLocalScriptForTesting();
@@ -91,11 +111,27 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
             chrome_test_utils::GetProfile(this), component_manager_.get());
   }
 
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    PlatformBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
+  }
+
   void TearDownOnMainThread() override {
     request_manager_.reset();
     component_manager_.reset();
 
-    ASSERT_TRUE(embedded_test_server()->ShutdownAndWaitUntilComplete());
+    if (https_server()->Started())
+      ASSERT_TRUE(https_server()->ShutdownAndWaitUntilComplete());
 
     PlatformBrowserTest::TearDownOnMainThread();
   }
@@ -104,10 +140,7 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
   std::unique_ptr<net::test_server::HttpResponse> Serve(
       const std::string& html,
       const net::test_server::HttpRequest& request) {
-    GURL absolute_url = embedded_test_server()->GetURL(request.relative_url);
-    if (absolute_url.path() != "/test")
-      return {};
-
+    GURL absolute_url = https_server()->GetURL(request.relative_url);
     auto response = std::make_unique<net::test_server::BasicHttpResponse>();
     response->set_code(net::HTTP_OK);
     response->set_content(html);
@@ -117,23 +150,31 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
 
   void OnGetMedia(const char* test_name,
                   std::vector<ExpectedData> expected_data,
+                  const std::string& requested_host,
                   std::vector<playlist::mojom::PlaylistItemPtr> actual_items) {
     VLOG(2) << test_name << ": " << __func__;
 
     std::vector<playlist::mojom::PlaylistItemPtr> expected_items;
-    base::ranges::for_each(expected_data, [&](auto& item) {
-      if (!item.thumbnail_source.empty()) {
-        item.thumbnail_source =
-            embedded_test_server()->GetURL(item.thumbnail_source).spec();
-      }
+    base::ranges::for_each(expected_data, [&](ExpectedData& item) {
+      auto fix_host = [&](auto& url_str) {
+        ASSERT_FALSE(url_str.empty());
 
-      if (!item.media_source.empty()) {
-        item.media_source =
-            embedded_test_server()->GetURL(item.media_source).spec();
-      }
+        // Fix up host so that we can drop port nums.
+        GURL new_url = https_server()->GetURL(url_str);
+        EXPECT_TRUE(new_url.is_valid());
+        GURL::Replacements replacements;
+        replacements.SetHostStr(requested_host);
+        url_str = new_url.ReplaceComponents(replacements).spec();
+      };
+
+      if (!item.thumbnail_source.empty())
+        fix_host(item.thumbnail_source);
+
+      if (!item.media_source.empty())
+        fix_host(item.media_source);
+
       expected_items.push_back(CreateItem(item));
     });
-
     EXPECT_EQ(actual_items.size(), expected_items.size());
 
     auto equal = [](const auto& a, const auto& b) {
@@ -151,6 +192,9 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
   std::unique_ptr<playlist::PlaylistDownloadRequestManager> request_manager_;
 
   std::unique_ptr<base::RunLoop> run_loop_;
+
+  content::ContentMockCertVerifier mock_cert_verifier_;
+  std::unique_ptr<net::EmbeddedTestServer> https_server_;
 };
 
 IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest, NoMedia) {
@@ -186,4 +230,67 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
       )html",
       {{.name = "", .thumbnail_source = "", .media_source = "/test1.mp4"},
        {.name = "", .thumbnail_source = "", .media_source = "/test2.mp4"}});
+}
+
+IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
+                       YouTubeSpecificRetriever) {
+  // Pre-conditions to decide site specific script
+  ASSERT_EQ(net::SchemefulSite(GURL("https://m.youtube.com")),
+            net::SchemefulSite(GURL("https://youtube.com")));
+  ASSERT_NE(net::SchemefulSite(GURL("http://m.youtube.com")),
+            net::SchemefulSite(GURL("https://m.youtube.com")));
+
+  // Getting JavaScript object requires to access the main world.
+  request_manager()->SetRunScriptOnMainWorldForTest();
+
+  // Check if we can retrieve metadata from youtube specific script.
+  LoadHTMLAndCheckResult(
+      R"html(
+        <html>
+        <script>
+          window.ytplayer = {
+            "bootstrapPlayerResponse": {
+              "videoDetails": {
+                "videoId": "12345689",
+                "title": "Dummy response",
+                "lengthSeconds": "200",
+                "keywords": [
+                  "keyword"
+                ],
+                "channelId": "channel-id",
+                "isOwnerViewing": false,
+                "shortDescription": "this is dummy data for youtube object",
+                "isCrawlable": true,
+                "thumbnail": {
+                  "thumbnails": [
+                    {
+                      "url": "thumbnail.jpg",
+                      "width": 1920,
+                      "height": 1080
+                    }
+                  ]
+                },
+                "allowRatings": true,
+                "viewCount": "1",
+                "author": "Me",
+                "isPrivate": false,
+                "isUnpluggedCorpus": false,
+                "isLiveContent": false
+              }
+            }
+          };
+        </script>
+        <body>
+          <video src="test.mp4"></video>
+        </body></html>
+      )html",
+      {
+          {.name = "Dummy response",
+           .thumbnail_source = "/thumbnail.jpg",
+           .media_source = "/test.mp4"},
+      },
+      GURL("https://m.youtube.com/"));
+
+  ASSERT_EQ(net::SchemefulSite(GURL("https://m.youtube.com")),
+            net::SchemefulSite(https_server()->GetURL("m.youtube.com", "/")));
 }

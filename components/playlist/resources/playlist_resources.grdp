@@ -3,5 +3,6 @@
   <if expr="enable_playlist">
      <include name="IDR_PLAYLIST_HTML" file="../playlist/resources/playlist.html" type="BINDATA" />
      <include name="IDR_PLAYLIST_MEDIA_DETECTOR_JS" file="../playlist/resources/media_detection/index.js" type="BINDATA" />
+     <include name="IDR_PLAYLIST_MEDIA_DETECTOR_YOUTUBE_JS" file="../playlist/resources/media_detection/youtube.com.js" type="BINDATA" />
   </if>
 </grit-part>
