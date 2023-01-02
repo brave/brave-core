@@ -20,6 +20,8 @@ using testing::_;
 
 namespace ipfs {
 
+namespace {
+
 class MockIpfsService : public IpfsService {
  public:
   MockIpfsService() = default;
@@ -31,6 +33,8 @@ class MockIpfsService : public IpfsService {
                void(IpfsService::GetConnectedPeersCallback,
                     absl::optional<int>));
 };
+
+}  // namespace
 
 class IpfsBasePinServiceTest : public testing::Test {
  public:

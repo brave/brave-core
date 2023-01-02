@@ -133,6 +133,8 @@ export class WalletApiProxy {
   addBraveWalletPinServiceObserver (store: Store) {
     const braveWalletServiceObserverReceiver = new BraveWallet.BraveWalletPinServiceObserverReceiver({
       onTokenStatusChanged: function (service, token, status) {
+      },
+      onLocalNodeStatusChanged: function (status) {
       }
     })
     this.braveWalletPinService.addObserver(braveWalletServiceObserverReceiver.$.bindNewPipeAndPassRemote())

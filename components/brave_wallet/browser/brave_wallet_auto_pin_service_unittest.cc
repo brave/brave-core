@@ -33,8 +33,7 @@ namespace {
 
 class MockBraveWalletPinService : public BraveWalletPinService {
  public:
-  MockBraveWalletPinService()
-      : BraveWalletPinService(nullptr, nullptr, nullptr) {}
+  MockBraveWalletPinService() : BraveWalletPinService() {}
   MOCK_METHOD3(AddPin,
                void(mojom::BlockchainTokenPtr,
                     const absl::optional<std::string>&,

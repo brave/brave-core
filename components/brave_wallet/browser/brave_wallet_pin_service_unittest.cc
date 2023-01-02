@@ -91,6 +91,15 @@ class MockJsonRpcService : public JsonRpcService {
   ~MockJsonRpcService() override {}
 };
 
+class MockIpfsService : public IpfsService {
+ public:
+  MockIpfsService() = default;
+  ~MockIpfsService() override = default;
+
+  MOCK_METHOD1(AddObserver, void(ipfs::IpfsServiceObserver* observer));
+  MOCK_METHOD0(IsDaemonLaunched, bool());
+};
+
 }  // namespace
 
 class BraveWalletPinServiceTest : public testing::Test {
@@ -104,7 +113,8 @@ class BraveWalletPinServiceTest : public testing::Test {
     auto* registry = pref_service_.registry();
     registry->RegisterDictionaryPref(kPinnedErc721Assets);
     brave_wallet_pin_service_ = std::make_unique<BraveWalletPinService>(
-        GetPrefs(), GetJsonRpcService(), GetIpfsLocalPinService());
+        GetPrefs(), GetJsonRpcService(), GetIpfsLocalPinService(),
+        GetIpfsService());
   }
 
   PrefService* GetPrefs() { return &pref_service_; }
@@ -117,8 +127,13 @@ class BraveWalletPinServiceTest : public testing::Test {
     return &ipfs_local_pin_service_;
   }
 
+  testing::NiceMock<MockIpfsService>* GetIpfsService() {
+    return &ipfs_service_;
+  }
+
   testing::NiceMock<MockIpfsLocalPinService> ipfs_local_pin_service_;
   testing::NiceMock<MockJsonRpcService> json_rpc_service_;
+  testing::NiceMock<MockIpfsService> ipfs_service_;
 
   std::unique_ptr<BraveWalletPinService> brave_wallet_pin_service_;
   TestingPrefServiceSimple pref_service_;
