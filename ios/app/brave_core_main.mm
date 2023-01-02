@@ -21,7 +21,6 @@
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/p3a/brave_p3a_service.h"
-#include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
@@ -419,14 +418,12 @@ static bool CustomLogHandler(int severity,
 
 - (void)initializeP3AServiceForChannel:(NSString*)channel
                          weekOfInstall:(NSString*)weekOfInstall {
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
   _p3a_service = base::MakeRefCounted<brave::BraveP3AService>(
       GetApplicationContext()->GetLocalState(),
       base::SysNSStringToUTF8(channel), base::SysNSStringToUTF8(weekOfInstall));
   _p3a_service->InitCallbacks();
   _p3a_service->Init(GetApplicationContext()->GetSharedURLLoaderFactory());
   _histogram_braveizer = brave::HistogramsBraveizer::Create();
-#endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 }
 
 - (BraveP3AUtils*)p3aUtils {

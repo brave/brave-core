@@ -19,7 +19,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
-#include "brave/components/p3a/buildflags.h"
+#include "brave/components/p3a/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/metrics/metrics_reporting_state.h"
 #include "chrome/browser/profiles/profile.h"
@@ -39,10 +39,6 @@
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
-
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
-#include "brave/components/p3a/pref_names.h"
-#endif
 
 using content::WebUIMessageHandler;
 
@@ -215,11 +211,9 @@ void WelcomeDOMHandler::SetLocalStateBooleanEnabled(
   local_state->SetBoolean(path, enabled);
 }
 
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
 void WelcomeDOMHandler::SetP3AEnabled(const base::Value::List& args) {
   SetLocalStateBooleanEnabled(brave::kP3AEnabled, args);
 }
-#endif
 
 // Converts Chromium country ID to 2 digit country string
 // For more info see src/components/country_codes/country_codes.h

@@ -30,7 +30,6 @@ source_set("app") {
     "//brave/components/brave_wallet/browser",
     "//brave/components/constants",
     "//brave/components/p3a",
-    "//brave/components/p3a:buildflags",
     "//brave/components/skus/browser",
     "//brave/components/update_client:buildflags",
     "//brave/ios/app/resources",

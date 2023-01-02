@@ -1,3 +1,0 @@
-declare_args() {
-  brave_p3a_enabled = true
-}

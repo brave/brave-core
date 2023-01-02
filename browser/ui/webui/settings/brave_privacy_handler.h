@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "brave/components/p3a/buildflags.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -42,11 +41,9 @@ class BravePrivacyHandler : public settings::SettingsPageUIHandler {
   void GetStatsUsagePingEnabled(const base::Value::List& args);
   void OnStatsUsagePingEnabledChanged();
 
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
   void SetP3AEnabled(const base::Value::List& args);
   void GetP3AEnabled(const base::Value::List& args);
   void OnP3AEnabledChanged();
-#endif
 
   Profile* profile_ = nullptr;
   PrefChangeRegistrar local_state_change_registrar_;

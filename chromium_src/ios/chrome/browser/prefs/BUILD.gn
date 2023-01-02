@@ -11,7 +11,6 @@ group("prefs") {
     "//brave/components/brave_wallet/browser",
     "//brave/components/ipfs/buildflags",
     "//brave/components/p3a",
-    "//brave/components/p3a:buildflags",
     "//brave/ios/browser/brave_stats",
   ]
   if (enable_ipfs) {

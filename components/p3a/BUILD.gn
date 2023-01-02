@@ -1,11 +1,4 @@
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
-import("//brave/components/p3a/buildflags.gni")
-import("//build/buildflag_header.gni")
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [ "BRAVE_P3A_ENABLED=$brave_p3a_enabled" ]
-}
 
 static_library("p3a") {
   sources = [
@@ -36,7 +29,6 @@ static_library("p3a") {
     "//base",
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/brave_stats/browser",
-    "//brave/components/p3a:buildflags",
     "//brave/components/p3a_utils",
     "//brave/components/version_info",
     "//brave/vendor/brave_base",

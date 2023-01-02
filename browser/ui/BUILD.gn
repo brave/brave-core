@@ -389,7 +389,6 @@ source_set("ui") {
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/common",
     "//brave/components/ntp_widget_utils/browser",
-    "//brave/components/p3a:buildflags",
     "//brave/components/playlist/buildflags",
     "//brave/components/resources:static_resources",
     "//brave/components/time_period_storage",

@@ -8,6 +8,7 @@
 #include "base/bind.h"
 #include "base/values.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/p3a/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/gcm_driver/gcm_buildflags.h"
@@ -20,22 +21,16 @@
 #include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
 #endif
 
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
-#include "brave/components/p3a/pref_names.h"
-#endif
-
 BravePrivacyHandler::BravePrivacyHandler() {
   local_state_change_registrar_.Init(g_browser_process->local_state());
   local_state_change_registrar_.Add(
       kStatsReportingEnabled,
       base::BindRepeating(&BravePrivacyHandler::OnStatsUsagePingEnabledChanged,
                           base::Unretained(this)));
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
   local_state_change_registrar_.Add(
       brave::kP3AEnabled,
       base::BindRepeating(&BravePrivacyHandler::OnP3AEnabledChanged,
                           base::Unretained(this)));
-#endif
 }
 
 BravePrivacyHandler::~BravePrivacyHandler() {
@@ -45,14 +40,12 @@ BravePrivacyHandler::~BravePrivacyHandler() {
 void BravePrivacyHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
 
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
   web_ui()->RegisterMessageCallback(
       "setP3AEnabled", base::BindRepeating(&BravePrivacyHandler::SetP3AEnabled,
                                            base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getP3AEnabled", base::BindRepeating(&BravePrivacyHandler::GetP3AEnabled,
                                            base::Unretained(this)));
-#endif
   web_ui()->RegisterMessageCallback(
       "setStatsUsagePingEnabled",
       base::BindRepeating(&BravePrivacyHandler::SetStatsUsagePingEnabled,
@@ -121,7 +114,6 @@ void BravePrivacyHandler::OnStatsUsagePingEnabledChanged() {
   }
 }
 
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
 void BravePrivacyHandler::SetP3AEnabled(const base::Value::List& args) {
   SetLocalStateBooleanEnabled(brave::kP3AEnabled, args);
 }
@@ -138,4 +130,3 @@ void BravePrivacyHandler::OnP3AEnabledChanged() {
     FireWebUIListener("p3a-enabled-changed", base::Value(enabled));
   }
 }
-#endif
