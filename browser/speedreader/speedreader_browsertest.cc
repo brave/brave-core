@@ -16,7 +16,6 @@
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_panel_data_handler_impl.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/common/features.h"
@@ -208,10 +207,6 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DisableSiteWorks) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
-  // Solana web3.js console warning will interfere with console observer
-  brave_wallet::SetDefaultSolanaWallet(
-      browser()->profile()->GetPrefs(),
-      brave_wallet::mojom::DefaultWallet::None);
   ToggleSpeedreader();
 
   content::WebContentsConsoleObserver console_observer(ActiveWebContents());
