@@ -12,6 +12,7 @@ import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
@@ -441,6 +442,15 @@ source_set("ui") {
       "//brave/browser/ui/views/infobars",
       "//brave/components/brave_shields/common:common",
     ]
+  }
+
+  if (enable_text_recognition) {
+    sources += [
+      "views/text_recognition_dialog_view.cc",
+      "views/text_recognition_dialog_view.h",
+    ]
+
+    deps += [ "//brave/components/text_recognition/browser" ]
   }
 
   # This is no longer compiled into Chromium on Android, but we still

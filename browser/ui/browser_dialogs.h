@@ -9,6 +9,11 @@
 #include "base/callback_forward.h"
 
 class Browser;
+class SkBitmap;
+
+namespace content {
+class WebContents;
+}  // namespace content
 
 namespace brave {
 
@@ -17,6 +22,10 @@ void ShowCrashReportPermissionAskDialog(Browser* browser);
 
 // Run |callback| when dialog closed.
 void ShowObsoleteSystemConfirmDialog(base::OnceCallback<void(bool)> callback);
+
+// Show web modal dialog for showing text that recognized from |image|.
+void ShowTextRecognitionDialog(content::WebContents* web_contents,
+                               const SkBitmap& image);
 
 }  // namespace brave
 

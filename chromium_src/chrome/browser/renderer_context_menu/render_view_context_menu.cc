@@ -1,6 +1,7 @@
-// Copyright 2018 The Brave Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2018 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 
@@ -9,6 +10,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/browser_dialogs.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -137,6 +139,16 @@ void OnTorProfileCreated(const GURL& link_url,
 
 #endif
 
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+void OnGetImage(base::WeakPtr<content::WebContents> web_contents,
+                const SkBitmap& image) {
+  if (!web_contents)
+    return;
+
+  brave::ShowTextRecognitionDialog(web_contents.get(), image);
+}
+#endif
+
 }  // namespace
 
 BraveRenderViewContextMenu::BraveRenderViewContextMenu(
@@ -152,6 +164,10 @@ BraveRenderViewContextMenu::BraveRenderViewContextMenu(
 
 bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   switch (id) {
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+    case IDC_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE:
+      return params_.has_image_contents;
+#endif
     case IDC_COPY_CLEAN_LINK:
       return params_.link_url.is_valid();
     case IDC_CONTENT_CONTEXT_FORCE_PASTE:
@@ -250,10 +266,25 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
                               HasAlreadyOpenedTorWindow(GetProfile())));
       break;
 #endif
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+    case IDC_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE:
+      CopyTextFromImage();
+      break;
+#endif
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
   }
 }
+
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+void BraveRenderViewContextMenu::CopyTextFromImage() {
+  RenderFrameHost* frame_host = GetRenderFrameHost();
+  if (frame_host)
+    frame_host->GetImageAt(
+        params_.x, params_.y,
+        base::BindOnce(OnGetImage, source_web_contents_->GetWeakPtr()));
+}
+#endif
 
 void BraveRenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {
   // Call our implementation, not the one in the base class.
@@ -382,6 +413,18 @@ void BraveRenderViewContextMenu::InitMenu() {
                                          IDC_CONTENT_CONTEXT_FORCE_PASTE,
                                          IDS_CONTENT_CONTEXT_FORCE_PASTE);
   }
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+  bool media_image = content_type_->SupportsGroup(
+      ContextMenuContentType::ITEM_GROUP_MEDIA_IMAGE);
+  if (media_image) {
+    index =
+        menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPYIMAGELOCATION);
+    DCHECK(index);
+    menu_model_.InsertItemWithStringIdAt(
+        index.value() + 1, IDC_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE,
+        IDS_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE);
+  }
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
   // Add Open Link with Tor

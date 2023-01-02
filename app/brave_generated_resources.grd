@@ -896,6 +896,25 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
       </if>
 
+      <!-- Text recognition dialog-->
+      <if expr="enable_text_recognition">
+        <message name="IDS_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE" desc="The name of the context menu item to get text from image">
+          Copy Text From Image
+        </message>
+        <message name="IDS_TEXT_RECOG_DIALOG_CLOSE_BUTTON" desc="The text for the close button of text recognition dialog">
+          Close
+        </message>
+        <message name="IDS_TEXT_RECOG_DIALOG_HEADER_IN_PROGRESS" desc="The text for the header of text recognition dialog">
+          Copying text from image...
+        </message>
+        <message name="IDS_TEXT_RECOG_DIALOG_HEADER_COMPLETE" desc="The text for the header of text recognition dialog">
+          Text copied from image
+        </message>
+        <message name="IDS_TEXT_RECOG_DIALOG_HEADER_FAILED" desc="The text for the header of text recognition dialog">
+          Text copy failed
+        </message>
+      </if>
+
       <!-- Brave VPN -->
       <if expr="enable_brave_vpn">
         <message name="IDS_SETTINGS_SHOW_VPN_BUTTON" desc="The label for showing vpn button in the toolbar">
