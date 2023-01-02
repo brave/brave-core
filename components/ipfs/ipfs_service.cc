@@ -582,8 +582,9 @@ void IpfsService::OnImportFinished(ipfs::ImportCompletedCallback callback,
   importers_.erase(key);
 }
 #endif
+
 void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback,
-                                    int retries) {
+                                    absl::optional<int> retries) {
   if (!IsDaemonLaunched()) {
     if (callback)
       std::move(callback).Run(false, std::vector<std::string>{});
@@ -605,7 +606,8 @@ void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback,
   iter->get()->Request(
       "POST", gurl, std::string(), std::string(), false,
       base::BindOnce(&IpfsService::OnGetConnectedPeers, base::Unretained(this),
-                     iter, std::move(callback), retries),
+                     iter, std::move(callback),
+                     retries.value_or(kPeersDefaultRetries)),
       GetHeaders(gurl));
 }
 

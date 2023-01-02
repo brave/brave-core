@@ -38,7 +38,13 @@ BraveWalletAutoPinServiceFactory::GetForContext(
     return mojo::PendingRemote<mojom::WalletAutoPinService>();
   }
 
-  return GetServiceForContext(context)->MakeRemote();
+  auto* service = GetServiceForContext(context);
+
+  if (!service) {
+    return mojo::PendingRemote<mojom::WalletAutoPinService>();
+  }
+
+  return service->MakeRemote();
 }
 
 // static

@@ -28,7 +28,8 @@ class MockIpfsService : public IpfsService {
 
   MOCK_METHOD1(StartDaemonAndLaunch, void(base::OnceCallback<void()>));
   MOCK_METHOD2(GetConnectedPeers,
-               void(IpfsService::GetConnectedPeersCallback, int));
+               void(IpfsService::GetConnectedPeersCallback,
+                    absl::optional<int>));
 };
 
 class IpfsBasePinServiceTest : public testing::Test {
