@@ -398,7 +398,8 @@ void VerticalTabStripRegionView::Layout() {
   if (scroll_view_->GetMaxHeight() != scroll_viewport_height)
     scroll_view_->ClipHeightTo(0, scroll_viewport_height);
 
-  if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
+  if (base::FeatureList::IsEnabled(features::kScrollableTabStrip) &&
+      tabs::features::ShouldShowVerticalTabs(browser_)) {
     scroll_contents_view_->SetSize(
         {scroll_view_->width(), scroll_view_->height()});
     auto* nested_scroll_view = GetTabStripScrollContainer()->scroll_view_.get();
