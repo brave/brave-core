@@ -253,6 +253,16 @@ if (enable_brave_vpn) {
     "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/common",
   ]
+
+  if (is_win) {
+    brave_chrome_browser_deps +=
+        [ "//brave/components/brave_vpn/browser/connection/win" ]
+  }
+
+  if (is_mac) {
+    brave_chrome_browser_deps +=
+        [ "//brave/components/brave_vpn/browser/connection/mac" ]
+  }
 }
 
 if (ethereum_remote_client_enabled) {
