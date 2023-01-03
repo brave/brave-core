@@ -364,40 +364,6 @@ jboolean JNI_BravePrefServiceBridge_GetBooleanForContentSetting(JNIEnv* env,
   }
 }
 
-void JNI_BravePrefServiceBridge_SetReferralAndroidFirstRunTimestamp(
-    JNIEnv* env,
-    jlong time) {
-  return g_browser_process->local_state()->SetTime(
-      kReferralAndroidFirstRunTimestamp, base::Time::FromJavaTime(time));
-}
-
-void JNI_BravePrefServiceBridge_SetReferralCheckedForPromoCodeFile(
-    JNIEnv* env,
-    jboolean value) {
-  return g_browser_process->local_state()->SetBoolean(
-      kReferralCheckedForPromoCodeFile, value);
-}
-
-void JNI_BravePrefServiceBridge_SetReferralInitialization(JNIEnv* env,
-                                                          jboolean value) {
-  return g_browser_process->local_state()->SetBoolean(kReferralInitialization,
-                                                      value);
-}
-
-void JNI_BravePrefServiceBridge_SetReferralPromoCode(
-    JNIEnv* env,
-    const JavaParamRef<jstring>& promoCode) {
-  return g_browser_process->local_state()->SetString(
-      kReferralPromoCode, ConvertJavaStringToUTF8(env, promoCode));
-}
-
-void JNI_BravePrefServiceBridge_SetReferralDownloadId(
-    JNIEnv* env,
-    const JavaParamRef<jstring>& downloadId) {
-  return g_browser_process->local_state()->SetString(
-      kReferralDownloadID, ConvertJavaStringToUTF8(env, downloadId));
-}
-
 jint JNI_BravePrefServiceBridge_GetWebrtcPolicy(JNIEnv* env) {
   return static_cast<int>(
       GetWebRTCIPHandlingPolicy(GetOriginalProfile()->GetPrefs()->GetString(
