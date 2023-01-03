@@ -186,14 +186,6 @@ public class BravePrefServiceBridge {
         BravePrefServiceBridgeJni.get().setReferralDownloadId(downloadId);
     }
 
-    public void setStatsReportingEnabled(boolean value) {
-        BravePrefServiceBridgeJni.get().setStatsReportingEnabled(value);
-    }
-
-    public boolean getStatsReportingEnabled() {
-        return BravePrefServiceBridgeJni.get().getStatsReportingEnabled();
-    }
-
     public void setUnstoppableDomainsResolveMethod(int method) {
         BravePrefServiceBridgeJni.get().setUnstoppableDomainsResolveMethod(method);
     }
@@ -300,9 +292,6 @@ public class BravePrefServiceBridge {
         void setReferralInitialization(boolean value);
         void setReferralPromoCode(String promoCode);
         void setReferralDownloadId(String downloadId);
-
-        void setStatsReportingEnabled(boolean value);
-        boolean getStatsReportingEnabled();
 
         void setUnstoppableDomainsResolveMethod(int method);
         int getUnstoppableDomainsResolveMethod();

@@ -434,7 +434,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         } else if (PREF_SEND_CRASH_REPORTS.equals(key)) {
             UmaSessionStats.changeMetricsReportingConsent((boolean) newValue);
         } else if (PREF_BRAVE_STATS_USAGE_PING.equals(key)) {
-            BravePrefServiceBridge.getInstance().setStatsReportingEnabled((boolean) newValue);
+            BraveLocalState.get().setBoolean(BravePref.STATS_REPORTING_ENABLED, (boolean) newValue);
         } else if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
             mPrefServiceBridge.setBoolean(Pref.SEARCH_SUGGEST_ENABLED, (boolean) newValue);
         } else if (PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR.equals(key)) {
@@ -575,7 +575,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mSendCrashReports.setChecked(mPrivacyPrefManager.isUsageAndCrashReportingPermittedByUser());
 
         mBraveStatsUsagePing.setChecked(
-                BravePrefServiceBridge.getInstance().getStatsReportingEnabled());
+                BraveLocalState.get().getBoolean(BravePref.STATS_REPORTING_ENABLED));
 
         mWebrtcPolicy.setSummary(
                 webrtcPolicyToString(BravePrefServiceBridge.getInstance().getWebrtcPolicy()));

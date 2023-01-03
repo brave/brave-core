@@ -417,15 +417,6 @@ void JNI_BravePrefServiceBridge_SetWebrtcPolicy(JNIEnv* env, jint policy) {
       GetWebRTCIPHandlingPreference((WebRTCIPHandlingPolicy)policy));
 }
 
-void JNI_BravePrefServiceBridge_SetStatsReportingEnabled(JNIEnv* env,
-                                                         jboolean value) {
-  g_browser_process->local_state()->SetBoolean(kStatsReportingEnabled, value);
-}
-
-jboolean JNI_BravePrefServiceBridge_GetStatsReportingEnabled(JNIEnv* env) {
-  return g_browser_process->local_state()->GetBoolean(kStatsReportingEnabled);
-}
-
 void JNI_BravePrefServiceBridge_SetUnstoppableDomainsResolveMethod(
     JNIEnv* env,
     jint method) {
