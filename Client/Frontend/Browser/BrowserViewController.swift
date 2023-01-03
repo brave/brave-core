@@ -2429,11 +2429,9 @@ extension BrowserViewController: TabDelegate {
     if !tab.isPrivate {
       injectedScripts += [
         LoginsScriptHandler(tab: tab, profile: profile, passwordAPI: braveCore.passwordAPI),
-        EthereumProviderScriptHandler(tab: tab)
+        EthereumProviderScriptHandler(tab: tab),
+        SolanaProviderScriptHandler(tab: tab)
       ]
-      if WalletDebugFlags.isSolanaDappsEnabled {
-        injectedScripts += [SolanaProviderScriptHandler(tab: tab)]
-      }
     }
 
     // XXX: Bug 1390200 - Disable NSUserActivity/CoreSpotlight temporarily

@@ -507,7 +507,7 @@ class TabManager: NSObject {
                                                         forMainFrameOnly: true,
                                                         in: EthereumProviderScriptHandler.scriptSandbox)
     }
-    if WalletDebugFlags.isSolanaDappsEnabled, let (provider, jsScripts) = makeWalletSolProvider?(tab) {
+    if let (provider, jsScripts) = makeWalletSolProvider?(tab) {
       tab.walletSolProvider = provider
       tab.walletSolProvider?.`init`(tab)
       tab.walletSolProviderScripts = jsScripts

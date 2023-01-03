@@ -195,7 +195,7 @@ public struct CryptoView: View {
               EditSiteConnectionView(
                 keyringStore: keyringStore,
                 origin: origin,
-                coin: WalletDebugFlags.isSolanaDappsEnabled ? keyringStore.selectedAccount.coin : .eth,
+                coin: keyringStore.selectedAccount.coin,
                 onDismiss: { accounts in
                   handler(accounts)
                   dismissAction?()

@@ -206,47 +206,36 @@ struct WalletPanelView: View {
     case blocked
     
     func title(_ coin: BraveWallet.CoinType) -> String {
-      if WalletDebugFlags.isSolanaDappsEnabled {
-        switch self {
-        case .connected:
-          return Strings.Wallet.walletPanelConnected
-        case .disconnected:
-          if coin == .eth {
-            return Strings.Wallet.walletPanelConnect
-          } else {
-            return Strings.Wallet.walletPanelDisconnected
-          }
-        case .blocked:
-          return Strings.Wallet.walletPanelBlocked
+      switch self {
+      case .connected:
+        return Strings.Wallet.walletPanelConnected
+      case .disconnected:
+        if coin == .eth {
+          return Strings.Wallet.walletPanelConnect
+        } else {
+          return Strings.Wallet.walletPanelDisconnected
         }
-      } else {
-        if self == .connected {
-          return Strings.Wallet.walletPanelConnected
-        }
-        return Strings.Wallet.walletPanelConnect
+      case .blocked:
+        return Strings.Wallet.walletPanelBlocked
       }
     }
   }
   
   private var accountStatus: ConnectionStatus {
     let selectedAccount = keyringStore.selectedAccount
-    if WalletDebugFlags.isSolanaDappsEnabled {
-      switch selectedAccount.coin {
-      case .eth:
-        return ethPermittedAccounts.contains(selectedAccount.address) ? .connected : .disconnected
-      case .sol:
-        if !allowSolProviderAccess.value {
-          return .blocked
-        } else {
-          return solConnectedAddresses.contains(selectedAccount.address) ? .connected : .disconnected
-        }
-      case .fil:
-        return .blocked
-      @unknown default:
-        return .blocked
-      }
-    } else {
+    switch selectedAccount.coin {
+    case .eth:
       return ethPermittedAccounts.contains(selectedAccount.address) ? .connected : .disconnected
+    case .sol:
+      if !allowSolProviderAccess.value {
+        return .blocked
+      } else {
+        return solConnectedAddresses.contains(selectedAccount.address) ? .connected : .disconnected
+      }
+    case .fil:
+      return .blocked
+    @unknown default:
+      return .blocked
     }
   }
   
@@ -266,26 +255,17 @@ struct WalletPanelView: View {
       }
     } label: {
       HStack {
-        if WalletDebugFlags.isSolanaDappsEnabled {
-          if keyringStore.selectedAccount.coin == .sol {
-            Circle()
-              .strokeBorder(.white, lineWidth: 1)
-              .background(
-                Circle()
-                  .foregroundColor(accountStatus == .connected ? .green : .red)
-              )
-              .frame(width: 12, height: 12)
-            Text(accountStatus.title(keyringStore.selectedAccount.coin))
-              .fontWeight(.bold)
-              .lineLimit(1)
-          } else {
-            if accountStatus == .connected {
-              Image(systemName: "checkmark")
-            }
-            Text(accountStatus.title(keyringStore.selectedAccount.coin))
-              .fontWeight(.bold)
-              .lineLimit(1)
-          }
+        if keyringStore.selectedAccount.coin == .sol {
+          Circle()
+            .strokeBorder(.white, lineWidth: 1)
+            .background(
+              Circle()
+                .foregroundColor(accountStatus == .connected ? .green : .red)
+            )
+            .frame(width: 12, height: 12)
+          Text(accountStatus.title(keyringStore.selectedAccount.coin))
+            .fontWeight(.bold)
+            .lineLimit(1)
         } else {
           if accountStatus == .connected {
             Image(systemName: "checkmark")
@@ -355,7 +335,6 @@ struct WalletPanelView: View {
   
   /// A boolean value indicates to hide or unhide `Connect` button
   private func isConnectButtonHidden() -> Bool {
-    guard WalletDebugFlags.isSolanaDappsEnabled else { return false }
     let account = keyringStore.selectedAccount
     if account.coin == .sol {
       for domain in Domain.allDomainsWithWalletPermissions(for: .sol) {
