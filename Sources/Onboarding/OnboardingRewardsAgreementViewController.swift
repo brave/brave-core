@@ -141,13 +141,6 @@ extension OnboardingRewardsAgreementViewController {
       $0.textContainerInset = .zero
       $0.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.regular)
       $0.delegate = self
-
-      $0.linkTextAttributes = [
-        .font: $0.font!,
-        .foregroundColor: OnboardingCommon.UX.linkColor,
-        .underlineStyle: 0,
-      ]
-
       $0.textAlignment = .center
     }
 
