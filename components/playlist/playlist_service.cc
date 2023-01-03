@@ -688,11 +688,11 @@ void PlaylistService::AddServiceObserver(
   service_receivers_.Add(this, std::move(service));
 }
 
-void PlaylistService::AddObserver(PlaylistServiceObserver* observer) {
+void PlaylistService::AddObserverForTest(PlaylistServiceObserver* observer) {
   observers_.AddObserver(observer);
 }
 
-void PlaylistService::RemoveObserver(PlaylistServiceObserver* observer) {
+void PlaylistService::RemoveObserverForTest(PlaylistServiceObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 

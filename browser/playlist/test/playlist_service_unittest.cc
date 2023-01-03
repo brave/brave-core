@@ -251,7 +251,7 @@ TEST_F(PlaylistServiceUnitTest, CreatePlaylistItem) {
     EXPECT_CALL(observer, OnMediaFileDownloadProgressed(_, _, _, _, _))
         .Times(testing::AtLeast(1));
 
-    service->AddObserver(&observer);
+    service->AddObserverForTest(&observer);
 
     auto item = GetValidCreateParams();
     item->id = id;
@@ -265,7 +265,7 @@ TEST_F(PlaylistServiceUnitTest, CreatePlaylistItem) {
           EXPECT_EQ(i + 1u, items.size());
         }));
 
-    service->RemoveObserver(&observer);
+    service->RemoveObserverForTest(&observer);
   }
 }
 
@@ -289,7 +289,7 @@ TEST_F(PlaylistServiceUnitTest, ThumbnailFailed) {
   EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
       .WillOnce(on_event);
 
-  service->AddObserver(&observer);
+  service->AddObserverForTest(&observer);
 
   auto params = GetInvalidCreateParams();
   params->id = id;
@@ -305,7 +305,7 @@ TEST_F(PlaylistServiceUnitTest, ThumbnailFailed) {
         EXPECT_EQ(1u, items.size());
       }));
 
-  service->RemoveObserver(&observer);
+  service->RemoveObserverForTest(&observer);
 }
 
 TEST_F(PlaylistServiceUnitTest, MediaDownloadFailed) {
@@ -330,7 +330,7 @@ TEST_F(PlaylistServiceUnitTest, MediaDownloadFailed) {
   EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
       .Times(testing::AtMost(1));
 
-  service->AddObserver(&observer);
+  service->AddObserverForTest(&observer);
 
   auto params = GetValidCreateParamsForIncompleteMediaFileList();
   params->id = id;
@@ -344,7 +344,7 @@ TEST_F(PlaylistServiceUnitTest, MediaDownloadFailed) {
         EXPECT_EQ(1u, items.size());
       }));
 
-  service->RemoveObserver(&observer);
+  service->RemoveObserverForTest(&observer);
 }
 
 TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
@@ -368,7 +368,7 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .Times(testing::AtMost(1));
 
-    service->AddObserver(&observer);
+    service->AddObserverForTest(&observer);
 
     auto params = GetValidCreateParamsForIncompleteMediaFileList();
     params->id = id;
@@ -382,7 +382,7 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
           EXPECT_EQ(1u, items.size());
         }));
 
-    service->RemoveObserver(&observer);
+    service->RemoveObserverForTest(&observer);
   }
 
   // Try to recover as is - should fail as it still has invalid media.
@@ -397,11 +397,11 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .Times(testing::AtMost(1));
 
-    service->AddObserver(&observer);
+    service->AddObserverForTest(&observer);
     service->RecoverLocalDataForItem(id);
     WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
 
-    service->RemoveObserver(&observer);
+    service->RemoveObserverForTest(&observer);
   }
 
   // Try to recover with valid media - should succeed.
@@ -417,7 +417,7 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .Times(testing::AtMost(1));
 
-    service->AddObserver(&observer);
+    service->AddObserverForTest(&observer);
 
     service->GetPlaylistItem(
         id, base::BindLambdaForTesting([&](mojom::PlaylistItemPtr item) {
@@ -432,7 +432,7 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
           WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
         }));
 
-    service->RemoveObserver(&observer);
+    service->RemoveObserverForTest(&observer);
   }
 }
 
@@ -456,7 +456,7 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .Times(testing::AtMost(1));
 
-    service->AddObserver(&observer);
+    service->AddObserverForTest(&observer);
 
     auto params = GetValidCreateParams();
     params->id = id;
@@ -470,7 +470,7 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
           EXPECT_EQ(i + 1u, items.size());
         }));
 
-    service->RemoveObserver(&observer);
+    service->RemoveObserverForTest(&observer);
   }
 
   // Delete the first item
@@ -483,7 +483,7 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
                     OnPlaylistStatusChanged(PlaylistChangeParams(
                         PlaylistChangeParams::Type::kItemDeleted, id)))
             .WillOnce([&]() { called = true; });
-        service->AddObserver(&observer);
+        service->AddObserverForTest(&observer);
 
         service->DeletePlaylistItemData(id);
         WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
@@ -493,7 +493,7 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
               EXPECT_EQ(items.size() - 1, new_items.size());
             }));
 
-        service->RemoveObserver(&observer);
+        service->RemoveObserverForTest(&observer);
       }));
 
   // Delete all items
@@ -503,7 +503,7 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
     EXPECT_CALL(observer, OnPlaylistStatusChanged(PlaylistChangeParams(
                               PlaylistChangeParams::Type::kAllDeleted, "")))
         .WillOnce([&]() { called = true; });
-    service->AddObserver(&observer);
+    service->AddObserverForTest(&observer);
 
     service->DeleteAllPlaylistItems();
     WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
@@ -513,7 +513,7 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
           EXPECT_FALSE(items.size());
         }));
 
-    service->RemoveObserver(&observer);
+    service->RemoveObserverForTest(&observer);
   }
 }
 
@@ -538,7 +538,7 @@ TEST_F(PlaylistServiceUnitTest, CreateAndRemovePlaylist) {
                               &PlaylistChangeParams::change_type,
                               PlaylistChangeParams::Type::kListCreated)))
         .WillOnce([&]() { called = true; });
-    service->AddObserver(&observer);
+    service->AddObserverForTest(&observer);
 
     service->CreatePlaylist(
         new_playlist->Clone(),
@@ -551,7 +551,7 @@ TEST_F(PlaylistServiceUnitTest, CreateAndRemovePlaylist) {
           EXPECT_EQ(initial_playlists.size() + 1, playlists.size());
         }));
 
-    service->RemoveObserver(&observer);
+    service->RemoveObserverForTest(&observer);
   }
 
   service->GetAllPlaylists(base::BindLambdaForTesting(
@@ -569,11 +569,11 @@ TEST_F(PlaylistServiceUnitTest, CreateAndRemovePlaylist) {
                                   &PlaylistChangeParams::change_type,
                                   PlaylistChangeParams::Type::kListRemoved)))
             .WillOnce([&]() { called = true; });
-        service->AddObserver(&observer);
+        service->AddObserverForTest(&observer);
 
         service->RemovePlaylist((*iter)->id.value());
 
-        service->RemoveObserver(&observer);
+        service->RemoveObserverForTest(&observer);
       }));
 
   service->GetAllPlaylists(base::BindLambdaForTesting(
@@ -607,7 +607,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .Times(testing::AtMost(1));
 
-    service->AddObserver(&observer);
+    service->AddObserverForTest(&observer);
 
     auto params = GetValidCreateParams();
     params->id = id;
@@ -631,7 +631,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
           }
         }));
 
-    service->RemoveObserver(&observer);
+    service->RemoveObserverForTest(&observer);
   }
 
   // Remove local media file. Thumbnail shouldn't be removed
@@ -833,7 +833,7 @@ TEST_F(PlaylistServiceUnitTest, CachingBehavior) {
           .Times(testing::Exactly(0));
     }
 
-    service->AddObserver(&observer);
+    service->AddObserverForTest(&observer);
 
     auto params = GetValidCreateParams();
     params->id = id;
@@ -842,7 +842,7 @@ TEST_F(PlaylistServiceUnitTest, CachingBehavior) {
     WaitUntil(
         base::BindLambdaForTesting([&]() { return expected_call_count == 0; }));
 
-    service->RemoveObserver(&observer);
+    service->RemoveObserverForTest(&observer);
   }
 }
 
@@ -898,7 +898,7 @@ TEST_F(PlaylistServiceUnitTest, UpdateItem) {
   EXPECT_CALL(observer,
               OnPlaylistStatusChanged(PlaylistChangeParams(
                   PlaylistChangeParams::Type::kItemUpdated, item.id)));
-  playlist_service()->AddObserver(&observer);
+  playlist_service()->AddObserverForTest(&observer);
 
   item.name = "new name";
   item.last_played_position = 100;
@@ -910,7 +910,7 @@ TEST_F(PlaylistServiceUnitTest, UpdateItem) {
         EXPECT_EQ(100, new_item->last_played_position);
       }));
 
-  playlist_service()->RemoveObserver(&observer);
+  playlist_service()->RemoveObserverForTest(&observer);
 }
 
 }  // namespace playlist

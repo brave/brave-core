@@ -100,8 +100,6 @@ class PlaylistService : public KeyedService,
   void AddServiceObserver(
       mojo::PendingRemote<mojom::ServiceObserver> service_observer,
       mojo::PendingReceiver<mojom::Service> service);
-  void AddObserver(PlaylistServiceObserver* observer);
-  void RemoveObserver(PlaylistServiceObserver* observer);
 
   bool GetThumbnailPath(const std::string& id, base::FilePath* thumbnail_path);
   bool GetMediaPath(const std::string& id, base::FilePath* media_path);
@@ -161,6 +159,10 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, MoveItem);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, DefaultSaveTargetListID);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, UpdateItem);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreateAndRemovePlaylist);
+
+  void AddObserverForTest(PlaylistServiceObserver* observer);
+  void RemoveObserverForTest(PlaylistServiceObserver* observer);
 
   // KeyedService overrides:
   void Shutdown() override;
