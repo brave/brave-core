@@ -25,6 +25,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -57,6 +58,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.brave_news.mojom.Article;
 import org.chromium.brave_news.mojom.BraveNewsController;
@@ -79,6 +81,7 @@ import org.chromium.chrome.browser.local_database.DisplayAdsTable;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -100,6 +103,8 @@ public class CardBuilderFeedCard {
     private final int TIME = 14;
     private final int CATEGORY = 15;
     private final int DEALS = 16;
+
+    public static final int CARDTYPE_BRAVE_RATING = 100;
 
     private LinearLayout mLinearLayout;
     private Activity mActivity;
@@ -626,6 +631,9 @@ public class CardBuilderFeedCard {
                     mLinearLayout.setBackground(
                             makeRound(CARD_LAYOUT, R.color.card_background, 30));
                     break;
+                case CARDTYPE_BRAVE_RATING:
+                    showBraveNewsRatingUI(mLinearLayout, linearLayoutParams);
+                    break;
                 case CardType.HEADLINE_PAIRED: // HEADLINEPAIR:
                     /*headlinepair
 
@@ -656,7 +664,6 @@ public class CardBuilderFeedCard {
                     mLinearLayout.addView(layoutLeft);
                     layoutLeft.setLayoutParams(cellParams);
                     layoutLeft.setOrientation(LinearLayout.VERTICAL);
-
                     addElementsToSingleLayout(layoutLeft, 0, type);
 
                     mLinearLayout.addView(layoutRight);
@@ -671,7 +678,6 @@ public class CardBuilderFeedCard {
                     layoutRight.setOrientation(LinearLayout.VERTICAL);
 
                     addElementsToSingleLayout(layoutRight, 1, type);
-
                     layoutLeft.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
                     layoutRight.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 
@@ -692,6 +698,24 @@ public class CardBuilderFeedCard {
         }
 
         return mLinearLayout;
+    }
+
+    private void showBraveNewsRatingUI(
+            LinearLayout linearLayout, RecyclerView.LayoutParams linearLayoutParams) {
+        View view = LayoutInflater.from(ContextUtils.getApplicationContext())
+                            .inflate(R.layout.brave_rating_news_layout, null);
+        view.setOnClickListener((v) -> { showBraveRateDialog(); });
+        linearLayoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
+        mLinearLayout.setLayoutParams(linearLayoutParams);
+        linearLayout.addView(view);
+    }
+
+    private void showBraveRateDialog() {
+        if (mActivity != null && mActivity instanceof ChromeActivity) {
+            BraveRateDialogFragment mRateDialogFragment = new BraveRateDialogFragment();
+            mRateDialogFragment.show(((ChromeActivity) mActivity).getSupportFragmentManager(),
+                    "BraveRateDialogFragment");
+        }
     }
 
     private void openUrlInSameTabAndSavePosition(String myUrl) {
