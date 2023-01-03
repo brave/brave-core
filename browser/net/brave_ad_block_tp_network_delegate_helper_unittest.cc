@@ -14,6 +14,7 @@
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/url_context.h"
+#include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
@@ -32,6 +33,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using brave::ResponseCallback;
+using brave_component_updater::BraveComponent;
 using brave_shields::TestFiltersProvider;
 
 namespace {
@@ -100,16 +102,11 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
         brave_component_updater_delegate_->local_state(),
         brave_component_updater_delegate_->locale(), nullptr,
         brave_component_updater_delegate_->GetTaskRunner(),
-        std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
-            brave_component_updater_delegate_->local_state(),
-            brave_component_updater_delegate_->GetTaskRunner(),
-            base::BindOnce(&FakeAdBlockSubscriptionDownloadManagerGetter),
-            user_data_dir));
+        base::BindOnce(&FakeAdBlockSubscriptionDownloadManagerGetter),
+        user_data_dir);
 
     TestingBraveBrowserProcess::GetGlobal()->SetAdBlockService(
         std::move(adblock_service));
-
-    g_brave_browser_process->ad_block_service()->Start();
 
     host_resolver_ = std::make_unique<net::MockHostResolver>();
     resolver_wrapper_ = std::make_unique<network::HostResolver>(

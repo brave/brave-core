@@ -44,28 +44,27 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
                                       catalog_entry.base64_public_key,
                                       catalog_entry.title) {}
 
-AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() = default;
+AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() {
+  // Can be nullptr in unit tests
+  if (component_updater_service_) {
+    component_updater_service_->UnregisterComponent(component_id_);
+  }
+}
 
 void AdBlockComponentFiltersProvider::OnComponentReady(
     const base::FilePath& path) {
   component_path_ = path;
 
-  base::FilePath list_file_path = component_path_.AppendASCII(kListFile);
-
-  // Load the list as a string
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_path),
-      base::BindOnce(&AdBlockComponentFiltersProvider::OnDATLoaded,
-                     weak_factory_.GetWeakPtr(), false));
+  NotifyObservers();
 }
 
 void AdBlockComponentFiltersProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {
   if (component_path_.empty()) {
-    // If the path is not ready yet, don't run the callback. An update should
-    // be pushed soon.
+    // If the path is not ready yet, run the callback with an empty list. An
+    // update will be pushed later to notify about the newly available list.
+    std::move(cb).Run(false, DATFileDataBuffer());
     return;
   }
 
@@ -75,10 +74,6 @@ void AdBlockComponentFiltersProvider::LoadDATBuffer(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_path),
       base::BindOnce(std::move(cb), false));
-}
-
-bool AdBlockComponentFiltersProvider::Delete() && {
-  return component_updater_service_->UnregisterComponent(component_id_);
 }
 
 }  // namespace brave_shields

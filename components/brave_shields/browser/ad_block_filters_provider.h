@@ -22,8 +22,7 @@ class AdBlockFiltersProvider {
  public:
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnDATLoaded(bool deserialize,
-                             const DATFileDataBuffer& dat_buf) = 0;
+    virtual void OnChanged() = 0;
   };
 
   AdBlockFiltersProvider();
@@ -34,19 +33,15 @@ class AdBlockFiltersProvider {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  void LoadDAT(Observer* observer);
-
-  virtual bool Delete() &&;
+  void LoadDAT(base::OnceCallback<void(bool deserialize,
+                                       const DATFileDataBuffer& dat_buf)>);
 
  protected:
   virtual void LoadDATBuffer(
       base::OnceCallback<void(bool deserialize,
                               const DATFileDataBuffer& dat_buf)>) = 0;
 
-  void OnLoad(AdBlockFiltersProvider::Observer* observer,
-              bool deserialize,
-              const DATFileDataBuffer& dat_buf);
-  void OnDATLoaded(bool deserialize, const DATFileDataBuffer& dat_buf);
+  void NotifyObservers();
 
  private:
   base::ObserverList<Observer> observers_;

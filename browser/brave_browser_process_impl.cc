@@ -193,7 +193,6 @@ ProfileManager* BraveBrowserProcessImpl::profile_manager() {
 void BraveBrowserProcessImpl::StartBraveServices() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  ad_block_service()->Start();
   https_everywhere_service()->Start();
   resource_component();
 
@@ -223,11 +222,9 @@ brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
              base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN}));
     ad_block_service_ = std::make_unique<brave_shields::AdBlockService>(
         local_state(), GetApplicationLocale(), component_updater(), task_runner,
-        std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
-            local_state(), task_runner,
-            AdBlockSubscriptionDownloadManagerGetter(),
-            profile_manager()->user_data_dir().Append(
-                profile_manager()->GetInitialProfileDir())));
+        AdBlockSubscriptionDownloadManagerGetter(),
+        profile_manager()->user_data_dir().Append(
+            profile_manager()->GetInitialProfileDir()));
   }
   return ad_block_service_.get();
 }

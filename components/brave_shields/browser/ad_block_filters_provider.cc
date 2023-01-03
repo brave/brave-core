@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
 
+#include <utility>
+
 namespace brave_shields {
 
 AdBlockFiltersProvider::AdBlockFiltersProvider() = default;
@@ -23,29 +25,16 @@ void AdBlockFiltersProvider::RemoveObserver(
     observers_.RemoveObserver(observer);
 }
 
-void AdBlockFiltersProvider::OnDATLoaded(bool deserialize,
-                                         const DATFileDataBuffer& dat_buf) {
+void AdBlockFiltersProvider::NotifyObservers() {
   for (auto& observer : observers_) {
-    observer.OnDATLoaded(deserialize, dat_buf);
+    observer.OnChanged();
   }
 }
 
 void AdBlockFiltersProvider::LoadDAT(
-    AdBlockFiltersProvider::Observer* observer) {
-  LoadDATBuffer(base::BindOnce(&AdBlockFiltersProvider::OnLoad,
-                               weak_factory_.GetWeakPtr(), observer));
-}
-
-void AdBlockFiltersProvider::OnLoad(AdBlockFiltersProvider::Observer* observer,
-                                    bool deserialize,
-                                    const DATFileDataBuffer& dat_buf) {
-  if (observers_.HasObserver(observer)) {
-    observer->OnDATLoaded(deserialize, dat_buf);
-  }
-}
-
-bool AdBlockFiltersProvider::Delete() && {
-  return false;
+    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
+        cb) {
+  LoadDATBuffer(std::move(cb));
 }
 
 }  // namespace brave_shields

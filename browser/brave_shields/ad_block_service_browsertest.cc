@@ -181,21 +181,12 @@ void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
 
 void AdBlockServiceTest::AssertTagExists(const std::string& tag,
                                          bool expected_exists) const {
-  bool exists_default =
-      g_brave_browser_process->ad_block_service()->TagExistsForTest(tag);
-  ASSERT_EQ(exists_default, expected_exists);
-
-  base::AutoLock lock(g_brave_browser_process->ad_block_service()
-                          ->regional_service_manager()
-                          ->regional_services_lock_);
-
-  for (const auto& regional_service :
-       g_brave_browser_process->ad_block_service()
-           ->regional_service_manager()
-           ->regional_services_) {
-    bool exists_regional = regional_service.second->TagExists(tag);
-    ASSERT_EQ(exists_regional, expected_exists);
-  }
+  g_brave_browser_process->ad_block_service()->TagExistsForTest(
+      tag, base::BindOnce(
+               [](bool expected_exists, bool actual_exists) {
+                 ASSERT_EQ(expected_exists, actual_exists);
+               },
+               expected_exists));
 }
 
 void AdBlockServiceTest::InitEmbeddedTestServer() {
@@ -224,7 +215,8 @@ bool AdBlockServiceTest::InstallDefaultAdBlockExtension(
     return false;
 
   g_brave_browser_process->ad_block_service()
-      ->default_filters_provider_->OnComponentReady(ad_block_extension->path());
+      ->default_filters_provider()
+      ->OnComponentReady(ad_block_extension->path());
   WaitForAdBlockServiceThreads();
 
   return true;
@@ -262,7 +254,7 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
   // loads.
   EXPECT_TRUE(InstallDefaultAdBlockExtension());
   auto* default_engine =
-      g_brave_browser_process->ad_block_service()->default_service_.get();
+      g_brave_browser_process->ad_block_service()->default_engine_.get();
   EngineTestObserver default_engine_observer(default_engine);
   default_engine_observer.Wait();
 
@@ -289,22 +281,18 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
     g_brave_browser_process->ad_block_service()
         ->regional_service_manager()
         ->EnableFilterList(uuid, true);
-    base::AutoLock lock(g_brave_browser_process->ad_block_service()
-                            ->regional_service_manager()
-                            ->regional_services_lock_);
-    EXPECT_EQ(g_brave_browser_process->ad_block_service()
-                  ->regional_service_manager()
-                  ->regional_services_.size(),
-              1ULL);
 
-    auto regional_engine = g_brave_browser_process->ad_block_service()
-                               ->regional_service_manager()
-                               ->regional_services_.find(uuid);
-    EngineTestObserver regional_engine_observer(regional_engine->second.get());
-    auto regional_filters_provider =
+    const auto& regional_filters_providers =
         g_brave_browser_process->ad_block_service()
             ->regional_service_manager()
-            ->regional_filters_providers_.find(uuid);
+            ->regional_filters_providers();
+
+    EXPECT_EQ(regional_filters_providers.size(), 1ULL);
+
+    auto* regional_engine = g_brave_browser_process->ad_block_service()
+                                ->additional_filters_engine_.get();
+    EngineTestObserver regional_engine_observer(regional_engine);
+    auto regional_filters_provider = regional_filters_providers.find(uuid);
     regional_filters_provider->second->OnComponentReady(
         ad_block_extension->path());
     regional_engine_observer.Wait();
@@ -2422,17 +2410,17 @@ IN_PROC_BROWSER_TEST_F(DefaultCookieListFlagEnabledTest, ListEnabled) {
 
   // Enable the filter list, and then disable it again.
   {
+    CookieListPrefObserver pref_observer(g_browser_process->local_state());
     g_brave_browser_process->ad_block_service()
         ->regional_service_manager()
         ->EnableFilterList(brave_shields::kCookieListUuid, true);
-    CookieListPrefObserver pref_observer(g_browser_process->local_state());
     pref_observer.Wait();
   }
   {
+    CookieListPrefObserver pref_observer(g_browser_process->local_state());
     g_brave_browser_process->ad_block_service()
         ->regional_service_manager()
         ->EnableFilterList(brave_shields::kCookieListUuid, false);
-    CookieListPrefObserver pref_observer(g_browser_process->local_state());
     pref_observer.Wait();
   }
 
