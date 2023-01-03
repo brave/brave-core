@@ -27,14 +27,6 @@ class BraveExtensionProviderTest : public extensions::ExtensionFunctionalTest {
 
 namespace extensions {
 
-IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, BlacklistExtension) {
-  base::FilePath test_data_dir;
-  GetTestDataDir(&test_data_dir);
-  const extensions::Extension* extension = InstallExtension(
-      test_data_dir.AppendASCII("should-be-blocked-extension"), 0);
-  ASSERT_FALSE(extension);
-}
-
 IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, WhitelistedExtension) {
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);

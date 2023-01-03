@@ -49,14 +49,6 @@ brave_shields::AdBlockService* TestingBraveBrowserProcess::ad_block_service() {
   return ad_block_service_.get();
 }
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-brave_component_updater::ExtensionWhitelistService*
-TestingBraveBrowserProcess::extension_whitelist_service() {
-  NOTREACHED();
-  return nullptr;
-}
-#endif
-
 #if BUILDFLAG(ENABLE_GREASELION)
 greaselion::GreaselionDownloadService*
 TestingBraveBrowserProcess::greaselion_download_service() {
