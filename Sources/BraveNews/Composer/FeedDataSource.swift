@@ -13,6 +13,7 @@ import BraveCore
 import CodableHelpers
 import os.log
 import SwiftUI
+import Collections
 
 /// Powers the Brave News feed.
 public class FeedDataSource: ObservableObject {
@@ -788,7 +789,7 @@ public class FeedDataSource: ObservableObject {
     dispatchPrecondition(condition: .onQueue(.main))
 
     let overridenSources = FeedSourceOverride.all()
-    var feedsFromEnabledSources = Set(items.filter { item in
+    var feedsFromEnabledSources = OrderedSet(items.filter { item in
       if item.source.isUserSource {
         return true
       }
@@ -798,7 +799,7 @@ public class FeedDataSource: ObservableObject {
     })
     for (key, value) in Preferences.BraveNews.followedChannels.value {
       let channelForLocale = Set(value)
-      feedsFromEnabledSources.formUnion(Set(items.filter({ item in
+      feedsFromEnabledSources.formUnion(OrderedSet(items.filter({ item in
         if overridenSources.first(where: { $0.publisherID == item.source.id })?.enabled == false {
           // Hidden source
           return false
