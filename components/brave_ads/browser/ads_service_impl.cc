@@ -31,6 +31,7 @@
 #include "base/timer/timer.h"
 #include "bat/ads/ad_constants.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/ads_client_callback.h"
 #include "bat/ads/ads_observer.h"
 #include "bat/ads/database.h"
 #include "bat/ads/new_tab_page_ad_info.h"
@@ -432,6 +433,15 @@ bool AdsServiceImpl::UserHasOptedIn() const {
          GetBooleanPrefValue(brave_news::prefs::kNewTabPageShowToday);
 }
 
+void AdsServiceImpl::BindAdsObservers() {
+  is_ads_observers_bound_ = true;
+
+  for (auto& ads_observer : ads_observers_) {
+    DCHECK(!ads_observer.IsBound());
+    bat_ads_remote_->AddBatAdsObserver(ads_observer.Bind());
+  }
+}
+
 bool AdsServiceImpl::CanStartBatAdsService() const {
   return IsEnabled() || UserHasOptedIn();
 }
@@ -475,8 +485,13 @@ void AdsServiceImpl::StartBatAdsService() {
   bat_ads_service_remote_->Create(
       bat_ads_client_receiver_.BindNewEndpointAndPassRemote(),
       bat_ads_remote_.BindNewEndpointAndPassReceiver(),
-      base::BindOnce(&AdsServiceImpl::InitializeBasePathDirectory,
-                     AsWeakPtr()));
+      base::BindOnce(&AdsServiceImpl::OnDidStartBatAdsService, AsWeakPtr()));
+}
+
+void AdsServiceImpl::OnDidStartBatAdsService() {
+  BindAdsObservers();
+
+  InitializeBasePathDirectory();
 }
 
 void AdsServiceImpl::RestartBatAdsServiceAfterDelay() {
@@ -763,7 +778,7 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
 
 bool AdsServiceImpl::CheckIfCanShowNotificationAds() {
   if (!features::IsNotificationAdsEnabled()) {
-    LOG(INFO) << "Notification not made: Ad notifications feature is disabled";
+    VLOG(1) << "Notification not made: Ad notifications feature is disabled";
     return false;
   }
 
@@ -1435,6 +1450,10 @@ void AdsServiceImpl::Shutdown() {
 
   is_bat_ads_initialized_ = false;
 
+  for (auto& ads_observer : ads_observers_) {
+    ads_observer.Reset();
+  }
+
   bat_ads_remote_.reset();
   bat_ads_client_receiver_.reset();
   bat_ads_service_remote_.reset();
@@ -1464,7 +1483,9 @@ void AdsServiceImpl::AddBatAdsObserver(ads::AdsObserver* observer) {
   DCHECK(observer);
   DCHECK(!observer->IsBound());
 
-  if (bat_ads_remote_.is_bound()) {
+  ads_observers_.AddObserver(observer);
+
+  if (is_ads_observers_bound_) {
     bat_ads_remote_->AddBatAdsObserver(observer->Bind());
   }
 }
@@ -1473,6 +1494,8 @@ void AdsServiceImpl::RemoveBatAdsObserver(ads::AdsObserver* observer) {
   DCHECK(observer);
 
   observer->Reset();
+
+  ads_observers_.RemoveObserver(observer);
 }
 
 bool AdsServiceImpl::IsSupportedLocale() const {

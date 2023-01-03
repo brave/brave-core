@@ -20,7 +20,6 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/browser/brave_ads/background_helper/background_helper.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
@@ -109,9 +108,12 @@ class AdsServiceImpl : public AdsService,
 
   bool UserHasOptedIn() const;
 
+  void BindAdsObservers();
+
   bool CanStartBatAdsService() const;
   void MaybeStartBatAdsService();
   void StartBatAdsService();
+  void OnDidStartBatAdsService();
   void RestartBatAdsServiceAfterDelay();
   void CancelRestartBatAdsService();
 
@@ -485,6 +487,9 @@ class AdsServiceImpl : public AdsService,
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
       bat_ads_client_receiver_;
   mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_remote_;
+
+  base::ObserverList<ads::AdsObserver> ads_observers_;
+  bool is_ads_observers_bound_ = false;
 };
 
 }  // namespace brave_ads

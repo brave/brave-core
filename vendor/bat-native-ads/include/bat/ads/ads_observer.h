@@ -6,13 +6,15 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_OBSERVER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_OBSERVER_H_
 
+#include "base/observer_list_types.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
 namespace ads {
 
-class AdsObserver : public bat_ads::mojom::BatAdsObserver {
+class AdsObserver : public base::CheckedObserver,
+                    public bat_ads::mojom::BatAdsObserver {
  public:
   AdsObserver();
 
@@ -35,7 +37,7 @@ class AdsObserver : public bat_ads::mojom::BatAdsObserver {
 
   // Resets the receiver to an unbound state. An unbound Receiver will NEVER
   // schedule method calls or disconnection notifications, and any pending tasks
-  // which were scheduled prior to unbinding are effectively cancelled.
+  // which were scheduled prior to unbinding are effectively canceled.
   void Reset() { receiver_.reset(); }
 
   // Invoked when ads has successfully initialized.

@@ -47,7 +47,6 @@ void AdsClientHelper::AddObserver(AdsClientObserver* observer) {
 // static
 void AdsClientHelper::RemoveObserver(AdsClientObserver* observer) {
   DCHECK(observer);
-  DCHECK(observer->IsBound());
 
   observer->Reset();
 }
