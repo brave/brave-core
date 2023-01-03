@@ -142,10 +142,6 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getSafetynetCheckFailed();
     }
 
-    public void setSafetynetStatus(String status) {
-        BravePrefServiceBridgeJni.get().setSafetynetStatus(status);
-    }
-
     public void resetPromotionLastFetchStamp() {
         BravePrefServiceBridgeJni.get().resetPromotionLastFetchStamp();
     }
@@ -281,8 +277,6 @@ public class BravePrefServiceBridge {
 
         void setSafetynetCheckFailed(boolean value);
         boolean getSafetynetCheckFailed();
-
-        void setSafetynetStatus(String status);
 
         void resetPromotionLastFetchStamp();
         boolean getBooleanForContentSetting(int content_type);

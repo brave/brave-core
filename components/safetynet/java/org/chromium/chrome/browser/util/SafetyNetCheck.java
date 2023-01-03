@@ -29,8 +29,9 @@ import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
+import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.BravePref;
 
 import java.security.SecureRandom;
 import java.util.Calendar;
@@ -171,16 +172,16 @@ public class SafetyNetCheck {
                         Log.e(TAG, "Unable to perform SafetyNet attestation: " + e);
                     }
                     attestationPassed = ctsProfileMatch && basicIntegrity;
-                    BravePrefServiceBridge.getInstance().setSafetynetStatus(attestationPassed
-                                    ? SAFETYNET_STATUS_VERIFIED_PASSED
-                                    : SAFETYNET_STATUS_VERIFIED_NOT_PASSED);
+                    BraveLocalState.get().setString(BravePref.SAFETYNET_STATUS,
+                            attestationPassed ? SAFETYNET_STATUS_VERIFIED_PASSED
+                                              : SAFETYNET_STATUS_VERIFIED_NOT_PASSED);
                     if (mSafetyNetCheckCallback != null) {
                         mSafetyNetCheckCallback.onResult(attestationPassed);
                     }
                 }
             } else {
-                BravePrefServiceBridge.getInstance().setSafetynetStatus(
-                        SAFETYNET_STATUS_NOT_VERIFIED);
+                BraveLocalState.get().setString(
+                        BravePref.SAFETYNET_STATUS, SAFETYNET_STATUS_NOT_VERIFIED);
             }
         }
         if (mNativeSafetyNetCheck == 0) return;
