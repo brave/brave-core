@@ -162,38 +162,6 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getBooleanForContentSetting(content_type);
     }
 
-    public void setUnstoppableDomainsResolveMethod(int method) {
-        BravePrefServiceBridgeJni.get().setUnstoppableDomainsResolveMethod(method);
-    }
-
-    public int getUnstoppableDomainsResolveMethod() {
-        return BravePrefServiceBridgeJni.get().getUnstoppableDomainsResolveMethod();
-    }
-
-    public void setENSResolveMethod(int method) {
-        BravePrefServiceBridgeJni.get().setENSResolveMethod(method);
-    }
-
-    public int getENSResolveMethod() {
-        return BravePrefServiceBridgeJni.get().getENSResolveMethod();
-    }
-
-    public void setENSOffchainResolveMethod(int method) {
-        BravePrefServiceBridgeJni.get().setENSOffchainResolveMethod(method);
-    }
-
-    public int getENSOffchainResolveMethod() {
-        return BravePrefServiceBridgeJni.get().getENSOffchainResolveMethod();
-    }
-
-    public void setSnsResolveMethod(int method) {
-        BravePrefServiceBridgeJni.get().setSnsResolveMethod(method);
-    }
-
-    public int getSnsResolveMethod() {
-        return BravePrefServiceBridgeJni.get().getSnsResolveMethod();
-    }
-
     public void setWebrtcPolicy(int policy) {
         BravePrefServiceBridgeJni.get().setWebrtcPolicy(policy);
     }
@@ -260,15 +228,6 @@ public class BravePrefServiceBridge {
 
         void resetPromotionLastFetchStamp();
         boolean getBooleanForContentSetting(int content_type);
-
-        void setUnstoppableDomainsResolveMethod(int method);
-        int getUnstoppableDomainsResolveMethod();
-        void setENSResolveMethod(int method);
-        int getENSResolveMethod();
-        void setENSOffchainResolveMethod(int method);
-        int getENSOffchainResolveMethod();
-        void setSnsResolveMethod(int method);
-        int getSnsResolveMethod();
 
         void setWebrtcPolicy(int policy);
         int getWebrtcPolicy();
