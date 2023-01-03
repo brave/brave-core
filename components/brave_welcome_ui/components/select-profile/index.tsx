@@ -80,7 +80,13 @@ function SelectProfile () {
 
     WelcomeBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.ImportSelectProfile, isFinished: false, isSkipped: false })
   }
-
+  const getImportEntryName = (entry: any) => {
+    let name = entry.name
+    if (entry.profileName) {
+      name += ' - ' + entry.profileName
+    }
+    return name
+  }
   return (
     <S.MainBox>
       <div className="view-header-box">
@@ -106,7 +112,7 @@ function SelectProfile () {
             return (<ProfileItem
               key={entry.index}
               id={entry.index}
-              profileName={entry.name}
+              profileName={getImportEntryName(entry)}
               onChange={handleChange}
               isChecked={selectedProfiles.has(entry.index)}
             />)
