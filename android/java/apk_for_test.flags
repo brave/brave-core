@@ -461,6 +461,14 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.download.BraveDownloadMessageUiControllerImpl {
+    *** isVisibleToUser(...);
+}
+
+-keep class org.chromium.chrome.browser.download.DownloadMessageUiControllerImpl {
+    *** isVisibleToUser(...);
+}
+
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteCoordinator {
     *** createViewProvider(...);
 }

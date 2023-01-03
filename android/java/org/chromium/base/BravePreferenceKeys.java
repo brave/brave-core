@@ -1,9 +1,9 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.preferences;
+package org.chromium.base;
 
 public final class BravePreferenceKeys {
     public static final String BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY =
@@ -25,6 +25,8 @@ public final class BravePreferenceKeys {
             "org.chromium.chrome.browser.upgrade.Milliseconds_New";
     public static final String BRAVE_DOWNLOADS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE =
             "org.chromium.chrome.browser.downloads.Automatically_Open_When_Possible";
+    public static final String BRAVE_DOWNLOADS_DOWNLOAD_PROGRESS_NOTIFICATION_BUBBLE =
+            "org.chromium.chrome.browser.downloads.Download_Progress_Notification_Bubble";
     public static final String BRAVE_DOUBLE_RESTART =
             "org.chromium.chrome.browser.Brave_Double_Restart";
     public static final String BRAVE_TAB_GROUPS_ENABLED =

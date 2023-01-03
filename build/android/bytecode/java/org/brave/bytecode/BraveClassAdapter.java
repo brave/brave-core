@@ -24,6 +24,7 @@ public class BraveClassAdapter {
         chain = new BraveContentSettingsResourcesClassAdapter(chain);
         chain = new BraveCustomizationProviderDelegateImplClassAdapter(chain);
         chain = new BraveDefaultBrowserPromoUtilsClassAdapter(chain);
+        chain = new BraveDownloadMessageUiControllerImplClassAdapter(chain);
         chain = new BraveDropdownItemViewInfoListBuilderClassAdapter(chain);
         chain = new BraveDropdownItemViewInfoListManagerClassAdapter(chain);
         chain = new BraveDynamicColorsClassAdapter(chain);

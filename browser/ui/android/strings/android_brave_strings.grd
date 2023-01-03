@@ -1643,6 +1643,12 @@ Are you sure you want to do this?
       <message name="IDS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE_TITLE" desc="Title for preference that allows the user to open downloads automatically.">
         Automatically open when possible
       </message>
+      <message name="IDS_DOWNLOAD_PROGRESS_NOTIFICATION_TITLE" desc="Title for preference that allows the user to enable disable download progress notifications bubble.">
+        Show download progress notifications
+      </message>
+      <message name="IDS_BRAVE_DOWNLOAD_LOCATION_PROMPT_ENABLED_TITLE" desc="Title for preference that allows the user to indicate whether they want to show a change downloads location prompt every time they download.">
+        Ask where to save files (if SD card is detected)
+      </message>
       <message name="IDS_VIEW_FULL_PRIVACY_REPORT" desc="Shields privacy report text">
         View full Privacy Report
       </message>

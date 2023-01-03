@@ -8,8 +8,8 @@ package org.chromium.chrome.browser;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 
 // see org.brave.bytecode.BraveLaunchIntentDispatcherClassAdapter
 public class BraveLaunchIntentDispatcher {

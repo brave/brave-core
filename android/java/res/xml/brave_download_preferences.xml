@@ -11,4 +11,10 @@
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
 
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="download_progress_notification_bubble"
+        android:title="@string/download_progress_notification_title"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off" />
+
 </PreferenceScreen>
