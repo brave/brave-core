@@ -45,9 +45,10 @@ class PlaylistUI : public ui::UntrustedWebUIController,
   }
 
   // playlist::mojom::PageHandlerFactory:
-  void BindInterface(
-      mojo::PendingRemote<playlist::mojom::ServiceObserver> service_observer,
-      mojo::PendingReceiver<playlist::mojom::Service> service) override;
+  void CreatePageHandler(
+      mojo::PendingRemote<playlist::mojom::PlaylistServiceObserver>
+          service_observer,
+      mojo::PendingReceiver<playlist::mojom::PlaylistService> service) override;
 
  private:
   base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;

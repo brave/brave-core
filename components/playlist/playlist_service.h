@@ -73,7 +73,7 @@ class MediaDetectorComponentManager;
 class PlaylistService : public KeyedService,
                         public PlaylistMediaFileDownloadManager::Delegate,
                         public PlaylistThumbnailDownloader::Delegate,
-                        public mojom::Service {
+                        public mojom::PlaylistService {
  public:
   class Delegate {
    public:
@@ -98,8 +98,8 @@ class PlaylistService : public KeyedService,
   PlaylistService& operator=(const PlaylistService&) = delete;
 
   void AddServiceObserver(
-      mojo::PendingRemote<mojom::ServiceObserver> service_observer,
-      mojo::PendingReceiver<mojom::Service> service);
+      mojo::PendingRemote<mojom::PlaylistServiceObserver> service_observer,
+      mojo::PendingReceiver<mojom::PlaylistService> service);
 
   bool GetThumbnailPath(const std::string& id, base::FilePath* thumbnail_path);
   bool GetMediaPath(const std::string& id, base::FilePath* media_path);
@@ -258,8 +258,8 @@ class PlaylistService : public KeyedService,
   const base::FilePath base_dir_;
   base::ObserverList<PlaylistServiceObserver> observers_;
 
-  mojo::ReceiverSet<mojom::Service> service_receivers_;
-  mojo::RemoteSet<mojom::ServiceObserver> service_observers_;
+  mojo::ReceiverSet<mojom::PlaylistService> service_receivers_;
+  mojo::RemoteSet<mojom::PlaylistServiceObserver> service_observers_;
 
   std::unique_ptr<PlaylistMediaFileDownloadManager>
       media_file_download_manager_;

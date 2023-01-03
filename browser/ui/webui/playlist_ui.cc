@@ -72,9 +72,10 @@ void PlaylistUI::BindInterface(
   page_handler_factory_receiver_.Bind(std::move(pending_receiver));
 }
 
-void PlaylistUI::BindInterface(
-    mojo::PendingRemote<playlist::mojom::ServiceObserver> service_observer,
-    mojo::PendingReceiver<playlist::mojom::Service> service) {
+void PlaylistUI::CreatePageHandler(
+    mojo::PendingRemote<playlist::mojom::PlaylistServiceObserver>
+        service_observer,
+    mojo::PendingReceiver<playlist::mojom::PlaylistService> service) {
   DCHECK(service_observer.is_valid());
 
   playlist::PlaylistServiceFactory::GetForBrowserContext(

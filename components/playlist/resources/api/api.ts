@@ -11,12 +11,12 @@ type PlaylistEventListener = (event: PlaylistMojo.PlaylistEvent) => void
 let apiInstance: API
 
 class API {
-  #pageCallbackRouter = new PlaylistMojo.ServiceObserverCallbackRouter()
-  #pageHandler = new PlaylistMojo.ServiceRemote()
+  #pageCallbackRouter = new PlaylistMojo.PlaylistServiceObserverCallbackRouter()
+  #pageHandler = new PlaylistMojo.PlaylistServiceRemote()
 
   constructor () {
     const factory = PlaylistMojo.PageHandlerFactory.getRemote()
-    factory.bindInterface(
+    factory.createPageHandler(
         this.#pageCallbackRouter.$.bindNewPipeAndPassRemote(),
         this.#pageHandler.$.bindNewPipeAndPassReceiver())
   }

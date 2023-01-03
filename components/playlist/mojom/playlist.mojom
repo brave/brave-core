@@ -43,12 +43,12 @@ struct PlaylistItem {
 interface PageHandlerFactory {
   // On Desktop, the WebUI page's |BrowserProxy| singleton calls this method 
   // when the page is first initialized.
-  BindInterface(pending_remote<ServiceObserver> service_observer,
-                pending_receiver<Service> service);
+  CreatePageHandler(pending_remote<PlaylistServiceObserver> service_observer,
+                    pending_receiver<PlaylistService> service);
 };
 
 // Service-side handler for requests from UI.
-interface Service {
+interface PlaylistService {
   // Getters for playlists.
   GetAllPlaylists() => (array<Playlist> playlists);
   GetPlaylist(string id) => (Playlist? playlist);
@@ -87,7 +87,7 @@ interface Service {
 };
 
 // UI-side handler for response from the service.
-interface ServiceObserver {
+interface PlaylistServiceObserver {
   // TODO(sko) For now, we only send |kUpdated| event. Need to make more events
   // and parameters for client side.
   OnEvent(PlaylistEvent event);
@@ -99,4 +99,3 @@ interface ServiceObserver {
       int8 percent_complete,
       string time_remaining);
 };
-

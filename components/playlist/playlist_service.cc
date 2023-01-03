@@ -682,8 +682,8 @@ void PlaylistService::DeleteAllPlaylistItems() {
 }
 
 void PlaylistService::AddServiceObserver(
-    mojo::PendingRemote<mojom::ServiceObserver> service_observer,
-    mojo::PendingReceiver<mojom::Service> service) {
+    mojo::PendingRemote<mojom::PlaylistServiceObserver> service_observer,
+    mojo::PendingReceiver<mojom::PlaylistService> service) {
   service_observers_.Add(std::move(service_observer));
   service_receivers_.Add(this, std::move(service));
 }
