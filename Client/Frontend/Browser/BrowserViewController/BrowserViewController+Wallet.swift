@@ -320,10 +320,7 @@ extension Tab: BraveWalletProviderDelegate {
     case .eth:
       return !Preferences.Wallet.allowEthProviderAccess.value
     case .sol:
-      if WalletDebugFlags.isSolanaDappsEnabled {
-        return !Preferences.Wallet.allowSolProviderAccess.value
-      }
-      return true
+      return !Preferences.Wallet.allowSolProviderAccess.value
     case .fil:
       return true
     @unknown default:
@@ -493,8 +490,7 @@ extension Tab: BraveWalletSolanaEventsListener {
   }
 
   @MainActor func updateSolanaProperties() async {
-    guard WalletDebugFlags.isSolanaDappsEnabled,
-          Preferences.Wallet.defaultSolWallet.value == Preferences.Wallet.WalletType.brave.rawValue,
+    guard Preferences.Wallet.defaultSolWallet.value == Preferences.Wallet.WalletType.brave.rawValue,
           let webView = webView,
           let provider = walletSolProvider else {
       return

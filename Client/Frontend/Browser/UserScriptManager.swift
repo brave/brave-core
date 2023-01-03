@@ -208,13 +208,11 @@ class UserScriptManager {
       }
       
       // Inject SolanaWeb3Script.js
-      if WalletDebugFlags.isSolanaDappsEnabled,
-         tab.isPrivate == false,
-         Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultSolWallet.value) == .brave {
-        let script = ScriptLoader.loadUserScript(named: "SolanaWeb3Script") ?? tab.walletSolProviderScripts[.solanaWeb3]
+      if tab.isPrivate == false,
+         Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultSolWallet.value) == .brave,
+         let solanaWeb3Script = ScriptLoader.loadUserScript(named: "SolanaWeb3Script") {
         
-        if let solanaWeb3Script = script {
-          let script = """
+        let script = """
           // Define a global variable with a random name
           // Local variables are NOT enumerable!
           let \(UserScriptManager.walletSolanaNameSpace);
@@ -246,18 +244,16 @@ class UserScriptManager {
             $.deepFreeze(\(UserScriptManager.walletSolanaNameSpace));
           });
           """
-          
-          let wkScript = WKUserScript.create(
-            source: script,
-            injectionTime: .atDocumentStart,
-            forMainFrameOnly: true,
-            in: SolanaProviderScriptHandler.scriptSandbox)
-          scriptController.addUserScript(wkScript)
-        }
+        
+        let wkScript = WKUserScript.create(
+          source: script,
+          injectionTime: .atDocumentStart,
+          forMainFrameOnly: true,
+          in: SolanaProviderScriptHandler.scriptSandbox)
+        scriptController.addUserScript(wkScript)
       }
       
-      if WalletDebugFlags.isSolanaDappsEnabled,
-         tab.isPrivate == false,
+      if tab.isPrivate == false,
          Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultSolWallet.value) == .brave,
          let script = self.dynamicScripts[.solanaProvider] {
 

@@ -103,20 +103,18 @@ public struct WalletSettingsView: View {
       ) {
         Group {
           ForEach(Array(WalletConstants.supportedCoinTypes)) { coin in
-            if coin != .sol || (coin == .sol && WalletDebugFlags.isSolanaDappsEnabled) {
-              NavigationLink(
-                destination:
-                  DappsSettings(
-                    coin: coin,
-                    siteConnectionStore: settingsStore.manageSiteConnectionsStore(keyringStore: keyringStore)
-                  )
-                  .onDisappear {
-                    settingsStore.closeManageSiteConnectionStore()
-                  }
-              ) {
-                Text(coin.localizedTitle)
-                  .foregroundColor(Color(.braveLabel))
-              }
+            NavigationLink(
+              destination:
+                DappsSettings(
+                  coin: coin,
+                  siteConnectionStore: settingsStore.manageSiteConnectionsStore(keyringStore: keyringStore)
+                )
+                .onDisappear {
+                  settingsStore.closeManageSiteConnectionStore()
+                }
+            ) {
+              Text(coin.localizedTitle)
+                .foregroundColor(Color(.braveLabel))
             }
           }
           Toggle(Strings.Wallet.web3PreferencesDisplayWeb3Notifications, isOn: $displayDappsNotifications.value)
