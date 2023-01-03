@@ -5,6 +5,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -292,35 +293,33 @@ class SidebarBrowserTestWithVerticalTabs : public SidebarBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithVerticalTabs,
                        SidebarRightSideTest) {
+  // Sidebar is on left by default
+  EXPECT_TRUE(IsSidebarUIOnLeft());
+
+  brave::ToggleVerticalTabStrip(browser());
+  ASSERT_TRUE(tabs::features::ShouldShowVerticalTabs(browser()));
+
   auto* prefs = browser()->profile()->GetPrefs();
-  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
 
   auto* vertical_tabs_container = GetVerticalTabsContainer();
   auto* sidebar_container =
       static_cast<SidebarContainerView*>(controller()->sidebar());
 
-  // Sidebar is on left.
-  EXPECT_TRUE(IsSidebarUIOnLeft());
-
-  // Check vertical tabs is located right after sidebar.
-  EXPECT_EQ(sidebar_container->bounds().right(), vertical_tabs_container->x());
-
-  // Changed to sidebar on right side.
-  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+  // Sidebar will be moved to the right when enabling vertical tab strip.
   EXPECT_FALSE(IsSidebarUIOnLeft());
 
-  // Check vertical tabs is located at first.
-  EXPECT_EQ(0, vertical_tabs_container->x());
-
-  // Check sidebar is located on the right side.
-  EXPECT_EQ(sidebar_container->bounds().right(), browser_view->width());
+  // Check if vertical tabs is located at first and sidebar is located on the
+  // right side.
+  EXPECT_LT(vertical_tabs_container->GetBoundsInScreen().x(),
+            sidebar_container->GetBoundsInScreen().x());
 
   // Changed to sidebar on left side again.
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
   EXPECT_TRUE(IsSidebarUIOnLeft());
 
-  // Check vertical tabs is located right after sidebar.
-  EXPECT_EQ(sidebar_container->bounds().right(), vertical_tabs_container->x());
+  // Check if vertical tabs is located first and sidebar is following it.
+  EXPECT_EQ(vertical_tabs_container->GetBoundsInScreen().right(),
+            sidebar_container->GetBoundsInScreen().x());
 
   // Check sidebar position option is synced between normal and private window.
   auto* private_browser = CreateIncognitoBrowser(browser()->profile());

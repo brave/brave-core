@@ -177,42 +177,39 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
   const bool supports_vertical_tabs =
       tabs::features::SupportsVerticalTabs(browser_.get());
+  if (supports_vertical_tabs) {
+    vertical_tab_strip_host_view_ =
+        AddChildView(std::make_unique<views::View>());
+  }
 
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_.get());
-
-  if (!supports_vertical_tabs && !can_have_sidebar)
-    return;
-
-  // Wrap chromium side panel with our sidebar container
-  auto original_side_panel = RemoveChildViewT(unified_side_panel_.get());
-  sidebar_container_view_ =
-      contents_container_->AddChildView(std::make_unique<SidebarContainerView>(
-          GetBraveBrowser(), side_panel_coordinator(),
-          std::move(original_side_panel)));
-  unified_side_panel_ = sidebar_container_view_->side_panel();
-  if (supports_vertical_tabs) {
-    vertical_tab_strip_host_view_ =
-        contents_container_->AddChildView(std::make_unique<views::View>());
-  }
-
-  contents_container_->SetLayoutManager(
-      std::make_unique<BraveContentsLayoutManager>(
-          devtools_web_view_, contents_web_view_, sidebar_container_view_,
-          vertical_tab_strip_host_view_));
-  sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
-
-  // Make sure |find_bar_host_view_| is the last child of BrowserView by
-  // re-ordering. FindBarHost widgets uses this view as a  kHostViewKey.
-  // See the comments of BrowserView::find_bar_host_view().
-  ReorderChildView(find_bar_host_view_, -1);
-
   if (can_have_sidebar) {
+    // Wrap chromium side panel with our sidebar container
+    auto original_side_panel = RemoveChildViewT(unified_side_panel_.get());
+    sidebar_container_view_ = contents_container_->AddChildView(
+        std::make_unique<SidebarContainerView>(GetBraveBrowser(),
+                                               side_panel_coordinator(),
+                                               std::move(original_side_panel)));
+    unified_side_panel_ = sidebar_container_view_->side_panel();
+    contents_container_->SetLayoutManager(
+        std::make_unique<BraveContentsLayoutManager>(
+            devtools_web_view_, contents_web_view_, sidebar_container_view_));
+    sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
+
     pref_change_registrar_.Add(
         prefs::kSidePanelHorizontalAlignment,
         base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                             base::Unretained(this)));
   }
+
+  if (!supports_vertical_tabs && !can_have_sidebar)
+    return;
+
+  // Make sure |find_bar_host_view_| is the last child of BrowserView by
+  // re-ordering. FindBarHost widgets uses this view as a  kHostViewKey.
+  // See the comments of BrowserView::find_bar_host_view().
+  ReorderChildView(find_bar_host_view_, -1);
 }
 
 void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
@@ -436,6 +433,9 @@ void BraveBrowserView::AddedToWidget() {
     vertical_tab_strip_widget_delegate_view_ =
         VerticalTabStripWidgetDelegateView::Create(
             this, vertical_tab_strip_host_view_);
+
+    GetBrowserViewLayout()->set_vertical_tab_strip_host(
+        vertical_tab_strip_host_view_.get());
   }
 }
 
