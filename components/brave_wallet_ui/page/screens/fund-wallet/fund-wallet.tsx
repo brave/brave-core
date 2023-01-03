@@ -325,6 +325,7 @@ export const FundWalletScreen = () => {
                       hideAddButton
                       hideAssetFilter
                       hideAccountFilter
+                      hideAutoDiscovery
                       estimatedItemSize={100}
                       renderToken={renderToken}
                     />
