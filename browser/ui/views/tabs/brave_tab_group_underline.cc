@@ -68,8 +68,6 @@ SkPath BraveTabGroupUnderline::GetPath() const {
   if (!tabs::features::ShouldShowVerticalTabs(tab_group_views_->GetBrowser()))
     return TabGroupUnderline::GetPath();
 
-  // In vertical tabs, underline is not actually "underline'. It's a enclosing
-  // rounded rect for views in the group.
   constexpr SkScalar kRadius = 4;
   auto rect = GetContentsBounds();
   rect.Inset(gfx::Insets().set_left_right(kRadius, kRadius));

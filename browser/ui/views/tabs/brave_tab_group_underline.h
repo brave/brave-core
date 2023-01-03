@@ -8,6 +8,8 @@
 
 #include "chrome/browser/ui/views/tabs/tab_group_underline.h"
 
+// In vertical tabs, TabGroupUnderline is not actually "underline'. It's an
+// enclosing rounded rect for views in the group.
 class BraveTabGroupUnderline : public TabGroupUnderline {
  public:
   BraveTabGroupUnderline(TabGroupViews* tab_group_views,
