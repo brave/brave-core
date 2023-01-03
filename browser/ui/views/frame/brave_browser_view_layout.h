@@ -23,6 +23,7 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
                            gfx::Rect& contents_container_bounds) override;
   int LayoutTabStripRegion(int top) override;
   int LayoutBookmarkAndInfoBars(int top, int browser_view_y) override;
+  int LayoutInfoBar(int top) override;
   void LayoutContentsContainerView(int top, int bottom) override;
 
  private:

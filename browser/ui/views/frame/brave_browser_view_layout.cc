@@ -31,12 +31,14 @@ void BraveBrowserViewLayout::Layout(views::View* host) {
   std::vector<views::View*> views_next_to_vertical_tabs;
   if (ShouldPushBookmarkBarForVerticalTabs())
     views_next_to_vertical_tabs.push_back(bookmark_bar_);
+  if (infobar_container_->GetVisible())
+    views_next_to_vertical_tabs.push_back(infobar_container_);
   views_next_to_vertical_tabs.push_back(contents_container_);
 
   gfx::Rect vertical_tab_strip_bounds = vertical_layout_rect_;
   vertical_tab_strip_bounds.set_y(views_next_to_vertical_tabs.front()->y());
   if (contents_separator_ &&
-      views_next_to_vertical_tabs.front() != contents_container_) {
+      views_next_to_vertical_tabs.front() == bookmark_bar_) {
     vertical_tab_strip_host_->SetBorder(
         views::CreateEmptyBorder(gfx::Insets().set_top(
             contents_separator_->GetPreferredSize().height())));
@@ -81,6 +83,17 @@ int BraveBrowserViewLayout::LayoutBookmarkAndInfoBars(int top,
       vertical_tab_strip_host_->GetPreferredSize().width()));
   base::AutoReset resetter(&vertical_layout_rect_, new_rect);
   return BrowserViewLayout::LayoutBookmarkAndInfoBars(top, browser_view_y);
+}
+
+int BraveBrowserViewLayout::LayoutInfoBar(int top) {
+  if (!vertical_tab_strip_host_)
+    return BrowserViewLayout::LayoutInfoBar(top);
+
+  auto new_rect = vertical_layout_rect_;
+  new_rect.Inset(gfx::Insets().set_left(
+      vertical_tab_strip_host_->GetPreferredSize().width()));
+  base::AutoReset resetter(&vertical_layout_rect_, new_rect);
+  return BrowserViewLayout::LayoutInfoBar(top);
 }
 
 void BraveBrowserViewLayout::LayoutContentsContainerView(int top, int bottom) {
