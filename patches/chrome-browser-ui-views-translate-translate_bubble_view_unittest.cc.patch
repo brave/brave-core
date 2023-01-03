@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/translate/translate_bubble_view_unittest.cc b/chrome/browser/ui/views/translate/translate_bubble_view_unittest.cc
+index 0aac5b4ceafd3068565a78b09430db99de3b8e29..bcc02d29419f27f757ada2be3e23c4166b29285a 100644
+--- a/chrome/browser/ui/views/translate/translate_bubble_view_unittest.cc
++++ b/chrome/browser/ui/views/translate/translate_bubble_view_unittest.cc
+@@ -189,6 +189,7 @@ class TranslateBubbleViewTest : public ChromeViewsTestBase {
+ 
+  protected:
+   void SetUp() override {
++    scoped_feature_list_.InitFromCommandLine("BraveEnableAutoTranslate", "");
+     ChromeViewsTestBase::SetUp();
+ 
+     // The bubble needs the parent as an anchor.
