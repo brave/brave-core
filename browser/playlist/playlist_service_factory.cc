@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/feature_list.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -18,8 +19,8 @@
 #include "brave/components/playlist/playlist_service.h"
 #include "brave/components/playlist/pref_names.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"

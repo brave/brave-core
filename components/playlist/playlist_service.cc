@@ -80,7 +80,6 @@ PlaylistService::~PlaylistService() = default;
 
 void PlaylistService::Shutdown() {
   service_observers_.Clear();
-  service_receivers_.Clear();
   download_request_manager_.reset();
   media_file_download_manager_.reset();
   thumbnail_downloader_.reset();
@@ -681,11 +680,9 @@ void PlaylistService::DeleteAllPlaylistItems() {
   CleanUpOrphanedPlaylistItemDirs();
 }
 
-void PlaylistService::AddServiceObserver(
-    mojo::PendingRemote<mojom::PlaylistServiceObserver> service_observer,
-    mojo::PendingReceiver<mojom::PlaylistService> service) {
-  service_observers_.Add(std::move(service_observer));
-  service_receivers_.Add(this, std::move(service));
+void PlaylistService::AddObserver(
+    mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) {
+  service_observers_.Add(std::move(observer));
 }
 
 void PlaylistService::AddObserverForTest(PlaylistServiceObserver* observer) {

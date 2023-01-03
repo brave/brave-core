@@ -75,12 +75,13 @@ void PlaylistUI::BindInterface(
 void PlaylistUI::CreatePageHandler(
     mojo::PendingRemote<playlist::mojom::PlaylistServiceObserver>
         service_observer,
-    mojo::PendingReceiver<playlist::mojom::PlaylistService> service) {
+    mojo::PendingReceiver<playlist::mojom::PlaylistService> pending_service) {
   DCHECK(service_observer.is_valid());
 
-  playlist::PlaylistServiceFactory::GetForBrowserContext(
-      Profile::FromWebUI(web_ui()))
-      ->AddServiceObserver(std::move(service_observer), std::move(service));
+  auto* service = playlist::PlaylistServiceFactory::GetForBrowserContext(
+      Profile::FromWebUI(web_ui()));
+  service_receivers_.Add(service, std::move(pending_service));
+  service->AddObserver(std::move(service_observer));
 
   // When WebUI calls this, mark that the page can be shown on sidebar.
   if (embedder_)

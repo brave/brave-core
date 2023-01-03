@@ -21,7 +21,6 @@
 #include "brave/components/playlist/playlist_thumbnail_downloader.h"
 #include "brave/components/playlist/playlist_types.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
 namespace base {
@@ -97,9 +96,8 @@ class PlaylistService : public KeyedService,
   PlaylistService(const PlaylistService&) = delete;
   PlaylistService& operator=(const PlaylistService&) = delete;
 
-  void AddServiceObserver(
-      mojo::PendingRemote<mojom::PlaylistServiceObserver> service_observer,
-      mojo::PendingReceiver<mojom::PlaylistService> service);
+  void AddObserver(
+      mojo::PendingRemote<mojom::PlaylistServiceObserver> observer);
 
   bool GetThumbnailPath(const std::string& id, base::FilePath* thumbnail_path);
   bool GetMediaPath(const std::string& id, base::FilePath* media_path);
@@ -258,7 +256,6 @@ class PlaylistService : public KeyedService,
   const base::FilePath base_dir_;
   base::ObserverList<PlaylistServiceObserver> observers_;
 
-  mojo::ReceiverSet<mojom::PlaylistService> service_receivers_;
   mojo::RemoteSet<mojom::PlaylistServiceObserver> service_observers_;
 
   std::unique_ptr<PlaylistMediaFileDownloadManager>

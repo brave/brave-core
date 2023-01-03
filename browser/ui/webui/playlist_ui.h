@@ -12,6 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/playlist/mojom/playlist.mojom.h"
 #include "content/public/browser/webui_config.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
 #include "ui/webui/untrusted_web_ui_controller.h"
 
@@ -52,6 +53,8 @@ class PlaylistUI : public ui::UntrustedWebUIController,
 
  private:
   base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
+
+  mojo::ReceiverSet<playlist::mojom::PlaylistService> service_receivers_;
 
   mojo::Receiver<playlist::mojom::PageHandlerFactory>
       page_handler_factory_receiver_{this};

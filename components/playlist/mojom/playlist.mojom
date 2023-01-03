@@ -41,7 +41,7 @@ struct PlaylistItem {
 
 // Used by the UI to bootstrap bidirectional communication.
 interface PageHandlerFactory {
-  // On Desktop, the WebUI page's |BrowserProxy| singleton calls this method 
+  // On Desktop, the WebUI page's |BrowserProxy| singleton calls this method
   // when the page is first initialized.
   CreatePageHandler(pending_remote<PlaylistServiceObserver> service_observer,
                     pending_receiver<PlaylistService> service);
@@ -63,7 +63,7 @@ interface PlaylistService {
   // Store all media files from tabs in this window.
   AddMediaFilesFromOpenTabsToPlaylist(string playlist_id);
   AddMediaFilesFromActiveTabToPlaylist(string playlist_id);
-  
+
   FindMediaFilesFromActiveTab() => (array<PlaylistItem> items);
 
   AddMediaFiles(array<PlaylistItem> items, string playlist_id);
