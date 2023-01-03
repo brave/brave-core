@@ -340,7 +340,8 @@ let package = Package(
         "FeedKit",
         "Fuzi",
         "Growth",
-        .product(name: "Lottie", package: "lottie-ios")
+        .product(name: "Lottie", package: "lottie-ios"),
+        .product(name: "Collections", package: "swift-collections"),
       ],
       resources: [
         .copy("Lottie Assets/brave-today-welcome-graphic.json"),
