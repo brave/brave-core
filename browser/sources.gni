@@ -36,6 +36,7 @@ import("//brave/browser/sync/sources.gni")
 import("//brave/browser/themes/sources.gni")
 import("//brave/browser/url_sanitizer/sources.gni")
 import("//brave/browser/web_discovery/sources.gni")
+import("//brave/build/config.gni")
 import("//brave/build/rust/config.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
@@ -44,7 +45,6 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
-import("//brave/components/translate/core/common/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 brave_chrome_browser_visibility = [
@@ -93,6 +93,10 @@ brave_chrome_browser_sources = [
   "//brave/browser/metrics/brave_metrics_service_accessor.h",
   "//brave/browser/metrics/metrics_reporting_util.cc",
   "//brave/browser/metrics/metrics_reporting_util.h",
+  "//brave/browser/translate/brave_translate_prefs_migration.cc",
+  "//brave/browser/translate/brave_translate_prefs_migration.h",
+  "//brave/browser/translate/brave_translate_utils.cc",
+  "//brave/browser/translate/brave_translate_utils.h",
   "//brave/browser/update_util.cc",
   "//brave/browser/update_util.h",
   "//brave/chromium_src/chrome/browser/notifications/notification_handler_impl.h",
@@ -176,7 +180,6 @@ brave_chrome_browser_deps = [
   "//brave/components/skus/common",
   "//brave/components/speedreader/common/buildflags",
   "//brave/components/tor/buildflags",
-  "//brave/components/translate/core/common:buildflags",
   "//brave/components/version_info",
   "//brave/services/network/public/cpp",
   "//brave/third_party/blink/renderer",
@@ -347,15 +350,6 @@ if (enable_widevine) {
     "//brave/browser/widevine",
     "//brave/browser/widevine:constants",
     "//brave/components/brave_drm",
-  ]
-}
-
-if (enable_brave_translate_go) {
-  brave_chrome_browser_sources += [
-    "//brave/browser/translate/brave_translate_prefs_migration.cc",
-    "//brave/browser/translate/brave_translate_prefs_migration.h",
-    "//brave/browser/translate/brave_translate_utils.cc",
-    "//brave/browser/translate/brave_translate_utils.h",
   ]
 }
 

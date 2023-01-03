@@ -15,5 +15,4 @@ brave_components_translate_core_common_sources = [
 brave_components_translate_core_common_public_deps = [
   "//brave/components/constants",
   "//brave/components/resources:static_resources_grit",
-  "//brave/components/translate/core/common:buildflags",
 ]
