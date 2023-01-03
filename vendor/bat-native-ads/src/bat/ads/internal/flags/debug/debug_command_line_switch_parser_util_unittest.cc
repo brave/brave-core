@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <string>
 
@@ -9,7 +9,7 @@
 #include "bat/ads/internal/common/unittest/command_line_switch_info.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/common/unittest/unittest_command_line_switch_util.h"
-#include "bat/ads/internal/flags/flag_manager_util.h"
+#include "bat/ads/internal/flags/flag_manager.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -50,7 +50,8 @@ TEST_P(BatAdsDebugCommandLineSwitchParserUtilTest,
   // Act
 
   // Assert
-  EXPECT_EQ(GetParam().expected_should_debug, ShouldDebug());
+  EXPECT_EQ(GetParam().expected_should_debug,
+            FlagManager::GetInstance()->ShouldDebug());
 }
 
 std::string TestParamToString(

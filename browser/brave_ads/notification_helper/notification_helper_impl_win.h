@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_BRAVE_ADS_NOTIFICATION_HELPER_NOTIFICATION_HELPER_IMPL_WIN_H_
 #define BRAVE_BROWSER_BRAVE_ADS_NOTIFICATION_HELPER_NOTIFICATION_HELPER_IMPL_WIN_H_
@@ -43,12 +43,13 @@ class NotificationHelperImplWin
 
   HRESULT InitializeToastNotifier();
 
-  template <unsigned int size, typename T>
+  template <unsigned int size>
   HRESULT CreateActivationFactory(wchar_t const (&class_name)[size],
-                                  T** object) const;
+                                  const IID& iid,
+                                  void** factory) const;
 
   Microsoft::WRL::ComPtr<ABI::Windows::UI::Notifications::IToastNotifier>
-      notifier_;
+      toast_notifier_;
 
   // NotificationHelperImpl:
   bool CanShowNotifications() override;

@@ -1,13 +1,13 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/ads/serving/permission_rules/command_line_permission_rule.h"
 
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/flags/environment/environment_types.h"
-#include "bat/ads/internal/flags/flag_manager_util.h"
+#include "bat/ads/internal/flags/flag_manager.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -18,9 +18,10 @@ class BatAdsCommandLinePermissionRuleTest : public UnitTestBase {};
 TEST_F(BatAdsCommandLinePermissionRuleTest,
        AllowAdIfDidNotOverrideCommandLineSwitchesForProduction) {
   // Arrange
-  SetEnvironmentTypeForTesting(EnvironmentType::kProduction);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kProduction);
 
-  SetDidOverrideFromCommandLineForTesting(false);
+  FlagManager::GetInstance()->SetDidOverrideFromCommandLineForTesting(false);
 
   // Act
   CommandLinePermissionRule permission_rule;
@@ -33,9 +34,10 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
 TEST_F(BatAdsCommandLinePermissionRuleTest,
        AllowAdIfDidNotOverrideCommandLineSwitchesForStaging) {
   // Arrange
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
-  SetDidOverrideFromCommandLineForTesting(false);
+  FlagManager::GetInstance()->SetDidOverrideFromCommandLineForTesting(false);
 
   // Act
   CommandLinePermissionRule permission_rule;
@@ -48,9 +50,10 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
 TEST_F(BatAdsCommandLinePermissionRuleTest,
        DoNotAllowAdIfDidOverrideCommandLineSwitchesForProduction) {
   // Arrange
-  SetEnvironmentTypeForTesting(EnvironmentType::kProduction);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kProduction);
 
-  SetDidOverrideFromCommandLineForTesting(true);
+  FlagManager::GetInstance()->SetDidOverrideFromCommandLineForTesting(true);
 
   // Act
   CommandLinePermissionRule permission_rule;
@@ -63,9 +66,10 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
 TEST_F(BatAdsCommandLinePermissionRuleTest,
        AllowAdIfDidOverrideCommandLineSwitchesForStaging) {
   // Arrange
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
-  SetDidOverrideFromCommandLineForTesting(true);
+  FlagManager::GetInstance()->SetDidOverrideFromCommandLineForTesting(true);
 
   // Act
   CommandLinePermissionRule permission_rule;

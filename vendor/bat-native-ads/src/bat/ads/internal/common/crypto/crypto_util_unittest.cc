@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/common/crypto/crypto_util.h"
 
@@ -38,7 +38,11 @@ TEST(BatAdsCryptoUtilTest, Sign) {
 
   // Assert
   const std::string expected_signature =
-      R"(keyId="primary",algorithm="ed25519",headers="digest",signature="m5CxS9uqI7DbZ5UDo51bcLRP2awqcUSU8tfc4t/ysrH47B8OJUG1roQyi6/pjSZj9VJuj296v77c/lxBlCn2DA==")";
+      R"(keyId="primary",)"
+      R"(algorithm="ed25519",)"
+      R"(headers="digest",)"
+      R"(signature="m5CxS9uqI7DbZ5UDo51bcLRP2awqcUSU8tfc4t/ysr)"
+      R"(H47B8OJUG1roQyi6/pjSZj9VJuj296v77c/lxBlCn2DA==")";
 
   EXPECT_EQ(expected_signature, signature);
 }

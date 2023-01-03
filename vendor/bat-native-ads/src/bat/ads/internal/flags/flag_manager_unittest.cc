@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/flags/flag_manager.h"
 
@@ -16,7 +16,6 @@
 #include "bat/ads/internal/flags/environment/environment_types.h"
 #include "bat/ads/internal/flags/environment/environment_types_unittest_util.h"
 #include "bat/ads/internal/flags/flag_manager_constants.h"
-#include "bat/ads/internal/flags/flag_manager_util.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "components/variations/variations_switches.h"
 
@@ -125,10 +124,12 @@ TEST_P(BatAdsFlagManagerTest, Initialize) {
   // Act
 
   // Assert
-  EXPECT_EQ(param.expected_should_debug, ShouldDebug());
+  EXPECT_EQ(param.expected_should_debug,
+            FlagManager::GetInstance()->ShouldDebug());
   EXPECT_EQ(param.expected_did_override_command_line_switches,
-            DidOverrideFromCommandLine());
-  EXPECT_EQ(param.expected_environment_type, GetEnvironmentType());
+            FlagManager::GetInstance()->DidOverrideFromCommandLine());
+  EXPECT_EQ(param.expected_environment_type,
+            FlagManager::GetInstance()->GetEnvironmentType());
 }
 
 std::string TestParamToString(

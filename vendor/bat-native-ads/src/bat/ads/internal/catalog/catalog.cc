@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/catalog/catalog.h"
 
@@ -22,7 +22,7 @@
 #include "bat/ads/internal/common/url/url_request_string_util.h"
 #include "bat/ads/internal/common/url/url_response_string_util.h"
 #include "bat/ads/internal/database/database_manager.h"
-#include "bat/ads/internal/flags/flag_manager_util.h"
+#include "bat/ads/internal/flags/flag_manager.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "net/http/http_status_code.h"
 
@@ -138,8 +138,9 @@ void Catalog::OnFetch(const mojom::UrlResponseInfo& url_response) {
 void Catalog::FetchAfterDelay() {
   retry_timer_.Stop();
 
-  const base::TimeDelta delay =
-      ShouldDebug() ? kDebugCatalogPing : GetCatalogPing();
+  const base::TimeDelta delay = FlagManager::GetInstance()->ShouldDebug()
+                                    ? kDebugCatalogPing
+                                    : GetCatalogPing();
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
       FROM_HERE, delay,

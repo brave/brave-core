@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 
@@ -9,7 +9,7 @@
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/common/unittest/unittest_build_channel_types.h"
 #include "bat/ads/internal/common/unittest/unittest_mock_util.h"
-#include "bat/ads/internal/flags/flag_manager_util.h"
+#include "bat/ads/internal/flags/flag_manager.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/sys_info.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
@@ -34,7 +34,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = true;
 
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 
@@ -65,7 +66,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = true;
 
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 
@@ -98,7 +100,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = true;
 
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 
@@ -131,7 +134,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = true;
 
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 
@@ -162,7 +166,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = true;
 
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 
@@ -195,7 +200,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = true;
 
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 
@@ -228,7 +234,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = false;
 
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 
@@ -259,7 +266,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = false;
 
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 
@@ -292,7 +300,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = false;
 
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 
@@ -325,7 +334,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = false;
 
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 
@@ -356,7 +366,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = false;
 
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 
@@ -389,7 +400,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Arrange
   SysInfo().is_uncertain_future = false;
 
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
 

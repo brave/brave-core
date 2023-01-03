@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/conversions/conversions.h"
 
@@ -26,7 +26,7 @@
 #include "bat/ads/internal/conversions/conversions_features.h"
 #include "bat/ads/internal/conversions/sorts/conversions_sort_factory.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
-#include "bat/ads/internal/flags/flag_manager_util.h"
+#include "bat/ads/internal/flags/flag_manager.h"
 #include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_info.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversions_resource.h"
@@ -386,9 +386,9 @@ void Conversions::AddItemToQueue(
   conversion_queue_item.advertiser_public_key =
       verifiable_conversion.public_key;
   conversion_queue_item.ad_type = ad_event.type;
-  // TODO(tmancey): Cleanup
   const auto rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
-      ShouldDebug() ? kDebugConvertAfterSeconds : kConvertAfterSeconds));
+      FlagManager::GetInstance()->ShouldDebug() ? kDebugConvertAfterSeconds
+                                                : kConvertAfterSeconds));
   conversion_queue_item.process_at =
       base::Time::Now() + base::Seconds(rand_delay);
 

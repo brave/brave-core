@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 
@@ -28,7 +28,7 @@ UnitTestBase::UnitTestBase()
       ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
       platform_helper_mock_(std::make_unique<NiceMock<PlatformHelperMock>>()),
       scoped_default_locale_(
-          std::make_unique<brave_l10n::test::ScopedDefaultLocale>(
+          std::make_unique<brave_l10n::test::ScopedDefaultLocale>(  // IN-TEST
               kDefaultLocale)) {
   CHECK(temp_dir_.CreateUniqueTempDir());
 }
@@ -42,7 +42,7 @@ UnitTestBase::~UnitTestBase() {
 }
 
 void UnitTestBase::SetUp() {
-  SetUpForTesting(/*is_integration_test*/ false);
+  SetUpForTesting(/*is_integration_test*/ false);  // IN-TEST
 }
 
 void UnitTestBase::TearDown() {

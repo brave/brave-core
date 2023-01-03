@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/common/crypto/crypto_util.h"
 
@@ -103,7 +103,7 @@ std::string Sign(const base::flat_map<std::string, std::string>& headers,
     return {};
   }
 
-  // Resolving the following linter error breaks the build on Windows
+  // Resolving the following linter/presubmit error breaks the build on Windows.
   unsigned long long signed_message_length = 0;  // NOLINT
   crypto_sign(
       &signed_message.front(), &signed_message_length,

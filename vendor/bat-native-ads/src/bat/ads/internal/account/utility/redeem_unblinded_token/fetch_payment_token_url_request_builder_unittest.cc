@@ -1,13 +1,13 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/fetch_payment_token_url_request_builder.h"
 
 #include "bat/ads/internal/account/confirmations/confirmation_unittest_util.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
-#include "bat/ads/internal/flags/flag_manager_util.h"
+#include "bat/ads/internal/flags/flag_manager.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "url/gurl.h"
 
@@ -19,7 +19,8 @@ class BatAdsFetchPaymentTokenUrlRequestBuilderTest : public UnitTestBase {};
 
 TEST_F(BatAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   privacy::SetUnblindedTokens(1);
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();

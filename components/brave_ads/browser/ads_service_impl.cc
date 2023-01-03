@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 
@@ -216,17 +216,17 @@ bool MigrateConfirmationStateOnFileTaskRunner(const base::FilePath& path) {
 
     if (!base::DirectoryExists(ads_service_base_path)) {
       if (!base::CreateDirectory(ads_service_base_path)) {
-        VLOG(0) << "Failed to create " << ads_service_base_path.value();
+        VLOG(1) << "Failed to create " << ads_service_base_path.value();
         return false;
       }
 
-      VLOG(1) << "Created " << ads_service_base_path.value();
+      VLOG(6) << "Created " << ads_service_base_path.value();
     }
 
     const base::FilePath confirmations_state_path =
         ads_service_base_path.AppendASCII("confirmations.json");
 
-    VLOG(1) << "Migrating " << legacy_confirmations_state_path.value() << " to "
+    VLOG(6) << "Migrating " << legacy_confirmations_state_path.value() << " to "
             << confirmations_state_path.value();
 
     if (!base::Move(legacy_confirmations_state_path,
@@ -234,14 +234,14 @@ bool MigrateConfirmationStateOnFileTaskRunner(const base::FilePath& path) {
       return false;
     }
 
-    VLOG(1) << "Successfully migrated confirmation state";
+    VLOG(6) << "Successfully migrated confirmation state";
   }
 
   if (base::PathExists(rewards_service_base_path)) {
-    VLOG(1) << "Deleting " << rewards_service_base_path.value();
+    VLOG(6) << "Deleting " << rewards_service_base_path.value();
 
     if (!base::DeleteFile(rewards_service_base_path)) {
-      VLOG(0) << "Failed to delete " << rewards_service_base_path.value();
+      VLOG(1) << "Failed to delete " << rewards_service_base_path.value();
     }
   }
 
@@ -295,11 +295,11 @@ std::vector<std::string> ExtraCommandLineSwitches() {
 
 void OnResetState(const bool success) {
   if (!success) {
-    VLOG(0) << "Failed to reset ads state";
+    VLOG(1) << "Failed to reset ads state";
     return;
   }
 
-  VLOG(1) << "Successfully reset ads state";
+  VLOG(6) << "Successfully reset ads state";
 }
 
 void OnLoad(ads::LoadCallback callback, const std::string& value) {
@@ -329,11 +329,11 @@ void OnBrowsingHistorySearchComplete(ads::GetBrowsingHistoryCallback callback,
 
 void OnLogTrainingInstance(const bool success) {
   if (!success) {
-    VLOG(1) << "Failed to log training covariates";
+    VLOG(6) << "Failed to log training covariates";
     return;
   }
 
-  VLOG(1) << "Successfully logged training covariates";
+  VLOG(6) << "Successfully logged training covariates";
 }
 
 }  // namespace
@@ -403,7 +403,7 @@ void AdsServiceImpl::MigrateConfirmationState() {
 
 void AdsServiceImpl::OnMigrateConfirmationState(const bool success) {
   if (!success) {
-    VLOG(0) << "Failed to migrate confirmation state";
+    VLOG(1) << "Failed to migrate confirmation state";
     return;
   }
 
@@ -453,7 +453,7 @@ void AdsServiceImpl::MaybeStartBatAdsService() {
   }
 
   if (!IsSupportedLocale()) {
-    VLOG(1) << brave_l10n::GetDefaultLocaleString()
+    VLOG(6) << brave_l10n::GetDefaultLocaleString()
             << " locale does not support ads";
     return;
   }
@@ -489,11 +489,11 @@ void AdsServiceImpl::StartBatAdsService() {
 }
 
 void AdsServiceImpl::RestartBatAdsServiceAfterDelay() {
-  VLOG(1) << "Restart bat-ads service";
+  VLOG(6) << "Restart bat-ads service";
 
   Shutdown();
 
-  VLOG(1) << "Restarting bat-ads service in " << kRestartBatAdsServiceDelay;
+  VLOG(6) << "Restarting bat-ads service in " << kRestartBatAdsServiceDelay;
   restart_bat_ads_service_timer_.Start(
       FROM_HERE, kRestartBatAdsServiceDelay,
       base::BindOnce(&AdsServiceImpl::MaybeStartBatAdsService, AsWeakPtr()));
@@ -501,7 +501,7 @@ void AdsServiceImpl::RestartBatAdsServiceAfterDelay() {
 
 void AdsServiceImpl::CancelRestartBatAdsService() {
   if (restart_bat_ads_service_timer_.IsRunning()) {
-    VLOG(1) << "Canceled bat-ads service restart";
+    VLOG(6) << "Canceled bat-ads service restart";
     restart_bat_ads_service_timer_.Stop();
   }
 }
@@ -516,7 +516,7 @@ void AdsServiceImpl::InitializeBasePathDirectory() {
 
 void AdsServiceImpl::OnInitializeBasePathDirectory(const bool success) {
   if (!success) {
-    VLOG(0) << "Failed to initialize " << base_path_ << " directory";
+    VLOG(1) << "Failed to initialize " << base_path_ << " directory";
     return Shutdown();
   }
 
@@ -561,7 +561,7 @@ void AdsServiceImpl::OnInitializeRewardsWallet(
     bat_ads_->OnRewardsWalletDidChange(
         wallet->payment_id, base::Base64Encode(wallet->recovery_seed));
   } else if (ShouldRewardUser()) {
-    VLOG(0) << "Failed to initialize Rewards wallet";
+    VLOG(1) << "Failed to initialize Rewards wallet";
     return Shutdown();
   }
 
@@ -577,7 +577,7 @@ void AdsServiceImpl::InitializeBatAds() {
 
 void AdsServiceImpl::OnInitializeBatAds(const bool success) {
   if (!success) {
-    VLOG(0) << "Failed to initialize bat-ads";
+    VLOG(1) << "Failed to initialize bat-ads";
     return Shutdown();
   }
 
@@ -595,7 +595,7 @@ void AdsServiceImpl::OnInitializeBatAds(const bool success) {
 void AdsServiceImpl::ShutdownAndResetState() {
   Shutdown();
 
-  VLOG(1) << "Resetting ads state";
+  VLOG(6) << "Resetting ads state";
 
   profile_->GetPrefs()->ClearPrefsWithPrefixSilently("brave.brave_ads");
 
@@ -840,7 +840,7 @@ void AdsServiceImpl::StartNotificationAdTimeOutTimer(
       base::BindOnce(&AdsServiceImpl::NotificationAdTimedOut, AsWeakPtr(),
                      placement_id));
 
-  VLOG(1) << "Timeout notification ad with placement id " << placement_id
+  VLOG(6) << "Timeout notification ad with placement id " << placement_id
           << " in " << timeout;
 }
 
@@ -857,7 +857,7 @@ bool AdsServiceImpl::StopNotificationAdTimeOutTimer(
 }
 
 void AdsServiceImpl::NotificationAdTimedOut(const std::string& placement_id) {
-  VLOG(1) << "Timed-out notification ad with placement id " << placement_id;
+  VLOG(2) << "Timed-out notification ad with placement id " << placement_id;
 
   CloseNotificationAd(placement_id);
 
@@ -899,7 +899,7 @@ void AdsServiceImpl::CloseAllNotificationAds() {
 void AdsServiceImpl::OnPrefetchNewTabPageAd(
     absl::optional<base::Value::Dict> dict) {
   if (!dict) {
-    VLOG(0) << "Failed to prefetch new tab page ad";
+    VLOG(1) << "Failed to prefetch new tab page ad";
     return;
   }
 
@@ -928,7 +928,7 @@ void AdsServiceImpl::PurgeOrphanedNewTabPageAdEvents() {
 
 void AdsServiceImpl::OnPurgeOrphanedNewTabPageAdEvents(const bool success) {
   if (!success) {
-    VLOG(0) << "Failed to purge orphaned ad events for new tab page ads";
+    VLOG(1) << "Failed to purge orphaned ad events for new tab page ads";
     return;
   }
 
@@ -947,7 +947,7 @@ void AdsServiceImpl::MaybeOpenNewTabWithAd() {
 
 void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
   if (StopNotificationAdTimeOutTimer(placement_id)) {
-    VLOG(1) << "Canceled timeout for notification ad with placement id "
+    VLOG(2) << "Canceled timeout for notification ad with placement id "
             << placement_id;
   }
 
@@ -963,7 +963,7 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
 void AdsServiceImpl::OnOpenNewTabWithAd(
     absl::optional<base::Value::Dict> dict) {
   if (!dict) {
-    VLOG(0) << "Failed to get notification ad";
+    VLOG(1) << "Failed to get notification ad";
     return;
   }
 
@@ -979,7 +979,7 @@ void AdsServiceImpl::OpenNewTabWithUrl(const GURL& url) {
   }
 
   if (!url.is_valid()) {
-    VLOG(0) << "Failed to open new tab due to invalid URL: " << url;
+    VLOG(1) << "Failed to open new tab due to invalid URL: " << url;
     return;
   }
 
@@ -1005,7 +1005,7 @@ void AdsServiceImpl::OpenNewTabWithUrl(const GURL& url) {
 }
 
 void AdsServiceImpl::RetryOpeningNewTabWithAd(const std::string& placement_id) {
-  VLOG(1) << "Retry opening new tab for ad with placement id " << placement_id;
+  VLOG(2) << "Retry opening new tab for ad with placement id " << placement_id;
   retry_opening_new_tab_for_ad_with_placement_id_ = placement_id;
 }
 
@@ -1080,14 +1080,14 @@ bool AdsServiceImpl::IsUpgradingFromPreBraveAdsBuild() {
 void AdsServiceImpl::MigratePrefs() {
   is_upgrading_from_pre_brave_ads_build_ = IsUpgradingFromPreBraveAdsBuild();
   if (is_upgrading_from_pre_brave_ads_build_) {
-    VLOG(1) << "Migrating ads preferences from pre Brave Ads build";
+    VLOG(2) << "Migrating ads preferences from pre Brave Ads build";
 
     // Force migration of preferences from version 1 if
     // |is_upgrading_from_pre_brave_ads_build_| is set to true to fix
     // "https://github.com/brave/brave-browser/issues/5434"
     SetIntegerPref(prefs::kVersion, 1);
   } else {
-    VLOG(1) << "Migrating ads preferences";
+    VLOG(2) << "Migrating ads preferences";
   }
 
   auto source_version = GetIntegerPref(prefs::kVersion);
@@ -1095,7 +1095,7 @@ void AdsServiceImpl::MigratePrefs() {
 
   if (!MigratePrefs(source_version, dest_version, true)) {
     // Migration dry-run failed, so do not migrate preferences
-    VLOG(0) << "Failed to migrate ads preferences from version "
+    VLOG(1) << "Failed to migrate ads preferences from version "
             << source_version << " to " << dest_version;
 
     return;
@@ -1156,7 +1156,7 @@ bool AdsServiceImpl::MigratePrefs(const int source_version,
     }
 
     if (!is_dry_run) {
-      VLOG(1) << "Migrating ads preferences from mapping version "
+      VLOG(2) << "Migrating ads preferences from mapping version "
               << from_version << " to " << to_version;
 
       (this->*(mapping->second))();
@@ -1171,7 +1171,7 @@ bool AdsServiceImpl::MigratePrefs(const int source_version,
   if (!is_dry_run) {
     SetIntegerPref(prefs::kVersion, dest_version);
 
-    VLOG(1) << "Successfully migrated Ads preferences from version "
+    VLOG(2) << "Successfully migrated Ads preferences from version "
             << source_version << " to " << dest_version;
   }
 
@@ -1409,7 +1409,7 @@ void AdsServiceImpl::Shutdown() {
 
   CancelRestartBatAdsService();
 
-  VLOG(1) << "Shutting down bat-ads service";
+  VLOG(2) << "Shutting down bat-ads service";
 
   is_bat_ads_initialized_ = false;
 
@@ -1435,7 +1435,7 @@ void AdsServiceImpl::Shutdown() {
     VLOG_IF(1, !success) << "Failed to release database";
   }
 
-  VLOG(1) << "Shutdown bat-ads service";
+  VLOG(2) << "Shutdown bat-ads service";
 }
 
 bool AdsServiceImpl::IsSupportedLocale() const {
@@ -1520,7 +1520,7 @@ void AdsServiceImpl::OnNotificationAdShown(const std::string& placement_id) {
 void AdsServiceImpl::OnNotificationAdClosed(const std::string& placement_id,
                                             const bool by_user) {
   if (StopNotificationAdTimeOutTimer(placement_id)) {
-    VLOG(1) << "Canceled timeout for notification ad with placement id "
+    VLOG(2) << "Canceled timeout for notification ad with placement id "
             << placement_id;
   }
 
@@ -1816,7 +1816,7 @@ bool AdsServiceImpl::IsBrowserInFullScreenMode() const {
 
 bool AdsServiceImpl::CanShowNotificationAds() {
   if (!features::IsNotificationAdsEnabled()) {
-    LOG(INFO) << "Notification not made: Ad notifications feature is disabled";
+    VLOG(1) << "Notification not made: Ad notifications feature is disabled";
     return false;
   }
 
@@ -2009,7 +2009,7 @@ void AdsServiceImpl::LoadFileResource(const std::string& id,
   }
   base::FilePath file_path = file_path_optional.value();
 
-  VLOG(1) << "Loading file resource from " << file_path << " for component id "
+  VLOG(2) << "Loading file resource from " << file_path << " for component id "
           << id;
 
   file_task_runner_->PostTaskAndReplyWithResult(
@@ -2061,7 +2061,7 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
   if (should_show_tooltip_notification) {
     if (pref_service->GetBoolean(
             brave_adaptive_captcha::prefs::kScheduledCaptchaPaused)) {
-      VLOG(0) << "Ads paused; support intervention required";
+      VLOG(1) << "Ads paused; support intervention required";
       return;
     }
 
