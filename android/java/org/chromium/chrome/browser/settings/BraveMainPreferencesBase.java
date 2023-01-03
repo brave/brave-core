@@ -475,7 +475,7 @@ public class BraveMainPreferencesBase
         if (PREF_BACKGROUND_VIDEO_PLAYBACK.equals(key)) {
             BraveFeatureUtil.enableFeature(
                     BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL, (boolean) newValue,
-                    true);
+                    false);
             if ((boolean) newValue) {
                 updateSummary(PREF_BACKGROUND_VIDEO_PLAYBACK,
                         R.string.prefs_background_video_playback_on);
