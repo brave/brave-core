@@ -142,6 +142,9 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
       widget->GetWindowBoundsInScreen().size() != widget_bounds.size();
   widget->SetBounds(widget_bounds);
 
+  if (auto insets = host_->GetInsets(); GetInsets() != insets)
+    SetBorder(insets.IsEmpty() ? nullptr : views::CreateEmptyBorder(insets));
+
   if (need_to_call_layout)
     Layout();
 
