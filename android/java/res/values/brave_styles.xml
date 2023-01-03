@@ -10,6 +10,11 @@
         <item name="colorControlActivated">#fb542b</item>
     </style>
 
+    <style name="BraveSwitchNewsTheme">
+        <item name="colorControlActivated">@color/news_settings_switch_color</item>
+        <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
+    </style>
+
     <style name="BraveDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="windowNoTitle">true</item>
     </style>

@@ -252,8 +252,8 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                int extraMarginForNews =
-                        (mIsDisplayNewsOptin || shouldDisplayNewsLoading() || mIsDisplayNews)
+                int extraMarginForNews = (mIsDisplayNewsOptin || shouldDisplayNewsLoading()
+                                                 || (mIsDisplayNews && mNewsItems.size() > 0))
                         ? dpToPx(mActivity, 30)
                         : 0;
 
@@ -310,8 +310,8 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (holder instanceof NewsViewHolder) {
             NewsViewHolder newsViewHolder = (NewsViewHolder) holder;
             newsViewHolder.linearLayout.removeAllViews();
-            int newsPosition =
-                    position - getStatsCount() - getTopSitesCount() - 1 - getNewContentCount();
+            int newsPosition = position - getStatsCount() - getTopSitesCount() - ONE_ITEM_SPACE
+                    - getNewContentCount();
             if (newsPosition < mNewsItems.size()) {
                 FeedItemsCard newsItem = mNewsItems.get(newsPosition);
                 if (mBraveNewsController != null) {

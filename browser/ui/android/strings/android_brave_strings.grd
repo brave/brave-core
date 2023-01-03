@@ -440,11 +440,63 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_NEWS_OPTIN_TITLE" desc="Text for opt in card title">
         Today’s top stories in a completely private feed, just for you.
       </message>
-
+      <message name="IDS_BRAVE_NEWS_SETTINGS_OPTIN_TITLE" desc="Text for opt in card title in settings">
+        Turn on Brave News, and never miss a story
+      </message>
       <message name="IDS_BRAVE_NEWS_OPTIN_SUBTITLE" desc="Text for opt in card subtitle">
         Brave News is ad-supported with completely private and anonymized ads matched on your device.
       </message>
-
+      <message name="IDS_BRAVE_NEWS_SETTINGS_OPTIN_SUBTITLE" desc="Text for opt in card subtitle in settings">
+        Follow your favorite sources, in a single feed. Just open a tab in Brave, scroll down, and... voila!\nBrave News is ad-supported with private, anonymized ads.
+      </message>
+      <message name="IDS_TURN_ON_BRAVE_NEWS" desc="Text for opt in card button in settings">
+        Turn on Brave News
+      </message>
+      <message name="IDS_BRAVE_NEWS_SETTINGS_SEARCH" desc="Text for Brave News settings search">
+        Search for site, topic or RSS feed
+      </message>
+      <message name="IDS_POPULAR" desc="Text for Brave News settings popular sources">
+        Popular
+      </message>
+      <message name="IDS_POPULAR_SUBTITLE" desc="Text for Brave News settings popular sources subtitle">
+        Ranked list of sources
+      </message>
+      <message name="IDS_SUGGESTED" desc="Text for Brave News settings suggested">
+        Suggested
+      </message>
+      <message name="IDS_SUGGESTED_SUBTITLE" desc="Text for Brave News settings suggested subtitle">
+        Some sources you might like
+      </message>
+      <message name="IDS_CHANNELS" desc="Text for Brave News settings channels">
+        Channels
+      </message>
+      <message name="IDS_CHANNELS_SUBTITLE" desc="Text for Brave News settings channels subtitle">
+        Follow topics that interest you
+      </message>
+      <message name="IDS_FOLLOWING" desc="Text for Brave News settings following">
+        Following
+      </message>
+      <message name="IDS_FOLLOWING_SUBTITLE" desc="Text for Brave News settings following subtitle">
+        Manage sources for your feed
+      </message>
+      <message name="IDS_FOLLOW" desc="Text for Brave News settings button follow">
+        Follow
+      </message>
+      <message name="IDS_UNFOLLOW" desc="Text for Brave News settings button unfollow">
+        Unfollow
+      </message>
+      <message name="IDS_GET_FEEDS" desc="Text for Brave News settings button get feeds">
+        Get Feeds
+      </message>
+      <message name="IDS_GETTING_FEEDS" desc="Text for Brave News settings button getting feeds">
+        Getting Feeds...
+      </message>
+      <message name="IDS_SOURCES" desc="Text for Brave News settings sources">
+        SOURCES
+      </message>
+      <message name="IDS_NO_FEED_FOUND" desc="Text for Brave News settings search no found">
+        No feeds found at <ph name="SEARCH_URL">%1$s</ph>
+      </message>
       <message name="IDS_BRAVE_NEWS_AD" desc="Text for Brave ad logo">
         Ad
       </message>
