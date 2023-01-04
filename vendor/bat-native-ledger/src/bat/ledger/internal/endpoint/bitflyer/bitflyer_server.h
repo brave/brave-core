@@ -10,7 +10,6 @@
 
 #include "bat/ledger/internal/endpoint/bitflyer/get_balance/get_balance_bitflyer.h"
 #include "bat/ledger/internal/endpoint/bitflyer/post_oauth/post_oauth_bitflyer.h"
-#include "bat/ledger/internal/endpoint/bitflyer/post_transaction/post_transaction_bitflyer.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -27,12 +26,9 @@ class BitflyerServer {
 
   bitflyer::PostOauth* post_oauth() const;
 
-  bitflyer::PostTransaction* post_transaction() const;
-
  private:
   std::unique_ptr<bitflyer::GetBalance> get_balance_;
   std::unique_ptr<bitflyer::PostOauth> post_oauth_;
-  std::unique_ptr<bitflyer::PostTransaction> post_transaction_;
 };
 
 }  // namespace endpoint
