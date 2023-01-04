@@ -47,6 +47,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -185,6 +186,7 @@ public class BraveRewardsPanel
     private final View mAnchorView;
     private final PopupWindow mPopupWindow;
     private ViewGroup mPopupView;
+    private FrameLayout mBravePanelShadow;
     private LinearLayout mRewardsMainLayout;
     private final BraveActivity mBraveActivity;
     private final ChromeTabbedActivity mActivity;
@@ -323,6 +325,7 @@ public class BraveRewardsPanel
 
         mPopupWindow.setWidth((int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95)));
 
+        mBravePanelShadow = mPopupView.findViewById(R.id.panel_shadow);
         mBraveRewardsOnboardingView =
                 mPopupView.findViewById(R.id.brave_rewards_onboarding_layout_id);
         mBraveRewardsOnboardingModalView =
@@ -1130,10 +1133,7 @@ public class BraveRewardsPanel
                             } else {
                                 // fetchRewardsData();
                                 mBraveRewardsNativeWorker.GetExternalWallet();
-                                if (mBraveRewardsUnverifiedView != null) {
-                                    mBraveRewardsUnverifiedView.setForeground(null);
-                                    enableControls(true, mBraveRewardsUnverifiedView);
-                                }
+                                panelShadow(false);
                             }
                         }
                     } else {
@@ -1314,13 +1314,7 @@ public class BraveRewardsPanel
             return;
         }
         mBraveRewardsOnboardingModalView.setVisibility(View.VISIBLE);
-
-        if (mBraveRewardsUnverifiedView != null) {
-            int foregroundColor = R.color.rewards_panel_foreground_color;
-            mBraveRewardsUnverifiedView.setForeground(
-                    new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
-            enableControls(false, mBraveRewardsUnverifiedView);
-        }
+        panelShadow(true);
 
         String tosText =
                 String.format(mActivity.getResources().getString(R.string.brave_rewards_tos_text),
@@ -1408,12 +1402,8 @@ public class BraveRewardsPanel
         if (mBraveRewardsOnboardingView == null) {
             return;
         }
-        if (mBraveRewardsUnverifiedView != null) {
-            int foregroundColor = R.color.rewards_panel_foreground_color;
-            mBraveRewardsUnverifiedView.setForeground(
-                    new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
-            enableControls(false, mBraveRewardsUnverifiedView);
-        }
+
+        panelShadow(true);
 
         mBraveRewardsOnboardingView.setVisibility(View.VISIBLE);
         final Button btnNext = mBraveRewardsOnboardingView.findViewById(R.id.btn_next);
@@ -1472,10 +1462,7 @@ public class BraveRewardsPanel
             @Override
             public void onClick(View v) {
                 mBraveRewardsOnboardingView.setVisibility(View.GONE);
-                if (mBraveRewardsUnverifiedView != null) {
-                    mBraveRewardsUnverifiedView.setForeground(null);
-                    enableControls(true, mBraveRewardsUnverifiedView);
-                }
+                panelShadow(false);
                 mBraveRewardsNativeWorker.GetExternalWallet();
             }
         }));
@@ -1483,6 +1470,26 @@ public class BraveRewardsPanel
                 .setVisibility(View.VISIBLE);
         mBraveRewardsOnboardingView.findViewById(R.id.onboarding_action_layout)
                 .setVisibility(View.GONE);
+    }
+
+    private void panelShadow(boolean isEnable) {
+        if (isEnable) {
+            if (mBravePanelShadow != null) {
+                mBravePanelShadow.setVisibility(View.VISIBLE);
+            }
+
+            if (mBraveRewardsUnverifiedView != null) {
+                enableControls(false, mBraveRewardsUnverifiedView);
+            }
+        } else {
+            if (mBravePanelShadow != null) {
+                mBravePanelShadow.setVisibility(View.GONE);
+            }
+
+            if (mBraveRewardsUnverifiedView != null) {
+                enableControls(true, mBraveRewardsUnverifiedView);
+            }
+        }
     }
 
     // Declare geo changes
@@ -1617,10 +1624,7 @@ public class BraveRewardsPanel
                     mBraveRewardsOnboardingView.setVisibility(View.GONE);
                 }
                 mConnectAccountModal.setVisibility(View.GONE);
-                if (mBraveRewardsUnverifiedView != null) {
-                    mBraveRewardsUnverifiedView.setForeground(null);
-                    enableControls(true, mBraveRewardsUnverifiedView);
-                }
+                panelShadow(false);
                 mBraveRewardsNativeWorker.GetExternalWallet();
             }
         }));
@@ -1633,10 +1637,7 @@ public class BraveRewardsPanel
                     mBraveRewardsOnboardingView.setVisibility(View.GONE);
                 }
                 mConnectAccountModal.setVisibility(View.GONE);
-                if (mBraveRewardsUnverifiedView != null) {
-                    mBraveRewardsUnverifiedView.setForeground(null);
-                    enableControls(true, mBraveRewardsUnverifiedView);
-                }
+                panelShadow(false);
                 mBraveRewardsNativeWorker.GetExternalWallet();
             }
         }));
