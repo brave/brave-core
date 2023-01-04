@@ -7,7 +7,6 @@ import { getLocale } from '$web-common/locale'
 import { BraveWallet, BuyOption } from '../constants/types'
 
 import RampIcon from '../assets/svg-icons/ramp-icon.svg'
-import WyreIcon from '../assets/svg-icons/wyre-icon.svg'
 import SardineIconLight from '../assets/svg-icons/sardine-logo-light.svg'
 import SardineIconDark from '../assets/svg-icons/sardine-logo-dark.svg'
 import { isSardineSupported } from '../utils/asset-utils'
@@ -19,13 +18,6 @@ function getBuyOptions (): BuyOption[] {
     icon: RampIcon,
     name: getLocale('braveWalletBuyRampNetworkName'),
     description: getLocale('braveWalletBuyRampDescription')
-  },
-  {
-    id: BraveWallet.OnRampProvider.kWyre,
-    actionText: getLocale('braveWalletBuyWithWyre'),
-    icon: WyreIcon,
-    name: getLocale('braveWalletBuyWyreName'),
-    description: getLocale('braveWalletBuyWyreDescription')
   }]
 
   if (isSardineSupported()) {

@@ -9,7 +9,6 @@ import * as React from 'react'
 import { getNetworkInfo } from '../../utils/network-utils'
 import {
   getRampAssetSymbol,
-  getWyreAssetSymbol,
   isSelectedAssetInAssetOptions
 } from '../../utils/asset-utils'
 
@@ -41,13 +40,11 @@ export const useMultiChainBuyAssets = () => {
   const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken | undefined>()
   const [options, setOptions] = React.useState<
     {
-      wyreAssetOptions: BraveWallet.BlockchainToken[]
       rampAssetOptions: BraveWallet.BlockchainToken[]
       sardineAssetOptions: BraveWallet.BlockchainToken[]
       allAssetOptions: BraveWallet.BlockchainToken[]
     }
   >({
-    wyreAssetOptions: [],
     rampAssetOptions: [],
     sardineAssetOptions: [],
     allAssetOptions: []
@@ -65,9 +62,8 @@ export const useMultiChainBuyAssets = () => {
   }, [selectedAsset, buyAssetNetworks])
 
   const selectedAssetBuyOptions: BuyOption[] = React.useMemo(() => {
-    const { wyreAssetOptions, rampAssetOptions, sardineAssetOptions } = options
+    const { rampAssetOptions, sardineAssetOptions } = options
     const onRampAssetMap = {
-      [BraveWallet.OnRampProvider.kWyre]: wyreAssetOptions,
       [BraveWallet.OnRampProvider.kRamp]: rampAssetOptions,
       [BraveWallet.OnRampProvider.kSardine]: sardineAssetOptions
     }
@@ -100,7 +96,6 @@ export const useMultiChainBuyAssets = () => {
       ...selectedAsset,
       symbol:
         buyOption === BraveWallet.OnRampProvider.kRamp ? getRampAssetSymbol(selectedAsset)
-          : buyOption === BraveWallet.OnRampProvider.kWyre ? getWyreAssetSymbol(selectedAsset)
             : selectedAsset.symbol
     }
 
@@ -134,7 +129,6 @@ export const useMultiChainBuyAssets = () => {
   return {
     allAssetOptions: options.allAssetOptions,
     rampAssetOptions: options.rampAssetOptions,
-    wyreAssetOptions: options.wyreAssetOptions,
     selectedAsset,
     setSelectedAsset,
     selectedAssetNetwork,

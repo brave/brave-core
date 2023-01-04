@@ -6,7 +6,6 @@
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import {
   getRampNetworkPrefix,
-  getWyreNetworkPrefix,
   httpifyIpfsUrl
 } from './string-utils'
 
@@ -27,19 +26,6 @@ export const isSelectedAssetInAssetOptions = (
       asset.chainId === selectedAsset.chainId &&
       asset.symbol.toLowerCase() === selectedAsset.symbol.toLowerCase()
   }) !== -1
-}
-
-export const getWyreAssetSymbol = (asset: BraveWallet.BlockchainToken) => {
-  if (
-    !asset.contractAddress || // gas coins ok
-    asset.chainId === BraveWallet.MAINNET_CHAIN_ID // ETH-ERC coins ok
-  ) {
-    return asset.symbol
-  }
-
-  // format non-ethereum EVM token symbols for Wyre
-  const prefix = getWyreNetworkPrefix(asset.chainId)
-  return prefix ? `${prefix}${asset.symbol.toUpperCase()}` : asset.symbol
 }
 
 export const getRampAssetSymbol = (asset: BraveWallet.BlockchainToken) => {
