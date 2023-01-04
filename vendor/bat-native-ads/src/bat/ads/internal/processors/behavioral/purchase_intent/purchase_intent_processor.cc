@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 
@@ -11,10 +11,10 @@
 #include "base/check.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/search_engine/search_engine_results_page_util.h"
-#include "bat/ads/internal/base/strings/string_strip_util.h"
-#include "bat/ads/internal/base/url/url_util.h"
+#include "bat/ads/internal/common/logging_util.h"
+#include "bat/ads/internal/common/search_engine/search_engine_results_page_util.h"
+#include "bat/ads/internal/common/strings/string_strip_util.h"
+#include "bat/ads/internal/common/url/url_util.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/locale/locale_manager.h"
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_signal_info.h"

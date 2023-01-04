@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule.h"
 
@@ -9,8 +9,8 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/base/calendar/calendar_util.h"
-#include "bat/ads/internal/base/time/time_util.h"
+#include "bat/ads/internal/common/calendar/calendar_util.h"
+#include "bat/ads/internal/common/time/time_util.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 
 namespace ads {

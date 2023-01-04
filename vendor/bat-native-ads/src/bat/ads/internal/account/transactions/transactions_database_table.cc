@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/transactions/transactions_database_table.h"
 
@@ -14,12 +14,12 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/database/database_bind_util.h"
-#include "bat/ads/internal/base/database/database_column_util.h"
-#include "bat/ads/internal/base/database/database_table_util.h"
-#include "bat/ads/internal/base/database/database_transaction_util.h"
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/time/time_formatting_util.h"
+#include "bat/ads/internal/common/database/database_bind_util.h"
+#include "bat/ads/internal/common/database/database_column_util.h"
+#include "bat/ads/internal/common/database/database_table_util.h"
+#include "bat/ads/internal/common/database/database_transaction_util.h"
+#include "bat/ads/internal/common/logging_util.h"
+#include "bat/ads/internal/common/time/time_formatting_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_constants.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 

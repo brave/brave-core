@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"
 
@@ -13,12 +13,12 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/locale/subdivision_code_util.h"
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/time/time_formatting_util.h"
-#include "bat/ads/internal/base/url/url_request_string_util.h"
-#include "bat/ads/internal/base/url/url_response_string_util.h"
-#include "bat/ads/internal/flags/flag_manager_util.h"
+#include "bat/ads/internal/common/locale/subdivision_code_util.h"
+#include "bat/ads/internal/common/logging_util.h"
+#include "bat/ads/internal/common/time/time_formatting_util.h"
+#include "bat/ads/internal/common/url/url_request_string_util.h"
+#include "bat/ads/internal/common/url/url_response_string_util.h"
+#include "bat/ads/internal/flags/flag_manager.h"
 #include "bat/ads/internal/geographic/subdivision/get_subdivision_url_request_builder.h"
 #include "bat/ads/internal/geographic/subdivision/supported_subdivision_codes.h"
 #include "bat/ads/internal/locale/locale_manager.h"
@@ -292,7 +292,7 @@ void SubdivisionTargeting::Retry() {
 }
 
 void SubdivisionTargeting::FetchAfterDelay() {
-  const base::TimeDelta delay = ShouldDebug()
+  const base::TimeDelta delay = FlagManager::GetInstance()->ShouldDebug()
                                     ? kDebugFetchSubdivisionTargetingPing
                                     : kFetchSubdivisionTargetingPing;
 

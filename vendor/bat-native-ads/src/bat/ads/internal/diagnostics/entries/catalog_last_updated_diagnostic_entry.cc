@@ -1,13 +1,13 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/diagnostics/entries/catalog_last_updated_diagnostic_entry.h"
 
 #include "base/time/time.h"
-#include "bat/ads/internal/base/time/time_formatting_util.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
+#include "bat/ads/internal/common/time/time_formatting_util.h"
 
 namespace ads {
 

@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/flags/did_override/did_override_features_from_command_line_util.h"
 
@@ -18,9 +18,9 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rule_features.h"
 #include "bat/ads/internal/ads/serving/serving_features.h"
-#include "bat/ads/internal/base/unittest/command_line_switch_info.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_command_line_switch_util.h"
+#include "bat/ads/internal/common/unittest/command_line_switch_info.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "bat/ads/internal/conversions/conversions_features.h"
 #include "bat/ads/internal/creatives/inline_content_ads/inline_content_ads_features.h"
 #include "bat/ads/internal/creatives/new_tab_page_ads/new_tab_page_ads_features.h"

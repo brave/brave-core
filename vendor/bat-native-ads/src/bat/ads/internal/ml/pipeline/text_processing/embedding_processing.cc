@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/ml/pipeline/text_processing/embedding_processing.h"
 
@@ -14,8 +14,8 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/crypto/crypto_util.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/crypto/crypto_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/pipeline/embedding_pipeline_info.h"
 #include "bat/ads/internal/ml/pipeline/embedding_pipeline_value_util.h"
