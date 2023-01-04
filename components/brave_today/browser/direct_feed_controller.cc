@@ -56,10 +56,12 @@ std::string GetResponseCharset(network::SimpleURLLoader* loader) {
   return response_info->charset.empty() ? "utf-8" : response_info->charset;
 }
 
-mojom::ArticlePtr RustFeedItemToArticle(const FeedItem& rust_feed_item) {
+mojom::ArticlePtr RustFeedItemToArticle(const FeedItem& rust_feed_item,
+                                        const std::string& publisher_id) {
   // We don't include description since there does not exist a
   // UI which uses that field at the moment.
   auto metadata = mojom::FeedItemMetadata::New();
+  metadata->publisher_id = publisher_id;
   metadata->title = static_cast<std::string>(rust_feed_item.title);
   metadata->image = mojom::Image::NewImageUrl(
       GURL(static_cast<std::string>(rust_feed_item.image_url)));
@@ -373,34 +375,45 @@ void DirectFeedController::DownloadFeedContent(const GURL& feed_url,
         // Valid feed, convert items
         VLOG(1) << "Valid feed parsed from " << response->url.spec();
         Articles articles;
-        for (auto entry : response->data.items) {
-          auto item = RustFeedItemToArticle(entry);
-          item->data->publisher_id = publisher_id;
-          articles.emplace_back(std::move(item));
-          // Limit to a certain count of articles, since for now the content
-          // is only shown in a single combined feed, and the user cannot view
-          // feed items per source.
-          if (articles.size() >= kMaxArticlesPerDirectFeedSource) {
-            break;
-          }
-        }
-        // Add variety to score, same as brave feed aggregator
-        // Sort by score, ascending
-        std::sort(articles.begin(), articles.end(),
-                  [](mojom::ArticlePtr& a, mojom::ArticlePtr& b) {
-                    return (a.get()->data->score < b.get()->data->score);
-                  });
-        double variety = 2.0;
-        for (auto& entry : articles) {
-          entry->data->score = entry->data->score * variety;
-          variety = variety * 2.0;
-        }
+        DirectFeedController::BuildArticles(articles, response->data,
+                                            publisher_id);
         VLOG(1) << "Direct feed retrieved article count: " << articles.size();
         std::move(callback).Run(std::move(articles));
       },
       std::move(callback), publisher_id);
   // Make request
   DownloadFeed(feed_url, std::move(responseHandler));
+}
+
+// static
+void DirectFeedController::BuildArticles(Articles& articles,
+                                         const FeedData& data,
+                                         const std::string& publisher_id) {
+  for (auto entry : data.items) {
+    auto item = RustFeedItemToArticle(entry, publisher_id);
+    // Only allow http and https links
+    if (!item->data->url.SchemeIsHTTPOrHTTPS()) {
+      continue;
+    }
+    articles.emplace_back(std::move(item));
+    // Limit to a certain count of articles, since for now the content
+    // is only shown in a single combined feed, and the user cannot view
+    // feed items per source.
+    if (articles.size() >= kMaxArticlesPerDirectFeedSource) {
+      break;
+    }
+  }
+  // Add variety to score, same as brave feed aggregator
+  // Sort by score, ascending
+  std::sort(articles.begin(), articles.end(),
+            [](mojom::ArticlePtr& a, mojom::ArticlePtr& b) {
+              return (a.get()->data->score < b.get()->data->score);
+            });
+  double variety = 2.0;
+  for (auto& entry : articles) {
+    entry->data->score = entry->data->score * variety;
+    variety = variety * 2.0;
+  }
 }
 
 void DirectFeedController::DownloadFeed(const GURL& feed_url,
