@@ -226,11 +226,8 @@ class BraveVPNServiceTest : public testing::Test {
       service_->Shutdown();
     }
     service_ = std::make_unique<BraveVpnService>(
-#if !BUILDFLAG(IS_ANDROID)
-        connection_api_.get(),
-#endif
-        url_loader_factory_.GetSafeWeakWrapper(), &local_pref_service_,
-        &profile_pref_service_,
+        connection_api_.get(), url_loader_factory_.GetSafeWeakWrapper(),
+        &local_pref_service_, &profile_pref_service_,
         base::BindRepeating(&BraveVPNServiceTest::GetSkusService,
                             base::Unretained(this)));
   }

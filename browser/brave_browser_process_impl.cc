@@ -89,14 +89,8 @@
 #include "chrome/browser/ui/browser_list.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
-#if BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_os_connection_api_win.h"
-#endif
-#if BUILDFLAG(IS_MAC)
-#include "brave/components/brave_vpn/browser/connection/mac/brave_vpn_os_connection_api_mac.h"
-#endif
 #endif
 
 using brave_component_updater::BraveComponent;
@@ -435,19 +429,14 @@ ipfs::BraveIpfsClientUpdater* BraveBrowserProcessImpl::ipfs_client_updater() {
 }
 #endif  // BUILDFLAG(ENABLE_IPFS)
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
 brave_vpn::BraveVPNOSConnectionAPI*
 BraveBrowserProcessImpl::brave_vpn_os_connection_api() {
   if (brave_vpn_os_connection_api_)
     return brave_vpn_os_connection_api_.get();
 
-  brave_vpn_os_connection_api_ =
-#if BUILDFLAG(IS_WIN)
-      std::make_unique<brave_vpn::BraveVPNOSConnectionAPIWin>(
-#elif BUILDFLAG(IS_MAC)
-      std::make_unique<brave_vpn::BraveVPNOSConnectionAPIMac>(
-#endif
-          shared_url_loader_factory(), local_state());
+  brave_vpn_os_connection_api_ = brave_vpn::CreateBraveVPNOSConnectionAPI(
+      shared_url_loader_factory(), local_state());
   return brave_vpn_os_connection_api_.get();
 }
 #endif

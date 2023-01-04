@@ -27,8 +27,7 @@ class BraveFarblingService;
 class URLSanitizerComponentInstaller;
 }  // namespace brave
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
-// vpn connection api is only used on desktop.
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
 namespace brave_vpn {
 class BraveVPNOSConnectionAPI;
 }  // namespace brave_vpn
@@ -119,7 +118,7 @@ class BraveBrowserProcess {
   virtual speedreader::SpeedreaderRewriterService*
   speedreader_rewriter_service() = 0;
 #endif
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   virtual brave_vpn::BraveVPNOSConnectionAPI* brave_vpn_os_connection_api() = 0;
 #endif
   virtual brave_ads::ResourceComponent* resource_component() = 0;

@@ -12,6 +12,12 @@
 #include "base/observer_list_types.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 
+namespace network {
+class SharedURLLoaderFactory;
+}  // namespace network
+
+class PrefService;
+
 namespace brave_vpn {
 
 // Interface for managing OS' vpn connection.
@@ -46,6 +52,13 @@ class BraveVPNOSConnectionAPI {
  protected:
   BraveVPNOSConnectionAPI() = default;
 };
+
+// Create platform specific api instance.
+// NOTE: Don't call this method directly.
+// Only BraveBrowserProcess need to use this method.
+std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNOSConnectionAPI(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PrefService* local_prefs);
 
 }  // namespace brave_vpn
 

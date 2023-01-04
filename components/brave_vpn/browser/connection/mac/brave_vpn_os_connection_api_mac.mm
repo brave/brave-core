@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_vpn/browser/connection/mac/brave_vpn_os_connection_api_mac.h"
 
+#include <memory>
+
 #import <NetworkExtension/NetworkExtension.h>
 
 #include "base/files/file_path.h"
@@ -155,6 +157,13 @@ NEVPNProtocolIKEv2* CreateProtocolConfig(const BraveVPNConnectionInfo& info) {
 }
 
 }  // namespace
+
+std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNOSConnectionAPI(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PrefService* local_prefs) {
+  return std::make_unique<BraveVPNOSConnectionAPIMac>(url_loader_factory,
+                                                      local_prefs);
+}
 
 BraveVPNOSConnectionAPIMac::BraveVPNOSConnectionAPIMac(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,

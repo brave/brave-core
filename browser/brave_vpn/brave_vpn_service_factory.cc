@@ -83,9 +83,7 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
       context);
 
   auto* vpn_service = new BraveVpnService(
-#if !BUILDFLAG(IS_ANDROID)
       g_brave_browser_process->brave_vpn_os_connection_api(),
-#endif
       shared_url_loader_factory, local_state,
       user_prefs::UserPrefs::Get(context), callback);
 #if BUILDFLAG(IS_WIN)

@@ -149,7 +149,7 @@ TestingBraveBrowserProcess::brave_farbling_service() {
   return nullptr;
 }
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
 brave_vpn::BraveVPNOSConnectionAPI*
 TestingBraveBrowserProcess::brave_vpn_os_connection_api() {
   NOTREACHED();

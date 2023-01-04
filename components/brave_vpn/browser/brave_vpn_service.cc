@@ -39,9 +39,7 @@ using ConnectionState = mojom::ConnectionState;
 using PurchasedState = mojom::PurchasedState;
 
 BraveVpnService::BraveVpnService(
-#if !BUILDFLAG(IS_ANDROID)
     BraveVPNOSConnectionAPI* connection_api,
-#endif
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
     PrefService* profile_prefs,
