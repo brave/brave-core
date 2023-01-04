@@ -27,9 +27,11 @@ import android.widget.TextView;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
@@ -233,7 +235,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             boolean isP3aEnabled = true;
 
             try {
-                isP3aEnabled = BravePrefServiceBridge.getInstance().getP3AEnabled();
+                isP3aEnabled = BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
             } catch (Exception e) {
                 Log.e("P3aOnboarding", e.getMessage());
             }
@@ -243,8 +245,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     try {
-                        BravePrefServiceBridge.getInstance().setP3AEnabled(isChecked);
-                        BravePrefServiceBridge.getInstance().setP3ANoticeAcknowledged(true);
+                        BraveLocalState.get().setBoolean(BravePref.P3A_ENABLED, isChecked);
+                        BraveLocalState.get().setBoolean(BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
+                        BraveLocalState.commitPendingWrite();
                     } catch (Exception e) {
                         Log.e("P3aOnboarding", e.getMessage());
                     }

@@ -69,6 +69,7 @@ import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.SendModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
@@ -88,7 +89,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.WalletNativeUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.decentralized_dns.EnsOffchainResolveMethod;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.qrreader.BarcodeTracker;
 import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
 import org.chromium.chrome.browser.qrreader.CameraSource;
@@ -1220,8 +1221,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
             Button mBtnEnableEnsOffchainLookup = findViewById(R.id.btn_enable_ens_offchain_lookup);
             mBtnEnableEnsOffchainLookup.setOnClickListener(v -> {
-                BravePrefServiceBridge.getInstance().setENSOffchainResolveMethod(
-                        EnsOffchainResolveMethod.ENABLED);
+                BraveLocalState.get().setInteger(
+                        BravePref.ENS_OFFCHAIN_RESOLVE_METHOD, EnsOffchainResolveMethod.ENABLED);
                 mEnsOffchainLookupSection.setVisibility(View.GONE);
                 maybeResolveWalletAddress();
             });
