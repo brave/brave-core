@@ -42,10 +42,6 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   // BraveBrowserProcess overrides:
   void StartBraveServices() override;
   brave_shields::AdBlockService* ad_block_service() override;
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  brave_component_updater::ExtensionWhitelistService*
-  extension_whitelist_service() override;
-#endif
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionDownloadService* greaselion_download_service() override;
 #endif

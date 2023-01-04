@@ -26,9 +26,6 @@ class URLSanitizerComponentInstaller;
 }  // namespace brave
 
 namespace brave_component_updater {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-class ExtensionWhitelistService;
-#endif
 class LocalDataFilesService;
 }  // namespace brave_component_updater
 
@@ -78,10 +75,6 @@ class BraveBrowserProcess {
   virtual ~BraveBrowserProcess();
   virtual void StartBraveServices() = 0;
   virtual brave_shields::AdBlockService* ad_block_service() = 0;
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  virtual brave_component_updater::ExtensionWhitelistService*
-  extension_whitelist_service() = 0;
-#endif
 #if BUILDFLAG(ENABLE_GREASELION)
   virtual greaselion::GreaselionDownloadService*
   greaselion_download_service() = 0;

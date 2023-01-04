@@ -57,11 +57,6 @@
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #endif
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "brave/common/extensions/whitelist.h"
-#include "brave/components/brave_component_updater/browser/extension_whitelist_service.h"
-#endif
-
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
 #endif
@@ -196,9 +191,6 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   https_everywhere_service()->Start();
   resource_component();
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  extension_whitelist_service();
-#endif
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion_download_service();
 #endif
@@ -240,18 +232,6 @@ BraveBrowserProcessImpl::ntp_background_images_service() {
 
   return ntp_background_images_service_.get();
 }
-
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-brave_component_updater::ExtensionWhitelistService*
-BraveBrowserProcessImpl::extension_whitelist_service() {
-  if (!extension_whitelist_service_) {
-    extension_whitelist_service_ =
-        brave_component_updater::ExtensionWhitelistServiceFactory(
-            local_data_files_service(), kVettedExtensions);
-  }
-  return extension_whitelist_service_.get();
-}
-#endif
 
 #if BUILDFLAG(ENABLE_GREASELION)
 greaselion::GreaselionDownloadService*

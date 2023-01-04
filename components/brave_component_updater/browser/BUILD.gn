@@ -21,13 +21,4 @@ static_library("browser") {
     "//base",
     "//components/component_updater:component_updater",
   ]
-
-  if (enable_extensions) {
-    sources += [
-      "extension_whitelist_service.cc",
-      "extension_whitelist_service.h",
-    ]
-
-    deps += [ "//brave/vendor/extension-whitelist/brave:extension-whitelist" ]
-  }
 }

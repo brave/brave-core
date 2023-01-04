@@ -19,8 +19,6 @@ class BraveExtensionProvider : public ManagementPolicy::Provider {
   BraveExtensionProvider& operator=(const BraveExtensionProvider&) = delete;
   ~BraveExtensionProvider() override;
   std::string GetDebugPolicyProviderName() const override;
-  bool UserMayLoad(const Extension* extension,
-                   std::u16string* error) const override;
   bool MustRemainInstalled(const Extension* extension,
                            std::u16string* error) const override;
 };

@@ -29,9 +29,6 @@ class BraveFarblingService;
 }  // namespace brave
 
 namespace brave_component_updater {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-class ExtensionWhitelistService;
-#endif
 class LocalDataFilesService;
 }  // namespace brave_component_updater
 
@@ -92,10 +89,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 
   void StartBraveServices() override;
   brave_shields::AdBlockService* ad_block_service() override;
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  brave_component_updater::ExtensionWhitelistService*
-  extension_whitelist_service() override;
-#endif
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionDownloadService* greaselion_download_service() override;
 #endif
@@ -151,10 +144,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<brave_component_updater::BraveComponent::Delegate>
       brave_component_updater_delegate_;
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  std::unique_ptr<brave_component_updater::ExtensionWhitelistService>
-      extension_whitelist_service_;
-#endif
 #if BUILDFLAG(ENABLE_GREASELION)
   std::unique_ptr<greaselion::GreaselionDownloadService>
       greaselion_download_service_;
