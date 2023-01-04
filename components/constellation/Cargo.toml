@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-star-constellation = { git = "https://github.com/brave/constellation", rev = "6c91f94d7b307f7dec08e1a86edcbf789d420185" }
+star-constellation = { git = "https://github.com/brave/constellation", rev = "3b34d761341518e97692de3419380600ede1057f" }
 cxx = { path = "../../../third_party/rust/cxx/v1/crate" }
 # Use following cxx dep if compiling example via Makefile
 # cxx = "1.0"

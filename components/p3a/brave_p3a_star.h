@@ -25,8 +25,6 @@ class SharedURLLoaderFactory;
 
 namespace brave {
 
-class MessageMetainfo;
-
 struct BraveP3AConfig;
 
 class BraveP3AStar {
