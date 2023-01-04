@@ -524,11 +524,11 @@ void Contribution::TransferFunds(const mojom::SKUTransaction& transaction,
     return;
   }
 
-  // if (wallet_type == constant::kWalletBitflyer) {
-  //   ledger_->bitflyer()->TransferFunds(transaction.amount, destination,
-  //                                      callback);
-  //   return;
-  // }
+  if (wallet_type == constant::kWalletBitflyer) {
+    ledger_->bitflyer()->TransferFunds(transaction.amount, destination,
+                                       contribution_id, callback);
+    return;
+  }
 
   // if (wallet_type == constant::kWalletGemini) {
   //   ledger_->gemini()->TransferFunds(transaction.amount, destination,

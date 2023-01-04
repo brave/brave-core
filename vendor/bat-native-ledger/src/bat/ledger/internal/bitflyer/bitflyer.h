@@ -18,6 +18,7 @@
 #include "base/timer/timer.h"
 #include "bat/ledger/internal/wallet_provider/connect_external_wallet.h"
 #include "bat/ledger/internal/wallet_provider/get_external_wallet.h"
+#include "bat/ledger/internal/wallet_provider/transfer.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -28,14 +29,6 @@ class BitflyerServer;
 }
 
 namespace bitflyer {
-
-struct Transaction {
-  std::string address;
-  double amount;
-  std::string message;
-};
-
-class BitflyerTransfer;
 
 using FetchBalanceCallback = base::OnceCallback<void(mojom::Result, double)>;
 
@@ -54,9 +47,10 @@ class Bitflyer {
 
   void FetchBalance(FetchBalanceCallback);
 
-  void TransferFunds(const double amount,
+  void TransferFunds(double amount,
                      const std::string& address,
-                     client::TransactionCallback callback);
+                     const std::string& contribution_id,
+                     client::LegacyResultCallback);
 
   void ConnectWallet(const base::flat_map<std::string, std::string>& args,
                      ledger::ConnectExternalWalletCallback);
@@ -72,12 +66,11 @@ class Bitflyer {
   [[nodiscard]] bool LogOutWallet();
 
  private:
-  void ContributionCompleted(mojom::Result result,
-                             const std::string& transaction_id,
+  void ContributionCompleted(ledger::LegacyResultCallback,
                              const std::string& contribution_id,
                              double fee,
                              const std::string& publisher_key,
-                             ledger::LegacyResultCallback callback);
+                             mojom::Result);
 
   void OnFetchBalance(FetchBalanceCallback, mojom::Result, double available);
 
@@ -85,10 +78,9 @@ class Bitflyer {
 
   void StartTransferFeeTimer(const std::string& fee_id, const int attempts);
 
-  void OnTransferFeeCompleted(const mojom::Result result,
-                              const std::string& transaction_id,
-                              const std::string& contribution_id,
-                              const int attempts);
+  void OnTransferFeeCompleted(const std::string& contribution_id,
+                              int attempts,
+                              mojom::Result);
 
   void TransferFee(const std::string& contribution_id,
                    const double amount,
@@ -98,9 +90,9 @@ class Bitflyer {
 
   void RemoveTransferFee(const std::string& contribution_id);
 
-  std::unique_ptr<BitflyerTransfer> transfer_;
   std::unique_ptr<wallet_provider::ConnectExternalWallet> connect_wallet_;
   std::unique_ptr<wallet_provider::GetExternalWallet> get_wallet_;
+  std::unique_ptr<wallet_provider::Transfer> transfer_;
   std::unique_ptr<endpoint::BitflyerServer> bitflyer_server_;
   LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;
