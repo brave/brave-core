@@ -26,6 +26,8 @@ std::string GetPlatformIdentifier();
 
 int GetIsoWeekNumber(const base::Time& time);
 
+base::Time GetLastMondayTime(const base::Time& time);
+
 base::Time GetYMDAsDate(const base::StringPiece& ymd);
 
 std::string GetAPIKey();

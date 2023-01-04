@@ -165,13 +165,7 @@ std::string BraveStatsUpdaterParams::GetCurrentDateAsYMD() const {
 
 std::string BraveStatsUpdaterParams::GetLastMondayAsYMD() const {
   base::Time now = GetCurrentTimeNow();
-  base::Time::Exploded exploded;
-  now.LocalExplode(&exploded);
-
-  int days_adjusted =
-      (exploded.day_of_week == 0) ? 6 : exploded.day_of_week - 1;
-  base::Time last_monday = base::Time::FromJsTime(
-      now.ToJsTime() - (days_adjusted * base::Time::kMillisecondsPerDay));
+  base::Time last_monday = GetLastMondayTime(now);
 
   return brave_stats::GetDateAsYMD(last_monday);
 }
