@@ -254,6 +254,8 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringFiltered) {
        {"https://example.com/?igshid=1234", ""},
        {"https://www.instagram.com/?igshid=1234", "https://www.instagram.com/"},
        {"https://example.com/?mkt_tok=123&foo=bar&mkt_unsubscribe=1", ""},
+       {"https://example.com/index.php/email/emailWebview?mkt_tok=1234&foo=bar",
+        ""},
        {"https://example.com/?mkt_tok=123&foo=bar",
         "https://example.com/?foo=bar"}});
   for (const auto& pair : urls) {
