@@ -192,6 +192,7 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
     DCHECK(it != regional_filters_providers_.end());
     AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(
         it->second.get());
+    it->second->UnregisterComponent();
     regional_filters_providers_.erase(it);
   }
 
