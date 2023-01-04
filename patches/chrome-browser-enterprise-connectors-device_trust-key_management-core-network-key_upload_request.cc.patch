@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/enterprise/connectors/device_trust/key_management/core/network/key_upload_request.cc b/chrome/browser/enterprise/connectors/device_trust/key_management/core/network/key_upload_request.cc
+index 54013328c366e5f4d67d11b38e95f5e4564684ad..007052c3bd9f4b86559760974bc3c0f2314eda28 100644
+--- a/chrome/browser/enterprise/connectors/device_trust/key_management/core/network/key_upload_request.cc
++++ b/chrome/browser/enterprise/connectors/device_trust/key_management/core/network/key_upload_request.cc
+@@ -25,6 +25,7 @@ BPKUR::KeyType AlgorithmToType(
+     case crypto::SignatureVerifier::RSA_PSS_SHA256:
+       return BPKUR::RSA_KEY;
+     case crypto::SignatureVerifier::ECDSA_SHA256:
++    case crypto::SignatureVerifier::ECDSA_SHA384:
+       return BPKUR::EC_KEY;
+   }
+ }
