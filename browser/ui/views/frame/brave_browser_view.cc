@@ -11,6 +11,7 @@
 #include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/sparkle_buildflags.h"
+#include "brave/browser/translate/brave_translate_utils.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -28,7 +29,6 @@
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
-#include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
@@ -61,10 +61,6 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "components/grit/brave_components_strings.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-#include "brave/browser/translate/brave_translate_utils.h"
 #endif
 
 namespace {
@@ -355,25 +351,6 @@ void BraveBrowserView::ShowUpdateChromeDialog() {
 #else
   BrowserView::ShowUpdateChromeDialog();
 #endif
-}
-
-// The translate bubble will be shown if ENABLE_BRAVE_TRANSLATE_GO build flag
-// is enabled. We utilize chromium's translate UI directly along with
-// go-translate.
-ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
-    content::WebContents* web_contents,
-    translate::TranslateStep step,
-    const std::string& source_language,
-    const std::string& target_language,
-    translate::TranslateErrors error_type,
-    bool is_user_gesture) {
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  return BrowserView::ShowTranslateBubble(web_contents, step, source_language,
-                                          target_language, error_type,
-                                          is_user_gesture);
-#else   // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  return ShowTranslateBubbleResult::BROWSER_WINDOW_NOT_VALID;
-#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 }
 
 speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(

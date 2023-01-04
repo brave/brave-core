@@ -6,7 +6,6 @@
 #include "brave/browser/translate/brave_translate_utils.h"
 
 #include "brave/components/translate/core/common/brave_translate_features.h"
-#include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/buildflags/buildflags.h"
 
