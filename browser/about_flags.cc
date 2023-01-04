@@ -28,7 +28,6 @@
 #include "brave/components/skus/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
-#include "brave/components/translate/core/common/buildflags.h"
 #include "build/build_config.h"
 #include "components/content_settings/core/common/features.h"
 #include "components/flags_ui/flags_state.h"
@@ -560,17 +559,6 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
 #define CRYPTO_WALLETS_FEATURE_ENTRIES
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-#define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES                           \
-    {"translate",                                                    \
-     flag_descriptions::kTranslateName,                              \
-     flag_descriptions::kTranslateDescription,                       \
-     kOsDesktop | kOsAndroid,                                        \
-     FEATURE_VALUE_TYPE(translate::kTranslate)},
-#else
-#define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES
-#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #define PLAYLIST_FEATURE_ENTRIES                                           \
      {kPlaylistFeatureInternalName,                                        \
@@ -765,6 +753,11 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
       flag_descriptions::kBraveRoundTimeStampsDescription,                  \
       kOsAll, FEATURE_VALUE_TYPE(                                           \
           blink::features::kBraveRoundTimeStamps)},                         \
+    {"translate",                                                           \
+      flag_descriptions::kTranslateName,                                    \
+      flag_descriptions::kTranslateDescription,                             \
+      kOsDesktop | kOsAndroid,                                              \
+      FEATURE_VALUE_TYPE(translate::kTranslate)},                           \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
     BRAVE_NEWS_FEATURE_ENTRIES                                              \
@@ -774,7 +767,6 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
     BRAVE_VPN_DNS_FEATURE_ENTRIES                                           \
     BRAVE_SKU_SDK_FEATURE_ENTRIES                                           \
     SPEEDREADER_FEATURE_ENTRIES                                             \
-    BRAVE_TRANSLATE_GO_FEATURE_ENTRIES                                      \
     BRAVE_FEDERATED_FEATURE_ENTRIES                                         \
     PLAYLIST_FEATURE_ENTRIES                                                \
     BRAVE_VERTICAL_TABS_FEATURE_ENTRY                                       \

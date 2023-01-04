@@ -14,19 +14,15 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/components/tor/tor_profile_service.h"
-#include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
+#include "components/translate/core/browser/translate_pref_names.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-#include "components/translate/core/browser/translate_pref_names.h"
-#endif
 
 namespace {
 size_t GetTorBrowserCount() {
@@ -133,7 +129,5 @@ void TorProfileManager::InitTorProfileUserPrefs(Profile* profile) {
   // Disable the automatic translate bubble in Tor because we currently don't
   // support extensions in Tor mode and users cannot disable this through
   // settings page for Tor windows.
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   pref_service->SetBoolean(translate::prefs::kOfferTranslateEnabled, false);
-#endif
 }

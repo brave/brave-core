@@ -65,6 +65,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
@@ -97,6 +98,8 @@ import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.app.domain.NetworkSelectorModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
+import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
+import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
@@ -149,13 +152,14 @@ import org.chromium.chrome.browser.prefetch.settings.PreloadPagesSettingsBridge;
 import org.chromium.chrome.browser.prefetch.settings.PreloadPagesState;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.rate.RateDialogFragment;
+import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingState;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserListener;
 import org.chromium.chrome.browser.settings.BraveNewsPreferences;
+import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
 import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
@@ -268,6 +272,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private boolean mNativeInitialized;
     private NewTabPageManager mNewTabPageManager;
     private NotificationPermissionController mNotificationPermissionController;
+    private BraveNewsController mBraveNewsController;
 
     @SuppressLint("VisibleForTests")
     public BraveActivity() {
@@ -393,10 +398,20 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         return true;
     }
 
+    private void cleanUpBraveNewsController() {
+        if (mBraveNewsController != null) {
+            mBraveNewsController.close();
+        }
+        mBraveNewsController = null;
+    }
+
     @Override
     public void onConnectionError(MojoException e) {
         cleanUpNativeServices();
         initNativeServices();
+
+        cleanUpBraveNewsController();
+        initBraveNewsController();
     }
 
     @Override
@@ -407,6 +422,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
         BraveSafeBrowsingApiHandler.getInstance().shutdownSafeBrowsing();
         super.onDestroyInternal();
+        cleanUpBraveNewsController();
         cleanUpNativeServices();
     }
 
@@ -896,13 +912,21 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         checkAndshowNotificationWarningDialog();
 
-        if (!RateUtils.getInstance(this).getPrefRateEnabled()) {
-            RateUtils.getInstance(this).setPrefRateEnabled(true);
-            RateUtils.getInstance(this).setNextRateDateAndCount();
+        if (RateUtils.getInstance().isLastSessionShown()) {
+            RateUtils.getInstance().setPrefNextRateDate();
+            RateUtils.getInstance().setLastSessionShown(false);
         }
 
-        if (RateUtils.getInstance(this).shouldShowRateDialog())
+        if (!RateUtils.getInstance().getPrefRateEnabled()) {
+            RateUtils.getInstance().setPrefRateEnabled(true);
+            RateUtils.getInstance().setPrefNextRateDate();
+        }
+        RateUtils.getInstance().setTodayDate();
+
+        if (RateUtils.getInstance().shouldShowRateDialog(this)) {
             showBraveRateDialog();
+            RateUtils.getInstance().setLastSessionShown(true);
+        }
 
         // TODO commenting out below code as we may use it in next release
 
@@ -1034,6 +1058,23 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                                    BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                                 >= 7)) {
             showAdFreeCalloutDialog();
+        }
+
+        initBraveNewsController();
+    }
+
+    public void initBraveNewsController() {
+        if (mBraveNewsController != null) {
+            return;
+        }
+
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS_V2)
+                && BravePrefServiceBridge.getInstance().getShowNews()
+                && BravePrefServiceBridge.getInstance().getNewsOptIn()) {
+            mBraveNewsController =
+                    BraveNewsControllerFactory.getInstance().getBraveNewsController(this);
+
+            BraveNewsUtils.getBraveNewsSettingsData(mBraveNewsController, null);
         }
     }
 
@@ -1206,7 +1247,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     private void openBraveNewsSettings() {
         SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
-        settingsLauncher.launchSettingsActivity(this, BraveNewsPreferences.class);
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS_V2)) {
+            settingsLauncher.launchSettingsActivity(this, BraveNewsPreferencesV2.class);
+        } else {
+            settingsLauncher.launchSettingsActivity(this, BraveNewsPreferences.class);
+        }
     }
 
     public void openBraveWalletSettings() {
@@ -1617,8 +1662,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     private void showBraveRateDialog() {
-        RateDialogFragment mRateDialogFragment = new RateDialogFragment();
-        mRateDialogFragment.show(getSupportFragmentManager(), "RateDialogFragment");
+        BraveRateDialogFragment mRateDialogFragment = new BraveRateDialogFragment();
+        mRateDialogFragment.show(getSupportFragmentManager(), "BraveRateDialogFragment");
     }
 
     private void showCrossPromotionalDialog() {
@@ -1942,6 +1987,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public void addOrEditBookmark(final Tab tabToBookmark) {
+        RateUtils.getInstance().setPrefAddedBookmarkCount();
         ((TabBookmarker) mTabBookmarkerSupplier.get()).addOrEditBookmark(tabToBookmark);
     }
 

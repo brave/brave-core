@@ -38,7 +38,7 @@
     <color name="brave_theme_success">#51cf66</color>
     <color name="brave_theme_error_txt">#E32444</color>
 
-    <!-- Onborading colors -->
+    <!-- Onboarding colors -->
     <color name="onboarding_orange">#fb542b</color>
     <color name="onboarding_gray">#84889c</color>
     <color name="onboarding_black">#1e2029</color>
@@ -92,14 +92,21 @@
     <color name="brave_wallet_button_pressed">#737ADE</color>
 
     <!-- Brave news colors -->
-    <!-- <color name="card_background">#DC353535</color> -->
+    <!-- <color name="card_background">#DC353535</color> -->    
     <color name="card_background">#F23B3E4F</color>
     <color name="card_background_solid">#353535</color>
     <color name="blurple">#5455cd</color>
     <color name="news_text_color">@android:color/white</color>
     <color name="news_time_color">#9CD2D5CF</color>
     <color name="news_promoted_background_color">#495057</color>
-
+    <color name="news_settings_title_color">#212529</color>
+    <color name="news_settings_subtitle_color">#868E96</color>
+    <color name="news_settings_divider_color">#E9E9F4</color>
+    <color name="news_settings_icon_bg_color">#0D000000</color>
+    <color name="news_settings_following_count_color">#D9495057</color>
+    <color name="news_settings_following_count_bg_color">#1A000000</color>
+    <color name="news_settings_optin_color">#CCCCCC</color>
+    <color name="news_settings_switch_color">#4C54D2</color>
 
     <!-- Incognito mode colors -->
     <color name="ntp_bg_incognito">@color/incognito_modern_primary_color</color>
@@ -259,4 +266,18 @@
     <color name="notification_button_color">#423EEE</color>
     <color name="rewards_onboarding_ac_slider_track_color">#E4DBFF</color>
     <color name="rewards_onboarding_ac_slider_active_track_color">#845EF7</color>
+
+    <color name="brave_rate_bg_color">#F4F6F8</color>
+    <color name="brave_smiley_sad_color">#E32444</color>
+    <color name="brave_smiley_happy_color">#4C54D2</color>
+    <color name="brave_rating_emoji_bg_color">#FFFFFF</color>
+    <color name="brave_rating_title_color">#000000</color>
+    <color name="brave_rating_sub_title_color">#424552</color>
+    <color name="brave_rating_not_now_text_color">#4C54D2</color>
+    <color name="brave_rating_rate_now_bg_color">#4C54D2</color>
+    <color name="brave_rating_text_input_stroke_color">#E2E3E7</color>
+    <color name="brave_rating_hint_text_color">#1D1F25</color>
+
+
+
 </resources>

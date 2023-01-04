@@ -18,7 +18,6 @@ import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
-import("//brave/components/translate/core/common/buildflags.gni")
 import("//brave/test/testing.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -253,7 +252,6 @@ test("brave_unit_tests") {
     "//brave/components/sync/engine:unit_tests",
     "//brave/components/time_period_storage",
     "//brave/components/tor/buildflags",
-    "//brave/components/translate/core/common:buildflags",
     "//brave/components/url_sanitizer/browser:unittests",
     "//brave/extensions:common",
     "//brave/mojo/brave_ast_patcher:unit_tests",

@@ -53,13 +53,6 @@ class BraveBrowserView : public BrowserView {
 
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
-  ShowTranslateBubbleResult ShowTranslateBubble(
-      content::WebContents* web_contents,
-      translate::TranslateStep step,
-      const std::string& source_language,
-      const std::string& target_language,
-      translate::TranslateErrors error_type,
-      bool is_user_gesture) override;
   speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       speedreader::SpeedreaderTabHelper* tab_helper,
       bool is_enabled) override;

@@ -15,6 +15,14 @@ public abstract class BraveFeatureUtil {
     public static final CachedFlag sTabSwitcherOnReturn =
             new CachedFlag(ChromeFeatureList.TAB_SWITCHER_ON_RETURN, false);
 
+    // The method sets a feature state that is passed in `enabled` var. However it can
+    // set the feature to a Default state if Default state is what is `enabled` var.
+    // For example: A feature `dummy_name` has 3 states and a Default value is Disabled:
+    // 0: Default (Disabled)
+    // 1: Enabled
+    // 2: Disabled
+    // enableFeature("dummy_name", false, true) sets the `dummy_name` feature state to Default
+    // enableFeature("dummy_name", false, false) sets the `dummy_name` feature state to Disabled
     public static void enableFeature(
             String featureName, boolean enabled, boolean fallbackToDefault) {
         BraveFeatureUtilJni.get().enableFeature(featureName, enabled, fallbackToDefault);

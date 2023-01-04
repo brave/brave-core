@@ -50,6 +50,8 @@ ConvertRulesToContentBlockingRules(const std::string& rules);
 typedef ADBLOCK_EXPORT struct FilterListMetadata {
   FilterListMetadata();
   explicit FilterListMetadata(C_FilterListMetadata* metadata);
+  explicit FilterListMetadata(const std::string& list);
+  explicit FilterListMetadata(const char* data, size_t data_size);
   ~FilterListMetadata();
 
   absl::optional<std::string> homepage;

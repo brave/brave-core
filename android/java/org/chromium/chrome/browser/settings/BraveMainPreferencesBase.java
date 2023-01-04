@@ -36,7 +36,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
-import org.chromium.chrome.browser.rate.RateDialogFragment;
+import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
@@ -78,6 +78,7 @@ public class BraveMainPreferencesBase
     private static final String PREF_SHIELDS_AND_PRIVACY = "brave_shields_and_privacy";
     private static final String PREF_BRAVE_SEARCH_ENGINES = "brave_search_engines";
     private static final String PREF_BRAVE_NEWS = "brave_news";
+    private static final String PREF_BRAVE_NEWS_V2 = "brave_news_v2";
     private static final String PREF_SYNC = "brave_sync_layout";
     private static final String PREF_PASSWORDS = "passwords";
     private static final String PREF_NOTIFICATIONS = "notifications";
@@ -195,9 +196,16 @@ public class BraveMainPreferencesBase
         removePreferenceIfPresent(PREF_ADVANCED_SECTION);
         removePreferenceIfPresent(PREF_PRIVACY);
         removePreferenceIfPresent(PREF_BRAVE_VPN_CALLOUT);
+
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
             removePreferenceIfPresent(PREF_BRAVE_NEWS);
+            removePreferenceIfPresent(PREF_BRAVE_NEWS_V2);
+        } else if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS_V2)) {
+            removePreferenceIfPresent(PREF_BRAVE_NEWS);
+        } else {
+            removePreferenceIfPresent(PREF_BRAVE_NEWS_V2);
         }
+
         updateSearchEnginePreference();
 
         updateSummaries();
@@ -429,7 +437,7 @@ public class BraveMainPreferencesBase
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(RateUtils.FROM_SETTINGS, true);
 
-                RateDialogFragment mRateDialogFragment = new RateDialogFragment();
+                BraveRateDialogFragment mRateDialogFragment = new BraveRateDialogFragment();
                 mRateDialogFragment.setArguments(bundle);
                 mRateDialogFragment.show(getParentFragmentManager(), "RateDialogFragment");
                 return true;
@@ -467,7 +475,7 @@ public class BraveMainPreferencesBase
         if (PREF_BACKGROUND_VIDEO_PLAYBACK.equals(key)) {
             BraveFeatureUtil.enableFeature(
                     BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL, (boolean) newValue,
-                    true);
+                    false);
             if ((boolean) newValue) {
                 updateSummary(PREF_BACKGROUND_VIDEO_PLAYBACK,
                         R.string.prefs_background_video_playback_on);

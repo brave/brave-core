@@ -13,26 +13,21 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/synchronization/lock.h"
+#include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
 #include "base/values.h"
-#include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_filter_list_catalog_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
+#include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
 class AdBlockServiceTest;
 
-using brave_component_updater::BraveComponent;
-
 namespace brave_shields {
 
-class AdBlockRegionalService;
 class FilterListCatalogEntry;
 
 // The AdBlock regional service manager, in charge of initializing and
@@ -44,7 +39,7 @@ class AdBlockRegionalServiceManager
       PrefService* local_state,
       std::string locale,
       component_updater::ComponentUpdateService* cus,
-      scoped_refptr<base::SequencedTaskRunner> task_runner);
+      AdBlockFilterListCatalogProvider* catalog_provider);
   AdBlockRegionalServiceManager(const AdBlockRegionalServiceManager&) = delete;
   AdBlockRegionalServiceManager& operator=(
       const AdBlockRegionalServiceManager&) = delete;
@@ -55,34 +50,9 @@ class AdBlockRegionalServiceManager
   void SetFilterListCatalog(std::vector<FilterListCatalogEntry> catalog);
   const std::vector<FilterListCatalogEntry>& GetFilterListCatalog();
 
-  bool Start();
-  void ShouldStartRequest(const GURL& url,
-                          blink::mojom::ResourceType resource_type,
-                          const std::string& tab_host,
-                          bool aggressive_blocking,
-                          bool* did_match_rule,
-                          bool* did_match_exception,
-                          bool* did_match_important,
-                          std::string* mock_data_url,
-                          std::string* rewritten_url);
-  absl::optional<std::string> GetCspDirectives(
-      const GURL& url,
-      blink::mojom::ResourceType resource_type,
-      const std::string& tab_host);
-  void EnableTag(const std::string& tag, bool enabled);
-  void UseResources(const std::string& resources);
   bool IsFilterListAvailable(const std::string& uuid) const;
   bool IsFilterListEnabled(const std::string& uuid) const;
   void EnableFilterList(const std::string& uuid, bool enabled);
-
-  absl::optional<base::Value> UrlCosmeticResources(const std::string& url);
-  base::Value::List HiddenClassIdSelectors(
-      const std::vector<std::string>& classes,
-      const std::vector<std::string>& ids,
-      const std::vector<std::string>& exceptions);
-
-  void Init(AdBlockResourceProvider* resource_provider,
-            AdBlockFilterListCatalogProvider* catalog_provider);
 
   // AdBlockFilterListCatalogProvider::Observer
   void OnFilterListCatalogLoaded(const std::string& catalog_json) override;
@@ -94,35 +64,30 @@ class AdBlockRegionalServiceManager
 
   void RecordP3ACookieListEnabled();
 
-  raw_ptr<PrefService> local_state_;
-  std::string locale_;
-  bool initialized_;
-  base::Lock regional_services_lock_;
-  std::map<std::string,
-           std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>>
-      regional_services_ GUARDED_BY(regional_services_lock_);
+  // for tests
+  const std::map<std::string, std::unique_ptr<AdBlockComponentFiltersProvider>>&
+  regional_filters_providers() {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    return regional_filters_providers_;
+  }
+
+  raw_ptr<PrefService> local_state_ GUARDED_BY_CONTEXT(sequence_checker_);
+  std::string locale_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::map<std::string, std::unique_ptr<AdBlockComponentFiltersProvider>>
-      regional_filters_providers_;
-  std::map<std::string, std::unique_ptr<AdBlockService::SourceProviderObserver>>
-      regional_source_observers_;
+      regional_filters_providers_ GUARDED_BY_CONTEXT(sequence_checker_);
 
-  std::vector<FilterListCatalogEntry> filter_list_catalog_;
+  std::vector<FilterListCatalogEntry> filter_list_catalog_
+      GUARDED_BY_CONTEXT(sequence_checker_);
 
-  scoped_refptr<base::SequencedTaskRunner> task_runner_;
-  raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
-  raw_ptr<AdBlockResourceProvider> resource_provider_;
-  raw_ptr<AdBlockFilterListCatalogProvider> catalog_provider_;
+  raw_ptr<component_updater::ComponentUpdateService> component_update_service_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  raw_ptr<AdBlockFilterListCatalogProvider> catalog_provider_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+
+  SEQUENCE_CHECKER(sequence_checker_);
 
   base::WeakPtrFactory<AdBlockRegionalServiceManager> weak_factory_{this};
 };
-
-// Creates the AdBlockRegionalServiceManager
-std::unique_ptr<AdBlockRegionalServiceManager>
-AdBlockRegionalServiceManagerFactory(
-    PrefService* local_state,
-    std::string locale,
-    component_updater::ComponentUpdateService* cus,
-    scoped_refptr<base::SequencedTaskRunner> task_runner);
 
 }  // namespace brave_shields
 

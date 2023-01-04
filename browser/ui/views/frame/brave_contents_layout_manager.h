@@ -13,8 +13,7 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
  public:
   BraveContentsLayoutManager(views::View* devtools_view,
                              views::View* contents_view,
-                             views::View* sidebar_container_view,
-                             views::View* vertical_tabs_container);
+                             views::View* sidebar_container_view);
   BraveContentsLayoutManager(const BraveContentsLayoutManager&) = delete;
   BraveContentsLayoutManager& operator=(const BraveContentsLayoutManager&) =
       delete;
@@ -29,7 +28,6 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
 
  private:
   raw_ptr<views::View> sidebar_container_view_ = nullptr;
-  raw_ptr<views::View> vertical_tabs_container_ = nullptr;
   bool sidebar_on_left_ = true;
 };
 

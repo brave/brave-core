@@ -71,6 +71,13 @@ struct C_Engine* engine_create_with_metadata(
     struct C_FilterListMetadata** metadata);
 
 /**
+ * Scans the beginning of the list for metadata and returns it without parsing
+ * any other list content.
+ */
+struct C_FilterListMetadata* read_list_metadata(const char* data,
+                                                size_t data_size);
+
+/**
  * Checks if a `url` matches for the specified `Engine` within the context.
  *
  * This API is designed for multi-engine use, so block results are used both as
