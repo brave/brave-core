@@ -237,6 +237,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
   // Pre-conditions to decide site specific script
   ASSERT_EQ(net::SchemefulSite(GURL("https://m.youtube.com")),
             net::SchemefulSite(GURL("https://youtube.com")));
+  ASSERT_EQ(net::SchemefulSite(GURL("https://youtube.com")),
+            net::SchemefulSite(GURL("https://www.youtube.com")));
   ASSERT_NE(net::SchemefulSite(GURL("http://m.youtube.com")),
             net::SchemefulSite(GURL("https://m.youtube.com")));
 
@@ -253,7 +255,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
               "videoDetails": {
                 "videoId": "12345689",
                 "title": "Dummy response",
-                "lengthSeconds": "200",
+                "lengthSeconds": "200.123",
                 "keywords": [
                   "keyword"
                 ],

@@ -239,7 +239,7 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
     // nullable data
     auto* thumbnail = media.FindStringKey("thumbnail");
     auto* author = media.FindStringKey("author");
-    auto duration = media.FindDoubleKey("duration");
+    auto duration = media.FindIntKey("duration");
 
     auto item = mojom::PlaylistItem::New();
     item->id = base::Token::CreateRandom().ToString();
