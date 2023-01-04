@@ -25,22 +25,6 @@ export const httpifyIpfsUrl = (url: string | undefined) => {
 
 export const isIpfs = (url?: string) => url?.startsWith('ipfs://')
 
-/**
- * Wyre currently supports the following chains:
- *  bitcoin, ethereum, avalanche(X & C), stellar, algorand, matic, flow
- * @see https://docs.sendwyre.com/reference/system-resource-names-1
- * @param chainId This Id of the chain on which to receive funds
- * @returns a string containing any prefix needed to lookup Wyre assets accross chains
- */
-export const getWyreNetworkPrefix = (chainId: string) => {
-  switch (chainId) {
-    case BraveWallet.POLYGON_MAINNET_CHAIN_ID: return 'M'
-    case BraveWallet.AVALANCHE_MAINNET_CHAIN_ID: return 'AVAXC'
-    case BraveWallet.MAINNET_CHAIN_ID: return ''
-    default: return ''
-  }
-}
-
 export const getRampNetworkPrefix = (chainId: string) => {
   switch (chainId) {
     case BraveWallet.MAINNET_CHAIN_ID: return ''
