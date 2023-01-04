@@ -18,7 +18,7 @@ const checkVersionsMatch = () => {
   }
 }
 
-const build = (buildConfig = config.defaultBuildConfig, options) => {
+const build = (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.buildConfig = buildConfig
   config.update(options)
   checkVersionsMatch()
