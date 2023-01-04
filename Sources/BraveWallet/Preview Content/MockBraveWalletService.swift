@@ -208,5 +208,8 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   
   func setDefaultSolanaWallet(_ defaultEthWallet: BraveWallet.DefaultWallet) {
   }
+  
+  func discoverAssetsOnAllSupportedChains() {
+  }
 }
 #endif

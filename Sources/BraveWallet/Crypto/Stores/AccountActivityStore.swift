@@ -289,6 +289,9 @@ extension AccountActivityStore: BraveWalletKeyringServiceObserver {
       }
     }
   }
+  
+  func accountsAdded(_ coin: BraveWallet.CoinType, addresses: [String]) {
+  }
 }
 
 extension AccountActivityStore: BraveWalletJsonRpcServiceObserver {
@@ -336,5 +339,8 @@ extension AccountActivityStore: BraveWalletBraveWalletServiceObserver {
   }
   
   func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+  
+  func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
   }
 }

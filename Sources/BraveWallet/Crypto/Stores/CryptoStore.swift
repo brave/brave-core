@@ -430,6 +430,8 @@ extension CryptoStore: BraveWalletKeyringServiceObserver {
   }
   public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
   }
+  public func accountsAdded(_ coin: BraveWallet.CoinType, addresses: [String]) {
+  }
 }
 
 extension CryptoStore: BraveWalletJsonRpcServiceObserver {

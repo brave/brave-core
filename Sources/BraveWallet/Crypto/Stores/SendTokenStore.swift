@@ -455,6 +455,9 @@ extension SendTokenStore: BraveWalletKeyringServiceObserver {
     update() // `selectedSendTokenBalance` needs updated for new account
     validateSendAddress() // `sendAddress` may equal selected account address
   }
+  
+  public func accountsAdded(_ coin: BraveWallet.CoinType, addresses: [String]) {
+  }
 }
 
 extension SendTokenStore: BraveWalletJsonRpcServiceObserver {

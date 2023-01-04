@@ -257,4 +257,7 @@ extension UserAssetsStore: BraveWalletKeyringServiceObserver {
   
   public func selectedAccountChanged(_ coin: BraveWallet.CoinType) {
   }
+  
+  public func accountsAdded(_ coin: BraveWallet.CoinType, addresses: [String]) {
+  }
 }

@@ -65,19 +65,6 @@ extension BrowserViewController {
     )
     braveRewardsPanel.actionHandler = { [weak self, unowned braveRewardsPanel] action in
       switch action {
-      case .rewardsTransferTapped:
-        guard let legacyWallet = self?.legacyWallet else { return }
-        braveRewardsPanel.dismiss(animated: true) {
-          let controller = WalletTransferViewController(legacyWallet: legacyWallet)
-          controller.learnMoreHandler = { [weak self, unowned controller] in
-            controller.dismiss(animated: true) {
-              self?.loadNewTabWithRewardsURL(BraveUX.braveRewardsLearnMoreURL)
-            }
-          }
-          let container = UINavigationController(rootViewController: controller)
-          container.modalPresentationStyle = .formSheet
-          self?.present(container, animated: true)
-        }
       case .unverifiedPublisherLearnMoreTapped:
         self?.loadNewTabWithRewardsURL(BraveUX.braveRewardsUnverifiedPublisherLearnMoreURL)
       }
@@ -99,40 +86,6 @@ extension BrowserViewController {
     rewards.ledger?.fetchPromotions(nil)
   }
 
-  public func showWalletTransferExpiryPanelIfNeeded() {
-    func _show() {
-      let controller = WalletTransferExpiredViewController()
-      let popover = PopoverController(contentController: controller)
-      popover.popoverDidDismiss = { _ in
-        Preferences.Rewards.transferUnavailableLastSeen.value = Date().timeIntervalSince1970
-      }
-      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-        popover.present(from: self.topToolbar.locationView.rewardsButton, on: self)
-      }
-    }
-
-    let now = Date()
-
-    guard let legacyWallet = legacyWallet,
-      !legacyWallet.isLedgerTransferExpired,
-      presentedViewController == nil,
-      Locale.current.regionCode == "JP"
-    else { return }
-
-    legacyWallet.transferrableAmount { amount in
-      guard amount > 0 else { return }
-      let gap = AppConstants.buildChannel.isPublic ? 3.days : 2.minutes
-      if let lastSeenTimeInterval = Preferences.Rewards.transferUnavailableLastSeen.value {
-        // Check if they've seen it in the past 3 days
-        if now.timeIntervalSince1970 > lastSeenTimeInterval + gap {
-          _show()
-        }
-      } else {
-        _show()
-      }
-    }
-  }
-
   func claimPendingPromotions() {
     guard
       let ledger = rewards.ledger,
@@ -144,43 +97,6 @@ extension BrowserViewController {
       for promo in promotions {
         let success = await ledger.claimPromotion(promo)
         adsRewardsLog.info("[BraveRewards] Auto-Claim Promotion - \(success) for \(promo.approximateValue)")
-      }
-    }
-  }
-
-  func authorizeUpholdWallet(from tab: Tab, queryItems items: [String: String]) {
-    guard let ledger = rewards.ledger else { return }
-    ledger.authorizeExternalWallet(
-      ofType: .uphold,
-      queryItems: items
-    ) { result, redirectURL in
-      switch result {
-      case .ledgerOk:
-        // Fetch the wallet
-        ledger.fetchUpholdWallet { _ in
-          if let redirectURL = redirectURL {
-            // Requires verification
-            let request = URLRequest(url: redirectURL)
-            tab.loadRequest(request)
-          } else {
-            // Done
-            self.tabManager.removeTab(tab)
-            self.showBraveRewardsPanel()
-          }
-        }
-      default:
-        // Some other issue occured with authorization
-        let popup = AlertPopupView(
-          imageView: nil,
-          title: Strings.userWalletGenericErrorTitle,
-          message: Strings.userWalletGenericErrorMessage,
-          titleWeight: .semibold,
-          titleSize: 18.0
-        )
-        popup.addButton(title: Strings.userWalletCloseButtonTitle, type: .primary, fontSize: 14.0) { () -> PopupViewDismissType in
-          return .flyDown
-        }
-        popup.showWithType(showType: .flyUp)
       }
     }
   }

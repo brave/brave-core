@@ -412,6 +412,9 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
   public func accountsChanged() {
     updateKeyringInfo()
   }
+  
+  public func accountsAdded(_ coin: BraveWallet.CoinType, addresses: [String]) {
+  }
 }
 
 extension KeyringStore: BraveWalletJsonRpcServiceObserver {
