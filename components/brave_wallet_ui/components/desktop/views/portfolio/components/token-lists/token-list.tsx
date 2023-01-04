@@ -49,6 +49,7 @@ interface Props {
   hideAddButton?: boolean
   hideAssetFilter?: boolean
   hideAccountFilter?: boolean
+  hideAutoDiscovery?: boolean
   enableScroll?: boolean
   maxListHeight?: string
   estimatedItemSize: number
@@ -63,7 +64,7 @@ export const TokenLists = ({
   maxListHeight,
   hideAssetFilter,
   hideAccountFilter,
-  estimatedItemSize = 58
+  hideAutoDiscovery
 }: Props) => {
   // routing
   const history = useHistory()
@@ -128,6 +129,9 @@ export const TokenLists = ({
   )
 
   const sortedFungibleTokensList: UserAssetInfoType[] = React.useMemo(() => {
+    if (hideAssetFilter) {
+      return fungibleTokens
+    }
     if (
       selectedAssetFilter.id === 'highToLow' ||
       selectedAssetFilter.id === 'lowToHigh'
@@ -158,13 +162,14 @@ export const TokenLists = ({
   }, [
     selectedAssetFilter.id,
     fungibleTokens,
-    computeFiatAmount
+    computeFiatAmount,
+    hideAssetFilter
   ])
 
   const listUi = React.useMemo(() => {
     return <>
       {sortedFungibleTokensList.map((token, index) => renderToken({ index, item: token, viewMode: 'list' }))}
-      {!assetAutoDiscoveryCompleted &&
+      {!assetAutoDiscoveryCompleted && !hideAutoDiscovery &&
         <PortfolioAssetItemLoadingSkeleton />
       }
       {nonFungibleTokens.length !== 0 &&
@@ -180,7 +185,8 @@ export const TokenLists = ({
     sortedFungibleTokensList,
     renderToken,
     nonFungibleTokens,
-    assetAutoDiscoveryCompleted
+    assetAutoDiscoveryCompleted,
+    hideAutoDiscovery
   ])
 
   // effects
