@@ -44,7 +44,9 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
                                       catalog_entry.base64_public_key,
                                       catalog_entry.title) {}
 
-AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() {
+AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() {}
+
+void AdBlockComponentFiltersProvider::UnregisterComponent() {
   // Can be nullptr in unit tests
   if (component_updater_service_) {
     component_updater_service_->UnregisterComponent(component_id_);
