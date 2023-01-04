@@ -19,8 +19,9 @@
 #define BrowserWindow BraveBrowserWindow
 #define BrowserViewLayout BraveBrowserViewLayout
 #define SidePanel BraveSidePanel
-#define GetContentsLayoutManager     \
-  GetContentsLayoutManager_Unused(); \
+#define GetContentsLayoutManager                                 \
+  GetContentsLayoutManager_Unused();                             \
+  static const char* GetBrowserViewKeyForNativeWindowProperty(); \
   virtual ContentsLayoutManager* GetContentsLayoutManager
 
 #define MaybeShowReadingListInSidePanelIPH \

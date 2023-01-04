@@ -23,14 +23,22 @@ float CalculateZValue_ChromiumImpl(views::View* child);
 
 // static
 float ZOrderableTabContainerElement::CalculateZValue(views::View* child) {
-  if (views::AsViewClass<TabGroupUnderline>(child)) {
-    if (auto* browser_view = BrowserView::GetBrowserViewForNativeWindow(
-            child->GetWidget()->GetTopLevelWidget()->GetNativeWindow());
-        browser_view &&
-        tabs::features::ShouldShowVerticalTabs(browser_view->browser())) {
-      // TabGroupUnderline in vertical tabs should be underneath other views.
-      return 0;
-    }
-  }
-  return brave::CalculateZValue_ChromiumImpl(child);
+  // TabGroupUnderline in vertical tabs should be underneath other views.
+  // Checks if the |child| is TabGroupUnderLine and its browser is showing
+  // vertical tab strip.
+  if (!views::AsViewClass<TabGroupUnderline>(child))
+    return brave::CalculateZValue_ChromiumImpl(child);
+
+  auto* widget = child->GetWidget();
+  if (!widget)
+    return brave::CalculateZValue_ChromiumImpl(child);
+
+  auto* browser_view =
+      BrowserView::GetBrowserViewForNativeWindow(widget->GetNativeWindow());
+  if (!browser_view)
+    return brave::CalculateZValue_ChromiumImpl(child);
+
+  return tabs::features::ShouldShowVerticalTabs(browser_view->browser())
+             ? 0
+             : brave::CalculateZValue_ChromiumImpl(child);
 }

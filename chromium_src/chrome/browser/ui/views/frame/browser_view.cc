@@ -47,3 +47,8 @@
 #undef kAlignLeft
 #undef kAlignRight
 #undef InfoBarContainerView
+
+// static
+const char* BrowserView::GetBrowserViewKeyForNativeWindowProperty() {
+  return kBrowserViewKey;
+}
