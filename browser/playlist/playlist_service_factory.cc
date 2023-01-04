@@ -19,13 +19,18 @@
 #include "brave/components/playlist/playlist_service.h"
 #include "brave/components/playlist/pref_names.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#endif
+
 namespace playlist {
 
+#if !BUILDFLAG(IS_ANDROID)
 namespace {
 
 class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
@@ -57,6 +62,7 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
 };
 
 }  // namespace
+#endif
 
 // static
 PlaylistServiceFactory* PlaylistServiceFactory::GetInstance() {
@@ -116,8 +122,12 @@ KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   DCHECK(media_detector_component_manager_);
   return new PlaylistService(context, media_detector_component_manager_.get(),
+#if BUILDFLAG(IS_ANDROID)
+                             nullptr);
+#else
                              std::make_unique<PlaylistServiceDelegateImpl>(
                                  Profile::FromBrowserContext(context)));
+#endif
 }
 
 void PlaylistServiceFactory::PrepareMediaDetectorComponentManager() {
