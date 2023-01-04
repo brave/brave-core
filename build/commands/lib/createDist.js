@@ -3,7 +3,7 @@ const util = require('../lib/util')
 const path = require('path')
 const fs = require('fs-extra')
 
-const createDist = (buildConfig = config.defaultBuildConfig, options) => {
+const createDist = (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.buildConfig = buildConfig
   config.update(options)
   util.updateBranding()
