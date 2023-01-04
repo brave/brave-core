@@ -5,6 +5,8 @@
 
 #include "brave/components/misc_metrics/pref_names.h"
 
-const char kMiscMetricsPagesLoadedCount[] = "brave.core_metrics.pages_loaded";
+namespace misc_metrics {
 const char kMiscMetricsMenuGroupActionCounts[] =
     "brave.misc_metrics.menu_group_actions";
+const char kMiscMetricsPagesLoadedCount[] = "brave.core_metrics.pages_loaded";
+}  // namespace misc_metrics

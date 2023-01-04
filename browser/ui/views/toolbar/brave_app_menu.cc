@@ -9,7 +9,6 @@
 
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/misc_metrics/menu_metrics.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
 #include "ui/base/models/menu_model.h"
@@ -23,10 +22,8 @@
 using views::MenuItemView;
 
 BraveAppMenu::BraveAppMenu(Browser* browser, int run_types)
-    : AppMenu(browser, run_types) {
-  menu_metrics_ = std::make_unique<misc_metrics::MenuMetrics>(
-      g_browser_process->local_state());
-}
+    : AppMenu(browser, run_types),
+      menu_metrics_(g_browser_process->local_state()) {}
 
 BraveAppMenu::~BraveAppMenu() = default;
 
@@ -86,5 +83,5 @@ void BraveAppMenu::RecordMenuUsage(int command_id) {
         return;
       }
   }
-  menu_metrics_->RecordMenuGroupAction(group);
+  menu_metrics_.RecordMenuGroupAction(group);
 }

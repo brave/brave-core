@@ -7,9 +7,7 @@
 #define BRAVE_COMPONENTS_MISC_METRICS_MENU_METRICS_H_
 
 #include "base/containers/flat_map.h"
-#include "base/task/cancelable_task_tracker.h"
-#include "base/timer/timer.h"
-#include "components/keyed_service/core/keyed_service.h"
+#include "base/memory/raw_ptr.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -29,8 +27,17 @@ class MenuMetrics {
   explicit MenuMetrics(PrefService* local_state);
   ~MenuMetrics();
 
+  MenuMetrics(const MenuMetrics&) = delete;
+  MenuMetrics& operator=(const MenuMetrics&) = delete;
+
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
+  // Records a usage of the relevant menu group, and records an answer
+  // for the following P3A question:
+  // What menu functionality group do you use the most?
+  // 0. Tab & window actions (new tab/new window)
+  // 1. Brave features (Wallet, Rewards, Sync)
+  // 2. Browser views (History, Bookmarks, Extensions, Settings)
   void RecordMenuGroupAction(MenuGroup group);
 
  private:

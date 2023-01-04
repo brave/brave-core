@@ -5,6 +5,8 @@
 
 #include "brave/components/misc_metrics/menu_metrics.h"
 
+#include <utility>
+
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/ranges/algorithm.h"
@@ -68,8 +70,7 @@ void MenuMetrics::RecordMenuGroupAction(MenuGroup group) {
   menu_group_access_counts_[group]++;
   update_dict.Set(GetMenuGroupPrefKey(group), menu_group_access_counts_[group]);
   const auto& result = base::ranges::max_element(
-      menu_group_access_counts_.begin(), menu_group_access_counts_.end(),
-      [](const auto& a, const auto& b) { return a.second < b.second; });
+      menu_group_access_counts_, {}, &std::pair<MenuGroup, double>::second);
   if (result == menu_group_access_counts_.end()) {
     return;
   }
