@@ -784,6 +784,9 @@ extension SwapTokenStore: BraveWalletKeyringServiceObserver {
       }
     }
   }
+  
+  public func accountsAdded(_ coin: BraveWallet.CoinType, addresses: [String]) {
+  }
 }
 
 extension SwapTokenStore: BraveWalletJsonRpcServiceObserver {

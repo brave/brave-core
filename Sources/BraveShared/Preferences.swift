@@ -98,13 +98,6 @@ extension Preferences {
     public static let isUsingBAP = Option<Bool?>(key: "rewards.is-using-bap", default: nil)
     public static let seenDataMigrationFailureError = Option<Bool>(key: "rewards.seen-data-migration-failure-error", default: false)
     public static let migratedLegacyWallet = Option<Bool>(key: "rewards.migrated-legacy-wallet", default: false)
-    public static let dismissedLegacyWalletTransfer = Option<Bool>(key: "rewards.dismissed-legacy-wallet-transfer", default: false)
-    public static let transferDrainID = Option<String?>(key: "rewards.legacy-wallet-transfer-drain-id", default: nil)
-    public static let lastTransferStatus = Option<Int?>(key: "rewards.legacy-wallet-transfer-status", default: nil)
-    public static let lastTransferStatusDismissed = Option<Int?>(key: "rewards.legacy-wallet-transfer-last-dismissed-status", default: nil)
-    public static let transferCompletionAcknowledged = Option<Bool>(key: "rewards.legacy-wallet-transfer-completion-acknowledged", default: false)
-    public static let transferUnavailableLastSeen = Option<TimeInterval?>(key: "rewards.transfer-unavailable-warning-last-seen-date", default: nil)
-    public static let drainStatusOverride = Option<Int?>(key: "rewards.drain-status-override", default: nil)
     public static let adaptiveCaptchaFailureCount = Option<Int>(key: "rewards.adaptive-captcha-failure-count", default: 0)
 
     public enum EnvironmentOverride: Int {

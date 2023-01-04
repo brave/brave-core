@@ -55,32 +55,6 @@ extension BraveLedger {
     }
   }
 
-  public func updateDrainStatus(_ completion: @escaping (Ledger.DrainStatus?) -> Void) {
-    guard let drainID = Preferences.Rewards.transferDrainID.value else {
-      completion(nil)
-      return
-    }
-    if !AppConstants.buildChannel.isPublic,
-      let overrideValue = Preferences.Rewards.drainStatusOverride.value,
-      let status = Ledger.DrainStatus(rawValue: overrideValue) {
-      Preferences.Rewards.lastTransferStatus.value = status.rawValue
-      completion(status)
-      return
-    }
-    drainStatus(for: drainID) { result, status in
-      if result != .ledgerOk {
-        if let lastStatus = Preferences.Rewards.lastTransferStatus.value {
-          completion(Ledger.DrainStatus(rawValue: lastStatus))
-        } else {
-          completion(nil)
-        }
-        return
-      }
-      Preferences.Rewards.lastTransferStatus.value = status.rawValue
-      completion(status)
-    }
-  }
-
   // MARK: -
 
   /// Creates the ledger wallet and fetches wallet properties and balances

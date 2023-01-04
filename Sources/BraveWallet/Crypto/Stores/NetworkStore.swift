@@ -281,4 +281,7 @@ extension NetworkStore: BraveWalletKeyringServiceObserver {
   
   public func autoLockMinutesChanged() {
   }
+  
+  public func accountsAdded(_ coin: BraveWallet.CoinType, addresses: [String]) {
+  }
 }

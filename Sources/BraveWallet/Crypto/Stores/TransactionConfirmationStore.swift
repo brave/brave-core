@@ -613,4 +613,7 @@ extension TransactionConfirmationStore: BraveWalletBraveWalletServiceObserver {
   
   public func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
   }
+  
+  public func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
+  }
 }

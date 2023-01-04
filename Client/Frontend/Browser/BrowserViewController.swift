@@ -893,8 +893,6 @@ public class BrowserViewController: UIViewController {
       }
     }
 
-    showWalletTransferExpiryPanelIfNeeded()
-
     doSyncMigration()
 
     if #available(iOS 14, *), !Preferences.DefaultBrowserIntro.defaultBrowserNotificationScheduled.value {

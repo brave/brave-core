@@ -791,6 +791,7 @@ extension SettingsViewController: BraveWalletKeyringServiceObserver {
   func accountsChanged() {}
   func autoLockMinutesChanged() {}
   func selectedAccountChanged(_ coin: BraveWallet.CoinType) {}
+  func accountsAdded(_ coin: BraveWallet.CoinType, addresses: [String]) {}
 
   func keyringReset() {
     setUpSections()

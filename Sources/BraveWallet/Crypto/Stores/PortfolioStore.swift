@@ -390,6 +390,9 @@ extension PortfolioStore: BraveWalletKeyringServiceObserver {
       update()
     }
   }
+  
+  public func accountsAdded(_ coin: BraveWallet.CoinType, addresses: [String]) {
+  }
 }
 
 extension PortfolioStore: BraveWalletBraveWalletServiceObserver {
@@ -413,5 +416,8 @@ extension PortfolioStore: BraveWalletBraveWalletServiceObserver {
   }
   
   public func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+  
+  public func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
   }
 }

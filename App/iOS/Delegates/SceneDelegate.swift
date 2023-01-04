@@ -226,7 +226,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     DebouncingResourceDownloader.shared.startLoading()
 
     if let scene = scene as? UIWindowScene {
-      scene.browserViewController?.showWalletTransferExpiryPanelIfNeeded()
       scene.browserViewController?.windowProtection = windowProtection
     }
   }
