@@ -417,7 +417,27 @@ extension LoginInfoViewController: LoginInfoTableViewCellDelegate {
       completion?(status)
     }
   }
+  
+  func didSelectCopyWebsite(_ cell: LoginInfoTableViewCell, authenticationRequired: Bool) {
+    func addPasswordToPasteBoardWithExpiry() {
+      let expireDate = Date().addingTimeInterval(5.minutes)
 
+      UIPasteboard.general.setItems(
+        [[UIPasteboard.typeAutomatic: cell.descriptionTextField.text ?? ""]],
+        options: [UIPasteboard.OptionsKey.expirationDate: expireDate])
+    }
+    
+    if authenticationRequired {
+      askForAuthentication() { status in
+        if status {
+          addPasswordToPasteBoardWithExpiry()
+        }
+      }
+    } else {
+      addPasswordToPasteBoardWithExpiry()
+    }
+  }
+  
   func textFieldDidEndEditing(_ cell: LoginInfoTableViewCell) {
     if cell.tag == InfoItem.passwordItem.rawValue {
       cell.displayDescriptionAsPassword = true

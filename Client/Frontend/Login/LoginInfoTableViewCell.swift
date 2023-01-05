@@ -16,6 +16,7 @@ protocol LoginInfoTableViewCellDelegate: AnyObject {
   /// Table Row Commands Related Actions (Copy - Open)
   func canPerform(action: Selector, for cell: LoginInfoTableViewCell) -> Bool
   func didSelectOpenWebsite(_ cell: LoginInfoTableViewCell)
+  func didSelectCopyWebsite(_ cell: LoginInfoTableViewCell, authenticationRequired: Bool)
   func didSelectReveal(_ cell: LoginInfoTableViewCell, completion: ((Bool) -> Void)?)
 }
 
@@ -173,11 +174,7 @@ extension LoginInfoTableViewCell: MenuHelperInterface {
   }
 
   func menuHelperCopy() {
-    let expireDate = Date().addingTimeInterval(5.minutes)
-
-    UIPasteboard.general.setItems(
-      [[UIPasteboard.typeAutomatic: descriptionTextField.text ?? ""]],
-      options: [UIPasteboard.OptionsKey.expirationDate: expireDate])
+    delegate?.didSelectCopyWebsite(self, authenticationRequired: displayDescriptionAsPassword)
   }
 
   func menuHelperOpenWebsite() {
