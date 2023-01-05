@@ -16,6 +16,7 @@ public enum WelcomeViewCalloutState {
     var toggleTitle: String?
     var toggleStatus: Bool
     var details: String
+    var secondaryDetails: String?
     var linkDescription: String?
     var primaryButtonTitle: String
     var secondaryButtonTitle: String?
@@ -29,6 +30,7 @@ public enum WelcomeViewCalloutState {
       toggleTitle: String? = nil,
       toggleStatus: Bool = true,
       details: String,
+      secondaryDetails: String? = nil,
       linkDescription: String? = nil,
       primaryButtonTitle: String,
       secondaryButtonTitle: String? = nil,
@@ -40,6 +42,7 @@ public enum WelcomeViewCalloutState {
         self.toggleTitle = toggleTitle
         self.toggleStatus = toggleStatus
         self.details = details
+        self.secondaryDetails = secondaryDetails
         self.linkDescription = linkDescription
         self.primaryButtonTitle = primaryButtonTitle
         self.secondaryButtonTitle = secondaryButtonTitle
@@ -60,7 +63,7 @@ public enum WelcomeViewCalloutState {
 
 class WelcomeViewCallout: UIView {
   private struct UX {
-    static let padding = 20.0
+    static let padding = 7.0
     static let contentPadding = 24.0
     static let cornerRadius = 16.0
     static let verticalLayoutMargin = 15.0
@@ -97,8 +100,15 @@ class WelcomeViewCallout: UIView {
     $0.textColor = .bravePrimary
     $0.textAlignment = .left
     $0.numberOfLines = 0
-    $0.minimumScaleFactor = 0.5
-    $0.adjustsFontSizeToFitWidth = true
+    $0.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+    $0.setContentHuggingPriority(.required, for: .horizontal)
+    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+  }
+  
+  private let secondaryDetailsLabel = UILabel().then {
+    $0.textColor = .bravePrimary
+    $0.textAlignment = .left
+    $0.numberOfLines = 0
     $0.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -165,7 +175,7 @@ class WelcomeViewCallout: UIView {
     super.init(frame: .zero)
     doLayout()
 
-    [titleLabel, actionToggle, detailsLabel, actionDescriptionLabel, primaryButton, secondaryButtonContentView].forEach {
+    [titleLabel, actionToggle, detailsLabel, secondaryDetailsLabel, actionDescriptionLabel, primaryButton, secondaryButtonContentView].forEach {
       contentStackView.addArrangedSubview($0)
 
       $0.alpha = 0.0
@@ -183,7 +193,7 @@ class WelcomeViewCallout: UIView {
       secondaryButtonContentView.addArrangedSubview($0)
     }
 
-    [titleLabel, actionToggle, detailsLabel, actionDescriptionLabel].forEach {
+    [titleLabel, actionToggle, detailsLabel, secondaryDetailsLabel, actionDescriptionLabel].forEach {
       $0.contentMode = .top
     }
     
@@ -289,6 +299,11 @@ class WelcomeViewCallout: UIView {
         $0.alpha = 0.0
         $0.isHidden = true
       }
+      
+      secondaryDetailsLabel.do {
+        $0.alpha = 0.0
+        $0.isHidden = true
+      }
 
       primaryButton.do {
         $0.alpha = 0.0
@@ -325,6 +340,13 @@ class WelcomeViewCallout: UIView {
       detailsLabel.do {
         $0.text = info.details
         $0.font = .preferredFont(for: .body, weight: .regular)
+        $0.alpha = 1.0
+        $0.isHidden = false
+      }
+      
+      secondaryDetailsLabel.do {
+        $0.text = info.secondaryDetails
+        $0.font = .preferredFont(for: .body, weight: .bold)
         $0.alpha = 1.0
         $0.isHidden = false
       }
@@ -366,7 +388,8 @@ class WelcomeViewCallout: UIView {
       }
 
       contentStackView.setCustomSpacing(horizontalLayoutMargin, after: titleLabel)
-      contentStackView.setCustomSpacing(3 * horizontalLayoutMargin, after: detailsLabel)
+      contentStackView.setCustomSpacing(horizontalLayoutMargin, after: detailsLabel)
+      contentStackView.setCustomSpacing(2 * horizontalLayoutMargin, after: secondaryDetailsLabel)
       contentStackView.setCustomSpacing(horizontalLayoutMargin, after: primaryButton)
     case .settings(let title, let details):
       contentStackView.do {
@@ -392,6 +415,11 @@ class WelcomeViewCallout: UIView {
         $0.font = .preferredFont(for: .title3, weight: .regular)
         $0.alpha = 0.0
         $0.isHidden = false
+      }
+      
+      secondaryDetailsLabel.do {
+        $0.alpha = 0.0
+        $0.isHidden = true
       }
 
       primaryButton.do {
@@ -442,6 +470,11 @@ class WelcomeViewCallout: UIView {
         $0.font = .preferredFont(for: .footnote, weight: .regular)
         $0.alpha = 1.0
         $0.isHidden = false
+      }
+      
+      secondaryDetailsLabel.do {
+        $0.alpha = 0.0
+        $0.isHidden = true
       }
       
       actionDescriptionLabel.do {
@@ -507,6 +540,13 @@ class WelcomeViewCallout: UIView {
         $0.alpha = 1.0
         $0.isHidden = false
       }
+      
+      secondaryDetailsLabel.do {
+        $0.text = info.details
+        $0.font = .preferredFont(for: .body, weight: .bold)
+        $0.alpha = 1.0
+        $0.isHidden = false
+      }
 
       primaryButton.do {
         $0.setTitle(info.primaryButtonTitle, for: .normal)
@@ -551,7 +591,8 @@ class WelcomeViewCallout: UIView {
       }
 
       contentStackView.setCustomSpacing(horizontalLayoutMargin, after: titleLabel)
-      contentStackView.setCustomSpacing(3 * horizontalLayoutMargin, after: detailsLabel)
+      contentStackView.setCustomSpacing(horizontalLayoutMargin, after: detailsLabel)
+      contentStackView.setCustomSpacing(2 * horizontalLayoutMargin, after: secondaryDetailsLabel)
       contentStackView.setCustomSpacing(horizontalLayoutMargin, after: primaryButton)
     }
   }

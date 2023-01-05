@@ -310,7 +310,7 @@ public class WelcomeViewController: UIViewController {
       contentContainer.spacing = 0.0
       iconBackgroundView.alpha = 0.0
       iconView.snp.remakeConstraints {
-        $0.height.equalTo(200.0)
+        $0.height.equalTo(175.0)
       }
       calloutView.setState(state: state)
     }
@@ -329,6 +329,7 @@ public class WelcomeViewController: UIViewController {
       info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
         title: Strings.Callout.defaultBrowserCalloutTitle,
         details: Strings.Callout.defaultBrowserCalloutDescription,
+        secondaryDetails: Strings.Callout.defaultBrowserCalloutButtonDescription,
         primaryButtonTitle: Strings.Callout.defaultBrowserCalloutPrimaryButtonTitle,
         secondaryButtonTitle: Strings.DefaultBrowserCallout.introSkipButtonText,
         primaryButtonAction: {
