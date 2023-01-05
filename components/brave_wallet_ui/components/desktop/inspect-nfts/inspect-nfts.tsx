@@ -7,6 +7,13 @@ import * as React from 'react'
 
 // components
 import { NftList } from './components/nft-list/nft-list'
+import { useDispatch, useSelector } from 'react-redux'
+
+// types
+import { PageState } from '../../../constants/types'
+
+// utils
+import { WalletPageActions } from '../../../page/actions'
 
 // styles
 import {
@@ -22,9 +29,13 @@ import {
   SubDivider,
   PinnedNftIllustration
 } from './inspects-nfts.styles'
+
 import {
+  ActionButton,
   BenefitHeading,
-  BenefitsList
+  BenefitsList,
+  IpfsNodeRunningStatus,
+  IpfsStatus
 } from '../local-ipfs-node/local-ipfs-node.styles'
 import { Column, Row } from '../../shared/style'
 
@@ -38,6 +49,14 @@ interface Props {
 
 export const InspectNftsScreen = ({ onClose }: Props) => {
   const [showTooltip, setShowTooltip] = React.useState<boolean>(false)
+
+  // redux
+  const dispatch = useDispatch()
+  const autoPinEnabled = useSelector(({ page }: { page: PageState }) => page.autoPinEnabled)
+
+  const onClickRunNode = React.useCallback(() => {
+    dispatch(WalletPageActions.setAutoPinEnabled(true))
+  }, [])
 
   const onShowTooltip = React.useCallback(() => setShowTooltip(true), [])
   const onHideTooltip = React.useCallback(() => setShowTooltip(false), [])
@@ -92,7 +111,18 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
             </li>
           </BenefitsList>
         </Column>
-        <PinNftsButton>Keep my NFTs always online</PinNftsButton>
+        <Row gap='16px' alignItems='center' justifyContent='flex-start'>
+          {autoPinEnabled
+            ? <>
+              <PinNftsButton>Keep my NFTs always online</PinNftsButton>
+              <IpfsNodeRunningStatus>
+                <IpfsStatus />
+                You’re running IPFS node
+              </IpfsNodeRunningStatus>
+            </>
+            : <ActionButton onClick={onClickRunNode}>Run my local IPFS Node</ActionButton>
+          }
+        </Row>
         <PinnedNftIllustration src={Illustration} />
       </MainContent>
     </InspectNftsWrapper>

@@ -48,5 +48,7 @@ export const {
   getIsAutoPinEnabled,
   setAutoPinEnabled,
   updateEnablingAutoPin,
-  updateAutoPinEnabled
+  updateAutoPinEnabled,
+  getNftPinningStatus,
+  updateNftPinningStatus
 } = PageActions

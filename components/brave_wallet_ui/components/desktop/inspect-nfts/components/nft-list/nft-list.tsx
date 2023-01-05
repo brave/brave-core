@@ -8,7 +8,7 @@ import * as React from 'react'
 import { useUnsafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../../common/selectors'
 import { getTokensNetwork } from '../../../../../utils/network-utils'
-import { reverseHttpifiedIpfsUrl, stripERC20TokenImageURL } from '../../../../../utils/string-utils'
+import { useNftPin } from '../../../../../common/hooks/nft-pin'
 
 // components
 import { NftIconWithNetworkIcon } from '../../../../shared/nft-icon/nft-icon-with-network-icon'
@@ -18,28 +18,10 @@ import { NftCountHeading } from '../../inspects-nfts.styles'
 import { NftListWrapper, List, NftItem, NftItemOverlay, PiningMessage } from './nft-list.styles'
 
 export const NftList = () => {
-  const userVisibleTokensInfo = useUnsafeWalletSelector(
-    WalletSelectors.userVisibleTokensInfo
-  )
   const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
 
-  const nonFungibleTokens = React.useMemo(() => {
-    const tokens = userVisibleTokensInfo.filter(
-      (token) => token.isErc721 || token.isNft
-    )
-    return tokens.map(token => {
-      const canBePinned = reverseHttpifiedIpfsUrl(stripERC20TokenImageURL(token.logo)).startsWith('ipfs://')
-      return { canBePinned, token }
-    })
-  }, [userVisibleTokensInfo])
-
-  const pinnableNftsCount = React.useMemo(() => {
-    return nonFungibleTokens
-      .map(token => token.canBePinned)
-      .reduce((accumulator, current) => {
-        return current ? accumulator + 1 : accumulator
-      }, 0)
-  }, [nonFungibleTokens])
+  // hooks
+  const { pinnableNftsCount, nonFungibleTokens } = useNftPin()
 
   return (
     <NftListWrapper>

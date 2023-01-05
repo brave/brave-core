@@ -1018,3 +1018,8 @@ export async function getNFTMetadata (token: BraveWallet.BlockchainToken) {
 
   return undefined
 }
+
+export async function getTokenPinningStatus (token: BraveWallet.BlockchainToken) {
+  const { braveWalletPinService } = getAPIProxy()
+  return await braveWalletPinService.getTokenStatus(token)
+}
