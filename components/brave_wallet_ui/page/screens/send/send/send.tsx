@@ -39,8 +39,7 @@ import {
   Background,
   FoundAddress,
   DIVForWidth,
-  InputRow,
-  DomainLoadIcon
+  InputRow
 } from './send.style'
 import { Column, Text, Row, HorizontalDivider } from '../shared.styles'
 
@@ -104,6 +103,7 @@ export const Send = (props: Props) => {
   // State
   const [backgroundHeight, setBackgroundHeight] = React.useState<number>(0)
   const [backgroundOpacity, setBackgroundOpacity] = React.useState<number>(0.3)
+  const [foundAddressPosition, setFoundAddressPosition] = React.useState<number>(0)
 
   // Methods
   const handleInputAmountChange = React.useCallback(
@@ -230,6 +230,18 @@ export const Send = (props: Props) => {
       : !!addressError || !!addressWarning
   }, [searchingForDomain, addressError, addressWarning])
 
+  const showResolvedDomainAddress = React.useMemo(() => {
+    if (
+      (addressError === undefined || addressError === '' || addressError === getLocale('braveWalletSameAddressError')) &&
+      toAddress &&
+      endsWithAny(allSupportedExtensions, toAddressOrUrl.toLowerCase())
+    ) {
+      setFoundAddressPosition(document.getElementById(INPUT_WIDTH_ID)?.clientWidth ?? 0)
+      return true
+    }
+    return false
+  }, [addressError, toAddress, toAddressOrUrl])
+
   const addressMessageInformation: AddressMessageInfo | undefined = React.useMemo(() => {
     // ToDo: Implement Invalid Checksum warning and other longer warnings here in the future.
     // https://github.com/brave/brave-browser/issues/26957
@@ -238,35 +250,6 @@ export const Send = (props: Props) => {
     }
     return undefined
   }, [showEnsOffchainWarning])
-
-  const searchingForAddressIconPosition = React.useMemo(() => {
-    // Sets the searchingForAddressIconPosition only if it meets conditions.
-    if (
-      (endsWithAny(allSupportedExtensions, toAddressOrUrl.toLowerCase()) && searchingForDomain) ||
-      showEnsOffchainLookupOptions
-    ) {
-      const position = document.getElementById(INPUT_WIDTH_ID)?.clientWidth
-      return position ? position + 22 : 0
-    }
-    // Fallback to 0
-    return 0
-  }, [searchingForDomain, toAddressOrUrl, showEnsOffchainLookupOptions])
-
-  const foundAddressPosition = React.useMemo(() => {
-    // Sets the foundAddressPosition only if it meets conditions.
-    if (
-      (addressError === undefined ||
-        addressError === '' ||
-        addressError === getLocale('braveWalletSameAddressError')) &&
-      toAddress &&
-      endsWithAny(allSupportedExtensions, toAddressOrUrl.toLowerCase())
-    ) {
-      const position = document.getElementById(INPUT_WIDTH_ID)?.clientWidth
-      return position ? position + 22 : 0
-    }
-    // Fallback to 0
-    return 0
-  }, [addressError, toAddress, toAddressOrUrl])
 
   // Effects
   React.useEffect(() => {
@@ -392,18 +375,15 @@ export const Send = (props: Props) => {
             verticalPadding={16}
             horizontalPadding={16}
           >
-            {foundAddressPosition !== 0 &&
+            {showResolvedDomainAddress && foundAddressPosition !== 0 &&
               <FoundAddress
                 textSize='16px'
                 textColor='text03'
                 isBold={false}
-                position={foundAddressPosition}
+                position={foundAddressPosition + 22}
               >
                 {reduceAddress(toAddress)}
               </FoundAddress>
-            }
-            {searchingForAddressIconPosition !== 0 &&
-              <DomainLoadIcon position={searchingForAddressIconPosition} />
             }
             <DIVForWidth id={INPUT_WIDTH_ID}>{toAddressOrUrl}</DIVForWidth>
             <AddressInput
