@@ -197,6 +197,7 @@ import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
 import org.chromium.components.safe_browsing.SafeBrowsingApiBridge;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.content_public.browser.UiThreadTaskTraits;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -270,6 +271,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private boolean isProcessingPendingDappsTxRequest;
     private int mLastTabId;
     private boolean mNativeInitialized;
+    private boolean mSafeBrowsingFlagEnabled;
     private NewTabPageManager mNewTabPageManager;
     private NotificationPermissionController mNotificationPermissionController;
     private BraveNewsController mBraveNewsController;
@@ -307,15 +309,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             }
             updateWalletBadgeVisibility();
         }
-        boolean safeBrowsingFlagEnabled =
+
+        // We can store a state of that flag as a browser has to be restarted
+        // when the flag state is changed in any case
+        mSafeBrowsingFlagEnabled =
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_SAFE_BROWSING);
-        boolean safeBrowsingPrefEnabled =
-                SafeBrowsingBridge.getSafeBrowsingState() != SafeBrowsingState.NO_SAFE_BROWSING;
-        if (safeBrowsingFlagEnabled && safeBrowsingPrefEnabled) {
-            executeInitSafeBrowsing(0);
-        } else if (!safeBrowsingFlagEnabled && safeBrowsingPrefEnabled) {
-            SafeBrowsingBridge.setSafeBrowsingState(SafeBrowsingState.NO_SAFE_BROWSING);
-        }
+
+        executeInitSafeBrowsing(0);
     }
 
     @Override
@@ -828,6 +828,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void turnSafeBrowsingOff() {
         SafeBrowsingBridge.setSafeBrowsingState(SafeBrowsingState.NO_SAFE_BROWSING);
+    }
+
+    @Override
+    public boolean isSafeBrowsingEnabled() {
+        return mSafeBrowsingFlagEnabled;
     }
 
     @Override
@@ -1995,8 +2000,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     // BraveSafeBrowsingApiHandler.SAFE_BROWSING_INIT_INTERVAL_MS,
     // as upstream does, to keep the GmsCore process alive.
     private void executeInitSafeBrowsing(long delay) {
-        PostTask.postDelayedTask(TaskTraits.USER_VISIBLE_MAY_BLOCK, () -> {
-            BraveSafeBrowsingApiHandler.getInstance().initSafeBrowsing();
+        // SafeBrowsingBridge.getSafeBrowsingState() has to be executed on a main thread
+        PostTask.postDelayedTask(UiThreadTaskTraits.DEFAULT, () -> {
+            if (SafeBrowsingBridge.getSafeBrowsingState() != SafeBrowsingState.NO_SAFE_BROWSING) {
+                // initSafeBrowsing could be executed on a background thread
+                PostTask.postTask(TaskTraits.USER_VISIBLE_MAY_BLOCK,
+                        () -> { BraveSafeBrowsingApiHandler.getInstance().initSafeBrowsing(); });
+            }
             executeInitSafeBrowsing(BraveSafeBrowsingApiHandler.SAFE_BROWSING_INIT_INTERVAL_MS);
         }, delay);
     }

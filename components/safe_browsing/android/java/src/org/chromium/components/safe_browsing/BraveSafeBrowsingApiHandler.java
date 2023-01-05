@@ -31,6 +31,9 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
 
     public interface BraveSafeBrowsingApiHandlerDelegate {
         default void turnSafeBrowsingOff() {}
+        default boolean isSafeBrowsingEnabled() {
+            return true;
+        }
         Activity getActivity();
     }
 
@@ -72,7 +75,10 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
 
     @Override
     public void startUriLookup(final long callbackId, String uri, int[] threatsOfInterest) {
-        if (mBraveSafeBrowsingApiHandlerDelegate == null) {
+        if (mBraveSafeBrowsingApiHandlerDelegate == null
+                || !mBraveSafeBrowsingApiHandlerDelegate.isSafeBrowsingEnabled()) {
+            mObserver.onUrlCheckDone(
+                    callbackId, SafeBrowsingResult.TIMEOUT, "{}", DEFAULT_CHECK_DELTA);
             return;
         }
         mTriesCount++;
