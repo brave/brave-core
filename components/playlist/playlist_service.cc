@@ -346,39 +346,32 @@ void PlaylistService::AddMediaFilesFromPageToPlaylist(
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
-void PlaylistService::AddMediaFilesFromOpenTabsToPlaylist(
+void PlaylistService::AddMediaFilesFromTabToPlaylist(
+    int32_t window_id,
+    int32_t tab_id,
     const std::string& playlist_id) {
-  if (!delegate_) {
-    LOG(ERROR) << "Delegate should be set to use this method.";
-    return;
-  }
+  DCHECK(delegate_);
 
-  const bool should_cache = prefs_->GetBoolean(kPlaylistCacheByDefault);
-  for (auto* contents : delegate_->GetOpenTabsWebContentses())
-    AddMediaFilesFromContentsToPlaylist(playlist_id, contents, should_cache);
-}
-
-void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(
-    const std::string& playlist_id) {
-  if (!delegate_) {
-    LOG(ERROR) << "Delegate should be set to use this method.";
+  auto* contents = delegate_->GetWebContents(window_id, tab_id);
+  if (!contents)
     return;
-  }
 
   AddMediaFilesFromContentsToPlaylist(
-      playlist_id, delegate_->GetActiveTabWebContents(),
-      prefs_->GetBoolean(kPlaylistCacheByDefault));
+      playlist_id, contents, prefs_->GetBoolean(kPlaylistCacheByDefault));
 }
 
-void PlaylistService::FindMediaFilesFromActiveTab(
-    FindMediaFilesFromActiveTabCallback callback) {
-  if (!delegate_) {
-    LOG(ERROR) << "Delegate should be set to use this method.";
+void PlaylistService::FindMediaFilesFromTab(
+    int32_t window_id,
+    int32_t tab_id,
+    FindMediaFilesFromTabCallback callback) {
+  DCHECK(delegate_);
+
+  auto* contents = delegate_->GetWebContents(window_id, tab_id);
+  if (!contents)
     return;
-  }
 
   PlaylistDownloadRequestManager::Request request;
-  request.url_or_contents = delegate_->GetActiveTabWebContents()->GetWeakPtr();
+  request.url_or_contents = contents->GetWeakPtr();
   request.callback = std::move(callback);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }

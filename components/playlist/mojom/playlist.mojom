@@ -20,7 +20,7 @@ struct Playlist {
 struct PlaylistItem {
   string id;
   string name;
-  
+
   // original sources
   url.mojom.Url page_source;
   url.mojom.Url media_source;
@@ -39,12 +39,19 @@ struct PlaylistItem {
   int8 last_played_position;
 };
 
-// Used by the UI to bootstrap bidirectional communication.
+// Used by the web UI to bootstrap bidirectional communication.
+// the WebUI page's |BrowserProxy| singleton calls this method
+// when the page is first initialized.
+[EnableIfNot=is_android]
 interface PageHandlerFactory {
-  // On Desktop, the WebUI page's |BrowserProxy| singleton calls this method
-  // when the page is first initialized.
   CreatePageHandler(pending_remote<PlaylistServiceObserver> service_observer,
                     pending_receiver<PlaylistService> service);
+
+  // Returns the active tab's id from a browser to which this web UI is
+  // attached When there's no active tab, returns -1 which is the same value as
+  // SessionID::InvalidValue() has.
+  [Sync]
+  GetActiveTabId() => (int32 window_id, int32 tab_id);
 };
 
 // Service-side handler for requests from UI.
@@ -59,12 +66,15 @@ interface PlaylistService {
 
   // Store all media files from given URL.
   AddMediaFilesFromPageToPlaylist(string playlist_id, url.mojom.Url url);
-  
-  // Store all media files from tabs in this window.
-  AddMediaFilesFromOpenTabsToPlaylist(string playlist_id);
-  AddMediaFilesFromActiveTabToPlaylist(string playlist_id);
 
-  FindMediaFilesFromActiveTab() => (array<PlaylistItem> items);
+  // Store or find all media files from given tab. The tab_id is an id generated
+  // by SessionTabHelper. |window_id| is a SessionID for window containing
+  // the |tab_id|, and it will be mapped to browser window on Desktop or
+  // TabModel on Android.
+  AddMediaFilesFromTabToPlaylist(int32 window_id, int32 tab_id,
+                                 string playlist_id);
+  FindMediaFilesFromTab(int32 context_id, int32 tab_id)
+      => (array<PlaylistItem> items);
 
   AddMediaFiles(array<PlaylistItem> items, string playlist_id);
 

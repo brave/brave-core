@@ -15,7 +15,10 @@
 #include "brave/components/playlist/playlist_service.h"
 #include "brave/components/playlist/resources/grit/playlist_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
@@ -86,6 +89,31 @@ void PlaylistUI::CreatePageHandler(
   // When WebUI calls this, mark that the page can be shown on sidebar.
   if (embedder_)
     embedder_->ShowUI();
+}
+
+void PlaylistUI::GetActiveTabId(GetActiveTabIdCallback callback) {
+  auto* browser = chrome::FindBrowserWithProfile(Profile::FromWebUI(web_ui()));
+  constexpr auto kInvalidSessionId = SessionID::InvalidValue();
+  if (!browser) {
+    std::move(callback).Run(kInvalidSessionId.id(), kInvalidSessionId.id());
+    return;
+  }
+
+  auto* tab_strip_model = browser->tab_strip_model();
+  DCHECK(tab_strip_model);
+
+  auto active_index = tab_strip_model->active_index();
+  if (active_index == TabStripModel::kNoTab) {
+    std::move(callback).Run(kInvalidSessionId.id(), kInvalidSessionId.id());
+    return;
+  }
+
+  auto* active_contents = tab_strip_model->GetWebContentsAt(active_index);
+  DCHECK(active_contents);
+  std::move(callback).Run(
+      sessions::SessionTabHelper::IdForWindowContainingTab(active_contents)
+          .id(),
+      sessions::SessionTabHelper::IdForTab(active_contents).id());
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(PlaylistUI)
