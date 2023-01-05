@@ -9,7 +9,7 @@ deps = {
     "condition": "checkout_win",
   },
   "vendor/sparkle": {
-    "url": "https://github.com/brave/Sparkle.git@1ba10369c4a7fe4b791b5a8d8ef130bd808087b7",
+    "url": "https://github.com/brave/Sparkle.git@8721f93f694244f9ff41fe975a92617ac5f63f9a",
     "condition": "checkout_mac",
   },
   "vendor/bip39wally-core-native": "https://github.com/brave-intl/bat-native-bip39wally-core.git@0d3a8713a2b388d2156fe49a70ef3f7cdb44b190",
@@ -48,7 +48,7 @@ hooks = [
     'name': 'download_sparkle',
     'pattern': '.',
     'condition': 'checkout_mac and download_prebuilt_sparkle',
-    'action': ['vpython3', 'build/mac/download_sparkle.py', '1ba10369c4a7fe4b791b5a8d8ef130bd808087b7'],
+    'action': ['vpython3', 'build/mac/download_sparkle.py', '1.24.3'],
   },
   {
     'name': 'download_rust_deps',
