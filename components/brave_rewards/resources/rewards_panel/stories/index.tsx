@@ -270,7 +270,7 @@ function createHost (): Host {
 export function MainPanel () {
   const [host] = React.useState(() => createHost())
   return (
-    <div className='brave-theme-dark'>
+    <div className='brave-theme-light'>
       <LocaleContext.Provider value={locale}>
         <App host={host} />
       </LocaleContext.Provider>
