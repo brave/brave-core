@@ -37,6 +37,9 @@ class BraveGM2TabStyle : public GM2TabStyle {
 
  private:
   bool IsVerticalTab() const {
+    if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+      return false;
+
     return tabs::features::ShouldShowVerticalTabs(
         tab_->controller()->GetBrowser());
   }

@@ -51,6 +51,9 @@ void BraveTab::ActiveStateChanged() {
 }
 
 absl::optional<SkColor> BraveTab::GetGroupColor() const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return Tab::GetGroupColor();
+
   // Hide tab border with group color as it doesn't go well with vertical tabs.
   if (tabs::features::ShouldShowVerticalTabs(controller()->GetBrowser()))
     return {};
@@ -95,6 +98,9 @@ bool BraveTab::ShouldRenderAsNormalTab() const {
 }
 
 bool BraveTab::IsAtMinWidthForVerticalTabStrip() const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return false;
+
   return tabs::features::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
          width() <= tabs::kVerticalTabMinWidth;
 }

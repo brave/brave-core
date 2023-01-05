@@ -32,6 +32,7 @@ class BraveTabStrip : public TabStrip {
   FRIEND_TEST_ALL_PREFIXES(ColorPaletteTest, LightThemeMinimumContrast);
 
   void UpdateTabContainer();
+  bool ShouldShowVerticalTabs() const;
 
   // TabStrip overrides:
   SkColor GetTabBackgroundColor(

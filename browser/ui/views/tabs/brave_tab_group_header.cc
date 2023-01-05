@@ -39,10 +39,8 @@ BraveTabGroupHeader::~BraveTabGroupHeader() = default;
 
 void BraveTabGroupHeader::VisualsChanged() {
   TabGroupHeader::VisualsChanged();
-  if (!tabs::features::ShouldShowVerticalTabs(
-          tab_slot_controller_->GetBrowser())) {
+  if (!ShouldShowVerticalTabs())
     return;
-  }
 
   title_->SetEnabledColor(GetDarkerColorForGroup(
       group().value(), base::to_address(tab_slot_controller_),
@@ -59,12 +57,18 @@ void BraveTabGroupHeader::VisualsChanged() {
 
 void BraveTabGroupHeader::Layout() {
   TabGroupHeader::Layout();
-  if (!tabs::features::ShouldShowVerticalTabs(
-          tab_slot_controller_->GetBrowser())) {
+  if (!ShouldShowVerticalTabs())
     return;
-  }
 
   LayoutTitleChip();
+}
+
+bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return false;
+
+  return tabs::features::ShouldShowVerticalTabs(
+      tab_slot_controller_->GetBrowser());
 }
 
 void BraveTabGroupHeader::LayoutTitleChip() {

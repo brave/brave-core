@@ -23,6 +23,9 @@ float CalculateZValue_ChromiumImpl(views::View* child);
 
 // static
 float ZOrderableTabContainerElement::CalculateZValue(views::View* child) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return brave::CalculateZValue_ChromiumImpl(child);
+
   // TabGroupUnderline in vertical tabs should be underneath other views.
   // Checks if the |child| is TabGroupUnderLine and its browser is showing
   // vertical tab strip.

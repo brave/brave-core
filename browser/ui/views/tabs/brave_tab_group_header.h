@@ -30,6 +30,7 @@ class BraveTabGroupHeader : public TabGroupHeader {
   void Layout() override;
 
  private:
+  bool ShouldShowVerticalTabs() const;
   void LayoutTitleChip();
 };
 

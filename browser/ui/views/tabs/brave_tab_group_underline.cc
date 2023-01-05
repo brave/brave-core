@@ -26,10 +26,8 @@ BraveTabGroupUnderline::~BraveTabGroupUnderline() = default;
 void BraveTabGroupUnderline::UpdateBounds(views::View* leading_view,
                                           views::View* trailing_view) {
   TabGroupUnderline::UpdateBounds(leading_view, trailing_view);
-  if (!tabs::features::ShouldShowVerticalTabs(tab_group_views_->GetBrowser()) ||
-      !GetVisible()) {
+  if (!ShouldShowVerticalTabs() || !GetVisible())
     return;
-  }
 
   // override bounds for vertical tabs mode.
   gfx::RectF leading_bounds = gfx::RectF(leading_view->bounds());
@@ -58,14 +56,14 @@ void BraveTabGroupUnderline::UpdateBounds(views::View* leading_view,
 
 gfx::Insets BraveTabGroupUnderline::GetInsetsForUnderline(
     views::View* sibling_view) const {
-  if (!tabs::features::ShouldShowVerticalTabs(tab_group_views_->GetBrowser()))
+  if (!ShouldShowVerticalTabs())
     return TabGroupUnderline::GetInsetsForUnderline(sibling_view);
 
   return {};
 }
 
 SkPath BraveTabGroupUnderline::GetPath() const {
-  if (!tabs::features::ShouldShowVerticalTabs(tab_group_views_->GetBrowser()))
+  if (!ShouldShowVerticalTabs())
     return TabGroupUnderline::GetPath();
 
   constexpr SkScalar kRadius = 4;
@@ -79,7 +77,7 @@ SkPath BraveTabGroupUnderline::GetPath() const {
 }
 
 void BraveTabGroupUnderline::OnPaint(gfx::Canvas* canvas) {
-  if (!tabs::features::ShouldShowVerticalTabs(tab_group_views_->GetBrowser())) {
+  if (!ShouldShowVerticalTabs()) {
     TabGroupUnderline::OnPaint(canvas);
     return;
   }
@@ -96,4 +94,11 @@ void BraveTabGroupUnderline::OnPaint(gfx::Canvas* canvas) {
   flags.setColor(color);
   flags.setStyle(cc::PaintFlags::kFill_Style);
   canvas->DrawPath(GetPath(), flags);
+}
+
+bool BraveTabGroupUnderline::ShouldShowVerticalTabs() const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return false;
+
+  return tabs::features::ShouldShowVerticalTabs(tab_group_views_->GetBrowser());
 }

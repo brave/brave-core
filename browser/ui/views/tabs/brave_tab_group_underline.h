@@ -22,6 +22,9 @@ class BraveTabGroupUnderline : public TabGroupUnderline {
   gfx::Insets GetInsetsForUnderline(views::View* sibling_view) const override;
   SkPath GetPath() const override;
   void OnPaint(gfx::Canvas* canvas) override;
+
+ private:
+  bool ShouldShowVerticalTabs() const;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_UNDERLINE_H_

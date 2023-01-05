@@ -46,7 +46,8 @@ gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
   gfx::Size size = kButtonSize;
   const auto insets = GetInsets();
   size.Enlarge(insets.width(), insets.height());
-  if (tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser()))
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
+      tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser()))
     size.set_height(kHeightForVerticalTabs);
 
   return size;
@@ -72,7 +73,8 @@ void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
   // Difference
   const int h_offset = correct_h_offset - chromium_offset;
   // Shim base implementation's painting
-  if (tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
+      tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {
     const int correct_v_offset = (GetContentsBounds().height() / 2);
     const int v_offset = correct_v_offset - chromium_offset;
     canvas->Translate(gfx::Vector2d(h_offset, v_offset));
@@ -84,7 +86,8 @@ void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
 }
 
 gfx::Insets BraveNewTabButton::GetInsets() const {
-  if (tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser()))
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
+      tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser()))
     return {};
 
   // Give an additional left margin to make more space from tab.
@@ -94,6 +97,11 @@ gfx::Insets BraveNewTabButton::GetInsets() const {
 }
 
 void BraveNewTabButton::PaintFill(gfx::Canvas* canvas) const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    NewTabButton::PaintFill(canvas);
+    return;
+  }
+
   if (!tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {
     NewTabButton::PaintFill(canvas);
     return;

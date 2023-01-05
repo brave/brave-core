@@ -26,6 +26,9 @@ BraveBrowserNonClientFrameViewMac::BraveBrowserNonClientFrameViewMac(
   frame_graphic_ =
       std::make_unique<BraveWindowFrameGraphic>(browser->profile());
 
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return;
+
   if (tabs::features::SupportsVerticalTabs(browser)) {
     auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
     show_vertical_tabs_.Init(
@@ -70,11 +73,17 @@ int BraveBrowserNonClientFrameViewMac::GetTopInset(bool restored) const {
 
 bool BraveBrowserNonClientFrameViewMac::ShouldShowWindowTitleForVerticalTabs()
     const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return false;
+
   return tabs::features::ShouldShowWindowTitleForVerticalTabs(
       browser_view()->browser());
 }
 
 void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleVisibility() {
+  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+      << "This method should be called only when the flag is on.";
+
   if (!browser_view()->browser()->is_type_normal())
     return;
 
@@ -102,6 +111,9 @@ void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleAndControls() {
 }
 
 gfx::Size BraveBrowserNonClientFrameViewMac::GetMinimumSize() const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return BrowserNonClientFrameViewMac::GetMinimumSize();
+
   if (tabs::features::ShouldShowVerticalTabs(browser_view()->browser())) {
     // In order to ignore tab strip height, skip BrowserNonClientFrameViewMac's
     // implementation.
