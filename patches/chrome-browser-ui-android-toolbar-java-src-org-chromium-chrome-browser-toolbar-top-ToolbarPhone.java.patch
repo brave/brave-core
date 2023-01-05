@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 621c04cfe2e0522a0db4681e189afb5f5a48a520..1e05efcae031d5e28426e439c3a756625ba047b4 100644
+index c46f2e7d7f9428ee62ff675a536d8ad3171e5421..0b1d9adc3be698a38bef8876740f4fa4ce9407f6 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -395,6 +395,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
@@ -34,7 +34,7 @@ index 621c04cfe2e0522a0db4681e189afb5f5a48a520..1e05efcae031d5e28426e439c3a75662
          // Draw the tab stack button and associated text if necessary.
          if (mTabSwitcherAnimationTabStackDrawable != null && mToggleTabStackButton != null
                  && mUrlExpansionFraction != 1f) {
-@@ -2057,6 +2061,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
+@@ -2068,6 +2072,7 @@ public class ToolbarPhone extends ToolbarLayout implements OnClickListener, TabC
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }
