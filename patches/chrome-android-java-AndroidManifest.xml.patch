@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 39c57cc7d63ee802d71a8c27dc9e1b37e8de7d4a..4481d8e7aebffc8e80b5bfc47683b2309869277d 100644
+index e861de3a552a0ad5719f910a398898396e7d8674..62ab20aa7360d1d1233894c1ef54bbeacb7325b0 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -90,7 +90,7 @@ index 39c57cc7d63ee802d71a8c27dc9e1b37e8de7d4a..4481d8e7aebffc8e80b5bfc47683b230
 @@ -900,6 +916,7 @@ by a child template that "extends" this file.
          <receiver
          android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderDino"
-         android:label="@string/dino_widget_title"
+         android:label="@string/dino_widget_text"
 +        android:enabled="false"
              android:exported="true">
              <intent-filter>
