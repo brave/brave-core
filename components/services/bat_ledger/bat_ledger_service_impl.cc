@@ -67,10 +67,6 @@ void BatLedgerServiceImpl::SetStateMigrationTargetVersionForTesting(
   ledger::state_migration_target_version_for_testing = version;
 }
 
-void BatLedgerServiceImpl::SetGeminiRetries(int32_t retries) {
-  ledger::gemini_retries = retries;
-}
-
 void BatLedgerServiceImpl::GetEnvironment(GetEnvironmentCallback callback) {
   std::move(callback).Run(ledger::_environment);
 }
@@ -86,10 +82,6 @@ void BatLedgerServiceImpl::GetReconcileInterval(
 
 void BatLedgerServiceImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
   std::move(callback).Run(ledger::retry_interval);
-}
-
-void BatLedgerServiceImpl::GetGeminiRetries(GetGeminiRetriesCallback callback) {
-  std::move(callback).Run(ledger::gemini_retries);
 }
 
 }  // namespace bat_ledger

@@ -13,7 +13,6 @@ namespace ledger {
 
 mojom::Environment _environment = mojom::Environment::PRODUCTION;
 
-int gemini_retries = 3;
 bool is_debug = false;
 bool is_testing = false;
 int state_migration_target_version_for_testing = -1;

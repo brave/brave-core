@@ -12,31 +12,21 @@
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/endpoint/gemini/gemini_server.h"
 #include "bat/ledger/internal/gemini/gemini.h"
-#include "bat/ledger/internal/gemini/gemini_transfer.h"
 #include "bat/ledger/internal/gemini/gemini_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
 #include "bat/ledger/internal/wallet_provider/gemini/connect_gemini_wallet.h"
+#include "bat/ledger/internal/wallet_provider/gemini/gemini_transfer.h"
 #include "bat/ledger/internal/wallet_provider/gemini/get_gemini_wallet.h"
 #include "brave_base/random.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-
-namespace {
-const char kFeeMessage[] =
-    "5% transaction fee collected by Brave Software International";
-const double kTransactionFee = 0.05;
-}  // namespace
-
-namespace ledger {
-namespace gemini {
+namespace ledger::gemini {
 
 Gemini::Gemini(LedgerImpl* ledger)
-    : transfer_(std::make_unique<GeminiTransfer>(ledger)),
-      connect_wallet_(std::make_unique<ConnectGeminiWallet>(ledger)),
+    : connect_wallet_(std::make_unique<ConnectGeminiWallet>(ledger)),
       get_wallet_(std::make_unique<GetGeminiWallet>(ledger)),
+      transfer_(std::make_unique<GeminiTransfer>(ledger)),
       gemini_server_(std::make_unique<endpoint::GeminiServer>(ledger)),
       ledger_(ledger) {}
 
@@ -59,31 +49,22 @@ void Gemini::StartContribution(const std::string& contribution_id,
                                LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher info is null");
-    ContributionCompleted(mojom::Result::LEDGER_ERROR, "", contribution_id,
-                          amount, "", callback);
-    return;
+    return callback(mojom::Result::LEDGER_ERROR);
   }
 
-  const double fee = (amount * kTransactionFee);
-  const double reconcile_amount = amount - fee;
+  const double fee = (amount * 1.05) - amount;
 
-  auto contribution_callback =
-      std::bind(&Gemini::ContributionCompleted, this, _1, _2, contribution_id,
-                fee, info->publisher_key, callback);
-
-  Transaction transaction;
-  transaction.address = info->address;
-  transaction.amount = reconcile_amount;
-
-  transfer_->Start(transaction, contribution_callback);
+  transfer_->Run(contribution_id, info->address, amount - fee,
+                 base::BindOnce(&Gemini::ContributionCompleted,
+                                base::Unretained(this), std::move(callback),
+                                contribution_id, fee, info->publisher_key));
 }
 
-void Gemini::ContributionCompleted(mojom::Result result,
-                                   const std::string& transaction_id,
+void Gemini::ContributionCompleted(ledger::LegacyResultCallback callback,
                                    const std::string& contribution_id,
                                    double fee,
                                    const std::string& publisher_key,
-                                   LegacyResultCallback callback) {
+                                   mojom::Result result) {
   if (result == mojom::Result::LEDGER_OK) {
     SaveTransferFee(contribution_id, fee);
 
@@ -136,13 +117,14 @@ void Gemini::OnFetchBalance(FetchBalanceCallback callback,
   std::move(callback).Run(mojom::Result::LEDGER_OK, available);
 }
 
-void Gemini::TransferFunds(const double amount,
+void Gemini::TransferFunds(double amount,
                            const std::string& address,
-                           client::TransactionCallback callback) {
-  Transaction transaction;
-  transaction.address = address;
-  transaction.amount = amount;
-  transfer_->Start(transaction, callback);
+                           const std::string& contribution_id,
+                           client::LegacyResultCallback callback) {
+  transfer_->Run(contribution_id, address, amount,
+                 base::BindOnce([](client::LegacyResultCallback callback,
+                                   mojom::Result result) { callback(result); },
+                                std::move(callback)));
 }
 
 void Gemini::ConnectWallet(const base::flat_map<std::string, std::string>& args,
@@ -184,10 +166,9 @@ void Gemini::StartTransferFeeTimer(const std::string& fee_id,
                      fee_id, attempts));
 }
 
-void Gemini::OnTransferFeeCompleted(const mojom::Result result,
-                                    const std::string& transaction_id,
-                                    const std::string& contribution_id,
-                                    const int attempts) {
+void Gemini::OnTransferFeeCompleted(const std::string& contribution_id,
+                                    int attempts,
+                                    mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {
     if (attempts < 3) {
       BLOG(0, "Transaction fee failed, retrying");
@@ -204,15 +185,10 @@ void Gemini::OnTransferFeeCompleted(const mojom::Result result,
 void Gemini::TransferFee(const std::string& contribution_id,
                          const double amount,
                          const int attempts) {
-  auto transfer_callback = std::bind(&Gemini::OnTransferFeeCompleted, this, _1,
-                                     _2, contribution_id, attempts);
-
-  Transaction transaction;
-  transaction.address = GetFeeAddress();
-  transaction.amount = amount;
-  transaction.message = kFeeMessage;
-
-  transfer_->Start(transaction, transfer_callback);
+  transfer_->Run(
+      contribution_id, GetFeeAddress(), amount,
+      base::BindOnce(&Gemini::OnTransferFeeCompleted, base::Unretained(this),
+                     contribution_id, attempts));
 }
 
 void Gemini::OnTransferFeeTimerElapsed(const std::string& id,
@@ -264,5 +240,4 @@ void Gemini::RemoveTransferFee(const std::string& contribution_id) {
   }
 }
 
-}  // namespace gemini
-}  // namespace ledger
+}  // namespace ledger::gemini

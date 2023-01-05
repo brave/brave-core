@@ -14,7 +14,6 @@
 #include "bat/ledger/internal/endpoint/gemini/post_cancel_transaction/post_cancel_transaction_gemini.h"
 #include "bat/ledger/internal/endpoint/gemini/post_oauth/post_oauth_gemini.h"
 #include "bat/ledger/internal/endpoint/gemini/post_recipient_id/post_recipient_id_gemini.h"
-#include "bat/ledger/internal/endpoint/gemini/post_transaction/post_transaction_gemini.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -39,8 +38,6 @@ class GeminiServer {
 
   gemini::PostRecipientId* post_recipient_id() const;
 
-  gemini::PostTransaction* post_transaction() const;
-
  private:
   std::unique_ptr<gemini::GetTransaction> get_transaction_;
   std::unique_ptr<gemini::PostAccount> post_account_;
@@ -48,7 +45,6 @@ class GeminiServer {
   std::unique_ptr<gemini::PostCancelTransaction> post_cancel_transaction_;
   std::unique_ptr<gemini::PostOauth> post_oauth_;
   std::unique_ptr<gemini::PostRecipientId> post_recipient_id_;
-  std::unique_ptr<gemini::PostTransaction> post_transaction_;
 };
 
 }  // namespace endpoint

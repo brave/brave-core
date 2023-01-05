@@ -17,8 +17,7 @@ GeminiServer::GeminiServer(LedgerImpl* ledger)
       post_cancel_transaction_(
           std::make_unique<gemini::PostCancelTransaction>(ledger)),
       post_oauth_(std::make_unique<gemini::PostOauth>(ledger)),
-      post_recipient_id_(std::make_unique<gemini::PostRecipientId>(ledger)),
-      post_transaction_(std::make_unique<gemini::PostTransaction>(ledger)) {}
+      post_recipient_id_(std::make_unique<gemini::PostRecipientId>(ledger)) {}
 
 GeminiServer::~GeminiServer() = default;
 
@@ -44,10 +43,6 @@ gemini::PostOauth* GeminiServer::post_oauth() const {
 
 gemini::PostRecipientId* GeminiServer::post_recipient_id() const {
   return post_recipient_id_.get();
-}
-
-gemini::PostTransaction* GeminiServer::post_transaction() const {
-  return post_transaction_.get();
 }
 
 }  // namespace endpoint

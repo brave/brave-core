@@ -2158,10 +2158,6 @@ void RewardsServiceImpl::HandleFlags(const RewardsFlags& flags) {
     SetRetryInterval(*flags.retry_interval);
   }
 
-  if (flags.gemini_retries) {
-    SetGeminiRetries(*flags.gemini_retries);
-  }
-
   // The "persist-logs" command-line flag is deprecated and will be removed
   // in a future version. Use --enable-features=BraveRewardsVerboseLogging
   // instead.
@@ -2296,10 +2292,6 @@ void RewardsServiceImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
   bat_ledger_service_->GetRetryInterval(std::move(callback));
 }
 
-void RewardsServiceImpl::GetGeminiRetries(GetGeminiRetriesCallback callback) {
-  bat_ledger_service_->GetGeminiRetries(std::move(callback));
-}
-
 void RewardsServiceImpl::SetEnvironment(
     ledger::mojom::Environment environment) {
   bat_ledger_service_->SetEnvironment(environment);
@@ -2315,10 +2307,6 @@ void RewardsServiceImpl::SetReconcileInterval(const int32_t interval) {
 
 void RewardsServiceImpl::SetRetryInterval(int32_t interval) {
   bat_ledger_service_->SetRetryInterval(interval);
-}
-
-void RewardsServiceImpl::SetGeminiRetries(const int32_t retries) {
-  bat_ledger_service_->SetGeminiRetries(retries);
 }
 
 void RewardsServiceImpl::GetPendingContributionsTotal(
