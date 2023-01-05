@@ -21,7 +21,7 @@ public class BuyTokenStore: ObservableObject {
   @Published var selectedCurrency: BraveWallet.OnRampCurrency = .init()
   
   /// A map of list of available tokens to a certain on ramp provider
-  var buyTokens: [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]] = [.ramp: [], .wyre: [], .sardine: []]
+  var buyTokens: [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]] = [.ramp: [], .sardine: []]
   /// A list of all available tokens for all providers
   var allTokens: [BraveWallet.BlockchainToken] = []
 
@@ -100,11 +100,9 @@ public class BuyTokenStore: ObservableObject {
     switch provider {
     case .ramp:
       symbol = token.rampNetworkSymbol
-    case .wyre:
-      symbol = token.wyreSymbol
     case .sardine:
       symbol = token.symbol
-    @unknown default:
+    default:
       symbol = token.symbol
     }
     
@@ -118,15 +116,6 @@ public class BuyTokenStore: ObservableObject {
     )
 
     guard error == nil else { return nil }
-    
-    // some adjustment
-    if provider == .wyre {
-      if selectedNetwork.chainId.caseInsensitiveCompare(BraveWallet.AvalancheMainnetChainId) == .orderedSame {
-        return url.replacingOccurrences(of: "dest=ethereum", with: "dest=avalanche")
-      } else if selectedNetwork.chainId.caseInsensitiveCompare(BraveWallet.PolygonMainnetChainId) == .orderedSame {
-        return url.replacingOccurrences(of: "dest=ethereum", with: "dest=matic")
-      }
-    }
     
     return url
   }
@@ -169,9 +158,9 @@ public class BuyTokenStore: ObservableObject {
   func updateInfo() async {
     // check device language to determine if we support `Sardine`
     if Locale.preferredLanguages.first?.caseInsensitiveCompare("en-us") == .orderedSame {
-      orderedSupportedBuyOptions = [.ramp, .sardine, .wyre]
+      orderedSupportedBuyOptions = [.ramp, .sardine]
     } else {
-      orderedSupportedBuyOptions = [.ramp, .wyre]
+      orderedSupportedBuyOptions = [.ramp]
     }
     
     let coin = await walletService.selectedCoin()
@@ -263,26 +252,6 @@ private extension BraveWallet.BlockchainToken {
       }
       
       return rampNetworkPrefix.isEmpty ? symbol : "\(rampNetworkPrefix)_\(symbol.uppercased())"
-    }
-  }
-  
-  // a special symbol to fetch correct wyre buy url
-  var wyreSymbol: String {
-    if contractAddress.isEmpty || chainId.caseInsensitiveCompare(BraveWallet.MainnetChainId) == .orderedSame {
-      return symbol
-    } else {
-      let wyrePrefix: String
-      switch chainId.lowercased() {
-      case BraveWallet.PolygonMainnetChainId.lowercased():
-        wyrePrefix = "M"
-      case BraveWallet.AvalancheMainnetChainId.lowercased():
-        wyrePrefix = "AVAXC"
-      case BraveWallet.MainnetChainId.lowercased():
-        wyrePrefix = ""
-      default:
-        wyrePrefix = ""
-      }
-      return wyrePrefix.isEmpty ? symbol : "\(wyrePrefix)\(symbol.uppercased())"
     }
   }
 }
