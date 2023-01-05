@@ -12,6 +12,7 @@ import {
   ImportAccountErrorType,
   UpdateAccountNamePayloadType
 } from '../../constants/types'
+import { getAssetIdKey } from '../../utils/asset-utils'
 import {
   WalletCreatedPayloadType,
   RecoveryWordsAvailablePayloadType,
@@ -26,7 +27,8 @@ import {
   RemoveHardwareAccountPayloadType,
   RemoveImportedAccountPayloadType,
   RestoreWalletPayloadType,
-  UpdateSelectedAssetType
+  UpdateSelectedAssetType,
+  UpdateNftPinningStatusType
 } from '../constants/action_types'
 
 const defaultState: PageState = {
@@ -56,7 +58,8 @@ const defaultState: PageState = {
   isImportWalletsCheckComplete: false,
   importWalletAttempts: 0,
   walletTermsAcknowledged: false,
-  selectedCoinMarket: undefined
+  selectedCoinMarket: undefined,
+  nftsPinningStatus: {}
 }
 
 export const WalletPageAsyncActions = {
@@ -80,7 +83,9 @@ export const WalletPageAsyncActions = {
   getIsAutoPinEnabled: createAction('getAutoPinEnabled'),
   setAutoPinEnabled: createAction<boolean>('setAutoPinEnabled'),
   updateEnablingAutoPin: createAction<boolean>('updateEnablingAutoPin'),
-  updateAutoPinEnabled: createAction<boolean>('updateAutoPinEnabled')
+  updateAutoPinEnabled: createAction<boolean>('updateAutoPinEnabled'),
+  getNftPinningStatus: createAction<UpdateNftPinningStatusType[]>('getNftPinningStatus'),
+  updateNftPinningStatus: createAction<UpdateNftPinningStatusType>('updateNftPinningStatus')
 }
 
 export const createPageSlice = (initialState: PageState = defaultState) => {
@@ -198,6 +203,26 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
       updateAutoPinEnabled (state, { payload }: PayloadAction<boolean>) {
         state.autoPinEnabled = payload
+      },
+
+      getNftPinningStatus (state, { payload }: PayloadAction<UpdateNftPinningStatusType[]>) {
+        const pinningStatus = {}
+        payload.forEach(({ token, status }) => {
+          pinningStatus[getAssetIdKey(token)] = status
+        })
+
+        state.nftsPinningStatus = {
+          ...state.nftsPinningStatus,
+          ...pinningStatus
+        }
+      },
+
+      updateNftPinningStatus (state, { payload }: PayloadAction<UpdateNftPinningStatusType>) {
+        const { token, status } = payload
+        state.nftsPinningStatus = {
+          ...state.nftsPinningStatus,
+          [getAssetIdKey(token)]: status
+        }
       }
     }
   })

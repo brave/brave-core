@@ -335,4 +335,8 @@ handler.on(WalletPageActions.getPinStatus.type, async (store, payload: BraveWall
   }
 })
 
+handler.on(WalletPageActions.getNftPinningStatus.type, async (store, payload) => {
+
+})
+
 export default handler.middleware

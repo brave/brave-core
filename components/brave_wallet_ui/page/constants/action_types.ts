@@ -98,3 +98,12 @@ export type ImportWalletErrorPayloadType = {
   errorMessage?: string
   incrementAttempts?: boolean
 }
+
+export type NftsPinningStatusType = {
+  [key: string]: BraveWallet.TokenPinStatus
+}
+
+export type UpdateNftPinningStatusType = {
+  token: BraveWallet.BlockchainToken
+  status: BraveWallet.TokenPinStatus
+}
