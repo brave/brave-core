@@ -206,11 +206,17 @@ extension Strings {
         tableName: "BraveShared", bundle: .module,
         value: "With Brave as default, every link you tap opens with Brave's privacy protections.",
         comment: "Subtitle - Description for Default Browser Full Screen Callout")
+    public static let defaultBrowserCalloutButtonDescription =
+      NSLocalizedString(
+        "callout.defaultBrowserCalloutButtonDescription",
+        tableName: "BraveShared", bundle: .module,
+        value: "Set Brave as default browser?",
+        comment: "Description - Description used for main button in Default Browser Full Screen Callout")
     public static let defaultBrowserCalloutPrimaryButtonTitle =
       NSLocalizedString(
         "callout.defaultBrowserCalloutPrimaryButtonTitle",
         tableName: "BraveShared", bundle: .module,
-        value: "Set as default browser",
+        value: "Set default",
         comment: "Title for main button in Default Browser Full Screen Callout")
     public static let defaultBrowserCalloutSecondaryButtonTitle =
       NSLocalizedString(
