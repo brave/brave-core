@@ -39,10 +39,91 @@ class SimpleShieldsView: UIView {
     $0.textColor = .braveLabel
   }
 
-  // Shields Up
+  let blockCountView = BlockCountView()
 
+  let footerLabel = UILabel().then {
+    $0.text = Strings.Shields.siteBroken
+    $0.font = .systemFont(ofSize: 13.0)
+    $0.textColor = UIColor(rgb: 0x868e96)
+    $0.numberOfLines = 0
+  }
+
+  // Shields Down
+
+  let shieldsDownStackView = UIStackView().then {
+    $0.axis = .vertical
+    $0.alignment = .center
+    $0.spacing = 16
+    $0.layoutMargins = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+    $0.isLayoutMarginsRelativeArrangement = true
+  }
+
+  private let shieldsDownDisclaimerLabel = UILabel().then {
+    $0.font = .systemFont(ofSize: 13)
+    $0.text = Strings.Shields.shieldsDownDisclaimer
+    $0.numberOfLines = 0
+    $0.textAlignment = .center
+    $0.textColor = .braveLabel
+  }
+
+  let reportSiteButton = ActionButton(type: .system).then {
+    $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
+    $0.titleEdgeInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
+    $0.setTitle(Strings.Shields.reportABrokenSite, for: .normal)
+    $0.tintColor = .braveLabel
+  }
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+
+    let stackView = UIStackView().then {
+      $0.axis = .vertical
+      $0.spacing = 16
+      $0.alignment = .center
+      $0.layoutMargins = UIEdgeInsets(top: 24, left: 12, bottom: 24, right: 12)
+      $0.isLayoutMarginsRelativeArrangement = true
+    }
+
+    addSubview(stackView)
+    stackView.snp.makeConstraints {
+      $0.edges.equalTo(self)
+    }
+
+    [shieldsDownDisclaimerLabel, reportSiteButton].forEach(shieldsDownStackView.addArrangedSubview)
+
+    stackView.addStackViewItems(
+      .view(
+        UIStackView(arrangedSubviews: [faviconImageView, hostLabel]).then {
+          $0.spacing = 8
+          $0.alignment = .center
+          $0.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
+          $0.isLayoutMarginsRelativeArrangement = true
+        }),
+      .view(shieldsSwitch),
+      .view(
+        UIStackView(arrangedSubviews: [braveShieldsLabel, statusLabel]).then {
+          $0.spacing = 4
+          $0.alignment = .center
+        }),
+      .customSpace(32),
+      .view(blockCountView),
+      .view(footerLabel),
+      .view(shieldsDownStackView)
+    )
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+}
+
+// MARK: - BlockCountView
+
+extension SimpleShieldsView {
+  
   class BlockCountView: UIView {
-
+    
     private struct UX {
       static let descriptionEdgeInset = UIEdgeInsets(top: 13, left: 16, bottom: 13, right: 16)
       static let iconEdgeInset = UIEdgeInsets(top: 22, left: 14, bottom: 22, right: 14)
@@ -160,84 +241,6 @@ class SimpleShieldsView: UIView {
     required init(coder: NSCoder) {
       fatalError()
     }
-  }
-
-  let blockCountView = BlockCountView()
-
-  let footerLabel = UILabel().then {
-    $0.text = Strings.Shields.siteBroken
-    $0.font = .systemFont(ofSize: 13.0)
-    $0.textColor = UIColor(rgb: 0x868e96)
-    $0.numberOfLines = 0
-  }
-
-  // Shields Down
-
-  let shieldsDownStackView = UIStackView().then {
-    $0.axis = .vertical
-    $0.alignment = .center
-    $0.spacing = 16
-    $0.layoutMargins = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
-    $0.isLayoutMarginsRelativeArrangement = true
-  }
-
-  private let shieldsDownDisclaimerLabel = UILabel().then {
-    $0.font = .systemFont(ofSize: 13)
-    $0.text = Strings.Shields.shieldsDownDisclaimer
-    $0.numberOfLines = 0
-    $0.textAlignment = .center
-    $0.textColor = .braveLabel
-  }
-
-  let reportSiteButton = ActionButton(type: .system).then {
-    $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
-    $0.titleEdgeInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
-    $0.setTitle(Strings.Shields.reportABrokenSite, for: .normal)
-    $0.tintColor = .braveLabel
-  }
-
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-
-    let stackView = UIStackView().then {
-      $0.axis = .vertical
-      $0.spacing = 16
-      $0.alignment = .center
-      $0.layoutMargins = UIEdgeInsets(top: 24, left: 12, bottom: 24, right: 12)
-      $0.isLayoutMarginsRelativeArrangement = true
-    }
-
-    addSubview(stackView)
-    stackView.snp.makeConstraints {
-      $0.edges.equalTo(self)
-    }
-
-    [shieldsDownDisclaimerLabel, reportSiteButton].forEach(shieldsDownStackView.addArrangedSubview)
-
-    stackView.addStackViewItems(
-      .view(
-        UIStackView(arrangedSubviews: [faviconImageView, hostLabel]).then {
-          $0.spacing = 8
-          $0.alignment = .center
-          $0.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
-          $0.isLayoutMarginsRelativeArrangement = true
-        }),
-      .view(shieldsSwitch),
-      .view(
-        UIStackView(arrangedSubviews: [braveShieldsLabel, statusLabel]).then {
-          $0.spacing = 4
-          $0.alignment = .center
-        }),
-      .customSpace(32),
-      .view(blockCountView),
-      .view(footerLabel),
-      .view(shieldsDownStackView)
-    )
-  }
-
-  @available(*, unavailable)
-  required init(coder: NSCoder) {
-    fatalError()
   }
 }
 
