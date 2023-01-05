@@ -17,7 +17,6 @@ import { SendScreenWrapper } from './send-screen.style'
 // Components
 import { SendHeader } from '../components/header/header'
 import { Send } from '../send/send'
-import { SelectTokenModal } from '../components/select-token-modal/select-token-modal'
 import { BuySendSwapDepositNav } from '../../../../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
 
 export const SendScreen = () => {
@@ -42,16 +41,12 @@ export const SendScreen = () => {
       <BuySendSwapDepositNav isTab={true} />
       <Send
         onShowSelectTokenModal={() => setShowSelectTokenModal(true)}
+        onHideSelectTokenModal={() => setShowSelectTokenModal(false)}
         selectedSendOption={selectedSendOption}
         setSelectedSendOption={setSelectedSendOption}
+        showSelectTokenModal={showSelectTokenModal}
+        selectTokenModalRef={selectTokenModalRef}
       />
-      {showSelectTokenModal &&
-        <SelectTokenModal
-          onClose={() => setShowSelectTokenModal(false)}
-          selectedSendOption={selectedSendOption}
-          ref={selectTokenModalRef}
-        />
-      }
     </SendScreenWrapper>
   )
 }
