@@ -39,7 +39,8 @@ import {
   Background,
   FoundAddress,
   DIVForWidth,
-  InputRow
+  InputRow,
+  DomainLoadIcon
 } from './send.style'
 import { Column, Text, Row, HorizontalDivider } from '../shared.styles'
 
@@ -60,8 +61,6 @@ interface Props {
   selectTokenModalRef: React.RefObject<HTMLDivElement>
   showSelectTokenModal: boolean
 }
-
-const INPUT_WIDTH_ID = 'input-width'
 
 export const Send = (props: Props) => {
   const {
@@ -115,7 +114,7 @@ export const Send = (props: Props) => {
   // State
   const [backgroundHeight, setBackgroundHeight] = React.useState<number>(0)
   const [backgroundOpacity, setBackgroundOpacity] = React.useState<number>(0.3)
-  const [foundAddressPosition, setFoundAddressPosition] = React.useState<number>(0)
+  const [domainPosition, setDomainPosition] = React.useState<number>(0)
 
   // Methods
   const handleInputAmountChange = React.useCallback(
@@ -157,6 +156,11 @@ export const Send = (props: Props) => {
     processAddressOrUrl,
     toAddressOrUrl
   ])
+
+  const updateLoadingIconPosition = React.useCallback((ref: HTMLDivElement | null) => {
+    const position = ref?.clientWidth
+    setDomainPosition(position ? position + 22 : 0)
+  }, [])
 
   // Memos
   const sendAssetBalance = React.useMemo(() => {
@@ -250,18 +254,6 @@ export const Send = (props: Props) => {
       : !!addressError || !!addressWarning
   }, [searchingForDomain, addressError, addressWarning])
 
-  const showResolvedDomainAddress = React.useMemo(() => {
-    if (
-      (addressError === undefined || addressError === '' || addressError === getLocale('braveWalletSameAddressError')) &&
-      toAddress &&
-      endsWithAny(allSupportedExtensions, toAddressOrUrl.toLowerCase())
-    ) {
-      setFoundAddressPosition(document.getElementById(INPUT_WIDTH_ID)?.clientWidth ?? 0)
-      return true
-    }
-    return false
-  }, [addressError, toAddress, toAddressOrUrl])
-
   const addressMessageInformation: AddressMessageInfo | undefined = React.useMemo(() => {
     // ToDo: Implement Invalid Checksum warning and other longer warnings here in the future.
     // https://github.com/brave/brave-browser/issues/26957
@@ -270,6 +262,19 @@ export const Send = (props: Props) => {
     }
     return undefined
   }, [showEnsOffchainWarning])
+
+  const showResolvedDomain = React.useMemo(() => {
+    return (addressError === undefined ||
+      addressError === '' ||
+      addressError === getLocale('braveWalletSameAddressError')) &&
+      toAddress &&
+      endsWithAny(allSupportedExtensions, toAddressOrUrl.toLowerCase())
+  }, [addressError, toAddress, toAddressOrUrl])
+
+  const showSearchingForDomainIcon = React.useMemo(() => {
+    return (endsWithAny(allSupportedExtensions, toAddressOrUrl.toLowerCase()) && searchingForDomain) ||
+      showEnsOffchainWarning
+  }, [toAddressOrUrl, searchingForDomain, showEnsOffchainWarning])
 
   // Effects
   React.useEffect(() => {
@@ -395,17 +400,20 @@ export const Send = (props: Props) => {
             verticalPadding={16}
             horizontalPadding={16}
           >
-            {showResolvedDomainAddress && foundAddressPosition !== 0 &&
+            {showResolvedDomain &&
               <FoundAddress
                 textSize='16px'
                 textColor='text03'
                 isBold={false}
-                position={foundAddressPosition + 22}
+                position={domainPosition}
               >
                 {reduceAddress(toAddress)}
               </FoundAddress>
             }
-            <DIVForWidth id={INPUT_WIDTH_ID}>{toAddressOrUrl}</DIVForWidth>
+            {showSearchingForDomainIcon &&
+              <DomainLoadIcon position={domainPosition} />
+            }
+            <DIVForWidth ref={updateLoadingIconPosition}>{toAddressOrUrl}</DIVForWidth>
             <AddressInput
               placeholder={getLocale('braveWalletEnterRecipientAddress')}
               hasError={hasAddressError}

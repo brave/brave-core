@@ -5,6 +5,9 @@
 
 import styled from 'styled-components'
 
+// Assets
+import { LoaderIcon } from 'brave-ui/components/icons'
+
 // Shared Styles
 import { StyledDiv, StyledInput, Text, Row } from '../shared.styles'
 
@@ -182,4 +185,14 @@ export const DIVForWidth = styled.div`
 export const InputRow = styled(Row)`
   box-sizing: border-box;
   position: relative;
+`
+
+export const DomainLoadIcon = styled(LoaderIcon) <{ position: number }>`
+  color: ${p => p.theme.palette.blurple500};
+  height: 16px;
+  width: 16px;
+  opacity: 0.4;
+  position: absolute;
+  z-index: 8;
+  left: ${(p) => p.position}px;
 `
