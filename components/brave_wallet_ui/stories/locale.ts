@@ -329,7 +329,7 @@ provideStrings({
   braveWalletWatchListTokenName: 'Token name',
   braveWalletWatchListTokenAddress: 'Token address',
   braveWalletWatchListTokenSymbol: 'Token symbol',
-  braveWalletWatchListTokenDecimals: 'Decimals of percision',
+  braveWalletWatchListTokenDecimals: 'Decimals of precision',
   braveWalletWatchListAdd: 'Add',
   braveWalletWatchListDoneButton: 'Done',
   braveWalletWatchListSuggestion: 'Add $1 as a custom token',
@@ -800,5 +800,15 @@ provideStrings({
   // Add asset tabs
   braveWalletAddAssetTokenTabTitle: 'Token',
   braveWalletAddAssetNftTabTitle: 'NFT',
-  braveWalletNftFetchingError: 'Something went wrong when fetching NFT details. Please try again later.'
+  braveWalletNftFetchingError:
+    'Something went wrong when fetching NFT details. Please try again later.',
+
+  // Add Custom Asset Form
+  braveWalletNetworkIsRequiredError: 'Network is required',
+  braveWalletTokenNameIsRequiredError: 'Token name is required',
+  braveWalletInvalidTokenContractAddressError:
+    'Invalid or empty token contract address',
+  braveWalletTokenSymbolIsRequiredError: 'Token symbol is required',
+  braveWalletTokenDecimalsIsRequiredError:
+    'Token decimals of precision value is required'
 })
