@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index d7c913bdfe3b578576679ed3b75a0be4a559063a..47e4bd7aaaff34693d001a5191750947837a2648 100644
+index 8ba5a90740a059ce265d5e7690921f18a636f674..247ea01859f6952929503e956314456e6c972905 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2528,6 +2528,7 @@ static_library("browser") {
+@@ -2530,6 +2530,7 @@ static_library("browser") {
        "performance_monitor/metric_evaluator_helper_posix.h",
      ]
    }
