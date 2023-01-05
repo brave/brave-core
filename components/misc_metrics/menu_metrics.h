@@ -45,7 +45,17 @@ class MenuMetrics {
   // 2. Browser views (History, Bookmarks, Extensions, Settings)
   void RecordMenuGroupAction(MenuGroup group);
 
+  // Increments weekly count of menu appearances in order to calculate the
+  // menu dismiss rate P3A question.
   void RecordMenuShown();
+  // Increments weekly count of menu dismisses, and records an answer
+  // for the following P3A question:
+  // How often is the menu triggered and dismissed without an action taken in
+  // the past week? 0. Menu was not opened in the past week
+  // 1. Less than 25% (exclusive) of opens
+  // 2. Between 25% (inclusive) and 50% (exclusive) of opens
+  // 3. Between 50% (inclusive) and 75% (exclusive) of opens
+  // 4. More than 75% of opens
   void RecordMenuDismiss();
 
  private:

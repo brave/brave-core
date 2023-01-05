@@ -114,12 +114,12 @@ void MenuMetrics::RecordMenuDismiss() {
 }
 
 void MenuMetrics::RecordMenuDismissRate() {
-  double shown_sum = menu_shown_storage_.GetWeeklySum();
-  double dismiss_sum = menu_dismiss_storage_.GetWeeklySum();
+  const double shown_sum = menu_shown_storage_.GetWeeklySum();
+  const double dismiss_sum = menu_dismiss_storage_.GetWeeklySum();
 
   int answer = 0;
   if (shown_sum != 0) {
-    double rate = dismiss_sum / shown_sum;
+    const double rate = dismiss_sum / shown_sum;
 
     VLOG(2) << "MenuMetrics: menu dismiss rate: " << rate;
 

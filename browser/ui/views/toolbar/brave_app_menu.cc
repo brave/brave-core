@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/toolbar/brave_app_menu.h"
 
+#include <memory>
+
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
