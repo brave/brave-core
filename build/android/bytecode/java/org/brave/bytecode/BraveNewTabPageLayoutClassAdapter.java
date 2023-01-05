@@ -30,9 +30,6 @@ public class BraveNewTabPageLayoutClassAdapter extends BraveClassVisitor {
         addMethodAnnotation(
                 sBraveNewTabPageLayoutClassName, "isScrollableMvtEnabled", "Ljava/lang/Override;");
 
-        deleteMethod(sBraveNewTabPageLayoutClassName, "hasLoadCompleted");
-        makePublicMethod(sNewTabPageLayoutClassName, "hasLoadCompleted");
-
         changeSuperName(sNewTabPageLayoutClassName, sNewTabPageLayoutSuperClassName);
     }
 }
