@@ -26,6 +26,15 @@
 
 namespace {
 
+std::string GetUpdateChannel() {
+  std::string channel_name = brave::GetChannelName();
+  if (channel_name == "release")
+    channel_name = "stable";
+  return base::SysInfo::OperatingSystemArchitecture() == "x86_64"
+             ? channel_name
+             : channel_name + "-arm64";
+}
+
 NSString* GetVersionFromAppcastItem(id item) {
   return [item performSelector:@selector(displayVersionString)];
 }
