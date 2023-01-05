@@ -134,14 +134,6 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
     WaitForCallback();
   }
 
-  void GetGeminiRetries() {
-    ResetWaitForCallback();
-    rewards_service_->GetGeminiRetries(
-        base::BindOnce(&RewardsFlagBrowserTest::OnGetGeminiRetriesWrapper,
-                       base::Unretained(this)));
-    WaitForCallback();
-  }
-
   void OnGetReconcileIntervalWrapper(int32_t interval) {
     OnGetReconcileInterval(interval);
     CallbackCalled();
@@ -162,16 +154,10 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
     CallbackCalled();
   }
 
-  void OnGetGeminiRetriesWrapper(int32_t retries) {
-    OnGetGeminiRetries(retries);
-    CallbackCalled();
-  }
-
   MOCK_METHOD1(OnGetEnvironment, void(ledger::mojom::Environment));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileInterval, void(int32_t));
   MOCK_METHOD1(OnGetRetryInterval, void(int32_t));
-  MOCK_METHOD1(OnGetGeminiRetries, void(int32_t));
 
   raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
@@ -431,55 +417,12 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsRetryInterval) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsGeminiRetries) {
-  rewards_browsertest_util::StartProcess(rewards_service_);
-  EXPECT_CALL(*this, OnGetGeminiRetries(2));
-  EXPECT_CALL(*this, OnGetGeminiRetries(10));
-  EXPECT_CALL(*this, OnGetGeminiRetries(0));
-
-  testing::InSequence s;
-
-  {
-    rewards_service_->SetGeminiRetries(0);
-    base::test::ScopedCommandLine scoped_command_line;
-    base::CommandLine* command_line =
-        scoped_command_line.GetProcessCommandLine();
-    command_line->AppendSwitchASCII("rewards", "gemini-retries=2");
-    rewards_service_->HandleFlags(
-        brave_rewards::RewardsFlags::ForCurrentProcess());
-    GetGeminiRetries();
-  }
-
-  {
-    rewards_service_->SetGeminiRetries(0);
-    base::test::ScopedCommandLine scoped_command_line;
-    base::CommandLine* command_line =
-        scoped_command_line.GetProcessCommandLine();
-    command_line->AppendSwitchASCII("rewards", "gemini-retries=10");
-    rewards_service_->HandleFlags(
-        brave_rewards::RewardsFlags::ForCurrentProcess());
-    GetGeminiRetries();
-  }
-
-  {
-    rewards_service_->SetGeminiRetries(0);
-    base::test::ScopedCommandLine scoped_command_line;
-    base::CommandLine* command_line =
-        scoped_command_line.GetProcessCommandLine();
-    command_line->AppendSwitchASCII("rewards", "gemini-retries=-1");
-    rewards_service_->HandleFlags(
-        brave_rewards::RewardsFlags::ForCurrentProcess());
-    GetGeminiRetries();
-  }
-}
-
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
   rewards_browsertest_util::StartProcess(rewards_service_);
   EXPECT_CALL(*this, OnGetEnvironment(ledger::mojom::Environment::STAGING));
   EXPECT_CALL(*this, OnGetDebug(true));
   EXPECT_CALL(*this, OnGetReconcileInterval(10));
   EXPECT_CALL(*this, OnGetRetryInterval(1));
-  EXPECT_CALL(*this, OnGetGeminiRetries(2));
 
   testing::InSequence s;
   rewards_service_->SetEnvironment(ledger::mojom::Environment::PRODUCTION);
@@ -490,7 +433,7 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
   command_line->AppendSwitchASCII("rewards",
                                   "staging=true,debug=true,retry-interval=1,"
-                                  "reconcile-interval=10,gemini-retries=2");
+                                  "reconcile-interval=10");
   rewards_service_->HandleFlags(
       brave_rewards::RewardsFlags::ForCurrentProcess());
 
@@ -498,7 +441,6 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
   GetRetryInterval();
   GetEnvironment();
   GetDebug();
-  GetGeminiRetries();
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
@@ -507,19 +449,17 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
   EXPECT_CALL(*this, OnGetDebug(false));
   EXPECT_CALL(*this, OnGetReconcileInterval(0));
   EXPECT_CALL(*this, OnGetRetryInterval(0));
-  EXPECT_CALL(*this, OnGetGeminiRetries(3));
 
   testing::InSequence s;
   rewards_service_->SetEnvironment(ledger::mojom::Environment::PRODUCTION);
   rewards_service_->SetDebug(false);
   rewards_service_->SetReconcileInterval(0);
   rewards_service_->SetRetryInterval(0);
-  rewards_service_->SetGeminiRetries(3);
 
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
   command_line->AppendSwitchASCII("rewards",
                                   "staging=,debug=,retryinterval="
-                                  "true,reconcile-interval,gemini-retries");
+                                  "true,reconcile-interval");
   rewards_service_->HandleFlags(
       brave_rewards::RewardsFlags::ForCurrentProcess());
 
@@ -527,7 +467,6 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
   GetRetryInterval();
   GetDebug();
   GetEnvironment();
-  GetGeminiRetries();
 }
 
 }  // namespace rewards_browsertest

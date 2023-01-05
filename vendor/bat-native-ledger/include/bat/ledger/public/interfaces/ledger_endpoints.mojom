@@ -61,6 +61,15 @@ enum PostCommitTransactionBitFlyerError {
   kFailedToParseBody
 };
 
+enum PostCommitTransactionGeminiError {
+  kFailedToCreateRequest,
+  kTransactionPending,                  // HTTP 200
+  kUnexpectedError,                     // HTTP 200
+  kAccessTokenExpired,                  // HTTP 401
+  kUnexpectedStatusCode,                // HTTP xxx
+  kFailedToParseBody
+};
+
 enum PostCommitTransactionUpholdError {
   kFailedToCreateRequest,
   kAccessTokenExpired,                  // HTTP 401

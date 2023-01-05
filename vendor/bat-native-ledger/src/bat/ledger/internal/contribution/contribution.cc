@@ -530,10 +530,11 @@ void Contribution::TransferFunds(const mojom::SKUTransaction& transaction,
     return;
   }
 
-  // if (wallet_type == constant::kWalletGemini) {
-  //   ledger_->gemini()->TransferFunds(transaction.amount, destination,
-  //   callback); return;
-  // }
+  if (wallet_type == constant::kWalletGemini) {
+    ledger_->gemini()->TransferFunds(transaction.amount, destination,
+                                     contribution_id, callback);
+    return;
+  }
 
   if (wallet_type == constant::kWalletUnBlinded) {
     sku_->Merchant(transaction, callback);
@@ -581,6 +582,11 @@ void Contribution::Result(const mojom::Result result,
                           const std::string& contribution_id) {
   if (result == mojom::Result::RETRY_SHORT) {
     SetRetryTimer(contribution_id, base::Seconds(5));
+    return;
+  }
+
+  if (result == mojom::Result::RETRY_LONG) {
+    SetRetryTimer(contribution_id, base::Minutes(5));
     return;
   }
 
