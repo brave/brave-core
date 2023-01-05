@@ -109,13 +109,9 @@ class AssetDetailStore: ObservableObject {
       let selectedNetwork = await rpcService.network(coin)
       let network = allNetworks.first(where: { $0.chainId == token.chainId }) ?? selectedNetwork
       self.network = network
-      var wyreBuyTokens: [BraveWallet.BlockchainToken] = []
-      if WalletConstants.supportedBuyWithWyreNetworkChainIds.contains(network.chainId) {
-        wyreBuyTokens = await blockchainRegistry.buyTokens(.wyre, chainId: network.chainId)
-      }
       let rampBuyTokens = await blockchainRegistry.buyTokens(.ramp, chainId: network.chainId)
       let sardineBuyTokens = await blockchainRegistry.buyTokens(.sardine, chainId: network.chainId)
-      let buyTokens = wyreBuyTokens + rampBuyTokens + sardineBuyTokens
+      let buyTokens = rampBuyTokens + sardineBuyTokens
       self.isBuySupported = buyTokens.first(where: { $0.symbol.caseInsensitiveCompare(token.symbol) == .orderedSame }) != nil
       self.isSwapSupported = await swapService.isiOSSwapSupported(chainId: token.chainId, coin: token.coin)
       

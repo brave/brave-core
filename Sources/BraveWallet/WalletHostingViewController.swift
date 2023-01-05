@@ -12,7 +12,7 @@ import BraveUI
 /// Methods for handling actions that occur while the user is interacting with Brave Wallet that require
 /// some integration with the browser
 public protocol BraveWalletDelegate: AnyObject {
-  /// Open a specific URL that comes from the wallet UI. For instance, when purchasing tokens through Wyre
+  /// Open a specific URL that comes from the wallet UI. For instance, when purchasing tokens through Ramp.Network
   ///
   /// This will be called after the wallet UI is dismissed
   func openWalletURL(_ url: URL)

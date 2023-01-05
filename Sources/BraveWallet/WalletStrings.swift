@@ -946,13 +946,6 @@ extension Strings {
       value: "Amount in %@",
       comment: "A placeholder on a text field to describe an amount of some currency. '%@' will be replaced with a currency code such as 'USD' or 'BAT'"
     )
-    public static let buyButtonTitle = NSLocalizedString(
-      "wallet.buyButtonTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Continue to Wyre",
-      comment: "The title of the button for users to click when they are ready to buy using Wyre payment"
-    )
     public static let purchaseMethodButtonTitle = NSLocalizedString(
       "wallet.purchaseMethodButtonTitle",
       tableName: "BraveWallet",
@@ -2792,7 +2785,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Buy not supported for selected network",
-      comment: "A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support buy token with Wyre."
+      comment: "A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support token purchasing."
     )
     public static let auroraBridgeAlertTitle = NSLocalizedString(
       "wallet.auroraBridgeAlertTitle",
@@ -2982,27 +2975,6 @@ extension Strings {
       bundle: .module,
       value: "Instant buy with your bank account. Lower fees.",
       comment: "The description of one of the 'Sardine' provider."
-    )
-    public static let wyreProviderName = NSLocalizedString(
-      "wallet.wyreProviderName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Wyre",
-      comment: "The name of one of the on ramp provider."
-    )
-    public static let wyreProviderShortName = NSLocalizedString(
-      "wallet.wyreProviderShortName",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Wyre",
-      comment: "The short name of one of the on ramp provider."
-    )
-    public static let wyreProviderDescription = NSLocalizedString(
-      "wallet.wyreProviderDescription",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Buy crypto with Visa or Mastercard.",
-      comment: "The description of one of the 'Wyre' provider."
     )
     public static let solanaDappTransactionTitle = NSLocalizedString(
       "wallet.solanaDappTransactionTitle",
