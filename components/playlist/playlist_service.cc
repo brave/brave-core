@@ -105,7 +105,7 @@ void PlaylistService::AddMediaFilesFromContentsToPlaylist(
     request.url_or_contents = contents->GetWeakPtr();
 
   request.callback = base::BindOnce(
-      &PlaylistService::AddMediaFilesFromItems, base::Unretained(this),
+      &PlaylistService::AddMediaFilesFromItems, weak_factory_.GetWeakPtr(),
       playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id, cache);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
@@ -340,7 +340,7 @@ void PlaylistService::AddMediaFilesFromPageToPlaylist(
   PlaylistDownloadRequestManager::Request request;
   request.url_or_contents = url.spec();
   request.callback = base::BindOnce(
-      &PlaylistService::AddMediaFilesFromItems, base::Unretained(this),
+      &PlaylistService::AddMediaFilesFromItems, weak_factory_.GetWeakPtr(),
       playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id,
       prefs_->GetBoolean(playlist::kPlaylistCacheByDefault));
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
