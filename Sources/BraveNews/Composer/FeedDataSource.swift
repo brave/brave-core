@@ -13,7 +13,6 @@ import BraveCore
 import CodableHelpers
 import os.log
 import SwiftUI
-import Collections
 
 /// Powers the Brave News feed.
 public class FeedDataSource: ObservableObject {
@@ -787,42 +786,12 @@ public class FeedDataSource: ObservableObject {
   private func generateCards(from items: [FeedItem], completion: @escaping ([FeedCard]) -> Void) {
     // Ensure main thread since we're querying from CoreData
     dispatchPrecondition(condition: .onQueue(.main))
-
+    
     let overridenSources = FeedSourceOverride.all()
-    var feedsFromEnabledSources = OrderedSet(items.filter { item in
-      if item.source.isUserSource {
-        return true
-      }
-      return overridenSources.first(where: {
-        $0.publisherID == item.source.id
-      })?.enabled ?? false
-    })
-    for (key, value) in Preferences.BraveNews.followedChannels.value {
-      let channelForLocale = Set(value)
-      feedsFromEnabledSources.formUnion(OrderedSet(items.filter({ item in
-        if overridenSources.first(where: { $0.publisherID == item.source.id })?.enabled == false {
-          // Hidden source
-          return false
-        }
-        return item.source.localeDetails?.contains(where: {
-          $0.locale == key && !$0.channels.intersection(channelForLocale).isEmpty
-        }) ?? false
-      })))
-    }
-    let feedItems = Array(feedsFromEnabledSources)
-    var sponsors = feedItems.filter { $0.content.contentType == .sponsor }
-    var partners = feedItems.filter { $0.content.contentType == .partner }
-    var deals = feedItems.filter { $0.content.contentType == .deals }
-    var articles = feedItems.filter { $0.content.contentType == .article }
-
-    let dealsCategoryFillStrategy = CategoryFillStrategy(
-      categories: Set(deals.compactMap(\.content.offersCategory)),
-      category: \.content.offersCategory
-    )
-
-    ads?.purgeOrphanedAdEvents(.inlineContentAd) { _ in }
-    var contentAdsQueryFailed = false
-
+    let followedSources = Set(overridenSources.filter { $0.enabled }.map(\.publisherID))
+    let hiddenSources = Set(overridenSources.filter { !$0.enabled }.map(\.publisherID))
+    let followedChannels = Preferences.BraveNews.followedChannels.value
+    
     let rules: [FeedSequenceElement] = [
       .sponsor,
       .fillUsing(
@@ -836,16 +805,7 @@ public class FeedDataSource: ObservableObject {
         .repeating([.headline(paired: false)], times: 2),
         .headline(paired: true),
         .partner,
-        .fillUsing(
-          CategoryFillStrategy(
-            categories: Set(articles.map(\.source.category)),
-            category: \.source.category,
-            initialCategory: Self.topNewsCategory
-          ),
-          [
-            .categoryGroup
-          ]
-        ),
+        .categoryGroup,
         .repeating([.headline(paired: false)], times: 2),
         .repeating([.headline(paired: true)], times: 2),
         .braveAd,
@@ -857,11 +817,7 @@ public class FeedDataSource: ObservableObject {
           [
             .headline(paired: false)
           ]),
-        .fillUsing(
-          dealsCategoryFillStrategy,
-          [
-            .deals
-          ]),
+        .deals,
         .fillUsing(
           RandomizedFillStrategy(isIncluded: { Date().timeIntervalSince($0.content.publishTime) < 48.hours }),
           [
@@ -870,174 +826,73 @@ public class FeedDataSource: ObservableObject {
           ]),
       ]),
     ]
-
-    func _cards(for element: FeedSequenceElement, fillStrategy: FillStrategy) -> [FeedCard]? {
-      switch element {
-      case .sponsor:
-        return fillStrategy.next(from: &sponsors).map {
-          [.sponsor($0)]
-        }
-      case .deals:
-        return fillStrategy.next(3, from: &deals).map {
-          let title = $0.first?.content.offersCategory
-          return [.deals($0, title: title ?? Strings.BraveNews.deals)]
-        }
-      case .partner:
-        let imageExists = { (item: FeedItem) -> Bool in
-          item.content.imageURL != nil
-        }
-        return fillStrategy.next(from: &partners, where: imageExists).map {
-          [.partner($0)]
-        }
-      case .braveAd:
-        // If we fail to obtain inline content ads during a card gen it can be assumed that
-        // all further calls will fail since cards are generated all at once
-        guard !contentAdsQueryFailed, let ads = ads else { return nil }
-        let group = DispatchGroup()
-        group.enter()
-        var contentAd: InlineContentAd?
-        DispatchQueue.main.async {
-          ads.inlineContentAds(
-            dimensions: "900x750",
-            completion: { dimensions, ad in
-              if let ad = ad {
-                contentAd = ad
-              } else {
-                contentAdsQueryFailed = true
-                Logger.module.debug("Inline content ads could not be filled; Skipping for the rest of this feed generation")
-              }
-              group.leave()
-            })
-        }
-        let result = group.wait(timeout: .now() + .seconds(1))
-        if result == .success, let ad = contentAd {
-          return [.ad(ad)]
-        }
-        return nil
-      case .headline(let paired):
-        if articles.isEmpty { return nil }
-        let imageExists = { (item: FeedItem) -> Bool in
-          item.content.imageURL != nil
-        }
-        if paired {
-          if articles.count < 2 {
-            return nil
-          }
-          return fillStrategy.next(2, from: &articles, where: imageExists).map {
-            [.headlinePair(.init($0[0], $0[1]))]
-          }
-        } else {
-          return fillStrategy.next(from: &articles, where: imageExists).map {
-            [.headline($0)]
-          }
-        }
-      case .categoryGroup:
-        return fillStrategy.next(3, from: &articles).map {
-          let title = $0.first?.source.category ?? ""
-          return [.group($0, title: title, direction: .vertical, displayBrand: false)]
-        }
-      case .brandedGroup(let numbered):
-        if let item = fillStrategy.next(from: &articles) {
-          return fillStrategy.next(2, from: &articles, where: { $0.source == item.source }).map {
-            let items = [item] + $0
-            if numbered {
-              return [.numbered(items, title: item.source.name)]
-            } else {
-              return [.group(items, title: "", direction: .vertical, displayBrand: true)]
-            }
-          }
-        }
-        return nil
-      case .group:
-        return fillStrategy.next(3, from: &articles).map {
-          [.group($0, title: "", direction: .vertical, displayBrand: false)]
-        }
-      case .fillUsing(let strategy, let fallbackStrategy, let elements):
-        var cards: [FeedCard] = []
-        for element in elements {
-          if let elementCards = _cards(for: element, fillStrategy: strategy) {
-            cards.append(contentsOf: elementCards)
-          } else {
-            if let fallbackStrategy, let elementCards = _cards(for: element, fillStrategy: fallbackStrategy) {
-              cards.append(contentsOf: elementCards)
-            }
-          }
-        }
-        return cards
-      case .repeating(let elements, let times):
-        var index = 0
-        var cards: [FeedCard] = []
-        repeat {
-          var repeatedCards: [FeedCard] = []
-          for element in elements {
-            if let elementCards = _cards(for: element, fillStrategy: fillStrategy) {
-              repeatedCards.append(contentsOf: elementCards)
-            }
-          }
-          if repeatedCards.isEmpty {
-            // Couldn't fill any of the cards so no reason to continue
-            break
-          }
-          cards.append(contentsOf: repeatedCards)
-          index += 1
-        } while !articles.isEmpty && index < times
-        return cards
-      }
-    }
-
-    todayQueue.async {
+    
+    Task { @MainActor in
+      let generator = FeedCardGenerator(
+        scoredItems: items,
+        sequence: rules,
+        followedSources: followedSources,
+        hiddenSources: hiddenSources,
+        followedChannels: followedChannels.mapValues(Set.init),
+        ads: ads
+      )
+      // Move to OSSignposter when we're 15+
+      let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "com.brave.ios", category: "Brave News")
+      let signpostID = OSSignpostID(log: log)
+      os_signpost(.begin, log: log, name: "Card Generation", signpostID: signpostID)
+      os_signpost(.begin, log: log, name: "Card Generation: Initial cards", signpostID: signpostID)
       var generatedCards: [FeedCard] = []
-      for rule in rules {
-        if let elementCards = _cards(for: rule, fillStrategy: DefaultFillStrategy()) {
-          generatedCards.append(contentsOf: elementCards)
+      for try await cards in generator {
+        generatedCards.append(contentsOf: cards)
+        if case .loading = self.state, generatedCards.count > 10 {
+          os_signpost(.end, log: log, name: "Card Generation: Initial cards", signpostID: signpostID)
+          // Update state immediately with some cards, let the rest be generated after. This makes News
+          // accessible much faster
+          self.state = .success(generatedCards)
         }
       }
       if generatedCards.count < 10,
-        generatedCards.allSatisfy({
-          if case .ad = $0 {
-            return true
-          }
-          return false
-        }) {
+         generatedCards.allSatisfy({
+           if case .ad = $0 {
+             return true
+           }
+           return false
+         }) {
         // If there are less than 10 cards and they all are ads, show nothing
         generatedCards.removeAll()
       }
-      DispatchQueue.main.async {
-        completion(generatedCards)
-      }
+      os_signpost(.end, log: log, name: "Brave News Card Generation", signpostID: signpostID, "%d cards", generatedCards.count)
+      completion(generatedCards)
     }
   }
 }
 
-extension FeedDataSource {
-  private enum FeedSequenceElement {
-    /// Display a sponsored image with the content type of `product`
-    case sponsor
-    /// Display a headline from a list of partnered items
-    case partner
-    /// Displays a Brave ad from the ads catalog
-    case braveAd
-    /// Displays a horizontal list of deals with the content type of `brave_offers`
-    case deals
-    /// Displays an `article` type item in a headline card. Can also be displayed as two (smaller) paired
-    /// headlines
-    case headline(paired: Bool)
-    /// Displays a list of `article` typed items with the same category in a vertical list.
-    case categoryGroup
-    /// Displays a list of `article` typed items with the same source. It can optionally be displayed as a
-    /// numbered list
-    case brandedGroup(numbered: Bool = false)
-    /// Displays a list of `article` typed items that can have different categories and different sources.
-    case group
-    /// Displays the sequence element provided using a specific fill strategy to obtain feed items from the
-    /// feed list. You can provide a fallback strategy that will be used if the strategy provided does not
-    /// yield any results.
-    indirect case fillUsing(_ strategy: FillStrategy, fallback: FillStrategy? = nil, _ elements: [FeedSequenceElement])
-    /// Displays the provided elements a number of times. Passing in `.max` for `times` means it will repeat
-    /// until there is no more content available
-    indirect case repeating([FeedSequenceElement], times: Int = .max)
-  }
-
+enum FeedSequenceElement {
+  /// Display a sponsored image with the content type of `product`
+  case sponsor
+  /// Display a headline from a list of partnered items
+  case partner
+  /// Displays a Brave ad from the ads catalog
+  case braveAd
+  /// Displays a horizontal list of deals with the content type of `brave_offers`
+  case deals
+  /// Displays an `article` type item in a headline card. Can also be displayed as two (smaller) paired
+  /// headlines
+  case headline(paired: Bool)
+  /// Displays a list of `article` typed items with the same category in a vertical list.
+  case categoryGroup
+  /// Displays a list of `article` typed items with the same source. It can optionally be displayed as a
+  /// numbered list
+  case brandedGroup(numbered: Bool = false)
+  /// Displays a list of `article` typed items that can have different categories and different sources.
+  case group
+  /// Displays the sequence element provided using a specific fill strategy to obtain feed items from the
+  /// feed list. You can provide a fallback strategy that will be used if the strategy provided does not
+  /// yield any results.
+  indirect case fillUsing(_ strategy: FillStrategy, fallback: FillStrategy? = nil, _ elements: [FeedSequenceElement])
+  /// Displays the provided elements a number of times. Passing in `.max` for `times` means it will repeat
+  /// until there is no more content available
+  indirect case repeating([FeedSequenceElement], times: Int = .max)
 }
 
 struct SearchResults {

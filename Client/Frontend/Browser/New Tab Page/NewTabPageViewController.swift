@@ -710,7 +710,6 @@ class NewTabPageViewController: UIViewController {
     if !feedDataSource.shouldLoadContent {
       return
     }
-    rewards.ads.purgeOrphanedAdEvents(.inlineContentAd) { _ in }
     feedDataSource.load(completion)
   }
 
