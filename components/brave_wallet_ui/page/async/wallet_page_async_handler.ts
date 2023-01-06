@@ -25,7 +25,8 @@ import {
   ImportFilecoinAccountPayloadType,
   RestoreWalletPayloadType,
   ImportWalletErrorPayloadType,
-  ShowRecoveryPhrasePayload
+  ShowRecoveryPhrasePayload,
+  UpdateNftPinningStatusType
 } from '../constants/action_types'
 import {
   findHardwareAccountInfo,
@@ -335,8 +336,20 @@ handler.on(WalletPageActions.getPinStatus.type, async (store, payload: BraveWall
   }
 })
 
-handler.on(WalletPageActions.getNftPinningStatus.type, async (store, payload) => {
+handler.on(WalletPageActions.getNftsPinningStatus.type, async (store, payload: BraveWallet.BlockchainToken[]) => {
+  const { braveWalletPinService } = getWalletPageApiProxy()
+  const getTokenStatusPromises = payload.map((token) => braveWalletPinService.getTokenStatus(token))
+  const results = await Promise.all(getTokenStatusPromises)
+  const nftsPinningStatus = results.map((result, index) => {
+    const status: UpdateNftPinningStatusType = {
+      token: payload[index],
+      status: result.status?.local || undefined,
+      error: result.error || undefined
+    }
 
+    return status
+  })
+  store.dispatch(WalletPageActions.setNftsPinningStatus(nftsPinningStatus))
 })
 
 export default handler.middleware

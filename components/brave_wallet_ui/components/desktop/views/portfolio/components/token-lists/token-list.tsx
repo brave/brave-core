@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
+import { useHistory, useDispatch } from 'react-router'
 
 // Selectors
 import { useSafeWalletSelector, useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
@@ -41,6 +41,9 @@ import {
   Spacer,
   FilterTokenRow
 } from '../../style'
+import { useUnsafePageSelector } from '../../../../../../common/hooks/use-safe-selector'
+import { PageSelectors } from '../../../../../../page/selectors'
+import { WalletPageActions } from '../../../../../../page/actions'
 
 interface Props {
   userAssetList: UserAssetInfoType[]
@@ -67,10 +70,13 @@ export const TokenLists = ({
 }: Props) => {
   // routing
   const history = useHistory()
+  // redux
+  const dispatch = useDispatch()
 
   // unsafe selectors
   const tokenSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const selectedAssetFilter = useUnsafeWalletSelector(WalletSelectors.selectedAssetFilter)
+  const nftsPinningStatus = useUnsafePageSelector(PageSelectors.nftsPinningStatus)
 
   // safe selectors
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
@@ -190,6 +196,12 @@ export const TokenLists = ({
       setSearchValue('')
     }
   }, [userAssetList])
+
+  React.useEffect(() => {
+    if (nonFungibleTokens.length !== 0 && Object.keys(nftsPinningStatus).length === 0) {
+      dispatch(WalletPageActions.getNftsPinningStatus(nonFungibleTokens.map((userAssetType) => userAssetType.asset)))
+    }
+  }, [nonFungibleTokens, nftsPinningStatus])
 
   // render
   return (
