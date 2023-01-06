@@ -5,61 +5,101 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import { WalletRoutes } from '../../../constants/types'
-import UploadingLightGif from '../../../assets/svg-icons/nft-ipfs/uploading-light.gif'
-import UploadingDarkGif from '../../../assets/svg-icons/nft-ipfs/uploading-dark.gif'
-import SuccessLightGif from '../../../assets/svg-icons/nft-ipfs/success-light.gif'
-import SuccessDarkGif from '../../../assets/svg-icons/nft-ipfs/success-dark.gif'
+
+// utils
+import { useNftPin } from '../../../common/hooks/nft-pin'
+import { useUnsafePageSelector } from '../../../common/hooks/use-safe-selector'
+import { BraveWallet, WalletRoutes } from '../../../constants/types'
+import { PageSelectors } from '../../../page/selectors'
+
+// components
+import { Row } from '../../shared/style'
+import { NftPinningStatusAnimation } from '../nft-pinning-status-animation/nft-pinning-status-animation'
 
 export type BannerStatus = 'start' | 'uploading' | 'success'
 
 interface Props {
-  status: BannerStatus
   onDismiss: () => void
 }
 
-// components
+// styles
 import {
   StyledWrapper,
-  Ipfs,
-  IpfsUploading,
   Text,
   LearnMore,
-  CloseButton,
-  GifWrapper,
-  StatusGif
+  CloseButton
 } from './nft-ipfs-banner.style'
 
-export const NftIpfsBanner = ({ status, onDismiss }: Props) => {
+export const NftIpfsBanner = ({ onDismiss }: Props) => {
   const history = useHistory()
+
+  const { pinnableNftsCount, pinnableNfts } = useNftPin()
+  console.log(pinnableNftsCount)
+
+  // redux
+  const nftsPinningStatus = useUnsafePageSelector(PageSelectors.nftsPinningStatus)
+
+  const pinnedNftsCount = React.useMemo(() => {
+    return Object.keys(nftsPinningStatus).reduce((accumulator, currentValue) => {
+      const status = nftsPinningStatus[currentValue]
+      if (status?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNED) {
+        return accumulator += 1
+      }
+
+      return accumulator
+    }, 0)
+  }, [nftsPinningStatus])
+
+  const status: BraveWallet.TokenPinStatusCode = React.useMemo(() => {
+    if (pinnableNftsCount === pinnedNftsCount) {
+      return BraveWallet.TokenPinStatusCode.STATUS_PINNED
+    }
+
+    const isUploading = Object.values(nftsPinningStatus).some(status => status?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS)
+    if (isUploading) return BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS
+
+    return BraveWallet.TokenPinStatusCode.STATUS_NOT_PINNED
+  }, [pinnableNftsCount, nftsPinningStatus, pinnableNfts, pinnedNftsCount])
+
+  const bannerStatus: BannerStatus = React.useMemo(() => {
+    switch (status) {
+      case BraveWallet.TokenPinStatusCode.STATUS_PINNED:
+        return 'success'
+      case BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS:
+        return 'uploading'
+      default:
+        return 'start'
+    }
+  }, [status])
 
   const onLearnMore = React.useCallback(() => {
     history.push(WalletRoutes.LocalIpfsNode)
   }, [])
 
   return (
-    <StyledWrapper status={status}>
-      {status === 'start' ? (
-        <Ipfs />
-      ) : status === 'uploading' ? (
-        <GifWrapper>
-          <StatusGif src={window.matchMedia('(prefers-color-scheme: dark)').matches ? UploadingDarkGif : UploadingLightGif} />
-          <IpfsUploading />
-        </GifWrapper>
-      ) : (
-        <GifWrapper>
-          <StatusGif src={window.matchMedia('(prefers-color-scheme: dark)').matches ? SuccessDarkGif : SuccessLightGif} />
-        </GifWrapper>
-      )}
-      <Text status={status}>
-        Now you can run your IPFS and be part of web 3. Your NFT data will stay
-        online forever and cannot be tampered with.&nbsp;
-        {status === 'start' && (
-          <LearnMore onClick={onLearnMore}>Learn more</LearnMore>
-        )}
-      </Text>
-      {status !== 'uploading' && (
-        <CloseButton onClick={onDismiss} status={status} />
+    <StyledWrapper status={bannerStatus}>
+      <Row gap='12px' justifyContent='flex-start'>
+        <NftPinningStatusAnimation
+          size='30px'
+          displayMode='banner'
+          status={status}
+        />
+        <Text status={bannerStatus}>
+          {bannerStatus === 'start' ? (
+            <>
+              Now you can run your IPFS and be part of web 3. Your NFT data will
+              stay online forever and cannot be tampered with.&nbsp;
+              <LearnMore onClick={onLearnMore}>Learn more</LearnMore>
+            </>
+          ) : bannerStatus === 'success' ? (
+            `${pinnedNftsCount} out of ${pinnableNftsCount} NFTs have been successfully pinned to IPFS.`
+          ) : (
+            'You’re running IPFS node. File is being uploaded to IPFS.'
+          )}
+        </Text>
+      </Row>
+      {(bannerStatus === 'start' || bannerStatus === 'success') && (
+        <CloseButton onClick={onDismiss} status={bannerStatus} />
       )}
     </StyledWrapper>
   )

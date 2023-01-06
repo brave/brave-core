@@ -40,3 +40,4 @@ export const selectedAssetCryptoPrice = ({ page }: State) => page.selectedAssetC
 export const selectedAssetFiatPrice = ({ page }: State) => page.selectedAssetFiatPrice
 export const selectedAssetPriceHistory = ({ page }: State) => page.selectedAssetPriceHistory
 export const selectedCoinMarket = ({ page }: State) => page.selectedCoinMarket
+export const nftsPinningStatus = ({ page }: State) => page.nftsPinningStatus

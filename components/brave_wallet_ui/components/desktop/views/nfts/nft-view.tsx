@@ -55,7 +55,7 @@ export const NftView = () => {
     <>
       {showBanner && (
         <BannerWrapper>
-          <NftIpfsBanner onDismiss={onDismissIpfsBanner} status='uploading' />
+          <NftIpfsBanner onDismiss={onDismissIpfsBanner} />
         </BannerWrapper>
       )}
       <Nfts networks={networkList} nftList={nonFungibleTokens} />
