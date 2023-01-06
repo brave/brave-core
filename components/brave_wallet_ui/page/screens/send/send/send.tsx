@@ -50,17 +50,28 @@ import { SelectTokenButton } from '../components/select-token-button/select-toke
 import { PresetButton } from '../components/preset-button/preset-button'
 import { AccountSelector } from '../components/account-selector/account-selector'
 import { AddressMessage } from '../components/address-message/address-message'
+import { SelectTokenModal } from '../components/select-token-modal/select-token-modal'
 
 interface Props {
   onShowSelectTokenModal: () => void
+  onHideSelectTokenModal: () => void
   selectedSendOption: SendOptionTypes
   setSelectedSendOption: (sendOption: SendOptionTypes) => void
+  selectTokenModalRef: React.RefObject<HTMLDivElement>
+  showSelectTokenModal: boolean
 }
 
 const INPUT_WIDTH_ID = 'input-width'
 
 export const Send = (props: Props) => {
-  const { onShowSelectTokenModal, setSelectedSendOption, selectedSendOption } = props
+  const {
+    onShowSelectTokenModal,
+    setSelectedSendOption,
+    selectedSendOption,
+    onHideSelectTokenModal,
+    selectTokenModalRef,
+    showSelectTokenModal
+  } = props
 
   // Wallet Selectors
   const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
@@ -83,10 +94,11 @@ export const Send = (props: Props) => {
     selectedSendAsset,
     sendAmountValidationError,
     setSendAmount,
-    setToAddressOrUrl,
+    updateToAddressOrUrl,
     submitSend,
     selectSendAsset,
-    searchingForDomain
+    searchingForDomain,
+    processAddressOrUrl
   } = useSend(true)
 
   // Hooks
@@ -115,9 +127,9 @@ export const Send = (props: Props) => {
 
   const handleInputAddressChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setToAddressOrUrl(event.target.value)
+      updateToAddressOrUrl(event.target.value)
     },
-    []
+    [updateToAddressOrUrl]
   )
 
   const setPresetAmountValue = React.useCallback((percent: number) => {
@@ -133,10 +145,18 @@ export const Send = (props: Props) => {
     if (showEnsOffchainWarning) {
       enableEnsOffchainLookup()
       setShowEnsOffchainWarning(false)
+      processAddressOrUrl(toAddressOrUrl)
       return
     }
     submitSend()
-  }, [showEnsOffchainWarning, setShowEnsOffchainWarning, submitSend, enableEnsOffchainLookup])
+  }, [
+    showEnsOffchainWarning,
+    setShowEnsOffchainWarning,
+    submitSend,
+    enableEnsOffchainLookup,
+    processAddressOrUrl,
+    toAddressOrUrl
+  ])
 
   // Memos
   const sendAssetBalance = React.useMemo(() => {
@@ -393,7 +413,7 @@ export const Send = (props: Props) => {
               onChange={handleInputAddressChange}
               spellCheck={false}
             />
-            <AccountSelector onSelectAddress={setToAddressOrUrl} />
+            <AccountSelector onSelectAddress={updateToAddressOrUrl} />
           </InputRow>
           {addressMessageInformation &&
             <AddressMessage addressMessageInfo={addressMessageInformation} />
@@ -421,6 +441,14 @@ export const Send = (props: Props) => {
             : selectedTokensNetwork?.chainId ?? ''
         }
       />
+      {showSelectTokenModal &&
+        <SelectTokenModal
+          onClose={onHideSelectTokenModal}
+          selectedSendOption={selectedSendOption}
+          ref={selectTokenModalRef}
+          selectSendAsset={selectSendAsset}
+        />
+      }
     </>
   )
 }

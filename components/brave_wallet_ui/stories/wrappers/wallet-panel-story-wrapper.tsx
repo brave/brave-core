@@ -9,7 +9,6 @@ import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 
 // utils
-import { createSendCryptoReducer } from '../../common/reducers/send_crypto_reducer'
 import { createWalletReducer } from '../../common/slices/wallet.slice'
 import { createPanelReducer } from '../../panel/reducers/panel_reducer'
 
@@ -25,7 +24,6 @@ import { LibContext } from '../../common/context/lib.context'
 // Mocks
 import * as Lib from '../../common/async/__mocks__/lib'
 import { mockWalletState } from '../mock-data/mock-wallet-state'
-import { mockSendCryptoState } from '../mock-data/send-crypto-state'
 import { mockPanelState } from '../mock-data/mock-panel-state'
 import { ApiProxyContext } from '../../common/context/api-proxy.context'
 import { getMockedAPIProxy } from '../../common/async/__mocks__/bridge'
@@ -61,8 +59,7 @@ export const WalletPanelStory: React.FC<React.PropsWithChildren<WalletPanelStory
           ...(panelStateOverride || {})
         }),
         page: createPageReducer(mockPageState),
-        [api.reducerPath]: api.reducer,
-        sendCrypto: createSendCryptoReducer(mockSendCryptoState)
+        [api.reducerPath]: api.reducer
       },
       devTools: true,
       middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware)
