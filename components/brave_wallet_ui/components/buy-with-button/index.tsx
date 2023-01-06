@@ -13,7 +13,7 @@ import {
   Option
 } from './style'
 import { BraveWallet, BuyOption } from '../../constants/types'
-import { RampLogo, WyreLogo } from '../buy-send-swap/buy/style'
+import { RampLogo } from '../buy-send-swap/buy/style'
 
 export interface Props {
   children?: React.ReactNode
@@ -55,7 +55,7 @@ const SelectBuy = (props: Props) => {
                 selected={value === option.id}
                 onClick={() => onOptionSelect(option.id)}
               >
-                {option.id === BraveWallet.OnRampProvider.kRamp ? <RampLogo/> : <WyreLogo/>}
+                <RampLogo/>
                 {option.label}
               </Option>
             )}
