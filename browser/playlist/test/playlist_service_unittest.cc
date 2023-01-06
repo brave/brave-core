@@ -24,6 +24,7 @@
 #include "components/download/public/common/download_task_runner.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/pref_service_mock_factory.h"
 #include "components/sync_preferences/pref_service_syncable.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -87,11 +88,11 @@ class MockObserver : public PlaylistServiceObserver {
 class PlaylistServiceUnitTest : public testing::Test {
  public:
   PlaylistServiceUnitTest() {
-    scoped_feature_list_.InitAndEnableFeature(playlist::features::kPlaylist);
+    scoped_feature_list_.InitAndEnableFeature(features::kPlaylist);
   }
   ~PlaylistServiceUnitTest() override = default;
 
-  playlist::PlaylistService* playlist_service() { return service_.get(); }
+  PlaylistService* playlist_service() { return service_.get(); }
 
   base::RunLoop* run_loop() const { return run_loop_.get(); }
 
@@ -160,7 +161,7 @@ class PlaylistServiceUnitTest : public testing::Test {
     auto registry = base::MakeRefCounted<user_prefs::PrefRegistrySyncable>();
     // Before initializing prefs, make sure that PlaylistServiceFactory
     // is instantiated.
-    playlist::PlaylistServiceFactory::GetInstance();
+    PlaylistServiceFactory::GetInstance();
     RegisterUserProfilePrefs(registry.get());
 
     temp_dir_ = std::make_unique<base::ScopedTempDir>();
@@ -183,9 +184,9 @@ class PlaylistServiceUnitTest : public testing::Test {
     ASSERT_EQ(pref_service_ptr, profile_->GetPrefs());
 
     detector_manager_ =
-        std::make_unique<playlist::MediaDetectorComponentManager>(nullptr);
+        std::make_unique<MediaDetectorComponentManager>(nullptr);
     detector_manager_->SetUseLocalScriptForTesting();
-    service_ = std::make_unique<playlist::PlaylistService>(
+    service_ = std::make_unique<PlaylistService>(
         profile_.get(), detector_manager_.get(), nullptr);
 
     // Set up embedded test server to handle fake responses.
@@ -212,8 +213,8 @@ class PlaylistServiceUnitTest : public testing::Test {
       content::BrowserTaskEnvironment::IO_MAINLOOP};
 
   std::unique_ptr<TestingProfile> profile_;
-  std::unique_ptr<playlist::MediaDetectorComponentManager> detector_manager_;
-  std::unique_ptr<playlist::PlaylistService> service_;
+  std::unique_ptr<MediaDetectorComponentManager> detector_manager_;
+  std::unique_ptr<PlaylistService> service_;
 
   std::unique_ptr<base::ScopedTempDir> temp_dir_;
 
@@ -421,10 +422,11 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
 
     service->GetPlaylistItem(
         id, base::BindLambdaForTesting([&](mojom::PlaylistItemPtr item) {
-          auto item_value = ConvertPlaylistItemToValue(item);
+          auto item_value = Type::Converter::ConvertPlaylistItemToValue(item);
           auto media_src = https_server()->GetURL("/valid_media_file_1").spec();
-          item_value.Set(kPlaylistItemMediaSrcKey, media_src);
-          item_value.Set(kPlaylistItemMediaFilePathKey, media_src);
+          item_value.Set(Type::Converter::kPlaylistItemMediaSrcKey, media_src);
+          item_value.Set(Type::Converter::kPlaylistItemMediaFilePathKey,
+                         media_src);
           service->UpdatePlaylistItemValue(id,
                                            base::Value(std::move(item_value)));
 
@@ -529,7 +531,7 @@ TEST_F(PlaylistServiceUnitTest, CreateAndRemovePlaylist) {
       }));
 
   // Add a new playlist
-  mojom::PlaylistPtr new_playlist = mojom::Playlist::New();
+  mojom::PlaylistPtr new_playlist = mojom::New();
   new_playlist->name = "new playlist";
   {
     bool called = false;
@@ -710,24 +712,34 @@ TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
 
   // Precondition - Default playlist exists and its items should be empty.
   auto* prefs = this->prefs();
-  auto* default_playlist = prefs->GetDict(playlist::kPlaylistsPref)
-                               .FindDict(playlist::kDefaultPlaylistID);
+  auto* default_playlist =
+      prefs->GetDict(kPlaylistsPref).FindDict(kDefaultPlaylistID);
   ASSERT_TRUE(default_playlist);
-  auto* items = default_playlist->FindList(playlist::kPlaylistItemsKey);
+  auto* items = default_playlist->FindList(Type::Converter::kPlaylistItemsKey);
   ASSERT_TRUE(items);
   ASSERT_TRUE(items->empty());
 
+  const base::flat_set<std::string> item_ids = {"id1", "id2", "id3"};
+  // Prepare dummy items.
+  for (const auto& id : item_ids) {
+    ScopedDictPrefUpdate items_update(prefs, kPlaylistItemsPref);
+    auto item = mojom::PlaylistItem::New();
+    item->id = id;
+    items_update->Set(id, Type::Converter::ConvertPlaylistItemToValue(item));
+  }
+  for (const auto& id : item_ids)
+    ASSERT_TRUE(prefs->GetDict(kPlaylistItemsPref).FindDict(id));
+
   // Try adding items and check they're stored well.
   // Adding duplicate items should affect the list, but considered as success.
-  const base::flat_set<std::string> item_ids = {"id1", "id2", "id3"};
   for (int i = 0; i < 2; i++) {
     EXPECT_TRUE(service->AddItemsToPlaylist(
-        playlist::kDefaultPlaylistID, {item_ids.begin(), item_ids.end()}));
-    default_playlist = prefs->GetDict(playlist::kPlaylistsPref)
-                           .FindDict(playlist::kDefaultPlaylistID);
+        kDefaultPlaylistID, {item_ids.begin(), item_ids.end()}));
+    default_playlist =
+        prefs->GetDict(kPlaylistsPref).FindDict(kDefaultPlaylistID);
     EXPECT_TRUE(default_playlist);
 
-    items = default_playlist->FindList(playlist::kPlaylistItemsKey);
+    items = default_playlist->FindList(Type::Converter::kPlaylistItemsKey);
     EXPECT_TRUE(items);
     base::flat_set<std::string> stored_ids;
     base::ranges::transform(*items, std::inserter(stored_ids, stored_ids.end()),
@@ -740,21 +752,31 @@ TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
 }
 
 TEST_F(PlaylistServiceUnitTest, MoveItem) {
-  using PlaylistId = playlist::PlaylistService::PlaylistId;
-  using PlaylistItemId = playlist::PlaylistService::PlaylistItemId;
+  using PlaylistId = PlaylistService::PlaylistId;
+  using PlaylistItemId = PlaylistService::PlaylistItemId;
 
   auto* service = playlist_service();
 
   // Precondition - Default playlist exists and it has some items. And there's
   // another playlist which is empty.
-  base::flat_set<std::string> item_ids = {"id1", "id2", "id3"};
-  EXPECT_TRUE(service->AddItemsToPlaylist(playlist::kDefaultPlaylistID,
-                                          {item_ids.begin(), item_ids.end()}));
   auto* prefs = this->prefs();
-  auto* playlist_value = prefs->GetDict(playlist::kPlaylistsPref)
-                             .FindDict(playlist::kDefaultPlaylistID);
+  base::flat_set<std::string> item_ids = {"id1", "id2", "id3"};
+  // Prepare dummy items.
+  for (const auto& id : item_ids) {
+    ScopedDictPrefUpdate items_update(prefs, kPlaylistItemsPref);
+    auto item = mojom::PlaylistItem::New();
+    item->id = id;
+    items_update->Set(id, Type::Converter::ConvertPlaylistItemToValue(item));
+  }
+  for (const auto& id : item_ids)
+    ASSERT_TRUE(prefs->GetDict(kPlaylistItemsPref).FindDict(id));
+
+  ASSERT_TRUE(service->AddItemsToPlaylist(kDefaultPlaylistID,
+                                          {item_ids.begin(), item_ids.end()}));
+  auto* playlist_value =
+      prefs->GetDict(kPlaylistsPref).FindDict(kDefaultPlaylistID);
   ASSERT_TRUE(playlist_value);
-  auto* items = playlist_value->FindList(playlist::kPlaylistItemsKey);
+  auto* items = playlist_value->FindList(Type::Converter::kPlaylistItemsKey);
   ASSERT_EQ(item_ids.size(), items->size());
 
   mojom::Playlist another_playlist;
@@ -765,28 +787,28 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
       }));
 
   playlist_value =
-      prefs->GetDict(playlist::kPlaylistsPref).FindDict(*another_playlist.id);
+      prefs->GetDict(kPlaylistsPref).FindDict(*another_playlist.id);
   ASSERT_TRUE(playlist_value);
-  items = playlist_value->FindList(playlist::kPlaylistItemsKey);
+  items = playlist_value->FindList(Type::Converter::kPlaylistItemsKey);
   ASSERT_TRUE(items->empty());
 
   // Try moving all items from default list to another playlist.
   for (const auto& id : item_ids) {
-    EXPECT_TRUE(service->MoveItem(PlaylistId(playlist::kDefaultPlaylistID),
+    EXPECT_TRUE(service->MoveItem(PlaylistId(kDefaultPlaylistID),
                                   PlaylistId(*another_playlist.id),
                                   PlaylistItemId(id)));
   }
   playlist_value =
-      prefs->GetDict(playlist::kPlaylistsPref).FindDict(*another_playlist.id);
+      prefs->GetDict(kPlaylistsPref).FindDict(*another_playlist.id);
   EXPECT_TRUE(playlist_value);
-  items = playlist_value->FindList(playlist::kPlaylistItemsKey);
+  items = playlist_value->FindList(Type::Converter::kPlaylistItemsKey);
   base::flat_set<std::string> stored_ids;
   base::ranges::transform(*items, std::inserter(stored_ids, stored_ids.end()),
                           [](const auto& item) { return item.GetString(); });
   EXPECT_EQ(item_ids, stored_ids);
-  playlist_value = prefs->GetDict(playlist::kPlaylistsPref)
-                       .FindDict(playlist::kDefaultPlaylistID);
-  EXPECT_TRUE(playlist_value->FindList(playlist::kPlaylistItemsKey)->empty());
+  playlist_value = prefs->GetDict(kPlaylistsPref).FindDict(kDefaultPlaylistID);
+  EXPECT_TRUE(
+      playlist_value->FindList(Type::Converter::kPlaylistItemsKey)->empty());
 
   // Try moving items to non-existing playlist. Then it should fail and the
   // original playlist should be unchanged.
@@ -796,9 +818,9 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
                                    PlaylistItemId(id)));
   }
   playlist_value =
-      prefs->GetDict(playlist::kPlaylistsPref).FindDict(*another_playlist.id);
+      prefs->GetDict(kPlaylistsPref).FindDict(*another_playlist.id);
   EXPECT_TRUE(playlist_value);
-  items = playlist_value->FindList(playlist::kPlaylistItemsKey);
+  items = playlist_value->FindList(Type::Converter::kPlaylistItemsKey);
   stored_ids.clear();
   base::ranges::transform(*items, std::inserter(stored_ids, stored_ids.end()),
                           [](const auto& item) { return item.GetString(); });

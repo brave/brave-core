@@ -13,47 +13,43 @@
 
 namespace playlist {
 
-bool IsItemValueMalformed(const base::Value::Dict& dict) {
-  return !dict.contains(playlist::kPlaylistItemIDKey) ||
-         !dict.contains(playlist::kPlaylistItemTitleKey) ||
-         !dict.contains(playlist::kPlaylistItemThumbnailPathKey) ||
-         !dict.contains(playlist::kPlaylistItemMediaFileCachedKey) ||
+bool TypeConverter::IsItemValueMalformed(const base::Value::Dict& dict) {
+  return !dict.contains(kPlaylistItemIDKey) ||
+         !dict.contains(kPlaylistItemTitleKey) ||
+         !dict.contains(kPlaylistItemThumbnailPathKey) ||
+         !dict.contains(kPlaylistItemMediaFileCachedKey) ||
          // Added 2022. Sep
-         !dict.contains(playlist::kPlaylistItemPageSrcKey) ||
-         !dict.contains(playlist::kPlaylistItemMediaSrcKey) ||
-         !dict.contains(playlist::kPlaylistItemThumbnailSrcKey) ||
-         !dict.contains(playlist::kPlaylistItemMediaFilePathKey) ||
+         !dict.contains(kPlaylistItemPageSrcKey) ||
+         !dict.contains(kPlaylistItemMediaSrcKey) ||
+         !dict.contains(kPlaylistItemThumbnailSrcKey) ||
+         !dict.contains(kPlaylistItemMediaFilePathKey) ||
          // Added 2022, dec.
-         !dict.contains(playlist::kPlaylistItemDurationKey) ||
-         !dict.contains(playlist::kPlaylistItemAuthorKey) ||
-         !dict.contains(playlist::kPlaylistItemLastPlayedPositionKey);
+         !dict.contains(kPlaylistItemDurationKey) ||
+         !dict.contains(kPlaylistItemAuthorKey) ||
+         !dict.contains(kPlaylistItemLastPlayedPositionKey);
 }
 
-mojom::PlaylistItemPtr ConvertValueToPlaylistItem(
+mojom::PlaylistItemPtr TypeConverter::ConvertValueToPlaylistItem(
     const base::Value::Dict& dict) {
-  DCHECK(!IsItemValueMalformed(dict));
+  DCHECK(!TypeConverter::IsItemValueMalformed(dict));
 
   auto item = mojom::PlaylistItem::New();
-  item->id = *dict.FindString(playlist::kPlaylistItemIDKey);
-  item->name = *dict.FindString(playlist::kPlaylistItemTitleKey);
-  item->page_source = GURL(*dict.FindString(playlist::kPlaylistItemPageSrcKey));
-  item->thumbnail_source =
-      GURL(*dict.FindString(playlist::kPlaylistItemThumbnailSrcKey));
-  item->thumbnail_path =
-      GURL(*dict.FindString(playlist::kPlaylistItemThumbnailPathKey));
-  item->media_source =
-      GURL(*dict.FindString(playlist::kPlaylistItemMediaSrcKey));
-  item->media_path =
-      GURL(*dict.FindString(playlist::kPlaylistItemMediaFilePathKey));
-  item->cached = *dict.FindBool(playlist::kPlaylistItemMediaFileCachedKey);
-  item->duration = *dict.FindString(playlist::kPlaylistItemDurationKey);
-  item->author = *dict.FindString(playlist::kPlaylistItemAuthorKey);
+  item->id = *dict.FindString(kPlaylistItemIDKey);
+  item->name = *dict.FindString(kPlaylistItemTitleKey);
+  item->page_source = GURL(*dict.FindString(kPlaylistItemPageSrcKey));
+  item->thumbnail_source = GURL(*dict.FindString(kPlaylistItemThumbnailSrcKey));
+  item->thumbnail_path = GURL(*dict.FindString(kPlaylistItemThumbnailPathKey));
+  item->media_source = GURL(*dict.FindString(kPlaylistItemMediaSrcKey));
+  item->media_path = GURL(*dict.FindString(kPlaylistItemMediaFilePathKey));
+  item->cached = *dict.FindBool(kPlaylistItemMediaFileCachedKey);
+  item->duration = *dict.FindString(kPlaylistItemDurationKey);
+  item->author = *dict.FindString(kPlaylistItemAuthorKey);
   item->last_played_position =
-      *dict.FindInt(playlist::kPlaylistItemLastPlayedPositionKey);
+      *dict.FindInt(kPlaylistItemLastPlayedPositionKey);
   return item;
 }
 
-base::Value::Dict ConvertPlaylistItemToValue(
+base::Value::Dict TypeConverter::ConvertPlaylistItemToValue(
     const mojom::PlaylistItemPtr& item) {
   base::Value::Dict playlist_value;
   playlist_value.Set(kPlaylistItemIDKey, item->id);
@@ -71,6 +67,33 @@ base::Value::Dict ConvertPlaylistItemToValue(
   playlist_value.Set(kPlaylistItemLastPlayedPositionKey,
                      item->last_played_position);
   return playlist_value;
+}
+
+mojom::PlaylistPtr TypeConverter::ConvertValueToPlaylist(
+    const base::Value::Dict& playlist_dict,
+    const base::Value::Dict& items_dict) {
+  mojom::PlaylistPtr playlist = mojom::Playlist::New();
+  playlist->id = *playlist_dict.FindString(kPlaylistIDKey);
+  playlist->name = *playlist_dict.FindString(kPlaylistNameKey);
+  for (const auto& item_id_value : *playlist_dict.FindList(kPlaylistItemsKey)) {
+    auto* item = items_dict.FindDict(item_id_value.GetString());
+    DCHECK(item) << "Couldn't find PlaylistItem with id: "
+                 << item_id_value.GetString();
+    playlist->items.push_back(ConvertValueToPlaylistItem(*item));
+  }
+  return playlist;
+}
+
+base::Value::Dict TypeConverter::ConvertPlaylistToValue(
+    const mojom::PlaylistPtr& playlist) {
+  base::Value::Dict value;
+  value.Set(kPlaylistIDKey, playlist->id.value());
+  value.Set(kPlaylistNameKey, playlist->name);
+  auto item_ids = base::Value::List();
+  for (const auto& items : playlist->items)
+    item_ids.Append(items->id);
+  value.Set(kPlaylistItemsKey, std::move(item_ids));
+  return value;
 }
 
 }  // namespace playlist

@@ -17,6 +17,7 @@
 #include "brave/components/playlist/playlist_constants.h"
 #include "brave/components/playlist/playlist_download_request_manager.h"
 #include "brave/components/playlist/playlist_service.h"
+#include "brave/components/playlist/playlist_service_helper.h"
 #include "brave/components/playlist/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
@@ -106,16 +107,16 @@ bool PlaylistServiceFactory::IsPlaylistEnabled(
 
 void PlaylistServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  base::Value::Dict default_playlist;
-  default_playlist.Set(kPlaylistIDKey, kDefaultPlaylistID);
-  default_playlist.Set(kPlaylistNameKey, std::string());
-  default_playlist.Set(kPlaylistItemsKey, base::Value::List());
+  auto default_list = mojom::Playlist::New();
+  default_list->id = kDefaultPlaylistID;
 
-  base::Value::Dict dict;
-  dict.Set(kDefaultPlaylistID, base::Value(std::move(default_playlist)));
+  base::Value::Dict playlists_value;
+  playlists_value.Set(
+      kDefaultPlaylistID,
+      playlist::TypeConverter::ConvertPlaylistToValue(default_list));
 
   registry->RegisterDictionaryPref(kPlaylistsPref,
-                                   base::Value(std::move(dict)));
+                                   base::Value(std::move(playlists_value)));
   registry->RegisterDictionaryPref(kPlaylistItemsPref);
   registry->RegisterBooleanPref(kPlaylistCacheByDefault, true);
   registry->RegisterStringPref(kPlaylistDefaultSaveTargetListID,
