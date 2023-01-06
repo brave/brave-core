@@ -103,7 +103,7 @@ export const reduxState: Rewards.ApplicationState = {
       }
     ],
     adsData: {
-      adsEnabled: true,
+      adsEnabled: false,
       adsPerHour: 0,
       adsSubdivisionTargeting: '',
       automaticallyDetectedAdsSubdivisionTargeting: '',

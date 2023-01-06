@@ -220,10 +220,6 @@ export function AdsPanel () {
       <>
         {renderTerms()}
         {renderDescription()}
-        <style.disabled>
-          {getString('adsDisabledTextOne')}&nbsp;
-          {getString('adsDisabledTextTwo')}
-        </style.disabled>
       </>
     )
   }
