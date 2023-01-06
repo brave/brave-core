@@ -87,7 +87,7 @@ Polymer({
       reflectToAttribute: true,
     },
 
-    isBraveRewardsSupported_: {
+    shouldShowRewardsButton_: {
       type: Boolean,
       value: true,
     },
@@ -193,7 +193,8 @@ Polymer({
 
   /** @override */
   attached: function () {
-    this.isBraveRewardsSupported_ = loadTimeData.getBoolean('isBraveRewardsSupported')
+    this.shouldShowRewardsButton_ =
+      loadTimeData.getBoolean('brToolbarShowRewardsButton')
     this.isBraveWalletAllowed_ = loadTimeData.getBoolean('isBraveWalletAllowed')
     this.initSlotFilledDetection()
     this.initStrings()
