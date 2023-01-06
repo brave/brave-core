@@ -40,7 +40,6 @@
     *** mLogoCoordinator;
     *** insertSiteSectionView(...);
     *** isScrollableMvtEnabled(...);
-    *** hasLoadCompleted(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
