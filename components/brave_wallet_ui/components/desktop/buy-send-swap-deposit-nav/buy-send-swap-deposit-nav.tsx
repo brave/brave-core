@@ -21,7 +21,7 @@ export interface Props {
 }
 
 // Transactions is not an option for Desktop.
-const buttonOptions = NavOptions.filter((option) => option.id !== 'transactions')
+const buttonOptions = NavOptions.filter((option) => option.id !== 'activity')
 
 const BRAVE_SWAP_DATA_THEME_KEY = 'brave-swap-data-theme'
 

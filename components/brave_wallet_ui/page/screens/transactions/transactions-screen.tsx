@@ -273,7 +273,7 @@ const updatePageParams = ({
   }
   const paramsString = params.toString()
 
-  return `${WalletRoutes.Transactions}${paramsString ? `?${paramsString}` : ''}`
+  return `${WalletRoutes.Activity}${paramsString ? `?${paramsString}` : ''}`
 }
 
 const findTokenBySearchValue = (

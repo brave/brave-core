@@ -611,7 +611,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   }
 
   const onBackToTransactions = () => {
-    navigateTo('transactions')
+    navigateTo('activity')
   }
 
   const onSelectAccount = (account: WalletAccountType) => () => {
@@ -817,7 +817,9 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                       {selectedPanel === 'sitePermissions' &&
                         <SitePermissions />
                       }
-                      {selectedPanel === 'transactions' &&
+
+                      {/* Transactions */}
+                      {selectedPanel === 'activity' &&
                         <TransactionsPanel
                           onSelectTransaction={onSelectTransaction}
                           selectedNetwork={mockNetworks[0]}

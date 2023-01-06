@@ -119,7 +119,7 @@ export type PanelTypes =
   | 'swap'
   | 'switchEthereumChain'
   | 'transactionDetails'
-  | 'transactions'
+  | 'activity' // Transactions
   | 'currencies'
   | 'transactionStatus'
 
@@ -134,7 +134,7 @@ export type TopTabNavTypes =
   | 'nfts'
   | 'accounts'
   | 'market'
-  | 'transactions'
+  | 'activity'
 
 export type AddAccountNavTypes =
   | 'create'
@@ -775,8 +775,8 @@ export enum WalletRoutes {
   Restore = '/crypto/restore-wallet',
   Unlock = '/crypto/unlock',
 
-  // Transactions
-  Transactions = '/crypto/transactions',
+  // Activity (Transactions)
+  Activity = '/crypto/activity',
 
   // portfolio
   Portfolio = '/crypto/portfolio',
@@ -967,7 +967,7 @@ export type NavIDTypes =
   | 'send'
   | 'swap'
   | 'deposit'
-  | 'transactions'
+  | 'activity'
   | 'portfolio'
 
 export interface NavOption {

@@ -807,4 +807,5 @@
   <message name="IDS_BRAVE_SWAP_JUPITER_DISCLAIMER" desc="Jupiter swap privacy policy disclaimer">Brave Swap uses Jupiter as a DEX aggregator for Solana network. Jupiter will process the Solana wallet address and IP address to fulfill a transaction (including getting quotes). Jupiter will ONLY use this data for the purposes of processing transactions.</message>
   <message name="IDS_BRAVE_SWAP_ZERO_EX_PRIVACY" desc="0x swap full privacy policy link text">Click here for 0x Privacy Policy.</message>
   <message name="IDS_BRAVE_SWAP_JUPITER_PRIVACY" desc="Jupiter swap full privacy policy link text">Click here for Jupiter Privacy Policy.</message>
+  <message name="IDS_BRAVE_WALLET_ACTIVITY" desc="Wallet activity and transactions">Activity</message>
 </grit-part>

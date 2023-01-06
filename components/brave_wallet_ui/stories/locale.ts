@@ -68,6 +68,7 @@ provideStrings({
   braveWalletAccounts: 'Accounts',
   braveWalletAccount: 'Account',
   braveWalletOwner: 'Owner',
+  braveWalletActivity: 'Activity',
   braveWalletTransactions: 'Transactions',
   braveWalletPrice: 'Price',
   braveWalletBack: 'Back',
