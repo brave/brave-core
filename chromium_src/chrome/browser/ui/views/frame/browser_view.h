@@ -15,13 +15,13 @@
 
 #define BrowserViewLayoutDelegateImpl \
   BrowserViewLayoutDelegateImpl;      \
-  friend class BraveBrowserView
+  friend class BraveBrowserView;      \
+  void SetNativeWindowPropertyForWidget(views::Widget* widget)
 #define BrowserWindow BraveBrowserWindow
 #define BrowserViewLayout BraveBrowserViewLayout
 #define SidePanel BraveSidePanel
-#define GetContentsLayoutManager                                 \
-  GetContentsLayoutManager_Unused();                             \
-  static const char* GetBrowserViewKeyForNativeWindowProperty(); \
+#define GetContentsLayoutManager     \
+  GetContentsLayoutManager_Unused(); \
   virtual ContentsLayoutManager* GetContentsLayoutManager
 
 #define MaybeShowReadingListInSidePanelIPH \

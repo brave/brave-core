@@ -48,7 +48,12 @@
 #undef kAlignRight
 #undef InfoBarContainerView
 
-// static
-const char* BrowserView::GetBrowserViewKeyForNativeWindowProperty() {
-  return kBrowserViewKey;
+void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {
+  // Sets a kBrowserWindowKey to given child |widget| so that we can get
+  // BrowserView from the |widget|.
+  DCHECK(GetWidget());
+  DCHECK_EQ(GetWidget(), widget->GetTopLevelWidget())
+      << "The |widget| should be child of BrowserView's widget.";
+
+  widget->SetNativeWindowProperty(kBrowserViewKey, this);
 }

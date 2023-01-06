@@ -18,36 +18,24 @@
 
 namespace {
 
+////////////////////////////////////////////////////////////////////////////////
+// BraveGM2TabStyle
+//
 class BraveGM2TabStyle : public GM2TabStyle {
  public:
   explicit BraveGM2TabStyle(Tab* tab);
   BraveGM2TabStyle(const BraveGM2TabStyle&) = delete;
   BraveGM2TabStyle& operator=(const BraveGM2TabStyle&) = delete;
+  ~BraveGM2TabStyle() override = default;
 
  protected:
-  SkPath GetPath(
-      PathType path_type,
-      float scale,
-      bool force_active = false,
-      RenderUnits render_units = RenderUnits::kPixels) const override;
   TabStyle::TabColors CalculateColors() const override;
   const gfx::FontList& GetFontList() const override;
-  SeparatorBounds GetSeparatorBounds(float scale) const override;
-  void PaintTab(gfx::Canvas* canvas) const override;
+
+  Tab* tab() { return base::to_address(tab_); }
+  const Tab* tab() const { return base::to_address(tab_); }
 
  private:
-  bool IsVerticalTab() const {
-    if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-      return false;
-
-    return tabs::features::ShouldShowVerticalTabs(
-        tab_->controller()->GetBrowser());
-  }
-
-  bool IsInactiveAndInGroup() const {
-    return !tab_->IsActive() && tab_->group().has_value();
-  }
-
   raw_ptr<Tab> tab_;
   gfx::FontList active_tab_font_;
 };
@@ -58,18 +46,73 @@ BraveGM2TabStyle::BraveGM2TabStyle(Tab* tab)
       active_tab_font_(
           normal_font_.DeriveWithWeight(gfx::Font::Weight::MEDIUM)) {}
 
-SkPath BraveGM2TabStyle::GetPath(PathType path_type,
-                                 float scale,
-                                 bool force_active,
-                                 RenderUnits render_units) const {
-  if (!IsVerticalTab())
-    return GM2TabStyle::GetPath(path_type, scale, force_active, render_units);
+TabStyle::TabColors BraveGM2TabStyle::CalculateColors() const {
+  auto colors = GM2TabStyle::CalculateColors();
+  const SkColor inactive_non_hovered_fg_color = SkColorSetA(
+      colors.foreground_color,
+      gfx::Tween::IntValueBetween(0.7, SK_AlphaTRANSPARENT, SK_AlphaOPAQUE));
+  SkColor final_fg_color = (tab_->IsActive() || tab_->mouse_hovered())
+                               ? colors.foreground_color
+                               : inactive_non_hovered_fg_color;
+  SkColor final_bg_color = colors.background_color;
+  return {final_fg_color, final_bg_color, colors.focus_ring_color,
+          colors.close_button_focus_ring_color};
+}
+
+const gfx::FontList& BraveGM2TabStyle::GetFontList() const {
+  const auto& font_list = GM2TabStyle::GetFontList();
+  if (&font_list == &normal_font_ && tab_->IsActive()) {
+    return active_tab_font_;
+  }
+  return font_list;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// BraveVerticalTabStyle
+//
+// This class deals with tab styling when vertical tab strip feature flag is
+// enabled.
+//
+class BraveVerticalTabStyle : public BraveGM2TabStyle {
+ public:
+  explicit BraveVerticalTabStyle(Tab* tab);
+  BraveVerticalTabStyle(const BraveVerticalTabStyle&) = delete;
+  BraveVerticalTabStyle& operator=(const BraveVerticalTabStyle&) = delete;
+  ~BraveVerticalTabStyle() override = default;
+
+  // BraveGM2TabStyle:
+  SkPath GetPath(
+      PathType path_type,
+      float scale,
+      bool force_active = false,
+      RenderUnits render_units = RenderUnits::kPixels) const override;
+  TabStyle::TabColors CalculateColors() const override;
+  SeparatorBounds GetSeparatorBounds(float scale) const override;
+  void PaintTab(gfx::Canvas* canvas) const override;
+
+ private:
+  bool ShouldShowVerticalTabs() const;
+  bool IsInGroupAndNotActive() const;
+};
+
+BraveVerticalTabStyle::BraveVerticalTabStyle(Tab* tab) : BraveGM2TabStyle(tab) {
+  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+      << "This class should be used only when the flag is on.";
+}
+
+SkPath BraveVerticalTabStyle::GetPath(PathType path_type,
+                                      float scale,
+                                      bool force_active,
+                                      RenderUnits render_units) const {
+  if (!ShouldShowVerticalTabs())
+    return BraveGM2TabStyle::GetPath(path_type, scale, force_active,
+                                     render_units);
 
   // Don't paint border.
   if (path_type == PathType::kBorder)
     return {};
 
-  gfx::RectF aligned_bounds = ScaleAndAlignBounds(tab_->bounds(), scale, 0);
+  gfx::RectF aligned_bounds = ScaleAndAlignBounds(tab()->bounds(), scale, 0);
 
   constexpr int kHorizontalInset = BraveTabGroupHeader::kPaddingForGroup;
 
@@ -84,7 +127,7 @@ SkPath BraveGM2TabStyle::GetPath(PathType path_type,
                     kHorizontalInset * scale, kHorizontalInset * scale);
 
   // Convert path to be relative to the tab origin.
-  gfx::PointF origin(tab_->origin());
+  gfx::PointF origin(tab()->origin());
   origin.Scale(scale);
   path.offset(-origin.x(), -origin.y());
 
@@ -95,45 +138,30 @@ SkPath BraveGM2TabStyle::GetPath(PathType path_type,
   return path;
 }
 
-TabStyle::TabColors BraveGM2TabStyle::CalculateColors() const {
-  auto colors = GM2TabStyle::CalculateColors();
-  const SkColor inactive_non_hovered_fg_color = SkColorSetA(
-      colors.foreground_color,
-      gfx::Tween::IntValueBetween(0.7, SK_AlphaTRANSPARENT, SK_AlphaOPAQUE));
-  SkColor final_fg_color = (tab_->IsActive() || tab_->mouse_hovered())
-                               ? colors.foreground_color
-                               : inactive_non_hovered_fg_color;
-  SkColor final_bg_color = colors.background_color;
-  if (IsVerticalTab() && IsInactiveAndInGroup()) {
-    final_fg_color = BraveTabGroupHeader::GetDarkerColorForGroup(
-        tab_->group().value(), tab_->controller(),
-        tab_->GetNativeTheme()->ShouldUseDarkColors());
-    final_bg_color = SK_ColorTRANSPARENT;
+TabStyle::TabColors BraveVerticalTabStyle::CalculateColors() const {
+  auto colors = BraveGM2TabStyle::CalculateColors();
+  if (ShouldShowVerticalTabs() && IsInGroupAndNotActive()) {
+    colors.foreground_color =
+        BraveTabGroupHeader::GetGroupBackgroundColorForVerticalTabs(
+            tab()->group().value(), tab()->controller(),
+            tab()->GetNativeTheme()->ShouldUseDarkColors());
+    colors.background_color = SK_ColorTRANSPARENT;
   }
 
-  return {final_fg_color, final_bg_color, colors.focus_ring_color,
-          colors.close_button_focus_ring_color};
+  return colors;
 }
 
-const gfx::FontList& BraveGM2TabStyle::GetFontList() const {
-  const auto& font_list = GM2TabStyle::GetFontList();
-  if (&font_list == &normal_font_ && tab_->IsActive()) {
-    return active_tab_font_;
-  }
-  return font_list;
-}
-
-BraveGM2TabStyle::SeparatorBounds BraveGM2TabStyle::GetSeparatorBounds(
+TabStyle::SeparatorBounds BraveVerticalTabStyle::GetSeparatorBounds(
     float scale) const {
-  if (IsVerticalTab())
+  if (ShouldShowVerticalTabs())
     return {};
 
-  return GM2TabStyle::GetSeparatorBounds(scale);
+  return BraveGM2TabStyle::GetSeparatorBounds(scale);
 }
 
-void BraveGM2TabStyle::PaintTab(gfx::Canvas* canvas) const {
-  if (!IsVerticalTab() || !IsInactiveAndInGroup()) {
-    GM2TabStyle::PaintTab(canvas);
+void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
+  if (!ShouldShowVerticalTabs() || !IsInGroupAndNotActive()) {
+    BraveGM2TabStyle::PaintTab(canvas);
     return;
   }
 
@@ -147,19 +175,31 @@ void BraveGM2TabStyle::PaintTab(gfx::Canvas* canvas) const {
 
   absl::optional<int> active_tab_fill_id;
   int active_tab_y_inset = 0;
-  if (tab_->GetThemeProvider()->HasCustomImage(IDR_THEME_TOOLBAR)) {
+  if (tab()->GetThemeProvider()->HasCustomImage(IDR_THEME_TOOLBAR)) {
     active_tab_fill_id = IDR_THEME_TOOLBAR;
     active_tab_y_inset = GetStrokeThickness(true);
   }
   canvas->SaveLayerAlpha(base::ClampRound<uint8_t>(throb_value * 0xff),
-                         tab_->GetLocalBounds());
+                         tab()->GetLocalBounds());
   PaintTabBackground(canvas, TabActive::kActive, active_tab_fill_id,
                      active_tab_y_inset);
   canvas->Restore();
 }
 
+bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
+  return tabs::features::ShouldShowVerticalTabs(
+      tab()->controller()->GetBrowser());
+}
+
+bool BraveVerticalTabStyle::IsInGroupAndNotActive() const {
+  return !tab()->IsActive() && tab()->group().has_value();
+}
+
 }  // namespace
 
 std::unique_ptr<TabStyleViews> TabStyleViews::CreateForTab(Tab* tab) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return std::make_unique<BraveVerticalTabStyle>(tab);
+
   return std::make_unique<BraveGM2TabStyle>(tab);
 }

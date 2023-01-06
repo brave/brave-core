@@ -430,9 +430,8 @@ void BraveBrowserView::AddedToWidget() {
     // properly even when we pass the native window for vertical tab strip.
     // As a result, we don't have to call GetTopLevelWidget() in order to
     // get browser view from the vertical tab strip's widget.
-    vertical_tab_strip_widget_delegate_view_->GetWidget()
-        ->SetNativeWindowProperty(GetBrowserViewKeyForNativeWindowProperty(),
-                                  this);
+    SetNativeWindowPropertyForWidget(
+        vertical_tab_strip_widget_delegate_view_->GetWidget());
 
     GetBrowserViewLayout()->set_vertical_tab_strip_host(
         vertical_tab_strip_host_view_.get());

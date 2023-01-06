@@ -16,10 +16,13 @@
 #include "ui/views/controls/label.h"
 
 // static
-SkColor BraveTabGroupHeader::GetDarkerColorForGroup(
+SkColor BraveTabGroupHeader::GetGroupBackgroundColorForVerticalTabs(
     const tab_groups::TabGroupId& group_id,
     TabSlotController* controller,
     bool dark_mode) {
+  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+      << "This should be called only when the flag is on.";
+
   if (!controller->GetBrowser()
            ->tab_strip_model()
            ->group_model()
@@ -42,7 +45,7 @@ void BraveTabGroupHeader::VisualsChanged() {
   if (!ShouldShowVerticalTabs())
     return;
 
-  title_->SetEnabledColor(GetDarkerColorForGroup(
+  title_->SetEnabledColor(GetGroupBackgroundColorForVerticalTabs(
       group().value(), base::to_address(tab_slot_controller_),
       GetNativeTheme()->ShouldUseDarkColors()));
   title_->SetFontList(
@@ -72,6 +75,9 @@ bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
 }
 
 void BraveTabGroupHeader::LayoutTitleChip() {
+  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+      << "This should be called only when the flag is on.";
+
   auto title_bounds = GetContentsBounds();
   title_bounds.Inset(gfx::Insets(kPaddingForGroup * 2));
   title_chip_->SetBoundsRect(title_bounds);

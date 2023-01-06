@@ -18,9 +18,10 @@ class BraveTabGroupHeader : public TabGroupHeader {
 
   constexpr static int kPaddingForGroup = 4;
 
-  static SkColor GetDarkerColorForGroup(const tab_groups::TabGroupId& group_id,
-                                        TabSlotController* controller,
-                                        bool dark_mode);
+  static SkColor GetGroupBackgroundColorForVerticalTabs(
+      const tab_groups::TabGroupId& group_id,
+      TabSlotController* controller,
+      bool dark_mode);
 
   using TabGroupHeader::TabGroupHeader;
   ~BraveTabGroupHeader() override;

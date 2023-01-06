@@ -18,6 +18,11 @@ BraveTabGroupUnderline::BraveTabGroupUnderline(
     TabGroupViews* tab_group_views,
     const tab_groups::TabGroupId& group)
     : TabGroupUnderline(tab_group_views, group) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return;
+
+  // This prevents this view from getting mouse event. Otherwise, tabs and
+  // group headers could be un-clickable as this view takes the events.
   SetEnabled(false);
 }
 
