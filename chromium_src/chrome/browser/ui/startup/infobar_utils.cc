@@ -6,6 +6,7 @@
 #include "brave/browser/ui/startup/brave_obsolete_system_infobar_delegate.h"
 #include "chrome/browser/ui/session_crashed_bubble.h"
 #include "chrome/browser/ui/startup/google_api_keys_infobar_delegate.h"
+#include "chrome/browser/ui/startup/obsolete_system_infobar_delegate.h"
 #include "components/infobars/content/content_infobar_manager.h"
 
 class BraveGoogleKeysInfoBarDelegate {

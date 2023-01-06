@@ -242,6 +242,8 @@ source_set("ui") {
       "views/frame/brave_opaque_browser_frame_view.h",
       "views/frame/brave_window_frame_graphic.cc",
       "views/frame/brave_window_frame_graphic.h",
+      "views/obsolete_system_confirm_dialog_view.cc",
+      "views/obsolete_system_confirm_dialog_view.h",
       "views/omnibox/brave_omnibox_popup_contents_view.cc",
       "views/omnibox/brave_omnibox_popup_contents_view.h",
       "views/omnibox/brave_omnibox_result_view.cc",

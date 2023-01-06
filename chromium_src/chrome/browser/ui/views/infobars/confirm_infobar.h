@@ -9,10 +9,14 @@
 #define GetDelegate                            \
   Unused() { return nullptr; }                 \
   friend class BraveSyncAccountDeletedInfoBar; \
+  friend class BraveConfirmInfoBar;            \
   ConfirmInfoBarDelegate* GetDelegate
+
+#define NonLabelWidth virtual NonLabelWidth
 
 #include "src/chrome/browser/ui/views/infobars/confirm_infobar.h"
 
+#undef NonLabelWidth
 #undef GetDelegate
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_INFOBARS_CONFIRM_INFOBAR_H_
