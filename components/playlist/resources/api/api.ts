@@ -49,13 +49,7 @@ class API {
   }
 
   addMediaFilesFromActiveTabToPlaylist (playlistId: string) {
-    PlaylistMojo.PageHandlerFactory.getRemote().getActiveTabId().then(({ windowId, tabId }) => {
-      if (windowId === -1 || tabId === -1) {
-        return
-      }
-
-      this.#pageHandler.addMediaFilesFromTabToPlaylist(windowId, tabId, playlistId)
-    })
+    this.#pageHandler.addMediaFilesFromActiveTabToPlaylist(playlistId)
   }
 
   removeItemFromPlaylist (playlistId: string, itemId: string) {

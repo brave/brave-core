@@ -81,8 +81,7 @@ class PlaylistService : public KeyedService,
     Delegate& operator=(const Delegate&) = delete;
     virtual ~Delegate() = default;
 
-    virtual content::WebContents* GetWebContents(int32_t window_id,
-                                                 int32_t tab_id) = 0;
+    virtual content::WebContents* GetActiveWebContents() = 0;
   };
 
   using PlaylistId = base::StrongAlias<class PlaylistIdTag, std::string>;
@@ -119,12 +118,10 @@ class PlaylistService : public KeyedService,
 
   void AddMediaFilesFromPageToPlaylist(const std::string& playlist_id,
                                        const GURL& url) override;
-  void AddMediaFilesFromTabToPlaylist(int32_t window_id,
-                                      int32_t tab_id,
-                                      const std::string& playlist_id) override;
-  void FindMediaFilesFromTab(int32_t window_id,
-                             int32_t tab_id,
-                             FindMediaFilesFromTabCallback callback) override;
+  void AddMediaFilesFromActiveTabToPlaylist(
+      const std::string& playlist_id) override;
+  void FindMediaFilesFromActiveTab(
+      FindMediaFilesFromActiveTabCallback callback) override;
   void AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
                      const std::string& playlist_id) override;
   void RemoveItemFromPlaylist(const std::string& playlist_id,

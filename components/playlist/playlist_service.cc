@@ -326,13 +326,11 @@ void PlaylistService::AddMediaFilesFromPageToPlaylist(
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
-void PlaylistService::AddMediaFilesFromTabToPlaylist(
-    int32_t window_id,
-    int32_t tab_id,
+void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(
     const std::string& playlist_id) {
   DCHECK(delegate_);
 
-  auto* contents = delegate_->GetWebContents(window_id, tab_id);
+  auto* contents = delegate_->GetActiveWebContents();
   if (!contents)
     return;
 
@@ -340,15 +338,15 @@ void PlaylistService::AddMediaFilesFromTabToPlaylist(
       playlist_id, contents, prefs_->GetBoolean(kPlaylistCacheByDefault));
 }
 
-void PlaylistService::FindMediaFilesFromTab(
-    int32_t window_id,
-    int32_t tab_id,
-    FindMediaFilesFromTabCallback callback) {
+void PlaylistService::FindMediaFilesFromActiveTab(
+    FindMediaFilesFromActiveTabCallback callback) {
   DCHECK(delegate_);
 
-  auto* contents = delegate_->GetWebContents(window_id, tab_id);
-  if (!contents)
+  auto* contents = delegate_->GetActiveWebContents();
+  if (!contents) {
+    std::move(callback).Run({});
     return;
+  }
 
   PlaylistDownloadRequestManager::Request request;
   request.url_or_contents = contents->GetWeakPtr();

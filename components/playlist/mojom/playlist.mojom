@@ -46,12 +46,6 @@ struct PlaylistItem {
 interface PageHandlerFactory {
   CreatePageHandler(pending_remote<PlaylistServiceObserver> service_observer,
                     pending_receiver<PlaylistService> service);
-
-  // Returns the active tab's id from a browser to which this web UI is
-  // attached When there's no active tab, returns -1 which is the same value as
-  // SessionID::InvalidValue() has.
-  [Sync]
-  GetActiveTabId() => (int32 window_id, int32 tab_id);
 };
 
 // Service-side handler for requests from UI.
@@ -67,14 +61,9 @@ interface PlaylistService {
   // Store all media files from given URL.
   AddMediaFilesFromPageToPlaylist(string playlist_id, url.mojom.Url url);
 
-  // Store or find all media files from given tab. The tab_id is an id generated
-  // by SessionTabHelper. |window_id| is a SessionID for window containing
-  // the |tab_id|, and it will be mapped to browser window on Desktop or
-  // TabModel on Android.
-  AddMediaFilesFromTabToPlaylist(int32 window_id, int32 tab_id,
-                                 string playlist_id);
-  FindMediaFilesFromTab(int32 context_id, int32 tab_id)
-      => (array<PlaylistItem> items);
+  // Store or find all media files from the active tab.   
+  AddMediaFilesFromActiveTabToPlaylist(string playlist_id);
+  FindMediaFilesFromActiveTab() => (array<PlaylistItem> items);
 
   AddMediaFiles(array<PlaylistItem> items, string playlist_id);
 

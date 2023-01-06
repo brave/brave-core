@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/feature_list.h"
+#include "base/ranges/algorithm.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/playlist/features.h"
 #include "brave/components/playlist/media_detector_component_manager.h"
@@ -39,42 +40,40 @@ namespace {
 
 class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
  public:
+#if BUILDFLAG(IS_ANDROID)
   PlaylistServiceDelegateImpl() = default;
+#else
+  explicit PlaylistServiceDelegateImpl(Profile* profile) : profile_(profile) {}
+#endif  // BUILDFLAG(IS_ANDROID)
   PlaylistServiceDelegateImpl(const PlaylistServiceDelegateImpl&) = delete;
   PlaylistServiceDelegateImpl& operator=(const PlaylistServiceDelegateImpl&) =
       delete;
   ~PlaylistServiceDelegateImpl() override = default;
 
-  content::WebContents* GetWebContents(int32_t window_id,
-                                       int32_t tab_id) override {
-    SessionID window_session_id = SessionID::FromSerializedValue(window_id);
-    DCHECK(window_session_id.is_valid());
-
-    SessionID tab_session_id = SessionID::FromSerializedValue(tab_id);
-    DCHECK(tab_session_id.is_valid());
-
+  content::WebContents* GetActiveWebContents() override {
 #if BUILDFLAG(IS_ANDROID)
-    auto* tab_model = TabModelList::FindTabModelWithId(window_session_id);
-    if (!tab_model)
+    auto tab_models = TabModelList::models();
+    auto iter = base::ranges::find_if(
+        tab_models, [](const auto& model) { return model->IsActive(); });
+    if (iter == tab_models.end())
       return nullptr;
+
+    iter->GetActiveWebContents();
 #else
-    auto* browser = chrome::FindBrowserWithID(window_session_id);
+    auto* browser = chrome::FindLastActiveWithProfile(profile_);
     if (!browser)
       return nullptr;
 
     auto* tab_model = browser->tab_strip_model();
     DCHECK(tab_model);
+    return tab_model->GetActiveWebContents();
 #endif  // defined(IS_ANDROID)
-
-    for (int i = 0; i < tab_model->GetTabCount(); i++) {
-      if (auto* web_contents = tab_model->GetWebContentsAt(i);
-          tab_session_id ==
-          sessions::SessionTabHelper::IdForTab(web_contents)) {
-        return web_contents;
-      }
-    }
-    return nullptr;
   }
+
+#if !BUILDFLAG(IS_ANDROID)
+ private:
+  raw_ptr<Profile> profile_;
+#endif  // !BUILDFLAG(IS_ANDROID)
 };
 
 }  // namespace
@@ -137,7 +136,12 @@ KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   DCHECK(media_detector_component_manager_);
   return new PlaylistService(context, media_detector_component_manager_.get(),
+#if BUILDFLAG(IS_ANDROID)
                              std::make_unique<PlaylistServiceDelegateImpl>());
+#else
+                             std::make_unique<PlaylistServiceDelegateImpl>(
+                                 Profile::FromBrowserContext(context)));
+#endif // !BUILDFLAG(IS_ANDROID)
 }
 
 void PlaylistServiceFactory::PrepareMediaDetectorComponentManager() {

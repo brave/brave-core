@@ -50,7 +50,6 @@ class PlaylistUI : public ui::UntrustedWebUIController,
       mojo::PendingRemote<playlist::mojom::PlaylistServiceObserver>
           service_observer,
       mojo::PendingReceiver<playlist::mojom::PlaylistService> service) override;
-  void GetActiveTabId(GetActiveTabIdCallback callback) override;
 
  private:
   base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;

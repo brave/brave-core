@@ -91,31 +91,6 @@ void PlaylistUI::CreatePageHandler(
     embedder_->ShowUI();
 }
 
-void PlaylistUI::GetActiveTabId(GetActiveTabIdCallback callback) {
-  auto* browser = chrome::FindBrowserWithProfile(Profile::FromWebUI(web_ui()));
-  constexpr auto kInvalidSessionId = SessionID::InvalidValue();
-  if (!browser) {
-    std::move(callback).Run(kInvalidSessionId.id(), kInvalidSessionId.id());
-    return;
-  }
-
-  auto* tab_strip_model = browser->tab_strip_model();
-  DCHECK(tab_strip_model);
-
-  auto active_index = tab_strip_model->active_index();
-  if (active_index == TabStripModel::kNoTab) {
-    std::move(callback).Run(kInvalidSessionId.id(), kInvalidSessionId.id());
-    return;
-  }
-
-  auto* active_contents = tab_strip_model->GetWebContentsAt(active_index);
-  DCHECK(active_contents);
-  std::move(callback).Run(
-      sessions::SessionTabHelper::IdForWindowContainingTab(active_contents)
-          .id(),
-      sessions::SessionTabHelper::IdForTab(active_contents).id());
-}
-
 WEB_UI_CONTROLLER_TYPE_IMPL(PlaylistUI)
 
 std::unique_ptr<content::WebUIController>
