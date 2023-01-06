@@ -165,7 +165,9 @@ BraveWalletPinService::BraveWalletPinService(
 BraveWalletPinService::BraveWalletPinService() = default;
 
 BraveWalletPinService::~BraveWalletPinService() {
-  ipfs_service_->RemoveObserver(this);
+  if (ipfs_service_) {
+    ipfs_service_->RemoveObserver(this);
+  }
 }
 
 mojo::PendingRemote<mojom::WalletPinService>
