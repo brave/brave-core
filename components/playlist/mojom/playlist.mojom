@@ -61,7 +61,7 @@ interface PlaylistService {
   // Store all media files from given URL.
   AddMediaFilesFromPageToPlaylist(string playlist_id, url.mojom.Url url);
 
-  // Store or find all media files from the active tab.   
+  // Store or find all media files from the active tab.
   AddMediaFilesFromActiveTabToPlaylist(string playlist_id);
   FindMediaFilesFromActiveTab() => (array<PlaylistItem> items);
 

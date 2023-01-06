@@ -5,6 +5,7 @@
 
 #include "brave/components/playlist/playlist_service_helper.h"
 
+#include <utility>
 #include <vector>
 
 #include "base/json/values_util.h"

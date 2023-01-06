@@ -70,8 +70,8 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
 #endif  // defined(IS_ANDROID)
   }
 
-#if !BUILDFLAG(IS_ANDROID)
  private:
+#if !BUILDFLAG(IS_ANDROID)
   raw_ptr<Profile> profile_;
 #endif  // !BUILDFLAG(IS_ANDROID)
 };
@@ -141,7 +141,7 @@ KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
 #else
                              std::make_unique<PlaylistServiceDelegateImpl>(
                                  Profile::FromBrowserContext(context)));
-#endif // !BUILDFLAG(IS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 void PlaylistServiceFactory::PrepareMediaDetectorComponentManager() {
