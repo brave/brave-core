@@ -582,7 +582,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     AppsList()[0].appList[0]
   ])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
-  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(mockEthToken)
+  const [selectedBuyAsset, setSelectedBuyAsset] = React.useState<BraveWallet.BlockchainToken>(mockEthToken)
   const [, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(mockBasicAttentionToken)
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [selectedTransaction, setSelectedTransaction] = React.useState<SerializableTransactionInfo | undefined>(transactionList[1][0])
@@ -612,7 +612,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
 
   const onSelectAsset = (asset: BraveWallet.BlockchainToken) => () => {
     if (selectedPanel === 'buy') {
-      setSelectedWyreAsset(asset)
+      setSelectedBuyAsset(asset)
     } else {
       setSelectedAsset(asset)
     }
@@ -785,7 +785,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                       {selectedPanel === 'buy' &&
                         <Buy
                           onChangeBuyView={onChangeSendView}
-                          selectedAsset={selectedWyreAsset}
+                          selectedAsset={selectedBuyAsset}
                           onShowCurrencySelection={onShowCurrencySelection}
                         />
                       }
