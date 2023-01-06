@@ -16,8 +16,10 @@ export function SetupForm (props: RewardsTourProps) {
   const [adsPerHourText, setAdsPerHourText] = React.useState('')
 
   React.useEffect(() => {
-    getPluralString('onboardingSetupAdsPerHour', props.adsPerHour)
-      .then(setAdsPerHourText)
+    return getPluralString(
+      'onboardingSetupAdsPerHour',
+      props.adsPerHour,
+      setAdsPerHourText)
   }, [props.adsPerHour])
 
   return (

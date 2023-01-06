@@ -4,25 +4,43 @@
 
 import * as React from 'react'
 
+// The `getPluralString` method accepts a callback and returns a cancellation
+// function. The cancellation function should be returned from React `setEffect`
+// hooks in order to avoid React memory leak warnings.
+type GetPluralStringFunction =
+  (key: string, count: number, callback: (result: string) => void) => () => void
+
 export interface Locale {
   getString: (key: string) => string
-  getPluralString: (key: string, count: number) => Promise<string>
+  getPluralString: GetPluralStringFunction
 }
 
 export const LocaleContext = React.createContext<Locale>({
   getString: () => '',
-  getPluralString: async () => ''
+  getPluralString: (
+    key: string,
+    count: number,
+    callback: (result: string) => void
+  ) => {
+    callback('')
+    return () => {}
+  }
 })
 
 // Creates a LocaleContext for testing in storybook, using a dictionary of
 // strings.
-export function createLocaleContextForTesting (strings: any) {
+export function createLocaleContextForTesting (strings: any): Locale {
   const getString =
     (key: string) => String(strings && strings[key] || 'MISSING')
   return {
     getString,
-    async getPluralString (key: string, count: number) {
-      return getString(key).replace('$1', String(count))
+    getPluralString: (
+      key: string,
+      count: number,
+      callback: (result: string) => void
+    ) => {
+      callback(getString(key).replace('$1', String(count)))
+      return () => {}
     }
   }
 }

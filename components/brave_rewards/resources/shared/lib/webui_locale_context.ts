@@ -10,8 +10,17 @@ export function createLocaleContextForWebUI () {
     getString (key: string): string {
       return (window as any).loadTimeData.getString(key)
     },
-    getPluralString (key: string, count: number): Promise<string> {
-      return PluralStringProxyImpl.getInstance().getPluralString(key, count)
+    getPluralString (
+      key: string,
+      count: number,
+      callback: (result: string) => void
+    ) {
+      let maybeCallback: ((value: string) => void) | null = callback
+      PluralStringProxyImpl
+        .getInstance()
+        .getPluralString(key, count)
+        .then((value: string) => { maybeCallback && maybeCallback(value) })
+      return () => { maybeCallback = null }
     }
   }
 }

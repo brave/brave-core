@@ -54,8 +54,10 @@ export function AutoContributePanel () {
   const [publisherCountText, setPublisherCountText] = React.useState('')
 
   React.useEffect(() => {
-    getPluralString('publisherCountText', data.autoContributeList.length)
-      .then(setPublisherCountText)
+    return getPluralString(
+      'publisherCountText',
+      data.autoContributeList.length,
+      setPublisherCountText)
   }, [data.autoContributeList.length])
 
   const activityList = data.autoContributeList.sort(

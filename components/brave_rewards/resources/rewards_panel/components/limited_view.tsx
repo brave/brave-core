@@ -47,8 +47,10 @@ export function LimitedView () {
   })
 
   React.useEffect(() => {
-    getPluralString('publisherCountText', publishersVisitedCount)
-      .then(setPublisherCountText)
+    return getPluralString(
+      'publisherCountText',
+      publishersVisitedCount,
+      setPublisherCountText)
   }, [publishersVisitedCount])
 
   function onToggleAdsEnabled () {
