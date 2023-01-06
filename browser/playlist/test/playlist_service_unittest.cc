@@ -421,7 +421,7 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
 
     service->GetPlaylistItem(
         id, base::BindLambdaForTesting([&](mojom::PlaylistItemPtr item) {
-          auto item_value = GetValueFromPlaylistItem(item);
+          auto item_value = ConvertPlaylistItemToValue(item);
           auto media_src = https_server()->GetURL("/valid_media_file_1").spec();
           item_value.Set(kPlaylistItemMediaSrcKey, media_src);
           item_value.Set(kPlaylistItemMediaFilePathKey, media_src);

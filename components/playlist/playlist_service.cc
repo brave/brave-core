@@ -314,7 +314,7 @@ void PlaylistService::GetAllPlaylistItems(
     GetAllPlaylistItemsCallback callback) {
   std::vector<mojom::PlaylistItemPtr> items;
   for (const auto it : prefs_->GetDict(kPlaylistItemsPref)) {
-    items.push_back(GetPlaylistItemFromValue(it.second.GetDict()));
+    items.push_back(ConvertValueToPlaylistItem(it.second.GetDict()));
   }
 
   std::move(callback).Run(std::move(items));
@@ -330,7 +330,7 @@ void PlaylistService::GetPlaylistItem(const std::string& id,
     return;
   }
 
-  return std::move(callback).Run(GetPlaylistItemFromValue(*item_value));
+  return std::move(callback).Run(ConvertValueToPlaylistItem(*item_value));
 }
 
 void PlaylistService::AddMediaFilesFromPageToPlaylist(
@@ -397,7 +397,7 @@ void PlaylistService::MoveItem(const std::string& from_playlist_id,
 
 void PlaylistService::UpdateItem(mojom::PlaylistItemPtr item) {
   UpdatePlaylistItemValue(item->id,
-                          base::Value(GetValueFromPlaylistItem(item)));
+                          base::Value(ConvertPlaylistItemToValue(item)));
 
   NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemUpdated, item->id});
 }
@@ -451,7 +451,7 @@ void PlaylistService::CreatePlaylistItem(const mojom::PlaylistItemPtr& item,
   VLOG(2) << __func__;
 
   UpdatePlaylistItemValue(item->id,
-                          base::Value(GetValueFromPlaylistItem(item)));
+                          base::Value(ConvertPlaylistItemToValue(item)));
 
   NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemAdded, item->id});
 

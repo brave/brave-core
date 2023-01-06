@@ -14,9 +14,11 @@ namespace playlist {
 
 bool IsItemValueMalformed(const base::Value::Dict& dict);
 
-mojom::PlaylistItemPtr GetPlaylistItemFromValue(const base::Value::Dict& dict);
+mojom::PlaylistItemPtr ConvertValueToPlaylistItem(
+    const base::Value::Dict& dict);
 
-base::Value::Dict GetValueFromPlaylistItem(const mojom::PlaylistItemPtr& item);
+base::Value::Dict ConvertPlaylistItemToValue(
+    const mojom::PlaylistItemPtr& item);
 
 }  // namespace playlist
 

@@ -29,7 +29,8 @@ bool IsItemValueMalformed(const base::Value::Dict& dict) {
          !dict.contains(playlist::kPlaylistItemLastPlayedPositionKey);
 }
 
-mojom::PlaylistItemPtr GetPlaylistItemFromValue(const base::Value::Dict& dict) {
+mojom::PlaylistItemPtr ConvertValueToPlaylistItem(
+    const base::Value::Dict& dict) {
   DCHECK(!IsItemValueMalformed(dict));
 
   auto item = mojom::PlaylistItem::New();
@@ -52,7 +53,8 @@ mojom::PlaylistItemPtr GetPlaylistItemFromValue(const base::Value::Dict& dict) {
   return item;
 }
 
-base::Value::Dict GetValueFromPlaylistItem(const mojom::PlaylistItemPtr& item) {
+base::Value::Dict ConvertPlaylistItemToValue(
+    const mojom::PlaylistItemPtr& item) {
   base::Value::Dict playlist_value;
   playlist_value.Set(kPlaylistItemIDKey, item->id);
   playlist_value.Set(kPlaylistItemTitleKey, item->name);
