@@ -11,11 +11,12 @@ import Growth
 public struct FullScreenCalloutManager {
 
   public enum FullScreenCalloutType {
-    case p3a, vpn, rewards, defaultBrowser, blockCookieConsentNotices
+    case bottomBar, p3a, vpn, rewards, defaultBrowser, blockCookieConsentNotices
 
     /// The number of days passed to show certain type of callout
     var period: Int {
       switch self {
+      case .bottomBar: return 0
       case .p3a: return 0
       case .vpn: return 4
       case .rewards: return 8
@@ -27,6 +28,8 @@ public struct FullScreenCalloutManager {
     /// The preference value stored for complete state
     public var preferenceValue: Preferences.Option<Bool> {
       switch self {
+      case .bottomBar:
+        return Preferences.FullScreenCallout.bottomBarCalloutCompleted
       case .p3a:
         return Preferences.Onboarding.p3aOnboardingShown
       case .vpn:

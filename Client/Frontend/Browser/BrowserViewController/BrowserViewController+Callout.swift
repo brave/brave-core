@@ -31,6 +31,43 @@ extension BrowserViewController {
     }
   }
   
+  func presentBottomBarCallout() {
+    if Preferences.DebugFlag.skipNTPCallouts == true || isOnboardingOrFullScreenCalloutPresented { return }
+
+    if presentedViewController != nil || !FullScreenCalloutManager.shouldShowDefaultBrowserCallout(calloutType: .bottomBar) {
+      return
+    }
+
+    // Onboarding should be completed to show callouts
+    if Preferences.Onboarding.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
+      return
+    }
+    
+    // Show if bottom bar is not enabled
+    if Preferences.General.isUsingBottomBar.value {
+      return
+    }
+
+    var bottomBarView = OnboardingBottomBarView()
+    bottomBarView.switchBottomBar = { [weak self] in
+      guard let self else { return }
+    
+      self.dismiss(animated: false) {
+        Preferences.General.isUsingBottomBar.value = true
+      }
+    }
+    bottomBarView.dismiss = { [weak self] in
+      guard let self = self else { return }
+      
+      self.dismiss(animated: false)
+    }
+    
+    let popup = PopupViewController(rootView: bottomBarView, isDismissable: true)
+
+    isOnboardingOrFullScreenCalloutPresented = true
+    present(popup, animated: false)
+  }
+  
   func presentP3AScreenCallout() {
     if Preferences.DebugFlag.skipNTPCallouts == true || isOnboardingOrFullScreenCalloutPresented { return }
 
