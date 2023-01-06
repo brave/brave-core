@@ -280,6 +280,43 @@ TEST(BraveNewsDirectFeed, ParseFeedRegression) {
             std::string::npos);
 }
 
+TEST(BraveNewsDirectFeed, ParseToArticle) {
+  // Create a feed item which should be valid as a Brave News Article
+  FeedItem item;
+  item.id = "1";
+  item.published_timestamp = 1672793966;
+  item.title = "Title";
+  item.description = "Description";
+  item.image_url = "https://example.com/image.jpg";
+  item.destination_url = "https://example.com";
+
+  FeedData data;
+  data.items.emplace_back(std::move(item));
+  Articles articles;
+  DirectFeedController::BuildArticles(articles, data, "Id1");
+  // The single item should be successfully added as an Article
+  EXPECT_EQ(articles.size(), 1u);
+}
+
+TEST(BraveNewsDirectFeed, ParseOnlyAllowsHTTPLinks) {
+  // Create a feed item which should be invalid as a Brave News Article
+  FeedItem item;
+  item.id = "1";
+  item.published_timestamp = 1672793966;
+  item.title = "Title";
+  item.description = "Description";
+  item.image_url = "https://example.com/image.jpg";
+  // A chrome: protocol should not be allowed
+  item.destination_url = "chrome://settings";
+
+  FeedData data;
+  data.items.emplace_back(std::move(item));
+  Articles articles;
+  DirectFeedController::BuildArticles(articles, data, "Id1");
+  // The single item should not be added as an Article
+  EXPECT_EQ(articles.size(), 0u);
+}
+
 TEST(BraveNewsDirectFeed, CanAddDirectFeed) {
   TestingPrefServiceSimple prefs;
   BraveNewsController::RegisterProfilePrefs(prefs.registry());
