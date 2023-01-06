@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/ui/views/brave_icon_with_badge_image_source.h"
+#include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"

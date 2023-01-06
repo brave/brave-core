@@ -82,6 +82,8 @@ source_set("ui") {
       "brave_browser_content_setting_bubble_model_delegate.h",
       "brave_browser_window.cc",
       "brave_browser_window.h",
+      "brave_icon_with_badge_image_source.cc",
+      "brave_icon_with_badge_image_source.h",
       "brave_layout_constants.cc",
       "brave_layout_constants.h",
       "brave_pages.cc",
@@ -738,10 +740,6 @@ source_set("ui") {
 
   if (!is_android) {
     sources += [
-      "views/brave_icon_with_badge_image_source.cc",
-      "views/brave_icon_with_badge_image_source.h",
-      "views/constants.cc",
-      "views/constants.h",
       "views/permission_bubble/brave_wallet_permission_prompt_impl.cc",
       "views/permission_bubble/brave_wallet_permission_prompt_impl.h",
       "views/toolbar/wallet_button.cc",

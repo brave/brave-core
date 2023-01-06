@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/brave_icon_with_badge_image_source.h"
+#include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 
 #include <algorithm>
 #include <utility>
@@ -34,6 +34,9 @@ constexpr int kMaxIncrementAttempts = 5;
 
 namespace brave {
 
+const SkColor kBadgeNotificationBG = SkColorSetRGB(0xfb, 0x54, 0x2b);
+const SkColor kBadgeTextColor = SK_ColorWHITE;
+
 BraveIconWithBadgeImageSource::BraveIconWithBadgeImageSource(
     const gfx::Size& size,
     GetColorProviderCallback get_color_provider_callback,
@@ -44,7 +47,7 @@ BraveIconWithBadgeImageSource::BraveIconWithBadgeImageSource(
       content_horizontal_margin_(content_horizontal_margin) {}
 
 // static
-gfx::Size BraveIconWithBadgeImageSource::GetBadgeSize() {
+gfx::Size BraveIconWithBadgeImageSource::GetMaxBadgeSize() {
   return gfx::Size(kBadgeMaxWidth, kBadgeHeight);
 }
 

@@ -9,8 +9,7 @@
 
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/ui/views/brave_icon_with_badge_image_source.h"
-#include "brave/browser/ui/views/constants.h"
+#include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -143,12 +142,12 @@ void WalletButton::OnNotificationUpdate(bool show_suggest_badge,
   UpdateImageAndText();
 }
 
-std::pair<std::string, SkColor> WalletButton::GetBadgeTextAndBackground() {
+std::string WalletButton::GetBadgeText() {
   if (counter_ > 0) {
     std::string text = counter_ > 99 ? "99+" : base::NumberToString(counter_);
-    return {text, brave::kBadgeNotificationBG};
+    return text;
   }
-  return {"", brave::kBadgeNotificationBG};
+  return "";
 }
 
 void WalletButton::UpdateImageAndText() {
@@ -157,7 +156,7 @@ void WalletButton::UpdateImageAndText() {
   auto icon = gfx::CreateVectorIcon(kWalletToolbarButtonIcon, icon_color);
 
   size_t icon_size = std::max(icon.width(), icon.height());
-  auto badge_size = brave::BraveIconWithBadgeImageSource::GetBadgeSize();
+  auto badge_size = brave::BraveIconWithBadgeImageSource::GetMaxBadgeSize();
   gfx::Size preferred_size(icon_size + badge_size.width() / 2,
                            icon_size + badge_size.height() / 2);
 
@@ -169,9 +168,9 @@ void WalletButton::UpdateImageAndText() {
   image_source->SetAllowEmptyText(show_suggest_badge_);
   image_source->SetIcon(gfx::Image(icon));
 
-  auto [text, background_color] = GetBadgeTextAndBackground();
+  auto text = GetBadgeText();
   image_source->SetBadge(std::make_unique<IconWithBadgeImageSource::Badge>(
-      text, brave::kBadgeTextColor, background_color));
+      text, brave::kBadgeTextColor, brave::kBadgeNotificationBG));
   SetImage(views::Button::STATE_NORMAL,
            gfx::ImageSkia(std::move(image_source), preferred_size));
   SetTooltipText(

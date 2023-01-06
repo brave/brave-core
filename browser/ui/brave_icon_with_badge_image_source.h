@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_H_
-#define BRAVE_BROWSER_UI_VIEWS_BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_H_
+#ifndef BRAVE_BROWSER_UI_BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_H_
+#define BRAVE_BROWSER_UI_BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_H_
 
 #include "chrome/browser/ui/extensions/icon_with_badge_image_source.h"
 
@@ -14,6 +14,9 @@ class Rect;
 }  // namespace gfx
 
 namespace brave {
+
+extern const SkColor kBadgeNotificationBG;
+extern const SkColor kBadgeTextColor;
 
 // The purpose of this subclass is to:
 // - Paint the BraveAction badge in a custom location and with a different size
@@ -32,7 +35,7 @@ class BraveIconWithBadgeImageSource : public IconWithBadgeImageSource {
 
   void SetAllowEmptyText(bool v);
 
-  static gfx::Size GetBadgeSize();
+  static gfx::Size GetMaxBadgeSize();
 
  private:
   void PaintBadge(gfx::Canvas* canvas) override;
@@ -53,4 +56,4 @@ class BraveIconWithBadgeImageSource : public IconWithBadgeImageSource {
 
 }  // namespace brave
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_H_
+#endif  // BRAVE_BROWSER_UI_BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_H_

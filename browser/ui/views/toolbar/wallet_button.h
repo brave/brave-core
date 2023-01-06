@@ -45,7 +45,7 @@ class WalletButton : public ToolbarButton {
 
  private:
   void AddedToWidget() override;
-  std::pair<std::string, SkColor> GetBadgeTextAndBackground();
+  std::string GetBadgeText();
   void OnPreferenceChanged();
   void OnWalletPressed(const ui::Event& event);
   void OnNotificationUpdate(bool show_suggest_badge, size_t counter);

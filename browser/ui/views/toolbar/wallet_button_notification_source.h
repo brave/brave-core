@@ -26,6 +26,8 @@ using WalletButtonNotificationSourceCallback =
     base::RepeatingCallback<void(bool /* show suggest */,
                                  size_t /* counter */)>;
 
+// Provides and updates data fot the wallet button notification badge.
+// Like number of pending transactions or onboarding bubble to show.
 class WalletButtonNotificationSource
     : brave_wallet::mojom::TxServiceObserver,
       brave_wallet::KeyringServiceObserverBase {
