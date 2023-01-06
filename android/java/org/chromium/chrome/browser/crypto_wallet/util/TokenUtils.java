@@ -121,11 +121,13 @@ public class TokenUtils {
     public static void getBuyTokensFiltered(BlockchainRegistry blockchainRegistry,
             NetworkInfo selectedNetwork, TokenType tokenType,
             Callbacks.Callback1<BlockchainToken[]> callback) {
-        blockchainRegistry.getBuyTokens(OnRampProvider.WYRE, selectedNetwork.chainId, tokens -> {
-            BlockchainToken[] filteredTokens =
-                    filterTokens(selectedNetwork, tokens, tokenType, false);
-            callback.call(filteredTokens);
-        });
+        callback.call(new BlockchainToken[0]);
+        // TODO(pav): Un-comment to reuse, while adding support for other providers
+        //        blockchainRegistry.getBuyTokens(, selectedNetwork.chainId, tokens -> {
+        //            BlockchainToken[] filteredTokens =
+        //                    filterTokens(selectedNetwork, tokens, tokenType, false);
+        //            callback.call(filteredTokens);
+        //        });
     }
 
     public static void isCustomToken(BlockchainRegistry blockchainRegistry,
