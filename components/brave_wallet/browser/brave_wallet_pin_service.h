@@ -137,12 +137,12 @@ class BraveWalletPinService : public KeyedService,
   mojo::RemoteSet<mojom::BraveWalletPinServiceObserver> observers_;
 
   // Prefs service is used to store list of pinned items
-  raw_ptr<PrefService> prefs_;
+  raw_ptr<PrefService> prefs_ = nullptr;
 
   // JsonRpcService is used to fetch token metadata
-  raw_ptr<JsonRpcService> json_rpc_service_;
-  raw_ptr<ipfs::IpfsLocalPinService> local_pin_service_;
-  raw_ptr<IpfsService> ipfs_service_;
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
+  raw_ptr<ipfs::IpfsLocalPinService> local_pin_service_ = nullptr;
+  raw_ptr<IpfsService> ipfs_service_ = nullptr;
 };
 
 }  // namespace brave_wallet
