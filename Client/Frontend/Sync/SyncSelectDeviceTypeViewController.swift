@@ -10,7 +10,7 @@ class SyncDeviceTypeButton: UIControl {
 
   var imageView: UIImageView = UIImageView()
   var label: UILabel = UILabel()
-  var type: DeviceType!
+  var type: SyncDeviceType!
 
   // Color for the opposite state of `pressed`
   private var pressedReversedColor = UIColor.braveBlurpleTint
@@ -33,7 +33,7 @@ class SyncDeviceTypeButton: UIControl {
     }
   }
 
-  convenience init(image: String, title: String, type: DeviceType) {
+  convenience init(image: String, title: String, type: SyncDeviceType) {
     self.init(frame: CGRect.zero)
 
     backgroundColor = .braveBackground
@@ -96,7 +96,7 @@ class SyncDeviceTypeButton: UIControl {
 }
 
 class SyncSelectDeviceTypeViewController: SyncViewController {
-  var syncInitHandler: ((String, DeviceType) -> Void)?
+  var syncInitHandler: ((String, SyncDeviceType) -> Void)?
 
   let loadingView = UIView()
   let chooseDeviceLabel = UILabel().then {

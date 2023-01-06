@@ -224,7 +224,7 @@ class SyncWelcomeViewController: SyncViewController {
         }
 
         let view = SyncAddDeviceViewController(title: title, type: type, syncAPI: self.syncAPI)
-        view.doneHandler = self.pushSettings
+        view.addDeviceHandler = self.pushSettings
         view.navigationItem.hidesBackButton = true
         self.navigationController?.pushViewController(view, animated: true)
       }

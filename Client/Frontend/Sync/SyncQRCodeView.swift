@@ -14,7 +14,7 @@ class SyncQRCodeView: UIImageView {
     let json = syncApi.qrCodeJson(fromHexSeed: syncApi.hexSeed(fromSyncCode: syncApi.getSyncCode()))
     let result = QRCodeGenerator().generateQRCode(QRCodeGenerator.Options(data: json,
                                                                           shouldRender: true,
-                                                                          renderLogoInCenter: true,
+                                                                          renderLogoInCenter: false,
                                                                           renderModuleStyle: .circles,
                                                                           renderLocatorStyle: .rounded))
     image = result.image ?? getQRCodeImage(json, size: CGSize(width: barcodeSize, height: barcodeSize))

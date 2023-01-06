@@ -467,7 +467,7 @@ extension SyncSettingsTableViewController {
 
     view.syncInitHandler = { title, type in
       let view = SyncAddDeviceViewController(title: title, type: type, syncAPI: self.syncAPI)
-      view.doneHandler = {
+      view.addDeviceHandler = {
         self.navigationController?.popToViewController(self, animated: true)
       }
       self.navigationController?.pushViewController(view, animated: true)
