@@ -17,7 +17,7 @@ class BraveTabSearchButton : public TabSearchButton {
   BraveTabSearchButton(const BraveTabSearchButton&) = delete;
   BraveTabSearchButton& operator=(const BraveTabSearchButton&) = delete;
 
-  void disable_fill_color() { disable_fill_color_ = true; }
+  void set_fill_color_disabled() { fill_color_disabled_ = true; }
 
   // TabSearchButton overrides:
   SkPath GetBorderPath(const gfx::Point& origin,
@@ -27,7 +27,7 @@ class BraveTabSearchButton : public TabSearchButton {
   int GetCornerRadius() const override;
 
  private:
-  bool disable_fill_color_ = false;
+  bool fill_color_disabled_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_SEARCH_BUTTON_H_
