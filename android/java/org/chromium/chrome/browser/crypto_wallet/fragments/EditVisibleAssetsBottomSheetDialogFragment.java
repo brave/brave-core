@@ -278,7 +278,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                         tokens -> { setUpAssetsList(view, tokens, new BlockchainToken[0]); });
             } else if (mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
                 TokenUtils.getBuyTokensFiltered(blockchainRegistry, mSelectedNetwork,
-                        TokenUtils.TokenType.ERC20,
+                        TokenUtils.TokenType.ALL,
                         tokens -> { setUpAssetsList(view, tokens, new BlockchainToken[0]); });
             }
         }
