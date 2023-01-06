@@ -54,7 +54,7 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
 #if BUILDFLAG(IS_ANDROID)
     auto tab_models = TabModelList::models();
     auto iter = base::ranges::find_if(
-        tab_models, [](const auto& model) { return model->IsActive(); });
+        tab_models, [](const auto& model) { return model->IsActiveModel(); });
     if (iter == tab_models.end())
       return nullptr;
 
