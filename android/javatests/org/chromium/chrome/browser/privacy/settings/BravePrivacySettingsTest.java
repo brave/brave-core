@@ -72,8 +72,7 @@ public class BravePrivacySettingsTest {
         checkPreferenceExists(PREF_CLEAR_BROWSING_DATA);
         checkPreferenceExists(PREF_DO_NOT_TRACK);
         checkPreferenceExists(PREF_HTTPS_FIRST_MODE);
-        // TODO : Need to add back the test once we have fix ready for safe browsing
-        // checkPreferenceExists(PREF_SAFE_BROWSING);
+        checkPreferenceExists(PREF_SAFE_BROWSING);
         checkPreferenceExists(PREF_SECURE_DNS);
         checkPreferenceExists(PREF_INCOGNITO_LOCK);
         checkPreferenceExists(PREF_PHONE_AS_A_SECURITY_KEY);
