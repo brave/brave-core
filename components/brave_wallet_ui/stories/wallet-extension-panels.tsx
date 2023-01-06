@@ -63,7 +63,6 @@ import WalletPanelStory from './wrappers/wallet-panel-story-wrapper'
 
 // reducers & slices
 import { walletApi } from '../common/slices/api.slice'
-import { createSendCryptoReducer } from '../common/reducers/send_crypto_reducer'
 import { createWalletReducer } from '../common/slices/wallet.slice'
 import { createPageReducer } from '../page/reducers/page_reducer'
 import { createPanelReducer } from '../panel/reducers/panel_reducer'
@@ -80,7 +79,6 @@ import { mockAccountAssetOptions, mockBasicAttentionToken, mockEthToken, mockNew
 import { mockPanelState } from './mock-data/mock-panel-state'
 import { mockPageState } from './mock-data/mock-page-state'
 import { mockWalletState } from './mock-data/mock-wallet-state'
-import { mockSendCryptoState } from './mock-data/send-crypto-state'
 import { mockUserAccounts } from './mock-data/user-accounts'
 import { BuyOptions } from '../options/buy-with-options'
 
@@ -357,8 +355,7 @@ function createStoreWithCustomState (customWalletState: Partial<WalletState> = {
       }),
       page: createPageReducer(mockPageState),
       panel: createPanelReducer(mockPanelState),
-      [walletApi.reducerPath]: walletApi.reducer,
-      sendCrypto: createSendCryptoReducer(mockSendCryptoState)
+      [walletApi.reducerPath]: walletApi.reducer
 
     },
     devTools: true,
