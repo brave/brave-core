@@ -969,18 +969,21 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 }
             } else if (mActivityType == ActivityType.BUY
                     && mSelectedNetwork.chainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
-                assert mBlockchainRegistry != null;
-                String asset = mFromAssetText.getText().toString();
-                mBlockchainRegistry.getBuyUrl(OnRampProvider.WYRE,
-                        BraveWalletConstants.MAINNET_CHAIN_ID, from, asset, value, (url, error) -> {
-                            if (error != null && !error.isEmpty() && Utils.isDebuggable(this)) {
-                                Log.e(TAG, "Could not get buy URL: " + error);
-                                return;
-                            }
-
-                            TabUtils.openUrlInNewTab(false, url);
-                            TabUtils.bringChromeTabbedActivityToTheTop(this);
-                        });
+                // TODO(pav): Un-comment to reuse, while adding support for other providers
+                //                assert mBlockchainRegistry != null;
+                //                String asset = mFromAssetText.getText().toString();
+                //                mBlockchainRegistry.getBuyUrl(,
+                //                        BraveWalletConstants.MAINNET_CHAIN_ID, from, asset, value,
+                //                        (url, error) -> {
+                //                            if (error != null && !error.isEmpty() &&
+                //                            Utils.isDebuggable(this)) {
+                //                                Log.e(TAG, "Could not get buy URL: " + error);
+                //                                return;
+                //                            }
+                //
+                //                            TabUtils.openUrlInNewTab(false, url);
+                //                            TabUtils.bringChromeTabbedActivityToTheTop(this);
+                //                        });
             } else if (mActivityType == ActivityType.SWAP) {
                 if (mCurrentBlockchainToken != null) {
                     String btnText = mBtnBuySendSwap.getText().toString();
