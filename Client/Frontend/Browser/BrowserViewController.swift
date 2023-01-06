@@ -1148,6 +1148,7 @@ public class BrowserViewController: UIViewController {
     // TODO: Remove the dispatch after with a proper fix and fix calling present functions before super.viewDidAppear
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
       self.presentP3AScreenCallout()
+      self.presentBottomBarCallout()
       self.presentVPNAlertCallout()
       self.presentDefaultBrowserScreenCallout()
       self.presentBraveRewardsScreenCallout()

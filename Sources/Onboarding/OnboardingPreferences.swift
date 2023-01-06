@@ -43,6 +43,11 @@ extension Preferences {
       key: "fullScreenCallout.full-screen-cookie-consent-notices-callout-completed",
       default: false)
     
+    /// Whether the bottom bar callout is shown.
+    public static let bottomBarCalloutCompleted = Option<Bool>(
+      key: "fullScreenCallout.full-screen-bottom-bar-callout-completed",
+      default: false)
+    
     /// Whether the vpn callout is shown.
     public static let vpnCalloutCompleted = Option<Bool>(
       key: "fullScreenCallout.full-screen-vpn-callout-completed",
@@ -51,11 +56,6 @@ extension Preferences {
     /// Whether the rewards callout is shown.
     public static let rewardsCalloutCompleted = Option<Bool>(
       key: "fullScreenCallout.full-screen-rewards-callout-completed",
-      default: false)
-    
-    /// Whether the whats new callout should be shown.
-    public static let whatsNewCalloutOptIn = Option<Bool>(
-      key: "fullScreenCallout.full-screen-whats-new-callout-completed",
       default: false)
     
     /// Whether the ntp callout is shown.
