@@ -53,7 +53,7 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
     DCHECK(tab_session_id.is_valid());
 
 #if BUILDFLAG(IS_ANDROID)
-    auto* tab_model = TabModelList::FindTabModelWithId(desired_id);
+    auto* tab_model = TabModelList::FindTabModelWithId(window_session_id);
     if (!tab_model)
       return nullptr;
 #else
