@@ -4,6 +4,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.TransactionType;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public final class WalletConstants {
@@ -49,8 +50,10 @@ public final class WalletConstants {
     // To clear prefs while resetting wallet
     public static final String[] BRAVE_WALLET_PREFS = {PREF_SHOW_BRIDGE_INFO_DIALOG};
 
-    public static List<String> BUY_SUPPORTED_NETWORKS =
-            Arrays.asList(BraveWalletConstants.MAINNET_CHAIN_ID);
+    // TODO(pav): We should maintain separate list of supported network list per provider so rename
+    // this accordingly. e.g. BUY_SUPPORTED_PROVIDER_NAME_NETWORKS
+    public static List<String> BUY_SUPPORTED_NETWORKS = Collections.emptyList();
+    //            Arrays.asList(BraveWalletConstants.MAINNET_CHAIN_ID);
     //            BraveWalletConstants.RINKEBY_CHAIN_ID,
     //            BraveWalletConstants.ROPSTEN_CHAIN_ID, BraveWalletConstants.GOERLI_CHAIN_ID,
     //            BraveWalletConstants.KOVAN_CHAIN_ID, BraveWalletConstants.LOCALHOST_CHAIN_ID
