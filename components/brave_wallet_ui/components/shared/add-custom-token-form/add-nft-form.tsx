@@ -22,6 +22,8 @@ import {
 // components
 import { SelectNetworkDropdown } from '../../desktop'
 import { NavButton } from '../../extension'
+import Tooltip from '../tooltip'
+import { FormErrorsList } from './form-errors-list'
 
 // styles
 import {
@@ -165,16 +167,35 @@ export const AddNftForm = (props: Props) => {
     onHideForm()
   }, [resetInputFields, onHideForm])
 
+  // computed
+  const customAssetsNetworkError = !customAssetsNetwork?.chainId
+  const tokenNameError = tokenName === ''
+  const tokenSymbolError = tokenSymbol === ''
+  const tokenContractAddressError =
+    tokenContractAddress === '' ||
+    (customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL &&
+      !tokenContractAddress.toLowerCase().startsWith('0x')) ||
+    (customAssetsNetwork?.coin === BraveWallet.CoinType.ETH && tokenID === '')
+
+  const buttonDisabled = tokenNameError ||
+    tokenSymbolError ||
+    tokenContractAddressError ||
+    customAssetsNetworkError
+
   // memos
-  const buttonDisabled = React.useMemo((): boolean => {
-    return tokenName === '' ||
-      tokenSymbol === '' ||
-      tokenContractAddress === '' ||
-      !customAssetsNetwork ||
-      (customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL &&
-        !tokenContractAddress.toLowerCase().startsWith('0x')) ||
-      (customAssetsNetwork?.coin === BraveWallet.CoinType.ETH && tokenID === '')
-  }, [tokenName, tokenSymbol, tokenID, tokenContractAddress, customAssetsNetwork])
+  const formErrors = React.useMemo(() => {
+    return [
+      tokenContractAddressError && getLocale('braveWalletInvalidTokenContractAddressError'),
+      customAssetsNetworkError && getLocale('braveWalletNetworkIsRequiredError'),
+      tokenNameError && getLocale('braveWalletTokenNameIsRequiredError'),
+      tokenSymbolError && getLocale('braveWalletTokenSymbolIsRequiredError')
+    ]
+  }, [
+    customAssetsNetworkError,
+    tokenNameError,
+    tokenContractAddressError,
+    tokenSymbolError
+  ])
 
   // effects
   React.useEffect(() => {
@@ -256,12 +277,18 @@ export const AddNftForm = (props: Props) => {
           text={getLocale('braveWalletButtonCancel')}
           buttonType='secondary'
         />
-        <NavButton
-          onSubmit={onClickAddCustomToken}
-          text={getLocale('braveWalletWatchListAdd')}
-          buttonType='primary'
-          disabled={buttonDisabled}
-        />
+        <Tooltip
+          text={<FormErrorsList errors={formErrors} />}
+          isVisible={buttonDisabled}
+          verticalPosition='above'
+        >
+          <NavButton
+            onSubmit={onClickAddCustomToken}
+            text={getLocale('braveWalletWatchListAdd')}
+            buttonType='primary'
+            disabled={buttonDisabled}
+          />
+        </Tooltip>
       </ButtonRow>
     </FormWrapper>
   )

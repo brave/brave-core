@@ -123,8 +123,18 @@ export const getBuyAssetUrl = () => {
   return 'brave.com'
 }
 
-export const getBlockchainTokenInfo = async (contractAddress: string): Promise<GetBlockchainTokenInfoReturnInfo> => {
+export const getBlockchainTokenInfo = async (
+  contractAddress: string
+): Promise<GetBlockchainTokenInfoReturnInfo> => {
+  if (
+    contractAddress.toLowerCase() ===
+    mockBasicAttentionToken.contractAddress.toLowerCase()
+  ) {
+    return {
+      token: mockBasicAttentionToken
+    }
+  }
   return {
-    token: mockBasicAttentionToken
+    token: null
   }
 }

@@ -808,4 +808,9 @@
   <message name="IDS_BRAVE_SWAP_ZERO_EX_PRIVACY" desc="0x swap full privacy policy link text">Click here for 0x Privacy Policy.</message>
   <message name="IDS_BRAVE_SWAP_JUPITER_PRIVACY" desc="Jupiter swap full privacy policy link text">Click here for Jupiter Privacy Policy.</message>
   <message name="IDS_BRAVE_WALLET_ACTIVITY" desc="Wallet activity and transactions">Activity</message>
+  <message name="IDS_BRAVE_WALLET_NETWORK_IS_REQUIRED_ERROR" desc="Error explaining that a network has not been selected">Network is required</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_NAME_IS_REQUIRED_ERROR" desc="Error explaining that a Token name value has not been entered">Token name is required</message>
+  <message name="IDS_BRAVE_WALLET_INVALID_TOKEN_CONTRACT_ADDRESS_ERROR" desc="Error explaining that an invalid or empty token contract address has been entered as a form value">Invalid or empty token contract address</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_SYMBOL_IS_REQUIRED_ERROR" desc="Error explaining that a Token symbol value has not been entered">Token symbol is required</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_DECIMALS_IS_REQUIRED_ERROR" desc="Error explaining that a Token decimals value has not been entered">Token decimals of precision value is required</message>
 </grit-part>
