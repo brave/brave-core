@@ -42,7 +42,6 @@ struct PlaylistItem {
 // Used by the web UI to bootstrap bidirectional communication.
 // the WebUI page's |BrowserProxy| singleton calls this method
 // when the page is first initialized.
-[EnableIfNot=is_android]
 interface PageHandlerFactory {
   CreatePageHandler(pending_remote<PlaylistServiceObserver> service_observer,
                     pending_receiver<PlaylistService> service);
