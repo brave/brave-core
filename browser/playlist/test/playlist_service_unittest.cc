@@ -15,9 +15,9 @@
 #include "brave/components/playlist/features.h"
 #include "brave/components/playlist/media_detector_component_manager.h"
 #include "brave/components/playlist/playlist_constants.h"
-#include "brave/components/playlist/playlist_service_helper.h"
 #include "brave/components/playlist/playlist_service_observer.h"
 #include "brave/components/playlist/pref_names.h"
+#include "brave/components/playlist/type_converter.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/test/base/testing_profile.h"
@@ -149,6 +149,15 @@ class PlaylistServiceUnitTest : public testing::Test {
     item->media_source = item->media_path =
         https_server()->GetURL("/invalid_media_file");
     return item;
+  }
+
+  mojom::PlaylistPtr GetPlaylist(const std::string& id) {
+    auto* playlist_value = prefs()->GetDict(kPlaylistsPref).FindDict(id);
+    if (!playlist_value)
+      return nullptr;
+
+    return ConvertValueToPlaylist(*playlist_value,
+                                  prefs()->GetDict(kPlaylistItemsPref));
   }
 
   // testing::Test:
@@ -422,13 +431,11 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
 
     service->GetPlaylistItem(
         id, base::BindLambdaForTesting([&](mojom::PlaylistItemPtr item) {
-          auto item_value = Type::Converter::ConvertPlaylistItemToValue(item);
-          auto media_src = https_server()->GetURL("/valid_media_file_1").spec();
-          item_value.Set(Type::Converter::kPlaylistItemMediaSrcKey, media_src);
-          item_value.Set(Type::Converter::kPlaylistItemMediaFilePathKey,
-                         media_src);
-          service->UpdatePlaylistItemValue(id,
-                                           base::Value(std::move(item_value)));
+          auto media_src = https_server()->GetURL("/valid_media_file_1");
+          item->media_source = media_src;
+          item->media_path = media_src;
+          service->UpdatePlaylistItemValue(
+              id, base::Value(ConvertPlaylistItemToValue(item)));
 
           service->RecoverLocalDataForItem(id);
           WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
@@ -531,7 +538,7 @@ TEST_F(PlaylistServiceUnitTest, CreateAndRemovePlaylist) {
       }));
 
   // Add a new playlist
-  mojom::PlaylistPtr new_playlist = mojom::New();
+  mojom::PlaylistPtr new_playlist = mojom::Playlist::New();
   new_playlist->name = "new playlist";
   {
     bool called = false;
@@ -712,20 +719,17 @@ TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
 
   // Precondition - Default playlist exists and its items should be empty.
   auto* prefs = this->prefs();
-  auto* default_playlist =
-      prefs->GetDict(kPlaylistsPref).FindDict(kDefaultPlaylistID);
+  auto default_playlist = GetPlaylist(kDefaultPlaylistID);
   ASSERT_TRUE(default_playlist);
-  auto* items = default_playlist->FindList(Type::Converter::kPlaylistItemsKey);
-  ASSERT_TRUE(items);
-  ASSERT_TRUE(items->empty());
+  ASSERT_TRUE(default_playlist->items.empty());
 
   const base::flat_set<std::string> item_ids = {"id1", "id2", "id3"};
   // Prepare dummy items.
   for (const auto& id : item_ids) {
-    ScopedDictPrefUpdate items_update(prefs, kPlaylistItemsPref);
-    auto item = mojom::PlaylistItem::New();
-    item->id = id;
-    items_update->Set(id, Type::Converter::ConvertPlaylistItemToValue(item));
+    auto dummy_item = mojom::PlaylistItem::New();
+    dummy_item->id = id;
+    service->UpdatePlaylistItemValue(
+        id, base::Value(ConvertPlaylistItemToValue(dummy_item)));
   }
   for (const auto& id : item_ids)
     ASSERT_TRUE(prefs->GetDict(kPlaylistItemsPref).FindDict(id));
@@ -735,15 +739,13 @@ TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
   for (int i = 0; i < 2; i++) {
     EXPECT_TRUE(service->AddItemsToPlaylist(
         kDefaultPlaylistID, {item_ids.begin(), item_ids.end()}));
-    default_playlist =
-        prefs->GetDict(kPlaylistsPref).FindDict(kDefaultPlaylistID);
-    EXPECT_TRUE(default_playlist);
 
-    items = default_playlist->FindList(Type::Converter::kPlaylistItemsKey);
-    EXPECT_TRUE(items);
+    default_playlist = GetPlaylist(kDefaultPlaylistID);
+    EXPECT_TRUE(default_playlist);
     base::flat_set<std::string> stored_ids;
-    base::ranges::transform(*items, std::inserter(stored_ids, stored_ids.end()),
-                            [](const auto& item) { return item.GetString(); });
+    base::ranges::transform(default_playlist->items,
+                            std::inserter(stored_ids, stored_ids.end()),
+                            [](const auto& item) { return item->id; });
     EXPECT_EQ(item_ids, stored_ids);
   }
 
@@ -763,67 +765,63 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
   base::flat_set<std::string> item_ids = {"id1", "id2", "id3"};
   // Prepare dummy items.
   for (const auto& id : item_ids) {
-    ScopedDictPrefUpdate items_update(prefs, kPlaylistItemsPref);
-    auto item = mojom::PlaylistItem::New();
-    item->id = id;
-    items_update->Set(id, Type::Converter::ConvertPlaylistItemToValue(item));
+    auto dummy_item = mojom::PlaylistItem::New();
+    dummy_item->id = id;
+    service->UpdatePlaylistItemValue(
+        id, base::Value(ConvertPlaylistItemToValue(dummy_item)));
   }
   for (const auto& id : item_ids)
     ASSERT_TRUE(prefs->GetDict(kPlaylistItemsPref).FindDict(id));
 
   ASSERT_TRUE(service->AddItemsToPlaylist(kDefaultPlaylistID,
                                           {item_ids.begin(), item_ids.end()}));
-  auto* playlist_value =
-      prefs->GetDict(kPlaylistsPref).FindDict(kDefaultPlaylistID);
-  ASSERT_TRUE(playlist_value);
-  auto* items = playlist_value->FindList(Type::Converter::kPlaylistItemsKey);
-  ASSERT_EQ(item_ids.size(), items->size());
+  auto playlist = GetPlaylist(kDefaultPlaylistID);
+  ASSERT_TRUE(playlist);
+  ASSERT_EQ(item_ids.size(), playlist->items.size());
 
-  mojom::Playlist another_playlist;
+  std::string another_playlist_id;
   service->CreatePlaylist(
-      another_playlist.Clone(),
+      mojom::Playlist::New(), 
       base::BindLambdaForTesting([&](mojom::PlaylistPtr new_list) {
-        another_playlist.id = new_list->id;
+        another_playlist_id = new_list->id.value_or(std::string());
       }));
+  ASSERT_FALSE(another_playlist_id.empty());
 
-  playlist_value =
-      prefs->GetDict(kPlaylistsPref).FindDict(*another_playlist.id);
-  ASSERT_TRUE(playlist_value);
-  items = playlist_value->FindList(Type::Converter::kPlaylistItemsKey);
-  ASSERT_TRUE(items->empty());
+  playlist = GetPlaylist(another_playlist_id);
+  ASSERT_TRUE(playlist);
+  ASSERT_TRUE(playlist->items.empty());
 
   // Try moving all items from default list to another playlist.
   for (const auto& id : item_ids) {
     EXPECT_TRUE(service->MoveItem(PlaylistId(kDefaultPlaylistID),
-                                  PlaylistId(*another_playlist.id),
+                                  PlaylistId(another_playlist_id),
                                   PlaylistItemId(id)));
   }
-  playlist_value =
-      prefs->GetDict(kPlaylistsPref).FindDict(*another_playlist.id);
-  EXPECT_TRUE(playlist_value);
-  items = playlist_value->FindList(Type::Converter::kPlaylistItemsKey);
+  playlist = GetPlaylist(another_playlist_id);
+  EXPECT_TRUE(playlist);
   base::flat_set<std::string> stored_ids;
-  base::ranges::transform(*items, std::inserter(stored_ids, stored_ids.end()),
-                          [](const auto& item) { return item.GetString(); });
+  base::ranges::transform(playlist->items,
+                          std::inserter(stored_ids, stored_ids.end()),
+                          [](const auto& item) { return item->id; });
   EXPECT_EQ(item_ids, stored_ids);
-  playlist_value = prefs->GetDict(kPlaylistsPref).FindDict(kDefaultPlaylistID);
-  EXPECT_TRUE(
-      playlist_value->FindList(Type::Converter::kPlaylistItemsKey)->empty());
+
+  playlist = GetPlaylist(kDefaultPlaylistID);
+  EXPECT_TRUE(playlist);
+  EXPECT_TRUE(playlist->items.empty());
 
   // Try moving items to non-existing playlist. Then it should fail and the
   // original playlist should be unchanged.
   for (const auto& id : item_ids) {
-    EXPECT_FALSE(service->MoveItem(PlaylistId(*another_playlist.id),
+    EXPECT_FALSE(service->MoveItem(PlaylistId(another_playlist_id),
                                    PlaylistId("non-existing-id"),
                                    PlaylistItemId(id)));
   }
-  playlist_value =
-      prefs->GetDict(kPlaylistsPref).FindDict(*another_playlist.id);
-  EXPECT_TRUE(playlist_value);
-  items = playlist_value->FindList(Type::Converter::kPlaylistItemsKey);
+  playlist = GetPlaylist(another_playlist_id);
+  EXPECT_TRUE(playlist);
   stored_ids.clear();
-  base::ranges::transform(*items, std::inserter(stored_ids, stored_ids.end()),
-                          [](const auto& item) { return item.GetString(); });
+  base::ranges::transform(playlist->items,
+                          std::inserter(stored_ids, stored_ids.end()),
+                          [](const auto& item) { return item->id; });
   EXPECT_EQ(item_ids, stored_ids);
 }
 

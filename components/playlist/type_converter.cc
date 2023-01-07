@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/playlist/playlist_service_helper.h"
+#include "brave/components/playlist/type_converter.h"
 
 #include <utility>
 #include <vector>
@@ -14,7 +14,29 @@
 
 namespace playlist {
 
-bool TypeConverter::IsItemValueMalformed(const base::Value::Dict& dict) {
+namespace {
+
+// Keys for Playlist's base::Dict --------------------------------------------
+constexpr char kPlaylistIDKey[] = "id";
+constexpr char kPlaylistNameKey[] = "name";
+constexpr char kPlaylistItemsKey[] = "items";
+
+// Keys for PlaylistItem's base::Dict ----------------------------------------
+constexpr char kPlaylistItemIDKey[] = "id";
+constexpr char kPlaylistItemPageSrcKey[] = "pageSrc";
+constexpr char kPlaylistItemMediaSrcKey[] = "mediaSrc";
+constexpr char kPlaylistItemThumbnailSrcKey[] = "thumbnailSrc";
+constexpr char kPlaylistItemThumbnailPathKey[] = "thumbnailPath";
+constexpr char kPlaylistItemMediaFilePathKey[] = "mediaFilePath";
+constexpr char kPlaylistItemMediaFileCachedKey[] = "mediaCached";
+constexpr char kPlaylistItemTitleKey[] = "title";
+constexpr char kPlaylistItemAuthorKey[] = "author";
+constexpr char kPlaylistItemDurationKey[] = "duration";
+constexpr char kPlaylistItemLastPlayedPositionKey[] = "lastPlayedPosition";
+
+}  // namespace
+
+bool IsItemValueMalformed(const base::Value::Dict& dict) {
   return !dict.contains(kPlaylistItemIDKey) ||
          !dict.contains(kPlaylistItemTitleKey) ||
          !dict.contains(kPlaylistItemThumbnailPathKey) ||
@@ -30,9 +52,9 @@ bool TypeConverter::IsItemValueMalformed(const base::Value::Dict& dict) {
          !dict.contains(kPlaylistItemLastPlayedPositionKey);
 }
 
-mojom::PlaylistItemPtr TypeConverter::ConvertValueToPlaylistItem(
+mojom::PlaylistItemPtr ConvertValueToPlaylistItem(
     const base::Value::Dict& dict) {
-  DCHECK(!TypeConverter::IsItemValueMalformed(dict));
+  DCHECK(!IsItemValueMalformed(dict));
 
   auto item = mojom::PlaylistItem::New();
   item->id = *dict.FindString(kPlaylistItemIDKey);
@@ -50,7 +72,7 @@ mojom::PlaylistItemPtr TypeConverter::ConvertValueToPlaylistItem(
   return item;
 }
 
-base::Value::Dict TypeConverter::ConvertPlaylistItemToValue(
+base::Value::Dict ConvertPlaylistItemToValue(
     const mojom::PlaylistItemPtr& item) {
   base::Value::Dict playlist_value;
   playlist_value.Set(kPlaylistItemIDKey, item->id);
@@ -70,7 +92,7 @@ base::Value::Dict TypeConverter::ConvertPlaylistItemToValue(
   return playlist_value;
 }
 
-mojom::PlaylistPtr TypeConverter::ConvertValueToPlaylist(
+mojom::PlaylistPtr ConvertValueToPlaylist(
     const base::Value::Dict& playlist_dict,
     const base::Value::Dict& items_dict) {
   mojom::PlaylistPtr playlist = mojom::Playlist::New();
@@ -85,7 +107,7 @@ mojom::PlaylistPtr TypeConverter::ConvertValueToPlaylist(
   return playlist;
 }
 
-base::Value::Dict TypeConverter::ConvertPlaylistToValue(
+base::Value::Dict ConvertPlaylistToValue(
     const mojom::PlaylistPtr& playlist) {
   base::Value::Dict value;
   value.Set(kPlaylistIDKey, playlist->id.value());
