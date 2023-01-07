@@ -68,6 +68,7 @@ using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockCosmeticFilteringChildFrames;
 using brave_shields::features::kBraveAdblockCspRules;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
+using brave_shields::features::kBraveAdblockMobileNotificationsListDefault;
 using brave_shields::features::kBraveDarkModeBlock;
 using brave_shields::features::kBraveDomainBlock;
 using brave_shields::features::kBraveDomainBlock1PES;
@@ -133,6 +134,12 @@ constexpr char kBraveAdblockDefault1pBlockingName[] =
 constexpr char kBraveAdblockDefault1pBlockingDescription[] =
     "Allow Brave Shields to block first-party network requests in Standard "
     "blocking mode";
+
+constexpr char kBraveAdblockMobileNotificationsListDefaultName[] =
+    "Treat 'Fanboy's Mobile Notifications List' as a default list source";
+constexpr char kBraveAdblockMobileNotificationsListDefaultDescription[] =
+    "Enables the 'Fanboy's Mobile Notifications List' regional list if its "
+    "toggle in brave://adblock hasn't otherwise been modified";
 
 constexpr char kBraveAdsCustomNotificationsName[] =
     "Enable Brave Ads custom push notifications";
@@ -645,6 +652,10 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
      flag_descriptions::kBraveAdblockDefault1pBlockingName,                 \
      flag_descriptions::kBraveAdblockDefault1pBlockingDescription, kOsAll,  \
      FEATURE_VALUE_TYPE(kBraveAdblockDefault1pBlocking)},                   \
+    {"brave-adblock-mobile-notifications-list-default",                         \
+     flag_descriptions::kBraveAdblockMobileNotificationsListDefaultName,        \
+     flag_descriptions::kBraveAdblockMobileNotificationsListDefaultDescription, \
+     kOsAll, FEATURE_VALUE_TYPE(kBraveAdblockMobileNotificationsListDefault)},  \
     {"brave-dark-mode-block",                                               \
      flag_descriptions::kBraveDarkModeBlockName,                            \
      flag_descriptions::kBraveDarkModeBlockDescription, kOsAll,             \
