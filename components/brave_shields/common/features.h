@@ -13,6 +13,7 @@
 
 namespace brave_shields {
 namespace features {
+BASE_DECLARE_FEATURE(kBraveAdblockAnnoyancesListDefault);
 BASE_DECLARE_FEATURE(kBraveAdblockDefault1pBlocking);
 BASE_DECLARE_FEATURE(kBraveAdblockCnameUncloaking);
 BASE_DECLARE_FEATURE(kBraveAdblockCollapseBlockedElements);

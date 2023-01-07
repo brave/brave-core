@@ -8,6 +8,8 @@
 namespace brave_shields {
 namespace prefs {
 
+const char kAdBlockAnnoyancesListSettingTouched[] =
+    "brave.ad_block.annoyances_list_setting_touched";
 const char kAdBlockCheckedDefaultRegion[] =
     "brave.ad_block.checked_default_region";
 const char kAdBlockCookieListOptInShown[] =

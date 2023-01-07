@@ -10,6 +10,11 @@
 namespace brave_shields {
 namespace features {
 
+// When enabled, Brave will enable "Fanboy Annoyances List" by default unless
+// overridden by a locally set preference.
+BASE_FEATURE(kBraveAdblockAnnoyancesListDefault,
+             "BraveAdblockAnnoyancesListDefault",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, Brave will block first-party requests that appear in a filter
 // list when Shields is in "standard" blocking mode. When disabled, Brave will
 // allow first-party requests in "standard" blocking mode regardless of whether

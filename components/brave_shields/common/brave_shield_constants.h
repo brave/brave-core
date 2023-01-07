@@ -39,6 +39,7 @@ const char kObsoleteFingerprinting[] = "fingerprinting";
 const base::FilePath::CharType kCustomSubscriptionListText[] =
     FILE_PATH_LITERAL("list_text.txt");
 
+const char kAnnoyancesListUuid[] = "67E792D4-AE03-4D1A-9EDE-80E01C81F9B8";
 const char kCookieListUuid[] = "AC023D22-AE88-4060-A978-4FEEEC4221693";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {

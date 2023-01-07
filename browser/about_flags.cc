@@ -60,6 +60,7 @@
 #include "brave/browser/android/safe_browsing/features.h"
 #endif
 
+using brave_shields::features::kBraveAdblockAnnoyancesListDefault;
 using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCookieListDefault;
@@ -89,6 +90,12 @@ using safe_browsing::features::kBraveAndroidSafeBrowsing;
 namespace flag_descriptions {
 
 namespace {
+
+constexpr char kBraveAdblockAnnoyancesListDefaultName[] =
+    "Treat 'Fanboy Annoyances List' as a default list source";
+constexpr char kBraveAdblockAnnoyancesListDefaultDescription[] =
+    "Enables the 'Fanboy Annoyances List' regional list if its toggle "
+    "in brave://adblock hasn't otherwise been modified";
 
 constexpr char kBraveAdblockCnameUncloakingName[] = "Enable CNAME uncloaking";
 constexpr char kBraveAdblockCnameUncloakingDescription[] =
@@ -612,6 +619,10 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
      flag_descriptions::kBraveNTPBrandedWallpaperDemoName,                  \
      flag_descriptions::kBraveNTPBrandedWallpaperDemoDescription, kOsAll,   \
      FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaperDemo)},                    \
+    {"brave-adblock-annoyances-list-default",                               \
+     flag_descriptions::kBraveAdblockAnnoyancesListDefaultName,             \
+     flag_descriptions::kBraveAdblockAnnoyancesListDefaultDescription,      \
+     kOsAll, FEATURE_VALUE_TYPE(kBraveAdblockAnnoyancesListDefault)},       \
     {"brave-adblock-cname-uncloaking",                                      \
      flag_descriptions::kBraveAdblockCnameUncloakingName,                   \
      flag_descriptions::kBraveAdblockCnameUncloakingDescription, kOsAll,    \
