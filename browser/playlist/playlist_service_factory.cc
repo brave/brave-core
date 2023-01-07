@@ -54,7 +54,7 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
     if (iter == tab_models.end())
       return nullptr;
 
-    auto* active_contents = iter->GetActiveWebContents();
+    auto* active_contents = (*iter)->GetActiveWebContents();
     DCHECK_EQ(active_contents->GetBrowserContext(), profile_.get());
     return active_contents;
 #else
