@@ -781,7 +781,7 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
 
   std::string another_playlist_id;
   service->CreatePlaylist(
-      mojom::Playlist::New(), 
+      mojom::Playlist::New(),
       base::BindLambdaForTesting([&](mojom::PlaylistPtr new_list) {
         another_playlist_id = new_list->id.value_or(std::string());
       }));

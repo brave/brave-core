@@ -107,8 +107,7 @@ mojom::PlaylistPtr ConvertValueToPlaylist(
   return playlist;
 }
 
-base::Value::Dict ConvertPlaylistToValue(
-    const mojom::PlaylistPtr& playlist) {
+base::Value::Dict ConvertPlaylistToValue(const mojom::PlaylistPtr& playlist) {
   base::Value::Dict value;
   value.Set(kPlaylistIDKey, playlist->id.value());
   value.Set(kPlaylistNameKey, playlist->name);
