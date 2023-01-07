@@ -579,9 +579,7 @@ bool IsBraveShieldsManaged(PrefService* prefs,
   DCHECK(map);
   content_settings::SettingInfo info;
   map->GetWebsiteSetting(url, url, ContentSettingsType::BRAVE_SHIELDS, &info);
-  return (prefs->IsManagedPreference(kManagedBraveShieldsDisabledForUrls) ||
-          prefs->IsManagedPreference(kManagedBraveShieldsEnabledForUrls)) &&
-         info.source == content_settings::SettingSource::SETTING_SOURCE_POLICY;
+  return info.source == content_settings::SettingSource::SETTING_SOURCE_POLICY;
 }
 
 void SetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
