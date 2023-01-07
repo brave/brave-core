@@ -104,8 +104,8 @@ constexpr char kBraveAdblockCollapseBlockedElementsDescription[] =
 constexpr char kBraveAdblockCookieListDefaultName[] =
     "Treat 'Easylist-Cookie List' as a default list source";
 constexpr char kBraveAdblockCookieListDefaultDescription[] =
-    "Enables the 'Easylist-Cookie List' regional list regardless of its "
-    "toggle setting in brave://adblock";
+    "Enables the 'Easylist-Cookie List' regional list if its toggle "
+    "in brave://adblock hasn't otherwise been modified";
 
 constexpr char kBraveAdblockCookieListOptInName[] =
     "Show an opt-in bubble for the 'Easylist-Cookie List' filter";

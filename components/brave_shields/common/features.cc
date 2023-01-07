@@ -28,8 +28,8 @@ BASE_FEATURE(kBraveAdblockCnameUncloaking,
 BASE_FEATURE(kBraveAdblockCollapseBlockedElements,
              "BraveAdblockCollapseBlockedElements",
              base::FEATURE_ENABLED_BY_DEFAULT);
-// When enabled, Brave will treat "Easylist-Cookie List" as a default,
-// always-on list, overriding any locally set preference.
+// When enabled, Brave will enable "Easylist-Cookie List" by default unless
+// overridden by a locally set preference.
 BASE_FEATURE(kBraveAdblockCookieListDefault,
              "BraveAdblockCookieListDefault",
              base::FEATURE_DISABLED_BY_DEFAULT);
