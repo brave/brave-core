@@ -55,6 +55,7 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
       return nullptr;
 
     auto* active_contents = (*iter)->GetActiveWebContents();
+    DCHECK(active_contents);
     DCHECK_EQ(active_contents->GetBrowserContext(), profile_.get());
     return active_contents;
 #else
