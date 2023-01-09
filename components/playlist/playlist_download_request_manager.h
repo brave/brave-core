@@ -16,6 +16,7 @@
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "brave/components/playlist/media_detector_component_manager.h"
+#include "brave/components/playlist/mojom/playlist.mojom.h"
 #include "brave/components/playlist/playlist_types.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -41,7 +42,7 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
  public:
   struct Request {
     using Callback =
-        base::OnceCallback<void(const std::vector<PlaylistItemInfo>&)>;
+        base::OnceCallback<void(std::vector<mojom::PlaylistItemPtr>)>;
 
     Request();
     Request& operator=(const Request&) = delete;

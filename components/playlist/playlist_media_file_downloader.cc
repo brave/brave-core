@@ -132,20 +132,20 @@ void PlaylistMediaFileDownloader::DetachCachedFile(
 }
 
 void PlaylistMediaFileDownloader::DownloadMediaFileForPlaylistItem(
-    const PlaylistItemInfo& item,
+    const mojom::PlaylistItemPtr& item,
     const base::FilePath& base_dir) {
   DCHECK(!in_progress_);
 
   ResetDownloadStatus();
 
-  if (item.media_file_cached) {
+  if (item->cached) {
     DVLOG(2) << __func__ << ": media file is already downloaded";
-    NotifySucceed(current_item_->id, current_item_->media_file_path);
+    NotifySucceed(current_item_->id, current_item_->media_path.spec());
     return;
   }
 
   in_progress_ = true;
-  current_item_ = std::make_unique<PlaylistItemInfo>(item);
+  current_item_ = item->Clone();
   if (!download_manager_) {
     // Creates our own manager. The arguments below are what's used by
     // AwBrowserContext::RetrieveInProgressDownloadManager().
@@ -164,7 +164,7 @@ void PlaylistMediaFileDownloader::DownloadMediaFileForPlaylistItem(
 
   DCHECK(download::GetIOTaskRunner()) << "This should be set by embedder";
 
-  if (GURL media_url(current_item_->media_src); media_url.is_valid()) {
+  if (GURL media_url(current_item_->media_source); media_url.is_valid()) {
     playlist_dir_path_ = base_dir.AppendASCII(current_item_->id);
     DownloadMediaFile(media_url);
   } else {
@@ -243,7 +243,8 @@ void PlaylistMediaFileDownloader::OnMediaFileDownloaded(base::FilePath path) {
     // This fail is handled during the generation.
     // See |has_skipped_source_files| in DoGenerateSingleMediaFile().
     // |has_skipped_source_files| will be set to true.
-    VLOG(1) << __func__ << ": failed to download media file: " << current_item_;
+    DVLOG(1) << __func__ << ": failed to download media file: "
+             << current_item_->media_source;
     NotifyFail(current_item_->id);
     return;
   }

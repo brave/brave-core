@@ -16,6 +16,7 @@
 #include "base/scoped_multi_source_observation.h"
 #include "base/scoped_observation.h"
 #include "base/values.h"
+#include "brave/components/playlist/mojom/playlist.mojom.h"
 #include "brave/components/playlist/playlist_types.h"
 #include "components/download/public/common/download_item.h"
 #include "components/download/public/common/simple_download_manager.h"
@@ -76,7 +77,7 @@ class PlaylistMediaFileDownloader
   PlaylistMediaFileDownloader& operator=(const PlaylistMediaFileDownloader&) =
       delete;
 
-  void DownloadMediaFileForPlaylistItem(const PlaylistItemInfo& item,
+  void DownloadMediaFileForPlaylistItem(const mojom::PlaylistItemPtr& item,
                                         const base::FilePath& base_dir);
 
   void RequestCancelCurrentPlaylistGeneration();
@@ -122,7 +123,7 @@ class PlaylistMediaFileDownloader
 
   // All below variables are only for playlist creation.
   base::FilePath playlist_dir_path_;
-  std::unique_ptr<PlaylistItemInfo> current_item_;
+  mojom::PlaylistItemPtr current_item_;
 
   // true when this class is working for playlist now.
   bool in_progress_ = false;
