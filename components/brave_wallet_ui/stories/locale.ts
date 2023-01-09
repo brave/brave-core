@@ -690,7 +690,7 @@ provideStrings({
   braveWalletAssetFilterZToA: 'Name ↑',
 
   // Account Filter
-  braveWalletAccountFilterAllAccounts: 'All Accounts',
+  braveWalletAccountFilterAllAccounts: 'All accounts',
 
   // Transaction post-confirmation
 

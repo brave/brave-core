@@ -6,6 +6,9 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
 
+// Options
+import { AllAccountsOption } from '../../../options/account-filter-options'
+
 // Types
 import { WalletAccountType } from '../../../constants/types'
 
@@ -45,7 +48,7 @@ export const AccountFilterItem = (props: Props) => {
     <NetworkItemWrapper>
       <NetworkItemButton onClick={onClickSelectAccount}>
         <LeftSide>
-          {account.address !== '' && (
+          {account.address !== AllAccountsOption.address && (
             <AccountCircle orb={orb} />
           )}
           <NetworkName>
