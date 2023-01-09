@@ -131,8 +131,23 @@ class PlaylistMediaStreamer {
             }
 
             if let newItem = newItem, URL(string: newItem.src) != nil {
-              PlaylistItem.updateItem(newItem) {
-                resolver(.success(newItem))
+              let updatedItem = PlaylistInfo(name: newItem.name,
+                                             src: newItem.src,
+                                             pageSrc: item.pageSrc,  // Keep the same pageSrc
+                                             pageTitle: newItem.pageTitle,
+                                             mimeType: newItem.mimeType,
+                                             duration: newItem.duration,
+                                             detected: newItem.detected,
+                                             dateAdded: item.dateAdded, // Keep the same dateAdded
+                                             tagId: item.tagId,  // Keep the same tagId
+                                             order: item.order) // Keep the same order
+              
+              PlaylistItem.updateItem(updatedItem) {
+                resolver(.success(updatedItem))
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                  PlaylistManager.shared.autoDownload(item: updatedItem)
+                }
               }
             } else if cancelled {
               resolver(.failure(.cancelled))
