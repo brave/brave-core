@@ -91,6 +91,10 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
       return
     }
     
+    if ReadyState.from(message: message) != nil {
+      return
+    }
+    
     Self.processPlaylistInfo(
       handler: self,
       item: PlaylistInfo.from(message: message))
@@ -103,6 +107,12 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
       }
       return
     }
+    
+    if handler.playlistItems.contains(item.src) {
+      return
+    }
+    
+    handler.playlistItems.insert(item.src)
 
     Self.queue.async { [weak handler] in
       guard let handler = handler else { return }
@@ -245,6 +255,24 @@ extension PlaylistScriptHandler {
   static func updatePlaylistTab(tab: Tab, item: PlaylistInfo?) {
     if let handler = tab.getContentScript(name: Self.scriptName) as? PlaylistScriptHandler {
       Self.processPlaylistInfo(handler: handler, item: item)
+    }
+  }
+}
+
+extension PlaylistScriptHandler {
+  struct ReadyState: Codable {
+    let state: String
+    
+    static func from(message: WKScriptMessage) -> ReadyState? {
+      if !JSONSerialization.isValidJSONObject(message.body) {
+        return nil
+      }
+
+      guard let data = try? JSONSerialization.data(withJSONObject: message.body, options: [.fragmentsAllowed]) else {
+        return nil
+      }
+      
+      return try? JSONDecoder().decode(ReadyState.self, from: data)
     }
   }
 }
