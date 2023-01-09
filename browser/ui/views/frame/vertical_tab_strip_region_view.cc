@@ -433,8 +433,6 @@ void VerticalTabStripRegionView::Layout() {
         {scroll_view_->width(),
          scroll_contents_view_->GetPreferredSize().height()});
   }
-
-  UpdateNewTabButtonVisibility();
   UpdateTabSearchButtonVisibility();
 }
 
@@ -481,6 +479,8 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
           views::LayoutOrientation::kHorizontal);
     }
   }
+
+  UpdateNewTabButtonVisibility();
 
   PreferredSizeChanged();
   Layout();
@@ -536,21 +536,11 @@ void VerticalTabStripRegionView::OnTabStripModelChanged(
 }
 
 void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
+  const bool is_vertical_tabs =
+      tabs::features::ShouldShowVerticalTabs(browser_);
   auto* original_ntb = region_view_->new_tab_button();
-  // contents' height already includes NTB height when it's visible. Otherwise,
-  // we should add it manually.
-  const auto contents_height =
-      scroll_view_->contents()->height() +
-      (original_ntb->GetVisible() ? 0
-                                  : BraveNewTabButton::kHeightForVerticalTabs);
-  bool overflowed = tabs::features::ShouldShowVerticalTabs(browser_) &&
-                    scroll_view_->GetMaxHeight() < contents_height;
-  if (overflowed != original_ntb->GetVisible())
-    return;
-
-  original_ntb->SetVisible(!overflowed);
-  new_tab_button_->SetVisible(overflowed);
-  Layout();
+  original_ntb->SetVisible(!is_vertical_tabs);
+  new_tab_button_->SetVisible(is_vertical_tabs);
 }
 
 void VerticalTabStripRegionView::UpdateTabSearchButtonVisibility() {
