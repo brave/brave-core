@@ -450,7 +450,7 @@ class PlaylistWebLoader: UIView {
         self.webLoader = nil
       }
 
-      if let readyState = ReadyState.from(message: message) {
+      if let readyState = PlaylistScriptHandler.ReadyState.from(message: message) {
         isPageLoaded = true
         
         if readyState.state == "cancel" {
@@ -505,22 +505,6 @@ class PlaylistWebLoader: UIView {
         self.webLoader?.tab.webView?.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
         self.webLoader = nil
       }
-    }
-  }
-  
-  private struct ReadyState: Codable {
-    let state: String
-    
-    static func from(message: WKScriptMessage) -> ReadyState? {
-      if !JSONSerialization.isValidJSONObject(message.body) {
-        return nil
-      }
-
-      guard let data = try? JSONSerialization.data(withJSONObject: message.body, options: [.fragmentsAllowed]) else {
-        return nil
-      }
-      
-      return try? JSONDecoder().decode(ReadyState.self, from: data)
     }
   }
 }
