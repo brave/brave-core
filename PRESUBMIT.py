@@ -19,21 +19,6 @@ PRESUBMIT_VERSION = '2.0.0'
 # pylint: disable=line-too-long,protected-access
 
 
-# Use a custom git diff call instead of input_api.AffectedSourceFiles(). This
-# way we get non-staged files similar to how "git cl format" works.
-def _GetDiffFiles(input_api):
-    upstream_branch = input_api.change.UpstreamBranch()
-    if not upstream_branch:
-        cl = git_cl.Changelist()
-        upstream_branch = cl.GetUpstreamBranch()
-    upstream_commit = git_cl.RunGit(['merge-base', 'HEAD', upstream_branch])
-    upstream_commit = upstream_commit.strip()
-    changed_files_cmd = git_cl.BuildGitDiffCmd('--name-only', upstream_commit,
-                                               [])
-    diff_output = git_cl.RunGit(changed_files_cmd)
-    return diff_output.splitlines()
-
-
 # Adds support for chromium_presubmit_config.json5 and some helpers.
 def CheckToModifyInputApi(input_api, _output_api):
     chromium_presubmit_overrides.modify_input_api(input_api)
@@ -72,23 +57,25 @@ def CheckPatchFormatted(input_api, output_api):
 
     if not is_format_required or input_api.PRESUBMIT_FIX:
         # Use Prettier to format other file types.
-        prettier_types = (
-            '.js',
-            '.ts',
-            '.tsx',
+        files_to_check = (
+            r'.+\.js$',
+            r'.+\.ts$',
+            r'.+\.tsx$',
         )
+        files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
 
-        files_to_format = [
-            f for f in _GetDiffFiles(input_api)
-            if os.path.isfile(f) and f.endswith(prettier_types)
-        ]
+        file_filter = lambda f: input_api.FilterSourceFile(
+            f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+        affected_files = input_api.AffectedFiles(file_filter=file_filter,
+                                                 include_deletes=False)
+        files_to_format = [f.AbsoluteLocalPath() for f in affected_files]
 
         node_args = [
             brave_node.PathInNodeModules('prettier', 'bin-prettier'),
             '--write' if input_api.PRESUBMIT_FIX else '--check',
         ]
 
-        files_per_command = 10 if input_api.is_windows else 1000
+        files_per_command = 25 if input_api.is_windows else 1000
         for i in range(0, len(files_to_format), files_per_command):
             args = node_args + files_to_format[i:i + files_per_command]
             try:
