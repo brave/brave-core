@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -10,8 +11,8 @@ type PlaylistEventListener = (event: PlaylistMojo.PlaylistEvent) => void
 let apiInstance: API
 
 class API {
-  #pageCallbackRouter = new PlaylistMojo.PageCallbackRouter()
-  #pageHandler = new PlaylistMojo.PageHandlerRemote()
+  #pageCallbackRouter = new PlaylistMojo.PlaylistServiceObserverCallbackRouter()
+  #pageHandler = new PlaylistMojo.PlaylistServiceRemote()
 
   constructor () {
     const factory = PlaylistMojo.PageHandlerFactory.getRemote()
@@ -47,9 +48,8 @@ class API {
         playlistId, mojoUrl)
   }
 
-  addMediaFilesFromOpenTabsToPlaylist (playlistId: string) {
-    this.#pageHandler.addMediaFilesFromOpenTabsToPlaylist(
-        playlistId)
+  addMediaFilesFromActiveTabToPlaylist (playlistId: string) {
+    this.#pageHandler.addMediaFilesFromActiveTabToPlaylist(playlistId)
   }
 
   removeItemFromPlaylist (playlistId: string, itemId: string) {

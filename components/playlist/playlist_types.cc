@@ -47,27 +47,4 @@ bool PlaylistChangeParams::operator==(const PlaylistChangeParams& rhs) const {
   return change_type == rhs.change_type && playlist_id == rhs.playlist_id;
 }
 
-PlaylistInfo::PlaylistInfo() = default;
-PlaylistInfo::~PlaylistInfo() = default;
-PlaylistInfo::PlaylistInfo(const PlaylistInfo& rhs) = default;
-PlaylistInfo& PlaylistInfo::operator=(const PlaylistInfo& rhs) = default;
-PlaylistInfo::PlaylistInfo(PlaylistInfo&& rhs) noexcept = default;
-PlaylistInfo& PlaylistInfo::operator=(PlaylistInfo&& rhs) noexcept = default;
-
-PlaylistItemInfo::PlaylistItemInfo() = default;
-PlaylistItemInfo::PlaylistItemInfo(const Title& title,
-                                   const ThumbnailPath& thumbnail_path,
-                                   const MediaFilePath& media_file_path)
-    : title(title),
-      thumbnail_path(thumbnail_path),
-      media_file_path(media_file_path) {}
-
-PlaylistItemInfo::~PlaylistItemInfo() = default;
-PlaylistItemInfo::PlaylistItemInfo(const PlaylistItemInfo& rhs) = default;
-PlaylistItemInfo& PlaylistItemInfo::operator=(const PlaylistItemInfo& rhs) =
-    default;
-PlaylistItemInfo::PlaylistItemInfo(PlaylistItemInfo&& rhs) noexcept = default;
-PlaylistItemInfo& PlaylistItemInfo::operator=(PlaylistItemInfo&& rhs) noexcept =
-    default;
-
 }  // namespace playlist

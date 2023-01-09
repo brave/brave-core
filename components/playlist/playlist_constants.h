@@ -8,22 +8,6 @@
 
 namespace playlist {
 
-constexpr char kPlaylistIDKey[] = "id";
-constexpr char kPlaylistNameKey[] = "name";
-constexpr char kPlaylistItemsKey[] = "items";
-
-constexpr char kPlaylistItemIDKey[] = "id";
-constexpr char kPlaylistItemPageSrcKey[] = "pageSrc";
-constexpr char kPlaylistItemMediaSrcKey[] = "mediaSrc";
-constexpr char kPlaylistItemThumbnailSrcKey[] = "thumbnailSrc";
-constexpr char kPlaylistItemThumbnailPathKey[] = "thumbnailPath";
-constexpr char kPlaylistItemMediaFilePathKey[] = "mediaFilePath";
-constexpr char kPlaylistItemMediaFileCachedKey[] = "mediaCached";
-constexpr char kPlaylistItemTitleKey[] = "title";
-constexpr char kPlaylistItemAuthorKey[] = "author";
-constexpr char kPlaylistItemDurationKey[] = "duration";
-constexpr char kPlaylistItemLastPlayedPositionKey[] = "lastPlayedPosition";
-
 constexpr char kDefaultPlaylistID[] = "default";
 
 }  // namespace playlist
