@@ -42,6 +42,9 @@ import TransactionsScreen from '../../../../page/screens/transactions/transactio
 import { LocalIpfsNodeScreen } from '../../local-ipfs-node/local-ipfs-node'
 import { InspectNftsScreen } from '../../inspect-nfts/inspect-nfts'
 import { WalletPageActions } from '../../../../page/actions'
+import { useNftPin } from '../../../../common/hooks/nft-pin'
+import { BannerWrapper } from '../../../shared/style'
+import { NftIpfsBanner } from '../../nft-ipfs-banner/nft-ipfs-banner'
 
 interface ParamsType {
   category?: TopTabNavTypes
@@ -69,6 +72,7 @@ const CryptoView = (props: Props) => {
 
   // hooks
   useBalanceUpdater()
+  const { isIpfsBannerVisible, onToggleShowIpfsBanner } = useNftPin()
 
   // accounts tab state
   const accountToRemove = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.accountToRemove)
@@ -185,6 +189,11 @@ const CryptoView = (props: Props) => {
           description={getLocale('braveWalletBackupWarningText')}
         />
       }
+      {isIpfsBannerVisible &&
+        <BannerWrapper>
+          <NftIpfsBanner onDismiss={onToggleShowIpfsBanner} />
+        </BannerWrapper>
+      }
     </>
   ), [
     category,
@@ -198,7 +207,8 @@ const CryptoView = (props: Props) => {
     onSelectTab,
     onShowBackup,
     showBackupWarning,
-    showMore
+    showMore,
+    isIpfsBannerVisible
   ])
 
   // effects
@@ -258,7 +268,7 @@ const CryptoView = (props: Props) => {
         {/* NFTs */}
         <Route path={WalletRoutes.Nfts} exact={true}>
           {nav}
-          <NftView />
+          <NftView onToggleShowIpfsBanner={onToggleShowIpfsBanner} />
         </Route>
 
         {/* Transactions */}
@@ -267,15 +277,15 @@ const CryptoView = (props: Props) => {
           <TransactionsScreen />
         </Route>
 
-          <Route path={WalletRoutes.LocalIpfsNode} exact={true}>
-            <LocalIpfsNodeScreen onClose={onClose} />
-          </Route>
+        <Route path={WalletRoutes.LocalIpfsNode} exact={true}>
+          <LocalIpfsNodeScreen onClose={onClose} />
+        </Route>
 
-          <Route path={WalletRoutes.InspectNfts} exact={true}>
-            <InspectNftsScreen onClose={onClose} onBack={onClose} />
-          </Route>
+        <Route path={WalletRoutes.InspectNfts} exact={true}>
+          <InspectNftsScreen onClose={onClose} onBack={onClose} />
+        </Route>
 
-          <Redirect to={sessionRoute || WalletRoutes.Portfolio} />
+        <Redirect to={sessionRoute || WalletRoutes.Portfolio} />
 
       </Switch>
 

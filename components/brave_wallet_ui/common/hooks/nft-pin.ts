@@ -5,10 +5,16 @@
 import * as React from 'react'
 import { BraveWallet } from '../../constants/types'
 import { reverseHttpifiedIpfsUrl, stripERC20TokenImageURL } from '../../utils/string-utils'
+import { LOCAL_STORAGE_KEYS } from '../constants/local-storage-keys'
 import { WalletSelectors } from '../selectors'
 import { useUnsafeWalletSelector } from './use-safe-selector'
 
 export function useNftPin () {
+  const [isIpfsBannerVisible, setIsIpfsBannerVisible] = React.useState<boolean>(
+    localStorage.getItem(LOCAL_STORAGE_KEYS.IS_IPFS_BANNER_HIDDEN) === 'false' ||
+    localStorage.getItem(LOCAL_STORAGE_KEYS.IS_IPFS_BANNER_HIDDEN) === null
+  )
+
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo
   )
@@ -28,9 +34,21 @@ export function useNftPin () {
     return [nfts, pinnable]
   }, [userVisibleTokensInfo])
 
+  const onToggleShowIpfsBanner = React.useCallback(() => {
+    setIsIpfsBannerVisible(prev => {
+      window.localStorage.setItem(
+        LOCAL_STORAGE_KEYS.IS_IPFS_BANNER_HIDDEN,
+        prev ? 'false' : 'true'
+      )
+      return !prev
+    })
+  }, [])
+
   return {
     nonFungibleTokens,
     pinnableNftsCount: pinnableNfts.length,
-    pinnableNfts
+    pinnableNfts,
+    isIpfsBannerVisible,
+    onToggleShowIpfsBanner
   }
 }

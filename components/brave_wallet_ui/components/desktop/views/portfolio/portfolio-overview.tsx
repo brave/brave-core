@@ -34,7 +34,6 @@ import { LoadingSkeleton } from '../../../shared'
 import { PortfolioAssetItem } from '../../'
 import { NFTGridViewItem } from './components/nft-grid-view/nft-grid-view-item'
 import { TokenLists } from './components/token-lists/token-list'
-import { NftIpfsBanner } from '../../nft-ipfs-banner/nft-ipfs-banner'
 
 // Styled Components
 import {
@@ -51,7 +50,6 @@ import { getAssetIdKey } from '../../../../utils/asset-utils'
 import PortfolioOverviewChart from './components/portfolio-overview-chart/portfolio-overview-chart'
 import { PlaceholderText } from '../../with-hide-balance-placeholder/style'
 import {
-  BannerWrapper,
   Column,
   HorizontalSpace,
   Row,
@@ -185,7 +183,6 @@ export const PortfolioOverview = () => {
   const [showChart, setShowChart] = React.useState<boolean>(
     window.localStorage.getItem(LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN) === 'true'
   )
-  const [showBanner, setShowBanner] = React.useState<boolean>(true)
 
   // methods
   const onChangeTimeline = React.useCallback((timeline: BraveWallet.AssetPriceTimeframe) => {
@@ -223,10 +220,6 @@ export const PortfolioOverview = () => {
     })
   }
 
-  const onDismissIpfsBanner = React.useCallback(() => {
-    setShowBanner(false)
-  }, [])
-
   // effects
   React.useEffect(() => {
     dispatch(WalletPageActions.selectAsset({ asset: undefined, timeFrame: selectedTimeline }))
@@ -235,12 +228,6 @@ export const PortfolioOverview = () => {
   // render
   return (
     <StyledWrapper>
-      {showBanner &&
-        <BannerWrapper>
-          <NftIpfsBanner onDismiss={onDismissIpfsBanner} />
-        </BannerWrapper>
-      }
-
       <Row alignItems='flex-start' justifyContent='flex-start'>
         <BalanceTitle>{getLocale('braveWalletBalance')}</BalanceTitle>
       </Row>
