@@ -372,9 +372,6 @@ class PlaylistListViewController: UIViewController {
           // Even if the item was NOT previously the last played item,
           // it is now as it has begun to play
           delegate.updateLastPlayedItem(item: item)
-          
-          // Download item if necessary
-          PlaylistManager.shared.autoDownload(item: item)
         }
       }
     }
