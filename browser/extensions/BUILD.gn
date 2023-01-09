@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
-import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
@@ -62,6 +61,7 @@ source_set("extensions") {
     "//brave/browser/webcompat_reporter",
     "//brave/common",
     "//brave/common/extensions/api",
+    "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_rewards/browser",
@@ -144,10 +144,6 @@ source_set("extensions") {
 
   if (enable_brave_wayback_machine) {
     deps += [ "//brave/components/brave_wayback_machine" ]
-  }
-
-  if (brave_adaptive_captcha_enabled) {
-    deps += [ "//brave/components/brave_adaptive_captcha" ]
   }
 }
 

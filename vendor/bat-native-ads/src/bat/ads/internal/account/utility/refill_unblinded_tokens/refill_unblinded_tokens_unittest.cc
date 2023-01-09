@@ -20,7 +20,6 @@
 #include "bat/ads/internal/privacy/tokens/token_generator_unittest_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
-#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"  // IWYU pragma: keep
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -177,7 +176,6 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
   EXPECT_EQ(50, privacy::UnblindedTokenCount());
 }
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
   // Arrange
   const URLResponseMap url_responses = {
@@ -228,7 +226,6 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
   // Assert
   EXPECT_EQ(0, privacy::UnblindedTokenCount());
 }
-#endif
 
 TEST_F(BatAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
   // Arrange

@@ -43,11 +43,9 @@ class MockAdsService : public AdsService {
 
   MOCK_CONST_METHOD0(NeedsBrowserUpgradeToServeAds, bool());
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   MOCK_METHOD2(ShowScheduledCaptcha,
                void(const std::string&, const std::string&));
   MOCK_METHOD0(SnoozeScheduledCaptcha, void());
-#endif
 
   MOCK_METHOD1(OnNotificationAdShown, void(const std::string&));
   MOCK_METHOD2(OnNotificationAdClosed, void(const std::string&, bool));

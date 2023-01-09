@@ -6,12 +6,13 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 
 #include "base/threading/sequence_bound.h"
+#include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/device_id/device_id_impl.h"
 #include "brave/browser/brave_federated/brave_federated_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "brave/components/brave_federated/brave_federated_service.h"
 #include "brave/components/brave_federated/data_store_service.h"
@@ -23,11 +24,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
-
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-#include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
-#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#endif
 
 namespace brave_ads {
 
@@ -55,10 +51,8 @@ AdsServiceFactory::AdsServiceFactory()
   DependsOn(brave_rewards::RewardsServiceFactory::GetInstance());
   DependsOn(HistoryServiceFactory::GetInstance());
   DependsOn(brave_federated::BraveFederatedServiceFactory::GetInstance());
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   DependsOn(brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::
                 GetInstance());
-#endif
 }
 
 AdsServiceFactory::~AdsServiceFactory() = default;
@@ -75,11 +69,9 @@ AdsServiceFactory::CreateAdsTooltipsDelegate(Profile* profile) const {
 KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   auto* brave_adaptive_captcha_service =
       brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetInstance()
           ->GetForProfile(profile);
-#endif
   brave_federated::AsyncDataStore* notification_ad_async_data_store = nullptr;
   auto* federated_service =
       brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(
@@ -99,12 +91,9 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
 
   std::unique_ptr<AdsServiceImpl> ads_service =
       std::make_unique<AdsServiceImpl>(
-          profile,
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-          brave_adaptive_captcha_service, CreateAdsTooltipsDelegate(profile),
-#endif
-          std::make_unique<DeviceIdImpl>(), history_service, rewards_service,
-          notification_ad_async_data_store);
+          profile, brave_adaptive_captcha_service,
+          CreateAdsTooltipsDelegate(profile), std::make_unique<DeviceIdImpl>(),
+          history_service, rewards_service, notification_ad_async_data_store);
   return ads_service.release();
 }
 

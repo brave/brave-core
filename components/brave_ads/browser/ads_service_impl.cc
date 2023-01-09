@@ -73,6 +73,9 @@
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #endif
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
+#include "brave/components/brave_adaptive_captcha/pref_names.h"
+#include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
@@ -94,12 +97,6 @@
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "content/public/browser/page_navigator.h"
-#endif
-
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#include "brave/components/brave_adaptive_captcha/pref_names.h"
-#include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
 #endif
 
 namespace brave_ads {
@@ -340,21 +337,17 @@ void OnLogTrainingInstance(const bool success) {
 
 AdsServiceImpl::AdsServiceImpl(
     Profile* profile,
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
     brave_adaptive_captcha::BraveAdaptiveCaptchaService*
         adaptive_captcha_service,
     std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
-#endif
     std::unique_ptr<DeviceId> device_id,
     history::HistoryService* history_service,
     brave_rewards::RewardsService* rewards_service,
     brave_federated::AsyncDataStore* notification_ad_timing_data_store)
     : profile_(profile),
       history_service_(history_service),
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
       adaptive_captcha_service_(adaptive_captcha_service),
       ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
-#endif
       device_id_(std::move(device_id)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
@@ -365,9 +358,7 @@ AdsServiceImpl::AdsServiceImpl(
       notification_ad_timing_data_store_(notification_ad_timing_data_store),
       bat_ads_client_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(profile_);
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   DCHECK(adaptive_captcha_service_);
-#endif
   DCHECK(device_id_);
   DCHECK(history_service_);
   DCHECK(rewards_service_);
@@ -657,12 +648,10 @@ void AdsServiceImpl::MaybeShowOnboardingNotification() {
 }
 
 void AdsServiceImpl::CloseAdaptiveCaptcha() {
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   adaptive_captcha_service_->ClearScheduledCaptcha();
 #if !BUILDFLAG(IS_ANDROID)
   ads_tooltips_delegate_->CloseCaptchaTooltip();
 #endif  // !BUILDFLAG(IS_ANDROID)
-#endif  // BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 }
 
 void AdsServiceImpl::InitializePrefChangeRegistrar() {
@@ -1499,7 +1488,6 @@ bool AdsServiceImpl::NeedsBrowserUpgradeToServeAds() const {
   return needs_browser_upgrade_to_serve_ads_;
 }
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
                                           const std::string& captcha_id) {
   adaptive_captcha_service_->ShowScheduledCaptcha(payment_id, captcha_id);
@@ -1508,7 +1496,6 @@ void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
 void AdsServiceImpl::SnoozeScheduledCaptcha() {
   adaptive_captcha_service_->SnoozeScheduledCaptcha();
 }
-#endif
 
 void AdsServiceImpl::OnNotificationAdShown(const std::string& placement_id) {
   if (bat_ads_.is_bound()) {
@@ -2046,17 +2033,14 @@ std::string AdsServiceImpl::LoadDataResource(const std::string& name) {
 void AdsServiceImpl::GetScheduledCaptcha(
     const std::string& payment_id,
     ads::GetScheduledCaptchaCallback callback) {
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   adaptive_captcha_service_->GetScheduledCaptcha(payment_id,
                                                  std::move(callback));
-#endif
 }
 
 void AdsServiceImpl::ShowScheduledCaptchaNotification(
     const std::string& payment_id,
     const std::string& captcha_id,
     const bool should_show_tooltip_notification) {
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   const PrefService* const pref_service = profile_->GetPrefs();
   if (should_show_tooltip_notification) {
     if (pref_service->GetBoolean(
@@ -2081,13 +2065,10 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
   } else {
     ShowScheduledCaptcha(payment_id, captcha_id);
   }
-#endif
 }
 
 void AdsServiceImpl::ClearScheduledCaptcha() {
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   adaptive_captcha_service_->ClearScheduledCaptcha();
-#endif
 }
 
 void AdsServiceImpl::RunDBTransaction(

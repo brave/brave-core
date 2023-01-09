@@ -7,7 +7,6 @@ import("//brave/android/android_browser_tests.gni")
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/metrics/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
-import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
@@ -188,7 +187,7 @@ test("brave_unit_tests") {
     "//brave/chromium_src/net/base:unit_tests",
     "//brave/components/adblock_rust_ffi",
     "//brave/components/api_request_helper:api_request_helper_unit_tests",
-    "//brave/components/brave_adaptive_captcha/buildflags",
+    "//brave/components/brave_adaptive_captcha/test:brave_adaptive_captcha_unit_tests",
     "//brave/components/brave_ads/browser:test_support",
     "//brave/components/brave_ads/common",
     "//brave/components/brave_ads/content/browser/search_result_ad",
@@ -321,10 +320,6 @@ test("brave_unit_tests") {
   }
   if (toolkit_views) {
     deps += [ "//chrome/browser/ui/views" ]
-  }
-
-  if (brave_adaptive_captcha_enabled) {
-    deps += [ "//brave/components/brave_adaptive_captcha/test:brave_adaptive_captcha_unit_tests" ]
   }
 
   if (enable_playlist) {
