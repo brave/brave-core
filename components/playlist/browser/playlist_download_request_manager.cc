@@ -226,20 +226,22 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
       continue;
     }
 
-    auto* name = media.FindStringKey("name");
-    auto* page_title = media.FindStringKey("pageTitle");
-    auto* page_source = media.FindStringKey("pageSrc");
-    auto* mime_type = media.FindStringKey("mimeType");
-    auto* src = media.FindStringKey("src");
+    const auto& media_dict = media.GetDict();
+
+    auto* name = media_dict.FindString("name");
+    auto* page_title = media_dict.FindString("pageTitle");
+    auto* page_source = media_dict.FindString("pageSrc");
+    auto* mime_type = media_dict.FindString("mimeType");
+    auto* src = media_dict.FindString("src");
     if (!name || !page_source || !page_title || !mime_type || !src) {
       LOG(ERROR) << __func__ << " required fields are not satisfied";
       continue;
     }
 
     // nullable data
-    auto* thumbnail = media.FindStringKey("thumbnail");
-    auto* author = media.FindStringKey("author");
-    auto duration = media.FindIntKey("duration");
+    auto* thumbnail = media_dict.FindString("thumbnail");
+    auto* author = media_dict.FindString("author");
+    auto duration = media_dict.FindInt("duration");
 
     auto item = mojom::PlaylistItem::New();
     item->id = base::Token::CreateRandom().ToString();
