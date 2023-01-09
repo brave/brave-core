@@ -168,10 +168,8 @@ class AdsImpl final : public Ads,
   void OnMigrateConfirmationState(InitializeCallback callback, bool success);
   void OnLoadConfirmationState(InitializeCallback callback, bool success);
   void OnMigrateNotificationState(InitializeCallback callback, bool success);
-
+  void SuccessfullyInitializedAds(InitializeCallback callback);
   bool IsInitialized() const;
-
-  void Start();
 
   // ConversionsObserver:
   void OnConversion(

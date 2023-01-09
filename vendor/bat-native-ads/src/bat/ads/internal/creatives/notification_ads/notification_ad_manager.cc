@@ -104,13 +104,6 @@ bool NotificationAdManager::Remove(const std::string& placement_id) {
   return true;
 }
 
-void NotificationAdManager::RemoveAll() {
-  ads_.clear();
-
-  AdsClientHelper::GetInstance()->SetListPref(prefs::kNotificationAds,
-                                              NotificationAdsToValue(ads_));
-}
-
 void NotificationAdManager::CloseAll() {
   for (const auto& ad : ads_) {
     AdsClientHelper::GetInstance()->CloseNotificationAd(ad.placement_id);
@@ -149,6 +142,13 @@ void NotificationAdManager::MaybeRemoveAll() {
     RemoveAll();
   }
 #endif  // BUILDFLAG(IS_ANDROID)
+}
+
+void NotificationAdManager::RemoveAll() {
+  ads_.clear();
+
+  AdsClientHelper::GetInstance()->SetListPref(prefs::kNotificationAds,
+                                              NotificationAdsToValue(ads_));
 }
 
 }  // namespace ads
