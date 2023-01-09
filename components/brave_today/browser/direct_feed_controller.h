@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/callback_forward.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
@@ -78,6 +79,15 @@ class DirectFeedController {
  private:
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
+
+  FRIEND_TEST_ALL_PREFIXES(BraveNewsDirectFeed, ParseToArticle);
+  FRIEND_TEST_ALL_PREFIXES(BraveNewsDirectFeed, ParseOnlyAllowsHTTPLinks);
+
+  // Convert from a parsed feed's FeedData to the mojom Article objects used
+  // in Brave News.
+  static void BuildArticles(Articles& articles,
+                            const FeedData& data,
+                            const std::string& publisher_id);
   void DownloadFeedContent(const GURL& feed_url,
                            const std::string& publisher_id,
                            GetArticlesCallback callback);
