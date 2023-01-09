@@ -23,6 +23,8 @@ namespace brave_news {
 
 namespace {
 
+// TODO(petemill): Accept base::Value::Dict param and use something like
+// `contains()` to avoid potential crashes dereferencing missing fields.
 bool ParseFeedItem(const base::Value& feed_item_raw,
                    mojom::FeedItemPtr* feed_item) {
   auto url_raw = *feed_item_raw.FindStringKey("url");
@@ -59,6 +61,10 @@ bool ParseFeedItem(const base::Value& feed_item_raw,
   auto url = GURL(url_raw);
   if (url.is_empty() || !url.has_host()) {
     VLOG(1) << "Could not parse item url: " << url_raw;
+    return false;
+  }
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    VLOG(1) << "Item url was not HTTP or HTTPS: " << url.spec();
     return false;
   }
   metadata->url = std::move(url);
