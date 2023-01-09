@@ -12,10 +12,12 @@ import { SupportedTestNetworks, WalletState } from '../../../../constants/types'
 // components
 import { Nfts } from './components/nfts'
 import { AllNetworksOption } from '../../../../options/network-filter-options'
-import { NftIpfsBanner } from '../../nft-ipfs-banner/nft-ipfs-banner'
-import { BannerWrapper } from '../../../shared/style'
 
-export const NftView = () => {
+interface Props {
+  onToggleShowIpfsBanner: () => void
+}
+
+export const NftView = ({ onToggleShowIpfsBanner }: Props) => {
   // redux
   const networkList = useSelector(
     ({ wallet }: { wallet: WalletState }) => wallet.networkList
@@ -27,9 +29,7 @@ export const NftView = () => {
     ({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter
   )
 
-  // state
-  const [showBanner, setShowBanner] = React.useState<boolean>(true)
-
+  // memos
   const nonFungibleTokens = React.useMemo(() => {
     if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
       return userVisibleTokensInfo.filter(
@@ -46,19 +46,7 @@ export const NftView = () => {
     )
   }, [userVisibleTokensInfo, selectedNetworkFilter])
 
-  // methods
-  const onDismissIpfsBanner = React.useCallback(() => {
-    setShowBanner(false)
-  }, [])
-
   return (
-    <>
-      {showBanner && (
-        <BannerWrapper>
-          <NftIpfsBanner onDismiss={onDismissIpfsBanner} />
-        </BannerWrapper>
-      )}
-      <Nfts networks={networkList} nftList={nonFungibleTokens} />
-    </>
+    <Nfts networks={networkList} nftList={nonFungibleTokens} onToggleShowIpfsBanner={onToggleShowIpfsBanner} />
   )
 }

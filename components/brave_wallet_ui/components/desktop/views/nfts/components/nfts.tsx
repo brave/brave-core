@@ -34,12 +34,14 @@ import Amount from '../../../../../utils/amount'
 interface Props {
   networks: BraveWallet.NetworkInfo[]
   nftList: BraveWallet.BlockchainToken[]
+  onToggleShowIpfsBanner: () => void
 }
 
 export const Nfts = (props: Props) => {
   const {
     networks,
-    nftList
+    nftList,
+    onToggleShowIpfsBanner
   } = props
 
   // state
@@ -61,7 +63,7 @@ export const Nfts = (props: Props) => {
   }, [dispatch])
 
   const onClickIpfsButton = React.useCallback(() => {
-    console.log('message')
+    onToggleShowIpfsBanner()
   }, [])
 
   // memos
