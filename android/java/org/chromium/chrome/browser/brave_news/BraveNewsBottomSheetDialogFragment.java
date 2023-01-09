@@ -91,7 +91,7 @@ public class BraveNewsBottomSheetDialogFragment extends BottomSheetDialogFragmen
         newTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TabUtils.openUrlInNewTab(false, mUrl);
+                TabUtils.openUrlInNewTabInBackground(false, mUrl);
                 dismiss();
             }
         });

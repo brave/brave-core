@@ -77,6 +77,16 @@ public class TabUtils {
         }
     }
 
+    public static void openUrlInNewTabInBackground(boolean isIncognito, String url) {
+        BraveActivity braveActivity = BraveActivity.getBraveActivity();
+        if (braveActivity != null && braveActivity.getTabModelSelector() != null
+                && braveActivity.getActivityTab() != null) {
+            braveActivity.getTabModelSelector().openNewTab(new LoadUrlParams(url),
+                    TabLaunchType.FROM_LONGPRESS_BACKGROUND_IN_GROUP,
+                    braveActivity.getActivityTab(), isIncognito);
+        }
+    }
+
     public static void openUrlInSameTab(String url) {
         BraveActivity braveActivity = BraveActivity.getBraveActivity();
         if (braveActivity != null && braveActivity.getActivityTab() != null) {
