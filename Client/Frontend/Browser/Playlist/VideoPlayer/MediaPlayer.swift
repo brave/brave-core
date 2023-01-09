@@ -121,7 +121,7 @@ class MediaPlayer: NSObject {
   }
 
   func load(url: URL) -> Deferred<AnyPublisher<Bool, MediaPlaybackError>> {
-    load(asset: AVURLAsset(url: url))
+    load(asset: AVURLAsset(url: url, options: AVAsset.defaultOptions))
   }
 
   /// On success, returns a publisher with a Boolean.
@@ -697,5 +697,16 @@ extension AVAsset {
   /// It's best to assume this type of media is a video stream.
   func isVideoTracksAvailable() -> Bool {
     !tracks.filter({ $0.mediaType == .video }).isEmpty
+  }
+  
+  static var defaultOptions: [String: Any] {
+    let userAgent = UserAgent.shouldUseDesktopMode ? UserAgent.desktop : UserAgent.mobile
+    var options: [String: Any] = [:]
+    if #available(iOS 16, *) {
+        options[AVURLAssetHTTPUserAgentKey] = userAgent
+    } else {
+        options["AVURLAssetHTTPHeaderFieldsKey"] = ["User-Agent": userAgent]
+    }
+    return options
   }
 }

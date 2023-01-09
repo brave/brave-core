@@ -869,7 +869,7 @@ extension PlaylistViewController: VideoViewDelegate {
   }
 
   func load(_ videoView: VideoView, url: URL, autoPlayEnabled: Bool) -> AnyPublisher<Void, MediaPlaybackError> {
-    load(videoView, asset: AVURLAsset(url: url), autoPlayEnabled: autoPlayEnabled)
+    load(videoView, asset: AVURLAsset(url: url, options: AVAsset.defaultOptions), autoPlayEnabled: autoPlayEnabled)
   }
 
   func load(_ videoView: VideoView, asset: AVURLAsset, autoPlayEnabled: Bool) -> AnyPublisher<Void, MediaPlaybackError> {

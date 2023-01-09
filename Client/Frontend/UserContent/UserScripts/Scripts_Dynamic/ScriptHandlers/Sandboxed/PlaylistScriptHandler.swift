@@ -114,16 +114,11 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
         return
       }
 
-      if let url = URL(string: item.src) {
-        handler.loadAssetPlayability(url: url) { [weak handler] isPlayable in
+      if URL(string: item.src) != nil {
+        DispatchQueue.main.async { [weak handler] in
           guard let handler = handler,
             let delegate = handler.delegate
           else { return }
-
-          if !isPlayable && !item.src.hasPrefix("blob:") {
-            delegate.updatePlaylistURLBar(tab: handler.tab, state: .none, item: nil)
-            return
-          }
 
           if PlaylistItem.itemExists(pageSrc: item.pageSrc) {
             // Item already exists, so just update the database with new token or URL.
@@ -147,7 +142,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
       // because otherwise it will add an invalid item to playlist that can't be played.
       // IE: WebM videos aren't supported so can't be played.
       // Therefore we shouldn't prompt the user to add to playlist.
-      asset = AVURLAsset(url: url)
+      asset = AVURLAsset(url: url, options: AVAsset.defaultOptions)
     }
     
     guard let asset = asset else {

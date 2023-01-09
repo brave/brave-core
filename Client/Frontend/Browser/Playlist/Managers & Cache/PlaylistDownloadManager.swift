@@ -178,7 +178,7 @@ public class PlaylistDownloadManager: PlaylistStreamDownloadManagerDelegate {
         return nil
       }
 
-      return AVURLAsset(url: url)
+      return AVURLAsset(url: url, options: AVAsset.defaultOptions)
     } catch {
       Logger.module.error("\(error.localizedDescription)")
       return nil
@@ -235,7 +235,7 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
   }
 
   func downloadAsset(_ session: AVAssetDownloadURLSession, assetUrl: URL, for item: PlaylistInfo) {
-    let asset = AVURLAsset(url: assetUrl)
+    let asset = AVURLAsset(url: assetUrl, options: AVAsset.defaultOptions)
 
     // TODO: In the future switch back to AVAggregateAssetDownloadTask after investigating progress calculation
     //        guard let task =
@@ -453,7 +453,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
             let mediaSrc = item.mediaSrc,
             let assetUrl = URL(string: mediaSrc) {
             let info = PlaylistInfo(item: item)
-            let asset = MediaDownloadTask(id: info.tagId, name: info.name, asset: AVURLAsset(url: assetUrl))
+            let asset = MediaDownloadTask(id: info.tagId, name: info.name, asset: AVURLAsset(url: assetUrl, options: AVAsset.defaultOptions))
             self.activeDownloadTasks[task] = asset
           }
         }
@@ -462,7 +462,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
   }
 
   func downloadAsset(_ session: URLSession, assetUrl: URL, for item: PlaylistInfo) {
-    let asset = AVURLAsset(url: assetUrl)
+    let asset = AVURLAsset(url: assetUrl, options: AVAsset.defaultOptions)
 
     let request: URLRequest = {
       var request = URLRequest(url: assetUrl, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10.0)
