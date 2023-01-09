@@ -98,8 +98,10 @@ export function RewardsCard (props: Props) {
   const [publisherCountText, setPublisherCountText] = React.useState('')
 
   React.useEffect(() => {
+    let active = true
     getPluralString('rewardsPublisherCountText', props.publishersVisited)
-      .then(setPublisherCountText)
+      .then((value) => { active && setPublisherCountText(value) })
+    return () => { active = false }
   }, [props.publishersVisited])
 
   function renderBalance () {
