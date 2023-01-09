@@ -516,7 +516,7 @@
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_HIGH_TO_LOW" desc="Aseet Filter Selector High to Low">Balance ↓</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_A_TO_Z" desc="Aseet Filter Selector A to Z">Name ↓</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_Z_TO_A" desc="Aseet Filter Selector Z to A">Name ↑</message>
-  <message name="IDS_BRAVE_WALLET_ACCOUNT_FILTER_ALL_ACCOUNTS" desc="Account Filter Selector All Accounts">All Accounts</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_FILTER_ALL_ACCOUNTS" desc="Account Filter Selector All Accounts">All accounts</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_TITLE" desc="Transaction submitted title">Transaction submitted</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_DESCRIPTION" desc="Transaction submitted description">Transaction has been successfully sent to the network and awaits confirmation.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SIGNED_TITLE" desc="Transaction signed title">Transaction signed</message>
