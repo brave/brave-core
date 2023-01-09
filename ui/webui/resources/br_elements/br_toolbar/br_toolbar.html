@@ -113,7 +113,7 @@
         <span class="nav-item_text">[[settingsTitle]]</span>
       </a>
     </li>
-    <template is="dom-if" if="[[isBraveRewardsSupported_]]">
+    <template is="dom-if" if="[[shouldShowRewardsButton_]]">
       <li class="nav-items_list-item" title="[[braveRewardsTitle]]">
         <a class$="nav-item [[getNavItemSelectedClassName('rewards')]]" href="chrome://rewards">
           <span class="nav-item_icon">
