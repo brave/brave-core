@@ -131,9 +131,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   if (!is_guest_session) {
     // If Rewards is not supported due to OFAC sanctions we still want to show
     // the menu item.
-    if (brave_rewards::IsSupported(
-            browser_->profile()->GetPrefs(),
-            brave_rewards::IsSupportedOptions::kSkipRegionCheck)) {
+    if (brave_rewards::IsSupported(browser_->profile()->GetPrefs())) {
       UpdateCommandForBraveRewards();
     }
     if (brave_wallet::IsAllowed(browser_->profile()->GetPrefs())) {
