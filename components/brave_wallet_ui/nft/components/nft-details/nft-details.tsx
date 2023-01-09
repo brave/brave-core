@@ -45,7 +45,7 @@ import {
   Subdivider,
   ProjectDetailName
 } from './nft-details-styles'
-import { isValidateUrl } from '../../../utils/string-utils'
+import { isValidateUrl, stripERC20TokenImageURL } from '../../../utils/string-utils'
 import { NftMultimedia } from '../nft-multimedia/nft-multimedia'
 import { MultimediaWrapper } from '../nft-content/nft-content-styles'
 import { CreateNetworkIcon } from '../../../components/shared'
@@ -59,9 +59,10 @@ interface Props {
   nftMetadata?: NFTMetadataReturnType
   nftMetadataError?: string
   tokenNetwork?: BraveWallet.NetworkInfo
+  nftPinningStatus?: BraveWallet.TokenPinStatus
 }
 
-export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, tokenNetwork }: Props) => {
+export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, tokenNetwork, nftPinningStatus }: Props) => {
   // custom hooks
   const onClickViewOnBlockExplorer = useExplorer(tokenNetwork || new BraveWallet.NetworkInfo())
 
@@ -197,24 +198,30 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                   <DetailSectionTitle>Description</DetailSectionTitle>
                   <ProjectDetailDescription>{nftMetadata.contractInformation.description}</ProjectDetailDescription>
                 </DetailSectionColumn>
-                <Subdivider />
-                <DetailSectionRow>
-                  <DetailSectionColumn>
-                    <DetailSectionTitle>CID</DetailSectionTitle>
-                    <ProjectDetailDescription>Qmdieskenfisef3135422524</ProjectDetailDescription>
-                  </DetailSectionColumn>
-                </DetailSectionRow>
-                <DetailSectionRow>
-                  <DetailSectionColumn>
-                    <DetailSectionTitle>Image location or address</DetailSectionTitle>
-                    <HighlightedDetailSectionValue>{selectedAsset.logo}</HighlightedDetailSectionValue>
-                  </DetailSectionColumn>
-                </DetailSectionRow>
-                <DetailSectionRow>
-                  <DetailSectionColumn>
-                    <NftPinnigStatus pinningStatus='failed' />
-                  </DetailSectionColumn>
-                </DetailSectionRow>
+                {nftPinningStatus?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNED &&
+                  <>
+                    <Subdivider />
+                    <DetailSectionRow>
+                      <DetailSectionColumn>
+                        <DetailSectionTitle>CID</DetailSectionTitle>
+                        <ProjectDetailDescription>{stripERC20TokenImageURL(selectedAsset.logo)?.replace('ipfs://', '')}</ProjectDetailDescription>
+                      </DetailSectionColumn>
+                    </DetailSectionRow>
+                    <DetailSectionRow>
+                      <DetailSectionColumn>
+                        <DetailSectionTitle>Image location or address</DetailSectionTitle>
+                        <HighlightedDetailSectionValue href={stripERC20TokenImageURL(selectedAsset.logo)} target='_blank'>{stripERC20TokenImageURL(selectedAsset.logo)}</HighlightedDetailSectionValue>
+                      </DetailSectionColumn>
+                    </DetailSectionRow>
+                  </>
+                }
+                {nftPinningStatus &&
+                  <DetailSectionRow>
+                    <DetailSectionColumn>
+                      <NftPinnigStatus pinningStatusCode={nftPinningStatus.code} />
+                    </DetailSectionColumn>
+                  </DetailSectionRow>
+                }
               </DetailColumn>
             </>
           }

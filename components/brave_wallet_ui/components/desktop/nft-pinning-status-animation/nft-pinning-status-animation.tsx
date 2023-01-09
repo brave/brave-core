@@ -20,15 +20,17 @@ interface Props {
 }
 
 export const NftPinningStatusAnimation = ({ size, status, displayMode }: Props) => {
+  const { STATUS_NOT_PINNED, STATUS_PINNING_IN_PROGRESS, STATUS_PINNED } = BraveWallet.TokenPinStatusCode
+
   return (
     <StyledWrapper size={size || '30px'}>
       {/* Banner starting state */}
-      {status === BraveWallet.TokenPinStatusCode.STATUS_NOT_PINNED &&
-        displayMode === 'banner' && <Ipfs />
+      {status === STATUS_NOT_PINNED &&
+        displayMode === 'banner' && <Ipfs size={size} />
       }
 
       {/* Uploading */}
-      {status === BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS && (
+      {status === STATUS_PINNING_IN_PROGRESS && (
         <GifWrapper>
           <StatusGif src={UploadingGif} />
           <IpfsUploading />
@@ -36,11 +38,11 @@ export const NftPinningStatusAnimation = ({ size, status, displayMode }: Props) 
       )}
 
       {/* Success */}
-      {status === BraveWallet.TokenPinStatusCode.STATUS_PINNED && (
-          <GifWrapper>
-            <StatusGif src={SuccessGif} />
-          </GifWrapper>
-        )}
+      {STATUS_PINNING_IN_PROGRESS && status === STATUS_PINNED && displayMode === 'banner' && (
+        <GifWrapper>
+          <StatusGif src={SuccessGif} />
+        </GifWrapper>
+      )}
     </StyledWrapper>
   )
 }

@@ -5,24 +5,21 @@
 
 import styled from 'styled-components'
 import { BraveThemedStyledProps } from 'brave-ui/src/theme/theme-interface'
-import { PinningStatus } from './nft-pinning-status'
 import Upload from '../../../assets/svg-icons/nft-ipfs/upload.svg'
 import Check from '../../../assets/svg-icons/nft-ipfs/check.svg'
 import Close from '../../../assets/svg-icons/close.svg'
 import { WalletButton } from '../../shared/style'
+import { BraveWallet } from '../../../constants/types'
 
-const getBackground = (p: BraveThemedStyledProps<any>, status: PinningStatus) => {
+const getBackground = (p: BraveThemedStyledProps<any>, status: BraveWallet.TokenPinStatusCode) => {
   switch (status) {
-    case 'uploading':
+    case BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS:
       return '#FFFCF0'
 
-    case 'centralized':
+    case BraveWallet.TokenPinStatusCode.STATUS_PINNING_FAILED:
       return '#FFF0F2'
 
-    case 'failed':
-      return '#FFF0F2'
-
-    case 'pinned':
+    case BraveWallet.TokenPinStatusCode.STATUS_PINNED:
       return 'rgba(213, 245, 218, 1)'
 
     default:
@@ -30,7 +27,7 @@ const getBackground = (p: BraveThemedStyledProps<any>, status: PinningStatus) =>
   }
 }
 
-export const StyledWrapper = styled.div<{ pinningStatus: PinningStatus }>`
+export const StyledWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -39,7 +36,7 @@ export const StyledWrapper = styled.div<{ pinningStatus: PinningStatus }>`
   position: relative;
 `
 
-export const ContentWrapper = styled.div<{ pinningStatus: PinningStatus }>`
+export const ContentWrapper = styled.div<{ pinningStatus: BraveWallet.TokenPinStatusCode }>`
   display: flex;
   justify-content: flex-start;
   align-items: center;

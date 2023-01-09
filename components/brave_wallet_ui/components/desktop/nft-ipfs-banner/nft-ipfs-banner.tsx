@@ -6,11 +6,11 @@
 import * as React from 'react'
 import { useHistory } from 'react-router'
 
+// constants
+import { BraveWallet, WalletRoutes } from '../../../constants/types'
+
 // utils
 import { useNftPin } from '../../../common/hooks/nft-pin'
-import { useUnsafePageSelector } from '../../../common/hooks/use-safe-selector'
-import { BraveWallet, WalletRoutes } from '../../../constants/types'
-import { PageSelectors } from '../../../page/selectors'
 
 // components
 import { Row } from '../../shared/style'
@@ -33,33 +33,7 @@ import {
 export const NftIpfsBanner = ({ onDismiss }: Props) => {
   const history = useHistory()
 
-  const { pinnableNftsCount, pinnableNfts } = useNftPin()
-  console.log(pinnableNftsCount)
-
-  // redux
-  const nftsPinningStatus = useUnsafePageSelector(PageSelectors.nftsPinningStatus)
-
-  const pinnedNftsCount = React.useMemo(() => {
-    return Object.keys(nftsPinningStatus).reduce((accumulator, currentValue) => {
-      const status = nftsPinningStatus[currentValue]
-      if (status?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNED) {
-        return accumulator += 1
-      }
-
-      return accumulator
-    }, 0)
-  }, [nftsPinningStatus])
-
-  const status: BraveWallet.TokenPinStatusCode = React.useMemo(() => {
-    if (pinnableNftsCount === pinnedNftsCount) {
-      return BraveWallet.TokenPinStatusCode.STATUS_PINNED
-    }
-
-    const isUploading = Object.values(nftsPinningStatus).some(status => status?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS)
-    if (isUploading) return BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS
-
-    return BraveWallet.TokenPinStatusCode.STATUS_NOT_PINNED
-  }, [pinnableNftsCount, nftsPinningStatus, pinnableNfts, pinnedNftsCount])
+  const { pinnableNftsCount, pinnedNftsCount, pinningStatusSummary: status } = useNftPin()
 
   const bannerStatus: BannerStatus = React.useMemo(() => {
     switch (status) {
@@ -71,6 +45,8 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
         return 'start'
     }
   }, [status])
+
+  console.log({ status, bannerStatus })
 
   const onLearnMore = React.useCallback(() => {
     history.push(WalletRoutes.LocalIpfsNode)

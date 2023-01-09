@@ -34,7 +34,8 @@ import {
   UpdateSelectedAssetMessage,
   UpdateTokenNetworkMessage,
   braveNftDisplayOrigin,
-  IframeSize
+  IframeSize,
+  UpdateNftPinningStatus
 } from '../../../../nft/nft-ui-messages'
 import { auroraSupportedContractAddresses } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
@@ -65,6 +66,7 @@ import {
   useUnsafePageSelector,
   useUnsafeWalletSelector
 } from '../../../../common/hooks/use-safe-selector'
+import { useNftPin } from '../../../../common/hooks/nft-pin'
 
 // Styled Components
 import {
@@ -153,9 +155,11 @@ export const PortfolioAsset = (props: Props) => {
   const nftMetadata = useUnsafePageSelector(PageSelectors.nftMetadata)
   const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
   const nftMetadataError = useSafePageSelector(PageSelectors.nftMetadataError)
+  const nftPinningStatus = useUnsafePageSelector(PageSelectors.nftsPinningStatus)
 
   // custom hooks
   const { allAssetOptions, isReduxSelectedAssetBuySupported, getAllBuyOptionsAllChains } = useMultiChainBuyAssets()
+  const { getNftPinningStatus } = useNftPin()
 
   // memos
   // This will scrape all the user's accounts and combine the asset balances for a single asset
@@ -557,12 +561,20 @@ export const PortfolioAsset = (props: Props) => {
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
 
+    if (nftPinningStatus && selectedAsset && nftDetailsRef?.current) {
+      const command: UpdateNftPinningStatus = {
+        command: NftUiCommand.UpdateNftPinningStatus,
+        payload: getNftPinningStatus(selectedAsset)
+      }
+      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
+    }
+
     // check if selectedAsset has an icon
     if (selectedAsset && nftMetadata?.imageURL && stripERC20TokenImageURL(selectedAsset.logo) === '') {
       // update asset logo
       dispatch(WalletActions.updateUserAsset({ ...selectedAsset, logo: nftMetadata?.imageURL || '' }))
     }
-  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList, nftMetadataError])
+  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList, nftMetadataError, nftPinningStatus])
 
   React.useEffect(() => {
     setDontShowAuroraWarning(JSON.parse(localStorage.getItem(bridgeToAuroraDontShowAgainKey) || 'false'))

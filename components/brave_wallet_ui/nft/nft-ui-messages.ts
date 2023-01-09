@@ -19,6 +19,7 @@ export const enum NftUiCommand {
   UpdateNFTMetadata = 'update-nft-metadata',
   UpdateNFTMetadataError = 'update-nft-metadata-error',
   UpdateTokenNetwork = 'update-token-network',
+  UpdateNftPinningStatus = 'update-nft-pinning-status',
   ToggleNftModal = 'toggle-nft-modal',
   IframeSize = 'iframe-size'
 }
@@ -57,6 +58,10 @@ export type UpdateNFtMetadataErrorMessage = CommandMessage & {
 
 export type UpdateTokenNetworkMessage = CommandMessage & {
   payload: BraveWallet.NetworkInfo
+}
+
+export type UpdateNftPinningStatus = CommandMessage & {
+  payload: BraveWallet.TokenPinStatus | undefined
 }
 
 export type ToggleNftModal = CommandMessage & {

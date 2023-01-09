@@ -209,7 +209,7 @@ _NftDetails.story = {
 export const _NftPinningStatus = () => {
   return (
     <NftPinnigStatus
-      pinningStatus='failed'
+      pinningStatusCode='failed'
     />
   )
 }

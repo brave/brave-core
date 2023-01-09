@@ -322,7 +322,6 @@ handler.on(WalletPageActions.setAutoPinEnabled.type, async (store, payload: bool
   await braveWalletAutoPinService.setAutoPinEnabled(payload)
   store.dispatch(WalletPageActions.updateEnablingAutoPin(false))
   const { enabled } = await braveWalletAutoPinService.isAutoPinEnabled()
-  console.log({ enabled })
   store.dispatch(WalletPageActions.updateAutoPinEnabled(enabled))
 })
 
