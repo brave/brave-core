@@ -84,8 +84,6 @@ export const localeStrings = {
   adsPerHour5: 'Up to 5 ads per hour',
   adsPerHour10: 'Up to 10 ads per hour',
   adsTitle: 'Brave Private Ads',
-  adsDisabledTextOne: 'Earnings are paid every month.',
-  adsDisabledTextTwo: 'Set your desired frequency to increase or decrease earnings.',
   adsCurrentEarnings: 'Current earnings this month (estimated)',
   adsPaymentDate: 'Next payment date',
   adsNotificationsReceived: 'Ads received this month',

@@ -29,6 +29,10 @@ export const root = styled.div`
     font-size: 14px;
     padding: 8px 41px 8px 13px;
   }
+
+  a {
+    color: #4C54D2;
+  }
 `
 
 export const onboarding = styled.div`

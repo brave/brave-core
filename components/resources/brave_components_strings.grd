@@ -476,9 +476,6 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_TITLE" desc="">Monthly Tips</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_DESC" desc="">Set up recurring monthly tips so you can continually support your favorite creators.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_EMPTY" desc="">No monthly tips set up yet.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT" desc="">Coming soon.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_ONE" desc="">Earnings are paid every month.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_TWO" desc="">Set your desired frequency to increase or decrease earnings.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT1" desc="">Reward creators for the content you love.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT2" desc="">Your monthly payment gets distributed across the sites you visit.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_SOME" desc="">Sites will appear as you browse</message>
