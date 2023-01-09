@@ -126,3 +126,8 @@ android/android_browser_tests.gni @brave/android-tests-reviewers
 # have that owners record temporary to avoid people adding
 # new things there
 android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java @AlexeyBarabash @samartnik @SergeyZhukovsky
+
+# GitHub configuration
+/.github/ @brave/devops-team
+/.github/CODEOWNERS @brave/devops-team @brave/sec-team @bsclifton
+/.github/PULL_REQUEST_TEMPLATE.md @bsclifton
