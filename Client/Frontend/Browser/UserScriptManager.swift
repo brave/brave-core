@@ -210,7 +210,7 @@ class UserScriptManager {
       // Inject SolanaWeb3Script.js
       if tab.isPrivate == false,
          Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultSolWallet.value) == .brave,
-         let solanaWeb3Script = ScriptLoader.loadUserScript(named: "SolanaWeb3Script") {
+         let solanaWeb3Script = tab.walletSolProviderScripts[.solanaWeb3] {
         
         let script = """
           // Define a global variable with a random name
