@@ -38,21 +38,28 @@ class BraveImportDataHandler : public ImportDataHandler,
   BraveImportDataHandler(const BraveImportDataHandler&) = delete;
   BraveImportDataHandler& operator=(const BraveImportDataHandler&) = delete;
 
- private:
+ protected:
+  const importer::SourceProfile& GetSourceProfileAt(int browser_index);
+  void HandleImportData(const base::Value::List& args);
   // ImportDataHandler overrides:
   void StartImport(const importer::SourceProfile& source_profile,
                    uint16_t imported_items) override;
 
   void StartImportImpl(const importer::SourceProfile& source_profile,
-                       uint16_t imported_items);
-  void NotifyImportProgress(const importer::SourceProfile& source_profile,
-                            const base::Value& info);
+                       uint16_t imported_items,
+                       Profile* profile);
+  virtual void NotifyImportProgress(
+      const importer::SourceProfile& source_profile,
+      const base::Value& info);
   void OnImportEnded(const base::FilePath& source_path);
+
 #if BUILDFLAG(IS_MAC)
   void CheckDiskAccess(const importer::SourceProfile& source_profile,
-                       uint16_t imported_items);
+                       uint16_t imported_items,
+                       Profile* profile);
   void OnGetDiskAccessPermission(const importer::SourceProfile& source_profile,
                                  uint16_t imported_items,
+                                 Profile* profile,
                                  bool allowed);
 
   // content::WebContentsObserver overrides:
@@ -60,7 +67,7 @@ class BraveImportDataHandler : public ImportDataHandler,
 
   bool guide_dialog_is_requested_ = false;
 #endif
-
+ private:
   std::unordered_map<base::FilePath, std::unique_ptr<BraveImporterObserver>>
       import_observers_;
   base::WeakPtrFactory<BraveImportDataHandler> weak_factory_{this};

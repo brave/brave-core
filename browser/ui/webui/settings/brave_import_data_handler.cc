@@ -11,6 +11,7 @@
 
 #include "brave/browser/importer/brave_external_process_importer_host.h"
 #include "brave/browser/ui/webui/settings/import_feature.h"
+#include "chrome/browser/importer/importer_list.h"
 #include "chrome/browser/importer/profile_writer.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -68,17 +69,18 @@ void BraveImportDataHandler::StartImport(
     uint16_t imported_items) {
   if (!imported_items)
     return;
-
+  Profile* profile = Profile::FromWebUI(web_ui());
 #if BUILDFLAG(IS_MAC)
-  CheckDiskAccess(source_profile, imported_items);
+  CheckDiskAccess(source_profile, imported_items, profile);
 #else
-  StartImportImpl(source_profile, imported_items);
+  StartImportImpl(source_profile, imported_items, profile);
 #endif
 }
 
 void BraveImportDataHandler::StartImportImpl(
     const importer::SourceProfile& source_profile,
-    uint16_t imported_items) {
+    uint16_t imported_items,
+    Profile* profile) {
   // Temporary flag to keep old way until
   // https://github.com/brave/brave-core/pull/15637 landed.
   // Should be removed in that PR.
@@ -97,7 +99,7 @@ void BraveImportDataHandler::StartImportImpl(
           importer_host, source_profile, imported_items,
           base::BindRepeating(&BraveImportDataHandler::NotifyImportProgress,
                               weak_factory_.GetWeakPtr()));
-  Profile* profile = Profile::FromWebUI(web_ui());
+
   importer_host->StartImportSettings(source_profile, profile, imported_items,
                                      new ProfileWriter(profile));
 }
@@ -115,14 +117,24 @@ void BraveImportDataHandler::NotifyImportProgress(
   }
 }
 
+void BraveImportDataHandler::HandleImportData(const base::Value::List& args) {
+  ImportDataHandler::HandleImportData(args);
+}
+
 void BraveImportDataHandler::OnImportEnded(const base::FilePath& source_path) {
   import_observers_.erase(source_path);
+}
+
+const importer::SourceProfile& BraveImportDataHandler::GetSourceProfileAt(
+    int browser_index) {
+  return importer_list_->GetSourceProfileAt(browser_index);
 }
 
 #if BUILDFLAG(IS_MAC)
 void BraveImportDataHandler::CheckDiskAccess(
     const importer::SourceProfile& source_profile,
-    uint16_t imported_items) {
+    uint16_t imported_items,
+    Profile* profile) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   guide_dialog_is_requested_ = false;
@@ -138,16 +150,17 @@ void BraveImportDataHandler::CheckDiskAccess(
         base::BindOnce(&HasProperDiskAccessPermission, imported_items),
         base::BindOnce(&BraveImportDataHandler::OnGetDiskAccessPermission,
                        weak_factory_.GetWeakPtr(), source_profile,
-                       imported_items));
+                       imported_items, profile));
     return;
   }
 
-  StartImportImpl(source_profile, imported_items);
+  StartImportImpl(source_profile, imported_items, profile);
 }
 
 void BraveImportDataHandler::OnGetDiskAccessPermission(
     const importer::SourceProfile& source_profile,
     uint16_t imported_items,
+    Profile* profile,
     bool allowed) {
   if (!allowed) {
     // Notify to webui to finish import process and launch tab modal dialog
@@ -165,7 +178,7 @@ void BraveImportDataHandler::OnGetDiskAccessPermission(
     return;
   }
 
-  StartImportImpl(source_profile, imported_items);
+  StartImportImpl(source_profile, imported_items, profile);
 }
 
 void BraveImportDataHandler::DidStopLoading() {
