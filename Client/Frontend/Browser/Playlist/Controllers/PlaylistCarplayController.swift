@@ -780,7 +780,7 @@ extension PlaylistCarplayController {
   }
 
   func load(url: URL, autoPlayEnabled: Bool) -> AnyPublisher<Void, Error> {
-    load(asset: AVURLAsset(url: url), autoPlayEnabled: autoPlayEnabled)
+    load(asset: AVURLAsset(url: url, options: AVAsset.defaultOptions), autoPlayEnabled: autoPlayEnabled)
   }
 
   func load(asset: AVURLAsset, autoPlayEnabled: Bool) -> AnyPublisher<Void, Error> {

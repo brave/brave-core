@@ -511,7 +511,7 @@ extension PlaylistManager {
       return asset
     }
 
-    return AVURLAsset(url: URL(string: mediaSrc)!)
+    return AVURLAsset(url: URL(string: mediaSrc)!, options: AVAsset.defaultOptions)
   }
 }
 
