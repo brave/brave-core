@@ -5,10 +5,10 @@
 
 #include "brave/browser/ui/views/text_recognition_dialog_view.h"
 
-#include <algorithm>
 #include <memory>
 
 #include "base/bind.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
@@ -99,12 +99,7 @@ void TextRecognitionDialogView::UpdateContents(
       IDS_TEXT_RECOG_DIALOG_HEADER_COMPLETE));
 
   // Treat each string in |text| as a separated line string.
-  const char* const delimiter = "\n";
-  std::ostringstream unified;
-  std::copy(text.begin(), text.end(),
-            std::ostream_iterator<std::string>(unified, delimiter));
-  std::string unified_string = unified.str();
-
+  const std::string unified_string = base::JoinString(text, "\n");
   ui::ScopedClipboardWriter(ui::ClipboardBuffer::kCopyPaste)
       .WriteText(base::UTF8ToUTF16(unified_string));
 
