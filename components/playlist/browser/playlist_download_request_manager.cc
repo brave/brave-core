@@ -51,9 +51,9 @@ PlaylistDownloadRequestManager::Request::~Request() = default;
 void PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
     const int32_t id) {
   // Never allow running in main world (0).
-  DCHECK(id > content::ISOLATED_WORLD_ID_CONTENT_END);
+  CHECK(id > content::ISOLATED_WORLD_ID_CONTENT_END);
   // Only allow ID to be set once.
-  DCHECK(!PlaylistJavaScriptWorldIdIsSet());
+  CHECK(!PlaylistJavaScriptWorldIdIsSet());
   g_playlist_javascript_world_id = id;
 }
 
@@ -95,7 +95,7 @@ void PlaylistDownloadRequestManager::FetchPendingRequest() {
 }
 
 void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
-  DCHECK(PlaylistJavaScriptWorldIdIsSet());
+  CHECK(PlaylistJavaScriptWorldIdIsSet());
 
   DCHECK_GE(in_progress_urls_count_, 0);
   in_progress_urls_count_++;
