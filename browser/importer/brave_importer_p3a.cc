@@ -60,6 +60,7 @@ void RecordImporterP3A(importer::ImporterType type) {
       break;
     case importer::TYPE_VIVALDI:
     case importer::TYPE_YANDEX:
+    case importer::TYPE_WHALE:
       metric = ImporterSource::kOther;
       break;
     case importer::TYPE_OPERA:

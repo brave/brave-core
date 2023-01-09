@@ -11,6 +11,7 @@
   case TYPE_VIVALDI:       \
   case TYPE_OPERA:         \
   case TYPE_YANDEX:        \
+  case TYPE_WHALE:         \
   break;                   \
   case TYPE_FIREFOX
 #include "src/chrome/browser/importer/importer_uma.cc"
