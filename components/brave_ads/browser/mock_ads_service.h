@@ -102,6 +102,25 @@ class MockAdsService : public AdsService {
   MOCK_METHOD2(ToggleSavedAd, void(base::Value::Dict, ToggleSavedAdCallback));
   MOCK_METHOD2(ToggleFlaggedAd,
                void(base::Value::Dict, ToggleFlaggedAdCallback));
+
+  MOCK_METHOD3(NotifyTabTextContentDidChange,
+               void(int32_t tab_id,
+                    const std::vector<GURL>& redirect_chain,
+                    const std::string& text));
+  MOCK_METHOD3(NotifyTabHtmlContentDidChange,
+               void(int32_t tab_id,
+                    const std::vector<GURL>& redirect_chain,
+                    const std::string& html));
+  MOCK_METHOD1(NotifyTabDidStartPlayingMedia, void(int32_t tab_id));
+  MOCK_METHOD1(NotifyTabDidStopPlayingMedia, void(int32_t tab_id));
+  MOCK_METHOD4(NotifyTabDidChange,
+               void(int32_t tab_id,
+                    const std::vector<GURL>& redirect_chain,
+                    bool is_visible,
+                    bool is_incognito));
+  MOCK_METHOD1(NotifyDidCloseTab, void(int32_t tab_id));
+  MOCK_METHOD0(NotifyBrowserDidBecomeActive, void());
+  MOCK_METHOD0(NotifyBrowserDidResignActive, void());
 };
 
 }  // namespace brave_ads

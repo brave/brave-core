@@ -39,7 +39,6 @@ bool AdsClientHelper::HasInstance() {
 // static
 void AdsClientHelper::AddObserver(AdsClientObserver* observer) {
   DCHECK(observer);
-  DCHECK(!observer->IsBound());
 
   g_ads_client_instance->AddObserver(observer);
 }

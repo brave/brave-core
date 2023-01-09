@@ -11,15 +11,4 @@ AdsClientObserver::AdsClientObserver() = default;
 
 AdsClientObserver::~AdsClientObserver() = default;
 
-mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver>
-AdsClientObserver::CreatePendingReceiverAndPassRemote() {
-  Reset();
-  return pending_receiver_.InitWithNewPipeAndPassRemote();
-}
-
-void AdsClientObserver::BindReceiver() {
-  DCHECK(pending_receiver_.is_valid());
-  receiver_.Bind(std::move(pending_receiver_));
-}
-
 }  // namespace ads

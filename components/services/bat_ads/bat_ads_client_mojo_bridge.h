@@ -14,6 +14,7 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
+#include "brave/components/services/bat_ads/bat_ads_client_observer_impl.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
@@ -130,8 +131,7 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
 
  private:
   mojo::AssociatedRemote<mojom::BatAdsClient> receiver_;
-  std::vector<ads::AdsClientObserver*> pending_observers_;
-  bool is_observers_bound_ = false;
+  BatAdsClientObserverImpl observer_impl_;
 };
 
 }  // namespace bat_ads

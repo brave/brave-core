@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "bat/ads/ads_client_observer.h"
 #include "bat/ads/notification_ad_info.h"
@@ -21,6 +20,8 @@ namespace bat_ads {
 BatAdsClientMojoBridge::BatAdsClientMojoBridge(
     mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info) {
   receiver_.Bind(std::move(client_info));
+  receiver_->AddBatAdsClientObserver(
+      observer_impl_.CreatePendingReceiverAndPassRemote());
 }
 
 BatAdsClientMojoBridge::~BatAdsClientMojoBridge() = default;
@@ -37,39 +38,15 @@ bool BatAdsClientMojoBridge::CanShowNotificationAdsWhileBrowserIsBackgrounded()
 }
 
 void BatAdsClientMojoBridge::AddObserver(ads::AdsClientObserver* observer) {
-  DCHECK(observer);
-
-  if (!receiver_.is_bound()) {
-    return;
-  }
-
-  receiver_->AddBatAdsClientObserver(
-      observer->CreatePendingReceiverAndPassRemote());
-
-  if (is_observers_bound_) {
-    return observer->BindReceiver();
-  }
-
-  pending_observers_.push_back(observer);
+  observer_impl_.AddObserver(observer);
 }
 
 void BatAdsClientMojoBridge::RemoveObserver(ads::AdsClientObserver* observer) {
-  DCHECK(observer);
-
-  observer->Reset();
-
-  pending_observers_.erase(base::ranges::remove(pending_observers_, observer),
-                           pending_observers_.end());
+  observer_impl_.RemoveObserver(observer);
 }
 
 void BatAdsClientMojoBridge::BindPendingObservers() {
-  is_observers_bound_ = true;
-
-  for (auto* observer : pending_observers_) {
-    observer->BindReceiver();
-  }
-
-  pending_observers_.clear();
+  observer_impl_.BindReceiver();
 }
 
 bool BatAdsClientMojoBridge::IsNetworkConnectionAvailable() const {

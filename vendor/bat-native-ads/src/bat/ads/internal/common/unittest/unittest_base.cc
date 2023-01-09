@@ -218,10 +218,8 @@ void UnitTestBase::Initialize() {
 
 void UnitTestBase::MockAdsClientAddObserver() {
   ON_CALL(*ads_client_mock_, AddObserver(_))
-      .WillByDefault(Invoke([=](AdsClientObserver* observer) {
-        AddBatAdsClientObserver(observer->CreatePendingReceiverAndPassRemote());
-        observer->BindReceiver();
-      }));
+      .WillByDefault(
+          Invoke([=](AdsClientObserver* observer) { AddObserver(observer); }));
 }
 
 void UnitTestBase::SetDefaultMocks() {

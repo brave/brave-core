@@ -24,37 +24,37 @@ interface BatAdsService {
 interface BatAdsClientObserver {
   // See AdsClientObserver for documentation.
 
-  OnLocaleDidChange(string locale);
+  NotifyLocaleDidChange(string locale);
 
-  OnPrefDidChange(string path);
+  NotifyPrefDidChange(string path);
 
-  OnDidUpdateResourceComponent(string id);
+  NotifyDidUpdateResourceComponent(string id);
 
-  OnTabHtmlContentDidChange(int32 tab_id,
-                            array<url.mojom.Url> redirect_chain,
-                            string html);
-  OnTabTextContentDidChange(int32 tab_id,
-                            array<url.mojom.Url> redirect_chain,
-                            string text);
-  OnTabDidStartPlayingMedia(int32 tab_id);
-  OnTabDidStopPlayingMedia(int32 tab_id);
-  OnTabDidChange(int32 tab_id,
-                 array<url.mojom.Url> redirect_chain,
-                 bool is_visible,
-                 bool is_incognito);
-  OnDidCloseTab(int32 tab_id);
+  NotifyTabHtmlContentDidChange(int32 tab_id,
+                                array<url.mojom.Url> redirect_chain,
+                                string html);
+  NotifyTabTextContentDidChange(int32 tab_id,
+                                array<url.mojom.Url> redirect_chain,
+                                string text);
+  NotifyTabDidStartPlayingMedia(int32 tab_id);
+  NotifyTabDidStopPlayingMedia(int32 tab_id);
+  NotifyTabDidChange(int32 tab_id,
+                     array<url.mojom.Url> redirect_chain,
+                     bool is_visible,
+                     bool is_incognito);
+  NotifyDidCloseTab(int32 tab_id);
 
-  OnUserDidBecomeIdle();
-  OnUserDidBecomeActive(mojo_base.mojom.TimeDelta idle_time,
-                        bool screen_was_locked);
+  NotifyUserDidBecomeIdle();
+  NotifyUserDidBecomeActive(mojo_base.mojom.TimeDelta idle_time,
+                            bool screen_was_locked);
 
-  OnBrowserDidEnterForeground();
-  OnBrowserDidEnterBackground();
-  OnBrowserDidBecomeActive();
-  OnBrowserDidResignActive();
+  NotifyBrowserDidEnterForeground();
+  NotifyBrowserDidEnterBackground();
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidResignActive();
 
-  OnRewardsWalletIsReady(string payment_id, string recovery_seed);
-  OnRewardsWalletDidChange(string payment_id, string recovery_seed);
+  NotifyRewardsWalletIsReady(string payment_id, string recovery_seed);
+  NotifyRewardsWalletDidChange(string payment_id, string recovery_seed);
 };
 
 interface BatAdsClient {

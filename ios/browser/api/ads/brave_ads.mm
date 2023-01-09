@@ -27,7 +27,8 @@
 #include "bat/ads/ad_event_history.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_callback.h"
-#include "bat/ads/ads_client_observer_notifier.h"
+#include "bat/ads/ads_client_observer.h"
+#include "bat/ads/ads_client_observer_manager.h"
 #include "bat/ads/build_channel.h"
 #include "bat/ads/database.h"
 #include "bat/ads/history_filter_types.h"
@@ -119,7 +120,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 @interface BraveAds () <AdsClientBridge> {
   AdsClientIOS* adsClient;
-  ads::AdsClientObserverNotifierIOS* adsClientObserverNotifier;
+  ads::AdsClientObserverManager ads_client_observer_manager_;
   ads::Ads* ads;
   ads::Database* adsDatabase;
   ads::AdEventHistory* adEventHistory;
@@ -203,10 +204,9 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
   if (ads != nil) {
     delete ads;
-    delete adsClientObserverNotifier;
+    ads_client_observer_manager_.Clear();
     delete adsClient;
     ads = nil;
-    adsClientObserverNotifier = nil;
     adsClient = nil;
     adEventHistory = nil;
   }
@@ -271,7 +271,6 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   adEventHistory = new ads::AdEventHistory();
 
   adsClient = new AdsClientIOS(self);
-  adsClientObserverNotifier = new AdsClientObserverNotifierIOS(self);
   ads = ads::Ads::CreateInstance(adsClient);
   ads->Initialize(base::BindOnce(^(const bool success) {
     [self periodicallyCheckForAdsResourceUpdates];
@@ -286,7 +285,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
   // TODO(tmancey/aseren): We should call NotifyRewardsWalletIsReady on browser
   // launch and NotifyRewardsWalletDidChange only if the wallet has changed.
-  adsClientObserverNotifier->NotifyRewardsWalletDidChange(
+  ads_client_observer_manager_.NotifyRewardsWalletDidChange(
       base::SysNSStringToUTF8(paymentId), base::SysNSStringToUTF8(base64Seed));
 }
 
@@ -312,9 +311,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
         if (self->ads != nil) {
           delete self->ads;
         }
-        if (self->adsClientObserverNotifier != nil) {
-          delete self->adsClientObserverNotifier;
-        }
+        ads_client_observer_manager_.Clear();
         if (self->adsClient != nil) {
           delete self->adsClient;
         }
@@ -325,7 +322,6 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
           delete self->adEventHistory;
         }
         self->ads = nil;
-        self->adsClientObserverNotifier = nil;
         self->adsClient = nil;
         self->adsDatabase = nil;
         self->adEventHistory = nil;
@@ -398,7 +394,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)savePref:(NSString*)name {
   if ([self isAdsServiceRunning]) {
-    adsClientObserverNotifier->NotifyPrefDidChange(
+    ads_client_observer_manager_.NotifyPrefDidChange(
         base::SysNSStringToUTF8(name));
   }
 
@@ -485,11 +481,11 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 #pragma mark - Observers
 
 - (void)addObserver:(ads::AdsClientObserver*)observer {
-  // TODO(tmancey/aseren): To be implemented
+  ads_client_observer_manager_.AddObserver(observer);
 }
 
 - (void)removeObserver:(ads::AdsClientObserver*)observer {
-  // TODO(tmancey/aseren): To be implemented
+  ads_client_observer_manager_.RemoveObserver(observer);
 }
 
 - (void)bindPendingObservers {
@@ -500,14 +496,14 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
-  adsClientObserverNotifier->NotifyBrowserDidEnterForeground();
+  ads_client_observer_manager_.NotifyBrowserDidEnterForeground();
 }
 
 - (void)applicationDidBackground {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  adsClientObserverNotifier->NotifyBrowserDidEnterBackground();
+  ads_client_observer_manager_.NotifyBrowserDidEnterBackground();
 }
 
 #pragma mark - History
@@ -572,9 +568,9 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     urls.push_back(net::GURLWithNSURL(redirectURL));
   }
   urls.push_back(net::GURLWithNSURL(url));
-  adsClientObserverNotifier->NotifyTabTextContentDidChange(
+  ads_client_observer_manager_.NotifyTabTextContentDidChange(
       (int32_t)tabId, urls, base::SysNSStringToUTF8(text));
-  adsClientObserverNotifier->NotifyTabHtmlContentDidChange(
+  ads_client_observer_manager_.NotifyTabHtmlContentDidChange(
       (int32_t)tabId, urls, base::SysNSStringToUTF8(html));
 }
 
@@ -582,14 +578,14 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
-  adsClientObserverNotifier->NotifyTabDidStartPlayingMedia((int32_t)tabId);
+  ads_client_observer_manager_.NotifyTabDidStartPlayingMedia((int32_t)tabId);
 }
 
 - (void)reportMediaStoppedWithTabId:(NSInteger)tabId {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  adsClientObserverNotifier->NotifyTabDidStopPlayingMedia((int32_t)tabId);
+  ads_client_observer_manager_.NotifyTabDidStopPlayingMedia((int32_t)tabId);
 }
 
 - (void)reportTabUpdated:(NSInteger)tabId
@@ -605,7 +601,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     urls.push_back(net::GURLWithNSURL(redirectURL));
   }
   urls.push_back(net::GURLWithNSURL(url));
-  adsClientObserverNotifier->NotifyTabDidChange(
+  ads_client_observer_manager_.NotifyTabDidChange(
       (int32_t)tabId, urls, isSelected, [self isBrowserActive], isPrivate);
 }
 
@@ -613,7 +609,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
-  adsClientObserverNotifier->NotifyDidCloseTab((int32_t)tabId);
+  ads_client_observer_manager_.NotifyDidCloseTab((int32_t)tabId);
 }
 
 - (void)reportNotificationAdEvent:(NSString*)placementId
@@ -854,8 +850,8 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                    if (success) {
                      const std::string bridged_language_code_adsResource_idkey =
                          base::SysNSStringToUTF8(languageCodeAdsResourceId);
-                     strongSelf->adsClientObserverNotifier
-                         ->NotifyDidUpdateResourceComponent(
+                     strongSelf->ads_client_observer_manager_
+                         .NotifyDidUpdateResourceComponent(
                              bridged_language_code_adsResource_idkey);
                    }
                  }];
@@ -892,9 +888,8 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                    if (success) {
                      const std::string bridged_country_code_adsResource_idkey =
                          base::SysNSStringToUTF8(countryCodeAdsResourceId);
-
-                     strongSelf->adsClientObserverNotifier
-                         ->NotifyDidUpdateResourceComponent(
+                     strongSelf->ads_client_observer_manager_
+                         .NotifyDidUpdateResourceComponent(
                              bridged_country_code_adsResource_idkey);
                    }
                  }];
@@ -970,8 +965,8 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      }
 
                      BLOG(1, @"Notifying ads resource observers");
-                     strongSelf->adsClientObserverNotifier
-                         ->NotifyDidUpdateResourceComponent(
+                     strongSelf->ads_client_observer_manager_
+                         .NotifyDidUpdateResourceComponent(
                              base::SysNSStringToUTF8(key));
                    }];
   }

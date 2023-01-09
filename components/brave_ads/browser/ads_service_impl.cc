@@ -560,8 +560,8 @@ void AdsServiceImpl::InitializeRewardsWallet() {
 void AdsServiceImpl::OnInitializeRewardsWallet(
     ledger::mojom::RewardsWalletPtr wallet) {
   if (wallet) {
-    NotifyRewardsWalletIsReady(wallet->payment_id,
-                               base::Base64Encode(wallet->recovery_seed));
+    ads_client_observer_->NotifyRewardsWalletIsReady(
+        wallet->payment_id, base::Base64Encode(wallet->recovery_seed));
   } else if (ShouldRewardUser()) {
     VLOG(0) << "Failed to initialize Rewards wallet";
     return Shutdown();
@@ -725,8 +725,8 @@ void AdsServiceImpl::GetRewardsWallet() {
 void AdsServiceImpl::OnGetRewardsWallet(
     ledger::mojom::RewardsWalletPtr wallet) const {
   if (wallet) {
-    NotifyRewardsWalletDidChange(wallet->payment_id,
-                                 base::Base64Encode(wallet->recovery_seed));
+    ads_client_observer_->NotifyRewardsWalletDidChange(
+        wallet->payment_id, base::Base64Encode(wallet->recovery_seed));
   }
 }
 
@@ -758,13 +758,14 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
     case ui::IdleState::IDLE_STATE_ACTIVE: {
       const bool screen_was_locked =
           last_idle_state_ == ui::IdleState::IDLE_STATE_LOCKED;
-      NotifyUserDidBecomeActive(idle_time, screen_was_locked);
+      ads_client_observer_->NotifyUserDidBecomeActive(idle_time,
+                                                      screen_was_locked);
       break;
     }
 
     case ui::IdleState::IDLE_STATE_IDLE:
     case ui::IdleState::IDLE_STATE_LOCKED: {
-      NotifyUserDidBecomeIdle();
+      ads_client_observer_->NotifyUserDidBecomeIdle();
       break;
     }
 
@@ -1799,9 +1800,53 @@ void AdsServiceImpl::ToggleFlaggedAd(base::Value::Dict value,
   }
 }
 
+void AdsServiceImpl::NotifyTabTextContentDidChange(
+    const int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& text) {
+  ads_client_observer_->NotifyTabTextContentDidChange(tab_id, redirect_chain,
+                                                      text);
+}
+
+void AdsServiceImpl::NotifyTabHtmlContentDidChange(
+    const int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& html) {
+  ads_client_observer_->NotifyTabHtmlContentDidChange(tab_id, redirect_chain,
+                                                      html);
+}
+
+void AdsServiceImpl::NotifyTabDidStartPlayingMedia(const int32_t tab_id) {
+  ads_client_observer_->NotifyTabDidStartPlayingMedia(tab_id);
+}
+
+void AdsServiceImpl::NotifyTabDidStopPlayingMedia(const int32_t tab_id) {
+  ads_client_observer_->NotifyTabDidStopPlayingMedia(tab_id);
+}
+
+void AdsServiceImpl::NotifyTabDidChange(const int32_t tab_id,
+                                        const std::vector<GURL>& redirect_chain,
+                                        const bool is_visible,
+                                        const bool is_incognito) {
+  ads_client_observer_->NotifyTabDidChange(tab_id, redirect_chain, is_visible,
+                                           is_incognito);
+}
+
+void AdsServiceImpl::NotifyDidCloseTab(const int32_t tab_id) {
+  ads_client_observer_->NotifyDidCloseTab(tab_id);
+}
+
+void AdsServiceImpl::NotifyBrowserDidBecomeActive() {
+  ads_client_observer_->NotifyBrowserDidBecomeActive();
+}
+
+void AdsServiceImpl::NotifyBrowserDidResignActive() {
+  ads_client_observer_->NotifyBrowserDidResignActive();
+}
+
 void AdsServiceImpl::AddBatAdsClientObserver(
     mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver> observer) {
-  ads::AdsClientObserverNotifier::AddBatAdsClientObserver(std::move(observer));
+  ads_client_observer_.Bind(std::move(observer));
 }
 
 void AdsServiceImpl::IsNetworkConnectionAvailable(
@@ -2042,9 +2087,8 @@ void AdsServiceImpl::LoadDataResource(const std::string& name,
   std::move(callback).Run(data_resource);
 }
 
-void AdsServiceImpl::GetScheduledCaptcha(
-    const std::string& payment_id,
-    ads::GetScheduledCaptchaCallback callback) {
+void AdsServiceImpl::GetScheduledCaptcha(const std::string& payment_id,
+                                         GetScheduledCaptchaCallback callback) {
   adaptive_captcha_service_->GetScheduledCaptcha(payment_id,
                                                  std::move(callback));
 }
@@ -2119,7 +2163,7 @@ void AdsServiceImpl::GetBooleanPref(const std::string& path,
 
 void AdsServiceImpl::SetBooleanPref(const std::string& path, const bool value) {
   profile_->GetPrefs()->SetBoolean(path, value);
-  NotifyPrefDidChange(path);
+  ads_client_observer_->NotifyPrefDidChange(path);
 }
 
 void AdsServiceImpl::GetIntegerPref(const std::string& path,
@@ -2129,7 +2173,7 @@ void AdsServiceImpl::GetIntegerPref(const std::string& path,
 
 void AdsServiceImpl::SetIntegerPref(const std::string& path, const int value) {
   profile_->GetPrefs()->SetInteger(path, value);
-  NotifyPrefDidChange(path);
+  ads_client_observer_->NotifyPrefDidChange(path);
 }
 
 void AdsServiceImpl::GetDoublePref(const std::string& path,
@@ -2140,7 +2184,7 @@ void AdsServiceImpl::GetDoublePref(const std::string& path,
 void AdsServiceImpl::SetDoublePref(const std::string& path,
                                    const double value) {
   profile_->GetPrefs()->SetDouble(path, value);
-  NotifyPrefDidChange(path);
+  ads_client_observer_->NotifyPrefDidChange(path);
 }
 
 void AdsServiceImpl::GetStringPref(const std::string& path,
@@ -2151,7 +2195,7 @@ void AdsServiceImpl::GetStringPref(const std::string& path,
 void AdsServiceImpl::SetStringPref(const std::string& path,
                                    const std::string& value) {
   profile_->GetPrefs()->SetString(path, value);
-  NotifyPrefDidChange(path);
+  ads_client_observer_->NotifyPrefDidChange(path);
 }
 
 void AdsServiceImpl::GetInt64Pref(const std::string& path,
@@ -2162,7 +2206,7 @@ void AdsServiceImpl::GetInt64Pref(const std::string& path,
 void AdsServiceImpl::SetInt64Pref(const std::string& path,
                                   const int64_t value) {
   profile_->GetPrefs()->SetInt64(path, value);
-  NotifyPrefDidChange(path);
+  ads_client_observer_->NotifyPrefDidChange(path);
 }
 
 void AdsServiceImpl::GetUint64Pref(const std::string& path,
@@ -2173,7 +2217,7 @@ void AdsServiceImpl::GetUint64Pref(const std::string& path,
 void AdsServiceImpl::SetUint64Pref(const std::string& path,
                                    const uint64_t value) {
   profile_->GetPrefs()->SetUint64(path, value);
-  NotifyPrefDidChange(path);
+  ads_client_observer_->NotifyPrefDidChange(path);
 }
 
 void AdsServiceImpl::GetTimePref(const std::string& path,
@@ -2184,7 +2228,7 @@ void AdsServiceImpl::GetTimePref(const std::string& path,
 void AdsServiceImpl::SetTimePref(const std::string& path,
                                  const base::Time value) {
   profile_->GetPrefs()->SetTime(path, value);
-  NotifyPrefDidChange(path);
+  ads_client_observer_->NotifyPrefDidChange(path);
 }
 
 void AdsServiceImpl::GetDictPref(const std::string& path,
@@ -2195,7 +2239,7 @@ void AdsServiceImpl::GetDictPref(const std::string& path,
 void AdsServiceImpl::SetDictPref(const std::string& path,
                                  base::Value::Dict value) {
   profile_->GetPrefs()->SetDict(path, std::move(value));
-  NotifyPrefDidChange(path);
+  ads_client_observer_->NotifyPrefDidChange(path);
 }
 
 void AdsServiceImpl::GetListPref(const std::string& path,
@@ -2206,12 +2250,12 @@ void AdsServiceImpl::GetListPref(const std::string& path,
 void AdsServiceImpl::SetListPref(const std::string& path,
                                  base::Value::List value) {
   profile_->GetPrefs()->SetList(path, std::move(value));
-  NotifyPrefDidChange(path);
+  ads_client_observer_->NotifyPrefDidChange(path);
 }
 
 void AdsServiceImpl::ClearPref(const std::string& path) {
   profile_->GetPrefs()->ClearPref(path);
-  NotifyPrefDidChange(path);
+  ads_client_observer_->NotifyPrefDidChange(path);
 }
 
 void AdsServiceImpl::HasPrefPath(const std::string& path,
@@ -2234,15 +2278,15 @@ void AdsServiceImpl::Log(const std::string& file,
 }
 
 void AdsServiceImpl::OnBrowserDidEnterForeground() {
-  NotifyBrowserDidEnterForeground();
+  ads_client_observer_->NotifyBrowserDidEnterForeground();
 }
 
 void AdsServiceImpl::OnBrowserDidEnterBackground() {
-  NotifyBrowserDidEnterBackground();
+  ads_client_observer_->NotifyBrowserDidEnterBackground();
 }
 
 void AdsServiceImpl::OnDidUpdateResourceComponent(const std::string& id) {
-  NotifyDidUpdateResourceComponent(id);
+  ads_client_observer_->NotifyDidUpdateResourceComponent(id);
 }
 
 void AdsServiceImpl::OnRewardsWalletUpdated() {

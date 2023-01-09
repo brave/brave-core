@@ -12,6 +12,8 @@ static_library("lib") {
   sources = [
     "bat_ads_client_mojo_bridge.cc",
     "bat_ads_client_mojo_bridge.h",
+    "bat_ads_client_observer_impl.cc",
+    "bat_ads_client_observer_impl.h",
     "bat_ads_impl.cc",
     "bat_ads_impl.h",
     "bat_ads_service_impl.cc",

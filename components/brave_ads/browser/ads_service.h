@@ -8,11 +8,11 @@
 
 #include <cstdint>
 #include <string>
+#include <vector>
 
 #include "base/observer_list.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "bat/ads/ads_client_observer_notifier.h"
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/new_tab_page_ad_info.h"
@@ -30,7 +30,7 @@ class PrefRegistrySyncable;
 
 namespace brave_ads {
 
-class AdsService : public ads::AdsClientObserverNotifier, public KeyedService {
+class AdsService : public KeyedService {
  public:
   AdsService();
 
@@ -245,6 +245,56 @@ class AdsService : public ads::AdsClientObserverNotifier, public KeyedService {
   // containing the current state.
   virtual void ToggleFlaggedAd(base::Value::Dict value,
                                ToggleFlaggedAdCallback callback) = 0;
+
+  // Invoked when the page for |tab_id| has loaded and the content is available
+  // for analysis. |redirect_chain| containing a list of redirect URLs that
+  // occurred on the way to the current page. The current page is the last one
+  // in the list (so even when there's no redirect, there should be one entry in
+  // the list). |text| containing the page content as text.
+  virtual void NotifyTabTextContentDidChange(
+      int32_t tab_id,
+      const std::vector<GURL>& redirect_chain,
+      const std::string& text) = 0;
+
+  // Invoked when the page for |tab_id| has loaded and the content is available
+  // for analysis. |redirect_chain| containing a list of redirect URLs that
+  // occurred on the way to the current page. The current page is the last one
+  // in the list (so even when there's no redirect, there should be one entry in
+  // the list). |html| containing the page content as HTML.
+  virtual void NotifyTabHtmlContentDidChange(
+      int32_t tab_id,
+      const std::vector<GURL>& redirect_chain,
+      const std::string& html) = 0;
+
+  // Invoked when media starts playing on a browser tab for the specified
+  // |tab_id|.
+  virtual void NotifyTabDidStartPlayingMedia(int32_t tab_id) = 0;
+
+  // Called when media stops playing on a browser tab for the specified
+  // |tab_id|.
+  virtual void NotifyTabDidStopPlayingMedia(int32_t tab_id) = 0;
+
+  // Invoked when a browser tab is updated with the specified |redirect_chain|
+  // containing a list of redirect URLs that occurred on the way to the current
+  // page. The current page is the last one in the list (so even when there's no
+  // redirect, there should be one entry in the list). |is_active| is set to
+  // |true| if |tab_id| refers to the currently active tab otherwise is set to
+  // |false|. |is_browser_active| is set to |true| if the browser window is
+  // active otherwise |false|. |is_incognito| is set to |true| if the tab is
+  // incognito otherwise |false|.
+  virtual void NotifyTabDidChange(int32_t tab_id,
+                                  const std::vector<GURL>& redirect_chain,
+                                  bool is_visible,
+                                  bool is_incognito) = 0;
+
+  // Invoked when a browser tab with the specified |tab_id| is closed.
+  virtual void NotifyDidCloseTab(int32_t tab_id) = 0;
+
+  // Invoked when the browser did become active.
+  virtual void NotifyBrowserDidBecomeActive() = 0;
+
+  // Invoked when the browser did resign active.
+  virtual void NotifyBrowserDidResignActive() = 0;
 
  protected:
   base::ObserverList<AdsServiceObserver> observers_;

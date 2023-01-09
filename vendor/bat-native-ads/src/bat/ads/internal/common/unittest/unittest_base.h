@@ -11,13 +11,13 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
+#include "bat/ads/ads_client_observer_manager.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/ads_observer_manager.h"
 #include "bat/ads/internal/browser/browser_manager.h"
 #include "bat/ads/internal/common/platform/platform_helper_mock.h"
-#include "bat/ads/internal/common/unittest/ads_client_observer_notifier_for_testing.h"
 #include "bat/ads/internal/covariates/covariate_manager.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "bat/ads/internal/database/database_manager.h"
@@ -44,8 +44,7 @@ namespace ads {
 
 class Database;
 
-class UnitTestBase : public AdsClientObserverNotifierForTesting,
-                     public testing::Test {
+class UnitTestBase : public AdsClientObserverManager, public testing::Test {
  public:
   UnitTestBase();
 

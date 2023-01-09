@@ -308,6 +308,22 @@ class AdsServiceImpl : public AdsService,
   void ToggleFlaggedAd(base::Value::Dict value,
                        ToggleFlaggedAdCallback callback) override;
 
+  void NotifyTabTextContentDidChange(int32_t tab_id,
+                                     const std::vector<GURL>& redirect_chain,
+                                     const std::string& text) override;
+  void NotifyTabHtmlContentDidChange(int32_t tab_id,
+                                     const std::vector<GURL>& redirect_chain,
+                                     const std::string& html) override;
+  void NotifyTabDidStartPlayingMedia(int32_t tab_id) override;
+  void NotifyTabDidStopPlayingMedia(int32_t tab_id) override;
+  void NotifyTabDidChange(int32_t tab_id,
+                          const std::vector<GURL>& redirect_chain,
+                          bool is_visible,
+                          bool is_incognito) override;
+  void NotifyDidCloseTab(int32_t tab_id) override;
+  void NotifyBrowserDidBecomeActive() override;
+  void NotifyBrowserDidResignActive() override;
+
   // AdsClient:
   void AddBatAdsClientObserver(
       mojo::PendingRemote<bat_ads::mojom::BatAdsClientObserver> observer)
@@ -487,6 +503,7 @@ class AdsServiceImpl : public AdsService,
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
       bat_ads_client_receiver_;
   mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_remote_;
+  mojo::Remote<bat_ads::mojom::BatAdsClientObserver> ads_client_observer_;
 
   base::ObserverList<ads::AdsObserver> ads_observers_;
   bool is_ads_observers_bound_ = false;
