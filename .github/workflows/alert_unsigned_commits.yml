@@ -34,5 +34,5 @@ jobs:
           Please follow the handbook to configure [commit signing](https://github.com/brave/handbook/blob/master/development/commit-and-tag-signing.md)
           cc: @${author_login}
           "
-              gh -R "$BRAVE_CORE_PATH" pr comment "$PR_NUMBER" "$msg"
+              gh -R "$BRAVE_CORE_PATH" pr comment "$PR_NUMBER" -b "$msg"
           fi
