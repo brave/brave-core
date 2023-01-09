@@ -16,9 +16,12 @@ import com.brave.playlist.enums.PlaylistOptions;
 import com.brave.playlist.fragment.AllPlaylistFragment;
 import com.brave.playlist.fragment.PlaylistFragment;
 import com.brave.playlist.listener.PlaylistOptionsListener;
+import com.brave.playlist.model.MoveOrCopyModel;
 import com.brave.playlist.model.PlaylistItemModel;
+import com.brave.playlist.model.PlaylistItemOptionModel;
 import com.brave.playlist.model.PlaylistModel;
 import com.brave.playlist.model.PlaylistOptionsModel;
+import com.brave.playlist.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,7 +60,7 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                 Log.e(PlaylistUtils.TAG, "Name : " + playlist.name);
                 mPlaylistPageHandler.createPlaylist(playlist);
                 Log.e(PlaylistUtils.TAG, "after Name : " + playlist.name);
-                openAllPlaylists();
+                openAllPlaylists(false, null);
             }
         });
 
@@ -124,8 +127,10 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                         PlaylistOptions option = playlistItemOption.getPlaylistOptions();
                         if (option == PlaylistOptions.MOVE_PLAYLIST_ITEM) {
                             Log.e(PlaylistUtils.TAG, "PlaylistOptions.MOVE_PLAYLIST_ITEM");
+                            openAllPlaylists(true, playlistItemOption);
                         } else if (option == PlaylistOptions.COPY_PLAYLIST_ITEM) {
                             Log.e(PlaylistUtils.TAG, "PlaylistOptions.COPY_PLAYLIST_ITEM");
+                            openAllPlaylists(true, playlistItemOption);
                         } else if (option == PlaylistOptions.DELETE_ITEMS_OFFLINE_DATA) {
                             Log.e(PlaylistUtils.TAG, "PlaylistOptions.DELETE_ITEMS_OFFLINE_DATA");
                             mPlaylistPageHandler.removeLocalDataForItem(
@@ -152,7 +157,7 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
         if (getIntent() != null && getIntent().getStringExtra(PlaylistUtils.PLAYLIST_ID) != null) {
             String playlistId = getIntent().getStringExtra(PlaylistUtils.PLAYLIST_ID);
             if (playlistId.equals("all")) {
-                openAllPlaylists();
+                openAllPlaylists(false, null);
             } else {
                 openPlaylist(playlistId, true);
             }
@@ -199,7 +204,8 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
         }
     }
 
-    private void openAllPlaylists() {
+    private void openAllPlaylists(
+            boolean showMoveOrCopy, PlaylistItemOptionModel playlistItemOptionModel) {
         if (mPlaylistPageHandler != null) {
             mPlaylistPageHandler.getAllPlaylists(playlists -> {
                 try {
@@ -233,12 +239,19 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                         playlistViewModel.setAllPlaylistData(playlistsJsonArray.toString(2));
                     }
 
-                    AllPlaylistFragment allPlaylistFragment = new AllPlaylistFragment();
-                    // allPlaylistFragment.setPlaylistOptionsListener(this);
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container_view_tag, allPlaylistFragment)
-                            .commit();
+                    if (!showMoveOrCopy) {
+                        AllPlaylistFragment allPlaylistFragment = new AllPlaylistFragment();
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container_view_tag, allPlaylistFragment)
+                                .commit();
+                    } else {
+                        MoveOrCopyModel moveOrCopyModel =
+                                new MoveOrCopyModel(playlistItemOptionModel.getPlaylistOptions(),
+                                        playlistItemOptionModel.getPlaylistId(), "");
+                        new MoveOrCopyToPlaylistBottomSheet(moveOrCopyModel)
+                                .show(getSupportFragmentManager(), null);
+                    }
                 } catch (JSONException e) {
                     Log.e(PlaylistUtils.TAG, "PlaylistHostActivity -> JSONException error " + e);
                 }
