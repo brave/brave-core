@@ -30,6 +30,8 @@ import {
 import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-grid-view-item'
 import { WalletPageActions } from '../../../../../page/actions'
 import Amount from '../../../../../utils/amount'
+import { useUnsafePageSelector } from '../../../../../common/hooks/use-safe-selector'
+import { PageSelectors } from '../../../../../page/selectors'
 
 interface Props {
   networks: BraveWallet.NetworkInfo[]
@@ -46,6 +48,9 @@ export const Nfts = (props: Props) => {
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
+
+  // redux
+  const nftsPinningStatus = useUnsafePageSelector(PageSelectors.nftsPinningStatus)
 
   // hooks
   const history = useHistory()
@@ -89,6 +94,12 @@ export const Nfts = (props: Props) => {
   const emptyStateMessage = React.useMemo(() => {
     return getLocale(searchValue === '' ? 'braveWalletNftsEmptyState' : 'braveWalletNftsEmptyStateSearch')
   }, [searchValue])
+
+  React.useEffect(() => {
+    if (nftList.length !== 0 && Object.keys(nftsPinningStatus).length === 0) {
+      dispatch(WalletPageActions.getNftsPinningStatus(nftList))
+    }
+  }, [nftList, nftsPinningStatus])
 
   return (
     <>

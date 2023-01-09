@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { BraveWallet } from '../../../constants/types'
 import { Row } from '../../shared/style'
 import { IpfsFailureReasons } from './ipfs-failure-reasons'
 
@@ -17,14 +18,12 @@ import {
   Text
 } from './nft-pinning-status.style'
 
-export type PinningStatus = 'uploading' | 'pinned' | 'failed' | 'centralized'
-
 interface Props {
-  pinningStatus: PinningStatus
+  pinningStatusCode: BraveWallet.TokenPinStatusCode
 }
 
 export const NftPinnigStatus = (props: Props) => {
-  const { pinningStatus } = props
+  const { pinningStatusCode } = props
   const [icon, setIcon] = React.useState<React.ReactNode>()
   const [message, setmessage] = React.useState<string>('')
   const [reportSubmitted, setReportSubmitted] = React.useState<boolean>(false)
@@ -35,46 +34,41 @@ export const NftPinnigStatus = (props: Props) => {
   }, [])
 
   const onShowTooltip = React.useCallback(() => {
-    if (pinningStatus === 'failed') {
+    if (pinningStatusCode === BraveWallet.TokenPinStatusCode.STATUS_PINNING_FAILED) {
       setShowTooltip(true)
     }
-  }, [pinningStatus])
+  }, [pinningStatusCode])
 
   React.useEffect(() => {
-    switch (pinningStatus) {
-      case 'uploading':
+    switch (pinningStatusCode) {
+      case BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS:
         setmessage('NFT data is being pinned to your local IPFS node')
         setIcon(<UploadIcon />)
         break
 
-      case 'centralized':
+      case BraveWallet.TokenPinStatusCode.STATUS_PINNING_FAILED:
         setmessage('Cannot be pinned to your local IPFS node')
         setIcon(<CloseIcon />)
         break
 
-      case 'failed':
-        setmessage('Failed pinning. We will retry.')
-        setIcon(<CloseIcon />)
-        break
-
-      case 'pinned':
+      case BraveWallet.TokenPinStatusCode.STATUS_PINNED:
         setmessage('Pinned to your local IPFS node')
         setIcon(<CheckIcon />)
         break
     }
-  }, [pinningStatus])
+  }, [pinningStatusCode])
 
   return (
-    <StyledWrapper pinningStatus={pinningStatus}>
+    <StyledWrapper>
       {showTooltip && <IpfsFailureReasons />}
       <ContentWrapper
-        pinningStatus={pinningStatus}
+        pinningStatus={pinningStatusCode}
         onMouseOver={onShowTooltip}
         onMouseLeave={() => setShowTooltip(false)}
       >
         {icon}
         {message}
-        {pinningStatus === 'failed' && (
+        {pinningStatusCode === BraveWallet.TokenPinStatusCode.STATUS_PINNING_FAILED && (
           <ReportButton onClick={onSubmitReport} disabled={reportSubmitted}>
             Report issue
           </ReportButton>

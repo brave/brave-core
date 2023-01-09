@@ -27,7 +27,7 @@ export const GifWrapper = styled.div<{ size?: string}>`
 export const StatusGif = styled.img`
   width: 100%;
   height: 100%;
-  z-index: 3;
+  z-index: 0;
   mix-blend-mode: multiply; /* make gif background blend with parent background */
 `
 
@@ -40,9 +40,12 @@ const BannerLeftIcon = styled.div`
   background-color: ${(p) => p.theme.palette.white};
 `
 
-export const Ipfs = styled(BannerLeftIcon)`
+export const Ipfs = styled(BannerLeftIcon)<{ size?: string}>`
   -webkit-mask-image: url(${IpfsIcon});
   mask-image: url(${IpfsIcon});
+  mask-repeat: no-repeat;
+  width: ${p => p.size};
+  height: ${p => p.size};
 `
 
 export const IpfsUploading = styled(BannerLeftIcon)`
@@ -51,6 +54,6 @@ export const IpfsUploading = styled(BannerLeftIcon)`
   background-size: cover;
   background-position: 0 0;
   background-color: transparent;
-  z-index: 2;
+  z-index: 0;
   position: absolute;
 `

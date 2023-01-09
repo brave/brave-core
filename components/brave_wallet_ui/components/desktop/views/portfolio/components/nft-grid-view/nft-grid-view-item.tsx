@@ -6,11 +6,17 @@
 import * as React from 'react'
 
 // Types
-import { UserAssetInfoType } from 'components/brave_wallet_ui/constants/types'
+import { BraveWallet, UserAssetInfoType } from '../../../../../../constants/types'
 
 // Utils
 import Amount from '../../../../../../utils/amount'
 import { NftIcon } from '../../../../../shared/nft-icon/nft-icon'
+
+// hooks
+import { useNftPin } from '../../../../../../common/hooks/nft-pin'
+
+// components
+import { NftPinningStatusAnimation } from '../../../../nft-pinning-status-animation/nft-pinning-status-animation'
 
 // Styled Components
 import {
@@ -18,9 +24,10 @@ import {
   NFTText,
   IconWrapper,
   DIVForClickableArea,
-  PinnedIcon,
-  NFTSymbol
+  NFTSymbol,
+  PinnedIcon
 } from './style'
+import { Row } from '../../../../../shared/style'
 
 interface Props {
   token: UserAssetInfoType
@@ -30,6 +37,12 @@ interface Props {
 export const NFTGridViewItem = (props: Props) => {
   const { token, onSelectAsset } = props
 
+  const { getNftPinningStatus } = useNftPin()
+
+  const pinningStatus = React.useMemo(() => {
+    return getNftPinningStatus(token.asset)
+  }, [token])
+
   return (
     <NFTButton
       onClick={onSelectAsset}
@@ -37,9 +50,18 @@ export const NFTGridViewItem = (props: Props) => {
       <IconWrapper>
         <DIVForClickableArea />
         <NftIcon icon={token.asset.logo} responsive={true} />
-        <PinnedIcon />
+        {pinningStatus?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNED && <PinnedIcon />}
       </IconWrapper>
-      <NFTText>{token.asset.name} {token.asset.tokenId ? '#' + new Amount(token.asset.tokenId).toNumber() : ''}</NFTText>
+      <Row alignItems='center' justifyContent='space-between' gap='14px' margin='6px 0 0 0'>
+        <NFTText>{token.asset.name} {token.asset.tokenId ? '#' + new Amount(token.asset.tokenId).toNumber() : ''}</NFTText>
+          {pinningStatus !== undefined &&
+            <NftPinningStatusAnimation
+              size='25px'
+              displayMode='nft'
+              status={pinningStatus?.code}
+            />
+          }
+      </Row>
       <NFTSymbol>{token.asset.symbol}</NFTSymbol>
     </NFTButton>
   )

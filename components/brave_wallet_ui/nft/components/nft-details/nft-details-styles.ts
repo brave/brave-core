@@ -239,7 +239,7 @@ export const NftStandard = styled.div`
   margin-bottom: 6px;
 `
 
-export const HighlightedDetailSectionValue = styled.p`
+export const HighlightedDetailSectionValue = styled.a`
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 500;
@@ -252,6 +252,7 @@ export const HighlightedDetailSectionValue = styled.p`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+  text-decoration: none;
 `
 
 export const CopyIcon = styled.button`
