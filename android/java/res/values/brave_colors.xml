@@ -278,6 +278,6 @@
     <color name="brave_rating_text_input_stroke_color">#E2E3E7</color>
     <color name="brave_rating_hint_text_color">#1D1F25</color>
 
-
-
+    <color name="bookmark_menu_text_color">#484B4E</color>
+    <color name="bookmark_menu_bg_color">@android:color/white</color>
 </resources>

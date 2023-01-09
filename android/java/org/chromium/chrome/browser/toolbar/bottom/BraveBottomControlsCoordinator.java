@@ -22,6 +22,7 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
@@ -31,6 +32,7 @@ import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.HomeButton;
+import org.chromium.chrome.browser.toolbar.LocationBarModel;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
@@ -51,6 +53,8 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
     private Callback<Integer> mSetUrlBarFocusAction;
     private OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
     private ScrollingBottomViewResourceFrameLayout mRoot;
+    private ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
+    private LocationBarModel mLocationBarModel;
 
     public BraveBottomControlsCoordinator(
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
@@ -64,7 +68,9 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             FullscreenManager fullscreenManager, ScrollingBottomViewResourceFrameLayout root,
             BottomControlsContentDelegate contentDelegate, TabObscuringHandler tabObscuringHandler,
             ObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
-            ObservableSupplier<Integer> constraintsSupplier) {
+            ObservableSupplier<Integer> constraintsSupplier,
+            ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
+            LocationBarModel locationBarModel) {
         super(activity, windowAndroid, layoutManager, resourceManager, controlsSizer,
                 fullscreenManager, root, contentDelegate, tabObscuringHandler,
                 overlayPanelVisibilitySupplier, constraintsSupplier);
@@ -77,6 +83,8 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
         mMenuButtonHelperSupplier = menuButtonHelperSupplier;
         mRoot = root;
+        mBookmarkModelSupplier = bookmarkModelSupplier;
+        mLocationBarModel = locationBarModel;
     }
 
     public void initializeWithNative(Activity activity, ResourceManager resourceManager,
@@ -85,11 +93,11 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             TabCountProvider tabCountProvider, IncognitoStateProvider incognitoStateProvider,
             ViewGroup topToolbarRoot, Runnable closeAllTabsAction) {
         if (BottomToolbarConfiguration.isBottomToolbarEnabled()) {
-            mBottomToolbarCoordinator =
-                    new BottomToolbarCoordinator(mRoot, mRoot.findViewById(R.id.bottom_toolbar),
-                            mTabProvider, mTabSwitcherLongclickListener, mThemeColorProvider,
-                            mOpenHomepageAction, mSetUrlBarFocusAction,
-                            mLayoutStateProviderSupplier, mMenuButtonHelperSupplier, mMediator);
+            mBottomToolbarCoordinator = new BottomToolbarCoordinator(mRoot,
+                    mRoot.findViewById(R.id.bottom_toolbar), mTabProvider,
+                    mTabSwitcherLongclickListener, mThemeColorProvider, mOpenHomepageAction,
+                    mSetUrlBarFocusAction, mLayoutStateProviderSupplier, mMenuButtonHelperSupplier,
+                    mMediator, mBookmarkModelSupplier, mLocationBarModel);
 
             mBottomToolbarCoordinator.initializeWithNative(tabSwitcherListener, newTabClickListener,
                     tabCountProvider, incognitoStateProvider, topToolbarRoot, closeAllTabsAction);

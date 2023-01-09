@@ -28,6 +28,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
+import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.feature_engagement.TrackerFactory;
 import org.chromium.chrome.browser.homepage.HomepageManager;
@@ -41,6 +42,7 @@ import org.chromium.chrome.browser.tasks.ReturnToChromeUtil;
 import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.HomeButton;
+import org.chromium.chrome.browser.toolbar.LocationBarModel;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
 import org.chromium.chrome.browser.toolbar.bottom.BookmarksButton;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarNewTabButton;
@@ -88,15 +90,20 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private BottomToolbarNewTabButton mNewTabButton;
     private View mBottomContainerTopShadow;
 
+    private ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
+    private LocationBarModel mLocationBarModel;
+
     private final Context mContext = ContextUtils.getApplicationContext();
 
-    BottomToolbarCoordinator(ScrollingBottomViewResourceFrameLayout scrollingBottomView,
-            View root, ActivityTabProvider tabProvider,
-            OnLongClickListener tabsSwitcherLongClickListner, ThemeColorProvider themeColorProvider,
-            Runnable openHomepageAction, Callback<Integer> setUrlBarFocusAction,
+    BottomToolbarCoordinator(ScrollingBottomViewResourceFrameLayout scrollingBottomView, View root,
+            ActivityTabProvider tabProvider, OnLongClickListener tabsSwitcherLongClickListner,
+            ThemeColorProvider themeColorProvider, Runnable openHomepageAction,
+            Callback<Integer> setUrlBarFocusAction,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
-            BottomControlsMediator bottomControlsMediator) {
+            BottomControlsMediator bottomControlsMediator,
+            ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
+            LocationBarModel locationBarModel) {
         layoutStateProviderSupplier.onAvailable(
                 mCallbackController.makeCancelable(this::setLayoutStateProvider));
 
@@ -124,6 +131,9 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
         mBottomContainerTopShadow =
                 mScrollingBottomView.findViewById(R.id.bottom_container_top_shadow);
+
+        mBookmarkModelSupplier = bookmarkModelSupplier;
+        mLocationBarModel = locationBarModel;
     }
 
     /**
@@ -249,11 +259,6 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             mBookmarksButton.setOnLongClickListener(this);
         }
 
-        mSearchAccelerator = bottomToolbarBrowsing.findViewById(R.id.search_accelerator);
-        if (mSearchAccelerator != null) {
-            mSearchAccelerator.setOnLongClickListener(this);
-        }
-
         mNewTabButton = bottomToolbarButtons.findViewById(R.id.bottom_new_tab_button);
         if (mNewTabButton != null) {
             mNewTabButton.setOnLongClickListener(this);
@@ -311,9 +316,6 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
     @Override
     public boolean onLongClick(View v) {
-        String description = "";
-        Resources resources = mContext.getResources();
-
         if (v == mHomeButton) {
             // It is currently a new tab button when homepage is disabled.
             if (!HomepageManager.isHomepageEnabled()) {
@@ -321,18 +323,16 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                 return true;
             }
 
-            description = resources.getString(R.string.accessibility_toolbar_btn_home);
         } else if (v == mBookmarksButton) {
-            description = resources.getString(R.string.accessibility_toolbar_btn_bookmark);
-        } else if (v == mSearchAccelerator) {
-            description =
-                    resources.getString(R.string.accessibility_toolbar_btn_search_accelerator);
+            TabUtils.showBookmarkTabPopupMenu(
+                    mContext, v, mBookmarkModelSupplier, mLocationBarModel);
+            return true;
         } else if (v == mNewTabButton) {
             TabUtils.showTabPopupMenu(mContext, v);
             return true;
         }
 
-        return Toast.showAnchoredToast(mContext, v, description);
+        return false;
     }
 
     public void updateHomeButtonState() {
