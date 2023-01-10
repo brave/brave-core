@@ -102,32 +102,32 @@ class TabManagerNavDelegateTests: XCTestCase {
         XCTAssertEqual(delegate2.receivedMessages, [.webViewDidStartProvisionalNavigation])
     }
 
-    func test_webViewDecidePolicyFor_actionPolicy_sendsCorrectMessage() {
+    @MainActor
+    func test_webViewDecidePolicyFor_actionPolicy_sendsCorrectMessage() async {
         let sut = TabManagerNavDelegate()
         let delegate1 = WKNavigationDelegateSpy()
         let delegate2 = WKNavigationDelegateSpy()
 
         sut.insert(delegate1)
         sut.insert(delegate2)
-        sut.webView(anyWebView(),
+        _ = await sut.webView(anyWebView(),
                     decidePolicyFor: WKNavigationAction(),
-                    preferences: WKWebpagePreferences(),
-                    decisionHandler: { _, _ in })
+                    preferences: WKWebpagePreferences())
 
         XCTAssertEqual(delegate1.receivedMessages, [.webViewDecidePolicyWithActionPolicy])
         XCTAssertEqual(delegate2.receivedMessages, [.webViewDecidePolicyWithActionPolicy])
     }
 
-    func test_webViewDecidePolicyFor_responsePolicy_sendsCorrectMessage() {
+    @MainActor
+    func test_webViewDecidePolicyFor_responsePolicy_sendsCorrectMessage() async {
         let sut = TabManagerNavDelegate()
         let delegate1 = WKNavigationDelegateSpy()
         let delegate2 = WKNavigationDelegateSpy()
 
         sut.insert(delegate1)
         sut.insert(delegate2)
-        sut.webView(anyWebView(),
-                    decidePolicyFor: WKNavigationResponse(),
-                    decisionHandler: { _ in })
+        _ = await sut.webView(anyWebView(),
+                    decidePolicyFor: WKNavigationResponse())
 
         XCTAssertEqual(delegate1.receivedMessages, [.webViewDecidePolicyWithResponsePolicy])
         XCTAssertEqual(delegate2.receivedMessages, [.webViewDecidePolicyWithResponsePolicy])
@@ -187,11 +187,13 @@ private class WKNavigationDelegateSpy: NSObject, WKNavigationDelegate {
         receivedMessages.append(.webViewDidStartProvisionalNavigation)
     }
 
-    func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse) async -> WKNavigationResponsePolicy {
         receivedMessages.append(.webViewDecidePolicyWithResponsePolicy)
+        return .allow
     }
-
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
-        receivedMessages.append(.webViewDecidePolicyWithActionPolicy)
+  
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
+      receivedMessages.append(.webViewDecidePolicyWithActionPolicy)
+      return (.allow, preferences)
     }
 }

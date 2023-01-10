@@ -157,6 +157,7 @@ extension BrowserViewController: WKNavigationDelegate {
     return url.scheme == "rewards" && url.host == "uphold"
   }
 
+  @MainActor
   public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
     guard let url = navigationAction.request.url else {
       return (.cancel, preferences)
@@ -331,23 +332,22 @@ extension BrowserViewController: WKNavigationDelegate {
 
       // We fetch cookies to determine if backup search was enabled on the website.
       let profile = self.profile
-      webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
-        tab?.braveSearchManager = BraveSearchManager(profile: profile, url: url, cookies: cookies)
-        if let braveSearchManager = tab?.braveSearchManager {
-          braveSearchManager.fallbackQueryResultsPending = true
-          braveSearchManager.shouldUseFallback { backupQuery in
-            guard let query = backupQuery else {
-              braveSearchManager.fallbackQueryResultsPending = false
-              return
-            }
+      let cookies = await webView.configuration.websiteDataStore.httpCookieStore.allCookies()
+      tab?.braveSearchManager = BraveSearchManager(profile: profile, url: url, cookies: cookies)
+      if let braveSearchManager = tab?.braveSearchManager {
+        braveSearchManager.fallbackQueryResultsPending = true
+        braveSearchManager.shouldUseFallback { backupQuery in
+          guard let query = backupQuery else {
+            braveSearchManager.fallbackQueryResultsPending = false
+            return
+          }
 
-            if query.found {
+          if query.found {
+            braveSearchManager.fallbackQueryResultsPending = false
+          } else {
+            braveSearchManager.backupSearch(with: query) { completion in
               braveSearchManager.fallbackQueryResultsPending = false
-            } else {
-              braveSearchManager.backupSearch(with: query) { completion in
-                braveSearchManager.fallbackQueryResultsPending = false
-                tab?.injectResults()
-              }
+              tab?.injectResults()
             }
           }
         }
@@ -439,6 +439,7 @@ extension BrowserViewController: WKNavigationDelegate {
     return (.cancel, preferences)
   }
 
+  @MainActor
   public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse) async -> WKNavigationResponsePolicy {
     let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
     let response = navigationResponse.response
@@ -528,6 +529,7 @@ extension BrowserViewController: WKNavigationDelegate {
     return .allow
   }
 
+  // When this function is moved to Async-Await, do NOT forget to move the `TabManagerNavDelegate` to async-await!
   public func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
 
     // If this is a certificate challenge, see if the certificate has previously been
