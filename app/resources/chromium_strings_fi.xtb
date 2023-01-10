@@ -53,6 +53,7 @@
 <translation id="7798069806040634998">Brave tarvitsee tallennustilan käyttöoikeuden tiedostojen lataamiseen.</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
 <translation id="7291143854620707672">Työprofiilin järjestelmänvalvoja voi poistaa tämän profiilin käytön aikana luotua Brave-dataa (esim. kirjanmerkit, historia, salasanat ja muut asetukset). <ph name="LEARN_MORE"/></translation>
+<translation id="6252796827759111076">Jatka Bravein käyttöä</translation>
 <translation id="7387051847644272380">Asennuksessa ilmeni käyttöjärjestelmävirhe. Lataa Brave uudelleen.</translation>
 <translation id="2648689842065142443">Jos käytät jaettua laitetta, kaverisi ja perheenjäsenesi voivat selata verkkoa erillään ja räätälöidä Braveista juuri itselleen sopivan</translation>
 <translation id="5926459996518749366">Brave on estänyt tämän arkistotiedoston, koska se voi piilottaa haittaohjelman</translation>
@@ -93,6 +94,7 @@
 <translation id="2645435784669275700">Brave-käyttöjärjestelmä</translation>
 <translation id="2297290224191497273">Vaihdetaanko nykyiseen Brave-profiiliin?</translation>
 <translation id="3412460710772753638">Braven Salasanojen ylläpidossa tällä laitteella</translation>
+<translation id="616005907576404509">{COUNT,plural, =1{Järjestelmänvalvoja on määrittänyt Bravein sulkeutumaan, jos se on ollut epäaktiivinen yli minuutin.}other{Järjestelmänvalvoja on määrittänyt Bravein sulkeutumaan, jos se on epäaktiivinen yli # minuuttia.}}</translation>
 <translation id="2450003541323895471">Kun käytät Brave-profiileja, voit pitää kaiken Brave-sisällön erillään. Luo profiileja kavereita ja perhettä varten tai tee ero työn ja hauskanpidon välille.</translation>
 <translation id="9216183508558772570">Brave ilmoittaa, kun kirjaudut sisään vaarantuneella salasanalla</translation>
 <translation id="5853262807109651878">Tämä poistaa <ph name="ITEMS_COUNT"/> kohdetta pysyvästi laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>
@@ -170,6 +172,7 @@
 <translation id="7021823858304886493">Salli Brave-kirjautuminen</translation>
 <translation id="5536657158619734169">Braveista on saatavilla uusi versio.</translation>
 <translation id="5267531627648004734">Poista Braveista</translation>
+<translation id="2783637305317815247">{0,plural, =0{Brave suljetaan nyt.}=1{Brave suljetaan 1 sekunnin kuluttua.}other{Brave sulkeutuu # sekunnin kuluttua.}}</translation>
 <translation id="239760341987199724">Aseta Brave oletusselaimeksi</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="894936507076470937">Brave ei ehkä toimi oikein, koska sen käyttöä tällä Linux-jakelulla ei enää tueta.</translation>
@@ -257,6 +260,7 @@ Kaikki ominaisuudet eivät ehkä ole käytettävissä. Määritä jokin muu prof
 <translation id="126871877963043118">Kokeilujen aikana käyttämäsi sivustot voivat pyytää Braveilta mainosten mittaamisen avulla tietoja, jotka auttavat mittaamaan sivustoilla näkyvien mainosten suoriutumista. Mainosten mittaaminen rajoittaa sivustojen välistä seurantaa siirtämällä mahdollisimman vähän tietoja sivustojen välillä.</translation>
 <translation id="4392161457256085190">Sivut, joilla käyt, voivat myöhemmin pyytää Braveilta tietoja kiinnostuksen kohteistasi ja personoida näkemiäsi mainoksia. Brave voi jakaa enintään kolme kiinnostuksen kohdetta.</translation>
 <translation id="6418340404893954563">Heikko salasana on helppo arvata. Brave voi <ph name="BEGIN_LINK"/>luoda ja muistaa vahvoja salasanoja puolestasi<ph name="END_LINK"/>.</translation>
+<translation id="196626648343945705">Brave ei ole aktiivinen</translation>
 <translation id="3453763134178591239">Brave-käyttöjärjestelmän käyttöehdot</translation>
 <translation id="3335606533094650083">Brave tarvitsee oikeuden käyttää mikrofoniasi tällä sivustolla.</translation>
 <translation id="7025789849649390912">Asennus keskeytyi.</translation>

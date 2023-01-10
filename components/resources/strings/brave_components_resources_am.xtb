@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">በ Brave ውስጥ የግል ጥሪ መጀመር ይችላሉ።</translation>
 <translation id="4903286433687221248">በ Brave Talk ውስጥ ከጓደኞችዎ እና ከሥራ ባልደረቦችዎ ጋር ያልተገደበ ጥሪዎችን ይጀምሩ።</translation>
 <translation id="7115051913071512405">ይሞክሩት</translation>
-<translation id="1447534717041828517">በመሳሪያ አሞሌው ውስጥ የ Brave News ቁልፍን አሳይ</translation>
 <translation id="370665806235115550">በመጫን ላይ…</translation>
 <translation id="4634933166298842522">የደንበኝነት ምዝገባዎችን ያስተዳድሩ</translation>
 <translation id="4108314971463891922">ተከተል</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">ዛሬ ለመመዝገብ እና ከአድናቂዎችዎ እና ተከታዮችዎ BAT ማግኘት ለመጀመር creators.brave.comን ይጎብኙ።</translation>
 <translation id="4816455138209470435">Brave YouTube ን፣ Twitch ን፣ Vimeo ን እና ሌሎችንም ይደግፋል!</translation>
 <translation id="3656941797339037856">Rewards ን ከ ጄሚኒ ጋር ያያይዙ!</translation>
-<translation id="31532096120351460">BAT ን ጨምሮ 50+ cryptos በጌሚኒ ይገበያዩ። ይህ የእርስዎን crypto ለማከማቸት ደህንነቱ የተጠበቀ መድረክ ነው። በተጨማሪም፣ በ US፣ HK እና SG ላይ ትርፍ ማግኘት ይችላሉ።</translation>
+<translation id="2888702144235098855">BAT ን ጨምሮ 50+ ክሪፕቶዎችን Gemini ላይ ይነግዱ። ክሪፕቶዎትን ለማስቀመጥ ደህንነቱ የተጠበቀ መዋቅር ነው።</translation>
 <translation id="7404779623219601861">ለስጦታ ካርዶች BAT መልሰው ያግኙ</translation>
 <translation id="6215565499749144110">በ TAP አውታረ መረብ፣ ታዋቂ ስም ላላቸው የብራንድ ስጦታ ካርዶች BAT መልሰው ማግኘት ይችላሉ።</translation>
 <translation id="6915065518766963119">* የመስቀያ ማረጋገጫ ያስፈልገዋል።</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">ወጥቷል</translation>
 <translation id="6080167751812750226">ያለውን ግንኙነት ያቁቋርጡ <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">የተገመቱ ገቢዎች</translation>
-<translation id="4244985009709452836">ወደ የራስዎ <ph name="PROVIDER"/> መለያ ይግቡ</translation>
+<translation id="7934950257968365573">ወደ <ph name="PROVIDER"/> መለያዎ ይግቡ</translation>
 <translation id="2613359062756190460">የአንድ ግዜ ምክሮች</translation>
 <translation id="590733288489975971">ከማስታወቂያዎች የተገኙ ሽልማቶች</translation>
 <translation id="6181762795539107980">ያልተረጋገጠ</translation>
@@ -1293,11 +1292,9 @@
 <translation id="3898731124813934210">በ Wyre ይግዙ</translation>
 <translation id="5522073372365069684">በRamp ይግዙ</translation>
 <translation id="7902920577183739843">በ Sardine ይግዙ</translation>
-<translation id="6534275647567011533">በ Transak ይግዙ</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">በቪዛ ወይም በማስተርካርድ ክሪፕቶን ይግዙ።</translation>
 <translation id="3101839349578102016">በባንክ ሂሳብዎ ወዲያውኑ ይግዙ። ዝቅተኛ ክፍያዎች።</translation>
 <translation id="8528916244724490964">ሁሉም አውታረ መረቦች</translation>
@@ -1552,19 +1549,26 @@
 <translation id="8265589281845759879">መኪናዎች</translation>
 <translation id="7577010593836079522">ባህል</translation>
 <translation id="3706423975342040244">መዝናኛ</translation>
+<translation id="3284069358246729581">የመዝናኛ ዜናዎች</translation>
 <translation id="1432147735538902155">ፋሽን</translation>
+<translation id="3350377832708834609">ፊልም እና ቲቪ</translation>
 <translation id="736592699917579616">ምግብ</translation>
 <translation id="5104499318017527547">ደስታ</translation>
 <translation id="2228584369802328636">ጨዋታ</translation>
 <translation id="6941852195052765076">ጤና</translation>
 <translation id="932327136139879170">መነሻ</translation>
+<translation id="5178222043222938163">ሙዚቃ</translation>
 <translation id="1322083935398004629">ፖለቲካ</translation>
+<translation id="8739620487574841501">ክልላዊ ዜናዎች</translation>
 <translation id="3872834068356954457">ሳይንስ</translation>
 <translation id="1264974993859112054">ሰፖርቶች</translation>
 <translation id="2283599456633275070">ጉብኝት</translation>
 <translation id="7487067081878637334">ቴክኖሎጂ</translation>
+<translation id="151743034625508713">የቴክኖሎጂ ዜናዎች</translation>
+<translation id="2388279876296929435">የቴክኖሎጂ ግምገማዎች</translation>
 <translation id="5030268312472358928">ዋናዋና ዜናዎች</translation>
 <translation id="5510475084662028636">ዋናዋና ምንጮች</translation>
+<translation id="1297570508541015874">የዩኤስ ዜናዎች</translation>
 <translation id="1459693405370120464">የአየር ሁኔታ</translation>
 <translation id="8366057325711477500">የዓለም ዜና</translation>
 <translation id="6303294677342628402">መከላከያዎች</translation>
@@ -1615,13 +1619,17 @@
 <translation id="2453860139492968684">ጨርስ</translation>
 <translation id="2273851479262317744">Brave ን እንደ ነባሪ አሳሽ ያዘጋጁ</translation>
 <translation id="5037676449506322593">ሁሉንም ይምረጡ</translation>
-<translation id="8330804319517911603">Brave ን ለማሻሻል ያግዙ</translation>
-<translation id="2867964979837593892">ምርቱን በደንብ ማስተካከል። በየቀኑ የእርስዎን ግላዊነት በመጠበቅ ላይ።</translation>
-<translation id="7661940959332108190">Brave ከተበላሸ ወይም ከቆመ የምርመራ ሪፖርቶችን ይላኩ።</translation>
-<translation id="6358373266071757311">ስም-አልባ የግል የምርት ግንዛቤዎችን ያጋሩ። ይህም በብዛት ጥቅም ላይ የሚውሉት የ Brave ክፍሎችን ለማወቅ ይረዳናል።</translation>
+<translation id="5148943178722443958">Brave ይበልጥ የተሻለ እንዲሆን ያግዙ።</translation>
+<translation id="1097073572755862978">ብልሽት ወይም የማንቀሳቀስ ችግሮች ካጋጠምዎ፣ የምርመራ ሪፖርቶችን ይላኩ።<ph name="LINK_BEFORE"/>ተጨማሪ መረጃን ያግኙ።<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">በ Brave ተጠቃሚዎች ምን አይነት ባህሪያት ጥቅም ላይ እንደሚውሉ የሚያትት ሙሉ ለሙሉ ግላዊ እና ስም-አልባ የሆኑ የምርት ግንዛቤዎችን ያጋሩ። <ph name="LINK_BEFORE"/>ተጨማሪ መረጃን ያግኙ።<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">ማዋቀር ተጠናቅቋል</translation>
 <translation id="3141206739023333979">እነዚህን ምርጫዎች በማንኛውም ጊዜ በ Brave በ <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>ይቀይሩ።</translation>
 <translation id="8321985064212130832">ሙሉውን የእኛን <ph name="LINK_BEFORE"/>የግላዊነት ፖሊሲ<ph name="LINK_AFTER"/>ያንብቡ</translation>
+<translation id="2801098717523961746">ገጽታዎትን ይምረጡ</translation>
+<translation id="6262510489122516114">ይህን በማንኛውም ግዜ የ Brave ማቀናበሪያዎች ጋር በመሄድ መቀየር ይችላሉ።</translation>
+<translation id="546481172717459539">ከስርዓቱ ቅንብር ጋር አዛምድ</translation>
+<translation id="7799817062559422778">የብርሃን ሁነታ</translation>
+<translation id="4117637339509843559">የጨለማ ሁነታ</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: ተገናኝቷል</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: ግንኙነቱ ተቋርጧል</translation>
 <translation id="3541307549916475335">የBrave ቪፒኤን ፓነል ዩአይ</translation>
@@ -1670,7 +1678,12 @@
 <translation id="3307461350293459700">የ VPN ግንኙነት አልተሳካም። እባክዎ እንደገና ለማገናኘት ይሞክሩና የ Brave's VPN ውቅረትን ለማንቃት ፍቀድ የሚለውን ጠቅ ማድረግዎን ያረጋግጡ።</translation>
 <translation id="7261518280726313829">ደህንነቱ የተጠበቀ ዲኤንኤስን ማጥፋት ወይም ነባሪ አገልጋዮችን በዊንዶውስ ላይ መጠቀም እርስዎ የሚጎበኟቸውን  ጣቢያዎች ስሞች ለበይነመረብ አገልግሎት አቅራቢዎ ሊያሳይ ይችላል። Brave ይህን እንዲያደርጉ አይመክርም። ለማንኛውም ሊያደርጉት ይፈልጋሉ?</translation>
 <translation id="888284761945060750">ደህንነቱ የተጠበቀ DNS በድርጅትዎ መመሪያዎች ተሰናክሏል። የBrave ቪፒኤን ያለ ደህንነቱ የተጠበቀ DNS መጠቀም እርስዎ የሚጎበኟቸውን ጣቢያዎች ስሞች ለበይነመረብ አገልግሎት አቅራቢዎ ወይም ድርጅትዎ ሊያሳይ ይችላል።</translation>
+<translation id="6593224083874259773">የ Brave VPN በ Windows ላይ</translation>
+<translation id="3153983908111684619">ቅንብሩ ተገናኝቶ እያለ በ BraveVPN ተቆልፏል</translation>
+<translation id="6507543978646831931">Windows ስለ አካባቢዎ እና ስለሚጎበኟቸው ድረ-ገጾች የተመለከተ መረጃን የሚያጋልጥ Smart Multi-Homed Name Resolution የሚባል ባህሪ አለው። አሁን Brave VPNን ስራ ስላስጀመሩ፣ ከዚህ ተጋላጭነት ለመጠበቅ በአሳሹ ውስጥ ያለውን የ DNS ቅንብሮችን ቀይረናል። VPN በሚገናኝበት ጊዜ ቅንብሮቹ ተፈጻሚ የሚሆኑ እና የሚቆለፉ ይሆናሉ። <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">ከእንግዲህ ስለዚህ አታስጠነቅቀኝ።</translation>
+<translation id="2740531572673183784">እሺ</translation>
+<translation id="9061845622728745852">የሰዓት ሰቅ፡</translation>
 <translation id="7586151660465233733">ተጨማሪ ገበያዎች በ​<ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">ገበያዎች ይመልከቱ እና በ FTX ላይ ክሪፕቶ ይነግዱ</translation>
 <translation id="5963745988819586370">ገበያዎች</translation>

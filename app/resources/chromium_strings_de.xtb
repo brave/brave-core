@@ -53,6 +53,7 @@
 <translation id="7798069806040634998">Brave benötigt Speicherzugriff, um Dateien herunterladen zu können</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
 <translation id="7291143854620707672">Alle Brave-Daten, die während der Nutzung dieses Profils erstellt werden, wie Lesezeichen, Verlauf, Passwörter und andere Einstellungen, können vom Administrator des Arbeitsprofils entfernt werden. <ph name="LEARN_MORE"/></translation>
+<translation id="6252796827759111076">Brave weiterhin verwenden</translation>
 <translation id="7387051847644272380">Während der Installation ist ein Fehler im Betriebssystem aufgetreten. Bitte lade Brave erneut herunter.</translation>
 <translation id="2648689842065142443">Auf gemeinsam genutzten Geräten können die verschiedenen Nutzer separat surfen und Brave jeweils nach ihren Wünschen einrichten</translation>
 <translation id="5926459996518749366">Brave hat diese Archivdatei blockiert, da sie möglicherweise Malware enthält</translation>
@@ -93,6 +94,7 @@
 <translation id="2645435784669275700">Brave OS</translation>
 <translation id="2297290224191497273">Zu bestehendem Brave-Profil wechseln?</translation>
 <translation id="3412460710772753638">Im Passwortmanager auf diesem Gerät</translation>
+<translation id="616005907576404509">{COUNT,plural, =1{Dein Administrator hat Brave so konfiguriert, dass es geschlossen wird, wenn es länger als eine Minute inaktiv ist.}other{Dein Administrator hat Brave so konfiguriert, dass es geschlossen wird, wenn es länger als # Minuten inaktiv ist.}}</translation>
 <translation id="2450003541323895471">Mit Brave-Profilen kannst du deine Brave-Inhalte voneinander trennen. Erstelle Profile für Freunde und Familie oder teile deine Inhalte in Arbeit und Freizeit ein.</translation>
 <translation id="9216183508558772570">Wenn du dich mit einem Passwort anmeldest, das gehackt wurde, benachrichtigt dich Brave entsprechend.</translation>
 <translation id="5853262807109651878">Dadurch werden <ph name="ITEMS_COUNT"/> Elemente von diesem Gerät gelöscht. Wenn du deine Daten später abrufen möchtest, melde dich als <ph name="USER_EMAIL"/> in Brave an.</translation>
@@ -170,6 +172,7 @@
 <translation id="7021823858304886493">Anmeldung in Brave zulassen</translation>
 <translation id="5536657158619734169">Eine neue Version von Brave ist verfügbar.</translation>
 <translation id="5267531627648004734">Aus Brave entfernen</translation>
+<translation id="2783637305317815247">{0,plural, =0{Brave wird jetzt geschlossen.}=1{Brave wird in 1 Sekunde geschlossen.}other{Brave wird in # Sekunden geschlossen.}}</translation>
 <translation id="239760341987199724">Brave als Standardbrowser festlegen</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="894936507076470937">Brave funktioniert unter Umständen nicht ordnungsgemäß, da es unter dieser Linux-Distribution nicht mehr unterstützt wird</translation>
@@ -256,6 +259,7 @@ Einige Funktionen stehen möglicherweise nicht zur Verfügung. Gib bitte ein and
 <translation id="126871877963043118">Wenn Tests aktiviert sind, können mithilfe der Anzeigenanalyse von dir besuchte Websites Informationen von Brave anfordern, mit denen sie die Leistung ihrer Werbung analysieren können. Durch die Anzeigenanalyse wird das websiteübergreifende Tracking eingeschränkt, indem so wenig Informationen wie möglich zwischen Websites ausgetauscht werden.</translation>
 <translation id="4392161457256085190">Wenn du eine Website besuchst, kann diese von Brave dann deine Interessen anfordern, um die dir gezeigte Werbung zu personalisieren. Brave kann bis zu drei Interessen teilen.</translation>
 <translation id="6418340404893954563">Schwache Passwörter sind einfach zu erraten. Erlaube Brave, ein <ph name="BEGIN_LINK"/>sicheres Passwort für deine Onlinekonten zu erstellen und zu speichern<ph name="END_LINK"/>.</translation>
+<translation id="196626648343945705">Brave ist inaktiv</translation>
 <translation id="3453763134178591239">Brave OS-Nutzungsbedingungen</translation>
 <translation id="3335606533094650083">Brave benötigt für diese Website die Berechtigung, auf dein Mikrofon zuzugreifen</translation>
 <translation id="7025789849649390912">Installation angehalten.</translation>

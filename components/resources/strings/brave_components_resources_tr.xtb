@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Brave'de özel bir arama başlatabilirsiniz.</translation>
 <translation id="4903286433687221248">Brave Talk'ta arkadaşlarınız ve iş arkadaşlarınızla sınırsız görüşmeler başlatın.</translation>
 <translation id="7115051913071512405">Deneyin</translation>
-<translation id="1447534717041828517">Araç çubuğunda Brave Haberler düğmesini göster</translation>
 <translation id="370665806235115550">Yükleniyor...</translation>
 <translation id="4634933166298842522">Abonelikleri Yönetin</translation>
 <translation id="4108314971463891922">Takip Et</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Bugün kaydolmak için creators.brave.com adresini ziyaret edin ve hayranlarınızla takipçilerinizden BAT kazanmaya başlayın.</translation>
 <translation id="4816455138209470435">Brave; Youtube, Twitch, Vimeo ve daha fazlasını destekler!</translation>
 <translation id="3656941797339037856">Rewards'u Gemini'a bağlayın!</translation>
-<translation id="31532096120351460">BAT de dahil olmak üzere, 50'den fazla kripto varlığı Gemini'da alıp satın. Gemini, kriptolarınızı saklamak için güvenli bir platformdur. Ayrıca ABD, Hong Kong ve Singapur'da faiz de kazanabilirsiniz.</translation>
+<translation id="2888702144235098855">Gemini'de BAT da dahil olmak üzere 50'den fazla kripto varlığı alıp satın. Gemini, kriptolarınızı saklamak için güvenli bir platformdur.</translation>
 <translation id="7404779623219601861">Hediye Kartları için BAT Kullanın</translation>
 <translation id="6215565499749144110">TAP Ağı ile, BAT'nizi popüler isim yapmış markalı hediye kartları için kullanabilirsiniz.</translation>
 <translation id="6915065518766963119">* Uphold Doğrulaması Gerekir</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Oturum kapatıldı</translation>
 <translation id="6080167751812750226"><ph name="PROVIDER"/> konumuyla bağlantıyı kes</translation>
 <translation id="3600355176618429948">Tahmini Kazanç</translation>
-<translation id="4244985009709452836"><ph name="PROVIDER"/> hesabınızda oturum açın</translation>
+<translation id="7934950257968365573"><ph name="PROVIDER"/> hesabınızda oturum açın</translation>
 <translation id="2613359062756190460">Tek-Seferlik Bahşiş</translation>
 <translation id="590733288489975971">Ads Ödülleri</translation>
 <translation id="6181762795539107980">Doğrulanmamış</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Wyre ile Satın Al</translation>
 <translation id="5522073372365069684">Ramp ile Satın Al</translation>
 <translation id="7902920577183739843">Sardine ile satın alın</translation>
-<translation id="6534275647567011533">Transak ile Satın Al</translation>
 <translation id="8725252491405767337">Ramp.Ağı</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Visa veya Mastercard ile kripto satın alın.</translation>
 <translation id="3101839349578102016">Banka hesabınızla anında satın alın. Daha düşük ücretler.</translation>
 <translation id="8528916244724490964">Tüm Ağlar</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Arabalar</translation>
 <translation id="7577010593836079522">Kültür</translation>
 <translation id="3706423975342040244">Eğlence Dünyası</translation>
+<translation id="3284069358246729581">Eğlence Haberleri</translation>
 <translation id="1432147735538902155">Moda</translation>
+<translation id="3350377832708834609">Film ve Televizyon</translation>
 <translation id="736592699917579616">Yiyecek</translation>
 <translation id="5104499318017527547">Eğlendirici İçerikler</translation>
 <translation id="2228584369802328636">Oyun</translation>
 <translation id="6941852195052765076">Sağlık</translation>
 <translation id="932327136139879170">Ana Sayfa</translation>
+<translation id="5178222043222938163">Müzik</translation>
 <translation id="1322083935398004629">Siyaset</translation>
+<translation id="8739620487574841501">Bölge Haberleri</translation>
 <translation id="3872834068356954457">Bilim</translation>
 <translation id="1264974993859112054">Spor</translation>
 <translation id="2283599456633275070">Seyahat</translation>
 <translation id="7487067081878637334">Teknoloji</translation>
+<translation id="151743034625508713">Teknik Haberler</translation>
+<translation id="2388279876296929435">Teknik İncelemeler</translation>
 <translation id="5030268312472358928">Önemli Haberler</translation>
 <translation id="5510475084662028636">Önemli Kaynaklar</translation>
+<translation id="1297570508541015874">ABD Haberleri</translation>
 <translation id="1459693405370120464">Hava Durumu</translation>
 <translation id="8366057325711477500">Dünya Haberleri</translation>
 <translation id="6303294677342628402">Kalkanlar</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">Tamamlandı</translation>
 <translation id="2273851479262317744">Brave'i varsayılan tarayıcı olarak ayarlayın</translation>
 <translation id="5037676449506322593">Tümünü seç</translation>
-<translation id="8330804319517911603">Brave'i geliştirmemize yardımcı olun</translation>
-<translation id="2867964979837593892">Ürün özel olarak ayarlanıyor. Gizliliğiniz korunuyor. Her gün.</translation>
-<translation id="7661940959332108190">Brave çökerse veya donarsa arıza teşhis raporu gönderin.</translation>
-<translation id="6358373266071757311">Anonim, gizli ürün içgörüleri paylaşın. Bu şekilde en sık hangi Brave özelliklerinin kullanıldığını öğrenmemize yardımcı olabilirsiniz.</translation>
+<translation id="5148943178722443958">Brave'i daha iyi hale getirmeye yardım edin.</translation>
+<translation id="1097073572755862978">Kilitlenme veya çökme yaşarsanız tanı raporu gönderin. <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Brave kullanıcılarının hangi özellikleri kullandığıyla ilgili tamamen gizli ve anonim ürün içgörüleri paylaşın. <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Kurulum tamamlandı</translation>
 <translation id="3141206739023333979">Brave'deki bu değişiklikleri istediğiniz zaman <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/> adresinden değiştirin.</translation>
 <translation id="8321985064212130832"><ph name="LINK_BEFORE"/>Gizlilik Politikamızın<ph name="LINK_AFTER"/> tamamını buradan okuyun</translation>
+<translation id="2801098717523961746">Temanızı seçin</translation>
+<translation id="6262510489122516114">İstediğiniz zaman Brave ayarlarından değiştirebilirsiniz.</translation>
+<translation id="546481172717459539">Sistem ayarını eşleştir</translation>
+<translation id="7799817062559422778">Aydınlık mod</translation>
+<translation id="4117637339509843559">Gece modu</translation>
 <translation id="7821773512278295352">Brave Güvenlik Duvarı + VPN: Bağlı</translation>
 <translation id="6019088868713395120">Brave Güvenlik Duvarı + VPN: Bağlı değil</translation>
 <translation id="3541307549916475335">Brave VPN Paneli Arayüzü</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">VPN bağlantısı başarısız. Lütfen tekrar bağlanmayı deneyin ve Brave'in VPN yapılandırmasını etkinleştirmek için İzin Ver'e tıkladığınızdan emin olun.</translation>
 <translation id="7261518280726313829">Güvenli bir DNS'yi kapatmak veya Windows'ta varsayılan sunucuları kullanmak ziyaret ettiğiniz sitelerin adlarını İnternet hizmet sağlayıcınıza gönderebilir. Brave bunu yapmayı önermez. Yine de yapmak istiyor musunuz?</translation>
 <translation id="888284761945060750">Güvenli DNS, kuruluşunuzun politikaları tarafından devre dışı bırakıldı. Güvenli DNS olmadan Brave VPN'i kullanmak, ziyaret ettiğiniz sitelerin adlarını İnternet hizmet sağlayıcınıza veya kuruluşunuza gönderebilir.</translation>
+<translation id="6593224083874259773">Windows'ta Brave VPN</translation>
+<translation id="3153983908111684619">Bu ayar, bağlı olduğu sırada BraveVPN tarafından kilitlenmiştir</translation>
+<translation id="6507543978646831931">Windows, konumunuza ve ziyaret ettiğiniz sitelere dair bilgileri ifşa edebilecek, Akıllı Çok Ana Bilgisayarlı Ad Çözümlemesi adlı bir özelliğe sahiptir. Brave VPN'i etkinleştirdiğiniz için sizi bu ifşaya karşı koruma amacıyla tarayıcının DNS ayarlarını değiştirdik. Bu ayarlar geçerliliğini koruyacak ve VPN bağlı olduğunda kilitli kalacak. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Beni bu konuda tekrar uyarma.</translation>
+<translation id="2740531572673183784">Tamam</translation>
+<translation id="9061845622728745852">Saat dilimi:</translation>
 <translation id="7586151660465233733">Daha fazla piyasa <ph name="SITE_NAME"/> adresinde</translation>
 <translation id="952067063131306699">FTX'de piyasaları görüntüleyin ve kripto ticareti yapın</translation>
 <translation id="5963745988819586370">Piyasalar</translation>

@@ -89,11 +89,6 @@
 <translation id="8303432794159193481">Brave 瀏覽器 Dev 應用程式</translation>
 <translation id="8292967014767479012">Brave 瀏覽器應用程式</translation>
 <translation id="4743468424889072281">Brave 瀏覽器 Development 應用程式</translation>
-<translation id="732814027519296280">想改進 Brave 搜尋嗎？</translation>
-<translation id="2677865600861971449">選擇加入 Web 發現專案，匿名貢獻一些搜尋與瀏覽資料，改進所有使用者的 Brave 搜尋結果。保護隱私。無需操作。<ph name="LEARN_MORE_TEXT"/></translation>
-<translation id="6165508094623778733">瞭解詳情</translation>
-<translation id="5860491529813859533">啟用</translation>
-<translation id="780301667611848630">不用了，謝謝</translation>
 <translation id="5039804452771397117">允許</translation>
 <translation id="7053983685419859001">封鎖</translation>
 <translation id="1679356339067548863">在 Brave 瀏覽器當機或凍結時自動傳送診斷報告，協助改善 Brave 的產品穩定性。</translation>
@@ -116,6 +111,11 @@
 <translation id="5026874946691314267">不要再顯示本訊息</translation>
 <translation id="5234764350956374838">關閉</translation>
 <translation id="5100490448228945668">關閉 Brave 搜尋轉換功能，按 Enter 鍵即可移除此建議</translation>
+<translation id="9194637241566114638">匿名傳送使用情況的相關資料，協助改善 <ph name="SEARCH_NAME"/>。<ph name="MORE_INFO"/></translation>
+<translation id="7404610376221341525">Brave 搜尋</translation>
+<translation id="8184318863960255706">更多資訊</translation>
+<translation id="6965382102122355670">確定</translation>
+<translation id="780301667611848630">不用了，謝謝</translation>
 <translation id="2515126961943087659">BAT 廣告服務</translation>
 <translation id="7924918279836988121">Bat 分類帳服務</translation>
 <translation id="6040143037577758943">關閉</translation>
@@ -241,6 +241,7 @@
 <translation id="7859704718976024901">瀏覽記錄</translation>
 <translation id="8820817407110198400">書籤列</translation>
 <translation id="6333347122924254968">在網址列顯示 Brave 獎勵圖示</translation>
+<translation id="2245286910966863912">在網址列顯示 Brave 新聞按鈕</translation>
 <translation id="1811404036171336214">總是在新分頁上顯示書籤</translation>
 <translation id="3416468988018290825">一律顯示完整 URL</translation>
 <translation id="5529693968082667490">顯示分頁搜尋按鈕</translation>
@@ -335,6 +336,7 @@
 <translation id="5165042248369837294">允許 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允許 Linkedin 嵌入貼文</translation>
 <translation id="8792121506918889955">WebRTC IP 處理政策</translation>
+<translation id="6165508094623778733">了解更多</translation>
 <translation id="1822560017823072927">預設公共和隱私介面</translation>
 <translation id="5825943197137337319">僅限預設公用介面</translation>
 <translation id="1689062823386843231">停用非代理 UDP</translation>

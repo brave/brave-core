@@ -55,6 +55,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="7798069806040634998">Brave a besoin d'accéder au stockage pour télécharger des fichiers</translation>
 <translation id="8447483940522230788">Aide de Brave</translation>
 <translation id="7291143854620707672">L'administrateur du profil professionnel peut retirer toutes les données Brave générées durant l'utilisation de ce profil (comme la création de favoris, l'historique, les mots de passe et d'autres paramètres). <ph name="LEARN_MORE"/></translation>
+<translation id="6252796827759111076">Continuer à utiliser Brave</translation>
 <translation id="7387051847644272380">Une erreur de système d'exploitation s'est produite pendant l'installation. Veuillez télécharger de nouveau Brave.</translation>
 <translation id="2648689842065142443">Si vous partagez un appareil avec vos proches, ceux-ci peuvent configurer Brave comme bon leur semble et naviguer sur le Web de façon autonome.</translation>
 <translation id="5926459996518749366">Brave a bloqué ce fichier d'archive, car il peut masquer des logiciels malveillants</translation>
@@ -95,6 +96,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="2645435784669275700">Brave OS</translation>
 <translation id="2297290224191497273">Passer au profil Brave existant?</translation>
 <translation id="3412460710772753638">Dans le gestionnaire de mots de passe sur cet appareil</translation>
+<translation id="616005907576404509">{COUNT,plural, =1{Votre administrateur a configuré Brave pour qu'il se ferme s'il est inactif pendant plus de 1 minute.}one{Votre administrateur a configuré Brave pour qu'il se ferme s'il est inactif pendant plus de # minute.}other{Votre administrateur a configuré Brave pour qu'il se ferme s'il est inactif pendant plus de # minutes.}}</translation>
 <translation id="2450003541323895471">Utilisez les profils Brave pour dissocier toutes vos données Brave. Créez des profils pour vos amis et votre famille, ou créez un profil pour le travail et un autre pour les divertissements.</translation>
 <translation id="9216183508558772570">Brave vous avisera lorsque vous utilisez un mot de passe compromis pour vous connecter</translation>
 <translation id="5853262807109651878">Cette action entraînera la suppression de <ph name="ITEMS_COUNT"/> éléments de cet appareil. Pour récupérer vos données plus tard, connectez-vous à Brave en tant que <ph name="USER_EMAIL"/>.</translation>
@@ -172,6 +174,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="7021823858304886493">Autoriser la connexion à Brave</translation>
 <translation id="5536657158619734169">Une nouvelle version de Brave est maintenant offerte.</translation>
 <translation id="5267531627648004734">Supprimer de Brave</translation>
+<translation id="2783637305317815247">{0,plural, =0{Brave va se fermer maintenant.}=1{Brave se fermera dans 1 seconde.}one{Brave se fermera dans # seconde.}other{Brave se fermera dans # secondes.}}</translation>
 <translation id="239760341987199724">Faire de Brave le navigateur par défaut</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave bêta</translation>
 <translation id="894936507076470937">Brave peut ne pas fonctionner correctement parce qu'il n'est plus pris en charge sur cette distribution Linux</translation>
@@ -258,6 +261,7 @@ Certaines fonctionnalités seront peut-être inaccessibles. Veuillez spécifier 
 <translation id="126871877963043118">Pendant les essais, la mesure des annonces permet aux sites que vous visitez de demander des informations à Brave afin de leur permettre de mesurer la performance de leurs annonces. La mesure des annonces limite les suivis intersites en transférant le moins d'informations possible entre les sites.</translation>
 <translation id="4392161457256085190">Ultérieurement, un site que vous visitez peut demander à Brave de voir vos centres d'intérêt afin de personnaliser les annonces que vous voyez. Brave peut partager jusqu'à trois centres d'intérêt.</translation>
 <translation id="6418340404893954563">Les mots de passe faibles sont faciles à deviner. Vous pouvez laisser Brave <ph name="BEGIN_LINK"/>créer et mémoriser des mots de passe forts pour vous<ph name="END_LINK"/>.</translation>
+<translation id="196626648343945705">Brave est inactif</translation>
 <translation id="3453763134178591239">Conditions d'utilisation de Brave OS</translation>
 <translation id="3335606533094650083">Brave a besoin de votre autorisation pour accéder à votre micro pour ce site</translation>
 <translation id="7025789849649390912">L'installation s'est arrêtée.</translation>

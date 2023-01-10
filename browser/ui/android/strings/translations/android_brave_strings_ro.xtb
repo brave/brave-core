@@ -2,6 +2,23 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ro">
 <translation id="915758461293673891">Suma plății:</translation>
+<translation id="1420756770787071946">Susțineți acest creator</translation>
+<translation id="4147995007712611681">Ați setat o contribuție în așteptare!</translation>
+<translation id="8966035543003363155">Notificările Brave ușurează lucrurile</translation>
+<translation id="7662771815233894695">Gestionați descărcările, câștigați tokeni, vedeți statisticile de utilizare săptămânale și multe altele.</translation>
+<translation id="4265429476391459783">Nu câștigați recompense sau nu primiți rapoarte de confidențialitate</translation>
+<translation id="1305714751384738456">Nu câștigați recompense Brave</translation>
+<translation id="1483391942610220726">Nu primiți rapoartele de confidențialitate</translation>
+<translation id="4683790942451502796">Activați din nou notificările dacă doriți să continuați să câștigați BAT și să primiți rapoarte de confidențialitate săptămânale.</translation>
+<translation id="1462722717055895108">Activați din nou notificările dacă doriți să continuați să câștigați BAT</translation>
+<translation id="5457255168064266494">Activați din nou notificările dacă doriți să primiți în continuare rapoarte de confidențialitate săptămânale.</translation>
+<translation id="6268959058971634697">Nu câștigați recompense</translation>
+<translation id="1088637159642753509">Activați notificările de pe dispozitiv pentru a câștiga recompense Brave și pentru a vedea rapoartele de confidențialitate.</translation>
+<translation id="312404770066229090">Activați notificările de pe dispozitiv pentru a câștiga recompense Brave.</translation>
+<translation id="2241529840361230499">Activați notificările de pe dispozitiv pentru a primi rapoartele de confidențialitate Brave.</translation>
+<translation id="4930155581888391118">Activați notificările de la Brave pentru a câștiga recompense Brave.</translation>
+<translation id="325187916104529570">Deschideți Setări și activați notificările de pe dispozitiv pentru Brave Ads.</translation>
+<translation id="5744802588121897886">Activați notificările Brave</translation>
 <translation id="7307834434086582547">Activați/dezactivați scuturile Brave</translation>
 <translation id="6945863270524203017">Primiți săptămânal noutăți despre confidențialitate referitoare la monitoare și blocări de anunțuri.</translation>
 <translation id="4324735664183300693">Activați notificările</translation>
@@ -102,6 +119,7 @@
 <translation id="8026334261755873520">Șterge datele de navigare</translation>
 <translation id="5965081608816406060">Redare fișier video în fundal</translation>
 <translation id="6332924730165919598">Închiderea tuturor paginilor închide și Brave</translation>
+<translation id="3872768973878059926">Permite ca redarea audio să continue atunci când treceți la o altă filă în Brave, când treceți la o altă aplicație sau când ecranul dispozitivului este oprit.</translation>
 <translation id="4150201353443180367">Ecran</translation>
 <translation id="2433507940547922241">Aspect</translation>
 <translation id="6333347122924254968">Afișați pictograma Recompense Brave în bara de adrese</translation>
@@ -697,6 +715,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1133619932669546254">Activați <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">TIPUL FUNCȚIEI: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Nu există date</translation>
+<translation id="1105525362447173583">Tranzacția Solana Dapp Sign</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> a trimis <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> a trimis <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/></translation>
 <translation id="2911329628253651823">Contul <ph name="ACCOUNT_NAME"/> a aprobat <ph name="ASSET"/> - <ph name="DATE"/></translation>
@@ -897,6 +916,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="6421371987002247943">Program de tokenuri</translation>
 <translation id="8780753288764281797">Program Secp256k1</translation>
 <translation id="8504640708321980506">Date</translation>
+<translation id="3723411967118253067">ID-ul programului</translation>
 <translation id="4771176409524282426">Creați cont</translation>
 <translation id="1755120947324658439">Alocați</translation>
 <translation id="7588707273764747927">Transfer</translation>
@@ -940,6 +960,24 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="7843211152394841558">Nr. max de reîncercări:</translation>
 <translation id="8496335570810457">Angajament Preflight:</translation>
 <translation id="5100124500279922001">Omiteți Preflight:</translation>
+<translation id="7152095322071766507">Site-ul cel mai vizitat</translation>
+<translation id="7230006500876504868">Căutați cu Brave</translation>
+<translation id="5888208462949095139">Căutați cu
+<ph name="DEFAULT_SEARCH_ENGINE"/></translation>
+<translation id="5456039738087398178">Widget pentru ecranul principal</translation>
+<translation id="703185154752046151">Widget adăugat la ecranul principal</translation>
+<translation id="3290805388004282161">Încercați widget-ul de căutare Brave</translation>
+<translation id="4809681171446727314">Accesați căutarea privată și independentă direct de pe ecranul de pornire.</translation>
+<translation id="7751715172931488388">Adăugați widget</translation>
+<translation id="7285167584112910782">Căutare rapidă Brave</translation>
+<translation id="2326703104633309781">Utilizați Brave Traducere</translation>
+<translation id="5802752138057422257">Caractere NON-ASCII detectate!</translation>
 <translation id="442709594176931966">Vizualizați mesajul original</translation>
 <translation id="2239252396088484499">Vizualizați mesajul în cod ASCII</translation>
+<translation id="4220693114674044366">Adresă Token</translation>
+<translation id="5658257029899993935">Conectați achiziția la contul dumneavoastră Brave</translation>
+<translation id="1187061015547219282">Conectați achiziția din Play Store la contul dumneavoastră Brave pentru a utiliza Brave VPN pe alte dispozitive.</translation>
+<translation id="6662142137695589205">Conectați-vă abonamentul VPN</translation>
+<translation id="2674077112509133024">Extindeți protecția Brave Firewall + VPN</translation>
+<translation id="6365389672683343144">Abonamentul tău Brave VPN poate proteja până la 5 dispozitive, pe Android, iOS și desktop. Trebuie doar să vă conectați abonamentul Google Play la contul dumneavoastră Brave.</translation>
 </translationbundle>

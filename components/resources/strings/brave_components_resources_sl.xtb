@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">V Brave lahko opravite zasebni klic.</translation>
 <translation id="4903286433687221248">Začnite klicati prijatelje in sodelavce brez omejitev v programu Brave Talk.</translation>
 <translation id="7115051913071512405">Poskusite</translation>
-<translation id="1447534717041828517">Prikaži gumb Brave News v orodni vrstici</translation>
 <translation id="370665806235115550">Nalaganje ...</translation>
 <translation id="4634933166298842522">Upravljanje naročnin</translation>
 <translation id="4108314971463891922">Sledite</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Obiščite creators.brave.com, da se prijavite še danes in začnite pridobivati sredstva BAT od svojih navdušencev in sledilcev.</translation>
 <translation id="4816455138209470435">Brave podpira YouTube, Twitch, Vimeo in več!</translation>
 <translation id="3656941797339037856">Povežite Rewards z Gemini!</translation>
-<translation id="31532096120351460">Trgujte s 50+ kriptovalutami, vključno z BAT, na Gemini. To je varna platforma za shranjevanje vaše kriptovalute. Poleg tega lahko zaslužite obresti v ZDA, HK in SG.</translation>
+<translation id="2888702144235098855">Trgujte z več kot 50 kriptovalutami, vključno z BAT, na platformi Gemini. To je varna platforma za shranjevanje kriptovalut.</translation>
 <translation id="7404779623219601861">Unovčite BAT za darilne kartice</translation>
 <translation id="6215565499749144110">Z omrežjem TAP Network lahko svoj BAT unovčite za darilne kartice priljubljene blagovne znamke.</translation>
 <translation id="6915065518766963119">* Zahteva preverjanje računa Uphold.</translation>
@@ -750,7 +749,7 @@ Podjetje Brave bo uporabljalo Infuro za izdajanje klicev Ethereum JSON-RPC pamet
 <translation id="2394961582378297792">Odjavljeni</translation>
 <translation id="6080167751812750226">Prekini povezavo z <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Ocenjeni zaslužek</translation>
-<translation id="4244985009709452836">Prijavite se v vaš račun <ph name="PROVIDER"/></translation>
+<translation id="7934950257968365573">Vpis v račun <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Enkratne donacije</translation>
 <translation id="590733288489975971">Nagrade z oglaševanjem</translation>
 <translation id="6181762795539107980">Nepotrjeno</translation>
@@ -1292,11 +1291,9 @@ Podjetje Brave bo uporabljalo Infuro za izdajanje klicev Ethereum JSON-RPC pamet
 <translation id="3898731124813934210">Kupite z Wyre</translation>
 <translation id="5522073372365069684">Kupite z Ramp</translation>
 <translation id="7902920577183739843">Kupite s Sardino</translation>
-<translation id="6534275647567011533">Za nakup uporabite Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Kupite kriptovaluto s kartico Visa ali Mastercard.</translation>
 <translation id="3101839349578102016">Takojšnji nakup z vašim bančnim računom. Nižje pristojbine.</translation>
 <translation id="8528916244724490964">Vsa omrežja</translation>
@@ -1551,19 +1548,26 @@ Podjetje Brave bo uporabljalo Infuro za izdajanje klicev Ethereum JSON-RPC pamet
 <translation id="8265589281845759879">Avtomobili</translation>
 <translation id="7577010593836079522">Kultura</translation>
 <translation id="3706423975342040244">Razvedrilo</translation>
+<translation id="3284069358246729581">Zabavne novosti</translation>
 <translation id="1432147735538902155">Moda</translation>
+<translation id="3350377832708834609">Film in TV</translation>
 <translation id="736592699917579616">Hrana</translation>
 <translation id="5104499318017527547">Zabava</translation>
 <translation id="2228584369802328636">Igre</translation>
 <translation id="6941852195052765076">Zdravje</translation>
 <translation id="932327136139879170">Domov</translation>
+<translation id="5178222043222938163">Glasba</translation>
 <translation id="1322083935398004629">Politika</translation>
+<translation id="8739620487574841501">Lokalne novosti</translation>
 <translation id="3872834068356954457">Znanost</translation>
 <translation id="1264974993859112054">Šport</translation>
 <translation id="2283599456633275070">Potovanja</translation>
 <translation id="7487067081878637334">Tehnologija</translation>
+<translation id="151743034625508713">Tehnološke novosti</translation>
+<translation id="2388279876296929435">Strokovna mnenja</translation>
 <translation id="5030268312472358928">Glavne novice</translation>
 <translation id="5510475084662028636">Glavni viri</translation>
+<translation id="1297570508541015874">Novosti iz ZDA</translation>
 <translation id="1459693405370120464">Vreme</translation>
 <translation id="8366057325711477500">Novice iz sveta</translation>
 <translation id="6303294677342628402">Ščiti</translation>
@@ -1614,13 +1618,17 @@ Podjetje Brave bo uporabljalo Infuro za izdajanje klicev Ethereum JSON-RPC pamet
 <translation id="2453860139492968684">Dokončaj</translation>
 <translation id="2273851479262317744">Nastavite Brave kot privzeti brskalnik</translation>
 <translation id="5037676449506322593">Izberite vse</translation>
-<translation id="8330804319517911603">Pomagajte izboljšati Brave</translation>
-<translation id="2867964979837593892">Natančna prilagoditev izdelka. Zaščita vaše zasebnosti. Vsak dan.</translation>
-<translation id="7661940959332108190">Pošljite diagnostična poročila, če se Brave zruši ali zamrzne.</translation>
-<translation id="6358373266071757311">Delite anonimne, zasebne vpoglede v izdelke. To nam pomaga izvedeti, katere funkcije Brave se najpogosteje uporabljajo.</translation>
+<translation id="5148943178722443958">Pomagajte izboljšati Brave.</translation>
+<translation id="1097073572755862978">Pošljite diagnostična poročila, če pride do okvare ali zamrznitve. <ph name="LINK_BEFORE"/>Več o tem.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Delite popolnoma zasebne in anonimne vpoglede v izdelek o tem, katere funkcije uporabljajo uporabniki sistema Brave. <ph name="LINK_BEFORE"/>Več o tem.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Namestitev končana</translation>
 <translation id="3141206739023333979">Te izbire lahko kadar koli spremenite v Brave na povezavi<ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Preberite našo celotno <ph name="LINK_BEFORE"/>politiko zasebnosti<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">Izberite temo</translation>
+<translation id="6262510489122516114">To lahko kadar koli spremenite v nastavitvah sistema Brave.</translation>
+<translation id="546481172717459539">Ujemanje nastavitev sistema</translation>
+<translation id="7799817062559422778">Svetli način</translation>
+<translation id="4117637339509843559">Temni način</translation>
 <translation id="7821773512278295352">Požarni zid Brave + VPN: povezano</translation>
 <translation id="6019088868713395120">Požarni zid Brave + VPN: prekinjena povezava</translation>
 <translation id="3541307549916475335">Uporabniški vmesnik plošče Brave VPN</translation>
@@ -1666,7 +1674,12 @@ Podjetje Brave bo uporabljalo Infuro za izdajanje klicev Ethereum JSON-RPC pamet
 <translation id="3307461350293459700">Povezava VPN ni uspela. Poskusite se ponovno povezati in kliknite Dovoli, da omogočite konfiguracijo VPN v Braveu.</translation>
 <translation id="7261518280726313829">Če v sistemu Windows izklopite varen DNS ali uporabljate privzete strežnike, lahko ponudniku internetnih storitev razkrijete imena spletnih mest, ki jih obiščete. Brave tega ne priporoča. Ali to vseeno želite storiti?</translation>
 <translation id="888284761945060750">Varni DNS je onemogočen v skladu s pravili vaše organizacije. Uporaba storitve Brave VPN brez Secure DNS lahko vašemu ponudniku internetnih storitev ali organizaciji razkrije imena spletnih mest, ki jih obiščete.</translation>
+<translation id="6593224083874259773">Brave VPN na sistemu Windows</translation>
+<translation id="3153983908111684619">BraveVPN zaklene nastavitev, ko je povezava vzpostavljena</translation>
+<translation id="6507543978646831931">V sistemu Windows je na voljo funkcija, imenovana Pametno reševanje imen z več domovi, ki lahko razkrije informacije o vaši lokaciji in spletnih mestih, ki jih obiskujete. Zdaj, ko ste omogočili Brave VPN, smo spremenili nastavitve DNS v brskalniku, da bi se zaščitili pred tem razkritjem. Nastavitve bodo ostale v veljavi in zaklenjene, ko bo vzpostavljena povezava VPN. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Ne opozarjaj me več na to.</translation>
+<translation id="2740531572673183784">V redu</translation>
+<translation id="9061845622728745852">Časovni pas</translation>
 <translation id="7586151660465233733">Več trgov na <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Oglejte si trge in trgujte s kripto na FTX</translation>
 <translation id="5963745988819586370">Trgi</translation>

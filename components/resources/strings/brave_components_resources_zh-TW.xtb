@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">您可以在 Brave 開始私人通話。</translation>
 <translation id="4903286433687221248">透過 Brave Talk 與朋友及同事無限通話。</translation>
 <translation id="7115051913071512405">歡迎試用</translation>
-<translation id="1447534717041828517">在工具列中顯示「Brave 新聞」按鈕</translation>
 <translation id="370665806235115550">載入...</translation>
 <translation id="4634933166298842522">管理訂閱</translation>
 <translation id="4108314971463891922">追隨</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">立即前往 creators.brave.com 並完成註冊，即可開始透過您的粉絲與關注者賺取 BAT。</translation>
 <translation id="4816455138209470435">Brave 支援 YouTube、Twitch、Vimeo 等各大平台！</translation>
 <translation id="3656941797339037856">將 Rewards 連結至 Gemini！</translation>
-<translation id="31532096120351460">在 Gemini 上買賣超過 50 種加密貨幣，包括 BAT。這是可存放您加密貨幣的安全平台。此外，您可在美國、香港和新加坡賺取利息。</translation>
+<translation id="2888702144235098855">在 Gemini 交易包括 BAT 在內超過 50 種的加密貨幣。該平台可以存放您的加密貨幣，安全無虞。</translation>
 <translation id="7404779623219601861">使用 BAT 兌換禮物卡</translation>
 <translation id="6215565499749144110">使用 TAP 網路，您可以使用您的 BAT 來兌換熱門名牌禮物卡。</translation>
 <translation id="6915065518766963119">* 需要 Uphold 驗證。</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">已登出</translation>
 <translation id="6080167751812750226">取消連結 <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">預估收益</translation>
-<translation id="4244985009709452836">登入您的 <ph name="PROVIDER"/> 帳戶</translation>
+<translation id="7934950257968365573">登入您的 <ph name="PROVIDER"/> 帳戶</translation>
 <translation id="2613359062756190460">一次性小費</translation>
 <translation id="590733288489975971">廣告獎勵</translation>
 <translation id="6181762795539107980">未驗證</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">以 Wyre 購買</translation>
 <translation id="5522073372365069684">以 Ramp 購買</translation>
 <translation id="7902920577183739843">以 Sardine 購買</translation>
-<translation id="6534275647567011533">以 Transak 購買</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">使用 Visa 或 Mastercard 購買加密貨幣。</translation>
 <translation id="3101839349578102016">使用您的銀行帳戶即時購買。手續費較低。</translation>
 <translation id="8528916244724490964">所有網路</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">汽車</translation>
 <translation id="7577010593836079522">文化</translation>
 <translation id="3706423975342040244">娛樂</translation>
+<translation id="3284069358246729581">娛樂新聞</translation>
 <translation id="1432147735538902155">流行時尚</translation>
+<translation id="3350377832708834609">影視</translation>
 <translation id="736592699917579616">美食</translation>
 <translation id="5104499318017527547">趣聞</translation>
 <translation id="2228584369802328636">遊戲</translation>
 <translation id="6941852195052765076">保健養生</translation>
 <translation id="932327136139879170">首頁</translation>
+<translation id="5178222043222938163">音樂</translation>
 <translation id="1322083935398004629">政治</translation>
+<translation id="8739620487574841501">地區新聞</translation>
 <translation id="3872834068356954457">科學</translation>
 <translation id="1264974993859112054">運動資訊</translation>
 <translation id="2283599456633275070">旅遊</translation>
 <translation id="7487067081878637334">科技資訊</translation>
+<translation id="151743034625508713">科技新聞</translation>
+<translation id="2388279876296929435">科技評論</translation>
 <translation id="5030268312472358928">熱門新聞</translation>
 <translation id="5510475084662028636">熱門來源</translation>
+<translation id="1297570508541015874">美國新聞</translation>
 <translation id="1459693405370120464">天氣</translation>
 <translation id="8366057325711477500">國際新聞</translation>
 <translation id="6303294677342628402">屏蔽</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">結束</translation>
 <translation id="2273851479262317744">將 Brave 設為預設瀏覽器</translation>
 <translation id="5037676449506322593">全選</translation>
-<translation id="8330804319517911603">協助 Brave 變得更好</translation>
-<translation id="2867964979837593892">將本產品調整到最佳狀態，每天為您提供隱私保護。</translation>
-<translation id="7661940959332108190">一旦 Brave 當機或停止回應，立即傳送診斷報告。</translation>
-<translation id="6358373266071757311">分享匿名、不公開的產品深入分析。這有助於我們瞭解哪些 Brave 功能的使用率最高。</translation>
+<translation id="5148943178722443958">協助提升 Brave 品質。</translation>
+<translation id="1097073572755862978">系統當機或停止回應時傳送診斷報告。<ph name="LINK_BEFORE"/>深入瞭解<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">分享完全不公開的匿名產品深入分析，指出 Brave 使用者正在使用哪些功能。<ph name="LINK_BEFORE"/>深入瞭解<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">設定完成</translation>
 <translation id="3141206739023333979">您可隨時在 Brave 變更這些選擇，網址為：<ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>。</translation>
 <translation id="8321985064212130832">詳閱我們的<ph name="LINK_BEFORE"/>隱私權政策<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">選擇您的主題</translation>
+<translation id="6262510489122516114">您可隨時前往 Brave 設定變更主題。</translation>
+<translation id="546481172717459539">比對系統設定</translation>
+<translation id="7799817062559422778">淺色模式</translation>
+<translation id="4117637339509843559">深色模式</translation>
 <translation id="7821773512278295352">Brave 防火牆 + VPN：已連線</translation>
 <translation id="6019088868713395120">Brave 防火牆 + VPN：已中斷連線</translation>
 <translation id="3541307549916475335">Brave VPN 面板 UI</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">VPN 連線失敗。請嘗試重新連線，並請務必按一下「允許」，啟用 Brave 的 VPN 設定。</translation>
 <translation id="7261518280726313829">無論您是在 Windows 上關閉安全 DNS 或使用預設伺服器，您的網際網路服務供應商都有可能得知您所造訪網站的名稱。Brave 不建議您這麼做。是否還要繼續操作？</translation>
 <translation id="888284761945060750">安全 DNS 已根據您組織的政策停用。只要您在缺少安全 DNS 的情況下使用 Brave VPN，您的網際網路服務供應商或組織就有可能得知您所造訪網站的名稱。</translation>
+<translation id="6593224083874259773">已在 Windows 上啟用 Brave VPN</translation>
+<translation id="3153983908111684619">Brave VPN 連線期間，此設定會遭到鎖定</translation>
+<translation id="6507543978646831931">Windows 的「智慧多重主目錄名稱解析」功能可能揭露您的位置和您造訪的網站等資訊。有鑑於您已啟用 Brave VPN，系統已變更瀏覽器的 DNS 設定，避免您的資訊遭到公開。VPN 連線期間，這些設定會持續生效，維持該功能的鎖定狀態。<ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">不必再警告我這項風險。</translation>
+<translation id="2740531572673183784">Ok</translation>
+<translation id="9061845622728745852">時區：</translation>
 <translation id="7586151660465233733"><ph name="SITE_NAME"/> 上的更多市場</translation>
 <translation id="952067063131306699">檢視市場並在 FTX 上交易加密貨幣</translation>
 <translation id="5963745988819586370">市場</translation>

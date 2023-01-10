@@ -2,6 +2,23 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="bg">
 <translation id="915758461293673891">Размер на бакшиша:</translation>
+<translation id="1420756770787071946">Подкрепете този създател</translation>
+<translation id="4147995007712611681">Задали сте чакащ бакшиш!</translation>
+<translation id="8966035543003363155">С известия от Brave е по-лесно</translation>
+<translation id="7662771815233894695">Управлявайте изтеглянията, печелете жетони, вижте седмичните статистики за потреблението и др.</translation>
+<translation id="4265429476391459783">Не печелите награди и не получавате отчети за поверителността</translation>
+<translation id="1305714751384738456">Не печелите Brave Rewards</translation>
+<translation id="1483391942610220726">Не получавате отчети за поверителността</translation>
+<translation id="4683790942451502796">Включете отново известията, ако искате да продължите да печелите BAT и да получавате седмични отчети за поверителността.</translation>
+<translation id="1462722717055895108">Включете отново известията, ако искате да продължите да печелите BAT.</translation>
+<translation id="5457255168064266494">Включете отново известията, ако искате да продължите да получавате седмични отчети за поверителността</translation>
+<translation id="6268959058971634697">Не печелите награди</translation>
+<translation id="1088637159642753509">Активирайте известията на устройството, за да печелите Brave Rewards и да виждате отчети за поверителността.</translation>
+<translation id="312404770066229090">Активирайте известията на устройството, за да печелите Brave Rewards.</translation>
+<translation id="2241529840361230499">Активирайте известията на устройството, за да получавате отчети за поверителността от Brave.</translation>
+<translation id="4930155581888391118">Активирайте известията от Brave, за да печелите Brave Rewards.</translation>
+<translation id="325187916104529570">Отворете Настройки и включете известията на устройството за реклами на Brave.</translation>
+<translation id="5744802588121897886">Включете известията на Brave</translation>
 <translation id="7307834434086582547">Разрешаване/забраняване на щитове на Brave</translation>
 <translation id="6945863270524203017">Получавайте ежеседмични актуализации за поверителност за проследяване и блокиране на реклами.</translation>
 <translation id="4324735664183300693">Включете известията</translation>
@@ -102,6 +119,7 @@
 <translation id="8026334261755873520">Изчистване на данните за сърфирането</translation>
 <translation id="5965081608816406060">Възпроизвеждане на фоново видео</translation>
 <translation id="6332924730165919598">Затварянето на всички раздели затваря Brave</translation>
+<translation id="3872768973878059926">Позволява аудиото да продължи да се възпроизвежда, когато преминете към друг раздел в Brave, превключите към друго приложение или екранът на устройството ви е изключен.</translation>
 <translation id="4150201353443180367">Екран</translation>
 <translation id="2433507940547922241">Облик</translation>
 <translation id="6333347122924254968">Показване на иконата с награди в Brave в адресната лента</translation>
@@ -696,6 +714,7 @@
 <translation id="1133619932669546254">Активиране на <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">ТИП ФУНКЦИЯ: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Няма данни</translation>
+<translation id="1105525362447173583">Трансакция със знак Solana Dapp</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> изпрати <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
 <translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> изпрати <ph name="ASSET"/> #<ph name="ASSET_ID"/> – <ph name="DATE"/></translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> одобри <ph name="ASSET"/> - <ph name="DATE"/></translation>
@@ -896,6 +915,7 @@
 <translation id="6421371987002247943">Програма за токени</translation>
 <translation id="8780753288764281797">Програма Secp256k1</translation>
 <translation id="8504640708321980506">Дата</translation>
+<translation id="3723411967118253067">Идентификатор на програма</translation>
 <translation id="4771176409524282426">Създаване на акаунт</translation>
 <translation id="1755120947324658439">Присвояване</translation>
 <translation id="7588707273764747927">Трансфер</translation>
@@ -939,6 +959,23 @@
 <translation id="7843211152394841558">Максимален брой повторни опити:</translation>
 <translation id="8496335570810457">Прифлайт обвързаност:</translation>
 <translation id="5100124500279922001">Пропускане на прифлайт:</translation>
+<translation id="7152095322071766507">Най-посещаван сайт</translation>
+<translation id="7230006500876504868">Търсене с Brave</translation>
+<translation id="5888208462949095139">Търсене с <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
+<translation id="5456039738087398178">Изпълним модул за начален екран</translation>
+<translation id="703185154752046151">Добавен е изпълним модул към началния екран</translation>
+<translation id="3290805388004282161">Изпробвайте изпълнимия модул за Brave търсене</translation>
+<translation id="4809681171446727314">Получете достъп до частно, независимо търсене директно от началния си екран.</translation>
+<translation id="7751715172931488388">Добавяне на изпълним модул</translation>
+<translation id="7285167584112910782">Бързо Brave търсене</translation>
+<translation id="2326703104633309781">Използване на Brave преводач</translation>
+<translation id="5802752138057422257">Открити са NON-ASCII знаци!</translation>
 <translation id="442709594176931966">Преглед на оригиналното съобщение</translation>
 <translation id="2239252396088484499">Преглед на съобщението в кодиране ASCII</translation>
+<translation id="4220693114674044366">Адрес на жетона</translation>
+<translation id="5658257029899993935">Свържете покупката с вашия акаунт в Brave</translation>
+<translation id="1187061015547219282">Свържете покупката си от Play Store с вашия акаунт в Brave, за да използвате Brave VPN на други устройства.</translation>
+<translation id="6662142137695589205">Свържете абонамента си за VPN</translation>
+<translation id="2674077112509133024">Удължете защитата от Защитна стена на Brave + VPN</translation>
+<translation id="6365389672683343144">Вашият абонамент за Brave VPN може да защитава до 5 устройства с Android, iOS и настолни компютри. Просто свържете абонамента си за Google Play към акаунта си в Brave.</translation>
 </translationbundle>

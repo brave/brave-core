@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Μπορείτε να ξεκινήσετε μια ιδιωτική κλήση στο Brave.</translation>
 <translation id="4903286433687221248">Πραγματοποιήστε απεριόριστες κλήσεις με φίλους και συναδέλφους στο Brave Talk.</translation>
 <translation id="7115051913071512405">Δοκιμάστε το</translation>
-<translation id="1447534717041828517">Εμφάνιση του κουμπιού Brave News στη γραμμή εργαλείων</translation>
 <translation id="370665806235115550">Φόρτωση...</translation>
 <translation id="4634933166298842522">Διαχείριση συνδρομών</translation>
 <translation id="4108314971463891922">Παρακολούθηση</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Μεταβείτε στο creators.brave.com για να εγγραφείτε σήμερα και ξεκινήστε να κερδίζετε BAT από τους θαυμαστές και τους ακολούθους σας.</translation>
 <translation id="4816455138209470435">Το Brave υποστηρίζει το YouTube, το Twitch, το Vimeo και πολλά άλλα!</translation>
 <translation id="3656941797339037856">Συνδέστε τις Ανταμοιβές με το Gemini!</translation>
-<translation id="31532096120351460">Ανταλλάξτε 50+ κρυπτονομίσματα, συμπεριλαμβανομένου του BAT, στο Gemini. Είναι μια ασφαλής πλατφόρμα για να αποθηκεύσετε τα κρυπτονομίσματά σας. Επιπλέον, μπορείτε να κερδίσετε τόκους σε ΗΠΑ, ΧΟΝΓΚ ΚΟΝΓΚ και ΣΙΓΚΑΠΟΥΡΗ.</translation>
+<translation id="2888702144235098855">Ανταλλάξτε 50+ κρυπτονομίσματα, συμπεριλαμβανομένου του BAT, στο Gemini. Είναι μια ασφαλής πλατφόρμα για να αποθηκεύετε τα κρυπτονομίσματά σας.</translation>
 <translation id="7404779623219601861">Εξαργυρώστε BAT με Δωροκάρτες</translation>
 <translation id="6215565499749144110">Με το δίκτυο TAP, μπορείτε να εξαργυρώσετε τα BAT σας με δημοφιλείς επώνυμες δωροκάρτες.</translation>
 <translation id="6915065518766963119">* Απαιτείται επιβεβαίωση από την Uphold.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Αποσυνδέθηκε</translation>
 <translation id="6080167751812750226">Αποσύνδεση από<ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Εκτιμώμενα κέρδη</translation>
-<translation id="4244985009709452836">Συνδεθείτε στον λογαριασμό σας <ph name="PROVIDER"/></translation>
+<translation id="7934950257968365573">Συνδεθείτε στον λογαριασμό σας <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Εφάπαξ φιλοδωρήματα</translation>
 <translation id="590733288489975971">Ανταμοιβές από Διαφημίσεις</translation>
 <translation id="6181762795539107980">Μη επαληθευμένο</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Αγορά με Wyre</translation>
 <translation id="5522073372365069684">Αγορά με Ramp</translation>
 <translation id="7902920577183739843">Αγοράστε με Sardine</translation>
-<translation id="6534275647567011533">Αγορά με Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Αγοράστε κρυπτονομίσματα με Visa ή Mastercard.</translation>
 <translation id="3101839349578102016">Άμεση αγορά με τον τραπεζικό σας λογαριασμό. Χαμηλότερα τέλη.</translation>
 <translation id="8528916244724490964">Όλα τα δίκτυα</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Αυτοκίνητο</translation>
 <translation id="7577010593836079522">Πολιτισμός</translation>
 <translation id="3706423975342040244">Ψυχαγωγία</translation>
+<translation id="3284069358246729581">Ειδήσεις από τον χώρο της ψυχαγωγίας</translation>
 <translation id="1432147735538902155">Μόδα</translation>
+<translation id="3350377832708834609">Κινηματογράφος και τηλεόραση</translation>
 <translation id="736592699917579616">Φαγητό</translation>
 <translation id="5104499318017527547">Διασκέδαση</translation>
 <translation id="2228584369802328636">Gaming</translation>
 <translation id="6941852195052765076">Υγεία</translation>
 <translation id="932327136139879170">Αρχική σελίδα</translation>
+<translation id="5178222043222938163">Μουσική</translation>
 <translation id="1322083935398004629">Πολιτική</translation>
+<translation id="8739620487574841501">Τοπικές ειδήσεις</translation>
 <translation id="3872834068356954457">Επιστήμη</translation>
 <translation id="1264974993859112054">Αθλητικά</translation>
 <translation id="2283599456633275070">Ταξίδι</translation>
 <translation id="7487067081878637334">Τεχνολογία</translation>
+<translation id="151743034625508713">Ειδήσεις τεχνολογίας</translation>
+<translation id="2388279876296929435">Κριτικές προϊόντων τεχνολογίας</translation>
 <translation id="5030268312472358928">Κορυφαίες ειδήσεις</translation>
 <translation id="5510475084662028636">Κορυφαίες πηγές</translation>
+<translation id="1297570508541015874">Ειδήσεις των ΗΠΑ</translation>
 <translation id="1459693405370120464">Καιρός</translation>
 <translation id="8366057325711477500">Διεθνείς ειδήσεις</translation>
 <translation id="6303294677342628402">Ασπίδες</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">Τέλος</translation>
 <translation id="2273851479262317744">Ορίστε τον Brave ως το προεπιλεγμένο πρόγραμμα περιήγησης</translation>
 <translation id="5037676449506322593">Επιλογή όλων</translation>
-<translation id="8330804319517911603">Συμβάλετε στη βελτίωση του Brave</translation>
-<translation id="2867964979837593892">Βελτιστοποίηση του προϊόντος. Προστασία του απορρήτου σας. Καθημερινά.</translation>
-<translation id="7661940959332108190">Αποστολή αναφορών διαγνωστικών σε περίπτωση σφάλματος ή παγώματος του Brave.</translation>
-<translation id="6358373266071757311">Αποστολή ανώνυμων, ιδιωτικών πληροφοριών προϊόντος. Αυτό μας βοηθά να μάθουμε ποιες λειτουργίες Brave χρησιμοποιούνται συχνότερα.</translation>
+<translation id="5148943178722443958">Βοηθήστε μας να κάνουμε το Brave καλύτερο.</translation>
+<translation id="1097073572755862978">Στείλτε αναφορές διαγνωστικών, σε περίπτωση σφάλματος ή παγώματος. <ph name="LINK_BEFORE"/>Μάθετε περισσότερα.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Κοινοποιήστε εντελώς ιδιωτικές και ανώνυμες πληροφορίες σχετικά με ποιες λειτουργίες χρησιμοποιούνται από τους χρήστες του Brave. <ph name="LINK_BEFORE"/>Μάθετε περισσότερα.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Η ρύθμιση ολοκληρώθηκε</translation>
 <translation id="3141206739023333979">Αλλάξτε αυτές τις επιλογές ανά πάσα στιγμή στο Brave στο <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Διαβάστε ολόκληρη την <ph name="LINK_BEFORE"/>Πολιτική απορρήτου<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">Επιλέξτε το θέμα σας</translation>
+<translation id="6262510489122516114">Μπορείτε να το αλλάξετε ανά πάσα στιγμή στις ρυθμίσεις του Brave.</translation>
+<translation id="546481172717459539">Αντιστοιχίστε με τις ρυθμίσεις συστήματος</translation>
+<translation id="7799817062559422778">Ανοιχτόχρωμη λειτουργία</translation>
+<translation id="4117637339509843559">Σκουρόχρωμη λειτουργία</translation>
 <translation id="7821773512278295352">Τείχος προστασίας Brave + VPN: Συνδέθηκε</translation>
 <translation id="6019088868713395120">Τείχος προστασίας Brave + VPN: Αποσυνδέθηκε</translation>
 <translation id="3541307549916475335">Πίνακας περιβάλλοντος χρήστη του VPN του Brave</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">Η σύνδεση VPN απέτυχε. Δοκιμάστε να συνδεθείτε ξανά και φροντίστε να κάνετε κλικ στο Να επιτρέπεται η ενεργοποίηση της διαμόρφωσης VPN του Brave.</translation>
 <translation id="7261518280726313829">Η απενεργοποίηση του ασφαλούς DNS ή η χρήση προεπιλεγμένων διακομιστών σε Windows μπορεί να αποκαλύψει τα ονόματα των ιστοτόπων που επισκέπτεστε στον πάροχο υπηρεσιών διαδικτύου σας. Το Brave δεν συνιστά αυτήν την ενέργεια. Να γίνει ούτως ή άλλως;</translation>
 <translation id="888284761945060750">Το ασφαλές σύστημα DNS έχει απενεργοποιηθεί από τις πολιτικές του οργανισμού σας. Η χρήση του VPN του Brave χωρίς ασφαλές DNS ενδέχεται να αποκαλύψει τα ονόματα των ιστοτόπων που επισκέπτεστε στον πάροχο υπηρεσιών διαδικτύου που χρησιμοποιείτε ή στον οργανισμό.</translation>
+<translation id="6593224083874259773">VPN του Brave στα Windows</translation>
+<translation id="3153983908111684619">Η ρύθμιση αυτή είναι κλειδωμένη από το Brave VPN κατά τη σύνδεση</translation>
+<translation id="6507543978646831931">Τα Windows έχουν μια λειτουργία που ονομάζεται Smart Multi-Homed Name Resolution, η οποία μπορεί να αποκαλύψει πληροφορίες για τη γεωγραφική τοποθεσία σας και τις διαδικτυακές τοποθεσίες που επισκέπτεστε. Όταν ενεργοποιείτε το VPN του Brave, αλλάζουμε τις ρυθμίσεις DNS του προγράμματος περιήγησης, για να σας προστατεύσουμε από αυτού του τύπου την έκθεση. Οι ρυθμίσεις παραμένουν ενεργές και κλειδωμένες, όσο είναι συνδεδεμένο το VPN. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Να μη λαμβάνω προειδοποίηση εκ νέου για αυτό το ζήτημα.</translation>
+<translation id="2740531572673183784">ΟK</translation>
+<translation id="9061845622728745852">Ζώνη ώρας:</translation>
 <translation id="7586151660465233733">Δείτε περισσότερες αγορές στο <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Δείτε τις αγορές και κάντε συναλλαγές με κρυπτονομίσματα στο FTX</translation>
 <translation id="5963745988819586370">Αγορές</translation>

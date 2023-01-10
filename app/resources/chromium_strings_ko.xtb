@@ -55,6 +55,7 @@
 <translation id="7798069806040634998">파일을 다운로드하려면 Brave에 저장소 액세스 권한이 있어야 합니다</translation>
 <translation id="8447483940522230788">Brave 도우미</translation>
 <translation id="7291143854620707672">북마크, 방문 기록, 비밀번호, 기타 설정 생성 등 이 프로필을 사용하는 동안 생성된 모든 Brave 데이터는 직장 프로필 관리자가 삭제할 수 있습니다. <ph name="LEARN_MORE"/></translation>
+<translation id="6252796827759111076">Brave 계속 사용</translation>
 <translation id="7387051847644272380">설치 중 운영체제 오류가 발생했습니다. Brave을 다시 다운로드하세요.</translation>
 <translation id="2648689842065142443">기기를 공유하는 경우 친구와 가족이 개별적으로 탐색하고 원하는 대로 Brave을 설정할 수 있습니다.</translation>
 <translation id="5926459996518749366">멀웨어가 숨겨져 있을 수 있어 Brave에서 이 보관 파일을 차단했습니다.</translation>
@@ -95,6 +96,7 @@
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">기존 Brave 프로필로 전환하시겠습니까?</translation>
 <translation id="3412460710772753638">기기의 비밀번호 관리자에 업데이트합니다.</translation>
+<translation id="616005907576404509">{COUNT,plural, =1{관리자가 Brave이 1분 이상 유휴 상태이면 닫히도록 구성했습니다.}other{관리자가 Brave이 #분 이상 유휴 상태이면 닫히도록 구성했습니다.}}</translation>
 <translation id="2450003541323895471">Brave 프로필을 사용하면 모든 Brave 데이터를 분리할 수 있습니다. 친구와 가족을 위한 프로필을 만들거나 업무용과 개인용 프로필을 구분하세요.</translation>
 <translation id="9216183508558772570">유출된 비밀번호로 로그인하면 Brave에서 알림을 표시합니다.</translation>
 <translation id="5853262807109651878">항목 <ph name="ITEMS_COUNT"/>개가 기기에서 삭제됩니다. 나중에 데이터를 가져오려면 Brave에 <ph name="USER_EMAIL"/>(으)로 로그인하세요.</translation>
@@ -172,6 +174,7 @@
 <translation id="7021823858304886493">Brave 로그인 허용</translation>
 <translation id="5536657158619734169">Brave의 새 버전이 출시되었습니다.</translation>
 <translation id="5267531627648004734">Brave에서 제거</translation>
+<translation id="2783637305317815247">{0,plural, =0{Brave이 지금 닫힙니다.}=1{Brave이 1초 후에 닫힙니다.}other{Brave이 #초 후에 닫힙니다.}}</translation>
 <translation id="239760341987199724">Brave을 기본 브라우저로 설정</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave 베타</translation>
 <translation id="894936507076470937">이 Linux 배포판에서 더 이상 Brave을 지원하지 않으므로 Brave이 올바르게 작동하지 않을 수 있습니다.</translation>
@@ -259,6 +262,7 @@
 <translation id="126871877963043118">무료 체험을 사용 설정한 경우 방문하는 사이트에서는 Ad measurement를 활용해 광고의 실적을 측정하는 데 도움이 되는 정보를 Brave에 요청할 수 있습니다. Ad measurement는 사이트 간에 최소한의 정보만 전송함으로써 크로스 사이트 추적을 제한합니다.</translation>
 <translation id="4392161457256085190">이후 방문한 사이트에서 광고 개인 최적화를 위해 내 관심분야를 알려달라고 Brave에 요청할 수 있습니다. Brave은 최대 3개의 관심분야를 공유할 수 있습니다.</translation>
 <translation id="6418340404893954563">취약한 비밀번호는 추측하기 쉽습니다. Brave에서 <ph name="BEGIN_LINK"/>안전한 비밀번호를 생성하고 기억하도록 설정<ph name="END_LINK"/>하세요.</translation>
+<translation id="196626648343945705">Brave이 비활성 상태임</translation>
 <translation id="3453763134178591239">ChromeOS 약관</translation>
 <translation id="3335606533094650083">이 사이트에서 마이크에 액세스하려면 Brave에 권한이 필요합니다</translation>
 <translation id="7025789849649390912">설치가 중단되었습니다.</translation>
