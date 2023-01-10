@@ -310,16 +310,26 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithVerticalTabs,
 
   // Check if vertical tabs is located at first and sidebar is located on the
   // right side.
+#if BUILDFLAG(IS_MAC)
+  EXPECT_LT(vertical_tabs_container->GetBoundsInScreen().x() + 1,
+            sidebar_container->GetBoundsInScreen().x());
+#else
   EXPECT_LT(vertical_tabs_container->GetBoundsInScreen().x(),
             sidebar_container->GetBoundsInScreen().x());
+#endif
 
   // Changed to sidebar on left side again.
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
   EXPECT_TRUE(IsSidebarUIOnLeft());
 
   // Check if vertical tabs is located first and sidebar is following it.
+#if BUILDFLAG(IS_MAC)
+  EXPECT_EQ(vertical_tabs_container->GetBoundsInScreen().right() + 1,
+            sidebar_container->GetBoundsInScreen().x());
+#else
   EXPECT_EQ(vertical_tabs_container->GetBoundsInScreen().right(),
             sidebar_container->GetBoundsInScreen().x());
+#endif
 
   // Check sidebar position option is synced between normal and private window.
   auto* private_browser = CreateIncognitoBrowser(browser()->profile());

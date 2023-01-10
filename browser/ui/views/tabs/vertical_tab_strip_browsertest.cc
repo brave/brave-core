@@ -210,19 +210,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, NewTabVisibility) {
       browser_view()->tab_strip_region_view()->new_tab_button()->GetVisible());
 
   ToggleVerticalTabStrip();
+  EXPECT_FALSE(
+      browser_view()->tab_strip_region_view()->new_tab_button()->GetVisible());
 
-  // When there are too many tabs so it overflows, the original new tab button
-  // will be hidden and vertical tabstrip region view will show it's own new tab
-  // button at the bottom.
-  while (!browser_view()
-              ->tab_strip_region_view()
-              ->new_tab_button()
-              ->GetVisible()) {
-    chrome::AddTabAt(browser(), {}, -1, true);
-  }
-
-  // When turning on horizontal tabstrip, the original new tab button should be
-  // visible.
   ToggleVerticalTabStrip();
   EXPECT_TRUE(
       browser_view()->tab_strip_region_view()->new_tab_button()->GetVisible());
