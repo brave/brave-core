@@ -83,7 +83,6 @@ import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsOnboardingPagerAdapter;
-import org.chromium.chrome.browser.BraveRewardsPublisher;
 import org.chromium.chrome.browser.BraveRewardsSiteBannerActivity;
 import org.chromium.chrome.browser.BraveRewardsUserWalletActivity;
 import org.chromium.chrome.browser.BraveRewardsVerifyWalletActivity;
@@ -104,6 +103,7 @@ import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.ledger.mojom.PublisherStatus;
 import org.chromium.ledger.mojom.UserType;
 import org.chromium.ledger.mojom.WalletStatus;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -2135,10 +2135,7 @@ public class BraveRewardsPanel
                 mBraveRewardsNativeWorker.RefreshPublisher(pubId);
             }
         }));
-        if (pubStatus == BraveRewardsPublisher.CONNECTED
-                || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
-                || pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
-                || pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED) {
+        if (pubStatus != PublisherStatus.NOT_VERIFIED) {
             verifiedText =
                     mPopupView.getResources().getString(R.string.brave_ui_verified_publisher);
             publisherVerified.setCompoundDrawablesWithIntrinsicBounds(
