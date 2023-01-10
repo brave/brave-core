@@ -14,17 +14,14 @@
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 
+namespace {
+constexpr int kStrokeThicknessForVerticalTabs = 4;
+}  // namespace
+
 BraveTabGroupUnderline::BraveTabGroupUnderline(
     TabGroupViews* tab_group_views,
     const tab_groups::TabGroupId& group)
-    : TabGroupUnderline(tab_group_views, group) {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-    return;
-
-  // This prevents this view from getting mouse event. Otherwise, tabs and
-  // group headers could be un-clickable as this view takes the events.
-  SetEnabled(false);
-}
+    : TabGroupUnderline(tab_group_views, group) {}
 
 BraveTabGroupUnderline::~BraveTabGroupUnderline() = default;
 
@@ -54,8 +51,7 @@ void BraveTabGroupUnderline::UpdateBounds(views::View* leading_view,
     return;
   }
 
-  SetBounds(0, group_bounds.y(),
-            std::max(leading_view->width(), trailing_view->width()),
+  SetBounds(0, group_bounds.y(), kStrokeThicknessForVerticalTabs,
             group_bounds.height());
 }
 
@@ -71,12 +67,28 @@ SkPath BraveTabGroupUnderline::GetPath() const {
   if (!ShouldShowVerticalTabs())
     return TabGroupUnderline::GetPath();
 
-  constexpr SkScalar kRadius = 4;
-  auto rect = GetContentsBounds();
-  rect.Inset(gfx::Insets().set_left_right(kRadius, kRadius));
-
+  // In vertical tabs, underline is not actually "underline'. It's vertical line
+  // at the left side of the tab group. And it has half rounded corners.
+  //
+  // +   group header   | '+' is the underline.
+  // ++  tab 1          | Drawing starts from top-right and goes
+  // ++  tab 2          | counter-clockwise
+  // +   tab 3          |
+  //
   SkPath path;
-  path.addRoundRect(gfx::RectToSkRect(rect), kRadius, kRadius);
+  path.arcTo(/* rx = */ kStrokeThicknessForVerticalTabs,
+             /* ry = */ kStrokeThicknessForVerticalTabs,
+             /* angle = */ 180.f, SkPath::kSmall_ArcSize, SkPathDirection::kCW,
+             /* x = */ kStrokeThicknessForVerticalTabs,
+             /* y = */ kStrokeThicknessForVerticalTabs);
+  path.lineTo(kStrokeThicknessForVerticalTabs,
+              height() - kStrokeThicknessForVerticalTabs);
+  path.arcTo(/* rx = */ kStrokeThicknessForVerticalTabs,
+             /* ry = */ kStrokeThicknessForVerticalTabs,
+             /* angle = */ 180.f, SkPath::kSmall_ArcSize, SkPathDirection::kCW,
+             /* x = */ 0,
+             /* y = */ height());
+  path.close();
 
   return path;
 }
@@ -89,14 +101,7 @@ void BraveTabGroupUnderline::OnPaint(gfx::Canvas* canvas) {
 
   cc::PaintFlags flags;
   flags.setAntiAlias(true);
-
-  SkColor color = tab_group_views_->GetGroupColor();
-  color = color_utils::HSLShift(
-      color,
-      {.h = -1 /*unchanged*/,
-       .s = 0.5 /*unchanged*/,
-       .l = GetNativeTheme()->ShouldUseDarkColors() ? 0.7 : 0.8 /*lighter*/});
-  flags.setColor(color);
+  flags.setColor(tab_group_views_->GetGroupColor());
   flags.setStyle(cc::PaintFlags::kFill_Style);
   canvas->DrawPath(GetPath(), flags);
 }

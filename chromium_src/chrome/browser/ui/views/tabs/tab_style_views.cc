@@ -86,7 +86,6 @@ class BraveVerticalTabStyle : public BraveGM2TabStyle {
       float scale,
       bool force_active = false,
       RenderUnits render_units = RenderUnits::kPixels) const override;
-  TabStyle::TabColors CalculateColors() const override;
   SeparatorBounds GetSeparatorBounds(float scale) const override;
   void PaintTab(gfx::Canvas* canvas) const override;
 
@@ -136,19 +135,6 @@ SkPath BraveVerticalTabStyle::GetPath(PathType path_type,
     path.transform(SkMatrix::Scale(1.0f / scale, 1.0f / scale));
 
   return path;
-}
-
-TabStyle::TabColors BraveVerticalTabStyle::CalculateColors() const {
-  auto colors = BraveGM2TabStyle::CalculateColors();
-  if (ShouldShowVerticalTabs() && IsInGroupAndNotActive()) {
-    colors.foreground_color =
-        BraveTabGroupHeader::GetGroupBackgroundColorForVerticalTabs(
-            tab()->group().value(), tab()->controller(),
-            tab()->GetNativeTheme()->ShouldUseDarkColors());
-    colors.background_color = SK_ColorTRANSPARENT;
-  }
-
-  return colors;
 }
 
 TabStyle::SeparatorBounds BraveVerticalTabStyle::GetSeparatorBounds(

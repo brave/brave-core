@@ -15,11 +15,11 @@
 #include "ui/views/background.h"
 #include "ui/views/controls/label.h"
 
-// static
-SkColor BraveTabGroupHeader::GetGroupBackgroundColorForVerticalTabs(
+namespace {
+
+SkColor GetGroupBackgroundColorForVerticalTabs(
     const tab_groups::TabGroupId& group_id,
-    TabSlotController* controller,
-    bool dark_mode) {
+    TabSlotController* controller) {
   DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
       << "This should be called only when the flag is on.";
 
@@ -31,12 +31,11 @@ SkColor BraveTabGroupHeader::GetGroupBackgroundColorForVerticalTabs(
     return gfx::kPlaceholderColor;
   }
 
-  return color_utils::HSLShift(
-      controller->GetPaintedGroupColor(controller->GetGroupColorId(group_id)),
-      {.h = -1 /*unchanged*/,
-       .s = 0.5 /*unchanged*/,
-       .l = dark_mode ? 0.2 : 0.3 /*darker*/});
+  return controller->GetPaintedGroupColor(
+      controller->GetGroupColorId(group_id));
 }
+
+}  // namespace
 
 BraveTabGroupHeader::~BraveTabGroupHeader() = default;
 
@@ -46,13 +45,11 @@ void BraveTabGroupHeader::VisualsChanged() {
     return;
 
   title_->SetEnabledColor(GetGroupBackgroundColorForVerticalTabs(
-      group().value(), base::to_address(tab_slot_controller_),
-      GetNativeTheme()->ShouldUseDarkColors()));
+      group().value(), base::to_address(tab_slot_controller_)));
   title_->SetFontList(
       title_->font_list().DeriveWithWeight(gfx::Font::Weight::MEDIUM));
 
-  // We don't need to fill |title_chip_| as we have enclosing box drawn by
-  // TabGroupUnderline.
+  // We don't draw background for vertical tabs.
   title_chip_->SetBackground(nullptr);
 
   LayoutTitleChip();

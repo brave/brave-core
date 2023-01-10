@@ -18,7 +18,6 @@ SkPath BraveTabGroupHighlight::GetPath() const {
   if (!tabs::features::ShouldShowVerticalTabs(tab_group_views_->GetBrowser()))
     return TabGroupHighlight::GetPath();
 
-  // We don't have to paint highlight as we have TabGroupUnderline draw a
-  // enclosing box.
+  // We don't have to paint highlight for vertical tabs
   return {};
 }
