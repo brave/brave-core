@@ -11,10 +11,10 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/theme_copying_widget.h"
 #include "chrome/common/pref_names.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/fill_layout.h"
-#include "ui/views/widget/widget.h"
 
 #if defined(USE_AURA)
 #include "ui/views/view_constants_aura.h"
@@ -37,7 +37,7 @@ VerticalTabStripWidgetDelegateView* VerticalTabStripWidgetDelegateView::Create(
   // not get focus.
   params.activatable = views::Widget::InitParams::Activatable::kNo;
 
-  auto widget = std::make_unique<views::Widget>();
+  auto widget = std::make_unique<ThemeCopyingWidget>(browser_view->GetWidget());
   widget->Init(std::move(params));
 #if defined(USE_AURA)
   widget->GetNativeView()->SetProperty(views::kHostViewKey, host_view);

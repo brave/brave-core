@@ -260,6 +260,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
   SetNotifyEnterExitOnChild(true);
 
   scroll_view_ = AddChildView(std::make_unique<CustomScrollView>());
+  scroll_view_->SetDrawOverflowIndicator(false);
   scroll_view_header_ =
       scroll_view_->SetHeader(std::make_unique<ScrollHeaderView>(
           base::BindRepeating(
