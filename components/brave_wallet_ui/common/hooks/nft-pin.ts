@@ -16,6 +16,7 @@ import { useUnsafePageSelector, useUnsafeWalletSelector } from './use-safe-selec
 import { reverseHttpifiedIpfsUrl, stripERC20TokenImageURL } from '../../utils/string-utils'
 import { LOCAL_STORAGE_KEYS } from '../constants/local-storage-keys'
 import { getAssetIdKey } from '../../utils/asset-utils'
+import { PinningStatusType } from '../../page/constants/action_types'
 
 export function useNftPin () {
   const [isIpfsBannerVisible, setIsIpfsBannerVisible] = React.useState<boolean>(
@@ -77,7 +78,7 @@ export function useNftPin () {
     })
   }, [])
 
-  const getNftPinningStatus = React.useCallback((token: BraveWallet.BlockchainToken): BraveWallet.TokenPinStatus | undefined => {
+  const getNftPinningStatus = React.useCallback((token: BraveWallet.BlockchainToken): PinningStatusType | undefined => {
     return nftsPinningStatus[getAssetIdKey(token)]
   }, [nftsPinningStatus])
 

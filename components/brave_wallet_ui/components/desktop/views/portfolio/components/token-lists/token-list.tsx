@@ -4,11 +4,12 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory, useDispatch } from 'react-router'
+import { useHistory } from 'react-router'
 
 // Selectors
-import { useSafeWalletSelector, useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
+import { useSafeWalletSelector, useUnsafePageSelector, useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../../../common/selectors'
+import { PageSelectors } from '../../../../../../page/selectors'
 
 // Types
 import {
@@ -41,9 +42,8 @@ import {
   Spacer,
   FilterTokenRow
 } from '../../style'
-import { useUnsafePageSelector } from '../../../../../../common/hooks/use-safe-selector'
-import { PageSelectors } from '../../../../../../page/selectors'
 import { WalletPageActions } from '../../../../../../page/actions'
+import { useDispatch } from 'react-redux'
 
 interface Props {
   userAssetList: UserAssetInfoType[]
