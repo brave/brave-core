@@ -10,6 +10,8 @@ source_set("infobars") {
   check_includes = false
 
   sources = [
+    "brave_confirm_infobar.cc",
+    "brave_confirm_infobar.h",
     "brave_infobar_container_view.cc",
     "brave_infobar_container_view.h",
     "custom_styled_label.cc",
@@ -26,6 +28,7 @@ source_set("infobars") {
     "//brave/app/theme:brave_theme_resources",
     "//brave/app/vector_icons",
     "//brave/components/constants",
+    "//brave/components/infobars/core",
     "//components/infobars/core",
     "//content/public/browser",
     "//third_party/abseil-cpp:absl",
