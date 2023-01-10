@@ -11,13 +11,13 @@
 
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/themes/theme_properties.h"
-#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
@@ -490,11 +490,18 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
 void VerticalTabStripRegionView::OnThemeChanged() {
   View::OnThemeChanged();
 
-  const auto background_color = GetColorProvider()->GetColor(kColorToolbar);
+  auto* cp = GetColorProvider();
+  DCHECK(cp);
+
+  const auto background_color = cp->GetColor(kColorToolbar);
   SetBackground(views::CreateSolidBackground(background_color));
   scroll_view_->SetBackgroundColor(background_color);
 
   new_tab_button_->FrameColorsChanged();
+
+  SetBorder(views::CreateSolidSidedBorder(
+      gfx::Insets().set_right(1),
+      cp->GetColor(kColorBraveVerticalTabSeparator)));
 }
 
 void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {
@@ -580,12 +587,12 @@ gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
 
 int VerticalTabStripRegionView::GetPreferredWidthForState(State state) const {
   if (state == State::kExpanded || state == State::kFloating)
-    return TabStyle::GetStandardWidth();
+    return TabStyle::GetStandardWidth() + GetInsets().width();
 
   DCHECK_EQ(state, State::kCollapsed)
       << "If a new state was added, " << __FUNCTION__
       << " should be revisited.";
-  return tabs::kVerticalTabMinWidth;
+  return tabs::kVerticalTabMinWidth + GetInsets().width();
 }
 
 TabStripScrollContainer*
