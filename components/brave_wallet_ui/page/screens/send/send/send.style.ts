@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
 
 // Shared Styles
-import { StyledDiv, StyledInput, Text, Row } from '../shared.styles'
+import { StyledDiv, StyledInput, Row } from '../shared.styles'
 
 export const SendContainer = styled(StyledDiv)`
   background-color: ${(p) => p.theme.color.background02};
@@ -162,12 +162,6 @@ export const Background = styled(StyledDiv) <{
   position: absolute;
   z-index: 8;
   background-image: var(--${p => p.network});
-`
-
-export const FoundAddress = styled(Text) <{ position: number }>`
-  position: absolute;
-  z-index: 8;
-  left: ${(p) => p.position}px;
 `
 
 export const DIVForWidth = styled.div`

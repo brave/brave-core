@@ -125,7 +125,7 @@
   <message name="IDS_BRAVE_WALLET_BUTTON_NEXT" desc="General Next button">Next</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_GOT_IT" desc="Acknowledgement Next button">Got it</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_COPY" desc="General Copy button">Copy</message>
-  <message name="IDS_BRAVE_WALLET_BUTTON_COPIED" desc="Confirmation that text has been copied to clipboard">Copied</message>
+  <message name="IDS_BRAVE_WALLET_BUTTON_COPIED" desc="Confirmation that text has been copied to clipboard">Copied!</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_VERIFY" desc="General Verify button">Verify</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_CLOSE" desc="General Close button">Close</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_MORE" desc="General More button">More</message>

@@ -131,7 +131,7 @@ provideStrings({
   braveWalletButtonNext: 'Next',
   braveWalletButtonGotIt: 'Got it',
   braveWalletButtonCopy: 'Copy',
-  braveWalletButtonCopied: 'Copied',
+  braveWalletButtonCopied: 'Copied!',
   braveWalletButtonVerify: 'Verify',
   braveWalletButtonClose: 'Close',
   braveWalletButtonMore: 'More',
