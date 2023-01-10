@@ -6,6 +6,8 @@
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 
 #include <algorithm>
+#include <memory>
+#include <utility>
 
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/tabs/features.h"
