@@ -20,24 +20,6 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/label.h"
 
-namespace {
-
-std::u16string GetObsoleteSystemDialogContent() {
-  int id = -1;
-#if BUILDFLAG(IS_WIN)
-  id = IDS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_CONTENT_WIN;
-#elif BUILDFLAG(IS_MAC)
-  id = IDS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_CONTENT_MAC;
-#elif BUILDFLAG(IS_LINUX)
-  id = IDS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_CONTENT_LINUX;
-#elif
-  NOTREACHED();
-#endif
-  return brave_l10n::GetLocalizedResourceUTF16String(id);
-}
-
-}  // namespace
-
 namespace brave {
 
 void ShowObsoleteSystemConfirmDialog(base::OnceCallback<void(bool)> callback) {
@@ -68,7 +50,8 @@ ObsoleteSystemConfirmDialogView::ObsoleteSystemConfirmDialogView(
   auto* label = AddChildView(std::make_unique<views::Label>());
   label->SetMultiLine(true);
   label->SetMaximumWidth(330);
-  label->SetText(GetObsoleteSystemDialogContent());
+  label->SetText(brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_CONTENT));
   const int size_diff = 14 - views::Label::GetDefaultFontList().GetFontSize();
   label->SetFontList(views::Label::GetDefaultFontList()
                          .DeriveWithSizeDelta(size_diff)

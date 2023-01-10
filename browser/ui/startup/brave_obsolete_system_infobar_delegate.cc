@@ -40,7 +40,7 @@ bool BraveObsoleteSystemInfoBarDelegate::HasCheckbox() const {
 
 std::u16string BraveObsoleteSystemInfoBarDelegate::GetCheckboxText() const {
   return l10n_util::GetStringUTF16(
-      IDS_OBSOLERE_SYSTEM_INFOBAR_DONT_SHOW_BUTTON);
+      IDS_OBSOLETE_SYSTEM_INFOBAR_DONT_SHOW_BUTTON);
 }
 
 void BraveObsoleteSystemInfoBarDelegate::SetCheckboxChecked(bool checked) {
