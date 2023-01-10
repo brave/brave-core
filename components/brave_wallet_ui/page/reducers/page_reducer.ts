@@ -209,6 +209,9 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
       setNftsPinningStatus (state, { payload }: PayloadAction<UpdateNftPinningStatusType[]>) {
         const pinningStatus = {}
         payload.forEach(({ token, status }) => {
+          if (status) {
+            status.validateTime = undefined // type is not serializable
+          }
           pinningStatus[getAssetIdKey(token)] = status
         })
 
@@ -220,6 +223,9 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
       updateNftPinningStatus (state, { payload }: PayloadAction<UpdateNftPinningStatusType>) {
         const { token, status } = payload
+        if (status) {
+          status.validateTime = undefined // type is not serializable
+        }
         state.nftsPinningStatus = {
           ...state.nftsPinningStatus,
           [getAssetIdKey(token)]: status
