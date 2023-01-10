@@ -407,7 +407,7 @@ constexpr char kBraveVerticalTabsName[] = "Vertical tabs";
 constexpr char kBraveVerticalTabsDescription[] =
     "Move tab strip to be a vertical panel on the side of the window instead "
     "of horizontal at the top of the window.";
-#endif
+#endif  // defined(TOOLKIT_VIEWS)
 
 #if BUILDFLAG(IS_ANDROID)
 constexpr char kBraveBackgroundVideoPlaybackName[] =
@@ -421,6 +421,13 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
     "Enables Google Safe Browsing for determining whether a URL has been "
     "marked as a known threat.";
 #endif
+
+#if BUILDFLAG(IS_LINUX)
+constexpr char kBraveChangeActiveTabOnScrollEventName[] =
+    "Change active tab on scroll event";
+constexpr char kBraveChangeActiveTabOnScrollEventDescription[] =
+    "Change the active tab when scroll events occur on tab strip.";
+#endif  // BUILDFLAG(IS_LINUX)
 }  // namespace
 
 }  // namespace flag_descriptions
@@ -580,6 +587,17 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
 #else
 #define BRAVE_VERTICAL_TABS_FEATURE_ENTRY
 #endif  // defined(TOOLKIT_VIEWS)
+
+#if BUILDFLAG(IS_LINUX)
+#define BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES              \
+    {"brave-vertical-tabs",                                                  \
+     flag_descriptions::kBraveChangeActiveTabOnScrollEventName,              \
+     flag_descriptions::kBraveChangeActiveTabOnScrollEventDescription,       \
+     kOsLinux,                                                               \
+     FEATURE_VALUE_TYPE(tabs::features::kBraveChangeActiveTabOnScrollEvent)},
+#else
+#define BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES
+#endif
 
 #if BUILDFLAG(IS_ANDROID)
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                   \
@@ -771,4 +789,5 @@ constexpr char kBraveAndroidSafeBrowsingDescription[] =
     PLAYLIST_FEATURE_ENTRIES                                                \
     BRAVE_VERTICAL_TABS_FEATURE_ENTRY                                       \
     BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                 \
-    BRAVE_SAFE_BROWSING_ANDROID
+    BRAVE_SAFE_BROWSING_ANDROID                                             \
+    BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES
