@@ -45,6 +45,7 @@ import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsSiteBannerActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.ui.widget.Toast;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -72,6 +73,8 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
     private static final int DEFAULT_VALUE_OPTION_2 = 5;
     private static final int DEFAULT_VALUE_OPTION_3 = 10;
 
+    private static final double DEFAULT_AMOUNT = 0.0;
+
     private static final String CUSTOM_TIP_CONFIRMATION_FRAGMENT_TAG =
             "custom_tip_confirmation_fragment";
     private static final String CUSTOM_TIP_FRAGMENT_TAG = "custom_tip_fragment";
@@ -92,8 +95,8 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mBatValue = 0.0;
-        mUsdValue = 0.0;
+        mBatValue = DEFAULT_AMOUNT;
+        mUsdValue = DEFAULT_AMOUNT;
         if (getArguments() != null) {
             currentTabId_ = getArguments().getInt(BraveRewardsSiteBannerActivity.TAB_ID_EXTRA);
             monthlyContribution = getArguments().getBoolean(
@@ -202,20 +205,6 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
             radio_tip_amount[i].setChecked(false);
         }
 
-        switch (recurrentAmount) {
-            case 1:
-                radio_tip_amount[0].setChecked(true);
-                break;
-            case 5:
-                radio_tip_amount[1].setChecked(true);
-                break;
-            case 10:
-                radio_tip_amount[2].setChecked(true);
-                break;
-            default:
-                radio_tip_amount[0].setChecked(true);
-                break;
-        }
         for (ToggleButton tb : radio_tip_amount) {
             tb.setOnClickListener(radio_clicker);
         }
@@ -248,7 +237,7 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
     };
 
     private double selectedAmount() {
-        double amount = 0;
+        double amount = DEFAULT_AMOUNT;
         for (ToggleButton tb : radio_tip_amount) {
             if (tb.isChecked()) {
                 int id = tb.getId();
@@ -347,18 +336,24 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
         sendDonationLayout.setOnClickListener(v -> {
             double balance = getBalance();
             double amount = selectedAmount();
-            boolean enough_funds = ((balance - amount) >= 0);
+            boolean enough_funds = ((balance - amount) >= DEFAULT_AMOUNT);
 
             // When custom tip with enough funds is there then continue button will show
             // click on continue button will show CustomTipConfirmation UI
             if (isCustomTipFragmentVisibile()) {
-                enough_funds = ((balance - mBatValue) >= 0) && mBatValue >= 0.25;
+                enough_funds = ((balance - mBatValue) >= DEFAULT_AMOUNT) && mBatValue >= 0.25;
                 if (enough_funds) {
                     showCustomTipConfirmationFrament();
                 } // else nothing
             }
             // proceed to tipping
             else if (enough_funds) {
+                if (amount == DEFAULT_AMOUNT) {
+                    Toast.makeText(getActivity(), R.string.rewards_tipping_select_amount,
+                                 Toast.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
                 donateAndShowConfirmationScreen(amount);
             }
             // if not enough funds
@@ -438,7 +433,7 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
     };
 
     void setBalanceText(View view) {
-        double balance = .0;
+        double balance = DEFAULT_AMOUNT;
         BraveRewardsBalance rewards_balance = mBraveRewardsNativeWorker.GetWalletBalance();
         if (rewards_balance != null) {
             balance = rewards_balance.getTotal();
@@ -455,7 +450,7 @@ public class BraveRewardsTippingPanelFragment extends Fragment implements BraveR
     public void updateAmount(double batValue, double usdValue) {
         mBatValue = batValue;
         mUsdValue = usdValue;
-        double balance = .0;
+        double balance = DEFAULT_AMOUNT;
         BraveRewardsBalance rewards_balance = mBraveRewardsNativeWorker.GetWalletBalance();
         if (rewards_balance != null) {
             balance = rewards_balance.getTotal();
