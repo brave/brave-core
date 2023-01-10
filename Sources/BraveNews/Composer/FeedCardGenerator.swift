@@ -64,7 +64,7 @@ struct FeedCardGenerator: AsyncSequence {
         }) ?? false
       })))
     }
-    let feedItems = Array(feedsFromEnabledSources)
+    let feedItems = feedsFromEnabledSources.sorted(by: <)
     let sponsors = feedItems.filter { $0.content.contentType == .sponsor }
     let partners = feedItems.filter { $0.content.contentType == .partner }
     let deals = feedItems.filter { $0.content.contentType == .deals }
@@ -180,7 +180,7 @@ extension FeedCardGenerator {
       case .braveAd:
         // If we fail to obtain inline content ads during a card gen it can be assumed that
         // all further calls will fail since cards are generated all at once
-        guard !contentAdsQueryFailed, let ads = ads else { return [] }
+        guard !contentAdsQueryFailed, let ads = ads, ads.isAdsServiceRunning() else { return [] }
         if !inlineContentAdsPurged {
           inlineContentAdsPurged = true
           await withCheckedContinuation { c in
