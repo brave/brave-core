@@ -6,12 +6,12 @@
 <translation id="103269572468856066">ਇਹਨਾਂ ਸਾਈਟਾਂ ਅਤੇ ਐਪਾਂ ਤੋਂ ਵੀ ਡਾਟਾ ਕਲੀਅਰ ਕਰਨਾ ਹੈ?</translation>
 <translation id="1034259925032978114">ਵਿੰਡੋ ਖੁੱਲ੍ਹੀ ਹੈ</translation>
 <translation id="1036348656032585052">ਬੰਦ ਕਰੋ</translation>
-<translation id="1036727731225946849"><ph name="WEBAPK_NAME"/> ਨੂੰ ਸ਼ਾਮਲ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ...</translation>
 <translation id="1045899828449635435">ਇਹਨਾਂ ਸਾਈਟਾਂ ਤੋਂ ਵੀ ਡਾਟਾ ਕਲੀਅਰ ਕਰਨਾ ਹੈ?</translation>
 <translation id="10614374240317010">ਕਦੇ ਵੀ ਸੁਰੱਖਿਅਤ ਨਹੀਂ ਕੀਤਾ</translation>
 <translation id="1062628064301375934">ਜ਼ਿਆਦਾ ਨਿੱਜੀ ਵੈੱਬ ਬਣਾਉਣ ਵਿੱਚ ਸਾਡੀ ਮਦਦ ਕਰੋ</translation>
 <translation id="107147699690128016">ਜੇ ਤੁਸੀਂ ਫ਼ਾਈਲ ਐਕਸਟੈਂਸ਼ਨ ਬਦਲਦੇ ਹੋ, ਤਾਂ ਫ਼ਾਈਲ ਸ਼ਾਇਦ ਕਿਸੇ ਵੱਖਰੀ ਐਪਲੀਕੇਸ਼ਨ ਵਿੱਚ ਖੁੱਲ੍ਹੇ ਅਤੇ ਸੰਭਾਵੀ ਤੌਰ 'ਤੇ ਤੁਹਾਡੇ ਡੀਵਾਈਸ ਦਾ ਨੁਕਸਾਨ ਹੋ ਸਕਦਾ ਹੈ।</translation>
 <translation id="1089606299949659462">ਸਮੀਖਿਆ ਪੂਰੀ ਹੋ ਗਈ!</translation>
+<translation id="1091604859693995976">ਦੇਖਣ ਲਈ ਰਿਫ੍ਰੈਸ਼ ਕਰੋ</translation>
 <translation id="1095761715416917775">ਪੱਕਾ ਕਰੋ ਤੁਸੀਂ ਆਪਣੇ ਸਿੰਕ ਕੀਤੇ ਡਾਟੇ ਤੱਕ ਹਮੇਸ਼ਾਂ ਪਹੁੰਚ ਕਰ ਸਕੋ</translation>
 <translation id="1100066534610197918">ਗਰੁੱਪ 'ਚ ਨਵੀਂ ਟੈਬ ਵਿੱਚ ਖੋਲ੍ਹੋ</translation>
 <translation id="4660777881054855091">ਕੀ Brave ਨੂੰ ਬਿਹਤਰ ਬਣਾਉਣ ਵਿੱਚ ਮਦਦ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</translation>
@@ -144,6 +144,7 @@
 <translation id="1750259112639922169">ਟੈਬ ਗਰੁੱਪ - <ph name="TAB_COUNT"/> ਟੈਬ</translation>
 <translation id="17513872634828108">ਟੈਬਸ ਖੋਲ੍ਹੋ</translation>
 <translation id="1754404134430936718">ਲਿਖਤ ਕਾਪੀ ਕੀਤੀ ਗਈ</translation>
+<translation id="1778457539567749232">ਨਾ-ਪੜ੍ਹੇ ਵਜੋਂ ਨਿਸ਼ਾਨਦੇਹੀ ਕਰੋ</translation>
 <translation id="1779766957982586368">window ਬੰਦ ਕਰੋ</translation>
 <translation id="1791662854739702043">ਸਥਾਪਤ ਕੀਤਾ ਗਿਆ</translation>
 <translation id="1792959175193046959">ਕਿਸੇ ਵੇਲੇ ਵੀ ਡਾਊਨਲੋਡ ਦਾ ਪੂਰਵ-ਨਿਰਧਾਰਤ ਟਿਕਾਣਾ ਬਦਲੋ</translation>
@@ -228,7 +229,6 @@
 <translation id="8820144752830692527">ਤੁਸੀਂ <ph name="BEGIN_LINK1"/>ਸੈਟਿੰਗਾਂ<ph name="END_LINK1"/> ਵਿੱਚ ਇਹ ਕਿਸੇ ਵੀ ਵੇਲੇ ਚੁਣ ਸਕਦੇ ਹੋ ਕਿ ਕੀ ਸਿੰਕ ਕਰਨਾ ਹੈ। Brave ਤੁਹਾਡੇ ਇਤਿਹਾਸ ਦੇ ਆਧਾਰ 'ਤੇ Search ਅਤੇ ਹੋਰ ਸੇਵਾਵਾਂ ਨੂੰ ਵਿਅਕਤੀਗਤ ਬਣਾ ਸਕਦਾ ਹੈ।</translation>
 <translation id="781982477617612877">ਆਪਣੇ ਪਾਸਵਰਡਾਂ ਦੀ ਜਾਂਚ ਕਰਨ ਲਈ ਆਪਣੇ Brave ਖਾਤੇ ਵਿੱਚ ਸਾਈਨ-ਇਨ ਕਰੋ</translation>
 <translation id="2278052315791335171">ਇਸ ਪਾਸਵਰਡ ਨੂੰ ਮਿਟਾਉਣ ਨਾਲ <ph name="SITE"/> 'ਤੇ ਤੁਹਾਡੇ ਖਾਤੇ ਨੂੰ ਮਿਟਾਇਆ ਨਹੀਂ ਜਾਵੇਗਾ</translation>
-<translation id="2279146068164892489">ਕੀ <ph name="APPNAME"/> ਲਈ ਐਪ ਨੂੰ ਖੋਲ੍ਹਣਾ ਹੈ?</translation>
 <translation id="2286841657746966508">ਬਿਲਿੰਗ ਪਤਾ</translation>
 <translation id="228704530595896923">ਸਾਂਝਾਕਰਨ ਵਿਕਲਪਾਂ ਦੀ ਸੂਚੀ।</translation>
 <translation id="230115972905494466">ਕੋਈ ਅਨੁਰੂਪ ਡੀਵਾਈਸ ਨਹੀਂ ਮਿਲੇ</translation>
@@ -263,6 +263,7 @@
 <translation id="2496180316473517155">ਬ੍ਰਾਊਜ਼ਿੰਗ ਇਤਿਹਾਸ</translation>
 <translation id="2497852260688568942">ਸਿੰਕ ਤੁਹਾਡੇ ਪ੍ਰਸ਼ਾਸਕ ਦੁਆਰਾ ਅਯੋਗ ਬਣਾਇਆ ਗਿਆ ਹੈ।</translation>
 <translation id="7229462727772664332">ਤੁਸੀਂ Brave ਵਿੱਚ ਆਪਣੀ <ph name="SITE_NAME"/> ਸਾਈਨ-ਇਨ ਸਥਿਤੀ, ਬ੍ਰਾਊਜ਼ਿੰਗ ਡਾਟਾ ਅਤੇ ਸਾਈਟ ਡਾਟਾ ਦੇਖੋਗੇ</translation>
+<translation id="2510106555128151389"><ph name="WEBAPK_NAME"/> ਨੂੰ ਸਥਾਪਤ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ...</translation>
 <translation id="7222718784508482526">ਪਰਦੇਦਾਰੀ, ਸੁਰੱਖਿਆ ਅਤੇ ਡਾਟਾ ਇਕੱਤਰ ਕਰਨ ਸੰਬੰਧੀ ਹੋਰ ਸੈਟਿੰਗਾਂ ਲਈ, <ph name="BEGIN_LINK"/>ਸਿੰਕ ਅਤੇ Brave ਸੇਵਾਵਾਂ<ph name="END_LINK"/> ਦੇਖੋ</translation>
 <translation id="2517472476991765520">ਸਕੈਨ ਕਰੋ</translation>
 <translation id="284843628681142937">Brave ਨੂੰ ਤੁਹਾਡੇ ਵੱਲੋਂ ਦੇਖੇ ਜਾਣ ਵਾਲੇ ਪੰਨਿਆਂ ਦੇ URL ਭੇਜਦੀ ਹੈ</translation>
@@ -495,7 +496,6 @@
 <translation id="1138681184697033370">Brave ਸੇਵਾ ਦੇ ਨਿਯਮ</translation>
 <translation id="3773856050682458546">ਮੁੱਢਲੇ ਡਾਟੇ ਤੋਂ ਇਲਾਵਾ ਤੁਹਾਡੇ ਵੱਲੋਂ ਦੇਖੀਆਂ ਜਾਣ ਵਾਲੀਆਂ ਵੈੱਬਸਾਈਟਾਂ ਅਤੇ ਵਰਤੀਆਂ ਜਾਣ ਵਾਲੀਆਂ ਐਪਾਂ ਬਾਰੇ ਜਾਣਕਾਰੀ</translation>
 <translation id="3775705724665058594">ਆਪਣੇ ਡੀਵਾਈਸਾਂ 'ਤੇ ਭੇਜੋ</translation>
-<translation id="3778956594442850293">ਹੋਮ ਸਕ੍ਰੀਨ 'ਤੇ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ</translation>
 <translation id="3791957072666773229">{TAB_COUNT,plural, =1{1 ਟੈਬ}one{# ਟੈਬ}other{# ਟੈਬਾਂ}}</translation>
 <translation id="3803784507854318295">ਸਵੈ-ਚਲਤ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ</translation>
 <translation id="3810838688059735925">ਵੀਡਿਓ</translation>
@@ -641,6 +641,7 @@
 <translation id="4668347365065281350">ਕੁਕੀਜ਼ ਅਤੇ ਸਥਾਨਕ ਤੌਰ 'ਤੇ ਸਟੋਰ ਕੀਤੇ ਹੋਰ ਡਾਟੇ ਸਮੇਤ ਸਾਰੀਆਂ ਸਾਈਟਾਂ ਵੱਲੋਂ ਸਟੋਰ ਕੀਤਾ ਗਿਆ ਡਾਟਾ</translation>
 <translation id="6904731820418823295">ਸਾਈਟਾਂ ਲਈ ਗੂੜ੍ਹਾ ਥੀਮ Brave ਵਿੱਚ ਚਾਲੂ ਹੈ</translation>
 <translation id="4684427112815847243">ਸਭ ਕੁਝ ਸਿੰਕ ਕਰੋ</translation>
+<translation id="4685741273709472646">ਡ੍ਰੌਪ-ਡਾਊਨ ਸੂਚੀ ਵਿੱਚੋਂ ਚੁਣੋ</translation>
 <translation id="4695891336199304370">{SHIPPING_OPTIONS,plural, =1{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 ਅਤੇ <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> ਹੋਰ}one{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 ਅਤੇ <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> ਹੋਰ}other{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 ਅਤੇ <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> ਹੋਰ}}</translation>
 <translation id="4699172675775169585">ਕੈਚ ਕੀਤੇ ਚਿੱਤਰ ਅਤੇ ਫਾਈਲਾਂ</translation>
 <translation id="4719927025381752090">ਅਨੁਵਾਦ ਲਈ ਪੇਸ਼ਕਸ਼ ਕਰੋ</translation>
@@ -922,7 +923,6 @@
 <translation id="6192907950379606605">ਚਿੱਤਰ ਵਰਣਨ ਪ੍ਰਾਪਤ ਕਰੋ</translation>
 <translation id="6193448654517602979">ਟੈਬਾਂ ਚੁਣੋ</translation>
 <translation id="8367262879301982880">ਪਾਸਵਰਡ ਇਸ ਡੀਵਾਈਸ ਦੇ Brave ਪਾਸਵਰਡ ਪ੍ਰਬੰਧਕ ਵਿੱਚ ਰੱਖਿਅਤ ਕੀਤੇ ਗਏ ਹਨ</translation>
-<translation id="620197886010707372">ਕੀ Google Play ਨਾਲ <ph name="APPNAME"/> ਲਈ ਐਪ ਨੂੰ ਖੋਲ੍ਹਣਾ ਹੈ?</translation>
 <translation id="6202812185118613467">ਸਿੰਕ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਵਾਪਸ ਸਾਈਨ-ਇਨ ਕਰੋ</translation>
 <translation id="6210748933810148297"><ph name="EMAIL"/> ਨਹੀਂ ਹੋ?</translation>
 <translation id="6211386937064921208">ਇਸ ਪੰਨੇ ਦੀ ਪੂਰਵ-ਝਲਕ ਦਿਖਾਈ ਜਾ ਰਹੀ ਹੈ</translation>
@@ -1246,6 +1246,7 @@
 <translation id="7887334752153342268">ਡੁਪਲੀਕੇਟ</translation>
 <translation id="5570166585033664196">Brave ਨੂੰ ਵਰਤਣ ਦਾ ਤਰੀਕਾ</translation>
 <translation id="7903184275147100332">ਇਸ ਵਿੱਚ ਕੁਝ ਸਮਾਂ ਲੱਗ ਸਕਦਾ ਹੈ</translation>
+<translation id="7914399737746719723">ਐਪ ਸਥਾਪਤ ਕੀਤੀ ਗਈ</translation>
 <translation id="7919123827536834358">ਇਹਨਾਂ ਭਾਸ਼ਾਵਾਂ ਦਾ ਸਵੈਚਲਿਤ ਤੌਰ 'ਤੇ ਅਨੁਵਾਦ ਕਰੋ</translation>
 <translation id="7926975587469166629">ਕਾਰਡ ਦਾ ਉਪਨਾਮ</translation>
 <translation id="7929962904089429003">ਮੀਨੂ ਖੋਲ੍ਹੋ</translation>
@@ -1338,7 +1339,6 @@
 <translation id="8393700583063109961">ਸੁਨੇਹਾ ਭੇਜੋ</translation>
 <translation id="7651600795135059130">Brave ਵਿੱਚ ਸਟੋਰ ਕੀਤੀਆਂ ਅਸੁਰੱਖਿਅਤ ਸਾਈਟਾਂ ਦੀ ਸੂਚੀ ਨਾਲ URL ਦੀ ਜਾਂਚ ਕੀਤੀ ਜਾਂਦੀ ਹੈ</translation>
 <translation id="8402673309244746971">'ਅਨੁਸਰਣ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ' 'ਤੇ ਜਾਓ</translation>
-<translation id="8410695015584479363">ਕੀਮਤਾਂ 'ਤੇ ਨਜ਼ਰ ਰੱਖੋ</translation>
 <translation id="8413126021676339697">ਪੂਰਾ ਇਤਿਹਾਸ ਦਿਖਾਓ</translation>
 <translation id="8414396119627470038"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> ਨਾਲ <ph name="SITE_ETLD_PLUS_ONE"/> ਵਿੱਚ ਸਾਈਨ-ਇਨ ਕਰੋ</translation>
 <translation id="2100587595569959771">Brave ਵਿੱਚ ਵਿਗਿਆਪਨ ਵਿਅਕਤੀਗਤਕਰਨ ਬਾਰੇ ਹੋਰ ਜਾਣੋ</translation>

@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">يمكنك بدء مكالمة خاصة في Brave.</translation>
 <translation id="4903286433687221248">قم بإجراء مكالمات غير محدودة مع الأصدقاء والزملاء من خلال Brave Talk.</translation>
 <translation id="7115051913071512405">جربه</translation>
-<translation id="1447534717041828517">إظهار زر أخبار Brave في شريط الأدوات</translation>
 <translation id="370665806235115550">جارٍ التحميل...</translation>
 <translation id="4634933166298842522">إدارة الاشتراكات</translation>
 <translation id="4108314971463891922">متابعة</translation>
@@ -548,7 +547,7 @@
 <translation id="4639659520811817892">تفضل بزيارة creators.brave.com لتسجل اليوم وتبدأ في كسب عملات BAT من معجبيك ومتابعيك.</translation>
 <translation id="4816455138209470435">يدعم Brave YouTube، Twitch، Vimeo، وغير ذلك الكثير!</translation>
 <translation id="3656941797339037856">ربط Rewards بـ Gemini!</translation>
-<translation id="31532096120351460">تداول أكثر من 50 عملة مشفرة، بما في ذلك عملة BAT الرقمية على منصة Gemini. إنها منصة آمنة لتخزين التشفير الخاص بك. بالإضافة إلى أنه يمكنك كسب فائدة في الولايات المتحدة وهونج كونج وسنغافوة.</translation>
+<translation id="2888702144235098855">تداول أكثر من 50 عملة مشفرة، بما في ذلك عملة BAT الرقمية على منصة Gemini. إنها منصة آمنة لتخزين عملاتك المشفرة.</translation>
 <translation id="7404779623219601861">تبديل BAT ببطاقات هدايا</translation>
 <translation id="6215565499749144110">مع شبكة TAP فبإمكانك تبديل BAT ببطاقات هدايا ذات علامات تجارية شهيرة.</translation>
 <translation id="6915065518766963119">* يتطلب التحقق من Uphold.</translation>
@@ -750,7 +749,7 @@
 <translation id="2394961582378297792">تم تسجيل الخروج</translation>
 <translation id="6080167751812750226">قطع الاتصال من <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">المكاسب المُقدَّرة</translation>
-<translation id="4244985009709452836">قم بتسجيل الدخول إلى حساب <ph name="PROVIDER"/> الخاص بك</translation>
+<translation id="7934950257968365573">سجّل الدخول إلى حساب<ph name="PROVIDER"/> الخاص بك</translation>
 <translation id="2613359062756190460">تلميحات لمرة واحدة</translation>
 <translation id="590733288489975971">مكافآت من الإعلانات</translation>
 <translation id="6181762795539107980">غير مُتحقق منه</translation>
@@ -1292,11 +1291,9 @@
 <translation id="3898731124813934210">الشراء باستخدام Wyre</translation>
 <translation id="5522073372365069684">الشراء باستخدام Ramp</translation>
 <translation id="7902920577183739843">شراء بواسطة Sardine</translation>
-<translation id="6534275647567011533">الشراء من خلال Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">شراء العملات المشفرة باستخدام Visa أو Mastercard.</translation>
 <translation id="3101839349578102016">شراء فوري عن طريق حسابك المصرفي. رسوم أقل.</translation>
 <translation id="8528916244724490964">كل الشبكات</translation>
@@ -1551,19 +1548,26 @@
 <translation id="8265589281845759879">السيارات</translation>
 <translation id="7577010593836079522">التقافة</translation>
 <translation id="3706423975342040244">الترفيه</translation>
+<translation id="3284069358246729581">الأخبار الترفيهية</translation>
 <translation id="1432147735538902155">الأزياء</translation>
+<translation id="3350377832708834609">السينما والتلفزيون</translation>
 <translation id="736592699917579616">الطعام</translation>
 <translation id="5104499318017527547">المتعة والتسلية</translation>
 <translation id="2228584369802328636">الألعاب</translation>
 <translation id="6941852195052765076">الصحة</translation>
 <translation id="932327136139879170">الصفحة الرئيسية</translation>
+<translation id="5178222043222938163">الموسيقى</translation>
 <translation id="1322083935398004629">السياسة</translation>
+<translation id="8739620487574841501">الأخبار الإقليمية</translation>
 <translation id="3872834068356954457">العلوم</translation>
 <translation id="1264974993859112054">رياضة</translation>
 <translation id="2283599456633275070">السفر</translation>
 <translation id="7487067081878637334">التقنية</translation>
+<translation id="151743034625508713">الأخبار التقنية</translation>
+<translation id="2388279876296929435">المراجعات التقنية</translation>
 <translation id="5030268312472358928">الأخبار المهمة</translation>
 <translation id="5510475084662028636">المصادر المهمة</translation>
+<translation id="1297570508541015874">أخبار الولايات المتحدة</translation>
 <translation id="1459693405370120464">الأحوال الجوية</translation>
 <translation id="8366057325711477500">أخبار العالم</translation>
 <translation id="6303294677342628402">طرق الحماية</translation>
@@ -1614,13 +1618,17 @@
 <translation id="2453860139492968684">اكتمل</translation>
 <translation id="2273851479262317744">تعيين Brave كمتصفح افتراضي</translation>
 <translation id="5037676449506322593">تحديد الكل</translation>
-<translation id="8330804319517911603">ساعد في تحسين Brave</translation>
-<translation id="2867964979837593892">ضبط دقيق للمنتج. حماية خصوصيتك. كل يوم.</translation>
-<translation id="7661940959332108190">إرسال تقارير تشخيصية في حالات تعطل Brave أو توقفه.</translation>
-<translation id="6358373266071757311">نتائج تحليلات المنتج الخاصة والمجهولة. يساعدنا هذا في معرفة ميزات Brave الأكثر استخدامًا.</translation>
+<translation id="5148943178722443958">ساعد في تحسين Brave.</translation>
+<translation id="1097073572755862978">أرسل تقارير التشخيص إذا واجهت حالة عطل أو توقف. <ph name="LINK_BEFORE"/>معرفة المزيد.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">شارك نتائج تحليلات المنتج الخاصة والمجهولة تمامًا حول الميزات التي يستخدمها مستخدمو Brave. <ph name="LINK_BEFORE"/>معرفة المزيد.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">اكتمل الإعداد</translation>
 <translation id="3141206739023333979">يمكنك تغيير هذه الاختيارات في أي وقت في Brave من خلال <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">اقرأ سياسة الخصوصية <ph name="LINK_BEFORE"/> الكاملة الخاصة بنا <ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">اختيار المظهر</translation>
+<translation id="6262510489122516114">يمكنك تغيير هذا في أي وقت في إعدادات Brave.</translation>
+<translation id="546481172717459539">مطابقة إعداد النظام</translation>
+<translation id="7799817062559422778">الوضع الفاتح</translation>
+<translation id="4117637339509843559">الوضع الداكن</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: متصل</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: غير متصل</translation>
 <translation id="3541307549916475335">واجهة مستخدم لوحة Brave VPN</translation>
@@ -1666,7 +1674,12 @@
 <translation id="3307461350293459700">فشل اتصال شبكة VPN. يُرجى محاولة الاتصال مرة أخرى، وتأكد من النقر فوق "السماح" لتمكين تهيئة شبكة VPN الخاصة بـ Brave.</translation>
 <translation id="7261518280726313829">قد يؤدي إيقاف تشغيل DNS الآمن أو استخدام الخوادم الافتراضية على Windows إلى الكشف عن أسماء المواقع التي تزورها لمزود خدمة الإنترنت لديك. لا ينصح Brave بالقيام بذلك. هل تريد أن تقوم بذلك على أي حال؟</translation>
 <translation id="888284761945060750">تم تعطيل DNS الآمن بواسطة سياسات مؤسستك. قد يكشف استخدام Brave VPN بدون DNS الآمن عن أسماء المواقع التي تزورها لمزود خدمة الإنترنت أو مؤسستك.</translation>
+<translation id="6593224083874259773">Brave VPN على نظام التشغيل Windows</translation>
+<translation id="3153983908111684619">يتم قفل الإعداد بواسطة BraveVPN أثناء اتصاله</translation>
+<translation id="6507543978646831931">يحتوي نظام التشغيل Windows على ميزة تسمى Smart Multi-Homed Name Resolution، والتي يمكنها كشف معلومات حول موقعك والمواقع التي تزورها. الآن بعد أن قمت بتمكين Brave VPN، غيّرنا إعدادات DNS في المتصفح للحماية من هذا الكشف. ستظل الإعدادات سارية ومغلقة أثناء اتصال VPN . <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">لا تحذرني من هذا الأمر مرة أخرى.</translation>
+<translation id="2740531572673183784">أوافق</translation>
+<translation id="9061845622728745852">المنطقة الزمنية:</translation>
 <translation id="7586151660465233733">مزيد من الأسواق على <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">عرض الأسواق وتداول العملات المشفرة على FTX</translation>
 <translation id="5963745988819586370">الأسواق</translation>

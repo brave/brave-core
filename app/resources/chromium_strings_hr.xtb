@@ -53,6 +53,7 @@
 <translation id="7798069806040634998">Brave treba pristup pohrani radi preuzimanja datoteka</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
 <translation id="7291143854620707672">Sve podatke iz Bravea koji se generiraju tijekom upotrebe ovog profila (primjerice izradom oznaka, povijesti, zaporki i drugih postavki) može ukloniti administrator poslovnog profila. <ph name="LEARN_MORE"/></translation>
+<translation id="6252796827759111076">Nastavi s upotrebom Bravea</translation>
 <translation id="7387051847644272380">Došlo je do pogreške operativnog sustava tijekom instalacije. Ponovo preuzmite Brave.</translation>
 <translation id="2648689842065142443">Ako dijelite uređaj, prijatelji i članovi obitelji mogu zasebno pregledavati i postaviti Brave prema svojim željama</translation>
 <translation id="5926459996518749366">Brave je blokirao arhivsku datoteku jer može skrivati zlonamjerni softver</translation>
@@ -93,6 +94,7 @@
 <translation id="2645435784669275700">Chrome OS</translation>
 <translation id="2297290224191497273">Želite li prijeći na postojeći profil u Braveu?</translation>
 <translation id="3412460710772753638">U Upravitelju zaporki na ovom uređaju</translation>
+<translation id="616005907576404509">{COUNT,plural, =1{Vaš je administrator konfigurirao Brave da se zatvori ako je u mirovanju dulje od jedne minute.}one{Vaš je administrator konfigurirao Brave da se zatvori ako je u mirovanju dulje od # minute.}few{Vaš je administrator konfigurirao Brave da se zatvori ako je u mirovanju dulje od # minute.}other{Vaš je administrator konfigurirao Brave da se zatvori ako je u mirovanju dulje od # minuta.}}</translation>
 <translation id="2450003541323895471">Pomoću Braveovih profila možete razdvojiti sve svoje sadržaje u Braveu. Izradite profile za prijatelje i obitelj ili odvojite posao i zabavu.</translation>
 <translation id="9216183508558772570">Brave će vas obavijestiti kada se prijavite ugroženom zaporkom</translation>
 <translation id="5853262807109651878">Time će se izbrisati sljedeći broj stavki s uređaja: <ph name="ITEMS_COUNT"/>. TDa biste kasnije dohvatili svoje podatke, prijavite se na Brave kao <ph name="USER_EMAIL"/>.</translation>
@@ -170,6 +172,7 @@
 <translation id="7021823858304886493">Dopusti prijavu u Brave</translation>
 <translation id="5536657158619734169">Dostupna je nova verzija preglednika Brave.</translation>
 <translation id="5267531627648004734">Uklanjanje iz Bravea</translation>
+<translation id="2783637305317815247">{0,plural, =0{Brave će se sada zatvoriti.}=1{Brave će se zatvoriti za jednu sekundu.}one{Brave će se zatvoriti za # sekundu.}few{Brave će se zatvoriti za # sekunde.}other{Brave će se zatvoriti za # sekundi.}}</translation>
 <translation id="239760341987199724">Postavite Brave kao zadani preglednik</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
 <translation id="894936507076470937">Brave možda neće ispravno raditi jer više nije podržan na toj distribuciji Linuxa</translation>
@@ -257,6 +260,7 @@ Neke su značajke možda nedostupne. Navedite neki drugi direktorij profila ili 
 <translation id="126871877963043118">Tijekom eksperimenata Ad measurement API omogućuje web-lokacijama koje posjećujete da od Bravea traže podatke koji im pomažu mjeriti izvedbu svojih oglasa. Ad measurement API ograničava praćenje na različitim web-lokacijama tako što se između web-lokacija prenosi što je manje moguće podataka.</translation>
 <translation id="4392161457256085190">Web-lokacija koju posjetite nakon toga od Bravea može tražiti podatke o vašim interesima kako bi prilagodila oglase koji će vam se prikazivati. Brave može dijeliti najviše tri interesa.</translation>
 <translation id="6418340404893954563">Slabe zaporke lako je pogoditi. Neka Brave <ph name="BEGIN_LINK"/>izradi i zapamti snažne zaporke za vas<ph name="END_LINK"/>.</translation>
+<translation id="196626648343945705">Brave nije aktivan</translation>
 <translation id="3453763134178591239">Uvjeti Chrome OS-a</translation>
 <translation id="3335606533094650083">Brave treba dopuštenje za pristup mikrofonu za ovu web-lokaciju</translation>
 <translation id="7025789849649390912">Instaliranje je zaustavljeno.</translation>

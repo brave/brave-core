@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">A Brave-ben privát hívásokat kezdeményezhetsz.</translation>
 <translation id="4903286433687221248">A Brave Talk-ban korlátlanul hívásokat indíthat kollégáival és barátaival.</translation>
 <translation id="7115051913071512405">Próbáld ki</translation>
-<translation id="1447534717041828517">A Brave-hírek gomb megjelenítése az eszköztáron</translation>
 <translation id="370665806235115550">Betöltés...</translation>
 <translation id="4634933166298842522">Követések kezelése</translation>
 <translation id="4108314971463891922">Követés</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Látogasson a creators.brave.com-ra, regisztráljon még ma, és kezdjen el BAT-ot gyűjteni a rajongóitól és követőitől.</translation>
 <translation id="4816455138209470435">A Brave támogatja a YouTube-ot, a Twitchet, a Vimeót, és még sok mást!</translation>
 <translation id="3656941797339037856">Kapcsolja össze a Rewards-ot a Geminivel!</translation>
-<translation id="31532096120351460">A Geminin 50+ kriptovalutával kereskedhet, többek között BAT-kkel. Biztonságos platform a kriptovalutái tárolására, amely a kamatozást is lehetővé teszi az Egyesült Államokban, Hongkongban és Szingapúrban.</translation>
+<translation id="2888702144235098855">A Geminin 50+ kriptovalutával kereskedhet, többek között BAT-kkel. Biztonságos platform a kriptovalutái tárolására.</translation>
 <translation id="7404779623219601861">BAT beváltása ajándékkártyákért</translation>
 <translation id="6215565499749144110">A TAP Network hálózatában BAT-pontjait ajándékutalványokra válthatja közkedvelt márkáktól.</translation>
 <translation id="6915065518766963119">* Uphold-ellenőrzést igényel.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Kijelentkezett</translation>
 <translation id="6080167751812750226">Kapcsolat bontása a következővel: <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Becsült bevételek</translation>
-<translation id="4244985009709452836">Jelentkezzen be az <ph name="PROVIDER"/> fiókjába</translation>
+<translation id="7934950257968365573">Jelentkezzen be az <ph name="PROVIDER"/> fiókjába</translation>
 <translation id="2613359062756190460">Egyszeri adományok</translation>
 <translation id="590733288489975971">Jutalmak az Ads révén</translation>
 <translation id="6181762795539107980">Nincs hitelesítve</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Megvásárlás Wyre-vel</translation>
 <translation id="5522073372365069684">Megvásárlás Ramppel</translation>
 <translation id="7902920577183739843">Vásárlás Sardine-nel</translation>
-<translation id="6534275647567011533">Megvásárlás Transakkal</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Vásároljon kriptót Visával vagy Mastercarddal.</translation>
 <translation id="3101839349578102016">Azonnali vásárlás a bankszámlájáról, alacsonyabb díjakkal.</translation>
 <translation id="8528916244724490964">Összes hálózat</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Autók</translation>
 <translation id="7577010593836079522">Kultúra</translation>
 <translation id="3706423975342040244">Szórakozás</translation>
+<translation id="3284069358246729581">Hírek - szórakozás</translation>
 <translation id="1432147735538902155">Divat</translation>
+<translation id="3350377832708834609">Film és tv</translation>
 <translation id="736592699917579616">Gasztronómia</translation>
 <translation id="5104499318017527547">Szórakozás</translation>
 <translation id="2228584369802328636">Játék</translation>
 <translation id="6941852195052765076">Egészség</translation>
 <translation id="932327136139879170">Főoldal</translation>
+<translation id="5178222043222938163">Zene</translation>
 <translation id="1322083935398004629">Politika</translation>
+<translation id="8739620487574841501">Helyi hírek</translation>
 <translation id="3872834068356954457">Tudomány</translation>
 <translation id="1264974993859112054">Sport</translation>
 <translation id="2283599456633275070">Utazás</translation>
 <translation id="7487067081878637334">Technológia</translation>
+<translation id="151743034625508713">Hírek - technológia</translation>
+<translation id="2388279876296929435">Értékelések - technológia</translation>
 <translation id="5030268312472358928">Vezető hírek</translation>
 <translation id="5510475084662028636">Népszerű források</translation>
+<translation id="1297570508541015874">Hírek - USA</translation>
 <translation id="1459693405370120464">Időjárás</translation>
 <translation id="8366057325711477500">Külföld</translation>
 <translation id="6303294677342628402">Védelmek</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">Befejezés</translation>
 <translation id="2273851479262317744">A Brave beállítása alapértelmezett böngészőként</translation>
 <translation id="5037676449506322593">Összes kiválasztása</translation>
-<translation id="8330804319517911603">Segítsen a Brave fejlesztésében</translation>
-<translation id="2867964979837593892">Tökéletesítse a terméket. Tudja biztonságban az adatait. Minden nap.</translation>
-<translation id="7661940959332108190">Küldjön diagnosztikai jelentéseket, ha a Brave összeomlik vagy lefagy.</translation>
-<translation id="6358373266071757311">Ossza meg a termékkel kapcsolatos meglátásait anonim, privát módon. Ezzel segít nekünk, hogy rájöjjünk, melyek a leggyakrabban használt Brave funkciók.</translation>
+<translation id="5148943178722443958">Segítsen a Brave továbbfejlesztésében.</translation>
+<translation id="1097073572755862978">Küldjön diagnosztikai jelentéseket, amikor a rendszer összeomlik vagy lefagy. <ph name="LINK_BEFORE"/>További információ.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Teljesen privát és anonimizált termékadatok megosztása azzal kapcsolatban, hogy milyen funkciókat használnak a Brave felhasználói. <ph name="LINK_BEFORE"/>További információ.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Beállítás befejezve</translation>
 <translation id="3141206739023333979">Változtasson ezen a Brave-beállításán bármikor itt: <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Olvassa el a teljes <ph name="LINK_BEFORE"/>Adatvédelmi szabályzatot<ph name="LINK_AFTER"/>.</translation>
+<translation id="2801098717523961746">Téma kiválasztása</translation>
+<translation id="6262510489122516114">Ezt bármikor módosíthatja a Brave beállításokban.</translation>
+<translation id="546481172717459539">Rendszerbeállítás egyeztetése</translation>
+<translation id="7799817062559422778">Világos mód</translation>
+<translation id="4117637339509843559">Sötét mód</translation>
 <translation id="7821773512278295352">Brave tűzfal + VPN: Csatlakozva</translation>
 <translation id="6019088868713395120">Brave tűzfal + VPN: Kapcsolat bontva</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">A VPN-csatlakozás sikertelen volt. Próbáljon meg újból csatlakozni, és győződjön meg róla, hogy rákattintott az Engedélyezés gombra a Brave VPN-konfigurációjának engedélyezéséhez.</translation>
 <translation id="7261518280726313829">A biztonságos DNS kikapcsolásával, vagy az alapértelmezett Windows szerver használatával az internetszolgáltatója láthatja az Ön által látogatott oldalak nevét. A Brave ezt nem ajánlja. Így is továbblép?</translation>
 <translation id="888284761945060750">A biztonságos DNS a szervezete szabályzata alapján le van tiltva. Ha biztonságos DNS nélkül használja a Brave VPN-t, az internetszolgáltatója és szervezete láthatja az Ön által látogatott oldalak nevét.</translation>
+<translation id="6593224083874259773">Brave VPN Windowson</translation>
+<translation id="3153983908111684619">A beállítást blokkolja a Brave VPN, amikor csatlakoztatva van</translation>
+<translation id="6507543978646831931">A Windows Intelligens többhelyű névfeloldás funkciója információkat fedhet fel az Ön tartózkodási helyével és a felkeresett weboldalakkal kapcsolatban. Mivel engedélyezte a Brave VPN-t, módosítottuk a böngésző DNS-beállításait annak érdekében, hogy védelmet biztosítsunk e kitettséggel szemben. A beállítások érvényesek és zároltak maradnak, amíg a VPN csatlakoztatva van. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Ne figyelmeztessen többé.</translation>
+<translation id="2740531572673183784">OK</translation>
+<translation id="9061845622728745852">Időzóna:</translation>
 <translation id="7586151660465233733">További piacok itt: <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Megtekintheti a piacokat és kriptokereskedést bonyolíthat az FTX-en</translation>
 <translation id="5963745988819586370">Piacok</translation>

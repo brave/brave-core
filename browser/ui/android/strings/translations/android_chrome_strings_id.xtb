@@ -6,12 +6,12 @@
 <translation id="103269572468856066">Hapus data dari situs dan aplikasi ini juga?</translation>
 <translation id="1034259925032978114">Jendela terbuka</translation>
 <translation id="1036348656032585052">Matikan</translation>
-<translation id="1036727731225946849">Menambahkan <ph name="WEBAPK_NAME"/>...</translation>
 <translation id="1045899828449635435">Hapus data dari situs ini juga?</translation>
 <translation id="10614374240317010">Jangan pernah disimpan</translation>
 <translation id="1062628064301375934">Bantu kami membuat web yang lebih pribadi</translation>
 <translation id="107147699690128016">Jika ekstensi file diubah, file dapat terbuka di aplikasi lain dan berpotensi membahayakan perangkat Anda.</translation>
 <translation id="1089606299949659462">Peninjauan selesai.</translation>
+<translation id="1091604859693995976">Muat ulang untuk melihat</translation>
 <translation id="1095761715416917775">Pastikan Anda selalu dapat mengakses data tersinkronisasi</translation>
 <translation id="1100066534610197918">Buka pada tab baru di grup</translation>
 <translation id="4660777881054855091">Bantu tingkatkan kualitas Brave?</translation>
@@ -144,6 +144,7 @@ Jika Anda menghapus histori penjelajahan, baik semua histori maupun histori untu
 <translation id="1750259112639922169">Grup tab - <ph name="TAB_COUNT"/> tab</translation>
 <translation id="17513872634828108">Buka tab</translation>
 <translation id="1754404134430936718">Teks Disalin</translation>
+<translation id="1778457539567749232">Tandai sebagai belum dibaca</translation>
 <translation id="1779766957982586368">Tutup jendela</translation>
 <translation id="1791662854739702043">Terinstal</translation>
 <translation id="1792959175193046959">Ubah lokasi download default kapan saja</translation>
@@ -228,7 +229,6 @@ Jika Anda menghapus histori penjelajahan, baik semua histori maupun histori untu
 <translation id="8820144752830692527">Anda dapat memilih jenis data yang akan disinkronkan di <ph name="BEGIN_LINK1"/>setelan<ph name="END_LINK1"/> kapan saja. Brave dapat mempersonalisasi Penelusuran dan layanan lainnya berdasarkan histori Anda.</translation>
 <translation id="781982477617612877">Login ke Akun Brave Anda untuk memeriksa sandi</translation>
 <translation id="2278052315791335171">Menghapus sandi ini tidak akan menghapus akun Anda di <ph name="SITE"/></translation>
-<translation id="2279146068164892489">Buka aplikasi <ph name="APPNAME"/>?</translation>
 <translation id="2286841657746966508">Alamat penagihan</translation>
 <translation id="228704530595896923">Daftar opsi berbagi.</translation>
 <translation id="230115972905494466">Tidak ada perangkat yang kompatibel</translation>
@@ -263,6 +263,7 @@ Jika Anda menghapus histori penjelajahan, baik semua histori maupun histori untu
 <translation id="2496180316473517155">Histori penjelajahan</translation>
 <translation id="2497852260688568942">Sinkronisasi dinonaktifkan oleh administrator</translation>
 <translation id="7229462727772664332">Di Brave, Anda akan melihat status login, data penjelajahan, dan data situs <ph name="SITE_NAME"/></translation>
+<translation id="2510106555128151389">Menginstal <ph name="WEBAPK_NAME"/> ...</translation>
 <translation id="7222718784508482526">Untuk setelan lainnya yang berkaitan dengan privasi, keamanan, dan pengumpulan data, lihat <ph name="BEGIN_LINK"/>Sinkronisasi dan layanan Brave<ph name="END_LINK"/></translation>
 <translation id="2517472476991765520">Pindai</translation>
 <translation id="284843628681142937">Mengirimkan URL halaman yang Anda buka ke Brave</translation>
@@ -313,7 +314,7 @@ Jika Anda menghapus histori penjelajahan, baik semua histori maupun histori untu
 <translation id="2781151931089541271">1 detik lagi</translation>
 <translation id="2788468313014644040">Nomor grup</translation>
 <translation id="2800066122460699237">Tab <ph name="TAB_TITLE"/> akan ditutup</translation>
-<translation id="2805756323405976993">Apl</translation>
+<translation id="2805756323405976993">Aplikasi</translation>
 <translation id="2806840421670364300">FLoC</translation>
 <translation id="7068873021383263704">Lihat dan kelola sandi tersimpan di <ph name="BEGIN_LINK"/>Akun Brave<ph name="END_LINK"/></translation>
 <translation id="2818669890320396765">Untuk dapat mengakses bookmark Anda di semua perangkat, login dan aktifkan sinkronisasi</translation>
@@ -495,7 +496,6 @@ Jika Anda menghapus histori penjelajahan, baik semua histori maupun histori untu
 <translation id="1138681184697033370">Persyaratan Layanan Brave</translation>
 <translation id="3773856050682458546">Data dasar ditambah informasi tentang situs yang Anda kunjungi dan aplikasi yang Anda gunakan</translation>
 <translation id="3775705724665058594">Kirim ke perangkat Anda</translation>
-<translation id="3778956594442850293">Ditambahkan ke Layar utama</translation>
 <translation id="3791957072666773229">{TAB_COUNT,plural, =1{1 tab}other{# tab}}</translation>
 <translation id="3803784507854318295">Kelola putar otomatis</translation>
 <translation id="3810838688059735925">Video</translation>
@@ -641,6 +641,7 @@ Akun Brave Anda mungkin memiliki bentuk histori penjelajahan lain seperti penelu
 <translation id="4668347365065281350">Semua data yang disimpan oleh situs, termasuk cookie dan data lain yang disimpan secara lokal</translation>
 <translation id="6904731820418823295">Tema gelap untuk situs aktif di Brave</translation>
 <translation id="4684427112815847243">Sinkronkan semua</translation>
+<translation id="4685741273709472646">Pilih dari daftar dropdown</translation>
 <translation id="4695891336199304370">{SHIPPING_OPTIONS,plural, =1{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 dan <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> lainnya}other{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 dan <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> lainnya}}</translation>
 <translation id="4699172675775169585">Gambar dan file dalam cache</translation>
 <translation id="4719927025381752090">Tawarkan penerjemahan</translation>
@@ -922,7 +923,6 @@ Uji coba Privacy Sandbox masih dalam pengembangan aktif dan hanya tersedia di wi
 <translation id="6192907950379606605">Dapatkan deskripsi gambar</translation>
 <translation id="6193448654517602979">Pilih tab</translation>
 <translation id="8367262879301982880">Sandi disimpan ke Pengelola Sandi Brave di perangkat ini</translation>
-<translation id="620197886010707372">Buka aplikasi <ph name="APPNAME"/> dengan Google Play?</translation>
 <translation id="6202812185118613467">Login kembali untuk memulai sinkronisasi</translation>
 <translation id="6210748933810148297">Bukan <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Melihat pratinjau halaman ini</translation>
@@ -1244,6 +1244,7 @@ Misalnya, beberapa situs web mungkin menanggapi permintaan ini dengan menayangka
 <translation id="7887334752153342268">Duplikasikan</translation>
 <translation id="5570166585033664196">Cara menggunakan Brave</translation>
 <translation id="7903184275147100332">Mungkin perlu waktu beberapa saat</translation>
+<translation id="7914399737746719723">Aplikasi diinstal</translation>
 <translation id="7919123827536834358">Terjemahkan bahasa ini secara otomatis</translation>
 <translation id="7926975587469166629">Nama panggilan kartu</translation>
 <translation id="7929962904089429003">Membuka menu</translation>
@@ -1336,7 +1337,6 @@ Misalnya, beberapa situs web mungkin menanggapi permintaan ini dengan menayangka
 <translation id="8393700583063109961">Kirim pesan</translation>
 <translation id="7651600795135059130">Memeriksa kesesuaian URL dengan daftar situs tidak aman yang disimpan di Brave</translation>
 <translation id="8402673309244746971">Buka feed Mengikuti</translation>
-<translation id="8410695015584479363">Pantau harga</translation>
 <translation id="8413126021676339697">Tampilkan histori lengkap</translation>
 <translation id="8414396119627470038">Login ke <ph name="SITE_ETLD_PLUS_ONE"/> dengan <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="2100587595569959771">Pelajari lebih lanjut personalisasi iklan di Brave</translation>

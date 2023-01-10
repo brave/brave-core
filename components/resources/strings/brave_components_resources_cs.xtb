@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">V Brave můžete zahájit soukromý hovor.</translation>
 <translation id="4903286433687221248">Pusťte se do neomezených hovorů s přáteli a kolegy v aplikaci Brave Talk.</translation>
 <translation id="7115051913071512405">Vyzkoušet</translation>
-<translation id="1447534717041828517">Zobrazit tlačítko Brave News na panelu nástrojů</translation>
 <translation id="370665806235115550">Načítání...</translation>
 <translation id="4634933166298842522">Správa předplatného</translation>
 <translation id="4108314971463891922">Sledovat</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Navštivte creators.brave.com, zaregistrujte se a můžete začít přijímat příspěvky BAT od svých fanoušků a sledujících.</translation>
 <translation id="4816455138209470435">Brave podporuje YouTube, Twitch, Vimeo a další!</translation>
 <translation id="3656941797339037856">Propojte odměny s Gemini!</translation>
-<translation id="31532096120351460">Obchodujte s více než 50 kryptoměnami, včetně BAT, na platformě Gemini, kde můžete bezpečně ukládat své kryptoměny. V US, HK a SG můžete navíc získat úrokovou sazbu.</translation>
+<translation id="2888702144235098855">Obchodujte na Gemini s více než 50 kryptoměnami, včetně BAT. Jedná se o bezpečnou platformu k ukládání vašich kryptoměn.</translation>
 <translation id="7404779623219601861">Směňujte BAT za dárkové karty</translation>
 <translation id="6215565499749144110">Díky síti TAP Network můžete směňovat vaše BAT za dárkové karty populárních značek.</translation>
 <translation id="6915065518766963119">* Je třeba ověření na Uphold.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Odhlášeno</translation>
 <translation id="6080167751812750226">Odpojit od <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Odhadovaný výdělek</translation>
-<translation id="4244985009709452836">Přihlaste se do svého účtu <ph name="PROVIDER"/></translation>
+<translation id="7934950257968365573">Přihlaste se do svého účtu <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Jednorázové příspěvky</translation>
 <translation id="590733288489975971">Odměny z reklam</translation>
 <translation id="6181762795539107980">Neověřeno</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Koupit pomocí Wyre</translation>
 <translation id="5522073372365069684">Koupit pomocí Ramp</translation>
 <translation id="7902920577183739843">Koupit pomocí Sardine</translation>
-<translation id="6534275647567011533">Koupit prostřednictvím Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Nakupujte kryptoměny prostřednictvím karet Visa nebo Mastercard.</translation>
 <translation id="3101839349578102016">Okamžitý nákup s vaším bankovním účtem. Nižší poplatky.</translation>
 <translation id="8528916244724490964">Všechny sítě</translation>
@@ -1551,19 +1548,26 @@ other {# zdrojů}
 <translation id="8265589281845759879">Auta</translation>
 <translation id="7577010593836079522">Kultura</translation>
 <translation id="3706423975342040244">Zábava</translation>
+<translation id="3284069358246729581">Zprávy ze zábavního průmyslu</translation>
 <translation id="1432147735538902155">Móda</translation>
+<translation id="3350377832708834609">Film a televize</translation>
 <translation id="736592699917579616">Jídlo</translation>
 <translation id="5104499318017527547">Humor</translation>
 <translation id="2228584369802328636">Hry</translation>
 <translation id="6941852195052765076">Zdraví</translation>
 <translation id="932327136139879170">Domovská stránka</translation>
+<translation id="5178222043222938163">Hudba</translation>
 <translation id="1322083935398004629">Politika</translation>
+<translation id="8739620487574841501">Regionální zprávy</translation>
 <translation id="3872834068356954457">Věda</translation>
 <translation id="1264974993859112054">Sport</translation>
 <translation id="2283599456633275070">Cestování</translation>
 <translation id="7487067081878637334">Technologie</translation>
+<translation id="151743034625508713">Technologické novinky</translation>
+<translation id="2388279876296929435">Recenze technologií</translation>
 <translation id="5030268312472358928">Horké novinky</translation>
 <translation id="5510475084662028636">Nejlepší zdroje</translation>
+<translation id="1297570508541015874">Zprávy z USA</translation>
 <translation id="1459693405370120464">Počasí</translation>
 <translation id="8366057325711477500">Ze světa</translation>
 <translation id="6303294677342628402">Štíty</translation>
@@ -1614,13 +1618,17 @@ other {# zdrojů}
 <translation id="2453860139492968684">Dokončit</translation>
 <translation id="2273851479262317744">Nastavit Brave jako výchozí prohlížeč</translation>
 <translation id="5037676449506322593">Vybrat vše</translation>
-<translation id="8330804319517911603">Pomoci zlepšovat Brave</translation>
-<translation id="2867964979837593892">Dolaďování aplikace. Ochrana soukromí. Každý den.</translation>
-<translation id="7661940959332108190">Pokud Brave spadne nebo zamrzne, poslat diagnostické hlášení.</translation>
-<translation id="6358373266071757311">Sdílejte anonymní, soukromí respektující informace o aplikaci. To nám pomůže zjistit, jaké funkce se v aplikaci Brave používají nejčastěji.</translation>
+<translation id="5148943178722443958">Pomozte vylepšit Brave.</translation>
+<translation id="1097073572755862978">Pokud dojde k pádu nebo zamrznutí, odešlete diagnostické hlášení. <ph name="LINK_BEFORE"/>Zjistěte více informací.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Sdílejte zcela soukromé a anonymní produktové informace o tom, jaké funkce uživatelé služby Brave používají. <ph name="LINK_BEFORE"/>Zjistěte více informací.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Nastavení je dokončeno</translation>
 <translation id="3141206739023333979">Tato nastavení aplikace Brave můžete kdykoli změnit na adrese <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Přečtěte si úplné znění našich <ph name="LINK_BEFORE"/>Zásad ochrany osobních údajů<ph name="LINK_AFTER"/>.</translation>
+<translation id="2801098717523961746">Vyberte si motiv</translation>
+<translation id="6262510489122516114">Tuto možnost můžete kdykoli změnit v nastavení služby Brave.</translation>
+<translation id="546481172717459539">Nastavení podle systému</translation>
+<translation id="7799817062559422778">Světlý režim</translation>
+<translation id="4117637339509843559">Tmavý režim</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: Připojeno</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: Odpojeno</translation>
 <translation id="3541307549916475335">Uživatelské rozhraní panelu Brave VPN</translation>
@@ -1666,7 +1674,12 @@ other {# zdrojů}
 <translation id="3307461350293459700">Připojení k síti VPN se nezdařilo. Zkuste se připojit znovu a nezapomeňte kliknout na tlačítko Povolit, chcete-li povolit konfiguraci sítě Brave VPN.</translation>
 <translation id="7261518280726313829">Vypnutí zabezpečeného serveru DNS nebo používání výchozích serverů v systému Windows může poskytovateli internetových služeb prozradit názvy navštívených stránek. Společnost Brave to nedoporučuje. Chcete to přesto udělat?</translation>
 <translation id="888284761945060750">Zabezpečené servery DNS jsou zakázány zásadami vaší organizace. Používání Brave VPN bez zabezpečeného serveru DNS může vašemu poskytovateli internetových služeb nebo organizaci prozradit názvy navštívených stránek.</translation>
+<translation id="6593224083874259773">Brave VPN v systému Windows</translation>
+<translation id="3153983908111684619">Nastavení je během připojení službou BraveVPN uzamčeno.</translation>
+<translation id="6507543978646831931">Systém Windows má funkci zvanou „Inteligentní rozlišování jmen ve více doménách“, která umožňuje získat informace o vaší poloze a navštívených stránkách. Nyní, když jste aktivovali službu Brave VPN, jsme změnili nastavení DNS v prohlížeči, abychom vás před tímto zpřístupněním ochránili. Nastavení zůstane v platnosti a bude uzamčeno, dokud je VPN připojena. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Už mě na to neupozorňujte.</translation>
+<translation id="2740531572673183784">OK</translation>
+<translation id="9061845622728745852">Časové pásmo:</translation>
 <translation id="7586151660465233733">Více trhů na stránce <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Zobrazit trhy a obchodovat s kryptoměnami na FTX</translation>
 <translation id="5963745988819586370">Trhy</translation>

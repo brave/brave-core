@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">U kunt een privégesprek beginnen in Brave.</translation>
 <translation id="4903286433687221248">Voer onbeperkt telefoongesprekken met vrienden en collega's via Brave Talk.</translation>
 <translation id="7115051913071512405">Probeer het uit</translation>
-<translation id="1447534717041828517">Brave-nieuws knop weergeven in de werkbalk</translation>
 <translation id="370665806235115550">Bezig met laden...</translation>
 <translation id="4634933166298842522">Abonnementen beheren</translation>
 <translation id="4108314971463891922">Volgen</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Bezoek creators.brave.com om u vandaag aan te melden en Bat te verdienen van fans en volgers.</translation>
 <translation id="4816455138209470435">Brave ondersteunt YouTube, Twitch, Vimeo en meer!</translation>
 <translation id="3656941797339037856">Koppel beloningen aan Gemini!</translation>
-<translation id="31532096120351460">Handel in meer dan 50 crypto's, waaronder BAT, op Gemini. Het is een veilig platform om uw crypto op te slaan. Bovendien kunt u rente verdienen in de VS, HK en SG.</translation>
+<translation id="2888702144235098855">Trade meer dan 50 crypto's, waaronder BAT, op Gemini. Het is een veilig platform om uw crypto op te slaan.</translation>
 <translation id="7404779623219601861">BAT inwisselen voor cadeaubonnen</translation>
 <translation id="6215565499749144110">Met TAP Network kun je je BAT inwisselen voor populaire cadeaubonnen van bekende merken.</translation>
 <translation id="6915065518766963119">* Vereist verdere verificatie.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Uitgelogd</translation>
 <translation id="6080167751812750226">Verbreek de verbinding met <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Geschatte verdiensten</translation>
-<translation id="4244985009709452836">Meld je aan bij je <ph name="PROVIDER"/>-account</translation>
+<translation id="7934950257968365573">Meld u aan bij uw <ph name="PROVIDER"/>-account</translation>
 <translation id="2613359062756190460">Eenmalige tips</translation>
 <translation id="590733288489975971">Beloningen uit advertenties</translation>
 <translation id="6181762795539107980">Niet-geverifieerd</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Kopen met Wyre</translation>
 <translation id="5522073372365069684">Kopen met Ramp</translation>
 <translation id="7902920577183739843">Kopen met Sardine</translation>
-<translation id="6534275647567011533">Kopen met Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Koop crypto met Visa of Mastercard.</translation>
 <translation id="3101839349578102016">Direct kopen met uw bankrekening. Lagere kosten.</translation>
 <translation id="8528916244724490964">Alle netwerken</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Auto's</translation>
 <translation id="7577010593836079522">Cultuur</translation>
 <translation id="3706423975342040244">Entertainment</translation>
+<translation id="3284069358246729581">Entertainmentnieuws</translation>
 <translation id="1432147735538902155">Mode</translation>
+<translation id="3350377832708834609">Films en tv</translation>
 <translation id="736592699917579616">Eten en drinken</translation>
 <translation id="5104499318017527547">Plezier</translation>
 <translation id="2228584369802328636">Gamen</translation>
 <translation id="6941852195052765076">Gezondheid</translation>
 <translation id="932327136139879170">Homepage</translation>
+<translation id="5178222043222938163">Muziek</translation>
 <translation id="1322083935398004629">Politiek</translation>
+<translation id="8739620487574841501">Regionaal nieuws</translation>
 <translation id="3872834068356954457">Wetenschap</translation>
 <translation id="1264974993859112054">Sport</translation>
 <translation id="2283599456633275070">Reizen</translation>
 <translation id="7487067081878637334">Technologie</translation>
+<translation id="151743034625508713">Technieuws</translation>
+<translation id="2388279876296929435">Techbeoordelingen</translation>
 <translation id="5030268312472358928">Belangrijk nieuws</translation>
 <translation id="5510475084662028636">Belangrijke bronnen</translation>
+<translation id="1297570508541015874">Nieuws VS</translation>
 <translation id="1459693405370120464">Weer</translation>
 <translation id="8366057325711477500">Wereldnieuws</translation>
 <translation id="6303294677342628402">Schilden</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">Voltooien</translation>
 <translation id="2273851479262317744">Brave instellen als standaardbrowser</translation>
 <translation id="5037676449506322593">Alles selecteren</translation>
-<translation id="8330804319517911603">Help Brave te verbeteren</translation>
-<translation id="2867964979837593892">Het product op uw wensen afstemmen. Bescherm uw privacy. Elke dag.</translation>
-<translation id="7661940959332108190">Stuur diagnostische rapporten als Brave crasht of vastloopt.</translation>
-<translation id="6358373266071757311">Deel anonieme, persoonlijke productinzichten. Dit geeft ons inzicht in welke functies van Brave het meest worden gebruikt.</translation>
+<translation id="5148943178722443958">Help ons Brave beter te maken.</translation>
+<translation id="1097073572755862978">Verzend diagnostische rapporten als uw systeem crasht of vastloopt. <ph name="LINK_BEFORE"/>Meer informatie.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Deel volledig privé en anoniem productinzichten over functies die worden gebruikt door gebruikers van Brave. <ph name="LINK_BEFORE"/>Meer informatie.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Set-up voltooid</translation>
 <translation id="3141206739023333979">Verander uw keuzes wanneer u wilt op <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Lees ons volledige <ph name="LINK_BEFORE"/>privacybeleid<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">Kies een thema</translation>
+<translation id="6262510489122516114">U kunt dit op elk moment wijzigen in de instellingen van Brave.</translation>
+<translation id="546481172717459539">Systeeminstelling koppelen</translation>
+<translation id="7799817062559422778">Lichte modus</translation>
+<translation id="4117637339509843559">Donkere modus</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: verbonden</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: niet verbonden</translation>
 <translation id="3541307549916475335">Gebruikersinterface Brave VPN-venster</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">VPN-verbinding mislukt. Probeer opnieuw verbinding te maken en klik op Toestaan om de VPN-configuratie van Brave in te schakelen.</translation>
 <translation id="7261518280726313829">Als u beveiligde DNS uitschakelt of standaardservers gebruikt in Windows, zijn de namen van sites die u bezoekt mogelijk zichtbaar voor uw internetprovider. Brave raadt dit niet aan. Wilt u toch doorgaan?</translation>
 <translation id="888284761945060750">Beveiligde DNS is uitgeschakeld vanwege het beleid van uw organisatie. Als u Brave VPN gebruikt zonder beveiligde DNS, zijn de namen van sites die u bezoekt mogelijk zichtbaar voor uw internetprovider of organisatie.</translation>
+<translation id="6593224083874259773">Brave VPN op Windows</translation>
+<translation id="3153983908111684619">De instelling is vergrendeld door Brave VPN wanneer er verbinding is</translation>
+<translation id="6507543978646831931">Windows heeft een functie met de naam Smart Multi-Homed Name Resolution, die informatie over uw locatie en de sites die u bezoekt kan weergeven. Doordat u Brave VPN hebt ingeschakeld, hebben wij de DNS-instellingen in de browser veranderd om u hiertegen te beschermen. De instellingen blijven van kracht en vergrendeld zolang VPN aanstaat. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Deze waarschuwing niet meer weergeven.</translation>
+<translation id="2740531572673183784">OK</translation>
+<translation id="9061845622728745852">Tijdzone:</translation>
 <translation id="7586151660465233733">Meer markten op <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Markten bekijken en crypto verhandelen op FTX</translation>
 <translation id="5963745988819586370">Markten</translation>

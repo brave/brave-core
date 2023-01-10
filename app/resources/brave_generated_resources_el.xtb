@@ -89,11 +89,6 @@
 <translation id="8303432794159193481">Εφαρμογές Dev του προγράμματος περιήγησης Brave</translation>
 <translation id="8292967014767479012">Εφαρμογές του προγράμματος περιήγησης Brave</translation>
 <translation id="4743468424889072281">Εφαρμογές ανάπτυξης του προγράμματος περιήγησης Brave</translation>
-<translation id="732814027519296280">Θέλετε να κάνετε την Αναζήτηση Brave ακόμα καλύτερη;</translation>
-<translation id="2677865600861971449">Δηλώστε συμμετοχή στο Web Discovery Project για να συνεισφέρετε ανώνυμα σε κάποια αναζήτηση &amp; περιήγηση δεδομένων και βελτίωση των αποτελεσμάτων της Αναζήτησης Brave για όλους. Διατήρηση της ιδιωτικής ζωής. Και μηδενική προσπάθεια. <ph name="LEARN_MORE_TEXT"/></translation>
-<translation id="6165508094623778733">Μάθετε περισσότερα</translation>
-<translation id="5860491529813859533">Ενεργοποίηση</translation>
-<translation id="780301667611848630">Όχι, ευχαριστώ</translation>
 <translation id="5039804452771397117">Αποδοχή</translation>
 <translation id="7053983685419859001">Αποκλεισμός</translation>
 <translation id="1679356339067548863">Συμβάλλετε στη βελτίωση της σταθερότητας του προϊόντος Brave με την αυτόματη αποστολή αναφορών διαγνωστικών όταν το πρόγραμμα περιήγησης Brave κολλάει ή παγώνει.</translation>
@@ -116,6 +111,11 @@
 <translation id="5026874946691314267">Να μην εμφανιστεί αυτό ξανά</translation>
 <translation id="5234764350956374838">Παράβλεψη</translation>
 <translation id="5100490448228945668">Παράβλεψη μετατροπής αναζήτησης Brave, πατήστε Enter για να καταργήσετε αυτήν την πρόταση</translation>
+<translation id="9194637241566114638">Βοηθήστε μας να βελτιώσουμε το <ph name="SEARCH_NAME"/> στέλνοντας ανώνυμα δεδομένα χρήσης. <ph name="MORE_INFO"/></translation>
+<translation id="7404610376221341525">Αναζήτηση Brave</translation>
+<translation id="8184318863960255706">Περισσότερες πληροφορίες</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="780301667611848630">Όχι, ευχαριστώ</translation>
 <translation id="2515126961943087659">Υπηρεσία διαφημίσεων BAT</translation>
 <translation id="7924918279836988121">Υπηρεσία Bat Ledger</translation>
 <translation id="6040143037577758943">Κλείσιμο</translation>
@@ -241,6 +241,7 @@
 <translation id="7859704718976024901">Ιστορικό περιήγησης</translation>
 <translation id="8820817407110198400">Γραμμή σελιδοδεικτών</translation>
 <translation id="6333347122924254968">Εμφάνιση εικονιδίου Ανταμοιβές Brave στη γραμμή διευθύνσεων</translation>
+<translation id="2245286910966863912">Εμφάνιση του κουμπιού Brave News στη γραμμή διεύθυνσης</translation>
 <translation id="1811404036171336214">Να εμφανίζονται πάντα οι σελιδοδείκτες στη σελίδα νέας καρτέλας</translation>
 <translation id="3416468988018290825">Να εμφανίζονται πάντα οι πλήρεις διευθύνσεις URL</translation>
 <translation id="5529693968082667490">Εμφάνιση κουμπιού αναζήτησης καρτελών</translation>
@@ -335,6 +336,7 @@
 <translation id="5165042248369837294">Να επιτρέπονται ενσωματωμένα tweet από το Twitter</translation>
 <translation id="958971637207126733">Να επιτρέπονται οι ενσωματωμένες αναρτήσεις LinkedIn</translation>
 <translation id="8792121506918889955">Πολιτική διαχείρισης IP WebRTC</translation>
+<translation id="6165508094623778733">Μάθετε περισσότερα</translation>
 <translation id="1822560017823072927">Προεπιλεγμένο δημόσιο και ιδιωτικό περιβάλλον χρήστη</translation>
 <translation id="5825943197137337319">Μόνο προεπιλεγμένη δημόσια διεπαφή</translation>
 <translation id="1689062823386843231">Απενεργοποίηση UDP χωρίς διαμεσολάβηση</translation>

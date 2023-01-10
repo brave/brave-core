@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">می‌توانید در Brave تماس خصوصی شروع کنید.</translation>
 <translation id="4903286433687221248">در Brave Talk، با دوستان و همکارانتان تماس‌های نامحدود داشته باشید.</translation>
 <translation id="7115051913071512405">آن را امتحان کنید</translation>
-<translation id="1447534717041828517">نمایش دکمه Brave News در نوار ابزار</translation>
 <translation id="370665806235115550">در حال بارکردن…</translation>
 <translation id="4634933166298842522">مدیریت اشتراک ها</translation>
 <translation id="4108314971463891922">دنبال کردن</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">همین امروز برای ثبت‌نام به وب‌سایت creators.brave.com مراجعه کنید و شروع به کسب BAT از هواداران و دنبال‌کنندگان خود شوید.</translation>
 <translation id="4816455138209470435">Brave از YouTube،‏ Twitch،‏ Vimeo و موارد دیگر پشتیبانی می‌کند!</translation>
 <translation id="3656941797339037856">Rewards را به Gemini مرتبط کنید!</translation>
-<translation id="31532096120351460">بیش از 50 رمز ارز، ازجمله BAT، در Gemini معامله کنید. این پلتفرمی ایمن برای ذخیره رمز ارز است. علاوه‌براین، می‌توانید در US،‏ HK و SG سود کسب کنید.</translation>
+<translation id="2888702144235098855">بیش از 50 رمز ارز، از جمله BAT را در Gemini معامله کنید. این پلتفرمی امن برای ذخیره رمزارز شما است.</translation>
 <translation id="7404779623219601861">نقد کردن BAT برای کارت‌های هدیه</translation>
 <translation id="6215565499749144110">با شبکه TAP، می‌توانید BAT خود را برای کارت‌های هدیه با برند معروف نقد کنید.</translation>
 <translation id="6915065518766963119">* به تأیید نگهداری نیاز دارد.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">از سیستم خارج شدید</translation>
 <translation id="6080167751812750226">قطع ارتباط با <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">درآمدهای تخمینی</translation>
-<translation id="4244985009709452836">به حساب <ph name="PROVIDER"/> خود وارد شوید</translation>
+<translation id="7934950257968365573">وارد حساب <ph name="PROVIDER"/> خود شوید</translation>
 <translation id="2613359062756190460">انعام یک‌باره</translation>
 <translation id="590733288489975971">پاداش‌های حاصل از آگهی‌ها</translation>
 <translation id="6181762795539107980">تأییدنشده</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">خرید با Wyre</translation>
 <translation id="5522073372365069684">خرید با Ramp</translation>
 <translation id="7902920577183739843">با Sardine خرید کنید</translation>
-<translation id="6534275647567011533">خرید با Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">با Visa یا Mastercard رمزارز بخرید.</translation>
 <translation id="3101839349578102016">خرید فوری با حساب بانکی خود هزینه های کمتر</translation>
 <translation id="8528916244724490964">تمام شبکه‌ها</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">خودروها</translation>
 <translation id="7577010593836079522">فرهنگ</translation>
 <translation id="3706423975342040244">سرگرمی</translation>
+<translation id="3284069358246729581">اخبار سرگرمی</translation>
 <translation id="1432147735538902155">مد</translation>
+<translation id="3350377832708834609">فیلم و تلویزیون</translation>
 <translation id="736592699917579616">غذا</translation>
 <translation id="5104499318017527547">بامزه</translation>
 <translation id="2228584369802328636">بازی</translation>
 <translation id="6941852195052765076">سلامت</translation>
 <translation id="932327136139879170">منزل</translation>
+<translation id="5178222043222938163">موسیقی</translation>
 <translation id="1322083935398004629">سیاست</translation>
+<translation id="8739620487574841501">اخبار منطقه‌ای</translation>
 <translation id="3872834068356954457">علم</translation>
 <translation id="1264974993859112054">ورزش</translation>
 <translation id="2283599456633275070">سفر</translation>
 <translation id="7487067081878637334">فناوری</translation>
+<translation id="151743034625508713">اخبار فناوری</translation>
+<translation id="2388279876296929435">بررسی‌های فناوری</translation>
 <translation id="5030268312472358928">سرخط اخبار</translation>
 <translation id="5510475084662028636">منابع برتر</translation>
+<translation id="1297570508541015874">اخبار ایالات متحده</translation>
 <translation id="1459693405370120464">آب‌وهوا</translation>
 <translation id="8366057325711477500">اخبار جهان</translation>
 <translation id="6303294677342628402">سپر ایمنی</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">پایان</translation>
 <translation id="2273851479262317744">تنظیم Brave به‌عنوان مرورگر پیش‌فرض</translation>
 <translation id="5037676449506322593">انتخاب همه</translation>
-<translation id="8330804319517911603">کمک به ارتقای Brave</translation>
-<translation id="2867964979837593892">محصول را به‌دقت تنظیم کنید. از حریم خصوصی خود محافظت کنید. هر روز.</translation>
-<translation id="7661940959332108190">اگر Brave از کار افتاد یا متوقف شد، گزارش‌های تشخیصی ارسال کنید.</translation>
-<translation id="6358373266071757311">اطلاعات آماری محصول را به‌صورت خصوصی و بی‌نام به اشتراک بگذارید. این امر به ما کمک می‌کند تا متوجه شویم کدام ویژگی‌های Brave اغلب استفاده می‌شوند.</translation>
+<translation id="5148943178722443958">به بهبود Brave کمک کنید.</translation>
+<translation id="1097073572755862978">اگر با از کار افتادن یا توقف مواجه شدید، گزارش‌های عیب‌یابی را ارسال کنید. <ph name="LINK_BEFORE"/>بیشتر بدانید.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">اطلاعات آماری محصول درباره ویژگی‌هایی که توسط کاربران Brave استفاده می‌شود کاملاً به‌طور خصوصی و ناشناس به اشتراک گذاشته می‌شود. <ph name="LINK_BEFORE"/>بیشتر بدانید<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">راه‌اندازی تکمیل شد</translation>
 <translation id="3141206739023333979">هر زمان خواستید،‌ این انتخاب‌ها را در <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/> تغییر دهید.</translation>
 <translation id="8321985064212130832">لطفاً <ph name="LINK_BEFORE"/>خط مشی حریم خصوصی<ph name="LINK_AFTER"/>ما را به‌طور کامل مطالعه کنید</translation>
+<translation id="2801098717523961746">انتخاب طرح زمینه</translation>
+<translation id="6262510489122516114">می‌توانید این مورد را هر زمان که بخواهید در تنظیمات Brave تغییر دهید.</translation>
+<translation id="546481172717459539">تنظیم سیستم مطابقت</translation>
+<translation id="7799817062559422778">حالت روشن</translation>
+<translation id="4117637339509843559">حالت تیره</translation>
 <translation id="7821773512278295352">فایروال Brave + ‏VPN: مت‏صل</translation>
 <translation id="6019088868713395120">فایروال Brave +‏ VPN: قطع</translation>
 <translation id="3541307549916475335">رابط کاربر پانل Brave VPN</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">اتصال VPN قطع شد. لطفاً دوباره برای اتصال تلاش کنید، و دقت کنید که روی «مجاز شود» کلیک کنید تا پیکربندی VPN مربوط به Brave فعال شود.</translation>
 <translation id="7261518280726313829">با خاموش کردن DNS ایمن یا استفاده از سرورهای پیش‌فرض در Windows، ممکن است نام سایت‌هایی که بازدید می‌کنید برای ارائه‌دهنده سرویس اینترنت شما فاش شود. Brave توصیه می‌کند از این مورد استفاده نکنید. در هر صورت می‌خواهید این کار را انجام دهید؟</translation>
 <translation id="888284761945060750">خط‌مشی‌های سازمانتان DNS ایمن را غیرفعال کرده است. استفاده از Brave VPN بدون DNS ایمن، ممکن است باعث افشای نام سایت‌هایی که بازدید می‌کنید برای سازمان یا ارائه‌دهنده سرویس اینترنت شود.</translation>
+<translation id="6593224083874259773">Brave VPN در Windows</translation>
+<translation id="3153983908111684619">هنگام اتصال، تنظیمات توسط BraveVPN قفل می‌شود</translation>
+<translation id="6507543978646831931">Windows قابلیتی موسوم به Smart Multi-Homed Name Resolution دارد که می‌تواند اطلاعات مربوط به موقعیت مکانی شما و سایت‌هایی را که بازدید می‌کنید در معرض دید قرار دهد. اکنون که Brave VPN را فعال کرده‌اید، تنظیمات DNS را در مرورگر تغییر داده‌ایم تا از شما در برابر آشکار شدن این اطلاعات محافظت کنیم. تا زمانی که VPN متصل است، تنظیمات به همین حالت و قفل باقی می‌ماند.<ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">دیگر درباره این مورد به من هشدار داده نشود.</translation>
+<translation id="2740531572673183784">تأیید</translation>
+<translation id="9061845622728745852">منطقه زمانی</translation>
 <translation id="7586151660465233733">بازارهای بیشتر در <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">مشاهده بازارها و تبادل رمزارزها در FTX</translation>
 <translation id="5963745988819586370">بازارها</translation>
