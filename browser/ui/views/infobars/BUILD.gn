@@ -2,6 +2,8 @@ source_set("brave_wayback_machine") {
   # Remove when https://github.com/brave/brave-browser/issues/10652 is resolved
   check_includes = false
   sources = [
+    "brave_confirm_infobar.cc",
+    "brave_confirm_infobar.h",
     "brave_infobar_container_view.cc",
     "brave_infobar_container_view.h",
     "brave_wayback_machine_infobar_button_container.cc",
@@ -26,6 +28,7 @@ source_set("brave_wayback_machine") {
     "//brave/app/vector_icons",
     "//brave/browser/themes",
     "//brave/components/brave_wayback_machine",
+    "//brave/components/infobars/core",
     "//chrome/browser:theme_properties",
     "//components/infobars/content",
     "//components/infobars/core",
