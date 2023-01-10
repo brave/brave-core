@@ -54,7 +54,7 @@ export const NFTGridViewItem = (props: Props) => {
       </IconWrapper>
       <Row alignItems='center' justifyContent='space-between' gap='14px' margin='6px 0 0 0'>
         <NFTText>{token.asset.name} {token.asset.tokenId ? '#' + new Amount(token.asset.tokenId).toNumber() : ''}</NFTText>
-          {pinningStatus !== undefined &&
+          {pinningStatus?.code !== undefined &&
             <NftPinningStatusAnimation
               size='25px'
               displayMode='nft'

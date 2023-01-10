@@ -52,6 +52,7 @@ import { CreateNetworkIcon } from '../../../components/shared'
 import { Row } from '../../../components/shared/style'
 import CopyTooltip from '../../../components/shared/copy-tooltip/copy-tooltip'
 import { NftPinnigStatus } from '../../../components/desktop/nft-pinning-status/nft-pinning-status'
+import { PinningStatusType } from '../../../page/constants/action_types'
 
 interface Props {
   isLoading?: boolean
@@ -59,7 +60,7 @@ interface Props {
   nftMetadata?: NFTMetadataReturnType
   nftMetadataError?: string
   tokenNetwork?: BraveWallet.NetworkInfo
-  nftPinningStatus?: BraveWallet.TokenPinStatus
+  nftPinningStatus?: PinningStatusType
 }
 
 export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, tokenNetwork, nftPinningStatus }: Props) => {
@@ -215,7 +216,7 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                     </DetailSectionRow>
                   </>
                 }
-                {nftPinningStatus &&
+                {nftPinningStatus?.code &&
                   <DetailSectionRow>
                     <DetailSectionColumn>
                       <NftPinnigStatus pinningStatusCode={nftPinningStatus.code} />
