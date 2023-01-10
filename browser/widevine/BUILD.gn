@@ -1,4 +1,11 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//third_party/widevine/cdm/widevine.gni")
+
+assert(enable_widevine)
 
 source_set("widevine") {
   # Remove when https://github.com/brave/brave-browser/issues/10644 is resolved
@@ -38,45 +45,42 @@ source_set("constants") {
 
 source_set("unittest") {
   testonly = true
-  if (enable_widevine && !is_android) {
-    sources = [ "widevine_cdm_component_installer_unittest.cc" ]
-    deps = [
-      "//testing/gtest",
-      "//third_party/widevine/cdm:buildflags",
-    ]
-  }
+
+  sources = [ "widevine_cdm_component_installer_unittest.cc" ]
+  deps = [
+    "//testing/gtest",
+    "//third_party/widevine/cdm:buildflags",
+  ]
 }
 
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  if (enable_widevine) {
-    sources = [
-      "widevine_permission_request_browsertest.cc",
-      "widevine_prefs_migration_browsertest.cc",
-    ]
+  sources = [
+    "widevine_permission_request_browsertest.cc",
+    "widevine_prefs_migration_browsertest.cc",
+  ]
 
-    deps = [
-      ":constants",
-      ":widevine",
-      "//base",
-      "//brave/browser",
-      "//brave/common",
-      "//brave/components/constants",
-      "//chrome/browser",
-      "//chrome/browser:browser_process",
-      "//chrome/browser/profiles:profile",
-      "//chrome/browser/ui",
-      "//chrome/common",
-      "//chrome/test:test_support_ui",
-      "//components/prefs",
-      "//content/public/browser",
-      "//content/test:test_support",
-      "//testing/gtest",
-      "//third_party/widevine/cdm:buildflags",
-      "//ui/views",
-      "//url",
-    ]
-  }
+  deps = [
+    ":constants",
+    ":widevine",
+    "//base",
+    "//brave/browser",
+    "//brave/common",
+    "//brave/components/constants",
+    "//chrome/browser",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
+    "//chrome/common",
+    "//chrome/test:test_support_ui",
+    "//components/prefs",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//third_party/widevine/cdm:buildflags",
+    "//ui/views",
+    "//url",
+  ]
 }
