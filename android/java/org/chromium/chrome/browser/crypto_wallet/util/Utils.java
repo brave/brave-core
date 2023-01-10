@@ -1634,7 +1634,8 @@ public class Utils {
     }
 
     public static boolean allowBuy(String chainId) {
-        return WalletConstants.BUY_SUPPORTED_NETWORKS.contains(chainId);
+        return !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(chainId)
+                && WalletConstants.BUY_SUPPORTED_ONRAMP_NETWORKS.contains(chainId);
     }
 
     public static boolean allowSwap(String chainId) {

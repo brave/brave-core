@@ -5,6 +5,9 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import org.chromium.base.Predicate;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,5 +26,15 @@ public class JavaUtils {
     public static <T> T safeVal(T object, T defValue) {
         if (object == null) return defValue;
         return object;
+    }
+
+    public static <T> List<T> filter(List<T> list, Predicate<T> filter) {
+        List<T> filteredList = new ArrayList<>();
+        for (T item : list) {
+            if (filter.test(item)) {
+                filteredList.add(item);
+            }
+        }
+        return filteredList;
     }
 }
