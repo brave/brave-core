@@ -49,6 +49,9 @@ void BraveBrowserViewLayout::Layout(views::View* host) {
     vertical_tab_strip_host_->SetBorder(nullptr);
   }
 
+#if BUILDFLAG(IS_MAC)
+  vertical_tab_strip_bounds.set_x(1);  // for frame border
+#endif
   vertical_tab_strip_bounds.set_width(
       vertical_tab_strip_host_->GetPreferredSize().width());
   vertical_tab_strip_bounds.set_height(
@@ -85,8 +88,7 @@ int BraveBrowserViewLayout::LayoutBookmarkAndInfoBars(int top,
     return BrowserViewLayout::LayoutBookmarkAndInfoBars(top, browser_view_y);
 
   auto new_rect = vertical_layout_rect_;
-  new_rect.Inset(gfx::Insets().set_left(
-      vertical_tab_strip_host_->GetPreferredSize().width()));
+  new_rect.Inset(GetInsetsConsideringVerticalTabHost());
   base::AutoReset resetter(&vertical_layout_rect_, new_rect);
   return BrowserViewLayout::LayoutBookmarkAndInfoBars(top, browser_view_y);
 }
@@ -96,8 +98,7 @@ int BraveBrowserViewLayout::LayoutInfoBar(int top) {
     return BrowserViewLayout::LayoutInfoBar(top);
 
   auto new_rect = vertical_layout_rect_;
-  new_rect.Inset(gfx::Insets().set_left(
-      vertical_tab_strip_host_->GetPreferredSize().width()));
+  new_rect.Inset(GetInsetsConsideringVerticalTabHost());
   base::AutoReset resetter(&vertical_layout_rect_, new_rect);
   return BrowserViewLayout::LayoutInfoBar(top);
 }
@@ -109,8 +110,7 @@ void BraveBrowserViewLayout::LayoutContentsContainerView(int top, int bottom) {
   }
 
   auto new_rect = vertical_layout_rect_;
-  new_rect.Inset(gfx::Insets().set_left(
-      vertical_tab_strip_host_->GetPreferredSize().width()));
+  new_rect.Inset(GetInsetsConsideringVerticalTabHost());
   base::AutoReset resetter(&vertical_layout_rect_, new_rect);
   return BrowserViewLayout::LayoutContentsContainerView(top, bottom);
 }
@@ -126,4 +126,17 @@ bool BraveBrowserViewLayout::ShouldPushBookmarkBarForVerticalTabs() {
          !browser_view_->browser()->profile()->GetPrefs()->GetBoolean(
              bookmarks::prefs::kShowBookmarkBar) &&
          delegate_->IsBookmarkBarVisible();
+}
+
+gfx::Insets BraveBrowserViewLayout::GetInsetsConsideringVerticalTabHost() {
+  DCHECK(vertical_tab_strip_host_)
+      << "This method is used only when vertical tab strip host is set";
+
+  gfx::Insets insets;
+  insets.set_left(vertical_tab_strip_host_->GetPreferredSize().width());
+#if BUILDFLAG(IS_MAC)
+  insets.set_left(1 + insets.left());
+#endif
+
+  return insets;
 }

@@ -167,10 +167,10 @@ void VerticalTabStripWidgetDelegateView::UpdateClip() {
   // https://github.com/chromium/chromium/blob/371d67fd9c7db16c32f22e3ba247a07aa5e81487/ui/views/controls/menu/menu_config_mac.mm#L35
   SkPath path;
   constexpr int kCornerRadius = 8;
-  path.moveTo(1, 0);
+  path.moveTo(0, 0);
   path.lineTo(width(), 0);
   path.lineTo(width(), height() - 1);
-  path.lineTo(1 + kCornerRadius, height() - 1);
+  path.lineTo(0 + kCornerRadius, height() - 1);
   path.rArcTo(kCornerRadius, kCornerRadius, 0, SkPath::kSmall_ArcSize,
               SkPathDirection::kCW, -kCornerRadius, -kCornerRadius);
   path.close();
