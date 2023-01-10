@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Anda dapat memulai panggilan privat di Brave.</translation>
 <translation id="4903286433687221248">Memulai panggilan tak terbatas dengan teman dan kolega di Brave Talk</translation>
 <translation id="7115051913071512405">Coba</translation>
-<translation id="1447534717041828517">Tampilkan tombol Berita Brave di bilah alat</translation>
 <translation id="370665806235115550">Memuat...</translation>
 <translation id="4634933166298842522">Mengelola Langganan</translation>
 <translation id="4108314971463891922">Ikuti</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Kunjungi creators.brave.com untuk mendaftar hari ini dan mulai dapatkan BAT dari penggemar dan pengikut Anda.</translation>
 <translation id="4816455138209470435">Brave mendukung YouTube, Twitch, Vimeo, dan banyak lagi!</translation>
 <translation id="3656941797339037856">Tautkan Rewards ke Gemini!</translation>
-<translation id="31532096120351460">Tukarkan kripto 50+, termasuk BAT, di Gemini. Ini adalah platform aman untuk menyimpan kripto Anda. Plus, Anda bisa mendapatkan bunga di AS, HK, dan SG.</translation>
+<translation id="2888702144235098855">Tukarkan kripto 50+, termasuk BAT, di Gemini. Ini adalah platform aman untuk menyimpan kripto Anda.</translation>
 <translation id="7404779623219601861">Tukar BAT dengan Kartu Hadiah</translation>
 <translation id="6215565499749144110">Dengan jaringan TAP, Anda bisa menukar BAT dengan kartu hadiah dari barang-barang merek terkenal.</translation>
 <translation id="6915065518766963119">* Harus Lolos Verifikasi</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Keluar</translation>
 <translation id="6080167751812750226">Putuskan koneksi dari <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Perkiraan Pendapatan</translation>
-<translation id="4244985009709452836">Masuklah ke akun <ph name="PROVIDER"/>Anda</translation>
+<translation id="7934950257968365573">Masuk ke akun <ph name="PROVIDER"/> Anda</translation>
 <translation id="2613359062756190460">Tip Satu Kali</translation>
 <translation id="590733288489975971">Imbalan dari Ads</translation>
 <translation id="6181762795539107980">Tidak Terverifikasi</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Beli dengan Wyre</translation>
 <translation id="5522073372365069684">Beli dengan Ramp</translation>
 <translation id="7902920577183739843">Membeli dengan Sardine</translation>
-<translation id="6534275647567011533">Beli dengan Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Beli kripto dengan Visa atau Mastercard.</translation>
 <translation id="3101839349578102016">Beli instan dengan rekening bank Anda. Biaya lebih rendah.</translation>
 <translation id="8528916244724490964">Semua Jaringan</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Mobil</translation>
 <translation id="7577010593836079522">Budaya</translation>
 <translation id="3706423975342040244">Hiburan</translation>
+<translation id="3284069358246729581">Berita Hiburan</translation>
 <translation id="1432147735538902155">Mode</translation>
+<translation id="3350377832708834609">Film dan TV</translation>
 <translation id="736592699917579616">Makanan</translation>
 <translation id="5104499318017527547">Kesenangan</translation>
 <translation id="2228584369802328636">Permainan</translation>
 <translation id="6941852195052765076">Kesehatan</translation>
 <translation id="932327136139879170">Beranda</translation>
+<translation id="5178222043222938163">Musik</translation>
 <translation id="1322083935398004629">Politik</translation>
+<translation id="8739620487574841501">Berita Regional</translation>
 <translation id="3872834068356954457">Sains</translation>
 <translation id="1264974993859112054">Olahraga</translation>
 <translation id="2283599456633275070">Perjalanan</translation>
 <translation id="7487067081878637334">Teknologi</translation>
+<translation id="151743034625508713">Berita Teknologi</translation>
+<translation id="2388279876296929435">Ulasan Teknologi</translation>
 <translation id="5030268312472358928">Berita Terpopuler</translation>
 <translation id="5510475084662028636">Sumber Terpopuler</translation>
+<translation id="1297570508541015874">Berita AS</translation>
 <translation id="1459693405370120464">Cuaca</translation>
 <translation id="8366057325711477500">Berita Dunia</translation>
 <translation id="6303294677342628402">Pelindung</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">Selesai</translation>
 <translation id="2273851479262317744">Tetapkan Brave sebagai peramban bawaan</translation>
 <translation id="5037676449506322593">Pilih Semua</translation>
-<translation id="8330804319517911603">Membantu meningkatkan Brave</translation>
-<translation id="2867964979837593892">Menyempurnakan produk. Melindungi privasi Anda. Setiap hari.</translation>
-<translation id="7661940959332108190">Mengirim laporan diagnostik jika Brave gagal atau macet.</translation>
-<translation id="6358373266071757311">Membagikan wawasan produk anonim dan privat. Ini membantu kami mempelajari fitur-fitur Brave yang digunakan paling sering.</translation>
+<translation id="5148943178722443958">Bantulah membuat Brave lebih baik.</translation>
+<translation id="1097073572755862978">Kirimkan laporan diagnostik jika Anda mengalami kerusakan atau kebekuan. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Bagikan wawasan produk yang sepenuhnya privat dan anonim tentang fitur-fitur yang digunakan oleh pengguna Brave. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Pengaturan selesai</translation>
 <translation id="3141206739023333979">Anda dapat mengubah pilihan ini kapan saja di Brave pada <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Baca <ph name="LINK_BEFORE"/>Kebijakan Privasi<ph name="LINK_AFTER"/> lengkap kami</translation>
+<translation id="2801098717523961746">Pilih tema</translation>
+<translation id="6262510489122516114">Anda dapat mengubah hal ini kapan pun di pengaturan Brave.</translation>
+<translation id="546481172717459539">Sesuaikan pengaturan sistem</translation>
+<translation id="7799817062559422778">Mode terang</translation>
+<translation id="4117637339509843559">Mode gelap</translation>
 <translation id="7821773512278295352">Dinding Api + VPN Brave: Terhubung</translation>
 <translation id="6019088868713395120">Dinding Api + VPN Brave: Terputus</translation>
 <translation id="3541307549916475335">UI Panel VPN Brave</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">Koneksi VPN gagal. Silakan coba menghubungkannya lagi, dan pastikan untuk mengklik Izinkan agar memungkinkan konfigurasi VPN Brave.</translation>
 <translation id="7261518280726313829">Mematikan Secure DNS atau menggunakan peladen bawaan pada Windows dapat mengungkap nama-nama situs yang Anda kunjungi kepada penyedia layanan Internet Anda. Brave tidak menyarankan hal ini. Apakah Anda tetap akan melakukannya?</translation>
 <translation id="888284761945060750">Secure DNS dinonaktifkan karena kebijakan organisasi Anda. Menggunakan VPN Brave tanpa Secure DNS dapat mengungkap nama-nama situs yang telah Anda kunjungi ke penyedia layanan Internet atau organisasi Anda.</translation>
+<translation id="6593224083874259773">VPN Brave pada Windows</translation>
+<translation id="3153983908111684619">Pengaturan dikunci oleh VPN Brave saat masih terkoneksi</translation>
+<translation id="6507543978646831931">Windows memiliki fitur yang disebut Resolusi Nama Multi-Induk, yang dapat mengungkap informasi tentang lokasi dan situs yang Anda kunjungi. Kini, setelah Anda mengaktifkan VPN Brave, kami telah mengubah pengaturan DNS di peramban untuk melindungi dari paparan ini. Pengaturan ini akan tetap berlaku dan terkunci sementara VPN terkoneksi. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Jangan berikan peringatan ini lagi kepada saya.</translation>
+<translation id="2740531572673183784">Oke</translation>
+<translation id="9061845622728745852">Zona Waktu:</translation>
 <translation id="7586151660465233733">Lebih banyak bursa tentang <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Lihat bursa dan bertransaksi kripto di FTX</translation>
 <translation id="5963745988819586370">Bursa</translation>

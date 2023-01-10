@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Bạn có thể gọi điện riêng tư trong Brave.</translation>
 <translation id="4903286433687221248">Bắt đầu cuộc gọi không giới hạn với bạn bè và đồng nghiệp trong Brave Talk.</translation>
 <translation id="7115051913071512405">Dùng thử</translation>
-<translation id="1447534717041828517">Hiển thị nút Brave Tin tức trên thanh công cụ</translation>
 <translation id="370665806235115550">Đang tải...</translation>
 <translation id="4634933166298842522">Quản lý Đăng kí</translation>
 <translation id="4108314971463891922">Theo dõi</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Truy cập creators.brave.com để đăng ký ngay hôm nay và bắt đầu kiếm BAT từ người hâm mộ và người theo dõi của bạn.</translation>
 <translation id="4816455138209470435">Brave hỗ trợ YouTube, Twitch, Vimeo và hơn thế nữa!</translation>
 <translation id="3656941797339037856">Liên kết Rewards với Gemini!</translation>
-<translation id="31532096120351460">Giao dịch hơn 50 loại tiền điện tử, bao gồm cả BAT, trên Gemini. Đó là một nền tảng an toàn để lưu trữ tiền điện tử của bạn. Ngoài ra, bạn có thể kiếm được tiền lãi ở Mỹ, Hồng Kông và Singapore.</translation>
+<translation id="2888702144235098855">Giao dịch hơn 50 loại tiền điện tử, bao gồm cả BAT, trên Gemini. Đó là nền tảng an toàn để lưu trữ tiền điện tử của bạn.</translation>
 <translation id="7404779623219601861">Đổi BAT lấy Thẻ quà tặng</translation>
 <translation id="6215565499749144110">Với Mạng TAP, bạn có thể đổi BAT của mình lấy các thẻ quà tặng nhãn hiệu nổi tiếng.</translation>
 <translation id="6915065518766963119">* Cần phải Xác thực Uphold.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Đã đăng xuất</translation>
 <translation id="6080167751812750226">Ngắt kết nối khỏi <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Thu nhập ước tính</translation>
-<translation id="4244985009709452836">Đăng nhập vào tài khoản <ph name="PROVIDER"/> của bạn</translation>
+<translation id="7934950257968365573">Đăng nhập vào tài khoản <ph name="PROVIDER"/> của bạn</translation>
 <translation id="2613359062756190460">Tiền tip Một lần</translation>
 <translation id="590733288489975971">Rewards từ Ads</translation>
 <translation id="6181762795539107980">Chưa xác minh</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Mua bằng Wyre</translation>
 <translation id="5522073372365069684">Mua bằng Ramp</translation>
 <translation id="7902920577183739843">Mua bằng Sardine</translation>
-<translation id="6534275647567011533">Mua bằng Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Mua tiền mã hóa bằng thẻ Visa hoặc Mastercard.</translation>
 <translation id="3101839349578102016">Mua ngay bằng tài khoản ngân hàng của bạn. Phí thấp hơn.</translation>
 <translation id="8528916244724490964">Tất cả các mạng</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Ô tô</translation>
 <translation id="7577010593836079522">Văn hóa</translation>
 <translation id="3706423975342040244">Giải trí</translation>
+<translation id="3284069358246729581">Tin tức giải trí</translation>
 <translation id="1432147735538902155">Thời trang</translation>
+<translation id="3350377832708834609">Phim và TV</translation>
 <translation id="736592699917579616">Đồ ăn</translation>
 <translation id="5104499318017527547">Hài</translation>
 <translation id="2228584369802328636">Game</translation>
 <translation id="6941852195052765076">Y tế</translation>
 <translation id="932327136139879170">Trang chủ</translation>
+<translation id="5178222043222938163">Âm nhạc</translation>
 <translation id="1322083935398004629">Chính trị</translation>
+<translation id="8739620487574841501">Tin tức khu vực</translation>
 <translation id="3872834068356954457">Khoa học</translation>
 <translation id="1264974993859112054">Thể thao</translation>
 <translation id="2283599456633275070">Du lịch</translation>
 <translation id="7487067081878637334">Công nghệ</translation>
+<translation id="151743034625508713">Tin tức công nghệ</translation>
+<translation id="2388279876296929435">Đánh giá công nghệ</translation>
 <translation id="5030268312472358928">Tin tức hàng đầu</translation>
 <translation id="5510475084662028636">Nguồn hàng đầu</translation>
+<translation id="1297570508541015874">Tin tức nước Mỹ</translation>
 <translation id="1459693405370120464">Thời tiết</translation>
 <translation id="8366057325711477500">Thời sự quốc tế</translation>
 <translation id="6303294677342628402">Lá chắn</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">Kết thúc</translation>
 <translation id="2273851479262317744">Đặt Brave làm trình duyệt mặc định</translation>
 <translation id="5037676449506322593">Chọn Tất cả</translation>
-<translation id="8330804319517911603">Giúp cải thiện Brave</translation>
-<translation id="2867964979837593892">Tinh chỉnh sản phẩm. Bảo vệ sự riêng tư của bạn. Hằng ngày.</translation>
-<translation id="7661940959332108190">Gửi báo cáo chẩn đoán nếu Brave gặp sự cố hoặc đóng băng.</translation>
-<translation id="6358373266071757311">Chia sẻ thông tin chi tiết về sản phẩm riêng tư, ẩn danh. Điều này giúp chúng tôi tìm hiểu những tính năng Brave được sử dụng thường xuyên nhất.</translation>
+<translation id="5148943178722443958">Giúp cải thiện Brave.</translation>
+<translation id="1097073572755862978">Gửi báo cáo chẩn đoán nếu bạn gặp sự cố hoặc đóng băng. <ph name="LINK_BEFORE"/>Tìm hiểu thêm.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Chia sẻ thông tin chi tiết về sản phẩm hoàn toàn riêng tư và ẩn danh về những tính năng đang được người dùng của Brave sử dụng. <ph name="LINK_BEFORE"/>Tìm hiểu thêm.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Cài đặt hoàn thành</translation>
 <translation id="3141206739023333979">Thay đổi những lựa chọn này bất kỳ lúc nào trong Brave tại <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Đọc <ph name="LINK_BEFORE"/>Chính sách quyền riêng tư<ph name="LINK_AFTER"/> đầy đủ của chúng tôi</translation>
+<translation id="2801098717523961746">Chọn chủ đề của bạn</translation>
+<translation id="6262510489122516114">Bạn có thể thay đổi điều này bất cứ lúc nào trong cài đặt Brave.</translation>
+<translation id="546481172717459539">Khớp với cài đặt hệ thống</translation>
+<translation id="7799817062559422778">Chế độ sáng</translation>
+<translation id="4117637339509843559">Chế độ tối</translation>
 <translation id="7821773512278295352">Brave Tường lửa + VPN: Đã kết nối</translation>
 <translation id="6019088868713395120">Brave Tường lửa + VPN: Đã ngắt kết nối</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">Kết nối VPN không thành công. Vui lòng thử kết nối lại và nhớ nhấp vào Cho phép để bật cấu hình VPN của Brave.</translation>
 <translation id="7261518280726313829">Tắt DNS bảo mật hoặc sử dụng máy chủ mặc định trên Windows có thể tiết lộ tên của các trang web bạn truy cập với nhà cung cấp dịch vụ Internet của mình. Brave không khuyên bạn nên làm điều này. Bạn có muốn làm điều đó hay không?</translation>
 <translation id="888284761945060750">DNS bảo mật bị vô hiệu hóa bởi các chính sách của tổ chức của bạn. Việc sử dụng Brave VPN mà không có DNS bảo mật có thể tiết lộ tên của các trang web bạn truy cập với tổ chức hoặc nhà cung cấp dịch vụ Internet của mình.</translation>
+<translation id="6593224083874259773">Brave VPN trên Windows</translation>
+<translation id="3153983908111684619">Cài đặt bị Brave VPN khóa khi Brave VPN được kết nối</translation>
+<translation id="6507543978646831931">Windows có tính năng Smart Multi-Homed Name Resolution có thể hiển thị thông tin về vị trí của bạn và các trang web bạn truy cập. Bây giờ bạn đã bật Brave VPN, chúng tôi đã thay đổi cài đặt DNS trong trình duyệt để bảo vệ khỏi sự lộ diện này. Các cài đặt sẽ vẫn có hiệu lực và bị khóa khi VPN được kết nối. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Không cảnh báo tôi về điều này nữa.</translation>
+<translation id="2740531572673183784">Ok</translation>
+<translation id="9061845622728745852">Múi giờ:</translation>
 <translation id="7586151660465233733">Thêm thị trường trên <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Xem thị trường và giao dịch tiền điện tử trên FTX</translation>
 <translation id="5963745988819586370">Thị trường</translation>

@@ -89,11 +89,6 @@
 <translation id="8303432794159193481">แอป Brave Browser Dev</translation>
 <translation id="8292967014767479012">แอป Brave Browser</translation>
 <translation id="4743468424889072281">แอป Brave Browser Development</translation>
-<translation id="732814027519296280">ต้องการให้ Brave Search ทำงานได้ดีขึ้นใช่ไหม</translation>
-<translation id="2677865600861971449">เข้าร่วมใน โปรเจ็กต์การค้นพบบนเว็บ เพื่อร่วมให้ข้อมูลการค้นหาและการเลือกดูแบบไม่ระบุตัวตน และช่วยปรับปรุงผลการค้นหาของ Brave Search ให้กับทุกๆ คน โดยรักษาความเป็นส่วนตัว และทำได้แบบง่ายๆ <ph name="LEARN_MORE_TEXT"/></translation>
-<translation id="6165508094623778733">ดูข้อมูลเพิ่มเติม</translation>
-<translation id="5860491529813859533">เปิด</translation>
-<translation id="780301667611848630">ไม่ ขอบคุณ</translation>
 <translation id="5039804452771397117">อนุญาต</translation>
 <translation id="7053983685419859001">บล็อก</translation>
 <translation id="1679356339067548863">ช่วยปรับปรุงความเสถียรของผลิตภัณฑ์ Brave โดยส่งรายงานการวินิจฉัยโดยอัตโนมัติเมื่อเบราว์เซอร์ Brave ขัดข้องหรือค้าง</translation>
@@ -116,6 +111,11 @@
 <translation id="5026874946691314267">ไม่ต้องแสดงสิ่งนี้อีก</translation>
 <translation id="5234764350956374838">ปิด</translation>
 <translation id="5100490448228945668">เปลี่ยนคอนเวอร์ชันการค้นหา Brave กด Enter เพื่อลบคำแนะนำนี้</translation>
+<translation id="9194637241566114638">ช่วยปรับปรุง <ph name="SEARCH_NAME"/> ด้วยการส่งข้อมูลการใช้งานแบบไม่ระบุชื่อ  <ph name="MORE_INFO"/></translation>
+<translation id="7404610376221341525">Brave Search</translation>
+<translation id="8184318863960255706">ข้อมูลเพิ่มเติม</translation>
+<translation id="6965382102122355670">ตกลง</translation>
+<translation id="780301667611848630">ไม่ ขอบคุณ</translation>
 <translation id="2515126961943087659">บริการโฆษณา BAT</translation>
 <translation id="7924918279836988121">บริการรายการเดินบัญชี Bat</translation>
 <translation id="6040143037577758943">ปิด</translation>
@@ -241,6 +241,7 @@
 <translation id="7859704718976024901">ประวัติการเรียกดู</translation>
 <translation id="8820817407110198400">บุ๊กมาร์ก</translation>
 <translation id="6333347122924254968">แสดงไอคอน Brave Rewards ในแถบที่อยู่</translation>
+<translation id="2245286910966863912">แสดงปุ่ม Brave News ในแถบที่อยู่</translation>
 <translation id="1811404036171336214">แสดงบุ๊กมาร์คบนหน้าแท็บใหม่</translation>
 <translation id="3416468988018290825">แสดง URL แบบเต็มเสมอ</translation>
 <translation id="5529693968082667490">แสดงปุ่มค้นหาแท็บ</translation>
@@ -335,6 +336,7 @@
 <translation id="5165042248369837294">อนุญาตให้ทวีตแบบฝังบน Twitter</translation>
 <translation id="958971637207126733">อนุญาตโพสต์แบบฝัง LinkedIn</translation>
 <translation id="8792121506918889955">นโยบายการจัดการ WebRTC IP</translation>
+<translation id="6165508094623778733">ดูข้อมูลเพิ่มเติม</translation>
 <translation id="1822560017823072927">อินเตอร์เฟซสาธารณะและส่วนตัวเริ่มต้น</translation>
 <translation id="5825943197137337319">เฉพาะหน้าอินเตอร์เฟซสาธารณะค่าเดิมเท่านั้น</translation>
 <translation id="1689062823386843231">ปิดการใช้งาน UDP ที่ไม่ใช่พร็อกซี่</translation>

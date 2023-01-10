@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">คุณสามารถเริ่มโทรแบบส่วนตัวใน Brave</translation>
 <translation id="4903286433687221248">เริ่มการโทรแบบไม่จำกัดกับเพื่อนและเพื่อนร่วมงานใน Brave Talk</translation>
 <translation id="7115051913071512405">ลองเลย</translation>
-<translation id="1447534717041828517">แสดงปุ่ม Brave News ที่แถบเครื่องมือ</translation>
 <translation id="370665806235115550">กำลังโหลด...</translation>
 <translation id="4634933166298842522">จัดการการสมัครสมาชิก</translation>
 <translation id="4108314971463891922">ติดตาม</translation>
@@ -548,7 +547,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4639659520811817892">เยี่ยมชม creators.brave.com เพื่อสมัครใช้งานวันนี้ และเริ่มได้รับ BAT จากแฟนและผู้ติดตาม</translation>
 <translation id="4816455138209470435">Brave รองรับ YouTube, Twitch, Vimeo และอื่นๆ อีกมากมาย!</translation>
 <translation id="3656941797339037856">เชื่อมโยง Rewards กับ Gemini!</translation>
-<translation id="31532096120351460">เทรดคริปโตได้มากกว่า 50+ เหรียญ รวมถึง BAT บน Gemini แพลตฟอร์มที่ปลอดภัยในการจัดเก็บคริปโตของคุณ นอกจากนี้คุณยังได้รับดอกเบี้ยในสหรัฐอเมริกา ฮ่องกง และสิงคโปร์อีกด้วย</translation>
+<translation id="2888702144235098855">เทรดคริปโตได้มากกว่า 50+ เหรียญ รวมถึง BAT บน Gemini แพลตฟอร์มที่ปลอดภัยในการจัดเก็บคริปโตของคุณ</translation>
 <translation id="7404779623219601861">แลก BAT เป็นบัตรของขวัญ</translation>
 <translation id="6215565499749144110">การใช้เครือข่าย TAP จะทำให้คุณแลก BAT เป็นบัตรของขวัญจากสินค้าแบรนด์เนมยอดนิยมได้</translation>
 <translation id="6915065518766963119">* ต้องตรวจสอบความถูกต้องกับ Uphold</translation>
@@ -750,7 +749,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2394961582378297792">ออกจากระบบ</translation>
 <translation id="6080167751812750226">ยกเลิกการเชื่อมต่อกับ <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">รายได้โดยประมาณ</translation>
-<translation id="4244985009709452836">ล็อกอินเข้าสู่บัญชี <ph name="PROVIDER"/> ของคุณ</translation>
+<translation id="7934950257968365573">ล็อกอินเข้าสู่บัญชี <ph name="PROVIDER"/> ของคุณ</translation>
 <translation id="2613359062756190460">ทิปครั้งเดียว</translation>
 <translation id="590733288489975971">Rewards จาก Ads</translation>
 <translation id="6181762795539107980">ยังไม่ยืนยัน</translation>
@@ -1292,11 +1291,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3898731124813934210">ซื้อกับ Wyre</translation>
 <translation id="5522073372365069684">ซื้อกับ Ramp</translation>
 <translation id="7902920577183739843">ซื้อด้วย Sardine</translation>
-<translation id="6534275647567011533">ซื้อกับ Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">ซื้อคริปโตด้วยบัตรวีซ่าหรือบัตรมาสเตอร์การ์ด</translation>
 <translation id="3101839349578102016">ซื้อทันทีผ่านบัญชีธนาคารของคุณด้วยค่าธรรมเนียมที่ต่ำกว่า</translation>
 <translation id="8528916244724490964">ทุกเครือข่าย</translation>
@@ -1551,19 +1548,26 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8265589281845759879">รถ</translation>
 <translation id="7577010593836079522">วัฒนธรรม</translation>
 <translation id="3706423975342040244">ความบันเทิง</translation>
+<translation id="3284069358246729581">ข่าวบันเทิง</translation>
 <translation id="1432147735538902155">แฟชั่น</translation>
+<translation id="3350377832708834609">ภาพยนตร์และทีวี</translation>
 <translation id="736592699917579616">อาหาร</translation>
 <translation id="5104499318017527547">ความสนุก</translation>
 <translation id="2228584369802328636">เกมมิ่ง</translation>
 <translation id="6941852195052765076">สุขภาพ</translation>
 <translation id="932327136139879170">หน้าแรก</translation>
+<translation id="5178222043222938163">เพลง</translation>
 <translation id="1322083935398004629">การเมือง</translation>
+<translation id="8739620487574841501">ข่าวท้องถิ่น</translation>
 <translation id="3872834068356954457">วิทยาศาสตร์</translation>
 <translation id="1264974993859112054">กีฬา</translation>
 <translation id="2283599456633275070">การเดินทาง</translation>
 <translation id="7487067081878637334">เทคโนโลยี</translation>
+<translation id="151743034625508713">ข่าวเทคโนโลยี</translation>
+<translation id="2388279876296929435">รีวิวเทคโนโลยี</translation>
 <translation id="5030268312472358928">ข่าวยอดนิยม</translation>
 <translation id="5510475084662028636">แหล่งข้อมูลยอดนิยม</translation>
+<translation id="1297570508541015874">ข่าวในสหรัฐอเมริกา</translation>
 <translation id="1459693405370120464">สภาพอากาศ</translation>
 <translation id="8366057325711477500">ข่าวทั่วโลก</translation>
 <translation id="6303294677342628402">ปกป้อง</translation>
@@ -1614,13 +1618,17 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2453860139492968684">เสร็จสิ้น</translation>
 <translation id="2273851479262317744">ตั้ง Brave เป็นเบราว์เซอร์เริ่มต้น</translation>
 <translation id="5037676449506322593">เลือกทั้งหมด</translation>
-<translation id="8330804319517911603">ช่วยปรับปรุง Brave</translation>
-<translation id="2867964979837593892">การปรับปรุงผลิตภัณฑ์ การปกป้องความเป็นส่วนตัว ทุกวัน</translation>
-<translation id="7661940959332108190">ส่งรายงานการวินิจฉัยถ้า Brave ขัดข้องหรือค้าง</translation>
-<translation id="6358373266071757311">แชร์ข้อมูลเชิงลึกของผลิตภัณฑ์แบบส่วนตัวและไม่ระบุชื่อซึ่งจะช่วยให้เราทราบว่าฟีเจอร์ใดของ Brave มีการใช้บ่อยที่สุด</translation>
+<translation id="5148943178722443958">ช่วยปรับปรุง Brave ให้ดีขึ้น</translation>
+<translation id="1097073572755862978">ส่งรายงานการวินิจฉัยหากคุณพบข้อขัดข้องหรืออาการค้าง<ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">แชร์ข้อมูลเชิงลึกของผลิตภัณฑ์แบบส่วนตัวและไม่ระบุชื่อ ซึ่งมีข้อมูลเกี่ยวกับคุณสมบัติที่ผู้ใช้ Brave ใช้<ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">การตั้งค่าเสร็จสมบูรณ์</translation>
 <translation id="3141206739023333979">เปลี่ยนตัวเลือกเหล่านี้ได้ทุกเวลาใน Brave ได้ที่ <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/></translation>
 <translation id="8321985064212130832">อ่านทั้งหมดของ <ph name="LINK_BEFORE"/>นโยบายความเป็นส่วนตัว<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">เลือกธีมของคุณ</translation>
+<translation id="6262510489122516114">คุณสามารถเปลี่ยนได้ทุกเมื่อในการตั้งค่า Brave</translation>
+<translation id="546481172717459539">การตั้งค่าระบบการจับคู่</translation>
+<translation id="7799817062559422778">โหมดสว่าง</translation>
+<translation id="4117637339509843559">โหมดมืด</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: เชื่อมต่อแล้ว</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: ตัดการเชื่อมต่อแล้ว</translation>
 <translation id="3541307549916475335">UI หน้าต่าง VPN ของ Brave</translation>
@@ -1666,7 +1674,12 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3307461350293459700">เชื่อมต่อ VPN ล้มเหลว โปรดลองเชื่อมต่ออีกครั้ง และโปรดคลิก อนุญาต เพื่อเปิดใช้งานการกำหนดค่า VPN ของ Brave</translation>
 <translation id="7261518280726313829">การปิด DNS รักษาความปลอดภัยหรือใช้เซิร์ฟเวอร์เริ่มต้นบน Windows อาจเปิดเผยชื่อเว็บไซต์ที่คุณเยี่ยมชมให้ผู้ให้บริการอินเทอร์เน็ตของคุณทราบได้ Brave จึงไม่แนะนำให้ดำเนินการเช่นนี้ คุณต้องการดำเนินการต่อหรือไม่</translation>
 <translation id="888284761945060750">DNS รักษาความปลอดภัยถูกปิดใช้งานตามนโยบายขององค์กรของคุณ การใช้ Brave VPN โดยไม่มี DNS รักษาความปลอดภัยอาจเปิดเผยชื่อเว็บไซต์ที่คุณเยี่ยมชมให้ผู้ให้บริการอินเทอร์เน็ตหรือองค์กรของคุณทราบได้</translation>
+<translation id="6593224083874259773">Brave VPN บน Windows</translation>
+<translation id="3153983908111684619">การตั้งค่าถูกล็อคโดย BraveVPN ในขณะที่เชื่อมต่อ</translation>
+<translation id="6507543978646831931">Windows มีคุณสมบัติที่เรียกว่า Smart Multi-Homed Name Resolution ซึ่งสามารถเปิดเผยข้อมูลเกี่ยวกับตำแหน่งของคุณและเว็บไซต์ที่คุณเยี่ยมชม เมื่อคุณเปิดใช้งาน Brave VPN แล้ว เราก็ได้ทำการเปลี่ยนการตั้งค่า DNS ในเบราว์เซอร์เพื่อป้องกันการเปิดเผยข้อมูลดังกล่าว โดยที่การตั้งค่าจะยังคงมีผลและถูกล็อคในขณะที่เชื่อมต่อ VPN <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">ไม่ต้องเตือนฉันอีก</translation>
+<translation id="2740531572673183784">Ok</translation>
+<translation id="9061845622728745852">เขตเวลา:</translation>
 <translation id="7586151660465233733">ตลาดซื้อขายเพิ่มเติมที่ <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">ดูตลาดซื้อขายและเทรดคริปโตบน FTX</translation>
 <translation id="5963745988819586370">ตลาดซื้อขาย</translation>

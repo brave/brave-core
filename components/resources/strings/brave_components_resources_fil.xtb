@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Puwede kang magsimula ng pribadong tawag sa Brave.</translation>
 <translation id="4903286433687221248">Magsimula ng mga unlimited na tawag sa mga kaibigan at kasamahan sa Brave Talk.</translation>
 <translation id="7115051913071512405">Subukan ito</translation>
-<translation id="1447534717041828517">Ipakita sa toolbar ang button ng Brave News</translation>
 <translation id="370665806235115550">Naglo-load...</translation>
 <translation id="4634933166298842522">Pamahalaan ang mga Subscription</translation>
 <translation id="4108314971463891922">I-follow</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Bisitahin ang creators.brave.com para mag-sign up ngayon at magsimulang kumita ng BAT mula sa mga fan at follower mo.</translation>
 <translation id="4816455138209470435">Sinusuportahan ng Brave ang YouTube, Twitch, Vimeo, at higit pa!</translation>
 <translation id="3656941797339037856">I-link ang Rewards sa Gemini!</translation>
-<translation id="31532096120351460">Mag-trade ng higit 50 cryptos, pati na BAT, sa Gemini. Ito ay isang ligtas na platform para ipunin ang iyong crypto. Higit sa lahat, maaari kang kumita ng interes sa US, HK, at SG.</translation>
+<translation id="2888702144235098855">Mag-trade ng 50+ crypto, kasama ang BAT, sa Gemini. Isa itong secure na platform para i-store ang iyong crypto.</translation>
 <translation id="7404779623219601861">I-redeem ang BAT para sa Mga Gift Card</translation>
 <translation id="6215565499749144110">Gamit ang TAP Network, mare-redeem mo ang iyong BAT para sa mga gift card ng mga sikat na tatak.</translation>
 <translation id="6915065518766963119">* Kailangan ng Pag-verify sa Uphold.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Na-log out</translation>
 <translation id="6080167751812750226">Idiskonekta mula sa <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Mga Tinatantyang Kita</translation>
-<translation id="4244985009709452836">Mag-log in sa iyong <ph name="PROVIDER"/> account</translation>
+<translation id="7934950257968365573">Mag-log in sa iyong <ph name="PROVIDER"/> account</translation>
 <translation id="2613359062756190460">Isang Beses na Pagbibigay ng Mga Tip</translation>
 <translation id="590733288489975971">Mga Reward mula sa Ads</translation>
 <translation id="6181762795539107980">Hindi na-verify</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Bumili gamit ang Wyre</translation>
 <translation id="5522073372365069684">Bumili gamit ang Ramp</translation>
 <translation id="7902920577183739843">Bumili gamit ang Sardine</translation>
-<translation id="6534275647567011533">Bumili gamit ang Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Bumili ng crypto gamit ang Visa o Mastercard.</translation>
 <translation id="3101839349578102016">Instant na bumili gamit ang iyong bank account. Mas mabababang fee.</translation>
 <translation id="8528916244724490964">Lahat ng Network</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Mga Kotse</translation>
 <translation id="7577010593836079522">Kultura</translation>
 <translation id="3706423975342040244">Entertainment</translation>
+<translation id="3284069358246729581">Entertainment News</translation>
 <translation id="1432147735538902155">Fashion</translation>
+<translation id="3350377832708834609">Film at TV</translation>
 <translation id="736592699917579616">Pagkain</translation>
 <translation id="5104499318017527547">Katuwaan</translation>
 <translation id="2228584369802328636">Laro</translation>
 <translation id="6941852195052765076">Kalusugan</translation>
 <translation id="932327136139879170">Home</translation>
+<translation id="5178222043222938163">Musika</translation>
 <translation id="1322083935398004629">Pulitika</translation>
+<translation id="8739620487574841501">Regional News</translation>
 <translation id="3872834068356954457">Agham</translation>
 <translation id="1264974993859112054">Pampalakasan</translation>
 <translation id="2283599456633275070">Paglalakbay</translation>
 <translation id="7487067081878637334">Teknolohiya</translation>
+<translation id="151743034625508713">Tech News</translation>
+<translation id="2388279876296929435">Tech Reviews</translation>
 <translation id="5030268312472358928">Nangungunang Balita</translation>
 <translation id="5510475084662028636">Mga Nangungunang Source</translation>
+<translation id="1297570508541015874">US News</translation>
 <translation id="1459693405370120464">Lagay ng Panahon</translation>
 <translation id="8366057325711477500">Balita sa Buong Mundo</translation>
 <translation id="6303294677342628402">Mga Shield</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">Tapos na</translation>
 <translation id="2273851479262317744">I-set ang Brave bilang default na browser</translation>
 <translation id="5037676449506322593">Piliin Lahat</translation>
-<translation id="8330804319517911603">Tumulong na pahusayin ang Brave</translation>
-<translation id="2867964979837593892">Isinasaayos ang produkto. Pinoprotektahan ang privacy mo. Araw-araw.</translation>
-<translation id="7661940959332108190">Magpadala ng mga ulat sa diagnostics kung magka-crash o magfi-freeze ang Brave.</translation>
-<translation id="6358373266071757311">Magpadala ng mga anonymous at pribadong insight sa produkto. Matutulungan kami nito na malaman kung anong mga feature ng Brave ang pinakamadalas gamitin.</translation>
+<translation id="5148943178722443958">Tumulong na pagandahin ang Brave.</translation>
+<translation id="1097073572755862978">Magpadala ng mga diagnostic report kung nakakaranas ka ng pag-crash o pag-freeze. <ph name="LINK_BEFORE"/>Alamin pa.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Mag-share ng ganap na pribado at anonymous na mga insight sa produkto tungkol sa kung anong mga feature ang ginagamit ng mga user ng Brave. <ph name="LINK_BEFORE"/>Alamin pa.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Kumpleto na ang pag-set up</translation>
 <translation id="3141206739023333979">Baguhin ang mga pagpiling ito anumang oras sa Brave sa <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Basahin ang aming buong <ph name="LINK_BEFORE"/>Patakaran sa Privacy<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">Piliin ang iyong tema</translation>
+<translation id="6262510489122516114">Puwede mo itong baguhin anumang oras sa Brave settings.</translation>
+<translation id="546481172717459539">I-match sa system setting</translation>
+<translation id="7799817062559422778">Light mode</translation>
+<translation id="4117637339509843559">Dark mode</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: Nakakonekta</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: Na-disconnect</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">Hindi nakakonekta sa VPN. Pakisubukang kumonekta ulit, at tiyaking i-click ang Payagan para i-on ang VPN configuration ng Brave.</translation>
 <translation id="7261518280726313829">Kapag na-off ang secure DNS o gumagamit ng mga default na server sa Windows, maaaring ipakita nito ang pangalan ng mga site na binisita mo sa iyong Internet service provider. Hindi inirerekomenda ng Brave na gawin ito. Gusto mo pa rin ba itong gawin?</translation>
 <translation id="888284761945060750">Na-disable ng mga patakaran ng iyong organisasyon ang Secure DNS. Ang paggamit sa Brave VPN nang walang Secure DNS ay maaaring magpakita sa mga pangalan ng mga site na binibisita mo sa iyong Internet service provider o organisasyon.</translation>
+<translation id="6593224083874259773">Brave VPN sa Windows</translation>
+<translation id="3153983908111684619">Ang setting ay na-lock ng BraveVPN habang nakakonekta ito</translation>
+<translation id="6507543978646831931">Ang Windows ay may feature na tinatawag na Smart Multi-Homed Name Resolution, na maaaring magpakita ng impormasyon tungkol sa iyong lokasyon at mga site na binibisita mo. Ngayong na-enable mo na ang Brave VPN, pinalitan namin ang DNS settings sa browser para protektahan ka laban sa exposure na ito. Ang mga setting ay mananatiling may bisa at naka-lock habang nakakonekta ang VPN. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Huwag na akong balaan tungkol dito.</translation>
+<translation id="2740531572673183784">Ok</translation>
+<translation id="9061845622728745852">Timezone:</translation>
 <translation id="7586151660465233733">Higit pang merkado sa <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Tumingin ng mga merkado at mag-trade ng crypto sa FTX</translation>
 <translation id="5963745988819586370">Mga Merkado</translation>

@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">У Brave можна зробити приватний дзвінок.</translation>
 <translation id="4903286433687221248">Насолоджуйтеся необмеженими викликами разом із друзями та колегами в Brave Talk.</translation>
 <translation id="7115051913071512405">Спробуйте</translation>
-<translation id="1447534717041828517">Відображати кнопку Brave News на панелі інструментів</translation>
 <translation id="370665806235115550">Завантаження...</translation>
 <translation id="4634933166298842522">Керування підписками</translation>
 <translation id="4108314971463891922">Стежити</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Перейдіть на сайт creators.brave.com, щоб почати заробляти BAT від прихильників і підписників.</translation>
 <translation id="4816455138209470435">Brave підтримує YouTube, Twitch, Vimeo та інші сервіси!</translation>
 <translation id="3656941797339037856">Прив’яжіть Rewards до Gemini!</translation>
-<translation id="31532096120351460">Торгуйте більш ніж 50 криптовалютами, зокрема BAT, на Gemini. Це надійна платформа для зберігання криптовалют. Крім того, ви можете заробляти в доларах США, Гонконгу та Сінгапура.</translation>
+<translation id="2888702144235098855">Торгуйте понад 50 криптовалютами, зокрема BAT, на Gemini. Це безпечна платформа для зберігання криптовалюти.</translation>
 <translation id="7404779623219601861">Отримати BAT за Подарункові картки</translation>
 <translation id="6215565499749144110">З Мережею TAP ви можете отримати свої BAT за подарункові картки популярного іменного бренду.</translation>
 <translation id="6915065518766963119">* Потрібна підтверджувальна верифікація</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Вихід виконано</translation>
 <translation id="6080167751812750226">Від’єднатися від <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Розрахункова сума надходжень</translation>
-<translation id="4244985009709452836">Увійти до облікового запису <ph name="PROVIDER"/></translation>
+<translation id="7934950257968365573">Увійти до облікового запису <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Разові чайові</translation>
 <translation id="590733288489975971">Винагороди за рекламні оголошення</translation>
 <translation id="6181762795539107980">Не підтверджено</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Купити через Wyre</translation>
 <translation id="5522073372365069684">Купити через Ramp</translation>
 <translation id="7902920577183739843">Купуйте разом із Sardine</translation>
-<translation id="6534275647567011533">Купити через Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Купуйте криптовалюту за допомогою карток Visa або Mastercard.</translation>
 <translation id="3101839349578102016">Миттєва покупка за допомогою банківського рахунку. Нижчі комісії.</translation>
 <translation id="8528916244724490964">Усі мережі</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Автомобілі</translation>
 <translation id="7577010593836079522">Культура</translation>
 <translation id="3706423975342040244">Розваги</translation>
+<translation id="3284069358246729581">Новини розваг</translation>
 <translation id="1432147735538902155">Мода</translation>
+<translation id="3350377832708834609">Кіно й ТБ</translation>
 <translation id="736592699917579616">Їжа</translation>
 <translation id="5104499318017527547">Розваги</translation>
 <translation id="2228584369802328636">Ігри</translation>
 <translation id="6941852195052765076">Здоров’я</translation>
 <translation id="932327136139879170">Домашня сторінка</translation>
+<translation id="5178222043222938163">Музика</translation>
 <translation id="1322083935398004629">Політика</translation>
+<translation id="8739620487574841501">Регіональні новини</translation>
 <translation id="3872834068356954457">Наука</translation>
 <translation id="1264974993859112054">Спорт</translation>
 <translation id="2283599456633275070">Подорожі</translation>
 <translation id="7487067081878637334">Технології</translation>
+<translation id="151743034625508713">Новини технологій</translation>
+<translation id="2388279876296929435">Огляди технологій</translation>
 <translation id="5030268312472358928">Популярні новини</translation>
 <translation id="5510475084662028636">Популярні джерела</translation>
+<translation id="1297570508541015874">Новини США</translation>
 <translation id="1459693405370120464">Погода</translation>
 <translation id="8366057325711477500">Світові новини</translation>
 <translation id="6303294677342628402">Щити</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">Готово</translation>
 <translation id="2273851479262317744">Установити Brave як браузер за замовчуванням</translation>
 <translation id="5037676449506322593">Вибрати все</translation>
-<translation id="8330804319517911603">Допоможіть поліпшити Brave</translation>
-<translation id="2867964979837593892">Персоналізація продукту та захист вашої конфіденційності щодня.</translation>
-<translation id="7661940959332108190">Надсилання звітів для діагностики у разі припинення роботи або затримок Brave.</translation>
-<translation id="6358373266071757311">Анонімно діліться приватною інформацією про продукт. Це допоможе нам дізнатися, які функції Brave використовуються найчастіше.</translation>
+<translation id="5148943178722443958">Допоможіть поліпшити Brave.</translation>
+<translation id="1097073572755862978">Надсилайте діагностичні звіти за аварійного завершення роботи чи зависання. <ph name="LINK_BEFORE"/>Детальніше.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Діліться цілком приватними й анонімними відомостями про те, які функції використовуються користувачами Brave. <ph name="LINK_BEFORE"/>Детальніше.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Налаштування завершено</translation>
 <translation id="3141206739023333979">Ці налаштування можна будь-коли змінити в Brave, перейшовши до розділу <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Прочитати <ph name="LINK_BEFORE"/>Політику конфіденційности<ph name="LINK_AFTER"/> повністю</translation>
+<translation id="2801098717523961746">Вибрати тему</translation>
+<translation id="6262510489122516114">Змінюйте параметри в будь-який час у налаштуваннях Brave.</translation>
+<translation id="546481172717459539">Установити системні налаштування</translation>
+<translation id="7799817062559422778">Світлий режим</translation>
+<translation id="4117637339509843559">Темний режим</translation>
 <translation id="7821773512278295352">Брандмауер Brave + VPN підключено</translation>
 <translation id="6019088868713395120">Брандмауер Brave + VPN відключено</translation>
 <translation id="3541307549916475335">Інтерфейс панелі VPN Brave</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">Помилка під’єднання VPN. Спробуйте ще раз, перевірте, щоб було ввімкнено налаштування «Дозволити вмикати Brave VPN».</translation>
 <translation id="7261518280726313829">Якщо буде вимкнено безпечний сервер DNS або використовуватимуться стандартні сервери у Windows, то ваш інтернет-оператор зможе побачити адреси переглянутих вами сайтів. Brave не радить так робити. Однаково вимкнути?</translation>
 <translation id="888284761945060750">Безпечний сервер DNS вимкнено політиками вашої організації. Якщо ви використовуватимете VPN Brave без безпечного сервера DNS, то ваш інтернет-оператор або організація зможуть побачити адреси переглянутих вами сайтів.</translation>
+<translation id="6593224083874259773">Brave VPN на Windows</translation>
+<translation id="3153983908111684619">Параметр заблоковано BraveVPN під час підключення</translation>
+<translation id="6507543978646831931">У Windows є функція під назвою Smart Multi-Homed Name Resolution (покращене багатоадресне розширення імен), що може передавати інформацію про ваше розташування на сайти, які ви відвідуєте. Після ввімкнення Brave VPN ми змінили параметри DNS у браузері, щоб захистити їх від передачі. Параметр буде ввімкненим, доки підключено VPN. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Більше не попереджати мене про це.</translation>
+<translation id="2740531572673183784">OK</translation>
+<translation id="9061845622728745852">Часовий пояс:</translation>
 <translation id="7586151660465233733">Більше ринків на <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Перегляд ринків і бірж криптовалют на FTX</translation>
 <translation id="5963745988819586370">Ринки</translation>

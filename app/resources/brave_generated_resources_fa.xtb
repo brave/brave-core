@@ -88,11 +88,6 @@
 <translation id="8303432794159193481">برنامه‌های Dev مرورگر Brave</translation>
 <translation id="8292967014767479012">برنامه‌های مرورگر Brave</translation>
 <translation id="4743468424889072281">برنامه‌های Development مرورگر Brave</translation>
-<translation id="732814027519296280">می‌خواهید جستجوی Brave را حتی بهتر از این کنید؟</translation>
-<translation id="2677865600861971449">برای مشارکت ناشناس در ارائه برخی داده‌های جستجو و مرور، و بهبود نتایج جستجوی Brave برای همه، در «پروژه کشف وب» شرکت کنید. حفظ حریم خصوصی. بدون هیچ دردسری. <ph name="LEARN_MORE_TEXT"/></translation>
-<translation id="6165508094623778733">بیشتر بدانید</translation>
-<translation id="5860491529813859533">روشن کردن</translation>
-<translation id="780301667611848630">نه متشکرم</translation>
 <translation id="5039804452771397117">اجازه دادن</translation>
 <translation id="7053983685419859001">مسدود کردن</translation>
 <translation id="1679356339067548863">وقتی «مروگر Brave» خراب یا متوقف می‌شود، با ارسال خودکار گزارش‌های عیب‌یابی به بهبود پایداری محصول Brave کمک کنید.</translation>
@@ -115,6 +110,11 @@
 <translation id="5026874946691314267">این مورد دیگر نشان داده نشود</translation>
 <translation id="5234764350956374838">لغو کردن</translation>
 <translation id="5100490448228945668">تبدیل جستجوی Brave را ببندید، کلید Enter را فشار دهید تا این پیشنهاد حذف شود</translation>
+<translation id="9194637241566114638">با ارسال داده‌های استفاده ناشناس، به بهبود <ph name="SEARCH_NAME"/> کمک کنید. <ph name="MORE_INFO"/></translation>
+<translation id="7404610376221341525">جستجوی Brave</translation>
+<translation id="8184318863960255706">اطلاعات بیشتر</translation>
+<translation id="6965382102122355670">قبول</translation>
+<translation id="780301667611848630">نه متشکرم</translation>
 <translation id="2515126961943087659">سرویس آگهی‌های Bat</translation>
 <translation id="7924918279836988121">سرویس بت لجر</translation>
 <translation id="6040143037577758943">بستن</translation>
@@ -240,6 +240,7 @@
 <translation id="7859704718976024901">سابقه مرور</translation>
 <translation id="8820817407110198400">نشانک‌ها</translation>
 <translation id="6333347122924254968">نمایش نماد Brave Rewards در نوار نشانی</translation>
+<translation id="2245286910966863912">نمایش دکمه Brave News در نوار آدرس</translation>
 <translation id="1811404036171336214">نشانک‌ها همیشه در صفحه برگه جدید نمایش داده شود</translation>
 <translation id="3416468988018290825">همیشه آدرس وب کامل نشان داده شود</translation>
 <translation id="5529693968082667490">نمایش دکمه جستجوی زبانه‌ها</translation>
@@ -334,6 +335,7 @@
 <translation id="5165042248369837294">مجاز کردن توییت‌های جاسازی‌شده Twitter</translation>
 <translation id="958971637207126733">مجاز کردن پست‌های جاسازی‌شده LinkedIn</translation>
 <translation id="8792121506918889955">خط‌مشی مدیریت WebRTC IP</translation>
+<translation id="6165508094623778733">بیشتر بدانید</translation>
 <translation id="1822560017823072927">رابط‌های عمومی و خصوصی پیش‌فرض</translation>
 <translation id="5825943197137337319">فقط رابط عمومی پیش‌فرض</translation>
 <translation id="1689062823386843231">غیرفعال کردن UDP غیرپروکسی</translation>
