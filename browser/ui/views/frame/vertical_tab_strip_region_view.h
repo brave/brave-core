@@ -99,7 +99,7 @@ class VerticalTabStripRegionView : public views::View,
   void ScheduleFloatingModeTimer();
 
   gfx::Size GetPreferredSizeForState(State state) const;
-  int GetPreferredWidthForState(State state) const;
+  int GetPreferredWidthForState(State state, bool include_border) const;
 
   // Returns valid object only when the related flag is enabled.
   TabStripScrollContainer* GetTabStripScrollContainer();

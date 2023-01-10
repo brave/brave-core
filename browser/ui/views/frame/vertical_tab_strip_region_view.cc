@@ -345,8 +345,8 @@ void VerticalTabStripRegionView::SetState(State state) {
   state_ = state;
 
   region_view_->tab_strip_->SetAvailableWidthCallback(base::BindRepeating(
-      &VerticalTabStripRegionView::GetPreferredWidthForState,
-      base::Unretained(this), state_));
+      &VerticalTabStripRegionView::GetAvailableWidthForTabContainer,
+      base::Unretained(this)));
   region_view_->tab_strip_->tab_container_->InvalidateIdealBounds();
 
   PreferredSizeChanged();
@@ -374,7 +374,7 @@ gfx::Vector2d VerticalTabStripRegionView::GetOffsetForDraggedTab() const {
 }
 
 int VerticalTabStripRegionView::GetAvailableWidthForTabContainer() {
-  return GetPreferredWidthForState(state_);
+  return GetPreferredWidthForState(state_, /*include_border=*/false);
 }
 
 gfx::Size VerticalTabStripRegionView::CalculatePreferredSize() const {
@@ -581,18 +581,22 @@ gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
   if (IsTabFullscreen())
     return {};
 
-  return {GetPreferredWidthForState(state),
+  return {GetPreferredWidthForState(state, /*include_border=*/true),
           View::CalculatePreferredSize().height()};
 }
 
-int VerticalTabStripRegionView::GetPreferredWidthForState(State state) const {
+int VerticalTabStripRegionView::GetPreferredWidthForState(
+    State state,
+    bool include_border) const {
   if (state == State::kExpanded || state == State::kFloating)
-    return TabStyle::GetStandardWidth() + GetInsets().width();
+    return TabStyle::GetStandardWidth() +
+           (include_border ? GetInsets().width() : 0);
 
   DCHECK_EQ(state, State::kCollapsed)
       << "If a new state was added, " << __FUNCTION__
       << " should be revisited.";
-  return tabs::kVerticalTabMinWidth + GetInsets().width();
+  return tabs::kVerticalTabMinWidth +
+         (include_border ? GetInsets().width() : 0);
 }
 
 TabStripScrollContainer*
@@ -639,7 +643,7 @@ void VerticalTabStripRegionView::ScrollActiveTabToBeVisible() {
 
   auto visible_rect = scroll_view_->GetVisibleRect();
   if (visible_rect.Contains(gfx::Rect(0, tab_bounds_in_contents_view.y(),
-                                      tab_bounds_in_contents_view.width(),
+                                      1 /*in order to ignore width */,
                                       tab_bounds_in_contents_view.height()))) {
     return;
   }
