@@ -53,6 +53,7 @@
 <translation id="7798069806040634998">Brave deve avere accesso allo spazio di archiviazione per poter scaricare file</translation>
 <translation id="8447483940522230788">Supporto Brave</translation>
 <translation id="7291143854620707672">Tutti i dati di Brave generati durante l'utilizzo di questo profilo (come i preferiti, la cronologia, le password e altre impostazioni) possono essere rimossi dall'amministratore del profilo di lavoro. <ph name="LEARN_MORE"/></translation>
+<translation id="6252796827759111076">Continua a utilizzare Brave</translation>
 <translation id="7387051847644272380">Durante l'installazione si è verificato un errore del sistema operativo. Scarica di nuovo Brave.</translation>
 <translation id="2648689842065142443">Se condividi un dispositivo, i tuoi amici e la tua famiglia possono navigare separatamente e configurare Brave in base alle proprie esigenze</translation>
 <translation id="5926459996518749366">Brave ha bloccato questo file di archivio perché potrebbe nascondere malware</translation>
@@ -93,6 +94,7 @@
 <translation id="2645435784669275700">Chrome OS</translation>
 <translation id="2297290224191497273">Vuoi passare a un profilo Brave esistente?</translation>
 <translation id="3412460710772753638">In Gestore delle password su questo dispositivo</translation>
+<translation id="616005907576404509">{COUNT,plural, =1{L'amministratore ha configurato Brave affinché si chiuda se è inattivo per più di 1 minuto.}other{L'amministratore ha configurato Brave affinché si chiuda se è inattivo per più di # minuti.}}</translation>
 <translation id="2450003541323895471">Con i profili Brave puoi separare tutti i tuoi contenuti di Brave. Crea profili per amici e familiari oppure dividi i dati di lavoro e i contenuti di svago.</translation>
 <translation id="9216183508558772570">Brave ti invierà una notifica quando accederai con una password compromessa</translation>
 <translation id="5853262807109651878">Verranno eliminati <ph name="ITEMS_COUNT"/> elementi da questo dispositivo. Per recuperare i dati in un secondo momento, accedi a Brave come <ph name="USER_EMAIL"/>.</translation>
@@ -170,6 +172,7 @@
 <translation id="7021823858304886493">Consenti l'accesso a Brave</translation>
 <translation id="5536657158619734169">È disponibile una nuova versione di Brave.</translation>
 <translation id="5267531627648004734">Rimuovi da Brave</translation>
+<translation id="2783637305317815247">{0,plural, =0{Brave verrà chiuso adesso.}=1{Brave verrà chiuso tra 1 secondo.}other{Brave verrà chiuso tra # secondi.}}</translation>
 <translation id="239760341987199724">Imposta Brave come browser predefinito</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave beta</translation>
 <translation id="894936507076470937">Brave potrebbe non funzionare correttamente perché non è più supportato su questa distribuzione Linux</translation>
@@ -256,6 +259,7 @@ Alcune funzioni potrebbero non essere disponibili. Specifica un'altra directory 
 <translation id="126871877963043118">Quando sono attive le prove, Ad measurement consente ai siti che visiti di chiedere a Brave informazioni che li aiutino a valutare il rendimento dei loro annunci. Ad measurement limita il tracciamento tra siti trasferendo il minor numero possibile di informazioni tra i siti.</translation>
 <translation id="4392161457256085190">Dopodiché, un sito che visiti può chiedere a Brave di conoscere i tuoi interessi per personalizzare gli annunci che ti vengono mostrati. Brave può condividere fino a 3 interessi.</translation>
 <translation id="6418340404893954563">Le password inefficaci sono facili da indovinare. Consenti a Brave di <ph name="BEGIN_LINK"/>creare e memorizzare password efficaci per te<ph name="END_LINK"/>.</translation>
+<translation id="196626648343945705">Brave non è attivo</translation>
 <translation id="3453763134178591239">Termini di Chrome OS</translation>
 <translation id="3335606533094650083">Per questo sito Brave ha bisogno dell'autorizzazione ad accedere al microfono</translation>
 <translation id="7025789849649390912">Installazione interrotta.</translation>

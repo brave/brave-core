@@ -53,6 +53,7 @@
 <translation id="7798069806040634998">Pārlūkam Brave ir nepieciešama piekļuve krātuvei, lai varētu lejupielādēt failus.</translation>
 <translation id="8447483940522230788">Brave palīgs</translation>
 <translation id="7291143854620707672">Darba profila administrators var noņemt šī profila lietošanas laikā ģenerētos Brave datus (piemēram, grāmatzīmes, vēsturi, paroles un citus iestatījumus). <ph name="LEARN_MORE"/></translation>
+<translation id="6252796827759111076">Turpināt lietot Brave</translation>
 <translation id="7387051847644272380">Instalācijas laikā radās operētājsistēmas kļūda. Lejupielādējiet Brave vēlreiz.</translation>
 <translation id="2648689842065142443">Ja ierīci izmanto arī jūsu draugi un ģimenes locekļi, viņi var iestatīt pārlūku Brave atbilstoši savām vēlmēm un pārlūkot saturu atsevišķos profilos.</translation>
 <translation id="5926459996518749366">Pārlūkā Brave šis arhīva fails tika bloķēts, jo tas var slēpt ļaunprātīgu programmatūru.</translation>
@@ -93,6 +94,7 @@
 <translation id="2645435784669275700">Brave OS</translation>
 <translation id="2297290224191497273">Vai pāriet uz esošo Brave profilu?</translation>
 <translation id="3412460710772753638">Tā tiks atjaunināta Paroļu pārvaldniekā šajā ierīcē</translation>
+<translation id="616005907576404509">{COUNT,plural, =1{Administrators ir konfigurējis Brave, lai tas tiktu aizvērts, ja tas ir neaktīvs ilgāk par 1 minūti.}zero{Administrators ir konfigurējis Brave, lai tas tiktu aizvērts, ja tas ir neaktīvs ilgāk par # minūtēm.}one{Administrators ir konfigurējis Brave, lai tas tiktu aizvērts, ja tas ir neaktīvs ilgāk par # minūti.}other{Administrators ir konfigurējis Brave, lai tas tiktu aizvērts, ja tas ir neaktīvs ilgāk par # minūtēm.}}</translation>
 <translation id="2450003541323895471">Izmantojot Brave profilus, varat nodalīt visu savu Brave saturu. Izveidojiet profilus draugiem un ģimenes locekļiem vai nodaliet darba un izklaides saturu.</translation>
 <translation id="9216183508558772570">Ja pierakstīsieties ar uzlauztu paroli, pārlūkprogrammā Brave tiks parādīts paziņojums</translation>
 <translation id="5853262807109651878">Veicot šo darbību, no šīs ierīces tiks dzēsts(-i) <ph name="ITEMS_COUNT"/> vienums(-i). Lai vēlāk izgūtu datus, pierakstieties pārlūkā Brave kā <ph name="USER_EMAIL"/>.</translation>
@@ -170,6 +172,7 @@
 <translation id="7021823858304886493">Atļaut pierakstīties pārlūkā Brave</translation>
 <translation id="5536657158619734169">Pieejama jauna Brave versija.</translation>
 <translation id="5267531627648004734">Noņemt no pārlūka Brave</translation>
+<translation id="2783637305317815247">{0,plural, =0{Brave tūlīt tiks aizvērts.}=1{Brave tiks aizvērts pēc 1 sekundes.}zero{Brave tiks aizvērts pēc # sekundēm.}one{Brave tiks aizvērts pēc # sekundes.}other{Brave tiks aizvērts pēc # sekundēm.}}</translation>
 <translation id="239760341987199724">Iestatīt Brave kā noklusējuma pārlūku</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> — Brave beta versija</translation>
 <translation id="894936507076470937">Iespējams, pārlūks Brave nedarbosies pareizi, jo tas vairs netiek atbalstīts šajā Linux izdevumā.</translation>
@@ -256,6 +259,7 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="126871877963043118">Kad izmēģināšana ir ieslēgta, reklāmu izvērtēšana ļauj jūsu apmeklētajām vietnēm pieprasīt informāciju no Brave, lai efektīvāk novērtētu vietnēs rādīto reklāmu veiktspēju. Reklāmu izvērtēšana ierobežo starpvietņu izsekošanu, pārsūtot starp vietnēm pēc iespējas mazāk informācijas.</translation>
 <translation id="4392161457256085190">Vēlāk kāda jūsu apmeklēta vietne var pieprasīt pārlūkam Brave atļauju skatīt jūsu intereses, lai personalizētu jums rādāmās reklāmas. Pārlūks Brave var kopīgot līdz trim interesēm.</translation>
 <translation id="6418340404893954563">Nedrošas paroles ir viegli uzminēt. Pārlūkā Brave <ph name="BEGIN_LINK"/>var automātiski veidot un iegaumēt drošas paroles jūsu kontiem<ph name="END_LINK"/>.</translation>
+<translation id="196626648343945705">Brave nav aktīvs</translation>
 <translation id="3453763134178591239">Brave OS noteikumi</translation>
 <translation id="3335606533094650083">Pārlūkam Brave ir nepieciešama atļauja piekļūt jūsu mikrofonam šajā vietnē.</translation>
 <translation id="7025789849649390912">Instalēšana apturēta.</translation>

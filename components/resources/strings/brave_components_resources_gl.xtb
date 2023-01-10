@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Podes iniciar unha chamada privada en Brave.</translation>
 <translation id="4903286433687221248">Chama sen límite a amigos e compañeiros con Brave Talk.</translation>
 <translation id="7115051913071512405">Próbao</translation>
-<translation id="1447534717041828517">Mostrar o botón Noticias de Brave na barra de ferramentas</translation>
 <translation id="370665806235115550">Cargando...</translation>
 <translation id="4634933166298842522">Xestionar subscricións</translation>
 <translation id="4108314971463891922">Seguir</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Visita creators.brave.com para rexistrarte hoxe e comezar a recibir BAT dos teus fans e seguidores.</translation>
 <translation id="4816455138209470435">Brave é compatible con YouTube, Twitch, Vimeo e moitas máis plataformas!</translation>
 <translation id="3656941797339037856">Liga Brave Rewards con Gemini!</translation>
-<translation id="31532096120351460">Comercia con máis de 50 criptomoedas, como BAT, en Gemini. Trátase dunha plataforma segura na que podes almacenar as túas criptomoedas e, ademais, gañar intereses en dólares de EE. UU., Hong Kong y Singapur.</translation>
+<translation id="2888702144235098855">Comercia con máis de 50 criptomoedas, como BAT, en Gemini. Trátase dunha plataforma segura na que podes almacenar as túas criptomoedas.</translation>
 <translation id="7404779623219601861">Cambiar BAT para tarxetas regalo</translation>
 <translation id="6215565499749144110">Con TAP Network, podes canxear a túa BAT para tarxetas regalo de marca popular.</translation>
 <translation id="6915065518766963119">* Requírese a verificación de espera.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Sesión pechada</translation>
 <translation id="6080167751812750226">Desconectar de <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Ingresos estimados</translation>
-<translation id="4244985009709452836">Inicia sesión na túa conta de <ph name="PROVIDER"/></translation>
+<translation id="7934950257968365573">Inicia sesión na túa conta de <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Consellos para unha soa vez</translation>
 <translation id="590733288489975971">Recompensas de Brave Ads</translation>
 <translation id="6181762795539107980">Non verificada</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Comprar con Wyre</translation>
 <translation id="5522073372365069684">Comprar con Ramp</translation>
 <translation id="7902920577183739843">Comprar con Sardine</translation>
-<translation id="6534275647567011533">Comprar con Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Compra criptomoedas con Visa ou Mastercard.</translation>
 <translation id="3101839349578102016">Compra de xeito instantáneo coa túa conta bancaria e goza de taxas máis baixas.</translation>
 <translation id="8528916244724490964">Todas as redes</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Coches</translation>
 <translation id="7577010593836079522">Cultura</translation>
 <translation id="3706423975342040244">Entretemento</translation>
+<translation id="3284069358246729581">Noticias de entretemento</translation>
 <translation id="1432147735538902155">Moda</translation>
+<translation id="3350377832708834609">Cine e TV</translation>
 <translation id="736592699917579616">Alimentación</translation>
 <translation id="5104499318017527547">Diversión</translation>
 <translation id="2228584369802328636">Videoxogos</translation>
 <translation id="6941852195052765076">Saúde</translation>
 <translation id="932327136139879170">Inicio</translation>
+<translation id="5178222043222938163">Música</translation>
 <translation id="1322083935398004629">Política</translation>
+<translation id="8739620487574841501">Noticias rexionais</translation>
 <translation id="3872834068356954457">Ciencia</translation>
 <translation id="1264974993859112054">Deportes</translation>
 <translation id="2283599456633275070">Viaxes</translation>
 <translation id="7487067081878637334">Tecnoloxía</translation>
+<translation id="151743034625508713">Noticias sobre tecnoloxía</translation>
+<translation id="2388279876296929435">Revisións tecnolóxicas</translation>
 <translation id="5030268312472358928">Noticias destacadas</translation>
 <translation id="5510475084662028636">Fontes destacadas</translation>
+<translation id="1297570508541015874">Noticias de Estados Unidos</translation>
 <translation id="1459693405370120464">Tempo</translation>
 <translation id="8366057325711477500">Noticias internacionais</translation>
 <translation id="6303294677342628402">Escudos</translation>
@@ -1613,13 +1617,17 @@ Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</tra
 <translation id="2453860139492968684">Finalizar</translation>
 <translation id="2273851479262317744">Establece Brave como navegador predefinido</translation>
 <translation id="5037676449506322593">Seleccionar todo</translation>
-<translation id="8330804319517911603">Axúdanos a mellorar Brave</translation>
-<translation id="2867964979837593892">Optimizamos o produto e protexemos a túa privacidade día a día.</translation>
-<translation id="7661940959332108190">Enviar informes de diagnóstico se Brave ten algún fallo ou bloqueo.</translation>
-<translation id="6358373266071757311">Comparte opinións sobre os produtos de xeito anónimo e privado. Así, poderemos saber cales son as funcións de Brave que se utilizan con máis frecuencia.</translation>
+<translation id="5148943178722443958">Axúdanos a mellorar Brave.</translation>
+<translation id="1097073572755862978">Envía informes de diagnóstico anónimos se tes algún fallo ou bloqueo. <ph name="LINK_BEFORE"/>Máis información.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Comparte de xeito totalmente privado e anónimo a túa opinión sobre as funcións que usan os usuarios de Brave. <ph name="LINK_BEFORE"/>Máis información.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Configuración completada</translation>
 <translation id="3141206739023333979">Cambia estas opcións cando queiras na sección <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/> de Brave.</translation>
 <translation id="8321985064212130832">Le a nosa <ph name="LINK_BEFORE"/>política de privacidade<ph name="LINK_AFTER"/> de principio a fin</translation>
+<translation id="2801098717523961746">Selecciona o teu tema</translation>
+<translation id="6262510489122516114">Podes cambiar isto en calquera momento na configuración de Brave.</translation>
+<translation id="546481172717459539">Adaptarse á configuración do sistema</translation>
+<translation id="7799817062559422778">Modo claro</translation>
+<translation id="4117637339509843559">Modo escuro</translation>
 <translation id="7821773512278295352">Firewall + VPN de Brave: conectado</translation>
 <translation id="6019088868713395120">Firewall + VPN de Brave: desconectado</translation>
 <translation id="3541307549916475335">IU do panel de VPN de Brave</translation>
@@ -1665,7 +1673,12 @@ Bloqueáronse <ph name="NUMBER"/> rastreadores, anuncios e demais elementos</tra
 <translation id="3307461350293459700">Non foi posible a conexión coa VPN. Téntao de novo e non esquezas facer clic en Permitir para activar a configuración da VPN de Brave.</translation>
 <translation id="7261518280726313829">Se desactivas o DNS seguro ou usas os servidores predefinidos de Windows, pode que o teu fornecedor de servizos de Internet teña acceso aos nomes dos sitios que visitas, cousa que Brave desaconsella. Queres facelo igualmente?</translation>
 <translation id="888284761945060750">O DNS seguro está desactivado por mor das políticas da túa organización. Se usas VPN de Brave sen DNS seguro, pode que o teu fornecedor de servizos de Internet ou a túa organización teñan acceso aos nomes dos sitios que visitas.</translation>
+<translation id="6593224083874259773">VPN de Brave en Windows</translation>
+<translation id="3153983908111684619">A configuración estará bloqueada mentres estea conectada a VPN de Brave</translation>
+<translation id="6507543978646831931">Windows ten unha función chamada "Resolución intelixente de nomes de hosts múltiples" que pode expoñer información sobre a túa localización e os sitios que visitas. Posto que activaches a VPN de Brave, cambiamos a configuración de DNS no navegador para protexerte desta exposición. A configuración manterase bloqueada mentres estea conectada a VPN. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Non advertirme de novo sobre isto.</translation>
+<translation id="2740531572673183784">Vale</translation>
+<translation id="9061845622728745852">Fuso horario:</translation>
 <translation id="7586151660465233733">Máis contratos en <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Consulta os contratos e comercia con criptomoedas en FTX</translation>
 <translation id="5963745988819586370">Contratos</translation>

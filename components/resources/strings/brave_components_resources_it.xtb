@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Puoi avviare una chiamata privata in Brave.</translation>
 <translation id="4903286433687221248">Avvia chiamate illimitate con amici e colleghi in Brave Talk.</translation>
 <translation id="7115051913071512405">Provalo</translation>
-<translation id="1447534717041828517">Mostra il pulsante News Brave nella barra degli strumenti</translation>
 <translation id="370665806235115550">Caricamento in corso...</translation>
 <translation id="4634933166298842522">Gestisci abbonamenti</translation>
 <translation id="4108314971463891922">Segui</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Vai su creators.brave.com e iscriviti subito per iniziare a ricevere dei BAT dai tuoi fan o dai tuoi follower.</translation>
 <translation id="4816455138209470435">Brave supporta YouTube, Twitch, Vimeo e non solo!</translation>
 <translation id="3656941797339037856">Collega Rewards a Gemini!</translation>
-<translation id="31532096120351460">Su Gemini puoi comprare e vendere oltre 50 criptovalute, incluso il BAT. Si tratta di una piattaforma sicura per il deposito delle criptovalute, e dà anche la possibilità di guadagnare interessi negli USA, a Hong Kong e a Singapore.</translation>
+<translation id="2888702144235098855">Su Gemini puoi comprare e vendere oltre 50 criptovalute, incluso il BAT. Si tratta di una piattaforma sicura per il deposito delle criptovalute.</translation>
 <translation id="7404779623219601861">Riscatta BAT per Carte Regalo</translation>
 <translation id="6215565499749144110">Con TAP Network, puoi riscattare i tuoi BAT per carte regalo di marchi popolari.</translation>
 <translation id="6915065518766963119">* Richiede verifica Uphold</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Disconnessione effettuata</translation>
 <translation id="6080167751812750226">Scollegati da <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Guadagni stimati</translation>
-<translation id="4244985009709452836">Accedere all’account <ph name="PROVIDER"/></translation>
+<translation id="7934950257968365573">Accedi al tuo account <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Donazione singola</translation>
 <translation id="590733288489975971">Premi di Brave Ads</translation>
 <translation id="6181762795539107980">Non verificato</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Compra con Wyre</translation>
 <translation id="5522073372365069684">Compra con Ramp</translation>
 <translation id="7902920577183739843">Acquista con Sardine</translation>
-<translation id="6534275647567011533">Acquista con Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Acquista delle criptovalute con Visa o Mastercard.</translation>
 <translation id="3101839349578102016">Acquisto immediato con il tuo conto bancario. Commissioni ridotte.</translation>
 <translation id="8528916244724490964">Tutte le reti</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Automobili</translation>
 <translation id="7577010593836079522">Cultura</translation>
 <translation id="3706423975342040244">Intrattenimento</translation>
+<translation id="3284069358246729581">Notizie di intrattenimento</translation>
 <translation id="1432147735538902155">Moda</translation>
+<translation id="3350377832708834609">Film e TV</translation>
 <translation id="736592699917579616">Cibo</translation>
 <translation id="5104499318017527547">Divertimento</translation>
 <translation id="2228584369802328636">Gaming</translation>
 <translation id="6941852195052765076">Salute</translation>
 <translation id="932327136139879170">Home page</translation>
+<translation id="5178222043222938163">Musica</translation>
 <translation id="1322083935398004629">Politica</translation>
+<translation id="8739620487574841501">Notizie regionali</translation>
 <translation id="3872834068356954457">Scienze</translation>
 <translation id="1264974993859112054">Sport</translation>
 <translation id="2283599456633275070">Viaggi</translation>
 <translation id="7487067081878637334">Tecnologia</translation>
+<translation id="151743034625508713">Notizie tecnologiche</translation>
+<translation id="2388279876296929435">Recensioni tecnologiche</translation>
 <translation id="5030268312472358928">Notizie principali</translation>
 <translation id="5510475084662028636">Fonti principali</translation>
+<translation id="1297570508541015874">Notizie sugli USA</translation>
 <translation id="1459693405370120464">Meteo</translation>
 <translation id="8366057325711477500">Notizie dal mondo</translation>
 <translation id="6303294677342628402">Protezioni</translation>
@@ -1613,13 +1617,17 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="2453860139492968684">Termina</translation>
 <translation id="2273851479262317744">Imposta Brave come browser predefinito</translation>
 <translation id="5037676449506322593">Seleziona tutto</translation>
-<translation id="8330804319517911603">Aiutaci a migliorare Brave</translation>
-<translation id="2867964979837593892">Perfezioniamo il prodotto e proteggiamo la tua privacy, ogni giorno.</translation>
-<translation id="7661940959332108190">Invia i report diagnostici se Brave si arresta o si blocca in modo anomalo.</translation>
-<translation id="6358373266071757311">Condividi analisi di prodotto anonime e rispettose della privacy. Questo ci aiuta a capire quali funzioni di Brave sono usate più spesso.</translation>
+<translation id="5148943178722443958">Contribuisci a migliorare Brave.</translation>
+<translation id="1097073572755862978">In caso di arresto anomalo o blocco, invia dei resoconti diagnostici. <ph name="LINK_BEFORE"/>Scopri di più.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Condividi informazioni di prodotto totalmente private e anonime per farci sapere quali sono le funzioni usate dagli utenti di Brave. <ph name="LINK_BEFORE"/>Scopri di più.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Configurazione completata</translation>
 <translation id="3141206739023333979">Puoi modificare queste impostazioni quando vuoi su Brave andando su <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Leggi per intero l’<ph name="LINK_BEFORE"/>informativa sulla privacy<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">Scegli il tuo tema</translation>
+<translation id="6262510489122516114">Puoi modificare questa selezione in qualsiasi momento nelle impostazioni di Brave.</translation>
+<translation id="546481172717459539">Adotta l’impostazione di sistema</translation>
+<translation id="7799817062559422778">Modalità chiara</translation>
+<translation id="4117637339509843559">Modalità scura</translation>
 <translation id="7821773512278295352">Firewall + VPN di Brave: connessione effettuata</translation>
 <translation id="6019088868713395120">Firewall + VPN di Brave: nessuna connessione</translation>
 <translation id="3541307549916475335">Interfaccia utente del pannello VPN di Brave</translation>
@@ -1665,7 +1673,12 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="3307461350293459700">La connessione alla VPN non è riuscita. Prova a collegarti di nuovo e ricordati di cliccare su Permetti per abilitare la configurazione della VPN di Brave.</translation>
 <translation id="7261518280726313829">La disattivazione del DNS sicuro o l’utilizzo di server predefiniti su Windows potrebbe rivelare i nomi dei siti che visiti al tuo provider di servizi Internet. Brave sconsiglia queste operazioni. Vuoi comunque procedere?</translation>
 <translation id="888284761945060750">Il DNS sicuro è disabilitato dalle politiche della tua organizzazione. L’utilizzo della VPN di Brave senza il DNS sicuro può rivelare i nomi dei siti che visiti al tuo provider di servizi Internet o alla tua organizzazione.</translation>
+<translation id="6593224083874259773">VPN di Brave su Windows</translation>
+<translation id="3153983908111684619">Durante la connessione l’impostazione è bloccata dalla VPN di Brave</translation>
+<translation id="6507543978646831931">Windows ha una funzione chiamata “risoluzione intelligente dei nomi multihomed”, che può rivelare informazioni relative alla tua posizione geografica e ai siti che visiti. Ora che hai attivato la VPN di Brave, abbiamo modificato le impostazioni del DNS nel browser per proteggerti da tale rischio. Durante la navigazione le impostazioni resteranno in vigore e bloccate. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Non avvisarmi più in merito a questo.</translation>
+<translation id="2740531572673183784">OK</translation>
+<translation id="9061845622728745852">Fuso orario:</translation>
 <translation id="7586151660465233733">Più mercati su <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Controlla i mercati e scambia criptovalute su FTX</translation>
 <translation id="5963745988819586370">Mercati</translation>

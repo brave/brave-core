@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Вы можете начать частный звонок в Brave.</translation>
 <translation id="4903286433687221248">Звоните друзьям и коллегам без ограничений с Brave Talk.</translation>
 <translation id="7115051913071512405">Попробовать</translation>
-<translation id="1447534717041828517">Показывать кнопку Brave Новостей на панели инструментов</translation>
 <translation id="370665806235115550">Загрузка...</translation>
 <translation id="4634933166298842522">Управление подписками</translation>
 <translation id="4108314971463891922">Подписаться</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Зарегистрируйтесь на сайте creators.brave.com и получайте BAT от поклонников и подписчиков.</translation>
 <translation id="4816455138209470435">Brave поддерживает YouTube, Twitch, Vimeo и многие другие платформы!</translation>
 <translation id="3656941797339037856">Привяжите Rewards к Gemini</translation>
-<translation id="31532096120351460">Покупайте и продавайте криптовалюты, включая BAT, на Gemini. Это надежная платформа, где можно хранить более 50 криптовалют и получать проценты в США, Гонконге и Сингапуре.</translation>
+<translation id="2888702144235098855">Gemini — безопасная платформа для торговли более чем 50 криптовалютами и хранения криптоактивов.</translation>
 <translation id="7404779623219601861">Использовать BAT для подарочных карт</translation>
 <translation id="6215565499749144110">С сетью TAP вы можете использовать BAT для оплаты подарочных карт популярных торговых брендов.</translation>
 <translation id="6915065518766963119">*Требует верификации в Uphold.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Вы вышли</translation>
 <translation id="6080167751812750226">Отключиться от <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Общий доход</translation>
-<translation id="4244985009709452836">Войти в аккаунт <ph name="PROVIDER"/></translation>
+<translation id="7934950257968365573">Войдите в аккаунт <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Разовые чаевые</translation>
 <translation id="590733288489975971">Вознаграждения за рекламу</translation>
 <translation id="6181762795539107980">Не подтвержден</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Купить через Wyre</translation>
 <translation id="5522073372365069684">Купить через Ramp</translation>
 <translation id="7902920577183739843">Купить с помощью Sardine</translation>
-<translation id="6534275647567011533">Купить с помощью Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Покупайте криптовалюту с помощью карт Visa или Mastercard.</translation>
 <translation id="3101839349578102016">Мгновенная покупка с помощью банковского счета с низкой комиссией.</translation>
 <translation id="8528916244724490964">Все сети</translation>
@@ -1552,19 +1549,26 @@ other {# источника}
 <translation id="8265589281845759879">Автомобили</translation>
 <translation id="7577010593836079522">Культура</translation>
 <translation id="3706423975342040244">Развлечения</translation>
+<translation id="3284069358246729581">Новости в сфере развлечений</translation>
 <translation id="1432147735538902155">Мода</translation>
+<translation id="3350377832708834609">Фильмы и ТВ</translation>
 <translation id="736592699917579616">Еда</translation>
 <translation id="5104499318017527547">Юмор</translation>
 <translation id="2228584369802328636">Игры</translation>
 <translation id="6941852195052765076">Здоровье</translation>
 <translation id="932327136139879170">Главная страница</translation>
+<translation id="5178222043222938163">Музыка</translation>
 <translation id="1322083935398004629">Политика</translation>
+<translation id="8739620487574841501">Региональные новости</translation>
 <translation id="3872834068356954457">Наука</translation>
 <translation id="1264974993859112054">Спорт</translation>
 <translation id="2283599456633275070">Путешествия</translation>
 <translation id="7487067081878637334">Технологии</translation>
+<translation id="151743034625508713">Новости в сфере технологий</translation>
+<translation id="2388279876296929435">Обзоры технологий</translation>
 <translation id="5030268312472358928">Популярные новости</translation>
 <translation id="5510475084662028636">Популярные источники</translation>
+<translation id="1297570508541015874">Новости США</translation>
 <translation id="1459693405370120464">Погода</translation>
 <translation id="8366057325711477500">Мировые новости</translation>
 <translation id="6303294677342628402">Защита</translation>
@@ -1615,13 +1619,17 @@ other {# источника}
 <translation id="2453860139492968684">Закрыть</translation>
 <translation id="2273851479262317744">Сделать Brave браузером по умолчанию</translation>
 <translation id="5037676449506322593">Выбрать все</translation>
-<translation id="8330804319517911603">Помогите нам улучшить Brave</translation>
-<translation id="2867964979837593892">Совершенствуем продукт. Защищаем вашу конфиденциальность. Каждый день.</translation>
-<translation id="7661940959332108190">Отправлять отчеты для диагностики, когда в Brave происходит сбой или браузер зависает.</translation>
-<translation id="6358373266071757311">Делиться анонимными и конфиденциальными данными о продукте (это поможет нам узнавать, какие функции Brave используются чаще всего).</translation>
+<translation id="5148943178722443958">Помогите сделать Brave лучше</translation>
+<translation id="1097073572755862978">Отправлять отчеты для диагностики, когда происходит сбой или зависание. <ph name="LINK_BEFORE"/>Подробнее<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Отправлять полностью конфиденциальные и анонимные сведения об используемых в Brave функциях. <ph name="LINK_BEFORE"/>Подробнее<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Настройка завершена</translation>
 <translation id="3141206739023333979">Вы можете когда угодно изменить настройки в браузере Brave по ссылке <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Прочитайте полную версию <ph name="LINK_BEFORE"/>Политики конфиденциальности<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">Выбрать тему</translation>
+<translation id="6262510489122516114">Вы можете в любой момент изменить тему в настройках Brave.</translation>
+<translation id="546481172717459539">В соответствии с системой</translation>
+<translation id="7799817062559422778">Светлая тема</translation>
+<translation id="4117637339509843559">Темная тема</translation>
 <translation id="7821773512278295352">Brave Брандмауэр + VPN: подключено</translation>
 <translation id="6019088868713395120">Brave Брандмауэр + VPN: отключено</translation>
 <translation id="3541307549916475335">Интерфейс панели управления Brave VPN</translation>
@@ -1667,7 +1675,12 @@ other {# источника}
 <translation id="3307461350293459700">Не удалось установить подключение к VPN. Повторите попытку. Если появится окно с предупреждением о добавлении конфигураций VPN, нажмите "Разрешить".</translation>
 <translation id="7261518280726313829">Brave не рекомендует отключать функцию защищенного DNS-сервера или использовать серверы Windows, установленные по умолчанию, поскольку в этом случае поставщик интернет-услуг сможет видеть названия сайтов, которые вы посещаете. Продолжить?</translation>
 <translation id="888284761945060750">Функция защищенного DNS-сервера отключена согласно правилам вашей организации. Если использовать Brave VPN без этой функции, поставщик интернет-услуг или сотрудники организации смогут видеть названия сайтов, которые вы посещаете.</translation>
+<translation id="6593224083874259773">Brave VPN в Windows</translation>
+<translation id="3153983908111684619">Функция блокируется Brave VPN во время подключения</translation>
+<translation id="6507543978646831931">В Windows есть функция под названием «Улучшенное многоадресное разрешение имен», которая может предоставлять информацию о вашем местоположении и посещаемых сайтах. Чтобы защитить вас от утечки этих сведений, мы изменили настройки DNS в браузере, как только вы включили Brave VPN. Когда вы отключите наш сервис, вернутся прежние настройки. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Больше не показывать это предупреждение.</translation>
+<translation id="2740531572673183784">ОК</translation>
+<translation id="9061845622728745852">Часовой пояс:</translation>
 <translation id="7586151660465233733">Больше рынков на сайте <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Просматривайте рынки и торгуйте криптовалютой на бирже FTX.</translation>
 <translation id="5963745988819586370">Рынки</translation>

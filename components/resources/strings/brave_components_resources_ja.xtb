@@ -85,7 +85,6 @@
 <translation id="9024104284526126630">Braveでプライベート通話を開始できます。</translation>
 <translation id="4903286433687221248">Brave Talkで友人や同僚と無制限の通話を始めよう。</translation>
 <translation id="7115051913071512405">試してみる</translation>
-<translation id="1447534717041828517">ツールバーに「Braveニュース」ボタンを表示</translation>
 <translation id="370665806235115550">Loading...</translation>
 <translation id="4634933166298842522">サブスクリプションの管理</translation>
 <translation id="4108314971463891922">フォロー</translation>
@@ -550,7 +549,7 @@
 <translation id="4639659520811817892">creators.brave.comにアクセスして今すぐ登録し、あなたのファンやフォロワーからさっそくBATを獲得しましょう。</translation>
 <translation id="4816455138209470435">BraveはYouTube、Twitch、Vimeoおよびその他多数のツールをサポートしています！</translation>
 <translation id="3656941797339037856">RewardsをGeminiにリンク!</translation>
-<translation id="31532096120351460">GeminiでBATを含む50以上の暗号資産を取引しましょう。安全なプラットフォーム上でお手持ちの暗号資産を保管できます。</translation>
+<translation id="2888702144235098855">GeminiでBATを含む50以上の暗号資産を取引しましょう。安全なプラットフォーム上でお手持ちの仮想通貨を保管できます。</translation>
 <translation id="7404779623219601861">BATをギフトカードと交換する</translation>
 <translation id="6215565499749144110">TAPネットワークを使用すると、BATを人気の有名ブランドのギフトカードと交換できます。</translation>
 <translation id="6915065518766963119">*「Uphold検証」が必要です。</translation>
@@ -752,7 +751,7 @@
 <translation id="2394961582378297792">ログアウト済み</translation>
 <translation id="6080167751812750226"><ph name="PROVIDER"/>との接続を解除</translation>
 <translation id="3600355176618429948">推定報酬</translation>
-<translation id="4244985009709452836"><ph name="PROVIDER"/>アカウントにログイン</translation>
+<translation id="7934950257968365573"><ph name="PROVIDER"/>アカウントにログイン</translation>
 <translation id="2613359062756190460">一度だけチップを送る</translation>
 <translation id="590733288489975971">AdsによるRewards</translation>
 <translation id="6181762795539107980">未認証</translation>
@@ -1294,11 +1293,9 @@
 <translation id="3898731124813934210">Wyreで購入</translation>
 <translation id="5522073372365069684">Rampで購入</translation>
 <translation id="7902920577183739843">Sardineで購入</translation>
-<translation id="6534275647567011533">Transakで購入</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">VisaまたはMastercardで暗号資産を購入。</translation>
 <translation id="3101839349578102016">銀行口座で即座に購入。手数料が安くなる</translation>
 <translation id="8528916244724490964">すべてのネットワーク</translation>
@@ -1553,19 +1550,26 @@
 <translation id="8265589281845759879">自動車</translation>
 <translation id="7577010593836079522">文化</translation>
 <translation id="3706423975342040244">エンタメ</translation>
+<translation id="3284069358246729581">エンタメニュース</translation>
 <translation id="1432147735538902155">ファッション</translation>
+<translation id="3350377832708834609">映画・テレビ</translation>
 <translation id="736592699917579616">フード</translation>
 <translation id="5104499318017527547">余暇</translation>
 <translation id="2228584369802328636">ゲーム</translation>
 <translation id="6941852195052765076">健康</translation>
 <translation id="932327136139879170">ホーム</translation>
+<translation id="5178222043222938163">音楽</translation>
 <translation id="1322083935398004629">政治</translation>
+<translation id="8739620487574841501">地域ニュース</translation>
 <translation id="3872834068356954457">科学</translation>
 <translation id="1264974993859112054">スポーツ</translation>
 <translation id="2283599456633275070">旅行</translation>
 <translation id="7487067081878637334">テクノロジー</translation>
+<translation id="151743034625508713">技術ニュース</translation>
+<translation id="2388279876296929435">技術レビュー</translation>
 <translation id="5030268312472358928">人気のニュース</translation>
 <translation id="5510475084662028636">人気のソース</translation>
+<translation id="1297570508541015874">米国ニュース</translation>
 <translation id="1459693405370120464">天気</translation>
 <translation id="8366057325711477500">世界のニュース</translation>
 <translation id="6303294677342628402">シールド</translation>
@@ -1616,13 +1620,17 @@
 <translation id="2453860139492968684">終了</translation>
 <translation id="2273851479262317744">Braveをデフォルトのブラウザとして設定</translation>
 <translation id="5037676449506322593">すべて選択</translation>
-<translation id="8330804319517911603">Brave の改善に協力する</translation>
-<translation id="2867964979837593892">製品を微調整して、毎日プライバシーを保護します。</translation>
-<translation id="7661940959332108190">Braveがクラッシュまたはフリーズした場合は、診断レポートを送信してください。</translation>
-<translation id="6358373266071757311">匿名かつプライベートな製品インサイトを共有することができます。これにより、Braveのどの機能が最も頻繁に使用されているかを知ることができます。</translation>
+<translation id="5148943178722443958">Braveの品質向上にご協力ください。</translation>
+<translation id="1097073572755862978">クラッシュやフリーズが発生した場合、診断レポートを送信します。<ph name="LINK_BEFORE"/>詳細はこちら。<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Braveのユーザーがどのような機能を使用しているか、完全に非公開で匿名の製品インサイトを共有します。<ph name="LINK_BEFORE"/>詳細はこちら。<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">設定が完了しました</translation>
 <translation id="3141206739023333979">Braveで選択した内容は、<ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>でいつでも変更できます。</translation>
 <translation id="8321985064212130832"><ph name="LINK_BEFORE"/>プライバシーポリシーの全文<ph name="LINK_AFTER"/>を読む</translation>
+<translation id="2801098717523961746">テーマを選択</translation>
+<translation id="6262510489122516114">Braveの設定でいつでも変更することができます。</translation>
+<translation id="546481172717459539">システム設定をマッチ</translation>
+<translation id="7799817062559422778">ライトモード</translation>
+<translation id="4117637339509843559">ダークモード</translation>
 <translation id="7821773512278295352">Braveファイアウォール + VPN: 接続済み</translation>
 <translation id="6019088868713395120">Braveファイアウォール + VPN: 切断</translation>
 <translation id="3541307549916475335">Brave VPNパネルUI</translation>
@@ -1668,7 +1676,12 @@
 <translation id="3307461350293459700">VPN接続に失敗しました。接続を再度お試しください。必ず［許可］をクリックしてBraveのVPN設定を有効にしてください。</translation>
 <translation id="7261518280726313829">セキュアDNSを無効化またはWindowsのデフォルトサーバーを使用すると、訪問したサイト名がインターネットサービスプロバイダーに表示される可能性があります。Braveではこれを推奨していませんが、操作を続行しますか？</translation>
 <translation id="888284761945060750">所属先組織のポリシーにより、セキュアDNSが無効になっています。セキュアDNSを使用せずにBrave VPNを使用すると、訪問したサイト名がインターネットサービスプロバイダーまたは組織に表示される可能性があります。</translation>
+<translation id="6593224083874259773">WindowsでのBrave VPN</translation>
+<translation id="3153983908111684619">接続中はBraveVPNによって設定がロックされます</translation>
+<translation id="6507543978646831931">Windowsにはスマートマルチホームの名前解決という機能があり、位置情報や訪問したサイトの情報を暴露してしまうことがあります。Brave VPNを有効にしたことで、この暴露から保護するために、ブラウザのDNS設定を変更しました。VPN接続中も設定は有効で、ロックされたままです。 <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">今後この件に関する警告を表示しない</translation>
+<translation id="2740531572673183784">OK</translation>
+<translation id="9061845622728745852">タイムゾーン:</translation>
 <translation id="7586151660465233733">その他の市場を確認するには、<ph name="SITE_NAME"/>へ</translation>
 <translation id="952067063131306699">FTXで暗号資産の市場を確認し、取引</translation>
 <translation id="5963745988819586370">市場</translation>

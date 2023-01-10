@@ -64,6 +64,7 @@
 <translation id="7798069806040634998">Brave 需要儲存空間的存取權才能下載檔案</translation>
 <translation id="8447483940522230788">Brave 輔助工具</translation>
 <translation id="7291143854620707672">工作設定檔管理員可移除任何在使用此設定檔時產生的 Brave 資料 (例如建立的書籤、記錄、密碼和其他設定)。<ph name="LEARN_MORE"/></translation>
+<translation id="6252796827759111076">繼續使用 Brave</translation>
 <translation id="7387051847644272380">安裝期間發生作業系統錯誤，請再次下載 Brave。</translation>
 <translation id="2648689842065142443">如果您與親朋好友共用裝置，每人都能各自瀏覽網頁，並按需求設定 Brave</translation>
 <translation id="5926459996518749366">由於此封存檔案可能隱藏惡意軟件，因此 Brave 已封鎖此封存檔案</translation>
@@ -105,6 +106,7 @@
 <translation id="2645435784669275700">Brave 作業系統</translation>
 <translation id="2297290224191497273">要切換至現有 Brave 設定檔嗎？</translation>
 <translation id="3412460710772753638">儲存在此裝置的「密碼管理工具」中</translation>
+<translation id="616005907576404509">{COUNT,plural, =1{管理員已設定 Brave 在閒置超過 1 分鐘後關閉。}other{管理員已設定 Brave 在閒置超過 # 分鐘後關閉。}}</translation>
 <translation id="2450003541323895471">透過 Brave 設定檔，您可將所有 Brave 內容分門別類，例如建立親朋好友專屬的設定檔，或劃分工作和娛樂內容。</translation>
 <translation id="9216183508558772570">如果您使用被盜用的密碼登入帳戶，Brave 會通知您</translation>
 <translation id="5853262807109651878">這會刪除此裝置上的 <ph name="ITEMS_COUNT"/> 個項目。如果日後想擷取資料，請以 <ph name="USER_EMAIL"/> 的身分登入 Brave。</translation>
@@ -186,6 +188,7 @@
 <translation id="7021823858304886493">允許登入 Brave</translation>
 <translation id="5536657158619734169">新版 Brave 現已推出。</translation>
 <translation id="5267531627648004734">從 Brave 中移除</translation>
+<translation id="2783637305317815247">{0,plural, =0{Brave 即將關閉。}=1{Brave 將於 1 秒後關閉。}other{Brave 將於 # 秒後關閉。}}</translation>
 <translation id="239760341987199724">將 Brave 設為預設瀏覽器</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta 版本</translation>
 <translation id="894936507076470937">Brave 不再支援此 Linux 發行版本，因此可能無法正常運作</translation>
@@ -273,6 +276,7 @@
 <translation id="4392161457256085190">您日後瀏覽的網站可向 Brave 要求查看您的興趣，以便向您顯示個人化廣告。Brave 最多可分享 3 個感興趣的主題。</translation>
 <translation id="4624945300945265642">在 Brave 無痕式視窗中開啟連結(&amp;G)</translation>
 <translation id="6418340404893954563">安全性弱的密碼很容易被猜到。讓 Brave <ph name="BEGIN_LINK"/>為您建立並記住安全性強的密碼<ph name="END_LINK"/>。</translation>
+<translation id="196626648343945705">Brave 閒置中</translation>
 <translation id="3453763134178591239">Brave 作業系統條款</translation>
 <translation id="3335606533094650083">Brave 需要取得權限，才能讓這個網站存取您的麥克風</translation>
 <translation id="7025789849649390912">已停止安裝。</translation>

@@ -35,6 +35,7 @@
 <translation id="1058479211578257048">Vistar kort...</translation>
 <translation id="1060320201901229167">Umslag: kaku 5</translation>
 <translation id="10614374240317010">Aldrei vistað</translation>
+<translation id="1064054731605354900">A3x5</translation>
 <translation id="106701514854093668">Skjáborðsbókamerki</translation>
 <translation id="1068672505746868501">Þýða aldrei síður á þessu tungumáli: <ph name="SOURCE_LANGUAGE"/></translation>
 <translation id="1070853536588271387">Tvinnbílar og bílar með óhefðbundna aflgjafa</translation>
@@ -44,13 +45,13 @@
 <translation id="1075079914415273530">Landbúnaður og skógrækt</translation>
 <translation id="1080116354587839789">Laga að breidd</translation>
 <translation id="1081061862829655580">Bakki 19</translation>
-<translation id="1086953900555227778">Index-5x8</translation>
 <translation id="1088860948719068836">Bæta við nafni á korti</translation>
 <translation id="1089439967362294234">Breyta aðgangsorði</translation>
 <translation id="1096545575934602868">Þessi reitur á ekki að vera með meira en <ph name="MAX_ITEMS_LIMIT"/> færslur. Færslum umfram það verður hent.</translation>
 <translation id="7584468665743195331">Hnappur til að halda ferðinni áfram, ýttu á Enter til að halda ferðinni áfram og sjá viðkomandi virkni í Brave ferlinum</translation>
 <translation id="1101672080107056897">Villuaðgerð</translation>
 <translation id="1103523840287552314">Þýða alltaf <ph name="LANGUAGE"/></translation>
+<translation id="1108464073729874771">A3x4</translation>
 <translation id="1110994991967754504">Velja heimild fyrir <ph name="PERMISSION_NAME"/></translation>
 <translation id="1112828774174131240">Antík- og safnmunir</translation>
 <translation id="1113869188872983271">Aft&amp;urkalla nýja röðun</translation>
@@ -78,6 +79,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="1175875016430184367">Þrjú hefti hægra megin</translation>
 <translation id="1177802847690410663">Vafrar</translation>
 <translation id="1178581264944972037">Gera hlé</translation>
+<translation id="1178821169867863726">12 x 16 to.</translation>
 <translation id="1181037720776840403">Fjarlægja</translation>
 <translation id="1186201132766001848">Yfirfara aðgangsorð</translation>
 <translation id="1195558154361252544">Sjálfkrafa er lokað á tilkynningar fyrir öll vefsvæði nema þau sem þú hefur gefið leyfi</translation>
@@ -92,6 +94,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="121201262018556460">Þú reyndir að ná sambandi við <ph name="DOMAIN"/> en þjónninn framvísaði vottorði sem inniheldur ótraustan lykil. Tölvuþrjótur kann að hafa skemmt einkalykilinn og þjónninn er ef til vill ekki sá sem þú bjóst við (þú gætir verið í samskiptum við tölvuþrjót).</translation>
 <translation id="1219129156119358924">Öryggisstilling kerfis</translation>
 <translation id="1222060260947439312">Bakk til hægri</translation>
+<translation id="1224330468394120478">A3x6</translation>
 <translation id="1225570101506606926">Biljarður</translation>
 <translation id="2735968720006267833">Brave mun finna afslætti fyrir þig</translation>
 <translation id="1227224963052638717">Óþekkt regla.</translation>
@@ -133,6 +136,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="129553762522093515">Nýlega lokað</translation>
 <translation id="1296930489679394997">Sala</translation>
 <translation id="129863573139666797"><ph name="BEGIN_LINK"/>Prófaðu að hreinsa fótsporin þín<ph name="END_LINK"/></translation>
+<translation id="1301227606947843452">Legal Extra</translation>
 <translation id="1301324364792935241">Athugaðu stillingar fyrir öruggan DNS-þjón</translation>
 <translation id="1307966114820526988">Úreldir eiginleikar</translation>
 <translation id="1308113895091915999">Tilboð til staðar</translation>
@@ -169,7 +173,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="1364822246244961190">Þessi regla er á bannlista, gildi hennar er hunsað.</translation>
 <translation id="1368318639262510626">Risaeðluleikur. Pixluð risaeðla sneiðir hjá kaktusum og flugeðlum þegar hún hleypur í gegnum eyðimörk. Ýttu á bilslána til að hoppa yfir hindranir um leið og hljóðmerki heyrist.</translation>
 <translation id="1374468813861204354">tillögur</translation>
-<translation id="1374692235857187091">Index-4x6 (póstkort)</translation>
 <translation id="1375198122581997741">Um útgáfu</translation>
 <translation id="1376836354785490390">Sýna minna</translation>
 <translation id="1377321085342047638">Kortanúmer</translation>
@@ -177,7 +180,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="138218114945450791">Ljósblár</translation>
 <translation id="1382194467192730611">USB-tæki sem kerfisstjórinn hefur heimilað</translation>
 <translation id="1382378825779654399">Þú færð tilkynningu í tölvupósti ef verðlækkun verður á einhverju vefsvæði. Síðan verður vistuð í <ph name="LAST_BOOKMARKS_FOLDER"/>.</translation>
-<translation id="1382912999714108023">Sérðu ekki núverandi upplýsingar? Hafðu samband við bankann þinn til að uppfæra þær.</translation>
 <translation id="1384725838384960382">Sannvottunarsíða fyrir skilríki öruggrar greiðslu</translation>
 <translation id="1386623374109090026">Skýringar</translation>
 <translation id="1391289752476847787">Hlutabréf og skuldabréf</translation>
@@ -209,7 +211,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="1459693405370120464">Veður</translation>
 <translation id="1462245070427461050">JIS B9</translation>
 <translation id="1462951478840426066">Notaðu leturgerðirnar í tölvunni svo þú getir búið til hágæðaefni.</translation>
-<translation id="1463543813647160932">5x7</translation>
 <translation id="1467432559032391204">Rangsælis</translation>
 <translation id="1468653229182955856"><ph name="ONE_TIME_CODE"/> er kóðinn þinn fyrir <ph name="EMBEDDED_ORIGIN"/> til að halda áfram á <ph name="TOP_ORIGIN"/></translation>
 <translation id="1472675084647422956">Sýna meira</translation>
@@ -243,7 +244,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="1539840569003678498">Skýrsla send:</translation>
 <translation id="154408704832528245">Velja heimilisfang til afhendingar</translation>
 <translation id="1549470594296187301">JavaScript verður að vera virkt til að hægt sé að nota þennan eiginleika.</translation>
-<translation id="155039086686388498">Engineering-D</translation>
 <translation id="1551884710160394169">Gjaldfrjáls hugbúnaður og valgreiðslubúnaður</translation>
 <translation id="1705567146636171298">Uppfæra Brave</translation>
 <translation id="1555130319947370107">Blár</translation>
@@ -257,6 +257,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="1567040042588613346">Þessi regla virkar sem skyldi en sama gildi er stillt annars staðar og þessi regla leysir það af hólmi.</translation>
 <translation id="1569487616857761740">Sláðu inn lokadagsetningu</translation>
 <translation id="1385693425784118652">Brave er að reyna að kveikja á Windows Hello til að fylla út aðgangsorð.</translation>
+<translation id="1572765991610098222"><ph name="WIDTH"/> x <ph name="HEIGHT"/> to.</translation>
 <translation id="1581080074034554886">CVC</translation>
 <translation id="1583429793053364125">Eitthvað fór úrskeiðis við að birta þessa vefsíðu.</translation>
 <translation id="1586541204584340881">Hvaða viðbætur þú hefur sett upp</translation>
@@ -274,7 +275,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="1620510694547887537">Myndavél</translation>
 <translation id="1622571349153632031">Grænmetisfæði</translation>
 <translation id="1623104350909869708">Koma í veg fyrir að þessi síða búi til fleiri glugga.</translation>
-<translation id="16338877384480380">Architecture-B</translation>
 <translation id="1634828734222219955">Samtals</translation>
 <translation id="163669211644121865">Framtalsgerð og skattaáætlanir</translation>
 <translation id="1638780421120290329">Ekki er hægt að vista kort</translation>
@@ -309,11 +309,11 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="1711528724596764268">Vélrænt nám og gervigreind</translation>
 <translation id="1712552549805331520"><ph name="URL"/> vill fá að geyma gögn varanlega í tölvunni þinni</translation>
 <translation id="1713628304598226412">Bakki 2</translation>
-<translation id="1715874602234207">F</translation>
 <translation id="1717218214683051432">Hreyfiskynjarar</translation>
 <translation id="1717494416764505390">Pósthólf 3</translation>
 <translation id="1718029547804390981">Þetta skjal er of stórt til að hægt sé að skrifa skýringar í það</translation>
 <translation id="1719434663396780149">Kveikt er á verðlækkunartilkynningum. Þú getur breytt þessu í <ph name="BEGIN_LINK"/><ph name="NOTIFICATION_SETTINGS"/><ph name="END_LINK"/>.</translation>
+<translation id="1719838434204287058">24 x 30 to.</translation>
 <translation id="1720941539803966190">Loka leiðsögn</translation>
 <translation id="1721424275792716183">* Reiturinn má ekki vera auður</translation>
 <translation id="1725591448053514783">Umslag: You 6</translation>
@@ -346,6 +346,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8114214752558951503"><ph name="MANAGE_GOOGLE_ACCOUNT_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ýttu á Tab og svo á Enter til að stjórna upplýsingum, persónuvernd og öryggi á Brave reikningnum þínum</translation>
 <translation id="1798447301915465742"><ph name="MULTIPLE_ACTIONS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, margar aðgerðir eru í boði, ýttu á Tab til að fletta í gegnum þær</translation>
 <translation id="1800473098294731951">B9</translation>
+<translation id="1801812870656502108">Upplýsingar um sýndarkort</translation>
 <translation id="1803020234906945288">Heilsusamlegt mataræði</translation>
 <translation id="1803264062614276815">Nafn korthafa</translation>
 <translation id="1803351196216024260">Getur beðið um að nota hljóðnemann</translation>
@@ -387,13 +388,16 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="1916770123977586577">Endurnýjaðu þessa síðu til að nota uppfærðar stillingar á þetta vefsvæði</translation>
 <translation id="1919345977826869612">Auglýsingar</translation>
 <translation id="1919367280705858090">Fáðu aðstoð varðandi einstök villuskilaboð</translation>
+<translation id="1919526244108283799">400 x 600 mm</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{Ekkert}=1{Eitt vefsvæði}one{# vefsvæði}other{# vefsvæði}}</translation>
 <translation id="1924727005275031552">Nýtt</translation>
 <translation id="2926892173992041302">Hnappur til að keyra öryggisathugun í Brave, ýttu á Enter til að keyra öryggisathugun í stillingum Brave</translation>
 <translation id="1935995810530254458">Afrita samt</translation>
 <translation id="1939175642807587452">Getur beðið um að senda tilkynningar</translation>
 <translation id="1943994668912612445">Hönnun</translation>
+<translation id="1946849748901605102">12 x 15 to.</translation>
 <translation id="1947454675006758438">Hefti efst til hægri</translation>
+<translation id="1954847915560574887">A3x3</translation>
 <translation id="1956486093533522234">Leitaðu að tækinu, læstu því eða eyddu af því</translation>
 <translation id="1958218078413065209">Stigametið þitt er <ph name="SCORE"/>.</translation>
 <translation id="990584554013599191">Hjálpaðu til við að auka öryggi allra á vefnum með því að senda <ph name="BEGIN_WHITEPAPER_LINK"/>vefslóðir sumra þeirra vefsíðna sem þú skoðar, takmarkaðar kerfisupplýsingar og tiltekið innihald síðna<ph name="END_WHITEPAPER_LINK"/> til Brave. <ph name="BEGIN_PRIVACY_PAGE_LINK"/>Persónuverndarstefna<ph name="END_PRIVACY_PAGE_LINK"/></translation>
@@ -415,6 +419,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2003775180883135320">Fjögur göt efst</translation>
 <translation id="2342444980304536062">Stjórnaðu heimildum og gögnum sem eru geymd á vefsvæðum í stillingum Brave</translation>
 <translation id="6955198705411680473">Hnappur til að stjórna aðgengisstillingum, ýttu á Enter til að sérsníða aðgengisverkfærin þín í stillingum Brave</translation>
+<translation id="202224654587969958">12 x 19 to.</translation>
 <translation id="2025115093177348061">Aukinn veruleiki</translation>
 <translation id="2025186561304664664">Proxy-þjónninn er stilltur á sjálfvirka stillingu.</translation>
 <translation id="2025891858974379949">Óöruggt efni</translation>
@@ -431,8 +436,10 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="205212645995975601">Grillmatur</translation>
 <translation id="2053111141626950936">Síður á þessu tungumáli verða ekki þýddar: <ph name="LANGUAGE"/>.</translation>
 <translation id="7948746210201997548">{NUM_DAYS,plural, =0{Þegar kveikt er á þessari stýringu og staða hennar er virk metur Brave hvaða stóra flokki eða „hópi“ fólks nýleg vafranotkun þín líkist mest. Auglýsendur geta valið auglýsingar fyrir hópinn og nýlegri vafranotkun þinni er haldið lokaðri í tækinu. Hópurinn þinn er uppfærður daglega.}=1{Þegar kveikt er á þessari stýringu og staða hennar er virk metur Brave hvaða stóra flokki eða „hópi“ fólks nýleg vafranotkun þín líkist mest. Auglýsendur geta valið auglýsingar fyrir hópinn og nýlegri vafranotkun þinni er haldið lokaðri í tækinu. Hópurinn þinn er uppfærður daglega.}one{Þegar kveikt er á þessari stýringu og staða hennar er virk metur Brave hvaða stóra flokki eða „hópi“ fólks nýleg vafranotkun þín líkist mest. Auglýsendur geta valið auglýsingar fyrir hópinn og nýlegri vafranotkun þinni er haldið lokaðri í tækinu. Hópurinn þinn er uppfærður á {NUM_DAYS} dags fresti.}other{Þegar kveikt er á þessari stýringu og staða hennar er virk metur Brave hvaða stóra flokki eða „hópi“ fólks nýleg vafranotkun þín líkist mest. Auglýsendur geta valið auglýsingar fyrir hópinn og nýlegri vafranotkun þinni er haldið lokaðri í tækinu. Hópurinn þinn er uppfærður á {NUM_DAYS} daga fresti.}}</translation>
+<translation id="2059202684901022309">22 x 34 to.</translation>
 <translation id="2064691555167957331">{COUNT,plural, =1{Ein tillaga}one{# tillaga}other{# tillögur}}</translation>
 <translation id="2066915425250589881">óskað eftir að láta eyða</translation>
+<translation id="2066969741541525119">Fyrirtækið þitt hefur lokað á vefsvæðið sem þú ert að reyna að opna</translation>
 <translation id="2068528718802935086">Ungbörn og smábörn</translation>
 <translation id="2071156619270205202">Þetta kort er ekki gjaldgengt fyrir sýndarkortsnúmer.</translation>
 <translation id="2071692954027939183">Lokað var sjálfkrafa á tilkynningar því þú leyfir þær yfirleitt ekki</translation>
@@ -452,7 +459,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2107021941795971877">Prentstuðningur</translation>
 <translation id="2108755909498034140">Endurræstu tölvuna</translation>
 <translation id="2111166930115883695">Ýttu á bilslána til að spila</translation>
-<translation id="2111256659903765347">Super-A</translation>
 <translation id="2112529237938317174">Sýna frekari upplýsingar um heimild</translation>
 <translation id="2113977810652731515">Kort</translation>
 <translation id="2114841414352855701">Hunsuð vegna þess að <ph name="POLICY_NAME"/> hnekkti henni.</translation>
@@ -462,6 +468,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2122719317867821810">Þessi regla virkar sem skyldi en gildi sem skarast á við hana er stillt annars staðar og þessi regla hnekkir því.</translation>
 <translation id="2126374524350484896">PDF-breytir:</translation>
 <translation id="2130448033692577677">Hugsanlega er ekki hægt að nota sniðmátin sem þú tilgreindir vegna þess að reglan DnsOverHttpsMode hefur ekki verið valin.</translation>
+<translation id="2130699163006053678">A3x7</translation>
 <translation id="2135799067377889518">Herrafatnaður</translation>
 <translation id="213826338245044447">Bókamerki fartækis</translation>
 <translation id="214556005048008348">Hætta við greiðslu</translation>
@@ -470,6 +477,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2153609454945889823">Setja upp Google Play þjónustur fyrir AR?</translation>
 <translation id="2154054054215849342">Samstilling er ekki í boði fyrir lénið þitt</translation>
 <translation id="2154484045852737596">Breyta korti</translation>
+<translation id="2155260325161282517">5 x 7 to.</translation>
 <translation id="2157640075051554492">Verðvöktunartilkynningar</translation>
 <translation id="2161656808144014275">Texti</translation>
 <translation id="2162510787844374618">Hefur samband við bankann…</translation>
@@ -486,7 +494,9 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2188375229972301266">Mörg göt neðst</translation>
 <translation id="219906046732893612">Endurbætur á heimili</translation>
 <translation id="2202020181578195191">Færðu inn gilt lokaár</translation>
+<translation id="2202627062836089804">bakhlið kortsins</translation>
 <translation id="22081806969704220">Bakki 3</translation>
+<translation id="2210794033760923560">Hlaða upp skýrslu</translation>
 <translation id="2212735316055980242">Regla fannst ekki</translation>
 <translation id="2213606439339815911">Sækir færslur...</translation>
 <translation id="2213612003795704869">Síða er prentuð</translation>
@@ -501,6 +511,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2230458221926704099">Lagaðu tenginguna með því að nota <ph name="BEGIN_LINK"/>greiningarforritið<ph name="END_LINK"/></translation>
 <translation id="2239100178324503013">Senda núna</translation>
 <translation id="2241693394036365668">Skrá er sótt</translation>
+<translation id="2246264294482514010">10 x 12 to.</translation>
 <translation id="2248949050832152960">Nota WebAuthn</translation>
 <translation id="2250931979407627383">Saumur vinstra megin</translation>
 <translation id="225207911366869382">Þetta gildi er úrelt fyrir þessa reglu.</translation>
@@ -517,6 +528,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2277753418458118549">Sýna frekari upplýsingar um tengingu</translation>
 <translation id="2283340219607151381">Vista og fylla út heimilisföng</translation>
 <translation id="2283447177162560884">„<ph name="PAGE_TITLE"/>“ var eytt</translation>
+<translation id="2286383991450886080">34 x 44 to.</translation>
 <translation id="2288422996159078444">Verið er að fylgjast með öllu sem þú slærð inn, síðum sem þú skoðar og öllum öðrum aðgerðum á vefnum. Innihald vefsvæða getur breyst án vitundar þinnar.</translation>
 <translation id="2289385804009217824">Klippa</translation>
 <translation id="2292556288342944218">Lokað er fyrir aðgang þinn að internetinu</translation>
@@ -560,7 +572,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2396249848217231973">&amp;Afturkalla eyðingu</translation>
 <translation id="2397836504670957718">Fartölvur og fistölvur</translation>
 <translation id="2400600116338235695">Getur beðið um að tengjast raðtengjum</translation>
-<translation id="2410754574180102685">Government-Legal</translation>
 <translation id="2413155254802890957">Gamalt</translation>
 <translation id="2413528052993050574">Þessi þjónn gat ekki sannað að hann væri <ph name="DOMAIN"/>; öryggisvottorð hans gæti hafa verið afturkallað. Þetta kann að orsakast af vanstillingu eða tölvuþrjóti sem komist hefur inn í tenginguna.</translation>
 <translation id="2414886740292270097">Dökkt</translation>
@@ -570,7 +581,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2448295565072560657">Jaðartæki tengd þessu tæki þegar þú ert innskráð(ur)</translation>
 <translation id="2450021089947420533">Ferðir</translation>
 <translation id="2463739503403862330">Fylla út</translation>
-<translation id="2465402087343596252">Architecture-E</translation>
 <translation id="2465655957518002998">Velja afhendingarmáta</translation>
 <translation id="2465688316154986572">Hefti</translation>
 <translation id="4058615531773510267">Stjórna skrám sem þú hefur sótt í Brave</translation>
@@ -584,7 +594,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="248348093745724435">Vélareglur</translation>
 <translation id="2491120439723279231">Vottorð þjónsins inniheldur villur.</translation>
 <translation id="2491414235131909199">Viðbót setti þessa síðu á bannlista</translation>
-<translation id="2493640343870896922">Letter-Plus</translation>
 <translation id="2495083838625180221">JSON-þáttari</translation>
 <translation id="2498091847651709837">Skanna nýtt kort</translation>
 <translation id="2501278716633472235">Fara til baka</translation>
@@ -658,9 +667,8 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2674804415323431591">Fela tillögur</translation>
 <translation id="2677696497921480781">Afmæli og nafnadagar</translation>
 <translation id="2677748264148917807">Yfirgefa</translation>
-<translation id="5597413561928518510">Vistaðu korta- og innheimtuupplýsingarnar þínar á Brave reikningnum þínum <ph name="USER_EMAIL"/> fyrir öruggari og hraðari greiðslur</translation>
-<translation id="2684561033061424857">11x12</translation>
 <translation id="2687555958734450033">Kjörstærð</translation>
+<translation id="2688186765492306706">500 x 760 mm</translation>
 <translation id="2688969097326701645">Já, halda áfram</translation>
 <translation id="2691924980723297736">Öryggisviðvörun</translation>
 <translation id="2692131511336778528">Vísindaskáldskapur og fantasíur</translation>
@@ -673,6 +681,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2709516037105925701">Sjálfvirk útfylling</translation>
 <translation id="2713444072780614174">Hvítur</translation>
 <translation id="4131157740532436004"><ph name="UPDATE_CREDIT_CARD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ýttu á Tab og svo Enter til að stjórna greiðslu- og kreditkortaupplýsingum í stillingum Brave</translation>
+<translation id="2715808615350965923">Super A</translation>
 <translation id="271663710482723385">Ýttu á |<ph name="ACCELERATOR1"/>| + |<ph name="ACCELERATOR2"/>| til að hætta birtingu á öllum skjánum</translation>
 <translation id="2721148159707890343">Beiðni tókst</translation>
 <translation id="4054726005361352357">Keyra öryggisathugun í stillingum Brave</translation>
@@ -680,6 +689,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2728127805433021124">Vottorð þjónsins er undirritað með ótraustu undirritunarreikniriti.</translation>
 <translation id="2730326759066348565"><ph name="BEGIN_LINK"/>Keyrir greiningu á tengigetu<ph name="END_LINK"/></translation>
 <translation id="2730600605555029057">Klassísk tónlist</translation>
+<translation id="2731382536835015353">44 x 68 to.</translation>
 <translation id="3163800392243881597">Leyfðu Brave að nota innkaupakörfurnar þínar til að finna sérsniðna afslætti. Afslættir birtast sjálfkrafa í körfunum þegar þeir eru í boði.</translation>
 <translation id="2738330467931008676">Velja heimilisfang til að sækja</translation>
 <translation id="2740531572673183784">Í lagi</translation>
@@ -692,9 +702,8 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="277499241957683684">Tækjaskrá vantar</translation>
 <translation id="2775884851269838147">Fyrsta prentsíða</translation>
 <translation id="2781692009645368755">Google Pay</translation>
+<translation id="2784474685437057136">B5 Extra</translation>
 <translation id="2784949926578158345">Tengingin var núllstillt.</translation>
-<translation id="2786469568759673015">Umslag: kínverskt #3</translation>
-<translation id="2791176355335562114">Greiddu hraðar næst</translation>
 <translation id="2792012897584536778">Kerfisstjórar þessa tækis eru búnir að setja upp öryggisvottorð sem kann að gera þeim kleift að sjá efni vefsvæða sem þú opnar.</translation>
 <translation id="2799020568854403057">Vefsvæðið framundan inniheldur skaðleg forrit</translation>
 <translation id="2799223571221894425">Endurræsa</translation>
@@ -707,8 +716,10 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2835170189407361413">Hreinsa eyðublað</translation>
 <translation id="2839032553903800133">Tilkynningar útilokaðar</translation>
 <translation id="2839501879576190149">Falskt vefsvæði</translation>
+<translation id="2851291081585704741">Þú ert ekki á netinu</translation>
 <translation id="2854764410992194509">Netþjónusta</translation>
 <translation id="2856444702002559011">Tölvuþrjótar gætu verið að reyna að stela upplýsingum þínum frá <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (til dæmis aðgangsorðum, skilaboðum eða kreditkortum). <ph name="BEGIN_LEARN_MORE_LINK"/>Frekari upplýsingar<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="2858134430383535011">200 x 300 mm</translation>
 <translation id="2859806420264540918">Þetta vefsvæði sýnir ágengar eða villandi auglýsingar.</translation>
 <translation id="287596039013813457">Vinalegt</translation>
 <translation id="28761159517501904">Kvikmyndir</translation>
@@ -735,7 +746,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2929525460561903222">{SHIPPING_ADDRESS,plural, =0{<ph name="SHIPPING_ADDRESS_PREVIEW"/>}=1{<ph name="SHIPPING_ADDRESS_PREVIEW"/> og <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> í viðbót}one{<ph name="SHIPPING_ADDRESS_PREVIEW"/> og <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> í viðbót}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/> og <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> í viðbót}}</translation>
 <translation id="2930577230479659665">Klippa eftir hvert eintak</translation>
 <translation id="2932085390869194046">Tillaga að aðgangsorði...</translation>
-<translation id="2934466151127459956">Government-Letter</translation>
 <translation id="2938225289965773019">Opna tengla fyrir <ph name="PROTOCOL"/></translation>
 <translation id="2941878205777356567">Umslag: 23 x 30 cm</translation>
 <translation id="2941952326391522266">Þessi þjónn gat ekki sannað að hann væri <ph name="DOMAIN"/>; öryggisvottorð hans er frá <ph name="DOMAIN2"/>. Þetta kann að orsakast af vanstillingu eða tölvuþrjóti sem komist hefur inn í tenginguna.</translation>
@@ -745,10 +755,12 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3955566820843143766">Hunsað því að tölvan er ekki skráð með skýjastjórnun Brave vafra.</translation>
 <translation id="2951588413176968965">Pósthólfið mitt</translation>
 <translation id="4920329334239571966">Loka öllum huliðsgluggum</translation>
+<translation id="2952904171810469095">A2x5</translation>
 <translation id="295526156371527179">Viðvörun: Þessi regla var ekki sameinuð sem safn eins og tilgreint er í reglu vegna þess að hún er ekki safn.</translation>
 <translation id="2955913368246107853">Loka leitarstiku</translation>
 <translation id="2958544468932521864">Krikket</translation>
 <translation id="2959113999220720579">Umhirða andlits og líkama</translation>
+<translation id="2962073860865348475">12 x 18 to.</translation>
 <translation id="2968103128155246731">Sendiferðabílar og smárútur</translation>
 <translation id="2972581237482394796">Endurge&amp;ra</translation>
 <translation id="2977665033722899841"><ph name="ROW_NAME"/>, valin. <ph name="ROW_CONTENT"/></translation>
@@ -851,7 +863,9 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3249151924975132674">Námslán og fjármögnun háskólanáms</translation>
 <translation id="3249845759089040423">Mergjað</translation>
 <translation id="3250640885957938546">Auglýsingar og markaðsmál</translation>
+<translation id="3251133337102041130">Government Legal</translation>
 <translation id="3252266817569339921">Franskt</translation>
+<translation id="3254301855501243548">18 x 22 to.</translation>
 <translation id="3256863843508922226">Starfslok og lífeyrir</translation>
 <translation id="6900454207575412115"><ph name="CREATE_GOOGLE_CALENDAR_EVENT_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ýttu á Tab og svo Enter til að búa til nýjan viðburð í Brave dagatali á skjótan hátt</translation>
 <translation id="3261488570342242926">Nánar um sýndarkort</translation>
@@ -862,6 +876,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3270156322180235608">Flugferðir</translation>
 <translation id="3270847123878663523">Aft&amp;urkalla nýja röðun</translation>
 <translation id="3271648667212143903"><ph name="ORIGIN"/> vill tengjast</translation>
+<translation id="3272091146646336650">Super B</translation>
 <translation id="3282085321714087552">Fyrirtækið þitt, <ph name="ENROLLMENT_DOMAIN"/>, hefur sent einhverjar upplýsingar á eftirfarandi vefsvæði, á borð við stillingar og reglur.</translation>
 <translation id="3282497668470633863">Bæta við nafni á korti</translation>
 <translation id="3286372614333682499">skammsnið</translation>
@@ -870,12 +885,15 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3293642807462928945">Frekari upplýsingar um regluna „<ph name="POLICY_NAME"/>“</translation>
 <translation id="5894665462526421022">Skoða og stjórna aðgangsorðunum þínum í stillingum Brave</translation>
 <translation id="3299098170013242198">Kveikt er á Windows Hello fyrir útfyllingu aðgangsorða</translation>
+<translation id="3303176609391916566">30 x 42 to.</translation>
 <translation id="3303855915957856445">Engar leitarniðurstöður fundust</translation>
 <translation id="3304073249511302126">Bluetooth-leit</translation>
+<translation id="3304777285002411338">A2x3</translation>
 <translation id="33073482541490531">Aðgangsorðið sem þú varst að nota fannst í öryggisbroti. Aðgangsorðastjórnun mælir með að þessu aðgangsorði verði breytt núna.</translation>
 <translation id="3308006649705061278">Skipulagseining (OU)</translation>
 <translation id="3308738399950580893">auglýsingar</translation>
 <translation id="3320021301628644560">Bæta við heimilisfangi greiðanda</translation>
+<translation id="3324687287337751929">4 x 6 to.</translation>
 <translation id="3324983252691184275">Fagurrauður</translation>
 <translation id="3329013043687509092">Mettun</translation>
 <translation id="3333762389743153920">Ekki gjaldgengt fyrir sýndarkort</translation>
@@ -885,6 +903,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3340978935015468852">stillingar</translation>
 <translation id="3342366525167526994">Líkamsskreyting</translation>
 <translation id="3345782426586609320">Augu</translation>
+<translation id="3349952286488694786">SRA2</translation>
 <translation id="3355823806454867987">Breyta proxy-stillingum...</translation>
 <translation id="3359565626472459400">Hjónaband</translation>
 <translation id="3360103848165129075">Greiðsluhjálparforrit</translation>
@@ -948,8 +967,10 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="350069200438440499">Skráarheiti:</translation>
 <translation id="3507936815618196901">Búa til þrívíddarkort af umhverfinu og rekja staðsetningu myndavélarinnar</translation>
 <translation id="3512163584740124171">Þessi regla er hunsuð vegna þess að önnur regla úr sama regluhópi hefur meiri forgang.</translation>
+<translation id="3515972145999192222">Fyrirtækið þitt hefur lokað á <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> vegna þess að það brýtur gegn reglum. <ph name="BEGIN_LEARN_MORE_LINK"/>Nánar<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="6733862566637706294">Hnappurinn „Stjórna vefslóðum“, ýttu á „Enter“ til að bæta við og stjórna vefslóðum í stillingum Brave</translation>
 <translation id="3518941727116570328">Meðhöndlun margra hluta</translation>
+<translation id="3525130752944427905">10 x 14 to.</translation>
 <translation id="3528171143076753409">Vottorði þjónsins er ekki treyst.</translation>
 <translation id="3528485271872257980">Dökkbrúnn</translation>
 <translation id="3530944546672790857">{COUNT,plural, =0{Að minnsta kosti eitt atriði í samstilltum tækjum}=1{Eitt atriði (og fleiri í samstilltum tækjum)}one{# atriði (og fleiri í samstilltum tækjum)}other{# atriði (og fleiri í samstilltum tækjum)}}</translation>
@@ -957,15 +978,20 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3531780078352352885">Vinnslublöð</translation>
 <translation id="3532844647053365774"><ph name="HOST"/> vill fá að nota hljóðnemann</translation>
 <translation id="3533328374079021623">Pósthólf 5</translation>
+<translation id="3537165859691846083">Letter Plus</translation>
 <translation id="3542768452570884558">Opna tengil í nýjum glugga</translation>
+<translation id="3547746132308051926">20 x 24 to.</translation>
 <translation id="3550112004925580947">Þjónustuiðnaður</translation>
 <translation id="3552297013052089404">Sans serif-letur</translation>
 <translation id="3558573058928565255">Dagur og tími</translation>
 <translation id="3560824484345057728">Sjá tengd vefsvæði</translation>
 <translation id="3566021033012934673">Tengingin þín er ekki örugg</translation>
+<translation id="3566336457819493938">215 x 315 mm</translation>
 <translation id="3567778190852720481">Ekki er hægt að skrá með vinnureikningi (ekki er hægt að nota vinnureikninga).</translation>
+<translation id="3567901620846335314">100 x 150 mm</translation>
 <translation id="3574305903863751447"><ph name="CITY"/>, <ph name="STATE"/> <ph name="COUNTRY"/></translation>
 <translation id="3575121482199441727">Leyfa fyrir þetta vefsvæði</translation>
+<translation id="3575168918110434329">A4x7</translation>
 <translation id="3576616784287504635">Innfelld síða á <ph name="SITE"/> segir</translation>
 <translation id="3577473026931028326">Eitthvað fór úrskeiðis. Reyndu aftur.</translation>
 <translation id="3577902790357386792">Fimleikar</translation>
@@ -979,9 +1005,9 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3595699422137460894">{NUM_DAYS,plural, =0{Þú getur endurstillt hópinn þinn hvenær sem er. Það tekur um einn dag að ganga í nýjan hóp.}=1{Þú getur endurstillt hópinn þinn hvenær sem er. Það tekur um einn dag að ganga í nýjan hóp.}one{Þú getur endurstillt hópinn þinn hvenær sem er. Það tekur {NUM_DAYS} dag að ganga í nýjan hóp.}other{Þú getur endurstillt hópinn þinn hvenær sem er. Það tekur {NUM_DAYS} daga að ganga í nýjan hóp.}}</translation>
 <translation id="3600246354004376029"><ph name="TITLE"/>, <ph name="DOMAIN"/>, <ph name="TIME"/></translation>
 <translation id="3603507503523709">Kerfisstjóri hefur lokað á þetta forrit</translation>
+<translation id="3605899229568538311">5 x 5 to.</translation>
 <translation id="3608932978122581043">Inntaksstefna</translation>
 <translation id="3611317423880285981">Rekstrarvörur fyrir heimili</translation>
-<translation id="3611395257124510155">Sýndarkort fyrir <ph name="CARD_IDENTIFIER"/></translation>
 <translation id="3614103345592970299">Stærð 2</translation>
 <translation id="361438452008624280">Listafærslan „<ph name="LANGUAGE_ID"/>“: Óþekkt eða óstutt tungumál.</translation>
 <translation id="3274500070896023877"><ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ýttu á dálkalykilinn (Tab) og svo Enter til að keyra öryggisathugun í stillingum Brave</translation>
@@ -997,8 +1023,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3632892046558972264">Hlé var gert á skjádeilingu</translation>
 <translation id="1367445511302842209">Hnappurinn Uppfæra Brave, ýttu á Enter til að uppfæra Brave úr stillingum Brave</translation>
 <translation id="3634530185120165534">Bakki 5</translation>
-<translation id="5334218736598399301">Vista á Brave reikningi</translation>
-<translation id="3640766068866876100">Index-4x6-Ext</translation>
 <translation id="3642638418806704195">Forrit:</translation>
 <translation id="3647286794400715637">Hver innsleginn vefslóðarstrengur verður að innihalda 1 til 2 vefslóðir</translation>
 <translation id="3650584904733503804">Sannvottun heppnaðist</translation>
@@ -1017,6 +1041,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3678342917559046352">Ógild viðbót: Búist var við að gildið yrði á einu eftirtalinna sniða: &lt;extension_id&gt; eða &lt;extension_id&gt;;&lt;update_url&gt;.</translation>
 <translation id="2388886110302389394">Opna síðu í nýjum huliðsstillingarglugga (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">Upplýsingar um vottorð</translation>
+<translation id="3693327506115126094">Veldu hvernig þú ætlar að staðfesta hver þú ert</translation>
 <translation id="3699374065820972102">Kveikt er á TouchID fyrir útfyllingu aðgangsorða</translation>
 <translation id="3701427423622901115">Endurstilling samþykkt.</translation>
 <translation id="3704162925118123524">Netið sem þú notar kann að fara fram á að þú farir á innskráningarsíðu þess.</translation>
@@ -1061,6 +1086,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3787705759683870569">Rennur út <ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="3789155188480882154">Stærð 16</translation>
 <translation id="3789841737615482174">Setja upp</translation>
+<translation id="3792100426446126328"><ph name="NAME"/> (<ph name="WIDTH"/> x <ph name="HEIGHT"/> to.)</translation>
 <translation id="3793574014653384240">Fjöldi nýlegra hruntilvika og orsakir þeirra</translation>
 <translation id="3795344968043407227">Indí- og jaðartónlist</translation>
 <translation id="3799805948399000906">Beðið um leturgerð</translation>
@@ -1069,6 +1095,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3807366285948165054">X-færsla myndar</translation>
 <translation id="3807873520724684969">Lokað á skaðlegt efni.</translation>
 <translation id="3810973564298564668">Stjórna</translation>
+<translation id="3815434930383843058">8 x 12 to.</translation>
 <translation id="3816482573645936981">Gildi (leyst af hólmi)</translation>
 <translation id="3823402221513322552">Vafranum þínum er stjórnað af <ph name="BROWSER_DOMAIN"/> og prófílnum þínum af <ph name="PROFILE_DOMAIN"/></translation>
 <translation id="382518646247711829">Ef þú notar proxy-þjón...</translation>
@@ -1080,6 +1107,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3831915413245941253"><ph name="ENROLLMENT_DOMAIN"/> hefur sett upp viðbætur fyrir fleiri aðgerðir. Viðbætur hafa aðgang að sumum af gögnunum þínum.</translation>
 <translation id="3832522519263485449">Mörg göt vinstra megin</translation>
 <translation id="3835233591525155343">Tækjanotkun þín</translation>
+<translation id="3844725157150297127">RA1</translation>
 <translation id="5749930378398424146"><ph name="CREATE_GOOGLE_DOC_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ýttu á Tab og svo Enter til að búa til nýtt Brave skjal á skjótan hátt</translation>
 <translation id="385051799172605136">Til baka</translation>
 <translation id="3853684360927654006">Mat á öryggi aðgangsorðs</translation>
@@ -1094,10 +1122,10 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3890664840433101773">Bæta við netfangi</translation>
 <translation id="3897092660631435901">Valmynd</translation>
 <translation id="3901925938762663762">Kortið er útrunnið</translation>
-<translation id="3906600011954732550">B5-Extra</translation>
 <translation id="3906954721959377182">Spjaldtölva</translation>
 <translation id="2650609753175229582"><ph name="URL"/> vill spila varið efni. Auðkenni tækisins verður staðfest af Brave og þetta vefsvæði kann að fá aðgang að því.</translation>
 <translation id="3909695131102177774"><ph name="LABEL"/> <ph name="ERROR"/></translation>
+<translation id="3921869355029467742">Sláðu inn öryggiskóðann</translation>
 <translation id="3927932062596804919">Hafna</translation>
 <translation id="393316646445601645">Internet og símaþjónusta</translation>
 <translation id="3939773374150895049">Nota WebAuthn í stað CVC-númers?</translation>
@@ -1108,6 +1136,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3949790930165450333"><ph name="DEVICE_NAME"/> (<ph name="DEVICE_ID"/>)</translation>
 <translation id="3949870428812919180">Engir vistaðir greiðslumátar</translation>
 <translation id="3950820424414687140">Skrá inn</translation>
+<translation id="3958057596965527988">4 x 4 to.</translation>
 <translation id="3961148744525529027">Greiðsluhjálparforritið er opið á hálfum skjánum</translation>
 <translation id="3962859241508114581">Fyrra lag</translation>
 <translation id="3963721102035795474">Lestrarstilling</translation>
@@ -1128,13 +1157,13 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4010758435855888356">Veita aðgang að geymslurými?</translation>
 <translation id="401170183602135785">Umslag: C6</translation>
 <translation id="4014128326099193693">{COUNT,plural, =1{PDF-skjal með {COUNT} síðu}one{PDF-skjal með {COUNT} síðu}other{PDF-skjal með {COUNT} síðum}}</translation>
-<translation id="4022639246993848966">3,5 x 5</translation>
 <translation id="4023431997072828269">Þar sem þetta eyðublað er sent með tengingu sem er ekki örugg verða upplýsingarnar þínar sýnilegar öðrum.</translation>
 <translation id="4024923292610332139">slökkva á TouchID til að fylla út aðgangsorð</translation>
 <translation id="3356024105713905662">Hnappur til að stjórna persónuverndarstillingum Brave, ýttu á Enter til að opna persónuverndarstillingar Brave reikningsins</translation>
 <translation id="4030383055268325496">Aft&amp;urkalla viðbót</translation>
 <translation id="4031179711345676612">Hljóðnemi er leyfður</translation>
 <translation id="4040350669425716613">Sérskólar og háskólar</translation>
+<translation id="4047351652147966654">18 x 24 to.</translation>
 <translation id="405399507749852140">Fáðu tilkynningu ef verðlækkun verður á einhverju vefsvæði</translation>
 <translation id="4056223980640387499">Brúnn blær</translation>
 <translation id="4161619938555288542">Leyfðu Brave að hjálpa þér að finna afslætti fyrir körfurnar þínar</translation>
@@ -1152,6 +1181,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8049340108547416244">Hnappurinn „Búa til viðburð“, ýttu á Enter til að búa til nýjan viðburð í Brave dagatali á skjótan hátt</translation>
 <translation id="4088981014127559358">Y-færsla myndar á hlið 1</translation>
 <translation id="4089152113577680600">Bakki 14</translation>
+<translation id="4096237801206588987">11 x 15 to.</translation>
 <translation id="4097288585054919042">Slökkva á tilkynningum</translation>
 <translation id="4098354747657067197">Villandi vefsvæði framundan</translation>
 <translation id="4099048595830172239">Regla kerfisstjóra ræður gegn því að deila skjánum þínum með <ph name="APPLICATION_TITLE"/> þegar trúnaðarupplýsingar eru sýnlegar:</translation>
@@ -1166,6 +1196,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4114146879518089587">Áfram á vefsvæði</translation>
 <translation id="4116663294526079822">Leyfa alltaf á þessu vefsvæði</translation>
 <translation id="4116701314593212016">JIS B7</translation>
+<translation id="4116798170070772848">RA2</translation>
 <translation id="4117700440116928470">Umfang reglunnar er óstutt.</translation>
 <translation id="4121428309786185360">Rennur út</translation>
 <translation id="4123572138124678573">Þrjú göt neðst</translation>
@@ -1175,6 +1206,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4132448310531350254">Afrita hjálparforrit fyrir skráarendinguna „<ph name="FILE_EXTENSION"/>“ sem er tilgreind af forritunum „<ph name="POLICY_IDS_LIST"/>“.</translation>
 <translation id="4134123981501319574">Búa til skjal</translation>
 <translation id="413544239732274901">Frekari upplýsingar</translation>
+<translation id="4140905530744469899">Prófílauðkenni:</translation>
 <translation id="4142935452406587478">Bakki 10</translation>
 <translation id="4148925816941278100">American Express</translation>
 <translation id="4150099059797363385">Umslag: kínverskt #4</translation>
@@ -1229,6 +1261,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4235360514405112390">Gilt</translation>
 <translation id="4250431568374086873">Tengingin við þetta vefsvæði er ekki alveg örugg</translation>
 <translation id="4250680216510889253">Nei</translation>
+<translation id="4250716950689692560">A4x4</translation>
 <translation id="4253168017788158739">Athugasemd</translation>
 <translation id="425582637250725228">Hugsanlegt er að breytingarnar þínar séu ekki vistaðar.</translation>
 <translation id="425869179292622354">Auka öryggið með sýndarkorti?</translation>
@@ -1283,10 +1316,10 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4358461427845829800">Stjórna greiðslumátum...</translation>
 <translation id="4363222835916186793">Slökkt hefur verið á tilkynningum fyrir þessa vöru</translation>
 <translation id="437040971055499437">Öryggisatvik á sér stað</translation>
-<translation id="4372516964750095882">Fanfold-Us</translation>
 <translation id="4372948949327679948">Búist var við <ph name="VALUE_TYPE"/> gildi.</translation>
 <translation id="4377125064752653719">Þú reyndir að ná í <ph name="DOMAIN"/> en vottorðið sem þjónninn gaf upp hefur verið afturkallað af útgefandanum. Þetta merkir að alls ekki skuli treysta öryggisskilríkjum þjónsins. Þú gætir verið að eiga samskipti við tölvuþrjót.</translation>
 <translation id="4378154925671717803">Sími</translation>
+<translation id="4384395682990721132">A4x3</translation>
 <translation id="4386413576162606861">Hlutverkaleikir</translation>
 <translation id="4390472908992056574">Brún</translation>
 <translation id="4393632246160856858">Naglaumhirðuvörur</translation>
@@ -1323,13 +1356,13 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3614771894046523359">Sjálfgefið er að slökkva á þessum eiginleikum. Þeir verða ekki tiltækir í síðari útgáfum Brave.</translation>
 <translation id="4493480324863638523">Ógild vefslóð. Verður að vera vefslóð með hefðbundinni framsetningu, t.d. http://example.com or https://example.com.</translation>
 <translation id="4500587658229086076">óöruggt efni</translation>
-<translation id="4503882053543859973">Architecture-D</translation>
 <translation id="4506176782989081258">Prófunarvilla: <ph name="VALIDATION_ERROR"/></translation>
 <translation id="4506599922270137252">Hafa samband við kerfisstjórann</translation>
 <translation id="450710068430902550">Deilir með kerfisstjóra.</translation>
 <translation id="7581711177899574338"><ph name="TRANSLATE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ýttu á Tab og svo Enter til að þýða þessa síðu með Brave Translate</translation>
 <translation id="4514308731478712184">Slökkva á ferðum</translation>
 <translation id="4892470328555495647">Kort og heimilisföng eru fengin úr Brave og Brave reikningnum þínum (<ph name="ACCOUNT_EMAIL"/>). Þú getur haft umsjón með þeim í <ph name="BEGIN_LINK"/>stillingunum<ph name="END_LINK"/>.</translation>
+<translation id="4520048001084013693">Regla stjórnanda kemur í veg fyrir að hægt sé að sækja þessa skrá</translation>
 <translation id="4521157617044179198"><ph name="WIDTH"/> × <ph name="HEIGHT"/> mm (<ph name="ORIENTATION"/>)</translation>
 <translation id="4521280267704259211">Umslag: monarch</translation>
 <translation id="4521916730539354575">Bakki til vinstri</translation>
@@ -1338,16 +1371,16 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4524805452350978254">Stjórna kortum</translation>
 <translation id="2446780203663220049">Fólk og samfélag</translation>
 <translation id="4530347922939905757">SMS-skilaboð</translation>
+<translation id="4531477351494678589">Númer sýndarkorts:</translation>
 <translation id="4540780316273593836">Eitthvað fór úrskeiðis</translation>
 <translation id="4541810033354695636">aukinn veruleika</translation>
 <translation id="4542971377163063093">Bakki 6</translation>
 <translation id="455113658016510503">A9</translation>
 <translation id="4558551763791394412">Prófaðu að slökkva á viðbótunum þínum.</translation>
-<translation id="4559134504959026834"><ph name="SET_OWNER"/> skilgreindi hópinn sem þetta vefsvæði er í og getur séð virkni þína</translation>
-<translation id="4559332380232738994">10x11</translation>
 <translation id="4566017918361049074">Útivist</translation>
 <translation id="457875822857220463">Sending</translation>
 <translation id="4582204425268416675">Fjarlægja kort</translation>
+<translation id="4582595824823167856">Fáðu SMS-skilaboð</translation>
 <translation id="459089498662672729">Reglur kerfisstjóra mæla gegn því að límt sé frá <ph name="ORIGIN_NAME"/> á þennan stað</translation>
 <translation id="4592951414987517459">Tengingin við <ph name="DOMAIN"/> er dulkóðuð með nýrri gerð dulkóðunarsafns.</translation>
 <translation id="4594403342090139922">Aft&amp;urkalla eyðingu</translation>
@@ -1358,10 +1391,13 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4606870351894164739">Áhrifamikið</translation>
 <translation id="7265018635737406618">Hnappurinn „Sjá ábendingar um Brave“, ýttu á Enter til að fá frekari upplýsingar um eiginleika Brave</translation>
 <translation id="8338928872956435647">Skoða ábendingar um Brave</translation>
+<translation id="460848736049414407">Lokað af stjórnanda</translation>
+<translation id="4610279718074907952"><ph name="SET_OWNER"/> skilgreindi hópinn sem þetta vefsvæði er í og getur séð virkni þína</translation>
 <translation id="4617273035598175554">Hugbúnaður fyrir grafíska vinnslu og hreyfimyndagerð</translation>
 <translation id="4622292761762557753">Flytja samt</translation>
 <translation id="6398431831028858802">Ekki er hægt að stilla þessa reglu á prófílstigi Brave og hún verður hunsuð.</translation>
 <translation id="4628948037717959914">Mynd</translation>
+<translation id="4629370161347991046">A4x6</translation>
 <translation id="4631649115723685955">Fjárvildarkerfi tengt</translation>
 <translation id="4636930964841734540">Upplýsingar</translation>
 <translation id="464342062220857295">Leitareiginleikar</translation>
@@ -1369,6 +1405,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4646534391647090355">Fara þangað núna</translation>
 <translation id="4648262692072505866">Tætigildi verður að vera á sniðinu SHA-256.</translation>
 <translation id="4652266463001779298">Ekki heimilað</translation>
+<translation id="4652440160515225514">Fyrirtækið þitt setti þetta vefsvæði á bannlista þar sem það brýtur gegn reglum.</translation>
 <translation id="4653167719759882810">Samruni og yfirtökur</translation>
 <translation id="4658638640878098064">Hefti efst til vinstri</translation>
 <translation id="3812568169637430422">Nú geturðu vafrað í næði og aðrir notendur tækisins geta ekki séð það sem þú gerir. Niðurhal, bókamerki og atriði á leslista verða þó vistuð.</translation>
@@ -1385,7 +1422,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4682496302933121474">Þýða síðu?</translation>
 <translation id="468314109939257734">Skoðaðu sýndarkortsnúmerið þitt</translation>
 <translation id="4692623383562244444">Leitarvélar</translation>
-<translation id="4693246800345263879">Umslag: 25 x 36 cm</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
 <translation id="4702504834785592287">Hlið</translation>
 <translation id="4702656508969495934">Skjátextar í rauntíma sýnilegir, notaðu gluggaval til að stilla fókus</translation>
@@ -1393,6 +1429,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4704732901923281920">Líffræði</translation>
 <translation id="4708268264240856090">Tengingin þín var rofin</translation>
 <translation id="4712404868219726379">Windows Hello</translation>
+<translation id="4718897478554657123">600 x 900 mm</translation>
 <translation id="4722547256916164131"><ph name="BEGIN_LINK"/>Keyrir Windows-netgreiningu<ph name="END_LINK"/></translation>
 <translation id="4722735765955348426">Aðgangsorð fyrir <ph name="USERNAME"/></translation>
 <translation id="4724144314178270921">Getur beðið um að sjá texta og myndir á klippiborðinu</translation>
@@ -1429,6 +1466,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4789704664580239421">Tilkynningar um verðlækkanir munu birtast á opnum flipum</translation>
 <translation id="4791134497475588553">Uppsett Linux-forrit og hvenær þau voru notuð síðast</translation>
 <translation id="4792686369684665359">Upplýsingarnar sem þú ert að fara að senda inn eru ekki öruggar</translation>
+<translation id="4793219378458250238">11 x 12 to.</translation>
 <translation id="4796594887379589189">Auðkenni vinnslureiknings</translation>
 <translation id="7110430050177876111">Sláðu inn gildistíma og CVC-númerið fyrir <ph name="CREDIT_CARD"/> til að uppfæra kortaupplýsingarnar. Greiðslukortaupplýsingum af Brave reikningnum þínum verður deilt með vefsvæðinu eftir að þú hefur staðfest.</translation>
 <translation id="4798269756263412078">Fáðu tilkynningu ef verðlækkun verður á einhverju vefsvæði. Tilkynningar verða sendar á netfangið þitt.</translation>
@@ -1440,6 +1478,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4813512666221746211">Netvilla</translation>
 <translation id="4816492930507672669">Laga að síðu</translation>
 <translation id="4819347708020428563">Breyta textaskýringum í sjálfgefnu sniði?</translation>
+<translation id="4823325221257637040">Ræsist</translation>
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ýttu á Tab og svo Enter til að búa til nýjan Brave töflureikni á skjótan hátt</translation>
 <translation id="4825507807291741242">Kraftmikið</translation>
 <translation id="483241715238664915">Kveikja á viðvörunum</translation>
@@ -1465,6 +1504,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4879491255372875719">Sjálfvirkt (sjálfgildi)</translation>
 <translation id="4880827082731008257">Leitarferill</translation>
 <translation id="4881695831933465202">Opna</translation>
+<translation id="4881808915112408168">24 x 31,5 to.</translation>
 <translation id="4885256590493466218">Greiddu með <ph name="CARD_DETAIL"/> þegar þú gengur frá kaupunum</translation>
 <translation id="4887406273302438710">Verndaðu aðgangsorð með Windows Hello</translation>
 <translation id="4888600795924685526">Tungumálanám</translation>
@@ -1493,7 +1533,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4950898438188848926">Hnappur til að skipta um flipa; ýttu á færslulykilinn til að skipta yfir í opinn flipa, <ph name="TAB_SWITCH_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
 <translation id="495170559598752135">Aðgerðir</translation>
 <translation id="4953689047182316270">Svara aðgengisatburði</translation>
-<translation id="4955242332710481440">A5-Extra</translation>
 <translation id="4958444002117714549">Stækka lista</translation>
 <translation id="4964505745997821360">Sjúkratryggingar</translation>
 <translation id="4968522289500246572">Þetta forrit er hannað fyrir snjalltæki og óvíst er að breytingar á stærð komi vel út. Vandamál gætu komið upp í forritinu eða endurræsing þess gæti átt sér stað.</translation>
@@ -1517,6 +1556,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="5017554619425969104">Texti sem þú afritaðir</translation>
 <translation id="5017828934289857214">Minna mig á seinna</translation>
 <translation id="5018422839182700155">Ekki tókst að opna þessa síðu</translation>
+<translation id="5018802455907704660">16 x 20 to.</translation>
 <translation id="5019198164206649151">Geymsla bakenda er í slæmri stöðu</translation>
 <translation id="5020776957610079374">Heimstónlist</translation>
 <translation id="6516968977334148048">Vaktaðu verð með Brave</translation>
@@ -1527,6 +1567,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6425384654920630035">Um Brave Translate</translation>
 <translation id="503498442187459473"><ph name="HOST"/> vill fá að nota myndavélina og hljóðnemann</translation>
 <translation id="5035135400558156732">Garðyrkja</translation>
+<translation id="503574301575803523">SRA3</translation>
 <translation id="5039762155821394373">Leturstærð</translation>
 <translation id="5039804452771397117">Leyfa</translation>
 <translation id="5040262127954254034">Persónuvernd</translation>
@@ -1553,18 +1594,18 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="5093232627742069661">Z-brot</translation>
 <translation id="4906192414477726331">Þessi þjónn gat ekki sannað að hann væri <ph name="DOMAIN"/>; Brave treystir ekki öryggisvottorðinu hans. Þetta kann að orsakast af vanstillingu eða tölvuþrjóti sem komist hefur inn í tenginguna.</translation>
 <translation id="5097099694988056070">Talnagögn tækis eins og notkun örgjörva/vinnsluminnis</translation>
+<translation id="5097468150760963273">27 x 39 to.</translation>
 <translation id="5097501891273180634">A2</translation>
 <translation id="5108881358339761672">Vefsvæðið er ekki öruggt</translation>
 <translation id="5109892411553231226">Stjórna greiðslumátum</translation>
 <translation id="5112422516732747637">A5</translation>
 <translation id="5114288597538800140">Bakki 18</translation>
+<translation id="511431458895937675">DSC-mynd</translation>
 <translation id="5114987907971894280">sýndarveruleika</translation>
-<translation id="5115216390227830982">European-Edp</translation>
 <translation id="5115232566827194440">Hnekkja takmarkaðri og stýrðri gestalotu</translation>
 <translation id="5115563688576182185">(64 bita)</translation>
 <translation id="5123063207673082822">Helgi</translation>
 <translation id="5123433949759960244">Körfubolti</translation>
-<translation id="5125394840236832993">B-Plus</translation>
 <translation id="5125751979347152379">Ógild vefslóð.</translation>
 <translation id="512592033764059484">Fótbolti</translation>
 <translation id="5126510351761255129">Staðfestu kortið þitt</translation>
@@ -1587,7 +1628,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2996889577833788807">Sláðu inn CVC-númerið fyrir <ph name="CREDIT_CARD"/>. Greiðslukortaupplýsingum af reikningnum þínum á Brave verður deilt með þessu vefsvæði eftir að þú hefur staðfest.</translation>
 <translation id="8515152881111950319">Þú gætir misst aðgang að fyrirtækisreikningnum eða orðið fyrir auðkennisstuldi. Brave mælir með því að þú skiptir um aðgangsorð núna.</translation>
 <translation id="5171045022955879922">Leitaðu eða sláðu inn vefslóð</translation>
-<translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">Vél</translation>
 <translation id="5177076414499237632">Nánar um heimildir og umfjöllunarefni þessarar síðu</translation>
 <translation id="5179510805599951267">Ekki <ph name="ORIGINAL_LANGUAGE"/>? Tilkynna þessa villu</translation>
@@ -1601,7 +1641,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="5205222826937269299">Heiti er nauðsynlegt</translation>
 <translation id="5209518306177824490">SHA-1 fingrafar</translation>
 <translation id="5209670883520018268">Bakki 20</translation>
-<translation id="5215363486134917902">Folio-Sp</translation>
 <translation id="521659676233207110">Bakki 13</translation>
 <translation id="5216942107514965959">Síðast opnað í dag</translation>
 <translation id="5217759126664161410">Ógilt snið samskiptareglu.</translation>
@@ -1610,7 +1649,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="5229588705416009823">Stórir fjölspilunarleikir</translation>
 <translation id="5230733896359313003">Sendingarheimilisfang</translation>
 <translation id="5230815978613972521">B8</translation>
-<translation id="5233045608889518621">12x19</translation>
+<translation id="523149107733989821">A4+</translation>
 <translation id="5234764350956374838">Hunsa</translation>
 <translation id="5239623327352565343">Staðsetning leyfð</translation>
 <translation id="5242889659037569123">Farangur og aukahlutir fyrir ferðalög</translation>
@@ -1620,6 +1659,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="5254043433801397071">Fínstilla prentefni</translation>
 <translation id="5254958791078852567">E1</translation>
 <translation id="5255690596502591079">Taka samt mynd</translation>
+<translation id="5255833070095767006">350 x 460 mm</translation>
 <translation id="5257739419779698609">{0,plural, =1{Regla kerfisstjóra mælir ekki með að afrita þessa skrá á <ph name="DESTINATION_NAME"/>}one{Regla kerfisstjóra mælir ekki með að afrita þessar skrár á <ph name="DESTINATION_NAME"/>}other{Regla kerfisstjóra mælir ekki með að afrita þessar skrár á <ph name="DESTINATION_NAME"/>}}</translation>
 <translation id="5266128565379329178">Innbundið efst</translation>
 <translation id="5269225904387178860">Fjögur göt neðst</translation>
@@ -1670,11 +1710,11 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="5363309033720083897">Raðtengi heimilað af stjórnanda</translation>
 <translation id="5363713372507812442">Leitarferli</translation>
 <translation id="5371425731340848620">Uppfæra kort</translation>
+<translation id="5375686690914744327">SRA1</translation>
 <translation id="5377026284221673050">„Klukkan er á eftir“, „Klukkan þín er á undan“ eða „&lt;span class="error-code"&gt;NET::ERR_CERT_DATE_INVALID&lt;/span&gt;“</translation>
 <translation id="6943284267010400133">Hnappurinn „Búa til kynningu“, ýttu á Enter til að búa til nýja Brave kynningu í Skyggnum á skjótan hátt</translation>
 <translation id="5385857628869214740">Grín</translation>
 <translation id="5386426401304769735">Vottorðskeðja þessa vefsvæðis inniheldur vottorð sem var undirritað með SHA-1.</translation>
-<translation id="538659543871111977">A4-Tab</translation>
 <translation id="5396631636586785122">Saumur hægra megin</translation>
 <translation id="5398772614898833570">Lokað á auglýsingar</translation>
 <translation id="5400836586163650660">Grár</translation>
@@ -1716,6 +1756,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="5510481203689988000">Fótsporastillingar stjórna þessari stillingu.</translation>
 <translation id="5510766032865166053">Hugsanlega var hún færð til eða henni eytt.</translation>
 <translation id="5513528801833998679">Nota innskráningu tækis</translation>
+<translation id="5515388687005870733">55 x 85 mm</translation>
 <translation id="5518670652865028077">Listir og afþreying</translation>
 <translation id="5519516356611866228">Með breytingunum þínum</translation>
 <translation id="5523118979700054094">Heiti reglu</translation>
@@ -1732,6 +1773,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="5541086400771735334">Pósthólf 7</translation>
 <translation id="5541546772353173584">Bæta við netfangi</translation>
 <translation id="5545756402275714221">Greinar fyrir þig</translation>
+<translation id="5551890439174915351">100 x 200 mm</translation>
 <translation id="6084314943327785510">Brave athugar aðgangsorðin þín reglulega og ber þau saman við lista sem hafa verið birtir á netinu. Meðan á þessu stendur eru aðgangsorðin þín og notandanöfn dulkóðuð svo enginn geti lesið þau, þ.m.t. ekki Brave.</translation>
 <translation id="5556459405103347317">Endurhlaða</translation>
 <translation id="5560088892362098740">Lokadagsetning</translation>
@@ -1741,6 +1783,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="5565871407246142825">Kreditkort</translation>
 <translation id="5570825185877910964">Vernda reikning</translation>
 <translation id="5571083550517324815">Ekki er hægt að sækja frá þessu heimilisfangi. Veldu annað heimilisfang.</translation>
+<translation id="5572434905385510939">22 x 28 to.</translation>
 <translation id="557886905979275351">Rakvélar</translation>
 <translation id="5580958916614886209">Athugaðu mánuð gildistímans og reyndu aftur</translation>
 <translation id="558420943003240152">Stjórna aðgangsorðum og aðgangslyklum…</translation>
@@ -1749,10 +1792,10 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="5587987780934666589">Notandi verkvangs</translation>
 <translation id="5593349413089863479">Tengingin er ekki alveg örugg</translation>
 <translation id="5595485650161345191">Breyta heimilisfangi</translation>
+<translation id="5596939519753369075">2 x 3,5 to</translation>
 <translation id="5598944008576757369">Velja greiðslumáta</translation>
 <translation id="560412284261940334">Stjórnun er ekki studd</translation>
 <translation id="5605670050355397069">Kladdi</translation>
-<translation id="5607240918979444548">Architecture-C</translation>
 <translation id="5610142619324316209">Athuga tenginguna</translation>
 <translation id="5610807607761827392">Þú getur haft umsjón með kortum og heimilisföngum í <ph name="BEGIN_LINK"/>stillingunum<ph name="END_LINK"/>.</translation>
 <translation id="2012723355262040739">Þýða þessa síðu með Brave Translate</translation>
@@ -1813,6 +1856,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="57689295674415555">Var sýndarkortsnúmerið ekki útfyllt?</translation>
 <translation id="5772086939108830423">Nota aðgangslykil í öðru tæki</translation>
 <translation id="5776313857861697733">Forgangur</translation>
+<translation id="5776574724412881956">Er sýndarkortið ekki útfyllt? Smelltu á upplýsingar sýndarkortsins til að afrita þær á klippiborðið. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5781136890105823427">Tilraun gerð virk</translation>
 <translation id="578305955206182703">Rafgulur</translation>
 <translation id="57838592816432529">Þagga</translation>
@@ -1837,6 +1881,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="583281660410589416">Óþekkt</translation>
 <translation id="5838278095973806738">Þú ættir ekki að færa inn neinar viðkvæmar upplýsingar á þessu vefsvæði (t.d. aðgangsorð eða kreditkortanúmer) því að tölvuþrjótar gætu stolið þeim.</translation>
 <translation id="5851548754964597211">Flipalisti</translation>
+<translation id="5852909432155870672">RA4</translation>
 <translation id="5860033963881614850">Slökkt</translation>
 <translation id="5862579898803147654">Staflari 8</translation>
 <translation id="5863847714970149516">Síðan gæti reynt að rukka þig um greiðslu</translation>
@@ -1849,7 +1894,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="5884465125445718607">Umslag: kínverskt #6</translation>
 <translation id="5887400589839399685">Kort vistað</translation>
 <translation id="5887687176710214216">Síðast opnað í gær</translation>
-<translation id="5891155897634819292">Umslag: kínverskt #5</translation>
 <translation id="5895138241574237353">Endurræsa</translation>
 <translation id="5895187275912066135">Gefið út</translation>
 <translation id="5901630391730855834">Gulur</translation>
@@ -1875,6 +1919,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="5953516610448771166">Skjátextar í rauntíma eru ekki í boði fyrir þetta efni. Settu <ph name="CONTENT_SETTINGS"/> á bannlista fyrir þetta vefsvæði til að fá skjátexta.</translation>
 <translation id="5955063559762970069">Hótel og gistirými</translation>
 <translation id="5963413905009737549">Hluti</translation>
+<translation id="5967260682280773804">36 x 48 to.</translation>
 <translation id="5967592137238574583">Breyta samskiptaupplýsingum</translation>
 <translation id="5967867314010545767">Fjarlægja úr ferli</translation>
 <translation id="5968022600320704045">Engar leitarniðurstöður</translation>
@@ -1882,7 +1927,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="5974052231147553524">Sjötta rúlla</translation>
 <translation id="5975083100439434680">Minnka aðdrátt</translation>
 <translation id="5979084224081478209">Yfirfara aðgangsorð</translation>
-<translation id="5980920751713728343">Index-3x5</translation>
 <translation id="5984570616552610254">Raki í hólfi</translation>
 <translation id="5984712050237025014">Aukinn veruleiki og sýndarveruleiki</translation>
 <translation id="598637245381783098">Ekki var hægt að opna greiðsluforritið</translation>
@@ -1891,6 +1935,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7409510288691071929">Stjórnaðu upplýsingum, persónuvernd og öryggi á Brave reikningnum þínum</translation>
 <translation id="3494641719937626561">Aðgangsorðið sem þú varst að nota fannst í öryggisbroti. Aðgangsorðastjórnun Brave mælir með að breyta aðgangsorðinu núna og athuga vistuð aðgangsorð til að tryggja öryggi reikninganna þinna.</translation>
 <translation id="6000758707621254961"><ph name="RESULT_COUNT"/> niðurstöður fyrir „<ph name="SEARCH_TEXT"/>“</translation>
+<translation id="6006365096047131769">3 x 5 to.</translation>
 <translation id="6006484371116297560">Hefðbundið</translation>
 <translation id="6008122969617370890">Röðun N til 1</translation>
 <translation id="6008256403891681546">JCB</translation>
@@ -1932,6 +1977,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6087312102907839798">Tengdar leitir</translation>
 <translation id="6094273045989040137">Setja inn skýringar</translation>
 <translation id="6094290315941448991">Slökkt er á skjáupptöku þegar trúnaðarefni er sýnilegt vegna reglu kerfisstjóra</translation>
+<translation id="6099269767116481177">22 x 29,5 to.</translation>
 <translation id="6104072995492677441">JIS B6</translation>
 <translation id="6105460996796456817">Búa til Site</translation>
 <translation id="6106989379647458772">Vefsíðan á <ph name="PAGE"/> gæti legið niðri tímabundið eða hafa verið færð á nýtt veffang fyrir fullt og allt.</translation>
@@ -1940,11 +1986,13 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6116338172782435947">Sjá texta og myndir sem þú afritar á klippiborðið</translation>
 <translation id="6118782133429281336">Listi yfir upprunastaði er tómur.</translation>
 <translation id="6120179357481664955">Muna eftir UPI-auðkenni?</translation>
+<translation id="6122181661879998141">framhlið kortsins</translation>
 <translation id="5972135347314259717">Brave Enterprise Connectors</translation>
 <translation id="6126565365696310362">Umslag: kínverskt #2</translation>
 <translation id="6127379762771434464">Atriði fjarlægt</translation>
 <translation id="6043883615739972429"><ph name="BEGIN_LINK"/>Nánar um huliðsstillingu í Brave<ph name="END_LINK"/></translation>
 <translation id="6133984428121856852">Skráarending er auð eða gölluð.</translation>
+<translation id="6139975341602920272">17 x 22 to.</translation>
 <translation id="6146055958333702838">Kannaðu allar snúrur og endurræstu beina, mótöld og önnur
     nettæki sem þú kannt að vera að nota.</translation>
 <translation id="614940544461990577">Prófaðu að:</translation>
@@ -1960,11 +2008,14 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6177128806592000436">Tenging þín við þetta vefsvæði er ekki örugg</translation>
 <translation id="6177531123306197852">Umslag: C2</translation>
 <translation id="6180316780098470077">Tími milli tilrauna</translation>
+<translation id="6182972682129119950">A4x5</translation>
 <translation id="61877208875190028">Kvenfatnaður</translation>
 <translation id="6194209731893739467">Sjá allar vaktaðar vörur hér</translation>
 <translation id="6195371403461054755">Jarðfræði</translation>
 <translation id="6196640612572343990">Loka á fótspor frá þriðja aðila</translation>
+<translation id="6197648101609735209">89 x 89 mm</translation>
 <translation id="6203231073485539293">Athugaðu internettenginguna</translation>
+<translation id="6212314149070368045">BNA Fanfold</translation>
 <translation id="8385639954311581596">Fjarlægja netfang úr Brave?</translation>
 <translation id="622039917539443112">Brotið tvisvar til helminga</translation>
 <translation id="6221345481584921695">Örugg vefnotkun Brave <ph name="BEGIN_LINK"/>greindi nýlega spilliforrit<ph name="END_LINK"/> á <ph name="SITE"/>. Vefsvæði sem allajafna eru örugg smitast stundum af spilliforritum. Skaðlega efnið er upprunnið frá <ph name="SUBRESOURCE_HOST"/>, þekktum dreifingaraðila spilliforrita.</translation>
@@ -1991,6 +2042,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7954557091400543500">Til að greiða hraðar næst geturðu vistað kortið og heimilisfang greiðanda á Brave reikningnum.</translation>
 <translation id="6279183038361895380">Ýttu á |<ph name="ACCELERATOR"/>| til að sýna bendilinn</translation>
 <translation id="6280223929691119688">Ekki er hægt að senda á þetta heimilisfang. Veldu annað heimilisfang.</translation>
+<translation id="6284292079994426700">26 x 38 to.</translation>
 <translation id="9069724554626063339">Hnappur til að stjórna niðurhali í Brave, ýttu á Enter til að stjórna skrám sem þú hefur sótt í Brave</translation>
 <translation id="6289939620939689042">Síðulitur</translation>
 <translation id="6290238015253830360">Tillögur að greinum birtast hér</translation>
@@ -2032,7 +2084,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6387645831795005740">Stundum herma tölvuþrjótar eftir vefsvæðum með því að gera litlar og illgreinanlegar breytingar á vefslóðinni.</translation>
 <translation id="6389470377220713856">Nafn á korti</translation>
 <translation id="6390200185239044127">Z-brot í miðju</translation>
-<translation id="6390662030813198813">Engineering-E</translation>
 <translation id="6391700400718590966">Skilríki öruggrar greiðslu — tilkynningasíðu um engin samsvarandi skilríki var lokað</translation>
 <translation id="6393956493820063117">Regla stjórnanda lokar á að hægt sé að líma frá <ph name="ORIGIN_NAME"/> á þessa staðsetningu</translation>
 <translation id="6394852772105848029">Þetta forrit vill opna <ph name="APP_NAME"/> forritið</translation>
@@ -2042,10 +2093,14 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6404511346730675251">Breyta bókamerki</translation>
 <translation id="6405181733356710802">Halda áfram í <ph name="APP_NAME"/>?</translation>
 <translation id="6410264514553301377">Sláðu inn gildistímann og CVC-númerið fyrir <ph name="CREDIT_CARD"/></translation>
+<translation id="6411107829285739505">A4x8</translation>
+<translation id="6416877227920300343">EDP</translation>
 <translation id="6425092077175753609">Nýja útlitshönnunin</translation>
 <translation id="6427730057873428458">Bæklingabrot</translation>
 <translation id="6428450836711225518">Staðfestu símanúmerið þitt</translation>
+<translation id="6429267199680088961">A4 Tab</translation>
 <translation id="7772223497488184427">Breyta Brave aðgangsorði</translation>
+<translation id="6431119592588449664">Skýrslu var hlaðið upp</translation>
 <translation id="6433490469411711332">Breyta samskiptaupplýsingum</translation>
 <translation id="6433595998831338502"><ph name="HOST_NAME"/> neitaði að koma á tengingu.</translation>
 <translation id="6433797564277305076">Staðfestu kortin þín hraðar með því að nota „Taka tæki úr lás“ héðan í frá</translation>
@@ -2053,8 +2108,10 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6443406338865242315">Hvaða viðbætur þú hefur sett upp</translation>
 <translation id="6446608382365791566">Bæta við fleiri upplýsingum</translation>
 <translation id="6447842834002726250">Fótspor</translation>
+<translation id="6450077999570164268">Quarto</translation>
 <translation id="6450212216969386944">Umslag: chou 40</translation>
 <translation id="6451458296329894277">Staðfesta endursendingu eyðublaðs</translation>
+<translation id="6452889436791091116">ISO ID-1</translation>
 <translation id="6456955391422100996">Auglýsing fjarlægð.</translation>
 <translation id="6457206614190510200">Kjalhefting</translation>
 <translation id="6457455098507772300">Tilkynningar um verðlækkanir birtast sem sprettigluggatilkynningar á skjáborðinu</translation>
@@ -2088,6 +2145,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6549443526281184652">Búningar</translation>
 <translation id="6554732001434021288">Síðast opnað fyrir <ph name="NUM_DAYS"/> dögum</translation>
 <translation id="6556866813142980365">Endurgera</translation>
+<translation id="6557715786897013164">14 x 17 to.</translation>
 <translation id="6569060085658103619">Þú ert að skoða viðbótarsíðu</translation>
 <translation id="6569366777234823130">Dramamyndir</translation>
 <translation id="6573200754375280815">Tvö göt hægra megin</translation>
@@ -2117,6 +2175,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="1375868315964791309">{COUNT,plural, =0{Ekkert}=1{Frá einu vefsvæði (þú verður ekki skráð(ur) út af Brave reikningnum þínum)}one{Frá # vefsvæði (þú verður ekki skráð(ur) út af Brave reikningnum þínum)}other{Frá # vefsvæðum (þú verður ekki skráð(ur) út af Brave reikningnum þínum)}}</translation>
 <translation id="6678472970290886941">Kerfisstjórinn þinn getur breytt uppsetningu vafrans með fjartengingu. Virkni þinni í þessu tæki er einnig hægt að stjórna utan Brave.</translation>
 <translation id="6648524591329069940">Serif-letur</translation>
+<translation id="6649510485211003056">195 x 270 mm</translation>
 <translation id="6651270836885078973">Stjórnað af:</translation>
 <translation id="6652101503459149953">Nota Windows Hello</translation>
 <translation id="6657585470893396449">Aðgangsorð</translation>
@@ -2148,6 +2207,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6716672519412350405"><ph name="URL"/> vill búa til þrívíddarkort af umhverfinu og rekja staðsetningu myndavélarinnar</translation>
 <translation id="6718612893943028815">Nota myndavél?</translation>
 <translation id="6721678857435001674">Sjá gerð og útgáfu öryggislykilsins þíns</translation>
+<translation id="6727094998759448074">SRA4</translation>
 <translation id="6732087373923685049">myndavél</translation>
 <translation id="6738516213925468394">Gögnin þín voru dulkóðuð með <ph name="BEGIN_LINK"/>aðgangsorði samstillingar<ph name="END_LINK"/> <ph name="TIME"/>. Sláðu það inn til að hefja samstillingu.</translation>
 <translation id="674375294223700098">Óþekkt villa í vottorði þjóns.</translation>
@@ -2182,10 +2242,11 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6826993739343257035">Viltu leyfa AR?</translation>
 <translation id="6828866289116430505">Erfðafræði</translation>
 <translation id="6831043979455480757">Þýða</translation>
-<translation id="2427219270600431645">Vistaðu korta- og innheimtuupplýsingarnar þínar á Brave reikningnum þínum fyrir öruggari og hraðari greiðslur</translation>
+<translation id="6842196666980060516">184 x 260 mm</translation>
 <translation id="6846340164947227603">Nota sýndarkortsnúmer...</translation>
 <translation id="6852204201400771460">Viltu endurhlaða forritið?</translation>
 <translation id="6857776781123259569">Stjórna aðgangsorðum...</translation>
+<translation id="6858034839887287663">A2x4</translation>
 <translation id="6864189428899665393">267 x 389 mm</translation>
 <translation id="686485648936420384">Neytendamál</translation>
 <translation id="6865412394715372076">Ekki er hægt að staðfesta þetta kort í augnablikinu</translation>
@@ -2200,7 +2261,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6890443033788248019">Leyfa staðsetningu?</translation>
 <translation id="6890531741535756070">Þú valdir að staðfesta með <ph name="DEVICE_LABEL"/> á vefsvæðum sem nota <ph name="PROVIDER_ORIGIN"/>. Þessi þjónustuaðili kann að hafa vistað upplýsingar um greiðslumátann þinn sem þú getur <ph name="BEGIN_LINK"/>óskað eftir að verði eytt<ph name="END_LINK"/>.</translation>
 <translation id="6891596781022320156">Stig stefnunnar er óstutt.</translation>
-<translation id="6895143722905299846">Sýndarnúmer:</translation>
 <translation id="6895330447102777224">Kortið er staðfest</translation>
 <translation id="6897140037006041989">Vafraupplýsingar</translation>
 <translation id="6898699227549475383">Notendaskipan (O)</translation>
@@ -2212,6 +2272,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6915804003454593391">Notandi:</translation>
 <translation id="6916954549222464607">Fjármálaáætlanir og -umsjón</translation>
 <translation id="6917795328362592458">Aðgangsorðið sem þú varst að nota fannst í öryggisbroti. Aðgangsorðastjórnun mælir með að þú athugir vistuð aðgangsorð til að tryggja öryggi reikninganna þinna.</translation>
+<translation id="6925267999184670015">B+ fyrir Norður Ameríku</translation>
 <translation id="6722453239914327220">Þetta nafn kemur af Brave reikningnum þínum</translation>
 <translation id="6936976777388162184">Þetta er pakkaleyfistæki og ekki er hægt að skrá það í sjálfsala- eða merkingauppfærslu.</translation>
 <translation id="6939469646605424232">Dramatískir sjónvarpsþættir</translation>
@@ -2220,6 +2281,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6946722113367118030">Hugsar</translation>
 <translation id="6948051842255602737">Leik lokið, þú fékkst <ph name="SCORE"/> stig.</translation>
 <translation id="6948701128805548767">Veldu heimilisfang til að sjá afhendingarmáta og kröfur</translation>
+<translation id="6948874830249067134">A1x3</translation>
 <translation id="6949872517221025916">Endurstilla aðgangsorð</translation>
 <translation id="6950684638814147129">Villa við þáttun JSON-gildis: <ph name="ERROR"/></translation>
 <translation id="695140971690006676">Endurstilla allt</translation>
@@ -2241,6 +2303,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6972629891077993081">HID-tæki</translation>
 <translation id="6973656660372572881">Bæði fastir proxy-þjónar og vefslóð á .pac-skriftu eru skilgreind.</translation>
 <translation id="6973932557599545801">Ég get ekki aðstoðað meira, haltu áfram upp á eigin spýtur.</translation>
+<translation id="6973988895180423160">3,5 x 5 to.</translation>
 <translation id="6978236010531171013">Deila samt</translation>
 <translation id="6979158407327259162">Google Drive</translation>
 <translation id="6979440798594660689">Slökkva á hljóði (sjálfgefið)</translation>
@@ -2254,10 +2317,12 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7012363358306927923">China UnionPay</translation>
 <translation id="7014741021609395734">Aðdráttarstig</translation>
 <translation id="7016992613359344582">Greiðslur gætu verið stakar eða endurteknar og hugsanlega er ekki greinilegt að borga þurfi.</translation>
+<translation id="7023162328967545559">Viðvörun stjórnanda</translation>
 <translation id="7029809446516969842">Aðgangsorð</translation>
 <translation id="7030436163253143341">Vottorðið er ekki gilt</translation>
 <translation id="7031646650991750659">Hvaða Google Play forrit þú hefur sett upp</translation>
 <translation id="8918349693525256593"><ph name="MANAGE_GOOGLE_PRIVACY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ýttu á Tab og svo Enter til að stjórna persónuverndarstillingum Brave reikningsins</translation>
+<translation id="7048095965575426564">Evrópskt Fanfold</translation>
 <translation id="7050187094878475250">Þú reyndir að ná sambandi við <ph name="DOMAIN"/> en þjónninn framvísaði vottorði sem er með of langan gildistíma til að hægt sé að treysta því.</translation>
 <translation id="705310974202322020">{NUM_CARDS,plural, =1{Ekki er hægt að vista þetta kort núna}one{Ekki er hægt að vista þessi kort núna}other{Ekki er hægt að vista þessi kort núna}}</translation>
 <translation id="7053983685419859001">Setja á bannlista</translation>
@@ -2271,6 +2336,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7068733155164172741">Sláðu inn <ph name="OTP_LENGTH"/> stafa kóða</translation>
 <translation id="70705239631109039">Tengingin er ekki alveg örugg</translation>
 <translation id="7075452647191940183">Beiðnin er of stór</translation>
+<translation id="7078665357168027058">RA3</translation>
 <translation id="7079718277001814089">Þetta vefsvæði inniheldur spilliforrit</translation>
 <translation id="7081308185095828845">Þessi eiginleiki er ekki í boði í tækinu þínu</translation>
 <translation id="7083258188081898530">Bakki 9</translation>
@@ -2284,6 +2350,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7108634116785509031"><ph name="HOST"/> vill fá að nota myndavélina</translation>
 <translation id="7108819624672055576">Leyft af viðbót</translation>
 <translation id="7111012039238467737">(gilt)</translation>
+<translation id="7112327784801341716">Sérðu ekki núverandi upplýsingar? Hafðu samband við bankann þinn til að uppfæra upplýsingarnar.</translation>
 <translation id="7118618213916969306">Leita að vefslóð á klippiborði, <ph name="SHORT_URL"/></translation>
 <translation id="7119414471315195487">Lokaðu öðrum flipum eða forritum</translation>
 <translation id="8817208096236092047">Þegar þú lokar öllum huliðsflipum í Brave er virkni þín á þessum flipum hreinsuð úr tækinu:
@@ -2294,8 +2361,10 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
           <ph name="END_LIST"/></translation>
 <translation id="7129409597930077180">Ekki er hægt að senda á þetta heimilisfang. Veldu annað heimilisfang.</translation>
 <translation id="7129809579943936035"><ph name="VALUE_PROP"/> <ph name="DETAILS"/></translation>
+<translation id="7130775116821607281">Lokað fyrir upphleðslu</translation>
 <translation id="7132939140423847331">Stjórnandi hefur bannað afritun þessara gagna.</translation>
 <translation id="7135130955892390533">Sýna stöðu</translation>
+<translation id="356726776930413501">Nánar um huliðsstillingu</translation>
 <translation id="7138472120740807366">Afhendingarmáti</translation>
 <translation id="7139892792842608322">Aðalbakki</translation>
 <translation id="714064300541049402">X-færsla myndar á hlið 2</translation>
@@ -2318,9 +2387,9 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7192203810768312527">Losar <ph name="SIZE"/>. Lengri tíma gæti tekið að sækja sum vefsvæði þegar þú heimsækir þau næst.</translation>
 <translation id="7193661028827781021">Heimildir</translation>
 <translation id="719464814642662924">Visa</translation>
+<translation id="7199278868241956094">Oficio</translation>
 <translation id="7201591969684833065">Kerfisstjórinn þinn getur séð:</translation>
 <translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ýttu á dálkalykilinn (Tab) og svo Enter til að opna nýjan huliðsflipa og fara huldu höfði</translation>
-<translation id="7202346780273620635">Letter-Extra</translation>
 <translation id="7210863904660874423"><ph name="HOST_NAME"/> uppfyllir ekki öryggiskröfur.</translation>
 <translation id="7210993021468939304">Virkni innan Linux-rammans og getur sett upp og keyrt Linux-forrit innan rammans</translation>
 <translation id="721197778055552897"><ph name="BEGIN_LINK"/>Frekari upplýsingar<ph name="END_LINK"/> um þetta vandamál.</translation>
@@ -2335,6 +2404,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7238585580608191973">SHA-256 fingrafar</translation>
 <translation id="7240120331469437312">Auknefni viðfangs vottorðsins</translation>
 <translation id="7243010569062352439"><ph name="PASSWORDS"/>; <ph name="SIGNIN_DATA"/></translation>
+<translation id="7243771829620208687">RA0</translation>
 <translation id="7244465398154211886">{NUM_MATCHES,plural, =1{# samsvörun}one{# samsvörun}other{# samsvaranir}}</translation>
 <translation id="724691107663265825">Vefsvæðið framundan inniheldur spilliforrit</translation>
 <translation id="724975217298816891">Sláðu inn gildistíma og CVC-númerið fyrir <ph name="CREDIT_CARD"/> til að uppfæra kortaupplýsingar. Greiðslukortaupplýsingum verður deilt með vefsvæðinu eftir að þú hefur staðfest.</translation>
@@ -2364,13 +2434,10 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7334320624316649418">Endu&amp;rtaka nýja röðun</translation>
 <translation id="7335157162773372339">Getur beðið um að nota myndavélina</translation>
 <translation id="7337248890521463931">Sýna fleiri línur</translation>
-<translation id="7337418456231055214">Var sýndarkortsnúmerið ekki útfyllt? Smelltu á upplýsingar kortsins til að afrita. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="7337706099755338005">Ekki í boði fyrir stýrikerfið þitt.</translation>
 <translation id="733923710415886693">Vottorð vefþjóns var ekki birt í gegnum gagnsæi vottorðs.</translation>
 <translation id="7341357280245177602">Notaðir bílar</translation>
-<translation id="734600844861828519">11x15</translation>
 <translation id="7346048084945669753">Tengist:</translation>
-<translation id="7349430561505560861">A4-Extra</translation>
 <translation id="7349921148288539306">Heimilað þar til þú lokar þessum flipa</translation>
 <translation id="7352651011704765696">Eitthvað fór úrskeiðis</translation>
 <translation id="7353601530677266744">Skipanalína</translation>
@@ -2392,6 +2459,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7378627244592794276">Neibb</translation>
 <translation id="7378810950367401542">/</translation>
 <translation id="7378877318020334501">Gamanþættir</translation>
+<translation id="7380398842872229465">10 x 15 to.</translation>
 <translation id="738439098860678026">Kennsla ungra barna</translation>
 <translation id="7386364858855961704">Á ekki við</translation>
 <translation id="7388594495505979117">{0,plural, =1{Tækið verður endurræst eftir 1 mínútu}one{Tækið verður endurræst eftir # mínútu}other{Tækið verður endurræst eftir # mínútur}}</translation>
@@ -2411,7 +2479,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
     &lt;li&gt;Smelltu á &lt;strong&gt;Nota&lt;/strong&gt; og síðan á &lt;strong&gt;Í lagi&lt;/strong&gt;
     &lt;li&gt;Farðu í &lt;a href="https://support.google.com/chrome/answer/6098869"&gt;hjálparmiðstöð Brave&lt;/a&gt; til að fá upplýsingar um hvernig hugbúnaður er fjarlægður varanlega af tölvunni
     &lt;/ol&gt;</translation>
-<translation id="741007362987735528">Wide-Format</translation>
 <translation id="7410471291937727359">Fagurt</translation>
 <translation id="741204030948306876">Hljómar vel</translation>
 <translation id="7416351320495623771">Stjórna aðgangsorðum…</translation>
@@ -2420,17 +2487,21 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7421067045979951561">hjálparforrit fyrir samskiptareglur</translation>
 <translation id="1451399671339759400">Hnappur til að skoða Brave ferilinn, ýttu á Enter til að skoða og stjórna vafraferlinum þínum í stillingum Brave</translation>
 <translation id="7427366580982928791">Netöryggi barna</translation>
+<translation id="7429429656042611765">Executive</translation>
 <translation id="7437289804838430631">Bæta við samskiptaupplýsingum</translation>
 <translation id="7437490109271760224">Spil með spilastokki</translation>
 <translation id="7440140511386898319">Skoðun án nettengingar</translation>
 <translation id="7441627299479586546">Rangt viðfang stefnu</translation>
 <translation id="7442725080345379071">Ljósappelsínugulur</translation>
 <translation id="7445762425076701745">Ekki er hægt að staðfesta að fullu auðkenni þjónsins sem þú ert með tengingu við. Þú tengist nú þjóni með heiti sem hefur einungis gildi innan netsins þíns og utanaðkomandi vottunarstöð hefur engan möguleika á að sannvotta eignarhald á. Þar sem sumar vottunarstöðvar munu gefa út vottorð fyrir slík heiti burtséð frá þessu er engin leið að tryggja að þú hafir náð tengingu við umbeðið vefsvæði en ekki tölvuþrjót.</translation>
+<translation id="7447625772313191651"><ph name="NAME"/> (<ph name="WIDTH"/> x <ph name="HEIGHT"/> mm.)</translation>
 <translation id="7451311239929941790"><ph name="BEGIN_LINK"/>Frekari upplýsingar<ph name="END_LINK"/> um þetta vandamál.</translation>
 <translation id="7455133967321480974">Nota altækt sjálfgildi (hafna)</translation>
+<translation id="745640750744109667">A0x3</translation>
 <translation id="7460618730930299168">Þetta er önnur sýning en þú valdir. Viltu halda áfram?</translation>
 <translation id="7461924472993315131">Festa</translation>
 <translation id="7463075493919226237">Ástralskur fótbolti</translation>
+<translation id="7465963048299965912">10 x 13 to.</translation>
 <translation id="7469935732330206581">Eyðublaðið er ekki öruggt</translation>
 <translation id="7473891865547856676">Nei, takk</translation>
 <translation id="7481312909269577407">Áfram</translation>
@@ -2441,6 +2512,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7489473601138133813">Starfsframi og -ráðgjöf</translation>
 <translation id="7495528107193238112">Þetta efni er á bannlista. Hafðu samband við eiganda vefsvæðisins til að lagfæra vandamálið.</translation>
 <translation id="7812541223399526596">Hnappurinn „Búa til skjal“, ýttu á Enter til að búa til nýtt Brave skjal á skjótan hátt</translation>
+<translation id="7501663406926337752">Fyrirtækið þitt hefur flaggað vefsvæðið sem þú ert að reyna að opna</translation>
 <translation id="7501853161948120656">Námsgögn</translation>
 <translation id="2957285558977211818">Brave <ph name="BEGIN_EMPHASIS"/>vistar ekki<ph name="END_EMPHASIS"/> eftirfarandi upplýsingar:
         <ph name="BEGIN_LIST"/>
@@ -2457,7 +2529,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7514365320538308">Sækja</translation>
 <translation id="7517414872996418597">Umslag: C10</translation>
 <translation id="7518003948725431193">Engin vefsíða fannst fyrir veffangið: <ph name="URL"/></translation>
-<translation id="7518098469289408841">Umslag: 25 x 33 cm</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="7521825010239864438">„<ph name="SECTION"/>“ hluti falinn</translation>
 <translation id="7523408071729642236">Iðnaðarframleiðsla</translation>
@@ -2495,6 +2566,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7591288787774558753">Deila trúnaðarupplýsingum?</translation>
 <translation id="7591636454931265313"><ph name="EMBEDDED_URL"/> vill nota fótspor og gögn vefsvæða á <ph name="TOP_LEVEL_URL"/></translation>
 <translation id="7592362899630581445">Vottorð þjónsins brýtur heitistakmarkanir.</translation>
+<translation id="7592749602347161287">A5 Extra</translation>
 <translation id="7598391785903975535">Minna en <ph name="UPPER_ESTIMATE"/></translation>
 <translation id="759889825892636187"><ph name="HOST_NAME"/> getur ekki unnið úr þessari beiðni eins og er.</translation>
 <translation id="7600965453749440009">Þýða aldrei <ph name="LANGUAGE"/></translation>
@@ -2521,6 +2593,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7658239707568436148">Hætta við</translation>
 <translation id="7659327900411729175">Umslag: kaku 8</translation>
 <translation id="7659878911471462949">Gleðitár</translation>
+<translation id="766014026101194726">{0,plural, =1{Regla stjórnanda kemur í veg fyrir að hægt sé að hlaða þessari skrá upp}one{Regla stjórnanda kemur í veg fyrir að hægt sé að hlaða # skrá upp}other{Regla stjórnanda kemur í veg fyrir að hægt sé að hlaða # skrám upp}}</translation>
 <translation id="7662298039739062396">Stillingu stýrt af viðbót</translation>
 <translation id="7663736086183791259">Vottorð <ph name="CERTIFICATE_VALIDITY"/></translation>
 <translation id="1090109565956608696">Ekki heimilað í huliðsstillingu</translation>
@@ -2579,6 +2652,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7798389633136518089">Hunsað þar sem reglan er ekki stillt í skýinu.</translation>
 <translation id="7800304661137206267">Tengingin er dulkóðuð með <ph name="CIPHER"/>, <ph name="MAC"/> er notað fyrir skilaboðasannvottun og <ph name="KX"/> sem aðferð til að skiptast á lyklum.</translation>
 <translation id="7802523362929240268">Vefsvæðið er traust</translation>
+<translation id="7802989406998618639">Sláðu inn <ph name="NUMBER_OF_DIGITS"/> tölustafa öryggiskóðann á <ph name="SIDE_OF_CARD"/> svo bankinn geti staðfest að þetta sért þú</translation>
 <translation id="780301667611848630">Nei, takk</translation>
 <translation id="7805571567667010077">Stjórnað af fyrirtækinu þínu</translation>
 <translation id="7805768142964895445">Staða</translation>
@@ -2615,11 +2689,13 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7939744324936979484">Þjóðlagatónlist</translation>
 <translation id="7941628148012649605">Umslag: chou 4</translation>
 <translation id="7942349550061667556">Rauður</translation>
+<translation id="7943397946612013052">Lokað fyrir niðurhal</translation>
 <translation id="7943893128817522649">Getur beðið um að fá að hlaða sjálfkrafa niður mörgum skrám</translation>
 <translation id="7947285636476623132">Athugaðu ár gildistímans og reyndu aftur</translation>
 <translation id="3227327027957060968"><ph name="SEE_CHROME_TIPS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ýttu á Tab og svo Enter til að fá frekari upplýsingar um eiginleika Brave</translation>
 <translation id="1535074845255182168">Stjórnaðu fótsporastillingum í stillingum Brave</translation>
 <translation id="7951415247503192394">(32 bita)</translation>
+<translation id="7952192831285741665">Evrópskt EDP</translation>
 <translation id="7953569069500808819">Saumur efst</translation>
 <translation id="7956713633345437162">Bókamerki fartækis</translation>
 <translation id="7961015016161918242">Aldrei</translation>
@@ -2629,7 +2705,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7968982339740310781">Skoða upplýsingar</translation>
 <translation id="7976214039405368314">Of margar beiðnir</translation>
 <translation id="7977538094055660992">Úttakstæki</translation>
-<translation id="7977894662897852582">Edp</translation>
 <translation id="7981129096182302364">Dans- og raftónlist</translation>
 <translation id="798134797138789862">Getur beðið um leyfi til að nota sýndarveruleikatæki og -gögn</translation>
 <translation id="7983008347525536475">Jeppar</translation>
@@ -2644,6 +2719,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8003046808285812021">„<ph name="SEARCH_TERMS"/>“</translation>
 <translation id="8004582292198964060">Vafri</translation>
 <translation id="8009225694047762179">Stjórna aðgangsorðum</translation>
+<translation id="8009843239480947060">10 x 11 to.</translation>
 <translation id="8012116502927253373">{NUM_CARDS,plural, =1{Þetta kort og heimilisfang greiðanda verða vistuð. Þú getur notað kortið þegar þú hefur skráð þig inn á <ph name="USER_EMAIL"/>.}one{Þessi kort og heimilisföng greiðanda verða vistuð. Þú getur notað kortin þegar þú hefur skráð þig inn á <ph name="USER_EMAIL"/>.}other{Þessi kort og heimilisföng greiðanda verða vistuð. Þú getur notað kortin þegar þú hefur skráð þig inn á <ph name="USER_EMAIL"/>.}}</translation>
 <translation id="8019861005170389898"><ph name="TRADITIONAL_TEXT"/> (<ph name="ADDITIONAL_TEXT"/>)</translation>
 <translation id="8025119109950072390">Þrjótar á þessu vefsvæði gætu reynt að gabba þig til að gera eitthvað varasamt eins og að setja upp hugbúnað eða gefa upp persónuupplýsingar (til dæmis aðgangsorð, símanúmer eða kreditkortanúmer).</translation>
@@ -2680,10 +2756,13 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="808894953321890993">Breyta aðgangsorði</translation>
 <translation id="8090403583893450254">Stærð 20</translation>
 <translation id="8091372947890762290">Virkjun er í bið á þjóninum</translation>
+<translation id="8092254339843485299">6 x 8 to.</translation>
 <translation id="8092774999298748321">Djúpfjólublár</translation>
 <translation id="8094917007353911263">Netið sem þú notar kann að krefjast þess að þú farir á <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
+<translation id="8098855213644561659">A3 Extra</translation>
 <translation id="809898108652741896">A6</translation>
 <translation id="8100588592594801589">Ógild kort hafa verið fjarlægð</translation>
+<translation id="8100666323495101203">Fyrirtækið þitt hefur skilgreint  <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> sem vefsvæði sem kann að brjóta gegn reglum. <ph name="BEGIN_LEARN_MORE_LINK"/>Nánar<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="8102225008113166873">Fræðiráðstefnur og -útgáfa</translation>
 <translation id="8103161714697287722">Greiðslumáti</translation>
 <translation id="8103643211515685474">Prenta samt</translation>
@@ -2702,6 +2781,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8153865548451212769">{0,plural, =1{Regla kerfisstjóra mælir ekki með því að hlaða skránni niður í <ph name="DESTINATION_NAME"/>}one{Regla kerfisstjóra mælir ekki með því að hlaða skránum niður í <ph name="DESTINATION_NAME"/>}other{Regla kerfisstjóra mælir ekki með því að hlaða skránum niður í <ph name="DESTINATION_NAME"/>}}</translation>
 <translation id="8157295877370077682">Fara af vefsvæði</translation>
 <translation id="8163866351304776260">Fjögur göt vinstra megin</translation>
+<translation id="8175330382720204696">Government Letter</translation>
 <translation id="4351627595884993315">Brave býður þér að vista kortin þín á Brave reikningnum vegna þess að þú ert innskráð(ur). Þú getur breytt þessu í stillingunum.</translation>
 <translation id="8176440868214972690">Stjórnandi tækisins hefur sent einhverjar upplýsingar á eftirfarandi vefsvæði, á borð við stillingar og reglur.</translation>
 <translation id="8184538546369750125">Nota altækt sjálfgildi (leyfa)</translation>
@@ -2711,14 +2791,17 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8201077131113104583">Ógild uppfærsluslóð fyrir viðbót með auðkennið „<ph name="EXTENSION_ID"/>“.</translation>
 <translation id="8202097416529803614">Yfirlit pöntunar</translation>
 <translation id="8202370299023114387">Skörun</translation>
+<translation id="8208363704094329105">300 x 400 mm</translation>
 <translation id="8210604850413485128">Vefhýsing</translation>
 <translation id="8211406090763984747">Tengingin er örugg</translation>
 <translation id="8213853114485953510">JIS Exec</translation>
+<translation id="8216640997712497593">14 x 18 to.</translation>
 <translation id="8217240300496046857">Vefsvæði geta ekki notað fótspor sem rekja virkni þína á vefnum. Ekki er víst að allir eiginleikar á öllum vefsvæðum virki.</translation>
 <translation id="8217748145574471584">Mannauðsdeild</translation>
 <translation id="8218327578424803826">Úthlutuð staðsetning:</translation>
 <translation id="8362995731815961365">Sá sem setti upp þessa tölvu valdi að loka fyrir þetta vefsvæði.</translation>
 <translation id="8228419419708659934">Birta tvær síður</translation>
+<translation id="8229288958566709448"><ph name="WIDTH"/> x <ph name="HEIGHT"/> mm.</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8231564988424805352">Íþróttaleikir</translation>
 <translation id="8232343881378637145">Hitastig grunns</translation>
@@ -2746,7 +2829,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8277900682056760511">Greiðsluhjálparforrit er opið</translation>
 <translation id="2164614088382669062">Kveikja þarf á Brave-tilkynningum. Þú getur kveikt á þeim í <ph name="BEGIN_LINK"/><ph name="NOTIFICATION_SETTINGS"/><ph name="END_LINK"/>.</translation>
 <translation id="8280630997017109758">Bakki 11</translation>
-<translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8281886186245836920">Sleppa</translation>
 <translation id="8282947398454257691">Komast að einkvæmu auðkenni tækisins</translation>
 <translation id="4596532552309852907">Stjórnaðu öruggri vefskoðun og fleiru í stillingum Brave</translation>
@@ -2762,7 +2844,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8299269255470343364">Japanskt</translation>
 <translation id="8303854710873047864">„<ph name="SECTION"/>“ hluti sýndur</translation>
 <translation id="830498451218851433">Brotið í miðju</translation>
-<translation id="8307358339886459768">Small-Photo</translation>
 <translation id="8307888238279532626">Uppsett forrit og hversu oft þau eru notuð</translation>
 <translation id="831997045666694187">Kvöld</translation>
 <translation id="8321476692217554900">tilkynningar</translation>
@@ -2786,6 +2867,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8380941800586852976">Hættulegt</translation>
 <translation id="8381674639488873545">Greiðslur gætu verið stakar eða endurteknar og hugsanlega er ekki greinilegt að borga þurfi. <ph name="BEGIN_LINK"/>Sýna samt<ph name="END_LINK"/></translation>
 <translation id="8390725133630534698">Regla stjórnanda lokar á að hægt sé að deila frá <ph name="ORIGIN_NAME"/> í <ph name="VM_NAME"/></translation>
+<translation id="8396522675989118466">Þetta er <ph name="NUMBER_OF_DIGITS"/> tölustafa kóðinn sem má finna <ph name="SIDE_OF_CARD"/></translation>
 <translation id="8398790343843005537">Finna símann minn</translation>
 <translation id="15931837016421186">Stjórna hvaða upplýsingar eru samstilltar í stillingum Brave</translation>
 <translation id="8409413588194360210">greiðslumiðlara</translation>
@@ -2795,6 +2877,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 Ítarlegar upplýsingar:
 <ph name="DEBUG_INFO"/></translation>
 <translation id="8424582179843326029"><ph name="FIRST_LABEL"/> <ph name="SECOND_LABEL"/> <ph name="THIRD_LABEL"/></translation>
+<translation id="8427848540066057481">500 x 750 mm</translation>
 <translation id="8428213095426709021">Stillingar</translation>
 <translation id="8428634594422941299">Ég skil</translation>
 <translation id="5808418475906247813"><ph name="MANAGE_COOKIES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ýttu á dálkalykilinn (Tab) og svo „Enter“ til að stjórna fótsporastillingum í stillingum Brave</translation>
@@ -2803,14 +2886,18 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8437238597147034694">Aft&amp;urkalla flutning</translation>
 <translation id="8438476240229491014">Muna þessa stillingu</translation>
 <translation id="8438786541497918448">Nota myndavél og hljóðnema?</translation>
+<translation id="8438923942245957911">Fyrirtækið þitt flaggaði þetta vefsvæði</translation>
 <translation id="8443613539889492016">Rapp og hipphopp</translation>
 <translation id="8444543005280733648">Tölvukerfi</translation>
 <translation id="8446884382197647889">Frekari upplýsingar</translation>
+<translation id="8449155699563577224">17 x 24 to.</translation>
 <translation id="8449836157089738489">Opna allt í nýjum flipahóp</translation>
 <translation id="8457125768502047971">Ótiltekið</translation>
+<translation id="8458202188076138974">Letter Extra</translation>
 <translation id="8461694314515752532">Dulkóða samstillt gögn með eigin aðgangsorði samstillingar</translation>
 <translation id="8466379296835108687">{COUNT,plural, =1{Eitt kreditkort}one{# kreditkort}other{# kreditkort}}</translation>
 <translation id="8468358362970107653">Umslag: C3</translation>
+<translation id="8473626140772740486">300 x 450 mm</translation>
 <translation id="8473863474539038330">Heimilisföng og fleira</translation>
 <translation id="8474910779563686872">Sýna upplýsingar forritara</translation>
 <translation id="8479754468255770962">Hefti neðst til vinstri</translation>
@@ -2834,6 +2921,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8539500321752640291">Leyfa 2 heimildir?</translation>
 <translation id="8541158209346794904">Bluetooth-tæki</translation>
 <translation id="8542014550340843547">Þrjú hefti neðst</translation>
+<translation id="8542617028204211143">SRA0</translation>
 <translation id="8543181531796978784">Þú getur <ph name="BEGIN_ERROR_LINK"/>tilkynnt vandamál við greiningu<ph name="END_ERROR_LINK"/> eða, ef þú skilur hvaða hættu þetta hefur í för með sér fyrir öryggi þitt, <ph name="BEGIN_LINK"/>opnað þetta ótrausta vefsvæði<ph name="END_LINK"/>.</translation>
 <translation id="854892890027593466">Umslag: C6/C5</translation>
 <translation id="8553387990086529628">Ferðamannastaðir</translation>
@@ -2843,7 +2931,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8557066899867184262">CVC-númer er aftan á kortinu.</translation>
 <translation id="8559762987265718583">Ekki er hægt að koma á lokaðri tengingu við <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> vegna þess að dag- og tímasetning tækisins (<ph name="DATE_AND_TIME"/>) er röng.</translation>
 <translation id="8564182942834072828">Aðskilin skjöl / ekki samröðuð eintök</translation>
-<translation id="8564453110650229930">Umslag: kínverskt #10</translation>
 <translation id="8576310925653847813">Heimabíókerfi</translation>
 <translation id="8577348305244205642">Sýndarkort ekki tiltækt</translation>
 <translation id="858637041960032120">Bæta við símanúmeri</translation>
@@ -2854,13 +2941,15 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8617269623452051934">tækjanotkun þín</translation>
 <translation id="861775596732816396">Stærð 4</translation>
 <translation id="8620276786115098679">Umslag: kaku 7</translation>
-<translation id="8622948367223941507">Legal-Extra</translation>
 <translation id="8623885649813806493">Engin samsvarandi aðgangsorð. Sýna öll vistuð aðgangsorð.</translation>
 <translation id="8624354461147303341">Fá afslætti</translation>
 <translation id="8625384913736129811">Vista þetta kort í þessu tæki</translation>
+<translation id="8634957317623797170">54 x 86 mm</translation>
 <translation id="8637577059508742477">Prófílnum og vafranum þínum er stjórnað af <ph name="DOMAIN"/></translation>
 <translation id="8643409044755049933">Umslag: kaku 3</translation>
+<translation id="8647287295490773273">210 x 330 mm</translation>
 <translation id="865032292777205197">hreyfiskynjara</translation>
+<translation id="8654126188050905496">55 x 91 mm</translation>
 <translation id="8663226718884576429">Yfirlit pöntunar, <ph name="TOTAL_LABEL"/>, frekari upplýsingar</translation>
 <translation id="8666678546361132282">Enska</translation>
 <translation id="867224526087042813">Undirskrift</translation>
@@ -2871,7 +2960,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8687429322371626002"><ph name="MANAGER"/> hefur umsjón með tækinu þínu og reikningnum.</translation>
 <translation id="8688672835843460752">Laust</translation>
 <translation id="868922510921656628">Síður í setti</translation>
-<translation id="8694278303623679191">Umslag: Postfix</translation>
 <translation id="869891660844655955">Lokadagsetning</translation>
 <translation id="8699041776323235191">HID-tæki</translation>
 <translation id="4959770473590669345">Hnappur til að spila Brave Dino leikinn, ýttu á Enter til að spila Dino Run leikinn í Brave</translation>
@@ -2891,8 +2979,10 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8725066075913043281">Reyna aftur</translation>
 <translation id="8726549941689275341">Síðustærð:</translation>
 <translation id="8730621377337864115">Lokið</translation>
+<translation id="8731268612289859741">Öryggiskóði</translation>
 <translation id="1769647018144434441">Hnappurinn Stjórna aðgangsorðum, ýttu á Enter til að skoða og stjórna aðgangsorðunum þínum í stillingum Brave</translation>
 <translation id="8734529307927223492"><ph name="DEVICE_TYPE"/> er í umsjón <ph name="MANAGER"/></translation>
+<translation id="8736059027199600831">30 x 40 to.</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ýttu á Tab og svo Enter til að opna nýjan huliðsglugga og fara huldu höfði</translation>
 <translation id="8737685506611670901">Opna tengla fyrir <ph name="PROTOCOL"/> í staðinn fyrir <ph name="REPLACED_HANDLER_TITLE"/></translation>
 <translation id="6326805297893828864">Klukka tölvunnar þarf að vera rétt til að hægt sé að koma á öruggri nettengingu. Þetta er vegna þess að vottorðin sem vefsvæði nota til að auðkenna sig eru aðeins gild í tiltekinn tíma. Brave getur ekki kannað vottorðin þar sem klukka tækisins er röng.</translation>
@@ -2900,6 +2990,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8742371904523228557"><ph name="ONE_TIME_CODE"/> er kóðinn þinn fyrir <ph name="ORIGIN"/></translation>
 <translation id="874918643257405732">Setja þennan flipa í bókamerki</translation>
 <translation id="8751426954251315517">Reyndu aftur síðar</translation>
+<translation id="8755125092386286553">A4x9</translation>
 <translation id="8757526089434340176">Google Pay tilboð í boði</translation>
 <translation id="8758885506338294482">Keppnisleikjaspilun</translation>
 <translation id="8759274551635299824">Kortið er útrunnið</translation>
@@ -2930,6 +3021,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="1723247378009489676">Hnappur til að loka huliðsgluggum, ýttu á Enter til að loka öllum huliðsgluggum sem eru opnir</translation>
 <translation id="883848425547221593">Önnur bókamerki</translation>
 <translation id="884264119367021077">Sendingarheimilisfang</translation>
+<translation id="8849231003559822746">130 x 180 mm</translation>
 <translation id="884923133447025588">Engin afturköllunarleið fannst.</translation>
 <translation id="8849262850971482943">Notaðu sýndarkortið þitt til að auka öryggi</translation>
 <translation id="8852567725116633427">Minnstu bílarnir á markaði</translation>
@@ -2949,13 +3041,11 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8874824191258364635">Færðu inn gilt kortanúmer</translation>
 <translation id="8876033571432926051">Hversdagsleikir</translation>
 <translation id="8877780815363510165">Stangveiði</translation>
-<translation id="8879882034055059721">Umslag: 25 x 38 cm</translation>
 <translation id="8884537526797090108">Ekki hægt að taka upp trúnaðarefni</translation>
 <translation id="8891727572606052622">Ógild proxy-stilling.</translation>
 <translation id="8894794286471754040">Langhlið fyrst</translation>
 <translation id="8897428486789851669">Sund</translation>
 <translation id="8903921497873541725">Auka aðdrátt</translation>
-<translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">Hnappur til að fjarlægja tillögu, ýttu á færslulykilinn til að fjarlægja, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
 <translation id="2684652081942622950">Brave reikningur</translation>
 <translation id="4102271590580840789">Hnappurinn Stjórna greiðslumátum, ýttu á Enter til að stjórna greiðslu- og kreditkortaupplýsingum í stillingum Brave</translation>
@@ -2967,6 +3057,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="893332455753468063">Bæta við nafni</translation>
 <translation id="8942355029279167844">Kerfisstjórinn þinn hefur gefið <ph name="APP_NAME"/> heimild til að safna greiningargögnum til að bæta vöruna. Frekari upplýsingar eru á <ph name="BEGIN_LINK"/>https://www.parallels.com/pcep<ph name="END_LINK"/>.</translation>
 <translation id="8943282376843390568">Límónugrænn</translation>
+<translation id="8949493680961858543">A1x4</translation>
 <translation id="8951415078585015151">Lög og yfirvöld</translation>
 <translation id="8957210676456822347">Auðkenningargátt</translation>
 <translation id="8962950042226115166">Grunsamlegt vefsvæði</translation>
@@ -2994,6 +3085,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="9005998258318286617">Mistókst að hlaða PDF-skjal.</translation>
 <translation id="9008178007718859630">Heimilis- og innanhússhönnun</translation>
 <translation id="9008201768610948239">Hunsa</translation>
+<translation id="9018120810758822233">Sláðu inn öryggiskóðann fyrir <ph name="CREDIT_CARD"/></translation>
 <translation id="901834265349196618">tölvupóstur</translation>
 <translation id="9020200922353704812">Heimilisfangs kortagreiðanda er krafist</translation>
 <translation id="9020542370529661692">Þessi síða var þýdd yfir á <ph name="TARGET_LANGUAGE"/></translation>
@@ -3009,6 +3101,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="9042617223719777575">Stór bakki</translation>
 <translation id="9044359186343685026">Nota snertiauðkenni</translation>
 <translation id="9045525010788763347"><ph name="RESULT_MODIFIED_DATE"/> – <ph name="RESULT_PRODUCT_SOURCE"/></translation>
+<translation id="9048662076076074925">24 x 36 to.</translation>
 <translation id="9049981332609050619">Þú reyndir að tengjast <ph name="DOMAIN"/> en netþjónninn framvísaði ógildu vottorði.</translation>
 <translation id="9050666287014529139">Aðgangsorð</translation>
 <translation id="9056953843249698117">Verslun</translation>
@@ -3070,6 +3163,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="9179907736442194268">Fáðu tilkynningar í tölvupósti ef verðlækkun verður á einhverju vefsvæði</translation>
 <translation id="9183302530794969518">Brave skjöl</translation>
 <translation id="9183425211371246419"><ph name="HOST_NAME"/> notast við óstuddar samskiptareglur.</translation>
+<translation id="918454845714257218">Athugaðu kóðann á <ph name="SIDE_OF_CARD"/> og reyndu aftur</translation>
 <translation id="9187461866967718678">Jaðaríþróttir</translation>
 <translation id="9191834167571392248">Gat neðst til vinstri</translation>
 <translation id="9199905725844810519">Lokað er fyrir prentun</translation>
@@ -3082,7 +3176,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="142389341645668510">Sérsníða Brave</translation>
 <translation id="933712198907837967">Diners Club</translation>
 <translation id="935608979562296692">HREINSA EYÐUBLAÐ</translation>
-<translation id="936474030629450166">Super-B</translation>
 <translation id="7486559383537872796">Þú gætir glatað aðganginum að Brave reikningnum þínum. Brave mælir með því að þú skiptir um aðgangsorð núna. Þú verður beðin(n) um að skrá þig inn.</translation>
 <translation id="937457230470581909">Dýragarðar, sædýrasöfn og friðuð landsvæði</translation>
 <translation id="939736085109172342">Ný mappa</translation>
@@ -3098,6 +3191,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="969892804517981540">Opinber smíði</translation>
 <translation id="973773823069644502">Bæta við heimilisfangi til afhendingar</translation>
 <translation id="975560348586398090">{COUNT,plural, =0{Ekkert}=1{Eitt atriði}one{# atriði}other{# atriði}}</translation>
+<translation id="976522784004777030">5 x 8 to.</translation>
 <translation id="977502174772294970">Brúðkaup</translation>
 <translation id="981121421437150478">Ónettengt</translation>
 <translation id="982885543310356857">Fornbílar</translation>

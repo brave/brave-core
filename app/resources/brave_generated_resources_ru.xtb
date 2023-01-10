@@ -89,11 +89,6 @@
 <translation id="8303432794159193481">Приложения разработчика для браузера Brave</translation>
 <translation id="8292967014767479012">Приложения браузера Brave</translation>
 <translation id="4743468424889072281">Приложения для разработки браузера Brave</translation>
-<translation id="732814027519296280">Хотите улучшить Brave Search?</translation>
-<translation id="2677865600861971449">Чтобы анонимно предоставлять Brave Search данные поиска и сведения о действиях в браузере для улучшения работы сервиса, включите Web Discovery Project. Защита конфиденциальности и никаких действий с вашей стороны. <ph name="LEARN_MORE_TEXT"/></translation>
-<translation id="6165508094623778733">Подробнее...</translation>
-<translation id="5860491529813859533">Включить</translation>
-<translation id="780301667611848630">Нет, спасибо</translation>
 <translation id="5039804452771397117">Разрешить</translation>
 <translation id="7053983685419859001">Блокировать</translation>
 <translation id="1679356339067548863">Автоматически отправляя данные диагностики при сбое браузера Brave, вы помогаете повышать стабильность его работы.</translation>
@@ -116,6 +111,11 @@
 <translation id="5026874946691314267">Больше не показывать</translation>
 <translation id="5234764350956374838">Dismiss</translation>
 <translation id="5100490448228945668">Отменить конверсию в Brave Поиске. Чтобы убрать эту подсказку, нажмите Enter.</translation>
+<translation id="9194637241566114638">Помогайте улучшать <ph name="SEARCH_NAME"/> — отправляйте анонимные сведения об использовании продукта. <ph name="MORE_INFO"/></translation>
+<translation id="7404610376221341525">Brave Поиск</translation>
+<translation id="8184318863960255706">Подробнее</translation>
+<translation id="6965382102122355670">ОК</translation>
+<translation id="780301667611848630">Спасибо, не надо</translation>
 <translation id="2515126961943087659">Рекламный сервис BAT</translation>
 <translation id="7924918279836988121">Служба учета BAT-транзакций</translation>
 <translation id="6040143037577758943">Близко</translation>
@@ -241,6 +241,7 @@
 <translation id="7859704718976024901">История просмотров</translation>
 <translation id="8820817407110198400">Закладки</translation>
 <translation id="6333347122924254968">Показывать значок сервиса «Brave Награды» в адресной строке</translation>
+<translation id="2245286910966863912">Показывать кнопку Brave Новостей в адресной строке</translation>
 <translation id="1811404036171336214">Всегда отображать закладки на странице новой вкладки</translation>
 <translation id="3416468988018290825">Всегда показывать полные URL-адреса</translation>
 <translation id="5529693968082667490">Показать кнопку «Поиск по вкладкам»</translation>
@@ -335,6 +336,7 @@
 <translation id="5165042248369837294">Разрешить встроенные твиты Twitter</translation>
 <translation id="958971637207126733">Разрешить встроенные сообщения LinkedIn</translation>
 <translation id="8792121506918889955">Политика обработки IP WebRTC</translation>
+<translation id="6165508094623778733">Узнать больше</translation>
 <translation id="1822560017823072927">Публичные и приватные интерфейсы по умолчанию</translation>
 <translation id="5825943197137337319">Только открытый интерфейс по умолчанию</translation>
 <translation id="1689062823386843231">Отключить непроксируемый протокол UDP</translation>
