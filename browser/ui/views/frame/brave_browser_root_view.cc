@@ -16,10 +16,12 @@ BraveBrowserRootView::~BraveBrowserRootView() = default;
 
 bool BraveBrowserRootView::OnMouseWheel(const ui::MouseWheelEvent& event) {
   // Bypass BrowserRootView::OnMouseWheel() to avoid tab cycling feature.
+#if BUILDFLAG(IS_LINUX)
   if (!base::FeatureList::IsEnabled(
           tabs::features::kBraveChangeActiveTabOnScrollEvent)) {
     return RootView::OnMouseWheel(event);
   }
+#endif
 
   // As vertical tabs are always in a scroll view, we should prefer scrolling
   // to tab cycling.

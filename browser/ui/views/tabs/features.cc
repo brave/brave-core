@@ -30,12 +30,10 @@ BASE_FEATURE(kBraveVerticalTabs,
              "BraveVerticalTabs",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+#if BUILDFLAG(IS_LINUX)
 BASE_FEATURE(kBraveChangeActiveTabOnScrollEvent,
              "BraveChangeActiveTabOnScrollEvent",
-#if BUILDFLAG(IS_LINUX)
              base::FEATURE_ENABLED_BY_DEFAULT);
-#else
-             base::FEATURE_DISABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(IS_LINUX)
 
 bool SupportsVerticalTabs(const Browser* browser) {
