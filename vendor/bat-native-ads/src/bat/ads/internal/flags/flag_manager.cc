@@ -9,8 +9,9 @@
 #include "base/check_op.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/flags/debug/debug_command_line_switch_parser_util.h"
+#include "bat/ads/internal/flags/did_override/did_override_command_line_switch_values_util.h"
+#include "bat/ads/internal/flags/did_override/did_override_command_line_switches_util.h"
 #include "bat/ads/internal/flags/did_override/did_override_features_from_command_line_util.h"
-#include "bat/ads/internal/flags/did_override/did_override_variations_command_line_switch_util.h"
 #include "bat/ads/internal/flags/environment/environment_command_line_switch_parser_util.h"
 #include "bat/ads/internal/flags/flag_manager_constants.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -66,8 +67,9 @@ bool FlagManager::HasInstance() {
 void FlagManager::Initialize() {
   should_debug_ = ParseDebugCommandLineSwitch();
 
-  did_override_from_command_line_ = DidOverrideVariationsCommandLineSwitch() ||
-                                    DidOverrideFeaturesFromCommandLine();
+  did_override_from_command_line_ = DidOverrideFeaturesFromCommandLine() ||
+                                    DidOverrideCommandLineSwitchValues() ||
+                                    DidOverrideCommandLineSwitches();
 
   environment_type_ = ChooseEnvironmentType();
 }
