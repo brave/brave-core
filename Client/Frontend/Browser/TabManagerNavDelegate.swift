@@ -78,47 +78,55 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
     }
     return .allow
   }
-
-  func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
-
+  
+  @MainActor
+  func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
     var res = defaultAllowPolicy()
     var pref = preferences
+    
     for delegate in delegates {
-      delegate.webView?(
-        webView, decidePolicyFor: navigationAction, preferences: preferences,
-        decisionHandler: { policy, preference in
-          if policy == .cancel {
-            res = policy
-          }
-
-          pref = preference
-        })
+      // Needed to resolve ambiguous delegate signatures: https://github.com/apple/swift/issues/45652#issuecomment-1149235081
+      typealias WKNavigationActionSignature = (WKNavigationDelegate) -> ((WKWebView, WKNavigationAction, WKWebpagePreferences, @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) -> Void)?
+      
+      // Needed to detect if async implementations exist as we cannot detect them directly
+      if delegate.responds(to: #selector(WKNavigationDelegate.webView(_:decidePolicyFor:preferences:decisionHandler:) as WKNavigationActionSignature)) {
+        // Do NOT change to `delegate.webView?(....)` the optional operator makes async-await calls crash the compiler atm!
+        // It must be force-unwrapped at the time of writing `January 10th, 2023`.
+        let (policy, preferences) = await delegate.webView!(webView, decidePolicyFor: navigationAction, preferences: preferences)
+        if policy == .cancel {
+          res = policy
+        }
+        
+        pref = preferences
+      }
     }
-
-    decisionHandler(res, pref)
+    
+    return (res, pref)
   }
-
-  func webView(
-    _ webView: WKWebView,
-    decidePolicyFor navigationResponse: WKNavigationResponse,
-    decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
-  ) {
+  
+  @MainActor
+  func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse) async -> WKNavigationResponsePolicy {
     var res = WKNavigationResponsePolicy.allow
     for delegate in delegates {
-      delegate.webView?(
-        webView, decidePolicyFor: navigationResponse,
-        decisionHandler: { policy in
-          if policy == .cancel {
-            res = policy
-          }
-        })
+      // Needed to resolve ambiguous delegate signatures: https://github.com/apple/swift/issues/45652#issuecomment-1149235081
+      typealias WKNavigationResponseSignature = (WKNavigationDelegate) -> ((WKWebView, WKNavigationResponse, @escaping (WKNavigationResponsePolicy) -> Void) -> Void)?
+      
+      // Needed to detect if async implementations exist as we cannot detect them directly
+      if delegate.responds(to: #selector(WKNavigationDelegate.webView(_:decidePolicyFor:decisionHandler:) as WKNavigationResponseSignature)) {
+        // Do NOT change to `delegate.webView?(....)` the optional operator makes async-await calls crash the compiler atm!
+        // It must be force-unwrapped at the time of writing `January 10th, 2023`.
+        let policy = await delegate.webView!(webView, decidePolicyFor: navigationResponse)
+        if policy == .cancel {
+          res = policy
+        }
+      }
     }
 
     if res == .allow {
       let tab = tabManager?[webView]
       tab?.mimeType = navigationResponse.response.mimeType
     }
-
-    decisionHandler(res)
+    
+    return res
   }
 }
