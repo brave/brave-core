@@ -5,8 +5,6 @@
 
 import styled from 'styled-components'
 
-import adsBackground from '../assets/ads_feature.svg'
-
 import * as mixins from '../../shared/lib/css_mixins'
 
 export const root = styled.div`
@@ -25,19 +23,6 @@ export const terms = styled.div`
   padding: 0 15px 15px 32px;
   border-bottom: 1px solid rgba(184, 185, 196, 0.4);
   font-size: 13px;
-`
-
-export const disabled = styled.div`
-  margin: 25px 16px 0;
-  font-size: 16px;
-  line-height: 1.7;
-  padding-left: 64px;
-  color: #3b3b3b;
-
-  background-image: url(/${adsBackground});
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-size: 42px auto;
 `
 
 export const paymentStatus = styled.div`

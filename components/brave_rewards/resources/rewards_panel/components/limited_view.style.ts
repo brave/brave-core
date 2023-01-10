@@ -88,7 +88,7 @@ export const connect = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  background: linear-gradient(125.83deg, #392DD1 0%, #A91B78 99.09%);
+  background: linear-gradient(129.97deg, #4C54D2 9.56%, #A3278F 106.62%);
   border-radius: 8px;
   font-weight: 400;
   font-size: 14px;
