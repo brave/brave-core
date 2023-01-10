@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
@@ -107,11 +108,9 @@ SkPath BraveVerticalTabStyle::GetPath(PathType path_type,
     return BraveGM2TabStyle::GetPath(path_type, scale, force_active,
                                      render_units);
 
-  // Don't paint border.
-  if (path_type == PathType::kBorder)
-    return {};
-
-  gfx::RectF aligned_bounds = ScaleAndAlignBounds(tab()->bounds(), scale, 0);
+  const int stroke_thickness = GetStrokeThickness();
+  gfx::RectF aligned_bounds =
+      ScaleAndAlignBounds(tab()->bounds(), scale, stroke_thickness);
 
   constexpr int kHorizontalInset = BraveTabGroupHeader::kPaddingForGroup;
 
@@ -120,6 +119,20 @@ SkPath BraveVerticalTabStyle::GetPath(PathType path_type,
   float tab_left = aligned_bounds.x() + kHorizontalInset * scale;
   float tab_right = aligned_bounds.right() - kHorizontalInset * scale;
   float tab_bottom = aligned_bounds.bottom();
+
+  const float stroke_adjustment = stroke_thickness * scale;
+  if (path_type == PathType::kInteriorClip) {
+    // Inside of the border runs |stroke_thickness| inside the outer edge.
+    tab_left += stroke_adjustment;
+    tab_right -= stroke_adjustment;
+    tab_top += stroke_adjustment;
+    tab_bottom -= stroke_adjustment;
+  } else if (path_type == PathType::kFill || path_type == PathType::kBorder) {
+    tab_left += 0.5f * stroke_adjustment;
+    tab_right -= 0.5f * stroke_adjustment;
+    tab_top += 0.5f * stroke_adjustment;
+    tab_bottom -= 0.5f * stroke_adjustment;
+  }
 
   SkPath path;
   path.addRoundRect({tab_left, tab_top, tab_right, tab_bottom},
@@ -146,39 +159,20 @@ TabStyle::SeparatorBounds BraveVerticalTabStyle::GetSeparatorBounds(
 }
 
 void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
-  if (!ShouldShowVerticalTabs() || !IsInGroupAndNotActive()) {
-    BraveGM2TabStyle::PaintTab(canvas);
+  BraveGM2TabStyle::PaintTab(canvas);
+  if (ShouldShowVerticalTabs() && (tab()->IsActive() || IsHoverActive())) {
+    const auto* widget = tab()->GetWidget();
+    DCHECK(widget);
+    const SkColor tab_stroke_color =
+        widget->GetColorProvider()->GetColor(kColorBraveVerticalTabSeparator);
+    PaintBackgroundStroke(canvas, TabActive::kActive, tab_stroke_color);
     return;
   }
-
-  // When a tab is in a group while vertical tab is enabled, make tab's
-  // background transparent so that the group's background can be visible
-  // instead.
-  // Skip painting background for inactive tab and paint throbbing background.
-  const float throb_value = GetThrobValue();
-  if (throb_value <= 0)
-    return;
-
-  absl::optional<int> active_tab_fill_id;
-  int active_tab_y_inset = 0;
-  if (tab()->GetThemeProvider()->HasCustomImage(IDR_THEME_TOOLBAR)) {
-    active_tab_fill_id = IDR_THEME_TOOLBAR;
-    active_tab_y_inset = GetStrokeThickness(true);
-  }
-  canvas->SaveLayerAlpha(base::ClampRound<uint8_t>(throb_value * 0xff),
-                         tab()->GetLocalBounds());
-  PaintTabBackground(canvas, TabActive::kActive, active_tab_fill_id,
-                     active_tab_y_inset);
-  canvas->Restore();
 }
 
 bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
   return tabs::features::ShouldShowVerticalTabs(
       tab()->controller()->GetBrowser());
-}
-
-bool BraveVerticalTabStyle::IsInGroupAndNotActive() const {
-  return !tab()->IsActive() && tab()->group().has_value();
 }
 
 }  // namespace

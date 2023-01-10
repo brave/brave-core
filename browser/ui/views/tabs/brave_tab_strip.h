@@ -40,6 +40,7 @@ class BraveTabStrip : public TabStrip {
       BrowserFrameActiveState active_state) const override;
   SkColor GetTabSeparatorColor() const override;
   bool ShouldDrawStrokes() const override;
+  int GetStrokeThickness() const override;
   void Layout() override;
 
   // Exposed for testing.

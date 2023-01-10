@@ -40,8 +40,11 @@ BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
 BraveTabStrip::~BraveTabStrip() = default;
 
 bool BraveTabStrip::ShouldDrawStrokes() const {
-  if (ShouldShowVerticalTabs())
+  if (ShouldShowVerticalTabs()) {
+    // Prevent root view from drawing lines. For tabs, we're overriding
+    // GetStrokeThickness().
     return false;
+  }
 
   if (!TabStrip::ShouldDrawStrokes())
     return false;
@@ -63,6 +66,15 @@ bool BraveTabStrip::ShouldDrawStrokes() const {
   const float contrast_ratio =
       color_utils::GetContrastRatio(background_color, frame_color);
   return contrast_ratio < kBraveMinimumContrastRatioForOutlines;
+}
+
+int BraveTabStrip::GetStrokeThickness() const {
+  if (ShouldShowVerticalTabs()) {
+    // Bypass checking ShouldDrawStrokes().
+    return 1;
+  }
+
+  return TabStrip::GetStrokeThickness();
 }
 
 void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
