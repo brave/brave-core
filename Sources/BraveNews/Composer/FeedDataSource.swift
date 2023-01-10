@@ -745,8 +745,6 @@ public class FeedDataSource: ObservableObject {
 
   /// Scores a set of items in the feed based on recency, personalization and variety.
   ///
-  /// The items returned in `completion` will be sorted based on score
-  ///
   /// Must be called on the main thread, `completion` is called on main thread
   private func score(
     feeds: [FeedItem.Content],
@@ -776,7 +774,6 @@ public class FeedDataSource: ObservableObject {
         }
         return FeedItem(score: score, content: content, source: source)
       }
-      .sorted(by: <)
       DispatchQueue.main.async {
         completion(items)
       }
