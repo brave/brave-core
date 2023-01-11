@@ -1963,21 +1963,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
   EXPECT_EQ(base::Value(true), result_third.value);
 }
 
-class CosmeticFilteringChildFramesFlagEnabledTest : public AdBlockServiceTest {
- public:
-  CosmeticFilteringChildFramesFlagEnabledTest() {
-    feature_list_.InitAndEnableFeature(
-        kBraveAdblockCosmeticFilteringChildFrames);
-  }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
-};
-
 // Test that cosmetic filtering is applied independently in a third-party child
 // frame
-IN_PROC_BROWSER_TEST_F(CosmeticFilteringChildFramesFlagEnabledTest,
-                       CosmeticFilteringFrames) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringFrames) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("frame.com##.ad\n");
 
