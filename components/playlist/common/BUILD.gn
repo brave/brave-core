@@ -13,10 +13,10 @@ source_set("common") {
     "features.h",
   ]
 
-  deps = [ "//base" ]
-
   public_deps = [
     "//brave/components/playlist/common/buildflags",
     "//brave/components/playlist/common/mojom",
   ]
+
+  deps = [ "//base" ]
 }

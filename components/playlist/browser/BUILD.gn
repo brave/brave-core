@@ -35,6 +35,8 @@ source_set("browser") {
     "type_converter.h",
   ]
 
+  public_deps = [ "//brave/components/playlist/common" ]
+
   deps = [
     "//base",
     "//brave/components/api_request_helper:api_request_helper",
@@ -53,6 +55,4 @@ source_set("browser") {
     "//third_party/re2",
     "//url",
   ]
-
-  public_deps = [ "//brave/components/playlist/common" ]
 }

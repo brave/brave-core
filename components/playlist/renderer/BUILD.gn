@@ -13,6 +13,8 @@ source_set("renderer") {
     "playlist_render_frame_observer.h",
   ]
 
+  public_deps = [ "//brave/components/playlist/common" ]
+
   deps = [
     "//content/public/renderer",
     "//third_party/blink/public:blink_headers",
@@ -20,6 +22,4 @@ source_set("renderer") {
     "//url",
     "//v8",
   ]
-
-  public_deps = [ "//brave/components/playlist/common" ]
 }
