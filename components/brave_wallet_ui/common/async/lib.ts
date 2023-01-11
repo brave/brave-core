@@ -44,6 +44,7 @@ import { AllAccountsOption } from '../../options/account-filter-options'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
 import { deserializeOrigin, makeSerializableTransaction } from '../../utils/model-serialization-utils'
+import { WalletPageActions } from '../../page/actions'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -426,8 +427,10 @@ export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo
     const visibleAssets = targetNetwork
       ? await inner(targetNetwork)
       : await Promise.all(networkList.map(async (item) => await inner(item)))
-
-    await dispatch(WalletActions.setVisibleTokensInfo(visibleAssets.flat(1)))
+    const userVisibleTokensInfo = visibleAssets.flat(1)
+    await dispatch(WalletActions.setVisibleTokensInfo(userVisibleTokensInfo))
+    const nfts = userVisibleTokensInfo.filter((asset) => asset.isErc721 || asset.isNft)
+    dispatch(WalletPageActions.getNftsPinningStatus(nfts))
   }
 }
 
