@@ -141,6 +141,14 @@ TestingBraveBrowserProcess::brave_farbling_service() {
   return nullptr;
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+brave_vpn::BraveVPNOSConnectionAPI*
+TestingBraveBrowserProcess::brave_vpn_os_connection_api() {
+  NOTREACHED();
+  return nullptr;
+}
+#endif
+
 void TestingBraveBrowserProcess::SetAdBlockService(
     std::unique_ptr<brave_shields::AdBlockService> service) {
   ad_block_service_ = std::move(service);

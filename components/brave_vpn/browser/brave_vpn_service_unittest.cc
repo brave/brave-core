@@ -210,13 +210,12 @@ class BraveVPNServiceTest : public testing::Test {
     // Setup required for SKU (dependency of VPN)
     skus_service_ = std::make_unique<skus::SkusServiceImpl>(
         &local_pref_service_, url_loader_factory_.GetSafeWeakWrapper());
+    connection_api_ = std::make_unique<BraveVPNOSConnectionAPISim>(
+        shared_url_loader_factory_, &local_pref_service_);
     ResetVpnService();
   }
 
   void TearDown() override {
-#if !BUILDFLAG(IS_ANDROID)
-    SetMockConnectionAPI(nullptr);
-#endif
     if (service_) {
       service_->Shutdown();
     }
@@ -227,14 +226,10 @@ class BraveVPNServiceTest : public testing::Test {
       service_->Shutdown();
     }
     service_ = std::make_unique<BraveVpnService>(
-        url_loader_factory_.GetSafeWeakWrapper(), &local_pref_service_,
-        &profile_pref_service_,
+        connection_api_.get(), url_loader_factory_.GetSafeWeakWrapper(),
+        &local_pref_service_, &profile_pref_service_,
         base::BindRepeating(&BraveVPNServiceTest::GetSkusService,
                             base::Unretained(this)));
-#if !BUILDFLAG(IS_ANDROID)
-    connection_api_ = BraveVPNOSConnectionAPI::GetInstanceForTest();
-    SetMockConnectionAPI(connection_api_.get());
-#endif
   }
   mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() {
     if (!skus_service_) {
@@ -320,10 +315,6 @@ class BraveVPNServiceTest : public testing::Test {
     service_->test_timezone_ = timezone;
   }
 
-  void SetMockConnectionAPI(BraveVPNOSConnectionAPI* api) {
-    ASSERT_TRUE(service_);
-    service_->SetMockBraveVpnConnectionApi(api);
-  }
   BraveVPNOSConnectionAPI* GetConnectionAPI() { return connection_api_.get(); }
 #endif
   void RecordP3A(bool new_usage) { service_->RecordP3A(new_usage); }
@@ -478,7 +469,7 @@ class BraveVPNServiceTest : public testing::Test {
   }
 
   std::string https_response_;
-  std::unique_ptr<BraveVPNOSConnectionAPI> connection_api_;
+  std::unique_ptr<BraveVPNOSConnectionAPISim> connection_api_;
   base::test::ScopedFeatureList scoped_feature_list_;
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple local_pref_service_;

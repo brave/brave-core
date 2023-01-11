@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_IMPL_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_IMPL_H_
@@ -12,12 +12,14 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "extensions/buildflags/buildflags.h"
 
@@ -116,6 +118,9 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
       override;
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  brave_vpn::BraveVPNOSConnectionAPI* brave_vpn_os_connection_api() override;
+#endif
   brave::BraveFarblingService* brave_farbling_service() override;
 
  private:
@@ -176,6 +181,11 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   std::unique_ptr<speedreader::SpeedreaderRewriterService>
       speedreader_rewriter_service_;
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  std::unique_ptr<brave_vpn::BraveVPNOSConnectionAPI>
+      brave_vpn_os_connection_api_;
 #endif
 
   std::unique_ptr<brave::BraveFarblingService> brave_farbling_service_;

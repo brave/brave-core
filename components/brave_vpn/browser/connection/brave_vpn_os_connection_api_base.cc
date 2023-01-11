@@ -24,7 +24,11 @@ namespace brave_vpn {
 
 using ConnectionState = mojom::ConnectionState;
 
-BraveVPNOSConnectionAPIBase::BraveVPNOSConnectionAPIBase() {
+BraveVPNOSConnectionAPIBase::BraveVPNOSConnectionAPIBase(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PrefService* local_prefs)
+    : local_prefs_(local_prefs), url_loader_factory_(url_loader_factory) {
+  DCHECK(url_loader_factory && local_prefs);
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 }
 
@@ -219,15 +223,6 @@ void BraveVPNOSConnectionAPIBase::OnConnectFailed() {
   connection_info_.Reset();
 
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
-}
-
-void BraveVPNOSConnectionAPIBase::SetLocalPrefs(PrefService* prefs) {
-  local_prefs_ = prefs;
-}
-
-void BraveVPNOSConnectionAPIBase::SetSharedUrlLoaderFactory(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
-  url_loader_factory_ = url_loader_factory;
 }
 
 void BraveVPNOSConnectionAPIBase::OnDisconnected() {

@@ -16,13 +16,11 @@
 
 namespace brave_vpn {
 
-// static
-std::unique_ptr<BraveVPNOSConnectionAPI>
-BraveVPNOSConnectionAPI::GetInstanceForTest() {
-  return std::make_unique<BraveVPNOSConnectionAPISim>();
-}
+BraveVPNOSConnectionAPISim::BraveVPNOSConnectionAPISim(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PrefService* local_prefs)
+    : BraveVPNOSConnectionAPIBase(url_loader_factory, local_prefs) {}
 
-BraveVPNOSConnectionAPISim::BraveVPNOSConnectionAPISim() = default;
 BraveVPNOSConnectionAPISim::~BraveVPNOSConnectionAPISim() = default;
 
 void BraveVPNOSConnectionAPISim::CreateVPNConnectionImpl(

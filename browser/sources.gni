@@ -253,6 +253,7 @@ if (enable_speedreader) {
 if (enable_brave_vpn) {
   brave_chrome_browser_deps += [
     "//brave/components/brave_vpn/browser",
+    "//brave/components/brave_vpn/browser/connection",
     "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/common",
   ]

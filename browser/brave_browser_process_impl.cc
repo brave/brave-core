@@ -84,6 +84,10 @@
 #include "chrome/browser/ui/browser_list.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#endif
+
 using brave_component_updater::BraveComponent;
 using ntp_background_images::NTPBackgroundImagesService;
 
@@ -404,6 +408,18 @@ ipfs::BraveIpfsClientUpdater* BraveBrowserProcessImpl::ipfs_client_updater() {
   return ipfs_client_updater_.get();
 }
 #endif  // BUILDFLAG(ENABLE_IPFS)
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+brave_vpn::BraveVPNOSConnectionAPI*
+BraveBrowserProcessImpl::brave_vpn_os_connection_api() {
+  if (brave_vpn_os_connection_api_)
+    return brave_vpn_os_connection_api_.get();
+
+  brave_vpn_os_connection_api_ = brave_vpn::CreateBraveVPNOSConnectionAPI(
+      shared_url_loader_factory(), local_state());
+  return brave_vpn_os_connection_api_.get();
+}
+#endif
 
 brave::BraveFarblingService* BraveBrowserProcessImpl::brave_farbling_service() {
   if (!brave_farbling_service_)
