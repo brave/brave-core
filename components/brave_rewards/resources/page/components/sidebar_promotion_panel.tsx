@@ -48,11 +48,6 @@ function getPromotionMessages (
         title: 'upholdPromoTitle',
         text1: 'upholdPromoInfo'
       }
-    case 'uphold-equities':
-      return {
-        title: 'upholdPromoEquitiesTitle',
-        text1: 'upholdPromoEquitiesInfo'
-      }
   }
 }
 
