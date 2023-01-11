@@ -22,7 +22,7 @@ static_library("sidebar") {
     "//base",
     "//brave/components/brave_wallet/common:common_utils",
     "//brave/components/l10n/common",
-    "//brave/components/playlist/common:features",
+    "//brave/components/playlist/common",
     "//brave/components/resources:strings",
     "//components/keyed_service/core",
     "//components/prefs",
@@ -39,7 +39,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/components/playlist/common:features",
+    "//brave/components/playlist/common",
     "//brave/components/sidebar",
     "//components/prefs",
     "//components/prefs:test_support",

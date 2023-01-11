@@ -5,9 +5,9 @@
 
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 
-source_set("browser_tests") {
-  assert(enable_playlist)
+assert(enable_playlist)
 
+source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
@@ -39,8 +39,6 @@ source_set("browser_tests") {
 }
 
 source_set("unit_tests") {
-  assert(enable_playlist)
-
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 

@@ -3,6 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/playlist/common/buildflags/buildflags.gni")
+
+assert(enable_playlist)
+
 source_set("renderer") {
   sources = [
     "playlist_render_frame_observer.cc",
@@ -10,11 +14,12 @@ source_set("renderer") {
   ]
 
   deps = [
-    "//brave/components/playlist/common:features",
     "//content/public/renderer",
     "//third_party/blink/public:blink_headers",
     "//third_party/blink/public/common",
     "//url",
     "//v8",
   ]
+
+  public_deps = [ "//brave/components/playlist/common" ]
 }

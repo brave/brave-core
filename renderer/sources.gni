@@ -45,10 +45,7 @@ if (enable_speedreader) {
 }
 
 if (enable_playlist) {
-  brave_chrome_renderer_deps += [
-    "//brave/components/playlist/common:features",
-    "//brave/components/playlist/renderer",
-  ]
+  brave_chrome_renderer_deps += [ "//brave/components/playlist/renderer" ]
 }
 
 if (enable_brave_vpn) {

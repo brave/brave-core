@@ -5,13 +5,18 @@
 
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 
-source_set("features") {
-  assert(enable_playlist)
+assert(enable_playlist)
 
+source_set("common") {
   sources = [
     "features.cc",
     "features.h",
   ]
 
   deps = [ "//base" ]
+
+  public_deps = [
+    "//brave/components/playlist/common/buildflags",
+    "//brave/components/playlist/common/mojom",
+  ]
 }
