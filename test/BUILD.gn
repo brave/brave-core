@@ -625,11 +625,14 @@ if (!is_android) {
       "//brave/browser/net/brave_network_audit_browsertest.cc",
     ]
 
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    public_deps = [ ":browser_tests_runner" ]
+
     deps = [
       "//base",
       "//brave/browser/ui",
       "//brave/components/brave_rewards/browser",
-      "//brave/components/playlist/common",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
@@ -649,9 +652,9 @@ if (!is_android) {
       ]
     }
 
-    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-
-    public_deps = [ ":browser_tests_runner" ]
+    if (enable_playlist_webui) {
+      deps += [ "//brave/components/playlist/common" ]
+    }
   }
 }
 
