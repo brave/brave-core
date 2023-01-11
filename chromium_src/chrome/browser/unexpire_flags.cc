@@ -5,7 +5,7 @@
 
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_features_internal_names.h"
-#include "brave/components/playlist/buildflags/buildflags.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "chrome/common/channel_info.h"
 #include "components/version_info/version_info.h"
 

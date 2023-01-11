@@ -66,8 +66,8 @@
 #include "brave/components/debounce/browser/debounce_navigation_throttle.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/playlist/buildflags/buildflags.h"
-#include "brave/components/playlist/features.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/common/features.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -202,7 +202,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/playlist_service.h"
+#include "brave/components/playlist/browser/playlist_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)

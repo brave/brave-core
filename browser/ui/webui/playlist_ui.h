@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/playlist/mojom/playlist.mojom.h"
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/webui_config.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"

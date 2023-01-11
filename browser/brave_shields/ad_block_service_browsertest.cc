@@ -35,7 +35,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
-#include "brave/components/playlist/buildflags/buildflags.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -55,8 +55,8 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/features.h"
-#include "brave/components/playlist/playlist_service.h"
+#include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/components/playlist/common/features.h"
 #endif
 
 const char kAdBlockTestPage[] = "/blocking.html";

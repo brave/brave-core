@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import("//brave/components/playlist/buildflags/buildflags.gni")
+import("//brave/components/playlist/common/buildflags/buildflags.gni")
 
 source_set("browser_tests") {
   assert(enable_playlist)
@@ -19,8 +19,8 @@ source_set("browser_tests") {
 
   deps = [
     "//base",
-    "//brave/components/playlist",
-    "//brave/components/playlist/mojom",
+    "//brave/components/playlist/browser",
+    "//brave/components/playlist/common/mojom",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
@@ -48,8 +48,8 @@ source_set("unit_tests") {
 
   deps = [
     "//base",
-    "//brave/components/playlist",
-    "//brave/components/playlist/mojom",
+    "//brave/components/playlist/browser",
+    "//brave/components/playlist/common/mojom",
     "//chrome/test:test_support",
     "//components/pref_registry",
     "//content/test:test_support",

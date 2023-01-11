@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/playlist/playlist_service.h"
+#include "brave/components/playlist/browser/playlist_service.h"
 
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
@@ -12,12 +12,12 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/timer/timer.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/features.h"
-#include "brave/components/playlist/media_detector_component_manager.h"
-#include "brave/components/playlist/playlist_constants.h"
-#include "brave/components/playlist/playlist_service_observer.h"
-#include "brave/components/playlist/pref_names.h"
-#include "brave/components/playlist/type_converter.h"
+#include "brave/components/playlist/browser/media_detector_component_manager.h"
+#include "brave/components/playlist/browser/playlist_constants.h"
+#include "brave/components/playlist/browser/playlist_service_observer.h"
+#include "brave/components/playlist/browser/pref_names.h"
+#include "brave/components/playlist/browser/type_converter.h"
+#include "brave/components/playlist/common/features.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/test/base/testing_profile.h"

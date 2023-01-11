@@ -29,7 +29,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/playlist/buildflags/buildflags.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -66,7 +66,7 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/features.h"
+#include "brave/components/playlist/common/features.h"
 #endif
 
 namespace brave {

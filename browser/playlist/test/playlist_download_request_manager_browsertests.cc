@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/playlist/playlist_download_request_manager.h"
+#include "brave/components/playlist/browser/playlist_download_request_manager.h"
 
 #include "base/ranges/algorithm.h"
-#include "brave/components/playlist/media_detector_component_manager.h"
-#include "brave/components/playlist/mojom/playlist.mojom.h"
+#include "brave/components/playlist/browser/media_detector_component_manager.h"
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"

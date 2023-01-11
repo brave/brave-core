@@ -23,7 +23,7 @@
 #include "brave/components/debounce/common/features.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
-#include "brave/components/playlist/buildflags/buildflags.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -48,7 +48,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/features.h"
+#include "brave/components/playlist/common/features.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
