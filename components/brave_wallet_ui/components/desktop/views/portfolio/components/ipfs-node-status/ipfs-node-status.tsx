@@ -5,6 +5,10 @@
 
 import * as React from 'react'
 
+// selectors
+import { useSafePageSelector } from '../../../../../../common/hooks/use-safe-selector'
+import { PageSelectors } from '../../../../../../page/selectors'
+
 import {
   IpfsNodeStatusWrapper,
   StatusIcon,
@@ -12,10 +16,12 @@ import {
 } from './ipfs-node-status.style'
 
 export const IpfsNodeStatus = () => {
+  const isLocalIpfsNodeRunning = useSafePageSelector(PageSelectors.isLocalIpfsNodeRunning)
+
   return (
     <IpfsNodeStatusWrapper>
-      <StatusIcon />
-      <Text>You’re running IPFS node</Text>
+      <StatusIcon running={isLocalIpfsNodeRunning} />
+      <Text>{isLocalIpfsNodeRunning ? 'You’re running IPFS node' : 'Local IPFS node is not running'}</Text>
     </IpfsNodeStatusWrapper>
   )
 }

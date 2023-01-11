@@ -371,6 +371,13 @@ export const PortfolioAsset = (props: Props) => {
     return fullTokenList.some((asset) => asset.symbol.toLowerCase() === selectedAsset?.symbol.toLowerCase())
   }, [fullTokenList, selectedAsset?.symbol])
 
+  const currentNftPinningStatus = React.useMemo(() => {
+    if (isNftAsset && selectedAsset) {
+      return getNftPinningStatus(selectedAsset)
+    }
+    return undefined
+  }, [isNftAsset, selectedAsset])
+
   // methods
   const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {
     history.push(WalletRoutes.AddAccountModal)
@@ -483,7 +490,6 @@ export const PortfolioAsset = (props: Props) => {
     if (message.command === NftUiCommand.IframeSize) {
       const { payload } = message as IframeSize
       setIframeHeight(payload.height + 'px')
-      console.log('payload', payload)
     }
   }, [])
 
@@ -564,7 +570,7 @@ export const PortfolioAsset = (props: Props) => {
     if (nftPinningStatus && selectedAsset && nftDetailsRef?.current) {
       const command: UpdateNftPinningStatus = {
         command: NftUiCommand.UpdateNftPinningStatus,
-        payload: getNftPinningStatus(selectedAsset)
+        payload: currentNftPinningStatus
       }
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
@@ -574,7 +580,7 @@ export const PortfolioAsset = (props: Props) => {
       // update asset logo
       dispatch(WalletActions.updateUserAsset({ ...selectedAsset, logo: nftMetadata?.imageURL || '' }))
     }
-  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList, nftMetadataError, nftPinningStatus])
+  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList, nftMetadataError, nftPinningStatus, currentNftPinningStatus])
 
   React.useEffect(() => {
     setDontShowAuroraWarning(JSON.parse(localStorage.getItem(bridgeToAuroraDontShowAgainKey) || 'false'))
@@ -608,7 +614,7 @@ export const PortfolioAsset = (props: Props) => {
       <TopRow>
         <BalanceRow gap='16px'>
           <BackButton onSubmit={goBack} />
-          <IpfsNodeStatus />
+          {isNftAsset && <IpfsNodeStatus />}
         </BalanceRow>
         <BalanceRow>
           {!isNftAsset &&

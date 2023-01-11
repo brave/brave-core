@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 
-import PositiveStatus from '../../../../../../assets/svg-icons/nft-ipfs/positive-status.svg'
+import NodeStatus from '../../../../../../assets/svg-icons/nft-ipfs/node-status.svg'
 
 export const IpfsNodeStatusWrapper = styled.div`
   display: flex;
@@ -15,12 +15,12 @@ export const IpfsNodeStatusWrapper = styled.div`
   justify-content: center;
 `
 
-export const StatusIcon = styled.div`
+export const StatusIcon = styled.div<{ running: boolean }>`
   width: 8px;
   height: 8px;
-  mask-image: url(${PositiveStatus});
-  -webkit-mask-image: url(${PositiveStatus});
-  background-color: #51CF66;
+  mask-image: url(${NodeStatus});
+  -webkit-mask-image: url(${NodeStatus});
+  background-color: ${p => p.running ? p.theme.color.successBorder : p.theme.color.errorBorder} ;
 `
 
 export const Text = styled.p`

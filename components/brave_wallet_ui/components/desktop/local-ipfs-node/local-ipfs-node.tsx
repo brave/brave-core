@@ -4,14 +4,18 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
 // types
-import { PageState, WalletRoutes } from '../../../constants/types'
+import { WalletRoutes } from '../../../constants/types'
 
 // actions
 import { WalletPageActions } from '../../../page/actions'
+
+// selectors
+import { useSafePageSelector } from '../../../common/hooks/use-safe-selector'
+import { PageSelectors } from '../../../page/selectors'
 
 // components
 import { Row } from '../../shared/style'
@@ -36,10 +40,9 @@ import {
   LeftWrapper,
   RightWrapper,
   BenefitsList,
-  IpfsNodeRunningStatus,
-  IpfsStatus,
   NftIllustration
 } from './local-ipfs-node.styles'
+import { IpfsNodeStatus } from '../views/portfolio/components/ipfs-node-status/ipfs-node-status'
 
 interface Props {
   onClose: () => void
@@ -53,7 +56,7 @@ export const LocalIpfsNodeScreen = (props: Props) => {
 
   // redux
   const dispatch = useDispatch()
-  const autoPinEnabled = useSelector(({ page }: { page: PageState }) => page.autoPinEnabled)
+  const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
 
   const onClickCheckNfts = React.useCallback(() => {
     history.push(WalletRoutes.InspectNfts)
@@ -61,6 +64,10 @@ export const LocalIpfsNodeScreen = (props: Props) => {
 
   const onClickRunNode = React.useCallback(() => {
     dispatch(WalletPageActions.setAutoPinEnabled(true))
+  }, [])
+
+  const goToNftsTab = React.useCallback(() => {
+    history.push(WalletRoutes.Nfts)
   }, [])
 
   return (
@@ -97,14 +104,11 @@ export const LocalIpfsNodeScreen = (props: Props) => {
         </Section>
         <Section>
           <LeftWrapper>
-            <Row gap='16px' alignItems='center' justifyContent='flex-start'>
-              {autoPinEnabled
+            <Row gap='16px' alignItems='center' justifyContent='flex-start' margin='0 0 0 8px'>
+              {isAutoPinEnabled
                 ? <>
-                  <ActionButton>Keep my NFTs always online</ActionButton>
-                  <IpfsNodeRunningStatus>
-                    <IpfsStatus />
-                    You’re running IPFS node
-                  </IpfsNodeRunningStatus>
+                  <ActionButton onClick={goToNftsTab}>Keep my NFTs always online</ActionButton>
+                  <IpfsNodeStatus />
                 </>
                 : <ActionButton onClick={onClickRunNode}>Run my local IPFS Node</ActionButton>
               }

@@ -140,6 +140,7 @@ export class WalletApiProxy {
         }))
       },
       onLocalNodeStatusChanged: function (status) {
+        store.dispatch(WalletPageActions.updateLocalIpfsNodeStatus(status))
       }
     })
     this.braveWalletPinService.addObserver(braveWalletServiceObserverReceiver.$.bindNewPipeAndPassRemote())

@@ -22,7 +22,7 @@ interface Props {
   pinningStatusCode: BraveWallet.TokenPinStatusCode
 }
 
-export const NftPinnigStatus = (props: Props) => {
+export const NftPinningStatus = (props: Props) => {
   const { pinningStatusCode } = props
   const [icon, setIcon] = React.useState<React.ReactNode>()
   const [message, setmessage] = React.useState<string>('')

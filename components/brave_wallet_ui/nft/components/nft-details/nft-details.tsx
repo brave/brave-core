@@ -51,7 +51,7 @@ import { MultimediaWrapper } from '../nft-content/nft-content-styles'
 import { CreateNetworkIcon } from '../../../components/shared'
 import { Row } from '../../../components/shared/style'
 import CopyTooltip from '../../../components/shared/copy-tooltip/copy-tooltip'
-import { NftPinnigStatus } from '../../../components/desktop/nft-pinning-status/nft-pinning-status'
+import { NftPinningStatus } from '../../../components/desktop/nft-pinning-status/nft-pinning-status'
 import { PinningStatusType } from '../../../page/constants/action_types'
 
 interface Props {
@@ -219,7 +219,7 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                 {nftPinningStatus?.code &&
                   <DetailSectionRow>
                     <DetailSectionColumn>
-                      <NftPinnigStatus pinningStatusCode={nftPinningStatus.code} />
+                      <NftPinningStatus pinningStatusCode={nftPinningStatus.code} />
                     </DetailSectionColumn>
                   </DetailSectionRow>
                 }

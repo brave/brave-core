@@ -4,13 +4,18 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router'
 
 // components
 import { NftList } from './components/nft-list/nft-list'
-import { useDispatch, useSelector } from 'react-redux'
+import Illustration from '../../../assets/svg-icons/nft-ipfs/pinned-nft-illustration.svg'
+import { InfoTooltip } from './components/info-tooltip/info-tooltip'
+import { IpfsNodeStatus } from '../views/portfolio/components/ipfs-node-status/ipfs-node-status'
 
-// types
-import { PageState } from '../../../constants/types'
+// selectors
+import { useSafePageSelector } from '../../../common/hooks/use-safe-selector'
+import { PageSelectors } from '../../../page/selectors'
 
 // utils
 import { WalletPageActions } from '../../../page/actions'
@@ -33,14 +38,10 @@ import {
 import {
   ActionButton,
   BenefitHeading,
-  BenefitsList,
-  IpfsNodeRunningStatus,
-  IpfsStatus
+  BenefitsList
 } from '../local-ipfs-node/local-ipfs-node.styles'
 import { Column, Row } from '../../shared/style'
-
-import Illustration from '../../../assets/svg-icons/nft-ipfs/pinned-nft-illustration.svg'
-import { InfoTooltip } from './components/info-tooltip/info-tooltip'
+import { WalletRoutes } from '../../../constants/types'
 
 interface Props {
   onClose: () => void
@@ -50,9 +51,12 @@ interface Props {
 export const InspectNftsScreen = ({ onClose }: Props) => {
   const [showTooltip, setShowTooltip] = React.useState<boolean>(false)
 
+  // routing
+  const history = useHistory()
+
   // redux
   const dispatch = useDispatch()
-  const autoPinEnabled = useSelector(({ page }: { page: PageState }) => page.autoPinEnabled)
+  const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
 
   const onClickRunNode = React.useCallback(() => {
     dispatch(WalletPageActions.setAutoPinEnabled(true))
@@ -60,6 +64,10 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
 
   const onShowTooltip = React.useCallback(() => setShowTooltip(true), [])
   const onHideTooltip = React.useCallback(() => setShowTooltip(false), [])
+
+  const goToNftsTab = React.useCallback(() => {
+    history.push(WalletRoutes.Nfts)
+  }, [])
 
   return (
     <InspectNftsWrapper>
@@ -82,7 +90,8 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
           gap='8px'
           alignItems='center'
           justifyContent='flex-end'
-          onMouseEnter={onShowTooltip} onMouseLeave={onHideTooltip}
+          onMouseEnter={onShowTooltip}
+          onMouseLeave={onHideTooltip}
         >
           <InfoSubHeading>Why not available</InfoSubHeading>
           <InfoIcon/>
@@ -112,13 +121,10 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
           </BenefitsList>
         </Column>
         <Row gap='16px' alignItems='center' justifyContent='flex-start'>
-          {autoPinEnabled
+          {isAutoPinEnabled
             ? <>
-              <PinNftsButton>Keep my NFTs always online</PinNftsButton>
-              <IpfsNodeRunningStatus>
-                <IpfsStatus />
-                You’re running IPFS node
-              </IpfsNodeRunningStatus>
+              <PinNftsButton onClick={goToNftsTab}>Keep my NFTs always online</PinNftsButton>
+              <IpfsNodeStatus />
             </>
             : <ActionButton onClick={onClickRunNode}>Run my local IPFS Node</ActionButton>
           }

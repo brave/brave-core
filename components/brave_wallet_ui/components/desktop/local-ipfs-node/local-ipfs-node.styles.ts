@@ -9,7 +9,6 @@ import { WalletButton } from '../../shared/style'
 import Background from '../../../assets/svg-icons/nft-ipfs/local-node-background.svg'
 import Ipfs from '../../../assets/svg-icons/nft-ipfs/ipfs.svg'
 import Close from '../../../assets/svg-icons/close.svg'
-import IpfsRunning from '../../../assets/svg-icons/nft-ipfs/positive-status.svg'
 
 export const RunNodeWrapper = styled.div`
   display: flex;
@@ -249,29 +248,6 @@ export const BenefitsList = styled.ul`
     color: #AEB1C2;
     margin-bottom: 8px;
   }
-`
-
-export const IpfsNodeRunningStatus = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 14px;
-  color: ${p => p.theme.color.text03};
-`
-
-export const IpfsStatus = styled.span`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 8px;
-  height: 8px;
-  background-color: #51CF66;
-  -webkit-mask-image: url(${IpfsRunning});
-  mask-image: url(${IpfsRunning});
-  mask-repeat: no-repeat;
-  mask-size: 8px;
-  margin-right: 8px;
 `
 
 export const NftIllustration = styled.img`

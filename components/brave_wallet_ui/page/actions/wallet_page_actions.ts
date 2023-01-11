@@ -51,5 +51,7 @@ export const {
   updateAutoPinEnabled,
   getNftsPinningStatus,
   setNftsPinningStatus,
-  updateNftPinningStatus
+  updateNftPinningStatus,
+  getLocalIpfsNodeStatus,
+  updateLocalIpfsNodeStatus
 } = PageActions

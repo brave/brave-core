@@ -213,6 +213,7 @@ const CryptoView = (props: Props) => {
 
   // effects
   React.useEffect(() => {
+    dispatch(WalletPageActions.getLocalIpfsNodeStatus())
     dispatch(WalletPageActions.getIsAutoPinEnabled())
   }, [])
 

@@ -23,7 +23,7 @@ import { NftDetails } from '../nft/components/nft-details/nft-details'
 import { mockNewAssetOptions } from './mock-data/mock-asset-options'
 import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
 import { mockNetwork } from '../common/constants/mocks'
-import { NftPinnigStatus } from '../components/desktop/nft-pinning-status/nft-pinning-status'
+import { NftPinningStatus } from '../components/desktop/nft-pinning-status/nft-pinning-status'
 import { IpfsDetailsModal } from '../components/desktop/ipfs-details-modal/ipfs-details-modal'
 
 export default {
@@ -208,7 +208,7 @@ _NftDetails.story = {
 
 export const _NftPinningStatus = () => {
   return (
-    <NftPinnigStatus
+    <NftPinningStatus
       pinningStatusCode='failed'
     />
   )
