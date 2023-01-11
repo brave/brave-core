@@ -9,7 +9,7 @@ import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.util.Base64;
 
-import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 
 import java.io.IOException;

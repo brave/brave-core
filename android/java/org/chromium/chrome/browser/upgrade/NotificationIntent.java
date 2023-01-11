@@ -17,11 +17,11 @@ import android.view.View;
 
 import androidx.core.app.NotificationCompat;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 
 import java.util.ArrayList;
 import java.util.Arrays;
