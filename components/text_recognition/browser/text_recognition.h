@@ -11,7 +11,11 @@
 
 class SkBitmap;
 
+namespace text_recognition {
+
 // Returns recognized texts from |image|.
 std::vector<std::string> GetTextFromImage(const SkBitmap& image);
+
+}  // namespace text_recognition
 
 #endif  // BRAVE_COMPONENTS_TEXT_RECOGNITION_BROWSER_TEXT_RECOGNITION_H_

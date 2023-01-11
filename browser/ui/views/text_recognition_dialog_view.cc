@@ -136,7 +136,7 @@ void TextRecognitionDialogView::StartExtractingText(const SkBitmap& image) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&GetTextFromImage, image),
+      base::BindOnce(&text_recognition::GetTextFromImage, image),
       base::BindOnce(&TextRecognitionDialogView::OnGetTextFromImage,
                      weak_factory_.GetWeakPtr()));
 }

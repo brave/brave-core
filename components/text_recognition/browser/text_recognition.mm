@@ -19,6 +19,8 @@
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/utils/mac/SkCGUtils.h"
 
+namespace text_recognition {
+
 std::vector<std::string> GetTextFromImage(const SkBitmap& image) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
@@ -76,3 +78,5 @@ std::vector<std::string> GetTextFromImage(const SkBitmap& image) {
 
   return result;
 }
+
+}  // namespace text_recognition
