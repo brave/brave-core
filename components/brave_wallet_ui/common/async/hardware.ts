@@ -68,8 +68,20 @@ export async function signTrezorTransaction (
   if (!txInfo.txDataUnion.ethTxData1559) {
     return { success: false, error: getLocale('braveWalletApproveTransactionError') }
   }
-  txInfo.txDataUnion.ethTxData1559.baseData.nonce = nonce.nonce
-  const signed = await deviceKeyring.signTransaction(path, txInfo, chainId.chainId)
+  const tx = {
+    ...txInfo,
+    txDataUnion: {
+      ...txInfo.txDataUnion,
+      ethTxData1559: {
+        ...txInfo.txDataUnion.ethTxData1559,
+        baseData: {
+          ...txInfo.txDataUnion.ethTxData1559?.baseData,
+          nonce: nonce.nonce
+        }
+      }
+    }
+  } as SerializableTransactionInfo
+  const signed = await deviceKeyring.signTransaction(path, tx, chainId.chainId)
   if (!signed || !signed.success || !signed.payload) {
     const error = (signed.error ? signed.error : getLocale('braveWalletSignOnDeviceError')) as string
     if (signed.code === TrezorErrorsCodes.CommandInProgress) {
@@ -83,7 +95,7 @@ export async function signTrezorTransaction (
   }
   const { v, r, s } = ethereumSignedTx
   const result =
-    await apiProxy.ethTxManagerProxy.processHardwareSignature(txInfo.id, v, r, s)
+    await apiProxy.ethTxManagerProxy.processHardwareSignature(tx.id, v, r, s)
   if (!result.status) {
     return { success: false, error: getLocale('braveWalletProcessTransactionError') }
   }
