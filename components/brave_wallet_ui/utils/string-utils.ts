@@ -6,7 +6,7 @@
 import { BraveWallet, WalletRoutes, TokenStandards } from '../constants/types'
 import { getLocale } from '../../common/locale'
 
-const IPFS_GATEWAY = 'https://ipfs.io/ipfs'
+const IPFS_GATEWAY = 'https://ipfs.io/ipfs/'
 const IPFS_PROTOCOL = 'ipfs://'
 
 export const stripERC20TokenImageURL = (url?: string) =>
