@@ -23,33 +23,33 @@
 #endif
 
 // MARK: - Constants
-BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredSmallest =
+FaviconLoaderSize const FaviconLoaderSizeDesiredSmallest =
     static_cast<NSInteger>(kMinFaviconSizePt);
-BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredSmall =
+FaviconLoaderSize const FaviconLoaderSizeDesiredSmall =
     static_cast<NSInteger>(kDesiredSmallFaviconSizePt);
-BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredMedium =
+FaviconLoaderSize const FaviconLoaderSizeDesiredMedium =
     static_cast<NSInteger>(kDesiredMediumFaviconSizePt);
-BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredLarge =
+FaviconLoaderSize const FaviconLoaderSizeDesiredLarge =
     static_cast<NSInteger>(64);
-BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredLarger =
+FaviconLoaderSize const FaviconLoaderSizeDesiredLarger =
     static_cast<NSInteger>(180);
-BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredLargest =
+FaviconLoaderSize const FaviconLoaderSizeDesiredLargest =
     static_cast<NSInteger>(192);
 
 // MARK: - Implementation
 
-@interface BraveFaviconLoader () {
-  base::raw_ptr<brave_favicon::BraveFaviconLoader> brave_favicon_loader_;
+@interface FaviconLoader () {
+  base::raw_ptr<brave_favicon::BraveFaviconLoader> favicon_loader_;
 }
 @end
 
-@implementation BraveFaviconLoader
+@implementation FaviconLoader
 - (instancetype)initWithBrowserState:(ChromeBrowserState*)browserState {
   if ((self = [super init])) {
-    brave_favicon_loader_ =
+    favicon_loader_ =
         brave_favicon::BraveIOSFaviconLoaderFactory::GetForBrowserState(
             browserState);
-    DCHECK(brave_favicon_loader_);
+    DCHECK(favicon_loader_);
   }
   return self;
 }
@@ -68,18 +68,18 @@ BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredLargest =
     CHECK(browser_state);
   }
 
-  return [[BraveFaviconLoader alloc] initWithBrowserState:browser_state];
+  return [[FaviconLoader alloc] initWithBrowserState:browser_state];
 }
 
 - (void)faviconForPageURLOrHost:(NSURL*)url
-                   sizeInPoints:(BraveFaviconLoaderSize)sizeInPoints
-                minSizeInPoints:(BraveFaviconLoaderSize)minSizeInPoints
+                   sizeInPoints:(FaviconLoaderSize)sizeInPoints
+                minSizeInPoints:(FaviconLoaderSize)minSizeInPoints
                      completion:
                          (void (^)(FaviconAttributes* attributes))completion {
-  brave_favicon_loader_->FaviconForPageUrlOrHost(
-      net::GURLWithNSURL(url), sizeInPoints, minSizeInPoints,
-      ^(FaviconAttributes* attributes) {
-        completion(attributes);
-      });
+  favicon_loader_->FaviconForPageUrlOrHost(net::GURLWithNSURL(url),
+                                           sizeInPoints, minSizeInPoints,
+                                           ^(FaviconAttributes* attributes) {
+                                             completion(attributes);
+                                           });
 }
 @end
