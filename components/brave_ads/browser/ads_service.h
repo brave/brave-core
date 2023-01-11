@@ -12,7 +12,6 @@
 #include "base/observer_list.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/new_tab_page_ad_info.h"
@@ -87,7 +86,6 @@ class AdsService : public KeyedService {
   // Called if a browser upgrade is required to serve ads.
   virtual bool NeedsBrowserUpgradeToServeAds() const = 0;
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   // Called to show a notification indicating that a scheduled captcha with the
   // given |captcha_id| must be solved for the given |payment_id| before the
   // user can continue to served ads.
@@ -96,7 +94,6 @@ class AdsService : public KeyedService {
 
   // Called to snooze the scheduled captcha, if any.
   virtual void SnoozeScheduledCaptcha() = 0;
-#endif
 
   // Called when a notification ad with |placement_id| is shown.
   virtual void OnNotificationAdShown(const std::string& placement_id) = 0;

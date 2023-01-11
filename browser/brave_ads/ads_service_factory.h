@@ -9,12 +9,9 @@
 #include <memory>
 
 #include "base/memory/singleton.h"
+#include "brave/browser/brave_ads/tooltips/ads_tooltips_delegate_impl.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
-
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-#include "brave/browser/brave_ads/tooltips/ads_tooltips_delegate_impl.h"
-#endif
 
 class Profile;
 

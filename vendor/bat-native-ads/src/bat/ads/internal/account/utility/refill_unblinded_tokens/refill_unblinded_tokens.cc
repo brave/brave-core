@@ -34,7 +34,6 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"  // IWYU pragma: keep
 #include "net/http/http_status_code.h"
 
 namespace ads {
@@ -227,7 +226,6 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   // Captcha required, retrieve captcha id from response
   if (url_response.status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(1, "Captcha required");
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
     const std::string* const captcha_id = root->FindStringKey("captcha_id");
     if (!captcha_id || captcha_id->empty()) {
       BLOG(0, "Response is missing captcha_id");
@@ -240,7 +238,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     if (delegate_) {
       delegate_->OnCaptchaRequiredToRefillUnblindedTokens(*captcha_id);
     }
-#endif
+
     return;
   }
 

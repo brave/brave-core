@@ -3,8 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
-
 brave_browser_brave_ads_sources = [
   "//brave/browser/brave_ads/ads_service_factory.cc",
   "//brave/browser/brave_ads/ads_service_factory.h",
@@ -31,7 +29,6 @@ brave_browser_brave_ads_deps = [
   "//brave/browser/brave_rewards:util",
   "//brave/browser/profiles:util",
   "//brave/browser/ui/brave_ads",
-  "//brave/components/brave_adaptive_captcha/buildflags",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/common",
   "//brave/components/brave_ads/common:mojom",
@@ -109,16 +106,11 @@ if (is_win) {
   ]
 
   brave_browser_brave_ads_deps += [
+    "//brave/browser/brave_ads/tooltips/",
+    "//brave/components/brave_adaptive_captcha:brave_adaptive_captcha",
     "//chrome/common",
     "//chrome/installer/util:with_no_strings",
     "//ui/gfx",
     "//ui/views",
-  ]
-}
-
-if (brave_adaptive_captcha_enabled) {
-  brave_browser_brave_ads_deps += [
-    "//brave/browser/brave_ads/tooltips/",
-    "//brave/components/brave_adaptive_captcha:brave_adaptive_captcha",
   ]
 }

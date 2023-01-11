@@ -14,6 +14,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/version.h"
 #include "bat/ads/supported_subdivisions.h"
+#include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -23,7 +24,7 @@
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/brave_rewards.h"
-#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -38,11 +39,6 @@
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
-
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-#include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
-#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#endif
 
 using brave_ads::AdsService;
 using brave_ads::AdsServiceFactory;
@@ -1410,7 +1406,6 @@ BraveRewardsGetScheduledCaptchaInfoFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsGetScheduledCaptchaInfoFunction::Run() {
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* brave_adaptive_captcha_service =
       brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetForProfile(
@@ -1431,9 +1426,6 @@ BraveRewardsGetScheduledCaptchaInfoFunction::Run() {
   dict.Set("maxAttemptsExceeded", max_attempts_exceeded);
 
   return RespondNow(OneArgument(base::Value(std::move(dict))));
-#else
-  return RespondNow(Error("Adaptive captcha not supported"));
-#endif
 }
 
 BraveRewardsUpdateScheduledCaptchaResultFunction::
@@ -1441,7 +1433,6 @@ BraveRewardsUpdateScheduledCaptchaResultFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsUpdateScheduledCaptchaResultFunction::Run() {
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   auto params(
       brave_rewards::UpdateScheduledCaptchaResult::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
@@ -1459,9 +1450,6 @@ BraveRewardsUpdateScheduledCaptchaResultFunction::Run() {
   brave_adaptive_captcha_service->UpdateScheduledCaptchaResult(params->result);
 
   return RespondNow(NoArguments());
-#else
-  return RespondNow(Error("Adaptive captcha not supported"));
-#endif
 }
 
 BraveRewardsEnableAdsFunction::~BraveRewardsEnableAdsFunction() = default;
