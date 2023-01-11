@@ -10,16 +10,21 @@
 #import <UIKit/UIKit.h>
 #import <Webkit/Webkit.h>
 
+@class WebState;
+
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
-NS_SWIFT_NAME(FaviconLoader.Driver)
-@interface BraveFaviconDriver : NSObject
-- (instancetype)initWithPrivateBrowsingMode:(bool)privateMode;
+NS_SWIFT_NAME(FaviconDriver)
+@interface FaviconDriver : NSObject
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithWebState:(WebState*)webState NS_DESIGNATED_INITIALIZER;
 
 - (void)setMaximumFaviconImageSize:(NSUInteger)maxImageSize;
 - (void)webView:(WKWebView*)webView
-    onFaviconURLsUpdated:(WKScriptMessage*)scriptMessage;
+       scriptMessage:(WKScriptMessage*)scriptMessage
+    onFaviconUpdated:(void (^)(NSURL* _Nullable, UIImage* _Nullable))callback;
 @end
 
 NS_ASSUME_NONNULL_END
