@@ -36,6 +36,8 @@ source_set("browser_tests") {
   } else {
     deps += [ "//chrome/test:test_support_ui" ]
   }
+
+  public_deps = [ "//brave/components/playlist/browser" ]
 }
 
 source_set("unit_tests") {
@@ -43,6 +45,8 @@ source_set("unit_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [ "playlist_service_unittest.cc" ]
+
+  public_deps = [ "//brave/components/playlist/browser" ]
 
   deps = [
     "//base",

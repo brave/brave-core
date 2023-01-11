@@ -629,7 +629,7 @@ if (!is_android) {
       "//base",
       "//brave/browser/ui",
       "//brave/components/brave_rewards/browser",
-      "//brave/components/playlist/common/buildflags",
+      "//brave/components/playlist/common",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
@@ -647,10 +647,6 @@ if (!is_android) {
         "//brave/browser/ui/sidebar",
         "//brave/components/sidebar",
       ]
-    }
-
-    if (enable_playlist_webui) {
-      deps += [ "//brave/components/playlist/common" ]
     }
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
@@ -1023,10 +1019,7 @@ test("brave_browser_tests") {
   }
 
   if (enable_playlist) {
-    deps += [
-      "//brave/browser/playlist/test:browser_tests",
-      "//brave/components/playlist/browser",
-    ]
+    deps += [ "//brave/browser/playlist/test:browser_tests" ]
   }
 
   if (is_win || is_linux) {
