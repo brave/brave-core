@@ -11,6 +11,7 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/trace_event/trace_event.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/p3a/brave_p3a_uploader.h"
 #include "crypto/sha2.h"
 
@@ -36,13 +37,23 @@ base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
     return result;
   }
 
+  // Get last monday for the dates so that the years of survey/install correctly
+  // match the ISO weeks of survey/install.
+  // i.e. date of survey = Sunday, January 1, 2023 should result in
+  // yos = 2022 and wos = 52 since that date falls on the last ISO week of the
+  // previous year.
+  base::Time date_of_survey_monday =
+      brave_stats::GetLastMondayTime(meta.date_of_survey);
+  base::Time date_of_install_monday =
+      brave_stats::GetLastMondayTime(meta.date_of_install);
+
   // Find out years of install and survey.
   base::Time::Exploded exploded;
-  meta.date_of_survey.LocalExplode(&exploded);
+  date_of_survey_monday.LocalExplode(&exploded);
   DCHECK_GE(exploded.year, 999);
   result.Set("yos", exploded.year);
 
-  meta.date_of_install.LocalExplode(&exploded);
+  date_of_install_monday.LocalExplode(&exploded);
   DCHECK_GE(exploded.year, 999);
   result.Set("yoi", exploded.year);
 
