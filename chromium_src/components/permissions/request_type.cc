@@ -32,32 +32,36 @@ constexpr auto& kMicIconValue = vector_icons::kMicIcon;
 //
 // TODO(jocelyn): Might need to update icon when we have ethereum.enable UI
 // support in Android.
-#define IDR_ANDROID_INFOBAR_PERMISSION_COOKIE     \
-  kAndroidInfobarPermissionCookie;                \
-  case RequestType::kWidevine:                    \
-  case RequestType::kBraveEthereum:               \
-  case RequestType::kBraveSolana:                 \
-  case RequestType::kBraveGoogleSignInPermission: \
+#define IDR_ANDROID_INFOBAR_PERMISSION_COOKIE        \
+  kAndroidInfobarPermissionCookie;                   \
+  case RequestType::kWidevine:                       \
+  case RequestType::kBraveEthereum:                  \
+  case RequestType::kBraveSolana:                    \
+  case RequestType::kBraveGoogleSignInPermission:    \
+  case RequestType::kBraveLocalhostAccessPermission: \
     return IDR_ANDROID_INFOBAR_PERMISSION_COOKIE
 
 // Add Brave cases into GetIconIdDesktop.
-#define kMicIcon                                  \
-  kMicIconValue;                                  \
-  case RequestType::kWidevine:                    \
-  case RequestType::kBraveEthereum:               \
-  case RequestType::kBraveSolana:                 \
-  case RequestType::kBraveGoogleSignInPermission: \
+#define kMicIcon                                     \
+  kMicIconValue;                                     \
+  case RequestType::kWidevine:                       \
+  case RequestType::kBraveEthereum:                  \
+  case RequestType::kBraveSolana:                    \
+  case RequestType::kBraveGoogleSignInPermission:    \
+  case RequestType::kBraveLocalhostAccessPermission: \
     return vector_icons::kExtensionIcon
 
-#define BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE                  \
-  case permissions::RequestType::kWidevine:                    \
-    return "widevine";                                         \
-  case permissions::RequestType::kBraveEthereum:               \
-    return "brave_ethereum";                                   \
-  case permissions::RequestType::kBraveSolana:                 \
-    return "brave_solana";                                     \
-  case permissions::RequestType::kBraveGoogleSignInPermission: \
-    return "brave_google_sign_in";
+#define BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE                     \
+  case permissions::RequestType::kWidevine:                       \
+    return "widevine";                                            \
+  case permissions::RequestType::kBraveEthereum:                  \
+    return "brave_ethereum";                                      \
+  case permissions::RequestType::kBraveSolana:                    \
+    return "brave_solana";                                        \
+  case permissions::RequestType::kBraveGoogleSignInPermission:    \
+    return "brave_google_sign_in";                                \
+  case permissions::RequestType::kBraveLocalhostAccessPermission: \
+    return "brave_localhost_access";
 
 #define ContentSettingsTypeToRequestType \
   ContentSettingsTypeToRequestType_ChromiumImpl
@@ -87,6 +91,8 @@ RequestType ContentSettingsTypeToRequestType(
       return RequestType::kBraveSolana;
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return RequestType::kBraveGoogleSignInPermission;
+    case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
+      return RequestType::kBraveLocalhostAccessPermission;
     default:
       return ContentSettingsTypeToRequestType_ChromiumImpl(
           content_settings_type);
@@ -98,6 +104,8 @@ absl::optional<ContentSettingsType> RequestTypeToContentSettingsType(
   switch (request_type) {
     case RequestType::kBraveGoogleSignInPermission:
       return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;
+    case RequestType::kBraveLocalhostAccessPermission:
+      return ContentSettingsType::BRAVE_LOCALHOST_ACCESS;
     case RequestType::kBraveEthereum:
       return ContentSettingsType::BRAVE_ETHEREUM;
     case RequestType::kBraveSolana:
@@ -110,6 +118,7 @@ absl::optional<ContentSettingsType> RequestTypeToContentSettingsType(
 bool IsRequestablePermissionType(ContentSettingsType content_settings_type) {
   switch (content_settings_type) {
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
+    case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
     case ContentSettingsType::BRAVE_ETHEREUM:
     case ContentSettingsType::BRAVE_SOLANA:
       return true;

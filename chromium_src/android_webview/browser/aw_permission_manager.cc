@@ -19,6 +19,7 @@
   case PermissionType::BRAVE_ETHEREUM:                  \
   case PermissionType::BRAVE_SOLANA:                    \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:            \
+  case PermissionType::BRAVE_LOCALHOST_ACCESS:          \
   case PermissionType::NUM
 
 #include "src/android_webview/browser/aw_permission_manager.cc"

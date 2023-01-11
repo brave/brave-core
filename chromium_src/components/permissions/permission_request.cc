@@ -33,7 +33,10 @@
   BRAVE_ENUM_ITEMS_FOR_SWITCH                            \
   case RequestType::kBraveGoogleSignInPermission:        \
     message_id = IDS_GOOGLE_SIGN_IN_PERMISSION_FRAGMENT; \
-    break;
+    break;                                               \
+  case RequestType::kBraveLocalhostAccessPermission:     \
+    message_id = IDS_LOCALHOST_PERMISSION_FRAGMENT;      \
+    break;                                               
 
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH_ANDROID       \
   BRAVE_ENUM_ITEMS_FOR_SWITCH                     \

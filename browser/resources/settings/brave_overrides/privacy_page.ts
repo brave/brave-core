@@ -75,6 +75,71 @@ function InsertGoogleSignInSubpage (
   }
 }
 
+function InsertLocalhostAccessSubpage (
+  templateContent: DocumentFragment,
+  pages: Element)
+{
+  pages.insertAdjacentHTML(
+    'beforeend', 
+    getTrustedHTML`
+        <template is="dom-if" route-path="/content/localhostAccess" no-search>
+        <settings-subpage>
+          <category-default-setting
+            id="googleSignInDefault"
+            category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]">
+          </category-default-setting>
+          <category-setting-exceptions
+            id="googleSignInExceptions"
+            category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]">
+          </category-setting-exceptions>
+        </settings-subpage>
+        </template>
+      `)
+
+  const localhostAccessTemplate = templateContent.
+    querySelector('[route-path="/content/localhostAccess"]')
+  if (!googleSignInTemplate) {
+    console.error(
+      '[Brave Settings Overrides] Couldn\'t find localhost access template')
+  } else {
+    const localhostAccessSubpage =
+      localhostAccessTemplate.content.querySelector('settings-subpage')
+    if (!localhostAccessSubpage) {
+      console.error(
+        '[Brave Settings Overrides] Couldn\'t find Google signin subpage')
+    } else {
+      localhostAccessSubpage.setAttribute('page-title',
+        I18nBehavior.i18n('siteSettingsCategoryGoogleSignIn'))
+      const localhostAccessDefault =
+        localhostAccessTemplate.content.getElementById('googleSignInDefault')
+      if (!localhostAccessDefault) {
+        console.error(
+          '[Brave Settings Overrides] Couldn\'t find Google signin default')
+      } else {
+        localhostAccessDefault.setAttribute(
+          'toggle-off-label',
+          I18nBehavior.i18n('siteSettingsGoogleSignInAsk'))
+        googleSignInDefault.setAttribute(
+          'toggle-on-label',
+          I18nBehavior.i18n('siteSettingsGoogleSignInAsk'))
+      }
+      const localhostAccessExceptions =
+        localhostAccessTemplate.content.getElementById('googleSignInExceptions')
+      if (!localhostAccessExceptions) {
+        console.error(
+          '[Brave Settings Overrides] Couldn\'t find Google signin exceptions')
+      } else {
+        localhostAccessExceptions.setAttribute(
+          'block-header',
+          I18nBehavior.i18n('siteSettingsGoogleSignInBlockExceptions'))
+        localhostAccessExceptions.setAttribute(
+          'allow-header',
+          I18nBehavior.i18n('siteSettingsGoogleSignInAllowExceptions'))
+      }
+    }
+  }
+}
+
 function InsertAutoplaySubpage (
   templateContent: DocumentFragment,
   pages: Element)
@@ -368,6 +433,10 @@ RegisterPolymerTemplateModifications({
       if (isGoogleSignInFeatureEnabled) {
         InsertGoogleSignInSubpage(templateContent, pages)
       }
+      const isLocalhostAccessFeatureEnabled = loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
+      if (isLocalhostAccessFeatureEnabled) {
+        InsertLocalhostAccessSubpage(templateContent, pages)
+      }
       InsertAutoplaySubpage(templateContent, pages)
       const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
       if (isNativeBraveWalletEnabled) {
@@ -377,7 +446,6 @@ RegisterPolymerTemplateModifications({
       InsertShieldsSubpage(templateContent, pages)
       InsertCookiesSubpage(templateContent, pages)
     }
-
     if (!loadTimeData.getBoolean('isPrivacySandboxRestricted')) {
       const privacySandboxSettings3Template = templateContent.
         querySelector(`template[if*='isPrivacySandboxSettings3Enabled_']`)

@@ -26,6 +26,8 @@
     return "BraveSpeedreaders";                         \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:            \
     return "BraveGoogleSignInPermission";               \
+  case PermissionType::BRAVE_LOCALHOST_ACCESS:          \
+    return "BraveLocalhostAccessPermission";            \
   case PermissionType::BRAVE_ETHEREUM:                  \
     return "BraveEthereum";                             \
   case PermissionType::BRAVE_SOLANA:                    \
