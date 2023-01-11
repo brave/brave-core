@@ -1200,7 +1200,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         CompositorViewHolder compositorView = findViewById(R.id.compositor_view_holder);
         if (compositorView != null) {
             ViewGroup root = (ViewGroup) compositorView.getChildAt(1);
-            if (root.getChildAt(0) instanceof FrameLayout) {
+            if (root != null && root.getChildAt(0) instanceof FrameLayout) {
                 FrameLayout frameLayout = (FrameLayout) root.getChildAt(0);
                 DisplayMetrics displayMetrics = new DisplayMetrics();
                 getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
