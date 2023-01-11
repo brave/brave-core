@@ -24,7 +24,6 @@ import Amount from '../../../../utils/amount'
 import { getBalance, formatTokenBalanceWithSymbol } from '../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
 import { getTokensNetwork } from '../../../../utils/network-utils'
-import { reduceAddress } from '../../../../utils/reduce-address'
 import { endsWithAny } from '../../../../utils/string-utils'
 
 // Hooks
@@ -37,7 +36,6 @@ import {
   AddressInput,
   AmountInput,
   Background,
-  FoundAddress,
   DIVForWidth,
   InputRow,
   DomainLoadIcon
@@ -52,6 +50,7 @@ import { PresetButton } from '../components/preset-button/preset-button'
 import { AccountSelector } from '../components/account-selector/account-selector'
 import { AddressMessage } from '../components/address-message/address-message'
 import { SelectTokenModal } from '../components/select-token-modal/select-token-modal'
+import { CopyAddress } from '../components/copy-address/copy-address'
 
 interface Props {
   onShowSelectTokenModal: () => void
@@ -397,23 +396,14 @@ export const Send = (props: Props) => {
           <InputRow
             rowWidth='full'
             verticalAlign='center'
-            verticalPadding={16}
+            paddingTop={16}
+            paddingBottom={showResolvedDomain ? 4 : 16}
             horizontalPadding={16}
           >
-            {showResolvedDomain &&
-              <FoundAddress
-                textSize='16px'
-                textColor='text03'
-                isBold={false}
-                position={domainPosition}
-              >
-                {reduceAddress(toAddress)}
-              </FoundAddress>
-            }
             {showSearchingForDomainIcon &&
               <DomainLoadIcon position={domainPosition} />
             }
-            <DIVForWidth ref={updateLoadingIconPosition}>{toAddressOrUrl}</DIVForWidth>
+            <DIVForWidth ref={(ref) => updateLoadingIconPosition(ref)}>{toAddressOrUrl}</DIVForWidth>
             <AddressInput
               placeholder={getLocale('braveWalletEnterRecipientAddress')}
               hasError={hasAddressError}
@@ -423,6 +413,9 @@ export const Send = (props: Props) => {
             />
             <AccountSelector onSelectAddress={updateToAddressOrUrl} />
           </InputRow>
+          {showResolvedDomain &&
+            <CopyAddress address={toAddress} />
+          }
           {addressMessageInformation &&
             <AddressMessage addressMessageInfo={addressMessageInformation} />
           }

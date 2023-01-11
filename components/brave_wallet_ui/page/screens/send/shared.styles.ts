@@ -8,13 +8,14 @@ import styled from 'styled-components'
 export const Text = styled.span<{
   textSize?: '20px' | '18px' | '16px' | '14px' | '12px'
   isBold?: boolean
-  textColor?: 'text01' | 'text02' | 'text03' | 'error'
+  textColor?: 'text01' | 'text02' | 'text03' | 'success' | 'error'
   maintainHeight?: boolean
   textAlign?: 'left' | 'right'
 }>`
   --text01: ${(p) => p.theme.color.text01};
   --text02: ${(p) => p.theme.color.text02};
   --text03: ${(p) => p.theme.color.text03};
+  --success: ${(p) => p.theme.color.successIcon};
   --line-height: ${(p) => (p.textSize === '12px' ? '18px' : '20px')}
   font-family: 'Poppins';
   color: ${(p) =>
@@ -47,17 +48,23 @@ export const Row = styled(StyledDiv) <{
   marginBottom?: number
   horizontalPadding?: number
   verticalPadding?: number
+  paddingTop?: number
+  paddingBottom?: number
+  paddingLeft?: number
+  paddingRight?: number
   horizontalAlign?: 'flex-start' | 'center' | 'flex-end'
   verticalAlign?: 'flex-start' | 'center' | 'flex-end'
 }>`
-  --vertical-padding: ${(p) => p.verticalPadding ?? 0}px;
-  --horizontal-padding: ${(p) => p.horizontalPadding ?? 0}px;
+  --padding-top: ${(p) => p.paddingTop ?? p.verticalPadding ?? 0}px;
+  --padding-bottom: ${(p) => p.paddingBottom ?? p.verticalPadding ?? 0}px;
+  --padding-left: ${(p) => p.paddingLeft ?? p.horizontalPadding ?? 0}px;
+  --padding-right: ${(p) => p.paddingRight ?? p.horizontalPadding ?? 0}px;
   box-sizing: border-box;
   flex-direction: row;
   align-items: ${(p) => p.verticalAlign ?? 'center'};
   justify-content: ${(p) => p.horizontalAlign ?? 'space-between'};
   margin-bottom: ${(p) => p.marginBottom ?? 0}px;
-  padding: var(--vertical-padding) var(--horizontal-padding);
+  padding: var(--padding-top) var(--padding-right) var(--padding-bottom) var(--padding-left);
   width: ${(p) => (p.rowWidth === 'full' ? '100%' : 'unset')};
   height: ${(p) => (p.rowHeight === 'full' ? '100%' : 'unset')};
 `
