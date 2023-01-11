@@ -3455,6 +3455,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_SEARCHING_FOR_DOMAIN" desc="Searching for wallet domain progress message.">
       Searching for domain...
     </message>
+    <message name="IDS_REWARDS_TIPPING_SELECT_AMOUNT" desc="Select tipping amount text">
+      Please select amount to tip
+    </message>
   </messages>
   </release>
 </grit>
