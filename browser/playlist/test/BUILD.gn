@@ -17,8 +17,6 @@ source_set("browser_tests") {
     "playlist_render_frame_observer_browsertest.cc",
   ]
 
-  public_deps = [ "//brave/components/playlist/browser" ]
-
   deps = [
     "//base",
     "//brave/components/playlist/browser",
@@ -45,8 +43,6 @@ source_set("unit_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [ "playlist_service_unittest.cc" ]
-
-  public_deps = [ "//brave/components/playlist/browser" ]
 
   deps = [
     "//base",

@@ -328,7 +328,10 @@ test("brave_unit_tests") {
   }
 
   if (enable_playlist) {
-    deps += [ "//brave/browser/playlist/test:unit_tests" ]
+    deps += [
+      "//brave/browser/playlist/test:unit_tests",
+      "//brave/browser/playlist/test:unit_tests",
+    ]
   }
 
   data = [ "data/" ]
@@ -1022,7 +1025,10 @@ test("brave_browser_tests") {
   }
 
   if (enable_playlist) {
-    deps += [ "//brave/browser/playlist/test:browser_tests" ]
+    deps += [
+      "//brave/browser/playlist/test:browser_tests",
+      "//brave/components/playlist/browser",
+    ]
   }
 
   if (is_win || is_linux) {

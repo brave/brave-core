@@ -100,6 +100,7 @@ source_set("unit_tests") {
     "//brave/browser/ui",
     "//brave/browser/ui/sidebar",
     "//brave/common",
+    "//brave/components/playlist/common",
     "//brave/components/sidebar",
     "//chrome/test:test_support",
     "//components/prefs",

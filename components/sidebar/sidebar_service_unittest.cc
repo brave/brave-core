@@ -9,6 +9,7 @@
 #include "base/containers/contains.h"
 #include "base/ranges/algorithm.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
