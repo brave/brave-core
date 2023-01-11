@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/bind.h"
+#include "base/scoped_observation.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/task_traits.h"
@@ -40,9 +41,9 @@ class TextRecognitionDialogTracker
   ~TextRecognitionDialogTracker() override = default;
 
   void SetActiveDialog(views::Widget* widget) {
-    DCHECK(!active_dialog_);
+    DCHECK(!active_dialog_ && !observation_.IsObserving());
     active_dialog_ = widget;
-    active_dialog_->AddObserver(this);
+    observation_.Observe(widget);
   }
 
   views::Widget* active_dialog() { return active_dialog_; }
@@ -54,14 +55,16 @@ class TextRecognitionDialogTracker
             *web_contents) {}
 
   // views::WidgetObserver overrides
-  void OnWidgetClosing(views::Widget* widget) override {
+  void OnWidgetDestroying(views::Widget* widget) override {
     DCHECK_EQ(active_dialog_, widget);
-    DCHECK(active_dialog_->HasObserver(this));
-    active_dialog_->RemoveObserver(this);
+    DCHECK(observation_.IsObservingSource(widget));
+    observation_.Reset();
     active_dialog_ = nullptr;
   }
 
   raw_ptr<views::Widget> active_dialog_ = nullptr;
+  base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{
+      this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
