@@ -11,8 +11,6 @@
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
-#include "brave/browser/brave_wallet/brave_wallet_auto_pin_service_factory.h"
-#include "brave/browser/brave_wallet/brave_wallet_pin_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -154,10 +152,6 @@ void WalletPageUI::CreatePageHandler(
   wallet_service->Bind(std::move(brave_wallet_service_receiver));
   wallet_service->GetBraveWalletP3A()->Bind(
       std::move(brave_wallet_p3a_receiver));
-  brave_wallet::BraveWalletPinServiceFactory::BindForContext(
-      profile, std::move(brave_wallet_pin_service_receiver));
-  brave_wallet::BraveWalletAutoPinServiceFactory::BindForContext(
-      profile, std::move(brave_wallet_auto_pin_service_receiver));
 
 #if BUILDFLAG(ENABLE_IPFS)
   brave_wallet::BraveWalletPinServiceFactory::BindForContext(
