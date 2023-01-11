@@ -28,8 +28,8 @@ BASE_FEATURE(kBraveAdblockCnameUncloaking,
 BASE_FEATURE(kBraveAdblockCollapseBlockedElements,
              "BraveAdblockCollapseBlockedElements",
              base::FEATURE_ENABLED_BY_DEFAULT);
-// When enabled, Brave will treat "Easylist-Cookie List" as a default,
-// always-on list, overriding any locally set preference.
+// When enabled, Brave will enable "Easylist-Cookie List" by default unless
+// overridden by a locally set preference.
 BASE_FEATURE(kBraveAdblockCookieListDefault,
              "BraveAdblockCookieListDefault",
              base::FEATURE_DISABLED_BY_DEFAULT);
@@ -47,6 +47,11 @@ BASE_FEATURE(kBraveAdblockCosmeticFilteringChildFrames,
 BASE_FEATURE(kBraveAdblockCspRules,
              "BraveAdblockCspRules",
              base::FEATURE_ENABLED_BY_DEFAULT);
+// When enabled, Brave will enable "Fanboy's Mobile Notifications List" by
+// default unless overridden by a locally set preference.
+BASE_FEATURE(kBraveAdblockMobileNotificationsListDefault,
+             "BraveAdblockMobileNotificationsListDefault",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, Brave will block domains listed in the user's selected adblock
 // filters and present a security interstitial with choice to proceed and
 // optionally whitelist the domain.
