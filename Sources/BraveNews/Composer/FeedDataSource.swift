@@ -389,11 +389,16 @@ public class FeedDataSource: ObservableObject {
   }
   
   private func loadSourceSuggestions(for localeIdentifier: String) async throws -> [String: [FeedItem.SourceSimilarity]] {
-    let items = try await loadResource(.sourceSuggestions, localeIdentifier: localeIdentifier, decodedTo: [String: [FailableDecodable<FeedItem.SourceSimilarity>]].self)
-    if items.isEmpty {
-      throw BraveNewsError.resourceEmpty
+    do {
+      let items = try await loadResource(.sourceSuggestions, localeIdentifier: localeIdentifier, decodedTo: [String: [FailableDecodable<FeedItem.SourceSimilarity>]].self)
+      if items.isEmpty {
+        throw BraveNewsError.resourceEmpty
+      }
+      return items.mapValues { $0.compactMap(\.wrappedValue) }
+    } catch {
+      Logger.module.error("Failed to load source suggestions: \(error.localizedDescription)")
+      return [:]
     }
-    return items.mapValues { $0.compactMap(\.wrappedValue) }
   }
 
   /// Describes a single RSS feed's loaded data set converted into Brave News based data
