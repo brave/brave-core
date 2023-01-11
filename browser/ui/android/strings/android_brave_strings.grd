@@ -207,7 +207,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Turn notifications back on if you'd like to keep earning BAT
       </message>
       <message name="IDS_NOTIFICATION_BRAVE_DIALOG_DESCRIPTION_ONLY_PRIVACY" desc="Text description for When ONLY Privacy Report is TURNED ON.">
-        Turn notifications back on if you\'d like to keep receiving weekly privacy reports.
+        Turn notifications back on if you'd like to keep receiving weekly privacy reports.
       </message>
      <message name="IDS_NOTIFICATION_OS_DIALOG_HEADER_BOTH_REWARDS_PRIVACY" desc="Text header for When BOTH Brave Rewards and Privacy Report are TURNED ON.">
         You're not earning Rewards or receiving Privacy Reports
