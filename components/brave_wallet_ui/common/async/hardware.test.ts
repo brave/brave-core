@@ -232,7 +232,7 @@ const signTransactionWithTrezor = (signed: Success<EthereumSignedTx> | Unsuccess
   const txInfo = getMockedTransactionInfo()
   const expectedPath = 'path'
   const mockedKeyring = getMockedTrezorKeyring(expectedPath, txInfo, signed)
-  const apiProxy = getMockedProxyServices(txInfo.id, { nonce: '0x1' }, undefined, signatureResponse)
+  const apiProxy = getMockedProxyServices(txInfo.id, { nonce: '0x03' }, undefined, signatureResponse)
   return signTrezorTransaction(apiProxy as unknown as WalletApiProxy,
     expectedPath, txInfo, mockedKeyring as unknown as TrezorBridgeKeyring)
 }
