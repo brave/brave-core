@@ -11,20 +11,20 @@
 
 @class FaviconAttributes;
 
-typedef NSInteger BraveFaviconLoaderSize
+typedef NSInteger FaviconLoaderSize
     NS_TYPED_ENUM NS_SWIFT_NAME(FaviconLoader.Sizes);
 /// Smallest acceptable favicon size, in points.
-OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredSmallest;
+OBJC_EXPORT FaviconLoaderSize const FaviconLoaderSizeDesiredSmallest;
 /// Desired small favicon size, in points.
-OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredSmall;
+OBJC_EXPORT FaviconLoaderSize const FaviconLoaderSizeDesiredSmall;
 /// Desired medium favicon size, in points.
-OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredMedium;
+OBJC_EXPORT FaviconLoaderSize const FaviconLoaderSizeDesiredMedium;
 /// Desired large favicon size, in points.
-OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredLarge;
+OBJC_EXPORT FaviconLoaderSize const FaviconLoaderSizeDesiredLarge;
 /// Desired larger favicon size, in points.
-OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredLarger;
+OBJC_EXPORT FaviconLoaderSize const FaviconLoaderSizeDesiredLarger;
 /// Desired largest favicon size, in points.
-OBJC_EXPORT BraveFaviconLoaderSize const BraveFaviconLoaderSizeDesiredLargest;
+OBJC_EXPORT FaviconLoaderSize const FaviconLoaderSizeDesiredLargest;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 // from LargeIconService and caching them, given a URL.
 OBJC_EXPORT
 NS_SWIFT_NAME(FaviconLoader)
-@interface BraveFaviconLoader : NSObject
+@interface FaviconLoader : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)getForPrivateMode:(bool)privateMode;
@@ -43,8 +43,8 @@ NS_SWIFT_NAME(FaviconLoader)
 /// |completion| may be called more than once (once with a default image, and
 /// one with the actual fav-icon if found).
 - (void)faviconForPageURLOrHost:(NSURL*)url
-                   sizeInPoints:(BraveFaviconLoaderSize)sizeInPoints
-                minSizeInPoints:(BraveFaviconLoaderSize)minSizeInPoints
+                   sizeInPoints:(FaviconLoaderSize)sizeInPoints
+                minSizeInPoints:(FaviconLoaderSize)minSizeInPoints
                      completion:
                          (void (^)(FaviconAttributes* attributes))completion;
 @end

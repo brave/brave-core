@@ -27,27 +27,6 @@
 
 namespace brave_favicon {
 
-BraveIOSWebFaviconDriver* BraveIOSWebFaviconDriver::FromBrowserState(
-    ChromeBrowserState* browser_state) {
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  DCHECK(browser_state);
-
-  return static_cast<BraveIOSWebFaviconDriver*>(
-      browser_state->GetUserData("kBraveIOSWebFaviconDriver"));
-}
-
-void BraveIOSWebFaviconDriver::CreateForBrowserState(
-    ChromeBrowserState* browser_state,
-    favicon::CoreFaviconService* favicon_service) {
-  if (FromBrowserState(browser_state)) {
-    return;
-  }
-
-  browser_state->SetUserData("kBraveIOSWebFaviconDriver",
-                             base::WrapUnique(new BraveIOSWebFaviconDriver(
-                                 browser_state, favicon_service)));
-}
-
 void BraveIOSWebFaviconDriver::SetMaximumFaviconImageSize(
     std::size_t max_image_size) {
   max_image_size_ = max_image_size;
@@ -55,24 +34,18 @@ void BraveIOSWebFaviconDriver::SetMaximumFaviconImageSize(
 
 // FaviconDriver implementation.
 gfx::Image BraveIOSWebFaviconDriver::GetFavicon() const {
-  static const web::FaviconStatus missing_favicon_status;
-  DCHECK(current_item_.get());
-  return (current_item_ ? current_item_->GetFaviconStatus()
-                        : missing_favicon_status)
-      .image;
+  DCHECK(web_state_);
+  return web_state_->GetFaviconStatus().image;
 }
 
 bool BraveIOSWebFaviconDriver::FaviconIsValid() const {
-  static const web::FaviconStatus missing_favicon_status;
-  DCHECK(current_item_.get());
-  return (current_item_ ? current_item_->GetFaviconStatus()
-                        : missing_favicon_status)
-      .valid;
+  DCHECK(web_state_);
+  return web_state_->GetFaviconStatus().valid;
 }
 
 GURL BraveIOSWebFaviconDriver::GetActiveURL() {
-  DCHECK(current_item_.get());
-  return current_item_ ? current_item_->GetURL() : GURL();
+  DCHECK(web_state_);
+  return web_state_->GetLastCommittedURL();
 }
 
 // FaviconHandler::Delegate implementation.
@@ -131,8 +104,8 @@ void BraveIOSWebFaviconDriver::DownloadManifest(
 }
 
 bool BraveIOSWebFaviconDriver::IsOffTheRecord() {
-  DCHECK(browser_state_);
-  return browser_state_->IsOffTheRecord();
+  DCHECK(web_state_);
+  return web_state_->GetBrowserState()->IsOffTheRecord();
 }
 
 void BraveIOSWebFaviconDriver::OnFaviconUpdated(
@@ -161,47 +134,46 @@ void BraveIOSWebFaviconDriver::OnFaviconDeleted(
 // Constructor / Destructor
 
 BraveIOSWebFaviconDriver::BraveIOSWebFaviconDriver(
-    ChromeBrowserState* browser_state,
+    web::WebState* web_state,
     favicon::CoreFaviconService* favicon_service)
     : FaviconDriverImpl(favicon_service),
-      image_fetcher_(browser_state->GetSharedURLLoaderFactory()),
-      browser_state_(browser_state),
-      current_item_(new web::NavigationItemImpl()),
-      max_image_size_(0) {}
+      image_fetcher_(web_state->GetBrowserState()->GetSharedURLLoaderFactory()),
+      max_image_size_(0),
+      web_state_(web_state) {
+  web_state_->AddObserver(this);
+}
 
-BraveIOSWebFaviconDriver::~BraveIOSWebFaviconDriver() = default;
+BraveIOSWebFaviconDriver::~BraveIOSWebFaviconDriver() {
+  // WebFaviconDriver is owned by WebState (as it is a WebStateUserData), so
+  // the WebStateDestroyed will be called before the destructor and the member
+  // field reset to null.
+  DCHECK(!web_state_);
+}
 
 // Notifications
 
-void BraveIOSWebFaviconDriver::DidStartNavigation(
-    ChromeBrowserState* browser_state,
-    const GURL& page_url) {
-  DCHECK_EQ(browser_state_, browser_state);
-  DCHECK(current_item_.get());
-
-  current_item_->SetOriginalRequestURL(page_url);
-  current_item_->SetURL(page_url);
-  current_item_->SetTransitionType(ui::PageTransition::PAGE_TRANSITION_TYPED);
-  current_item_->SetNavigationInitiationType(
-      web::NavigationInitiationType::BROWSER_INITIATED);
-}
-
 void BraveIOSWebFaviconDriver::DidFinishNavigation(
-    ChromeBrowserState* browser_state,
-    const GURL& page_url) {
-  DCHECK_EQ(browser_state_, browser_state);
-  DCHECK(current_item_.get());
-
-  // Fetch the fav-icon
-  FetchFavicon(current_item_->GetURL(), /*IsSameDocument*/ false);
+    web::WebState* web_state,
+    web::NavigationContext* navigation_context) {
+  // Fetch the favicon
+  FetchFavicon(web_state->GetLastCommittedURL(), /*IsSameDocument*/ false);
+  // navigation_context->IsSameDocument()
 }
 
 void BraveIOSWebFaviconDriver::FaviconUrlUpdated(
+    web::WebState* web_state,
     const std::vector<web::FaviconURL>& candidates) {
+  DCHECK_EQ(web_state_, web_state);
   DCHECK(!candidates.empty());
   OnUpdateCandidates(GetActiveURL(),
                      favicon::FaviconURLsFromWebFaviconURLs(candidates),
                      GURL());
+}
+
+void BraveIOSWebFaviconDriver::WebStateDestroyed(web::WebState* web_state) {
+  DCHECK_EQ(web_state_, web_state);
+  web_state_->RemoveObserver(this);
+  web_state_ = nullptr;
 }
 
 void BraveIOSWebFaviconDriver::SetFaviconStatus(
@@ -209,15 +181,21 @@ void BraveIOSWebFaviconDriver::SetFaviconStatus(
     const web::FaviconStatus& favicon_status,
     favicon::FaviconDriverObserver::NotificationIconType notification_icon_type,
     bool icon_url_changed) {
-  DCHECK(current_item_.get());
+  DCHECK(web_state_);
 
-  if (!current_item_ || current_item_->GetURL() != page_url) {
+  // Check whether the active URL has changed since FetchFavicon() was called.
+  // On iOS, the active URL can change between calls to FetchFavicon(). For
+  // instance, FetchFavicon() is not synchronously called when the active URL
+  // changes as a result of CRWSessionController::goToEntry().
+  if (web_state_->GetLastCommittedURL() != page_url) {
     return;
   }
 
-  current_item_->SetFaviconStatus(favicon_status);
+  web_state_->SetFaviconStatus(favicon_status);
   NotifyFaviconUpdatedObservers(notification_icon_type, favicon_status.url,
                                 icon_url_changed, favicon_status.image);
 }
+
+WEB_STATE_USER_DATA_KEY_IMPL(BraveIOSWebFaviconDriver)
 
 }  // namespace brave_favicon
