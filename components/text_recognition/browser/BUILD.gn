@@ -17,12 +17,12 @@ source_set("browser") {
       "Foundation.framework",
       "Vision.framework",
     ]
+
+    configs += [ "//build/config/compiler:enable_arc" ]
   }
 
   deps = [
     "//base",
     "//skia",
   ]
-
-  configs += [ "//build/config/compiler:enable_arc" ]
 }
