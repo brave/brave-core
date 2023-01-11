@@ -423,9 +423,6 @@
   <message name="IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE" desc="The title the settings section which has options for blocking third-party embeds, commonly from social media sites">
     Social media blocking
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_GOOGLE_LOGIN_LABEL" desc="Label for a switch control which allows Google social buttons to be enabled/disabled">
-    Allow Google login buttons on third party sites
-  </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_FACEBOOK_EMBEDDED_POSTS_LABEL" desc="Label for a switch control which allows Facebook embedded posts">
     Allow Facebook logins and embedded posts
   </message>
@@ -527,6 +524,19 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SOLANA_BLOCK" desc="Label for solana site settings.">
     Block sites from accessing the Solana provider API
+  </message>
+  <!-- Google Sign-In setting -->
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN" desc="Label for G sign-in site settings.">
+    Google Sign-In
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ASK" desc="Label for G sign-in site settings.">
+    Ask when a site wants to use legacy Google Sign-In
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_BLOCK" desc="Label for G sign-in site settings.">
+    Block sites from using legacy Google Sign-In
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW" desc="Label for G sign-in site settings.">
+    Allow sites to use legacy Google Sign-In
   </message>
 
   <!-- Settings / Privacy and security / Safety Check -->

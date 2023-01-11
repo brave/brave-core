@@ -17,7 +17,7 @@ declare namespace RewardsInternals {
     fullLog: string
     externalWallet: ExternalWallet
     eventLogs: EventLog[]
-    adDiagnostics: AdDiagnosticsEntry[]
+    adDiagnostics: AdDiagnostics
   }
 
   export interface ContributionInfo {
@@ -76,5 +76,10 @@ declare namespace RewardsInternals {
   export interface AdDiagnosticsEntry {
     name: string
     value: string
+  }
+
+  export interface AdDiagnostics {
+    entries: AdDiagnosticsEntry[]
+    diagnosticId: string
   }
 }

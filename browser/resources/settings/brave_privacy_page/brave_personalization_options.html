@@ -28,6 +28,14 @@
     </cr-button>
   </template>
 </settings-toggle-button>
+<template is="dom-if" if="[[isGoogleSignInFeatureEnabled_]]">
+  <settings-toggle-button id="googleLoginControlType"
+      class="cr-row"
+      pref="{{prefs.brave.google_login_default}}"
+      label="$i18n{googleLoginControlLabel}"
+      learn-more-url="$i18n{googleLoginLearnMoreURL}">
+  </settings-toggle-button>
+</template>
 <settings-toggle-button id="p3aEnabled"
     class="cr-row"
     pref="[[p3aEnabledPref_]]"

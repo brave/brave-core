@@ -6,6 +6,7 @@
 | catalog  | no  |  Catalog id  |
 | conversion  | yes  | Envelope encryption for verifiable conversions  |
 | created at timestamp  | no  | Privacy-preserving [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp  |
+| diagnostic id  | yes  | Diagnostic id from brave://rewards-internals to help diagnose issues.  |
 | locale  | yes  | Privacy-preserving operating system locale  |
 | mutated  | yes  | A change in the structure of the genes or chromosomes of an organism  |
 | odyssey  | no  | A host and guest relationship is a binary that is seen throughout The Odyssey, especially during Odysseus' long journey  |

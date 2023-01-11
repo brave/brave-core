@@ -5,4 +5,5 @@ include_rules = [
   "+components/pref_registry",
   "+content/public/browser",
   "+services/preferences/public/cpp",
+  "+third_party/blink/public",
 ]

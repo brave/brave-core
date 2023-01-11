@@ -48,6 +48,9 @@ namespace ads::prefs {
 // Stores whether Brave ads is enabled or disabled
 const char kEnabled[] = "brave.brave_ads.enabled";
 
+// Stores a diagnostic id
+const char kDiagnosticId[] = "brave.brave_ads.diagnostics.id";
+
 // Stores the maximum number of notification ads per hour
 const char kMaximumNotificationAdsPerHour[] = "brave.brave_ads.ads_per_hour";
 

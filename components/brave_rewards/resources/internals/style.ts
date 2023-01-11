@@ -83,5 +83,24 @@ export const EventCell = styled('td')<{}>`
 `
 
 export const DiagnosticsEntry = styled('div')<{}>`
-  margin: 0 20px 10px;
+  margin: 0px 20px 10px;
+`
+
+export const Input = styled.input`
+  box-sizing: border-box;
+  box-shadow: none;
+  width: 100%;
+  background-color: ${(p) => p.theme.color.background02};
+  border: 1px solid ${(p) => p.theme.color.interactive08};
+  border-radius: 4px;
+  padding: 10px;
+  margin: 0px;
+  outline: none;
+  :focus {
+      outline: none;
+  }
+`
+
+export const DiagnosticsHeader = styled.h3`
+  margin: 20px 0px 10px;
 `

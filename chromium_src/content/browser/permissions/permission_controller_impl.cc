@@ -19,6 +19,7 @@
   case PermissionType::BRAVE_SPEEDREADER:               \
   case PermissionType::BRAVE_ETHEREUM:                  \
   case PermissionType::BRAVE_SOLANA:                    \
+  case PermissionType::BRAVE_GOOGLE_SIGN_IN:            \
   case PermissionType::NUM
 
 #include "src/content/browser/permissions/permission_controller_impl.cc"
