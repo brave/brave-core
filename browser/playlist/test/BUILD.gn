@@ -17,6 +17,8 @@ source_set("browser_tests") {
     "playlist_render_frame_observer_browsertest.cc",
   ]
 
+  public_deps = [ "//brave/components/playlist/browser" ]
+
   deps = [
     "//base",
     "//brave/components/playlist/browser",
@@ -36,8 +38,6 @@ source_set("browser_tests") {
   } else {
     deps += [ "//chrome/test:test_support_ui" ]
   }
-
-  public_deps = [ "//brave/components/playlist/browser" ]
 }
 
 source_set("unit_tests") {
