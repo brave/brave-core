@@ -37,7 +37,7 @@ import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { Store } from '../../common/async/types'
 import { getTokenParam } from '../../utils/api-utils'
 import { getTokensNetwork } from '../../utils/network-utils'
-import { httpifyIpfsUrl } from '../../utils/string-utils'
+import { addIpfsGateway } from '../../utils/string-utils'
 import { getLocale } from '../../../common/locale'
 
 const handler = new AsyncActionHandler()
@@ -288,7 +288,7 @@ handler.on(WalletPageActions.getNFTMetadata.type, async (store, payload: BraveWa
           ? 'SPL'
           : '',
       tokenID: payload.tokenId,
-      imageURL: response.image.startsWith('data:image/') ? response.image : httpifyIpfsUrl(response.image),
+      imageURL: response.image.startsWith('data:image/') ? response.image : addIpfsGateway(response.image),
       imageMimeType: 'image/*',
       floorFiatPrice: '',
       floorCryptoPrice: '',

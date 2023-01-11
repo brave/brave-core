@@ -13,7 +13,7 @@ import {
   UpdateLoadingMessage,
   UpdateNFtMetadataMessage
 } from '../../../nft/nft-ui-messages'
-import { httpifyIpfsUrl, stripERC20TokenImageURL } from '../../../utils/string-utils'
+import { addIpfsGateway, stripERC20TokenImageURL } from '../../../utils/string-utils'
 
 // styles
 import {
@@ -37,7 +37,7 @@ export const NftIcon = (props: NftIconProps) => {
   const tokenImageURL = stripERC20TokenImageURL(icon)
 
   const remoteImage = React.useMemo(() => {
-    return httpifyIpfsUrl(tokenImageURL)
+    return addIpfsGateway(tokenImageURL)
   }, [tokenImageURL])
 
   const loadingCommand: UpdateLoadingMessage = {

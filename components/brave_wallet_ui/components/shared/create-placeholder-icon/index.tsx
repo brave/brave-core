@@ -13,7 +13,7 @@ import {
   stripERC20TokenImageURL,
   isRemoteImageURL,
   isValidIconExtension,
-  httpifyIpfsUrl,
+  addIpfsGateway,
   isIpfs,
   isDataURL
 } from '../../../utils/string-utils'
@@ -84,7 +84,7 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
 
     const remoteImage = React.useMemo(() => {
       if (isRemoteURL) {
-        return `chrome://image?${httpifyIpfsUrl(tokenImageURL)}`
+        return `chrome://image?${addIpfsGateway(tokenImageURL)}`
       }
       return ''
     }, [isRemoteURL, tokenImageURL])

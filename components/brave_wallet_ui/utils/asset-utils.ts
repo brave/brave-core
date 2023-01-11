@@ -11,7 +11,7 @@ import Amount from './amount'
 import {
   getRampNetworkPrefix,
   getWyreNetworkPrefix,
-  httpifyIpfsUrl
+  addIpfsGateway
 } from './string-utils'
 
 export const getUniqueAssets = (assets: BraveWallet.BlockchainToken[]) => {
@@ -93,7 +93,7 @@ export const auroraSupportedContractAddresses = [
 
 export const addLogoToToken = (token: BraveWallet.BlockchainToken) => {
   const newLogo = token.logo?.startsWith('ipfs://')
-    ? httpifyIpfsUrl(token.logo)
+    ? addIpfsGateway(token.logo)
     : token.logo?.startsWith('data:image/')
       ? token.logo
       : `chrome://erc-token-images/${token.logo}`
