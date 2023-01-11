@@ -498,10 +498,9 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
       return;
     }
 
-    for (const auto& items :
-         ConvertValueToPlaylist(*target_playlist,
-                                prefs_->GetDict(kPlaylistItemsPref))
-             ->items)
+    auto playlist = ConvertValueToPlaylist(*target_playlist,
+                                           prefs_->GetDict(kPlaylistItemsPref));
+    for (const auto& items : playlist->items)
       id_list.Append(base::Value(items->id));
 
     playlists_update->Remove(playlist_id);
