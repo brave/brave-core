@@ -9,7 +9,7 @@
 
 #include "base/bind.h"
 #include "base/check_is_test.h"
-#include "base/json/values_util.cc"
+#include "base/json/values_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
@@ -262,7 +262,7 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
     }
 
     if (duration.has_value()) {
-      item->duration = 
+      item->duration =
           base::TimeDeltaToValue(base::Seconds(*duration)).GetString();
     }
     if (thumbnail) {
