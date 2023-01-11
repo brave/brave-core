@@ -800,6 +800,8 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
       }
     }, {
       std::string("rewards-internals"), {
+        { "adDiagnosticId", IDS_BRAVE_REWARDS_INTERNALS_AD_DIAGNOSTIC_ID },
+        { "adDiagnosticInfo", IDS_BRAVE_REWARDS_INTERNALS_AD_DIAGNOSTIC_INFO },                  // NOLINT
         { "adsNotInitialized", IDS_BRAVE_REWARDS_INTERNALS_ADS_NOT_INITIALIZED },                // NOLINT
         { "amount", IDS_BRAVE_REWARDS_INTERNALS_AMOUNT },
         { "autoRefresh", IDS_BRAVE_REWARDS_INTERNALS_AUTO_REFRESH },

@@ -60,7 +60,7 @@ function eventLogs (logs: RewardsInternals.EventLog[]) {
   getActions().onEventLogs(logs)
 }
 
-function adDiagnostics (diagnostics: RewardsInternals.AdDiagnosticsEntry[]) {
+function adDiagnostics (diagnostics: RewardsInternals.AdDiagnostics) {
   getActions().onAdDiagnostics(diagnostics)
 }
 

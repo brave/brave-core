@@ -42,6 +42,8 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterBooleanPref(prefs::kNotificationAdDidFallbackToCustom,
                                 false);
 
+  registry->RegisterStringPref(ads::prefs::kDiagnosticId, "");
+
   registry->RegisterInt64Pref(ads::prefs::kMaximumNotificationAdsPerHour, -1);
 
   registry->RegisterIntegerPref(ads::prefs::kIdleTimeThreshold, 15);
