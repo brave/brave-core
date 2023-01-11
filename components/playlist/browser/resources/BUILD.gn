@@ -14,7 +14,7 @@ transpile_web_ui("playlist_ui") {
         rebase_path("playlist.tsx"),
       ] ]
 
-  deps = [
+  public_deps = [
     "//brave/components/playlist/common/mojom:mojom_js",
     "//mojo/public/mojom/base",
   ]

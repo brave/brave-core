@@ -764,10 +764,8 @@ source_set("ui") {
       "webui/playlist_ui.cc",
       "webui/playlist_ui.h",
     ]
-    deps += [
-      "//brave/components/playlist/browser/resources:generated_resources",
-      "//brave/components/playlist/common/mojom",
-    ]
+    deps +=
+        [ "//brave/components/playlist/browser/resources:generated_resources" ]
   }
 
   if (toolkit_views) {
