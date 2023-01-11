@@ -13,12 +13,15 @@
 #include "base/mac/mac_util.h"
 #include "base/mac/scoped_cftyperef.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/threading/scoped_blocking_call.h"
 #include "skia/ext/skia_utils_base.h"
 #include "skia/ext/skia_utils_mac.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/utils/mac/SkCGUtils.h"
 
 std::vector<std::string> GetTextFromImage(const SkBitmap& image) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   std::vector<std::string> result;
   if (@available(macOS 10.15, *)) {
     // The bitmap type is sanitized to be N32 before we get here. The conversion

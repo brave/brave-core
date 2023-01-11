@@ -18,6 +18,7 @@ class SkBitmap;
 
 namespace views {
 class Label;
+class ScrollView;
 }  // namespace views
 
 class TextRecognitionDialogView : public views::DialogDelegateView {
@@ -30,8 +31,9 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
       delete;
   ~TextRecognitionDialogView() override;
 
- private:
   void StartExtractingText(const SkBitmap& image);
+
+ private:
   void OnGetTextFromImage(const std::vector<std::string>& text);
 
   // Show |text| in this dialog and copy it to clipboard.
@@ -39,6 +41,7 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
   void AdjustWidgetSize();
 
   raw_ptr<views::Label> header_label_ = nullptr;
+  raw_ptr<views::ScrollView> scroll_view_ = nullptr;
   base::WeakPtrFactory<TextRecognitionDialogView> weak_factory_{this};
 };
 

@@ -31,7 +31,9 @@ namespace blink {
 
 namespace {
 
-static scoped_refptr<Image> ImageFromNode(const Node& node) {
+// Copied same method from
+// third_party/blink/renderer/core/editing/editing_utilities.cc
+scoped_refptr<Image> ImageFromNode(const Node& node) {
   DCHECK(!node.GetDocument().NeedsLayoutTreeUpdate());
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       node.GetDocument().Lifecycle());
@@ -57,6 +59,7 @@ static scoped_refptr<Image> ImageFromNode(const Node& node) {
 
 }  // namespace
 
+// Referred LocalFrame::CopyImageAtViewportPoint().
 SkBitmap LocalFrame::GetImageAtViewportPoint(const gfx::Point& viewport_point) {
   HitTestResult result = HitTestResultForVisualViewportPos(viewport_point);
   if (!IsA<HTMLCanvasElement>(result.InnerNodeOrImageMapImage()) &&
@@ -76,6 +79,8 @@ SkBitmap LocalFrame::GetImageAtViewportPoint(const gfx::Point& viewport_point) {
   if (!image.get())
     return {};
 
+  // Referred SystemClipboard::WriteImageWithTag() about how to get bitmap data
+  // from Image.
   PaintImage paint_image = image->PaintImageForCurrentFrame();
   // Orient the data.
   if (!image->HasDefaultOrientation()) {

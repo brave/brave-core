@@ -140,8 +140,8 @@ void OnTorProfileCreated(const GURL& link_url,
 #endif
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-void OnGetImage(base::WeakPtr<content::WebContents> web_contents,
-                const SkBitmap& image) {
+void OnGetImageForTextCopy(base::WeakPtr<content::WebContents> web_contents,
+                           const SkBitmap& image) {
   if (!web_contents)
     return;
 
@@ -280,9 +280,9 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
 void BraveRenderViewContextMenu::CopyTextFromImage() {
   RenderFrameHost* frame_host = GetRenderFrameHost();
   if (frame_host)
-    frame_host->GetImageAt(
-        params_.x, params_.y,
-        base::BindOnce(OnGetImage, source_web_contents_->GetWeakPtr()));
+    frame_host->GetImageAt(params_.x, params_.y,
+                           base::BindOnce(OnGetImageForTextCopy,
+                                          source_web_contents_->GetWeakPtr()));
 }
 #endif
 
@@ -414,7 +414,7 @@ void BraveRenderViewContextMenu::InitMenu() {
                                          IDS_CONTENT_CONTEXT_FORCE_PASTE);
   }
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-  bool media_image = content_type_->SupportsGroup(
+  const bool media_image = content_type_->SupportsGroup(
       ContextMenuContentType::ITEM_GROUP_MEDIA_IMAGE);
   if (media_image) {
     index =

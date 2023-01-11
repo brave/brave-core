@@ -405,6 +405,7 @@ source_set("ui") {
     "//brave/components/p3a:buildflags",
     "//brave/components/playlist/common/buildflags",
     "//brave/components/resources:static_resources",
+    "//brave/components/text_recognition/common/buildflags",
     "//brave/components/time_period_storage",
     "//brave/components/tor/buildflags",
     "//brave/components/vector_icons",
