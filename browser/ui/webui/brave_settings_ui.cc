@@ -27,6 +27,7 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/common/features.h"
+#include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -126,6 +127,10 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isDebounceFeatureEnabled",
       base::FeatureList::IsEnabled(debounce::features::kBraveDebounce));
+  html_source->AddBoolean(
+      "isGoogleSignInFeatureEnabled",
+      base::FeatureList::IsEnabled(
+          google_sign_in_permission::features::kBraveGoogleSignInPermission));
   html_source->AddBoolean("isBraveRewardsSupported",
                           brave_rewards::IsSupportedForProfile(profile));
 

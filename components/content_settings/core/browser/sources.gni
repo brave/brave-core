@@ -19,6 +19,7 @@ if (!is_ios) {
     "//brave/components/brave_shields/common",
     "//brave/components/constants",
     "//brave/components/content_settings/core/common",
+    "//brave/components/google_sign_in_permission",
     "//components/prefs",
     "//content/public/browser",
     "//net",

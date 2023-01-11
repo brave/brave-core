@@ -1,5 +1,6 @@
 include_rules = [
   "+brave/components/constants",
+  "+brave/components/google_sign_in_permission",
   "+content/public/browser",
   "+services/preferences",
 ]

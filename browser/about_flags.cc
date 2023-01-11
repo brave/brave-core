@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/common/features.h"
+#include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/buildflags/buildflags.h"
@@ -77,6 +78,7 @@ using brave_shields::features::kCosmeticFilteringSyncLoad;
 
 using de_amp::features::kBraveDeAMP;
 using debounce::features::kBraveDebounce;
+using google_sign_in_permission::features::kBraveGoogleSignInPermission;
 
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
 using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
@@ -169,6 +171,11 @@ constexpr char kBraveDebounceDescription[] =
 
 constexpr char kBraveDeAMPName[] = "Enable De-AMP";
 constexpr char kBraveDeAMPDescription[] = "Enable De-AMPing feature";
+
+constexpr char kBraveGoogleSignInPermissionName[] =
+    "Enable Google Sign-In Permission Prompt";
+constexpr char kBraveGoogleSignInPermissionDescription[] =
+    "Enable permissioning access to legacy Google Sign-In";
 
 constexpr char kBraveExtensionNetworkBlockingName[] =
     "Enable extension network blocking";
@@ -683,6 +690,10 @@ constexpr char kBraveChangeActiveTabOnScrollEventDescription[] =
         flag_descriptions::kBraveDeAMPName,                                 \
         flag_descriptions::kBraveDeAMPDescription, kOsAll,                  \
         FEATURE_VALUE_TYPE(kBraveDeAMP)},                                   \
+    {"brave-google-sign-in-permission",                                     \
+        flag_descriptions::kBraveGoogleSignInPermissionName,                \
+        flag_descriptions::kBraveGoogleSignInPermissionDescription, kOsAll, \
+        FEATURE_VALUE_TYPE(kBraveGoogleSignInPermission)},                  \
     {"brave-extension-network-blocking",                                    \
      flag_descriptions::kBraveExtensionNetworkBlockingName,                 \
      flag_descriptions::kBraveExtensionNetworkBlockingDescription, kOsAll,  \

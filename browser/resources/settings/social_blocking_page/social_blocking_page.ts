@@ -5,6 +5,7 @@
 
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {getTemplate} from './social_blocking_page.html.js'
+import {loadTimeData} from '../i18n_setup.js';
 
 export class BraveSettingsSocialBlockingPage extends PolymerElement {
   static get is() {
@@ -13,6 +14,18 @@ export class BraveSettingsSocialBlockingPage extends PolymerElement {
 
   static get template() {
     return getTemplate()
+  }
+
+  static get properties() {
+    return {
+      isGoogleSignInFeatureEnabled_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
+        }
+      },
+    };
   }
 }
 
