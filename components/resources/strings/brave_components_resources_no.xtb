@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Du kan starte en privat samtale i Brave.</translation>
 <translation id="4903286433687221248">Få ubegrensede samtaler med venner og kolleger i Brave Talk.</translation>
 <translation id="7115051913071512405">Prøv det</translation>
-<translation id="1447534717041828517">Vis Brave-nyhetsknappen i verktøylinjen</translation>
 <translation id="370665806235115550">Laster inn ...</translation>
 <translation id="4634933166298842522">Administrer abonnementer</translation>
 <translation id="4108314971463891922">Følg</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Gå til creators.brave.com for å registrere deg i dag og begynne å tjene inn BAT fra fans og følgere.</translation>
 <translation id="4816455138209470435">Brave har støtte for YouTube, Twitch, Vimeo og mange fler!</translation>
 <translation id="3656941797339037856">Knytt Rewards til Gemini!</translation>
-<translation id="31532096120351460">Handle med over 50 kryptovalutaer, inkludert BAT, på Gemini – en sikker plattform for oppbevaring av krypto. I tillegg kan du tjene opp renter i USA, Hong Kong og Singapore.</translation>
+<translation id="2888702144235098855">Handle med over 50 kryptovalutaer, inkludert BAT, på Gemini – en sikker plattform for lagring av krypto.</translation>
 <translation id="7404779623219601861">Løs inn BAT i gavekort</translation>
 <translation id="6215565499749144110">Med TAP Network kan du løse inn BAT i gavekort fra populære merkenavn.</translation>
 <translation id="6915065518766963119">* Krever Uphold-verifisering.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Logget ut</translation>
 <translation id="6080167751812750226">Koble fra <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Ansl. inntjening</translation>
-<translation id="4244985009709452836">Logg på din <ph name="PROVIDER"/>-konto</translation>
+<translation id="7934950257968365573">Logg inn på <ph name="PROVIDER"/>-kontoen din.</translation>
 <translation id="2613359062756190460">Engangstips</translation>
 <translation id="590733288489975971">Rewards fra Ads</translation>
 <translation id="6181762795539107980">Ikke verifisert</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Kjøp med Wyre</translation>
 <translation id="5522073372365069684">Kjøp med Ramp</translation>
 <translation id="7902920577183739843">Kjøp med Sardine</translation>
-<translation id="6534275647567011533">Kjøp med Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Kjøp krypto med Visa eller Mastercard.</translation>
 <translation id="3101839349578102016">Umiddelbart kjøp med bankkontoen din. Lavere avgifter.</translation>
 <translation id="8528916244724490964">Alle nettverk</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Biler</translation>
 <translation id="7577010593836079522">Kultur</translation>
 <translation id="3706423975342040244">Underholdning</translation>
+<translation id="3284069358246729581">Underholdningsnyheter</translation>
 <translation id="1432147735538902155">Mote</translation>
+<translation id="3350377832708834609">Film og TV</translation>
 <translation id="736592699917579616">Mat</translation>
 <translation id="5104499318017527547">Moro</translation>
 <translation id="2228584369802328636">Gaming</translation>
 <translation id="6941852195052765076">Helse</translation>
 <translation id="932327136139879170">Gå til startsiden</translation>
+<translation id="5178222043222938163">Musikk</translation>
 <translation id="1322083935398004629">Politikk</translation>
+<translation id="8739620487574841501">Regionsnyheter</translation>
 <translation id="3872834068356954457">Vitenskap</translation>
 <translation id="1264974993859112054">Sport</translation>
 <translation id="2283599456633275070">Reise</translation>
 <translation id="7487067081878637334">Teknologi</translation>
+<translation id="151743034625508713">Tekniske nheter</translation>
+<translation id="2388279876296929435">Tekniske brukertester</translation>
 <translation id="5030268312472358928">Toppnyheter</translation>
 <translation id="5510475084662028636">Toppkilder</translation>
+<translation id="1297570508541015874">Nyheter fra USA</translation>
 <translation id="1459693405370120464">Vær</translation>
 <translation id="8366057325711477500">Nytt fra hele verden</translation>
 <translation id="6303294677342628402">Skjold</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">Fullfør</translation>
 <translation id="2273851479262317744">Angi Brave som standard nettleser</translation>
 <translation id="5037676449506322593">Velg alle</translation>
-<translation id="8330804319517911603">Bidra til å gjøre Brave bedre</translation>
-<translation id="2867964979837593892">Vi finjusterer produktet og ivaretar personvernet ditt – hver dag.</translation>
-<translation id="7661940959332108190">Send diagnoserapporter hvis Brave krasjer eller henger seg opp.</translation>
-<translation id="6358373266071757311">Del anonyme og private produktdata så vi kan finne ut hvilke Brave-funksjoner som brukes oftest.</translation>
+<translation id="5148943178722443958">Bidra til å gjøre Brave bedre.</translation>
+<translation id="1097073572755862978">Send diagnoserapporter hvis du opplever at systemet krasjer eller henger seg opp. <ph name="LINK_BEFORE"/>Finn ut mer.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Del helt private og anonyme produktdata om hvilke funksjoner Brave-brukerne benytter seg av. <ph name="LINK_BEFORE"/>Finn ut mer.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Ferdig</translation>
 <translation id="3141206739023333979">Du kan endre disse innstillingene når som helst i <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Les den fullstendige <ph name="LINK_BEFORE"/>personvernerklæringen<ph name="LINK_AFTER"/> vår.</translation>
+<translation id="2801098717523961746">Velg tema</translation>
+<translation id="6262510489122516114">Du kan endre dette når som helst via Brave-innstillingene.</translation>
+<translation id="546481172717459539">Match systeminnstillingene</translation>
+<translation id="7799817062559422778">Lys modus</translation>
+<translation id="4117637339509843559">Mørk modus</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: Tilkoblet</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: Frakoblet</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">VPN-tilkoblingen mislyktes. Prøv å koble til igjen, og husk å trykke på Tillat for å aktivere Braves VPN-konfigurasjon.</translation>
 <translation id="7261518280726313829">Hvis du slår av sikker DNS eller bruker standardserverne på Windows, kan navnene på nettsidene du besøker, bli synlige for internettleverandøren din. Brave anbefaler ikke å gjøre dette. Vil du gjøre det likevel?</translation>
 <translation id="888284761945060750">Secure DNS er deaktivert av organisasjonen din. Hvis du bruker Brave VPN uten Secure DNS, kan navnene på nettstedene du besøker, bli synlige for internettleverandøren eller organisasjonen din.</translation>
+<translation id="6593224083874259773">Brave VPN på Windows</translation>
+<translation id="3153983908111684619">Denne innstillingen er låst av Brave VPN så lenge den er tilkoblet.</translation>
+<translation id="6507543978646831931">Windows har en funksjon kalt Smart Multi-Homed Name Resolution, som kan avsløre informasjon om hvor du befinner deg og hvilke sider du besøker. Nå som du har aktivert Brave VPN, har vi endret DNS-innstillingen i nettleseren for å beskytte mot dette. Innstillingen er gjeldende og låst så lenge VPN er tilkoblet.<ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Ikke varsle meg om dette igjen</translation>
+<translation id="2740531572673183784">OK</translation>
+<translation id="9061845622728745852">Tidssone:</translation>
 <translation id="7586151660465233733">Flere markeder på <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Se markeder og handle krypto på FTX</translation>
 <translation id="5963745988819586370">Markeder</translation>

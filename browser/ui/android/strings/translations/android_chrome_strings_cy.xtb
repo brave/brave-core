@@ -6,12 +6,12 @@
 <translation id="103269572468856066">Clirio'r data o'r gwefannau ac apiau hyn hefyd?</translation>
 <translation id="1034259925032978114">Mae'r ffenestr ar agor</translation>
 <translation id="1036348656032585052">Diffodd</translation>
-<translation id="1036727731225946849">Wrthi'n ychwanegu <ph name="WEBAPK_NAME"/>…</translation>
 <translation id="1045899828449635435">Clirio data o'r gwefannau hyn hefyd?</translation>
 <translation id="10614374240317010">Erioed wedi'i gadw</translation>
 <translation id="1062628064301375934">Helpwch ni i ddatblygu gwe fwy preifat</translation>
 <translation id="107147699690128016">Os byddwch yn newid yr estyniad ffeil, gall y ffeil agor mewn apiau gwahanol ac mae'n bosib y bydd yn berygl i'ch dyfais.</translation>
 <translation id="1089606299949659462">Adolygiad wedi'i gwblhau!</translation>
+<translation id="1091604859693995976">Ail-lwythwch i'w gweld</translation>
 <translation id="1095761715416917775">Gwnewch yn siŵr eich bod bob amser yn gallu cael mynediad at eich data cysoni</translation>
 <translation id="1100066534610197918">Agor mewn tab a grŵp newydd</translation>
 <translation id="4660777881054855091">Helpwch i wella Brave?</translation>
@@ -144,6 +144,7 @@ Pan fyddwch yn dileu eich hanes pori — y cyfan neu ar gyfer gwefan benodol —
 <translation id="1750259112639922169">Grŵp tabiau - <ph name="TAB_COUNT"/> o dabiau</translation>
 <translation id="17513872634828108">Tabiau agored</translation>
 <translation id="1754404134430936718">Copïwyd y Testun</translation>
+<translation id="1778457539567749232">Marcio ei fod heb ei ddarllen</translation>
 <translation id="1779766957982586368">Cau'r ffenestr</translation>
 <translation id="1791662854739702043">Wedi gosod</translation>
 <translation id="1792959175193046959">Gallwch newid y lleoliad lawrlwytho diofyn ar unrhyw adeg</translation>
@@ -228,7 +229,6 @@ Pan fyddwch yn dileu eich hanes pori — y cyfan neu ar gyfer gwefan benodol —
 <translation id="8820144752830692527">Gallwch bob amser ddewis beth i'w gysoni yn y <ph name="BEGIN_LINK1"/>gosodiadau<ph name="END_LINK1"/>. Gall Brave bersonoleiddio Search a gwasanaethau eraill yn seiliedig ar eich hanes.</translation>
 <translation id="781982477617612877">Mewngofnodwch i'ch cyfrif Brave i wirio eich cyfrineiriau</translation>
 <translation id="2278052315791335171">Ni fydd dileu'r cyfrinair hwn yn dileu'ch cyfrif ar <ph name="SITE"/></translation>
-<translation id="2279146068164892489">Agor ap ar gyfer <ph name="APPNAME"/>?</translation>
 <translation id="2286841657746966508">Cyfeiriad bilio</translation>
 <translation id="228704530595896923">Rhestr o ddewisiadau rhannu.</translation>
 <translation id="230115972905494466">Heb ganfod unrhyw ddyfeisiau cydnaws</translation>
@@ -263,6 +263,7 @@ Pan fyddwch yn dileu eich hanes pori — y cyfan neu ar gyfer gwefan benodol —
 <translation id="2496180316473517155">Hanes pori</translation>
 <translation id="2497852260688568942">Mae Cysoni wedi'i analluogi gan eich gweinyddwr</translation>
 <translation id="7229462727772664332">Byddwch yn gweld eich statws mewngofnodi, pori data, a data gwefan <ph name="SITE_NAME"/> yn Brave</translation>
+<translation id="2510106555128151389">Wrthi'n gosod <ph name="WEBAPK_NAME"/>...</translation>
 <translation id="7222718784508482526">Am ragor o osodiadau sy'n ymwneud â phreifatrwydd, diogelwch a chasglu data, gweler <ph name="BEGIN_LINK"/>Cysoni a gwasanaethau Brave<ph name="END_LINK"/></translation>
 <translation id="2517472476991765520">Sganio</translation>
 <translation id="284843628681142937">Yn anfon URL o dudalennau rydych yn ymweld â nhw at Brave</translation>
@@ -495,7 +496,6 @@ Pan fyddwch yn dileu eich hanes pori — y cyfan neu ar gyfer gwefan benodol —
 <translation id="1138681184697033370">Telerau Gwasanaeth Brave</translation>
 <translation id="3773856050682458546">Data sylfaenol ynghyd â gwybodaeth am y gwefannau rydych yn ymweld â nhw a'r apiau rydych yn eu defnyddio</translation>
 <translation id="3775705724665058594">Anfon at eich dyfeisiau</translation>
-<translation id="3778956594442850293">Ychwanegwyd at y sgrîn Hafan</translation>
 <translation id="3791957072666773229">{TAB_COUNT,plural, =1{1 tab}zero{# tab}two{# dab}few{# thab}many{# thab}other{# tab}}</translation>
 <translation id="3803784507854318295">Rheoli awto chwarae</translation>
 <translation id="3810838688059735925">Fideo</translation>
@@ -641,6 +641,7 @@ Mae'n bosib y bydd gan eich cyfrif Brave fathau eraill o hanes pori megis chwili
 <translation id="4668347365065281350">Yr holl ddata sy'n cael eu cadw gan wefannau, gan gynnwys cwcis a'r holl ddata eraill sy'n cael eu cadw'n lleol</translation>
 <translation id="6904731820418823295">Mae'r thema dywyll ar gyfer gwefannau ymlaen yn Brave</translation>
 <translation id="4684427112815847243">Cysoni popeth</translation>
+<translation id="4685741273709472646">Dewiswch o'r gwymplen</translation>
 <translation id="4695891336199304370">{SHIPPING_OPTIONS,plural, =1{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 ac <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> arall}zero{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 a <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> arall}two{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 a <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> arall}few{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 a <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> arall}many{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 a <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> arall}other{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 a <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> arall}}</translation>
 <translation id="4699172675775169585">Lluniau a ffeiliau sydd wedi'u storio dros dro</translation>
 <translation id="4719927025381752090">Cynnig cyfieithu</translation>
@@ -922,7 +923,6 @@ Mae treialon Privacy Sandbox yn dal i gael eu datblygu ac maent ar gael mewn rha
 <translation id="6192907950379606605">Cael disgrifiadau lluniau</translation>
 <translation id="6193448654517602979">Dewis tabiau</translation>
 <translation id="8367262879301982880">Mae cyfrineiriau'n cael eu cadw i Rheolwr Cyfrineiriau Brave ar y ddyfais hon.</translation>
-<translation id="620197886010707372">Agor ap ar gyfer <ph name="APPNAME"/> gyda Google Play?</translation>
 <translation id="6202812185118613467">Mewngofnodwch eto i ddechrau cysoni</translation>
 <translation id="6210748933810148297">Nid <ph name="EMAIL"/> ydych chi?</translation>
 <translation id="6211386937064921208">Wrthi'n dangos rhagolwg o'r dudalen hon</translation>
@@ -1246,6 +1246,7 @@ Er enghraifft, gall rhai gwefannau ymateb i'r cais hwn drwy ddangos hysbysebion 
 <translation id="7887334752153342268">Dyblygu</translation>
 <translation id="5570166585033664196">Sut i ddefnyddio Brave</translation>
 <translation id="7903184275147100332">Gall hyn gymryd munud</translation>
+<translation id="7914399737746719723">Gosodwyd ap</translation>
 <translation id="7919123827536834358">Cyfieithu'r ieithoedd hyn yn awtomatig</translation>
 <translation id="7926975587469166629">Llysenw cerdyn</translation>
 <translation id="7929962904089429003">Agorwch y ddewislen</translation>
@@ -1338,7 +1339,6 @@ Er enghraifft, gall rhai gwefannau ymateb i'r cais hwn drwy ddangos hysbysebion 
 <translation id="8393700583063109961">Anfon neges</translation>
 <translation id="7651600795135059130">Yn gwirio cyfeiriadau URL gyda rhestr o wefannau anniogel sydd wedi'u storio yn Brave</translation>
 <translation id="8402673309244746971">Mynd i Yn Dilyn</translation>
-<translation id="8410695015584479363">Olrhain prisiau</translation>
 <translation id="8413126021676339697">Dangos hanes llawn</translation>
 <translation id="8414396119627470038">Mewngofnodwch i <ph name="SITE_ETLD_PLUS_ONE"/> gyda <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="2100587595569959771">Dysgu rhagor am bersonoleiddio hysbysebion yn Brave</translation>

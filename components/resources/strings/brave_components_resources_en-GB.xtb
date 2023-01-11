@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">You can start a private call in Brave.</translation>
 <translation id="4903286433687221248">Start unlimited calls with friends and colleagues in Brave Talk.</translation>
 <translation id="7115051913071512405">Try it out</translation>
-<translation id="1447534717041828517">Show Brave News button in the toolbar</translation>
 <translation id="370665806235115550">Loading...</translation>
 <translation id="4634933166298842522">Manage Subscriptions</translation>
 <translation id="4108314971463891922">Follow</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Visit creators.brave.com to sign up today and start earning BAT from your fans and followers.</translation>
 <translation id="4816455138209470435">Brave supports YouTube, Twitch, Vimeo and more!</translation>
 <translation id="3656941797339037856">Link Rewards to Gemini!</translation>
-<translation id="31532096120351460">Trade 50+ cryptos, including BAT, on Gemini. It's a secure platform to store your crypto. Plus, you can earn interest in US, HK, and SG.</translation>
+<translation id="2888702144235098855">Trade 50+ cryptos, including BAT, on Gemini. It's a secure platform to store your crypto.</translation>
 <translation id="7404779623219601861">Redeem BAT for gift cards</translation>
 <translation id="6215565499749144110">With TAP Network, you can redeem your BAT for popular name-brand gift cards.</translation>
 <translation id="6915065518766963119">* Requires Uphold verification.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Logged out</translation>
 <translation id="6080167751812750226">Disconnect from <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Estimated earnings</translation>
-<translation id="4244985009709452836">Log into your <ph name="PROVIDER"/> account</translation>
+<translation id="7934950257968365573">Log in to your <ph name="PROVIDER"/> account</translation>
 <translation id="2613359062756190460">One-Time Tips</translation>
 <translation id="590733288489975971">Rewards from Ads</translation>
 <translation id="6181762795539107980">Unverified</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Buy with Wyre</translation>
 <translation id="5522073372365069684">Buy with Ramp</translation>
 <translation id="7902920577183739843">Buy with Sardine</translation>
-<translation id="6534275647567011533">Buy with Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Buy crypto with Visa or Mastercard.</translation>
 <translation id="3101839349578102016">Instant buy with your bank account. Lower fees.</translation>
 <translation id="8528916244724490964">All networks</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Cars</translation>
 <translation id="7577010593836079522">Culture</translation>
 <translation id="3706423975342040244">Entertainment</translation>
+<translation id="3284069358246729581">Entertainment news</translation>
 <translation id="1432147735538902155">Fashion</translation>
+<translation id="3350377832708834609">Film and TV</translation>
 <translation id="736592699917579616">Food</translation>
 <translation id="5104499318017527547">Fun</translation>
 <translation id="2228584369802328636">Gaming</translation>
 <translation id="6941852195052765076">Health</translation>
 <translation id="932327136139879170">Home</translation>
+<translation id="5178222043222938163">Music</translation>
 <translation id="1322083935398004629">Politics</translation>
+<translation id="8739620487574841501">Regional news</translation>
 <translation id="3872834068356954457">Science</translation>
 <translation id="1264974993859112054">Sports</translation>
 <translation id="2283599456633275070">Travel</translation>
 <translation id="7487067081878637334">Technology</translation>
+<translation id="151743034625508713">Tech news</translation>
+<translation id="2388279876296929435">Tech reviews</translation>
 <translation id="5030268312472358928">Top news</translation>
 <translation id="5510475084662028636">Top sources</translation>
+<translation id="1297570508541015874">US news</translation>
 <translation id="1459693405370120464">Weather</translation>
 <translation id="8366057325711477500">World news</translation>
 <translation id="6303294677342628402">Shields</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">Finish</translation>
 <translation id="2273851479262317744">Set Brave as default browser</translation>
 <translation id="5037676449506322593">Select all</translation>
-<translation id="8330804319517911603">Help improve Brave</translation>
-<translation id="2867964979837593892">Fine-tuning the product. Protecting your privacy. Every day.</translation>
-<translation id="7661940959332108190">Send dianogstic reports if Brave crashes or freezes.</translation>
-<translation id="6358373266071757311">Share anonymous, private product insights. This helps us learn what Brave features are used most often.</translation>
+<translation id="5148943178722443958">Help make Brave better.</translation>
+<translation id="1097073572755862978">Send diagnostic reports if you experience a crash or freeze. <ph name="LINK_BEFORE"/>Learn more.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Share completely private and anonymous product insights about what features are being used by Brave's users. <ph name="LINK_BEFORE"/>Learn more.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Set-up complete</translation>
 <translation id="3141206739023333979">Change these choices at any time in Brave at <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Read our full <ph name="LINK_BEFORE"/>Privacy Policy<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">Choose your theme</translation>
+<translation id="6262510489122516114">You can change this at any time in Brave settings.</translation>
+<translation id="546481172717459539">Match system setting</translation>
+<translation id="7799817062559422778">Light mode</translation>
+<translation id="4117637339509843559">Dark mode</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: connected</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: disconnected</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">VPN connection failed. Please try connecting again, and be sure to click "Allow" to enable Brave's VPN configuration.</translation>
 <translation id="7261518280726313829">Turning off secure DNS or using default servers on Windows may reveal the names of the sites you visit to your Internet service provider. Brave does not recommend doing this. Do you want to do it anyway?</translation>
 <translation id="888284761945060750">Secure DNS is disabled by your organisation's policies. Using Brave VPN without Secure DNS may reveal the names of the sites you visit to your Internet service provider or organisation.</translation>
+<translation id="6593224083874259773">Brave VPN on Windows</translation>
+<translation id="3153983908111684619">The setting is locked by BraveVPN while it is connected</translation>
+<translation id="6507543978646831931">Windows has a feature called Smart Multi-Homed Name Resolution, which can expose information about your location and the sites you visit. Now that you’ve enabled Brave VPN, we’ve changed the DNS settings in the browser to protect against this exposure. The settings will remain in effect and locked while VPN is connected. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Do not warn me about this anymore.</translation>
+<translation id="2740531572673183784">OK</translation>
+<translation id="9061845622728745852">Timezone:</translation>
 <translation id="7586151660465233733">More markets on <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">View markets and trade crypto on FTX</translation>
 <translation id="5963745988819586370">Markets</translation>

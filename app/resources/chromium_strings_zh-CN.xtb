@@ -53,6 +53,7 @@
 <translation id="7798069806040634998">Brave 需要获得存储空间使用权限，才能下载文件</translation>
 <translation id="8447483940522230788">Brave 帮助程序</translation>
 <translation id="7291143854620707672">在使用此工作资料（例如创建书签、历史记录、密码和其他设置）时生成的任何 Brave 数据都可由工作资料管理员移除。<ph name="LEARN_MORE"/></translation>
+<translation id="6252796827759111076">继续使用 Brave</translation>
 <translation id="7387051847644272380">安装过程中出现操作系统错误。请重新下载 Brave。</translation>
 <translation id="2648689842065142443">如果您是与亲朋好友共用一部设备，他们将能够使用单独的帐号进行浏览，并可随心所欲地设置 Brave</translation>
 <translation id="5926459996518749366">Brave 屏蔽了此归档文件，因为它可能藏有恶意软件</translation>
@@ -93,6 +94,7 @@
 <translation id="2645435784669275700">Brave 操作系统</translation>
 <translation id="2297290224191497273">切换到现有的 Brave 个人资料？</translation>
 <translation id="3412460710772753638">在此设备上的密码管理工具中更新</translation>
+<translation id="616005907576404509">{COUNT,plural, =1{管理员已将 Brave 配置为在闲置时长超过 1 分钟后关闭。}other{管理员已将 Brave 配置为在闲置时长超过 # 分钟后关闭。}}</translation>
 <translation id="2450003541323895471">借助 Brave 个人资料，您可将自己的所有 Brave 内容分门别类。比如，您可为朋友和家人创建专属个人资料，或者将工作内容和娱乐内容分开。</translation>
 <translation id="9216183508558772570">当您使用已泄露的密码登录时，Brave 会通知您</translation>
 <translation id="5853262807109651878">这会从这台设备上删除 <ph name="ITEMS_COUNT"/> 项内容。如果日后想要检索您的数据，届时请以 <ph name="USER_EMAIL"/> 的身份登录 Brave。</translation>
@@ -170,6 +172,7 @@
 <translation id="7021823858304886493">允许登录 Brave</translation>
 <translation id="5536657158619734169">Brave 现已推出新版本。</translation>
 <translation id="5267531627648004734">从Brave中移除</translation>
+<translation id="2783637305317815247">{0,plural, =0{Brave 将立即关闭。}=1{Brave 将在 1 秒后关闭。}other{Brave 将在 # 秒后关闭。}}</translation>
 <translation id="239760341987199724">将Brave设为默认浏览器</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave 测试版</translation>
 <translation id="894936507076470937">Brave 可能无法正常运行，因为它不再支持此 Linux 发行版</translation>
@@ -256,6 +259,7 @@
 <translation id="126871877963043118">在试用期间，Ad measurement 允许您访问的网站向 Brave 请求信息来对网站上的广告进行效果衡量。Ad measurement 会在网站间传输尽可能少的信息，从而限制跨网站跟踪。</translation>
 <translation id="4392161457256085190">之后，您访问的网站可向 Brave 请求查看您的兴趣，以便向您展示个性化广告。Brave 最多可共享 3 项兴趣信息。</translation>
 <translation id="6418340404893954563">安全系数低的密码容易被人猜到。不妨让 Brave <ph name="BEGIN_LINK"/>为您创建并记住安全系数高的密码<ph name="END_LINK"/>。</translation>
+<translation id="196626648343945705">Brave 处于闲置状态</translation>
 <translation id="3453763134178591239">Brave 操作系统条款</translation>
 <translation id="3335606533094650083">Brave 需要获得相应权限，才能允许此网站使用您的麦克风</translation>
 <translation id="7025789849649390912">已停止安装。</translation>
@@ -319,7 +323,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="3360368475735266712">登录即可在您的所有设备上同步并个性化设置 Brave</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> 之前使用的是 Brave</translation>
 <translation id="3098618823450433881">如需在您的所有设备上访问自己的 Brave 浏览器信息，请登录您的帐号，然后开启同步功能</translation>
-<translation id="2569754604093464025">若要接收后续 Brave 更新，您需使用 Windows 10 或更高版本。该计算机目前使用的是 Windows 8。</translation>
+<translation id="2569754604093464025">若要接收后续 Brave 更新，您需使用 Windows 10 或更高版本。此计算机目前使用的是 Windows 8。</translation>
 <translation id="5337999052834672687">{0,plural, =1{请于 1 天内重新启动 Brave}other{请于 # 天内重新启动 Brave}}</translation>
 <translation id="6914496861676471566">安装程序归档损坏或无效。请重新下载 Brave。</translation>
 <translation id="6431861494713261006">可选：自动向 Brave 发送诊断数据和使用情况数据，协助改进 Brave 操作系统的功能和性能。</translation>

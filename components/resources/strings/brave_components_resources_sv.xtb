@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Du kan starta ett privat samtal i Brave.</translation>
 <translation id="4903286433687221248">Starta obegränsade samtal med vänner och kollegor i Brave Talk.</translation>
 <translation id="7115051913071512405">Prova den</translation>
-<translation id="1447534717041828517">Visa Brave News-knappen i verktygsfältet</translation>
 <translation id="370665806235115550">Läser in...</translation>
 <translation id="4634933166298842522">Hantera prenumerationer</translation>
 <translation id="4108314971463891922">Följ</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Besök creators.brave.com för att registrera dig idag och börja tjäna BAT från dina fans och följare.</translation>
 <translation id="4816455138209470435">Brave stöder YouTube, Twitch, Vimeo med flera!</translation>
 <translation id="3656941797339037856">Länka Rewards till Gemini!</translation>
-<translation id="31532096120351460">Handla över 50 kryptovalutor, inklusive BAT, på Gemini. Det är en säker plattform för att lagra dina kryptovalutor. Dessutom kan du tjäna ränta i USA, Hongkong och Singapore.</translation>
+<translation id="2888702144235098855">Handla över 50 kryptovalutor, inklusive BAT, på Gemini. Det är en säker plattform för att lagra dina kryptovalutor.</translation>
 <translation id="7404779623219601861">Lös in BAT mot presentkort</translation>
 <translation id="6215565499749144110">Med TAP Network kan du lösa in din BAT och få presentkort på populära märken.</translation>
 <translation id="6915065518766963119">* Kräver godkänd verifiering.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Utloggad</translation>
 <translation id="6080167751812750226">Frånkopplad från <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Beräknade intäkter</translation>
-<translation id="4244985009709452836">Logga in på ditt <ph name="PROVIDER"/>-konto</translation>
+<translation id="7934950257968365573">Logga in på ditt <ph name="PROVIDER"/>-konto</translation>
 <translation id="2613359062756190460">Engångsdricks</translation>
 <translation id="590733288489975971">Belöningar från Ads</translation>
 <translation id="6181762795539107980">Ej verifierad</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Köp med Wyre</translation>
 <translation id="5522073372365069684">Köp med Ramp</translation>
 <translation id="7902920577183739843">Köp med Sardine</translation>
-<translation id="6534275647567011533">Köp med Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Köp kryptovaluta med Visa eller Mastercard.</translation>
 <translation id="3101839349578102016">Köp direkt med ditt bankkonto. Lägre avgifter.</translation>
 <translation id="8528916244724490964">Alla nätverk</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Bilar</translation>
 <translation id="7577010593836079522">Kultur</translation>
 <translation id="3706423975342040244">Underhållning</translation>
+<translation id="3284069358246729581">Nyheter om nöje</translation>
 <translation id="1432147735538902155">Mode</translation>
+<translation id="3350377832708834609">Film och tv</translation>
 <translation id="736592699917579616">Mat</translation>
 <translation id="5104499318017527547">Nöje</translation>
 <translation id="2228584369802328636">Spel</translation>
 <translation id="6941852195052765076">Hälsa</translation>
 <translation id="932327136139879170">Startsida</translation>
+<translation id="5178222043222938163">Musik</translation>
 <translation id="1322083935398004629">Politik</translation>
+<translation id="8739620487574841501">Regionala nyheter</translation>
 <translation id="3872834068356954457">Vetenskap</translation>
 <translation id="1264974993859112054">Sport</translation>
 <translation id="2283599456633275070">Resor</translation>
 <translation id="7487067081878637334">Teknik</translation>
+<translation id="151743034625508713">Nyheter om teknik</translation>
+<translation id="2388279876296929435">Recensioner av teknik</translation>
 <translation id="5030268312472358928">Toppnyheter</translation>
 <translation id="5510475084662028636">Toppkällor</translation>
+<translation id="1297570508541015874">USA nyheter</translation>
 <translation id="1459693405370120464">Väder</translation>
 <translation id="8366057325711477500">Världsnyheter</translation>
 <translation id="6303294677342628402">Sköldar</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">Slutför</translation>
 <translation id="2273851479262317744">Ange Brave som standardwebbläsare</translation>
 <translation id="5037676449506322593">Välj alla</translation>
-<translation id="8330804319517911603">Hjälp oss förbättra Brave</translation>
-<translation id="2867964979837593892">Finjusterar produkten. Skyddar din integritet. Varje dag.</translation>
-<translation id="7661940959332108190">Skicka diagnostikrapporter om Brave kraschar eller fryser.</translation>
-<translation id="6358373266071757311">Dela privat produktstatistik anonymt. Det hjälper oss att förstå vilka Brave-funktioner som används mest.</translation>
+<translation id="5148943178722443958">Hjälp till att göra Brave bättre.</translation>
+<translation id="1097073572755862978">Skicka diagnostikrapporter om du upplever en krasch eller frysning. <ph name="LINK_BEFORE"/>Läs mer.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Dela helt privat och anonym produktstatistik om vilka funktioner som används av Braves användare. <ph name="LINK_BEFORE"/>Läs mer.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Konfigurationen är klar</translation>
 <translation id="3141206739023333979">Ändra dessa val när som helst i Brave: <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Läs vår fullständiga <ph name="LINK_BEFORE"/>Integritetspolicy<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">Välj tema</translation>
+<translation id="6262510489122516114">Du kan ändra detta när som helst i Brave-inställningarna.</translation>
+<translation id="546481172717459539">Matcha systeminställning</translation>
+<translation id="7799817062559422778">Ljust läge</translation>
+<translation id="4117637339509843559">Mörkt läge</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: Ansluten</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: Frånkopplad</translation>
 <translation id="3541307549916475335">Användargränssnitt för Brave VPN-panel</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">VPN-anslutningen misslyckades. Försök att ansluta igen och klicka på Tillåt för att aktivera Braves VPN-konfiguration.</translation>
 <translation id="7261518280726313829">Om du stänger av säker DNS eller använder standardservrar i Windows kan namnen på de webbplatser du besöker avslöjas för din internetoperatör. Brave rekommender inte att du gör detta. Vill du göra det ändå?</translation>
 <translation id="888284761945060750">Säker DNS har avaktiverats av din organisations policyer. Om du använder Brave VPN utan säker DNS kan namnen på de webbplatser du besöker avslöjas för din internetoperatör eller organisation.</translation>
+<translation id="6593224083874259773">Brave VPN för Windows</translation>
+<translation id="3153983908111684619">Inställningen är låst av Brave VPN när det är anslutet</translation>
+<translation id="6507543978646831931">Windows har en funktion som heter Smart Multi-Homed Name Resolution, som kan visa information om din plats och de webbplatser du besöker. Nu när du har aktiverat Brave VPN har vi ändrat DNS-inställningarna i webbläsaren för att skydda mot denna exponering. Inställningarna förblir i kraft och låsta medan VPN är anslutet. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Varna mig inte längre om detta.</translation>
+<translation id="2740531572673183784">OK</translation>
+<translation id="9061845622728745852">Tidszon:</translation>
 <translation id="7586151660465233733">Fler marknader på <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Visa marknader och handla krypto på FTX</translation>
 <translation id="5963745988819586370">Marknader</translation>

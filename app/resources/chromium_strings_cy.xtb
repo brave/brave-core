@@ -55,6 +55,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="7798069806040634998">Mae angen mynediad storfa ar Brave i lawrlwytho ffeiliau</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
 <translation id="7291143854620707672">Gall unrhyw ddata Brave a gynhyrchir wrth ddefnyddio'r proffil hwn (megis creu nodau tudalen, hanes, cyfrineiriau, a gosodiadau eraill) gael eu tynnu gan weinyddwr y proffil gwaith. <ph name="LEARN_MORE"/></translation>
+<translation id="6252796827759111076">Parhau i ddefnyddio Brave</translation>
 <translation id="7387051847644272380">Bu gwall system weithredu wrth osod. Lawrlwythwch Brave eto.</translation>
 <translation id="2648689842065142443">Os ydych yn rhannu dyfais, gall ffrindiau a theulu bori ar wahân a gosod Brave yn yr union ffordd y maent eisiau</translation>
 <translation id="5926459996518749366">Gwnaeth Brave rwysto'r ffeil archif hon oherwydd mae'n bosib ei bod yn cuddio drwgwedd</translation>
@@ -95,6 +96,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">Newid i broffil Brave presennol?</translation>
 <translation id="3412460710772753638">Yn Rheolwr Cyfrineiriau ar y ddyfais hon</translation>
+<translation id="616005907576404509">{COUNT,plural, =1{Mae eich gweinyddwr wedi ffurfweddu Brave i gau os yw'n segur am fwy nag 1 funud.}zero{Mae eich gweinyddwr wedi ffurfweddu Brave i gau os yw'n segur am fwy na # munud.}two{Mae eich gweinyddwr wedi ffurfweddu Brave i gau os yw'n segur am fwy na # funud.}few{Mae eich gweinyddwr wedi ffurfweddu Brave i gau os yw'n segur am fwy na # munud.}many{Mae eich gweinyddwr wedi ffurfweddu Brave i gau os yw'n segur am fwy na # munud.}other{Mae eich gweinyddwr wedi ffurfweddu Brave i gau os yw'n segur am fwy na # munud.}}</translation>
 <translation id="2450003541323895471">Gallwch wahanu eich holl bethau Brave gyda phroffiliau Brave. Creu proffiliau ar gyfer eich ffrindiau a'ch teulu, neu rannu rhwng gwaith a hwyl.</translation>
 <translation id="9216183508558772570">Bydd Brave yn eich hysbysu pan fyddwch yn mewngofnodi gyda chyfrinair sydd wedi'i ddarganfod</translation>
 <translation id="5853262807109651878">Bydd hyn yn dileu <ph name="ITEMS_COUNT"/> eitem o'r ddyfais hon. I adfer eich data yn nes ymlaen, mewngofnodwch i Brave fel <ph name="USER_EMAIL"/>.</translation>
@@ -172,6 +174,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="7021823858304886493">Caniatáu Mewngofnodi drwy Brave</translation>
 <translation id="5536657158619734169">Mae fersiwn newydd o Brave ar gael.</translation>
 <translation id="5267531627648004734">Tynnu o Brave</translation>
+<translation id="2783637305317815247">{0,plural, =0{Bydd Brave yn cau nawr.}=1{Bydd Brave yn cau mewn 1 eiliad.}two{Bydd Brave yn cau mewn # eiliad.}few{Bydd Brave yn cau mewn # eiliad.}many{Bydd Brave yn cau mewn # eiliad.}other{Bydd Brave yn cau mewn # eiliad.}}</translation>
 <translation id="239760341987199724">Gosod Brave fel eich porwr diofyn</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Beta Brave</translation>
 <translation id="894936507076470937">Mae'n bosib na fydd Brave yn gweithredu'n gywir oherwydd nad yw'n cael ei gefnogi mwyach ar y dosbarthiad Linux hwn</translation>
@@ -259,6 +262,7 @@ baru <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></transla
 <translation id="126871877963043118">Pan fydd treialon ymlaen, mae Mesur hysbysebion yn caniatáu i wefannau rydych yn ymweld â nhw i ofyn am wybodaeth gan Brave sy'n helpu'r wefan i fesur perfformiad eu hysbysebion. Mae Mesur hysbysebion yn cyfyngu ar olrhain traws-wefan drwy drosglwyddo cyn lleied o wybodaeth â phosib rhwng gwefannau.</translation>
 <translation id="4392161457256085190">Yn nes ymlaen, gall gwefan rydych yn ymweld â hi ofyn i Brave weld eich diddordebau er mwyn personoleiddio'r hysbysebion rydych yn eu gweld. Gall Brave rannu hyd at 3 diddordeb.</translation>
 <translation id="6418340404893954563">Mae'n hawdd dyfalu cyfrineiriau gwan. Caniatáu i Brave <ph name="BEGIN_LINK"/>creu a chofio cyfrineiriau cryf ar eich cyfer<ph name="END_LINK"/>.</translation>
+<translation id="196626648343945705">Mae Brave yn anweithredol</translation>
 <translation id="3453763134178591239">Telerau ChromeOS</translation>
 <translation id="3335606533094650083">Mae angen caniatâd ar Brave i ddefnyddio eich meicroffon ar gyfer y wefan hon</translation>
 <translation id="7025789849649390912">Wedi Stopio Gosod.</translation>

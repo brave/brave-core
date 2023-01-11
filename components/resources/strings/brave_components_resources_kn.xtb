@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">ನೀವು Brave ನಲ್ಲಿ ಖಾಸಗಿ ಕರೆಯನ್ನು ಆರಂಭಿಸಬಹುದು.</translation>
 <translation id="4903286433687221248">Brave ಟಾಕ್ನಲ್ಲಿ ಸ್ನೇಹಿತರು ಮತ್ತು ಸಹೋದ್ಯೋಗಿಗಳೊಂದಿಗೆ ಅನಿಯಮಿತ ಕರೆಗಳನ್ನು ಆರಂಭಿಸಿ.</translation>
 <translation id="7115051913071512405">ಅದನ್ನು ಪ್ರಯತ್ನಿಸಿ ನೋಡಿ</translation>
-<translation id="1447534717041828517">ಟೂಲ್‌ಬಾರ್‌ನಲ್ಲಿ Brave ನ್ಯೂಸ್ ಬಟನ್ ತೋರಿಸಿ</translation>
 <translation id="370665806235115550">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</translation>
 <translation id="4634933166298842522">ಚಂದಾದಾರಿಕೆಗಳನ್ನು ನಿರ್ವಹಿಸಿ</translation>
 <translation id="4108314971463891922">ಫಾಲೋ ಮಾಡಿ</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">ಇಂದೇ ಸೈನ್ ಅಪ್ ಮಾಡಲು creators.brave.com ಗೆ ಭೇಟಿ ನೀಡಿ ಮತ್ತು ನಿಮ್ಮ ಅಭಿಮಾನಿಗಳು ಮತ್ತು ಅನುಯಾಯಿಗಳಿಂದ BAT ಗಳಿಸಲು ಆರಂಭಿಸಿ.</translation>
 <translation id="4816455138209470435">YouTube, Twitch, Vimeo ಹಾಗೂ ಹೆಚ್ಚಿನವುಗಳನ್ನು Brave ಬೆಂಬಲಿಸುತ್ತದೆ!</translation>
 <translation id="3656941797339037856">Rewards ಅನ್ನು Gemini ಗೆ ಲಿಂಕ್ ಮಾಡಿ</translation>
-<translation id="31532096120351460">Gemini ಯಲ್ಲಿ BAT ಒಳಗೊಂಡಂತೆ, 50+ ಕ್ರಿಪ್ಟೋಗಳನ್ನು ಟ್ರೇಡ್ ಮಾಡಿ. ನಿಮ್ಮ ಕ್ರಿಪ್ಟೋ ಸಂಗ್ರಹಿಸುವುದಕ್ಕಾಗಿ ಇದು ಸುರಕ್ಷಿತ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್ ಆಗಿದೆ. ಜೊತೆಗೆ, ನೀವು US, HK ಮತ್ತು SG ನಲ್ಲಿ ಬಡ್ಡಿಯನ್ನು ಗಳಿಸಬಹುದು.</translation>
+<translation id="2888702144235098855">Gemini ಯಲ್ಲಿ BAT ಒಳಗೊಂಡಂತೆ 50+ ಕ್ರಿಪ್ಟೋಗಳಲ್ಲಿ ಟ್ರೇಡ್ ಮಾಡಿ. ಇದು ನಿಮ್ಮ ಕ್ರಿಪ್ಟೋ ಸಂಗ್ರಹಿಸುವುದಕ್ಕಾಗಿ ಸುರಕ್ಷಿತವಾದ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್ ಆಗಿದೆ.</translation>
 <translation id="7404779623219601861">ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಿಗಾಗಿ BAT ರೀಡಿಮ್ ಮಾಡಿ</translation>
 <translation id="6215565499749144110">TAP ನೆಟ್‌ವರ್ಕ್‌ನೊಂದಿಗೆ, ಜನಪ್ರಿಯ ಹೆಸರು-ಬ್ರಾಂಡ್ ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಿಗಾಗಿ ನಿಮ್ಮ BAT ಅನ್ನು ನೀವು ಪುನಃ ಪಡೆದುಕೊಳ್ಳಬಹುದು.</translation>
 <translation id="6915065518766963119">* ಅಪ್‌ಹೋಲ್ಡ್ ಪರಿಶೀಲನೆಯ ಅಗತ್ಯವಿದೆ.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">ಲಾಗ್ ಔಟ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="6080167751812750226"><ph name="PROVIDER"/> ನಿಂದ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ</translation>
 <translation id="3600355176618429948">ಅಂದಾಜು ಮಾಡಲಾದ ಗಳಿಕೆಗಳು</translation>
-<translation id="4244985009709452836">ನಿಮ್ಮ <ph name="PROVIDER"/> ಖಾತೆಗೆ ಲಾಗ್ ಇನ್ ಮಾಡಿ</translation>
+<translation id="7934950257968365573">ನಿಮ್ಮ <ph name="PROVIDER"/> ಖಾತೆಗೆ ಲಾಗ್ ಇನ್ ಮಾಡಿ</translation>
 <translation id="2613359062756190460">ಒಂದು ಬಾರಿಯ ಸಲಹೆಗಳು</translation>
 <translation id="590733288489975971">ಜಾಹೀರಾತುಗಳಿಂದ ರಿವಾರ್ಡ್‌ಗಳು</translation>
 <translation id="6181762795539107980">ಪರಿಶೀಲಿಸಿಲ್ಲದವು</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Wyre ನೊಂದಿಗೆ ಖರೀದಿಸಿ</translation>
 <translation id="5522073372365069684">Ramp ನೊಂದಿಗೆ ಖರೀದಿಸಿ</translation>
 <translation id="7902920577183739843">Sardine ಮೂಲಕ ಖರೀದಿಸಿ</translation>
-<translation id="6534275647567011533">Transak ಮೂಲಕ ಖರೀದಿಸಿ</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Visa ಅಥವಾ Mastercard ಮೂಲಕ ಕ್ರಿಪ್ಟೋ ಖರೀದಿಸಿ.</translation>
 <translation id="3101839349578102016">ನಿಮ್ಮ ಬ್ಯಾಂಕ್ ಖಾತೆಯೊಂದಿಗೆ ತ್ವರಿತ ಖರೀದಿ. ಕಡಿಮೆ ಶುಲ್ಕಗಳು.</translation>
 <translation id="8528916244724490964">ಎಲ್ಲಾ ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">ಕಾರುಗಳು</translation>
 <translation id="7577010593836079522">ಸಂಸ್ಕೃತಿ</translation>
 <translation id="3706423975342040244">ಮನರಂಜನೆ</translation>
+<translation id="3284069358246729581">ಮನರಂಜನೆ ಸುದ್ದಿ</translation>
 <translation id="1432147735538902155">ಫ್ಯಾಷನ್</translation>
+<translation id="3350377832708834609">ಚಲನಚಿತ್ರ ಮತ್ತು TV</translation>
 <translation id="736592699917579616">ಆಹಾರ</translation>
 <translation id="5104499318017527547">ಮೋಜು</translation>
 <translation id="2228584369802328636">ಆಟ</translation>
 <translation id="6941852195052765076">ಆರೋಗ್ಯ</translation>
 <translation id="932327136139879170">ಹೋಮ್</translation>
+<translation id="5178222043222938163">ಸಂಗೀತ</translation>
 <translation id="1322083935398004629">ರಾಜಕೀಯ</translation>
+<translation id="8739620487574841501">ಪ್ರಾದೇಶಿಕ ಸುದ್ದಿ</translation>
 <translation id="3872834068356954457">ವಿಜ್ಞಾನ</translation>
 <translation id="1264974993859112054">ಕ್ರೀಡೆ</translation>
 <translation id="2283599456633275070">ಪ್ರಯಾಣ</translation>
 <translation id="7487067081878637334">ತಂತ್ರಜ್ಞಾನ</translation>
+<translation id="151743034625508713">ತಾಂತ್ರಿಕ ಸುದ್ದಿ</translation>
+<translation id="2388279876296929435">ತಾಂತ್ರಿಕ ವಿಮರ್ಶೆಗಳು</translation>
 <translation id="5030268312472358928">ಪ್ರಮುಖ ಸುದ್ದಿ</translation>
 <translation id="5510475084662028636">ಪ್ರಮುಖ ಮೂಲಗಳು</translation>
+<translation id="1297570508541015874">US ಸುದ್ದಿ</translation>
 <translation id="1459693405370120464">ಹವಾಮಾನ</translation>
 <translation id="8366057325711477500">ವಿಶ್ವ ಸುದ್ದಿ</translation>
 <translation id="6303294677342628402">ಶೀಲ್ಡ್‌ಗಳು</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">ಪೂರ್ಣಗೊಳಿಸು</translation>
 <translation id="2273851479262317744">Brave ಅನ್ನು ಡೀಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಆಗಿ ಹೊಂದಿಸಿ</translation>
 <translation id="5037676449506322593">ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆ ಮಾಡಿ</translation>
-<translation id="8330804319517911603">Brave ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡಿ</translation>
-<translation id="2867964979837593892">ಉತ್ಪನ್ನವನ್ನು ಇನ್ನಷ್ಟು ಸುಧಾರಿಸುವುದು. ನಿಮ್ಮ ಗೌಪ್ಯತೆಯನ್ನು ರಕ್ಷಿಸುವುದು. ಪ್ರತಿ ದಿನ.</translation>
-<translation id="7661940959332108190">ಒಂದು ವೇಳೆ Brave ಕ್ರ್ಯಾಶ್ ಆದರೆ ಅಥವಾ ಫ್ರೀಜ್ ಆದರೆ ಡಯಾಗ್ನಾಸ್ಟಿಕ್ ವರದಿಗಳನ್ನು ಕಳುಹಿಸಿ.</translation>
-<translation id="6358373266071757311">ಅನಾಮಧೇಯ, ಖಾಸಗಿ ಉತ್ಪನ್ನ ಒಳನೋಟಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಿ. ಯಾವ Brave ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಹೆಚ್ಚು ಆಗಾಗ್ಗೆ ಬಳಸಲಾಗುತ್ತದೆ ಎಂಬುದನ್ನು ತಿಳಿದುಕೊಳ್ಳಲು ಇದು ನಮಗೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ.</translation>
+<translation id="5148943178722443958">Brave ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಲು ಸಹಾಯ ಮಾಡಿ.</translation>
+<translation id="1097073572755862978">ನೀವು ಕ್ರ್ಯಾಶ್ ಅಥವಾ ಫ್ರೀಜ್ ಅನುಭವಿಸಿದರೆ ಡಯಾಗ್ನಾಸ್ಟಿಕ್ ವರದಿಗಳನ್ನು ಕಳುಹಿಸಿ. <ph name="LINK_BEFORE"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Brave ನ ಬಳಕೆದಾರರು ಯಾವ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಬಳಸುತ್ತಿದ್ದಾರೆ ಎಂಬ ಕುರಿತು ಸಂಪೂರ್ಣವಾಗಿ ಖಾಸಗಿ ಮತ್ತು ಅನಾಮಧೇಯ ಉತ್ಪನ್ನ ಒಳನೋಟಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಿ. <ph name="LINK_BEFORE"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">ಸೆಟಪ್ ಪೂರ್ಣಗೊಂಡಿದೆ</translation>
 <translation id="3141206739023333979">ಈ ಆಯ್ಕೆಗಳನ್ನು Brave ನಲ್ಲಿ ಯಾವುದೇ ಸಮಯದಲ್ಲಿ <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/> ಎಂಬಲ್ಲಿ ಬದಲಿಸಿ.</translation>
 <translation id="8321985064212130832">ಪೂರ್ಣ <ph name="LINK_BEFORE"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="LINK_AFTER"/> ಓದಿ</translation>
+<translation id="2801098717523961746">ನಿಮ್ಮ ಥೀಮ್ ಆರಿಸಿ</translation>
+<translation id="6262510489122516114">Brave ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಯಾವುದೇ ಸಮಯದಲ್ಲಿ ಇದನ್ನು ನೀವು ಬದಲಾಯಿಸಬಹುದು.</translation>
+<translation id="546481172717459539">ಸಿಸ್ಟಂ ಸೆಟ್ಟಿಂಗ್ ಹೊಂದಾಣಿಕೆ ಮಾಡಿ</translation>
+<translation id="7799817062559422778">ಲೈಟ್ ಮೋಡ್</translation>
+<translation id="4117637339509843559">ಡಾರ್ಕ್ ಮೋಡ್</translation>
 <translation id="7821773512278295352">Brave ಫೈರ್‌ವಾಲ್ + VPN: ಸಂಪರ್ಕಿತವಾಗಿದೆ</translation>
 <translation id="6019088868713395120">Brave ಫೈರ್‌ವಾಲ್ + VPN: ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</translation>
 <translation id="3541307549916475335">Brave VPN ಪ್ಯಾನೆಲ್ UI</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">VPN ಸಂಪರ್ಕ ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಸಂಪರ್ಕಿಸಲು ಪ್ರಯತ್ನಿಸಿ ಮತ್ತು Brave ನ VPN ಕಾನ್ಫಿಗರೇಶನ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ಅನುಮತಿಸು ಕ್ಲಿಕ್ ಮಾಡಲು ಮರೆಯದಿರಿ.</translation>
 <translation id="7261518280726313829">ಸುರಕ್ಷಿತ DNS ಆಫ್ ಮಾಡುವುದರಿಂದ ಅಥವಾ Windows ನಲ್ಲಿ ಡೀಫಾಲ್ಟ್ ಸರ್ವರ್‌ಗಳನ್ನು ಬಳಸುವುದರಿಂದ ನೀವು ಭೇಟಿ ನೀಡುವ ಸೈಟ್‌ಗಳ ಹೆಸರುಗಳು ನಿಮ್ಮ ಇಂಟರ್ನೆಟ್ ಸೇವಾ ನೀಡುಗರಿಗೆ ತಿಳಿಯಬಹುದು. ಇದನ್ನು ಮಾಡುವುದನ್ನು Brave ಶಿಫಾರಸು ಮಾಡುವುದಿಲ್ಲ. ಏನೇ ಆಗಲಿ ಇದನ್ನು ಮಾಡಲು ನೀವು ಬಯಸುವಿರಾ?</translation>
 <translation id="888284761945060750">ನಿಮ್ಮ ಸಂಸ್ಥೆಯ ನೀತಿಗಳು ಸುರಕ್ಷಿತ DNS ಅನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿವೆ. ಸುರಕ್ಷಿತ DNS ಇಲ್ಲದೆಯೇ Brave VPN ಬಳಸುವುದರಿಂದ ನೀವು ಭೇಟಿ ನೀಡುವ ಸೈಟ್‌ಗಳ ಹೆಸರುಗಳು ನಿಮ್ಮ ಇಂಟರ್ನೆಟ್ ಸೇವಾ ನೀಡುಗರಿಗೆ ಅಥವಾ ಸಂಸ್ಥೆಗೆ ತಿಳಿಯಬಹುದು.</translation>
+<translation id="6593224083874259773">Windows ನಲ್ಲಿ Brave VPN</translation>
+<translation id="3153983908111684619">ಅದು ಸಂಪರ್ಕಗೊಂಡಿರುವಾಗ Brave VPN ಈ ಸೆಟ್ಟಿಂಗ್ ಅನ್ನು ಲಾಕ್ ಮಾಡಿದೆ</translation>
+<translation id="6507543978646831931">ಸ್ಮಾರ್ಟ್ ಮಲ್ಟಿ-ಹೋಮ್ಡ್ ನೇಮ್ ರೆಸಲ್ಯೂಷನ್ ಎಂದು ಕರೆಯಲಾಗುವ ವೈಶಿಷ್ಟ್ಯವನ್ನು Windows ಹೊಂದಿದ್ದು, ಅದು ನಿಮ್ಮ ಸ್ಥಳ ಮತ್ತು ನೀವು ಭೇಟಿ ನೀಡುವ ಸೈಟ್‌ಗಳ ಕುರಿತು ಮಾಹಿತಿಯನ್ನು ಬಹಿರಂಗಪಡಿಸಬಹುದು. ಇದೀಗ ನೀವು Brave VPN ಸಕ್ರಿಯಗೊಳಿಸಿರುವುದರಿಂದ, ಈ ಬಹಿರಂಗಪಡಿಸುವಿಕೆಯ ವಿರುದ್ಧ ರಕ್ಷಣೆ ನೀಡುವುದಕ್ಕಾಗಿ ಬ್ರೌಸರ್‌ನಲ್ಲಿ DNS ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ನಾವು ಬದಲಾಯಿಸಿದ್ದೇವೆ. VPN ಸಂಪರ್ಕಗೊಂಡಿರುವಾಗ ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಕಾರ್ಯಗತಗೊಂಡು ಮತ್ತು ಲಾಕ್ ಆಗಿ ಇರುತ್ತವೆ.<ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">ಇದರ ಕುರಿತು ಇನ್ನು ಮುಂದೆ ನನಗೆ ಎಚ್ಚರಿಕೆ ನೀಡಬೇಡ.</translation>
+<translation id="2740531572673183784">ಸರಿ</translation>
+<translation id="9061845622728745852">ಸಮಯವಲಯ:</translation>
 <translation id="7586151660465233733"><ph name="SITE_NAME"/> ನಲ್ಲಿ ಹೆಚ್ಚಿನ ಮಾರುಕಟ್ಟೆಗಳು</translation>
 <translation id="952067063131306699">FTX ನಲ್ಲಿ ಮಾರುಕಟ್ಟೆಗಳನ್ನು ನೋಡಿ ಮತ್ತು ಕ್ರಿಪ್ಟೋ ಟ್ರೇಡ್ ಮಾಡಿ</translation>
 <translation id="5963745988819586370">ಮಾರುಕಟ್ಟೆಗಳು</translation>

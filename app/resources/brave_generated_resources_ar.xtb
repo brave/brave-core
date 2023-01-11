@@ -89,11 +89,6 @@
 <translation id="8303432794159193481">تطبيقات تطوير متصفح Brave</translation>
 <translation id="8292967014767479012">تطبيقات متصفح Brave</translation>
 <translation id="4743468424889072281">تطبيقات تطوير متصفح Brave</translation>
-<translation id="732814027519296280">هل تريد أن تجعل Brave Search أفضل؟</translation>
-<translation id="2677865600861971449">اشترك في Web Discovery Project للمساهمة بشكل مجهول في بعض عمليات البحث &amp; تصفح البيانات، وتحسين نتائج Brave Search للجميع. الحفاظ على الخصوصية. <ph name="LEARN_MORE_TEXT"/></translation>
-<translation id="6165508094623778733">مزيد من المعلومات</translation>
-<translation id="5860491529813859533">تفعيل</translation>
-<translation id="780301667611848630">لا، شكرًا</translation>
 <translation id="5039804452771397117">سماح</translation>
 <translation id="7053983685419859001">حظر</translation>
 <translation id="1679356339067548863">ساعد في تحسين استقرار منتج Brave عن طريق إرسال تقارير تشخيصية تلقائيًا عند تعطل متصفح Brave أو توقفه.</translation>
@@ -116,6 +111,11 @@
 <translation id="5026874946691314267">لا تظهر هذا مرة أخرى</translation>
 <translation id="5234764350956374838">رفض</translation>
 <translation id="5100490448228945668">قم برفض تحويل البحث في Brave، اضغط على Enter لإزالة هذا الاقتراح</translation>
+<translation id="9194637241566114638">ساعد في تحسين<ph name="SEARCH_NAME"/>عن طريق إرسال بيانات استخدام مجهولة الهوية.<ph name="MORE_INFO"/></translation>
+<translation id="7404610376221341525">بحث Brave</translation>
+<translation id="8184318863960255706">مزيد من المعلومات</translation>
+<translation id="6965382102122355670">موافق</translation>
+<translation id="780301667611848630">لا، شكرًا</translation>
 <translation id="2515126961943087659">خدمة إعلانات Bat</translation>
 <translation id="7924918279836988121">خدمة دفتر الأستاذ من Bat</translation>
 <translation id="6040143037577758943">إغلاق</translation>
@@ -241,6 +241,7 @@
 <translation id="7859704718976024901">تاريخ التصفح</translation>
 <translation id="8820817407110198400">إشارات</translation>
 <translation id="6333347122924254968">إظهار رمز "مكافآت متصفح Brave" في شريط العنواين</translation>
+<translation id="2245286910966863912">إظهار زر أخبار Brave في شريط العناوين</translation>
 <translation id="1811404036171336214">اظهر دائماً الإشارات المرجعية على صفحة علامة تبويب جديدة</translation>
 <translation id="3416468988018290825">أظهِر عناوين URLs كاملة دائمًا</translation>
 <translation id="5529693968082667490">إظهار زر بحث علامة التبويب</translation>
@@ -335,6 +336,7 @@
 <translation id="5165042248369837294">السماح بدمج تغريدات من تويتر</translation>
 <translation id="958971637207126733">السماح بالمشاركات المدمجة في LinkedIn</translation>
 <translation id="8792121506918889955">سياسة التعامل مع WebRTC IP</translation>
+<translation id="6165508094623778733">اعرف المزيد</translation>
 <translation id="1822560017823072927">الواجهات الافتراضية العامة والخاصة</translation>
 <translation id="5825943197137337319">الواجهة العامة الافتراضية فقط</translation>
 <translation id="1689062823386843231">تعطيل UDP التي ليس لها وكيل</translation>

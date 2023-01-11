@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Voit aloittaa yksityispuhelun Bravessa.</translation>
 <translation id="4903286433687221248">Käynnistä rajoittamattomat puhelut ystävien ja kollegoiden kanssa Brave Talkissa.</translation>
 <translation id="7115051913071512405">Kokeile</translation>
-<translation id="1447534717041828517">Näytä Brave-uutiset-painike työkalupalkissa</translation>
 <translation id="370665806235115550">Ladataan...</translation>
 <translation id="4634933166298842522">Hallinnoi tilauksia</translation>
 <translation id="4108314971463891922">Seuraa</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Käy osoitteessa creators.brave.com rekisteröityäksesi jo tänään ja aloita BATien ansaitseminen faneiltasi ja seuraajiltasi.</translation>
 <translation id="4816455138209470435">Brave tukee YouTubea, Twitchiä, Vimeota ja monia muita!</translation>
 <translation id="3656941797339037856">Linkitä Rewards Geminiin!</translation>
-<translation id="31532096120351460">Käy kauppaa 50+ kryptolla, mukaan lukien BAT, on Geminissä. Se on suojattu alusta, missä voit säilyttää kryptojasi. Plus voit ansaita korkoa Yhdysvalloissa, Hong Kongissa ja Singaporessa.</translation>
+<translation id="2888702144235098855">Käy kauppaa 50+ kryptolla, mukaan lukien BAT, Geminissä. Se on suojattu alusta, missä voit säilyttää kryptojasi.</translation>
 <translation id="7404779623219601861">Vaihda BAT-valuuttaa lahjakorteiksi</translation>
 <translation id="6215565499749144110">TAP Networkin avulla voit vaihtaa BAT-valuuttasi suosittujen nimibrändien lahjakorteiksi.</translation>
 <translation id="6915065518766963119">* Vaatii Uphold-vahvistuksen.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Kirjautunut ulos</translation>
 <translation id="6080167751812750226">Katkaise yhteys toimittajasta <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Arvioidut tulot</translation>
-<translation id="4244985009709452836">Kirjaudu sisään <ph name="PROVIDER"/> tilillesi</translation>
+<translation id="7934950257968365573">Kirjaudu sisään <ph name="PROVIDER"/> tilillesi</translation>
 <translation id="2613359062756190460">Kertatipit</translation>
 <translation id="590733288489975971">Palkinnot Ads-mainoksista</translation>
 <translation id="6181762795539107980">Vahvistamaton</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Osta Wyren kautta</translation>
 <translation id="5522073372365069684">Osta Rampin kautta</translation>
 <translation id="7902920577183739843">Osta Sardinen kautta</translation>
-<translation id="6534275647567011533">Osta Transakin kautta</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Osta kryptovaluuttaa Visalla tai Mastercardilla.</translation>
 <translation id="3101839349578102016">Osta heti pankkitililläsi. Pienemmät maksut.</translation>
 <translation id="8528916244724490964">Kaikki verkot</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Autot</translation>
 <translation id="7577010593836079522">Kulttuuri</translation>
 <translation id="3706423975342040244">Viihde</translation>
+<translation id="3284069358246729581">Viihdeuutiset</translation>
 <translation id="1432147735538902155">Muoti</translation>
+<translation id="3350377832708834609">Elokuvat ja televisio</translation>
 <translation id="736592699917579616">Ruoka</translation>
 <translation id="5104499318017527547">Hauskanpito</translation>
 <translation id="2228584369802328636">Pelaaminen</translation>
 <translation id="6941852195052765076">Terveys</translation>
 <translation id="932327136139879170">Etusivu</translation>
+<translation id="5178222043222938163">Musiikki</translation>
 <translation id="1322083935398004629">Politiikka</translation>
+<translation id="8739620487574841501">Alueelliset uutiset</translation>
 <translation id="3872834068356954457">Tiede</translation>
 <translation id="1264974993859112054">Urheilu</translation>
 <translation id="2283599456633275070">Matkustaminen</translation>
 <translation id="7487067081878637334">Tekniikka</translation>
+<translation id="151743034625508713">Teknologiauutiset</translation>
+<translation id="2388279876296929435">Teknologia-arvostelut</translation>
 <translation id="5030268312472358928">Tärkeimmät uutiset</translation>
 <translation id="5510475084662028636">Tärkeimmät lähteet</translation>
+<translation id="1297570508541015874">Yhdysvaltain uutiset</translation>
 <translation id="1459693405370120464">Sää</translation>
 <translation id="8366057325711477500">Maailman uutiset</translation>
 <translation id="6303294677342628402">Suojaukset</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">Valmis</translation>
 <translation id="2273851479262317744">Aseta Brave oletusselaimeksi</translation>
 <translation id="5037676449506322593">Valitse kaikki</translation>
-<translation id="8330804319517911603">Auta parantamaan Bravea</translation>
-<translation id="2867964979837593892">Hienosäätää tuotetta. Suojaa yksityisyyttäsi. Joka päivä.</translation>
-<translation id="7661940959332108190">Lähetä diagnostiikkaraportteja, jos Brave kaatuu tai jäätyy.</translation>
-<translation id="6358373266071757311">Jaa anonyymejä, yksityisiä tuotetietoja. Näin saamme tietää, mitä Braven ominaisuuksia käytetään eniten.</translation>
+<translation id="5148943178722443958">Auta parantamaan Bravea.</translation>
+<translation id="1097073572755862978">Lähetä diagnostiikkaraportteja, jos selain kaatuu tai jäätyy. <ph name="LINK_BEFORE"/>Lue lisää.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Jaa täysin yksityisiä ja nimettömiä tuotetietoja siitä, mitä ominaisuuksia Braven käyttäjät käyttävät. <ph name="LINK_BEFORE"/>Lue lisää.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Määritys on valmis</translation>
 <translation id="3141206739023333979">Muuta näitä valintoja milloin tahansa Bravessa osoitteessa <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Lue koko <ph name="LINK_BEFORE"/>tietosuojakäytäntömme<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">Valitse teema</translation>
+<translation id="6262510489122516114">Voit muuttaa tätä koska tahansa Braven asetuksissa.</translation>
+<translation id="546481172717459539">Vastaa järjestelmäasetuksia</translation>
+<translation id="7799817062559422778">Valotila</translation>
+<translation id="4117637339509843559">Tumma tila</translation>
 <translation id="7821773512278295352">Brave-palomuuri + VPN: yhdistetty</translation>
 <translation id="6019088868713395120">Brave-palomuuri + VPN: yhteys katkaistu</translation>
 <translation id="3541307549916475335">Brave VPN:n paneelin käyttöliittymä</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">VPN-yhteys epäonnistui. Yritä muodostaa yhteys uudelleen ja varmista, että napsautat Salli-painiketta ottaaksesi Braven VPN-määrityksen käyttöön.</translation>
 <translation id="7261518280726313829">Suojattujen DNS-asetusten poistaminen käytöstä tai oletuspalvelimien käyttäminen Windowsilla saattaa paljastaa Internet-palveluntarjoajallesi niiden sivustojen nimet, joilla olet vieraillut. Brave ei suosittele tämän tekemistä. Haluatko kuitenkin tehdä sen?</translation>
 <translation id="888284761945060750">Suojatut DNS-asetukset on poistettu käytöstä organisaatiosi käytäntöjen vuoksi. Brave VPN:n käyttäminen ilman suojattuja DNS-asetuksia voi paljastaa Internet-palveluntarjoajallesi tai organisaatiollesi niiden sivustojen nimet, joilla olet vieraillut.</translation>
+<translation id="6593224083874259773">Brave VPN Windowsissa</translation>
+<translation id="3153983908111684619">Brave VPN lukitsee asetuksen, kun se on yhteydessä verkkoon</translation>
+<translation id="6507543978646831931">Windowsissa on ominaisuus nimeltä Smart Multi-Homed Name Resolution, joka voi paljastaa tietoja sijainnistasi ja sivustoista, joissa olet vieraillut. Nyt kun olet ottanut Brave VPN:n käyttöön, olemme muuttaneet selaimen DNS-asetuksia suojellaksemme tietojen luottamuksellisuutta. Asetukset pysyvät voimassa ja lukittuina, kun VPN on kytkettynä päälle. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Älä enää varoita minua tästä.</translation>
+<translation id="2740531572673183784">Ok</translation>
+<translation id="9061845622728745852">Aikavyöhyke:</translation>
 <translation id="7586151660465233733">Lisää markkinoita sivustolla <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Katso markkinoita ja käy kauppaa kryptolla FTX:ssä</translation>
 <translation id="5963745988819586370">Markkinat</translation>
