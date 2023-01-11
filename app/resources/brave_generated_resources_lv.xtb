@@ -88,11 +88,6 @@
 <translation id="8303432794159193481">Brave Dev pārlūka lietotnes</translation>
 <translation id="8292967014767479012">Brave pārlūka vietnes</translation>
 <translation id="4743468424889072281">Brave pārlūka izstrādes lietotnes</translation>
-<translation id="732814027519296280">Vai vēlaties vēl vairāk uzlabot Brave meklēšanu?</translation>
-<translation id="2677865600861971449">Izvēlieties Tīmekļa atklāšanas projektu, lai anonīmi sniegtu dažus meklēšanas un pārlūkošanas datus, kā arī uzlabotu Brave meklēšanas rezultātus visiem. Ievērojot privātumu. Un bez piepūles. <ph name="LEARN_MORE_TEXT"/></translation>
-<translation id="6165508094623778733">Uzziniet vairāk</translation>
-<translation id="5860491529813859533">Ieslēgt</translation>
-<translation id="780301667611848630">Nē, paldies</translation>
 <translation id="5039804452771397117">Atļaut</translation>
 <translation id="7053983685419859001">Bloķēt</translation>
 <translation id="1679356339067548863">Palīdziet uzlabot Brave produktu stabilitāti, automātiski nosūtot diagnostikas ziņojumus, kad Brave pārlūks avarē vai pārstāj darboties.</translation>
@@ -115,6 +110,11 @@
 <translation id="5026874946691314267">Vairs nerādīt</translation>
 <translation id="5234764350956374838">Noraidīt</translation>
 <translation id="5100490448228945668">Noraidīt Brave meklēšanas konvertāciju; nospiediet Ievadīt, lai noņemtu šo ieteikumu</translation>
+<translation id="9194637241566114638">Palīdziet uzlabot <ph name="SEARCH_NAME"/>, sūtot anonīmus lietojuma datus.  <ph name="MORE_INFO"/></translation>
+<translation id="7404610376221341525">Brave meklēšana</translation>
+<translation id="8184318863960255706">Plašāka informācija</translation>
+<translation id="6965382102122355670">Labi</translation>
+<translation id="780301667611848630">Nē, paldies</translation>
 <translation id="2515126961943087659">BAT reklāmu pakalpojums</translation>
 <translation id="7924918279836988121">BAT norēķinu pakalpojums</translation>
 <translation id="6040143037577758943">Aizvērt</translation>
@@ -240,6 +240,7 @@
 <translation id="7859704718976024901">Pārlūkošanas vēsture</translation>
 <translation id="8820817407110198400">Grāmatzīmju josla</translation>
 <translation id="6333347122924254968">Rādīt Brave Atlīdzību ikonu adrešu joslā</translation>
+<translation id="2245286910966863912">Rādīt Brave ziņu pogu adreses joslā</translation>
 <translation id="1811404036171336214">Vienmēr rādīt grāmatzīmes jaunas cilnes lapā</translation>
 <translation id="3416468988018290825">Vienmēr rādīt pilnus URL vietrāžus</translation>
 <translation id="5529693968082667490">Rādīt pogu "Meklēt cilnes"</translation>
@@ -334,6 +335,7 @@
 <translation id="5165042248369837294">Atļaut Twitter iegultos tvītus</translation>
 <translation id="958971637207126733">Atļaut LinkedIn iegultās ziņas</translation>
 <translation id="8792121506918889955">WebRTC IP apstrādes politika</translation>
+<translation id="6165508094623778733">Uzzinināt vairāk</translation>
 <translation id="1822560017823072927">Noklusējuma publiskie un privātie interfeisi</translation>
 <translation id="5825943197137337319">Tikai noklusējuma publiskais interfeiss</translation>
 <translation id="1689062823386843231">Atspējot UDP protokolu, kam netiek izmantots starpniekserveris</translation>

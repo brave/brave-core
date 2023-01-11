@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Brave'i kaudu saate alustada isikliku kõne.</translation>
 <translation id="4903286433687221248">Brave Talkis saate sõpradele ja kolleegidele piiramatult helistada.</translation>
 <translation id="7115051913071512405">Proovige järele</translation>
-<translation id="1447534717041828517">Kuva tööriistaribal Brave'i uudiste nupp</translation>
 <translation id="370665806235115550">Laadimine...</translation>
 <translation id="4634933166298842522">Tellimuste haldamine</translation>
 <translation id="4108314971463891922">Jälgi</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Külastage veebisaiti creators.brave.com, et registreeruda juba täna ning alustada BAT-i teenimist oma fännidelt ja jälgijatelt.</translation>
 <translation id="4816455138209470435">Brave toetab YouTube'i, Twitchi, Vimeot ja paljut muud.</translation>
 <translation id="3656941797339037856">Siduge Rewards Geminiga!</translation>
-<translation id="31532096120351460">Gemini kaudu saab kaubelda rohkem kui 50 krüptovääringuga, sealhulgas BAT. See on turvaline platvorm krüptoraha säilitamiseks. Lisaks saate teenida intressi Ameerika Ühendriikides, Hongkongis ja Singapuris.</translation>
+<translation id="2888702144235098855">Gemini kaudu saab kaubelda rohkem kui 50 krüptovääringuga, sealhulgas BAT. See on turvaline platvorm krüptoraha säilitamiseks.</translation>
 <translation id="7404779623219601861">Lunasta BAT-d kinkekaartide vastu</translation>
 <translation id="6215565499749144110">TAP-võrgustikuga saad lunastada oma BAT-sid populaarsete kaubamärkide kinkekaartide vastu.</translation>
 <translation id="6915065518766963119">* Vajalik hoidmise kinnitus.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Välja loginud</translation>
 <translation id="6080167751812750226">Katkesta ühendus teenusepakkujaga <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Hinnanguline tulu</translation>
-<translation id="4244985009709452836">Logige oma <ph name="PROVIDER"/> kontole sisse</translation>
+<translation id="7934950257968365573">Logige sisse oma teenusepakkuja <ph name="PROVIDER"/> kontole</translation>
 <translation id="2613359062756190460">Ühekordsed preemiad</translation>
 <translation id="590733288489975971">Preemiad Adsilt</translation>
 <translation id="6181762795539107980">Kinnitamata</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Osta Wyre kaudu</translation>
 <translation id="5522073372365069684">Osta Rampi kaudu</translation>
 <translation id="7902920577183739843">Osta Sardine'i kaudu</translation>
-<translation id="6534275647567011533">Osta Transaki kaudu</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Krüpto ostmine Visa või Mastercardi abil.</translation>
 <translation id="3101839349578102016">Kohene ost teie pangakonto kaudu. Madalamad tasud.</translation>
 <translation id="8528916244724490964">Kõik võrgud</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Autod</translation>
 <translation id="7577010593836079522">Kultuur</translation>
 <translation id="3706423975342040244">Meelelahutus</translation>
+<translation id="3284069358246729581">Meelelahutusuudised</translation>
 <translation id="1432147735538902155">Mood</translation>
+<translation id="3350377832708834609">Filmid ja telesaated</translation>
 <translation id="736592699917579616">Toit</translation>
 <translation id="5104499318017527547">Ajaviide</translation>
 <translation id="2228584369802328636">Mängimine</translation>
 <translation id="6941852195052765076">Tervis</translation>
 <translation id="932327136139879170">Kodu</translation>
+<translation id="5178222043222938163">Muusika</translation>
 <translation id="1322083935398004629">Poliitika</translation>
+<translation id="8739620487574841501">Piirkondlikud uudised</translation>
 <translation id="3872834068356954457">Teadus</translation>
 <translation id="1264974993859112054">Sport</translation>
 <translation id="2283599456633275070">Reisimine</translation>
 <translation id="7487067081878637334">Tehnoloogia</translation>
+<translation id="151743034625508713">Tehnoloogiauudised</translation>
+<translation id="2388279876296929435">Tehnoloogiaülevaated</translation>
 <translation id="5030268312472358928">Tähtsamad uudised</translation>
 <translation id="5510475084662028636">Põhilised allikad</translation>
+<translation id="1297570508541015874">USA uudised</translation>
 <translation id="1459693405370120464">Ilm</translation>
 <translation id="8366057325711477500">Maailma uudised</translation>
 <translation id="6303294677342628402">Kaitse</translation>
@@ -1612,13 +1616,17 @@
 <translation id="2453860139492968684">Valmis</translation>
 <translation id="2273851479262317744">Määra Brave vaikebrauseriks</translation>
 <translation id="5037676449506322593">Vali kõik</translation>
-<translation id="8330804319517911603">Aidake Brave'i paremaks muuta</translation>
-<translation id="2867964979837593892">Peenhäälestame toodet. Teie privaatsuse kaitsel. Iga päev.</translation>
-<translation id="7661940959332108190">Saate saata diagnostikaaruande, kui Brave läheb krahhi või hangub.</translation>
-<translation id="6358373266071757311">Saate anonüümselt ja privaatselt tooteülevaateid jagada. See aitab meil teada saada, milliseid Brave'i funktsioone kasutatakse kõige sagedamini.</translation>
+<translation id="5148943178722443958">Aidake Brave'i paremaks muuta.</translation>
+<translation id="1097073572755862978">Saatke diagnostikaaruanne, kui kogete krahhi minekut või hangumist. <ph name="LINK_BEFORE"/>Lisateave.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Jagage täiesti privaatselt ja anonüümselt tooteteavet funktsioonide kohta, mida Brave’i kasutajad tarvitavad. <ph name="LINK_BEFORE"/>Lisateave.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Seadistamine on lõpetatud</translation>
 <translation id="3141206739023333979">Neid valikuid saate Brave'is alati muuta lehel <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Lugege kõiki meie <ph name="LINK_BEFORE"/>privaatsuspõhimõtteid<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">Valige oma lahendus</translation>
+<translation id="6262510489122516114">Saate seda igal ajal Brave’i seadetes muuta.</translation>
+<translation id="546481172717459539">Ühilda süsteemiseade</translation>
+<translation id="7799817062559422778">Hele režiim</translation>
+<translation id="4117637339509843559">Tume režiim</translation>
 <translation id="7821773512278295352">Brave'i tulemüür + VPN: ühendatud</translation>
 <translation id="6019088868713395120">Brave'i tulemüür + VPN: ühenduseta</translation>
 <translation id="3541307549916475335">Brave'i VPN-i paneeli kasutajaliides</translation>
@@ -1664,7 +1672,12 @@
 <translation id="3307461350293459700">VPN-i ühenduse loomine nurjus. Proovige uuesti ühendust luua ja klõpsake kindlasti valikul „Luba“, et lubada Brave'i VPN-i konfiguratsioon.</translation>
 <translation id="7261518280726313829">Turvalise DNS-i väljalülitamine või Windowsis vaikeserverite kasutamine võib avaldada internetiteenuse pakkujale veebisaitide nimed, mida külastate. Brave ei soovita seda teha. Kas soovite seda siiski teha?</translation>
 <translation id="888284761945060750">Turvaline DNS on teie organisatsiooni poliitikate kohaselt keelatud. Brave'i VPN-i kasutamine ilma turvalise DNS-ita võib avaldada internetiteenuse pakkujale või organisatsioonile veebisaitide nimed, mida külastate.</translation>
+<translation id="6593224083874259773">Brave’i VPN Windowsis</translation>
+<translation id="3153983908111684619">Kui Brave’i VPN on ühendatud, lukustab see selle seade.</translation>
+<translation id="6507543978646831931">Windowsil on funktsioon nimega Smart Multi-Homed Name Resolution, mis saab avaldada teavet teie asukoha ja külastatavate saitide kohta. Kui lubate Brave’i VPN-i, muudetakse brauseris DNS-seadeid, et vältida teie teabe avaldamist. Seade jääb jõusse ja lukustatuks, kuni VPN on ühendatud. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Ära hoiata mind enam selle eest.</translation>
+<translation id="2740531572673183784">OK</translation>
+<translation id="9061845622728745852">Ajavöönd:</translation>
 <translation id="7586151660465233733">Veel turge saidil <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Vaata turge ja kauple FTX-is krüptoga</translation>
 <translation id="5963745988819586370">Turud</translation>

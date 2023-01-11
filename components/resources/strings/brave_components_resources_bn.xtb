@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">আপনি Brave এ প্রাইভেট কল শুরু করতে পারেন।</translation>
 <translation id="4903286433687221248">Brave Talk-এ বন্ধু এবং সহকর্মীদের সাথে সীমাহীন কল শুরু করুন।</translation>
 <translation id="7115051913071512405">চেষ্টা কর</translation>
-<translation id="1447534717041828517">টুলবারে Brave সংবাদ বোতাম দেখান</translation>
 <translation id="370665806235115550">লোড হচ্ছে...</translation>
 <translation id="4634933166298842522">সাবস্ক্রিপশন পরিচালনা করুন</translation>
 <translation id="4108314971463891922">ফলো করুন</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">আজ সাইন আপ করতে creators.brave.com-এ যান এবং আপনার ফ্যান ও ফলোয়ারদের থেকে BAT আয় করা শুরু করুন।</translation>
 <translation id="4816455138209470435">Brave-এ YouTube, Twitch, Vimeo এবং আরও অনেক কিছু সমর্থিত!</translation>
 <translation id="3656941797339037856">Gemini-র সাথে Rewards লিঙ্ক করুন!</translation>
-<translation id="31532096120351460">Gemini-তে, BAT সহ, 50+ ক্রিপ্টো কেনাবেচা করুন। এটি আপনার ক্রিপ্টো সংরক্ষণ করার একটি নিরাপদ প্ল্যাটফর্ম। উপরন্তু, আপনি মার্কিন যুক্তরাষ্ট্র, হংকং এবং সিঙ্গাপুরে সুদ উপার্জন করতে পারবেন।</translation>
+<translation id="2888702144235098855">Gemini-এ BAT সহ 50+ ক্রিপ্টো ট্রেড করুন। আপনার ক্রিপ্টো সঞ্চয় করার এটা একটা নিরাপদ প্ল্যাটফর্ম।</translation>
 <translation id="7404779623219601861">উপহার কার্ডের জন্য BAT রিডিম করুন</translation>
 <translation id="6215565499749144110">TAP নেটওয়ার্ক দিয়ে, আপনি জনপ্রিয় নাম-ব্র্যান্ড যুক্ত উপহার কার্ডের জন্য আপনার BAT রিডিম করে নিতে পারেন।</translation>
 <translation id="6915065518766963119">* অনুমোদিত যাচাইকরণের প্রয়োজন।</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">লগ আউট করেছেন</translation>
 <translation id="6080167751812750226"><ph name="PROVIDER"/> থেকে সংযোগ বিচ্ছিন্ন করুন</translation>
 <translation id="3600355176618429948">আনুমানিক উপার্জন</translation>
-<translation id="4244985009709452836">আপনার <ph name="PROVIDER"/> অ্যাকাউন্টে লগইন করুন</translation>
+<translation id="7934950257968365573">আপনার <ph name="PROVIDER"/> অ্যাকাউন্টে লগইন করুন</translation>
 <translation id="2613359062756190460">একবারের দান/পরামর্শ</translation>
 <translation id="590733288489975971">বিজ্ঞাপন থেকে পুরস্কার</translation>
 <translation id="6181762795539107980">যাচাই করা হয়নি</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Wyre দিয়ে ক্রয় করুন</translation>
 <translation id="5522073372365069684">Ramp দিয়ে ক্রয় করুন</translation>
 <translation id="7902920577183739843">Sardine দিয়ে কিনুন</translation>
-<translation id="6534275647567011533">Transak-এর মাধ্যমে কিনুন</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Visa বা Mastercard দিয়ে ক্রিপ্টো কিনুন।</translation>
 <translation id="3101839349578102016">আপনার ব্যাঙ্ক একাউন্ট দিয়ে তাৎক্ষণিক কিনুন। কম ফি।</translation>
 <translation id="8528916244724490964">সকল নেটওয়ার্ক</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">গাড়ি</translation>
 <translation id="7577010593836079522">সংস্কৃতি</translation>
 <translation id="3706423975342040244">বিনোদন</translation>
+<translation id="3284069358246729581">বিনোদনের খবর</translation>
 <translation id="1432147735538902155">ফ্যাশন</translation>
+<translation id="3350377832708834609">ফিল্ম এবং টিভি</translation>
 <translation id="736592699917579616">খাদ্য</translation>
 <translation id="5104499318017527547">মজা</translation>
 <translation id="2228584369802328636">গেমিং</translation>
 <translation id="6941852195052765076">স্বাস্থ্য</translation>
 <translation id="932327136139879170">হোম</translation>
+<translation id="5178222043222938163">মিউজিক</translation>
 <translation id="1322083935398004629">রাজনীতি</translation>
+<translation id="8739620487574841501">আঞ্চলিক খবর</translation>
 <translation id="3872834068356954457">বিজ্ঞান</translation>
 <translation id="1264974993859112054">খেলাধূলা</translation>
 <translation id="2283599456633275070">ভ্রমণ</translation>
 <translation id="7487067081878637334">প্রযুক্তি</translation>
+<translation id="151743034625508713">প্রযুক্তির খবর</translation>
+<translation id="2388279876296929435">প্রযুক্তি রিভিউ</translation>
 <translation id="5030268312472358928">সেরা খবর</translation>
 <translation id="5510475084662028636">সেরা সোর্স</translation>
+<translation id="1297570508541015874">মার্কিন যুক্তরাষ্ট্রের খবর</translation>
 <translation id="1459693405370120464">আবহাওয়া</translation>
 <translation id="8366057325711477500">বিশ্বের খবর</translation>
 <translation id="6303294677342628402">শিল্ড</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">সমাপ্ত করুন</translation>
 <translation id="2273851479262317744">Brave-কে ডিফল্ট ব্রাউজার হিসেবে সেট করুন</translation>
 <translation id="5037676449506322593">সব বেছে নিন</translation>
-<translation id="8330804319517911603">Brave উন্নত করতে সহায়তা করুন</translation>
-<translation id="2867964979837593892">প্রোডাক্ট ফাইন-টিউন করুন। আপনার গোপনীয়তা সুরক্ষিত রাখুন। প্রতিদিন।</translation>
-<translation id="7661940959332108190">Brave ক্র্যাশ বা ফ্রিজ হলে ডায়াগোনস্টিক রিপোর্ট পাঠান।</translation>
-<translation id="6358373266071757311">বেনামী, গোপন প্রোডাক্টের ইনসাইট শেয়ার করুন। Brave -এর কোন বৈশিষ্ট্যগুলো প্রায়শই ব্যবহৃত হয় এটি আমাদের তা জানতে সাহায্য করে।</translation>
+<translation id="5148943178722443958">Brave কে আরও ভালো করে তুলতে সাহায্য করুন৷।</translation>
+<translation id="1097073572755862978">আপনি ক্র্যাশ বা ফ্রিজের অভিজ্ঞতা লাভ করে থাকলে ডায়াগোনস্টিক রিপোর্ট পাঠান। <ph name="LINK_BEFORE"/>আরও জানুন।<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Brave ইউজাররা কোন ফিচার ব্যবহার ব্যবহার করছেন সেই সম্বন্ধে সম্পূর্ণভাবে ব্যক্তিগত ও বেনামী প্রোডাক্ট ইনসাইট শেয়ার করুন। <ph name="LINK_BEFORE"/>আরও জানুন।<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">সেটআপ সম্পূর্ণ</translation>
 <translation id="3141206739023333979"><ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>-এ Brave-এ যে কোনো সময়ে বিকল্পের পরিবর্তন করুন।</translation>
 <translation id="8321985064212130832">আমাদের সম্পূর্ণ <ph name="LINK_BEFORE"/>গোপনীয়তা নীতি<ph name="LINK_AFTER"/> পড়ুন</translation>
+<translation id="2801098717523961746">আপনার থীম পছন্দ</translation>
+<translation id="6262510489122516114">আপনি Brave সেটিংসের মধ্যে যে কোনও সময় এটি পরিবর্তন করতে পারেন।</translation>
+<translation id="546481172717459539">ম্যাচ সিস্টেম সেটিং</translation>
+<translation id="7799817062559422778">লাইট মোড</translation>
+<translation id="4117637339509843559">ডার্ক মোড</translation>
 <translation id="7821773512278295352">Brave ফায়ারওয়াল + VPN: সংযুক্ত</translation>
 <translation id="6019088868713395120">Brave ফায়ারওয়াল + VPN: সংযোগ বিচ্ছিন্ন</translation>
 <translation id="3541307549916475335">Brave VPN প্যানেল UI</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">VPN সংযোগ করা যায়নি। অনুগ্রহ করে আবার সংযোগ করার চেষ্টা করুন এবং Brave-এর VPN কনফিগারেশন সক্রিয় করেছেন কিনা সুনিশ্চিত করুন।</translation>
 <translation id="7261518280726313829">নিরাপদ DNS বন্ধ করলে বা Windows-এ ডিফল্ট সার্ভার ব্যবহার করলে আপনি যেসব সাইট দেখেছেন আপনার ইন্টারনেট প্রোভাইডারের কাছে সেসব সাইটের নাম প্রকাশ হয়ে যেতে পারে। Brave এরকম করার সুপারিশ করে না। আপনি কি যে কোনও উপায়ে এটি করতে চান?</translation>
 <translation id="888284761945060750">আপনার সংস্থার পলিসি অনুযায়ী নিরাপদ DNS নিষ্ক্রিয় করা আছে। নিরাপদ DNS ছাড়া Brave VPN ব্যবহার করলে আপনি যে সব সাইট দেখেছেন আপনার ইন্টারনেট সার্ভিস প্রোভাইডার বা সংস্থার কাছে সেসব সাইটের নাম প্রকাশ হয়ে যেতে পারে।</translation>
+<translation id="6593224083874259773">Windows-এ Brave VPN</translation>
+<translation id="3153983908111684619">এটি সংযুক্ত থাকার স BraveVPN এই সেটিং লক করে</translation>
+<translation id="6507543978646831931">Windows-এর স্মার্ট মাল্টি-হোমড নেম রেজোলিউশন নামে একটি ফিচার আছে, যা আপনার লোকেশন ও আপনি যে সাইটগুলোতে যান সেই তথ্য প্রকাশ করতে পারে। আপনি এখন Brave VPN চালু করেছেন, এই এক্সপোজারকে সুরক্ষিত রাখতে ব্রাউজারের মধ্যে আমরা DNS সেটিংস পরিবর্তন করেছি। VPN সংযুক্ত থাকার সময়ে এই সেটিংস কার্যকর ও লক থাকবে। <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">এই সম্পর্কে আমাকে আর সতর্ক করবেন না।</translation>
+<translation id="2740531572673183784">ঠিক আছে</translation>
+<translation id="9061845622728745852">সময় জোন:</translation>
 <translation id="7586151660465233733"><ph name="SITE_NAME"/>-এ আরো মার্কেট পাওয়া যাবে</translation>
 <translation id="952067063131306699">FTX-এ মার্কেট দেখুন এবং ক্রিপ্টো ট্রেডিং করুন</translation>
 <translation id="5963745988819586370">মার্কেট</translation>

@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Unaweza kuanzisha simu ya faragha katika Brave.</translation>
 <translation id="4903286433687221248">Anza mawasiliano ya simu zisizo na kikomo na marafiki na wafanyakazi wenza katika Brave Talk.</translation>
 <translation id="7115051913071512405">Ijaribu</translation>
-<translation id="1447534717041828517">Onyesha kitufe cha Habari za Brave kwenye upau wa vidhibiti</translation>
 <translation id="370665806235115550">Inapakia...</translation>
 <translation id="4634933166298842522">Dhibiti Usajili</translation>
 <translation id="4108314971463891922">Fuata</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Tembelea creators.brave.com ili kujisajili leo na uanze kupata BAT kutoka kwa mashabiki na wafuasi wako.</translation>
 <translation id="4816455138209470435">Brave huwezesha matumizi ya YouTube, Twitch, Vimeo na zaidi!</translation>
 <translation id="3656941797339037856">Unganisha Zawadi kwa Gemini!</translation>
-<translation id="31532096120351460">Uza crypto 50+, ikiwa ni pamoja na BAT, kwenye Gemini. Ni jukwaa salama la kuhifadhi crypto yako. Aidha, unaweza kupata riba ndani ya US, HK na SG.</translation>
+<translation id="2888702144235098855">Uza crypto 50+, ikiwa ni pamoja na BAT, kwenye Gemini. Ni jukwaa salama la kuhifadhi crypto yako.</translation>
 <translation id="7404779623219601861">Tumia BAT upate Kadi za Zawadi</translation>
 <translation id="6215565499749144110">Unaweza kurudisha BAT yako kwa kadi za zawadi za chapa ya jina maarufu ukiwa na Mtandao wa TAP.</translation>
 <translation id="6915065518766963119">* Inahitaji Uthibitisho wa Kudumisha.</translation>
@@ -648,7 +647,7 @@
 <translation id="8328137586971750853">Brave itakuwa inatumia Infura kutoa miito ya Ethereum JSON-RPC kwa mkataba mahiri kutoka kwa Huduma ya Majina ya Ethereum ili kutatua maombi ya ukaguzi wa jina ya kikoa cha .eth. Ukiwezesha hili, Infura itaona kikoa cha .eth ambacho unajaribu kutembelea lakini haitaweza kuona vikoa vingine. Tazama <ph name="BEGIN_INFURA_TOU_LINK"/>masharti ya matumizi<ph name="END_INFURA_TOU_LINK"/> na <ph name="BEGIN_INFURA_PRIVACY_LINK"/>sera ya faragha<ph name="END_INFURA_PRIVACY_LINK"/> ya Infura.</translation>
 <translation id="807404806385418949">Utafutaji wa Nje wa Huduma ya Jina ya Ethereum</translation>
 <translation id="4049590838234508776">Je, ungependa kuwezesha matumizi ya utafutaji wa nje wa Huduma ya Jina ya Ethereum (ENS) katika Brave?</translation>
-<translation id="1769433806670482329">Brave itakuwa inatumia malango ya nje ya mtungo kutatua maombi ya ukaguzi wa jina ya kikoa cha .eth. Ukiwezesha hili, malango ya mhusika wa mwingine yataona kikoa cha .eth unachojaribu kutembelea lakini hayataweza kuona vikoa vingine. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Jifunze zaidi<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
+<translation id="1769433806670482329">Brave itakuwa inatumia malango ya nje ya mtungo kutatua maombi ya ukaguzi wa jina ya kikoa cha .eth. Ukiwezesha hili, malango ya mhusika mwingine yataona kikoa cha .eth unachojaribu kutembelea lakini hayataweza kuona vikoa vingine. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Jifunze zaidi<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
 <translation id="4047002754575891955">Endelea na utafuti wa nje</translation>
 <translation id="531747189990625622">Huduma ya Majina ya Solana</translation>
 <translation id="1090584614351290462">Je, ungependa kuwezesha matumizi ya Huduma ya Majina ya Solana (SNS) kwenye Brave?</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Umeondoka</translation>
 <translation id="6080167751812750226">Tengansha kutoka kwa <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Mapato Yanayokadiriwa</translation>
-<translation id="4244985009709452836">Unganisha akaunti yako ya <ph name="PROVIDER"/></translation>
+<translation id="7934950257968365573">Ingia kwenye akaunti yako ya <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Michango ya Mara Moja</translation>
 <translation id="590733288489975971">Zawadi kutoka kwenye Matangazo</translation>
 <translation id="6181762795539107980">Haijathibitishwa</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Nunua kwa Wyre</translation>
 <translation id="5522073372365069684">Nunua kwa Ramp</translation>
 <translation id="7902920577183739843">Nunua na Sardini</translation>
-<translation id="6534275647567011533">Nunua kwa Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardini</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Nunua crypto kwa Visa au Mastercard.</translation>
 <translation id="3101839349578102016">Ununuzi wa papo hapo kwa akaunti yako ya benki. Ada za chini.</translation>
 <translation id="8528916244724490964">Mitandao Yote</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Magari</translation>
 <translation id="7577010593836079522">Utamaduni</translation>
 <translation id="3706423975342040244">Burudani</translation>
+<translation id="3284069358246729581">Habari za Burudani</translation>
 <translation id="1432147735538902155">Mitindo</translation>
+<translation id="3350377832708834609">Filamu na Vipindi vya Runinga</translation>
 <translation id="736592699917579616">Chakula</translation>
 <translation id="5104499318017527547">Kujifurahisha</translation>
 <translation id="2228584369802328636">Michezo</translation>
 <translation id="6941852195052765076">Afya</translation>
 <translation id="932327136139879170">Mwanzo</translation>
+<translation id="5178222043222938163">Muziki</translation>
 <translation id="1322083935398004629">Siasa</translation>
+<translation id="8739620487574841501">Habari za Kanda</translation>
 <translation id="3872834068356954457">Sayansi</translation>
 <translation id="1264974993859112054">Michezo</translation>
 <translation id="2283599456633275070">Ziara</translation>
 <translation id="7487067081878637334">Teknolojia</translation>
+<translation id="151743034625508713">Habari za Teknolojia</translation>
+<translation id="2388279876296929435">Ukadiriaji wa Teknolojia</translation>
 <translation id="5030268312472358928">Habari Kuu</translation>
 <translation id="5510475084662028636">Vyanzo Vikuu</translation>
+<translation id="1297570508541015874">Habari za Marekani</translation>
 <translation id="1459693405370120464">Hali ya Hewa</translation>
 <translation id="8366057325711477500">Habari za Dunia</translation>
 <translation id="6303294677342628402">Ulinzi</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">Maliza</translation>
 <translation id="2273851479262317744">Weka Brave kuwa kivinjari chaguomsingi</translation>
 <translation id="5037676449506322593">Chagua Wote</translation>
-<translation id="8330804319517911603">Saidia kuboresha Brave</translation>
-<translation id="2867964979837593892">Kurekebisha bidhaa kuwa bora zaidi. Kulinda faragha yako. Kila siku.</translation>
-<translation id="7661940959332108190">Tuma ripoti za uchunguzi wa kubainisha tatizo ikiwa Brave itaacha kufanya kazi au kukwama.</translation>
-<translation id="6358373266071757311">Shiriki taarifa zisizobainisha utambulisho za faragha kuhusu bidhaa. Hili hutusaidia kujifunza vipengele vya Brave vinavyotumiwa mara nyingi.</translation>
+<translation id="5148943178722443958">Saidia kuboresha Brave.</translation>
+<translation id="1097073572755862978">Tuma ripoti za uchunguzi wa kubainisha matatizo ikiwa utakabiliwa na programu kuacha kufanya kazi vyema au kukwama. <ph name="LINK_BEFORE"/>Jifunze zaidi.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Shiriki taarifa za uelewa wa bidhaa ambazo ni za faragha na zisizobainisha utambulisho kabisa kuhusu ni vipengele vipi vinatumiwa na watumiaji wa Brave. <ph name="LINK_BEFORE"/>Jifunze zaidi.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Usanidi umekamilika</translation>
 <translation id="3141206739023333979">Badilisha uteuzi huu wakati wowote kwenye Brave katika <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Soma <ph name="LINK_BEFORE"/>Sera yetu kamili ya Faragha<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">Chagua thimu yako</translation>
+<translation id="6262510489122516114">Unaweza kubadilisha hili wakati wowote katika Mipangilio ya Brave.</translation>
+<translation id="546481172717459539">Linganisha mpangilio wa mfumo</translation>
+<translation id="7799817062559422778">Hali ya mwanga</translation>
+<translation id="4117637339509843559">Hali ya giza</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: Vimeunganishwa</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: Havijaunganishwa</translation>
 <translation id="3541307549916475335">UI ya Paneli ya VPN ya Brave</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">Muunganisho wa VPN haujafaulu. Tafadhali jaribu kuunganisha tena na uhakikishe umebofya Ruhusu ili kuwezesha usanidi wa VPN wa Brave.</translation>
 <translation id="7261518280726313829">Kuzima DNS salama au kutumia seva chaguo-msingi kwenye Windows kunaweza kufichua majina ya tovuti unazotembelea kwa mtoa huduma wako wa Intaneti. Brave haipendekezi kufanya hivi. Je, ungependa kufanya hivyo hata hivyo?</translation>
 <translation id="888284761945060750">DNS salama imelemezwa na sera za shirika lako. Kutumia VPN ya Brave bila DNS Salama kunaweza kufichua majina ya tovuti unazotembelea kwa mtoa huduma wako wa Intaneti au shirika lako.</translation>
+<translation id="6593224083874259773">VPN ya Brave kwenye Windows</translation>
+<translation id="3153983908111684619">Mpangilio huo hufungwa na BraveVPN wakati imeunganishwa</translation>
+<translation id="6507543978646831931">Windows ina kipengele kinachoitwa Smart Multi-Homed Name Resolution, ambacho kinaweza kufichua taarifa kuhusu eneo lako na tovuti unazotembelea. Kwa kuwa sasa umewasha Brave VPN, tumebadilisha mipangilio ya DNS kwenye kivinjari ili kutoa ulinzi dhidi ya ufichuzi huu. Mipangilio hiyo itaendelea kutumika na kufungwa wakati VPN imeunganishwa. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Usinionye kuhusu hii tena.</translation>
+<translation id="2740531572673183784">Sawa</translation>
+<translation id="9061845622728745852">Saa za eneo:</translation>
 <translation id="7586151660465233733">Masoko zaidi kwenye <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Tazama masoko na uuze crypto kwenye FTX</translation>
 <translation id="5963745988819586370">Masoko</translation>

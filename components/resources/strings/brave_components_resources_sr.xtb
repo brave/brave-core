@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Možete da započnete privatni poziv u Brave-u.</translation>
 <translation id="4903286433687221248">Pokrenite neograničene pozive sa prijateljima i kolegama pomoću Brave Talk.</translation>
 <translation id="7115051913071512405">Isprobajte</translation>
-<translation id="1447534717041828517">Prikaži dugme za Brave vesti na traci sa alatkama</translation>
 <translation id="370665806235115550">Учитава се...</translation>
 <translation id="4634933166298842522">Upravljajte pretplatama</translation>
 <translation id="4108314971463891922">Prati</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Posetite creators.brave.com da biste se već danas prijavili i počeli da zarađujete BAT tokene od vaših fanova i pratilaca.</translation>
 <translation id="4816455138209470435">Brave podržava YouTube, Twitch, Vimeo i druge platforme!</translation>
 <translation id="3656941797339037856">Povežite Rewards i Gemini!</translation>
-<translation id="31532096120351460">Pomoću platforme Gemini, trgujte sa više od 50 kriptovaluta, uključujući i tokene (BAT). To je bezbedna platforma za čuvanje vaše kriptovalute. Osim toga, možete dobiti i kamatu za US, HK i SG.</translation>
+<translation id="2888702144235098855">Pomoću platforme Gemini, trgujte sa više od 50 kriptovaluta, uključujući i tokene (BAT). To je bezbedna platforma za čuvanje vaše kriptovalute.</translation>
 <translation id="7404779623219601861">Zamenite BAT za poklon kartice</translation>
 <translation id="6215565499749144110">Sa TAP mrežom, možete zameniti vaše BAT za popularno ime- poklon kartice brenda.</translation>
 <translation id="6915065518766963119">*Zahteva potvrdnu verifikaciju.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Odjavljeno</translation>
 <translation id="6080167751812750226">Prekini vezu sa <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Procenjena zarada</translation>
-<translation id="4244985009709452836">Prijavite se na svoj <ph name="PROVIDER"/> nalog</translation>
+<translation id="7934950257968365573">Prijavite se na svoj <ph name="PROVIDER"/> nalog</translation>
 <translation id="2613359062756190460">Jednokratne donacije</translation>
 <translation id="590733288489975971">Nagrade od Ads</translation>
 <translation id="6181762795539107980">Nepotvrđeno</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Kupiti preko servisa Wyre</translation>
 <translation id="5522073372365069684">Kupiti preko servisa Ramp</translation>
 <translation id="7902920577183739843">Kupujte sa platformom Sardine</translation>
-<translation id="6534275647567011533">Kupiti preko servisa Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Kupovina kripto valute pomoću platnog sistema Visa ili Mastercard.</translation>
 <translation id="3101839349578102016">Trenutna kupovina sa vašim bankovnim računom. Niže naknade.</translation>
 <translation id="8528916244724490964">Sve mreže</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Automobili</translation>
 <translation id="7577010593836079522">Kultura</translation>
 <translation id="3706423975342040244">Razonoda</translation>
+<translation id="3284069358246729581">Vesti iz sveta razonode</translation>
 <translation id="1432147735538902155">Moda</translation>
+<translation id="3350377832708834609">Film i TV</translation>
 <translation id="736592699917579616">Hrana</translation>
 <translation id="5104499318017527547">Zabava</translation>
 <translation id="2228584369802328636">Gejming</translation>
 <translation id="6941852195052765076">Zdravlje</translation>
 <translation id="932327136139879170">Почетна</translation>
+<translation id="5178222043222938163">Muzika</translation>
 <translation id="1322083935398004629">Politika</translation>
+<translation id="8739620487574841501">Vesti iz regiona</translation>
 <translation id="3872834068356954457">Nauka</translation>
 <translation id="1264974993859112054">Спорт</translation>
 <translation id="2283599456633275070">Putovanje</translation>
 <translation id="7487067081878637334">Технологија</translation>
+<translation id="151743034625508713">Vesti iz sveta tehnologije</translation>
+<translation id="2388279876296929435">Recenzije iz sveta tehnologije</translation>
 <translation id="5030268312472358928">Najvažnije vesti</translation>
 <translation id="5510475084662028636">Najpopularniji izvori</translation>
+<translation id="1297570508541015874">Vesti iz SAD</translation>
 <translation id="1459693405370120464">Vreme</translation>
 <translation id="8366057325711477500">Vesti iz sveta</translation>
 <translation id="6303294677342628402">Štitovi</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">Заврши</translation>
 <translation id="2273851479262317744">Podesi Brave kao podrazumevani pretraživač</translation>
 <translation id="5037676449506322593">Izaberi sve</translation>
-<translation id="8330804319517911603">Pomozite nam da Brave učinimo još boljim</translation>
-<translation id="2867964979837593892">Fino podešavanje proizvoda. Zaštita vaše privatnosti svakog dana.</translation>
-<translation id="7661940959332108190">Pošaljite nam dijagnostički izveštaj u slučaju da dođe do pada ili kočenja pregledača Brave.</translation>
-<translation id="6358373266071757311">Podelite anonimna, privatna saznanja o proizvodu. To nam pomaže da razumemo koje Brave funkcije se najčešće koriste.</translation>
+<translation id="5148943178722443958">Pomozite nam da poboljšamo Brave.</translation>
+<translation id="1097073572755862978">Pošaljite nam dijagnostički izveštaj u slučaju da dođe do pada ili kočenja programa. <ph name="LINK_BEFORE"/>Saznajte više.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Podelite potpuno privatna i anonimna saznanja o proizvodu što se tiče funkcija koje upotrebljavaju Brave korisnici. <ph name="LINK_BEFORE"/>Saznajte više.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Konfigurisanje je dovršeno</translation>
 <translation id="3141206739023333979">Ove opcije možete promeniti u svakom trenutku u pregledaču Brave tako što idete na <ph name="LINK_BEFORE1"/>brave://podešavanja/privatnost<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Pročitajte u celosti našu <ph name="LINK_BEFORE"/>politiku privatnosti<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">Odaberite temu</translation>
+<translation id="6262510489122516114">Ovo uvek možete da promenite u podešavanjima pregledača Brave.</translation>
+<translation id="546481172717459539">Uskladiti sa podešavanjima sistema</translation>
+<translation id="7799817062559422778">Svetli režim</translation>
+<translation id="4117637339509843559">Tamni režim</translation>
 <translation id="7821773512278295352">Brave zaštitni zid + VPN: Povezano</translation>
 <translation id="6019088868713395120">Brave zaštitni zid + VPN: Nije povezano</translation>
 <translation id="3541307549916475335">Brave VPN Panel korisnički interfejs</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">VPN konekcija nije uspela. Pokušajte da se konektujete ponovo i proverite da li ste kliknuli na Dozvoli kako biste omogućili Brave VPN konfiguraciju.</translation>
 <translation id="7261518280726313829">Ako isključite bezbedan DNS ili koristite podrazumevane servere na operativnom sistemu Windows, vaš internet provajder može da vidi imena sajtova koje posećujete. Brave ne preporučuje da to učinite. Želite li ipak da to uradite?</translation>
 <translation id="888284761945060750">Bezbedan DNS je onemogućen zbog politike vaše organizacije. Ako koristite Brave VPN ali ne i bezbedan DNS, vaš internet provajder ili vaša organizacije može da vidi imena sajtova koje posećujete.</translation>
+<translation id="6593224083874259773">Brave VPN na operativnom sistemu Windows</translation>
+<translation id="3153983908111684619">Podešavanje je zaključano pomoću Brave VPN dok je on povezan</translation>
+<translation id="6507543978646831931">Operativni sistem Windows poseduje funkciju Smart Multi-Homed Name Resolution, koja može da otkrije informacije o vašoj lokaciji i veb-sajtovima koje posećujete. Budući da ste aktivirali Brave VPN, promenili smo podešavanja za DNS u pregledaču kako ne bi došlo do otkrivanja tih informacija. Ova podešavanja će biti aktivna i zaključana sve dok je VPN povezan. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Ne upozoravaj me više na ovo.</translation>
+<translation id="2740531572673183784">Потврди</translation>
+<translation id="9061845622728745852">Vremenska zona:</translation>
 <translation id="7586151660465233733">Više tržišta na <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Vidite tržišta i trgujte kripto valutom na FTX-u</translation>
 <translation id="5963745988819586370">Tržišta</translation>
