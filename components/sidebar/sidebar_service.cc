@@ -21,7 +21,6 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/common_util.h"
 #include "brave/components/l10n/common/localization_util.h"
-#include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
@@ -33,6 +32,10 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/common/features.h"
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 using version_info::Channel;
 

@@ -9,7 +9,6 @@
 #include "base/containers/contains.h"
 #include "base/ranges/algorithm.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
@@ -19,6 +18,10 @@
 #include "components/version_info/channel.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/common/features.h"
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 using ::testing::Eq;
 using ::testing::NiceMock;
