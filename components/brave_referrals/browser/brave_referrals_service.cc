@@ -62,9 +62,46 @@ BraveReferralsService::ReferralInitializedCallback*
 
 base::FilePath g_promo_file_path;
 
+using URLMatcherKey = base::flat_set<std::string>;
+using URLMatcherMap =
+    base::flat_map<URLMatcherKey, std::unique_ptr<url_matcher::URLMatcher>>;
+
+URLMatcherMap& GetURLMatcherMap() {
+  static base::NoDestructor<URLMatcherMap> matcher_map;
+  return *matcher_map;
+}
+
 base::Value::Dict CreateReferralHeader(
     const char partner_name[],
     const std::vector<std::string>& partner_domains) {
+  auto& matcher_map = GetURLMatcherMap();
+  URLMatcherKey key(partner_domains.begin(), partner_domains.end());
+  if (!matcher_map.count(key)) {
+    matcher_map[key] = std::make_unique<url_matcher::URLMatcher>();
+    auto& matcher = matcher_map[key];
+
+    url_matcher::URLMatcherConditionSet::Vector condition_sets;
+    base::MatcherStringPattern::ID id = 0u;
+    static_assert(std::is_arithmetic_v<decltype(id)>,
+                  "We'll use post-increment operator on |id| assuming that "
+                  "it's arithmetic type");
+    for (const auto& domain : partner_domains) {
+      condition_sets.push_back(
+          {url_matcher::util::CreateConditionSet(matcher.get(), id++,
+                                                 /*scheme*/ std::string(),
+                                                 /*host*/ domain,
+                                                 /*match_subdomains*/ true,
+                                                 /*port*/ 0,
+                                                 /*path*/ std::string(),
+                                                 /*query*/ std::string(),
+                                                 /*allow*/ true)});
+    }
+    // This operation is known to be expensive. So we cache the matcher.
+    matcher->AddConditionSets(condition_sets);
+  }
+
+  DCHECK(!matcher_map.at(key)->IsEmpty());
+
   base::Value::Dict headers_dict;
   base::Value::List domains;
   for (const auto& header : partner_domains)
@@ -170,27 +207,16 @@ bool BraveReferralsHeaders::GetMatchingReferralHeaders(
       continue;
     }
 
-    url_matcher::URLMatcher matcher;
-    url_matcher::URLMatcherConditionSet::Vector condition_sets;
-    base::MatcherStringPattern::ID id = 0u;
-    static_assert(std::is_arithmetic_v<decltype(id)>,
-                  "We'll use post-increment operator on |id| assuming that "
-                  "it's arithmetic type");
-    for (const auto& domain_value : *domains_list) {
-      condition_sets.push_back({url_matcher::util::CreateConditionSet(
-          &matcher, id++,
-          /*scheme*/ std::string(),
-          /*host*/ domain_value.GetString(),
-          /*match_subdomains*/ true,
-          /*port*/ 0,
-          /*path*/ std::string(),
-          /*query*/ std::string(),
-          /*allow*/ true)});
-    }
+    URLMatcherKey key;
+    for (const auto& domain_value : *domains_list)
+      key.insert(domain_value.GetString());
 
-    matcher.AddConditionSets(condition_sets);
-    DCHECK(!matcher.IsEmpty());
-    if (!matcher.MatchURL(url).empty()) {
+    const auto& matcher_map = GetURLMatcherMap();
+    DCHECK(matcher_map.count(key) && matcher_map.at(key))
+        << "URLMatcher for domain list should have been added.";
+    DCHECK(!matcher_map.at(key)->IsEmpty())
+        << "URLMatcher doesn't have proper match condition sets";
+    if (!matcher_map.at(key)->MatchURL(url).empty()) {
       *request_headers_dict = headers_dict;
       return true;
     }
