@@ -302,20 +302,21 @@ public class BraveNewTabPageLayout
         }
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
             initBraveNewsController();
-            if (BraveActivity.getBraveActivity() != null
-                    && BravePrefServiceBridge.getInstance().getNewsOptIn()) {
+            if (BravePrefServiceBridge.getInstance().getNewsOptIn()) {
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    Tab tab = BraveActivity.getBraveActivity().getActivityTab();
-                    if (tab != null && tab.getUrl().getSpec() != null
-                            && UrlUtilities.isNTPUrl(tab.getUrl().getSpec())) {
-                        // purges display ads on tab change
-                        if (BraveActivity.getBraveActivity().getLastTabId() != tab.getId()) {
-                            if (mBraveNewsController != null) {
-                                mBraveNewsController.onDisplayAdPurgeOrphanedEvents();
+                    if (BraveActivity.getBraveActivity() != null) {
+                        Tab tab = BraveActivity.getBraveActivity().getActivityTab();
+                        if (tab != null && tab.getUrl().getSpec() != null
+                                && UrlUtilities.isNTPUrl(tab.getUrl().getSpec())) {
+                            // purges display ads on tab change
+                            if (BraveActivity.getBraveActivity().getLastTabId() != tab.getId()) {
+                                if (mBraveNewsController != null) {
+                                    mBraveNewsController.onDisplayAdPurgeOrphanedEvents();
+                                }
                             }
-                        }
 
-                        BraveActivity.getBraveActivity().setLastTabId(tab.getId());
+                            BraveActivity.getBraveActivity().setLastTabId(tab.getId());
+                        }
                     }
                 });
             }
