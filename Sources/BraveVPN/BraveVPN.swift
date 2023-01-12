@@ -305,13 +305,16 @@ public class BraveVPN {
     GRDKeychain.removeGuardianKeychainItems()
     GRDKeychain.removeSubscriberCredential(withRetries: 3)
     
-    clearSkusCredentials() 
+    clearSkusCredentials(includeExpirationDate: true)
   }
   
-  public static func clearSkusCredentials() {
+  public static func clearSkusCredentials(includeExpirationDate: Bool) {
     Preferences.VPN.skusCredential.reset()
     Preferences.VPN.skusCredentialDomain.reset()
-    Preferences.VPN.expirationDate.reset()
+    
+    if includeExpirationDate {
+      Preferences.VPN.expirationDate.reset()
+    }
   }
 
   // MARK: - Region selection
