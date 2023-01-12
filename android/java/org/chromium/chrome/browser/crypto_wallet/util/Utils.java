@@ -84,6 +84,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
+import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
@@ -1428,23 +1429,8 @@ public class Utils {
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
 
         for (BlockchainToken userAsset : userAssets) {
-            String currentAssetKey = Utils.tokenToString(userAsset);
-            Double fiatBalance = Utils.getOrDefault(perTokenFiatSum, currentAssetKey, 0.0d);
-            String fiatBalanceString = String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
-            Double cryptoBalance = Utils.getOrDefault(perTokenCryptoSum, currentAssetKey, 0.0d);
-            String cryptoBalanceString =
-                    String.format(Locale.getDefault(), "%.4f %s", cryptoBalance, userAsset.symbol);
-
-            WalletListItemModel walletListItemModel =
-                    new WalletListItemModel(Utils.getCoinIcon(userAsset.coin), userAsset.name,
-                            userAsset.symbol, userAsset.tokenId,
-                            // Amount in USD
-                            fiatBalanceString,
-                            // Amount in current crypto currency/token
-                            cryptoBalanceString);
-
-            walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
-            walletListItemModel.setBlockchainToken(userAsset);
+            WalletListItemModel walletListItemModel = mapToWalletListItemModel(
+                    perTokenCryptoSum, perTokenFiatSum, tokensPath, userAsset);
             walletListItemModelList.add(walletListItemModel);
         }
 
@@ -1452,6 +1438,50 @@ public class Utils {
         walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
 
         return walletCoinAdapter;
+    }
+
+    public static WalletCoinAdapter setupVisibleNftAssetList(
+            List<PortfolioModel.NftDataModel> userAssets, HashMap<String, Double> perTokenCryptoSum,
+            HashMap<String, Double> perTokenFiatSum, String tokensPath) {
+        WalletCoinAdapter walletCoinAdapter =
+                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
+        List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+
+        for (PortfolioModel.NftDataModel userAsset : userAssets) {
+            WalletListItemModel walletListItemModel = mapToWalletListItemModel(
+                    perTokenCryptoSum, perTokenFiatSum, tokensPath, userAsset.token);
+            walletListItemModel.setNftDataModel(userAsset);
+            walletListItemModelList.add(walletListItemModel);
+        }
+
+        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+        walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
+
+        return walletCoinAdapter;
+    }
+
+    @NonNull
+    private static WalletListItemModel mapToWalletListItemModel(
+            HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum,
+            String tokensPath, BlockchainToken userAsset) {
+        String currentAssetKey = Utils.tokenToString(userAsset);
+        Double fiatBalance = Utils.getOrDefault(perTokenFiatSum, currentAssetKey, 0.0d);
+        String fiatBalanceString = String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
+        Double cryptoBalance = Utils.getOrDefault(perTokenCryptoSum, currentAssetKey, 0.0d);
+        String cryptoBalanceString =
+                String.format(Locale.getDefault(), "%.4f %s", cryptoBalance, userAsset.symbol);
+
+        WalletListItemModel walletListItemModel =
+                new WalletListItemModel(Utils.getCoinIcon(userAsset.coin), userAsset.name,
+                        userAsset.symbol, userAsset.tokenId,
+                        // Amount in USD
+                        fiatBalanceString,
+                        // Amount in current crypto currency/token
+                        cryptoBalanceString);
+
+        walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
+        walletListItemModel.setBlockchainToken(userAsset);
+        return walletListItemModel;
     }
 
     public static String formatErc721TokenTitle(String title, String id) {

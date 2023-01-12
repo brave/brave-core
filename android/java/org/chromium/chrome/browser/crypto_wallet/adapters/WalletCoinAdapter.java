@@ -26,8 +26,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.util.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
@@ -192,11 +194,18 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                         walletListItemModel.getIconPath(), walletListItemModel.getIcon(),
                         holder.iconImg, null, true);
             } else {
-                Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, holder.iconImg,
-                        walletListItemModel.getBlockchainToken().contractAddress,
-                        walletListItemModel.getBlockchainToken().symbol,
-                        context.getResources().getDisplayMetrics().density, null, context, false,
-                        (float) 0.9);
+                PortfolioModel.NftDataModel nftDataModel = walletListItemModel.getNftDataModel();
+                if (walletListItemModel.hasNftImageLink()
+                        && ImageLoader.isSupported(nftDataModel.erc721MetaData.mImageUrl)) {
+                    String url = nftDataModel.erc721MetaData.mImageUrl;
+                    ImageLoader.loadNft(url, holder.iconImg, context, false);
+                } else {
+                    Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, holder.iconImg,
+                            walletListItemModel.getBlockchainToken().contractAddress,
+                            walletListItemModel.getBlockchainToken().symbol,
+                            context.getResources().getDisplayMetrics().density, null, context,
+                            false, (float) 0.9);
+                }
                 if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                     onWalletListItemClick.onMaybeShowTrashButton(
                             walletListItemModel, holder.iconTrash);
