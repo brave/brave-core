@@ -14,11 +14,6 @@ namespace google_sign_in_permission::features {
 // Google Sign In.
 BASE_FEATURE(kBraveGoogleSignInPermission,
              "BraveGoogleSignInPermission",
-#if BUILDFLAG(IS_ANDROID)
-             base::FEATURE_DISABLED_BY_DEFAULT
-#else
-             base::FEATURE_ENABLED_BY_DEFAULT
-#endif
-);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace google_sign_in_permission::features
