@@ -16,7 +16,7 @@ source_set("browser_tests") {
     "playlist_render_frame_observer_browsertest.cc",
   ]
 
-  if (!is_android) {
+  if (enable_playlist_webui) {
     sources += [ "playlist_browsertest.cc" ]
   }
 

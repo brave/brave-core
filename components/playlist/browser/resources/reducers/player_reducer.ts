@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { Playlist } from 'components/definitions/playlist'
-import * as PlaylistMojo from 'gen/brave/components/playlist/mojom/playlist.mojom.m.js'
+import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 import { Reducer } from 'redux'
 
 import { types } from '../constants/playlist_types'

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -54,7 +55,7 @@ export class PlaylistPage extends React.Component<Props, State> {
   }
 
   getImgSrc = (item: PlaylistMojo.PlaylistItem) => {
-    if (item.thumbnailPath.url.startsWith('http')) {
+    if (item.thumbnailPath.url.startsWith('http://') || item.thumbnailPath.url.startsWith('https://')) {
       // Not cached yet. in this case we should show the default image
       return ''
     }
@@ -215,7 +216,7 @@ export class PlaylistPage extends React.Component<Props, State> {
 
         <div>
           <h1>Experimental</h1>
-          <button onClick={this.onClickDownloadMediaFilesFromActiveTab}>Download media files from the active tab</button>
+          <button id='download-from-active-tab-btn' onClick={this.onClickDownloadMediaFilesFromActiveTab}>Download media files from the active tab</button>
           <br /><br />
           <div>
             <div>URL input</div>

@@ -3,8 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/playlist/browser/playlist_service.h"
+
 #include <memory>
 
+#include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
@@ -14,7 +17,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_download_request_manager.h"
-#include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/components/playlist/browser/playlist_service_observer.h"
 #include "brave/components/playlist/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -25,6 +28,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
+#include "testing/gmock/include/gmock/gmock.h"
 
 class PlaylistBrowserTest : public PlatformBrowserTest {
  public:
@@ -61,6 +65,11 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
     run_loop_->Run();
   }
 
+  playlist::PlaylistService* GetService() {
+    return playlist::PlaylistServiceFactory::GetForBrowserContext(
+        browser()->profile());
+  }
+
   // PlatformBrowserTest:
   void SetUpOnMainThread() override {
     PlatformBrowserTest::SetUpOnMainThread();
@@ -78,8 +87,7 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
     https_server_->ServeFilesFromDirectory(test_data_dir);
     ASSERT_TRUE(https_server_->Start());
 
-    auto* service = playlist::PlaylistServiceFactory::GetForBrowserContext(
-        browser()->profile());
+    auto* service = GetService();
     service->download_request_manager_->media_detector_component_manager()
         ->SetUseLocalScriptForTesting();
   }
@@ -115,13 +123,16 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
   chrome::AddTabAt(browser(), {}, -1, true /*foreground*/);
   ASSERT_TRUE(
       content::NavigateToURL(GetActiveWebContents(), GURL(kPlaylistURL)));
+  auto* playlist_web_contents = GetActiveWebContents();
+
+  browser()->tab_strip_model()->ActivateTabAt(0);
 
   ASSERT_TRUE(content::ExecJs(
-      GetActiveWebContents(),
-      "document.querySelector('#download-from-open-tabs-btn').click();"));
+      playlist_web_contents,
+      "document.querySelector('#download-from-active-tab-btn').click();"));
 
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return content::EvalJs(GetActiveWebContents(),
+    return content::EvalJs(playlist_web_contents,
                            "!!document.querySelector('.playlist-item');")
         .ExtractBool();
   }));
@@ -153,84 +164,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, DISABLED_CreateAndRemovePlaylist) {
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, RemoveAndRestoreLocalData) {
-  VLOG(2) << "create playlist 1";
-  ResetStatus();
-  service->CreatePlaylistItem(GetValidCreateParams());
-  WaitForEvents(3);
-
-  // pre condition: there's an already downloaded playlist item.
-  auto items = service->GetAllPlaylistItems();
-  ASSERT_EQ(1UL, items.size());
-
-  auto item = items.front();
-  ASSERT_TRUE(item.media_file_cached);
-  ASSERT_NE(item.media_src, item.media_file_path);
-  ASSERT_NE(item.thumbnail_src, item.thumbnail_path);
-  auto dir_path = service->GetPlaylistItemDirPath(item.id);
-  {
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    ASSERT_TRUE(base::DirectoryExists(dir_path));
-  }
-
-  // Store the item's local file path first
-  items = service->GetAllPlaylistItems();
-  item = items.front();
-  base::FilePath media_path;
-  base::FilePath thumbnail_path;
-  ASSERT_TRUE(service->GetMediaPath(item.id, &media_path));
-  ASSERT_TRUE(service->GetThumbnailPath(item.id, &thumbnail_path));
-
-  // Remove local data for the item. When we remove local data, we remove only
-  // media file.
-  service->DeletePlaylistLocalData(items.front().id);
-  items = service->GetAllPlaylistItems();
-  EXPECT_EQ(1UL, items.size());
-  item = items.front();
-
-  auto file_exists = [](const base::FilePath& path) {
-    return base::PathExists(path) && !base::DirectoryExists(path);
-  };
-
-  // Values are updated first and then the data from disk will be removed.
-  EXPECT_FALSE(item.media_file_cached);
-  EXPECT_EQ(item.media_src, item.media_file_path);
-  EXPECT_NE(item.thumbnail_src, item.thumbnail_path);
-  WaitUntil(base::BindLambdaForTesting([&]() {
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    return !file_exists(media_path);
-  }));
-
-  {
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    EXPECT_TRUE(base::DirectoryExists(dir_path));
-    EXPECT_TRUE(file_exists(thumbnail_path));
-    EXPECT_FALSE(file_exists(media_path));
-  }
-
-  // Restore local data for the item.
-  service->RecoverPlaylistItem(item.id);
-  items = service->GetAllPlaylistItems();
-  EXPECT_EQ(1UL, items.size());
-
-  item = items.front();
-  {
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    EXPECT_TRUE(base::DirectoryExists(dir_path));
-  }
-
-  WaitUntil(base::BindLambdaForTesting([&]() {
-    auto items = service->GetAllPlaylistItems();
-    return items.size() && items.front().media_file_cached;
-  }));
-  item = service->GetAllPlaylistItems().front();
-  EXPECT_NE(item.media_src, item.media_file_path);
-
-  {
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    EXPECT_TRUE(base::DirectoryExists(dir_path));
-    EXPECT_TRUE(file_exists(thumbnail_path));
-    EXPECT_TRUE(file_exists(media_path));
-  }
+  // TODO(sko) Test the actual UI, once the spec and the implementation for it
+  // are done https://github.com/brave/brave-browser/issues/25829.
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlayWithoutLocalCache) {
@@ -241,15 +176,17 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlayWithoutLocalCache) {
                              "/playlist/site_with_video.html")));
 
   chrome::AddTabAt(browser(), {}, -1, true /*foreground*/);
-  ASSERT_TRUE(
-      content::NavigateToURL(GetActiveWebContents(), GURL(kPlaylistURL)));
+  auto* playlist_contents = GetActiveWebContents();
+  ASSERT_TRUE(content::NavigateToURL(playlist_contents, GURL(kPlaylistURL)));
+
+  browser()->tab_strip_model()->ActivateTabAt(0);
 
   ASSERT_TRUE(content::ExecJs(
-      GetActiveWebContents(),
-      "document.querySelector('#download-from-open-tabs-btn').click();"));
+      playlist_contents,
+      "document.querySelector('#download-from-active-tab-btn').click();"));
 
   WaitUntil(base::BindLambdaForTesting([&]() {
-    auto result = content::EvalJs(GetActiveWebContents(),
+    auto result = content::EvalJs(playlist_contents,
                                   R"-js(
           const item = document.querySelector('.playlist-item');
           item && item.parentElement.parentElement
@@ -261,15 +198,14 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlayWithoutLocalCache) {
   }));
 
   // Remove cache
-  LOG(ERROR) << "1))))";
-  ASSERT_TRUE(content::ExecJs(GetActiveWebContents(),
+  ASSERT_TRUE(content::ExecJs(playlist_contents,
                               R"-js(
           const item = document.querySelector('.playlist-item');
           item.parentElement.parentElement
               .querySelector('.playlist-item-cache-btn').click();
         )-js"));
   WaitUntil(base::BindLambdaForTesting([&]() {
-    auto result = content::EvalJs(GetActiveWebContents(),
+    auto result = content::EvalJs(playlist_contents,
                                   R"-js(
           const item = document.querySelector('.playlist-item');
           item && item.parentElement.parentElement
@@ -280,14 +216,14 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlayWithoutLocalCache) {
     return !result.value.is_none() && result.ExtractBool();
   }));
 
-  LOG(ERROR) << "2))))";
   // Try playing the item
-  ASSERT_TRUE(content::ExecJs(GetActiveWebContents(),
+  browser()->tab_strip_model()->ActivateTabAt(1);
+  ASSERT_TRUE(content::ExecJs(playlist_contents,
                               R"-js(
           document.querySelector('.playlist-item-thumbnail').click();
         )-js"));
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return content::EvalJs(GetActiveWebContents(),
+    return content::EvalJs(playlist_contents,
                            R"-js(
           document.querySelector('#player')
           .getAttribute('data-playing') === 'true';
