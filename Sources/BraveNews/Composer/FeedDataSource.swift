@@ -381,11 +381,16 @@ public class FeedDataSource: ObservableObject {
   }
 
   private func loadFeed(for localeIdentifier: String) async throws -> [FeedItem.Content] {
-    let items = try await loadResource(.feed, localeIdentifier: localeIdentifier, decodedTo: [FailableDecodable<FeedItem.Content>].self)
-    if items.isEmpty {
-      throw BraveNewsError.resourceEmpty
+    do {
+      let items = try await loadResource(.feed, localeIdentifier: localeIdentifier, decodedTo: [FailableDecodable<FeedItem.Content>].self)
+      if items.isEmpty {
+        throw BraveNewsError.resourceEmpty
+      }
+      return items.compactMap(\.wrappedValue)
+    } catch {
+      Logger.module.error("Failed to load feed (\(localeIdentifier)): \(error.localizedDescription)")
+      return []
     }
-    return items.compactMap(\.wrappedValue)
   }
   
   private func loadSourceSuggestions(for localeIdentifier: String) async throws -> [String: [FeedItem.SourceSimilarity]] {
@@ -396,7 +401,7 @@ public class FeedDataSource: ObservableObject {
       }
       return items.mapValues { $0.compactMap(\.wrappedValue) }
     } catch {
-      Logger.module.error("Failed to load source suggestions: \(error.localizedDescription)")
+      Logger.module.error("Failed to load source suggestions (\(localeIdentifier)): \(error.localizedDescription)")
       return [:]
     }
   }
@@ -589,6 +594,9 @@ public class FeedDataSource: ObservableObject {
             // added
             break
           }
+        }
+        if !followedLocales.isEmpty && self.items.isEmpty {
+          throw BraveNewsError.resourceEmpty
         }
         self.reloadCards(from: self.items, sources: self.sources, completion: completion)
       } catch {
