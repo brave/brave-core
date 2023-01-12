@@ -1,12 +1,12 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 
 #include <memory>
-#include <utility>
+#include <type_traits>
 #include <vector>
 
 #include "base/callback_helpers.h"
@@ -26,29 +26,19 @@
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave_base/random.h"
-#include "chrome/browser/browser_process.h"
-#include "chrome/browser/first_run/first_run.h"
-#include "chrome/browser/net/system_network_context_manager.h"
-#include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/common/chrome_paths.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/url_matcher/url_matcher.h"
+#include "components/url_matcher/url_util.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/common/referrer.h"
-#include "extensions/common/url_pattern.h"
 #include "net/base/load_flags.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/fetch_api.mojom-shared.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
-
-#if BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/android/service_tab_launcher.h"
-#else
-#include "chrome/browser/ui/browser.h"
-#endif
 
 // Perform finalization checks once a day.
 const int kFinalizationChecksFrequency = 60 * 60 * 24;
@@ -163,6 +153,9 @@ bool BraveReferralsHeaders::GetMatchingReferralHeaders(
     const Iter& referral_headers_list,
     const base::Value::Dict** request_headers_dict,
     const GURL& url) {
+  if (!url.SchemeIsHTTPOrHTTPS())
+    return false;
+
   // If the domain for this request matches one of our target domains,
   // set the associated custom headers.
   for (const auto& headers_value : referral_headers_list) {
@@ -176,15 +169,28 @@ bool BraveReferralsHeaders::GetMatchingReferralHeaders(
       LOG(WARNING) << "Failed to retrieve 'headers' key from referral headers";
       continue;
     }
+
+    url_matcher::URLMatcher matcher;
+    url_matcher::URLMatcherConditionSet::Vector condition_sets;
+    base::MatcherStringPattern::ID id = 0u;
+    static_assert(std::is_arithmetic_v<decltype(id)>,
+                  "We'll use post-increment operator on |id| assuming that "
+                  "it's arithmetic type");
     for (const auto& domain_value : *domains_list) {
-      URLPattern url_pattern(URLPattern::SCHEME_HTTPS |
-                             URLPattern::SCHEME_HTTP);
-      url_pattern.SetScheme("*");
-      url_pattern.SetHost(domain_value.GetString());
-      url_pattern.SetPath("/*");
-      url_pattern.SetMatchSubdomains(true);
-      if (!url_pattern.MatchesURL(url))
-        continue;
+      condition_sets.push_back({url_matcher::util::CreateConditionSet(
+          &matcher, id++,
+          /*scheme*/ std::string(),
+          /*host*/ domain_value.GetString(),
+          /*match_subdomains*/ true,
+          /*port*/ 0,
+          /*path*/ std::string(),
+          /*query*/ std::string(),
+          /*allow*/ true)});
+    }
+
+    matcher.AddConditionSets(condition_sets);
+    DCHECK(!matcher.IsEmpty());
+    if (!matcher.MatchURL(url).empty()) {
       *request_headers_dict = headers_dict;
       return true;
     }
@@ -195,29 +201,13 @@ bool BraveReferralsHeaders::GetMatchingReferralHeaders(
 BraveReferralsService::BraveReferralsService(PrefService* pref_service,
                                              const std::string& api_key,
                                              const std::string& platform)
-    : initialized_(false),
-      task_runner_(
+    : task_runner_(
           base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()})),
       pref_service_(pref_service),
       api_key_(api_key),
-      platform_(platform),
-      weak_factory_(this) {
-  // Track initial profile creation
-  if (g_browser_process->profile_manager()) {
-    profile_manager_observer_.Observe(g_browser_process->profile_manager());
-    DCHECK_EQ(0U,
-              g_browser_process->profile_manager()->GetLoadedProfiles().size());
-  }
-}
+      platform_(platform) {}
 
 BraveReferralsService::~BraveReferralsService() = default;
-
-void BraveReferralsService::OnProfileAdded(Profile* profile) {
-  if (profile == ProfileManager::GetPrimaryUserProfile()) {
-    profile_manager_observer_.Reset();
-    Start();
-  }
-}
 
 void BraveReferralsService::Start() {
   if (initialized_)
@@ -257,6 +247,9 @@ void BraveReferralsService::Start() {
   }
 
   initialized_ = true;
+
+  DCHECK(delegate_);
+  delegate_->OnInitialized();
 }
 
 void BraveReferralsService::Stop() {
@@ -414,8 +407,9 @@ void BraveReferralsService::GetFirstRunTime() {
   }
   SetFirstRunTime(first_run_timestamp);
 #else
+  DCHECK(delegate_);
   task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE, base::BindOnce(&first_run::GetFirstRunSentinelCreationTime),
+      FROM_HERE, delegate_->GetFirstRunSentinelCreationTimeCallback(),
       base::BindOnce(&BraveReferralsService::SetFirstRunTime,
                      weak_factory_.GetWeakPtr()));
 #endif
@@ -453,9 +447,8 @@ base::FilePath BraveReferralsService::GetPromoCodeFileName() const {
   if (!g_promo_file_path.empty())
     return g_promo_file_path;
 
-  base::FilePath user_data_dir;
-  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-  return user_data_dir.AppendASCII("promoCode");
+  DCHECK(delegate_);
+  return delegate_->GetUserDataDirectory().AppendASCII("promoCode");
 }
 
 void BraveReferralsService::MaybeCheckForReferralFinalization() {
@@ -569,9 +562,9 @@ void BraveReferralsService::InitReferral() {
   resource_request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES |
                                  net::LOAD_BYPASS_CACHE |
                                  net::LOAD_DISABLE_CACHE;
+  DCHECK(delegate_);
   network::mojom::URLLoaderFactory* loader_factory =
-      g_browser_process->system_network_context_manager()
-          ->GetURLLoaderFactory();
+      delegate_->GetURLLoaderFactory();
   referral_init_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
   referral_init_loader_->SetAllowHttpErrorResults(true);
@@ -639,9 +632,9 @@ void BraveReferralsService::CheckForReferralFinalization() {
   resource_request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES |
                                  net::LOAD_BYPASS_CACHE |
                                  net::LOAD_DISABLE_CACHE;
+  DCHECK(delegate_);
   network::mojom::URLLoaderFactory* loader_factory =
-      g_browser_process->system_network_context_manager()
-          ->GetURLLoaderFactory();
+      delegate_->GetURLLoaderFactory();
   referral_finalization_check_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
   referral_finalization_check_loader_->SetAllowHttpErrorResults(true);

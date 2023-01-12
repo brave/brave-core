@@ -55,7 +55,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
-#endif
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/first_run/first_run.h"
+#endif  // !BUILDFLAG(!IS_ANDROID)
+#endif  // BUILDFLAG(ENABLE_BRAVER_REFERRALS)
 
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
@@ -101,6 +104,58 @@ void InitSystemRequestHandlerCallback() {
   network::SystemRequestHandler::GetInstance()
       ->RegisterOnBeforeSystemRequestCallback(before_system_request_callback);
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+class ReferralServiceDelegate : public brave::BraveReferralsService::Delegate,
+                                public ProfileManagerObserver {
+ public:
+  explicit ReferralServiceDelegate(brave::BraveReferralsService* service)
+      : service_(service) {
+    if (auto* profile_manager = g_browser_process->profile_manager()) {
+      profile_manager_observation_.Observe(profile_manager);
+      DCHECK_EQ(0U, profile_manager->GetLoadedProfiles().size());
+    }
+  }
+  ~ReferralServiceDelegate() override = default;
+
+  // brave::BraveReferralsService::Delegate:
+  void OnInitialized() override { profile_manager_observation_.Reset(); }
+
+  base::FilePath GetUserDataDirectory() override {
+    base::FilePath user_data_dir;
+    base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+    return user_data_dir;
+  }
+
+  network::mojom::URLLoaderFactory* GetURLLoaderFactory() override {
+    return g_browser_process->system_network_context_manager()
+        ->GetURLLoaderFactory();
+  }
+
+#if !BUILDFLAG(IS_ANDROID)
+  base::OnceCallback<base::Time()> GetFirstRunSentinelCreationTimeCallback()
+      override {
+    return base::BindOnce(first_run::GetFirstRunSentinelCreationTime);
+  }
+#endif
+
+  // ProfileManagerObserver:
+  void OnProfileAdded(Profile* profile) override {
+    if (profile != ProfileManager::GetPrimaryUserProfile())
+      return;
+
+    service_->Start();
+    DCHECK(!profile_manager_observation_.IsObserving())
+        << "Should be cleared by OnInitialized";
+  }
+
+ private:
+  raw_ptr<brave::BraveReferralsService> service_;  // owner
+
+  base::ScopedObservation<ProfileManager, ProfileManagerObserver>
+      profile_manager_observation_{this};
+};
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
 }  // namespace
 
@@ -348,10 +403,14 @@ brave::BraveP3AService* BraveBrowserProcessImpl::brave_p3a_service() {
 
 brave::BraveReferralsService*
 BraveBrowserProcessImpl::brave_referrals_service() {
-  if (!brave_referrals_service_)
+  if (!brave_referrals_service_) {
     brave_referrals_service_ = std::make_unique<brave::BraveReferralsService>(
         local_state(), brave_stats::GetAPIKey(),
         brave_stats::GetPlatformIdentifier());
+    brave_referrals_service_->set_delegate(
+        std::make_unique<ReferralServiceDelegate>(
+            brave_referrals_service_.get()));
+  }
   return brave_referrals_service_.get();
 }
 
