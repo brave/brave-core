@@ -604,7 +604,7 @@ constexpr char kBraveChangeActiveTabOnScrollEventDescription[] =
 
 #if BUILDFLAG(IS_LINUX)
 #define BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES              \
-    {"brave-vertical-tabs",                                                  \
+    {"brave-change-active-tab-on-scroll-event",                              \
      flag_descriptions::kBraveChangeActiveTabOnScrollEventName,              \
      flag_descriptions::kBraveChangeActiveTabOnScrollEventDescription,       \
      kOsLinux,                                                               \
