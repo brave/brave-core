@@ -31,25 +31,44 @@
 namespace {
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-absl::optional<base::Value::Dict> GetChromeExtensionsList(
-    const base::FilePath& secured_preference_path) {
-  if (!base::PathExists(secured_preference_path))
+constexpr char kChromePreferencesFile[] = "Preferences";
+
+absl::optional<base::Value::Dict> GetChromeExtensionsListFromFile(
+    const base::FilePath& preference_path) {
+  if (!base::PathExists(preference_path))
     return absl::nullopt;
 
-  std::string secured_preference_content;
-  base::ReadFileToString(secured_preference_path, &secured_preference_content);
-  absl::optional<base::Value> secured_preference =
-      base::JSONReader::Read(secured_preference_content);
-  DCHECK(secured_preference);
-  DCHECK(secured_preference->is_dict());
+  std::string preference_content;
+  base::ReadFileToString(preference_path, &preference_content);
+  absl::optional<base::Value> preference =
+      base::JSONReader::Read(preference_content);
+  DCHECK(preference);
+  DCHECK(preference->is_dict());
 
-  if (auto* extensions = secured_preference->GetDict().FindDictByDottedPath(
+  if (auto* extensions = preference->GetDict().FindDictByDottedPath(
           kChromeExtensionsListPath)) {
     return std::move(*extensions);
   }
   return absl::nullopt;
 }
 
+absl::optional<base::Value::Dict> GetChromeExtensionsList(
+    const base::FilePath& profile_path) {
+
+  auto list_from_secure_preference = GetChromeExtensionsListFromFile(profile_path.AppendASCII(
+      kChromeExtensionsPreferencesFile));
+  auto list_from_preferences = GetChromeExtensionsListFromFile(profile_path.AppendASCII(
+      kChromePreferencesFile));
+  if (!list_from_secure_preference.has_value())
+    return list_from_preferences;
+  
+  if (list_from_secure_preference.has_value() && list_from_preferences.has_value()) {
+    list_from_secure_preference->Merge(std::move(list_from_preferences.value()));
+    return list_from_secure_preference;
+  }
+  
+  return list_from_secure_preference;
+}
 // Silent installer via websotre w/o any prompt or bubble.
 class WebstoreInstallerForImporting
     : public extensions::WebstoreInstallWithPrompt {
@@ -76,13 +95,11 @@ BraveExternalProcessImporterHost::~BraveExternalProcessImporterHost() = default;
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 void BraveExternalProcessImporterHost::LaunchExtensionsImport() {
-  const base::FilePath pref_file = source_profile_.source_path.AppendASCII(
-      kChromeExtensionsPreferencesFile);
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
-      base::BindOnce(&GetChromeExtensionsList, pref_file),
+      base::BindOnce(&GetChromeExtensionsList, source_profile_.source_path),
       base::BindOnce(
           &BraveExternalProcessImporterHost::OnGetChromeExtensionsList,
           weak_ptr_factory_.GetWeakPtr()));
