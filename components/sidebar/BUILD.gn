@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
 assert(toolkit_views)
@@ -22,7 +23,6 @@ static_library("sidebar") {
     "//base",
     "//brave/components/brave_wallet/common:common_utils",
     "//brave/components/l10n/common",
-    "//brave/components/playlist:playlist_features",
     "//brave/components/resources:strings",
     "//components/keyed_service/core",
     "//components/prefs",
@@ -30,6 +30,10 @@ static_library("sidebar") {
     "//ui/base",
     "//url",
   ]
+
+  if (enable_playlist) {
+    deps += [ "//brave/components/playlist/common" ]
+  }
 }
 
 source_set("unit_tests") {
@@ -39,7 +43,6 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/components/playlist:playlist_features",
     "//brave/components/sidebar",
     "//components/prefs",
     "//components/prefs:test_support",
@@ -49,4 +52,8 @@ source_set("unit_tests") {
     "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (enable_playlist) {
+    deps += [ "//brave/components/playlist/common" ]
+  }
 }

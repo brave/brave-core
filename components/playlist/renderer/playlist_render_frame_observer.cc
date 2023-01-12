@@ -1,13 +1,13 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/playlist/renderer/playlist_render_frame_observer.h"
 
 #include <vector>
 
-#include "brave/components/playlist/features.h"
+#include "brave/components/playlist/common/features.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "third_party/blink/public/platform/web_string.h"

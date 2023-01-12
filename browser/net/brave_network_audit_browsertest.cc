@@ -20,7 +20,7 @@
 #include "brave/browser/net/brave_network_audit_allowed_lists.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
-#include "brave/components/playlist/buildflags/buildflags.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -38,7 +38,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-#include "brave/components/playlist/features.h"
+#include "brave/components/playlist/common/features.h"
 #endif
 
 namespace brave {

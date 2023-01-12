@@ -10,7 +10,7 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
-import("//brave/components/playlist/buildflags/buildflags.gni")
+import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -402,7 +402,7 @@ source_set("ui") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/ntp_widget_utils/browser",
     "//brave/components/p3a:buildflags",
-    "//brave/components/playlist/buildflags",
+    "//brave/components/playlist/common/buildflags",
     "//brave/components/resources:static_resources",
     "//brave/components/time_period_storage",
     "//brave/components/tor/buildflags",
@@ -765,8 +765,8 @@ source_set("ui") {
       "webui/playlist_ui.h",
     ]
     deps += [
-      "//brave/components/playlist/mojom",
-      "//brave/components/playlist/resources:generated_resources",
+      "//brave/components/playlist/browser",
+      "//brave/components/playlist/browser/resources:generated_resources",
     ]
   }
 
