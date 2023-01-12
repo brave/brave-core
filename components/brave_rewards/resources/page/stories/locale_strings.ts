@@ -47,7 +47,7 @@ export const localeStrings = {
   contributionVisitSome: 'Sites will appear as you browse',
   tosAndPp: 'By turning on $1, you agree to the $2Terms of Service$3 and $4Privacy Policy$5.',
   contributionTitle: 'Auto-Contribute',
-  contributionDesc: 'An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The Brave Verified sites you visit will receive your contributions automatically, based on your attention as measured by Brave.',
+  contributionDesc: 'An automatic way to support sites and content creators. Set a monthly contribution amount and browse normally. $1Verified sites and creators$2 you visit will receive contributions from you each month based on the amount of time you spend on their content.',
   contributionDisabledText1: 'Reward creators for the content you love.',
   contributionDisabledText2: 'Your monthly payment gets distributed across the sites you visit.',
   contributionMonthly: 'Monthly payment',
