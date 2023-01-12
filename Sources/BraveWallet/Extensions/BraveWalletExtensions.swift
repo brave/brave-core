@@ -288,3 +288,15 @@ extension BraveWallet.OnRampProvider {
     }
   }
 }
+
+public extension String {
+  /// Returns true if the string ends with a supported ENS extension.
+  var endsWithSupportedENSExtension: Bool {
+    WalletConstants.supportedENSExtensions.contains(where: hasSuffix)
+  }
+  
+  /// Returns true if the string ends with a supported SNS extension.
+  var endsWithSupportedSNSExtension: Bool {
+    WalletConstants.supportedSNSExtensions.contains(where: hasSuffix)
+  }
+}

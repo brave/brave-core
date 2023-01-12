@@ -29,6 +29,8 @@ extension BraveCoreSwitchKey {
       return "Express Rotation Interval"
     case .p3aUploadServerURL:
       return "Upload Server URL"
+    case .enableFeatures:
+      return "Enable Features"
     default:
       return ""
     }
@@ -42,6 +44,8 @@ extension BraveCoreSwitchKey {
       return false
     }
   }
+  
+  static let enableFeatures: Self = .init(rawValue: "enable-features")
 }
 
 private enum SkusEnvironment: String, CaseIterable {
@@ -246,6 +250,11 @@ struct BraveCoreDebugSwitchesView: View {
             BasicStringInputView(coreSwitch: .vModule, hint: "Should match the format:\n\n{folder-expression}={level}\n\nDefaults to */brave/*=5")
           } label: {
             SwitchContainer(.vModule)
+          }
+          NavigationLink {
+            BasicStringInputView(coreSwitch: .enableFeatures, hint: "Should match the format:\n\n{feature_name}\n\nMultiple features can be enabled via comma separation")
+          } label: {
+            SwitchContainer(.enableFeatures)
           }
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))

@@ -28,6 +28,7 @@ struct SendTokenView: View {
           let token = sendTokenStore.selectedSendToken,
           !sendTokenStore.isMakingTx,
           !sendTokenStore.sendAddress.isEmpty,
+          !sendTokenStore.isResolvingAddress,
           sendTokenStore.addressError == nil,
           sendTokenStore.sendError == nil else {
       return true
@@ -148,31 +149,62 @@ struct SendTokenView: View {
               .font(.footnote)
               .foregroundColor(Color(.braveErrorLabel))
               .padding(.bottom)
+            } else {
+              // SwiftUI will add/remove this Section footer when addressError
+              // optionality is changed. This can cause keyboard to dismiss.
+              // By using clear square, the footer remains and section is not
+              // redrawn, so the keyboard does not dismiss as user types.
+              Color.clear.frame(width: 1, height: 1)
+                .accessibility(hidden: true)
+                .transition(.identity)
             }
           }
         ) {
-          HStack(spacing: 14.0) {
-            TextField(Strings.Wallet.sendToCryptoAddressPlaceholder, text: $sendTokenStore.sendAddress)
-            Button(action: {
-              if let string = UIPasteboard.general.string {
-                sendTokenStore.sendAddress = string
+          VStack {
+            HStack(spacing: 14.0) {
+              TextField(Strings.Wallet.sendToCryptoAddressPlaceholder, text: $sendTokenStore.sendAddress)
+                .autocorrectionDisabled()
+                .osAvailabilityModifiers {
+                  if #available(iOS 15, *) {
+                    $0.textInputAutocapitalization(.never)
+                  } else {
+                    $0.autocapitalization(.none)
+                  }
+                }
+              Button(action: {
+                if let string = UIPasteboard.general.string {
+                  sendTokenStore.sendAddress = string
+                }
+              }) {
+                Label(Strings.Wallet.pasteFromPasteboard, braveSystemImage: "brave.clipboard")
+                  .labelStyle(.iconOnly)
+                  .foregroundColor(Color(.primaryButtonTint))
+                  .font(.body)
               }
-            }) {
-              Label(Strings.Wallet.pasteFromPasteboard, braveSystemImage: "brave.clipboard")
-                .labelStyle(.iconOnly)
-                .foregroundColor(Color(.primaryButtonTint))
-                .font(.body)
+              .buttonStyle(PlainButtonStyle())
+              Button(action: {
+                isShowingScanner = true
+              }) {
+                Label(Strings.Wallet.scanQRCodeAccessibilityLabel, braveSystemImage: "brave.qr-code")
+                  .labelStyle(.iconOnly)
+                  .foregroundColor(Color(.primaryButtonTint))
+                  .font(.body)
+              }
+              .buttonStyle(PlainButtonStyle())
             }
-            .buttonStyle(PlainButtonStyle())
-            Button(action: {
-              isShowingScanner = true
-            }) {
-              Label(Strings.Wallet.scanQRCodeAccessibilityLabel, braveSystemImage: "brave.qr-code")
-                .labelStyle(.iconOnly)
-                .foregroundColor(Color(.primaryButtonTint))
-                .font(.body)
+            Group {
+              if sendTokenStore.isResolvingAddress {
+                ProgressView()
+              }
+              if let resolvedAddress = sendTokenStore.resolvedAddress {
+                AddressView(address: resolvedAddress) {
+                  Text(resolvedAddress)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .foregroundColor(Color(.secondaryBraveLabel))
+                }
+              }
             }
-            .buttonStyle(PlainButtonStyle())
+            .frame(maxWidth: .infinity, alignment: .leading)
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }

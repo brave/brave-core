@@ -22,7 +22,8 @@ class SendTokenStoreTests: XCTestCase {
     erc20Balance: String = "0",
     erc721Balance: String = "0",
     solanaBalance: UInt64 = 0,
-    splTokenBalance: String = "0"
+    splTokenBalance: String = "0",
+    snsGetSolAddr: String = ""
   ) -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestSolanaTxManagerProxy) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
@@ -37,6 +38,9 @@ class SendTokenStoreTests: XCTestCase {
     rpcService._solanaBalance = { $2(solanaBalance, .success, "") }
     rpcService._splTokenAccountBalance = {_, _, _, completion in
       completion(splTokenBalance, UInt8(6), "", .success, "")
+    }
+    rpcService._snsGetSolAddr = { address, completion in
+      completion(snsGetSolAddr, .success, "")
     }
     rpcService._erc721Metadata = { _, _, _, completion in
       completion(
@@ -575,6 +579,145 @@ class SendTokenStoreTests: XCTestCase {
     store.selectedSendToken = .mockERC721NFTToken
     
     waitForExpectations(timeout: 1) { error in
+      XCTAssertNil(error)
+    }
+  }
+  
+  func testSNSAddressResolution() {
+    let domain = "brave.sol"
+    let expectedAddress = "xxxxxxxxxxyyyyyyyyyyzzzzzzzzzz0000000000"
+    
+    let (keyringService, rpcService, walletService, _) = setupServices(
+      selectedCoin: .sol,
+      snsGetSolAddr: expectedAddress
+    )
+    
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      ethTxManagerProxy: BraveWallet.TestEthTxManagerProxy(),
+      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy(),
+      prefilledToken: nil
+    )
+    
+    let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
+    XCTAssertNil(store.resolvedAddress)  // Initial state
+    store.$resolvedAddress
+      .dropFirst() // Initial value
+      .collect(2) // 1 - reset to nil in `sendAddress` didSet, 2 - assigned resolved address
+      .sink { resolvedAddress in
+        defer { resolvedAddressExpectation.fulfill() }
+        guard let resolvedAddress = resolvedAddress.last else {
+          XCTFail("Unexpected test result")
+          return
+        }
+        XCTAssertEqual(resolvedAddress, expectedAddress)
+      }.store(in: &cancellables)
+    
+    store.sendAddress = domain
+    
+    waitForExpectations(timeout: 1) { error in
+      XCTAssertNil(error)
+    }
+  }
+  
+  func testSNSAddressResolutionFailure() {
+    let domain = "brave.sol"
+    let expectedAddress = ""
+    let (keyringService, rpcService, walletService, _) = setupServices(
+      selectedCoin: .sol,
+      snsGetSolAddr: expectedAddress
+    )
+    
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      ethTxManagerProxy: BraveWallet.TestEthTxManagerProxy(),
+      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy(),
+      prefilledToken: nil
+    )
+    
+    let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
+    XCTAssertNil(store.resolvedAddress)  // Initial state
+    store.$resolvedAddress
+      .dropFirst() // Initial value
+      .sink { resolvedAddress in
+        defer { resolvedAddressExpectation.fulfill() }
+        XCTAssertNil(resolvedAddress)
+      }.store(in: &cancellables)
+    
+    let addressErrorExpectation = expectation(description: "sendTokenStore-addressError")
+    XCTAssertNil(store.resolvedAddress)  // Initial state
+    store.$addressError
+      .dropFirst() // Initial value
+      .sink { addressError in
+        defer { addressErrorExpectation.fulfill() }
+        XCTAssertEqual(addressError, .snsError(domain: domain))
+      }.store(in: &cancellables)
+    
+    store.sendAddress = domain
+    
+    waitForExpectations(timeout: 1) { error in
+      XCTAssertNil(error)
+    }
+  }
+  
+  func testResolvedAddressUsedInSolTxIfAvailable() {
+    let domain = "brave.sol"
+    let expectedAddress = "xxxxxxxxxxyyyyyyyyyyzzzzzzzzzz0000000000"
+    let (keyringService, rpcService, walletService, solTxManagerProxy) = setupServices(
+      selectedCoin: .sol,
+      selectedNetwork: .mockSolana,
+      snsGetSolAddr: expectedAddress
+    )
+    var createdWithToAddress: String?
+    solTxManagerProxy._makeSystemProgramTransferTxData = { _, toAddress, _, completion in
+      createdWithToAddress = toAddress
+      completion(.init(), .success, "")
+    }
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      ethTxManagerProxy: BraveWallet.TestEthTxManagerProxy(),
+      solTxManagerProxy: solTxManagerProxy,
+      prefilledToken: nil
+    )
+    store.selectedSendToken = .mockSolToken
+    
+    let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
+    XCTAssertNil(store.resolvedAddress)  // Initial state
+    store.$resolvedAddress
+      .dropFirst() // Initial value
+      .collect(2) // 1 - reset to nil in `sendAddress` didSet, 2 - assigned resolved address
+      .sink { resolvedAddress in
+        defer { resolvedAddressExpectation.fulfill() }
+        guard let resolvedAddress = resolvedAddress.last else {
+          XCTFail("Unexpected test result")
+          return
+        }
+        XCTAssertEqual(resolvedAddress, expectedAddress)
+      }.store(in: &cancellables)
+    store.sendAddress = domain
+    // wait for resolved domain to populate
+    wait(for: [resolvedAddressExpectation], timeout: 1)
+    
+    let ex = expectation(description: "send-transaction")
+    store.sendToken(amount: "0.01") { success, _ in
+      defer { ex.fulfill() }
+      XCTAssertTrue(success)
+      XCTAssertNotNil(createdWithToAddress)
+      XCTAssertEqual(createdWithToAddress, expectedAddress)
+    }
+    waitForExpectations(timeout: 3) { error in
       XCTAssertNil(error)
     }
   }

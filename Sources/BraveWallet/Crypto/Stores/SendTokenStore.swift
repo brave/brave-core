@@ -27,6 +27,9 @@ public class SendTokenStore: ObservableObject {
   /// The destination account address
   @Published var sendAddress = "" {
     didSet {
+      if oldValue != sendAddress {
+        resolvedAddress = nil
+      }
       sendAddressUpdatedTimer?.invalidate()
       sendAddressUpdatedTimer = Timer.scheduledTimer(
         withTimeInterval: 0.25, // try not to validate for every character entered
@@ -54,14 +57,19 @@ public class SendTokenStore: ObservableObject {
   @Published var sendError: SendError?
   /// If we are loading `userAssets`, `allTokens`, and `selectedSendTokenBalance`
   @Published var isLoading: Bool = false
+  /// If we are currently resolving an SNS or ENS address
+  @Published private(set) var isResolvingAddress: Bool = false
+  /// The address returned from SNS / ENS
+  @Published private(set) var resolvedAddress: String?
 
-  enum AddressError: LocalizedError {
+  enum AddressError: LocalizedError, Equatable {
     case sameAsFromAddress
     case contractAddress
     case notEthAddress
     case missingChecksum
     case invalidChecksum
     case notSolAddress
+    case snsError(domain: String)
 
     var errorDescription: String? {
       switch self {
@@ -77,6 +85,8 @@ public class SendTokenStore: ObservableObject {
         return Strings.Wallet.sendWarningAddressInvalidChecksum
       case .notSolAddress:
         return Strings.Wallet.sendWarningSolAddressNotValid
+      case .snsError(let domain):
+        return String.localizedStringWithFormat(Strings.Wallet.sendErrorDomainNotRegistered, domain)
       }
     }
   }
@@ -216,51 +226,90 @@ public class SendTokenStore: ObservableObject {
       completion(success, errorMessage)
     }
   }
-
-  /// Validate the `sendAddress`
+  
+  private var validateSendAddressTask: Task<Void, Never>?
   private func validateSendAddress() {
-    Task { @MainActor in
-      let coin = await self.walletService.selectedCoin()
-      guard let sendFromAddress = await self.keyringService.selectedAccount(coin),
-            !sendAddress.isEmpty,
-            let token = selectedSendToken else {
+    validateSendAddressTask?.cancel()
+    validateSendAddressTask = Task { @MainActor in
+      guard !sendAddress.isEmpty,
+            case let coin = await self.walletService.selectedCoin(),
+            let sendFromAddress = await self.keyringService.selectedAccount(coin),
+            !Task.isCancelled else {
         return
       }
-      let normalizedSendToAddress = sendAddress.lowercased()
-      if token.coin == .eth {
-        if !sendAddress.isETHAddress {
-          // 1. check if send address is a valid eth address
-          addressError = .notEthAddress
-        } else if sendFromAddress.lowercased() == normalizedSendToAddress {
-          // 2. check if send address is the same as the from address
-          addressError = .sameAsFromAddress
-        } else if (userAssets.first(where: { $0.contractAddress.lowercased() == normalizedSendToAddress }) != nil)
-                    || (allTokens.first(where: { $0.contractAddress.lowercased() == normalizedSendToAddress }) != nil) {
-          // 3. check if send address is a contract address
-          addressError = .contractAddress
-        } else {
-          let checksumAddress = await keyringService.checksumEthAddress(sendAddress)
-          if sendAddress == checksumAddress {
-            // 4. check if send address is the same as the checksum address from the `KeyringService`
-            addressError = nil
-          } else if sendAddress.removingHexPrefix.lowercased() == sendAddress.removingHexPrefix || sendAddress.removingHexPrefix.uppercased() == sendAddress.removingHexPrefix {
-            // 5. check if send address has each of the alphabetic character as uppercase, or has each of
-            // the alphabeic character as lowercase
-            addressError = .missingChecksum
-          } else {
-            // 6. send address has mixed with uppercase and lowercase and does not match with the checksum address
-            addressError = .invalidChecksum
-          }
-        }
-      } else if token.coin == .sol {
-        let isValid = await walletService.isBase58EncodedSolanaPubkey(sendAddress)
-        if !isValid {
-          addressError = .notSolAddress
-        } else if sendFromAddress.lowercased() == normalizedSendToAddress {
-          addressError = .sameAsFromAddress
-        } else {
-          addressError = nil
-        }
+      switch coin {
+      case .eth:
+        await validateEthereumSendAddress(fromAddress: sendFromAddress)
+      case .sol:
+        await validateSolanaSendAddress(fromAddress: sendFromAddress)
+      case .fil:
+        break
+      @unknown default:
+        break
+      }
+    }
+  }
+  
+  @MainActor private func validateEthereumSendAddress(fromAddress: String) async {
+    let normalizedFromAddress = fromAddress.lowercased()
+    let normalizedToAddress = sendAddress.lowercased()
+    // TODO: Support ENS #5787
+    if !sendAddress.isETHAddress {
+      // 1. check if send address is a valid eth address
+      addressError = .notEthAddress
+    } else if normalizedFromAddress == normalizedToAddress {
+      // 2. check if send address is the same as the from address
+      addressError = .sameAsFromAddress
+    } else if (userAssets.first(where: { $0.contractAddress.lowercased() == normalizedToAddress }) != nil)
+                || (allTokens.first(where: { $0.contractAddress.lowercased() == normalizedToAddress }) != nil) {
+      // 3. check if send address is a contract address
+      addressError = .contractAddress
+    } else {
+      let checksumAddress = await keyringService.checksumEthAddress(sendAddress)
+      if sendAddress == checksumAddress {
+        // 4. check if send address is the same as the checksum address from the `KeyringService`
+        addressError = nil
+      } else if sendAddress.removingHexPrefix.lowercased() == sendAddress.removingHexPrefix || sendAddress.removingHexPrefix.uppercased() == sendAddress.removingHexPrefix {
+        // 5. check if send address has each of the alphabetic character as uppercase, or has each of
+        // the alphabeic character as lowercase
+        addressError = .missingChecksum
+      } else {
+        // 6. send address has mixed with uppercase and lowercase and does not match with the checksum address
+        addressError = .invalidChecksum
+      }
+    }
+  }
+  
+  @MainActor private func validateSolanaSendAddress(fromAddress: String) async {
+    let normalizedFromAddress = fromAddress.lowercased()
+    let normalizedToAddress = sendAddress.lowercased()
+    let isSupportedSNSExtension = sendAddress.endsWithSupportedSNSExtension
+    if isSupportedSNSExtension {
+      self.isResolvingAddress = true
+      defer { self.isResolvingAddress = false }
+      // If value ends with a supported SNS extension, will call findSNSAddress.
+      let (address, status, _) = await rpcService.snsGetSolAddr(sendAddress)
+      guard !Task.isCancelled else { return }
+      if status != .success || address.isEmpty {
+        addressError = .snsError(domain: sendAddress)
+        return
+      }
+      // If found address is the same as the selectedAccounts Wallet Address
+      if address.lowercased() == normalizedFromAddress {
+        addressError = .sameAsFromAddress
+        return
+      }
+      // store address for sending
+      resolvedAddress = address
+      addressError = nil
+    } else { // not supported SNS extension, validate address
+      let isValid = await walletService.isBase58EncodedSolanaPubkey(sendAddress)
+      if !isValid {
+        addressError = .notSolAddress
+      } else if normalizedFromAddress == normalizedToAddress {
+        addressError = .sameAsFromAddress
+      } else {
+        addressError = nil
       }
     }
   }
@@ -316,12 +365,14 @@ public class SendTokenStore: ObservableObject {
       completion(false, "An Internal Error")
       return
     }
+    
+    let sendToAddress = resolvedAddress ?? sendAddress
 
     isMakingTx = true
     rpcService.network(.eth) { [weak self] network in
       guard let self = self else { return }
       if network.isNativeAsset(token) {
-        let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: self.sendAddress, value: "0x\(weiHexString)", data: .init())
+        let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: sendToAddress, value: "0x\(weiHexString)", data: .init())
         if network.isEip1559 {
           self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress) { success, errorMessage  in
             self.isMakingTx = false
@@ -335,7 +386,7 @@ public class SendTokenStore: ObservableObject {
           }
         }
       } else if token.isErc721 {
-        self.ethTxManagerProxy.makeErc721Transfer(fromData: fromAddress, to: self.sendAddress, tokenId: token.tokenId, contractAddress: token.contractAddress) { success, data in
+        self.ethTxManagerProxy.makeErc721Transfer(fromData: fromAddress, to: sendToAddress, tokenId: token.tokenId, contractAddress: token.contractAddress) { success, data in
           guard success else {
             completion(false, nil)
             return
@@ -348,7 +399,7 @@ public class SendTokenStore: ObservableObject {
           }
         }
       } else {
-        self.ethTxManagerProxy.makeErc20TransferData(self.sendAddress, amount: "0x\(weiHexString)") { success, data in
+        self.ethTxManagerProxy.makeErc20TransferData(sendToAddress, amount: "0x\(weiHexString)") { success, data in
           guard success else {
             completion(false, nil)
             return
@@ -381,13 +432,15 @@ public class SendTokenStore: ObservableObject {
       completion(false, "An Internal Error")
       return
     }
+    
+    let sendToAddress = resolvedAddress ?? sendAddress
 
     rpcService.network(.sol) { [weak self] network in
       guard let self = self else { return }
       if network.isNativeAsset(token) {
         self.solTxManagerProxy.makeSystemProgramTransferTxData(
           fromAddress,
-          to: self.sendAddress,
+          to: sendToAddress,
           lamports: amount
         ) { solTxData, error, errMsg in
           guard let solanaTxData = solTxData else {
@@ -403,7 +456,7 @@ public class SendTokenStore: ObservableObject {
         self.solTxManagerProxy.makeTokenProgramTransferTxData(
           token.contractAddress,
           fromWalletAddress: fromAddress,
-          toWalletAddress: self.sendAddress,
+          toWalletAddress: sendToAddress,
           amount: amount
         ) { solTxData, error, errMsg in
           guard let solanaTxData = solTxData else {

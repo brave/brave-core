@@ -1765,6 +1765,13 @@ extension Strings {
       value: "Not a valid SOL address",
       comment: "A warning that appears below the send crypto address text field, when the input `To` address is not a valid SOL address."
     )
+    public static let sendErrorDomainNotRegistered = NSLocalizedString(
+      "wallet.sendErrorDomainNotRegistered",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "%@ is not registered",
+      comment: "An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. Ex. `Stephen.sol`"
+    )
     public static let customNetworkChainIdTitle = NSLocalizedString(
       "wallet.customNetworkChainIdTitle",
       tableName: "BraveWallet",
