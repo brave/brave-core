@@ -146,8 +146,8 @@
 
     <!-- Quick Action Search and Bookmark Widget Promo-->
     <color name="search_widget_promo_add_widget_text_color">#FFFFFF</color>
-    <color name="search_widget_promo_not_now_text_color">#F0F2FF</color>
-    <color name="search_widget_promo_bg_color">#495057</color>
+    <color name="search_widget_promo_not_now_text_color">#8389E0</color>
+    <color name="search_widget_promo_bg_color">#1E2025</color>
 
     <color name="brave_rate_bg_color">#1E2025</color>
     <color name="brave_smiley_sad_color">#DC1D3C</color>
