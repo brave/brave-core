@@ -193,8 +193,8 @@ class BraveBrowserTypeImpl(BrowserType):
     return _MakeTestingFieldTrials(out_dir, tag, variations_repo_dir)
 
 
-def _ParseVersion(version_string) -> List[str]:
-  return version_string.split('.')
+def _ParseVersion(version_string) -> List[int]:
+  return list(map(int, version_string.split('.')))
 
 
 def _FetchTag(tag: str):
