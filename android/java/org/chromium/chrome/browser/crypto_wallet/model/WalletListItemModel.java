@@ -6,10 +6,12 @@
 package org.chromium.chrome.browser.crypto_wallet.model;
 
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 public class WalletListItemModel {
@@ -33,6 +35,7 @@ public class WalletListItemModel {
     private TransactionInfo mTxInfo;
     private String mChainSymbol;
     private int mChainDecimals;
+    private PortfolioModel.NftDataModel mNftDataModel;
 
     public WalletListItemModel(
             int icon, String title, String subTitle, String id, String text1, String text2) {
@@ -49,6 +52,15 @@ public class WalletListItemModel {
         this(icon, title, subTitle, "", text1, text2);
         mIsImportedAccount = isImportedAccount;
         mIsAccount = true;
+    }
+
+    public boolean isNft() {
+        return mBlockchainToken.isNft || mBlockchainToken.isErc721;
+    }
+
+    public boolean hasNftImageLink() {
+        return isNft() && mNftDataModel != null && mNftDataModel.erc721MetaData != null
+                && !TextUtils.isEmpty(mNftDataModel.erc721MetaData.mImageUrl);
     }
 
     public void setTransactionInfo(TransactionInfo txInfo) {
@@ -186,5 +198,13 @@ public class WalletListItemModel {
 
     public boolean isAccount() {
         return mIsAccount;
+    }
+
+    public PortfolioModel.NftDataModel getNftDataModel() {
+        return mNftDataModel;
+    }
+
+    public void setNftDataModel(PortfolioModel.NftDataModel mNftDataModel) {
+        this.mNftDataModel = mNftDataModel;
     }
 }
