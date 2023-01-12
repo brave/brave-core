@@ -43,18 +43,15 @@ AdBlockFiltersProviderManager::~AdBlockFiltersProviderManager() = default;
 
 void AdBlockFiltersProviderManager::AddProvider(
     AdBlockFiltersProvider* provider) {
-  auto it =
-      std::find(filters_providers_.begin(), filters_providers_.end(), provider);
-  CHECK(it == filters_providers_.end());
-  filters_providers_.push_back(provider);
+  auto rv = filters_providers_.insert(provider);
+  DCHECK(rv.second);
   provider->AddObserver(this);
 }
 
 void AdBlockFiltersProviderManager::RemoveProvider(
     AdBlockFiltersProvider* provider) {
-  auto it =
-      std::find(filters_providers_.begin(), filters_providers_.end(), provider);
-  CHECK(it != filters_providers_.end());
+  auto it = filters_providers_.find(provider);
+  DCHECK(it != filters_providers_.end());
   (*it)->RemoveObserver(this);
   filters_providers_.erase(it);
   NotifyObservers();
@@ -80,7 +77,7 @@ void AdBlockFiltersProviderManager::LoadDATBuffer(
     task_tracker_.PostTask(
         base::SequencedTaskRunnerHandle::Get().get(), FROM_HERE,
         base::BindOnce(
-            &AdBlockFiltersProvider::LoadDAT, base::Unretained(provider),
+            &AdBlockFiltersProvider::LoadDAT, provider->AsWeakPtr(),
             base::BindOnce(OnDATLoaded, std::move(collect_and_merge))));
   }
 }

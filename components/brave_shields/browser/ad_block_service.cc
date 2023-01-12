@@ -297,8 +297,9 @@ void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Tags only need to be modified for the default engine.
   GetTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&AdBlockEngine::EnableTag,
-                                default_engine_->AsWeakPtr(), tag, enabled));
+      FROM_HERE,
+      base::BindOnce(&AdBlockEngine::EnableTag,
+                     base::Unretained(default_engine_.get()), tag, enabled));
 }
 
 base::SequencedTaskRunner* AdBlockService::GetTaskRunner() {
@@ -347,7 +348,6 @@ void AdBlockService::TagExistsForTest(const std::string& tag,
       base::BindOnce(&AdBlockEngine::TagExists,
                      base::Unretained(default_engine_.get()), tag),
       std::move(cb));
-  // return default_engine_->TagExists(tag);
 }
 
 // static

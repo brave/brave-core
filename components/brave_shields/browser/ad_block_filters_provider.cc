@@ -37,4 +37,8 @@ void AdBlockFiltersProvider::LoadDAT(
   LoadDATBuffer(std::move(cb));
 }
 
+base::WeakPtr<AdBlockFiltersProvider> AdBlockFiltersProvider::AsWeakPtr() {
+  return weak_factory_.GetWeakPtr();
+}
+
 }  // namespace brave_shields
