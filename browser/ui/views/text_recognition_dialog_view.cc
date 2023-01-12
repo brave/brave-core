@@ -6,18 +6,18 @@
 #include "brave/browser/ui/views/text_recognition_dialog_view.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/bind.h"
-#include "base/scoped_observation.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
+#include "brave/browser/ui/views/text_recognition_dialog_tracker.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/text_recognition/browser/text_recognition.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "components/constrained_window/constrained_window_views.h"
-#include "content/public/browser/web_contents_user_data.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/geometry/insets.h"
@@ -25,53 +25,7 @@
 #include "ui/views/controls/scroll_view.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/widget/widget.h"
-#include "ui/views/widget/widget_observer.h"
 #include "ui/views/window/dialog_client_view.h"
-
-namespace {
-
-// Tracks whether text recognition dialog is active or not for WebContents.
-class TextRecognitionDialogTracker
-    : public content::WebContentsUserData<TextRecognitionDialogTracker>,
-      public views::WidgetObserver {
- public:
-  TextRecognitionDialogTracker(const TextRecognitionDialogTracker&) = delete;
-  TextRecognitionDialogTracker& operator=(const TextRecognitionDialogTracker&) =
-      delete;
-  ~TextRecognitionDialogTracker() override = default;
-
-  void SetActiveDialog(views::Widget* widget) {
-    DCHECK(!active_dialog_ && !observation_.IsObserving());
-    active_dialog_ = widget;
-    observation_.Observe(widget);
-  }
-
-  views::Widget* active_dialog() { return active_dialog_; }
-
- private:
-  friend class content::WebContentsUserData<TextRecognitionDialogTracker>;
-  explicit TextRecognitionDialogTracker(content::WebContents* web_contents)
-      : content::WebContentsUserData<TextRecognitionDialogTracker>(
-            *web_contents) {}
-
-  // views::WidgetObserver overrides
-  void OnWidgetDestroying(views::Widget* widget) override {
-    DCHECK_EQ(active_dialog_, widget);
-    DCHECK(observation_.IsObservingSource(widget));
-    observation_.Reset();
-    active_dialog_ = nullptr;
-  }
-
-  raw_ptr<views::Widget> active_dialog_ = nullptr;
-  base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{
-      this};
-
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
-};
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(TextRecognitionDialogTracker);
-
-}  // namespace
 
 namespace brave {
 
@@ -148,6 +102,10 @@ void TextRecognitionDialogView::OnGetTextFromImage(
     const std::vector<std::string>& text) {
   UpdateContents(text);
   AdjustWidgetSize();
+
+  if (on_get_text_callback_for_test_) {
+    std::move(on_get_text_callback_for_test_).Run(text);
+  }
 }
 
 void TextRecognitionDialogView::UpdateContents(

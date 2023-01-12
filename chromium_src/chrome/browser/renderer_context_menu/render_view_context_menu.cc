@@ -279,10 +279,11 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 void BraveRenderViewContextMenu::CopyTextFromImage() {
   RenderFrameHost* frame_host = GetRenderFrameHost();
-  if (frame_host)
+  if (frame_host) {
     frame_host->GetImageAt(params_.x, params_.y,
                            base::BindOnce(OnGetImageForTextCopy,
                                           source_web_contents_->GetWeakPtr()));
+  }
 }
 #endif
 

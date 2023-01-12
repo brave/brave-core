@@ -447,6 +447,8 @@ source_set("ui") {
 
   if (enable_text_recognition) {
     sources += [
+      "views/text_recognition_dialog_tracker.cc",
+      "views/text_recognition_dialog_tracker.h",
       "views/text_recognition_dialog_view.cc",
       "views/text_recognition_dialog_view.h",
     ]
@@ -801,16 +803,22 @@ source_set("browser_tests") {
     ]
 
     deps = [
+      "//brave/app:command_ids",
       "//brave/browser/ui",
       "//brave/components/constants",
       "//chrome/browser",
       "//chrome/browser/devtools:test_support",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
+      "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//components/javascript_dialogs",
       "//components/prefs",
       "//content/test:test_support",
     ]
+
+    if (enable_text_recognition) {
+      sources += [ "text_recognition_browsertest.cc" ]
+    }
   }
 }

@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -34,6 +35,8 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
   void StartExtractingText(const SkBitmap& image);
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(TextRecognitionBrowserTest, TextRecognitionTest);
+
   void OnGetTextFromImage(const std::vector<std::string>& text);
 
   // Show |text| in this dialog and copy it to clipboard.
@@ -42,6 +45,9 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
 
   raw_ptr<views::Label> header_label_ = nullptr;
   raw_ptr<views::ScrollView> scroll_view_ = nullptr;
+
+  base::OnceCallback<void(const std::vector<std::string>&)>
+      on_get_text_callback_for_test_;
   base::WeakPtrFactory<TextRecognitionDialogView> weak_factory_{this};
 };
 
