@@ -54,7 +54,7 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   void LaunchExtensionsImport();
   void OnGetChromeExtensionsList(
-      absl::optional<base::Value::Dict> extensions_list);
+      absl::optional<std::vector<std::string>> extensions_list);
 #endif
   bool do_not_launch_import_for_testing_ = false;
   MockedInstallCallback install_extension_callback_for_testing_;
