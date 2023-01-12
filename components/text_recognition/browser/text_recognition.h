@@ -9,11 +9,14 @@
 #include <string>
 #include <vector>
 
+#include "base/component_export.h"
+
 class SkBitmap;
 
 namespace text_recognition {
 
 // Returns recognized texts from |image|.
+COMPONENT_EXPORT(TEXT_RECOGNITION_BROWSER)
 std::vector<std::string> GetTextFromImage(const SkBitmap& image);
 
 }  // namespace text_recognition

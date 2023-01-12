@@ -7,7 +7,9 @@ import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 
 assert(enable_text_recognition)
 
-source_set("browser") {
+component("browser") {
+  output_name = "text_recognition_browser"
+
   sources = [ "text_recognition.h" ]
 
   if (is_mac) {
@@ -25,4 +27,6 @@ source_set("browser") {
     "//base",
     "//skia",
   ]
+
+  defines = [ "IS_TEXT_RECOGNITION_BROWSER_IMPL" ]
 }
