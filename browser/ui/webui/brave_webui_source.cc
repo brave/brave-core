@@ -828,8 +828,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "upholdPromoTitle", IDS_BRAVE_UI_UPHOLD_PROMO_TITLE },
         { "upholdPromoInfo", IDS_BRAVE_UI_UPHOLD_PROMO_INFO },
 
-        { "upholdPromoEquitiesTitle",IDS_BRAVE_UI_UPHOLD_PROMO_EQUITIES_TITLE },                 // NOLINT
-        { "upholdPromoEquitiesInfo", IDS_BRAVE_UI_UPHOLD_PROMO_EQUITIES_INFO },
         { "connectWalletChooseHeader", IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_HEADER },  // NOLINT
         { "connectWalletChooseNote", IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_NOTE },  // NOLINT
         { "connectWalletChooseText", IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_TEXT },  // NOLINT

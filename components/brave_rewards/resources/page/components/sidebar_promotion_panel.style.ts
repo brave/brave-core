@@ -11,7 +11,6 @@ import braveCreatorsBackground from '../assets/brave_creators_bg.svg'
 import geminiBackground from '../assets/gemini_bg.svg'
 import tapBackgroud from '../assets/tap_bg.svg'
 import upholdCardBackground from '../assets/uphold_card_bg.png'
-import upholdEquitiesBackground from '../assets/uphold_equities_bg.svg'
 
 function getBackgroundImage (key: PromotionKey) {
   switch (key) {
@@ -20,7 +19,6 @@ function getBackgroundImage (key: PromotionKey) {
     case 'gemini': return geminiBackground
     case 'tap-network': return tapBackgroud
     case 'uphold-card': return upholdCardBackground
-    case 'uphold-equities': return upholdEquitiesBackground
   }
 }
 
@@ -56,10 +54,6 @@ export const promotion = styled.div`
 
   &.promotion-uphold-card {
     background-image: url(/${getBackgroundImage('uphold-card')});
-  }
-
-  &.promotion-uphold-equities {
-    background-image: url(/${getBackgroundImage('uphold-equities')});
   }
 `
 
