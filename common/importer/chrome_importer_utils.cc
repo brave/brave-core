@@ -30,6 +30,8 @@ using extensions::Manifest;
 #endif
 
 namespace {
+// Pref file that holds installed extension list.
+constexpr char kChromePreferencesFile[] = "Preferences";
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 bool HasImportableExtensions(const base::FilePath& secured_preference_path) {
@@ -42,7 +44,7 @@ bool HasImportableExtensions(const base::FilePath& secured_preference_path) {
       base::JSONReader::Read(secured_preference_content);
   DCHECK(secured_preference);
   DCHECK(secured_preference->is_dict());
-
+  LOG(ERROR) << "secured_preference_path:" << secured_preference_path;
   if (auto* extensions = secured_preference->GetDict().FindDictByDottedPath(
           kChromeExtensionsListPath)) {
     auto extensions_list =
@@ -153,8 +155,6 @@ bool ChromeImporterCanImport(const base::FilePath& profile,
     profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("History")));
   base::FilePath passwords =
     profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("Login Data")));
-  base::FilePath secured_preference =
-      profile.AppendASCII(kChromeExtensionsPreferencesFile);
   if (base::PathExists(bookmarks))
     *services_supported |= importer::FAVORITES;
   if (base::PathExists(history))
@@ -164,7 +164,9 @@ bool ChromeImporterCanImport(const base::FilePath& profile,
   if (HasPaymentMethods(profile.Append(kWebDataFilename)))
     *services_supported |= importer::PAYMENTS;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  if (HasImportableExtensions(secured_preference))
+  if (HasImportableExtensions(profile.AppendASCII(kChromeExtensionsPreferencesFile)))
+    *services_supported |= importer::EXTENSIONS;
+  if (HasImportableExtensions(profile.AppendASCII(kChromePreferencesFile)))
     *services_supported |= importer::EXTENSIONS;
 #endif
 
