@@ -29,6 +29,7 @@
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
+#include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_tabgenerator_api+private.h"
@@ -105,6 +106,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
 @property(nonatomic) BraveTabGeneratorAPI* tabGeneratorAPI;
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
+@property(nonatomic) IpfsAPI* ipfsAPI;
 @end
 
 @implementation BraveCoreMain
@@ -416,6 +418,15 @@ static bool CustomLogHandler(int severity,
 - (BraveStats*)braveStats {
   return [[BraveStats alloc] initWithBrowserState:_mainBrowserState];
 }
+
+// #if BUILDFLAG(IPFS_ENABLED)
+- (IpfsAPI*)ipfsAPI {
+  if (!_ipfsAPI) {
+    _ipfsAPI = [[IpfsAPI alloc] initWithBrowserState:_mainBrowserState];
+  }
+  return _ipfsAPI;
+}
+// #endif  // IPFS_ENABLED
 
 - (void)initializeP3AServiceForChannel:(NSString*)channel
                          weekOfInstall:(NSString*)weekOfInstall {

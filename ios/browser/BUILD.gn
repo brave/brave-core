@@ -25,6 +25,7 @@ source_set("browser") {
     "api/certificate",
     "api/favicon",
     "api/history",
+    "api/ipfs",
     "api/net",
     "api/opentabs",
     "api/p3a",
