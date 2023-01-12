@@ -1,7 +1,7 @@
-/* Copyright 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/asset_discovery_manager.h"
 
@@ -185,6 +185,7 @@ void AssetDiscoveryManager::OnGetTransferLogs(
     bool triggered_by_accounts_added,
     const std::string& chain_id,
     const std::vector<Log>& logs,
+    base::Value rawlogs,
     mojom::ProviderError error,
     const std::string& error_message) {
   if (error != mojom::ProviderError::kSuccess) {

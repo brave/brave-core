@@ -48,6 +48,7 @@ constexpr char kWeb3ClientVersion[] = "web3_clientVersion";
 constexpr char kEthSubscribe[] = "eth_subscribe";
 constexpr char kEthUnsubscribe[] = "eth_unsubscribe";
 constexpr char kEthSubscribeNewHeads[] = "newHeads";
+constexpr char kEthSubscribeLogs[] = "logs";
 
 // We currently don't handle it until MetaMask point it to v3 or v4 other than
 // v1 or v2

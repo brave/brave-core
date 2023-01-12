@@ -1172,14 +1172,14 @@ class JsonRpcServiceUnitTest : public testing::Test {
     json_rpc_service_->EthGetLogs(
         chain_id, from_block, to_block, std::move(contract_addresses),
         std::move(topics),
-        base::BindLambdaForTesting([&](const std::vector<Log>& logs,
-                                       mojom::ProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(logs, expected_logs);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
+        base::BindLambdaForTesting(
+            [&](const std::vector<Log>& logs, base::Value rawlogs,
+                mojom::ProviderError error, const std::string& error_message) {
+              EXPECT_EQ(logs, expected_logs);
+              EXPECT_EQ(error, expected_error);
+              EXPECT_EQ(error_message, expected_error_message);
+              run_loop.Quit();
+            }));
     run_loop.Run();
   }
 

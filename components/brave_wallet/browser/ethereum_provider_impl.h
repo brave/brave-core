@@ -15,6 +15,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/eth_block_tracker.h"
+#include "brave/components/brave_wallet/browser/eth_logs_tracker.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
@@ -41,7 +42,8 @@ class EthereumProviderImpl final
       public mojom::TxServiceObserver,
       public brave_wallet::mojom::KeyringServiceObserver,
       public content_settings::Observer,
-      public EthBlockTracker::Observer {
+      public EthBlockTracker::Observer,
+      public EthLogsTracker::Observer {
  public:
   using GetAllowedAccountsCallback =
       base::OnceCallback<void(const std::vector<std::string>& accounts,
@@ -170,6 +172,7 @@ class EthereumProviderImpl final
   FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
                            RequestEthereumPermissionsWithAccounts);
   FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest, EthSubscribe);
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest, EthSubscribeLogs);
   friend class EthereumProviderImplUnitTest;
 
   // mojom::BraveWalletProvider:
@@ -370,6 +373,12 @@ class EthereumProviderImpl final
   // EthBlockTracker::Observer:
   void OnLatestBlock(uint256_t block_num) override;
   void OnNewBlock(uint256_t block_num) override;
+  bool UnsubscribeBlockObserver(const std::string& subscription_id);
+
+  // EthLogsTracker::Observer:
+  void OnLogsReceived(base::Value rawlogs) override;
+  bool UnsubscribeLogObserver(const std::string& subscription_id);
+  std::string GenerateSubscriptionHexBytes();
 
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
@@ -392,7 +401,9 @@ class EthereumProviderImpl final
       keyring_observer_receiver_{this};
   std::vector<std::string> known_allowed_accounts;
   std::vector<std::string> eth_subscriptions_;
+  std::vector<std::string> eth_log_subscriptions_;
   EthBlockTracker eth_block_tracker_;
+  EthLogsTracker eth_logs_tracker_;
   bool first_known_accounts_check = true;
   PrefService* prefs_ = nullptr;
   bool wallet_onboarding_shown_ = false;

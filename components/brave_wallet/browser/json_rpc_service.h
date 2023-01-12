@@ -90,6 +90,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& error_message)>;
   using EthGetLogsCallback =
       base::OnceCallback<void(const std::vector<Log>& logs,
+                              base::Value rawlogs,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
   void GetBlockNumber(GetBlockNumberCallback callback);
