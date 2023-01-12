@@ -802,7 +802,11 @@ handler.on(WalletActions.transactionStatusChanged.type, async (store: Store, pay
       BraveWallet.TransactionStatus.Approved]
       .includes(payload.txInfo.txStatus)
   ) {
-    if (state.selectedPanel === 'approveTransaction' && walletState.pendingTransactions.length === 0) {
+    if ((
+      state.selectedPanel === 'approveTransaction' ||
+      payload.txInfo.txStatus === BraveWallet.TransactionStatus.Rejected
+    ) && walletState.pendingTransactions.length === 0
+    ) {
       const apiProxy = getWalletPanelApiProxy()
       apiProxy.panelHandler.closeUI()
     }
