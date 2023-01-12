@@ -37,6 +37,7 @@
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/highlight_path_generator.h"
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -95,7 +96,10 @@ void BraveLocationBarView::Init() {
       !browser_->profile()->IsOffTheRecord()) {
     brave_news_location_view_ =
         AddChildView(std::make_unique<BraveNewsLocationView>(
-            browser_->profile(), browser_->tab_strip_model()));
+            browser_->profile(), this, this));
+    brave_news_location_view_->SetVisible(false);
+    views::InkDrop::Get(brave_news_location_view_)
+        ->SetVisibleOpacity(GetPageActionInkDropVisibleOpacity());
   }
 #if BUILDFLAG(ENABLE_TOR)
   onion_location_view_ =
@@ -149,6 +153,10 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
     ipfs_location_view_->Update(contents, show_page_actions);
 #endif
 
+  if (brave_news_location_view_) {
+    brave_news_location_view_->Update();
+  }
+
   LocationBarView::Update(contents);
 
   if (!ShouldShowIPFSLocationView())
@@ -192,7 +200,7 @@ void BraveLocationBarView::OnChanged() {
 #endif
 
   if (brave_news_location_view_) {
-    brave_news_location_view_->SetVisible(!hide_page_actions);
+    brave_news_location_view_->Update();
   }
 
   // OnChanged calls Layout

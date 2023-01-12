@@ -6,17 +6,62 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_NEWS_LOCATION_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_NEWS_LOCATION_VIEW_H_
 
+#include <string>
+#include <vector>
+
+#include "brave/browser/brave_news/brave_news_tab_helper.h"
+#include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
+#include "components/prefs/pref_member.h"
+#include "ui/gfx/vector_icon_types.h"
 #include "ui/views/view.h"
 
 class Profile;
-class TabStripModel;
+class BraveNewsBubbleView;
 
-class BraveNewsLocationView : public views::View {
+namespace content {
+class WebContents;
+}  // namespace content
+
+// LocationBar action for Brave News which shows a bubble allowing the user to
+// manage feed subscriptions for the current Tab
+class BraveNewsLocationView : public PageActionIconView,
+                              public BraveNewsTabHelper::PageFeedsObserver {
  public:
-  BraveNewsLocationView(Profile* profile, TabStripModel* tab_strip_model);
+  BraveNewsLocationView(
+      Profile* profile,
+      IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
+      PageActionIconView::Delegate* page_action_icon_delegate);
   BraveNewsLocationView(const BraveNewsLocationView&) = delete;
   BraveNewsLocationView& operator=(const BraveNewsLocationView&) = delete;
   ~BraveNewsLocationView() override;
+
+  // PageActionIconView:
+  views::BubbleDialogDelegate* GetBubble() const override;
+  void UpdateImpl() override;
+  std::u16string GetTextForTooltipAndAccessibleName() const override;
+  bool ShouldShowLabel() const override;
+
+  // BraveNewsTabHelper::PageFeedsObserver:
+  void OnAvailableFeedsChanged(
+      const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) override;
+
+  // views::View:
+  void OnThemeChanged() override;
+
+ protected:
+  // PageActionIconView:
+  void OnExecuting(PageActionIconView::ExecuteSource execute_source) override;
+  const gfx::VectorIcon& GetVectorIcon() const override;
+
+ private:
+  SkColor GetIconColor(bool subscribed) const;
+  void OnBubbleClosed();
+
+  raw_ptr<content::WebContents> last_contents_;
+  BooleanPrefMember should_show_;
+  BooleanPrefMember opted_in_;
+  BooleanPrefMember news_enabled_;
+  raw_ptr<BraveNewsBubbleView> bubble_view_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_NEWS_LOCATION_VIEW_H_
