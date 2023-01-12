@@ -9,6 +9,7 @@ import { useUnsafeWalletSelector } from '../../../../../common/hooks/use-safe-se
 import { WalletSelectors } from '../../../../../common/selectors'
 import { getTokensNetwork } from '../../../../../utils/network-utils'
 import { useNftPin } from '../../../../../common/hooks/nft-pin'
+import { getLocale } from '../../../../../../common/locale'
 
 // components
 import { NftIconWithNetworkIcon } from '../../../../shared/nft-icon/nft-icon-with-network-icon'
@@ -25,15 +26,19 @@ export const NftList = () => {
 
   return (
     <NftListWrapper>
-      <NftCountHeading>{pinnableNftsCount} out of {nonFungibleTokens.length} are available!</NftCountHeading>
+      <NftCountHeading>
+        {getLocale('braveWalletNftPinningInspectHeading')
+          .replace('$1', `${pinnableNftsCount}`)
+          .replace('$2', `${nonFungibleTokens.length}`)}
+      </NftCountHeading>
       <List>
         {nonFungibleTokens.map(({ canBePinned, token }) => (
           <NftItem key={`nft-item-${token.contractAddress}-${token.tokenId}`}>
-            {!canBePinned &&
+            {!canBePinned && (
               <NftItemOverlay>
-                <PiningMessage>Unable to pin</PiningMessage>
+                <PiningMessage>{getLocale('braveWalletNftPinningUnableToPin')}</PiningMessage>
               </NftItemOverlay>
-            }
+            )}
             <NftIconWithNetworkIcon
               key={`${token.contractAddress}-${token.tokenId}`}
               tokensNetwork={getTokensNetwork(networkList, token)}

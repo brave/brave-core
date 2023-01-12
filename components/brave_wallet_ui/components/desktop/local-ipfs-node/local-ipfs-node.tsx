@@ -43,6 +43,7 @@ import {
   NftIllustration
 } from './local-ipfs-node.styles'
 import { IpfsNodeStatus } from '../views/portfolio/components/ipfs-node-status/ipfs-node-status'
+import { getLocale } from '../../../../common/locale'
 
 interface Props {
   onClose: () => void
@@ -74,31 +75,22 @@ export const LocalIpfsNodeScreen = (props: Props) => {
     <RunNodeWrapper>
       <TopRow>
         <CloseButton onClick={onClose}>
-          Close
+          {getLocale('braveWalletNftPinningCloseButton')}
           <CloseIcon />
         </CloseButton>
       </TopRow>
       <MainContent>
         <HeadingWrapper>
           <IpfsIcon />
-          <Heading>A big step toward becoming part of web3</Heading>
+          <Heading>{getLocale('braveWalletNftPinningHeading')}</Heading>
         </HeadingWrapper>
         <Section>
           <LeftWrapper>
-            <SectionText>
-              Run IPFS node and keep your NFTs always online
-            </SectionText>
+            <SectionText>{getLocale('braveWalletNftPinningRunNodeHeading')}</SectionText>
           </LeftWrapper>
           <RightWrapper>
             <Description>
-              Today's centralized internet model doesn't work in space. On today’s
-              internet, every time you click something, that data has to be
-              retrieved from a centralized server. If you are on the moon, there
-              will be a delay with every click, as content is retrieved from
-              earth. Using IPFS, content is retrieved from wherever is closest. If
-              someone else nearby on the moon has already retrieved that data,
-              your data can be retrieved by you or them on the moon. So is your
-              NFT data.
+              {getLocale('braveWalletNftPinningRunNodeDescription')}
             </Description>
           </RightWrapper>
         </Section>
@@ -107,20 +99,20 @@ export const LocalIpfsNodeScreen = (props: Props) => {
             <Row gap='16px' alignItems='center' justifyContent='flex-start' margin='0 0 0 8px'>
               {isAutoPinEnabled
                 ? <>
-                  <ActionButton onClick={goToNftsTab}>Keep my NFTs always online</ActionButton>
+                  <ActionButton onClick={goToNftsTab}>{getLocale('braveWalletNftPinningPinNftsButton')}</ActionButton>
                   <IpfsNodeStatus />
                 </>
-                : <ActionButton onClick={onClickRunNode}>Run my local IPFS Node</ActionButton>
+                : <ActionButton onClick={onClickRunNode}>{getLocale('braveWalletNftPinningRunNodeButton')}</ActionButton>
               }
             </Row>
-            <CheckNftsButton onClick={onClickCheckNfts}>Check which NFTs of mine can be pinned</CheckNftsButton>
+            <CheckNftsButton onClick={onClickCheckNfts}>{getLocale('braveWalletNftPinningCheckNftsButton')}</CheckNftsButton>
           </LeftWrapper>
           <RightWrapper>
-            <BenefitHeading>By running IPFS on your computer you can:</BenefitHeading>
+            <BenefitHeading>{getLocale('braveWalletNftPinningBenefitsHeading')}</BenefitHeading>
             <BenefitsList>
-              <li>Ensure your NFT data stays online and it cannot be tempered with.</li>
-              <li>Get content back using content identifier(CID) from an incorrect data.</li>
-              <li>Participate proof of authenticity and make IPFS network rich and healthy.</li>
+              <li>{getLocale('braveWalletNftPinningBenefitOne')}</li>
+              <li>{getLocale('braveWalletNftPinningBenefitTwo')}</li>
+              <li>{getLocale('braveWalletNftPinningBenefitThree')}</li>
             </BenefitsList>
           </RightWrapper>
         </Section>

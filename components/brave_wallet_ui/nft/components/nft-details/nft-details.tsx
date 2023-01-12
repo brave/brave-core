@@ -196,7 +196,7 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                     )}
                 </ProjectDetailRow>
                 <DetailSectionColumn>
-                  <DetailSectionTitle>Description</DetailSectionTitle>
+                  <DetailSectionTitle>{getLocale('braveWalletNFTDetailDescription')}</DetailSectionTitle>
                   <ProjectDetailDescription>{nftMetadata.contractInformation.description}</ProjectDetailDescription>
                 </DetailSectionColumn>
                 {nftPinningStatus?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNED &&
@@ -204,13 +204,13 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                     <Subdivider />
                     <DetailSectionRow>
                       <DetailSectionColumn>
-                        <DetailSectionTitle>CID</DetailSectionTitle>
+                        <DetailSectionTitle>{getLocale('braveWalletNFTDetailCid')}</DetailSectionTitle>
                         <ProjectDetailDescription>{stripERC20TokenImageURL(selectedAsset.logo)?.replace('ipfs://', '')}</ProjectDetailDescription>
                       </DetailSectionColumn>
                     </DetailSectionRow>
                     <DetailSectionRow>
                       <DetailSectionColumn>
-                        <DetailSectionTitle>Image location or address</DetailSectionTitle>
+                        <DetailSectionTitle>{getLocale('braveWalletNFTDetailImageAddress')}</DetailSectionTitle>
                         <HighlightedDetailSectionValue href={stripERC20TokenImageURL(selectedAsset.logo)} target='_blank'>{stripERC20TokenImageURL(selectedAsset.logo)}</HighlightedDetailSectionValue>
                       </DetailSectionColumn>
                     </DetailSectionRow>

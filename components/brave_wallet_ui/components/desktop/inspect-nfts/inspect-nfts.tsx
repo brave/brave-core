@@ -12,6 +12,12 @@ import { NftList } from './components/nft-list/nft-list'
 import Illustration from '../../../assets/svg-icons/nft-ipfs/pinned-nft-illustration.svg'
 import { InfoTooltip } from './components/info-tooltip/info-tooltip'
 import { IpfsNodeStatus } from '../views/portfolio/components/ipfs-node-status/ipfs-node-status'
+import {
+  ActionButton,
+  BenefitHeading,
+  BenefitsList
+} from '../local-ipfs-node/local-ipfs-node.styles'
+import { Column, Row } from '../../shared/style'
 
 // selectors
 import { useSafePageSelector } from '../../../common/hooks/use-safe-selector'
@@ -19,6 +25,10 @@ import { PageSelectors } from '../../../page/selectors'
 
 // utils
 import { WalletPageActions } from '../../../page/actions'
+import { getLocale } from '../../../../common/locale'
+
+// routes
+import { WalletRoutes } from '../../../constants/types'
 
 // styles
 import {
@@ -34,14 +44,6 @@ import {
   SubDivider,
   PinnedNftIllustration
 } from './inspects-nfts.styles'
-
-import {
-  ActionButton,
-  BenefitHeading,
-  BenefitsList
-} from '../local-ipfs-node/local-ipfs-node.styles'
-import { Column, Row } from '../../shared/style'
-import { WalletRoutes } from '../../../constants/types'
 
 interface Props {
   onClose: () => void
@@ -74,10 +76,10 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
       <TopRow>
         <TopRowButton onClick={onClose}>
           <BackIcon />
-          Back
+          {getLocale('braveWalletNftPinningBackButton')}
         </TopRowButton>
         <TopRowButton onClick={onClose}>
-          Close
+          {getLocale('braveWalletNftPinningCloseButton')}
           <CloseIcon />
         </TopRowButton>
       </TopRow>
@@ -93,40 +95,30 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
           onMouseEnter={onShowTooltip}
           onMouseLeave={onHideTooltip}
         >
-          <InfoSubHeading>Why not available</InfoSubHeading>
+          <InfoSubHeading>{getLocale('braveWalletNftPinningWhyNotAvailable')}</InfoSubHeading>
           <InfoIcon/>
           {showTooltip && (
-            <InfoTooltip text='Some of NFT data are stored in centralized server such as AWS, Google Cloud, etc. In this case, it is not available to pin your NFT data to IPFS network.' />
+            <InfoTooltip text={getLocale('braveWalletNftPinningTooltip')} />
           )}
         </Row>
         <Row>
           <SubDivider />
         </Row>
         <Column margin='32px 0 0'>
-          <BenefitHeading>
-            By running IPFS on your computer you can:
-          </BenefitHeading>
+          <BenefitHeading>{getLocale('braveWalletNftPinningBenefitsHeading')}</BenefitHeading>
           <BenefitsList>
-            <li>
-              Ensure your NFT data stays online and it cannot be tempered with.
-            </li>
-            <li>
-              Get content back using content identifier(CID) from an incorrect
-              data.
-            </li>
-            <li>
-              Participate proof of authenticity and make IPFS network rich and
-              healthy.
-            </li>
+            <li>{getLocale('braveWalletNftPinningBenefitOne')}</li>
+            <li>{getLocale('braveWalletNftPinningBenefitTwo')}</li>
+            <li>{getLocale('braveWalletNftPinningBenefitThree')}</li>
           </BenefitsList>
         </Column>
         <Row gap='16px' alignItems='center' justifyContent='flex-start'>
           {isAutoPinEnabled
             ? <>
-              <PinNftsButton onClick={goToNftsTab}>Keep my NFTs always online</PinNftsButton>
+              <PinNftsButton onClick={goToNftsTab}>{getLocale('braveWalletNftPinningPinNftsButton')}</PinNftsButton>
               <IpfsNodeStatus />
             </>
-            : <ActionButton onClick={onClickRunNode}>Run my local IPFS Node</ActionButton>
+            : <ActionButton onClick={onClickRunNode}>{getLocale('braveWalletNftPinningRunNodeButton')}</ActionButton>
           }
         </Row>
         <PinnedNftIllustration src={Illustration} />

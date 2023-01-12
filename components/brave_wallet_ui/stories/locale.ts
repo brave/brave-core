@@ -654,6 +654,9 @@ provideStrings({
   braveWalletNFTDetailTokenStandard: 'Token standard',
   braveWalletNFTDetailTokenID: 'Token ID',
   braveWalletNFTDetailContractAddress: 'Contract address',
+  braveWalletNFTDetailDescription: 'Description',
+  braveWalletNFTDetailCid: 'CID',
+  braveWalletNFTDetailImageAddress: 'Image location or address',
 
   // Sweepstakes
   braveWalletSweepstakesTitle: 'Brave Swap-stakes',
@@ -799,5 +802,32 @@ provideStrings({
   // Add asset tabs
   braveWalletAddAssetTokenTabTitle: 'Token',
   braveWalletAddAssetNftTabTitle: 'NFT',
-  braveWalletNftFetchingError: 'Something went wrong when fetching NFT details. Please try again later.'
+  braveWalletNftFetchingError: 'Something went wrong when fetching NFT details. Please try again later.',
+
+  // NFT Pinning
+  braveWalletNftPinningWhyNotAvailable: 'Why not available',
+  braveWalletNftPinningTooltip: 'Some of NFT data are stored in centralized server such as AWS, Google Cloud, etc. In this case, it is not available to pin your NFT data to IPFS network.',
+  braveWalletNftPinningBenefitsHeading: 'By running IPFS on your computer you can:',
+  braveWalletNftPinningBenefitOne: 'Ensure your NFT data stays online and it cannot be tempered with.',
+  braveWalletNftPinningBenefitTwo: 'Get content back using content identifier(CID) from an incorrect data.',
+  braveWalletNftPinningBenefitThree: 'Participate proof of authenticity and make IPFS network rich and healthy.',
+  braveWalletNftPinningPinNftsButton: 'Keep my NFTs always online',
+  braveWalletNftPinningRunNodeButton: 'Run my local IPFS Node',
+  braveWalletNftPinningBackButton: 'Back',
+  braveWalletNftPinningCloseButton: 'Close',
+  braveWalletNftPinningHeading: 'A big step toward becoming part of web3',
+  braveWalletNftPinningRunNodeHeading: 'Run IPFS node and keep your NFTs always online',
+  braveWalletNftPinningRunNodeDescription: 'Today\'s centralized internet model doesn\'t work in space. On today\’s internet, every time you click something, that data has to be retrieved from a centralized server. If you are on the moon, there will be a delay with every click, as content is retrieved from earth. Using IPFS, content is retrieved from wherever is closest. If someone else nearby on the moon has already retrieved that data, your data can be retrieved by you or them on the moon. So is your NFT data.',
+  braveWalletNftPinningCheckNftsButton: 'Check which NFTs of mine can be pinned',
+  braveWalletNftPinningBannerStart: 'Now you can run your IPFS and be part of web 3. Your NFT data will stay online forever and cannot be tampered with.',
+  braveWalletNftPinningBannerUploading: 'You\’re running IPFS node. File is being uploaded to IPFS.',
+  braveWalletNftPinningBannerSuccess: '$1 out of $2 NFTs have been successfully pinned to IPFS.',
+  braveWalletNftPinningBannerLearnMore: 'Learn more',
+  braveWalletNftPinningInspectHeading: '$1 out of $2 are available!',
+  braveWalletNftPinningUnableToPin: 'Unable to pin',
+  braveWalletNftPinningNodeRunningStatus: 'You\’re running IPFS node',
+  braveWalletNftPinningNodeNotRunningStatus: 'Local IPFS node is not running',
+  braveWalletNftPinningStatusPinned: 'NFT data is being pinned to your local IPFS node',
+  braveWalletNftPinningStatusPinning: 'Cannot be pinned to your local IPFS node',
+  braveWalletNftPinningStatusPinningFailed: 'Pinned to your local IPFS node'
 })

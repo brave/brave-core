@@ -700,6 +700,12 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletNFTDetailTokenID", IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_ID},
     {"braveWalletNFTDetailContractAddress",
      IDS_BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS},
+    {"braveWalletNFTDetailDescription",
+     IDS_BRAVE_WALLET_NFT_DETAIL_DESCRIPTION},
+    {"braveWalletNFTDetailCid",
+     IDS_BRAVE_WALLET_NFT_DETAIL_CID},
+    {"braveWalletNFTDetailImageAddress",
+     IDS_BRAVE_WALLET_NFT_DETAIL_IMAGE_ADDRESS},
     {"braveWalletTrezorSignTypedDataError",
      IDS_BRAVE_WALLET_TREZOR_SIGN_TYPED_DATA_ERROR},
     {"braveWalletSweepstakesTitle", IDS_BRAVE_WALLET_SWEEPSTAKES_TITLE},
@@ -1059,7 +1065,35 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveSwapZeroXDisclaimer", IDS_BRAVE_SWAP_ZERO_EX_DISCLAIMER},
     {"braveSwapJupiterDisclaimer", IDS_BRAVE_SWAP_JUPITER_DISCLAIMER},
     {"braveSwapZeroXPrivacy", IDS_BRAVE_SWAP_ZERO_EX_PRIVACY},
-    {"braveSwapJupiterPrivacy", IDS_BRAVE_SWAP_JUPITER_PRIVACY}};
+    {"braveSwapJupiterPrivacy", IDS_BRAVE_SWAP_JUPITER_PRIVACY},
+    
+    // NFT Pinning
+    {"braveWalletNftPinningWhyNotAvailable", IDS_BRAVE_WALLET_NFT_PINNING_WHY_NOT_AVAILABLE},
+    {"braveWalletNftPinningTooltip", IDS_BRAVE_WALLET_NFT_PINNING_TOOLTIP},
+    {"braveWalletNftPinningBenefitsHeading", IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_HEADING},
+    {"braveWalletNftPinningBenefitOne", IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_ONE},
+    {"braveWalletNftPinningBenefitTwo", IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_TWO},
+    {"braveWalletNftPinningBenefitThree", IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_THREE},
+    {"braveWalletNftPinningPinNftsButton", IDS_BRAVE_WALLET_NFT_PINNING_PIN_NFT_BUTTON},
+    {"braveWalletNftPinningRunNodeButton", IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_BUTTON},
+    {"braveWalletNftPinningBackButton", IDS_BRAVE_WALLET_NFT_PINNING_BACK_BUTTON},
+    {"braveWalletNftPinningCloseButton", IDS_BRAVE_WALLET_NFT_PINNING_CLOSE_BUTTON},
+    {"braveWalletNftPinningHeading", IDS_BRAVE_WALLET_NFT_PINNING_HEADING},
+    {"braveWalletNftPinningRunNodeHeading", IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_HEADING},
+    {"braveWalletNftPinningRunNodeDescription", IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_DESCRIPTION},
+    {"braveWalletNftPinningCheckNftsButton", IDS_BRAVE_WALLET_NFT_PINNING_CHECK_NFTS_BUTTON},
+    {"braveWalletNftPinningBannerStart", IDS_BRAVE_WALLET_NFT_PINNING_BANNER_START},
+    {"braveWalletNftPinningBannerUploading", IDS_BRAVE_WALLET_NFT_PINNING_BANNER_UPLOADING},
+    {"braveWalletNftPinningBannerSuccess", IDS_BRAVE_WALLET_NFT_PINNING_BANNER_SUCCESS},
+    {"braveWalletNftPinningBannerLearnMore", IDS_BRAVE_WALLET_NFT_PINNING_BANNER_LEARN_MORE},
+    {"braveWalletNftPinningInspectHeading", IDS_BRAVE_WALLET_NFT_PINNING_INSPECT_HEADING},
+    {"braveWalletNftPinningUnableToPin", IDS_BRAVE_WALLET_NFT_PINNING_UNABLE_TO_PIN},
+    {"braveWalletNftPinningNodeRunningStatus", IDS_BRAVE_WALLET_NFT_PINNING_NODE_RUNNING_STATUS},
+    {"braveWalletNftPinningNodeNotRunningStatus", IDS_BRAVE_WALLET_NFT_PINNING_NODE_NOT_RUNNING_STATUS},
+    {"braveWalletNftPinningStatusPinned", IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNED},
+    {"braveWalletNftPinningStatusPinning", IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING},
+    {"braveWalletNftPinningStatusPinningFailed", IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING_FAILED}
+  };
 
 // 0x swap constants
 constexpr char kGoerliSwapBaseAPIURL[] = "https://goerli.api.0x.org/";

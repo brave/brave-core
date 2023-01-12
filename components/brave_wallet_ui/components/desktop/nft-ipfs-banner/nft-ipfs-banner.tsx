@@ -11,6 +11,7 @@ import { BraveWallet, WalletRoutes } from '../../../constants/types'
 
 // utils
 import { useNftPin } from '../../../common/hooks/nft-pin'
+import { getLocale } from '../../../../common/locale'
 
 // components
 import { Row } from '../../shared/style'
@@ -46,8 +47,6 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
     }
   }, [status])
 
-  console.log({ status, bannerStatus })
-
   const onLearnMore = React.useCallback(() => {
     history.push(WalletRoutes.LocalIpfsNode)
   }, [])
@@ -63,14 +62,17 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
         <Text status={bannerStatus}>
           {bannerStatus === 'start' ? (
             <>
-              Now you can run your IPFS and be part of web 3. Your NFT data will
-              stay online forever and cannot be tampered with.&nbsp;
-              <LearnMore onClick={onLearnMore}>Learn more</LearnMore>
+              {getLocale('braveWalletNftPinningBannerStart')}&nbsp;
+              <LearnMore onClick={onLearnMore}>
+                {getLocale('braveWalletNftPinningBannerLearnMore')}
+              </LearnMore>
             </>
           ) : bannerStatus === 'success' ? (
-            `${pinnedNftsCount} out of ${pinnableNftsCount} NFTs have been successfully pinned to IPFS.`
+            `${getLocale('braveWalletNftPinningBannerSuccess')
+              .replace('$1', `${pinnedNftsCount}`)
+              .replace('$2', `${pinnableNftsCount}`)}`
           ) : (
-            'You’re running IPFS node. File is being uploaded to IPFS.'
+            `${getLocale('braveWalletNftPinningBannerUploading')}`
           )}
         </Text>
       </Row>

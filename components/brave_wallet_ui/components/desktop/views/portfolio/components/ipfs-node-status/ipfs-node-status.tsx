@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { getLocale } from '../../../../../../../common/locale'
 
 // selectors
 import { useSafePageSelector } from '../../../../../../common/hooks/use-safe-selector'
@@ -21,7 +22,7 @@ export const IpfsNodeStatus = () => {
   return (
     <IpfsNodeStatusWrapper>
       <StatusIcon running={isLocalIpfsNodeRunning} />
-      <Text>{isLocalIpfsNodeRunning ? 'You’re running IPFS node' : 'Local IPFS node is not running'}</Text>
+      <Text>{isLocalIpfsNodeRunning ? getLocale('braveWalletNftPinningNodeRunningStatus') : getLocale('braveWalletNftPinningNodeNotRunningStatus')}</Text>
     </IpfsNodeStatusWrapper>
   )
 }
