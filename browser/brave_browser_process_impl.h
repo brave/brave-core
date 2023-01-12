@@ -12,6 +12,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -24,7 +25,9 @@
 #include "extensions/buildflags/buildflags.h"
 
 namespace brave {
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 class BraveReferralsService;
+#endif // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 class BraveP3AService;
 class HistogramsBraveizer;
 class BraveFarblingService;
@@ -48,6 +51,7 @@ namespace greaselion {
 class GreaselionDownloadService;
 #endif
 }  // namespace greaselion
+
 
 namespace debounce {
 class DebounceComponentInstaller;
@@ -109,7 +113,9 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;
 #endif
   brave::BraveP3AService* brave_p3a_service() override;
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   brave::BraveReferralsService* brave_referrals_service() override;
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   brave_stats::BraveStatsUpdater* brave_stats_updater() override;
   ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() override;
