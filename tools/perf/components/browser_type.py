@@ -39,7 +39,6 @@ class _BaseVersion:
 
 
 class BraveVersion(_BaseVersion):
-
   def __init__(self, tag: str) -> None:
     super().__init__()
     assert re.match(r'v\d+\.\d+\.\d+', tag)
@@ -58,7 +57,6 @@ class BraveVersion(_BaseVersion):
 
 
 class ChromiumVersion(_BaseVersion):
-
   def __init__(self, v: str) -> None:
     super().__init__()
     assert re.match(r'\d+\.\d+\.\d+\.\d+', v)

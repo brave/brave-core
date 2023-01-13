@@ -49,9 +49,9 @@ class CommonOptions:
     return options
 
 
-def ReportToDashboardImpl(
-    browser_type: BrowserType, dashboard_bot_name: str, revision: str,
-    output_dir: str) -> Tuple[bool, List[str], Optional[str]]:
+def ReportToDashboardImpl(browser_type: BrowserType, dashboard_bot_name: str,
+                          revision: str, output_dir: str
+                          ) -> Tuple[bool, List[str], Optional[str]]:
 
   if browser_type.ReportAsReference():
     # .reference suffix for benchmark folder is used in process_perf_results.py
@@ -285,9 +285,10 @@ class RunableConfiguration:
     return run_tests_ok and report_ok, self.logs
 
 
-def PrepareBinariesAndDirectories(
-    configurations: List[RunnerConfig], benchmarks: List[BenchmarkConfig],
-    common_options: CommonOptions) -> List[RunableConfiguration]:
+def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
+                                  benchmarks: List[BenchmarkConfig],
+                                  common_options: CommonOptions
+                                  ) -> List[RunableConfiguration]:
   runable_configurations: List[RunableConfiguration] = []
   for config in configurations:
     if config.tag == config.label:
@@ -317,9 +318,9 @@ def PrepareBinariesAndDirectories(
   return runable_configurations
 
 
-def SpawnConfigurationsFromTargetList(
-    target_list: List[str],
-    base_configuration: RunnerConfig) -> List[RunnerConfig]:
+def SpawnConfigurationsFromTargetList(target_list: List[str],
+                                      base_configuration: RunnerConfig
+                                      ) -> List[RunnerConfig]:
   configurations: List[RunnerConfig] = []
   for target_string in target_list:
     config = deepcopy(base_configuration)

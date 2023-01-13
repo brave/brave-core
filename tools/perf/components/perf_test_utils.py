@@ -14,8 +14,7 @@ with path_util.SysPath(path_util.GetPyJson5Dir()):
   import json5  # pylint: disable=import-error
 
 
-def GetProcessOutput(args: List[str],
-                     cwd: Optional[str] = None,
+def GetProcessOutput(args: List[str], cwd: Optional[str] = None,
                      check=False) -> Tuple[bool, str]:
   try:
     logging.debug('Run binary: %s, cwd = %s', ' '.join(args), cwd)
