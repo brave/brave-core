@@ -24,12 +24,14 @@
     <color name="modern_blue_700">#C22700</color>
     <color name="dialog_bg_color_dark_baseline">@color/toolbar_background_primary_dark</color>
 
-    <!-- Day/Night colors -->
+    <!-- Day/Night brave wallet colors -->
     <color name="brave_wallet_day_night_toolbar_icon_color">#495057</color>
     <color name="brave_wallet_day_night_text_color">@android:color/black</color>
     <color name="brave_wallet_day_night_icon_color">@android:color/black</color>
     <color name="brave_wallet_day_night_negative_ripple_color">#E1E3E4</color>
     <color name="brave_wallet_dn_error_text_bg_color">#F0F2FF</color>
+    <color name="brave_wallet_dn_highlight_bg_color">#FFFFFF</color>
+    <color name="wallet_dn_bg_primary">#F8F9FA</color>
 
     <!-- Text colors -->
     <color name="brave_theme_subtitle_text">#868E96</color>
