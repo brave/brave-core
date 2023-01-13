@@ -614,7 +614,7 @@ export const PortfolioAsset = (props: Props) => {
       <TopRow>
         <BalanceRow gap='16px'>
           <BackButton onSubmit={goBack} />
-          {isNftAsset && <IpfsNodeStatus />}
+          {isNftAsset && currentNftPinningStatus?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNED && <IpfsNodeStatus />}
         </BalanceRow>
         <BalanceRow>
           {!isNftAsset &&

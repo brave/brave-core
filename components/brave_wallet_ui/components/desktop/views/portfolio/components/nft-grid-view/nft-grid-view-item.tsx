@@ -6,17 +6,17 @@
 import * as React from 'react'
 
 // Types
-import { BraveWallet, UserAssetInfoType } from '../../../../../../constants/types'
+import { BraveWallet } from '../../../../../../constants/types'
 
 // Utils
 import Amount from '../../../../../../utils/amount'
-import { NftIcon } from '../../../../../shared/nft-icon/nft-icon'
 
-// hooks
-import { useNftPin } from '../../../../../../common/hooks/nft-pin'
+// selectors
+import { useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../../../common/selectors'
 
 // components
-import { NftPinningStatusAnimation } from '../../../../nft-pinning-status-animation/nft-pinning-status-animation'
+import { NftIconWithNetworkIcon } from '../../../../../shared/nft-icon/nft-icon-with-network-icon'
 
 // Styled Components
 import {
@@ -24,24 +24,20 @@ import {
   NFTText,
   IconWrapper,
   DIVForClickableArea,
-  NFTSymbol,
-  PinnedIcon
+  NFTSymbol
 } from './style'
 import { Row } from '../../../../../shared/style'
+import { getTokensNetwork } from '../../../../../../utils/network-utils'
 
 interface Props {
-  token: UserAssetInfoType
+  token: BraveWallet.BlockchainToken
   onSelectAsset: () => void
 }
 
 export const NFTGridViewItem = (props: Props) => {
   const { token, onSelectAsset } = props
 
-  const { getNftPinningStatus } = useNftPin()
-
-  const pinningStatus = React.useMemo(() => {
-    return getNftPinningStatus(token.asset)
-  }, [token])
+  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
 
   return (
     <NFTButton
@@ -49,20 +45,16 @@ export const NFTGridViewItem = (props: Props) => {
     >
       <IconWrapper>
         <DIVForClickableArea />
-        <NftIcon icon={token.asset.logo} responsive={true} />
-        {pinningStatus?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNED && <PinnedIcon />}
+        <NftIconWithNetworkIcon
+          icon={token.logo}
+          responsive={true}
+          tokensNetwork={getTokensNetwork(networkList, token)}
+        />
       </IconWrapper>
       <Row alignItems='center' justifyContent='space-between' gap='14px' margin='6px 0 0 0'>
-        <NFTText>{token.asset.name} {token.asset.tokenId ? '#' + new Amount(token.asset.tokenId).toNumber() : ''}</NFTText>
-          {pinningStatus?.code !== undefined &&
-            <NftPinningStatusAnimation
-              size='25px'
-              displayMode='nft'
-              status={pinningStatus?.code}
-            />
-          }
+        <NFTText>{token.name} {token.tokenId ? '#' + new Amount(token.tokenId).toNumber() : ''}</NFTText>
       </Row>
-      <NFTSymbol>{token.asset.symbol}</NFTSymbol>
+      <NFTSymbol>{token.symbol}</NFTSymbol>
     </NFTButton>
   )
 }

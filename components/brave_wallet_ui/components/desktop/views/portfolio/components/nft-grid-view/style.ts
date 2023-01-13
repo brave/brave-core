@@ -37,7 +37,7 @@ export const NFTButton = styled(WalletButton)`
   background: none;
   border: none;
   margin: 0px;
-  padding: 0px;
+  padding: 2px;
   overflow: hidden;
   &:last-child {
     margin-right: 0px;
@@ -46,10 +46,9 @@ export const NFTButton = styled(WalletButton)`
 
 export const IconWrapper = styled.div`
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   width: 100%;
   padding-top: 100%;
-  border-radius: 8px;
 `
 
 export const DIVForClickableArea = styled.div`

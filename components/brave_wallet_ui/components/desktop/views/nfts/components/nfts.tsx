@@ -109,7 +109,7 @@ export const Nfts = (props: Props) => {
           {filteredNfts.map(nft => (
             <NFTGridViewItem
               key={`${nft.tokenId}-${nft.contractAddress}`}
-              token={{ asset: nft, assetBalance: '' }}
+              token={nft}
               onSelectAsset={() => onSelectAsset(nft)}
             />
           ))}

@@ -13,6 +13,10 @@ import { BraveWallet, WalletRoutes } from '../../../constants/types'
 import { useNftPin } from '../../../common/hooks/nft-pin'
 import { getLocale } from '../../../../common/locale'
 
+// selectors
+import { useSafePageSelector } from '../../../common/hooks/use-safe-selector'
+import { PageSelectors } from '../../../page/selectors'
+
 // components
 import { Row } from '../../shared/style'
 import { NftPinningStatusAnimation } from '../nft-pinning-status-animation/nft-pinning-status-animation'
@@ -35,8 +39,11 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
   const history = useHistory()
 
   const { pinnableNftsCount, pinnedNftsCount, pinningStatusSummary: status } = useNftPin()
+  const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
 
   const bannerStatus: BannerStatus = React.useMemo(() => {
+    if (!isAutoPinEnabled) return 'start'
+
     switch (status) {
       case BraveWallet.TokenPinStatusCode.STATUS_PINNED:
         return 'success'

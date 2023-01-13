@@ -25,12 +25,11 @@ export interface NftIconProps {
   icon?: string
   responsive?: boolean
   iconStyles?: CSSProperties
-  circular?: boolean
   onLoad?: () => void
 }
 
 export const NftIcon = (props: NftIconProps) => {
-  const { icon, responsive, iconStyles, circular, onLoad } = props
+  const { icon, responsive, iconStyles, onLoad } = props
   const [loaded, setLoaded] = React.useState<boolean>()
   const nftImageIframeRef = React.useRef<HTMLIFrameElement>(null)
 
@@ -74,7 +73,6 @@ export const NftIcon = (props: NftIconProps) => {
         ref={nftImageIframeRef}
         src="chrome-untrusted://nft-display"
         sandbox="allow-scripts allow-same-origin"
-        circular={circular}
       />
       : <NftImageIframe
         style={iconStyles}
@@ -82,7 +80,6 @@ export const NftIcon = (props: NftIconProps) => {
         ref={nftImageIframeRef}
         src="chrome-untrusted://nft-display"
         sandbox="allow-scripts allow-same-origin"
-        circular={circular}
       />
   )
 }

@@ -40,12 +40,10 @@ export const NftList = () => {
               </NftItemOverlay>
             )}
             <NftIconWithNetworkIcon
-              key={`${token.contractAddress}-${token.tokenId}`}
               tokensNetwork={getTokensNetwork(networkList, token)}
               icon={token.logo}
-              circular={true}
               responsive={true}
-              disabled={canBePinned}
+              disabled={!canBePinned}
             />
           </NftItem>
         ))}

@@ -26,6 +26,7 @@ export const NftItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 120px;
 `
 
 export const NftItemOverlay = styled.div`
@@ -38,7 +39,6 @@ export const NftItemOverlay = styled.div`
   justify-content: center;
   align-items: center;
   color: ${p => p.theme.palette.white};
-  border-radius: 50%;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
   z-index: 3;
 `

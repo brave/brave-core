@@ -291,7 +291,7 @@ export const PortfolioOverview = () => {
             />
           : <NFTGridViewItem
               key={`${item.asset.tokenId}-${item.asset.contractAddress}`}
-              token={item}
+              token={item.asset}
               onSelectAsset={() => onSelectAsset(item.asset)}
             />
         }
