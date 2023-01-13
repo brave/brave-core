@@ -242,7 +242,7 @@ class RunableConfiguration:
     assert (self.config.tag is not None)
     report_success, report_failed_logs, revision_number = ReportToDashboardImpl(
         self.config.browser_type, self.config.dashboard_bot_name,
-        'refs/tags/' + self.config.tag, os.path.join(self.out_dir, 'results'))
+        f'refs/tags/{self.config.tag}', os.path.join(self.out_dir, 'results'))
     spent_time = time.time() - start_time
     self.status_line += f'Report {spent_time:.2f}s '
     self.status_line += 'OK, ' if report_success else 'FAILURE, '
@@ -282,7 +282,7 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
   runable_configurations: List[RunableConfiguration] = []
   for config in configurations:
     if config.tag == config.label:
-      description = config.tag
+      description = str(config.tag)
     else:
       description = f'{config.label}'
       if config.tag is not None:
@@ -317,7 +317,7 @@ def SpawnConfigurationsFromTargetList(target_list: List[str],
       config.location = location
     if not config.tag:
       raise RuntimeError(f'Can get the tag from target {target_string}')
-    config.label = config.tag
+    config.label = str(config.tag)
     configurations.append(config)
   return configurations
 

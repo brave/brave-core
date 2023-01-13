@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
+from __future__ import annotations
+
 import sys
 import os
 import logging
@@ -22,8 +24,46 @@ from distutils.dir_util import copy_tree
 from components import path_util
 from components.perf_test_utils import GetProcessOutput
 
+class _BaseVersion:
+  _version: List[int]
 
-def _GetBraveDownloadUrl(tag: str, binary: str) -> str:
+  def equals(self, a: _BaseVersion) -> bool:
+    return self._version == a._version
+
+  def less(self, a: _BaseVersion) -> bool:
+    return self._version < a._version
+
+class BraveVersion(_BaseVersion):
+  def __init__(self, tag: str) -> None:
+    super().__init__()
+    assert re.match(r'v\d+\.\d+\.\d+', tag)
+    self._version = list(map(int, tag[1:].split('.')))
+
+  def __str__(self) -> str:
+    return 'v' + '.'.join(map(str, self._version))
+
+  def to_chromium_version(self) -> ChromiumVersion:
+    return _GetChromiumVersion(self)
+
+  #Returns a version like 108.1.48.1
+  def to_combined_version(self) -> str:
+    chromium_version = self.to_chromium_version()
+    return f'{chromium_version.major()}.' + '.'.join(map(str, self._version))
+
+class ChromiumVersion(_BaseVersion):
+  def __init__(self, v: str) -> None:
+    super().__init__()
+    assert re.match(r'\d+\.\d+\.\d+\.\d+', v)
+    self._version = list(map(int, v.split('.')))
+
+  def __str__(self) -> str:
+    return '.'.join(map(str, self._version))
+
+  def major(self) -> int:
+    return self._version[0]
+
+
+def _GetBraveDownloadUrl(tag: BraveVersion, binary: str) -> str:
   return ('https://github.com/brave/brave-browser/releases/download/' +
           f'{tag}/{binary}')
 
@@ -104,11 +144,11 @@ class BrowserType:
   def ReportAsReference(self) -> bool:
     return self._report_as_reference
 
-  def DownloadBrowserBinary(self, tag: str, out_dir: str) -> str:
+  def DownloadBrowserBinary(self, tag: BraveVersion, out_dir: str) -> str:
     raise NotImplementedError()
 
   # pylint: disable=no-self-use
-  def MakeFieldTrials(self, _tag: str, _out_dir: str,
+  def MakeFieldTrials(self, _tag: BraveVersion, _out_dir: str,
                       _variations_repo_dir: Optional[str]) -> Optional[str]:
     return None
 
@@ -144,7 +184,7 @@ class BraveBrowserTypeImpl(BrowserType):
 
     return _GetBraveDownloadUrl(tag, f'brave-{tag}-{platform_name}.zip')
 
-  def _DownloadDmgAndExtract(self, tag: str, out_dir: str) -> str:
+  def _DownloadDmgAndExtract(self, tag: BraveVersion, out_dir: str) -> str:
     assert sys.platform == 'darwin'
     dmg_name = f'Brave-Browser-{self._channel}-{platform.machine()}.dmg'
     url = _GetBraveDownloadUrl(tag, dmg_name)
@@ -169,7 +209,7 @@ class BraveBrowserTypeImpl(BrowserType):
     return os.path.join(out_dir, app_name + '.app', 'Contents', 'MacOS',
                         app_name)
 
-  def DownloadBrowserBinary(self, tag: str, out_dir: str) -> str:
+  def DownloadBrowserBinary(self, tag: BraveVersion, out_dir: str) -> str:
     m = re.match(r'^v(\d+)\.(\d+)\.\d+$', tag)
     if not m:
       raise RuntimeError(f'Failed to parse tag "{tag}"')
@@ -184,7 +224,7 @@ class BraveBrowserTypeImpl(BrowserType):
 
     return _DownloadArchiveAndUnpack(out_dir, self._GetZipDownloadUrl(tag))
 
-  def MakeFieldTrials(self, tag: str, out_dir: str,
+  def MakeFieldTrials(self, tag: BraveVersion, out_dir: str,
                       variations_repo_dir: Optional[str]) -> Optional[str]:
     if not self._use_field_trials:
       return None
@@ -193,18 +233,14 @@ class BraveBrowserTypeImpl(BrowserType):
     return _MakeTestingFieldTrials(out_dir, tag, variations_repo_dir)
 
 
-def _ParseVersion(version_string) -> List[int]:
-  return list(map(int, version_string.split('.')))
-
-
-def _FetchTag(tag: str):
+def _FetchTag(tag: BraveVersion):
   tag_str = f'refs/tags/{tag}'
   args = ['git', 'fetch', 'origin', tag_str]
   GetProcessOutput(args, cwd=path_util.GetBraveDir(), check=True)
   return tag_str
 
 
-def _GetBuildDate(tag: str) -> str:
+def _GetBuildDate(tag: BraveVersion) -> str:
   tag_str = _FetchTag(tag)
   _, output = GetProcessOutput(['git', 'show', '-s', '--format=%ci', tag_str],
                                cwd=path_util.GetBraveDir(),
@@ -213,12 +249,10 @@ def _GetBuildDate(tag: str) -> str:
 
 
 def _MakeTestingFieldTrials(out_dir: str,
-                            tag: str,
+                            tag: BraveVersion,
                             variations_repo_dir: str,
                             branch: str = 'production') -> str:
-  chromium_version = _ParseVersion(_GetChromiumVersion(tag))
-  assert re.match(r'v\d+\.\d+\.\d+', tag)
-  combined_version = chromium_version[0] + '.' + tag[1:]
+  combined_version = tag.to_combined_version()
   logging.debug('combined_version %s', combined_version)
   target_path = os.path.join(out_dir, 'fieldtrial_testing_config.json')
 
@@ -233,36 +267,33 @@ def _MakeTestingFieldTrials(out_dir: str,
   return target_path
 
 
-def _GetChromiumVersion(tag: str) -> str:
+def _GetChromiumVersion(tag: BraveVersion) -> ChromiumVersion:
   tag_str = _FetchTag(tag)
   package_json = json.loads(
       subprocess.check_output(['git', 'show', f'{tag_str}:package.json'],
                               cwd=path_util.GetBraveDir()))
-  return package_json['config']['projects']['chrome']['tag']
+  return ChromiumVersion(package_json['config']['projects']['chrome']['tag'])
 
 
-def _GetNearestChromiumUrl(tag: str) -> str:
+def _GetNearestChromiumUrl(tag: BraveVersion) -> ChromiumVersion:
   chrome_versions = {}
   with open(path_util.GetChromeReleasesJsonPath(), 'r') as config_file:
     chrome_versions = json.load(config_file)
 
-  requested_version = _GetChromiumVersion(tag)
+  requested_version = tag.to_chromium_version()
   logging.debug('Got requested_version: %s', requested_version)
 
-  parsed_requested_version = _ParseVersion(requested_version)
-  best_candidate = None
-  for version in chrome_versions:
-    parsed_version = _ParseVersion(version)
-    if parsed_version[0] == parsed_requested_version[
-        0] and parsed_version >= parsed_requested_version:
-      if not best_candidate or best_candidate > parsed_version:
-        best_candidate = parsed_version
+  best_candidate: Optional[ChromiumVersion] = None
+  for version_str in chrome_versions:
+    version = ChromiumVersion(version_str)
+    if version.major() == requested_version.major() and requested_version.less(version):
+      if not best_candidate or version.less(best_candidate):
+        best_candidate = version
 
   if best_candidate:
-    string_version = '.'.join(map(str, best_candidate))
     logging.info('Use chromium version %s for requested %s', best_candidate,
                  requested_version)
-    return chrome_versions[string_version]['url']
+    return chrome_versions[str(best_candidate)]['url']
 
   raise RuntimeError(f'No chromium version found for {requested_version}')
 
@@ -280,7 +311,7 @@ class ChromeBrowserTypeImpl(BrowserType):
     return os.path.join(os.path.expanduser('~'), 'AppData', 'Local', 'Google',
                         'Chrome ' + self._channel, 'Application')
 
-  def DownloadBrowserBinary(self, tag: str, out_dir: str) -> str:
+  def DownloadBrowserBinary(self, tag: BraveVersion, out_dir: str) -> str:
     if sys.platform == 'win32':
       return _DownloadWinInstallerAndExtract(out_dir,
                                              _GetNearestChromiumUrl(tag),
