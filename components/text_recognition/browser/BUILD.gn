@@ -12,6 +12,13 @@ component("browser") {
 
   sources = [ "text_recognition.h" ]
 
+  defines = [ "IS_TEXT_RECOGNITION_BROWSER_IMPL" ]
+
+  deps = [
+    "//base",
+    "//skia",
+  ]
+
   if (is_mac) {
     sources += [ "text_recognition.mm" ]
 
@@ -22,11 +29,4 @@ component("browser") {
 
     configs += [ "//build/config/compiler:enable_arc" ]
   }
-
-  deps = [
-    "//base",
-    "//skia",
-  ]
-
-  defines = [ "IS_TEXT_RECOGNITION_BROWSER_IMPL" ]
 }
