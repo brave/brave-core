@@ -26,6 +26,14 @@ struct PerformanceReport {
   size_t dataset_size;
   float loss;
   float accuracy;
+  std::vector<Weights> parameters;
+
+  PerformanceReport(size_t dataset_size,
+                    float loss,
+                    float accuracy,
+                    std::vector<Weights> parameters);
+  PerformanceReport(const PerformanceReport& other);
+  ~PerformanceReport();
 };
 
 class Model {

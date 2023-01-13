@@ -8,10 +8,23 @@
 #include <algorithm>
 #include <cmath>
 #include <random>
+#include <vector>
 
 #include "base/check.h"
 
 namespace brave_federated {
+
+PerformanceReport::PerformanceReport(size_t dataset_size,
+                                     float loss,
+                                     float accuracy,
+                                     std::vector<Weights> parameters)
+    : dataset_size(dataset_size),
+      loss(loss),
+      accuracy(accuracy),
+      parameters(parameters) {}
+
+PerformanceReport::PerformanceReport(const PerformanceReport& other) = default;
+PerformanceReport::~PerformanceReport() = default;
 
 Model::Model(ModelSpec model_spec)
     : num_iterations_(model_spec.num_iterations),
@@ -117,11 +130,14 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
   }
   float accuracy = training_loss;
 
-  return PerformanceReport{
-      train_dataset.size(),  // dataset_size
-      training_loss,         // loss
-      accuracy,              // accuracy
-  };
+  std::vector<Weights> reported_model;
+  reported_model.push_back(weights_);
+  reported_model.push_back({bias_});
+  return PerformanceReport(train_dataset.size(),  // dataset_size
+                           training_loss,         // loss
+                           accuracy,              // accuracy
+                           reported_model         // parameters
+  );
 }
 
 PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
@@ -152,11 +168,11 @@ PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
   float accuracy = total_correct * 1.0 / test_dataset.size();
   float test_loss = ComputeNLL(y, Predict(X));
 
-  return PerformanceReport{
-      test_dataset.size(),  // dataset_size
-      test_loss,            // loss
-      accuracy,             // accuracy
-  };
+  return PerformanceReport(test_dataset.size(),  // dataset_size
+                           test_loss,            // loss
+                           accuracy,             // accuracy
+                           {}                    // parameters
+  );
 }
 
 float Model::ComputeNLL(std::vector<float> true_labels,
