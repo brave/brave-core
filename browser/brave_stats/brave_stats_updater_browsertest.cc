@@ -249,9 +249,11 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   WaitForReferralInitializeCallback();
   WaitForStandardStatsUpdatedCallback();
 
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   // Promo code file preference should now be true
   EXPECT_TRUE(
       g_browser_process->local_state()->GetBoolean(kReferralInitialization));
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
   // Verify that update url is valid
   const GURL update_url = GetUpdateURL();
@@ -272,12 +274,14 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
                        DISABLED_StatsUpdaterMigration) {
   // Create a pre 1.19 user.
   // Has a download_id, kReferralCheckedForPromoCodeFile is set, has promo code.
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   ASSERT_FALSE(
       g_browser_process->local_state()->GetBoolean(kReferralInitialization));
   g_browser_process->local_state()->SetString(kReferralDownloadID, "migration");
   g_browser_process->local_state()->SetString(kReferralPromoCode, "BRV001");
   g_browser_process->local_state()->SetBoolean(kReferralCheckedForPromoCodeFile,
                                                true);
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
   WaitForStandardStatsUpdatedCallback();
   // Verify that update url is valid
@@ -328,9 +332,11 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterReferralCodeBrowserTest,
   WaitForReferralInitializeCallback();
   WaitForStandardStatsUpdatedCallback();
 
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   // Promo code file preference should now be true
   EXPECT_TRUE(
       g_browser_process->local_state()->GetBoolean(kReferralInitialization));
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
   // Verify that update url is valid
   const GURL update_url = GetUpdateURL();

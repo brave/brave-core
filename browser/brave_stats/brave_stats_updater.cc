@@ -353,6 +353,7 @@ void BraveStatsUpdater::QueueServerPing() {
       num_closures,
       base::BindOnce(&BraveStatsUpdater::StartServerPingStartupTimer,
                      base::Unretained(this)));
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (!referrals_initialized) {
     pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
     pref_change_registrar_->Init(pref_service_);
@@ -361,6 +362,8 @@ void BraveStatsUpdater::QueueServerPing() {
         base::BindRepeating(&BraveStatsUpdater::OnReferralInitialization,
                             base::Unretained(this)));
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+
   if (ads_enabled) {
     DetectUncertainFuture();
   }

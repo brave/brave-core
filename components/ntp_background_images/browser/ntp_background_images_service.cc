@@ -241,10 +241,19 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
     // If referral code is non empty, that means browser is shutdown after
     // getting referal code. In this case, we should start downloading mapping
     // table.
-    if ((local_pref_->GetBoolean(kReferralCheckedForPromoCodeFile) ||
-         local_pref_->GetBoolean(kReferralInitialization)) &&
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+    const bool referral_checked =
+        local_pref_->GetBoolean(kReferralCheckedForPromoCodeFile) ||
+        local_pref_->GetBoolean(kReferralInitialization);
+#else
+    // When referral component is not enabled, we should mark that this install
+    // is not super referral.
+    const bool referral_checked = true;
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+
+    if (referral_checked &&
         !local_pref_->GetBoolean(
-             prefs::kNewTabPageGetInitialSRComponentInProgress)) {
+            prefs::kNewTabPageGetInitialSRComponentInProgress)) {
       MarkThisInstallIsNotSuperReferralForever();
       DVLOG(2) << __func__ << ": Cached SR Info is clean and Referral Service"
                            << " is not in initial state."
@@ -265,6 +274,7 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
       return;
     }
 
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
     // This below code is for recover above abnormal situation - Shutdown
     // situation before getting map table or getting initial component.
     if (brave::BraveReferralsService::IsDefaultReferralCode(code)) {
@@ -274,7 +284,9 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
       // mapping table.
       DownloadSuperReferralMappingTable();
     }
-    return;
+#else
+    MarkThisInstallIsNotSuperReferralForever();
+#endif
   }
 
   DVLOG(2) << __func__ << ": This has invalid component info.";
@@ -286,13 +298,16 @@ void NTPBackgroundImagesService::MonitorReferralPromoCodeChange() {
   DVLOG(2) << __func__ << ": Monitor referral promo code change";
 
   pref_change_registrar_.Init(local_pref_);
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   pref_change_registrar_.Add(kReferralPromoCode,
       base::BindRepeating(&NTPBackgroundImagesService::OnPreferenceChanged,
       base::Unretained(this)));
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 }
 
 void NTPBackgroundImagesService::OnPreferenceChanged(
   const std::string& pref_name) {
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   DCHECK_EQ(kReferralPromoCode, pref_name);
   const std::string new_referral_code = GetReferralPromoCode();
   DVLOG(2) << __func__ << ": Got referral promo code: "
@@ -308,6 +323,7 @@ void NTPBackgroundImagesService::OnPreferenceChanged(
                        << " Let's check this code is super referral or not"
                        << " after downloading mapping table.";
   DownloadSuperReferralMappingTable();
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 }
 
 void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
@@ -563,7 +579,11 @@ void NTPBackgroundImagesService::UnRegisterSuperReferralComponent() {
 }
 
 std::string NTPBackgroundImagesService::GetReferralPromoCode() const {
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   return local_pref_->GetString(kReferralPromoCode);
+#else
+  return std::string();
+#endif
 }
 
 bool NTPBackgroundImagesService::IsSuperReferral() const {

@@ -168,7 +168,9 @@ void BraveBrowserProcessImpl::Init() {
 void BraveBrowserProcessImpl::StartTearDown() {
   ad_block_service_.reset();
   brave_stats_updater_.reset();
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   brave_referrals_service_.reset();
+#endif  //  BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   BrowserProcessImpl::StartTearDown();
 }
 #endif

@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Software Team. Distributed under the MPL2
  * license. This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 // An implementation of BraveBrowserProcess for unit tests that fails for most
 // services. By preventing creation of services, we reduce dependencies and
@@ -60,7 +60,9 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;
 #endif
   brave::BraveP3AService* brave_p3a_service() override;
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   brave::BraveReferralsService* brave_referrals_service() override;
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   brave_stats::BraveStatsUpdater* brave_stats_updater() override;
   ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() override;
