@@ -422,12 +422,6 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
         blink::BackForwardCacheAware::kAllow);
   }
 
-  if (!base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveAdblockCosmeticFilteringChildFrames) &&
-      !render_frame_->IsMainFrame()) {
-    return;
-  }
-
   // Working on css rules
   generichide_ = resources_dict_->FindBool("generichide").value_or(false);
   namespace bf = brave_shields::features;
