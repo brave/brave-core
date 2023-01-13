@@ -21,19 +21,25 @@ from io import BytesIO
 from zipfile import ZipFile
 from distutils.dir_util import copy_tree
 
-from components import path_util
+import components.path_util as path_util
 from components.perf_test_utils import GetProcessOutput
+
 
 class _BaseVersion:
   _version: List[int]
 
   def equals(self, a: _BaseVersion) -> bool:
-    return self._version == a._version
+    return self._version == a.version()
 
   def less(self, a: _BaseVersion) -> bool:
-    return self._version < a._version
+    return self._version < a.version()
+
+  def version(self) -> List[int]:
+    return self._version
+
 
 class BraveVersion(_BaseVersion):
+
   def __init__(self, tag: str) -> None:
     super().__init__()
     assert re.match(r'v\d+\.\d+\.\d+', tag)
@@ -50,7 +56,9 @@ class BraveVersion(_BaseVersion):
     chromium_version = self.to_chromium_version()
     return f'{chromium_version.major()}.' + '.'.join(map(str, self._version))
 
+
 class ChromiumVersion(_BaseVersion):
+
   def __init__(self, v: str) -> None:
     super().__init__()
     assert re.match(r'\d+\.\d+\.\d+\.\d+', v)
@@ -165,7 +173,7 @@ class BraveBrowserTypeImpl(BrowserType):
     self._channel = channel
     self._use_field_trials = use_field_trials
 
-  def _GetSetupDownloadUrl(self, tag) -> str:
+  def _GetSetupDownloadUrl(self, tag: BraveVersion) -> str:
     return _GetBraveDownloadUrl(
         tag, f'BraveBrowserStandaloneSilent{self._channel}Setup.exe')
 
@@ -175,7 +183,7 @@ class BraveBrowserTypeImpl(BrowserType):
                         'Application')
 
   @classmethod
-  def _GetZipDownloadUrl(cls, tag) -> str:
+  def _GetZipDownloadUrl(cls, tag: BraveVersion) -> str:
     platform_name = None
     if sys.platform == 'win32':
       platform_name = 'win32-x64'
@@ -210,13 +218,10 @@ class BraveBrowserTypeImpl(BrowserType):
                         app_name)
 
   def DownloadBrowserBinary(self, tag: BraveVersion, out_dir: str) -> str:
-    m = re.match(r'^v(\d+)\.(\d+)\.\d+$', tag)
-    if not m:
-      raise RuntimeError(f'Failed to parse tag "{tag}"')
     if sys.platform == 'darwin':
       return self._DownloadDmgAndExtract(tag, out_dir)
-    if (sys.platform == 'win32' and int(m.group(1)) == 1
-        and int(m.group(2)) < 35):
+    if (sys.platform == 'win32' and tag.version()[0] == 1
+        and tag.version()[1] < 35):
       return _DownloadWinInstallerAndExtract(out_dir,
                                              self._GetSetupDownloadUrl(tag),
                                              self._GetWinInstallPath(),
@@ -286,7 +291,8 @@ def _GetNearestChromiumUrl(tag: BraveVersion) -> ChromiumVersion:
   best_candidate: Optional[ChromiumVersion] = None
   for version_str in chrome_versions:
     version = ChromiumVersion(version_str)
-    if version.major() == requested_version.major() and requested_version.less(version):
+    if version.major() == requested_version.major() and requested_version.less(
+        version):
       if not best_candidate or version.less(best_candidate):
         best_candidate = version
 

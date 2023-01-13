@@ -3,6 +3,9 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
+from __future__ import annotations
+
+import argparse
 import os
 import json
 import logging
@@ -10,39 +13,45 @@ import shutil
 import time
 
 from copy import deepcopy
-from typing import Tuple, Optional, List, NamedTuple
+from typing import Tuple, Optional, List
 
-from components import path_util, perf_profile
+import components.path_util as path_util
+import components.perf_profile as perf_profile
+import components.perf_test_utils as perf_test_utils
+
 from components.perf_config import BenchmarkConfig, RunnerConfig
 from components.browser_type import BrowserType
 from components.browser_binary_fetcher import PrepareBinary, ParseTarget
-from components.perf_test_utils import (GetRevisionNumberAndHash,
-                                        GetProcessOutput)
 
 
-class CommonOptions(NamedTuple):
+class CommonOptions:
   verbose: bool = False
+  variations_repo_dir: Optional[str] = None
+  working_directory: str = ''
+
   do_run_tests: bool = True
   do_report: bool = False
   report_on_failure: bool = False
   local_run: bool = False
-  variations_repo_dir: Optional[str] = None
-  working_directory: str = ''
 
   @classmethod
-  def from_args(cls, args) -> 'CommonOptions':
-    return CommonOptions(verbose=args.verbose,
-                         do_run_tests=not args.report_only,
-                         do_report=not args.no_report and not args.local_run,
-                         report_on_failure=args.report_on_failure,
-                         local_run=args.local_run,
-                         variations_repo_dir=args.variations_repo_dir,
-                         working_directory=args.working_directory)
+  def add_common_parser_args(cls, parser: argparse.ArgumentParser) -> None:
+    parser.add_argument('--verbose', action='store_true')
+    parser.add_argument('--variations-repo-dir', type=str)
+    parser.add_argument('--working-directory', required=True, type=str)
+
+  @classmethod
+  def from_args(cls, args) -> CommonOptions:
+    options = CommonOptions()
+    options.verbose = args.verbose
+    options.variations_repo_dir = args.variations_repo_dir
+    options.working_directory = args.working_directory
+    return options
 
 
-def ReportToDashboardImpl(browser_type: BrowserType, dashboard_bot_name: str,
-                          revision: str, output_dir: str
-                          ) -> Tuple[bool, List[str], Optional[str]]:
+def ReportToDashboardImpl(
+    browser_type: BrowserType, dashboard_bot_name: str, revision: str,
+    output_dir: str) -> Tuple[bool, List[str], Optional[str]]:
 
   if browser_type.ReportAsReference():
     # .reference suffix for benchmark folder is used in process_perf_results.py
@@ -62,7 +71,7 @@ def ReportToDashboardImpl(browser_type: BrowserType, dashboard_bot_name: str,
   args.append(f'--task-output-dir={output_dir}')
   args.append('--output-json=' + os.path.join(output_dir, 'results.json'))
 
-  revision_number, git_hash = GetRevisionNumberAndHash(revision)
+  revision_number, git_hash = perf_test_utils.GetRevisionNumberAndHash(revision)
   logging.debug('Got revision %s git_hash %s', revision_number, git_hash)
 
   build_properties = {}
@@ -86,7 +95,7 @@ def ReportToDashboardImpl(browser_type: BrowserType, dashboard_bot_name: str,
   build_properties_serialized = json.dumps(build_properties)
   args.append('--build-properties=' + build_properties_serialized)
 
-  success, _ = GetProcessOutput(args)
+  success, _ = perf_test_utils.GetProcessOutput(args)
   if success:
     return True, [], revision_number
 
@@ -197,7 +206,8 @@ class RunableConfiguration:
     if len(extra_browser_args) > 0:
       args.append('--extra-browser-args=' + ' '.join(extra_browser_args))
 
-    success, _ = GetProcessOutput(args, cwd=path_util.GetChromiumPerfDir())
+    success, _ = perf_test_utils.GetProcessOutput(
+        args, cwd=path_util.GetChromiumPerfDir())
     return success
 
   def TakeStatusLine(self):
@@ -253,7 +263,7 @@ class RunableConfiguration:
 
   def ClearArtifacts(self):
     if self.common_options.local_run:
-      for benchmark in self.common_options.benchmarks:
+      for benchmark in self.benchmarks:
         artifacts_dir = os.path.join(self.out_dir, os.pardir, benchmark.name,
                                      'artifacts')
         shutil.rmtree(artifacts_dir)
@@ -275,10 +285,9 @@ class RunableConfiguration:
     return run_tests_ok and report_ok, self.logs
 
 
-def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
-                                  benchmarks: List[BenchmarkConfig],
-                                  common_options: CommonOptions
-                                  ) -> List[RunableConfiguration]:
+def PrepareBinariesAndDirectories(
+    configurations: List[RunnerConfig], benchmarks: List[BenchmarkConfig],
+    common_options: CommonOptions) -> List[RunableConfiguration]:
   runable_configurations: List[RunableConfiguration] = []
   for config in configurations:
     if config.tag == config.label:
@@ -291,12 +300,14 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
     out_dir = os.path.join(common_options.working_directory, description)
 
     binary_path = None
+    field_trial_config = None
 
     if common_options.do_run_tests:
       shutil.rmtree(out_dir, True)
       os.makedirs(out_dir)
       binary_path = PrepareBinary(out_dir, config.tag, config.location,
                                   config.browser_type)
+      assert (config.tag is not None)
       field_trial_config = config.browser_type.MakeFieldTrials(
           config.tag, out_dir, common_options.variations_repo_dir)
       logging.info('%s : %s directory %s', description, binary_path, out_dir)
@@ -306,9 +317,9 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
   return runable_configurations
 
 
-def SpawnConfigurationsFromTargetList(target_list: List[str],
-                                      base_configuration: RunnerConfig
-                                      ) -> List[RunnerConfig]:
+def SpawnConfigurationsFromTargetList(
+    target_list: List[str],
+    base_configuration: RunnerConfig) -> List[RunnerConfig]:
   configurations: List[RunnerConfig] = []
   for target_string in target_list:
     config = deepcopy(base_configuration)
