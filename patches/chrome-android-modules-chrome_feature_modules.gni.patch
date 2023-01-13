@@ -1,0 +1,12 @@
+diff --git a/chrome/android/modules/chrome_feature_modules.gni b/chrome/android/modules/chrome_feature_modules.gni
+index d5c7f779d11b15a6c174946347b9b7ad4b1ffae9..eaa1db6d927e414ffe851ae82b419a3f3fb6ee67 100644
+--- a/chrome/android/modules/chrome_feature_modules.gni
++++ b/chrome/android/modules/chrome_feature_modules.gni
+@@ -53,6 +53,7 @@ if (dfmify_dev_ui) {
+   chrome_modern_module_descs += [ dev_ui_module_desc ]
+ }
+ 
++chrome_modern_module_descs += brave_module_descs
+ # Modules shipped in Monochrome (Android N+).
+ monochrome_module_descs = chrome_modern_module_descs
+ if (false) {  # AR DFM is currently disabled

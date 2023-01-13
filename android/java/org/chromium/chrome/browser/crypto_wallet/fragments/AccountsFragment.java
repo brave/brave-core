@@ -40,17 +40,21 @@ import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
+import org.chromium.chrome.modules.ledger_hw.LedgerHwInstallListener;
+import org.chromium.chrome.modules.ledger_hw.LedgerHwModuleProvider;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountsFragment extends Fragment implements OnWalletListItemClick {
+public class AccountsFragment extends Fragment
+        implements OnWalletListItemClick, LedgerHwInstallListener.LedgerHwInstallListenerDelegate {
     private static final String TAG = "AccountsFragment";
 
     private View rootView;
     private WalletCoinAdapter walletCoinAdapter;
     private WalletModel mWalletModel;
+    private LedgerHwInstallListener mLedgerHwInstallListener;
 
     public static AccountsFragment newInstance() {
         return new AccountsFragment();
@@ -86,6 +90,11 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
             sheetDialogFragment.show(
                     getChildFragmentManager(), CreateAccountBottomSheetFragment.TAG);
         });
+        TextView importHwAccountBtn = view.findViewById(R.id.import_hardware_account_btn);
+        importHwAccountBtn.setOnClickListener(v -> {
+            mLedgerHwInstallListener = new LedgerHwInstallListener(this);
+            LedgerHwModuleProvider.installModule(mLedgerHwInstallListener);
+        });
 
         TextView backupBtn = view.findViewById(R.id.accounts_backup);
         backupBtn.setOnClickListener(
@@ -99,6 +108,12 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
 
         setUpAccountList(view);
         setUpSecondaryAccountList(view);
+    }
+
+    // LedgerHwInstallListenerDelegate method
+    @Override
+    public void onComplete(boolean success) {
+        // TODO(sergz): an event is triggered when module is installed
     }
 
     private void setUpAccountList(View view) {

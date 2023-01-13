@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    featureSplit="ledger_hw"
+    package="com.brave.browser"
+    platformBuildVersionCode="33"
+    platformBuildVersionName="13">
+  <dist:module dist:onDemand="true" dist:title="@string/ledger_hw_module_title">  # DIFF-ANCHOR: 0e2412ae
+    <dist:fusing dist:include="true"/>
+  </dist:module>  # DIFF-ANCHOR: 0e2412ae
+  <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="33"/>
+  <application android:hasCode="false"/>
+</manifest>

@@ -365,6 +365,8 @@ const util = {
       const androidComponentsStylesResDest = path.join(config.srcDir, 'components', 'browser_ui', 'styles', 'android', 'java', 'res')
       const androidSafeBrowsingResSource = path.join(config.braveCoreDir, 'browser', 'safe_browsing', 'android', 'java', 'res')
       const androidSafeBrowsingResDest = path.join(config.srcDir, 'chrome', 'browser', 'safe_browsing', 'android', 'java', 'res')
+      const androidExpectationsSource = path.join(config.braveCoreDir, 'android', 'expectations')
+      const androidExpectationsDest = path.join(config.srcDir, 'chrome', 'android', 'expectations')
 
       // Mapping for copying Brave's Android resource into chromium folder.
       const copyAndroidResourceMapping = {
@@ -378,10 +380,11 @@ const util = {
         [androidToolbarResSource]: [androidToolbarResDest],
         [androidComponentsWidgetResSource]: [androidComponentsWidgetResDest],
         [androidComponentsStylesResSource]: [androidComponentsStylesResDest],
-        [androidSafeBrowsingResSource]: [androidSafeBrowsingResDest]
+        [androidSafeBrowsingResSource]: [androidSafeBrowsingResDest],
+        [androidExpectationsSource]: [androidExpectationsDest]
       }
 
-      console.log('copy Android app icons and app resources')
+      console.log('copy Android files, app icons and app resources')
       Object.entries(copyAndroidResourceMapping).map(([sourcePath, destPaths]) => {
         let androidSourceFiles = []
         if (fs.statSync(sourcePath).isDirectory()) {
