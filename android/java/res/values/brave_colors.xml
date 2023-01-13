@@ -249,4 +249,13 @@
     <color name="search_widget_promo_bg_color">#FFFFFF</color>
 
     <color name="notification_button_color">#423EEE</color>
+
+    <color name="notification_volume_icon_color">#D1E8EB</color>
+    <color name="notification_bat1_icon_color">#FEDED6</color>
+    <color name="notification_bat2_icon_color">#F195A4</color>
+    <color name="notification_bat3_icon_color">#E2E2FC</color>
+    <color name="notification_graph_icon_color">#A6ABE8</color>
+    <color name="notification_badge_icon_color">#C2A5D1</color>
+    <color name="notification_download_icon_color">#F092C5</color>
+    <color name="notification_rationale_dialog_card_bg_color">@android:color/white</color>
 </resources>
