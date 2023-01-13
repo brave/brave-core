@@ -350,11 +350,26 @@ public class PortfolioFragment
         if (selectedNetwork == null) {
             return;
         }
+
         if (asset.isErc721 || asset.isNft) {
-            // TODO: show nft details of clicked nft
-            return;
+            PortfolioModel.NftDataModel selectedNft = null;
+            if (mPortfolioModel != null) {
+                List<PortfolioModel.NftDataModel> nftModels = mPortfolioModel.mNftModels.getValue();
+                for (PortfolioModel.NftDataModel nftDataModel: nftModels) {
+                    if (nftDataModel.token.tokenId.equals(asset.tokenId)) {
+                        selectedNft = nftDataModel;
+                        break;
+                    }
+                }
+            }
+            if (selectedNft == null) {
+                return;
+            }
+
+             Utils.openNftDetailActivity(getActivity(), selectedNetwork.chainId, asset, selectedNft);
+        } else {
+            Utils.openAssetDetailsActivity(getActivity(), selectedNetwork.chainId, asset);
         }
-        Utils.openAssetDetailsActivity(getActivity(), selectedNetwork.chainId, asset);
     }
 
     private void openNetworkSelection() {
