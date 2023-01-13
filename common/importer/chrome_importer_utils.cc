@@ -31,8 +31,6 @@ using extensions::Manifest;
 
 namespace {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-// Pref file that holds installed extension list.
-constexpr char kChromePreferencesFile[] = "Preferences";
 
 absl::optional<base::Value::Dict> GetChromeExtensionsListFromFile(
     const base::FilePath& preference_path) {
@@ -93,7 +91,7 @@ std::vector<std::string> GetImportableListFromChromeExtensionsList(
 absl::optional<base::Value::Dict> GetChromeExtensionsList(
     const base::FilePath& profile_path) {
   auto list_from_secure_preference = GetChromeExtensionsListFromFile(
-      profile_path.AppendASCII(kChromeExtensionsPreferencesFile));
+      profile_path.AppendASCII(kChromeSecurePreferencesFile));
 
   auto list_from_preferences = GetChromeExtensionsListFromFile(
       profile_path.AppendASCII(kChromePreferencesFile));

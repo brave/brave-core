@@ -42,7 +42,7 @@ class BraveChromeImporterUtilsTest : public testing::Test {
 };
 
 TEST_F(BraveChromeImporterUtilsTest, GetChromeExtensionsListPreferences) {
-  CopyTestFileToProfile("Preferences", "Preferences");
+  CopyTestFileToProfile(kChromePreferencesFile, kChromePreferencesFile);
   auto extensions_list =
       GetImportableChromeExtensionsList(GetTestProfilePath());
   EXPECT_TRUE(extensions_list);
@@ -54,7 +54,7 @@ TEST_F(BraveChromeImporterUtilsTest, GetChromeExtensionsListPreferences) {
 
 TEST_F(BraveChromeImporterUtilsTest, GetChromeExtensionsListSecurePreferences) {
   CopyTestFileToProfile("Secure_Preferences_for_extension_import",
-                        kChromeExtensionsPreferencesFile);
+                        kChromeSecurePreferencesFile);
   auto extensions_list =
       GetImportableChromeExtensionsList(GetTestProfilePath());
   EXPECT_TRUE(extensions_list);
@@ -65,7 +65,7 @@ TEST_F(BraveChromeImporterUtilsTest, GetChromeExtensionsListSecurePreferences) {
 
 TEST_F(BraveChromeImporterUtilsTest, ExtensionImportTest) {
   CopyTestFileToProfile("Secure_Preferences_for_extension_import",
-                        kChromeExtensionsPreferencesFile);
+                        kChromeSecurePreferencesFile);
   CopyTestFileToProfile("Preferences", "Preferences");
   auto extensions_list =
       GetImportableChromeExtensionsList(GetTestProfilePath());
@@ -74,7 +74,6 @@ TEST_F(BraveChromeImporterUtilsTest, ExtensionImportTest) {
   // We don't import theme, pre-installed extensions, disabled extensions and
   // installed by default (1 from Secure Preferences, 1 from Preferences)
   EXPECT_EQ(3u, extensions_list->size());
-
   EXPECT_EQ(extensions_list.value(),
             std::vector<std::string>({"aeblfdkhhhdcdjpifhhbdiojplfjncoa",
                                       "jldhpllghnbhlbpcmnajkpdmadaolakh",
@@ -125,8 +124,8 @@ TEST_F(BraveChromeImporterUtilsTest, GetChromeUserDataFolder) {
 
 TEST_F(BraveChromeImporterUtilsTest, ChromeImporterCanImport) {
   CopyTestFileToProfile("Secure_Preferences_for_extension_import",
-                        kChromeExtensionsPreferencesFile);
-  CopyTestFileToProfile("Preferences", "Preferences");
+                        kChromeSecurePreferencesFile);
+  CopyTestFileToProfile(kChromePreferencesFile, kChromePreferencesFile);
   uint16_t services_supported = importer::NONE;
   EXPECT_TRUE(
       ChromeImporterCanImport(GetTestProfilePath(), &services_supported));
