@@ -11,14 +11,14 @@ if (is_android) {
 assert(enable_brave_referrals)
 
 static_library("browser") {
-  public_deps = [
-    "//brave/components/brave_referrals/buildflags",
-    "//brave/components/brave_referrals/common",
-  ]
-
   sources = [
     "brave_referrals_service.cc",
     "brave_referrals_service.h",
+  ]
+
+  public_deps = [
+    "//brave/components/brave_referrals/buildflags",
+    "//brave/components/brave_referrals/common",
   ]
 
   deps = [

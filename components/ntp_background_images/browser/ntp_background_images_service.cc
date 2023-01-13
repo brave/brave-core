@@ -19,9 +19,7 @@
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
-#include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_component_installer.h"
@@ -34,6 +32,11 @@
 #include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/brave_referrals/common/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
 using brave_component_updater::BraveOnDemandUpdater;
 

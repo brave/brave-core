@@ -8,9 +8,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
-#include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -20,6 +18,11 @@
 #include "build/build_config.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/brave_referrals/common/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
 namespace ntp_background_images {
 
@@ -230,7 +233,9 @@ class NTPBackgroundImagesServiceTest : public testing::Test {
   void SetUp() override {
     auto* registry = pref_service_.registry();
     NTPBackgroundImagesService::RegisterLocalStatePrefs(registry);
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
     brave::RegisterPrefsForBraveReferralsService(registry);
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   }
 
   void Init() {
@@ -257,8 +262,10 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   TestObserver observer;
   service_->AddObserver(&observer);
 
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
   pref_service_.SetBoolean(kReferralInitialization, true);
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
   // Check with json file w/o schema version with empty object.
   service_->si_images_data_.reset();
@@ -416,8 +423,10 @@ TEST_F(NTPBackgroundImagesServiceTest, MultipleCampaignsTest) {
   TestObserver observer;
   service_->AddObserver(&observer);
 
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
   pref_service_.SetBoolean(kReferralInitialization, true);
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
   service_->si_images_data_.reset();
   observer.on_si_updated_ = false;
@@ -728,9 +737,9 @@ TEST_F(NTPBackgroundImagesServiceTest,
   // Make this install has initialized super referral service.
   pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
   pref_service_.SetBoolean(kReferralInitialization, true);
-  pref_service_.SetBoolean(
-      prefs::kNewTabPageGetInitialSRComponentInProgress, true);
   pref_service_.SetString(kReferralPromoCode, "BRV001");
+  pref_service_.SetBoolean(prefs::kNewTabPageGetInitialSRComponentInProgress,
+                           true);
 
   EXPECT_TRUE(pref_service_.FindPreference(
       prefs::kNewTabPageCachedSuperReferralComponentInfo)->IsDefaultValue());

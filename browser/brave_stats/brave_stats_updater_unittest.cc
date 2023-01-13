@@ -15,7 +15,7 @@
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -32,6 +32,10 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
 using testing::HasSubstr;
 
@@ -73,8 +77,10 @@ class BraveStatsUpdaterTest : public testing::Test {
     profile_ = CreateBraveAdsProfile();
     EXPECT_TRUE(profile_.get());
     brave_stats::RegisterLocalStatePrefs(testing_local_state_.registry());
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
     brave::RegisterPrefsForBraveReferralsService(
         testing_local_state_.registry());
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
     SetCurrentTimeForTest(base::Time());
     brave_stats::BraveStatsUpdaterParams::SetFirstRunForTest(true);
   }

@@ -11,7 +11,7 @@
 
 #include "base/environment.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/webcompat_reporter/browser/buildflags.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -23,6 +23,10 @@
 #include "services/network/public/mojom/fetch_api.mojom-shared.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
 namespace brave {
 

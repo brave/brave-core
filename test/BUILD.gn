@@ -327,7 +327,6 @@ test("brave_unit_tests") {
   }
 
   if (enable_brave_referrals) {
-    deps += [ "//brave/components/brave_referrals/browser" ]
   }
 
   data = [ "data/" ]
@@ -496,6 +495,7 @@ test("brave_unit_tests") {
       # TODO(keur): Reminder to move this out when we migrate
       # stats browser tests into unit tests.
       "//brave/components/brave_ads/browser",
+      "//brave/components/brave_referrals/browser",
       "//brave/components/brave_rewards/browser",
       "//brave/components/brave_stats/browser",
       "//brave/vendor/bat-native-ads",

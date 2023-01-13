@@ -20,7 +20,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/build/android/jni_headers/NTPBackgroundImagesBridge_jni.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
@@ -31,6 +31,10 @@
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
 using base::android::AttachCurrentThread;
 using base::android::ConvertUTF8ToJavaString;
