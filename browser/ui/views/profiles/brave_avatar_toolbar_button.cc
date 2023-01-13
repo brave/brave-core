@@ -25,6 +25,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/base/theme_provider.h"
+#include "ui/gfx/geometry/rrect_f.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -50,31 +51,26 @@ class BraveAvatarButtonHighlightPathGenerator
       const BraveAvatarButtonHighlightPathGenerator&) = delete;
   ~BraveAvatarButtonHighlightPathGenerator() override = default;
 
-  // HighlightPathGenerator:
-  SkPath GetHighlightPath(const views::View* view) override {
-    if (avatar_button_)
-      return {};
-
-    gfx::Rect rect(view->size());
-    rect.Inset(GetToolbarInkDropInsets(view));
-    SkPath path;
-
+  absl::optional<gfx::RRectF> GetRoundRect(const gfx::RectF& bounds) override {
+    gfx::Rect rect(avatar_button_->size());
+    rect.Inset(GetToolbarInkDropInsets(avatar_button_.get()));
+    DCHECK(avatar_button_);
     if (avatar_button_->GetAvatarButtonState() ==
         AvatarToolbarButton::State::kAnimatedUserIdentity) {
       // When it's animating we shouldn't draw rounded highlight as the button
       // has different radius. We draw rect here then the button will clip the
       // highlight properly.
-      path.addRect(gfx::RectToSkRect(rect));
-    } else {
-      path.addRoundRect(gfx::RectToSkRect(rect), kHighlightRadius,
-                        kHighlightRadius);
+      return gfx::RRectF(gfx::RectF(rect), 0);
     }
-    return path;
+
+    // This make the highlight drawn as circle.
+    return gfx::RRectF(gfx::RectF(rect), kHighlightRadius);
   }
 
  private:
   base::WeakPtr<BraveAvatarToolbarButton> avatar_button_;
 };
+
 }  // namespace
 
 BraveAvatarToolbarButton::BraveAvatarToolbarButton(BrowserView* browser_view)
