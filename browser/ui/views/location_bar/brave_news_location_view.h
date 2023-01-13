@@ -54,7 +54,7 @@ class BraveNewsLocationView : public PageActionIconView,
   const gfx::VectorIcon& GetVectorIcon() const override;
 
  private:
-  SkColor GetIconColor(bool subscribed) const;
+  void UpdateIconColor(bool subscribed);
   void OnBubbleClosed();
 
   raw_ptr<content::WebContents> last_contents_;

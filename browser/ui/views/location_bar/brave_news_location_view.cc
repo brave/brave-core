@@ -96,9 +96,7 @@ void BraveNewsLocationView::UpdateImpl() {
   }
 
   // Icon color changes if any feeds are being followed
-  bool subscribed = false;
-  subscribed = tab_helper->IsSubscribed();
-  SetIconColor(GetIconColor(subscribed));
+  UpdateIconColor(tab_helper->IsSubscribed());
 
   // Don't show icon if there are no feeds
   const bool has_feeds = !tab_helper->GetAvailableFeeds().empty();
@@ -125,8 +123,12 @@ void BraveNewsLocationView::OnAvailableFeedsChanged(
 }
 
 void BraveNewsLocationView::OnThemeChanged() {
-  views::LabelButton::OnThemeChanged();
-  Update();
+  bool subscribed = false;
+  if (auto* contents = GetWebContents()) {
+    subscribed = BraveNewsTabHelper::FromWebContents(contents)->IsSubscribed();
+  }
+  UpdateIconColor(subscribed);
+  PageActionIconView::OnThemeChanged();
 }
 
 void BraveNewsLocationView::OnExecuting(
@@ -149,15 +151,18 @@ void BraveNewsLocationView::OnExecuting(
   bubble_widget->Show();
 }
 
-void BraveNewsLocationView::OnBubbleClosed() {
-  bubble_view_ = nullptr;
+void BraveNewsLocationView::UpdateIconColor(bool subscribed) {
+  SkColor icon_color;
+  if (subscribed) {
+    auto is_dark = GetNativeTheme()->GetPreferredColorScheme() ==
+                   ui::NativeTheme::PreferredColorScheme::kDark;
+    icon_color = is_dark ? kSubscribedDarkColor : kSubscribedLightColor;
+  } else {
+    icon_color = color_utils::DeriveDefaultIconColor(GetCurrentTextColor());
+  }
+  SetIconColor(icon_color);
 }
 
-SkColor BraveNewsLocationView::GetIconColor(bool subscribed) const {
-  if (!subscribed)
-    return color_utils::DeriveDefaultIconColor(GetCurrentTextColor());
-
-  auto is_dark = GetNativeTheme()->GetPreferredColorScheme() ==
-                 ui::NativeTheme::PreferredColorScheme::kDark;
-  return is_dark ? kSubscribedDarkColor : kSubscribedLightColor;
+void BraveNewsLocationView::OnBubbleClosed() {
+  bubble_view_ = nullptr;
 }
