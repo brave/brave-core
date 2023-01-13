@@ -24,21 +24,15 @@ import java.util.List;
 public class ImageLoader {
     private static final List<String> ANIMATED_LIST = Arrays.asList(".gif");
 
-    public static void loadNft(
-            String url, ImageView imageView, Context context, boolean isCircular) {
-        loadImg(url, imageView, context, isCircular);
-    }
-
-    public static void loadImg(
-            String url, ImageView imageView, Context context, boolean isCircular) {
+    public static RequestBuilder<Drawable> getLoadNftRequest(
+            String url, Context context, boolean isCircular) {
         RequestBuilder<Drawable> request =
                 Glide.with(context).load(url).transform(new CenterInside(), new RoundedCorners(24));
         if (isCircular) {
             request = request.circleCrop();
         }
-        request.priority(Priority.IMMEDIATE)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imageView);
+        return request.priority(Priority.IMMEDIATE)
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
     }
 
     public static boolean isSupported(String url) {
