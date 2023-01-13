@@ -3560,6 +3560,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ENABLE_SPEEDREADER_SUMMARY" desc="Summary for preference that enables or disables Speedreader">
       Automatically loads eligible articles in reader mode
     </message>
+    <message name="IDS_LEDGER_HW_MODULE_TITLE" desc="Text shown when the Ledger Hardware module is referenced in install start, success, failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Ledger Hardware for Brave…').">
+      Ledger Hardware support
+    </message>
+    <message name="IDS_IMPORT_HARDWARE_ACCOUNT" desc="Brave Wallet account dialog button text">
+      Import from hardware wallet
+    </message>
   </messages>
   </release>
 </grit>

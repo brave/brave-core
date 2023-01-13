@@ -98,6 +98,21 @@
             android:paddingEnd="16dp"
             android:layout_marginBottom="16dp"/>
 
+        <TextView
+            android:id="@+id/import_hardware_account_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/import_hardware_account"
+            android:textColor="@color/wallet_text_color"
+            android:background="@drawable/rounded_white_holo_bg"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            android:drawablePadding="4dp"
+            app:drawableStartCompat="@drawable/ic_wallet_hardware_icon"/>
+
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

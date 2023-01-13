@@ -6,6 +6,7 @@
 import("//brave/android/brave_android_wireguard_sources.gni")
 import("//brave/android/brave_java_resources.gni")
 import("//brave/android/brave_java_sources.gni")
+import("//brave/android/modules/brave_feature_modules.gni")
 import("//brave/build/android/bytecode/bytecode_rewriter.gni")
 
 declare_args() {
@@ -20,6 +21,7 @@ brave_android_manifest_includes = [
 
 brave_chrome_java_deps = [
   "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
+  "//brave/android/modules/ledger_hw/provider:java",
   "//brave/browser/download/android:java",
   "//brave/browser/download/internal/android:java",
   "//brave/browser/notifications/android:brave_java",

@@ -666,6 +666,7 @@ brave_java_resources = [
   "java/res/drawable/ic_vpn.xml",
   "java/res/drawable/ic_vpn_promo.xml",
   "java/res/drawable/ic_vpn_shield.xml",
+  "java/res/drawable/ic_wallet_hardware_icon.xml",
   "java/res/drawable/ic_wallet_lock.xml",
   "java/res/drawable/ic_wallet_settings.xml",
   "java/res/drawable/ic_warning.xml",
