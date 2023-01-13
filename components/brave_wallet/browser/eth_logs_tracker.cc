@@ -11,7 +11,7 @@
 namespace brave_wallet {
 
 EthLogsTracker::EthLogsTracker(JsonRpcService* json_rpc_service)
-    : json_rpc_service_(json_rpc_service), weak_factory_(this) {
+    : json_rpc_service_(json_rpc_service) {
   DCHECK(json_rpc_service_);
 }
 

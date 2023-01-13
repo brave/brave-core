@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 
 #include <string>
+#include <tuple>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -580,22 +581,29 @@ void EthereumProviderImpl::RecoverAddress(const std::string& message,
 void EthereumProviderImpl::EthSubscribe(const std::string& event_type,
                                         RequestCallback callback,
                                         base::Value id) {
+  const auto generateHexBytes = [](std::vector<std::string>& subscriptions) {
+    std::vector<uint8_t> bytes(16);
+    crypto::RandBytes(&bytes.front(), bytes.size());
+    std::string hex_bytes = ToHex(bytes);
+    subscriptions.push_back(hex_bytes);
+    return std::tuple<bool, std::string>{subscriptions.size() == 1, hex_bytes};
+  };
+
   if (event_type == kEthSubscribeNewHeads) {
-    std::string hex_bytes = GenerateSubscriptionHexBytes();
-    eth_subscriptions_.push_back(hex_bytes);
-    if (eth_subscriptions_.size() == 1)
+    const auto gen_res = generateHexBytes(eth_subscriptions_);
+    if (std::get<0>(gen_res)) {
       eth_block_tracker_.Start(
           base::Seconds(kBlockTrackerDefaultTimeInSeconds));
-    std::move(callback).Run(std::move(id), base::Value(hex_bytes), false, "",
-                            false);
+    }
+    std::move(callback).Run(std::move(id), base::Value(std::get<1>(gen_res)),
+                            false, "", false);
   } else if (event_type == kEthSubscribeLogs) {
-    std::string hex_bytes = GenerateSubscriptionHexBytes();
-    eth_log_subscriptions_.push_back(hex_bytes);
-    if (eth_log_subscriptions_.size() == 1) {
+    const auto gen_res = generateHexBytes(eth_log_subscriptions_);
+    if (std::get<0>(gen_res)) {
       eth_logs_tracker_.Start(base::Seconds(kLogTrackerDefaultTimeInSeconds));
     }
-    std::move(callback).Run(std::move(id), base::Value(hex_bytes), false, "",
-                            false);
+    std::move(callback).Run(std::move(id), base::Value(std::get<1>(gen_res)),
+                            false, "", false);
   } else {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInternalError,
@@ -605,12 +613,6 @@ void EthereumProviderImpl::EthSubscribe(const std::string& event_type,
                             "", false);
     return;
   }
-}
-
-std::string EthereumProviderImpl::GenerateSubscriptionHexBytes() {
-  std::vector<uint8_t> bytes(16);
-  crypto::RandBytes(&bytes.front(), bytes.size());
-  return ToHex(bytes);
 }
 
 void EthereumProviderImpl::EthUnsubscribe(const std::string& subscription_id,
@@ -638,16 +640,13 @@ bool EthereumProviderImpl::UnsubscribeBlockObserver(
 
 bool EthereumProviderImpl::UnsubscribeLogObserver(
     const std::string& subscription_id) {
-  auto it = std::find(eth_log_subscriptions_.begin(),
-                      eth_log_subscriptions_.end(), subscription_id);
-  bool found = it != eth_log_subscriptions_.end();
-  if (found) {
-    if (eth_log_subscriptions_.size() == 1) {
+  if (base::Erase(eth_log_subscriptions_, subscription_id)) {
+    if (eth_log_subscriptions_.empty())
       eth_logs_tracker_.Stop();
-    }
-    eth_log_subscriptions_.erase(it);
+
+    return true;
   }
-  return found;
+  return false;
 }
 
 void EthereumProviderImpl::GetEncryptionPublicKey(const std::string& address,
@@ -1711,12 +1710,13 @@ void EthereumProviderImpl::OnLogsReceived(base::Value rawlogs) {
   auto& dict = rawlogs.GetDict();
   const base::Value::List* results = dict.FindList("result");
 
+  if (results == nullptr) {
+    return;
+  }
+
   for (auto& results_item : *results) {
-    base::ranges::for_each(
-        eth_log_subscriptions_,
-        [this, &results_item](const std::string& subscription_id) {
-          events_listener_->MessageEvent(subscription_id, results_item.Clone());
-        });
+    for (const auto& subscription_id : eth_log_subscriptions_)
+      events_listener_->MessageEvent(subscription_id, results_item.Clone());
   }
 }
 

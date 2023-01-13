@@ -30,7 +30,7 @@ class EthLogsTracker {
   EthLogsTracker(const EthLogsTracker&&) = delete;
   EthLogsTracker& operator=(const EthLogsTracker&&) = delete;
 
-  virtual ~EthLogsTracker();
+  ~EthLogsTracker();
 
   class Observer : public base::CheckedObserver {
    public:
@@ -57,7 +57,7 @@ class EthLogsTracker {
 
   base::ObserverList<Observer> observers_;
 
-  base::WeakPtrFactory<EthLogsTracker> weak_factory_;
+  base::WeakPtrFactory<EthLogsTracker> weak_factory_{this};
 };
 
 }  // namespace brave_wallet

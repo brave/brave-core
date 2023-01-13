@@ -378,7 +378,6 @@ class EthereumProviderImpl final
   // EthLogsTracker::Observer:
   void OnLogsReceived(base::Value rawlogs) override;
   bool UnsubscribeLogObserver(const std::string& subscription_id);
-  std::string GenerateSubscriptionHexBytes();
 
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
