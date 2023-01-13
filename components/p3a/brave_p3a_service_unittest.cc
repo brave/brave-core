@@ -14,7 +14,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/time/time.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
@@ -23,10 +22,6 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
 namespace brave {
 
@@ -55,9 +50,6 @@ class P3AServiceTest : public testing::Test {
     }
 
     BraveP3AService::RegisterPrefs(local_state_.registry(), true);
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-    RegisterPrefsForBraveReferralsService(local_state_.registry());
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {

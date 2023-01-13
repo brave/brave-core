@@ -66,9 +66,8 @@ base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
   return result;
 }
 
-void MaybeStripRefcodeAndCountry(MessageMetainfo* meta) {
+void MaybeStripCountry(MessageMetainfo* meta) {
   const std::string& country = meta->country_code;
-  constexpr char kRefcodeNone[] = "none";
   constexpr char kCountryOther[] = "other";
 
   static base::flat_set<std::string> const kLinuxCountries(
@@ -80,10 +79,6 @@ void MaybeStripRefcodeAndCountry(MessageMetainfo* meta) {
        "AU", "RU", "JP", "PL", "ID", "KR", "AR"});
 
   DCHECK(meta);
-
-  // Always strip the refcode.
-  // We no longer need to partition P3A data with that key.
-  meta->refcode = kRefcodeNone;
 
   if (meta->platform == "linux-bc") {
     // If we have more than 3/0.05 = 60 users in a country for
