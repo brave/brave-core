@@ -74,6 +74,7 @@ source_set("unit_tests") {
   ]
   deps = [
     "//base/test:test_support",
+    "//brave/components/brave_referrals/buildflags",
     "//brave/components/p3a",
     "//components/prefs:test_support",
     "//net:net",

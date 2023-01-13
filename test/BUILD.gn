@@ -326,9 +326,6 @@ test("brave_unit_tests") {
     ]
   }
 
-  if (enable_brave_referrals) {
-  }
-
   data = [ "data/" ]
 
   if (enable_custom_background) {
