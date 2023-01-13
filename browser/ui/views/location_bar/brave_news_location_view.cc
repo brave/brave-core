@@ -43,11 +43,6 @@ BraveNewsLocationView::BraveNewsLocationView(
                          "BraveNewsFollow") {
   SetLabel(l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_ACTION_VIEW_TOOLTIP));
 
-  last_contents_ = GetWebContents();
-  if (last_contents_) {
-    BraveNewsTabHelper::FromWebContents(last_contents_)->AddObserver(this);
-  }
-
   should_show_.Init(brave_news::prefs::kShouldShowToolbarButton,
                     profile->GetPrefs(),
                     base::BindRepeating(&BraveNewsLocationView::UpdateImpl,
@@ -75,16 +70,25 @@ void BraveNewsLocationView::UpdateImpl() {
       contents ? BraveNewsTabHelper::FromWebContents(contents) : nullptr;
 
   // When the active tab changes, subscribe to notification when
-  // it has found a feed, and update display with current state.
-  if (contents != last_contents_) {
-    // Unobserve old Tab
-    if (last_contents_) {
-      BraveNewsTabHelper::FromWebContents(last_contents_)->RemoveObserver(this);
+  // it has found a feed.
+  if (contents && tab_helper) {
+    // Observe BraveNewsTabHelper for feed changes
+    if (!page_feeds_observer_.IsObservingSource(tab_helper)) {
+      page_feeds_observer_.Reset();
+      page_feeds_observer_.Observe(tab_helper);
     }
-    last_contents_ = contents;
-    // Observe new Tab
-    if (contents) {
-      tab_helper->AddObserver(this);
+    // Observe WebContentsObserver for WebContentsDestroyed
+    if (web_contents() != contents) {
+      Observe(contents);
+    }
+  } else {
+    // Unobserve WebContentsObserver
+    if (web_contents()) {
+      Observe(nullptr);
+    }
+    // Unobserve BraveNewsTabHelper
+    if (page_feeds_observer_.IsObserving()) {
+      page_feeds_observer_.Reset();
     }
   }
 
@@ -95,6 +99,11 @@ void BraveNewsLocationView::UpdateImpl() {
     return;
   }
 
+  // Verify observing BraveNewsTabHelper
+  DCHECK(page_feeds_observer_.IsObservingSource(tab_helper));
+  // Verify observing for WebContentsDestroyed
+  DCHECK(web_contents());
+
   // Icon color changes if any feeds are being followed
   UpdateIconColor(tab_helper->IsSubscribed());
 
@@ -102,6 +111,11 @@ void BraveNewsLocationView::UpdateImpl() {
   const bool has_feeds = !tab_helper->GetAvailableFeeds().empty();
   const bool is_visible = has_feeds || IsBubbleShowing();
   SetVisible(is_visible);
+}
+
+void BraveNewsLocationView::WebContentsDestroyed() {
+  page_feeds_observer_.Reset();
+  Observe(nullptr);
 }
 
 const gfx::VectorIcon& BraveNewsLocationView::GetVectorIcon() const {

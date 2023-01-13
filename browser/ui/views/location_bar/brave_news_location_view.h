@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/scoped_observation.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "components/prefs/pref_member.h"
@@ -18,14 +19,11 @@
 class Profile;
 class BraveNewsBubbleView;
 
-namespace content {
-class WebContents;
-}  // namespace content
-
 // LocationBar action for Brave News which shows a bubble allowing the user to
 // manage feed subscriptions for the current Tab
 class BraveNewsLocationView : public PageActionIconView,
-                              public BraveNewsTabHelper::PageFeedsObserver {
+                              public BraveNewsTabHelper::PageFeedsObserver,
+                              public content::WebContentsObserver {
  public:
   BraveNewsLocationView(
       Profile* profile,
@@ -48,6 +46,9 @@ class BraveNewsLocationView : public PageActionIconView,
   // views::View:
   void OnThemeChanged() override;
 
+  // content::WebContentsObserver
+  void WebContentsDestroyed() override;
+
  protected:
   // PageActionIconView:
   void OnExecuting(PageActionIconView::ExecuteSource execute_source) override;
@@ -57,7 +58,9 @@ class BraveNewsLocationView : public PageActionIconView,
   void UpdateIconColor(bool subscribed);
   void OnBubbleClosed();
 
-  raw_ptr<content::WebContents> last_contents_;
+  base::ScopedObservation<BraveNewsTabHelper,
+                          BraveNewsTabHelper::PageFeedsObserver>
+      page_feeds_observer_{this};
   BooleanPrefMember should_show_;
   BooleanPrefMember opted_in_;
   BooleanPrefMember news_enabled_;
