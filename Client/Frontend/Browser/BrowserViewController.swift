@@ -1636,6 +1636,13 @@ public class BrowserViewController: UIViewController {
           tabManager.selectedTab?.reportPageLoad(to: rewards, redirectionURLs: [])
         }
       }
+      
+      // Update the estimated progress when the URL changes. Estimated progress may update to 0.1 when the url
+      // is still an internal URL even though a request may be pending for a web page.
+      if tab === tabManager.selectedTab, let url = webView.url,
+         !InternalURL.isValid(url: url), webView.estimatedProgress > 0 {
+        topToolbar.updateProgressBar(Float(webView.estimatedProgress))
+      }
     case .title:
       // Ensure that the tab title *actually* changed to prevent repeated calls
       // to navigateInTab(tab:).
@@ -1828,6 +1835,9 @@ public class BrowserViewController: UIViewController {
     }
 
     _ = tabManager.addTabAndSelect(request, isPrivate: isPrivate)
+    // Has to go after since switching tabs will cause the URL bar to update to the selected Tab's url (which
+    // is going to be nil still until the web view first commits
+    updateToolbarCurrentURL(url)
   }
 
   public func openBlankNewTab(attemptLocationFieldFocus: Bool, isPrivate: Bool, searchFor searchText: String? = nil, isExternal: Bool = false) {
@@ -2692,6 +2702,8 @@ extension BrowserViewController: TabManagerDelegate {
         if previousEstimatedProgress != selectedEstimatedProgress {
           topToolbar.updateProgressBar(Float(selectedEstimatedProgress))
         }
+      } else {
+        topToolbar.hideProgressBar()
       }
 
       readerModeCache = ReaderModeScriptHandler.cache(for: tab)
