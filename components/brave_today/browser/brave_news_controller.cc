@@ -142,6 +142,10 @@ void BraveNewsController::ClearHistory() {
   // feed cache somewhere.
 }
 
+bool BraveNewsController::GetIsEnabledForTesting() {
+  return GetIsEnabled();
+}
+
 mojo::PendingRemote<mojom::BraveNewsController>
 BraveNewsController::MakeRemote() {
   mojo::PendingRemote<mojom::BraveNewsController> remote;

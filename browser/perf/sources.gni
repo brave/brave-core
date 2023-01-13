@@ -1,0 +1,22 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_browser_perf_sources = [
+  "//brave/browser/perf/brave_perf_features_processor.cc",
+  "//brave/browser/perf/brave_perf_features_processor.h",
+  "//brave/browser/perf/brave_perf_switches.cc",
+  "//brave/browser/perf/brave_perf_switches.h",
+]
+
+brave_browser_perf_deps = [
+  "//base",
+  "//brave/components/brave_ads/browser",
+  "//brave/components/brave_ads/browser",
+  "//brave/components/brave_rewards/browser",
+  "//brave/components/brave_shields/browser",
+  "//brave/components/brave_shields/common/",
+  "//brave/components/speedreader",
+  "//components/prefs",
+]
