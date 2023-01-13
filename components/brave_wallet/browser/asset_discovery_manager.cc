@@ -139,28 +139,41 @@ void AssetDiscoveryManager::OnGetAllTokensDiscoverAssets(
   }
 
   // Create set of contract addresses the user already has for easy lookups
-  base::flat_set<std::string> user_asset_contract_addresses;
+  base::flat_set<std::string> already_added_contract_addresses;
   for (const auto& user_asset : user_assets) {
-    user_asset_contract_addresses.insert(user_asset->contract_address);
+    already_added_contract_addresses.insert(user_asset->contract_address);
   }
 
-  // Create a list of contract addresses to search by removing
-  // all erc20s and assets the user has already added.
+  // List of contract addresses to include in the eth_getLogs call
+  // It should contain only the contract addresses that the user does not
+  // already have that are in the token registry
   base::Value::List contract_addresses_to_search;
-  // Also create a map for addresses to blockchain tokens for easy lookup
-  // for blockchain tokens in OnGetTransferLogs
+
+  // Map from address strings to BlockchainTokens for easy lookup in
+  // OnGetTransferLogs
   base::flat_map<std::string, mojom::BlockchainTokenPtr> tokens_to_search;
+
+  // Look through the token registry for tokens that the user doesn't already
+  // have
   for (auto& registry_token : token_registry) {
-    if (registry_token->is_erc20 && !registry_token->contract_address.empty() &&
-        !user_asset_contract_addresses.contains(
+    // If the user already has this token, or the token is missing an address,
+    // skip it
+    if (registry_token->contract_address.empty() ||
+        already_added_contract_addresses.contains(
             registry_token->contract_address)) {
-      // Use lowercase representation of hex address for comparisons
-      // because providers may return all lowercase addresses.
-      const std::string lower_case_contract_address =
-          base::ToLowerASCII(registry_token->contract_address);
-      contract_addresses_to_search.Append(lower_case_contract_address);
-      tokens_to_search[lower_case_contract_address] = std::move(registry_token);
+      continue;
     }
+
+    // Use lowercase representation of hex address for comparisons
+    // because providers may return all lowercase addresses.
+    const std::string lower_case_contract_address =
+        base::ToLowerASCII(registry_token->contract_address);
+
+    // Add contract address to list of contract addresses to search
+    contract_addresses_to_search.Append(lower_case_contract_address);
+
+    // Add BlockchainToken to map of tokens for easy lookup by address later
+    tokens_to_search[lower_case_contract_address] = std::move(registry_token);
   }
 
   if (contract_addresses_to_search.size() == 0) {
@@ -194,24 +207,48 @@ void AssetDiscoveryManager::OnGetTransferLogs(
     return;
   }
 
-  // Create unique list of addresses that matched eth_getLogs query
-  // and keep track of largest block discovered
-  base::flat_set<std::string> matching_contract_addresses;
+  // Create unique list of addresses that matched the eth_getLogs query
+  base::flat_set<std::pair<std::string, absl::optional<std::string>>>
+      matching_contract_addresses;
+  // Keep track of largest block assets were discovered on
   uint256_t largest_block = 0;
   for (const auto& log : logs) {
-    matching_contract_addresses.insert(base::ToLowerASCII(log.address));
+    // Pull the token ID from the log data (for ERC721s only)
+    absl::optional<std::string> token_id;
+    if (log.topics.size() > 3) {
+      token_id = log.topics[3];
+    } else {
+      token_id = absl::nullopt;
+    }
+
+    // Save the contract address and token ID
+    matching_contract_addresses.insert(
+        std::make_pair(base::ToLowerASCII(log.address), token_id));
+
+    // Update largest block seen
     if (log.block_number > largest_block) {
       largest_block = log.block_number;
     }
   }
-  std::vector<mojom::BlockchainTokenPtr> discovered_assets;
 
+  // Check each contract address to see if it is a token in the registry
+  // that user user doesn't have, and if so, add it to the list of user assets
+  std::vector<mojom::BlockchainTokenPtr> discovered_assets;
   for (const auto& contract_address : matching_contract_addresses) {
-    if (!tokens_to_search.contains(contract_address)) {
+    // Skip if contract address is not in the in the token registry
+    if (!tokens_to_search.contains(contract_address.first)) {
       continue;
     }
+
+    // Get the BlockchainToken from the contract address string
     mojom::BlockchainTokenPtr token =
-        std::move(tokens_to_search.at(contract_address));
+        std::move(tokens_to_search.at(contract_address.first));
+
+    // Add token ID if it's an ERC721 asset using the fourth topic in the log
+    // which is the token ID
+    if (token->is_erc721 && contract_address.second) {
+      token->token_id = *contract_address.second;
+    }
 
     if (!BraveWalletService::AddUserAsset(token.Clone(), prefs_)) {
       continue;

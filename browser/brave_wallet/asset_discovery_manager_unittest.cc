@@ -414,7 +414,6 @@ TEST_F(AssetDiscoveryManagerUnitTest, DiscoverAssets) {
                      {"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"}, {},
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), "");
-
   // Invalid logs (missing addresses) triggers parsing error
   response = R"({
     "jsonrpc": "2.0",
@@ -446,7 +445,7 @@ TEST_F(AssetDiscoveryManagerUnitTest, DiscoverAssets) {
   // Valid registry token WETH is discovered and added (tests insensitivity to
   // lower case addresses in provider logs response).
   // Valid BAT is not added because it is already a user asset.
-  // Invalid LilNoun is not added because it is an ERC721.
+  // Valid LilNoun is added because ERC721s are supported.
   token_list_json = R"(
      {
       "0x0d8775f648430679a709e98d2b0cb6250d2887ef": {
@@ -476,7 +475,8 @@ TEST_F(AssetDiscoveryManagerUnitTest, DiscoverAssets) {
         "logo": "lilnouns.svg",
         "erc20": false,
         "erc721": true,
-        "symbol": "LilNouns",
+        "symbol": "LILNOUN",
+        "decimals": 0,
         "chainId": "0x1"
       }
      })";
@@ -512,10 +512,11 @@ TEST_F(AssetDiscoveryManagerUnitTest, DiscoverAssets) {
         "data":"0x00000000000000000000000000000000000000000000000555aff1f0fae8c000",
         "logIndex":"0x159",
         "removed":false,
-        "topics":[
+        "topics": [
           "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-          "0x000000000000000000000000503828976d22510aad0201ac7ec88293211d23da",
-          "0x000000000000000000000000b4b2802129071b2b9ebb8cbb01ea1e4d14b34961"
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x000000000000000000000000b4b2802129071b2b9ebb8cbb01ea1e4d14b34961",
+          "0x0000000000000000000000000000000000000000000000000000000000000c68"
         ],
         "transactionHash":"0x2e652b70966c6a05f4b3e68f20d6540b7a5ab712385464a7ccf62774d39b7066",
         "transactionIndex":"0x9f"
@@ -541,7 +542,8 @@ TEST_F(AssetDiscoveryManagerUnitTest, DiscoverAssets) {
   SetInterceptor(expected_network, response);
   TestDiscoverAssets(mojom::kMainnetChainId, mojom::CoinType::ETH,
                      {"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"},
-                     {"0x6B175474E89094C44Da98b954EedeAC495271d0F",
+                     {"0x4b10701Bfd7BFEdc47d50562b76b436fbB5BdB3B",
+                      "0x6B175474E89094C44Da98b954EedeAC495271d0F",
                       "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"},
                      mojom::ProviderError::kSuccess, "", "0xd6464d");
 
