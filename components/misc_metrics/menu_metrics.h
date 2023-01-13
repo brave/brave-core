@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
-#include "base/timer/timer.h"
+#include "base/timer/wall_clock_timer.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -69,7 +69,7 @@ class MenuMetrics {
   WeeklyStorage menu_shown_storage_;
   WeeklyStorage menu_dismiss_storage_;
 
-  base::RepeatingTimer update_timer_;
+  base::WallClockTimer update_timer_;
 };
 
 }  // namespace misc_metrics

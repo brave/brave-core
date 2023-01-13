@@ -47,7 +47,6 @@ MenuMetrics::MenuMetrics(PrefService* local_state)
     : local_state_(local_state),
       menu_shown_storage_(local_state, kMiscMetricsMenuShownStorage),
       menu_dismiss_storage_(local_state, kMiscMetricsMenuDismissStorage) {
-  update_timer_.Start(FROM_HERE, kUpdateInterval, this, &MenuMetrics::Update);
   Update();
 }
 
@@ -139,6 +138,8 @@ void MenuMetrics::RecordMenuDismissRate() {
 
 void MenuMetrics::Update() {
   RecordMenuDismissRate();
+  update_timer_.Start(FROM_HERE, base::Time::Now() + kUpdateInterval, this,
+                      &MenuMetrics::Update);
 }
 
 }  // namespace misc_metrics
