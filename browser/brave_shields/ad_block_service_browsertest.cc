@@ -90,7 +90,6 @@ using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCookieListDefault;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
-using brave_shields::features::kBraveAdblockCosmeticFilteringChildFrames;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kCosmeticFilteringJsPerformance;
 
@@ -2426,8 +2425,7 @@ class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
  public:
   AdBlockServiceTestJsPerformance() {
     feature_list_.InitWithFeaturesAndParameters(
-        {{kBraveAdblockCosmeticFilteringChildFrames, {}},
-         {kCosmeticFilteringJsPerformance,
+        {{kCosmeticFilteringJsPerformance,
           {{"subframes_first_query_delay_ms", "3000"},
            {"switch_to_polling_threshold", "500"},
            {"fetch_throttling_ms", "500"}}}},
