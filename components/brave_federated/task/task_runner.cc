@@ -38,7 +38,7 @@ Model* TaskRunner::GetModel() {
 }
 
 TaskResult TaskRunner::Run() {
-  PerformanceReport report;
+  PerformanceReport report(0, 0, 0, {});
   if (task_.GetType() == TaskType::Training) {
     report = model_->Train(training_data_);
   } else if (task_.GetType() == TaskType::Evaluation) {

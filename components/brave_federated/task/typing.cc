@@ -4,13 +4,17 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_federated/task/typing.h"
+#include <vector>
 #include "brave/components/brave_federated/task/model.h"
 
 namespace brave_federated {
 
-Task::Task(int task_id, TaskType type, std::string token)
-    : task_id_(task_id), type_(type), token_(token) {}
-
+Task::Task(int task_id,
+           TaskType type,
+           std::string token,
+           std::vector<Weights> parameters)
+    : task_id_(task_id), type_(type), token_(token), parameters_(parameters) {}
+Task::Task(const Task& other) = default;
 Task::~Task() = default;
 
 int Task::GetId() {
@@ -23,6 +27,10 @@ TaskType Task::GetType() {
 
 std::string Task::GetToken() {
   return token_;
+}
+
+std::vector<Weights> Task::GetParameters() {
+  return parameters_;
 }
 
 TaskResult::TaskResult(Task task, PerformanceReport report)

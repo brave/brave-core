@@ -9,8 +9,16 @@
 #include <string>
 
 #include "brave/components/brave_federated/task/typing.h"
+#include "brave/third_party/flower/src/proto/flwr/proto/transport.pb.h"
 
 namespace brave_federated {
+
+std::vector<float> GetFloatVectorFromString(std::string string);
+std::string GetStringFromFloatVector(std::vector<float> vector);
+flower::Parameters GetMessageFromParameters(
+    std::vector<std::vector<float>> parameters_vector);
+std::vector<std::vector<float>> GetParametersFromMessage(
+    flower::Parameters parameters_msg);
 
 std::string BuildGetTasksPayload();
 std::string BuildPostTaskResultsPayload(TaskResult result);
