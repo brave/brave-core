@@ -8,7 +8,6 @@ import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 
 // utils
-import { PendingCryptoSendState } from '../../common/reducers/send_crypto_reducer'
 import { AccountsTabState } from '../../page/reducers/accounts-tab-reducer'
 import { createMockStore } from '../../utils/test-utils'
 
@@ -30,7 +29,6 @@ export interface WalletPageStoryProps {
   walletStateOverride?: Partial<WalletState>
   pageStateOverride?: Partial<PageState>
   accountTabStateOverride?: Partial<AccountsTabState>
-  sendCryptoStateOverride?: Partial<PendingCryptoSendState>
 }
 
 const mockedProxy = getMockedAPIProxy()
@@ -39,21 +37,18 @@ export const WalletPageStory: React.FC<React.PropsWithChildren<WalletPageStoryPr
   children,
   pageStateOverride,
   walletStateOverride,
-  accountTabStateOverride,
-  sendCryptoStateOverride
+  accountTabStateOverride
 }) => {
   // redux
   const store = React.useMemo(() => {
     return createMockStore({
       accountTabStateOverride,
       pageStateOverride,
-      sendCryptoStateOverride,
       walletStateOverride
     })
   }, [
     accountTabStateOverride,
     pageStateOverride,
-    sendCryptoStateOverride,
     walletStateOverride
   ])
 

@@ -50,7 +50,7 @@ function Send (props: Props) {
     selectedSendAsset,
     sendAmountValidationError,
     setSendAmount,
-    setToAddressOrUrl,
+    updateToAddressOrUrl,
     submitSend
   } = useSend()
 
@@ -68,7 +68,7 @@ function Send (props: Props) {
 
   const onInputChange = (value: string, name: string) => {
     if (name === 'address') {
-      setToAddressOrUrl(value)
+      updateToAddressOrUrl(value)
     } else {
       setSendAmount(value)
     }
