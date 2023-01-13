@@ -1,3 +1,8 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/p3a/buildflags.gni")
 import("//build/buildflag_header.gni")
@@ -69,7 +74,6 @@ source_set("unit_tests") {
   ]
   deps = [
     "//base/test:test_support",
-    "//brave/components/brave_referrals/browser",
     "//brave/components/p3a",
     "//components/prefs:test_support",
     "//net:net",
@@ -79,5 +83,9 @@ source_set("unit_tests") {
   ]
   if (!is_ios) {
     deps += [ "//content/test:test_support" ]
+  }
+
+  if (enable_brave_referrals) {
+    deps += [ "//brave/components/brave_referrals/browser" ]
   }
 }

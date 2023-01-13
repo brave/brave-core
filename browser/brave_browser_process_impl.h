@@ -27,7 +27,7 @@
 namespace brave {
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 class BraveReferralsService;
-#endif // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 class BraveP3AService;
 class HistogramsBraveizer;
 class BraveFarblingService;
@@ -51,7 +51,6 @@ namespace greaselion {
 class GreaselionDownloadService;
 #endif
 }  // namespace greaselion
-
 
 namespace debounce {
 class DebounceComponentInstaller;

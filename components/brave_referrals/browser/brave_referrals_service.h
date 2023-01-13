@@ -155,7 +155,7 @@ class BraveReferralsService {
   std::unique_ptr<base::OneShotTimer> initialization_timer_;
   std::unique_ptr<base::RepeatingTimer> finalization_checks_timer_;
   ReferralInitializedCallback referral_initialized_callback_;
-  std::unique_ptr<Delegate> delegate_ = nullptr;
+  std::unique_ptr<Delegate> delegate_;
   raw_ptr<PrefService> pref_service_ = nullptr;
   const std::string api_key_;
   const std::string platform_;

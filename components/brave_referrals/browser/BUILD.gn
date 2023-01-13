@@ -8,39 +8,41 @@ if (is_android) {
   import("//build/config/android/rules.gni")
 }
 
+assert(enable_brave_referrals)
+
 static_library("browser") {
-  public_deps = [ "//brave/components/brave_referrals/buildflags" ]
+  public_deps = [
+    "//brave/components/brave_referrals/buildflags",
+    "//brave/components/brave_referrals/common",
+  ]
 
-  if (enable_brave_referrals) {
-    sources = [
-      "brave_referrals_service.cc",
-      "brave_referrals_service.h",
+  sources = [
+    "brave_referrals_service.cc",
+    "brave_referrals_service.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_stats/browser",
+    "//brave/components/constants",
+    "//brave/vendor/brave_base",
+    "//components/prefs",
+    "//components/url_matcher",
+    "//content/public/browser",
+    "//net",
+    "//services/network/public/cpp",
+  ]
+
+  if (is_android) {
+    sources += [
+      "android_brave_referrer.cc",
+      "android_brave_referrer.h",
     ]
 
-    deps = [
-      "//base",
-      "//brave/components/brave_referrals/common",
-      "//brave/components/brave_stats/browser",
-      "//brave/components/constants",
-      "//brave/vendor/brave_base",
-      "//components/prefs",
-      "//components/url_matcher",
-      "//content/public/browser",
-      "//net",
-      "//services/network/public/cpp",
+    deps += [
+      ":jni_headers",
+      "//brave/components/safetynet:android",
     ]
-
-    if (is_android) {
-      sources += [
-        "android_brave_referrer.cc",
-        "android_brave_referrer.h",
-      ]
-
-      deps += [
-        ":jni_headers",
-        "//brave/components/safetynet:android",
-      ]
-    }
   }
 }
 

@@ -217,10 +217,7 @@ source_set("unit_tests") {
       "//brave/browser/net/brave_torrent_redirect_network_delegate_helper_unittest.cc",
     ]
 
-    deps += [
-      "//brave/browser/extensions",
-      "//brave/components/brave_referrals/browser",
-    ]
+    deps += [ "//brave/browser/extensions" ]
   }
   if (enable_brave_referrals) {
     if (!is_android) {
@@ -229,5 +226,7 @@ source_set("unit_tests") {
         "brave_referrals_network_delegate_helper_unittest.cc",
       ]
     }
+
+    deps += [ "//brave/components/brave_referrals/browser" ]
   }
 }

@@ -76,7 +76,7 @@ base::Value::Dict CreateReferralHeader(
     const std::vector<std::string>& partner_domains) {
   auto& matcher_map = GetURLMatcherMap();
   URLMatcherKey key(partner_domains.begin(), partner_domains.end());
-  if (!matcher_map.count(key)) {
+  if (!base::Contains(matcher_map, key)) {
     matcher_map[key] = std::make_unique<url_matcher::URLMatcher>();
     auto& matcher = matcher_map[key];
 

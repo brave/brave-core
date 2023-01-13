@@ -196,9 +196,6 @@ test("brave_unit_tests") {
     "//brave/components/brave_federated:brave_federated_tests",
     "//brave/components/brave_perf_predictor/browser",
     "//brave/components/brave_private_cdn",
-    "//brave/components/brave_referrals/browser",
-    "//brave/components/brave_referrals/buildflags",
-    "//brave/components/brave_referrals/common",
     "//brave/components/brave_rewards/common:features",
     "//brave/components/brave_rewards/test:brave_rewards_unit_tests",
     "//brave/components/brave_search/browser",
@@ -327,6 +324,10 @@ test("brave_unit_tests") {
       "//brave/browser/playlist/test:unit_tests",
       "//brave/browser/playlist/test:unit_tests",
     ]
+  }
+
+  if (enable_brave_referrals) {
+    deps += [ "//brave/components/brave_referrals/browser" ]
   }
 
   data = [ "data/" ]
@@ -836,8 +837,6 @@ test("brave_browser_tests") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_perf_predictor/browser",
     "//brave/components/brave_perf_predictor/common",
-    "//brave/components/brave_referrals/browser",
-    "//brave/components/brave_referrals/common",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common:features",
@@ -1024,6 +1023,10 @@ test("brave_browser_tests") {
       "//brave/browser/playlist/test:browser_tests",
       "//brave/components/playlist/browser",
     ]
+  }
+
+  if (enable_brave_referrals) {
+    deps += [ "//brave/components/brave_referrals/browser" ]
   }
 
   if (is_win || is_linux) {

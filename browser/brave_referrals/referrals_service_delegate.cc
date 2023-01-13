@@ -8,7 +8,7 @@
 #include "base/path_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
-#include "chrome/common/chrome_paths.cc"
+#include "chrome/common/chrome_paths.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/first_run/first_run.h"
