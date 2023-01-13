@@ -6,14 +6,16 @@ import os
 import subprocess
 import logging
 
-from typing import Tuple, List
-from components import path_util
+from typing import Tuple, List, Optional
+
+import components.path_util as path_util
 
 with path_util.SysPath(path_util.GetPyJson5Dir()):
   import json5  # pylint: disable=import-error
 
 
-def GetProcessOutput(args: List[str], cwd: str = None,
+def GetProcessOutput(args: List[str],
+                     cwd: Optional[str] = None,
                      check=False) -> Tuple[bool, str]:
   try:
     logging.debug('Run binary: %s, cwd = %s', ' '.join(args), cwd)

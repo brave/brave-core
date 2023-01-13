@@ -21,8 +21,8 @@ def ParseTarget(target: str) -> Tuple[Optional[BraveVersion], str]:
   return tag, localtion
 
 
-def PrepareBinary(out_dir: str, tag: Optional[BraveVersion], location: Optional[str],
-                  browser_type: BrowserType) -> str:
+def PrepareBinary(out_dir: str, tag: Optional[BraveVersion],
+                  location: Optional[str], browser_type: BrowserType) -> str:
   if location:  # local binary
     if os.path.exists(location):
       return location

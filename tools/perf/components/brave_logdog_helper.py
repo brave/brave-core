@@ -6,6 +6,7 @@
 
 # pylint: disable=no-self-use
 class FakeStream:
+
   def close(self):
     return
 

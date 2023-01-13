@@ -11,7 +11,7 @@ import shutil
 
 from lib.util import extract_zip
 
-from components import path_util
+import components.path_util as path_util
 
 with path_util.SysPath(path_util.GetDepotToolsDir()):
   import download_from_google_storage  # pylint: disable=import-error
