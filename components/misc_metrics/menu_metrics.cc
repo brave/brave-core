@@ -5,8 +5,6 @@
 
 #include "brave/components/misc_metrics/menu_metrics.h"
 
-#include <utility>
-
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/ranges/algorithm.h"
@@ -19,9 +17,6 @@
 namespace misc_metrics {
 
 namespace {
-
-const MenuGroup kAllMenuGroups[] = {
-    MenuGroup::kTabWindow, MenuGroup::kBraveFeatures, MenuGroup::kBrowserViews};
 
 const char kTabWindowPrefKey[] = "tab_window";
 const char kBraveFeaturesPrefKey[] = "brave_features";
@@ -60,34 +55,35 @@ void MenuMetrics::RecordMenuGroupAction(MenuGroup group) {
 
   DictionaryPrefUpdate update(local_state_, kMiscMetricsMenuGroupActionCounts);
   base::Value::Dict& update_dict = update->GetDict();
-  for (MenuGroup it : kAllMenuGroups) {
-    if (!menu_group_access_counts_.contains(it)) {
-      double value =
-          update_dict.FindDouble(GetMenuGroupPrefKey(it)).value_or(0);
-      menu_group_access_counts_[it] = value;
-    }
-  }
-  menu_group_access_counts_[group]++;
-  update_dict.Set(GetMenuGroupPrefKey(group), menu_group_access_counts_[group]);
-  const auto& result = base::ranges::max_element(
-      menu_group_access_counts_, {}, &std::pair<MenuGroup, double>::second);
-  if (result == menu_group_access_counts_.end()) {
-    return;
-  }
-  int histogram_value = -1;
-  switch (result->first) {
-    case MenuGroup::kTabWindow:
-      histogram_value = 0;
-      break;
-    case MenuGroup::kBraveFeatures:
-      histogram_value = 1;
-      break;
-    case MenuGroup::kBrowserViews:
-      histogram_value = 2;
-      break;
-    default:
-      NOTREACHED();
+
+  update_dict.Set(group_pref_key,
+                  update_dict.FindDouble(group_pref_key).value_or(0) + 1);
+
+  int histogram_value;
+  if (current_max_group_.has_value() && current_max_group_->first == group) {
+    // No need to check for max element if we added to the last known max group.
+    histogram_value = current_max_group_->second;
+  } else {
+    const auto& result = base::ranges::max_element(
+        update_dict.cbegin(), update_dict.cend(),
+        [](const auto& a, const auto& b) {
+          return a.second.GetDouble() < b.second.GetDouble();
+        });
+    if (result == update_dict.cend()) {
       return;
+    }
+    if (result->first == kTabWindowPrefKey) {
+      histogram_value = 0;
+      current_max_group_ = std::make_pair(MenuGroup::kTabWindow, 0);
+    } else if (result->first == kBraveFeaturesPrefKey) {
+      histogram_value = 1;
+      current_max_group_ = std::make_pair(MenuGroup::kBraveFeatures, 1);
+    } else if (result->first == kBrowserViewsPrefKey) {
+      histogram_value = 2;
+      current_max_group_ = std::make_pair(MenuGroup::kBrowserViews, 2);
+    } else {
+      return;
+    }
   }
 
   UMA_HISTOGRAM_EXACT_LINEAR(kFrequentMenuGroupHistogramName, histogram_value,

@@ -48,29 +48,29 @@ TEST_F(MenuMetricsUnitTest, MostFrequent) {
   }
 
   // "brave features" is the most frequent with a max count of 4
-  histogram_tester_.ExpectBucketCount(kFrequentMenuGroupHistogramName, 1, 1);
+  histogram_tester_.ExpectBucketCount(kFrequentMenuGroupHistogramName, 1, 2);
 
   for (size_t i = 0; i < 3; i++) {
     menu_metrics_->RecordMenuGroupAction(MenuGroup::kBrowserViews);
   }
 
-  histogram_tester_.ExpectBucketCount(kFrequentMenuGroupHistogramName, 1, 4);
+  histogram_tester_.ExpectBucketCount(kFrequentMenuGroupHistogramName, 1, 5);
 
   for (size_t i = 0; i < 2; i++) {
     menu_metrics_->RecordMenuGroupAction(MenuGroup::kBrowserViews);
   }
 
   // "browser views" is the most frequent with a max count of 5
-  histogram_tester_.ExpectBucketCount(kFrequentMenuGroupHistogramName, 1, 5);
+  histogram_tester_.ExpectBucketCount(kFrequentMenuGroupHistogramName, 1, 6);
   histogram_tester_.ExpectBucketCount(kFrequentMenuGroupHistogramName, 2, 1);
 
   for (size_t i = 0; i < 2; i++) {
     menu_metrics_->RecordMenuGroupAction(MenuGroup::kBraveFeatures);
   }
 
-  // "browser views" is the most frequent with a max count of 6
+  // "brave features" is the most frequent with a max count of 6
   histogram_tester_.ExpectBucketCount(kFrequentMenuGroupHistogramName, 2, 1);
-  histogram_tester_.ExpectBucketCount(kFrequentMenuGroupHistogramName, 1, 7);
+  histogram_tester_.ExpectBucketCount(kFrequentMenuGroupHistogramName, 1, 8);
 }
 
 TEST_F(MenuMetricsUnitTest, MostFrequentWithReset) {
@@ -81,13 +81,13 @@ TEST_F(MenuMetricsUnitTest, MostFrequentWithReset) {
     menu_metrics_->RecordMenuGroupAction(MenuGroup::kBraveFeatures);
   }
 
-  histogram_tester_.ExpectBucketCount(kFrequentMenuGroupHistogramName, 1, 1);
+  histogram_tester_.ExpectBucketCount(kFrequentMenuGroupHistogramName, 1, 2);
 
   Reset();
 
   menu_metrics_->RecordMenuGroupAction(MenuGroup::kBrowserViews);
 
-  histogram_tester_.ExpectBucketCount(kFrequentMenuGroupHistogramName, 1, 2);
+  histogram_tester_.ExpectBucketCount(kFrequentMenuGroupHistogramName, 1, 3);
 
   for (size_t i = 0; i < 3; i++) {
     menu_metrics_->RecordMenuGroupAction(MenuGroup::kBrowserViews);

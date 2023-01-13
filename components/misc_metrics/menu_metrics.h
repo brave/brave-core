@@ -6,8 +6,10 @@
 #ifndef BRAVE_COMPONENTS_MISC_METRICS_MENU_METRICS_H_
 #define BRAVE_COMPONENTS_MISC_METRICS_MENU_METRICS_H_
 
-#include "base/containers/flat_map.h"
+#include <utility>
+
 #include "base/memory/raw_ptr.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -41,8 +43,7 @@ class MenuMetrics {
   void RecordMenuGroupAction(MenuGroup group);
 
  private:
-  base::flat_map<MenuGroup, double> menu_group_access_counts_;
-
+  absl::optional<std::pair<MenuGroup, int>> current_max_group_;
   raw_ptr<PrefService> local_state_ = nullptr;
 };
 

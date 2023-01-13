@@ -11,8 +11,6 @@
 
 class BraveAppMenu : public AppMenu {
  public:
-  using AppMenu::AppMenu;
-
   BraveAppMenu(Browser* browser, int run_types);
   ~BraveAppMenu() override;
 
