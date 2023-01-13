@@ -355,7 +355,7 @@ public class PortfolioFragment
             PortfolioModel.NftDataModel selectedNft = null;
             if (mPortfolioModel != null) {
                 List<PortfolioModel.NftDataModel> nftModels = mPortfolioModel.mNftModels.getValue();
-                for (PortfolioModel.NftDataModel nftDataModel: nftModels) {
+                for (PortfolioModel.NftDataModel nftDataModel : nftModels) {
                     if (nftDataModel.token.tokenId.equals(asset.tokenId)) {
                         selectedNft = nftDataModel;
                         break;
@@ -366,7 +366,7 @@ public class PortfolioFragment
                 return;
             }
 
-             Utils.openNftDetailActivity(getActivity(), selectedNetwork.chainId, asset, selectedNft);
+            Utils.openNftDetailActivity(getActivity(), selectedNetwork.chainId, asset, selectedNft);
         } else {
             Utils.openAssetDetailsActivity(getActivity(), selectedNetwork.chainId, asset);
         }

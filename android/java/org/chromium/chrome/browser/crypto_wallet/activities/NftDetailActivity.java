@@ -35,8 +35,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 
-public class NftDetailActivity
-        extends BraveWalletBaseActivity {
+public class NftDetailActivity extends BraveWalletBaseActivity {
     private static final String TOKEN_ID_FORMAT = "#%s";
     private static final String NFT_URL_FORMAT = "%s/token/%s?a=%s";
     private String mNftName;
@@ -57,9 +56,14 @@ public class NftDetailActivity
         BraveActivity activity = BraveActivity.getBraveActivity();
 
         if (activity != null) {
-            NetworkInfo networkInfo = activity.getWalletModel().getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+            NetworkInfo networkInfo = activity.getWalletModel()
+                                              .getCryptoModel()
+                                              .getNetworkModel()
+                                              .mDefaultNetwork.getValue();
             mNetworkName = networkInfo.chainName;
-            mBlockExplorerUrl = networkInfo.blockExplorerUrls.length > 0 ? networkInfo.blockExplorerUrls[0] : "";
+            mBlockExplorerUrl = networkInfo.blockExplorerUrls.length > 0
+                    ? networkInfo.blockExplorerUrls[0]
+                    : "";
         }
 
         // Calculate half screen height and assign it to NFT image view,
@@ -78,7 +82,9 @@ public class NftDetailActivity
             mContractAddress = getIntent().getStringExtra(Utils.ASSET_CONTRACT_ADDRESS);
             mNftTokenHex = getIntent().getStringExtra(Utils.NFT_TOKEN_ID_HEX);
             mNftTokenId = Utils.hexToIntString(mNftTokenHex);
-            PortfolioModel.Erc721MetaData erc721MetaData = (PortfolioModel.Erc721MetaData) getIntent().getSerializableExtra(Utils.NFT_META_DATA);
+            PortfolioModel.Erc721MetaData erc721MetaData =
+                    (PortfolioModel.Erc721MetaData) getIntent().getSerializableExtra(
+                            Utils.NFT_META_DATA);
             setMetadata(erc721MetaData);
         }
 
@@ -106,7 +112,8 @@ public class NftDetailActivity
         SpannableString spannable = new SpannableString(tokenStr);
 
         if (!TextUtils.isEmpty(mBlockExplorerUrl)) {
-            String url = String.format(NFT_URL_FORMAT, mBlockExplorerUrl, mContractAddress, mNftTokenId);
+            String url =
+                    String.format(NFT_URL_FORMAT, mBlockExplorerUrl, mContractAddress, mNftTokenId);
             NoUnderlineClickableSpan linkSpan = new NoUnderlineClickableSpan(this,
                     R.color.brave_link, (textView) -> { TabUtils.openLinkWithFocus(this, url); });
             spannable.setSpan(linkSpan, 0, spannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -140,14 +147,18 @@ public class NftDetailActivity
         ImageLoader.getLoadNftRequest(imageUrl, this, false)
                 .listener(new RequestListener<Drawable>() {
                     @Override
-                    public boolean onLoadFailed(GlideException glideException, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    public boolean onLoadFailed(GlideException glideException, Object model,
+                            Target<Drawable> target, boolean isFirstResource) {
                         setNftImageAsNotAvailable();
                         return false;
                     }
 
                     @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        target.onResourceReady(resource, new DrawableCrossFadeTransition(250, true));
+                    public boolean onResourceReady(Drawable resource, Object model,
+                            Target<Drawable> target, DataSource dataSource,
+                            boolean isFirstResource) {
+                        target.onResourceReady(
+                                resource, new DrawableCrossFadeTransition(250, true));
                         return true;
                     }
                 })

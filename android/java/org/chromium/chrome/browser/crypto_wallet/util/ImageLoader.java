@@ -31,8 +31,7 @@ public class ImageLoader {
         if (isCircular) {
             request = request.circleCrop();
         }
-        return request.priority(Priority.IMMEDIATE)
-                .diskCacheStrategy(DiskCacheStrategy.ALL);
+        return request.priority(Priority.IMMEDIATE).diskCacheStrategy(DiskCacheStrategy.ALL);
     }
 
     public static boolean isSupported(String url) {

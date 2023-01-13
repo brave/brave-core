@@ -262,8 +262,8 @@ public class Utils {
         openBuySendSwapActivity(activity, activityType, null);
     }
 
-    public static void openNftDetailActivity(
-            Activity activity, String chainId, BlockchainToken asset, PortfolioModel.NftDataModel nftDataModel) {
+    public static void openNftDetailActivity(Activity activity, String chainId,
+            BlockchainToken asset, PortfolioModel.NftDataModel nftDataModel) {
         Intent assetDetailIntent = new Intent(activity, NftDetailActivity.class);
         assetDetailIntent.putExtra(CHAIN_ID, chainId);
         assetDetailIntent.putExtra(ASSET_NAME, asset.name);
