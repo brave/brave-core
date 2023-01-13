@@ -3107,7 +3107,9 @@ extension BrowserViewController: WKUIDelegate {
 
   public func webView(_ webView: WKWebView, contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo, completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
 
-    guard let url = elementInfo.linkURL else { return completionHandler(UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)) }
+    // Only show context menu for valid links such as `http`, `https`, `data`. Safari does not show it for anything else.
+    // This is because you cannot open `javascript:something` URLs in a new page, or share it, or anything else.
+    guard let url = elementInfo.linkURL, url.isWebPage() else { return completionHandler(UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)) }
 
     let actionProvider: UIContextMenuActionProvider = { _ -> UIMenu? in
       var actions = [UIAction]()
