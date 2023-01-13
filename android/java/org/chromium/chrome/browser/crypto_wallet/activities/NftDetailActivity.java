@@ -117,7 +117,7 @@ public class NftDetailActivity
     }
 
     private void setMetadata(PortfolioModel.Erc721MetaData erc721MetaData) {
-        // In case of no errors proceed to assign descrption and fetch NFT image.
+        // In case of no errors proceed to assign description and fetch NFT image.
         if (erc721MetaData.mErrCode == 0) {
             String description = erc721MetaData.mDescription;
             String imageUrl = erc721MetaData.mImageUrl;
