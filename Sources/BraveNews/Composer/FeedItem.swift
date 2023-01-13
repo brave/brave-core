@@ -14,6 +14,15 @@ public struct FeedItem: Hashable, Comparable {
   public static func < (lhs: Self, rhs: Self) -> Bool {
     lhs.score < rhs.score
   }
+  
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(content.urlHash)
+    hasher.combine(source.id)
+  }
+  
+  public static func == (lhs: Self, rhs: Self) -> Bool {
+    lhs.source.id == rhs.source.id && lhs.content.urlHash == rhs.content.urlHash
+  }
 }
 
 extension FeedItem {
@@ -58,6 +67,10 @@ extension FeedItem {
       case coverURL = "cover_url"
       case backgroundColor = "background_color"
       case localeDetails = "locales"
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+      hasher.combine(id)
     }
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
@@ -116,6 +129,15 @@ extension FeedItem {
     public var baseScore: Double
     public var offersCategory: String?
     public var creativeInstanceID: String?
+    
+    public func hash(into hasher: inout Hasher) {
+      hasher.combine(urlHash)
+      hasher.combine(publisherID)
+    }
+    
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+      lhs.urlHash == rhs.urlHash && lhs.publisherID == rhs.publisherID
+    }
 
     enum CodingKeys: String, CodingKey {
       case publishTime = "publish_time"
