@@ -175,6 +175,9 @@ void DomainBlockNavigationThrottle::OnShouldBlockDomain(
   } else if (new_url.is_valid()) {
     content::NavigationHandle* handle = navigation_handle();
 
+    content::OpenURLParams params =
+        content::OpenURLParams::FromNavigationHandle(handle);
+
     content::WebContents* contents = handle->GetWebContents();
 
     // Cancel without an error status to surface any real errors during page
@@ -182,8 +185,6 @@ void DomainBlockNavigationThrottle::OnShouldBlockDomain(
     CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
         content::NavigationThrottle::CANCEL));
 
-    content::OpenURLParams params =
-        content::OpenURLParams::FromNavigationHandle(handle);
     params.url = new_url;
     params.transition = ui::PAGE_TRANSITION_CLIENT_REDIRECT;
     // We get a DCHECK here if we don't clear the redirect chain because
