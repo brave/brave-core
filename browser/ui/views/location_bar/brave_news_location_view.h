@@ -64,7 +64,7 @@ class BraveNewsLocationView : public PageActionIconView,
   BooleanPrefMember should_show_;
   BooleanPrefMember opted_in_;
   BooleanPrefMember news_enabled_;
-  raw_ptr<BraveNewsBubbleView> bubble_view_;
+  raw_ptr<BraveNewsBubbleView> bubble_view_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_NEWS_LOCATION_VIEW_H_
