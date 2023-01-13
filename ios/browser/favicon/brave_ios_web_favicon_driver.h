@@ -9,17 +9,15 @@
 #include <memory>
 #include <vector>
 
-#include "base/supports_user_data.h"
 #include "components/favicon/core/favicon_driver_impl.h"
 #import "components/image_fetcher/ios/ios_image_data_fetcher_wrapper.h"
-#include "ios/web/navigation/navigation_item_impl.h"
 #include "ios/web/public/favicon/favicon_url.h"
-#include "ios/web/public/thread/web_thread.h"
-
-class ChromeBrowserState;
+#include "ios/web/public/web_state_observer.h"
+#import "ios/web/public/web_state_user_data.h"
 
 namespace web {
 struct FaviconStatus;
+class WebState;
 }  // namespace web
 
 namespace favicon {
@@ -28,19 +26,15 @@ class CoreFaviconService;
 
 namespace brave_favicon {
 
-class BraveIOSWebFaviconDriver : public favicon::FaviconDriverImpl,
-                                 public base::SupportsUserData::Data {
+class BraveIOSWebFaviconDriver
+    : public web::WebStateObserver,
+      public web::WebStateUserData<BraveIOSWebFaviconDriver>,
+      public favicon::FaviconDriverImpl {
  public:
   BraveIOSWebFaviconDriver(const BraveIOSWebFaviconDriver&) = delete;
   BraveIOSWebFaviconDriver& operator=(const BraveIOSWebFaviconDriver&) = delete;
 
   ~BraveIOSWebFaviconDriver() override;
-
-  static void CreateForBrowserState(
-      ChromeBrowserState* browser_state,
-      favicon::CoreFaviconService* favicon_service);
-  static BraveIOSWebFaviconDriver* FromBrowserState(
-      ChromeBrowserState* browser_state);
 
   void SetMaximumFaviconImageSize(std::size_t max_image_size);
 
@@ -66,15 +60,24 @@ class BraveIOSWebFaviconDriver : public favicon::FaviconDriverImpl,
                         favicon::FaviconDriverObserver::NotificationIconType
                             notification_icon_type) override;
 
-  void DidStartNavigation(ChromeBrowserState* browser_state,
-                          const GURL& page_url);
-  void DidFinishNavigation(ChromeBrowserState* browser_state,
-                           const GURL& page_url);
-  void FaviconUrlUpdated(const std::vector<web::FaviconURL>& candidates);
-
  private:
-  BraveIOSWebFaviconDriver(ChromeBrowserState* browser_state,
+  friend class web::WebStateUserData<BraveIOSWebFaviconDriver>;
+  BraveIOSWebFaviconDriver(web::WebState* web_state,
                            favicon::CoreFaviconService* favicon_service);
+
+  // web::WebStateObserver implementation.
+  void DidFinishNavigation(web::WebState* web_state,
+                           web::NavigationContext* navigation_context) override;
+
+  void FaviconUrlUpdated(
+      web::WebState* web_state,
+      const std::vector<web::FaviconURL>& candidates) override;
+
+  void WebStateDestroyed(web::WebState* web_state) override;
+
+  void FaviconUrlUpdatedInternal(
+      const std::vector<favicon::FaviconURL>& candidates);
+
   void SetFaviconStatus(const GURL& page_url,
                         const web::FaviconStatus& favicon_status,
                         favicon::FaviconDriverObserver::NotificationIconType
@@ -83,9 +86,13 @@ class BraveIOSWebFaviconDriver : public favicon::FaviconDriverImpl,
 
   // Image Fetcher used to fetch favicon.
   image_fetcher::IOSImageDataFetcherWrapper image_fetcher_;
-  ChromeBrowserState* browser_state_ = nullptr;
-  std::unique_ptr<web::NavigationItemImpl> current_item_;
   std::size_t max_image_size_;
+
+  // The WebState this instance is observing. Will be null after
+  // WebStateDestroyed has been called.
+  web::WebState* web_state_ = nullptr;
+
+  WEB_STATE_USER_DATA_KEY_DECL();
 };
 
 }  // namespace brave_favicon
