@@ -161,7 +161,7 @@
   <message name="IDS_BRAVE_WALLET_LOCK_SCREEN_BUTTON" desc="Lock screen unlock button">Unlock</message>
   <message name="IDS_BRAVE_WALLET_LOCK_SCREEN_ERROR" desc="Lock screen wrong password error">Incorrect password</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_SETTINGS" desc="Wallet popup settings button">Settings</message>
-  <message name="IDS_BRAVE_WALLET_WALLET_POPUP_LOCK" desc="Wallet popup lock crypto button">Lock Wallet</message>
+  <message name="IDS_BRAVE_WALLET_WALLET_POPUP_LOCK" desc="Wallet popup lock crypto button">Lock wallet</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_BACKUP" desc="Wallet popup backup wallet button">Backup Wallet</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_CONNECTED_SITES" desc="Wallet popup connected sites button">Connected sites</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_WARNING_TEXT" desc="Backup warning banner description">Back up your wallet now to protect your assets and ensure you never lose access.</message>
