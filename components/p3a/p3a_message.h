@@ -25,7 +25,6 @@ struct MessageMetainfo {
   base::Time date_of_install;
   base::Time date_of_survey;
   int woi;  // Week of install. Remove this occasionally and extract from above.
-  int wos;  // Week of survey.
   std::string country_code;
 };
 

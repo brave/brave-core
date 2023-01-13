@@ -453,14 +453,11 @@ void BraveP3AService::InitMessageMeta() {
 
   VLOG(2) << "Message meta: " << message_meta_.platform << " "
           << message_meta_.channel << " " << message_meta_.version << " "
-          << message_meta_.woi << " " << message_meta_.wos << " "
-          << message_meta_.country_code;
+          << message_meta_.woi << " " << message_meta_.country_code;
 }
 
 void BraveP3AService::UpdateMessageMeta() {
   message_meta_.date_of_survey = base::Time::Now();
-  message_meta_.wos =
-      brave_stats::GetIsoWeekNumber(message_meta_.date_of_survey);
 }
 
 void BraveP3AService::StartScheduledUpload(MetricLogType log_type) {

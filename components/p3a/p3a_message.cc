@@ -38,19 +38,21 @@ base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
     return result;
   }
 
-  // Get last monday for the dates so that the years of survey/install correctly
-  // match the ISO weeks of survey/install.
-  // i.e. date of survey = Sunday, January 1, 2023 should result in
-  // yos = 2022 and wos = 52 since that date falls on the last ISO week of the
-  // previous year.
-  base::Time date_of_survey_monday =
-      brave_stats::GetLastMondayTime(meta.date_of_survey);
   base::Time date_of_install_monday =
       brave_stats::GetLastMondayTime(meta.date_of_install);
+  base::Time date_of_survey = meta.date_of_survey;
+
+  if (log_type != MetricLogType::kSlow) {
+    // Get last monday for the date so that the years of survey/install
+    // correctly match the ISO weeks of survey/install. i.e. date of survey =
+    // Sunday, January 1, 2023 should result in yos = 2022 and wos = 52 since
+    // that date falls on the last ISO week of the previous year.
+    date_of_survey = brave_stats::GetLastMondayTime(date_of_survey);
+  }
 
   // Find out years of install and survey.
   base::Time::Exploded exploded;
-  date_of_survey_monday.LocalExplode(&exploded);
+  date_of_survey.LocalExplode(&exploded);
   DCHECK_GE(exploded.year, 999);
   result.Set("yos", exploded.year);
 
@@ -62,7 +64,12 @@ base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
   result.Set("country_code", meta.country_code);
   result.Set("version", meta.version);
   result.Set("woi", meta.woi);
-  result.Set("wos", meta.wos);
+
+  if (log_type == MetricLogType::kSlow) {
+    result.Set("mos", exploded.month);
+  } else {
+    result.Set("wos", brave_stats::GetIsoWeekNumber(date_of_survey));
+  }
 
   std::string cadence;
   switch (log_type) {

@@ -266,7 +266,7 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendSlow) {
   EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
 
   // Fast forward to the first of the next month
-  task_environment_.FastForwardBy(base::Days(8) +
+  task_environment_.FastForwardBy(base::Days(12) +
                                   base::Seconds(kUploadIntervalSeconds * 100));
 
   EXPECT_EQ(p3a_json_sent_metrics_.size(), 2U);
