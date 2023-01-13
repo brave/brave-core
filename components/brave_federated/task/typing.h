@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "brave/components/brave_federated/task/model.h"
+#include "brave/components/brave_federated/util/linear_algebra_util.h"
 
 namespace brave_federated {
 
@@ -20,17 +21,23 @@ enum TaskType {
 
 class Task {
  public:
-  Task(int task_id, TaskType type, std::string token);
+  Task(int task_id,
+       TaskType type,
+       std::string token,
+       std::vector<Weights> parameters);
+  Task(const Task& other);
   ~Task();
 
   int GetId();
   TaskType GetType();
   std::string GetToken();
+  std::vector<Weights> GetParameters();
 
  private:
   int task_id_;
   TaskType type_;
   std::string token_;
+  std::vector<Weights> parameters_;
 };
 
 class TaskResult {

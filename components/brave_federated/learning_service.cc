@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_federated/learning_service.h"
 
-#include <memory>
 #include <utility>
 #include <vector>
 
@@ -14,7 +13,6 @@
 #include "brave/components/brave_federated/communication_adapter.h"
 #include "brave/components/brave_federated/eligibility_service.h"
 #include "brave/components/brave_federated/notification_ad_task_constants.h"
-#include "brave/components/brave_federated/task/communication_helper.h"
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/task_runner.h"
 #include "brave/components/brave_federated/task/typing.h"
@@ -67,9 +65,10 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
     return;
   }
 
-  Task task = tasks.at(0);
   // TODO(lminto): implement actual task handling
+  Task task = tasks.at(0);
   ModelSpec spec{32, 64, 0.01, 500, 0.5};
+
   Model* model = new Model(spec);
   TaskRunner* notification_ad_task_runner = new TaskRunner(task, model);
 

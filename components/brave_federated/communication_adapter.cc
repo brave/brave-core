@@ -5,13 +5,16 @@
 
 #include "brave/components/brave_federated/communication_adapter.h"
 
+#include <string>
 #include <utility>
 #include <vector>
 
 #include "base/check.h"
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_federated/task/communication_helper.h"
+#include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_federated/task/flower_helper.h"
 #include "brave/components/brave_federated/task/typing.h"
+#include "brave/components/brave_federated/util/linear_algebra_util.h"
 #include "brave/third_party/flower/src/proto/flwr/proto/fleet.pb.h"
 #include "brave/third_party/flower/src/proto/flwr/proto/task.pb.h"
 #include "brave/third_party/flower/src/proto/flwr/proto/transport.pb.h"
@@ -58,6 +61,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
         }
     )");
 }
+
 }  // namespace
 
 CommunicationAdapter::CommunicationAdapter(
@@ -75,11 +79,9 @@ void CommunicationAdapter::GetTasks(GetTaskCallback callback) {
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   request->method = net::HttpRequestHeaders::kPostMethod;
 
-  VLOG(2) << "Requesting Tasks list " << request->method << " " << request->url;
+  VLOG(2) << "Requesting tasks list " << request->method << " " << request->url;
 
   const std::string& payload = BuildGetTasksPayload();
-
-  VLOG(2) << "Payload " << payload;
 
   url_loader_ = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
@@ -95,7 +97,7 @@ void CommunicationAdapter::OnGetTasks(
     const std::unique_ptr<std::string> response_body) {
   if (!url_loader_->ResponseInfo() || !url_loader_->ResponseInfo()->headers) {
     std::move(callback).Run({}, 10);
-    VLOG(1) << "Failed to get federated tasks";
+    VLOG(1) << "Failed to get federated tasks, retrying in 10s";
     return;
   }
 
@@ -119,10 +121,15 @@ void CommunicationAdapter::OnGetTasks(
           flower::ServerMessage message = flwr_task.legacy_server_message();
 
           TaskType type;
+          std::vector<Weights> parameters = {};
           if (message.has_fit_ins()) {
             type = TaskType::Training;
+            parameters =
+                GetParametersFromMessage(message.fit_ins().parameters());
           } else if (message.has_evaluate_ins()) {
             type = TaskType::Evaluation;
+            parameters =
+                GetParametersFromMessage(message.evaluate_ins().parameters());
           } else if (message.has_reconnect_ins()) {
             std::move(callback).Run(task_list,
                                     message.reconnect_ins().seconds());
@@ -133,7 +140,7 @@ void CommunicationAdapter::OnGetTasks(
             return;
           }
 
-          Task task = Task(task_id, type, token);
+          Task task = Task(task_id, type, token, parameters);
           task_list.push_back(task);
         }
 
@@ -168,8 +175,6 @@ void CommunicationAdapter::PostTaskResult(TaskResult result,
 
   flower::Result task_result;
   task_result.ParseFromString(payload);
-
-  VLOG(2) << "Payload " << payload;
 
   url_loader_ = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());

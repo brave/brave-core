@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_federated/task/communication_helper.h"
+#include "brave/components/brave_federated/task/flower_helper.h"
+
+#include <sstream>
 
 #include "base/json/json_writer.h"
 #include "base/strings/string_util.h"
@@ -22,6 +24,51 @@ namespace {
 }  // namespace
 
 namespace brave_federated {
+
+std::vector<float> GetFloatVectorFromString(std::string string) {
+  int vector_size = string.size() / sizeof(float);
+  float parameters_array[vector_size];
+  std::memcpy(parameters_array, string.data(), string.size());
+
+  std::vector<float> parameters_vector(parameters_array,
+                                       parameters_array + vector_size);
+
+  return parameters_vector;
+}
+
+std::string GetStringFromFloatVector(std::vector<float> vector) {
+  std::ostringstream oss;
+  oss.write(reinterpret_cast<const char*>(vector.data()),
+            vector.size() * sizeof(float));
+
+  return oss.str();
+}
+
+std::vector<std::vector<float>> GetParametersFromMessage(
+    flower::Parameters parameters_msg) {
+  std::vector<std::vector<float>> tensors;
+  for (int i = 0; i < parameters_msg.tensors_size(); i++) {
+    std::string parameters_string = parameters_msg.tensors(i);
+    std::vector<float> parameters_vector =
+        GetFloatVectorFromString(parameters_string);
+    tensors.push_back(parameters_vector);
+  }
+
+  return tensors;
+}
+
+flower::Parameters GetMessageFromParameters(
+    std::vector<std::vector<float>> parameters_vector) {
+  flower::Parameters flower_parameters;
+  flower_parameters.set_tensor_type("cpp_float");
+
+  for (auto const& vector : parameters_vector) {
+    std::string string = GetStringFromFloatVector(vector);
+    flower_parameters.add_tensors();
+  }
+
+  return flower_parameters;
+}
 
 flower::GetTasksRequest BuildGetTasksRequestMessage() {
   flower::GetTasksRequest trm;
@@ -52,7 +99,8 @@ std::string BuildPostTaskResultsPayload(TaskResult result) {
   if (task_type == TaskType::Training) {
     flower::ClientMessage_FitRes fit_res;
     fit_res.set_num_examples(report.dataset_size);
-    // TODO(lminto): Add parameters, status, metrics?
+    *fit_res.mutable_parameters() = GetMessageFromParameters(report.parameters);
+    // TODO(lminto): add res of information
     *client_message.mutable_fit_res() = fit_res;
   } else {
     flower::ClientMessage_EvaluateRes eval_res;
