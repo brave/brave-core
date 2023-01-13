@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -62,7 +62,7 @@ public class NftDetailActivity
             mBlockExplorerUrl = networkInfo.blockExplorerUrls.length > 0 ? networkInfo.blockExplorerUrls[0] : "";
         }
 
-        // Calculate halft screen height and assign it to NFT image view,
+        // Calculate half screen height and assign it to NFT image view,
         // or "Image not found" text view (that will pop up in case of issues).
         int halfScreenHeight = AndroidUtils.getScreenHeight() / 2;
 
