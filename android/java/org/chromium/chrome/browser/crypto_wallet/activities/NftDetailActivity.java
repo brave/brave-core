@@ -63,7 +63,7 @@ public class NftDetailActivity
         }
 
         // Calculate half screen height and assign it to NFT image view,
-        // or "Image not found" text view (that will pop up in case of issues).
+        // and "Image not found" text view (that will pop up in case of issues).
         int halfScreenHeight = AndroidUtils.getScreenHeight() / 2;
 
         mNftImageView = findViewById(R.id.nft_detail_image);
