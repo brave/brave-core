@@ -56,27 +56,32 @@ window.__firefox__.execute(function($) {
       return originalOpen.apply(this, arguments)
     }
 
-    // Extract the url
-    const urlString = arguments[1]
+    // Set the url on the request so we can reference it later
+    // Store only primitive types not things like URL objects
+    this._url = arguments[1]
+    return originalOpen.apply(this, arguments)
+  });
+
+  const originalSend = XMLHttpRequest.prototype.send
+  XMLHttpRequest.prototype.send = $(function () {
+    if (this._url === undefined) {
+      return originalSend.apply(this, arguments)
+    }
+    
+    // Extract the URL object by combining it with window.location
+    let resourceURL
     
     try {
       // We do this in a try/catch block to not fail the request in case we can't
       // create a URL
-      this._resourceURL = new URL(urlString, window.location.href)
+      resourceURL = new URL(this._url, window.location.href)
     } catch (error) {
       // Ignore this error and proceed like a regular request
-    }
-    
-    return originalOpen.apply(this, arguments)
-  });
-  
-  const originalSend = XMLHttpRequest.prototype.send
-  XMLHttpRequest.prototype.send = $(function () {
-    if (this._resourceURL === undefined) {
       return originalSend.apply(this, arguments)
     }
-    
-    sendMessage(this._resourceURL).then(blocked => {
+
+    // Ask iOS if we need to block this request
+    sendMessage(resourceURL).then(blocked => {
       if (blocked) {
         Object.defineProperties(this, {
           readyState: { value: 4 }
