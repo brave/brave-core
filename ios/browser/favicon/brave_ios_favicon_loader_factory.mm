@@ -12,6 +12,7 @@
 #include "ios/chrome/browser/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/favicon/favicon_service_factory.h"
+#import "ios/chrome/browser/favicon/ios_chrome_large_icon_service_factory.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -57,7 +58,8 @@ BraveIOSFaviconLoaderFactory::BraveIOSFaviconLoaderFactory()
     : BrowserStateKeyedServiceFactory(
           "BraveFaviconLoader",
           BrowserStateDependencyManager::GetInstance()) {
-  DependsOn(BraveIOSFaviconLoaderFactory::GetInstance());
+  DependsOn(ios::FaviconServiceFactory::GetInstance());
+  DependsOn(IOSChromeLargeIconServiceFactory::GetInstance());
 }
 
 BraveIOSFaviconLoaderFactory::~BraveIOSFaviconLoaderFactory() {}

@@ -1,45 +1,30 @@
-# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
-source_set("opentabs") {
+source_set("web_state") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   sources = [
-    "brave_opentabs_api+private.h",
-    "brave_opentabs_api.h",
-    "brave_opentabs_api.mm",
-    "brave_opentabs_observer.h",
-    "brave_sendtab_api+private.h",
-    "brave_sendtab_api.h",
-    "brave_sendtab_api.mm",
-    "brave_sendtab_observer.h",
-    "brave_tabgenerator_api+private.h",
-    "brave_tabgenerator_api.h",
-    "brave_tabgenerator_api.mm",
-    "opentabs_session_listener_ios.h",
-    "opentabs_session_listener_ios.mm",
-    "sendtab_model_listener_ios.h",
-    "sendtab_model_listener_ios.mm",
+    "web_state+private.h",
+    "web_state.h",
+    "web_state.mm",
+    "web_state_native.h",
+    "web_state_native.mm",
   ]
 
   deps = [
     "//base",
-    "//brave/ios/browser/api/web/web_state",
     "//components/keyed_service/ios:ios",
-    "//components/send_tab_to_self",
-    "//components/sync/driver",
-    "//components/sync_sessions",
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/main:public",
     "//ios/chrome/browser/sessions",
     "//ios/chrome/browser/sync",
     "//ios/chrome/browser/tabs",
-    "//ios/chrome/browser/ui/recent_tabs:synced_sessions",
     "//ios/chrome/browser/web_state_list",
     "//ios/web/common:user_agent",
     "//ios/web/public/session:session",
