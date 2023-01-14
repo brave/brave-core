@@ -4,5 +4,5 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 declare_args() {
-  enable_brave_referrals = is_linux || is_win || is_android
+  enable_brave_referrals = is_mac || is_linux || is_win || is_android
 }
