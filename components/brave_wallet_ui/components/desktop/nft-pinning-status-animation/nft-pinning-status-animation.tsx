@@ -16,32 +16,27 @@ import SuccessGif from '../../../assets/svg-icons/nft-ipfs/success.gif'
 interface Props {
   size: string | undefined
   status: BraveWallet.TokenPinStatusCode
-  displayMode: 'nft' | 'banner'
+  isAutopinEnabled: boolean
 }
 
-export const NftPinningStatusAnimation = ({ size, status, displayMode }: Props) => {
-  const { STATUS_NOT_PINNED, STATUS_PINNING_IN_PROGRESS, STATUS_PINNED } = BraveWallet.TokenPinStatusCode
+export const NftPinningStatusAnimation = ({ size, status, isAutopinEnabled }: Props) => {
+  const { STATUS_PINNING_IN_PROGRESS, STATUS_PINNED } = BraveWallet.TokenPinStatusCode
 
   return (
     <StyledWrapper size={size || '30px'}>
-      {/* Banner starting state */}
-      {status === STATUS_NOT_PINNED &&
-        displayMode === 'banner' && <Ipfs size={size} />
-      }
-
-      {/* Uploading */}
-      {status === STATUS_PINNING_IN_PROGRESS && (
+      {!isAutopinEnabled ? (
+        <Ipfs size={size} />
+      ) : status === STATUS_PINNING_IN_PROGRESS ? (
         <GifWrapper>
           <StatusGif src={UploadingGif} />
           <IpfsUploading />
         </GifWrapper>
-      )}
-
-      {/* Success */}
-      {STATUS_PINNING_IN_PROGRESS && status === STATUS_PINNED && displayMode === 'banner' && (
-        <GifWrapper>
-          <StatusGif src={SuccessGif} />
-        </GifWrapper>
+      ) : (
+        status === STATUS_PINNED && (
+          <GifWrapper>
+            <StatusGif src={SuccessGif} />
+          </GifWrapper>
+        )
       )}
     </StyledWrapper>
   )

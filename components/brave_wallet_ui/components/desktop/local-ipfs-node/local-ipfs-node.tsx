@@ -118,6 +118,10 @@ export const LocalIpfsNodeScreen = (props: Props) => {
         </Section>
       </MainContent>
       <NftIllustration src={Illustration} />
+      {/* TODO (william): Remove this button, only for testing */}
+      <button onClick={() => {
+        dispatch(WalletPageActions.setAutoPinEnabled(false))
+      }}>disable autopin</button>
     </RunNodeWrapper>
   )
 }

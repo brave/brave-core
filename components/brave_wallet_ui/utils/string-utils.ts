@@ -139,3 +139,7 @@ export const getNFTTokenStandard = (token: BraveWallet.BlockchainToken) => {
   }
   return ''
 }
+
+export const isNftPinnable = (tokenLogo: string) => {
+  return reverseHttpifiedIpfsUrl(stripERC20TokenImageURL(tokenLogo)).startsWith('ipfs://')
+}

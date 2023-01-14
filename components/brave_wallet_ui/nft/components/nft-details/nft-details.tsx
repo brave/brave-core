@@ -17,6 +17,7 @@ import { useExplorer } from '../../../common/hooks'
 // Utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '$web-common/locale'
+import { isNftPinnable, isValidateUrl, stripERC20TokenImageURL } from '../../../utils/string-utils'
 
 // Styled Components
 import {
@@ -45,7 +46,6 @@ import {
   Subdivider,
   ProjectDetailName
 } from './nft-details-styles'
-import { isValidateUrl, stripERC20TokenImageURL } from '../../../utils/string-utils'
 import { NftMultimedia } from '../nft-multimedia/nft-multimedia'
 import { MultimediaWrapper } from '../nft-content/nft-content-styles'
 import { CreateNetworkIcon } from '../../../components/shared'
@@ -216,7 +216,7 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                     </DetailSectionRow>
                   </>
                 }
-                {nftPinningStatus?.code &&
+                {selectedAsset && isNftPinnable(selectedAsset.logo) && nftPinningStatus?.code &&
                   <DetailSectionRow>
                     <DetailSectionColumn>
                       <NftPinningStatus pinningStatusCode={nftPinningStatus.code} />

@@ -13,7 +13,7 @@ import { WalletSelectors } from '../selectors'
 import { useUnsafePageSelector, useUnsafeWalletSelector } from './use-safe-selector'
 
 // utils
-import { reverseHttpifiedIpfsUrl, stripERC20TokenImageURL } from '../../utils/string-utils'
+import { isNftPinnable } from '../../utils/string-utils'
 import { LOCAL_STORAGE_KEYS } from '../constants/local-storage-keys'
 import { getAssetIdKey } from '../../utils/asset-utils'
 import { PinningStatusType } from '../../page/constants/action_types'
@@ -48,7 +48,7 @@ export function useNftPin () {
     )
     const pinnable: BraveWallet.BlockchainToken[] = []
     const nfts = tokens.map(token => {
-      const canBePinned = reverseHttpifiedIpfsUrl(stripERC20TokenImageURL(token.logo)).startsWith('ipfs://')
+      const canBePinned = isNftPinnable(token.logo)
       if (canBePinned) {
         pinnable.push(token)
       }

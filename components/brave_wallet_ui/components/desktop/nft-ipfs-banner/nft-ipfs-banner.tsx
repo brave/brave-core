@@ -63,8 +63,8 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
       <Row gap='12px' justifyContent='flex-start'>
         <NftPinningStatusAnimation
           size='30px'
-          displayMode='banner'
           status={status}
+          isAutopinEnabled={isAutoPinEnabled}
         />
         <Text status={bannerStatus}>
           {bannerStatus === 'start' ? (
