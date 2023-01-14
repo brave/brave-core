@@ -21,6 +21,7 @@
 #include "brave/components/playlist/browser/playlist_types.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
 namespace base {
@@ -94,6 +95,9 @@ class PlaylistService : public KeyedService,
   ~PlaylistService() override;
   PlaylistService(const PlaylistService&) = delete;
   PlaylistService& operator=(const PlaylistService&) = delete;
+
+  mojo::PendingRemote<mojom::PlaylistService> MakeRemote();
+  void Bind(mojo::PendingReceiver<mojom::PlaylistService> receiver);
 
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer);
@@ -271,6 +275,8 @@ class PlaylistService : public KeyedService,
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<PrefService> prefs_ = nullptr;
+
+  mojo::ReceiverSet<mojom::PlaylistService> receivers_;
 
   base::WeakPtrFactory<PlaylistService> weak_factory_{this};
 };

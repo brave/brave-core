@@ -689,6 +689,17 @@ void PlaylistService::RemoveLocalDataForItem(
   }
 }
 
+mojo::PendingRemote<mojom::PlaylistService> PlaylistService::MakeRemote() {
+  mojo::PendingRemote<mojom::PlaylistService> remote;
+  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
+  return remote;
+}
+
+void PlaylistService::Bind(
+    mojo::PendingReceiver<mojom::PlaylistService> receiver) {
+  receivers_.Add(this, std::move(receiver));
+}
+
 void PlaylistService::AddObserver(
     mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) {
   service_observers_.Add(std::move(observer));
