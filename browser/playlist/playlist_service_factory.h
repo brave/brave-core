@@ -9,7 +9,9 @@
 #include <memory>
 
 #include "base/memory/singleton.h"
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 
 namespace playlist {
 class PlaylistService;
@@ -20,6 +22,8 @@ class PlaylistServiceFactory : public BrowserContextKeyedServiceFactory {
   static bool IsPlaylistEnabled(content::BrowserContext* context);
 
   static PlaylistService* GetForBrowserContext(
+      content::BrowserContext* context);
+  static mojo::PendingRemote<mojom::PlaylistService> GetForContext(
       content::BrowserContext* context);
   static PlaylistServiceFactory* GetInstance();
 

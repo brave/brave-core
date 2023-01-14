@@ -95,6 +95,14 @@ PlaylistService* PlaylistServiceFactory::GetForBrowserContext(
 }
 
 // static
+mojo::PendingRemote<mojom::PlaylistService>
+PlaylistServiceFactory::GetForContext(content::BrowserContext* context) {
+  return static_cast<PlaylistService*>(
+             GetInstance()->GetServiceForBrowserContext(context, true))
+      ->MakeRemote();
+}
+
+// static
 bool PlaylistServiceFactory::IsPlaylistEnabled(
     content::BrowserContext* context) {
   return base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
