@@ -1713,7 +1713,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 openNewOrSelectExistingTab(openUrl);
             }
         }
-        checkAndshowNotificationWarningDialog();
+        checkForNotificationData();
     }
 
     @Override
