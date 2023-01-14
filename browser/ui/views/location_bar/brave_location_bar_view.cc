@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -267,13 +268,16 @@ void BraveLocationBarView::OnThemeChanged() {
   RefreshBackground();
 }
 
-void BraveLocationBarView::ChildPreferredSizeChanged(views::View* child) {
-  LocationBarView::ChildPreferredSizeChanged(child);
-
-  if (child != brave_actions_)
-    return;
-
-  Layout();
+void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {
+  LocationBarView::ChildVisibilityChanged(child);
+  // Normally, PageActionIcons are in a container which is always visible, only
+  // the size changes when an icon is shown or hidden. The LocationBarView
+  // does not listen to ChildVisibilityChanged events so we must make we Layout
+  // and re-caculate trailing decorator positions when a child changes.
+  if (base::Contains(GetTrailingViews(), child)) {
+    Layout();
+    SchedulePaint();
+  }
 }
 
 int BraveLocationBarView::GetBorderRadius() const {
