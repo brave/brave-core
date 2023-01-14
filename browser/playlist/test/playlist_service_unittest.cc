@@ -665,11 +665,13 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
         const auto& item = items.front();
         EXPECT_FALSE(item->cached);
         EXPECT_EQ(item->media_source, item->media_path);
-        EXPECT_EQ(item->thumbnail_source, item->thumbnail_path);
+
+        base::FilePath media_path;
+        ASSERT_TRUE(service->GetMediaPath(item->id, &media_path));
+
         WaitUntil(base::BindLambdaForTesting([&]() {
           base::ScopedAllowBlockingForTesting allow_blocking;
-          return !base::DirectoryExists(
-              service->GetPlaylistItemDirPath(item->id));
+          return !base::PathExists(media_path);
         }));
       }));
 
@@ -681,10 +683,12 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
         const auto& item = items.front();
         service->RecoverLocalDataForItem(item->id);
 
+        base::FilePath media_path;
+        ASSERT_TRUE(service->GetMediaPath(item->id, &media_path));
+
         WaitUntil(base::BindLambdaForTesting([&]() {
           base::ScopedAllowBlockingForTesting allow_blocking;
-          return base::DirectoryExists(
-              service->GetPlaylistItemDirPath(item->id));
+          return base::PathExists(media_path);
         }));
       }));
 
