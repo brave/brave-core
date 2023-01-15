@@ -601,8 +601,10 @@ void PlaylistService::RemoveLocalDataForItem(const std::string& id) {
   const auto* item_value = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   DCHECK(item_value);
   auto playlist_item = ConvertValueToPlaylistItem(*item_value);
+  if (!playlist_item->cached)
+    return;
+
   playlist_item->cached = false;
-  playlist_item->thumbnail_path = playlist_item->thumbnail_source;
   DCHECK(playlist_item->media_source.is_valid())
       << "media_source should be valid";
   playlist_item->media_path = playlist_item->media_source;
@@ -612,8 +614,12 @@ void PlaylistService::RemoveLocalDataForItem(const std::string& id) {
   NotifyPlaylistChanged(
       {PlaylistChangeParams::Type::kItemLocalDataRemoved, id});
 
-  GetTaskRunner()->PostTask(FROM_HERE, base::GetDeletePathRecursivelyCallback(
-                                           GetPlaylistItemDirPath(id)));
+  base::FilePath media_path;
+  if (GetMediaPath(playlist_item->id, &media_path)) {
+    auto delete_file = base::BindOnce(
+        [](const base::FilePath& path) { base::DeleteFile(path); }, media_path);
+    GetTaskRunner()->PostTask(FROM_HERE, std::move(delete_file));
+  }
 }
 
 void PlaylistService::DeleteAllPlaylistItems() {
