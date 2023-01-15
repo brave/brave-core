@@ -20,6 +20,7 @@ bool ShouldUseBraveImporter(importer::ImporterType type) {
     case importer::TYPE_VIVALDI:
     case importer::TYPE_OPERA:
     case importer::TYPE_YANDEX:
+    case importer::TYPE_WHALE:
       return true;
     default:
       return false;

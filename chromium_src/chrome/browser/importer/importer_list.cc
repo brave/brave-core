@@ -34,6 +34,13 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
                                      profile->begin(), profile->end())),
                                  &items))
       continue;
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
+    // We can import password from Whale only on macOS.
+    // Decryption failed on Windows and Linux.
+    if (type == importer::TYPE_WHALE && (items & importer::PASSWORDS)) {
+      items ^= importer::PASSWORDS;
+    }
+#endif
     importer::SourceProfile chrome;
     std::string importer_name(brand);
     importer_name.append(*name);
@@ -100,6 +107,12 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
       GetChromeSourceProfiles(GetYandexUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
       GetYandexUserDataFolder(), "Yandex ", importer::TYPE_YANDEX);
+
+  AddChromeToProfiles(
+      profiles,
+      GetChromeSourceProfiles(GetWhaleUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
+      GetWhaleUserDataFolder(), "Whale ", importer::TYPE_WHALE);
 
 #if BUILDFLAG(IS_LINUX)
   // Installed via snap Opera has different profile path.

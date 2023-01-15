@@ -111,3 +111,13 @@ base::FilePath GetYandexUserDataFolder() {
 
   return result;
 }
+
+base::FilePath GetWhaleUserDataFolder() {
+  base::FilePath result;
+  if (!base::PathService::Get(base::DIR_LOCAL_APP_DATA, &result))
+    return base::FilePath();
+
+  return result.AppendASCII("Naver")
+      .AppendASCII("Naver Whale")
+      .AppendASCII("User Data");
+}
