@@ -311,6 +311,7 @@
     "CheckWebDevStyle": [
       "components/speedreader/resources/speedreader-desktop.css",
       "components/speedreader/resources/third_party/",
+      "test/data/speedreader/",
     ]
   },
 }
