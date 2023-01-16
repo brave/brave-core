@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.settings;
 
@@ -592,7 +592,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             // Creating a new chain
             GetPureWords();
             setNewChainLayout();
-            seedWordsReceived(mCodephrase);
+            seedWordsReceived(mCodephrase, SyncInputType.NEW);
         } else if (mMobileButton == v) {
             setAddMobileDeviceLayout();
         } else if (mLaptopButton == v) {
@@ -652,7 +652,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 // We have the confirmation from user
                 // Code phrase looks valid, we can pass it down to sync system
                 mCodephrase = codephraseCandidate;
-                seedWordsReceived(mCodephrase);
+                seedWordsReceived(mCodephrase, SyncInputType.JOIN);
             }, () -> {});
         } else if (mEnterCodeWordsButton == v) {
             getActivity().getWindow().setSoftInputMode(
@@ -729,7 +729,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             @Override
             public void run() {
                 String seedWords = getBraveSyncWorker().GetWordsFromSeedHex(seedHex);
-                seedWordsReceivedImpl(seedWords);
+                seedWordsReceivedImpl(seedWords, SyncInputType.JOIN);
             }
         });
     }
@@ -737,14 +737,14 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     // This function used in two cases:
     // 1) when we have entered the code words to connect to the chain
     // 2) when we have created a new chain
-    private void seedWordsReceived(String seedWords) {
+    private void seedWordsReceived(String seedWords, SyncInputType syncInputType) {
         if (null == getActivity()) {
             return;
         }
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                seedWordsReceivedImpl(seedWords);
+                seedWordsReceivedImpl(seedWords, syncInputType);
             }
         });
     }
@@ -798,13 +798,15 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
     }
 
-    private void seedWordsReceivedImpl(String seedWords) {
+    private enum SyncInputType { NEW, JOIN }
+    private void seedWordsReceivedImpl(String seedWords, SyncInputType syncInputType) {
         pauseSyncStateChangedObserver();
 
         getBraveSyncWorker().setJoinSyncChainCallback((Boolean result) -> {
             if (result) {
-                resumeSyncStateChangedObserver();
-                setAppropriateView();
+                if (syncInputType == SyncInputType.JOIN) {
+                    setAppropriateView();
+                }
             } else {
                 // TODO(AlexeyBarabash): consider to have error code if there will
                 // be more than only one case of failure
@@ -1122,6 +1124,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             public void onClick(DialogInterface dialog, int button) {
                 if (button == AlertDialog.BUTTON_POSITIVE) {
                     if (device.mIsCurrentDevice) {
+                        resumeSyncStateChangedObserver();
                         getBraveSyncWorker().ResetSync();
                         startLeaveSyncChainOperations();
                     } else {
@@ -1242,9 +1245,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             } else {
                 InvalidateCodephrase();
             }
+            setAppropriateView();
         }
-
-        setAppropriateView();
     }
 
   private void setJoinExistingChainLayout() {
@@ -1492,6 +1494,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
       }
 
       onDevicesAvailable();
+      resumeSyncStateChangedObserver();
   }
 
   private void adjustWidth(View view, int orientation) {
