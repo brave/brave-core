@@ -18,6 +18,7 @@
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
@@ -57,10 +58,11 @@ class BraveAvatarButtonHighlightPathGenerator
     DCHECK(avatar_button_);
     if (avatar_button_->GetAvatarButtonState() ==
         AvatarToolbarButton::State::kAnimatedUserIdentity) {
-      // When it's animating we shouldn't draw rounded highlight as the button
-      // has different radius. We draw rect here then the button will clip the
-      // highlight properly.
-      return gfx::RRectF(gfx::RectF(rect), 0);
+      // In this case, our radius wouldn't be used. We should keep using
+      // upstream's radius for the highlight too.
+      return gfx::RRectF(gfx::RectF(rect),
+                         ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
+                             views::Emphasis::kMaximum, {}));
     }
 
     // This make the highlight drawn as circle.
