@@ -283,15 +283,21 @@ public class CryptoStore: ObservableObject {
         portfolioStore.discoverAssetsOnAllSupportedChains()
       }
       let pendingTransactions = await fetchPendingTransactions()
+      var newPendingRequest: PendingRequest?
       if !pendingTransactions.isEmpty {
         if self.buySendSwapDestination != nil {
           // Dismiss any buy send swap open to show the unapproved transactions
           self.buySendSwapDestination = nil
         }
-        self.pendingRequest = .transactions(pendingTransactions)
+        newPendingRequest = .transactions(pendingTransactions)
       } else { // no pending transactions, check for webpage requests
-        let pendingWebpageRequest = await fetchPendingWebpageRequest()
-        self.pendingRequest = pendingWebpageRequest
+        newPendingRequest = await fetchPendingWebpageRequest()
+      }
+      // Verify this new `newPendingRequest` isn't the same as the current
+      // `pendingRequest` because re-assigning the same request could cause
+      // present of a previously dismissed / ignored pending request (#6750).
+      if newPendingRequest?.id != self.pendingRequest?.id {
+        self.pendingRequest = newPendingRequest
       }
       // If we set these before the send or swap screens disappear for some reason it may crash
       // within the SwiftUI runtime or fail to dismiss. Delaying it to give time for the
