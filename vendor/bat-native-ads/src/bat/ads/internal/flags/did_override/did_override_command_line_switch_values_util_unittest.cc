@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/flags/did_override/did_override_variations_command_line_switch_util.h"
+#include "bat/ads/internal/flags/did_override/did_override_command_line_switch_values_util.h"
 
 #include <memory>
 #include <string>
@@ -44,7 +44,7 @@ struct ParamInfo final {
 
 }  // namespace
 
-class BatAdsDidOverrideVariationsCommandLineSwitchUtilTest
+class BatAdsDidOverrideCommandLineSwitchValuesUtilTest
     : public UnitTestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
@@ -63,15 +63,15 @@ class BatAdsDidOverrideVariationsCommandLineSwitchUtilTest
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-TEST_P(BatAdsDidOverrideVariationsCommandLineSwitchUtilTest,
-       DidOverrideVariationsCommandLineSwitch) {
+TEST_P(BatAdsDidOverrideCommandLineSwitchValuesUtilTest,
+       DidOverrideCommandLineSwitchValues) {
   // Arrange
 
   // Act
 
   // Assert
   EXPECT_EQ(GetParam().expected_did_override_command_line_switch,
-            DidOverrideVariationsCommandLineSwitch());
+            DidOverrideCommandLineSwitchValues());
 }
 
 std::string TestParamToString(
@@ -84,13 +84,13 @@ std::string TestParamToString(
   const std::string sanitized_command_line_switch =
       SanitizeCommandLineSwitch(test_param.param.command_line_switch);
 
-  return base::StringPrintf("Set%sVariationsFor%s",
+  return base::StringPrintf("Set%sCommandLineSwitchValuesFor%s",
                             expected_did_override_command_line_switch.c_str(),
                             sanitized_command_line_switch.c_str());
 }
 
 INSTANTIATE_TEST_SUITE_P(,
-                         BatAdsDidOverrideVariationsCommandLineSwitchUtilTest,
+                         BatAdsDidOverrideCommandLineSwitchValuesUtilTest,
                          testing::ValuesIn(kTests),
                          TestParamToString);
 

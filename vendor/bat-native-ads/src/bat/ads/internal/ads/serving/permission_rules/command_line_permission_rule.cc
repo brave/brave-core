@@ -21,7 +21,7 @@ bool DoesRespectCap() {
 
 bool CommandLinePermissionRule::ShouldAllow() {
   if (!DoesRespectCap()) {
-    last_message_ = "--enable-features command-line arg is not supported";
+    last_message_ = "Command-line arg is not supported";
     return false;
   }
 
