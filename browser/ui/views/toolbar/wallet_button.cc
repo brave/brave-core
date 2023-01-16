@@ -21,15 +21,22 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/simple_menu_model.h"
+#include "ui/gfx/geometry/rect_f.h"
+#include "ui/gfx/geometry/rrect_f.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/layout/fill_layout.h"
 
 namespace {
+
+constexpr int kBraveWalletLeftMarginExtra = -4;
 
 content::WebContents* GetActiveWebContents() {
   return BrowserList::GetInstance()
@@ -37,6 +44,29 @@ content::WebContents* GetActiveWebContents() {
       ->tab_strip_model()
       ->GetActiveWebContents();
 }
+
+class BraveWalletButtonHighlightPathGenerator
+    : public views::HighlightPathGenerator {
+ public:
+  // HighlightPathGenerator:
+  SkPath GetHighlightPath(const views::View* view) override {
+    DCHECK(view);
+
+    gfx::Rect rect(view->size());
+    rect.Inset(GetToolbarInkDropInsets(view));
+    rect.Inset(gfx::Insets::TLBR(0, 0, 0, -1 * kBraveWalletLeftMarginExtra));
+
+    auto* layout_provider = ChromeLayoutProvider::Get();
+    DCHECK(layout_provider);
+
+    int radius = layout_provider->GetCornerRadiusMetric(
+        views::Emphasis::kMaximum, rect.size());
+
+    SkPath path;
+    path.addRoundRect(gfx::RectToSkRect(rect), radius, radius);
+    return path;
+  }
+};
 
 class WalletButtonMenuModel : public ui::SimpleMenuModel,
                               public ui::SimpleMenuModel::Delegate {
@@ -115,6 +145,9 @@ WalletButton::WalletButton(View* backup_anchor_view, Profile* profile)
             profile, base::BindRepeating(&WalletButton::OnNotificationUpdate,
                                          weak_ptr_factory_.GetWeakPtr()));
   }
+
+  views::HighlightPathGenerator::Install(
+      this, std::make_unique<BraveWalletButtonHighlightPathGenerator>());
 }
 
 WalletButton::~WalletButton() = default;
@@ -164,7 +197,7 @@ void WalletButton::UpdateImageAndText() {
       preferred_size,
       base::BindRepeating(&GetColorProviderForView,
                           weak_ptr_factory_.GetWeakPtr()),
-      icon_size, 5u);
+      icon_size, kBraveWalletLeftMarginExtra);
   image_source->SetAllowEmptyText(show_suggest_badge_);
   image_source->SetIcon(gfx::Image(icon));
 

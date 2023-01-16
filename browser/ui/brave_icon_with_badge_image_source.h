@@ -27,7 +27,7 @@ class BraveIconWithBadgeImageSource : public IconWithBadgeImageSource {
       const gfx::Size& size,
       GetColorProviderCallback get_color_provider_callback,
       size_t content_image_size,
-      size_t content_horizontal_margin);
+      size_t image_left_margin_extra);
 
   BraveIconWithBadgeImageSource(const BraveIconWithBadgeImageSource&) = delete;
   BraveIconWithBadgeImageSource& operator=(
@@ -51,7 +51,7 @@ class BraveIconWithBadgeImageSource : public IconWithBadgeImageSource {
 
   bool allow_empty_text_ = false;
   size_t content_image_size_;
-  size_t content_horizontal_margin_;
+  size_t image_left_margin_extra_;
 };
 
 }  // namespace brave

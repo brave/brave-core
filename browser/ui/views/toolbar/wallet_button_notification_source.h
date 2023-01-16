@@ -26,7 +26,7 @@ using WalletButtonNotificationSourceCallback =
     base::RepeatingCallback<void(bool /* show suggest */,
                                  size_t /* counter */)>;
 
-// Provides and updates data fot the wallet button notification badge.
+// Provides and updates data for the wallet button notification badge.
 // Like number of pending transactions or onboarding bubble to show.
 class WalletButtonNotificationSource
     : brave_wallet::mojom::TxServiceObserver,
@@ -78,7 +78,7 @@ class WalletButtonNotificationSource
 
   WalletButtonNotificationSourceCallback callback_;
 
-  absl::optional<bool> wallet_created_ = false;
+  absl::optional<bool> wallet_created_;
   uint32_t pending_tx_count_ = 0;
 
   base::WeakPtrFactory<WalletButtonNotificationSource> weak_ptr_factory_{this};

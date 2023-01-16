@@ -22,6 +22,7 @@ WalletButtonNotificationSource::WalletButtonNotificationSource(
     WalletButtonNotificationSourceCallback callback)
     : profile_(profile), callback_(callback) {
   prefs_ = profile->GetPrefs();
+  prefs_->SetBoolean(kShouldShowWalletSuggestionBadge, true);
 }
 
 void WalletButtonNotificationSource::Init() {
@@ -30,15 +31,16 @@ void WalletButtonNotificationSource::Init() {
 }
 
 void WalletButtonNotificationSource::EnsureTxServiceConnected() {
-  if (!tx_service_) {
-    auto pending = brave_wallet::TxServiceFactory::GetForContext(profile_);
-    tx_service_.Bind(std::move(pending));
-    tx_service_.set_disconnect_handler(base::BindOnce(
-        &WalletButtonNotificationSource::OnTxServiceConnectionError,
-        weak_ptr_factory_.GetWeakPtr()));
-    tx_service_->AddObserver(tx_observer_.BindNewPipeAndPassRemote());
-    CheckTxStatus();
+  if (tx_service_) {
+    return;
   }
+  auto pending = brave_wallet::TxServiceFactory::GetForContext(profile_);
+  tx_service_.Bind(std::move(pending));
+  tx_service_.set_disconnect_handler(base::BindOnce(
+      &WalletButtonNotificationSource::OnTxServiceConnectionError,
+      weak_ptr_factory_.GetWeakPtr()));
+  tx_service_->AddObserver(tx_observer_.BindNewPipeAndPassRemote());
+  CheckTxStatus();
 }
 
 void WalletButtonNotificationSource::EnsureKeyringServiceConnected() {
@@ -87,7 +89,6 @@ void WalletButtonNotificationSource::MarkWalletButtonWasClicked() {
 
 void WalletButtonNotificationSource::CheckTxStatus() {
   if (!tx_service_) {
-    NOTREACHED();
     return;
   }
   tx_service_->GetPendingTransactionsCount(

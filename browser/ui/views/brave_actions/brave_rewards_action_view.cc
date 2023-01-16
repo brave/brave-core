@@ -57,7 +57,7 @@ class ButtonHighlightPathGenerator : public views::HighlightPathGenerator {
   SkPath GetHighlightPath(const views::View* view) override {
     DCHECK(view);
     gfx::Rect rect(view->GetPreferredSize());
-    rect.Inset(gfx::Insets::TLBR(0, 0, 0, kBraveActionRightMargin));
+    rect.Inset(gfx::Insets::TLBR(0, 0, 0, -1 * kBraveActionLeftMarginExtra));
 
     auto* layout_provider = ChromeLayoutProvider::Get();
     DCHECK(layout_provider);
@@ -191,7 +191,7 @@ void BraveRewardsActionView::Update() {
 
       preferred_size,
       base::BindRepeating(GetColorProviderForWebContents, weak_contents),
-      kBraveActionGraphicSize, kBraveActionRightMargin);
+      kBraveActionGraphicSize, kBraveActionLeftMarginExtra);
 
   image_source->SetIcon(gfx::Image(GetRewardsIcon()));
 

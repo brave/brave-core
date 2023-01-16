@@ -41,10 +41,10 @@ BraveIconWithBadgeImageSource::BraveIconWithBadgeImageSource(
     const gfx::Size& size,
     GetColorProviderCallback get_color_provider_callback,
     size_t content_image_size,
-    size_t content_horizontal_margin)
+    size_t image_left_margin_extra)
     : IconWithBadgeImageSource(size, std::move(get_color_provider_callback)),
       content_image_size_(content_image_size),
-      content_horizontal_margin_(content_horizontal_margin) {}
+      image_left_margin_extra_(image_left_margin_extra) {}
 
 // static
 gfx::Size BraveIconWithBadgeImageSource::GetMaxBadgeSize() {
@@ -199,8 +199,7 @@ absl::optional<int> BraveIconWithBadgeImageSource::GetCustomGraphicSize() {
 
 absl::optional<int> BraveIconWithBadgeImageSource::GetCustomGraphicXOffset() {
   return std::floor(
-      (size().width() - content_horizontal_margin_ - content_image_size_) /
-      2.0);
+      (image_left_margin_extra_ + size().width() - content_image_size_) / 2.0);
 }
 
 absl::optional<int> BraveIconWithBadgeImageSource::GetCustomGraphicYOffset() {
