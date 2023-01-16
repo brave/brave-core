@@ -1,7 +1,7 @@
-/* Copyright 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_DISCOVERY_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_DISCOVERY_MANAGER_H_
@@ -52,6 +52,7 @@ class AssetDiscoveryManager : public mojom::KeyringServiceObserver {
   using APIRequestResult = api_request_helper::APIRequestResult;
   using EthGetLogsCallback =
       base::OnceCallback<void(const std::vector<Log>& logs,
+                              base::Value rawlogs,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
   using DiscoverAssetsCompletedCallbackForTesting =
@@ -107,6 +108,7 @@ class AssetDiscoveryManager : public mojom::KeyringServiceObserver {
       bool triggered_by_accounts_added,
       const std::string& chain_id,
       const std::vector<Log>& logs,
+      base::Value rawlogs,
       mojom::ProviderError error,
       const std::string& error_message);
 

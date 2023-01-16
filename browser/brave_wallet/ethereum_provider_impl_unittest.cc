@@ -2077,6 +2077,100 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
   EXPECT_FALSE(provider_->eth_block_tracker_.IsRunning());
 }
 
+TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogs) {
+  CreateWallet();
+
+  // Unsupported subscription type
+  std::string request_payload_json =
+      R"({"id":1,"jsonrpc:": "2.0","method":"eth_subscribe",
+          "params": ["foo"]})";
+  absl::optional<base::Value> request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  auto response = CommonRequestOrSendAsync(request_payload.value());
+
+  mojom::ProviderError error_code;
+  std::string error_message;
+  GetErrorCodeMessage(std::move(response.second), &error_code, &error_message);
+  EXPECT_EQ(response.first, true);
+  EXPECT_EQ(error_code, mojom::ProviderError::kInternalError);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_UNSUPPORTED_SUBSCRIPTION_TYPE));
+
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        url_loader_factory_.ClearResponses();
+
+        std::string header_value;
+        EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
+        std::string content;
+        if (header_value == "eth_getLogs") {
+          content =
+              R"({"id":1,"jsonrpc":"2.0","result":[{"address":"0x91",
+              "blockHash":"0xe8","blockNumber":"0x10","data":"0x0067",
+              "logIndex":"0x0","removed":false,
+              "topics":["0x4b","0x06e","0x085"],
+              "transactionHash":"0x22f7","transactionIndex":"0x0"}]})";
+        }
+        url_loader_factory_.AddResponse(request.url.spec(), content);
+      }));
+
+  // Logs subscription with parameters
+  request_payload_json =
+      R"({"id":1,"jsonrpc:": "2.0","method":"eth_subscribe",
+          "params": ["logs"]})";
+  request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  response = CommonRequestOrSendAsync(request_payload.value());
+
+  EXPECT_EQ(response.first, false);
+  EXPECT_TRUE(response.second.is_string());
+  std::string first_subscription = *response.second.GetIfString();
+  browser_task_environment_.FastForwardBy(
+      base::Seconds(kLogTrackerDefaultTimeInSeconds));
+  EXPECT_TRUE(observer_->MessageEventFired());
+  base::Value rv = observer_->GetLastMessage();
+  ASSERT_TRUE(rv.is_dict());
+
+  std::string* address = rv.GetDict().FindString("address");
+  EXPECT_EQ(*address, "0x91");
+
+  // Make a second subscription
+  request_payload_json =
+      R"({"id":1,"jsonrpc:": "2.0","method":"eth_subscribe",
+          "params": ["logs"]})";
+  request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_EQ(response.first, false);
+  EXPECT_TRUE(response.second.is_string());
+  std::string second_subscription = *response.second.GetIfString();
+
+  // The first unsubscribe should not stop the block tracker
+  request_payload_json = base::StringPrintf(R"({"id":1,"jsonrpc:": "2.0",
+                              "method":"eth_unsubscribe",
+                              "params": ["%s"]})",
+                                            first_subscription.c_str());
+  request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_TRUE(provider_->eth_logs_tracker_.IsRunning());
+
+  // The second unsubscribe should stop the block tracker
+  request_payload_json = base::StringPrintf(R"({"id":1,"jsonrpc:": "2.0",
+                              "method":"eth_unsubscribe",
+                              "params": ["%s"]})",
+                                            second_subscription.c_str());
+  request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_FALSE(provider_->eth_logs_tracker_.IsRunning());
+}
+
 TEST_F(EthereumProviderImplUnitTest, Web3ClientVersion) {
   std::string expected_version = base::StringPrintf(
       "BraveWallet/v%s", version_info::GetBraveChromiumVersionNumber().c_str());
