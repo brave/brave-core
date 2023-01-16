@@ -5,6 +5,7 @@ import argparse
 import importlib
 import os
 import sys
+import json
 
 _current_dir = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(1, os.path.join(_current_dir, *([os.pardir] * 4 + ['mojo/public/tools/mojom'])))
@@ -21,6 +22,15 @@ def parse_args():
     parser.add_argument('--exclude', nargs=1, required=False)
     return parser.parse_args()
 
+def load_cpp_typemap_info(module_dir):
+    # Attempt to load base typemap info if available
+    base_typemap_path = os.path.join(os.path.dirname(module_dir),
+                                     'mojom__type_mappings')
+    if os.path.isfile(base_typemap_path):
+        with open(base_typemap_path, 'rb') as f:
+            return json.load(f)['c++'] if not None else {}
+    return {}
+
 def main():
     args = parse_args()
     mojom_module = args.mojom_module[0]
@@ -34,6 +44,7 @@ def main():
     generator = generator_module.Generator(None)
     generator.bytecode_path = bytecode_path
     generator.excludedTypes = excluded.split(',')
+    generator.typemap = load_cpp_typemap_info(mojom_module)
     with open(mojom_module, 'rb') as f:
         generator.module = Module.Load(f)
     generator.GenerateFiles(output_dir)
