@@ -1,4 +1,10 @@
-# pylint: disable=import-error,too-many-return-statements,no-self-use,too-many-branches
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# pylint: disable=import-error,too-many-return-statements,no-self-use
+# pylint: disable=too-many-branches
 
 import os
 
@@ -599,27 +605,28 @@ class Generator(generator.Generator):
             self._GetFullMojomNameForKind(kind) in self.typemap
 
     def _ShouldPassParamByValue(self, kind):
-        return ((not mojom.IsReferenceKind(kind)) or self._IsMoveOnlyKind(kind) or
-            self._IsCopyablePassByValue(kind))
+        return ((not mojom.IsReferenceKind(kind)) or self._IsMoveOnlyKind(kind)
+                or self._IsCopyablePassByValue(kind))
 
     def _IsCopyablePassByValue(self, kind):
         if not self._IsTypemappedKind(kind):
             return False
-        return self.typemap[self._GetFullMojomNameForKind(kind)][
-            "copyable_pass_by_value"]
+        return self.typemap[self._GetFullMojomNameForKind(
+            kind)]["copyable_pass_by_value"]
 
     def _IsMoveOnlyKind(self, kind):
         if self._IsTypemappedKind(kind):
             if mojom.IsEnumKind(kind):
                 return False
-            return self.typemap[self._GetFullMojomNameForKind(kind)]["move_only"]
+            return self.typemap[self._GetFullMojomNameForKind(
+                kind)]["move_only"]
         if mojom.IsStructKind(kind) or mojom.IsUnionKind(kind):
             return True
         if mojom.IsArrayKind(kind):
             return self._IsMoveOnlyKind(kind.kind)
         if mojom.IsMapKind(kind):
-            return (self._IsMoveOnlyKind(kind.value_kind) or
-                self._IsMoveOnlyKind(kind.key_kind))
+            return (self._IsMoveOnlyKind(kind.value_kind)
+                    or self._IsMoveOnlyKind(kind.key_kind))
         if mojom.IsAnyHandleOrInterfaceKind(kind):
             return True
         return False
