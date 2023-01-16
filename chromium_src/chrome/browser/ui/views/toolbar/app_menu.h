@@ -6,13 +6,18 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_APP_MENU_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_APP_MENU_H_
 
-#define AddMenuItem                  \
-  UnusedMethod() { return nullptr; } \
-  friend class BraveAppMenu;         \
+#define RunMenu      \
+  UnusedMethod1() {} \
+  virtual void RunMenu
+
+#define AddMenuItem                   \
+  UnusedMethod2() { return nullptr; } \
+  friend class BraveAppMenu;          \
   virtual views::MenuItemView* AddMenuItem
 
 #include "src/chrome/browser/ui/views/toolbar/app_menu.h"
 
+#undef RunMenu
 #undef AddMenuItem
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_APP_MENU_H_

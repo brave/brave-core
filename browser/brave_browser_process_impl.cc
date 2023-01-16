@@ -33,6 +33,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/debounce/browser/debounce_component_installer.h"
 #include "brave/components/debounce/common/features.h"
+#include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
@@ -127,6 +128,9 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   brave_p3a_service();
   histogram_braveizer_ = brave::HistogramsBraveizer::Create();
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
+
+  // early initialize menu metrics
+  menu_metrics();
 }
 
 void BraveBrowserProcessImpl::Init() {
@@ -425,4 +429,10 @@ brave::BraveFarblingService* BraveBrowserProcessImpl::brave_farbling_service() {
   if (!brave_farbling_service_)
     brave_farbling_service_ = std::make_unique<brave::BraveFarblingService>();
   return brave_farbling_service_.get();
+}
+
+misc_metrics::MenuMetrics* BraveBrowserProcessImpl::menu_metrics() {
+  if (!menu_metrics_)
+    menu_metrics_ = std::make_unique<misc_metrics::MenuMetrics>(local_state());
+  return menu_metrics_.get();
 }
