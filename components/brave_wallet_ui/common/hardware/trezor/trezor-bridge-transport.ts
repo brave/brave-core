@@ -12,7 +12,6 @@ export class TrezorBridgeTransport extends MessagingTransport {
   constructor (bridgeFrameUrl: string) {
     super()
     this.bridgeFrameUrl = bridgeFrameUrl
-    // @ts-expect-error
     this.frameId = crypto.randomUUID()
   }
 
