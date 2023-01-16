@@ -5,12 +5,20 @@
 
 #include "brave/components/playlist/browser/type_converter.h"
 
+#include <limits>
 #include <utility>
 #include <vector>
 
 #include "base/json/values_util.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_types.h"
+
+static_assert(
+    std::numeric_limits<
+        decltype(playlist::mojom::PlaylistItem::last_played_position)>::max() <=
+        std::numeric_limits<int>::max(),
+    "PlaylistItem's last_played_position could be overflowed when creating "
+    "base::Value(int)");
 
 namespace playlist {
 
