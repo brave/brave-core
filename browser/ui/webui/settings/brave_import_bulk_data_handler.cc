@@ -16,7 +16,6 @@
 #include "base/json/json_reader.h"
 #include "base/rand_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/ui/webui/settings/import_feature.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/browser/profiles/profile_manager.h"

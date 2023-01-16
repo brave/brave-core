@@ -7,10 +7,9 @@
 
 #include <memory>
 #include <string>
-#include <unordered_map>
+#include <utility>
 
 #include "brave/browser/importer/brave_external_process_importer_host.h"
-#include "brave/browser/ui/webui/settings/import_feature.h"
 #include "chrome/browser/importer/importer_list.h"
 #include "chrome/browser/importer/profile_writer.h"
 #include "chrome/browser/profiles/profile.h"
@@ -81,13 +80,6 @@ void BraveImportDataHandler::StartImportImpl(
     const importer::SourceProfile& source_profile,
     uint16_t imported_items,
     Profile* profile) {
-  // Temporary flag to keep old way until
-  // https://github.com/brave/brave-core/pull/15637 landed.
-  // Should be removed in that PR.
-  if (!IsParallelImportEnabled(web_ui()->GetWebContents()->GetVisibleURL())) {
-    ImportDataHandler::StartImport(source_profile, imported_items);
-    return;
-  }
   // If another import is already ongoing, let it finish silently.
   if (import_observers_.count(source_profile.source_path))
     import_observers_.erase(source_profile.source_path);
@@ -167,9 +159,8 @@ void BraveImportDataHandler::OnGetDiskAccessPermission(
     // to guide full disk access information to users.
     // Guide dialog will be opened after import dialog is closed.
     FireWebUIListener("import-data-status-changed", base::Value("failed"));
-    if (IsParallelImportEnabled(web_ui()->GetWebContents()->GetVisibleURL())) {
+    if (import_observers_.count(source_profile.source_path))
       import_observers_[source_profile.source_path]->ImportEnded();
-    }
     // Observing web_contents is started here to know the closing timing of
     // import dialog.
     Observe(web_ui()->GetWebContents());
