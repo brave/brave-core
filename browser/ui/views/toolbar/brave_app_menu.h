@@ -6,15 +6,18 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_APP_MENU_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_APP_MENU_H_
 
+#include "brave/components/misc_metrics/menu_metrics.h"
 #include "chrome/browser/ui/views/toolbar/app_menu.h"
 
 class BraveAppMenu : public AppMenu {
  public:
-  using AppMenu::AppMenu;
+  BraveAppMenu(Browser* browser, int run_types);
   ~BraveAppMenu() override;
 
   BraveAppMenu(const BraveAppMenu&) = delete;
   BraveAppMenu& operator=(const BraveAppMenu&) = delete;
+
+  void ExecuteCommand(int command_id, int mouse_event_flags) override;
 
  private:
   // AppMenu overrides:
@@ -23,6 +26,10 @@ class BraveAppMenu : public AppMenu {
                                    ui::MenuModel* model,
                                    size_t model_index,
                                    ui::MenuModel::ItemType menu_type) override;
+
+  void RecordMenuUsage(int command_id);
+
+  misc_metrics::MenuMetrics menu_metrics_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_APP_MENU_H_

@@ -1,21 +1,21 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/core_metrics/core_metrics_service.h"
+#include "brave/components/misc_metrics/page_metrics_service.h"
 
 #include "base/bind.h"
 #include "base/logging.h"
 #include "base/time/time.h"
-#include "brave/components/core_metrics/pref_names.h"
+#include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
-namespace core_metrics {
+namespace misc_metrics {
 
 const char kPagesLoadedHistogramName[] = "Brave.Core.PagesLoaded";
 const char kDomainsLoadedHistogramName[] = "Brave.Core.DomainsLoaded";
@@ -32,66 +32,66 @@ constexpr base::TimeDelta kDomainsLoadedInitReportDelay = base::Seconds(30);
 
 }  // namespace
 
-CoreMetricsService::CoreMetricsService(PrefService* local_state,
+PageMetricsService::PageMetricsService(PrefService* local_state,
                                        history::HistoryService* history_service)
     : local_state_(local_state), history_service_(history_service) {
   DCHECK(local_state);
   DCHECK(history_service);
 
   pages_loaded_report_timer_.Start(FROM_HERE, kPagesLoadedReportInterval, this,
-                                   &CoreMetricsService::ReportPagesLoaded);
+                                   &PageMetricsService::ReportPagesLoaded);
   domains_loaded_report_timer_.Start(FROM_HERE, kDomainsLoadedReportInterval,
                                      this,
-                                     &CoreMetricsService::ReportDomainsLoaded);
+                                     &PageMetricsService::ReportDomainsLoaded);
 
   pages_loaded_report_init_timer_.Start(FROM_HERE, kPagesLoadedInitReportDelay,
                                         this,
-                                        &CoreMetricsService::ReportPagesLoaded);
+                                        &PageMetricsService::ReportPagesLoaded);
   domains_loaded_report_init_timer_.Start(
       FROM_HERE, kDomainsLoadedInitReportDelay, this,
-      &CoreMetricsService::ReportDomainsLoaded);
+      &PageMetricsService::ReportDomainsLoaded);
 }
 
-CoreMetricsService::~CoreMetricsService() = default;
+PageMetricsService::~PageMetricsService() = default;
 
-void CoreMetricsService::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterListPref(kCoreMetricsPagesLoadedCount);
+void PageMetricsService::RegisterPrefs(PrefRegistrySimple* registry) {
+  registry->RegisterListPref(kMiscMetricsPagesLoadedCount);
 }
 
-void CoreMetricsService::IncrementPagesLoadedCount() {
-  VLOG(2) << "CoreMetricsService: increment page load count";
+void PageMetricsService::IncrementPagesLoadedCount() {
+  VLOG(2) << "PageMetricsService: increment page load count";
   if (pages_loaded_storage_ == nullptr) {
     pages_loaded_storage_ = std::make_unique<WeeklyStorage>(
-        local_state_, kCoreMetricsPagesLoadedCount);
+        local_state_, kMiscMetricsPagesLoadedCount);
   }
   pages_loaded_storage_->AddDelta(1);
 }
 
-void CoreMetricsService::ReportDomainsLoaded() {
+void PageMetricsService::ReportDomainsLoaded() {
   // Derived from current profile history.
   // Mutiple profiles will result in metric overwrites which is okay.
   history_service_->GetDomainDiversity(
       base::Time::Now(), /*number_of_days_to_report*/ 1,
       history::DomainMetricType::kEnableLast7DayMetric,
-      base::BindOnce(&CoreMetricsService::OnDomainDiversityResult,
+      base::BindOnce(&PageMetricsService::OnDomainDiversityResult,
                      base::Unretained(this)),
       &history_service_task_tracker_);
 }
 
-void CoreMetricsService::ReportPagesLoaded() {
+void PageMetricsService::ReportPagesLoaded() {
   // Stores a global count in local state to
   // capture page loads across all profiles.
   if (pages_loaded_storage_ == nullptr) {
     pages_loaded_storage_ = std::make_unique<WeeklyStorage>(
-        local_state_, kCoreMetricsPagesLoadedCount);
+        local_state_, kMiscMetricsPagesLoadedCount);
   }
   uint64_t count = pages_loaded_storage_->GetPeriodSum();
   p3a_utils::RecordToHistogramBucket(kPagesLoadedHistogramName,
                                      kPagesLoadedBuckets, count);
-  VLOG(2) << "CoreMetricsService: pages loaded report, count = " << count;
+  VLOG(2) << "PageMetricsService: pages loaded report, count = " << count;
 }
 
-void CoreMetricsService::OnDomainDiversityResult(
+void PageMetricsService::OnDomainDiversityResult(
     std::vector<history::DomainMetricSet> metrics) {
   if (metrics.size() == 0) {
     return;
@@ -103,7 +103,7 @@ void CoreMetricsService::OnDomainDiversityResult(
   int count = metric_set.seven_day_metric->count;
   p3a_utils::RecordToHistogramBucket(kDomainsLoadedHistogramName,
                                      kDomainsLoadedBuckets, count);
-  VLOG(2) << "CoreMetricsService: domains loaded report, count = " << count;
+  VLOG(2) << "PageMetricsService: domains loaded report, count = " << count;
 }
 
-}  // namespace core_metrics
+}  // namespace misc_metrics
