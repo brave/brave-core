@@ -90,7 +90,7 @@ struct AccountActivityView: View {
                 image: NFTIconView(
                   token: nftAsset.token,
                   network: nftAsset.network,
-                  url: nftAsset.erc721Metadata?.imageURL,
+                  url: nftAsset.nftMetadata?.imageURL,
                   shouldShowNativeTokenIcon: true
                 ),
                 title: nftAsset.token.nftTokenTitle,

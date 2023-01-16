@@ -23,7 +23,7 @@ struct NFTAssetViewModel: Identifiable, Equatable {
   var token: BraveWallet.BlockchainToken
   var network: BraveWallet.NetworkInfo
   var balance: Int
-  var erc721Metadata: ERC721Metadata?
+  var nftMetadata: NFTMetadata?
 
   public var id: String {
     token.id + network.chainId
@@ -112,8 +112,8 @@ public class PortfolioStore: ObservableObject {
   private var pricesCache: [String: String] = [:]
   /// Cache of priceHistories. The key is the token's `assetRatioId`.
   private var priceHistoriesCache: [String: [BraveWallet.AssetTimePrice]] = [:]
-  /// Cache of metadata for erc721 token. The key is the token's `id`.
-  private var metadataCache: [String: ERC721Metadata] = [:]
+  /// Cache of metadata for NFTs. The key is the token's `id`.
+  private var metadataCache: [String: NFTMetadata] = [:]
 
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -181,7 +181,7 @@ public class PortfolioStore: ObservableObject {
                 token: token,
                 network: networkAssets.network,
                 balance: Int(totalBalancesCache[token.assetBalanceId] ?? 0),
-                erc721Metadata: metadataCache[token.id]
+                nftMetadata: metadataCache[token.id]
               )
             )
           } else {
@@ -255,9 +255,9 @@ public class PortfolioStore: ObservableObject {
         self.priceHistoriesCache[key] = value
       }
       
-      // fetch ERC721 metadata for ERC721 tokens
-      let erc721Tokens = allTokens.filter { $0.isErc721 }
-      let allMetadata = await rpcService.fetchERC721Metadata(tokens: erc721Tokens)
+      // fetch nft metadata for all NFTs
+      let allNFTs = allTokens.filter { $0.isNft || $0.isErc721 }
+      let allMetadata = await rpcService.fetchNFTMetadata(tokens: allNFTs)
       for (key, value) in allMetadata { // update cached values
         metadataCache[key] = value
       }
@@ -273,7 +273,7 @@ public class PortfolioStore: ObservableObject {
                 token: token,
                 network: networkAssets.network,
                 balance: Int(totalBalancesCache[token.assetBalanceId] ?? 0),
-                erc721Metadata: metadataCache[token.id]
+                nftMetadata: metadataCache[token.id]
               )
             )
           } else {
@@ -349,10 +349,10 @@ public class PortfolioStore: ObservableObject {
     return priceHistories
   }
   
-  func updateERC721MetadataCache(for token: BraveWallet.BlockchainToken, metadata: ERC721Metadata) {
+  func updateERC721MetadataCache(for token: BraveWallet.BlockchainToken, metadata: NFTMetadata) {
     metadataCache[token.id] = metadata
     if let index = userVisibleNFTs.firstIndex(where: { $0.token.id == token.id }), let viewModel = userVisibleNFTs[safe: index] {
-      userVisibleNFTs[index] = NFTAssetViewModel(token: viewModel.token, network: viewModel.network, balance: viewModel.balance, erc721Metadata: metadata)
+      userVisibleNFTs[index] = NFTAssetViewModel(token: viewModel.token, network: viewModel.network, balance: viewModel.balance, nftMetadata: metadata)
     }
   }
 }

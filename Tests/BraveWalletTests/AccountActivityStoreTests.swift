@@ -86,6 +86,16 @@ class AccountActivityStoreTests: XCTestCase {
       }
       """, .success, "")
     }
+    rpcService._solTokenMetadata = { _, completion in
+      completion(
+      """
+      {
+        "image": "sol.mock.image.url",
+        "name": "sol mock nft name",
+        "description": "sol mock nft description"
+      }
+      """, .success, "")
+    }
     
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
@@ -127,7 +137,7 @@ class AccountActivityStoreTests: XCTestCase {
     let mockNFTBalance: Double = 1
     let mockERC721BalanceWei = formatter.weiString(from: mockNFTBalance, radix: .hex, decimals: 0) ?? ""
     
-    let mockERC721Metadata: ERC721Metadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description")
+    let mockERC721Metadata: NFTMetadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description")
     
     let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy) = setupServices(
       mockEthBalanceWei: mockEthBalanceWei,
@@ -188,9 +198,9 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedVisibleNFTs.count, 1)
         XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.token.symbol, BraveWallet.BlockchainToken.mockERC721NFTToken.symbol)
         XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.balance, Int(mockNFTBalance))
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.erc721Metadata?.imageURLString, mockERC721Metadata.imageURLString)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.erc721Metadata?.name, mockERC721Metadata.name)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.erc721Metadata?.description, mockERC721Metadata.description)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.imageURLString, mockERC721Metadata.imageURLString)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.name, mockERC721Metadata.name)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.description, mockERC721Metadata.description)
       }.store(in: &cancellables)
     
     let transactionSummariesExpectation = expectation(description: "accountActivityStore-transactions")
@@ -224,6 +234,8 @@ class AccountActivityStoreTests: XCTestCase {
       BraveWallet.BlockchainToken.mockSpdToken.contractAddress: "\(mockSpdTokenBalance)",
       BraveWallet.BlockchainToken.mockSolanaNFTToken.contractAddress: "\(mockSolanaNFTTokenBalance)"
     ]
+    
+    let mockSolMetadata: NFTMetadata = .init(imageURLString: "sol.mock.image.url", name: "sol mock nft name", description: "sol mock nft description")
     
     let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy) = setupServices(
       mockLamportBalance: mockLamportBalance,
@@ -283,6 +295,9 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedVisibleNFTs.count, 1)
         XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.token.symbol, BraveWallet.BlockchainToken.mockSolanaNFTToken.symbol)
         XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.balance, Int(mockSolanaNFTTokenBalance))
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.imageURLString, mockSolMetadata.imageURLString)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.name, mockSolMetadata.name)
+        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.description, mockSolMetadata.description)
       }.store(in: &cancellables)
     
     let transactionSummariesExpectation = expectation(description: "accountActivityStore-transactions")

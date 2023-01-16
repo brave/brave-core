@@ -15,11 +15,11 @@ public class SendTokenStore: ObservableObject {
   /// The current selected token to send. Default with nil value.
   @Published var selectedSendToken: BraveWallet.BlockchainToken? {
     didSet {
-      update() // need to update `selectedSendTokenBalance` and `selectedSendTokenERC721Metadata`
+      update() // need to update `selectedSendTokenBalance` and `selectedSendNFTMetadata`
     }
   }
-  /// The current selected token's ERC721 metadata. Default with nil value.
-  @Published var selectedSendTokenERC721Metadata: ERC721Metadata?
+  /// The current selected NFT metadata. Default with nil value.
+  @Published var selectedSendNFTMetadata: NFTMetadata?
   /// The current selected token balance. Default with nil value.
   @Published var selectedSendTokenBalance: BDouble?
   /// A boolean indicates if this store is making an unapproved tx
@@ -112,7 +112,7 @@ public class SendTokenStore: ObservableObject {
   private var sendAddressUpdatedTimer: Timer?
   private var sendAmountUpdatedTimer: Timer?
   private var prefilledToken: BraveWallet.BlockchainToken?
-  private var metadataCache: [String: ERC721Metadata] = [:]
+  private var metadataCache: [String: NFTMetadata] = [:]
 
   public init(
     keyringService: BraveWalletKeyringService,
@@ -204,12 +204,12 @@ public class SendTokenStore: ObservableObject {
         decimalFormatStyle: .decimals(precision: Int(selectedSendToken.decimals))
       )
   
-      if selectedSendToken.isErc721, metadataCache[selectedSendToken.id] == nil {
-        metadataCache[selectedSendToken.id] = await rpcService.fetchERC721Metadata(for: selectedSendToken)
+      if (selectedSendToken.isErc721 || selectedSendToken.isNft), metadataCache[selectedSendToken.id] == nil {
+        metadataCache[selectedSendToken.id] = await rpcService.fetchNFTMetadata(for: selectedSendToken)
       }
       guard !Task.isCancelled else { return }
       self.selectedSendTokenBalance = balance
-      self.selectedSendTokenERC721Metadata = metadataCache[selectedSendToken.id]
+      self.selectedSendNFTMetadata = metadataCache[selectedSendToken.id]
       self.validateBalance()
     }
   }
@@ -472,8 +472,8 @@ public class SendTokenStore: ObservableObject {
     }
   }
   
-  @MainActor func fetchERC721Metadata(tokens: [BraveWallet.BlockchainToken]) async -> [String: ERC721Metadata] {
-    return await rpcService.fetchERC721Metadata(tokens: tokens)
+  @MainActor func fetchNFTMetadata(tokens: [BraveWallet.BlockchainToken]) async -> [String: NFTMetadata] {
+    return await rpcService.fetchNFTMetadata(tokens: tokens)
   }
 }
 
