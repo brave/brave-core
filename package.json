@@ -367,7 +367,6 @@
     "date-fns": "^2.15.0",
     "fuse.js": "6.6.2",
     "jszip": "^3.2.2",
-    "jszip-unzip": "^3.4.0-0",
     "prettier-bytes": "^1.0.4",
     "qr-image": "^3.2.0",
     "react-router": "^5.2.1",

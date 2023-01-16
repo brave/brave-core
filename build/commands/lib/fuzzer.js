@@ -8,7 +8,7 @@ const config = require('../lib/config')
 const fs = require('fs-extra')
 const path = require('path')
 const { spawn } = require('child_process')
-const unzip = require('jszip-unzip').default
+const jszip = require('jszip')
 
 const fuzzerBuildConfig = 'Fuzzer'
 
@@ -23,6 +23,29 @@ const buildFuzzer = (fuzzer_test_target, options) => {
 
 const getBinary = (suite) => {
   return (process.platform === 'win32') ? `${suite}.exe` : suite
+}
+
+const unzip = (zip_file, outdir) => {
+  fs.readFile(zip_file, (err, data) => {
+    if (err) throw err
+    jszip.loadAsync(data).then((zip) => { // Sensitive
+      zip.forEach((relativePath, zipEntry) => {
+        const resolvedPath = path.join(outdir, zipEntry.name)
+        if (!zip.file(zipEntry.name)) {
+          if (!fs.existsSync(resolvedPath)) {
+            fs.mkdirSync(resolvedPath)
+          }
+        } else {
+          zip.file(zipEntry.name).async('nodebuffer').then((content) => {
+            if (!fs.existsSync(resolvedPath)) {
+              fs.mkdirSync(path.dirname(resolvedPath))
+            }
+            fs.writeFileSync(resolvedPath, content)
+          })
+        }
+      })
+    })
+  })
 }
 
 const runFuzzer = (passthroughArgs, suite) => {
@@ -42,7 +65,7 @@ const runFuzzer = (passthroughArgs, suite) => {
   if (fs.existsSync(seedCorpusFile)) {
     const seedCorpus = path.join(config.outputDir, suite)
     fuzzerArgs.push(seedCorpus)
-    unzip(fs.readFileSync(seedCorpusFile), { to: seedCorpus })
+    unzip(seedCorpusFile, seedCorpus)
   }
 
   fuzzerArgs = fuzzerArgs.concat(passthroughArgs)
