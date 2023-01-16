@@ -277,8 +277,11 @@ public class CryptoStore: ObservableObject {
     }
   }
   
-  func prepare() {
+  func prepare(isInitialOpen: Bool = false) {
     Task { @MainActor in
+      if isInitialOpen {
+        portfolioStore.discoverAssetsOnAllSupportedChains()
+      }
       let pendingTransactions = await fetchPendingTransactions()
       if !pendingTransactions.isEmpty {
         if self.buySendSwapDestination != nil {

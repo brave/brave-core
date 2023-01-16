@@ -33,7 +33,7 @@ struct CryptoPagesView: View {
         // Give the animation time
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
           self.fetchedPendingRequestsThisSession = true
-          self.cryptoStore.prepare()
+          self.cryptoStore.prepare(isInitialOpen: true)
         }
       }
     }

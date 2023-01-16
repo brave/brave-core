@@ -152,6 +152,10 @@ struct PortfolioView: View {
       }, header: {
         HStack {
           Text(Strings.Wallet.assetsTitle)
+          if portfolioStore.isLoadingDiscoverAssets {
+            ProgressView()
+              .padding(.leading, 5)
+          }
           Spacer()
           networkFilterButton
         }

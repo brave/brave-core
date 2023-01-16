@@ -92,6 +92,7 @@ public class PortfolioStore: ObservableObject {
       update()
     }
   }
+  @Published private(set) var isLoadingDiscoverAssets: Bool = false
 
   public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
     walletService: self.walletService,
@@ -145,6 +146,11 @@ public class PortfolioStore: ObservableObject {
     walletService.defaultBaseCurrency { [self] currencyCode in
       self.currencyCode = currencyCode
     }
+  }
+  
+  func discoverAssetsOnAllSupportedChains() {
+    isLoadingDiscoverAssets = true
+    walletService.discoverAssetsOnAllSupportedChains()
   }
   
   func update() {
@@ -419,5 +425,9 @@ extension PortfolioStore: BraveWalletBraveWalletServiceObserver {
   }
   
   public func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
+    isLoadingDiscoverAssets = false
+    if !discoveredAssets.isEmpty {
+      update()
+    }
   }
 }
