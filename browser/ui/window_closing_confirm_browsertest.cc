@@ -31,6 +31,7 @@
 #include "content/public/test/download_test_observer.h"
 #include "content/public/test/test_download_http_response.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "ui/views/widget/widget_observer.h"
 
 namespace {
 
@@ -51,7 +52,8 @@ void CancelClose() {
 
 }  // namespace
 
-class WindowClosingConfirmBrowserTest : public InProcessBrowserTest {
+class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
+                                        public views::WidgetObserver {
  public:
   void SetUpOnMainThread() override {
     BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(false);
@@ -79,6 +81,10 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest {
   }
 
   void OnWindowClosingConfirmDialogCreated(views::DialogDelegateView* view) {
+    view->GetWidget()->AddObserver(this);
+
+    // This check detect whether multiple quit requests cause multiple dialog
+    // creation.
     EXPECT_FALSE(closing_confirm_dialog_created_);
 
     closing_confirm_dialog_created_ = true;
@@ -108,6 +114,19 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest {
             base::Unretained(this)));
     run_loop_->Run();
     run_loop_.reset();
+  }
+
+  // views::WidgetObserver:
+  void OnWidgetDestroyed(views::Widget* widget) override {
+    widget->RemoveObserver(this);
+
+    if (run_loop_)
+      run_loop_->Quit();
+  }
+
+  void WaitTillConfirmDialogClosed() {
+    run_loop_ = std::make_unique<base::RunLoop>();
+    run_loop_->Run();
   }
 
   // To detect the timing when BeforeUnloadFired() is called.
@@ -167,6 +186,11 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithTwoNTPTabs) {
 
   closing_confirm_dialog_created_ = false;
   allow_to_close_ = true;
+
+  // Do quit request twice and check second quit request doesn't make
+  // another dialog. If it's created, DCHECK() in
+  // OnWindowClosingConfirmDialogCreated() can detect.
+  chrome::CloseWindow(brave_browser);
   chrome::CloseWindow(brave_browser);
   ui_test_utils::WaitForBrowserToClose(brave_browser);
   EXPECT_TRUE(closing_confirm_dialog_created_);
@@ -296,6 +320,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithDownload) {
   chrome::CloseWindow(brave_browser);
   EXPECT_TRUE(closing_confirm_dialog_created_);
   EXPECT_TRUE(brave_browser->ShouldAskForBrowserClosingBeforeHandlers());
+  WaitTillConfirmDialogClosed();
 
   // Allow window closing while downloading and don't cancel downloading.
   // Then, we could ask window closing again.
@@ -304,6 +329,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithDownload) {
   SetDownloadConfirmReturn(false);
   chrome::CloseWindow(brave_browser);
   EXPECT_TRUE(closing_confirm_dialog_created_);
+  WaitTillConfirmDialogClosed();
   SetClosingBrowserCallbackAndWait();
   EXPECT_TRUE(brave_browser->ShouldAskForBrowserClosingBeforeHandlers());
 

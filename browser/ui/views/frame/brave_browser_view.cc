@@ -432,10 +432,13 @@ void BraveBrowserView::OnTabStripModelChanged(
 
 views::CloseRequestResult BraveBrowserView::OnWindowCloseRequested() {
   if (GetBraveBrowser()->ShouldAskForBrowserClosingBeforeHandlers()) {
-    WindowClosingConfirmDialogView::Show(
-        browser(),
-        base::BindOnce(&BraveBrowserView::OnWindowClosingConfirmResponse,
-                       weak_ptr_.GetWeakPtr()));
+    if (!closing_confirm_dialog_activated_) {
+      WindowClosingConfirmDialogView::Show(
+          browser(),
+          base::BindOnce(&BraveBrowserView::OnWindowClosingConfirmResponse,
+                         weak_ptr_.GetWeakPtr()));
+      closing_confirm_dialog_activated_ = true;
+    }
     return views::CloseRequestResult::kCannotClose;
   }
 
@@ -443,6 +446,9 @@ views::CloseRequestResult BraveBrowserView::OnWindowCloseRequested() {
 }
 
 void BraveBrowserView::OnWindowClosingConfirmResponse(bool allowed_to_close) {
+  DCHECK(closing_confirm_dialog_activated_);
+  closing_confirm_dialog_activated_ = false;
+
   auto* browser = GetBraveBrowser();
   // Set to Browser instance because Browser instance knows about the result
   // of any warning handlers or beforeunload handlers.
