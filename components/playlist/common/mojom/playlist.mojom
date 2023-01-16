@@ -68,6 +68,7 @@ interface PlaylistService {
 
   RemoveItemFromPlaylist(string playlist_id, string item_id);
   MoveItem(string from_playlist_id, string to_playlist_id, string item_id);
+  ReorderItemFromPlaylist(string playlist_id, string item_id, int16 position);
 
   UpdateItem(PlaylistItem item);
 

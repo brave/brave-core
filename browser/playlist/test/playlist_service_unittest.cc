@@ -937,4 +937,69 @@ TEST_F(PlaylistServiceUnitTest, UpdateItem) {
   playlist_service()->RemoveObserverForTest(&observer);
 }
 
+TEST_F(PlaylistServiceUnitTest, ReorderItemFromPlaylist) {
+  // pre-condition: Prepare items ----------------------------------------------
+  std::vector<mojom::PlaylistItemPtr> items;
+  mojom::PlaylistItem prototype_item;
+  prototype_item.page_source = GURL("https://foo.com/");
+  prototype_item.thumbnail_source = GURL("https://thumbnail.src/");
+  prototype_item.thumbnail_path = GURL("file://thumbnail/path/");
+  prototype_item.media_source = GURL("https://media.src/");
+  prototype_item.media_path = GURL("file://media/path/");
+  prototype_item.cached = false;
+  prototype_item.author = "me";
+  for (int i = 0; i < 5; i++) {
+    auto item = prototype_item.Clone();
+    item->id = base::Token::CreateRandom().ToString();
+    item->name = base::NumberToString(i + 1);
+    items.push_back(std::move(item));
+  }
+
+  auto target = prototype_item.Clone();
+  target->id = base::Token::CreateRandom().ToString();
+  target->name = "target";
+  items.push_back(target->Clone());
+
+  auto* service = playlist_service();
+  service->AddMediaFilesFromItems(playlist::kDefaultPlaylistID,
+                                  false /* no caching */, std::move(items));
+
+  auto order_checker = [](const std::vector<std::string>& expected_orders) {
+    return base::BindLambdaForTesting(
+        [&](playlist::mojom::PlaylistPtr playlist) {
+          EXPECT_TRUE(
+              base::ranges::equal(playlist->items, expected_orders,
+                                  [](const auto& item, const auto& name) {
+                                    EXPECT_EQ(item->name, name);
+                                    return item->name == name;
+                                  }));
+        });
+  };
+
+  service->GetPlaylist(playlist::kDefaultPlaylistID,
+                       order_checker({"1", "2", "3", "4", "5", "target"}));
+
+  // Move to the left ----------------------------------------------------------
+  service->ReorderItemFromPlaylist(playlist::kDefaultPlaylistID, target->id, 4);
+  service->GetPlaylist(playlist::kDefaultPlaylistID,
+                       order_checker({"1", "2", "3", "4", "target", "5"}));
+
+  service->ReorderItemFromPlaylist(playlist::kDefaultPlaylistID, target->id, 2);
+  service->GetPlaylist(playlist::kDefaultPlaylistID,
+                       order_checker({"1", "2", "target", "3", "4", "5"}));
+
+  service->ReorderItemFromPlaylist(playlist::kDefaultPlaylistID, target->id, 0);
+  service->GetPlaylist(playlist::kDefaultPlaylistID,
+                       order_checker({"target", "1", "2", "3", "4", "5"}));
+
+  // Move to the right ---------------------------------------------------------
+  service->ReorderItemFromPlaylist(playlist::kDefaultPlaylistID, target->id, 3);
+  service->GetPlaylist(playlist::kDefaultPlaylistID,
+                       order_checker({"1", "2", "3", "target", "4", "5"}));
+
+  service->ReorderItemFromPlaylist(playlist::kDefaultPlaylistID, target->id, 5);
+  service->GetPlaylist(playlist::kDefaultPlaylistID,
+                       order_checker({"1", "2", "3", "4", "5", "target"}));
+}
+
 }  // namespace playlist

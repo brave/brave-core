@@ -129,6 +129,9 @@ class PlaylistService : public KeyedService,
   void MoveItem(const std::string& from_playlist_id,
                 const std::string& to_playlist_id,
                 const std::string& item_id) override;
+  void ReorderItemFromPlaylist(const std::string& playlist_id,
+                               const std::string& item_id,
+                               int16_t position) override;
   void UpdateItem(mojom::PlaylistItemPtr item) override;
   void RecoverLocalDataForItem(const std::string& item_id) override;
   void RemoveLocalDataForItem(const std::string& item_id) override;
@@ -155,6 +158,7 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, DefaultSaveTargetListID);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, UpdateItem);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreateAndRemovePlaylist);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ReorderItemFromPlaylist);
 
   void AddObserverForTest(PlaylistServiceObserver* observer);
   void RemoveObserverForTest(PlaylistServiceObserver* observer);
