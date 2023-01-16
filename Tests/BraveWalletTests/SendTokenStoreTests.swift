@@ -52,6 +52,16 @@ class SendTokenStoreTests: XCTestCase {
       }
       """, .success, "")
     }
+    rpcService._solTokenMetadata = { _, completion in
+      completion(
+      """
+      {
+        "image": "sol.mock.image.url",
+        "name": "sol mock nft name",
+        "description": "sol mock nft description"
+      }
+      """, .success, "")
+    }
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._selectedCoin = { $0(selectedCoin) }
     walletService._userAssets = { $2(userAssets) }
@@ -541,13 +551,13 @@ class SendTokenStoreTests: XCTestCase {
     }
   }
 
-  func testFetchSelectedERC721Metadata() {
+  func testFetchSelectedSendNFTMetadataERC721() {
     let (keyringService, rpcService, walletService, solTxManagerProxy) = setupServices()
     let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()
     ethTxManagerProxy._makeErc721TransferFromData = { _, _, _, _, completion in
       completion(true, .init())
     }
-    let mockERC721Metadata: ERC721Metadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description")
+    let mockERC721Metadata: NFTMetadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description")
     
     let store = SendTokenStore(
       keyringService: keyringService,
@@ -560,13 +570,13 @@ class SendTokenStoreTests: XCTestCase {
       prefilledToken: nil
     )
     
-    let selectedSendTokenERC721MetadataException = expectation(description: "accountActivityStore-selectedSendTokenERC721MetadataException")
-    XCTAssertNil(store.selectedSendTokenERC721Metadata)  // Initial state
-    store.$selectedSendTokenERC721Metadata
+    let selectedSendNFTMetadataERC721Exception = expectation(description: "sendTokenStore-selectedSendTokenERC721MetadataException")
+    XCTAssertNil(store.selectedSendNFTMetadata)  // Initial state
+    store.$selectedSendNFTMetadata
       .dropFirst()
       .collect(1)
       .sink { metadata in
-        defer { selectedSendTokenERC721MetadataException.fulfill() }
+        defer { selectedSendNFTMetadataERC721Exception.fulfill() }
         guard let lastUpdatedMetadata = metadata.last else {
           XCTFail("Unexpected test result")
           return
@@ -577,6 +587,48 @@ class SendTokenStoreTests: XCTestCase {
       }.store(in: &cancellables)
     
     store.selectedSendToken = .mockERC721NFTToken
+    
+    waitForExpectations(timeout: 1) { error in
+      XCTAssertNil(error)
+    }
+  }
+  
+  func testFetchSelectedSendNFTMetadataSolNFT() {
+    let (keyringService, rpcService, walletService, solTxManagerProxy) = setupServices()
+    let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()
+    ethTxManagerProxy._makeErc721TransferFromData = { _, _, _, _, completion in
+      completion(true, .init())
+    }
+    let mockSolMetadata: NFTMetadata = .init(imageURLString: "sol.mock.image.url", name: "sol mock nft name", description: "sol mock nft description")
+    
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      prefilledToken: nil
+    )
+    
+    let selectedSendNFTMetadataSolNFTException = expectation(description: "sendTokenStore-selectedSendNFTMetadataSolNFTException")
+    XCTAssertNil(store.selectedSendNFTMetadata)  // Initial state
+    store.$selectedSendNFTMetadata
+      .dropFirst()
+      .collect(1)
+      .sink { metadata in
+        defer { selectedSendNFTMetadataSolNFTException.fulfill() }
+        guard let lastUpdatedMetadata = metadata.last else {
+          XCTFail("Unexpected test result")
+          return
+        }
+        XCTAssertEqual(lastUpdatedMetadata?.imageURLString, mockSolMetadata.imageURLString)
+        XCTAssertEqual(lastUpdatedMetadata?.name, mockSolMetadata.name)
+        XCTAssertEqual(lastUpdatedMetadata?.description, mockSolMetadata.description)
+      }.store(in: &cancellables)
+    
+    store.selectedSendToken = .mockSolanaNFTToken
     
     waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)

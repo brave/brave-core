@@ -277,41 +277,60 @@ extension BraveWalletJsonRpcService {
     }
   }
   
-  /// Returns a map of Token.id with it ERC721 metadata
-  @MainActor func fetchERC721Metadata(tokens: [BraveWallet.BlockchainToken]) async -> [String: ERC721Metadata] {
-    await withTaskGroup(of: [String: ERC721Metadata].self) {  @MainActor [weak self] group -> [String: ERC721Metadata] in
+  /// Returns a nullable NFT metadata
+  @MainActor func fetchNFTMetadata(for token: BraveWallet.BlockchainToken) async -> NFTMetadata? {
+    var metaDataString = ""
+    if token.isErc721 {
+      let (metaData, result, errMsg) = await self.erc721Metadata(token.contractAddress, tokenId: token.tokenId, chainId: token.chainId)
+      if result != .success {
+        Logger.module.debug("Failed to load ERC721 metadata: \(errMsg)")
+      }
+      metaDataString = metaData
+    } else {
+      let (metaData, result, errMsg) = await self.solTokenMetadata(token.contractAddress)
+      if result != .success {
+        Logger.module.debug("Failed to load Solana NFT metadata: \(errMsg)")
+      }
+      metaDataString = metaData
+    }
+    if let data = metaDataString.data(using: .utf8),
+       let result = try? JSONDecoder().decode(NFTMetadata.self, from: data) {
+      return result
+    }
+    return nil
+  }
+  
+  /// Returns a map of Token.id with its NFT metadata
+  @MainActor func fetchNFTMetadata(tokens: [BraveWallet.BlockchainToken]) async -> [String: NFTMetadata] {
+    await withTaskGroup(of: [String: NFTMetadata].self) {  @MainActor [weak self] group -> [String: NFTMetadata] in
       guard let self = self else { return [:] }
       for token in tokens {
         group.addTask { @MainActor in
-          let (metaData, result, errMsg) = await self.erc721Metadata(token.contractAddress, tokenId: token.tokenId, chainId: token.chainId)
-          if result != .success {
+          var metaDataString = ""
+          if token.isErc721 {
+            let (metaData, result, errMsg) = await self.erc721Metadata(token.contractAddress, tokenId: token.tokenId, chainId: token.chainId)
             if result != .success {
               Logger.module.debug("Failed to load ERC721 metadata: \(errMsg)")
             }
+            metaDataString = metaData
+          } else {
+            let (metaData, result, errMsg) = await self.solTokenMetadata(token.contractAddress)
+            if result != .success {
+              Logger.module.debug("Failed to load Solana NFT metadata: \(errMsg)")
+            }
+            metaDataString = metaData
           }
-          if let data = metaData.data(using: .utf8),
-             let result = try? JSONDecoder().decode(ERC721Metadata.self, from: data) {
+          
+          if let data = metaDataString.data(using: .utf8),
+             let result = try? JSONDecoder().decode(NFTMetadata.self, from: data) {
             return [token.id: result]
           }
           return [:]
         }
       }
-
+      
       return await group.reduce([:], { $0.merging($1, uniquingKeysWith: { key, _ in key })
       })
     }
-  }
-  
-  /// Returns a nullable ERC721 metadata
-  @MainActor func fetchERC721Metadata(for token: BraveWallet.BlockchainToken) async -> ERC721Metadata? {
-    let (metaData, result, errMsg) = await self.erc721Metadata(token.contractAddress, tokenId: token.tokenId, chainId: token.chainId)
-    if result != .success {
-      Logger.module.debug("Failed to load ERC721 metadata: \(errMsg)")
-    }
-    if let data = metaData.data(using: .utf8),
-       let result = try? JSONDecoder().decode(ERC721Metadata.self, from: data) {
-      return result
-    }
-    return nil
   }
 }

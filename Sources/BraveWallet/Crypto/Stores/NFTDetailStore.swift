@@ -12,7 +12,7 @@ private extension String {
   }
 }
 
-struct ERC721Metadata: Codable, Equatable {
+struct NFTMetadata: Codable, Equatable {
   var imageURLString: String?
   var name: String?
   var description: String?
@@ -52,17 +52,17 @@ class NFTDetailStore: ObservableObject {
   private let rpcService: BraveWalletJsonRpcService
   let nft: BraveWallet.BlockchainToken
   @Published var isLoading: Bool = false
-  @Published var erc721Metadata: ERC721Metadata?
+  @Published var nftMetadata: NFTMetadata?
   @Published var networkInfo: BraveWallet.NetworkInfo = .init()
   
   init(
     rpcService: BraveWalletJsonRpcService,
     nft: BraveWallet.BlockchainToken,
-    erc721Metadata: ERC721Metadata?
+    nftMetadata: NFTMetadata?
   ) {
     self.rpcService = rpcService
     self.nft = nft
-    self.erc721Metadata = erc721Metadata
+    self.nftMetadata = nftMetadata
   }
   
   func update() {
@@ -72,16 +72,10 @@ class NFTDetailStore: ObservableObject {
         networkInfo = network
       }
       
-      if erc721Metadata == nil {
+      if nftMetadata == nil {
         isLoading = true
-        
-        let (metaData, _, _) = await rpcService.erc721Metadata(nft.contractAddress, tokenId: nft.tokenId, chainId: nft.chainId)
-        
+        nftMetadata = await rpcService.fetchNFTMetadata(for: nft)
         isLoading = false
-        if let data = metaData.data(using: .utf8),
-           let result = try? JSONDecoder().decode(ERC721Metadata.self, from: data) {
-          erc721Metadata = result
-        }
       }
     }
   }

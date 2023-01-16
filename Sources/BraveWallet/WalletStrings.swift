@@ -1492,6 +1492,13 @@ extension Strings {
       value: "Token address",
       comment: "A title that will be displayed on top of the text field for users to input the custom token address"
     )
+    public static let tokenMintAddress = NSLocalizedString(
+      "wallet.tokenMintAddress",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Mint address",
+      comment: "A title that will be displayed on top of the text field for users to input the custom token mint address"
+    )
     public static let enterAddress = NSLocalizedString(
       "wallet.enterAddress",
       tableName: "BraveWallet",
@@ -3353,6 +3360,13 @@ extension Strings {
       bundle: .module,
       value: "ERC 721",
       comment: "This is one type of token standard. And most likey this does not need to be translated"
+    )
+    public static let nftDetailSPL = NSLocalizedString(
+      "wallet.nftDetailSPL",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "SPL",
+      comment: "This is one type of NFT standard. And most likey this does not need to be translated"
     )
     public static let nftDetailTokenStandard = NSLocalizedString(
       "wallet.nftDetailTokenStandard",

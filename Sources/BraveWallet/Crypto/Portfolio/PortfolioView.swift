@@ -188,7 +188,7 @@ struct PortfolioView: View {
                   image: NFTIconView(
                     token: nftAsset.token,
                     network: nftAsset.network,
-                    url: nftAsset.erc721Metadata?.imageURL,
+                    url: nftAsset.nftMetadata?.imageURL,
                     shouldShowNativeTokenIcon: true
                   ),
                   title: nftAsset.token.nftTokenTitle,
@@ -236,9 +236,9 @@ struct PortfolioView: View {
         ),
         destination: {
           if let nftViewModel = selectedNFTViewModel {
-            if nftViewModel.token.isErc721 {
+            if nftViewModel.token.isErc721 || nftViewModel.token.isNft {
               NFTDetailView(
-                nftDetailStore: cryptoStore.nftDetailStore(for: nftViewModel.token, erc721Metadata: nftViewModel.erc721Metadata),
+                nftDetailStore: cryptoStore.nftDetailStore(for: nftViewModel.token, nftMetadata: nftViewModel.nftMetadata),
                 buySendSwapDestination: buySendSwapDestination
               ) { erc721Metadata in
                 portfolioStore.updateERC721MetadataCache(for: nftViewModel.token, metadata: erc721Metadata)

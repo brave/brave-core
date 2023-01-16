@@ -146,8 +146,12 @@ class AccountActivityStore: ObservableObject {
         timeframe: .oneDay
       )
       
-      // fetch ERC721 metadata for ERC721 tokens
-      let allErc721Metadata = await rpcService.fetchERC721Metadata(tokens: userVisibleNFTs.map(\.token).filter(\.isErc721))
+      // fetch NFTs metadata
+      let allNFTMetadata = await rpcService.fetchNFTMetadata(
+        tokens: userVisibleNFTs
+          .map(\.token)
+          .filter({ $0.isErc721 || $0.isNft })
+      )
       
       guard !Task.isCancelled else { return }
       updatedUserVisibleAssets.removeAll()
@@ -160,7 +164,7 @@ class AccountActivityStore: ObservableObject {
                 token: token,
                 network: networkAssets.network,
                 balance: Int(totalBalances[token.assetBalanceId] ?? 0),
-                erc721Metadata: allErc721Metadata[token.id]
+                nftMetadata: allNFTMetadata[token.id]
               )
             )
           } else {

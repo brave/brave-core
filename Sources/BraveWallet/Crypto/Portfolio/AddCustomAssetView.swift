@@ -105,7 +105,7 @@ struct AddCustomAssetView: View {
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
-          header: WalletListHeaderView(title: Text(Strings.Wallet.tokenAddress))
+          header: WalletListHeaderView(title: networkSelectionStore.networkSelectionInForm?.coin == .sol ? Text(Strings.Wallet.tokenMintAddress) : Text(Strings.Wallet.tokenAddress))
         ) {
           TextField(Strings.Wallet.enterAddress, text: $addressInput)
             .onChange(of: addressInput) { newValue in

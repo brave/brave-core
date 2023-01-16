@@ -77,11 +77,11 @@ struct SendTokenView: View {
           ) {
             HStack {
               if let token = sendTokenStore.selectedSendToken {
-                if token.isErc721 {
+                if token.isErc721 || token.isNft {
                   NFTIconView(
                     token: token,
                     network: networkStore.selectedChain,
-                    url: sendTokenStore.selectedSendTokenERC721Metadata?.imageURL,
+                    url: sendTokenStore.selectedSendNFTMetadata?.imageURL,
                     length: 26
                   )
                 } else {

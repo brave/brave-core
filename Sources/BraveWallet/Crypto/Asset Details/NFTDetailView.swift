@@ -12,7 +12,7 @@ import SDWebImageSwiftUI
 struct NFTDetailView: View {
   @ObservedObject var nftDetailStore: NFTDetailStore
   @Binding var buySendSwapDestination: BuySendSwapDestination? 
-  var onERC721MetadataRefreshed: ((ERC721Metadata) -> Void)?
+  var onNFTMetadataRefreshed: ((NFTMetadata) -> Void)?
   
   @Environment(\.openWalletURLAction) private var openWalletURL
   
@@ -23,8 +23,8 @@ struct NFTDetailView: View {
   }
   
   @ViewBuilder private var nftImage: some View {
-    if let erc721Metadata = nftDetailStore.erc721Metadata {
-      if let urlString = erc721Metadata.imageURLString {
+    if let nftMetadata = nftDetailStore.nftMetadata {
+      if let urlString = nftMetadata.imageURLString {
         NFTImageView(urlString: urlString) {
           noImageView
         }
@@ -38,7 +38,7 @@ struct NFTDetailView: View {
   }
   
   private var isSVGImage: Bool {
-    guard let erc721Metadata = nftDetailStore.erc721Metadata, let imageUrlString = erc721Metadata.imageURLString else { return false }
+    guard let nftMetadata = nftDetailStore.nftMetadata, let imageUrlString = nftMetadata.imageURLString else { return false }
     return imageUrlString.hasPrefix("data:image/svg") || imageUrlString.hasSuffix(".svg")
   }
   
@@ -70,7 +70,7 @@ struct NFTDetailView: View {
             .buttonStyle(BraveFilledButtonStyle(size: .large))
           }
         }
-        if let erc721Metadata = nftDetailStore.erc721Metadata, let description = erc721Metadata.description, !description.isEmpty {
+        if let nftMetadata = nftDetailStore.nftMetadata, let description = nftMetadata.description, !description.isEmpty {
           VStack(alignment: .leading, spacing: 8) {
             Text(Strings.Wallet.nftDetailDescription)
               .font(.headline.weight(.semibold))
@@ -91,31 +91,65 @@ struct NFTDetailView: View {
               Text(Strings.Wallet.nftDetailTokenStandard)
                 .font(.headline.weight(.semibold))
               Spacer()
-              Text(Strings.Wallet.nftDetailERC721)
+              Text(nftDetailStore.nft.isErc721 ? Strings.Wallet.nftDetailERC721 : Strings.Wallet.nftDetailSPL)
             }
-            HStack {
-              Text(Strings.Wallet.nftDetailTokenID)
-                .font(.headline.weight(.semibold))
-              Spacer()
-              Button(action: {
-                if let explorerURL = nftDetailStore.networkInfo.blockExplorerUrls.first {
-                  let baseURL = "\(explorerURL)/token/\(nftDetailStore.nft.contractAddress)"
-                  var nftURL = URL(string: baseURL)
-                  if let tokenId = Int(nftDetailStore.nft.tokenId.removingHexPrefix, radix: 16) {
-                    nftURL = URL(string: "\(baseURL)?a=\(tokenId)")
+            if nftDetailStore.nft.isErc721 {
+              HStack {
+                Text(Strings.Wallet.nftDetailTokenID)
+                  .font(.headline.weight(.semibold))
+                Spacer()
+                Button(action: {
+                  if let explorerURL = nftDetailStore.networkInfo.blockExplorerUrls.first {
+                    let baseURL = "\(explorerURL)/token/\(nftDetailStore.nft.contractAddress)"
+                    var nftURL = URL(string: baseURL)
+                    if let tokenId = Int(nftDetailStore.nft.tokenId.removingHexPrefix, radix: 16) {
+                      nftURL = URL(string: "\(baseURL)?a=\(tokenId)")
+                    }
+                    
+                    if let url = nftURL {
+                      openWalletURL?(url)
+                    }
                   }
-                  
-                  if let url = nftURL {
-                    openWalletURL?(url)
+                }) {
+                  if let tokenId = Int(nftDetailStore.nft.tokenId.removingHexPrefix, radix: 16) {
+                    HStack {
+                      Text(verbatim: "#\(tokenId)")
+                      Image(systemName: "arrow.up.forward.square")
+                    }
+                    .foregroundColor(Color(.braveBlurple))
+                  } else {
+                    HStack {
+                      Text("\(nftDetailStore.nft.name) #\(nftDetailStore.nft.tokenId)")
+                      Image(systemName: "arrow.up.forward.square")
+                    }
+                    .foregroundColor(Color(.braveBlurple))
                   }
                 }
-              }) {
-                if let tokenId = Int(nftDetailStore.nft.tokenId.removingHexPrefix, radix: 16) {
-                  Text(verbatim: "#\(tokenId)")
-                    .foregroundColor(Color(.braveBlurple))
-                } else {
-                  Text("\(nftDetailStore.nft.name) #\(nftDetailStore.nft.tokenId)")
-                    .foregroundColor(Color(.braveBlurple))
+              }
+            } else {
+              HStack {
+                Text(Strings.Wallet.tokenMintAddress)
+                  .font(.headline.weight(.semibold))
+                Spacer()
+                Button(action: {
+                  if WalletConstants.supportedTestNetworkChainIds.contains(nftDetailStore.networkInfo.chainId) {
+                    if let components = nftDetailStore.networkInfo.blockExplorerUrls.first?.separatedBy("/?cluster="), let baseURL = components.first {
+                      let cluster = components.last ?? ""
+                      if let nftURL = URL(string: "\(baseURL)/address/\(nftDetailStore.nft.contractAddress)/?cluster=\(cluster)") {
+                        openWalletURL?(nftURL)
+                      }
+                    }
+                  } else {
+                    if let explorerURL = nftDetailStore.networkInfo.blockExplorerUrls.first, let nftURL = URL(string: "\(explorerURL)/address/\(nftDetailStore.nft.contractAddress)") {
+                      openWalletURL?(nftURL)
+                    }
+                  }
+                }) {
+                  HStack {
+                    Text("\(nftDetailStore.nft.contractAddress.truncatedAddress)")
+                    Image(systemName: "arrow.up.forward.square")
+                  }
+                  .foregroundColor(Color(.braveBlurple))
                 }
               }
             }
@@ -132,9 +166,9 @@ struct NFTDetailView: View {
       }
       .padding()
     }
-    .onChange(of: nftDetailStore.erc721Metadata, perform: { newValue in
+    .onChange(of: nftDetailStore.nftMetadata, perform: { newValue in
       if let newMetadata = newValue {
-        onERC721MetadataRefreshed?(newMetadata)
+        onNFTMetadataRefreshed?(newMetadata)
       }
     })
     .onAppear {
