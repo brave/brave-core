@@ -78,8 +78,8 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
 
     private static final int TOTAL_TILES = 16;
     private static final int TILES_PER_ROW = 4;
-    private static final int MIN_VISIBLE_HEIGHT_ROW_1 = 116;
-    private static final int MIN_VISIBLE_HEIGHT_ROW_2 = 184;
+    private static final int MIN_VISIBLE_HEIGHT_ROW_1 = 125;
+    private static final int MIN_VISIBLE_HEIGHT_ROW_2 = 220;
     private static final int MIN_VISIBLE_HEIGHT_ROW_3 = 252;
     private static final int MIN_VISIBLE_HEIGHT_ROW_4 = 320;
     private static final int DESIRED_ICON_SIZE = 44;
