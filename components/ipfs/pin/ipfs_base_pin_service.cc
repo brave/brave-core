@@ -81,10 +81,11 @@ void IpfsBasePinService::MaybeStartDaemon() {
   }
 
   ipfs_service_->StartDaemonAndLaunch(base::BindOnce(
-      &IpfsBasePinService::OnDaemonStarted, base::Unretained(this)));
+      &IpfsBasePinService::OnDaemonStarted, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void IpfsBasePinService::OnDaemonStarted() {
+  // Ensure that daemon service is fully initialized
   ipfs_service_->GetConnectedPeers(base::NullCallback(), 2);
 }
 

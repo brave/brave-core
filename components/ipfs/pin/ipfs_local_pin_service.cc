@@ -39,28 +39,29 @@ void AddLocalPinJob::Start() {
 }
 
 void AddLocalPinJob::OnAddPinResult(absl::optional<AddPinResult> result) {
-  if (result) {
-    for (const auto& cid : cids_) {
-      if (!base::Contains(result->pins, cid)) {
-        std::move(callback_).Run(false);
-        return;
-      }
-    }
-
-    {
-      DictionaryPrefUpdate update(prefs_service_, kIPFSPinnedCids);
-      base::Value::Dict& update_dict = update->GetDict();
-
-      for (const auto& cid : cids_) {
-        base::Value::List* list = update_dict.EnsureList(cid);
-        list->EraseValue(base::Value(prefix_));
-        list->Append(base::Value(prefix_));
-      }
-    }
-    std::move(callback_).Run(true);
-  } else {
+  if (!result) {
     std::move(callback_).Run(false);
+    return;
   }
+
+  for (const auto& cid : cids_) {
+    if (!base::Contains(result->pins, cid)) {
+      std::move(callback_).Run(false);
+      return;
+    }
+  }
+
+  {
+    DictionaryPrefUpdate update(prefs_service_, kIPFSPinnedCids);
+    base::Value::Dict& update_dict = update->GetDict();
+
+    for (const auto& cid : cids_) {
+      base::Value::List* list = update_dict.EnsureList(cid);
+      list->EraseValue(base::Value(prefix_));
+      list->Append(base::Value(prefix_));
+    }
+  }
+  std::move(callback_).Run(true);
 }
 
 RemoveLocalPinJob::RemoveLocalPinJob(PrefService* prefs_service,
@@ -114,32 +115,32 @@ void VerifyLocalPinJob::Start() {
 }
 
 void VerifyLocalPinJob::OnGetPinsResult(absl::optional<GetPinsResult> result) {
-  if (result) {
-    DictionaryPrefUpdate update(prefs_service_, kIPFSPinnedCids);
-    base::Value::Dict& update_dict = update->GetDict();
+  if (!result) {
+    std::move(callback_).Run(absl::nullopt);
+    return;
+  }
+  DictionaryPrefUpdate update(prefs_service_, kIPFSPinnedCids);
+  base::Value::Dict& update_dict = update->GetDict();
 
-    bool verification_passed = true;
-    for (const auto& cid : cids_) {
-      base::Value::List* list = update_dict.FindList(cid);
-      if (!list) {
-        verification_passed = false;
+  bool verification_passed = true;
+  for (const auto& cid : cids_) {
+    base::Value::List* list = update_dict.FindList(cid);
+    if (!list) {
+      verification_passed = false;
+    } else {
+      if (result->find(cid) != result->end()) {
+        list->EraseValue(base::Value(prefix_));
+        list->Append(base::Value(prefix_));
       } else {
-        if (result->find(cid) != result->end()) {
-          list->EraseValue(base::Value(prefix_));
-          list->Append(base::Value(prefix_));
-        } else {
-          verification_passed = false;
-          list->EraseValue(base::Value(prefix_));
-        }
-        if (list->empty()) {
-          update_dict.Remove(cid);
-        }
+        verification_passed = false;
+        list->EraseValue(base::Value(prefix_));
+      }
+      if (list->empty()) {
+        update_dict.Remove(cid);
       }
     }
-    std::move(callback_).Run(verification_passed);
-  } else {
-    std::move(callback_).Run(absl::nullopt);
   }
+  std::move(callback_).Run(verification_passed);
 }
 
 GcJob::GcJob(PrefService* prefs_service,
@@ -157,25 +158,25 @@ void GcJob::Start() {
 }
 
 void GcJob::OnGetPinsResult(absl::optional<GetPinsResult> result) {
-  std::vector<std::string> cids_to_delete;
-  if (result) {
-    const base::Value::Dict& dict = prefs_service_->GetDict(kIPFSPinnedCids);
-    for (const auto& pair : result.value()) {
-      const base::Value::List* list = dict.FindList(pair.first);
-      if (!list || list->empty()) {
-        cids_to_delete.push_back(pair.first);
-      }
-    }
-
-    if (!cids_to_delete.empty()) {
-      ipfs_service_->RemovePin(cids_to_delete,
-                               base::BindOnce(&GcJob::OnPinsRemovedResult,
-                                              weak_ptr_factory_.GetWeakPtr()));
-    } else {
-      std::move(callback_).Run(true);
-    }
-  } else {
+  if (!result) {
     std::move(callback_).Run(false);
+    return;
+  }
+  std::vector<std::string> cids_to_delete;
+  const base::Value::Dict& dict = prefs_service_->GetDict(kIPFSPinnedCids);
+  for (const auto& pair : result.value()) {
+    const base::Value::List* list = dict.FindList(pair.first);
+    if (!list || list->empty()) {
+      cids_to_delete.push_back(pair.first);
+    }
+  }
+
+  if (!cids_to_delete.empty()) {
+    ipfs_service_->RemovePin(cids_to_delete,
+                             base::BindOnce(&GcJob::OnPinsRemovedResult,
+                                            weak_ptr_factory_.GetWeakPtr()));
+  } else {
+    std::move(callback_).Run(true);
   }
 }
 

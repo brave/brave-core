@@ -54,6 +54,8 @@ class IpfsBasePinService : public IpfsServiceObserver {
   PrefChangeRegistrar pref_change_registrar_;
   std::unique_ptr<IpfsBaseJob> current_job_;
   std::queue<std::unique_ptr<IpfsBaseJob>> jobs_;
+
+  base::WeakPtrFactory<IpfsBasePinService> weak_ptr_factory_{this};
 };
 
 }  // namespace ipfs
