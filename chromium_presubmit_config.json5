@@ -48,7 +48,13 @@
     ],
   },
 
-  // Files to skip in all checks.
+  // Additional files to check (extends InputApi.DEFAULT_FILES_TO_CHECK).
+  "default_files_to_check": [
+    ".+\\.jsx$",
+    ".+\\.tsx$",
+  ],
+
+  // Files to skip in all checks (extends InputApi.DEFAULT_FILES_TO_SKIP).
   "default_files_to_skip": [
     "\\.storybook/",
     "components/brave_wallet/resources/solana_web3_script\\.js",
