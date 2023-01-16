@@ -275,7 +275,7 @@ class Tab: NSObject {
     self.configuration = configuration
     rewardsId = UInt32.random(in: 1...UInt32.max)
     nightMode = Preferences.General.nightModeEnabled.value
-    syncTab = tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: true)
+    syncTab = tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: type == .private)
 
     super.init()
     self.type = type
