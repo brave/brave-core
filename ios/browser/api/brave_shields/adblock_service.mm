@@ -17,7 +17,6 @@
 @interface AdblockService () {
   component_updater::ComponentUpdateService* _cus;  // NOT OWNED
 }
-@property(nonatomic, copy) NSString* shieldsInstallPath;
 @property(nonatomic, copy)
     NSArray<AdblockFilterListCatalogEntry*>* regionalFilterLists;
 @end
@@ -32,45 +31,45 @@
   return self;
 }
 
-- (void)registerDefaultShieldsComponent {
+- (void)
+    registerDefaultShieldsComponentUsingLegacyComponent:(bool)useLegacyComponent
+                                         componentReady:
+                                             (void (^)(
+                                                 NSString* _Nullable shieldsInstallPath,
+                                                 NSArray<
+                                                     AdblockFilterListCatalogEntry*>* _Nullable regionalFilterLists))
+                                                 componentReady {
   __weak auto weakSelf = self;
   brave_shields::RegisterAdBlockIosDefaultDatComponent(
-      _cus, base::BindRepeating(^(const base::FilePath& install_path) {
-        [weakSelf adblockComponentDidBecomeReady:install_path];
-      }));
-}
+      _cus, useLegacyComponent,
+      base::BindRepeating(^(const base::FilePath& install_path) {
+        // Get filter lists from catalog
+        base::ThreadPool::PostTaskAndReplyWithResult(
+            FROM_HERE, {base::MayBlock()},
+            base::BindOnce(&brave_component_updater::GetDATFileAsString,
+                           install_path.AppendASCII("regional_catalog.json")),
+            base::BindOnce(^(const std::string& json) {
+              auto strongSelf = weakSelf;
+              if (!strongSelf) {
+                return;
+              }
+              auto catalog = brave_shields::FilterListCatalogFromJSON(json);
 
-- (void)adblockComponentDidBecomeReady:(base::FilePath)install_path {
-  // Update shields install path (w/ KVO)
-  [self willChangeValueForKey:@"shieldsInstallPath"];
-  self.shieldsInstallPath = base::SysUTF8ToNSString(install_path.value());
-  [self didChangeValueForKey:@"shieldsInstallPath"];
-
-  __weak auto weakSelf = self;
-  // Get filter lists from catalog
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     install_path.AppendASCII("regional_catalog.json")),
-      base::BindOnce(^(const std::string& json) {
-        auto strongSelf = weakSelf;
-        if (!strongSelf) {
-          return;
-        }
-        auto catalog = brave_shields::FilterListCatalogFromJSON(json);
-
-        NSMutableArray* lists = [[NSMutableArray alloc] init];
-        for (const auto& entry : catalog) {
-          [lists
-              addObject:[[AdblockFilterListCatalogEntry alloc]
-                            initWithFilterListCatalogEntry:
-                                brave_shields::FilterListCatalogEntry(entry)]];
-        }
-        strongSelf.regionalFilterLists = lists;
-
-        if (strongSelf.shieldsComponentReady) {
-          strongSelf.shieldsComponentReady(strongSelf.shieldsInstallPath);
-        }
+              NSMutableArray* lists = [[NSMutableArray alloc] init];
+              for (const auto& entry : catalog) {
+                [lists addObject:[[AdblockFilterListCatalogEntry alloc]
+                                     initWithFilterListCatalogEntry:
+                                         brave_shields::FilterListCatalogEntry(
+                                             entry)]];
+              }
+              strongSelf.regionalFilterLists = lists;
+              if (strongSelf.shieldsComponentReady) {
+                strongSelf.shieldsComponentReady(
+                    base::SysUTF8ToNSString(install_path.value()));
+              }
+              componentReady(base::SysUTF8ToNSString(install_path.value()),
+                             lists);
+            }));
       }));
 }
 

@@ -305,8 +305,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
   RegisterSafetyTipsComponent(cus);
   brave_wallet::RegisterWalletDataFilesComponent(cus);
-
-  [self.adblockService registerDefaultShieldsComponent];
 }
 
 + (void)setLogHandler:(BraveCoreLogHandler)logHandler {

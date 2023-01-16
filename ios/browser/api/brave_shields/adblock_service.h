@@ -15,16 +15,23 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 @interface AdblockService : NSObject
 
-/// The main shields file install path (KVO compiliant)
-@property(readonly, nullable) NSString* shieldsInstallPath;
+/// Executed each time the main shields component is updated
+@property(nonatomic, copy, nullable) void (^shieldsComponentReady)
+    (NSString* _Nullable installPath);
 
 /// Regional filter lists
 @property(readonly, nullable)
     NSArray<AdblockFilterListCatalogEntry*>* regionalFilterLists;
 
-/// Executed each time the main shields component is updated
-@property(nonatomic, copy, nullable) void (^shieldsComponentReady)
-    (NSString* _Nullable installPath);
+- (void)
+    registerDefaultShieldsComponentUsingLegacyComponent:(bool)useLegacyComponent
+                                         componentReady:
+                                             (void (^)(
+                                                 NSString* _Nullable shieldsInstallPath,
+                                                 NSArray<
+                                                     AdblockFilterListCatalogEntry*>* _Nullable regionalFilterLists))
+                                                 componentReady
+    NS_SWIFT_NAME(registerDefaultShieldsComponent(useLegacyComponent:componentReady:));
 
 /// Registers a filter list with the component updater and calls
 /// `componentReady` each time the component is updated

@@ -60,6 +60,17 @@ const char kAdBlockIosDefaultDatComponentBase64PublicKey[] =
     "5HcH/heRrB4MvrE1J76WF3fvZ03aHVcnlLtQeiNNOZ7VbBDXdie8Nomf/QswbBGa"
     "VwIDAQAB";
 
+const char kAdBlockIosComponentName[] = "Brave Ad Block Updater";
+const char kAdBlockIosComponentId[] = "iodkpdagapdfkphljnddpjlldadblomo";
+const char kAdBlockIosComponentBase64PublicKey[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsD/B/MGdz0gh7WkcFARn"
+    "ZTBX9KAw2fuGeogijoI+fET38IK0L+P/trCT2NshqhRNmrDpLzV2+Dmes6PvkA+O"
+    "dQkUV6VbChJG+baTfr3Oo5PdE0WxmP9Xh8XD7p85DQrk0jJilKuElxpK7Yq0JhcT"
+    "Sc3XNHeTwBVqCnHwWZZ+XysYQfjuDQ0MgQpS/s7U04OZ63NIPe/iCQm32stvS/pE"
+    "ya7KdBZXgRBQ59U6M1n1Ikkp3vfECShbBld6VrrmNrl59yKWlEPepJ9oqUc2Wf2M"
+    "q+SDNXROG554RnU4BnDJaNETTkDTZ0Pn+rmLmp1qY5Si0yGsfHkrv3FS3vdxVozO"
+    "PQIDAQAB";
+
 class AdBlockComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
@@ -172,6 +183,7 @@ void OnRegistered(const std::string& component_id) {
 
 void RegisterAdBlockIosDefaultDatComponent(
     component_updater::ComponentUpdateService* cus,
+    bool use_legacy_component,
     OnComponentReadyCallback callback) {
   // In test, |cus| could be nullptr.
   if (!cus)
@@ -179,8 +191,12 @@ void RegisterAdBlockIosDefaultDatComponent(
 
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<AdBlockComponentInstallerPolicy>(
-          kAdBlockIosDefaultDatComponentBase64PublicKey,
-          kAdBlockIosDefaultDatComponentId, kAdBlockIosDefaultDatComponentName,
+          use_legacy_component ? kAdBlockIosDefaultDatComponentBase64PublicKey
+                               : kAdBlockIosComponentBase64PublicKey,
+          use_legacy_component ? kAdBlockIosDefaultDatComponentId
+                               : kAdBlockIosComponentId,
+          use_legacy_component ? kAdBlockIosDefaultDatComponentName
+                               : kAdBlockIosComponentName,
           callback));
   installer->Register(
       cus, base::BindOnce(&OnRegistered, kAdBlockIosDefaultDatComponentId));

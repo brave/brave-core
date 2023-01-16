@@ -15,7 +15,6 @@ class ComponentUpdateService;
 @interface AdblockService (Private)
 - (instancetype)initWithComponentUpdater:
     (component_updater::ComponentUpdateService*)componentUpdaterService;
-- (void)registerDefaultShieldsComponent;
 @end
 
 #endif  // BRAVE_IOS_BROWSER_API_BRAVE_SHIELDS_ADBLOCK_SERVICE_PRIVATE_H_

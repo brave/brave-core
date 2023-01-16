@@ -22,6 +22,7 @@ using OnComponentReadyCallback =
 
 void RegisterAdBlockIosDefaultDatComponent(
     component_updater::ComponentUpdateService* cus,
+    bool use_legacy_component,
     OnComponentReadyCallback callback);
 
 void RegisterAdBlockDefaultResourceComponent(
