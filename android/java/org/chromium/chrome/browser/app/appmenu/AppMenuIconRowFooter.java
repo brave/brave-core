@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
 
@@ -78,17 +79,18 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
      * @param appMenuDelegate The AppMenuDelegate to handle options item selection.
      */
     public void initialize(AppMenuHandler appMenuHandler, BookmarkModel bookmarkBridge,
-            Tab currentTab, AppMenuDelegate appMenuDelegate) {
+            @Nullable Tab currentTab, AppMenuDelegate appMenuDelegate) {
         mAppMenuHandler = appMenuHandler;
         mAppMenuDelegate = appMenuDelegate;
 
-        mForwardButton.setEnabled(currentTab.canGoForward());
+        mForwardButton.setEnabled(currentTab == null ? false : currentTab.canGoForward());
 
         updateBookmarkMenuItem(bookmarkBridge, currentTab);
 
-        mDownloadButton.setEnabled(DownloadUtils.isAllowedToDownloadPage(currentTab));
+        mDownloadButton.setEnabled(
+                currentTab == null ? false : DownloadUtils.isAllowedToDownloadPage(currentTab));
 
-        loadingStateChanged(currentTab.isLoading());
+        loadingStateChanged(currentTab == null ? false : currentTab.isLoading());
     }
 
     @Override
@@ -110,10 +112,10 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
                         : getContext().getString(R.string.accessibility_btn_refresh));
     }
 
-    private void updateBookmarkMenuItem(BookmarkModel bookmarkBridge, Tab currentTab) {
+    private void updateBookmarkMenuItem(BookmarkModel bookmarkBridge, @Nullable Tab currentTab) {
         mBookmarkButton.setEnabled(bookmarkBridge.isEditBookmarksEnabled());
 
-        if (bookmarkBridge.hasBookmarkIdForTab(currentTab)) {
+        if (currentTab != null && bookmarkBridge.hasBookmarkIdForTab(currentTab)) {
             mBookmarkButton.setImageResource(R.drawable.btn_star_filled);
             mBookmarkButton.setContentDescription(getContext().getString(R.string.edit_bookmark));
             ApiCompatibilityUtils.setImageTintList(mBookmarkButton,
