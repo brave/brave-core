@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/memory/raw_ptr.h"
-
 #import <Cocoa/Cocoa.h>
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
@@ -44,7 +42,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
       BraveBrowserView::GetBrowserViewForBrowser(browser()));
   OmniboxView* omnibox_view = browser_view->GetLocationBar()->GetOmniboxView();
   omnibox_view->SelectAll(false);
-  EXPECT_TRUE(browser_view->HasSelectedURL());
+  EXPECT_TRUE(omnibox_view->IsSelectAll());
+  EXPECT_TRUE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());
 
   BraveAppController* ac = base::mac::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
@@ -82,6 +81,35 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemNotVisible) {
 
   [ac menuNeedsUpdate:[clean_link_menu_item menu]];
 
+  EXPECT_TRUE([clean_link_menu_item isHidden]);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
+                       CopyLinkItemNotVisibleWithoutSelection) {
+  ASSERT_TRUE(embedded_test_server()->Start());
+  GURL url = embedded_test_server()->GetURL(kTestingPage);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
+
+  BraveBrowserView* browser_view = static_cast<BraveBrowserView*>(
+      BraveBrowserView::GetBrowserViewForBrowser(browser()));
+  OmniboxView* omnibox_view = browser_view->GetLocationBar()->GetOmniboxView();
+  EXPECT_FALSE(omnibox_view->IsSelectAll());
+  EXPECT_FALSE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());
+
+  BraveAppController* ac = base::mac::ObjCCastStrict<BraveAppController>(
+      [[NSApplication sharedApplication] delegate]);
+  ASSERT_TRUE(ac);
+  base::scoped_nsobject<NSMenu> edit_submenu(
+      [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu],
+      base::scoped_policy::RETAIN);
+
+  base::scoped_nsobject<NSMenuItem> clean_link_menu_item(
+      [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK],
+      base::scoped_policy::RETAIN);
+
+  [ac menuNeedsUpdate:[clean_link_menu_item menu]];
+  base::RunLoop().RunUntilIdle();
   EXPECT_TRUE([clean_link_menu_item isHidden]);
 }
 

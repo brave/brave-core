@@ -27,6 +27,7 @@ BraveBrowserWindow* BraveBrowserWindow::From(BrowserWindow* window) {
 sidebar::Sidebar* BraveBrowserWindow::InitSidebar() {
   return nullptr;
 }
+
 bool BraveBrowserWindow::HasSelectedURL() const {
   return false;
 }

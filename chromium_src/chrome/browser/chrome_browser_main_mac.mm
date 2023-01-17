@@ -8,3 +8,4 @@
 
 #define AppController BraveAppController
 #include "src/chrome/browser/chrome_browser_main_mac.mm"
+#undef AppController

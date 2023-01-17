@@ -17,18 +17,6 @@
 #include "components/omnibox/browser/omnibox_edit_model.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 
-BraveOmniboxViewViews::BraveOmniboxViewViews(
-    OmniboxEditController* controller,
-    std::unique_ptr<OmniboxClient> client,
-    bool popup_window_mode,
-    LocationBarView* location_bar,
-    const gfx::FontList& font_list)
-    : OmniboxViewViews(controller,
-                       std::move(client),
-                       popup_window_mode,
-                       location_bar,
-                       font_list) {}
-
 BraveOmniboxViewViews::~BraveOmniboxViewViews() = default;
 
 bool BraveOmniboxViewViews::SelectedTextIsURL() {
