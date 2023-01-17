@@ -51,14 +51,16 @@ base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
   }
 
   // Find out years of install and survey.
-  base::Time::Exploded exploded;
-  date_of_survey.LocalExplode(&exploded);
-  DCHECK_GE(exploded.year, 999);
-  result.Set("yos", exploded.year);
+  base::Time::Exploded survey_exploded;
+  base::Time::Exploded install_exploded;
+  date_of_survey.LocalExplode(&survey_exploded);
+  date_of_install_monday.LocalExplode(&install_exploded);
 
-  date_of_install_monday.LocalExplode(&exploded);
-  DCHECK_GE(exploded.year, 999);
-  result.Set("yoi", exploded.year);
+  DCHECK_GE(survey_exploded.year, 999);
+  result.Set("yos", survey_exploded.year);
+
+  DCHECK_GE(install_exploded.year, 999);
+  result.Set("yoi", install_exploded.year);
 
   // Fill meta.
   result.Set("country_code", meta.country_code);
@@ -66,7 +68,7 @@ base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
   result.Set("woi", meta.woi);
 
   if (log_type == MetricLogType::kSlow) {
-    result.Set("mos", exploded.month);
+    result.Set("mos", survey_exploded.month);
   } else {
     result.Set("wos", brave_stats::GetIsoWeekNumber(date_of_survey));
   }

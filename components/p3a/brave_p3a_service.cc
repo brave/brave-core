@@ -88,16 +88,18 @@ base::TimeDelta GetRandomizedUploadInterval(
 
 base::Time NextFirstDayOfMonth(base::Time time) {
   base::Time::Exploded exploded;
-  time.LocalMidnight().LocalExplode(&exploded);
+  time.LocalMidnight().UTCExplode(&exploded);
   exploded.month++;
   if (exploded.month > 12) {
     exploded.year++;
     exploded.month = 1;
   }
   exploded.day_of_month = 1;
-  DCHECK(base::Time::FromLocalExploded(exploded, &time));
+  base::Time result;
+  bool from_result = base::Time::FromUTCExploded(exploded, &result);
+  DCHECK(from_result);
   // Adding few hours of padding to prevent potential problems with DST.
-  return (time + base::Hours(4)).LocalMidnight();
+  return (result + base::Hours(4)).LocalMidnight();
 }
 
 base::Time NextMonday(base::Time time) {
