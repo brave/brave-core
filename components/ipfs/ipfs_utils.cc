@@ -261,6 +261,10 @@ bool IsIPFSScheme(const GURL& url) {
   return url.SchemeIs(kIPFSScheme) || url.SchemeIs(kIPNSScheme);
 }
 
+bool IsIPFSLocalNodeScheme(const GURL& url) {
+  return url.SchemeIs(kIPFSLocalNodeScheme);
+}
+
 GURL ToPublicGatewayURL(const GURL& url, PrefService* prefs) {
   DCHECK(prefs);
   DCHECK(IsIPFSScheme(url) || IsLocalGatewayURL(url));

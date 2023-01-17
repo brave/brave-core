@@ -19,6 +19,7 @@ extern const char kAddressesField[];
 extern const char kShutdownPath[];
 extern const char kIPFSScheme[];
 extern const char kIPNSScheme[];
+extern const char kIPFSLocalNodeScheme[];
 extern const char kDefaultIPFSGateway[];
 extern const char kDefaultIPFSNFTGateway[];
 extern const char kDefaultIPFSLocalGateway[];

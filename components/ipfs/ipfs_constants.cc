@@ -19,6 +19,7 @@ const char kAddressesField[] = "Addresses";
 const char kShutdownPath[] = "/api/v0/shutdown";
 const char kIPFSScheme[] = "ipfs";
 const char kIPNSScheme[] = "ipns";
+const char kIPFSLocalNodeScheme[] = "ipfs-local-node";
 const char kDefaultIPFSGateway[] = "https://dweb.link";
 const char kDefaultIPFSNFTGateway[] = "https://nftstorage.link";
 const char kDefaultIPFSLocalGateway[] = "http://localhost";

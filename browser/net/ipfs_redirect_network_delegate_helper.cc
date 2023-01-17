@@ -17,6 +17,28 @@
 
 namespace ipfs {
 
+int OnBedoreURLRequest_IPFSLocalNodeRedirectWork(
+    const brave::ResponseCallback& next_callback,
+    std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  const bool has_ipfs_localnode_scheme = IsIPFSLocalNodeScheme(ctx->request_url);
+
+  if (!ctx->browser_context) {
+    // IPFS url translation depends on selected gateway.
+    // So we block IPFS requests if we don't have access to prefs.
+    if (has_ipfs_scheme) {
+      ctx->blocked_by = brave::kOtherBlocked;
+    }
+    return net::OK;
+  }
+
+  if (ctx->request_url.schemeIs(extensions::kExtensionScheme)) {
+    ctx->request_url.host();
+  }
+  const extensions::Extension* extension = registry->GetExtensionById(
+          extension_id, extensions::ExtensionRegistry::ENABLED);
+
+}
+
 int OnBeforeURLRequest_IPFSRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
