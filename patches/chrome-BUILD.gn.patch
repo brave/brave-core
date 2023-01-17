@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 2ef38efd9617c09dcdb68d972ce10ce9c70dfc14..10b6c93fb9e6ea3ffb05008f64c061d9fa3151c3 100644
+index a09d7b9873001ce8bdd62fb776cb3c8a06b76874..65acc10544719b99119bee0514999255921b21a4 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -182,6 +182,7 @@ if (!is_android && !is_mac) {
@@ -69,15 +69,15 @@ index 2ef38efd9617c09dcdb68d972ce10ce9c70dfc14..10b6c93fb9e6ea3ffb05008f64c061d9
        }
  
        extra_substitutions = [
-@@ -894,6 +901,7 @@ if (is_win) {
-       sources += [ "//third_party/updater/chrome_mac_universal_prod/${updater_product_full_name}.app" ]
-     } else {
-       sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
+@@ -895,6 +902,7 @@ if (is_win) {
+         sources += [ "//third_party/updater/chrome_mac_universal_prod/${updater_product_full_name}.app" ]
+       } else {
+         sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
 +      sources -= [ "$root_out_dir/${updater_product_full_name}.app" ]
  
-       public_deps += [
-         "//chrome/updater/mac:browser_install_script",
-@@ -1202,6 +1210,7 @@ if (is_win) {
+         public_deps += [
+           "//chrome/updater/mac:browser_install_script",
+@@ -1204,6 +1212,7 @@ if (is_win) {
        chrome_dylib_version,
        "-Wl,-order_file," + rebase_path("app/framework.order", root_build_dir),
      ]
@@ -85,7 +85,7 @@ index 2ef38efd9617c09dcdb68d972ce10ce9c70dfc14..10b6c93fb9e6ea3ffb05008f64c061d9
  
      if (!is_component_build) {
        # Specify a sensible install_name for static builds. The library is
-@@ -1381,6 +1390,7 @@ if (is_win) {
+@@ -1383,6 +1392,7 @@ if (is_win) {
  
  group("dependencies") {
    public_deps = [
@@ -93,7 +93,7 @@ index 2ef38efd9617c09dcdb68d972ce10ce9c70dfc14..10b6c93fb9e6ea3ffb05008f64c061d9
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/browser",
-@@ -1451,7 +1461,7 @@ group("dependencies") {
+@@ -1453,7 +1463,7 @@ group("dependencies") {
  
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
@@ -102,7 +102,7 @@ index 2ef38efd9617c09dcdb68d972ce10ce9c70dfc14..10b6c93fb9e6ea3ffb05008f64c061d9
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1505,6 +1515,7 @@ group("resources") {
+@@ -1507,6 +1517,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",

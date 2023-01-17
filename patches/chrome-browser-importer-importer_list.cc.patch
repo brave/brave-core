@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/importer/importer_list.cc b/chrome/browser/importer/importer_list.cc
-index b6cd6b3764f6358250759cb03d760d5d1df3eeb1..4ac095f5593b2d964ecce224284c21705a1608e5 100644
+index d31c78f65d2a65907a97bc02d5013d3ddc19eec6..7e651588666ddae715a58f51d3a2da7eac06a849 100644
 --- a/chrome/browser/importer/importer_list.cc
 +++ b/chrome/browser/importer/importer_list.cc
 @@ -163,20 +163,30 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(

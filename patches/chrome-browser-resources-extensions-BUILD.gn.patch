@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/extensions/BUILD.gn b/chrome/browser/resources/extensions/BUILD.gn
-index 936a541e79de45528e31427bd9e4640312e683fc..c5e6f1d95ae7700d31d9ba5fadfcb933d766fb6b 100644
+index 6c6e958fd6df432cc9cdd6940851b93268d21baf..4ca7d25734c29579e503c8765426bf48d05eacba 100644
 --- a/chrome/browser/resources/extensions/BUILD.gn
 +++ b/chrome/browser/resources/extensions/BUILD.gn
-@@ -106,4 +106,5 @@ build_webui("build") {
+@@ -107,4 +107,5 @@ build_webui("build") {
      optimize_webui_resource_paths_rewrites =
          [ "extensions.rollup.js|extensions.js" ]
    }
