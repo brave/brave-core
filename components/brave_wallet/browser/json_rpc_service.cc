@@ -1698,21 +1698,14 @@ void JsonRpcService::OnUnstoppableDomainsGetWalletAddr(
     return;
   }
 
-  auto bytes_result = ParseDecodedBytesResult(api_request_result.value_body());
-  if (!bytes_result) {
+  auto array_result = eth::ParseUnstoppableDomainsProxyReaderGetMany(
+      api_request_result.value_body());
+  if (!array_result) {
     mojom::ProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
                                            &error, &error_message);
     ud_get_eth_addr_calls_.SetError(key, chain_id, error, error_message);
-    return;
-  }
-
-  auto array_result = eth_abi::ExtractStringArrayFromTuple(*bytes_result, 0);
-  if (!array_result) {
-    ud_get_eth_addr_calls_.SetError(
-        key, chain_id, mojom::ProviderError::kInternalError,
-        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 

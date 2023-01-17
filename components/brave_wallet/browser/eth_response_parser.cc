@@ -11,6 +11,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_abi_decoder.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
+#include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "net/base/data_url.h"
@@ -269,19 +270,12 @@ bool ParseEnsResolverContentHash(const base::Value& json_value,
 
 absl::optional<std::vector<std::string>>
 ParseUnstoppableDomainsProxyReaderGetMany(const base::Value& json_value) {
-  auto result = ParseSingleStringResult(json_value);
-  if (!result)
+  auto bytes_result = ParseDecodedBytesResult(json_value);
+  if (!bytes_result) {
     return absl::nullopt;
+  }
 
-  size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
-  if (offset > result->size())
-    return absl::nullopt;
-
-  std::vector<std::string> values;
-  if (!brave_wallet::DecodeStringArray(result->substr(offset), &values))
-    return absl::nullopt;
-
-  return values;
+  return eth_abi::ExtractStringArrayFromTuple(*bytes_result, 0);
 }
 
 absl::optional<std::string> ParseUnstoppableDomainsProxyReaderGet(
