@@ -1,0 +1,21 @@
+<style include="settings-shared iron-flex">
+  .settings-box.bottom-border {
+    border-bottom: var(--cr-separator-line);
+    border-top: none;
+  }
+</style>
+<div class="settings-box bottom-border">
+  <div class="flex" id="labelWrapper" aria-hidden="true">
+    <div class="label">$i18n{appearanceSettingsBookmarBar}</div>
+    <div class="secondary label" id="sub-label">
+      <span id="sub-label-text" aria-hidden="true">
+        [[bookmarkBarShowEnabledLabel_]]
+      </span>
+    </div>
+  </div>
+  <settings-dropdown-menu
+    pref="[[bookmarkBarStatePref_]]"
+    on-settings-control-change="onShowOptionChanged_"
+    menu-options="[[bookmarkBarShowOptions_]]">
+  </settings-dropdown-menu>
+</div>
