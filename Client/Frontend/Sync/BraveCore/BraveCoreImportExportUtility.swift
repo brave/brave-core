@@ -33,7 +33,7 @@ class BraveCoreImportExportUtility {
   func importBookmarks(from path: URL, _ completion: @escaping (_ success: Bool) -> Void) {
     precondition(state == .none, "Bookmarks Import - Error Importing while an Import/Export operation is in progress")
 
-    guard let path = nativeURLPathFromURL(path) else {
+    guard let nativePath = nativeURLPathFromURL(path) else {
       Logger.module.error("Bookmarks Import - Invalid FileSystem Path")
       DispatchQueue.main.async {
         completion(false)
@@ -43,9 +43,22 @@ class BraveCoreImportExportUtility {
 
     state = .importing
     self.queue.async {
-      self.importer.import(fromFile: path, topLevelFolderName: Strings.Sync.importFolderName, automaticImport: true) { [weak self] state, bookmarks in
+      // While accessing document URL from UIDocumentPickerViewController to access the file
+      // startAccessingSecurityScopedResource should be called for that URL
+      // Reference: https://stackoverflow.com/a/73912499/2239348
+      guard path.startAccessingSecurityScopedResource() else {
+        return
+      }
+      
+      self.importer.import(fromFile: nativePath, topLevelFolderName: Strings.Sync.importFolderName, automaticImport: true) { [weak self] state, bookmarks in
+        defer {
+          // Each call to startAccessingSecurityScopedResource must be balanced with a call to stopAccessingSecurityScopedResource
+          // (Note: this is not reference counted)
+          path.stopAccessingSecurityScopedResource()
+        }
+        
         guard let self = self, state != .started else { return }
-
+            
         do {
           try self.rethrow(state)
           self.state = .none
@@ -68,7 +81,7 @@ class BraveCoreImportExportUtility {
   func importBookmarks(from path: URL, _ completion: @escaping (_ success: Bool, _ bookmarks: [BraveImportedBookmark]) -> Void) {
     precondition(state == .none, "Bookmarks Import - Error Importing while an Import/Export operation is in progress")
 
-    guard let path = nativeURLPathFromURL(path) else {
+    guard let nativePath = nativeURLPathFromURL(path) else {
       Logger.module.error("Bookmarks Import - Invalid FileSystem Path")
       DispatchQueue.main.async {
         completion(false, [])
@@ -78,9 +91,19 @@ class BraveCoreImportExportUtility {
 
     state = .importing
     self.queue.async {
-      self.importer.import(fromFile: path, topLevelFolderName: Strings.Sync.importFolderName, automaticImport: false) { [weak self] state, bookmarks in
+      // To access a document URL from UIDocumentPickerViewController
+      // startAccessingSecurityScopedResource should be called
+      guard path.startAccessingSecurityScopedResource() else {
+        return
+      }
+      
+      self.importer.import(fromFile: nativePath, topLevelFolderName: Strings.Sync.importFolderName, automaticImport: false) { [weak self] state, bookmarks in
+        defer {
+          path.stopAccessingSecurityScopedResource()
+        }
+        
         guard let self = self, state != .started else { return }
-
+        
         do {
           try self.rethrow(state)
           self.state = .none
