@@ -43,6 +43,7 @@ static_library("browser") {
     "//base",
     "//brave/components/api_request_helper:api_request_helper",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/resources:static_resources",
     "//components/component_updater",
     "//components/download/public/common:public",
     "//components/keyed_service/core",
