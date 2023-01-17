@@ -39,6 +39,8 @@ class BraveImportDataHandler : public ImportDataHandler,
   BraveImportDataHandler& operator=(const BraveImportDataHandler&) = delete;
 
  protected:
+  using ContinueImportCallback = base::OnceCallback<void()>;
+
   const importer::SourceProfile& GetSourceProfileAt(int browser_index);
   void HandleImportData(const base::Value::List& args);
   // ImportDataHandler overrides:
@@ -51,15 +53,17 @@ class BraveImportDataHandler : public ImportDataHandler,
   virtual void NotifyImportProgress(
       const importer::SourceProfile& source_profile,
       const base::Value& info);
-  void OnImportEnded(const base::FilePath& source_path);
+  virtual void OnImportEnded(const importer::SourceProfile& source_profile);
 
+  void OnStartImport(const importer::SourceProfile& source_profile,
+                     uint16_t imported_items);
 #if BUILDFLAG(IS_MAC)
-  void CheckDiskAccess(const importer::SourceProfile& source_profile,
-                       uint16_t imported_items,
-                       Profile* profile);
-  void OnGetDiskAccessPermission(const importer::SourceProfile& source_profile,
-                                 uint16_t imported_items,
-                                 Profile* profile,
+  void CheckDiskAccess(uint16_t imported_items,
+                       base::FilePath source_path,
+                       importer::ImporterType importer_type,
+                       ContinueImportCallback callback);
+  void OnGetDiskAccessPermission(ContinueImportCallback callback,
+                                 base::FilePath source_path,
                                  bool allowed);
 
   // content::WebContentsObserver overrides:

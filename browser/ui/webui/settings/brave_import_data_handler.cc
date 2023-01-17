@@ -56,6 +56,8 @@ bool HasProperDiskAccessPermission(uint16_t imported_items) {
   return true;
 }
 #endif  // BUILDFLAG(IS_MAC)
+const char kImportStatusSucceeded[] = "succeeded";
+const char kImportStatusFailed[] = "failed";
 }  // namespace
 
 namespace settings {
@@ -70,7 +72,11 @@ void BraveImportDataHandler::StartImport(
     return;
   Profile* profile = Profile::FromWebUI(web_ui());
 #if BUILDFLAG(IS_MAC)
-  CheckDiskAccess(source_profile, imported_items, profile);
+  CheckDiskAccess(imported_items, source_profile.source_path,
+                  source_profile.importer_type,
+                  base::BindOnce(&BraveImportDataHandler::StartImportImpl,
+                                 weak_factory_.GetWeakPtr(), source_profile,
+                                 imported_items, profile));
 #else
   StartImportImpl(source_profile, imported_items, profile);
 #endif
@@ -99,13 +105,15 @@ void BraveImportDataHandler::StartImportImpl(
 void BraveImportDataHandler::NotifyImportProgress(
     const importer::SourceProfile& source_profile,
     const base::Value& info) {
-  FireWebUIListener("brave-import-data-status-changed", info);
   const std::string* event = info.FindStringKey("event");
-  if (event && *event == "ImportEnded") {
+  if (!event)
+    return;
+  if (*event == "ImportItemEnded") {
+    import_did_succeed_ = true;
+  } else if (*event == "ImportEnded") {
     content::GetUIThreadTaskRunner({})->PostTask(
-        FROM_HERE,
-        base::BindOnce(&BraveImportDataHandler::OnImportEnded,
-                       weak_factory_.GetWeakPtr(), source_profile.source_path));
+        FROM_HERE, base::BindOnce(&BraveImportDataHandler::OnImportEnded,
+                                  weak_factory_.GetWeakPtr(), source_profile));
   }
 }
 
@@ -113,8 +121,12 @@ void BraveImportDataHandler::HandleImportData(const base::Value::List& args) {
   ImportDataHandler::HandleImportData(args);
 }
 
-void BraveImportDataHandler::OnImportEnded(const base::FilePath& source_path) {
-  import_observers_.erase(source_path);
+void BraveImportDataHandler::OnImportEnded(
+    const importer::SourceProfile& source_profile) {
+  import_observers_.erase(source_profile.source_path);
+  FireWebUIListener("import-data-status-changed",
+                    base::Value(import_did_succeed_ ? kImportStatusSucceeded
+                                                    : kImportStatusFailed));
 }
 
 const importer::SourceProfile& BraveImportDataHandler::GetSourceProfileAt(
@@ -124,43 +136,39 @@ const importer::SourceProfile& BraveImportDataHandler::GetSourceProfileAt(
 
 #if BUILDFLAG(IS_MAC)
 void BraveImportDataHandler::CheckDiskAccess(
-    const importer::SourceProfile& source_profile,
     uint16_t imported_items,
-    Profile* profile) {
+    base::FilePath source_path,
+    importer::ImporterType importer_type,
+    ContinueImportCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   guide_dialog_is_requested_ = false;
 
-  if (!imported_items)
-    return;
-
-  if (source_profile.importer_type == importer::TYPE_SAFARI) {
+  if (importer_type == importer::TYPE_SAFARI) {
     // Start import if Brave has full disk access permission.
     // If not, show dialog that has infos about that permission.
     base::ThreadPool::PostTaskAndReplyWithResult(
         FROM_HERE, {base::MayBlock()},
         base::BindOnce(&HasProperDiskAccessPermission, imported_items),
         base::BindOnce(&BraveImportDataHandler::OnGetDiskAccessPermission,
-                       weak_factory_.GetWeakPtr(), source_profile,
-                       imported_items, profile));
+                       weak_factory_.GetWeakPtr(), std::move(callback),
+                       source_path));
     return;
   }
-
-  StartImportImpl(source_profile, imported_items, profile);
+  std::move(callback).Run();
 }
 
 void BraveImportDataHandler::OnGetDiskAccessPermission(
-    const importer::SourceProfile& source_profile,
-    uint16_t imported_items,
-    Profile* profile,
+    ContinueImportCallback callback,
+    base::FilePath source_path,
     bool allowed) {
   if (!allowed) {
     // Notify to webui to finish import process and launch tab modal dialog
     // to guide full disk access information to users.
     // Guide dialog will be opened after import dialog is closed.
     FireWebUIListener("import-data-status-changed", base::Value("failed"));
-    if (import_observers_.count(source_profile.source_path))
-      import_observers_[source_profile.source_path]->ImportEnded();
+    if (import_observers_.count(source_path))
+      import_observers_[source_path]->ImportEnded();
     // Observing web_contents is started here to know the closing timing of
     // import dialog.
     Observe(web_ui()->GetWebContents());
@@ -169,7 +177,7 @@ void BraveImportDataHandler::OnGetDiskAccessPermission(
     return;
   }
 
-  StartImportImpl(source_profile, imported_items, profile);
+  std::move(callback).Run();
 }
 
 void BraveImportDataHandler::DidStopLoading() {

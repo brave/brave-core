@@ -62,17 +62,6 @@ void BraveImportBulkDataHandler::PrepareProfile(
           std::move(profile_ready_callback)));
 }
 
-void BraveImportBulkDataHandler::ProfileReadyForImport(
-    const importer::SourceProfile& source_profile,
-    uint16_t imported_items,
-    Profile* profile) {
-#if BUILDFLAG(IS_MAC)
-  CheckDiskAccess(source_profile, imported_items, profile);
-#else
-  StartImportImpl(source_profile, imported_items, profile);
-#endif
-}
-
 void BraveImportBulkDataHandler::HandleImportDataBulk(
     const base::Value::List& args) {
   CHECK_GE(args.size(), 2u);
@@ -112,22 +101,31 @@ void BraveImportBulkDataHandler::StartImport(
   }
   if (!imported_items)
     return;
-  PrepareProfile(
-      source_profile.profile.empty() ? source_profile.importer_name
-                                     : source_profile.profile,
-      base::BindOnce(&BraveImportBulkDataHandler::ProfileReadyForImport,
-                     weak_factory_.GetWeakPtr(), source_profile,
-                     imported_items));
+  auto profile_name = source_profile.profile.empty()
+                          ? source_profile.importer_name
+                          : source_profile.profile;
+  auto import_callback = base::BindOnce(
+      &BraveImportBulkDataHandler::StartImportImpl, weak_factory_.GetWeakPtr(),
+      source_profile, imported_items);
+#if BUILDFLAG(IS_MAC)
+  CheckDiskAccess(imported_items, source_profile.source_path,
+                  source_profile.importer_type,
+                  base::BindOnce(&BraveImportBulkDataHandler::PrepareProfile,
+                                 weak_factory_.GetWeakPtr(), profile_name,
+                                 std::move(import_callback)));
+#else
+  PrepareProfile(profile_name, std::move(import_callback));
+#endif
 }
 
 void BraveImportBulkDataHandler::NotifyImportProgress(
     const importer::SourceProfile& source_profile,
     const base::Value& info) {
-  BraveImportDataHandler::NotifyImportProgress(source_profile, info);
+  FireWebUIListener("brave-import-data-status-changed", info);
+}
 
-  const std::string* event = info.FindStringKey("event");
-  if (!event || *event != "ImportEnded")
-    return;
+void BraveImportBulkDataHandler::OnImportEnded(
+    const importer::SourceProfile& source_profile) {
   auto index = GetProfileIndex(source_profile);
   if (index.has_value()) {
     importing_profiles_.erase(index.value());

@@ -31,26 +31,31 @@ class BraveImportBulkDataHandler : public BraveImportDataHandler {
   BraveImportBulkDataHandler& operator=(const BraveImportBulkDataHandler&) =
       delete;
 
+ protected:
+  void HandleImportDataBulk(const base::Value::List& args);
+
+  absl::optional<int> GetProfileIndex(
+      const importer::SourceProfile& source_profile);
+
   void PrepareProfile(const std::u16string& name,
                       ProfileReadyCallback callback);
 
   void ProfileReadyForImport(const importer::SourceProfile& source_profile,
                              uint16_t imported_items,
                              Profile* profile);
+  // BraveImportDataHandler
   void NotifyImportProgress(const importer::SourceProfile& source_profile,
                             const base::Value& info) override;
+  void OnImportEnded(const importer::SourceProfile& source_profile) override;
 
   // SettingsPageUIHandler
   void RegisterMessages() override;
 
- private:
-  absl::optional<int> GetProfileIndex(
-      const importer::SourceProfile& source_profile);
-
-  void HandleImportDataBulk(const base::Value::List& args);
   // ImportDataHandler overrides:
   void StartImport(const importer::SourceProfile& source_profile,
                    uint16_t imported_items) override;
+
+ private:
   base::flat_set<int> importing_profiles_;
   base::WeakPtrFactory<BraveImportBulkDataHandler> weak_factory_{this};
 };
