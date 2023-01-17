@@ -397,6 +397,11 @@ constexpr char kBraveSyncHistoryDiagnosticsName[] =
 constexpr char kBraveSyncHistoryDiagnosticsDescription[] =
     "Brave Sync History Diagnostics flag displays additional sync related "
     "information on History page";
+constexpr char kBraveSyncSendAllHistoryName[] =
+    "Send All History to Brave Sync";
+constexpr char kBraveSyncSendAllHistoryDescription[] =
+    "With Send All History flag all sync entries are sent to Sync server "
+    "including transitions of link, bookmark, reload, etc";
 
 // Blink features.
 constexpr char kFileSystemAccessAPIName[] = "File System Access API";
@@ -829,6 +834,11 @@ constexpr char kRestrictEventSourcePoolDescription[] =
       flag_descriptions::kRestrictEventSourcePoolDescription,               \
       kOsAll, FEATURE_VALUE_TYPE(                                           \
           blink::features::kRestrictEventSourcePool)},                      \
+    {"brave-sync-send-all-history",                                         \
+      flag_descriptions::kBraveSyncSendAllHistoryName,                      \
+      flag_descriptions::kBraveSyncSendAllHistoryDescription,               \
+      kOsAll, FEATURE_VALUE_TYPE(                                           \
+          brave_sync::features::kBraveSyncSendAllHistory)},                 \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
     BRAVE_NEWS_FEATURE_ENTRIES                                              \
