@@ -490,6 +490,21 @@ void BraveBrowserView::MaybeShowReadingListInSidePanelIPH() {
   // Do nothing.
 }
 
+void BraveBrowserView::OnWidgetActivationChanged(views::Widget* widget,
+                                                 bool active) {
+  BrowserView::OnWidgetActivationChanged(widget, active);
+
+  // For updating sidebar's item state.
+  // As we can activate other window's Talk tab with current window's sidebar
+  // Talk item, sidebar Talk item should have activated state if other windows
+  // have Talk tab. It would be complex to get updated when Talk tab is opened
+  // from other windows. So, simply trying to update when window activation
+  // state is changed. With this, active window could have correct sidebar item
+  // state.
+  if (sidebar_container_view_)
+    sidebar_container_view_->UpdateSidebar();
+}
+
 bool BraveBrowserView::ShouldShowWindowTitle() const {
   if (BrowserView::ShouldShowWindowTitle())
     return true;
