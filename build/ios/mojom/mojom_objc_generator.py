@@ -576,11 +576,15 @@ class Generator(generator.Generator):
             raise Exception("No typemap found for the given kind: %s" % kind)
         cpp_assign = typemap.ObjCToCpp(accessor)
         if mojom.IsNullableKind(kind):
-            if (isinstance(typemap, (StructMojoTypemap, UnionMojoTypemap))):
-                cpp_assign = "%s ? %s : nullptr" % (accessor, cpp_assign)
-            else:
+            if ((self._IsTypemappedKind(kind)
+                 and not self.typemap[self._GetFullMojomNameForKind(
+                     kind)]["nullable_is_same_type"])
+                    or not isinstance(typemap,
+                                      (StructMojoTypemap, UnionMojoTypemap))):
                 cpp_assign = "%s ? absl::make_optional(%s) : absl::nullopt" % (
                     accessor, cpp_assign)
+            else:
+                cpp_assign = "%s ? %s : nullptr" % (accessor, cpp_assign)
         return cpp_assign
 
     def _CppToObjCAssign(self, field, prefix=None, suffix=None):
@@ -589,10 +593,14 @@ class Generator(generator.Generator):
                                field.name, (suffix if suffix else ""))
         typemap = MojoTypemapForKind(kind)
         if mojom.IsNullableKind(kind):
-            if mojom.IsStructKind(kind) or mojom.IsUnionKind(kind):
-                value_accessor = accessor
-            else:
+            if ((self._IsTypemappedKind(kind)
+                 and not self.typemap[self._GetFullMojomNameForKind(
+                     kind)]["nullable_is_same_type"])
+                    or not isinstance(typemap,
+                                      (StructMojoTypemap, UnionMojoTypemap))):
                 value_accessor = "%s.value()" % accessor
+            else:
+                value_accessor = accessor
             return "%s ? %s : nil" % (
                 accessor, typemap.CppToObjC(value_accessor))
         return typemap.CppToObjC(accessor)
