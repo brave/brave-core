@@ -1,11 +1,11 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index f516737a56282d248fe78717b94797b8ab9ca3d5..3e2b819cf46a29fe5906088be9f0bd0909fd1b8f 100644
+index 4cbfed424dd46b8e37c488b25f24c1ccb223edb4..98df3358c07f54e07d9766ee21435032c18453e5 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
-@@ -112,6 +112,7 @@ constexpr HistogramValue kHistogramValue[] = {
-     {ContentSettingsType::FEDERATED_IDENTITY_IDENTITY_PROVIDER_SIGNIN_STATUS,
+@@ -113,6 +113,7 @@ constexpr HistogramValue kHistogramValue[] = {
       91},
      {ContentSettingsType::REVOKED_UNUSED_SITE_PERMISSIONS, 92},
+     {ContentSettingsType::TOP_LEVEL_STORAGE_ACCESS, 93},
 +    BRAVE_HISTOGRAM_VALUE_LIST
  };
  
