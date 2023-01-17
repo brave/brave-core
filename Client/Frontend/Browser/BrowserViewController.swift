@@ -879,6 +879,7 @@ public class BrowserViewController: UIViewController {
     // links into the view from other apps.
     let dropInteraction = UIDropInteraction(delegate: self)
     view.addInteraction(dropInteraction)
+    topToolbar.addInteraction(dropInteraction)
 
     // Adding a small delay before fetching gives more reliability to it,
     // epsecially when you are connected to a VPN.
