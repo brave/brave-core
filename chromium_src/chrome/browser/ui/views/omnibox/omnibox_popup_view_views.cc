@@ -7,5 +7,5 @@
 #include "brave/browser/ui/views/omnibox/brave_rounded_omnibox_results_frame.h"
 
 #define RoundedOmniboxResultsFrame BraveRoundedOmniboxResultsFrame
-#include "src/chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.cc"
+#include "src/chrome/browser/ui/views/omnibox/omnibox_popup_view_views.cc"
 #undef RoundedOmniboxResultsFrame
