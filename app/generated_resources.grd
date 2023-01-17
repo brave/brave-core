@@ -344,11 +344,6 @@ are declared in tools/grit/grit_rule.gni.
         <part file="vr_strings.grdp" />
       </if>
 
-      <!-- Supervised user error page -->
-      <if expr="enable_supervised_users">
-        <part file="supervised_user_error_page_strings.grdp" />
-      </if>
-
       <!-- TODO add all of your "string table" messages here.  Remember to
       change nontranslateable parts of the messages into placeholders (using the
       <ph> element).  You can also use the 'grit add' tool to help you identify
@@ -580,9 +575,6 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_READ_ANYTHING" desc="Context menu menuitem to open page in Read Anything view">
            Open in Reader
           </message>
-          <message name="IDS_CONTENT_CONTEXT_RUN_PDF_OCR" desc="Context menu menuitem that runs a local machine intelligence model to extract the content of the current PDF and pass it to assisstive technologies.">
-           Recognize P&amp;DF text
-          </message>
           <message name="IDS_CONTENT_CONTEXT_RELOAD" desc="The name of the Reload command in the content area context menu">
             &amp;Reload
           </message>
@@ -752,6 +744,15 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_SEND_ONCE" desc="The context-menu sub-item that asks whether to integrate the accessibility image labeling service of Brave to Brave, for a single use.">
             Just once
           </message>
+          <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION" desc="The context-menu item that asks whether to use the PDF OCR service to convert image to text.">
+            Convert image to text
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION_ALWAYS" desc="The context-menu sub-item that asks whether to use the PDF OCR service to convert image to text always.">
+            Always
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION_ONCE" desc="The context-menu sub-item that asks whether to use the PDF OCR service to convert image to text, for a single use.">
+            Just once
+          </message>
           <message name="IDS_CONTENT_CONTEXT_SPELLING_ASK_GOOGLE" desc="The context-menu item that asks whether to integrate the spelling service of Brave to Brave.">
             Use enhanced spell check
           </message>
@@ -831,9 +832,6 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_READ_ANYTHING" desc="Context menu menuitem to open page in Read Anything view">
            Open in Reader
-          </message>
-          <message name="IDS_CONTENT_CONTEXT_RUN_PDF_OCR" desc="Context menu menuitem that runs a local machine intelligence model to extract the content of the current PDF and pass it to assisstive technologies.">
-           Recognize P&amp;DF text
           </message>
           <message name="IDS_CONTENT_CONTEXT_RELOAD" desc="In Title Case: The name of the Reload command in the content area context menu">
             &amp;Reload
@@ -1014,6 +1012,15 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_SEND_ONCE" desc="The context-menu sub-item that asks whether to integrate the accessibility image labeling service of Brave to Brave, for a single use.">
             Just Once
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION" desc="The context-menu item that asks whether to use the PDF OCR service to convert image to text.">
+            Convert image to text
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION_ALWAYS" desc="The context-menu sub-item that asks whether to use the PDF OCR service to convert image to text always.">
+            Always
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION_ONCE" desc="The context-menu sub-item that asks whether to use the PDF OCR service to convert image to text, for a single use.">
+            Just once
           </message>
           <message name="IDS_CONTENT_CONTEXT_SPELLING_ASK_GOOGLE" desc="In Title Case: The context-menu item that asks whether to integrate the spelling service of Brave to Brave.">
             Use Enhanced Spell Check
@@ -2558,6 +2565,30 @@ are declared in tools/grit/grit_rule.gni.
             Back to Recent Downloads
           </message>
         </if>
+      <message name="IDS_DOWNLOAD_BUBBLE_CANCEL_MAIN_BUTTON_ACCESSIBILITY" desc="Accessibility label for cancel button.">
+        Cancel <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph>
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_DELETE_MAIN_BUTTON_ACCESSIBILITY" desc="Accessibility label for delete button.">
+        Delete <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph>
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_KEEP_MAIN_BUTTON_ACCESSIBILITY" desc="Accessibility label for keep button.">
+        Keep <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph>
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_SCAN_MAIN_BUTTON_ACCESSIBILITY" desc="Accessibility label for scan button.">
+        Scan <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph>
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_OPEN_NOW_MAIN_BUTTON_ACCESSIBILITY" desc="Accessibility label for open now button.">
+        Open <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> now
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_RESUME_MAIN_BUTTON_ACCESSIBILITY" desc="Accessibility label for resume button.">
+        Resume <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph>
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_REVIEW_MAIN_BUTTON_ACCESSIBILITY" desc="Accessibility label for review button.">
+        Review <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph>
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_RETRY_MAIN_BUTTON_ACCESSIBILITY" desc="Accessibility label for retry button.">
+        Retry <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph>
+      </message>
 
       <!-- Tailored Warning in Download Bubble -->
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_COOKIE_THEFT" desc="Subpage summary for cookie theft warning.">
@@ -5416,6 +5447,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSIONS_MENU_EXTENSIONS_TAB_DISCOVER_MORE_TITLE" desc="Text of the button in the installed extensions tab used to open the webstore page">
         Discover more extensions
       </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_SETTINGS_TOGGLE_ON_TOOLTIP" desc="Tooltip text for the site setting toggle button when is on.">
+        Extensions are allowed on this site
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_SETTINGS_TOGGLE_OFF_TOOLTIP" desc="Tooltip text for the site setting toggle button when is off.'">
+        Extensions are blocked on this site
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_SETTINGS_TOGGLE_ON_ACCESSIBLE_NAME" desc="Accessibility string for the site setting toggle button when is on.">
+        Select to block all extensions on this site
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_SETTINGS_TOGGLE_OFF_ACCESSIBLE_NAME" desc="Accessibility string for the site setting toggle button when is off.'">
+        Select to allow extensions on this site
+      </message>
       <message name="IDS_EXTENSIONS_MENU_REQUESTS_ACCESS_SECTION_TITLE" desc="Title of the requests access section that lists the extensions requesting site access">
         Requests access
       </message>
@@ -6395,6 +6438,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_APPEARANCE_LABEL" desc="The label for the option to edit appearance in the Customize Brave side panel.">
         Appearance
       </message>
+      <message name="IDS_NTP_CUSTOMIZE_THEMES_HEADER" desc="The header for the page that lists theme categories in the Customize Brave side panel.">
+        Themes
+      </message>
       <message name="IDS_NTP_CUSTOMIZE_MENU_BACKGROUND_LABEL" desc="The label for the backgrounds option in the customization menu on the New Tab Page.">
         Background
       </message>
@@ -6413,6 +6459,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_NO_BACKGROUND_LABEL" desc="The label for the 'Classic Brave' tile in the customization menu on the New Tab Page">
         Classic Brave
       </message>
+      <message name="IDS_NTP_CUSTOMIZE_CHROME_COLORS_LABEL" desc="The label for the 'Brave Colors' tile in the New Tab Page customize chrome side panel, which lists themes of colored classic chrome.">
+        Brave Colors
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_CHROME_CHANGE_THEME_LABEL" desc="The label for the action button for changing Brave theme in the New Tab Page customize chrome side panel.">
+        Change Theme
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_CHROME_RESET_TO_CLASSIC_CHROME_LABEL" desc="The label for the button for resetting theme back to classic chrome in the New Tab Page customize chrome side panel.">
+        Reset to Classic Brave
+      </message>
       <message name="IDS_NTP_CUSTOMIZE_UPLOADED_IMAGE_LABEL" desc="The label for the 'Uploaded image' tile in the customization menu on the New Tab Page side panel.">
         Uploaded image
       </message>
@@ -6424,6 +6479,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_CUSTOMIZE_HIDE_SHORTCUTS_DESC" desc="The description for the option to hide shortcuts in the customization menu on the New Tab Page">
         Don't show shortcuts on this page
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_SHOW_CARDS_LABEL" desc="The label for the option to show cards in the customization menu on the New Tab Page">
+        Show cards
       </message>
       <message name="IDS_NTP_CUSTOMIZE_SHOW_SHORTCUTS_LABEL" desc="The label for the option to show shortcuts in the customization menu on the New Tab Page">
         Show shortcuts
@@ -6466,6 +6524,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
     </message>
       <message name="IDS_NTP_CUSTOMIZE_DEFAULT_LABEL" desc="The label for the Default theme in the customization menu on the New Tab Page">
         Default color
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_MAIN_COLOR_LABEL" desc="The label for the main color theme in the customization menu on the New Tab Page">
+        Color based on theme
       </message>
       <message name="IDS_NTP_COLORS_WARM_GREY" desc="A color option in the customization menu on the New Tab Page.">
         Warm grey
@@ -6947,9 +7008,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Side panel strings -->
-      <message name="IDS_SIDE_PANEL_TITLE" desc="Title of the Side Panel">
-        Side Panel
-      </message>
       <message name="IDS_ACCNAME_SIDE_PANEL_RESIZE" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the side panel resize handle is focused.">
         Side Panel Resize Handle
       </message>
@@ -7011,6 +7069,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_BOOKMARK_FOLDER_CHILD_COUNT" desc="Text description for the number of children of a bookmark folder">
         {NUM_BOOKMARKS, plural, =1 {1 bookmark} other {# bookmarks}}
+      </message>
+      <message name="IDS_BOOKMARKS_EDIT_MORE" desc="Tooltip for the menu button in the bookmarks side panel bulk edit mode that shows more actions the user can take on selected bookmarks.">
+        More
+      </message>
+      <message name="IDS_BOOKMARK_DELETION_COUNT" desc="Text description for the number of deleted bookmarks">
+        {NUM_BOOKMARKS, plural, =1 {1 bookmark deleted} other {# bookmarks deleted}}
+      </message>
+      <message name="IDS_UNDO_BOOKMARK_DELETION" desc="Label for the bookmarks side panel undo button displayed after deleting one or more bookmarks">
+        Undo
       </message>
 
       <!-- Read Anything strings -->
@@ -8261,8 +8328,8 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_PICTURE_IN_PICTURE_RESIZE_HANDLE_TEXT" desc="Text label of the resize handle. The button appears when the user hovers over the Picture-in-Picture window.">
         Resize
       </message>
-      <message name="IDS_PICTURE_IN_PICTURE_PLAY_PAUSE_CONTROL_ACCESSIBLE_TEXT" desc="Accessible text label used for the controls button in the Picture-in-Picture window. The button toggles between play and pause controls.">
-        Toggle video to play or pause
+      <message name="IDS_PICTURE_IN_PICTURE_PLAY_PAUSE_CONTROL_ACCESSIBLE_TEXT" is_accessibility_with_no_ui="true" desc="Accessible text label used for the controls button in the Picture-in-Picture window. The button toggles between play and pause controls.">
+        Play or pause video
       </message>
       <message name="IDS_PICTURE_IN_PICTURE_NEXT_TRACK_CONTROL_ACCESSIBLE_TEXT" desc="Accessible text label used for the controls button in the Picture-in-Picture window. The button invokes next track action.">
         Next track
@@ -9171,9 +9238,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_EDIT_BUTTON_LABEL" desc="Button text for the Screenshot dialog edit button.">
           Edit
         </message>
-        <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_SEARCH_IMAGE_BUTTON_LABEL" desc="Button text for the Screenshot dialog search image button.">
-          Search with Brave
-        </message>
         <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_SHARE_BUTTON_LABEL" desc="Button text for the Screenshot dialog share button.">
           Share
         </message>
@@ -9917,45 +9981,48 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </if>
 
       <!--  Tangible Sync version of the Sync Confirmation page -->
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_TITLE" desc="Title of the tangible sync confirmation page">
+      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_TITLE" desc="This string appears as a heading on a modal window that asks users if they want to turn on sync. 'Sync' is short for 'synchronization'. The tone should be informative and inviting.">
         Turn on sync
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_INFO_TITLE" desc="Title in the information about sync on the tangible sync confirmation page">
+      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_INFO_TITLE" desc="This string appears as a subheading on a screen, and it asks users if they want to turn on sync. This string explains to users that they can back up their Brave data and use it on all their computers, phones, and other devices; a user's Brave data includes their bookmarks, passwords, history, settings, and more. If there is no natural translation for the word 'stuff' in your language, the word can be translated as 'data' or similar. Maintain the level of formality that your language generally uses in the Brave app. The tone should be informative and inviting.">
         Back up your stuff and use it on any device
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_INFO_TITLE_SIGNIN_INTERCEPT" desc="Title in the information about sync on the tangible sync confirmation page during the Sign-in Intercept flow">
+      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_INFO_TITLE_SIGNIN_INTERCEPT_V2" desc="This string appears as a subheading on a pop-up dialog, and it asks users if they want to turn on sync. This string explains to users that they can back up their Brave data and use it on all their computers, phones, and other devices; a user's Brave data includes their bookmarks, passwords, history, settings, and more. If there is no natural translation for the word 'stuff' in your language, the word can be translated as 'data' or similar. Maintain the level of formality that your language generally uses in the Brave app. The tone should be informative and inviting.">
         Turn on sync to back up your stuff and use it on any device
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_BOOKMARKS" desc="This string appears as an item in a list of sync data types on a page that asks users if they want to turn on sync. Translate 'bookmarks' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=59c31bb. Used in the tangible sync confirmation page.">
+      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_BOOKMARKS" desc="This string appears as an item in a list of sync data types on a screen that asks users if they want to turn on sync. Translate 'bookmarks' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=59c31bb. Used in the tangible sync confirmation page.">
         Bookmarks
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_AUTOFILL" desc="This string appears as an item in a list of sync data types on a page that asks users if they want to turn on sync. Translate 'autofill' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=77d3626. Used in the tangible sync confirmation page.">
+      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_READING_LIST" desc="This string appears as an item in a list of sync data types on a screen that asks users if they want to turn on sync. Translate 'reading list' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=4de6a318. Used in the tangible sync confirmation page.">
+        Reading List
+      </message>
+      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_AUTOFILL" desc="This string appears as an item in a list of sync data types on a screen that asks users if they want to turn on sync. Translate 'autofill' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=77d3626. Used in the tangible sync confirmation page.">
         Autofill
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_EXTENSIONS" desc="This string appears as an item in a list of sync data types on a page that asks users if they want to turn on sync. Translate 'extensions' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=62f9351. Used in the tangible sync confirmation page.">
+      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_EXTENSIONS" desc="This string appears as an item in a list of sync data types on a screen that asks users if they want to turn on sync. Translate 'extensions' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=62f9351. Used in the tangible sync confirmation page.">
         Extensions
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_HISTORY_AND_MORE" desc="This string appears as an item in a list of sync data types on a page that asks users if they want to turn on sync. Translate 'history' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=59c3162. Translate 'and more' so that it conveys that there are additional similar items that are not listed. Used in the tangible sync confirmation page.">
+      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_HISTORY_AND_MORE" desc="This string appears as an item in a list of sync data types on a screen that asks users if they want to turn on sync. Translate 'history' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=59c3162. Translate 'and more' so that it conveys that there are additional similar items that are not listed. Used in the tangible sync confirmation page.">
         History and more
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_INFO_DESC" desc="Description in the information about sync and information about customizing Sync settings on the tangible sync confirmation page">
+      <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_INFO_DESC" desc="This string appears in the footer on a screen that asks users if they want to turn on sync. This string informs the user that if they choose to sync, then their history may be used to personalize Search and other services. Translate 'history' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=59c3162">
         You can always choose what to sync in settings. Brave may personalize Search and other services based on your history.
       </message>
 
       <!--  Sync Confirmation section of the Signin Intercept first run experience flow -->
-      <message name="IDS_SYNC_CONFIRMATION_WELCOME_TITLE_SIGNIN_INTERCEPT" desc="Title of the sync confirmation dialog in the Signin Intercept flow, after the user creates a new profile through this flow.">
+      <message name="IDS_SYNC_CONFIRMATION_WELCOME_TITLE_SIGNIN_INTERCEPT" desc="This string appears as a heading on a pop-up dialog that shows up after users create a new profile. It welcomes users. The tone should be friendly and inviting.">
         Welcome, <ph name="USERNAME">$1<ex>Bob</ex></ph>
       </message>
       <message name="IDS_SYNC_CONFIRMATION_SYNC_INFO_SIGNIN_INTERCEPT" desc="Information about sync on the sync confirmation dialog in the Signin Intercept flow. The second string is an exact copy of IDS_SYNC_CONFIRMATION_SYNC_INFO_DESC with a period at the end.">
         Turn on sync to get your bookmarks, passwords, history, and more on this device and anywhere else you're syncing. Brave may use your history to personalize Search and other Brave services.
       </message>
       <if expr="not use_titlecase">
-        <message name="IDS_SYNC_CONFIRMATION_TURN_ON_SYNC_BUTTON_LABEL" desc="Label of the confirmation button in the sync confirmation dialog of the Signin Intercept flow">
+        <message name="IDS_SYNC_CONFIRMATION_TURN_ON_SYNC_BUTTON_LABEL" desc="This string appears as a button on a dialog that asks users if they want to turn on sync. When the user taps this button, they are opting in to the sync feature. 'Sync' is short for 'synchronization'.">
           Turn on sync
         </message>
       </if>
       <if expr="use_titlecase">
-        <message name="IDS_SYNC_CONFIRMATION_TURN_ON_SYNC_BUTTON_LABEL" desc="In Title Case: Label of the confirmation button in the sync confirmation dialog of the Signin Intercept flow">
+        <message name="IDS_SYNC_CONFIRMATION_TURN_ON_SYNC_BUTTON_LABEL" desc="In Title Case: This string appears as a button on a dialog that asks users if they want to turn on sync. When the user taps this button, they are opting in to the sync feature. 'Sync' is short for 'synchronization'.">
           Turn On Sync
         </message>
       </if>
@@ -12030,6 +12097,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DEVICE_LOG_TYPE_GEOLOCATION" desc="Checkbox to enable showing events of type Geolocation">
         Geolocation
       </message>
+      <message name="IDS_DEVICE_LOG_TYPE_EXTENSIONS" desc="Checkbox to enable showing events reported by extensions">
+        Extensions
+      </message>
       <message name="IDS_DEVICE_LOG_FILEINFO" desc="File info checkbox in device event log">
         File Info
       </message>
@@ -13752,154 +13822,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Settings
     </message>
 
-    <!-- Privacy Sandbox Dialog M1 strings -->
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_TITLE" translateable="false" desc="Title of privacy sandbox consent dialog">
-      Lorem ipsum Consent
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_DESCRIPTION_1" translateable="false" desc="First part of description in privacy sandbox consent dialog">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium pulvinar metus non mollis. Quisque placerat eget nisl sit amet facilisis.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_DESCRIPTION_2" translateable="false" desc="Second part of description in privacy sandbox consent dialog">
-      Nulla in tortor a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit. Integer et libero id metus egestas consequat non a ipsum.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_DESCRIPTION_3" translateable="false" desc="Third part of description in privacy sandbox consent dialog">
-      Vestibulum pretium placerat justo vel suscipit. Quisque urna arcu, elementum ut venenatis ornare, consequat ac turpis.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_LEARN_MORE_EXPAND_LABEL" translateable="false" desc="Learn more expand label in privacy sandbox consent dialog">
-      Vestibulum orci risus, consectetur
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_DESCRIPTION_4" translateable="false" desc="Forth part of description in privacy sandbox consent dialog">
-      Vestibulum pretium placerat justo vel suscipit. Quisque urna arcu, elementum ut venenatis ornare, consequat ac turpis.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_SAVING_LABEL" translateable="false" desc="Saving state label in privacy sandbox consent dialog">
-      Consectetur
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_ACCEPT_BUTTON" translateable="false" desc="Accept button label in privacy sandbox consent dialog">
-      Quisque
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_DECLINE_BUTTON" translateable="false" desc="Decline button label in privacy sandbox consent dialog">
-      Lorem
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_LEARN_MORE_HEADING" translateable="false" desc="Learn more heading in privacy sandbox consent dialog">
-      Esed purus vestibulum velit convalli
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_LEARN_MORE_BULLET_1" translateable="false" desc="Learn more bullet point 1 in privacy sandbox consent dialog">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Nulla in tortor: <ph name="END_BOLD">&lt;/b&gt;</ph> a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_LEARN_MORE_BULLET_2" translateable="false" desc="Learn more bullet point 2 in privacy sandbox consent dialog">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Consectetur adipiscing elit:<ph name="END_BOLD">&lt;/b&gt;</ph> Duis pretium pulvinar metus non mollis
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_LEARN_MORE_BULLET_3" translateable="false" desc="Learn more bullet point 3 in privacy sandbox consent dialog">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Sed purus vestibulum:<ph name="END_BOLD">&lt;/b&gt;</ph> velit convallis suscipit. Aenean aliquam ut velit eget dapibus. Vestibulum orci risus, consectetur non odio vulputate, mattis dignissim purus. Cras id tempor mi.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_LEARN_MORE_LINK" translateable="false" desc="Learn more link in privacy sandbox consent dialog">
-      Esed purus vestibulum velit convalli
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_CONSENT_BANNER_IMAGE_A11Y_DESCRIPTION" translateable="false" desc="A11y description for the banner image in privacy sandbox consent dialog">
+    <!-- Privacy Sandbox Consent Dialog M1 strings -->
+    <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_BANNER_IMAGE_A11Y_DESCRIPTION" translateable="false" desc="A11y  description for the banner image in privacy sandbox consent dialog">
       Sed ullamcorper, ligula ac tempus venenatis
     </message>
 
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_TITLE" translateable="false" desc="Title of privacy sandbox notice EEA dialog">
-      Lorem ipsum Notice EEA
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_DESCRIPTION_1" translateable="false" desc="First part of description in privacy sandbox notice EEA dialog">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium pulvinar metus non mollis. Quisque placerat eget nisl sit amet facilisis.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_BULLET_1" translateable="false" desc="First bullet point in the description in privacy sandbox notice EEA dialog">
-      Nulla in tortor: a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_BULLET_2" translateable="false" desc="Second bullet point in the description in privacy sandbox notice EEA dialog">
-      Sed purus vestibulum: velit convallis suscipit. Aenean aliquam ut velit eget dapibus. Vestibulum orci risus, consectetur non odio vulputate, mattis dignissim purus. Cras id tempor mi.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_LEARN_MORE_EXPAND_LABEL" translateable="false" desc="Learn more expand label in privacy sandbox notice EEA dialog">
-      Vestibulum orci risus, consectetur
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_DESCRIPTION_2" translateable="false" desc="Second part of description in privacy sandbox notice EEA dialog">
-      Consectetur adipiscing elit duis pretium pulvinar metus non mollis
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_ACK_BUTTON" translateable="false" desc="Acknowledge button label in privacy sandbox notice EEA dialog">
-      Sed
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_SETTINGS_BUTTON" translateable="false" desc="Open settings button label in privacy sandbox notice EEA dialog">
-      Cras id
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_LEARN_MORE_HEADING_1" translateable="false" desc="Learn more first heading in privacy sandbox notice EEA dialog">
-      Esed purus vestibulum velit convalli
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_LEARN_MORE_DESCRIPTION" translateable="false" desc="Learn more description in privacy sandbox notice EEA dialog">
-      Nulla in tortor a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit. Integer et libero id metus egestas consequat non a ipsum.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_LEARN_MORE_HEADING_2" translateable="false" desc="Learn more second heading in privacy sandbox notice EEA dialog">
-      Proin sed purus vestibulum velit velit eget dapibus.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_LEARN_MORE_BULLET_1" translateable="false" desc="Learn more bullet point 1 in privacy sandbox notice EEA dialog">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Nulla in tortor:<ph name="END_BOLD">&lt;/b&gt;</ph> a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_LEARN_MORE_BULLET_2" translateable="false" desc="Learn more bullet point 2 in privacy sandbox notice EEA dialog">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Consectetur adipiscing elit:<ph name="END_BOLD">&lt;/b&gt;</ph> Duis pretium pulvinar metus non mollis
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_EEA_LEARN_MORE_BULLET_3" translateable="false" desc="Learn more bullet point 3 in privacy sandbox notice EEA dialog">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Sed purus vestibulum:<ph name="END_BOLD">&lt;/b&gt;</ph> velit convallis suscipit. Aenean aliquam ut velit eget dapibus. Vestibulum orci risus, consectetur non odio vulputate, mattis dignissim purus. Cras id tempor mi.
-    </message>
-
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_TITLE" translateable="false" desc="Title of privacy sandbox notice ROW dialog">
-       Lorem ipsum Notice ROW
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_DESCRIPTION_1" translateable="false" desc="First part of description in privacy sandbox notice ROW dialog">
-       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pretium pulvinar metus non mollis.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_DESCRIPTION_2" translateable="false" desc="Second part of description in privacy sandbox notice ROW dialog">
-      Nulla in tortor a ligula scelerisque laoreet. Sed sem velit, varius non purus vitae, imperdiet porttitor elit. Integer et libero id metus egestas consequat non a ipsum. Quisque placerat eget nisl sit amet facilisis.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_DESCRIPTION_3" translateable="false" desc="Third part of description in privacy sandbox notice ROW dialog">
-      Vestibulum pretium placerat justo vel suscipit. Quisque urna arcu, elementum ut venenatis ornare, consequat ac turpis. Vestibulum orci risus, consectetur non odio vulputate, mattis dignissim purus. Cras id tempor mi.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_DESCRIPTION_4" translateable="false" desc="Fourth part of description in privacy sandbox notice ROW dialog">
-      Proin sed purus vestibulum velit convallis suscipit eget dapibus.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_ACK_BUTTON" translateable="false" desc="Acknowledge button label in privacy sandbox notice EEA dialog">
-      Sed
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_SETTINGS_BUTTON" translateable="false" desc="Open settings button label in privacy sandbox notice EEA dialog">
-      Cras id
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_EXPAND_LABEL" translateable="false" desc="Learn more expand label in privacy sandbox notice ROW dialog">
-      Vestibulum orci risus consectetur
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_HEADING_1" translateable="false" desc="Learn more first heading in privacy sandbox notice ROW dialog">
-      Esed purus vestibulum velit convalli
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_1" translateable="false" desc="First part of learn more description in privacy sandbox notice ROW dialog">
-      Etiam dictum sem et neque molestie lobortis. Morbi quam tellus, tincidunt eget dapibus ac, lobortis et lacus. Integer nec egestas elit. Nulla venenatis facilisis dui eget suscipit.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_HEADING_2" translateable="false" desc="Learn more second heading in privacy sandbox notice ROW dialog">
-      Class aptent taciti sociosqu ad
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_2" translateable="false" desc="Second part of learn more description in privacy sandbox notice ROW dialog">
-      Vestibulum pretium placerat justo vel suscipit. Quisque urna arcu.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_BULLET_1" translateable="false" desc="Learn more bullet point 1 in privacy sandbox notice ROW dialog">
-      Sed elementum tellus condimentum quam vestibulum lacinia. Ut eu lobortis massa, venenatis sodales lacus. Nulla elementum magna et tortor efficitur, at volutpat metus varius.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_BULLET_2" translateable="false" desc="Learn more bullet point 2 in privacy sandbox notice ROW dialog">
-      Duis tempor nulla nisi, ac bibendum lorem tempus sit amet. Proin non blandit risus. Maecenas facilisis enim nec tristique tristique. Eelementum ut venenatis ornare, consequat ac turpis. Vestibulum orci risus, consectetur non odio vulputate, mattis dignissim purus. Cras id tempor mi.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_3" translateable="false" desc="Third part of learn more description in privacy sandbox notice ROW dialog">
-      Etiam hendrerit turpis nibh, ac maximus lectus placerat at. Vivamus ligula quam, posuere luctus felis eu, dictum egestas arcu. per conubia nostra, per inceptos himenaeos. Cras ut metus vel est molestie finibus nec ut orci.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_4" translateable="false" desc="Fourth part of learn more description in privacy sandbox notice ROW dialog">
-      Aliquam euismod scelerisque metus, in aliquet est vehicula ut. Curabitur sit amet ligula quis ante maximus gravida non id magna. Pellentesque interdum venenatis leo, at ultrices felis mollis nec. Integer vulputate velit eget mauris lacinia, ut ullamcorper mauris vehicula.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_HEADING_3" translateable="false" desc="Learn more third heading in privacy sandbox notice ROW dialog">
-      Orci varius natoque penatibus et
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_5" translateable="false" desc="Fifth part of description in privacy sandbox notice ROW dialog">
-      Suspendisse at dui pulvinar, rhoncus orci at, porttitor nibh. Curabitur lacinia nulla sem, eu euismod dolor vulputate quis. Duis mattis eros et arcu elementum tempor. Duis pharetra eleifend sagittis.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_6" translateable="false" desc="Sixth part of description in privacy sandbox notice ROW dialog">
-      Cras sed lacus suscipit, efficitur erat nec, semper sapien. Fusce at nunc molestie, elementum augue at, auctor nunc. Sed dui nisi, consectetur sit amet urna vitae, facilisis scelerisque justo.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_M1_NOTICE_ROW_BANNER_IMAGE_A11Y_DESCRIPTION" translateable="false" desc="A11y description for the banner image in privacy sandbox notice ROW dialog">
+    <!-- Privacy Sandbox Notice Dialog M1 strings -->
+    <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_BANNER_IMAGE_A11Y_DESCRIPTION" translateable="false" desc="A11y description for the banner image in privacy sandbox notice ROW dialog">
       Ut venenatis magna nec lacus facilisis
     </message>
 

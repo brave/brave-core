@@ -14,6 +14,9 @@
   <message name="IDS_SETTINGS_MORE_ACTIONS" desc="Tooltip text (shows on hover or for screenreaders) for a button that shows a menu with more actions when clicked or tapped">
     More actions
   </message>
+  <message name="IDS_SETTINGS_OPENS_IN_NEW_TAB" desc="ARIA (accessibility) label describing a link which opens in a new tab.">
+    Opens in new tab
+  </message>
 
   <if expr="not chromeos_ash">
     <message name="IDS_RELAUNCH_CONFIRMATION_DIALOG_BODY" desc="The body of the modal dialog that we show when users click on relaunch and they have open Private windows. The dialog serves to warn the users about losing their Private windows if they proceed with the relaunch.">
@@ -76,6 +79,12 @@
   </message>
   <message name="IDS_SETTINGS_ACCESSIBLE_IMAGE_LABELS_SUBTITLE" desc="Subtitle for screen reader image labels feature.">
     If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave.
+  </message>
+  <message name="IDS_SETTINGS_PDF_OCR_TITLE" desc="Description for screen reader pdf ocr feature.">
+    Convert images to text
+  </message>
+  <message name="IDS_SETTINGS_PDF_OCR_SUBTITLE" desc="Subtitle for screen reader pdf ocr feature.">
+    Scan PDF images to convert text for screen reader when necessary
   </message>
   <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_TITLE" desc="Name of the setting to enable Live Caption feature.">
     Live Caption
@@ -441,6 +450,12 @@
   </message>
   <message name="IDS_SETTINGS_CREDIT_CARD_NICKNAME_INVALID" desc="The error message that is shown when user uses digit numbers in credit card nickname">
     Nickname can’t include numbers
+  </message>
+  <message name="IDS_SETTINGS_ADD_PAYMENT_METHOD_CREDIT_OR_DEBIT_CARD" desc="The label that appears in the drop-down selector when adding a local payment method, which allows users to add a credit or debit card.">
+    Credit/Debit card
+  </message>
+  <message name="IDS_SETTINGS_ADD_PAYMENT_METHOD_IBAN" desc="The label that appears in the drop-down selector when adding a local payment method, which allows users to add an IBAN.">
+    IBAN
   </message>
   <message name="IDS_SETTINGS_UPI_ID_LABEL" desc="A label which appears next to UPI IDs, when they are listed as stored payment info, but it is visually separate from the UPI ID. It lets the user know this is a UPI ID (e.g. as opposed to a credit card number). UPI is a system for payments in India. A UPI ID is an email-like string.">
     UPI ID
@@ -1341,12 +1356,6 @@
   <message name="IDS_SETTINGS_CLEAR_PERIOD_EVERYTHING" desc="The option to delete browsing data from the beginning of time.">
     All time
   </message>
-  <message name="IDS_SETTINGS_CLEAR_INSTALLED_APPS_DATA_TITLE" desc="Text for title of the important sites dialog.">
-    Also clear data from these apps?
-  </message>
-  <message name="IDS_SETTINGS_CLEAR_INSTALLED_APPS_DATA_CONFIRM" desc="Text for confirmation button of the important sites dialog.">
-    Clear
-  </message>
   <message name="IDS_SETTINGS_NOTIFICATION_WARNING" desc="A warning that notifications will be disabled by deleting cookies for this site.">
     Notifications will be disabled
   </message>
@@ -1540,8 +1549,14 @@
     <message name="IDS_SETTINGS_LANGUAGES_NO_LANGUAGES_ADDED" desc="Placeholder for language list settings when no languages have been added, on the Manage Languages page.">
       No languages added
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_REMOVE_ARIA_LABEL" desc="Text read by screen readers when focusing on the trash can icon for removing a language. Activating this button will remove the selected language from its current list. This text only announced by screen readers and is not visible in the UI.">
-      Remove <ph name="LANGUAGE_NAME">$1<ex>Swahili</ex></ph>
+    <message name="IDS_SETTINGS_LANGUAGES_ADD_ARIA_LABEL" desc="Text read by screen readers when focusing on the checkbox for adding a language. This text is only announced by screen readers and is not visible in the UI.">
+      Add <ph name="LANGUAGE_NAME">$1<ex>Swahili</ex></ph>
+    </message>
+    <message name="IDS_SETTINGS_LANGUAGES_REMOVE_AUTOMATIC_ARIA_LABEL" desc="Text read by screen readers when focusing on the remove icon for automatiaclly translated languages. Activating this button will remove the selected language. This text only announced by screen readers and is not visible in the UI.">
+      Remove <ph name="LANGUAGE_NAME">$1<ex>Swahili</ex></ph> from automatically translated languages
+    </message>
+    <message name="IDS_SETTINGS_LANGUAGES_REMOVE_NEVER_ARIA_LABEL" desc="Text read by screen readers when focusing on the remove icon for never offer translate languages. Activating this button will remove the selected language. This text only announced by screen readers and is not visible in the UI.">
+      Remove <ph name="LANGUAGE_NAME">$1<ex>Swahili</ex></ph> from never offer translation languages
     </message>
     <message name="IDS_SETTINGS_TRANSLATE_PAGE_TITLE" desc="Name of the settings page which displays translate preferences.">
       Brave Translate
@@ -1867,21 +1882,13 @@
     Disabled Vivamus id lacus et lacus porttitor vulputate. Sed semper egestas orci vel maximus.
   </message>
 
-  <!-- Privacy Sandbox Settings 4 - Topics Page -->
-  <message name="IDS_SETTINGS_TOPICS_PAGE_TITLE" translateable="false" desc="Title for the Topics preferences page.">
-    Mauris interdum lectus vitae lacinia
-  </message>
-  <message name="IDS_SETTINGS_TOPICS_PAGE_TOGGLE_LABEL" translateable="false" desc="Label for the toggle in the Topics preferences page.">
-    Nunc gravida condimentum consectetur
-  </message>
-  <message name="IDS_SETTINGS_TOPICS_PAGE_TOGGLE_SUB_LABEL" translateable="false" desc="Subabel for the toggle in the Topics preferences page.">
-    Vivamus nibh turpis, varius quis nisi vel, porta laoreet tellus. Mauris porta imperdiet venenatis
-  </message>
-  <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_HEADING" translateable="false" desc="Section title for the current Topics list underneath toggle in the Topics preferences page.">
-    Mauris at lectus
-  </message>
+  <!-- Privacy Sandbox v4 - Topics Page -->
+  <!-- Where possible, these strings have been unified on Desktop & Android in privacy_sandox_strings.grdp. The strings here either only appear on one platform, or have platform specific requirements, e.g. the format of placeholders, and so cannot be unified. For the latter case, they have corresponding _CANONICAL representations used when consent is recorded on either platform, and so they must stay in sync -->
   <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_DESCRIPTION" translateable="false" desc="Section description for the current Topics list in the Topics preferences page.">
-    Nulla tincidunt iaculis nulla, sit amet viverra massa luctus nec. Integer eget pellentesque magna, et venenatis lorem. Integer a porta elit. Eget bibendum neque.
+    Nulla tincidunt iaculis nulla, sit amet viverra massa luctus nec. Integer eget pellentesque magna, et venenatis lorem. Integer a porta elit.
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_DESCRIPTION_LEARN_MORE_A11Y_LABEL" translateable="false" desc="A11y label for the clickable section of the description ('Learn more') for the current Topics list in the Topics preferences page.">
+    A11y label. Nulla tincidunt iaculis nulla, sit amet viverra massa luctus nec. Integer eget pellentesque magna, et venenatis lorem. Integer a porta elit.
   </message>
   <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_DESCRIPTION_DISABLED" translateable="false" desc="Section description for the current Topics list when Topics is disabled in the Topics preferences page.">
     Sed porta viverra lacus ut euismod. Integer a cursus metus, ac ultricies libero.
@@ -1889,10 +1896,73 @@
   <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_DESCRIPTION_EMPTY" translateable="false" desc="Section description for the current Topics list when the Topics list is empty in the Topics preferences page.">
     Curabitur sagittis sapien ut turpis interdum, vitae porttitor sem pretium. Vestibulum sem mauris, ultrices ac massa sit amet, sodales aliquet est.
   </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_CURRENT_TOPICS_DESCRIPTION_LEARN_MORE_LINK" translateable="false" desc="Text for the clickable section of the description ('Learn more') for the current Topics list in the Topics preferences page.">
+    Eget bibendum neque.
+  </message>
+  <message name="IDS_SETTINGS_TOPICS_PAGE_FOOTER" translateable="false" desc="Footer with more information at the bottom of the Topics preferences page.">
+    Quisque eu auctor purus, id tempus nulla. Pellentesque porta orci purus. Donec dictum, <ph name="BEGIN_LINK1">&lt;a href="$1" target="_blank"&gt;</ph>justo nec ultricies semper<ph name="LINK_END1">&lt;/a&gt;</ph>, eros mauris varius nibh, <ph name="BEGIN_LINK2">&lt;a href="$2" target="_blank"&gt;</ph>sit amet molestie quam<ph name="LINK_END2">&lt;/a&gt;</ph> arcu id urna. Donec vulputate dui ut lorem egestas, ac sollicitudin metus fermentum.
+  </message>
 
   <!-- Privacy Sandbox Settings 4 - Fledge Page -->
   <message name="IDS_SETTINGS_FLEDGE_PAGE_TITLE" translateable="false" desc="Title for the Fledge preferences page.">
     Aenean erat leo
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_TOGGLE_LABEL" translateable="false" desc="Label for the toggle in the Fledge preferences page.">
+    Nunc aliquam consequat felis non tincidunt
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_TOGGLE_SUB_LABEL" translateable="false" desc="Subabel for the toggle in the Fledge preferences page.">
+    Donec pretium non elit vitae ornare. Morbi arcu elit, rutrum nec sapien quis, tristique tristique ante.
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_HEADING" translateable="false" desc="Section title for the current sites list underneath toggle in the FLEDGE preferences page.">
+    Aliquam
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_DESCRIPTION" translateable="false" desc="Section description for the current sites list in the FLEDGE preferences page.">
+    Nullam sollicitudin elit vitae hendrerit suscipit. Nunc mi leo, placerat sit amet lorem non, semper convallis sapien.
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_DESCRIPTION_LEARN_MORE" translateable="false" desc="Text for the clickable section of the description ('Learn more') for the current sites list in the FLEDGE preferences page.">
+    Learn More
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_DESCRIPTION_DISABLED" translateable="false" desc="Section description for the current sites list when FLEDGE is disabled in the FLEDGE preferences page.">
+    Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_DESCRIPTION_EMPTY" translateable="false" desc="Section description for the current sites list when the sites list is empty in the FLEDGE preferences page.">
+    Morbi quis orci in mauris tempus rutrum. Curabitur blandit orci tortor, pellentesque tempor turpis lacinia ac.
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_SEE_ALL_SITES_LABEL" translateable="false" desc="Label for the expand button which shows the rest of the sites list in the FLEDGE preferences page.">
+    Donec non mi
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCK_SITE" translateable="false" desc="String on the button to block a site in the FLEDGE preferences page.">
+    Pellent
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCKED_SITES_HEADING" translateable="false" desc="Section title for the blocked sites list in the FLEDGE preferences page.">
+    Curabitur a pharetra
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCKED_SITES_DESCRIPTION" translateable="false" desc="Section description for the blocked sites list in the FLEDGE preferences page.">
+    Vivamus ultrices libero purus, quis gravida risus tristique eu. Integer nunc mi, feugiat a pharetra et.
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_BLOCKED_SITES_DESCRIPTION_EMPTY" translateable="false" desc="Section description for the blocked sites list when there are no blocked sites in the FLEDGE preferences page.">
+    Vivamus non urna sit amet turpis euismod semper. Phasellus sodales turpis ipsum.
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_ALLOW_SITE" translateable="false" desc="String on the button to re-allow a site in the FLEDGE preferences page.">
+    Aenean
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_FOOTER" translateable="false" desc="Footer with more information at the bottom of the FLEDGE preferences page.">
+    Pellentesque sollicitudin purus sit amet felis fringilla blandit. Donec a eleifend ligula, <ph name="BEGIN_LINK1">&lt;a href="$1" target="_blank"&gt;</ph>et fringilla nunc<ph name="LINK_END1">&lt;/a&gt;</ph>. Vivamus sit amet cursus quam. <ph name="BEGIN_LINK2">&lt;a href="$2" target="_blank"&gt;</ph>Etiam ultricies rutrum orci<ph name="LINK_END2">&lt;/a&gt;</ph>, eget accumsan purus mattis in.
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_LEARN_MORE_HEADING" translateable="false" desc="Heading on 'Learn more' dialog in the FLEDGE preferences page.">
+    Nam a ornare ligula, nec auctor enim
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_LEARN_MORE_BULLET_1" translateable="false" desc="First bullet on 'Learn more' dialog in the FLEDGE preferences page.">
+    Nullam egestas neque felis, ut tincidunt sapien hendrerit eget. Mauris nec nisi id sapien tristique condimentum.
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_LEARN_MORE_BULLET_2" translateable="false" desc="Second bullet on 'Learn more' dialog in the FLEDGE preferences page.">
+    Phasellus tincidunt magna leo, pulvinar mollis mi finibus id. Aliquam suscipit porta dui id tincidunt. Aenean lacus est, venenatis eget mi quis, consequat tincidunt mauris.
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_LEARN_MORE_BULLET_3" translateable="false" desc="Third bullet on 'Learn more' dialog in the FLEDGE preferences page.">
+    In hac habitasse platea dictumst. Mauris sit amet nibh sollicitudin, fermentum quam vel, pharetra nisi. Nam a ornare ligula, nec auctor enim. Quisque dictum convallis nibh, non dictum nunc efficitur vitae.
+  </message>
+  <message name="IDS_SETTINGS_FLEDGE_PAGE_CURRENT_SITES_DESCRIPTION_LEARN_MORE_A11Y_LABEL" translateable="false" desc="A11y label for the clickable section of the description ('Learn more') for the current sites list in the FLEDGE preferences page.">
+    A11y label. Nullam sollicitudin elit vitae hendrerit suscipit. Nunc mi leo, placerat sit amet lorem non, semper convallis sapien.
   </message>
 
   <!-- Privacy Sandbox Settings 4 - Ad Measurement Page -->
@@ -1990,9 +2060,6 @@
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_MSBB_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of 'make searches and browsing better' in the 'Privacy Guide'.">
     URLs you visit are sent to Brave to predict what sites you might visit next
-  </message>
-  <message name="IDS_SETTINGS_PRIVACY_GUIDE_CLEAR_ON_EXIT_CARD_HEADER" desc="Header of the 'clear cookies on exit' card in the 'Privacy Guide'.">
-    Review automatic data clearing
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_HISTORY_SYNC_CARD_HEADER" desc="Header of the history sync card in the 'Privacy Guide'.">
     Choose whether to sync history
@@ -3267,6 +3334,18 @@
   <message name="IDS_SETTINGS_COOKIES_PAGE" desc="Title of the cookies settings page">
     Cookies and other site data
   </message>
+  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_LINK_ROW_LABEL" desc="Label of the link row that leads to the third-party cookies page" translateable="false">
+    Nam condimentum
+  </message>
+  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_LINK_ROW_SUB_LABEL_ENABLED" desc="Subabel for third-party cookies link row stating that third-party cookies are allowed with no exceptions" translateable="false">
+    Enabled Vestibulum ante mi, feugiat eget velit id
+  </message>
+  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_LINK_ROW_SUB_LABEL_DISABLED_INCOGNITO" desc="Subabel for third-party cookies link row stating that third-party cookies are disabled in private mode with no exceptions" translateable="false">
+    Disabled Private Vestibulum ante mi, feugiat eget velit id
+  </message>
+  <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_LINK_ROW_SUB_LABEL_DISABLED" desc="Subabel for third-party cookies link row stating that third-party cookies are disabled with no exceptions" translateable="false">
+    Disabled Vestibulum ante mi, feugiat eget velit id
+  </message>
   <message name="IDS_SETTINGS_COOKIES_CONTROLS" desc="Title of the general cookies control section.">
     General settings
   </message>
@@ -3293,6 +3372,9 @@
   </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_TWO" desc="Description for the first bullet of block third party cookies in Private radio toggle">
     While in Private, sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may not work.
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_TWO_FPS" desc="Description for the first bullet of block third party cookies in Private radio toggle">
+    While in Private, sites can't use your cookies to see your browsing activity across sites, even related sites. Your browsing activity isn't used for things like personalizing ads. Features on some sites may not work.
   </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY" desc="Label for block third party cookies radio toggle">
     Block third-party cookies
@@ -3686,6 +3768,9 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_CLEAR_STORAGE_OFFLINE_DATA" desc="Text for the dialog that warns about loss of offline data when clearing all storage data.">
     Any offline data will be cleared
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_AD_PERSONALIZATION" translateable="false" desc="Text for the dialog that warns about loss of the data that affects ad personalization when clearing all storage data.">
+    Nunc pulvinar, orci sed ullamcorper varius, nunc velit eleifend quam, a commodo lacus elit id tortor
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_CLEAR_STORAGE_APPS" desc="Text for the dialog that warns about loss of offline data for installed app when clearing all storage data for site.">
     Offline data in installed app will also be cleared
   </message>
@@ -3791,14 +3876,85 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_NO_SITES_FOUND" desc="Explanation shown when there are no matching search results on All Sites page.">
     No sites found
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_SCANNING_ASK" desc="The label that is used to show the Bluetooth scanning setting is set to ask in site settings.">
-    Ask when a site wants to discover nearby Bluetooth devices
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_SCANNING_DESCRIPTION" desc="Description text on the page controlling whether sites can use Bluetooth scanning.">
+    Sites usually look for Bluetooth devices for features like setting up or syncing a low-energy beacon, a health or fitness tracker, or a smart light bulb
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_SCANNING_ASK_RECOMMENDED" desc="The label that is used to show the Bluetooth scanning setting is set to ask (with the 'recommended' suffix) in site settings.">
-    Ask when a site wants to discover nearby Bluetooth devices (recommended)
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_SCANNING_ASK" desc="The label that is used to show the Bluetooth scanning setting is set to ask in site settings.">
+    Sites can ask to look for Bluetooth devices
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_SCANNING_BLOCK" desc="The label that is used to show the Bluetooth scanning setting is set to block in site settings.">
-    Do not allow any site to discover nearby Bluetooth devices
+    Don't allow sites to look for Bluetooth devices
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_SCANNING_ALLOWED_EXCEPTIONS" desc="The label for the section that displayed sites that are always allowed to use bluetooth scanning.">
+    Allowed to look for Bluetooth devices
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_SCANNING_BLOCKED_EXCEPTIONS" desc="The label for the section that displayed sites that are never allowed to use bluetooth scanning.">
+    Not allowed to look for Bluetooth devices
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_EXTENSION_ID_DESCRIPTION" desc="Description for an extension using its extension id.">
+    ID: <ph name="EXTENSION_ID">$1<ex>mhabknllooicelmdboebjilbohdbihln</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_PAGE_SITE_DATA_ALLOWED_SUB_LABEL" desc="1 of 3 possible states for the On-device site data setting. This text appears beneath the 'On-device site data' label and shows the user the state of the setting. With this status, sites have the most flexibility.">
+    Sites can save data on your device
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_PAGE_SITE_DATA_BLOCKED_SUB_LABEL" desc="2 of 3 possible states for the On-device site data setting. This text appears beneath the 'On-device site data' label and shows the user the state of the setting. With this status, sites have the least flexibility.">
+    Sites aren't allowed to save data on your device
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_PAGE_SITE_DATA_CLEAR_ON_EXIT_SUB_LABEL" desc="3 of 3 possible states for the On-device site data setting. This text appears beneath the 'On-device site data' label and shows the user the state of the setting. With this status, data stored on the user's device is deleted each time the user closes all Brave windows.">
+    Site data is cleared from your device when you close all windows
+  </message>
+
+  <!-- Site Settings - Site Data Page-->
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_TITLE" desc="A page title for a new page. What is 'On-device site data'? When you interact with a site, that site can remember things about what you do. For example, you might place a pair of shoes in a shopping cart, close down your browser, and find those same shoes in your shopping cart when you visit the same site a week later. Sometimes that info is saved in the Cloud. Sometimes that info is saved on the user's device. There are several ways a site can save info to the user's device—for example, with cookies (text files saved to your device), small JavaScript databases, and even Brave's new ad settings that are part of the Privacy Sandbox project (see details below). This page introduces the concept of on-device site data, allows the user to see which sites are using it, and allows the user to delete all saved data or just data from specific sites.">
+    On-device site data
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_DESCRIPTION" desc="A paragraph that appear beneath the page title: 'On-device site data'. It defines what on-device site data is. What is 'On-device site data'? When you interact with a site, that site can remember things about what you do. For example, you might place a pair of shoes in a shopping cart, close down your browser, and find those same shoes in your shopping cart when you visit the same site a week later. Sometimes that info is saved in the Cloud. Sometimes that info is saved on the user's device. There are several ways a site can save info to the user's device—for example, with cookies (text files saved to your device), small JavaScript databases, and even Brave's new ad settings that are part of the Privacy Sandbox project (see details below). This page introduces the concept of on-device site data, allows the user to see which sites are using it, and allows the user to delete all saved data or just data from specific sites. **** CONTEXT PRIVACY SANDBOX **** Brave's Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com.">
+    A site you visit can save info about what you're doing so that it works as you would expect — for example, to keep you signed in to a site or to save items in your shopping cart. Often sites save this info temporarily on your device.
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_DEFAULT_BEHAVIOR_HEADING" desc="A label on a permissions page. For example, see the Microphone permission at chrome://settings/content/microphone.">
+    Default behavior
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_DEFAULT_BEHAVIOR_DESCRIPTION" desc="A description of what 'Default behavior' means. For example, see the Microphone permission at chrome://settings/content/microphone.">
+    Sites automatically follow this setting when you visit them
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_ALLOW_RADIO_LABEL" desc="1 of 3 choices the user has regarding the 'default behavior' of the 'On-device site data' setting. This offers sites the most flexibility.">
+    Allow sites to save data on your device
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_ALLOW_RADIO_SUB_LABEL" desc="A description of the benefit/cost of choosing 'Sites can save content on your device'.">
+    Sites are more likely to work as you would expect
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_CLEAR_ON_EXIT_RADIO_LABEL" desc="2 of 3 choices the user has regarding the 'default behavior' of the 'On-device site data' setting.">
+    Delete data sites have saved to your device when you close all windows
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_BLOCK_RADIO_LABEL" desc="3 of 3 choices the user has regarding the 'default behavior' of the 'On-device site data' setting. We include 'not recommended' because the user could have a poor experience with any given site. Imagine getting prompted to sign in again every time you click a link?">
+    Don't allow sites to save data on your device (not recommended)
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_BLOCK_RADIO_SUB_LABEL" desc="A description of the benefit/cost of choosing 'Sites can save content on your device. * 'don't want to leave information on your device': We think that most users should allow all on-device site data because sites might break if they don't. But there are cases for which this info could prove harmful. Imagine a case of domestic abuse and a tech-savvy partner who can go into Brave settings and find saved information about the activity of their partner. Or a journalist working in a sensitive environment. We want to convey the value of this option without alarming users.">
+    Sites may not work as you would expect. Choose this option if you don't want to leave information on your device about sites you visit.
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_CUSTOMIZED_BEHAVIOR_HEADING" desc="A label on a permissions page. For example, see the Microphone permission at chrome://settings/content/microphone.">
+    Customized behaviors
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_CUSTOMIZED_BEHAVIOR_DESCRIPTION" desc="A description of 'customized behaviors' that appear beneath the 'Customized behaviors' title. For example, see the Microphone permission at chrome://settings/content/microphone.">
+    Sites listed below follow a custom setting instead of the default
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_ALLOW_EXCEPTIONS_SUB_HEADING" desc="1 of 3. A label within 'Customized behaviors' that allows for exceptions to the 'On-device site data' setting. This label and the list of sites that can appear beneath it is only relevant if the user has chosen to not allow 'on-device site data' as the default value above.">
+    Allowed to save data on your device
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_BLOCK_EXCEPTIONS_SUB_HEADING" desc="3 of 3. A label within 'Customized behaviors' that allows for exceptions to the 'On-device site data' setting. This label and the list of sites that can appear beneath it is only relevant if the user has chosen to allow 'on-device site data' as the default value above.">
+    Not allowed to save data on your device
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_BLOCK_CONFIRM_DIALOG_TITLE" desc="The title of a dialog box that appears if the user chooses 'Don't allow sites to save data on your device (not recommended)'. This dialog essentially serves as a 'are you sure?' reminder.">
+    Sites you visit may stop working as designed
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_BLOCK_CONFIRM_DIALOG_DESCRIPTION" desc="A paragraph beneath the 'Sites you visit may stop working as designed' title on a dialog box that appears when a user chooses 'Don't allow sites to save data on your device (not recommended)'. We want to convey that sites are generally designed to rely on saving some information about the user. Usually this is benign, but sites can abuse this power, and so we qualify the statement with 'often'.">
+    Most sites you visit probably save data to your device, often to improve your experience by saving your preferences or information you share with the site. We recommend keeping this setting on.
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_BLOCK_CONFIRM_DIALOG_CONFIRM_BUTTON" desc="A button label. The user chose 'Don't allow sites to save data on your device (not recommended)'. As an 'are you sure' moment, we show the user a dialog box titled 'Sites you visit may stop working as designed.'. This string allows the user to confirm their intention to turn this setting off.">
+    Turn off
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_BLOCK_CONFIRM_DIALOG_CANCEL_BUTTON" desc="A button label on the 'Sites you visit may stop working as designed' dialog.">
+    Cancel
   </message>
 
   <message name="IDS_SETTINGS_NO_BLUETOOTH_DEVICES_FOUND" desc="Explanation for not showing Bluetooth devices in site settings.">

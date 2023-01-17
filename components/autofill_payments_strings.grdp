@@ -328,9 +328,6 @@
     <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_INSTRUCTIONS" desc="Text explaining what the user should do in the card unmasking dialog.">
       After you confirm, card details from your Brave sync chain will be shared with this site.
     </message>
-    <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_INSTRUCTIONS_LOCAL_CARD" desc="Text explaining what the user should do in the card unmasking dialog.  Appears specifically for local cards already stored on the device.">
-      Once you confirm, your card details will be shared with this site.
-    </message>
     <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_INSTRUCTIONS_VIRTUAL_CARD" desc="Text providing instructions on how to unmask virtual card.">
       Enter the <ph name="NUMBER_OF_DIGITS">$1<ex>3</ex></ph>-digit security code on the <ph name="SIDE_OF_CARD">$2<ex>back of your card</ex></ph> so your bank can verify it's you
     </message>
@@ -348,14 +345,8 @@
     <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_INSTRUCTIONS" desc="Text explaining what the user should do in the card unmasking dialog.">
       Enter the CVC for <ph name="CREDIT_CARD">$1<ex>Visa - 5679</ex></ph>. After you confirm, card details from your Brave sync chain will be shared with this site.
     </message>
-    <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_INSTRUCTIONS_LOCAL_CARD" desc="Text explaining what the user should do in the card unmasking dialog.  Appears specifically for local cards already stored on the device.">
-      Enter the CVC for <ph name="CREDIT_CARD">$1<ex>Visa - 5679</ex></ph>. Once you confirm, your card details will be shared with this site.
-    </message>
     <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_INSTRUCTIONS_EXPIRED" desc="Text explaining what the user should do in the card unmasking dialog to update an expired card.">
       Enter the expiration date and CVC for <ph name="CREDIT_CARD">$1<ex>Visa - 5679</ex></ph> to update your card details. After you confirm, card details from your Brave sync chain will be shared with this site.
-    </message>
-    <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_INSTRUCTIONS_EXPIRED_LOCAL_CARD" desc="Text explaining what the user should do in the card unmasking dialog to update an expired card.  Appears specifically for local cards already stored on the device.">
-      Enter the expiration date and CVC for <ph name="CREDIT_CARD">$1<ex>Visa - 5679</ex></ph> to update your card details. Once you confirm, your card details will be shared with this site.
     </message>
     <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_CVC_FIELD_TITLE" desc="The name of the field for credit card verification code in the card unmasking dialog. The text field where this is presented can be very narrow, so please prefer to translate this to the most common abbreviated form. [CHAR_LIMIT=4]">
       CVC
@@ -784,6 +775,18 @@
     </message>
     <message name="IDS_AUTOFILL_CREDIT_CARD_CONTINUE_BUTTON" desc="The label of the button, which would fill in the web form with card credentials." formatter_data="android_java">
       Continue
+    </message>
+    <message name="IDS_AUTOFILL_CREDIT_CARD_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string read when the bottom sheet is opened. It describes the bottom sheet where a user can pick a credit card to fill into a form." formatter_data="android_java">
+      List of credit cards to be filled on touch.
+    </message>
+    <message name="IDS_AUTOFILL_CREDIT_CARD_BOTTOM_SHEET_HALF_HEIGHT" desc="Accessibility string read when the bottom sheet showing a list of the user's credit cards is opened at half height. The sheet will occupy the bottom half the screen." formatter_data="android_java">
+      List of credit cards to be filled on touch opened at half height.
+    </message>
+    <message name="IDS_AUTOFILL_CREDIT_CARD_BOTTOM_SHEET_FULL_HEIGHT" desc="Accessibility string read when the bottom sheet showing a list of the user's credit cards is opened at full height. The sheet will occupy the entire screen." formatter_data="android_java">
+      List of credit cards to be filled on touch opened at full height.
+    </message>
+    <message name="IDS_AUTOFILL_CREDIT_CARD_BOTTOM_SHEET_CLOSED" desc="Accessibility string read when the bottom sheet showing a list of the user's credit cards is closed." formatter_data="android_java">
+      List of credit cards is closed.
     </message>
   </if>
 
