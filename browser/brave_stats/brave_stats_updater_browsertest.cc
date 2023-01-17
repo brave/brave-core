@@ -34,6 +34,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
+
 namespace {
 
 // Request handler for stats and referral updates. The response this returns

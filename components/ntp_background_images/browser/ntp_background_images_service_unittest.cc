@@ -725,9 +725,9 @@ TEST_F(NTPBackgroundImagesServiceTest,
   // Make this install has initialized super referral service.
   pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
   pref_service_.SetBoolean(kReferralInitialization, true);
-  pref_service_.SetString(kReferralPromoCode, "BRV001");
   pref_service_.SetBoolean(prefs::kNewTabPageGetInitialSRComponentInProgress,
                            true);
+  pref_service_.SetString(kReferralPromoCode, "BRV001");
 
   EXPECT_TRUE(pref_service_.FindPreference(
       prefs::kNewTabPageCachedSuperReferralComponentInfo)->IsDefaultValue());

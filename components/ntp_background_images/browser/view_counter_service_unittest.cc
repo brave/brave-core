@@ -151,9 +151,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     auto* registry = prefs()->registry();
     ViewCounterService::RegisterProfilePrefs(registry);
     auto* local_registry = local_pref_.registry();
-
     brave::RegisterPrefsForBraveReferralsService(local_registry);
-
     NTPBackgroundImagesService::RegisterLocalStatePrefs(local_registry);
     ViewCounterService::RegisterLocalStatePrefs(local_registry);
 
