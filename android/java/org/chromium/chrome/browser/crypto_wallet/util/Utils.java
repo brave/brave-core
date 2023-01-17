@@ -150,8 +150,6 @@ public class Utils {
     public static final String ADDRESS = "address";
     public static final String NAME = "name";
     public static final String COIN_TYPE = "coinType";
-    public static final String NFT_TOKEN_ID_HEX = "nftTokenIdHex";
-    public static final String NFT_META_DATA = "nftMetaData";
     public static final String ISIMPORTED = "isImported";
     public static final String ISUPDATEACCOUNT = "isUpdateAccount";
     public static final String SWAP_EXCHANGE_PROXY = "0xdef1c0ded9bec7f1a1670819833240f027b25eff";
@@ -260,17 +258,6 @@ public class Utils {
     public static void openBuySendSwapActivity(
             Activity activity, BuySendSwapActivity.ActivityType activityType) {
         openBuySendSwapActivity(activity, activityType, null);
-    }
-
-    public static void openNftDetailActivity(Activity activity, String chainId,
-            BlockchainToken asset, PortfolioModel.NftDataModel nftDataModel) {
-        Intent assetDetailIntent = new Intent(activity, NftDetailActivity.class);
-        assetDetailIntent.putExtra(CHAIN_ID, chainId);
-        assetDetailIntent.putExtra(ASSET_NAME, asset.name);
-        assetDetailIntent.putExtra(ASSET_CONTRACT_ADDRESS, asset.contractAddress);
-        assetDetailIntent.putExtra(NFT_TOKEN_ID_HEX, asset.tokenId);
-        assetDetailIntent.putExtra(NFT_META_DATA, nftDataModel.erc721MetaData);
-        activity.startActivity(assetDetailIntent);
     }
 
     public static void openAssetDetailsActivity(
