@@ -57,6 +57,7 @@ public struct OnboardingBottomBarView: View {
         Text(Strings.Callout.bottomBarCalloutDismissButtonTitle)
           .frame(maxWidth: .infinity, maxHeight: .infinity)
           .font(.title3.weight(.medium))
+          .foregroundColor(Color(.bravePrimary))
       }
       .frame(height: 44)
       .background(Color(.clear))
