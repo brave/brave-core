@@ -492,7 +492,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     case .searchSuggestionsOptIn:
       return footerHeight
     case .openTabsAndHistoryAndBookmarks:
-        return footerHeight
+      return footerHeight
     }
   }
 
@@ -655,6 +655,12 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
         !dataSource.searchQuery.looksLikeAURL() &&
         !dataSource.tabType.isPrivate ? searchSuggestionsCount : 0
     case .openTabsAndHistoryAndBookmarks:
+      // Private Browsing Mode (PBM) should *not* show items from normal mode History etc
+      // when search suggestions is not enabled
+      if Preferences.Privacy.privateBrowsingOnly.value, dataSource.searchEngines?.shouldShowSearchSuggestions == false {
+        return 0
+      }
+      
       return data.count
     case .findInPage:
       if let sd = searchDelegate, sd.searchViewControllerAllowFindInPage() {
