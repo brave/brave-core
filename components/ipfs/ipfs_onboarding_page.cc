@@ -18,13 +18,13 @@
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/common/isolated_world_ids.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -33,8 +33,7 @@ const char16_t kResponseScript[] =
     u"window.postMessage({command: 'ipfs', code: {code}, value: '{value}'}, "
     u"'*') }";
 
-constexpr int kOnboardingIsolatedWorldId =
-    content::ISOLATED_WORLD_ID_CONTENT_END + 1;
+constexpr int kOnboardingIsolatedWorldId = ISOLATED_WORLD_ID_BRAVE_INTERNAL;
 
 // The period in seconds during which we will repeat requests
 // to get connected peers if no peers available
