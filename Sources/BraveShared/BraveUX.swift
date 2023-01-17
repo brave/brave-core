@@ -29,4 +29,9 @@ public struct BraveUX {
   public static let faviconBorderColor = UIColor(white: 0, alpha: 0.2)
   public static let faviconBorderWidth = 1.0 / UIScreen.main.scale
   public static let baseDimensionValue = 450.0
+  
+  /// The apps URL scheme for the current build channel
+  public static var appURLScheme: String {
+    Bundle.main.infoDictionary?["BRAVE_URL_SCHEME"] as? String ?? "brave"
+  }
 }

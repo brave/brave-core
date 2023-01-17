@@ -43,7 +43,7 @@ class ShareToBraveViewController: SLComposeServiceViewController {
       var components = URLComponents()
       let queryItem: URLQueryItem
 
-      components.scheme = "brave"
+      components.scheme = Bundle.main.infoDictionary?["BRAVE_URL_SCHEME"] as? String ?? "brave"
 
       switch type {
       case .url:

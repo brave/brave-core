@@ -6,6 +6,8 @@
 	<string>$(BRAVE_API_KEY)</string>
 	<key>AppIdentifierPrefix</key>
 	<string>$(APP_IDENTIFIER_PREFIX)</string>
+	<key>BRAVE_URL_SCHEME</key>
+	<string>$(BRAVE_URL_SCHEME)</string>
 	<key>CFBundleAllowMixedLocalizations</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -37,7 +39,7 @@
 			<array>
 				<string>http</string>
 				<string>https</string>
-				<string>brave</string>
+				<string>$(BRAVE_URL_SCHEME)</string>
 			</array>
 		</dict>
 	</array>

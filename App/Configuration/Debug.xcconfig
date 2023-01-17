@@ -9,6 +9,7 @@ MOZ_BUNDLE_DISPLAY_NAME = Brave ($(USER))
 
 BRAVE_API_KEY = key
 BRAVE_SERVICES_KEY = key
+BRAVE_URL_SCHEME = brave-debug
 
 // Bundle Identifier
 // MOZ_BUNDLE_ID = set in Local.xconfig
