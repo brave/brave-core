@@ -1,9 +1,9 @@
 diff --git a/ui/webui/resources/cr_elements/cr_elements.gni b/ui/webui/resources/cr_elements/cr_elements.gni
-index 5cbbb4151fbc8ad29c72e0f8c7fc30d558ae9db2..bf36744730cf898ec5cc9ead53ac513c015ac10b 100644
+index e0c7ce6159d57ab3f4a1163c9106944ba5355227..3b72da48f22d710802e2ca42236e0edfe39484e9 100644
 --- a/ui/webui/resources/cr_elements/cr_elements.gni
 +++ b/ui/webui/resources/cr_elements/cr_elements.gni
 @@ -67,6 +67,7 @@ if (include_polymer) {
-     web_component_files_polymer_ts +=
+     web_component_files_polymer +=
          [ "cr_searchable_drop_down/cr_searchable_drop_down.ts" ]
    }
 +  else if (!is_android) { web_component_files_polymer_ts += [ "cr_searchable_drop_down/cr_searchable_drop_down.ts" ] }

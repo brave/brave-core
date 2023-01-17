@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 2fcbaaaac2e34cc04e9c60164df2252afc9326c6..b33c558e61ab7d8ce2dc894510f2aa609a6f9e63 100644
+index 3ec3e142f652891c58b3c0672e4848a342c31a33..0fd4708c6182da7089bb331e429cfd7060276574 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -176,6 +176,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
-     // called from UI, so we don't need a representation JS string.
+@@ -178,6 +178,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      {ContentSettingsType::DEPRECATED_PPAPI_BROKER, nullptr},
      {ContentSettingsType::REVOKED_UNUSED_SITE_PERMISSIONS, nullptr},
+     {ContentSettingsType::TOP_LEVEL_STORAGE_ACCESS, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  };
  
  static_assert(std::size(kContentSettingsTypeGroupNames) ==
-@@ -364,6 +365,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -366,6 +367,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {
