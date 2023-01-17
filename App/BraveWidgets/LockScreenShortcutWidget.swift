@@ -8,6 +8,7 @@ import SwiftUI
 import WidgetKit
 import BraveWidgetsModels
 import Strings
+import BraveShared
 
 struct LockScreenShortcutWidget: Widget {
   var body: some WidgetConfiguration {
@@ -66,7 +67,7 @@ struct LockScreenShortcutView: View {
           .accessibilityLabel(Text(entry.widgetShortcut.displayString))
           .unredacted()
       )
-      .widgetURL(URL(string: "brave://shortcut?path=\(entry.widgetShortcut.rawValue)"))
+      .widgetURL(URL(string: "\(BraveUX.appURLScheme)://shortcut?path=\(entry.widgetShortcut.rawValue)"))
   }
 }
 
