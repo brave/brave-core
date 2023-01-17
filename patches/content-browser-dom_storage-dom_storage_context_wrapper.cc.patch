@@ -1,8 +1,8 @@
 diff --git a/content/browser/dom_storage/dom_storage_context_wrapper.cc b/content/browser/dom_storage/dom_storage_context_wrapper.cc
-index a95b792cf308172dede8babe6b1c3542ea953989..9bd476ceb2d10502110ba5909fe06ff282f81345 100644
+index 1c5b6a4161f9dcfc98c9a4f24c7f1a31f830f273..b33400bf6c417d2599e3006e09957cb160ba17d7 100644
 --- a/content/browser/dom_storage/dom_storage_context_wrapper.cc
 +++ b/content/browser/dom_storage/dom_storage_context_wrapper.cc
-@@ -298,6 +298,7 @@ bool DOMStorageContextWrapper::IsRequestValid(
+@@ -297,6 +297,7 @@ bool DOMStorageContextWrapper::IsRequestValid(
        return false;
      }
      host_storage_key_did_not_match = host->storage_key() != storage_key;
