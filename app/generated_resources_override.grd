@@ -133,10 +133,6 @@ are declared in tools/grit/grit_rule.gni.
         <part file="vr_strings_override.grdp" />
       </if>
 
-      <if expr="enable_supervised_users">
-        <part file="supervised_user_error_page_strings_override.grdp" />
-      </if>
-
       <if expr="is_win">
         </if>
       <if expr="use_titlecase">
@@ -343,7 +339,6 @@ are declared in tools/grit/grit_rule.gni.
           </if>
         <if expr="use_titlecase">
           </if>
-
       <if expr="not is_android">
         </if>
 

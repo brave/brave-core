@@ -2904,6 +2904,21 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_HOTSPOT_DISABLED_A11Y_LABEL" desc="Accessibility announcement when Hotspot is disabled.">
     Hotspot disabled
   </message>
+  <message name="IDS_SETTINGS_INTERNET_HOTSPOT_NAME_LABEL" desc="Label for showing the hotspot name in the hotspot subpage.">
+    Hotspot name
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_HOTSPOT_CONFIGURE_BUTTON" desc="Text for button that opens the hotspot configuration dialog.">
+    Configure
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_HOTSPOT_CONNECTED_DEVICE_COUNT_LABEL" desc="Label for showing the current connected device count in the hotspot subpage.">
+    Devices currently connected to hotspot
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_HOTSPOT_AUTO_DISABLED_LABEL" desc="Label for showing if hotspot should be turned off automatically when no devices are connected in the hotspot subpage.">
+    Turn off hotspot automatically
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_HOTSPOT_AUTO_DISABLED_SUBLABEL" desc="Sublabel for showing if hotspot should be turned off automatically when no devices are connected in the hotspot subpage.">
+    When no devices are connected
+  </message>
   <message name="IDS_SETTINGS_INTERNET_WIFI_NETWORKS" desc="Name of the settings page which displays a list of Wi-Fi networks which the user can choose to connect to.">
     Wi-Fi networks
   </message>
@@ -4388,7 +4403,7 @@ Press an assigned switch or key to remove assignment.
     When turned on, all notifications will be silenced
   </message>
   <message name="IDS_SETTINGS_APP_NOTIFICATIONS_LINK_TO_BROWSER_SETTINGS_DESCRIPTION" desc="In notifications OS Settings subpage, explanatory text for website notifications link.">
-    For browser notifications, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>Brave browser Settings<ph name="LINK_END">&lt;/a&gt;</ph>
+    For browser notifications, go to <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>Brave browser Settings<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_APP_BADGING_TOGGLE_LABEL" desc="The label for the app badging toggle in the App Notifications page of OS Settings.">
     App badging
