@@ -617,6 +617,18 @@ void PlaylistService::RecoverLocalDataForItem(const std::string& id) {
           weak_factory_.GetWeakPtr()));
 }
 
+void PlaylistService::RemoveLocalDataForItemsInPlaylist(
+    const std::string& playlist_id) {
+  const auto* item_value =
+      prefs_->GetDict(kPlaylistsPref).FindDict(playlist_id);
+  DCHECK(item_value);
+
+  auto playlist =
+      ConvertValueToPlaylist(*item_value, prefs_->GetDict(kPlaylistItemsPref));
+  for (const auto& item : playlist->items)
+    RemoveLocalDataForItem(item);
+}
+
 void PlaylistService::DeletePlaylistItemData(const std::string& id) {
   media_file_download_manager_->CancelDownloadRequest(id);
   thumbnail_downloader_->CancelDownloadRequest(id);
@@ -636,25 +648,7 @@ void PlaylistService::RemoveLocalDataForItem(const std::string& id) {
   const auto* item_value = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   DCHECK(item_value);
   auto playlist_item = ConvertValueToPlaylistItem(*item_value);
-  if (!playlist_item->cached)
-    return;
-
-  playlist_item->cached = false;
-  DCHECK(playlist_item->media_source.is_valid())
-      << "media_source should be valid";
-  playlist_item->media_path = playlist_item->media_source;
-  UpdatePlaylistItemValue(
-      id, base::Value(ConvertPlaylistItemToValue(playlist_item)));
-
-  NotifyPlaylistChanged(
-      {PlaylistChangeParams::Type::kItemLocalDataRemoved, id});
-
-  base::FilePath media_path;
-  if (GetMediaPath(playlist_item->id, &media_path)) {
-    auto delete_file = base::BindOnce(
-        [](const base::FilePath& path) { base::DeleteFile(path); }, media_path);
-    GetTaskRunner()->PostTask(FROM_HERE, std::move(delete_file));
-  }
+  RemoveLocalDataForItem(playlist_item);
 }
 
 void PlaylistService::DeleteAllPlaylistItems() {
@@ -670,6 +664,29 @@ void PlaylistService::DeleteAllPlaylistItems() {
   NotifyPlaylistChanged({PlaylistChangeParams::Type::kAllDeleted, ""});
 
   CleanUpOrphanedPlaylistItemDirs();
+}
+
+void PlaylistService::RemoveLocalDataForItem(
+    const mojom::PlaylistItemPtr& item) {
+  DCHECK(item);
+  if (!item->cached)
+    return;
+
+  item->cached = false;
+  DCHECK(item->media_source.is_valid()) << "media_source should be valid";
+  item->media_path = item->media_source;
+  UpdatePlaylistItemValue(item->id,
+                          base::Value(ConvertPlaylistItemToValue(item)));
+
+  NotifyPlaylistChanged(
+      {PlaylistChangeParams::Type::kItemLocalDataRemoved, item->id});
+
+  base::FilePath media_path;
+  if (GetMediaPath(item->id, &media_path)) {
+    auto delete_file = base::BindOnce(
+        [](const base::FilePath& path) { base::DeleteFile(path); }, media_path);
+    GetTaskRunner()->PostTask(FROM_HERE, std::move(delete_file));
+  }
 }
 
 void PlaylistService::AddObserver(

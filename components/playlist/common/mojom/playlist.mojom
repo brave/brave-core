@@ -72,11 +72,14 @@ interface PlaylistService {
 
   UpdateItem(PlaylistItem item);
 
-  // Try downloading thumbnail and media files again
+  // Try downloading media files again
   RecoverLocalDataForItem(string id);
 
-  // Removes thumbnail and media files for a item stored in local directory.
+  // Removes media files for a item stored in local directory.
   RemoveLocalDataForItem(string id);
+
+  // Removes media files of all items in a playlist with |playlist_id|.
+  RemoveLocalDataForItemsInPlaylist(string playlist_id);
 
   // Creates a new playlist with given |playlist| and return created Playlist
   // with a new ID of the playlist.
