@@ -10,7 +10,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
-#include "chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.h"
+#include "chrome/browser/ui/views/omnibox/omnibox_popup_view_views.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -27,7 +27,7 @@ class OmniboxAutocompleteTest : public InProcessBrowserTest {
   }
   OmniboxViewViews* omnibox_view() { return location_bar()->omnibox_view(); }
   OmniboxEditModel* edit_model() { return omnibox_view()->model(); }
-  OmniboxPopupContentsView* popup_view() {
+  OmniboxPopupViewViews* popup_view() {
     return omnibox_view()->GetPopupContentsViewForTesting();
   }
 };
