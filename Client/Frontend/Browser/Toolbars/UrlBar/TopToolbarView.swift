@@ -380,6 +380,9 @@ class TopToolbarView: UIView, ToolbarProtocol {
     locationTextField.attributedPlaceholder = self.locationView.placeholder
     locationTextField.rightView = qrCodeButton
     locationTextField.rightViewMode = .never
+    
+    let dragInteraction = UIDragInteraction(delegate: self)
+    locationTextField.addInteraction(dragInteraction)
 
     locationContainer.addSubview(locationTextField)
     locationTextField.snp.remakeConstraints { make in
@@ -746,5 +749,17 @@ extension TopToolbarView: AutocompleteTextFieldDelegate {
   func autocompleteTextFieldDidCancel(_ autocompleteTextField: AutocompleteTextField) {
     leaveOverlayMode(didCancel: true)
     updateLocationBarRightView(showQrCodeButton: false)
+  }
+}
+
+extension TopToolbarView: UIDragInteractionDelegate {
+  func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
+    guard let text = locationTextField?.text else {
+      return []
+    }
+    
+    let dragItem = UIDragItem(itemProvider: NSItemProvider(object: text as NSString))
+    dragItem.localObject = locationTextField
+    return [dragItem]
   }
 }
