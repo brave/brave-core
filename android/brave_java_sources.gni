@@ -8,7 +8,6 @@ import("//brave/android/feed/brave_feed_java_sources.gni")
 import("//brave/browser/brave_ads/android/java_sources.gni")
 import("//brave/browser/flags/brave_flags_java_sources.gni")
 import("//brave/browser/share/android/java_sources.gni")
-import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/permissions/android/java_sources.gni")
 import("//brave/components/safetynet/java_sources.gni")
 import("//components/feed/features.gni")
@@ -392,6 +391,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveConstants.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveDbUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveDynamicColors.java",
+  "../../brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/ConfigurationUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/ImageUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/LiveDataUtil.java",
@@ -438,10 +438,6 @@ brave_java_sources += brave_rewards_java_sources
 brave_java_sources += brave_feed_java_sources
 brave_java_sources += brave_public_tab_management_java_sources
 brave_java_sources += brave_share_java_sources
-
-if (enable_brave_referrals) {
-  brave_java_sources += [ "../../brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java" ]
-}
 
 brave_browser_ui_android_appmenu_internal_sources = [
   "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java",
