@@ -36,7 +36,7 @@ struct PlaylistItem {
 
   string author;
   string duration;
-  int8 last_played_position;
+  int32 last_played_position;
 };
 
 // Used by the web UI to bootstrap bidirectional communication.
