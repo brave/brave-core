@@ -5,6 +5,8 @@
 
 #include "brave/components/update_client/buildflags.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_features.h"
+#include "chrome/browser/dips/dips_features.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
 #include "chrome/browser/preloading/prefetch/prefetch_proxy/prefetch_proxy_features.h"
@@ -44,11 +46,11 @@
 #include "android_webview/common/aw_features.h"
 #include "chrome/test/base/android/android_browser_test.h"
 #else
-#include "chrome/browser/browser_features.h"
 #include "chrome/browser/ui/profile_picker.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/translate/core/common/translate_util.h"
+#include "extensions/common/extension_features.h"
 #endif
 
 using BraveMainDelegateBrowserTest = PlatformBrowserTest;
@@ -86,7 +88,10 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   // Please, keep alphabetized
   const base::Feature* disabled_features[] = {
 #if BUILDFLAG(IS_ANDROID)
+    &android_webview::features::kWebViewAppsPackageNamesServerSideAllowlist,
     &android_webview::features::kWebViewClientHintsControllerDelegate,
+    &android_webview::features::kWebViewEnumerateDevicesCache,
+    &android_webview::features::kWebViewMeasureScreenCoverage,
 #endif
     &autofill::features::kAutofillEnableAccountWalletStorage,
     &autofill::features::kAutofillEnableOfferNotificationForPromoCodes,
@@ -104,11 +109,16 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kCssSelectorFragmentAnchor,
     &blink::features::kFencedFrames,
     &blink::features::kFledge,
+    &blink::features::kFledgeConsiderKAnonymity,
+    &blink::features::kFledgeEnforceKAnonymity,
     &blink::features::kInterestGroupStorage,
     &blink::features::kParakeet,
     &blink::features::kPrerender2,
+    &blink::features::kPrerender2InBackground,
     &blink::features::kPrivacySandboxAdsAPIs,
     &blink::features::kSharedStorageAPI,
+    &blink::features::kSpeculationRulesHeaderEnableThirdPartyOriginTrial,
+    &blink::features::kSpeculationRulesPrefetchFuture,
     &blink::features::kSpeculationRulesPrefetchProxy,
     &blink::features::kTextFragmentAnchor,
     &commerce::kCommerceAllowOnDemandBookmarkUpdates,
@@ -118,7 +128,11 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &commerce::kShoppingList,
     &commerce::kShoppingPDPMetrics,
     &commerce::kRetailCoupons,
+    &dips::kFeature,
     &enterprise_connectors::kLocalContentAnalysisEnabled,
+#if !BUILDFLAG(IS_ANDROID)
+    &extensions_features::kExtensionsManifestV3Only,
+#endif
 #if BUILDFLAG(IS_WIN)
     &features::kAppBoundEncryptionMetrics,
 #endif
@@ -128,6 +142,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kDigitalGoodsApi,
     &features::kEarlyHintsPreloadForNavigation,
     &features::kFedCm,
+    &features::kFedCmIframeSupport,
+    &features::kFedCmUserInfo,
+    &features::kFedCmWithoutThirdPartyCookies,
     &features::kFirstPartySets,
     &features::kIdleDetection,
     &features::kIsolatePrerenders,

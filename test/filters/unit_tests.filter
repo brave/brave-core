@@ -132,6 +132,12 @@
 # features::kEarlyHintsPreloadForNavigation
 -PreconnectManagerTest.*
 
+# These tests fail because we disable DIPS via dips::kFeature
+-All/DIPSDatabaseAllColumnTest.*/*
+-All/DIPSDatabaseGarbageCollectionTest.*/*
+-All/DIPSDatabaseInteractionTest.*/*
+-DIPSDatabaseHistogramTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*

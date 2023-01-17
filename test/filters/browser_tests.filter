@@ -427,6 +427,10 @@
 # No binder found for interface brave_news.mojom.BraveNewsController for the frame/document scope
 -InteractiveBrowserTestBrowsertest.InstrumentTabsAsTestSteps
 
+# These tests fail because we disable DIPS via dips::kFeature
+-All/DIPSTabHelperBrowserTest.*/*
+-DIPSBounceDetectorBrowserTest.*
+
 # These tests fail on CI but pass locally
 -DeviceChooserExtensionBrowserTests/DeviceChooserExtensionBrowserTest.ChooserAnchoredToExtensionIcon/WebHid
 -DeviceChooserExtensionBrowserTests/DeviceChooserExtensionBrowserTest.ChooserAnchoredToExtensionIcon/WebUsb
