@@ -2,24 +2,5 @@ include_rules = [
   "+brave/components/constants",
   "+content/public/browser",
   "+content/public/common",
-  "+extensions/common",
   "+services/network/public",
 ]
-
-# Existing exceptions
-specific_include_rules = {
-  "brave_referrals_service.h": [
-    "+chrome/browser/profiles/profile_manager.h",
-    "+chrome/browser/profiles/profile_manager_observer.h",
-  ],
-  "brave_referrals_service.cc": [
-    "+chrome/browser/browser_process.h",
-    "+chrome/browser/first_run/first_run.h",
-    "+chrome/browser/net/system_network_context_manager.h",
-    "+chrome/browser/profiles/profile_manager.h",
-    "+chrome/browser/ui/scoped_tabbed_browser_displayer.h",
-    "+chrome/common/chrome_paths.h",
-    "+chrome/browser/android/service_tab_launcher.h",
-    "+chrome/browser/ui/browser.h",
-  ],
-}

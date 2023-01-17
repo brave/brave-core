@@ -11,7 +11,6 @@
 #include "base/memory/ref_counted.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -166,9 +165,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<brave_shields::HTTPSEverywhereService>
       https_everywhere_service_;
   std::unique_ptr<brave_stats::BraveStatsUpdater> brave_stats_updater_;
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   std::unique_ptr<brave::BraveReferralsService> brave_referrals_service_;
-#endif
 #if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<tor::BraveTorClientUpdater> tor_client_updater_;
   std::unique_ptr<tor::BraveTorPluggableTransportUpdater>

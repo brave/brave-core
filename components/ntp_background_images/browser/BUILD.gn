@@ -39,7 +39,6 @@ static_library("browser") {
     "//brave/components/brave_ads/common",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_referrals/browser",
-    "//brave/components/brave_referrals/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/buildflags",

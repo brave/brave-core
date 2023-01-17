@@ -1,13 +1,14 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_REFERRALS_BROWSER_BRAVE_REFERRALS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_REFERRALS_BROWSER_BRAVE_REFERRALS_SERVICE_H_
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -19,8 +20,6 @@
 #include "base/timer/timer.h"
 #include "base/values.h"
 #include "build/build_config.h"
-#include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/browser/profiles/profile_manager_observer.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -30,11 +29,13 @@
 
 class PrefRegistrySimple;
 class PrefService;
-class Profile;
 
 namespace network {
+namespace mojom {
+class URLLoaderFactory;
+}  // namespace mojom
 class SimpleURLLoader;
-}
+}  // namespace network
 
 namespace brave {
 
@@ -66,12 +67,33 @@ class BraveReferralsHeaders {
   std::vector<base::Value::Dict> referral_headers_;
 };
 
-class BraveReferralsService : public ProfileManagerObserver {
+class BraveReferralsService {
  public:
-  explicit BraveReferralsService(PrefService* pref_service,
-                                 const std::string& platform,
-                                 const std::string& api_key);
-  ~BraveReferralsService() override;
+  class Delegate {
+   public:
+    Delegate() = default;
+    virtual ~Delegate() = default;
+
+    virtual void OnInitialized() = 0;
+    virtual base::FilePath GetUserDataDirectory() = 0;
+    virtual network::mojom::URLLoaderFactory* GetURLLoaderFactory() = 0;
+
+#if !BUILDFLAG(IS_ANDROID)
+    virtual base::OnceCallback<base::Time()>
+    GetFirstRunSentinelCreationTimeCallback() = 0;
+#endif
+  };
+
+  BraveReferralsService(PrefService* pref_service,
+                        const std::string& platform,
+                        const std::string& api_key);
+  BraveReferralsService(const BraveReferralsService&) = delete;
+  BraveReferralsService& operator=(const BraveReferralsService&) = delete;
+  ~BraveReferralsService();
+
+  void set_delegate(std::unique_ptr<Delegate> delegate) {
+    delegate_ = std::move(delegate);
+  }
 
   void Start();
   void Stop();
@@ -87,9 +109,6 @@ class BraveReferralsService : public ProfileManagerObserver {
   static bool IsDefaultReferralCode(const std::string& code);
 
  private:
-  // ProfileManagerObserver
-  void OnProfileAdded(Profile* profile) override;
-
   void GetFirstRunTime();
   void SetFirstRunTime(const base::Time& first_run_timestamp);
   void PerformFinalizationChecks();
@@ -128,7 +147,7 @@ class BraveReferralsService : public ProfileManagerObserver {
   android_brave_referrer::BraveReferrer android_brave_referrer_;
 #endif
 
-  bool initialized_;
+  bool initialized_ = false;
   base::Time first_run_timestamp_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   std::unique_ptr<network::SimpleURLLoader> referral_init_loader_;
@@ -136,14 +155,13 @@ class BraveReferralsService : public ProfileManagerObserver {
   std::unique_ptr<base::OneShotTimer> initialization_timer_;
   std::unique_ptr<base::RepeatingTimer> finalization_checks_timer_;
   ReferralInitializedCallback referral_initialized_callback_;
+  std::unique_ptr<Delegate> delegate_;
   raw_ptr<PrefService> pref_service_ = nullptr;
   const std::string api_key_;
   const std::string platform_;
   std::string promo_code_;
-  base::ScopedObservation<ProfileManager, ProfileManagerObserver>
-      profile_manager_observer_{this};
 
-  base::WeakPtrFactory<BraveReferralsService> weak_factory_;
+  base::WeakPtrFactory<BraveReferralsService> weak_factory_{this};
 };
 
 // Registers the preferences used by BraveReferralsService

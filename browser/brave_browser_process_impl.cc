@@ -12,6 +12,7 @@
 #include "base/bind.h"
 #include "base/path_service.h"
 #include "base/task/thread_pool.h"
+#include "brave/browser/brave_referrals/referrals_service_delegate.h"
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
@@ -23,7 +24,7 @@
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
+#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
@@ -53,10 +54,6 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
-#endif
 
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
@@ -114,10 +111,9 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   g_browser_process = this;
   g_brave_browser_process = this;
 
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   // early initialize referrals
   brave_referrals_service();
-#endif
+
   // early initialize brave stats
   brave_stats_updater();
 
@@ -352,10 +348,14 @@ brave::BraveP3AService* BraveBrowserProcessImpl::brave_p3a_service() {
 
 brave::BraveReferralsService*
 BraveBrowserProcessImpl::brave_referrals_service() {
-  if (!brave_referrals_service_)
+  if (!brave_referrals_service_) {
     brave_referrals_service_ = std::make_unique<brave::BraveReferralsService>(
         local_state(), brave_stats::GetAPIKey(),
         brave_stats::GetPlatformIdentifier());
+    brave_referrals_service_->set_delegate(
+        std::make_unique<ReferralsServiceDelegate>(
+            brave_referrals_service_.get()));
+  }
   return brave_referrals_service_.get();
 }
 

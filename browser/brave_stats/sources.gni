@@ -3,8 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import("//brave/components/brave_referrals/buildflags/buildflags.gni")
-
 brave_browser_brave_stats_updater_sources = [
   "//brave/browser/brave_stats/brave_stats_tab_helper.cc",
   "//brave/browser/brave_stats/brave_stats_tab_helper.h",
@@ -21,7 +19,7 @@ brave_browser_brave_stats_updater_deps = [
   "//brave/browser/brave_stats:buildflags",
   "//brave/common",
   "//brave/components/brave_ads/common",
-  "//brave/components/brave_referrals/buildflags",
+  "//brave/components/brave_referrals/common",
   "//brave/components/brave_stats/browser",
   "//brave/components/brave_wallet/browser",
   "//brave/components/constants",
@@ -37,8 +35,3 @@ brave_browser_brave_stats_updater_deps = [
   "//services/network/public/cpp",
   "//ui/base",
 ]
-
-if (enable_brave_referrals) {
-  brave_browser_brave_stats_updater_deps +=
-      [ "//brave/components/brave_referrals/common" ]
-}
