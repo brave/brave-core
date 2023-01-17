@@ -3660,42 +3660,6 @@ extension Strings {
       value: "Number of content creators you are helping support this month.",
       comment: "Displayed next to a number representing the total number of publishers supported"
     )
-    public static let walletTransferTitle = NSLocalizedString("rewards.walletTransferTitle", tableName: "BraveShared", bundle: .module,
-      value: "Wallet Transfer Status",
-      comment: "Title of the legacy wallet transfer screen"
-    )
-    public static let walletTransferFailureAlertTitle = NSLocalizedString("rewards.walletTransferFailureAlertTitle", tableName: "BraveShared", bundle: .module,
-      value: "Connection Error",
-      comment: "Title on the alert presented if wallet transfer fails"
-    )
-    public static let walletTransferFailureAlertMessage = NSLocalizedString("rewards.walletTransferFailureAlertMessage", tableName: "BraveShared", bundle: .module,
-      value: "The Brave Rewards server did not respond. Please try again in a moment.",
-      comment: "Message on the alert presented if wallet transfer fails"
-    )
-    public static let walletTransferStepsTitle = NSLocalizedString("rewards.walletTransferStepsTitle", tableName: "BraveShared", bundle: .module,
-      value: "Scan One-Time Transfer Code",
-      comment: "Title above the steps to use wallet transfer"
-    )
-    public static let walletTransferStepsBody = NSLocalizedString("rewards.walletTransferStepsBody", tableName: "BraveShared", bundle: .module,
-      value: "Your Brave Rewards token balance can be transfered to an existing Brave Rewards desktop wallet, one time.\n\n1. Open Brave Browser on your desktop\n2. Navigate to brave://rewards\n3. Click “QR Code”\n4. Scan QR Code with your device",
-      comment: "Describes the steps for using wallet transfer"
-    )
-    public static let walletTransferCompleteTitle = NSLocalizedString("rewards.walletTransferCompleteTitle", tableName: "BraveShared", bundle: .module,
-      value: "Balance transfer has initiated",
-      comment: "Title shown above the confirmation message after completing a wallet transfer successfully"
-    )
-    public static let walletTransferCompleteBody = NSLocalizedString("rewards.walletTransferCompleteBody", tableName: "BraveShared", bundle: .module,
-      value: "Your transfer has initiated. Any existing BAT balance may take several minutes to appear in your desktop Brave Rewards wallet. Check your Rewards summary on Desktop for details when transfer has completed.\n\nYou may close this window and continue using Brave as your transfer is in progress.",
-      comment: "A confirmation message shown to the user after completing a wallet transfer successfully"
-    )
-    public static let legacyWalletTransfer = NSLocalizedString("rewards.legacyWalletTransfer", tableName: "BraveShared", bundle: .module,
-      value: "Legacy Wallet Transfer",
-      comment: ""
-    )
-    public static let legacyWalletTransferSubtitle = NSLocalizedString("rewards.legacyWalletTransferSubtitle", tableName: "BraveShared", bundle: .module,
-      value: "One-time transfer-out existing tokens",
-      comment: ""
-    )
     public static let settingsToggleTitle = NSLocalizedString("rewards.settingsToggleTitle", tableName: "BraveShared", bundle: .module,
       value: "Enable Brave Rewards",
       comment: ""
