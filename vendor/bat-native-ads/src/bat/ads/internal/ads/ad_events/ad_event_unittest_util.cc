@@ -121,10 +121,6 @@ void FireAdEvent(const AdEventInfo& ad_event) {
 void FireAdEvents(const AdEventInfo& ad_event, const int count) {
   for (int i = 0; i < count; i++) {
     FireAdEvent(ad_event);
-
-    AdEventInfo served_ad_event = ad_event;
-    served_ad_event.confirmation_type = ConfirmationType::kServed;
-    FireAdEvent(served_ad_event);
   }
 }
 
