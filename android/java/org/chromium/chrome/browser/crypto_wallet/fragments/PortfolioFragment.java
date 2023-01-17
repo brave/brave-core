@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
@@ -96,6 +96,7 @@ public class PortfolioFragment
     private SmoothLineChartEquallySpaced mChartES;
     private PortfolioModel mPortfolioModel;
     private ProgressBar mPbAssetDiscovery;
+    private List<PortfolioModel.NftDataModel> mNftDataModels;
 
     public static PortfolioFragment newInstance() {
         return new PortfolioFragment();
@@ -204,6 +205,7 @@ public class PortfolioFragment
                 });
         mPortfolioModel.mNftModels.observe(getViewLifecycleOwner(), nftDataModels -> {
             if (nftDataModels.isEmpty() || mPortfolioModel.mPortfolioHelper == null) return;
+            mNftDataModels = nftDataModels;
             setUpNftList(nftDataModels, mPortfolioModel.mPortfolioHelper.getPerTokenCryptoSum(),
                     mPortfolioModel.mPortfolioHelper.getPerTokenFiatSum());
         });
@@ -355,8 +357,7 @@ public class PortfolioFragment
 
         if (asset.isErc721 || asset.isNft) {
             PortfolioModel.NftDataModel selectedNft = null;
-            List<PortfolioModel.NftDataModel> nftModels = mPortfolioModel.mNftModels.getValue();
-            for (PortfolioModel.NftDataModel nftDataModel : nftModels) {
+            for (PortfolioModel.NftDataModel nftDataModel : mNftDataModels) {
                 if (nftDataModel.token.tokenId.equals(asset.tokenId)) {
                     selectedNft = nftDataModel;
                     break;
