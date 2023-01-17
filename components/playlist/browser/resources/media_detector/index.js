@@ -117,7 +117,7 @@
 
     if (!isTitleValid(title)) { title = document.title }
 
-    return fixUpRelativeUrl(thumbnail)
+    return title
   }
 
   function getMediaAuthor (node) {
