@@ -86,7 +86,7 @@ const std::vector<std::string>& BridgesConfig::GetBuiltinBridges() const {
   });
 
   static const base::NoDestructor<std::vector<std::string>> kMeekAzureBriges({
-      "meek_lite 192.0.2.2:2 97700DFE9F483596DDA6264C4D7DF7641E1E39CE "
+      "meek_lite 192.0.2.2:2 BE776A53492E1E044A26F17306E1BC46A55A1625 "
       "url=https://meek.azureedge.net/ front=ajax.aspnetcdn.com"});
 
   switch (use_builtin) {
