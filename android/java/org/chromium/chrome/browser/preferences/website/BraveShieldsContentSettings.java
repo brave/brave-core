@@ -95,7 +95,8 @@ public class BraveShieldsContentSettings {
             BraveShieldsContentSettingsJni.get().setCookieControlType(settingOption, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_TRACKERS)) {
             BraveShieldsContentSettingsJni.get().setCosmeticFilteringControlType(
-                    settingOption, host, profile);
+                    DEFAULT.equals(settingOption) ? BLOCK_THIRDPARTY_RESOURCE : settingOption, host,
+                    profile);
             BraveShieldsContentSettingsJni.get().setAdControlType(settingOption, host, profile);
         }
     }
@@ -123,8 +124,57 @@ public class BraveShieldsContentSettings {
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_TRACKERS)) {
             settings = BraveShieldsContentSettingsJni.get().getCosmeticFilteringControlType(
                     host, profile);
+            if (settings.equals(BLOCK_THIRDPARTY_RESOURCE)) {
+                settings = DEFAULT;
+            }
         }
         return settings;
+    }
+
+    public static void setHTTPSEverywherePref(boolean value) {
+        setShields(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES, value,
+                false);
+    }
+
+    public static void setFingerprintingPref(String value) {
+        setShieldsValue(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING, value, false);
+    }
+
+    public static void setCookiesPref(String value) {
+        setShieldsValue(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES, value, false);
+    }
+
+    public static void setTrackersPref(String value) {
+        setShieldsValue(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS, value, false);
+    }
+
+    public static void setJavascriptPref(boolean value) {
+        setShields(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS, value, false);
+    }
+
+    public static boolean getJavascriptPref() {
+        return getShields(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS);
+    }
+
+    public static String getTrackersPref() {
+        return getShieldsValue(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS);
+    }
+
+    public static String getFingerprintingPref() {
+        return getShieldsValue(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
+    }
+
+    public static boolean getHTTPSEverywherePref() {
+        return getShields(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES);
     }
 
     @CalledByNative

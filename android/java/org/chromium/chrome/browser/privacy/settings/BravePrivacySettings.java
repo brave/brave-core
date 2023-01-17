@@ -15,7 +15,6 @@ import androidx.preference.PreferenceCategory;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
-import org.chromium.base.Log;
 import org.chromium.brave_shields.mojom.CookieListOptInPageAndroidHandler;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
@@ -80,7 +79,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_BLOCK_SCRIPTS = "scripts_block";
     public static final String PREF_FINGERPRINTING_PROTECTION = "fingerprinting_protection";
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
-    private static final String PREF_HTTPS_EVERYWHERE = "https_everywhere";
     private static final String PREF_SEND_P3A = "send_p3a_analytics";
     private static final String PREF_SEND_CRASH_REPORTS = "send_crash_reports";
     private static final String PREF_BRAVE_STATS_USAGE_PING = "brave_stats_usage_ping";
@@ -344,7 +342,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 ContextUtils.getAppSharedPreferences().edit();
         if (PREF_HTTPSE.equals(key)) {
             boolean newValueBool = (boolean) newValue;
-            BravePrefServiceBridge.getInstance().setHTTPSEEnabled(newValueBool);
+            BraveShieldsContentSettings.setHTTPSEverywherePref(newValueBool);
             mHttpsFirstModePref.setVisible(newValueBool);
             if (newValueBool) {
                 // Restore state of HTTPS_ONLY_MODE.
@@ -362,6 +360,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 UserPrefs.get(Profile.getLastUsedRegularProfile())
                         .setBoolean(Pref.HTTPS_ONLY_MODE_ENABLED, newValueBool);
             }
+        } else if (PREF_HTTPS_FIRST_MODE.equals(key)) {
+            UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    .setBoolean(Pref.HTTPS_ONLY_MODE_ENABLED, (boolean) newValue);
         } else if (PREF_DE_AMP.equals(key)) {
             UserPrefs.get(Profile.getLastUsedRegularProfile())
                     .setBoolean(BravePref.DE_AMP_PREF_ENABLED, (boolean) newValue);
@@ -369,63 +370,69 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             UserPrefs.get(Profile.getLastUsedRegularProfile())
                     .setBoolean(BravePref.DEBOUNCE_ENABLED, (boolean) newValue);
         } else if (PREF_IPFS_GATEWAY.equals(key)) {
-            BravePrefServiceBridge.getInstance().setIpfsGatewayEnabled((boolean) newValue);
+            BravePrivacySettingsIPFSUtils.setIPFSGatewayPref((boolean) newValue);
         } else if (PREF_BLOCK_COOKIE_CONSENT_NOTICES.equals(key)) {
             if (mCookieListOptInPageAndroidHandler != null) {
                 mCookieListOptInPageAndroidHandler.enableFilter((boolean) newValue);
             }
-
         } else if (PREF_FINGERPRINTING_PROTECTION.equals(key)) {
-            if (newValue instanceof String
-                    && String.valueOf(newValue).equals(
-                            BraveShieldsContentSettings.BLOCK_RESOURCE)) {
-                BravePrefServiceBridge.getInstance().setFingerprintingControlType(
-                        BraveShieldsContentSettings.BLOCK_RESOURCE);
-                mFingerprintingProtectionPref.setSummary(getActivity().getResources().getString(
-                        R.string.block_fingerprinting_option_1));
-                mFingerprintingProtectionPref.setCheckedIndex(0);
-            } else if (newValue instanceof String
-                    && String.valueOf(newValue).equals(BraveShieldsContentSettings.DEFAULT)) {
-                BravePrefServiceBridge.getInstance().setFingerprintingControlType(
-                        BraveShieldsContentSettings.DEFAULT);
-                mFingerprintingProtectionPref.setSummary(getActivity().getResources().getString(
-                        R.string.block_fingerprinting_option_2));
-                mFingerprintingProtectionPref.setCheckedIndex(1);
-            } else {
-                BravePrefServiceBridge.getInstance().setFingerprintingControlType(
-                        BraveShieldsContentSettings.ALLOW_RESOURCE);
-                mFingerprintingProtectionPref.setSummary(getActivity().getResources().getString(
-                        R.string.block_fingerprinting_option_3));
-                mFingerprintingProtectionPref.setCheckedIndex(2);
+            if (newValue instanceof String) {
+                final String newStringValue = String.valueOf(newValue);
+                switch (newStringValue) {
+                    case BraveShieldsContentSettings.BLOCK_RESOURCE:
+                        BraveShieldsContentSettings.setFingerprintingPref(newStringValue);
+                        mFingerprintingProtectionPref.setSummary(
+                                getActivity().getResources().getString(
+                                        R.string.block_fingerprinting_option_1));
+                        mFingerprintingProtectionPref.setCheckedIndex(0);
+                        break;
+                    case BraveShieldsContentSettings.DEFAULT:
+                        BraveShieldsContentSettings.setFingerprintingPref(newStringValue);
+                        mFingerprintingProtectionPref.setSummary(
+                                getActivity().getResources().getString(
+                                        R.string.block_fingerprinting_option_2));
+                        mFingerprintingProtectionPref.setCheckedIndex(1);
+                        break;
+                    case BraveShieldsContentSettings.ALLOW_RESOURCE:
+                    default:
+                        BraveShieldsContentSettings.setFingerprintingPref(
+                                BraveShieldsContentSettings.ALLOW_RESOURCE);
+                        mFingerprintingProtectionPref.setSummary(
+                                getActivity().getResources().getString(
+                                        R.string.block_fingerprinting_option_3));
+                        mFingerprintingProtectionPref.setCheckedIndex(2);
+                        break;
+                }
             }
         } else if (PREF_FINGERPRINT_LANGUAGE.equals(key)) {
             UserPrefs.get(Profile.getLastUsedRegularProfile())
                     .setBoolean(BravePref.REDUCE_LANGUAGE_ENABLED, (boolean) newValue);
         } else if (PREF_BLOCK_CROSS_SITE_COOKIES.equals(key)) {
-            if ((int) newValue == 0) {
-                BravePrefServiceBridge.getInstance().setCookiesBlockType(
-                        BraveShieldsContentSettings.BLOCK_RESOURCE);
-                mBlockCrosssiteCookies.setSummary(
-                        getActivity().getResources().getString(R.string.block_cookies_option_1));
-                mBlockCrosssiteCookies.setCheckedIndex(0);
-            } else if ((int) newValue == 1) {
-                BravePrefServiceBridge.getInstance().setCookiesBlockType(
-                        BraveShieldsContentSettings.DEFAULT);
-                mBlockCrosssiteCookies.setSummary(
-                        getActivity().getResources().getString(R.string.block_cross_site_cookies));
-                mBlockCrosssiteCookies.setCheckedIndex(1);
-            } else {
-                BravePrefServiceBridge.getInstance().setCookiesBlockType(
-                        BraveShieldsContentSettings.ALLOW_RESOURCE);
-                mBlockCrosssiteCookies.setSummary(
-                        getActivity().getResources().getString(R.string.block_cookies_option_3));
-                mBlockCrosssiteCookies.setCheckedIndex(2);
+            switch ((int) newValue) {
+                case STRICT:
+                    BraveShieldsContentSettings.setCookiesPref(
+                            BraveShieldsContentSettings.BLOCK_RESOURCE);
+                    mBlockCrosssiteCookies.setSummary(getActivity().getResources().getString(
+                            R.string.block_cookies_option_1));
+                    mBlockCrosssiteCookies.setCheckedIndex(0);
+                    break;
+                case STANDARD:
+                    BraveShieldsContentSettings.setCookiesPref(
+                            BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE);
+                    mBlockCrosssiteCookies.setSummary(getActivity().getResources().getString(
+                            R.string.block_cookies_option_2));
+                    mBlockCrosssiteCookies.setCheckedIndex(1);
+                // fall through
+                case ALLOW:
+                default:
+                    BraveShieldsContentSettings.setCookiesPref(
+                            BraveShieldsContentSettings.ALLOW_RESOURCE);
+                    mBlockCrosssiteCookies.setSummary(getActivity().getResources().getString(
+                            R.string.block_cookies_option_3));
+                    mBlockCrosssiteCookies.setCheckedIndex(2);
             }
         } else if (PREF_BLOCK_SCRIPTS.equals(key)) {
-            String settingString =
-                    ((boolean) newValue ? BraveShieldsContentSettings.BLOCK_RESOURCE
-                                        : BraveShieldsContentSettings.ALLOW_RESOURCE);
-            BravePrefServiceBridge.getInstance().setNoScriptControlType(settingString);
+            BraveShieldsContentSettings.setJavascriptPref((boolean) newValue);
         } else if (PREF_CLOSE_TABS_ON_EXIT.equals(key)) {
             sharedPreferencesEditor.putBoolean(PREF_CLOSE_TABS_ON_EXIT, (boolean) newValue);
         } else if (PREF_SEND_P3A.equals(key)) {
@@ -460,26 +467,30 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     .setBoolean(BravePref.LINKED_IN_EMBED_CONTROL_TYPE, (boolean) newValue);
         } else if (PREF_CLEAR_ON_EXIT.equals(key)) {
             sharedPreferencesEditor.putBoolean(PREF_CLEAR_ON_EXIT, (boolean) newValue);
-
         } else if (PREF_BLOCK_TRACKERS_ADS.equals(key)) {
-            if (newValue instanceof String
-                    && String.valueOf(newValue).equals(
-                            BraveShieldsContentSettings.BLOCK_RESOURCE)) {
-                BravePrefServiceBridge.getInstance().setCosmeticFilteringControlType(0);
-                mAdsTrakersBlockPref.setSummary(getActivity().getResources().getString(
-                        R.string.block_trackers_ads_option_1));
-                mAdsTrakersBlockPref.setCheckedIndex(0);
-            } else if (newValue instanceof String
-                    && String.valueOf(newValue).equals(BraveShieldsContentSettings.DEFAULT)) {
-                BravePrefServiceBridge.getInstance().setCosmeticFilteringControlType(1);
-                mAdsTrakersBlockPref.setSummary(getActivity().getResources().getString(
-                        R.string.block_trackers_ads_option_2));
-                mAdsTrakersBlockPref.setCheckedIndex(1);
-            } else {
-                BravePrefServiceBridge.getInstance().setCosmeticFilteringControlType(2);
-                mAdsTrakersBlockPref.setSummary(getActivity().getResources().getString(
-                        R.string.block_trackers_ads_option_3));
-                mAdsTrakersBlockPref.setCheckedIndex(2);
+            if (newValue instanceof String) {
+                final String newStringValue = String.valueOf(newValue);
+                switch (newStringValue) {
+                    case BraveShieldsContentSettings.BLOCK_RESOURCE:
+                        BraveShieldsContentSettings.setTrackersPref(newStringValue);
+                        mAdsTrakersBlockPref.setSummary(getActivity().getResources().getString(
+                                R.string.block_trackers_ads_option_1));
+                        mAdsTrakersBlockPref.setCheckedIndex(0);
+                        break;
+                    case BraveShieldsContentSettings.DEFAULT:
+                        BraveShieldsContentSettings.setTrackersPref(newStringValue);
+                        mAdsTrakersBlockPref.setSummary(getActivity().getResources().getString(
+                                R.string.block_trackers_ads_option_2));
+                        mAdsTrakersBlockPref.setCheckedIndex(1);
+                        break;
+                    default:
+                        BraveShieldsContentSettings.setTrackersPref(
+                                BraveShieldsContentSettings.ALLOW_RESOURCE);
+                        mAdsTrakersBlockPref.setSummary(getActivity().getResources().getString(
+                                R.string.block_trackers_ads_option_3));
+                        mAdsTrakersBlockPref.setCheckedIndex(2);
+                        break;
+                }
             }
         }
 
@@ -496,22 +507,27 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         }
         removePreferenceIfPresent(PREF_SYNC_AND_SERVICES_LINK);
 
-        String getNoScriptControlType =
-                BravePrefServiceBridge.getInstance().getNoScriptControlType();
-
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
 
-        String blockAdTrackersPref =
-                BravePrefServiceBridge.getInstance().getCosmeticFilteringControlType();
+        String blockAdTrackersPref = BraveShieldsContentSettings.getTrackersPref();
         int cookiesBlockPref = sharedPreferences.getInt(PREF_BLOCK_CROSS_SITE_COOKIES, 1);
-        String fingerprintingPref =
-                BravePrefServiceBridge.getInstance().getFingerprintingControlType();
+        String fingerprintingPref = BraveShieldsContentSettings.getFingerprintingPref();
 
-        if (getNoScriptControlType.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
-            mBlockScriptsPref.setChecked(true);
+        mBlockScriptsPref.setChecked(BraveShieldsContentSettings.getJavascriptPref());
+
+        // HTTPSE and HTTPS only mode
+        final boolean httpseEnabled = BraveShieldsContentSettings.getHTTPSEverywherePref();
+        mHttpsePref.setChecked(httpseEnabled);
+        if (httpseEnabled) {
+            mHttpsFirstModePref.setVisible(httpseEnabled);
+            mHttpsFirstModePref.setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile())
+                                                   .getBoolean(Pref.HTTPS_ONLY_MODE_ENABLED));
         } else {
-            mBlockScriptsPref.setChecked(false);
+            mHttpsFirstModePref.setChecked(httpseEnabled);
         }
+
+        // IPFS Gateway
+        mIpfsGatewayPref.setChecked(BravePrivacySettingsIPFSUtils.getIPFSGatewayPref());
 
         if (blockAdTrackersPref.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
             mAdsTrakersBlockPref.setCheckedIndex(0);
@@ -534,7 +550,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         } else if (cookiesBlockPref == STANDARD) {
             mBlockCrosssiteCookies.setCheckedIndex(1);
             mBlockCrosssiteCookies.setSummary(
-                    getActivity().getResources().getString(R.string.block_cross_site_cookies));
+                    getActivity().getResources().getString(R.string.block_cookies_option_2));
         } else if (cookiesBlockPref == ALLOW) {
             mBlockCrosssiteCookies.setCheckedIndex(2);
             mBlockCrosssiteCookies.setSummary(

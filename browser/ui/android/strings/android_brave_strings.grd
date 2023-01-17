@@ -1340,9 +1340,6 @@ Are you sure you want to do this?
       <message name="IDS_BLOCK_TRACKERS_ADS_OPTION_3" desc="Text for block trackers and ads option.">
         Allow all trackers &amp; ads
       </message>
-      <message name="IDS_BLOCK_CROSS_SITE_COOKIES" desc="Title for shields option.">
-        Block cross-site cookies
-      </message>
       <message name="IDS_BLOCK_COOKIES" desc="Title for shields option.">
         Block Cookies
       </message>
@@ -1351,6 +1348,9 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_BLOCK_COOKIES_OPTION_1" desc="Title for shields option.">
         Block all cookies
+      </message>
+      <message name="IDS_BLOCK_COOKIES_OPTION_2" desc="Title for shields option.">
+        Block cross-site cookies
       </message>
       <message name="IDS_BLOCK_COOKIES_OPTION_3" desc="Title for shields option.">
         Allow all cookies
