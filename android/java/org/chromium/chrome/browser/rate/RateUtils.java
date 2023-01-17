@@ -8,7 +8,9 @@
 package org.chromium.chrome.browser.rate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
@@ -180,5 +182,25 @@ public class RateUtils {
     private long dayDifference(long date1, long date2) {
         long difference = date1 - date2;
         return (difference / (1000 * 60 * 60 * 24)) % 365;
+    }
+
+    /**
+     * This opens app page in playstore
+     * if it fails open app playstore page link in browser
+     * */
+    public void openPlaystore(Context context) {
+        final Uri marketUri = Uri.parse("market://details?id=" + context.getPackageName());
+        try {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, marketUri));
+        } catch (android.content.ActivityNotFoundException ex) {
+            openReviewLink(context);
+        }
+    }
+
+    private void openReviewLink(Context context) {
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/apps/details?id="
+                        + context.getPackageName()));
+        context.startActivity(webIntent);
     }
 }

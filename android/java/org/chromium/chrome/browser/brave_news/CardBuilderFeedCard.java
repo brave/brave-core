@@ -707,6 +707,7 @@ public class CardBuilderFeedCard {
         view.setOnClickListener((v) -> { showBraveRateDialog(); });
         linearLayoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
         mLinearLayout.setLayoutParams(linearLayoutParams);
+        mLinearLayout.setBackground(makeRound(CARD_LAYOUT, R.color.card_background, 30));
         linearLayout.addView(view);
     }
 
