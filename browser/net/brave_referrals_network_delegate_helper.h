@@ -9,11 +9,6 @@
 #include <memory>
 
 #include "brave/browser/net/url_context.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
-
-static_assert(
-    BUILDFLAG(ENABLE_BRAVE_REFERRALS),
-    "This file is meant to be used only when the brave referral is enabled");
 
 struct BraveRequestInfo;
 

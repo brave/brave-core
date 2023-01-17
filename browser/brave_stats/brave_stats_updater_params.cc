@@ -5,14 +5,12 @@
 
 #include <cmath>
 
-#include "brave/browser/brave_stats/brave_stats_updater_params.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
-
 #include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
 #include "base/threading/thread_restrictions.h"
 #include "base/time/time.h"
+#include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -138,9 +136,7 @@ void BraveStatsUpdaterParams::LoadPrefs() {
     }
   }
 
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   referral_promo_code_ = stats_pref_service_->GetString(kReferralPromoCode);
-#endif
 }
 
 void BraveStatsUpdaterParams::SavePrefs() {

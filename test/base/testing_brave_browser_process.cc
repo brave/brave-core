@@ -104,13 +104,11 @@ brave::BraveP3AService* TestingBraveBrowserProcess::brave_p3a_service() {
   return nullptr;
 }
 
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 brave::BraveReferralsService*
 TestingBraveBrowserProcess::brave_referrals_service() {
   NOTREACHED();
   return nullptr;
 }
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
 brave_stats::BraveStatsUpdater*
 TestingBraveBrowserProcess::brave_stats_updater() {

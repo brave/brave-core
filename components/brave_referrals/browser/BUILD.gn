@@ -3,12 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 if (is_android) {
   import("//build/config/android/rules.gni")
 }
 
-assert(enable_brave_referrals)
+assert(!is_ios)
 
 static_library("browser") {
   sources = [
@@ -16,10 +15,7 @@ static_library("browser") {
     "brave_referrals_service.h",
   ]
 
-  public_deps = [
-    "//brave/components/brave_referrals/buildflags",
-    "//brave/components/brave_referrals/common",
-  ]
+  public_deps = [ "//brave/components/brave_referrals/common" ]
 
   deps = [
     "//base",

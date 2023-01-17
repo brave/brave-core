@@ -13,7 +13,8 @@
 #include "base/test/task_environment.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/browser/mock_ads_service.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
+#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -33,11 +34,6 @@
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 #include "brave/components/ntp_background_images/browser/ntp_custom_background_images_service.h"
 #endif
-
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
-#include "brave/components/brave_referrals/common/pref_names.h"
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
 using testing::_;
 using testing::Return;
@@ -156,9 +152,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     ViewCounterService::RegisterProfilePrefs(registry);
     auto* local_registry = local_pref_.registry();
 
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
     brave::RegisterPrefsForBraveReferralsService(local_registry);
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
     NTPBackgroundImagesService::RegisterLocalStatePrefs(local_registry);
     ViewCounterService::RegisterLocalStatePrefs(local_registry);
@@ -183,9 +177,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
 #endif
 
     // Set referral service is properly initialized sr component is set.
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
     local_pref_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
     local_pref_.SetDict(prefs::kNewTabPageCachedSuperReferralComponentInfo,
                         base::Value::Dict());
   }

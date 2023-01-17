@@ -41,7 +41,6 @@ import("//brave/build/config.gni")
 import("//brave/build/rust/config.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
-import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -135,7 +134,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_private_new_tab_ui/common",
   "//brave/components/brave_private_new_tab_ui/common:mojom",
-  "//brave/components/brave_referrals/buildflags",
+  "//brave/components/brave_referrals/browser",
   "//brave/components/brave_rewards/common",
   "//brave/components/brave_rewards/common:features",
   "//brave/components/brave_rewards/common:mojom",
@@ -330,10 +329,6 @@ if (enable_extensions) {
     brave_chrome_browser_deps +=
         [ "//brave/components/brave_webtorrent/browser" ]
   }
-}
-
-if (enable_brave_referrals) {
-  brave_chrome_browser_deps += [ "//brave/components/brave_referrals/browser" ]
 }
 
 if (enable_brave_wayback_machine) {

@@ -16,7 +16,7 @@
 #include "brave/browser/brave_stats/switches.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
+#include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/network_constants.h"
@@ -38,10 +38,6 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/fetch_api.mojom-shared.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-#include "brave/components/brave_referrals/common/pref_names.h"
-#endif
 
 namespace brave_stats {
 
@@ -312,12 +308,8 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
 }
 
 bool BraveStatsUpdater::IsReferralInitialized() {
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   return pref_service_->GetBoolean(kReferralInitialization) ||
          pref_service_->GetBoolean(kReferralCheckedForPromoCodeFile);
-#else
-  return true;
-#endif
 }
 
 bool BraveStatsUpdater::IsAdsEnabled() {
@@ -353,7 +345,6 @@ void BraveStatsUpdater::QueueServerPing() {
       num_closures,
       base::BindOnce(&BraveStatsUpdater::StartServerPingStartupTimer,
                      base::Unretained(this)));
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (!referrals_initialized) {
     pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
     pref_change_registrar_->Init(pref_service_);
@@ -362,7 +353,6 @@ void BraveStatsUpdater::QueueServerPing() {
         base::BindRepeating(&BraveStatsUpdater::OnReferralInitialization,
                             base::Unretained(this)));
   }
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
   if (ads_enabled) {
     DetectUncertainFuture();

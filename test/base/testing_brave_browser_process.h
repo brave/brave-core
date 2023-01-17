@@ -60,9 +60,7 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;
 #endif
   brave::BraveP3AService* brave_p3a_service() override;
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   brave::BraveReferralsService* brave_referrals_service() override;
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   brave_stats::BraveStatsUpdater* brave_stats_updater() override;
   ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() override;

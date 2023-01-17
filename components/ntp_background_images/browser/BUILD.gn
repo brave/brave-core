@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 
 static_library("browser") {
@@ -39,7 +38,7 @@ static_library("browser") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/common",
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_referrals/buildflags",
+    "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/common",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/buildflags",
@@ -66,9 +65,5 @@ static_library("browser") {
       "ntp_custom_images_source.cc",
       "ntp_custom_images_source.h",
     ]
-  }
-
-  if (enable_brave_referrals) {
-    deps += [ "//brave/components/brave_referrals/browser" ]
   }
 }

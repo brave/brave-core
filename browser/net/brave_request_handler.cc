@@ -15,12 +15,12 @@
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 #include "brave/browser/net/brave_reduce_language_network_delegate_helper.h"
+#include "brave/browser/net/brave_referrals_network_delegate_helper.h"
 #include "brave/browser/net/brave_service_key_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 #include "brave/browser/net/brave_stp_util.h"
 #include "brave/browser/net/decentralized_dns_network_delegate_helper.h"
 #include "brave/browser/net/global_privacy_control_network_delegate_helper.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
@@ -33,10 +33,6 @@
 #include "extensions/buildflags/buildflags.h"
 #include "extensions/common/constants.h"
 #include "net/base/net_errors.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-#include "brave/browser/net/brave_referrals_network_delegate_helper.h"
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/browser/net/brave_torrent_redirect_network_delegate_helper.h"
@@ -104,11 +100,9 @@ void BraveRequestHandler::SetupCallbacks() {
       base::BindRepeating(brave::OnBeforeStartTransaction_BraveServiceKey);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
 
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   start_transaction_callback =
       base::BindRepeating(brave::OnBeforeStartTransaction_ReferralsWork);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
-#endif
 
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveReduceLanguage)) {

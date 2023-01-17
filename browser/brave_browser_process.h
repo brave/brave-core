@@ -11,7 +11,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -21,9 +20,7 @@
 #include "extensions/buildflags/buildflags.h"
 
 namespace brave {
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 class BraveReferralsService;
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 class BraveP3AService;
 class BraveFarblingService;
 class URLSanitizerComponentInstaller;
@@ -105,9 +102,7 @@ class BraveBrowserProcess {
   virtual ipfs::BraveIpfsClientUpdater* ipfs_client_updater() = 0;
 #endif
   virtual brave::BraveP3AService* brave_p3a_service() = 0;
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   virtual brave::BraveReferralsService* brave_referrals_service() = 0;
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   virtual brave_stats::BraveStatsUpdater* brave_stats_updater() = 0;
   virtual ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() = 0;

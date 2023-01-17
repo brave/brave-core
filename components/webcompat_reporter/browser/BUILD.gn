@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 
@@ -25,15 +24,11 @@ static_library("browser") {
   deps = [
     ":buildflags",
     "//base",
-    "//brave/components/brave_referrals/buildflags",
+    "//brave/components/brave_referrals/browser",
     "//brave/components/brave_stats/browser",
     "//brave/components/constants",
     "//content/public/browser",
     "//net",
     "//services/network/public/cpp",
   ]
-
-  if (enable_brave_referrals) {
-    deps += [ "//brave/components/brave_referrals/browser" ]
-  }
 }

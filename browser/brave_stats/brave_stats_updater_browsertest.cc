@@ -14,7 +14,8 @@
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/browser/brave_stats/switches.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
+#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -33,12 +34,6 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
-
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
-#include "brave/components/brave_referrals/common/pref_names.h"
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-
 namespace {
 
 // Request handler for stats and referral updates. The response this returns
@@ -67,13 +62,11 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequestForStats(
 class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
  public:
   void SetUp() override {
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
     auto referral_initialized_callback = base::BindRepeating(
         &BraveStatsUpdaterBrowserTest::OnReferralInitialized,
         base::Unretained(this));
     brave::BraveReferralsService::SetReferralInitializedCallbackForTesting(
         &referral_initialized_callback);
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
     auto stats_updated_callback = base::BindRepeating(
         &BraveStatsUpdaterBrowserTest::OnStandardStatsUpdated,
@@ -90,10 +83,8 @@ class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
   }
 
   void TearDown() override {
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
     brave::BraveReferralsService::SetReferralInitializedCallbackForTesting(
         nullptr);
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
     brave_stats::BraveStatsUpdater::SetStatsUpdatedCallbackForTesting(nullptr);
     brave_stats::BraveStatsUpdater::SetStatsThresholdCallbackForTesting(
         nullptr);
@@ -249,11 +240,9 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   WaitForReferralInitializeCallback();
   WaitForStandardStatsUpdatedCallback();
 
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   // Promo code file preference should now be true
   EXPECT_TRUE(
       g_browser_process->local_state()->GetBoolean(kReferralInitialization));
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
   // Verify that update url is valid
   const GURL update_url = GetUpdateURL();
@@ -274,14 +263,12 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
                        DISABLED_StatsUpdaterMigration) {
   // Create a pre 1.19 user.
   // Has a download_id, kReferralCheckedForPromoCodeFile is set, has promo code.
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   ASSERT_FALSE(
       g_browser_process->local_state()->GetBoolean(kReferralInitialization));
   g_browser_process->local_state()->SetString(kReferralDownloadID, "migration");
   g_browser_process->local_state()->SetString(kReferralPromoCode, "BRV001");
   g_browser_process->local_state()->SetBoolean(kReferralCheckedForPromoCodeFile,
                                                true);
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
   WaitForStandardStatsUpdatedCallback();
   // Verify that update url is valid
@@ -306,9 +293,7 @@ class BraveStatsUpdaterReferralCodeBrowserTest
     const base::FilePath promo_code_file =
         dir.GetPath().AppendASCII("promoCode");
     WritePromoCodeFile(promo_code_file, referral_code());
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
     brave::BraveReferralsService::SetPromoFilePathForTesting(promo_code_file);
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
     BraveStatsUpdaterBrowserTest::SetUp();
   }
 
@@ -332,11 +317,9 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterReferralCodeBrowserTest,
   WaitForReferralInitializeCallback();
   WaitForStandardStatsUpdatedCallback();
 
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   // Promo code file preference should now be true
   EXPECT_TRUE(
       g_browser_process->local_state()->GetBoolean(kReferralInitialization));
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
   // Verify that update url is valid
   const GURL update_url = GetUpdateURL();

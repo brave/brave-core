@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -45,6 +44,8 @@ source_set("net") {
     "brave_query_filter.h",
     "brave_reduce_language_network_delegate_helper.cc",
     "brave_reduce_language_network_delegate_helper.h",
+    "brave_referrals_network_delegate_helper.cc",
+    "brave_referrals_network_delegate_helper.h",
     "brave_request_handler.cc",
     "brave_request_handler.h",
     "brave_service_key_network_delegate_helper.cc",
@@ -73,7 +74,7 @@ source_set("net") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/safebrowsing",
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_referrals/buildflags",
+    "//brave/components/brave_referrals/browser",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_wallet/browser",
@@ -116,15 +117,6 @@ source_set("net") {
       "//brave/components/ipfs",
       "//chrome/common:channel_info",
     ]
-  }
-
-  if (enable_brave_referrals) {
-    sources += [
-      "brave_referrals_network_delegate_helper.cc",
-      "brave_referrals_network_delegate_helper.h",
-    ]
-
-    deps += [ "//brave/components/brave_referrals/browser" ]
   }
 
   if (enable_brave_webtorrent) {
@@ -219,14 +211,12 @@ source_set("unit_tests") {
 
     deps += [ "//brave/browser/extensions" ]
   }
-  if (enable_brave_referrals) {
-    if (!is_android) {
-      sources += [
-        # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI
-        "brave_referrals_network_delegate_helper_unittest.cc",
-      ]
-    }
 
+  if (!is_android) {
+    sources += [
+      # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI
+      "brave_referrals_network_delegate_helper_unittest.cc",
+    ]
     deps += [ "//brave/components/brave_referrals/browser" ]
   }
 }
