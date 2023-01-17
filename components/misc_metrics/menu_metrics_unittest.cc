@@ -142,4 +142,31 @@ TEST_F(MenuMetricsUnitTest, DismissRate) {
   histogram_tester_.ExpectBucketCount(kMenuDismissRateHistogramName, 0, 2);
 }
 
+TEST_F(MenuMetricsUnitTest, OpenCount) {
+  histogram_tester_.ExpectUniqueSample(kMenuOpensHistogramName, 0, 1);
+
+  for (size_t i = 0; i < 3; i++) {
+    menu_metrics_->RecordMenuShown();
+  }
+
+  histogram_tester_.ExpectBucketCount(kMenuOpensHistogramName, 1, 3);
+
+  for (size_t i = 0; i < 4; i++) {
+    menu_metrics_->RecordMenuShown();
+  }
+
+  histogram_tester_.ExpectBucketCount(kMenuOpensHistogramName, 1, 5);
+  histogram_tester_.ExpectBucketCount(kMenuOpensHistogramName, 2, 2);
+
+  task_environment_.FastForwardBy(base::Days(4));
+
+  histogram_tester_.ExpectBucketCount(kMenuOpensHistogramName, 2, 6);
+  histogram_tester_.ExpectBucketCount(kMenuOpensHistogramName, 0, 1);
+
+  task_environment_.FastForwardBy(base::Days(3));
+
+  histogram_tester_.ExpectBucketCount(kMenuOpensHistogramName, 2, 8);
+  histogram_tester_.ExpectBucketCount(kMenuOpensHistogramName, 0, 2);
+}
+
 }  // namespace misc_metrics

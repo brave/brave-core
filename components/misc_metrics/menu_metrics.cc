@@ -11,6 +11,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/misc_metrics/pref_names.h"
+#include "brave/components/p3a_utils/bucket.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -24,6 +25,8 @@ const char kBraveFeaturesPrefKey[] = "brave_features";
 const char kBrowserViewsPrefKey[] = "browser_views";
 
 constexpr base::TimeDelta kUpdateInterval = base::Days(1);
+
+const int kMenuOpenBuckets[] = {0, 5, 15, 29, 49};
 
 const char* GetMenuGroupPrefKey(MenuGroup group) {
   switch (group) {
@@ -42,6 +45,7 @@ const char* GetMenuGroupPrefKey(MenuGroup group) {
 const char kFrequentMenuGroupHistogramName[] =
     "Brave.Toolbar.FrequentMenuGroup";
 const char kMenuDismissRateHistogramName[] = "Brave.Toolbar.MenuDismissRate";
+const char kMenuOpensHistogramName[] = "Brave.Toolbar.MenuOpens";
 
 MenuMetrics::MenuMetrics(PrefService* local_state)
     : local_state_(local_state),
@@ -104,6 +108,7 @@ void MenuMetrics::RecordMenuShown() {
   VLOG(2) << "MenuMetrics: menu shown";
   menu_shown_storage_.AddDelta(1);
   RecordMenuDismissRate();
+  RecordMenuOpens();
 }
 
 void MenuMetrics::RecordMenuDismiss() {
@@ -136,8 +141,14 @@ void MenuMetrics::RecordMenuDismissRate() {
   UMA_HISTOGRAM_EXACT_LINEAR(kMenuDismissRateHistogramName, answer, 5);
 }
 
+void MenuMetrics::RecordMenuOpens() {
+  p3a_utils::RecordToHistogramBucket(kMenuOpensHistogramName, kMenuOpenBuckets,
+                                     menu_shown_storage_.GetWeeklySum());
+}
+
 void MenuMetrics::Update() {
   RecordMenuDismissRate();
+  RecordMenuOpens();
   update_timer_.Start(FROM_HERE, base::Time::Now() + kUpdateInterval, this,
                       &MenuMetrics::Update);
 }
