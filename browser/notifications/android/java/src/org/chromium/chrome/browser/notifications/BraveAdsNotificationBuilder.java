@@ -136,14 +136,6 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
             view.setViewPadding(R.id.title, 0, scaledPadding, 0, 0);
             view.setViewPadding(R.id.body_container, 0, scaledPadding, 0, scaledPadding);
             // addWorkProfileBadge(view);
-
-            int smallIconId = useMaterial() ? R.id.small_icon_overlay : R.id.small_icon_footer;
-            view.setViewVisibility(smallIconId, View.VISIBLE);
-            if (mSmallIconBitmapForContent != null) {
-                view.setImageViewBitmap(smallIconId, mSmallIconBitmapForContent);
-            } else {
-                view.setImageViewResource(smallIconId, mSmallIconId);
-            }
         }
 
         // Support following custom notification changes on Android 12:
@@ -302,13 +294,5 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
      */
     private static int pxToDp(float value, DisplayMetrics metrics) {
         return Math.round(value / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
-
-    /**
-     * Whether to use the Material look and feel or fall back to Holo.
-     */
-    @VisibleForTesting
-    static boolean useMaterial() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 }
