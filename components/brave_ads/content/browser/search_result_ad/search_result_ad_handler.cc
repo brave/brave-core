@@ -1,4 +1,4 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -14,11 +14,13 @@
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "content/public/browser/render_frame_host.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
+#include "url/url_constants.h"
 
 namespace brave_ads {
 
-SearchResultAdHandler::SearchResultAdHandler(AdsService* ads_service,
-                                             bool should_trigger_viewed_event)
+SearchResultAdHandler::SearchResultAdHandler(
+    AdsService* ads_service,
+    const bool should_trigger_viewed_event)
     : ads_service_(ads_service),
       should_trigger_viewed_event_(should_trigger_viewed_event) {
   DCHECK(ads_service_);
@@ -31,7 +33,7 @@ std::unique_ptr<SearchResultAdHandler>
 SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
     AdsService* ads_service,
     const GURL& url,
-    bool should_trigger_viewed_event) {
+    const bool should_trigger_viewed_event) {
   if (!ads_service || !ads_service->IsEnabled() ||
       !base::FeatureList::IsEnabled(
           features::kSupportBraveSearchResultAdConfirmationEvents) ||
@@ -67,10 +69,10 @@ void SearchResultAdHandler::MaybeRetrieveSearchResultAd(
 
 void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
     const GURL& navigation_url) {
-  DCHECK(navigation_url.is_valid());
   DCHECK(ads_service_);
-
-  if (!ads_service_->IsEnabled() || !search_result_ads_) {
+  if (!ads_service_->IsEnabled() || !search_result_ads_ ||
+      !navigation_url.is_valid() ||
+      !navigation_url.SchemeIs(url::kHttpsScheme)) {
     return;
   }
 
@@ -80,9 +82,10 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
   }
 
   const ads::mojom::SearchResultAdInfoPtr& search_result_ad = it->second;
-  DCHECK(search_result_ad);
-  DCHECK(search_result_ad->target_url.is_valid() &&
-         search_result_ad->target_url.SchemeIs(url::kHttpsScheme));
+  if (!search_result_ad || !search_result_ad->target_url.is_valid() ||
+      !search_result_ad->target_url.SchemeIs(url::kHttpsScheme)) {
+    return;
+  }
 
   ads_service_->TriggerSearchResultAdEvent(
       search_result_ad->Clone(), ads::mojom::SearchResultAdEventType::kClicked);

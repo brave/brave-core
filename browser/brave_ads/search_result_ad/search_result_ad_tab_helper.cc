@@ -14,13 +14,12 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
+#include "url/gurl.h"
 
 namespace brave_ads {
 
 namespace {
-
 AdsService* g_ads_service_for_testing = nullptr;
-
 }  // namespace
 
 SearchResultAdTabHelper::SearchResultAdTabHelper(
@@ -53,6 +52,7 @@ void SearchResultAdTabHelper::MaybeTriggerSearchResultAdClickedEvent(
 
 // static
 void SearchResultAdTabHelper::SetAdsServiceForTesting(AdsService* ads_service) {
+  DCHECK(!g_ads_service_for_testing || !ads_service);
   g_ads_service_for_testing = ads_service;
 }
 
@@ -74,7 +74,7 @@ void SearchResultAdTabHelper::DidFinishNavigation(
     return;
   }
 
-  ProcessPossibleSearchResultAdClickedEvent(navigation_handle);
+  MaybeProcessSearchResultAdClickedEvent(navigation_handle);
 
   const bool should_trigger_viewed_event =
       navigation_handle->GetRestoreType() == content::RestoreType::kNotRestored;
@@ -96,7 +96,7 @@ void SearchResultAdTabHelper::WebContentsDestroyed() {
   search_result_ad_handler_.reset();
 }
 
-void SearchResultAdTabHelper::ProcessPossibleSearchResultAdClickedEvent(
+void SearchResultAdTabHelper::MaybeProcessSearchResultAdClickedEvent(
     content::NavigationHandle* navigation_handle) {
   DCHECK(navigation_handle);
 

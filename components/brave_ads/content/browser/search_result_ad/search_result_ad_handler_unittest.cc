@@ -1,4 +1,4 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -15,12 +15,12 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-namespace brave_ads {
-namespace {
-
 using testing::_;
 using testing::Mock;
 using testing::Return;
+
+namespace brave_ads {
+namespace {
 
 constexpr char kAllowedDomain[] = "https://search.brave.com";
 constexpr char kNotAllowedDomain[] = "https://brave.com";
@@ -33,11 +33,6 @@ class SearchResultAdHandlerTest : public ::testing::Test {
     feature_list_.InitAndEnableFeature(
         features::kSupportBraveSearchResultAdConfirmationEvents);
   }
-  ~SearchResultAdHandlerTest() override = default;
-
-  SearchResultAdHandlerTest(const SearchResultAdHandlerTest&) = delete;
-  SearchResultAdHandlerTest& operator=(const SearchResultAdHandlerTest&) =
-      delete;
 
   static void SimulateOnRetrieveSearchResultAdEntities(
       SearchResultAdHandler* search_result_ad_handler,
@@ -105,7 +100,7 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsEmpty) {
                                            blink::mojom::WebPage::New());
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
-      GURL(kTargetUrl));
+      GURL(kTestWebPageTargetUrl));
 }
 
 TEST_F(SearchResultAdHandlerTest, BraveAdsBecomeDisabled) {
@@ -132,7 +127,7 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsBecomeDisabled) {
                                            CreateTestWebPage());
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
-      GURL(kTargetUrl));
+      GURL(kTestWebPageTargetUrl));
 }
 
 TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
@@ -155,10 +150,10 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
                                            CreateTestWebPage());
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
-      GURL(kTargetUrl));
+      GURL(kTestWebPageTargetUrl));
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
-      GURL(kTargetUrl));
+      GURL(kTestWebPageTargetUrl));
 }
 
 TEST_F(SearchResultAdHandlerTest, BraveAdsTabRestored) {
@@ -181,7 +176,7 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsTabRestored) {
                                            CreateTestWebPage());
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
-      GURL(kTargetUrl));
+      GURL(kTestWebPageTargetUrl));
 }
 
 }  // namespace brave_ads

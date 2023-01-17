@@ -14,11 +14,12 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
-#include "url/gurl.h"
+
+class GURL;
 
 namespace content {
 class RenderFrameHost;
-}
+}  // namespace content
 
 namespace brave_ads {
 
@@ -55,7 +56,7 @@ class SearchResultAdTabHelper
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void WebContentsDestroyed() override;
 
-  void ProcessPossibleSearchResultAdClickedEvent(
+  void MaybeProcessSearchResultAdClickedEvent(
       content::NavigationHandle* navigation_handle);
 
   std::unique_ptr<SearchResultAdHandler> search_result_ad_handler_;

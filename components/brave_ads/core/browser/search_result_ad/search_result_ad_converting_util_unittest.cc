@@ -1,4 +1,4 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -20,16 +20,17 @@ TEST(SearchResultAdConvertingTest, ValidWebPage) {
       ConvertWebPageToSearchResultAds(std::move(web_page));
   EXPECT_EQ(ads.size(), 1U);
   const ads::mojom::SearchResultAdInfoPtr& search_result_ad =
-      ads.at(GURL(kTargetUrl));
+      ads.at(GURL(kTestWebPageTargetUrl));
   ASSERT_TRUE(search_result_ad.get());
 
-  EXPECT_EQ(search_result_ad->target_url, GURL(kTargetUrl));
+  EXPECT_EQ(search_result_ad->target_url, GURL(kTestWebPageTargetUrl));
   EXPECT_EQ(search_result_ad->value, 0.5);
   EXPECT_EQ(
       static_cast<size_t>(search_result_ad->conversion->observation_window),
       1U);
 
-  EXPECT_EQ(search_result_ad->creative_instance_id, kCreativeInstanceId);
+  EXPECT_EQ(search_result_ad->creative_instance_id,
+            kTestWebPageCreativeInstanceId);
   EXPECT_EQ(search_result_ad->placement_id, "value0");
   EXPECT_EQ(search_result_ad->creative_set_id, "value1");
   EXPECT_EQ(search_result_ad->campaign_id, "value2");
@@ -143,7 +144,7 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
         schema_org::mojom::Property::New();
     extra_property->name = "data-landing-page";
     extra_property->values =
-        schema_org::mojom::Values::NewStringValues({kTargetUrl});
+        schema_org::mojom::Values::NewStringValues({kTestWebPageTargetUrl});
     ad_entity->properties.push_back(std::move(extra_property));
 
     const SearchResultAdMap ads =

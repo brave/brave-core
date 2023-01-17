@@ -1,4 +1,4 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -89,9 +89,9 @@ class TestWebPageConstructor final {
     entity->type = "SearchResultAd";
 
     AddProperty<std::string>(&entity->properties, "data-creative-instance-id",
-                             kCreativeInstanceId);
+                             kTestWebPageCreativeInstanceId);
     AddProperty<std::string>(&entity->properties, "data-landing-page",
-                             kTargetUrl);
+                             kTestWebPageTargetUrl);
     AddProperty<std::string>(&entity->properties, "data-rewards-value", "0.5");
     AddProperty<int64_t>(&entity->properties,
                          "data-conversion-observation-window-value", 1);

@@ -1,4 +1,4 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -193,12 +193,12 @@ bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
   return false;
 }
 
-void ConvertSearchResultAdEntity(const schema_org::mojom::EntityPtr& ad_entity,
-                                 SearchResultAdMap* search_result_ads) {
+void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
+                                   SearchResultAdMap* search_result_ads) {
   DCHECK(search_result_ads);
 
   // Wrong search result ad type specified.
-  if (!ad_entity || ad_entity->type != kSearchResultAdType) {
+  if (!entity || entity->type != kSearchResultAdType) {
     return;
   }
 
@@ -206,7 +206,7 @@ void ConvertSearchResultAdEntity(const schema_org::mojom::EntityPtr& ad_entity,
   search_result_ad->conversion = ConversionInfo::New();
 
   base::flat_set<base::StringPiece> found_attributes;
-  for (const auto& ad_property : ad_entity->properties) {
+  for (const auto& ad_property : entity->properties) {
     if (!ad_property) {
       return;
     }
@@ -221,7 +221,7 @@ void ConvertSearchResultAdEntity(const schema_org::mojom::EntityPtr& ad_entity,
     found_attributes.insert(*it);
 
     if (!SetSearchAdProperty(ad_property, search_result_ad.get())) {
-      VLOG(2) << "Cannot read search result ad attribute value: "
+      VLOG(6) << "Cannot read search result ad attribute value: "
               << ad_property->name;
       return;
     }
@@ -235,7 +235,7 @@ void ConvertSearchResultAdEntity(const schema_org::mojom::EntityPtr& ad_entity,
                         found_attributes.begin(), found_attributes.end(),
                         std::back_inserter(absent_attributes));
 
-    VLOG(2) << "Some of search result ad attributes were not specified: "
+    VLOG(6) << "Some of search result ad attributes were not specified: "
             << base::JoinString(absent_attributes, ", ");
 
     return;
@@ -258,19 +258,19 @@ void ConvertWebPageEntityProperty(
     return;
   }
 
-  for (const auto& ad_entity : values->get_entity_values()) {
-    ConvertSearchResultAdEntity(ad_entity, search_result_ads);
+  for (const auto& entity : values->get_entity_values()) {
+    ConvertEntityToSearchResultAd(entity, search_result_ads);
   }
 }
 
 void LogSearchResultAdMap(const SearchResultAdMap& search_result_ads) {
-  if (!VLOG_IS_ON(2)) {
+  if (!VLOG_IS_ON(6)) {
     return;
   }
 
   for (const auto& search_result_ad_pair : search_result_ads) {
     const auto& search_result_ad = search_result_ad_pair.second;
-    VLOG(2) << "Converted search result ad with \"" << kDataPlacementId
+    VLOG(6) << "Converted search result ad with \"" << kDataPlacementId
             << "\": " << search_result_ad->placement_id << "\n"
             << "  \"" << kDataCreativeInstanceId
             << "\": " << search_result_ad->creative_instance_id << "\n"
