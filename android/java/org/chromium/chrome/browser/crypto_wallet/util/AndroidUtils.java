@@ -91,6 +91,10 @@ public class AndroidUtils {
         }
     }
 
+    /**
+     * Gets device screen height in pixels, excluding the navigation bar (if visible) and insets.
+     * @return device screen height in pixels.
+     */
     public static int getScreenHeight() {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
     }

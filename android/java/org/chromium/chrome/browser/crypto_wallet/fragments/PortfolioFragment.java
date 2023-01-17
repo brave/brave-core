@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -48,6 +49,7 @@ import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.NftDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
@@ -353,20 +355,20 @@ public class PortfolioFragment
 
         if (asset.isErc721 || asset.isNft) {
             PortfolioModel.NftDataModel selectedNft = null;
-            if (mPortfolioModel != null) {
-                List<PortfolioModel.NftDataModel> nftModels = mPortfolioModel.mNftModels.getValue();
-                for (PortfolioModel.NftDataModel nftDataModel : nftModels) {
-                    if (nftDataModel.token.tokenId.equals(asset.tokenId)) {
-                        selectedNft = nftDataModel;
-                        break;
-                    }
+            List<PortfolioModel.NftDataModel> nftModels = mPortfolioModel.mNftModels.getValue();
+            for (PortfolioModel.NftDataModel nftDataModel : nftModels) {
+                if (nftDataModel.token.tokenId.equals(asset.tokenId)) {
+                    selectedNft = nftDataModel;
+                    break;
                 }
             }
             if (selectedNft == null) {
                 return;
             }
 
-            Utils.openNftDetailActivity(getActivity(), selectedNetwork.chainId, asset, selectedNft);
+            Intent intent = NftDetailActivity.getIntent(
+                    getContext(), selectedNetwork.chainId, asset, selectedNft);
+            startActivity(intent);
         } else {
             Utils.openAssetDetailsActivity(getActivity(), selectedNetwork.chainId, asset);
         }

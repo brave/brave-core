@@ -24,7 +24,7 @@ import java.util.List;
 public class ImageLoader {
     private static final List<String> ANIMATED_LIST = Arrays.asList(".gif");
 
-    public static RequestBuilder<Drawable> getLoadNftRequest(
+    public static RequestBuilder<Drawable> createLoadNftRequest(
             String url, Context context, boolean isCircular) {
         RequestBuilder<Drawable> request =
                 Glide.with(context).load(url).transform(new CenterInside(), new RoundedCorners(24));

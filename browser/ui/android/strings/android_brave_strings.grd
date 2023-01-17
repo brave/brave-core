@@ -2047,7 +2047,7 @@ Are you sure you want to do this?
       Blockchain
     </message>
     <message name="IDS_BRAVE_WALLET_NFT_TOKEN_STANDARD" desc="Token standard text for Brave wallet NFT asset detail.">
-      Token standard
+      Token Standard
     </message>
     <message name="IDS_BRAVE_WALLET_NFT_ERC_721" desc="Type of NFT token standard. It does not need to be translated.">
       ERC 721

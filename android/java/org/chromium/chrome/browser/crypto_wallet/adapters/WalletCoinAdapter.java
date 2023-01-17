@@ -198,7 +198,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                 if (walletListItemModel.hasNftImageLink()
                         && ImageLoader.isSupported(nftDataModel.erc721MetaData.mImageUrl)) {
                     String url = nftDataModel.erc721MetaData.mImageUrl;
-                    ImageLoader.getLoadNftRequest(url, context, false).into(holder.iconImg);
+                    ImageLoader.createLoadNftRequest(url, context, false).into(holder.iconImg);
                 } else {
                     Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, holder.iconImg,
                             walletListItemModel.getBlockchainToken().contractAddress,
