@@ -943,7 +943,7 @@ interface JsonRpcService {
   SnsGetSolAddr(string domain) => (string address, SolanaProviderError error, string error_message);
 
   // SNS Domain lookups
-  SnsResolveHost(string domain) => (url.mojom.Url url, SolanaProviderError error, string error_message);
+  SnsResolveHost(string domain) => (url.mojom.Url? url, SolanaProviderError error, string error_message);
 
   // Unstoppable Domains lookups
   UnstoppableDomainsGetWalletAddr(string domain, BlockchainToken? token) => (string address, ProviderError error, string error_message);
