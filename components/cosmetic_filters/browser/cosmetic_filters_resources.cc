@@ -68,9 +68,11 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
 
 void CosmeticFiltersResources::UrlCosmeticResources(
     const std::string& url,
+    bool aggressive_blocking,
     UrlCosmeticResourcesCallback callback) {
   DCHECK(ad_block_service_->GetTaskRunner()->RunsTasksInCurrentSequence());
-  auto resources = ad_block_service_->UrlCosmeticResources(url);
+  auto resources =
+      ad_block_service_->UrlCosmeticResources(url, aggressive_blocking);
   std::move(callback).Run(base::Value(std::move(resources)));
 }
 

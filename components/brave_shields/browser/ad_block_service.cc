@@ -170,9 +170,29 @@ absl::optional<std::string> AdBlockService::GetCspDirectives(
   return csp_directives;
 }
 
-base::Value::Dict AdBlockService::UrlCosmeticResources(const std::string& url) {
+base::Value::Dict AdBlockService::UrlCosmeticResources(
+    const std::string& url,
+    bool aggressive_blocking) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   base::Value::Dict resources = default_engine_->UrlCosmeticResources(url);
+
+  if (!aggressive_blocking) {
+    // `:has` procedural selectors from the default engine should not be hidden
+    // in standard blocking mode.
+    base::Value::List* default_hide_selectors =
+        resources.FindList("hide_selectors");
+    if (default_hide_selectors) {
+      base::Value::List::iterator it = default_hide_selectors->begin();
+      while (it < default_hide_selectors->end()) {
+        DCHECK(it->is_string());
+        if (it->GetString().find(":has(") != std::string::npos) {
+          it = default_hide_selectors->erase(it);
+        } else {
+          it++;
+        }
+      }
+    }
+  }
 
   base::Value::Dict additional_resources =
       additional_filters_engine_->UrlCosmeticResources(url);

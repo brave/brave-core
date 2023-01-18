@@ -46,6 +46,7 @@ class CosmeticFiltersResources final
   // filtering to first party elements along with an initial set of rules and
   // scripts to apply for the given URL.
   void UrlCosmeticResources(const std::string& url,
+                            bool aggressive_blocking,
                             UrlCosmeticResourcesCallback callback) override;
 
  private:
