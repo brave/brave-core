@@ -94,6 +94,7 @@ PlaylistService* PlaylistServiceFactory::GetForBrowserContext(
   return nullptr;
 }
 
+#if BUILDFLAG(IS_ANDROID)
 // static
 mojo::PendingRemote<mojom::PlaylistService>
 PlaylistServiceFactory::GetForContext(content::BrowserContext* context) {
@@ -101,6 +102,7 @@ PlaylistServiceFactory::GetForContext(content::BrowserContext* context) {
              GetInstance()->GetServiceForBrowserContext(context, true))
       ->MakeRemote();
 }
+#endif  // BUILDFLAG(IS_ANDROID)
 
 // static
 bool PlaylistServiceFactory::IsPlaylistEnabled(

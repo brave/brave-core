@@ -689,16 +689,13 @@ void PlaylistService::RemoveLocalDataForItem(
   }
 }
 
+#if BUILDFLAG(IS_ANDROID)
 mojo::PendingRemote<mojom::PlaylistService> PlaylistService::MakeRemote() {
   mojo::PendingRemote<mojom::PlaylistService> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
   return remote;
 }
-
-void PlaylistService::Bind(
-    mojo::PendingReceiver<mojom::PlaylistService> receiver) {
-  receivers_.Add(this, std::move(receiver));
-}
+#endif  // BUILDFLAG(IS_ANDROID)
 
 void PlaylistService::AddObserver(
     mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) {
