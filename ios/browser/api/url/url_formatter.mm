@@ -49,10 +49,14 @@ BraveURLSchemeDisplay const BraveURLSchemeDisplayOmitCryptographic =
   return base::SysUTF16ToNSString(result) ?: @"";
 }
 
-+ (NSString*)formatURL:(NSString*)url {
++ (NSString*)formatURL:(NSString*)url
+           formatTypes:(BraveURLFormatterFormatType)formatTypes
+       unescapeOptions:(BraveURLFormatterUnescapeRule)unescapeOptions {
   std::u16string result = url_formatter::FormatUrl(
-      GURL(base::SysNSStringToUTF8(url)), url_formatter::kFormatUrlOmitDefaults,
-      base::UnescapeRule::SPACES, nullptr, nullptr, nullptr);
+      GURL(base::SysNSStringToUTF8(url)),
+      static_cast<url_formatter::FormatUrlType>(formatTypes),
+      static_cast<base::UnescapeRule::Type>(unescapeOptions), nullptr, nullptr,
+      nullptr);
   return base::SysUTF16ToNSString(result) ?: @"";
 }
 @end
