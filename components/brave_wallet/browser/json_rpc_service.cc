@@ -1433,14 +1433,14 @@ void JsonRpcService::SnsResolveHost(const std::string& domain,
                                     SnsResolveHostCallback callback) {
   if (!base::FeatureList::IsEnabled(features::kBraveWalletSnsFeature)) {
     std::move(callback).Run(
-        GURL(), mojom::SolanaProviderError::kInvalidParams,
+        absl::nullopt, mojom::SolanaProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
   if (!IsValidDomain(domain)) {
     std::move(callback).Run(
-        GURL(), mojom::SolanaProviderError::kInvalidParams,
+        absl::nullopt, mojom::SolanaProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }

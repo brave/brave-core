@@ -40,7 +40,7 @@ void OnBeforeURLRequest_EnsRedirectWork(
 void OnBeforeURLRequest_SnsRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx,
-    const GURL& url,
+    const absl::optional<GURL>& url,
     brave_wallet::mojom::SolanaProviderError error,
     const std::string& error_message);
 
