@@ -29,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.chromium.base.Consumer;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
@@ -43,6 +44,8 @@ import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.suggestions.tile.Tile;
 import org.chromium.chrome.browser.ui.favicon.FaviconUtils;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityConstants;
+import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityPreferencesManager;
+import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityPreferencesManager.SearchActivityPreferences;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
 import org.chromium.components.browser_ui.widget.RoundedIconGenerator;
 import org.chromium.components.favicon.IconType;
@@ -60,6 +63,17 @@ import java.util.List;
 import java.util.Objects;
 
 public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvider {
+    static class QuickActionSearchAndBookmarkWidgetProviderDelegate
+            implements Consumer<SearchActivityPreferences> {
+        public QuickActionSearchAndBookmarkWidgetProviderDelegate() {}
+
+        @Override
+        public void accept(SearchActivityPreferences prefs) {
+            if (prefs == null) prefs = SearchActivityPreferencesManager.getCurrent();
+            updateSearchEngine(prefs.searchEngineName);
+        }
+    }
+
     public static String FROM_SETTINGS = "FROM_SETTINGS";
 
     private static final int TOTAL_TILES = 16;
@@ -98,8 +112,21 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
             },
     };
 
+    private static QuickActionSearchAndBookmarkWidgetProviderDelegate mDelegate;
+
     public QuickActionSearchAndBookmarkWidgetProvider() {
         ChromeBrowserInitializer.getInstance().handleSynchronousStartup();
+    }
+
+    public static void initializeDelegate() {
+        SearchActivityPreferencesManager.addObserver(getDelegate());
+    }
+
+    private static QuickActionSearchAndBookmarkWidgetProviderDelegate getDelegate() {
+        if (mDelegate == null) {
+            mDelegate = new QuickActionSearchAndBookmarkWidgetProviderDelegate();
+        }
+        return mDelegate;
     }
 
     @Override
@@ -134,6 +161,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     public static void updateSearchEngine(String searchEngine) {
+        if (searchEngine == null) return;
         Context context = ContextUtils.getApplicationContext();
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = getAppWidgetIds(context, appWidgetManager);
