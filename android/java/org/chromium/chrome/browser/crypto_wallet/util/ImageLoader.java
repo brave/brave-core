@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -35,7 +36,7 @@ public class ImageLoader {
     }
 
     public static boolean isSupported(String url) {
-        return !isSvg(url);
+        return isValidImgUrl(url) && !isSvg(url);
     }
 
     public static boolean isSvg(String url) {
@@ -44,6 +45,6 @@ public class ImageLoader {
     }
 
     private static boolean isValidImgUrl(String url) {
-        return !TextUtils.isEmpty(url);
+        return URLUtil.isDataUrl(url) || URLUtil.isNetworkUrl(url);
     }
 }

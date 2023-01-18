@@ -164,7 +164,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
                 // Hide description layout in case of an empty string.
                 mNftDescriptionLayout.setVisibility(View.GONE);
             }
-            if (!TextUtils.isEmpty(imageUrl)) {
+            if (ImageLoader.isSupported(imageUrl)) {
                 loadNftImage(imageUrl);
             } else {
                 setNftImageAsNotAvailable();
