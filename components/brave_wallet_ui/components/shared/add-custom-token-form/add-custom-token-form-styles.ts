@@ -83,6 +83,7 @@ export const FormRow = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  gap: 17px;
 `
 
 export const FormColumn = styled.div`
@@ -91,6 +92,11 @@ export const FormColumn = styled.div`
   align-items: flex-start;
   justify-content: center;
   width: 49%;
+`
+
+export const FullWidthFormColumn = styled(FormColumn)`
+  width: 100%;
+  margin-top: 8px;
 `
 
 export const InputLabel = styled.span`
@@ -104,7 +110,7 @@ export const InputLabel = styled.span`
 
 export const Input = styled.input`
   outline: none;
-  width: 265px;
+  width: ${p => p.width ? p.width : '265px'};
   background-image: none;
   background-color: ${(p) => p.theme.color.background02};
   box-shadow: none;
@@ -137,4 +143,10 @@ export const Input = styled.input`
     -webkit-appearance: none;
     margin: 0;
   }
+`
+
+export const ButtonRowSpacer = styled.div`
+  display: flex;
+  width: 100% auto;
+  margin-top: 14px;
 `

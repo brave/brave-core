@@ -50,7 +50,8 @@ import {
   UnlockWalletPayloadType,
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionNonceType,
-  UpdateUnapprovedTransactionSpendAllowanceType
+  UpdateUnapprovedTransactionSpendAllowanceType,
+  UpdateUsetAssetType
 } from '../constants/action_types'
 import {
   AddAccountPayloadType,
@@ -142,7 +143,7 @@ export const WalletAsyncActions = {
   addFavoriteApp: createAction<BraveWallet.AppItem>('addFavoriteApp'), // should use ApiProxy.walletHandler + refreshWalletInfo
   removeFavoriteApp: createAction<BraveWallet.AppItem>('removeFavoriteApp'), // should use ApiProxy.walletHandler + refreshWalletInfo
   addUserAsset: createAction<BraveWallet.BlockchainToken>('addUserAsset'),
-  updateUserAsset: createAction<BraveWallet.BlockchainToken>('updateUserAsset'),
+  updateUserAsset: createAction<UpdateUsetAssetType>('updateUserAsset'),
   removeUserAsset: createAction<BraveWallet.BlockchainToken>('removeUserAsset'),
   setUserAssetVisible: createAction<SetUserAssetVisiblePayloadType>(
     'setUserAssetVisible'

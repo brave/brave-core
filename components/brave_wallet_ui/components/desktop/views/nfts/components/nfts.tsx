@@ -16,24 +16,30 @@ import {
 import { useSafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../../common/selectors'
 
+// actions
+import { WalletPageActions } from '../../../../../page/actions'
+
 // utils
 import { getLocale } from '$web-common/locale'
+import Amount from '../../../../../utils/amount'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
 import NetworkFilterSelector from '../../../network-filter-selector'
+import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-grid-view-item'
 
 // styles
 import {
-  EmptyStateText,
+  StyledWrapper,
   FilterTokenRow,
   IpfsButton,
   IpfsIcon,
-  NftGrid
+  NftGrid,
+  AddIcon,
+  AddButton
 } from './nfts.styles'
-import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-grid-view-item'
-import { WalletPageActions } from '../../../../../page/actions'
-import Amount from '../../../../../utils/amount'
+import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
+import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
 
 interface Props {
   networks: BraveWallet.NetworkInfo[]
@@ -52,6 +58,7 @@ export const Nfts = (props: Props) => {
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
+  const [showAddNftModal, setShowAddNftModal] = React.useState<boolean>(false)
 
   // hooks
   const history = useHistory()
@@ -71,6 +78,10 @@ export const Nfts = (props: Props) => {
   const onClickIpfsButton = React.useCallback(() => {
     onToggleShowIpfsBanner()
   }, [onToggleShowIpfsBanner])
+
+  const toggleShowAddNftModal = React.useCallback(() => {
+    setShowAddNftModal(value => !value)
+  }, [])
 
   // memos
   const filteredNfts = React.useMemo(() => {
@@ -92,12 +103,12 @@ export const Nfts = (props: Props) => {
     })
   }, [searchValue, nftList])
 
-  const emptyStateMessage = React.useMemo(() => {
-    return getLocale(searchValue === '' ? 'braveWalletNftsEmptyState' : 'braveWalletNftsEmptyStateSearch')
-  }, [searchValue])
+  const sortedNfts = React.useMemo(() => {
+    return filteredNfts.sort((a, b) => a.name.localeCompare(b.name))
+  }, [filteredNfts])
 
   return (
-    <>
+    <StyledWrapper>
       <FilterTokenRow>
         <SearchBar
           placeholder={getLocale('braveWalletSearchText')}
@@ -110,11 +121,14 @@ export const Nfts = (props: Props) => {
             <IpfsIcon />
           </IpfsButton>
         }
+        <AddButton onClick={toggleShowAddNftModal}>
+          <AddIcon />
+        </AddButton>
       </FilterTokenRow>
-      {filteredNfts.length === 0
-        ? <EmptyStateText>{emptyStateMessage}</EmptyStateText>
+      {sortedNfts.length === 0
+        ? <NftsEmptyState onImportNft={toggleShowAddNftModal} />
         : <NftGrid>
-          {filteredNfts.map(nft => (
+          {sortedNfts.map(nft => (
             <NFTGridViewItem
               key={`${nft.tokenId}-${nft.contractAddress}`}
               token={nft}
@@ -123,6 +137,12 @@ export const Nfts = (props: Props) => {
           ))}
         </NftGrid>
       }
-    </>
+      {showAddNftModal &&
+        <AddOrEditNftModal
+          onClose={toggleShowAddNftModal}
+          onHideForm={toggleShowAddNftModal}
+        />
+      }
+    </StyledWrapper>
   )
 }

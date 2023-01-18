@@ -9,7 +9,9 @@ import * as React from 'react'
 import { BraveWallet } from '../../../../../../constants/types'
 
 // Utils
+import { stripERC20TokenImageURL, addIpfsGateway } from '../../../../../../utils/string-utils'
 import Amount from '../../../../../../utils/amount'
+import { getTokensNetwork } from '../../../../../../utils/network-utils'
 
 // selectors
 import { useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
@@ -17,17 +19,19 @@ import { WalletSelectors } from '../../../../../../common/selectors'
 
 // components
 import { NftIconWithNetworkIcon } from '../../../../../shared/nft-icon/nft-icon-with-network-icon'
+import { NftMorePopup } from '../nft-more-popup/nft-more-popup'
+import { AddOrEditNftModal } from '../../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 
 // Styled Components
 import {
-  NFTButton,
+  NFTWrapper,
   NFTText,
   IconWrapper,
+  VerticalMenuIcon,
+  VerticalMenu,
   DIVForClickableArea,
   NFTSymbol
 } from './style'
-import { Row } from '../../../../../shared/style'
-import { getTokensNetwork } from '../../../../../../utils/network-utils'
 
 interface Props {
   token: BraveWallet.BlockchainToken
@@ -37,24 +41,63 @@ interface Props {
 export const NFTGridViewItem = (props: Props) => {
   const { token, onSelectAsset } = props
 
+  // state
+  const [showMore, setShowMore] = React.useState<boolean>(false)
+  const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
+
+  // redux
   const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
 
+  // methods
+  const onToggleShowMore = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    event?.stopPropagation()
+    setShowMore((currentValue) => !currentValue)
+  }, [])
+
+  const onHideModal = React.useCallback(() => {
+    setShowEditModal(false)
+  }, [])
+
+  const onEditNft = React.useCallback(() => {
+    setShowEditModal(true)
+    setShowMore(false)
+  }, [])
+
+  // memos
+  const remoteImage = React.useMemo(() => {
+    const tokenImageURL = stripERC20TokenImageURL(token.logo)
+    return addIpfsGateway(tokenImageURL)
+  }, [token.logo])
+
   return (
-    <NFTButton
-      onClick={onSelectAsset}
-    >
-      <IconWrapper>
-        <DIVForClickableArea />
-        <NftIconWithNetworkIcon
-          icon={token.logo}
-          responsive={true}
-          tokensNetwork={getTokensNetwork(networkList, token)}
-        />
-      </IconWrapper>
-      <Row alignItems='center' justifyContent='space-between' gap='14px' margin='6px 0 0 0'>
+    <>
+      <NFTWrapper>
+        <VerticalMenu onClick={onToggleShowMore}>
+          <VerticalMenuIcon />
+        </VerticalMenu>
+        {showMore &&
+          <NftMorePopup
+            onEditNft={onEditNft}
+          />
+        }
+        <DIVForClickableArea onClick={onSelectAsset}/>
+        <IconWrapper>
+          <NftIconWithNetworkIcon
+            icon={remoteImage}
+            responsive={true}
+            tokensNetwork={getTokensNetwork(networkList, token)}
+          />
+        </IconWrapper>
         <NFTText>{token.name} {token.tokenId ? '#' + new Amount(token.tokenId).toNumber() : ''}</NFTText>
-      </Row>
-      <NFTSymbol>{token.symbol}</NFTSymbol>
-    </NFTButton>
+        <NFTSymbol>{token.symbol}</NFTSymbol>
+      </NFTWrapper>
+      {showEditModal &&
+        <AddOrEditNftModal
+          nftToken={token}
+          onHideForm={onHideModal}
+          onClose={onHideModal}
+        />
+      }
+    </>
   )
 }

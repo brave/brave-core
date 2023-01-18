@@ -755,8 +755,6 @@
   <message name="IDS_BRAVE_WALLET_REMOVE_ACCOUNT_MODAL_TITLE" desc="Title prompt to confirm removal of a wallet account">Are you sure you want to remove "<ph name="ACCOUNT_NAME">$1<ex>Eth Account 1</ex></ph>"?</message>
   <message name="IDS_BRAVE_WALLET_REQUEST_FEATURE_BUTTON_TEXT" desc="Text displayed in request feature button">Request feature</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_LENGTH_ERROR" desc="Error message for when a supplied recovery phrase has an invalid number of words">Recovery phrase must be 12, 15, 18, 21, or 24 words long</message>
-  <message name="IDS_BRAVE_WALLET_NFTS_EMPTY_STATE" desc="Message displayed when user has no NFTs">No NFTs found in your wallet. You can add NFTs by clicking the "+ Visible assets" button at the bottom of the "Portfolio" tab</message>
-  <message name="IDS_BRAVE_WALLET_NFTS_EMPTY_STATE_SEARCH_FILTER" desc="Message displayed no NFTs match search criteria">No NFTs matching search or filter found</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFFCHAIN_PROCEED_WITH_YES" desc="Proceed with ENS offchain lookup answer">Yes</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFFCHAIN_PROCEED_WITH_NO" desc="Proceed with ENS offchain lookup answer">No</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFFCHAIN_DONT_SHOW_AGAIN" desc="Proceed with ENS offchain lookup checkbox">Don't show this again</message>
@@ -861,4 +859,8 @@
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNED" desc="IPFS pinning status description when an NFT is pinned">Pinned to your local IPFS node</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING" desc="IPFS pinning status description when pinning is in progress">NFT data is being pinned to your local IPFS node</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING_FAILED" desc="IPFS pinning status description when pinning failed">Cannot be pinned to your local IPFS node</message>
+  <message name="IDS_BRAVE_WALLET_NFTS_TAB_IMPORT_NFT" desc="NFT tab import NFT dropdown item">Import NFT</message>
+  <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_HEADING" desc="NFT tab empty state heading">No NFTs here yet.</message>
+  <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_SUBHEADING" desc="NFT tab empty state subheading">Ready to add some? Just click the button below to import.</message>
+  <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_DISCLAIMER" desc="NFT tab empty state disclaimer">Compatible with NFTs on Solana (SPL) and Ethereum (ERC-721).</message>
 </grit-part>
