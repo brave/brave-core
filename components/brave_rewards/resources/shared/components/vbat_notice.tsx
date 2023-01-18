@@ -1,4 +1,4 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -43,13 +43,14 @@ interface Props {
 
 export function VBATNotice (props: Props) {
   const { getString } = React.useContext(LocaleContext)
-  if (!props.vbatDeadline) {
-    return null
-  }
-
-  const deadline = new Date(props.vbatDeadline)
 
   function getMessages () {
+    if (!props.vbatDeadline) {
+      return null
+    }
+
+    const deadline = new Date(props.vbatDeadline)
+
     if (!props.canConnectAccount) {
       return {
         title: getString('rewardsVBATNoticeTitle2'),
@@ -69,6 +70,9 @@ export function VBATNotice (props: Props) {
   }
 
   const messages = getMessages()
+  if (!messages) {
+    return null
+  }
 
   return (
     <style.root>
