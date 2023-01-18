@@ -5,10 +5,8 @@
 
 #import "brave/ios/browser/api/net/certificate_utility.h"
 
-#include <algorithm>
+#include <limits>
 #include <memory>
-#include <tuple>
-#include <utility>
 #include <vector>
 
 #include "base/base64.h"
@@ -16,15 +14,24 @@
 #include "base/containers/span.h"
 #include "base/logging.h"
 #include "base/memory/ref_counted.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/strings/sys_string_conversions.h"
 
+#include "net/base/host_port_pair.h"
+#include "net/base/net_errors.h"
+#include "net/base/network_anonymization_key.h"
+#include "net/cert/cert_verify_proc_ios.h"
+#include "net/cert/cert_verify_result.h"
+#include "net/cert/crl_set.h"
 #include "net/cert/pem.h"
 #include "net/cert/pki/cert_errors.h"
 #include "net/cert/pki/parsed_certificate.h"
 #include "net/cert/x509_certificate.h"
 #include "net/cert/x509_util.h"
+#include "net/cert/x509_util_apple.h"
 #include "net/der/input.h"
 #include "net/http/transport_security_state.h"
+#include "net/log/net_log_with_source.h"
 #include "net/net_buildflags.h"
 #include "net/tools/transport_security_state_generator/cert_util.h"
 #include "net/tools/transport_security_state_generator/spki_hash.h"
@@ -112,5 +119,98 @@ namespace {
   SHA256(spki.UnsafeData(), spki.Length(), data);
 
   return [NSData dataWithBytes:data length:sizeof(data) / sizeof(data[0])];
+}
+
++ (int)verifyTrust:(SecTrustRef)trust
+              host:(NSString*)host
+              port:(NSInteger)port {
+  // Get the chain of Trust
+  // Create a certificate with all the intermediates from the Trust
+  auto create_cert_from_trust =
+      [](SecTrustRef trust) -> scoped_refptr<net::X509Certificate> {
+    if (!trust) {
+      return nullptr;
+    }
+
+    CFIndex cert_count = SecTrustGetCertificateCount(trust);
+    if (cert_count == 0) {
+      return nullptr;
+    }
+
+    std::vector<base::ScopedCFTypeRef<SecCertificateRef>> intermediates;
+    for (CFIndex i = 1; i < cert_count; ++i) {
+      intermediates.emplace_back(SecTrustGetCertificateAtIndex(trust, i),
+                                 base::scoped_policy::RETAIN);
+    }
+
+    return net::x509_util::CreateX509CertificateFromSecCertificate(
+        /*root_cert=*/base::ScopedCFTypeRef<SecCertificateRef>(
+            SecTrustGetCertificateAtIndex(trust, 0),
+            base::scoped_policy::RETAIN),
+        intermediates);
+  };
+
+  auto cert = create_cert_from_trust(trust);
+  if (!cert) {
+    return net::ERR_FAILED;
+  }
+
+  // Validate the chain of Trust
+  net::CertVerifyResult verify_result;
+  scoped_refptr<net::CRLSet> crl_set = net::CRLSet::BuiltinCRLSet();
+  scoped_refptr<net::CertVerifyProc> verifier =
+      base::MakeRefCounted<net::CertVerifyProcIOS>();
+  verifier->Verify(cert.get(), base::SysNSStringToUTF8(host),
+                   /*ocsp_response=*/std::string(),
+                   /*sct_list=*/std::string(),
+                   /*flags=*/0,
+                   /*crl_set=*/crl_set.get(),
+                   /*additional_trust_anchors=*/net::CertificateList(),
+                   &verify_result, net::NetLogWithSource());
+
+  // Create a transport security state to pin certificates
+  auto transport_security_state =
+      std::make_unique<net::TransportSecurityState>();
+  if (!transport_security_state) {
+    return net::ERR_FAILED;
+  }
+
+  // Get the PKPState to check if pins are available for the specified domain
+  net::TransportSecurityState::PKPState pkp_state;
+  transport_security_state->GetPKPState(base::SysNSStringToUTF8(host),
+                                        &pkp_state);
+
+  // Nothing to pin against for this domain
+  if (!pkp_state.HasPublicKeyPins()) {
+    return std::numeric_limits<std::int32_t>::min();
+  }
+
+  // Check the Public Key Pins to see if the certificate chain is valid
+  // For this, we use the verification result above
+  std::string failure_log;
+  net::NetworkAnonymizationKey network_anonymization_key =
+      net::NetworkAnonymizationKey::CreateTransient();
+
+  net::TransportSecurityState::PKPStatus status =
+      transport_security_state->CheckPublicKeyPins(
+          net::HostPortPair(base::SysNSStringToUTF8(host), port),
+          verify_result.is_issued_by_known_root,
+          verify_result.public_key_hashes, cert.get(),
+          verify_result.verified_cert.get(),
+          net::TransportSecurityState::ENABLE_PIN_REPORTS,
+          network_anonymization_key, &failure_log);
+  switch (status) {
+    case net::TransportSecurityState::PKPStatus::VIOLATED:
+      return net::ERR_FAILED;
+    case net::TransportSecurityState::PKPStatus::OK:
+      return net::OK;
+    case net::TransportSecurityState::PKPStatus::BYPASSED:
+      return net::ERR_FAILED;
+    default:
+      break;
+  }
+
+  // If the status is none of the above, we fall back to the verification result
+  return verify_result.cert_status;
 }
 @end
