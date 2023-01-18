@@ -94,5 +94,13 @@ async function waitCSSSelector(selector, property, expected) {
       <img src="http://chrome.appspot.com/sponsored/640x820.png">
     </div>
     <div id="inline-block-important" style="display: block !important"></div>
+
+    <!-- `:has` pseudoclass -->
+    <div class="container">
+      <div id="promotion"></div>
+    </div>
+    <div class="container">
+      <div id="real-user-content"></div>
+    </div>
 </body>
 </html>

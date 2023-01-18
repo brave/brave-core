@@ -1998,6 +1998,57 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringFrames) {
   EXPECT_EQ(base::Value(true), main_result.value);
 }
 
+// Test cosmetic filtering ignores rules with the `:has` pseudoclass in standard
+// blocking mode
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CosmeticFilteringHasPseudoclassStandard) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  DisableAggressiveMode();
+  UpdateAdBlockInstanceWithRules("b.com##.container:has(#promotion)\n");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_EQ(true, EvalJs(contents,
+                         "checkSelector('.container', 'display', 'block')"));
+}
+
+// Test cosmetic filtering applies rules with the `:has` pseudoclass in
+// aggressive blocking mode
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CosmeticFilteringHasPseudoclassAggressive) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  UpdateAdBlockInstanceWithRules("b.com##.container:has(#promotion)\n");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  // the `#promotion` element's container is hidden
+  EXPECT_EQ("none", EvalJs(contents,
+                           "window.getComputedStyle(document.getElementById('"
+                           "promotion').parentElement).display"));
+
+  // the `#real-user-content` element's container is not hidden
+  EXPECT_EQ("block", EvalJs(contents,
+                            "window.getComputedStyle(document.getElementById('"
+                            "real-user-content').parentElement).display"));
+
+  // both inner elements have no new styles applied
+  EXPECT_EQ(true, EvalJs(contents,
+                         "checkSelector('#promotion', 'display', 'block')"));
+  EXPECT_EQ(true,
+            EvalJs(contents,
+                   "checkSelector('#real-user-content', 'display', 'block')"));
+}
+
 // Test cosmetic filtering ignores content determined to be 1st party
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringProtect1p) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
