@@ -21,6 +21,7 @@ import java.lang.UnsupportedOperationException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -121,13 +122,12 @@ public class TokenUtils {
     public static void getBuyTokensFiltered(BlockchainRegistry blockchainRegistry,
             NetworkInfo selectedNetwork, TokenType tokenType,
             Callbacks.Callback1<BlockchainToken[]> callback) {
-        callback.call(new BlockchainToken[0]);
-        // TODO(pav): Un-comment to reuse, while adding support for other providers
-        //        blockchainRegistry.getBuyTokens(, selectedNetwork.chainId, tokens -> {
-        //            BlockchainToken[] filteredTokens =
-        //                    filterTokens(selectedNetwork, tokens, tokenType, false);
-        //            callback.call(filteredTokens);
-        //        });
+        blockchainRegistry.getBuyTokens(OnRampProvider.RAMP, selectedNetwork.chainId, tokens -> {
+            BlockchainToken[] filteredTokens =
+                    filterTokens(selectedNetwork, tokens, tokenType, false);
+            Arrays.sort(filteredTokens, blockchainTokenComparatorPerGasOrBatType);
+            callback.call(filteredTokens);
+        });
     }
 
     public static void isCustomToken(BlockchainRegistry blockchainRegistry,
@@ -200,4 +200,22 @@ public class TokenUtils {
                     callback.onResult(resultToken);
                 });
     }
+
+    private static Comparator<BlockchainToken> blockchainTokenComparatorPerGasOrBatType =
+            (token1, token2) -> {
+        boolean isNativeToken1 = AssetUtils.isNativeToken(token1);
+        boolean isNativeToken2 = AssetUtils.isNativeToken(token2);
+        boolean isBatToken1 = AssetUtils.isBatToken(token1);
+        boolean isBatToken2 = AssetUtils.isBatToken(token2);
+        if (isNativeToken1 && !isNativeToken2)
+            return -1;
+        else if (!isNativeToken1 && isNativeToken2)
+            return 1;
+        else if (isBatToken1 && !isBatToken2)
+            return -1;
+        else if (!isBatToken1 && isBatToken2)
+            return 1;
+        else
+            return token1.symbol.compareTo(token2.symbol);
+    };
 }
