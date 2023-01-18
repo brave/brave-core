@@ -33,7 +33,9 @@ describe('getNetworkInfo', () => {
 
 describe('getNetworksByCoinType', () => {
   it('CoinType ETH, should return all ETH networks', () => {
-    expect(getNetworksByCoinType(mockNetworks, BraveWallet.CoinType.ETH)).toEqual(mockNetworks)
+    expect(
+      getNetworksByCoinType(mockNetworks, BraveWallet.CoinType.ETH)
+    ).toEqual(mockNetworks.filter((n) => n.coin === BraveWallet.CoinType.ETH))
   })
   it('CoinType random number, should return an empty array', () => {
     expect(getNetworksByCoinType(mockNetworks, 3000)).toEqual([])

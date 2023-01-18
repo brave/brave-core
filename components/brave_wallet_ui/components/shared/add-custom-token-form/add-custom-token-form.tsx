@@ -259,7 +259,9 @@ export const AddCustomTokenForm = (props: Props) => {
         </FormColumn>
         <FormColumn>
           <InputLabel>
-            {getLocale('braveWalletWatchListTokenAddress')}
+            {customAssetsNetwork?.coin === BraveWallet.CoinType.SOL
+              ? getLocale('braveWalletTokenMintAddress')
+              : getLocale('braveWalletWatchListTokenAddress')}
           </InputLabel>
           <Input
             value={tokenContractAddress}
