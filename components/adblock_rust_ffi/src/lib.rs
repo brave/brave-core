@@ -356,7 +356,7 @@ pub unsafe extern "C" fn engine_url_cosmetic_resources(
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
     CString::new(
-        serde_json::to_string(&engine.url_cosmetic_resources(url)).unwrap_or_else(|_| "".into()),
+        serde_json::to_string(&engine.url_cosmetic_resources(url)).unwrap_or_else(|_| "{}".into()),
     )
     .expect("Error: CString::new()")
     .into_raw()

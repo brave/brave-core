@@ -71,8 +71,7 @@ void CosmeticFiltersResources::UrlCosmeticResources(
     UrlCosmeticResourcesCallback callback) {
   DCHECK(ad_block_service_->GetTaskRunner()->RunsTasksInCurrentSequence());
   auto resources = ad_block_service_->UrlCosmeticResources(url);
-  std::move(callback).Run(resources ? std::move(resources.value())
-                                    : base::Value());
+  std::move(callback).Run(base::Value(std::move(resources)));
 }
 
 }  // namespace cosmetic_filters

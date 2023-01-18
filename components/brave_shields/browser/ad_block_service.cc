@@ -170,24 +170,15 @@ absl::optional<std::string> AdBlockService::GetCspDirectives(
   return csp_directives;
 }
 
-absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
-    const std::string& url) {
+base::Value::Dict AdBlockService::UrlCosmeticResources(const std::string& url) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
-  absl::optional<base::Value> resources =
-      default_engine_->UrlCosmeticResources(url);
+  base::Value::Dict resources = default_engine_->UrlCosmeticResources(url);
 
-  if (!resources || !resources->is_dict()) {
-    return resources;
-  }
-
-  absl::optional<base::Value> additional_resources =
+  base::Value::Dict additional_resources =
       additional_filters_engine_->UrlCosmeticResources(url);
 
-  if (additional_resources && additional_resources->is_dict()) {
-    MergeResourcesInto(std::move(additional_resources->GetDict()),
-                       resources->GetIfDict(),
-                       /*force_hide=*/true);
-  }
+  MergeResourcesInto(std::move(additional_resources), resources,
+                     /*force_hide=*/true);
 
   return resources;
 }
