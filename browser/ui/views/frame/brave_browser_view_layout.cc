@@ -40,20 +40,25 @@ void BraveBrowserViewLayout::Layout(views::View* host) {
 
   gfx::Rect vertical_tab_strip_bounds = vertical_layout_rect_;
   vertical_tab_strip_bounds.set_y(views_next_to_vertical_tabs.front()->y());
+  gfx::Insets insets;
   if (contents_separator_ &&
       views_next_to_vertical_tabs.front() == bookmark_bar_) {
-    vertical_tab_strip_host_->SetBorder(
-        views::CreateEmptyBorder(gfx::Insets().set_top(
-            contents_separator_->GetPreferredSize().height())));
-  } else {
-    vertical_tab_strip_host_->SetBorder(nullptr);
+    insets.set_top(contents_separator_->GetPreferredSize().height());
   }
 
 #if BUILDFLAG(IS_MAC)
-  vertical_tab_strip_bounds.set_x(1);  // for frame border
+  // for frame border drawn by OS. Vertical tabstrip's widget shouldn't cover
+  // that line
+  insets.set_left(1);
 #endif
+
+  if (insets.IsEmpty())
+    vertical_tab_strip_host_->SetBorder(nullptr);
+  else
+    vertical_tab_strip_host_->SetBorder(views::CreateEmptyBorder(insets));
+
   vertical_tab_strip_bounds.set_width(
-      vertical_tab_strip_host_->GetPreferredSize().width());
+      vertical_tab_strip_host_->GetPreferredSize().width() + insets.width());
   vertical_tab_strip_bounds.set_height(
       views_next_to_vertical_tabs.back()->bounds().bottom() -
       vertical_tab_strip_bounds.y());
