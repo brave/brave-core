@@ -27,6 +27,7 @@ import org.chromium.brave_wallet.mojom.GetEncryptionPublicKeyRequest;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -35,8 +36,11 @@ import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
+import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SelectedAccountResponsesCollector;
+import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -318,6 +322,18 @@ public class CryptoModel {
         this.mAccountInfosFromKeyRingModel = accountInfosFromKeyRingModel;
         // pass on the observer to other object
         mNetworkModel.setAccountInfosFromKeyRingModel(accountInfosFromKeyRingModel);
+    }
+
+    // TODO: Move to BuyModel class
+    public void isBuySupported(NetworkInfo selectedNetwork, String assetSymbol,
+            String contractAddress, String chainId, Callback1<Boolean> callback) {
+        TokenUtils.getBuyTokensFiltered(
+                mBlockchainRegistry, selectedNetwork, TokenUtils.TokenType.ALL, tokens -> {
+                    callback.call(JavaUtils.includes(tokens,
+                            iToken
+                            -> AssetUtils.Filters.isSameToken(
+                                    iToken, assetSymbol, contractAddress, chainId)));
+                });
     }
 
     // Clear buy send swap model
