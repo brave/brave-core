@@ -126,7 +126,11 @@ void VpnDnsHandler::UpdateFiltersState() {
       VLOG(1) << "BraveVPN Disconnected, remove filters";
       if (!RemoveFilters(base::UTF8ToWide(brave_vpn::kBraveVPNEntryName))) {
         VLOG(1) << "Failed to remove DNS filters";
+        Exit();
+        break;
       }
+      // Reset service launch counter if dns filters successfully removed.
+      ResetLaunchCounter();
       Exit();
       break;
     default:

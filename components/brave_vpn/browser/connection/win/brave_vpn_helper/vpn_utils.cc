@@ -12,7 +12,10 @@
 
 #include "base/logging.h"
 #include "base/strings/string_util.h"
+#include "base/win/registry.h"
 #include "base/win/windows_version.h"
+#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/scoped_sc_handle.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
@@ -64,9 +67,9 @@ bool SetServiceFailActions(SC_HANDLE service) {
   SC_ACTION failActions[] = {
       {SC_ACTION_RESTART, 1}, {SC_ACTION_RESTART, 1}, {SC_ACTION_RESTART, 1}};
   // The time after which to reset the failure count to zero if there are no
-  // failures, in seconds. 86400 in sec = 1 day.
+  // failures, in seconds.
   SERVICE_FAILURE_ACTIONS servFailActions = {
-      .dwResetPeriod = 86400,
+      .dwResetPeriod = 0,
       .lpRebootMsg = NULL,
       .lpCommand = NULL,
       .cActions = sizeof(failActions) / sizeof(SC_ACTION),
@@ -355,6 +358,29 @@ bool ConfigureServiceAutoRestart(const std::wstring& service_name,
     return false;
   }
   return true;
+}
+
+void CountSuccessfulLaunch() {
+  base::win::RegKey key(HKEY_LOCAL_MACHINE, kBraveVpnHelperRegistryStoragePath,
+                        KEY_ALL_ACCESS);
+  if (!key.Valid()) {
+    LOG(ERROR) << "Failed to write successful launch counter";
+    return;
+  }
+  DWORD launch = 0;
+  key.ReadValueDW(kBraveVpnHelperLaunchCounterValue, &launch);
+  launch++;
+  key.WriteValue(kBraveVpnHelperLaunchCounterValue, launch);
+}
+
+void ResetLaunchCounter() {
+  base::win::RegKey key(HKEY_LOCAL_MACHINE, kBraveVpnHelperRegistryStoragePath,
+                        KEY_ALL_ACCESS);
+  if (!key.Valid()) {
+    LOG(ERROR) << "Failed to write successful launch counter";
+    return;
+  }
+  key.DeleteValue(kBraveVpnHelperLaunchCounterValue);
 }
 
 }  // namespace brave_vpn

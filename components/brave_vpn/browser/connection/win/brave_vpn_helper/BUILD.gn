@@ -17,7 +17,13 @@ config("no-missing-braces") {
 }
 
 source_set("common") {
-  sources = [ "brave_vpn_helper_constants.h" ]
+  sources = [
+    "brave_vpn_helper_constants.h",
+    "brave_vpn_helper_state.cc",
+    "brave_vpn_helper_state.h",
+    "scoped_sc_handle.h",
+  ]
+  deps = [ "//base" ]
 }
 
 source_set("lib") {
@@ -34,6 +40,7 @@ source_set("lib") {
   ]
 
   deps = [
+    ":common",
     "//base",
     "//brave//components/brave_vpn/browser/connection/win:utils",
     "//brave//components/brave_vpn/common",
