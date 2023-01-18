@@ -118,6 +118,11 @@ void VpnDnsHandler::UpdateFiltersState() {
       }
       if (!SetFilters(base::UTF8ToWide(brave_vpn::kBraveVPNEntryName))) {
         VLOG(1) << "Failed to set DNS filters";
+        auto result = internal::DisconnectEntry(
+            base::UTF8ToWide(brave_vpn::kBraveVPNEntryName));
+        if (!result.success) {
+          VLOG(1) << "Failed to disconnect entry:" << result.error_description;
+        }
         Exit();
         return;
       }

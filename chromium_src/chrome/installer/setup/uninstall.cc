@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/installer/util/brave_shell_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/installer/util/brave_shell_util.h"
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #endif
@@ -66,8 +66,7 @@ InstallStatus UninstallProduct(const ModifyParams& modify_params,
     if (!InstallServiceWorkItem::DeleteService(
             brave_vpn::kBraveVpnServiceName,
             brave_vpn::kBraveVpnHelperRegistryStoragePath, {}, {})) {
-      LOG(WARNING) << "Failed to delete "
-                   << brave_vpn::kBraveVpnServiceName;
+      LOG(WARNING) << "Failed to delete " << brave_vpn::kBraveVpnServiceName;
     }
   }
   return UninstallProduct_ChromiumImpl(modify_params, remove_all,

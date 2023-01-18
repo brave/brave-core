@@ -16,8 +16,9 @@ namespace brave_vpn {
 
 namespace {
 // Helper service has 3 fail actions configured to autorestart the service if
-// crashed.
-const int kHelperServiceFailActionsNumber = 3;
+// crashed. The check happens before the service started and counter set to 1,
+// thus we calculate attempts from 0 -> 2.
+const int kHelperServiceFailActionsNumber = 2;
 
 HRESULT HRESULTFromLastError() {
   const auto error_code = ::GetLastError();
@@ -49,7 +50,7 @@ bool IsBraveVPNHelperServiceLive() {
   ScopedScHandle service(::OpenService(
       scm.Get(), brave_vpn::kBraveVpnServiceName, SERVICE_QUERY_STATUS));
 
-  // Service registered and has not exceeded the number of autoconfigured
+  // Service registered and has not exceeded the number of auto-configured
   // restarts.
   return service.IsValid() &&
          GetServiceLaunchCounterValue() <= kHelperServiceFailActionsNumber;
