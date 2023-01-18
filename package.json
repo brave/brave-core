@@ -346,7 +346,7 @@
   },
   "dependencies": {
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
-    "@brave/wallet-standard-brave": "~0.0.3",
+    "@brave/wallet-standard-brave": "~0.0.5",
     "@dnd-kit/core": "6.0.5",
     "@dnd-kit/sortable": "7.0.1",
     "@glif/filecoin-wallet-provider": "2.0.0-beta.12",
