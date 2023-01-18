@@ -19,10 +19,17 @@ const onlyInLeft = (left: BraveWallet.BlockchainToken[], right: BraveWallet.Bloc
       leftValue.contractAddress.toLowerCase() === rightValue.contractAddress.toLowerCase() &&
       leftValue.chainId === rightValue.chainId && leftValue.tokenId === rightValue.tokenId))
 
+const findTokensWithMismatchedVisibility = (left: BraveWallet.BlockchainToken[], right: BraveWallet.BlockchainToken[]) =>
+  left.filter(leftValue =>
+    right.some(rightValue =>
+      leftValue.contractAddress.toLowerCase() === rightValue.contractAddress.toLowerCase() &&
+      leftValue.chainId === rightValue.chainId &&
+      leftValue.tokenId === rightValue.tokenId &&
+      leftValue.visible !== rightValue.visible))
+
 export default function useAssetManagement () {
   // redux
   const {
-    fullTokenList,
     userVisibleTokensInfo
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
   const dispatch = useDispatch()
@@ -43,12 +50,6 @@ export default function useAssetManagement () {
     }
   }
 
-  const findVisibleTokenInfo = React.useCallback((token: BraveWallet.BlockchainToken) =>
-    userVisibleTokensInfo.find(t =>
-      t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
-      t.chainId === token.chainId),
-    [userVisibleTokensInfo])
-
   const onUpdateVisibleAssets = React.useCallback((updatedTokensList: BraveWallet.BlockchainToken[]) => {
     // Gets a list of all added tokens and adds them to the userVisibleTokensInfo list
     onlyInLeft(updatedTokensList, userVisibleTokensInfo)
@@ -60,16 +61,8 @@ export default function useAssetManagement () {
 
     // Gets a list of custom tokens and native assets returned from updatedTokensList payload
     // then compares against userVisibleTokensInfo list and updates the tokens visibility if it has changed.
-    onlyInLeft(updatedTokensList, fullTokenList)
-      .forEach(token => {
-        const foundToken = findVisibleTokenInfo(token)
-        // Updates token visibility
-        if (foundToken?.visible !== token.visible) {
-          dispatch(WalletActions.setUserAssetVisible(
-            { token, isVisible: token.visible }
-          ))
-        }
-      })
+    findTokensWithMismatchedVisibility(updatedTokensList, userVisibleTokensInfo)
+      .forEach(token => dispatch(WalletActions.setUserAssetVisible({ token, isVisible: token.visible })))
 
     // Refresh Balances, Prices and Price History when done.
     dispatch(WalletActions.refreshBalancesAndPriceHistory())

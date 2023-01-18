@@ -208,9 +208,22 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
     return updatedTokensList.filter((t) => t !== token)
   }, [updatedTokensList])
 
+  // Do to a bug, users were able to set a non custom token's
+  // visibility to false. We only allow setting visibility to custom tokens
+  // to make it easier for users to re-add in the future. This method is added
+  // to help the user get un-stuck.
+  const findNonCustomTokenWithVisibleFalse = React.useCallback((token: BraveWallet.BlockchainToken) => {
+    return userVisibleTokensInfo.some((t) =>
+      t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
+      t.symbol.toLowerCase() === token.symbol.toLowerCase() &&
+      t.chainId === token.chainId &&
+      t.tokenId === token.tokenId &&
+      !t.visible)
+  }, [userVisibleTokensInfo])
+
   const onCheckWatchlistItem = React.useCallback((key: string, selected: boolean, token: BraveWallet.BlockchainToken, isCustom: boolean) => {
     if (isUserToken(token)) {
-      if (isCustom || token.contractAddress === '') {
+      if (isCustom || token.contractAddress === '' || (!isCustom && findNonCustomTokenWithVisibleFalse(token))) {
         const updatedToken = selected ? { ...token, visible: true } : { ...token, visible: false }
         const tokenIndex = updatedTokensList.findIndex((t) =>
           t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
@@ -231,7 +244,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
       return
     }
     setUpdatedTokensList(addOrRemoveTokenFromList(selected, token))
-  }, [isUserToken, updatedTokensList, addOrRemoveTokenFromList])
+  }, [isUserToken, updatedTokensList, addOrRemoveTokenFromList, findNonCustomTokenWithVisibleFalse])
 
   const toggleShowAddCustomToken = () => setShowAddCustomToken(prev => !prev)
 
