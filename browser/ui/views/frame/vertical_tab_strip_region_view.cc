@@ -22,6 +22,7 @@
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -30,6 +31,7 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/accessibility/accessibility_paint_checks.h"
 #include "ui/views/animation/ink_drop.h"
+#include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/controls/scroll_view.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/fill_layout.h"
@@ -46,13 +48,17 @@ namespace {
 constexpr SkColor kHeaderButtonColor = SkColorSetRGB(0x6B, 0x70, 0x84);
 constexpr int kHeaderInset = 4;
 
-class ToggleButton : public views::Button {
+// Inherits NewTabButton in order to synchronize ink drop effect with
+// the search button. Unfortunately, we can't inherit BraveTabSearchButton
+// as NotifyClick() is marked as 'final'.
+class ToggleButton : public BraveNewTabButton {
  public:
   METADATA_HEADER(ToggleButton);
 
   ToggleButton(Button::PressedCallback callback,
                VerticalTabStripRegionView* region_view)
-      : Button(std::move(callback)),
+      : BraveNewTabButton(region_view->tab_strip(),
+                          std::move(std::move(callback))),
         region_view_(region_view),
         tab_strip_(region_view_->tab_strip()) {
     // TODO(sangwoo.ko) Temporary workaround before we have a proper tooltip
@@ -71,7 +77,7 @@ class ToggleButton : public views::Button {
   constexpr static int GetIconWidth() { return tabs::kVerticalTabHeight; }
 
   // views::Button:
-  void PaintButtonContents(gfx::Canvas* canvas) override {
+  void PaintIcon(gfx::Canvas* canvas) override {
     const bool expanded =
         region_view_->state() == VerticalTabStripRegionView::State::kExpanded;
 
@@ -80,6 +86,15 @@ class ToggleButton : public views::Button {
         GetContentsBounds().CenterPoint() -
         gfx::Vector2d(icon_to_use.width() / 2, icon_to_use.height() / 2);
     canvas->DrawImageInt(icon_to_use, origin.x(), origin.y());
+  }
+
+  int GetCornerRadius() const override {
+    return ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
+        views::Emphasis::kMaximum, GetPreferredSize());
+  }
+
+  void PaintFill(gfx::Canvas* canvas) const override {
+    // dont' fill
   }
 
  private:
@@ -207,6 +222,7 @@ class VerticalTabStripRegionView::ScrollHeaderView : public views::View {
 
     // We should call SetImageModel() after FrameColorChanged() to override
     // the icon.
+    toggle_button_->FrameColorsChanged();
     tab_search_button_->FrameColorsChanged();
     tab_search_button_->SetImageModel(
         views::Button::STATE_NORMAL,
