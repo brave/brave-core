@@ -491,18 +491,23 @@ public class BraveNewTabPageLayout
 
                         int lastVisibleItemPosition =
                                 linearLayoutManager.findLastCompletelyVisibleItemPosition();
-                        if (lastVisibleItemPosition >= newsFeedPosition
+                        if (mNewsItemsFeedCard != null && mNewsItemsFeedCard.size() > 0
+                                && lastVisibleItemPosition >= newsFeedPosition
                                 && lastVisibleItemPosition > mPrevVisibleNewsCardPosition) {
                             for (int i = mPrevVisibleNewsCardPosition + 1;
                                     i <= lastVisibleItemPosition; i++) {
-                                FeedItemsCard itemsCard =
-                                        mNewsItemsFeedCard.get(i - newsFeedPosition);
-                                if (itemsCard != null) {
-                                    List<FeedItemCard> feedItems = itemsCard.getFeedItems();
-                                    // Two items are shown as two cards side by side,
-                                    // and three or more items is shown as one card as a list
-                                    mNewsSessionCardViews +=
-                                            feedItems != null && feedItems.size() == 2 ? 2 : 1;
+                                int itemCardPosition = i - newsFeedPosition;
+                                if (itemCardPosition >= 0
+                                        && itemCardPosition < mNewsItemsFeedCard.size()) {
+                                    FeedItemsCard itemsCard =
+                                            mNewsItemsFeedCard.get(itemCardPosition);
+                                    if (itemsCard != null) {
+                                        List<FeedItemCard> feedItems = itemsCard.getFeedItems();
+                                        // Two items are shown as two cards side by side,
+                                        // and three or more items is shown as one card as a list
+                                        mNewsSessionCardViews +=
+                                                feedItems != null && feedItems.size() == 2 ? 2 : 1;
+                                    }
                                 }
                             }
                             if (mBraveNewsController != null) {
@@ -949,8 +954,10 @@ public class BraveNewTabPageLayout
 
                     processFeed(isNewContent);
 
-                    BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
-                    BraveActivity.getBraveActivity().setLoadedFeed(true);
+                    if (BraveActivity.getBraveActivity() != null) {
+                        BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
+                        BraveActivity.getBraveActivity().setLoadedFeed(true);
+                    }
                 });
             }
         };
