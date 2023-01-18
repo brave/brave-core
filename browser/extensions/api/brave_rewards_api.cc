@@ -605,6 +605,7 @@ void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
     data.Set("autoContributeChoices", base::Value::List());
     data.Set("payoutStatus", base::Value::Dict());
     data.Set("walletProviderRegions", base::Value::Dict());
+    data.Set("vbatExpired", false);
     return Respond(OneArgument(base::Value(std::move(data))));
   }
 
@@ -643,6 +644,12 @@ void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
     provider_regions.Set(provider, std::move(regions_dict));
   }
   data.Set("walletProviderRegions", std::move(provider_regions));
+
+  if (!parameters->vbat_deadline.is_null()) {
+    data.Set("vbatDeadline", floor(parameters->vbat_deadline.ToDoubleT() *
+                                   base::Time::kMillisecondsPerSecond));
+  }
+  data.Set("vbatExpired", parameters->vbat_expired);
 
   Respond(OneArgument(base::Value(std::move(data))));
 }

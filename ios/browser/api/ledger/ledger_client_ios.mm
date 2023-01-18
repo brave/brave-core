@@ -113,6 +113,12 @@ void LedgerClientIOS::SetValueState(const std::string& name,
 base::Value LedgerClientIOS::GetValueState(const std::string& name) const {
   return [bridge_ getValueState:name];
 }
+void LedgerClientIOS::SetTimeState(const std::string& name, base::Time time) {
+  [bridge_ setTimeState:name time:time];
+}
+base::Time LedgerClientIOS::GetTimeState(const std::string& name) const {
+  return [bridge_ getTimeState:name];
+}
 void LedgerClientIOS::ClearState(const std::string& name) {
   [bridge_ clearState:name];
 }

@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ledger/ledger_client.h"
 #include "bat/ledger/public/ledger_database.h"
@@ -115,6 +116,10 @@ class TestLedgerClient : public LedgerClient {
   void SetValueState(const std::string& name, base::Value value) override;
 
   base::Value GetValueState(const std::string& name) const override;
+
+  void SetTimeState(const std::string& name, base::Time time) override;
+
+  base::Time GetTimeState(const std::string& name) const override;
 
   void ClearState(const std::string& name) override;
 

@@ -94,6 +94,10 @@ class State {
 
   base::flat_map<std::string, mojom::RegionsPtr> GetWalletProviderRegions();
 
+  base::Time GetVBatDeadline();
+
+  bool GetVBatExpired();
+
   void SetEmptyBalanceChecked(const bool checked);
 
   bool GetEmptyBalanceChecked();

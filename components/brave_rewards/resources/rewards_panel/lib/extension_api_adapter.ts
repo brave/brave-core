@@ -86,7 +86,9 @@ export function getRewardsParameters () {
       resolve({
         options: {
           externalWalletRegions: regionMap,
-          autoContributeAmounts: parameters.autoContributeChoices
+          autoContributeAmounts: parameters.autoContributeChoices,
+          vbatDeadline: parameters.vbatDeadline,
+          vbatExpired: parameters.vbatExpired
         },
         exchangeInfo: {
           currency: 'USD',

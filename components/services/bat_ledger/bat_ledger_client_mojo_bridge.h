@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/time/time.h"
 #include "bat/ledger/ledger_client.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
@@ -76,6 +77,8 @@ class BatLedgerClientMojoBridge :
   uint64_t GetUint64State(const std::string& name) const override;
   void SetValueState(const std::string& name, base::Value value) override;
   base::Value GetValueState(const std::string& name) const override;
+  void SetTimeState(const std::string& name, base::Time time) override;
+  base::Time GetTimeState(const std::string& name) const override;
   void ClearState(const std::string& name) override;
 
   bool GetBooleanOption(const std::string& name) const override;

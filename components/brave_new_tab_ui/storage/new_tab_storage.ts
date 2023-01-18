@@ -82,7 +82,9 @@ export const defaultState: NewTab.State = {
       rate: 0,
       monthlyTipChoices: [],
       payoutStatus: {},
-      walletProviderRegions: {}
+      walletProviderRegions: {},
+      vbatDeadline: undefined,
+      vbatExpired: false
     }
   },
   currentStackWidget: '',

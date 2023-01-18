@@ -108,6 +108,19 @@ Result ParseBody(const std::string& body) {
 
   parameters->wallet_provider_regions = std::move(*wallet_provider_regions);
 
+  const auto* vbat_deadline = dict.FindString("vbatDeadline");
+  if (vbat_deadline) {
+    if (base::Time time;
+        base::Time::FromUTCString(vbat_deadline->c_str(), &time)) {
+      parameters->vbat_deadline = time;
+    }
+  }
+
+  const auto vbat_expired = dict.FindBool("vbatExpired");
+  if (vbat_expired) {
+    parameters->vbat_expired = *vbat_expired;
+  }
+
   return parameters;
 }
 

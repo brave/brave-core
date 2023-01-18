@@ -83,6 +83,7 @@ export interface RewardsParameters {
   rate: number
   tipChoices: number[]
   monthlyTipChoices: number[]
+  vbatExpired: boolean
 }
 
 export interface HostError {

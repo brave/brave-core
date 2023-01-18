@@ -656,7 +656,8 @@ void RewardsServiceImpl::GetUserType(
       version = base::Version({1});
     }
 
-    if (version.CompareTo(base::Version({2, 5})) < 0) {
+    if (!prefs->GetBoolean(prefs::kParametersVBatExpired) &&
+        version.CompareTo(base::Version({2, 5})) < 0) {
       std::move(callback).Run(UserType::kLegacyUnconnected);
       return;
     }
@@ -1229,10 +1230,17 @@ void RewardsServiceImpl::GetRewardsParameters(
 void RewardsServiceImpl::OnGetRewardsParameters(
     GetRewardsParametersCallback callback,
     ledger::mojom::RewardsParametersPtr parameters) {
-  if (parameters &&
-      base::FeatureList::IsEnabled(
-          brave_rewards::features::kAllowUnsupportedWalletProvidersFeature)) {
-    parameters->wallet_provider_regions.clear();
+  if (parameters) {
+    if (base::FeatureList::IsEnabled(
+            brave_rewards::features::kAllowUnsupportedWalletProvidersFeature)) {
+      parameters->wallet_provider_regions.clear();
+    }
+
+    // If the user has disabled the "VBAT notice" feature then clear the
+    // corresponding deadline from the returned data.
+    if (!base::FeatureList::IsEnabled(features::kVBatNoticeFeature)) {
+      parameters->vbat_deadline = base::Time();
+    }
   }
 
   std::move(callback).Run(std::move(parameters));
@@ -1608,6 +1616,15 @@ void RewardsServiceImpl::SetValueState(const std::string& name,
 
 base::Value RewardsServiceImpl::GetValueState(const std::string& name) const {
   return profile_->GetPrefs()->GetValue(GetPrefPath(name)).Clone();
+}
+
+void RewardsServiceImpl::SetTimeState(const std::string& name,
+                                      base::Time time) {
+  profile_->GetPrefs()->SetTime(GetPrefPath(name), time);
+}
+
+base::Time RewardsServiceImpl::GetTimeState(const std::string& name) const {
+  return profile_->GetPrefs()->GetTime(GetPrefPath(name));
 }
 
 void RewardsServiceImpl::ClearState(const std::string& name) {

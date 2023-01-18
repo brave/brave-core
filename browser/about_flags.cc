@@ -279,6 +279,11 @@ constexpr char kBraveRewardsGeminiDescription[] =
     "Enables support for Gemini as an external wallet provider for Brave";
 #endif
 
+constexpr char kBraveRewardsVBatNoticeName[] =
+    "Enable Brave Rewards VBAT notices";
+constexpr char kBraveRewardsVBatNoticeDescription[] =
+    "Enables notices in the Brave Rewards UI about VBAT deadlines.";
+
 constexpr char kBraveRewardsVerboseLoggingName[] =
     "Enable Brave Rewards verbose logging";
 constexpr char kBraveRewardsVerboseLoggingDescription[] =
@@ -731,6 +736,11 @@ constexpr char kBraveChangeActiveTabOnScrollEventDescription[] =
      flag_descriptions::kBraveFirstPartyEphemeralStorageDescription,        \
      kOsAll,                                                                \
      FEATURE_VALUE_TYPE(net::features::kBraveFirstPartyEphemeralStorage)},  \
+    {"brave-rewards-vbat-notice",                                           \
+     flag_descriptions::kBraveRewardsVBatNoticeName,                        \
+     flag_descriptions::kBraveRewardsVBatNoticeDescription,                 \
+     kOsDesktop | kOsAndroid,                                               \
+     FEATURE_VALUE_TYPE(brave_rewards::features::kVBatNoticeFeature)},      \
     {"brave-rewards-verbose-logging",                                       \
      flag_descriptions::kBraveRewardsVerboseLoggingName,                    \
      flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \

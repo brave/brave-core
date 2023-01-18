@@ -81,6 +81,8 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kParametersMonthlyTipChoices, "");
   registry->RegisterStringPref(prefs::kParametersPayoutStatus, "");
   registry->RegisterDictionaryPref(prefs::kParametersWalletProviderRegions);
+  registry->RegisterTimePref(prefs::kParametersVBatDeadline, base::Time());
+  registry->RegisterBooleanPref(prefs::kParametersVBatExpired, false);
   registry->RegisterBooleanPref(prefs::kFetchOldBalance, true);
   registry->RegisterBooleanPref(prefs::kEmptyBalanceChecked, false);
   registry->RegisterStringPref(prefs::kWalletBrave, "");

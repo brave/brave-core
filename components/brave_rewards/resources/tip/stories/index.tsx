@@ -84,7 +84,8 @@ function createHostState (): HostState {
     rewardsParameters: {
       tipChoices: [0.25, 2, 10],
       monthlyTipChoices: [0.25, 2, 10],
-      rate: 0.333
+      rate: 0.333,
+      vbatExpired: false
     },
     hostError: undefined,
     nextReconcileDate: new Date(Date.now() + 15 * 14 * 60 * 60 * 1000),

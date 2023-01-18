@@ -343,6 +343,10 @@ void State::SetRewardsParameters(const mojom::RewardsParameters& parameters) {
   ledger_->ledger_client()->SetValueState(
       kParametersWalletProviderRegions,
       WalletProviderRegionsToValue(parameters.wallet_provider_regions));
+  ledger_->ledger_client()->SetTimeState(kParametersVBatDeadline,
+                                         parameters.vbat_deadline);
+  ledger_->ledger_client()->SetBooleanState(kParametersVBatExpired,
+                                            parameters.vbat_expired);
 }
 
 mojom::RewardsParametersPtr State::GetRewardsParameters() {
@@ -354,6 +358,8 @@ mojom::RewardsParametersPtr State::GetRewardsParameters() {
   parameters->monthly_tip_choices = GetMonthlyTipChoices();
   parameters->payout_status = GetPayoutStatus();
   parameters->wallet_provider_regions = GetWalletProviderRegions();
+  parameters->vbat_deadline = GetVBatDeadline();
+  parameters->vbat_expired = GetVBatExpired();
 
   return parameters;
 }
@@ -404,6 +410,14 @@ base::flat_map<std::string, mojom::RegionsPtr>
 State::GetWalletProviderRegions() {
   return ValueToWalletProviderRegions(ledger_->ledger_client()->GetValueState(
       kParametersWalletProviderRegions));
+}
+
+base::Time State::GetVBatDeadline() {
+  return ledger_->ledger_client()->GetTimeState(kParametersVBatDeadline);
+}
+
+bool State::GetVBatExpired() {
+  return ledger_->ledger_client()->GetBooleanState(kParametersVBatExpired);
 }
 
 void State::SetEmptyBalanceChecked(const bool checked) {

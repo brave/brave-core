@@ -68,7 +68,9 @@ export function defaultState (): Rewards.State {
         bitflyer: { allow: [], block: [] },
         gemini: { allow: [], block: [] },
         uphold: { allow: [], block: [] }
-      }
+      },
+      vbatDeadline: undefined,
+      vbatExpired: false
     },
     initializing: true,
     showOnboarding: null,

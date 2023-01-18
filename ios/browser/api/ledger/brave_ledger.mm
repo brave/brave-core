@@ -1378,6 +1378,17 @@ BATLedgerBridge(BOOL,
   return std::move(*value);
 }
 
+- (void)setTimeState:(const std::string&)name time:(base::Time)time {
+  const auto key = base::SysUTF8ToNSString(name);
+  self.prefs[key] = @(time.ToDoubleT());
+  [self savePrefs];
+}
+
+- (base::Time)getTimeState:(const std::string&)name {
+  const auto key = base::SysUTF8ToNSString(name);
+  return base::Time::FromDoubleT([self.prefs[key] doubleValue]);
+}
+
 - (void)clearState:(const std::string&)name {
   const auto key = base::SysUTF8ToNSString(name);
   [self.prefs removeObjectForKey:key];

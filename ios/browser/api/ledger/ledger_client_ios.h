@@ -62,6 +62,8 @@ class LedgerClientIOS : public ledger::LedgerClient {
   uint64_t GetUint64State(const std::string& name) const override;
   void SetValueState(const std::string& name, base::Value value) override;
   base::Value GetValueState(const std::string& name) const override;
+  void SetTimeState(const std::string& name, base::Time time) override;
+  base::Time GetTimeState(const std::string& name) const override;
   void ClearState(const std::string& name) override;
   std::string GetLegacyWallet() override;
   void ShowNotification(const std::string& type,

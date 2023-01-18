@@ -36,6 +36,7 @@ export function Card () {
           <RewardsCard
             rewardsEnabled={true}
             userType='connected'
+            vbatDeadline={Date.parse('2023-01-01T00:00:00-05:00')}
             isUnsupportedRegion={false}
             declaredCountry='US'
             adsEnabled={true}

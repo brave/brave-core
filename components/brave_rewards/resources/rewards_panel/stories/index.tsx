@@ -48,7 +48,9 @@ function createHost (): Host {
       externalWalletRegions: new Map([
         ['uphold', { allow: ['US'], block: [] }],
         ['gemini', { allow: [], block: ['US'] }]
-      ])
+      ]),
+      vbatDeadline: Date.parse('2023-01-01T00:00:00-05:00'),
+      vbatExpired: false
     },
     grantCaptchaInfo: null && {
       id: '123',
