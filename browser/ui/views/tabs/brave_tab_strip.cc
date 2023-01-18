@@ -9,6 +9,7 @@
 
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
@@ -128,8 +129,9 @@ SkColor BraveTabStrip::GetTabBackgroundColor(
   if (!cp)
     return gfx::kPlaceholderColor;
 
-  return cp->GetColor(active == TabActive::kActive ? kColorLocationBarBackground
-                                                   : kColorToolbar);
+  return cp->GetColor(active == TabActive::kActive
+                          ? kColorBraveVerticalTabActiveBackground
+                          : kColorBraveVerticalTabInactiveBackground);
 }
 
 SkColor BraveTabStrip::GetTabSeparatorColor() const {
