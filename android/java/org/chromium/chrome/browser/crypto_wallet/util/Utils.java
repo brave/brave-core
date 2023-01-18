@@ -160,6 +160,9 @@ public class Utils {
     public static final String ASSET_DECIMALS = "assetDecimals";
     public static final String CHAIN_ID = "chainId";
     public static final String IS_FROM_DAPPS = "isFromDapps";
+    public static final String RESTART_WALLET_ACTIVITY = "restartWalletActivity";
+    public static final String RESTART_WALLET_ACTIVITY_SETUP = "restartWalletActivitySetup";
+    public static final String RESTART_WALLET_ACTIVITY_RESTORE = "restartWalletActivityRestore";
     public static final String ETHEREUM_CONTRACT_FOR_SWAP =
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
     public static final BigInteger MAX_UINT256 =
