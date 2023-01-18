@@ -195,29 +195,10 @@ class VerticalTabStripRegionView::ScrollHeaderView : public views::View {
   void UpdateTabSearchButtonVisibility() {
     tab_search_button_->SetVisible(
         !WindowFrameUtil::IsWin10TabSearchCaptionButtonEnabled(
-            region_view_->browser()));
-  }
-
-  views::BoxLayout::Orientation GetPreferredOrientationForWidth(int width) {
-    auto preferred_width = 0;
-    std::vector<views::View*> buttons = {base::to_address(tab_search_button_),
-                                         base::to_address(toggle_button_)};
-    for (auto* view : buttons) {
-      if (view->GetVisible())
-        preferred_width += view->width();
-    }
-
-    return width >= preferred_width ? views::BoxLayout::Orientation::kHorizontal
-                                    : views::BoxLayout::Orientation::kVertical;
-  }
-
-  void UpdateLayoutOrientation() {
-    views::BoxLayout::Orientation orientation =
-        GetPreferredOrientationForWidth(width());
-    if (layout_->GetOrientation() == orientation)
-      return;
-
-    layout_->SetOrientation(orientation);
+            region_view_->browser()) &&
+        tab_search_button_->GetPreferredSize().width() +
+                toggle_button_->GetPreferredSize().width() <=
+            width());
   }
 
   // views::View:
@@ -238,7 +219,7 @@ class VerticalTabStripRegionView::ScrollHeaderView : public views::View {
 
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override {
     View::OnBoundsChanged(previous_bounds);
-    UpdateLayoutOrientation();
+    UpdateTabSearchButtonVisibility();
   }
 
  private:
@@ -408,14 +389,8 @@ void VerticalTabStripRegionView::Layout() {
 
   // 2. ScrollView takes the rest of space.
   // Set preferred size for scroll view to know this.
-  const bool is_scroll_header_horizontal =
-      scroll_view_header_->GetPreferredOrientationForWidth(
-          contents_bounds.width()) ==
-      views::BoxLayout::Orientation::kHorizontal;
-  const gfx::Size header_size{
-      contents_bounds.width(),
-      tabs::kVerticalTabHeight * (is_scroll_header_horizontal ? 1 : 2) +
-          kHeaderInset * 2};
+  const gfx::Size header_size{contents_bounds.width(),
+                              tabs::kVerticalTabHeight + kHeaderInset * 2};
   scroll_view_header_->SetPreferredSize(header_size);
   scroll_view_header_->SetSize(header_size);
 
