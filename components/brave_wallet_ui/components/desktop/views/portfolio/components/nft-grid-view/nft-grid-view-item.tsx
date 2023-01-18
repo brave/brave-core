@@ -20,14 +20,15 @@ import { NftIconWithNetworkIcon } from '../../../../../shared/nft-icon/nft-icon-
 
 // Styled Components
 import {
-  NFTButton,
+  NFTWrapper,
   NFTText,
   IconWrapper,
-  DIVForClickableArea,
-  NFTSymbol
+  VerticalMenuIcon,
+  VerticalMenu,
+  DIVForClickableArea
 } from './style'
-import { Row } from '../../../../../shared/style'
-import { getTokensNetwork } from '../../../../../../utils/network-utils'
+import { NftMorePopup } from '../nft-more-popup/nft-more-popup'
+import { AddOrEditNftModal } from '../../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 
 interface Props {
   token: BraveWallet.BlockchainToken
@@ -36,25 +37,57 @@ interface Props {
 
 export const NFTGridViewItem = (props: Props) => {
   const { token, onSelectAsset } = props
+  const { asset } = token
 
-  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
+  // state
+  const [showMore, setShowMore] = React.useState<boolean>(false)
+  const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
+
+  // methods
+  const onToggleShowMore = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    event?.stopPropagation()
+    setShowMore((currentValue) => !currentValue)
+  }, [])
+
+  const onHideModal = React.useCallback(() => {
+    setShowEditModal(false)
+  }, [])
+
+  const onEditNft = React.useCallback(() => {
+    setShowEditModal(true)
+    setShowMore(false)
+  }, [])
+
+  // memos
+  const remoteImage = React.useMemo(() => {
+    const tokenImageURL = stripERC20TokenImageURL(token.asset.logo)
+    return httpifyIpfsUrl(tokenImageURL)
+  }, [token.asset.logo])
 
   return (
-    <NFTButton
-      onClick={onSelectAsset}
-    >
-      <IconWrapper>
-        <DIVForClickableArea />
-        <NftIconWithNetworkIcon
-          icon={token.logo}
-          responsive={true}
-          tokensNetwork={getTokensNetwork(networkList, token)}
+    <>
+      <NFTWrapper>
+        <VerticalMenu onClick={onToggleShowMore}>
+          <VerticalMenuIcon />
+        </VerticalMenu>
+        {showMore &&
+          <NftMorePopup
+            onEditNft={onEditNft}
+          />
+        }
+        <DIVForClickableArea onClick={onSelectAsset}/>
+        <IconWrapper>
+          <NftIcon icon={remoteImage} responsive={true} />
+        </IconWrapper>
+        <NFTText>{asset.name} {asset.tokenId ? '#' + new Amount(asset.tokenId).toNumber() : ''}</NFTText>
+      </NFTWrapper>
+      {showEditModal &&
+        <AddOrEditNftModal
+          nftToken={asset}
+          onHideForm={onHideModal}
+          onClose={onHideModal}
         />
-      </IconWrapper>
-      <Row alignItems='center' justifyContent='space-between' gap='14px' margin='6px 0 0 0'>
-        <NFTText>{token.name} {token.tokenId ? '#' + new Amount(token.tokenId).toNumber() : ''}</NFTText>
-      </Row>
-      <NFTSymbol>{token.symbol}</NFTSymbol>
-    </NFTButton>
+      }
+    </>
   )
 }

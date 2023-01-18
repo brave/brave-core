@@ -13,8 +13,7 @@ import { NftDetails } from '../nft-details/nft-details'
 import { BraveWallet, NFTMetadataReturnType } from '../../../constants/types'
 import { DisplayMode } from '../../nft-ui-messages'
 
-import Placeholder from '../../../assets/svg-icons/placeholdr-image.svg'
-import { PinningStatusType } from '../../../page/constants/action_types'
+import Placeholder from '../../../assets/svg-icons/nft-placeholder.svg'
 
 interface Props {
   isLoading?: boolean

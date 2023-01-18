@@ -813,9 +813,10 @@ provideStrings({
   braveWalletViewDecodedMessage: 'View message in ASCII encoding',
 
   // NFTs Tab
-  braveWalletNftsEmptyState: 'No NFTs found in your wallet. You can add NFTs by clicking the "+ Visible assets" button at the bottom of' +
-    ' the "Portfolio" tab',
-  braveWalletNftsEmptyStateSearch: 'No NFTs matching search or filter found',
+  braveNftsTabImportNft: 'Import NFT',
+  braveNftsTabEmptyStateHeading: 'No NFTs here yet.',
+  braveNftsTabEmptyStateSubHeading: 'Ready to add some? Just click the button below to import.',
+  braveNftsTabEmptyStateDisclaimer: 'Note that Brave Wallet currently only supports the ERC721 token standard.',
 
   // Add asset tabs
   braveWalletAddAssetTokenTabTitle: 'Token',

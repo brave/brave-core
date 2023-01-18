@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 import { WalletButton } from '../../../../../shared/style'
-import Ipfs from '../../../../../../assets/svg-icons/nft-ipfs/ipfs-color.svg'
+import MoreVertical from '../../../../../../assets/svg-icons/more-vertical.svg'
 
 export const StyledWrapper = styled.div`
   display: grid;
@@ -25,7 +25,7 @@ export const StyledWrapper = styled.div`
   }
 `
 
-export const NFTButton = styled(WalletButton)`
+export const NFTWrapper = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -42,6 +42,8 @@ export const NFTButton = styled(WalletButton)`
   &:last-child {
     margin-right: 0px;
   }
+  z-index: 1;
+  position: relative;
 `
 
 export const IconWrapper = styled.div`
@@ -49,6 +51,7 @@ export const IconWrapper = styled.div`
   overflow: visible;
   width: 100%;
   padding-top: 100%;
+  z-index: 0;
 `
 
 export const DIVForClickableArea = styled.div`
@@ -61,6 +64,7 @@ export const DIVForClickableArea = styled.div`
   right: 0;
   width: 100%;
   height: 100%;
+  z-index: 2;
 `
 
 export const NFTText = styled.span`
@@ -98,4 +102,28 @@ export const PinnedIcon = styled.div`
   background-image: url(${Ipfs});
   background-repeat: no-repeat;
   z-index: 2;
+`
+
+export const VerticalMenu = styled(WalletButton)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  z-index: 3;
+  border: none;
+  cursor: pointer;
+`
+
+export const VerticalMenuIcon = styled.div`
+  width: 4px;
+  height: 14px;
+  filter: drop-shadow(0px 1px 4px rgba(0, 0, 0, 0.1));
+  mask-image: url(${MoreVertical});
+  -webkit-mask-image: url(${MoreVertical});
+  background-color: #fff;
 `
