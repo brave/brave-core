@@ -25,6 +25,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
+
 namespace brave_vpn {
 
 namespace {

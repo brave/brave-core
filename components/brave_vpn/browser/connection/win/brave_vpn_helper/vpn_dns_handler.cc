@@ -12,14 +12,10 @@
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_dns_delegate.h"
+#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/vpn_utils.h"
 #include "brave/components/brave_vpn/browser/connection/win/utils.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
-
-namespace {
-// Repeating interval to check the connection is live.
-constexpr int kCheckConnectionIntervalInSeconds = 3;
-}  // namespace
 
 namespace brave_vpn {
 

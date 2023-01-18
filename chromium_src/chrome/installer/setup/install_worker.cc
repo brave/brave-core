@@ -2,6 +2,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include <shlobj.h>
 
 #include "base/bind.h"
@@ -46,10 +47,10 @@ base::FilePath GetBraveVPNServicePath(const base::FilePath& target_path,
 
 bool ConfigureBraveVPNServiceAutoRestart(const base::FilePath& exe_path,
                                          const CallbackWorkItem&) {
-  base::CommandLine cmd(exe_path);
-  cmd.AppendSwitch(brave_vpn::kBraveVpnHelperInstall);
   if (!base::PathExists(exe_path))
     return false;
+  base::CommandLine cmd(exe_path);
+  cmd.AppendSwitch(brave_vpn::kBraveVpnHelperInstall);
   base::LaunchOptions options = base::LaunchOptions();
   options.wait = true;
   return base::LaunchProcess(cmd, base::LaunchOptions()).IsValid();
@@ -62,7 +63,7 @@ void AddBraveVPNServiceWorkItems(const base::FilePath& vpn_service_path,
   DCHECK(::IsUserAnAdmin());
 
   if (vpn_service_path.empty()) {
-    LOG(ERROR) << "The path to brave_vpn_helper.exe is invalid.";
+    VLOG(1) << "The path to brave_vpn_helper.exe is invalid.";
     return;
   }
   WorkItem* install_service_work_item = new installer::InstallServiceWorkItem(

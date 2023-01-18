@@ -50,6 +50,7 @@ source_set("lib") {
   libs = [
     "Fwpuclnt.lib",
     "Iphlpapi.lib",
+    "rasapi32.lib",
   ]
 }
 
@@ -92,6 +93,7 @@ source_set("unit_tests") {
   sources = [ "vpn_dns_handler_unittest.cc" ]
 
   deps = [
+    ":common",
     ":lib",
     "//base",
     "//base/test:test_support",

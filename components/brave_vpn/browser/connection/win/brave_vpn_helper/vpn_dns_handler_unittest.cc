@@ -13,6 +13,7 @@
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_dns_delegate.h"
+#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/browser/connection/win/utils.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -97,7 +98,7 @@ TEST_F(VpnDnsHandlerTest, ConnectingFailed) {
 
   // Repeating interval to check the connection is live.
   // kCheckConnectionIntervalInSeconds
-  FastForwardBy(base::Seconds(3));
+  FastForwardBy(base::Seconds(kCheckConnectionIntervalInSeconds));
   EXPECT_FALSE(handler.IsActive());
   // Disconnected status should stop service.
   EXPECT_TRUE(callback_called);
@@ -118,7 +119,7 @@ TEST_F(VpnDnsHandlerTest, ConnectingSuccessFailedToSetFilters) {
   handler.SetPlatformFiltersResultForTesting(false);
   // Repeating interval to check the connection is live.
   // kCheckConnectionIntervalInSeconds
-  FastForwardBy(base::Seconds(3));
+  FastForwardBy(base::Seconds(kCheckConnectionIntervalInSeconds));
   EXPECT_FALSE(handler.IsActive());
   // Failed to set filters, stop service
   EXPECT_TRUE(callback_called);
@@ -140,7 +141,7 @@ TEST_F(VpnDnsHandlerTest, ConnectingSuccessFiltersInstalled) {
   handler.SetPlatformFiltersResultForTesting(true);
   // Repeating interval to check the connection is live.
   // kCheckConnectionIntervalInSeconds
-  FastForwardBy(base::Seconds(3));
+  FastForwardBy(base::Seconds(kCheckConnectionIntervalInSeconds));
   EXPECT_TRUE(handler.IsActive());
   // Waiting for signals from RAS.
   EXPECT_FALSE(callback_called);
@@ -164,7 +165,7 @@ TEST_F(VpnDnsHandlerTest, Connected) {
   MockVpnDnsHandler handler(
       base::BindLambdaForTesting([&]() { callback_called = true; }));
   EXPECT_FALSE(handler.IsActive());
-  // Disconnected.
+  // Connected.
   handler.SetConnectionResultForTesting(
       internal::CheckConnectionResult::CONNECTED);
   handler.StartMonitoring();

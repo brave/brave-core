@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
 
   base::win::SetupCRT(*command_line);
 
-  // Run interactively if needed.
+  // Register vpn helper service in the system.
   if (command_line->HasSwitch(brave_vpn::kBraveVpnHelperInstall)) {
     auto success = brave_vpn::ConfigureServiceAutoRestart(
         brave_vpn::kBraveVpnServiceName,

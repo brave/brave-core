@@ -23,6 +23,13 @@
 #include "components/crash/core/app/crashpad.h"
 #include "components/version_info/channel.h"
 
+namespace {
+// Split into two places to avoid patching:
+// chromium_src\components\crash\core\app\crashpad.cc
+// Need keep it in sync.
+constexpr char kBraveVPNHelperProcessType[] = "brave-vpn-helper";
+}  // namespace
+
 BraveVPNHelperCrashReporterClient::BraveVPNHelperCrashReporterClient() =
     default;
 
@@ -49,7 +56,7 @@ void BraveVPNHelperCrashReporterClient::InitializeCrashReportingForProcess(
   install_static::GetUserDataDirectory(&user_data_dir, nullptr);
 
   crash_reporter::InitializeCrashpadWithEmbeddedHandler(
-      true, brave_vpn::kBraveVPNHelperProcessType,
+      true, kBraveVPNHelperProcessType,
       install_static::WideToUTF8(user_data_dir), base::FilePath());
 }
 

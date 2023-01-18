@@ -60,7 +60,7 @@ class VpnDnsHandler : public base::win::ObjectWatcher::Delegate {
       connection_result_for_testing_;
   absl::optional<bool> platform_filters_result_for_testing_;
   absl::optional<bool> close_engine_result_for_testing_;
-  BraveVpnDnsDelegate* delegate_ = nullptr;
+  raw_ptr<BraveVpnDnsDelegate> delegate_;
   HANDLE engine_ = nullptr;
   HANDLE event_handle_for_vpn_ = nullptr;
   base::win::ObjectWatcher connected_disconnected_event_watcher_;

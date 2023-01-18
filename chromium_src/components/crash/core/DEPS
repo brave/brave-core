@@ -1,3 +1,0 @@
-include_rules = [
-  "+brave/components/brave_vpn/browser/connection/win/brave_vpn_helper"
-]

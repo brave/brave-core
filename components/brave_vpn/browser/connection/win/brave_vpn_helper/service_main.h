@@ -37,6 +37,8 @@ class ServiceMain : public brave_vpn::BraveVpnDnsDelegate {
   void SignalExit() override;
 
  private:
+  friend class base::NoDestructor<ServiceMain>;
+
   ServiceMain();
   ~ServiceMain();
 
@@ -70,9 +72,7 @@ class ServiceMain : public brave_vpn::BraveVpnDnsDelegate {
   VpnDnsHandler dns_handler_{this};
   SERVICE_STATUS_HANDLE service_status_handle_;
   SERVICE_STATUS service_status_;
-  base::WaitableEvent exit_signal_;
   base::OnceClosure quit_;
-  friend class base::NoDestructor<ServiceMain>;
 };
 
 }  // namespace brave_vpn
