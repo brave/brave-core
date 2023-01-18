@@ -1,0 +1,12 @@
+diff --git a/components/sync/BUILD.gn b/components/sync/BUILD.gn
+index aa8ab6f262c519dd22c537d682e46b6f862db113..d0086f77968d8d49cce77dbcbd941a3b03476eb2 100644
+--- a/components/sync/BUILD.gn
++++ b/components/sync/BUILD.gn
+@@ -19,6 +19,7 @@ group("sync") {
+   if (is_chromeos) {
+     public_deps += [ "//components/sync/chromeos" ]
+   }
++  import("//brave/build/config/brave_build.gni") public_deps += brave_components_sync_deps
+ }
+ 
+ static_library("test_support") {
