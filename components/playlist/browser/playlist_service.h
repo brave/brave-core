@@ -279,11 +279,11 @@ class PlaylistService : public KeyedService,
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<PrefService> prefs_ = nullptr;
 
-  base::WeakPtrFactory<PlaylistService> weak_factory_{this};
-
 #if BUILDFLAG(IS_ANDROID)
   mojo::ReceiverSet<mojom::PlaylistService> receivers_;
 #endif  // BUILDFLAG(IS_ANDROID)
+
+  base::WeakPtrFactory<PlaylistService> weak_factory_{this};
 };
 
 }  // namespace playlist
