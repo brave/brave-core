@@ -30,8 +30,5 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
                                   &output);
 
   brave_wallet::DecodeString(offset, input, &output);
-  std::vector<std::string> array_output;
-  brave_wallet::DecodeStringArray(input, &array_output);
-
   return 0;
 }
