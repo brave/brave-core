@@ -164,4 +164,14 @@
 
     <color name="bookmark_menu_text_color">#C2C4CF</color>
     <color name="bookmark_menu_bg_color">#2E3039</color>
+
+    <color name="notification_volume_icon_color">#F0F2FF</color>
+    <color name="notification_bat1_icon_color">#A0A5EB</color>
+    <color name="notification_bat2_icon_color">#FF7654</color>
+    <color name="notification_bat3_icon_color">#A0A5EB</color>
+    <color name="notification_graph_icon_color">#FF7654</color>
+    <color name="notification_badge_icon_color">#737ADE</color>
+    <color name="notification_download_icon_color">#F0F2FF</color>
+    <color name="notification_rationale_dialog_card_bg_color">#17171F</color>
+
 </resources>

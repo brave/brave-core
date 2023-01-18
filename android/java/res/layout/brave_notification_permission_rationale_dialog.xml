@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="@drawable/ad_free_card_bg"
+    android:background="@drawable/notification_rationale_dialog_background"
     android:padding="24dp">
 
     <ImageView
@@ -42,7 +42,7 @@
         android:fontFamily="sans-serif"
         android:text="@string/brave_notification_permission_rationale_dialog_message"
         android:textSize="16sp"
-        android:textColor="@color/news_promoted_background_color"
+        android:textColor="@color/wallet_secondary_layout_text_color"
         app:layout_constraintBottom_toTopOf="@+id/notification_continue_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/notification_permission_rationale_title" />
@@ -65,7 +65,7 @@
         android:layout_width="96dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@drawable/blue_48_rounded_bg"
+        android:background="@drawable/notification_button_rounded_bg"
         android:text="@string/continue_text"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
