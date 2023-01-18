@@ -67,12 +67,16 @@ BASE_FEATURE(kBraveHttpsByDefault,
 // website is closed.
 BASE_FEATURE(kBraveForgetFirstPartyStorage,
              "BraveForgetFirstPartyStorage",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 const base::FeatureParam<int>
     kBraveForgetFirstPartyStorageKeepAliveTimeInSeconds = {
         &kBraveForgetFirstPartyStorage,
         "BraveForgetFirstPartyStorageKeepAliveTimeInSeconds", 30};
+
+const base::FeatureParam<bool> kBraveForgetFirstPartyStorageByDefault = {
+    &kBraveForgetFirstPartyStorage, "BraveForgetFirstPartyStorageByDefault",
+    false};
 
 }  // namespace features
 }  // namespace net

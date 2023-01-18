@@ -14,9 +14,12 @@
 #include "base/ranges/ranges.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ephemeral_storage/first_party_storage_lifetime.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/storage_partition.h"
@@ -194,12 +197,16 @@ void EphemeralStorageTabHelper::CreateFirstPartyStorageLifetime(
           net::features::kBraveForgetFirstPartyStorage)) {
     return;
   }
-  if (!url.is_valid()) {
-    return;
-  }
 
-  first_party_storage_lifetime_ = FirstPartyStorageLifetime::GetOrCreate(
-      web_contents()->GetBrowserContext(), url::Origin::Create(url));
+  if (url.is_valid() && brave_shields::GetBraveShieldsEnabled(
+                            HostContentSettingsMapFactory::GetForProfile(
+                                GetWebContents().GetBrowserContext()),
+                            url)) {
+    first_party_storage_lifetime_ = FirstPartyStorageLifetime::GetOrCreate(
+        web_contents()->GetBrowserContext(), url::Origin::Create(url));
+  } else {
+    first_party_storage_lifetime_.reset();
+  }
 }
 
 // static

@@ -147,11 +147,13 @@ void EphemeralStorageService::FirstPartyStorageAreaInUse(
     return;
   }
 
-  if (first_party_storage_areas_to_cleanup_.erase(origin)) {
-    ScopedListPrefUpdate pref_update(user_prefs::UserPrefs::Get(context_),
-                                     kFirstPartyStorageURLsToCleanup);
-    pref_update->EraseValue(base::Value(origin.Serialize()));
+  if (!first_party_storage_areas_to_cleanup_.erase(origin)) {
+    return;
   }
+
+  ScopedListPrefUpdate pref_update(user_prefs::UserPrefs::Get(context_),
+                                   kFirstPartyStorageURLsToCleanup);
+  pref_update->EraseValue(base::Value(origin.Serialize()));
 }
 
 void EphemeralStorageService::FirstPartyStorageAreaNotInUse(

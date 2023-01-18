@@ -9,6 +9,7 @@
 
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "components/content_settings/core/common/content_settings.h"
+#include "net/base/features.h"
 
 namespace content_settings {
 
@@ -172,14 +173,16 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
   Register(ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
-           "brave_remember_1p_storage", CONTENT_SETTING_ALLOW,
+           "brave_remember_1p_storage",
+           net::features::kBraveForgetFirstPartyStorageByDefault.Get()
+               ? CONTENT_SETTING_BLOCK
+               : CONTENT_SETTING_ALLOW,
            WebsiteSettingsInfo::UNSYNCABLE, {},
            {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
-           ContentSettingsInfo::PERSISTENT,
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
   // Disable background sync by default (brave/brave-browser#4709)
