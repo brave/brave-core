@@ -33,7 +33,7 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
 
   PlaylistDownloadRequestManagerBrowserTest() {
     playlist::PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
-        ISOLATED_WORLD_ID_CHROME_INTERNAL);
+        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
   ~PlaylistDownloadRequestManagerBrowserTest() override = default;
 
