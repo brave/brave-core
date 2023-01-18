@@ -97,8 +97,11 @@ pub unsafe extern "C" fn engine_create(rules: *const c_char) -> *mut Engine {
 /// Create a new `Engine`, interpreting `rules` as a null-terminated C string and then parsing as a
 /// filter list in ABP syntax. Also populates metadata from the filter list into `metadata`.
 #[no_mangle]
-pub unsafe extern "C" fn engine_create_with_metadata(rules: *const c_char, metadata: *mut *mut FilterListMetadata) -> *mut Engine {
-    let rules = CStr::from_ptr(rules).to_str().unwrap_or_else(|_|{
+pub unsafe extern "C" fn engine_create_with_metadata(
+    rules: *const c_char,
+    metadata: *mut *mut FilterListMetadata,
+) -> *mut Engine {
+    let rules = CStr::from_ptr(rules).to_str().unwrap_or_else(|_| {
         eprintln!("Failed to parse filter list with invalid UTF-8 content");
         ""
     });
@@ -127,10 +130,7 @@ fn engine_create_from_str(rules: &str) -> (*mut FilterListMetadata, *mut Engine)
     let mut filter_set = adblock::lists::FilterSet::new(false);
     let metadata = filter_set.add_filter_list(&rules, Default::default());
     let engine = Engine::from_filter_set(filter_set, true);
-    (
-        Box::into_raw(Box::new(metadata)),
-        Box::into_raw(Box::new(engine)),
-    )
+    (Box::into_raw(Box::new(metadata)), Box::into_raw(Box::new(engine)))
 }
 
 /// Checks if a `url` matches for the specified `Engine` within the context.
