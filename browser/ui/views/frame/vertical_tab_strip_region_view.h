@@ -19,7 +19,8 @@ namespace views {
 class ScrollView;
 }
 
-class Browser;
+class BraveNewTabButton;
+class BrowserView;
 class TabStripScrollContainer;
 
 // Wraps TabStripRegion and show it vertically.
@@ -43,7 +44,8 @@ class VerticalTabStripRegionView : public views::View,
     kExpanded,
   };
 
-  VerticalTabStripRegionView(Browser* browser, TabStripRegionView* region_view);
+  VerticalTabStripRegionView(BrowserView* browser_view,
+                             TabStripRegionView* region_view);
   ~VerticalTabStripRegionView() override;
 
   State state() const { return state_; }
@@ -106,6 +108,8 @@ class VerticalTabStripRegionView : public views::View,
 
   void ScrollActiveTabToBeVisible();
 
+  std::u16string GetShortcutTextForNewTabButton(BrowserView* browser_view);
+
   raw_ptr<Browser> browser_ = nullptr;
 
   raw_ptr<views::View> original_parent_of_region_view_ = nullptr;
@@ -117,7 +121,7 @@ class VerticalTabStripRegionView : public views::View,
   raw_ptr<ScrollHeaderView> scroll_view_header_ = nullptr;
 
   // New tab button created for vertical tabs
-  raw_ptr<NewTabButton> new_tab_button_ = nullptr;
+  raw_ptr<BraveNewTabButton> new_tab_button_ = nullptr;
 
   State state_ = State::kExpanded;
 

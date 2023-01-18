@@ -311,6 +311,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithVerticalTabs,
   // Check if vertical tabs is located at first and sidebar is located on the
   // right side.
 #if BUILDFLAG(IS_MAC)
+  // On Mac, we should consider frame border thickness.
   EXPECT_LT(vertical_tabs_container->GetBoundsInScreen().x() + 1,
             sidebar_container->GetBoundsInScreen().x());
 #else
@@ -324,6 +325,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithVerticalTabs,
 
   // Check if vertical tabs is located first and sidebar is following it.
 #if BUILDFLAG(IS_MAC)
+  // On Mac, we should consider frame border thickness.
   EXPECT_EQ(vertical_tabs_container->GetBoundsInScreen().right() + 1,
             sidebar_container->GetBoundsInScreen().x());
 #else

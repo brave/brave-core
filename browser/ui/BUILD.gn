@@ -626,6 +626,10 @@ source_set("ui") {
       "views/toolbar/brave_toolbar_view.h",
     ]
 
+    if (is_mac) {
+      sources += [ "views/frame/vertical_tab_strip_region_view_mac.mm" ]
+    }
+
     if (enable_extensions) {
       sources += [
         "webui/settings/brave_default_extensions_handler.cc",

@@ -34,6 +34,8 @@ class BraveNewTabButton : public NewTabButton {
   BraveNewTabButton& operator=(const BraveNewTabButton&) = delete;
   ~BraveNewTabButton() override;
 
+  void SetShortcutText(const std::u16string& text);
+
   // NewTabButton:
   void FrameColorsChanged() override;
   void Layout() override;

@@ -76,15 +76,13 @@ BraveNewTabButton::BraveNewTabButton(TabStrip* tab_strip,
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
     return;
 
-  text_ = AddChildView(
-      std::make_unique<views::Label>(l10n_util::GetStringUTF16(IDS_NEW_TAB)));
+  text_ = AddChildView(std::make_unique<views::Label>(
+      l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB)));
   text_->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
   text_->SetVerticalAlignment(gfx::VerticalAlignment::ALIGN_MIDDLE);
   text_->SetVisible(false);
 
-  shortcut_text_ = AddChildView(std::make_unique<views::Label>(
-      ui::Accelerator(ui::VKEY_T, ui::EF_PLATFORM_ACCELERATOR)
-          .GetShortcutText()));
+  shortcut_text_ = AddChildView(std::make_unique<views::Label>());
   shortcut_text_->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_RIGHT);
   shortcut_text_->SetVerticalAlignment(gfx::VerticalAlignment::ALIGN_MIDDLE);
   shortcut_text_->SetVisible(false);
@@ -92,23 +90,35 @@ BraveNewTabButton::BraveNewTabButton(TabStrip* tab_strip,
 
 BraveNewTabButton::~BraveNewTabButton() = default;
 
+void BraveNewTabButton::SetShortcutText(const std::u16string& text) {
+  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
+  DCHECK(shortcut_text_);
+  shortcut_text_->SetText(text);
+}
+
 void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
-  // Overriden to fix chromium assumption that border radius
-  // will be 50% of width.
   gfx::ScopedCanvas scoped_canvas(canvas);
   // Incorrect offset that base class will use
   const int chromium_offset = GetCornerRadius();
   // Shim base implementation's painting
   if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
       tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {
+    DCHECK(text_);
+    const bool should_align_icon_center = text_->bounds().IsEmpty();
+    auto contents_bounds = GetContentsBounds();
+
     // Offset that we want to use
-    const int correct_h_offset = kInsetForVerticalTab;
-    const int correct_v_offset = (GetContentsBounds().height() / 2);
+    const int correct_h_offset = should_align_icon_center
+                                     ? (contents_bounds.width() / 2)
+                                     : kInsetForVerticalTab;
+    const int correct_v_offset = (contents_bounds.height() / 2);
     // Difference
     const int h_offset = correct_h_offset - chromium_offset;
     const int v_offset = correct_v_offset - chromium_offset;
     canvas->Translate(gfx::Vector2d(h_offset, v_offset));
   } else {
+    // Overriden to fix chromium assumption that border radius
+    // will be 50% of width.
     // Offset that we want to use
     const int correct_h_offset = (GetContentsBounds().width() / 2);
 
@@ -195,9 +205,10 @@ void BraveNewTabButton::Layout() {
   if (!text_->GetVisible())
     return;
 
+  constexpr int kTextLeftMargin = 20;
   gfx::Rect text_bounds = GetLocalBounds();
   text_bounds.Inset(gfx::Insets(kInsetForVerticalTab));
-  text_bounds.Inset(gfx::Insets().set_left(20) /* for + icon and spacing*/);
+  text_bounds.Inset(gfx::Insets().set_left(kTextLeftMargin));
   text_->SetBoundsRect(text_bounds);
   shortcut_text_->SetBoundsRect(text_bounds);
 }

@@ -60,7 +60,7 @@ VerticalTabStripWidgetDelegateView::VerticalTabStripWidgetDelegateView(
     : browser_view_(browser_view),
       host_(host),
       region_view_(AddChildView(std::make_unique<VerticalTabStripRegionView>(
-          browser_view_->browser(),
+          browser_view_,
           browser_view_->tab_strip_region_view()))) {
   SetLayoutManager(std::make_unique<views::FillLayout>());
 

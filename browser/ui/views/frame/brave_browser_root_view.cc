@@ -18,7 +18,7 @@ bool BraveBrowserRootView::OnMouseWheel(const ui::MouseWheelEvent& event) {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
     return BrowserRootView::OnMouseWheel(event);
 
-  // Bypass BrowserRootView::OnMouseWheel() to avoid tab cycling feature.
+    // Bypass BrowserRootView::OnMouseWheel() to avoid tab cycling feature.
 #if BUILDFLAG(IS_LINUX)
   if (!base::FeatureList::IsEnabled(
           tabs::features::kBraveChangeActiveTabOnScrollEvent)) {

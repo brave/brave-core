@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 
@@ -36,6 +36,10 @@
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_types.h"
 #include "ui/views/view_utils.h"
+
+#if !BUILDFLAG(IS_MAC)
+#include "chrome/app/chrome_command_ids.h"
+#endif
 
 namespace {
 
@@ -249,13 +253,13 @@ BEGIN_METADATA(VerticalTabStripRegionView, ScrollHeaderView, views::View)
 END_METADATA
 
 VerticalTabStripRegionView::VerticalTabStripRegionView(
-    Browser* browser,
+    BrowserView* browser_view,
     TabStripRegionView* region_view)
-    : browser_(browser), region_view_(region_view) {
+    : browser_(browser_view->browser()), region_view_(region_view) {
   DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
       << "This view should be created only when this flag is on";
 
-  browser->tab_strip_model()->AddObserver(this);
+  browser_->tab_strip_model()->AddObserver(this);
 
   SetNotifyEnterExitOnChild(true);
 
@@ -296,6 +300,8 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
       l10n_util::GetStringUTF16(IDS_TOOLTIP_NEW_TAB));
   new_tab_button_->SetAccessibleName(
       l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB));
+  new_tab_button_->SetShortcutText(
+      GetShortcutTextForNewTabButton(browser_view));
 
   auto* prefs = browser_->profile()->GetOriginalProfile()->GetPrefs();
   show_vertical_tabs_.Init(
@@ -660,6 +666,20 @@ void VerticalTabStripRegionView::ScrollActiveTabToBeVisible() {
                 scroll_view_->height() - scroll_view_header_->height()});
   }
 }
+
+#if !BUILDFLAG(IS_MAC)
+std::u16string VerticalTabStripRegionView::GetShortcutTextForNewTabButton(
+    BrowserView* browser_view) {
+  if (ui::Accelerator new_tab_accelerator;
+      browser_view->GetAcceleratorForCommandId(IDC_NEW_TAB,
+                                               &new_tab_accelerator)) {
+    return new_tab_accelerator.GetShortcutText();
+  }
+
+  NOTREACHED() << "Couldn't find the accelerator for new tab.";
+  return {};
+}
+#endif
 
 BEGIN_METADATA(VerticalTabStripRegionView, views::View)
 END_METADATA
