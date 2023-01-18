@@ -1,3 +1,8 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 module cosmetic_filters.mojom;
 
 import "mojo/public/mojom/base/values.mojom";
@@ -8,5 +13,6 @@ interface CosmeticFiltersResources {
       mojo_base.mojom.DictionaryValue result);
 
   [Sync]
-  UrlCosmeticResources(string url) => (mojo_base.mojom.Value result);
+  UrlCosmeticResources(string url, bool aggressive_blocking) => (
+      mojo_base.mojom.Value result);
 };

@@ -64,7 +64,7 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
 
-  absl::optional<base::Value> UrlCosmeticResources(const std::string& url);
+  base::Value::Dict UrlCosmeticResources(const std::string& url);
   base::Value::List HiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,

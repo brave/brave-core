@@ -170,24 +170,35 @@ absl::optional<std::string> AdBlockService::GetCspDirectives(
   return csp_directives;
 }
 
-absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
-    const std::string& url) {
+base::Value::Dict AdBlockService::UrlCosmeticResources(
+    const std::string& url,
+    bool aggressive_blocking) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
-  absl::optional<base::Value> resources =
-      default_engine_->UrlCosmeticResources(url);
+  base::Value::Dict resources = default_engine_->UrlCosmeticResources(url);
 
-  if (!resources || !resources->is_dict()) {
-    return resources;
+  if (!aggressive_blocking) {
+    // `:has` procedural selectors from the default engine should not be hidden
+    // in standard blocking mode.
+    base::Value::List* default_hide_selectors =
+        resources.FindList("hide_selectors");
+    if (default_hide_selectors) {
+      base::Value::List::iterator it = default_hide_selectors->begin();
+      while (it < default_hide_selectors->end()) {
+        DCHECK(it->is_string());
+        if (it->GetString().find(":has(") != std::string::npos) {
+          it = default_hide_selectors->erase(it);
+        } else {
+          it++;
+        }
+      }
+    }
   }
 
-  absl::optional<base::Value> additional_resources =
+  base::Value::Dict additional_resources =
       additional_filters_engine_->UrlCosmeticResources(url);
 
-  if (additional_resources && additional_resources->is_dict()) {
-    MergeResourcesInto(std::move(additional_resources->GetDict()),
-                       resources->GetIfDict(),
-                       /*force_hide=*/true);
-  }
+  MergeResourcesInto(std::move(additional_resources), resources,
+                     /*force_hide=*/true);
 
   return resources;
 }
