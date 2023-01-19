@@ -101,7 +101,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
   }
 
   private class func processPlaylistInfo(handler: PlaylistScriptHandler, item: PlaylistInfo?) {
-    guard let item = item, !item.src.isEmpty else {
+    guard var item = item, !item.src.isEmpty else {
       DispatchQueue.main.async {
         handler.delegate?.updatePlaylistURLBar(tab: handler.tab, state: .none, item: nil)
       }
@@ -113,6 +113,19 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     }
     
     handler.playlistItems.insert(item.src)
+    
+    // Copy the item but use the web-view's title and location instead, if available
+    // This is due to a iFrames security
+    item = PlaylistInfo(name: item.name,
+                        src: item.src,
+                        pageSrc: handler.tab?.webView?.url?.absoluteString ?? item.pageSrc,
+                        pageTitle: handler.tab?.webView?.title ?? item.pageTitle,
+                        mimeType: item.mimeType,
+                        duration: item.duration,
+                        detected: item.detected,
+                        dateAdded: item.dateAdded,
+                        tagId: item.tagId,
+                        order: item.order)
 
     Self.queue.async { [weak handler] in
       guard let handler = handler else { return }
