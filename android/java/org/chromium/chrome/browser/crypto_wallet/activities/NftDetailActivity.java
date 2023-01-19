@@ -27,6 +27,8 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.DrawableCrossFadeTransition;
 
+import java.util.Locale;
+
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
@@ -41,7 +43,9 @@ import org.chromium.ui.text.NoUnderlineClickableSpan;
 
 public class NftDetailActivity extends BraveWalletBaseActivity {
     private static final String TOKEN_ID_FORMAT = "#%s";
-    private static final String NFT_URL_FORMAT = "%s/token/%s?a=%s";
+    private static final String NFT_ERC721_URL_FORMAT = "%s/token/%s?a=%s";
+    private static final String NFT_SPL_URL_FORMAT = "%s/address/%s";
+    private static final String NFT_SPL_URL_FORMAT_WITH_CLUSTER = NFT_SPL_URL_FORMAT + "/?cluster=%s";
 
     private static final String CHAIN_ID = "chainId";
     private static final String ASSET_NAME = "assetName";
@@ -148,23 +152,53 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
                             ? defaultNetwork.blockExplorerUrls[0]
                             : "";
 
-                    String tokenStr = String.format(TOKEN_ID_FORMAT, mNftTokenId);
-                    SpannableString spannable = new SpannableString(tokenStr);
+                    SpannableString spannable;
+                    if (mIsErc721) {
+                        String tokenStr = String.format(Locale.US, TOKEN_ID_FORMAT, mNftTokenId);
+                        spannable = new SpannableString(tokenStr);
 
-                    if (!TextUtils.isEmpty(blockExplorerUrl)) {
-                        String url = String.format(
-                                NFT_URL_FORMAT, blockExplorerUrl, mContractAddress, mNftTokenId);
-                        NoUnderlineClickableSpan linkSpan =
-                                new NoUnderlineClickableSpan(this, R.color.brave_link,
-                                        (textView) -> { TabUtils.openLinkWithFocus(this, url); });
-                        spannable.setSpan(
-                                linkSpan, 0, spannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        if (!TextUtils.isEmpty(blockExplorerUrl)) {
+                            String url = String.format(Locale.US,
+                                    NFT_ERC721_URL_FORMAT, blockExplorerUrl, mContractAddress, mNftTokenId);
+                            createClickableLink(blockExplorerUrl, url, spannable);
+                        }
+
+                    } else {
+                        String mintAddress = getTruncatedCapitalizedAddress(mContractAddress);
+                        spannable = new SpannableString(mintAddress);
+
+                        if (!TextUtils.isEmpty(blockExplorerUrl)) {
+                            String[] splitBlockExplorerUrl = blockExplorerUrl.split("/\\?cluster=");
+                            String baseUrl = splitBlockExplorerUrl[0];
+                            String url;
+                            if (splitBlockExplorerUrl.length > 1) {
+                                String cluster = splitBlockExplorerUrl[1];
+                                url = String.format(Locale.US, NFT_SPL_URL_FORMAT_WITH_CLUSTER, baseUrl, mContractAddress, cluster);
+                            } else {
+                                url = String.format(Locale.US, NFT_SPL_URL_FORMAT, baseUrl, mContractAddress);
+                            }
+                            createClickableLink(blockExplorerUrl, url, spannable);
+                        }
                     }
+
                     mTokenAddressView.setText(spannable);
                     mTokenAddressView.setMovementMethod(LinkMovementMethod.getInstance());
 
                     onInitialLayoutInflationComplete();
                 });
+    }
+
+    private String getTruncatedCapitalizedAddress(String address) {
+        int prefixLength = address.startsWith("0x") ? 6 : 4;
+        return (address.substring(0, prefixLength) + "…" + address.substring(address.length() - 4)).toUpperCase(Locale.US);
+    }
+
+    private void createClickableLink(String blockExplorerUrl, String url, SpannableString spannable) {
+        NoUnderlineClickableSpan linkSpan =
+                new NoUnderlineClickableSpan(this, R.color.brave_link,
+                        (textView) -> { TabUtils.openLinkWithFocus(this, url); });
+        spannable.setSpan(
+                linkSpan, 0, spannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     private void setMetadata(PortfolioModel.NftMetadata nftMetaData) {
