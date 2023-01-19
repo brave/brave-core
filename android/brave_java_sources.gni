@@ -191,7 +191,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/decentralized_dns/settings/UnstoppableDomainsSettingsFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/document/BraveLauncherActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/dom_distiller/BraveReaderModeManager.java",
-  "../../brave/android/java/org/chromium/chrome/browser/download/BraveMimeUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/download/settings/BraveDownloadSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/feedback/BraveHelpAndFeedbackLauncherImpl.java",
