@@ -85,6 +85,10 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
       privacy::p2a::GetAdImpressionNameForAdType(AdType::kInlineContentAd);
   EXPECT_CALL(*ads_client_mock_, RecordP2AEvent(name, _));
 
+  GetAds()->TriggerInlineContentAdEvent(
+      kPlacementId, kCreativeInstanceIdId,
+      mojom::InlineContentAdEventType::kServed);
+
   // Act
   GetAds()->TriggerInlineContentAdEvent(
       kPlacementId, kCreativeInstanceIdId,
@@ -99,6 +103,12 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
 
 TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
+  GetAds()->TriggerInlineContentAdEvent(
+      kPlacementId, kCreativeInstanceIdId,
+      mojom::InlineContentAdEventType::kServed);
+  GetAds()->TriggerInlineContentAdEvent(
+      kPlacementId, kCreativeInstanceIdId,
+      mojom::InlineContentAdEventType::kViewed);
 
   // Act
   GetAds()->TriggerInlineContentAdEvent(
@@ -107,9 +117,13 @@ TEST_F(BatAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
 
   // Assert
   EXPECT_EQ(
+      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kServed));
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kViewed));
+  EXPECT_EQ(
       1, GetAdEventCount(AdType::kInlineContentAd, ConfirmationType::kClicked));
-  EXPECT_EQ(1, GetHistoryItemCount());
-  EXPECT_EQ(1, GetTransactionCount());
+  EXPECT_EQ(2, GetHistoryItemCount());
+  EXPECT_EQ(2, GetTransactionCount());
 }
 
 }  // namespace ads

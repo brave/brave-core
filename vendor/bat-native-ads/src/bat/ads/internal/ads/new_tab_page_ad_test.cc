@@ -73,12 +73,16 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {
 
 TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
+  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceIdId,
+                                     mojom::NewTabPageAdEventType::kServed);
 
   // Act
   GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceIdId,
                                      mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
+  EXPECT_EQ(1,
+            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
   EXPECT_EQ(1,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
   EXPECT_EQ(1, GetHistoryItemCount());
@@ -87,6 +91,10 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
 
 TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
+  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceIdId,
+                                     mojom::NewTabPageAdEventType::kServed);
+  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceIdId,
+                                     mojom::NewTabPageAdEventType::kViewed);
 
   // Act
   GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceIdId,
@@ -94,9 +102,13 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
 
   // Assert
   EXPECT_EQ(1,
+            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kServed));
+  EXPECT_EQ(1,
+            GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kViewed));
+  EXPECT_EQ(1,
             GetAdEventCount(AdType::kNewTabPageAd, ConfirmationType::kClicked));
-  EXPECT_EQ(1, GetHistoryItemCount());
-  EXPECT_EQ(1, GetTransactionCount());
+  EXPECT_EQ(2, GetHistoryItemCount());
+  EXPECT_EQ(2, GetTransactionCount());
 }
 
 }  // namespace ads

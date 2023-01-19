@@ -39,8 +39,6 @@ class EventHandler final : public EventHandlerObserver {
 
  private:
   void FireEvent(const PromotedContentAdInfo& ad,
-                 const std::string& placement_id,
-                 const std::string& creative_instance_id,
                  mojom::PromotedContentAdEventType event_type);
   void FailedToFireEvent(const std::string& placement_id,
                          const std::string& creative_instance_id,
