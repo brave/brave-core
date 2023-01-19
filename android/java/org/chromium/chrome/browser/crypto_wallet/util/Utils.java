@@ -1698,6 +1698,7 @@ public class Utils {
      */
     private static String getTruncatedCapitalizedAddress(String address) {
         int prefixLength = address.startsWith("0x") ? 6 : 4;
-        return (address.substring(0, prefixLength) + "…" + address.substring(address.length() - 4)).toUpperCase(Locale.US);
+        return (address.substring(0, prefixLength) + "…" + address.substring(address.length() - 4))
+                .toUpperCase(Locale.US);
     }
 }

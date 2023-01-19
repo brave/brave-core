@@ -93,18 +93,19 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
         ArrayList<AsyncUtils.BaseGetNftMetadataContext> nftMetadataList = new ArrayList<>();
         for (BlockchainToken userAsset : nftList) {
             if (userAsset.isErc721) {
-                AsyncUtils.GetNftErc721MetadataContext nftMetadata = new AsyncUtils.GetNftErc721MetadataContext(
-                        nftMetaDataHandler.singleResponseComplete);
+                AsyncUtils.GetNftErc721MetadataContext nftMetadata =
+                        new AsyncUtils.GetNftErc721MetadataContext(
+                                nftMetaDataHandler.singleResponseComplete);
                 nftMetadata.asset = userAsset;
                 mJsonRpcService.getErc721Metadata(userAsset.contractAddress, userAsset.tokenId,
                         userAsset.chainId, nftMetadata);
                 nftMetadataList.add(nftMetadata);
-            }
-            else if (userAsset.isNft) {
+            } else if (userAsset.isNft) {
                 if (userAsset.coin == CoinType.SOL) {
                     // Solana NFTs.
-                    AsyncUtils.GetNftSolanaMetadataContext nftMetadata = new AsyncUtils.GetNftSolanaMetadataContext(
-                            nftMetaDataHandler.singleResponseComplete);
+                    AsyncUtils.GetNftSolanaMetadataContext nftMetadata =
+                            new AsyncUtils.GetNftSolanaMetadataContext(
+                                    nftMetaDataHandler.singleResponseComplete);
                     nftMetadata.asset = userAsset;
                     mJsonRpcService.getSolTokenMetadata(userAsset.contractAddress, nftMetadata);
                     nftMetadataList.add(nftMetadata);

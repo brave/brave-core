@@ -401,9 +401,8 @@ public class AsyncUtils {
         }
     }
 
-    public static class GetNftSolanaMetadataContext
-            extends BaseGetNftMetadataContext implements JsonRpcService.GetSolTokenMetadata_Response {
-
+    public static class GetNftSolanaMetadataContext extends BaseGetNftMetadataContext
+            implements JsonRpcService.GetSolTokenMetadata_Response {
         public GetNftSolanaMetadataContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
@@ -419,7 +418,6 @@ public class AsyncUtils {
 
     public static class GetNftErc721MetadataContext
             extends BaseGetNftMetadataContext implements JsonRpcService.GetErc721Metadata_Response {
-
         public GetNftErc721MetadataContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
