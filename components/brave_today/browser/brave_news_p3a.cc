@@ -119,7 +119,7 @@ void RecordWeeklyDisplayAdsViewedCount(PrefService* prefs, bool is_add) {
   // Store current weekly total in p3a, ready to send on the next upload
   constexpr int buckets[] = {0, 1, 4, 8, 14, 30, 60, 120};
   uint64_t total = AddToWeeklyStorageAndGetSum(
-      prefs, prefs::kBraveTodayWeeklyCardViewsCount, is_add);
+      prefs, prefs::kBraveTodayWeeklyDisplayAdViewedCount, is_add);
   p3a_utils::RecordToHistogramBucket(kWeeklyDisplayAdsViewedHistogramName,
                                      buckets, total);
 }
