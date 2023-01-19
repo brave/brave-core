@@ -10,6 +10,7 @@
 
 // Manages logic to switch hotkey between copy and copy clean link item.
 @interface BraveAppController : AppController {
+  NSMenuItem* _copyMenuItem;
   NSMenuItem* _copyCleanLinkMenuItem;
 }
 
