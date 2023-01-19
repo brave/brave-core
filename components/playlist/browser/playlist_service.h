@@ -135,6 +135,8 @@ class PlaylistService : public KeyedService,
   void UpdateItem(mojom::PlaylistItemPtr item) override;
   void RecoverLocalDataForItem(const std::string& item_id) override;
   void RemoveLocalDataForItem(const std::string& item_id) override;
+  void RemoveLocalDataForItemsInPlaylist(
+      const std::string& playlist_id) override;
 
   void CreatePlaylist(mojom::PlaylistPtr playlist,
                       CreatePlaylistCallback callback) override;
@@ -251,6 +253,8 @@ class PlaylistService : public KeyedService,
   // Removes Item value from prefs and related cached data.
   void DeletePlaylistItemData(const std::string& id);
   void DeleteAllPlaylistItems();
+
+  void RemoveLocalDataForItem(const mojom::PlaylistItemPtr& item);
 
   std::unique_ptr<Delegate> delegate_;
 
