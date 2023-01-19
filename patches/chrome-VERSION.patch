@@ -3,7 +3,7 @@ index c246d05e63ee157e41044aec59da64162b04b01c..7ca82dc573aa8970ddc67668a44a2675
 --- a/chrome/VERSION
 +++ b/chrome/VERSION
 @@ -1,4 +1,4 @@
--MAJOR=111
+ MAJOR=111
 -MINOR=0
 -BUILD=5545
 -PATCH=3
