@@ -67,12 +67,23 @@ window.__firefox__.includeOnce("Playlist", function($) {
   
   function sendMessage(name, node, target, type, detected) {
     $(function() {
+      var location = "";
+      var pageTitle = "";
+      
+      try {
+        location = window.top.location.href;
+        pageTitle = window.top.document.title;
+      } catch(error) {
+        location = window.location.href;
+        pageTitle = document.title;
+      }
+      
       $.postNativeMessage('$<message_handler>', {
         "securityToken": SECURITY_TOKEN,
         "name": name,
         "src": node.src,
-        "pageSrc": window.top.location.href,
-        "pageTitle": window.top.document.title,
+        "pageSrc": location,
+        "pageTitle": pageTitle,
         "mimeType": type,
         "duration": clamp_duration(target.duration),
         "detected": detected,
@@ -85,7 +96,11 @@ window.__firefox__.includeOnce("Playlist", function($) {
     if (target) {
       var name = target.title;
       if (!name || name == "") {
-        name = window.top.document.title;
+        try {
+          name = window.top.document.title;
+        } catch(error) {
+          name = document.title;
+        }
       }
     
       if (!type || type == "") {
