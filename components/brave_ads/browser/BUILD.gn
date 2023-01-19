@@ -12,8 +12,6 @@ source_set("browser") {
     "ads_service.cc",
     "ads_service.h",
     "ads_service_observer.h",
-    "ads_status_header_throttle.cc",
-    "ads_status_header_throttle.h",
     "ads_storage_cleanup.cc",
     "ads_storage_cleanup.h",
     "component_updater/component_info.cc",
