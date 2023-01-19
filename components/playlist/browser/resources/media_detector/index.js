@@ -130,17 +130,10 @@
   }
 
   function getMediaDurationInSeconds (node) {
-    const isNan = (value) => { return typeof value === 'number' && Number.isNaN(value) }
-    const isInfinite = (value) => { return typeof value === 'number' && (value === Infinity || value === -Infinity) }
     const clampDuration = (value) => {
-      if (isNan(value)) {
-        return 0.0
-      }
-
-      if (isInfinite(value)) {
-        return Number.MAX_VALUE
-      }
-      return value
+      if (Number.isFinite(value) && value >= 0) return value
+      if (value === Number.POSITIVE_INFINITY) return Number.MAX_VALUE
+      return 0.0
     }
 
     let duration = node.duration
