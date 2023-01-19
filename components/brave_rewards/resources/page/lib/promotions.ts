@@ -9,8 +9,7 @@ export type PromotionKey =
   'brave-creators' |
   'gemini' |
   'tap-network' |
-  'uphold-card' |
-  'uphold-equities'
+  'uphold-card'
 
 function getSupportedLocales (key: Exclude<PromotionKey, 'brave-creators'>) {
   switch (key) {
@@ -22,22 +21,6 @@ function getSupportedLocales (key: Exclude<PromotionKey, 'brave-creators'>) {
       return ['US']
     case 'uphold-card':
       return ['US']
-    case 'uphold-equities':
-      return [
-        'AF', 'AG', 'AI', 'AN', 'AO', 'AR', 'AW', 'AZ', 'BB', 'BD', 'BF', 'BH',
-        'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BR', 'BS', 'BT', 'BW', 'BZ', 'CF',
-        'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CR', 'CV', 'DJ', 'DM', 'DO', 'DZ',
-        'EC', 'EH', 'ER', 'ET', 'FJ', 'FK', 'FM', 'GA', 'GD', 'GE', 'GH', 'GM',
-        'GN', 'GQ', 'GS', 'GT', 'GW', 'GY', 'HK', 'HN', 'HT', 'ID', 'IN', 'IO',
-        'JM', 'JO', 'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KR', 'KW', 'KY', 'KZ',
-        'LA', 'LB', 'LC', 'LK', 'LR', 'LS', 'LY', 'MA', 'MG', 'MH', 'ML', 'MN',
-        'MO', 'MR', 'MS', 'MU', 'MV', 'MW', 'MZ', 'NA', 'NE', 'NG', 'NI', 'NP',
-        'NR', 'NU', 'NZ', 'OM', 'PA', 'PE', 'PG', 'PH', 'PK', 'PN', 'PS', 'PW',
-        'PY', 'QA', 'RW', 'SA', 'SB', 'SC', 'SH', 'SL', 'SN', 'SO', 'SR', 'ST',
-        'SV', 'SZ', 'TC', 'TD', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO',
-        'TR', 'TT', 'TV', 'TW', 'TZ', 'UG', 'UY', 'UZ', 'VC', 'VE', 'VG', 'VN',
-        'VU', 'WS', 'ZM', 'ZW'
-      ]
   }
 }
 
@@ -62,8 +45,6 @@ export function getPromotionURL (key: PromotionKey) {
       return 'https://brave.tapnetwork.io'
     case 'uphold-card':
       return 'https://uphold.com/brave/upholdcard'
-    case 'uphold-equities':
-      return 'https://uphold.com/en/buy-fractional-shares/brave'
   }
 }
 
@@ -79,11 +60,8 @@ function getPromotions (
     }
   } else {
     list.unshift('tap-network')
-    if (!externalWallet) {
-      list.unshift('uphold-equities')
-    } else if (externalWallet.provider === 'uphold') {
+    if (externalWallet && externalWallet.provider === 'uphold') {
       list.unshift('uphold-card')
-      list.unshift('uphold-equities')
     }
     list.unshift('gemini')
     list.unshift('brave-creators')
