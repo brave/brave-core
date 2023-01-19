@@ -8,6 +8,7 @@ import SnapKit
 import BraveShared
 import Combine
 import BraveCore
+import DesignSystem
 
 protocol TabLocationViewDelegate {
   func tabLocationViewDidTapLocation(_ tabLocationView: TabLocationView)
@@ -135,6 +136,13 @@ class TabLocationView: UIView {
     urlTextField.clipsToBounds = true
     urlTextField.textColor = .braveLabel
     urlTextField.isEnabled = false
+    urlTextField.defaultTextAttributes = {
+      var attributes = urlTextField.defaultTextAttributes
+      let style = (attributes[.paragraphStyle, default: NSParagraphStyle.default] as! NSParagraphStyle).mutableCopy() as! NSMutableParagraphStyle // swiftlint:disable:this force_cast
+      style.lineBreakMode = .byClipping
+      attributes[.paragraphStyle] = style
+      return attributes
+    }()
     // Remove the default drop interaction from the URL text field so that our
     // custom drop interaction on the BVC can accept dropped URLs.
     if let dropInteraction = urlTextField.textDropInteraction {
@@ -486,6 +494,34 @@ class DisplayTextField: UITextField {
   weak var accessibilityActionsSource: AccessibilityActionsSource?
   var hostString: String = ""
   let pathPadding: CGFloat = 5.0
+  
+  private let leadingClippingFade = GradientView(
+    colors: [.braveBackground, .braveBackground.withAlphaComponent(0.0)],
+    positions: [0, 1],
+    startPoint: .init(x: 0, y: 0.5),
+    endPoint: .init(x: 1, y: 0.5)
+  )
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    
+    addSubview(leadingClippingFade)
+    leadingClippingFade.snp.makeConstraints {
+      $0.leading.top.bottom.equalToSuperview()
+      $0.width.equalTo(20)
+    }
+  }
+  
+  override var text: String? {
+    didSet {
+      leadingClippingFade.isHidden = true
+    }
+  }
+  
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
 
   override var accessibilityCustomActions: [UIAccessibilityCustomAction]? {
     get {
@@ -515,6 +551,8 @@ class DisplayTextField: UITextField {
       if size.width > self.bounds.width {
         rect.origin.x = rect.origin.x - (size.width + pathPadding - self.bounds.width)
         rect.size.width = size.width + pathPadding
+        bringSubviewToFront(leadingClippingFade)
+        leadingClippingFade.isHidden = false
       }
     }
     return rect
