@@ -30,7 +30,8 @@ export const root = styled.div`
     padding: 8px 41px 8px 13px;
   }
 
-  a {
+  /* Use :where to reduce selector specificity and allow overriding. */
+  & :where(a) {
     color: #4C54D2;
   }
 `
