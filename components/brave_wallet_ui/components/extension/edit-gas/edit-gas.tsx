@@ -8,7 +8,7 @@ import { getLocale } from '../../../../common/locale'
 import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
 import { UpdateUnapprovedTransactionGasFieldsType } from '../../../common/constants/action_types'
 
-import { NavButton, Panel } from '../'
+import { NavButton, Panel } from '..'
 
 // Utils
 import Amount from '../../../utils/amount'
@@ -34,7 +34,7 @@ import {
   SliderWrapper,
   SliderValue,
   WarningText
-} from './style'
+} from './edit-gas.styles'
 import { ErrorText } from '../../shared/style'
 
 export enum MaxPriorityPanels {
@@ -42,7 +42,7 @@ export enum MaxPriorityPanels {
   setCustom = 1
 }
 
-export interface Props {
+interface Props {
   onCancel: () => void
   networkSpotPrice: string
   transactionInfo: SerializableTransactionInfo
@@ -56,7 +56,7 @@ export interface Props {
   setMaxPriorityPanel: (value: MaxPriorityPanels) => void
 }
 
-const EditGas = (props: Props) => {
+export const EditGas = (props: Props) => {
   const {
     onCancel,
     networkSpotPrice,

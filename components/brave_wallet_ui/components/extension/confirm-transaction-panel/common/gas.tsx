@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import EditGas, { MaxPriorityPanels } from '../../edit-gas'
+import EditGas, { MaxPriorityPanels } from '../../edit-gas/edit-gas'
 import { usePendingTransactions } from '../../../../common/hooks/use-pending-transaction'
 import { useSelector } from 'react-redux'
 import { WalletState } from '../../../../constants/types'
