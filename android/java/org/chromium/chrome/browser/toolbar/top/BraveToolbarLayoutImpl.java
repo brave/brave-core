@@ -58,6 +58,7 @@ import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.BooleanSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.task.AsyncTask;
+import org.chromium.base.task.PostTask;
 import org.chromium.brave_shields.mojom.CookieListOptInPageAndroidHandler;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
@@ -126,6 +127,7 @@ import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.url_formatter.UrlFormatter;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.NavigationHandle;
+import org.chromium.content_public.browser.UiThreadTaskTraits;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.UiUtils;
@@ -1056,7 +1058,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             Intent searchActivityIntent = new Intent(context, SearchActivity.class);
             context.startActivity(searchActivityIntent);
         }
-        if (hasFocus) mSearchWidgetPromoPanel.showIfNeeded(this);
+        // Delay showing the panel. Otherwise there are ANRs on holding onUrlFocusChange
+        PostTask.postTask(UiThreadTaskTraits.DEFAULT, () -> {
+            if (hasFocus) mSearchWidgetPromoPanel.showIfNeeded(this);
+        });
 
         if (OnboardingPrefManager.getInstance().getUrlFocusCount() == 0) {
             OnboardingPrefManager.getInstance().updateUrlFocusCount();
