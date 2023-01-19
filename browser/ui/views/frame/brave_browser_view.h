@@ -114,6 +114,7 @@ class BraveBrowserView : public BrowserView {
   BraveBrowser* GetBraveBrowser() const;
 
   sidebar::Sidebar* InitSidebar() override;
+  bool HasSelectedURL() const override;
   void UpdateSideBarHorizontalAlignment();
 
   bool closing_confirm_dialog_activated_ = false;

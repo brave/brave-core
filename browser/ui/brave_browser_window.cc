@@ -18,8 +18,17 @@ gfx::Rect BraveBrowserWindow::GetShieldsBubbleRect() {
   return gfx::Rect();
 }
 
+// static
+BraveBrowserWindow* BraveBrowserWindow::From(BrowserWindow* window) {
+  return static_cast<BraveBrowserWindow*>(window);
+}
+
 #if defined(TOOLKIT_VIEWS)
 sidebar::Sidebar* BraveBrowserWindow::InitSidebar() {
   return nullptr;
+}
+
+bool BraveBrowserWindow::HasSelectedURL() const {
+  return false;
 }
 #endif
