@@ -6,6 +6,7 @@ source_set("infobars") {
   # Remove when https://github.com/brave/brave-browser/issues/10649 is resolved
   check_includes = false
   sources = [
+    "brave_confirm_infobar_creator.h",
     "brave_confirm_p3a_infobar_delegate.cc",
     "brave_confirm_p3a_infobar_delegate.h",
     "sync_cannot_run_infobar_delegate.cc",

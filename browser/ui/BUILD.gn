@@ -333,6 +333,21 @@ source_set("ui") {
     ]
   }
 
+  # brave's obsolete infobar is only used on Windows now.
+  if (is_win) {
+    sources += [
+      "startup/brave_obsolete_system_infobar_delegate.cc",
+      "startup/brave_obsolete_system_infobar_delegate.h",
+    ]
+
+    if (toolkit_views) {
+      sources += [
+        "views/obsolete_system_confirm_dialog_view.cc",
+        "views/obsolete_system_confirm_dialog_view.h",
+      ]
+    }
+  }
+
   if (is_linux) {
     sources += [
       "views/brave_views_delegate_linux.cc",
