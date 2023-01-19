@@ -67,7 +67,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
     private ViewGroup mNftDescriptionLayout;
     private Toolbar mToolbar;
 
-    private PortfolioModel.Erc721MetaData mErc721MetaData;
+    private PortfolioModel.Erc721Metadata mErc721Metadata;
 
     @Override
     protected void triggerLayoutInflation() {
@@ -80,8 +80,8 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
             mContractAddress = intent.getStringExtra(ASSET_CONTRACT_ADDRESS);
             mNftTokenHex = intent.getStringExtra(NFT_TOKEN_ID_HEX);
             mNftTokenId = Utils.hexToIntString(mNftTokenHex);
-            mErc721MetaData =
-                    (PortfolioModel.Erc721MetaData) intent.getSerializableExtra(NFT_META_DATA);
+            mErc721Metadata =
+                    (PortfolioModel.Erc721Metadata) intent.getSerializableExtra(NFT_META_DATA);
         }
 
         // Calculate half screen height and assign it to NFT image view,
@@ -119,7 +119,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
 
         mNftDescriptionLayout = findViewById(R.id.nft_description);
 
-        setMetadata(mErc721MetaData);
+        setMetadata(mErc721Metadata);
 
         BraveActivity braveActivity = BraveActivity.getBraveActivity();
         assert braveActivity != null;
@@ -152,7 +152,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
                 });
     }
 
-    private void setMetadata(PortfolioModel.Erc721MetaData erc721MetaData) {
+    private void setMetadata(PortfolioModel.Erc721Metadata erc721MetaData) {
         if (erc721MetaData == null) return;
         // In case of no errors proceed to assign description and fetch NFT image.
         if (erc721MetaData.mErrCode == 0) {

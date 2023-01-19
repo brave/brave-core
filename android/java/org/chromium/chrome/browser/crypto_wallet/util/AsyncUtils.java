@@ -417,10 +417,10 @@ public class AsyncUtils {
         }
     }
 
-    public static class GetNftErc721MetaDataContext
+    public static class GetNftErc721MetadataContext
             extends BaseGetNftMetadataContext implements JsonRpcService.GetErc721Metadata_Response {
 
-        public GetNftErc721MetaDataContext(Runnable responseCompleteCallback) {
+        public GetNftErc721MetadataContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
 

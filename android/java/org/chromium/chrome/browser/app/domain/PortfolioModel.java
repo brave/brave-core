@@ -93,7 +93,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
         ArrayList<AsyncUtils.BaseGetNftMetadataContext> nftMetadataList = new ArrayList<>();
         for (BlockchainToken userAsset : nftList) {
             if (userAsset.isErc721) {
-                AsyncUtils.GetNftErc721MetaDataContext nftMetadata = new AsyncUtils.GetNftErc721MetaDataContext(
+                AsyncUtils.GetNftErc721MetadataContext nftMetadata = new AsyncUtils.GetNftErc721MetadataContext(
                         nftMetaDataHandler.singleResponseComplete);
                 nftMetadata.asset = userAsset;
                 mJsonRpcService.getErc721Metadata(userAsset.contractAddress, userAsset.tokenId,
@@ -118,7 +118,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
         nftMetaDataHandler.setWhenAllCompletedAction(() -> {
             for (AsyncUtils.BaseGetNftMetadataContext metaData : nftMetadataList) {
                 nftDataModels.add(new NftDataModel(metaData.asset, networkInfo,
-                        new Erc721MetaData(metaData.tokenMetadata, metaData.errorCode,
+                        new Erc721Metadata(metaData.tokenMetadata, metaData.errorCode,
                                 metaData.errorMessage)));
             }
             _mNftModels.postValue(nftDataModels);
@@ -160,24 +160,24 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
     public static class NftDataModel {
         public BlockchainToken token;
         public NetworkInfo networkInfo;
-        public Erc721MetaData erc721MetaData;
+        public Erc721Metadata erc721MetaData;
 
         public NftDataModel(
-                BlockchainToken token, NetworkInfo networkInfo, Erc721MetaData erc721MetaData) {
+                BlockchainToken token, NetworkInfo networkInfo, Erc721Metadata erc721MetaData) {
             this.token = token;
             this.networkInfo = networkInfo;
             this.erc721MetaData = erc721MetaData;
         }
     }
 
-    public static class Erc721MetaData implements Serializable {
+    public static class Erc721Metadata implements Serializable {
         public String mDescription;
         public String mImageUrl;
         public String mName;
         public int mErrCode;
         public String mErrMsg;
 
-        public Erc721MetaData(String jsonString, int mErrCode, String mErrMsg) {
+        public Erc721Metadata(String jsonString, int mErrCode, String mErrMsg) {
             this.mErrCode = mErrCode;
             this.mErrMsg = mErrMsg;
             try {
@@ -189,7 +189,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
             }
         }
 
-        public Erc721MetaData(String mDescription, String mImageUrl, String mName) {
+        public Erc721Metadata(String mDescription, String mImageUrl, String mName) {
             this.mDescription = mDescription;
             this.mImageUrl = mImageUrl;
             this.mName = mName;
