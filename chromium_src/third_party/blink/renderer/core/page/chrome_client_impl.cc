@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
+
 #include "src/third_party/blink/renderer/core/page/chrome_client_impl.cc"
 
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
@@ -27,9 +29,15 @@ const display::ScreenInfos& ChromeClientImpl::BraveGetScreenInfos(
   if (!brave::BlockScreenFingerprinting(context)) {
     return GetScreenInfos(frame);
   }
-  gfx::Rect farbled_screen_rect(dom_window->screenX(), dom_window->screenY(),
-                                dom_window->outerWidth(),
-                                dom_window->outerHeight());
+  // Don't tell window screen is smaller than 450x450.
+  int min_width =
+      FarbleInteger(context, brave::FarbleKey::kWindowInnerWidth, 450, 0, 8);
+  int min_height =
+      FarbleInteger(context, brave::FarbleKey::kWindowInnerHeight, 450, 0, 8);
+  gfx::Rect farbled_screen_rect(
+      dom_window->screenX(), dom_window->screenY(),
+      std::max(min_width, dom_window->outerWidth()),
+      std::max(min_height, dom_window->outerHeight()));
   screen_info.rect = farbled_screen_rect;
   screen_info.available_rect = farbled_screen_rect;
   screen_info.is_extended = false;

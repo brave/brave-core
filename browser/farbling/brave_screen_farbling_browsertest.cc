@@ -26,6 +26,8 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "third_party/blink/public/common/features.h"
+#include "ui/views/widget/widget.h"
+#include "ui/views/widget/widget_observer.h"
 
 using brave_shields::ControlType;
 
@@ -33,9 +35,53 @@ namespace {
 
 const gfx::Rect kTestWindowBounds[] = {
     gfx::Rect(200, 100, 300, 200), gfx::Rect(50, 50, 200, 200),
-    gfx::Rect(50, 50, 555, 444), gfx::Rect(0, 0, 200, 200)};
+    gfx::Rect(50, 50, 475, 460), gfx::Rect(0, 0, 200, 200)};
 
 }  // namespace
+
+// A helper class to wait for widget bounds changes beyond given thresholds.
+class WidgetBoundsChangeWaiter final : public views::WidgetObserver {
+ public:
+  WidgetBoundsChangeWaiter(views::Widget* widget, int threshold)
+      : widget_(widget),
+        threshold_(threshold),
+        initial_bounds_(widget->GetWindowBoundsInScreen()) {
+    widget_->AddObserver(this);
+  }
+
+  WidgetBoundsChangeWaiter(const WidgetBoundsChangeWaiter&) = delete;
+  WidgetBoundsChangeWaiter& operator=(const WidgetBoundsChangeWaiter&) = delete;
+  ~WidgetBoundsChangeWaiter() final { widget_->RemoveObserver(this); }
+
+  // views::WidgetObserver:
+  void OnWidgetBoundsChanged(views::Widget* widget,
+                             const gfx::Rect& rect) final {
+    if (BoundsChangeMeetsThreshold(rect)) {
+      widget_->RemoveObserver(this);
+      run_loop_.Quit();
+    }
+  }
+
+  // Wait for changes to occur, or return immediately if they already have.
+  void Wait() {
+    if (!BoundsChangeMeetsThreshold(widget_->GetWindowBoundsInScreen())) {
+      run_loop_.Run();
+    }
+  }
+
+ private:
+  bool BoundsChangeMeetsThreshold(const gfx::Rect& rect) const {
+    return std::abs(rect.x() - initial_bounds_.x()) >= threshold_ &&
+           std::abs(rect.y() - initial_bounds_.y()) >= threshold_ &&
+           std::abs(rect.width() - initial_bounds_.width()) >= threshold_ &&
+           std::abs(rect.height() - initial_bounds_.height()) >= threshold_;
+  }
+
+  const raw_ptr<views::Widget> widget_;
+  const int threshold_;
+  const gfx::Rect initial_bounds_;
+  base::RunLoop run_loop_;
+};
 
 class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
  public:
@@ -57,8 +103,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
 
     ASSERT_TRUE(embedded_test_server()->Start());
 
-    top_level_page_url_ = embedded_test_server()->GetURL("a.com", "/");
-    farbling_url_ = embedded_test_server()->GetURL("a.com", "/iframe.html");
+    parent_url_ = embedded_test_server()->GetURL("a.com", "/iframe.html");
   }
 
   void TearDown() override {
@@ -81,7 +126,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
   void SetFingerprintingSetting(bool allow) {
     brave_shields::SetFingerprintingControlType(
         ContentSettings(), allow ? ControlType::ALLOW : ControlType::DEFAULT,
-        top_level_page_url_);
+        parent_url());
   }
 
   content::WebContents* Contents() const {
@@ -110,8 +155,6 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
 
   virtual bool IsFlagDisabled() const = 0;
 
-  const GURL& FarblingUrl() { return farbling_url_; }
-
   gfx::Rect SetBounds(const gfx::Rect& bounds) {
     browser()->window()->SetBounds(bounds);
     return browser()->window()->GetBounds();
@@ -132,16 +175,20 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
             EXPECT_GE(8, EvalJs(host, "window.outerWidth - parent.innerWidth"));
             EXPECT_GE(8,
                       EvalJs(host, "window.outerHeight - parent.innerHeight"));
+            EXPECT_GE(8, EvalJs(host,
+                                "window.screen.availWidth - Math.max(450, "
+                                "parent.innerWidth)"));
+            EXPECT_GE(8, EvalJs(host,
+                                "window.screen.availHeight -  Math.max(450, "
+                                "parent.innerHeight)"));
             EXPECT_GE(
                 8,
-                EvalJs(host, "window.screen.availWidth - parent.innerWidth"));
-            EXPECT_GE(
-                8,
-                EvalJs(host, "window.screen.availHeight - parent.innerHeight"));
-            EXPECT_GE(8,
-                      EvalJs(host, "window.screen.width - parent.innerWidth"));
-            EXPECT_GE(
-                8, EvalJs(host, "window.screen.height - parent.innerHeight"));
+                EvalJs(
+                    host,
+                    "window.screen.width - Math.max(450, parent.innerWidth)"));
+            EXPECT_GE(8, EvalJs(host,
+                                "window.screen.height - Math.max(450, "
+                                "parent.innerHeight)"));
           } else {
             EXPECT_LE(0, EvalJs(host, "window.outerWidth - parent.innerWidth"));
             EXPECT_LT(8,
@@ -176,7 +223,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
       SetFingerprintingSetting(allow_fingerprinting);
       for (int i = 0; i < static_cast<int>(std::size(kTestWindowBounds)); ++i) {
         SetBounds(kTestWindowBounds[i]);
-        NavigateToURLUntilLoadStop(FarblingUrl());
+        NavigateToURLUntilLoadStop(parent_url());
         for (bool test_iframe : {false, true}) {
           content::RenderFrameHost* host = test_iframe ? Parent() : IFrame();
           if (!allow_fingerprinting && !IsFlagDisabled()) {
@@ -208,7 +255,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
       SetBounds(kTestWindowBounds[j]);
       for (bool allow_fingerprinting : {false, true}) {
         SetFingerprintingSetting(allow_fingerprinting);
-        NavigateToURLUntilLoadStop(FarblingUrl());
+        NavigateToURLUntilLoadStop(parent_url());
         for (bool test_iframe : {false, true}) {
           content::RenderFrameHost* host = test_iframe ? Parent() : IFrame();
           EXPECT_EQ(
@@ -233,10 +280,10 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     } while (parent_bounds.width() > 600 || parent_bounds.height() > 600);
     for (bool allow_fingerprinting : {false, true}) {
       SetFingerprintingSetting(allow_fingerprinting);
-      NavigateToURLUntilLoadStop(FarblingUrl());
+      NavigateToURLUntilLoadStop(parent_url());
       for (bool test_iframe : {false, true}) {
         const char* script =
-            "open('http://d.test/', '', `"
+            "open('/simple.html', '', `"
             "left=10,"
             "top=10,"
             "width=${outerWidth + 200},"
@@ -249,24 +296,43 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
         if (!allow_fingerprinting && !IsFlagDisabled()) {
           EXPECT_GE(child_bounds.x(), parent_bounds.x());
           EXPECT_GE(child_bounds.y(), parent_bounds.y());
-          EXPECT_GE(10 + parent_bounds.width(), child_bounds.width());
-          EXPECT_GE(10 + parent_bounds.height(), child_bounds.height());
+          int maxWidth = 10 + std::max(450, parent_bounds.width());
+          int maxHeight = 10 + std::max(450, parent_bounds.width());
+          EXPECT_GE(maxWidth, child_bounds.width());
+          EXPECT_GE(maxHeight, child_bounds.height());
         } else {
           EXPECT_LE(child_bounds.x(), std::max(80, 10 + parent_bounds.x()));
           EXPECT_LE(child_bounds.y(), std::max(80, 10 + parent_bounds.y()));
           EXPECT_LE(parent_bounds.width(), child_bounds.width());
           EXPECT_LE(parent_bounds.height(), child_bounds.height());
         }
+        if (!test_iframe) {
+          auto bounds_before = popup->window()->GetBounds();
+          auto* widget = views::Widget::GetWidgetForNativeWindow(
+              popup->window()->GetNativeWindow());
+          auto waiter = WidgetBoundsChangeWaiter(widget, 10);
+          ASSERT_TRUE(
+              ExecJs(popup_contents, "moveTo(screenX + 11, screenY + 12)"));
+          ASSERT_TRUE(ExecJs(popup_contents,
+                             "resizeTo(outerWidth + 13, outerHeight + 14)"));
+          waiter.Wait();
+          auto bounds_after = popup->window()->GetBounds();
+          EXPECT_EQ(11, bounds_after.x() - bounds_before.x());
+          EXPECT_EQ(12, bounds_after.y() - bounds_before.y());
+          EXPECT_EQ(13, bounds_after.width() - bounds_before.width());
+          EXPECT_EQ(14, bounds_after.height() - bounds_before.height());
+        }
       }
     }
   }
+
+  GURL& parent_url() { return parent_url_; }
 
  protected:
   base::test::ScopedFeatureList feature_list_;
 
  private:
-  GURL top_level_page_url_;
-  GURL farbling_url_;
+  GURL parent_url_;
   std::unique_ptr<ChromeContentClient> content_client_;
   std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 };
@@ -295,12 +361,12 @@ class BraveScreenFarblingBrowserTest_DisableFlag
 
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
                        FarbleScreenSize_EnableFlag) {
-  FarbleScreenSize(FarblingUrl(), true);
+  FarbleScreenSize(parent_url(), true);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_DisableFlag,
                        FarbleScreenSize_DisableFlag) {
-  FarbleScreenSize(FarblingUrl(), true);
+  FarbleScreenSize(parent_url(), true);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
