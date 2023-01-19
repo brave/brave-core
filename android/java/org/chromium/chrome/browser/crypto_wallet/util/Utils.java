@@ -1692,13 +1692,12 @@ public class Utils {
     }
 
     /**
-     * Gets truncated capitalized address from a full contract address.
+     * Gets truncated address from a full contract address.
      * @param address full contract address
-     * @return truncated capitalized address
+     * @return truncated address
      */
-    private static String getTruncatedCapitalizedAddress(String address) {
+    public static String getTruncatedAddress(String address) {
         int prefixLength = address.startsWith("0x") ? 6 : 4;
-        return (address.substring(0, prefixLength) + "…" + address.substring(address.length() - 4))
-                .toUpperCase(Locale.US);
+        return (address.substring(0, prefixLength) + "…" + address.substring(address.length() - 4));
     }
 }

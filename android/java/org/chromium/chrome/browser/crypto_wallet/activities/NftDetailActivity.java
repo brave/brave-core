@@ -164,7 +164,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
                         }
 
                     } else {
-                        String mintAddress = Utils.getTruncatedCapitalizedAddress(mContractAddress);
+                        String mintAddress = Utils.getTruncatedAddress(mContractAddress);
                         spannable = new SpannableString(mintAddress);
 
                         if (!TextUtils.isEmpty(blockExplorerUrl)) {
