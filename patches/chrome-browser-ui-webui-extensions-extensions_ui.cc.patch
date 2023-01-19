@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index 2dfc03bc31563845c1bcc3799fb0ffe71216263b..82937cf25b4a8bf8dee74880819f333870752099 100644
+index 09966051792fe2d6315bdced4dea53abb244102f..3b9de9e2b3f6ba606abd51d553db6bdbed20c3a1 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-@@ -404,6 +404,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+@@ -405,6 +405,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
        "showAccessRequestsInToolbarLearnMoreLink",
        chrome_extension_constants::kShowAccessRequestsInToolbarHelpURL);
  
