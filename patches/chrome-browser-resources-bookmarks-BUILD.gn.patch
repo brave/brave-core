@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/bookmarks/BUILD.gn b/chrome/browser/resources/bookmarks/BUILD.gn
-index 30fcfd0a4a3d9c460d2a2ddfc0cdff1ac1884751..7d8ee1ba9ca6fb00fba76f85c2ce178d07f7d5c5 100644
+index 37a4400ede4ef08c763364d2b7ad9842e95bcfcd..63f49a99add18887a7f9096236f6c779a5178cd2 100644
 --- a/chrome/browser/resources/bookmarks/BUILD.gn
 +++ b/chrome/browser/resources/bookmarks/BUILD.gn
-@@ -73,4 +73,5 @@ build_webui("build") {
+@@ -74,4 +74,5 @@ build_webui("build") {
      optimize_webui_resource_paths_rewrites =
          [ "bookmarks.rollup.js|bookmarks.js" ]
    }

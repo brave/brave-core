@@ -1,5 +1,5 @@
 diff --git a/storage/browser/blob/blob_url_store_impl.cc b/storage/browser/blob/blob_url_store_impl.cc
-index 5d36c6d54102f9d6e4d747e8eeda64ac3794a749..e9ca91ac102ad92c166d9dc0858c0ce8ed846f88 100644
+index 8b318b4824c955c9abd14c246e7104958b29a82a..3cfc516a353eb387a0f596884e30b3100a34a8d5 100644
 --- a/storage/browser/blob/blob_url_store_impl.cc
 +++ b/storage/browser/blob/blob_url_store_impl.cc
 @@ -198,6 +198,7 @@ bool BlobURLStoreImpl::BlobUrlIsValid(const GURL& url,
