@@ -107,7 +107,7 @@ public class DAppsDialog extends Dialog implements ConnectionErrorHandler {
     private void openWallet() {
         BraveActivity activity = BraveActivity.getBraveActivity();
         assert activity != null;
-        activity.openBraveWallet(true);
+        activity.openBraveWallet(true, false, false);
     }
 
     @Override

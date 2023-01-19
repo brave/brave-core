@@ -76,6 +76,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private boolean mShowBiometricPrompt;
     private boolean mIsFromDapps;
     private WalletModel mWalletModel;
+    private boolean mRestartSetupAction;
+    private boolean mRestartRestoreAction;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -107,6 +109,10 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mIsFromDapps = false;
         if (getIntent() != null) {
             mIsFromDapps = getIntent().getBooleanExtra(Utils.IS_FROM_DAPPS, false);
+            mRestartSetupAction =
+                    getIntent().getBooleanExtra(Utils.RESTART_WALLET_ACTIVITY_SETUP, false);
+            mRestartRestoreAction =
+                    getIntent().getBooleanExtra(Utils.RESTART_WALLET_ACTIVITY_RESTORE, false);
         }
         mShowBiometricPrompt = true;
         mToolbar = findViewById(R.id.toolbar);
@@ -249,7 +255,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mSwapButton.setVisibility(View.GONE);
         mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
         if (type == ONBOARDING_FIRST_PAGE_ACTION) {
-            SetupWalletFragment setupWalletFragment = new SetupWalletFragment();
+            SetupWalletFragment setupWalletFragment =
+                    new SetupWalletFragment(mRestartSetupAction, mRestartRestoreAction);
             setupWalletFragment.setOnNextPageListener(this);
             navigationItems.add(new NavigationItem(
                     getResources().getString(R.string.setup_crypto), setupWalletFragment));

@@ -377,7 +377,7 @@ public class BraveWalletPanel implements DialogInterface {
             dismiss();
             BraveActivity activity = BraveActivity.getBraveActivity();
             if (activity != null) {
-                activity.openBraveWallet(false);
+                activity.openBraveWallet(false, false, false);
             }
         });
         mOptionsImage = mPopupView.findViewById(R.id.iv_dapp_panel_menu);
