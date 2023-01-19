@@ -144,20 +144,6 @@ class NewTabPage extends React.Component<Props, State> {
       this.trackBrandedWallpaperNotificationAutoDismiss()
     }
     this.checkShouldOpenSettings()
-    // Only prompt for brave today if we're not scrolling down.
-    const shouldPromptBraveToday =
-      this.props.newTabData.featureFlagBraveNewsPromptEnabled &&
-      this.props.newTabData.showToday &&
-      !this.props.todayData.articleScrollTo
-    if (shouldPromptBraveToday) {
-      this.braveNewsPromptTimerId = window.setTimeout(() => {
-        if (window.scrollY > 0) {
-          // Don't do anything if user has already scrolled
-          return
-        }
-        this.setState({ isPromptingBraveToday: true })
-      }, 1700)
-    }
     const searchPromotionEnabled = this.props.newTabData.searchPromotionEnabled
     this.setState({
       showSearchPromotion: searchPromotionEnabled,
@@ -174,6 +160,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   componentDidUpdate (prevProps: Props) {
+    this.maybePeekBraveNews()
     const oldImageSource = GetBackgroundImageSrc(prevProps)
     const newImageSource = GetBackgroundImageSrc(this.props)
     this.imageSource = newImageSource
@@ -193,6 +180,30 @@ class NewTabPage extends React.Component<Props, State> {
     if (GetShouldShowBrandedWallpaperNotification(prevProps) &&
       !GetShouldShowBrandedWallpaperNotification(this.props)) {
       this.stopWaitingForBrandedWallpaperNotificationAutoDismiss()
+    }
+  }
+
+  maybePeekBraveNews () {
+    const hasPromptedBraveNews = !!this.braveNewsPromptTimerId
+    const shouldPromptBraveNews =
+      !hasPromptedBraveNews && // Don't start a prompt if we already did
+      window.scrollY === 0 && // Don't start a prompt if we are scrolled
+      this.props.newTabData.featureFlagBraveNewsPromptEnabled &&
+      this.props.newTabData.initialDataLoaded && // Wait for accurate showToday
+      this.props.newTabData.showToday &&
+      // Don't prompt if the user has navigated back and we're going to scroll
+      // down to a previous place in the feed.
+      !this.props.todayData.articleScrollTo
+    if (shouldPromptBraveNews) {
+      this.braveNewsPromptTimerId = window.setTimeout(() => {
+        if (window.scrollY > 0) {
+          // If the user happens to start scrolling whilst waiting for the timer,
+          // make sure we cancel the timer otherwise content will shift and provide
+          // a poor UX.
+          return
+        }
+        this.setState({ isPromptingBraveToday: true })
+      }, 1700)
     }
   }
 
