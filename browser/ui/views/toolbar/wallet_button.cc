@@ -36,7 +36,7 @@
 
 namespace {
 
-constexpr int kBraveWalletLeftMarginExtra = -4;
+constexpr int kBraveWalletLeftMarginExtra = -3;
 
 content::WebContents* GetActiveWebContents() {
   return BrowserList::GetInstance()
@@ -190,7 +190,7 @@ void WalletButton::UpdateImageAndText() {
 
   size_t icon_size = std::max(icon.width(), icon.height());
   auto badge_size = brave::BraveIconWithBadgeImageSource::GetMaxBadgeSize();
-  gfx::Size preferred_size(icon_size + badge_size.width() / 2,
+  gfx::Size preferred_size(icon_size + badge_size.width(),
                            icon_size + badge_size.height() / 2);
 
   auto image_source = std::make_unique<brave::BraveIconWithBadgeImageSource>(
