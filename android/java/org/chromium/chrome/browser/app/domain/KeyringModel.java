@@ -144,7 +144,9 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     void update() {
-        mBraveWalletService.getSelectedCoin(coinType -> { update(coinType); });
+        if (mBraveWalletService != null) {
+            mBraveWalletService.getSelectedCoin(coinType -> { update(coinType); });
+        }
     }
 
     private void updateSelectedAccountPerOriginOrFirst(KeyringInfo keyringInfo) {
