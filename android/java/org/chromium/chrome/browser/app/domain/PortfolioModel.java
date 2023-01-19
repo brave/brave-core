@@ -176,7 +176,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
         public String mName;
         public int mErrCode;
         public String mErrMsg;
-        // ERC721 only.
+        // ERC721 only, but it may be present anyway in other standards.
         public String mDescription;
 
         public NftMetadata(String jsonString, int mErrCode, String mErrMsg) {
