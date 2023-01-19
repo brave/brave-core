@@ -10,7 +10,7 @@
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/url_constants.h"
@@ -18,7 +18,6 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
-#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
@@ -67,6 +66,8 @@ const char16_t kBraveSyncGuideUrl[] =
     u"https://support.brave.com/hc/en-us/articles/360047642371-Sync-FAQ";
 const char16_t kDeAmpLearnMoreUrl[] =
     u"https://support.brave.com/hc/en-us/articles/8611298579981";
+const char16_t kDebounceLearnMoreUrl[] =
+    u"https://brave.com/privacy-updates/11-debouncing/";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -85,6 +86,15 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"siteSettingsCategorySolana", IDS_SETTINGS_SITE_SETTINGS_SOLANA},
     {"siteSettingsSolanaAsk", IDS_SETTINGS_SITE_SETTINGS_SOLANA_ASK},
     {"siteSettingsSolanaBlock", IDS_SETTINGS_SITE_SETTINGS_SOLANA_BLOCK},
+    {"siteSettingsGoogleSignIn", IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN},
+    {"siteSettingsCategoryGoogleSignIn",
+     IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN},
+    {"siteSettingsGoogleSignInAsk",
+     IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ASK},
+    {"siteSettingsGoogleSignInBlock",
+     IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_BLOCK},
+    {"siteSettingsGoogleSignInAllow",
+     IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW},
     {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
     {"siteSettingsShields", IDS_SETTINGS_SITE_SETTINGS_SHIELDS},
     {"siteSettingsShieldsStatus", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_STATUS},
@@ -96,20 +106,28 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES},
     {"appearanceSettingsShowBookmarksButton",
      IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_BOOKMARKS_BUTTON},
-    {"appearanceSettingsShowSidePanelButton",
-     IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_SIDE_PANEL_BUTTON},
     {"appearanceSettingsLocationBarIsWide",
      IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE},
     {"appearanceSettingsShowBraveRewardsButtonLabel",
      IDS_SETTINGS_SHOW_BRAVE_REWARDS_BUTTON_LABEL},
-    {"appearanceSettingsAlwaysShowBookmarkBarOnNTP",
+    {"appearanceSettingsShowBraveNewsButtonLabel",
+     IDS_SETTINGS_SHOW_BRAVE_NEWS_BUTTON_LABEL},
+    {"appearanceSettingsBookmarBar", IDS_SETTINGS_SHOW_BOOKMARK_BAR},
+    {"appearanceSettingsBookmarBarAlways",
+     IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ALWAYS},
+    {"appearanceSettingsBookmarBarNTP",
      IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP},
+    {"appearanceSettingsBookmarBarNever", IDS_SETTINGS_NEVER_SHOW_BOOKMARK_BAR},
+    {"appearanceSettingsBookmarBarAlwaysDesc",
+     IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ALWAYS_DESC},
+    {"appearanceSettingsBookmarBarNTPDesc",
+     IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP_DESC},
+    {"appearanceSettingsBookmarBarNeverDesc",
+     IDS_SETTINGS_NEVER_SHOW_BOOKMARK_BAR_DESC},
     {"appearanceSettingsShowAutocompleteInAddressBar",
      IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR},
     {"appearanceSettingsUseTopSiteSuggestions",
      IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_TOP_SITES},
-    {"appearanceSettingsUseBraveSuggestedSiteSuggestions",
-     IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES},
     {"appearanceSettingsUseHistorySuggestions",
      IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_HISTORY},
     {"appearanceSettingsUseBookmarkSuggestions",
@@ -126,9 +144,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_CARD_WITH_PREVIEW},
     {"appearanceSettingsTabHoverModeTooltip",
      IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_TOOLTIP},
-#if BUILDFLAG(ENABLE_SIDEBAR)
+#if defined(TOOLKIT_VIEWS)
+    {"sideBar", IDS_SETTINGS_APPEARNCE_SETTINGS_SIDEBAR_PART_TITLE},
     {"appearanceSettingsShowOptionTitle",
      IDS_SETTINGS_SIDEBAR_SHOW_OPTION_TITLE},
+    {"appearanceSettingsShowSidebarButton",
+     IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_SIDEBAR_BUTTON},
     {"appearanceSettingsShowOptionAlways", IDS_SIDEBAR_SHOW_OPTION_ALWAYS},
     {"appearanceSettingsShowOptionMouseOver",
      IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER},
@@ -152,6 +173,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"speedreaderSettingSubLabel", IDS_SETTINGS_SPEEDREADER_SUB_LABEL},
     {"deAmpSettingLabel", IDS_SETTINGS_DE_AMP_LABEL},
     {"deAmpSettingSubLabel", IDS_SETTINGS_DE_AMP_SUB_LABEL},
+    {"debounceSettingLabel", IDS_SETTINGS_DEBOUNCE_LABEL},
+    {"debounceSettingSubLabel", IDS_SETTINGS_DEBOUNCE_SUB_LABEL},
     {"braveShieldsTitle", IDS_SETTINGS_BRAVE_SHIELDS_TITLE},
     {"braveShieldsDefaultsSectionTitle",
      IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE},
@@ -174,7 +197,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_BRAVE_SHIELDS_NO_SCRIPT_CONTROL_LABEL},
     {"showStatsBlockedBadgeLabel",
      IDS_SETTINGS_BRAVE_SHIELDS_SHOW_STATS_BLOCKED_BADGE_LABEL},
-    {"googleLoginControlLabel", IDS_SETTINGS_BRAVE_SHIELDS_GOOGLE_LOGIN_LABEL},
+    {"googleLoginControlLabel", IDS_GOOGLE_SIGN_IN_PERMISSION_FRAGMENT},
     {"fbEmbedControlLabel",
      IDS_SETTINGS_BRAVE_SHIELDS_FACEBOOK_EMBEDDED_POSTS_LABEL},
     {"twitterEmbedControlLabel",
@@ -211,6 +234,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveSyncSetupTitle", IDS_SETTINGS_BRAVE_SYNC_SETUP_TITLE},
     {"braveSyncSetupSubtitle", IDS_SETTINGS_BRAVE_SYNC_SETUP_SUBTITLE},
     {"braveSyncManageActionLabel", IDS_SETTINGS_BRAVE_SYNC_MANAGE_ACTION_LABEL},
+    {"braveSyncCouldNotSyncActionLabel",
+     IDS_SETTINGS_BRAVE_SYNC_COULD_NOT_SYNC_ACTION_LABEL},
     {"braveSyncWordCount", IDS_SETTINGS_BRAVE_SYNC_WORD_COUNT},
     {"braveSyncCopied", IDS_SETTINGS_BRAVE_SYNC_COPIED_TEXT},
     {"braveSyncQRCodeAlt", IDS_SETTINGS_BRAVE_SYNC_QR_IMAGE_ALT},
@@ -256,11 +281,29 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveSyncInvalidSyncCodeTitle", IDS_BRAVE_SYNC_INVALID_SYNC_CODE_TITLE},
     {"braveSyncResetButton", IDS_BRAVE_SYNC_RESET_BUTTON},
     {"braveSyncResetConfirmation", IDS_BRAVE_SYNC_RESET_CONFIRMATION},
+    {"braveSyncDeleteAccountButtonAndDialogTitle",
+     IDS_BRAVE_DELETE_SYNC_ACCOUNT_BUTTON_AND_DIALOG_TITLE},
+    {"braveSyncPermanentlyDeleteAccountButton",
+     IDS_BRAVE_SYNC_PERMANENTLY_DELETE_ACCOUNT_BUTTON},
     {"braveSyncDeleteDeviceConfirmation",
      IDS_BRAVE_SYNC_DELETE_DEVICE_CONFIRMATION},
+    {"braveSyncPermanentlyDeleteAccountInProgress",
+     IDS_BRAVE_SYNC_PERMANENTLY_DELETE_ACCOUNT_IN_PROGRESS},
+    {"braveSyncDeleteAccountDesc1",
+     IDS_BRAVE_SYNC_DELETE_ACCOUNT_DESCRIPTION_PARTIAL_1},
+    {"braveSyncDeleteAccountDesc2",
+     IDS_BRAVE_SYNC_DELETE_ACCOUNT_DESCRIPTION_PARTIAL_2},
+    {"braveSyncDeleteAccountDesc3",
+     IDS_BRAVE_SYNC_DELETE_ACCOUNT_DESCRIPTION_PARTIAL_3},
     {"braveSyncFinalSecurityWarning",
      IDS_BRAVE_SYNC_FINAL_SECURITY_WARNING_TEXT},
+    {"braveSyncPassphraseDecryptionErrorUnlockedSsMessage",
+     IDS_BRAVE_SYNC_PASSPHRASE_DECRYPTION_SS_UNLOCKED_ERROR_MESSAGE},
+    {"braveSyncLeaveAndRejoinTheChainButton",
+     IDS_BRAVE_SYNC_LEAVE_AND_REJOIN_THE_CHAIN_BUTTON},
     {"braveIPFS", IDS_BRAVE_IPFS_SETTINGS_SECTION},
+    {"braveWeb3", IDS_BRAVE_WEB3_SETTINGS_SECTION},
+    {"braveWeb3Domains", IDS_BRAVE_WEB3_DOMAINS_SETTINGS_SECTION},
     {"braveTor", IDS_BRAVE_TOR_SETTINGS_SECTION},
     {"braveWallet", IDS_BRAVE_WALLET_SETTINGS_SECTION},
     {"braveHelpTips", IDS_SETTINGS_HELP_TIPS},
@@ -269,6 +312,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveHelpTipsWarnBeforeClosingWindow",
      IDS_SETTINGS_WINDOW_CLOSING_CONFIRM_OPTION_LABEL},
     {"braveHelpTipsClosingLastTab", IDS_SETTINGS_CLOSING_LAST_TAB_OPTION_LABEL},
+    {"braveDisableClickableMuteIndicators",
+     IDS_SETTINGS_DISABLE_CLICKABLE_MUTE_INDICATORS},
     // New Tab Page
     {"braveNewTab", IDS_SETTINGS_NEW_TAB},
     {"braveNewTabBraveRewards", IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS},
@@ -486,6 +531,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"walletNetworksError", IDS_SETTINGS_WALLET_NETWORKS_ERROR},
     {"walletDeleteNetworkConfirmation",
      IDS_SETTINGS_WALLET_DELETE_NETWORK_CONFIRMATION},
+    {"walletActiveNetworkIsAlwaysVisible",
+     IDS_SETTINGS_WALLET_ACTIVE_NETWORK_IS_ALWAYS_VISIBLE},
+    {"walletShowHideNetwork", IDS_SETTINGS_WALLET_SHOW_HIDE_NETWORK},
     {"walletResetNetworkConfirmation",
      IDS_SETTINGS_WALLET_RESET_NETWORK_CONFIRMATION},
     {"walletAddNetworkDialogChainIdTitle",
@@ -571,10 +619,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   };
 
   html_source->AddLocalizedStrings(localized_strings);
+  html_source->AddString("braveShieldsExampleTemplate", "example.com");
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
   html_source->AddString("ipfsDNSLinkLearnMoreURL", kDNSLinkLearnMoreURL);
   html_source->AddString("deAmpLearnMoreURL", kDeAmpLearnMoreUrl);
+  html_source->AddString("debounceLearnMoreURL", kDebounceLearnMoreUrl);
   auto confirmation_phrase = brave_l10n::GetLocalizedResourceUTF16String(
       IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE);
   html_source->AddString("walletResetConfirmationPhrase", confirmation_phrase);
@@ -699,6 +749,10 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
     };
     html_source->AddLocalizedStrings(kSessionOnlyToEphemeralStrings);
   }
+
+  // Always disable upstream's side panel align option.
+  // We add our customized option at preferred position.
+  html_source->AddBoolean("showSidePanelOptions", false);
 }
 
 }  // namespace settings

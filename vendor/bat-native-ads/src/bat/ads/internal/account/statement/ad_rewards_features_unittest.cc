@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/statement/ad_rewards_features.h"
 
@@ -26,8 +26,7 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsEnabled) {
 
 TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDisabled) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
   disabled_features.emplace_back(kAdRewards);
@@ -45,7 +44,7 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDisabled) {
 
 TEST(BatAdsAdRewardsFeaturesTest, AdRewardsNextPaymentDay) {
   // Arrange
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams kAdRewardsParameters;
   const char kNextPaymentDayParameter[] = "next_payment_day";
   kAdRewardsParameters[kNextPaymentDayParameter] = "5";
@@ -67,8 +66,7 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsNextPaymentDay) {
 
 TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDefaultNextPaymentDay) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -85,8 +83,7 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDefaultNextPaymentDay) {
 
 TEST(BatAdsAdRewardsFeaturesTest, DisabledAdRewardsDefaultNextPaymentDay) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
   disabled_features.emplace_back(kAdRewards);

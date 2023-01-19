@@ -11,16 +11,17 @@
 #include "base/bind.h"
 #include "base/containers/contains.h"
 #include "base/json/values_util.h"
+#include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/bind_post_task.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
+#include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "build/build_config.h"
 #include "components/content_settings/core/browser/content_settings_info.h"
 #include "components/content_settings/core/browser/content_settings_pref.h"
@@ -32,11 +33,10 @@
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "services/preferences/public/cpp/dictionary_value_update.h"
-#include "services/preferences/public/cpp/scoped_pref_update.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content_settings {
@@ -47,10 +47,6 @@ constexpr char kObsoleteShieldCookies[] =
     "profile.content_settings.exceptions.shieldsCookies";
 constexpr char kBraveShieldsFPSettingsMigration[] =
     "brave.shields_fp_settings_migration";
-
-constexpr char kGoogleAuthPattern[] =
-    "https://accounts.google.com/o/oauth2/auth/*";
-constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/__/auth/*";
 
 const char kExpirationPath[] = "expiration";
 const char kLastModifiedPath[] = "last_modified";
@@ -296,31 +292,21 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIdsForOneType(
   CHECK(prefs_->HasPrefPath(preference_path))
       << "Attempted to migrate unsupported shields setting.";
 
-  prefs::ScopedDictionaryPrefUpdate update(prefs_, preference_path);
-  std::unique_ptr<prefs::DictionaryValueUpdate> shield_settings = update.Get();
+  ScopedDictPrefUpdate update(prefs_, preference_path);
 
-  std::unique_ptr<prefs::DictionaryValueUpdate> shield_settings_dictionary;
-  bool found = shield_settings->GetDictionaryWithoutPathExpansion(
-      patterns_string, &shield_settings_dictionary);
+  base::Value::Dict* shield_settings = update->EnsureDict(patterns_string);
+  DCHECK(shield_settings);
 
-  if (!found) {
-    shield_settings_dictionary =
-        shield_settings->SetDictionaryWithoutPathExpansion(
-            patterns_string, std::make_unique<base::DictionaryValue>());
-  }
-  DCHECK(shield_settings_dictionary);
-
-  shield_settings_dictionary->SetKey(
+  shield_settings->Set(
       kExpirationPath,
-      base::Value(base::NumberToString(
-          expiration.ToDeltaSinceWindowsEpoch().InMicroseconds())));
-  shield_settings_dictionary->SetKey(
+      base::NumberToString(
+          expiration.ToDeltaSinceWindowsEpoch().InMicroseconds()));
+  shield_settings->Set(
       kLastModifiedPath,
-      base::Value(base::NumberToString(
-          last_modified.ToDeltaSinceWindowsEpoch().InMicroseconds())));
-  shield_settings_dictionary->SetKey(
-      kSessionModelPath, base::Value(static_cast<int>(session_model)));
-  shield_settings_dictionary->SetKey(kSettingPath, base::Value(setting));
+      base::NumberToString(
+          last_modified.ToDeltaSinceWindowsEpoch().InMicroseconds()));
+  shield_settings->Set(kSessionModelPath, static_cast<int>(session_model));
+  shield_settings->Set(kSettingPath, setting);
 }
 
 void BravePrefProvider::MigrateShieldsSettingsV1ToV2() {
@@ -386,7 +372,8 @@ void BravePrefProvider::MigrateShieldsSettingsV2ToV3() {
     // Replace first party placeholder with actual pattern
     if (new_rule.primary_pattern == first_party) {
       new_rule.primary_pattern =
-          content_settings::CreatePrimaryPattern(new_rule.secondary_pattern);
+          content_settings::CreateShieldsCookiesDomainPattern(
+              new_rule.secondary_pattern);
     }
     new_rules.push_back(std::move(new_rule));
   }
@@ -634,25 +621,31 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   std::vector<Rule> rules;
   auto old_rules = std::move(brave_cookie_rules_[incognito]);
   auto old_shields_down_rules = std::move(brave_shield_down_rules_[incognito]);
-
   brave_cookie_rules_[incognito].clear();
 
-  // kGoogleLoginControlType preference adds an exception for
-  // accounts.google.com to access cookies in 3p context to allow login using
-  // google oauth. The exception is added before all overrides to allow google
-  // oauth to work when the user sets custom overrides for a site.
-  // For example: Google OAuth will be allowed if the user allows all cookies
-  // and sets 3p cookie blocking for a site.
-  //
-  // We also create the same exception for firebase apps, since they
-  // are tightly bound to google, and require google auth to work.
-  // See: #5075, #9852, #10367
-  //
-  // PS: kGoogleLoginControlType preference might not be registered for tests.
-  if (prefs_->FindPreference(kGoogleLoginControlType) &&
-      prefs_->GetBoolean(kGoogleLoginControlType)) {
+  const bool google_sign_in_flag_enabled =
+      google_sign_in_permission::IsGoogleSignInFeatureEnabled();
+  const bool google_sign_in_pref_enabled =
+      google_sign_in_permission::IsGoogleSignInPrefEnabled(prefs_);
+
+  // If Google Sign-In permission feature flag is disabled (default on),
+  // we add 3p cookie exception globally for Google/Firebase auth domains.
+  // TODO(ssahib): Remove this once we no longer need to support the flag.
+  if (!google_sign_in_flag_enabled && google_sign_in_pref_enabled) {
+    // kGoogleLoginControlType preference adds an exception for
+    // accounts.google.com to access cookies in 3p context to allow login using
+    // google oauth. The exception is added before all overrides to allow google
+    // oauth to work when the user sets custom overrides for a site.
+    // For example: Google OAuth will be allowed if the user allows all cookies
+    // and sets 3p cookie blocking for a site.
+    //
+    // We also create the same exception for firebase apps, since they
+    // are tightly bound to google, and require google auth to work.
+    // See: #5075, #9852, #10367
+    //
+    // PS: kGoogleLoginControlType preference might not be registered for tests.
     const auto google_auth_rule = Rule(
-        ContentSettingsPattern::FromString(kGoogleAuthPattern),
+        google_sign_in_permission::GetGoogleAuthPattern(),
         ContentSettingsPattern::Wildcard(),
         ContentSettingToValue(CONTENT_SETTING_ALLOW),
         {.expiration = base::Time(), .session_model = SessionModel::Durable});
@@ -660,13 +653,49 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
     brave_cookie_rules_[incognito].emplace_back(CloneRule(google_auth_rule));
 
     const auto firebase_rule = Rule(
-        ContentSettingsPattern::FromString(kFirebasePattern),
+        google_sign_in_permission::GetFirebaseAuthPattern(),
         ContentSettingsPattern::Wildcard(),
         ContentSettingToValue(CONTENT_SETTING_ALLOW),
         {.expiration = base::Time(), .session_model = SessionModel::Durable});
     rules.emplace_back(CloneRule(firebase_rule));
     brave_cookie_rules_[incognito].emplace_back(CloneRule(firebase_rule));
+  } else if (google_sign_in_pref_enabled) {
+    // Add per-site cookie exception for Google/Firebase auth domains.
+    // Get all sites that have BRAVE_GOOGLE_SIGN_IN turned on, and add exception
+    // for them
+    auto google_sign_in_content_setting_it = PrefProvider::GetRuleIterator(
+        ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, incognito);
+    while (google_sign_in_content_setting_it &&
+           google_sign_in_content_setting_it->HasNext()) {
+      const auto google_sign_in_rule =
+          google_sign_in_content_setting_it->Next();
+      // The embedding pattern for the cookie rule will be the primary pattern
+      // for the BRAVE_GOOGLE_SIGN_IN permission.
+      // We want to get all subdomains for the cookie rule...
+      auto embedding_pattern = ContentSettingsPattern::ToDomainWildcardPattern(
+          google_sign_in_rule.primary_pattern);
+      // ... but if that doesn't work, fallback to stored pattern.
+      if (!embedding_pattern.IsValid()) {
+        embedding_pattern = google_sign_in_rule.primary_pattern;
+      }
+      const auto google_auth_rule =
+          Rule(google_sign_in_permission::GetGoogleAuthPattern(),
+               embedding_pattern, google_sign_in_rule.value.Clone(),
+               {.expiration = google_sign_in_rule.metadata.expiration,
+                .session_model = google_sign_in_rule.metadata.session_model});
+      rules.emplace_back(CloneRule(google_auth_rule));
+      brave_cookie_rules_[incognito].emplace_back(CloneRule(google_auth_rule));
+
+      const auto firebase_rule =
+          Rule(google_sign_in_permission::GetFirebaseAuthPattern(),
+               embedding_pattern, google_sign_in_rule.value.Clone(),
+               {.expiration = google_sign_in_rule.metadata.expiration,
+                .session_model = google_sign_in_rule.metadata.session_model});
+      rules.emplace_back(CloneRule(firebase_rule));
+      brave_cookie_rules_[incognito].emplace_back(CloneRule(firebase_rule));
+    }
   }
+
   // non-pref based exceptions should go in the cookie_settings_base.cc
   // chromium_src override
 
@@ -775,8 +804,10 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   }
 
   // Notify brave cookie changes as ContentSettingsType::COOKIES
-  if (initialized_ && (content_type == ContentSettingsType::BRAVE_COOKIES ||
-                       content_type == ContentSettingsType::BRAVE_SHIELDS)) {
+  if (initialized_ &&
+      (content_type == ContentSettingsType::BRAVE_COOKIES ||
+       content_type == ContentSettingsType::BRAVE_SHIELDS ||
+       content_type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN)) {
     NotifyChanges(brave_cookie_updates, incognito);
   }
 }
@@ -805,7 +836,8 @@ void BravePrefProvider::OnContentSettingChanged(
     ContentSettingsType content_type) {
   if (content_type == ContentSettingsType::COOKIES ||
       content_type == ContentSettingsType::BRAVE_COOKIES ||
-      content_type == ContentSettingsType::BRAVE_SHIELDS) {
+      content_type == ContentSettingsType::BRAVE_SHIELDS ||
+      content_type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN) {
     OnCookieSettingsChanged(content_type);
   }
 }

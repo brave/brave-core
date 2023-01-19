@@ -8,6 +8,7 @@ import WebAnimationPlayer from '../api/web_animation_player'
 export enum ViewType {
   DefaultBrowser, // the welcome ui
   ImportSelectBrowser,
+  ImportSelectTheme,
   ImportSelectProfile,
   ImportInProgress,
   ImportSucceeded,
@@ -23,7 +24,9 @@ export enum BrowserType {
   Mozilla_Firefox = 'Mozilla Firefox',
   Microsoft_Edge = 'Microsoft Edge',
   Vivaldi = 'Vivaldi',
-  Opera = 'Opera'
+  Opera = 'Opera',
+  Yandex = 'Yandex',
+  Whale = 'Whale'
 }
 
 export interface Scenes {

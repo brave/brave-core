@@ -6,7 +6,6 @@
 #include "third_party/blink/renderer/core/frame/navigator_language.h"
 
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
-#include "third_party/blink/public/platform/web_content_settings_client.h"
 
 #define NavigatorLanguage NavigatorLanguage_ChromiumImpl
 #include "src/third_party/blink/renderer/core/frame/navigator_language.cc"
@@ -19,13 +18,13 @@ NavigatorLanguage::NavigatorLanguage(ExecutionContext* execution_context)
 
 void NavigatorLanguage::EnsureUpdatedLanguage() {
   NavigatorLanguage_ChromiumImpl::EnsureUpdatedLanguage();
-  blink::WebContentSettingsClient* settings =
-      brave::GetContentSettingsClientFor(execution_context_);
+  BraveFarblingLevel farbling_level = brave::GetBraveFarblingLevelFor(
+      execution_context_, BraveFarblingLevel::OFF);
   // If Brave Shields are down or anti-fingerprinting is off for this site,
   // do nothing.
-  if (!settings || settings->GetBraveFarblingLevel() == BraveFarblingLevel::OFF)
+  if (farbling_level == BraveFarblingLevel::OFF)
     return;
-  if (settings->GetBraveFarblingLevel() == BraveFarblingLevel::MAXIMUM) {
+  if (farbling_level == BraveFarblingLevel::MAXIMUM) {
     // If anti-fingerprinting is at maximum, override the entire language list
     // regardless of locale or other settings.
     languages_.clear();

@@ -62,6 +62,8 @@ class LedgerClientIOS : public ledger::LedgerClient {
   uint64_t GetUint64State(const std::string& name) const override;
   void SetValueState(const std::string& name, base::Value value) override;
   base::Value GetValueState(const std::string& name) const override;
+  void SetTimeState(const std::string& name, base::Time time) override;
+  base::Time GetTimeState(const std::string& name) const override;
   void ClearState(const std::string& name) override;
   std::string GetLegacyWallet() override;
   void ShowNotification(const std::string& type,
@@ -83,7 +85,9 @@ class LedgerClientIOS : public ledger::LedgerClient {
       ledger::client::GetCreateScriptCallback callback) override;
   void PendingContributionSaved(const ledger::mojom::Result result) override;
   void ClearAllNotifications() override;
-  void WalletDisconnected(const std::string& wallet_type) override;
+  void ExternalWalletConnected() const override;
+  void ExternalWalletLoggedOut() const override;
+  void ExternalWalletReconnected() const override;
   void DeleteLog(ledger::client::LegacyResultCallback callback) override;
   absl::optional<std::string> EncryptString(const std::string& value) override;
   absl::optional<std::string> DecryptString(const std::string& value) override;

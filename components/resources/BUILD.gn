@@ -1,11 +1,13 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
-import("//brave/components/brave_vpn/buildflags/buildflags.gni")
-import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
-import("//brave/components/ftx/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
-import("//brave/components/playlist/buildflags/buildflags.gni")
-import("//brave/components/sidebar/buildflags/buildflags.gni")
-import("//brave/components/speedreader/common/buildflags.gni")
+import("//brave/components/playlist/common/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//build/config/locales.gni")
@@ -35,9 +37,7 @@ brave_grit("static_resources") {
   }
 
   defines = [
-    "crypto_dot_com_enabled=$crypto_dot_com_enabled",
     "enable_brave_vpn=$enable_brave_vpn",
-    "enable_ftx=$enable_ftx",
     "enable_ipfs=$enable_ipfs",
     "enable_playlist=$enable_playlist",
     "enable_playlist_webui=$enable_playlist_webui",
@@ -117,8 +117,9 @@ repack("resources") {
   }
 
   if (enable_playlist_webui) {
-    deps += [ "//brave/components/playlist/resources:generated_resources" ]
-    sources += [ "$root_gen_dir/brave/components/playlist/resources/playlist_generated.pak" ]
+    deps +=
+        [ "//brave/components/playlist/browser/resources:generated_resources" ]
+    sources += [ "$root_gen_dir/brave/components/playlist/browser/resources/playlist_generated.pak" ]
   }
 
   output = "$root_gen_dir/components/brave_components_resources.pak"
@@ -133,10 +134,7 @@ brave_grit("strings") {
     "enable_speedreader=$enable_speedreader",
     "enable_ipfs=$enable_ipfs",
     "ethereum_remote_client_enabled=$ethereum_remote_client_enabled",
-    "crypto_dot_com_enabled=$crypto_dot_com_enabled",
     "enable_tor=$enable_tor",
-    "enable_sidebar=$enable_sidebar",
-    "enable_ftx=$enable_ftx",
     "enable_brave_vpn=$enable_brave_vpn",
   ]
 

@@ -44,6 +44,9 @@
 //    setFirstSetupComplete
 //    isFirstSetupComplete
 
+using base::android::ConvertUTF8ToJavaString;
+using content::BrowserThread;
+
 namespace {
 static const size_t SEED_BYTES_COUNT = 32u;
 }  // namespace
@@ -81,7 +84,7 @@ static void JNI_BraveSyncWorker_DestroyV1LevelDb(JNIEnv* env) {
 }
 
 static void JNI_BraveSyncWorker_MarkSyncV1WasEnabledAndMigrated(JNIEnv* env) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   Profile* profile =
       ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
   brave_sync::Prefs brave_sync_prefs(profile->GetPrefs());
@@ -99,7 +102,7 @@ base::android::ScopedJavaLocalRef<jstring> BraveSyncWorker::GetSyncCodeWords(
 
   CHECK(brave_sync::crypto::IsPassphraseValid(sync_code));
 
-  return base::android::ConvertUTF8ToJavaString(env, sync_code);
+  return ConvertUTF8ToJavaString(env, sync_code);
 }
 
 void BraveSyncWorker::SaveCodeWords(
@@ -271,6 +274,94 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
   }
 }
 
+namespace {
+std::string GetErrorDescription(
+    const syncer::SyncProtocolError& sync_protocol_error) {
+  if (sync_protocol_error.error_type == syncer::SYNC_SUCCESS) {
+    return std::string();
+  } else if (sync_protocol_error.error_type != syncer::SYNC_SUCCESS &&
+             sync_protocol_error.error_description.empty()) {
+    return GetSyncErrorTypeString(sync_protocol_error.error_type);
+  } else {
+    return sync_protocol_error.error_description;
+  }
+}
+
+void NativePermanentlyDeleteAccountCallback(
+    JNIEnv* env,
+    const base::android::ScopedJavaGlobalRef<jobject>& callback,
+    const syncer::SyncProtocolError& sync_protocol_error) {
+  std::string error_description = GetErrorDescription(sync_protocol_error);
+
+  Java_BraveSyncWorker_onPermanentlyDeleteAccountResult(
+      env, callback, ConvertUTF8ToJavaString(env, error_description));
+}
+}  // namespace
+
+void BraveSyncWorker::PermanentlyDeleteAccount(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& callback) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  auto* sync_service = GetSyncService();
+  CHECK_NE(sync_service, nullptr);
+
+  base::android::ScopedJavaGlobalRef<jobject> java_callback;
+  java_callback.Reset(env, callback);
+
+  sync_service->PermanentlyDeleteAccount(base::BindOnce(
+      &NativePermanentlyDeleteAccountCallback, env, java_callback));
+}
+
+namespace {
+
+base::android::ScopedJavaLocalRef<jobject> GetJavaBoolean(
+    JNIEnv* env,
+    const bool& native_bool) {
+  jclass booleanClass = env->FindClass("java/lang/Boolean");
+  jmethodID methodID = env->GetMethodID(booleanClass, "<init>", "(Z)V");
+  jobject booleanObject = env->NewObject(booleanClass, methodID, native_bool);
+
+  return base::android::ScopedJavaLocalRef<jobject>(env, booleanObject);
+}
+
+void NativeJoinSyncChainCallback(
+    JNIEnv* env,
+    const base::android::ScopedJavaGlobalRef<jobject>& callback,
+    const bool& result) {
+  Java_BraveSyncWorker_onJoinSyncChainResult(env, callback,
+                                             GetJavaBoolean(env, result));
+}
+
+}  // namespace
+
+void BraveSyncWorker::SetJoinSyncChainCallback(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& callback) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  auto* sync_service = GetSyncService();
+  CHECK_NE(sync_service, nullptr);
+
+  base::android::ScopedJavaGlobalRef<jobject> java_callback;
+  java_callback.Reset(env, callback);
+
+  sync_service->SetJoinChainResultCallback(
+      base::BindOnce(&NativeJoinSyncChainCallback, env, java_callback));
+}
+
+void BraveSyncWorker::ClearAccountDeletedNoticePending(JNIEnv* env) {
+  Profile* profile =
+      ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
+  brave_sync::Prefs brave_sync_prefs(profile->GetPrefs());
+  brave_sync_prefs.SetSyncAccountDeletedNoticePending(false);
+}
+
+bool BraveSyncWorker::IsAccountDeletedNoticePending(JNIEnv* env) {
+  Profile* profile =
+      ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
+  brave_sync::Prefs brave_sync_prefs(profile->GetPrefs());
+  return brave_sync_prefs.IsSyncAccountDeletedNoticePending();
+}
+
 static void JNI_BraveSyncWorker_Init(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller) {
@@ -294,7 +385,7 @@ JNI_BraveSyncWorker_GetSeedHexFromWords(
     VLOG(1) << __func__ << " PassphraseToBytes32 failed for " << str_seed_words;
   }
 
-  return base::android::ConvertUTF8ToJavaString(env, sync_code_hex);
+  return ConvertUTF8ToJavaString(env, sync_code_hex);
 }
 
 std::string GetWordsFromSeedHex(const std::string& str_seed_hex) {
@@ -327,7 +418,7 @@ JNI_BraveSyncWorker_GetWordsFromSeedHex(
     const base::android::JavaParamRef<jstring>& seed_hex) {
   std::string str_seed_hex = base::android::ConvertJavaStringToUTF8(seed_hex);
   std::string sync_code_words = GetWordsFromSeedHex(str_seed_hex);
-  return base::android::ConvertUTF8ToJavaString(env, sync_code_words);
+  return ConvertUTF8ToJavaString(env, sync_code_words);
 }
 
 static base::android::ScopedJavaLocalRef<jstring>
@@ -340,7 +431,7 @@ JNI_BraveSyncWorker_GetQrDataJson(
   const std::string qr_code_string =
       brave_sync::QrCodeData::CreateWithActualDate(str_seed_hex)->ToJson();
 
-  return base::android::ConvertUTF8ToJavaString(env, qr_code_string);
+  return ConvertUTF8ToJavaString(env, qr_code_string);
 }
 
 int JNI_BraveSyncWorker_GetQrCodeValidationResult(
@@ -419,7 +510,7 @@ JNI_BraveSyncWorker_GetSeedHexFromQrJson(
 
   DCHECK(!GetWordsFromSeedHex(result).empty());
 
-  return base::android::ConvertUTF8ToJavaString(env, result);
+  return ConvertUTF8ToJavaString(env, result);
 }
 
 }  // namespace android

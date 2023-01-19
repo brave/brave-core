@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 
-import { LocaleContext } from '../../../lib/locale_context'
+import { LocaleContext, createLocaleContextForTesting } from '../../../lib/locale_context'
 import { WithThemeVariables } from '../../with_theme_variables'
 
 import { RewardsTourModal } from '../rewards_tour_modal'
@@ -14,11 +14,7 @@ import { RewardsTourPromo } from '../rewards_tour_promo'
 
 import { localeStrings } from './locale_strings'
 
-const localeContext = {
-  getString (key: string) {
-    return localeStrings[key] || 'MISSING'
-  }
-}
+const localeContext = createLocaleContextForTesting(localeStrings)
 
 function actionLogger (name: string) {
   return (...args: any[]) => {
@@ -47,12 +43,10 @@ function getRewardsTourProps () {
   return {
     firstTimeSetup: true,
     adsPerHour: 3,
-    externalWalletProvider: 'bitflyer',
-    autoContributeAmount: 15,
-    autoContributeAmountOptions: [5, 10, 15, 20, 25, 50, 100],
+    canAutoContribute: true,
+    canConnectAccount: true,
     onAdsPerHourChanged: actionLogger('onAdsPerHourChanged'),
-    onAutoContributeAmountChanged: actionLogger('onAcAmountChanged'),
-    onVerifyWalletClick: actionLogger('onVerifyWalletClick'),
+    onConnectAccount: actionLogger('onConnectAccount'),
     onDone: actionLogger('onDone')
   }
 }
@@ -62,10 +56,14 @@ export default {
 }
 
 export function TourModal () {
+  const [adsPerHour, setAdsPerHour] = React.useState(3)
+
   return (
     <StoryWrapper>
       <RewardsTourModal
         {...getRewardsTourProps()}
+        adsPerHour={adsPerHour}
+        onAdsPerHourChanged={setAdsPerHour}
         onClose={actionLogger('onClose')}
       />
     </StoryWrapper>

@@ -1,6 +1,8 @@
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
+assert(enable_tor)
+
 source_set("tor") {
   # Remove when https://github.com/brave/brave-browser/issues/10655 is resolved
   check_includes = false
@@ -15,122 +17,114 @@ source_set("tor") {
     "//chrome/browser",
   ]
 
-  if (enable_tor) {
-    sources = [
-      "onion_location_navigation_throttle_delegate.cc",
-      "onion_location_navigation_throttle_delegate.h",
-      "tor_profile_manager.cc",
-      "tor_profile_manager.h",
-      "tor_profile_service_factory.cc",
-      "tor_profile_service_factory.h",
-    ]
+  sources = [
+    "onion_location_navigation_throttle_delegate.cc",
+    "onion_location_navigation_throttle_delegate.h",
+    "tor_profile_manager.cc",
+    "tor_profile_manager.h",
+    "tor_profile_service_factory.cc",
+    "tor_profile_service_factory.h",
+  ]
 
-    deps = [
-      "//base",
-      "//brave/components/brave_webtorrent/browser/buildflags",
-      "//brave/components/constants",
-      "//brave/components/tor",
-      "//brave/components/tor:pref_names",
-      "//brave/components/translate/core/common:buildflags",
-      "//chrome/common",
-      "//components/keyed_service/content",
-      "//components/safe_browsing/core/common:safe_browsing_prefs",
-      "//components/translate/core/browser",
-      "//content/public/browser",
-      "//third_party/blink/public/common",
-    ]
+  deps = [
+    "//base",
+    "//brave/components/brave_webtorrent/browser/buildflags",
+    "//brave/components/constants",
+    "//brave/components/tor",
+    "//brave/components/tor:pref_names",
+    "//chrome/common",
+    "//components/keyed_service/content",
+    "//components/safe_browsing/core/common:safe_browsing_prefs",
+    "//components/translate/core/browser",
+    "//content/public/browser",
+    "//third_party/blink/public/common",
+  ]
 
-    # Below dep list are not directly used tor target.
-    # Only added to fix intermittent build failure.
-    # Most of the case comes from including brave_browser_process_impl.h`
-    # headers. That header includes some buildflags but sometimes they are
-    # not generated before evaluating tor target.
-    deps += [
-      "//brave/components/brave_referrals/buildflags",
-      "//brave/components/greaselion/browser/buildflags",
-      "//brave/components/speedreader/common:buildflags",
-    ]
-  }
+  # Below dep list are not directly used tor target.
+  # Only added to fix intermittent build failure.
+  # Most of the case comes from including brave_browser_process_impl.h`
+  # headers. That header includes some buildflags but sometimes they are
+  # not generated before evaluating tor target.
+  deps += [
+    "//brave/components/greaselion/browser/buildflags",
+    "//brave/components/speedreader/common/buildflags",
+  ]
 }
 
 source_set("unit_tests") {
   testonly = true
-  if (enable_tor) {
-    sources = [
-      "tor_navigation_throttle_unittest.cc",
-      "tor_profile_manager_unittest.cc",
-    ]
 
-    deps = [
-      "//base",
-      "//base/test:test_support",
-      "//brave/browser/tor",
-      "//brave/components/brave_webtorrent/browser/buildflags",
-      "//brave/components/constants",
-      "//brave/components/tor",
-      "//brave/components/tor:test_support",
-      "//brave/components/translate/core/common:buildflags",
-      "//chrome/browser/devtools",
-      "//chrome/common",
-      "//chrome/test:test_support",
-      "//components/keyed_service/content",
-      "//components/safe_browsing/core/common:safe_browsing_prefs",
-      "//components/translate/core/browser",
-      "//content/public/browser",
-      "//content/test:test_support",
-      "//testing/gtest",
-      "//third_party/blink/public/common",
-      "//url",
-    ]
-  }
+  sources = [
+    "tor_navigation_throttle_unittest.cc",
+    "tor_profile_manager_unittest.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser/tor",
+    "//brave/components/brave_webtorrent/browser/buildflags",
+    "//brave/components/constants",
+    "//brave/components/tor",
+    "//brave/components/tor:test_support",
+    "//chrome/browser/devtools",
+    "//chrome/common",
+    "//chrome/test:test_support",
+    "//components/keyed_service/content",
+    "//components/safe_browsing/core/common:safe_browsing_prefs",
+    "//components/translate/core/browser",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//third_party/blink/public/common",
+    "//url",
+  ]
 }
 
 source_set("browser_tests") {
   testonly = true
-  if (enable_tor) {
-    sources = [
-      "//chrome//browser/net/profile_network_context_service_test_utils.cc",
-      "//chrome//browser/net/profile_network_context_service_test_utils.h",
-      "brave_local_state_browsertest.cc",
-      "brave_tor_browsertest.cc",
-      "onion_location_navigation_throttle_browsertest.cc",
-      "tor_profile_manager_browsertest.cc",
+  sources = [
+    "//chrome//browser/net/profile_network_context_service_test_utils.cc",
+    "//chrome//browser/net/profile_network_context_service_test_utils.h",
+    "brave_local_state_browsertest.cc",
+    "brave_tor_browsertest.cc",
+    "onion_location_navigation_throttle_browsertest.cc",
+    "tor_profile_manager_browsertest.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/browser",
+    "//brave/browser/tor",
+    "//brave/browser/ui",
+    "//brave/common",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/constants",
+    "//brave/components/ipfs/buildflags",
+    "//brave/components/l10n/common",
+    "//brave/components/tor",
+    "//brave/components/tor:pref_names",
+    "//brave/components/tor:test_support",
+    "//chrome/browser",
+    "//chrome/browser:browser_process",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//components/bookmarks/browser",
+    "//components/bookmarks/common",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//ui/views:test_support",
+  ]
+
+  if (enable_extensions) {
+    deps += [
+      "//extensions/browser",
+      "//extensions/common",
     ]
-
-    deps = [
-      "//base",
-      "//brave/app:brave_generated_resources_grit",
-      "//brave/browser",
-      "//brave/browser/tor",
-      "//brave/browser/ui",
-      "//brave/common",
-      "//brave/components/brave_ads/browser",
-      "//brave/components/brave_component_updater/browser",
-      "//brave/components/constants",
-      "//brave/components/ipfs/buildflags",
-      "//brave/components/l10n/common",
-      "//brave/components/tor",
-      "//brave/components/tor:pref_names",
-      "//brave/components/tor:test_support",
-      "//chrome/browser",
-      "//chrome/browser:browser_process",
-      "//chrome/test:test_support",
-      "//chrome/test:test_support_ui",
-      "//components/bookmarks/browser",
-      "//components/bookmarks/common",
-      "//content/public/browser",
-      "//content/test:test_support",
-      "//net:test_support",
-      "//ui/views:test_support",
-    ]
-
-    if (enable_extensions) {
-      deps += [
-        "//extensions/browser",
-        "//extensions/common",
-      ]
-    }
-
-    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   }
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }

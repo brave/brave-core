@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/ads/serving/permission_rules/browser_is_active_permission_rule.h"
 
@@ -9,9 +9,9 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rule_features.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/browser/browser_manager.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_mock_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -66,7 +66,7 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
   // Arrange
   base::FieldTrialParams kParameters;
   kParameters["should_only_serve_ads_if_browser_is_active"] = "false";
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(permission_rules::features::kFeature,
                                 kParameters);
 

@@ -1,9 +1,10 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/sidebar/buildflags/buildflags.gni")
-import("//brave/components/speedreader/common/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
 import("//components/vector_icons/vector_icons.gni")
 
 aggregate_vector_icons("brave_vector_icons") {
@@ -16,10 +17,9 @@ aggregate_vector_icons("brave_vector_icons") {
     "brave_ads_light_mode_info_button.icon",
     "brave_news_arrow_right.icon",
     "brave_news_follow_button.icon",
+    "brave_news_subscribe.icon",
     "brave_news_unfollow_button.icon",
     "brave_sad.icon",
-    "brave_today_subscribe.icon",
-    "brave_today_subscribed.icon",
     "brave_tooltips_stopwatch.icon",
     "brave_translate.icon",
     "download_unlock.icon",
@@ -32,7 +32,7 @@ aggregate_vector_icons("brave_vector_icons") {
     "web_discovery_infobar_close_button.icon",
   ]
 
-  if (enable_sidebar) {
+  if (toolkit_views) {
     sources += [
       "sidebar_add_item.icon",
       "sidebar_bookmarks.icon",

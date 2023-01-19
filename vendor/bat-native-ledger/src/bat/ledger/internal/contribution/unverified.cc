@@ -113,8 +113,7 @@ void Unverified::OnContributeUnverifiedPublishers(
 
     // If the publisher is still not verified,
     // leave the contribution in the pending table.
-    if (item->status == mojom::PublisherStatus::NOT_VERIFIED ||
-        item->status == mojom::PublisherStatus::CONNECTED) {
+    if (!ledger_->publisher()->IsVerified(item->status)) {
       continue;
     }
 

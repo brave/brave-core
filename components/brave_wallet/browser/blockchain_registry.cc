@@ -11,6 +11,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "net/base/url_util.h"
 
 namespace brave_wallet {
@@ -126,6 +127,8 @@ void BlockchainRegistry::GetBuyTokens(mojom::OnRampProvider provider,
     buy_tokens = &GetRampBuyTokens();
   else if (provider == mojom::OnRampProvider::kSardine)
     buy_tokens = &GetSardineBuyTokens();
+  else if (provider == mojom::OnRampProvider::kTransak)
+    buy_tokens = &GetTransakBuyTokens();
 
   if (buy_tokens == nullptr) {
     std::move(callback).Run(std::move(blockchain_buy_tokens));

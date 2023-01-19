@@ -1,16 +1,16 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
-import("//brave/components/binance/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
-import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
-import("//brave/components/ftx/browser/buildflags/buildflags.gni")
-import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
-import("//brave/components/sidebar/buildflags/buildflags.gni")
-import("//brave/components/speedreader/common/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
+import("//build/config/ui.gni")
 import("//components/gcm_driver/config.gni")
 
 source_set("extensions") {
@@ -61,22 +61,22 @@ source_set("extensions") {
     "//brave/browser/webcompat_reporter",
     "//brave/common",
     "//brave/common/extensions/api",
+    "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
-    "//brave/components/brave_vpn/buildflags",
+    "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common:common_utils",
-    "//brave/components/brave_wayback_machine:buildflags",
+    "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
     "//brave/components/de_amp/common",
     "//brave/components/decentralized_dns/content",
     "//brave/components/ipfs/buildflags",
     "//brave/components/ntp_widget_utils/browser",
-    "//brave/components/sidebar/buildflags",
     "//brave/components/tor/buildflags",
     "//brave/vendor/bat-native-ads:headers",
     "//brave/vendor/bat-native-ledger:headers",
@@ -98,7 +98,7 @@ source_set("extensions") {
     "//url",
   ]
 
-  if (enable_sidebar) {
+  if (toolkit_views) {
     deps += [ "//brave/components/sidebar" ]
   }
 
@@ -141,64 +141,9 @@ source_set("extensions") {
       "brave_webtorrent_navigation_throttle.h",
     ]
   }
+
   if (enable_brave_wayback_machine) {
     deps += [ "//brave/components/brave_wayback_machine" ]
-  }
-  if (gemini_enabled) {
-    sources += [
-      "api/gemini_api.cc",
-      "api/gemini_api.h",
-    ]
-    deps += [
-      "//brave/components/gemini/browser",
-      "//brave/components/ntp_widget_utils/browser",
-    ]
-  }
-
-  if (enable_ftx) {
-    sources += [
-      "api/ftx_api.cc",
-      "api/ftx_api.h",
-    ]
-    deps += [
-      "//brave/components/ftx/browser",
-      "//brave/components/ftx/common",
-      "//brave/components/ntp_widget_utils/browser",
-    ]
-  }
-
-  if (binance_enabled) {
-    sources += [
-      "api/binance_api.cc",
-      "api/binance_api.h",
-    ]
-
-    deps += [
-      "//brave/components/binance/browser",
-      "//brave/components/ntp_widget_utils/browser",
-    ]
-  }
-
-  if (crypto_dot_com_enabled) {
-    sources += [
-      "api/crypto_dot_com_api.cc",
-      "api/crypto_dot_com_api.h",
-    ]
-    deps += [
-      "//brave/browser/profiles",
-      "//brave/common",
-      "//brave/components/crypto_dot_com/browser",
-      "//brave/components/crypto_dot_com/common/",
-      "//brave/components/ntp_widget_utils/browser",
-      "//chrome/browser/extensions",
-      "//components/prefs",
-      "//extensions/browser",
-      "//extensions/common:common_constants",
-    ]
-  }
-
-  if (brave_adaptive_captcha_enabled) {
-    deps += [ "//brave/components/brave_adaptive_captcha" ]
   }
 }
 

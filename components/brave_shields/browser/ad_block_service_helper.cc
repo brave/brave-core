@@ -42,18 +42,17 @@ void MergeCspDirectiveInto(absl::optional<std::string> from,
 // will be moved into a possibly new field of `into` called
 // `force_hide_selectors`.
 void MergeResourcesInto(base::Value::Dict from,
-                        base::Value::Dict* into,
+                        base::Value::Dict& into,
                         bool force_hide) {
-  DCHECK(into);
   base::Value::List* resources_hide_selectors = nullptr;
   if (force_hide) {
-    resources_hide_selectors = into->FindList("force_hide_selectors");
+    resources_hide_selectors = into.FindList("force_hide_selectors");
     if (!resources_hide_selectors) {
       resources_hide_selectors =
-          into->Set("force_hide_selectors", base::Value::List())->GetIfList();
+          into.Set("force_hide_selectors", base::Value::List())->GetIfList();
     }
   } else {
-    resources_hide_selectors = into->FindList("hide_selectors");
+    resources_hide_selectors = into.FindList("hide_selectors");
   }
   base::Value::List* from_resources_hide_selectors =
       from.FindList("hide_selectors");
@@ -64,7 +63,7 @@ void MergeResourcesInto(base::Value::Dict from,
   }
 
   base::Value::Dict* resources_style_selectors =
-      into->FindDict("style_selectors");
+      into.FindDict("style_selectors");
   base::Value::Dict* from_resources_style_selectors =
       from.FindDict("style_selectors");
   if (resources_style_selectors && from_resources_style_selectors) {
@@ -82,7 +81,7 @@ void MergeResourcesInto(base::Value::Dict from,
     }
   }
 
-  base::Value::List* resources_exceptions = into->FindList("exceptions");
+  base::Value::List* resources_exceptions = into.FindList("exceptions");
   base::Value::List* from_resources_exceptions = from.FindList("exceptions");
   if (resources_exceptions && from_resources_exceptions) {
     for (auto& exception : *from_resources_exceptions) {
@@ -90,7 +89,7 @@ void MergeResourcesInto(base::Value::Dict from,
     }
   }
 
-  auto* resources_injected_script = into->FindString("injected_script");
+  auto* resources_injected_script = into.FindString("injected_script");
   auto* from_resources_injected_script = from.FindString("injected_script");
   if (resources_injected_script && from_resources_injected_script) {
     *resources_injected_script = base::StrCat(
@@ -99,7 +98,7 @@ void MergeResourcesInto(base::Value::Dict from,
 
   auto from_resources_generichide = from.FindBool("generichide");
   if (from_resources_generichide && *from_resources_generichide) {
-    into->Set("generichide", true);
+    into.Set("generichide", true);
   }
 }
 

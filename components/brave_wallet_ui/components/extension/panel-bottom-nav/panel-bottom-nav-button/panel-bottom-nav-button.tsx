@@ -49,7 +49,7 @@ export const PanelBottomNavButton = (props: Props) => {
         horizontalAlign={
           option.id === 'buy'
             ? 'left'
-            : option.id === 'transactions'
+            : option.id === 'activity'
               ? 'right'
               : 'center'
         }

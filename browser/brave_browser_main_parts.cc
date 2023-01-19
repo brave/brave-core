@@ -15,7 +15,7 @@
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/speedreader/common/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "build/build_config.h"
@@ -46,6 +46,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
+#include "brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h"
 #include "brave/browser/infobars/sync_cannot_run_infobar_delegate.h"
 #include "brave/browser/infobars/sync_v2_migrate_infobar_delegate.h"
 #include "chrome/browser/sync/sync_service_factory.h"
@@ -148,6 +149,9 @@ void BraveBrowserMainParts::PostBrowserStart() {
                                              profile, browser);
 
         SyncCannotRunInfoBarDelegate::Create(infobar_manager, profile, browser);
+
+        BraveSyncAccountDeletedInfoBarDelegate::Create(active_web_contents,
+                                                       profile, browser);
       }
     }
   }

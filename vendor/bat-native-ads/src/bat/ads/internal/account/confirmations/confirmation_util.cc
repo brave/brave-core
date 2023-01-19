@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/confirmations/confirmation_util.h"
 
@@ -18,7 +18,8 @@
 #include "bat/ads/internal/account/confirmations/confirmation_payload_json_writer.h"
 #include "bat/ads/internal/account/confirmations/opted_in_credential_json_writer.h"
 #include "bat/ads/internal/account/confirmations/opted_in_info.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
+#include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
@@ -26,6 +27,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/verification_signature.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_util.h"
 
@@ -192,6 +194,15 @@ bool IsValid(const ConfirmationInfo& confirmation) {
   }
 
   return false;
+}
+
+void ResetConfirmations() {
+  ConfirmationStateManager::GetInstance()->reset_failed_confirmations();
+  ConfirmationStateManager::GetInstance()->Save();
+
+  privacy::RemoveAllUnblindedPaymentTokens();
+
+  privacy::RemoveAllUnblindedTokens();
 }
 
 }  // namespace ads

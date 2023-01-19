@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as BraveVPN from 'gen/brave/components/brave_vpn/mojom/brave_vpn.mojom.m.js'
+import * as BraveVPN from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom.m.js'
 // Provide access to all the generated types
-export * from 'gen/brave/components/brave_vpn/mojom/brave_vpn.mojom.m.js'
+export * from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom.m.js'
 
 export type SupportData = BraveVPN.ServiceHandler_GetSupportData_ResponseParams
 

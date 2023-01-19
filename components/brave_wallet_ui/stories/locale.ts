@@ -68,6 +68,7 @@ provideStrings({
   braveWalletAccounts: 'Accounts',
   braveWalletAccount: 'Account',
   braveWalletOwner: 'Owner',
+  braveWalletActivity: 'Activity',
   braveWalletTransactions: 'Transactions',
   braveWalletPrice: 'Price',
   braveWalletBack: 'Back',
@@ -98,13 +99,18 @@ provideStrings({
   braveWalletSwapFeesNotice: 'Quote includes a $1 Brave fee.',
   braveWalletDecimalPlacesError: 'Too many decimal places',
   braveWalletBuyTapBuyNotSupportedMessage: 'Buy not supported for selected network',
+  braveWalletSearchingForDomain: 'Searching for domain...',
+  braveWalletEnsOffChainLookupTitle: 'Brave supports using off-chain gateways to resolve .eth domains.',
+  braveWalletEnsOffChainLookupDescription: 'It looks like you\'ve entered an ENS address. We\'ll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain.',
+  braveWalletEnsOffChainButton: 'Use ENS domain',
 
   // Send Tab
   braveWalletSendToken: 'Send token',
   braveWalletSendNFT: 'Send NFT',
   braveWalletSelectToken: 'Select token',
   braveWalletSelectNFT: 'Select NFT',
-  braveWalletSendTabSelectTitle: 'Select a token to send',
+  braveWalletSendTabSelectTokenTitle: 'Select a token to send',
+  braveWalletSendTabSelectNFTTitle: 'Select an NFT to send',
   braveWalletEnterRecipientAddress: 'Enter recipient address',
   braveWalletNotEnoughFunds: 'Not enough funds',
   braveWalletSendHalf: 'HALF',
@@ -125,7 +131,7 @@ provideStrings({
   braveWalletButtonNext: 'Next',
   braveWalletButtonGotIt: 'Got it',
   braveWalletButtonCopy: 'Copy',
-  braveWalletButtonCopied: 'Copied',
+  braveWalletButtonCopied: 'Copied!',
   braveWalletButtonVerify: 'Verify',
   braveWalletButtonClose: 'Close',
   braveWalletButtonMore: 'More',
@@ -236,7 +242,7 @@ provideStrings({
 
   // Wallet More Popup
   braveWalletWalletPopupSettings: 'Settings',
-  braveWalletWalletPopupLock: 'Lock Wallet',
+  braveWalletWalletPopupLock: 'Lock wallet',
   braveWalletWalletPopupBackup: 'Backup Wallet',
   braveWalletWalletPopupConnectedSites: 'Connected sites',
 
@@ -323,7 +329,7 @@ provideStrings({
   braveWalletWatchListTokenName: 'Token name',
   braveWalletWatchListTokenAddress: 'Token address',
   braveWalletWatchListTokenSymbol: 'Token symbol',
-  braveWalletWatchListTokenDecimals: 'Decimals of percision',
+  braveWalletWatchListTokenDecimals: 'Decimals of precision',
   braveWalletWatchListAdd: 'Add',
   braveWalletWatchListDoneButton: 'Done',
   braveWalletWatchListSuggestion: 'Add $1 as a custom token',
@@ -424,12 +430,15 @@ provideStrings({
   braveWalletBuyRampNetworkName: 'Ramp.Network',
   braveWalletBuyWyreName: 'Wyre',
   braveWalletBuySardineName: 'Sardine',
+  braveWalletBuyTransakName: 'Transak',
   braveWalletBuyRampDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
   braveWalletBuyWyreDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
   braveWalletBuySardineDescription: 'Instant buy with your bank account. Lower fees.',
+  braveWalletBuyTransakDescription: 'Instant buy with your bank account. Lower fees.',
   braveWalletBuyWithWyre: 'Buy with Wyre',
   braveWalletBuyWithRamp: 'Buy with Ramp',
   braveWalletBuyWithSardine: 'Buy with Sardine',
+  braveWalletBuyWithTransak: 'Buy with Transak',
 
   // Fund Wallet Screen
   braveWalletFundWalletTitle: 'To finish your $1 purchase, select one of our partners',
@@ -639,6 +648,7 @@ provideStrings({
   braveWalletTransactionStatusConfirmed: 'Confirmed',
   braveWalletTransactionStatusError: 'Error',
   braveWalletTransactionStatusDropped: 'Dropped',
+  braveWalletTransactionStatusSigned: 'Signed',
 
   // NFT Details Page
   braveWalletNFTDetailBlockchain: 'Blockchain',
@@ -671,15 +681,16 @@ provideStrings({
   // Network Filter
   braveWalletNetworkFilterAll: 'All Networks',
   braveWalletNetworkFilterSecondary: 'Secondary Networks',
+  braveWalletNetworkFilterTestNetworks: 'Test Networks',
 
   // Asset Filter
-  braveWalletAssetFilterAllAssets: 'All Assets',
-  braveWalletAssetFilterNFTs: 'NFTs',
   braveWalletAssetFilterLowToHigh: 'Balance ↑',
   braveWalletAssetFilterHighToLow: 'Balance ↓',
+  braveWalletAssetFilterAToZ: 'Name ↓',
+  braveWalletAssetFilterZToA: 'Name ↑',
 
   // Account Filter
-  braveWalletAccountFilterAllAccounts: 'All Accounts',
+  braveWalletAccountFilterAllAccounts: 'All accounts',
 
   // Transaction post-confirmation
 
@@ -789,5 +800,17 @@ provideStrings({
   // Add asset tabs
   braveWalletAddAssetTokenTabTitle: 'Token',
   braveWalletAddAssetNftTabTitle: 'NFT',
-  braveWalletNftFetchingError: 'Something went wrong when fetching NFT details. Please try again later.'
+  braveWalletNftFetchingError:
+    'Something went wrong when fetching NFT details. Please try again later.',
+
+  // Add Custom Asset Form
+  braveWalletNetworkIsRequiredError: 'Network is required',
+  braveWalletTokenNameIsRequiredError: 'Token name is required',
+  braveWalletInvalidTokenContractAddressError:
+    'Invalid or empty token contract address',
+  braveWalletTokenSymbolIsRequiredError: 'Token symbol is required',
+  braveWalletTokenDecimalsIsRequiredError:
+    'Token decimals of precision value is required',
+  braveWalletTokenContractAddress: 'Token Contract Address',
+  braveWalletTokenDecimal: 'Token Decimal'
 })

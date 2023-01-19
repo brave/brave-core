@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<!-- navigator.userAgent dynamic iframe test 2 -->
+<!-- iframe, allow-same-origin, non-empty src attribute -->
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <script>
+         const element = document.createElement("iframe");
+         document.body.appendChild(element);
+         element.setAttribute("sandbox", "allow-same-origin");
+         element.setAttribute("src", "?");
+         const iframeWindow = element.contentWindow;
+         var iframeNavigator = iframeWindow.navigator;
+         if (window.navigator.userAgent == iframeNavigator["userAgent"]) {
+             document.title = "pass";
+         }
+        </script>
+    </body>
+</html>

@@ -1,9 +1,15 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/build/config.gni")
 import("//brave/components/brave_wallet/common/config.gni")
 import("//build/buildflag_header.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//testing/test.gni")
 import("//tools/grit/preprocess_if_expr.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
 
 preprocess_folder = "preprocessed"
 preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
@@ -50,6 +56,7 @@ static_library("common") {
   ]
   deps = [
     ":common_constants",
+    ":generated_json_rpc_requests",
     ":mojom__generator",
     ":solana_utils",
     "//brave/third_party/argon2",
@@ -100,6 +107,13 @@ source_set("common_utils") {
     "//base",
     "//components/prefs",
   ]
+}
+
+generated_types("generated_json_rpc_requests") {
+  sources = [ "json_rpc_requests.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [ ":common" ]
 }
 
 preprocess_if_expr("preprocess_mojo") {

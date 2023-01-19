@@ -14,6 +14,9 @@ const char kAdBlockCookieListOptInShown[] =
     "brave.ad_block.cookie_list_opt_in_shown";
 const char kAdBlockCookieListSettingTouched[] =
     "brave.ad_block.cookie_list_setting_touched";
+const char kAdBlockMobileNotificationsListSettingTouched[] =
+    "brave.ad_block.mobile_notifications_list_setting_touched";
+
 const char kAdBlockCustomFilters[] = "brave.ad_block.custom_filters";
 const char kAdBlockRegionalFilters[] = "brave.ad_block.regional_filters";
 const char kAdBlockListSubscriptions[] = "brave.ad_block.list_subscriptions";

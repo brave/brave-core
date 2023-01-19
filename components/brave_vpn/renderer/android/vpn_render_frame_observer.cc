@@ -12,8 +12,8 @@
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/renderer/skus_utils.h"
 #include "build/build_config.h"
 #include "content/public/renderer/render_frame.h"
@@ -27,6 +27,7 @@ namespace {
 
 char kIntentParamName[] = "intent";
 char kIntentParamValue[] = "connect-receipt";
+char kIntentParamTestValue[] = "connect-receipt-test";
 char kProductParamName[] = "product";
 char kProductParamValue[] = "vpn";
 
@@ -105,8 +106,11 @@ bool VpnRenderFrameObserver::IsAllowed() {
 
   GURL current_url(
       render_frame()->GetWebFrame()->GetDocument().Url().GetString().Utf8());
-  return ExtractParam(current_url, kIntentParamName) == kIntentParamValue &&
-         ExtractParam(current_url, kProductParamName) == kProductParamValue;
+
+  std::string intent = ExtractParam(current_url, kIntentParamName);
+  std::string product = ExtractParam(current_url, kProductParamName);
+  return (intent == kIntentParamValue || intent == kIntentParamTestValue) &&
+         product == kProductParamValue;
 }
 
 void VpnRenderFrameObserver::OnDestruct() {

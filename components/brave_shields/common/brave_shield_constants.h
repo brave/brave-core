@@ -40,6 +40,8 @@ const base::FilePath::CharType kCustomSubscriptionListText[] =
     FILE_PATH_LITERAL("list_text.txt");
 
 const char kCookieListUuid[] = "AC023D22-AE88-4060-A978-4FEEEC4221693";
+const char kMobileNotificationsListUuid[] =
+    "2F3DCE16-A19A-493C-A88F-2E110FBD37D6";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveShields", IDS_BRAVE_SHIELDS},

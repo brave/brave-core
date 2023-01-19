@@ -35,6 +35,12 @@ bool EthPendingTxTracker::UpdatePendingTransactions(size_t* num_pending) {
 
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
       mojom::TransactionStatus::Submitted, absl::nullopt);
+  auto signed_transactions = tx_state_manager_->GetTransactionsByStatus(
+      mojom::TransactionStatus::Signed, absl::nullopt);
+  pending_transactions.insert(
+      pending_transactions.end(),
+      std::make_move_iterator(signed_transactions.begin()),
+      std::make_move_iterator(signed_transactions.end()));
   for (const auto& pending_transaction : pending_transactions) {
     if (IsNonceTaken(static_cast<const EthTxMeta&>(*pending_transaction))) {
       DropTransaction(pending_transaction.get());

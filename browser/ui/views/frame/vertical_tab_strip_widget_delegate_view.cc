@@ -48,8 +48,11 @@ VerticalTabStripWidgetDelegateView* VerticalTabStripWidgetDelegateView::Create(
   return delegate_view;
 }
 
-VerticalTabStripWidgetDelegateView::~VerticalTabStripWidgetDelegateView() =
-    default;
+VerticalTabStripWidgetDelegateView::~VerticalTabStripWidgetDelegateView() {
+  // Child views will be deleted after this. Marks `region_view_` nullptr
+  // so that they dont' access the `region_view_` via this view.
+  region_view_ = nullptr;
+}
 
 VerticalTabStripWidgetDelegateView::VerticalTabStripWidgetDelegateView(
     BrowserView* browser_view,
@@ -111,7 +114,9 @@ void VerticalTabStripWidgetDelegateView::OnViewIsDeleting(
 void VerticalTabStripWidgetDelegateView::OnWidgetBoundsChanged(
     views::Widget* widget,
     const gfx::Rect& new_bounds) {
-  UpdateWidgetBounds();
+  // The parent widget could be resized because fullscreen status changed.
+  // Try resetting preferred size.
+  ChildPreferredSizeChanged(region_view_);
 }
 
 void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
@@ -137,6 +142,9 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
       widget->GetWindowBoundsInScreen().size() != widget_bounds.size();
   widget->SetBounds(widget_bounds);
 
+  if (auto insets = host_->GetInsets(); GetInsets() != insets)
+    SetBorder(insets.IsEmpty() ? nullptr : views::CreateEmptyBorder(insets));
+
   if (need_to_call_layout)
     Layout();
 
@@ -157,11 +165,8 @@ void VerticalTabStripWidgetDelegateView::UpdateClip() {
   SkPath path;
   const bool is_vertical_tab_left_most =
       !static_cast<BraveBrowserView*>(browser_view_)->IsSidebarVisible() ||
-      !browser_view_->browser()
-           ->profile()
-           ->GetOriginalProfile()
-           ->GetPrefs()
-           ->GetBoolean(prefs::kSidePanelHorizontalAlignment);
+      browser_view_->browser()->profile()->GetPrefs()->GetBoolean(
+          prefs::kSidePanelHorizontalAlignment);
 
   if (is_vertical_tab_left_most) {
     // We should clip the bottom-left corner too.

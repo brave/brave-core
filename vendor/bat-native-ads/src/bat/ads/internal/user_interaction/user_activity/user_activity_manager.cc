@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
 
@@ -12,8 +12,8 @@
 #include "base/check_op.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/browser/browser_manager.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/tabs/tab_info.h"
 #include "bat/ads/internal/tabs/tab_manager.h"
 #include "bat/ads/internal/user_interaction/user_activity/page_transition_util.h"

@@ -4,6 +4,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 module ledger.mojom;
 
+import "mojo/public/mojom/base/time.mojom";
+
 enum ContributionStep {
   STEP_RETRY_COUNT = -7,
   STEP_AC_OFF = -6,
@@ -124,6 +126,8 @@ struct RewardsParameters {
   array<double> monthly_tip_choices;
   map<string, string> payout_status;
   map<string, Regions> wallet_provider_regions;
+  mojo_base.mojom.Time vbat_deadline;
+  bool vbat_expired;
 };
 
 struct Balance {
@@ -228,7 +232,6 @@ enum Result {
 
 enum PublisherStatus {
   NOT_VERIFIED = 0,
-  CONNECTED = 1,
   UPHOLD_VERIFIED = 2,
   BITFLYER_VERIFIED = 3,
   GEMINI_VERIFIED = 4

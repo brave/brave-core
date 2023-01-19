@@ -5,27 +5,18 @@
 import * as React from 'react'
 
 import { LocaleContext } from '../../lib/locale_context'
-import { MonthlyContributionFailedNotification } from './notification'
 import { NotificationViewProps } from './notification_view'
 
 export function MonthlyContributionFailed (props: NotificationViewProps) {
   const { getString } = React.useContext(LocaleContext)
   const { Title, Body, Action } = props
-  const { reason } = props.notification as MonthlyContributionFailedNotification
-
-  let message = 'notificationMonthlyContributionFailedText'
-  switch (reason) {
-    case 'insufficient-funds':
-      message = 'notificationInsufficientFundsText'
-      break
-  }
 
   return (
     <div>
       <Title style='error'>
         {getString('notificationMonthlyContributionFailedTitle')}
       </Title>
-      <Body>{getString(message)}</Body>
+      <Body>{getString('notificationMonthlyContributionFailedText')}</Body>
       <Action notification={props.notification} />
     </div>
   )

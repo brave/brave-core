@@ -28,21 +28,6 @@ export const getNetworkInfo = (chainId: string, coin: BraveWallet.CoinType, list
   return emptyNetwork
 }
 
-export const reduceNetworkDisplayName = (name: string) => {
-  if (!name) {
-    return ''
-  } else {
-    const firstWord = name.split(' ')[0]
-    if (firstWord.length > 9) {
-      const firstEight = firstWord.slice(0, 6)
-      const reduced = firstEight.concat('..')
-      return reduced
-    } else {
-      return firstWord
-    }
-  }
-}
-
 export const getNetworksByCoinType = (networks: BraveWallet.NetworkInfo[], coin: BraveWallet.CoinType): BraveWallet.NetworkInfo[] => {
   if (!networks) {
     return []
@@ -76,12 +61,21 @@ export const getCoinFromTxDataUnion = <T extends TxDataPresence> (txDataUnion: T
   return BraveWallet.CoinType.ETH
 }
 
-export const getNetworkFromTXDataUnion = <T extends TxDataPresence> (txDataUnion: T, networks: BraveWallet.NetworkInfo[], selectedNetwork?: BraveWallet.NetworkInfo) => {
+export const getNetworkFromTXDataUnion = <
+  T extends TxDataPresence,
+  N extends BraveWallet.NetworkInfo
+> (
+  txDataUnion: T,
+  networks: N[],
+  selectedNetwork?: N | undefined
+): N | undefined => {
   const coin = getCoinFromTxDataUnion(txDataUnion)
   return networks.find((network) => network.coin === coin) ?? selectedNetwork
 }
 
-export function getFilecoinKeyringIdFromNetwork (network: BraveWallet.NetworkInfo) {
+export function getFilecoinKeyringIdFromNetwork (
+  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
+) {
   if (network.coin !== BraveWallet.CoinType.FIL) {
     return undefined
   }

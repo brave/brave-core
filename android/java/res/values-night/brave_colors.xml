@@ -36,12 +36,14 @@
     <color name="scan_qr_code_text_color">#F0F2FF</color>
     <color name="scan_qr_code_bg_color">#1E2029</color>
     
-    <!-- Day/Night colors -->
+    <!-- Day/Night brave wallet colors -->
     <color name="brave_wallet_day_night_toolbar_icon_color">@android:color/white</color>
     <color name="brave_wallet_day_night_text_color">@android:color/white</color>
     <color name="brave_wallet_day_night_icon_color">#C2C4CF</color>
     <color name="brave_wallet_day_night_negative_ripple_color">#272733</color>
     <color name="brave_wallet_dn_error_text_bg_color">#453e2d</color>
+    <color name="brave_wallet_dn_highlight_bg_color">#1E2029</color>
+    <color name="wallet_dn_bg_primary">#17171F</color>
 
     <!-- Text colors -->
     <color name="brave_theme_subtitle_text">#C2C4CF</color>
@@ -60,6 +62,12 @@
     <!-- <color name="turn_on_button">#737ADE</color> -->
     <color name="news_text_color">@android:color/white</color>
     <color name="news_time_color">#9CD2D5CF</color>
+    <color name="news_settings_title_color">#F0F2FF</color>
+    <color name="news_settings_subtitle_color">#C2C4CF</color>
+    <color name="news_settings_divider_color">#1AFFFFFF</color>
+    <color name="news_settings_icon_bg_color">#0DFFFFFF</color>
+    <color name="news_settings_following_count_color">#D9F0F2FF</color>
+    <color name="news_settings_following_count_bg_color">#1AFFFFFF</color>
 
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@android:color/transparent</color>
@@ -112,10 +120,15 @@
     <color name="rewards_panel_card_bg_color">#000000</color>
     <color name="rewards_panel_action_color">#737ADE</color>
     <color name="rewards_panel_verified_button_border">#84889C</color>
+    <color name="rewards_panel_notification_date_border">#5E6175</color>
     <color name="rewards_panel_summary_title_bg">#AD17171F</color>
     <color name="rewards_panel_summary_bg">#9E17171F</color>
     <color name="rewards_panel_summary_divider_color">#66FFFFFF</color>
     <color name="rewards_panel_foreground_color">#80FFFFFF</color>
+    <color name="rewards_unverified_section_bg_color">#1AFFFFFF</color>
+    <color name="rewards_panel_notification_text_color">#ECEFF2</color>
+    <color name="rewards_panel_notification_secondary_text_color">#C2C4CF</color>
+    <color name="rewards_panel_notification_bg_color">#121316</color>
 
     <color name="rewards_divider_color">#3B3E4F</color>
 
@@ -135,6 +148,30 @@
 
     <!-- Quick Action Search and Bookmark Widget Promo-->
     <color name="search_widget_promo_add_widget_text_color">#FFFFFF</color>
-    <color name="search_widget_promo_not_now_text_color">#F0F2FF</color>
-    <color name="search_widget_promo_bg_color">#495057</color>
+    <color name="search_widget_promo_not_now_text_color">#8389E0</color>
+    <color name="search_widget_promo_bg_color">#1E2025</color>
+
+    <color name="brave_rate_bg_color">#1E2025</color>
+    <color name="brave_smiley_sad_color">#DC1D3C</color>
+    <color name="brave_smiley_happy_color">#5F5CF1</color>
+    <color name="brave_rating_emoji_bg_color">#121316</color>
+    <color name="brave_rating_title_color">#ECEFF2</color>
+    <color name="brave_rating_sub_title_color">#8C90A1</color>
+    <color name="brave_rating_not_now_text_color">#AAA8F7</color>
+    <color name="brave_rating_rate_now_bg_color">#585C6D</color>
+    <color name="brave_rating_text_input_stroke_color">#2E3039</color>
+    <color name="brave_rating_hint_text_color">#ECEFF2</color>
+
+    <color name="bookmark_menu_text_color">#C2C4CF</color>
+    <color name="bookmark_menu_bg_color">#2E3039</color>
+
+    <color name="notification_volume_icon_color">#F0F2FF</color>
+    <color name="notification_bat1_icon_color">#A0A5EB</color>
+    <color name="notification_bat2_icon_color">#FF7654</color>
+    <color name="notification_bat3_icon_color">#A0A5EB</color>
+    <color name="notification_graph_icon_color">#FF7654</color>
+    <color name="notification_badge_icon_color">#737ADE</color>
+    <color name="notification_download_icon_color">#F0F2FF</color>
+    <color name="notification_rationale_dialog_card_bg_color">#17171F</color>
+
 </resources>

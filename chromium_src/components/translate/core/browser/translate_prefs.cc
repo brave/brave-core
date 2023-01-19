@@ -7,6 +7,21 @@
 // chromium_src/chrome/browser/prefs/browser_prefs.cc
 #include "components/translate/core/browser/translate_prefs.h"
 
-#define MigrateObsoleteProfilePrefs MigrateObsoleteProfilePrefs_ChromiumImpl
+#include "brave/components/translate/core/common/brave_translate_features.h"
+
+#define TranslatePrefs TranslatePrefs_ChromiumImpl
 #include "src/components/translate/core/browser/translate_prefs.cc"
-#undef MigrateObsoleteProfilePrefs
+#undef TranslatePrefs
+
+namespace translate {
+
+bool TranslatePrefs::ShouldAutoTranslate(base::StringPiece source_language,
+                                         std::string* target_language) {
+  if (!IsBraveAutoTranslateEnabled()) {
+    return false;
+  }
+
+  return TranslatePrefs_ChromiumImpl::ShouldAutoTranslate(source_language,
+                                                          target_language);
+}
+}  // namespace translate

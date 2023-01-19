@@ -13,7 +13,6 @@ include_rules = [
   "+chrome/installer/util",
   "+chrome/install_static",
   "+chrome/test",
-  "+content/browser/service_worker",
   "+content/public/browser",
   "+content/public/common",
   "+content/public/test",

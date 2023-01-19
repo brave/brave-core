@@ -27,7 +27,6 @@ import { LibContext } from '../context/lib.context'
 import * as MockedLib from '../async/__mocks__/lib'
 import { createWalletReducer } from '../slices/wallet.slice'
 import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
-import { createSendCryptoReducer } from '../reducers/send_crypto_reducer'
 import { mockBasicAttentionToken, mockBinanceCoinErc20Token, mockEthToken, mockMoonCatNFT, mockNewAssetOptions } from '../../stories/mock-data/mock-asset-options'
 
 const mockSendAssetOptions = [
@@ -66,17 +65,7 @@ const makeStoreWithActionSpies = (actionSpies: Array<{
 
   const store = configureStore({
     reducer: {
-      wallet: walletReducer,
-      sendCrypto: createSendCryptoReducer({
-        selectedSendAsset: mockSendAssetOptions[0],
-        sendAmount: '',
-        toAddress: '',
-        toAddressOrUrl: '',
-        showEnsOffchainLookupOptions: false,
-        addressError: '',
-        addressWarning: '',
-        ensOffchainLookupOptions: undefined
-      })
+      wallet: walletReducer
     },
     middleware: [listener.middleware]
   })
@@ -123,7 +112,7 @@ describe('useSend hook', () => {
 
     // Sets values here
     await act(async () => {
-      result.current.setToAddressOrUrl('bravey.eth')
+      result.current.updateToAddressOrUrl('bravey.eth')
       result.current.selectSendAsset(mockEthToken)
       result.current.setSendAmount('10')
     })
@@ -179,7 +168,7 @@ describe('useSend hook', () => {
 
     // Sets values here
     await act(async () => {
-      result.current.setToAddressOrUrl('brave.crypto')
+      result.current.updateToAddressOrUrl('brave.crypto')
       result.current.selectSendAsset(mockBasicAttentionToken)
       result.current.setSendAmount('300')
     })
@@ -236,7 +225,7 @@ describe('useSend hook', () => {
 
     // Sets values here
     await act(async () => {
-      result.current.setToAddressOrUrl('brave.eth')
+      result.current.updateToAddressOrUrl('brave.eth')
       result.current.selectSendAsset(mockNewAssetOptions[6])
     })
 
@@ -298,7 +287,7 @@ describe('useSend hook', () => {
 
         // Sets values here
         await act(async () => {
-          result.current.setToAddressOrUrl(domainName)
+          result.current.updateToAddressOrUrl(domainName)
         })
 
         // Expected return values
@@ -341,7 +330,7 @@ describe('useSend hook', () => {
 
         // Sets values here
         await act(async () => {
-          result.current.setToAddressOrUrl(toAddress)
+          result.current.updateToAddressOrUrl(toAddress)
         })
 
         // Expected return values

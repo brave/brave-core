@@ -33,5 +33,7 @@
       "allow": ["AU", "AT", "BE", "CO", "DK", "FI", "HK", "IE", "IT", "NL", "NO", "PT", "SG", "ES", "SE", "GB", "US"],
       "block": []
     }
-  }
+  },
+  "vbatDeadline": "2022-12-24T15:04:45.352584Z",
+  "vbatExpired": false
 }

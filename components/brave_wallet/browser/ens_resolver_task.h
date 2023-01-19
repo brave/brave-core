@@ -46,7 +46,7 @@ struct OffchainLookupData {
   ~OffchainLookupData();
 
   static absl::optional<OffchainLookupData> ExtractFromJson(
-      const std::string& json);
+      const base::Value& json_value);
   static absl::optional<OffchainLookupData> ExtractFromEthAbiPayload(
       eth_abi::Span bytes);
 

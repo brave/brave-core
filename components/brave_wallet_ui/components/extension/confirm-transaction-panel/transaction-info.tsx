@@ -166,7 +166,7 @@ export const TransactionInfo = ({
     }
 
     <TransactionText hasError={false}>
-      {transactionDetails.fiatTotal.formatAsFiat(defaultCurrencies.fiat)}
+      {new Amount(transactionDetails.fiatTotal).formatAsFiat(defaultCurrencies.fiat)}
     </TransactionText>
 
     {transactionDetails.insufficientFundsForGasError &&

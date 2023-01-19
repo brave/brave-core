@@ -7,7 +7,7 @@ edition = "2018"
 
 [dependencies]
 cxx = { path = "../../../../../../third_party/rust/cxx/v1/crate"}
-async-trait = "0.1.52"
+async-trait = "0.1.61"
 futures = "0.3.19"
 libc = { version = "0.2" }
 skus = { path = "../lib" }

@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/common/pref_names.h"  // IWYU pragma: keep
 
@@ -47,6 +47,9 @@ namespace ads::prefs {
 
 // Stores whether Brave ads is enabled or disabled
 const char kEnabled[] = "brave.brave_ads.enabled";
+
+// Stores a diagnostic id
+const char kDiagnosticId[] = "brave.brave_ads.diagnostics.id";
 
 // Stores the maximum number of notification ads per hour
 const char kMaximumNotificationAdsPerHour[] = "brave.brave_ads.ads_per_hour";
@@ -110,6 +113,8 @@ const char kHasMigratedNotificationState[] =
     "brave.brave_ads.has_migrated.notification_state";
 const char kHasMigratedRewardsState[] =
     "brave.brave_ads.migrated.rewards_state";
+const char kShouldMigrateVerifiedRewardsUser[] =
+    "brave.brave_ads.rewards.verified_user.should_migrate";
 
 const char kConfirmationsHash[] = "brave.brave_ads.confirmations.hash";
 const char kClientHash[] = "brave.brave_ads.client.hash";

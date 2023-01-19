@@ -8,7 +8,7 @@
 
 #define TYPE_FIREFOX                                           \
   TYPE_CHROME = 1, TYPE_EDGE_CHROMIUM = 10, TYPE_VIVALDI = 11, \
-  TYPE_OPERA = 12, TYPE_FIREFOX
+  TYPE_OPERA = 12, TYPE_YANDEX = 13, TYPE_WHALE = 14, TYPE_FIREFOX
 #include "src/chrome/common/importer/importer_type.h"
 #undef TYPE_FIREFOX
 

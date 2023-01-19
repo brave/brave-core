@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/ads/notification_ad.h"
 
@@ -15,8 +15,8 @@
 #include "bat/ads/internal/ads/ad_events/notification_ads/notification_ad_event_handler.h"
 #include "bat/ads/internal/ads/notification_ad_util.h"
 #include "bat/ads/internal/ads/serving/notification_ad_serving.h"
-#include "bat/ads/internal/base/logging_util.h"
 #include "bat/ads/internal/browser/browser_manager.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/covariates/covariate_manager.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
 #include "bat/ads/internal/geographic/subdivision/subdivision_targeting.h"

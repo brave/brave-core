@@ -24,6 +24,7 @@ class BookmarkPrefsServiceFactory : public BrowserContextKeyedServiceFactory {
 
  private:
   friend struct base::DefaultSingletonTraits<BookmarkPrefsServiceFactory>;
+  FRIEND_TEST_ALL_PREFIXES(BookmarkStateUnittest, SetState);
 
   BookmarkPrefsServiceFactory();
   ~BookmarkPrefsServiceFactory() override;

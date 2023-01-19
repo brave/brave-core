@@ -9,16 +9,18 @@
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
-#include "brave/components/playlist/buildflags/buildflags.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/safe_builtins/renderer/safe_builtins.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/renderer/skus_render_frame_observer.h"
-#include "brave/components/speedreader/common/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/renderer/brave_render_thread_observer.h"
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "chrome/renderer/chrome_render_thread_observer.h"
 #include "content/public/renderer/render_thread.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
@@ -31,13 +33,15 @@
 #include "brave/components/speedreader/renderer/speedreader_render_frame_observer.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/renderer/android/vpn_render_frame_observer.h"
 #endif  // BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/features.h"
+#include "brave/components/playlist/common/features.h"
 #include "brave/components/playlist/renderer/playlist_render_frame_observer.h"
 #endif
 
@@ -61,6 +65,7 @@ void BraveContentRendererClient::
   blink::WebRuntimeFeatures::EnableFeatureFromString("Serial", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString(
       "SpeculationRulesPrefetchProxy", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
 }
 
 BraveContentRendererClient::~BraveContentRendererClient() = default;
@@ -104,7 +109,8 @@ void BraveContentRendererClient::RenderFrameCreated(
         render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
   }
 
-  if (base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
+  if (base::FeatureList::IsEnabled(skus::features::kSkusFeature) &&
+      !ChromeRenderThreadObserver::is_incognito_process()) {
     new skus::SkusRenderFrameObserver(render_frame);
   }
 

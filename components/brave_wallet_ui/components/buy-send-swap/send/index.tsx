@@ -44,16 +44,13 @@ function Send (props: Props) {
   const {
     toAddressOrUrl,
     toAddress,
-    showEnsOffchainLookupOptions,
-    ensOffchainLookupOptions,
-    setEnsOffchainLookupOptions,
     addressError,
     addressWarning,
     sendAmount,
     selectedSendAsset,
     sendAmountValidationError,
     setSendAmount,
-    setToAddressOrUrl,
+    updateToAddressOrUrl,
     submitSend
   } = useSend()
 
@@ -71,7 +68,7 @@ function Send (props: Props) {
 
   const onInputChange = (value: string, name: string) => {
     if (name === 'address') {
-      setToAddressOrUrl(value)
+      updateToAddressOrUrl(value)
     } else {
       setSendAmount(value)
     }
@@ -154,9 +151,6 @@ function Send (props: Props) {
         addressError={addressError}
         addressWarning={addressWarning}
         toAddress={toAddress}
-        showEnsOffchainLookupOptions={showEnsOffchainLookupOptions}
-        ensOffchainLookupOptions={ensOffchainLookupOptions}
-        setEnsOffchainLookupOptions={setEnsOffchainLookupOptions}
         inputName='address'
         onPaste={onPasteFromClipboard}
         selectedNetwork={selectedNetwork}

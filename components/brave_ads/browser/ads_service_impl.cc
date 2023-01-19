@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 
@@ -73,6 +73,9 @@
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #endif
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
+#include "brave/components/brave_adaptive_captcha/pref_names.h"
+#include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
@@ -94,12 +97,6 @@
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "content/public/browser/page_navigator.h"
-#endif
-
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#include "brave/components/brave_adaptive_captcha/pref_names.h"
-#include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
 #endif
 
 namespace brave_ads {
@@ -216,17 +213,17 @@ bool MigrateConfirmationStateOnFileTaskRunner(const base::FilePath& path) {
 
     if (!base::DirectoryExists(ads_service_base_path)) {
       if (!base::CreateDirectory(ads_service_base_path)) {
-        VLOG(0) << "Failed to create " << ads_service_base_path.value();
+        VLOG(1) << "Failed to create " << ads_service_base_path.value();
         return false;
       }
 
-      VLOG(1) << "Created " << ads_service_base_path.value();
+      VLOG(6) << "Created " << ads_service_base_path.value();
     }
 
     const base::FilePath confirmations_state_path =
         ads_service_base_path.AppendASCII("confirmations.json");
 
-    VLOG(1) << "Migrating " << legacy_confirmations_state_path.value() << " to "
+    VLOG(6) << "Migrating " << legacy_confirmations_state_path.value() << " to "
             << confirmations_state_path.value();
 
     if (!base::Move(legacy_confirmations_state_path,
@@ -234,14 +231,14 @@ bool MigrateConfirmationStateOnFileTaskRunner(const base::FilePath& path) {
       return false;
     }
 
-    VLOG(1) << "Successfully migrated confirmation state";
+    VLOG(6) << "Successfully migrated confirmation state";
   }
 
   if (base::PathExists(rewards_service_base_path)) {
-    VLOG(1) << "Deleting " << rewards_service_base_path.value();
+    VLOG(6) << "Deleting " << rewards_service_base_path.value();
 
     if (!base::DeleteFile(rewards_service_base_path)) {
-      VLOG(0) << "Failed to delete " << rewards_service_base_path.value();
+      VLOG(1) << "Failed to delete " << rewards_service_base_path.value();
     }
   }
 
@@ -295,11 +292,11 @@ std::vector<std::string> ExtraCommandLineSwitches() {
 
 void OnResetState(const bool success) {
   if (!success) {
-    VLOG(0) << "Failed to reset ads state";
+    VLOG(1) << "Failed to reset ads state";
     return;
   }
 
-  VLOG(1) << "Successfully reset ads state";
+  VLOG(6) << "Successfully reset ads state";
 }
 
 void OnLoad(ads::LoadCallback callback, const std::string& value) {
@@ -329,32 +326,28 @@ void OnBrowsingHistorySearchComplete(ads::GetBrowsingHistoryCallback callback,
 
 void OnLogTrainingInstance(const bool success) {
   if (!success) {
-    VLOG(1) << "Failed to log training covariates";
+    VLOG(6) << "Failed to log training covariates";
     return;
   }
 
-  VLOG(1) << "Successfully logged training covariates";
+  VLOG(6) << "Successfully logged training covariates";
 }
 
 }  // namespace
 
 AdsServiceImpl::AdsServiceImpl(
     Profile* profile,
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
     brave_adaptive_captcha::BraveAdaptiveCaptchaService*
         adaptive_captcha_service,
     std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
-#endif
     std::unique_ptr<DeviceId> device_id,
     history::HistoryService* history_service,
     brave_rewards::RewardsService* rewards_service,
     brave_federated::AsyncDataStore* notification_ad_timing_data_store)
     : profile_(profile),
       history_service_(history_service),
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
       adaptive_captcha_service_(adaptive_captcha_service),
       ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
-#endif
       device_id_(std::move(device_id)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
@@ -365,9 +358,7 @@ AdsServiceImpl::AdsServiceImpl(
       notification_ad_timing_data_store_(notification_ad_timing_data_store),
       bat_ads_client_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(profile_);
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   DCHECK(adaptive_captcha_service_);
-#endif
   DCHECK(device_id_);
   DCHECK(history_service_);
   DCHECK(rewards_service_);
@@ -403,7 +394,7 @@ void AdsServiceImpl::MigrateConfirmationState() {
 
 void AdsServiceImpl::OnMigrateConfirmationState(const bool success) {
   if (!success) {
-    VLOG(0) << "Failed to migrate confirmation state";
+    VLOG(1) << "Failed to migrate confirmation state";
     return;
   }
 
@@ -453,7 +444,7 @@ void AdsServiceImpl::MaybeStartBatAdsService() {
   }
 
   if (!IsSupportedLocale()) {
-    VLOG(1) << brave_l10n::GetDefaultLocaleString()
+    VLOG(6) << brave_l10n::GetDefaultLocaleString()
             << " locale does not support ads";
     return;
   }
@@ -489,11 +480,11 @@ void AdsServiceImpl::StartBatAdsService() {
 }
 
 void AdsServiceImpl::RestartBatAdsServiceAfterDelay() {
-  VLOG(1) << "Restart bat-ads service";
+  VLOG(6) << "Restart bat-ads service";
 
   Shutdown();
 
-  VLOG(1) << "Restarting bat-ads service in " << kRestartBatAdsServiceDelay;
+  VLOG(6) << "Restarting bat-ads service in " << kRestartBatAdsServiceDelay;
   restart_bat_ads_service_timer_.Start(
       FROM_HERE, kRestartBatAdsServiceDelay,
       base::BindOnce(&AdsServiceImpl::MaybeStartBatAdsService, AsWeakPtr()));
@@ -501,7 +492,7 @@ void AdsServiceImpl::RestartBatAdsServiceAfterDelay() {
 
 void AdsServiceImpl::CancelRestartBatAdsService() {
   if (restart_bat_ads_service_timer_.IsRunning()) {
-    VLOG(1) << "Canceled bat-ads service restart";
+    VLOG(6) << "Canceled bat-ads service restart";
     restart_bat_ads_service_timer_.Stop();
   }
 }
@@ -516,7 +507,7 @@ void AdsServiceImpl::InitializeBasePathDirectory() {
 
 void AdsServiceImpl::OnInitializeBasePathDirectory(const bool success) {
   if (!success) {
-    VLOG(0) << "Failed to initialize " << base_path_ << " directory";
+    VLOG(1) << "Failed to initialize " << base_path_ << " directory";
     return Shutdown();
   }
 
@@ -561,7 +552,7 @@ void AdsServiceImpl::OnInitializeRewardsWallet(
     bat_ads_->OnRewardsWalletDidChange(
         wallet->payment_id, base::Base64Encode(wallet->recovery_seed));
   } else if (ShouldRewardUser()) {
-    VLOG(0) << "Failed to initialize Rewards wallet";
+    VLOG(1) << "Failed to initialize Rewards wallet";
     return Shutdown();
   }
 
@@ -577,7 +568,7 @@ void AdsServiceImpl::InitializeBatAds() {
 
 void AdsServiceImpl::OnInitializeBatAds(const bool success) {
   if (!success) {
-    VLOG(0) << "Failed to initialize bat-ads";
+    VLOG(1) << "Failed to initialize bat-ads";
     return Shutdown();
   }
 
@@ -595,7 +586,7 @@ void AdsServiceImpl::OnInitializeBatAds(const bool success) {
 void AdsServiceImpl::ShutdownAndResetState() {
   Shutdown();
 
-  VLOG(1) << "Resetting ads state";
+  VLOG(6) << "Resetting ads state";
 
   profile_->GetPrefs()->ClearPrefsWithPrefixSilently("brave.brave_ads");
 
@@ -657,12 +648,10 @@ void AdsServiceImpl::MaybeShowOnboardingNotification() {
 }
 
 void AdsServiceImpl::CloseAdaptiveCaptcha() {
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   adaptive_captcha_service_->ClearScheduledCaptcha();
 #if !BUILDFLAG(IS_ANDROID)
   ads_tooltips_delegate_->CloseCaptchaTooltip();
 #endif  // !BUILDFLAG(IS_ANDROID)
-#endif  // BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 }
 
 void AdsServiceImpl::InitializePrefChangeRegistrar() {
@@ -840,7 +829,7 @@ void AdsServiceImpl::StartNotificationAdTimeOutTimer(
       base::BindOnce(&AdsServiceImpl::NotificationAdTimedOut, AsWeakPtr(),
                      placement_id));
 
-  VLOG(1) << "Timeout notification ad with placement id " << placement_id
+  VLOG(6) << "Timeout notification ad with placement id " << placement_id
           << " in " << timeout;
 }
 
@@ -857,7 +846,7 @@ bool AdsServiceImpl::StopNotificationAdTimeOutTimer(
 }
 
 void AdsServiceImpl::NotificationAdTimedOut(const std::string& placement_id) {
-  VLOG(1) << "Timed-out notification ad with placement id " << placement_id;
+  VLOG(2) << "Timed-out notification ad with placement id " << placement_id;
 
   CloseNotificationAd(placement_id);
 
@@ -899,7 +888,7 @@ void AdsServiceImpl::CloseAllNotificationAds() {
 void AdsServiceImpl::OnPrefetchNewTabPageAd(
     absl::optional<base::Value::Dict> dict) {
   if (!dict) {
-    VLOG(0) << "Failed to prefetch new tab page ad";
+    VLOG(1) << "Failed to prefetch new tab page ad";
     return;
   }
 
@@ -928,7 +917,7 @@ void AdsServiceImpl::PurgeOrphanedNewTabPageAdEvents() {
 
 void AdsServiceImpl::OnPurgeOrphanedNewTabPageAdEvents(const bool success) {
   if (!success) {
-    VLOG(0) << "Failed to purge orphaned ad events for new tab page ads";
+    VLOG(1) << "Failed to purge orphaned ad events for new tab page ads";
     return;
   }
 
@@ -947,7 +936,7 @@ void AdsServiceImpl::MaybeOpenNewTabWithAd() {
 
 void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
   if (StopNotificationAdTimeOutTimer(placement_id)) {
-    VLOG(1) << "Canceled timeout for notification ad with placement id "
+    VLOG(2) << "Canceled timeout for notification ad with placement id "
             << placement_id;
   }
 
@@ -963,7 +952,7 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
 void AdsServiceImpl::OnOpenNewTabWithAd(
     absl::optional<base::Value::Dict> dict) {
   if (!dict) {
-    VLOG(0) << "Failed to get notification ad";
+    VLOG(1) << "Failed to get notification ad";
     return;
   }
 
@@ -979,7 +968,7 @@ void AdsServiceImpl::OpenNewTabWithUrl(const GURL& url) {
   }
 
   if (!url.is_valid()) {
-    VLOG(0) << "Failed to open new tab due to invalid URL: " << url;
+    VLOG(1) << "Failed to open new tab due to invalid URL: " << url;
     return;
   }
 
@@ -1005,7 +994,7 @@ void AdsServiceImpl::OpenNewTabWithUrl(const GURL& url) {
 }
 
 void AdsServiceImpl::RetryOpeningNewTabWithAd(const std::string& placement_id) {
-  VLOG(1) << "Retry opening new tab for ad with placement id " << placement_id;
+  VLOG(2) << "Retry opening new tab for ad with placement id " << placement_id;
   retry_opening_new_tab_for_ad_with_placement_id_ = placement_id;
 }
 
@@ -1080,14 +1069,14 @@ bool AdsServiceImpl::IsUpgradingFromPreBraveAdsBuild() {
 void AdsServiceImpl::MigratePrefs() {
   is_upgrading_from_pre_brave_ads_build_ = IsUpgradingFromPreBraveAdsBuild();
   if (is_upgrading_from_pre_brave_ads_build_) {
-    VLOG(1) << "Migrating ads preferences from pre Brave Ads build";
+    VLOG(2) << "Migrating ads preferences from pre Brave Ads build";
 
     // Force migration of preferences from version 1 if
     // |is_upgrading_from_pre_brave_ads_build_| is set to true to fix
     // "https://github.com/brave/brave-browser/issues/5434"
     SetIntegerPref(prefs::kVersion, 1);
   } else {
-    VLOG(1) << "Migrating ads preferences";
+    VLOG(2) << "Migrating ads preferences";
   }
 
   auto source_version = GetIntegerPref(prefs::kVersion);
@@ -1095,7 +1084,7 @@ void AdsServiceImpl::MigratePrefs() {
 
   if (!MigratePrefs(source_version, dest_version, true)) {
     // Migration dry-run failed, so do not migrate preferences
-    VLOG(0) << "Failed to migrate ads preferences from version "
+    VLOG(1) << "Failed to migrate ads preferences from version "
             << source_version << " to " << dest_version;
 
     return;
@@ -1156,7 +1145,7 @@ bool AdsServiceImpl::MigratePrefs(const int source_version,
     }
 
     if (!is_dry_run) {
-      VLOG(1) << "Migrating ads preferences from mapping version "
+      VLOG(2) << "Migrating ads preferences from mapping version "
               << from_version << " to " << to_version;
 
       (this->*(mapping->second))();
@@ -1171,7 +1160,7 @@ bool AdsServiceImpl::MigratePrefs(const int source_version,
   if (!is_dry_run) {
     SetIntegerPref(prefs::kVersion, dest_version);
 
-    VLOG(1) << "Successfully migrated Ads preferences from version "
+    VLOG(2) << "Successfully migrated Ads preferences from version "
             << source_version << " to " << dest_version;
   }
 
@@ -1409,7 +1398,7 @@ void AdsServiceImpl::Shutdown() {
 
   CancelRestartBatAdsService();
 
-  VLOG(1) << "Shutting down bat-ads service";
+  VLOG(2) << "Shutting down bat-ads service";
 
   is_bat_ads_initialized_ = false;
 
@@ -1435,7 +1424,7 @@ void AdsServiceImpl::Shutdown() {
     VLOG_IF(1, !success) << "Failed to release database";
   }
 
-  VLOG(1) << "Shutdown bat-ads service";
+  VLOG(2) << "Shutdown bat-ads service";
 }
 
 bool AdsServiceImpl::IsSupportedLocale() const {
@@ -1499,7 +1488,6 @@ bool AdsServiceImpl::NeedsBrowserUpgradeToServeAds() const {
   return needs_browser_upgrade_to_serve_ads_;
 }
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
                                           const std::string& captcha_id) {
   adaptive_captcha_service_->ShowScheduledCaptcha(payment_id, captcha_id);
@@ -1508,7 +1496,6 @@ void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
 void AdsServiceImpl::SnoozeScheduledCaptcha() {
   adaptive_captcha_service_->SnoozeScheduledCaptcha();
 }
-#endif
 
 void AdsServiceImpl::OnNotificationAdShown(const std::string& placement_id) {
   if (bat_ads_.is_bound()) {
@@ -1520,7 +1507,7 @@ void AdsServiceImpl::OnNotificationAdShown(const std::string& placement_id) {
 void AdsServiceImpl::OnNotificationAdClosed(const std::string& placement_id,
                                             const bool by_user) {
   if (StopNotificationAdTimeOutTimer(placement_id)) {
-    VLOG(1) << "Canceled timeout for notification ad with placement id "
+    VLOG(2) << "Canceled timeout for notification ad with placement id "
             << placement_id;
   }
 
@@ -1816,7 +1803,7 @@ bool AdsServiceImpl::IsBrowserInFullScreenMode() const {
 
 bool AdsServiceImpl::CanShowNotificationAds() {
   if (!features::IsNotificationAdsEnabled()) {
-    LOG(INFO) << "Notification not made: Ad notifications feature is disabled";
+    VLOG(1) << "Notification not made: Ad notifications feature is disabled";
     return false;
   }
 
@@ -2009,7 +1996,7 @@ void AdsServiceImpl::LoadFileResource(const std::string& id,
   }
   base::FilePath file_path = file_path_optional.value();
 
-  VLOG(1) << "Loading file resource from " << file_path << " for component id "
+  VLOG(2) << "Loading file resource from " << file_path << " for component id "
           << id;
 
   file_task_runner_->PostTaskAndReplyWithResult(
@@ -2046,22 +2033,19 @@ std::string AdsServiceImpl::LoadDataResource(const std::string& name) {
 void AdsServiceImpl::GetScheduledCaptcha(
     const std::string& payment_id,
     ads::GetScheduledCaptchaCallback callback) {
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   adaptive_captcha_service_->GetScheduledCaptcha(payment_id,
                                                  std::move(callback));
-#endif
 }
 
 void AdsServiceImpl::ShowScheduledCaptchaNotification(
     const std::string& payment_id,
     const std::string& captcha_id,
     const bool should_show_tooltip_notification) {
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   const PrefService* const pref_service = profile_->GetPrefs();
   if (should_show_tooltip_notification) {
     if (pref_service->GetBoolean(
             brave_adaptive_captcha::prefs::kScheduledCaptchaPaused)) {
-      VLOG(0) << "Ads paused; support intervention required";
+      VLOG(1) << "Ads paused; support intervention required";
       return;
     }
 
@@ -2081,13 +2065,10 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
   } else {
     ShowScheduledCaptcha(payment_id, captcha_id);
   }
-#endif
 }
 
 void AdsServiceImpl::ClearScheduledCaptcha() {
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   adaptive_captcha_service_->ClearScheduledCaptcha();
-#endif
 }
 
 void AdsServiceImpl::RunDBTransaction(
@@ -2260,6 +2241,10 @@ void AdsServiceImpl::OnDidUpdateResourceComponent(const std::string& id) {
 
 void AdsServiceImpl::OnRewardsWalletUpdated() {
   GetRewardsWallet();
+}
+
+void AdsServiceImpl::OnExternalWalletConnected() {
+  SetBooleanPref(ads::prefs::kShouldMigrateVerifiedRewardsUser, true);
 }
 
 void AdsServiceImpl::OnCompleteReset(const bool success) {

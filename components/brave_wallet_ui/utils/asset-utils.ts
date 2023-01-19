@@ -3,10 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+// Types
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+
+// utils
+import Amount from './amount'
 import {
   getRampNetworkPrefix,
-  getWyreNetworkPrefix,
   httpifyIpfsUrl
 } from './string-utils'
 
@@ -27,19 +30,6 @@ export const isSelectedAssetInAssetOptions = (
       asset.chainId === selectedAsset.chainId &&
       asset.symbol.toLowerCase() === selectedAsset.symbol.toLowerCase()
   }) !== -1
-}
-
-export const getWyreAssetSymbol = (asset: BraveWallet.BlockchainToken) => {
-  if (
-    !asset.contractAddress || // gas coins ok
-    asset.chainId === BraveWallet.MAINNET_CHAIN_ID // ETH-ERC coins ok
-  ) {
-    return asset.symbol
-  }
-
-  // format non-ethereum EVM token symbols for Wyre
-  const prefix = getWyreNetworkPrefix(asset.chainId)
-  return prefix ? `${prefix}${asset.symbol.toUpperCase()}` : asset.symbol
 }
 
 export const getRampAssetSymbol = (asset: BraveWallet.BlockchainToken) => {
@@ -111,6 +101,22 @@ export const addLogoToToken = (token: BraveWallet.BlockchainToken) => {
   }
 }
 
+export const addChainIdToToken = (
+  token: BraveWallet.BlockchainToken,
+  chainId: string
+) => {
+  try {
+    token.chainId = chainId
+    return token
+  } catch {
+    // the token object was immutable, return a new token object
+    return {
+      ...token,
+      chainId: chainId
+    }
+  }
+}
+
 export const getNativeTokensFromList = (tokenList: BraveWallet.BlockchainToken[]) => {
   // separate Native (gas) assets from other tokens
   const { nativeAssets, tokens } = tokenList.reduce((acc, t) => {
@@ -168,11 +174,20 @@ export const getBatTokensFromList = (tokenList: BraveWallet.BlockchainToken[]) =
   }
 }
 
+export type GetBlockchainTokenIdArg = Pick<
+  BraveWallet.BlockchainToken,
+  | 'chainId'
+  | 'contractAddress'
+  | 'isErc721'
+  | 'symbol'
+  | 'tokenId'
+>
+
 /**
  * @param asset The token to get an id for
  * @returns an id that can be used as a react element key
  */
-export const getAssetIdKey = (asset: BraveWallet.BlockchainToken) => {
+export const getAssetIdKey = (asset: GetBlockchainTokenIdArg) => {
   return asset.isErc721
     ? `${asset.contractAddress}-${asset.symbol}-${asset.tokenId}-${asset.chainId}`
     : `${asset.contractAddress}-${asset.symbol}-${asset.chainId}`
@@ -191,4 +206,31 @@ export const findTokenByContractAddress = (
   return tokensList.find((token) =>
     token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
   )
+}
+
+export const findTokenBySymbol = (
+  tokenSymbol: string,
+  tokensList: BraveWallet.BlockchainToken[]
+) => {
+  return tokensList.find((token) =>
+    token.symbol.toLowerCase() === tokenSymbol.toLowerCase()
+  )
+}
+
+export const isNativeAsset = (
+  token: Pick<BraveWallet.BlockchainToken, 'contractAddress'>
+) => token.contractAddress === ''
+
+export const formatTokenBalance = (
+  tokenBalanceString: string | undefined,
+  selectedAsset:
+    | Pick<BraveWallet.BlockchainToken, 'decimals' | 'symbol'>
+    | undefined,
+  decimalPlaces?: number
+): string => {
+  return tokenBalanceString
+    ? new Amount(tokenBalanceString ?? '')
+        .divideByDecimals(selectedAsset?.decimals ?? 18)
+        .formatAsAsset(decimalPlaces ?? 6, selectedAsset?.symbol ?? '')
+    : ''
 }

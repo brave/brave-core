@@ -1,10 +1,10 @@
 diff --git a/components/sync/engine/model_type_worker.h b/components/sync/engine/model_type_worker.h
-index 874cb1ec905fa209534d1c7e51a20ad240e274c3..326bbe02368614c9fa83abc3a6054cdb64fda4c7 100644
+index d92f30dc79edf26de0c21a549d651ff980571822..def8fd0ffdeb18cde9ab992c94b999ec62e5e2aa 100644
 --- a/components/sync/engine/model_type_worker.h
 +++ b/components/sync/engine/model_type_worker.h
-@@ -185,6 +185,7 @@ class ModelTypeWorker : public UpdateHandler,
+@@ -207,6 +207,7 @@ class ModelTypeWorker : public UpdateHandler,
  
-   bool IsEncryptionEnabledForTest() const { return encryption_enabled_; }
+   static constexpr size_t kMaxPendingInvalidations = 10u;
  
 + BRAVE_MODEL_TYPE_WORKER_H_
   private:

@@ -64,16 +64,6 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
                 "https://github.com/brave-intl/challenge-bypass-ristretto-ffi",
             "License": "MPL-2.0",
         },
-        os.path.join('brave', 'vendor', 'extension-whitelist'): {
-            "Name": "extension-whitelist",
-            "URL": "https://github.com/brave/extension-whitelist",
-            "License": "MPL-2.0",
-        },
-        os.path.join('brave', 'vendor', 'hashset-cpp'): {
-            "Name": "Hash Set",
-            "URL": "https://github.com/brave/hashset-cpp",
-            "License": "MPL-2.0",
-        },
         os.path.join('brave', 'vendor', 'web-discovery-project'): {
             "Name": "Web Discovery Project",
             "URL": "https://github.com/brave/web-discovery-project",
@@ -108,6 +98,13 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
             "URL": "https://github.com/Tencent/rapidjson",
             "License": "MIT",
             "License File": "/brave/third_party/rapidjson/src/license.txt",
+        },
+        os.path.join('brave', 'third_party', 'rust'): {
+            "Name": "rust-cxx",
+            "URL": "https://crates.io/crates/cxx",
+            "License": "Apache-2.0",
+            "License File": \
+                "/brave/third_party/rust/cxx/v1/crate/LICENSE-APACHE",
         },
         os.path.join('brave', 'vendor', 'omaha', 'third_party', 'zlib'): {
             "Name": "zlib",

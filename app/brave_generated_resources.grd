@@ -168,12 +168,21 @@
       <message name="IDS_SHOW_BRAVE_REWARDS" desc="The show Brave Rewards menu in the app menu">
         Brave Rewards
       </message>
+      <message name="IDS_BOOKMAR_BAR_MENU_SHOW_ALWAYS" desc="The name of the context menu item to always show bookmark bar">
+        Always
+      </message>
+      <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NEVER" desc="The name of the context menu item to never show bookmark bar">
+        Never
+      </message>
       <if expr="use_titlecase">
         <message name="IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER" desc="The menu item to report a broken site in the app menu">
           Report a Broken Site
         </message>
         <message name="IDS_COPY_CLEAN_LINK" desc="The name of the context menu item to copy clean link">
           Copy Clean Link
+        </message>
+        <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NTP" desc="The name of the context menu item to show bookmark bar on ntp only">
+          Only On the New Tab Page
         </message>
       </if>
       <if expr="not use_titlecase">
@@ -182,6 +191,9 @@
         </message>
         <message name="IDS_COPY_CLEAN_LINK" desc="The name of the context menu item to copy clean link">
           Copy clean link
+        </message>
+        <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NTP" desc="The name of the context menu item to show bookmark bar on ntp only">
+           Only on the new tab page
         </message>
       </if>
       <message name="IDS_SHOW_BRAVE_SYNC" desc="The show brave sync menu in the app menu">
@@ -261,9 +273,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt which was not vetted by Brave. Asks the user if they want to install a particular extension or app.">
         Brave does not review extensions for security and safety. Only install this extension if you trust the developer.
       </message>
-      <message name="IDS_EXTENSION_CANT_INSTALL_ON_BRAVE" desc="Error message when user tries to install an extension that is not allowed in Brave.">
-        <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") is not allowed in Brave.
-      </message>
 
       <!-- Tor -->
       <message name="IDS_BRAVE_TOR_SETTINGS_SECTION" desc="Open Tor settings section">
@@ -316,7 +325,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND" desc="Command text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
         Begin Setup
       </message>
-
+      <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_MESSAGE" desc="Message text shown to users who's Sync account was deleted. Is used along with IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_LINK_TEXT">
+        This Brave Sync account was deleted from another device. If you didn’t mean to disable Sync,<ph name="LINK_TEXT">$1<ex>re-create the account</ex></ph>
+      </message>
+      <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_LINK_TEXT" desc="Link text shown to users who's Sync account was deleted. When user clicks the link, Sync Setup page is opened. Is used along with IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_MESSAGE">
+        <ph name="INFOBAR_TEXT">$1<ex>This Brave Sync account was deleted from another device. If you didn’t mean to disable Sync,</ex></ph>re-create the account
+      </message>
+      <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_BUTTON" desc="Button text shown to users who's Sync account was disabled. This button prevents further show of the infobar.">
+        OK
+      </message>
       <message name="IDS_BRAVE_SYNC_CANNOT_RUN_INFOBAR_MESSAGE" desc="Message text shown to users when Sync service cannot run and additional attention is required">
         Sync service could not be started, Brave Sync is not running
       </message>
@@ -595,6 +612,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_WEB_DISCOVERY_INFOBAR_NO_THANKS_LABEL" desc="The text for no thanks button in infobar">
           No thanks
         </message>
+        <!-- obsolete system InfoBar -->
+        <if expr="is_win">
+          <message name="IDS_OBSOLETE_SYSTEM_INFOBAR_DONT_SHOW_BUTTON" desc="The text for don't show again button">
+            Don't show again
+          </message>
+          <message name="IDS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_CONTENT" desc="The text for obsolete system confirm dialog">
+            By clicking OK, you acknowledge that your installation of Brave will NOT receive critical security fixes until you update to Windows 10 or later. This warning will NOT show again.
+          </message>
+        </if>
       </if>
 
       <!-- Brave Ads -->
@@ -625,15 +651,27 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
 
       <!-- Sidebar -->
-      <if expr="enable_sidebar">
+      <if expr="toolkit_views">
         <if expr="not use_titlecase">
           <message name="IDS_HIDE_SIDE_PANEL_TOOLBAR_BUTTON" desc="The menu item to hide the side panel icon on the toolbar">
-            Hide side panel icon
+            Hide sidebar icon 
+          </message>
+          <message name="IDS_TOOLTIP_SIDEBAR_HIDE" desc="The tooltip for the sidebar button, when closed">
+            Hide sidebar
+          </message>
+          <message name="IDS_TOOLTIP_SIDEBAR_SHOW" desc="The tooltip for the sidebar button, when closed">
+            Show sidebar
           </message>
         </if>
         <if expr="use_titlecase">
           <message name="IDS_HIDE_SIDE_PANEL_TOOLBAR_BUTTON" desc="The menu item to hide the side panel icon on the toolbar">
-            Hide Side Panel Icon
+            Hide Sidebar Icon
+          </message>
+          <message name="IDS_TOOLTIP_SIDEBAR_HIDE" desc="The tooltip for the sidebar button, when closed">
+            Hide Sidebar
+          </message>
+          <message name="IDS_TOOLTIP_SIDEBAR_SHOW" desc="The tooltip for the sidebar button, when closed">
+            Show Sidebar
           </message>
         </if>
         <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_EDIT" desc="Menu for editing an existing item from sidebar">
@@ -662,6 +700,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_SIDEBAR_SHOW_OPTION_TITLE" desc="Title of sidebar show option menu">
           Show Sidebar
+        </message>
+        <message name="IDS_SIDEBAR_MENU_MODEL_POSITION_OPTION_TITLE" desc="Title of sidebar show option menu">
+          Position
+        </message>
+        <message name="IDS_SIDEBAR_MENU_MODEL_POSITION_MOVE_TO_RIGHT_OPTION" desc="Title of sidebar position option menu to move to the right">
+          Move to the right
+        </message>
+        <message name="IDS_SIDEBAR_MENU_MODEL_POSITION_MOVE_TO_LEFT_OPTION" desc="Title of sidebar position option menu to move to the left">
+          Move to the left
         </message>
         <message name="IDS_SETTINGS_SIDEBAR_SHOW_OPTION_TITLE" desc="Title of sidebar show option menu in settings">
           Show Sidebar
@@ -786,6 +833,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_IPFS_SETTINGS_SECTION" desc="Open IPFS settings section">
         IPFS
       </message>
+      <message name="IDS_BRAVE_WEB3_SETTINGS_SECTION" desc="Open Web3 settings section">
+        Web3
+      </message>
+      <message name="IDS_BRAVE_WEB3_DOMAINS_SETTINGS_SECTION" desc="Open Web3 Domains settings section">
+        Web3 Domains
+      </message>
       <message name="IDS_BRAVE_IPFS_LEARN_MORE">
         Learn more about IPFS and privacy
       </message>
@@ -827,6 +880,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_TAB_CXMENU_USE_FLOATING_VERTICAL_TABS" desc="The label of the tab context menu item for enabling floating mode for vertical tab strip">
           Float on mouseover
         </message>
+        <message name="IDS_TAB_CXMENU_SOUND_MUTE_TAB" desc="The label of the tab context menu item for muting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Mute tab} other {Mute tabs}}
+        </message>
+        <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_TAB" desc="The label of the tab context menu item for unmuting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Unmute tab} other {Unmute tabs}}
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
@@ -840,6 +899,31 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_TAB_CXMENU_USE_FLOATING_VERTICAL_TABS" desc="The label of the tab context menu item for enabling floating mode for vertical tab strip">
           Float on Mouseover
+        </message>
+        <message name="IDS_TAB_CXMENU_SOUND_MUTE_TAB" desc="The label of the tab context menu item for muting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Mute Tab} other {Mute Tabs}}
+        </message>
+        <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_TAB" desc="The label of the tab context menu item for unmuting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Unmute Tab} other {Unmute Tabs}}
+        </message>
+      </if>
+
+      <!-- Text recognition dialog-->
+      <if expr="enable_text_recognition">
+        <message name="IDS_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE" desc="The name of the context menu item to get text from image">
+          Copy Text From Image
+        </message>
+        <message name="IDS_TEXT_RECOGNITION_DIALOG_CLOSE_BUTTON" desc="The text for the close button of text recognition dialog">
+          Close
+        </message>
+        <message name="IDS_TEXT_RECOGNITION_DIALOG_HEADER_IN_PROGRESS" desc="The text for the header of text recognition dialog">
+          Copying text from image...
+        </message>
+        <message name="IDS_TEXT_RECOGNITION_DIALOG_HEADER_COMPLETE" desc="The text for the header of text recognition dialog">
+          Text copied from image
+        </message>
+        <message name="IDS_TEXT_RECOGNITION_DIALOG_HEADER_FAILED" desc="The text for the header of text recognition dialog">
+          Text copy failed
         </message>
       </if>
 

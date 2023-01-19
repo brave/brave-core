@@ -13,25 +13,23 @@ namespace decentralized_dns {
 // Disabled: Disable all unstoppable domains resolution.
 // Ask: Ask users if they want to enable support of unstoppable domains.
 // Enabled: Resolve domain name using Ethereum JSON-RPC server.
-constexpr char kUnstoppableDomainsResolveMethod[] =
-    "brave.unstoppable_domains.resolve_method";
+extern const char kUnstoppableDomainsResolveMethod[];
 
 // Used to determine which method should be used to resolve ENS domains,
 // between:
 // Disabled: Disable all ENS domains resolution.
 // Ask: Ask users if they want to enable support of ENS.
 // Enabled: Resolve domain name using Ethereum JSON-RPC server.
-constexpr char kENSResolveMethod[] = "brave.ens.resolve_method";
+extern const char kENSResolveMethod[];
 
-constexpr char kEnsOffchainResolveMethod[] =
-    "brave.ens.offchain_resolve_method";
+extern const char kEnsOffchainResolveMethod[];
 
 // Used to determine which method should be used to resolve SNS domains,
 // between:
 // Disabled: Disable all SNS domains resolution.
 // Ask: Ask users if they want to enable support of SNS.
 // Enabled: Resolve domain name using Solana JSON-RPC server.
-constexpr char kSnsResolveMethod[] = "brave.sns.resolve_method";
+extern const char kSnsResolveMethod[];
 
 }  // namespace decentralized_dns
 

@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { UserType } from '../../shared/lib/user_type'
+
 import * as mojom from '../../shared/lib/mojom'
+import { PublisherStatus } from '../../shared/lib/publisher_status'
 
 type EmptyMediaData = {
   mediaType: 'none'
@@ -53,14 +57,6 @@ export type TipKind = 'one-time' | 'monthly'
 
 export type PaymentKind = 'bat'
 
-export enum PublisherStatus {
-  NOT_VERIFIED = 0,
-  CONNECTED = 1,
-  UPHOLD_VERIFIED = 2,
-  BITFLYER_VERIFIED = 3,
-  GEMINI_VERIFIED = 4
-}
-
 export interface PublisherInfo {
   publisherKey: string
   name: string
@@ -87,6 +83,7 @@ export interface RewardsParameters {
   rate: number
   tipChoices: number[]
   monthlyTipChoices: number[]
+  vbatExpired: boolean
 }
 
 export interface HostError {
@@ -98,6 +95,7 @@ export interface HostState {
   publisherInfo?: PublisherInfo
   balanceInfo?: BalanceInfo
   externalWalletInfo?: ExternalWalletInfo
+  userType?: UserType
   rewardsParameters?: RewardsParameters
   hostError?: HostError
   nextReconcileDate?: Date
@@ -111,7 +109,6 @@ export type HostListener = (state: HostState) => void
 
 export interface Host {
   state: HostState
-  getString: (key: string) => string
   getDialogArgs: () => DialogArgs
   closeDialog: () => void
   processTip: (amount: number, kind: TipKind) => void

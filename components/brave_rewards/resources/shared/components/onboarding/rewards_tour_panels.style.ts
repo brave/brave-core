@@ -4,7 +4,7 @@
 
 import styled from 'styled-components'
 
-import warningCircleImage from '../../assets/warning_circle.svg'
+import * as mixins from '../../lib/css_mixins'
 
 export const formText = styled.div`
   color: var(--brave-color-brandBat);
@@ -14,65 +14,48 @@ export const formText = styled.div`
 `
 
 export const verifySubtext = styled.div`
-  position: relative;
-  text-align: left;
-  margin-top: 11px;
-  background: #F8F9FA;
-  border-radius: 8px;
-  padding: 14px 14px 14px 38px;
-  font-size: 13px;
-  line-height: 19px;
-  color: #495057;
-
-  background-repeat: no-repeat;
-  background-position: 14px 18px;
-  background-size: 16px 16px;
-  background-image: url('${warningCircleImage}');
-`
-
-export const verifyNote = styled.div`
-  margin-top: 8px;
-  font-size: 11px;
-  line-height: 17px;
-  color: #868E96;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--brave-palette-neutral700);
 `
 
 export const verifyActions = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
 
   button {
-    color: #212529;
+    ${mixins.buttonReset}
+    background: #4C54D2;
+    border-radius: 48px;
+    padding: 6px 18px;
+    font-weight: 600;
     font-size: 13px;
-    font-weight: 600;
-    line-height: 19px;
-    padding: 5px 20px;
-    border: 1px solid #AEB1C2;
-    background: none;
-    border-radius: 30px;
+    line-height: 20px;
+    color: #fff;
     cursor: pointer;
+
+    &:active {
+      background: #737ADE;
+    }
+
+    .icon {
+      vertical-align: middle;
+      height: 17px;
+      width: auto;
+      margin-left: 8px;
+      margin-top: -2px;
+    }
   }
 
-  button.verify-now {
-    border: none;
-    background: var(--brave-color-brandBat);
-    color: var(--brave-palette-white);
-  }
-
-  button:active {
-    background: var(--brave-color-brandBatActive);
-  }
-`
-
-export const verifyLearnMore = styled.div`
-  margin-top: 11px;
-  font-size: 13px;
-  line-height: 19px;
-  padding-bottom: 20px;
-
-  a {
-    color: var(--brave-color-brandBat);
-    text-decoration: none;
+  button.verify-later {
+    ${mixins.buttonReset}
+    color: #4C54D2;
     font-weight: 600;
+    font-size: 12px;
+    line-height: 20px;
+    cursor: pointer;
   }
 `

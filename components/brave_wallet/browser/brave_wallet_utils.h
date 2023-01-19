@@ -53,8 +53,6 @@ bool EncodeStringArray(const std::vector<std::string>& input,
                        std::string* output);
 
 bool DecodeString(size_t offset, const std::string& input, std::string* output);
-bool DecodeStringArray(const std::string& input,
-                       std::vector<std::string>* output);
 
 // Updates preferences for when the wallet is unlocked.
 // This is done in a utils function instead of in the KeyringService
@@ -112,7 +110,6 @@ void SetDefaultBaseCurrency(PrefService* prefs, const std::string& currency);
 std::string GetDefaultBaseCurrency(PrefService* prefs);
 void SetDefaultBaseCryptocurrency(PrefService* prefs,
                                   const std::string& cryptocurrency);
-bool GetShowWalletTestNetworks(PrefService* prefs);
 void SetSelectedCoin(PrefService* prefs, mojom::CoinType coin);
 mojom::CoinType GetSelectedCoin(PrefService* prefs);
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
@@ -124,7 +121,9 @@ std::string GetKnownEthNetworkId(const std::string& chain_id);
 GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id);
 std::string GetUnstoppableDomainsProxyReaderContractAddress(
     const std::string& chain_id);
+GURL GetEnsRpcUrl();
 std::string GetEnsRegistryContractAddress(const std::string& chain_id);
+GURL GetSnsRpcUrl();
 
 // Append chain value to kBraveWalletCustomNetworks dictionary pref.
 void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain);
@@ -133,8 +132,8 @@ void RemoveCustomNetwork(PrefService* prefs,
                          const std::string& chain_id_to_remove,
                          mojom::CoinType coin);
 
-std::vector<std::string> GetAllHiddenNetworks(PrefService* prefs,
-                                              mojom::CoinType coin);
+std::vector<std::string> GetHiddenNetworks(PrefService* prefs,
+                                           mojom::CoinType coin);
 void AddHiddenNetwork(PrefService* prefs,
                       mojom::CoinType coin,
                       const std::string& chain_id);

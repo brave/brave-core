@@ -12,12 +12,13 @@
 namespace views {
 
 void Widget::SetWindowTitleVisibility(bool visible) {
-  static_cast<NativeWidgetMac*>(native_widget_)
+  static_cast<NativeWidgetMac*>(native_widget_private())
       ->SetWindowTitleVisibility(visible);
 }
 
 void Widget::ResetWindowControlsPosition() {
-  static_cast<NativeWidgetMac*>(native_widget_)->ResetWindowControlsPosition();
+  static_cast<NativeWidgetMac*>(native_widget_private())
+      ->ResetWindowControlsPosition();
 }
 
 }  // namespace views

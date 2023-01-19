@@ -40,9 +40,9 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   }
 }
 
-bool IsUnstoppableDomainsTLD(const GURL& url) {
+bool IsUnstoppableDomainsTLD(const base::StringPiece& host) {
   for (auto* domain : kUnstoppableDomains) {
-    if (base::EndsWith(url.host_piece(), domain))
+    if (base::EndsWith(host, domain))
       return true;
   }
   return false;
@@ -57,7 +57,7 @@ bool IsUnstoppableDomainsResolveMethodAsk(PrefService* local_state) {
          static_cast<int>(ResolveMethodTypes::ASK);
 }
 
-bool IsUnstoppableDomainsResolveMethodEthereum(PrefService* local_state) {
+bool IsUnstoppableDomainsResolveMethodEnabled(PrefService* local_state) {
   if (!local_state) {
     return false;  // Treat it as disabled.
   }
@@ -66,8 +66,8 @@ bool IsUnstoppableDomainsResolveMethodEthereum(PrefService* local_state) {
          static_cast<int>(ResolveMethodTypes::ENABLED);
 }
 
-bool IsENSTLD(const GURL& url) {
-  return base::EndsWith(url.host_piece(), kEthDomain);
+bool IsENSTLD(const base::StringPiece& host) {
+  return base::EndsWith(host, kEthDomain);
 }
 
 bool IsENSResolveMethodAsk(PrefService* local_state) {
@@ -79,7 +79,7 @@ bool IsENSResolveMethodAsk(PrefService* local_state) {
          static_cast<int>(ResolveMethodTypes::ASK);
 }
 
-bool IsENSResolveMethodEthereum(PrefService* local_state) {
+bool IsENSResolveMethodEnabled(PrefService* local_state) {
   if (!local_state) {
     return false;  // Treat it as disabled.
   }
@@ -98,8 +98,8 @@ EnsOffchainResolveMethod GetEnsOffchainResolveMethod(PrefService* local_state) {
       local_state->GetInteger(kEnsOffchainResolveMethod));
 }
 
-bool IsSnsTLD(const GURL& url) {
-  return base::EndsWith(url.host_piece(), kSolDomain);
+bool IsSnsTLD(const base::StringPiece& host) {
+  return base::EndsWith(host, kSolDomain);
 }
 
 bool IsSnsResolveMethodAsk(PrefService* local_state) {

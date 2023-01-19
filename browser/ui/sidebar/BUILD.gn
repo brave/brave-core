@@ -1,14 +1,14 @@
 # Copyright (c) 2021 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/sidebar/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
 import("//extensions/buildflags/buildflags.gni")
 
-source_set("sidebar") {
-  assert(enable_sidebar)
+assert(toolkit_views)
 
+source_set("sidebar") {
   # Set due to //chrome/browser and //chrome/browser/ui circular dependencies.
   # TODO(simonhong): Create issue for removing this. Remove when XXXXXXX is resolved
   check_includes = false
@@ -65,48 +65,48 @@ source_set("sidebar") {
 }
 
 source_set("browser_tests") {
-  if (enable_sidebar) {
-    testonly = true
-    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-    sources = [ "sidebar_browsertest.cc" ]
+  sources = [
+    "//brave/browser/ui/sidebar/sidebar_browsertest.cc",
+    "//brave/browser/ui/views/sidebar/sidebar_container_view_browsertest.cc",
+  ]
 
-    deps = [
-      "//base",
-      "//brave/browser/ui",
-      "//brave/browser/ui/sidebar",
-      "//brave/components/sidebar",
-      "//chrome/browser",
-      "//chrome/browser/profiles:profile",
-      "//chrome/browser/ui",
-      "//chrome/common:constants",
-      "//chrome/test:test_support_ui",
-      "//components/prefs",
-      "//content/test:test_support",
-      "//ui/events",
-      "//ui/gfx",
-    ]
-  }
+  deps = [
+    "//base",
+    "//brave/browser/ui",
+    "//brave/browser/ui/sidebar",
+    "//brave/components/sidebar",
+    "//chrome/browser",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
+    "//chrome/common:constants",
+    "//chrome/test:test_support_ui",
+    "//components/prefs",
+    "//content/test:test_support",
+    "//ui/events",
+    "//ui/gfx",
+  ]
 }
 
 source_set("unit_tests") {
-  if (enable_sidebar) {
-    testonly = true
+  testonly = true
 
-    sources = [ "sidebar_unittest.cc" ]
+  sources = [ "sidebar_unittest.cc" ]
 
-    deps = [
-      "//base",
-      "//brave/browser/ui",
-      "//brave/browser/ui/sidebar",
-      "//brave/common",
-      "//brave/components/sidebar",
-      "//chrome/test:test_support",
-      "//components/prefs",
-      "//components/sync_preferences:test_support",
-      "//content/test:test_support",
-      "//testing/gmock",
-      "//testing/gtest",
-    ]
-  }
+  deps = [
+    "//base",
+    "//brave/browser/ui",
+    "//brave/browser/ui/sidebar",
+    "//brave/common",
+    "//brave/components/playlist/common",
+    "//brave/components/sidebar",
+    "//chrome/test:test_support",
+    "//components/prefs",
+    "//components/sync_preferences:test_support",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
 }

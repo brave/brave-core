@@ -250,7 +250,8 @@ const char kChromeCleanerLearnMoreURL[] =
 const char kWindowsXPVistaDeprecationURL[] =
     "https://support.brave.com/";
 
-const char kWindows78DeprecationURL[] = "https://support.brave.com/";
+const char kWindows78DeprecationURL[] =
+    "https://support.brave.com/hc/en-us/articles/11197967945613";
 #endif  // BUILDFLAG(IS_WIN)
 
 const char kChromeSyncLearnMoreURL[] = "https://support.brave.com/";

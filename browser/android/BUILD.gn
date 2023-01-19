@@ -1,3 +1,8 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/build/config.gni")
 import("//build/config/android/rules.gni")
 
@@ -7,6 +12,7 @@ source_set("android_browser_process") {
   sources = [
     "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
     "brave_feature_util.cc",
+    "brave_local_state_android.cc",
     "brave_relaunch_utils.cc",
     "brave_shields_content_settings.cc",
     "brave_shields_content_settings.h",
@@ -17,6 +23,7 @@ source_set("android_browser_process") {
   deps = [
     "//base",
     "//brave/browser/android/preferences",
+    "//brave/browser/android/safe_browsing",
     "//brave/browser/brave_ads/android:jni_headers",
     "//brave/build/android:jni_headers",
     "//brave/components/brave_ads/browser",

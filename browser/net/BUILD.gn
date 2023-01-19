@@ -1,6 +1,11 @@
-import("//brave/components/brave_referrals/buildflags/buildflags.gni")
+# Copyright (c) 2017 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 
@@ -39,6 +44,8 @@ source_set("net") {
     "brave_query_filter.h",
     "brave_reduce_language_network_delegate_helper.cc",
     "brave_reduce_language_network_delegate_helper.h",
+    "brave_referrals_network_delegate_helper.cc",
+    "brave_referrals_network_delegate_helper.h",
     "brave_request_handler.cc",
     "brave_request_handler.h",
     "brave_service_key_network_delegate_helper.cc",
@@ -66,14 +73,15 @@ source_set("net") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/safebrowsing",
-    "//brave/common",
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_referrals/buildflags",
+    "//brave/components/brave_referrals/browser",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_webtorrent/browser/buildflags",
+    "//brave/components/constants",
+    "//brave/components/constants:brave_service_key_helper",
     "//brave/components/decentralized_dns/content",
     "//brave/components/ipfs/buildflags",
     "//brave/components/update_client:buildflags",
@@ -111,15 +119,6 @@ source_set("net") {
     ]
   }
 
-  if (enable_brave_referrals) {
-    sources += [
-      "brave_referrals_network_delegate_helper.cc",
-      "brave_referrals_network_delegate_helper.h",
-    ]
-
-    deps += [ "//brave/components/brave_referrals/browser" ]
-  }
-
   if (enable_brave_webtorrent) {
     sources += [
       "brave_torrent_redirect_network_delegate_helper.cc",
@@ -149,7 +148,7 @@ source_set("browser_tests") {
     "//brave/browser/net",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
-    "//brave/components/tor",
+    "//brave/components/tor/buildflags",
     "//chrome/browser",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
@@ -167,6 +166,9 @@ source_set("browser_tests") {
       "//net:test_support",
       "//net/traffic_annotation:test_support",
     ]
+  }
+  if (enable_tor) {
+    deps += [ "//brave/components/tor" ]
   }
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }
@@ -189,6 +191,7 @@ source_set("unit_tests") {
   deps = [
     "//brave/browser/net",
     "//brave/browser/net:geolocation",
+    "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/browser",
     "//chrome/test:test_support",
     "//content/test:test_support",
@@ -211,12 +214,12 @@ source_set("unit_tests") {
       "//brave/components/brave_referrals/browser",
     ]
   }
-  if (enable_brave_referrals) {
-    if (!is_android) {
-      sources += [
-        # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI
-        "brave_referrals_network_delegate_helper_unittest.cc",
-      ]
-    }
+
+  if (!is_android) {
+    sources += [
+      # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI
+      "brave_referrals_network_delegate_helper_unittest.cc",
+    ]
+    deps += [ "//brave/components/brave_referrals/browser" ]
   }
 }

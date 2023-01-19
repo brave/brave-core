@@ -113,6 +113,12 @@ void LedgerClientIOS::SetValueState(const std::string& name,
 base::Value LedgerClientIOS::GetValueState(const std::string& name) const {
   return [bridge_ getValueState:name];
 }
+void LedgerClientIOS::SetTimeState(const std::string& name, base::Time time) {
+  [bridge_ setTimeState:name time:time];
+}
+base::Time LedgerClientIOS::GetTimeState(const std::string& name) const {
+  return [bridge_ getTimeState:name];
+}
 void LedgerClientIOS::ClearState(const std::string& name) {
   [bridge_ clearState:name];
 }
@@ -169,9 +175,9 @@ void LedgerClientIOS::PendingContributionSaved(
 void LedgerClientIOS::ClearAllNotifications() {
   [bridge_ clearAllNotifications];
 }
-void LedgerClientIOS::WalletDisconnected(const std::string& wallet_type) {
-  [bridge_ walletDisconnected:wallet_type];
-}
+void LedgerClientIOS::ExternalWalletConnected() const {}
+void LedgerClientIOS::ExternalWalletLoggedOut() const {}
+void LedgerClientIOS::ExternalWalletReconnected() const {}
 void LedgerClientIOS::DeleteLog(ledger::client::LegacyResultCallback callback) {
   [bridge_ deleteLog:callback];
 }

@@ -9,26 +9,10 @@ import { OnboardingResult, RewardsOptInModal, RewardsTourModal } from '../../sha
 import { AdaptiveCaptchaView } from '../../rewards_panel/components/adaptive_captcha_view'
 import { GrantCaptchaModal } from './grant_captcha_modal'
 import { NotificationOverlay } from './notification_overlay'
+import { VBATNoticeModal } from './vbat_notice_modal'
+import { shouldShowVBATNotice } from '../../shared/components/vbat_notice'
 
-// Attaches a CSS class to the document body containing the name of the overlay.
-// This allows root-level style rules to expand the height of the panel if
-// necessary, based on the currently displayed overlay.
-function NamedOverlay (props: { name: string, children: React.ReactNode }) {
-  const onMountUnmount = (elem: HTMLElement | null) => {
-    const className = `panel-overlay-${props.name}`
-    if (elem) {
-      document.body.classList.add(className)
-    } else {
-      document.body.classList.remove(className)
-    }
-  }
-
-  return (
-    <div ref={onMountUnmount}>
-      {props.children}
-    </div>
-  )
-}
+import * as derivedState from '../lib/derived_state'
 
 export function PanelOverlays () {
   const host = React.useContext(HostContext)
@@ -51,9 +35,13 @@ export function PanelOverlays () {
     React.useState(host.state.adaptiveCaptchaInfo)
   const [notifications, setNotifications] =
     React.useState(host.state.notifications)
+  const [canConnectAccount, setCanConnectAccount] =
+    React.useState(derivedState.canConnectAccount(host.state))
+  const [userType, setUserType] = React.useState(host.state.userType)
 
   const [showTour, setShowTour] = React.useState(false)
   const [notificationsHidden, setNotificationsHidden] = React.useState(false)
+  const [hideVBATNotice, setHideVBATNotice] = React.useState(false)
   const [onboardingResult, setOnboardingResult] =
     React.useState<OnboardingResult | null>(null)
 
@@ -70,6 +58,8 @@ export function PanelOverlays () {
     setGrantCaptchaInfo(state.grantCaptchaInfo)
     setNotifications(state.notifications)
     setAdaptiveCaptchaInfo(state.adaptiveCaptchaInfo)
+    setCanConnectAccount(derivedState.canConnectAccount(state))
+    setUserType(state.userType)
   })
 
   React.useEffect(() => {
@@ -83,25 +73,21 @@ export function PanelOverlays () {
   }
 
   if (showTour) {
-    const onVerifyWalletClick = () => {
+    const onConnectAccount = () => {
       host.handleExternalWalletAction('verify')
     }
 
     return (
-      <NamedOverlay name='rewards-tour'>
-        <RewardsTourModal
-          firstTimeSetup={rewardsEnabled}
-          adsPerHour={settings.adsPerHour}
-          externalWalletProvider={externalWalletProviders[0]}
-          autoContributeAmount={settings.autoContributeAmount}
-          autoContributeAmountOptions={options.autoContributeAmounts}
-          onAdsPerHourChanged={host.setAdsPerHour}
-          onAutoContributeAmountChanged={host.setAutoContributeAmount}
-          onVerifyWalletClick={onVerifyWalletClick}
-          onDone={toggleTour}
-          onClose={toggleTour}
-        />
-      </NamedOverlay>
+      <RewardsTourModal
+        firstTimeSetup={rewardsEnabled}
+        adsPerHour={settings.adsPerHour}
+        canAutoContribute={!externalWalletProviders.includes('bitflyer')}
+        canConnectAccount={canConnectAccount}
+        onAdsPerHourChanged={host.setAdsPerHour}
+        onConnectAccount={onConnectAccount}
+        onDone={toggleTour}
+        onClose={toggleTour}
+      />
     )
   }
 
@@ -121,16 +107,14 @@ export function PanelOverlays () {
     }
 
     return (
-      <NamedOverlay name='opt-in'>
-        <RewardsOptInModal
-          availableCountries={availableCountries}
-          initialView={needsCountry ? 'declare-country' : 'default'}
-          result={onboardingResult}
-          onEnable={onEnable}
-          onTakeTour={toggleTour}
-          onHideResult={onHideResult}
-        />
-      </NamedOverlay>
+      <RewardsOptInModal
+        availableCountries={availableCountries}
+        initialView={needsCountry ? 'declare-country' : 'default'}
+        result={onboardingResult}
+        onEnable={onEnable}
+        onTakeTour={toggleTour}
+        onHideResult={onHideResult}
+      />
     )
   }
 
@@ -145,35 +129,40 @@ export function PanelOverlays () {
     }
 
     return (
-      <NamedOverlay name='adaptive-captcha'>
-        <AdaptiveCaptchaView
-          adaptiveCaptchaInfo={adaptiveCaptchaInfo}
-          onClose={onClose}
-          onCaptchaResult={host.handleAdaptiveCaptchaResult}
-          onContactSupport={onContactSupport}
-        />
-      </NamedOverlay>
+      <AdaptiveCaptchaView
+        adaptiveCaptchaInfo={adaptiveCaptchaInfo}
+        onClose={onClose}
+        onCaptchaResult={host.handleAdaptiveCaptchaResult}
+        onContactSupport={onContactSupport}
+      />
     )
   }
 
   if (grantCaptchaInfo) {
     return (
-      <NamedOverlay name='grant-captcha'>
-        <GrantCaptchaModal
-          grantCaptchaInfo={grantCaptchaInfo}
-          onSolve={host.solveGrantCaptcha}
-          onClose={host.clearGrantCaptcha}
-        />
-      </NamedOverlay>
+      <GrantCaptchaModal
+        grantCaptchaInfo={grantCaptchaInfo}
+        onSolve={host.solveGrantCaptcha}
+        onClose={host.clearGrantCaptcha}
+      />
     )
   }
 
   if (notifications.length > 0 && !notificationsHidden) {
     const onClose = () => { setNotificationsHidden(true) }
     return (
-      <NamedOverlay name='notifications'>
-        <NotificationOverlay notifications={notifications} onClose={onClose} />
-      </NamedOverlay>
+      <NotificationOverlay notifications={notifications} onClose={onClose} />
+    )
+  }
+
+  if (!hideVBATNotice && shouldShowVBATNotice(userType, options.vbatDeadline)) {
+    const onClose = () => { setHideVBATNotice(true) }
+    const onConnect = () => { host.handleExternalWalletAction('verify') }
+    return (
+      <VBATNoticeModal
+        onClose={onClose}
+        onConnectAccount={onConnect}
+      />
     )
   }
 

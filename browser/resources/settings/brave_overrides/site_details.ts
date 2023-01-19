@@ -19,6 +19,12 @@ RegisterPolymerTemplateModifications({
         idleDetectionItem.hidden = true
       }
     }
+    const adsItem = templateContent.querySelector('[category="[[contentSettingsTypesEnum_.ADS]]"]')
+    if (!adsItem) {
+      console.error(`[Brave Settings Overrides] Couldn't find ads item`)
+    } else {
+      adsItem.hidden = true
+    }
     const firstPermissionItem = templateContent.querySelector('div.list-frame > site-details-permission:nth-child(1)')
     if (!firstPermissionItem) {
       console.error(`[Brave Settings Overrides] Couldn't find first permission item`)
@@ -29,6 +35,15 @@ RegisterPolymerTemplateModifications({
             icon="cr:extension" label="${I18nBehavior.i18n('siteSettingsAutoplay')}">
         </site-details-permission>
       `)
+      const isGoogleSignInFeatureEnabled = loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
+      if (isGoogleSignInFeatureEnabled) {
+        firstPermissionItem.insertAdjacentHTML('beforebegin', `
+          <site-details-permission
+              category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]"
+              icon="cr:person" label="${I18nBehavior.i18n('siteSettingsGoogleSignIn')}">
+          </site-details-permission>
+        `)
+      }
       const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
       if (isNativeBraveWalletEnabled) {
           firstPermissionItem.insertAdjacentHTML('beforebegin', `

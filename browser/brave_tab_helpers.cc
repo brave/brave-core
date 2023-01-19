@@ -13,16 +13,16 @@
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/brave_stats/brave_stats_tab_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/core_metrics/core_metrics_tab_helper.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
+#include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/ntp_background/ntp_tab_helper.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_today/common/features.h"
-#include "brave/components/brave_wayback_machine/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/speedreader/common/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "content/public/browser/browser_context.h"
@@ -120,9 +120,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
-  if (base::FeatureList::IsEnabled(
-          brave_today::features::kBraveNewsSubscribeButtonFeature) &&
-      !web_contents->GetBrowserContext()->IsOffTheRecord()) {
+  if (!web_contents->GetBrowserContext()->IsOffTheRecord()) {
     BraveNewsTabHelper::CreateForWebContents(web_contents);
   }
 
@@ -137,7 +135,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
   if (!web_contents->GetBrowserContext()->IsOffTheRecord()) {
     ntp_background_images::NTPTabHelper::CreateForWebContents(web_contents);
-    core_metrics::CoreMetricsTabHelper::CreateForWebContents(web_contents);
+    misc_metrics::PageMetricsTabHelper::CreateForWebContents(web_contents);
   }
 }
 

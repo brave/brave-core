@@ -9,8 +9,8 @@
 #include <map>
 #include <string>
 
-#include "base/callback.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "brave/third_party/blink/renderer/platform/brave_audio_farbling_helper.h"
 #include "third_party/abseil-cpp/absl/random/random.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/renderer/core/core_export.h"
@@ -42,8 +42,6 @@ enum FarbleKey : uint64_t {
 };
 
 typedef absl::randen_engine<uint64_t> FarblingPRNG;
-typedef absl::optional<base::RepeatingCallback<float(float, size_t)>>
-    OptionalAudioFarblingCallback;
 
 CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(
     ExecutionContext* context);
@@ -76,11 +74,9 @@ class CORE_EXPORT BraveSessionCache final
   static BraveSessionCache& From(ExecutionContext&);
   static void Init();
 
-  OptionalAudioFarblingCallback GetAudioFarblingCallback(
-      blink::WebContentSettingsClient* settings);
-  void PerturbPixels(blink::WebContentSettingsClient* settings,
-                     const unsigned char* data,
-                     size_t size);
+  BraveFarblingLevel GetBraveFarblingLevel() { return farbling_level_; }
+  void FarbleAudioChannel(float* dst, size_t count);
+  void PerturbPixels(const unsigned char* data, size_t size);
   WTF::String GenerateRandomString(std::string seed, wtf_size_t length);
   WTF::String FarbledUserAgent(WTF::String real_user_agent);
   int FarbledInteger(FarbleKey key,
@@ -90,12 +86,17 @@ class CORE_EXPORT BraveSessionCache final
   bool AllowFontFamily(blink::WebContentSettingsClient* settings,
                        const AtomicString& family_name);
   FarblingPRNG MakePseudoRandomGenerator(FarbleKey key = FarbleKey::kNone);
+  absl::optional<blink::BraveAudioFarblingHelper> GetAudioFarblingHelper() {
+    return audio_farbling_helper_;
+  }
 
  private:
   bool farbling_enabled_;
   uint64_t session_key_;
   uint8_t domain_key_[32];
   std::map<FarbleKey, int> farbled_integers_;
+  BraveFarblingLevel farbling_level_;
+  absl::optional<blink::BraveAudioFarblingHelper> audio_farbling_helper_;
 
   void PerturbPixelsInternal(const unsigned char* data, size_t size);
 };

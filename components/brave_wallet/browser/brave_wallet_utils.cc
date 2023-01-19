@@ -262,13 +262,13 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownEthNetworks() {
   static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
       // clang-format off
       GetEthMainnet(),
+      GetAuroraMainnet(),
       GetPolygonMainnet(),
       GetBscMainnet(),
       GetCeloMainnet(),
       GetAvalancheMainnet(),
       GetFantomOperaMainnet(),
       GetOptimismMainnet(),
-      GetAuroraMainnet(),
       GetGoerliTestNetwork(),
       GetSepoliaTestNetwork(),
       GetEthLocalhost(),
@@ -884,40 +884,6 @@ bool DecodeString(size_t offset,
          base::HexStringToString(input.substr(offset, len), output);
 }
 
-bool DecodeStringArray(const std::string& input,
-                       std::vector<std::string>* output) {
-  // Get count of array.
-  uint256_t count = 0;
-  if (!HexValueToUint256("0x" + input.substr(0, 64), &count) ||
-      input.size() == 0) {
-    return false;
-  }
-
-  // Decode count and string for each array element.
-  *output = std::vector<std::string>(static_cast<size_t>(count), "");
-  size_t offset = 64;  // Offset to count of first element.
-  for (size_t i = 0; i < static_cast<size_t>(count); i++) {
-    // Get the starting data offset for each string element.
-    uint256_t data_offset;
-    if (offset + 64 > input.size() ||
-        !HexValueToUint256("0x" + input.substr(offset, 64), &data_offset)) {
-      return false;
-    }
-
-    // Decode each string.
-    size_t string_offset =
-        64 /* count */ + static_cast<size_t>(data_offset) * 2;
-    if (string_offset > input.size() ||
-        !DecodeString(string_offset, input, &output->at(i))) {
-      return false;
-    }
-
-    offset += 64;  // Offset for next count.
-  }
-
-  return true;
-}
-
 // Updates preferences for when the wallet is unlocked.
 // This is done in a utils function instead of in the KeyringService
 // because we call it both from the old extension and the new wallet when
@@ -1229,12 +1195,8 @@ void SetDefaultBaseCryptocurrency(PrefService* prefs,
   prefs->SetString(kDefaultBaseCryptocurrency, cryptocurrency);
 }
 
-bool GetShowWalletTestNetworks(PrefService* prefs) {
-  return prefs->GetBoolean(kShowWalletTestNetworks);
-}
-
 mojom::CoinType GetSelectedCoin(PrefService* prefs) {
-  return static_cast<brave_wallet::mojom::CoinType>(
+  return static_cast<mojom::CoinType>(
       prefs->GetInteger(kBraveWalletSelectedCoin));
 }
 
@@ -1247,11 +1209,11 @@ std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
 }
 
 GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id) {
-  if (base::CompareCaseInsensitiveASCII(
-          chain_id, brave_wallet::mojom::kMainnetChainId) == 0 ||
-      base::CompareCaseInsensitiveASCII(
-          chain_id, brave_wallet::mojom::kPolygonMainnetChainId) == 0) {
-    return AddInfuraProjectId(GURL(GetInfuraURLForKnownChainId(chain_id)));
+  if (base::CompareCaseInsensitiveASCII(chain_id, mojom::kMainnetChainId) ==
+          0 ||
+      base::CompareCaseInsensitiveASCII(chain_id,
+                                        mojom::kPolygonMainnetChainId) == 0) {
+    return AddInfuraProjectId(GetInfuraURLForKnownChainId(chain_id));
   }
 
   NOTREACHED();
@@ -1266,10 +1228,19 @@ std::string GetUnstoppableDomainsProxyReaderContractAddress(
   return "";
 }
 
+GURL GetEnsRpcUrl() {
+  return AddInfuraProjectId(
+      GetInfuraURLForKnownChainId(mojom::kMainnetChainId));
+}
+
 std::string GetEnsRegistryContractAddress(const std::string& chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
-  DCHECK_EQ(chain_id_lower, brave_wallet::mojom::kMainnetChainId);
+  DCHECK_EQ(chain_id_lower, mojom::kMainnetChainId);
   return kEnsRegistryContractAddress;
+}
+
+GURL GetSnsRpcUrl() {
+  return GetSolMainnet()->rpc_endpoints.front();
 }
 
 void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {
@@ -1281,15 +1252,8 @@ void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {
   {  // Update needs to be done before GetNetworkId below.
     DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
     base::Value::Dict& dict = update.Get()->GetDict();
-    // TODO(cdesouza): Once cr106 is merged, this FindList should be replaced
-    // with EnsureList.
-    base::Value::List* list = dict.FindList(GetPrefKeyForCoinType(chain.coin));
-    if (!list) {
-      list = dict.Set(GetPrefKeyForCoinType(chain.coin), base::Value::List())
-                 ->GetIfList();
-    }
-    CHECK(list);
-    list->Append(NetworkInfoToValue(chain));
+    dict.EnsureList(GetPrefKeyForCoinType(chain.coin))
+        ->Append(NetworkInfoToValue(chain));
   }
 
   if (chain.coin != mojom::CoinType::ETH)
@@ -1342,20 +1306,20 @@ void RemoveCustomNetwork(PrefService* prefs,
   });
 }
 
-std::vector<std::string> GetAllHiddenNetworks(PrefService* prefs,
-                                              mojom::CoinType coin) {
+std::vector<std::string> GetHiddenNetworks(PrefService* prefs,
+                                           mojom::CoinType coin) {
   std::vector<std::string> result;
   const auto& hidden_networks = prefs->GetDict(kBraveWalletHiddenNetworks);
 
-  auto* hidden_eth_networks =
+  auto* hidden_networks_list =
       hidden_networks.FindList(GetPrefKeyForCoinType(coin));
-  if (!hidden_eth_networks)
+  if (!hidden_networks_list)
     return result;
 
-  for (const auto& it : *hidden_eth_networks) {
-    auto* chain_id = it.GetIfString();
-    if (chain_id)
-      result.push_back(base::ToLowerASCII(std::move(*chain_id)));
+  for (const auto& it : *hidden_networks_list) {
+    if (auto* chain_id = it.GetIfString()) {
+      result.push_back(base::ToLowerASCII(*chain_id));
+    }
   }
 
   return result;
@@ -1366,14 +1330,7 @@ void AddHiddenNetwork(PrefService* prefs,
                       const std::string& chain_id) {
   DictionaryPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
   base::Value::Dict& dict = update.Get()->GetDict();
-  // TODO(cdesouza): Once cr106 is merged, this FindList should be replaced with
-  // EnsureList.
-  base::Value::List* list = dict.FindList(GetPrefKeyForCoinType(coin));
-  if (!list) {
-    list =
-        dict.Set(GetPrefKeyForCoinType(coin), base::Value::List())->GetIfList();
-  }
-  CHECK(list);
+  base::Value::List* list = dict.EnsureList(GetPrefKeyForCoinType(coin));
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
   if (!base::Contains(*list, base::Value(chain_id_lower))) {
     list->Append(chain_id_lower);

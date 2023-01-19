@@ -105,42 +105,6 @@ TEST_F(UpholdUtilTest, GetLoginUrl) {
            "transactions:transfer:others&intention=login&state=rdfdsfsdfsdf"}));
 }
 
-TEST_F(UpholdUtilTest, GetAddUrl) {
-  // empty string
-  std::string result = uphold::GetAddUrl("");
-  ASSERT_EQ(result, "");
-
-  // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
-  result = uphold::GetAddUrl("9324i5i32459i");
-  ASSERT_EQ(result, "https://uphold.com/dashboard/cards/9324i5i32459i/add");
-
-  // staging
-  ledger::_environment = mojom::Environment::STAGING;
-  result = uphold::GetAddUrl("9324i5i32459i");
-  ASSERT_EQ(
-      result,
-      "https://wallet-sandbox.uphold.com/dashboard/cards/9324i5i32459i/add");
-}
-
-TEST_F(UpholdUtilTest, GetWithdrawUrl) {
-  // empty string
-  std::string result = uphold::GetWithdrawUrl("");
-  ASSERT_EQ(result, "");
-
-  // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
-  result = uphold::GetWithdrawUrl("9324i5i32459i");
-  ASSERT_EQ(result, "https://uphold.com/dashboard/cards/9324i5i32459i/use");
-
-  // staging
-  ledger::_environment = mojom::Environment::STAGING;
-  result = uphold::GetWithdrawUrl("9324i5i32459i");
-  ASSERT_EQ(
-      result,
-      "https://wallet-sandbox.uphold.com/dashboard/cards/9324i5i32459i/use");
-}
-
 TEST_F(UpholdUtilTest, GetActivityUrl) {
   // empty string
   std::string result = uphold::GetActivityUrl("");
@@ -169,16 +133,13 @@ TEST_F(UpholdUtilTest, GetWallet) {
 
   const std::string wallet = FakeEncryption::Base64EncryptString(R"({
     "account_url":"https://wallet-sandbox.uphold.com/dashboard",
-    "add_url":"https://wallet-sandbox.uphold.com/dashboard/cards/asadasdasd/add",
     "address":"2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af",
     "fees":{},
     "login_url":"https://wallet-sandbox.uphold.com/authorize/4c2b665ca060d",
     "one_time_string":"1F747AE0A708E47ED7E650BF1856B5A4EF7E36833BDB1158A108F8",
     "status":2,
     "token":"4c80232r219c30cdf112208890a32c7e00",
-    "user_name":"test",
-    "withdraw_url":
-      "https://wallet-sandbox.uphold.com/dashboard/cards/asadasdasd/use"
+    "user_name":"test"
   })");
 
   ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
@@ -216,8 +177,6 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
   wallet->token = "";    // must be empty
   wallet->address = "";  // must be empty
   auto result = uphold::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url, "");
-  ASSERT_EQ(result->withdraw_url, "");
   ASSERT_EQ(
       result->login_url,
       base::StrCat({"https://wallet-sandbox.uphold.com/authorize/",
@@ -232,12 +191,6 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
   wallet->token = "must be non-empty";
   wallet->address = "123123123124234234234";  // must be non-empty
   result = uphold::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url,
-            "https://wallet-sandbox.uphold.com/dashboard/cards/"
-            "123123123124234234234/add");
-  ASSERT_EQ(result->withdraw_url,
-            "https://wallet-sandbox.uphold.com/dashboard/cards/"
-            "123123123124234234234/use");
   ASSERT_EQ(
       result->login_url,
       base::StrCat({"https://wallet-sandbox.uphold.com/authorize/",
@@ -252,8 +205,6 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
   wallet->token = "";    // must be empty
   wallet->address = "";  // must be empty
   result = uphold::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url, "");
-  ASSERT_EQ(result->withdraw_url, "");
   ASSERT_EQ(
       result->login_url,
       base::StrCat({"https://wallet-sandbox.uphold.com/authorize/",

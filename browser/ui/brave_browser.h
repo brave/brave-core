@@ -8,16 +8,15 @@
 
 #include <memory>
 
-#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
+#if defined(TOOLKIT_VIEWS)
 namespace sidebar {
 class SidebarController;
 }  // namespace sidebar
+#endif
 
 class BraveBrowserWindow;
-#endif
 
 namespace content {
 class WebContents;
@@ -54,7 +53,7 @@ class BraveBrowser : public Browser {
   // any warning/onbeforeunload handlers.
   bool ShouldAskForBrowserClosingBeforeHandlers();
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
+#if defined(TOOLKIT_VIEWS)
   sidebar::SidebarController* sidebar_controller() {
     return sidebar_controller_.get();
   }
@@ -72,9 +71,7 @@ class BraveBrowser : public Browser {
   // static
   static void SuppressBrowserWindowClosingDialogForTesting(bool suppress);
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
-#endif
 
   // Set true when user allowed to close browser before starting any
   // warning or onbeforeunload handlers.

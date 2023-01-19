@@ -1,10 +1,11 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/importer/importer_list.h"
 #include "base/files/file_path.h"
+#include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/scoped_blocking_call.h"
 #include "base/values.h"
@@ -34,10 +35,15 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
                                      profile->begin(), profile->end())),
                                  &items))
       continue;
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
+    // We can import password from Whale only on macOS.
+    // Decryption failed on Windows and Linux.
+    if (type == importer::TYPE_WHALE && (items & importer::PASSWORDS)) {
+      items ^= importer::PASSWORDS;
+    }
+#endif
     importer::SourceProfile chrome;
-    std::string importer_name(brand);
-    importer_name.append(*name);
-    chrome.importer_name = base::UTF8ToUTF16(importer_name);
+    chrome.importer_name = base::UTF8ToUTF16(base::StrCat({brand, " ", *name}));
     chrome.importer_type = type;
     chrome.services_supported = items;
     chrome.source_path = user_data_folder.Append(
@@ -53,47 +59,59 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
       profiles,
       GetChromeSourceProfiles(GetChromeUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetChromeUserDataFolder(), "Chrome ", importer::TYPE_CHROME);
+      GetChromeUserDataFolder(), "Chrome", importer::TYPE_CHROME);
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetChromeBetaUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetChromeBetaUserDataFolder(), "Chrome Beta ", importer::TYPE_CHROME);
+      GetChromeBetaUserDataFolder(), "Chrome Beta", importer::TYPE_CHROME);
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetChromeDevUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetChromeDevUserDataFolder(), "Chrome Dev ", importer::TYPE_CHROME);
+      GetChromeDevUserDataFolder(), "Chrome Dev", importer::TYPE_CHROME);
 #if !BUILDFLAG(IS_LINUX)
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetCanaryUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetCanaryUserDataFolder(), "Chrome Canary ", importer::TYPE_CHROME);
+      GetCanaryUserDataFolder(), "Chrome Canary", importer::TYPE_CHROME);
 #endif
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetChromiumUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetChromiumUserDataFolder(), "Chromium ", importer::TYPE_CHROME);
+      GetChromiumUserDataFolder(), "Chromium", importer::TYPE_CHROME);
 
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetEdgeUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetEdgeUserDataFolder(), "Microsoft Edge ", importer::TYPE_EDGE_CHROMIUM);
+      GetEdgeUserDataFolder(), "Microsoft Edge", importer::TYPE_EDGE_CHROMIUM);
 
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetVivaldiUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetVivaldiUserDataFolder(), "Vivaldi ", importer::TYPE_VIVALDI);
+      GetVivaldiUserDataFolder(), "Vivaldi", importer::TYPE_VIVALDI);
 
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetOperaUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetOperaUserDataFolder(), "Opera ", importer::TYPE_OPERA);
+      GetOperaUserDataFolder(), "Opera", importer::TYPE_OPERA);
+
+  AddChromeToProfiles(
+      profiles,
+      GetChromeSourceProfiles(GetYandexUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
+      GetYandexUserDataFolder(), "Yandex", importer::TYPE_YANDEX);
+
+  AddChromeToProfiles(
+      profiles,
+      GetChromeSourceProfiles(GetWhaleUserDataFolder().Append(
+          base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
+      GetWhaleUserDataFolder(), "Whale", importer::TYPE_WHALE);
 
 #if BUILDFLAG(IS_LINUX)
   // Installed via snap Opera has different profile path.
@@ -101,7 +119,7 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
       profiles,
       GetChromeSourceProfiles(GetOperaSnapUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetOperaSnapUserDataFolder(), "Opera ", importer::TYPE_OPERA);
+      GetOperaSnapUserDataFolder(), "Opera", importer::TYPE_OPERA);
 #endif
 }
 

@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/browser/ads_service.h"
 
@@ -42,6 +42,8 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterBooleanPref(prefs::kNotificationAdDidFallbackToCustom,
                                 false);
 
+  registry->RegisterStringPref(ads::prefs::kDiagnosticId, "");
+
   registry->RegisterInt64Pref(ads::prefs::kMaximumNotificationAdsPerHour, -1);
 
   registry->RegisterIntegerPref(ads::prefs::kIdleTimeThreshold, 15);
@@ -78,6 +80,8 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedNotificationState,
                                 false);
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedRewardsState, false);
+  registry->RegisterBooleanPref(ads::prefs::kShouldMigrateVerifiedRewardsUser,
+                                false);
 
   registry->RegisterUint64Pref(ads::prefs::kConfirmationsHash, 0);
   registry->RegisterUint64Pref(ads::prefs::kClientHash, 0);

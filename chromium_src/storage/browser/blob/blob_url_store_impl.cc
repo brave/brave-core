@@ -1,6 +1,7 @@
-// Copyright 2017 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "storage/browser/blob/blob_url_store_impl.h"
 
@@ -53,11 +54,14 @@ bool IsBlobUrlValidForPartitionedOrigin(const url::Origin& origin,
 
 namespace storage {
 
-BlobURLStoreImpl::BlobURLStoreImpl(const blink::StorageKey& storage_key,
-                                   base::WeakPtr<BlobUrlRegistry> registry)
+BlobURLStoreImpl::BlobURLStoreImpl(
+    const blink::StorageKey& storage_key,
+    base::WeakPtr<BlobUrlRegistry> registry,
+    BlobURLValidityCheckBehavior validity_check_behavior)
     : BlobURLStoreImpl_ChromiumImpl::BlobURLStoreImpl_ChromiumImpl(
           storage_key,
-          std::move(registry)) {}
+          std::move(registry),
+          validity_check_behavior) {}
 
 void BlobURLStoreImpl::Register(
     mojo::PendingRemote<blink::mojom::Blob> blob,

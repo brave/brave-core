@@ -13,6 +13,7 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/sync/driver/sync_service_impl.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 
 class Profile;
 
@@ -21,6 +22,7 @@ namespace syncer {
 class BraveSyncAuthManager;
 class SyncServiceImplDelegate;
 class SyncServiceCrypto;
+struct SyncProtocolError;
 
 class BraveSyncServiceImpl : public SyncServiceImpl {
  public:
@@ -54,21 +56,61 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   const brave_sync::Prefs& prefs() { return brave_sync_prefs_; }
 
+  void PermanentlyDeleteAccount(
+      base::OnceCallback<void(const SyncProtocolError&)> callback);
+
+  void SetJoinChainResultCallback(
+      base::OnceCallback<void(const bool&)> callback);
+
  private:
   friend class BraveSyncServiceImplTest;
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
                            ForcedSetDecryptionPassphrase);
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, OnAccountDeleted_Success);
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
+                           OnAccountDeleted_FailureAndRetry);
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, JoinActiveOrNewChain);
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, JoinDeletedChain);
+
   BraveSyncAuthManager* GetBraveSyncAuthManager();
   SyncServiceCrypto* GetCryptoForTests();
 
   void OnBraveSyncPrefsChanged(const std::string& path);
 
+  void PermanentlyDeleteAccountImpl(
+      const int current_attempt,
+      base::OnceCallback<void(const SyncProtocolError&)> callback);
+
+  void OnAccountDeleted(
+      const int current_attempt,
+      base::OnceCallback<void(const SyncProtocolError&)> callback,
+      const SyncProtocolError&);
+
+  void ResetEngine(ShutdownReason shutdown_reason,
+                   ResetEngineReason reset_reason) override;
+
+  void LocalDeviceAppeared();
+
   brave_sync::Prefs brave_sync_prefs_;
 
   PrefChangeRegistrar brave_sync_prefs_change_registrar_;
 
-  std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate_;
+  // This is set to true between |PermanentlyDeleteAccount| succeeded call and
+  // new sync chain setup or browser exit. This is used to avoid show the
+  // infobar to ourselves, because we know what we have done
+  bool initiated_delete_account_ = false;
 
+  // This flag is used to detect the case when we are trying to connect
+  // deleted sync chain. It is true between SetSyncCode and LocalDeviceAppeared.
+  bool initiated_join_chain_ = false;
+
+  // This flag is used to separate cases of normal leave the chain procedure and
+  // delete account case. When it's a normal leave procedure, we must not call
+  // BraveSyncServiceImpl::StopAndClear from BraveSyncServiceImpl::ResetEngine
+  bool initiated_self_device_info_deleted_ = false;
+
+  std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate_;
+  base::OnceCallback<void(const bool&)> join_chain_result_callback_;
   base::WeakPtrFactory<BraveSyncServiceImpl> weak_ptr_factory_;
 
   BraveSyncServiceImpl(const BraveSyncServiceImpl&) = delete;

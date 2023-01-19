@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_ads/android/brave_ads_native_helper.h"
 
@@ -30,14 +30,15 @@ jboolean JNI_BraveAdsNativeHelper_IsBraveAdsEnabled(
 // static
 void JNI_BraveAdsNativeHelper_SetAdsEnabled(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile_android) {
+    const base::android::JavaParamRef<jobject>& j_profile_android,
+    jboolean should_enable_ads) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
   AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service) {
     return;
   }
 
-  ads_service->SetEnabled(true);
+  ads_service->SetEnabled(should_enable_ads);
 }
 
 // static

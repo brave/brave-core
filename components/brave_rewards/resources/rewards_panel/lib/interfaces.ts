@@ -1,8 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { ExternalWallet, ExternalWalletProvider } from '../../shared/lib/external_wallet'
+import {
+  ExternalWallet,
+  ExternalWalletProvider,
+  ExternalWalletProviderRegionInfo
+} from '../../shared/lib/external_wallet'
+
+import { UserType } from '../../shared/lib/user_type'
 import { GrantInfo } from '../../shared/lib/grant_info'
 import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { PublisherPlatform } from '../../shared/lib/publisher_platform'
@@ -26,7 +33,6 @@ export interface PublisherInfo {
   name: string
   icon: string
   platform: PublisherPlatform | null
-  registered: boolean
   attentionScore: number
   autoContributeEnabled: boolean
   monthlyTip: number
@@ -57,6 +63,7 @@ export interface AdaptiveCaptchaInfo {
 }
 
 export interface Settings {
+  adsEnabled: boolean
   adsPerHour: number
   autoContributeEnabled: boolean
   autoContributeAmount: number
@@ -64,6 +71,9 @@ export interface Settings {
 
 export interface Options {
   autoContributeAmounts: number[]
+  externalWalletRegions: Map<string, ExternalWalletProviderRegionInfo>
+  vbatDeadline: number | undefined
+  vbatExpired: boolean
 }
 
 type RequestedView = 'rewards-tour'
@@ -89,6 +99,8 @@ export interface HostState {
   notifications: Notification[]
   availableCountries: string[]
   declaredCountry: string
+  userType: UserType
+  publishersVisitedCount: number
 }
 
 export type HostListener = (state: HostState) => void
@@ -98,13 +110,12 @@ export type MonthlyTipAction = 'update' | 'cancel'
 export interface Host {
   state: HostState
   addListener: (callback: HostListener) => () => void
-  getString: (key: string) => string
   enableRewards: (country: string) => Promise<OnboardingResult>
   openAdaptiveCaptchaSupport: () => void
   openRewardsSettings: () => void
   refreshPublisherStatus: () => void
   setIncludeInAutoContribute: (include: boolean) => void
-  setAutoContributeAmount: (amount: number) => void
+  setAdsEnabled: (adsEnabled: boolean) => void
   setAdsPerHour: (adsPerHour: number) => void
   sendTip: () => void
   handleMonthlyTipAction: (action: MonthlyTipAction) => void

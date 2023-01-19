@@ -19,7 +19,6 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -238,10 +237,8 @@ ViewCounterService::GetCurrentBrandedWallpaperFromModel() const {
 }
 
 std::vector<TopSite> ViewCounterService::GetTopSitesData() const {
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (auto* data = GetCurrentBrandedWallpaperData())
     return data->top_sites;
-#endif
 
   return {};
 }

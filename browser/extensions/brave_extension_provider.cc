@@ -6,37 +6,8 @@
 #include "brave/browser/extensions/brave_extension_provider.h"
 
 #include <string>
-#include <vector>
 
-#include "base/containers/contains.h"
-#include "base/strings/utf_string_conversions.h"
-#include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_component_updater/browser/extension_whitelist_service.h"
-#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "extensions/common/constants.h"
-#include "ui/base/l10n/l10n_util.h"
-
-namespace {
-
-bool IsBlacklisted(const extensions::Extension* extension) {
-  // This is a hardcoded list of extensions to block.
-  // Don't add new extensions to this list. Add them to
-  // the files managed by the extension whitelist service.
-  static std::vector<std::string> blacklisted_extensions(
-      {// Used for tests, corresponds to
-       // brave/test/data/should-be-blocked-extension.
-       "mlklomjnahgiddgfdgjhibinlfibfffc",
-     });
-
-  if (base::Contains(blacklisted_extensions, extension->id()))
-    return true;
-
-  return g_brave_browser_process->extension_whitelist_service()->IsBlacklisted(
-      extension->id());
-}
-
-}  // namespace
 
 namespace extensions {
 
@@ -51,22 +22,6 @@ std::string BraveExtensionProvider::GetDebugPolicyProviderName() const {
 #else
   return "Brave Extension Provider";
 #endif
-}
-
-bool BraveExtensionProvider::UserMayLoad(const Extension* extension,
-                                         std::u16string* error) const {
-  if (IsBlacklisted(extension)) {
-    if (error) {
-      *error = l10n_util::GetStringFUTF16(IDS_EXTENSION_CANT_INSTALL_ON_BRAVE,
-                                          base::UTF8ToUTF16(extension->name()),
-                                          base::UTF8ToUTF16(extension->id()));
-    }
-    DVLOG(1) << "Extension will not install "
-             << " ID: " << base::UTF8ToUTF16(extension->id()) << ", "
-             << " Name: " << base::UTF8ToUTF16(extension->name());
-    return false;
-  }
-  return true;
 }
 
 bool BraveExtensionProvider::MustRemainInstalled(const Extension* extension,

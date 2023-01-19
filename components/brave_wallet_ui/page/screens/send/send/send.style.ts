@@ -5,8 +5,11 @@
 
 import styled from 'styled-components'
 
+// Assets
+import { LoaderIcon } from 'brave-ui/components/icons'
+
 // Shared Styles
-import { StyledDiv, StyledInput, Text } from '../shared.styles'
+import { StyledDiv, StyledInput, Row } from '../shared.styles'
 
 export const SendContainer = styled(StyledDiv)`
   background-color: ${(p) => p.theme.color.background02};
@@ -26,7 +29,7 @@ export const SendContainer = styled(StyledDiv)`
 export const SectionBox = styled(StyledDiv) <{
   hasError?: boolean
   minHeight?: number
-  lessLeftPadding?: boolean
+  noPadding?: boolean
   boxDirection?: 'row' | 'column'
 }>`
   background-color: ${(p) => p.theme.color.background02};
@@ -35,7 +38,7 @@ export const SectionBox = styled(StyledDiv) <{
   border-radius: 16px;
   border: 1px solid
     ${(p) => (p.hasError ? p.theme.color.errorBorder : p.theme.color.divider01)};
-  padding: 16px 16px 16px ${(p) => (p.lessLeftPadding ? '8px' : '16px')};
+  padding: ${(p) => p.noPadding ? '0px' : '16px 16px 16px 8px'};
   width: 100%;
   position: relative;
   margin-bottom: 16px;
@@ -161,12 +164,6 @@ export const Background = styled(StyledDiv) <{
   background-image: var(--${p => p.network});
 `
 
-export const FoundAddress = styled(Text) <{ position: number }>`
-  position: absolute;
-  z-index: 8;
-  left: ${(p) => p.position}px;
-`
-
 export const DIVForWidth = styled.div`
   width: auto;
   display: inline-block;
@@ -177,4 +174,19 @@ export const DIVForWidth = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
+`
+
+export const InputRow = styled(Row)`
+  box-sizing: border-box;
+  position: relative;
+`
+
+export const DomainLoadIcon = styled(LoaderIcon) <{ position: number }>`
+  color: ${p => p.theme.palette.blurple500};
+  height: 16px;
+  width: 16px;
+  opacity: 0.4;
+  position: absolute;
+  z-index: 8;
+  left: ${(p) => p.position}px;
 `

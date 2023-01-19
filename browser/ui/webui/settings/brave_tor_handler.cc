@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/ui/webui/settings/brave_tor_handler.h"
 
@@ -13,13 +13,8 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/callback.h"
-#include "base/callback_helpers.h"
+#include "base/json/json_writer.h"
 #include "base/memory/ref_counted_memory.h"
-#include "base/memory/weak_ptr.h"
-#include "base/strings/strcat.h"
-#include "base/strings/stringprintf.h"
-#include "base/strings/utf_string_conversions.h"
-#include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/pref_names.h"
@@ -29,11 +24,14 @@
 #include "chrome/browser/image_fetcher/image_decoder_impl.h"
 #include "components/image_fetcher/core/image_decoder.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/browser_thread.h"
-#include "content/public/browser/navigation_controller.h"
-#include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_observer.h"
+#include "net/url_request/url_request.h"
+#include "services/data_decoder/public/cpp/data_decoder.h"
+#include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/image/image.h"
@@ -41,82 +39,93 @@
 
 namespace {
 
-constexpr const char kTorBridgesUrl[] =
-    "https://bridges.torproject.org/bridges?transport=obfs4";
+// https://gitlab.torproject.org/tpo/anti-censorship/rdsys/-/blob/main/doc/moat.md
 
-constexpr const char16_t kGetCaptchaScript[] =
-    uR"js(
-  (function() {
-    const captchaBox = document.getElementById('bridgedb-captcha')
-    if (!captchaBox) return null
+constexpr const char kTorBridgesFetchUrl[] =
+    "https://bridges.torproject.org/moat/fetch";
+constexpr const char kTorBridgesCheckUrl[] =
+    "https://bridges.torproject.org/moat/check";
 
-    const captchaImages = captchaBox.getElementsByTagName('img')
-    if (!captchaImages || captchaImages.length < 1)
-      return null
+constexpr const char kMoatVersion[] = "0.1.0";
 
-    const captchaImage = captchaImages[0]
-    return { captcha: captchaImage.src }
-  })();
-)js";
+constexpr const char kMoatShimToken[] = "LVOippNS8UiKLH6kXf1D8pI1clLc";
 
-constexpr const char16_t kSendCaptchaScript[] =
-    uR"js(
-  (function(captcha) {
-    const responseField = document.getElementById('bridgedb-captcha-input')
-    if (!responseField) return null
+constexpr net::NetworkTrafficAnnotationTag kTorBridgesMoatAnnotation =
+    net::DefineNetworkTrafficAnnotation("brave_tor_bridges", R"(
+    semantics {
+      sender:
+        "Brave Tor Handler"
+      description:
+        "This service sends requests to the Tor bridges server."
+      trigger:
+        "When user requests bridges from settings."
+      destination: WEBSITE
+    }
+    policy {
+      cookies_allowed: NO
+    })");
 
-    responseField.value = captcha
+constexpr const size_t kMaxBodySize = 256 * 1024;
 
-    const submit = document.getElementById('bridgedb-captcha-submit')
-    if (!submit) return null
+base::Value FetchCaptchaData() {
+  base::Value::Dict data;
+  data.Set("type", "client-transports");
+  data.Set("version", kMoatVersion);
+  base::Value::List supported_transports;
 
-    submit.click()
-    return { result: true }
-  })
-)js";
+  supported_transports.Append("obfs4");
+  data.Set("supported", std::move(supported_transports));
 
-constexpr const char16_t kParseBridgesScript[] =
-    uR"js(
-  (function() {
-    const bridgeLines = document.getElementById('bridgelines')
-    if (!bridgeLines) return null
+  base::Value::List list;
+  list.Append(std::move(data));
 
-    const bridges = bridgeLines.textContent.split('\n').filter(
-       (bridge) => { return bridge.trim().length != 0 }).
-       map((bridge) => { return bridge.trim(); })
-    return {bridges : bridges}
-  })();
-)js";
+  base::Value::Dict result;
+  result.Set("data", std::move(list));
+  return base::Value(std::move(result));
+}
 
-constexpr int kIsolatedWorldId = content::ISOLATED_WORLD_ID_CONTENT_END + 1;
+base::Value SolveCaptchaData(const std::string& challenge,
+                             const std::string& solution) {
+  base::Value::Dict data;
+  data.Set("id", "2");
+  data.Set("version", kMoatVersion);
+  data.Set("qrcode", "false");
+  data.Set("type", "moat-solution");
+  data.Set("transport", "obfs4");
+  data.Set("challenge", challenge);
+  data.Set("solution", solution);
+
+  base::Value::List list;
+  list.Append(std::move(data));
+
+  base::Value::Dict result;
+  result.Set("data", std::move(list));
+  return base::Value(std::move(result));
+}
+
 }  // namespace
 
-// This class is designed for making request to the Tor bridge web site.
-// It creates WebContents and loads kTorBridgesUrl. When the load complete
-// queries for captcha image and post it to CaptchaCallback.
-// When user resolves captcha BridgeRequest paste it into the loaded WebContents
-// and sumbit a form. Tor bridges site returns list of bridges which parsed and
-// posted to the BridgesCallback.
-class BridgeRequest : public content::WebContentsObserver {
+// Requests TOR bridges from moat API.
+class BridgeRequest {
  public:
   using CaptchaCallback = base::OnceCallback<void(const base::Value& image)>;
   using BridgesCallback = base::OnceCallback<void(const base::Value& bridges)>;
 
   BridgeRequest(content::BrowserContext* browser_context,
                 CaptchaCallback captcha_callback)
-      : captcha_callback_(std::move(captcha_callback)) {
-    content::WebContents::CreateParams params(browser_context);
-    web_contents_ = content::WebContents::Create(params);
-    Observe(web_contents_.get());
-
-    const GURL url(kTorBridgesUrl);
-    content::NavigationController::LoadURLParams load_params(url);
-    web_contents_->GetController().LoadURLWithParams(load_params);
+      : url_loader_factory_(browser_context->GetDefaultStoragePartition()
+                                ->GetURLLoaderFactoryForBrowserProcess()),
+        captcha_callback_(std::move(captcha_callback)) {
+    // Fetch the CAPTCHA challenge.
+    simple_url_loader_ =
+        MakeMoatRequest(GURL(kTorBridgesFetchUrl), FetchCaptchaData(),
+                        base::BindOnce(&BridgeRequest::OnCaptchaResponse,
+                                       weak_factory_.GetWeakPtr()));
   }
 
   BridgeRequest(const BridgeRequest&) = delete;
   BridgeRequest& operator=(const BridgeRequest&) = delete;
-  ~BridgeRequest() override {
+  ~BridgeRequest() {
     if (captcha_callback_) {
       std::move(captcha_callback_).Run(base::Value());
     }
@@ -130,10 +139,14 @@ class BridgeRequest : public content::WebContentsObserver {
     DCHECK_EQ(State::kProvideCaptcha, state_);
 
     result_callback_ = std::move(result_callback);
-    const auto script = base::StrCat(
-        {kSendCaptchaScript, u"('", base::UTF8ToUTF16(captcha), u"')"});
-    render_frame_host_->ExecuteJavaScriptInIsolatedWorld(
-        script, base::DoNothing(), kIsolatedWorldId);
+
+    // Check the solution of the challenge.
+    simple_url_loader_ =
+        MakeMoatRequest(GURL(kTorBridgesCheckUrl),
+                        SolveCaptchaData(captcha_challenge_, captcha),
+                        base::BindOnce(&BridgeRequest::OnBridgesResponse,
+                                       weak_factory_.GetWeakPtr()));
+
     state_ = State::kWaitForBridges;
   }
 
@@ -144,44 +157,40 @@ class BridgeRequest : public content::WebContentsObserver {
     kWaitForBridges,
   };
 
-  // content::WebContentsObserver:
-  void DOMContentLoaded(content::RenderFrameHost* render_frame_host) override {
-    render_frame_host_ = render_frame_host;
-    switch (state_) {
-      case State::kLoadCaptcha:
-        render_frame_host_->ExecuteJavaScriptInIsolatedWorld(
-            kGetCaptchaScript,
-            base::BindOnce(&BridgeRequest::OnGetCaptchaImage,
-                           weak_factory_.GetWeakPtr()),
-            kIsolatedWorldId);
-        state_ = State::kProvideCaptcha;
-        break;
-      case State::kProvideCaptcha:
-        break;
-      case State::kWaitForBridges:
-        ParseBridges();
-        break;
+  void OnCaptchaResponse(std::unique_ptr<std::string> response_body) {
+    simple_url_loader_.reset();
+
+    if (!response_body) {
+      OnCaptchaParsed(base::unexpected("Request has failed."));
+    } else {
+      data_decoder::DataDecoder::ParseJsonIsolated(
+          *response_body, base::BindOnce(&BridgeRequest::OnCaptchaParsed,
+                                         weak_factory_.GetWeakPtr()));
     }
   }
 
-  void WebContentsDestroyed() override {
-    Observe(nullptr);
-
-    if (result_callback_) {
-      std::move(result_callback_).Run({});
+  void OnCaptchaParsed(data_decoder::DataDecoder::ValueOrError value) {
+    if (!value.has_value() || !value->is_dict()) {
+      return std::move(captcha_callback_).Run(base::Value());
     }
-  }
-
-  void OnGetCaptchaImage(base::Value value) {
-    if (!value.is_dict() || !value.GetDict().FindString("captcha")) {
-      return std::move(captcha_callback_).Run(std::move(value));
+    const auto* data = value->GetDict().FindList("data");
+    if (!data || data->empty()) {
+      return std::move(captcha_callback_).Run(base::Value());
     }
+    const auto& captcha = data->front();
+    if (!captcha.is_dict() || !captcha.GetDict().FindString("image") ||
+        !captcha.GetDict().FindString("challenge")) {
+      return std::move(captcha_callback_).Run(base::Value());
+    }
+
     std::string image_data;
-    base::Base64Decode(*value.GetDict().FindString("captcha"));
-    if (!base::Base64Decode(*value.GetDict().FindString("captcha"),
+    if (!base::Base64Decode(*captcha.GetDict().FindString("image"),
                             &image_data)) {
-      return std::move(captcha_callback_).Run(std::move(value));
+      return std::move(captcha_callback_).Run(base::Value());
     }
+
+    captcha_challenge_ = *captcha.GetDict().FindString("challenge");
+
     if (!image_decoder_) {
       image_decoder_ = std::make_unique<ImageDecoderImpl>();
     }
@@ -204,27 +213,69 @@ class BridgeRequest : public content::WebContentsObserver {
     result.Set("captcha",
                "data:image/png;base64," + base::Base64Encode(encoded->data()));
     std::move(captcha_callback_).Run(base::Value(std::move(result)));
+    state_ = State::kProvideCaptcha;
   }
 
-  void ParseBridges() {
-    DCHECK_EQ(State::kWaitForBridges, state_);
-    render_frame_host_->ExecuteJavaScriptInIsolatedWorld(
-        kParseBridgesScript,
-        base::BindOnce(&BridgeRequest::OnBridgesParsed,
-                       weak_factory_.GetWeakPtr()),
-        kIsolatedWorldId);
+  void OnBridgesResponse(std::unique_ptr<std::string> response_body) {
+    simple_url_loader_.reset();
+
+    if (!response_body) {
+      OnBridgesParsed(base::unexpected("Request has failed."));
+    } else {
+      data_decoder::DataDecoder::ParseJsonIsolated(
+          *response_body, base::BindOnce(&BridgeRequest::OnBridgesParsed,
+                                         weak_factory_.GetWeakPtr()));
+    }
   }
 
-  void OnBridgesParsed(base::Value value) {
-    std::move(result_callback_).Run(std::move(value));
+  void OnBridgesParsed(data_decoder::DataDecoder::ValueOrError value) {
+    if (!value.has_value() || !value->is_dict()) {
+      return std::move(result_callback_).Run(base::Value());
+    }
+    const auto* data = value->GetDict().FindList("data");
+    if (!data || data->empty() || !data->front().is_dict() ||
+        !data->front().GetDict().FindList("bridges")) {
+      return std::move(result_callback_).Run(base::Value());
+    }
+
+    std::move(result_callback_).Run(data->front());
   }
 
-  raw_ptr<content::RenderFrameHost> render_frame_host_ = nullptr;
+  std::unique_ptr<network::SimpleURLLoader> MakeMoatRequest(
+      const GURL& url,
+      const base::Value& data,
+      network::SimpleURLLoader::BodyAsStringCallback response_callback) {
+    auto request = std::make_unique<network::ResourceRequest>();
+    request->url = url;
+    request->method = net::HttpRequestHeaders::kPostMethod;
+    request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+    request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES |
+                          net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
+    request->headers.SetHeader("Content-Type", "application/vnd.api+json");
+    request->headers.SetHeader("shim-token", kMoatShimToken);
+
+    auto url_loader = network::SimpleURLLoader::Create(
+        std::move(request), kTorBridgesMoatAnnotation);
+    if (!data.is_none()) {
+      std::string data_content;
+      base::JSONWriter::Write(data, &data_content);
+      url_loader->AttachStringForUpload(data_content);
+    }
+    url_loader->DownloadToString(url_loader_factory_.get(),
+                                 std::move(response_callback), kMaxBodySize);
+
+    return url_loader;
+  }
+
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   CaptchaCallback captcha_callback_;
   BridgesCallback result_callback_;
   State state_ = State::kLoadCaptcha;
-  std::unique_ptr<content::WebContents> web_contents_;
+
+  std::string captcha_challenge_;
   std::unique_ptr<image_fetcher::ImageDecoder> image_decoder_;
+
+  std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
 
   base::WeakPtrFactory<BridgeRequest> weak_factory_{this};
 };

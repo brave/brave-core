@@ -11,6 +11,7 @@ brave_bytecode_jars = [
   "obj/chrome/android/base_module_java.javac.jar",
   "obj/chrome/android/chrome_java.javac.jar",
   "obj/chrome/android/features/tab_ui/java.javac.jar",
+  "obj/chrome/browser/download/internal/android/java.javac.jar",
   "obj/chrome/browser/flags/java.javac.jar",
   "obj/chrome/browser/locale/delegate_java.javac.jar",
   "obj/chrome/browser/notifications/java.javac.jar",

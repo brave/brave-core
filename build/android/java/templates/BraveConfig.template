@@ -16,8 +16,14 @@ public class BraveConfig {
 #endif
 
 #if defined(BRAVE_ANDROID_P3A_ENABLED)
-public static final boolean P3A_ENABLED = BRAVE_ANDROID_P3A_ENABLED;
+  public static final boolean P3A_ENABLED = BRAVE_ANDROID_P3A_ENABLED;
 #else
-public static final boolean P3A_ENABLED = false;
+  public static final boolean P3A_ENABLED = false;
+#endif
+
+#if defined(BRAVE_SAFEBROWSING_API_KEY)
+  public static final String SAFEBROWSING_API_KEY = BRAVE_SAFEBROWSING_API_KEY;
+#else
+  public static final String SAFEBROWSING_API_KEY = "";
 #endif
 }

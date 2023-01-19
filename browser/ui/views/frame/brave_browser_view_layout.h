@@ -13,10 +13,23 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
   using BrowserViewLayout::BrowserViewLayout;
   ~BraveBrowserViewLayout() override;
 
+  void set_vertical_tab_strip_host(views::View* vertical_tab_strip_host) {
+    vertical_tab_strip_host_ = vertical_tab_strip_host;
+  }
+
   // BrowserViewLayout overrides:
+  void Layout(views::View* host) override;
   void LayoutSidePanelView(views::View* side_panel,
                            gfx::Rect& contents_container_bounds) override;
   int LayoutTabStripRegion(int top) override;
+  int LayoutBookmarkAndInfoBars(int top, int browser_view_y) override;
+  int LayoutInfoBar(int top) override;
+  void LayoutContentsContainerView(int top, int bottom) override;
+
+ private:
+  bool ShouldPushBookmarkBarForVerticalTabs();
+
+  raw_ptr<views::View> vertical_tab_strip_host_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_LAYOUT_H_

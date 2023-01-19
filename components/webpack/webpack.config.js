@@ -11,10 +11,11 @@ const pathMap = require('./path-map')
 
 const tsConfigPath = path.join(process.env.ROOT_GEN_DIR, 'tsconfig-webpack.json')
 
-// OpenSSL 3 no longer supports the insecure md4 hash, but webpack < 6
+// OpenSSL 3 no longer supports the insecure md4 hash, but webpack < 5.54.0
 // hardcodes it. Work around by substituting a supported algorithm.
 // https://github.com/webpack/webpack/issues/13572
 // https://github.com/webpack/webpack/issues/14532
+// TODO(petemill): Remove this patching when webpack > 5.54.0 is being used.
 const crypto = require("crypto");
 const crypto_orig_createHash = crypto.createHash;
 crypto.createHash = algorithm => crypto_orig_createHash(algorithm == "md4" ? "sha256" : algorithm);
@@ -117,8 +118,8 @@ module.exports = async function (env, argv) {
           loader: 'url-loader?limit=13000&minetype=application/font-woff'
         },
         {
-          test: /\.(ttf|eot|ico|svg|png|jpg|jpeg|gif)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: 'file-loader'
+          test: /\.(ttf|eot|ico|svg|png|jpg|jpeg|gif|webp)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loaders: ['file-loader']
         },
         // In order to fix a memory leak in WDP we introduced the 'linkedom'
         // depencendy: https://github.com/brave/web-discovery-project/pull/197
@@ -152,6 +153,23 @@ module.exports = async function (env, argv) {
               loader: 'babel-loader', // This should be the last loader of course
               options: {
                 plugins: ['@babel/plugin-proposal-export-namespace-from'],
+              },
+            },
+          ],
+        },
+        {
+          test: (input) => {
+            // Handle both Windows and Linux/Mac paths formats
+            return (
+              input.endsWith('/wallet-standard-brave/lib/esm/wallet.js') ||
+              input.endsWith('\\wallet-standard-brave\\lib\\esm\\wallet.js')
+            );
+          },
+          use: [
+            {
+              loader: 'babel-loader', // This should be the last loader of course
+              options: {
+                plugins: ['@babel/plugin-proposal-optional-chaining'],
               },
             },
           ],

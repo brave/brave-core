@@ -8,11 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+@class WebState;
+
 NS_ASSUME_NONNULL_BEGIN
 
 NS_SWIFT_NAME(BraveSyncTab)
 OBJC_EXPORT
 @interface BraveSyncTab : NSObject
+
+@property(nonatomic, strong, readonly) WebState* webState;
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -30,7 +34,8 @@ OBJC_EXPORT
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (BraveSyncTab*)createBraveSyncTab;
+- (BraveSyncTab*)createBraveSyncTab:(bool)isOffTheRecord
+    NS_SWIFT_NAME(createBraveSyncTab(isOffTheRecord:));
 @end
 
 NS_ASSUME_NONNULL_END

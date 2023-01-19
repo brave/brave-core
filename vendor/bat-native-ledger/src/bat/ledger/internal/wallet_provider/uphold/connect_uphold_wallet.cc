@@ -102,14 +102,6 @@ void ConnectUpholdWallet::OnGetUser(
 
   if (user.bat_not_allowed) {
     BLOG(0, "BAT is not allowed for the user!");
-    if (wallet->status == mojom::WalletStatus::kLoggedOut) {
-      // kLoggedOut ==> kNotConnected
-      if (!ledger_->uphold()->TransitionWallet(
-              std::move(wallet), mojom::WalletStatus::kNotConnected)) {
-        return std::move(callback).Run(
-            base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
-      }
-    }
 
     return std::move(callback).Run(base::unexpected(
         mojom::ConnectExternalWalletError::kUpholdBATNotAllowed));
@@ -163,15 +155,6 @@ void ConnectUpholdWallet::OnGetCapabilities(
   if (!*capabilities.can_receive || !*capabilities.can_send) {
     BLOG(0, "User doesn't have the required " << constant::kWalletUphold
                                               << " capabilities!");
-
-    if (wallet->status == mojom::WalletStatus::kLoggedOut) {
-      // kLoggedOut ==> kNotConnected
-      if (!ledger_->uphold()->TransitionWallet(
-              std::move(wallet), mojom::WalletStatus::kNotConnected)) {
-        return std::move(callback).Run(
-            base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
-      }
-    }
 
     return std::move(callback).Run(base::unexpected(
         mojom::ConnectExternalWalletError::kUpholdInsufficientCapabilities));
@@ -245,7 +228,7 @@ void ConnectUpholdWallet::OnGetUser(mojom::Result result,
   if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
     // kConnected ==> kLoggedOut
-    if (!ledger_->uphold()->DisconnectWallet()) {
+    if (!ledger_->uphold()->LogOutWallet()) {
       BLOG(0, "Failed to disconnect " << constant::kWalletUphold << " wallet!");
     }
 
@@ -260,21 +243,12 @@ void ConnectUpholdWallet::OnGetUser(mojom::Result result,
   if (user.bat_not_allowed) {
     BLOG(0, "BAT is not allowed for the user!");
 
-    const std::string abbreviated_address = wallet->address.substr(0, 5);
-
-    // kConnected ==> kNotConnected
-    if (!ledger_->uphold()->TransitionWallet(
-            std::move(wallet), mojom::WalletStatus::kNotConnected)) {
-      return BLOG(0, "Failed to transition " << constant::kWalletUphold
-                                             << " wallet state!");
+    // kConnected ==> kLoggedOut
+    if (!ledger_->uphold()->LogOutWallet(notifications::kUpholdBATNotAllowed)) {
+      BLOG(0, "Failed to disconnect " << constant::kWalletUphold << " wallet!");
     }
 
-    ledger_->database()->SaveEventLog(
-        log::kWalletDisconnected,
-        std::string(constant::kWalletUphold) + "/" + abbreviated_address);
-    ledger_->ledger_client()->WalletDisconnected(constant::kWalletUphold);
-    return ledger_->ledger_client()->ShowNotification(
-        notifications::kUpholdBATNotAllowed, {}, [](auto) {});
+    return;
   }
 
   ledger_->uphold()->GetCapabilities(
@@ -295,7 +269,7 @@ void ConnectUpholdWallet::OnGetCapabilities(mojom::Result result,
   if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
     // kConnected ==> kLoggedOut
-    if (!ledger_->uphold()->DisconnectWallet()) {
+    if (!ledger_->uphold()->LogOutWallet()) {
       BLOG(0, "Failed to disconnect " << constant::kWalletUphold << " wallet!");
     }
 
@@ -311,10 +285,12 @@ void ConnectUpholdWallet::OnGetCapabilities(mojom::Result result,
   if (!*capabilities.can_receive || !*capabilities.can_send) {
     BLOG(0, "User doesn't have the required " << constant::kWalletUphold
                                               << " capabilities!");
-    // kConnected ==> kNotConnected
-    ledger_->wallet()->DisconnectWallet(constant::kWalletUphold, [](auto) {});
-    ledger_->ledger_client()->ShowNotification(
-        notifications::kUpholdInsufficientCapabilities, {}, [](auto) {});
+
+    // kConnected ==> kLoggedOut
+    if (!ledger_->uphold()->LogOutWallet(
+            notifications::kUpholdInsufficientCapabilities)) {
+      BLOG(0, "Failed to disconnect " << constant::kWalletUphold << " wallet!");
+    }
   }
 }
 

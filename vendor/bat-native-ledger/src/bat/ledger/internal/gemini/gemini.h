@@ -69,7 +69,7 @@ class Gemini {
 
   [[nodiscard]] bool SetWallet(mojom::ExternalWalletPtr);
 
-  [[nodiscard]] bool DisconnectWallet(bool manual = false);
+  [[nodiscard]] bool LogOutWallet();
 
  private:
   void ContributionCompleted(mojom::Result result,

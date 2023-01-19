@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -14,6 +14,7 @@
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
@@ -76,7 +77,7 @@ KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
       KeyringServiceFactory::GetServiceForContext(context),
       JsonRpcServiceFactory::GetServiceForContext(context),
       TxServiceFactory::GetServiceForContext(context),
-      user_prefs::UserPrefs::Get(context));
+      user_prefs::UserPrefs::Get(context), g_browser_process->local_state());
 }
 
 content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(

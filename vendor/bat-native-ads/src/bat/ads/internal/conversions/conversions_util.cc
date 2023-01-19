@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/conversions/conversions_util.h"
 
@@ -11,8 +11,8 @@
 
 #include "base/base64.h"
 #include "base/check_op.h"
-#include "bat/ads/internal/base/crypto/crypto_util.h"
-#include "bat/ads/internal/base/crypto/key_pair_info.h"
+#include "bat/ads/internal/common/crypto/crypto_util.h"
+#include "bat/ads/internal/common/crypto/key_pair_info.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
 #include "third_party/re2/src/re2/re2.h"

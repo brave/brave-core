@@ -10,19 +10,21 @@
 #include "brave/browser/ui/webui/brave_wallet/market/market_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/nft/nft_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/trezor/trezor_ui.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
-#include "brave/components/playlist/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "content/public/browser/webui_config_map.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_vpn/vpn_panel_ui.h"
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID)
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
-#include "brave/components/playlist/features.h"
+#include "brave/components/playlist/common/features.h"
 #endif
 
 #define RegisterChromeUntrustedWebUIConfigs \

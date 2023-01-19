@@ -9,6 +9,8 @@ namespace brave_rewards {
 namespace prefs {
 
 const char kDisabledByPolicy[] = "brave.rewards.disabled_by_policy";
+const char kUserVersion[] = "brave.rewards.user_version";
+const char kCurrentUserVersion[] = "2.5";
 const char kHideButton[] = "brave.hide_brave_rewards_button";
 const char kShowButton[] = "brave.show_brave_rewards_button";
 const char kEnabled[] = "brave.rewards.enabled";
@@ -23,8 +25,7 @@ const char kBackupNotificationInterval[] =
 const char kBackupSucceeded[] = "brave.rewards.backup_succeeded";
 const char kUserHasFunded[] = "brave.rewards.user_has_funded";
 const char kUserHasClaimedGrant[] = "brave.rewards.user_has_claimed_grant";
-const char kAddFundsNotification[] =
-    "brave.rewards.add_funds_notification";
+const char kAddFundsNotification[] = "brave.rewards.add_funds_notification";
 const char kNotificationStartupDelay[] =
     "brave.rewards.notification_startup_delay";
 const char kExternalWallets[] = "brave.rewards.external_wallets";
@@ -69,6 +70,8 @@ const char kParametersMonthlyTipChoices[] =
 const char kParametersPayoutStatus[] = "brave.rewards.parameters.payout_status";
 const char kParametersWalletProviderRegions[] =
     "brave.rewards.parameters.wallet_provider_regions";
+const char kParametersVBatDeadline[] = "brave.rewards.parameters.vbat_deadline";
+const char kParametersVBatExpired[] = "brave.rewards.parameters.vbat_expired";
 const char kFetchOldBalance[] =
     "brave.rewards.fetch_old_balance";
 const char kEmptyBalanceChecked[] =

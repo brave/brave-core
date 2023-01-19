@@ -15,9 +15,9 @@ if (!is_android) {
   ]
 
   brave_browser_ui_color_mixers_deps += [
-    "//brave/components/brave_vpn/buildflags",
-    "//brave/components/sidebar/buildflags",
-    "//brave/components/speedreader/common:buildflags",
+    "//brave/browser/themes",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/speedreader/common/buildflags",
     "//skia",
     "//ui/color",
     "//ui/gfx",

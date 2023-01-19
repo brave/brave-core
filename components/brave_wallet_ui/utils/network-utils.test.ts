@@ -5,7 +5,6 @@
 import {
   getNetworkInfo,
   emptyNetwork,
-  reduceNetworkDisplayName,
   getNetworksByCoinType,
   getTokensNetwork,
   getCoinFromTxDataUnion,
@@ -29,23 +28,6 @@ describe('getNetworkInfo', () => {
     const chainId = 'fakeChainId'
     const coin = BraveWallet.CoinType.ETH
     expect(getNetworkInfo(chainId, coin, mockNetworks)).toEqual(emptyNetwork)
-  })
-})
-
-describe('reduceNetworkDisplayName', () => {
-  it('should return empty string if network name is falsy', () => {
-    expect(reduceNetworkDisplayName('')).toEqual('')
-  })
-
-  it('should return first word when network name contains spaces', () => {
-    const result = reduceNetworkDisplayName('Ethereum Mainet')
-    expect(result).toEqual('Ethereum')
-  })
-
-  it('should concatenate first six character of network name and ..', () => {
-    const networkName = 'TestNetworkName'
-    const expected = 'TestNe..'
-    expect(reduceNetworkDisplayName(networkName)).toBe(expected)
   })
 })
 

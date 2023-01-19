@@ -13,6 +13,7 @@
 #include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/timer/timer.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -57,7 +58,8 @@ namespace brave_news {
 // owning prefs data.
 // Controls remote feed update logic via Timer and prefs values.
 class BraveNewsController : public KeyedService,
-                            public mojom::BraveNewsController {
+                            public mojom::BraveNewsController,
+                            public PublishersController::Observer {
  public:
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
@@ -128,6 +130,9 @@ class BraveNewsController : public KeyedService,
                        const std::string& creative_instance_id) override;
   void OnDisplayAdPurgeOrphanedEvents() override;
 
+  // PublishersController::Observer:
+  void OnPublishersUpdated(brave_news::PublishersController*) override;
+
  private:
   void ConditionallyStartOrStopTimer();
   void CheckForFeedsUpdate();
@@ -156,6 +161,8 @@ class BraveNewsController : public KeyedService,
   base::RepeatingTimer timer_publishers_update_;
   base::CancelableTaskTracker task_tracker_;
 
+  base::ScopedObservation<PublishersController, PublishersController::Observer>
+      publishers_observation_;
   mojo::ReceiverSet<mojom::BraveNewsController> receivers_;
   mojo::RemoteSet<mojom::PublishersListener> publishers_listeners_;
   base::WeakPtrFactory<BraveNewsController> weak_ptr_factory_;

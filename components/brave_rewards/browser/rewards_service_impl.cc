@@ -554,19 +554,6 @@ void RewardsServiceImpl::OnResult(ledger::LegacyResultCallback callback,
   callback(result);
 }
 
-void RewardsServiceImpl::MaybeShowAddFundsNotification(
-    uint64_t reconcile_stamp) {
-  // Show add funds notification if reconciliation will occur in the
-  // next 3 days and balance is too low.
-  base::Time now = base::Time::Now();
-  if (reconcile_stamp - now.ToDoubleT() <
-      3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour) {
-    if (ShouldShowNotificationAddFunds()) {
-      MaybeShowNotificationAddFunds();
-    }
-  }
-}
-
 void RewardsServiceImpl::CreateRewardsWallet(
     const std::string& country,
     CreateRewardsWalletCallback callback) {
@@ -605,6 +592,7 @@ void RewardsServiceImpl::CreateRewardsWallet(
       // automatically enable Ads and AC.
       if (!prefs->GetBoolean(prefs::kEnabled)) {
         prefs->SetBoolean(prefs::kEnabled, true);
+        prefs->SetString(prefs::kUserVersion, prefs::kCurrentUserVersion);
         prefs->SetBoolean(ads::prefs::kEnabled, true);
 
         // Fetch the user's balance before turning on AC. We don't want to
@@ -636,6 +624,49 @@ void RewardsServiceImpl::CreateRewardsWallet(
   ready_->Post(FROM_HERE, base::BindOnce(on_start, AsWeakPtr(), country,
                                          std::move(callback)));
   StartLedgerProcessIfNecessary();
+}
+
+void RewardsServiceImpl::GetUserType(
+    base::OnceCallback<void(ledger::mojom::UserType)> callback) {
+  using ledger::mojom::UserType;
+
+  if (!Connected()) {
+    return DeferCallback(FROM_HERE, std::move(callback),
+                         UserType::kUnconnected);
+  }
+
+  auto on_external_wallet = [](base::WeakPtr<RewardsServiceImpl> self,
+                               base::OnceCallback<void(UserType)> callback,
+                               GetExternalWalletResult result) {
+    if (!self) {
+      std::move(callback).Run(UserType::kUnconnected);
+      return;
+    }
+
+    auto wallet = std::move(result).value_or(nullptr);
+    if (!wallet ||
+        wallet->status != ledger::mojom::WalletStatus::kNotConnected) {
+      std::move(callback).Run(UserType::kConnected);
+      return;
+    }
+
+    auto* prefs = self->profile_->GetPrefs();
+    base::Version version(prefs->GetString(prefs::kUserVersion));
+    if (!version.IsValid()) {
+      version = base::Version({1});
+    }
+
+    if (!prefs->GetBoolean(prefs::kParametersVBatExpired) &&
+        version.CompareTo(base::Version({2, 5})) < 0) {
+      std::move(callback).Run(UserType::kLegacyUnconnected);
+      return;
+    }
+
+    std::move(callback).Run(UserType::kUnconnected);
+  };
+
+  GetExternalWallet(
+      base::BindOnce(on_external_wallet, AsWeakPtr(), std::move(callback)));
 }
 
 std::string RewardsServiceImpl::GetCountryCode() const {
@@ -715,6 +746,14 @@ void RewardsServiceImpl::GetActivityInfoList(
       start, limit, std::move(filter),
       base::BindOnce(&RewardsServiceImpl::OnGetPublisherInfoList, AsWeakPtr(),
                      std::move(callback)));
+}
+
+void RewardsServiceImpl::GetPublishersVisitedCount(
+    base::OnceCallback<void(int)> callback) {
+  if (!Connected()) {
+    return DeferCallback(FROM_HERE, std::move(callback), 0);
+  }
+  bat_ledger_->GetPublishersVisitedCount(std::move(callback));
 }
 
 void RewardsServiceImpl::GetExcludedList(
@@ -1184,7 +1223,27 @@ void RewardsServiceImpl::GetRewardsParameters(
     return DeferCallback(FROM_HERE, std::move(callback), nullptr);
   }
 
-  bat_ledger_->GetRewardsParameters(std::move(callback));
+  bat_ledger_->GetRewardsParameters(
+      base::BindOnce(&OnGetRewardsParameters, std::move(callback)));
+}
+
+void RewardsServiceImpl::OnGetRewardsParameters(
+    GetRewardsParametersCallback callback,
+    ledger::mojom::RewardsParametersPtr parameters) {
+  if (parameters) {
+    if (base::FeatureList::IsEnabled(
+            brave_rewards::features::kAllowUnsupportedWalletProvidersFeature)) {
+      parameters->wallet_provider_regions.clear();
+    }
+
+    // If the user has disabled the "VBAT notice" feature then clear the
+    // corresponding deadline from the returned data.
+    if (!base::FeatureList::IsEnabled(features::kVBatNoticeFeature)) {
+      parameters->vbat_deadline = base::Time();
+    }
+  }
+
+  std::move(callback).Run(std::move(parameters));
 }
 
 void RewardsServiceImpl::FetchPromotions(FetchPromotionsCallback callback) {
@@ -1557,6 +1616,15 @@ void RewardsServiceImpl::SetValueState(const std::string& name,
 
 base::Value RewardsServiceImpl::GetValueState(const std::string& name) const {
   return profile_->GetPrefs()->GetValue(GetPrefPath(name)).Clone();
+}
+
+void RewardsServiceImpl::SetTimeState(const std::string& name,
+                                      base::Time time) {
+  profile_->GetPrefs()->SetTime(GetPrefPath(name), time);
+}
+
+base::Time RewardsServiceImpl::GetTimeState(const std::string& name) const {
+  return profile_->GetPrefs()->GetTime(GetPrefPath(name));
 }
 
 void RewardsServiceImpl::ClearState(const std::string& name) {
@@ -2080,56 +2148,7 @@ void RewardsServiceImpl::OnNotificationTimerFired() {
     return;
   }
 
-  GetReconcileStamp(base::BindOnce(
-      &RewardsServiceImpl::MaybeShowAddFundsNotification, AsWeakPtr()));
   FetchPromotions(base::DoNothing());
-}
-
-void RewardsServiceImpl::MaybeShowNotificationAddFunds() {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_->HasSufficientBalanceToReconcile(
-      base::BindOnce(&RewardsServiceImpl::ShowNotificationAddFunds,
-        AsWeakPtr()));
-}
-
-void RewardsServiceImpl::MaybeShowNotificationAddFundsForTesting(
-    base::OnceCallback<void(bool)> callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), false);
-  }
-
-  bat_ledger_->HasSufficientBalanceToReconcile(
-      base::BindOnce(
-          &RewardsServiceImpl::OnMaybeShowNotificationAddFundsForTesting,
-          AsWeakPtr(),
-          std::move(callback)));
-}
-
-void RewardsServiceImpl::OnMaybeShowNotificationAddFundsForTesting(
-    base::OnceCallback<void(bool)> callback,
-    const bool sufficient) {
-  ShowNotificationAddFunds(sufficient);
-  std::move(callback).Run(sufficient);
-}
-
-bool RewardsServiceImpl::ShouldShowNotificationAddFunds() const {
-  base::Time next_time =
-      profile_->GetPrefs()->GetTime(prefs::kAddFundsNotification);
-  return (next_time.is_null() || base::Time::Now() > next_time);
-}
-
-void RewardsServiceImpl::ShowNotificationAddFunds(bool sufficient) {
-  if (sufficient) return;
-
-  base::Time next_time = base::Time::Now() + base::Days(3);
-  profile_->GetPrefs()->SetTime(prefs::kAddFundsNotification, next_time);
-  RewardsNotificationService::RewardsNotificationArgs args;
-  notification_service_->AddNotification(
-      RewardsNotificationService::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS, args,
-      "rewards_notification_insufficient_funds");
 }
 
 void RewardsServiceImpl::MaybeShowNotificationTipsPaid() {
@@ -2349,10 +2368,6 @@ void RewardsServiceImpl::StartMonthlyContributionForTest() {
   bat_ledger_->StartMonthlyContribution();
 }
 
-void RewardsServiceImpl::CheckInsufficientFundsForTesting() {
-  MaybeShowNotificationAddFunds();
-}
-
 void RewardsServiceImpl::GetEnvironment(GetEnvironmentCallback callback) {
   bat_ledger_service_->GetEnvironment(std::move(callback));
 }
@@ -2539,15 +2554,6 @@ void RewardsServiceImpl::OnContributeUnverifiedPublishers(
     const std::string& publisher_key,
     const std::string& publisher_name) {
   switch (result) {
-    case ledger::mojom::Result::PENDING_NOT_ENOUGH_FUNDS: {
-      RewardsNotificationService::RewardsNotificationArgs args;
-      notification_service_->AddNotification(
-          RewardsNotificationService::
-          REWARDS_NOTIFICATION_PENDING_NOT_ENOUGH_FUNDS,
-          args,
-          "rewards_notification_not_enough_funds");
-      break;
-    }
     case ledger::mojom::Result::PENDING_PUBLISHER_REMOVED: {
       for (auto& observer : observers_) {
         observer.OnPendingContributionRemoved(this,
@@ -2635,25 +2641,6 @@ void RewardsServiceImpl::ConnectExternalWallet(
 
   bat_ledger_->ConnectExternalWallet(wallet_type, query_parameters,
                                      std::move(callback));
-}
-
-void RewardsServiceImpl::OnDisconnectWallet(
-    const std::string& wallet_type,
-    const ledger::mojom::Result result) {
-  for (auto& observer : observers_) {
-    observer.OnDisconnectWallet(this, result, wallet_type);
-  }
-}
-
-void RewardsServiceImpl::DisconnectWallet() {
-  if (!Connected()) {
-    return;
-  }
-
-  const std::string wallet_type = GetExternalWalletType();
-  bat_ledger_->DisconnectWallet(
-      wallet_type, base::BindOnce(&RewardsServiceImpl::OnDisconnectWallet,
-                                  AsWeakPtr(), wallet_type));
 }
 
 void RewardsServiceImpl::ShowNotification(
@@ -2929,8 +2916,22 @@ void RewardsServiceImpl::OnFilesDeletedForCompleteReset(
   std::move(callback).Run(success);
 }
 
-void RewardsServiceImpl::WalletDisconnected(const std::string& wallet_type) {
-  OnDisconnectWallet(wallet_type, ledger::mojom::Result::LEDGER_OK);
+void RewardsServiceImpl::ExternalWalletConnected() const {
+  for (auto& observer : observers_) {
+    observer.OnExternalWalletConnected();
+  }
+}
+
+void RewardsServiceImpl::ExternalWalletLoggedOut() const {
+  for (auto& observer : observers_) {
+    observer.OnExternalWalletLoggedOut();
+  }
+}
+
+void RewardsServiceImpl::ExternalWalletReconnected() const {
+  for (auto& observer : observers_) {
+    observer.OnExternalWalletReconnected();
+  }
 }
 
 void RewardsServiceImpl::DeleteLog(ledger::LegacyResultCallback callback) {

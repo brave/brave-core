@@ -40,6 +40,10 @@ let fetchNewClassIdRulesTimeoutId: number | undefined
 const queriedIds = new Set<string>()
 const queriedClasses = new Set<string>()
 
+const notYetQueriedElements: Array<(Element[] | NodeListOf<Element>)> = []
+
+const classIdWithoutHtmlOrBody = '[id]:not(html):not(body),[class]:not(html):not(body)'
+
 // Each of these get setup once the mutation observer starts running.
 let notYetQueriedClasses: string[] = []
 let notYetQueriedIds: string[] = []
@@ -144,6 +148,25 @@ const ShouldThrottleFetchNewClassIdsRules = (): boolean => {
 }
 
 const fetchNewClassIdRules = () => {
+  for (const elements of notYetQueriedElements) {
+    for (const element of elements) {
+      const id = element.id
+      if (id && !queriedIds.has(id)) {
+        notYetQueriedIds.push(id)
+        queriedIds.add(id)
+      }
+      const classList = element.classList
+      if (classList) {
+        for (const className of classList.values()) {
+          if (className && !queriedClasses.has(className)) {
+            notYetQueriedClasses.push(className)
+            queriedClasses.add(className)
+          }
+        }
+      }
+    }
+  }
+  notYetQueriedElements.length = 0
   if ((!notYetQueriedClasses || notYetQueriedClasses.length === 0) &&
     (!notYetQueriedIds || notYetQueriedIds.length === 0)) {
     return
@@ -175,11 +198,8 @@ const useMutationObserver = () => {
 
 const usePolling = (observer?: MutationObserver) => {
   if (observer) {
-    const mutations = observer.takeRecords()
     observer.disconnect()
-    if (mutations) {
-      queueAttrsFromMutations(mutations)
-    }
+    notYetQueriedElements.length = 0
   }
 
   const futureTimeMs = window.Date.now() + returnToMutationObserverIntervalMs
@@ -223,21 +243,12 @@ const queueAttrsFromMutations = (mutations: MutationRecord[]): number => {
         if (!element) {
           continue
         }
-        mutationScore++
-        const id = element.id
-        if (id && !queriedIds.has(id)) {
-          notYetQueriedIds.push(id)
-          queriedIds.add(id)
-        }
-        const classList = element.classList
-        if (classList) {
-          mutationScore += classList.length
-          for (const className of classList.values()) {
-            if (className && !queriedClasses.has(className)) {
-              notYetQueriedClasses.push(className)
-              queriedClasses.add(className)
-            }
-          }
+        notYetQueriedElements.push([element])
+        mutationScore += 1
+        if (element.firstElementChild !== null) {
+          const nodeList = element.querySelectorAll(classIdWithoutHtmlOrBody)
+          notYetQueriedElements.push(nodeList)
+          mutationScore += nodeList.length
         }
       }
     }
@@ -604,7 +615,7 @@ const queryAttrsFromDocument = (switchToMutationObserverAtTime?: number) => {
   // @ts-expect-error
   const eventId: number | undefined = cf_worker.onQuerySelectorsBegin?.()
 
-  const elmWithClassOrId = document.querySelectorAll('[class],[id]')
+  const elmWithClassOrId = document.querySelectorAll(classIdWithoutHtmlOrBody)
   for (const elm of elmWithClassOrId) {
     for (const aClassName of elm.classList.values()) {
       if (aClassName && !queriedClasses.has(aClassName)) {

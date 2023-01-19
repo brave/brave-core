@@ -6,7 +6,7 @@
 #include "brave/browser/brave_vpn/vpn_utils.h"
 
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "build/build_config.h"
 
 namespace brave_vpn {

@@ -17,6 +17,7 @@ import '../brave_search_engines_page/brave_search_engines_page.js'
 import '../brave_sync_page/brave_sync_page.js'
 import '../brave_tor_page/brave_tor_subpage.js'
 import '../brave_wallet_page/brave_wallet_page.js'
+import '../brave_web3_domains_page/brave_web3_domains_page.js'
 import '../default_brave_shields_page/default_brave_shields_page.js'
 import '../getting_started_page/getting_started.js'
 import '../social_blocking_page/social_blocking_page.js'
@@ -146,8 +147,9 @@ RegisterPolymerTemplateModifications({
       sectionIPFS.setAttribute('is', 'dom-if')
       sectionIPFS.setAttribute('restamp', true)
       sectionIPFS.setAttribute('if', '[[showPage_(pageVisibility.braveIPFS)]]')
-      sectionIPFS.content.appendChild(createSectionElement(
+      sectionIPFS.content.appendChild(createNestedSectionElement(
         'ipfs',
+        'web3',
         'braveIPFS',
         'settings-brave-ipfs-page',
         {
@@ -174,8 +176,9 @@ RegisterPolymerTemplateModifications({
         sectionWallet.setAttribute('is', 'dom-if')
         sectionWallet.setAttribute('restamp', true)
         sectionWallet.setAttribute('if', '[[showPage_(pageVisibility.braveWallet)]]')
-        sectionWallet.content.appendChild(createSectionElement(
+        sectionWallet.content.appendChild(createNestedSectionElement(
           'wallet',
+          'web3',
           'braveWallet',
           'settings-brave-wallet-page',
           {
@@ -183,6 +186,20 @@ RegisterPolymerTemplateModifications({
           }
         ))
       }
+      const sectionWeb3Domains = document.createElement('template')
+      sectionWeb3Domains.setAttribute('is', 'dom-if')
+      sectionWeb3Domains.setAttribute('restamp', true)
+      sectionWeb3Domains.setAttribute('if',
+        '[[showPage_(pageVisibility.braveWeb3Domains)]]')
+      sectionWeb3Domains.content.appendChild(createNestedSectionElement(
+        'web3Domains',
+        'web3',
+        'braveWeb3Domains',
+        'settings-brave-web3-domains-page',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
       const sectionSync = document.createElement('template')
       sectionSync.setAttribute('is', 'dom-if')
       sectionSync.setAttribute('restamp', true)
@@ -258,40 +275,43 @@ RegisterPolymerTemplateModifications({
         }
       ))
       // Get Started at top
-      basicPageEl.insertAdjacentElement('afterbegin', sectionGetStarted)
+      let last = basicPageEl.insertAdjacentElement('afterbegin',
+        sectionGetStarted)
       // Move Appearance item
-      const sectionAppearance = getSectionElement(actualTemplate.content, 'appearance')
-      sectionGetStarted.insertAdjacentElement('afterend', sectionAppearance)
+      const sectionAppearance = getSectionElement(actualTemplate.content,
+        'appearance')
+      last = last.insertAdjacentElement('afterend', sectionAppearance)
       // Insert New Tab
-      sectionAppearance.insertAdjacentElement('afterend', sectionNewTab)
+      last = last.insertAdjacentElement('afterend', sectionNewTab)
       // Insert shields
-      sectionNewTab.insertAdjacentElement('afterend', sectionShields)
-      // Insert Rewards and Social Blocking
-      if (isBraveRewardsSupported) {
-        sectionShields.insertAdjacentElement('afterend', sectionRewards)
-        sectionRewards.insertAdjacentElement('afterend', sectionSocialBlocking)
-      } else {
-        sectionShields.insertAdjacentElement('afterend', sectionSocialBlocking)
+      last = last.insertAdjacentElement('afterend', sectionShields)
+      // Insert Rewards
+      if (sectionRewards) {
+        last = last.insertAdjacentElement('afterend', sectionRewards)
       }
+      // Insert Social Blocking
+      last = last.insertAdjacentElement('afterend', sectionSocialBlocking)
       // Move privacy section to after social blocking
       const sectionPrivacy = getSectionElement(actualTemplate.content, 'privacy')
-      sectionSocialBlocking.insertAdjacentElement('afterend', sectionPrivacy)
+      last = last.insertAdjacentElement('afterend', sectionPrivacy)
       // Insert sync
-      sectionPrivacy.insertAdjacentElement('afterend', sectionSync)
+      last = last.insertAdjacentElement('afterend', sectionSync)
       // Move search
       const sectionSearch = getSectionElement(actualTemplate.content, 'search')
-      sectionSync.insertAdjacentElement('afterend', sectionSearch)
+      last = last.insertAdjacentElement('afterend', sectionSearch)
       // Insert extensions
-      sectionSearch.insertAdjacentElement('afterend', sectionExtensions)
-      // Insert Wallet and IPFS
-      if (isBraveWalletAllowed) {
-        sectionExtensions.insertAdjacentElement('afterend', sectionWallet)
-        sectionWallet.insertAdjacentElement('afterend', sectionIPFS)
-      } else {
-        sectionExtensions.insertAdjacentElement('afterend', sectionIPFS)
+      last = last.insertAdjacentElement('afterend', sectionExtensions)
+      // Insert Wallet
+      if (sectionWallet) {
+        last = last.insertAdjacentElement('afterend', sectionWallet)
       }
+      // Insert IPFS
+      last = last.insertAdjacentElement('afterend', sectionIPFS)
+      // Insert Web3 Domains
+      last = last.insertAdjacentElement('afterend', sectionWeb3Domains)
       // Insert Tor
-      sectionIPFS.insertAdjacentElement('afterend', sectionTor)
+      last = last.insertAdjacentElement('afterend', sectionTor)
+
       // Advanced
       const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')
       if (!advancedTemplate) {

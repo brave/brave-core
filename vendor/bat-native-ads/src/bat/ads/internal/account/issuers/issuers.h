@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_H_
@@ -9,8 +9,8 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "bat/ads/internal/account/issuers/issuers_delegate.h"
-#include "bat/ads/internal/base/timer/backoff_timer.h"
-#include "bat/ads/internal/base/timer/timer.h"
+#include "bat/ads/internal/common/timer/backoff_timer.h"
+#include "bat/ads/internal/common/timer/timer.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 
 namespace ads {

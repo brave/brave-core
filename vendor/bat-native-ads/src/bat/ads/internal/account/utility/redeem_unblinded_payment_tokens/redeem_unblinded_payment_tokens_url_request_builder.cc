@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 
@@ -102,7 +102,7 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::
 RedeemUnblindedPaymentTokensUrlRequestBuilder::
     ~RedeemUnblindedPaymentTokensUrlRequestBuilder() = default;
 
-// PUT /v2/confirmation/payment/{paymentId}
+// PUT /v3/confirmation/payment/{paymentId}
 
 mojom::UrlRequestInfoPtr
 RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
@@ -121,7 +121,7 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
 
 GURL RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildUrl() const {
   const std::string spec = base::StringPrintf(
-      "%s/v2/confirmation/payment/%s", server::GetNonAnonymousHost().c_str(),
+      "%s/v3/confirmation/payment/%s", server::GetNonAnonymousHost().c_str(),
       wallet_.id.c_str());
   return GURL(spec);
 }

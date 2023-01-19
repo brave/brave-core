@@ -1,0 +1,112 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_vpn.mojom;
+
+// Used by the WebUI page to bootstrap bidirectional communication.
+interface PanelHandlerFactory {
+  // The WebUI calls this method when the page is first initialized.
+  CreatePanelHandler(pending_remote<Page> page,
+    pending_receiver<PanelHandler> panel_handler,
+    pending_receiver<ServiceHandler> service_handler);
+};
+
+// Browser-side handler for requests from WebUI page.
+interface PanelHandler {
+  // Notify the backend that the UI is ready to be shown.
+  ShowUI();
+
+  // Notify the backend that the dialog should be closed.
+  CloseUI();
+
+  // Run purchase action.
+  OpenVpnUI(string type);
+};
+
+interface ServiceObserver {
+  [EnableIfNot=is_android]
+  OnConnectionStateChanged(ConnectionState state);
+
+  [EnableIfNot=is_android]
+  OnSelectedRegionChanged(Region region);
+
+  OnPurchasedStateChanged(PurchasedState state);
+};
+
+// Browser-side handler for vpn service things
+interface ServiceHandler {
+  AddObserver(pending_remote<ServiceObserver> observer);
+  GetPurchasedState() => (PurchasedState state);
+  LoadPurchasedState(string domain);
+
+  [EnableIfNot=is_android]
+  GetConnectionState() => (ConnectionState state);
+
+  [EnableIfNot=is_android]
+  Connect();
+
+  [EnableIfNot=is_android]
+  Disconnect();
+
+  // Gets all region from internal cache which is fetched from Guardian API
+  [EnableIfNot=is_android]
+  GetAllRegions() => (array<Region> regions);
+
+  [EnableIfNot=is_android]
+  GetSelectedRegion() => (Region current_region);
+
+  [EnableIfNot=is_android]
+  SetSelectedRegion(Region region);
+
+  [EnableIfNot=is_android]
+  GetProductUrls() => (ProductUrls urls);
+
+  [EnableIfNot=is_android]
+  GetSupportData() => (string app_version, string os_version, string hostname, string timezone);
+
+  [EnableIfNot=is_android]
+  CreateSupportTicket(string email, string subject, string body) =>
+    (bool success, string response);
+
+  [EnableIf=is_android]
+  GetPurchaseToken() => (string token);
+};
+
+// WebUI-side handler for requests from the browser.
+interface Page {
+};
+
+struct ProductUrls {
+  string feedback;
+  string about;
+  string manage;
+};
+
+enum ConnectionState {
+  CONNECTED,
+  DISCONNECTED,
+  CONNECTING,
+  DISCONNECTING,
+  CONNECT_NOT_ALLOWED,
+  CONNECT_FAILED,
+};
+
+enum PurchasedState {
+  NOT_PURCHASED,
+  PURCHASED,
+  EXPIRED,
+  LOADING,
+  FAILED,
+};
+
+// Make sure updating BraveVpnService properly when member is added to Region
+// struct. Ex, IsValidRegion() or IsValidRegionValue(). It should also check
+// new member.
+struct Region {
+  string continent;
+  string name;
+  string name_pretty;
+  string country_iso_code;
+};

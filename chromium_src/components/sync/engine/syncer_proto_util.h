@@ -9,6 +9,7 @@
 #define SetProtocolVersion                                                \
   SaveServerErrorMessage(const sync_pb::ClientToServerResponse& response, \
                          StatusController* status_controller);            \
+  friend class BraveSyncServerCommands;                                   \
   static void SetProtocolVersion
 
 #include "src/components/sync/engine/syncer_proto_util.h"

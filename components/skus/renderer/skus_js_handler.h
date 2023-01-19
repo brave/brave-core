@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -18,6 +18,10 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "url/gurl.h"
 #include "v8/include/v8.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
+#endif
 
 namespace skus {
 
@@ -89,7 +93,9 @@ class SkusJSHandler : public gin::Wrappable<SkusJSHandler> {
 
   content::RenderFrame* render_frame_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   mojo::Remote<brave_vpn::mojom::ServiceHandler> vpn_service_;
+#endif
 };
 
 }  // namespace skus

@@ -35,7 +35,7 @@ TEST(EthTransactionUnitTest, GetMessageToSign) {
   EthTransaction tx1 = *EthTransaction::FromTxData(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data));
+                         "0x016345785d8a0000", data, false, absl::nullopt));
 
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx1.GetMessageToSign(0))),
             "61e1ec33764304dddb55348e7883d4437426f44ab3ef65e6da1e025734c03ff0");
@@ -44,9 +44,10 @@ TEST(EthTransactionUnitTest, GetMessageToSign) {
             "9ad82175b6921c5525fc52ebc08b97118cc9709952a16b2249a3f42d44614721");
 
   data.clear();
-  EthTransaction tx2 = *EthTransaction::FromTxData(mojom::TxData::New(
-      "0x0b", "0x051f4d5c00", "0x5208",
-      "0x656e929d6fc0cac52d3d9526d288fe02dcd56fbd", "0x2386f26fc10000", data));
+  EthTransaction tx2 = *EthTransaction::FromTxData(
+      mojom::TxData::New("0x0b", "0x051f4d5c00", "0x5208",
+                         "0x656e929d6fc0cac52d3d9526d288fe02dcd56fbd",
+                         "0x2386f26fc10000", data, false, absl::nullopt));
 
   // with chain id (mainnet)
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx2.GetMessageToSign(1))),
@@ -99,16 +100,16 @@ TEST(EthTransactionUnitTest, GetMessageToSign) {
   };
 
   for (const auto& entry : cases) {
-    EthTransaction tx = *EthTransaction::FromTxData(
-        mojom::TxData::New(entry.nonce, entry.gas_price, entry.gas_limit,
-                           entry.to, entry.value, std::vector<uint8_t>()));
+    EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
+        entry.nonce, entry.gas_price, entry.gas_limit, entry.to, entry.value,
+        std::vector<uint8_t>(), false, absl::nullopt));
     // with chain id (mainnet)
     EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.GetMessageToSign(1))),
               entry.hash);
   }
 }
 
-TEST(EthTransactionUnitTest, GetSignedTransaction) {
+TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
   std::vector<uint8_t> private_key;
   EXPECT_TRUE(base::HexStringToBytes(
       "4646464646464646464646464646464646464646464646464646464646464646",
@@ -119,10 +120,10 @@ TEST(EthTransactionUnitTest, GetSignedTransaction) {
       std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>(
           new std::vector<uint8_t>(private_key),
           SecureZeroVectorDeleter<uint8_t>()));
-  EthTransaction tx = *EthTransaction::FromTxData(
-      mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
-                         "0x3535353535353535353535353535353535353535",
-                         "0x0de0b6b3a7640000", std::vector<uint8_t>()));
+  EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
+      "0x09", "0x4a817c800", "0x5208",
+      "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
+      std::vector<uint8_t>(), false, absl::nullopt));
 
   const std::vector<uint8_t> message = tx.GetMessageToSign(1);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message)),
@@ -150,6 +151,9 @@ TEST(EthTransactionUnitTest, GetSignedTransaction) {
             "35880de0b6b3a76400008025a028ef61340bd939bc2195fe537567866003e1a15d"
             "3c71ff63e1590620aa636276a067cbe9d8997f761aecb703304b3800ccf555c9f3"
             "dc64214b297fb1966a3b6d83");
+  EXPECT_EQ(
+      tx.GetTransactionHash(),
+      "0x33469b22e9f636356c4160a87eb19df52b7412e8eac32a4a55ffe88ea8350788");
 
   EXPECT_TRUE(tx.IsSigned());
   EXPECT_EQ(tx.v_, (uint256_t)37);
@@ -172,6 +176,9 @@ TEST(EthTransactionUnitTest, GetSignedTransaction) {
             "35880de0b6b3a764000080820a96a011d1f0b9de554ad9e690bb8355507007731b"
             "741e232ecb0dc183154c10c77875a03a4b32607c8c2287e82ae8c2a334d8412baf"
             "15e52ee25c531762dc34252a1365");
+  EXPECT_EQ(
+      tx.GetTransactionHash(),
+      "0x3874c51841f3290a1b3e23152c474d361cc34e5b58f4adfcf4ff04bd77ed6b7a");
   EXPECT_TRUE(tx.IsSigned());
   EXPECT_EQ(tx.v_, (uint256_t)2710);
   EXPECT_EQ(base::HexEncode(tx.r_),
@@ -181,10 +188,10 @@ TEST(EthTransactionUnitTest, GetSignedTransaction) {
 }
 
 TEST(EthTransactionUnitTest, TransactionAndValue) {
-  EthTransaction tx = *EthTransaction::FromTxData(
-      mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
-                         "0x3535353535353535353535353535353535353535",
-                         "0x0de0b6b3a7640000", std::vector<uint8_t>()));
+  EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
+      "0x09", "0x4a817c800", "0x5208",
+      "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
+      std::vector<uint8_t>(), false, absl::nullopt));
   base::Value::Dict tx_value = tx.ToValue();
   auto tx_from_value = EthTransaction::FromValue(tx_value);
   ASSERT_NE(tx_from_value, absl::nullopt);
@@ -217,21 +224,21 @@ TEST(EthTransactionUnitTest, GetDataFee) {
   EthTransaction tx2 = *EthTransaction::FromTxData(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data));
+                         "0x016345785d8a0000", data, false, absl::nullopt));
   EXPECT_EQ(tx2.GetDataFee(), uint256_t(1716));
 }
 
 TEST(EthTransactionUnitTest, GetUpFrontCost) {
   EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
       "0x00", "0x3E8", "0x989680", "0x3535353535353535353535353535353535353535",
-      "0x2A", std::vector<uint8_t>()));
+      "0x2A", std::vector<uint8_t>(), false, absl::nullopt));
   EXPECT_EQ(tx.GetUpfrontCost(), uint256_t(10000000042));
 }
 
 TEST(EthTransactionUnitTest, FromTxData) {
   auto tx = EthTransaction::FromTxData(mojom::TxData::New(
       "0x01", "0x3E8", "0x989680", "0x3535353535353535353535353535353535353535",
-      "0x2A", std::vector<uint8_t>{1}));
+      "0x2A", std::vector<uint8_t>{1}, false, absl::nullopt));
   ASSERT_TRUE(tx);
   EXPECT_EQ(tx->nonce(), uint256_t(1));
   EXPECT_EQ(tx->gas_price(), uint256_t(1000));
@@ -244,26 +251,26 @@ TEST(EthTransactionUnitTest, FromTxData) {
   // Empty nonce
   tx = EthTransaction::FromTxData(mojom::TxData::New(
       "", "0x3E8", "0x989680", "0x3535353535353535353535353535353535353535",
-      "0x2A", std::vector<uint8_t>{1}));
+      "0x2A", std::vector<uint8_t>{1}, false, absl::nullopt));
   ASSERT_TRUE(tx);
   EXPECT_FALSE(tx->nonce());
 
   // Missing values should not parse correctly
   EXPECT_FALSE(EthTransaction::FromTxData(mojom::TxData::New(
       "0x01", "", "0x989680", "0x3535353535353535353535353535353535353535",
-      "0x2A", std::vector<uint8_t>{1})));
+      "0x2A", std::vector<uint8_t>{1}, false, absl::nullopt)));
   EXPECT_FALSE(EthTransaction::FromTxData(mojom::TxData::New(
       "0x01", "0x3E8", "", "0x3535353535353535353535353535353535353535", "0x2A",
-      std::vector<uint8_t>{1})));
+      std::vector<uint8_t>{1}, false, absl::nullopt)));
   EXPECT_FALSE(EthTransaction::FromTxData(mojom::TxData::New(
       "0x01", "0x3E8", "0x989680", "0x3535353535353535353535353535353535353535",
-      "", std::vector<uint8_t>{1})));
+      "", std::vector<uint8_t>{1}, false, absl::nullopt)));
 
   // But missing data is allowed when strict is false
   tx = EthTransaction::FromTxData(
       mojom::TxData::New("", "0x3E8", "",
                          "0x3535353535353535353535353535353535353535", "",
-                         std::vector<uint8_t>{1}),
+                         std::vector<uint8_t>{1}, false, absl::nullopt),
       false);
   ASSERT_TRUE(tx);
   // Empty nonce should be absl::nullopt
@@ -278,7 +285,7 @@ TEST(EthTransactionUnitTest, FromTxData) {
   tx = EthTransaction::FromTxData(
       mojom::TxData::New("0x1", "", "0x989680",
                          "0x3535353535353535353535353535353535353535", "0x2A",
-                         std::vector<uint8_t>{1}),
+                         std::vector<uint8_t>{1}, false, absl::nullopt),
       false);
   ASSERT_TRUE(tx);
   // Unspecified value defaults to 0

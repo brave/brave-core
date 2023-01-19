@@ -24,9 +24,6 @@ BASE_FEATURE(kBraveNewsV2Feature,
 BASE_FEATURE(kBraveNewsCardPeekFeature,
              "BraveNewsCardPeek",
              base::FEATURE_ENABLED_BY_DEFAULT);
-BASE_FEATURE(kBraveNewsSubscribeButtonFeature,
-             "BraveNewsSubscribeButton",
-             base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace features
 }  // namespace brave_today

@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/account.h"
 
@@ -18,9 +18,9 @@
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
-#include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
@@ -163,7 +163,7 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLResponseMap url_responses = {{// Get issuers request
-                                         R"(/v1/issuers/)",
+                                         R"(/v3/issuers/)",
                                          {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
@@ -248,7 +248,7 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
   const URLResponseMap url_responses = {{// Get issuers request
-                                         R"(/v1/issuers/)",
+                                         R"(/v3/issuers/)",
                                          {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
@@ -321,7 +321,7 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLResponseMap url_responses = {{// Get issuers request
-                                         R"(/v1/issuers/)",
+                                         R"(/v3/issuers/)",
                                          {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
@@ -418,7 +418,7 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingIssuers) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLResponseMap url_responses = {{// Get issuers request
-                                         R"(/v1/issuers/)",
+                                         R"(/v3/issuers/)",
                                          {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
@@ -444,7 +444,7 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLResponseMap url_responses = {{// Get issuers request
-                                         R"(/v1/issuers/)",
+                                         R"(/v3/issuers/)",
                                          {{net::HTTP_OK, "INVALID"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -466,7 +466,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
 
   const URLResponseMap url_responses = {
       {// Create confirmation request
-       R"(/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
+       R"(/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
        {{net::HTTP_CREATED, R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
@@ -477,7 +477,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
             }
           )"}}},
       {// Fetch payment token request
-       R"(/v2/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken)",
+       R"(/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken)",
        {{net::HTTP_OK, R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",

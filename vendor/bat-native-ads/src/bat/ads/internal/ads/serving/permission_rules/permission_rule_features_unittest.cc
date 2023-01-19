@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/ads/serving/permission_rules/permission_rule_features.h"
 
@@ -26,8 +26,7 @@ TEST(BatAdsPermissionRuleFeaturesTest, IsEnabled) {
 
 TEST(BatAdsPermissionRuleFeaturesTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
   disabled_features.emplace_back(kFeature);
@@ -47,7 +46,7 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsInWindowedMode) {
   // Arrange
   base::FieldTrialParams kParameters;
   kParameters["should_only_serve_ads_in_windowed_mode"] = "false";
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, kParameters);
 
   const std::vector<base::test::FeatureRef> disabled_features;
@@ -69,8 +68,7 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsInWindowedMode) {
 TEST(BatAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsInWindowedMode) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -89,8 +87,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
 
 TEST(BatAdsPermissionRuleFeaturesTest, ShouldExcludeAdIfConvertedWhenDisable) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
   disabled_features.emplace_back(kFeature);
@@ -114,7 +111,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
   // Arrange
   base::FieldTrialParams kParameters;
   kParameters["should_only_serve_ads_with_valid_internet_connection"] = "false";
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, kParameters);
 
   const std::vector<base::test::FeatureRef> disabled_features;
@@ -137,8 +134,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
 TEST(BatAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsWithValidInternetConnection) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -159,8 +155,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
 TEST(BatAdsPermissionRuleFeaturesTest,
      ShouldOnlyServeAdsWithValidInternetConnectionWhenDisabled) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
   disabled_features.emplace_back(kFeature);
@@ -184,7 +179,7 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsIfMediaIsNotPlaying) {
   // Arrange
   base::FieldTrialParams kParameters;
   kParameters["should_only_serve_ads_if_media_is_not_playing"] = "false";
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, kParameters);
 
   const std::vector<base::test::FeatureRef> disabled_features;
@@ -206,8 +201,7 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsIfMediaIsNotPlaying) {
 TEST(BatAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsIfMediaIsNotPlaying) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -227,8 +221,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
 TEST(BatAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsIfMediaIsNotPlayingWhenDisabled) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
   disabled_features.emplace_back(kFeature);
@@ -251,7 +244,7 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsIfBrowserIsActive) {
   // Arrange
   base::FieldTrialParams kParameters;
   kParameters["should_only_serve_ads_if_browser_is_active"] = "false";
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, kParameters);
 
   const std::vector<base::test::FeatureRef> disabled_features;
@@ -273,8 +266,7 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsIfBrowserIsActive) {
 TEST(BatAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsIfBrowserIsActive) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -294,8 +286,7 @@ TEST(BatAdsPermissionRuleFeaturesTest,
 TEST(BatAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsIfBrowserIsActiveWhenDisabled) {
   // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
   disabled_features.emplace_back(kFeature);

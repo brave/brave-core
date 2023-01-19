@@ -5,22 +5,15 @@
 
 #include "brave/components/speedreader/common/features.h"
 
-#include "brave/components/speedreader/common/buildflags.h"
-
 namespace speedreader {
 
 BASE_FEATURE(kSpeedreaderFeature,
              "Speedreader",
-#if BUILDFLAG(ENABLE_SPEEDREADER_FEATURE)
-             base::FEATURE_ENABLED_BY_DEFAULT
-#else
-             base::FEATURE_DISABLED_BY_DEFAULT
-#endif
-);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kSpeedreaderPanelV2,
              "SpeedreaderPanelV2",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 const base::FeatureParam<int> kSpeedreaderMinOutLengthParam{
     &kSpeedreaderFeature, "min_out_length", 1000};

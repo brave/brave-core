@@ -32,7 +32,7 @@ class CosmeticResourceMergeTest : public testing::Test {
         base::JSONReader::Read(expected);
     ASSERT_TRUE(expected_val);
 
-    MergeResourcesInto(std::move(b_val->GetDict()), a_val->GetIfDict(),
+    MergeResourcesInto(std::move(b_val->GetDict()), *a_val->GetIfDict(),
                        force_hide);
 
     ASSERT_EQ(*a_val, *expected_val);

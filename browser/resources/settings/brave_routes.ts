@@ -7,8 +7,9 @@
 
 import {pageVisibility} from './brave_overrides/page_visibility.js'
 import {loadTimeData} from './i18n_setup.js'
+import {SettingsRoutes} from './settings_routes.js';
 
-export default function addBraveRoutes(r) {
+export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   const isGuest = loadTimeData.getBoolean('isGuest')
   if (!r.BASIC) {
     console.error('[Brave Settings Overrides] Routes: could not find BASIC page')
@@ -35,13 +36,16 @@ export default function addBraveRoutes(r) {
     r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
     r.BRAVE_SYNC_SETUP = r.BRAVE_SYNC.createChild('/braveSync/setup');
   }
+  if (pageVisibility.braveWeb3) {
+    r.BRAVE_WEB3 = r.BASIC.createSection('/web3', 'web3')
+  }
   if (pageVisibility.braveIPFS) {
-    r.BRAVE_IPFS = r.BASIC.createSection('/ipfs', 'ipfs')
+    r.BRAVE_IPFS = r.BRAVE_WEB3.createSection('/ipfs', 'ipfs')
     r.BRAVE_IPFS_KEYS = r.BRAVE_IPFS.createChild('/ipfs/keys');
     r.BRAVE_IPFS_PEERS = r.BRAVE_IPFS.createChild('/ipfs/peers');
   }
   if (pageVisibility.braveWallet) {
-    r.BRAVE_WALLET = r.BASIC.createSection('/wallet', 'wallet')
+    r.BRAVE_WALLET = r.BRAVE_WEB3.createSection('/wallet', 'wallet')
     r.BRAVE_WALLET_NETWORKS = r.BRAVE_WALLET.createChild('/wallet/networks');
   }
   if (r.ADVANCED) {
@@ -52,6 +56,10 @@ export default function addBraveRoutes(r) {
   r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
   if (r.SITE_SETTINGS) {
     r.SITE_SETTINGS_AUTOPLAY = r.SITE_SETTINGS.createChild('autoplay')
+    const isGoogleSignInFeatureEnabled = loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
+    if (isGoogleSignInFeatureEnabled) {
+      r.SITE_SETTINGS_GOOGLE_SIGN_IN = r.SITE_SETTINGS.createChild('googleSignIn')
+    }
     const isNativeBraveWalletFeatureEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
     if (isNativeBraveWalletFeatureEnabled) {
       r.SITE_SETTINGS_ETHEREUM = r.SITE_SETTINGS.createChild('ethereum')

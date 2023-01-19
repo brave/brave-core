@@ -45,23 +45,6 @@ inline uint64_t lfsr_next(uint64_t v) {
   return ((v >> 1) | (((v << 62) ^ (v << 61)) & (~(~zero << 63) << 62)));
 }
 
-float ConstantMultiplier(double fudge_factor, float value, size_t index) {
-  return value * fudge_factor;
-}
-
-float PseudoRandomSequence(uint64_t seed, float value, size_t index) {
-  static uint64_t v;
-  if (index == 0) {
-    // start of loop, reset to initial seed which was passed in and is based on
-    // the domain key
-    v = seed;
-  }
-  // get next value in PRNG sequence
-  v = lfsr_next(v);
-  // return pseudo-random float between 0 and 0.1
-  return (v / maxUInt64AsDouble) / 10;
-}
-
 }  // namespace
 
 namespace brave {
@@ -88,11 +71,17 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
     return settings;
   }
   if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
-    auto* frame = window->GetFrame();
-    if (!frame)
-      frame = window->GetDisconnectedFrame();
-    if (frame)
-      settings = frame->GetContentSettingsClient();
+    auto* local_frame = window->GetFrame();
+    if (!local_frame)
+      local_frame = window->GetDisconnectedFrame();
+    if (local_frame) {
+      if (auto* top_local_frame =
+              blink::DynamicTo<blink::LocalFrame>(&local_frame->Tree().Top())) {
+        settings = top_local_frame->GetContentSettingsClient();
+      } else {
+        settings = local_frame->GetContentSettingsClient();
+      }
+    }
   } else if (context->IsWorkerGlobalScope()) {
     settings =
         blink::To<blink::WorkerGlobalScope>(context)->ContentSettingsClient();
@@ -103,20 +92,14 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
 BraveFarblingLevel GetBraveFarblingLevelFor(ExecutionContext* context,
                                             BraveFarblingLevel default_value) {
   BraveFarblingLevel value = default_value;
-  // This is safe to call with a null pointer.
-  blink::WebContentSettingsClient* settings =
-      GetContentSettingsClientFor(context);
-  if (settings)
-    value = settings->GetBraveFarblingLevel();
+  if (context)
+    value = brave::BraveSessionCache::From(*context).GetBraveFarblingLevel();
   return value;
 }
 
 bool AllowFingerprinting(ExecutionContext* context) {
-  blink::WebContentSettingsClient* settings =
-      GetContentSettingsClientFor(context);
-  if (settings)
-    return settings->AllowFingerprinting();
-  return true;
+  return (GetBraveFarblingLevelFor(context, BraveFarblingLevel::OFF) !=
+          BraveFarblingLevel::MAXIMUM);
 }
 
 bool AllowFontFamily(ExecutionContext* context,
@@ -174,6 +157,7 @@ int FarbledPointerScreenCoordinate(const DOMWindow* view,
 BraveSessionCache::BraveSessionCache(ExecutionContext& context)
     : Supplement<ExecutionContext>(context) {
   farbling_enabled_ = false;
+  farbling_level_ = BraveFarblingLevel::OFF;
   scoped_refptr<const blink::SecurityOrigin> origin;
   if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
     auto* frame = window->GetFrame();
@@ -210,6 +194,17 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key_),
                sizeof session_key_));
   CHECK(h.Sign(domain, domain_key_, sizeof domain_key_));
+  const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
+  double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
+  uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
+  if (blink::WebContentSettingsClient* settings =
+          GetContentSettingsClientFor(&context)) {
+    farbling_level_ = settings->GetBraveFarblingLevel();
+  }
+  if (farbling_level_ != BraveFarblingLevel::OFF) {
+    audio_farbling_helper_.emplace(
+        fudge_factor, seed, farbling_level_ == BraveFarblingLevel::MAXIMUM);
+  }
   farbling_enabled_ = true;
 }
 
@@ -228,46 +223,15 @@ void BraveSessionCache::Init() {
   RegisterAllowFontFamilyCallback(base::BindRepeating(&brave::AllowFontFamily));
 }
 
-OptionalAudioFarblingCallback BraveSessionCache::GetAudioFarblingCallback(
-    blink::WebContentSettingsClient* settings) {
-  if (farbling_enabled_ && settings) {
-    switch (settings->GetBraveFarblingLevel()) {
-      case BraveFarblingLevel::OFF: {
-        break;
-      }
-      case BraveFarblingLevel::BALANCED: {
-        const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
-        double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
-        VLOG(1) << "audio fudge factor (based on session token) = "
-                << fudge_factor;
-        return base::BindRepeating(&ConstantMultiplier, fudge_factor);
-      }
-      case BraveFarblingLevel::MAXIMUM: {
-        uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
-        return base::BindRepeating(&PseudoRandomSequence, seed);
-      }
-    }
-  }
-  return absl::nullopt;
+void BraveSessionCache::FarbleAudioChannel(float* dst, size_t count) {
+  if (audio_farbling_helper_)
+    audio_farbling_helper_->FarbleAudioChannel(dst, count);
 }
 
-void BraveSessionCache::PerturbPixels(blink::WebContentSettingsClient* settings,
-                                      const unsigned char* data,
-                                      size_t size) {
-  if (!farbling_enabled_ || !settings)
+void BraveSessionCache::PerturbPixels(const unsigned char* data, size_t size) {
+  if (!farbling_enabled_ || farbling_level_ == BraveFarblingLevel::OFF)
     return;
-  switch (settings->GetBraveFarblingLevel()) {
-    case BraveFarblingLevel::OFF:
-      break;
-    case BraveFarblingLevel::BALANCED:
-    case BraveFarblingLevel::MAXIMUM: {
-      PerturbPixelsInternal(data, size);
-      break;
-    }
-    default:
-      NOTREACHED();
-  }
-  return;
+  PerturbPixelsInternal(data, size);
 }
 
 void BraveSessionCache::PerturbPixelsInternal(const unsigned char* data,
@@ -360,7 +324,7 @@ bool BraveSessionCache::AllowFontFamily(
     const AtomicString& family_name) {
   if (!farbling_enabled_ || !settings || !settings->IsReduceLanguageEnabled())
     return true;
-  switch (settings->GetBraveFarblingLevel()) {
+  switch (farbling_level_) {
     case BraveFarblingLevel::OFF:
       break;
     case BraveFarblingLevel::BALANCED:

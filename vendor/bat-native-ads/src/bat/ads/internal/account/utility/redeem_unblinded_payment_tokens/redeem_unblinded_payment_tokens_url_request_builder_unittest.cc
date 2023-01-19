@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 
@@ -10,9 +10,9 @@
 #include "base/check.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
-#include "bat/ads/internal/flags/flag_manager_util.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/flags/flag_manager.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "bat/ads/sys_info.h"
@@ -75,7 +75,8 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest,
 
   SysInfo().is_uncertain_future = true;
 
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   WalletInfo wallet;
   wallet.id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";
@@ -100,7 +101,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest,
     mojom::UrlRequestInfoPtr expected_url_request =
         mojom::UrlRequestInfo::New();
     expected_url_request->url = GURL(
-        R"(https://mywallet.ads.bravesoftware.com/v2/confirmation/payment/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)");
+        R"(https://mywallet.ads.bravesoftware.com/v3/confirmation/payment/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)");
     expected_url_request->headers = {
         R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
         R"(accept: application/json)"};
@@ -122,7 +123,8 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest,
 
   SysInfo().is_uncertain_future = false;
 
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   WalletInfo wallet;
   wallet.id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";
@@ -147,7 +149,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUrlRequestBuilderTest,
     mojom::UrlRequestInfoPtr expected_url_request =
         mojom::UrlRequestInfo::New();
     expected_url_request->url = GURL(
-        R"(https://mywallet.ads.bravesoftware.com/v2/confirmation/payment/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)");
+        R"(https://mywallet.ads.bravesoftware.com/v3/confirmation/payment/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)");
     expected_url_request->headers = {
         R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
         R"(accept: application/json)"};

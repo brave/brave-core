@@ -7,6 +7,7 @@
 #include "base/strings/pattern.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/constants/brave_paths.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_navigator.h"
@@ -109,7 +110,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, NotAllowedToLoadTest) {
   ASSERT_TRUE(ExecuteScript(
       active_contents(),
       "window.domAutomationController.send(openBraveSettings())"));
-  console_observer.Wait();
+  ASSERT_TRUE(console_observer.Wait());
 }
 
 // Test whether brave page is not loaded from different host by window.open().
@@ -124,7 +125,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   ASSERT_TRUE(ExecuteScript(
       active_contents(),
       "window.domAutomationController.send(openBraveSettingsWithNoOpener())"));
-  console_observer.Wait();
+  ASSERT_TRUE(console_observer.Wait());
 }
 
 // Test whether brave page is not loaded from different host directly by
@@ -140,7 +141,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   ASSERT_TRUE(ExecuteScript(
       active_contents(),
       "window.domAutomationController.send(replaceToBraveSettingsDirectly())"));
-  console_observer.Wait();
+  ASSERT_TRUE(console_observer.Wait());
 }
 
 // Test whether brave page is not loaded from different host indirectly by
@@ -157,7 +158,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   ASSERT_TRUE(ExecuteScript(initial_active_tab,
                             "window.domAutomationController.send("
                             "replaceToBraveSettingsIndirectly())"));
-  console_observer.Wait();
+  ASSERT_TRUE(console_observer.Wait());
 }
 
 // Test whether brave page is not loaded from chrome page.
@@ -172,7 +173,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 
   ASSERT_TRUE(
       ExecuteScript(active_contents(), "window.open(\"brave://settings\")"));
-  console_observer.Wait();
+  ASSERT_TRUE(console_observer.Wait());
 }
 
 // Test whether brave page is not loaded by click.
@@ -186,7 +187,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, NotAllowedToBraveByClick) {
   ASSERT_TRUE(ExecuteScript(
       active_contents(),
       "window.domAutomationController.send(gotoBraveSettingsByClick())"));
-  console_observer.Wait();
+  ASSERT_TRUE(console_observer.Wait());
 }
 
 // Test whether brave page is not loaded by middle click.
@@ -201,7 +202,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   ASSERT_TRUE(ExecuteScript(
       active_contents(),
       "window.domAutomationController.send(gotoBraveSettingsByMiddleClick())"));
-  console_observer.Wait();
+  ASSERT_TRUE(console_observer.Wait());
 }
 
 // Check renderer crash happened by observing related notification.

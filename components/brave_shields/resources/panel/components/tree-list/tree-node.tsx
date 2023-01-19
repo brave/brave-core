@@ -69,8 +69,8 @@ interface TreeNodeProps {
 
 function rectToQuad (rect: DOMRect) {
   return DOMQuad.fromRect({
-    x: ('x' in rect) ? rect.x : rect.left,
-    y: ('y' in rect) ? rect.y : rect.top,
+    x: rect.x ?? rect.left,
+    y: rect.y ?? rect.top,
     width: rect.width,
     height: rect.height
   })

@@ -24,10 +24,12 @@ import {
   ERC721TransferFromParams,
   SendTransactionParams,
   SPLTransferFromParams,
-  SerializableTransactionInfo
+  SerializableTransactionInfo,
+  SerializableOriginInfo
 } from '../../constants/types'
 import {
   AddSitePermissionPayloadType,
+  CancelTransactionPayload,
   ChainChangedEventPayloadType,
   DefaultBaseCryptocurrencyChanged,
   DefaultBaseCurrencyChanged,
@@ -38,10 +40,12 @@ import {
   IsEip1559Changed,
   NewUnapprovedTxAdded,
   RemoveSitePermissionPayloadType,
+  RetryTransactionPayload,
   SelectedAccountChangedPayloadType,
   SetTransactionProviderErrorType,
   SetUserAssetVisiblePayloadType,
   SitePermissionsPayloadType,
+  SpeedupTransactionPayload,
   TransactionStatusChanged,
   UnapprovedTxUpdated,
   UnlockWalletPayloadType,
@@ -64,7 +68,7 @@ import {
 } from '../../utils/account-utils'
 
 // Options
-import { AllAssetsFilterOption } from '../../options/asset-filter-options'
+import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
 import { AllNetworksOption } from '../../options/network-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
@@ -118,12 +122,13 @@ const defaultState: WalletState = {
   defaultNetworks: [] as BraveWallet.NetworkInfo[],
   defaultAccounts: [] as BraveWallet.AccountInfo[],
   selectedNetworkFilter: AllNetworksOption,
-  selectedAssetFilter: AllAssetsFilterOption,
+  selectedAssetFilter: HighToLowAssetsFilterOption,
   selectedAccountFilter: AllAccountsOption,
   solFeeEstimates: undefined,
   onRampCurrencies: [] as BraveWallet.OnRampCurrency[],
   selectedCurrency: undefined,
-  passwordAttempts: 0
+  passwordAttempts: 0,
+  assetAutoDiscoveryCompleted: false
 }
 
  // async actions
@@ -136,11 +141,14 @@ export const WalletAsyncActions = {
   addUserAsset: createAction<BraveWallet.BlockchainToken>('addUserAsset'),
   updateUserAsset: createAction<BraveWallet.BlockchainToken>('updateUserAsset'),
   removeUserAsset: createAction<BraveWallet.BlockchainToken>('removeUserAsset'),
-  setUserAssetVisible: createAction<SetUserAssetVisiblePayloadType>('setUserAssetVisible'), // alias for ApiProxy.braveWalletService.setUserAssetVisible
+  setUserAssetVisible: createAction<SetUserAssetVisiblePayloadType>(
+    'setUserAssetVisible'
+  ), // alias for ApiProxy.braveWalletService.setUserAssetVisible
   selectAccount: createAction<WalletAccountType>('selectAccount'), // should use apiProxy - keyringService
   selectNetwork: createAction<BraveWallet.NetworkInfo>('selectNetwork'), // should useLib
   getAllNetworks: createAction('getAllNetworks'), // alias to refreshFullNetworkList
-  chainChangedEvent: createAction<ChainChangedEventPayloadType>('chainChangedEvent'),
+  chainChangedEvent:
+    createAction<ChainChangedEventPayloadType>('chainChangedEvent'),
   keyringCreated: createAction('keyringCreated'),
   keyringRestored: createAction('keyringRestored'),
   keyringReset: createAction('keyringReset'),
@@ -148,39 +156,84 @@ export const WalletAsyncActions = {
   unlocked: createAction('unlocked'),
   backedUp: createAction('backedUp'),
   accountsChanged: createAction('accountsChanged'),
-  selectedAccountChanged: createAction<SelectedAccountChangedPayloadType>('selectedAccountChanged'),
+  selectedAccountChanged: createAction<SelectedAccountChangedPayloadType>(
+    'selectedAccountChanged'
+  ),
   getAllTokensList: createAction('getAllTokensList'),
-  selectPortfolioTimeline: createAction<BraveWallet.AssetPriceTimeframe>('selectPortfolioTimeline'),
+  selectPortfolioTimeline: createAction<BraveWallet.AssetPriceTimeframe>(
+    'selectPortfolioTimeline'
+  ),
   sendTransaction: createAction<SendTransactionParams>('sendTransaction'),
   sendERC20Transfer: createAction<ER20TransferParams>('sendERC20Transfer'),
   sendSPLTransfer: createAction<SPLTransferFromParams>('sendSPLTransfer'),
-  sendERC721TransferFrom: createAction<ERC721TransferFromParams>('sendERC721TransferFrom'),
-  approveERC20Allowance: createAction<ApproveERC20Params>('approveERC20Allowance'),
-  transactionStatusChanged: createAction<TransactionStatusChanged>('transactionStatusChanged'),
-  approveTransaction: createAction<SerializableTransactionInfo>('approveTransaction'),
-  rejectTransaction: createAction<SerializableTransactionInfo>('rejectTransaction'),
+  sendERC721TransferFrom: createAction<ERC721TransferFromParams>(
+    'sendERC721TransferFrom'
+  ),
+  approveERC20Allowance: createAction<ApproveERC20Params>(
+    'approveERC20Allowance'
+  ),
+  transactionStatusChanged: createAction<TransactionStatusChanged>(
+    'transactionStatusChanged'
+  ),
+  approveTransaction:
+    createAction<SerializableTransactionInfo>('approveTransaction'),
+  rejectTransaction:
+    createAction<SerializableTransactionInfo>('rejectTransaction'),
   rejectAllTransactions: createAction('rejectAllTransactions'),
-  refreshGasEstimates: createAction<SerializableTransactionInfo>('refreshGasEstimates'),
-  updateUnapprovedTransactionGasFields: createAction<UpdateUnapprovedTransactionGasFieldsType>('updateUnapprovedTransactionGasFields'),
-  updateUnapprovedTransactionSpendAllowance: createAction<UpdateUnapprovedTransactionSpendAllowanceType>('updateUnapprovedTransactionSpendAllowance'),
-  updateUnapprovedTransactionNonce: createAction<UpdateUnapprovedTransactionNonceType>('updateUnapprovedTransactionNonce'),
-  defaultEthereumWalletChanged: createAction<DefaultEthereumWalletChanged>('defaultEthereumWalletChanged'), // refreshWalletInfo
-  defaultSolanaWalletChanged: createAction<DefaultSolanaWalletChanged>('defaultSolanaWalletChanged'), // refreshWalletInfo
-  defaultBaseCurrencyChanged: createAction<DefaultBaseCurrencyChanged>('defaultBaseCurrencyChanged'), // refreshWalletInfo
-  defaultBaseCryptocurrencyChanged: createAction<DefaultBaseCryptocurrencyChanged>('defaultBaseCryptocurrencyChanged'), // refreshWalletInfo
-  removeSitePermission: createAction<RemoveSitePermissionPayloadType>('removeSitePermission'), // refreshWalletInfo
-  addSitePermission: createAction<AddSitePermissionPayloadType>('addSitePermission'), // refreshWalletInfo
+  refreshGasEstimates: createAction<SerializableTransactionInfo>(
+    'refreshGasEstimates'
+  ),
+  updateUnapprovedTransactionGasFields:
+    createAction<UpdateUnapprovedTransactionGasFieldsType>(
+      'updateUnapprovedTransactionGasFields'
+    ),
+  updateUnapprovedTransactionSpendAllowance:
+    createAction<UpdateUnapprovedTransactionSpendAllowanceType>(
+      'updateUnapprovedTransactionSpendAllowance'
+    ),
+  updateUnapprovedTransactionNonce:
+    createAction<UpdateUnapprovedTransactionNonceType>(
+      'updateUnapprovedTransactionNonce'
+    ),
+  defaultEthereumWalletChanged: createAction<DefaultEthereumWalletChanged>(
+    'defaultEthereumWalletChanged'
+  ), // refreshWalletInfo
+  defaultSolanaWalletChanged: createAction<DefaultSolanaWalletChanged>(
+    'defaultSolanaWalletChanged'
+  ), // refreshWalletInfo
+  defaultBaseCurrencyChanged: createAction<DefaultBaseCurrencyChanged>(
+    'defaultBaseCurrencyChanged'
+  ), // refreshWalletInfo
+  defaultBaseCryptocurrencyChanged:
+    createAction<DefaultBaseCryptocurrencyChanged>(
+      'defaultBaseCryptocurrencyChanged'
+    ),
+  removeSitePermission: createAction<RemoveSitePermissionPayloadType>(
+    'removeSitePermission'
+  ),
+  addSitePermission:
+    createAction<AddSitePermissionPayloadType>('addSitePermission'),
   refreshBalancesAndPrices: createAction('refreshBalancesAndPrices'),
-  retryTransaction: createAction<SerializableTransactionInfo>('retryTransaction'),
-  cancelTransaction: createAction<SerializableTransactionInfo>('cancelTransaction'),
-  speedupTransaction: createAction<SerializableTransactionInfo>('speedupTransaction'),
+  retryTransaction: createAction<RetryTransactionPayload>('retryTransaction'),
+  cancelTransaction:
+    createAction<CancelTransactionPayload>('cancelTransaction'),
+  speedupTransaction:
+    createAction<SpeedupTransactionPayload>('speedupTransaction'),
   expandWalletNetworks: createAction('expandWalletNetworks'), // replace with chrome.tabs.create helper
-  refreshBalancesAndPriceHistory: createAction('refreshBalancesAndPriceHistory'),
+  refreshBalancesAndPriceHistory: createAction(
+    'refreshBalancesAndPriceHistory'
+  ),
   getCoinMarkets: createAction<GetCoinMarketPayload>('getCoinMarkets'),
-  setSelectedNetworkFilter: createAction<BraveWallet.NetworkInfo>('setSelectedNetworkFilter'),
-  setSelectedAccountFilterItem: createAction<WalletAccountType>('setSelectedAccountFilterItem'),
+  setSelectedNetworkFilter: createAction<BraveWallet.NetworkInfo>(
+    'setSelectedNetworkFilter'
+  ),
+  setSelectedAccountFilterItem: createAction<WalletAccountType>(
+    'setSelectedAccountFilterItem'
+  ),
   addAccount: createAction<AddAccountPayloadType>('addAccount'), // alias for keyringService.addAccount
-  addFilecoinAccount: createAction<AddFilecoinAccountPayloadType>('addFilecoinAccount'), // alias for keyringService.addFilecoinAccount
+  // alias for keyringService.addFilecoinAccount
+  addFilecoinAccount:
+    createAction<AddFilecoinAccountPayloadType>('addFilecoinAccount'),
   getOnRampCurrencies: createAction('getOnRampCurrencies'),
   autoLockMinutesChanged: createAction('autoLockMinutesChanged') // No reducer or API logic for this (UNUSED)
 }
@@ -191,7 +244,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
     name: 'wallet',
     initialState,
     reducers: {
-      activeOriginChanged (state: WalletState, { payload }: PayloadAction<BraveWallet.OriginInfo>) {
+      activeOriginChanged (state: WalletState, { payload }: PayloadAction<SerializableOriginInfo>) {
         state.activeOrigin = payload
       },
 
@@ -348,6 +401,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
       setAllTokensList (state: WalletState, { payload }: PayloadAction<BraveWallet.BlockchainToken[]>) {
         state.fullTokenList = payload
+      },
+
+      setAssetAutoDiscoveryCompleted (state: WalletState, { payload }: PayloadAction<BraveWallet.BlockchainToken[]>) {
+        state.assetAutoDiscoveryCompleted = true
       },
 
       setCoinMarkets (state: WalletState, { payload }: PayloadAction<GetCoinMarketsResponse>) {

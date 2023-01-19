@@ -11,7 +11,6 @@ import { Redirect, useHistory, useParams } from 'react-router'
 import {
   AddAccountNavTypes,
   BraveWallet,
-  SerializableTransactionInfo,
   SupportedTestNetworks,
   UserAssetInfoType,
   WalletRoutes
@@ -98,6 +97,7 @@ import { WalletActions } from '../../../../common/actions'
 import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
 import { NftModal } from './components/nft-modal/nft-modal'
 import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
+import { ParsedTransaction } from '../../../../common/hooks/transaction-parser'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 const rainbowbridgeLink = 'https://rainbowbridge.app'
@@ -258,7 +258,7 @@ export const PortfolioAsset = (props: Props) => {
     const visibleAssetOptions = userAssetList
       .filter((token) =>
         token.asset.visible &&
-        !token.asset.isErc721
+        !(token.asset.isErc721 || token.asset.isNft)
       )
 
     if (visibleAssetOptions.length === 0) {
@@ -293,20 +293,26 @@ export const PortfolioAsset = (props: Props) => {
     }
   }, [portfolioPriceHistory, fullPortfolioFiatBalance])
 
-  const transactionsByNetwork = React.useMemo(() => {
-    if (!selectedAssetsNetwork) {
+  const accountsByNetwork = React.useMemo(() => {
+    if (selectedAssetsNetwork?.coin !== undefined) {
       return []
     }
-    const accountsByNetwork = accounts.filter((account) => account.coin === selectedAssetsNetwork.coin)
+    return accounts.filter((account) => account.coin === selectedAssetsNetwork?.coin)
+  }, [selectedAssetsNetwork?.coin, accounts])
+
+  const transactionsByNetwork = React.useMemo(() => {
     return accountsByNetwork.map((account) => {
       return transactions[account.address]
-    }).flat(1)
-  }, [accounts, transactions, selectedAssetsNetwork])
+    }).flat(1).map(parseTransaction)
+  }, [
+    accountsByNetwork,
+    transactions
+  ])
 
-  const selectedAssetTransactions: SerializableTransactionInfo[] = React.useMemo(() => {
+  const selectedAssetTransactions: ParsedTransaction[] = React.useMemo(() => {
     if (selectedAsset) {
       const filteredTransactions = transactionsByNetwork.filter((tx) => {
-        return tx && parseTransaction(tx).symbol === selectedAsset?.symbol
+        return tx && tx?.symbol === selectedAsset?.symbol
       })
       return sortTransactionByDate(filteredTransactions, 'descending')
     }
@@ -551,7 +557,7 @@ export const PortfolioAsset = (props: Props) => {
 
   React.useEffect(() => {
     setDontShowAuroraWarning(JSON.parse(localStorage.getItem(bridgeToAuroraDontShowAgainKey) || 'false'))
-  })
+  }, [])
 
   // Receive postMessage from chrome-untrusted://nft-display
   React.useEffect(() => {
@@ -706,7 +712,7 @@ export const PortfolioAsset = (props: Props) => {
 
       <NftDetails
         onLoad={onNftDetailsLoad}
-        visible={selectedAsset?.isErc721}
+        visible={selectedAsset?.isErc721 || selectedAsset?.isNft}
         ref={nftDetailsRef}
         sandbox="allow-scripts allow-popups allow-same-origin"
         src='chrome-untrusted://nft-display'

@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "base/values.h"
 #include "brave/components/ipfs/addresses_config.h"
 #include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/node_info.h"
@@ -17,22 +18,25 @@
 
 class IPFSJSONParser {
  public:
-  static bool GetPeersFromJSON(const std::string& json,
+  static bool GetPeersFromJSON(const base::Value& json_value,
                                std::vector<std::string>* peers);
-  static bool GetAddressesConfigFromJSON(const std::string& json,
+  static bool GetAddressesConfigFromJSON(const base::Value& json_value,
                                          ipfs::AddressesConfig* config);
-  static bool GetRepoStatsFromJSON(const std::string& json,
+  static bool GetRepoStatsFromJSON(const base::Value& json_value,
                                    ipfs::RepoStats* config);
-  static bool GetNodeInfoFromJSON(const std::string& json,
+  static bool GetNodeInfoFromJSON(const base::Value& json_value,
                                   ipfs::NodeInfo* info);
-  static bool GetGarbageCollectionFromJSON(const std::string& json,
+  static bool GetGarbageCollectionFromJSON(const base::Value& json_value,
                                            std::string* error);
   static bool GetImportResponseFromJSON(const std::string& json,
                                         ipfs::ImportedData* data);
   static bool GetParseKeysFromJSON(
-      const std::string& json,
+      const base::Value& json_value,
       std::unordered_map<std::string, std::string>* keys);
   static bool GetParseSingleKeyFromJSON(const std::string& json,
+                                        std::string* name,
+                                        std::string* value);
+  static bool GetParseSingleKeyFromJSON(const base::Value& json_value,
                                         std::string* name,
                                         std::string* value);
   static bool GetPeersFromConfigJSON(const std::string& json,

@@ -17,7 +17,6 @@ source_set("p3a") {
     "//base",
     "//brave/components/p3a",
     "//components/prefs",
-    "//ios/chrome/browser",
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/url:constants",
     "//ios/components/webui:url_constants",

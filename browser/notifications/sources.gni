@@ -8,17 +8,19 @@ brave_browser_notifications_sources = [
   "//brave/browser/notifications/ads_notification_handler.h",
 ]
 
+brave_browser_notifications_deps = [
+  "//base",
+  "//chrome/browser/notifications",
+  "//third_party/abseil-cpp:absl",
+  "//url",
+]
+
 if (is_android) {
   brave_browser_notifications_sources += [
     "//brave/browser/notifications/brave_notification_platform_bridge_helper_android.cc",
     "//brave/browser/notifications/brave_notification_platform_bridge_helper_android.h",
   ]
-}
 
-brave_browser_notifications_deps = [
-  "//base",
-  "//brave/components/brave_adaptive_captcha/buildflags",
-  "//chrome/browser/notifications",
-  "//third_party/abseil-cpp:absl",
-  "//url",
-]
+  brave_browser_notifications_deps +=
+      [ "//brave/android:brave_android_java_enums_srcjar" ]
+}

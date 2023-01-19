@@ -1,7 +1,7 @@
-/* Copyright (c) 2021 The Brave Software Team. Distributed under the MPL2
- * license. This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/test/base/testing_brave_browser_process.h"
 
@@ -48,14 +48,6 @@ brave_shields::AdBlockService* TestingBraveBrowserProcess::ad_block_service() {
   DCHECK(ad_block_service_);
   return ad_block_service_.get();
 }
-
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-brave_component_updater::ExtensionWhitelistService*
-TestingBraveBrowserProcess::extension_whitelist_service() {
-  NOTREACHED();
-  return nullptr;
-}
-#endif
 
 #if BUILDFLAG(ENABLE_GREASELION)
 greaselion::GreaselionDownloadService*
@@ -145,6 +137,19 @@ brave_ads::ResourceComponent* TestingBraveBrowserProcess::resource_component() {
 
 brave::BraveFarblingService*
 TestingBraveBrowserProcess::brave_farbling_service() {
+  NOTREACHED();
+  return nullptr;
+}
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+brave_vpn::BraveVPNOSConnectionAPI*
+TestingBraveBrowserProcess::brave_vpn_os_connection_api() {
+  NOTREACHED();
+  return nullptr;
+}
+#endif
+
+misc_metrics::MenuMetrics* TestingBraveBrowserProcess::menu_metrics() {
   NOTREACHED();
   return nullptr;
 }

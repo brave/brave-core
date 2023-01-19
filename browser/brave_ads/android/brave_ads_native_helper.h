@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_BRAVE_ADS_ANDROID_BRAVE_ADS_NATIVE_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_ADS_ANDROID_BRAVE_ADS_NATIVE_HELPER_H_
@@ -16,7 +16,8 @@ static jboolean JNI_BraveAdsNativeHelper_IsBraveAdsEnabled(
 
 static void JNI_BraveAdsNativeHelper_SetAdsEnabled(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile_android);
+    const base::android::JavaParamRef<jobject>& j_profile_android,
+    jboolean should_enable_ads);
 
 static jboolean JNI_BraveAdsNativeHelper_IsSupportedLocale(
     JNIEnv* env,

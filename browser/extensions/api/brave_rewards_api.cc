@@ -12,7 +12,9 @@
 
 #include "base/bind.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/version.h"
 #include "bat/ads/supported_subdivisions.h"
+#include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -22,7 +24,7 @@
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/brave_rewards.h"
-#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -37,11 +39,6 @@
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/constants.h"
-
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-#include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
-#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#endif
 
 using brave_ads::AdsService;
 using brave_ads::AdsServiceFactory;
@@ -607,6 +604,8 @@ void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
     data.Set("monthlyTipChoices", base::Value::List());
     data.Set("autoContributeChoices", base::Value::List());
     data.Set("payoutStatus", base::Value::Dict());
+    data.Set("walletProviderRegions", base::Value::Dict());
+    data.Set("vbatExpired", false);
     return Respond(OneArgument(base::Value(std::move(data))));
   }
 
@@ -628,6 +627,29 @@ void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
     payout_status.Set(key, value);
   }
   data.Set("payoutStatus", std::move(payout_status));
+
+  base::Value::Dict provider_regions;
+  for (const auto& [provider, regions] : parameters->wallet_provider_regions) {
+    base::Value::List allow;
+    for (const auto& country : regions->allow) {
+      allow.Append(country);
+    }
+    base::Value::List block;
+    for (const auto& country : regions->block) {
+      block.Append(country);
+    }
+    base::Value::Dict regions_dict;
+    regions_dict.Set("allow", std::move(allow));
+    regions_dict.Set("block", std::move(block));
+    provider_regions.Set(provider, std::move(regions_dict));
+  }
+  data.Set("walletProviderRegions", std::move(provider_regions));
+
+  if (!parameters->vbat_deadline.is_null()) {
+    data.Set("vbatDeadline", floor(parameters->vbat_deadline.ToDoubleT() *
+                                   base::Time::kMillisecondsPerSecond));
+  }
+  data.Set("vbatExpired", parameters->vbat_expired);
 
   Respond(OneArgument(base::Value(std::move(data))));
 }
@@ -696,6 +718,57 @@ BraveRewardsGetDeclaredCountryFunction::Run() {
   auto* prefs = Profile::FromBrowserContext(browser_context())->GetPrefs();
   std::string country = prefs->GetString(::brave_rewards::prefs::kDeclaredGeo);
   return RespondNow(OneArgument(base::Value(std::move(country))));
+}
+
+BraveRewardsGetUserTypeFunction::~BraveRewardsGetUserTypeFunction() = default;
+
+ExtensionFunction::ResponseAction BraveRewardsGetUserTypeFunction::Run() {
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(OneArgument(base::Value(std::string())));
+  }
+
+  rewards_service->GetUserType(
+      base::BindOnce(&BraveRewardsGetUserTypeFunction::Callback, this));
+
+  return RespondLater();
+}
+
+void BraveRewardsGetUserTypeFunction::Callback(
+    ledger::mojom::UserType user_type) {
+  auto map_user_type = [](ledger::mojom::UserType user_type) -> std::string {
+    switch (user_type) {
+      case ledger::mojom::UserType::kLegacyUnconnected:
+        return "legacy-unconnected";
+      case ledger::mojom::UserType::kConnected:
+        return "connected";
+      case ledger::mojom::UserType::kUnconnected:
+        return "unconnected";
+    }
+  };
+  Respond(OneArgument(base::Value(map_user_type(user_type))));
+}
+
+BraveRewardsGetPublishersVisitedCountFunction::
+    ~BraveRewardsGetPublishersVisitedCountFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetPublishersVisitedCountFunction::Run() {
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(OneArgument(base::Value(0)));
+  }
+
+  rewards_service->GetPublishersVisitedCount(base::BindOnce(
+      &BraveRewardsGetPublishersVisitedCountFunction::Callback, this));
+
+  return RespondLater();
+}
+
+void BraveRewardsGetPublishersVisitedCountFunction::Callback(int count) {
+  Respond(OneArgument(base::Value(count)));
 }
 
 BraveRewardsGetBalanceReportFunction::~BraveRewardsGetBalanceReportFunction() =
@@ -1152,6 +1225,22 @@ void BraveRewardsFetchBalanceFunction::OnBalance(
   Respond(OneArgument(base::Value(std::move(balance_value))));
 }
 
+BraveRewardsGetExternalWalletProvidersFunction::
+    ~BraveRewardsGetExternalWalletProvidersFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetExternalWalletProvidersFunction::Run() {
+  base::Value::List providers;
+
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  if (auto* rewards_service = RewardsServiceFactory::GetForProfile(profile)) {
+    for (auto& provider : rewards_service->GetExternalWalletProviders()) {
+      providers.Append(provider);
+    }
+  }
+  return RespondNow(OneArgument(base::Value(std::move(providers))));
+}
+
 BraveRewardsGetExternalWalletFunction::
     ~BraveRewardsGetExternalWalletFunction() = default;
 
@@ -1180,29 +1269,12 @@ void BraveRewardsGetExternalWalletFunction::OnGetExternalWallet(
   data.Set("type", wallet->type);
   data.Set("address", wallet->address);
   data.Set("status", static_cast<int>(wallet->status));
-  data.Set("addUrl", wallet->add_url);
-  data.Set("withdrawUrl", wallet->withdraw_url);
   data.Set("userName", wallet->user_name);
   data.Set("accountUrl", wallet->account_url);
   data.Set("loginUrl", wallet->login_url);
   data.Set("activityUrl", wallet->activity_url);
 
   Respond(OneArgument(base::Value(std::move(data))));
-}
-
-BraveRewardsDisconnectWalletFunction::~BraveRewardsDisconnectWalletFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsDisconnectWalletFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    return RespondNow(NoArguments());
-  }
-
-  rewards_service->DisconnectWallet();
-  return RespondNow(NoArguments());
 }
 
 BraveRewardsGetRewardsEnabledFunction::
@@ -1341,7 +1413,6 @@ BraveRewardsGetScheduledCaptchaInfoFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsGetScheduledCaptchaInfoFunction::Run() {
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* brave_adaptive_captcha_service =
       brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetForProfile(
@@ -1362,9 +1433,6 @@ BraveRewardsGetScheduledCaptchaInfoFunction::Run() {
   dict.Set("maxAttemptsExceeded", max_attempts_exceeded);
 
   return RespondNow(OneArgument(base::Value(std::move(dict))));
-#else
-  return RespondNow(Error("Adaptive captcha not supported"));
-#endif
 }
 
 BraveRewardsUpdateScheduledCaptchaResultFunction::
@@ -1372,7 +1440,6 @@ BraveRewardsUpdateScheduledCaptchaResultFunction::
 
 ExtensionFunction::ResponseAction
 BraveRewardsUpdateScheduledCaptchaResultFunction::Run() {
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   auto params(
       brave_rewards::UpdateScheduledCaptchaResult::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
@@ -1390,9 +1457,6 @@ BraveRewardsUpdateScheduledCaptchaResultFunction::Run() {
   brave_adaptive_captcha_service->UpdateScheduledCaptchaResult(params->result);
 
   return RespondNow(NoArguments());
-#else
-  return RespondNow(Error("Adaptive captcha not supported"));
-#endif
 }
 
 BraveRewardsEnableAdsFunction::~BraveRewardsEnableAdsFunction() = default;

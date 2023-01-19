@@ -29,7 +29,10 @@ TEST_F(IPFSServiceUtils, UpdateConfigJSONTest) {
       "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\",\"Swarm\":"
       "[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip6/::/tcp/SwarmPort\""
       "]},\"Datastore\":{\"GCPeriod\":\"1h\",\"StorageMax\":"
-      "\"StorageSize\"},\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
+      "\"StorageSize\"},"
+      "\"Gateway\":{\"PublicGateways\":{\"localhost\":{\"InlineDNSLink\":true,"
+      "\"Paths\":[\"/ipfs\",\"/ipns\",\"/api\"],\"UseSubdomains\":true}}},"
+      "\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
       "\"HighWater\":40,\"LowWater\":20}}}";
   ASSERT_TRUE(UpdateConfigJSON(json, config.get(), &updated));
   EXPECT_EQ(updated, expect);
@@ -82,7 +85,11 @@ TEST_F(IPFSServiceUtils, DNSResolversRemove) {
         "]},\"DNS\":{\"Resolvers\":{\".\":\"https://cloudflare.com/"
         "dns-query\"}},"
         "\"Datastore\":{\"GCPeriod\":\"1h\",\"StorageMax\":"
-        "\"StorageSize\"},\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
+        "\"StorageSize\"},"
+        "\"Gateway\":{\"PublicGateways\":{\"localhost\":{\"InlineDNSLink\":"
+        "true,\"Paths\":[\"/ipfs\",\"/ipns\",\"/"
+        "api\"],\"UseSubdomains\":true}}},"
+        "\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
         "\"HighWater\":40,\"LowWater\":20}}}";
 
     EXPECT_TRUE(UpdateConfigJSON(json, config.get(), &updated));
@@ -101,7 +108,10 @@ TEST_F(IPFSServiceUtils, DNSResolversRemove) {
       "[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip6/::/tcp/SwarmPort\""
       "]},"
       "\"Datastore\":{\"GCPeriod\":\"1h\",\"StorageMax\":"
-      "\"StorageSize\"},\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
+      "\"StorageSize\"},\"Gateway\":{\"PublicGateways\":{\"localhost\":{"
+      "\"InlineDNSLink\":true,\"Paths\":[\"/ipfs\",\"/ipns\",\"/"
+      "api\"],\"UseSubdomains\":true}}},"
+      "\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
       "\"HighWater\":40,\"LowWater\":20}}}";
 
   EXPECT_TRUE(UpdateConfigJSON(json, config.get(), &updated));
@@ -122,7 +132,10 @@ TEST_F(IPFSServiceUtils, DNSResolversUpdate) {
       "[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip6/::/tcp/SwarmPort\""
       "]},\"DNS\":{\"Resolvers\":{\".\":\"https://cloudflare.com/dns-query\"}},"
       "\"Datastore\":{\"GCPeriod\":\"1h\",\"StorageMax\":"
-      "\"StorageSize\"},\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
+      "\"StorageSize\"},\"Gateway\":{\"PublicGateways\":{\"localhost\":{"
+      "\"InlineDNSLink\":true,\"Paths\":[\"/ipfs\",\"/ipns\",\"/"
+      "api\"],\"UseSubdomains\":true}}},"
+      "\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
       "\"HighWater\":40,\"LowWater\":20}}}";
   ASSERT_TRUE(UpdateConfigJSON(json, config.get(), &updated));
   EXPECT_EQ(updated, expect);
@@ -142,7 +155,10 @@ TEST_F(IPFSServiceUtils, DNSResolversUpdate_DnsHasRFC8484Template) {
       "[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip6/::/tcp/SwarmPort\""
       "]},\"DNS\":{\"Resolvers\":{\".\":\"https://cloudflare.com/dns-query\"}},"
       "\"Datastore\":{\"GCPeriod\":\"1h\",\"StorageMax\":"
-      "\"StorageSize\"},\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
+      "\"StorageSize\"},"
+      "\"Gateway\":{\"PublicGateways\":{\"localhost\":{\"InlineDNSLink\":true,"
+      "\"Paths\":[\"/ipfs\",\"/ipns\",\"/api\"],\"UseSubdomains\":true}}},"
+      "\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
       "\"HighWater\":40,\"LowWater\":20}}}";
   ASSERT_TRUE(UpdateConfigJSON(json, config.get(), &updated));
   EXPECT_EQ(updated, expect);

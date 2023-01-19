@@ -9,6 +9,7 @@
 #define FrameColorsChanged                                          \
   UnUsed_FrameColorsChanged() {}                                    \
   friend class VerticalTabStripRegionView;                          \
+  friend class BraveTabStrip;                                       \
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, MinHeight); \
   void FrameColorsChanged
 #include "src/chrome/browser/ui/views/frame/tab_strip_region_view.h"

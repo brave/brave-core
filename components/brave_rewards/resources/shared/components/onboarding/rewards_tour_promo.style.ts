@@ -14,7 +14,7 @@ export const root = styled.div`
     linear-gradient(279.66deg, #694CD9 0%, #7D186C 100%);
   background-repeat: no-repeat;
   background-size: cover;
-  border-radius: 12px;
+  border-radius: 8px;
   font-family: var(--brave-font-heading);
   color: var(--brave-palette-white);
   padding: 28px 16px 18px;

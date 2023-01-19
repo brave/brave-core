@@ -6,9 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_COLOR_BRAVE_COLOR_ID_H_
 #define BRAVE_BROWSER_UI_COLOR_BRAVE_COLOR_ID_H_
 
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
-#include "brave/components/sidebar/buildflags/buildflags.h"
-#include "brave/components/speedreader/common/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 
 // clang-format off
@@ -39,7 +38,6 @@
     E_CPONLY(kColorSearchConversionButtonTypeDescHovered)             \
     E_CPONLY(kColorSearchConversionButtonTypeInputAppend)
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
 #define BRAVE_SIDEBAR_COLOR_IDS                               \
     E_CPONLY(kColorSidebarAddBubbleBackground)                \
     E_CPONLY(kColorSidebarAddBubbleHeaderText)                \
@@ -54,9 +52,6 @@
     E_CPONLY(kColorSidebarItemBackgroundHovered)              \
     E_CPONLY(kColorSidebarItemDragIndicator)                  \
     E_CPONLY(kColorSidebarSeparator)
-#else
-#define BRAVE_SIDEBAR_COLOR_IDS
-#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #define BRAVE_SPEEDREADER_COLOR_IDS      \

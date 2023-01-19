@@ -38,6 +38,7 @@ import { AddAccountModal } from '../../popup-modals/add-account-modal/add-accoun
 import { NftView } from '../nfts/nft-view'
 import { ConfirmPasswordModal } from '../../popup-modals/confirm-password-modal/confirm-password-modal'
 import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/account-settings-modal'
+import TransactionsScreen from '../../../../page/screens/transactions/transactions-screen'
 
 interface ParamsType {
   category?: TopTabNavTypes
@@ -227,6 +228,7 @@ const CryptoView = (props: Props) => {
           <Accounts />
         </Route>
 
+        {/* Market */}
         <Route path={WalletRoutes.Market} exact={true}>
           {nav}
           <MarketView />
@@ -239,9 +241,16 @@ const CryptoView = (props: Props) => {
           />
         </Route>
 
+        {/* NFTs */}
         <Route path={WalletRoutes.Nfts} exact={true}>
           {nav}
           <NftView />
+        </Route>
+
+        {/* Transactions */}
+        <Route path={WalletRoutes.Activity} exact={true}>
+          {nav}
+          <TransactionsScreen />
         </Route>
 
         <Redirect to={sessionRoute || WalletRoutes.Portfolio} />

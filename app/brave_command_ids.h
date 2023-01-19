@@ -9,6 +9,9 @@
 // First brave id must be higher than last chrome command.
 // Check chrome/app/chrome_command_ids.h when rebase.
 // ID of IDC_BRAVE_COMANDS_START and first brave command should be same.
+
+// If new main menu items are added, please consider adding a case for it
+// in the switch statement of BraveAppMenu::RecordMenuUsage for P3A purposes
 #define IDC_BRAVE_COMMANDS_START 56000
 #define IDC_SHOW_BRAVE_REWARDS 56000
 #define IDC_NEW_TOR_CONNECTION_FOR_SITE     56002
@@ -49,9 +52,17 @@
 #define IDC_APP_MENU_IPFS_UPDATE_IPNS 56038
 #define IDC_CONTENT_CONTEXT_FORCE_PASTE 56039
 #define IDC_COPY_CLEAN_LINK 56040
+#define IDC_TOGGLE_TAB_MUTE 56041
+#define IDC_SIDEBAR_TOGGLE_POSITION 56042
+#define IDC_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE 56043
 
 #define IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START 56100
 #define IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_END 56199
+
+#define IDC_BRAVE_BOOKMARK_BAR_SUBMENU 56200
+#define IDC_BRAVE_BOOKMARK_BAR_ALWAYS 56201
+#define IDC_BRAVE_BOOKMARK_BAR_NTP 56202
+#define IDC_BRAVE_BOOKMARK_BAR_NEVER 56203
 
 #define IDC_BRAVE_COMMANDS_LAST  57000
 

@@ -56,13 +56,15 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
       [network.symbol, asset.symbol]
     )
 
+    const isNonFungibleToken = React.useMemo(() => asset.isNft || asset.isErc721, [asset.isNft, asset.isErc721])
+
     const tokenImageURL = stripERC20TokenImageURL(asset.logo)
     const isRemoteURL = isRemoteImageURL(tokenImageURL)
     const isStorybook = asset.logo.startsWith('static/media/components/brave_wallet_ui/')
 
     const isValidIcon = React.useMemo(() => {
       if (isRemoteURL || isDataURL(asset.logo)) {
-        return tokenImageURL?.includes('data:image/') || isIpfs(tokenImageURL) ? true : isValidIconExtension(new URL(asset.logo).pathname)
+        return tokenImageURL?.includes('data:image/') || isIpfs(tokenImageURL) || isNonFungibleToken ? true : isValidIconExtension(new URL(asset.logo).pathname)
       }
       if (isStorybook) {
         return true

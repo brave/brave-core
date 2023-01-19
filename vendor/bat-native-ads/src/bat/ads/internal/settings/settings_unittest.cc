@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/settings/settings.h"
 
@@ -9,7 +9,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ads/serving/serving_features.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -20,7 +20,7 @@ class BatAdsSettingsTest : public UnitTestBase {};
 
 TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   // Arrange
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams kParameters;
   kParameters["default_ad_notifications_per_hour"] = "2";
   enabled_features.emplace_back(features::kServing, kParameters);
@@ -43,7 +43,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
 
 TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasNotChangedDefaultSetting) {
   // Arrange
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams kParameters;
   kParameters["default_ad_notifications_per_hour"] = "2";
   enabled_features.emplace_back(features::kServing, kParameters);
@@ -63,7 +63,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasNotChangedDefaultSetting) {
 
 TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
   // Arrange
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams kParameters;
   kParameters["default_ad_notifications_per_hour"] = "-1";
   enabled_features.emplace_back(features::kServing, kParameters);
@@ -83,7 +83,7 @@ TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
 
 TEST_F(BatAdsSettingsTest, ClampMaxAdsPerHour) {
   // Arrange
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams kParameters;
   kParameters["default_ad_notifications_per_hour"] = "11";
   enabled_features.emplace_back(features::kServing, kParameters);

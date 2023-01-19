@@ -10,9 +10,8 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
-#include "brave/components/sidebar/buildflags/buildflags.h"
-#include "brave/components/speedreader/common/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
@@ -224,7 +223,6 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorDialogDontAskAgainButton] = {SkColorSetRGB(0x86, 0x8E, 0x96)};
   mixer[kColorDialogDontAskAgainButtonHovered] = {
       SkColorSetRGB(0x49, 0x50, 0x57)};
-#if BUILDFLAG(ENABLE_SIDEBAR)
   mixer[kColorSidebarAddBubbleBackground] = {SK_ColorWHITE};
   mixer[kColorSidebarAddBubbleHeaderText] = {SkColorSetRGB(0x17, 0x17, 0x1F)};
   mixer[kColorSidebarAddBubbleItemTextBackgroundHovered] = {
@@ -252,7 +250,6 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarItemDragIndicator] = {
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x21, 0x25, 0x29),
                                     SkColorSetRGB(0xC2, 0xC4, 0xCF))};
-#endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   mixer[kColorSpeedreaderIcon] = {SkColorSetRGB(0x4C, 0x54, 0xD2)};
   mixer[kColorSpeedreaderToggleThumb] = {SkColorSetRGB(0x4C, 0x54, 0xD2)};
@@ -317,7 +314,6 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorDialogDontAskAgainButton] = {SkColorSetRGB(0x84, 0x88, 0x9C)};
   mixer[kColorDialogDontAskAgainButtonHovered] = {
       SkColorSetRGB(0xC2, 0xC4, 0xCF)};
-#if BUILDFLAG(ENABLE_SIDEBAR)
   mixer[kColorSidebarAddBubbleBackground] = {gfx::kBraveGrey800};
   mixer[kColorSidebarAddBubbleHeaderText] = {SkColorSetRGB(0xF0, 0xF0, 0xFF)};
   mixer[kColorSidebarAddBubbleItemTextBackgroundHovered] = {
@@ -344,7 +340,6 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarItemDragIndicator] = {
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x21, 0x25, 0x29),
                                     SkColorSetRGB(0xC2, 0xC4, 0xCF))};
-#endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   mixer[kColorSpeedreaderIcon] = {SkColorSetRGB(0x73, 0x7A, 0xDE)};
   mixer[kColorSpeedreaderToggleThumb] = {SkColorSetRGB(0x44, 0x36, 0xE1)};

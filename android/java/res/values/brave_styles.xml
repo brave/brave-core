@@ -10,6 +10,11 @@
         <item name="colorControlActivated">#fb542b</item>
     </style>
 
+    <style name="BraveSwitchNewsTheme">
+        <item name="colorControlActivated">@color/news_settings_switch_color</item>
+        <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
+    </style>
+
     <style name="BraveDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="windowNoTitle">true</item>
     </style>
@@ -23,6 +28,7 @@
     <style name="AppBottomSheetDialogTheme"
            parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
@@ -161,6 +167,13 @@
         <item name="android:background">@drawable/brave_sync_toggle_on_btn_left</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BookmarkTabPopupMenu" parent="Theme.AppCompat.DayNight">
+        <item name="android:textColor">@color/bookmark_menu_text_color</item>
+        <item name="android:popupBackground">@drawable/bookmark_menu_bg</item>
+        <item name="android:popupElevation">20dp</item>
+        <item name="android:popupMenuStyle">@drawable/bookmark_menu_bg</item>
     </style>
 
     <style name="NewTabPopupMenuLight" parent="Widget.AppCompat.PopupMenu">

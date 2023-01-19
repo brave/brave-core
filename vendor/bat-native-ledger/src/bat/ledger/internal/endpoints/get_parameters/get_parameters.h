@@ -50,7 +50,9 @@
 //   "tips": {
 //     "defaultMonthlyChoices": [1.25, 5, 10.5],
 //     "defaultTipChoices": [1.25, 5, 10.5]
-//   }
+//   },
+//   "vbatDeadline": "2022-12-24T15:04:45.352584Z",
+//   "vbatExpired": false
 // }
 // clang-format on
 

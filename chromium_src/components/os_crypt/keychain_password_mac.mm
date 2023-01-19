@@ -33,6 +33,12 @@ std::pair<std::string, std::string> GetServiceAndAccountName() {
   if (command_line->HasSwitch("import-edge")) {
     service_name = std::string("Microsoft Edge Safe Storage");
     account_name = std::string("Microsoft Edge");
+  } else if (command_line->HasSwitch("import-yandex")) {
+    service_name = std::string("Yandex Safe Storage");
+    account_name = std::string("Yandex");
+  } else if (command_line->HasSwitch("import-whale")) {
+    service_name = std::string("Whale Safe Storage");
+    account_name = std::string("Whale");
   } else if (command_line->HasSwitch("import-chrome")) {
     service_name = std::string("Chrome Safe Storage");
     account_name = std::string("Chrome");

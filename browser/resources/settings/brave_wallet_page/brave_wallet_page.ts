@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
@@ -12,10 +13,11 @@ import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {PrefsMixin} from '../prefs/prefs_mixin.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {Router, RouteObserverMixin} from '../router.js';
-import {WebUIListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
+import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {getTemplate} from './brave_wallet_page.html.js'
 
-const SettingsBraveWalletPageBase = WebUIListenerMixin(PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement))))
+const SettingsBraveWalletPageBase =
+  WebUiListenerMixin(PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement))))
 
 /**
  * 'settings-brave-default-extensions-page' is the settings page containing

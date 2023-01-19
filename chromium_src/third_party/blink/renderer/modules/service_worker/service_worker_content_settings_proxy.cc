@@ -7,12 +7,6 @@
 
 namespace blink {
 
-bool ServiceWorkerContentSettingsProxy::AllowFingerprinting() {
-  bool result = true;
-  GetService()->AllowFingerprinting(&result);
-  return result;
-}
-
 BraveFarblingLevel ServiceWorkerContentSettingsProxy::GetBraveFarblingLevel() {
   uint8_t result = BraveFarblingLevel::OFF;
   GetService()->GetBraveFarblingLevel(&result);

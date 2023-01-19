@@ -18,7 +18,7 @@ path = "../../../third_party/rust/link_cplusplus/v1/crate"
 package = "link-cplusplus"
 
 [patch.crates-io.cxx_v1]
-path = "../../../third_party/rust/cxx/v1/crate"
+path = "../../third_party/rust/cxx/v1/crate"
 package = "cxx"
 
 [lib]

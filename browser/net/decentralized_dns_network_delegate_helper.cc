@@ -38,8 +38,8 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
   if (!json_rpc_service)
     return net::OK;
 
-  if (IsUnstoppableDomainsTLD(ctx->request_url) &&
-      IsUnstoppableDomainsResolveMethodEthereum(
+  if (IsUnstoppableDomainsTLD(ctx->request_url.host_piece()) &&
+      IsUnstoppableDomainsResolveMethodEnabled(
           g_browser_process->local_state())) {
     json_rpc_service->UnstoppableDomainsResolveDns(
         ctx->request_url.host(),
@@ -49,8 +49,8 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     return net::ERR_IO_PENDING;
   }
 
-  if (IsENSTLD(ctx->request_url) &&
-      IsENSResolveMethodEthereum(g_browser_process->local_state())) {
+  if (IsENSTLD(ctx->request_url.host_piece()) &&
+      IsENSResolveMethodEnabled(g_browser_process->local_state())) {
     json_rpc_service->EnsGetContentHash(
         ctx->request_url.host(),
         base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork, next_callback,
@@ -61,7 +61,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
 
   if (base::FeatureList::IsEnabled(
           brave_wallet::features::kBraveWalletSnsFeature) &&
-      IsSnsTLD(ctx->request_url) &&
+      IsSnsTLD(ctx->request_url.host_piece()) &&
       IsSnsResolveMethodEnabled(g_browser_process->local_state())) {
     json_rpc_service->SnsResolveHost(
         ctx->request_url.host(),

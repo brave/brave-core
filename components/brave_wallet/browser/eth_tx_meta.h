@@ -37,13 +37,16 @@ class EthTxMeta : public TxMeta {
 
   TransactionReceipt tx_receipt() const { return tx_receipt_; }
   EthTransaction* tx() const { return tx_.get(); }
+  bool sign_only() const { return sign_only_; }
 
   void set_tx_receipt(const TransactionReceipt& tx_receipt) {
     tx_receipt_ = tx_receipt;
   }
   void set_tx(std::unique_ptr<EthTransaction> tx) { tx_ = std::move(tx); }
+  void set_sign_only(bool sign_only) { sign_only_ = sign_only; }
 
  private:
+  bool sign_only_ = false;
   TransactionReceipt tx_receipt_;
   std::unique_ptr<EthTransaction> tx_;
 };

@@ -13,6 +13,16 @@ import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.browser.profiles.Profile;
 
+/**
+ * Please don't add anything in that file. We are going to refactor it soon.
+ * Check this PRs on how to handle preferences correctly:
+ * https://github.com/brave/brave-core/pull/16356
+ * https://github.com/brave/brave-core/pull/15905
+ * For the local_state based prefs please look on the PR:
+ * https://github.com/brave/brave-core/pull/16486
+ * Contact code owners if you have additional questions.
+ */
+
 @JNINamespace("chrome::android")
 public class BravePrefServiceBridge {
     private BravePrefServiceBridge() {
@@ -36,45 +46,10 @@ public class BravePrefServiceBridge {
     }
 
     /**
-     * @param whether De-AMP should be enabled.
-     */
-    public void setDeAmpEnabled(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setDeAmpEnabled(enabled);
-    }
-
-    /**
      * @param whether the IPFS gateway should be enabled.
      */
     public void setIpfsGatewayEnabled(boolean enabled) {
         BravePrefServiceBridgeJni.get().setIpfsGatewayEnabled(enabled);
-    }
-
-    /**
-     * @param whether google login is enabled on third party sites.
-     */
-    public void setThirdPartyGoogleLoginEnabled(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setThirdPartyGoogleLoginEnabled(enabled);
-    }
-
-    /**
-     * @param whether facebook embeds are allowed on third party sites.
-     */
-    public void setThirdPartyFacebookEmbedEnabled(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setThirdPartyFacebookEmbedEnabled(enabled);
-    }
-
-    /**
-     * @param whether twitter embeds are allowed on third party sites.
-     */
-    public void setThirdPartyTwitterEmbedEnabled(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setThirdPartyTwitterEmbedEnabled(enabled);
-    }
-
-    /**
-     * @param whether linkedin embeds are allowed on third party sites.
-     */
-    public void setThirdPartyLinkedinEmbedEnabled(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setThirdPartyLinkedinEmbedEnabled(enabled);
     }
 
     /**
@@ -167,20 +142,8 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getSafetynetCheckFailed();
     }
 
-    public void setSafetynetStatus(String status) {
-        BravePrefServiceBridgeJni.get().setSafetynetStatus(status);
-    }
-
-    public void setUseRewardsStagingServer(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setUseRewardsStagingServer(enabled);
-    }
-
     public void resetPromotionLastFetchStamp() {
         BravePrefServiceBridgeJni.get().resetPromotionLastFetchStamp();
-    }
-
-    public boolean getUseRewardsStagingServer() {
-        return BravePrefServiceBridgeJni.get().getUseRewardsStagingServer();
     }
 
     public void setOldTrackersBlockedCount(Profile profile, long count) {
@@ -197,70 +160,6 @@ public class BravePrefServiceBridge {
 
     public boolean GetBooleanForContentSetting(int content_type) {
         return BravePrefServiceBridgeJni.get().getBooleanForContentSetting(content_type);
-    }
-
-    public void setReferralAndroidFirstRunTimestamp(long time) {
-        BravePrefServiceBridgeJni.get().setReferralAndroidFirstRunTimestamp(time);
-    }
-
-    public void setReferralCheckedForPromoCodeFile(boolean value) {
-        BravePrefServiceBridgeJni.get().setReferralCheckedForPromoCodeFile(value);
-    }
-
-    public void setReferralInitialization(boolean value) {
-        BravePrefServiceBridgeJni.get().setReferralInitialization(value);
-    }
-
-    public void setReferralPromoCode(String promoCode) {
-        BravePrefServiceBridgeJni.get().setReferralPromoCode(promoCode);
-    }
-
-    public void setReferralDownloadId(String downloadId) {
-        BravePrefServiceBridgeJni.get().setReferralDownloadId(downloadId);
-    }
-
-    public void setP3AEnabled(boolean value) {
-        BravePrefServiceBridgeJni.get().setP3AEnabled(value);
-    }
-
-    public boolean getP3AEnabled() {
-        return BravePrefServiceBridgeJni.get().getP3AEnabled();
-    }
-
-    public void setStatsReportingEnabled(boolean value) {
-        BravePrefServiceBridgeJni.get().setStatsReportingEnabled(value);
-    }
-
-    public boolean getStatsReportingEnabled() {
-        return BravePrefServiceBridgeJni.get().getStatsReportingEnabled();
-    }
-
-    public boolean hasPathP3AEnabled() {
-        return BravePrefServiceBridgeJni.get().hasPathP3AEnabled();
-    }
-
-    public void setP3ANoticeAcknowledged(boolean value) {
-        BravePrefServiceBridgeJni.get().setP3ANoticeAcknowledged(value);
-    }
-
-    public boolean getP3ANoticeAcknowledged() {
-        return BravePrefServiceBridgeJni.get().getP3ANoticeAcknowledged();
-    }
-
-    public void setUnstoppableDomainsResolveMethod(int method) {
-        BravePrefServiceBridgeJni.get().setUnstoppableDomainsResolveMethod(method);
-    }
-
-    public int getUnstoppableDomainsResolveMethod() {
-        return BravePrefServiceBridgeJni.get().getUnstoppableDomainsResolveMethod();
-    }
-
-    public void setENSResolveMethod(int method) {
-        BravePrefServiceBridgeJni.get().setENSResolveMethod(method);
-    }
-
-    public int getENSResolveMethod() {
-        return BravePrefServiceBridgeJni.get().getENSResolveMethod();
     }
 
     public void setWebrtcPolicy(int policy) {
@@ -302,14 +201,8 @@ public class BravePrefServiceBridge {
         String getNoScriptControlType();
 
         void setHTTPSEEnabled(boolean enabled);
-        void setDeAmpEnabled(boolean enabled);
         void setIpfsGatewayEnabled(boolean enabled);
         void setAdBlockEnabled(boolean enabled);
-
-        void setThirdPartyGoogleLoginEnabled(boolean enabled);
-        void setThirdPartyFacebookEmbedEnabled(boolean enabled);
-        void setThirdPartyTwitterEmbedEnabled(boolean enabled);
-        void setThirdPartyLinkedinEmbedEnabled(boolean enabled);
 
         void setPlayYTVideoInBrowserEnabled(boolean enabled);
         boolean getPlayYTVideoInBrowserEnabled();
@@ -333,32 +226,8 @@ public class BravePrefServiceBridge {
         void setSafetynetCheckFailed(boolean value);
         boolean getSafetynetCheckFailed();
 
-        void setSafetynetStatus(String status);
-
-        void setUseRewardsStagingServer(boolean enabled);
         void resetPromotionLastFetchStamp();
-        boolean getUseRewardsStagingServer();
         boolean getBooleanForContentSetting(int content_type);
-
-        void setReferralAndroidFirstRunTimestamp(long time);
-        void setReferralCheckedForPromoCodeFile(boolean value);
-        void setReferralInitialization(boolean value);
-        void setReferralPromoCode(String promoCode);
-        void setReferralDownloadId(String downloadId);
-
-        void setP3AEnabled(boolean value);
-        boolean getP3AEnabled();
-        boolean hasPathP3AEnabled();
-        void setP3ANoticeAcknowledged(boolean value);
-        boolean getP3ANoticeAcknowledged();
-
-        void setStatsReportingEnabled(boolean value);
-        boolean getStatsReportingEnabled();
-
-        void setUnstoppableDomainsResolveMethod(int method);
-        void setENSResolveMethod(int method);
-        int getUnstoppableDomainsResolveMethod();
-        int getENSResolveMethod();
 
         void setWebrtcPolicy(int policy);
         int getWebrtcPolicy();

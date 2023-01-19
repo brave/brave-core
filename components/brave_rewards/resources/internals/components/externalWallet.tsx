@@ -24,7 +24,7 @@ const getWalletStatus = (status: mojom.WalletStatus) => {
       return getLocale('walletStatusDisconnectedVerified')
   }
 
-  return getLocale('walletStatusNoWallet')
+  return getLocale('walletNotCreated')
 }
 export const ExternalWallet = (props: Props) => {
   if (!props.info) {

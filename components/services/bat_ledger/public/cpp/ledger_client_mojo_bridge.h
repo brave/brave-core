@@ -14,6 +14,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/time/time.h"
 #include "bat/ledger/ledger_client.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 
@@ -92,6 +93,11 @@ class LedgerClientMojoBridge :
                      SetValueStateCallback callback) override;
   void GetValueState(const std::string& name,
                      GetValueStateCallback callback) override;
+  void SetTimeState(const std::string& name,
+                    base::Time time,
+                    SetTimeStateCallback callback) override;
+  void GetTimeState(const std::string& name,
+                    GetTimeStateCallback callback) override;
   void ClearState(const std::string& name,
                   ClearStateCallback callback) override;
 
@@ -149,7 +155,11 @@ class LedgerClientMojoBridge :
 
   void ClearAllNotifications() override;
 
-  void WalletDisconnected(const std::string& wallet_type) override;
+  void ExternalWalletConnected() override;
+
+  void ExternalWalletLoggedOut() override;
+
+  void ExternalWalletReconnected() override;
 
   void DeleteLog(DeleteLogCallback callback) override;
 

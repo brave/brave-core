@@ -12,12 +12,16 @@ export function getInitialState (): HostState {
     rewardsEnabled: false,
     balance: 0,
     settings: {
+      adsEnabled: false,
       adsPerHour: 0,
       autoContributeEnabled: false,
       autoContributeAmount: 0
     },
     options: {
-      autoContributeAmounts: []
+      autoContributeAmounts: [],
+      externalWalletRegions: new Map(),
+      vbatDeadline: undefined,
+      vbatExpired: false
     },
     grantCaptchaInfo: null,
     adaptiveCaptchaInfo: null,
@@ -44,6 +48,8 @@ export function getInitialState (): HostState {
     },
     notifications: [],
     availableCountries: [],
-    declaredCountry: ''
+    declaredCountry: '',
+    userType: 'unconnected',
+    publishersVisitedCount: 0
   }
 }

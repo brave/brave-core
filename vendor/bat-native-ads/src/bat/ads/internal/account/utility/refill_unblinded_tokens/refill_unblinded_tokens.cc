@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens.h"
 
@@ -19,11 +19,11 @@
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h"
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/net/http/http_status_code.h"
-#include "bat/ads/internal/base/time/time_formatting_util.h"
-#include "bat/ads/internal/base/url/url_request_string_util.h"
-#include "bat/ads/internal/base/url/url_response_string_util.h"
+#include "bat/ads/internal/common/logging_util.h"
+#include "bat/ads/internal/common/net/http/http_status_code.h"
+#include "bat/ads/internal/common/time/time_formatting_util.h"
+#include "bat/ads/internal/common/url/url_request_string_util.h"
+#include "bat/ads/internal/common/url/url_response_string_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/batch_dleq_proof.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_util.h"
@@ -34,7 +34,6 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"  // IWYU pragma: keep
 #include "net/http/http_status_code.h"
 
 namespace ads {
@@ -121,7 +120,7 @@ void RefillUnblindedTokens::Refill() {
 
 void RefillUnblindedTokens::RequestSignedTokens() {
   BLOG(1, "RequestSignedTokens");
-  BLOG(2, "POST /v2/confirmation/token/{paymentId}");
+  BLOG(2, "POST /v3/confirmation/token/{paymentId}");
 
   const int count = CalculateAmountOfTokensToRefill();
   tokens_ = token_generator_->Generate(count);
@@ -182,7 +181,7 @@ void RefillUnblindedTokens::OnRequestSignedTokens(
 
 void RefillUnblindedTokens::GetSignedTokens() {
   BLOG(1, "GetSignedTokens");
-  BLOG(2, "GET /v2/confirmation/token/{paymentId}?nonce={nonce}");
+  BLOG(2, "GET /v3/confirmation/token/{paymentId}?nonce={nonce}");
 
   GetSignedTokensUrlRequestBuilder url_request_builder(wallet_, nonce_);
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -227,7 +226,6 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   // Captcha required, retrieve captcha id from response
   if (url_response.status_code == net::HTTP_UNAUTHORIZED) {
     BLOG(1, "Captcha required");
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
     const std::string* const captcha_id = root->FindStringKey("captcha_id");
     if (!captcha_id || captcha_id->empty()) {
       BLOG(0, "Response is missing captcha_id");
@@ -240,7 +238,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     if (delegate_) {
       delegate_->OnCaptchaRequiredToRefillUnblindedTokens(*captcha_id);
     }
-#endif
+
     return;
   }
 

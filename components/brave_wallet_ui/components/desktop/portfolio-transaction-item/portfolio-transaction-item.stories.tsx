@@ -5,13 +5,15 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import { mockAccount } from '../../../common/constants/mocks'
-import { mockTransactionInfo } from '../../../stories/mock-data/mock-transaction-info'
 
+// components
 import { WalletPageStory } from '../../../stories/wrappers/wallet-page-story-wrapper'
 import WalletPageLayout from '../wallet-page-layout'
 import WalletSubViewLayout from '../wallet-sub-view-layout'
 import { PortfolioTransactionItem } from './index'
+
+// mocks
+import { mockParsedTransactionInfo } from '../../../stories/mock-data/mock-parsed-transaction-info'
 
 export const CryptoViewWrapper = styled.div`
   display: flex;
@@ -39,10 +41,8 @@ export const _PortfolioTransactionItem: React.FC = () => {
           <CryptoViewWrapper>
             <PortfolioWrapper>
               <PortfolioTransactionItem
-                account={mockAccount}
-                accounts={[mockAccount]}
                 displayAccountName={true}
-                transaction={mockTransactionInfo}
+                transaction={mockParsedTransactionInfo}
               />
             </PortfolioWrapper>
           </CryptoViewWrapper>

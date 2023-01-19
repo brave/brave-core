@@ -48,11 +48,6 @@ function getPromotionMessages (
         title: 'upholdPromoTitle',
         text1: 'upholdPromoInfo'
       }
-    case 'uphold-equities':
-      return {
-        title: 'upholdPromoEquitiesTitle',
-        text1: 'upholdPromoEquitiesInfo'
-      }
   }
 }
 
@@ -104,7 +99,7 @@ export function SidebarPromotionPanel (props: Props) {
   }
 
   return (
-    <div>
+    <>
       {renderOnboardingPromo()}
       {
         getAvailablePromotions(
@@ -174,6 +169,6 @@ export function SidebarPromotionPanel (props: Props) {
           )
         })
       }
-    </div>
+    </>
   )
 }

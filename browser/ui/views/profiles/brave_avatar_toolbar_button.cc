@@ -10,6 +10,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/ui/views/profiles/brave_avatar_toolbar_button_delegate.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
@@ -17,46 +18,76 @@
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
-#include "chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/base/theme_provider.h"
+#include "ui/gfx/geometry/rrect_f.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/highlight_path_generator.h"
+#include "ui/views/view_class_properties.h"
 
 namespace {
 
 constexpr int kHighlightRadius = 36;
 constexpr int kBraveAvatarButtonHorizontalSpacing = 10;
 
-class BraveToolbarButtonHighlightPathGenerator
+class BraveAvatarButtonHighlightPathGenerator
     : public views::HighlightPathGenerator {
  public:
-  // HighlightPathGenerator:
-  SkPath GetHighlightPath(const views::View* view) override {
-    gfx::Rect rect(view->size());
-    rect.Inset(GetToolbarInkDropInsets(view));
-    SkPath path;
-    path.addRoundRect(gfx::RectToSkRect(rect), kHighlightRadius,
-                      kHighlightRadius);
-    return path;
+  explicit BraveAvatarButtonHighlightPathGenerator(
+      const base::WeakPtr<BraveAvatarToolbarButton>& avatar_button)
+      : avatar_button_(avatar_button) {}
+  BraveAvatarButtonHighlightPathGenerator(
+      const BraveAvatarButtonHighlightPathGenerator&) = delete;
+  BraveAvatarButtonHighlightPathGenerator& operator=(
+      const BraveAvatarButtonHighlightPathGenerator&) = delete;
+  ~BraveAvatarButtonHighlightPathGenerator() override = default;
+
+  absl::optional<gfx::RRectF> GetRoundRect(const gfx::RectF& bounds) override {
+    gfx::Rect rect(avatar_button_->size());
+    rect.Inset(GetToolbarInkDropInsets(avatar_button_.get()));
+    DCHECK(avatar_button_);
+    if (avatar_button_->GetAvatarButtonState() ==
+        AvatarToolbarButton::State::kAnimatedUserIdentity) {
+      // In this case, our radius wouldn't be used. We should keep using
+      // upstream's radius for the highlight too.
+      return gfx::RRectF(gfx::RectF(rect),
+                         ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
+                             views::Emphasis::kMaximum, {}));
+    }
+
+    // This make the highlight drawn as circle.
+    return gfx::RRectF(gfx::RectF(rect), kHighlightRadius);
   }
+
+ private:
+  base::WeakPtr<BraveAvatarToolbarButton> avatar_button_;
 };
+
 }  // namespace
 
 BraveAvatarToolbarButton::BraveAvatarToolbarButton(BrowserView* browser_view)
     : AvatarToolbarButton(browser_view) {
   // Replace ToolbarButton's highlight path generator.
   views::HighlightPathGenerator::Install(
-      this, std::make_unique<BraveToolbarButtonHighlightPathGenerator>());
+      this, std::make_unique<BraveAvatarButtonHighlightPathGenerator>(
+                weak_ptr_factory_.GetWeakPtr()));
+}
+
+BraveAvatarToolbarButton::~BraveAvatarToolbarButton() = default;
+
+AvatarToolbarButton::State BraveAvatarToolbarButton::GetAvatarButtonState()
+    const {
+  return delegate_->GetState();
 }
 
 void BraveAvatarToolbarButton::SetHighlight(

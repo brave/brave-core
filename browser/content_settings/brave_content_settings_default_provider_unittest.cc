@@ -16,7 +16,7 @@ namespace content_settings {
 class BraveContentSettingsDefaultProviderTest : public testing::Test {
  public:
   BraveContentSettingsDefaultProviderTest()
-      : provider_(profile_.GetPrefs(), false) {}
+      : provider_(profile_.GetPrefs(), false, false) {}
   ~BraveContentSettingsDefaultProviderTest() override {
     provider_.ShutdownOnUIThread();
   }
@@ -37,21 +37,21 @@ TEST_F(BraveContentSettingsDefaultProviderTest, DiscardObsoleteAutoplayAsk) {
   // The ASK value of the autoplay content setting should be discarded.
   {
     prefs->SetInteger(autoplay_pref_path, CONTENT_SETTING_ASK);
-    DefaultProvider provider(prefs, false);
+    DefaultProvider provider(prefs, false, false);
     EXPECT_FALSE(prefs->HasPrefPath(autoplay_pref_path));
   }
 
   // Other values of the autoplay content setting should be preserved.
   {
     prefs->SetInteger(autoplay_pref_path, CONTENT_SETTING_ALLOW);
-    DefaultProvider provider(prefs, false);
+    DefaultProvider provider(prefs, false, false);
     EXPECT_TRUE(prefs->HasPrefPath(autoplay_pref_path));
     EXPECT_EQ(CONTENT_SETTING_ALLOW, prefs->GetInteger(autoplay_pref_path));
   }
 
   {
     prefs->SetInteger(autoplay_pref_path, CONTENT_SETTING_BLOCK);
-    DefaultProvider provider(prefs, false);
+    DefaultProvider provider(prefs, false, false);
 
     EXPECT_TRUE(prefs->HasPrefPath(autoplay_pref_path));
     EXPECT_EQ(CONTENT_SETTING_BLOCK, prefs->GetInteger(autoplay_pref_path));

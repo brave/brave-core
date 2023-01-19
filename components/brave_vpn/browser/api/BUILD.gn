@@ -1,0 +1,49 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+assert(enable_brave_vpn)
+
+source_set("api") {
+  sources = [
+    "brave_vpn_api_helper.cc",
+    "brave_vpn_api_helper.h",
+    "brave_vpn_api_request.cc",
+    "brave_vpn_api_request.h",
+    "vpn_response_parser.cc",
+    "vpn_response_parser.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/api_request_helper:api_request_helper",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/skus/browser",
+    "//components/prefs",
+    "//net/traffic_annotation",
+    "//services/network/public/cpp",
+    "//third_party/icu",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "brave_vpn_api_helper_unittest.cc",
+    "vpn_response_parser_unittest.cc",
+  ]
+
+  deps = [
+    ":api",
+    "//base",
+    "//brave/components/brave_vpn/common",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+  ]
+}

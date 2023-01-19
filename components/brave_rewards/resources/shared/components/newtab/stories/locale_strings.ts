@@ -8,6 +8,9 @@ export const localeStrings = {
   rewardsBraveRewards: 'Brave Rewards',
   rewardsClaimRewards: 'Claim Rewards',
   rewardsClaimTokens: 'Claim Tokens',
+  rewardsConnectAccount: 'Connect account',
+  rewardsConnectAccountNoProviders: 'To start earning BAT, you need to connect a custodial account to Brave Rewards. Unfortunately, there’s no custodian available in your region, so earning isn’t available at this time. However, you’ll still be automatically supporting creators by using Rewards.',
+  rewardsConnectAccountText: '$1Ready to start earning BAT?$2 Just connect your custodial account to your Rewards profile. If you don’t have an account, you’ll get the chance to create one.',
   rewardsContinue: 'Continue',
   rewardsEarning: 'Earning',
   rewardsEarningInfoText: 'The tokens you earn this month will begin processing on $1.',
@@ -24,6 +27,7 @@ export const localeStrings = {
   rewardsPaymentPending: 'Your $1 $2 rewards will arrive in $3',
   rewardsPaymentProcessing: 'Your $1 $2 rewards are on the way. Keep an eye out!',
   rewardsProgress: 'Progress',
+  rewardsPublisherCountText: 'This month, you\'ve visited $1 creators supported by Brave Rewards',
   rewardsSelectCountryHeader: 'Select your country',
   rewardsSelectCountryText: 'To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. $1Privacy Policy$2',
   rewardsSettings: 'Rewards settings',
@@ -31,5 +35,9 @@ export const localeStrings = {
   rewardsSponsoredImageOptInText: 'Earn tokens for viewing this image and support content creators.',
   rewardsStartUsingRewards: 'Start using Rewards',
   rewardsTokenBalance: 'Token Balance',
-  rewardsTokenGrantTitle: 'A token grant is available!'
+  rewardsTokenGrantTitle: 'A token grant is available!',
+  rewardsVBATNoticeTitle1: 'Action required: Connect a custodial account or your vBAT will be lost',
+  rewardsVBATNoticeText1: 'On $1, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.',
+  rewardsVBATNoticeTitle2: 'You still have time to contribute your vBAT to your favorite creators',
+  rewardsVBATNoticeText2: 'On $1, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region ($2) to withdraw your earnings. Until then, you can still contribute to your favorite creators.'
 }

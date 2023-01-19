@@ -13,7 +13,6 @@ import {
   MonthlyContributionFailedNotification,
   GrantAvailableNotification,
   PendingPublisherVerifiedNotification,
-  PendingTipFailedNotification,
   ExternalWalletDisconnectedNotification,
   UpholdBATNotAllowedNotification,
   UpholdInsufficientCapabilitiesNotification
@@ -42,10 +41,8 @@ enum ExtensionNotificationType {
   AUTO_CONTRIBUTE = 1,
   GRANT = 2,
   GRANT_ADS = 3,
-  INSUFFICIENT_FUNDS = 6,
   TIPS_PROCESSED = 8,
   VERIFIED_PUBLISHER = 10,
-  PENDING_NOT_ENOUGH_FUNDS = 11,
   GENERAL_LEDGER = 12
 }
 
@@ -73,16 +70,11 @@ export function mapNotification (
             amount: parseFloat(obj.args[3]) || 0
           })
         case 1: // General error
-          return create<MonthlyContributionFailedNotification>({
-            ...baseProps,
-            type: 'monthly-contribution-failed',
-            reason: 'unknown'
-          })
         case 15: // Not enough funds
           return create<MonthlyContributionFailedNotification>({
             ...baseProps,
             type: 'monthly-contribution-failed',
-            reason: 'insufficient-funds'
+            reason: 'unknown'
           })
       }
       break
@@ -106,11 +98,6 @@ export function mapNotification (
           ...parseGrantDetails(obj.args)
         }
       })
-    case ExtensionNotificationType.INSUFFICIENT_FUNDS:
-      return {
-        ...baseProps,
-        type: 'add-funds'
-      }
     case ExtensionNotificationType.TIPS_PROCESSED:
       return {
         ...baseProps,
@@ -121,12 +108,6 @@ export function mapNotification (
         ...baseProps,
         type: 'pending-publisher-verified',
         publisherName: obj.args[0] || ''
-      })
-    case ExtensionNotificationType.PENDING_NOT_ENOUGH_FUNDS:
-      return create<PendingTipFailedNotification>({
-        ...baseProps,
-        type: 'pending-tip-failed',
-        reason: 'insufficient-funds'
       })
     case ExtensionNotificationType.GENERAL_LEDGER:
       switch (obj.args[0]) {

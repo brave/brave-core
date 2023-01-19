@@ -475,187 +475,6 @@ TEST(BraveWalletUtilsUnitTest, DecodeString) {
       &output));
 }
 
-TEST(BraveWalletUtilsUnitTest, DecodeStringArray) {
-  std::vector<std::string> output;
-  EXPECT_TRUE(DecodeStringArray(
-      // count of elements in input array
-      "0000000000000000000000000000000000000000000000000000000000000003"
-      // offsets to array elements
-      "0000000000000000000000000000000000000000000000000000000000000060"
-      "00000000000000000000000000000000000000000000000000000000000000a0"
-      "00000000000000000000000000000000000000000000000000000000000000e0"
-      // count for "one"
-      "0000000000000000000000000000000000000000000000000000000000000003"
-      // encoding for "one"
-      "6f6e650000000000000000000000000000000000000000000000000000000000"
-      // count for "two"
-      "0000000000000000000000000000000000000000000000000000000000000003"
-      // encoding for "two"
-      "74776f0000000000000000000000000000000000000000000000000000000000"
-      // count for "three"
-      "0000000000000000000000000000000000000000000000000000000000000005"
-      // encoding for "three"
-      "7468726565000000000000000000000000000000000000000000000000000000",
-      &output));
-  std::vector<std::string> expected_output({"one", "two", "three"});
-  EXPECT_EQ(output, expected_output);
-
-  output.clear();
-  EXPECT_TRUE(DecodeStringArray(
-      "0000000000000000000000000000000000000000000000000000000000000005"
-      // offsets to array elements
-      "00000000000000000000000000000000000000000000000000000000000000a0"
-      "00000000000000000000000000000000000000000000000000000000000000e0"
-      "0000000000000000000000000000000000000000000000000000000000000140"
-      "0000000000000000000000000000000000000000000000000000000000000180"
-      "00000000000000000000000000000000000000000000000000000000000001e0"
-      // count for "one"
-      "0000000000000000000000000000000000000000000000000000000000000003"
-      // encoding for "one"
-      "6f6e650000000000000000000000000000000000000000000000000000000000"
-      // count for "one two three four five six seven eight nine"
-      "000000000000000000000000000000000000000000000000000000000000002c"
-      // encoding for "one two three four five six seven eight nine"
-      "6f6e652074776f20746872656520666f75722066697665207369782073657665"
-      "6e206569676874206e696e650000000000000000000000000000000000000000"
-      // count for "two"
-      "0000000000000000000000000000000000000000000000000000000000000003"
-      // encoding for "two"
-      "74776f0000000000000000000000000000000000000000000000000000000000"
-      // count for "one two three four five six seven eight nine ten"
-      "0000000000000000000000000000000000000000000000000000000000000030"
-      // encoding for "one two three four five six seven eight nine ten"
-      "6f6e652074776f20746872656520666f75722066697665207369782073657665"
-      "6e206569676874206e696e652074656e00000000000000000000000000000000"
-      // count for "three"
-      "0000000000000000000000000000000000000000000000000000000000000005"
-      // encoding for "three"
-      "7468726565000000000000000000000000000000000000000000000000000000",
-      &output));
-  expected_output = {"one", "one two three four five six seven eight nine",
-                     "two", "one two three four five six seven eight nine ten",
-                     "three"};
-  EXPECT_EQ(output, expected_output);
-
-  output.clear();
-  EXPECT_TRUE(DecodeStringArray(
-      "0000000000000000000000000000000000000000000000000000000000000006"
-      // offsets to array elements
-      "00000000000000000000000000000000000000000000000000000000000000c0"
-      "00000000000000000000000000000000000000000000000000000000000000e0"
-      "0000000000000000000000000000000000000000000000000000000000000120"
-      "0000000000000000000000000000000000000000000000000000000000000140"
-      "0000000000000000000000000000000000000000000000000000000000000180"
-      "00000000000000000000000000000000000000000000000000000000000001a0"
-      // count for ""
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for "one"
-      "0000000000000000000000000000000000000000000000000000000000000003"
-      // encoding for "one"
-      "6f6e650000000000000000000000000000000000000000000000000000000000"
-      // count for ""
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for "two"
-      "0000000000000000000000000000000000000000000000000000000000000003"
-      // encoding for "two"
-      "74776f0000000000000000000000000000000000000000000000000000000000"
-      // count for ""
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for "three"
-      "0000000000000000000000000000000000000000000000000000000000000005"
-      // encoding for "three"
-      "7468726565000000000000000000000000000000000000000000000000000000",
-      &output));
-  expected_output = {"", "one", "", "two", "", "three"};
-  EXPECT_EQ(output, expected_output);
-
-  // Test invalid input.
-  output.clear();
-  EXPECT_FALSE(DecodeStringArray("", &output));
-  EXPECT_FALSE(DecodeStringArray("1", &output));
-  EXPECT_FALSE(DecodeStringArray("z", &output));
-  EXPECT_FALSE(DecodeStringArray("\xF0\x8F\xBF\xBE", &output));
-  EXPECT_FALSE(DecodeStringArray(
-      // count of array elements
-      "0000000000000000000000000000000000000000000000000000000000000001"
-      // invalid data offset to string element.
-      "0000000000000000000000000000000000000000000000000000000000001",
-      &output));
-  EXPECT_FALSE(DecodeStringArray(
-      // count of array elements
-      "0000000000000000000000000000000000000000000000000000000000000002"
-      // out-of-bound offset to array element
-      "00000000000000000000000000000000000000000000000000000000000001e0",
-      &output));
-
-  EXPECT_FALSE(DecodeStringArray(
-      // Mismatched count of elements in input array
-      "0000000000000000000000000000000000000000000000000000000000000003"
-      // offsets to array elements
-      "0000000000000000000000000000000000000000000000000000000000000060"
-      "00000000000000000000000000000000000000000000000000000000000000a0"
-      // count for "one"
-      "0000000000000000000000000000000000000000000000000000000000000003"
-      // encoding for "one"
-      "6f6e650000000000000000000000000000000000000000000000000000000000"
-      // count for "two"
-      "0000000000000000000000000000000000000000000000000000000000000003"
-      // encoding for "two"
-      "74776f0000000000000000000000000000000000000000000000000000000000",
-      &output));
-
-  EXPECT_FALSE(DecodeStringArray(
-      // count of elements in input array
-      "0000000000000000000000000000000000000000000000000000000000000003"
-      // offsets to array elements, last offset point to non-existed data
-      "0000000000000000000000000000000000000000000000000000000000000060"
-      "00000000000000000000000000000000000000000000000000000000000000a0"
-      "00000000000000000000000000000000000000000000000000000000000000e0"
-      // count for "one"
-      "0000000000000000000000000000000000000000000000000000000000000003"
-      // encoding for "one"
-      "6f6e650000000000000000000000000000000000000000000000000000000000"
-      // count for "two"
-      "0000000000000000000000000000000000000000000000000000000000000003"
-      // encoding for "two"
-      "74776f0000000000000000000000000000000000000000000000000000000000",
-      &output));
-
-  // Missing data offset and data.
-  EXPECT_FALSE(DecodeStringArray(
-      // count of elements in input array
-      "0000000000000000000000000000000000000000000000000000000000000001",
-      &output));
-
-  // Missing data.
-  EXPECT_FALSE(DecodeStringArray(
-      // count of elements in input array
-      "0000000000000000000000000000000000000000000000000000000000000001"
-      // offset for "one", data missing
-      "0000000000000000000000000000000000000000000000000000000000000020",
-      &output));
-
-  // Missing count.
-  EXPECT_FALSE(DecodeStringArray(
-      // count of elements in input array
-      "0000000000000000000000000000000000000000000000000000000000000001"
-      // offset for "one"
-      "0000000000000000000000000000000000000000000000000000000000000020"
-      // encoding for "one"
-      "6f6e650000000000000000000000000000000000000000000000000000000000",
-      &output));
-
-  // Missing encoding of string.
-  EXPECT_FALSE(DecodeStringArray(
-      // count of elements in input array
-      "0000000000000000000000000000000000000000000000000000000000000001"
-      // offset for "one"
-      "0000000000000000000000000000000000000000000000000000000000000020"
-      // count for "one"
-      "0000000000000000000000000000000000000000000000000000000000000003",
-      &output));
-}
-
 TEST(BraveWalletUtilsUnitTest, TransactionReceiptAndValue) {
   TransactionReceipt tx_receipt;
   tx_receipt.transaction_hash =
@@ -799,8 +618,8 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   // Custom Polygon chain takes place of known one.
   // Custom unknown chain becomes last.
   auto expected_chains = std::move(known_chains);
-  EXPECT_EQ(expected_chains[1]->chain_id, mojom::kPolygonMainnetChainId);
-  expected_chains[1] = chain1.Clone();
+  EXPECT_EQ(expected_chains[2]->chain_id, mojom::kPolygonMainnetChainId);
+  expected_chains[2] = chain1.Clone();
   expected_chains.push_back(chain2.Clone());
 
   auto all_chains = GetAllChains(&prefs, mojom::CoinType::ETH);
@@ -1027,11 +846,11 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
 
 TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
   const std::vector<std::string> expected_network_ids(
-      {"mainnet", mojom::kPolygonMainnetChainId,
+      {"mainnet", mojom::kAuroraMainnetChainId, mojom::kPolygonMainnetChainId,
        mojom::kBinanceSmartChainMainnetChainId, mojom::kCeloMainnetChainId,
        mojom::kAvalancheMainnetChainId, mojom::kFantomMainnetChainId,
-       mojom::kOptimismMainnetChainId, mojom::kAuroraMainnetChainId, "goerli",
-       "sepolia", "http://localhost:7545/"});
+       mojom::kOptimismMainnetChainId, "goerli", "sepolia",
+       "http://localhost:7545/"});
   ASSERT_EQ(GetAllKnownNetworksForTesting().size(),
             expected_network_ids.size());
   EXPECT_EQ(GetAllKnownEthNetworkIds(), expected_network_ids);
@@ -1244,34 +1063,47 @@ TEST(BraveWalletUtilsUnitTest, RemoveCustomNetwork) {
 }
 
 TEST(BraveWalletUtilsUnitTest, HiddenNetworks) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::ETH),
+              ElementsAreArray<std::string>({mojom::kGoerliChainId,
+                                             mojom::kSepoliaChainId,
+                                             mojom::kLocalhostChainId}));
+  EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::FIL),
+              ElementsAreArray<std::string>(
+                  {mojom::kFilecoinTestnet, mojom::kLocalhostChainId}));
+  EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::SOL),
+              ElementsAreArray<std::string>({mojom::kSolanaDevnet,
+                                             mojom::kSolanaTestnet,
+                                             mojom::kLocalhostChainId}));
+
   for (auto coin :
        {mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL}) {
-    TestingPrefServiceSimple prefs;
-    prefs.registry()->RegisterDictionaryPref(kBraveWalletHiddenNetworks);
+    for (auto& default_hidden : GetHiddenNetworks(&prefs, coin)) {
+      RemoveHiddenNetwork(&prefs, coin, default_hidden);
+    }
 
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin),
                 ElementsAreArray<std::string>({}));
 
     AddHiddenNetwork(&prefs, coin, "0x123");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
-                ElementsAreArray({"0x123"}));
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin), ElementsAreArray({"0x123"}));
     AddHiddenNetwork(&prefs, coin, "0x123");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
-                ElementsAreArray({"0x123"}));
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin), ElementsAreArray({"0x123"}));
 
     RemoveHiddenNetwork(&prefs, coin, "0x555");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
-                ElementsAreArray({"0x123"}));
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin), ElementsAreArray({"0x123"}));
 
     AddHiddenNetwork(&prefs, coin, "0x7");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin),
                 ElementsAreArray({"0x123", "0x7"}));
 
     RemoveHiddenNetwork(&prefs, coin, "0x123");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin), ElementsAreArray({"0x7"}));
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin), ElementsAreArray({"0x7"}));
 
     RemoveHiddenNetwork(&prefs, coin, "0x7");
-    EXPECT_THAT(GetAllHiddenNetworks(&prefs, coin),
+    EXPECT_THAT(GetHiddenNetworks(&prefs, coin),
                 ElementsAreArray<std::string>({}));
   }
 }
@@ -1345,6 +1177,22 @@ TEST(BraveWalletUtilsUnitTest, GetActiveEndpointUrl) {
   chain.active_rpc_endpoint_index = 0;
   chain.rpc_endpoints.clear();
   EXPECT_EQ(GURL(), GetActiveEndpointUrl(chain));
+}
+
+TEST(BraveWalletUtilsUnitTest, GetUnstoppableDomainsRpcUrl) {
+  EXPECT_EQ(AddInfuraProjectId(GURL("https://mainnet-infura.brave.com")),
+            GetUnstoppableDomainsRpcUrl(mojom::kMainnetChainId));
+  EXPECT_EQ(AddInfuraProjectId(GURL("https://mainnet-polygon.brave.com")),
+            GetUnstoppableDomainsRpcUrl(mojom::kPolygonMainnetChainId));
+}
+
+TEST(BraveWalletUtilsUnitTest, GetEnsRpcUrl) {
+  EXPECT_EQ(AddInfuraProjectId(GURL("https://mainnet-infura.brave.com")),
+            GetEnsRpcUrl());
+}
+
+TEST(BraveWalletUtilsUnitTest, GetSnsRpcUrl) {
+  EXPECT_EQ(GURL("https://mainnet-beta-solana.brave.com/rpc"), GetSnsRpcUrl());
 }
 
 }  // namespace brave_wallet

@@ -1,12 +1,13 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//tools/grit/repack.gni")
 
 repack("resources") {
   output = "$root_gen_dir/brave/components/brave_ads/resources/brave_ads_resources.pak"
-  sources = [
-    "$root_gen_dir/bat/ads/resources/bat_ads_resources.pak",
-  ]
+  sources = [ "$root_gen_dir/bat/ads/resources/bat_ads_resources.pak" ]
 
-  deps = [
-    "//brave/vendor/bat-native-ads/data/resources",
-  ]
+  deps = [ "//brave/vendor/bat-native-ads/data/resources" ]
 }

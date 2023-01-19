@@ -8,7 +8,6 @@
 
 #include "base/test/task_environment.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
@@ -147,8 +146,6 @@ TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesTest) {
   EXPECT_EQ(-1, bg_source_->GetWallpaperIndexFromPath("wallpaper-3.jpg"));
 }
 
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-
 #if !BUILDFLAG(IS_LINUX)
 TEST_F(NTPBackgroundImagesSourceTest, BasicSuperReferralDataTest) {
   // Valid super referral component json data.
@@ -204,7 +201,5 @@ TEST_F(NTPBackgroundImagesSourceTest, BasicSuperReferralDataTest) {
   EXPECT_FALSE(source_->IsValidPath("super-referral/abcd.png"));
 }
 #endif
-
-#endif  // ENABLE_BRAVE_REFERRALS
 
 }  // namespace ntp_background_images

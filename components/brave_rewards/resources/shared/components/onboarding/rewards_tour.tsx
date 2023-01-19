@@ -9,16 +9,16 @@ import { LocaleContext } from '../../lib/locale_context'
 import { RewardsTourProps } from './rewards_tour_props'
 import { TourNavigation } from './tour_navigation'
 import { TourStepLinks } from './tour_step_links'
-import { getTourPanels, getVerifyWalletPanel } from './rewards_tour_panels'
+import { getTourPanels, getConnectWalletPanel } from './rewards_tour_panels'
 
 import * as style from './rewards_tour.style'
 
 export function RewardsTour (props: RewardsTourProps) {
   const locale = React.useContext(LocaleContext)
   const [currentStep, setCurrentStep] = React.useState(0)
-  const [showVerifyPanel, setShowVerifyPanel] = React.useState(false)
+  const [showConnectPanel, setShowConnectPanel] = React.useState(false)
   const stepPanels = getTourPanels(props)
-  const verifyPanel = getVerifyWalletPanel(locale, props)
+  const connectPanel = getConnectWalletPanel(locale, props)
 
   function getPanelNav () {
     const stepLinks = (
@@ -40,8 +40,8 @@ export function RewardsTour (props: RewardsTourProps) {
     }
 
     const onNavDone = () => {
-      if (verifyPanel) {
-        setShowVerifyPanel(true)
+      if (connectPanel) {
+        setShowConnectPanel(true)
       } else {
         props.onDone()
       }
@@ -54,7 +54,7 @@ export function RewardsTour (props: RewardsTourProps) {
           stepCount={stepPanels.length}
           currentStep={currentStep}
           firstTimeSetup={props.firstTimeSetup}
-          postTourContent={Boolean(verifyPanel)}
+          postTourContent={Boolean(connectPanel)}
           onSelectStep={setCurrentStep}
           onDone={onNavDone}
           onSkip={onNavSkip}
@@ -68,8 +68,8 @@ export function RewardsTour (props: RewardsTourProps) {
   }
 
   function getPanel () {
-    if (showVerifyPanel) {
-      return verifyPanel
+    if (showConnectPanel) {
+      return connectPanel
     }
     if (stepPanels.length === 0 || currentStep >= stepPanels.length) {
       return null

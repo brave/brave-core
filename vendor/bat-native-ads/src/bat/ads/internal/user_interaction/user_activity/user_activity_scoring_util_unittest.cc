@@ -1,14 +1,14 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_scoring_util.h"
 
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_features.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
 
@@ -28,8 +28,7 @@ class BatAdsUserActivityScoringUtilTest : public UnitTestBase {
     parameters[kTimeWindowParameter] = "1h";
     const char kThresholdParameter[] = "threshold";
     parameters[kThresholdParameter] = "2.0";
-    std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-        enabled_features;
+    std::vector<base::test::FeatureRefAndParams> enabled_features;
     enabled_features.emplace_back(user_activity::features::kFeature,
                                   parameters);
 

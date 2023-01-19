@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/threading/thread_task_runner_handle.h"
+#include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
@@ -16,9 +17,13 @@ namespace brave_shields {
 
 AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
     PrefService* local_state)
-    : local_state_(local_state) {}
+    : local_state_(local_state) {
+  AdBlockFiltersProviderManager::GetInstance()->AddProvider(this);
+}
 
-AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() = default;
+AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() {
+  AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(this);
+}
 
 std::string AdBlockCustomFiltersProvider::GetCustomFilters() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -34,9 +39,7 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
     return false;
   local_state_->SetString(prefs::kAdBlockCustomFilters, custom_filters);
 
-  auto buffer =
-      std::vector<unsigned char>(custom_filters.begin(), custom_filters.end());
-  OnDATLoaded(false, buffer);
+  NotifyObservers();
 
   return true;
 }
@@ -53,6 +56,14 @@ void AdBlockCustomFiltersProvider::LoadDATBuffer(
   // PostTask so this has an async return to match other loaders
   base::ThreadTaskRunnerHandle::Get()->PostTask(
       FROM_HERE, base::BindOnce(std::move(cb), false, std::move(buffer)));
+}
+
+// The custom filters provider can provide its filters immediately after being
+// observed.
+void AdBlockCustomFiltersProvider::AddObserver(
+    AdBlockFiltersProvider::Observer* observer) {
+  AdBlockFiltersProvider::AddObserver(observer);
+  NotifyObservers();
 }
 
 }  // namespace brave_shields

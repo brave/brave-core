@@ -31,24 +31,6 @@
 namespace {
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-absl::optional<base::Value::Dict> GetChromeExtensionsList(
-    const base::FilePath& secured_preference_path) {
-  if (!base::PathExists(secured_preference_path))
-    return absl::nullopt;
-
-  std::string secured_preference_content;
-  base::ReadFileToString(secured_preference_path, &secured_preference_content);
-  absl::optional<base::Value> secured_preference =
-      base::JSONReader::Read(secured_preference_content);
-  DCHECK(secured_preference);
-  DCHECK(secured_preference->is_dict());
-
-  if (auto* extensions = secured_preference->GetDict().FindDictByDottedPath(
-          kChromeExtensionsListPath)) {
-    return std::move(*extensions);
-  }
-  return absl::nullopt;
-}
 
 // Silent installer via websotre w/o any prompt or bubble.
 class WebstoreInstallerForImporting
@@ -76,15 +58,12 @@ BraveExternalProcessImporterHost::~BraveExternalProcessImporterHost() = default;
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 void BraveExternalProcessImporterHost::LaunchExtensionsImport() {
-  DCHECK_EQ(importer::TYPE_CHROME, source_profile_.importer_type);
-
-  const base::FilePath pref_file = source_profile_.source_path.AppendASCII(
-      kChromeExtensionsPreferencesFile);
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
-      base::BindOnce(&GetChromeExtensionsList, pref_file),
+      base::BindOnce(&GetImportableChromeExtensionsList,
+                     source_profile_.source_path),
       base::BindOnce(
           &BraveExternalProcessImporterHost::OnGetChromeExtensionsList,
           weak_ptr_factory_.GetWeakPtr()));
@@ -147,13 +126,12 @@ void BraveExternalProcessImporterHost::ImportExtensions(
 }
 
 void BraveExternalProcessImporterHost::OnGetChromeExtensionsList(
-    absl::optional<base::Value::Dict> extensions_list) {
-  if (!extensions_list) {
+    absl::optional<std::vector<std::string>> extensions_list) {
+  if (!extensions_list.has_value()) {
     ExternalProcessImporterHost::NotifyImportEnded();
     return;
   }
-  const auto ids =
-      GetImportableListFromChromeExtensionsList(extensions_list.value());
+  const auto ids = extensions_list.value();
   if (ids.empty()) {
     ExternalProcessImporterHost::NotifyImportEnded();
     return;

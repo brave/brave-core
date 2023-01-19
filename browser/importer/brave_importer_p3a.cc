@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/importer/brave_importer_p3a.h"
 
@@ -22,7 +22,7 @@ enum class ImporterSource {
   kMicrosoft,  // includes IE, Legacy Edge, Chromium Edge
   kOpera,
   kSafari,
-  kOther,  // includes Vivaldi and can include others
+  kOther,  // includes Vivaldi, Yandex and can include others
   kSize
 };
 }  // namespace
@@ -59,6 +59,8 @@ void RecordImporterP3A(importer::ImporterType type) {
       metric = ImporterSource::kMicrosoft;
       break;
     case importer::TYPE_VIVALDI:
+    case importer::TYPE_YANDEX:
+    case importer::TYPE_WHALE:
       metric = ImporterSource::kOther;
       break;
     case importer::TYPE_OPERA:

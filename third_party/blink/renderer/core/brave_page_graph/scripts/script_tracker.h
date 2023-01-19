@@ -39,9 +39,6 @@ class ScriptTracker {
   std::map<ScriptKey, NodeScript*> scripts_;
 };
 
-std::ostream& operator<<(std::ostream& os,
-                         const ScriptTracker::ScriptKey& script_key);
-
 }  // namespace brave_page_graph
 
 #endif  // BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_SCRIPTS_SCRIPT_TRACKER_H_

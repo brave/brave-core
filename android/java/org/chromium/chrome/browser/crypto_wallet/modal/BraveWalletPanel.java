@@ -342,7 +342,7 @@ public class BraveWalletPanel implements DialogInterface {
                                 BalanceHelper.getNativeAssetsBalances(
                                         mBraveWalletPanelServices.getJsonRpcService(),
                                         selectedNetwork, new AccountInfo[] {selectedAccount},
-                                        nativeAssetsBalances -> {
+                                        (coinType, nativeAssetsBalances) -> {
                                             double price = Utils.getOrDefault(assetPrices,
                                                     asset.symbol.toLowerCase(Locale.getDefault()),
                                                     0.0d);

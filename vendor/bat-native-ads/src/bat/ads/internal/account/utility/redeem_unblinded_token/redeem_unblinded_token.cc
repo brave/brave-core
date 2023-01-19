@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token.h"
 
@@ -23,10 +23,10 @@
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/fetch_payment_token_url_request_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/net/http/http_status_code.h"
-#include "bat/ads/internal/base/url/url_request_string_util.h"
-#include "bat/ads/internal/base/url/url_response_string_util.h"
+#include "bat/ads/internal/common/logging_util.h"
+#include "bat/ads/internal/common/net/http/http_status_code.h"
+#include "bat/ads/internal/common/url/url_request_string_util.h"
+#include "bat/ads/internal/common/url/url_response_string_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/batch_dleq_proof.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
@@ -70,7 +70,7 @@ void RedeemUnblindedToken::Redeem(const ConfirmationInfo& confirmation) {
 void RedeemUnblindedToken::CreateConfirmation(
     const ConfirmationInfo& confirmation) {
   BLOG(1, "CreateConfirmation");
-  BLOG(2, "POST /v2/confirmation/{transactionId}/{credential}");
+  BLOG(2, "POST /v3/confirmation/{transactionId}/{credential}");
 
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -117,7 +117,7 @@ void RedeemUnblindedToken::FetchPaymentToken(
   DCHECK(confirmation.opted_in);
 
   BLOG(1, "FetchPaymentToken");
-  BLOG(2, "GET /v2/confirmation/{transactionId}/paymentToken");
+  BLOG(2, "GET /v3/confirmation/{transactionId}/paymentToken");
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();

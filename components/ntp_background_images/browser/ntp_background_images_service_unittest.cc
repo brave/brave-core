@@ -9,7 +9,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -459,8 +458,6 @@ TEST_F(NTPBackgroundImagesServiceTest, MultipleCampaignsTest) {
   service_->RemoveObserver(&observer);
 }
 
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-
 #if BUILDFLAG(IS_LINUX)
 
 // Linux doesn't support referral service now.
@@ -728,8 +725,8 @@ TEST_F(NTPBackgroundImagesServiceTest,
   // Make this install has initialized super referral service.
   pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
   pref_service_.SetBoolean(kReferralInitialization, true);
-  pref_service_.SetBoolean(
-      prefs::kNewTabPageGetInitialSRComponentInProgress, true);
+  pref_service_.SetBoolean(prefs::kNewTabPageGetInitialSRComponentInProgress,
+                           true);
   pref_service_.SetString(kReferralPromoCode, "BRV001");
 
   EXPECT_TRUE(pref_service_.FindPreference(
@@ -763,7 +760,5 @@ TEST_F(NTPBackgroundImagesServiceTest,
 }
 
 #endif  // OS_LINUX
-
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
 }  // namespace ntp_background_images

@@ -1,7 +1,7 @@
-/* Copyright 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
 
@@ -26,7 +26,7 @@ BraveBrowserNonClientFrameViewMac::BraveBrowserNonClientFrameViewMac(
   frame_graphic_ =
       std::make_unique<BraveWindowFrameGraphic>(browser->profile());
 
-  if (tabs::features::ShouldShowVerticalTabs(browser)) {
+  if (tabs::features::SupportsVerticalTabs(browser)) {
     auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
     show_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsEnabled, prefs,
@@ -96,5 +96,21 @@ void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleAndControls() {
 
   // In case title visibility wasn't changed and only vertical tab strip enabled
   // state changed, we should reset controls positions manually.
-  frame()->ResetWindowControlsPosition();
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(&views::Widget::ResetWindowControlsPosition,
+                                frame()->GetWeakPtr()));
+}
+
+gfx::Size BraveBrowserNonClientFrameViewMac::GetMinimumSize() const {
+  if (tabs::features::ShouldShowVerticalTabs(browser_view()->browser())) {
+    // In order to ignore tab strip height, skip BrowserNonClientFrameViewMac's
+    // implementation.
+    auto size = frame()->client_view()->GetMinimumSize();
+    size.SetToMax(gfx::Size(0, (size.width() * 3) / 4));
+    // Note that we can't set empty bounds on Mac.
+    size.SetToMax({1, 1});
+    return size;
+  }
+
+  return BrowserNonClientFrameViewMac::GetMinimumSize();
 }

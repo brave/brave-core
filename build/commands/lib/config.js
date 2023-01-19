@@ -1,3 +1,8 @@
+// Copyright (c) 2016 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 'use strict'
 
 const path = require('path')
@@ -117,9 +122,6 @@ const Config = function () {
   this.googleDefaultClientSecret = getNPMConfig(['google_default_client_secret']) || ''
   this.braveServicesKey = getNPMConfig(['brave_services_key']) || ''
   this.infuraProjectId = getNPMConfig(['brave_infura_project_id']) || ''
-  this.binanceClientId = getNPMConfig(['binance_client_id']) || ''
-  this.ftxClientId = getNPMConfig(['ftx_client_id']) || ''
-  this.ftxClientSecret = getNPMConfig(['ftx_client_secret']) || ''
   this.bitflyerClientId = getNPMConfig(['bitflyer_client_id']) || ''
   this.bitflyerClientSecret = getNPMConfig(['bitflyer_client_secret']) || ''
   this.bitflyerStagingClientId = getNPMConfig(['bitflyer_staging_client_id']) || ''
@@ -133,8 +135,6 @@ const Config = function () {
   this.geminiWalletClientSecret = getNPMConfig(['gemini_wallet_client_secret']) || ''
   this.geminiWalletStagingClientId = getNPMConfig(['gemini_wallet_staging_client_id']) || ''
   this.geminiWalletStagingClientSecret = getNPMConfig(['gemini_wallet_staging_client_secret']) || ''
-  this.geminiClientId = getNPMConfig(['gemini_client_id']) || ''
-  this.geminiClientSecret = getNPMConfig(['gemini_client_secret']) || ''
   this.upholdClientId = getNPMConfig(['uphold_client_id']) || ''
   this.upholdClientSecret = getNPMConfig(['uphold_client_secret']) || ''
   this.upholdStagingClientId = getNPMConfig(['uphold_staging_client_id']) || ''
@@ -175,6 +175,7 @@ const Config = function () {
   this.extraGnArgs = {}
   this.extraGnGenOpts = getNPMConfig(['brave_extra_gn_gen_opts']) || ''
   this.extraNinjaOpts = []
+  this.braveAndroidSafeBrowsingApiKey = getNPMConfig(['brave_safebrowsing_api_key']) || ''
   this.braveSafetyNetApiKey = getNPMConfig(['brave_safetynet_api_key']) || ''
   this.braveAndroidDeveloperOptionsCode = getNPMConfig(['brave_android_developer_options_code']) || ''
   this.braveAndroidKeystorePath = getNPMConfig(['brave_android_keystore_path'])
@@ -238,6 +239,14 @@ Config.prototype.isAsan = function () {
   return false
 }
 
+Config.prototype.isOfficialBuild = function () {
+  return this.isReleaseBuild() && !this.isAsan()
+}
+
+Config.prototype.getBrandingPathProduct = function () {
+  return this.isOfficialBuild() ? "brave" : "brave-development"
+}
+
 Config.prototype.buildArgs = function () {
   const version = this.braveVersion
   let version_parts = version.split('+')[0]
@@ -263,11 +272,11 @@ Config.prototype.buildArgs = function () {
     proprietary_codecs: true,
     ffmpeg_branding: "Chrome",
     branding_path_component: "brave",
-    branding_path_product: "brave",
+    branding_path_product: this.getBrandingPathProduct(),
     enable_nacl: false,
     enable_widevine: true,
     target_cpu: this.targetArch,
-    is_official_build: this.isReleaseBuild() && !this.isAsan(),
+    is_official_build: this.isOfficialBuild(),
     is_debug: this.isDebug(),
     dcheck_always_on: getNPMConfig(['dcheck_always_on']) || this.isComponentBuild(),
     brave_channel: this.channel,
@@ -276,9 +285,6 @@ Config.prototype.buildArgs = function () {
     google_default_client_id: this.googleDefaultClientId,
     google_default_client_secret: this.googleDefaultClientSecret,
     brave_infura_project_id: this.infuraProjectId,
-    binance_client_id: this.binanceClientId,
-    ftx_client_id: this.ftxClientId,
-    ftx_client_secret: this.ftxClientSecret,
     bitflyer_client_id: this.bitflyerClientId,
     bitflyer_client_secret: this.bitflyerClientSecret,
     bitflyer_staging_client_id: this.bitflyerStagingClientId,
@@ -292,8 +298,6 @@ Config.prototype.buildArgs = function () {
     gemini_wallet_client_secret: this.geminiWalletClientSecret,
     gemini_wallet_staging_client_id: this.geminiWalletStagingClientId,
     gemini_wallet_staging_client_secret: this.geminiWalletStagingClientSecret,
-    gemini_client_id: this.geminiClientId,
-    gemini_client_secret: this.geminiClientSecret,
     uphold_client_id: this.upholdClientId,
     uphold_client_secret: this.upholdClientSecret,
     uphold_staging_client_id: this.upholdStagingClientId,
@@ -322,10 +326,6 @@ Config.prototype.buildArgs = function () {
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     use_goma: this.use_goma,
     ...this.extraGnArgs,
-  }
-
-  if (!args.is_official_build) {
-    args.branding_path_product += "-development"
   }
 
   if (!this.isBraveReleaseBuild()) {
@@ -478,6 +478,7 @@ Config.prototype.buildArgs = function () {
 
     args.brave_android_developer_options_code = this.braveAndroidDeveloperOptionsCode
     args.brave_safetynet_api_key = this.braveSafetyNetApiKey
+    args.brave_safebrowsing_api_key = this.braveAndroidSafeBrowsingApiKey
     args.enable_widevine = false
     args.safe_browsing_mode = 2
 
@@ -508,9 +509,6 @@ Config.prototype.buildArgs = function () {
     // not have a default value for this. But we'll
     // eventually want it on Android, so keeping CI
     // unchanged and deleting here for now.
-    delete args.ftx_client_id
-    delete args.ftx_client_secret
-    delete args.gemini_client_id
     delete args.gemini_client_secret
   }
 
@@ -558,9 +556,6 @@ Config.prototype.buildArgs = function () {
     delete args.brave_google_api_key
     delete args.brave_stats_api_key
     delete args.brave_stats_updater_url
-    delete args.binance_client_id
-    delete args.ftx_client_id
-    delete args.ftx_client_secret
     delete args.bitflyer_client_id
     delete args.bitflyer_client_secret
     delete args.bitflyer_staging_client_id
@@ -574,7 +569,6 @@ Config.prototype.buildArgs = function () {
     delete args.gemini_wallet_client_secret
     delete args.gemini_wallet_staging_client_id
     delete args.gemini_wallet_staging_client_secret
-    delete args.gemini_client_id
     delete args.gemini_client_secret
     delete args.uphold_client_id
     delete args.uphold_client_secret
@@ -735,6 +729,10 @@ Config.prototype.update = function (options) {
     this.braveGoogleApiKey = options.brave_google_api_key
   }
 
+  if (options.brave_safebrowsing_api_key) {
+    this.braveAndroidSafeBrowsingApiKey = options.brave_safebrowsing_api_key
+  }
+
   if (options.brave_safetynet_api_key) {
     this.braveSafetyNetApiKey = options.brave_safetynet_api_key
   }
@@ -745,18 +743,6 @@ Config.prototype.update = function (options) {
 
   if (options.brave_infura_project_id) {
     this.infuraProjectId = options.infura_project_id
-  }
-
-  if (options.binance_client_id) {
-    this.binanceClientId = options.binance_client_id
-  }
-
-  if (options.ftx_client_id) {
-    this.ftxClientId = options.ftx_client_id
-  }
-
-  if (options.ftx_client_secret) {
-    this.ftxClientSecret = options.ftx_client_secret
   }
 
   if (options.bitflyer_client_id) {
@@ -805,14 +791,6 @@ Config.prototype.update = function (options) {
 
   if (options.gemini_wallet_staging_client_secret) {
     this.geminiWalletStagingClientSecret = options.gemini_wallet_staging_client_secret
-  }
-
-  if (options.gemini_client_id) {
-    this.geminiClientId = options.gemini_client_id
-  }
-
-  if (options.gemini_client_secret) {
-    this.geminiClientSecret = options.gemini_client_secret
   }
 
   if (options.uphold_client_id) {

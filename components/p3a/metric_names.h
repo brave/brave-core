@@ -1,7 +1,7 @@
-/* Copyright 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_P3A_METRIC_NAMES_H_
 #define BRAVE_COMPONENTS_P3A_METRIC_NAMES_H_
@@ -75,6 +75,9 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Today.WeeklyMaxCardVisitsCount",
     "Brave.Today.WeeklySessionCount",
     "Brave.Today.WeeklyTotalCardViews",
+    "Brave.Toolbar.FrequentMenuGroup",
+    "Brave.Toolbar.MenuDismissRate",
+    "Brave.Toolbar.MenuOpens",
     "Brave.Sync.Status.2",
     "Brave.Sync.ProgressTokenEverReset",
     "Brave.Uptime.BrowserOpenMinutes",
@@ -84,12 +87,13 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Wallet.ActiveEthAccounts",
     "Brave.Wallet.ActiveFilAccounts",
     "Brave.Wallet.ActiveSolAccounts",
-    "Brave.Wallet.EthProvider",
+    "Brave.Wallet.EthProvider.2",
     "Brave.Wallet.EthTransactionSent",
     "Brave.Wallet.FilTransactionSent",
     "Brave.Wallet.DefaultSolanaWalletSetting",
     "Brave.Wallet.DefaultWalletSetting",
     "Brave.Wallet.KeyringCreated",
+    "Brave.Wallet.LastUsageTime",
     "Brave.Wallet.NewUserReturning",
     "Brave.Wallet.OnboardingConversion.2",
     "Brave.Wallet.SolTransactionSent",

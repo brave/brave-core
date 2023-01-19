@@ -11,6 +11,7 @@
 #include "base/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
 
@@ -19,9 +20,11 @@ class ScrollView;
 }
 
 class Browser;
+class TabStripScrollContainer;
 
 // Wraps TabStripRegion and show it vertically.
-class VerticalTabStripRegionView : public views::View {
+class VerticalTabStripRegionView : public views::View,
+                                   public TabStripModelObserver {
  public:
   METADATA_HEADER(VerticalTabStripRegionView);
 
@@ -57,6 +60,11 @@ class VerticalTabStripRegionView : public views::View {
   [[nodiscard]] ScopedStateResetter ExpandTabStripForDragging();
   gfx::Vector2d GetOffsetForDraggedTab() const;
 
+  int GetAvailableWidthForTabContainer();
+
+  // This should be called when height of this view or tab strip changes.
+  void UpdateNewTabButtonVisibility();
+
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
   gfx::Size GetMinimumSize() const override;
@@ -64,6 +72,13 @@ class VerticalTabStripRegionView : public views::View {
   void OnThemeChanged() override;
   void OnMouseExited(const ui::MouseEvent& event) override;
   void OnMouseEntered(const ui::MouseEvent& event) override;
+  void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
+
+  // TabStripModelObserver:
+  void OnTabStripModelChanged(
+      TabStripModel* tab_strip_model,
+      const TabStripModelChange& change,
+      const TabStripSelectionChange& selection) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
@@ -74,7 +89,6 @@ class VerticalTabStripRegionView : public views::View {
 
   void UpdateLayout(bool in_destruction = false);
 
-  void UpdateNewTabButtonVisibility();
   void UpdateTabSearchButtonVisibility();
 
   void OnCollapsedPrefChanged();
@@ -83,6 +97,12 @@ class VerticalTabStripRegionView : public views::View {
   void ScheduleFloatingModeTimer();
 
   gfx::Size GetPreferredSizeForState(State state) const;
+  int GetPreferredWidthForState(State state) const;
+
+  // Returns valid object only when the related flag is enabled.
+  TabStripScrollContainer* GetTabStripScrollContainer();
+
+  void ScrollActiveTabToBeVisible();
 
   raw_ptr<Browser> browser_ = nullptr;
 

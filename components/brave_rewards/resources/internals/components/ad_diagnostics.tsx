@@ -5,30 +5,59 @@
 import * as React from 'react'
 
 import { Button } from 'brave-ui/components'
-import { ButtonWrapper, DiagnosticsEntry } from '../style'
+import { ButtonWrapper, DiagnosticsEntry, Input, DiagnosticsHeader } from '../style'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 
 interface Props {
-  entries: RewardsInternals.AdDiagnosticsEntry[]
+  adDiagnostics: RewardsInternals.AdDiagnostics
   onGet: () => void
+  setAdDiagnosticId: (adDiagnosticId: string) => void
 }
 
 const getEntries = (entries: RewardsInternals.AdDiagnosticsEntry[]) => {
-  if (!entries || entries.length === 0) {
-    return (
-      <DiagnosticsEntry>
-        {getLocale('adsNotInitialized')}
-      </DiagnosticsEntry>
-    )
-  }
-
   return entries.map(entry => (
     <DiagnosticsEntry key={entry.name}>
       {entry.name}: {entry.value}
     </DiagnosticsEntry>
   ))
+}
+
+const adDiagnosticInfo = (adDiagnostics: RewardsInternals.AdDiagnostics) => {
+  const { entries } = adDiagnostics
+
+  return (
+    <>
+      <DiagnosticsHeader>
+        {getLocale('adDiagnosticInfo')}
+      </DiagnosticsHeader>
+      {
+        (!entries || entries.length === 0)
+          ? getLocale('adsNotInitialized')
+          : getEntries(entries)
+      }
+    </>
+  )
+}
+
+const adDiagnosticId = (props: Props) => {
+  return (
+    <>
+      <DiagnosticsHeader>
+        {getLocale('adDiagnosticId')}
+      </DiagnosticsHeader>
+      <DiagnosticsEntry>
+        <Input
+          value={props.adDiagnostics.diagnosticId}
+          onChange={(ev) => props.setAdDiagnosticId(ev.target.value)}
+          maxLength={36}
+          autoComplete="off"
+          spellCheck={false}
+        />
+      </DiagnosticsEntry>
+    </>
+  )
 }
 
 export const AdDiagnostics = (props: Props) => {
@@ -42,7 +71,10 @@ export const AdDiagnostics = (props: Props) => {
           onClick={props.onGet}
         />
       </ButtonWrapper>
-      {getEntries(props.entries)}
+
+      {adDiagnosticInfo(props.adDiagnostics)}
+
+      {adDiagnosticId(props)}
     </>
   )
 }

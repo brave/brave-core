@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 
@@ -15,13 +15,13 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/containers/container_util.h"
-#include "bat/ads/internal/base/database/database_bind_util.h"
-#include "bat/ads/internal/base/database/database_column_util.h"
-#include "bat/ads/internal/base/database/database_table_util.h"
-#include "bat/ads/internal/base/database/database_transaction_util.h"
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/time/time_formatting_util.h"
+#include "bat/ads/internal/common/containers/container_util.h"
+#include "bat/ads/internal/common/database/database_bind_util.h"
+#include "bat/ads/internal/common/database/database_column_util.h"
+#include "bat/ads/internal/common/database/database_table_util.h"
+#include "bat/ads/internal/common/database/database_transaction_util.h"
+#include "bat/ads/internal/common/logging_util.h"
+#include "bat/ads/internal/common/time/time_formatting_util.h"
 #include "bat/ads/internal/creatives/campaigns_database_table.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/creatives/creative_ads_database_table.h"

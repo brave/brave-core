@@ -10,19 +10,18 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/common/pref_names.h"
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_today/common/pref_names.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wayback_machine/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/pref_names.h"
+#include "brave/components/debounce/common/pref_names.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
-#include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
-#include "brave/components/sidebar/buildflags/buildflags.h"
-#include "brave/components/speedreader/common/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
 #include "chrome/common/extensions/api/settings_private.h"
@@ -45,11 +44,7 @@
 #include "brave/components/ipfs/pref_names.h"
 #endif
 
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-#include "brave/components/crypto_dot_com/common/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SIDEBAR)
+#if defined(TOOLKIT_VIEWS)
 #include "brave/components/sidebar/pref_names.h"
 #endif
 
@@ -61,12 +56,8 @@
 #include "brave/components/tor/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_FTX)
-#include "brave/components/ftx/common/pref_names.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
 namespace extensions {
@@ -154,13 +145,13 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kShowSidePanelButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[brave_news::prefs::kShouldShowToolbarButton] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kLocationBarIsWide] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[omnibox::kAutocompleteEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[omnibox::kTopSiteSuggestionsEnabled] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[omnibox::kBraveSuggestedSiteSuggestionsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[omnibox::kHistorySuggestionsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
@@ -176,11 +167,13 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[brave_tabs::kTabHoverMode] =
       settings_api::PREF_TYPE_NUMBER;
+  (*s_brave_allowlist)[kTabMuteIndicatorNotClickable] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   (*s_brave_allowlist)[brave_vpn::prefs::kBraveVPNShowButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
-#if BUILDFLAG(ENABLE_SIDEBAR)
+#if defined(TOOLKIT_VIEWS)
   (*s_brave_allowlist)[sidebar::kSidebarShowOption] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
 #endif
@@ -190,6 +183,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #endif
   // De-AMP feature
   (*s_brave_allowlist)[de_amp::kDeAmpPrefEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  // Debounce feature
+  (*s_brave_allowlist)[debounce::prefs::kDebounceEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // new tab prefs
   (*s_brave_allowlist)[kNewTabPageShowSponsoredImagesBackgroundImage] =
@@ -202,22 +198,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kNewTabPageShowRewards] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[kNewTabPageShowBinance] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kNewTabPageShowBraveTalk] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[kNewTabPageShowGemini] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kNewTabPageShowsOptions] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  (*s_brave_allowlist)[kCryptoDotComNewTabPageShowCryptoDotCom] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-#endif
-#if BUILDFLAG(ENABLE_FTX)
-  (*s_brave_allowlist)[kFTXNewTabPageShowFTX] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-#endif
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Web discovery prefs
   (*s_brave_allowlist)[kWebDiscoveryEnabled] =
@@ -274,8 +258,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kDefaultBaseCryptocurrency] =
       settings_api::PrefType::PREF_TYPE_STRING;
   (*s_brave_allowlist)[kShowWalletIconOnToolbar] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[kShowWalletTestNetworks] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kBraveWalletAutoLockMinutes] =
       settings_api::PrefType::PREF_TYPE_NUMBER;

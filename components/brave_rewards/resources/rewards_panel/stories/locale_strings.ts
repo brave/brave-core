@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -9,14 +10,28 @@ export const localeStrings = {
   ...walletCardStrings,
   ...onboardingStrings,
 
+  aboutRewardsText: 'Using Brave Rewards helps support content creators, and lets you earn BAT.',
+  connectAccount: 'Connect account',
+  connectAccountText: '$1Ready to start earning BAT?$2 Just connect your custodial account to your Rewards profile. If you don’t have an account, you’ll get the chance to create one.',
+  connectAccountNoProviders: 'To earn BAT, users must connect a custodial account to Brave Rewards. Unfortunately, there\'s no custodian available in your region, so earning isn\'t available. For now, turning on Brave Rewards will automatically support creators.',
+  learnMore: 'Learn more',
+  publisherCountText: 'This month, you\'ve visited $1 creators supported by Brave Rewards',
+  headerTitle: 'Brave Rewards',
+  headerTextAdsEnabled: 'You are helping support content creators',
+  headerTextAdsDisabled: 'Turn on to help support content creators',
+  rewardsSettings: 'Rewards settings',
+  learnMoreAboutBAT: 'Learn more about BAT',
   summary: 'Summary',
   tip: 'Tip',
   unverifiedCreator: 'Unverified Creator',
   verifiedCreator: 'Verified Creator',
-  refreshStatus: 'Refresh',
-  pendingTipText: 'Any tip you make will remain pending and retry automatically for 90 days. $1Learn more$2',
+  refreshStatus: 'Refresh Creator verification status',
+  pendingTipText: 'For now, any tip you make will remain pending ' +
+                  'and retry automatically for 90 days. $1Learn more$2',
   pendingTipTitle: 'This creator is not signed up yet.',
-  pendingTipTitleRegistered: 'This creator is currently not configured to receive tips from your Rewards custodial wallet service.',
+  pendingTipTitleRegistered: 'You\'re connected to $1, but this creator ' +
+                             'is connected to $2. This means your tip ' +
+                             'can\'t reach this creator.',
   platformPublisherTitle: '$1 on $2',
   attention: 'Attention',
   sendTip: 'Send Tip',
@@ -47,12 +62,9 @@ export const localeStrings = {
   captchaMaxAttemptsExceededText: 'Looks like this is not working, Brave ads will remain paused. Contact us if you need help with the captcha.',
   captchaContactSupport: 'Contact support',
 
-  notificationAddFunds: 'Add Funds',
   notificationReconnect: 'Reconnect',
   notificationClaimRewards: 'Claim Rewards',
   notificationClaimTokens: 'Claim Tokens',
-  notificationAddFundsTitle: 'Insufficient Funds',
-  notificationAddFundsText: 'Your Brave Rewards account is waiting for a deposit.',
   notificationAutoContributeCompletedTitle: 'Auto-Contribute',
   notificationAutoContributeCompletedText: 'You\'ve contributed $1.',
   notificationWalletDisconnectedTitle: 'You are logged out',
@@ -66,13 +78,16 @@ export const localeStrings = {
   notificationAdGrantAmount: '$1 Rewards: $2',
   notificationAdGrantTitle: 'Your $1 Ad Rewards are here!',
   notificationGrantDaysRemaining: 'You have $1 left to claim',
-  notificationInsufficientFundsText: 'Your scheduled monthly payment for Auto-Contribute and monthly contributions could not be completed due to insufficient funds. We’ll try again in 30 days.',
   notificationMonthlyContributionFailedText: 'There was a problem processing your contribution.',
   notificationMonthlyContributionFailedTitle: 'Monthly contribution failed',
   notificationMonthlyTipCompletedTitle: 'Contributions and tips',
   notificationMonthlyTipCompletedText: 'Your monthly contributions have been processed.',
   notificationPublisherVerifiedTitle: 'Pending contribution',
   notificationPublisherVerifiedText: 'Creator $1 recently verified.',
-  notificationPendingTipFailedTitle: 'Insufficient funds',
-  notificationPendingTipFailedText: 'You have pending tips due to insufficient funds'
+
+  rewardsConnectAccount: 'Connect account',
+  rewardsVBATNoticeTitle1: 'Action required: Connect a custodial account or your vBAT will be lost',
+  rewardsVBATNoticeText1: 'On $1, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.',
+  rewardsVBATNoticeTitle2: 'You still have time to contribute your vBAT to your favorite creators',
+  rewardsVBATNoticeText2: 'On $1, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region ($2) to withdraw your earnings. Until then, you can still contribute to your favorite creators.'
 }

@@ -27,7 +27,7 @@ constexpr char kLogValueKey[] = "value";
 constexpr char kLogSentKey[] = "sent";
 constexpr char kLogTimestampKey[] = "timestamp";
 
-void RecordP3A(uint64_t answers_count) {
+void RecordSentAnswersCount(uint64_t answers_count) {
   int answer = 0;
   if (1 <= answers_count && answers_count < 5) {
     answer = 1;
@@ -126,7 +126,10 @@ void BraveP3ALogStore::ResetUploadStamps() {
     }
   }
 
-  RecordP3A(log_.size() - unsent_entries_.size());
+  // Only record the sent answers count metric for weekly metrics
+  if (type_ == MetricLogType::kTypical) {
+    RecordSentAnswersCount(log_.size() - unsent_entries_.size());
+  }
 
   // Rebuild the unsent set.
   unsent_entries_.clear();

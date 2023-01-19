@@ -17,6 +17,7 @@ OBJC_EXPORT
 
 + (nullable NSString*)pemEncodeCertificate:(SecCertificateRef)certificate;
 + (nullable NSData*)hashCertificateSPKI:(SecCertificateRef)certificate;
++ (int)verifyTrust:(SecTrustRef)trust host:(NSString*)host port:(NSInteger)port;
 @end
 
 NS_ASSUME_NONNULL_END

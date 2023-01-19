@@ -1,3 +1,8 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -6,8 +11,11 @@ source_set("infobars") {
   # Remove when https://github.com/brave/brave-browser/issues/10649 is resolved
   check_includes = false
   sources = [
+    "brave_confirm_infobar_creator.h",
     "brave_confirm_p3a_infobar_delegate.cc",
     "brave_confirm_p3a_infobar_delegate.h",
+    "brave_sync_account_deleted_infobar_delegate.cc",
+    "brave_sync_account_deleted_infobar_delegate.h",
     "sync_cannot_run_infobar_delegate.cc",
     "sync_cannot_run_infobar_delegate.h",
     "sync_v2_migrate_infobar_delegate.cc",
@@ -21,6 +29,7 @@ source_set("infobars") {
     "//brave/common:common",
     "//brave/components/brave_sync:features",
     "//brave/components/brave_sync:prefs",
+    "//brave/components/constants",
     "//brave/components/p3a",
     "//chrome/app:chromium_strings",
     "//chrome/browser/ui",
@@ -46,9 +55,6 @@ source_set("infobars") {
       "brave_wayback_machine_delegate_impl.h",
     ]
 
-    deps += [
-      "//brave/components/brave_wayback_machine",
-      "//brave/components/constants",
-    ]
+    deps += [ "//brave/components/brave_wayback_machine" ]
   }
 }

@@ -13,9 +13,8 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
-#include "brave/components/binance/browser/buildflags/buildflags.h"
-#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
@@ -30,21 +29,17 @@
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
-#include "brave/components/brave_wayback_machine/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/pref_names.h"
-#include "brave/components/ftx/browser/buildflags/buildflags.h"
-#include "brave/components/gemini/browser/buildflags/buildflags.h"
+#include "brave/components/debounce/browser/debounce_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
-#include "brave/components/sidebar/buildflags/buildflags.h"
-#include "brave/components/speedreader/common/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/translate/core/common/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefetch/pref_names.h"
 #include "chrome/browser/prefetch/prefetch_prefs.h"
@@ -68,9 +63,7 @@
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
@@ -93,25 +86,12 @@
 #include "brave/components/ipfs/ipfs_service.h"
 #endif
 
-#if BUILDFLAG(GEMINI_ENABLED)
-#include "brave/components/gemini/browser/pref_names.h"
-#endif
-
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 #include "brave/browser/gcm_driver/brave_gcm_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_service.h"
-#endif
-
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-#include "brave/components/crypto_dot_com/browser/crypto_dot_com_pref_utils.h"
-#include "brave/components/crypto_dot_com/common/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_FTX)
-#include "brave/components/ftx/browser/ftx_pref_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -131,17 +111,13 @@
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
+#if defined(TOOLKIT_VIEWS)
 #include "brave/components/sidebar/sidebar_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/common/feature_switch.h"
 using extensions::FeatureSwitch;
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-#include "brave/browser/translate/brave_translate_prefs_migration.h"
 #endif
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
@@ -182,6 +158,27 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterBooleanPref(kDontAskEnableWebDiscovery, false);
   registry->RegisterIntegerPref(kBraveSearchVisitCount, 0);
 #endif
+
+  // Added 24/11/2022: https://github.com/brave/brave-core/pull/16027
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+  registry->RegisterStringPref(kFTXAccessToken, "");
+  registry->RegisterStringPref(kFTXOauthHost, "");
+  registry->RegisterBooleanPref(kFTXNewTabPageShowFTX, false);
+  registry->RegisterBooleanPref(kCryptoDotComNewTabPageShowCryptoDotCom, false);
+  registry->RegisterBooleanPref(kCryptoDotComHasBoughtCrypto, false);
+  registry->RegisterBooleanPref(kCryptoDotComHasInteracted, false);
+  registry->RegisterStringPref(kGeminiAccessToken, "");
+  registry->RegisterStringPref(kGeminiRefreshToken, "");
+  registry->RegisterBooleanPref(kNewTabPageShowGemini, false);
+#endif
+
+  // Added 24/11/2022: https://github.com/brave/brave-core/pull/16027
+#if !BUILDFLAG(IS_IOS)
+  registry->RegisterStringPref(kBinanceAccessToken, "");
+  registry->RegisterStringPref(kBinanceRefreshToken, "");
+  registry->RegisterBooleanPref(kNewTabPageShowBinance, false);
+  registry->RegisterBooleanPref(kBraveSuggestedSiteSuggestionsEnabled, false);
+#endif
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -199,6 +196,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(brave_rewards::prefs::kShowButton, true);
   registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
   registry->RegisterBooleanPref(kTabsSearchShow, true);
+  registry->RegisterBooleanPref(kTabMuteIndicatorNotClickable, false);
 
   brave_sync::Prefs::RegisterProfilePrefs(registry);
 
@@ -245,10 +243,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kBraveWaybackMachineEnabled, true);
 #endif
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   brave_adaptive_captcha::BraveAdaptiveCaptchaService::RegisterProfilePrefs(
       registry);
-#endif
 
 #if BUILDFLAG(IS_ANDROID)
   registry->RegisterBooleanPref(kDesktopModeEnabled, false);
@@ -327,9 +323,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kNewTabPageClockFormat, "");
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
-  registry->RegisterBooleanPref(kNewTabPageShowBinance, false);
   registry->RegisterBooleanPref(kNewTabPageShowBraveTalk, true);
-  registry->RegisterBooleanPref(kNewTabPageShowGemini, false);
   registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
 
 // Private New Tab Page
@@ -370,18 +364,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(prefs::kAddOpenSearchEngines,
                                 allow_open_search_engines);
 
-  // Binance widget
-#if BUILDFLAG(BINANCE_ENABLED)
-  registry->RegisterStringPref(kBinanceAccessToken, "");
-  registry->RegisterStringPref(kBinanceRefreshToken, "");
-#endif
-
-  // Gemini widget
-#if BUILDFLAG(GEMINI_ENABLED)
-  registry->RegisterStringPref(kGeminiAccessToken, "");
-  registry->RegisterStringPref(kGeminiRefreshToken, "");
-#endif
-
   omnibox::RegisterBraveProfilePrefs(registry);
 
   // Password leak detection should be disabled
@@ -407,20 +389,13 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #endif
 
   de_amp::RegisterProfilePrefs(registry);
-
-#if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
-  crypto_dot_com::RegisterProfilePrefs(registry);
-#endif
-
-#if BUILDFLAG(ENABLE_FTX)
-  ftx::RegisterProfilePrefs(registry);
-#endif
+  debounce::DebounceService::RegisterProfilePrefs(registry);
 
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterProfilePrefs(registry);
 #endif
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
+#if defined(TOOLKIT_VIEWS)
   sidebar::SidebarService::RegisterProfilePrefs(registry, chrome::GetChannel());
   // Set false for showing sidebar on left by default.
   registry->SetDefaultPrefValue(prefs::kSidePanelHorizontalAlignment,
@@ -456,9 +431,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   RegisterProfilePrefsForMigration(registry);
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   translate::RegisterBraveProfilePrefsForMigration(registry);
-#endif
 }
 
 }  // namespace brave

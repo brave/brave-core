@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -17,6 +18,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/p3a_utils/feature_usage.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/pref_service_syncable.h"
@@ -45,7 +47,40 @@ base::Value::Dict GetDefaultSelectedNetworks() {
   return selected_networks;
 }
 
+base::Value::Dict GetDefaultHiddenNetworks() {
+  base::Value::Dict hidden_networks;
+
+  base::Value::List eth_hidden;
+  eth_hidden.Append(mojom::kGoerliChainId);
+  eth_hidden.Append(mojom::kSepoliaChainId);
+  eth_hidden.Append(mojom::kLocalhostChainId);
+  hidden_networks.Set(kEthereumPrefKey, std::move(eth_hidden));
+
+  base::Value::List fil_hidden;
+  fil_hidden.Append(mojom::kFilecoinTestnet);
+  fil_hidden.Append(mojom::kLocalhostChainId);
+  hidden_networks.Set(kFilecoinPrefKey, std::move(fil_hidden));
+
+  base::Value::List sol_hidden;
+  sol_hidden.Append(mojom::kSolanaDevnet);
+  sol_hidden.Append(mojom::kSolanaTestnet);
+  sol_hidden.Append(mojom::kLocalhostChainId);
+  hidden_networks.Set(kSolanaPrefKey, std::move(sol_hidden));
+
+  return hidden_networks;
+}
+
 }  // namespace
+
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
+  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
+  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
+  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
+  p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
+                                       kBraveWalletP3ALastUnlockTime,
+                                       kBraveWalletP3AUsedSecondDay, nullptr);
+}
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(prefs::kDisabledByPolicy, false);
@@ -60,34 +95,37 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kDefaultBaseCurrency, "USD");
   registry->RegisterStringPref(kDefaultBaseCryptocurrency, "BTC");
   registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
-  registry->RegisterBooleanPref(kShowWalletTestNetworks, false);
   registry->RegisterIntegerPref(
       kBraveWalletSelectedCoin,
       static_cast<int>(brave_wallet::mojom::CoinType::ETH));
   registry->RegisterDictionaryPref(kBraveWalletTransactions);
-  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
-  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
   registry->RegisterDictionaryPref(kBraveWalletP3AActiveWalletDict);
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
   registry->RegisterBooleanPref(kBraveWalletKeyringEncryptionKeysMigrated,
                                 false);
   registry->RegisterDictionaryPref(kBraveWalletCustomNetworks);
-  registry->RegisterDictionaryPref(kBraveWalletHiddenNetworks);
+  registry->RegisterDictionaryPref(kBraveWalletHiddenNetworks,
+                                   GetDefaultHiddenNetworks());
   registry->RegisterDictionaryPref(kBraveWalletSelectedNetworks,
-                                   base::Value(GetDefaultSelectedNetworks()));
+                                   GetDefaultSelectedNetworks());
   registry->RegisterDictionaryPref(kBraveWalletUserAssets,
-                                   base::Value(GetDefaultUserAssets()));
+                                   GetDefaultUserAssets());
   registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes, 5);
   registry->RegisterStringPref(kBraveWalletSelectedAccount, "");
   registry->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
-  p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
-                                       kBraveWalletP3ALastUnlockTime,
-                                       kBraveWalletP3AUsedSecondDay, nullptr);
   registry->RegisterDictionaryPref(kBraveWalletLastTransactionSentTimeDict);
   registry->RegisterDictionaryPref(kBraveWalletNextAssetDiscoveryFromBlocks);
   registry->RegisterTimePref(kBraveWalletLastDiscoveredAssetsAt, base::Time());
+
+  // TODO(djandries): remove the following prefs at some point,
+  //                  since they're now maintained in local state
+  p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
+                                       kBraveWalletP3ALastUnlockTime,
+                                       kBraveWalletP3AUsedSecondDay, nullptr);
+  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
+  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
+  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
+  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
 }
 
 void RegisterProfilePrefsForMigration(
@@ -127,6 +165,9 @@ void RegisterProfilePrefsForMigration(
 
   // Added 10/2022
   registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsNFTMigrated, false);
+
+  // Added 12/2022
+  registry->RegisterBooleanPref(kShowWalletTestNetworksDeprecated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -211,6 +252,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 10/2022
   JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs);
+
+  // Added 12/2022
+  JsonRpcService::MigrateShowTestNetworksToggle(prefs);
 }
 
 }  // namespace brave_wallet

@@ -28,12 +28,15 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
+import org.chromium.chrome.browser.notifications.BravePermissionUtils;
+import org.chromium.chrome.browser.notifications.permissions.BraveNotificationPermissionRationaleDialog;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
-import org.chromium.chrome.browser.rate.RateDialogFragment;
+import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
@@ -75,6 +78,7 @@ public class BraveMainPreferencesBase
     private static final String PREF_SHIELDS_AND_PRIVACY = "brave_shields_and_privacy";
     private static final String PREF_BRAVE_SEARCH_ENGINES = "brave_search_engines";
     private static final String PREF_BRAVE_NEWS = "brave_news";
+    private static final String PREF_BRAVE_NEWS_V2 = "brave_news_v2";
     private static final String PREF_SYNC = "brave_sync_layout";
     private static final String PREF_PASSWORDS = "passwords";
     private static final String PREF_NOTIFICATIONS = "notifications";
@@ -126,11 +130,26 @@ public class BraveMainPreferencesBase
         // Otherwise, some prefs could be added after finishing updateBravePreferences().
         new Handler().post(() -> updateBravePreferences());
         if (mNotificationClicked
-                && BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(
-                        getActivity())) {
+                && BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(getActivity())
+                && !OnboardingPrefManager.getInstance()
+                            .isNotificationPermissionEnablingDialogShownFromSetting()) {
             mNotificationClicked = false;
-            showNotificationWarningDialog();
+            if (BravePermissionUtils.hasNotificationPermission(getActivity())) {
+                showNotificationWarningDialog();
+            } else {
+                showNotificationRationale();
+            }
+            OnboardingPrefManager.getInstance()
+                    .setNotificationPermissionEnablingDialogShownFromSetting(true);
         }
+    }
+
+    private void showNotificationRationale() {
+        BraveNotificationPermissionRationaleDialog notificationWarningDialog =
+                BraveNotificationPermissionRationaleDialog.newInstance();
+        notificationWarningDialog.setCancelable(false);
+        notificationWarningDialog.show(getChildFragmentManager(),
+                BraveNotificationWarningDialog.NOTIFICATION_WARNING_DIALOG_TAG);
     }
 
     private void showNotificationWarningDialog() {
@@ -144,17 +163,19 @@ public class BraveMainPreferencesBase
 
     private void notificationClick() {
         Preference notifications = findPreference(PREF_NOTIFICATIONS);
-        notifications.setOnPreferenceClickListener(preference -> {
-            mNotificationClicked = true;
+        if (notifications != null) {
+            notifications.setOnPreferenceClickListener(preference -> {
+                mNotificationClicked = true;
 
-            Intent intent = new Intent();
-            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-            intent.putExtra(Settings.EXTRA_APP_PACKAGE,
-                    ContextUtils.getApplicationContext().getPackageName());
-            startActivity(intent);
-            // We handle the click so the default action isn't triggered.
-            return true;
-        });
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE,
+                        ContextUtils.getApplicationContext().getPackageName());
+                startActivity(intent);
+                // We handle the click so the default action isn't triggered.
+                return true;
+            });
+        }
     }
 
     private void updateBravePreferences() {
@@ -175,9 +196,16 @@ public class BraveMainPreferencesBase
         removePreferenceIfPresent(PREF_ADVANCED_SECTION);
         removePreferenceIfPresent(PREF_PRIVACY);
         removePreferenceIfPresent(PREF_BRAVE_VPN_CALLOUT);
+
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
             removePreferenceIfPresent(PREF_BRAVE_NEWS);
+            removePreferenceIfPresent(PREF_BRAVE_NEWS_V2);
+        } else if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS_V2)) {
+            removePreferenceIfPresent(PREF_BRAVE_NEWS);
+        } else {
+            removePreferenceIfPresent(PREF_BRAVE_NEWS_V2);
         }
+
         updateSearchEnginePreference();
 
         updateSummaries();
@@ -409,7 +437,7 @@ public class BraveMainPreferencesBase
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(RateUtils.FROM_SETTINGS, true);
 
-                RateDialogFragment mRateDialogFragment = new RateDialogFragment();
+                BraveRateDialogFragment mRateDialogFragment = new BraveRateDialogFragment();
                 mRateDialogFragment.setArguments(bundle);
                 mRateDialogFragment.show(getParentFragmentManager(), "RateDialogFragment");
                 return true;
@@ -447,7 +475,7 @@ public class BraveMainPreferencesBase
         if (PREF_BACKGROUND_VIDEO_PLAYBACK.equals(key)) {
             BraveFeatureUtil.enableFeature(
                     BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL, (boolean) newValue,
-                    true);
+                    false);
             if ((boolean) newValue) {
                 updateSummary(PREF_BACKGROUND_VIDEO_PLAYBACK,
                         R.string.prefs_background_video_playback_on);

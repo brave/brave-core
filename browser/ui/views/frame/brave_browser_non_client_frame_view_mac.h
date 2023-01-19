@@ -22,6 +22,7 @@ class BraveBrowserNonClientFrameViewMac : public BrowserNonClientFrameViewMac {
       const BraveBrowserNonClientFrameViewMac&) = delete;
   BraveBrowserNonClientFrameViewMac& operator=(
       const BraveBrowserNonClientFrameViewMac&) = delete;
+  gfx::Size GetMinimumSize() const override;
 
  private:
   bool ShouldShowWindowTitleForVerticalTabs() const;

@@ -7,9 +7,10 @@ import { getLocale } from '$web-common/locale'
 import { BraveWallet, BuyOption } from '../constants/types'
 
 import RampIcon from '../assets/svg-icons/ramp-icon.svg'
-import WyreIcon from '../assets/svg-icons/wyre-icon.svg'
 import SardineIconLight from '../assets/svg-icons/sardine-logo-light.svg'
 import SardineIconDark from '../assets/svg-icons/sardine-logo-dark.svg'
+import TransakIcon from '../assets/svg-icons/transak-logo.svg'
+
 import { isSardineSupported } from '../utils/asset-utils'
 
 function getBuyOptions (): BuyOption[] {
@@ -21,18 +22,21 @@ function getBuyOptions (): BuyOption[] {
     description: getLocale('braveWalletBuyRampDescription')
   },
   {
-    id: BraveWallet.OnRampProvider.kWyre,
-    actionText: getLocale('braveWalletBuyWithWyre'),
-    icon: WyreIcon,
-    name: getLocale('braveWalletBuyWyreName'),
-    description: getLocale('braveWalletBuyWyreDescription')
-  }]
+    id: BraveWallet.OnRampProvider.kTransak,
+    actionText: getLocale('braveWalletBuyWithTransak'),
+    icon: TransakIcon,
+    name: getLocale('braveWalletBuyTransakName'),
+    description: getLocale('braveWalletBuyTransakDescription')
+  }
+  ]
 
   if (isSardineSupported()) {
     buyOptions.push({
       id: BraveWallet.OnRampProvider.kSardine,
       actionText: getLocale('braveWalletBuyWithSardine'),
-      icon: window.matchMedia('(prefers-color-scheme: dark)').matches ? SardineIconDark : SardineIconLight,
+      icon: window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? SardineIconDark
+        : SardineIconLight,
       name: getLocale('braveWalletBuySardineName'),
       description: getLocale('braveWalletBuySardineDescription')
     })

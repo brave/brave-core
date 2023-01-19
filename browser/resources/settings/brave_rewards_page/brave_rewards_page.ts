@@ -4,19 +4,29 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-'use strict';
+'use strict'
 
-import {loadTimeData} from '../i18n_setup.js';
+import {loadTimeData} from '../i18n_setup.js'
 
-import '//resources/js/cr.m.js';
-import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import '//resources/js/cr.m.js'
+import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
-import {PrefsMixin} from '../prefs/prefs_mixin.js';
-import {BraveRewardsBrowserProxyImpl} from './brave_rewards_browser_proxy.js';
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {PrefsMixin} from '../prefs/prefs_mixin.js'
+import {BraveRewardsBrowserProxyImpl} from './brave_rewards_browser_proxy.js'
 import {getTemplate} from './brave_rewards_page.html.js'
 
 const SettingsBraveRewardsPageBase = I18nMixin(PrefsMixin(PolymerElement))
+
+interface AutoContributeMonthlyLimit {
+  name: string,
+  value: number
+}
+
+interface AdsSubdivisionTargeting {
+  name: string,
+  value: string
+}
 
 /**
  * 'settings-brave-rewards-page' is the settings page containing settings for
@@ -27,12 +37,20 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
     return 'settings-brave-rewards-page'
   }
 
-  static get template() {
+  static get template () {
     return getTemplate()
   }
 
-  static get properties() {
+  static get properties () {
     return {
+      countryCode_: {
+        type: String,
+        value: ''
+      },
+      subdivisions_: {
+        type: Array,
+        value: []
+      },
       maxAdsToDisplay_: {
         readOnly: true,
         type: Array,
@@ -81,7 +99,7 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
       },
       shouldShowAutoContributeSettings_: {
         type: Boolean,
-        value: true
+        value: false
       },
       isRewardsEnabled_: {
         type: Boolean,
@@ -89,27 +107,32 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
       },
       wasInlineTippingForRedditEnabledOnStartup_: {
         type: Boolean,
-        value: false,
+        value: false
       },
       wasInlineTippingForTwitterEnabledOnStartup_: {
         type: Boolean,
-        value: false,
+        value: false
       },
       wasInlineTippingForGithubEnabledOnStartup_: {
         type: Boolean,
-        value: false,
+        value: false
       }
     }
   }
 
-  browserProxy_ = BraveRewardsBrowserProxyImpl.getInstance()
+  private countryCode_: string
+  private subdivisions_: AdsSubdivisionTargeting[]
+  private isRewardsEnabled_: boolean
+  private autoContributeMonthlyLimit_: AutoContributeMonthlyLimit[]
+  private shouldAllowAdsSubdivisionTargeting_: boolean
+  private shouldShowAutoContributeSettings_: boolean
+  private wasInlineTippingForRedditEnabledOnStartup_: boolean
+  private wasInlineTippingForTwitterEnabledOnStartup_: boolean
+  private wasInlineTippingForGithubEnabledOnStartup_: boolean
+  private browserProxy_ = BraveRewardsBrowserProxyImpl.getInstance()
 
-  ready() {
+  override ready () {
     super.ready()
-    this.openRewardsPanel_ = () => {
-      chrome.braveRewards.openRewardsPanel()
-      this.isAutoContributeSupported_()
-    }
     this.browserProxy_.getRewardsEnabled().then((enabled) => {
       if (enabled) {
         this.onRewardsEnabled_()
@@ -122,6 +145,9 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
         this.onRewardsEnabled_()
       }
     })
+    chrome.braveRewards.onExternalWalletConnected.addListener(() => {
+      this.maybeShowAutoContributeSettings_()
+    })
     chrome.settingsPrivate.onPrefsChanged.addListener((prefs) => {
       prefs.forEach((pref) => {
         if (pref.key === 'brave.brave_ads.should_allow_ads_subdivision_targeting') {
@@ -131,37 +157,48 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
     })
   }
 
-  isAutoContributeSupported_() {
-    this.browserProxy_.isAutoContributeSupported().then((supported) => {
-      // Show auto-contribute settings if this profile supports it
-      this.shouldShowAutoContributeSettings_ = supported
-    })
+  private openRewardsPanel_ () {
+    chrome.braveRewards.openRewardsPanel()
+    this.maybeShowAutoContributeSettings_()
   }
 
-  onRewardsEnabled_() {
+  private async maybeShowAutoContributeSettings_ () {
+    // Show auto-contribute settings if applicable and user is connected
+    try {
+      const supportsAutoContribute =
+        await this.browserProxy_.isAutoContributeSupported()
+      const userType = await this.browserProxy_.getUserType()
+      this.shouldShowAutoContributeSettings_ =
+        supportsAutoContribute && userType !== 'unconnected'
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  private onRewardsEnabled_ () {
     this.isRewardsEnabled_ = true
     this.wasInlineTippingForRedditEnabledOnStartup_ = this.getPref('brave.rewards.inline_tip.reddit').value
     this.wasInlineTippingForTwitterEnabledOnStartup_ = this.getPref('brave.rewards.inline_tip.twitter').value
     this.wasInlineTippingForGithubEnabledOnStartup_ = this.getPref('brave.rewards.inline_tip.github').value
-    this.isAutoContributeSupported_()
+    this.maybeShowAutoContributeSettings_()
     this.populateAutoContributeAmountDropdown_()
     this.getAdsDataForSubdivisionTargeting_()
   }
 
-  getAdsDataForSubdivisionTargeting_() {
-    this.browserProxy_.getAdsData().then((adsData) => {
+  private getAdsDataForSubdivisionTargeting_ () {
+    this.browserProxy_.getAdsData().then((adsData: any) => {
       this.shouldAllowAdsSubdivisionTargeting_ = adsData.shouldAllowAdsSubdivisionTargeting
       this.countryCode_ = adsData.countryCode
       this.subdivisions_ = adsData.subdivisions
     })
   }
 
-  populateAutoContributeAmountDropdown_() {
-    this.browserProxy_.getRewardsParameters().then((params) => {
+  private populateAutoContributeAmountDropdown_ () {
+    this.browserProxy_.getRewardsParameters().then((params: any) => {
       let autoContributeChoices = [
         { name: loadTimeData.getString('braveRewardsDefaultItem'), value: 0 }
       ]
-      params.autoContributeChoices.forEach((element) => {
+      params.autoContributeChoices.forEach((element: number) => {
         autoContributeChoices.push({
           name: `${loadTimeData.getString('braveRewardsContributionUpTo')} ${element.toFixed(3)} BAT`,
           value: element
@@ -171,7 +208,7 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
     })
   }
 
-  shouldShowRestartButtonForReddit_(enabled) {
+  private shouldShowRestartButtonForReddit_ (enabled: boolean) {
     if (!this.isRewardsEnabled_) {
       return false
     }
@@ -179,7 +216,7 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
     return enabled !== this.wasInlineTippingForRedditEnabledOnStartup_
   }
 
-  shouldShowRestartButtonForTwitter_(enabled) {
+  private shouldShowRestartButtonForTwitter_ (enabled: boolean) {
     if (!this.isRewardsEnabled_) {
       return false
     }
@@ -187,7 +224,7 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
     return enabled !== this.wasInlineTippingForTwitterEnabledOnStartup_
   }
 
-  shouldShowRestartButtonForGithub_(enabled) {
+  private shouldShowRestartButtonForGithub_ (enabled: boolean) {
     if (!this.isRewardsEnabled_) {
       return false
     }
@@ -195,12 +232,12 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
     return enabled !== this.wasInlineTippingForGithubEnabledOnStartup_
   }
 
-  restartBrowser_(e) {
-    e.stopPropagation();
-    window.open('chrome://restart', '_self');
+  private restartBrowser_ (e: Event) {
+    e.stopPropagation()
+    window.open('chrome://restart', '_self')
   }
 
-  adsSubdivisionTargetingCodes_() {
+  private adsSubdivisionTargetingCodes_ () {
     if (!this.subdivisions_ || !this.subdivisions_.length) {
       return []
     }

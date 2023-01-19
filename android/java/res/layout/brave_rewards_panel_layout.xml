@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView 
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         app:cardBackgroundColor="@color/rewards_panel_bg_color"
         android:layout_height="400dp"
@@ -15,6 +15,7 @@
         app:cardElevation="0dp">
 
                 <FrameLayout
+                    android:id="@+id/panel_main_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -34,10 +35,27 @@
                         android:id="@+id/brave_rewards_onboarding_layout_id"
                         layout="@layout/brave_rewards_onboarding_layout"/>
 
+                    <FrameLayout
+                        android:id="@+id/panel_shadow"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:foreground="@color/rewards_panel_foreground_color"
+                        android:elevation="6dp"
+                        android:visibility="gone"/>
+
+                    <include
+                        android:id="@+id/brave_rewards_panel_unverified_layout_id"
+                        layout="@layout/brave_rewards_panel_unverified_layout"/>
+
+                    <include
+                        android:id="@+id/connect_account_layout_id"
+                        layout="@layout/connect_account_layout" />
+
                     <LinearLayout
                         android:id="@+id/rewards_main_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
                         <androidx.cardview.widget.CardView 
@@ -64,13 +82,7 @@
 
                     </LinearLayout>
 
-                    <include
-                        android:id="@+id/brave_rewards_welcome_layout_id"
-                        layout="@layout/brave_rewards_welcome_layout"/>
-
                 </FrameLayout>
-
-            
 
     </androidx.cardview.widget.CardView>
 

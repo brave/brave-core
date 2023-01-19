@@ -1,3 +1,0 @@
-declare_args() {
-  crypto_dot_com_enabled = is_mac || is_linux || is_win
-}

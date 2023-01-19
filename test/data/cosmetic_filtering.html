@@ -16,6 +16,12 @@ function addElementsDynamically() {
     e.className = 'dontblockme'
     root.appendChild(e);
   }
+
+  for (let i = 0; i < 10; i++) {
+    const e = document.createElement('div');
+    e.innerHTML = '<div class="hide-innerhtml"></div>';
+    root.appendChild(e);
+  }
 }
 
 let didWait = false;
@@ -43,6 +49,15 @@ function checkSelector(selector, property, expected) {
         resolve(checkSelectorInner())
       }, 3000)
     })
+  }
+}
+
+async function waitCSSSelector(selector, property, expected) {
+  if (await checkSelector(selector, property, expected)) {
+    window.domAutomationController.send(true);
+  } else {
+    console.log('still waiting for css selector');
+    setTimeout(waitCSSSelector.bind(undefined, selector, property, expected), 200);
   }
 }
 
@@ -79,5 +94,13 @@ function checkSelector(selector, property, expected) {
       <img src="http://chrome.appspot.com/sponsored/640x820.png">
     </div>
     <div id="inline-block-important" style="display: block !important"></div>
+
+    <!-- `:has` pseudoclass -->
+    <div class="container">
+      <div id="promotion"></div>
+    </div>
+    <div class="container">
+      <div id="real-user-content"></div>
+    </div>
 </body>
 </html>

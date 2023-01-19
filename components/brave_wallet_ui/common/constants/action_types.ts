@@ -5,7 +5,7 @@
 
 import {
   BraveWallet,
-  Origin,
+  SerializableOrigin,
   SerializableTransactionInfo,
   SlippagePresetObjectType,
   TransactionProviderError,
@@ -99,13 +99,13 @@ export type SitePermissionsPayloadType = {
 
 export type RemoveSitePermissionPayloadType = {
   coin: BraveWallet.CoinType
-  origin: Origin
+  origin: SerializableOrigin
   account: string
 }
 
 export type AddSitePermissionPayloadType = {
   coin: BraveWallet.CoinType
-  origin: Origin
+  origin: SerializableOrigin
   account: string
 }
 
@@ -123,3 +123,12 @@ export type SetTransactionProviderErrorType = {
   transaction: BraveWallet.TransactionInfo
   providerError: TransactionProviderError
 }
+
+export interface RetryTransactionPayload {
+  transactionId: string
+  coinType: BraveWallet.CoinType
+  fromAddress: string
+}
+
+export type SpeedupTransactionPayload = RetryTransactionPayload
+export type CancelTransactionPayload = RetryTransactionPayload

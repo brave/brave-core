@@ -8,13 +8,10 @@
 
 #include "build/build_config.h"
 
-// Pref file that holds installed extension list.
-constexpr char kChromeExtensionsPreferencesFile[] =
-#if BUILDFLAG(IS_LINUX)
-    "Preferences";
-#else
-    "Secure Preferences";
-#endif
+// Prefs files that holds installed extension list.
+constexpr char kChromeSecurePreferencesFile[] = "Secure Preferences";
+constexpr char kChromePreferencesFile[] = "Preferences";
+
 constexpr char kChromeExtensionsListPath[] = "extensions.settings";
 constexpr char kChromeLocalStateFile[] = "Local State";
 

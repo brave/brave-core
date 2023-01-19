@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { EntityState } from '@reduxjs/toolkit'
+import { EntityId, EntityState } from '@reduxjs/toolkit'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
 
 /**
@@ -16,11 +16,6 @@ function concatErrorCache<T, ID> (
   existingCache: CacheList<T, ID>,
   error: FetchBaseQueryError | undefined
 ): CacheList<T, ID> {
-  if (error && 'status' in error && error.status === 401) {
-    // unauthorized error
-    return [...existingCache, 'UNAUTHORIZED']
-  }
-
   // unknown error
   return [...existingCache, 'UNKNOWN_ERROR']
 }
@@ -189,6 +184,37 @@ export const cacheByIdArgProperty = <T extends string>(type: T) => <
 ): readonly [CacheItem<T, Arg['id']>] | [] => [{ type, id: arg.id }] as const
 
 /**
+ * HOF to create an entity cache for a single item using the id property from the query result as the ID.
+ *
+ * @example
+ * ```ts
+ * cacheByIdResultProperty('Todo')({ id: 5, message: 'sweep up' })
+ * // returns:
+ * // [{ type: 'Todo', id: 5 }]
+ * ```
+ */
+export const cacheByIdResultProperty = <T extends string>(type: T) => <
+  Result extends { id: EntityId } | undefined,
+  Arg = any,
+  Error = undefined
+>(
+  result: Result,
+  error: Error,
+  arg: Arg
+): readonly ['UNKNOWN_ERROR'] | readonly [{
+  readonly type: T
+  readonly id: EntityId
+}] => {
+  // is result available?
+  if (result?.id) {
+    // successful query
+    return [{ type, id: result.id }] as const
+  }
+  // Received an error, include an error cache item to the cache list
+  return ['UNKNOWN_ERROR'] as const
+}
+
+/**
  * HOF to invalidate the 'UNAUTHORIZED' type cache item.
  */
 export const invalidatesUnauthorized = () => <
@@ -218,12 +244,13 @@ export const invalidatesUnknownErrors = () => <
  * Utility helpers for common provides/invalidates scenarios
  */
 export const cacher = {
-  defaultTags,
-  providesList,
-  providesRegistry,
-  invalidatesList,
   cacheByIdArg,
   cacheByIdArgProperty,
+  cacheByIdResultProperty,
+  defaultTags,
+  invalidatesList,
   invalidatesUnauthorized,
-  invalidatesUnknownErrors
+  invalidatesUnknownErrors,
+  providesList,
+  providesRegistry
 }

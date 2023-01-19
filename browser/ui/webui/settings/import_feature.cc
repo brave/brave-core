@@ -7,6 +7,8 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "brave/components/constants/webui_url_constants.h"
+#include "url/gurl.h"
 
 namespace settings {
 
@@ -16,8 +18,9 @@ BASE_FEATURE(kParallelImports,
 
 // Temporary flag to keep old way until
 // https://github.com/brave/brave-core/pull/15637 landed.
-bool IsParallelImportEnabled() {
-  return base::FeatureList::IsEnabled(kParallelImports);
+bool IsParallelImportEnabled(const GURL& url) {
+  return base::FeatureList::IsEnabled(kParallelImports) &&
+         url.DomainIs(kWelcomeHost);
 }
 
 }  // namespace settings

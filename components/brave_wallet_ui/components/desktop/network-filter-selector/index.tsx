@@ -7,7 +7,7 @@ import * as React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 // Types
-import { BraveWallet, SupportedTestNetworks, WalletState } from '../../../constants/types'
+import { BraveWallet, SupportedTestNetworks, WalletAccountType, WalletState } from '../../../constants/types'
 
 // Components
 import NetworkFilterItem from './network-filter-item'
@@ -16,6 +16,7 @@ import { CreateNetworkIcon } from '../../shared'
 // Utils
 import { WalletActions } from '../../../common/actions'
 import { getLocale } from '../../../../common/locale'
+import { accountInfoEntityAdaptor } from '../../../common/slices/entities/account-info.entity'
 
 // Options
 import {
@@ -31,17 +32,23 @@ import {
   DropDownButton,
   DropDownIcon,
   SelectorLeftSide,
-  SubDropDown,
   SecondaryNetworkText,
   ClickAwayArea
 } from './style'
-import { useGetIsTestNetworksEnabledQuery } from '../../../common/slices/api.slice'
 
 interface Props {
   networkListSubset?: BraveWallet.NetworkInfo[]
+  selectedNetwork?: BraveWallet.NetworkInfo
+  selectedAccount?: Pick<WalletAccountType, 'address' | 'coin' | 'name'>
+  onSelectNetwork?: (network: BraveWallet.NetworkInfo) => void
 }
 
-export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
+export const NetworkFilterSelector = ({
+  networkListSubset,
+  onSelectNetwork,
+  selectedNetwork: networkProp,
+  selectedAccount: accountProp
+}: Props) => {
   // state
   const [showNetworkFilter, setShowNetworkFilter] = React.useState<boolean>(false)
 
@@ -52,16 +59,18 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
   const reduxNetworkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
 
   // api
-  const { data: isTestNetworksEnabled } = useGetIsTestNetworksEnabledQuery()
+  const selectedNetwork = networkProp || selectedNetworkFilter
+  const selectedAccount = accountProp || selectedAccountFilter
 
   // memos
   const networkList: BraveWallet.NetworkInfo[] = React.useMemo(() => {
-    // Filters networks by coinType is a selectedAccountFilter is selected
-    const networks = selectedAccountFilter.id === AllAccountsOption.id
+    // Filters networks by coinType if a selectedAccountFilter is selected
+    const accountId = accountInfoEntityAdaptor.selectId(selectedAccount)
+    const networks = accountId === AllAccountsOption.id
       ? networkListSubset
-      : networkListSubset?.filter((network) => network.coin === selectedAccountFilter.coin)
+      : networkListSubset?.filter((network) => network.coin === selectedAccount.coin)
     return networks || reduxNetworkList
-  }, [networkListSubset, reduxNetworkList, selectedAccountFilter])
+  }, [networkListSubset, reduxNetworkList, selectedAccount])
 
   const sortedNetworks = React.useMemo(() => {
     const onlyMainnets = networkList.filter((network) => SupportedTopLevelChainIds.includes(network.chainId))
@@ -79,26 +88,27 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
     return sortedNetworks.filter((network) => !primaryList.includes(network.chainId))
   }, [sortedNetworks])
 
-  // methods
-  const getSubTestNetworks = React.useCallback((network: BraveWallet.NetworkInfo) => {
-    return sortedNetworks.filter((n) =>
-      n.coin === network.coin &&
-      n.symbol.toLowerCase() === network.symbol.toLowerCase() &&
-      SupportedTestNetworks.includes(n.chainId))
-  }, [sortedNetworks])
+  const testNetworks = React.useMemo(() => {
+    return networkList.filter((network) => SupportedTestNetworks.includes(network.chainId))
+  }, [networkList])
 
   const toggleShowNetworkFilter = React.useCallback(() => {
     setShowNetworkFilter(prev => !prev)
   }, [])
 
-  const onSelectAndClose = React.useCallback((network: BraveWallet.NetworkInfo) => {
-    dispatch(WalletActions.setSelectedNetworkFilter(network))
-    toggleShowNetworkFilter()
-  }, [toggleShowNetworkFilter])
-
   const hideNetworkFilter = React.useCallback(() => {
     setShowNetworkFilter(false)
   }, [])
+
+  const onSelectAndClose = React.useCallback((network: BraveWallet.NetworkInfo) => {
+    if (onSelectNetwork) {
+      onSelectNetwork(network)
+    } else {
+      dispatch(WalletActions.setSelectedNetworkFilter(network))
+    }
+
+    hideNetworkFilter()
+  }, [onSelectNetwork, hideNetworkFilter])
 
   // render
   return (
@@ -106,10 +116,10 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
       <DropDownButton
         onClick={toggleShowNetworkFilter}>
         <SelectorLeftSide>
-          {selectedNetworkFilter.chainId !== AllNetworksOption.chainId &&
-            <CreateNetworkIcon network={selectedNetworkFilter} marginRight={14} size='big' />
+          {selectedNetwork.chainId !== AllNetworksOption.chainId &&
+            <CreateNetworkIcon network={selectedNetwork} marginRight={14} size='big' />
           }
-          {selectedNetworkFilter.chainName}
+          {selectedNetwork.chainName}
         </SelectorLeftSide>
         <DropDownIcon />
       </DropDownButton>
@@ -121,22 +131,8 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
               key={`${network.chainId + network.chainName}`}
               network={network}
               onSelectNetwork={onSelectAndClose}
-              selectedNetwork={selectedNetworkFilter}
-              isSubItem={isTestNetworksEnabled ? !SupportedTopLevelChainIds.includes(network.chainId) : true}
+              selectedNetwork={selectedNetwork}
             >
-              {isTestNetworksEnabled &&
-                <SubDropDown>
-                  {getSubTestNetworks(network).map((subNetwork) =>
-                    <NetworkFilterItem
-                      key={`${subNetwork.chainId + subNetwork.chainName}`}
-                      network={subNetwork}
-                      onSelectNetwork={onSelectAndClose}
-                      selectedNetwork={selectedNetworkFilter}
-                      isSubItem={true}
-                    />
-                  )}
-                </SubDropDown>
-              }
             </NetworkFilterItem>
           )}
 
@@ -148,8 +144,21 @@ export const NetworkFilterSelector = ({ networkListSubset }: Props) => {
                   key={`${network.chainId + network.chainName}`}
                   network={network}
                   onSelectNetwork={onSelectAndClose}
+                  selectedNetwork={selectedNetwork}
+                />
+              )}
+            </>
+          }
+
+          {testNetworks.length > 0 &&
+            <>
+              <SecondaryNetworkText>{getLocale('braveWalletNetworkFilterTestNetworks')}</SecondaryNetworkText>
+              {testNetworks.map((network) =>
+                <NetworkFilterItem
+                  key={`${network.chainId + network.chainName}`}
+                  network={network}
+                  onSelectNetwork={onSelectAndClose}
                   selectedNetwork={selectedNetworkFilter}
-                  isSubItem={true}
                 />
               )}
             </>

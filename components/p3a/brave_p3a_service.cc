@@ -24,7 +24,6 @@
 #include "base/strings/string_piece_forward.h"
 #include "base/timer/wall_clock_timer.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/p3a/brave_p2a_protocols.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
@@ -40,10 +39,6 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/metrics_proto/reporting_info.pb.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-#include "brave/components/brave_referrals/common/pref_names.h"
-#endif
 
 #if BUILDFLAG(IS_IOS)
 #include "ios/web/public/thread/web_task_traits.h"
@@ -416,17 +411,14 @@ void BraveP3AService::InitMessageMeta() {
 
   message_meta_.country_code =
       base::ToUpperASCII(base::CountryCodeForCurrentTimezone());
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-  message_meta_.refcode = local_state_->GetString(kReferralPromoCode);
-#endif
-  MaybeStripRefcodeAndCountry(&message_meta_);
+  MaybeStripCountry(&message_meta_);
 
   UpdateMessageMeta();
 
   VLOG(2) << "Message meta: " << message_meta_.platform << " "
           << message_meta_.channel << " " << message_meta_.version << " "
           << message_meta_.woi << " " << message_meta_.wos << " "
-          << message_meta_.country_code << " " << message_meta_.refcode;
+          << message_meta_.country_code;
 }
 
 void BraveP3AService::UpdateMessageMeta() {

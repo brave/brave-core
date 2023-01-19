@@ -217,6 +217,36 @@ TEST(DeAmpUtilUnitTest, NoQuotesEndingWithSpaceAngleBracket) {
   CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
 }
 
+TEST(DeAmpUtilUnitTest, SingleQuotesWithTrueAttribute) {
+  const std::string body =
+      "<DOCTYPE! html>"
+      "<html AMP=\'true\'>\n"
+      "<head>\n<link rel=canonical href=https://abc.com ><link rel=author "
+      "href=https://xyz.com/>"
+      "</head><body></body></html>";
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
+}
+
+TEST(DeAmpUtilUnitTest, DoubleQuotesWithTrueAttribute) {
+  const std::string body =
+      "<DOCTYPE! html>"
+      "<html AMP=\"true\">\n"
+      "<head>\n<link rel=canonical href=https://abc.com ><link rel=author "
+      "href=https://xyz.com/>"
+      "</head><body></body></html>";
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
+}
+
+TEST(DeAmpUtilUnitTest, DoubleQuotesWithTrueAttributeUpperCase) {
+  const std::string body =
+      "<DOCTYPE! html>"
+      "<html AMP=\"TRUE\">\n"
+      "<head>\n<link rel=canonical href=https://abc.com ><link rel=author "
+      "href=https://xyz.com/>"
+      "</head><body></body></html>";
+  CheckFindCanonicalLinkResult("https://abc.com", body, true, true);
+}
+
 TEST(DeAmpUtilUnitTest, CanonicalLinkMissingScheme) {
   CheckCheckCanonicalLinkResult("xyz.com", "https://amp.xyz.com", false);
 }

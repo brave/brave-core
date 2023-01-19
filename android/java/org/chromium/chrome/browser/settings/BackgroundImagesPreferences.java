@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
+import androidx.preference.PreferenceCategory;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
@@ -32,8 +33,10 @@ public class BackgroundImagesPreferences
     public static final String PREF_SHOW_BACKGROUND_IMAGES = "show_background_images";
     public static final String PREF_SHOW_SPONSORED_IMAGES = "show_sponsored_images";
     public static final String PREF_SHOW_TOP_SITES = "show_top_sites";
+    public static final String PREF_SHOW_BRAVE_STATS = "show_brave_stats";
     public static final String PREF_SHOW_NON_DISRUPTIVE_BANNER = "show_non_disruptive_banner";
     public static final String PREF_SHOW_BRE_BANNER = "show_bre_banner";
+    public static final String PREF_BACKGROUND_IMAGES_CATEGORY = "background_images";
 
     private ChromeSwitchPreference mShowBackgroundImagesPref;
     private ChromeSwitchPreference mShowSponsoredImagesPref;
@@ -45,14 +48,6 @@ public class BackgroundImagesPreferences
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.prefs_new_tab_page);
         SettingsUtils.addPreferencesFromResource(this, R.xml.background_images_preferences);
-        if (!NTPBackgroundImagesBridge.enableSponsoredImages()) {
-            removePreferenceIfPresent(PREF_SHOW_SPONSORED_IMAGES);
-        }
-    }
-
-    private void removePreferenceIfPresent(String key) {
-        Preference preference = getPreferenceScreen().findPreference(key);
-        if (preference != null) getPreferenceScreen().removePreference(preference);
     }
 
     @Override
@@ -79,12 +74,25 @@ public class BackgroundImagesPreferences
                                     BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE));
             mShowSponsoredImagesPref.setOnPreferenceChangeListener(this);
         }
+        if (!NTPBackgroundImagesBridge.enableSponsoredImages()) {
+            PreferenceCategory preferenceCategory =
+                    (PreferenceCategory) findPreference(PREF_BACKGROUND_IMAGES_CATEGORY);
+            preferenceCategory.removePreference(mShowSponsoredImagesPref);
+        }
+
         mShowTopSitesPref = (ChromeSwitchPreference) findPreference(PREF_SHOW_TOP_SITES);
         if (mShowTopSitesPref != null) {
             mShowTopSitesPref.setEnabled(true);
             mShowTopSitesPref.setChecked(
                     ContextUtils.getAppSharedPreferences().getBoolean(PREF_SHOW_TOP_SITES, true));
             mShowTopSitesPref.setOnPreferenceChangeListener(this);
+        }
+        mShowBraveStatsPref = (ChromeSwitchPreference) findPreference(PREF_SHOW_BRAVE_STATS);
+        if (mShowBraveStatsPref != null) {
+            mShowBraveStatsPref.setEnabled(true);
+            mShowBraveStatsPref.setChecked(
+                    ContextUtils.getAppSharedPreferences().getBoolean(PREF_SHOW_BRAVE_STATS, true));
+            mShowBraveStatsPref.setOnPreferenceChangeListener(this);
         }
     }
 

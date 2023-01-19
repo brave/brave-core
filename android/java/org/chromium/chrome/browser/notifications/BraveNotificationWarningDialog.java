@@ -22,15 +22,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 
-import org.chromium.base.BuildInfo;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveDialogFragment;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.ui.permissions.PermissionConstants;
 
 /**
@@ -74,15 +74,37 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
     }
 
     /**
-     * If no notification permission and if any privacy or rewards state is on then return true
+     *  Should show dialog if any one is true
+     *  1. No notification permission
+     *  2. Notification permission is there but general or ads group is blocked
+     *
+     * if above any case is there and rewards / privacy / both enabled.
      * */
     public static boolean shouldShowNotificationWarningDialog(Context context) {
-        if (!BravePermissionUtils.hasPermission(
-                    context, PermissionConstants.NOTIFICATION_PERMISSION)) {
-            return OnboardingPrefManager.getInstance().isBraveStatsEnabled()
-                    || OnboardingPrefManager.getInstance().isBraveAdsEnabled();
+        if (!BravePermissionUtils.hasNotificationPermission(context)) {
+            return true;
+        } else if (shouldShowRewardWarningDialog(context)
+                || shouldShowPrivacyWarningDialog(context)) {
+            return true;
         }
         return false;
+    }
+
+    private static boolean shouldShowRewardWarningDialog(Context context) {
+        return BravePermissionUtils.isBraveAdsNotificationPermissionBlocked(context)
+                && isBraveRewardsEnabled();
+    }
+
+    private static boolean shouldShowPrivacyWarningDialog(Context context) {
+        return BravePermissionUtils.isGeneralNotificationPermissionBlocked(context)
+                && isPrivacyReportsEnabled();
+    }
+
+    private static boolean shouldShowBothWarningDialog(Context context) {
+        if (!BravePermissionUtils.hasNotificationPermission(context)) {
+            return true;
+        }
+        return shouldShowRewardWarningDialog(context) && shouldShowPrivacyWarningDialog(context);
     }
 
     @Override
@@ -117,11 +139,11 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
         clickOnNotNow(view);
     }
 
-    public boolean isBraveRewardsEnabled() {
-        return OnboardingPrefManager.getInstance().isBraveAdsEnabled();
+    public static boolean isBraveRewardsEnabled() {
+        return BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile());
     }
 
-    public boolean isPrivacyReportsEnabled() {
+    public static boolean isPrivacyReportsEnabled() {
         return OnboardingPrefManager.getInstance().isBraveStatsEnabled();
     }
 
@@ -155,14 +177,14 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
     private void launchedFromBraveActivity(View view) {
         mPrimaryButton.setText(R.string.turn_on_brave_notifications);
 
-        if (isBraveRewardsEnabled() && isPrivacyReportsEnabled()) {
+        if (shouldShowBothWarningDialog(getContext())) {
             mTitleTextView.setText(R.string.notification_os_dialog_header_both_rewards_privacy);
             mDescriptionTextView.setText(
                     R.string.notification_os_dialog_description_both_rewards_privacy);
-        } else if (isBraveRewardsEnabled()) {
+        } else if (shouldShowRewardWarningDialog(getContext())) {
             mTitleTextView.setText(R.string.notification_os_dialog_header_only_rewards);
             mDescriptionTextView.setText(R.string.notification_os_dialog_description_only_rewards);
-        } else if (isPrivacyReportsEnabled()) {
+        } else if (shouldShowPrivacyWarningDialog(getContext())) {
             mTitleTextView.setText(R.string.notification_os_dialog_header_only_privacy);
             mDescriptionTextView.setText(R.string.notification_os_dialog_description_only_privacy);
         }
@@ -171,15 +193,15 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
     private void launchedFromBraveSettings(View view) {
         mPrimaryButton.setText(R.string.got_it);
 
-        if (isBraveRewardsEnabled() && isPrivacyReportsEnabled()) {
+        if (shouldShowBothWarningDialog(getContext())) {
             mTitleTextView.setText(R.string.notification_brave_dialog_header_both_rewards_privacy);
             mDescriptionTextView.setText(
                     R.string.notification_brave_dialog_description_both_rewards_privacy);
-        } else if (isBraveRewardsEnabled()) {
+        } else if (shouldShowRewardWarningDialog(getContext())) {
             mTitleTextView.setText(R.string.notification_brave_dialog_header_only_rewards);
             mDescriptionTextView.setText(
                     R.string.notification_brave_dialog_description_only_rewards);
-        } else if (isPrivacyReportsEnabled()) {
+        } else if (shouldShowPrivacyWarningDialog(getContext())) {
             mTitleTextView.setText(R.string.notification_brave_dialog_header_only_privacy);
             mDescriptionTextView.setText(
                     R.string.notification_brave_dialog_description_only_privacy);
@@ -190,18 +212,7 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
         Button primaryButton = view.findViewById(R.id.notification_warning_primary_button);
         primaryButton.setOnClickListener(v -> {
             dismiss();
-            if (getActivity().shouldShowRequestPermissionRationale(
-                        PermissionConstants.NOTIFICATION_PERMISSION)
-                    || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
-                // other than android 13 redirect to
-                // setting page and for android 13 Last time don't allow selected in permission
-                // dialog, then enable through setting
-                BravePermissionUtils.notificationSettingPage(getContext());
-            } else {
-                // 1st time request permission
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[] {PermissionConstants.NOTIFICATION_PERMISSION}, 1);
-            }
+            BravePermissionUtils.requestPermission(getActivity());
         });
     }
 

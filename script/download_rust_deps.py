@@ -1,7 +1,8 @@
 #!/usr/bin/env python
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 """Script to download rust_deps."""
 
@@ -183,7 +184,7 @@ def main():
         rustup_add_target('aarch64-apple-darwin')
 
     cxx_path = os.path.abspath(
-        os.path.join(BRAVE_CORE_ROOT, '..', 'third_party', 'rust', 'cxx', 'v1'))
+        os.path.join(BRAVE_CORE_ROOT, 'third_party', 'rust', 'cxx', 'v1'))
 
     with open(os.path.join(cxx_path, "README.chromium")) as readme_file:
         _VERSION_PREFIX = "Version: "

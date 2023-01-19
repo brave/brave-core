@@ -33,6 +33,8 @@ class DatabaseActivityInfo: public DatabaseTable {
   void DeleteRecord(const std::string& publisher_key,
                     ledger::LegacyResultCallback callback);
 
+  void GetPublishersVisitedCount(base::OnceCallback<void(int)> callback);
+
  private:
   void CreateInsertOrUpdate(mojom::DBTransaction* transaction,
                             mojom::PublisherInfoPtr info);

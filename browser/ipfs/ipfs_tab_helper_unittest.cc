@@ -228,7 +228,9 @@ TEST_F(IpfsTabHelperUnitTest, DNSLinkRecordResolved_AutoRedirectDNSLink) {
   web_contents()->NavigateAndCommit(GURL("https://brantly.eth/page?query#ref"));
 
   helper->SetPageURLForTesting(GURL("https://brantly.eth/page?query#ref"));
-  helper->HostResolvedCallback(absl::nullopt, "brantly.eth",
+  helper->HostResolvedCallback(GURL("https://brantly.eth/page?query#ref"),
+                               GURL("https://brantly.eth/page?query#ref"),
+                               false, absl::nullopt, "brantly.eth",
                                "/ipns/brantly.eth/");
   ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
             helper->GetIPFSResolvedURL());
@@ -313,7 +315,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayResolving) {
 
   GURL api_server = GetAPIServer(chrome::GetChannel());
   helper->SetPageURLForTesting(api_server);
-  helper->DNSLinkResolved(GURL());
+  helper->DNSLinkResolved(GURL(), false);
   ASSERT_FALSE(helper->GetIPFSResolvedURL().is_valid());
 
   scoped_refptr<net::HttpResponseHeaders> response_headers(
@@ -327,18 +329,18 @@ TEST_F(IpfsTabHelperUnitTest, GatewayResolving) {
 
   GURL test_url("ipns://brantly.eth/");
   helper->SetPageURLForTesting(api_server);
-  helper->DNSLinkResolved(test_url);
+  helper->DNSLinkResolved(test_url, false);
 
   helper->MaybeCheckDNSLinkRecord(response_headers.get());
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
 
   helper->SetPageURLForTesting(api_server);
-  helper->DNSLinkResolved(test_url);
+  helper->DNSLinkResolved(test_url, false);
   helper->UpdateDnsLinkButtonState();
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
 
   helper->SetPageURLForTesting(api_server);
-  helper->DNSLinkResolved(GURL());
+  helper->DNSLinkResolved(GURL(), false);
   helper->MaybeCheckDNSLinkRecord(response_headers.get());
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
 }
@@ -490,6 +492,126 @@ TEST_F(IpfsTabHelperUnitTest, GatewayLikeUrlParsed_AutoRedirectDisabled) {
     EXPECT_EQ(ipfs_tab_helper()->ipfs_resolved_url_,
               GURL("ipfs://bafy1?query#ref"));
   }
+}
+
+TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_ResolveUrl) {
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+
+  web_contents()->NavigateAndCommit(
+      GURL("https://ipfs.io/ipns/brantly.eth/page?query#ref"));
+  helper->SetPageURLForTesting(
+      GURL("https://ipfs.io/ipns/brantly.eth/page?query#ref"));
+
+  ipfs_host_resolver()->SetDNSLinkToRespond("/ipns/brantly.eth/");
+  auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
+  helper->MaybeCheckDNSLinkRecord(headers.get());
+
+  EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
+  ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
+            helper->GetIPFSResolvedURL());
+}
+
+TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_Redirect) {
+  SetAutoRedirecIPFSResources(true);
+  SetAutoRedirectDNSLink(false);
+
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+
+  web_contents()->NavigateAndCommit(
+      GURL("https://ipfs.io/ipns/brantly-eth/page?query#ref"));
+  helper->SetPageURLForTesting(
+      GURL("https://ipfs.io/ipns/brantly-eth/page?query#ref"));
+
+  ipfs_host_resolver()->SetDNSLinkToRespond("x");
+  auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
+  helper->MaybeCheckDNSLinkRecord(headers.get());
+
+  EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
+  ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"), redirect_url());
+}
+
+TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_No_Redirect_WhenNoDnsLink) {
+  SetAutoRedirecIPFSResources(true);
+  SetAutoRedirectDNSLink(false);
+
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+
+  web_contents()->NavigateAndCommit(
+      GURL("https://ipfs.io/ipns/brantly-eth/page?query#ref"));
+  helper->SetPageURLForTesting(
+      GURL("https://ipfs.io/ipns/brantly-eth/page?query#ref"));
+
+  ipfs_host_resolver()->SetDNSLinkToRespond("");
+  auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
+  helper->MaybeCheckDNSLinkRecord(headers.get());
+
+  EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
+  ASSERT_EQ(GURL(), redirect_url());
+}
+
+TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_Redirect_LibP2PKey) {
+  SetAutoRedirecIPFSResources(true);
+  SetAutoRedirectDNSLink(false);
+
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+
+  web_contents()->NavigateAndCommit(
+      GURL("https://ipfs.io/ipns/"
+           "k51qzi5uqu5dlvj2baxnqndepeb86cbk3ng7n3i46uzyxzyqj2xjonzllnv0v8/"
+           "page?query#ref"));
+  helper->SetPageURLForTesting(
+      GURL("https://ipfs.io/ipns/"
+           "k51qzi5uqu5dlvj2baxnqndepeb86cbk3ng7n3i46uzyxzyqj2xjonzllnv0v8/"
+           "page?query#ref"));
+
+  EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
+  ASSERT_EQ(GURL("ipns://"
+                 "k51qzi5uqu5dlvj2baxnqndepeb86cbk3ng7n3i46uzyxzyqj2xjonzllnv0v"
+                 "8/page?query#ref"),
+            redirect_url());
+}
+
+TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_Redirect_LibP2PKey_NoAutoRedirect) {
+  SetAutoRedirecIPFSResources(false);
+  SetAutoRedirectDNSLink(false);
+
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+
+  web_contents()->NavigateAndCommit(
+      GURL("https://ipfs.io/ipns/"
+           "k51qzi5uqu5dlvj2baxnqndepeb86cbk3ng7n3i46uzyxzyqj2xjonzllnv0v8/"
+           "page?query#ref"));
+  helper->SetPageURLForTesting(
+      GURL("https://ipfs.io/ipns/"
+           "k51qzi5uqu5dlvj2baxnqndepeb86cbk3ng7n3i46uzyxzyqj2xjonzllnv0v8/"
+           "page?query#ref"));
+
+  EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
+  ASSERT_EQ(GURL("ipns://"
+                 "k51qzi5uqu5dlvj2baxnqndepeb86cbk3ng7n3i46uzyxzyqj2xjonzllnv0v"
+                 "8/page?query#ref"),
+            helper->GetIPFSResolvedURL());
+}
+
+TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_NoRedirect_WhenNoDnsLinkRecord) {
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+
+  web_contents()->NavigateAndCommit(
+      GURL("https://ipfs.io/ipns/brantly.eth/page?query#ref"));
+  helper->SetPageURLForTesting(
+      GURL("https://ipfs.io/ipns/brantly.eth/page?query#ref"));
+
+  auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
+  helper->MaybeCheckDNSLinkRecord(headers.get());
+
+  EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
+  ASSERT_EQ(GURL(), helper->GetIPFSResolvedURL());
 }
 
 }  // namespace ipfs

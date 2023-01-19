@@ -33,7 +33,9 @@ mojom::ExternalWalletPtr TransitionWallet(
 mojom::ExternalWalletPtr MaybeCreateWallet(LedgerImpl*,
                                            const std::string& wallet_type);
 
-bool DisconnectWallet(LedgerImpl*, const std::string& wallet_type, bool manual);
+bool LogOutWallet(LedgerImpl*,
+                  const std::string& wallet_type,
+                  const std::string& notification = "");
 
 mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr);
 

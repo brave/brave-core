@@ -15,7 +15,6 @@
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
-#include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/translate/chrome_translate_client.h"
 #include "chrome/browser/translate/translate_test_utils.h"
@@ -249,7 +248,6 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
   std::string script_;
 };
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
   ResetObserver();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
@@ -310,7 +308,27 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
   EXPECT_TRUE(TranslateDownloadManager::IsSupportedLanguage("ar"));
   EXPECT_TRUE(TranslateDownloadManager::IsSupportedLanguage("vi"));
 }
-#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+
+IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, NoAutoTranslate) {
+  // Set auto translate from es to en.
+  GetChromeTranslateClient()
+      ->GetTranslatePrefs()
+      ->AddLanguagePairToAlwaysTranslateList("es", "en");
+  ResetObserver();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), embedded_test_server()->GetURL("/espanol_page.html")));
+  WaitUntilLanguageDetermined();
+
+  auto* bubble = TranslateBubbleController::FromWebContents(
+                     browser()->tab_strip_model()->GetActiveWebContents())
+                     ->GetTranslateBubble();
+  ASSERT_TRUE(bubble);
+
+  // Check that the we see BEFORE translation bubble (not in-progress bubble).
+  ASSERT_EQ(bubble->GetWindowTitle(),
+            brave_l10n::GetLocalizedResourceUTF16String(
+                IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE));
+}
 
 class BraveTranslateBrowserGoogleRedirectTest
     : public BraveTranslateBrowserTest {
@@ -326,7 +344,6 @@ class BraveTranslateBrowserGoogleRedirectTest
   }
 };
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserGoogleRedirectTest,
                        JsRedirectionsSelectivity) {
   ResetObserver();
@@ -382,6 +399,5 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserGoogleRedirectTest,
   EXPECT_CALL(backend_request_, Call(_)).Times(0);
   EXPECT_EQ(false, EvalTranslateJs(load_image));
 }
-#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 
 }  // namespace translate

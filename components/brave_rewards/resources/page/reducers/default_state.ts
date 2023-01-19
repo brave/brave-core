@@ -4,6 +4,7 @@
 
 export function defaultState (): Rewards.State {
   return {
+    userType: 'unconnected',
     enabledAds: false,
     enabledAdsMigrated: false,
     enabledContribute: false,
@@ -14,8 +15,8 @@ export function defaultState (): Rewards.State {
     contributionVideos: true,
     reconcileStamp: 0,
     ui: {
-      disconnectWalletError: false,
       modalBackup: false,
+      modalConnect: false,
       modalRedirect: 'hide',
       promosDismissed: {}
     },
@@ -67,7 +68,9 @@ export function defaultState (): Rewards.State {
         bitflyer: { allow: [], block: [] },
         gemini: { allow: [], block: [] },
         uphold: { allow: [], block: [] }
-      }
+      },
+      vbatDeadline: undefined,
+      vbatExpired: false
     },
     initializing: true,
     showOnboarding: null,

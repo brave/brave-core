@@ -8,8 +8,6 @@
 
 #define CreateNetworkFactoryParamsForSubresources                         \
   UnusedFunction();                                                       \
-  void AllowFingerprinting(const GURL& url,                               \
-                           base::OnceCallback<void(bool)> callback);      \
   void GetBraveFarblingLevel(const GURL& url,                             \
                              base::OnceCallback<void(uint8_t)> callback); \
   network::mojom::URLLoaderFactoryParamsPtr                               \

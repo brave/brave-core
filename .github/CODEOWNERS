@@ -70,8 +70,8 @@ script/generate_licenses.py @fmarier
 # Crypto Wallets
 browser/brave_wallet/ @brave/crypto-wallets-core
 components/brave_wallet/ @brave/crypto-wallets-core
-components/brave_wallet/browser/brave_wallet_provider_delegate.h @brave/crypto-wallets @brave/ios
-components/brave_wallet/resources/*.js @brave/crypto-wallets @brave/ios
+components/brave_wallet/browser/brave_wallet_provider_delegate.h @brave/crypto-wallets-core @brave/ios
+components/brave_wallet/resources/*.js @brave/crypto-wallets-core @brave/ios
 components/brave_wallet_ui/ @brave/crypto-wallets-front-end
 
 # Brave Referrals Service
@@ -103,8 +103,8 @@ components/permissions/**/*expiration* @goodov
 components/permissions/**/*lifetime* @goodov
 
 # Java patching
-build/android/bytecode/ @samartnik
-patches/*.java.patch @samartnik
+build/android/bytecode/ @brave/java-patch-reviewers
+patches/*.java.patch @brave/java-patch-reviewers
 
 # Bitcoin-core
 third_party/bitcoin-core/BUILD.gn @brave/sec-team
@@ -121,3 +121,13 @@ build/ios/ @brave/ios
 
 # Android tests
 android/android_browser_tests.gni @brave/android-tests-reviewers
+
+# BravePrefServiceBridge.java is going to be retired soon. We
+# have that owners record temporary to avoid people adding
+# new things there
+android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java @AlexeyBarabash @samartnik @SergeyZhukovsky
+
+# GitHub configuration
+/.github/ @brave/devops-team
+/.github/CODEOWNERS @brave/devops-team @bsclifton
+/.github/PULL_REQUEST_TEMPLATE.md @bsclifton

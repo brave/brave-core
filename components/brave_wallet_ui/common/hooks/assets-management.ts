@@ -38,7 +38,7 @@ export default function useAssetManagement () {
     onAddUserAsset(token)
 
     // We handle refreshing balances for ERC721 tokens in the addUserAsset handler.
-    if (!token.isErc721) {
+    if (!(token.isErc721 || token.isNft)) {
       dispatch(WalletActions.refreshBalancesAndPriceHistory())
     }
   }

@@ -34,7 +34,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/attention"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:textColor="@color/rewards_panel_text_color"
                 android:textSize="16sp" />
 
@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:textColor="@color/rewards_panel_text_color"
                 android:textSize="16sp" />
 
@@ -69,7 +69,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/include_auto_contribute"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:textColor="@color/rewards_panel_secondary_text_color"
                 android:textSize="16sp" />
 
@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:text="@string/monthly_tip"
                 android:textColor="@color/rewards_panel_secondary_text_color"
                 android:textSize="16sp" />
@@ -107,7 +107,7 @@
                 android:padding="8dp"
                 android:text="@string/set"
                 android:drawablePadding="4dp"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_600"
                 android:textColor="@color/rewards_panel_action_color"
                 android:textSize="16sp" />
 
@@ -134,7 +134,7 @@
             android:paddingBottom="4dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/poppins_600"
             android:text="@string/send_tip"
             android:textSize="16sp"
             android:textStyle="bold"

@@ -5,15 +5,16 @@
 
 package org.chromium.chrome.browser.settings;
 
-import android.os.Bundle;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+
 import androidx.preference.Preference;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
-import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
-import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
+import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 

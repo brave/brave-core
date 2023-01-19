@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_IMPL_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_IMPL_H_
@@ -11,13 +11,14 @@
 #include "base/memory/ref_counted.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/speedreader/common/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "extensions/buildflags/buildflags.h"
 
@@ -29,9 +30,6 @@ class BraveFarblingService;
 }  // namespace brave
 
 namespace brave_component_updater {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-class ExtensionWhitelistService;
-#endif
 class LocalDataFilesService;
 }  // namespace brave_component_updater
 
@@ -53,6 +51,10 @@ class GreaselionDownloadService;
 namespace debounce {
 class DebounceComponentInstaller;
 }  // namespace debounce
+
+namespace misc_metrics {
+class MenuMetrics;
+}  // namespace misc_metrics
 
 namespace ntp_background_images {
 class NTPBackgroundImagesService;
@@ -92,10 +94,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 
   void StartBraveServices() override;
   brave_shields::AdBlockService* ad_block_service() override;
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  brave_component_updater::ExtensionWhitelistService*
-  extension_whitelist_service() override;
-#endif
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionDownloadService* greaselion_download_service() override;
 #endif
@@ -123,7 +121,11 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
       override;
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  brave_vpn::BraveVPNOSConnectionAPI* brave_vpn_os_connection_api() override;
+#endif
   brave::BraveFarblingService* brave_farbling_service() override;
+  misc_metrics::MenuMetrics* menu_metrics() override;
 
  private:
   // BrowserProcessImpl overrides:
@@ -151,10 +153,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<brave_component_updater::BraveComponent::Delegate>
       brave_component_updater_delegate_;
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  std::unique_ptr<brave_component_updater::ExtensionWhitelistService>
-      extension_whitelist_service_;
-#endif
 #if BUILDFLAG(ENABLE_GREASELION)
   std::unique_ptr<greaselion::GreaselionDownloadService>
       greaselion_download_service_;
@@ -167,9 +165,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<brave_shields::HTTPSEverywhereService>
       https_everywhere_service_;
   std::unique_ptr<brave_stats::BraveStatsUpdater> brave_stats_updater_;
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   std::unique_ptr<brave::BraveReferralsService> brave_referrals_service_;
-#endif
 #if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<tor::BraveTorClientUpdater> tor_client_updater_;
   std::unique_ptr<tor::BraveTorPluggableTransportUpdater>
@@ -189,7 +185,13 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
       speedreader_rewriter_service_;
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  std::unique_ptr<brave_vpn::BraveVPNOSConnectionAPI>
+      brave_vpn_os_connection_api_;
+#endif
+
   std::unique_ptr<brave::BraveFarblingService> brave_farbling_service_;
+  std::unique_ptr<misc_metrics::MenuMetrics> menu_metrics_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };

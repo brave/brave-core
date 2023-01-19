@@ -11,9 +11,8 @@
 #include <unordered_map>
 #include <vector>
 
-#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/models/simple_menu_model.h"
@@ -54,7 +53,7 @@ class BraveAppMenuModel : public AppMenuModel {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   size_t GetIndexOfBraveVPNItem() const;
 #endif
-#if BUILDFLAG(ENABLE_SIDEBAR)
+#if defined(TOOLKIT_VIEWS)
   size_t GetIndexOfBraveSidebarItem() const;
 #endif
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)

@@ -104,6 +104,7 @@ BraveNewsController::BraveNewsController(
                               &publishers_controller_,
                               &api_request_helper_,
                               history_service),
+      publishers_observation_(this),
       weak_ptr_factory_(this) {
   DCHECK(prefs_);
   // Set up preference listeners
@@ -120,6 +121,8 @@ BraveNewsController::BraveNewsController(
       prefs::kBraveNewsChannels,
       base::BindRepeating(&BraveNewsController::HandleSubscriptionsChanged,
                           base::Unretained(this)));
+
+  publishers_observation_.Observe(&publishers_controller_);
 
   p3a::RecordAtInit(prefs_);
   // Monitor kBraveTodaySources and update feed / publisher cache
@@ -424,20 +427,8 @@ void BraveNewsController::SetPublisherPref(const std::string& publisher_id,
           } else {
             update->SetBoolKey(publisher_id,
                                (new_status == mojom::UserEnabled::ENABLED));
+            controller->publishers_controller_.EnsurePublishersIsUpdating();
           }
-          // Force an update of publishers and feed to include or ignore
-          // content from the affected publisher.
-          // And if in the middle of update, that's ok because
-          // consideration of source preferences is done after the remote fetch
-          // is completed.
-          for (const auto& listener : controller->publishers_listeners_) {
-            auto event = mojom::PublishersEvent::New();
-            auto copy = publisher->Clone();
-            copy->user_enabled_status = new_status;
-            event->addedOrUpdated[publisher_id] = std::move(copy);
-            listener->Changed(std::move(event));
-          }
-          controller->publishers_controller_.EnsurePublishersIsUpdating();
         }
       },
       publisher_id, new_status, base::Unretained(this)));
@@ -693,6 +684,21 @@ void BraveNewsController::MaybeInitPrefs() {
           },
           base::Unretained(&channels_controller_)));
     }
+  }
+}
+
+void BraveNewsController::OnPublishersUpdated(
+    brave_news::PublishersController*) {
+  // TODO(fallaciousreasoning): Make this more granular. It's fine for now
+  // but we should be able to just let the frontend know what's changed.
+  auto event = mojom::PublishersEvent::New();
+  for (const auto& [id, publisher] :
+       publishers_controller_.GetLastPublishers()) {
+    event->addedOrUpdated.insert({id, publisher->Clone()});
+  }
+
+  for (const auto& observer : publishers_listeners_) {
+    observer->Changed(event->Clone());
   }
 }
 

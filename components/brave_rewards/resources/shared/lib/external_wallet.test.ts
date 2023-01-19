@@ -21,7 +21,6 @@ describe('external_wallet', () => {
         username: '',
         links: {
           account: '',
-          addFunds: '',
           reconnect: ''
         }
       })
@@ -70,12 +69,6 @@ describe('external_wallet', () => {
       expect(convert({ ...basicObject, accountUrl: 'url' })).toMatchObject({
         links: {
           account: 'url'
-        }
-      })
-
-      expect(convert({ ...basicObject, addUrl: 'url' })).toMatchObject({
-        links: {
-          addFunds: 'url'
         }
       })
 

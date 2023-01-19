@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_ads/notification_helper/notification_helper_impl_mac.h"
 
@@ -28,8 +28,7 @@ bool IsAuthorized() {
   return true;
 
   // #if !defined(OFFICIAL_BUILD)
-  //   LOG(WARNING) << "Unable to detect the status of native notifications on
-  //   non"
+  //   VLOG(1) << "Unable to detect the status of native notifications on non"
   //       " official builds as the app is not code signed";
   //   return true;
   // #else
@@ -51,9 +50,9 @@ bool IsAuthorized() {
   //     requestAuthorizationWithOptions:UNAuthorizationOptionAlert
   //         completionHandler:^(BOOL granted, NSError * _Nullable error) {
   //       if (granted) {
-  //         LOG(INFO) << "User granted authorization to show notifications";
+  //         VLOG(1) << "User granted authorization to show notifications";
   //       } else {
-  //         LOG(WARNING) << "User denied authorization to show notifications";
+  //         VLOG(1) << "User denied authorization to show notifications";
   //       }
 
   //       is_authorized = granted;
@@ -65,7 +64,7 @@ bool IsAuthorized() {
   //     dispatch_release(semaphore);
 
   //     if (!is_authorized) {
-  //       LOG(WARNING) << "User is not authorized to show notifications";
+  //       VLOG(1) << "User is not authorized to show notifications";
   //     }
 
   //     return is_authorized;
@@ -82,8 +81,7 @@ bool IsEnabled() {
   return true;
 
   // #if !defined(OFFICIAL_BUILD)
-  //   LOG(WARNING) << "Unable to detect the status of native notifications on
-  //   non"
+  //   VLOG(1) << "Unable to detect the status of native notifications on non"
   //       " official builds as the app is not code signed";
   //   return true;
   // #else
@@ -105,25 +103,25 @@ bool IsEnabled() {
   //         ^(UNNotificationSettings * _Nonnull settings) {
   //       switch (settings.authorizationStatus) {
   //         case UNAuthorizationStatusDenied: {
-  //           LOG(WARNING) << "Notification authorization status denied";
+  //           VLOG(1) << "Notification authorization status denied";
   //           is_authorized = false;
   //           break;
   //         }
 
   //         case UNAuthorizationStatusNotDetermined: {
-  //           LOG(INFO) << "Notification authorization status not determined";
+  //           VLOG(1) << "Notification authorization status not determined";
   //           is_authorized = true;
   //           break;
   //         }
 
   //         case UNAuthorizationStatusAuthorized: {
-  //           LOG(INFO) << "Notification authorization status authorized";
+  //           VLOG(1) << "Notification authorization status authorized";
   //           is_authorized = true;
   //           break;
   //         }
 
   //         case UNAuthorizationStatusProvisional: {
-  //           LOG(INFO) << "Notification authorization status provisional";
+  //           VLOG(1) << "Notification authorization status provisional";
   //           is_authorized = true;
   //           break;
   //         }
@@ -136,7 +134,7 @@ bool IsEnabled() {
   //     dispatch_release(semaphore);
 
   //     if (!is_authorized) {
-  //       LOG(WARNING) << "Notifications not authorized";
+  //       VLOG(1) << "Notifications not authorized";
   //     }
 
   //     return is_authorized;
@@ -154,13 +152,12 @@ NotificationHelperImplMac::~NotificationHelperImplMac() = default;
 
 bool NotificationHelperImplMac::CanShowNotifications() {
   if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
-    LOG(WARNING) << "Native notifications feature is disabled";
+    VLOG(1) << "Native notifications feature is disabled";
     return false;
   }
 
   if (base::mac::IsAtMostOS10_13()) {
-    LOG(WARNING)
-        << "Native notifications are not supported prior to macOS 10.14";
+    VLOG(1) << "Native notifications are not supported prior to macOS 10.14";
     return false;
   }
 

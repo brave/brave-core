@@ -64,6 +64,7 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
       source_providers_;
 
   net::SpawnedTestServer ws_server_;
+  net::EmbeddedTestServer dynamic_server_;
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_SHIELDS_AD_BLOCK_SERVICE_BROWSERTEST_H_

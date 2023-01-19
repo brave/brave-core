@@ -29,7 +29,8 @@ import {
 } from '../constants/action_types'
 import {
   findHardwareAccountInfo,
-  getKeyringIdFromAddress
+  getKeyringIdFromAddress,
+  getNFTMetadata
 } from '../../common/async/lib'
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { Store } from '../../common/async/types'
@@ -141,7 +142,7 @@ handler.on(WalletPageActions.selectAsset.type, async (store: Store, payload: Upd
     const priceHistory = await assetRatioService.getPriceHistory(getTokenParam(selectedAsset), defaultFiat, payload.timeFrame)
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, defaultFiatPrice: defaultPrices.values[0], defaultCryptoPrice: defaultPrices.values[1], timeFrame: payload.timeFrame }))
 
-    if (payload.asset.isErc721) {
+    if (payload.asset.isErc721 || payload.asset.isNft) {
       store.dispatch(WalletPageActions.getNFTMetadata(payload.asset))
     }
   } else {
@@ -273,15 +274,17 @@ handler.on(WalletPageActions.openWalletSettings.type, async (store) => {
 
 handler.on(WalletPageActions.getNFTMetadata.type, async (store, payload: BraveWallet.BlockchainToken) => {
   store.dispatch(WalletPageActions.setIsFetchingNFTMetadata(true))
-  const jsonRpcService = getWalletPageApiProxy().jsonRpcService
-  const result = await jsonRpcService.getERC721Metadata(payload.contractAddress, payload.tokenId, payload.chainId)
-
-  if (!result.error) {
-    const response = JSON.parse(result.response)
+  const result = await getNFTMetadata(payload)
+  if (!result?.error) {
+    const response = result?.response && JSON.parse(result.response)
     const tokenNetwork = getTokensNetwork(getWalletState(store).networkList, payload)
     const nftMetadata: NFTMetadataReturnType = {
       chainName: tokenNetwork.chainName,
-      tokenType: 'ERC721', // getNFTMetadata currently supports only ERC721 standard. When other standards are supported, this value should be dynamic
+      tokenType: payload.coin === BraveWallet.CoinType.ETH
+        ? 'ERC721'
+        : payload.coin === BraveWallet.CoinType.SOL
+          ? 'SPL'
+          : '',
       tokenID: payload.tokenId,
       imageURL: response.image.startsWith('data:image/') ? response.image : httpifyIpfsUrl(response.image),
       imageMimeType: 'image/*',

@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/issuers/issuers.h"
 
@@ -14,10 +14,10 @@
 #include "bat/ads/internal/account/issuers/issuers_json_reader.h"
 #include "bat/ads/internal/account/issuers/issuers_url_request_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/logging_util.h"
-#include "bat/ads/internal/base/time/time_formatting_util.h"
-#include "bat/ads/internal/base/url/url_request_string_util.h"
-#include "bat/ads/internal/base/url/url_response_string_util.h"
+#include "bat/ads/internal/common/logging_util.h"
+#include "bat/ads/internal/common/time/time_formatting_util.h"
+#include "bat/ads/internal/common/url/url_request_string_util.h"
+#include "bat/ads/internal/common/url/url_response_string_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "net/http/http_status_code.h"
@@ -58,7 +58,7 @@ void Issuers::Fetch() {
   is_fetching_ = true;
 
   BLOG(1, "FetchIssuers");
-  BLOG(2, "GET /v1/issuers/");
+  BLOG(2, "GET /v3/issuers/");
 
   IssuersUrlRequestBuilder url_request_builder;
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();

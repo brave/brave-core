@@ -15,12 +15,19 @@ using brave_component_updater::DATFileDataBuffer;
 
 class PrefService;
 
+namespace adblock {
+struct FilterListMetadata;
+}  // namespace adblock
+
 namespace brave_shields {
 
 class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
  public:
-  AdBlockSubscriptionFiltersProvider(PrefService* local_state,
-                                     base::FilePath list_file);
+  AdBlockSubscriptionFiltersProvider(
+      PrefService* local_state,
+      base::FilePath list_file,
+      base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
+          on_metadata_retrieved);
   AdBlockSubscriptionFiltersProvider(
       const AdBlockSubscriptionFiltersProvider&) = delete;
   AdBlockSubscriptionFiltersProvider& operator=(
@@ -31,8 +38,18 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
       base::OnceCallback<void(bool deserialize,
                               const DATFileDataBuffer& dat_buf)>) override;
 
+  void OnDATFileDataReady(
+      base::OnceCallback<void(bool deserialize,
+                              const DATFileDataBuffer& dat_buf)> cb,
+      const DATFileDataBuffer& dat_buf);
+
+  void OnListAvailable();
+
  private:
   base::FilePath list_file_;
+
+  base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
+      on_metadata_retrieved_;
 
   base::WeakPtrFactory<AdBlockSubscriptionFiltersProvider> weak_factory_{this};
 };

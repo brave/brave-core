@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
+#include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -29,6 +30,8 @@
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
+#include "ui/views/layout/layout_types.h"
+#include "ui/views/view_utils.h"
 
 namespace {
 
@@ -201,10 +204,15 @@ class ScrollContentsView : public views::View {
 
   // views::View:
   void ChildPreferredSizeChanged(views::View* child) override {
-    if (height() == GetPreferredSize().height())
+    if (base::FeatureList::IsEnabled(features::kScrollableTabStrip))
       return;
 
-    SetSize({width(), GetPreferredSize().height()});
+    if (in_preferred_size_changed_)
+      return;
+
+    // Prevent reentrance caused by container_->Layout()
+    base::AutoReset<bool> in_preferred_size_change(&in_preferred_size_changed_,
+                                                   true);
     container_->Layout();
   }
 
@@ -218,6 +226,8 @@ class ScrollContentsView : public views::View {
  private:
   raw_ptr<VerticalTabStripRegionView> container_ = nullptr;
   raw_ptr<TabStrip> tab_strip_ = nullptr;
+
+  bool in_preferred_size_changed_ = false;
 };
 
 BEGIN_METADATA(ScrollContentsView, views::View)
@@ -229,6 +239,8 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
     Browser* browser,
     TabStripRegionView* region_view)
     : browser_(browser), region_view_(region_view) {
+  browser->tab_strip_model()->AddObserver(this);
+
   SetNotifyEnterExitOnChild(true);
 
   scroll_view_ = AddChildView(std::make_unique<CustomScrollView>());
@@ -255,7 +267,9 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
   scroll_contents_view_->SetLayoutManager(
       std::make_unique<views::FillLayout>());
   scroll_view_->SetVerticalScrollBarMode(
-      views::ScrollView::ScrollBarMode::kHiddenButEnabled);
+      base::FeatureList::IsEnabled(features::kScrollableTabStrip)
+          ? views::ScrollView::ScrollBarMode::kDisabled
+          : views::ScrollView::ScrollBarMode::kHiddenButEnabled);
 
   new_tab_button_ = AddChildView(std::make_unique<BraveNewTabButton>(
       region_view_->tab_strip_,
@@ -312,6 +326,12 @@ void VerticalTabStripRegionView::SetState(State state) {
 
   mouse_enter_timer_.Stop();
   state_ = state;
+
+  region_view_->tab_strip_->SetAvailableWidthCallback(base::BindRepeating(
+      &VerticalTabStripRegionView::GetPreferredWidthForState,
+      base::Unretained(this), state_));
+  region_view_->tab_strip_->tab_container_->InvalidateIdealBounds();
+
   PreferredSizeChanged();
 }
 
@@ -333,8 +353,11 @@ VerticalTabStripRegionView::ExpandTabStripForDragging() {
 }
 
 gfx::Vector2d VerticalTabStripRegionView::GetOffsetForDraggedTab() const {
-  return {0, scroll_view_header_->GetPreferredSize().height() +
-                 (tabs::kVerticalTabHeight / 2)};
+  return {0, scroll_view_header_->GetPreferredSize().height()};
+}
+
+int VerticalTabStripRegionView::GetAvailableWidthForTabContainer() {
+  return GetPreferredWidthForState(state_);
 }
 
 gfx::Size VerticalTabStripRegionView::CalculatePreferredSize() const {
@@ -362,18 +385,32 @@ void VerticalTabStripRegionView::Layout() {
 
   // 2. ScrollView takes the rest of space.
   // Set preferred size for scroll view to know this.
-  const gfx::Size header_size{scroll_view_->width(),
+  const gfx::Size header_size{contents_bounds.width(),
                               new_tab_button_->GetPreferredSize().height()};
   scroll_view_header_->SetPreferredSize(header_size);
   scroll_view_header_->SetSize(header_size);
+
   scroll_view_->SetSize({contents_bounds.width(),
                          contents_bounds.height() - new_tab_button_->height()});
   scroll_view_->SetPosition(contents_bounds.origin());
-  scroll_view_->ClipHeightTo(0, scroll_view_->height() - header_size.height());
 
-  auto* scroll_view_contents = scroll_view_->contents();
-  scroll_view_contents->SetSize(
-      {scroll_view_->width(), scroll_view_contents->height()});
+  auto scroll_viewport_height = scroll_view_->height() - header_size.height();
+  if (scroll_view_->GetMaxHeight() != scroll_viewport_height)
+    scroll_view_->ClipHeightTo(0, scroll_viewport_height);
+
+  if (base::FeatureList::IsEnabled(features::kScrollableTabStrip) &&
+      tabs::features::ShouldShowVerticalTabs(browser_)) {
+    scroll_contents_view_->SetSize(
+        {scroll_view_->width(), scroll_view_->height()});
+    auto* nested_scroll_view = GetTabStripScrollContainer()->scroll_view_.get();
+    nested_scroll_view->SetSize(
+        {scroll_view_->width(), scroll_viewport_height});
+    nested_scroll_view->ClipHeightTo(0, scroll_viewport_height);
+  } else {
+    scroll_contents_view_->SetSize(
+        {scroll_view_->width(),
+         scroll_contents_view_->GetPreferredSize().height()});
+  }
 
   UpdateNewTabButtonVisibility();
   UpdateTabSearchButtonVisibility();
@@ -386,15 +423,41 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
       original_parent_of_region_view_->RemoveChildView(region_view_);
       scroll_view_->contents()->AddChildView(region_view_.get());
     }
+
     region_view_->layout_manager_->SetOrientation(
         views::LayoutOrientation::kVertical);
+    if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
+      auto* scroll_container = GetTabStripScrollContainer();
+      scroll_container->SetLayoutManager(std::make_unique<views::FillLayout>());
+      scroll_container->scroll_view_->SetTreatAllScrollEventsAsHorizontal(
+          false);
+      scroll_container->scroll_view_->SetVerticalScrollBarMode(
+          views::ScrollView::ScrollBarMode::kHiddenButEnabled);
+      scroll_container->overflow_view_->SetOrientation(
+          views::LayoutOrientation::kVertical);
+    }
   } else {
     if (Contains(region_view_)) {
       scroll_view_->contents()->RemoveChildView(region_view_);
-      original_parent_of_region_view_->AddChildView(region_view_.get());
+      // TabStrip should be added before other views so that we can preserve
+      // the z-order. At this moment, tab strip is the first child of the
+      // parent view.
+      // https://github.com/chromium/chromium/blob/bdcef78b63f64119bbe950386b2495a045629f0e/chrome/browser/ui/views/frame/browser_view.cc#L904
+      original_parent_of_region_view_->AddChildViewAt(region_view_.get(), 0);
     }
+
     region_view_->layout_manager_->SetOrientation(
         views::LayoutOrientation::kHorizontal);
+    if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
+      auto* scroll_container = GetTabStripScrollContainer();
+      scroll_container->SetLayoutManager(std::make_unique<views::FillLayout>())
+          ->SetMinimumSizeEnabled(true);
+      scroll_container->scroll_view_->SetTreatAllScrollEventsAsHorizontal(true);
+      scroll_container->scroll_view_->SetVerticalScrollBarMode(
+          views::ScrollView::ScrollBarMode::kDisabled);
+      scroll_container->overflow_view_->SetOrientation(
+          views::LayoutOrientation::kHorizontal);
+    }
   }
 
   PreferredSizeChanged();
@@ -403,7 +466,10 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
 
 void VerticalTabStripRegionView::OnThemeChanged() {
   View::OnThemeChanged();
-  scroll_view_->SetBackgroundColor(GetColorProvider()->GetColor(kColorToolbar));
+
+  const auto background_color = GetColorProvider()->GetColor(kColorToolbar);
+  SetBackground(views::CreateSolidBackground(background_color));
+  scroll_view_->SetBackgroundColor(background_color);
 
   new_tab_button_->FrameColorsChanged();
 }
@@ -429,6 +495,22 @@ void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
     return;
 
   ScheduleFloatingModeTimer();
+}
+
+void VerticalTabStripRegionView::OnBoundsChanged(
+    const gfx::Rect& previous_bounds) {
+  if (previous_bounds.size() != size())
+    ScrollActiveTabToBeVisible();
+}
+
+void VerticalTabStripRegionView::OnTabStripModelChanged(
+    TabStripModel* tab_strip_model,
+    const TabStripModelChange& change,
+    const TabStripSelectionChange& selection) {
+  if (!selection.active_tab_changed())
+    return;
+
+  ScrollActiveTabToBeVisible();
 }
 
 void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
@@ -469,15 +551,28 @@ gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
   if (IsTabFullscreen())
     return {};
 
-  if (state == State::kExpanded || state == State::kFloating) {
-    return {TabStyle::GetStandardWidth(),
-            View::CalculatePreferredSize().height()};
-  }
+  return {GetPreferredWidthForState(state),
+          View::CalculatePreferredSize().height()};
+}
+
+int VerticalTabStripRegionView::GetPreferredWidthForState(State state) const {
+  if (state == State::kExpanded || state == State::kFloating)
+    return TabStyle::GetStandardWidth();
 
   DCHECK_EQ(state, State::kCollapsed)
       << "If a new state was added, " << __FUNCTION__
       << " should be revisited.";
-  return {tabs::kVerticalTabMinWidth, View::CalculatePreferredSize().height()};
+  return tabs::kVerticalTabMinWidth;
+}
+
+TabStripScrollContainer*
+VerticalTabStripRegionView::GetTabStripScrollContainer() {
+  DCHECK(base::FeatureList::IsEnabled(features::kScrollableTabStrip));
+  auto* scroll_container = views::AsViewClass<TabStripScrollContainer>(
+      region_view_->tab_strip_container_);
+  DCHECK(scroll_container)
+      << "TabStripScrollContainer is used by upstream at this moment.";
+  return scroll_container;
 }
 
 void VerticalTabStripRegionView::ScheduleFloatingModeTimer() {
@@ -492,6 +587,43 @@ void VerticalTabStripRegionView::ScheduleFloatingModeTimer() {
         FROM_HERE, base::Milliseconds(400),
         base::BindOnce(&VerticalTabStripRegionView::SetState,
                        base::Unretained(this), State::kFloating));
+  }
+}
+
+void VerticalTabStripRegionView::ScrollActiveTabToBeVisible() {
+  if (!tabs::features::ShouldShowVerticalTabs(browser_))
+    return;
+
+  auto active_index = browser_->tab_strip_model()->active_index();
+  if (active_index == TabStripModel::kNoTab) {
+    // This could happen on destruction.
+    return;
+  }
+
+  auto* active_tab = region_view_->tab_strip_->tab_at(active_index);
+  DCHECK(active_tab);
+
+  gfx::RectF tab_bounds_in_contents_view(active_tab->GetLocalBounds());
+  views::View::ConvertRectToTarget(active_tab, scroll_contents_view_,
+                                   &tab_bounds_in_contents_view);
+
+  auto visible_rect = scroll_view_->GetVisibleRect();
+  if (visible_rect.Contains(gfx::Rect(0, tab_bounds_in_contents_view.y(),
+                                      tab_bounds_in_contents_view.width(),
+                                      tab_bounds_in_contents_view.height()))) {
+    return;
+  }
+
+  // Unfortunately, ScrollView's API doesn't work well for us. So we manually
+  // adjust scroll offset. Note that we change contents view's position as
+  // we disabled layered scroll view.
+  if (visible_rect.y() > tab_bounds_in_contents_view.bottom()) {
+    scroll_contents_view_->SetPosition(
+        {0, -static_cast<int>(tab_bounds_in_contents_view.y())});
+  } else {
+    scroll_contents_view_->SetPosition(
+        {0, -static_cast<int>(tab_bounds_in_contents_view.bottom()) +
+                scroll_view_->height() - scroll_view_header_->height()});
   }
 }
 

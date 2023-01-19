@@ -10,6 +10,7 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/callback_helpers.h"
+#include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/path_service.h"
 #include "base/ranges/algorithm.h"
@@ -205,6 +206,22 @@ base::Value TestLedgerClient::GetValueState(const std::string& name) const {
   return value ? value->Clone() : base::Value();
 }
 
+void TestLedgerClient::SetTimeState(const std::string& name, base::Time time) {
+  state_store_.SetByDottedPath(name, base::TimeToValue(time));
+}
+
+base::Time TestLedgerClient::GetTimeState(const std::string& name) const {
+  const auto* value = state_store_.FindByDottedPath(name);
+  DCHECK(value);
+  if (!value) {
+    return base::Time();
+  }
+
+  auto time = base::ValueToTime(*value);
+  DCHECK(time);
+  return time.value_or(base::Time());
+}
+
 void TestLedgerClient::ClearState(const std::string& name) {
   state_store_.RemoveByDottedPath(name);
 }
@@ -289,7 +306,11 @@ void TestLedgerClient::PendingContributionSaved(const mojom::Result result) {}
 
 void TestLedgerClient::ClearAllNotifications() {}
 
-void TestLedgerClient::WalletDisconnected(const std::string& wallet_type) {}
+void TestLedgerClient::ExternalWalletConnected() const {}
+
+void TestLedgerClient::ExternalWalletLoggedOut() const {}
+
+void TestLedgerClient::ExternalWalletReconnected() const {}
 
 void TestLedgerClient::DeleteLog(client::LegacyResultCallback callback) {
   callback(mojom::Result::LEDGER_OK);

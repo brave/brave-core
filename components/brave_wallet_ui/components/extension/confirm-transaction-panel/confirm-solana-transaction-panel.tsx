@@ -169,7 +169,7 @@ export const ConfirmSolanaTransactionPanel = ({
 
           <TransactionFiatAmountBig>
             {
-              transactionDetails.fiatValue.formatAsFiat(defaultCurrencies.fiat)
+              new Amount(transactionDetails.fiatValue).formatAsFiat(defaultCurrencies.fiat)
             }
           </TransactionFiatAmountBig>
         </>

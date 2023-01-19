@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 
@@ -11,6 +11,7 @@
 #include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/sparkle_buildflags.h"
+#include "brave/browser/translate/brave_translate_utils.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -27,8 +28,7 @@
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/speedreader/common/buildflags.h"
-#include "brave/components/translate/core/common/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
@@ -46,7 +46,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
-#include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPARKLE)
@@ -61,10 +61,6 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "components/grit/brave_components_strings.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-#include "brave/browser/translate/brave_translate_utils.h"
 #endif
 
 namespace {
@@ -177,42 +173,39 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
   const bool supports_vertical_tabs =
       tabs::features::SupportsVerticalTabs(browser_.get());
+  if (supports_vertical_tabs) {
+    vertical_tab_strip_host_view_ =
+        AddChildView(std::make_unique<views::View>());
+  }
 
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_.get());
-
-  if (!supports_vertical_tabs && !can_have_sidebar)
-    return;
-
-  // Wrap chromium side panel with our sidebar container
-  auto original_side_panel = RemoveChildViewT(unified_side_panel_.get());
-  sidebar_container_view_ =
-      contents_container_->AddChildView(std::make_unique<SidebarContainerView>(
-          GetBraveBrowser(), side_panel_coordinator(),
-          std::move(original_side_panel)));
-  unified_side_panel_ = sidebar_container_view_->side_panel();
-  if (supports_vertical_tabs) {
-    vertical_tab_strip_host_view_ =
-        contents_container_->AddChildView(std::make_unique<views::View>());
-  }
-
-  contents_container_->SetLayoutManager(
-      std::make_unique<BraveContentsLayoutManager>(
-          devtools_web_view_, contents_web_view_, sidebar_container_view_,
-          vertical_tab_strip_host_view_));
-  sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
-
-  // Make sure |find_bar_host_view_| is the last child of BrowserView by
-  // re-ordering. FindBarHost widgets uses this view as a  kHostViewKey.
-  // See the comments of BrowserView::find_bar_host_view().
-  ReorderChildView(find_bar_host_view_, -1);
-
   if (can_have_sidebar) {
+    // Wrap chromium side panel with our sidebar container
+    auto original_side_panel = RemoveChildViewT(unified_side_panel_.get());
+    sidebar_container_view_ = contents_container_->AddChildView(
+        std::make_unique<SidebarContainerView>(GetBraveBrowser(),
+                                               side_panel_coordinator(),
+                                               std::move(original_side_panel)));
+    unified_side_panel_ = sidebar_container_view_->side_panel();
+    contents_container_->SetLayoutManager(
+        std::make_unique<BraveContentsLayoutManager>(
+            devtools_web_view_, contents_web_view_, sidebar_container_view_));
+    sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
+
     pref_change_registrar_.Add(
         prefs::kSidePanelHorizontalAlignment,
         base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                             base::Unretained(this)));
   }
+
+  if (!supports_vertical_tabs && !can_have_sidebar)
+    return;
+
+  // Make sure |find_bar_host_view_| is the last child of BrowserView by
+  // re-ordering. FindBarHost widgets uses this view as a  kHostViewKey.
+  // See the comments of BrowserView::find_bar_host_view().
+  ReorderChildView(find_bar_host_view_, -1);
 }
 
 void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
@@ -237,9 +230,8 @@ void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
 void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
   DCHECK(sidebar_container_view_);
 
-  const bool on_left =
-      !GetProfile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
-          prefs::kSidePanelHorizontalAlignment);
+  const bool on_left = !GetProfile()->GetPrefs()->GetBoolean(
+      prefs::kSidePanelHorizontalAlignment);
 
   sidebar_container_view_->SetSidebarOnLeft(on_left);
   static_cast<BraveContentsLayoutManager*>(GetContentsLayoutManager())
@@ -361,25 +353,6 @@ void BraveBrowserView::ShowUpdateChromeDialog() {
 #endif
 }
 
-// The translate bubble will be shown if ENABLE_BRAVE_TRANSLATE_GO build flag
-// is enabled. We utilize chromium's translate UI directly along with
-// go-translate.
-ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
-    content::WebContents* web_contents,
-    translate::TranslateStep step,
-    const std::string& source_language,
-    const std::string& target_language,
-    translate::TranslateErrors error_type,
-    bool is_user_gesture) {
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  return BrowserView::ShowTranslateBubble(web_contents, step, source_language,
-                                          target_language, error_type,
-                                          is_user_gesture);
-#else   // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  return ShowTranslateBubbleResult::BROWSER_WINDOW_NOT_VALID;
-#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-}
-
 speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
     speedreader::SpeedreaderTabHelper* tab_helper,
     bool is_enabled) {
@@ -437,6 +410,9 @@ void BraveBrowserView::AddedToWidget() {
     vertical_tab_strip_widget_delegate_view_ =
         VerticalTabStripWidgetDelegateView::Create(
             this, vertical_tab_strip_host_view_);
+
+    GetBrowserViewLayout()->set_vertical_tab_strip_host(
+        vertical_tab_strip_host_view_.get());
   }
 }
 
@@ -456,10 +432,13 @@ void BraveBrowserView::OnTabStripModelChanged(
 
 views::CloseRequestResult BraveBrowserView::OnWindowCloseRequested() {
   if (GetBraveBrowser()->ShouldAskForBrowserClosingBeforeHandlers()) {
-    WindowClosingConfirmDialogView::Show(
-        browser(),
-        base::BindOnce(&BraveBrowserView::OnWindowClosingConfirmResponse,
-                       weak_ptr_.GetWeakPtr()));
+    if (!closing_confirm_dialog_activated_) {
+      WindowClosingConfirmDialogView::Show(
+          browser(),
+          base::BindOnce(&BraveBrowserView::OnWindowClosingConfirmResponse,
+                         weak_ptr_.GetWeakPtr()));
+      closing_confirm_dialog_activated_ = true;
+    }
     return views::CloseRequestResult::kCannotClose;
   }
 
@@ -467,6 +446,9 @@ views::CloseRequestResult BraveBrowserView::OnWindowCloseRequested() {
 }
 
 void BraveBrowserView::OnWindowClosingConfirmResponse(bool allowed_to_close) {
+  DCHECK(closing_confirm_dialog_activated_);
+  closing_confirm_dialog_activated_ = false;
+
   auto* browser = GetBraveBrowser();
   // Set to Browser instance because Browser instance knows about the result
   // of any warning handlers or beforeunload handlers.

@@ -346,6 +346,101 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, GatewayRedirectToIPFS) {
   EXPECT_EQ(active_contents()->GetVisibleURL(), expected_final_url);
 }
 
+IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest,
+                       GatewayRedirectToIPND_LibP2PKey) {
+  ASSERT_TRUE(
+      ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
+  ipfs::IPFSTabHelper* helper =
+      ipfs::IPFSTabHelper::FromWebContents(active_contents());
+  if (!helper)
+    return;
+  auto* storage_partition =
+      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
+  std::unique_ptr<FakeIPFSHostResolver> resolver(
+      new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
+  FakeIPFSHostResolver* resolver_raw = resolver.get();
+  resolver_raw->SetDNSLinkToRespond("/ipfs/QmXoypiz");
+  helper->SetResolverForTesting(std::move(resolver));
+  auto* prefs =
+      user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
+
+  prefs->SetBoolean(kIPFSAutoRedirectGateway, true);
+  prefs->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
+
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), std::string());
+  ASSERT_FALSE(resolver_raw->resolve_called());
+  SetXIpfsPathHeader("/ipns/other");
+
+  const GURL test_url = embedded_test_server()->GetURL(
+      "navigate_to.com",
+      "/ipns/k51qzi5uqu5dlvj2baxnqndepeb86cbk3ng7n3i46uzyxzyqj2xjonzllnv0v8/"
+      "wiki/empty.html?query#ref");
+
+  GURL gateway_url = embedded_test_server()->GetURL("a.com", "/");
+  prefs->SetString(kIPFSPublicGatewayAddress, gateway_url.spec());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
+  ASSERT_TRUE(WaitForLoadStop(active_contents()));
+  ASSERT_FALSE(resolver_raw->resolve_called());
+
+  // gateway url.
+  GURL expected_final_url;
+  ipfs::TranslateIPFSURI(GURL("ipns://"
+                              "k51qzi5uqu5dlvj2baxnqndepeb86cbk3ng7n3i46uzyxzyq"
+                              "j2xjonzllnv0v8/wiki/empty.html?query#ref"),
+                         &expected_final_url, gateway_url, false);
+
+  EXPECT_EQ(active_contents()->GetVisibleURL(), expected_final_url);
+}
+
+IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, GatewayRedirectToIPNS) {
+  ASSERT_TRUE(
+      ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
+  ipfs::IPFSTabHelper* helper =
+      ipfs::IPFSTabHelper::FromWebContents(active_contents());
+  if (!helper)
+    return;
+  auto* storage_partition =
+      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
+  std::unique_ptr<FakeIPFSHostResolver> resolver(
+      new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
+  FakeIPFSHostResolver* resolver_raw = resolver.get();
+  resolver_raw->SetDNSLinkToRespond("/ipns/QmXoypiz");
+  helper->SetResolverForTesting(std::move(resolver));
+  auto* prefs =
+      user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
+
+  prefs->SetBoolean(kIPFSAutoRedirectGateway, true);
+  prefs->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
+
+  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), std::string());
+  ASSERT_FALSE(resolver_raw->resolve_called());
+  SetXIpfsPathHeader("/ipns/other");
+
+  const GURL test_url = embedded_test_server()->GetURL(
+      "navigate_to.com",
+      "/ipns/en-wikiepdia--on--ipfs-org/wiki/empty.html?query#ref");
+
+  GURL gateway_url = embedded_test_server()->GetURL("a.com", "/");
+  prefs->SetString(kIPFSPublicGatewayAddress, gateway_url.spec());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
+  ASSERT_TRUE(WaitForLoadStop(active_contents()));
+  ASSERT_TRUE(resolver_raw->resolve_called());
+
+  // gateway url.
+  GURL expected_final_url;
+  ipfs::TranslateIPFSURI(
+      GURL("ipns://en.wikiepdia-on-ipfs.org/wiki/empty.html?query#ref"),
+      &expected_final_url, gateway_url, false);
+
+  EXPECT_EQ(active_contents()->GetVisibleURL(), expected_final_url);
+}
+
 IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolveIPFSLinkCalled5xx) {
   ASSERT_TRUE(
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));

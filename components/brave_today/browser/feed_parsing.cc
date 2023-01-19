@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/time/time.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
@@ -24,6 +23,8 @@ namespace brave_news {
 
 namespace {
 
+// TODO(petemill): Accept base::Value::Dict param and use something like
+// `contains()` to avoid potential crashes dereferencing missing fields.
 bool ParseFeedItem(const base::Value& feed_item_raw,
                    mojom::FeedItemPtr* feed_item) {
   auto url_raw = *feed_item_raw.FindStringKey("url");
@@ -60,6 +61,10 @@ bool ParseFeedItem(const base::Value& feed_item_raw,
   auto url = GURL(url_raw);
   if (url.is_empty() || !url.has_host()) {
     VLOG(1) << "Could not parse item url: " << url_raw;
+    return false;
+  }
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    VLOG(1) << "Item url was not HTTP or HTTPS: " << url.spec();
     return false;
   }
   metadata->url = std::move(url);
@@ -116,18 +121,12 @@ bool ParseFeedItem(const base::Value& feed_item_raw,
 
 }  // namespace
 
-bool ParseFeedItems(const std::string& json,
+bool ParseFeedItems(const base::Value& json_value,
                     std::vector<mojom::FeedItemPtr>* feed_items) {
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+  if (!json_value.is_list()) {
     return false;
   }
-  if (!records_v->is_list()) {
-    return false;
-  }
-  for (const base::Value& feed_item_raw : records_v->GetList()) {
+  for (const base::Value& feed_item_raw : json_value.GetList()) {
     mojom::FeedItemPtr item;
     if (ParseFeedItem(feed_item_raw, &item)) {
       feed_items->push_back(std::move(item));

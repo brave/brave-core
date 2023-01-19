@@ -27,7 +27,8 @@ void ComponentInstaller::Register(ComponentUpdateService* cus,
 
 void ComponentInstaller::Register(RegisterCallback register_callback,
                                   base::OnceClosure callback,
-                                  base::TaskPriority task_priority) {
+                                  base::TaskPriority task_priority,
+                                  const base::Version& registered_version) {
   static std::string disallowed_components[] = {
     "bklopemakmnopmghhmccadeonafabnal",  // Legacy TLS Deprecation Config
     "cmahhnpholdijhjokonmfdjbfmklppij",  // Federated Learning of Cohorts
@@ -55,7 +56,7 @@ void ComponentInstaller::Register(RegisterCallback register_callback,
     }
   }
   Register_ChromiumImpl(std::move(register_callback), std::move(callback),
-                        task_priority);
+                        task_priority, registered_version);
 }
 
 }  // namespace component_updater

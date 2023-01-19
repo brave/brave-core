@@ -23,9 +23,6 @@ class ContributionMonthly {
 
   void Process(ledger::LegacyResultCallback callback);
 
-  void HasSufficientBalance(
-      ledger::HasSufficientBalanceToReconcileCallback callback);
-
  private:
   void PrepareTipList(std::vector<mojom::PublisherInfoPtr> list,
                       ledger::LegacyResultCallback callback);
@@ -34,16 +31,6 @@ class ContributionMonthly {
                           std::vector<mojom::PublisherInfoPtr>* verified_list);
 
   void OnSavePendingContribution(const mojom::Result result);
-
-  void OnSufficientBalanceWallet(
-      ledger::HasSufficientBalanceToReconcileCallback callback,
-      const mojom::Result result,
-      mojom::BalancePtr info);
-
-  void OnHasSufficientBalance(
-      const std::vector<mojom::PublisherInfoPtr>& publisher_list,
-      const double balance,
-      ledger::HasSufficientBalanceToReconcileCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

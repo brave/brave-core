@@ -1,6 +1,7 @@
-# Copyright 2020 The Brave Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//build/config/android/rules.gni")
 
@@ -25,6 +26,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveContentSettingsResourcesClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveCustomizationProviderDelegateImplClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveDefaultBrowserPromoUtilsClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveDownloadMessageUiControllerImplClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveDropdownItemViewInfoListBuilderClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveDropdownItemViewInfoListManagerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveDynamicColorsClassAdapter.java",
@@ -37,6 +39,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveIncognitoToggleTabLayoutClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveIntentHandlerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveLaunchIntentDispatcherClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveLauncherActivityClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveLocationBarCoordinatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveLocationBarLayoutClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveLocationBarMediatorClassAdapter.java",
@@ -51,10 +54,10 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveNewTabPageLayoutClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveNotificationManagerProxyImplClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveNotificationPermissionRationaleDialogControllerClassAdapter.java",
-    "//brave/build/android/bytecode/java/org/brave/bytecode/BravePartnerBookmarksDelegateImplClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BravePasswordSettingsBaseClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BravePermissionDialogDelegateClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BravePermissionDialogModelClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BravePreferenceFragmentClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BravePureJavaExceptionReporterClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveQueryTileSectionClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveQuickActionSearchWidgetProviderClassAdapter.java",
@@ -68,6 +71,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveSiteSettingsCategoryClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveSiteSettingsDelegateClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveSiteSettingsPreferencesBaseClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveStartupPaintPreviewHelperClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveStatusMediatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabGroupUiCoordinatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabSwitcherModeTTCoordinatorClassAdapter.java",

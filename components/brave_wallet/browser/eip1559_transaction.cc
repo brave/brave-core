@@ -270,27 +270,14 @@ std::string Eip1559Transaction::GetSignedTransaction() const {
   DCHECK(IsSigned());
   DCHECK(nonce_);
 
-  base::Value::List list;
-  list.Append(RLPUint256ToBlob(chain_id_));
-  list.Append(RLPUint256ToBlob(nonce_.value()));
-  list.Append(RLPUint256ToBlob(max_priority_fee_per_gas_));
-  list.Append(RLPUint256ToBlob(max_fee_per_gas_));
-  list.Append(RLPUint256ToBlob(gas_limit_));
-  list.Append(base::Value::BlobStorage(to_.bytes()));
-  list.Append(RLPUint256ToBlob(value_));
-  list.Append(base::Value(data_));
-  list.Append(base::Value(AccessListToValue(access_list_)));
-  list.Append(RLPUint256ToBlob(v_));
-  list.Append(base::Value(r_));
-  list.Append(base::Value(s_));
+  return ToHex(Serialize());
+}
 
-  std::vector<uint8_t> result;
-  result.push_back(type_);
+std::string Eip1559Transaction::GetTransactionHash() const {
+  DCHECK(IsSigned());
+  DCHECK(nonce_);
 
-  const std::string rlp_msg = RLPEncode(base::Value(std::move(list)));
-  result.insert(result.end(), rlp_msg.begin(), rlp_msg.end());
-
-  return ToHex(result);
+  return ToHex(KeccakHash(Serialize()));
 }
 
 base::Value::Dict Eip1559Transaction::ToValue() const {
@@ -329,6 +316,30 @@ uint256_t Eip1559Transaction::GetUpfrontCost(uint256_t block_base_fee) const {
   uint256_t gas_price = inclusion_fee_per_gas + block_base_fee;
 
   return gas_limit_ * gas_price + value_;
+}
+
+std::vector<uint8_t> Eip1559Transaction::Serialize() const {
+  base::Value::List list;
+  list.Append(RLPUint256ToBlob(chain_id_));
+  list.Append(RLPUint256ToBlob(nonce_.value()));
+  list.Append(RLPUint256ToBlob(max_priority_fee_per_gas_));
+  list.Append(RLPUint256ToBlob(max_fee_per_gas_));
+  list.Append(RLPUint256ToBlob(gas_limit_));
+  list.Append(base::Value::BlobStorage(to_.bytes()));
+  list.Append(RLPUint256ToBlob(value_));
+  list.Append(base::Value(data_));
+  list.Append(base::Value(AccessListToValue(access_list_)));
+  list.Append(RLPUint256ToBlob(v_));
+  list.Append(base::Value(r_));
+  list.Append(base::Value(s_));
+
+  std::vector<uint8_t> result;
+  result.push_back(type_);
+
+  const std::string rlp_msg = RLPEncode(base::Value(std::move(list)));
+  result.insert(result.end(), rlp_msg.begin(), rlp_msg.end());
+
+  return result;
 }
 
 }  // namespace brave_wallet

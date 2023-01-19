@@ -23,6 +23,7 @@
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
 #include "chrome/browser/sync/sync_service_factory.h"
 #include "components/sync/driver/sync_user_settings.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
@@ -84,10 +85,14 @@ void BraveSyncHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "SyncSetupReset", base::BindRepeating(&BraveSyncHandler::HandleReset,
                                             base::Unretained(this)));
-
   web_ui()->RegisterMessageCallback(
       "SyncDeleteDevice",
       base::BindRepeating(&BraveSyncHandler::HandleDeleteDevice,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "SyncPermanentlyDeleteAccount",
+      base::BindRepeating(&BraveSyncHandler::HandlePermanentlyDeleteAccount,
                           base::Unretained(this)));
 }
 
@@ -156,7 +161,8 @@ void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
 
   // Sync code arrives here with time-limit 25th word, remove it to get proper
   // pure seed for QR generation  (QR codes have their own expiry)
-  auto pure_words_with_status = TimeLimitedWords::Parse(time_limited_sync_code);
+  auto pure_words_with_status =
+      TimeLimitedWords::ParseIgnoreDate(time_limited_sync_code);
   CHECK(pure_words_with_status.has_value());
   CHECK_NE(pure_words_with_status.value().size(), 0u);
 
@@ -228,16 +234,51 @@ void BraveSyncHandler::HandleSetSyncCode(const base::Value::List& args) {
   CHECK(!pure_words_with_status.value().empty());
 
   auto* sync_service = GetSyncService();
-  if (!sync_service ||
-      !sync_service->SetSyncCode(pure_words_with_status.value())) {
-    LOG(ERROR) << "sync_service=" << sync_service;
+  if (!sync_service) {
+    LOG(ERROR) << "Cannot get sync_service";
     RejectJavascriptCallback(
         args[0].Clone(),
         l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_INTERNAL_SETUP_ERROR));
     return;
   }
 
-  ResolveJavascriptCallback(args[0].Clone(), base::Value(true));
+  base::Value callback_id_arg(args[0].Clone());
+  sync_service->SetJoinChainResultCallback(base::BindOnce(
+      &BraveSyncHandler::OnJoinChainResult, weak_ptr_factory_.GetWeakPtr(),
+      std::move(callback_id_arg)));
+
+  if (!sync_service->SetSyncCode(pure_words_with_status.value())) {
+    RejectJavascriptCallback(
+        args[0].Clone(),
+        l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_INTERNAL_SETUP_ERROR));
+    return;
+  }
+
+  // Originally it was invoked through
+  // #2 syncer::SyncPrefs::SetSyncRequested()
+  // #3 settings::PeopleHandler::MarkFirstSetupComplete()
+  // #4 settings::PeopleHandler::OnDidClosePage()
+  // #4 brave_sync_subpage.js didNavigateAwayFromSyncPage()
+  // #5 brave_sync_subpage.js onNavigateAwayFromPage_()
+  // But we forcing it here because we need detect the case when we are trying
+  // to join the deleted chain. So we allow Sync system to proceed and then
+  // we will set the result at BraveSyncHandler::OnJoinChainResult.
+  // Otherwise we will not let to send request to the server.
+
+  sync_service->GetUserSettings()->SetSyncRequested(true);
+  sync_service->GetUserSettings()->SetFirstSetupComplete(
+      syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+}
+
+void BraveSyncHandler::OnJoinChainResult(base::Value callback_id,
+                                         const bool& result) {
+  if (result) {
+    ResolveJavascriptCallback(callback_id, base::Value(true));
+  } else {
+    std::string errorText =
+        l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_JOINING_DELETED_ACCOUNT);
+    RejectJavascriptCallback(callback_id, base::Value(errorText));
+  }
 }
 
 void BraveSyncHandler::HandleReset(const base::Value::List& args) {
@@ -257,6 +298,36 @@ void BraveSyncHandler::HandleReset(const base::Value::List& args) {
                         base::BindOnce(&BraveSyncHandler::OnResetDone,
                                        weak_ptr_factory_.GetWeakPtr(),
                                        std::move(callback_id_arg)));
+}
+
+void BraveSyncHandler::OnAccountPermanentlyDeleted(
+    base::Value callback_id,
+    const syncer::SyncProtocolError& sync_protocol_error) {
+  if (sync_protocol_error.error_description.empty()) {
+    ResolveJavascriptCallback(callback_id, base::Value(true));
+  } else {
+    RejectJavascriptCallback(
+        callback_id, base::Value(sync_protocol_error.error_description));
+  }
+}
+
+void BraveSyncHandler::HandlePermanentlyDeleteAccount(
+    const base::Value::List& args) {
+  AllowJavascript();
+  CHECK_EQ(1U, args.size());
+
+  auto* sync_service = GetSyncService();
+  if (!sync_service) {
+    RejectJavascriptCallback(
+        args[0].Clone(),
+        l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_INTERNAL_ACCOUNT_DELETE_ERROR));
+    return;
+  }
+
+  base::Value callback_id_arg(args[0].Clone());
+  sync_service->PermanentlyDeleteAccount(base::BindOnce(
+      &BraveSyncHandler::OnAccountPermanentlyDeleted,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback_id_arg)));
 }
 
 void BraveSyncHandler::HandleDeleteDevice(const base::Value::List& args) {

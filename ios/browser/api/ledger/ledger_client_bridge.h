@@ -50,6 +50,8 @@
 - (uint64_t)getUint64State:(const std::string&)name;
 - (void)setValueState:(const std::string&)name value:(base::Value)value;
 - (base::Value)getValueState:(const std::string&)name;
+- (void)setTimeState:(const std::string&)name time:(base::Time)time;
+- (base::Time)getTimeState:(const std::string&)name;
 - (void)clearState:(const std::string&)name;
 - (std::string)getLegacyWallet;
 - (void)showNotification:(const std::string&)type
@@ -69,6 +71,7 @@
 - (void)getCreateScript:(ledger::client::GetCreateScriptCallback)callback;
 - (void)pendingContributionSaved:(const ledger::mojom::Result)result;
 - (void)clearAllNotifications;
+// TODO(zenparsing): This method is no longer called and should be removed.
 - (void)walletDisconnected:(const std::string&)wallet_type;
 - (void)deleteLog:(ledger::client::LegacyResultCallback)callback;
 - (absl::optional<std::string>)encryptString:(const std::string&)value;

@@ -133,7 +133,7 @@
   history::HistoryAddPageArgs args = history::HistoryAddPageArgs(
       /*url*/ net::GURLWithNSURL(history.url),
       /*time*/ base::Time::FromNSDate(history.dateAdded),
-      /*context_id=*/nullptr,
+      /*context_id=*/0,
       /*nav_entry_id=*/0, /*referrer=*/GURL(),
       /*redirect_list*/ history::RedirectList(),
       /*transition*/

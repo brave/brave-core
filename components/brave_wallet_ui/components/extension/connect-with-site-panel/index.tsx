@@ -12,7 +12,7 @@ import {
 import { PanelActions } from '../../../panel/actions'
 
 // Types
-import { BraveWallet, WalletAccountType, PanelState, WalletState } from '../../../constants/types'
+import { WalletAccountType, PanelState, WalletState, SerializableOriginInfo } from '../../../constants/types'
 
 // Components
 import {
@@ -43,7 +43,7 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
 
 export interface Props {
-  originInfo: BraveWallet.OriginInfo
+  originInfo: SerializableOriginInfo
   accountsToConnect: WalletAccountType[]
 }
 export const ConnectWithSite = (props: Props) => {

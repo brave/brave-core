@@ -69,6 +69,18 @@ int GetIsoWeekNumber(const base::Time& time) {
   return week_number;
 }
 
+base::Time GetLastMondayTime(const base::Time& time) {
+  base::Time::Exploded exploded;
+  time.LocalExplode(&exploded);
+
+  int days_adjusted =
+      (exploded.day_of_week == 0) ? 6 : exploded.day_of_week - 1;
+  base::Time last_monday = base::Time::FromJsTime(
+      time.ToJsTime() - (days_adjusted * base::Time::kMillisecondsPerDay));
+
+  return last_monday;
+}
+
 base::Time GetYMDAsDate(const base::StringPiece& ymd) {
   const auto pieces = base::SplitStringPiece(ymd, "-", base::TRIM_WHITESPACE,
                                              base::SPLIT_WANT_NONEMPTY);

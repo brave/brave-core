@@ -50,6 +50,8 @@ ConvertRulesToContentBlockingRules(const std::string& rules);
 typedef ADBLOCK_EXPORT struct FilterListMetadata {
   FilterListMetadata();
   explicit FilterListMetadata(C_FilterListMetadata* metadata);
+  explicit FilterListMetadata(const std::string& list);
+  explicit FilterListMetadata(const char* data, size_t data_size);
   ~FilterListMetadata();
 
   absl::optional<std::string> homepage;
@@ -74,7 +76,8 @@ class ADBLOCK_EXPORT Engine {
                bool* did_match_rule,
                bool* did_match_exception,
                bool* did_match_important,
-               std::string* redirect);
+               std::string* redirect,
+               std::string* rewritten_url);
   std::string getCspDirectives(const std::string& url,
                                const std::string& host,
                                const std::string& tab_host,
@@ -85,7 +88,7 @@ class ADBLOCK_EXPORT Engine {
   void addResource(const std::string& key,
                    const std::string& content_type,
                    const std::string& data);
-  void addResources(const std::string& resources);
+  void useResources(const std::string& resources);
   void removeTag(const std::string& tag);
   bool tagExists(const std::string& tag);
   const std::string urlCosmeticResources(const std::string& url);

@@ -71,7 +71,7 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
   // Get the default locale on load.
   useEffect(() => {
     getBraveNewsController().getLocale().then(({ locale }) => setLocale(locale))
-  }, [])
+  }, [isOptInPrefEnabled, isShowOnNTPPrefEnabled])
 
   React.useEffect(() => {
     const handler = (channels: Channels) => setChannels(channels)

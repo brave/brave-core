@@ -232,6 +232,23 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
     api_request_helper_->Request("POST", sardine_token_url, payload,
                                  "application/json", true,
                                  std::move(internal_callback), request_headers);
+  } else if (provider == mojom::OnRampProvider::kTransak) {
+    GURL transak_url = GURL(kTransakURL);
+    transak_url =
+        net::AppendQueryParameter(transak_url, "fiatCurrency", currency_code);
+    transak_url =
+        net::AppendQueryParameter(transak_url, "defaultCryptoCurrency", symbol);
+    transak_url = net::AppendQueryParameter(transak_url, "fiatAmount", amount);
+    transak_url =
+        net::AppendQueryParameter(transak_url, "walletAddress", address);
+    transak_url = net::AppendQueryParameter(
+        transak_url, "networks",
+        "ethereum,arbitrum,optimism,polygon,bsc,solana,avaxcchain,osmosis,"
+        "fantom,aurora,celo");
+    transak_url =
+        net::AppendQueryParameter(transak_url, "apiKey", kTransakApiKey);
+
+    std::move(callback).Run(std::move(transak_url.spec()), absl::nullopt);
   } else {
     std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
   }
@@ -274,7 +291,7 @@ void AssetRatioService::OnGetSardineAuthToken(
     return;
   }
 
-  auto auth_token = ParseSardineAuthToken(api_request_result.body());
+  auto auth_token = ParseSardineAuthToken(api_request_result.value_body());
   if (!auth_token) {
     std::move(callback).Run("", "INTERNAL_SERVICE_ERROR");
     return;
@@ -294,7 +311,7 @@ void AssetRatioService::OnGetPrice(std::vector<std::string> from_assets,
     std::move(callback).Run(false, std::move(prices));
     return;
   }
-  if (!ParseAssetPrice(api_request_result.body(), from_assets, to_assets,
+  if (!ParseAssetPrice(api_request_result.value_body(), from_assets, to_assets,
                        &prices)) {
     std::move(callback).Run(false, std::move(prices));
     return;
@@ -325,7 +342,7 @@ void AssetRatioService::OnGetPriceHistory(GetPriceHistoryCallback callback,
     std::move(callback).Run(false, std::move(values));
     return;
   }
-  if (!ParseAssetPriceHistory(api_request_result.body(), &values)) {
+  if (!ParseAssetPriceHistory(api_request_result.value_body(), &values)) {
     std::move(callback).Run(false, std::move(values));
     return;
   }
@@ -360,8 +377,9 @@ void AssetRatioService::OnGetTokenInfo(GetTokenInfoCallback callback,
     return;
   }
 
-  std::move(callback).Run(ParseTokenInfo(
-      api_request_result.body(), mojom::kMainnetChainId, mojom::CoinType::ETH));
+  std::move(callback).Run(ParseTokenInfo(api_request_result.value_body(),
+                                         mojom::kMainnetChainId,
+                                         mojom::CoinType::ETH));
 }
 
 // static
@@ -395,7 +413,7 @@ void AssetRatioService::OnGetCoinMarkets(GetCoinMarketsCallback callback,
     return;
   }
 
-  if (!ParseCoinMarkets(api_request_result.body(), &values)) {
+  if (!ParseCoinMarkets(api_request_result.value_body(), &values)) {
     std::move(callback).Run(false, std::move(values));
     return;
   }

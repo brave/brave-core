@@ -1,16 +1,19 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
-import("//brave/components/brave_vpn/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
-import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
-import("//brave/components/playlist/buildflags/buildflags.gni")
-import("//brave/components/sidebar/buildflags/buildflags.gni")
-import("//brave/components/speedreader/common/buildflags.gni")
+import("//brave/components/playlist/common/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
-import("//brave/components/translate/core/common/buildflags.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -96,8 +99,14 @@ source_set("ui") {
       "omnibox/brave_omnibox_client_impl.cc",
       "omnibox/brave_omnibox_client_impl.h",
       "session_crashed_bubble_brave.cc",
+      "toolbar/bookmark_bar_sub_menu_model.cc",
+      "toolbar/bookmark_bar_sub_menu_model.h",
       "toolbar/brave_app_menu_model.cc",
       "toolbar/brave_app_menu_model.h",
+      "toolbar/brave_bookmark_context_menu_controller.cc",
+      "toolbar/brave_bookmark_context_menu_controller.h",
+      "toolbar/brave_bookmark_sub_menu_model.cc",
+      "toolbar/brave_bookmark_sub_menu_model.h",
       "toolbar/brave_recent_tabs_sub_menu_model.h",
       "webui/brave_rewards/rewards_panel_handler.cc",
       "webui/brave_rewards/rewards_panel_handler.h",
@@ -149,6 +158,8 @@ source_set("ui") {
       "webui/settings/brave_search_engines_handler.h",
       "webui/settings/brave_settings_localized_strings_provider.cc",
       "webui/settings/brave_settings_localized_strings_provider.h",
+      "webui/settings/brave_site_settings_handler.cc",
+      "webui/settings/brave_site_settings_handler.h",
       "webui/settings/brave_sync_handler.cc",
       "webui/settings/brave_sync_handler.h",
       "webui/settings/brave_wallet_handler.cc",
@@ -206,6 +217,8 @@ source_set("ui") {
     sources += [
       "views/bookmarks/bookmark_bar_instructions_view.cc",
       "views/bookmarks/bookmark_bar_instructions_view.h",
+      "views/bookmarks/brave_bookmark_context_menu.cc",
+      "views/bookmarks/brave_bookmark_context_menu.h",
       "views/brave_first_run_dialog.cc",
       "views/brave_first_run_dialog.h",
       "views/brave_layout_provider.cc",
@@ -283,7 +296,16 @@ source_set("ui") {
       "views/window_closing_confirm_dialog_view.cc",
       "views/window_closing_confirm_dialog_view.h",
     ]
-
+    if (enable_brave_vpn) {
+      if (is_win) {
+        sources += [
+          "views/brave_vpn/brave_vpn_dns_settings_notificiation_dialog_view.cc",
+          "views/brave_vpn/brave_vpn_dns_settings_notificiation_dialog_view.h",
+          "webui/settings/brave_settings_secure_dns_handler.cc",
+          "webui/settings/brave_settings_secure_dns_handler.h",
+        ]
+      }
+    }
     if (use_aura) {
       sources += [
         "views/renderer_context_menu/brave_render_view_context_menu_views.cc",
@@ -324,6 +346,21 @@ source_set("ui") {
     ]
   }
 
+  # brave's obsolete infobar is only used on Windows now.
+  if (is_win) {
+    sources += [
+      "startup/brave_obsolete_system_infobar_delegate.cc",
+      "startup/brave_obsolete_system_infobar_delegate.h",
+    ]
+
+    if (toolkit_views) {
+      sources += [
+        "views/obsolete_system_confirm_dialog_view.cc",
+        "views/obsolete_system_confirm_dialog_view.h",
+      ]
+    }
+  }
+
   if (is_linux) {
     sources += [
       "views/brave_views_delegate_linux.cc",
@@ -341,7 +378,6 @@ source_set("ui") {
     "//brave/browser:sparkle_buildflags",
     "//brave/browser/gcm_driver",
     "//brave/browser/profiles",
-    "//brave/browser/tor",
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
@@ -364,23 +400,21 @@ source_set("ui") {
     "//brave/components/brave_search/common",
     "//brave/components/brave_search_conversion",
     "//brave/components/brave_shields/browser",
-    "//brave/components/brave_vpn/buildflags",
-    "//brave/components/brave_wayback_machine:buildflags",
+    "//brave/components/brave_shields/common:mojom",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
-    "//brave/components/crypto_dot_com/browser/buildflags:buildflags",
-    "//brave/components/ftx/browser/buildflags:buildflags",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/common",
     "//brave/components/ntp_widget_utils/browser",
     "//brave/components/p3a:buildflags",
-    "//brave/components/playlist/buildflags",
+    "//brave/components/playlist/common/buildflags",
     "//brave/components/resources:static_resources",
-    "//brave/components/sidebar/buildflags",
+    "//brave/components/text_recognition/common/buildflags",
     "//brave/components/time_period_storage",
-    "//brave/components/tor",
-    "//brave/components/tor:pref_names",
     "//brave/components/tor/buildflags",
     "//brave/components/vector_icons",
     "//brave/components/webcompat_reporter/browser",
@@ -414,8 +448,20 @@ source_set("ui") {
     deps += [
       "//brave/browser/ui/views/brave_ads",
       "//brave/browser/ui/views/brave_tooltips",
+      "//brave/browser/ui/views/infobars",
       "//brave/components/brave_shields/common:common",
     ]
+  }
+
+  if (enable_text_recognition) {
+    sources += [
+      "views/text_recognition_dialog_tracker.cc",
+      "views/text_recognition_dialog_tracker.h",
+      "views/text_recognition_dialog_view.cc",
+      "views/text_recognition_dialog_view.h",
+    ]
+
+    deps += [ "//brave/components/text_recognition/browser" ]
   }
 
   # This is no longer compiled into Chromium on Android, but we still
@@ -430,6 +476,12 @@ source_set("ui") {
     if (toolkit_views) {
       deps += [ "//brave/browser/ui/views/infobars:brave_wayback_machine" ]
     }
+  }
+
+  if (toolkit_views) {
+    deps += [
+      "//brave/browser/ui/views/infobars:brave_sync_account_deleted_infobar",
+    ]
   }
 
   if (enable_ipfs) {
@@ -458,7 +510,7 @@ source_set("ui") {
     ]
   }
 
-  if (enable_sidebar) {
+  if (toolkit_views) {
     deps += [
       "//brave/browser/ui/sidebar",
       "//brave/components/sidebar",
@@ -562,6 +614,8 @@ source_set("ui") {
       "views/location_bar/brave_star_view.h",
       "views/profiles/brave_avatar_toolbar_button.cc",
       "views/profiles/brave_avatar_toolbar_button.h",
+      "views/profiles/brave_avatar_toolbar_button_delegate.cc",
+      "views/profiles/brave_avatar_toolbar_button_delegate.h",
       "views/tabs/brave_new_tab_button.cc",
       "views/tabs/brave_new_tab_button.h",
       "views/tabs/brave_tab_search_button.cc",
@@ -591,6 +645,11 @@ source_set("ui") {
       sources += [
         "views/location_bar/onion_location_view.cc",
         "views/location_bar/onion_location_view.h",
+      ]
+
+      deps += [
+        "//brave/browser/tor",
+        "//brave/components/tor:pref_names",
       ]
     }
 
@@ -624,14 +683,15 @@ source_set("ui") {
     sources += [
       "toolbar/brave_vpn_menu_model.cc",
       "toolbar/brave_vpn_menu_model.h",
+      "webui/brave_vpn/brave_vpn_localized_string_provider.cc",
+      "webui/brave_vpn/brave_vpn_localized_string_provider.h",
       "webui/brave_vpn/vpn_panel_handler.cc",
       "webui/brave_vpn/vpn_panel_handler.h",
       "webui/brave_vpn/vpn_panel_ui.cc",
       "webui/brave_vpn/vpn_panel_ui.h",
     ]
     deps += [
-      "//brave/components/brave_vpn",
-      "//brave/components/brave_vpn/mojom",
+      "//brave/components/brave_vpn/browser",
       "//brave/components/brave_vpn/resources/panel:brave_vpn_panel_generated",
       "//mojo/public/cpp/bindings",
       "//ui/webui:webui",
@@ -722,20 +782,14 @@ source_set("ui") {
     deps += [ "//brave/browser/ui/webui/ethereum_remote_client:ethereum_remote_client_page_generated" ]
   }
 
-  if (enable_ftx) {
-    deps += [ "//brave/components/ftx/common" ]
-  }
-
   if (enable_playlist_webui) {
     sources += [
-      "webui/playlist_page_handler.cc",
-      "webui/playlist_page_handler.h",
       "webui/playlist_ui.cc",
       "webui/playlist_ui.h",
     ]
     deps += [
-      "//brave/components/playlist/mojom",
-      "//brave/components/playlist/resources:generated_resources",
+      "//brave/components/playlist/browser",
+      "//brave/components/playlist/browser/resources:generated_resources",
     ]
   }
 
@@ -759,16 +813,22 @@ source_set("browser_tests") {
     ]
 
     deps = [
+      "//brave/app:command_ids",
       "//brave/browser/ui",
       "//brave/components/constants",
       "//chrome/browser",
       "//chrome/browser/devtools:test_support",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
+      "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//components/javascript_dialogs",
       "//components/prefs",
       "//content/test:test_support",
     ]
+
+    if (enable_text_recognition) {
+      sources += [ "text_recognition_browsertest.cc" ]
+    }
   }
 }

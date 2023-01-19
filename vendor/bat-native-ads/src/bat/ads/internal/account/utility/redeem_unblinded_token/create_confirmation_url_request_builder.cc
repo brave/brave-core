@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 
@@ -42,7 +42,7 @@ CreateConfirmationUrlRequestBuilder::CreateConfirmationUrlRequestBuilder(
   DCHECK(IsValid(confirmation_));
 }
 
-// POST /v2/confirmation/{transactionId}/{credential}
+// POST /v3/confirmation/{transactionId}/{credential}
 
 mojom::UrlRequestInfoPtr CreateConfirmationUrlRequestBuilder::Build() {
   mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
@@ -65,7 +65,7 @@ GURL CreateConfirmationUrlRequestBuilder::BuildUrl() const {
   }
 
   const std::string spec = base::StringPrintf(
-      "%s/v2/confirmation/%s%s",
+      "%s/v3/confirmation/%s%s",
       GetAnonymousHost(confirmation_.ad_type).c_str(),
       confirmation_.transaction_id.c_str(), credential_base64_url.c_str());
 

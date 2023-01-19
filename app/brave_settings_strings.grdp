@@ -74,9 +74,6 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_BOOKMARKS_BUTTON" desc="The label for whether the bookmarks button should be shown or not">
     Show bookmarks button
   </message>
-  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_SIDE_PANEL_BUTTON" desc="The label for whether the side panel button should be shown or not">
-    Show side panel button
-  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE" desc="The label for whether the location bar should display wide or not">
     Use wide address bar
   </message>
@@ -85,9 +82,6 @@
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_TOP_SITES" desc="The label for settings checkbox controlling whether or not top sites show up in autocomplete">
     Top sites
-  </message>
-  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES" desc="The label for settings checkbox controlling whether or not Brave suggested sites show up in autocomplete">
-    Suggested sites
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_HISTORY" desc="The label for settings checkbox controlling whether or not browsing history shows up in autocomplete">
     Browsing History
@@ -98,8 +92,29 @@
   <message name="IDS_SETTINGS_SHOW_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
     Show Brave Rewards icon in address bar
   </message>
+  <message name="IDS_SETTINGS_SHOW_BRAVE_NEWS_BUTTON_LABEL" desc="The label for the settings switch controlling whether the Brave News button is shown in the toolbar">
+    Show Brave News button in address bar
+  </message>
+  <message name="IDS_SETTINGS_SHOW_BOOKMARK_BAR" desc="The label for settings switch controlling the permanent visibility of bookmarks bar">
+    Show bookmarks
+  </message>
+  <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ALWAYS" desc="The label for settings switch controlling the permanent visibility of bookmarks bar">
+    Always
+  </message>
+  <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ALWAYS_DESC" desc="The label for settings switch controlling the permanent visibility of bookmarks bar">
+    Bookmark bar is visible on all pages
+  </message>
   <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP" desc="The label for settings switch controlling the visibility of bookmarks bar on NTP">
-    Always show bookmarks on new tab page
+    Only on the new tab page
+  </message>
+  <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP_DESC" desc="The label for settings switch controlling the visibility of bookmarks bar on NTP description">
+    Bookmark bar is hidden on all pages except the new tab page
+  </message>
+  <message name="IDS_SETTINGS_NEVER_SHOW_BOOKMARK_BAR" desc="The label for settings switch controlling the visibility of bookmarks bar">
+    Never
+  </message>
+  <message name="IDS_SETTINGS_NEVER_SHOW_BOOKMARK_BAR_DESC" desc="The label for settings switch controlling the visibility of bookmarks bar description">
+    Bookmarks bar is hidden on all pages
   </message>
   <message name="IDS_SETTINGS_ALWAYS_SHOW_FULL_URLS" desc="The label for a setting to show full URLs on omnibox">
     Always show full URLs
@@ -116,6 +131,15 @@
   <message name="IDS_SETTINGS_SPEEDREADER_SUB_LABEL" desc="The sub-label describing Speedreader">
     Articles automatically load in reader mode, saving you time
   </message>
+
+  <if expr="toolkit_views">
+    <message name="IDS_SETTINGS_APPEARNCE_SETTINGS_SIDEBAR_PART_TITLE" desc="Title of sidebar part in settings">
+      Sidebar
+    </message>
+    <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_SIDEBAR_BUTTON" desc="The label for whether the side panel button should be shown or not">
+      Show Sidebar button
+    </message>
+  </if>
 
   <!-- Settings / New tab page -->
   <message name="IDS_SETTINGS_NEW_TAB" desc="The text label for the New Tab settings page">
@@ -205,6 +229,12 @@
   </message>
   <message name="IDS_SETTINGS_DE_AMP_SUB_LABEL" desc="The sub-label describing De-AMP feature">
     Prefer publisher page URLs, instead of AMP and similar versions.
+  </message>
+  <message name="IDS_SETTINGS_DEBOUNCE_LABEL" desc="The label to activate debounce feature">
+    Auto-redirect tracking URLs
+  </message>
+  <message name="IDS_SETTINGS_DEBOUNCE_SUB_LABEL" desc="The sub-label describing debounce feature">
+    Enable support for bypassing top-level redirect tracking URLs.
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_CONTROL_LABEL" desc="Default Brave reduce language control setting label">
     Prevent sites from fingerprinting me based on my language preferences
@@ -411,9 +441,6 @@
   <message name="IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE" desc="The title the settings section which has options for blocking third-party embeds, commonly from social media sites">
     Social media blocking
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_GOOGLE_LOGIN_LABEL" desc="Label for a switch control which allows Google social buttons to be enabled/disabled">
-    Allow Google login buttons on third party sites
-  </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_FACEBOOK_EMBEDDED_POSTS_LABEL" desc="Label for a switch control which allows Facebook embedded posts">
     Allow Facebook logins and embedded posts
   </message>
@@ -516,6 +543,19 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_SOLANA_BLOCK" desc="Label for solana site settings.">
     Block sites from accessing the Solana provider API
   </message>
+  <!-- Google Sign-In setting -->
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN" desc="Label for G sign-in site settings.">
+    Google Sign-In
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ASK" desc="Label for G sign-in site settings.">
+    Ask when a site wants to use legacy Google Sign-In
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_BLOCK" desc="Label for G sign-in site settings.">
+    Block sites from using legacy Google Sign-In
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW" desc="Label for G sign-in site settings.">
+    Allow sites to use legacy Google Sign-In
+  </message>
 
   <!-- Settings / Privacy and security / Safety Check -->
   <message name="IDS_SETTINGS_BRAVE_SAFETY_CHECK_SAFE_BROWSING_ENABLED_STANDARD_AVAILABLE_ENHANCED" desc="This text points out that Safe Browsing is enabled as standard protection.">
@@ -537,6 +577,9 @@
   </message>
   <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGE_ACTION_LABEL" desc="Brave Sync manage action label">
     Manage your synced devices
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_SYNC_COULD_NOT_SYNC_ACTION_LABEL" desc="Could not sync devices action label. It is displayed in the case when Brave Sync could not decrypt code words and start work">
+    Could not sync Brave on your devices
   </message>
   <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGER_TITLE" desc="Brave Sync manager title">
     Sync Manager
@@ -632,7 +675,7 @@
     Enter a sync code
   </message>
   <message name="IDS_BRAVE_SYNC_ENTER_CODE_DESCRIPTION" desc="The Sync modal text for `enter sync code`">
-    Type your supplied sync chain code words into the form below.
+    Enter your sync chain passphrase below.
   </message>
   <message name="IDS_BRAVE_SYNC_ADD_DEVICE_BUTTON" desc="The Sync button `add device` for adding a new device to the sync chain. triggers a modal with device options">
     Add New Device
@@ -654,6 +697,9 @@
   </message>
   <message name="IDS_BRAVE_SYNC_INTERNAL_SETUP_ERROR" desc="Text for rarely occured sync setup error.">
     Internal sync setup error
+  </message>
+  <message name="IDS_BRAVE_SYNC_INTERNAL_ACCOUNT_DELETE_ERROR" desc="Text for rarely occured permanently delete sync account error.">
+    Internal account delete error
   </message>
   <message name="IDS_BRAVE_SYNC_CODE_FROM_DEPRECATED_VERSION" desc="Text for error when trying to use old version sync code after v1 sunset date.">
     This code was generated by a deprecated version of Brave, please upgrade your other device first
@@ -682,6 +728,40 @@
   </message>
   <message name="IDS_BRAVE_SYNC_PASSPHRASE_DECRYPTION_ERROR_MESSAGE" desc="Warning message that informs user about Brave Sync is not running and browser needs to have access to secure OS passwords store">
     Brave could not access your operating system's safe storage. This is what's used to secure data such as passwords and cookies; it's also required for Brave Sync to connect your browser profile between devices. This means Brave Sync is not running. To resolve this issue, please see the <ph name="BEGIN_LINK_SYNC_GUIDE">&lt;a target="_blank" href="$1"&gt;</ph>Brave Sync troubleshooting guide<ph name="END_LINK_SYNC_GUIDE">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_BRAVE_SYNC_PASSPHRASE_DECRYPTION_SS_UNLOCKED_ERROR_MESSAGE" desc="Warning">
+    It looks like the sync encryption key is different from the one used when you first set up Brave Sync. The easiest fix here is to reset and re-join the sync chain using the passphrase from one of your other synced devices.
+  </message>
+  <message name="IDS_BRAVE_SYNC_LEAVE_AND_REJOIN_THE_CHAIN_BUTTON" desc="Button which does reset the sync and offers to re-join the sync chain">
+    Reset and re-join sync chain
+  </message>
+  <message name="IDS_BRAVE_DELETE_SYNC_ACCOUNT_BUTTON_AND_DIALOG_TITLE" desc="The button that opens Permanently delete account confirmation dialog. Also this string is the dialog title">
+    Delete Sync account
+  </message>
+  <message name="IDS_BRAVE_SYNC_PERMANENTLY_DELETE_ACCOUNT_BUTTON" desc="The Sync button that leads to permanently delete Sync account">
+    Permanently delete account
+  </message>
+  <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_DESCRIPTION_PARTIAL_1" desc="">
+    Deleting your account will remove your encrypted data from Brave servers and disable Sync on all of your connected devices.
+  </message>
+  <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_DESCRIPTION_PARTIAL_2" desc="">
+    It will not however delete the data that is stored locally on those devices.
+  </message>
+  <message name="IDS_BRAVE_SYNC_DELETE_ACCOUNT_DESCRIPTION_PARTIAL_3" desc="">
+    This deletion is permanent and there is no way to recover the data. Should you decide to
+    start using Sync again, you will need to create a new account and re-add each device one by one.
+  </message>
+  <message name="IDS_BRAVE_SYNC_PERMANENTLY_DELETE_ACCOUNT_IN_PROGRESS" desc="The string which indicates that Sync account deletion happens now">
+    Account deletion is in progress...
+  </message>
+  <message name="IDS_BRAVE_SYNC_JOINING_DELETED_ACCOUNT" desc="The error text for the case when trying to connect to the permanently deleted chain">
+    Could not join this sync chain. Account was deleted.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_AUTOFILL_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing autofill settings between multiple browser instances.">
+    Addresses, payment info, etc.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_APPS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing apps between multiple browser instances.">
+    Web apps (PWAs)
   </message>
 
   <!-- Settings / Search engine -->
@@ -855,7 +935,7 @@
     The number of minutes to wait until the Brave Wallet is automatically locked
   </message>
   <message name="IDS_SETTINGS_WALLET_NETWORKS_ITEM" desc="The label for opening wallet networks list">
-    Networks
+    Wallet Networks
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO" desc="Reset wallet transactions">
     Clear wallet transaction and nonce information
@@ -974,6 +1054,12 @@
   </message>
   <message name="IDS_SETTINGS_WALLET_DELETE_NETWORK_CONFIRMATION" desc="The text of confirmation to delete wallet network">
     Do you really want to delete <ph name="KEY_NAME">$1<ex>NetworkName</ex></ph>?
+  </message>
+  <message name="IDS_SETTINGS_WALLET_ACTIVE_NETWORK_IS_ALWAYS_VISIBLE" desc="Tooltip for disabled hide/show network toggle when network is active">
+    Active network is always visible in wallet network list
+  </message>
+  <message name="IDS_SETTINGS_WALLET_SHOW_HIDE_NETWORK" desc="Tooltip for disabled hide/show network toggle">
+    Show/hide network in wallet network list
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_NETWORK_CONFIRMATION" desc="The text of confirmation to reset wallet network">
     Do you really want to reset <ph name="KEY_NAME">$1<ex>NetworkName</ex></ph>?
@@ -1149,6 +1235,9 @@
   </message>
   <message name="IDS_SETTINGS_CLOSING_LAST_TAB_OPTION_LABEL" desc="The text for settings option">
     Close window when closing last tab
+  </message>
+  <message name="IDS_SETTINGS_DISABLE_CLICKABLE_MUTE_INDICATORS" desc="The text for the settings option for disabling clickable tab mute indicators">
+    Disable mute function in tab speaker icons
   </message>
 
   <!-- Avatars. Generated via zsh and node:

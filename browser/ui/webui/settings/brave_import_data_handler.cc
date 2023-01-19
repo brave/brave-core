@@ -9,11 +9,12 @@
 #include <string>
 #include <unordered_map>
 
+#include "brave/browser/importer/brave_external_process_importer_host.h"
 #include "brave/browser/ui/webui/settings/import_feature.h"
-#include "chrome/browser/importer/external_process_importer_host.h"
 #include "chrome/browser/importer/profile_writer.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/web_contents.h"
 
 #if BUILDFLAG(IS_MAC)
 #include "base/files/file_path.h"
@@ -81,7 +82,7 @@ void BraveImportDataHandler::StartImportImpl(
   // Temporary flag to keep old way until
   // https://github.com/brave/brave-core/pull/15637 landed.
   // Should be removed in that PR.
-  if (!IsParallelImportEnabled()) {
+  if (!IsParallelImportEnabled(web_ui()->GetWebContents()->GetVisibleURL())) {
     ImportDataHandler::StartImport(source_profile, imported_items);
     return;
   }
@@ -90,7 +91,7 @@ void BraveImportDataHandler::StartImportImpl(
     import_observers_.erase(source_profile.source_path);
 
   // Using weak pointers because it destroys itself when finshed.
-  auto* importer_host = new ExternalProcessImporterHost();
+  auto* importer_host = new BraveExternalProcessImporterHost();
   import_observers_[source_profile.source_path] =
       std::make_unique<BraveImporterObserver>(
           importer_host, source_profile, imported_items,
@@ -153,7 +154,7 @@ void BraveImportDataHandler::OnGetDiskAccessPermission(
     // to guide full disk access information to users.
     // Guide dialog will be opened after import dialog is closed.
     FireWebUIListener("import-data-status-changed", base::Value("failed"));
-    if (IsParallelImportEnabled()) {
+    if (IsParallelImportEnabled(web_ui()->GetWebContents()->GetVisibleURL())) {
       import_observers_[source_profile.source_path]->ImportEnded();
     }
     // Observing web_contents is started here to know the closing timing of

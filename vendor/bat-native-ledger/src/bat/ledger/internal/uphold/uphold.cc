@@ -121,7 +121,7 @@ void Uphold::OnFetchBalance(FetchBalanceCallback callback,
 
   if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    if (!DisconnectWallet()) {
+    if (!LogOutWallet()) {
       BLOG(0, "Failed to disconnect " << constant::kWalletUphold << " wallet!");
       return std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
     }
@@ -267,9 +267,9 @@ mojom::ExternalWalletPtr Uphold::TransitionWallet(
   return ledger::wallet::TransitionWallet(ledger_, std::move(wallet), to);
 }
 
-bool Uphold::DisconnectWallet(bool manual) {
-  return ledger::wallet::DisconnectWallet(ledger_, constant::kWalletUphold,
-                                          manual);
+bool Uphold::LogOutWallet(const std::string& notification) {
+  return ledger::wallet::LogOutWallet(ledger_, constant::kWalletUphold,
+                                      notification);
 }
 
 void Uphold::RemoveTransferFee(const std::string& contribution_id) {

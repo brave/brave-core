@@ -11,7 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.BraveLocalState;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
 public class UnstoppableDomainsSettingsFragment extends PreferenceFragmentCompat {
@@ -23,18 +24,18 @@ public class UnstoppableDomainsSettingsFragment extends PreferenceFragmentCompat
         getActivity().setTitle(R.string.unstoppable_domains_title);
         SettingsUtils.addPreferencesFromResource(this, R.xml.unstoppable_domains_preferences);
 
-        RadioButtonGroupUnstoppableDomainsResolveMethodPreference
-                radioButtonGroupUnstoppableDomainsResolveMethodPreference =
-                        (RadioButtonGroupUnstoppableDomainsResolveMethodPreference) findPreference(
-                                PREF_UNSTOPPABLE_DOMAINS_RESOLVE_METHOD);
+        RadioButtonGroupDDnsResolveMethodPreference radioButtonGroupDDnsResolveMethodPreference =
+                (RadioButtonGroupDDnsResolveMethodPreference) findPreference(
+                        PREF_UNSTOPPABLE_DOMAINS_RESOLVE_METHOD);
 
-        radioButtonGroupUnstoppableDomainsResolveMethodPreference.initialize(
-                BravePrefServiceBridge.getInstance().getUnstoppableDomainsResolveMethod());
+        radioButtonGroupDDnsResolveMethodPreference.initialize(
+                BraveLocalState.get().getInteger(BravePref.UNSTOPPABLE_DOMAINS_RESOLVE_METHOD));
 
-        radioButtonGroupUnstoppableDomainsResolveMethodPreference.setOnPreferenceChangeListener(
+        radioButtonGroupDDnsResolveMethodPreference.setOnPreferenceChangeListener(
                 (preference, newValue) -> {
                     int method = (int) newValue;
-                    BravePrefServiceBridge.getInstance().setUnstoppableDomainsResolveMethod(method);
+                    BraveLocalState.get().setInteger(
+                            BravePref.UNSTOPPABLE_DOMAINS_RESOLVE_METHOD, method);
                     return true;
                 });
     }

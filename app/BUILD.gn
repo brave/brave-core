@@ -1,7 +1,12 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
-import("//brave/components/brave_vpn/buildflags/buildflags.gni")
-import("//brave/components/sidebar/buildflags/buildflags.gni")
-import("//brave/components/speedreader/common/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//build/config/features.gni")
 import("//build/config/locales.gni")
@@ -12,10 +17,10 @@ source_set("command_ids") {
 
 brave_grit("brave_generated_resources_grit") {
   defines = [
-    "enable_sidebar=$enable_sidebar",
     "enable_speedreader=$enable_speedreader",
     "enable_brave_vpn=$enable_brave_vpn",
     "enable_pin_shortcut=$enable_pin_shortcut",
+    "enable_text_recognition=$enable_text_recognition",
   ]
   source = "brave_generated_resources.grd"
   output_dir = "$root_gen_dir/brave"

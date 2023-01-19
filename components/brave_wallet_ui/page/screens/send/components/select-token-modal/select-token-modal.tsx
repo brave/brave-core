@@ -16,9 +16,6 @@ import { WalletActions } from '../../../../../common/actions/'
 // Types
 import { BraveWallet, WalletAccountType, CoinTypesMap, SendOptionTypes } from '../../../../../constants/types'
 
-// Hooks
-import useSend from '../../../../../common/hooks/send'
-
 // Utils
 import { getLocale } from '../../../../../../common/locale'
 import { getFilecoinKeyringIdFromNetwork, getTokensNetwork } from '../../../../../utils/network-utils'
@@ -43,14 +40,12 @@ import { Wrapper, Modal, ScrollContainer, AccountSection } from './select-tokenm
 interface Props {
   onClose: () => void
   selectedSendOption: SendOptionTypes
+  selectSendAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
 }
 
 export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
   (props: Props, forwardedRef) => {
-    const { onClose, selectedSendOption } = props
-
-    // Hooks
-    const { selectSendAsset } = useSend(true)
+    const { onClose, selectedSendOption, selectSendAsset } = props
 
     // Redux
     const dispatch = useDispatch()
@@ -90,7 +85,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     }, [userVisibleTokensInfo, networks])
 
     const getTokenListWithBalances = React.useCallback((account: WalletAccountType) => {
-      return getTokenListByAccount(account).filter((token) => getBalance(account, token) !== '0')
+      return getTokenListByAccount(account).filter((token) => getBalance(account, token) > '0')
     }, [getTokenListByAccount])
 
     const getTokensBySelectedSendOption = React.useCallback((account: WalletAccountType) => {
@@ -161,6 +156,13 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       return accounts.map((account) => getTokensBySearchValue(account)).flat(1).length === 0
     }, [accounts, getTokensBySearchValue])
 
+    const modalTitle = React.useMemo(() => {
+      if (selectedSendOption === 'nft') {
+        return getLocale('braveWalletSendTabSelectNFTTitle')
+      }
+      return getLocale('braveWalletSendTabSelectTokenTitle')
+    }, [selectedSendOption])
+
     const tokensByAccount = React.useMemo(() => {
       if (emptyTokensList) {
         return <Text textSize='14px' isBold={false} textColor='text03'>
@@ -182,13 +184,15 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             >
               {account.name}
             </Text>
-            <Text
-              textColor='text03'
-              textSize='14px'
-              isBold={false}
-            >
-              {getAccountFiatValue(account)}
-            </Text>
+            {selectedSendOption === 'token' &&
+              <Text
+                textColor='text03'
+                textSize='14px'
+                isBold={false}
+              >
+                {getAccountFiatValue(account)}
+              </Text>
+            }
           </AccountSection>
           <Column columnWidth='full' horizontalPadding={8}>
             <VerticalSpacer size={8} />
@@ -203,7 +207,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           </Column>
         </Column>
       )
-    }, [getTokensBySearchValue, getAccountFiatValue, emptyTokensList])
+    }, [getTokensBySearchValue, getAccountFiatValue, emptyTokensList, selectedSendOption])
 
     // render
     return (
@@ -211,7 +215,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         <Modal ref={forwardedRef}>
           <Row rowWidth='full' horizontalPadding={24} verticalPadding={20}>
             <Text textSize='18px' isBold={true}>
-              {getLocale('braveWalletSendTabSelectTitle')}
+              {modalTitle}
             </Text>
             <IconButton icon={CloseIcon} onClick={onClose} size={20} />
           </Row>

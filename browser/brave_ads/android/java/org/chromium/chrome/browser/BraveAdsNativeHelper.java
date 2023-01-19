@@ -1,8 +1,9 @@
-/** Copyright (c) 2019 The Brave Authors. All rights reserved.
-  * This Source Code Form is subject to the terms of the Mozilla Public
-  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
-  * You can obtain one at http://mozilla.org/MPL/2.0/.
-  */
+/**
+ * Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
 
 package org.chromium.chrome.browser;
 
@@ -18,8 +19,8 @@ public class BraveAdsNativeHelper {
         return BraveAdsNativeHelperJni.get().isBraveAdsEnabled(profile);
     };
 
-    public static void nativeSetAdsEnabled(Profile profile) {
-        BraveAdsNativeHelperJni.get().setAdsEnabled(profile);
+    public static void nativeSetAdsEnabled(Profile profile, boolean should_enable_ads) {
+        BraveAdsNativeHelperJni.get().setAdsEnabled(profile, should_enable_ads);
     };
 
     public static boolean nativeIsSupportedLocale(Profile profile) {
@@ -42,7 +43,7 @@ public class BraveAdsNativeHelper {
     @NativeMethods
     interface Natives {
         boolean isBraveAdsEnabled(Profile profile);
-        void setAdsEnabled(Profile profile);
+        void setAdsEnabled(Profile profile, boolean should_enable_ads);
         boolean isSupportedLocale(Profile profile);
         void onNotificationAdShown(Profile profile, String j_notification_id);
         void onNotificationAdClosed(Profile profile, String j_notification_id, boolean j_by_user);

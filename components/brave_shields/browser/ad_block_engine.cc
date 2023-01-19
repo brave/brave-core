@@ -98,7 +98,9 @@ std::string ResourceTypeToString(blink::mojom::ResourceType resource_type) {
 
 namespace brave_shields {
 
-AdBlockEngine::AdBlockEngine() : ad_block_client_(new adblock::Engine()) {}
+AdBlockEngine::AdBlockEngine() : ad_block_client_(new adblock::Engine()) {
+  DETACH_FROM_SEQUENCE(sequence_checker_);
+}
 
 AdBlockEngine::~AdBlockEngine() = default;
 
@@ -109,7 +111,9 @@ void AdBlockEngine::ShouldStartRequest(const GURL& url,
                                        bool* did_match_rule,
                                        bool* did_match_exception,
                                        bool* did_match_important,
-                                       std::string* mock_data_url) {
+                                       std::string* mock_data_url,
+                                       std::string* rewritten_url) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
   // a URL or origin and not a string to a host name.
@@ -120,7 +124,7 @@ void AdBlockEngine::ShouldStartRequest(const GURL& url,
   ad_block_client_->matches(url.spec(), url.host(), tab_host, is_third_party,
                             ResourceTypeToString(resource_type), did_match_rule,
                             did_match_exception, did_match_important,
-                            mock_data_url);
+                            mock_data_url, rewritten_url);
 
   // LOG(ERROR) << "AdBlockEngine::ShouldStartRequest(), host: "
   //  << tab_host
@@ -132,6 +136,7 @@ absl::optional<std::string> AdBlockEngine::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
   // a URL or origin and not a string to a host name.
@@ -151,6 +156,7 @@ absl::optional<std::string> AdBlockEngine::GetCspDirectives(
 }
 
 void AdBlockEngine::EnableTag(const std::string& tag, bool enabled) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (enabled) {
     if (tags_.find(tag) == tags_.end()) {
       ad_block_client_->addTag(tag);
@@ -162,23 +168,34 @@ void AdBlockEngine::EnableTag(const std::string& tag, bool enabled) {
   }
 }
 
-void AdBlockEngine::AddResources(const std::string& resources) {
-  ad_block_client_->addResources(resources);
+void AdBlockEngine::UseResources(const std::string& resources) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  ad_block_client_->useResources(resources);
 }
 
 bool AdBlockEngine::TagExists(const std::string& tag) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return base::Contains(tags_, tag);
 }
 
-absl::optional<base::Value> AdBlockEngine::UrlCosmeticResources(
-    const std::string& url) {
-  return base::JSONReader::Read(ad_block_client_->urlCosmeticResources(url));
+base::Value::Dict AdBlockEngine::UrlCosmeticResources(const std::string& url) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  absl::optional<base::Value> result =
+      base::JSONReader::Read(ad_block_client_->urlCosmeticResources(url));
+
+  if (!result) {
+    return base::Value::Dict();
+  } else {
+    DCHECK(result->is_dict());
+    return std::move(result->GetDict());
+  }
 }
 
 base::Value::List AdBlockEngine::HiddenClassIdSelectors(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   absl::optional<base::Value> result = base::JSONReader::Read(
       ad_block_client_->hiddenClassIdSelectors(classes, ids, exceptions));
 
@@ -190,23 +207,22 @@ base::Value::List AdBlockEngine::HiddenClassIdSelectors(
   }
 }
 
-absl::optional<adblock::FilterListMetadata> AdBlockEngine::Load(
-    bool deserialize,
-    const DATFileDataBuffer& dat_buf,
-    const std::string& resources_json) {
+void AdBlockEngine::Load(bool deserialize,
+                         const DATFileDataBuffer& dat_buf,
+                         const std::string& resources_json) {
   if (deserialize) {
     OnDATLoaded(dat_buf, resources_json);
-    return absl::nullopt;
   } else {
-    return absl::make_optional(OnListSourceLoaded(dat_buf, resources_json));
+    OnListSourceLoaded(dat_buf, resources_json);
   }
 }
 
 void AdBlockEngine::UpdateAdBlockClient(
     std::unique_ptr<adblock::Engine> ad_block_client,
     const std::string& resources_json) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ad_block_client_ = std::move(ad_block_client);
-  AddResources(resources_json);
+  UseResources(resources_json);
   AddKnownTagsToAdBlockInstance();
   if (test_observer_) {
     test_observer_->OnEngineUpdated();
@@ -214,17 +230,18 @@ void AdBlockEngine::UpdateAdBlockClient(
 }
 
 void AdBlockEngine::AddKnownTagsToAdBlockInstance() {
-  std::for_each(tags_.begin(), tags_.end(),
-                [&](const std::string tag) { ad_block_client_->addTag(tag); });
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  std::for_each(tags_.begin(), tags_.end(), [&](const std::string tag) {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    ad_block_client_->addTag(tag);
+  });
 }
 
-adblock::FilterListMetadata AdBlockEngine::OnListSourceLoaded(
-    const DATFileDataBuffer& filters,
-    const std::string& resources_json) {
-  auto metadata_and_engine = adblock::engineFromBufferWithMetadata(
+void AdBlockEngine::OnListSourceLoaded(const DATFileDataBuffer& filters,
+                                       const std::string& resources_json) {
+  auto engine = std::make_unique<adblock::Engine>(
       reinterpret_cast<const char*>(filters.data()), filters.size());
-  UpdateAdBlockClient(std::move(metadata_and_engine.second), resources_json);
-  return std::move(metadata_and_engine.first);
+  UpdateAdBlockClient(std::move(engine), resources_json);
 }
 
 void AdBlockEngine::OnDATLoaded(const DATFileDataBuffer& dat_buf,

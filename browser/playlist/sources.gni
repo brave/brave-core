@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import("//brave/components/playlist/buildflags/buildflags.gni")
+import("//brave/components/playlist/common/buildflags/buildflags.gni")
 
 brave_browser_playlist_sources = []
 brave_browser_playlist_deps = []
@@ -17,7 +17,7 @@ if (enable_playlist) {
   brave_browser_playlist_deps += [
     "//base",
     "//brave/browser/profiles:util",
-    "//brave/components/playlist",
+    "//brave/components/playlist/browser",
     "//chrome/browser:browser_process",
     "//chrome/common",
     "//components/keyed_service/content",

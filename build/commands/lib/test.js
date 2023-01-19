@@ -53,7 +53,30 @@ const getApplicableFilters = (suite) => {
   return filterFilePaths
 }
 
-const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, options) => {
+const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, options = {}) => {
+  buildTests(suite, buildConfig, options)
+  runTests(passthroughArgs, suite, buildConfig, options)
+}
+
+const buildTests = (suite, buildConfig = config.defaultBuildConfig, options = {}) => {
+  config.buildConfig = buildConfig
+  config.update(options)
+
+  let testSuites = [
+    'brave_unit_tests',
+    'brave_browser_tests',
+    'brave_network_audit_tests',
+  ]
+  if (testSuites.includes(suite)) {
+    config.buildTarget = 'brave/test:' + suite
+  } else {
+    config.buildTarget = suite
+  }
+  util.touchOverriddenFiles()
+  util.buildTarget()
+}
+
+const runTests = (passthroughArgs, suite, buildConfig, options) => {
   config.buildConfig = buildConfig
   config.update(options)
 
@@ -96,20 +119,6 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
 
   braveArgs = braveArgs.concat(passthroughArgs)
 
-  // Build the tests
-  let testSuites = [
-    'brave_unit_tests',
-    'brave_browser_tests',
-    'brave_network_audit_tests',
-  ]
-  if (testSuites.includes(suite)) {
-    config.buildTarget = 'brave/test:' + suite
-  } else {
-    config.buildTarget = suite
-  }
-  util.touchOverriddenFiles()
-  util.buildTarget()
-
   // Filter out upstream tests that are known to fail for Brave
   let upstreamTestSuites = [
     'unit_tests',
@@ -123,12 +132,13 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
 
   if (config.targetOS === 'ios') {
     util.run(path.join(config.outputDir, "iossim"), [
+      "-d", "\"iPhone 14 Pro\"",
       path.join(config.outputDir, `${suite}.app`),
       path.join(config.outputDir, `${suite}.app/PlugIns/${suite}_module.xctest`)
     ], config.defaultOptions)
   } else {
     // Run the tests
-    getTestsToRun(config, suite).forEach((testSuite) => {
+    getTestsToRun(config, suite).every((testSuite) => {
       if (options.output) {
         braveArgs.splice(braveArgs.indexOf('--gtest_output=xml:' + options.output), 1)
         braveArgs.push(`--gtest_output=xml:${testSuite}.xml`)
@@ -142,7 +152,21 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
         // Specify emulator to run tests on
         braveArgs.push(`--avd-config tools/android/avd/proto/generic_android28.textpb`)
       }
-      util.run(path.join(config.outputDir, getTestBinary(testSuite)), braveArgs, config.defaultOptions)
+      let runOptions = config.defaultOptions
+      if (options.output)
+        // When test results are saved to a file, callers (such as CI) generate
+        // and analyze test reports as a next step. These callers are typically
+        // not interested in the exit code of running the tests, because they
+        // get the information about test success or failure from the output
+        // file. On the other hand, callers are interested in errors that
+        // produce an exit code, such as test compilation failures. By ignoring
+        // the test exit code here, we give callers a chance to distinguish test
+        // failures (by looking at the output file) from compilation errors.
+        runOptions.continueOnFail = true
+      let prog = util.run(path.join(config.outputDir, getTestBinary(testSuite)), braveArgs, runOptions)
+      // Don't run other tests if one has failed already, especially because
+      // this would overwrite the --output file (if given).
+      return prog.status === 0
     })
   }
 }

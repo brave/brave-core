@@ -9,12 +9,11 @@ import * as React from 'react'
 import { getNetworkInfo } from '../../utils/network-utils'
 import {
   getRampAssetSymbol,
-  getWyreAssetSymbol,
   isSelectedAssetInAssetOptions
 } from '../../utils/asset-utils'
 
 // types
-import { BraveWallet, BuyOption, SupportedOnRampNetworks } from '../../constants/types'
+import { BraveWallet, BuyOption, SupportedOnRampNetworks, SupportedTestNetworks } from '../../constants/types'
 import { WalletSelectors } from '../selectors'
 import { PageSelectors } from '../../page/selectors'
 
@@ -31,6 +30,7 @@ export const useMultiChainBuyAssets = () => {
   const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
   const selectedCurrency = useUnsafeWalletSelector(WalletSelectors.selectedCurrency)
   const reduxSelectedAsset = useUnsafePageSelector(PageSelectors.selectedAsset)
+  const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
 
   // custom hooks
   const isMounted = useIsMounted()
@@ -41,15 +41,15 @@ export const useMultiChainBuyAssets = () => {
   const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken | undefined>()
   const [options, setOptions] = React.useState<
     {
-      wyreAssetOptions: BraveWallet.BlockchainToken[]
       rampAssetOptions: BraveWallet.BlockchainToken[]
       sardineAssetOptions: BraveWallet.BlockchainToken[]
+      transakAssetOptions: BraveWallet.BlockchainToken[]
       allAssetOptions: BraveWallet.BlockchainToken[]
     }
   >({
-    wyreAssetOptions: [],
     rampAssetOptions: [],
     sardineAssetOptions: [],
+    transakAssetOptions: [],
     allAssetOptions: []
   })
 
@@ -65,11 +65,11 @@ export const useMultiChainBuyAssets = () => {
   }, [selectedAsset, buyAssetNetworks])
 
   const selectedAssetBuyOptions: BuyOption[] = React.useMemo(() => {
-    const { wyreAssetOptions, rampAssetOptions, sardineAssetOptions } = options
+    const { rampAssetOptions, sardineAssetOptions, transakAssetOptions } = options
     const onRampAssetMap = {
-      [BraveWallet.OnRampProvider.kWyre]: wyreAssetOptions,
       [BraveWallet.OnRampProvider.kRamp]: rampAssetOptions,
-      [BraveWallet.OnRampProvider.kSardine]: sardineAssetOptions
+      [BraveWallet.OnRampProvider.kSardine]: sardineAssetOptions,
+      [BraveWallet.OnRampProvider.kTransak]: transakAssetOptions
     }
     return selectedAsset
       ? [...BuyOptions]
@@ -77,6 +77,23 @@ export const useMultiChainBuyAssets = () => {
         .sort((optionA, optionB) => optionA.name.localeCompare(optionB.name))
       : []
   }, [selectedAsset, options])
+
+  const isSelectedNetworkSupported = React.useMemo(() => {
+    if (!selectedNetwork) return false
+
+    // Test networks are not supported in buy tab
+    if (SupportedTestNetworks.includes(selectedNetwork.chainId.toLowerCase())) {
+      return false
+    }
+
+    return options.allAssetOptions
+      .map(asset => asset.chainId.toLowerCase())
+      .includes(selectedNetwork.chainId.toLowerCase())
+  }, [options.allAssetOptions, selectedNetwork])
+
+  const assetsForFilteredNetwork = React.useMemo(() => {
+    return options.allAssetOptions.filter(asset => selectedNetwork?.chainId === asset.chainId)
+  }, [selectedNetwork, options.allAssetOptions])
 
   // methods
   const getAllBuyOptionsAllChains = React.useCallback(() => {
@@ -100,7 +117,6 @@ export const useMultiChainBuyAssets = () => {
       ...selectedAsset,
       symbol:
         buyOption === BraveWallet.OnRampProvider.kRamp ? getRampAssetSymbol(selectedAsset)
-          : buyOption === BraveWallet.OnRampProvider.kWyre ? getWyreAssetSymbol(selectedAsset)
             : selectedAsset.symbol
     }
 
@@ -134,7 +150,6 @@ export const useMultiChainBuyAssets = () => {
   return {
     allAssetOptions: options.allAssetOptions,
     rampAssetOptions: options.rampAssetOptions,
-    wyreAssetOptions: options.wyreAssetOptions,
     selectedAsset,
     setSelectedAsset,
     selectedAssetNetwork,
@@ -144,6 +159,8 @@ export const useMultiChainBuyAssets = () => {
     buyAmount,
     setBuyAmount,
     openBuyAssetLink,
-    isReduxSelectedAssetBuySupported
+    isReduxSelectedAssetBuySupported,
+    isSelectedNetworkSupported,
+    assetsForFilteredNetwork
   }
 }

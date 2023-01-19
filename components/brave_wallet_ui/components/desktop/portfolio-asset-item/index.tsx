@@ -62,11 +62,13 @@ export const PortfolioAssetItem = ({
   const [assetNetworkSkeletonWidth, setAssetNetworkSkeletonWidth] = React.useState(0)
 
   // memos & computed
-  const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(token.isErc721 && !isDataURL(token.logo) ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
-  }, [token.isErc721])
+  const isNonFungibleToken = React.useMemo(() => token.isNft || token.isErc721, [token.isNft, token.isErc721])
 
-  const formattedAssetBalance = token.isErc721
+  const AssetIconWithPlaceholder = React.useMemo(() => {
+    return withPlaceholderIcon(isNonFungibleToken && !isDataURL(token.logo) ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
+  }, [isNonFungibleToken, token.logo])
+
+  const formattedAssetBalance = isNonFungibleToken
     ? new Amount(assetBalance)
       .divideByDecimals(token.decimals)
       .format()
@@ -83,7 +85,7 @@ export const PortfolioAssetItem = ({
   }, [fiatBalance, defaultCurrencies.fiat])
 
   const isLoading = React.useMemo(() => {
-    return formattedAssetBalance === '' && !token.isErc721
+    return formattedAssetBalance === '' && !isNonFungibleToken
   }, [formattedAssetBalance, token])
 
   const tokensNetwork = React.useMemo(() => {
@@ -116,8 +118,6 @@ export const PortfolioAssetItem = ({
   return (
     <>
       {token.visible &&
-        // Selecting an erc721 token is temp disabled until UI is ready for viewing NFTs
-        // or when showing loading skeleton
         <StyledWrapper disabled={isLoading} onClick={action}>
           <NameAndIcon>
             <IconsWrapper>
@@ -163,7 +163,7 @@ export const PortfolioAssetItem = ({
               hideBalances={hideBalances ?? false}
             >
 
-              {!(token.isErc721 || token.isNft) &&
+              {!isNonFungibleToken &&
                 <>
                   {formattedFiatBalance ? (
                     <FiatBalanceText>{formattedFiatBalance}</FiatBalanceText>

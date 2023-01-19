@@ -56,6 +56,13 @@ public class OnboardingPrefManager {
     private static final String PREF_P3A_CRASH_REPORTING_MESSAGE_SHOWN =
             "p3a_crash_reporting_message_shown";
     private static final String PREF_URL_FOCUS_COUNT = "url_focus_count";
+    private static final String PREF_NOTIFICATION_PERMISSION_ENABLING_DIALOG =
+            "notification_permission_enabling_dialog";
+
+    private static final String PREF_NOTIFICATION_PERMISSION_ENABLING_DIALOG_FROM_SETTING =
+            "notification_permission_enabling_dialog_from_setting";
+
+    private static final String PREF_APP_LAUNCH_COUNT = "APP_LAUNCH_COUNT";
 
     private static OnboardingPrefManager sInstance;
 
@@ -340,5 +347,57 @@ public class OnboardingPrefManager {
 
         Date date = calendar.getTime();
         return date.getTime();
+    }
+
+    /**
+     * Returns the user preference for whether the Notification Permission Enabling dialog is shown.
+     */
+    public boolean isNotificationPermissionEnablingDialogShown() {
+        return mSharedPreferences.getBoolean(PREF_NOTIFICATION_PERMISSION_ENABLING_DIALOG, false);
+    }
+
+    /**
+     * Sets the user preference for whether the Notification Permission Enabling dialog is shown.
+     */
+    public void setNotificationPermissionEnablingDialogShown(boolean isShown) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_NOTIFICATION_PERMISSION_ENABLING_DIALOG, isShown);
+        sharedPreferencesEditor.apply();
+    }
+
+    /**
+     * Returns the user preference for whether the Notification Permission Enabling dialog is shown
+     * From setting.
+     */
+    public boolean isNotificationPermissionEnablingDialogShownFromSetting() {
+        return mSharedPreferences.getBoolean(
+                PREF_NOTIFICATION_PERMISSION_ENABLING_DIALOG_FROM_SETTING, false);
+    }
+
+    /**
+     * Sets the user preference for whether the Notification Permission Enabling dialog is shown
+     * From setting.
+     */
+    public void setNotificationPermissionEnablingDialogShownFromSetting(boolean isShown) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(
+                PREF_NOTIFICATION_PERMISSION_ENABLING_DIALOG_FROM_SETTING, isShown);
+        sharedPreferencesEditor.apply();
+    }
+
+    /**
+     * Returns the user preference for application launch count
+     */
+    public int launchCount() {
+        return mSharedPreferences.getInt(PREF_APP_LAUNCH_COUNT, 0);
+    }
+
+    /**
+     * Sets the user preference for application launch count
+     */
+    public void updateLaunchCount() {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putInt(PREF_APP_LAUNCH_COUNT, launchCount() + 1);
+        sharedPreferencesEditor.apply();
     }
 }

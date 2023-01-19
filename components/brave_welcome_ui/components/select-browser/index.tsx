@@ -22,6 +22,8 @@ import FirefoxSVG from '../svg/browser-icons/firefox'
 import OperaSVG from '../svg/browser-icons/opera'
 import SafariSVG from '../svg/browser-icons/safari'
 import VivaldiSVG from '../svg/browser-icons/vivaldi'
+import WhaleSVG from '../svg/browser-icons/whale'
+import YandexSVG from '../svg/browser-icons/yandex'
 
 interface BrowserItemButtonProps {
   browserName: string
@@ -37,7 +39,9 @@ const browserIcons = {
   'Mozilla Firefox': <FirefoxSVG />,
   'Opera': <OperaSVG />,
   'Safari': <SafariSVG />,
-  'Vivaldi': <VivaldiSVG />
+  'Vivaldi': <VivaldiSVG />,
+  'Whale': <WhaleSVG />,
+  'Yandex': <YandexSVG />
 }
 
 function BrowserItemButton (props: BrowserItemButtonProps) {

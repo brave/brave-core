@@ -16,7 +16,6 @@
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
-#include "base/stl_util.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/sys_byteorder.h"
@@ -54,10 +53,10 @@ uint64_t FromLE(uint64_t uint64_le) {
 #endif
 }
 
-SnsResolverTaskError ParseErrorResult(const std::string& json) {
+SnsResolverTaskError ParseErrorResult(const base::Value& json_value) {
   SnsResolverTaskError task_error;
   brave_wallet::ParseErrorResult<mojom::SolanaProviderError>(
-      json, &task_error.error, &task_error.error_message);
+      json_value, &task_error.error, &task_error.error_message);
 
   return task_error;
 }
@@ -208,8 +207,12 @@ std::string getProgramAccounts(const SolanaAddress& mint_token) {
 // Parsing result of getProgramAccounts call. Exepected to find 1 token account
 // for mint. If parsing fails first element of pair is `false`.
 std::pair<bool, absl::optional<SolanaAddress>>
-GetTokenOwnerFromGetProgramAccountsResult(const std::string& json) {
-  auto result = ParseResultList(json);
+GetTokenOwnerFromGetProgramAccountsResult(const base::Value& json_value) {
+  auto response = json_rpc_responses::RPCResponse::FromValue(json_value);
+  if (!response || !response->result)
+    return {false, absl::nullopt};
+
+  auto* result = response->result->GetIfList();
   if (!result)
     return {false, absl::nullopt};
 
@@ -224,7 +227,7 @@ GetTokenOwnerFromGetProgramAccountsResult(const std::string& json) {
     return {false, absl::nullopt};
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(*account, &account_info)) {
+  if (!solana::ParseGetAccountInfoPayload(*account, &account_info)) {
     return {false, absl::nullopt};
   }
 
@@ -314,7 +317,7 @@ absl::optional<SolanaAddress> GetDomainKey(const std::string& domain,
   // Subdomains get one-bytes prefix depending on requested record type.
   // https://bonfida.github.io/solana-name-service-guide/domain-name/records.html#difference-between-records-and-subdomains
   std::string prefix = "";
-  if (base::STLCount(domain, '.') > 1)
+  if (base::ranges::count(domain, '.') > 1)
     prefix = (record ? '\x01' : '\x00');
 
   return GetNameAccountKey(GetHashedName(prefix + name),
@@ -526,8 +529,9 @@ void SnsResolverTask::OnFetchNftSplMint(APIRequestResult api_request_result) {
   }
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(api_request_result.body(), &account_info)) {
-    SetError(ParseErrorResult(api_request_result.body()));
+  if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
+                                   &account_info)) {
+    SetError(ParseErrorResult(api_request_result.value_body()));
     return;
   }
 
@@ -564,10 +568,10 @@ void SnsResolverTask::OnFetchNftTokenOwner(
     return;
   }
 
-  auto [parsing_ok, token_owner] =
-      GetTokenOwnerFromGetProgramAccountsResult(api_request_result.body());
+  auto [parsing_ok, token_owner] = GetTokenOwnerFromGetProgramAccountsResult(
+      api_request_result.value_body());
   if (!parsing_ok) {
-    SetError(ParseErrorResult(api_request_result.body()));
+    SetError(ParseErrorResult(api_request_result.value_body()));
     return;
   }
 
@@ -595,8 +599,9 @@ void SnsResolverTask::OnFetchDomainRegistryState(
   }
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(api_request_result.body(), &account_info)) {
-    SetError(ParseErrorResult(api_request_result.body()));
+  if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
+                                   &account_info)) {
+    SetError(ParseErrorResult(api_request_result.value_body()));
     return;
   }
 
@@ -643,8 +648,9 @@ void SnsResolverTask::OnFetchSolRecordRegistryState(
   }
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(api_request_result.body(), &account_info)) {
-    SetError(ParseErrorResult(api_request_result.body()));
+  if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
+                                   &account_info)) {
+    SetError(ParseErrorResult(api_request_result.value_body()));
     return;
   }
 
@@ -697,8 +703,9 @@ void SnsResolverTask::OnFetchUrlRecordRegistryState(
   }
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(api_request_result.body(), &account_info)) {
-    SetError(ParseErrorResult(api_request_result.body()));
+  if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
+                                   &account_info)) {
+    SetError(ParseErrorResult(api_request_result.value_body()));
     return;
   }
 
@@ -757,8 +764,9 @@ void SnsResolverTask::OnFetchIpfsRecordRegistryState(
   }
 
   absl::optional<SolanaAccountInfo> account_info;
-  if (!solana::ParseGetAccountInfo(api_request_result.body(), &account_info)) {
-    SetError(ParseErrorResult(api_request_result.body()));
+  if (!solana::ParseGetAccountInfo(api_request_result.value_body(),
+                                   &account_info)) {
+    SetError(ParseErrorResult(api_request_result.value_body()));
     return;
   }
 

@@ -8,6 +8,7 @@
 #include "brave/browser/brave_rewards/rewards_prefs_util.h"
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -16,7 +17,6 @@
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
@@ -39,10 +39,6 @@
 #if !BUILDFLAG(ENABLE_EXTENSIONS)
 #define CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_
 #endif  // !BUILDFLAG(ENABLE_EXTENSIONS)
-
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-#include "brave/browser/translate/brave_translate_prefs_migration.h"
-#endif
 
 #define MigrateObsoleteProfilePrefs MigrateObsoleteProfilePrefs_ChromiumImpl
 #define MigrateObsoleteLocalStatePrefs \
@@ -110,13 +106,32 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   brave_rewards::MigrateObsoleteProfilePrefs(profile->GetPrefs());
 
   // Added 05/2022
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   translate::ClearMigrationBraveProfilePrefs(profile->GetPrefs());
-#endif
 
   // Added 06/2022
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
   NTPBackgroundPrefs(profile->GetPrefs()).MigrateOldPref();
+#endif
+
+  // Added 24/11/2022: https://github.com/brave/brave-core/pull/16027
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+  profile->GetPrefs()->ClearPref(kFTXAccessToken);
+  profile->GetPrefs()->ClearPref(kFTXOauthHost);
+  profile->GetPrefs()->ClearPref(kFTXNewTabPageShowFTX);
+  profile->GetPrefs()->ClearPref(kCryptoDotComNewTabPageShowCryptoDotCom);
+  profile->GetPrefs()->ClearPref(kCryptoDotComHasBoughtCrypto);
+  profile->GetPrefs()->ClearPref(kCryptoDotComHasInteracted);
+  profile->GetPrefs()->ClearPref(kGeminiAccessToken);
+  profile->GetPrefs()->ClearPref(kGeminiRefreshToken);
+  profile->GetPrefs()->ClearPref(kNewTabPageShowGemini);
+#endif
+
+  // Added 24/11/2022: https://github.com/brave/brave-core/pull/16027
+#if !BUILDFLAG(IS_IOS)
+  profile->GetPrefs()->ClearPref(kBinanceAccessToken);
+  profile->GetPrefs()->ClearPref(kBinanceRefreshToken);
+  profile->GetPrefs()->ClearPref(kNewTabPageShowBinance);
+  profile->GetPrefs()->ClearPref(kBraveSuggestedSiteSuggestionsEnabled);
 #endif
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }

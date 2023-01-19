@@ -5,30 +5,14 @@
 import styled from 'styled-components'
 
 export const root = styled.div`
+  background: #fafcff;
   width: 410px;
+  min-height: calc(var(--modal-content-block-size, '250px') + 30px);
   padding: 13px;
   font-family: var(--brave-font-heading);
 
-  /* Expand the height of the panel for tall overlays. See
-     |panel_overlays.tsx|. */
-
-  .panel-overlay-rewards-tour & {
-    min-height: 554px;
-  }
-
-  .panel-overlay-grant-captcha & {
-    min-height: 576px;
-  }
-
-  /* The Brave Talk opt-in is a special-case: for historical reasons it's not
-     presented as an overlay. Instead it should replace the panel content. */
-
-  .panel-overlay-brave-talk-opt-in & {
-    padding: 0;
-
-    .rewards-panel {
-      display: none;
-    }
+  .brave-theme-dark & {
+    background: #17171f;
   }
 `
 

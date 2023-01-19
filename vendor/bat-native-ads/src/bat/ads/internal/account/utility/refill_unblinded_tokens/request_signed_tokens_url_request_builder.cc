@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
 
@@ -13,7 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
-#include "bat/ads/internal/base/crypto/crypto_util.h"
+#include "bat/ads/internal/common/crypto/crypto_util.h"
 #include "bat/ads/internal/server/headers/via_header_util.h"
 #include "bat/ads/internal/server/url/hosts/server_host_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -45,7 +45,7 @@ RequestSignedTokensUrlRequestBuilder::RequestSignedTokensUrlRequestBuilder(
 RequestSignedTokensUrlRequestBuilder::~RequestSignedTokensUrlRequestBuilder() =
     default;
 
-// POST /v2/confirmation/token/{paymentId}
+// POST /v3/confirmation/token/{paymentId}
 
 mojom::UrlRequestInfoPtr RequestSignedTokensUrlRequestBuilder::Build() {
   mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
@@ -63,7 +63,7 @@ mojom::UrlRequestInfoPtr RequestSignedTokensUrlRequestBuilder::Build() {
 
 GURL RequestSignedTokensUrlRequestBuilder::BuildUrl() const {
   const std::string spec = base::StringPrintf(
-      "%s/v2/confirmation/token/%s", server::GetNonAnonymousHost().c_str(),
+      "%s/v3/confirmation/token/%s", server::GetNonAnonymousHost().c_str(),
       wallet_.id.c_str());
   return GURL(spec);
 }

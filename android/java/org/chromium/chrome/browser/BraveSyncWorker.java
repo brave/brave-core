@@ -8,6 +8,7 @@ package org.chromium.chrome.browser;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
@@ -200,6 +201,32 @@ public class BraveSyncWorker {
                 mNativeBraveSyncWorker, isDismissed);
     }
 
+    @CalledByNative
+    private static void onPermanentlyDeleteAccountResult(Callback<String> callback, String result) {
+        callback.onResult(result);
+    }
+
+    public void permanentlyDeleteAccount(Callback<String> callback) {
+        BraveSyncWorkerJni.get().permanentlyDeleteAccount(mNativeBraveSyncWorker, callback);
+    }
+
+    public void clearAccountDeletedNoticePending() {
+        BraveSyncWorkerJni.get().clearAccountDeletedNoticePending(mNativeBraveSyncWorker);
+    }
+
+    public boolean isAccountDeletedNoticePending() {
+        return BraveSyncWorkerJni.get().isAccountDeletedNoticePending(mNativeBraveSyncWorker);
+    }
+
+    @CalledByNative
+    private static void onJoinSyncChainResult(Callback<Boolean> callback, Boolean result) {
+        callback.onResult(result);
+    }
+
+    public void setJoinSyncChainCallback(Callback<Boolean> callback) {
+        BraveSyncWorkerJni.get().setJoinSyncChainCallback(mNativeBraveSyncWorker, callback);
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveSyncWorker caller);
@@ -231,5 +258,9 @@ public class BraveSyncWorker {
         boolean getSyncV1WasEnabled(long nativeBraveSyncWorker);
         boolean getSyncV2MigrateNoticeDismissed(long nativeBraveSyncWorker);
         void setSyncV2MigrateNoticeDismissed(long nativeBraveSyncWorker, boolean isDismissed);
+        void permanentlyDeleteAccount(long nativeBraveSyncWorker, Callback<String> callback);
+        void clearAccountDeletedNoticePending(long nativeBraveSyncWorker);
+        boolean isAccountDeletedNoticePending(long nativeBraveSyncWorker);
+        void setJoinSyncChainCallback(long nativeBraveSyncWorker, Callback<Boolean> callback);
     }
 }

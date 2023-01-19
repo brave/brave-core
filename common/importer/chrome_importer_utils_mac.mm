@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2018 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <Cocoa/Cocoa.h>
 #include <sys/param.h>
@@ -48,4 +49,14 @@ base::FilePath GetEdgeUserDataFolder() {
 base::FilePath GetOperaUserDataFolder() {
   base::FilePath result = base::mac::GetUserLibraryPath();
   return result.Append("Application Support/com.operasoftware.Opera");
+}
+
+base::FilePath GetYandexUserDataFolder() {
+  base::FilePath result = base::mac::GetUserLibraryPath();
+  return result.Append("Application Support/Yandex/YandexBrowser");
+}
+
+base::FilePath GetWhaleUserDataFolder() {
+  base::FilePath result = base::mac::GetUserLibraryPath();
+  return result.Append("Application Support").Append("Naver").Append("Whale");
 }

@@ -154,6 +154,10 @@ TEST_F(BraveTemplateURLPrepopulateDataTest,
   CheckForCountry('A', 'R', "Brave");
 }
 
+TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForIndia) {
+  CheckForCountry('I', 'N', "Brave");
+}
+
 TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForBrazil) {
   CheckForCountry('B', 'R', "Brave");
 }

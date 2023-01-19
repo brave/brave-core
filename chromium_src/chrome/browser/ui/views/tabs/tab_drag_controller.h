@@ -15,10 +15,10 @@ using TabDragControllerBrave = TabDragController;
   Unused_GetAttachedDragPoint() { return {}; } \
   virtual gfx::Point GetAttachedDragPoint
 
-#define MoveAttached             \
+#define InitDragData             \
   Unused_MoveUattached() {}      \
   friend TabDragControllerBrave; \
-  virtual void MoveAttached
+  virtual void InitDragData
 #define GetTabGroupForTargetIndex virtual GetTabGroupForTargetIndex
 #define GetAttachedBrowserWidget                   \
   GetAttachedBrowserWidget_Unused() { return {}; } \
@@ -31,6 +31,7 @@ using TabDragControllerBrave = TabDragController;
 
 #include "src/chrome/browser/ui/views/tabs/tab_drag_controller.h"
 
+#undef InitDragData
 #undef CalculateDraggedBrowserBounds
 #undef CalculateNonMaximizedDraggedBrowserBounds
 #undef DetachAndAttachToNewContext
@@ -38,7 +39,7 @@ using TabDragControllerBrave = TabDragController;
 #undef GetAttachedBrowserWidget
 #undef GetTabGroupForTargetIndex
 #undef TabDragController
-#undef MoveAttached
+#undef InitDragData
 #undef GetAttachedDragPoint
 
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
@@ -82,6 +83,8 @@ class TabDragController : public TabDragControllerChromium {
       TabDragContext* source,
       const gfx::Point& point_in_screen,
       std::vector<gfx::Rect>* drag_bounds) override;
+
+  void InitDragData(TabSlotView* view, TabDragData* drag_data) override;
 
  private:
   gfx::Vector2d GetVerticalTabStripWidgetOffset();

@@ -5,7 +5,6 @@
 import * as React from 'react'
 
 // Utils
-import { getUniqueAssets } from '../../../utils/asset-utils'
 import {
   UserAccountType,
   BuySendSwapViewTypes,
@@ -14,7 +13,6 @@ import {
 } from '../../../constants/types'
 
 // Hooks
-import { useAssets } from '../../../common/hooks'
 
 // Components
 import {
@@ -22,6 +20,7 @@ import {
   Header,
   Buy
 } from '..'
+import { useMultiChainBuyAssets } from '../../../common/hooks/use-multi-chain-buy-assets'
 
 export interface Props {
   showHeader?: boolean
@@ -34,10 +33,21 @@ function BuyTab (props: Props) {
     showHeader,
     onSelectAccount
   } = props
+
   // Custom Hooks
-  const { buyAssetOptions } = useAssets()
+  const {
+    allAssetOptions: buyAssetOptions,
+    selectedAsset,
+    selectedAssetBuyOptions,
+    setSelectedAsset,
+    getAllBuyOptionsAllChains,
+    buyAmount,
+    setBuyAmount,
+    isSelectedNetworkSupported,
+    assetsForFilteredNetwork,
+    openBuyAssetLink
+  } = useMultiChainBuyAssets()
   const [buyView, setBuyView] = React.useState<BuySendSwapViewTypes>('buy')
-  const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(buyAssetOptions[0])
 
   const onChangeBuyView = React.useCallback((view: BuySendSwapViewTypes) => {
     setBuyView(view)
@@ -66,16 +76,17 @@ function BuyTab (props: Props) {
     onChangeBuyView('currencies')
   }, [onChangeBuyView])
 
-  // Memos
-  const filteredAssetOptions = React.useMemo(() => {
-    return getUniqueAssets(buyAssetOptions)
-  }, [buyAssetOptions])
+  React.useEffect(() => {
+    if (buyAssetOptions.length === 0) {
+      getAllBuyOptionsAllChains()
+    }
+  }, [buyAssetOptions.length])
 
   React.useEffect(() => {
-    if (buyAssetOptions.length > 0) {
-      setSelectedAsset(buyAssetOptions[0])
+    if (assetsForFilteredNetwork.length > 0) {
+      setSelectedAsset(assetsForFilteredNetwork[0])
     }
-  }, [buyAssetOptions])
+  }, [assetsForFilteredNetwork])
 
   return (
     <>
@@ -87,16 +98,21 @@ function BuyTab (props: Props) {
             />
           }
           <Buy
-            selectedAsset={selectedAsset}
+            isSelectedNetworkSupported={isSelectedNetworkSupported}
+            buyAmount={buyAmount}
+            buyOptions={selectedAssetBuyOptions}
+            onChangeBuyAmount={setBuyAmount}
+            selectedAsset={selectedAsset || assetsForFilteredNetwork[0]}
             onChangeBuyView={onChangeBuyView}
             onShowCurrencySelection={onShowCurrencySelection}
+           openBuyAssetLink={openBuyAssetLink}
           />
         </>
       }
       {buyView !== 'buy' &&
         <AccountsAssetsNetworks
           goBack={goBack}
-          assetOptions={filteredAssetOptions}
+          assetOptions={assetsForFilteredNetwork}
           onClickSelectAccount={onClickSelectAccount}
           onSelectedAsset={onSelectedAsset}
           onSelectCurrency={onSelectCurrency}

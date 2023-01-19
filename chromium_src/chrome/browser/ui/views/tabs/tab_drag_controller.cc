@@ -7,6 +7,7 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
+#include "brave/browser/ui/views/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/root_view.h"
@@ -26,8 +27,19 @@
       view->GetWidget()->GetTopLevelWidget()->GetRootView(), point)
 #define GetRestoredBounds GetTopLevelWidget()->GetRestoredBounds
 
+// Remove drag threshold when it's vertical tab strip
+#define GetHorizontalDragThreshold()                          \
+  GetHorizontalDragThreshold() -                              \
+      (tabs::features::ShouldShowVerticalTabs(                \
+           BrowserView::GetBrowserViewForNativeWindow(        \
+               GetAttachedBrowserWidget()->GetNativeWindow()) \
+               ->browser())                                   \
+           ? attached_context_->GetHorizontalDragThreshold()  \
+           : 0)
+
 #include "src/chrome/browser/ui/views/tabs/tab_drag_controller.cc"
 
+#undef GetHorizontalDragThreshold
 #undef GetRestoredBounds
 #undef ConvertPointToWidget
 #undef GetBrowserViewForNativeWindow
@@ -65,7 +77,6 @@ void TabDragController::Init(TabDragContext* source_context,
   views::View::ConvertPointToScreen(source_view, &start_point_in_screen_);
 
   last_point_in_screen_ = start_point_in_screen_;
-  last_move_screen_loc_ = start_point_in_screen_.y();
 }
 
 gfx::Point TabDragController::GetAttachedDragPoint(
@@ -77,20 +88,30 @@ gfx::Point TabDragController::GetAttachedDragPoint(
 
   gfx::Point tab_loc(point_in_screen);
   views::View::ConvertPointFromScreen(attached_context_, &tab_loc);
+  const int x = drag_data_.front().pinned ? tab_loc.x() - mouse_offset_.x() : 0;
   const int y = tab_loc.y() - mouse_offset_.y();
-  return gfx::Point(0, std::max(0, y));
+  return {x, y};
 }
 
 void TabDragController::MoveAttached(const gfx::Point& point_in_screen,
                                      bool just_attached) {
-  gfx::Point new_point_in_screen = point_in_screen;
-  if (is_showing_vertical_tabs_) {
-    // As MoveAttached() compare point_in_screen.x() and last_move_screen_loc_,
-    // override x with y so that calculate offset for vertical mode.
-    new_point_in_screen.set_x(new_point_in_screen.y());
-  }
+  TabDragControllerChromium::MoveAttached(point_in_screen, just_attached);
+  if (!is_showing_vertical_tabs_)
+    return;
 
-  TabDragControllerChromium::MoveAttached(new_point_in_screen, just_attached);
+  // Update |last_move_attached_context_loc_| only when tab strip actually
+  // changed just like Chromium impl does. But we set y coordinate as we're in
+  // vertical tab strip.
+  WebContents* last_contents = drag_data_.back().contents;
+  auto* attached_model = attached_context_->GetTabStripModel();
+  int index_of_last_item = attached_model->GetIndexOfWebContents(last_contents);
+  if (index_of_last_item !=
+      attached_model->GetIndexOfWebContents(last_contents)) {
+    gfx::Point point_in_attached_context = point_in_screen;
+    views::View::ConvertPointFromScreen(attached_context_,
+                                        &point_in_attached_context);
+    last_move_attached_context_loc_ = point_in_attached_context.y();
+  }
 }
 
 absl::optional<tab_groups::TabGroupId>
@@ -225,10 +246,14 @@ gfx::Rect TabDragController::CalculateDraggedBrowserBounds(
   auto bounds = TabDragControllerChromium::CalculateDraggedBrowserBounds(
       source, point_in_screen, drag_bounds);
   if (is_showing_vertical_tabs_) {
-    // Revert back y coordinate adjustment done by Chromium impl.
-    bounds.set_y(point_in_screen.y());
+    // Revert back coordinate adjustment done by Chromium impl.
+    bounds.set_origin(point_in_screen);
 
-    // Adjust y coordinate so that dragged tabs are under cursor.
+    // Adjust coordinate so that dragged tabs are under cursor.
+    DCHECK(!drag_bounds->empty());
+    bounds.Offset(-(mouse_offset_.OffsetFromOrigin()));
+    bounds.Offset({-drag_bounds->front().x(), 0});
+
     auto* browser_view = static_cast<BraveBrowserView*>(
         BrowserView::GetBrowserViewForNativeWindow(
             GetAttachedBrowserWidget()->GetNativeWindow()));
@@ -238,7 +263,7 @@ gfx::Rect TabDragController::CalculateDraggedBrowserBounds(
         browser_view->vertical_tab_strip_widget_delegate_view();
     DCHECK(widget_delegate_view);
 
-    bounds.Offset({0, GetVerticalTabStripWidgetOffset().y()});
+    bounds.Offset(GetVerticalTabStripWidgetOffset());
     bounds.Offset(-widget_delegate_view->vertical_tab_strip_region_view()
                        ->GetOffsetForDraggedTab());
   }
@@ -262,4 +287,22 @@ gfx::Vector2d TabDragController::GetVerticalTabStripWidgetOffset() {
   auto tabstrip_widget_bounds = tabstrip_widget->GetWindowBoundsInScreen();
 
   return browser_widget_bounds.origin() - tabstrip_widget_bounds.origin();
+}
+
+void TabDragController::InitDragData(TabSlotView* view,
+                                     TabDragData* drag_data) {
+  // This seems to be a bug from upstream. If the `view` is a group header,
+  // there can't be contents or pinned state which are bound to this `view`.
+  if (view->GetTabSlotViewType() == TabSlotView::ViewType::kTabGroupHeader) {
+    absl::optional<tab_groups::TabGroupId> tab_group_id = view->group();
+    DCHECK(tab_group_id.has_value());
+    drag_data->tab_group_data = TabDragData::TabGroupData{
+        tab_group_id.value(), *source_context_->GetTabStripModel()
+                                   ->group_model()
+                                   ->GetTabGroup(tab_group_id.value())
+                                   ->visual_data()};
+    return;
+  }
+
+  TabDragControllerChromium::InitDragData(view, drag_data);
 }

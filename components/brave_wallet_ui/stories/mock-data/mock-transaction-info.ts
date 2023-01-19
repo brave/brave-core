@@ -2,7 +2,11 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Types
 import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
+
+// Mocks
 import { mockOriginInfo } from './mock-origin-info'
 
 export const mockTransactionInfo: SerializableTransactionInfo = {
@@ -17,7 +21,9 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
         gasLimit: '21000',
         to: '2',
         value: '0x15ddf09c97b0000',
-        data: Array.from(new Uint8Array(24))
+        data: Array.from(new Uint8Array(24)),
+        signOnly: false,
+        signedTransaction: undefined
       },
       chainId: '0x0',
       maxPriorityFeePerGas: '',

@@ -20,7 +20,7 @@ void MergeCspDirectiveInto(absl::optional<std::string> from,
                            absl::optional<std::string>* into);
 
 void MergeResourcesInto(base::Value::Dict from,
-                        base::Value::Dict* into,
+                        base::Value::Dict& into,
                         bool force_hide);
 
 }  // namespace brave_shields

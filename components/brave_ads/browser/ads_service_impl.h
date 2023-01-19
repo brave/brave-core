@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_
@@ -23,7 +23,7 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/browser/brave_ads/background_helper/background_helper.h"
-#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"  // IWYU pragma: keep
+#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -35,10 +35,6 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/idle/idle.h"
-
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-#include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#endif
 
 class GURL;
 
@@ -82,11 +78,9 @@ class AdsServiceImpl : public AdsService,
  public:
   explicit AdsServiceImpl(
       Profile* profile,
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
       brave_adaptive_captcha::BraveAdaptiveCaptchaService*
           adaptive_captcha_service,
       std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
-#endif
       std::unique_ptr<DeviceId> device_id,
       history::HistoryService* history_service,
       brave_rewards::RewardsService* rewards_service,
@@ -237,11 +231,9 @@ class AdsServiceImpl : public AdsService,
 
   bool NeedsBrowserUpgradeToServeAds() const override;
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   void ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override;
   void SnoozeScheduledCaptcha() override;
-#endif
 
   void OnNotificationAdShown(const std::string& placement_id) override;
   void OnNotificationAdClosed(const std::string& placement_id,
@@ -426,6 +418,7 @@ class AdsServiceImpl : public AdsService,
 
   // RewardsServiceObserver:
   void OnRewardsWalletUpdated() override;
+  void OnExternalWalletConnected() override;
   void OnCompleteReset(bool success) override;
 
   bool is_bat_ads_initialized_ = false;
@@ -463,11 +456,9 @@ class AdsServiceImpl : public AdsService,
   const raw_ptr<history::HistoryService> history_service_ =
       nullptr;  // NOT OWNED
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   const raw_ptr<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
       adaptive_captcha_service_ = nullptr;  // NOT OWNED
   const std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate_;
-#endif
 
   const std::unique_ptr<DeviceId> device_id_;
 

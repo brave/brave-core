@@ -118,6 +118,10 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_CONST_METHOD1(GetValueState, base::Value(const std::string& name));
 
+  MOCK_METHOD2(SetTimeState, void(const std::string& name, base::Time time));
+
+  MOCK_CONST_METHOD1(GetTimeState, base::Time(const std::string& name));
+
   MOCK_METHOD1(ClearState, void(
       const std::string& name));
 
@@ -164,7 +168,11 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_METHOD0(ClearAllNotifications, void());
 
-  MOCK_METHOD1(WalletDisconnected, void(const std::string& wallet_type));
+  MOCK_CONST_METHOD0(ExternalWalletConnected, void());
+
+  MOCK_CONST_METHOD0(ExternalWalletLoggedOut, void());
+
+  MOCK_CONST_METHOD0(ExternalWalletReconnected, void());
 
   MOCK_METHOD1(DeleteLog, void(client::LegacyResultCallback callback));
 

@@ -239,6 +239,18 @@ base::Value BatLedgerClientMojoBridge::GetValueState(
   return value;
 }
 
+void BatLedgerClientMojoBridge::SetTimeState(const std::string& name,
+                                             base::Time time) {
+  bat_ledger_client_->SetTimeState(name, time);
+}
+
+base::Time BatLedgerClientMojoBridge::GetTimeState(
+    const std::string& name) const {
+  base::Time time;
+  bat_ledger_client_->GetTimeState(name, &time);
+  return time;
+}
+
 void BatLedgerClientMojoBridge::ClearState(const std::string& name) {
   bat_ledger_client_->ClearState(name);
 }
@@ -372,9 +384,16 @@ void BatLedgerClientMojoBridge::ClearAllNotifications() {
   bat_ledger_client_->ClearAllNotifications();
 }
 
-void BatLedgerClientMojoBridge::WalletDisconnected(
-    const std::string& wallet_type) {
-  bat_ledger_client_->WalletDisconnected(wallet_type);
+void BatLedgerClientMojoBridge::ExternalWalletConnected() const {
+  bat_ledger_client_->ExternalWalletConnected();
+}
+
+void BatLedgerClientMojoBridge::ExternalWalletLoggedOut() const {
+  bat_ledger_client_->ExternalWalletLoggedOut();
+}
+
+void BatLedgerClientMojoBridge::ExternalWalletReconnected() const {
+  bat_ledger_client_->ExternalWalletReconnected();
 }
 
 void OnDeleteLog(ledger::client::LegacyResultCallback callback,

@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_COMMON_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_COMMON_PREF_NAMES_H_
@@ -34,6 +34,9 @@ namespace ads::prefs {
 
 // Brave Ads enabled/disabled pref
 extern const char kEnabled[];
+
+// Diagnostic id prefs
+extern const char kDiagnosticId[];
 
 // Notification prefs
 extern const char kMaximumNotificationAdsPerHour[];
@@ -72,6 +75,7 @@ extern const char kHasMigratedConfirmationState[];
 extern const char kHasMigratedConversionState[];
 extern const char kHasMigratedNotificationState[];
 extern const char kHasMigratedRewardsState[];
+extern const char kShouldMigrateVerifiedRewardsUser[];
 
 // Confirmations prefs
 extern const char kConfirmationsHash[];

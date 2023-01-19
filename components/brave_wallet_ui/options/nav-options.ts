@@ -46,9 +46,9 @@ export const NavOptions: NavOption[] = [
     route: WalletRoutes.DepositFundsPageStart
   },
   {
-    id: 'transactions',
-    name: 'braveWalletTransactions',
+    id: 'activity',
+    name: 'braveWalletActivity',
     icon: HistoryIcon,
-    route: WalletRoutes.Accounts
+    route: WalletRoutes.Activity
   }
 ]

@@ -6,6 +6,8 @@
 #include "base/bind.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/strings/escape.h"
+#include "base/strings/string_piece_forward.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
@@ -14,6 +16,7 @@
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_panel_data_handler_impl.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/common/features.h"
@@ -43,10 +46,13 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "net/test/embedded_test_server/http_request.h"
+#include "net/test/embedded_test_server/http_response.h"
 
 const char kTestHost[] = "a.test";
 const char kTestPageSimple[] = "/simple.html";
 const char kTestPageReadable[] = "/articles/guardian.html";
+const char kTestPageRedirect[] = "/articles/redirect_me.html";
 const char kTestXml[] = "/article/rss.xml";
 
 constexpr char kSpeedreaderToggleUMAHistogramName[] =
@@ -64,7 +70,26 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
+
+    auto redirector = [](const net::test_server::HttpRequest& request)
+        -> std::unique_ptr<net::test_server::HttpResponse> {
+      if (request.GetURL().path_piece() != kTestPageRedirect)
+        return nullptr;
+      const std::string dest =
+          base::UnescapeBinaryURLComponent(request.GetURL().query_piece());
+
+      auto http_response =
+          std::make_unique<net::test_server::BasicHttpResponse>();
+      http_response->set_code(net::HTTP_MOVED_PERMANENTLY);
+      http_response->AddCustomHeader("Location", dest);
+      http_response->AddCustomHeader("Access-Control-Allow-Origin", "*");
+      http_response->set_content_type("text/html");
+      return http_response;
+    };
+
+    https_server_.RegisterDefaultHandler(base::BindRepeating(redirector));
     https_server_.ServeFilesFromDirectory(test_data_dir);
+
     EXPECT_TRUE(https_server_.Start());
   }
 
@@ -118,7 +143,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   }
 
   void NavigateToPageSynchronously(
-      const char* path,
+      base::StringPiece path,
       WindowOpenDisposition disposition =
           WindowOpenDisposition::NEW_FOREGROUND_TAB) {
     const GURL url = https_server_.GetURL(kTestHost, path);
@@ -183,30 +208,64 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DisableSiteWorks) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
+  // Solana web3.js console warning will interfere with console observer
+  brave_wallet::SetDefaultSolanaWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::None);
   ToggleSpeedreader();
-  NavigateToPageSynchronously(kTestPageReadable);
+
+  content::WebContentsConsoleObserver console_observer(ActiveWebContents());
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::CURRENT_TAB);
+
   const std::string kGetStyleLength =
       "document.getElementById('brave_speedreader_style').innerHTML.length";
+  const std::string kGetFontsExists =
+      "!!(document.getElementById('atkinson_hyperligible_font') && "
+      "document.getElementById('open_dyslexic_font'))";
 
   const std::string kGetContentLength = "document.body.innerHTML.length";
 
-  const auto eval_js = [&](const std::string& script) {
-    int out;
-    EXPECT_TRUE(content::ExecuteScriptAndExtractInt(
-        ActiveWebContents(),
-        "window.domAutomationController.send(" + script + ")", &out));
-    return out;
-  };
-
   // Check that the document became much smaller and that non-empty speedreader
   // style is injected.
-  EXPECT_LT(0, eval_js(kGetStyleLength));
-  EXPECT_GT(17750 + 1, eval_js(kGetContentLength));
+  EXPECT_LT(0, content::EvalJs(ActiveWebContents(), kGetStyleLength,
+                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                               speedreader::kIsolatedWorldId)
+                   .ExtractInt());
+  EXPECT_TRUE(content::EvalJs(ActiveWebContents(), kGetFontsExists,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              speedreader::kIsolatedWorldId)
+                  .ExtractBool());
+  EXPECT_GT(17750, content::EvalJs(ActiveWebContents(), kGetContentLength,
+                                   content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                   speedreader::kIsolatedWorldId)
+                       .ExtractInt());
+
+  EXPECT_TRUE(console_observer.messages().empty());
 
   // Check that disabled speedreader doesn't affect the page.
   ToggleSpeedreader();
   NavigateToPageSynchronously(kTestPageReadable);
-  EXPECT_LT(106000, eval_js(kGetContentLength));
+  EXPECT_LT(106000, content::EvalJs(ActiveWebContents(), kGetContentLength,
+                                    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                    speedreader::kIsolatedWorldId)
+                        .ExtractInt());
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Redirect) {
+  ToggleSpeedreader();
+
+  const auto redirect_url = https_server_.GetURL(
+      kTestHost, "/speedreader/rewriter/jsonld_shortest_desc.html");
+  NavigateToPageSynchronously(kTestPageRedirect + ("?" + redirect_url.spec()));
+
+  const std::string kCheckNoStyle =
+      "!document.getElementById('brave_speedreader_style')";
+
+  EXPECT_TRUE(content::EvalJs(ActiveWebContents(), kCheckNoStyle,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              speedreader::kIsolatedWorldId)
+                  .ExtractBool());
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, P3ATest) {
@@ -353,7 +412,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
       const link =
         document.getElementById('c93e2206-2f31-4ddc-9828-2bb8e8ed940e');
       link.click();
-      return link.text
+      return link.innerText
     })();
   )js";
 

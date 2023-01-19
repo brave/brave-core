@@ -30,6 +30,7 @@
 #include "components/segmentation_platform/public/features.h"
 #include "components/send_tab_to_self/features.h"
 #include "components/shared_highlighting/core/common/shared_highlighting_features.h"
+#include "components/subresource_filter/core/common/common_features.h"
 #include "content/public/common/content_features.h"
 #include "content/public/test/browser_test.h"
 #include "gpu/config/gpu_finch_features.h"
@@ -141,15 +142,19 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kSignedHTTPExchange,
 #if !BUILDFLAG(IS_ANDROID)
     &features::kTrustSafetySentimentSurvey,
+    &features::kTrustSafetySentimentSurveyV2,
+#endif
+#if BUILDFLAG(IS_MAC)
+    &features::kUseChromiumUpdater,
 #endif
     &features::kWebOTP,
     &history_clusters::features::kOnDeviceClustering,
     &history_clusters::internal::kHistoryClustersInternalsPage,
     &history_clusters::internal::kJourneys,
     &history_clusters::internal::kOmniboxAction,
+    &history_clusters::internal::kPersistedClusters,
     &history_clusters::internal::kPersistContextAnnotationsInHistoryDb,
     &lens::features::kLensStandalone,
-    &lens::features::kLensUnifiedSidePanelFooter,
     &media::kLiveCaption,
     &net::features::kNoncedPartitionedCookies,
     &net::features::kPartitionedCookies,
@@ -167,10 +172,12 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &permissions::features::kPermissionOnDeviceNotificationPredictions,
     &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
     &privacy_sandbox::kPrivacySandboxSettings3,
+    &privacy_sandbox::kPrivacySandboxSettings4,
     &segmentation_platform::features::kSegmentationPlatformFeature,
     &send_tab_to_self::kSendTabToSelfSigninPromo,
     &shared_highlighting::kIOSSharedHighlightingV2,
     &shared_highlighting::kSharedHighlightingAmp,
+    &subresource_filter::kAdTagging,
 #if !BUILDFLAG(IS_ANDROID)
     &translate::kTFLiteLanguageDetectionEnabled,
 #endif

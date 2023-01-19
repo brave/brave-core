@@ -24,9 +24,11 @@ import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncherImpl;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.search_engines.BraveTemplateUrlServiceFactory;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.share.crow.CrowButtonDelegate;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.top.Toolbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
@@ -65,6 +67,19 @@ public class BraveNewTabPage extends NewTabPage {
             ((BraveNewTabPageLayout) mNewTabPageLayout).setTab(tab);
             ((BraveNewTabPageLayout) mNewTabPageLayout).setTabProvider(activityTabProvider);
         }
+
+        // We have no way to know exactly which service the observer is added to, so try remove on
+        // both
+        if (tabModelSelector != null) {
+            for (TabModel tabModel : tabModelSelector.getModels()) {
+                if (tabModel.getProfile() != null)
+                    BraveTemplateUrlServiceFactory.getForProfile(tabModel.getProfile())
+                            .removeObserver(this);
+            }
+        }
+        // Re-add to the new tab's profile
+        BraveTemplateUrlServiceFactory.getForProfile(Profile.fromWebContents(mTab.getWebContents()))
+                .addObserver(this);
     }
 
     @Override

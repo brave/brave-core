@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/fetch_payment_token_url_request_builder.h"
 
@@ -23,7 +23,7 @@ FetchPaymentTokenUrlRequestBuilder::FetchPaymentTokenUrlRequestBuilder(
   DCHECK(IsValid(confirmation_));
 }
 
-// GET /v2/confirmation/{transactionId}/paymentToken
+// GET /v3/confirmation/{transactionId}/paymentToken
 
 mojom::UrlRequestInfoPtr FetchPaymentTokenUrlRequestBuilder::Build() {
   mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
@@ -37,7 +37,7 @@ mojom::UrlRequestInfoPtr FetchPaymentTokenUrlRequestBuilder::Build() {
 
 GURL FetchPaymentTokenUrlRequestBuilder::BuildUrl() const {
   const std::string spec =
-      base::StringPrintf("%s/v2/confirmation/%s/paymentToken",
+      base::StringPrintf("%s/v3/confirmation/%s/paymentToken",
                          GetAnonymousHost(confirmation_.ad_type).c_str(),
                          confirmation_.transaction_id.c_str());
   return GURL(spec);

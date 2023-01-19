@@ -51,7 +51,7 @@ void UnsupportedPublisherMigrator::EnsureInitialized() {
         // can try and migrate the sources again next time the browser is
         // launched.
         if (result.Is2XXResponseCode()) {
-          ParseCombinedPublisherList(result.body(),
+          ParseCombinedPublisherList(result.value_body(),
                                      &migrator->v1_api_publishers_);
         }
 

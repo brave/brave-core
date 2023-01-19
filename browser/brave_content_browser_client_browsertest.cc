@@ -13,7 +13,7 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/tor/onion_location_navigation_throttle.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -38,6 +38,10 @@
 #include "extensions/common/constants.h"
 #include "net/dns/mock_host_resolver.h"
 #include "url/origin.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/components/tor/onion_location_navigation_throttle.h"
+#endif
 
 class BraveContentBrowserClientTest : public InProcessBrowserTest {
  public:
@@ -485,6 +489,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
       << "No changes on the real URL";
 }
 
+#if BUILDFLAG(ENABLE_TOR)
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
   // Don't block the mock .onion requests.
   tor::OnionLocationNavigationThrottle::BlockOnionRequestsOutsideTorForTesting(
@@ -511,7 +516,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
         "'http://auto_upgradable_to_https.com/image.jpg'. This request was "
         "automatically upgraded to HTTPS*");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), onion_url));
-    console_observer.Wait();
+    ASSERT_TRUE(console_observer.Wait());
   }
   auto fetch = [](const std::string& resource) {
     return "fetch('" + resource + "').then((response) => { console.log('" +
@@ -528,7 +533,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
         embedded_test_server()->GetURL("example.com", "/logo-referrer.png");
     const std::string kFetchScript = fetch(resource_url.spec());
     ASSERT_FALSE(content::ExecJs(contents, kFetchScript));
-    console_observer.Wait();
+    ASSERT_TRUE(console_observer.Wait());
   }
   {
     auto https_server = std::make_unique<net::EmbeddedTestServer>(
@@ -543,7 +548,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
     console_observer.SetPattern(resource_url + " OK");
     const std::string kFetchScript = fetch(resource_url);
     ASSERT_TRUE(content::ExecJs(contents, kFetchScript));
-    console_observer.Wait();
+    ASSERT_TRUE(console_observer.Wait());
   }
   {
     content::WebContentsConsoleObserver console_observer(contents);
@@ -555,9 +560,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
     console_observer.SetPattern(resource_url + " OK");
     const std::string kFetchScript = fetch(resource_url);
     ASSERT_TRUE(content::ExecJs(contents, kFetchScript));
-    console_observer.Wait();
+    ASSERT_TRUE(console_observer.Wait());
   }
 }
+#endif
 
 #if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,

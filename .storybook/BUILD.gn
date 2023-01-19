@@ -3,6 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+
 group("storybook") {
   # Depend on any generated JS output that will
   # be imported by any JS code used in any Brave
@@ -14,12 +17,15 @@ group("storybook") {
     "//brave/components/brave_new_tab_ui:mojom_js",
     "//brave/components/brave_shields/common:mojom_js",
     "//brave/components/brave_today/common:mojom_js",
-    "//brave/components/brave_vpn/mojom:mojom_js",
+    "//brave/components/brave_vpn/common/mojom:mojom_js",
     "//brave/components/brave_wallet/common:mojom_js",
-    "//brave/components/speedreader/common:mojom_js",
     "//mojo/public/js:bindings",
     "//mojo/public/js:resources",
     "//ui/webui/resources/js:cr.m",
     "//ui/webui/resources/js:preprocess",
   ]
+
+  if (enable_speedreader) {
+    deps += [ "//brave/components/speedreader/common:mojom_js" ]
+  }
 }

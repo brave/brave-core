@@ -10,7 +10,7 @@ import { Modal, ModalCloseButton } from '../../shared/components/modal'
 import { NewTabLink } from '../../shared/components/new_tab_link'
 import { TokenAmount } from '../../shared/components/token_amount'
 import { ExchangeAmount } from '../../shared/components/exchange_amount'
-import { isPublisherConnectedOrVerified } from './utils'
+import { isPublisherVerified } from '../../shared/lib/publisher_status'
 import { TrashIcon } from './icons/trash_icon'
 
 import * as style from './pending_contributions_modal.style'
@@ -36,7 +36,7 @@ export function PendingContributionsModal (props: Props) {
   const { getString } = React.useContext(LocaleContext)
 
   function renderRow (item: Rewards.PendingContribution) {
-    const verified = isPublisherConnectedOrVerified(item.status)
+    const verified = isPublisherVerified(item.status)
     const faviconPath = verified && item.favIcon || item.url
     const expires = new Date(parseInt(item.expirationDate, 10) * 1000)
     const platform = lookupPublisherPlatformName(item.provider)

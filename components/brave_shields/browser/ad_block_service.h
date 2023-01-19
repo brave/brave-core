@@ -12,13 +12,16 @@
 #include <string>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "content/public/browser/browser_thread.h"
@@ -27,21 +30,11 @@
 #include "url/gurl.h"
 
 class AdBlockServiceTest;
-class BraveAdBlockTPNetworkDelegateHelperTest;
-class DomainBlockTest;
-class EphemeralStorage1pDomainBlockBrowserTest;
-class HTTPSEverywhereServiceTest;
-class PerfPredictorTabHelperTest;
-class PrefChangeRegistrar;
 class PrefService;
 
 namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
-
-namespace adblock {
-struct FilterListMetadata;
-}  // namespace adblock
 
 namespace brave_shields {
 
@@ -60,34 +53,28 @@ class AdBlockService {
                                  public AdBlockFiltersProvider::Observer {
    public:
     SourceProviderObserver(
-        base::WeakPtr<AdBlockEngine> adblock_engine,
+        AdBlockEngine* adblock_engine,
         AdBlockFiltersProvider* source_provider,
         AdBlockResourceProvider* resource_provider,
-        scoped_refptr<base::SequencedTaskRunner> task_runner,
-        base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
-            on_metadata_retrieved = base::DoNothing());
+        scoped_refptr<base::SequencedTaskRunner> task_runner);
     SourceProviderObserver(const SourceProviderObserver&) = delete;
     SourceProviderObserver& operator=(const SourceProviderObserver&) = delete;
     ~SourceProviderObserver() override;
 
    private:
+    void OnDATLoaded(bool deserialize, const DATFileDataBuffer& dat_buf);
+
     // AdBlockFiltersProvider::Observer
-    void OnDATLoaded(bool deserialize,
-                     const DATFileDataBuffer& dat_buf) override;
+    void OnChanged() override;
 
     // AdBlockResourceProvider::Observer
     void OnResourcesLoaded(const std::string& resources_json) override;
 
-    void OnEngineReplaced(
-        const absl::optional<adblock::FilterListMetadata> maybe_metadata);
-
     bool deserialize_;
     DATFileDataBuffer dat_buf_;
-    base::WeakPtr<AdBlockEngine> adblock_engine_;
+    raw_ptr<AdBlockEngine> adblock_engine_;
     raw_ptr<AdBlockFiltersProvider> filters_provider_;    // not owned
     raw_ptr<AdBlockResourceProvider> resource_provider_;  // not owned
-    base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
-        on_metadata_retrieved_;
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
     base::WeakPtrFactory<SourceProviderObserver> weak_factory_{this};
@@ -98,7 +85,8 @@ class AdBlockService {
       std::string locale,
       component_updater::ComponentUpdateService* cus,
       scoped_refptr<base::SequencedTaskRunner> task_runner,
-      std::unique_ptr<AdBlockSubscriptionServiceManager> manager);
+      AdBlockSubscriptionDownloadManager::DownloadManagerGetter getter,
+      const base::FilePath& profile_dir);
   AdBlockService(const AdBlockService&) = delete;
   AdBlockService& operator=(const AdBlockService&) = delete;
   ~AdBlockService();
@@ -110,76 +98,79 @@ class AdBlockService {
                           bool* did_match_rule,
                           bool* did_match_exception,
                           bool* did_match_important,
-                          std::string* mock_data_url);
+                          std::string* mock_data_url,
+                          std::string* rewritten_url);
   absl::optional<std::string> GetCspDirectives(
       const GURL& url,
       blink::mojom::ResourceType resource_type,
       const std::string& tab_host);
-  absl::optional<base::Value> UrlCosmeticResources(const std::string& url);
+  base::Value::Dict UrlCosmeticResources(const std::string& url,
+                                         bool aggressive_blocking);
   base::Value::Dict HiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
 
   AdBlockRegionalServiceManager* regional_service_manager();
-  AdBlockEngine* custom_filters_service();
-  AdBlockEngine* default_service();
   AdBlockSubscriptionServiceManager* subscription_service_manager();
-
   AdBlockCustomFiltersProvider* custom_filters_provider();
 
   void EnableTag(const std::string& tag, bool enabled);
 
   base::SequencedTaskRunner* GetTaskRunner();
 
-  bool Start();
-
- private:
-  friend class ::BraveAdBlockTPNetworkDelegateHelperTest;
-  friend class ::AdBlockServiceTest;
-  friend class ::DomainBlockTest;
-  friend class ::EphemeralStorage1pDomainBlockBrowserTest;
-  friend class ::HTTPSEverywhereServiceTest;
-  friend class ::PerfPredictorTabHelperTest;
-
-  static std::string g_ad_block_dat_file_version_;
-
-  AdBlockResourceProvider* resource_provider();
-
   void UseSourceProvidersForTest(AdBlockFiltersProvider* source_provider,
                                  AdBlockResourceProvider* resource_provider);
   void UseCustomSourceProvidersForTest(
       AdBlockFiltersProvider* source_provider,
       AdBlockResourceProvider* resource_provider);
-  bool TagExistsForTest(const std::string& tag);
+
+ private:
+  friend class ::AdBlockServiceTest;
+
+  static std::string g_ad_block_dat_file_version_;
+
+  AdBlockResourceProvider* resource_provider();
+  AdBlockComponentFiltersProvider* default_filters_provider() {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    return default_filters_provider_.get();
+  }
+
+  void TagExistsForTest(const std::string& tag,
+                        base::OnceCallback<void(bool)> cb);
 
   raw_ptr<PrefService> local_state_;
   std::string locale_;
+  base::FilePath profile_dir_;
+
+  AdBlockSubscriptionDownloadManager::DownloadManagerGetter
+      subscription_download_manager_getter_;
 
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
-  std::unique_ptr<brave_shields::AdBlockDefaultResourceProvider>
-      resource_provider_;
-  std::unique_ptr<brave_shields::AdBlockCustomFiltersProvider>
-      custom_filters_provider_;
-  std::unique_ptr<brave_shields::AdBlockComponentFiltersProvider>
-      default_filters_provider_;
-  std::unique_ptr<brave_shields::AdBlockFilterListCatalogProvider>
-      filter_list_catalog_provider_;
+  std::unique_ptr<AdBlockDefaultResourceProvider> resource_provider_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockCustomFiltersProvider> custom_filters_provider_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockComponentFiltersProvider> default_filters_provider_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockFilterListCatalogProvider>
+      filter_list_catalog_provider_ GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockSubscriptionServiceManager>
+      subscription_service_manager_ GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockRegionalServiceManager> regional_service_manager_
+      GUARDED_BY_CONTEXT(sequence_checker_);
 
-  std::unique_ptr<brave_shields::AdBlockRegionalServiceManager>
-      regional_service_manager_;
-  std::unique_ptr<brave_shields::AdBlockEngine, base::OnTaskRunnerDeleter>
-      custom_filters_service_;
-  std::unique_ptr<brave_shields::AdBlockEngine, base::OnTaskRunnerDeleter>
-      default_service_;
-  std::unique_ptr<brave_shields::AdBlockSubscriptionServiceManager>
-      subscription_service_manager_;
+  std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter> default_engine_;
+  std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>
+      additional_filters_engine_;
 
-  std::unique_ptr<SourceProviderObserver> default_service_observer_;
-  std::unique_ptr<SourceProviderObserver> custom_filters_service_observer_;
+  std::unique_ptr<SourceProviderObserver> default_service_observer_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<SourceProviderObserver> additional_filters_service_observer_
+      GUARDED_BY_CONTEXT(sequence_checker_);
 
   SEQUENCE_CHECKER(sequence_checker_);
 

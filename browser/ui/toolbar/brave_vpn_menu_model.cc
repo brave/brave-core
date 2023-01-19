@@ -6,7 +6,7 @@
 #include "brave/browser/ui/toolbar/brave_vpn_menu_model.h"
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"

@@ -7,20 +7,17 @@
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 
-#define BRAVE_TO_DATA_URL_INTERNAL                                     \
-  {                                                                    \
-    ExecutionContext* execution_context = GetExecutionContext();       \
-    if (!execution_context) {                                          \
-      execution_context = scoped_execution_context_.Get();             \
-    }                                                                  \
-    if (execution_context) {                                           \
-      if (WebContentSettingsClient* settings =                         \
-              brave::GetContentSettingsClientFor(execution_context)) { \
-        brave::BraveSessionCache::From(*execution_context)             \
-            .PerturbPixels(settings, data_buffer->Pixels(),            \
-                           data_buffer->ComputeByteSize());            \
-      }                                                                \
-    }                                                                  \
+#define BRAVE_TO_DATA_URL_INTERNAL                               \
+  {                                                              \
+    ExecutionContext* execution_context = GetExecutionContext(); \
+    if (!execution_context) {                                    \
+      execution_context = scoped_execution_context_.Get();       \
+    }                                                            \
+    if (execution_context) {                                     \
+      brave::BraveSessionCache::From(*execution_context)         \
+          .PerturbPixels(data_buffer->Pixels(),                  \
+                         data_buffer->ComputeByteSize());        \
+    }                                                            \
   }
 
 #include "src/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc"

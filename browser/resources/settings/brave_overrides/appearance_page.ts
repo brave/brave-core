@@ -12,8 +12,8 @@ import {loadTimeData} from '../i18n_setup.js'
 
 import '../brave_appearance_page/super_referral.js'
 import '../brave_appearance_page/brave_theme.js'
-import '../brave_appearance_page/sidebar.js'
 import '../brave_appearance_page/toolbar.js'
+import '../brave_appearance_page/bookmark_bar.js'
 
 const superReferralStringId = 'superReferralThemeName'
 
@@ -61,11 +61,17 @@ RegisterPolymerTemplateModifications({
       console.error(`[Brave Settings Overrides] Couldn't find bookmark bar toggle`)
     } else {
       bookmarkBarToggle.insertAdjacentHTML('beforebegin', `
-        <settings-brave-appearance-sidebar prefs="{{prefs}}"></settings-brave-appearance-sidebar>
+        <settings-brave-appearance-bookmark-bar prefs="{{prefs}}">
+        </settings-brave-appearance-bookmark-bar>
       `)
+
       bookmarkBarToggle.insertAdjacentHTML('afterend', `
-        <settings-brave-appearance-toolbar prefs="{{prefs}}"></settings-brave-appearance-toolbar>
+        <settings-brave-appearance-toolbar prefs="{{prefs}}">
+        </settings-brave-appearance-toolbar>
       `)
+      // Remove Chromium bookmark toggle becasue it is replaced by
+      // settings-brave-appearance-bookmark-bar
+      bookmarkBarToggle.remove()
     }
     const zoomLevel = templateContent.getElementById('zoomLevel')
     if (!zoomLevel || !zoomLevel.parentNode) {

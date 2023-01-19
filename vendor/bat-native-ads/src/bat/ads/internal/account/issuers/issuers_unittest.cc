@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/issuers/issuers.h"
 
@@ -12,8 +12,8 @@
 #include "bat/ads/internal/account/issuers/issuers_info.h"
 #include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_mock_util.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -40,7 +40,7 @@ class BatAdsIssuersTest : public UnitTestBase {
 TEST_F(BatAdsIssuersTest, FetchIssuers) {
   // Arrange
   const URLResponseMap url_responses = {{// Issuers request
-                                         R"(/v1/issuers/)",
+                                         R"(/v3/issuers/)",
                                          {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
@@ -97,7 +97,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuers) {
 TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
   // Arrange
   const URLResponseMap url_responses = {{// Issuers request
-                                         R"(/v1/issuers/)",
+                                         R"(/v3/issuers/)",
                                          {{net::HTTP_OK, "FOOBAR"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -122,7 +122,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
 TEST_F(BatAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   // Arrange
   const URLResponseMap url_responses = {{// Issuers request
-                                         R"(/v1/issuers/)",
+                                         R"(/v3/issuers/)",
                                          {{net::HTTP_NOT_FOUND, {}}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 

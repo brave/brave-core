@@ -4,7 +4,6 @@
 
 import * as React from 'react'
 
-// @ts-expect-error: Requires TS 4.5
 const countryNames = new Intl.DisplayNames(undefined, { type: 'region' })
 
 export function getCountryName (code: string) {

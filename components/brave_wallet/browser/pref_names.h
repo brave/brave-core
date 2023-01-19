@@ -12,7 +12,6 @@ extern const char kDefaultBaseCurrency[];
 extern const char kDefaultBaseCryptocurrency[];
 extern const char kBraveWalletTransactions[];
 extern const char kShowWalletIconOnToolbar[];
-extern const char kShowWalletTestNetworks[];
 extern const char kBraveWalletSelectedCoin[];
 extern const char kBraveWalletLastUnlockTime[];
 extern const char kBraveWalletPingReportedUnlockTime[];
@@ -51,6 +50,7 @@ extern const char kBraveWalletLastDiscoveredAssetsAt[];
 extern const char kBraveWalletLastTransactionSentTimeDict[];
 
 // DEPRECATED
+extern const char kShowWalletTestNetworksDeprecated[];
 extern const char kBraveWalletSelectedAccount[];
 extern const char kBraveWalletWeb3ProviderDeprecated[];
 extern const char kDefaultWalletDeprecated[];

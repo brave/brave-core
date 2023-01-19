@@ -99,3 +99,25 @@ base::FilePath GetOperaUserDataFolder() {
 
   return result;
 }
+
+base::FilePath GetYandexUserDataFolder() {
+  base::FilePath result;
+  if (!base::PathService::Get(base::DIR_LOCAL_APP_DATA, &result))
+    return base::FilePath();
+
+  result = result.AppendASCII("Yandex");
+  result = result.AppendASCII("YandexBrowser");
+  result = result.AppendASCII("User Data");
+
+  return result;
+}
+
+base::FilePath GetWhaleUserDataFolder() {
+  base::FilePath result;
+  if (!base::PathService::Get(base::DIR_LOCAL_APP_DATA, &result))
+    return base::FilePath();
+
+  return result.AppendASCII("Naver")
+      .AppendASCII("Naver Whale")
+      .AppendASCII("User Data");
+}

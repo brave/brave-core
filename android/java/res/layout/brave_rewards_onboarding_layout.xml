@@ -7,7 +7,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="340dp"
+    android:layout_width="360dp"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:gravity="center"
@@ -23,8 +23,7 @@
       android:layout_height="wrap_content"
       android:paddingTop="8dp"
       android:paddingBottom="10dp"
-      android:paddingStart="12dp"
-      android:paddingEnd="12dp">
+      android:paddingHorizontal="20dp">
 
       <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -64,16 +63,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minHeight="0dp"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="24dp"
                     android:layout_gravity="center_horizontal"
-                    android:background="@android:color/transparent"
+                    android:background="@drawable/blue_48_rounded_bg"
                     android:clickable="true"
                     android:drawableEnd="@drawable/ic_chevron_right"
-                    android:drawablePadding="4dp"
-                    android:drawableTint="@color/rewards_panel_action_color"
+                    android:drawablePadding="8dp"
+                    android:textAllCaps="false"
+                    android:drawableTint="@android:color/white"
                     android:focusable="true"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="@font/poppins_600"
                     android:text="@string/lets_take_a_quick_tour"
-                    android:textColor="@color/rewards_panel_action_color" />
+                    android:textColor="@android:color/white" />
 
                 <android.widget.Button
                     android:id="@+id/btn_skip"
@@ -84,9 +86,10 @@
                     android:background="@android:color/transparent"
                     android:clickable="true"
                     android:focusable="true"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/skip"
-                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginTop="16dp"
+                    android:textAllCaps="false"
+                    android:text="@string/skip_for_now"
+                    android:fontFamily="@font/poppins_600"
                     android:textColor="@color/rewards_panel_secondary_text_color" />
 
               </LinearLayout>
@@ -102,16 +105,14 @@
                     android:id="@+id/btn_go_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start"
                     android:background="@android:color/transparent"
+                    android:layout_gravity="start|center_vertical"
+                    android:textAllCaps="false"
                     android:clickable="true"
-                    android:drawableStart="@drawable/ic_chevron_left"
-                    android:drawablePadding="4dp"
-                    android:drawableTint="@color/rewards_panel_secondary_text_color"
                     android:focusable="true"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="@font/poppins_600"
                     android:text="@string/go_back"
-                    android:textColor="@color/rewards_panel_secondary_text_color" />
+                    android:textColor="@color/rewards_panel_action_color" />
 
                 <View
                   android:layout_width="0dp"
@@ -122,16 +123,19 @@
                     android:id="@+id/btn_next"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_vertical|end"
+                    android:background="@drawable/blue_48_rounded_bg"
                     android:clickable="true"
-                    android:drawableEnd="@drawable/ic_chevron_right"
-                    android:drawablePadding="4dp"
-                    android:drawableTint="@color/rewards_panel_action_color"
+                    android:drawableEnd="@drawable/ic_arrow_circle_right"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@android:color/white"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="32dp"
                     android:focusable="true"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="@string/next"
-                    android:textColor="@color/rewards_panel_action_color" />
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/poppins_600"
+                    android:text="@string/continue_text"
+                    android:textColor="@android:color/white" />
 
               </LinearLayout>
 

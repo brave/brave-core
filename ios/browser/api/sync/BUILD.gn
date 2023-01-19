@@ -28,7 +28,7 @@ source_set("sync") {
     "//brave/components/brave_sync:time_limited_codes",
     "//components/sync/driver",
     "//components/sync_device_info",
-    "//ios/chrome/browser",
+    "//ios/chrome/browser/application_context:application_context",
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/sync",
     "//ios/components/webui:url_constants",

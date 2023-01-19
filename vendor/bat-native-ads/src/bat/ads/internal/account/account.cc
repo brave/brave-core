@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/account.h"
 
@@ -26,7 +26,7 @@
 #include "bat/ads/internal/account/wallet/wallet.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/base/logging_util.h"
+#include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/prefs/pref_manager.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"  // IWYU pragma: keep
@@ -34,13 +34,23 @@
 
 namespace ads {
 
+namespace {
+
+bool ShouldResetIssuersAndConfirmations() {
+  return ShouldRewardUser() && AdsClientHelper::GetInstance()->GetBooleanPref(
+                                   prefs::kShouldMigrateVerifiedRewardsUser);
+}
+
+}  // namespace
+
 Account::Account(privacy::TokenGeneratorInterface* token_generator)
-    : confirmations_(std::make_unique<Confirmations>(token_generator)),
+    : token_generator_(token_generator),
+      confirmations_(std::make_unique<Confirmations>(token_generator_)),
       issuers_(std::make_unique<Issuers>()),
       redeem_unblinded_payment_tokens_(
           std::make_unique<RedeemUnblindedPaymentTokens>()),
       refill_unblinded_tokens_(
-          std::make_unique<RefillUnblindedTokens>(token_generator)),
+          std::make_unique<RefillUnblindedTokens>(token_generator_)),
       wallet_(std::make_unique<Wallet>()) {
   PrefManager::GetInstance()->AddObserver(this);
 
@@ -92,7 +102,9 @@ const WalletInfo& Account::GetWallet() const {
   return wallet_->Get();
 }
 
-void Account::Process() const {
+void Account::Process() {
+  MaybeResetIssuersAndConfirmations();
+
   NotifyStatementOfAccountsDidChange();
 
   MaybeGetIssuers();
@@ -187,12 +199,14 @@ void Account::FailedToProcessDeposit(
 void Account::ProcessClearingCycle() const {
   confirmations_->ProcessRetryQueue();
 
-  if (ShouldRewardUser()) {
-    ProcessUnclearedTransactions();
-  }
+  ProcessUnclearedTransactions();
 }
 
 void Account::ProcessUnclearedTransactions() const {
+  if (!ShouldRewardUser()) {
+    return;
+  }
+
   const WalletInfo& wallet = GetWallet();
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 }
@@ -214,6 +228,36 @@ void Account::WalletDidChange(const WalletInfo& wallet) const {
 
     TopUpUnblindedTokens();
   });
+}
+
+void Account::MaybeResetIssuersAndConfirmations() {
+  if (!ShouldResetIssuersAndConfirmations()) {
+    return;
+  }
+
+  confirmations_ = std::make_unique<Confirmations>(token_generator_);
+  confirmations_->SetDelegate(this);
+  ResetConfirmations();
+
+  issuers_ = std::make_unique<Issuers>();
+  issuers_->SetDelegate(this);
+
+  redeem_unblinded_payment_tokens_ =
+      std::make_unique<RedeemUnblindedPaymentTokens>();
+  redeem_unblinded_payment_tokens_->SetDelegate(this);
+
+  refill_unblinded_tokens_ =
+      std::make_unique<RefillUnblindedTokens>(token_generator_);
+  refill_unblinded_tokens_->SetDelegate(this);
+
+  ResetIssuers();
+
+  AdsClientHelper::GetInstance()->SetBooleanPref(
+      prefs::kShouldMigrateVerifiedRewardsUser, false);
+
+  MaybeGetIssuers();
+
+  ProcessClearingCycle();
 }
 
 void Account::TopUpUnblindedTokens() const {
@@ -268,7 +312,11 @@ void Account::NotifyStatementOfAccountsDidChange() const {
 
 void Account::OnPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
+    MaybeResetIssuersAndConfirmations();
+
     MaybeGetIssuers();
+  } else if (path == prefs::kShouldMigrateVerifiedRewardsUser) {
+    MaybeResetIssuersAndConfirmations();
   }
 }
 

@@ -14,7 +14,7 @@ import {
 import { WalletActions } from '../../../common/actions'
 
 // Types
-import { WalletAccountType, WalletState } from '../../../constants/types'
+import { BraveWallet, WalletAccountType, WalletState } from '../../../constants/types'
 
 // Options
 import { AllAccountsOption } from '../../../options/account-filter-options'
@@ -37,7 +37,17 @@ import {
   ClickAwayArea
 } from '../network-filter-selector/style'
 
-export const AccountFilterSelector = () => {
+interface Props {
+  onSelectAccount?: (account: Pick<WalletAccountType, 'address' | 'name'>) => void
+  selectedAccount?: Pick<WalletAccountType, 'address' | 'name'>
+  selectedNetwork?: BraveWallet.NetworkInfo
+}
+
+export const AccountFilterSelector = ({
+  onSelectAccount,
+  selectedAccount: accountProp,
+  selectedNetwork: networkProp
+}: Props) => {
   // Redux
   const dispatch = useDispatch()
 
@@ -56,33 +66,40 @@ export const AccountFilterSelector = () => {
 
   const onSelectAccountAndClose = React.useCallback((account: WalletAccountType) => {
     setIsOpen(false)
+    if (onSelectAccount) {
+      onSelectAccount(account)
+      return
+    }
     dispatch(WalletActions.setSelectedAccountFilterItem(account))
-  }, [dispatch])
+  }, [onSelectAccount])
 
   // Memos
+  const selectedAccount = accountProp || selectedAccountFilter
+  const selectedNetwork = networkProp || selectedNetworkFilter
+
   const orb = React.useMemo(() => {
-    return create({ seed: selectedAccountFilter.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [selectedAccountFilter.address])
+    return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
+  }, [selectedAccount.address])
 
   // Filters accounts by network if a selectedNetworkFilter is selected
   const accountsFilteredBySelectedNetworkFilter: WalletAccountType[] = React.useMemo(() => {
-    return selectedNetworkFilter.chainId === AllNetworksOption.chainId
+    return selectedNetwork.chainId === AllNetworksOption.chainId
       ? accounts
-      : accounts.filter((account) => account.coin === selectedNetworkFilter.coin)
-  }, [accounts, selectedNetworkFilter])
+      : accounts.filter((account) => account.coin === selectedNetwork.coin)
+  }, [accounts, selectedNetwork])
 
   const accountsList: WalletAccountType[] = React.useMemo(() => {
     return [AllAccountsOption, ...accountsFilteredBySelectedNetworkFilter]
-  }, [accountsFilteredBySelectedNetworkFilter, AllAccountsOption])
+  }, [accountsFilteredBySelectedNetworkFilter])
 
   return (
     <StyledWrapper>
       <DropDownButton onClick={onClick}>
         <SelectorLeftSide>
-          {selectedAccountFilter.address !== '' &&
+          {selectedAccount.address !== AllAccountsOption.address &&
             <AccountCircle orb={orb} />
           }
-          {selectedAccountFilter.name}
+          {selectedAccount.name}
         </SelectorLeftSide>
         <DropDownIcon />
       </DropDownButton>
@@ -92,7 +109,7 @@ export const AccountFilterSelector = () => {
             <AccountFilterItem
               key={account.address}
               account={account}
-              selected={selectedAccountFilter.address === account.address}
+              selected={account.address === selectedAccount.address}
               onSelectAccount={onSelectAccountAndClose}
             />
           )}

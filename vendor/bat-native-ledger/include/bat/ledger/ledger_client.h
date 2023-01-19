@@ -13,6 +13,7 @@
 #include <map>
 
 #include "base/callback_forward.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/mojom_structs.h"
@@ -122,6 +123,10 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual base::Value GetValueState(const std::string& name) const = 0;
 
+  virtual void SetTimeState(const std::string& name, base::Time time) = 0;
+
+  virtual base::Time GetTimeState(const std::string& name) const = 0;
+
   virtual void ClearState(const std::string& name) = 0;
 
   virtual bool GetBooleanOption(const std::string& name) const = 0;
@@ -163,7 +168,11 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void ClearAllNotifications() = 0;
 
-  virtual void WalletDisconnected(const std::string& wallet_type) = 0;
+  virtual void ExternalWalletConnected() const = 0;
+
+  virtual void ExternalWalletLoggedOut() const = 0;
+
+  virtual void ExternalWalletReconnected() const = 0;
 
   virtual void DeleteLog(client::LegacyResultCallback callback) = 0;
 

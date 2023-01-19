@@ -1,16 +1,20 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/confirmations/confirmation_util.h"
 
 #include <memory>
 
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/base/unittest/unittest_time_util.h"
+#include "bat/ads/internal/account/confirmations/confirmation_unittest_util.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_unittest_util.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 
@@ -115,6 +119,46 @@ TEST_F(BatAdsConfirmationUtilTest, IsNotValidForOptedInUser) {
 
   // Assert
   EXPECT_FALSE(IsValid(confirmation));
+}
+
+TEST_F(BatAdsConfirmationUtilTest, ResetConfirmations) {
+  // Arrange
+  privacy::SetUnblindedTokens(/*count*/ 2);
+
+  privacy::SetUnblindedPaymentTokens(/*count*/ 1);
+
+  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
+  ASSERT_TRUE(confirmation);
+  ConfirmationStateManager::GetInstance()->AppendFailedConfirmation(
+      *confirmation);
+
+  // Act
+  ResetConfirmations();
+
+  // Assert
+  const ConfirmationList& failed_confirmations =
+      ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
+  EXPECT_TRUE(failed_confirmations.empty());
+
+  EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
+
+  EXPECT_TRUE(privacy::UnblindedTokensIsEmpty());
+}
+
+TEST_F(BatAdsConfirmationUtilTest, ResetEmptyConfirmations) {
+  // Arrange
+
+  // Act
+  ResetConfirmations();
+
+  // Assert
+  const ConfirmationList& failed_confirmations =
+      ConfirmationStateManager::GetInstance()->GetFailedConfirmations();
+  EXPECT_TRUE(failed_confirmations.empty());
+
+  EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
+
+  EXPECT_TRUE(privacy::UnblindedTokensIsEmpty());
 }
 
 }  // namespace ads
