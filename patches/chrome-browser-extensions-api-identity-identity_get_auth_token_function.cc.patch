@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
-index 7e6fea444d19f1eedbf50a4300d153a18592c90f..3f703e52e77b7fb365ba3a6dc3c4901cd31c9c71 100644
+index 120ed70af8385cda741cd1f34d21751c0873d0fd..0510fde397b72d1164b9d0ab4c279dca73d9f1f3 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
-@@ -44,6 +44,13 @@
+@@ -48,6 +48,13 @@
  #include "google_apis/gaia/gaia_constants.h"
  #endif
  
@@ -16,7 +16,7 @@ index 7e6fea444d19f1eedbf50a4300d153a18592c90f..3f703e52e77b7fb365ba3a6dc3c4901c
  namespace extensions {
  
  namespace {
-@@ -155,6 +162,14 @@ ExtensionFunction::ResponseAction IdentityGetAuthTokenFunction::Run() {
+@@ -192,6 +199,14 @@ ExtensionFunction::ResponseAction IdentityGetAuthTokenFunction::Run() {
    // From here on out, results must be returned asynchronously.
    StartAsyncRun();
  
@@ -31,7 +31,7 @@ index 7e6fea444d19f1eedbf50a4300d153a18592c90f..3f703e52e77b7fb365ba3a6dc3c4901c
    if (gaia_id.empty() || IsPrimaryAccountOnly()) {
      // Try the primary account.
      // TODO(https://crbug.com/932400): collapse the asynchronicity
-@@ -381,9 +396,15 @@ void IdentityGetAuthTokenFunction::StartMintTokenFlow(
+@@ -417,9 +432,15 @@ void IdentityGetAuthTokenFunction::StartMintTokenFlow(
      IdentityMintRequestQueue::MintType type) {
  #if !BUILDFLAG(IS_CHROMEOS)
    // ChromeOS in kiosk mode may start the mint token flow without account.
@@ -50,7 +50,7 @@ index 7e6fea444d19f1eedbf50a4300d153a18592c90f..3f703e52e77b7fb365ba3a6dc3c4901c
  #endif
    TRACE_EVENT_NESTABLE_ASYNC_BEGIN1("identity", "MintTokenFlow", this, "type",
                                      type);
-@@ -464,6 +485,14 @@ void IdentityGetAuthTokenFunction::StartMintToken(
+@@ -499,6 +520,14 @@ void IdentityGetAuthTokenFunction::StartMintToken(
          }
  #endif
  
@@ -65,7 +65,7 @@ index 7e6fea444d19f1eedbf50a4300d153a18592c90f..3f703e52e77b7fb365ba3a6dc3c4901c
          if (oauth2_info.auto_approve && *oauth2_info.auto_approve) {
            // oauth2_info.auto_approve is protected by an allowlist in
            // _manifest_features.json hence only selected extensions take
-@@ -506,6 +535,11 @@ void IdentityGetAuthTokenFunction::StartMintToken(
+@@ -541,6 +570,11 @@ void IdentityGetAuthTokenFunction::StartMintToken(
                                     cache_entry.granted_scopes());
          break;
        case IdentityTokenCacheValue::CACHE_STATUS_NOTFOUND:
@@ -75,9 +75,9 @@ index 7e6fea444d19f1eedbf50a4300d153a18592c90f..3f703e52e77b7fb365ba3a6dc3c4901c
 +        }
 +        FALLTHROUGH;
        case IdentityTokenCacheValue::CACHE_STATUS_REMOTE_CONSENT:
+         RecordInteractivityMetrics(InteractionType::kConsent);
          ShowRemoteConsentDialog(resolution_data_);
-         break;
-@@ -580,6 +614,33 @@ void IdentityGetAuthTokenFunction::OnRemoteConsentSuccess(
+@@ -611,6 +645,33 @@ void IdentityGetAuthTokenFunction::OnRemoteConsentSuccess(
    StartMintTokenFlow(IdentityMintRequestQueue::MINT_TYPE_INTERACTIVE);
  }
  
@@ -111,7 +111,7 @@ index 7e6fea444d19f1eedbf50a4300d153a18592c90f..3f703e52e77b7fb365ba3a6dc3c4901c
  void IdentityGetAuthTokenFunction::OnRefreshTokenUpdatedForAccount(
      const CoreAccountInfo& account_info) {
    if (account_listening_mode_ != AccountListeningMode::kListeningTokens)
-@@ -730,6 +791,84 @@ void IdentityGetAuthTokenFunction::OnGaiaRemoteConsentFlowApproved(
+@@ -761,6 +822,84 @@ void IdentityGetAuthTokenFunction::OnGaiaRemoteConsentFlowApproved(
    StartMintTokenFlow(IdentityMintRequestQueue::MINT_TYPE_NONINTERACTIVE);
  }
  
