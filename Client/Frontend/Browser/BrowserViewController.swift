@@ -2992,12 +2992,18 @@ extension BrowserViewController: TabManagerDelegate {
     let bookmarkMenu = UIMenu(title: "", options: .displayInline, children: bookmarkMenuChildren)
     let duplicateTabMenu = UIMenu(title: "", options: .displayInline, children: duplicateTabMenuChildren)
     let closeTabMenu = UIMenu(title: "", options: .displayInline, children: closeTabMenuChildren)
+    
+    let tabButtonMenuActionList = [closeTabMenu, duplicateTabMenu, bookmarkMenu, newTabMenu]
+    let addTabMenuActionList = [addTabMenu]
 
-    toolbar?.tabsButton.menu = UIMenu(title: "", identifier: nil, children: [closeTabMenu, duplicateTabMenu, bookmarkMenu, newTabMenu])
-    topToolbar.tabsButton.menu = UIMenu(title: "", identifier: nil, children: [closeTabMenu, duplicateTabMenu, bookmarkMenu, newTabMenu])
-
+    toolbar?.tabsButton.menu = UIMenu(title: "", identifier: nil, children: tabButtonMenuActionList)
+    toolbar?.searchButton.menu = UIMenu(title: "", identifier: nil, children: addTabMenuActionList)
+    
+    topToolbar.tabsButton.menu = UIMenu(title: "", identifier: nil, children: tabButtonMenuActionList)
+    toolbar?.searchButton.menu = UIMenu(title: "", identifier: nil, children: addTabMenuActionList)
+    
     // Update Actions for Add-Tab Button
-    toolbar?.addTabButton.menu = UIMenu(title: "", identifier: nil, children: [addTabMenu])
+    toolbar?.addTabButton.menu = UIMenu(title: "", identifier: nil, children: addTabMenuActionList)
   }
 }
 
