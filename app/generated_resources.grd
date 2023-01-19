@@ -5956,23 +5956,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Choose sites to clear
       </message>
 
-      <!-- Experimental Lacros Infobar-->
-      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_MESSAGE" desc="Message shown when user launches Lacros, an experimental feature.">
-        Experimental (alpha-quality) browser! Some features missing or incomplete. Report issues with: Help &gt; "Report an issue...".
-      </message>
-
-      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_MESSAGE_PRIMARY" desc="Addendum which is sometimes added to the initial warning message.">
-        The standard browser can be found by typing "Brave" into Launcher.
-      </message>
-
-      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_MESSAGE_MANAGED" desc="Addendum which is sometimes added to the initial warning message.">
-        For more information, contact your administrator.
-      </message>
-
-      <message name="IDS_EXPERIMENTAL_LACROS_WARNING_LEARN_MORE" desc="A section of text that the user can click on to learn more about Lacros.">
-        Learn More
-      </message>
-
       <!-- Bad Flags Infobar-->
       <message name="IDS_BAD_FLAGS_WARNING_MESSAGE" desc="Message shown when an unsupported command-line flag is used. [Keep it short so it fits in the infobar.]">
         You are using an unsupported command-line flag: <ph name="BAD_FLAG">$1<ex>--no-sandbox</ex></ph>. Stability and security will suffer.
@@ -6473,6 +6456,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_CUSTOMIZE_UPLOAD_FROM_DEVICE_LABEL" desc="The label for the 'Upload from device' tile in the customization menu on the New Tab Page">
         Upload from device
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_CHROME_CURRENT_THEME_LABEL" desc="The second line of the label for the button that opens a link to a third party theme.">
+        Current theme you have installed.
       </message>
       <message name="IDS_NTP_CUSTOMIZE_HIDE_SHORTCUTS_LABEL" desc="The label for the option to hide shortcuts in the customization menu on the New Tab Page">
         Hide shortcuts
@@ -7078,6 +7064,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_UNDO_BOOKMARK_DELETION" desc="Label for the bookmarks side panel undo button displayed after deleting one or more bookmarks">
         Undo
+      </message>
+      <message name="IDS_BOOKMARKS_MOVE_TO_BOOKMARKS_BAR" desc="Label for the move to bookmarks bar folder menu option">
+        Move to Bookmarks Bar folder
+      </message>
+      <message name="IDS_BOOKMARKS_MOVE_TO_ALL_BOOKMARKS" desc="Label for the move to all bookmarks menu option">
+        Move to All Bookmarks
+      </message>
+      <message name="IDS_BOOKMARKS_RENAME" desc="Label for the rename bookmarks menu option">
+        Rename
       </message>
 
       <!-- Read Anything strings -->
@@ -11321,10 +11316,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_MIC_TURNED_OFF_IN_MACOS" desc="Title for the media status bubble that is used when a site requests microphone access, but microphone is blocked on an OS level in macOS.">
           Microphone is turned off in Mac System Preferences
         </message>
-        <message name="IDS_OPEN_PREFERENCES_LINK" desc="Title for the button that takes the user to the Security and Privacy settings in macOS, in order for the user to be able to modify the ability to access camera and microphone for Brave. System Preferences was renamed to System Settings in macOS 13 so this string shouldn't be used past macOS 12.">
-          Open Preferences
-        </message>
-        <message name="IDS_OPEN_SETTINGS_LINK" desc="Title for the button that takes the user to System Settings in macOS &gt;= 13. The translation for this string should match the translation of the System Settings app title in the macOS target locale. You can find this by selecting the locale from https://support.apple.com/guide/mac-help/mh15217/mac/localeselector. The title of the next page after that includes the desired translation. Note that, for size reasons, the English string omits 'System' and the same contraction may be suitable in other languages.">
+        <message name="IDS_OPEN_SETTINGS_LINK" desc="Title for the button that takes the user to the Security and Privacy settings in macOS, in order for the user to be able to modify the ability to access camera and microphone for Brave. The translation for this string should match the translation of the System Settings app title in the macOS target locale. You can find this by selecting the locale from https://support.apple.com/guide/mac-help/mh15217/mac/localeselector. The title of the next page after that includes the desired translation. Note that, for size reasons, the English string omits 'System' and the same contraction may be suitable in other languages.">
           Open Settings
         </message>
         <message name="IDS_CAMERA" desc="Description text for the camera.">
@@ -13376,47 +13368,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       OK
     </message>
 
-    <!-- Enterprise file system connector service providers' display names -->
-    <message name="IDS_FILE_SYSTEM_CONNECTOR_BOX" meaning="box.com" desc="Display name for Box.">
-      Box
-    </message>
-    <message name="IDS_FILE_SYSTEM_CONNECTOR_GOOGLE_DRIVE" desc="Display name for Google Drive.">
-      Google Drive
-    </message>
-
-    <!-- Enterprise file system connector sign in from settings page confirmation dialog -->
-    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_CONFIRM_TITLE" desc="Title shown in modal shown upon clicking sign in for downloads connection on settings page, before sign in dialog">
-      Storing <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph> Authentication Token
-    </message>
-    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_CONFIRM_MESSAGE" desc="Meesage shown in above-mentioned modal">
-      Upon signing in, an unique authentication token will be stored and used for all future eligible downloads.
-    </message>
-    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_CONFIRM_CANCEL_BUTTON" desc="Text displayed for cancel button in above-mentioned modal">
-      Cancel
-    </message>
-    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_CONFIRM_ACCEPT_BUTTON" desc="Text displayed for accept button in above-mentioned modal">
-      Continue
-    </message>
-
-    <!-- Enterprise file system connector sign in on first download confirmation dialog -->
-    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_REQUIRED_TITLE" desc="Title shown in modal shown upon first eligible download to be uploaded, before sign in dialog">
-      Sign into <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph> to complete download
-    </message>
-    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_REQUIRED_MESSAGE" desc="Meesage shown in above-mentioned modal">
-      Your organization requires eligible downloads to be saved to <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph>. Upon signing in, an unique authentication token will be stored and used for all future eligible downloads.
-    </message>
-    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_REQUIRED_CANCEL_BUTTON" desc="Text displayed for cancel button in above-mentioned modal">
-      Cancel download
-    </message>
-    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_REQUIRED_ACCEPT_BUTTON" desc="Text displayed for accept button in above-mentioned modal">
-      Sign in
-    </message>
-
-    <!-- Enterprise file system connector sign in dialog -->
-    <message name="IDS_FILE_SYSTEM_CONNECTOR_SIGNIN_DIALOG_TITLE" desc="Title shown in dialog when prompting user to sign in to link a web drive account.">
-      Link <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph> account for Downloads
-    </message>
-
     <!-- App uninstall prompt title -->
     <message name="IDS_PROMPT_APP_UNINSTALL_TITLE" desc="Title text for uninstalling an app.">
       Uninstall "<ph name="APP_NAME">$1<ex>Gmail Checker</ex></ph>"?
@@ -13641,8 +13592,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </if>
 
     <!-- FedCM Account Selection strings -->
-    <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT" desc="Header for sign in sheet. Sheet is shown to prompt user for sign in consent.">
+    <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT_SIGN_IN" desc="Header for sign-in sheet. Sheet is shown to prompt the user to sign-in to a website using an account from an identity provider.">
       Sign in to <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$2<ex>idp.example</ex></ph>
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT_SIGN_UP" desc="Header for sign-up sheet. Sheet is shown to prompt the user to link their identity on a website with their identity from an identity provider.">
+      Sign up to <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$2<ex>idp.example</ex></ph>
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT_USE" desc="Header for use sheet. Sheet is shown to prompt user to use a website using an account from an identity provider.">
+      Use <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$2<ex>idp.example</ex></ph>
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT_CONTINUE" desc="Header for continue-to sheet. Sheet is shown to prompt user to continue using their identity from an identity provider on a website.">
+      Continue to <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$2<ex>idp.example</ex></ph>
     </message>
     <message name="IDS_ACCOUNT_SELECTION_CONTINUE" desc="Title of the button that continues filling with the only available set of credentials.">
       Continue as <ph name="NAME">$1<ex>Albus (or Albus Dumbledore)</ex></ph>
@@ -13822,16 +13782,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Settings
     </message>
 
-    <!-- Privacy Sandbox Consent Dialog M1 strings -->
-    <message name="IDS_PRIVACY_SANDBOX_M1_CONSENT_BANNER_IMAGE_A11Y_DESCRIPTION" translateable="false" desc="A11y  description for the banner image in privacy sandbox consent dialog">
-      Sed ullamcorper, ligula ac tempus venenatis
-    </message>
-
-    <!-- Privacy Sandbox Notice Dialog M1 strings -->
-    <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_BANNER_IMAGE_A11Y_DESCRIPTION" translateable="false" desc="A11y description for the banner image in privacy sandbox notice ROW dialog">
-      Ut venenatis magna nec lacus facilisis
-    </message>
-
     <!-- Battery Saver Toolbar strings  -->
     <if expr="not is_android">
       <message name="IDS_BATTERY_SAVER_BUTTON_TOOLTIP" desc="The tooltip for the battery saver toolbar button">
@@ -13882,11 +13832,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_HIGH_EFFICIENCY_DIALOG_BODY" desc="Body text for a dialog describing that Memory Saver mode will use less memory from inactive tabs and that this is a setting the user can control.">
         While this tab was inactive, Memory Saver freed up memory for other tasks. You can change this anytime in <ph name="SETTINGS_LINK">$1<ex>Settings</ex></ph>.
       </message>
+      <message name="IDS_HIGH_EFFICIENCY_DIALOG_BODY_WITHOUT_LINK" desc="Body text for a dialog describing that Memory Saver mode will use less memory.">
+        While this tab was inactive, Memory Saver freed up memory for other tasks.
+      </message>
       <message name="IDS_HIGH_EFFICIENCY_DIALOG_BODY_LINK_TEXT" desc="The link text for the body text for the Memory Saver dialog.">
         Settings
       </message>
       <message name="IDS_HIGH_EFFICIENCY_DIALOG_BODY_WITH_SAVINGS_AND_LINK" desc="Body text for a dialog describing how much less memory was used due to Memory Saver mode and that this is a setting the user can control.">
         While this tab was inactive, Memory Saver freed up <ph name="MEMORY_VALUE">$1<ex>175MB</ex></ph> of memory for other tasks. You can change this anytime in <ph name="SETTINGS_LINK">$2<ex>Settings</ex></ph>.
+      </message>
+      <message name="IDS_HIGH_EFFICIENCY_DIALOG_BODY_WITH_SAVINGS" desc="Body text for a dialog describing how much less memory was used due to Memory Saver mode.">
+        While this tab was inactive, Memory Saver freed up <ph name="MEMORY_VALUE">$1<ex>175MB</ex></ph> of memory for other tasks.
       </message>
     </if>
     <message name="IDS_ACCNAME_SIDEBAR_WEBVIEW_LOCATION_BAR" desc="The accessible name of the sidebar webview's location bar.">
