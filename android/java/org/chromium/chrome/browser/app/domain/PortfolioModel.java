@@ -116,10 +116,10 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
             }
         }
         nftMetaDataHandler.setWhenAllCompletedAction(() -> {
-            for (AsyncUtils.BaseGetNftMetadataContext metaData : nftMetadataList) {
-                nftDataModels.add(new NftDataModel(metaData.asset, networkInfo,
-                        new Erc721Metadata(metaData.tokenMetadata, metaData.errorCode,
-                                metaData.errorMessage)));
+            for (AsyncUtils.BaseGetNftMetadataContext metadata : nftMetadataList) {
+                nftDataModels.add(new NftDataModel(metadata.asset, networkInfo,
+                        new NftMetadata(metadata.tokenMetadata, metadata.errorCode,
+                                metadata.errorMessage)));
             }
             _mNftModels.postValue(nftDataModels);
         });
@@ -160,24 +160,25 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
     public static class NftDataModel {
         public BlockchainToken token;
         public NetworkInfo networkInfo;
-        public Erc721Metadata erc721MetaData;
+        public NftMetadata nftMetadata;
 
         public NftDataModel(
-                BlockchainToken token, NetworkInfo networkInfo, Erc721Metadata erc721MetaData) {
+                BlockchainToken token, NetworkInfo networkInfo, NftMetadata nftMetadata) {
             this.token = token;
             this.networkInfo = networkInfo;
-            this.erc721MetaData = erc721MetaData;
+            this.nftMetadata = nftMetadata;
         }
     }
 
-    public static class Erc721Metadata implements Serializable {
-        public String mDescription;
+    public static class NftMetadata implements Serializable {
         public String mImageUrl;
         public String mName;
         public int mErrCode;
         public String mErrMsg;
+        // ERC721 only.
+        public String mDescription;
 
-        public Erc721Metadata(String jsonString, int mErrCode, String mErrMsg) {
+        public NftMetadata(String jsonString, int mErrCode, String mErrMsg) {
             this.mErrCode = mErrCode;
             this.mErrMsg = mErrMsg;
             try {
@@ -189,7 +190,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
             }
         }
 
-        public Erc721Metadata(String mDescription, String mImageUrl, String mName) {
+        public NftMetadata(String mDescription, String mImageUrl, String mName) {
             this.mDescription = mDescription;
             this.mImageUrl = mImageUrl;
             this.mName = mName;
