@@ -9,6 +9,7 @@
 #include <string>
 #include <unordered_map>
 #include <utility>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/files/file_path.h"
@@ -17,12 +18,29 @@
 #include "base/rand_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile_attributes_entry.h"
+#include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
 namespace settings {
+
+namespace {
+base::FilePath GetProfilePathByName(const std::u16string& name) {
+  std::vector<ProfileAttributesEntry*> entries =
+      g_browser_process->profile_manager()
+          ->GetProfileAttributesStorage()
+          .GetAllProfilesAttributesSortedByName();
+  for (auto* it : entries) {
+    if (it->GetName() == name) {
+      return it->GetPath();
+    }
+  }
+  return base::FilePath();
+}
+}  // namespace
 
 BraveImportBulkDataHandler::BraveImportBulkDataHandler() = default;
 BraveImportBulkDataHandler::~BraveImportBulkDataHandler() = default;
@@ -39,27 +57,48 @@ void BraveImportBulkDataHandler::PrepareProfile(
     const std::u16string& name,
     ProfileReadyCallback profile_ready_callback) {
   ProfileManager* profile_manager = g_browser_process->profile_manager();
-  Profile* profile =
-      profile_manager->GetProfileByPath(profile_manager->user_data_dir().Append(
-          base::FilePath::FromASCII(base::UTF16ToUTF8(name))));
-
-  if (profile) {
-    std::move(profile_ready_callback).Run(profile);
+  auto profile_path = GetProfilePathByName(name);
+  // If a profile with the given path is currently managed by this object and
+  // fully initialized, return a pointer to the corresponding Profile object.
+  Profile* loaded_profile = profile_manager->GetProfileByPath(profile_path);
+  if (loaded_profile) {
+    std::move(profile_ready_callback).Run(loaded_profile);
     return;
   }
-
-  auto avatar_index = base::RandInt(profiles::GetModernAvatarIconStartIndex(),
-                                    profiles::GetDefaultAvatarIconCount());
-  ProfileManager::CreateMultiProfileAsync(
-      name, avatar_index, false,
+  // Asynchronously loads an existing profile given its |profile_base_name|
+  // (which is the directory name within the user data directory), optionally in
+  // |incognito| mode. The |callback| will be called with the Profile when it
+  // has been loaded, or with a nullptr otherwise.
+  profile_manager->LoadProfileByPath(
+      profile_path, false,
       base::BindOnce(
-          [](ProfileReadyCallback initialized_callback, Profile* profile) {
-            CHECK(profile);
-            // Migrate welcome page flag to new profiles.
-            profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
-            std::move(initialized_callback).Run(profile);
+          [](ProfileReadyCallback profile_callback, const std::u16string& name,
+             Profile* existing_profile) {
+            // Existing profile loaded, reuse it.
+            if (existing_profile) {
+              std::move(profile_callback).Run(existing_profile);
+              return;
+            }
+            // Asynchronously creates a new profile in the next available
+            // multiprofile directory. Directories are named "profile_1",
+            // "profile_2", etc., in sequence of creation.
+            auto avatar_index =
+                base::RandInt(profiles::GetModernAvatarIconStartIndex(),
+                              profiles::GetDefaultAvatarIconCount());
+            ProfileManager::CreateMultiProfileAsync(
+                name, avatar_index, false,
+                base::BindOnce(
+                    [](ProfileReadyCallback initialized_callback,
+                       Profile* created_profile) {
+                      CHECK(created_profile);
+                      // Migrate welcome page flag to new profiles.
+                      created_profile->GetPrefs()->SetBoolean(
+                          prefs::kHasSeenWelcomePage, true);
+                      std::move(initialized_callback).Run(created_profile);
+                    },
+                    std::move(profile_callback)));
           },
-          std::move(profile_ready_callback)));
+          std::move(profile_ready_callback), name));
 }
 
 void BraveImportBulkDataHandler::HandleImportDataBulk(
