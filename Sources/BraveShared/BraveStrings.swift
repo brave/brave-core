@@ -497,7 +497,7 @@ extension Strings {
   public static let loginDetailLastModifiedCellFormatTitle = NSLocalizedString("LoginDetailLastModifiedCellFormatTitle", tableName: "BraveShared", bundle: .module, value: "Last modified %@", comment: "Footer label describing when the current login was last modified with the timestamp as the parameter.")
 }
 
-// MARK:-  ReaderModeHandlers.swift
+// MARK:-  ReaderModeHandler.swift
 extension Strings {
   public static let readerModeLoadingContentDisplayText = NSLocalizedString("ReaderModeLoadingContentDisplayText", tableName: "BraveShared", bundle: .module, value: "Loading content…", comment: "Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app.")
   public static let readerModePageCantShowDisplayText = NSLocalizedString("ReaderModePageCantShowDisplayText", tableName: "BraveShared", bundle: .module, value: "The page could not be displayed in Reader View.", comment: "Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app.")

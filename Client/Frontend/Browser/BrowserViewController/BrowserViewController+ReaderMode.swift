@@ -138,7 +138,7 @@ extension BrowserViewController {
     let backList = webView.backForwardList.backList
     let forwardList = webView.backForwardList.forwardList
 
-    guard let currentURL = webView.backForwardList.currentItem?.url, let readerModeURL = currentURL.encodeReaderModeURL(WebServer.sharedInstance.baseReaderModeURL()) else { return }
+    guard let currentURL = webView.backForwardList.currentItem?.url, let readerModeURL = currentURL.encodeReaderModeURL("\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)") else { return }
 
     if backList.count > 1 && backList.last?.url == readerModeURL {
       let playlistItem = tab.playlistItem

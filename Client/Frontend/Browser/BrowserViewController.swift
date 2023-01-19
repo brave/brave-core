@@ -2708,7 +2708,7 @@ extension BrowserViewController: TabManagerDelegate {
       }
 
       readerModeCache = ReaderModeScriptHandler.cache(for: tab)
-      ReaderModeHandlers.readerModeCache = readerModeCache
+      ReaderModeHandler.readerModeCache = readerModeCache
 
       webViewContainer.addSubview(webView)
       webView.snp.remakeConstraints { make in

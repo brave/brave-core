@@ -90,8 +90,4 @@ public class WebServer {
   func URLForResource(_ resource: String, module: String) -> String {
     return "\(base)/\(module)/\(resource)"
   }
-
-  func baseReaderModeURL() -> String {
-    return WebServer.sharedInstance.URLForResource("page", module: "reader-mode")
-  }
 }

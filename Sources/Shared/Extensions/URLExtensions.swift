@@ -285,7 +285,7 @@ extension URL {
     guard self.isLocal else {
       return false
     }
-    let utilityURLs = ["/\(InternalURL.Path.errorpage)", "/\(InternalURL.Path.sessionrestore)", "/about/home", "/reader-mode"]
+    let utilityURLs = ["/\(InternalURL.Path.errorpage.rawValue)", "/\(InternalURL.Path.sessionrestore.rawValue)", "/about/home", "/\(InternalURL.Path.readermode.rawValue)"]
     return utilityURLs.contains { self.path.hasPrefix($0) }
   }
 
@@ -332,7 +332,7 @@ extension URL {
 extension URL {
   public var isReaderModeURL: Bool {
     let scheme = self.scheme, host = self.host, path = self.path
-    return scheme == "http" && (host == "localhost" || host == "127.0.0.1") && path == "/reader-mode/page"
+    return scheme == InternalURL.scheme && host == InternalURL.host && path == "/\(InternalURL.Path.readermode.rawValue)"
   }
 
   public var decodeReaderModeURL: URL? {
@@ -502,10 +502,12 @@ extension String {
 public struct InternalURL {
   public static let uuid = UUID().uuidString
   public static let scheme = "internal"
-  public static let baseUrl = "\(scheme)://local"
+  public static let host = "local"
+  public static let baseUrl = "\(scheme)://\(host)"
   public enum Path: String {
     case errorpage = "errorpage"
     case sessionrestore = "sessionrestore"
+    case readermode = "reader-mode"
     func matches(_ string: String) -> Bool {
       return string.range(of: "/?\(self.rawValue)", options: .regularExpression, range: nil, locale: nil) != nil
     }
@@ -518,18 +520,10 @@ public struct InternalURL {
   }
 
   public let url: URL
-
   private let sessionRestoreHistoryItemBaseUrl = "\(InternalURL.baseUrl)/\(InternalURL.Path.sessionrestore.rawValue)?url="
 
   public static func isValid(url: URL) -> Bool {
-    let isWebServerUrl = url.absoluteString.hasPrefix("http://localhost:\(AppConstants.webServerPort)/") || url.absoluteString.hasPrefix("http://127.0.0.1:\(AppConstants.webServerPort)/")
-    if isWebServerUrl, url.path.hasPrefix("/test-fixture/") {
-      // internal test pages need to be treated as external pages
-      return false
-    }
-
-    // TODO: (reader-mode-custom-scheme) remove isWebServerUrl when updating code.
-    return isWebServerUrl || InternalURL.scheme == url.scheme
+    return InternalURL.scheme == url.scheme && InternalURL.host == url.host
   }
 
   public init?(_ url: URL) {
@@ -575,6 +569,10 @@ public struct InternalURL {
     // Error pages can be nested in session restore URLs, and session restore handler will forward them to the error page handler
     let path = url.absoluteString.hasPrefix(sessionRestoreHistoryItemBaseUrl) ? extractedUrlParam?.path : url.path
     return InternalURL.Path.errorpage.matches(path ?? "")
+  }
+  
+  public var isReaderModePage: Bool {
+    return InternalURL.Path.readermode.matches(url.path)
   }
 
   public var originalURLFromErrorPage: URL? {

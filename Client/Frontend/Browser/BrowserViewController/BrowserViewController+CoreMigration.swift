@@ -41,42 +41,11 @@ extension BrowserViewController {
   }
 
   private func migrateToSyncObjects(_ completion: @escaping ((BraveCoreMigrator.MigrationError?) -> Void)) {
-    let showInterstitialPage = { (url: URL?) -> Bool in
-      guard let url = url else {
-        Logger.module.error("Cannot open bookmarks page in new tab")
-        return false
-      }
-
-      return BookmarksInterstitialPageHandler.showBookmarksPage(tabManager: self.tabManager, url: url)
-    }
-
     guard let migrator = migration?.braveCoreSyncObjectsMigrator else { return }
 
     migrator.migrate { error in
       Preferences.Chromium.syncV2ObjectMigrationCount.value += 1
-
-      guard let error = error else {
-        completion(nil)
-        return
-      }
-
-      switch error {
-      case .failedBookmarksMigration:
-        guard let url = migrator.datedBookmarksURL else {
-          completion(showInterstitialPage(migrator.bookmarksURL) ? nil : error)
-          return
-        }
-
-        migrator.exportBookmarks(to: url) { success in
-          if success {
-            completion(showInterstitialPage(url) ? nil : error)
-          } else {
-            completion(showInterstitialPage(migrator.bookmarksURL) ? nil : error)
-          }
-        }
-      default:
-        completion(error)
-      }
+      completion(error)
     }
   }
 }

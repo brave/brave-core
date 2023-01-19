@@ -423,19 +423,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let server = WebServer.sharedInstance
     guard !server.server.isRunning else { return }
 
-    let responders: [(String, InternalSchemeResponse)] =
-      [
-        (AboutHomeHandler.path, AboutHomeHandler()),
-        (AboutLicenseHandler.path, AboutLicenseHandler()),
-        (SessionRestoreHandler.path, SessionRestoreHandler()),
-        (ErrorPageHandler.path, ErrorPageHandler()),
-      ]
+    let responders: [(String, InternalSchemeResponse)] = [
+      (AboutHomeHandler.path, AboutHomeHandler()),
+      (AboutLicenseHandler.path, AboutLicenseHandler()),
+      (SessionRestoreHandler.path, SessionRestoreHandler()),
+      (ErrorPageHandler.path, ErrorPageHandler()),
+      (ReaderModeHandler.path, ReaderModeHandler(profile: profile))
+    ]
     responders.forEach { (path, responder) in
       InternalSchemeHandler.responders[path] = responder
     }
-
-    ReaderModeHandlers.register(server, profile: profile)  // TODO: PORT TO InternalSchemeHandler
-    BookmarksInterstitialPageHandler.register(server)  // TODO: PORT TO InternalSchemeHandler
 
     // Bug 1223009 was an issue whereby CGDWebserver crashed when moving to a background task
     // catching and handling the error seemed to fix things, but we're not sure why.
