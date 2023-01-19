@@ -160,6 +160,8 @@ void SidebarControlView::ShowContextMenuForViewImpl(
       static_cast<int>(ShowSidebarOption::kShowNever),
       brave_l10n::GetLocalizedResourceUTF16String(
           IDS_SIDEBAR_SHOW_OPTION_NEVER));
+  context_menu_model_->AddSeparator(
+      ui::MenuSeparatorType::BOTH_SIDE_PADDED_SEPARATOR);
   context_menu_model_->AddTitle(brave_l10n::GetLocalizedResourceUTF16String(
       IDS_SIDEBAR_MENU_MODEL_POSITION_OPTION_TITLE));
   context_menu_model_->AddItemWithStringId(
