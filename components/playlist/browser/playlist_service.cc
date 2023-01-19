@@ -85,6 +85,9 @@ void PlaylistService::Shutdown() {
   thumbnail_downloader_.reset();
   download_request_manager_.reset();
   task_runner_.reset();
+#if BUILDFLAG(IS_ANDROID)
+  receivers_.Clear();
+#endif  // BUILDFLAG(IS_ANDROID)
 }
 
 void PlaylistService::AddMediaFilesFromContentsToPlaylist(
