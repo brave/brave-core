@@ -234,3 +234,13 @@ export const formatTokenBalance = (
         .formatAsAsset(decimalPlaces ?? 6, selectedAsset?.symbol ?? '')
     : ''
 }
+
+export const checkIfTokensMatch = (
+  tokenOne: BraveWallet.BlockchainToken,
+  tokenTwo: BraveWallet.BlockchainToken
+): boolean => {
+  return tokenOne.symbol.toLowerCase() === tokenTwo.symbol.toLowerCase() &&
+    tokenOne.contractAddress.toLowerCase() === tokenTwo.contractAddress.toLowerCase() &&
+    tokenOne.chainId === tokenTwo.chainId &&
+    tokenOne.tokenId === tokenTwo.tokenId
+}
