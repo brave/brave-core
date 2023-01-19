@@ -51,6 +51,20 @@ public class AssetUtils {
             "0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e" // YFI
     };
 
+    public static class Filters {
+        public static boolean isSameToken(BlockchainToken token1, BlockchainToken token2) {
+            return token1.symbol.equals(token2.symbol)
+                    && token1.contractAddress.equals(token2.contractAddress)
+                    && token1.chainId.equals(token2.chainId);
+        }
+
+        public static boolean isSameToken(
+                BlockchainToken token, String symbol, String contractAddress, String chainId) {
+            return token.symbol.equals(symbol) && token.contractAddress.equals(contractAddress)
+                    && token.chainId.equals(chainId);
+        }
+    }
+
     public static boolean isAuroraAddress(String contractAddress, String chainId) {
         boolean isEthereumBridgeAddress = false;
         boolean isNativeAsset = TextUtils.isEmpty(contractAddress);
@@ -134,8 +148,8 @@ public class AssetUtils {
                 return "SOLANA";
             case BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID:
                 return "OPTIMISM";
-                //            case BraveWalletConstants.FILECOIN_MAINNET: return "FILECOIN"; /*not
-                //            supported yet*/
+            //            case BraveWalletConstants.FILECOIN_MAINNET: return "FILECOIN"; /*not
+            //            supported yet*/
             case BraveWalletConstants.MAINNET_CHAIN_ID:
             case BraveWalletConstants.CELO_MAINNET_CHAIN_ID:
             default:
