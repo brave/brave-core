@@ -102,6 +102,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
 
         mBtnSend = findViewById(R.id.btn_send);
         // TODO(simone): Enable if it's the NFT owner.
+        // GitHub issue: https://github.com/brave/brave-browser/issues/27802.
         mBtnSend.setVisibility(View.GONE);
 
         mNftDetailTitleView = findViewById(R.id.nft_detail_title);
