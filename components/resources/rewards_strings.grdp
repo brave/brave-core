@@ -106,6 +106,9 @@
   <message name="IDS_REWARDS_WIDGET_EARNING_INFO_TEXT" desc="">
     The tokens you earn this month will begin processing on <ph name="DATE">$1<ex>OCT 12</ex></ph>.
   </message>
+  <message name="IDS_REWARDS_WIDGET_ENABLE_BRAVE_ADS" desc="">
+    Enable Brave Ads
+  </message>
   <message name="IDS_REWARDS_WIDGET_EXCHANGE_VALUE_NOTE" desc="">
     This may vary based on market volatility.
   </message>

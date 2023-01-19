@@ -256,7 +256,7 @@ export function RewardsCard (props: Props) {
         </style.adsOptIn>
         <style.primaryAction>
           <button onClick={props.onEnableAds}>
-            {getString('rewardsStartUsingRewards')}
+            {getString('rewardsEnableBraveAds')}
           </button>
         </style.primaryAction>
       </>
