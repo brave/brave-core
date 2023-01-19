@@ -6,9 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSIONS_DATABASE_TABLE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSIONS_DATABASE_TABLE_H_
 
-#include <functional>
 #include <string>
 
+#include "base/functional/callback_forward.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/database/database_table_interface.h"
@@ -17,7 +17,7 @@
 namespace ads::database::table {
 
 using GetConversionsCallback =
-    std::function<void(const bool, const ConversionList&)>;
+    base::OnceCallback<void(const bool, const ConversionList&)>;
 
 class Conversions final : public TableInterface {
  public:

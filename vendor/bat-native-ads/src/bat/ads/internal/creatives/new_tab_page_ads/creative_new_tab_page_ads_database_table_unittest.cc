@@ -162,12 +162,14 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 
   database_table_.GetForCreativeInstanceId(
       expected_creative_ad.creative_instance_id,
-      [&expected_creative_ad](const bool success,
-                              const std::string& /*creative_instance_id*/,
-                              const CreativeNewTabPageAdInfo& creative_ad) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_creative_ad, creative_ad);
-      });
+      base::BindOnce(
+          [](const CreativeNewTabPageAdInfo& expected_creative_ad,
+             const bool success, const std::string& /*creative_instance_id*/,
+             const CreativeNewTabPageAdInfo& creative_ad) {
+            ASSERT_TRUE(success);
+            EXPECT_EQ(expected_creative_ad, creative_ad);
+          },
+          expected_creative_ad));
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
@@ -182,10 +184,11 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Assert
   database_table_.GetForCreativeInstanceId(
       "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-      [](const bool success, const std::string& /*creative_instance_id*/,
-         const CreativeNewTabPageAdInfo& /*creative_ad*/) {
+      base::BindOnce([](const bool success,
+                        const std::string& /*creative_instance_id*/,
+                        const CreativeNewTabPageAdInfo& /*creative_ad*/) {
         EXPECT_FALSE(success);
-      });
+      }));
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,

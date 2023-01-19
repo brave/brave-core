@@ -6,10 +6,10 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSION_QUEUE_DATABASE_TABLE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CONVERSIONS_CONVERSION_QUEUE_DATABASE_TABLE_H_
 
-#include <functional>
 #include <string>
 
 #include "base/check_op.h"
+#include "base/functional/callback_forward.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/database/database_table_interface.h"
@@ -18,12 +18,12 @@
 namespace ads::database::table {
 
 using GetConversionQueueCallback =
-    std::function<void(const bool, const ConversionQueueItemList&)>;
+    base::OnceCallback<void(const bool, const ConversionQueueItemList&)>;
 
 using GetConversionQueueForCreativeInstanceIdCallback =
-    std::function<void(const bool,
-                       const std::string& creative_instance_id,
-                       const ConversionQueueItemList&)>;
+    base::OnceCallback<void(const bool,
+                            const std::string& creative_instance_id,
+                            const ConversionQueueItemList&)>;
 
 class ConversionQueue final : public TableInterface {
  public:

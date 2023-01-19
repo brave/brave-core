@@ -94,18 +94,9 @@ void Confirmations::Confirm(const TransactionInfo& transaction) {
   const ConfirmationUserDataBuilder user_data_builder(
       created_at, transaction.creative_instance_id,
       transaction.confirmation_type);
-  user_data_builder.Build([=](const base::Value::Dict& user_data) {
-    const absl::optional<ConfirmationInfo> confirmation = CreateConfirmation(
-        token_generator_, created_at, transaction.id,
-        transaction.creative_instance_id, transaction.confirmation_type,
-        transaction.ad_type, user_data);
-    if (!confirmation) {
-      BLOG(0, "Failed to confirm confirmation");
-      return;
-    }
-
-    redeem_unblinded_token_->Redeem(*confirmation);
-  });
+  user_data_builder.Build(
+      base::BindOnce(&Confirmations::CreateConfirmationAndRedeemToken,
+                     base::Unretained(this), transaction, created_at));
 }
 
 void Confirmations::ProcessRetryQueue() {
@@ -153,26 +144,35 @@ void Confirmations::StopRetrying() {
   retry_timer_.Stop();
 }
 
+void Confirmations::CreateConfirmationAndRedeemToken(
+    const TransactionInfo& transaction,
+    const base::Time& created_at,
+    const base::Value::Dict& user_data) {
+  const absl::optional<ConfirmationInfo> confirmation = CreateConfirmation(
+      token_generator_, created_at, transaction.id,
+      transaction.creative_instance_id, transaction.confirmation_type,
+      transaction.ad_type, user_data);
+  if (!confirmation) {
+    BLOG(0, "Failed to confirm confirmation");
+    return;
+  }
+
+  redeem_unblinded_token_->Redeem(*confirmation);
+}
+
 void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
-    const ConfirmationInfo& confirmation) {
-  DCHECK(IsValid(confirmation));
+    const ConfirmationInfo& confirmation,
+    const base::Value::Dict& user_data) {
+  const absl::optional<ConfirmationInfo> new_confirmation = CreateConfirmation(
+      token_generator_, confirmation.created_at, confirmation.transaction_id,
+      confirmation.creative_instance_id, confirmation.type,
+      confirmation.ad_type, user_data);
+  if (!new_confirmation) {
+    AppendToRetryQueue(confirmation);
+    return;
+  }
 
-  const ConfirmationUserDataBuilder user_data_builder(
-      confirmation.created_at, confirmation.creative_instance_id,
-      confirmation.type);
-  user_data_builder.Build([=](const base::Value::Dict& user_data) {
-    const absl::optional<ConfirmationInfo> new_confirmation =
-        CreateConfirmation(token_generator_, confirmation.created_at,
-                           confirmation.transaction_id,
-                           confirmation.creative_instance_id, confirmation.type,
-                           confirmation.ad_type, user_data);
-    if (!new_confirmation) {
-      AppendToRetryQueue(confirmation);
-      return;
-    }
-
-    AppendToRetryQueue(*new_confirmation);
-  });
+  AppendToRetryQueue(*new_confirmation);
 }
 
 void Confirmations::OnDidSendConfirmation(
@@ -234,9 +234,16 @@ void Confirmations::OnFailedToRedeemUnblindedToken(
     const ConfirmationInfo& confirmation,
     const bool should_retry,
     const bool should_backoff) {
+  DCHECK(IsValid(confirmation));
+
   if (should_retry) {
     if (!confirmation.was_created) {
-      CreateNewConfirmationAndAppendToRetryQueue(confirmation);
+      const ConfirmationUserDataBuilder user_data_builder(
+          confirmation.created_at, confirmation.creative_instance_id,
+          confirmation.type);
+      user_data_builder.Build(base::BindOnce(
+          &Confirmations::CreateNewConfirmationAndAppendToRetryQueue,
+          base::Unretained(this), confirmation));
     } else {
       AppendToRetryQueue(confirmation);
     }

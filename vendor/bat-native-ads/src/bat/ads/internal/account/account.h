@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_H_
 
-#include <functional>
 #include <memory>
 #include <string>
 
@@ -72,10 +71,20 @@ class Account final : public PrefManagerObserver,
  private:
   void MaybeGetIssuers() const;
 
+  void OnGetDepositValue(const std::string& creative_instance_id,
+                         const AdType& ad_type,
+                         const ConfirmationType& confirmation_type,
+                         bool success,
+                         double value) const;
   void ProcessDeposit(const std::string& creative_instance_id,
                       const AdType& ad_type,
                       const ConfirmationType& confirmation_type,
                       double value) const;
+  void OnDepositProcessed(const std::string& creative_instance_id,
+                          const AdType& ad_type,
+                          const ConfirmationType& confirmation_type,
+                          bool success,
+                          const TransactionInfo& transaction) const;
   void FailedToProcessDeposit(const std::string& creative_instance_id,
                               const AdType& ad_type,
                               const ConfirmationType& confirmation_type) const;
@@ -85,6 +94,7 @@ class Account final : public PrefManagerObserver,
 
   void WalletDidUpdate(const WalletInfo& wallet) const;
   void WalletDidChange(const WalletInfo& wallet) const;
+  void OnRewardsReset(bool success) const;
 
   void MaybeResetIssuersAndConfirmations();
 

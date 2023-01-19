@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_AD_EVENTS_AD_EVENTS_DATABASE_TABLE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_AD_EVENTS_AD_EVENTS_DATABASE_TABLE_H_
 
-#include <functional>
 #include <string>
 
 #include "base/functional/callback.h"
@@ -17,9 +16,6 @@
 
 namespace ads::database::table {
 
-using GetAdEventsCallbackDeprecated =
-    std::function<void(const bool, const AdEventList&)>;
-
 using GetAdEventsCallback =
     base::OnceCallback<void(const bool, const AdEventList&)>;
 
@@ -27,13 +23,9 @@ class AdEvents final : public TableInterface {
  public:
   void LogEvent(const AdEventInfo& ad_event, ResultCallback callback);
 
-  void GetIf(const std::string& condition,
-             const GetAdEventsCallbackDeprecated& callback) const;
+  void GetIf(const std::string& condition, GetAdEventsCallback callback) const;
 
-  void GetAll(const GetAdEventsCallbackDeprecated& callback) const;
-
-  void GetForType(mojom::AdType ad_type,
-                  const GetAdEventsCallbackDeprecated& callback) const;
+  void GetAll(GetAdEventsCallback callback) const;
 
   void GetForType(mojom::AdType ad_type, GetAdEventsCallback callback) const;
 

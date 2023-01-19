@@ -38,19 +38,22 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {
   const ml::pipeline::TextEmbeddingInfo text_embedding = BuildTextEmbedding();
 
   // Act
-  LogTextEmbeddingHtmlEvent(BuildTextEmbeddingHtmlEvent(text_embedding),
-                            [=](const bool success) { ASSERT_TRUE(success); });
+  LogTextEmbeddingHtmlEvent(
+      BuildTextEmbeddingHtmlEvent(text_embedding),
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
-  GetTextEmbeddingHtmlEventsFromDatabase(
-      [=](const bool success,
-          const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+  GetTextEmbeddingHtmlEventsFromDatabase(base::BindOnce(
+      [](const ml::pipeline::TextEmbeddingInfo& text_embedding,
+         const bool success,
+         const TextEmbeddingHtmlEventList& text_embedding_html_events) {
         ASSERT_TRUE(!text_embedding_html_events.empty());
         ASSERT_TRUE(success);
 
         // Assert
         EXPECT_EQ(text_embedding.hashed_text_base64,
                   text_embedding_html_events.front().hashed_text_base64);
-      });
+      },
+      text_embedding));
 }
 
 TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
@@ -58,25 +61,27 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
   for (int i = 0; i < targeting::features::GetTextEmbeddingsHistorySize() + 4;
        i++) {
     const ml::pipeline::TextEmbeddingInfo text_embedding = BuildTextEmbedding();
-    LogTextEmbeddingHtmlEvent(BuildTextEmbeddingHtmlEvent(text_embedding),
-                              [](const bool success) { ASSERT_TRUE(success); });
+    LogTextEmbeddingHtmlEvent(
+        BuildTextEmbeddingHtmlEvent(text_embedding),
+        base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
   }
 
   // Act
   PurgeStaleTextEmbeddingHtmlEvents(
-      [](const bool success) { ASSERT_TRUE(success); });
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   // Assert
-  GetTextEmbeddingHtmlEventsFromDatabase(
+  GetTextEmbeddingHtmlEventsFromDatabase(base::BindOnce(
       [](const bool success,
          const TextEmbeddingHtmlEventList& text_embedding_html_events) {
         ASSERT_TRUE(success);
 
-        const int text_embedding_html_event_count =
+        const size_t text_embedding_html_event_count =
             text_embedding_html_events.size();
-        EXPECT_TRUE(text_embedding_html_event_count <=
-                    targeting::features::GetTextEmbeddingsHistorySize());
-      });
+        EXPECT_LE(text_embedding_html_event_count,
+                  static_cast<size_t>(
+                      targeting::features::GetTextEmbeddingsHistorySize()));
+      }));
 }
 
 }  // namespace ads

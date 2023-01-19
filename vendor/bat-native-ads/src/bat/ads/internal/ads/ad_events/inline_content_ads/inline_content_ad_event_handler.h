@@ -9,15 +9,16 @@
 #include <string>
 
 #include "base/observer_list.h"
+#include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
 namespace ads {
 
+struct CreativeInlineContentAdInfo;
 struct InlineContentAdInfo;
 
 namespace inline_content_ads {
-
 class EventHandler final : public EventHandlerObserver {
  public:
   EventHandler();
@@ -38,8 +39,19 @@ class EventHandler final : public EventHandlerObserver {
                  mojom::InlineContentAdEventType event_type);
 
  private:
+  void OnGetForCreativeInstanceId(
+      const std::string& placement_id,
+      mojom::InlineContentAdEventType event_type,
+      bool success,
+      const std::string& creative_instance_id,
+      const CreativeInlineContentAdInfo& creative_ad);
+
   void FireEvent(const InlineContentAdInfo& ad,
                  mojom::InlineContentAdEventType event_type);
+  void OnGetAdEvents(const InlineContentAdInfo& ad,
+                     mojom::InlineContentAdEventType event_type,
+                     bool success,
+                     const AdEventList& ad_events);
   void FailedToFireEvent(const std::string& placement_id,
                          const std::string& creative_instance_id,
                          mojom::InlineContentAdEventType event_type) const;

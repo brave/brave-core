@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <utility>
 
+#include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
@@ -119,18 +120,27 @@ void RedeemUnblindedPaymentTokens::Redeem() {
 
   const RedeemUnblindedPaymentTokensUserDataBuilder user_data_builder(
       unblinded_payment_tokens);
-  user_data_builder.Build([=](const base::Value::Dict& user_data) {
-    RedeemUnblindedPaymentTokensUrlRequestBuilder url_request_builder(
-        wallet_, unblinded_payment_tokens, user_data);
-    mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-    BLOG(6, UrlRequestToString(url_request));
-    BLOG(7, UrlRequestHeadersToString(url_request));
+  user_data_builder.Build(
+      base::BindOnce(&RedeemUnblindedPaymentTokens::
+                         OnRedeemUnblindedPaymentTokensUserDataBuilt,
+                     base::Unretained(this)));
+}
 
-    AdsClientHelper::GetInstance()->UrlRequest(
-        std::move(url_request),
-        base::BindOnce(&RedeemUnblindedPaymentTokens::OnRedeem,
-                       base::Unretained(this), unblinded_payment_tokens));
-  });
+void RedeemUnblindedPaymentTokens::OnRedeemUnblindedPaymentTokensUserDataBuilt(
+    const base::Value::Dict& user_data) {
+  const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
+      privacy::GetAllUnblindedPaymentTokens();
+
+  RedeemUnblindedPaymentTokensUrlRequestBuilder url_request_builder(
+      wallet_, unblinded_payment_tokens, user_data);
+  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  BLOG(6, UrlRequestToString(url_request));
+  BLOG(7, UrlRequestHeadersToString(url_request));
+
+  AdsClientHelper::GetInstance()->UrlRequest(
+      std::move(url_request),
+      base::BindOnce(&RedeemUnblindedPaymentTokens::OnRedeem,
+                     base::Unretained(this), unblinded_payment_tokens));
 }
 
 void RedeemUnblindedPaymentTokens::OnRedeem(

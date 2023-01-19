@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/functional/bind.h"
 #include "bat/ads/internal/account/transactions/transaction_info.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
@@ -25,9 +26,10 @@ TEST_F(BatAdsTransactionsTest, Add) {
   const TransactionInfo transaction = transactions::Add(
       "42a33833-0a08-4cbb-ab3e-458e020221ab", 0.01, AdType::kNotificationAd,
       ConfirmationType::kViewed,
-      [](const bool success, const TransactionInfo& /*transaction*/) {
-        ASSERT_TRUE(success);
-      });
+      base::BindOnce(
+          [](const bool success, const TransactionInfo& /*transaction*/) {
+            ASSERT_TRUE(success);
+          }));
 
   // Assert
   TransactionList expected_transactions = {transaction};
@@ -96,7 +98,8 @@ TEST_F(BatAdsTransactionsTest, RemoveAll) {
   SaveTransactions(transactions);
 
   // Act
-  transactions::RemoveAll([](const bool success) { ASSERT_TRUE(success); });
+  transactions::RemoveAll(
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   // Assert
   transactions::GetForDateRange(

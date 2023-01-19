@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SEARCH_RESULT_AD_H_
 
 #include <memory>
+#include <string>
 
 #include "base/containers/circular_deque.h"
 #include "base/memory/raw_ptr.h"
@@ -44,6 +45,9 @@ class SearchResultAd final : public search_result_ads::EventHandlerObserver {
 
  private:
   void MaybeTriggerAdViewedEventFromQueue();
+  void OnFireAdViewedEvent(bool success,
+                           const std::string& placement_id,
+                           mojom::SearchResultAdEventType event_type);
 
   // search_result_ads::EventHandlerObserver:
   void OnSearchResultAdViewed(const SearchResultAdInfo& ad) override;

@@ -5,6 +5,10 @@
 
 #include "bat/ads/internal/account/account_util.h"
 
+#include <utility>
+
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "bat/ads/internal/account/confirmations/confirmation_util.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -17,18 +21,20 @@ bool ShouldRewardUser() {
   return AdsClientHelper::GetInstance()->GetBooleanPref(prefs::kEnabled);
 }
 
-void ResetRewards(const ResetRewardsCallback& callback) {
-  transactions::RemoveAll([callback](const bool success) {
-    if (!success) {
-      BLOG(0, "Failed to remove transactions");
-      callback(/*success*/ false);
-      return;
-    }
+void ResetRewards(ResetRewardsCallback callback) {
+  transactions::RemoveAll(base::BindOnce(
+      [](ResetRewardsCallback callback, const bool success) {
+        if (!success) {
+          BLOG(0, "Failed to remove transactions");
+          std::move(callback).Run(/*success*/ false);
+          return;
+        }
 
-    ResetConfirmations();
+        ResetConfirmations();
 
-    callback(/*success*/ true);
-  });
+        std::move(callback).Run(/*success*/ true);
+      },
+      std::move(callback)));
 }
 
 }  // namespace ads

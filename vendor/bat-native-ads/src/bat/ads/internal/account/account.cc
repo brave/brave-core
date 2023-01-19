@@ -137,15 +137,9 @@ void Account::Deposit(const std::string& creative_instance_id,
   }
 
   deposit->GetValue(
-      creative_instance_id, [=](const bool success, const double value) {
-        if (!success) {
-          FailedToProcessDeposit(creative_instance_id, ad_type,
-                                 confirmation_type);
-          return;
-        }
-
-        ProcessDeposit(creative_instance_id, ad_type, confirmation_type, value);
-      });
+      creative_instance_id,
+      base::BindOnce(&Account::OnGetDepositValue, base::Unretained(this),
+                     creative_instance_id, ad_type, confirmation_type));
 }
 
 // static
@@ -168,31 +162,50 @@ void Account::MaybeGetIssuers() const {
   issuers_->MaybeFetch();
 }
 
+void Account::OnGetDepositValue(const std::string& creative_instance_id,
+                                const AdType& ad_type,
+                                const ConfirmationType& confirmation_type,
+                                const bool success,
+                                const double value) const {
+  if (!success) {
+    FailedToProcessDeposit(creative_instance_id, ad_type, confirmation_type);
+    return;
+  }
+
+  ProcessDeposit(creative_instance_id, ad_type, confirmation_type, value);
+}
+
 void Account::ProcessDeposit(const std::string& creative_instance_id,
                              const AdType& ad_type,
                              const ConfirmationType& confirmation_type,
                              const double value) const {
   transactions::Add(
       creative_instance_id, value, ad_type, confirmation_type,
-      [=](const bool success, const TransactionInfo& transaction) {
-        if (!success) {
-          FailedToProcessDeposit(creative_instance_id, ad_type,
-                                 confirmation_type);
-          return;
-        }
+      base::BindOnce(&Account::OnDepositProcessed, base::Unretained(this),
+                     creative_instance_id, ad_type, confirmation_type));
+}
 
-        BLOG(3, "Successfully processed deposit for "
-                    << transaction.ad_type << " with creative instance id "
-                    << transaction.creative_instance_id << " and "
-                    << transaction.confirmation_type << " valued at "
-                    << transaction.value);
+void Account::OnDepositProcessed(const std::string& creative_instance_id,
+                                 const AdType& ad_type,
+                                 const ConfirmationType& confirmation_type,
+                                 const bool success,
+                                 const TransactionInfo& transaction) const {
+  if (!success) {
+    FailedToProcessDeposit(creative_instance_id, ad_type, confirmation_type);
+    return;
+  }
 
-        NotifyDidProcessDeposit(transaction);
+  BLOG(3, "Successfully processed deposit for "
+              << transaction.ad_type << " with creative instance id "
+              << transaction.creative_instance_id << " and "
+              << transaction.confirmation_type << " valued at "
+              << transaction.value);
 
-        NotifyStatementOfAccountsDidChange();
+  NotifyDidProcessDeposit(transaction);
 
-        confirmations_->Confirm(transaction);
-      });
+  NotifyStatementOfAccountsDidChange();
+
+  confirmations_->Confirm(transaction);
 }
 
 void Account::FailedToProcessDeposit(
@@ -233,18 +246,21 @@ void Account::WalletDidChange(const WalletInfo& wallet) const {
 
   NotifyWalletDidChange(wallet);
 
-  ResetRewards([=](const bool success) {
-    if (!success) {
-      BLOG(0, "Failed to reset rewards state");
-      return;
-    }
+  ResetRewards(
+      base::BindOnce(&Account::OnRewardsReset, base::Unretained(this)));
+}
 
-    BLOG(3, "Successfully reset rewards state");
+void Account::OnRewardsReset(const bool success) const {
+  if (!success) {
+    BLOG(0, "Failed to reset rewards state");
+    return;
+  }
 
-    NotifyStatementOfAccountsDidChange();
+  BLOG(3, "Successfully reset rewards state");
 
-    TopUpUnblindedTokens();
-  });
+  NotifyStatementOfAccountsDidChange();
+
+  TopUpUnblindedTokens();
 }
 
 void Account::MaybeResetIssuersAndConfirmations() {

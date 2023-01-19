@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
+#include "base/values.h"
 #include "bat/ads/internal/account/confirmations/confirmations_delegate.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/internal/common/timer/backoff_timer.h"
@@ -49,8 +50,13 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
   void OnRetry();
   void StopRetrying();
 
+  void CreateConfirmationAndRedeemToken(const TransactionInfo& transaction,
+                                        const base::Time& created_at,
+                                        const base::Value::Dict& user_data);
+
   void CreateNewConfirmationAndAppendToRetryQueue(
-      const ConfirmationInfo& confirmation);
+      const ConfirmationInfo& confirmation,
+      const base::Value::Dict& user_data);
 
   // RedeemUnblindedTokenDelegate:
   void OnDidSendConfirmation(const ConfirmationInfo& confirmation) override;

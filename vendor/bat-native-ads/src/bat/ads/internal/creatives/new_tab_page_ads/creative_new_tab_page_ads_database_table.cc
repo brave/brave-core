@@ -10,6 +10,7 @@
 
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -162,12 +163,12 @@ CreativeNewTabPageAdList GetCreativeAdsFromResponse(
 }
 
 void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
-                                const GetCreativeNewTabPageAdCallback& callback,
+                                GetCreativeNewTabPageAdCallback callback,
                                 mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative new tab page ad");
-    callback(/*success*/ false, creative_instance_id, {});
+    std::move(callback).Run(/*success*/ false, creative_instance_id, {});
     return;
   }
 
@@ -176,13 +177,13 @@ void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
 
   if (creative_ads.size() != 1) {
     BLOG(0, "Failed to get creative new tab page ad");
-    callback(/*success*/ false, creative_instance_id, {});
+    std::move(callback).Run(/*success*/ false, creative_instance_id, {});
     return;
   }
 
   const CreativeNewTabPageAdInfo& creative_ad = creative_ads.front();
 
-  callback(/*success*/ true, creative_instance_id, creative_ad);
+  std::move(callback).Run(/*success*/ true, creative_instance_id, creative_ad);
 }
 
 void OnGetForSegments(const SegmentList& segments,
@@ -305,7 +306,7 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
     GetCreativeNewTabPageAdCallback callback) const {
   if (creative_instance_id.empty()) {
-    callback(/*success*/ false, creative_instance_id, {});
+    std::move(callback).Run(/*success*/ false, creative_instance_id, {});
     return;
   }
 
@@ -398,8 +399,9 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetForCreativeInstanceId,
-                                             creative_instance_id, callback));
+      std::move(transaction),
+      base::BindOnce(&OnGetForCreativeInstanceId, creative_instance_id,
+                     std::move(callback)));
 }
 
 void CreativeNewTabPageAds::GetForSegments(

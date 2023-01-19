@@ -43,14 +43,13 @@ TEST_F(BatAdsConversionsDatabaseTableTest, EmptySave) {
   SaveConversions(conversions);
 
   // Assert
-  const ConversionList expected_conversions = conversions;
-
-  database_table_->GetAll(
-      [&expected_conversions](const bool success,
-                              const ConversionList& conversions) {
+  database_table_->GetAll(base::BindOnce(
+      [](const ConversionList& expected_conversions, const bool success,
+         const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
-      });
+        EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
+      },
+      conversions));
 }
 
 TEST_F(BatAdsConversionsDatabaseTableTest, SaveConversions) {
@@ -79,12 +78,13 @@ TEST_F(BatAdsConversionsDatabaseTableTest, SaveConversions) {
   // Assert
   const ConversionList expected_conversions = conversions;
 
-  database_table_->GetAll(
-      [&expected_conversions](const bool success,
-                              const ConversionList& conversions) {
+  database_table_->GetAll(base::BindOnce(
+      [](const ConversionList& expected_conversions, const bool success,
+         const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
-      });
+        EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
+      },
+      expected_conversions));
 }
 
 TEST_F(BatAdsConversionsDatabaseTableTest, DoNotSaveDuplicateConversion) {
@@ -107,12 +107,13 @@ TEST_F(BatAdsConversionsDatabaseTableTest, DoNotSaveDuplicateConversion) {
   // Assert
   const ConversionList expected_conversions = conversions;
 
-  database_table_->GetAll(
-      [&expected_conversions](const bool success,
-                              const ConversionList& conversions) {
+  database_table_->GetAll(base::BindOnce(
+      [](const ConversionList& expected_conversions, const bool success,
+         const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
-      });
+        EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
+      },
+      expected_conversions));
 }
 
 TEST_F(BatAdsConversionsDatabaseTableTest, PurgeExpiredConversions) {
@@ -155,12 +156,13 @@ TEST_F(BatAdsConversionsDatabaseTableTest, PurgeExpiredConversions) {
   expected_conversions.push_back(info_1);
   expected_conversions.push_back(info_3);
 
-  database_table_->GetAll(
-      [&expected_conversions](const bool success,
-                              const ConversionList& conversions) {
+  database_table_->GetAll(base::BindOnce(
+      [](const ConversionList& expected_conversions, const bool success,
+         const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
-      });
+        EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
+      },
+      expected_conversions));
 }
 
 TEST_F(BatAdsConversionsDatabaseTableTest,
@@ -193,12 +195,13 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
   ConversionList expected_conversions;
   expected_conversions.push_back(info_2);
 
-  database_table_->GetAll(
-      [&expected_conversions](const bool success,
-                              const ConversionList& conversions) {
+  database_table_->GetAll(base::BindOnce(
+      [](const ConversionList& expected_conversions, const bool success,
+         const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
-      });
+        EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
+      },
+      expected_conversions));
 }
 
 TEST_F(BatAdsConversionsDatabaseTableTest, TableName) {

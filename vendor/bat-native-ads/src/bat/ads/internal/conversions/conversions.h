@@ -12,7 +12,10 @@
 #include <vector>
 
 #include "base/observer_list.h"
+#include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/common/timer/timer.h"
+#include "bat/ads/internal/conversions/conversion_info.h"
+#include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/locale/locale_manager_observer.h"
 #include "bat/ads/internal/resources/behavioral/conversions/conversion_id_pattern_info.h"
@@ -28,7 +31,6 @@ class Conversions;
 }  // namespace resource
 
 struct AdEventInfo;
-struct ConversionQueueItemInfo;
 struct VerifiableConversionInfo;
 
 class Conversions final : public LocaleManagerObserver,
@@ -57,9 +59,24 @@ class Conversions final : public LocaleManagerObserver,
   void Process();
 
  private:
+  void OnGetUnprocessedConversions(
+      bool success,
+      const ConversionQueueItemList& conversion_queue_items);
+
   void CheckRedirectChain(const std::vector<GURL>& redirect_chain,
                           const std::string& html,
                           const ConversionIdPatternMap& conversion_id_patterns);
+  void OnGetAllAdEvents(std::vector<GURL> redirect_chain,
+                        std::string html,
+                        ConversionIdPatternMap conversion_id_patterns,
+                        bool success,
+                        const AdEventList& ad_events);
+  void OnGetAllConversions(const std::vector<GURL>& redirect_chain,
+                           const std::string& html,
+                           const ConversionIdPatternMap& conversion_id_patterns,
+                           const AdEventList& ad_events,
+                           bool success,
+                           const ConversionList& conversions);
 
   void Convert(const AdEventInfo& ad_event,
                const VerifiableConversionInfo& verifiable_conversion);
@@ -69,6 +86,9 @@ class Conversions final : public LocaleManagerObserver,
   void OnSaveConversionQueue(bool success);
 
   void ProcessQueueItem(const ConversionQueueItemInfo& queue_item);
+  void OnGetConversionQueue(
+      bool success,
+      const ConversionQueueItemList& conversion_queue_items);
   void ProcessQueue();
 
   void RemoveInvalidQueueItem(

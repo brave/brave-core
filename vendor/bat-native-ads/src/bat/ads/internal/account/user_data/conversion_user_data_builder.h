@@ -6,17 +6,17 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_CONVERSION_USER_DATA_BUILDER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_CONVERSION_USER_DATA_BUILDER_H_
 
-#include <functional>
 #include <string>
 
+#include "base/functional/callback_forward.h"
 #include "base/values.h"
 
 namespace ads::user_data::builder {
 
-using BuildConversionCallback = std::function<void(base::Value::Dict)>;
+using BuildConversionCallback = base::OnceCallback<void(base::Value::Dict)>;
 
 void BuildConversion(const std::string& creative_instance_id,
-                     const BuildConversionCallback& callback);
+                     BuildConversionCallback callback);
 
 }  // namespace ads::user_data::builder
 

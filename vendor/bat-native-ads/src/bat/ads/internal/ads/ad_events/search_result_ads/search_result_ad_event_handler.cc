@@ -9,11 +9,11 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/internal/account/deposits/deposit_builder.h"
 #include "bat/ads/internal/account/deposits/deposit_info.h"
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
-#include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/ad_events/search_result_ads/search_result_ad_event_factory.h"
@@ -99,7 +99,7 @@ void EventHandler::RemoveObserver(EventHandlerObserver* observer) {
 
 void EventHandler::FireEvent(mojom::SearchResultAdInfoPtr ad_mojom,
                              const mojom::SearchResultAdEventType event_type,
-                             const FireAdEventHandlerCallback& callback) const {
+                             FireAdEventHandlerCallback callback) const {
   DCHECK(ad_mojom);
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
@@ -107,28 +107,28 @@ void EventHandler::FireEvent(mojom::SearchResultAdInfoPtr ad_mojom,
 
   if (!ad.IsValid()) {
     BLOG(1, "Failed to fire event due to an invalid search result ad");
-    return FailedToFireEvent(ad, event_type, callback);
+    return FailedToFireEvent(ad, event_type, std::move(callback));
   }
 
   if (event_type == mojom::SearchResultAdEventType::kServed &&
       !PermissionRules::HasPermission()) {
     BLOG(1, "Search result ad: Not allowed due to permission rules");
-    return FailedToFireEvent(ad, event_type, callback);
+    return FailedToFireEvent(ad, event_type, std::move(callback));
   }
 
   switch (event_type) {
     case mojom::SearchResultAdEventType::kServed: {
-      FireEvent(ad, event_type, callback);
+      FireEvent(ad, event_type, std::move(callback));
       break;
     }
 
     case mojom::SearchResultAdEventType::kViewed: {
-      FireViewedEvent(std::move(ad_mojom), callback);
+      FireViewedEvent(std::move(ad_mojom), std::move(callback));
       break;
     }
 
     case mojom::SearchResultAdEventType::kClicked: {
-      FireClickedEvent(ad, callback);
+      FireClickedEvent(ad, std::move(callback));
       break;
     }
   }
@@ -138,18 +138,17 @@ void EventHandler::FireEvent(mojom::SearchResultAdInfoPtr ad_mojom,
 
 void EventHandler::FireEvent(const SearchResultAdInfo& ad,
                              const mojom::SearchResultAdEventType event_type,
-                             const FireAdEventHandlerCallback& callback) const {
+                             FireAdEventHandlerCallback callback) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
   const auto ad_event = AdEventFactory::Build(event_type);
   ad_event->FireEvent(ad);
 
-  NotifySearchResultAdEvent(ad, event_type, callback);
+  NotifySearchResultAdEvent(ad, event_type, std::move(callback));
 }
 
-void EventHandler::FireViewedEvent(
-    mojom::SearchResultAdInfoPtr ad_mojom,
-    const FireAdEventHandlerCallback& callback) const {
+void EventHandler::FireViewedEvent(mojom::SearchResultAdInfoPtr ad_mojom,
+                                   FireAdEventHandlerCallback callback) const {
   DCHECK(ad_mojom);
 
   const DepositInfo deposit = BuildDeposit(ad_mojom);
@@ -158,11 +157,11 @@ void EventHandler::FireViewedEvent(
   deposits_database_table.Save(
       deposit,
       base::BindOnce(&EventHandler::OnSaveDeposits, base::Unretained(this),
-                     std::move(ad_mojom), callback));
+                     std::move(ad_mojom), std::move(callback)));
 }
 
 void EventHandler::OnSaveDeposits(mojom::SearchResultAdInfoPtr ad_mojom,
-                                  const FireAdEventHandlerCallback& callback,
+                                  FireAdEventHandlerCallback callback,
                                   const bool success) const {
   DCHECK(ad_mojom);
 
@@ -171,7 +170,7 @@ void EventHandler::OnSaveDeposits(mojom::SearchResultAdInfoPtr ad_mojom,
   if (!success) {
     BLOG(0, "Failed to save deposits state");
     return FailedToFireEvent(ad, mojom::SearchResultAdEventType::kViewed,
-                             callback);
+                             std::move(callback));
   }
 
   BLOG(3, "Successfully saved deposits state");
@@ -183,17 +182,18 @@ void EventHandler::OnSaveDeposits(mojom::SearchResultAdInfoPtr ad_mojom,
 
   database::table::Conversions conversion_database_table;
   conversion_database_table.Save(
-      conversions, base::BindOnce(&EventHandler::OnSaveConversions,
-                                  base::Unretained(this), ad, callback));
+      conversions,
+      base::BindOnce(&EventHandler::OnSaveConversions, base::Unretained(this),
+                     ad, std::move(callback)));
 }
 
 void EventHandler::OnSaveConversions(const SearchResultAdInfo& ad,
-                                     const FireAdEventHandlerCallback& callback,
+                                     FireAdEventHandlerCallback callback,
                                      const bool success) const {
   if (!success) {
     BLOG(0, "Failed to save conversions state");
     return FailedToFireEvent(ad, mojom::SearchResultAdEventType::kViewed,
-                             callback);
+                             std::move(callback));
   }
 
   BLOG(3, "Successfully saved conversions state");
@@ -201,47 +201,60 @@ void EventHandler::OnSaveConversions(const SearchResultAdInfo& ad,
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kSearchResultAd,
-      [=](const bool success, const AdEventList& ad_events) {
-        const mojom::SearchResultAdEventType event_type =
-            mojom::SearchResultAdEventType::kViewed;
-
-        if (!success) {
-          BLOG(1, "Search result ad: Failed to get ad events");
-          return FailedToFireEvent(ad, event_type, callback);
-        }
-
-        if (!WasAdServed(ad, ad_events, event_type)) {
-          BLOG(1,
-               "Search result ad: Not allowed because an ad was not served "
-               "for placement id "
-                   << ad.placement_id);
-          return FailedToFireEvent(ad, event_type, callback);
-        }
-
-        if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
-          BLOG(1, "Search result ad: Not allowed as debounced "
-                      << event_type << " event for placement id "
-                      << ad.placement_id);
-          return FailedToFireEvent(ad, event_type, callback);
-        }
-
-        FireEvent(ad, event_type, callback);
-      });
+      base::BindOnce(&EventHandler::OnGetAdEventsForViewedSearchResultAd,
+                     base::Unretained(this), ad, std::move(callback)));
 }
 
-void EventHandler::FireClickedEvent(
+void EventHandler::OnGetAdEventsForViewedSearchResultAd(
     const SearchResultAdInfo& ad,
-    const FireAdEventHandlerCallback& callback) const {
+    FireAdEventHandlerCallback callback,
+    const bool success,
+    const AdEventList& ad_events) const {
+  const mojom::SearchResultAdEventType event_type =
+      mojom::SearchResultAdEventType::kViewed;
+
+  if (!success) {
+    BLOG(1, "Search result ad: Failed to get ad events");
+    return FailedToFireEvent(ad, event_type, std::move(callback));
+  }
+
+  if (!WasAdServed(ad, ad_events, event_type)) {
+    BLOG(1,
+         "Search result ad: Not allowed because an ad was not served "
+         "for placement id "
+             << ad.placement_id);
+    return FailedToFireEvent(ad, event_type, std::move(callback));
+  }
+
+  if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
+    BLOG(1, "Search result ad: Not allowed as debounced "
+                << event_type << " event for placement id " << ad.placement_id);
+    return FailedToFireEvent(ad, event_type, std::move(callback));
+  }
+
+  FireEvent(ad, event_type, std::move(callback));
+}
+
+void EventHandler::FireClickedEvent(const SearchResultAdInfo& ad,
+                                    FireAdEventHandlerCallback callback) const {
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kSearchResultAd,
-      [=](const bool success, const AdEventList& ad_events) {
-        const mojom::SearchResultAdEventType event_type =
-            mojom::SearchResultAdEventType::kClicked;
+      base::BindOnce(&EventHandler::OnGetAdEventsForClickedSearchResultAd,
+                     base::Unretained(this), ad, std::move(callback)));
+}
+
+void EventHandler::OnGetAdEventsForClickedSearchResultAd(
+    const SearchResultAdInfo& ad,
+    FireAdEventHandlerCallback callback,
+    const bool success,
+    const AdEventList& ad_events) const {
+  const mojom::SearchResultAdEventType event_type =
+      mojom::SearchResultAdEventType::kClicked;
 
         if (!success) {
           BLOG(1, "Search result ad: Failed to get ad events");
-          return FailedToFireEvent(ad, event_type, callback);
+          return FailedToFireEvent(ad, event_type, std::move(callback));
         }
 
         if (!WasAdServed(ad, ad_events, event_type)) {
@@ -249,37 +262,36 @@ void EventHandler::FireClickedEvent(
                "Search result ad: Not allowed because an ad was not served "
                "for placement id "
                    << ad.placement_id);
-          return FailedToFireEvent(ad, event_type, callback);
+          return FailedToFireEvent(ad, event_type, std::move(callback));
         }
 
         if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
           BLOG(1, "Search result ad: Not allowed as debounced "
                       << event_type << " event for placement id "
                       << ad.placement_id);
-          return FailedToFireEvent(ad, event_type, callback);
+          return FailedToFireEvent(ad, event_type, std::move(callback));
         }
 
-        FireEvent(ad, event_type, callback);
-      });
+  FireEvent(ad, event_type, std::move(callback));
 }
 
 void EventHandler::FailedToFireEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
-    const FireAdEventHandlerCallback& callback) const {
+    FireAdEventHandlerCallback callback) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
   BLOG(1, "Failed to fire search result ad "
               << event_type << " event for placement_id " << ad.placement_id
               << " and creative instance id " << ad.creative_instance_id);
 
-  NotifySearchResultAdEventFailed(ad, event_type, callback);
+  NotifySearchResultAdEventFailed(ad, event_type, std::move(callback));
 }
 
 void EventHandler::NotifySearchResultAdEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
-    const FireAdEventHandlerCallback& callback) const {
+    FireAdEventHandlerCallback callback) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
   switch (event_type) {
@@ -299,7 +311,7 @@ void EventHandler::NotifySearchResultAdEvent(
     }
   }
 
-  callback(/*success*/ true, ad.placement_id, event_type);
+  std::move(callback).Run(/*success*/ true, ad.placement_id, event_type);
 }
 
 void EventHandler::NotifySearchResultAdServed(
@@ -326,14 +338,14 @@ void EventHandler::NotifySearchResultAdClicked(
 void EventHandler::NotifySearchResultAdEventFailed(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
-    const FireAdEventHandlerCallback& callback) const {
+    FireAdEventHandlerCallback callback) const {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
   for (EventHandlerObserver& observer : observers_) {
     observer.OnSearchResultAdEventFailed(ad, event_type);
   }
 
-  callback(/*success*/ false, ad.placement_id, event_type);
+  std::move(callback).Run(/*success*/ false, ad.placement_id, event_type);
 }
 
 }  // namespace ads::search_result_ads
